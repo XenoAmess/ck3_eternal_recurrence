@@ -33,12 +33,13 @@ std::array<std::byte, 0x20> g_pending_slots{};
 std::array<std::byte, 0x5C8> g_unrelated_pending_interaction{};
 std::array<std::byte, 0x5C8> g_pending_interaction{};
 std::array<std::byte, 0x40> g_character_storage{};
-std::array<std::byte, 0x70> g_character_slots{};
+std::array<std::byte, 0x80> g_character_slots{};
 std::array<std::byte, 0x1D0> g_played_character{};
 std::array<std::byte, 0x1D0> g_target_character{};
 std::array<std::byte, 0x1D0> g_dead_character{};
 std::array<std::byte, 0x1D0> g_generation_mismatch_character{};
 std::array<std::byte, 0x1D0> g_ally_character{};
+std::array<std::byte, 0x1D0> g_marriage_matchmaker_character{};
 std::array<std::byte, 0x200> g_played_land_status{};
 std::array<std::byte, 0x40> g_combat_retreat_rule_state{};
 std::array<std::byte, 0x300> g_played_character_extension{};
@@ -522,6 +523,9 @@ std::int32_t g_marriage_redirect_calls = 0;
 std::int32_t g_marriage_legacy_context_construct_calls = 0;
 bool g_marriage_redirect_ready = false;
 bool g_marriage_validate_result = true;
+bool g_family_marriage_fixture_active = false;
+std::uint8_t g_family_marriage_answer = 1;
+std::int64_t g_family_marriage_accept_raw = 1'250'000;
 bool g_global_variable_container_available = true;
 std::int32_t g_script_identifier_lookup_calls = 0;
 constexpr std::int32_t kMarriageMatchmakerCharacterId = 0x01000007;
@@ -1832,9 +1836,13 @@ void FixtureRedirectCharacterInteractionRoles(
       secondary_recipient_character_id == nullptr ||
       intermediary_character_id == nullptr ||
       *actor_character_id != 0x01000002 ||
-      *recipient_character_id != 0x01000003 ||
-      *secondary_actor_character_id != 0x01000002 ||
-      *secondary_recipient_character_id != 0x01000003 ||
+      *recipient_character_id != 0x01000003 &&
+          !(g_family_marriage_fixture_active &&
+            *recipient_character_id == kMarriageMatchmakerCharacterId) ||
+      *secondary_actor_character_id !=
+          (g_family_marriage_fixture_active ? kFixtureAllyCharacterId
+                                            : 0x01000002) ||
+      *secondary_recipient_character_id != *recipient_character_id ||
       *intermediary_character_id != -1) {
     return;
   }
@@ -1842,7 +1850,9 @@ void FixtureRedirectCharacterInteractionRoles(
   // addressed to the candidate's matchmaker, while the candidate remains the
   // secondary recipient. The all-role path and the original UI's later role
   // updates are expected to converge on these final IDs.
-  *recipient_character_id = kMarriageMatchmakerCharacterId;
+  if (*recipient_character_id == 0x01000003) {
+    *recipient_character_id = kMarriageMatchmakerCharacterId;
+  }
   ++g_marriage_redirect_calls;
   g_marriage_redirect_ready = true;
 }
@@ -1858,8 +1868,13 @@ void *FixtureConstructCharacterInteractionContextAllRoles(
       interaction != g_arrange_marriage_interaction.data() ||
       actor_character_id != 0x01000002 ||
       recipient_character_id != kMarriageMatchmakerCharacterId ||
-      secondary_actor_character_id != 0x01000002 ||
-      secondary_recipient_character_id != 0x01000003 ||
+      secondary_actor_character_id !=
+          (g_family_marriage_fixture_active ? kFixtureAllyCharacterId
+                                            : 0x01000002) ||
+      secondary_recipient_character_id != 0x01000003 &&
+          !(g_family_marriage_fixture_active &&
+            secondary_recipient_character_id ==
+                kMarriageMatchmakerCharacterId) ||
       intermediary_character_id != -1 || extra_context != nullptr) {
     return nullptr;
   }
@@ -2742,6 +2757,16 @@ std::uint8_t FixtureEvaluateCharacterInteractionAnswer(
   ++g_exit_terms_answer_calls;
   g_exit_terms_answer_destroy_counts.push_back(
       g_interaction_destroy_calls);
+  void *interaction = nullptr;
+  if (opaque_context != nullptr) {
+    std::memcpy(&interaction, opaque_context, sizeof(interaction));
+  }
+  if (g_family_marriage_fixture_active &&
+      interaction == g_arrange_marriage_interaction.data() &&
+      answer_mode == 1 && flag == 1 && error_sink_a == nullptr &&
+      error_sink_b == nullptr) {
+    return g_family_marriage_answer;
+  }
   if (opaque_context == nullptr || answer_mode != 1 || flag != 0 ||
       error_sink_a != nullptr || error_sink_b != nullptr) {
     return 3;
@@ -2779,7 +2804,9 @@ bool FixtureValidateCharacterInteractionContext(void *opaque_context,
     return g_marriage_validate_result && error_output == nullptr &&
            actor_id == 0x01000002 &&
            recipient_id == kMarriageMatchmakerCharacterId &&
-           actor_to_match_id == actor_id &&
+           actor_to_match_id ==
+               (g_family_marriage_fixture_active ? kFixtureAllyCharacterId
+                                                 : actor_id) &&
            recipient_to_match_id == 0x01000003;
   }
   void *declaration = nullptr;
@@ -2799,6 +2826,13 @@ std::int64_t *FixtureReadCharacterInteractionAnswerScore(
     void *opaque_context, std::int64_t *output) {
   if (opaque_context == nullptr || output == nullptr) {
     return nullptr;
+  }
+  void *interaction = nullptr;
+  std::memcpy(&interaction, opaque_context, sizeof(interaction));
+  if (g_family_marriage_fixture_active &&
+      interaction == g_arrange_marriage_interaction.data()) {
+    *output = g_family_marriage_accept_raw;
+    return output;
   }
   void *special_data = nullptr;
   std::memcpy(&special_data,
@@ -3436,6 +3470,8 @@ int main() {
         static_cast<void *>(g_generation_mismatch_character.data()));
   Store(g_character_slots, 0x68,
         static_cast<void *>(g_ally_character.data()));
+  Store(g_character_slots, 0x78,
+        static_cast<void *>(g_marriage_matchmaker_character.data()));
   Store(g_played_character, 0x18, played_character_id);
   Store(g_played_character, 0x1A0,
         static_cast<void *>(g_played_family_data.data()));
@@ -3451,6 +3487,10 @@ int main() {
         static_cast<void *>(nullptr));
   Store(g_ally_character, 0x18, kFixtureAllyCharacterId);
   Store(g_ally_character, 0x1C8, static_cast<void *>(nullptr));
+  Store(g_marriage_matchmaker_character, 0x18,
+        kMarriageMatchmakerCharacterId);
+  Store(g_marriage_matchmaker_character, 0x1C8,
+        static_cast<void *>(nullptr));
   g_character_validity_vtable[1] =
       reinterpret_cast<std::uintptr_t>(&FixtureCharacterValid);
   Store(g_played_character, 0x10,
@@ -8702,6 +8742,68 @@ int main() {
   }
   g_marriage_validate_result = true;
 
+  // An observed heir is the actual secondary actor; the played ruler remains
+  // the proposal actor. Native final Can Send and outer answer are independent
+  // gates, and no action/command is submitted by the private read.
+  Store(g_character_storage, 0x2C, std::int32_t{8});
+  g_family_marriage_fixture_active = true;
+  g_family_marriage_answer = 1;
+  g_family_marriage_accept_raw = 1'250'000;
+  std::vector<xar::ck3_11906::ArrangeMarriageFamilyCandidateV1>
+      family_candidates;
+  xar::ck3_11906::ArrangeMarriageQueryDiagnostics family_diagnostics{};
+  g_submit_called = false;
+  if (xar::ck3_11906::ReadArrangeMarriageFamilyCandidatesV1(
+          bindings, kFixtureAllyCharacterId, family_candidates,
+          family_diagnostics) !=
+          xar::ck3_11906::
+              ReadArrangeMarriageFamilyCandidatesResultV1::available ||
+      family_candidates.size() != 1 ||
+      family_candidates[0].played_character_id != played_character_id ||
+      family_candidates[0].subject_character_id !=
+          kFixtureAllyCharacterId ||
+      family_candidates[0].candidate_character_id != enemy_character_id ||
+      family_candidates[0].recipient_matchmaker_character_id !=
+          kMarriageMatchmakerCharacterId ||
+      !family_candidates[0].complete_can_send ||
+      !family_candidates[0].recipient_answer_allows_send ||
+      family_candidates[0].recipient_ai_accept_raw != 1'250'000 ||
+      family_diagnostics.native_validate_true != 1 || g_submit_called) {
+    return Fail("observed-heir private query lost native family legality");
+  }
+  g_family_marriage_answer = 0;
+  if (xar::ck3_11906::ReadArrangeMarriageFamilyCandidatesV1(
+          bindings, kFixtureAllyCharacterId, family_candidates,
+          family_diagnostics) !=
+          xar::ck3_11906::
+              ReadArrangeMarriageFamilyCandidatesResultV1::available ||
+      family_candidates.size() != 1 ||
+      !family_candidates[0].complete_can_send ||
+      family_candidates[0].recipient_answer_allows_send) {
+    return Fail("native final responder denial was counted as legal marriage");
+  }
+  g_marriage_validate_result = false;
+  if (xar::ck3_11906::ReadArrangeMarriageFamilyCandidatesV1(
+          bindings, kFixtureAllyCharacterId, family_candidates,
+          family_diagnostics) !=
+          xar::ck3_11906::
+              ReadArrangeMarriageFamilyCandidatesResultV1::available ||
+      !family_candidates.empty() ||
+      family_diagnostics.native_validate_true != 0) {
+    return Fail("native family Can Send rejection returned a candidate");
+  }
+  g_marriage_validate_result = true;
+  if (xar::ck3_11906::ReadArrangeMarriageFamilyCandidatesV1(
+          bindings, 0x02000006, family_candidates,
+          family_diagnostics) !=
+          xar::ck3_11906::
+              ReadArrangeMarriageFamilyCandidatesResultV1::subject_not_found ||
+      !family_candidates.empty()) {
+    return Fail("stale heir generation reached marriage context");
+  }
+  g_family_marriage_fixture_active = false;
+  Store(g_character_storage, 0x2C, std::int32_t{6});
+
   auto stale_marriage_choice = marriage_choices[0];
   stale_marriage_choice.played_character_id = 0x02000002;
   g_submit_called = false;
@@ -11726,6 +11828,7 @@ int main() {
                "declarable_war_enumeration=1 "
                "declare_war_command=1 "
                "arrange_marriage_query=1 "
+               "observed_heir_family_query=1 "
                "arrange_marriage_command=1 "
                "war_termination_query=1 surrender_war_command=1 "
                "offer_white_peace_command=1 "

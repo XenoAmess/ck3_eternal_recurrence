@@ -13,7 +13,9 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.marriage_matchmaking_private_transport import (
+    PRIVATE_OBSERVED_HEIR_MARRIAGE_STEP_V1,
     PRIVATE_RANKED_MARRIAGE_STEP_V1,
+    query_observed_heir_marriage_private_v1,
     query_ranked_marriage_private_v1,
 )
 
@@ -21,6 +23,7 @@ from xar_autoplayer.bridge.marriage_matchmaking_private_transport import (
 def _paused_frame() -> dict[str, object]:
     return {
         "native_revision": 693,
+        "revision": 693,
         "date_raw": 53178264,
         "paused": True,
         "map_ready": True,
@@ -99,9 +102,18 @@ class _Driver:
         self.endpoint = _Endpoint()
         self.state = _State(result)
         self.frames = frames
+        self.root_query_expected_revision: int | None = None
 
     def take_snapshot(self) -> dict[str, object]:
         return self.frames.pop(0)
+
+    def _execute_campaign_root_context_v1_query(
+        self, *, expected_revision: int | None,
+    ) -> dict[str, object]:
+        self.root_query_expected_revision = expected_revision
+        return {"status": "available", "query_sequence": 7,
+                "held_title_partition": [{"primary": True,
+                                          "first_heir_character_id": 38822}]}
 
 
 def _reply(status: str, **fields: object) -> dict[str, object]:
@@ -154,6 +166,60 @@ class PrivateRankedMarriageTransportTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(BridgeUnavailableError, "frame changed"):
             query_ranked_marriage_private_v1(driver, expected_native_revision=693)
+
+
+class PrivateObservedHeirMarriageTransportTests(unittest.TestCase):
+    @staticmethod
+    def _family_reply(*, answer: bool, subject_id: int = 38822) -> dict[str, object]:
+        return {"ok": True, "result": {
+            "step": PRIVATE_OBSERVED_HEIR_MARRIAGE_STEP_V1,
+            "accepted": True, "private_build": True, "read_only": True,
+            "advertised": False, "status": "available", "query_sequence": 2,
+            "subject_source": "public_campaign_root_primary_first_heir",
+            "subject_character_id": subject_id, "unavailable_reason": None,
+            "family_candidates": [{
+                "played_character_id": 29829,
+                "subject_character_id": subject_id,
+                "candidate_character_id": 30001,
+                "recipient_matchmaker_character_id": 30002,
+                "intermediary_character_id": -1,
+                "native_rank": None,
+                "complete_can_send": True,
+                "recipient_ai_accept_raw": 250000,
+                "recipient_answer_status_raw": int(answer),
+                "recipient_answer_allows_send": answer,
+            }],
+            "arrange_marriage_diagnostics": {
+                "storage_capacity": 8, "slots_scanned": 8,
+            },
+            "family_subject_role_mismatches": 0,
+        }}
+
+    def test_same_frame_public_heir_binds_native_family_pair(self) -> None:
+        driver = _Driver(self._family_reply(answer=True),
+                         [_paused_frame(), _paused_frame(), _paused_frame()])
+        result = query_observed_heir_marriage_private_v1(
+            driver, expected_native_revision=693)
+        self.assertEqual(result["status"], "available")
+        self.assertEqual(result["observed_first_heir_character_id"], 38822)
+        self.assertEqual(len(result["native_legal_candidates"]), 1)
+        self.assertEqual(driver.root_query_expected_revision, 693)
+        self.assertEqual(driver.endpoint.request["step"],
+                         PRIVATE_OBSERVED_HEIR_MARRIAGE_STEP_V1)
+        self.assertNotIn("subject_character_id", driver.endpoint.request)
+
+    def test_answer_denial_and_heir_mismatch_cannot_count_legal(self) -> None:
+        driver = _Driver(self._family_reply(answer=False),
+                         [_paused_frame(), _paused_frame(), _paused_frame()])
+        result = query_observed_heir_marriage_private_v1(
+            driver, expected_native_revision=693)
+        self.assertEqual(result["native_legal_candidates"], [])
+        driver = _Driver(self._family_reply(answer=True, subject_id=38823),
+                         [_paused_frame(), _paused_frame(), _paused_frame()])
+        with self.assertRaisesRegex(BridgeUnavailableError,
+                                   "disagrees with public heir"):
+            query_observed_heir_marriage_private_v1(
+                driver, expected_native_revision=693)
 
 
 if __name__ == "__main__":

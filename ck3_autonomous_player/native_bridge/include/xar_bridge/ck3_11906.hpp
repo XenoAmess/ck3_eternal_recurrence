@@ -1013,6 +1013,17 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
     std::vector<ArrangeMarriageChoice> &output,
     ArrangeMarriageQueryDiagnostics &diagnostics) noexcept;
 
+using game::ArrangeMarriageFamilyCandidateV1;
+using game::ReadArrangeMarriageFamilyCandidatesResultV1;
+// Unadvertised, read-only family query. The subject comes from an independent
+// same-revision public campaign-root observation; every row passes the exact
+// native five-role Can Send and final responder-answer calls.
+ReadArrangeMarriageFamilyCandidatesResultV1
+ReadArrangeMarriageFamilyCandidatesV1(
+    const Bindings &bindings, std::int32_t subject_character_id,
+    std::vector<ArrangeMarriageFamilyCandidateV1> &output,
+    ArrangeMarriageQueryDiagnostics &diagnostics) noexcept;
+
 using game::ArrangeMarriageResult;
 
 // Rebuilds the context from both exact CharacterID handles and validates it

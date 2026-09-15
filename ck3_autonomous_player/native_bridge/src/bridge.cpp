@@ -6184,6 +6184,83 @@ std::string ArrangeMarriageChoicesResultFrame(
 }
 
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+constexpr std::string_view kObservedHeirMarriagePrivateStepV1 =
+    "query-observed-heir-marriage-choices-v1-private";
+
+std::string ObservedHeirMarriagePrivateResultFrameV1(
+    std::string_view request_id, std::uint64_t query_sequence,
+    std::int32_t subject_character_id,
+    xar::game::ReadArrangeMarriageFamilyCandidatesResultV1 read_result,
+    const std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> &candidates,
+    const xar::game::ArrangeMarriageQueryDiagnostics &diagnostics,
+    std::string_view override_unavailable_reason = {}) {
+  const bool available =
+      read_result == xar::game::ReadArrangeMarriageFamilyCandidatesResultV1::
+                         available;
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, kObservedHeirMarriagePrivateStepV1);
+  result += ",\"accepted\":true,\"private_build\":true,"
+            "\"read_only\":true,\"advertised\":false,\"status\":";
+  AppendJsonString(result, available ? "available" : "unavailable");
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"subject_source\":\"public_campaign_root_primary_first_heir\","
+            "\"subject_character_id\":";
+  result += SignedNumber(subject_character_id);
+  result += ",\"unavailable_reason\":";
+  if (available) {
+    result += "null";
+  } else if (!override_unavailable_reason.empty()) {
+    AppendJsonString(result, override_unavailable_reason);
+  } else if (read_result ==
+             xar::game::ReadArrangeMarriageFamilyCandidatesResultV1::
+                 subject_not_found) {
+    AppendJsonString(result, "observed_subject_not_living_or_generation_bound");
+  } else if (read_result ==
+             xar::game::ReadArrangeMarriageFamilyCandidatesResultV1::
+                 no_played_character) {
+    AppendJsonString(result, "no_living_played_character");
+  } else {
+    AppendJsonString(result, "native_family_query_unavailable");
+  }
+  result += ",\"family_candidates\":[";
+  if (available) {
+    for (std::size_t index = 0; index < candidates.size(); ++index) {
+      if (index != 0) result += ',';
+      const auto &row = candidates[index];
+      result += "{\"played_character_id\":";
+      result += SignedNumber(row.played_character_id);
+      result += ",\"subject_character_id\":";
+      result += SignedNumber(row.subject_character_id);
+      result += ",\"candidate_character_id\":";
+      result += SignedNumber(row.candidate_character_id);
+      result += ",\"recipient_matchmaker_character_id\":";
+      result += SignedNumber(row.recipient_matchmaker_character_id);
+      result += ",\"intermediary_character_id\":";
+      result += SignedNumber(row.intermediary_character_id);
+      result += ",\"native_rank\":null,\"complete_can_send\":";
+      result += row.complete_can_send ? "true" : "false";
+      result += ",\"recipient_ai_accept_raw\":";
+      result += SignedNumber(row.recipient_ai_accept_raw);
+      result += ",\"recipient_answer_status_raw\":";
+      result += Number(static_cast<unsigned>(row.recipient_answer_status_raw));
+      result += ",\"recipient_answer_allows_send\":";
+      result += row.recipient_answer_allows_send ? "true" : "false";
+      result += '}';
+    }
+  }
+  result += "],\"arrange_marriage_diagnostics\":";
+  AppendMarriageQueryDiagnostics(result, diagnostics);
+  result += ",\"family_subject_role_mismatches\":";
+  result += SignedNumber(diagnostics.family_subject_role_mismatches);
+  result += "}}";
+  return result;
+}
+
 std::string RankedMarriagePrivateResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::bridge::MarriageMatchmakingObservationV1 &observation) {
@@ -6905,6 +6982,12 @@ struct WorkerState {
   std::uint64_t battle_reinforcement_assignment_query_sequence = 0;
   std::uint64_t battle_terminal_transition_query_sequence = 0;
   std::uint64_t campaign_root_context_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+  std::uint64_t marriage_family_private_query_sequence = 0;
+  std::uint64_t observed_primary_heir_revision = 0;
+  std::uint64_t observed_primary_heir_connection_generation = 0;
+  std::optional<std::int32_t> observed_primary_heir_character_id;
+#endif
   std::uint64_t player_faction_alerts_query_sequence = 0;
   std::uint64_t steward_develop_county_candidates_query_sequence = 0;
   std::uint64_t zhongguo_case_snapshot_query_sequence = 0;
@@ -7201,6 +7284,7 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
                    && step !=
                           xar::bridge::kMarriageRankedPrivateQueryStepV1
+                   && step != kObservedHeirMarriagePrivateStepV1
 #endif
         ) {
           connected = xar::bridge::WriteFrame(
@@ -8031,6 +8115,64 @@ void RunConnectedSession(
                                         published_checkpoint_sequence);
           }
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+        } else if (step == kObservedHeirMarriagePrivateStepV1) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision == 0 || expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                         "observed-heir marriage requires current native revision"));
+          } else {
+            xar::game::Snapshot before{};
+            if (!previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, before) ||
+                before != *previous_snapshot || !before.paused ||
+                !before.map_ready || !before.has_played_character ||
+                !before.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                           "observed-heir marriage admission frame changed"));
+            } else {
+              std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> rows;
+              xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
+              const bool observed_current =
+                  state.observed_primary_heir_revision == state_revision &&
+                  state.observed_primary_heir_connection_generation ==
+                      connection_generation;
+              const auto subject_id =
+                  observed_current && state.observed_primary_heir_character_id
+                      ? *state.observed_primary_heir_character_id
+                      : -1;
+              auto read_result = xar::game::
+                  ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+              std::string_view unavailable_reason;
+              if (!observed_current) {
+                unavailable_reason =
+                    "same_revision_public_campaign_root_query_required";
+              } else if (subject_id == -1) {
+                unavailable_reason =
+                    "public_campaign_root_primary_first_heir_absent";
+              } else {
+                read_result = xar::game::ReadArrangeMarriageFamilyCandidatesV1(
+                    game, subject_id, rows, diagnostics);
+              }
+              xar::game::Snapshot after{};
+              if (!xar::game::ReadSnapshot(game, after) || after != before) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                             "observed-heir marriage frame changed during read"));
+              } else {
+                ++state.marriage_family_private_query_sequence;
+                connected = xar::bridge::WriteFrame(
+                    pipe, ObservedHeirMarriagePrivateResultFrameV1(
+                              request_id,
+                              state.marriage_family_private_query_sequence,
+                              subject_id, read_result, rows, diagnostics,
+                              unavailable_reason));
+              }
+            }
+          }
         } else if (step == xar::bridge::kMarriageRankedPrivateQueryStepV1) {
           std::uint64_t expected_revision = 0;
           if (!xar::bridge::JsonUnsignedField(
@@ -8260,6 +8402,22 @@ void RunConnectedSession(
                       query.result);
                   if (!response.empty()) {
                     ++campaign_root_context_query_sequence;
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+                    state.observed_primary_heir_character_id.reset();
+                    state.observed_primary_heir_revision = state_revision;
+                    state.observed_primary_heir_connection_generation =
+                        connection_generation;
+                    if (query.result.status ==
+                        xar::game::CampaignRootContextStatusV1::available) {
+                      for (const auto &row : query.result.held_title_partition) {
+                        if (row.primary && row.first_heir_character_id) {
+                          state.observed_primary_heir_character_id =
+                              *row.first_heir_character_id;
+                          break;
+                        }
+                      }
+                    }
+#endif
                   }
                 }
                 if (response.empty()) {

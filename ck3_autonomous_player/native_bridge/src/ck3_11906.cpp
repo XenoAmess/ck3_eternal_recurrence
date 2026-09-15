@@ -2111,7 +2111,7 @@ void *ResolveCharacterInteraction(const Bindings &bindings,
 
 bool PrepareArrangeMarriageContext(
     const Bindings &bindings, std::int32_t played_character_id,
-    std::int32_t candidate_character_id,
+    std::int32_t subject_character_id, std::int32_t candidate_character_id,
     CharacterInteractionContextStorage &storage,
     ArrangeMarriageValidationSample *diagnostic_sample = nullptr) noexcept {
   void *const interaction =
@@ -2122,7 +2122,7 @@ bool PrepareArrangeMarriageContext(
   }
   std::int32_t actor_character_id = played_character_id;
   std::int32_t recipient_character_id = candidate_character_id;
-  std::int32_t secondary_actor_character_id = played_character_id;
+  std::int32_t secondary_actor_character_id = subject_character_id;
   std::int32_t secondary_recipient_character_id = candidate_character_id;
   std::int32_t intermediary_character_id = -1;
   bindings.redirect_character_interaction_roles(
@@ -16248,6 +16248,7 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
     sample.candidate_character_id = candidate_character_id;
     if (!PrepareArrangeMarriageContext(
             bindings, current.played_character_id,
+            current.played_character_id,
             candidate_character_id, context_storage, &sample)) {
       ++diagnostics.context_construct_failures;
       return ReadArrangeMarriageChoicesResult::unavailable;
@@ -16270,6 +16271,137 @@ ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
   }
   output = std::move(choices);
   return ReadArrangeMarriageChoicesResult::available;
+}
+
+ReadArrangeMarriageFamilyCandidatesResultV1
+ReadArrangeMarriageFamilyCandidatesV1(
+    const Bindings &bindings, std::int32_t subject_character_id,
+    std::vector<ArrangeMarriageFamilyCandidateV1> &output,
+    ArrangeMarriageQueryDiagnostics &diagnostics) noexcept {
+  output.clear();
+  diagnostics = {};
+  if (!HasArrangeMarriageReadBindings(bindings) ||
+      bindings.read_character_interaction_answer_score == nullptr ||
+      bindings.evaluate_character_interaction_answer == nullptr) {
+    return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+  }
+  Snapshot current{};
+  if (!ReadSnapshot(bindings, current)) {
+    return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+  }
+  if (!current.has_played_character || !current.played_character_alive) {
+    return ReadArrangeMarriageFamilyCandidatesResultV1::no_played_character;
+  }
+  void *const subject = ResolveCharacter(bindings, subject_character_id);
+  if (subject == nullptr || subject_character_id == current.played_character_id ||
+      LoadAt<void *>(subject, kCharacterDeathDataOffset) != nullptr) {
+    return ReadArrangeMarriageFamilyCandidatesResultV1::subject_not_found;
+  }
+  void *const played = ResolveCharacter(bindings, current.played_character_id);
+  void *const storage = *bindings.character_storage_slot;
+  if (played == nullptr || storage == nullptr ||
+      ResolveCharacterInteraction(
+          bindings, bindings.arrange_marriage_interaction_offset) == nullptr) {
+    return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+  }
+  void *const slots = LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+  const auto capacity =
+      LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+  diagnostics.storage_capacity = capacity;
+  if (slots == nullptr || capacity <= 0 ||
+      capacity > kMaximumComponentCapacity) {
+    return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+  }
+  std::vector<ArrangeMarriageFamilyCandidateV1> candidates;
+  for (std::int32_t index = 0; index < capacity; ++index) {
+    ++diagnostics.slots_scanned;
+    void *const candidate = LoadAt<void *>(
+        slots, static_cast<std::size_t>(index) * kComponentStorageSlotSize +
+                   kComponentStorageSlotObjectOffset);
+    if (candidate == nullptr) {
+      ++diagnostics.empty_slots;
+      continue;
+    }
+    if (candidate == played || candidate == subject) {
+      ++diagnostics.self_candidates;
+      continue;
+    }
+    if (LoadAt<void *>(candidate, kCharacterDeathDataOffset) != nullptr) {
+      ++diagnostics.dead_candidates;
+      continue;
+    }
+    const auto candidate_id =
+        LoadAt<std::int32_t>(candidate, kCharacterIdOffset);
+    if ((static_cast<std::uint32_t>(candidate_id) & 0x00FFFFFFU) !=
+        static_cast<std::uint32_t>(index)) {
+      ++diagnostics.generation_mismatch_candidates;
+      continue;
+    }
+    ++diagnostics.live_candidates;
+    CharacterInteractionContextStorage context_storage{};
+    void *const context = context_storage.bytes.data();
+    ArrangeMarriageValidationSample sample{};
+    sample.slot_index = index;
+    if (!PrepareArrangeMarriageContext(
+            bindings, current.played_character_id, subject_character_id,
+            candidate_id, context_storage, &sample)) {
+      ++diagnostics.context_construct_failures;
+      return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+    }
+    ++diagnostics.contexts_constructed;
+    // Redirect is native, but only a proposal whose final actor remains the
+    // played ruler and whose actual couple remains the observed heir/candidate
+    // can count as a player-controlled family opportunity.
+    if (sample.actor_character_id != current.played_character_id ||
+        sample.secondary_actor_character_id != subject_character_id ||
+        sample.secondary_recipient_character_id != candidate_id ||
+        ResolveCharacter(bindings, sample.recipient_character_id) == nullptr ||
+        (sample.intermediary_character_id != -1 &&
+         ResolveCharacter(bindings, sample.intermediary_character_id) ==
+             nullptr)) {
+      bindings.destroy_character_interaction_context(context);
+      ++diagnostics.family_subject_role_mismatches;
+      ++diagnostics.native_validate_false;
+      if (diagnostics.validation_false_samples.size() <
+          kMaximumMarriageValidationSamples) {
+        diagnostics.validation_false_samples.push_back(sample);
+      }
+      continue;
+    }
+    const bool can_send =
+        bindings.validate_character_interaction_context(context, nullptr);
+    if (!can_send) {
+      bindings.destroy_character_interaction_context(context);
+      ++diagnostics.native_validate_false;
+      if (diagnostics.validation_false_samples.size() <
+          kMaximumMarriageValidationSamples) {
+        diagnostics.validation_false_samples.push_back(sample);
+      }
+      continue;
+    }
+    ++diagnostics.native_validate_true;
+    std::int64_t accept_raw = 0;
+    if (bindings.read_character_interaction_answer_score(context,
+                                                          &accept_raw) !=
+        &accept_raw) {
+      bindings.destroy_character_interaction_context(context);
+      return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+    }
+    const auto answer = bindings.evaluate_character_interaction_answer(
+        context, 1, 1, nullptr, nullptr);
+    bindings.destroy_character_interaction_context(context);
+    candidates.push_back({current.played_character_id,
+                          subject_character_id,
+                          candidate_id,
+                          sample.recipient_character_id,
+                          sample.intermediary_character_id,
+                          accept_raw,
+                          answer,
+                          true,
+                          answer != 0});
+  }
+  output = std::move(candidates);
+  return ReadArrangeMarriageFamilyCandidatesResultV1::available;
 }
 
 ArrangeMarriageResult SubmitArrangeMarriage(
@@ -16306,6 +16438,7 @@ ArrangeMarriageResult SubmitArrangeMarriage(
   void *const context = context_storage.bytes.data();
   if (!PrepareArrangeMarriageContext(
           bindings, choice.played_character_id,
+          choice.played_character_id,
           choice.candidate_character_id, context_storage)) {
     return ArrangeMarriageResult::unavailable;
   }

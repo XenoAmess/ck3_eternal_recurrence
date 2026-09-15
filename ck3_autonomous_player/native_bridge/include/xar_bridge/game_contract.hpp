@@ -38,6 +38,24 @@ struct ArrangeMarriageChoice {
                          const ArrangeMarriageChoice &) = default;
 };
 
+// Private read-only evidence for a ruler arranging a marriage for the
+// observed primary heir. These rows are not action choices and carry no
+// native AI rank when the played Character has no matchmaking Strategy.
+struct ArrangeMarriageFamilyCandidateV1 {
+  std::int32_t played_character_id = -1;
+  std::int32_t subject_character_id = -1;
+  std::int32_t candidate_character_id = -1;
+  std::int32_t recipient_matchmaker_character_id = -1;
+  std::int32_t intermediary_character_id = -1;
+  std::int64_t recipient_ai_accept_raw = 0;
+  std::uint8_t recipient_answer_status_raw = 0;
+  bool complete_can_send = false;
+  bool recipient_answer_allows_send = false;
+
+  friend bool operator==(const ArrangeMarriageFamilyCandidateV1 &,
+                         const ArrangeMarriageFamilyCandidateV1 &) = default;
+};
+
 // Bounded, version-neutral evidence from one native marriage enumeration.
 // Role IDs are captured after the interaction's redirect script has run, so a
 // live empty result can be distinguished from storage traversal or context
@@ -67,6 +85,7 @@ struct ArrangeMarriageQueryDiagnostics {
   std::int32_t context_construct_failures = 0;
   std::int32_t native_validate_true = 0;
   std::int32_t native_validate_false = 0;
+  std::int32_t family_subject_role_mismatches = 0;
   std::vector<ArrangeMarriageValidationSample> validation_false_samples;
 
   friend bool operator==(const ArrangeMarriageQueryDiagnostics &,
@@ -1722,6 +1741,12 @@ enum class DeclareWarResult {
 enum class ReadArrangeMarriageChoicesResult {
   available,
   no_played_character,
+  unavailable,
+};
+enum class ReadArrangeMarriageFamilyCandidatesResultV1 {
+  available,
+  no_played_character,
+  subject_not_found,
   unavailable,
 };
 enum class ArrangeMarriageResult {

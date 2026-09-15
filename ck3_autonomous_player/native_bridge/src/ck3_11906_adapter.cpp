@@ -279,6 +279,14 @@ public:
     return ck3_11906::ReadArrangeMarriageChoices(bindings_, output,
                                                   diagnostics);
   }
+  ReadArrangeMarriageFamilyCandidatesResultV1
+  read_arrange_marriage_family_candidates_v1(
+      std::int32_t subject_character_id,
+      std::vector<ArrangeMarriageFamilyCandidateV1> &output,
+      ArrangeMarriageQueryDiagnostics &diagnostics) const noexcept override {
+    return ck3_11906::ReadArrangeMarriageFamilyCandidatesV1(
+        bindings_, subject_character_id, output, diagnostics);
+  }
   ArrangeMarriageResult submit_arrange_marriage(
       const ArrangeMarriageChoice &choice) const noexcept override {
     return ck3_11906::SubmitArrangeMarriage(bindings_, choice);

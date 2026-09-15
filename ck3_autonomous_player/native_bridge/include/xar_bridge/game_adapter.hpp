@@ -97,6 +97,16 @@ public:
   virtual ReadArrangeMarriageChoicesResult read_arrange_marriage_choices(
       std::vector<ArrangeMarriageChoice> &output,
       ArrangeMarriageQueryDiagnostics &diagnostics) const noexcept = 0;
+  // The default keeps non-CK3 test adapters and production capability lists
+  // unchanged. Only the exact-build adapter implements this private read.
+  virtual ReadArrangeMarriageFamilyCandidatesResultV1
+  read_arrange_marriage_family_candidates_v1(
+      std::int32_t, std::vector<ArrangeMarriageFamilyCandidateV1> &output,
+      ArrangeMarriageQueryDiagnostics &diagnostics) const noexcept {
+    output.clear();
+    diagnostics = {};
+    return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+  }
   virtual ArrangeMarriageResult
   submit_arrange_marriage(const ArrangeMarriageChoice &choice) const
       noexcept = 0;
@@ -266,6 +276,14 @@ inline ReadArrangeMarriageChoicesResult ReadArrangeMarriageChoices(
     std::vector<ArrangeMarriageChoice> &output,
     ArrangeMarriageQueryDiagnostics &diagnostics) noexcept {
   return game.read_arrange_marriage_choices(output, diagnostics);
+}
+inline ReadArrangeMarriageFamilyCandidatesResultV1
+ReadArrangeMarriageFamilyCandidatesV1(
+    const GameAdapter &game, std::int32_t subject_character_id,
+    std::vector<ArrangeMarriageFamilyCandidateV1> &output,
+    ArrangeMarriageQueryDiagnostics &diagnostics) noexcept {
+  return game.read_arrange_marriage_family_candidates_v1(
+      subject_character_id, output, diagnostics);
 }
 inline ArrangeMarriageResult
 SubmitArrangeMarriage(const GameAdapter &game,

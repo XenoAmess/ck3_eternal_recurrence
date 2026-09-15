@@ -2074,6 +2074,20 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=timeout_seconds,
         )
 
+    def query_observed_heir_marriage_private_v1(
+        self, *, expected_native_revision: int,
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Controlled exact-build family read; absent from public steps/MCP."""
+        from .marriage_matchmaking_private_transport import (
+            query_observed_heir_marriage_private_v1,
+        )
+
+        return query_observed_heir_marriage_private_v1(
+            self, expected_native_revision=expected_native_revision,
+            timeout_seconds=timeout_seconds,
+        )
+
     def retain_succession_expectation_v1(
         self,
         turn_bundle: dict[str, object],
