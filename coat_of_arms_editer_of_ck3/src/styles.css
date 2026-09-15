@@ -165,6 +165,38 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
   .image-fit-grid { grid-template-columns: 180px 1fr; }
   .fit-report { grid-column: 1 / -1; }
 }
+
+@media (max-width: 760px) {
+  body { min-width: 0; }
+  .app-shell { padding: 16px 12px 24px; }
+  .topbar { align-items: stretch; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+  h1 { font-size: clamp(25px, 8vw, 34px); letter-spacing: .04em; }
+  .top-actions, .source-actions, .fit-actions, .row-actions { flex-wrap: wrap; }
+  .top-actions .el-select { flex: 1 1 150px; }
+  .image-fit-grid, .workspace { grid-template-columns: minmax(0, 1fr); }
+  .image-drop { min-height: 150px; }
+  .image-drop img { height: 150px; }
+  .fit-report { grid-column: auto; }
+  .fit-report dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fit-budget { align-items: stretch; flex-direction: column; }
+  .fit-budget .el-input-number { width: 100%; }
+  .panel { min-height: auto; padding: 14px; }
+  .panel-title { align-items: flex-start; flex-wrap: wrap; gap: 10px; }
+  .panel-title > div { min-width: 0; }
+  .autosave-recovery { align-items: stretch; flex-direction: column; margin: 0 0 16px; }
+  .code-input .el-textarea__inner { min-height: 320px !important; }
+  .preview-stage { min-height: 390px; }
+  .shield { width: min(260px, 82vw); height: min(315px, 99vw); }
+  .candidate-grid, .form-grid, .number-grid { grid-template-columns: minmax(0, 1fr); }
+  .wide { grid-column: auto; }
+  .instance-window-toolbar, .emblem-window-toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .instance-window-toolbar .el-input-number,
+  .emblem-window-toolbar .el-input-number { width: min(126px, 38vw); }
+  .editor-pane, .editor-pane .panel-title, .editor-pane .el-scrollbar__view { padding-right: 0; }
+  .syntax-capabilities { overflow-x: auto; }
+}
 .syntax-capabilities {
   margin-top: 18px;
 }
