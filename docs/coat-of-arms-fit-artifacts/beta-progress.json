@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T22:01:00+08:00",
+  "updatedAt": "2026-09-15T22:12:35+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -228,9 +228,10 @@
     {
       "id": "WP5",
       "status": "in_progress",
-      "commit": "8cc793fa",
+      "commit": "d265503e",
       "commands": [
         "pnpm exec vitest run src/domain/largeDocumentContract.test.ts --reporter=verbose",
+        "pnpm exec playwright test e2e/editor-recovery.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/large-document-stress.spec.ts --reporter=line",
         "pnpm build"
       ],
@@ -244,11 +245,18 @@
         "utf8Bytes": 1653890,
         "lines": 70014,
         "renderedInstanceCards": 32,
-        "browserImportMs": 4487,
-        "browserTailJumpAndEditMs": 724,
-        "browserClipboardCopyMs": 178,
-        "browserProjectDownloadMs": 403,
-        "measuredJsHeapDeltaBytes": 139473681,
+        "browserImportMs": 4668,
+        "browserTailJumpAndEditMs": 737,
+        "browserClipboardCopyMs": 161,
+        "browserProjectDownloadMs": 365,
+        "browserAutosaveMs": 1096,
+        "browserAutosaveRecoveryMs": 5899,
+        "boundedUndoRedo": "passed",
+        "autosaveRecovery": "passed",
+        "historyMaximumEntries": 32,
+        "historyMaximumUtf8Bytes": 16777216,
+        "measuredJsHeapDeltaBytes": 188860210,
+        "heapAfterRecoveryNavigationObservationalOnly": 328066982,
         "memoryEvidenceScope": "JavaScript heap delta only; excludes GPU and browser-process memory",
         "nonGetRequests": 0,
         "firstRunTailEditMs": 4683,
