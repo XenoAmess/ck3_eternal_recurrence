@@ -1,0 +1,67 @@
+{
+  "schema": "xar.ck3.g2_m4_council_r696_controlled_input_contract_template_v1",
+  "status": "sealed-no-launch-after-exact-build",
+  "scope": "one private controlled steward replacement from a paused standard-feudal save; no public Council advertisement",
+  "game_version": "1.19.0.6",
+  "game_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "source_save_name": "dev3b_r639",
+  "source_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+  "source_commit": "245dcf4995f0f18aa5e88468f1303357f6162a0b",
+  "bridge_dll_sha256": null,
+  "required_before_seal": [
+    "Council27 final-gate code integrated to remote master",
+    "Release DLL and injector built from exact integrated source",
+    "CMake controlled action options and exact EXE checked",
+    "R695 sealed prelaunch profile rows unchanged"
+  ],
+  "cmake_options": {
+    "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "ON"
+  },
+  "dlc_mod_config": {
+    "enabled_mods": ["mod/xar_autoplayer.mod"],
+    "disabled_dlcs": [],
+    "profile_source": "R695 sealed prelaunch rows, descriptor rewritten for controlled candidate"
+  },
+  "last_completed_round": "R695",
+  "new_round": "allocated by sole CK3 owner before launch; runner requires --new-round",
+  "private_query_step": "private-query-council-final-gates-v1",
+  "private_assign_step": "private-assign-councillor-v1",
+  "private_receipt_step": "private-query-assign-councillor-receipt-v1",
+  "private_status_step": "private-council-application-main-status-v1",
+  "expected_scene": {
+    "owner_character_id": 29829,
+    "incumbent_character_id": 32716,
+    "candidate_character_id": 33433,
+    "candidate_stewardship": 16,
+    "incumbent_stewardship": 12,
+    "already_councillor_negative_control_id": 33435,
+    "already_councillor_positive_ids": [33435, 34333, 34867],
+    "candidate_count": 11
+  },
+  "assertions": [
+    "private and unadvertised; public Council query/action absent from hello",
+    "terminal gate schema/status available with 11 complete unique rows",
+    "each gate row has same candidate ID and native ordinal as its public query row",
+    "all four gate fields and incumbent fireability are typed booleans for every row",
+    "33435 typed rejected_before_submit with candidate_already_councillor and helper false",
+    "fresh gate query after negative test, then one helper-only ACK for legal 33433",
+    "independent later paused frame incumbent 33433 and applied typed receipt; ACK alone is insufficient",
+    "paused date/source save unchanged and one typed checkpoint materialized",
+    "tracked CK3 job recovered and total CK3 inventory zero",
+    "formal next-turn Council consumption and goal cold restore remain unverified by private candidate"
+  ],
+  "timeouts_seconds": {
+    "readiness": 300,
+    "each_operation": 60,
+    "overall": 480
+  },
+  "asset_boundary": {
+    "reason": "one exact paused scene checks a material replacement without premature public registration",
+    "impact": "runner is exact-scene local evidence only; it is not a public CK3 or MCP capability",
+    "reuse_plan": "versioned native gate/action/receipt contract and read-only MCP adapter after production final gates close",
+    "migration_deadline": "before Council query/action production advertisement",
+    "responsible_package": "G2-COUNCIL30"
+  }
+}
