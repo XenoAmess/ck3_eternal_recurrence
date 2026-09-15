@@ -62,7 +62,12 @@ builds with MSVC `/W4 /WX
 also compiles and links with the new source set. These are offline fixtures;
 no CK3 process is started.
 
-Production-live readiness still requires a narrowly scoped internal caller or
-protocol/MCP route, a fixed candidate, and one paused live submit followed by
-the independent fresh receipt. Any such public interface is a later contract
-change and is outside DECISION7.
+DECISION8 supplies the later private fixed-candidate permit and asynchronous
+submit/fresh-receipt driver without a public interface. Production-live
+readiness still requires exact-build production implementations of the full
+DECISION5 precondition and postcondition captures. Their current absence is
+recorded in `major-decision-found-kingdom-internal-route.md` and is not replaced
+by the offline fixtures.
+
+On the integrated stack, the fixed Decision executor uses mailbox slot 36;
+Faction remains on slot 34 and Construction remains on slot 35.

@@ -180,6 +180,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1
+  "Arm the private fixed-candidate found-kingdom submit/receipt route"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1
   "Emit private diagnostics for the exact-vtable G2 truce preview observer"
   OFF
@@ -371,6 +377,7 @@ add_library(xar_ck3_bridge SHARED
   src/major_decision_found_kingdom_action_core_v1.cpp
   src/major_decision_found_kingdom_native_submit_v1.cpp
   src/major_decision_found_kingdom_shared_glue_v1.cpp
+  src/major_decision_found_kingdom_internal_route_v1.cpp
   src/pending_character_interaction_context_v1.cpp
   src/pending_character_interaction_context_v1_mailbox.cpp
   src/pending_character_interaction_context_v1_serializer.cpp
@@ -456,6 +463,11 @@ if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1=1
   )
 endif()
 target_link_libraries(xar_ck3_bridge PRIVATE xar_bridge_protocol bcrypt)
@@ -1653,6 +1665,58 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_major_decision_found_kingdom_shared_glue_v1
     COMMAND xar_ck3_major_decision_found_kingdom_shared_glue_v1_test
+  )
+
+  add_executable(xar_ck3_major_decision_found_kingdom_internal_route_v1_test
+    src/main_thread_query_mailbox_v1.cpp
+    src/major_decision_found_kingdom_observer_v1.cpp
+    src/major_decision_found_kingdom_source_adapter_v1.cpp
+    src/major_decision_found_kingdom_native_binder_v1.cpp
+    src/major_decision_found_kingdom_action_core_v1.cpp
+    src/major_decision_found_kingdom_native_submit_v1.cpp
+    src/major_decision_found_kingdom_shared_glue_v1.cpp
+    src/major_decision_found_kingdom_internal_route_v1.cpp
+    src/major_decision_found_kingdom_internal_route_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_major_decision_found_kingdom_internal_route_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_major_decision_found_kingdom_internal_route_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+    XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1=1)
+  target_link_libraries(
+    xar_ck3_major_decision_found_kingdom_internal_route_v1_test PRIVATE bcrypt)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_major_decision_found_kingdom_internal_route_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_major_decision_found_kingdom_internal_route_v1
+    COMMAND xar_ck3_major_decision_found_kingdom_internal_route_v1_test
+  )
+
+  add_executable(
+    xar_ck3_major_decision_found_kingdom_internal_route_v1_source_contract_test
+    src/major_decision_found_kingdom_internal_route_v1_source_contract_test.cpp
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_major_decision_found_kingdom_internal_route_v1_source_contract_test
+      PRIVATE /W4 /WX /permissive-)
+  endif()
+  add_test(
+    NAME
+      xar_ck3_native_bridge_major_decision_found_kingdom_internal_route_v1_source_contract
+    COMMAND
+      xar_ck3_major_decision_found_kingdom_internal_route_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/main_thread_query_mailbox_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/main_thread_query_mailbox_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/major_decision_found_kingdom_shared_glue_v1_test.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/major_decision_found_kingdom_internal_route_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/major_decision_found_kingdom_internal_route_v1_test.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
   )
 
   add_executable(
