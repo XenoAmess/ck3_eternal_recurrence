@@ -180,18 +180,14 @@ bool ProbeFrontendBookmarkModelV1(
     output.unavailable_reason = "selected_bookmark_group_pointer_unreadable";
     return true;
   }
-  // frontend_bookmarks.gui:2495-2496 legitimately clears the selected group
-  // after selecting Bookmark.Self. A null group is not a missing bookmark.
+  // frontend_bookmarks.gui:2495-2496 clears the selected group after selecting
+  // Bookmark.Self. Original F6FE00 can store a non-key sentinel at view+0x108;
+  // the group key is diagnostic, while the selected Bookmark is the identity.
   if (selected_group != nullptr) {
-    if (!ReadScriptKeySso(access, selected_group, 0x38,
-                          output.selected_bookmark_group_key)) {
-      output.unavailable_reason =
-          "selected_bookmark_group_script_key_unreadable";
-      return true;
-    }
     (void)ReadVtableRva(access, environment.module_base, selected_group,
                         output.selected_bookmark_group_vtable_rva);
-    output.selected_bookmark_group_key_available = true;
+    output.selected_bookmark_group_key_available = ReadScriptKeySso(
+        access, selected_group, 0x38, output.selected_bookmark_group_key);
   }
 
   void *selected_bookmark = nullptr;

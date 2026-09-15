@@ -209,6 +209,18 @@ int main() {
     std::fprintf(stderr, "cleared selected group is a legal bookmark state\n");
     return 1;
   }
+  // ClearSelectedBookmarkGroup F6FE00 stores a native sentinel rather than
+  // necessarily null. An object without a script group key cannot hide the
+  // independently verified Bookmark/character/government/date identity.
+  fixture.Put(0x8000 + 0x108, std::uintptr_t{0xE000});
+  if (!Probe(fixture, result) ||
+      result.selected_bookmark_group_key_available ||
+      !result.selected_bookmark_key_available ||
+      !result.candidate_identity_ready) {
+    std::fprintf(stderr,
+                 "non-key selected-group sentinel must remain diagnostic\n");
+    return 1;
+  }
   fixture.Put(0x8000 + 0x108, std::uintptr_t{0xD000});
   // Factory 0x7F7BC0 can leave the shared global in the base-only class;
   // its intermediate/base vtable is never accepted as CInterfaceApplication.
