@@ -1,4 +1,4 @@
-"""Focused CK3 1.19.0.6 stock source verifier for G2-M4-DEFINITION0.
+"""Focused CK3 1.19.0.6 county CBuildingType source verifier.
 
 It checks exact source bytes and the direct call/global/RTTI anchors used by
 the default-OFF private world building-definition reader. It never starts CK3.
@@ -43,9 +43,32 @@ def verify(exe: Path) -> None:
     for region in abi["exact_regions"]:
         start, end = rva(region["start_rva"]), rva(region["end_rva_exclusive"])
         assert hashlib.sha256(pe.get_data(start, end - start)).hexdigest().upper() == region["sha256"], region["name"]
-    assert rip_target(pe, 0xC8CEE4) == rva(abi["world_source"]["global_slot_rva"])
-    assert call_target(pe, 0x1922305) == rva(abi["world_source"]["accessor_rva"])
-    assert call_target(pe, 0x15ABC4B) == rva(abi["world_source"]["accessor_rva"])
+    assert pe.OPTIONAL_HEADER.SizeOfImage == 0x5C2D000
+    assert rip_target(pe, 0xC8CE84) == rva(abi["world_source"]["global_slot_rva"])
+    assert call_target(pe, 0x176EFD5) == rva(abi["world_source"]["accessor_rva"])
+    assert call_target(pe, 0x14D0B94) == 0x176EFB0
+    assert call_target(pe, 0x14D1BB0) == 0x176EFB0
+    domicile = abi["r730_wrong_domicile_source"]
+    assert rip_target(pe, 0xC8CEE4) == rva(domicile["global_slot_rva"])
+    assert call_target(pe, 0x1922305) == rva(domicile["accessor_rva"])
+    assert call_target(pe, 0x15ABC4B) == rva(domicile["accessor_rva"])
+    vtable_rva = rva(domicile["observed_first_vtable_rva"])
+    col_va = struct.unpack("<Q", pe.get_data(vtable_rva - 8, 8))[0]
+    assert col_va - pe.OPTIONAL_HEADER.ImageBase == rva(domicile["first_vtable_col_rva"])
+    col_rva = rva(domicile["first_vtable_col_rva"])
+    signature, offset, _, peer_type_rva, hierarchy_rva, self_rva = struct.unpack(
+        "<6I", pe.get_data(col_rva, 24))
+    assert signature == 1 and offset == 0 and self_rva == col_rva
+    assert peer_type_rva == rva(domicile["type_descriptor_rva"])
+    assert pe.get_string_at_rva(peer_type_rva + 16) == b".?AVCDomicileBuildingType@@"
+    _, _, base_count, base_array_rva = struct.unpack("<4I", pe.get_data(hierarchy_rva, 16))
+    peer_bases = []
+    for index in range(base_count):
+        base_descriptor_rva = struct.unpack("<I", pe.get_data(base_array_rva + index * 4, 4))[0]
+        base_type_rva = struct.unpack("<I", pe.get_data(base_descriptor_rva, 4))[0]
+        peer_bases.append(pe.get_string_at_rva(base_type_rva + 16))
+    assert peer_bases == [b".?AVCDomicileBuildingType@@",
+                          b".?AVCGameDatabaseObject@@", b".?AVCPersistent@@"]
     assert rip_target(pe, 0x2C543F0) == rva(abi["world_source"]["primary_vtable_rva"])
     assert call_target(pe, 0x11A632E) == rva(abi["stock_player_final_legality"]["native_predicate_rva"])
     type_descriptor = rva(abi["world_source"]["type_descriptor_rva"])
@@ -54,7 +77,7 @@ def verify(exe: Path) -> None:
         col = rva(abi["world_source"][col_name])
         signature, _, _, type_rva, _, self_rva = struct.unpack("<6I", pe.get_data(col, 24))
         assert signature == 1 and type_rva == type_descriptor and self_rva == col
-    print("GREEN exact world CBuildingType registry/player final-legality source; CK3 not launched")
+    print("GREEN exact county CBuildingType registry/player final-legality source; CK3 not launched")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 {
   "contract": "g2-m4-player-world-building-definition-source-v1",
   "schema_version": 1,
-  "status": "r726-live-red-definition-identity-diagnostic-pending",
+  "status": "r730-live-red-domicile-registry-misbinding-county-source-repair-static-pending",
   "game_version": "1.19.0.6",
   "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "read_only": true,
@@ -11,6 +11,9 @@
   "r722_source_report_sha256": "11892CBE9B6F70EC65F90BAF4360A9E286C82139741815DEFC22B1F30208DF1F",
   "r726_world_report_sha256": "0A5C5545D1185692674715A2D5234620ACF4BD3CCDCC5109E0663D944D1735D7",
   "r726_world_result": "same paused native revision 3, actor 29829, six personally held barony/Province rows; private executor ran once, but definition_identity failed before registry count or final legality could be reported; no game action/date change, CK3 reclaimed. Closed GUI count 0 does not imply zero legal buildings",
+  "r730_world_report_sha256": "FDBBC6512A6C422CDA3CEDD12DBB5DDC75C2D9C7B89CC58AE3E792C34A594334",
+  "r730_private_read_sha256": "AB0022FBFFD3D5F8C081C39E7C3FBE02842A55A1F2C6D67813A39BA6D93741B6",
+  "r730_world_result": "same paused revision 3/date 53178312/player 29829 and immutable source pair; private registry count 1620, first index 0 vtable_mismatch observed 0x4172FA8, no final legality/action/date, CK3 reclaimed; definition_identity RED remains until corrected source paused live proof",
   "definition_identity_diagnostic": {
     "scope": "additive private read-only slot42 receipt only; a failure retains status unavailable and RED",
     "registry_count": "copied bounded count if registry header was valid; null otherwise",
@@ -31,13 +34,14 @@
     "interpretation": "the zero is a county-view mode-0 source reading; it is not a world building-definition count or no-legal-construction proof"
   },
   "world_source": {
-    "accessor_rva": "0xC8CEE0",
-    "global_slot_rva": "0x57BFFD0",
+    "accessor_rva": "0xC8CE80",
+    "global_slot_rva": "0x57BFFF8",
     "vector_data_offset": "0x68",
     "vector_capacity_offset": "0x70",
     "vector_count_offset": "0x74",
-    "candidate_enumerator_call_rva": "0x1922305",
-    "independent_world_iterator_call_rva": "0x15ABC4B",
+    "stock_gui_county_source_refresh_call_rva": "0x176EFD5",
+    "stock_gui_county_source_vector_rva": "0x176F06B",
+    "stock_gui_source_refresh_callers": ["0x14D0B94", "0x14D1BB0"],
     "element": "CBuildingType primary object; full scalar BuildingTypeID at +0x10",
     "type_descriptor_rva": "0x5089D20",
     "primary_col_rva": "0x4A7D890",
@@ -45,13 +49,24 @@
     "primary_vtable_rva": "0x44046C0",
     "constructor_primary_vtable_write_rva": "0x2C543F0"
   },
+  "r730_wrong_domicile_source": {
+    "accessor_rva": "0xC8CEE0",
+    "global_slot_rva": "0x57BFFD0",
+    "stock_iterator_calls": ["0x1922305", "0x15ABC4B"],
+    "observed_first_vtable_rva": "0x4172FA8",
+    "first_vtable_col_rva": "0x4738B00",
+    "type_descriptor_rva": "0x50780C0",
+    "type_name": "CDomicileBuildingType",
+    "hierarchy": ["CDomicileBuildingType", "CGameDatabaseObject", "CPersistent"],
+    "relation": "peer, not a subclass of CBuildingType; never pass these borrowed pointers to player county final legality"
+  },
   "stock_player_final_legality": {
     "gui_callback_call_rva": "0x11A632E",
     "native_predicate_rva": "0x295CD60",
     "arguments": [
       "same-frame played CharacterID",
       "directly held ProvinceID",
-      "borrowed CBuildingType pointer from exact world registry",
+      "borrowed CBuildingType pointer from exact stock county GUI registry",
       "bounded Province construction slot index",
       "stock true flag",
       "stock null context"
@@ -62,14 +77,16 @@
     "action": "none"
   },
   "exact_regions": [
-    {"name": "registry_accessor", "start_rva": "0xC8CEE0", "end_rva_exclusive": "0xC8CF37", "sha256": "731705B71FCCF14FA80510E052D6CC46676EC7AF3EC81B12DFBE351D221B1E69"},
-    {"name": "world_candidate_vector", "start_rva": "0x1922305", "end_rva_exclusive": "0x192231F", "sha256": "B2891EDF39D3D6250D41D4C2418E6C5FBEE59B07B08DC7E564A9346C608A3B0D"},
-    {"name": "independent_world_vector", "start_rva": "0x15ABC4B", "end_rva_exclusive": "0x15ABC5F", "sha256": "5B7E02EC3F6F076757392C8BD3F5127A3440DBBD6B113FCC23D046079C6631CF"},
+    {"name": "county_registry_accessor", "start_rva": "0xC8CE80", "end_rva_exclusive": "0xC8CED7", "sha256": "6FE5218B5B72E0DAF921DB3FDC8E06DF431C596D3AA1AE26E0A8F675EA48937E"},
+    {"name": "county_gui_source_refresh_call", "start_rva": "0x176EFCB", "end_rva_exclusive": "0x176EFE6", "sha256": "4A84D3B9CA6DB84C580DC97234B7FFB57202D67729B25593EF3C4D643AEF0B05"},
+    {"name": "county_gui_source_vector", "start_rva": "0x176F06B", "end_rva_exclusive": "0x176F07F", "sha256": "32697474C3D83B405D799661070C044DAA9B093AEEF5740135E2734A6CBDE318"},
+    {"name": "domicile_registry_accessor_for_r730", "start_rva": "0xC8CEE0", "end_rva_exclusive": "0xC8CF37", "sha256": "731705B71FCCF14FA80510E052D6CC46676EC7AF3EC81B12DFBE351D221B1E69"},
+    {"name": "domicile_vtable_col_for_r730", "start_rva": "0x4172FA0", "end_rva_exclusive": "0x4172FB0", "sha256": "E2E80CDE768FAA2CABB34EAF7A75560496B781FCCAA9C5B44A09615AAE323C40"},
     {"name": "building_type_ctor", "start_rva": "0x2C543F0", "end_rva_exclusive": "0x2C5440E", "sha256": "FACE83F62F26D90027F9AA8B0D34868B08D9D8695C3B946EA07911579B9AA0CE"},
     {"name": "gui_final_predicate_call", "start_rva": "0x11A6308", "end_rva_exclusive": "0x11A6333", "sha256": "B3B8CD7E8E28C60A0D88EA7B431207E6C067A152D17260C93FA8E1D4C4D2E27E"},
     {"name": "gui_cost_callback", "start_rva": "0x11A6530", "end_rva_exclusive": "0x11A6559", "sha256": "60EA4BD2C73866AC4BBBB45DD76EB4FFAB1FECC207D423935D16B027984257BD"}
   ],
-  "next_live_gate": "in a distinct version-matched private-ON DLL and existing owner-controlled paused standard-feudal paired source, run root query then existing slot42 step on one revision; first retain R726 definition_identity RED or obtain the diagnostic registry count/index/stage/module-relative vtable RVA/BuildingTypeID needed for one smallest exact repair; only after identity repair may a separate gate prove world registry count and bounded stock player final-legality samples, with 0 action/date change and cost/action/ad false",
+  "next_live_gate": "from a distinct final-master private-ON DLL and owner-controlled same R697 standard-feudal paired source, read exact 0xC8CE80/module+0x57BFFF8 county CBuildingType registry on one paused revision, verify bounded count and copied BuildingTypeID/TitleID/ProvinceID rows plus at least one true stock player final-legality sample or explicitly retain evidence_insufficient; any definition identity mismatch stays RED. Zero game action/date/UI, tree reclaimed, cost/action/ad false. R730 wrong-domicile RED closes only after corrected source independently succeeds on paused live",
   "next_cost_gate": "obtain stock exact player row/view GetCost or independent cost evaluator after a typed holding_view open path; verify native costs before any construction policy/action",
   "open_kaishek_mcp": "private additive receipt only; no current public consumer or adapter change. A public versioned read-only MCP query plus compatibility mapping is required before public registration"
 }

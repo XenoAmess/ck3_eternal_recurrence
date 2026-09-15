@@ -11,7 +11,9 @@
 namespace xar::ck3_11906 {
 namespace {
 
-constexpr std::uintptr_t kWorldBuildingRegistrySlotRva = 0x57BFFD0;
+// Stock GUI CBuildingType source refresh 0x176EFD5 calls 0xC8CE80.
+// Adjacent 0x57BFFD0/0xC8CEE0 is the peer CDomicileBuildingType registry.
+constexpr std::uintptr_t kWorldBuildingRegistrySlotRva = 0x57BFFF8;
 constexpr std::uintptr_t kBuildingTypePrimaryVtableRva = 0x44046C0;
 constexpr std::uintptr_t kExactExeImageSize = 0x5C2D000;
 constexpr std::uintptr_t kGameStateSlotRva = 0x570E068;

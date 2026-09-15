@@ -27,7 +27,8 @@ def main() -> int:
         raise RuntimeError("cl.exe missing from Visual Studio environment")
     with tempfile.TemporaryDirectory(prefix="xar-player-world-buildings-") as name:
         build = Path(name)
-        for mode, flags in (("normal", ["/Od"]), ("optimized", ["/O2"])):
+        for mode, flags in (("normal-Debug", ["/Od", "/MDd", "/Zi"]),
+                            ("optimized-Release", ["/O2", "/MD"])):
             output = build / f"player-world-buildings-{mode}.exe"
             command = [
                 compiler, "/nologo", "/std:c++20", "/W4", "/WX",
