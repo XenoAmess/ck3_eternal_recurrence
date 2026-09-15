@@ -540,3 +540,27 @@ remains `in_progress`, its council adjustment/action/postcondition loop remains
 open, and global G2 remains `1/8`. This corrects the prose-table drift from
 `not started` to the machine-readable `g2-requirements-v1` state without
 changing the fixed denominator or claiming a new completed milestone.
+
+## R693 private steward-candidate reader production-live primitive
+
+New round R693 executed sealed candidate `g2-m4-council18-r693-5e0c5d5` once
+against exact CK3 `1.19.0.6` from source commit
+`41bd2d5d0c159676876f21adc3845cf0afeeaf97`. The application-main mailbox
+started and executed one request. The private reader returned `available` for
+owner `29829`, published a complete 11-character steward-candidate vector,
+released the temporary native vector and persisted no raw pointer fields. This
+closes the R692 private-reader capability RED.
+
+The run remained paused and read-only with zero UI/gameplay actions, no date
+advance and no save mutation. Both save hashes stayed
+`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`;
+managed cleanup proved the CK3 process tree and watchdog absent. The immutable
+post-run manifest SHA-256 is
+`FC59D8D8F001B6B6F6A5ACD041EFBA78596F7D837A54819A8B3F3A2E3EAFABC4`.
+
+This evidence is a `production-live primitive`. It did not pass through the
+formal planner, did not submit a Council assignment and did not verify a
+postcondition or next-cycle policy response. G2-M4 therefore remains
+`in_progress`: public/formal candidate semantics, legal assignment,
+independent postcondition and subsequent policy consumption remain open, as do
+construction and a real vassal/faction intervention. Global G2 stays `1/8`.

@@ -121,11 +121,12 @@
       "status": "in_progress",
       "latest_evidence": [
         "R639 standard-feudal independent/vassal production-live domain-capacity and active-council-task observations; artifact CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB",
-        "LIFE1 exact-build native lifestyle focus/perk decision tree static-confirmed at a04ee02a04a3a86bb685395270d8cd23359b8ba2; public observation and semantic action remain pending"
+        "LIFE1 exact-build native lifestyle focus/perk decision tree static-confirmed at a04ee02a04a3a86bb685395270d8cd23359b8ba2; public observation and semantic action remain pending",
+        "R693 exact-build private steward-candidate reader production-live primitive GREEN: available with a complete 11-candidate vector, one application-main execution, temporary vector released, paused read-only run and cleanup GREEN; manifest FC59D8D8F001B6B6F6A5ACD041EFBA78596F7D837A54819A8B3F3A2E3EAFABC4"
       ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one council reassignment and one real vassal or faction intervention",
-      "open_blocker": "R639 closes domain size/limit and current council-task observation for two standard-feudal scenes, but holdings/buildings/construction, council reassignment, lifestyle focus/perk observation and action, and the vassal/faction intervention loop remain incomplete"
+      "open_blocker": "R693 closes the private exact-build steward-candidate enumeration blocker. The public/formal strategy still needs candidate semantics, a legal council assignment action, independent postcondition verification and next-cycle consumption; holdings/buildings/construction, lifestyle focus/perk observation and action, and the vassal/faction intervention loop also remain incomplete"
     },
     {
       "id": "G2-M5",
@@ -197,5 +198,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-14T15:40:21+08:00"
+  "updated_at": "2026-09-15T13:08:15+08:00"
 }
