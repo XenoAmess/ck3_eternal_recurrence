@@ -61,10 +61,17 @@ jobs:
       - name: Run unit tests
         run: pnpm test
 
+      - name: Build production acceptance artifact
+        run: pnpm build
+        env:
+          VITE_BASE_PATH: "/"
+
       - name: Install headless browsers
         run: pnpm exec playwright install --with-deps chromium firefox webkit
 
       - name: Run standalone browser acceptance
+        env:
+          COA_E2E_USE_PREVIEW: "true"
         run: |
           pnpm exec playwright test e2e/fit-budget-stress.spec.ts
           pnpm exec playwright test e2e/standalone-image-fit.spec.ts
@@ -73,6 +80,8 @@ jobs:
 
       - name: Run cross-browser core acceptance
         run: pnpm exec playwright test --config=playwright.cross-browser.config.ts
+        env:
+          COA_E2E_USE_PREVIEW: "true"
 
       - name: Build Pages artifact
         run: pnpm build
