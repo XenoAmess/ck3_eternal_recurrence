@@ -23,7 +23,7 @@ import {
   type LoadedWebAssetPack,
   type WebAssetPackEntry,
 } from './domain/assetPack'
-import { syntaxCapabilityRows } from './domain/capabilityMatrix'
+import { syntaxCapabilityRows, type CapabilityStage } from './domain/capabilityMatrix'
 import {
   structurallyCompressCoatOfArms,
   type StructuralCompressionReceipt,
@@ -78,6 +78,15 @@ function chooseLocale(value: string | number | boolean | undefined) {
 
 function uiText(value: string): string {
   return translateRuntimeText(value, locale.value)
+}
+
+function capabilityStageLabel(stage: CapabilityStage): string {
+  if (stage === 'full') return t('coverageFull')
+  if (stage === 'normalized') return t('coverageNormalized')
+  if (stage === 'limited') return t('coverageLimited')
+  if (stage === 'missing') return t('coverageMissing')
+  if (stage === 'rejected') return t('coverageRejected')
+  return t('coverageNotApplicable')
 }
 
 const ElMessage = {
@@ -2099,6 +2108,18 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               <el-table-column prop="syntax" :label="t('syntax')" min-width="190" show-overflow-tooltip />
               <el-table-column :label="t('example')" min-width="250">
                 <template #default="{ row }"><code>{{ row.example }}</code></template>
+              </el-table-column>
+              <el-table-column :label="t('parserCoverage')" width="100">
+                <template #default="{ row }">{{ capabilityStageLabel(row.coverage.parser) }}</template>
+              </el-table-column>
+              <el-table-column :label="t('previewCoverage')" width="100">
+                <template #default="{ row }">{{ capabilityStageLabel(row.coverage.preview) }}</template>
+              </el-table-column>
+              <el-table-column :label="t('editorCoverage')" width="100">
+                <template #default="{ row }">{{ capabilityStageLabel(row.coverage.editor) }}</template>
+              </el-table-column>
+              <el-table-column :label="t('serializerCoverage')" width="100">
+                <template #default="{ row }">{{ capabilityStageLabel(row.coverage.serializer) }}</template>
               </el-table-column>
               <el-table-column prop="engineOutcome" :label="t('nativeResult')" min-width="170" show-overflow-tooltip />
               <el-table-column prop="editorPolicy" :label="t('editorPolicy')" width="105" />

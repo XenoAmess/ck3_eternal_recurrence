@@ -1,5 +1,6 @@
 export type SyntaxClassification = 'supported' | 'not-executable' | 'ambiguous'
 export type EditorPolicy = 'accept' | 'warn' | 'sanitize' | 'reject'
+export type CapabilityStage = 'full' | 'normalized' | 'limited' | 'missing' | 'rejected' | 'not-applicable'
 
 export interface SyntaxCapabilityRow {
   id: string
@@ -9,6 +10,12 @@ export interface SyntaxCapabilityRow {
   engineOutcome: string
   evidence: 'mcp-applied' | 'mcp-detected' | 'mcp-not-detected'
   editorPolicy: EditorPolicy
+  coverage: {
+    parser: CapabilityStage
+    preview: CapabilityStage
+    editor: CapabilityStage
+    serializer: CapabilityStage
+  }
   note: string
   english: {
     syntax: string
@@ -22,7 +29,7 @@ export interface SyntaxCapabilityRow {
  * docs/ck3-coat-of-arms-clipboard-import-capability.md §5–§7.
  * Keep this list conservative: syntax not present here is not advertised.
  */
-export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
+const baseSyntaxCapabilityRows: readonly Omit<SyntaxCapabilityRow, 'coverage'>[] = [
   {
     id: 'wrapper',
     classification: 'supported',
@@ -220,3 +227,26 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     },
   },
 ]
+
+const browserCoverage: Record<string, SyntaxCapabilityRow['coverage']> = {
+  wrapper: { parser: 'full', preview: 'full', editor: 'normalized', serializer: 'normalized' },
+  'core-render-description': { parser: 'full', preview: 'full', editor: 'full', serializer: 'full' },
+  'hsv-and-comments': { parser: 'normalized', preview: 'full', editor: 'normalized', serializer: 'normalized' },
+  'static-variable': { parser: 'normalized', preview: 'full', editor: 'normalized', serializer: 'normalized' },
+  'textured-default': { parser: 'full', preview: 'limited', editor: 'limited', serializer: 'full' },
+  'missing-resource': { parser: 'full', preview: 'missing', editor: 'limited', serializer: 'full' },
+  'empty-or-defaulted': { parser: 'limited', preview: 'limited', editor: 'full', serializer: 'normalized' },
+  parent: { parser: 'full', preview: 'missing', editor: 'limited', serializer: 'full' },
+  'duplicate-scalar': { parser: 'normalized', preview: 'full', editor: 'full', serializer: 'normalized' },
+  'multiple-root': { parser: 'rejected', preview: 'not-applicable', editor: 'rejected', serializer: 'not-applicable' },
+  'body-only': { parser: 'rejected', preview: 'not-applicable', editor: 'rejected', serializer: 'not-applicable' },
+  'script-vm-families': { parser: 'rejected', preview: 'not-applicable', editor: 'rejected', serializer: 'not-applicable' },
+  'template-dsl': { parser: 'rejected', preview: 'not-applicable', editor: 'rejected', serializer: 'not-applicable' },
+  'unknown-field': { parser: 'rejected', preview: 'not-applicable', editor: 'rejected', serializer: 'not-applicable' },
+}
+
+export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = baseSyntaxCapabilityRows.map((row) => {
+  const coverage = browserCoverage[row.id]
+  if (!coverage) throw new Error(`Capability row ${row.id} has no browser coverage matrix`)
+  return { ...row, coverage }
+})
