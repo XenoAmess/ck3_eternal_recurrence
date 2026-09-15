@@ -594,3 +594,42 @@ all five modules to candidate-local files, the 596-file sealed inventory
 matched, and CK3 inventory remained zero. The unique proposed pipe is
 `\\.\pipe\xar_ck3_bridge_g2_m4_council14_r691_e5c6b4d`; R691 remains
 unallocated and no `live-r691` directory exists.
+
+## COUNCIL15: R691 pythoncom launch RED and R692 entry
+
+The authorized R691 attempt allocated its round and stopped while bootstrapping
+the detached cleanup watchdog, before CK3 process creation began. The retained
+unsafe-cleanup marker has `ck3_pid=null` and reason `watchdog bootstrap
+requested; CK3 launch not yet started`; the candidate has no session report or
+Council heartbeat. Windows Application Error event 1000 at 2026-09-15 03:02
+Asia/Shanghai binds the failed supervisor PID `183292` (`0x2CBFC`) to
+`pythoncom313.dll` version `3.13.312.0`, exception `0xc0000005`, offset
+`0xc52e`. This is a harness RED and leaves the Council capability
+`not_observed`.
+
+The failing call is
+`runtime._start_process_watchdog ->
+windows_process.create_process_via_windows_management ->
+Win32_Process.Create`. The helper initialized COM, retained the WMI service,
+class, method, input, and output dispatch wrappers as function locals, then
+called `CoUninitialize` in `finally`. CPython released those wrappers only while
+tearing down the function frame, after the COM apartment had closed. A direct
+non-CK3 WMI create probe on the same Python 3.13 runtime reproduced pywin32
+`releasing IUnknown` exceptions in both normal and optimized modes.
+
+The repaired helper executes WMI in an inner apartment scope and explicitly
+drops every retained dispatch wrapper before the outer scope calls
+`CoUninitialize`. It preserves both the legacy `ExecMethod_` and current
+`ExecMethod` pywin32 spellings and does not change watchdog authentication,
+launch locking, Council data, public MCP, or saved-game behavior. The focused
+lifetime regression proves no proxy is alive when apartment shutdown begins;
+all four focused tests pass in normal and `-O` modes. The same real non-CK3 WMI
+create probe then returned a PID with exit code zero in both modes, emitted no
+IUnknown-release exception, and produced no new pythoncom WER event.
+
+R691 and its unsafe marker remain immutable failure evidence. After this fix is
+rebased onto master, the R692 candidate must export the fixed runtime from that
+final master commit into a new sealed candidate root, use a new R692 state/live
+directory and pipe, and bind `R691 -> R692`. It must not clear or reuse the R691
+candidate's control state. R692 remains a future live candidate; this repair
+does not itself provide CK3 or Council capability evidence.

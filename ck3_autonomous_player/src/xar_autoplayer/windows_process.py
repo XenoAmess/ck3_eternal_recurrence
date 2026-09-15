@@ -29,6 +29,45 @@ def _execute_wmi_method(service: Any, *arguments: Any) -> Any:
     return execute(*arguments)
 
 
+def _create_process_in_current_com_apartment(
+    command_line: str, current_directory: str | None
+) -> int | None:
+    """Perform the WMI call while every IDispatch proxy can still be released."""
+
+    import win32com.client
+
+    service: Any = None
+    process_class: Any = None
+    method: Any = None
+    parameters: Any = None
+    output: Any = None
+    try:
+        service = win32com.client.GetObject("winmgmts:")
+        process_class = service.Get("Win32_Process")
+        method = process_class.Methods_("Create")
+        parameters = method.InParameters.SpawnInstance_()
+        parameters.Properties_("CommandLine").Value = command_line
+        if current_directory is not None:
+            parameters.Properties_("CurrentDirectory").Value = current_directory
+        output = _execute_wmi_method(
+            service, "Win32_Process", "Create", parameters
+        )
+        return_value = int(_property_value(output.Properties_, "ReturnValue"))
+        if return_value != 0:
+            raise WindowsProcessCreationError(return_value)
+        raw_pid = _property_value(output.Properties_, "ProcessId")
+        return int(raw_pid) if raw_pid not in (None, "") else None
+    finally:
+        # pywin32 releases these wrappers from their destructors.  Drop every
+        # reference before the caller tears down this thread's COM apartment;
+        # releasing them after CoUninitialize can fault in pythoncom313.dll.
+        output = None
+        parameters = None
+        method = None
+        process_class = None
+        service = None
+
+
 def create_process_via_windows_management(
     command_line: str, current_directory: str | None = None
 ) -> int | None:
@@ -46,24 +85,11 @@ def create_process_via_windows_management(
     if current_directory is not None and "\0" in current_directory:
         raise ValueError("current directory contains a NUL character")
     import pythoncom
-    import win32com.client
 
     pythoncom.CoInitialize()
     try:
-        service = win32com.client.GetObject("winmgmts:")
-        process_class = service.Get("Win32_Process")
-        method = process_class.Methods_("Create")
-        parameters = method.InParameters.SpawnInstance_()
-        parameters.Properties_("CommandLine").Value = command_line
-        if current_directory is not None:
-            parameters.Properties_("CurrentDirectory").Value = current_directory
-        output = _execute_wmi_method(
-            service, "Win32_Process", "Create", parameters
+        return _create_process_in_current_com_apartment(
+            command_line, current_directory
         )
-        return_value = int(_property_value(output.Properties_, "ReturnValue"))
-        if return_value != 0:
-            raise WindowsProcessCreationError(return_value)
-        raw_pid = _property_value(output.Properties_, "ProcessId")
-        return int(raw_pid) if raw_pid not in (None, "") else None
     finally:
         pythoncom.CoUninitialize()
