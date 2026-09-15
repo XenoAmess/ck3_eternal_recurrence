@@ -4634,6 +4634,11 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
       g_player_lifestyle_last_query_revision_v1 = revision;
       g_player_lifestyle_last_query_player_v1 =
           published.played_character_id;
+    } else if (mode == PlayerLifestyleFormalWireModeV1::submit_perk &&
+               PlayerLifestyleAckProvesNoNativeSubmitV1(
+                   context->pending_ack)) {
+      g_player_lifestyle_action_may_have_submitted_v1 = false;
+      g_player_lifestyle_last_query_revision_v1 = 0;
     } else if (mode == PlayerLifestyleFormalWireModeV1::verify_receipt &&
                context->receipt.status ==
                    xar::game::PlayerLifestyleSelectionActionReceiptStatusV1::

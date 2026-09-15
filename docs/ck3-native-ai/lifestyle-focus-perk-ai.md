@@ -653,6 +653,12 @@ CK3 paused snapshot、完整角色 storage 回链与 LIFE2/LIFE4 source；
 `proof_epoch` 仍绑定真实 published revision，source 本身保持两次
 fresh root/sample。action 只接受上一次相同 episode/frame/player
 query 中的最终合法 perk；任何未确认提交阻塞下一次提交。
+若 LIFE6 在执行器完成且同帧稳定的 typed ACK 中明确给出
+`request_contract`、`exact_build_binding`、`snapshot_binding`、
+`final_legality` 或 `state_observation` 的提交前拒绝，则清除
+本次 queue 的“可能已提交”标记，并要求重新查询后才能重试；
+`native_command_dispatch` 或未知终态仍保持阻塞，先观测实际状态，
+不从错误消息猜测是否生效。
 receipt 从后续真实 `native:<n+1>` paused frame 重新读 LIFE2
 focus、owned-perk、XP 与点数，material `HasPerk` 才可确认 applied。
 

@@ -33,6 +33,32 @@ inline std::uint64_t PlayerLifestyleFormalFrameProofEpochV1(
              : 0;
 }
 
+// The worker marks an action as possibly submitted when its executor is
+// queued. Only a completed typed ACK from an earlier-than-dispatch LIFE6
+// failure proves that no native submit happened; dispatch failure stays
+// unknown and blocks retry until actual state is queried.
+inline bool PlayerLifestyleAckProvesNoNativeSubmitV1(
+    const game::PlayerLifestyleSelectionActionAckV1 &ack) noexcept {
+  if (ack.status != game::PlayerLifestyleSelectionActionAckStatusV1::
+                        rejected_before_submit ||
+      ack.verification_pending) {
+    return false;
+  }
+  using Failure = game::PlayerLifestyleSelectionActionFailureClassV1;
+  switch (ack.failure_class) {
+  case Failure::request_contract:
+  case Failure::exact_build_binding:
+  case Failure::snapshot_binding:
+  case Failure::final_legality:
+  case Failure::state_observation:
+    return true;
+  case Failure::none:
+  case Failure::native_command_dispatch:
+    return false;
+  }
+  return false;
+}
+
 // One controlled candidate transaction. The bridge worker owns this object
 // until the fixed application-main mailbox ticket is terminal and reclaimed.
 // No public GameAdapter step or capability advertisement is installed.

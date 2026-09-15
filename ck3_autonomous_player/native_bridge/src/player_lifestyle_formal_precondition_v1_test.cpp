@@ -90,6 +90,18 @@ int main() {
             ck3::PlayerLifestyleFormalFrameProofEpochV1(711, action_pump));
     Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(711, action_pump) ==
             711);
+    game::PlayerLifestyleSelectionActionAckV1 safe_reject{};
+    safe_reject.failure_class =
+        game::PlayerLifestyleSelectionActionFailureClassV1::final_legality;
+    Require(ck3::PlayerLifestyleAckProvesNoNativeSubmitV1(safe_reject));
+    safe_reject.failure_class = game::
+        PlayerLifestyleSelectionActionFailureClassV1::
+            native_command_dispatch;
+    Require(!ck3::PlayerLifestyleAckProvesNoNativeSubmitV1(safe_reject));
+    safe_reject.status = game::
+        PlayerLifestyleSelectionActionAckStatusV1::
+            submitted_verification_pending;
+    Require(!ck3::PlayerLifestyleAckProvesNoNativeSubmitV1(safe_reject));
     Require(ck3::BuildPlayerLifestyleFormalPreconditionV1(
                 *state, *candidates, episode, *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::ready);
@@ -135,7 +147,7 @@ int main() {
                 *state, *candidates, "", *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::
                 episode_unavailable);
-    std::cout << "player_lifestyle_formal_precondition_v1_test: 6/6 GREEN\n";
+    std::cout << "player_lifestyle_formal_precondition_v1_test: 7/7 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';
