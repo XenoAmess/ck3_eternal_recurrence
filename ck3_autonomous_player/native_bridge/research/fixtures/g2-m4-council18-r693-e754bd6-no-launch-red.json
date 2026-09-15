@@ -1,0 +1,17 @@
+{
+  "schema": "xar.ck3.g2_m4_council18_r693_no_launch_red_v1",
+  "status": "red",
+  "candidate": "g2-m4-council18-r693-e754bd6",
+  "harness_commit": "e754bd6023bbd7091baf6f10dbd48aca584b8787",
+  "candidate_manifest_sha256": "CF032F32698B79EF5D6C355DA7001E99EAA10F41788E90D065548AEA19A46000",
+  "sealed_prep_manifest_sha256": "58B109680C581AC85EAF2905BD06CD62B94C22BEB8E71679BDFAC3E21BBF4F74",
+  "failure_layer": "candidate_generator",
+  "failure": "verify_prep.py retained the R692 source commit constant and rejected the R693 sealed source commit",
+  "isolated_import_status": "green",
+  "runtime_source_commit": "41bd2d5d0c159676876f21adc3845cf0afeeaf97",
+  "ck3_launched": false,
+  "round_allocated": false,
+  "suggested_round_consumed": false,
+  "candidate_retry_allowed": false,
+  "resolution": "generate a new hash-bound candidate after fixing the source-commit rewrite"
+}

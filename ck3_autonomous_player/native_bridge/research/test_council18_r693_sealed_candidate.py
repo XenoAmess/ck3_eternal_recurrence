@@ -21,6 +21,8 @@ from council18_candidate_runtime_identity import (
     verify_candidate_source,
 )
 from prepare_council18_r693_sealed_candidate import (
+    RUNTIME_SOURCE_COMMIT,
+    SOURCE_BRIDGE_COMMIT,
     SOURCE_HARNESS_COMMIT,
     SOURCE_PIPE,
     advance_rounds,
@@ -148,11 +150,15 @@ class Council18CandidateTests(unittest.TestCase):
             target_commit = "1" * 40
             target_pipe = r"\\.\pipe\xar_ck3_bridge_g2_m4_council18_r693_1111111"
             python_template = (
-                f"COUNCIL16 R691 R692 r692 {SOURCE_HARNESS_COMMIT} {SOURCE_PIPE}\n"
+                f"COUNCIL16 R691 R692 r692 {SOURCE_BRIDGE_COMMIT} "
+                f"{SOURCE_HARNESS_COMMIT} {SOURCE_PIPE}\n"
             )
             for name in ("run_r692.py", "invoke_r692.py", "verify_prep.py"):
                 (output / name).write_text(python_template, encoding="utf-8")
-            text_template = f"{source} R691 R692 r692 {SOURCE_HARNESS_COMMIT} {SOURCE_PIPE}\n"
+            text_template = (
+                f"{source} R691 R692 r692 {SOURCE_BRIDGE_COMMIT} "
+                f"{SOURCE_HARNESS_COMMIT} {SOURCE_PIPE}\n"
+            )
             for name in (
                 "execute-command.txt",
                 "preflight-command.txt",
@@ -174,6 +180,8 @@ class Council18CandidateTests(unittest.TestCase):
                 text = (output / name).read_text(encoding="utf-8")
                 self.assertIn(target_commit, text)
                 self.assertIn(target_pipe, text)
+                self.assertIn(RUNTIME_SOURCE_COMMIT, text)
+                self.assertNotIn(SOURCE_BRIDGE_COMMIT, text)
                 self.assertNotIn(SOURCE_PIPE, text)
             execute = (output / "execute-command.txt").read_text(encoding="utf-8")
             self.assertIn(str(output), execute)
