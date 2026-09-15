@@ -167,11 +167,22 @@ worker wire 的 step 固定为：
 的 `action_request_id`。`query_sequence` 是每次 mailbox ticket，submit 与 receipt 必须不同，不能拿它
 做动作相关 ID。
 
-当前真实未闭合点没有被隐藏：production 尚未提供同时覆盖
-`candidate_already_councillor`、`candidate_is_guest`、
-`pending_character_interaction` 及替换路径
-`CFireFromCouncilConfirmation::CanConfirm` fireability 的 final-gate binding。因此
-`CouncilApplicationMainActionRuntimeReadyV1` 在 production 配置下仍为 false，bridge 不注册、
-不广告 action。offline fixture 的 GREEN 只证明事务顺序、拒绝路径、helper-only ACK 和独立后帧 receipt
-合同；它不是 live action。下一步应只绑定这些现存 gate、注册 worker 路由并执行一次 bounded paused
+当前真实未闭合点没有被隐藏：四项 production final-gate callback 尚未在受控实机中完成
+合法/拒绝与替换行为验证，也尚未接到 worker route。因此当前配置的
+`CouncilApplicationMainActionRuntimeReadyV1` 仍为 false，bridge 不注册、不广告 action。
+offline fixture 的 GREEN 只证明事务顺序、拒绝路径、helper-only ACK 和独立后帧 receipt
+合同；它不是 live action。下一步只绑定这些现存 gate、注册受控 worker 路由并执行 bounded paused
 候选，不扩张新能力。
+
+## COUNCIL25 exact-build final-gate callback（静态，未实机）
+
+交接后对同一 `1.19.0.6` EXE 的 GUI reflection 调用链定位了四个必要的只读原生判定：
+
+| 原版 GUI 门 | 可调用的 native leaf | exact 输入 |
+|---|---|---|
+| `Character.IsCouncillor` | `0x2667300` | 同帧解析并 round-trip 的候选 `CCharacter*` |
+| `Character.IsGuest` | `0x18E2A10` | 同一候选指针 |
+| `PotentialCouncillorWindow.HasPendingInteraction` | `0x1058C00` 取得当前玩家 manager，再由 `0x2752220` 判断 | owner global 与同帧玩家 full ID 相同；manager 指针和候选 full ID |
+| occupied replacement fireability | `0x105C770` (`CFireFromCouncilConfirmation::CanConfirm`) | 零初始化 `0x170` 字节临时 confirmation，`+0x160/+0x164` 写 incumbent/task full ID |
+
+最后一项的 exact 汇编仅读 confirmation 中的这两个 ID，走原生解职 trigger 与身份解析；它没有调用任命 helper。`0x1058C00` 只读取得按当前玩家 full ID 选择的 pending manager；manager 缺失是 **unavailable**，不能当作“没有 pending”。COUNCIL25 的 production callback 在 application-main 同一 transaction 重新检查四项，并把结果交给既有 Council22 typed action gate。静态 ABI/source 与聚焦 fixture 仅支持调用形状；四项合法/拒绝、替换 fireability 与正式任命后置仍必须在受控 paused CK3 中分别验证。在此之前 query/action 继续不注册、不广告。
