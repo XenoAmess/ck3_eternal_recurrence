@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import base64
 from contextlib import ExitStack
 import hashlib
 import json
@@ -32,7 +33,13 @@ sys.path.insert(0, str(PACKAGE_ROOT))
 from mcp import Client  # noqa: E402
 
 from xar_autoplayer.bridge.coat_of_arms_source_probe_contract import (  # noqa: E402
+    COAT_OF_ARMS_SOURCE_V1_EXECUTABLE_SHA256,
+    COAT_OF_ARMS_SOURCE_V1_GAME_VERSION,
     encode_coat_of_arms_source_v1,
+    encode_coat_of_arms_source_transport_v2,
+)
+from xar_autoplayer.bridge.coat_of_arms_source_upload_v2 import (  # noqa: E402
+    COAT_OF_ARMS_SOURCE_UPLOAD_V2_MAX_CHUNK_BYTES,
 )
 from xar_autoplayer.bridge.frontend_gui_route_contract import (  # noqa: E402
     frontend_coat_of_arms_background_patterns_ready_v1,
@@ -114,6 +121,10 @@ COMMIT_DYNASTY_COAT_OF_ARMS_TOOL = (
 SNAPSHOT_TOOL = "ck3_take_snapshot"
 PROBE_COAT_OF_ARMS_TOOL = "ck3_probe_coat_of_arms_source_v1"
 EXPORT_COAT_OF_ARMS_TOOL = "ck3_export_coat_of_arms_source_v1"
+BEGIN_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_begin_coat_of_arms_source_upload_v2"
+APPEND_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_append_coat_of_arms_source_chunk_v2"
+COMMIT_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_commit_coat_of_arms_source_upload_v2"
+ABORT_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_abort_coat_of_arms_source_upload_v2"
 SYNTAX_MATRIX = Path(__file__).with_name("coat_of_arms_syntax_matrix_v1.json")
 _PROFILE_EXCLUDES = frozenset(
     {"crashes", "dumps", "exceptions", "logs", "save games", "last_save.ck3"}
@@ -149,6 +160,14 @@ def _parser() -> argparse.ArgumentParser:
         help=(
             "apply one CoA, commit with native dynasty Finish, reopen, and "
             "compare native Copy bytes"
+        ),
+    )
+    parser.add_argument(
+        "--large-source",
+        type=Path,
+        help=(
+            "apply one source larger than the v1 request bound through the "
+            "chunked v2 MCP contract, then perform native Copy"
         ),
     )
     parser.add_argument("--output", type=Path, required=True)
@@ -253,6 +272,131 @@ async def _call(
 def _structured(call: dict[str, object]) -> dict[str, object]:
     value = call.get("structured_content")
     return value if isinstance(value, dict) else {}
+
+
+def _source_structure(source: str) -> dict[str, int]:
+    return {
+        "logical_layers": len(
+            re.findall(r"(?m)^\s*colored_emblem\s*=", source)
+        ),
+        "colored_emblem_blocks": len(
+            re.findall(r"(?m)^\s*colored_emblem\s*=", source)
+        ),
+        "textured_emblem_blocks": len(
+            re.findall(r"(?m)^\s*textured_emblem\s*=", source)
+        ),
+        "instances": len(re.findall(r"(?m)^\s*instance\s*=", source)),
+        "utf8_bytes": len(source.encode("ascii")),
+        "lines": len(source.splitlines()),
+    }
+
+
+def _semantic_projection(source: str) -> dict[str, object]:
+    flags = re.IGNORECASE | re.MULTILINE
+
+    def text_values(pattern: str) -> list[str]:
+        return [
+            " ".join(value.split()).lower()
+            for value in re.findall(pattern, source, flags)
+        ]
+
+    def numeric_values(pattern: str) -> list[list[float]]:
+        return [
+            [
+                float(number)
+                for number in re.findall(r"[-+]?[0-9]*\.?[0-9]+(?:e[-+]?[0-9]+)?", value)
+            ]
+            for value in re.findall(pattern, source, flags)
+        ]
+
+    return {
+        "patterns": text_values(r'\bpattern\s*=\s*"([^"]+)"'),
+        "textures": text_values(r'\btexture\s*=\s*"([^"]+)"'),
+        "colors": text_values(
+            r"\bcolor[123]\s*=\s*(rgb\s*\{[^}]*\}|hsv\s*\{[^}]*\}|"
+            r'"[^"]+"|[a-z_][a-z0-9_]*)'
+        ),
+        "masks": text_values(r"\bmask\s*=\s*\{([^}]*)\}"),
+        "positions": numeric_values(r"\bposition\s*=\s*\{([^}]*)\}"),
+        "scales": numeric_values(r"\bscale\s*=\s*\{([^}]*)\}"),
+        "rotations": numeric_values(r"\brotation\s*=\s*([-+0-9.e]+)"),
+        "depths": numeric_values(r"\bdepth\s*=\s*([-+0-9.e]+)"),
+        "parents": text_values(
+            r"\bparent\s*=\s*(\"[^\"]+\"|[a-z_][a-z0-9_]*)"
+        ),
+    }
+
+
+def _semantic_projection_checks(
+    expected: dict[str, object],
+    actual: dict[str, object],
+) -> dict[str, bool]:
+    numeric_keys = {"positions", "scales", "rotations", "depths"}
+    checks: dict[str, bool] = {}
+    for key, expected_value in expected.items():
+        actual_value = actual.get(key)
+        if key not in numeric_keys:
+            checks[key] = actual_value == expected_value
+            continue
+        checks[key] = bool(
+            isinstance(expected_value, list)
+            and isinstance(actual_value, list)
+            and len(expected_value) == len(actual_value)
+            and all(
+                isinstance(expected_row, list)
+                and isinstance(actual_row, list)
+                and len(expected_row) == len(actual_row)
+                and all(
+                    abs(float(left) - float(right)) <= 5.1e-7
+                    for left, right in zip(expected_row, actual_row)
+                )
+                for expected_row, actual_row in zip(
+                    expected_value,
+                    actual_value,
+                )
+            )
+        )
+    return checks
+
+
+def _projection_summary(projection: dict[str, object]) -> dict[str, object]:
+    wire = json.dumps(
+        projection,
+        ensure_ascii=True,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("ascii")
+    return {
+        "sha256": hashlib.sha256(wire).hexdigest(),
+        "field_counts": {
+            key: len(value) if isinstance(value, list) else 0
+            for key, value in projection.items()
+        },
+    }
+
+
+def _load_large_source(
+    path: Path,
+) -> tuple[str, dict[str, object]]:
+    resolved = path.resolve()
+    raw = resolved.read_bytes()
+    try:
+        decoded = raw.decode("ascii")
+    except UnicodeDecodeError as error:
+        raise RuntimeError("large coat-of-arms source must be ASCII") from error
+    encoded = encode_coat_of_arms_source_transport_v2(decoded)
+    wire = encoded.source.encode("ascii")
+    projection = _semantic_projection(encoded.source)
+    return encoded.source, {
+        "path": str(resolved),
+        "raw_bytes": len(raw),
+        "raw_sha256": hashlib.sha256(raw).hexdigest(),
+        "wire_bytes": len(wire),
+        "wire_sha256": encoded.source_sha256,
+        "line_endings_normalized": raw != wire,
+        "structure": _source_structure(encoded.source),
+        "semantic_projection": _projection_summary(projection),
+    }
 
 
 def _load_syntax_matrix(path: Path = SYNTAX_MATRIX) -> dict[str, object]:
@@ -643,6 +787,215 @@ async def _collect_commit_roundtrip(
     }
 
 
+async def _collect_large_source_roundtrip(
+    client: Client,
+    source: str,
+    receipt: dict[str, object],
+    record: Any,
+) -> dict[str, object]:
+    capability_call = await _call(client, "ck3_get_capabilities")
+    record(capability_call)
+    capabilities = _structured(capability_call)
+    snapshot_call: dict[str, object] | None = None
+    if capability_call.get("is_error") is not False:
+        return {"ok": False, "error": "large-source capabilities call failed"}
+    if capabilities.get("snapshot") is True:
+        snapshot_call = await _call(client, SNAPSHOT_TOOL)
+        record(snapshot_call)
+        revision = _structured(snapshot_call).get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 1
+        ):
+            return {"ok": False, "error": "large-source snapshot lacks revision"}
+        binding_mode = "snapshot"
+    elif capabilities.get("snapshot") is False:
+        revision = 0
+        binding_mode = "frontend"
+    else:
+        return {
+            "ok": False,
+            "error": "large-source capabilities lack snapshot state",
+        }
+
+    payload = source.encode("ascii")
+    chunks = [
+        payload[
+            offset : offset + COAT_OF_ARMS_SOURCE_UPLOAD_V2_MAX_CHUNK_BYTES
+        ]
+        for offset in range(
+            0,
+            len(payload),
+            COAT_OF_ARMS_SOURCE_UPLOAD_V2_MAX_CHUNK_BYTES,
+        )
+    ]
+    source_sha256 = hashlib.sha256(payload).hexdigest()
+    metadata = {
+        "source_sha256": source_sha256,
+        "expected_revision": revision,
+        "apply": True,
+        "expected_game_version": COAT_OF_ARMS_SOURCE_V1_GAME_VERSION,
+        "expected_executable_sha256": (
+            COAT_OF_ARMS_SOURCE_V1_EXECUTABLE_SHA256
+        ),
+    }
+    chunk_receipts = [
+        {
+            "chunk_index": index,
+            "chunk_bytes": len(chunk),
+            "chunk_sha256": hashlib.sha256(chunk).hexdigest(),
+        }
+        for index, chunk in enumerate(chunks)
+    ]
+    begin_call = await _call(
+        client,
+        BEGIN_COAT_OF_ARMS_UPLOAD_TOOL,
+        {
+            "total_bytes": len(payload),
+            "chunk_count": len(chunks),
+            "chunk_encoding": "base64",
+            **metadata,
+        },
+    )
+    record(begin_call)
+    begun = _structured(begin_call)
+    append_calls: list[dict[str, object]] = []
+    if begin_call.get("is_error") is False:
+        for index, chunk in enumerate(chunks):
+            item = await _call(
+                client,
+                APPEND_COAT_OF_ARMS_UPLOAD_TOOL,
+                {
+                    "upload_id": begun.get("upload_id"),
+                    "generation": begun.get("generation"),
+                    "chunk_index": index,
+                    "chunk_count": len(chunks),
+                    "chunk_encoding": "base64",
+                    "chunk_bytes": len(chunk),
+                    "chunk_sha256": hashlib.sha256(chunk).hexdigest(),
+                    "chunk_base64": base64.b64encode(chunk).decode("ascii"),
+                    **metadata,
+                },
+            )
+            record(item)
+            append_calls.append(item)
+            if item.get("is_error") is not False:
+                break
+
+    all_chunks_sent = bool(
+        len(append_calls) == len(chunks)
+        and all(call.get("is_error") is False for call in append_calls)
+    )
+    commit_call: dict[str, object] | None = None
+    export_call: dict[str, object] | None = None
+    if all_chunks_sent:
+        commit_call = await _call(
+            client,
+            COMMIT_COAT_OF_ARMS_UPLOAD_TOOL,
+            {
+                "upload_id": begun.get("upload_id"),
+                "generation": begun.get("generation"),
+                "chunk_count": len(chunks),
+                **metadata,
+            },
+        )
+        record(commit_call)
+        if commit_call.get("is_error") is False:
+            export_call = await _call(
+                client,
+                EXPORT_COAT_OF_ARMS_TOOL,
+                {"expected_revision": revision},
+            )
+            record(export_call)
+
+    committed = _structured(commit_call or {})
+    native_result = (
+        committed.get("result")
+        if isinstance(committed.get("result"), dict)
+        else {}
+    )
+    exported = _structured(export_call or {})
+    exported_source = exported.get("source")
+    input_projection = _semantic_projection(source)
+    output_projection = (
+        _semantic_projection(exported_source)
+        if isinstance(exported_source, str)
+        else {}
+    )
+    input_structure = _source_structure(source)
+    output_structure = (
+        _source_structure(exported_source)
+        if isinstance(exported_source, str)
+        else {}
+    )
+    semantic_checks = _semantic_projection_checks(
+        input_projection,
+        output_projection,
+    )
+    checks = {
+        "input_exceeds_v1_bound": len(payload) > 128 * 1024,
+        "begin_not_error": begin_call.get("is_error") is False,
+        "begin_receiving": begun.get("status") == "receiving",
+        "all_chunks_sent": all_chunks_sent,
+        "last_chunk_ready": bool(
+            append_calls
+            and _structured(append_calls[-1]).get("status") == "ready"
+        ),
+        "commit_not_error": bool(
+            commit_call is not None
+            and commit_call.get("is_error") is False
+        ),
+        "commit_applied": bool(
+            committed.get("status") == "committed"
+            and native_result.get("status") == "applied"
+            and native_result.get("detected") is True
+            and native_result.get("applied") is True
+        ),
+        "commit_source_identity": bool(
+            native_result.get("source_bytes") == len(payload)
+            and native_result.get("source_sha256") == source_sha256
+        ),
+        "native_copy_exported": bool(
+            export_call is not None
+            and export_call.get("is_error") is False
+            and exported.get("status") == "exported"
+        ),
+        "native_copy_exceeds_v1_bound": bool(
+            isinstance(exported.get("source_bytes"), int)
+            and exported["source_bytes"] > 128 * 1024
+        ),
+        "drawn_instance_count_preserved": bool(
+            output_structure.get("instances") == input_structure["instances"]
+        ),
+        "logical_layer_count_preserved": bool(
+            output_structure.get("logical_layers")
+            == input_structure["logical_layers"]
+        ),
+        "colored_emblem_block_count_preserved": bool(
+            output_structure.get("colored_emblem_blocks")
+            == input_structure["colored_emblem_blocks"]
+        ),
+        "semantic_field_sequences_preserved": all(semantic_checks.values()),
+    }
+    return {
+        "ok": all(checks.values()),
+        "binding_mode": binding_mode,
+        "expected_revision": revision,
+        "input": receipt,
+        "chunk_count": len(chunks),
+        "chunks": chunk_receipts,
+        "begin": begin_call,
+        "append": append_calls,
+        "commit": commit_call,
+        "native_copy": export_call,
+        "output_structure": output_structure,
+        "output_semantic_projection": _projection_summary(output_projection),
+        "semantic_checks": semantic_checks,
+        "checks": checks,
+    }
+
+
 def _summarize_pattern_grid(inspection: object) -> dict[str, object]:
     """Summarize only the bounded subtree below vanilla patterns_scrollbox."""
 
@@ -777,6 +1130,7 @@ async def _mcp_sequence(
     syntax_matrix: dict[str, object] | None = None,
     custom_mode_census: bool = False,
     commit_roundtrip: bool = False,
+    large_source: tuple[str, dict[str, object]] | None = None,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
@@ -833,6 +1187,18 @@ async def _mcp_sequence(
             if commit_roundtrip
             else set()
         )
+        large_source_required = (
+            {
+                SNAPSHOT_TOOL,
+                BEGIN_COAT_OF_ARMS_UPLOAD_TOOL,
+                APPEND_COAT_OF_ARMS_UPLOAD_TOOL,
+                COMMIT_COAT_OF_ARMS_UPLOAD_TOOL,
+                ABORT_COAT_OF_ARMS_UPLOAD_TOOL,
+                EXPORT_COAT_OF_ARMS_TOOL,
+            }
+            if large_source is not None
+            else set()
+        )
         custom_mode_required = (
             {
                 INSPECT_COAT_OF_ARMS_TREE_TOOL,
@@ -846,6 +1212,7 @@ async def _mcp_sequence(
             route_required
             | matrix_required
             | commit_required
+            | large_source_required
             | custom_mode_required
         )
         schemas = {
@@ -890,6 +1257,65 @@ async def _mcp_sequence(
                 "coat-of-arms matrix MCP tools do not have the expected v1 schemas",
                 tool_schemas=schemas,
             )
+        if large_source is not None and not (
+            _schema_is_zero_input(schemas.get(SNAPSHOT_TOOL))
+            and _schema_has_required_fields(
+                schemas.get(BEGIN_COAT_OF_ARMS_UPLOAD_TOOL),
+                {
+                    "total_bytes",
+                    "source_sha256",
+                    "chunk_count",
+                    "chunk_encoding",
+                    "expected_revision",
+                    "apply",
+                    "expected_game_version",
+                    "expected_executable_sha256",
+                },
+            )
+            and _schema_has_required_fields(
+                schemas.get(APPEND_COAT_OF_ARMS_UPLOAD_TOOL),
+                {
+                    "upload_id",
+                    "generation",
+                    "chunk_index",
+                    "chunk_count",
+                    "chunk_encoding",
+                    "chunk_bytes",
+                    "chunk_sha256",
+                    "chunk_base64",
+                    "source_sha256",
+                    "expected_revision",
+                    "apply",
+                    "expected_game_version",
+                    "expected_executable_sha256",
+                },
+            )
+            and _schema_has_required_fields(
+                schemas.get(COMMIT_COAT_OF_ARMS_UPLOAD_TOOL),
+                {
+                    "upload_id",
+                    "generation",
+                    "chunk_count",
+                    "source_sha256",
+                    "expected_revision",
+                    "apply",
+                    "expected_game_version",
+                    "expected_executable_sha256",
+                },
+            )
+            and _schema_has_required_fields(
+                schemas.get(ABORT_COAT_OF_ARMS_UPLOAD_TOOL),
+                {"upload_id", "generation"},
+            )
+            and _schema_has_required_fields(
+                schemas.get(EXPORT_COAT_OF_ARMS_TOOL),
+                {"expected_revision"},
+            )
+        ):
+            return red(
+                "large-source MCP tools do not have the expected closed schemas",
+                tool_schemas=schemas,
+            )
 
         required_capabilities = {
             QUERY_CAPABILITY,
@@ -911,6 +1337,11 @@ async def _mcp_sequence(
                 PROBE_COAT_OF_ARMS_CAPABILITY,
                 EXPORT_COAT_OF_ARMS_CAPABILITY,
                 COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY,
+            }
+        if large_source is not None:
+            required_capabilities |= {
+                PROBE_COAT_OF_ARMS_CAPABILITY,
+                EXPORT_COAT_OF_ARMS_CAPABILITY,
             }
         if custom_mode_census:
             required_capabilities |= {
@@ -1152,6 +1583,23 @@ async def _mcp_sequence(
             checks["commit_roundtrip_evidence_complete"] = (
                 commit_result.get("ok") is True
             )
+        large_source_result: dict[str, object] | None = None
+        if large_source is not None:
+            if all(checks.values()):
+                large_source_result = await _collect_large_source_roundtrip(
+                    client,
+                    large_source[0],
+                    large_source[1],
+                    record,
+                )
+            else:
+                large_source_result = {
+                    "ok": False,
+                    "error": "route checks failed before large-source round-trip",
+                }
+            checks["large_source_roundtrip_evidence_complete"] = (
+                large_source_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -1168,6 +1616,7 @@ async def _mcp_sequence(
             "custom_mode_census": custom_mode_result,
             "syntax_matrix": matrix_result,
             "commit_roundtrip": commit_result,
+            "large_source_roundtrip": large_source_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -1192,6 +1641,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     )
     commit_roundtrip = bool(getattr(args, "commit_roundtrip", False))
     custom_mode_census = bool(getattr(args, "custom_mode_census", False))
+    large_source = (
+        _load_large_source(args.large_source)
+        if getattr(args, "large_source", None) is not None
+        else None
+    )
     state_dir = args.state_dir.resolve()
     output = args.output.resolve()
     if state_dir.exists():
@@ -1220,6 +1674,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "syntax_matrix_plan": syntax_matrix,
         "custom_mode_census_requested": custom_mode_census,
         "commit_roundtrip_requested": commit_roundtrip,
+        "large_source_requested": large_source is not None,
+        "large_source_plan": large_source[1] if large_source else None,
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -1285,6 +1741,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 syntax_matrix=syntax_matrix,
                 custom_mode_census=custom_mode_census,
                 commit_roundtrip=commit_roundtrip,
+                large_source=large_source,
             )
         )
         report["sequence"] = sequence

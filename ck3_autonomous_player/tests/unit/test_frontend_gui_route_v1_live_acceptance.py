@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
 import sys
+import tempfile
 from types import SimpleNamespace
 import unittest
 
@@ -80,6 +82,141 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         self.assertIn('"commit_dynasty_coat_of_arms"', source)
         self.assertIn(
             '"native_copy_bytes_preserved_after_commit_reopen"', source
+        )
+
+    def test_runner_has_opt_in_chunked_large_source_roundtrip(self) -> None:
+        source = RUNNER.read_text(encoding="utf-8")
+
+        self.assertIn('"--large-source"', source)
+        self.assertIn('"ck3_begin_coat_of_arms_source_upload_v2"', source)
+        self.assertIn('"ck3_append_coat_of_arms_source_chunk_v2"', source)
+        self.assertIn('"ck3_commit_coat_of_arms_source_upload_v2"', source)
+        self.assertIn('"semantic_field_sequences_preserved"', source)
+
+    def test_large_source_receipt_and_numeric_semantics_are_stable(self) -> None:
+        module = _load_runner_module()
+        raw = (
+            b'coa={\n pattern="pattern_solid.dds"\n'
+            b' colored_emblem={ texture="ce_block_02.dds" color1=rgb { 1 2 3 }\n'
+            b' instance={ position={ 0.12345678 0.5 } scale={ 1 1 } '
+            b'rotation=0 depth=1 } }\n}\n'
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "source.txt"
+            path.write_bytes(raw)
+            source, receipt = module._load_large_source(path)
+
+        self.assertTrue(receipt["line_endings_normalized"])
+        self.assertEqual(receipt["raw_bytes"], len(raw))
+        self.assertEqual(receipt["wire_bytes"], len(source.encode("ascii")))
+        self.assertEqual(receipt["structure"]["instances"], 1)
+        expected = module._semantic_projection(source)
+        canonical = source.replace("0.12345678", "0.123457").replace(
+            "depth=1", "depth=1.000000"
+        )
+        actual = module._semantic_projection(canonical)
+        checks = module._semantic_projection_checks(expected, actual)
+        self.assertTrue(all(checks.values()))
+
+    def test_large_source_collector_round_trips_through_v2_tools(self) -> None:
+        module = _load_runner_module()
+        source = (
+            "coa={\r\n"
+            + (
+                ' colored_emblem={ texture="ce_block_02.dds" '
+                "color1=rgb { 1 2 3 } instance={ position={ 0.1 0.2 } "
+                "scale={ 0.3 0.4 } rotation=0 depth=1 } }\r\n"
+            )
+            * 1_500
+            + "}\r\n"
+        )
+        self.assertGreater(len(source.encode("ascii")), 128 * 1024)
+        digest = hashlib.sha256(source.encode("ascii")).hexdigest()
+
+        class FakeClient:
+            def __init__(self) -> None:
+                self.calls: list[tuple[str, dict[str, object]]] = []
+
+            async def call_tool(self, name, arguments):
+                arguments = dict(arguments)
+                self.calls.append((name, arguments))
+                if name == "ck3_get_capabilities":
+                    body = {"snapshot": False}
+                elif name == module.BEGIN_COAT_OF_ARMS_UPLOAD_TOOL:
+                    body = {
+                        "status": "receiving",
+                        "upload_id": "1" * 32,
+                        "generation": 1,
+                    }
+                elif name == module.APPEND_COAT_OF_ARMS_UPLOAD_TOOL:
+                    body = {
+                        "status": (
+                            "ready"
+                            if arguments["chunk_index"]
+                            == arguments["chunk_count"] - 1
+                            else "receiving"
+                        )
+                    }
+                elif name == module.COMMIT_COAT_OF_ARMS_UPLOAD_TOOL:
+                    body = {
+                        "status": "committed",
+                        "result": {
+                            "status": "applied",
+                            "detected": True,
+                            "applied": True,
+                            "source_bytes": len(source.encode("ascii")),
+                            "source_sha256": digest,
+                        },
+                    }
+                elif name == module.EXPORT_COAT_OF_ARMS_TOOL:
+                    exported = source.replace("coa={", "coa_rd_dynasty_1={", 1)
+                    body = {
+                        "status": "exported",
+                        "source": exported,
+                        "source_bytes": len(exported.encode("ascii")),
+                        "source_sha256": hashlib.sha256(
+                            exported.encode("ascii")
+                        ).hexdigest(),
+                    }
+                else:
+                    raise AssertionError(name)
+                return SimpleNamespace(
+                    content=[],
+                    is_error=False,
+                    structured_content=body,
+                )
+
+        receipt = {
+            "wire_bytes": len(source.encode("ascii")),
+            "wire_sha256": digest,
+            "structure": module._source_structure(source),
+            "semantic_projection": module._projection_summary(
+                module._semantic_projection(source)
+            ),
+        }
+        client = FakeClient()
+        recorded = []
+        result = asyncio.run(
+            module._collect_large_source_roundtrip(
+                client,
+                source,
+                receipt,
+                recorded.append,
+            )
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertGreater(result["chunk_count"], 1)
+        self.assertTrue(all(result["semantic_checks"].values()))
+        self.assertEqual(
+            len(
+                [
+                    name
+                    for name, _ in client.calls
+                    if name == module.COMMIT_COAT_OF_ARMS_UPLOAD_TOOL
+                ]
+            ),
+            1,
         )
 
     def test_runner_has_opt_in_native_custom_mode_census(self) -> None:
