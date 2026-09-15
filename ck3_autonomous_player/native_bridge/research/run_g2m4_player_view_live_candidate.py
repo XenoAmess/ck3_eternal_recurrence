@@ -189,7 +189,7 @@ def run(root: Path, round_id: str, evidence: Path) -> int:
             "played_character_id": played.get("character_id"),
         }
         bridge_pid = initial.get("diagnostics", {}).get("bridge_pid") if isinstance(initial.get("diagnostics"), dict) else None
-        report["gui_visual_receipt"] = screenshot(evidence, initial, bridge_pid)
+        report["desktop_diagnostic"] = screenshot(evidence, initial, bridge_pid)
         frozen = {
             "candidate_id": root.name, "round_id": round_id,
             "seed": "r697-standard-feudal-peace-paired",
@@ -256,7 +256,8 @@ def run(root: Path, round_id: str, evidence: Path) -> int:
     print(json.dumps({"status": report["status"], "cache_branch": report.get("cache_branch"),
                       "ck3_reclaimed": report["ck3_reclaimed"], "evidence": str(evidence)}, ensure_ascii=False))
     return 0 if report["status"] == "cache_branch_observed" and report["ck3_reclaimed"] else 2 if (
-        report["status"] == "closed_view_evidence_insufficient" and report["ck3_reclaimed"]
+        report["status"] in {"closed_view_evidence_insufficient", "open_view_scene"}
+        and report["ck3_reclaimed"]
     ) else 1
 
 

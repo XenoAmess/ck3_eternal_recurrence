@@ -131,7 +131,8 @@ bool ExecutePlayerConstructionViewProbeMailboxV1(
       first.failure != second.failure ||
       first.view_present != second.view_present ||
       first.candidate_capacity != second.candidate_capacity ||
-      first.cached_candidate_count != second.cached_candidate_count) {
+      first.cached_candidate_count != second.cached_candidate_count ||
+      first.holding_view_visibility != second.holding_view_visibility) {
     query->result = FrameChanged();
   } else {
     query->result = second;
@@ -155,6 +156,29 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
   json += std::to_string(result.candidate_capacity);
   json += ",\"cached_candidate_count\":";
   json += std::to_string(result.cached_candidate_count);
+  json += ",\"snapshot_revision\":";
+  json += std::to_string(query.expected_revision);
+  json += ",\"date_raw\":";
+  json += std::to_string(query.expected_snapshot.date_raw);
+  json += ",\"holding_view_visibility\":{";
+  json += "\"widget_key\":\"holding_view\",\"status\":\"";
+  const auto visibility = result.holding_view_visibility;
+  json += visibility == xar::ck3::shared::
+                           PlayerConstructionHoldingViewVisibilityV1::
+                               unavailable
+              ? "unavailable"
+              : "available";
+  json += "\",\"effective_visible\":";
+  json += visibility == xar::ck3::shared::
+                           PlayerConstructionHoldingViewVisibilityV1::
+                               unavailable
+              ? "null"
+              : visibility == xar::ck3::shared::
+                                  PlayerConstructionHoldingViewVisibilityV1::
+                                      visible
+                    ? "true"
+                    : "false";
+  json += '}';
   json += ",\"executor_invocations\":";
   json += std::to_string(query.executor_invocations);
   json += '}';

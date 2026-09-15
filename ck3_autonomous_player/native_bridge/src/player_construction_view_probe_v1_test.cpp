@@ -16,6 +16,8 @@ struct Fixture final {
   std::array<std::byte, 0xE0> handler{};
   std::array<std::byte, 0x140> view{};
   PlayerConstructionViewResolvedOwnerV1 owner{};
+  bool visibility_readable = true;
+  bool effective_visible = false;
 
   Fixture() {
     owner.root = 0x20000000U;
@@ -67,6 +69,16 @@ bool Read(void* context, std::uintptr_t address, void* destination,
   return false;
 }
 
+bool ReadVisibility(void* context, std::uintptr_t module,
+                    bool& effective_visible) noexcept {
+  const auto& fixture = *static_cast<Fixture*>(context);
+  if (module != Fixture::kModule || !fixture.visibility_readable) {
+    return false;
+  }
+  effective_visible = fixture.effective_visible;
+  return true;
+}
+
 PlayerConstructionViewProbeResultV1 Probe(Fixture& fixture) {
   PlayerConstructionViewProbeAdmissionV1 admission{};
   admission.exact_build_admitted = true;
@@ -78,6 +90,8 @@ PlayerConstructionViewProbeResultV1 Probe(Fixture& fixture) {
   source.owner_context = &fixture;
   source.read_memory = &Read;
   source.read_context = &fixture;
+  source.read_holding_view_visibility = &ReadVisibility;
+  source.visibility_context = &fixture;
   return ProbePlayerConstructionViewCacheV1(admission, source);
 }
 
@@ -90,7 +104,10 @@ int main() {
                               view_candidate_cache_empty);
   assert(result.failure == PlayerConstructionViewProbeFailureV1::none);
   assert(result.view_present && result.cached_candidate_count == 0);
+  assert(result.holding_view_visibility ==
+         PlayerConstructionHoldingViewVisibilityV1::hidden);
 
+  fixture.effective_visible = true;
   Fixture::Put(fixture.view, 0x118U, std::uintptr_t{0x30000000U});
   Fixture::Put(fixture.view, 0x120U, std::int32_t{3});
   Fixture::Put(fixture.view, 0x124U, std::int32_t{2});
@@ -99,6 +116,16 @@ int main() {
                               view_candidate_cache_present);
   assert(result.cached_candidate_count == 2 &&
          result.candidate_capacity == 3);
+  assert(result.holding_view_visibility ==
+         PlayerConstructionHoldingViewVisibilityV1::visible);
+
+  fixture.visibility_readable = false;
+  result = Probe(fixture);
+  assert(result.status == PlayerConstructionViewProbeStatusV1::
+                              view_candidate_cache_present);
+  assert(result.holding_view_visibility ==
+         PlayerConstructionHoldingViewVisibilityV1::unavailable);
+  fixture.visibility_readable = true;
 
   Fixture::Put(fixture.view, 0xD0U, std::uintptr_t{0xDEADBEEFU});
   result = Probe(fixture);

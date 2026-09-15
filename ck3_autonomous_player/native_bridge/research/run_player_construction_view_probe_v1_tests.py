@@ -32,12 +32,20 @@ def main() -> int:
                 f"/I{HERE}", f"/I{NATIVE / 'src'}",
                 f"/I{NATIVE / 'include'}",
                 str(NATIVE / "src/player_construction_view_probe_v1.cpp"),
-                str(NATIVE / "src/player_construction_view_probe_v1_process.cpp"),
                 str(NATIVE / "src/player_construction_view_probe_v1_test.cpp"),
                 f"/Fe:{output}",
             ]
             subprocess.run(command, cwd=build, env=environment, check=True)
             subprocess.run([str(output)], cwd=build, env=environment, check=True)
+            process_object = build / f"player-construction-view-probe-process-{mode}.obj"
+            subprocess.run([
+                compiler, "/nologo", "/std:c++20", "/W4", "/WX",
+                "/DNOMINMAX", "/DWIN32_LEAN_AND_MEAN", "/permissive-",
+                "/EHsc", *flags, f"/I{HERE}", f"/I{NATIVE / 'src'}",
+                f"/I{NATIVE / 'include'}", "/c",
+                str(NATIVE / "src/player_construction_view_probe_v1_process.cpp"),
+                f"/Fo:{process_object}",
+            ], cwd=build, env=environment, check=True)
             mailbox_object = build / f"player-construction-view-probe-mailbox-{mode}.obj"
             subprocess.run([
                 compiler, "/nologo", "/std:c++20", "/W4", "/WX",
@@ -47,7 +55,17 @@ def main() -> int:
                 str(NATIVE / "src/player_construction_view_probe_v1_mailbox.cpp"),
                 f"/Fo:{mailbox_object}",
             ], cwd=build, env=environment, check=True)
-            print(f"player-construction-view-probe-{mode}: GREEN_W4WX")
+            subprocess.run([
+                compiler, "/nologo", "/std:c++20", "/W4",
+                "/DNOMINMAX", "/DWIN32_LEAN_AND_MEAN",
+                "/DXAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=1",
+                '/DXAR_BRIDGE_VERSION="0.1.0"',
+                "/permissive-", "/EHsc", *flags,
+                f"/I{HERE}", f"/I{NATIVE / 'src'}",
+                f"/I{NATIVE / 'include'}", "/Zs",
+                str(NATIVE / "src/bridge.cpp"),
+            ], cwd=build, env=environment, check=True)
+            print(f"player-construction-view-probe-{mode}: GREEN_W4WX_NATIVE_AND_BRIDGE_SYNTAX")
     return 0
 
 

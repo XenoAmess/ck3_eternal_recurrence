@@ -27,6 +27,12 @@ enum class PlayerConstructionViewProbeFailureV1 : std::uint8_t {
   frame_changed,
 };
 
+enum class PlayerConstructionHoldingViewVisibilityV1 : std::uint8_t {
+  unavailable = 0,
+  hidden,
+  visible,
+};
+
 struct PlayerConstructionViewResolvedOwnerV1 final {
   std::uintptr_t root = 0U;
   std::uintptr_t idler_base = 0U;
@@ -38,6 +44,9 @@ struct PlayerConstructionViewResolvedOwnerV1 final {
 using ResolvePlayerConstructionViewOwnerV1 = bool (*)(
     void* context, std::uintptr_t module_base,
     PlayerConstructionViewResolvedOwnerV1& owner) noexcept;
+using ReadPlayerConstructionHoldingViewVisibilityV1 = bool (*)(
+    void* context, std::uintptr_t module_base,
+    bool& effective_visible) noexcept;
 
 struct PlayerConstructionViewProbeAdmissionV1 final {
   bool exact_build_admitted = false;
@@ -51,6 +60,9 @@ struct PlayerConstructionViewProbeSourceV1 final {
   void* owner_context = nullptr;
   research::DomainConstructionReadMemoryV1 read_memory = nullptr;
   void* read_context = nullptr;
+  ReadPlayerConstructionHoldingViewVisibilityV1 read_holding_view_visibility =
+      nullptr;
+  void* visibility_context = nullptr;
 };
 
 struct PlayerConstructionViewProbeResultV1 final {
@@ -61,6 +73,8 @@ struct PlayerConstructionViewProbeResultV1 final {
   bool view_present = false;
   std::int32_t candidate_capacity = 0;
   std::int32_t cached_candidate_count = 0;
+  PlayerConstructionHoldingViewVisibilityV1 holding_view_visibility =
+      PlayerConstructionHoldingViewVisibilityV1::unavailable;
 };
 
 // CK3 1.19.0.6; EXE SHA-256

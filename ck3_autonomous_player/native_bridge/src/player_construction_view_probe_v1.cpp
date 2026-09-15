@@ -121,6 +121,16 @@ PlayerConstructionViewProbeResultV1 ProbePlayerConstructionViewCacheV1(
                             view_candidate_cache_empty
                       : PlayerConstructionViewProbeStatusV1::
                             view_candidate_cache_present;
+  bool effective_visible = false;
+  if (source.read_holding_view_visibility != nullptr &&
+      source.read_holding_view_visibility(
+          source.visibility_context, admission.module_base,
+          effective_visible)) {
+    result.holding_view_visibility =
+        effective_visible
+            ? PlayerConstructionHoldingViewVisibilityV1::visible
+            : PlayerConstructionHoldingViewVisibilityV1::hidden;
+  }
   return result;
 }
 

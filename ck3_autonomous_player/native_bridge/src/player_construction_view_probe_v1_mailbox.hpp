@@ -24,6 +24,7 @@ struct PlayerConstructionViewProbeMailboxContextV1 final {
   MainThreadQueryTicketV1 ticket{};
   Bindings bindings{};
   game::Snapshot expected_snapshot{};
+  std::uint64_t expected_revision = 0U;
   std::uintptr_t module_base = 0U;
   xar::ck3::shared::PlayerConstructionViewProbeResultV1 result{};
   PlayerConstructionViewProbeMailboxCompletionV1 completion =

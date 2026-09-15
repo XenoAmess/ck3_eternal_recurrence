@@ -11,7 +11,6 @@ through that driver's existing endpoint.
 from __future__ import annotations
 
 import json
-import hashlib
 import uuid
 from pathlib import Path
 from typing import Any
@@ -110,7 +109,7 @@ def _root_issue(result: dict[str, object], binding: dict[str, object], frozen: d
     return None
 
 
-def _probe_issue(result: dict[str, object]) -> str | None:
+def _probe_issue(result: dict[str, object], binding: dict[str, object]) -> str | None:
     if result.get("step") != PRIVATE_STEP or result.get("accepted") is not True:
         return "private_probe_not_accepted"
     probe = result.get("private_probe")
@@ -120,6 +119,19 @@ def _probe_issue(result: dict[str, object]) -> str | None:
         return "private_probe_view_or_source_unavailable"
     if probe.get("executor_invocations") != 1:
         return "private_probe_executor_not_once"
+    if probe.get("snapshot_revision") != binding["native_revision"] or probe.get("date_raw") != binding["date_raw"]:
+        return "private_probe_stale_frame"
+    visibility = probe.get("holding_view_visibility")
+    if not isinstance(visibility, dict) or visibility.get("widget_key") != "holding_view":
+        return "private_probe_visibility_receipt_missing"
+    if visibility.get("status") == "available":
+        if not isinstance(visibility.get("effective_visible"), bool):
+            return "private_probe_visibility_receipt_invalid"
+    elif visibility.get("status") == "unavailable":
+        if visibility.get("effective_visible") is not None:
+            return "private_probe_visibility_receipt_invalid"
+    else:
+        return "private_probe_visibility_receipt_invalid"
     count = probe.get("cached_candidate_count")
     capacity = probe.get("candidate_capacity")
     if not isinstance(count, int) or isinstance(count, bool) or not isinstance(capacity, int) or isinstance(capacity, bool):
@@ -131,28 +143,6 @@ def _probe_issue(result: dict[str, object]) -> str | None:
     if probe.get("status") == "view_candidate_cache_present" and count > 0:
         return None
     return "private_probe_status_count_mismatch"
-
-
-def _closed_view_bound(frozen: dict[str, object], binding: dict[str, object]) -> bool:
-    receipt = frozen.get("closed_county_view_receipt")
-    bound = (
-        isinstance(receipt, dict) and receipt.get("visible") is False
-        and receipt.get("window_key") == "window_county_view"
-        and receipt.get("snapshot_id") == binding["snapshot_id"]
-        and receipt.get("native_revision") == binding["native_revision"]
-        and receipt.get("date_raw") == binding["date_raw"]
-        and isinstance(receipt.get("artifact_path"), str)
-        and Path(receipt["artifact_path"]).is_absolute()
-        and isinstance(receipt.get("artifact_sha256"), str)
-        and len(receipt["artifact_sha256"]) == 64
-    )
-    if not bound:
-        return False
-    receipt_path = Path(receipt["artifact_path"])
-    if not receipt_path.is_file():
-        return False
-    digest = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
-    return digest.casefold() == receipt["artifact_sha256"].casefold()
 
 
 def _manifest_complete(frozen: dict[str, object]) -> bool:
@@ -180,8 +170,8 @@ def run_owned_paused_player_view_read(
 
     ``frozen`` is the owner's existing run manifest with candidate/round,
     source-save SHA, CK3 EXE SHA, agent/native DLL commits or SHA, and DLC/mod
-    configuration. A same-frame GUI visibility receipt is required to claim
-    the *closed-view* branch; absent evidence still yields a useful cache read.
+    configuration. The private native result supplies an application-main
+    holding_view visibility receipt bound to the same revision and date.
     Capital province identity is observed, but its holder is not emitted by
     campaign-root v1. Held county holder=played actor is guaranteed by the
     exact native root collector before it emits an available partition.
@@ -245,7 +235,7 @@ def run_owned_paused_player_view_read(
         if not isinstance(probe_result, dict):
             record.update(status="red", issue="private_probe_result_missing")
             return record
-        issue = _probe_issue(probe_result)
+        issue = _probe_issue(probe_result, starting)
         if issue:
             record.update(status="red", issue=issue)
             return record
@@ -256,7 +246,17 @@ def run_owned_paused_player_view_read(
             return record
         probe = probe_result["private_probe"]
         record["cache_branch"] = probe["status"]
-        record["closed_county_view_bound"] = _closed_view_bound(frozen, starting)
+        visibility = probe["holding_view_visibility"]
+        record["holding_view_visibility_receipt"] = {
+            "snapshot_id": starting["snapshot_id"],
+            "native_revision": probe["snapshot_revision"],
+            "date_raw": probe["date_raw"],
+            **visibility,
+        }
+        record["closed_county_view_bound"] = (
+            visibility["status"] == "available"
+            and visibility["effective_visible"] is False
+        )
         record["frozen_manifest_complete"] = _manifest_complete(frozen)
         record["held_county_holder_proof"] = "exact campaign_root_context_v1.cpp title holder equality before available partition"
         record["capital_province_holder_observed"] = False
@@ -265,9 +265,10 @@ def run_owned_paused_player_view_read(
             else "typed_row_cost_and_final_can_construct"
         )
         record["status"] = (
-            "cache_branch_observed" if record["closed_county_view_bound"] and record["frozen_manifest_complete"]
-            else "frozen_manifest_evidence_insufficient" if not record["frozen_manifest_complete"]
-            else "closed_view_evidence_insufficient"
+            "frozen_manifest_evidence_insufficient" if not record["frozen_manifest_complete"]
+            else "cache_branch_observed" if record["closed_county_view_bound"]
+            else "closed_view_evidence_insufficient" if visibility["status"] == "unavailable"
+            else "open_view_scene"
         )
         return record
     except Exception as error:

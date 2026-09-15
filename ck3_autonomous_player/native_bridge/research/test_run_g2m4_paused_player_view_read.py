@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import hashlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -58,7 +57,8 @@ def root_result(*, actor_id: int = ACTOR_ID, government: str = "feudal_governmen
     }
 
 
-def probe_result(*, count: int = 0) -> dict[str, object]:
+def probe_result(*, count: int = 0, visibility: str = "hidden") -> dict[str, object]:
+    assert visibility in {"hidden", "visible", "unavailable"}
     return {
         "step": PRIVATE_STEP,
         "accepted": True,
@@ -72,6 +72,13 @@ def probe_result(*, count: int = 0) -> dict[str, object]:
             "view_present": True,
             "candidate_capacity": max(count, 4),
             "cached_candidate_count": count,
+            "snapshot_revision": REVISION,
+            "date_raw": DATE_RAW,
+            "holding_view_visibility": {
+                "widget_key": "holding_view",
+                "status": "unavailable" if visibility == "unavailable" else "available",
+                "effective_visible": None if visibility == "unavailable" else visibility == "visible",
+            },
             "executor_invocations": 1,
         },
     }
@@ -112,7 +119,7 @@ class FakeDriver:
         }
 
 
-def frozen(*, receipt: dict[str, object] | None = None) -> dict[str, object]:
+def frozen() -> dict[str, object]:
     result: dict[str, object] = {
         "candidate_id": "controlled-feudal-peace",
         "round_id": "R696",
@@ -127,8 +134,6 @@ def frozen(*, receipt: dict[str, object] | None = None) -> dict[str, object]:
         "dlc_mod_load_order": [],
         "configuration": {"speed": 0},
     }
-    if receipt is not None:
-        result["closed_county_view_receipt"] = receipt
     return result
 
 
@@ -144,31 +149,43 @@ class PausedPlayerReadTests(unittest.TestCase):
         return result
 
     def test_cache_present_with_same_frame_closed_view_receipt(self) -> None:
-        gui_artifact = Path(self.temporary.name) / "controlled-gui-tree.json"
-        gui_artifact.write_text('{"window_county_view_visible":false}\n', encoding="utf-8")
-        receipt = {
-            "visible": False,
-            "window_key": "window_county_view",
-            "snapshot_id": "paused-feudal-12",
-            "native_revision": REVISION,
-            "date_raw": DATE_RAW,
-            "artifact_path": str(gui_artifact),
-            "artifact_sha256": hashlib.sha256(gui_artifact.read_bytes()).hexdigest(),
-        }
         driver = FakeDriver({ROOT_STEP: root_result(), PRIVATE_STEP: probe_result(count=3)})
-        result = self._run(driver, frozen(receipt=receipt))
+        result = self._run(driver, frozen())
         self.assertEqual(result["status"], "cache_branch_observed")
         self.assertEqual(result["cache_branch"], "view_candidate_cache_present")
         self.assertTrue(result["closed_county_view_bound"])
+        self.assertEqual(result["holding_view_visibility_receipt"]["widget_key"], "holding_view")
+        self.assertIs(result["holding_view_visibility_receipt"]["effective_visible"], False)
         self.assertFalse(result["capital_province_holder_observed"])
         self.assertEqual([frame["step"] for frame in driver.sent], [ROOT_STEP, PRIVATE_STEP])
 
-    def test_empty_cache_without_gui_receipt_is_not_no_legal_building(self) -> None:
-        driver = FakeDriver({ROOT_STEP: root_result(), PRIVATE_STEP: probe_result()})
+    def test_empty_cache_with_unreadable_gui_flags_is_not_no_legal_building(self) -> None:
+        driver = FakeDriver({
+            ROOT_STEP: root_result(),
+            PRIVATE_STEP: probe_result(visibility="unavailable"),
+        })
         result = self._run(driver, frozen())
         self.assertEqual(result["status"], "closed_view_evidence_insufficient")
         self.assertEqual(result["cache_branch"], "view_candidate_cache_empty")
         self.assertEqual(result["next_read"], "player_model_holding_enumerator")
+        self.assertIsNone(result["holding_view_visibility_receipt"]["effective_visible"])
+
+    def test_visible_holding_view_is_an_open_scene_not_closed_view_green(self) -> None:
+        driver = FakeDriver({
+            ROOT_STEP: root_result(),
+            PRIVATE_STEP: probe_result(count=2, visibility="visible"),
+        })
+        result = self._run(driver, frozen())
+        self.assertEqual(result["status"], "open_view_scene")
+        self.assertFalse(result["closed_county_view_bound"])
+
+    def test_wrong_native_visibility_revision_keeps_red(self) -> None:
+        bad = probe_result()
+        bad["private_probe"]["snapshot_revision"] = REVISION + 1
+        driver = FakeDriver({ROOT_STEP: root_result(), PRIVATE_STEP: bad})
+        result = self._run(driver, frozen())
+        self.assertEqual(result["status"], "red")
+        self.assertEqual(result["issue"], "private_probe_stale_frame")
 
     def test_war_scene_never_sends_private_query(self) -> None:
         driver = FakeDriver({}, war=True)

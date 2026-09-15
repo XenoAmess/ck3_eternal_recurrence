@@ -8290,6 +8290,7 @@ void RunConnectedSession(
               query.module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));
               query.expected_snapshot = current_snapshot;
+              query.expected_revision = expected_revision;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::

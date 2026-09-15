@@ -1,6 +1,7 @@
 #include "player_construction_view_probe_v1_process.hpp"
 
 #include "xar_bridge/title_map_navigation_v1_camera.hpp"
+#include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 
 #include <windows.h>
 
@@ -96,6 +97,38 @@ bool ResolveOwner(void* context, std::uintptr_t module_base,
   return true;
 }
 
+bool ReadHoldingViewVisibility(void* context, std::uintptr_t module_base,
+                               bool& effective_visible) noexcept {
+  const auto* process =
+      static_cast<const PlayerConstructionViewProcessAccessV1*>(context);
+  if (process == nullptr || module_base == 0U ||
+      process->module_base != module_base) {
+    return false;
+  }
+  const auto environment =
+      xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+          module_base, true);
+  xar::ck3_11906::ZhongguoScoreboardAccessV1 access{};
+  void* root = nullptr;
+  void* widget = nullptr;
+  if (!xar::ck3_11906::ResolveNamedGuiWidgetV1(
+          environment, access, "holding_view", "holding_view", root,
+          widget) ||
+      root == nullptr || widget != root) {
+    return false;
+  }
+  std::string runtime_name;
+  void* vtable = nullptr;
+  bool enabled = false;
+  if (!xar::ck3_11906::ReadGuiWidgetRuntimeV1(
+          access, widget, runtime_name, vtable, effective_visible,
+          enabled) ||
+      runtime_name != "holding_view") {
+    return false;
+  }
+  return true;
+}
+
 }  // namespace
 
 PlayerConstructionViewProbeSourceV1
@@ -106,6 +139,8 @@ BindCurrentProcessPlayerConstructionViewProbeSourceV1(
     source.resolve_owner = &ResolveOwner;
     source.owner_context = &access;
     source.read_memory = &ReadCurrentProcess;
+    source.read_holding_view_visibility = &ReadHoldingViewVisibility;
+    source.visibility_context = &access;
   }
   return source;
 }
