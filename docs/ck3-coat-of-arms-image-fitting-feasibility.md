@@ -204,7 +204,7 @@ Alpha 不承诺照片写实重建、OCR/文字识别、全局最优、逐像素 
 ## 后续阶段
 
 - **Alpha**：完整独立静态 asset pack、纯浏览器输入、确定性多层残差 fitter、WebGL2 最终候选交叉评分、可编辑代码；正式构建不包含 CK3 连接界面。
-- **Beta**：WebGL2 atlas/reduction 批量搜索、更强的 beam/连续优化、多候选与可暂停/恢复。
+- **Beta**：先修复大预算块覆盖空隙造成的规则底色分割线，并以高分辨率 seam gate、hunter v4 和 MCP 大载荷原生回读为首批阻断门禁；随后推进最终剪枝/实例合并、WebGL2 atlas/reduction 批量搜索、更强的 beam/连续优化、多候选与可暂停/恢复。完整执行计划见 [`ck3-coat-of-arms-editor-beta-plan.md`](ck3-coat-of-arms-editor-beta-plan.md)。
 - **Native fidelity（仅开发夹具）**：继续优先补原生 MCP，从 CK3 renderer 取得不依赖屏幕/OCR的 framebuffer 或稳定像素摘要，用于校准浏览器评分；该夹具不进入正式平台，在此之前保持“近似”标签。
 - **Advanced**：可选 WebGPU compute、感知 embedding 粗筛、用户约束（指定元素/对称/颜色/最大图层）和多目标 Pareto 结果。
 

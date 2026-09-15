@@ -103,6 +103,7 @@ Pages checkout 必须含已跟踪的 exact-build 完整包；verifier 或 exact-
 
 ## Alpha 已知限制
 
+- 大预算四叉树块路径当前会在 `[0.96, 1, 1.04]` 中选择缩放；96×96 损失可能看不见 `0.96` 块之间的亚像素空隙，而较高分辨率预览会把底层 pattern 显示成规则分割线。该问题已列为 Beta 的第一阻断项，根因、回归门禁和 hunter v4 重跑要求见 [`ck3-coat-of-arms-editor-beta-plan.md`](ck3-coat-of-arms-editor-beta-plan.md)。
 - v3 仍不是组合全局最优；小预算语义路径只保留宽度有限的 background/layer beam，大预算原生块路径是确定性四叉树近似。
 - 每个自动图层当前生成一个 instance；同一 DDS 的重复使用表现为多个可独立编辑的 `colored_emblem` 块。
 - CPU 仍承担全库搜索，WebGL2 当前只交叉评分最终候选；WebGL2 atlas/reduction 批处理属于 Beta。
@@ -114,13 +115,16 @@ Pages checkout 必须含已跟踪的 exact-build 完整包；verifier 或 exact-
 
 ## Beta 优先级
 
-1. WebGL2 texture-array/atlas 批量 pattern/emblem 渲染和 reduction；
-2. 更宽的 beam、原生圆/矩形混合画笔、曲线感知分区、同块多 instance 合并与多个 Pareto 候选；
-3. 将当前运行时轮廓、透明边界和通道能量特征预计算进 fit index，进一步减少精渲染 shortlist；
-4. 输入前景/背景、对称、指定元素、颜色锁和复杂度上限控制；
-5. 完整原版包的分片、Service Worker 缓存和增量 build 更新策略；
-6. 前端按路由/面板拆包与移动端布局。
+1. 修复大预算块的覆盖空隙，建立 230/512px 接缝回归门禁并重跑 1024 参数 hunter 基准；
+2. 扩展版本化 MCP 大文本合同，完成超过 128 KiB 家徽代码的原生 Copy/Apply/Copy 边界验证；
+3. 做最终 backward prune、同配置多 instance 合并和代码体积门禁；
+4. WebGL2 texture-array/atlas 批量 pattern/emblem 渲染和 reduction；
+5. 更宽的 beam、原生圆/矩形混合画笔、曲线感知分区与多个 Pareto 候选；
+6. 将当前运行时轮廓、透明边界和通道能量特征预计算进 fit index，进一步减少精渲染 shortlist；
+7. 输入前景/背景、对称、指定元素、颜色锁和复杂度上限控制；
+8. 完整原版包的分片、Service Worker 缓存、前端拆包与移动端布局。
 
-详细方案见 [`ck3-coat-of-arms-image-fitting-feasibility.md`](ck3-coat-of-arms-image-fitting-feasibility.md)，引擎语法边界见
+完整执行顺序、验收条件、停止条件与粗略工期见 [`ck3-coat-of-arms-editor-beta-plan.md`](ck3-coat-of-arms-editor-beta-plan.md)。
+设计方案见 [`ck3-coat-of-arms-image-fitting-feasibility.md`](ck3-coat-of-arms-image-fitting-feasibility.md)，引擎语法边界见
 [`ck3-coat-of-arms-clipboard-import-capability.md`](ck3-coat-of-arms-clipboard-import-capability.md)，Pages 合同见
 [`ck3-coat-of-arms-github-pages.md`](ck3-coat-of-arms-github-pages.md)。

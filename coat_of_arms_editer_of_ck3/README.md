@@ -37,6 +37,8 @@ CK3，不依赖 MCP、Quarkus 或 Java；它只生成原版“从剪贴板粘贴
 [`../docs/ck3-coat-of-arms-image-fitting-feasibility.md`](../docs/ck3-coat-of-arms-image-fitting-feasibility.md)。
 当前 Alpha 的逐项交付状态、exact-build 本地素材包 receipt、验收命令与已知限制见
 [`../docs/ck3-coat-of-arms-editor-alpha.md`](../docs/ck3-coat-of-arms-editor-alpha.md)。
+红色规则分割线修复、MCP 大载荷原生闭环、剪枝压缩、10,000 层压力门禁与完整 Beta 顺序见
+[`../docs/ck3-coat-of-arms-editor-beta-plan.md`](../docs/ck3-coat-of-arms-editor-beta-plan.md)。
 
 ## 在线版本
 
