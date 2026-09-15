@@ -1,8 +1,9 @@
 import type { FitImage } from './imageFitter'
+import { MAX_SVG_FILE_BYTES, sanitizeSvg } from './safeSvg'
 
 export const MAX_IMAGE_FILE_BYTES = 16 * 1024 * 1024
 export const MAX_IMAGE_DIMENSION = 4096
-export const SUPPORTED_IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'])
+export const SUPPORTED_IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'])
 
 export interface DecodedFitImage {
   image: FitImage
@@ -17,15 +18,37 @@ export interface DecodedFitImage {
   previewUrl: string
 }
 
+async function decodeSanitizedSvg(source: Blob): Promise<ImageBitmap> {
+  const url = URL.createObjectURL(source)
+  try {
+    const image = new Image()
+    image.decoding = 'sync'
+    image.src = url
+    await image.decode()
+    return await createImageBitmap(image)
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
+
 export async function decodeFitImageFile(file: File, size = 96): Promise<DecodedFitImage> {
-  if (!SUPPORTED_IMAGE_TYPES.has(file.type)) throw new Error('只接受 PNG、JPEG 或 WebP 图片')
+  if (!SUPPORTED_IMAGE_TYPES.has(file.type)) throw new Error('只接受 PNG、JPEG、WebP 或 SVG 图片')
   if (file.size < 1 || file.size > MAX_IMAGE_FILE_BYTES) throw new Error('图片必须在 1 B..16 MiB')
+  if (file.type === 'image/svg+xml' && file.size > MAX_SVG_FILE_BYTES) throw new Error('SVG 必须在 1 B..2 MiB')
   if (!Number.isSafeInteger(size) || size < 32 || size > 256) throw new Error('目标预览尺寸必须在 32..256')
-  const sha256 = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await file.arrayBuffer())))
+  const fileBytes = await file.arrayBuffer()
+  const sha256 = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', fileBytes)))
     .map((byte) => byte.toString(16).padStart(2, '0'))
     .join('')
     .toUpperCase()
-  const bitmap = await createImageBitmap(file)
+  let bitmapSource: Blob = file
+  if (file.type === 'image/svg+xml') {
+    const sanitized = sanitizeSvg(new TextDecoder('utf-8', { fatal: true }).decode(fileBytes))
+    bitmapSource = new Blob([sanitized.source], { type: 'image/svg+xml' })
+  }
+  const bitmap = file.type === 'image/svg+xml'
+    ? await decodeSanitizedSvg(bitmapSource)
+    : await createImageBitmap(bitmapSource)
   try {
     if (
       bitmap.width < 1 || bitmap.height < 1

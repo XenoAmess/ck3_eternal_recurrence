@@ -1827,9 +1827,9 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
       </div>
       <div class="image-fit-grid">
         <label class="image-drop">
-          <input type="file" accept="image/png,image/jpeg,image/webp" @change="selectTargetImage">
+          <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" @change="selectTargetImage">
           <img v-if="targetImage" :src="targetImage.previewUrl" alt="待拟合目标图片">
-          <span v-else>选择 PNG / JPEG / WebP<br><small>最大 16 MiB、4096×4096</small></span>
+          <span v-else>选择 PNG / JPEG / WebP / SVG<br><small>位图 16 MiB；安全 SVG 2 MiB；最大 4096×4096</small></span>
         </label>
         <div class="fit-controls">
           <strong>独立素材包</strong>
