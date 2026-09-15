@@ -15,6 +15,28 @@ The action path still requires a separately admitted exact final-gate callback;
 the query-only configuration returns `complete_native_action_gates_not_bound`
 for assignment and receipt requests.
 
+Council27 adds the independent build-time
+`XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1` switch, also default
+`OFF`. It is valid only together with the Council26 private route. With it
+`ON`, the fixed transport context binds the exact Council25 four-gate callback
+for a sealed controlled candidate. The default query-only candidate still has
+no action callback. This private switch does not register a public query/action
+or add either to the adapter capability/hello advertisement; live behavior for
+already-councillor, guest, pending interaction and replacement fireability
+must be accepted separately before any production advertisement.
+
+The separate `XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1` switch
+is also default `OFF` and requires the private route. It enables
+`private-query-council-final-gates-v1` for a paused, same-revision read of the
+provider's complete candidate rows on application-main. This gate-only build
+keeps action admission false: private assign/receipt reject before a helper is
+called. A queued gate query uses the same non-cancelling private status step and
+60-second terminal window. If any exact native row is unavailable, the entire
+gate vector is typed `unavailable` with no partial rows; guest/pending false and
+incumbent fireability true must come from the native result, not from the
+visible GUI. Query results are unadvertised and do not prove a councillor
+change or next-turn consumption.
+
 The controlled native pipe request is a protocol v1 `execute_step` frame. After
 the host reports a paused native snapshot at revision `N`, submit:
 

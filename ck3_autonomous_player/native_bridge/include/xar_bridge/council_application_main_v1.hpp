@@ -6,6 +6,7 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
+#include <array>
 #include <string>
 #include <string_view>
 
@@ -17,6 +18,8 @@ inline constexpr std::string_view kCouncilAssignCouncillorStepV1 =
     "assign-councillor-v1";
 inline constexpr std::string_view kCouncilAssignCouncillorReceiptStepV1 =
     "query-assign-councillor-receipt-v1";
+inline constexpr std::string_view kCouncilFinalGatesPrivateStepV1 =
+    "private-query-council-final-gates-v1";
 inline constexpr std::string_view kCouncilApplicationMainEnvelopeSchemaV1 =
     "xar.ck3.council-application-main/v1";
 
@@ -29,6 +32,7 @@ inline constexpr bool kCouncilApplicationMainAdvertisedByDefaultV1 = false;
 enum class CouncilApplicationMainOperationV1 : std::uint8_t {
   none = 0,
   query_candidates,
+  query_final_gates,
   submit_assignment,
   verify_assignment_receipt,
 };
@@ -52,6 +56,7 @@ enum class CouncilApplicationMainFailureV1 : std::uint8_t {
   private_reader_unavailable,
   enrichment_unavailable,
   projection_unavailable,
+  final_gate_query_unavailable,
   action_runtime_unavailable,
   action_rejected,
   pending_ack_unavailable,
@@ -83,6 +88,7 @@ using EvaluateCouncilAssignCouncillorNativeGatesV1 = bool (*)(
 struct CouncilApplicationMainConfigurationV1 {
   bool enabled = false;
   bool query_runtime_enabled = false;
+  bool final_gate_query_runtime_enabled = false;
   bool action_runtime_enabled = false;
   bool exact_build_admitted = false;
   bool private_candidate_admitted = false;
@@ -110,6 +116,7 @@ struct CouncilApplicationMainStateV1 {
   std::uint64_t pending_submit_sequence = 0;
   bool configured = false;
   bool query_runtime_ready = false;
+  bool final_gate_query_runtime_ready = false;
   bool action_runtime_ready = false;
   bool has_pending_ack = false;
 };
@@ -122,6 +129,19 @@ struct CouncilApplicationMainContextV1 {
   std::string query_snapshot_id;
   game::CouncilAssignCouncillorActionRequestV1 action_request{};
   game::CouncilCompositionCandidatesPublicV1 query_result{};
+  struct FinalGateRowV1 {
+    std::int32_t candidate_character_id = -1;
+    bool available = false;
+    bool already_councillor = false;
+    bool guest = false;
+    bool pending_interaction = false;
+    bool fireability_evaluated = false;
+    bool incumbent_can_be_fired = false;
+  };
+  std::array<FinalGateRowV1,
+             game::kCouncilCompositionStewardCandidatesMaximumRowsV1>
+      final_gate_rows{};
+  std::uint32_t final_gate_row_count = 0;
   game::CouncilAssignCouncillorActionAckV1 action_ack{};
   game::CouncilAssignCouncillorActionReceiptV1 action_receipt{};
   ck3_11906::MainThreadQueryTicketV1 ticket{};
@@ -143,6 +163,10 @@ bool ConfigureCouncilApplicationMainV1(
     CouncilApplicationMainContextV1 &context) noexcept;
 
 bool PrepareCouncilApplicationMainQueryV1(
+    CouncilApplicationMainContextV1 &context,
+    const ck3_11906::CouncilCompositionStewardCandidatesRequestV1
+    &request) noexcept;
+bool PrepareCouncilApplicationMainFinalGateQueryV1(
     CouncilApplicationMainContextV1 &context,
     const ck3_11906::CouncilCompositionStewardCandidatesRequestV1
         &request) noexcept;

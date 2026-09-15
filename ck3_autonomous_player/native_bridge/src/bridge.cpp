@@ -22,6 +22,10 @@
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
 #include "xar_bridge/council_application_main_private_transport_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1) || \
+    defined(XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1)
+#include "xar_bridge/council_production_final_gates_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
 #include "xar_bridge/council_composition_steward_candidates_private_probe_v1.hpp"
 #endif
@@ -6595,14 +6599,31 @@ public:
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
   void MaybeConfigureCouncilPrivateRoute() noexcept {
     if (!installed_ || council_private_route_configured_) return;
-    // Linking Council23 is insufficient to admit an action. The private
-    // candidate routes only the exact paused query until all final gates bind.
+    const auto module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    const auto bindings = xar::ck3_11906::BindCurrentProcess(true);
+    // The gate-only candidate invokes the read-only evaluator in slot 41 but
+    // keeps action_runtime_enabled false, so private assign cannot submit.
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1) || \
+    defined(XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1)
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1)
+    constexpr bool action_admitted = true;
+#else
+    constexpr bool action_admitted = false;
+#endif
     council_private_route_configured_ =
         xar::bridge::ConfigureCouncilApplicationMainPrivateTransportV1(
             g_council_application_main_private_transport_v1,
-            g_main_thread_query_mailbox_v1,
-            xar::ck3_11906::BindCurrentProcess(true),
-            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)));
+            g_main_thread_query_mailbox_v1, bindings, module_base,
+            action_admitted,
+            &xar::bridge::EvaluateCouncilAssignCouncillorProductionGatesV1,
+            &g_council_application_main_private_transport_v1.context, true);
+#else
+    council_private_route_configured_ =
+        xar::bridge::ConfigureCouncilApplicationMainPrivateTransportV1(
+            g_council_application_main_private_transport_v1,
+            g_main_thread_query_mailbox_v1, bindings, module_base);
+#endif
   }
 #endif
   void MaybeConfigureMarriageRoute() noexcept {

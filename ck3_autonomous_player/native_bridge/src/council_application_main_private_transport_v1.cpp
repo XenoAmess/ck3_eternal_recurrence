@@ -126,6 +126,7 @@ bool Queue(CouncilApplicationMainPrivateTransportV1 &transport) noexcept {
 
 bool IsCouncilApplicationMainPrivateStepV1(std::string_view step) noexcept {
   return step == kCouncilPrivateQueryStepV1 ||
+         step == kCouncilFinalGatesPrivateStepV1 ||
          step == kCouncilPrivateAssignStepV1 ||
          step == kCouncilPrivateReceiptStepV1 ||
          step == kCouncilPrivateStatusStepV1;
@@ -137,7 +138,8 @@ bool ConfigureCouncilApplicationMainPrivateTransportV1(
     const ck3_11906::Bindings &bindings, std::uintptr_t module_base,
     bool action_admitted,
     EvaluateCouncilAssignCouncillorNativeGatesV1 evaluate_action_gates,
-    void *action_gate_context) noexcept {
+    void *action_gate_context,
+    bool gate_query_admitted) noexcept {
   if (transport.configured || module_base == 0) return false;
   transport.mailbox = &mailbox;
   transport.bindings = bindings;
@@ -154,11 +156,15 @@ bool ConfigureCouncilApplicationMainPrivateTransportV1(
   CouncilApplicationMainConfigurationV1 configuration{};
   configuration.enabled = true;
   configuration.query_runtime_enabled = true;
+  configuration.final_gate_query_runtime_enabled =
+      gate_query_admitted && evaluate_action_gates != nullptr;
   configuration.action_runtime_enabled =
       action_admitted && evaluate_action_gates != nullptr;
   configuration.exact_build_admitted = true;
-  configuration.private_candidate_admitted = action_admitted;
-  configuration.native_command_abi_certified = action_admitted;
+  configuration.private_candidate_admitted =
+      action_admitted || gate_query_admitted;
+  configuration.native_command_abi_certified =
+      action_admitted || gate_query_admitted;
   configuration.offline_fixture = false;
   configuration.module_base = module_base;
   configuration.admitted_executable_sha256 =
@@ -247,6 +253,18 @@ std::string ExecuteCouncilApplicationMainPrivateStepV1(
         !Queue(transport))
       return Result(protocol_request_id, step, false,
                     "private_query_queue_unavailable");
+    return Result(protocol_request_id, step, true, "pending");
+  }
+  if (step == kCouncilFinalGatesPrivateStepV1) {
+    if (!transport.shared.final_gate_query_runtime_ready)
+      return Result(protocol_request_id, step, false,
+                    "private_final_gate_query_not_admitted");
+    const auto request = SnapshotRequest(transport, current,
+                                         published_revision);
+    if (!PrepareCouncilApplicationMainFinalGateQueryV1(
+            transport.context, request) || !Queue(transport))
+      return Result(protocol_request_id, step, false,
+                    "private_final_gate_query_queue_unavailable");
     return Result(protocol_request_id, step, true, "pending");
   }
   if (!CouncilApplicationMainActionRuntimeReadyV1(transport.shared))

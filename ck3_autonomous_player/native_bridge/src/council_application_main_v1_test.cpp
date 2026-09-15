@@ -271,6 +271,7 @@ bool EvaluateGates(
     return false;
   }
   output = {};
+  output.available = true;
   output.candidate_already_councillor = fixture.candidate_already_councillor;
   output.candidate_is_guest = fixture.candidate_is_guest;
   output.pending_character_interaction =
@@ -280,6 +281,27 @@ bool EvaluateGates(
   output.native_reason_key = fixture.incumbent_can_be_fired
       ? ""
       : "incumbent_cannot_be_fired";
+  return true;
+}
+
+bool EvaluateReadOnlyGateRows(
+    void *opaque, const game::CouncilAssignCouncillorFrameV1 &frame,
+    std::int32_t candidate_character_id,
+    game::CouncilAssignCouncillorFinalLegalityV1 &output) noexcept {
+  auto &fixture = *static_cast<Fixture *>(opaque);
+  ++fixture.gate_calls;
+  if (!fixture.gate_available && candidate_character_id == 33437)
+    return false;
+  if (std::find(fixture.candidate_ids.begin(), fixture.candidate_ids.end(),
+                candidate_character_id) == fixture.candidate_ids.end())
+    return false;
+  output = {};
+  output.available = true;
+  output.candidate_already_councillor = candidate_character_id == 33888;
+  output.candidate_is_guest = candidate_character_id == 33437;
+  output.pending_character_interaction = false;
+  output.incumbent_fireability_evaluated = frame.has_incumbent;
+  output.incumbent_can_be_fired = true;
   return true;
 }
 
@@ -309,11 +331,12 @@ native::CouncilCompositionStewardCandidatesBindingEnvironmentV1 Binding(
 
 bridge::CouncilApplicationMainConfigurationV1 Configuration(
     Fixture &fixture, bool action_runtime = true,
-    bool include_gates = true) {
+    bool include_gates = true, bool gate_query = false) {
   fixture.submit_adapter.helper_override = &InvokeHelper;
   bridge::CouncilApplicationMainConfigurationV1 output{};
   output.enabled = true;
   output.query_runtime_enabled = true;
+  output.final_gate_query_runtime_enabled = gate_query;
   output.action_runtime_enabled = action_runtime;
   output.exact_build_admitted = true;
   output.private_candidate_admitted = true;
@@ -326,7 +349,9 @@ bridge::CouncilApplicationMainConfigurationV1 Configuration(
   output.source_context = &fixture;
   output.capture_source_frame = &CaptureSource;
   output.action_gate_context = &fixture;
-  output.evaluate_action_gates = include_gates ? &EvaluateGates : nullptr;
+  output.evaluate_action_gates = include_gates
+      ? (gate_query ? &EvaluateReadOnlyGateRows : &EvaluateGates)
+      : nullptr;
   output.submit_adapter = &fixture.submit_adapter;
   return output;
 }
@@ -376,11 +401,13 @@ void PrepareMailbox(native::MainThreadQueryMailboxV1 &mailbox) {
 
 struct Harness {
   explicit Harness(Fixture &fixture, bool action_runtime = true,
-                   bool include_gates = true) {
+                   bool include_gates = true,
+                   bool gate_query = false) {
     PrepareMailbox(mailbox);
     Require(bridge::ConfigureCouncilApplicationMainV1(
                 mailbox,
-                Configuration(fixture, action_runtime, include_gates), state,
+                Configuration(fixture, action_runtime, include_gates,
+                              gate_query), state,
                 context),
             "Council application-main configuration failed");
   }
@@ -462,6 +489,61 @@ void TestIncompleteNativeGatesStayUnadvertised() {
                                                           request) &&
               fixture.helper_calls == 0,
           "incomplete action gates reached native submit");
+}
+
+void TestReadOnlyFinalGatesCannotSubmitOrPublishPartialRows() {
+  Fixture fixture;
+  Harness harness(fixture, false, true, true);
+  Require(harness.state.final_gate_query_runtime_ready &&
+              !bridge::CouncilApplicationMainActionRuntimeReadyV1(
+                  harness.state) &&
+              !bridge::kCouncilApplicationMainAdvertisedByDefaultV1,
+          "read-only gate candidate admitted an action or public capability");
+  Require(bridge::PrepareCouncilApplicationMainFinalGateQueryV1(
+              harness.context, QueryRequest(fixture)),
+          "read-only final-gate query preparation failed");
+  Queue(harness, fixture);
+  const auto rows_begin = harness.context.final_gate_rows.begin();
+  const auto rows_end = rows_begin + harness.context.final_gate_row_count;
+  const bool saw_councillor = std::any_of(
+      rows_begin, rows_end, [](const auto &row) {
+        return row.candidate_character_id == 33888 &&
+               row.already_councillor;
+      });
+  const bool saw_guest = std::any_of(
+      rows_begin, rows_end, [](const auto &row) {
+        return row.candidate_character_id == 33437 && row.guest;
+      });
+  Require(harness.context.completion ==
+              bridge::CouncilApplicationMainCompletionV1::query_available &&
+              harness.context.final_gate_row_count == 3 &&
+              saw_councillor && saw_guest &&
+              fixture.gate_calls == 3 && fixture.helper_calls == 0 &&
+              fixture.submit_adapter.invocation_count == 0 &&
+              !harness.state.has_pending_ack,
+          "gate-only executor did not evaluate all rows without a helper");
+  const auto wire = bridge::SerializeCouncilApplicationMainResultEnvelopeV1(
+      harness.context, "pipe-gates-1");
+  Require(wire.find("\"private\":true,\"advertised\":false") !=
+                  std::string::npos &&
+              wire.find("\"candidate_is_guest\":true") !=
+                  std::string::npos &&
+              wire.find("\"native_helper_invocations_delta\":0") !=
+                  std::string::npos,
+          "read-only gate envelope omitted evaluated status or no-submit proof");
+  Reclaim(harness);
+
+  fixture.gate_available = false;
+  Require(bridge::PrepareCouncilApplicationMainFinalGateQueryV1(
+              harness.context, QueryRequest(fixture)),
+          "unavailable gate query preparation failed");
+  Queue(harness, fixture);
+  Require(harness.context.completion ==
+              bridge::CouncilApplicationMainCompletionV1::query_unavailable &&
+              harness.context.final_gate_row_count == 0 &&
+              fixture.helper_calls == 0 && !harness.state.has_pending_ack,
+          "unavailable final native row published partial gates or submitted");
+  Reclaim(harness);
 }
 
 game::CouncilAssignCouncillorActionRequestV1 ActionRequest(
@@ -584,10 +666,11 @@ int main() {
   try {
     TestQueryTransactionAndSerializer();
     TestIncompleteNativeGatesStayUnadvertised();
+    TestReadOnlyFinalGatesCannotSubmitOrPublishPartialRows();
     TestSubmitAndFreshReceipt();
     TestReplacementFireabilityBlocksHelper();
     TestMailboxIdentityMismatchIsInfrastructureRed();
-    std::cout << "council_application_main_v1_test: 5/5 GREEN\n";
+    std::cout << "council_application_main_v1_test: 6/6 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "council_application_main_v1 RED: " << error.what() << '\n';

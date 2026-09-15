@@ -192,6 +192,25 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1
+  "Admit exact Council final gates only in the unadvertised controlled action candidate"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+  message(FATAL_ERROR "Council private action gates require the controlled private route")
+endif()
+option(
+  XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1
+  "Read exact Council final gates on application-main without admitting a helper action"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1 AND
+   NOT XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+  message(FATAL_ERROR "Council final-gate query requires the controlled private route")
+endif()
+
+option(
   XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1
   "Link the activity-owned paused application-main snapshot glue"
   OFF
@@ -785,6 +804,16 @@ endif()
 if(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)

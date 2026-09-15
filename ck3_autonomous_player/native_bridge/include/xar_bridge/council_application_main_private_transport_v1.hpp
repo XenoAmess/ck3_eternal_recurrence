@@ -48,7 +48,8 @@ bool ConfigureCouncilApplicationMainPrivateTransportV1(
     bool action_admitted = false,
     EvaluateCouncilAssignCouncillorNativeGatesV1 evaluate_action_gates =
         nullptr,
-    void *action_gate_context = nullptr) noexcept;
+    void *action_gate_context = nullptr,
+    bool gate_query_admitted = false) noexcept;
 
 void PollCouncilApplicationMainPrivateTransportV1(
     CouncilApplicationMainPrivateTransportV1 &transport) noexcept;

@@ -261,6 +261,60 @@ bool ExecuteQuery(CouncilApplicationMainContextV1 &context) noexcept {
   return true;
 }
 
+bool ExecuteFinalGateQuery(CouncilApplicationMainContextV1 &context) noexcept {
+  auto &state = *context.shared_state;
+  context.final_gate_rows = {};
+  context.final_gate_row_count = 0;
+  if (!state.final_gate_query_runtime_ready ||
+      context.configuration.evaluate_action_gates == nullptr) {
+    SetFailure(context, Completion::query_unavailable,
+               Failure::final_gate_query_unavailable,
+               "final_gate_query_not_admitted");
+    return true;
+  }
+  if (!ReadPublicTransaction(context)) return true;
+  game::CouncilAssignCouncillorFrameV1 frame{};
+  if (!PublicToActionFrame(context, frame) ||
+      context.query_result.candidate_count == 0 ||
+      context.query_result.candidate_count > context.final_gate_rows.size()) {
+    SetFailure(context, Completion::query_unavailable,
+               Failure::final_gate_query_unavailable,
+               "final_gate_source_frame_unavailable");
+    return true;
+  }
+  for (std::uint32_t index = 0;
+       index < context.query_result.candidate_count; ++index) {
+    const auto candidate_id =
+        context.query_result.candidates[index].character_id;
+    game::CouncilAssignCouncillorFinalLegalityV1 legality{};
+    if (candidate_id <= 0 ||
+        !context.configuration.evaluate_action_gates(
+            context.configuration.action_gate_context, frame,
+            candidate_id, legality) || !legality.available) {
+      context.final_gate_rows = {};
+      context.final_gate_row_count = 0;
+      SetFailure(context, Completion::query_unavailable,
+                 Failure::final_gate_query_unavailable,
+                 "final_gate_native_row_unavailable");
+      return true;
+    }
+    auto &row = context.final_gate_rows[index];
+    row.candidate_character_id = candidate_id;
+    row.available = true;
+    row.already_councillor = legality.candidate_already_councillor;
+    row.guest = legality.candidate_is_guest;
+    row.pending_interaction = legality.pending_character_interaction;
+    row.fireability_evaluated =
+        legality.incumbent_fireability_evaluated;
+    row.incumbent_can_be_fired = legality.incumbent_can_be_fired;
+    ++context.final_gate_row_count;
+  }
+  context.completion = Completion::query_available;
+  context.failure = Failure::none;
+  context.failure_reason.clear();
+  return true;
+}
+
 bool ExecuteSubmit(CouncilApplicationMainContextV1 &context,
                    const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto &state = *context.shared_state;
@@ -507,6 +561,11 @@ bool ConfigureCouncilApplicationMainV1(
   state.reader_access = source_access;
   state.configured = true;
   state.query_runtime_ready = true;
+  state.final_gate_query_runtime_ready =
+      configuration.final_gate_query_runtime_enabled &&
+      configuration.private_candidate_admitted &&
+      configuration.native_command_abi_certified &&
+      configuration.evaluate_action_gates != nullptr;
   const auto *adapter = configuration.submit_adapter;
   state.action_runtime_ready =
       configuration.action_runtime_enabled &&
@@ -556,6 +615,19 @@ bool PrepareCouncilApplicationMainQueryV1(
                "query_prepare_exception");
     return false;
   }
+}
+
+bool PrepareCouncilApplicationMainFinalGateQueryV1(
+    CouncilApplicationMainContextV1 &context,
+    const ck3_11906::CouncilCompositionStewardCandidatesRequestV1
+        &request) noexcept {
+  if (!context.shared_state ||
+      !context.shared_state->final_gate_query_runtime_ready ||
+      !PrepareCouncilApplicationMainQueryV1(context, request)) return false;
+  context.operation = Operation::query_final_gates;
+  context.final_gate_rows = {};
+  context.final_gate_row_count = 0;
+  return true;
 }
 
 bool PrepareCouncilApplicationMainSubmitV1(
@@ -676,6 +748,9 @@ bool ExecuteCouncilApplicationMainV1(
     bool result = false;
     switch (context->operation) {
     case Operation::query_candidates: result = ExecuteQuery(*context); break;
+    case Operation::query_final_gates:
+      result = ExecuteFinalGateQuery(*context);
+      break;
     case Operation::submit_assignment:
       result = ExecuteSubmit(*context, stamp);
       break;
@@ -729,6 +804,9 @@ std::string SerializeCouncilApplicationMainResultEnvelopeV1(
   case Operation::query_candidates:
     AppendJsonString(output, kCouncilCompositionCandidatesStepV1);
     break;
+  case Operation::query_final_gates:
+    AppendJsonString(output, kCouncilFinalGatesPrivateStepV1);
+    break;
   case Operation::submit_assignment:
     AppendJsonString(output, kCouncilAssignCouncillorStepV1);
     break;
@@ -738,10 +816,10 @@ std::string SerializeCouncilApplicationMainResultEnvelopeV1(
   case Operation::none: return {};
   }
   output += ",\"accepted\":true,\"status\":";
-  if (context.operation == Operation::query_candidates) {
+  if (context.operation == Operation::query_candidates ||
+      context.operation == Operation::query_final_gates) {
     AppendJsonString(output,
-        context.query_result.status ==
-                game::CouncilCompositionCandidatesPublicStatusV1::available
+        context.completion == Completion::query_available
             ? "available" : "unavailable");
   } else if (context.operation == Operation::submit_assignment) {
     AppendJsonString(output, AckStatusName(context.action_ack.status));
@@ -762,6 +840,55 @@ std::string SerializeCouncilApplicationMainResultEnvelopeV1(
             context.query_result);
     if (payload.empty()) return {};
     output += ",\"council_composition_candidates\":" + payload;
+  } else if (context.operation == Operation::query_final_gates) {
+    output += ",\"private\":true,\"advertised\":false,";
+    output += "\"native_helper_invocations_delta\":0,";
+    output += "\"council_final_gates\":{\"schema\":";
+    AppendJsonString(output, "xar.ck3.private.council-final-gates/v1");
+    output += ",\"status\":";
+    const bool available =
+        context.completion == Completion::query_available &&
+        context.final_gate_row_count == context.query_result.candidate_count &&
+        context.final_gate_row_count != 0;
+    AppendJsonString(output, available ? "available" : "unavailable");
+    output += ",\"unavailable_reason\":";
+    AppendJsonString(output, available ? "none" : context.failure_reason);
+    output += ",\"candidate_count\":" +
+        std::to_string(available ? context.final_gate_row_count : 0);
+    output += ",\"rows\":[";
+    if (available) {
+      const auto payload =
+          ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(
+              context.query_result);
+      if (payload.empty()) return {};
+      for (std::uint32_t index = 0; index < context.final_gate_row_count;
+           ++index) {
+        if (index != 0) output += ',';
+        const auto &row = context.final_gate_rows[index];
+        output += "{\"character_id\":" +
+            std::to_string(row.candidate_character_id);
+        output += ",\"native_collection_ordinal\":" +
+            std::to_string(context.query_result.candidates[index]
+                               .native_collection_ordinal);
+        output += ",\"final_gate_available\":";
+        output += row.available ? "true" : "false";
+        output += ",\"candidate_already_councillor\":";
+        output += row.already_councillor ? "true" : "false";
+        output += ",\"candidate_is_guest\":";
+        output += row.guest ? "true" : "false";
+        output += ",\"pending_character_interaction\":";
+        output += row.pending_interaction ? "true" : "false";
+        output += ",\"incumbent_fireability_evaluated\":";
+        output += row.fireability_evaluated ? "true" : "false";
+        output += ",\"incumbent_can_be_fired\":";
+        output += row.incumbent_can_be_fired ? "true" : "false";
+        output += '}';
+      }
+      output += "],\"council_composition_candidates\":" + payload;
+    } else {
+      output += ']';
+    }
+    output += '}';
   } else if (context.operation == Operation::submit_assignment) {
     output += ",\"council_assign_councillor_ack\":";
     AppendAck(output, context.action_ack);
@@ -784,6 +911,8 @@ std::string_view CouncilApplicationMainFailureNameV1(Failure failure) noexcept {
     return "private_reader_unavailable";
   case Failure::enrichment_unavailable: return "enrichment_unavailable";
   case Failure::projection_unavailable: return "projection_unavailable";
+  case Failure::final_gate_query_unavailable:
+    return "final_gate_query_unavailable";
   case Failure::action_runtime_unavailable:
     return "action_runtime_unavailable";
   case Failure::action_rejected: return "action_rejected";
