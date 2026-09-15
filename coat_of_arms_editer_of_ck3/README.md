@@ -19,6 +19,8 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 
 引擎证据与完整正反例矩阵见
 [`../docs/ck3-coat-of-arms-clipboard-import-capability.md`](../docs/ck3-coat-of-arms-clipboard-import-capability.md)。
+用户图片只在浏览器内使用原生元素做近似重建的可行性、WebGL2/CPU 架构、隐私边界和 Alpha 门禁见
+[`../docs/ck3-coat-of-arms-image-fitting-feasibility.md`](../docs/ck3-coat-of-arms-image-fitting-feasibility.md)。
 
 ## 开发
 
