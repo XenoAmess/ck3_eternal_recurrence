@@ -35,6 +35,8 @@ def query_ranked_marriage_private_v1(
     if (
         snapshot.get("paused") is not True
         or snapshot.get("map_ready") is not True
+        or not isinstance(played, dict)
+        or played.get("alive") is not True
         or type(played_id) is not int
         or played_id <= 0
         or type(snapshot.get("date_raw")) is not int
@@ -102,5 +104,6 @@ def _require_same_paused_frame(
         or after.get("map_ready") is not True
         or not isinstance(after_played, dict)
         or after_played.get("character_id") != played_id
+        or after_played.get("alive") is not True
     ):
         raise BridgeUnavailableError("ranked marriage frame changed before result consumption")
