@@ -59,6 +59,9 @@ bool ValidRequest(
       ValidRequestToken(
           request.expected_snapshot_id,
           game::kPlayerLifestyleWindowSnapshotIdCapacityV1 - 1) &&
+      ValidRequestToken(
+          request.expected_episode_run_id,
+          game::kPlayerLifestyleSelectionEpisodeRunIdCapacityV1 - 1) &&
       request.expected_public_revision != 0 &&
       request.expected_native_revision != 0 &&
       request.expected_proof_epoch != 0 &&
@@ -103,6 +106,8 @@ bool CandidateSnapshotBoundToRequest(
       candidates.readiness.same_frame_ready && state.available &&
       state.paused &&
       FixedString(state.snapshot_id) == FixedString(candidates.snapshot_id) &&
+      FixedString(state.episode_run_id) ==
+          request.expected_episode_run_id &&
       state.public_revision == candidates.public_revision &&
       state.native_revision == candidates.native_revision &&
       state.proof_epoch == candidates.proof_epoch &&
@@ -263,6 +268,7 @@ void CopyPreconditionToAck(
   ack.target_key = target;
   ack.target_lifestyle_key = target_lifestyle;
   ack.snapshot_id = precondition.state.snapshot_id;
+  ack.episode_run_id = precondition.state.episode_run_id;
   ack.pre_public_revision = precondition.state.public_revision;
   ack.pre_native_revision = precondition.state.native_revision;
   ack.pre_proof_epoch = precondition.state.proof_epoch;
@@ -412,7 +418,8 @@ ReceiptStatus VerifyPlayerLifestyleSelectionActionReceiptV1(
         !ack.verification_pending ||
         (ack.kind != Kind::focus && ack.kind != Kind::perk) ||
         !ValidStableKey(ack.target_key) ||
-        !ValidStableKey(ack.target_lifestyle_key)) {
+        !ValidStableKey(ack.target_lifestyle_key) ||
+        FixedString(ack.episode_run_id).empty()) {
       return FailReceipt("invalid_pending_ack", receipt);
     }
     if (access.capture_receipt_state == nullptr ||
@@ -429,24 +436,27 @@ ReceiptStatus VerifyPlayerLifestyleSelectionActionReceiptV1(
       return FailReceipt("receipt_state_read_failed", receipt);
     }
     receipt.post_public_revision = post->public_revision;
+    receipt.post_snapshot_id = post->snapshot_id;
+    receipt.episode_run_id = post->episode_run_id;
     receipt.post_native_revision = post->native_revision;
     receipt.post_proof_epoch = post->proof_epoch;
     receipt.post_date_raw = post->date_raw;
     receipt.player_character_id = post->player_character_id;
 
     if (!post->available || !post->paused ||
-        FixedString(post->snapshot_id) != FixedString(ack.snapshot_id) ||
+        FixedString(post->episode_run_id) !=
+            FixedString(ack.episode_run_id) ||
         post->player_character_id != ack.player_character_id) {
-      return FailReceipt("post_snapshot_or_player_mismatch", receipt);
+      return FailReceipt("post_episode_or_player_mismatch", receipt);
     }
-    const bool revision_advanced =
-        post->public_revision > ack.pre_public_revision ||
-        post->native_revision > ack.pre_native_revision ||
-        post->proof_epoch > ack.pre_proof_epoch;
-    if (post->public_revision < ack.pre_public_revision ||
+    if (FixedString(post->snapshot_id).empty() ||
+        FixedString(post->snapshot_id) == FixedString(ack.snapshot_id)) {
+      return FailReceipt("no_new_native_snapshot_frame", receipt);
+    }
+    if (post->public_revision <= ack.pre_public_revision ||
         post->native_revision < ack.pre_native_revision ||
         post->proof_epoch < ack.pre_proof_epoch ||
-        post->date_raw < ack.pre_date_raw || !revision_advanced) {
+        post->date_raw < ack.pre_date_raw) {
       return FailReceipt("no_new_paused_observation", receipt);
     }
 

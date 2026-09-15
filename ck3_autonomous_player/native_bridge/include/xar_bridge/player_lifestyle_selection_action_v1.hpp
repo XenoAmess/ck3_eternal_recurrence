@@ -48,6 +48,8 @@ struct PlayerLifestyleSelectionProgressRowV1 {
 
 inline constexpr std::size_t kPlayerLifestyleSelectionMaximumProgressRowsV1 =
     64;
+inline constexpr std::size_t kPlayerLifestyleSelectionEpisodeRunIdCapacityV1 =
+    64;
 
 // Produced from one paused native transaction. All four observation groups
 // are mandatory: current focus, the complete owned-perk set, lifestyle XP,
@@ -56,6 +58,10 @@ struct PlayerLifestyleSelectionStateObservationV1 {
   bool available = false;
   bool paused = false;
   std::array<char, kPlayerLifestyleWindowSnapshotIdCapacityV1> snapshot_id{};
+  // Persistent one-life/campaign identity supplied by the official driver;
+  // snapshot_id remains the real per-revision native:<n> frame identity.
+  std::array<char, kPlayerLifestyleSelectionEpisodeRunIdCapacityV1>
+      episode_run_id{};
   std::uint64_t public_revision = 0;
   std::uint64_t native_revision = 0;
   std::uint64_t proof_epoch = 0;
@@ -96,6 +102,7 @@ struct PlayerLifestyleSelectionActionRequestV1 {
       PlayerLifestyleSelectionKindV1::unknown;
   std::string_view target_key{};
   std::string_view expected_snapshot_id{};
+  std::string_view expected_episode_run_id{};
   std::uint64_t expected_public_revision = 0;
   std::uint64_t expected_native_revision = 0;
   std::uint64_t expected_proof_epoch = 0;
@@ -113,6 +120,8 @@ struct PlayerLifestyleSelectionActionAckV1 {
   PlayerLifestyleWindowStableKeyV1 target_key{};
   PlayerLifestyleWindowStableKeyV1 target_lifestyle_key{};
   std::array<char, kPlayerLifestyleWindowSnapshotIdCapacityV1> snapshot_id{};
+  std::array<char, kPlayerLifestyleSelectionEpisodeRunIdCapacityV1>
+      episode_run_id{};
   std::uint64_t pre_public_revision = 0;
   std::uint64_t pre_native_revision = 0;
   std::uint64_t pre_proof_epoch = 0;
@@ -138,6 +147,9 @@ struct PlayerLifestyleSelectionActionReceiptV1 {
   PlayerLifestyleWindowStableKeyV1 target_key{};
   std::string reason;
   std::uint64_t post_public_revision = 0;
+  std::array<char, kPlayerLifestyleWindowSnapshotIdCapacityV1> post_snapshot_id{};
+  std::array<char, kPlayerLifestyleSelectionEpisodeRunIdCapacityV1>
+      episode_run_id{};
   std::uint64_t post_native_revision = 0;
   std::uint64_t post_proof_epoch = 0;
   std::int32_t post_date_raw = 0;

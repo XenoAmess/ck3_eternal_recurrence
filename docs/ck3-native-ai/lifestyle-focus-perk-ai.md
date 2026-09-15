@@ -607,3 +607,33 @@ flowchart TD
 由唯一 CK3 负责人取得同版本普通存档的真实 paused 观测、一次 native typed
 动作、独立结果、下一 turn 消费及 checkpoint/cold restore。当前用户保留了
 Windows CK3 和屏幕作人工使用，因此本包离线阶段不消耗实机轮次。
+
+### G2-M4-LIFESTYLE-FORMAL-WIRE 静态接线边界（2026-09-16）
+
+正式 bridge 的 `StateSnapshotFrame` 在 exact 1.19.0.6 制品内以
+`native:<revision>` 为每一帧的真实 `snapshot_id`。既有 LIFE6 receipt
+曾同时要求后续 `snapshot_id` 等于 ACK 中的旧值、而 public revision 增长；
+真实独立 paused frame 因此必然被误判。修正后保留旧帧作提交前置条件，
+receipt 必须来自不同的 `native:<n+1>` 帧且 public revision 增长；
+连续性另外使用正式 driver 的已观测 `episode_run_id` 与完整角色 ID，
+不是凭 ACK 推断效果。R695/R735 配对 driver-state 均有实际
+`episode_run_id`，但这些 artifact 没有生活方式动作后置结果。
+
+LIFE2 已验证的无重心源只读得到 focus 缺席与完整 owned-perk 集合，
+尚未发布目标 stewardship lifestyle 的 XP/未花点；LIFE6 的 typed
+前后状态需要目标 progress row。因此 `player_lifestyle_formal_precondition_v1`
+只从同一真实帧 LIFE2 当前生活方式进度与 LIFE4 最终合法候选构造
+perk 路径，缺席重心的 focus 路径明确返回
+`target_progress_unavailable`，不能把零或 `null` 填作合法点数。
+下一个只读源施工入口是从同一 exact focus definition 的
+`+0x880` target lifestyle 指针读取 getter 结果，并用真实 paused
+snapshot 互证；此门未关前 focus 不注册、不广告。
+
+本包内部字段变化限于 LIFE6 私有 state/request/ACK/receipt 的
+`episode_run_id` 与 receipt `post_snapshot_id`，不改变 public
+command 或 MCP schema。open_kaishek 当前 main64cd 没有 LIFE
+私有 consumer；将来冻结 public typed receipt 后仍须给它被动适配，
+再考虑能力广告。静态 `/Od`、`/O2` LIFE6 各 7/7、同帧
+precondition 各 4/4 与 Python 普通/`-O` 各 6/6 只证明
+源合同和私有策略；正式入口、实机 material result、下一 turn 与
+cold restore 仍待唯一 CK3 负责人在用户释放实例后验收。

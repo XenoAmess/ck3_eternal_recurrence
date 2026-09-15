@@ -99,4 +99,13 @@ ReadPlayerLifestyleWindowSourceAdapterV1(
     std::uint32_t played_character_id,
     PlayerLifestyleWindowSourceSampleV1 &output) noexcept;
 
+// Fresh exact storage lookup for LIFE2's read-only current-focus/owned-perk
+// source in the same application-main paused transaction. No pointer is
+// retained beyond the caller's transaction.
+bool ResolvePlayerLifestylePlayedCharacterV1(
+    const PlayerLifestyleWindowSourceAdapterEnvironmentV1 &environment,
+    const PlayerLifestyleWindowSourceAdapterAccessV1 &access,
+    std::uint32_t full_id,
+    std::uintptr_t &played_character) noexcept;
+
 } // namespace xar::ck3_11906

@@ -208,7 +208,8 @@ bool ReadSpan(
 bool ResolveCharacterRoundTrip(
     const PlayerLifestyleWindowSourceAdapterEnvironmentV1 &environment,
     const PlayerLifestyleWindowSourceAdapterAccessV1 &access,
-    std::uint32_t full_id) noexcept {
+    std::uint32_t full_id,
+    std::uintptr_t *played_character = nullptr) noexcept {
   std::uintptr_t storage = 0;
   std::uintptr_t fallback = 0;
   if (!ReadPointer(access,
@@ -244,11 +245,13 @@ bool ResolveCharacterRoundTrip(
   }
   std::uintptr_t character = 0;
   std::uint32_t observed_id = 0xFFFFFFFFU;
-  return ReadPointer(access, object_slot, character) && character != 0 &&
+  const bool valid = ReadPointer(access, object_slot, character) && character != 0 &&
       character != fallback &&
       ReadAt(access, character, kLifestyleWindowCharacterIdentityOffsetV1,
              observed_id) &&
       observed_id == full_id;
+  if (played_character != nullptr) *played_character = valid ? character : 0;
+  return valid;
 }
 
 bool ValidateEvaluatorSlots(
@@ -561,6 +564,20 @@ ReadPlayerLifestyleWindowSourceAdapterV1(
   if (const auto result = MaterializePerks(environment, access, output);
       result != SourceResult::success) return result;
   return SourceResult::success;
+}
+
+bool ResolvePlayerLifestylePlayedCharacterV1(
+    const PlayerLifestyleWindowSourceAdapterEnvironmentV1 &environment,
+    const PlayerLifestyleWindowSourceAdapterAccessV1 &access,
+    std::uint32_t full_id,
+    std::uintptr_t &played_character) noexcept {
+  played_character = 0;
+  if (full_id == 0xFFFFFFFFU || environment.module_base == 0 ||
+      access.read_memory == nullptr) {
+    return false;
+  }
+  return ResolveCharacterRoundTrip(environment, access, full_id,
+                                   &played_character);
 }
 
 } // namespace xar::ck3_11906

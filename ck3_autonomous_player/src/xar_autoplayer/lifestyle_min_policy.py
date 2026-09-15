@@ -30,6 +30,7 @@ def _positive_int(value: object) -> bool:
 
 def _binding(snapshot: Mapping[str, object]) -> dict[str, object] | None:
     snapshot_id = snapshot.get("snapshot_id")
+    episode_run_id = snapshot.get("episode_run_id")
     date_raw = snapshot.get("date_raw")
     player_id = snapshot.get("player_character_id")
     revisions = (
@@ -39,6 +40,8 @@ def _binding(snapshot: Mapping[str, object]) -> dict[str, object] | None:
     )
     if not isinstance(snapshot_id, str) or not snapshot_id:
         return None
+    if not isinstance(episode_run_id, str) or not episode_run_id:
+        return None
     if not isinstance(date_raw, int) or isinstance(date_raw, bool):
         return None
     if not isinstance(player_id, int) or isinstance(player_id, bool) or player_id < 0:
@@ -47,6 +50,7 @@ def _binding(snapshot: Mapping[str, object]) -> dict[str, object] | None:
         return None
     return {
         "expected_snapshot_id": snapshot_id,
+        "expected_episode_run_id": episode_run_id,
         "expected_public_revision": revisions[0],
         "expected_native_revision": revisions[1],
         "expected_proof_epoch": revisions[2],
@@ -153,6 +157,20 @@ def choose_min_feudal_lifestyle_action(
     if focus.get("presence") != "absent" or progress.get("presence") != "absent":
         return {**result, "status": "observation_unavailable"}
     if _WEALTH_FOCUS in focus_keys:
+        # LIFE2 currently observes progress only for the current lifestyle.
+        # When focus is absent, LIFE6 cannot capture its mandatory target
+        # stewardship progress row from that source. A later exact read-only
+        # producer must supply it before typed focus submission is possible.
+        target_progress = snapshot.get("target_lifestyle_progress")
+        if (
+            not isinstance(target_progress, Mapping)
+            or target_progress.get("presence") != "present"
+            or target_progress.get("lifestyle_key") != _STEWARDSHIP
+            or not isinstance(target_progress.get("unspent_perk_points"), int)
+            or isinstance(target_progress.get("unspent_perk_points"), bool)
+            or target_progress.get("unspent_perk_points") < 0
+        ):
+            return {**result, "status": "target_progress_source_unavailable"}
         return {
             **result,
             "status": "recommend_action",

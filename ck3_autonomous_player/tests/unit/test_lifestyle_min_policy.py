@@ -15,7 +15,8 @@ from xar_autoplayer.lifestyle_min_policy import choose_min_feudal_lifestyle_acti
 def _complete_snapshot() -> dict[str, object]:
     return {
         "status": "available",
-        "snapshot_id": "life:min:001",
+        "snapshot_id": "native:701",
+        "episode_run_id": "native-29829-ee172aa720db",
         "public_revision": 701,
         "native_revision": 9001,
         "proof_epoch": 17,
@@ -68,8 +69,12 @@ class LifestyleMinPolicyTests(unittest.TestCase):
         self.assertEqual(action["kind"], "perk")
         self.assertEqual(action["target_key"], "cutting_corners_perk")
         self.assertEqual(action["expected"]["expected_player_character_id"], 32904)
+        self.assertEqual(
+            action["expected"]["expected_episode_run_id"],
+            "native-29829-ee172aa720db",
+        )
 
-    def test_absent_focus_uses_legal_income_focus(self) -> None:
+    def test_absent_focus_requires_exact_target_progress_source(self) -> None:
         snapshot = _complete_snapshot()
         snapshot["current_focus"] = {"presence": "absent"}
         snapshot["current_lifestyle_progress"] = {"presence": "absent"}
@@ -79,6 +84,14 @@ class LifestyleMinPolicyTests(unittest.TestCase):
                 "key": "stewardship_wealth_focus",
                 "lifestyle_key": "stewardship_lifestyle",
             }],
+        }
+        result = _choose(snapshot)
+        self.assertEqual(result["status"], "target_progress_source_unavailable")
+        self.assertIsNone(result["selected_action"])
+        snapshot["target_lifestyle_progress"] = {
+            "presence": "present",
+            "lifestyle_key": "stewardship_lifestyle",
+            "unspent_perk_points": 0,
         }
         result = _choose(snapshot)
         self.assertEqual(result["selected_action"]["kind"], "focus")
@@ -128,6 +141,9 @@ class LifestyleMinPolicyTests(unittest.TestCase):
         self.assertEqual(unknown["status"], "scope_observation_unavailable")
         bad = copy.deepcopy(snapshot)
         bad["player_character_id"] = None
+        self.assertEqual(_choose(bad)["status"], "observation_unavailable")
+        bad = copy.deepcopy(snapshot)
+        bad["episode_run_id"] = None
         self.assertEqual(_choose(bad)["status"], "observation_unavailable")
 
 

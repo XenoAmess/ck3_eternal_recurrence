@@ -23,7 +23,9 @@ using StableKey = game::PlayerLifestyleWindowStableKeyV1;
 
 constexpr std::uintptr_t kModule = 0x0000000140000000ULL;
 constexpr std::uint32_t kPlayer = 0xF100002A;
-constexpr std::string_view kSnapshot = "life6-selection-fixture-001";
+constexpr std::string_view kSnapshot = "native:711";
+constexpr std::string_view kPostSnapshot = "native:712";
+constexpr std::string_view kEpisode = "native-29829-ee172aa720db";
 
 void Require(
     bool condition,
@@ -68,6 +70,7 @@ game::PlayerLifestyleSelectionStateObservationV1 State() {
   output.available = true;
   output.paused = true;
   Fixed(output.snapshot_id, kSnapshot);
+  Fixed(output.episode_run_id, kEpisode);
   output.public_revision = 711;
   output.native_revision = 9'021;
   output.proof_epoch = 31;
@@ -122,7 +125,10 @@ std::unique_ptr<Fixture> Base() {
   fixture->precondition.candidates = Candidates();
   fixture->precondition.state = State();
   fixture->receipt_state = State();
+  Fixed(fixture->receipt_state.snapshot_id, kPostSnapshot);
+  ++fixture->receipt_state.public_revision;
   ++fixture->receipt_state.native_revision;
+  ++fixture->receipt_state.proof_epoch;
   return fixture;
 }
 
@@ -175,7 +181,7 @@ ck3::PlayerLifestyleSelectionActionEnvironmentV1 FixtureEnvironment() {
 
 game::PlayerLifestyleSelectionActionRequestV1 Request(
     Kind kind, std::string_view target) {
-  return {"life6-selection-request-1", kind, target, kSnapshot,
+  return {"life6-selection-request-1", kind, target, kSnapshot, kEpisode,
           711, 9'021, 31, 54'335'000, kPlayer};
 }
 
@@ -215,6 +221,8 @@ void TestFocusAckIsPendingAndReceiptRereadsState() {
   Require(receipt.current_focus_reread && receipt.owned_perks_reread &&
           receipt.experience_reread && receipt.perk_points_reread);
   Require(receipt.target_state_changed && receipt.postcondition_verified);
+  Require(std::string_view(receipt.post_snapshot_id.data()) == kPostSnapshot);
+  Require(std::string_view(receipt.episode_run_id.data()) == kEpisode);
   Require(receipt.post_target_lifestyle_experience_raw == 37'500);
   Require(receipt.post_target_lifestyle_perk_points == 2);
 }
@@ -353,12 +361,16 @@ void TestReceiptFailuresAreExplicit() {
   game::PlayerLifestyleSelectionActionReceiptV1 receipt{};
 
   fixture->receipt_state.native_revision = ack.pre_native_revision;
+  fixture->receipt_state.public_revision = ack.pre_public_revision;
+  fixture->receipt_state.proof_epoch = ack.pre_proof_epoch;
   Require(ck3::VerifyPlayerLifestyleSelectionActionReceiptV1(
               Access(*fixture), ack, receipt) ==
           ReceiptStatus::postcondition_failed);
   Require(receipt.reason == "no_new_paused_observation");
 
   ++fixture->receipt_state.native_revision;
+  ++fixture->receipt_state.public_revision;
+  ++fixture->receipt_state.proof_epoch;
   fixture->receipt_state.owned_perks_fully_materialized = false;
   Require(ck3::VerifyPlayerLifestyleSelectionActionReceiptV1(
               Access(*fixture), ack, receipt) ==
@@ -392,6 +404,32 @@ void TestReceiptFailuresAreExplicit() {
   Require(perk_fixture->receipt_captures == captures_before);
 }
 
+void TestDistinctNativeFrameAndEpisodeAreRequired() {
+  auto fixture = Base();
+  const auto ack = SubmitExpected(
+      *fixture, Kind::focus, "stewardship_wealth_focus");
+  fixture->receipt_state.current_focus_key =
+      Key("stewardship_wealth_focus");
+  game::PlayerLifestyleSelectionActionReceiptV1 receipt{};
+
+  Fixed(fixture->receipt_state.snapshot_id, kSnapshot);
+  Require(ck3::VerifyPlayerLifestyleSelectionActionReceiptV1(
+              Access(*fixture), ack, receipt) ==
+          ReceiptStatus::postcondition_failed);
+  Require(receipt.reason == "no_new_native_snapshot_frame");
+  Fixed(fixture->receipt_state.snapshot_id, kPostSnapshot);
+  Fixed(fixture->receipt_state.episode_run_id,
+        "native-29829-other-campaign");
+  Require(ck3::VerifyPlayerLifestyleSelectionActionReceiptV1(
+              Access(*fixture), ack, receipt) ==
+          ReceiptStatus::postcondition_failed);
+  Require(receipt.reason == "post_episode_or_player_mismatch");
+  Fixed(fixture->receipt_state.episode_run_id, kEpisode);
+  Require(ck3::VerifyPlayerLifestyleSelectionActionReceiptV1(
+              Access(*fixture), ack, receipt) == ReceiptStatus::applied);
+  Require(fixture->submits == 1);
+}
+
 } // namespace
 
 int main() {
@@ -406,7 +444,8 @@ int main() {
     TestIncompleteStateAndPreSubmitDriftNeverSubmit();
     TestCommandBindingAndSubmitAreFailClosedAndSingleShot();
     TestReceiptFailuresAreExplicit();
-    std::cout << "player_lifestyle_selection_action_v1_test: 6/6 GREEN\n";
+    TestDistinctNativeFrameAndEpisodeAreRequired();
+    std::cout << "player_lifestyle_selection_action_v1_test: 7/7 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';
