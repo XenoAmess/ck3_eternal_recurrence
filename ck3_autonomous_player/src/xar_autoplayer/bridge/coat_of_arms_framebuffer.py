@@ -254,6 +254,74 @@ def _masked_metrics(
     }
 
 
+def _aligned_content(
+    reference_rgb: np.ndarray,
+    framebuffer: Image.Image,
+    outer_rect: tuple[int, int, int, int],
+    mask: np.ndarray,
+) -> tuple[Image.Image, dict[str, object], dict[str, object]]:
+    left, top, right, bottom = outer_rect
+    outer_side = right - left
+    reference_side = reference_rgb.shape[0]
+    candidates: list[tuple[float, int, int, int, dict[str, object], Image.Image]] = []
+    for ratio in (0.82, 0.85, 0.875, 0.90, 0.925, 0.95, 1.0):
+        content_side = max(1, round(outer_side * ratio))
+        nominal_left = left + (outer_side - content_side) // 2
+        nominal_top = top + (outer_side - content_side) // 2
+        for offset_y_ratio in (-0.025, 0.0, 0.025):
+            for offset_x_ratio in (-0.025, 0.0, 0.025):
+                content_left = nominal_left + round(outer_side * offset_x_ratio)
+                content_top = nominal_top + round(outer_side * offset_y_ratio)
+                content_right = content_left + content_side
+                content_bottom = content_top + content_side
+                if (
+                    content_left < left
+                    or content_top < top
+                    or content_right > right
+                    or content_bottom > bottom
+                ):
+                    continue
+                crop = framebuffer.convert("RGB").crop(
+                    (content_left, content_top, content_right, content_bottom)
+                )
+                normalized = crop.resize(
+                    (reference_side, reference_side), Image.Resampling.BILINEAR
+                )
+                observed = np.asarray(normalized, dtype=np.uint8)
+                metrics = _masked_metrics(reference_rgb, observed, mask)
+                score = (
+                    0.62 * float(metrics["colorMse"])
+                    + 0.38 * float(metrics["edgeLoss"])
+                )
+                candidates.append(
+                    (
+                        score,
+                        content_side,
+                        content_left,
+                        content_top,
+                        metrics,
+                        normalized,
+                    )
+                )
+    if not candidates:
+        raise CoatOfArmsFramebufferError("no bounded content alignment candidate")
+    candidates.sort(key=lambda value: (value[0], -value[1], value[2], value[3]))
+    score, content_side, content_left, content_top, metrics, normalized = candidates[0]
+    return normalized, metrics, {
+        "contract": "outer-frame-local-square-alignment-v1",
+        "candidateCount": len(candidates),
+        "outerRect": list(outer_rect),
+        "contentRect": [
+            content_left,
+            content_top,
+            content_left + content_side,
+            content_top + content_side,
+        ],
+        "contentToOuterRatio": content_side / outer_side,
+        "alignmentLoss": score,
+    }
+
+
 def compare_reference_to_framebuffer_v1(
     reference: Image.Image,
     framebuffer: Image.Image,
@@ -329,14 +397,25 @@ def compare_reference_to_framebuffer_v1(
     x = int(best["x"])
     y = int(best["y"])
     crop = framebuffer.convert("RGB").crop((x, y, x + side, y + side))
-    observed = np.asarray(
-        crop.resize(reference.size, Image.Resampling.BILINEAR), dtype=np.uint8
-    )
     reference_rgb = reference_rgba[:, :, :3]
     mask = _shield_mask(reference.width, reference_rgba[:, :, 3])
+    erosion_radius = max(1, round(reference.width * 0.025))
+    erosion_kernel = np.ones(
+        (erosion_radius * 2 + 1, erosion_radius * 2 + 1), dtype=np.uint8
+    )
+    comparison_mask = cv2.erode(mask, erosion_kernel)
+    aligned, metrics, alignment = _aligned_content(
+        reference_rgb,
+        framebuffer,
+        (x, y, x + side, y + side),
+        comparison_mask,
+    )
     output = BytesIO()
     crop.save(output, format="PNG", optimize=True)
     crop_png = output.getvalue()
+    aligned_output = BytesIO()
+    aligned.save(aligned_output, format="PNG", optimize=True)
+    aligned_png = aligned_output.getvalue()
     return {
         "locatorContract": "full-client-global-shield-mask-color72-edge28-v1",
         "searchedWholeFramebuffer": True,
@@ -347,9 +426,19 @@ def compare_reference_to_framebuffer_v1(
             "rect": [x, y, x + side, y + side],
             "cropPngSha256": _sha256(crop_png),
             "cropPngBase64": base64.b64encode(crop_png).decode("ascii"),
+            "alignment": alignment,
+            "alignedContentPngSha256": _sha256(aligned_png),
+            "alignedContentPngBase64": base64.b64encode(aligned_png).decode(
+                "ascii"
+            ),
         },
         "scaleCandidates": candidates,
-        "metrics": _masked_metrics(reference_rgb, observed, mask),
+        "comparisonMask": {
+            "contract": "shield-polygon-alpha-eroded-v1",
+            "erosionRadiusPixels": erosion_radius,
+            "maskPixels": int(np.count_nonzero(comparison_mask)),
+        },
+        "metrics": metrics,
     }
 
 

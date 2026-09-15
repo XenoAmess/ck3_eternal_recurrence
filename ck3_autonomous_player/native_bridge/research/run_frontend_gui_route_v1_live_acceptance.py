@@ -1362,7 +1362,22 @@ async def _collect_picture_corpus(
         roundtrip = await _collect_large_source_roundtrip(
             client, source, source_receipt, record
         )
-        if roundtrip.get("ok") is True:
+        roundtrip_checks = roundtrip.get("checks")
+        framebuffer_ready = bool(
+            isinstance(roundtrip_checks, dict)
+            and all(
+                roundtrip_checks.get(name) is True
+                for name in (
+                    "commit_applied",
+                    "commit_source_identity",
+                    "native_copy_exported",
+                    "drawn_instance_count_preserved",
+                    "logical_layer_count_preserved",
+                    "colored_emblem_block_count_preserved",
+                )
+            )
+        )
+        if framebuffer_ready:
             await asyncio.sleep(0.75)
             preparation_call = await _call(
                 client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL
@@ -1395,6 +1410,7 @@ async def _collect_picture_corpus(
                 "source": source_receipt,
                 "reference": preview_receipt,
                 "roundtrip": roundtrip,
+                "framebuffer_ready_after_native_apply": framebuffer_ready,
                 "framebuffer": framebuffer,
                 "ok": bool(
                     roundtrip.get("ok") is True
@@ -2235,8 +2251,13 @@ def _write_native_crop_call(
         and isinstance(comparison.get("bestMatch"), dict)
         else {}
     )
-    encoded = best.get("cropPngBase64")
-    expected_sha256 = best.get("cropPngSha256")
+    encoded = best.get("alignedContentPngBase64")
+    expected_sha256 = best.get("alignedContentPngSha256")
+    payload_kind = "aligned-content"
+    if not isinstance(encoded, str) or not isinstance(expected_sha256, str):
+        encoded = best.get("cropPngBase64")
+        expected_sha256 = best.get("cropPngSha256")
+        payload_kind = "outer-match"
     if not isinstance(encoded, str) or not isinstance(expected_sha256, str):
         raise RuntimeError("framebuffer result has no native crop payload")
     try:
@@ -2257,6 +2278,7 @@ def _write_native_crop_call(
         "path": str(resolved),
         "bytes": len(raw),
         "sha256": actual_sha256,
+        "payload_kind": payload_kind,
     }
 
 

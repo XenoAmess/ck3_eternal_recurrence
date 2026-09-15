@@ -70,3 +70,25 @@ def test_locates_reference_over_the_whole_frame_without_fixed_coordinates() -> N
     assert metrics["colorMse"] < 0.002
     assert metrics["edgeLoss"] < 0.08
     assert len(metrics["spatialMeanAbsoluteError8x8"]) == 8
+
+
+def test_aligns_content_inside_native_decorative_frame() -> None:
+    reference = _reference()
+    framebuffer = Image.new("RGB", (420, 300), (91, 83, 76))
+    outer = Image.new("RGB", (128, 128), (49, 35, 31))
+    outer.paste(
+        reference.resize((112, 112), Image.Resampling.BILINEAR),
+        (8, 8),
+    )
+    framebuffer.paste(outer, (173, 91))
+
+    result = compare_reference_to_framebuffer_v1(
+        reference,
+        framebuffer,
+        search_sides=(128,),
+    )
+
+    alignment = result["bestMatch"]["alignment"]
+    assert 0.84 <= alignment["contentToOuterRatio"] <= 0.93
+    assert result["metrics"]["meanAbsoluteError"] < 0.04
+    assert result["metrics"]["colorMse"] < 0.02
