@@ -118,6 +118,22 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         checks = module._semantic_projection_checks(expected, actual)
         self.assertTrue(all(checks.values()))
 
+    def test_native_color_domain_and_default_rotation_are_semantic_equals(self) -> None:
+        module = _load_runner_module()
+        expected = module._semantic_projection(
+            'coa={ color1=rgb { 1 0 0 } colored_emblem={ color1=rgb { 253 0 0 } '
+            'instance={ rotation=0 depth=1 } } }'
+        )
+        native_copy = module._semantic_projection(
+            'coa_rd_dynasty_1={ color1=rgb { 255 0 0 } '
+            'colored_emblem={ color1=rgb { 253 0 0 } instance={ depth=1.000000 } } }'
+        )
+
+        checks = module._semantic_projection_checks(expected, native_copy)
+
+        self.assertTrue(checks["colors"])
+        self.assertTrue(checks["rotations"])
+
     def test_large_source_collector_round_trips_through_v2_tools(self) -> None:
         module = _load_runner_module()
         source = (

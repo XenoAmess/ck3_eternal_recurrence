@@ -25,6 +25,7 @@ import subprocess
 import sys
 import time
 from typing import Any
+import winreg
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
@@ -139,7 +140,14 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-pipe", required=True)
     parser.add_argument("--bridge-dll", type=Path, required=True)
     parser.add_argument("--bridge-injector", type=Path, required=True)
-    parser.add_argument("--steam-loginusers", type=Path, required=True)
+    parser.add_argument(
+        "--steam-loginusers",
+        type=Path,
+        help=(
+            "Steam loginusers.vdf used for the offline-mode gate. When omitted, "
+            "the runner resolves SteamPath from the current-user registry."
+        ),
+    )
     parser.add_argument("--timeout", type=float, default=360.0)
     parser.add_argument(
         "--syntax-matrix",
@@ -232,6 +240,34 @@ def _steam_offline(loginusers: Path) -> dict[str, object]:
     return result
 
 
+def _resolve_steam_loginusers(explicit: Path | None) -> Path:
+    if explicit is not None:
+        path = explicit.resolve()
+        if not path.is_file():
+            raise FileNotFoundError(f"Steam loginusers.vdf not found: {path}")
+        return path
+
+    registry_locations = (
+        (winreg.HKEY_CURRENT_USER, r"Software\Valve\Steam", "SteamPath"),
+        (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath"),
+    )
+    checked: list[str] = []
+    for hive, key_name, value_name in registry_locations:
+        checked.append(key_name)
+        try:
+            with winreg.OpenKey(hive, key_name) as key:
+                steam_root, _ = winreg.QueryValueEx(key, value_name)
+        except OSError:
+            continue
+        candidate = Path(str(steam_root)) / "config" / "loginusers.vdf"
+        if candidate.is_file():
+            return candidate.resolve()
+    raise FileNotFoundError(
+        "Steam loginusers.vdf was not supplied and SteamPath discovery failed; "
+        f"registry locations checked: {', '.join(checked)}"
+    )
+
+
 def _content_blocks(result: Any) -> list[object]:
     blocks: list[object] = []
     for block in getattr(result, "content", []):
@@ -309,13 +345,42 @@ def _semantic_projection(source: str) -> dict[str, object]:
             for value in re.findall(pattern, source, flags)
         ]
 
+    def color_values() -> list[object]:
+        values = text_values(
+            r"\bcolor[123]\s*=\s*(rgb\s*\{[^}]*\}|hsv\s*\{[^}]*\}|"
+            r'"[^"]+"|[a-z_][a-z0-9_]*)'
+        )
+        canonical: list[object] = []
+        for value in values:
+            match = re.fullmatch(r"rgb\s*\{([^}]*)\}", value)
+            if match is None:
+                canonical.append({"space": "text", "value": value})
+                continue
+            channels = [
+                float(number)
+                for number in re.findall(
+                    r"[-+]?[0-9]*\.?[0-9]+(?:e[-+]?[0-9]+)?",
+                    match.group(1),
+                )
+            ]
+            if len(channels) != 3:
+                canonical.append({"space": "text", "value": value})
+                continue
+            # CK3 accepts normalized rgb channels when every channel is in
+            # [0, 1], but native Copy emits byte-domain channels. Comparing
+            # both spellings in the unit interval preserves that semantics.
+            normalized = (
+                channels
+                if all(0.0 <= channel <= 1.0 for channel in channels)
+                else [channel / 255.0 for channel in channels]
+            )
+            canonical.append({"space": "rgb", "channels": normalized})
+        return canonical
+
     return {
         "patterns": text_values(r'\bpattern\s*=\s*"([^"]+)"'),
         "textures": text_values(r'\btexture\s*=\s*"([^"]+)"'),
-        "colors": text_values(
-            r"\bcolor[123]\s*=\s*(rgb\s*\{[^}]*\}|hsv\s*\{[^}]*\}|"
-            r'"[^"]+"|[a-z_][a-z0-9_]*)'
-        ),
+        "colors": color_values(),
         "masks": text_values(r"\bmask\s*=\s*\{([^}]*)\}"),
         "positions": numeric_values(r"\bposition\s*=\s*\{([^}]*)\}"),
         "scales": numeric_values(r"\bscale\s*=\s*\{([^}]*)\}"),
@@ -335,6 +400,39 @@ def _semantic_projection_checks(
     checks: dict[str, bool] = {}
     for key, expected_value in expected.items():
         actual_value = actual.get(key)
+        if key == "colors":
+            checks[key] = bool(
+                isinstance(expected_value, list)
+                and isinstance(actual_value, list)
+                and len(expected_value) == len(actual_value)
+                and all(
+                    isinstance(left, dict)
+                    and isinstance(right, dict)
+                    and left.get("space") == right.get("space")
+                    and (
+                        left.get("value") == right.get("value")
+                        if left.get("space") == "text"
+                        else isinstance(left.get("channels"), list)
+                        and isinstance(right.get("channels"), list)
+                        and len(left["channels"]) == len(right["channels"])
+                        and all(
+                            abs(float(a) - float(b)) <= 5.1e-7
+                            for a, b in zip(
+                                left["channels"], right["channels"]
+                            )
+                        )
+                    )
+                    for left, right in zip(expected_value, actual_value)
+                )
+            )
+            continue
+        if key == "rotations" and actual_value == []:
+            checks[key] = bool(
+                isinstance(expected_value, list)
+                and expected_value
+                and all(row == [0.0] for row in expected_value)
+            )
+            continue
         if key not in numeric_keys:
             checks[key] = actual_value == expected_value
             continue
@@ -1636,6 +1734,7 @@ def _write_json(path: Path, payload: dict[str, object]) -> None:
 def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     started = time.monotonic()
     repository = Path(__file__).resolve().parents[3]
+    steam_loginusers = _resolve_steam_loginusers(args.steam_loginusers)
     syntax_matrix = (
         _load_syntax_matrix() if getattr(args, "syntax_matrix", False) else None
     )
@@ -1690,7 +1789,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     }
     report["shared_ck3_slot"] = shared_slot
     try:
-        report["steam"] = _steam_offline(args.steam_loginusers)
+        report["steam"] = _steam_offline(steam_loginusers)
         report["profile"] = _copy_profile(
             args.source_profile, state_dir / "profile"
         )
