@@ -465,6 +465,7 @@ def native_auto_run(
             poll_interval_seconds=poll_seconds,
             cold_start_checkpoint=cold_start_checkpoint,
             allow_terminal=False,
+            require_post_ready_pump=True,
         )
         current_attempt["before"] = _public_binding(readiness)
         initial_episode = {
@@ -1546,6 +1547,7 @@ def _wait_for_readiness(
     poll_interval_seconds: float,
     cold_start_checkpoint: bool,
     allow_terminal: bool,
+    require_post_ready_pump: bool = False,
     expected_character_id: int | None = None,
 ) -> dict[str, object]:
     """Wait for a stable native frame, optionally pinned to one character.
@@ -1553,6 +1555,8 @@ def _wait_for_readiness(
     Callers that will issue UI or gameplay input against a known save must
     provide ``expected_character_id``.  A map-ready frame can precede the
     played-character and episode projections during direct load.
+    ``require_post_ready_pump`` binds the first request after a new process
+    launch to a later application-main pump of that same stable frame.
     """
     if expected_character_id is not None and (
         isinstance(expected_character_id, bool)
@@ -1565,7 +1569,8 @@ def _wait_for_readiness(
     deadline = time.monotonic() + timeout_seconds
     stable_key: tuple[object, ...] | None = None
     stable_since: float | None = None
-    cold_ready_pump_epoch: int | None = None
+    post_ready_pump_required = cold_start_checkpoint or require_post_ready_pump
+    ready_pump_epoch: int | None = None
     last_reason = "native DLL has not connected"
     last_observation: dict[str, object] | None = None
     last_readiness_diagnostics: dict[str, object] | None = None
@@ -1622,28 +1627,32 @@ def _wait_for_readiness(
                 if key != stable_key:
                     stable_key = key
                     stable_since = now
-                    cold_ready_pump_epoch = (
+                    ready_pump_epoch = (
                         current_pump_epoch
-                        if cold_start_checkpoint
+                        if post_ready_pump_required
                         else None
                     )
-                cold_pump_advanced = bool(
-                    not cold_start_checkpoint
+                post_ready_pump_advanced = bool(
+                    not post_ready_pump_required
                     or (
                         current_pump_epoch is not None
-                        and cold_ready_pump_epoch is not None
-                        and current_pump_epoch > cold_ready_pump_epoch
+                        and ready_pump_epoch is not None
+                        and current_pump_epoch > ready_pump_epoch
                     )
                 )
-                if cold_start_checkpoint and not cold_pump_advanced:
+                if post_ready_pump_required and not post_ready_pump_advanced:
+                    lifecycle = (
+                        "cold checkpoint" if cold_start_checkpoint
+                        else "fresh-process"
+                    )
                     last_reason = (
-                        "application-main pump has not advanced after cold "
-                        "checkpoint readiness: "
-                        f"baseline={cold_ready_pump_epoch!r}, "
+                        "application-main pump has not advanced after "
+                        f"{lifecycle} readiness: "
+                        f"baseline={ready_pump_epoch!r}, "
                         f"current={current_pump_epoch!r}"
                     )
                 if (
-                    cold_pump_advanced
+                    post_ready_pump_advanced
                     and stable_since is not None
                     and now - stable_since >= stable_seconds
                 ):
@@ -1651,12 +1660,12 @@ def _wait_for_readiness(
             else:
                 stable_key = None
                 stable_since = None
-                cold_ready_pump_epoch = None
+                ready_pump_epoch = None
         except (BridgeUnavailableError, UnsupportedStepError) as error:
             last_reason = str(error)
             stable_key = None
             stable_since = None
-            cold_ready_pump_epoch = None
+            ready_pump_epoch = None
         time.sleep(min(poll_interval_seconds, max(0.0, deadline - now)))
 
 

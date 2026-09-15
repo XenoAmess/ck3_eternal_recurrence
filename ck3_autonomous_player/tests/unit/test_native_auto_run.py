@@ -1091,6 +1091,7 @@ class NativeAutoRunTests(unittest.TestCase):
         allow_stationary_objective_hold_sentinel_canary: bool = False,
         reset_connection_generation_on_new_episode: bool = False,
         operator_stop_after_action_count: int | None = None,
+        advance_pump_epochs: bool = True,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         harness = _NativeAutoRunHarness(
             self.spec,
@@ -1108,6 +1109,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 operator_stop_after_action_count
             ),
         )
+        harness.advance_pump_epochs = advance_pump_epochs
         with mock.patch.object(
             native_auto_run_module,
             "NativeHeadlessGameplayDriver",
@@ -2148,6 +2150,59 @@ class NativeAutoRunTests(unittest.TestCase):
         )
         self.assertEqual(binding["episode_binding_state"], "active_resumed")
         self.assertGreater(harness.pump_epochs, 40)
+
+    def test_fresh_process_readiness_waits_for_a_post_binding_pump_epoch(self) -> None:
+        harness = _NativeAutoRunHarness(
+            self.spec, [], initial_unready_snapshot=False, cold_start=False,
+        )
+        harness.advance_pump_epochs = False
+        driver = harness.make_driver(
+            self.config.pipe_name,
+            state_dir=self.spec.state_dir,
+            save_dir=self.spec.profile_dir / "save games",
+            route_contact_timeline_speed=3,
+            allow_route_contact_high_speed_ab=False,
+            allow_stationary_objective_hold_sentinel_canary=False,
+        )
+        with self.assertRaises(
+            native_auto_run_module.NativeReadinessTimeoutError
+        ) as caught:
+            native_auto_run_module._wait_for_readiness(
+                driver, session_done=threading.Event(), session_state={},
+                timeout_seconds=0.02, stable_seconds=0.0,
+                poll_interval_seconds=0.001, cold_start_checkpoint=False,
+                allow_terminal=False, require_post_ready_pump=True,
+            )
+        self.assertIn(
+            "application-main pump has not advanced after fresh-process "
+            "readiness: baseline=40, current=40",
+            str(caught.exception),
+        )
+        harness.advance_pump_epochs = True
+        binding = native_auto_run_module._wait_for_readiness(
+            driver, session_done=threading.Event(), session_state={},
+            timeout_seconds=0.05, stable_seconds=0.0,
+            poll_interval_seconds=0.001, cold_start_checkpoint=False,
+            allow_terminal=False, require_post_ready_pump=True,
+        )
+        self.assertEqual(binding["episode_binding_state"], "active_new")
+        self.assertGreater(harness.pump_epochs, 40)
+
+    def test_initial_direct_load_does_not_start_turn_while_pump_is_stalled(self) -> None:
+        report, harness = self._run(
+            ["advance"], initial_unready_snapshot=False,
+            timeout_seconds=0.4, advance_pump_epochs=False,
+        )
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["first_blocker"]["stage"], "readiness")
+        self.assertEqual(report["first_blocker"]["kind"], "readiness_failed")
+        self.assertIn(
+            "application-main pump has not advanced after fresh-process",
+            report["first_blocker"]["message"],
+        )
+        self.assertEqual(report["auto_run"]["attempted_turns"], 0)
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertTrue(report["cleanup"]["ok"])
 
     def test_hot_readiness_does_not_require_a_new_pump_epoch(self) -> None:
         harness = _NativeAutoRunHarness(

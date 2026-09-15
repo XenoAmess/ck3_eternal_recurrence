@@ -168,6 +168,31 @@ holds the epoch fixed to reproduce the readiness timeout, then advances it to
 prove admission; a separate hot fixture proves that hot readiness does not
 acquire the new condition.
 
+R733 exposed the same lifecycle gap on an ordinary standard-feudal direct
+`-loadsave`, without a checkpoint restore. The sealed agent source was
+`ab7899c19ef4c639c9376a0b07b62def6a429505`, the exact CK3 EXE SHA-256
+was `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+and the paired save SHA-256 was
+`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`.
+The public declarable-war query returned 30 native rows, but the next
+application-main campaign-root ticket remained queued for its eight-second
+budget: `pump_epochs=7851 -> 7851`, executor-started and executed counts both
+stayed zero, and cancellation happened before execution. The tracked CK3 tree
+was recycled, with no action, UI input, date advance, or save change. The
+failed R733 report at
+`Z:\ck3_mod_rewrite_process_assets\g2-m5-r725-answer-20260915\candidate\live-R733\report.json`
+has SHA-256 `4C9F61B6FB5980EA27651D87746010D8DDE5E6CAAF38535FFBF8BFDC28AAA81D`.
+The exact reason the owner thread stopped pumping during that eight-second
+window remains unknown. The confirmed caller gap is that the first direct-load
+readiness used `cold_start_checkpoint=False`, so it accepted the map binding
+without the later-pump condition; the worker-side war response did not prove
+application-main was ready. Initial `native_auto_run` readiness now requests
+one later pump epoch for the same stable binding, while later hot/replan calls
+and the existing checkpoint cold-restore condition retain their semantics.
+The private M5 controlled runner must request that same initial-launch barrier
+in its next distinct version. No native timeout, reader, ABI, or capability
+advertisement changes are needed.
+
 ## Install and process lifetime
 
 The PeekMessageW IAT lives on a read-only page. Install and uninstall use the same bounded
