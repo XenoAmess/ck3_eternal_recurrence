@@ -118,6 +118,28 @@ bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
                                query.result.tree_inspection);
 }
 
+bool InspectBookmarkModel(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (!ResolveRoute(query, query.result) ||
+      query.result.route != FrontendGuiRouteV1::bookmarks) {
+    query.result.bookmark_model_probe.unavailable_reason =
+        "bookmarks_route_unavailable";
+    return true;
+  }
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *widget = nullptr;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access,
+                               "frontend_bookmarks", "frontend_bookmarks",
+                               root, widget) || root == nullptr ||
+      widget != root) {
+    query.result.bookmark_model_probe.unavailable_reason =
+        "bookmarks_root_unverified";
+    return true;
+  }
+  return ProbeFrontendBookmarkModelV1(
+      query.environment, access, root, query.result.bookmark_model_probe);
+}
+
 bool InspectCoatOfArmsTree(
     FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (!ResolveRoute(query, query.result) ||
@@ -482,6 +504,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   query->result = {};
   if (query->operation == FrontendGuiRouteOperationV1::inspect_tree) {
     return InspectActiveRouteTree(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::probe_bookmark_model) {
+    return InspectBookmarkModel(*query);
   }
   if (query->operation ==
       FrontendGuiRouteOperationV1::inspect_coat_of_arms_tree) {

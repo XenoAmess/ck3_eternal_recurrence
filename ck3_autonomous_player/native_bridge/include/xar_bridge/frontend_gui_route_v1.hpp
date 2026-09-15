@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/frontend_bookmark_model_probe_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 
@@ -17,6 +18,10 @@ inline constexpr std::string_view kFrontendGuiTreeInspectionV1Capability =
     "game.command.inspect-frontend-gui-tree-v1";
 inline constexpr std::string_view kFrontendGuiTreeInspectionV1Step =
     "inspect-frontend-gui-tree-v1";
+inline constexpr std::string_view kFrontendBookmarkModelProbeV1Capability =
+    "game.command.probe-frontend-bookmark-model-v1";
+inline constexpr std::string_view kFrontendBookmarkModelProbeV1Step =
+    "probe-frontend-bookmark-model-v1";
 inline constexpr std::string_view
     kFrontendCoatOfArmsTreeInspectionV1Capability =
         "game.command.inspect-frontend-coat-of-arms-tree-v1";
@@ -80,6 +85,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   enter_coat_of_arms_custom_mode = 9,
   inspect_coat_of_arms_pattern_grid = 10,
   start_selected_bookmark = 11,
+  probe_bookmark_model = 12,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -97,6 +103,7 @@ struct FrontendGuiRouteResultV1 {
   bool dispatch_invoked = false;
   bool native_handled = false;
   NamedGuiTreeInspectionV1 tree_inspection{};
+  FrontendBookmarkModelProbeV1 bookmark_model_probe{};
 };
 
 struct FrontendGuiRouteMailboxContextV1 {

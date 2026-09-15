@@ -203,6 +203,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1
+  "Admit unadvertised exact-build Bookmarks selected-model read-only candidate"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1
   "Admit exact Council final gates only in the unadvertised controlled action candidate"
   OFF
@@ -430,6 +436,7 @@ add_library(xar_ck3_bridge SHARED
   src/event_window_context_v1.cpp
   src/event_window_context_v1_mailbox.cpp
   src/event_window_context_v1_serializer.cpp
+  src/frontend_bookmark_model_probe_v1.cpp
   src/frontend_gui_route_v1.cpp
   src/game_adapter.cpp
   src/government_runtime_adapter_observer_v1.cpp
@@ -838,6 +845,11 @@ if(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
     XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1
   )
 endif()
+if(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1
+  )
+endif()
 if(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1=1
@@ -1009,6 +1021,23 @@ endif()
 include(CTest)
 if(BUILD_TESTING)
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
+  add_executable(xar_ck3_frontend_bookmark_model_probe_v1_test
+    src/frontend_bookmark_model_probe_v1.cpp
+    src/frontend_bookmark_model_probe_v1_test.cpp)
+  target_include_directories(
+    xar_ck3_frontend_bookmark_model_probe_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_frontend_bookmark_model_probe_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_frontend_bookmark_model_probe_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_frontend_bookmark_model_probe_v1
+    COMMAND xar_ck3_frontend_bookmark_model_probe_v1_test)
 
   add_executable(xar_ck3_activity_planning_snapshot_v1_application_glue_test
     src/activity_planning_snapshot_v1_private_observer.cpp
