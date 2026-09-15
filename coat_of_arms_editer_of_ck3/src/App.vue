@@ -19,6 +19,11 @@ import {
   structurallyCompressCoatOfArms,
   type StructuralCompressionReceipt,
 } from './domain/coatOfArmsOptimizer'
+import type {
+  InstancePruneProgress,
+  InstancePruneReceipt,
+  InstancePruneResult,
+} from './domain/coatOfArmsPruner'
 import { decodeFitImageFile, type DecodedFitImage } from './domain/imageInput'
 import {
   resizeFitImage,
@@ -129,8 +134,14 @@ const fitCompressionEvidence = ref<{
   pixelExactResolutions: number[]
 }>()
 const fitCompressionSource = ref('')
+const fitPruneBusy = ref(false)
+const fitPruneProgress = ref<InstancePruneProgress>()
+const fitPruneEvidence = ref<InstancePruneReceipt>()
+const fitPruneSource = ref('')
 let fitWorker: Worker | null = null
 let fitRunId = 0
+let fitPruneWorker: Worker | null = null
+let fitPruneRunId = 0
 
 const fitTerminationLabels: Record<ImageFitResult['provenance']['terminationReason'], string> = {
   layer_budget: '达到用户搜索预算',
@@ -146,6 +157,9 @@ const outputLines = computed(() => output.value.match(/\n/g)?.length ?? 0)
 const activeFitCompression = computed(() => (
   fitCompressionSource.value === output.value ? fitCompressionEvidence.value : undefined
 ))
+const activeFitPrune = computed(() => (
+  fitPruneSource.value === output.value ? fitPruneEvidence.value : undefined
+))
 const fitEvidenceJson = computed(() => {
   if (!fitResult.value) return ''
   const { layerLosses, selectedAssetSha256, ...provenance } = fitResult.value.provenance
@@ -160,6 +174,17 @@ const fitEvidenceJson = computed(() => {
     },
     selectedAssetSha256: [...new Set(selectedAssetSha256)],
     structuralCompression: activeFitCompression.value ?? null,
+    exactInstancePrune: activeFitPrune.value
+      ? {
+          contract: activeFitPrune.value.contract,
+          drawnInstancesBefore: activeFitPrune.value.drawnInstancesBefore,
+          drawnInstancesAfter: activeFitPrune.value.drawnInstancesAfter,
+          removedInstances: activeFitPrune.value.removedInstances,
+          fixedPointPasses: activeFitPrune.value.fixedPointPasses,
+          evaluatedCandidates: activeFitPrune.value.evaluatedCandidates,
+          finalNecessityEvidenceCount: activeFitPrune.value.finalNecessityEvidence.length,
+        }
+      : null,
   })
 })
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -349,6 +374,7 @@ async function selectTargetImage(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
+  cancelInstancePrune(false)
   cancelImageFit(false)
   fitProgressPercent.value = 0
   fitProgressLabel.value = '等待开始'
@@ -357,6 +383,8 @@ async function selectTargetImage(event: Event) {
     fitResult.value = undefined
     fitCompressionEvidence.value = undefined
     fitCompressionSource.value = ''
+    fitPruneEvidence.value = undefined
+    fitPruneSource.value = ''
     fitWebGlScore.value = null
     fitPreviewUrl.value = ''
     fitStatus.value = `${file.name} · ${targetImage.value.originalWidth}×${targetImage.value.originalHeight} · ${(file.size / 1024).toFixed(1)} KiB · 只在浏览器内处理`
@@ -379,6 +407,164 @@ function cancelImageFit(notify = true) {
     fitProgressLabel.value = notify ? '已取消' : '等待开始'
   }
   fitBusy.value = false
+}
+
+function cancelInstancePrune(notify = true) {
+  fitPruneRunId += 1
+  fitPruneWorker?.terminate()
+  fitPruneWorker = null
+  if (fitPruneBusy.value && notify) ElMessage.info('已取消精确剪枝；当前编辑结果保持不变')
+  fitPruneBusy.value = false
+  fitPruneProgress.value = undefined
+}
+
+function cloneDecodedDdsForWorker(texture: DecodedDds): DecodedDds {
+  return {
+    width: texture.width,
+    height: texture.height,
+    fourCC: texture.fourCC,
+    pixels: new Uint8ClampedArray(texture.pixels),
+  }
+}
+
+function cloneCoatOfArmsForWorker(value: CoatOfArms): CoatOfArms {
+  return {
+    outerKey: value.outerKey,
+    parent: value.parent,
+    pattern: value.pattern,
+    colors: [...value.colors],
+    coloredEmblems: value.coloredEmblems.map((emblem) => ({
+      texture: emblem.texture,
+      colors: [...emblem.colors],
+      mask: [...emblem.mask],
+      instances: emblem.instances.map((instance) => ({
+        position: [...instance.position],
+        scale: [...instance.scale],
+        rotation: instance.rotation,
+        depth: instance.depth,
+      })),
+    })),
+    texturedEmblems: value.texturedEmblems.map((emblem) => ({ ...emblem })),
+  }
+}
+
+function pruneFitDocument() {
+  if (!fitResult.value || !targetImage.value || !patternTexture.value) {
+    ElMessage.warning('请先完成一次图片拟合并载入结果素材')
+    return
+  }
+  const missing = [...new Set(coatOfArms.value.coloredEmblems.map((item) => item.texture))]
+    .filter((name) => !emblemTextures.value[name])
+  if (missing.length) {
+    ElMessage.error(`无法执行精确剪枝，缺少 ${missing.length} 个结果 DDS`)
+    return
+  }
+  cancelInstancePrune(false)
+  const runId = ++fitPruneRunId
+  fitPruneBusy.value = true
+  fitPruneEvidence.value = undefined
+  fitPruneSource.value = ''
+  fitPruneProgress.value = {
+    pass: 1, completedInPass: 0,
+    totalInPass: fitResult.value.provenance.drawnInstances,
+    evaluatedCandidates: 0, percent: 0,
+  }
+  const worker = new Worker(new URL('./domain/coatOfArmsPruner.worker.ts', import.meta.url), { type: 'module' })
+  fitPruneWorker = worker
+  const fail = (message: string) => {
+    if (runId !== fitPruneRunId) return
+    worker.terminate()
+    fitPruneWorker = null
+    fitPruneBusy.value = false
+    fitPruneProgress.value = undefined
+    ElMessage.error(`精确剪枝 Worker 失败：${message}`)
+  }
+  worker.onmessage = (event: MessageEvent<
+    | { kind: 'progress', progress: InstancePruneProgress }
+    | { kind: 'result', ok: boolean, result?: InstancePruneResult, error?: string }
+  >) => {
+    if (runId !== fitPruneRunId) return
+    if (event.data.kind === 'progress') {
+      fitPruneProgress.value = event.data.progress
+      return
+    }
+    worker.terminate()
+    fitPruneWorker = null
+    fitPruneBusy.value = false
+    if (!event.data.ok || !event.data.result) {
+      fitPruneProgress.value = undefined
+      ElMessage.error(`精确剪枝失败：${event.data.error ?? 'unknown'}`)
+      return
+    }
+    const pruned = event.data.result
+    const removedIds = new Set(pruned.receipt.removedEvidence.map((item) => item.instanceId))
+    const [patternAssetSha256, ...instanceAssetSha256] = fitResult.value!.provenance.selectedAssetSha256
+    const retainedAssetSha256 = instanceAssetSha256.length === pruned.receipt.drawnInstancesBefore
+      ? instanceAssetSha256.filter((_, index) => !removedIds.has(index))
+      : instanceAssetSha256
+    coatOfArms.value = pruned.coatOfArms
+    source.value = serializeCoatOfArms(pruned.coatOfArms)
+    fitResult.value = {
+      ...fitResult.value!,
+      coatOfArms: pruned.coatOfArms,
+      provenance: {
+        ...fitResult.value!.provenance,
+        logicalLayers: pruned.coatOfArms.coloredEmblems.length + pruned.coatOfArms.texturedEmblems.length,
+        coloredEmblemBlocks: pruned.coatOfArms.coloredEmblems.length,
+        drawnInstances: pruned.receipt.drawnInstancesAfter,
+        selectedLayers: pruned.receipt.drawnInstancesAfter,
+        selectedAssetSha256: [patternAssetSha256, ...retainedAssetSha256].filter(Boolean),
+      },
+    }
+    fitPruneEvidence.value = pruned.receipt
+    fitPruneSource.value = source.value
+    if (pruned.receipt.removedInstances > 0) {
+      fitCompressionEvidence.value = undefined
+      fitCompressionSource.value = ''
+    }
+    fitPruneProgress.value = {
+      pass: pruned.receipt.fixedPointPasses,
+      completedInPass: pruned.receipt.finalNecessityEvidence.length,
+      totalInPass: pruned.receipt.finalNecessityEvidence.length,
+      evaluatedCandidates: pruned.receipt.evaluatedCandidates,
+      percent: 100,
+    }
+    ElMessage.success(`精确剪枝达到固定点：移除 ${pruned.receipt.removedInstances}，保留 ${pruned.receipt.drawnInstancesAfter}`)
+  }
+  worker.onerror = (event) => {
+    fail(event.message)
+  }
+  worker.onmessageerror = () => {
+    fail('结果消息无法反序列化')
+  }
+  const usedTextureNames = [...new Set(coatOfArms.value.coloredEmblems.map((item) => item.texture))]
+  const workerEmblems = Object.fromEntries(usedTextureNames.map((name) => (
+    [name, cloneDecodedDdsForWorker(emblemTextures.value[name])]
+  )))
+  try {
+    worker.postMessage([
+      cloneCoatOfArmsForWorker(coatOfArms.value),
+      {
+        width: targetImage.value.image.width,
+        height: targetImage.value.image.height,
+        pixels: new Uint8ClampedArray(targetImage.value.image.pixels),
+      },
+      cloneDecodedDdsForWorker(patternTexture.value),
+      workerEmblems,
+      undefined,
+      Object.fromEntries(Object.entries(shaderNamedColors.value).map(([name, color]) => (
+        [name, [...color]]
+      ))),
+      {
+        searchResolution: 96,
+        validationResolutions: [230, 512],
+        numericLossTolerance: 1e-12,
+        allowedVisualDifferenceBytes: 0,
+      },
+    ])
+  } catch (error) {
+    fail(errorMessage(error))
+  }
 }
 
 function compressFitDocument() {
@@ -449,12 +635,15 @@ async function fitTargetImage() {
     return
   }
   fitLayerBudget.value = layerBudget
+  cancelInstancePrune(false)
   cancelImageFit(false)
   const runId = ++fitRunId
   fitBusy.value = true
   fitResult.value = undefined
   fitCompressionEvidence.value = undefined
   fitCompressionSource.value = ''
+  fitPruneEvidence.value = undefined
+  fitPruneSource.value = ''
   fitWebGlScore.value = null
   fitPreviewUrl.value = ''
   fitProgressPercent.value = 0
@@ -1052,11 +1241,13 @@ importSource()
           </div>
           <small class="fit-budget-note">例如 1024 表示最多搜索并保留 1024 层，不保证输出恰好 1024 层。每一层必须严格降低实际渲染损失；无改善或用户取消时提前停止。输入支持 10000 及更大安全整数。</small>
           <div class="fit-actions">
-            <el-button type="primary" :loading="fitBusy" :disabled="!targetImage || !loadedAssetPack" @click="fitTargetImage">
+            <el-button type="primary" :loading="fitBusy" :disabled="fitPruneBusy || !targetImage || !loadedAssetPack" @click="fitTargetImage">
               开始本地拟合
             </el-button>
             <el-button :disabled="!fitBusy" @click="cancelImageFit()">取消</el-button>
-            <el-button :disabled="fitBusy || !fitResult" @click="compressFitDocument">安全压缩相邻同样式块</el-button>
+            <el-button :disabled="fitBusy || fitPruneBusy || !fitResult" @click="compressFitDocument">安全压缩相邻同样式块</el-button>
+            <el-button :loading="fitPruneBusy" :disabled="fitBusy || fitPruneBusy || !fitResult" @click="pruneFitDocument">精确固定点剪枝</el-button>
+            <el-button v-if="fitPruneBusy" @click="cancelInstancePrune()">取消剪枝</el-button>
           </div>
         </div>
         <div class="fit-report" :data-fit-evidence="fitEvidenceJson">
@@ -1071,6 +1262,10 @@ importSource()
             <small>{{ fitProgressLabel }}（进度表示当前搜索阶段）</small>
           </div>
           <template v-if="fitResult">
+            <div v-if="fitPruneProgress" class="fit-progress">
+              <el-progress :percentage="fitPruneProgress.percent" :status="activeFitPrune ? 'success' : undefined" :stroke-width="8" />
+              <small>剪枝第 {{ fitPruneProgress.pass }} 轮 · {{ fitPruneProgress.completedInPass }}/{{ fitPruneProgress.totalInPass }} · 累计 {{ fitPruneProgress.evaluatedCandidates }} 候选</small>
+            </div>
             <div v-if="fitPreviewUrl" class="fit-result-image">
               <span>拟合平面（不叠加盾面材质）</span>
               <img :src="fitPreviewUrl" alt="图片拟合结果预览">
@@ -1091,6 +1286,11 @@ importSource()
                 <div><dt>安全压缩实例</dt><dd>{{ activeFitCompression.receipt.drawnInstancesBefore }} → {{ activeFitCompression.receipt.drawnInstancesAfter }}</dd></div>
                 <div><dt>安全压缩体积</dt><dd>{{ activeFitCompression.receipt.utf8BytesBefore }} → {{ activeFitCompression.receipt.utf8BytesAfter }} bytes</dd></div>
                 <div><dt>压缩像素门禁</dt><dd>{{ activeFitCompression.pixelExactResolutions.join(' / ') }} 全部逐字节一致</dd></div>
+              </template>
+              <template v-if="activeFitPrune">
+                <div><dt>固定点剪枝</dt><dd>{{ activeFitPrune.drawnInstancesBefore }} → {{ activeFitPrune.drawnInstancesAfter }} 实例</dd></div>
+                <div><dt>必要性证据</dt><dd>{{ activeFitPrune.finalNecessityEvidence.length }} / {{ activeFitPrune.drawnInstancesAfter }} 完整</dd></div>
+                <div><dt>剪枝合同</dt><dd>96 / 230 / 512 零像素差；损失容差 1e-12</dd></div>
               </template>
               <div><dt>高分辨率接缝门禁</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.status === 'passed' ? '96 / 230 / 512 全部通过' : '不适用' }}</dd></div>
               <div><dt>接缝指标</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.metrics.map((metric) => `${metric.resolution}px leak=${metric.backgroundLeakPixels} peak=${Math.max(metric.peakRowLeakPixels, metric.peakColumnLeakPixels)}`).join('；') || '不适用' }}</dd></div>

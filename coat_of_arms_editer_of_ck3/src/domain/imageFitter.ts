@@ -167,7 +167,7 @@ function validateImage(image: FitImage): void {
 
 export function resizeFitImage(image: FitImage, size: number): FitImage {
   validateImage(image)
-  if (!Number.isSafeInteger(size) || size < 8 || size > 128) throw new Error('搜索分辨率必须在 8..128')
+  if (!Number.isSafeInteger(size) || size < 8 || size > 4096) throw new Error('重采样分辨率必须在 8..4096')
   const pixels = new Uint8ClampedArray(size * size * 4)
   for (let y = 0; y < size; y += 1) {
     const sourceY = clamp((y + 0.5) * image.height / size - 0.5, 0, image.height - 1)
