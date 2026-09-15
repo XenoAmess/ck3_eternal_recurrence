@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import copy
 import sys
 import unittest
 
@@ -17,7 +18,11 @@ from xar_autoplayer.bridge.war_entry_contract import (
     query_war_entry_assessments_step,
     require_declarable_war_targets,
     require_war_entry_assessment_targets,
+    raiktor_bookmark_saved_scope_target_v1,
     war_entry_assessment_target_scopes,
+)
+from ck3_autonomous_player.tests.unit.test_event_window_context_v1_bridge import (
+    _raiktor_frame_and_snapshot,
 )
 
 
@@ -172,6 +177,53 @@ class WarEntryRequestContractTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "active-war primary opponents"):
             require_war_entry_assessment_targets(snapshot, [43])
+
+    def test_exact_robert_saved_scope_authorizes_read_only_byzantine_power(self) -> None:
+        frame, snapshot = _raiktor_frame_and_snapshot()
+        self.assertEqual(raiktor_bookmark_saved_scope_target_v1(snapshot, frame), 84)
+        self.assertEqual(
+            war_entry_assessment_target_scopes(
+                snapshot, [84], event_context=frame
+            ),
+            [
+                {
+                    "target_character_id": 84,
+                    "sources": ["raiktor_bookmark_byz_emperor_saved_scope"],
+                }
+            ],
+        )
+        self.assertEqual(
+            require_war_entry_assessment_targets(
+                snapshot, [84], event_context=frame
+            ),
+            [84],
+        )
+        with self.assertRaisesRegex(ValueError, "outside current"):
+            require_war_entry_assessment_targets(
+                snapshot, [85], event_context=frame
+            )
+        with self.assertRaisesRegex(ValueError, "outside current"):
+            require_war_entry_assessment_targets(snapshot, [84])
+
+    def test_robert_event_scope_rejects_stale_frame_and_unknown_holder(self) -> None:
+        frame, snapshot = _raiktor_frame_and_snapshot()
+        stale = copy.deepcopy(frame)
+        stale["snapshot_revision"] += 1
+        with self.assertRaisesRegex(ValueError, "frame binding"):
+            raiktor_bookmark_saved_scope_target_v1(snapshot, stale)
+
+        missing = copy.deepcopy(frame)
+        missing["saved_scopes"][0]["scope"]["typed_identity"] = {
+            "status": "unavailable",
+            "reason": "character_scope_identity_unavailable",
+        }
+        with self.assertRaisesRegex(ValueError, "saved character"):
+            raiktor_bookmark_saved_scope_target_v1(snapshot, missing)
+
+        wrong_root = copy.deepcopy(frame)
+        wrong_root["root_scope"]["typed_identity"]["character_id"] = 85
+        with self.assertRaisesRegex(ValueError, "player root"):
+            raiktor_bookmark_saved_scope_target_v1(snapshot, wrong_root)
 
 
 class WarEntryAvailableResultContractTests(unittest.TestCase):

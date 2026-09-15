@@ -34,6 +34,7 @@ from .bridge.battle_terminal_transition_contract import (
 )
 from .bridge.war_entry_contract import (
     FIXED_POINT_SCALE as WAR_ENTRY_FIXED_POINT_SCALE,
+    RAIKTOR_BOOKMARK_EVENT_SCOPE_CAPABILITY,
     normalize_war_entry_assessments,
     query_war_entry_assessments_step,
 )
@@ -119,6 +120,9 @@ from .simulation.battle_terminal_cruise_policy import (
 )
 from .vanilla_events.policy import (
     recommend_registered_vanilla_event_option_v1,
+)
+from .vanilla_events.bookmark_raiktor_policy import (
+    recommend_robert_raiktor_option_v1,
 )
 from .vanilla_events.outcome import (
     plan_registered_event_material_postcondition_v1,
@@ -5376,6 +5380,75 @@ def choose_one_life_turn(
                 if isinstance(played_character, dict)
                 else None
             )
+            raiktor_decision = recommend_robert_raiktor_option_v1(
+                event_context,
+                snapshot,
+                war_entry_assessments=_same_frame_war_entry_assessments(
+                    rows, snapshot
+                ),
+                action_steps=available_steps,
+                cross_run_focus=cross_run_focus,
+                event_scope_query_supported=(
+                    RAIKTOR_BOOKMARK_EVENT_SCOPE_CAPABILITY
+                    in available_capabilities
+                ),
+            )
+            if raiktor_decision is not None:
+                event_summary["raiktor_decision"] = raiktor_decision
+                if raiktor_decision["status"] == "query_required":
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_raiktor_power_query",
+                        "selected_step": raiktor_decision["selected_step"],
+                        "reason": raiktor_decision["reason"],
+                        "active_event": event_summary,
+                        "event_decision": raiktor_decision,
+                    }
+                if raiktor_decision["status"] == "blocked":
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_raiktor_contract_blocked",
+                        "selected_step": None,
+                        "reason": raiktor_decision["reason"],
+                        "active_event": event_summary,
+                        "event_decision": raiktor_decision,
+                    }
+                native_index = raiktor_decision["selected_native_option_index"]
+                assert isinstance(native_index, int)
+                option_number = native_index + 1
+                exact_step = event_option_step(option_number)
+                selected = next(
+                    option
+                    for option in materialized_options
+                    if option["native_option_index"] == native_index
+                )
+                event_summary.update(
+                    {
+                        "selected_option_number": option_number,
+                        "selected_option_index": native_index,
+                        "selected_native_option_index": native_index,
+                        "selected_rendered_index": selected.get("rendered_index"),
+                        "semantic_optimal": False,
+                    }
+                )
+                if exact_step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_raiktor_source_reviewed_choice",
+                        "selected_step": exact_step,
+                        "reason": raiktor_decision["reason"],
+                        "active_event": event_summary,
+                        "event_decision": raiktor_decision,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "active_event_raiktor_choice_unsupported",
+                    "selected_step": None,
+                    "required_step": exact_step,
+                    "reason": f"source-reviewed option {option_number} needs {exact_step}",
+                    "active_event": event_summary,
+                    "event_decision": raiktor_decision,
+                }
             registry_decision = (
                 recommend_registered_vanilla_event_option_v1(
                     event_context,

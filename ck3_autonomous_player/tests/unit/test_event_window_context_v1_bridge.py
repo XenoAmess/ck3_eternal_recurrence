@@ -15,6 +15,13 @@ from xar_autoplayer.bridge.mcp_server import (
 from xar_autoplayer.bridge.native_driver import _action_steps
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.strategy import choose_one_life_turn
+from xar_autoplayer.vanilla_events.bookmark_raiktor_policy import (
+    recommend_robert_raiktor_option_v1,
+)
+from xar_autoplayer.bridge.war_entry_contract import (
+    RAIKTOR_BOOKMARK_EVENT_SCOPE_CAPABILITY,
+    query_war_entry_assessments_step,
+)
 
 
 EVENT_ID = 0x01000029
@@ -1107,6 +1114,143 @@ class EventWindowContractTests(unittest.TestCase):
                 ("select-event-option-4", 9),
             ],
         )
+
+
+def _raiktor_frame_and_snapshot() -> tuple[dict[str, object], dict[str, object]]:
+    frame = _frame()
+    frame["event_definition_key"] = "bookmark.1071"
+    frame["root_scope"] = _scope(character_id=CHARACTER_ID)
+    frame["saved_scopes"] = [
+        {
+            "name": "byz_emperor",
+            "name_identifier": 401,
+            "scope": _scope(character_id=84),
+        },
+        {
+            "name": "raiktor",
+            "name_identifier": 402,
+            "scope": _scope(character_id=77),
+        },
+    ]
+    first = frame["options"][0]
+    first.update(
+        {
+            "native_option_index": 0,
+            "enabled": True,
+            "fallback": False,
+            "cancel": False,
+            "resolved_name": "Claim the empire",
+        }
+    )
+    first["effect_indicators"]["rows"] = []
+    second = copy.deepcopy(first)
+    second.update(
+        {"rendered_index": 1, "native_option_index": 1, "resolved_name": "Coast"}
+    )
+    third = copy.deepcopy(first)
+    third.update(
+        {"rendered_index": 2, "native_option_index": 2, "resolved_name": "Decline"}
+    )
+    frame["options"] = [first, second, third]
+    snapshot = _snapshot()
+    snapshot["active_event"]["option_count"] = 3
+    snapshot["played_character"] = {"character_id": CHARACTER_ID, "alive": True}
+    snapshot["played_character_gold"] = {"raw": 20_000_000, "scale": 100_000}
+    snapshot["active_wars"] = []
+    snapshot["declarable_wars"] = []
+    return frame, snapshot
+
+
+class RobertRaiktorTypedConsumerTests(unittest.TestCase):
+    def test_formal_planner_declines_without_power_instead_of_first_option(self) -> None:
+        frame, snapshot = _raiktor_frame_and_snapshot()
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+                "select-event-option-3",
+            },
+        )
+        self.assertEqual(plan["phase"], "active_event_raiktor_source_reviewed_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-3")
+        self.assertFalse(plan["event_decision"]["native_power_observed"])
+
+    def test_query_only_when_byzantine_holder_is_a_lawful_native_target(self) -> None:
+        frame, snapshot = _raiktor_frame_and_snapshot()
+        step = query_war_entry_assessments_step([84])
+        snapshot["declarable_wars"] = [{"target_character_id": 84}]
+        choice = recommend_robert_raiktor_option_v1(
+            frame,
+            snapshot,
+            war_entry_assessments={},
+            action_steps={step},
+            cross_run_focus=None,
+        )
+        self.assertEqual(choice["status"], "query_required")
+        self.assertEqual(choice["selected_step"], step)
+        snapshot["declarable_wars"] = []
+        choice = recommend_robert_raiktor_option_v1(
+            frame,
+            snapshot,
+            war_entry_assessments={},
+            action_steps={step},
+            cross_run_focus=None,
+        )
+        self.assertEqual(choice["selected_native_option_index"], 2)
+        choice = recommend_robert_raiktor_option_v1(
+            frame,
+            snapshot,
+            war_entry_assessments={},
+            action_steps={step},
+            cross_run_focus=None,
+            event_scope_query_supported=True,
+        )
+        self.assertEqual(choice["status"], "query_required")
+        self.assertEqual(
+            RAIKTOR_BOOKMARK_EVENT_SCOPE_CAPABILITY,
+            "game.command.query-war-entry-assessments-raiktor-bookmark-saved-scope-v1",
+        )
+
+    def test_claim_requires_large_observed_own_power_margin(self) -> None:
+        frame, snapshot = _raiktor_frame_and_snapshot()
+        assessment = {
+            84: {"actor_power_base_raw": 250_000, "target_power_total_raw": 190_000}
+        }
+        choice = recommend_robert_raiktor_option_v1(
+            frame,
+            snapshot,
+            war_entry_assessments=assessment,
+            action_steps=set(),
+            cross_run_focus=None,
+        )
+        self.assertEqual(choice["selected_native_option_index"], 0)
+        self.assertTrue(choice["source_capture_required_for_gen034_d"])
+        assessment[84]["target_power_total_raw"] = 210_000
+        choice = recommend_robert_raiktor_option_v1(
+            frame,
+            snapshot,
+            war_entry_assessments=assessment,
+            action_steps=set(),
+            cross_run_focus=None,
+        )
+        self.assertEqual(choice["selected_native_option_index"], 2)
+
+    def test_missing_saved_scope_blocks_instead_of_degraded_choice(self) -> None:
+        frame, snapshot = _raiktor_frame_and_snapshot()
+        frame["saved_scopes"] = frame["saved_scopes"][:1]
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+                "select-event-option-3",
+            },
+        )
+        self.assertEqual(plan["phase"], "active_event_raiktor_contract_blocked")
+        self.assertIsNone(plan["selected_step"])
 
 
 if __name__ == "__main__":

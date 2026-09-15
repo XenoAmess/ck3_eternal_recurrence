@@ -7,9 +7,19 @@ this module must never synthesize strategic power from snapshot soldier totals.
 
 from __future__ import annotations
 
+from .event_window_context_contract import (
+    normalize_current_event_window_context_v1,
+)
+
 
 QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY = (
     "game.command.query-war-entry-assessments-v1-N"
+)
+# Reserved for a future frontend hookup. The current production bridge does
+# not advertise this event-saved-scope authorization until its same-frame
+# query/action route has been implemented and paused-live verified.
+RAIKTOR_BOOKMARK_EVENT_SCOPE_CAPABILITY = (
+    "game.command.query-war-entry-assessments-raiktor-bookmark-saved-scope-v1"
 )
 QUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX = (
     "query-war-entry-assessments-v1-"
@@ -156,10 +166,86 @@ def require_declarable_war_targets(
     return targets
 
 
+def raiktor_bookmark_saved_scope_target_v1(
+    snapshot: object, event_context: object
+) -> int | None:
+    """Authorize only the real Byzantine holder saved by exact bookmark.1071.
+
+    This is a read-only scope source for an existing native power query, not
+    war legality or permission to execute either event war option. The caller
+    must supply a typed event frame from the same paused native revision.
+    """
+
+    if not isinstance(snapshot, dict) or not isinstance(event_context, dict):
+        raise ValueError("Raiktor event-scope assessment requires two objects")
+    active = snapshot.get("active_event")
+    played = snapshot.get("played_character")
+    event_id = active.get("instance_id") if isinstance(active, dict) else None
+    option_count = active.get("option_count") if isinstance(active, dict) else None
+    player_id = played.get("character_id") if isinstance(played, dict) else None
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    if (
+        snapshot.get("paused") is not True
+        or isinstance(event_id, bool)
+        or not isinstance(event_id, int)
+        or isinstance(native_revision, bool)
+        or not isinstance(native_revision, int)
+        or isinstance(date_raw, bool)
+        or not isinstance(date_raw, int)
+        or isinstance(player_id, bool)
+        or not isinstance(player_id, int)
+        or player_id <= 0
+    ):
+        raise ValueError("Raiktor event-scope assessment lacks a paused frame")
+    normalized = normalize_current_event_window_context_v1(
+        event_context,
+        expected_event_instance_id=event_id,
+        expected_date_raw=date_raw,
+        expected_snapshot_revision=native_revision,
+    )
+    if normalized["status"] != "available" or normalized["event_definition_key"] != "bookmark.1071":
+        return None
+    if option_count != 3 or {row["native_option_index"] for row in normalized["options"]} != {0, 1, 2}:
+        raise ValueError("Raiktor event-scope option projection drifted")
+
+    root = normalized["root_scope"]
+    root_identity = root["typed_identity"]
+    if (
+        root["type_key"] != "character"
+        or root_identity.get("status") != "available"
+        or root_identity.get("character_id") != player_id
+    ):
+        raise ValueError("Raiktor event-scope player root drifted")
+    saved: dict[str, int] = {}
+    for row in normalized["saved_scopes"]:
+        name = row["name"]
+        if name not in {"byz_emperor", "raiktor"}:
+            continue
+        scope = row["scope"]
+        identity = scope["typed_identity"]
+        character_id = identity.get("character_id") if isinstance(identity, dict) else None
+        if (
+            scope["type_key"] != "character"
+            or identity.get("status") != "available"
+            or isinstance(character_id, bool)
+            or not isinstance(character_id, int)
+            or character_id <= 0
+        ):
+            raise ValueError("Raiktor event-scope saved character drifted")
+        saved[name] = character_id
+    if set(saved) != {"byz_emperor", "raiktor"} or saved["byz_emperor"] == player_id:
+        raise ValueError("Raiktor event-scope Byzantine holder is unavailable")
+    return saved["byz_emperor"]
+
+
 def war_entry_assessment_target_scopes(
-    snapshot: object, target_character_ids: list[int]
+    snapshot: object,
+    target_character_ids: list[int],
+    *,
+    event_context: object = None,
 ) -> list[dict[str, object]]:
-    """Bind each target to a current declaration or active-war opponent row."""
+    """Bind each target to a declaration, active opponent, or typed event scope."""
     targets = normalize_war_entry_target_ids(target_character_ids)
     if not isinstance(snapshot, dict):
         raise ValueError("war-entry assessment requires a snapshot object")
@@ -206,6 +292,12 @@ def war_entry_assessment_target_scopes(
             )
         active_opponents.add(opponent)
 
+    event_scope_target = (
+        raiktor_bookmark_saved_scope_target_v1(snapshot, event_context)
+        if event_context is not None
+        else None
+    )
+
     scopes: list[dict[str, object]] = []
     outside: list[int] = []
     for target in targets:
@@ -214,6 +306,8 @@ def war_entry_assessment_target_scopes(
             sources.append("declarable_war")
         if target in active_opponents:
             sources.append("active_war_primary_opponent")
+        if target == event_scope_target:
+            sources.append("raiktor_bookmark_byz_emperor_saved_scope")
         if not sources:
             outside.append(target)
             continue
@@ -225,18 +319,24 @@ def war_entry_assessment_target_scopes(
         )
     if outside:
         raise ValueError(
-            "target_character_ids are outside current declarable_wars and "
-            f"active-war primary opponents: {outside}"
+            "target_character_ids are outside current declarable_wars, "
+            "active-war primary opponents, and exact Raiktor event saved scope: "
+            f"{outside}"
         )
     return scopes
 
 
 def require_war_entry_assessment_targets(
-    snapshot: object, target_character_ids: list[int]
+    snapshot: object,
+    target_character_ids: list[int],
+    *,
+    event_context: object = None,
 ) -> list[int]:
-    """Require targets to belong to either supported current target scope."""
+    """Require targets to belong to a supported same-frame scope."""
     targets = normalize_war_entry_target_ids(target_character_ids)
-    war_entry_assessment_target_scopes(snapshot, targets)
+    war_entry_assessment_target_scopes(
+        snapshot, targets, event_context=event_context
+    )
     return targets
 
 
