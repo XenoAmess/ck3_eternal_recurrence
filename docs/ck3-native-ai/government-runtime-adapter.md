@@ -3,10 +3,12 @@
 ## Status and scope
 
 - **[research / static-frozen]** This topic freezes the exact-build government identity reader, all 18 stock government definitions, their nonreligious native AI switches, and the runtime feature inputs needed to select a future G2 adapter.
-- **[static-ready / private source adapter]** The semantic observer and its
-  collector-facing source adapter are implemented and pass standalone normal
-  and optimized MSVC `/W4 /WX` tests. They are not wired into the bridge,
-  mailbox, public schema, planner, or MCP.
+- **[static-ready / private bridge binder]** The semantic observer, its
+  collector-facing source adapter, and the GOV4 exact-build binder pass
+  standalone normal and optimized MSVC `/W4 /WX` tests. The binder is compiled
+  into the native bridge and provides a fixed read-only mailbox operation, but
+  no bridge caller or mailbox permit slot invokes it yet. No public schema,
+  planner, capability, or MCP surface changed.
 - **[not live]** CK3 was neither started nor attached. The evidence is executable and source-file analysis only.
 - Religion remains owner-deferred. `theocracy_government` and `holy_order_government` are retained as identity rows, while faith, doctrine, tenet, fervor, conversion, religious reformation, and holy-order mechanics are excluded.
 
@@ -34,6 +36,36 @@ application-main while paused, rejects any frame, lifecycle, player,
 government, feature, or script-DLC identity drift, then owns all strings and
 vectors passed into the semantic observer. It neither reads native memory nor
 publishes a capability by itself.
+
+The private bridge binder has its own versioned contract and focused test:
+
+- `ck3_autonomous_player/native_bridge/research/government_runtime_adapter_bridge_binder_v1_abi.json`
+- `ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_bridge_binder_v1_standalone.py`
+
+The binder admits only CK3 `1.19.0.6` with the frozen executable hash, binds
+the existing campaign-root and loaded-feature native environments, and runs
+the GOV3 double observation inside one exact mailbox slot. Each sample must
+match the operation revision and application-main execution date. The
+campaign lifecycle must also match the mailbox stamp's game-state identity;
+both collector roots must remain stable around each composite capture. A
+private resolver proxy records the raw government object, while the
+loaded-feature memory proxy records the script-DLC bucket base, mask, and
+maximum spill. GOV3 carries those private identities across its two composite
+captures and rejects drift even when the copied semantic values are equal.
+The two collectors also retain their own internal government-object,
+feature-root, and script-DLC-layout double-read gates.
+
+The offline fixture path exercises the same revision/date boundary. Production
+rejects fixture callback overrides. A typed GOV3 unavailable result completes
+the mailbox executor, while direct calls, stale tickets, repeated operations,
+and non-owner execution fail as transport errors.
+
+Focused static acceptance, which never starts or attaches to CK3:
+
+```powershell
+py ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_bridge_binder_v1_standalone.py
+py -O ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_bridge_binder_v1_standalone.py
+```
 
 ## Exact-build freeze
 
@@ -240,10 +272,11 @@ feature profile. It does not complete the visible outcome of qualifying
 multiple rulers/seeds/governments or restoring the same intent after
 checkpoints and inheritance.
 
-The next critical work is to bind the private source adapter to both existing
-collectors inside the native bridge and expose one read-only query without
-weakening its atomic identity gate. After that, define policy matrices for
-supported adapter families and validate them with paused live snapshots.
-Cross-inheritance goal memory remains a separate consumer. Any policy derived
-from a government transition must re-read the effective identity after
-succession rather than carry the predecessor's adapter by assumption.
+The next critical work is to give a private bridge caller ownership of the
+existing collector bindings, admit this fixed executor in a candidate-only
+mailbox slot, and retain paused live snapshots before any public query is
+considered. After that, define policy matrices for supported adapter families
+and validate them across multiple rulers and governments. Cross-inheritance
+goal memory remains a separate consumer. Any policy derived from a government
+transition must re-read the effective identity after succession rather than
+carry the predecessor's adapter by assumption.

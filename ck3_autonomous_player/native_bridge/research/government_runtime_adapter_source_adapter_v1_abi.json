@@ -21,8 +21,10 @@
     "stable_feature_lifecycle_identity": true,
     "stable_player_identity": true,
     "stable_government_identity": true,
+    "stable_government_object_identity": true,
     "stable_effective_feature_identity": true,
-    "stable_script_dlc_identity": true
+    "stable_script_dlc_identity": true,
+    "stable_script_dlc_layout_identity": true
   },
   "ownership": {
     "copies_collector_rows": true,
@@ -36,7 +38,8 @@
     "source": "src/government_runtime_adapter_source_adapter_v1.cpp",
     "standalone_test": "src/government_runtime_adapter_source_adapter_v1_test.cpp",
     "build_test": "research/test_government_runtime_adapter_source_adapter_v1_standalone.py",
-    "cmake_target_added": false,
+    "cmake_target_added": true,
+    "private_bridge_binder_compiled": true,
     "bridge_wired": false,
     "public_capability_added": false,
     "public_schema_changed": false,

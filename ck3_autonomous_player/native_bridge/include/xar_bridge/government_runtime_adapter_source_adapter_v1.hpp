@@ -39,6 +39,9 @@ enum class GovernmentRuntimeAdapterSourceFailureV1 : std::uint32_t {
   feature_count_mismatch,
   script_dlc_count_mismatch,
   semantic_input_rejected,
+  collector_provenance_unavailable,
+  government_object_identity_drift,
+  script_dlc_layout_identity_drift,
 };
 
 struct GovernmentRuntimeAdapterCollectorMemoryV1 {
@@ -47,6 +50,12 @@ struct GovernmentRuntimeAdapterCollectorMemoryV1 {
   bool paused = false;
   std::uint64_t campaign_lifecycle_identity = 0;
   std::uint64_t feature_lifecycle_identity = 0;
+  bool government_object_identity_available = false;
+  std::uintptr_t government_object_identity = 0;
+  bool script_dlc_layout_identity_available = false;
+  std::uintptr_t script_dlc_bucket_base_identity = 0;
+  std::uint32_t script_dlc_bucket_mask_identity = 0;
+  std::uint8_t script_dlc_maximum_spill_identity = 0;
 };
 
 struct GovernmentRuntimeAdapterCollectorSampleV1 {
@@ -55,14 +64,20 @@ struct GovernmentRuntimeAdapterCollectorSampleV1 {
   bool paused = false;
   std::uint64_t campaign_lifecycle_identity = 0;
   std::uint64_t feature_lifecycle_identity = 0;
+  bool government_object_identity_available = false;
+  std::uintptr_t government_object_identity = 0;
+  bool script_dlc_layout_identity_available = false;
+  std::uintptr_t script_dlc_bucket_base_identity = 0;
+  std::uint32_t script_dlc_bucket_mask_identity = 0;
+  std::uint8_t script_dlc_maximum_spill_identity = 0;
 
-  friend bool operator==(const GovernmentRuntimeAdapterCollectorSampleV1 &,
-                         const GovernmentRuntimeAdapterCollectorSampleV1 &) =
-      default;
+  friend bool
+  operator==(const GovernmentRuntimeAdapterCollectorSampleV1 &,
+             const GovernmentRuntimeAdapterCollectorSampleV1 &) = default;
 };
 
-using IsGovernmentRuntimeAdapterApplicationMainV1 = bool (*)(
-    void *context) noexcept;
+using IsGovernmentRuntimeAdapterApplicationMainV1 =
+    bool (*)(void *context) noexcept;
 using CaptureGovernmentRuntimeAdapterCollectorSampleV1 = bool (*)(
     void *context, GovernmentRuntimeAdapterCollectorSampleV1 &output) noexcept;
 
@@ -91,9 +106,9 @@ struct GovernmentRuntimeAdapterOwnedInputV1 {
 
   GovernmentRuntimeAdapterObserverResultV1 Evaluate() const;
 
-  friend bool operator==(const GovernmentRuntimeAdapterOwnedInputV1 &,
-                         const GovernmentRuntimeAdapterOwnedInputV1 &) =
-      default;
+  friend bool
+  operator==(const GovernmentRuntimeAdapterOwnedInputV1 &,
+             const GovernmentRuntimeAdapterOwnedInputV1 &) = default;
 };
 
 struct GovernmentRuntimeAdapterSourceResultV1 {
@@ -108,9 +123,9 @@ struct GovernmentRuntimeAdapterSourceResultV1 {
   GovernmentRuntimeAdapterOwnedInputV1 input;
   GovernmentRuntimeAdapterObserverResultV1 semantic_result;
 
-  friend bool operator==(const GovernmentRuntimeAdapterSourceResultV1 &,
-                         const GovernmentRuntimeAdapterSourceResultV1 &) =
-      default;
+  friend bool
+  operator==(const GovernmentRuntimeAdapterSourceResultV1 &,
+             const GovernmentRuntimeAdapterSourceResultV1 &) = default;
 };
 
 inline constexpr std::string_view

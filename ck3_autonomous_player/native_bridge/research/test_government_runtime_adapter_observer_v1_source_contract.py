@@ -126,8 +126,9 @@ class GovernmentRuntimeAdapterObserverSourceContractTests(unittest.TestCase):
             "SelectionStatus::owner_deferred_religious", self.observer_source
         )
         implementation = self.abi["implementation"]
+        self.assertTrue(implementation["cmake_target_added"])
+        self.assertTrue(implementation["private_bridge_binder_compiled"])
         for key in (
-            "cmake_target_added",
             "bridge_wired",
             "public_capability_added",
             "public_schema_changed",

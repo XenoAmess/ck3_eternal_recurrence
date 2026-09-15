@@ -52,6 +52,12 @@ Sample AvailableSample() {
   sample.paused = true;
   sample.campaign_lifecycle_identity = 0xCA'11;
   sample.feature_lifecycle_identity = 0xFE'A7;
+  sample.government_object_identity_available = true;
+  sample.government_object_identity = 0x60'01;
+  sample.script_dlc_layout_identity_available = true;
+  sample.script_dlc_bucket_base_identity = 0xD1'C0;
+  sample.script_dlc_bucket_mask_identity = 7;
+  sample.script_dlc_maximum_spill_identity = 2;
 
   auto &campaign = sample.campaign_root;
   campaign.status = game::CampaignRootContextStatusV1::available;
@@ -60,7 +66,8 @@ Sample AvailableSample() {
   campaign.player_character_id = 29'829;
   campaign.government = game::CampaignRootGovernmentV1{
       "feudal_government",
-      {"government_uses_domain_limit", "government_is_feudal"}, 2};
+      {"government_uses_domain_limit", "government_is_feudal"},
+      2};
   campaign.readiness.player_identity_ready = true;
   campaign.readiness.government_ready = true;
   campaign.readiness.same_frame_ready = true;
@@ -94,8 +101,8 @@ Sample AvailableSample() {
   return sample;
 }
 
-observer::GovernmentRuntimeAdapterSourceAccessV1 Access(
-    FixtureContext &context) {
+observer::GovernmentRuntimeAdapterSourceAccessV1
+Access(FixtureContext &context) {
   return {true, &context, IsApplicationMain, Capture};
 }
 
@@ -117,8 +124,7 @@ bool TestAvailableOwnedObservation() {
          result.feature_lifecycle_identity == 0xFE'A7 &&
          result.input.player_character_id ==
              std::optional<std::int32_t>{29'829} &&
-         result.input.effective_government_stable_key ==
-             "feudal_government" &&
+         result.input.effective_government_stable_key == "feudal_government" &&
          result.input.government_flags.size() == 2 &&
          result.input.effective_feature_flags.size() == 44 &&
          result.input.enabled_feature_count == 2 &&
@@ -135,8 +141,18 @@ bool TestAvailableOwnedObservation() {
 bool TestCopyOwnsCollectorData() {
   auto campaign = AvailableSample().campaign_root;
   auto features = AvailableSample().loaded_features;
-  observer::GovernmentRuntimeAdapterCollectorMemoryV1 memory{
-      &campaign, &features, true, 41, 43};
+  observer::GovernmentRuntimeAdapterCollectorMemoryV1 memory{};
+  memory.campaign_root = &campaign;
+  memory.loaded_features = &features;
+  memory.paused = true;
+  memory.campaign_lifecycle_identity = 41;
+  memory.feature_lifecycle_identity = 43;
+  memory.government_object_identity_available = true;
+  memory.government_object_identity = 47;
+  memory.script_dlc_layout_identity_available = true;
+  memory.script_dlc_bucket_base_identity = 53;
+  memory.script_dlc_bucket_mask_identity = 7;
+  memory.script_dlc_maximum_spill_identity = 2;
   Sample output{};
   if (!observer::CopyGovernmentRuntimeAdapterCollectorMemoryV1(memory,
                                                                output)) {
@@ -150,6 +166,12 @@ bool TestCopyOwnsCollectorData() {
          output.loaded_features.script_dlc_keys.keys.size() == 2 &&
          output.campaign_lifecycle_identity == 41 &&
          output.feature_lifecycle_identity == 43 &&
+         output.government_object_identity_available &&
+         output.government_object_identity == 47 &&
+         output.script_dlc_layout_identity_available &&
+         output.script_dlc_bucket_base_identity == 53 &&
+         output.script_dlc_bucket_mask_identity == 7 &&
+         output.script_dlc_maximum_spill_identity == 2 &&
          !observer::CopyGovernmentRuntimeAdapterCollectorMemoryV1(incomplete,
                                                                   rejected) &&
          rejected == Sample{};
@@ -185,8 +207,7 @@ bool TestAdmissionAndCaptureFailures() {
 
 bool TestCollectorValidationFailures() {
   const auto baseline = AvailableSample();
-  auto verify = [&baseline](Failure expected,
-                            const auto &mutate) -> bool {
+  auto verify = [&baseline](Failure expected, const auto &mutate) -> bool {
     auto changed = baseline;
     mutate(changed);
     FixtureContext context{true, {changed, changed}};
@@ -194,21 +215,30 @@ bool TestCollectorValidationFailures() {
   };
   return verify(Failure::requires_paused,
                 [](Sample &sample) { sample.paused = false; }) &&
-         verify(Failure::collector_readiness_unavailable, [](Sample &sample) {
-           sample.loaded_features.readiness.actionable_ready = false;
-         }) &&
-         verify(Failure::collector_frame_mismatch, [](Sample &sample) {
-           ++sample.loaded_features.snapshot_revision;
-         }) &&
-         verify(Failure::collector_lifecycle_unavailable, [](Sample &sample) {
-           sample.campaign_lifecycle_identity = 0;
-         }) &&
-         verify(Failure::government_flag_count_mismatch, [](Sample &sample) {
-           ++sample.campaign_root.government->native_flag_count;
-         }) &&
-         verify(Failure::feature_count_mismatch, [](Sample &sample) {
-           sample.loaded_features.effective_feature_flags.items.pop_back();
-         }) &&
+         verify(Failure::collector_readiness_unavailable,
+                [](Sample &sample) {
+                  sample.loaded_features.readiness.actionable_ready = false;
+                }) &&
+         verify(Failure::collector_frame_mismatch,
+                [](Sample &sample) {
+                  ++sample.loaded_features.snapshot_revision;
+                }) &&
+         verify(
+             Failure::collector_lifecycle_unavailable,
+             [](Sample &sample) { sample.campaign_lifecycle_identity = 0; }) &&
+         verify(Failure::collector_provenance_unavailable,
+                [](Sample &sample) {
+                  sample.government_object_identity_available = false;
+                }) &&
+         verify(Failure::government_flag_count_mismatch,
+                [](Sample &sample) {
+                  ++sample.campaign_root.government->native_flag_count;
+                }) &&
+         verify(
+             Failure::feature_count_mismatch,
+             [](Sample &sample) {
+               sample.loaded_features.effective_feature_flags.items.pop_back();
+             }) &&
          verify(Failure::script_dlc_count_mismatch, [](Sample &sample) {
            sample.loaded_features.script_dlc_keys.enumerated_count = 1;
          });
@@ -216,32 +246,43 @@ bool TestCollectorValidationFailures() {
 
 bool TestSecondSampleDriftFailures() {
   const auto baseline = AvailableSample();
-  auto verify = [&baseline](Failure expected,
-                            const auto &mutate) -> bool {
+  auto verify = [&baseline](Failure expected, const auto &mutate) -> bool {
     auto changed = baseline;
     mutate(changed);
     FixtureContext context{true, {baseline, changed}};
     return Read(context).failure == expected;
   };
-  return verify(Failure::collector_frame_mismatch, [](Sample &sample) {
-           ++sample.campaign_root.snapshot_revision;
-           ++sample.loaded_features.snapshot_revision;
-         }) &&
-         verify(Failure::collector_lifecycle_drift, [](Sample &sample) {
-           ++sample.feature_lifecycle_identity;
-         }) &&
-         verify(Failure::player_identity_drift, [](Sample &sample) {
-           sample.campaign_root.player_character_id = 31'337;
-         }) &&
-         verify(Failure::government_identity_drift, [](Sample &sample) {
-           sample.campaign_root.government->key = "clan_government";
-         }) &&
-         verify(Failure::feature_identity_drift, [](Sample &sample) {
-           sample.loaded_features.effective_feature_flags.items[0].enabled =
-               !sample.loaded_features.effective_feature_flags.items[0].enabled;
-         }) &&
-         verify(Failure::script_dlc_identity_drift, [](Sample &sample) {
-           sample.loaded_features.script_dlc_keys.keys[0] = "Royal Court";
+  return verify(Failure::collector_frame_mismatch,
+                [](Sample &sample) {
+                  ++sample.campaign_root.snapshot_revision;
+                  ++sample.loaded_features.snapshot_revision;
+                }) &&
+         verify(Failure::collector_lifecycle_drift,
+                [](Sample &sample) { ++sample.feature_lifecycle_identity; }) &&
+         verify(Failure::player_identity_drift,
+                [](Sample &sample) {
+                  sample.campaign_root.player_character_id = 31'337;
+                }) &&
+         verify(Failure::government_identity_drift,
+                [](Sample &sample) {
+                  sample.campaign_root.government->key = "clan_government";
+                }) &&
+         verify(Failure::government_object_identity_drift,
+                [](Sample &sample) { ++sample.government_object_identity; }) &&
+         verify(
+             Failure::feature_identity_drift,
+             [](Sample &sample) {
+               sample.loaded_features.effective_feature_flags.items[0].enabled =
+                   !sample.loaded_features.effective_feature_flags.items[0]
+                        .enabled;
+             }) &&
+         verify(Failure::script_dlc_identity_drift,
+                [](Sample &sample) {
+                  sample.loaded_features.script_dlc_keys.keys[0] =
+                      "Royal Court";
+                }) &&
+         verify(Failure::script_dlc_layout_identity_drift, [](Sample &sample) {
+           ++sample.script_dlc_bucket_mask_identity;
          });
 }
 
@@ -256,12 +297,10 @@ bool TestSemanticRejectionIsTyped() {
 } // namespace
 
 int main() {
-  const bool green = TestAvailableOwnedObservation() &&
-                     TestCopyOwnsCollectorData() &&
-                     TestAdmissionAndCaptureFailures() &&
-                     TestCollectorValidationFailures() &&
-                     TestSecondSampleDriftFailures() &&
-                     TestSemanticRejectionIsTyped();
+  const bool green =
+      TestAvailableOwnedObservation() && TestCopyOwnsCollectorData() &&
+      TestAdmissionAndCaptureFailures() && TestCollectorValidationFailures() &&
+      TestSecondSampleDriftFailures() && TestSemanticRejectionIsTyped();
   if (!green) {
     std::cerr << "government-runtime-adapter-source-adapter-v1: RED\n";
     return 1;

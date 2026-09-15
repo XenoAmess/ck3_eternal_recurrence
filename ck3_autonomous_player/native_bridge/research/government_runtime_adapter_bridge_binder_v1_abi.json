@@ -1,0 +1,65 @@
+{
+  "contract": "government_runtime_adapter_bridge_binder_v1",
+  "schema_version": 1,
+  "status": "static-ready-private-bridge-binder",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "inputs": {
+    "source_adapter": "government_runtime_adapter_source_adapter_v1",
+    "campaign_collector": "campaign-root-context-v1",
+    "feature_collector": "loaded-feature-manifest-v1",
+    "mailbox_executor_abi": "MainThreadQueryExecutorV1",
+    "exact_mailbox_slot_required": true,
+    "expected_revision_required": true,
+    "paused_application_main_stamp_required": true
+  },
+  "identity_gate": {
+    "sample_revision_matches_operation": true,
+    "sample_date_matches_execution_stamp": true,
+    "campaign_lifecycle_matches_execution_stamp_game_state": true,
+    "campaign_lifecycle_stable_across_collector_read": true,
+    "feature_lifecycle_stable_across_collector_read": true,
+    "government_object_stable_across_composite_captures": true,
+    "script_dlc_layout_stable_across_composite_captures": true,
+    "source_double_observation_preserved": true
+  },
+  "operation": {
+    "read_only": true,
+    "single_execution": true,
+    "direct_invocation_rejected": true,
+    "binding_and_operation_noncopyable": true,
+    "typed_source_unavailable_is_completed": true,
+    "repeated_or_invalid_container_is_infrastructure_failure": true,
+    "fixture_override_production_forbidden": true
+  },
+  "native_provenance": {
+    "government_object": "raw result of the frozen campaign government resolver",
+    "script_dlc_layout": "bucket base, mask, and maximum spill read by the loaded-feature collector",
+    "values_escape_public_schema": false
+  },
+  "implementation": {
+    "header": "include/xar_bridge/government_runtime_adapter_bridge_binder_v1.hpp",
+    "source": "src/government_runtime_adapter_bridge_binder_v1.cpp",
+    "standalone_test": "src/government_runtime_adapter_bridge_binder_v1_test.cpp",
+    "build_test": "research/test_government_runtime_adapter_bridge_binder_v1_standalone.py",
+    "compiled_into_native_bridge": true,
+    "private_caller_wired": false,
+    "mailbox_permitted_executor_registered": false,
+    "public_capability_added": false,
+    "public_schema_changed": false,
+    "mcp_changed": false,
+    "planner_changed": false
+  },
+  "acceptance": {
+    "normal_msvc_w4_wx": "green",
+    "optimized_msvc_w4_wx": "green",
+    "python_normal": "green",
+    "python_optimized": "green",
+    "ck3_launched": false,
+    "live_status": "not_run",
+    "live_ready": false,
+    "live_blocker": "a private bridge caller must own the collector bindings and register/submit the fixed executor"
+  }
+}

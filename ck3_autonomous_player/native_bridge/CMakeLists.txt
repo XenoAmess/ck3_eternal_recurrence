@@ -356,6 +356,9 @@ add_library(xar_ck3_bridge SHARED
   src/event_window_context_v1_serializer.cpp
   src/frontend_gui_route_v1.cpp
   src/game_adapter.cpp
+  src/government_runtime_adapter_observer_v1.cpp
+  src/government_runtime_adapter_source_adapter_v1.cpp
+  src/government_runtime_adapter_bridge_binder_v1.cpp
   src/g2_truce_native_callsite_observer_v1.cpp
   src/g2_truce_preview_entry_observer_v1.cpp
   src/loaded_feature_manifest_v1.cpp
@@ -1466,6 +1469,33 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/campaign_root_context_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/campaign_root_context_v1_source_contract.json
+  )
+
+  add_executable(xar_ck3_government_runtime_adapter_bridge_binder_v1_test
+    src/government_runtime_adapter_observer_v1.cpp
+    src/government_runtime_adapter_source_adapter_v1.cpp
+    src/campaign_root_context_v1.cpp
+    src/loaded_feature_manifest_v1.cpp
+    src/government_runtime_adapter_bridge_binder_v1.cpp
+    src/government_runtime_adapter_bridge_binder_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_government_runtime_adapter_bridge_binder_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_government_runtime_adapter_bridge_binder_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_government_runtime_adapter_bridge_binder_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_government_runtime_adapter_bridge_binder_v1
+    COMMAND xar_ck3_government_runtime_adapter_bridge_binder_v1_test
   )
 
   add_executable(xar_ck3_player_faction_alerts_v1_test

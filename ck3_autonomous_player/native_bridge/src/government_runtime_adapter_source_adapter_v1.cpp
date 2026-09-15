@@ -55,6 +55,10 @@ SourceFailure ValidateSample(
       sample.feature_lifecycle_identity == 0) {
     return SourceFailure::collector_lifecycle_unavailable;
   }
+  if (!sample.government_object_identity_available ||
+      !sample.script_dlc_layout_identity_available) {
+    return SourceFailure::collector_provenance_unavailable;
+  }
   if (sample.campaign_root.government.has_value()) {
     const auto &government = sample.campaign_root.government.value();
     if (government.native_flag_count < 0 ||
@@ -67,8 +71,7 @@ SourceFailure ValidateSample(
   if (features.status != game::LoadedFeatureComponentStatusV1::available ||
       !features.native_count.has_value() ||
       features.native_count.value() !=
-          static_cast<std::int32_t>(
-              kGovernmentRuntimeAdapterFeatureCountV1) ||
+          static_cast<std::int32_t>(kGovernmentRuntimeAdapterFeatureCountV1) ||
       features.items.size() != kGovernmentRuntimeAdapterFeatureCountV1) {
     return SourceFailure::feature_count_mismatch;
   }
@@ -93,8 +96,7 @@ SourceFailure CompareSamples(
       first.loaded_features.date_raw != second.loaded_features.date_raw) {
     return SourceFailure::collector_frame_mismatch;
   }
-  if (first.campaign_lifecycle_identity !=
-          second.campaign_lifecycle_identity ||
+  if (first.campaign_lifecycle_identity != second.campaign_lifecycle_identity ||
       first.feature_lifecycle_identity != second.feature_lifecycle_identity) {
     return SourceFailure::collector_lifecycle_drift;
   }
@@ -105,6 +107,9 @@ SourceFailure CompareSamples(
   if (first.campaign_root.government != second.campaign_root.government) {
     return SourceFailure::government_identity_drift;
   }
+  if (first.government_object_identity != second.government_object_identity) {
+    return SourceFailure::government_object_identity_drift;
+  }
   if (first.loaded_features.effective_feature_flags !=
       second.loaded_features.effective_feature_flags) {
     return SourceFailure::feature_identity_drift;
@@ -112,6 +117,14 @@ SourceFailure CompareSamples(
   if (first.loaded_features.script_dlc_keys !=
       second.loaded_features.script_dlc_keys) {
     return SourceFailure::script_dlc_identity_drift;
+  }
+  if (first.script_dlc_bucket_base_identity !=
+          second.script_dlc_bucket_base_identity ||
+      first.script_dlc_bucket_mask_identity !=
+          second.script_dlc_bucket_mask_identity ||
+      first.script_dlc_maximum_spill_identity !=
+          second.script_dlc_maximum_spill_identity) {
+    return SourceFailure::script_dlc_layout_identity_drift;
   }
   return SourceFailure::none;
 }
@@ -168,6 +181,17 @@ bool CopyGovernmentRuntimeAdapterCollectorMemoryV1(
     output.paused = memory.paused;
     output.campaign_lifecycle_identity = memory.campaign_lifecycle_identity;
     output.feature_lifecycle_identity = memory.feature_lifecycle_identity;
+    output.government_object_identity_available =
+        memory.government_object_identity_available;
+    output.government_object_identity = memory.government_object_identity;
+    output.script_dlc_layout_identity_available =
+        memory.script_dlc_layout_identity_available;
+    output.script_dlc_bucket_base_identity =
+        memory.script_dlc_bucket_base_identity;
+    output.script_dlc_bucket_mask_identity =
+        memory.script_dlc_bucket_mask_identity;
+    output.script_dlc_maximum_spill_identity =
+        memory.script_dlc_maximum_spill_identity;
     return true;
   } catch (...) {
     output = {};
