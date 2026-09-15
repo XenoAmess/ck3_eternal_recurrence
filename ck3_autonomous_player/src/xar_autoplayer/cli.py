@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
+import signal
 import sys
+import threading
 
 from .environment import (
     doctor,
@@ -26,6 +29,30 @@ from .runtime import (
     configure_native_bridge_launch_environment,
     smoke,
 )
+
+
+@contextmanager
+def _deferred_native_auto_run_sigint(stop_event: threading.Event):
+    """Let one Ctrl+C finish the current typed turn before stopping."""
+    if threading.current_thread() is not threading.main_thread():
+        raise AgentError("native-auto-run CLI must run on the main thread")
+    previous = signal.getsignal(signal.SIGINT)
+
+    def request_stop(_signum: int, _frame: object) -> None:
+        if stop_event.is_set():
+            raise KeyboardInterrupt
+        stop_event.set()
+        print(
+            "Stop requested; finishing the current turn and checkpoint.",
+            file=sys.stderr,
+            flush=True,
+        )
+
+    signal.signal(signal.SIGINT, request_stop)
+    try:
+        yield
+    finally:
+        signal.signal(signal.SIGINT, previous)
 
 
 def parser() -> argparse.ArgumentParser:
@@ -512,20 +539,23 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "native-auto-run":
             from .native_auto_run import native_auto_run
 
-            result = native_auto_run(
-                spec,
-                turn_count=args.turns,
-                timeout_seconds=args.timeout,
-                readiness_timeout_seconds=args.readiness_timeout,
-                cold_start_checkpoint=args.cold_start_checkpoint,
-                route_contact_timeline_speed=args.route_contact_speed,
-                allow_route_contact_high_speed_ab=(
-                    args.allow_route_contact_high_speed_ab
-                ),
-                allow_stationary_objective_hold_sentinel_canary=(
-                    args.allow_stationary_objective_hold_sentinel_canary
-                ),
-            )
+            operator_stop_event = threading.Event()
+            with _deferred_native_auto_run_sigint(operator_stop_event):
+                result = native_auto_run(
+                    spec,
+                    turn_count=args.turns,
+                    timeout_seconds=args.timeout,
+                    readiness_timeout_seconds=args.readiness_timeout,
+                    cold_start_checkpoint=args.cold_start_checkpoint,
+                    route_contact_timeline_speed=args.route_contact_speed,
+                    allow_route_contact_high_speed_ab=(
+                        args.allow_route_contact_high_speed_ab
+                    ),
+                    allow_stationary_objective_hold_sentinel_canary=(
+                        args.allow_stationary_objective_hold_sentinel_canary
+                    ),
+                    operator_stop_event=operator_stop_event,
+                )
         elif args.command == "native-one-generation":
             from .one_generation_run import native_one_generation_run
 
@@ -610,5 +640,12 @@ def main(argv: list[str] | None = None) -> int:
         }
         and result.get("ok") is not True
     ):
+        if (
+            args.command == "native-auto-run"
+            and result.get("status") == "operator_stop_checkpointed"
+            and result.get("outcome") == "operator_stopped"
+            and result.get("cleanup", {}).get("ok") is True
+        ):
+            return 0
         return 1
     return 0

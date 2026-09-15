@@ -79,6 +79,7 @@ class _NativeAutoRunHarness:
         fail_save_checkpoint: bool = False,
         persistent_unavailable: bool = False,
         reset_connection_generation_on_new_episode: bool = False,
+        operator_stop_after_action_count: int | None = None,
     ) -> None:
         self.spec = spec
         self.actions = list(actions)
@@ -90,6 +91,9 @@ class _NativeAutoRunHarness:
         self.reset_connection_generation_on_new_episode = (
             reset_connection_generation_on_new_episode
         )
+        self.operator_stop_event = threading.Event()
+        self.operator_stop_after_action_count = operator_stop_after_action_count
+        self.auto_turn_count = 0
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -292,6 +296,9 @@ class _NativeAutoRunHarness:
             raise AssertionError("fake planner action list is exhausted")
         action = self.actions.pop(0)
         self.events.append(f"auto_turn:{action}")
+        self.auto_turn_count += 1
+        if self.auto_turn_count == self.operator_stop_after_action_count:
+            self.operator_stop_event.set()
         if action == "blocked":
             return {
                 "status": "blocked",
@@ -1038,6 +1045,7 @@ class NativeAutoRunTests(unittest.TestCase):
         persistent_unavailable: bool = False,
         allow_stationary_objective_hold_sentinel_canary: bool = False,
         reset_connection_generation_on_new_episode: bool = False,
+        operator_stop_after_action_count: int | None = None,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         harness = _NativeAutoRunHarness(
             self.spec,
@@ -1050,6 +1058,9 @@ class NativeAutoRunTests(unittest.TestCase):
             persistent_unavailable=persistent_unavailable,
             reset_connection_generation_on_new_episode=(
                 reset_connection_generation_on_new_episode
+            ),
+            operator_stop_after_action_count=(
+                operator_stop_after_action_count
             ),
         )
         with mock.patch.object(
@@ -1098,6 +1109,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 allow_stationary_objective_hold_sentinel_canary=(
                     allow_stationary_objective_hold_sentinel_canary
                 ),
+                operator_stop_event=harness.operator_stop_event,
             )
         return report, harness
 
@@ -2535,6 +2547,68 @@ class NativeAutoRunTests(unittest.TestCase):
             report["auto_run"]["dirty_gameplay_since_checkpoint"]
         )
 
+    def test_operator_stop_waits_for_verified_turn_and_saves_tail(self) -> None:
+        report, harness = self._run(
+            ["advance", "blocked"],
+            operator_stop_after_action_count=1,
+        )
+
+        self.assertEqual(report["status"], "operator_stop_checkpointed")
+        self.assertEqual(report["outcome"], "operator_stopped")
+        self.assertFalse(report["ok"])
+        self.assertIsNone(report["first_blocker"])
+        self.assertEqual(report["auto_run"]["successful_turns"], 1)
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 1)
+        self.assertEqual(report["checkpoints"][-1]["phase"], "operator_stop_checkpoint")
+        self.assertLess(
+            harness.events.index("auto_turn:advance"),
+            harness.events.index("save_checkpoint"),
+        )
+        self.assertNotIn("auto_turn:blocked", harness.events)
+        self.assertTrue(report["cleanup"]["ok"])
+
+    def test_operator_stop_after_query_creates_first_resume_anchor(self) -> None:
+        report, harness = self._run(
+            ["query", "blocked"],
+            operator_stop_after_action_count=1,
+        )
+
+        self.assertEqual(report["status"], "operator_stop_checkpointed")
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+        self.assertEqual(report["checkpoints"][-1]["phase"], "operator_stop_checkpoint")
+        self.assertEqual(harness.events.count("save_checkpoint"), 1)
+        self.assertNotIn("auto_turn:blocked", harness.events)
+
+    def test_operator_stop_checkpoint_failure_remains_red(self) -> None:
+        report, harness = self._run(
+            ["advance", "blocked"],
+            operator_stop_after_action_count=1,
+            fail_save_checkpoint=True,
+        )
+
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertEqual(report["outcome"], "failed")
+        self.assertIsNotNone(report["first_blocker"])
+        self.assertEqual(report["checkpoints"], [])
+        self.assertTrue(report["cleanup"]["ok"])
+        self.assertNotIn("auto_turn:blocked", harness.events)
+
+    def test_operator_stop_on_pending_modal_does_not_claim_checkpoint(self) -> None:
+        report, harness = self._run(
+            ["advance_to_event", "event"],
+            operator_stop_after_action_count=1,
+        )
+
+        self.assertEqual(report["status"], "operator_stop_checkpoint_deferred")
+        self.assertEqual(report["outcome"], "not_qualified")
+        self.assertEqual(report["checkpoints"], [])
+        self.assertIsNotNone(report["first_blocker"])
+        self.assertEqual(
+            report["first_blocker"]["kind"], "pending_state_checkpoint_deferred"
+        )
+        self.assertNotIn("save_checkpoint", harness.events)
+        self.assertNotIn("auto_turn:event", harness.events)
+
     def test_read_only_query_must_remain_on_same_paused_frame(self) -> None:
         report, _harness = self._run(["query_change"])
 
@@ -2893,7 +2967,50 @@ class NativeAutoRunTests(unittest.TestCase):
                     route_contact_timeline_speed=3,
                     allow_route_contact_high_speed_ab=False,
                     allow_stationary_objective_hold_sentinel_canary=False,
+                    operator_stop_event=mock.ANY,
                 )
+                self.assertIsInstance(
+                    run_mock.call_args.kwargs["operator_stop_event"],
+                    threading.Event,
+                )
+
+    def test_cli_reports_checkpointed_operator_stop_separately_from_qualification(self) -> None:
+        stopped = {
+            "ok": False,
+            "status": "operator_stop_checkpointed",
+            "outcome": "operator_stopped",
+            "cleanup": {"ok": True},
+        }
+        with mock.patch.object(
+            cli, "make_spec", return_value=self.spec
+        ), mock.patch.object(
+            cli,
+            "configure_native_bridge_launch_environment",
+            return_value=self.config,
+        ), mock.patch.object(
+            native_auto_run_module, "native_auto_run", return_value=stopped
+        ), contextlib.redirect_stdout(io.StringIO()):
+            code = cli.main(
+                [
+                    "--bridge-mode", "native-headless",
+                    "--bridge-dll", str(self.dll_path),
+                    "--bridge-injector", str(self.injector_path),
+                    "native-auto-run", "--turns", "2",
+                ]
+            )
+        self.assertEqual(code, 0)
+
+    def test_cli_first_sigint_requests_boundary_stop_second_is_emergency(self) -> None:
+        stop_event = threading.Event()
+        previous = cli.signal.getsignal(cli.signal.SIGINT)
+        with contextlib.redirect_stderr(io.StringIO()):
+            with cli._deferred_native_auto_run_sigint(stop_event):
+                handler = cli.signal.getsignal(cli.signal.SIGINT)
+                handler(cli.signal.SIGINT, None)
+                self.assertTrue(stop_event.is_set())
+                with self.assertRaises(KeyboardInterrupt):
+                    handler(cli.signal.SIGINT, None)
+        self.assertEqual(cli.signal.getsignal(cli.signal.SIGINT), previous)
 
 
 if __name__ == "__main__":

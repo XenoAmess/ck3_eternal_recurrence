@@ -189,6 +189,7 @@ def native_auto_run(
     ),
     allow_route_contact_high_speed_ab: bool = False,
     allow_stationary_objective_hold_sentinel_canary: bool = False,
+    operator_stop_event: threading.Event | None = None,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -475,6 +476,13 @@ def native_auto_run(
         status = "running"
 
         for turn_index in range(1, turn_count + 1):
+            # A first Ctrl+C is deferred by the CLI until the previous typed
+            # action and its independent postcondition have both completed.
+            # An in-flight command can have an unknown outcome; never save or
+            # relaunch from that intermediate state merely to honour a stop.
+            if operator_stop_event is not None and operator_stop_event.is_set():
+                status = "operator_stop_requested"
+                break
             current_attempt = {
                 "turn_index": turn_index,
                 "stage": "session",
@@ -1073,7 +1081,10 @@ def native_auto_run(
                 break
         else:
             status = (
-                "turn_limit_terminal_pending"
+                "operator_stop_requested"
+                if operator_stop_event is not None
+                and operator_stop_event.is_set()
+                else "turn_limit_terminal_pending"
                 if terminal_pending
                 else "turn_limit_player_decision_pending"
                 if modal_decision_pending
@@ -1083,13 +1094,26 @@ def native_auto_run(
         # A bounded production run must not knowingly discard a visible tail.
         # Queries never dirty this tail, and terminal/unknown frames are never
         # forced through a save operation.
-        if status == "turn_limit" and dirty_gameplay_since_checkpoint:
-            last_after = turns[-1].get("after") if turns else None
+        if status == "operator_stop_requested" and (
+            terminal_pending or modal_decision_pending
+        ):
+            status = "operator_stop_checkpoint_deferred"
+        final_checkpoint_needed = (
+            status == "operator_stop_requested"
+            or (status == "turn_limit" and dirty_gameplay_since_checkpoint)
+        )
+        if final_checkpoint_needed:
+            last_after = turns[-1].get("after") if turns else readiness
+            final_phase = (
+                "operator_stop_checkpoint"
+                if status == "operator_stop_requested"
+                else "final_checkpoint"
+            )
             current_attempt = {
                 "turn_index": len(turns),
                 "stage": "checkpoint_preflight",
                 "before": copy.deepcopy(last_after),
-                "plan": {"phase": "final_checkpoint"},
+                "plan": {"phase": final_phase},
                 "selected_step": "save-checkpoint",
                 "result": None,
                 "after": copy.deepcopy(last_after),
@@ -1138,13 +1162,15 @@ def native_auto_run(
             checkpoints.append(
                 {
                     "turn_index": len(turns),
-                    "phase": "final_checkpoint",
+                    "phase": final_phase,
                     **checkpoint,
                 }
             )
             current_attempt["stage"] = "checkpoint_complete"
             eligible_since_checkpoint = 0
             dirty_gameplay_since_checkpoint = False
+            if status == "operator_stop_requested":
+                status = "operator_stop_checkpointed"
             if (
                 completion_contract == "next_episode"
                 and next_episode_transition is not None
@@ -1359,6 +1385,12 @@ def native_auto_run(
         )
     if qualified:
         first_blocker = None
+    elif (
+        status == "operator_stop_checkpointed"
+        and primary_error is None
+        and cleanup.get("ok") is True
+    ):
+        first_blocker = None
     elif first_failure is not None:
         first_blocker = copy.deepcopy(first_failure)
         first_blocker["run_status"] = status
@@ -1375,7 +1407,11 @@ def native_auto_run(
             cleanup=cleanup,
         )
     outcome = (
-        "qualified"
+        "operator_stopped"
+        if status == "operator_stop_checkpointed"
+        and primary_error is None
+        and cleanup.get("ok") is True
+        else "qualified"
         if qualified
         else (
             (
@@ -2527,6 +2563,8 @@ def _first_blocker_report(
         stage, kind = "postcondition", "terminal_finalization_pending"
     elif status == "turn_limit_player_decision_pending":
         stage, kind = "bound", "player_decision_checkpoint_deferred"
+    elif status == "operator_stop_checkpoint_deferred":
+        stage, kind = "postcondition", "pending_state_checkpoint_deferred"
     elif status == "terminal_preexisting":
         stage, kind = "readiness", "preexisting_terminal"
     elif status == "terminal_non_death_step":
@@ -2561,6 +2599,10 @@ def _first_blocker_report(
             "turn_limit_player_decision_pending": (
                 "run bound ended on a modal player decision; checkpoint was "
                 "deferred and the previous durable anchor was retained"
+            ),
+            "operator_stop_checkpoint_deferred": (
+                "operator stopped on a pending player decision or terminal "
+                "state; current progress was not checkpointed"
             ),
             "terminal_non_death_step": (
                 "a non-death terminal planner step ended the loop"
