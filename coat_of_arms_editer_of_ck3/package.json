@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:cross-browser": "playwright test --config=playwright.cross-browser.config.ts"
   },
   "dependencies": {
     "element-plus": "2.14.5",

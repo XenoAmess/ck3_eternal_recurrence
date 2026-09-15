@@ -61,8 +61,8 @@ jobs:
       - name: Run unit tests
         run: pnpm test
 
-      - name: Install headless Chromium
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Install headless browsers
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
 
       - name: Run standalone browser acceptance
         run: |
@@ -70,6 +70,9 @@ jobs:
           pnpm exec playwright test e2e/standalone-image-fit.spec.ts
           mapfile -t remaining_specs < <(find e2e -maxdepth 1 -name '*.spec.ts' ! -name 'fit-budget-stress.spec.ts' ! -name 'standalone-image-fit.spec.ts' -print | sort)
           pnpm exec playwright test "${remaining_specs[@]}"
+
+      - name: Run cross-browser core acceptance
+        run: pnpm exec playwright test --config=playwright.cross-browser.config.ts
 
       - name: Build Pages artifact
         run: pnpm build
