@@ -152,6 +152,16 @@ def _compact_case(value: object, crop_by_id: dict[str, dict[str, Any]]) -> dict[
         "cropPngSha256",
         "selectedPixels",
     )
+    metrics = comparison.get("metrics")
+    if not isinstance(metrics, dict):
+        metrics = {}
+    metric_kept = (
+        "contract",
+        "maskPixels",
+        "meanAbsoluteError",
+        "colorMse",
+        "edgeLoss",
+    )
     return {
         "id": identifier,
         "ok": value.get("ok"),
@@ -179,7 +189,10 @@ def _compact_case(value: object, crop_by_id: dict[str, dict[str, Any]]) -> dict[
             "worst_spatial_mean_absolute_error": framebuffer.get(
                 "worst_spatial_mean_absolute_error"
             ),
-            "metrics": comparison.get("metrics"),
+            # The full 8x8 spatial matrix remains in the immutable raw report.
+            # Keeping only its already-computed maximum makes this review receipt
+            # compact enough to inspect while preserving every declared gate.
+            "metrics": {key: metrics[key] for key in metric_kept if key in metrics},
             "best_match": {
                 key: best_match[key] for key in best_kept if key in best_match
             },

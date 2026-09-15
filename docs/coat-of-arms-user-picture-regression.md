@@ -98,24 +98,39 @@ v7 r6 的 7 例首次粘贴均完成；旋转修复使 framebuffer MAE 全面下
 浏览器产物在 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-budget-1024/`，受控消融在
 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v7-depth-diagnostic/`。
 
+## v8 原生 UV 对照完成（2026-09-16）
+
+framebuffer MCP v3 先用红/绿状态定位动态表面，再通过黑底与 9 个原生白色标记恢复 canonical UV
+到原生 framebuffer 的仿射映射，避免 CK3 圆框/盾框变化污染缩放和裁剪。r11 的 9 点最大重投影
+误差为 0 px；`pictures.zip` 全部 7 例均完成大载荷 Apply、Copy、UV 对齐截图和空间评分。
+
+7/7 原生像素门禁通过：MAE 范围为 0.020320–0.043774，MSE 为 0.004009–0.010389，edge 为
+0.058618–0.132857，最坏 8×8 空间块为 0.082469–0.140578，全部低于运行前冻结的
+0.10 / 0.03 / 0.16 / 0.25 阈值。逐图人工复核同样确认主体和层序一致，picture-07 不再出现前景
+被大块覆盖。证据位于 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-native-r11/`。
+
+严格文本 round-trip 为 4/7；picture-02/05/07 的唯一失败字段是 rotation，因为 CK3 Copy 将小数
+rotation 规范化为整数。三例当前 Apply 后的像素门禁均通过，但还不能据此宣称“Copy 回读文本再次
+Apply”也像素等价；该差异继续单列，不用宽松归一化掩盖。
+
 | 检查 | 当前状态 | 当前证据能支持的结论 |
 |---|---|---|
 | 原图→浏览器拟合 | 已逐图量化 | 7 图均完成 1024 预算，但其中多图质量仍不可接受 |
 | 下方预览→右侧预览 | 通过 | 7/7 字节源和展示几何一致 |
 | 完整复制→重新解析 | 通过 | 7/7 代码完整，实例计数一致，serialize/parse 精确闭环 |
-| CK3 Apply/Copy | v6 r5 已逐图执行；v7 待重跑 | v6 的 7/7 大载荷核心计数闭环通过；picture-02/05/07 的 Copy 将一个小数 rotation 规范化为整数 |
-| CK3 空间像素→右侧预览 | v6 r5 已定位缺陷；v7 待重跑 | fixed-calibration v2 已取得 7 个原生 crop；消融证明浏览器旋转方向错误并已修复，尚不能用旧 crop 冒充 v7 通过 |
+| CK3 Apply/Copy | v8 r11 已逐图执行 | 7/7 大载荷核心计数闭环通过；严格字段序列 4/7，picture-02/05/07 的 Copy 将小数 rotation 规范化为整数 |
+| CK3 空间像素→右侧预览 | 通过 | v3 原生 UV 校准后 7/7 通过预先冻结的四项像素门禁；原生框体不参与评分 |
 
 MCP 的当前定位、指标和隐私边界见
-`docs/ck3-coat-of-arms-framebuffer-comparison-v2.md`。下一个原生工作包是对 v7 新代码逐图完成
-Apply/Copy 和 fixed-calibration framebuffer 对照；同时继续高分辨率局部替换/边缘细化，用这 7 图逐图做改动前后消融。
+`docs/ck3-coat-of-arms-framebuffer-comparison-v3.md`。下一步是验证三例 CK3 Copy 规范化文本再次
+Apply 后的像素差异；同时继续高分辨率局部替换/边缘细化，用这 7 图逐图做改动前后消融。
 
 ## 复现命令
 
 ```bat
 cd coat_of_arms_editer_of_ck3
 pnpm exec playwright test e2e/user-picture-preview-consistency.spec.ts --reporter=line
-set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs/coat-of-arms-fit-artifacts/user-picture-corpus-v7-budget-1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line
+set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-budget-1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line
 pnpm test
 pnpm build
 ```
