@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T02:42:00+08:00",
+  "updatedAt": "2026-09-16T03:01:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -344,11 +344,26 @@
     },
     {
       "id": "WP7",
-      "status": "pending",
-      "commit": null,
-      "commands": [],
-      "resultPath": null,
-      "keyMetrics": {},
+      "status": "passed",
+      "commit": "0b8c6733",
+      "commands": [
+        "pnpm test",
+        "pnpm build",
+        "pnpm verify:production-boundary",
+        "set COA_E2E_USE_PREVIEW=true&& pnpm exec playwright test e2e/production-no-backend.spec.ts --reporter=line"
+      ],
+      "resultPath": "docs/coat-of-arms-production-runtime-boundary.md",
+      "keyMetrics": {
+        "quarkusBackendRetired": true,
+        "browserRestClientRetired": true,
+        "productionForbiddenMarkerMatches": 0,
+        "observedHttpRequests": 13,
+        "observedHttpMethods": ["GET"],
+        "observedHttpOrigins": ["http://127.0.0.1:4173"],
+        "backendRequests": 0,
+        "userContentRequests": 0,
+        "nativeDevelopmentAcceptancePath": "managed_typed_mcp_native_bridge"
+      },
       "blockers": []
     }
   ]

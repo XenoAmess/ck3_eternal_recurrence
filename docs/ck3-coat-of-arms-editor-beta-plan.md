@@ -1,12 +1,13 @@
 # CK3 家徽编辑器 Beta 工作计划
 
-> 状态：执行中（2026-09-15）；WP0–WP2 已通过，当前推进 WP3 高分辨率与混合原生元素
+> 状态：执行中（2026-09-16）；WP0–WP2 与 WP7 已通过，继续推进 WP3–WP6 未闭合门禁
 >
 > 产品目录：`coat_of_arms_editer_of_ck3/`
 >
 > 目标：从 Alpha 的“可用近似器”推进到可验证、可压缩、可在大预算下稳定工作的纯浏览器 Beta。
 >
-> WP0 浏览器接缝修复、WP1 大载荷文本闭环、WP2 精确剪枝/压缩及压缩文本原生闭环均已通过；当前工作项为 WP3。
+> WP0 浏览器接缝修复、WP1 大载荷文本闭环、WP2 精确剪枝/压缩及压缩文本原生闭环均已通过；WP7 已删除
+> Quarkus/REST 生产残留并以完整 production 请求观测闭环。当前继续处理 WP3–WP6 的剩余范围。
 > 128 KiB 已由真实 380,862-byte CK3 round-trip 明确证明只是旧桥合同，不是当前实测引擎上限。
 
 机器可读状态见 [`coat-of-arms-fit-artifacts/beta-progress.json`](coat-of-arms-fit-artifacts/beta-progress.json)，WP0 完整证据见
@@ -196,7 +197,10 @@ Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_a
 
 ### WP7：开发后端退役（P1，1–2 工程日，依赖 WP1）
 
-当前 Quarkus 只把本机 REST 请求转成 Java MCP SDK，再转给 Python stdio MCP/原生桥；正式平台本来就不使用它。WP1 的版本化传输稳定后，将开发期连接能力直接收敛到 MCP 的可选 loopback/受管 transport，迁移对应合同测试，随后删除 Quarkus backend 和浏览器 REST client。
+当前状态：`passed`（`0b8c6733`）。Quarkus backend、浏览器 REST client 与生产界面的本机桥控件已删除；原生开发验收继续
+直接使用 WP1 已通过合同测试和实机 round-trip 的受管 typed MCP/native bridge。production bundle 字节扫描没有发现五类旧后端标识；
+完整浏览器流程观测到 13 个 HTTP 请求，全部是同源 GET，backend 与用户内容请求均为 0。证据见
+[生产运行边界](coat-of-arms-production-runtime-boundary.md)。
 
 退出条件：所有仍有价值的原生开发验收都有 MCP 等价路径；独立浏览器 E2E 继续断言图片拟合期间零 `/api/` 请求；生产构建中不存在 Java/本机服务依赖。
 
