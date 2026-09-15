@@ -6,6 +6,9 @@
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
 #include "xar_bridge/player_faction_alerts_v1_mailbox.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
+#include "player_construction_view_probe_v1_mailbox.hpp"
+#endif
 #include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
 #include "xar_bridge/steward_develop_county_enumerator_observer_v1.hpp"
 #include "domain_construction_application_main_runtime_v1.hpp"
@@ -7102,6 +7105,10 @@ void RunConnectedSession(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));
         } else if (!game.supports_step(step)
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kPlayerConstructionViewProbePrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
                    && !xar::bridge::IsCouncilApplicationMainPrivateStepV1(step)
 #endif
@@ -8118,7 +8125,119 @@ void RunConnectedSession(
               }
             }
           }
-        } else if (
+        }
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
+        else if (step == xar::ck3_11906::
+                             kPlayerConstructionViewProbePrivateStepV1) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision == 0) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "private construction probe request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "private construction probe revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != *previous_snapshot ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "private construction probe paused frame unavailable"));
+            } else {
+              xar::ck3_11906::PlayerConstructionViewProbeMailboxContextV1
+                  query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.module_base = reinterpret_cast<std::uintptr_t>(
+                  GetModuleHandleW(nullptr));
+              query.expected_snapshot = current_snapshot;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::
+                      ExecutePlayerConstructionViewProbeMailboxV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                                             "private construction probe executor unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kCampaignRootContextV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kCampaignRootContextV1ExecutingWaitSliceMilliseconds);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot &&
+                    state_revision == expected_revision;
+                std::string response;
+                if (stable &&
+                    query.completion == xar::ck3_11906::
+                                            PlayerConstructionViewProbeMailboxCompletionV1::
+                                                completed) {
+                  const bool observed =
+                      query.result.status != xar::ck3::shared::
+                                                 PlayerConstructionViewProbeStatusV1::
+                                                     unavailable;
+                  response = CommandResultFrame(
+                      request_id, step, observed,
+                      observed ? "private construction cache branch observed"
+                               : "private construction cache branch unavailable");
+                  if (observed && response.size() >= 2 &&
+                      response.substr(response.size() - 2) == "}}") {
+                    response.resize(response.size() - 2);
+                    response += ",\"private_probe\":";
+                    response += xar::ck3_11906::
+                        SerializePlayerConstructionViewProbePrivateV1(query);
+                    response += "}}";
+                  } else if (!observed && !response.empty() &&
+                             response.back() == '}') {
+                    response.pop_back();
+                    response += ",\"private_probe\":";
+                    response += xar::ck3_11906::
+                        SerializePlayerConstructionViewProbePrivateV1(query);
+                    response += '}';
+                  }
+                } else {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "private construction probe application-main capture failed");
+                }
+                const auto reclaimed = xar::ck3_11906::
+                    ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                                             query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "private construction probe result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        }
+#endif
+        else if (
             step == xar::ck3_11906::kPlayerFactionAlertsV1Step) {
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::

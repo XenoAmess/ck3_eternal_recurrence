@@ -3,7 +3,7 @@
 ## 状态与范围
 
 - **COST-GATE1（2026-09-15，static-ready/read-only，未实机）**：在已冻结的 native selected-row 成本 helper `0x18D17E0` 中，`0x18D18F3` 前的 `rdi`、`rbp-0x41`、`rbx` 分别是同步借用的 `0x28` 目标行、八槽成本、八槽资源余额；同一 native command 以后从 `[r14+0x18]` 写入 actor ID，因此 collector 要求它等于当帧玩家，排除 AI 的建设候选。exact EXE 和 helper span 的 SHA-256，以及对应寄存器来源指令，保存在 `native_bridge/research/domain_construction_cost_gate_collector_v1_abi.json`；独立 C++ collector 在该调用尚未返回时复制身份/成本/余额。`cost == balance` 在原生严格 `<` 判定下成为可观测的 `insufficient_resource` 拒绝；余额足够却尚未观察最终 native validator 时只记录 `final_observation`，不能进入 construction action。normal/optimized 聚焦 fixture 与 exact-build source verifier 已验证静态来源，**没有 paused live capture**。自然调用属于 AI scheduler；该 collector 没有可证的玩家调用，当前不接 AI hook 或广告公共建设动作。玩家建设的下一输入转向下文原版县视图与底层定义枚举。
-- **VIEW-PROBE1（2026-09-15，static-ready-private，未接 bridge/未实机）**：`player_construction_view_probe_v1.hpp/.cpp/_process.cpp/_mailbox.cpp` 复用 exact root/idler/handler 路径，借用 `handler+0xD0` 的 `CHoldingView`，在 paused application-main 中同步读取 `+0x118/+0x120/+0x124` 候选缓存。返回 `view_candidate_cache_empty` 与 `view_candidate_cache_present`，其中 cache empty **不是**“玩家没有可建建筑”。源码 ABI `native_bridge/research/player_construction_view_probe_v1_abi.json` 与 exact source verifier GREEN，normal/optimized MSVC `/W4 /WX` 聚焦 fixture GREEN。私有 mailbox executor 已静态编译但尚未加入 bridge/CMake，没有真实 paused query、候选成本/合法性、策略动作或后置结果；不提升 M4/预览能力。
+- **VIEW-PROBE1（2026-09-15，static-ready-private，未实机）**：`player_construction_view_probe_v1.hpp/.cpp/_process.cpp/_mailbox.cpp` 复用 exact root/idler/handler 路径，借用 `handler+0xD0` 的 `CHoldingView`，在 paused application-main 中同步读取 `+0x118/+0x120/+0x124` 候选缓存。返回 `view_candidate_cache_empty` 与 `view_candidate_cache_present`，其中 cache empty **不是**“玩家没有可建建筑”。源码 ABI `native_bridge/research/player_construction_view_probe_v1_abi.json` 与 exact source verifier GREEN，normal/optimized MSVC `/W4 /WX` 聚焦 fixture GREEN。`bridge.cpp` 有只在 `XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=ON` 时路由的私有 `execute_step`，CMake 默认 `OFF`；Debug/Release DLL 候选已链接。尚无真实 paused query、候选成本/合法性、策略动作或后置结果；不提升 M4/预览能力。
 
 - **[static-confirmed]** 本专题冻结 CK3 `1.19.0.6` 的原版建筑候选门、`ai_value` 评分、头部
   `80%` 入围带、带权随机选择、预算储备背景、施工提交边以及原版对“存钱等目标”的明确说明。
@@ -87,10 +87,34 @@ registry 中 `0x412E670` 的字符串是完整方法名
 `0x11A6530`，其 core `0x119B930` 会从当前省份/建筑重新计算费用，
 不是从 AI scheduler 的八槽栈值读取。
 
+该玩家 callback 的冻结调用参数进一步定位为：`ecx` 是
+`module+0x4FE7EE0` 的当前玩家完整 CharacterID，`edx` 来自
+`[row->view+0x1F0]+0x10` 的当前县视图省份身份，`r8=[row+8]`
+是建筑定义，`r9d=[row+0x10]` 是候选 mode；两个栈参数为
+`true, null`。因此独立候选查询需要把省份、建筑定义和 mode
+绑定到同一个 paused frame，不能只拿建筑 key 调最终判定。
+`0x119B930` 的金钱费用 core 同样以 `row->view` 和
+`[row+8]` 为输入，在 `0x119B9BB` 调 `0x2918AF0`。
+
 `view+0x118` 的 `data/capacity/count` 分别在 `+0x118/+0x120/+0x124`。
 `0x11A32B0` 先清除旧 row，随后在 `0x11A364F..0x11A3732`
 按筛选结果生成新 row。row 的生命周期由 view 管理，只能在同一
-application-main callback 同步读取。
+ application-main callback 同步读取。
+其 mode 0 定义输入从 `[view+0x108]->+0x628/+0x60` 的指针向量读取，
+先经过 `0x21F6380` 和 definition 的 enabled/scripted gate，
+再构造 GUI row。定义向量是候选来源线索，但这一步还没有证明
+任意玩家省份和建筑槽位可建；关闭县视图时 cache 为零不能解释为
+「当前玩家没有合法建设」。
+
+私有 paused 查询需要当前原生 snapshot `revision`，发送
+`execute_step` 的 `step=g2_player_construction_view_probe_v1` 与
+`expected_revision`；成功 `command_result.result.private_probe` 仅有
+`status/failure/view_present/candidate_capacity/cached_candidate_count`
+及执行次数，`advertised=false`。这是一项有界分叉观测：若关闭县视图的
+实机 cache 非空，下一项是同帧解码 typed row、费用和最终 CanConstruct；
+若 cache 为空，下一项应直接沿上述模型定义向量与玩家实际持有的
+省份/holding 枚举，不得把空 cache 解释为合法 no-op，也不得延长同一
+paused 等待或为这个探针另开永久运行。
 
 尚未闭合县视图关闭时是否存在可用候选、row 的完整 identity/成本、
 玩家直辖地枚举来源。因此当前不能仅凭 `handler+0xD0`

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "static-ready-private-player-view-cache-probe-bridge-unwired-live-pending",
+  "status": "static-ready-private-player-view-cache-probe-bridge-default-off-live-pending",
   "game_version": "1.19.0.6",
   "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "stock_gui_sha256": "E4121041153486379D813BC0154718F48446EA5F2143BFF4ADF06D7E9B8C4E8E",
@@ -52,6 +52,13 @@
     "datamodel = \"[HoldingView.GetPotentialBuildings]\"",
     "enabled = \"[GUIPotentialBuildingItem.CanConstruct]\""
   ],
+  "private_transport": {
+    "cmake_option": "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1",
+    "default": "OFF",
+    "execute_step": "g2_player_construction_view_probe_v1",
+    "request_field": "expected_revision",
+    "result_field": "command_result.result.private_probe"
+  },
   "not_proven": [
     "closed-view cache population",
     "full candidate identity and cost in normal production frame",

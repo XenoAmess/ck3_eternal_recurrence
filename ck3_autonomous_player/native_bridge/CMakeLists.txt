@@ -142,6 +142,11 @@ option(
   "Install the private exact-build native-runtime domain-construction observer"
   OFF
 )
+option(
+  XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1
+  "Read the player HoldingView candidate-cache branch on paused application-main"
+  OFF
+)
 
 option(
   XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1
@@ -368,6 +373,9 @@ add_library(xar_ck3_bridge SHARED
   src/player_faction_alerts_v1.cpp
   src/player_faction_alerts_v1_mailbox.cpp
   src/player_faction_alerts_v1_serializer.cpp
+  src/player_construction_view_probe_v1.cpp
+  src/player_construction_view_probe_v1_process.cpp
+  src/player_construction_view_probe_v1_mailbox.cpp
   src/steward_develop_county_candidates_v1.cpp
   src/steward_develop_county_candidates_v1_mailbox.cpp
   src/steward_develop_county_candidates_v1_serializer.cpp
@@ -708,6 +716,11 @@ if(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1)
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)

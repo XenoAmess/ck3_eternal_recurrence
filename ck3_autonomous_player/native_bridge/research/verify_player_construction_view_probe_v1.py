@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 
 import pefile
 
@@ -68,6 +69,23 @@ def main() -> int:
         assert anchor in process_source, anchor
     assert "advertised\\\":false" in mailbox_source
     assert contract["advertised"] is False
+    transport = contract["private_transport"]
+    assert transport["default"] == "OFF"
+    assert transport["execute_step"] in (
+        NATIVE / "src/player_construction_view_probe_v1_mailbox.hpp"
+    ).read_text(encoding="utf-8")
+    cmake = (NATIVE / "CMakeLists.txt").read_text(encoding="utf-8")
+    option = re.escape(transport["cmake_option"])
+    assert re.search(rf"option\(\s*{option}\s*\"[^\"]+\"\s*OFF\s*\)", cmake)
+    for unit in ("player_construction_view_probe_v1.cpp",
+                 "player_construction_view_probe_v1_process.cpp",
+                 "player_construction_view_probe_v1_mailbox.cpp"):
+        assert f"src/{unit}" in cmake, unit
+    bridge = (NATIVE / "src/bridge.cpp").read_text(encoding="utf-8")
+    assert f"#if defined({transport['cmake_option']})" in bridge
+    assert "kPlayerConstructionViewProbePrivateStepV1" in bridge
+    assert "ExecutePlayerConstructionViewProbeMailboxV1" in bridge
+    assert 'response += ",\\\"private_probe\\\":"' in bridge
     print("player-construction-view-probe-source: GREEN_EXACT_BUILD")
     return 0
 
