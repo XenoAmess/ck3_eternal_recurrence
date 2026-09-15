@@ -47,6 +47,7 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .panel-title { min-height: 42px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
 .panel-title > div, .section-heading { display: flex; align-items: center; gap: 11px; }
 .source-actions { display: flex; align-items: center; gap: 8px; }
+.hidden-file-input { display: none; }
 .panel h2, .panel h3 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; }
 .panel h2 { font-size: 20px; }
 .panel h3 { font-size: 16px; }
@@ -118,6 +119,8 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .wide { grid-column: 1 / -1; }
 .section-heading { margin: 12px 0; justify-content: space-between; }
 .instance-list { display: grid; gap: 10px; }
+.instance-window-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto 126px auto; gap: 8px; align-items: center; margin: 8px 0 10px; padding: 8px 10px; border: 1px solid var(--line); background: rgba(26,23,20,.7); color: #a99d8e; font-size: 12px; }
+.instance-window-toolbar .el-input-number { width: 126px; }
 .instance-card { padding: 12px; border: 1px solid var(--line); background: rgba(15,13,11,.42); }
 .instance-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; color: #cdb985; font-size: 12px; }
 .number-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 8px; }

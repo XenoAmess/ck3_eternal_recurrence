@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T21:36:00+08:00",
+  "updatedAt": "2026-09-15T21:48:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -186,20 +186,47 @@
         },
     {
       "id": "WP4",
-      "status": "pending",
+      "status": "in_progress",
       "commit": null,
       "commands": [],
       "resultPath": null,
-      "keyMetrics": {},
+      "keyMetrics": {
+        "realFitBudget10000": "pending",
+        "completeDocumentStress": "passed_under_WP5"
+      },
       "blockers": []
     },
     {
       "id": "WP5",
-      "status": "pending",
+      "status": "in_progress",
       "commit": null,
-      "commands": [],
-      "resultPath": null,
-      "keyMetrics": {},
+      "commands": [
+        "pnpm exec vitest run src/domain/largeDocumentContract.test.ts --reporter=verbose",
+        "pnpm exec playwright test e2e/large-document-stress.spec.ts --reporter=line",
+        "pnpm build"
+      ],
+      "resultPath": "docs/coat-of-arms-large-document-stress.md",
+      "keyMetrics": {
+        "contract": "ck3-coa-large-document-v1",
+        "logicalLayers": 1,
+        "coloredEmblemBlocks": 1,
+        "drawnInstances": 10000,
+        "instances": 10000,
+        "utf8Bytes": 1653890,
+        "lines": 70014,
+        "renderedInstanceCards": 32,
+        "browserImportMs": 4487,
+        "browserTailJumpAndEditMs": 724,
+        "browserClipboardCopyMs": 178,
+        "browserProjectDownloadMs": 403,
+        "measuredJsHeapDeltaBytes": 139473681,
+        "memoryEvidenceScope": "JavaScript heap delta only; excludes GPU and browser-process memory",
+        "nonGetRequests": 0,
+        "firstRunTailEditMs": 4683,
+        "firstRunGateStatus": "failed_before_deferred_large_document_preview",
+        "copyParseInstanceCount": 10000,
+        "projectRoundTripInstanceCount": 10000
+      },
       "blockers": []
     },
     {

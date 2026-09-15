@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   createCk3CompanionClient,
@@ -33,6 +33,11 @@ import {
   type ImageFitResult,
 } from './domain/imageFitter'
 import { parseCoatOfArms } from './domain/parser'
+import {
+  createCoatOfArmsProject,
+  parseCoatOfArmsProject,
+  serializeCoatOfArmsProject,
+} from './domain/projectDocument'
 import {
   renderCoatOfArms,
   renderedCoatOfArmsToDataUrl,
@@ -88,6 +93,8 @@ const mcpBusy = ref(false)
 const catalogBusy = ref(false)
 const textureBusy = ref(false)
 const clipboardBusy = ref(false)
+const projectFileBusy = ref(false)
+const projectFileInput = ref<HTMLInputElement>()
 const mcpStatus = ref('未连接')
 const patternResources = ref<CoatOfArmsResourceItem[]>([])
 const emblemResources = ref<CoatOfArmsResourceItem[]>([])
@@ -142,6 +149,9 @@ let fitWorker: Worker | null = null
 let fitRunId = 0
 let fitPruneWorker: Worker | null = null
 let fitPruneRunId = 0
+const INSTANCE_EDITOR_WINDOW_SIZE = 32
+const OUTPUT_PREVIEW_CHARACTER_LIMIT = 64 * 1024
+const instanceWindowStart = ref(0)
 
 const fitTerminationLabels: Record<ImageFitResult['provenance']['terminationReason'], string> = {
   layer_budget: '达到用户搜索预算',
@@ -153,7 +163,11 @@ const fitTerminationLabels: Record<ImageFitResult['provenance']['terminationReas
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const outputBytes = computed(() => new TextEncoder().encode(output.value).length)
-const outputLines = computed(() => output.value.match(/\n/g)?.length ?? 0)
+const outputLines = computed(() => output.value ? (output.value.match(/\n/g)?.length ?? 0) + 1 : 0)
+const outputPreviewTruncated = computed(() => output.value.length > OUTPUT_PREVIEW_CHARACTER_LIMIT)
+const outputPreview = computed(() => outputPreviewTruncated.value
+  ? `${output.value.slice(0, OUTPUT_PREVIEW_CHARACTER_LIMIT)}\r\n… UI 仅显示前 ${OUTPUT_PREVIEW_CHARACTER_LIMIT.toLocaleString()} 字符；复制和项目保存仍读取完整模型 …`
+  : output.value)
 const activeFitCompression = computed(() => (
   fitCompressionSource.value === output.value ? fitCompressionEvidence.value : undefined
 ))
@@ -188,6 +202,26 @@ const fitEvidenceJson = computed(() => {
   })
 })
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
+const boundedInstanceWindowStart = computed(() => {
+  const length = activeEmblem.value?.instances.length ?? 0
+  const maximum = Math.max(0, length - INSTANCE_EDITOR_WINDOW_SIZE)
+  return Math.min(Math.max(0, Math.floor(instanceWindowStart.value)), maximum)
+})
+const visibleInstanceItems = computed(() => (activeEmblem.value?.instances ?? [])
+  .slice(boundedInstanceWindowStart.value, boundedInstanceWindowStart.value + INSTANCE_EDITOR_WINDOW_SIZE)
+  .map((instance, offset) => ({ instance, index: boundedInstanceWindowStart.value + offset })))
+const instanceWindowEnd = computed(() => (
+  boundedInstanceWindowStart.value + visibleInstanceItems.value.length
+))
+const fallbackPreviewEmblems = computed(() => {
+  let remaining = 512
+  return coatOfArms.value.coloredEmblems.flatMap((emblem, emblemIndex) => {
+    if (remaining <= 0) return []
+    const instances = emblem.instances.slice(0, remaining)
+    remaining -= instances.length
+    return instances.length ? [{ emblem, emblemIndex, instances }] : []
+  })
+})
 const visibleDiagnostics = computed<Diagnostic[]>(() => {
   const items = [...diagnostics.value, ...validateCoatOfArms(coatOfArms.value)]
   if (outputBytes.value > COAT_OF_ARMS_MCP_MAX_BYTES) {
@@ -201,7 +235,15 @@ const visibleDiagnostics = computed<Diagnostic[]>(() => {
   )) === index)
 })
 const errorCount = computed(() => visibleDiagnostics.value.filter((item) => item.severity === 'error').length)
+const drawnInstanceCount = computed(() => coatOfArms.value.coloredEmblems.reduce(
+  (sum, item) => sum + item.instances.length, 0,
+))
+const largeDocumentPreviewDeferred = computed(() => drawnInstanceCount.value > 2_048)
 const renderedPreviewUrl = computed(() => {
+  // A synchronous 10,000-instance canvas redraw on every numeric keystroke
+  // blocks the editor for seconds. Large documents therefore keep editing,
+  // copying and project persistence live while preview is explicitly deferred.
+  if (largeDocumentPreviewDeferred.value) return ''
   const rendered = renderCoatOfArms(
     coatOfArms.value,
     {
@@ -258,6 +300,74 @@ async function copyOutput() {
   }
 }
 
+function openProjectFilePicker() {
+  projectFileInput.value?.click()
+}
+
+function downloadTextFile(name: string, text: string, type: string) {
+  const url = URL.createObjectURL(new Blob([text], { type }))
+  const anchor = document.createElement('a')
+  anchor.href = url
+  anchor.download = name
+  anchor.click()
+  URL.revokeObjectURL(url)
+}
+
+async function exportProject() {
+  projectFileBusy.value = true
+  try {
+    const loaded = loadedAssetPack.value
+    const project = await createCoatOfArmsProject(coatOfArms.value, {
+      selectedEmblem: selectedEmblem.value,
+      assetPack: loaded ? {
+        packId: loaded.pack.pack_id,
+        manifestSha256: loaded.manifestSha256,
+        ck3Build: loaded.pack.ck3_build,
+      } : undefined,
+    })
+    downloadTextFile(
+      `ck3-coat-of-arms-${new Date().toISOString().replaceAll(':', '-')}.coa-project.json`,
+      serializeCoatOfArmsProject(project),
+      'application/json;charset=utf-8',
+    )
+    ElMessage.success(`项目已保存：${project.ck3Source.stats.drawnInstances} 个完整实例`)
+  } catch (error) {
+    ElMessage.error(`项目保存失败：${errorMessage(error)}`)
+  } finally {
+    projectFileBusy.value = false
+  }
+}
+
+async function importProject(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  projectFileBusy.value = true
+  try {
+    const project = await parseCoatOfArmsProject(await file.text())
+    cancelImageFit(false)
+    cancelInstancePrune(false)
+    coatOfArms.value = project.coatOfArms
+    source.value = serializeCoatOfArms(project.coatOfArms)
+    diagnostics.value = []
+    selectedEmblem.value = project.selectedEmblem
+    instanceWindowStart.value = 0
+    fitResult.value = undefined
+    fitCompressionEvidence.value = undefined
+    fitCompressionSource.value = ''
+    fitPruneEvidence.value = undefined
+    fitPruneSource.value = ''
+    fitPreviewUrl.value = ''
+    await loadCurrentTexturePreviews()
+    ElMessage.success(`项目已恢复：${project.ck3Source.stats.drawnInstances} 个实例，SHA-256 已验证`)
+  } catch (error) {
+    ElMessage.error(`项目导入失败：${errorMessage(error)}`)
+  } finally {
+    projectFileBusy.value = false
+    input.value = ''
+  }
+}
+
 async function pasteSource() {
   clipboardBusy.value = true
   try {
@@ -288,6 +398,7 @@ function reset() {
   emblemPreviewUrls.value = {}
   patternTexture.value = undefined
   emblemTextures.value = {}
+  instanceWindowStart.value = 0
 }
 
 function addEmblem() {
@@ -298,6 +409,26 @@ function addEmblem() {
 function removeEmblem(index: number) {
   coatOfArms.value.coloredEmblems.splice(index, 1)
   selectedEmblem.value = Math.max(0, Math.min(selectedEmblem.value, coatOfArms.value.coloredEmblems.length - 1))
+}
+
+function moveInstanceWindow(start: number) {
+  const length = activeEmblem.value?.instances.length ?? 0
+  instanceWindowStart.value = Math.min(
+    Math.max(0, Math.floor(start)),
+    Math.max(0, length - INSTANCE_EDITOR_WINDOW_SIZE),
+  )
+}
+
+function addInstanceToActiveEmblem() {
+  if (!activeEmblem.value) return
+  activeEmblem.value.instances.push(createInstance())
+  moveInstanceWindow(activeEmblem.value.instances.length - INSTANCE_EDITOR_WINDOW_SIZE)
+}
+
+function removeActiveInstance(index: number) {
+  if (!activeEmblem.value) return
+  activeEmblem.value.instances.splice(index, 1)
+  moveInstanceWindow(boundedInstanceWindowStart.value)
 }
 
 function parseMask(value: string) {
@@ -826,6 +957,10 @@ onMounted(() => {
   void loadStandaloneAssetPack(false)
 })
 
+watch(selectedEmblem, () => {
+  instanceWindowStart.value = 0
+})
+
 async function getCurrentCoaRevision(): Promise<number> {
   const binding = await companion.sourceBinding()
   if (
@@ -1226,6 +1361,9 @@ importSource()
         <el-tag :type="loadedAssetPack ? 'success' : 'warning'" effect="plain">
           {{ loadedAssetPack ? '独立素材包已绑定' : '等待独立素材包' }}
         </el-tag>
+        <input ref="projectFileInput" class="hidden-file-input" type="file" accept="application/json,.json" @change="importProject">
+        <el-button :loading="projectFileBusy" @click="openProjectFilePicker">打开项目</el-button>
+        <el-button :loading="projectFileBusy" @click="exportProject">保存项目</el-button>
         <el-button @click="reset">重置</el-button>
         <el-button type="primary" :disabled="errorCount > 0" @click="copyOutput">复制 CK3 代码</el-button>
       </div>
@@ -1410,23 +1548,23 @@ importSource()
               <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" alt="原版 pattern DDS 通道图" />
               <div class="shield-light" :style="{ background: cssColor(coatOfArms.colors[1]) }" />
               <div
-                v-for="(emblem, emblemIndex) in coatOfArms.coloredEmblems"
-                :key="`${emblem.texture}-${emblemIndex}`"
+                v-for="item in fallbackPreviewEmblems"
+                :key="`${item.emblem.texture}-${item.emblemIndex}`"
                 class="emblem-group"
               >
-                <template v-for="(instance, instanceIndex) in emblem.instances" :key="instanceIndex">
+                <template v-for="(instance, instanceIndex) in item.instances" :key="instanceIndex">
                   <img
-                    v-if="emblemPreviewUrls[emblem.texture]"
+                    v-if="emblemPreviewUrls[item.emblem.texture]"
                     class="emblem-texture"
-                    :src="emblemPreviewUrls[emblem.texture]"
-                    :alt="emblem.texture"
+                    :src="emblemPreviewUrls[item.emblem.texture]"
+                    :alt="item.emblem.texture"
                     :style="{
                       left: `${instance.position[0] * 100}%`,
                       top: `${instance.position[1] * 100}%`,
                       transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
                       zIndex: Math.round(instance.depth * 10),
                     }"
-                    :title="emblem.texture"
+                    :title="item.emblem.texture"
                   />
                   <div
                     v-else
@@ -1434,11 +1572,11 @@ importSource()
                     :style="{
                       left: `${instance.position[0] * 100}%`,
                       top: `${instance.position[1] * 100}%`,
-                      color: cssColor(emblem.colors[0]),
+                      color: cssColor(item.emblem.colors[0]),
                       transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
                       zIndex: Math.round(instance.depth * 10),
                     }"
-                    :title="emblem.texture"
+                    :title="item.emblem.texture"
                   >✦</div>
                 </template>
               </div>
@@ -1447,8 +1585,11 @@ importSource()
         </div>
         <div class="preview-caption">
           <strong>{{ coatOfArms.pattern || '未指定 pattern' }}</strong>
-          <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ coatOfArms.coloredEmblems.reduce((sum, item) => sum + item.instances.length, 0) }} 个实例 · {{ coatOfArms.texturedEmblems.length }} 个受限纹理层</span>
+          <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ drawnInstanceCount }} 个实例 · {{ coatOfArms.texturedEmblems.length }} 个受限纹理层</span>
         </div>
+        <el-alert v-if="largeDocumentPreviewDeferred" type="warning" :closable="false" show-icon>
+          <template #title>当前文档超过 2,048 个实例；为保证编辑响应，实时整幅预览已延后。完整模型、复制和项目保存不受影响。</template>
+        </el-alert>
         <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">从独立素材包加载当前 DDS</el-button>
         <el-alert type="info" :closable="false" show-icon>
           <template #title>预览翻译 exact 1.19.0.6 随附 shader 的通道、mask、transform、surface detail 与 blend；FallbackColor 绑定、GPU 采样/色彩空间仍待以后原生像素对照。</template>
@@ -1599,24 +1740,37 @@ importSource()
                 </el-form-item>
               </div>
 
-              <div class="instance-list">
-                <div v-for="(instance, index) in activeEmblem.instances" :key="index" class="instance-card">
+              <div v-if="activeEmblem.instances.length > INSTANCE_EDITOR_WINDOW_SIZE" class="instance-window-toolbar">
+                <span>实例窗口 {{ boundedInstanceWindowStart + 1 }}–{{ instanceWindowEnd }} / {{ activeEmblem.instances.length }}</span>
+                <el-button size="small" :disabled="boundedInstanceWindowStart === 0" @click="moveInstanceWindow(boundedInstanceWindowStart - INSTANCE_EDITOR_WINDOW_SIZE)">上一页</el-button>
+                <el-input-number
+                  :model-value="boundedInstanceWindowStart + 1"
+                  :min="1"
+                  :max="activeEmblem.instances.length"
+                  :step="INSTANCE_EDITOR_WINDOW_SIZE"
+                  controls-position="right"
+                  @update:model-value="moveInstanceWindow(Number($event) - 1)"
+                />
+                <el-button size="small" :disabled="instanceWindowEnd >= activeEmblem.instances.length" @click="moveInstanceWindow(instanceWindowEnd)">下一页</el-button>
+              </div>
+              <div class="instance-list" data-testid="instance-editor-window">
+                <div v-for="item in visibleInstanceItems" :key="item.index" class="instance-card" :data-instance-index="item.index">
                   <div class="instance-title">
-                    <strong>实例 {{ index + 1 }}</strong>
-                    <el-button link type="danger" @click="activeEmblem.instances.splice(index, 1)">删除</el-button>
+                    <strong>实例 {{ item.index + 1 }}</strong>
+                    <el-button link type="danger" @click="removeActiveInstance(item.index)">删除</el-button>
                   </div>
                   <div class="number-grid">
-                    <el-form-item label="X"><el-input-number v-model="instance.position[0]" :step="0.05" /></el-form-item>
-                    <el-form-item label="Y"><el-input-number v-model="instance.position[1]" :step="0.05" /></el-form-item>
-                    <el-form-item label="Scale X"><el-input-number v-model="instance.scale[0]" :step="0.05" /></el-form-item>
-                    <el-form-item label="Scale Y"><el-input-number v-model="instance.scale[1]" :step="0.05" /></el-form-item>
-                    <el-form-item label="Rotation"><el-input-number v-model="instance.rotation" :step="5" /></el-form-item>
-                    <el-form-item label="Depth"><el-input-number v-model="instance.depth" :step="0.01" /></el-form-item>
+                    <el-form-item label="X"><el-input-number v-model="item.instance.position[0]" :step="0.05" /></el-form-item>
+                    <el-form-item label="Y"><el-input-number v-model="item.instance.position[1]" :step="0.05" /></el-form-item>
+                    <el-form-item label="Scale X"><el-input-number v-model="item.instance.scale[0]" :step="0.05" /></el-form-item>
+                    <el-form-item label="Scale Y"><el-input-number v-model="item.instance.scale[1]" :step="0.05" /></el-form-item>
+                    <el-form-item label="Rotation"><el-input-number v-model="item.instance.rotation" :step="5" /></el-form-item>
+                    <el-form-item label="Depth"><el-input-number v-model="item.instance.depth" :step="0.01" /></el-form-item>
                   </div>
                 </div>
               </div>
               <div class="row-actions">
-                <el-button @click="activeEmblem.instances.push(createInstance())">添加实例</el-button>
+                <el-button @click="addInstanceToActiveEmblem">添加实例</el-button>
                 <el-button type="danger" plain @click="removeEmblem(selectedEmblem)">删除当前图层</el-button>
               </div>
             </template>
@@ -1657,8 +1811,15 @@ importSource()
           </el-form>
 
           <div class="output-block">
-            <div class="section-heading"><h3>确定性导出</h3><el-tag>CRLF</el-tag></div>
-            <pre>{{ output }}</pre>
+            <div class="section-heading">
+              <h3>确定性导出</h3>
+              <el-space>
+                <el-tag>{{ outputBytes.toLocaleString() }} bytes · {{ outputLines.toLocaleString() }} 行</el-tag>
+                <el-tag v-if="outputPreviewTruncated" type="warning">UI 摘要；复制仍为完整文档</el-tag>
+                <el-tag>CRLF</el-tag>
+              </el-space>
+            </div>
+            <pre>{{ outputPreview }}</pre>
           </div>
         </el-scrollbar>
       </section>
