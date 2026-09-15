@@ -1,0 +1,79 @@
+{
+  "contract": "g2-domain-construction-application-main-runtime-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-application-main-runtime-live-pending",
+  "upstream_contracts": [
+    "g2-domain-construction-cost-legality-live-observer-v1",
+    "g2-domain-construction-shared-glue-v1",
+    "g2-domain-construction-native-submit-adapter-v1"
+  ],
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008,
+    "image_base": "0x140000000"
+  },
+  "application_main_collector": {
+    "input": "synchronous borrowed callsite frame",
+    "reads_per_candidate": 4,
+    "publication_sets": 2,
+    "reads_per_publication": 2,
+    "binding": [
+      "nonzero even generation",
+      "mailbox pump proof epoch",
+      "application-main date"
+    ],
+    "owned_output": [
+      "candidate_id",
+      "candidate_kind",
+      "binding",
+      "eight-slot cost",
+      "eight-slot resource balance",
+      "native affordability",
+      "native final legality"
+    ],
+    "engine_pointer_in_result": false,
+    "drift_behavior": "typed RED before command construction"
+  },
+  "exact_native_backend": {
+    "building_primary_vtable_rva": "0x432F050",
+    "building_secondary_vtable_rva": "0x432F0E8",
+    "holding_primary_vtable_rva": "0x4333128",
+    "holding_secondary_vtable_rva": "0x4333060",
+    "building_validator_rva": "0x26CD410",
+    "holding_validator_rva": "0x275C7F0",
+    "receiver_rva": "0x341D990",
+    "receiver_singleton_rva": "0x57621F0",
+    "receiver_flags": 7,
+    "command_bytes": 48,
+    "application_main_only": true,
+    "receiver_true_is_pending_ack": true,
+    "leftover_owned_command_released": true
+  },
+  "build_integration": {
+    "default_bridge_linked": true,
+    "application_main_mailbox_executor_registered": true,
+    "compiled_sources": [
+      "research/domain_construction_candidate_identity_decoder_v1.cpp",
+      "research/domain_construction_candidate_cost_legality_decoder_v1.cpp",
+      "research/domain_construction_cost_legality_collector_source_adapter_v1.cpp",
+      "research/domain_construction_cost_legality_live_observer_v1.cpp",
+      "research/domain_construction_semantic_action_core_v1.cpp",
+      "research/domain_construction_native_submit_adapter_v1.cpp",
+      "src/domain_construction_shared_glue_v1.cpp",
+      "src/domain_construction_application_main_runtime_v1.cpp"
+    ],
+    "public_capability_registered": false,
+    "public_action_registered": false,
+    "public_schema_changed": false,
+    "mcp_changed": false
+  },
+  "verification": {
+    "focused_normal": "GREEN_W4WX",
+    "focused_optimized": "GREEN_W4WX",
+    "default_bridge": "GREEN_LINK",
+    "ck3_started": false,
+    "production_live": false
+  },
+  "unique_live_step": "run one authorized exact-build CK3 round that supplies a real synchronous borrowed collector frame, observes exact receiver pending ACK, and closes it with a fresh matching construction or exact resource-deduction receipt"
+}

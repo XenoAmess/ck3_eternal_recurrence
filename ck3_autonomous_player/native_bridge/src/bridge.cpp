@@ -8,6 +8,7 @@
 #include "xar_bridge/player_faction_alerts_v1_mailbox.hpp"
 #include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
 #include "xar_bridge/steward_develop_county_enumerator_observer_v1.hpp"
+#include "domain_construction_application_main_runtime_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
 #include "xar_bridge/domain_construction_candidate_observer_v1.hpp"
 #include "xar_bridge/domain_construction_candidate_observer_v1_serializer.hpp"
@@ -6445,6 +6446,9 @@ public:
     environment.permitted_executor_quattuortrigintary =
         &xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1;
 #endif
+    environment.permitted_executor_quintrigintary =
+        &xar::ck3::shared::
+            ExecuteDomainConstructionApplicationMainRuntimeV1;
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(

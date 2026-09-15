@@ -207,6 +207,9 @@ bool SubmitDomainConstructionSharedCandidateV1(
       return false;
     }
     state.native_failure = NativeFailure::none;
+    state.native_submit.production_native_path =
+        environment.concrete_native_backend_bound &&
+        !environment.offline_fixture_backend;
     state.phase = DomainConstructionSharedPhaseV1::pending_receipt;
     return true;
   } catch (...) {

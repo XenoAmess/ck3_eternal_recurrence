@@ -34,6 +34,9 @@
 - **[DEV20 static-ready shared glue]** `static-ready-shared-construction-glue-candidate-ready-native-live-pending` 已把 DEV18/DEV19
   编入 shared runtime，并提供 concrete publication 双采样到 pointer-free semantic candidate、一次性 backend stage、typed RED 与 fresh
   receipt 的最小 glue。公共 action/schema/MCP 未注册；真实 candidate 与 exact native backend 仍待新轮次。
+- **[DEV21 static-ready private application-main runtime]** `static-ready-private-application-main-runtime-live-pending` 已把同步
+  borrowed-frame collector、DEV17 四读/双 publication、DEV20 shared glue 与 DEV19 exact validator/materialize/receiver backend 编入默认
+  bridge。offline fixture 仍保持 `candidate_live=false`、`production_native_path=false`；只有新 CK3 轮次的 exact application-main 调用可提升。
 - **[static-confirmed cadence boundary]** `CDailyTickCommand` final stage `0x26D3E80` 每次完成日更时调用一次
   `CAIManager` update `0x18876D0`，建设 runtime entry 位于该 pass 的内部列表路由。每条通过 raw gates 的 runtime entry
   调用 producer 恰好一次；全局每日至少/至多命中多少个 owner、存钱目标何时重试仍未闭合，不能写成“每个角色每天必建”或
@@ -621,6 +624,30 @@ DEV19 仍将 `production_native_path=false`，因此 callback seam 不能冒充 
 proof/date 与 target-building、target-holding 或八槽精确扣减证据；stale/缺失 receipt 记录 RED 并保持 pending，允许后续真实 fresh observation
 完成验证。focused normal `/Od` 与 optimized `/O2` 均以 `/W4 /WX` 验证。未启动 CK3，R687 `BOUNDED_NO_GO` 不变。下一入口为
 `bind_concrete_domain_construction_candidate_collector_and_exact_native_backend_then_validate_in_authorized_new_round`。
+
+### DEV21-CONSTRUCTION-BACKEND-BIND：同步 collector 与 exact application-main backend
+
+状态为 `static-ready-private-application-main-runtime-live-pending`。新增 private runtime 只接受 application-main 同步调用期内有效的
+borrowed frame；每个候选连续执行两组 publication、每组两次完整 sample，共四读。每次 sample 都通过 DEV17 source adapter 立即复制
+selected `0x28` row、八槽 cost、八槽 resource balance 与 final-legality 结果；两份 pointer-free publication 再进入 DEV20/DEV18 的完整
+集合漂移检查与确定性选择。expected binding 必须是非零偶数 generation，proof epoch 与 date 必须精确等于当前 mailbox stamp。
+identity、binding、payload 或 final branch 漂移在构造 command 前保留 typed RED。runtime result 不保存 row、cost、balance、候选对象或
+其他 engine pointer；new-holding candidate object 只在同一个同步 validator 调用期内借用。
+
+exact backend 按 `0x18D29A0..0x18D2B6E` 冻结形状构造 `0x30` 字节 building/new-holding command。building primary/secondary vtable
+分别为 `0x432F050/0x432F0E8`，new-holding 为 `0x4333128/0x4333060`；两个 validator 继续使用 DEV19 的
+`0x26CD410/0x275C7F0`。materialize 只调用 command vtable `+0x40` 一次，再把 heap command 交给
+`module+0x57621F0` receiver singleton 的 `0x341D990`，flags 固定为 `7`。receiver 未清空 holder 时才走 deleting destructor 回收并保留
+ownership RED；receiver true 仍只产生 pending ACK，不能解释成施工完成。
+
+默认 `xar_ck3_bridge` 现在链接 DEV15/16/17 collector 链、DEV18/19、DEV20 glue 与 DEV21 runtime，但仍不注册公共 capability、action、
+schema 或 MCP。fixture 的低层 native calls 只核对两种 command 的 exact 字段、四读、单次 validator/materialize/receiver、漂移 RED 与
+pointer-free result，并明确保持 `candidate_live=false`、`production_native_path=false`。focused normal `/Od`、optimized `/O2` 均以
+`/W4 /WX` 通过，fresh Release 默认 DLL 链接通过；本包没有启动或接触 CK3，R687 仍为 `BOUNDED_NO_GO`。
+
+唯一剩余 live 步骤是在获授权的新 CK3 轮次中，让 exact application-main hook/feed 提供一份真实同步 borrowed frame，观察 exact
+receiver pending ACK，再用更新后的匹配 construction state 或八槽精确资源扣减 fresh receipt 收口。该步骤之前不得把本状态提升为
+production-live，也不得开放公共 action/MCP。
 
 ## 最小只读输入合同：`domain-construction-candidates-v1`
 

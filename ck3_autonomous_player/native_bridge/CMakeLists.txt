@@ -330,9 +330,14 @@ add_library(xar_ck3_bridge SHARED
   src/steward_develop_county_candidates_v1_serializer.cpp
   src/steward_develop_county_action_v1.cpp
   src/steward_develop_county_enumerator_observer_v1.cpp
+  research/domain_construction_candidate_identity_decoder_v1.cpp
+  research/domain_construction_candidate_cost_legality_decoder_v1.cpp
+  research/domain_construction_cost_legality_collector_source_adapter_v1.cpp
+  research/domain_construction_cost_legality_live_observer_v1.cpp
   research/domain_construction_semantic_action_core_v1.cpp
   research/domain_construction_native_submit_adapter_v1.cpp
   src/domain_construction_shared_glue_v1.cpp
+  src/domain_construction_application_main_runtime_v1.cpp
   src/council_composition_candidate_observer_v1.cpp
   src/council_composition_candidate_observer_v1_serializer.cpp
   src/ck3_11906.cpp
@@ -1847,6 +1852,40 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_domain_construction_shared_glue_v1
     COMMAND xar_ck3_domain_construction_shared_glue_v1_test
+  )
+
+  add_executable(xar_ck3_domain_construction_application_main_runtime_v1_test
+    research/domain_construction_candidate_identity_decoder_v1.cpp
+    research/domain_construction_candidate_cost_legality_decoder_v1.cpp
+    research/domain_construction_cost_legality_collector_source_adapter_v1.cpp
+    research/domain_construction_cost_legality_live_observer_v1.cpp
+    research/domain_construction_semantic_action_core_v1.cpp
+    research/domain_construction_native_submit_adapter_v1.cpp
+    src/domain_construction_shared_glue_v1.cpp
+    src/domain_construction_application_main_runtime_v1.cpp
+    src/domain_construction_application_main_runtime_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_domain_construction_application_main_runtime_v1_test
+    PRIVATE include research src)
+  target_compile_definitions(
+    xar_ck3_domain_construction_application_main_runtime_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_domain_construction_application_main_runtime_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_domain_construction_application_main_runtime_v1
+    COMMAND xar_ck3_domain_construction_application_main_runtime_v1_test
+  )
+  add_test(
+    NAME xar_ck3_native_bridge_domain_construction_application_main_runtime_v1_source_contract
+    COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/test_domain_construction_application_main_runtime_v1_source_contract.py
+      --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
+      --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
   )
 
   add_executable(xar_ck3_council_composition_candidate_observer_v1_test
