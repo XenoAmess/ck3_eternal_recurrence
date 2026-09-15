@@ -1,0 +1,62 @@
+{
+  "schema": "xar.ck3.g2_m4_council_r695_gate_input_contract_template_v1",
+  "status": "awaiting-council27-master-and-release-dll",
+  "scope": "one paused, read-only standard-feudal final-gate query; no gameplay action",
+  "game_version": "1.19.0.6",
+  "game_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "source_save_name": "dev3b_r639",
+  "source_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+  "source_commit": null,
+  "bridge_dll_sha256": null,
+  "required_before_seal": [
+    "Council27 gate-only code integrated to remote master",
+    "Release DLL and injector built from exact integrated source",
+    "CMake gate-only options and exact EXE checked",
+    "R694 sealed prelaunch profile rows unchanged"
+  ],
+  "cmake_options": {
+    "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF"
+  },
+  "dlc_mod_config": {
+    "enabled_mods": ["mod/xar_autoplayer.mod"],
+    "disabled_dlcs": [],
+    "profile_source": "R694 sealed prelaunch rows, descriptor rewritten for R695"
+  },
+  "old_round": "R694",
+  "new_round": "R695",
+  "private_query_step": "private-query-council-final-gates-v1",
+  "private_status_step": "private-council-application-main-status-v1",
+  "expected_scene": {
+    "owner_character_id": 29829,
+    "incumbent_character_id": 32716,
+    "candidate_character_id": 33433,
+    "candidate_stewardship": 16,
+    "incumbent_stewardship": 12,
+    "already_councillor_positive_ids": [33435, 34333, 34867],
+    "candidate_count": 11
+  },
+  "assertions": [
+    "private and unadvertised; public Council query/action absent from hello",
+    "terminal gate schema/status available with 11 complete unique rows",
+    "each gate row has same candidate ID and native ordinal as its public query row",
+    "all four gate fields and incumbent fireability are typed booleans for every row",
+    "no partial rows, null-as-false, ACK-as-effect, or gameplay action",
+    "native_helper_invocations_delta equals zero",
+    "paused date and source/target save hashes unchanged",
+    "tracked CK3 job recovered and total CK3 inventory zero"
+  ],
+  "timeouts_seconds": {
+    "readiness": 300,
+    "query_status": 60,
+    "overall": 480
+  },
+  "asset_boundary": {
+    "reason": "one exact paused scene checks the newly bound Council27 gates without opening production action",
+    "impact": "runner is local gate evidence only; it is not a public CK3 or MCP capability",
+    "reuse_plan": "versioned native gate query schema and read-only MCP adapter after all live gate branches are verified",
+    "migration_deadline": "before Council query/action production advertisement",
+    "responsible_package": "G2-COUNCIL29"
+  }
+}
