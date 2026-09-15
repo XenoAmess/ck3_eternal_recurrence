@@ -9,8 +9,10 @@ import pytest
 
 from xar_autoplayer.bridge.coat_of_arms_framebuffer import (
     CoatOfArmsFramebufferError,
+    compare_reference_to_calibrated_framebuffer_v2,
     compare_reference_to_framebuffer_v1,
     decode_reference_png_v1,
+    derive_two_state_calibration_v2,
 )
 
 
@@ -92,3 +94,59 @@ def test_aligns_content_inside_native_decorative_frame() -> None:
     assert 0.84 <= alignment["contentToOuterRatio"] <= 0.93
     assert result["metrics"]["meanAbsoluteError"] < 0.04
     assert result["metrics"]["colorMse"] < 0.02
+
+
+def test_two_state_calibration_selects_largest_reference_independent_surface() -> None:
+    begin = Image.new("RGB", (420, 300), (31, 29, 27))
+    complete = begin.copy()
+    begin_draw = ImageDraw.Draw(begin)
+    complete_draw = ImageDraw.Draw(complete)
+    begin_draw.ellipse((30, 30, 93, 93), fill=(240, 20, 20))
+    complete_draw.ellipse((30, 30, 93, 93), fill=(20, 240, 20))
+    begin_draw.polygon(((170, 40), (300, 40), (280, 220), (235, 270), (190, 220)), fill=(240, 20, 20))
+    complete_draw.polygon(((170, 40), (300, 40), (280, 220), (235, 270), (190, 220)), fill=(20, 240, 20))
+
+    calibration = derive_two_state_calibration_v2(
+        "fixture-1", 1234, begin, complete
+    )
+
+    assert calibration.rect == (170, 40, 301, 270)
+    assert calibration.component_count == 2
+    assert calibration.selected_pixels > 20_000
+
+
+def test_calibrated_comparison_never_relocalizes_from_reference() -> None:
+    reference = _reference()
+    begin = Image.new("RGB", (420, 300), (31, 29, 27))
+    complete = begin.copy()
+    begin_draw = ImageDraw.Draw(begin)
+    complete_draw = ImageDraw.Draw(complete)
+    surface = ((170, 40), (300, 40), (280, 220), (235, 270), (190, 220))
+    begin_draw.polygon(surface, fill=(240, 20, 20))
+    complete_draw.polygon(surface, fill=(20, 240, 20))
+    calibration = derive_two_state_calibration_v2(
+        "fixture-2", 1234, begin, complete
+    )
+    observed = Image.new("RGB", begin.size, (31, 29, 27))
+    observed.paste(
+        reference.resize((131, 230), Image.Resampling.BILINEAR),
+        (170, 40),
+    )
+    # Place a second exact copy elsewhere. A reference-driven global search
+    # would choose this decoy; v2 must retain the calibrated rectangle.
+    observed.paste(reference, (20, 180))
+
+    result = compare_reference_to_calibrated_framebuffer_v2(
+        reference, observed, calibration
+    )
+
+    assert result["referenceUsedForLocalization"] is False
+    assert result["bestMatch"]["rect"] == [170, 40, 301, 270]
+    assert result["metrics"]["meanAbsoluteError"] < 0.03
+    aligned = Image.open(
+        BytesIO(
+            base64.b64decode(result["bestMatch"]["alignedContentPngBase64"])
+        )
+    )
+    assert aligned.mode == "RGBA"
+    assert aligned.getpixel((0, aligned.height - 1))[3] == 0

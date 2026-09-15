@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import base64
+from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
 from io import BytesIO
 import os
+import re
 from typing import Final
 
 import cv2
@@ -31,10 +33,35 @@ COAT_OF_ARMS_FRAMEBUFFER_V1_SEARCH_SIDES: Final = (
     512,
 )
 COAT_OF_ARMS_FRAMEBUFFER_V1_SPATIAL_GRID: Final = 8
+COAT_OF_ARMS_FRAMEBUFFER_V2_CALIBRATION_DIFFERENCE_THRESHOLD: Final = 48
+COAT_OF_ARMS_FRAMEBUFFER_V2_MAXIMUM_CALIBRATIONS: Final = 4
 
 
 class CoatOfArmsFramebufferError(RuntimeError):
     """The bounded framebuffer contract could not produce valid evidence."""
+
+
+@dataclass(frozen=True)
+class CoatOfArmsFramebufferCalibrationV2:
+    calibration_id: str
+    bridge_pid: int
+    framebuffer_size: tuple[int, int]
+    rect: tuple[int, int, int, int]
+    mask: np.ndarray
+    begin_pixel_sha256: str
+    complete_pixel_sha256: str
+    component_count: int
+    changed_pixels: int
+    selected_pixels: int
+
+
+def _calibration_id(value: str) -> str:
+    if (
+        not isinstance(value, str)
+        or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}", value) is None
+    ):
+        raise CoatOfArmsFramebufferError("calibration ID is malformed")
+    return value
 
 
 def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
@@ -251,6 +278,190 @@ def _masked_metrics(
         "colorMse": color_mse,
         "edgeLoss": edge_loss,
         "spatialMeanAbsoluteError8x8": spatial,
+    }
+
+
+def derive_two_state_calibration_v2(
+    calibration_id: str,
+    bridge_pid: int,
+    begin: Image.Image,
+    complete: Image.Image,
+) -> CoatOfArmsFramebufferCalibrationV2:
+    """Locate the largest CoA surface changed by two caller-applied solid states.
+
+    The two images are independent of the later reference image.  This prevents
+    the evidence path from choosing a different, reference-friendly GUI crop
+    for every test case.
+    """
+
+    identifier = _calibration_id(calibration_id)
+    if isinstance(bridge_pid, bool) or not isinstance(bridge_pid, int) or bridge_pid < 1:
+        raise CoatOfArmsFramebufferError("native bridge PID is malformed")
+    if begin.size != complete.size or begin.width < 1 or begin.height < 1:
+        raise CoatOfArmsFramebufferError("calibration frame sizes differ")
+    begin_rgb = np.asarray(begin.convert("RGB"), dtype=np.uint8)
+    complete_rgb = np.asarray(complete.convert("RGB"), dtype=np.uint8)
+    difference = np.max(
+        np.abs(begin_rgb.astype(np.int16) - complete_rgb.astype(np.int16)), axis=2
+    )
+    changed = np.where(
+        difference >= COAT_OF_ARMS_FRAMEBUFFER_V2_CALIBRATION_DIFFERENCE_THRESHOLD,
+        255,
+        0,
+    ).astype(np.uint8)
+    changed_pixels = int(np.count_nonzero(changed))
+    if changed_pixels < 512:
+        raise CoatOfArmsFramebufferError(
+            "two-state calibration did not change enough framebuffer pixels"
+        )
+    opened = cv2.morphologyEx(
+        changed,
+        cv2.MORPH_OPEN,
+        np.ones((3, 3), dtype=np.uint8),
+    )
+    connected_count, labels, statistics, _centroids = cv2.connectedComponentsWithStats(
+        opened, connectivity=8
+    )
+    candidates: list[tuple[int, int, int, int, int, int, int]] = []
+    for label in range(1, connected_count):
+        x = int(statistics[label, cv2.CC_STAT_LEFT])
+        y = int(statistics[label, cv2.CC_STAT_TOP])
+        width = int(statistics[label, cv2.CC_STAT_WIDTH])
+        height = int(statistics[label, cv2.CC_STAT_HEIGHT])
+        area = int(statistics[label, cv2.CC_STAT_AREA])
+        aspect = width / height if height else 0.0
+        fill = area / (width * height) if width and height else 0.0
+        if (
+            width >= 32
+            and height >= 32
+            and area >= 512
+            and 0.55 <= aspect <= 1.8
+            and fill >= 0.12
+        ):
+            candidates.append((area, width * height, x, y, width, height, label))
+    if not candidates:
+        raise CoatOfArmsFramebufferError(
+            "two-state calibration found no bounded CoA-sized component"
+        )
+    candidates.sort(key=lambda item: (-item[0], -item[1], item[2], item[3]))
+    _area, _box_area, x, y, width, height, selected_label = candidates[0]
+    component = np.where(labels == selected_label, 255, 0).astype(np.uint8)
+    component = cv2.morphologyEx(
+        component,
+        cv2.MORPH_CLOSE,
+        np.ones((5, 5), dtype=np.uint8),
+    )
+    mask = component[y : y + height, x : x + width]
+    selected_pixels = int(np.count_nonzero(mask))
+    if selected_pixels < 512:
+        raise CoatOfArmsFramebufferError("calibrated CoA surface mask is empty")
+    return CoatOfArmsFramebufferCalibrationV2(
+        calibration_id=identifier,
+        bridge_pid=bridge_pid,
+        framebuffer_size=begin.size,
+        rect=(x, y, x + width, y + height),
+        mask=mask,
+        begin_pixel_sha256=_sha256(begin_rgb.tobytes()),
+        complete_pixel_sha256=_sha256(complete_rgb.tobytes()),
+        component_count=len(candidates),
+        changed_pixels=changed_pixels,
+        selected_pixels=selected_pixels,
+    )
+
+
+def _calibration_receipt_v2(
+    calibration: CoatOfArmsFramebufferCalibrationV2,
+) -> dict[str, object]:
+    mask_image = Image.fromarray(calibration.mask, mode="L")
+    output = BytesIO()
+    mask_image.save(output, format="PNG", optimize=True)
+    mask_png = output.getvalue()
+    return {
+        "schema": "ck3-coat-of-arms-framebuffer-calibration-v2",
+        "schemaVersion": 2,
+        "calibrationId": calibration.calibration_id,
+        "bridgePid": calibration.bridge_pid,
+        "framebufferSize": list(calibration.framebuffer_size),
+        "rect": list(calibration.rect),
+        "differenceThreshold": (
+            COAT_OF_ARMS_FRAMEBUFFER_V2_CALIBRATION_DIFFERENCE_THRESHOLD
+        ),
+        "candidateComponentCount": calibration.component_count,
+        "changedPixels": calibration.changed_pixels,
+        "selectedPixels": calibration.selected_pixels,
+        "beginPixelSha256": calibration.begin_pixel_sha256,
+        "completePixelSha256": calibration.complete_pixel_sha256,
+        "maskPngSha256": _sha256(mask_png),
+        "maskPngBase64": base64.b64encode(mask_png).decode("ascii"),
+        "referenceIndependent": True,
+        "fixedScreenCoordinatesUsed": False,
+        "usesOcr": False,
+        "usesKeyboard": False,
+        "usesMouse": False,
+    }
+
+
+def compare_reference_to_calibrated_framebuffer_v2(
+    reference: Image.Image,
+    framebuffer: Image.Image,
+    calibration: CoatOfArmsFramebufferCalibrationV2,
+) -> dict[str, object]:
+    if framebuffer.size != calibration.framebuffer_size:
+        raise CoatOfArmsFramebufferError("framebuffer size changed after calibration")
+    left, top, right, bottom = calibration.rect
+    if not (
+        0 <= left < right <= framebuffer.width
+        and 0 <= top < bottom <= framebuffer.height
+    ):
+        raise CoatOfArmsFramebufferError("calibrated CoA rectangle is outside the frame")
+    reference_rgba = np.asarray(reference.convert("RGBA"), dtype=np.uint8)
+    reference_rgb = reference_rgba[:, :, :3]
+    crop = framebuffer.convert("RGB").crop((left, top, right, bottom))
+    normalized = crop.resize(reference.size, Image.Resampling.BILINEAR)
+    observed_rgb = np.asarray(normalized, dtype=np.uint8)
+    mask = cv2.resize(
+        calibration.mask,
+        reference.size,
+        interpolation=cv2.INTER_NEAREST,
+    )
+    erosion_radius = max(1, round(reference.width * 0.02))
+    comparison_mask = cv2.erode(
+        mask,
+        np.ones((erosion_radius * 2 + 1, erosion_radius * 2 + 1), dtype=np.uint8),
+    )
+    alpha = reference_rgba[:, :, 3]
+    comparison_mask = cv2.bitwise_and(comparison_mask, alpha)
+    metrics = _masked_metrics(reference_rgb, observed_rgb, comparison_mask)
+    crop_output = BytesIO()
+    crop.save(crop_output, format="PNG", optimize=True)
+    crop_png = crop_output.getvalue()
+    visible_surface = np.dstack((observed_rgb, mask)).astype(np.uint8)
+    normalized_output = BytesIO()
+    Image.fromarray(visible_surface, mode="RGBA").save(
+        normalized_output, format="PNG", optimize=True
+    )
+    normalized_png = normalized_output.getvalue()
+    return {
+        "locatorContract": "two-solid-state-reference-independent-surface-v2",
+        "calibrationId": calibration.calibration_id,
+        "searchedWholeFramebuffer": False,
+        "referenceUsedForLocalization": False,
+        "fixedScreenCoordinatesUsed": False,
+        "bestMatch": {
+            "rect": list(calibration.rect),
+            "cropPngSha256": _sha256(crop_png),
+            "cropPngBase64": base64.b64encode(crop_png).decode("ascii"),
+            "alignedContentPngSha256": _sha256(normalized_png),
+            "alignedContentPngBase64": base64.b64encode(normalized_png).decode(
+                "ascii"
+            ),
+        },
+        "comparisonMask": {
+            "contract": "two-solid-state-dynamic-surface-eroded-v2",
+            "erosionRadiusPixels": erosion_radius,
+            "maskPixels": int(np.count_nonzero(comparison_mask)),
+        },
+        "metrics": metrics,
     }
 
 
@@ -515,6 +726,108 @@ def capture_ck3_client_framebuffer_v1(bridge_pid: int) -> Image.Image:
             f"captured CK3 client has size {image.size}, expected {EXPECTED_CLIENT_SIZE}"
         )
     return image
+
+
+class CoatOfArmsFramebufferCalibrationStoreV2:
+    """Bounded process-local calibration state for the developer MCP."""
+
+    def __init__(self) -> None:
+        self._begins: dict[str, tuple[int, Image.Image]] = {}
+        self._calibrations: dict[str, CoatOfArmsFramebufferCalibrationV2] = {}
+
+    def begin(self, bridge_pid: int, calibration_id: str) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        if identifier in self._begins or identifier in self._calibrations:
+            raise CoatOfArmsFramebufferError("calibration ID is already in use")
+        if len(self._begins) + len(self._calibrations) >= (
+            COAT_OF_ARMS_FRAMEBUFFER_V2_MAXIMUM_CALIBRATIONS
+        ):
+            raise CoatOfArmsFramebufferError("calibration store is full")
+        framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        pixels = framebuffer.tobytes()
+        self._begins[identifier] = (bridge_pid, framebuffer.copy())
+        return {
+            "schema": "ck3-coat-of-arms-framebuffer-calibration-stage-v2",
+            "schemaVersion": 2,
+            "calibrationId": identifier,
+            "phase": "begin",
+            "bridgePid": bridge_pid,
+            "framebufferSize": list(framebuffer.size),
+            "pixelSha256": _sha256(pixels),
+            "readyForComplete": True,
+            "readOnlyCapture": True,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
+
+    def complete(self, bridge_pid: int, calibration_id: str) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        begin = self._begins.pop(identifier, None)
+        if begin is None:
+            raise CoatOfArmsFramebufferError("calibration begin state is missing")
+        begin_pid, begin_framebuffer = begin
+        if begin_pid != bridge_pid:
+            raise CoatOfArmsFramebufferError("native bridge PID changed during calibration")
+        complete_framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        calibration = derive_two_state_calibration_v2(
+            identifier,
+            bridge_pid,
+            begin_framebuffer,
+            complete_framebuffer,
+        )
+        self._calibrations[identifier] = calibration
+        return {
+            **_calibration_receipt_v2(calibration),
+            "phase": "complete",
+            "readyForComparison": True,
+        }
+
+    def compare(
+        self,
+        bridge_pid: int,
+        calibration_id: str,
+        reference_png_base64: str,
+        reference_png_sha256: str,
+    ) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        calibration = self._calibrations.get(identifier)
+        if calibration is None:
+            raise CoatOfArmsFramebufferError("completed calibration is missing")
+        if calibration.bridge_pid != bridge_pid:
+            raise CoatOfArmsFramebufferError("native bridge PID differs from calibration")
+        reference = decode_reference_png_v1(
+            reference_png_base64, reference_png_sha256
+        )
+        framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        framebuffer_bytes = framebuffer.tobytes()
+        comparison = compare_reference_to_calibrated_framebuffer_v2(
+            reference, framebuffer, calibration
+        )
+        return {
+            "schema": "ck3-coat-of-arms-framebuffer-comparison-v2",
+            "schemaVersion": 2,
+            "capturedAt": datetime.now(timezone.utc).isoformat(),
+            "captureBackend": "windows-imagegrab-authenticated-client-framebuffer",
+            "bridgePid": bridge_pid,
+            "framebuffer": {
+                "width": framebuffer.width,
+                "height": framebuffer.height,
+                "pixelFormat": "RGB8",
+                "pixelSha256": _sha256(framebuffer_bytes),
+            },
+            "reference": {
+                "width": reference.width,
+                "height": reference.height,
+                "pngSha256": reference_png_sha256,
+            },
+            "calibration": _calibration_receipt_v2(calibration),
+            "comparison": comparison,
+            "readOnly": True,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
 
 
 def capture_and_compare_coat_of_arms_framebuffer_v1(

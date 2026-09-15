@@ -991,6 +991,26 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
                 {"reference_png_base64", "reference_png_sha256"},
             )
             self.assertFalse(framebuffer.input_schema["additionalProperties"])
+            calibration = tools[
+                "ck3_calibrate_frontend_coat_of_arms_framebuffer_v2"
+            ]
+            self.assertEqual(
+                set(calibration.input_schema.get("required", [])),
+                {"calibration_id", "phase"},
+            )
+            self.assertFalse(calibration.input_schema["additionalProperties"])
+            calibrated = tools[
+                "ck3_compare_frontend_coat_of_arms_framebuffer_v2"
+            ]
+            self.assertEqual(
+                set(calibrated.input_schema.get("required", [])),
+                {
+                    "calibration_id",
+                    "reference_png_base64",
+                    "reference_png_sha256",
+                },
+            )
+            self.assertFalse(calibrated.input_schema["additionalProperties"])
             query = await client.call_tool("ck3_query_frontend_gui_route_v1", {})
             self.assertFalse(query.is_error)
             self.assertEqual(query.structured_content["route"], "main_menu")

@@ -1,5 +1,10 @@
 # CK3 家徽 framebuffer 对照 MCP v1
 
+> 2026-09-16 状态：v1 的真实 CK3 运行暴露了 reference-driven 定位偏差。它会用待验证图片选择
+> 每个案例自己的位置和缩放，部分 crop 实际包含角色设计器的棕色装饰框。因此 v1 只保留为历史
+> 诊断合同，不能再作为网页/CK3 像素一致性结论。替代合同见
+> [CK3 家徽 framebuffer 对照 MCP v2](ck3-coat-of-arms-framebuffer-comparison-v2.md)。
+
 ## 用途与边界
 
 `ck3_compare_frontend_coat_of_arms_framebuffer_v1` 是开发验收工具，用来回答“网页 canonical
@@ -57,9 +62,11 @@
 
 ## 当前证据
 
-2026-09-16 的浏览器外单元夹具已证明：工具能在任意插入位置全局定位合成盾形图，不依赖固定
-坐标；hash、载荷、尺寸、路由漂移和 bridge 绑定均会 fail closed。真实 CK3 的 7 图结果尚待共享
-槽位 live run，因此当前只能声明 MCP 合同和离线实现通过，不能声明原生像素验收通过。
+2026-09-16 的浏览器外单元夹具证明：工具能在任意插入位置全局定位合成盾形图，不依赖固定
+坐标；hash、载荷、尺寸、路由漂移和 bridge 绑定均会 fail closed。随后 7 图 live run `r4` 完成
+7/7 Apply、Copy 与 crop，但视觉复核发现 `picture-02/04/05/06` 等 crop 包含装饰框，且
+`contentToOuterRatio` 会按待验证 reference 在 0.82–1.0 间变化。该证据仍可支持传输、原生 Apply/Copy
+与“v1 定位器不适合作为验收口径”，不能支持网页与 CK3 的像素差异大小。
 
 复现命令：
 

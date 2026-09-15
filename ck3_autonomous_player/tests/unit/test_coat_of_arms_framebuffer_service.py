@@ -131,6 +131,50 @@ class CoatOfArmsFramebufferServiceTests(unittest.TestCase):
         self.assertTrue(result["routeStable"])
         self.assertEqual(result["connectionGeneration"], 7)
 
+    def test_two_state_calibration_is_bound_to_stable_route_pid_and_generation(
+        self,
+    ) -> None:
+        service = self._service()
+        service._coat_of_arms_framebuffer_calibrations_v2 = Mock()
+        service._coat_of_arms_framebuffer_calibrations_v2.begin.return_value = {
+            "schema": "ck3-coat-of-arms-framebuffer-calibration-stage-v2",
+            "bridgePid": 1234,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
+
+        result = service.calibrate_frontend_coat_of_arms_framebuffer_v2(
+            "corpus", "begin"
+        )
+
+        service._coat_of_arms_framebuffer_calibrations_v2.begin.assert_called_once_with(
+            1234, "corpus"
+        )
+        self.assertTrue(result["routeStable"])
+        self.assertEqual(result["connectionGeneration"], 7)
+
+    def test_calibrated_comparison_is_bound_to_the_same_native_process(self) -> None:
+        service = self._service()
+        service._coat_of_arms_framebuffer_calibrations_v2 = Mock()
+        service._coat_of_arms_framebuffer_calibrations_v2.compare.return_value = {
+            "schema": "ck3-coat-of-arms-framebuffer-comparison-v2",
+            "bridgePid": 1234,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
+
+        result = service.compare_frontend_coat_of_arms_framebuffer_v2(
+            "corpus", "reference", "A" * 64
+        )
+
+        service._coat_of_arms_framebuffer_calibrations_v2.compare.assert_called_once_with(
+            1234, "corpus", "reference", "A" * 64
+        )
+        self.assertTrue(result["routeStable"])
+        self.assertEqual(result["connectionGeneration"], 7)
+
 
 if __name__ == "__main__":
     unittest.main()

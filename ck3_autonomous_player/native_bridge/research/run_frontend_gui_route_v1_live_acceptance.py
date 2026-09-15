@@ -133,6 +133,12 @@ ABORT_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_abort_coat_of_arms_source_upload_v2"
 COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
     "ck3_compare_frontend_coat_of_arms_framebuffer_v1"
 )
+CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL = (
+    "ck3_calibrate_frontend_coat_of_arms_framebuffer_v2"
+)
+COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL = (
+    "ck3_compare_frontend_coat_of_arms_framebuffer_v2"
+)
 PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
     "ck3_prepare_frontend_coat_of_arms_framebuffer_v1"
 )
@@ -693,10 +699,14 @@ def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
     ] if isinstance(spatial, list) else []
     worst_spatial = max(spatial_values) if spatial_values else None
     thresholds = FRAMEBUFFER_GATE_THRESHOLDS
+    is_v2 = body.get("schema") == "ck3-coat-of-arms-framebuffer-comparison-v2"
+    calibration = body.get("calibration") if is_v2 else None
     checks = {
         "call_not_error": call.get("is_error") is False,
-        "schema": body.get("schema")
-        == "ck3-coat-of-arms-framebuffer-comparison-v1",
+        "schema": body.get("schema") in {
+            "ck3-coat-of-arms-framebuffer-comparison-v1",
+            "ck3-coat-of-arms-framebuffer-comparison-v2",
+        },
         "route_stable": body.get("routeStable") is True,
         "read_only_no_ocr_or_input": (
             body.get("readOnly") is True
@@ -704,12 +714,17 @@ def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
             and body.get("usesKeyboard") is False
             and body.get("usesMouse") is False
         ),
-        "locator_loss": (
+        "reference_independent_localization": bool(
+            isinstance(calibration, dict)
+            and calibration.get("referenceIndependent") is True
+            and comparison.get("referenceUsedForLocalization") is False
+        ) if is_v2 else True,
+        "locator_loss": True if is_v2 else (
             isinstance(best.get("locatorLoss"), (int, float))
             and not isinstance(best.get("locatorLoss"), bool)
             and best["locatorLoss"] <= thresholds["maximum_locator_loss"]
         ),
-        "distinct_margin": (
+        "distinct_margin": True if is_v2 else (
             isinstance(best.get("distinctMargin"), (int, float))
             and not isinstance(best.get("distinctMargin"), bool)
             and best["distinctMargin"] >= thresholds["minimum_distinct_margin"]
@@ -1342,11 +1357,139 @@ async def _collect_large_source_roundtrip(
     }
 
 
+async def _apply_calibration_source(
+    client: Client,
+    source: str,
+    record: Any,
+) -> dict[str, object]:
+    capability_call = await _call(client, "ck3_get_capabilities")
+    record(capability_call)
+    capabilities = _structured(capability_call)
+    snapshot_call: dict[str, object] | None = None
+    if capability_call.get("is_error") is not False:
+        return {"ok": False, "error": "calibration capabilities call failed"}
+    if capabilities.get("snapshot") is True:
+        snapshot_call = await _call(client, SNAPSHOT_TOOL)
+        record(snapshot_call)
+        revision = _structured(snapshot_call).get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 1
+        ):
+            return {"ok": False, "error": "calibration snapshot lacks revision"}
+    elif capabilities.get("snapshot") is False:
+        revision = 0
+    else:
+        return {"ok": False, "error": "calibration capabilities lack snapshot state"}
+    call = await _call(
+        client,
+        PROBE_COAT_OF_ARMS_TOOL,
+        {"source": source, "expected_revision": revision, "apply": True},
+    )
+    record(call)
+    result = _structured(call)
+    return {
+        "ok": bool(
+            call.get("is_error") is False
+            and result.get("status") == "applied"
+            and result.get("detected") is True
+            and result.get("applied") is True
+        ),
+        "source_sha256": hashlib.sha256(source.encode("ascii")).hexdigest().upper(),
+        "expected_revision": revision,
+        "capabilities": capability_call,
+        "snapshot": snapshot_call,
+        "apply": call,
+    }
+
+
+async def _calibrate_picture_corpus_surface(
+    client: Client,
+    record: Any,
+) -> dict[str, object]:
+    calibration_id = "picture-corpus"
+    red_source = (
+        'coa={pattern="pattern_solid.dds" color1=rgb { 255 0 0 } '
+        'color2=rgb { 255 0 0 } color3=rgb { 255 0 0 }}'
+    )
+    green_source = (
+        'coa={pattern="pattern_solid.dds" color1=rgb { 0 255 0 } '
+        'color2=rgb { 0 255 0 } color3=rgb { 0 255 0 }}'
+    )
+    red = await _apply_calibration_source(client, red_source, record)
+    if red.get("ok") is not True:
+        return {"ok": False, "stage": "apply-red", "red": red}
+    await asyncio.sleep(0.75)
+    prepare_red = await _call(client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL)
+    record(prepare_red)
+    begin = await _call(
+        client,
+        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
+        {"calibration_id": calibration_id, "phase": "begin"},
+    )
+    record(begin)
+    green = await _apply_calibration_source(client, green_source, record)
+    if green.get("ok") is not True:
+        return {
+            "ok": False,
+            "stage": "apply-green",
+            "red": red,
+            "prepare_red": prepare_red,
+            "begin": begin,
+            "green": green,
+        }
+    await asyncio.sleep(0.75)
+    prepare_green = await _call(client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL)
+    record(prepare_green)
+    complete = await _call(
+        client,
+        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
+        {"calibration_id": calibration_id, "phase": "complete"},
+    )
+    record(complete)
+    completed = _structured(complete)
+    checks = {
+        "red_applied": red.get("ok") is True,
+        "red_preparation": bool(
+            prepare_red.get("is_error") is False
+            and _structured(prepare_red).get("routeStable") is True
+        ),
+        "begin_captured": bool(
+            begin.get("is_error") is False
+            and _structured(begin).get("readyForComplete") is True
+        ),
+        "green_applied": green.get("ok") is True,
+        "green_preparation": bool(
+            prepare_green.get("is_error") is False
+            and _structured(prepare_green).get("routeStable") is True
+        ),
+        "complete_captured": bool(
+            complete.get("is_error") is False
+            and completed.get("readyForComparison") is True
+            and completed.get("referenceIndependent") is True
+            and completed.get("calibrationId") == calibration_id
+        ),
+    }
+    return {
+        "ok": all(checks.values()),
+        "calibration_id": calibration_id,
+        "red": red,
+        "prepare_red": prepare_red,
+        "begin": begin,
+        "green": green,
+        "prepare_green": prepare_green,
+        "complete": complete,
+        "checks": checks,
+    }
+
+
 async def _collect_picture_corpus(
     client: Client,
     corpus: list[dict[str, object]],
     record: Any,
 ) -> dict[str, object]:
+    calibration = await _calibrate_picture_corpus_surface(client, record)
     results: list[dict[str, object]] = []
     for value in corpus:
         identifier = value["id"]
@@ -1377,7 +1520,7 @@ async def _collect_picture_corpus(
                 )
             )
         )
-        if framebuffer_ready:
+        if framebuffer_ready and calibration.get("ok") is True:
             await asyncio.sleep(0.75)
             preparation_call = await _call(
                 client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL
@@ -1385,8 +1528,9 @@ async def _collect_picture_corpus(
             record(preparation_call)
             framebuffer_call = await _call(
                 client,
-                COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+                COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
                 {
+                    "calibration_id": calibration["calibration_id"],
                     "reference_png_base64": preview_base64,
                     "reference_png_sha256": preview_receipt["png_sha256"],
                 },
@@ -1402,7 +1546,10 @@ async def _collect_picture_corpus(
         else:
             framebuffer = {
                 "ok": False,
-                "error": "large-source round-trip failed before framebuffer comparison",
+                "error": (
+                    "large-source round-trip or reference-independent calibration "
+                    "failed before framebuffer comparison"
+                ),
             }
         results.append(
             {
@@ -1420,6 +1567,7 @@ async def _collect_picture_corpus(
         )
     return {
         "schema": "ck3-coat-of-arms-picture-corpus-live-v1",
+        "framebuffer_calibration": calibration,
         "case_count": len(results),
         "passed": sum(result["ok"] is True for result in results),
         "failed": sum(result["ok"] is not True for result in results),
@@ -1641,8 +1789,15 @@ async def _mcp_sequence(
         )
         framebuffer_required = (
             {
-                COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
                 PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+                *(
+                    {
+                        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
+                        COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
+                    }
+                    if picture_corpus is not None
+                    else {COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL}
+                ),
             }
             if reference_preview is not None or picture_corpus is not None
             else set()
@@ -1765,14 +1920,30 @@ async def _mcp_sequence(
                 "large-source MCP tools do not have the expected closed schemas",
                 tool_schemas=schemas,
             )
-        if (
-            reference_preview is not None or picture_corpus is not None
-        ) and not _schema_has_required_fields(
+        if reference_preview is not None and not _schema_has_required_fields(
             schemas.get(COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL),
             {"reference_png_base64", "reference_png_sha256"},
         ):
             return red(
                 "coat-of-arms framebuffer MCP tool does not have the expected schema",
+                tool_schemas=schemas,
+            )
+        if picture_corpus is not None and not (
+            _schema_has_required_fields(
+                schemas.get(CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL),
+                {"calibration_id", "phase"},
+            )
+            and _schema_has_required_fields(
+                schemas.get(COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL),
+                {
+                    "calibration_id",
+                    "reference_png_base64",
+                    "reference_png_sha256",
+                },
+            )
+        ):
+            return red(
+                "coat-of-arms calibrated framebuffer MCP tools have unexpected schemas",
                 tool_schemas=schemas,
             )
         if (
