@@ -4,7 +4,7 @@ R706 已从这份精确 ZIP 的全新解压目录经正式 `native-auto-run` 完
 
 ## 获取与支持组合
 
-冻结 ZIP：`Z:\ck3_mod_rewrite_process_assets\g2-preview-bundle-d11268f1-eefc88e4\g2-preview-candidate-d11268f1-eefc88e4.zip`，81,958,760 字节，SHA-256 `0e233dcb024d1df3e6eb1a3534f1d160cf27b4609cec078cc2a1364551e44eb2`。同目录外部交付清单 `download-manifest.json` SHA-256 `7f08e17c290f9e39d00f7145e7933d4fe54cbe3c09fed57fba2e5e7bb240098d`，记录 R706 从该 ZIP 验证后的 `GO_BOUNDED_PREVIEW_EXACT_VALIDATED_HOST`、报告与 checkpoint 映射。包内 `candidate-manifest.json` SHA-256 为 `ff352e242a68fdc62268f40f78bb67088f4170b92449f82bbac98489e99bf730`；它封存时仍写 `NO_GO_PENDING_FORMAL_SMOKE_FROM_ZIP_LAYOUT`，通过后的状态在**外部**交付清单，ZIP 未为改状态无故重建。764 个 ZIP entry 的 CRC 与 763 个文件的逐文件 SHA 已通过。ZIP 不包含 CK3 本体。用户在本机可先核对：
+冻结 ZIP：`Z:\ck3_mod_rewrite_process_assets\g2-preview-bundle-d11268f1-eefc88e4\g2-preview-candidate-d11268f1-eefc88e4.zip`，81,958,760 字节，SHA-256 `0e233dcb024d1df3e6eb1a3534f1d160cf27b4609cec078cc2a1364551e44eb2`。同目录外部交付清单 `download-manifest.json` SHA-256 `c4af9c509cd31cd22ff1fff50d1f5f4ff29187181207edf9ba3bb284a8fb395e`（2026-09-16 只读复核），记录 R706 从该 ZIP 验证后的 `GO_BOUNDED_PREVIEW_EXACT_VALIDATED_HOST`、报告与 checkpoint 映射。包内 `candidate-manifest.json` SHA-256 为 `ff352e242a68fdc62268f40f78bb67088f4170b92449f82bbac98489e99bf730`；它封存时仍写 `NO_GO_PENDING_FORMAL_SMOKE_FROM_ZIP_LAYOUT`，通过后的状态在**外部**交付清单，ZIP 未为改状态无故重建。764 个 ZIP entry 的 CRC 与 763 个文件的逐文件 SHA 已通过。ZIP 不包含 CK3 本体。用户在本机可先核对：
 
 ```powershell
 $zip = 'Z:\ck3_mod_rewrite_process_assets\g2-preview-bundle-d11268f1-eefc88e4\g2-preview-candidate-d11268f1-eefc88e4.zip'
