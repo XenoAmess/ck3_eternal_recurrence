@@ -1,0 +1,42 @@
+{
+  "schema": "xar.ck3.g2_m4_council_r696_checkpoint_readonly_contract_v2",
+  "scope": "one new CK3 process cold-loads R696 material checkpoint and reads the steward incumbent only",
+  "source_round": "R696",
+  "r696_pending_action_request_id": "r696-replace-33433",
+  "source_checkpoint_sha256": "599B9EEE2E2C78A2AA341567FE5C52C36A1292AE1C5F8F00A231E2D7DCA27F64",
+  "game_version": "1.19.0.6",
+  "game_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "native_gate_only_source_commit": "72882e69c11a8b77e4926dfa22ae52998b0e1a61",
+  "r696_action_source_commit": "245dcf4995f0f18aa5e88468f1303357f6162a0b",
+  "cmake_options": {
+    "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF"
+  },
+  "enabled_mods": ["mod/xar_autoplayer.mod"],
+  "disabled_dlcs": [],
+  "new_round": "allocated by sole CK3 owner after R696; R697 belongs to another candidate",
+  "private_query_step": "private-query-council-final-gates-v1",
+  "private_status_step": "private-council-application-main-status-v1",
+  "expected_owner_character_id": 29829,
+  "expected_incumbent_character_id": 33433,
+  "expected_incumbent_stewardship": 16,
+  "expected_date_raw": 53178264,
+  "assertions": [
+    "only the copied R696 checkpoint is loaded; source checkpoint SHA stays unchanged",
+    "new CK3 process and native paused query observe incumbent 33433 and stewardship 16",
+    "native helper invocation delta equals zero; no assign or checkpoint command is sent",
+    "public Council query/action remain unadvertised",
+    "paused date remains unchanged and CK3 process is fully recovered",
+    "typed receipt across the process boundary is unavailable because private pending ACK was process-local",
+    "formal high-level goal cold restore remains unverified because private assignment was absent from driver state"
+  ],
+  "timeouts_seconds": {"readiness": 300, "query_status": 60, "overall": 480},
+  "asset_boundary": {
+    "reason": "R696 runner SHA casing bug stopped before same-process typed receipt despite real material action and save",
+    "impact": "one-off exact-scene recovery evidence, no public or MCP action capability claim",
+    "reuse_plan": "integrate case-normalized checkpoint assertion and persist pending Council action/goal in formal production path before capability advertisement",
+    "migration_deadline": "before Council production query/action advertisement",
+    "responsible_package": "G2-COUNCIL30"
+  }
+}

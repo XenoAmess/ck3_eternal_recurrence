@@ -134,6 +134,25 @@ def public_from_gate(result: dict[str, object]) -> dict[str, object]:
     return gates["council_composition_candidates"]
 
 
+def validate_typed_checkpoint_result(result: dict[str, object],
+                                     checkpoint_save: Path,
+                                     elapsed_seconds: float) -> dict[str, object]:
+    """Compare the material save digest as hexadecimal, independent of casing."""
+    checkpoint = result.get("checkpoint")
+    materialization = result.get("materialization")
+    expected = checkpoint.get("sha256") if isinstance(checkpoint, dict) else None
+    require(elapsed_seconds <= 60 and isinstance(checkpoint, dict) and
+            checkpoint.get("status") == "saved" and
+            checkpoint.get("name") == "xar_checkpoint.ck3" and
+            isinstance(materialization, dict) and
+            materialization.get("available") is True and
+            isinstance(expected, str) and len(expected) == 64 and
+            checkpoint_save.is_file() and
+            sha256(checkpoint_save) == expected.upper(),
+            f"typed checkpoint did not materialize within bound: {result!r}")
+    return checkpoint
+
+
 def validate_gate_query(result: dict[str, object], initial: dict[str, object]) -> dict[str, object]:
     require(result.get("type") == "command_result" and result.get("ok") is True,
             f"private status returned RED: {result!r}")
@@ -478,15 +497,8 @@ def main() -> int:
             checkpoint_start = time.monotonic()
             checkpoint = driver.execute_step("save-checkpoint", expected_revision=None)
             write_json(evidence / "typed-checkpoint-result.json", checkpoint)
-            materialization = checkpoint.get("checkpoint")
-            require(time.monotonic() - checkpoint_start <= 60 and
-                    isinstance(materialization, dict) and
-                    materialization.get("status") == "saved" and
-                    materialization.get("name") == "xar_checkpoint.ck3" and
-                    isinstance(materialization.get("sha256"), str) and
-                    checkpoint_save.is_file() and
-                    sha256(checkpoint_save) == materialization["sha256"],
-                    f"typed checkpoint did not materialize within bound: {checkpoint!r}")
+            materialization = validate_typed_checkpoint_result(
+                checkpoint, checkpoint_save, time.monotonic() - checkpoint_start)
             report["checkpoint"] = materialization
             revision_deadline = min(time.monotonic() + 60, deadline - 20)
             post = driver.take_internal_semantic_snapshot()
@@ -566,7 +578,8 @@ def main() -> int:
               postflight["source_save_sha256"] == SAVE_SHA and
               postflight["target_save_sha256"] == SAVE_SHA and
               isinstance(report.get("checkpoint"), dict) and
-              postflight["checkpoint_sha256"] == report["checkpoint"]["sha256"] and
+              postflight["checkpoint_sha256"] ==
+              str(report["checkpoint"]["sha256"]).upper() and
               postflight["wall_seconds"] <= 480 and
               not report.get("driver_close_red") and
               not report.get("lock_cleanup_red"))
