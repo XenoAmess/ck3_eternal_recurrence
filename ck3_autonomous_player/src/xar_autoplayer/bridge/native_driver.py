@@ -2049,6 +2049,21 @@ class NativeHeadlessGameplayDriver:
             "native_rollback_war_failures": rollback_war_failures,
         }
 
+    def query_ranked_marriage_private_v1(
+        self, *, expected_native_revision: int,
+        timeout_seconds: float = 20.0,
+    ) -> dict[str, object]:
+        """Controlled paused read; absent from public steps and MCP tools."""
+        from .marriage_matchmaking_private_transport import (
+            query_ranked_marriage_private_v1,
+        )
+
+        return query_ranked_marriage_private_v1(
+            self,
+            expected_native_revision=expected_native_revision,
+            timeout_seconds=timeout_seconds,
+        )
+
     def retain_succession_expectation_v1(
         self,
         turn_bundle: dict[str, object],

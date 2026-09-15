@@ -771,3 +771,9 @@ spouse/betrothed 与 alliance before/after 后置验证。任何一步 RED 都�
 [static-ready / no new live evidence] Python 增加了私有 ranked observation 的同帧 typed consumer 和婚姻/宣战原生合法候选台账。它按真实候选 ID 去重，只有 `complete_can_send=true` 且 `recipient_answer_allows_send=true` 的婚姻 row 才计入合法候选；宣战 row 仍由公开 native declarable 列表的冻结 identity 合同校验。指定 candidate filter 可保留原生 rank（例如单行 rank 4），不能重排为 rank 1；五角色中的 intermediary 是原生 `uint32`，默认 sentinel 序列化可为 `4294967295`，不能按 signed CharacterID 下界误拒。
 
 这张台账只判定是否**实际观察到**至少五个不同的原生合法候选，绝不把五候选场景或静态 fixture 写成 M5 的联合评分通过。现有公开婚姻查询仍只有 ID，私有 ranked route 尚无 paused production 查询和公开 MCP；战争 power assessment 的 `eu_lower_raw` 仍为 `null`。联盟及长期承诺价值、战争参与者/补给、战役成本与结束语义、共用预算/多战争机会成本尚未进入同一可比较的 campaign utility 域，因此当前不能诚实提交跨域最优动作。下一可施工入口是先在固定 DLL 上完成 ranked/internal route 的 paused live 验收，再让公共只读 query/MCP 返回同版本 typed rows；取得独立联盟/关系后置状态和战争风险成本后，才接正式联合策略选择与一个 typed action。
+
+#### G2-M5-JOINT3 受控 ranked 查询传输
+
+[static-ready / paused-live 待验] 私有 native step `query-ranked-marriage-candidates-v1-private` 只在带显式 CMake 开关的候选 DLL 中接通；正式 hello、action step 注册和公共 MCP 广告保持关闭。application-main mailbox slot 38 在发布的 paused native revision 上执行 MARRIAGE8 candidate route，worker 记录 submit、wait、reclaim、completion 与 executor invocations；`available` 只携带同帧 typed ranked observation，`unavailable` 保留具体原因，mailbox/执行器基础设施失败保留 RED。Python `NativeHeadlessGameplayDriver.query_ranked_marriage_private_v1(expected_native_revision=...)` 是受控 paused 验收入口，校验原生 serializer 的 exact build `1.19.0.6`、直接玩家 pair roles、原生最终合法性与接受度、查询前后同一 paused frame。版本 fixture 用真实 serializer 的字段名，不用公开的 ID-only 婚姻 choice 代替 ranked score。
+
+这一切尚未产生 CK3 paused artifact。下一步由单实例负责人以冻结的 CK3 EXE/build、候选 DLL 和普通 production paused 存档提交一次私有查询，并保存非空合法 row、独立后续 native frame 和日志；只有该 live gate 与 bilateral action/result 门分别通过，才考虑公共只读 MCP 查询和正式策略消费。五个合法候选不足时如实记录，不复制或添加非法 row；联合评分仍受战争和长期承诺观测缺口阻塞。
