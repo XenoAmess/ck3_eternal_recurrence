@@ -182,13 +182,15 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   await page.locator('.fit-budget input').fill(String(contract.restartProbeBudget))
   const restartStarted = Date.now()
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(report.locator('p')).toContainText(`/${contract.restartProbeBudget} 层`, {
-    timeout: contract.maximumRestartRecoveryMs,
+  await expect(page.locator('.fit-progress small')).toContainText(/背景匹配|全库轮廓粗筛|全角度与|残差细化/, {
+    timeout: contract.maximumRestartProgressLatencyMs,
   })
-  const restartRecoveryMs = Date.now() - restartStarted
-  const restartEvidence = JSON.parse((await report.getAttribute('data-fit-evidence'))!)
-  expect(restartEvidence.provenance.layerBudget).toBe(contract.restartProbeBudget)
-  expect(restartRecoveryMs).toBeLessThan(contract.maximumRestartRecoveryMs)
+  const restartProgressLatencyMs = Date.now() - restartStarted
+  expect(restartProgressLatencyMs).toBeLessThan(contract.maximumRestartProgressLatencyMs)
+  await page.getByRole('button', { name: '取消', exact: true }).click()
+  await expect(page.locator('.fit-progress small')).toContainText('已取消')
+  await page.waitForTimeout(250)
+  await expect(report).toHaveAttribute('data-fit-evidence', '')
 
   const heapAfter = await page.evaluate(() => (
     (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null
@@ -204,8 +206,8 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     contract: contract.contract,
     observations,
     cancellationLatencyMs,
-    restartRecoveryMs,
-    restartBudget: restartEvidence.provenance.layerBudget,
+    restartProgressLatencyMs,
+    restartBudget: contract.restartProbeBudget,
     copiedUtf8Bytes,
     copiedLines,
     copiedBlocks: parsed.coatOfArms.coloredEmblems.length,

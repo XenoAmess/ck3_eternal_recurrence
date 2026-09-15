@@ -9,7 +9,7 @@ export const FIT_BUDGET_STRESS_CONTRACT = {
   },
   maximumCancellationLatencyMs: 1_000,
   restartProbeBudget: 1,
-  maximumRestartRecoveryMs: 10_000,
+  maximumRestartProgressLatencyMs: 5_000,
   maximumMeasuredJsHeapDeltaBytes: 384 * 1024 * 1024,
   memoryEvidenceScope: 'JavaScript heap delta only; excludes GPU and browser-process memory',
 } as const

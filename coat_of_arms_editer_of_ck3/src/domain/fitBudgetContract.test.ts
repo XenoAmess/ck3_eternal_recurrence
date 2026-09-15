@@ -70,7 +70,7 @@ describe('real 10,000 fit-budget contract', () => {
     expect(progress.every((update) => update.layerBudget === 10_000)).toBe(true)
     expect(contract.restartProbeBudget).toBeGreaterThanOrEqual(1)
     expect(contract.restartProbeBudget).toBeLessThan(contract.budgets[0])
-    expect(contract.maximumRestartRecoveryMs).toBeLessThanOrEqual(contract.maximumDurationMs[128])
+    expect(contract.maximumRestartProgressLatencyMs).toBeLessThan(contract.maximumDurationMs[128])
     expect(durationMs).toBeLessThan(contract.maximumDurationMs[10000])
     console.info(JSON.stringify({
       contract: contract.contract,
