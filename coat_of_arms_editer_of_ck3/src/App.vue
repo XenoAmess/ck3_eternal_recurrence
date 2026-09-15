@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   createCk3CompanionClient,
@@ -7,7 +7,15 @@ import {
   type CoatOfArmsResourceItem,
 } from './api/ck3Companion'
 import { decodeDdsBase64, decodedDdsToDataUrl, type DecodedDds } from './domain/dds'
+import {
+  loadWebAssetPack,
+  readWebAsset,
+  type LoadedWebAssetPack,
+  type WebAssetPackEntry,
+} from './domain/assetPack'
 import { syntaxCapabilityRows } from './domain/capabilityMatrix'
+import { decodeFitImageFile, type DecodedFitImage } from './domain/imageInput'
+import { resizeFitImage, type FitImage, type FitTextureCandidate, type ImageFitResult } from './domain/imageFitter'
 import { parseCoatOfArms } from './domain/parser'
 import {
   renderCoatOfArms,
@@ -17,6 +25,7 @@ import {
 } from './domain/renderer'
 import { serializeCoatOfArms } from './domain/serializer'
 import { validateCoatOfArms } from './domain/validation'
+import { scoreWithWebGl2, type WebGlScore } from './domain/webglScorer'
 import {
   createCoatOfArms,
   createColoredEmblem,
@@ -88,6 +97,21 @@ const configuredEmblemCount = ref<number | null>(null)
 const configuredArchiveCount = ref(0)
 const configuredPatternResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
 const configuredEmblemResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
+const developmentCompanionEnabled = import.meta.env.VITE_ENABLE_CK3_COMPANION === 'true'
+const defaultAssetPackUrl = import.meta.env.VITE_COA_ASSET_PACK_URL
+  || '/asset-packs/ck3-1.19.0.6/manifest.json'
+const loadedAssetPack = ref<LoadedWebAssetPack>()
+const assetPackBusy = ref(false)
+const assetPackStatus = ref('尚未载入独立素材包')
+const webAssetCache = new Map<string, DecodedDds>()
+const targetImage = ref<DecodedFitImage>()
+const fitBusy = ref(false)
+const fitStatus = ref('请选择一张图片')
+const fitResult = ref<ImageFitResult>()
+const fitWebGlScore = ref<WebGlScore | null>(null)
+const fitEmblemBudget = ref(24)
+let fitWorker: Worker | null = null
+let fitRunId = 0
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -210,6 +234,209 @@ function parseMask(value: string) {
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
+
+function packEntry(kind: 'pattern' | 'colored_emblem', name: string): WebAssetPackEntry | undefined {
+  return loadedAssetPack.value?.pack.assets.find((item) => item.kind === kind && item.name === name)
+}
+
+function asResourceItem(item: WebAssetPackEntry, index: number): CoatOfArmsResourceItem {
+  return {
+    index,
+    name: item.name,
+    colors: item.colors,
+    visible: item.visible,
+    category: item.category,
+    relative_path: item.url,
+    asset_exists: true,
+    asset_bytes: item.asset_bytes,
+    asset_sha256: item.asset_sha256,
+  }
+}
+
+async function readPackTexture(item: WebAssetPackEntry): Promise<DecodedDds> {
+  const cached = webAssetCache.get(item.asset_sha256)
+  if (cached) return cached
+  if (!loadedAssetPack.value) throw new Error('独立素材包尚未载入')
+  const decoded = await readWebAsset(loadedAssetPack.value, item)
+  webAssetCache.set(item.asset_sha256, decoded)
+  return decoded
+}
+
+async function loadStandaloneAssetPack(notify = true) {
+  assetPackBusy.value = true
+  try {
+    const loaded = await loadWebAssetPack(defaultAssetPackUrl)
+    const patterns = loaded.pack.assets.filter((item) => item.kind === 'pattern' && item.visible)
+    const emblems = loaded.pack.assets.filter((item) => item.kind === 'colored_emblem' && item.visible)
+    const mask = loaded.pack.assets.find((item) => item.kind === 'surface_mask')
+    if (!patterns.length || !emblems.length || !mask) throw new Error('素材包缺少可见 pattern、emblem 或 surface mask')
+    loadedAssetPack.value = loaded
+    webAssetCache.clear()
+    patternResources.value = patterns.map(asResourceItem)
+    emblemResources.value = emblems.map(asResourceItem)
+    shaderNamedColors.value = loaded.pack.named_colors
+    surfaceMask.value = await readPackTexture(mask)
+    shaderSourceCount.value = 5
+    assetPackStatus.value = `${loaded.pack.pack_id} · ${patterns.length} pattern · ${emblems.length} emblem · ${loaded.manifestSha256.slice(0, 12)}`
+    if (notify) ElMessage.success('独立静态素材包已载入；运行时不需要 CK3、MCP 或 Java')
+    await loadCurrentTexturePreviews()
+  } catch (error) {
+    loadedAssetPack.value = undefined
+    assetPackStatus.value = `素材包不可用：${errorMessage(error)}`
+    if (notify) ElMessage.error(assetPackStatus.value)
+  } finally {
+    assetPackBusy.value = false
+  }
+}
+
+async function selectTargetImage(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  cancelImageFit(false)
+  try {
+    targetImage.value = await decodeFitImageFile(file)
+    fitResult.value = undefined
+    fitWebGlScore.value = null
+    fitStatus.value = `${file.name} · ${targetImage.value.originalWidth}×${targetImage.value.originalHeight} · ${(file.size / 1024).toFixed(1)} KiB · 只在浏览器内处理`
+  } catch (error) {
+    targetImage.value = undefined
+    fitStatus.value = `图片拒绝：${errorMessage(error)}`
+    ElMessage.error(fitStatus.value)
+  } finally {
+    input.value = ''
+  }
+}
+
+function cancelImageFit(notify = true) {
+  fitRunId += 1
+  fitWorker?.terminate()
+  fitWorker = null
+  if (fitBusy.value && notify) ElMessage.info('已取消图片拟合')
+  fitBusy.value = false
+}
+
+async function fitTargetImage() {
+  if (!targetImage.value) {
+    ElMessage.warning('请先选择目标图片')
+    return
+  }
+  if (!loadedAssetPack.value) {
+    ElMessage.warning('请先载入独立静态素材包')
+    return
+  }
+  cancelImageFit(false)
+  const runId = ++fitRunId
+  fitBusy.value = true
+  fitResult.value = undefined
+  fitWebGlScore.value = null
+  try {
+    const patterns = loadedAssetPack.value.pack.assets
+      .filter((item) => item.kind === 'pattern' && item.visible)
+      .sort((left, right) => left.name.localeCompare(right.name))
+      .slice(0, 64)
+    const emblems = loadedAssetPack.value.pack.assets
+      .filter((item) => item.kind === 'colored_emblem' && item.visible)
+      .sort((left, right) => left.name.localeCompare(right.name))
+      .slice(0, fitEmblemBudget.value)
+    fitStatus.value = `正在从静态 pack 读取 ${patterns.length + emblems.length} 个 content-addressed DDS…`
+    const toCandidate = async (item: WebAssetPackEntry): Promise<FitTextureCandidate> => ({
+      name: item.name,
+      assetSha256: item.asset_sha256,
+      texture: await readPackTexture(item),
+    })
+    const [patternCandidates, emblemCandidates] = await Promise.all([
+      Promise.all(patterns.map(toCandidate)),
+      Promise.all(emblems.map(toCandidate)),
+    ])
+    if (runId !== fitRunId) return
+    fitStatus.value = '浏览器 Worker 正在执行确定性 CPU reference 搜索…'
+    const worker = new Worker(new URL('./domain/imageFitter.worker.ts', import.meta.url), { type: 'module' })
+    fitWorker = worker
+    const target = targetImage.value.image
+    worker.onmessage = (event: MessageEvent<{ ok: boolean, result?: ImageFitResult, error?: string }>) => {
+      if (runId !== fitRunId) return
+      worker.terminate()
+      fitWorker = null
+      fitBusy.value = false
+      if (!event.data.ok || !event.data.result) {
+        fitStatus.value = `拟合失败：${event.data.error ?? 'unknown'}`
+        ElMessage.error(fitStatus.value)
+        return
+      }
+      const result = event.data.result
+      fitResult.value = result
+      coatOfArms.value = result.coatOfArms
+      source.value = serializeCoatOfArms(result.coatOfArms)
+      diagnostics.value = []
+      selectedEmblem.value = 0
+      const selectedPattern = patternCandidates.find((item) => item.name === result.coatOfArms.pattern)
+      patternTexture.value = selectedPattern?.texture
+      patternPreviewUrl.value = selectedPattern ? decodedDdsToDataUrl(selectedPattern.texture) : ''
+      emblemTextures.value = Object.fromEntries(
+        emblemCandidates
+          .filter((item) => result.coatOfArms.coloredEmblems.some((emblem) => emblem.texture === item.name))
+          .map((item) => [item.name, item.texture]),
+      )
+      emblemPreviewUrls.value = Object.fromEntries(
+        Object.entries(emblemTextures.value).map(([name, decoded]) => [name, decodedDdsToDataUrl(decoded)]),
+      )
+      const normalizedTarget = resizeFitImage(target, result.provenance.resolution)
+      const rendered = renderCoatOfArms(
+        result.coatOfArms,
+        { pattern: selectedPattern?.texture, coloredEmblems: emblemTextures.value },
+        {},
+        result.provenance.resolution,
+      )
+      try {
+        fitWebGlScore.value = rendered
+          ? scoreWithWebGl2(normalizedTarget, { width: rendered.width, height: rendered.height, pixels: rendered.pixels })
+          : null
+      } catch {
+        fitWebGlScore.value = null
+      }
+      fitStatus.value = `完成 · ${result.provenance.evaluatedCandidates} 候选 · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
+      ElMessage.success('拟合候选已载入结构化编辑器，可继续调整并复制代码')
+    }
+    worker.onerror = (event) => {
+      if (runId !== fitRunId) return
+      worker.terminate()
+      fitWorker = null
+      fitBusy.value = false
+      fitStatus.value = `Worker 失败：${event.message}`
+      ElMessage.error(fitStatus.value)
+    }
+    const workerImage: FitImage = {
+      width: target.width,
+      height: target.height,
+      pixels: new Uint8ClampedArray(target.pixels),
+    }
+    const workerCandidates = (items: FitTextureCandidate[]): FitTextureCandidate[] => items.map((item) => ({
+      name: item.name,
+      assetSha256: item.assetSha256,
+      texture: {
+        width: item.texture.width,
+        height: item.texture.height,
+        fourCC: item.texture.fourCC,
+        pixels: new Uint8ClampedArray(item.texture.pixels),
+      },
+    }))
+    worker.postMessage([workerImage, workerCandidates(patternCandidates), workerCandidates(emblemCandidates), {
+      resolution: 40,
+      maxPatterns: patterns.length,
+      maxEmblems: emblems.length,
+    }])
+  } catch (error) {
+    if (runId !== fitRunId) return
+    fitBusy.value = false
+    fitStatus.value = `拟合失败：${errorMessage(error)}`
+    ElMessage.error(fitStatus.value)
+  }
+}
+
+onMounted(() => {
+  void loadStandaloneAssetPack(false)
+})
 
 async function getCurrentCoaRevision(): Promise<number> {
   const binding = await companion.sourceBinding()
@@ -462,6 +689,14 @@ async function readTexturePreview(
   kind: 'pattern' | 'colored_emblem',
   name: string,
 ): Promise<{ decoded: DecodedDds, preview: string }> {
+  const staticEntry = packEntry(kind, name)
+  if (staticEntry) {
+    const decoded = await readPackTexture(staticEntry)
+    return { decoded, preview: decodedDdsToDataUrl(decoded) }
+  }
+  if (!developmentCompanionEnabled) {
+    throw new Error(`独立素材包中没有 ${kind}/${name}`)
+  }
   const asset = await companion.asset(kind, name)
   const decoded = decodeDdsBase64(asset.asset_base64)
   if (
@@ -591,18 +826,61 @@ importSource()
   <div class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">Crusader Kings III · MCP-first</p>
+        <p class="eyebrow">Crusader Kings III code · standalone browser Alpha</p>
         <h1>家徽工坊</h1>
-        <p class="subtitle">结构化编辑原版可导入的静态纹章数据，不执行任意 CK3 脚本。</p>
+        <p class="subtitle">独立生成与编辑可粘贴的静态纹章代码；正式平台不连接或启动游戏。</p>
       </div>
       <div class="top-actions">
-        <el-tag :type="mcpStatus.startsWith('已连接') ? 'success' : 'info'" effect="plain">
-          {{ mcpStatus }}
+        <el-tag :type="loadedAssetPack ? 'success' : 'warning'" effect="plain">
+          {{ loadedAssetPack ? '独立素材包已绑定' : '等待独立素材包' }}
         </el-tag>
         <el-button @click="reset">重置</el-button>
         <el-button type="primary" :disabled="errorCount > 0" @click="copyOutput">复制 CK3 代码</el-button>
       </div>
     </header>
+
+    <section class="image-fit-panel panel">
+      <div class="panel-title">
+        <div><span class="step">00</span><h2>图片拟合原生元素</h2></div>
+        <el-tag effect="plain" type="success">纯浏览器 · 图片不上传</el-tag>
+      </div>
+      <div class="image-fit-grid">
+        <label class="image-drop">
+          <input type="file" accept="image/png,image/jpeg,image/webp" @change="selectTargetImage">
+          <img v-if="targetImage" :src="targetImage.previewUrl" alt="待拟合目标图片">
+          <span v-else>选择 PNG / JPEG / WebP<br><small>最大 16 MiB、4096×4096</small></span>
+        </label>
+        <div class="fit-controls">
+          <strong>独立素材包</strong>
+          <p>{{ assetPackStatus }}</p>
+          <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">重新载入静态素材包</el-button>
+          <div class="fit-budget">
+            <span>Emblem 搜索预算</span>
+            <el-input-number v-model="fitEmblemBudget" :min="0" :max="64" :step="8" />
+          </div>
+          <div class="fit-actions">
+            <el-button type="primary" :loading="fitBusy" :disabled="!targetImage || !loadedAssetPack" @click="fitTargetImage">
+              开始本地拟合
+            </el-button>
+            <el-button :disabled="!fitBusy" @click="cancelImageFit()">取消</el-button>
+          </div>
+        </div>
+        <div class="fit-report">
+          <strong>运行状态</strong>
+          <p>{{ fitStatus }}</p>
+          <template v-if="fitResult">
+            <dl>
+              <div><dt>总损失</dt><dd>{{ fitResult.metrics.totalLoss.toFixed(5) }}</dd></div>
+              <div><dt>颜色</dt><dd>{{ fitResult.metrics.colorLoss.toFixed(5) }}</dd></div>
+              <div><dt>边缘</dt><dd>{{ fitResult.metrics.edgeLoss.toFixed(5) }}</dd></div>
+              <div><dt>候选数</dt><dd>{{ fitResult.provenance.evaluatedCandidates }}</dd></div>
+              <div><dt>GPU 交叉分</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : '不可用' }}</dd></div>
+            </dl>
+            <small>分数只用于同一算法和目标之间比较，不代表 CK3 像素一致率。结果已进入下方结构化编辑器。</small>
+          </template>
+        </div>
+      </div>
+    </section>
 
     <main class="workspace">
       <section class="source-pane panel">
@@ -619,7 +897,7 @@ importSource()
         <el-input v-model="source" type="textarea" :rows="21" resize="none" spellcheck="false" class="code-input" />
         <el-button class="import-button" type="primary" @click="importSource">解析并载入</el-button>
 
-        <div class="mcp-panel">
+        <div v-if="developmentCompanionEnabled" class="mcp-panel">
           <div class="section-heading">
             <div>
               <h3>CK3 原生 MCP</h3>
@@ -728,7 +1006,7 @@ importSource()
           <strong>{{ coatOfArms.pattern || '未指定 pattern' }}</strong>
           <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ coatOfArms.coloredEmblems.reduce((sum, item) => sum + item.instances.length, 0) }} 个实例 · {{ coatOfArms.texturedEmblems.length }} 个受限纹理层</span>
         </div>
-        <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">加载当前原版 DDS</el-button>
+        <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">从独立素材包加载当前 DDS</el-button>
         <el-alert type="info" :closable="false" show-icon>
           <template #title>预览翻译 exact 1.19.0.6 随附 shader 的通道、mask、transform、surface detail 与 blend；FallbackColor 绑定、GPU 采样/色彩空间仍待以后原生像素对照。</template>
         </el-alert>
@@ -738,22 +1016,23 @@ importSource()
         <div class="panel-title">
           <div><span class="step">03</span><h2>结构化编辑</h2></div>
           <el-space>
-            <el-button size="small" :loading="runtimeFeatureBusy" @click="loadRuntimeFeatures">读取运行态</el-button>
-            <el-button size="small" :loading="catalogBusy" @click="loadResourceCatalog">读取资源</el-button>
+            <el-button v-if="developmentCompanionEnabled" size="small" :loading="runtimeFeatureBusy" @click="loadRuntimeFeatures">开发期运行态</el-button>
+            <el-button v-if="developmentCompanionEnabled" size="small" :loading="catalogBusy" @click="loadResourceCatalog">开发期 MCP 资源</el-button>
+            <el-button v-else size="small" :loading="assetPackBusy" @click="loadStandaloneAssetPack()">刷新静态资源</el-button>
           </el-space>
         </div>
         <el-scrollbar height="690px">
-          <div class="resource-search">
+          <div v-if="developmentCompanionEnabled" class="resource-search">
             <el-input v-model="emblemSearch" clearable placeholder="筛选 emblem 名；留空取前 200 项" @keyup.enter="loadResourceCatalog" />
             <el-button :loading="catalogBusy" @click="loadResourceCatalog">刷新目录</el-button>
           </div>
           <p class="resource-note">
-            目录只证明 exact 1.19.0.6 基础游戏磁盘资源；
-            <template v-if="installedDlcDescriptorCount !== null && dlcCoaSourceCount !== null">
+            正式平台只读取部署时冻结、逐项 SHA-256 绑定的静态 asset pack，不访问本机游戏。
+            <template v-if="developmentCompanionEnabled && installedDlcDescriptorCount !== null && dlcCoaSourceCount !== null">
               安装树含 {{ installedDlcDescriptorCount }} 份 DLC 描述符，其中 {{ dlcCoaSourceCount }} 份有直接 CoA 候选；
               该数字不证明商店授权或引擎 mount。
             </template>
-            <template v-if="configuredModCount !== null">
+            <template v-if="developmentCompanionEnabled && configuredModCount !== null">
               `dlc_load.json` 当前配置 {{ configuredModCount }} 个 mod；
               <template v-if="configuredPatternCount !== null && configuredEmblemCount !== null">
                 已枚举 {{ configuredPatternCount }} 个 pattern、{{ configuredEmblemCount }} 个 emblem 资源候选，
@@ -765,15 +1044,15 @@ importSource()
               启动配置未读取，暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。
             </template>
             <br>
-            CK3 运行态：{{ runtimeFeatureStatus }}。
-            <template v-if="runtimeEnabledFeatureCount !== null && runtimeFeatureCount !== null && runtimeDlcKeys !== null">
+            <template v-if="developmentCompanionEnabled">开发期 CK3 运行态：{{ runtimeFeatureStatus }}。</template>
+            <template v-if="developmentCompanionEnabled && runtimeEnabledFeatureCount !== null && runtimeFeatureCount !== null && runtimeDlcKeys !== null">
               原生同帧读到 {{ runtimeEnabledFeatureCount }}/{{ runtimeFeatureCount }} 个 effective feature 为真，
               `has_dlc` 可见 {{ runtimeDlcKeys.length }} 个 key。
               这证明当前进程的 gameplay gate，不证明商店授权，也不决定同名家徽资源的最终胜者。
             </template>
           </p>
           <el-collapse
-            v-if="configuredPatternResources.length || configuredEmblemResources.length"
+            v-if="developmentCompanionEnabled && (configuredPatternResources.length || configuredEmblemResources.length)"
             class="configured-candidates"
           >
             <el-collapse-item

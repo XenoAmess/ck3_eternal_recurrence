@@ -1,19 +1,25 @@
 # CK3 家徽编辑器
 
-Vue 3 + Element Plus + TypeScript 实现的 CK3 静态纹章代码编辑器。它只覆盖原版“从剪贴板粘贴”所读取的
-coat-of-arms render description，不把该入口描述成任意 CK3 脚本执行器。
+Vue 3 + Element Plus + TypeScript 实现的独立 CK3 静态纹章代码编辑器和图片拟合器。正式 Web 平台不安装、启动或连接
+CK3，不依赖 MCP、Quarkus 或 Java；它只生成原版“从剪贴板粘贴”所读取的 coat-of-arms render description，
+不把该入口描述成任意 CK3 脚本执行器。
 
 ## 当前能力
 
 - 解析 `name = { ... }`、注释、紧凑/多行排版和 `rgb` / `hsv` typed block；拒绝 wrapper 外杂项及未声明、循环或重复的静态 `@变量`；
 - 通过浏览器 Clipboard API 一键读取剪贴板文本并立即进入同一解析/诊断流程；浏览器权限或安全上下文不满足时明确报错；
+- 在浏览器内解码用户选择的 PNG/JPEG/WebP，以可取消 Web Worker 搜索静态 asset pack 中的 pattern 与 colored emblem，
+  输出可继续手调和复制的 CK3 代码；图片不上传，CPU reference 决定候选，WebGL2 RGBA8 对最终候选做真实交叉评分；
+- 使用 `ck3-coa-web-asset-pack-v1` 静态素材包：manifest 与每个 DDS 都经 SHA-256、字节数、尺寸和格式绑定，正式运行时不读取
+  用户的游戏目录；
 - 编辑 pattern、三通道颜色、重复 `colored_emblem`、mask 和重复 instance；
 - 对唯一已由原生 MCP 应用并 Copy 保留的 `textured_emblem = { texture = "_default.dds" }` 提供明确标限的解析、编辑、原始纹理预览和导出；不生成未验证字段，也暂不把该层合成进最终家徽；
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；
 - 导入后继续对表单模型执行确定性校验：颜色语法、可打印 ASCII 资源名、有限数值和原生 128 KiB 上限不合格时，禁止复制或发送 MCP；
 - 内置 exact 1.19.0.6 的机器可读语法能力矩阵，逐项展示例子、原生 `detected/applied/not_detected` 结果、编辑器策略与证据边界；
 - 展开简单静态 `@变量`；保留已证实可应用/Copy 的受限 `parent` 数据库引用；重复标量按 CK3 后值优先并警告，多顶层仍阻止静默丢数据；
-- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json`、目录/ZIP 模组 manifest 与 DDS 候选，以及运行中 CK3 的 effective feature / script `has_dlc` truth；获取 session revision，执行原生检测/应用、Copy/export，以固定的原生王朝 Finish 动作提交回角色设计器，并可通过固定自定义模式按钮进入背景图案页、只读检查 `coat_of_arms_page` 子树及固定 pattern 网格根；
+- 仓库保留本机 Quarkus → typed MCP → CK3 原生桥作为开发期研究/验收夹具；默认正式界面不显示这些控件，独立浏览器 E2E
+  断言完整图片拟合过程中没有任何 `/api/` 请求；
 - 在浏览器解码原版 DXT1 pattern、DXT5 colored emblem、`coa_mask_texture.dds` 以及 `_default.dds` 使用的无压缩 BGRA8 顶层 mip；
 - 按 CK3 随附的 Clausewitz/Jomini shader 源码翻译三通道调色、pattern mask、flip→rotate→scale→translate、surface detail 和 alpha blend；GPU 采样/色彩空间及引擎未公开的 `FallbackColor` 绑定仍不冒充逐像素一致。
 
@@ -21,20 +27,33 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 [`../docs/ck3-coat-of-arms-clipboard-import-capability.md`](../docs/ck3-coat-of-arms-clipboard-import-capability.md)。
 用户图片只在浏览器内使用原生元素做近似重建的可行性、WebGL2/CPU 架构、隐私边界和 Alpha 门禁见
 [`../docs/ck3-coat-of-arms-image-fitting-feasibility.md`](../docs/ck3-coat-of-arms-image-fitting-feasibility.md)。
+当前 Alpha 的逐项交付状态、exact-build 本地素材包 receipt、验收命令与已知限制见
+[`../docs/ck3-coat-of-arms-editor-alpha.md`](../docs/ck3-coat-of-arms-editor-alpha.md)。
 
 ## 开发
 
 ```text
 pnpm install
 pnpm test
+pnpm test:e2e
 pnpm build
 pnpm dev
 ```
 
-浏览器不能直接启动本机 stdio MCP，所以 `backend/` 提供必要且很薄的 Maven + Java + Quarkus 伴随服务。它只允许调用
+本地开发者可以从明确给出的 exact-build 安装目录冻结一份部署用静态 pack。生成物可能包含 Paradox 素材，已由 Git 忽略；
+公开托管前必须另行确认分发许可：
+
+```text
+python tools/build_web_asset_pack.py --game-root "<CK3 installation root>" --output public/asset-packs/ck3-1.19.0.6
+python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
+```
+
+浏览器本身不执行这些 Python 命令。Vite 只把已经准备好的静态 pack 复制到 `dist`，部署后的页面不再读取游戏目录。
+
+`backend/` 是开发期研究夹具，不属于最终平台。它提供很薄的 Maven + Java + Quarkus 伴随服务，只允许调用
 `ck3_get_capabilities`、`ck3_take_snapshot`、十四项 CoA 专用 MCP 工具和一项原生 runtime-feature 查询，共 17 项；不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
 
-## 启动伴随服务
+## 仅开发期：伴随服务
 
 需要 JDK 17+、Maven，以及已经安装 Python MCP SDK 的 Python 环境。以下路径按本机 checkout 修改；state 目录必须是专用目录：
 
@@ -57,7 +76,8 @@ subprocess.run(
 )
 ```
 
-前端默认访问 `http://localhost:8080`；需要改变地址时设置 `VITE_CK3_COMPANION_URL`。伴随服务公开：
+最终平台不得启用这一模式。仓库内开发夹具可显式设置 `VITE_ENABLE_CK3_COMPANION=true`；此时前端访问
+`http://localhost:8080`，需要改变地址时设置 `VITE_CK3_COMPANION_URL`。伴随服务公开：
 
 | REST | MCP | 是否需要已运行的 CK3 |
 |---|---|---:|
@@ -87,7 +107,9 @@ mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
 
-当前基线：Vitest `43/43`、Vite production build、Quarkus REST `18/18` 与 Maven test 均 GREEN。
+当前 Alpha 基线：Vitest `50/50`、Playwright 独立浏览器 E2E `2/2`、Vite production build、静态 pack verifier、
+Quarkus REST `18/18` 与 Maven test 均 GREEN。E2E 同时覆盖合成 pack 和本机生成的 exact 1.19.0.6 pack；
+前者可进 CI，后者因素材不进 Git而在没有本地 pack 时明确 skip。
 “打开原生家徽页”和“提交回角色设计器”都只调用固定、零参数的王朝家徽 MCP，并要求独立 route 后置条件；它们不会接受浏览器传入的控件名、路径、指针或桌面输入。提交动作已在 exact CK3 `1.19.0.6` 完成受管实机往返：Finish 前后重开家徽页的原生 Copy 均为 330 bytes，SHA-256 均为 `4769FD42836E68FA35DC07FBA23BEABCC589E5A33087314F1D6287E5C53C305A`；该结论仍不覆盖完成整个角色创建或战役/存档持久化。
 
 probe/export 不再错误地假设家徽页必有 gameplay snapshot。binding 端点先验证 native-headless、named-pipe、exact

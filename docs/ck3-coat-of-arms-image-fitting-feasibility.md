@@ -126,7 +126,7 @@ WebGPU 暂不作为 Alpha 必需项。它适合以后把 reduction 和大规模�
 - 粗网格搜索 position、等比 scale、rotation 与水平 flip；
 - 对入选候选再局部细化 position、X/Y scale 和 rotation；
 - 根据 emblem RGB channel mask 对目标残差求三个代表色；
-- Alpha 默认先限制每个 colored-emblem 一个 instance、最多 4 个图层，再允许用户提高搜索预算；
+- Alpha 先限制为最多一个 colored-emblem、一个 instance；Beta 再用同一 beam 合同扩展到默认最多 4 个图层；
 - depth 按加入顺序确定，导出有限数值，不依赖浮点比较的偶然顺序。
 
 ### 5. 分层 beam search
@@ -135,7 +135,7 @@ WebGPU 暂不作为 Alpha 必需项。它适合以后把 reduction 和大规模�
 
 ### 6. 输出与可信度
 
-输出不是单个“神谕结果”，而是 1–3 个候选，每项显示：
+Alpha 输出一个可继续手调的确定性最佳候选；Beta 扩展为 1–3 个 Pareto 候选。每项显示：
 
 - 浏览器预览；
 - 总相似度以及颜色、轮廓、边缘子分数；
