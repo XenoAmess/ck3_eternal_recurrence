@@ -57,11 +57,14 @@ from .bridge.event_window_context_contract import (
     normalize_current_event_window_context_v1,
 )
 from .bridge.council_composition_candidates_contract import (
-    ASSIGN_COUNCILLOR_V1_CAPABILITY,
     QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
     QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
     STEWARD_POSITION_KEY,
     normalize_council_composition_candidates_v1,
+)
+from .bridge.council_assign_councillor_action_contract import (
+    ASSIGN_COUNCILLOR_V1_CAPABILITY,
+    ASSIGN_COUNCILLOR_V1_STEP,
 )
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.succession_transition_contract import (
@@ -2304,26 +2307,31 @@ def _plan_steward_composition_v1(
                 "selected_candidate": dict(selected),
                 **evidence,
             }
+        routable = ASSIGN_COUNCILLOR_V1_CAPABILITY in available_capabilities
         return {
             "policy": "council-composition-steward-v1",
             "outcome": "REPLACE_REQUIRED",
-            "reason_code": "replacement_action_not_routable",
+            "reason_code": (
+                "replacement_action_ready"
+                if routable
+                else "replacement_action_capability_unavailable"
+            ),
             "required_capability": ASSIGN_COUNCILLOR_V1_CAPABILITY,
-            "action_routable": False,
+            "action_routable": routable,
             "selected_candidate": dict(selected),
             **evidence,
         }
+    routable = ASSIGN_COUNCILLOR_V1_CAPABILITY in available_capabilities
     return {
         "policy": "council-composition-steward-v1",
         "outcome": "ASSIGN_REQUIRED",
         "reason_code": (
-            "assignment_action_not_routable"
-            if ASSIGN_COUNCILLOR_V1_CAPABILITY
-            in available_capabilities
+            "assignment_action_ready"
+            if routable
             else "assignment_action_capability_unavailable"
         ),
         "required_capability": ASSIGN_COUNCILLOR_V1_CAPABILITY,
-        "action_routable": False,
+        "action_routable": routable,
         "selected_candidate": dict(selected),
         **evidence,
     }
@@ -9312,6 +9320,24 @@ def choose_one_life_turn(
                 "ASSIGN_REQUIRED",
                 "REPLACE_REQUIRED",
             }:
+                if ASSIGN_COUNCILLOR_V1_STEP in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "council_composition_action",
+                        "selected_step": ASSIGN_COUNCILLOR_V1_STEP,
+                        "reason": (
+                            "submit the deterministic native-legal steward "
+                            "choice and require an independent later-frame "
+                            "incumbent receipt"
+                        ),
+                        "council_assignment": {
+                            "observation": council_observation,
+                            "candidate_character_id": council_decision[
+                                "selected_candidate"
+                            ]["character_id"],
+                        },
+                        "council_decision": council_decision,
+                    }
                 return {
                     "policy": "one-life-turn-v1",
                     "phase": "council_composition_action_unavailable",

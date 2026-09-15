@@ -141,6 +141,14 @@ from .council_composition_candidates_contract import (
     build_council_composition_candidates_request_v1,
     normalize_council_composition_candidates_v1,
 )
+from .council_assign_councillor_action_contract import (
+    ASSIGN_COUNCILLOR_V1_CAPABILITY,
+    ASSIGN_COUNCILLOR_V1_STEP,
+    QUERY_ASSIGN_COUNCILLOR_RECEIPT_V1_STEP,
+    build_assign_councillor_request_v1,
+    normalize_assign_councillor_ack_v1,
+    normalize_assign_councillor_receipt_v1,
+)
 from .steward_develop_county_contract import (
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY,
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
@@ -6376,6 +6384,7 @@ class NativeHeadlessGameplayDriver:
         timeout_seconds: float | None = None,
         internal_semantic_snapshot: bool = False,
         allow_frontend_revision_zero: bool = False,
+        protocol_request_id: str | None = None,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
@@ -6426,7 +6435,13 @@ class NativeHeadlessGameplayDriver:
                     f"expected {expected_revision}, current {revision}"
                 )
         self._request_sequence += 1
-        request_id = f"step-{self._request_sequence}-{uuid.uuid4().hex[:12]}"
+        request_id = (
+            protocol_request_id
+            if protocol_request_id is not None
+            else f"step-{self._request_sequence}-{uuid.uuid4().hex[:12]}"
+        )
+        if not isinstance(request_id, str) or not request_id:
+            raise ValueError("protocol_request_id must be a non-empty string")
         request = {
             "type": "execute_step",
             "protocol_version": PROTOCOL_VERSION,
@@ -10013,6 +10028,263 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": snapshot_id,
             "queried_revision": public_revision,
             "queried_native_revision": native_revision,
+        }
+
+    def assign_councillor_v1(
+        self,
+        observation: dict[str, object],
+        *,
+        candidate_character_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Submit one steward choice and require a separate receipt query."""
+
+        try:
+            result = self._assign_councillor_v1_unrecorded(
+                observation,
+                candidate_character_id=candidate_character_id,
+                expected_revision=expected_revision,
+            )
+        except Exception as error:
+            self._record_command(
+                ASSIGN_COUNCILLOR_V1_STEP,
+                ok=False,
+                result=(
+                    error.step_result
+                    if isinstance(error, StepPostconditionError)
+                    else None
+                ),
+                error=f"{type(error).__name__}: {error}",
+            )
+            raise
+        self._record_command(ASSIGN_COUNCILLOR_V1_STEP, ok=True, result=result)
+        return result
+
+    def _assign_councillor_v1_unrecorded(
+        self,
+        observation: dict[str, object],
+        *,
+        candidate_character_id: int,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "assign-councillor requires a paused CK3 snapshot"
+            )
+        if starting.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "assign-councillor source revision is stale"
+            )
+        played = starting.get("played_character")
+        owner_character_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        try:
+            normalized_observation = (
+                normalize_council_composition_candidates_v1(
+                    observation,
+                    expected_snapshot_id=starting.get("snapshot_id"),
+                    expected_public_revision=starting.get("revision"),
+                    expected_native_revision=starting.get("native_revision"),
+                    expected_date_raw=starting.get("date_raw"),
+                    expected_owner_character_id=owner_character_id,
+                )
+            )
+            action_request_id = f"council-{uuid.uuid4().hex}"
+            request = build_assign_councillor_request_v1(
+                normalized_observation,
+                candidate_character_id=candidate_character_id,
+                request_id=action_request_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"assign-councillor lacks an exact same-frame input: {error}"
+            ) from error
+        capabilities = self.capabilities()
+        bridge_capabilities = set(
+            _string_list(capabilities.get("bridge_capabilities"))
+        )
+        if not (
+            {
+                QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
+                ASSIGN_COUNCILLOR_V1_CAPABILITY,
+            }
+            <= bridge_capabilities
+            and ASSIGN_COUNCILLOR_V1_STEP
+            in set(_string_list(capabilities.get("action_steps")))
+        ):
+            raise UnsupportedStepError(
+                "native DLL does not advertise the complete council action"
+            )
+        request_fields = request.as_wire_fields()
+        request_fields.pop("request_id")
+        submit = self._execute_primitive_step(
+            ASSIGN_COUNCILLOR_V1_STEP,
+            expected_revision=expected_revision,
+            required_capability=ASSIGN_COUNCILLOR_V1_CAPABILITY,
+            request_fields=request_fields,
+            protocol_request_id=action_request_id,
+        )
+        submit_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "council_assign_councillor_ack",
+            "backend_id",
+        }
+        if (
+            set(submit) != submit_keys
+            or submit.get("step") != ASSIGN_COUNCILLOR_V1_STEP
+            or submit.get("accepted") is not True
+            or not isinstance(submit.get("backend_id"), str)
+            or not submit.get("backend_id")
+        ):
+            raise BridgeUnavailableError(
+                "assign-councillor submit returned a malformed envelope"
+            )
+        submit_sequence = submit.get("query_sequence")
+        if (
+            isinstance(submit_sequence, bool)
+            or not isinstance(submit_sequence, int)
+            or not 1 <= submit_sequence <= 2**64 - 1
+            or submit.get("snapshot_revision")
+            != request.expected_native_revision
+        ):
+            raise BridgeUnavailableError(
+                "assign-councillor submit lost its native frame binding"
+            )
+        try:
+            ack = normalize_assign_councillor_ack_v1(
+                submit.get("council_assign_councillor_ack"),
+                expected_request=request,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"assign-councillor ACK is malformed: {error}"
+            ) from error
+        if submit.get("status") != ack.get("status"):
+            raise BridgeUnavailableError(
+                "assign-councillor envelope disagrees with its ACK"
+            )
+        partial = {
+            "step": ASSIGN_COUNCILLOR_V1_STEP,
+            "accepted": True,
+            "status": ack["status"],
+            "backend_id": submit["backend_id"],
+            "submit": copy.deepcopy(submit),
+            "council_assign_councillor_ack": ack,
+        }
+        if ack["status"] != "native_helper_invoked_verification_pending":
+            raise StepPostconditionError(
+                "assign-councillor was rejected before native helper invocation",
+                step_result=partial,
+                selected_step=ASSIGN_COUNCILLOR_V1_STEP,
+            )
+
+        receipt_result = self._execute_primitive_step(
+            QUERY_ASSIGN_COUNCILLOR_RECEIPT_V1_STEP,
+            required_capability=ASSIGN_COUNCILLOR_V1_CAPABILITY,
+        )
+        receipt_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "council_assign_councillor_receipt",
+            "backend_id",
+        }
+        if (
+            set(receipt_result) != receipt_keys
+            or receipt_result.get("step")
+            != QUERY_ASSIGN_COUNCILLOR_RECEIPT_V1_STEP
+            or receipt_result.get("accepted") is not True
+            or receipt_result.get("backend_id") != submit.get("backend_id")
+        ):
+            raise StepPostconditionError(
+                "assign-councillor receipt returned a malformed envelope",
+                step_result={**partial, "receipt_query": receipt_result},
+                selected_step=ASSIGN_COUNCILLOR_V1_STEP,
+            )
+        receipt_sequence = receipt_result.get("query_sequence")
+        if (
+            isinstance(receipt_sequence, bool)
+            or not isinstance(receipt_sequence, int)
+            or receipt_sequence <= int(submit_sequence)
+        ):
+            raise StepPostconditionError(
+                "assign-councillor receipt is not a later mailbox ticket",
+                step_result={**partial, "receipt_query": receipt_result},
+                selected_step=ASSIGN_COUNCILLOR_V1_STEP,
+            )
+        try:
+            receipt = normalize_assign_councillor_receipt_v1(
+                receipt_result.get("council_assign_councillor_receipt"),
+                expected_ack=ack,
+            )
+        except ValueError as error:
+            raise StepPostconditionError(
+                f"assign-councillor receipt is malformed: {error}",
+                step_result={**partial, "receipt_query": receipt_result},
+                selected_step=ASSIGN_COUNCILLOR_V1_STEP,
+            ) from error
+        if not (
+            receipt_result.get("status") == receipt.get("status")
+            and receipt_result.get("snapshot_revision")
+            == receipt.get("post_native_revision")
+        ):
+            raise StepPostconditionError(
+                "assign-councillor receipt envelope lost its post-frame binding",
+                step_result={**partial, "receipt_query": receipt_result},
+                selected_step=ASSIGN_COUNCILLOR_V1_STEP,
+            )
+        complete = {
+            **partial,
+            "status": receipt["status"],
+            "receipt_query": copy.deepcopy(receipt_result),
+            "council_assign_councillor_receipt": receipt,
+        }
+        if receipt["status"] != "applied":
+            raise StepPostconditionError(
+                "assign-councillor did not satisfy its later-frame postcondition",
+                step_result=complete,
+                selected_step=ASSIGN_COUNCILLOR_V1_STEP,
+            )
+        observed = self._wait_for_snapshot(
+            self.take_snapshot(),
+            lambda frame: (
+                frame.get("paused") is True
+                and frame.get("snapshot_id") == receipt["post_snapshot_id"]
+                and frame.get("revision") == receipt["post_public_revision"]
+                and frame.get("native_revision")
+                == receipt["post_native_revision"]
+                and frame.get("date_raw") == receipt["post_date_raw"]
+            ),
+            timeout_seconds=self.command_timeout_seconds,
+        )
+        if not (
+            observed.get("paused") is True
+            and observed.get("snapshot_id") == receipt["post_snapshot_id"]
+            and observed.get("revision") == receipt["post_public_revision"]
+            and observed.get("native_revision") == receipt["post_native_revision"]
+            and observed.get("date_raw") == receipt["post_date_raw"]
+        ):
+            raise StepPostconditionError(
+                "assign-councillor receipt was not published as game state",
+                step_result=complete,
+                selected_step=ASSIGN_COUNCILLOR_V1_STEP,
+            )
+        return {
+            **complete,
+            "progress_status": "postcondition",
+            "postcondition_verified": True,
+            "snapshot_id": observed["snapshot_id"],
+            "revision": observed["revision"],
+            "native_revision": observed["native_revision"],
+            "date_raw": observed["date_raw"],
         }
 
     def _execute_player_faction_alerts_v1_query(
@@ -21706,6 +21978,7 @@ def _action_steps(
     expand_battle_reinforcement_assignments = False
     advertise_campaign_root_context = False
     advertise_council_composition_candidates = False
+    advertise_assign_councillor = False
     advertise_steward_develop_county_candidates = False
     advertise_player_faction_alerts = False
     advertise_loaded_feature_manifest = False
@@ -21727,6 +22000,9 @@ def _action_steps(
     for capability in capabilities:
         if capability == QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY:
             advertise_council_composition_candidates = True
+            continue
+        if capability == ASSIGN_COUNCILLOR_V1_CAPABILITY:
+            advertise_assign_councillor = True
             continue
         if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
             continue
@@ -22047,6 +22323,8 @@ def _action_steps(
         steps.add(QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP)
     if advertise_council_composition_candidates and paused is True:
         steps.add(QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP)
+    if advertise_assign_councillor and paused is True:
+        steps.add(ASSIGN_COUNCILLOR_V1_STEP)
     if advertise_steward_develop_county_candidates and paused is True:
         steps.add(QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP)
     if advertise_player_faction_alerts and paused is True:

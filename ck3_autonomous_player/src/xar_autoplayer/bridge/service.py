@@ -91,6 +91,9 @@ from .council_composition_candidates_contract import (
     build_council_composition_candidates_request_v1,
     normalize_council_composition_candidates_v1,
 )
+from .council_assign_councillor_action_contract import (
+    ASSIGN_COUNCILLOR_V1_STEP,
+)
 from .steward_develop_county_contract import (
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY,
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
@@ -700,6 +703,32 @@ class GameplayBridgeService:
                 result = self.select_event_option(
                     event_option_number,
                     event_instance_id=planned_event_id,
+                    expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == ASSIGN_COUNCILLOR_V1_STEP:
+                assignment = (
+                    plan.get("council_assignment")
+                    if isinstance(plan, dict)
+                    else None
+                )
+                executor = getattr(self.driver, "assign_councillor_v1", None)
+                if not (
+                    isinstance(assignment, dict)
+                    and isinstance(assignment.get("observation"), dict)
+                    and isinstance(assignment.get("candidate_character_id"), int)
+                    and not isinstance(
+                        assignment.get("candidate_character_id"), bool
+                    )
+                    and callable(executor)
+                ):
+                    raise UnsupportedStepError(
+                        "selected backend has no typed assign-councillor executor"
+                    )
+                result = executor(
+                    assignment["observation"],
+                    candidate_character_id=assignment[
+                        "candidate_character_id"
+                    ],
                     expected_revision=int(planned["revision"]),
                 )
             else:

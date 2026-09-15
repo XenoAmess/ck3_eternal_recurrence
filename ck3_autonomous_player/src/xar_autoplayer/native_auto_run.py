@@ -30,6 +30,9 @@ from .bridge.native_driver import (
 from .bridge.pending_character_interaction_context_contract import (
     normalize_pending_interaction_id,
 )
+from .bridge.council_assign_councillor_action_contract import (
+    ASSIGN_COUNCILLOR_V1_STEP,
+)
 from .bridge.service import GameplayBridgeService
 from .bridge.settlement_contract import (
     normalize_fixed_score,
@@ -106,6 +109,49 @@ def _registered_event_material_postcondition_issue(
         return "failed"
     if status not in {"verified_change", "verified_no_change"}:
         return "unavailable"
+    return None
+
+
+def _council_assignment_postcondition_issue(
+    step: object,
+    result: object,
+    after_snapshot: object,
+) -> str | None:
+    """Require the formal action's distinct receipt to match public state."""
+
+    if step != ASSIGN_COUNCILLOR_V1_STEP:
+        return None
+    if not isinstance(result, dict) or not isinstance(after_snapshot, dict):
+        return "result_or_snapshot_unavailable"
+    ack = result.get("council_assign_councillor_ack")
+    receipt = result.get("council_assign_councillor_receipt")
+    played = after_snapshot.get("played_character")
+    if not (
+        isinstance(ack, dict)
+        and ack.get("status")
+        == "native_helper_invoked_verification_pending"
+        and ack.get("native_helper_invoked") is True
+        and ack.get("queue_acceptance_observed") is False
+        and ack.get("verification_pending") is True
+        and isinstance(receipt, dict)
+        and receipt.get("status") == "applied"
+        and receipt.get("postcondition_verified") is True
+        and receipt.get("action_request_id")
+        == ack.get("action_request_id")
+        and receipt.get("incumbent_character_id")
+        == ack.get("candidate_character_id")
+        and after_snapshot.get("paused") is True
+        and after_snapshot.get("snapshot_id")
+        == receipt.get("post_snapshot_id")
+        and after_snapshot.get("revision")
+        == receipt.get("post_public_revision")
+        and after_snapshot.get("native_revision")
+        == receipt.get("post_native_revision")
+        and after_snapshot.get("date_raw") == receipt.get("post_date_raw")
+        and isinstance(played, dict)
+        and played.get("character_id") == receipt.get("owner_character_id")
+    ):
+        return "receipt_or_public_binding_mismatch"
     return None
 
 
@@ -732,6 +778,24 @@ def native_auto_run(
                         "native pending-interaction reply lacks a typed "
                         "old-instance lifecycle postcondition"
                     )
+            council_issue = _council_assignment_postcondition_issue(
+                step, outcome.get("result"), after_snapshot
+            )
+            if council_issue is not None:
+                capture_first_failure(
+                    stage="postcondition",
+                    kind="council_assignment_postcondition_failed",
+                    message=(
+                        "native council assignment lacks a typed later-frame "
+                        f"receipt: {council_issue}"
+                    ),
+                )
+                raise AgentError(
+                    "native council assignment lacks a typed later-frame "
+                    f"receipt: {council_issue}"
+                )
+            if step == ASSIGN_COUNCILLOR_V1_STEP:
+                evidence.append("council_incumbent_changed")
             white_peace_submission_pending = False
             if parse_offer_white_peace_step(step) is not None:
                 result = outcome.get("result")
@@ -2975,6 +3039,8 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "subject_army_id",
         "objective_province_id",
         "exact_war_terminal_watch",
+        "council_assignment",
+        "council_decision",
         "exact_active_war_set_watch",
         "maximum_omitted_state_detection_lag_days",
         "omitted_native_watch_fields",
@@ -3064,6 +3130,8 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "checkpoint",
         "event_selection",
         "event_material_postcondition",
+        "council_assign_councillor_ack",
+        "council_assign_councillor_receipt",
     )
     compact = {key: result.get(key) for key in keys if key in result}
     if "interaction_result" in result:
