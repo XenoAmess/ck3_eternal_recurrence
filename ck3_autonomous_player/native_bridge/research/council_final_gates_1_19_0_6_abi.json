@@ -1,0 +1,112 @@
+{
+  "contract": "council_final_gates_1_19_0_6_abi",
+  "schema_version": 1,
+  "status": "offline-exact-build-static-ready-private-unadvertised",
+  "scope": "councillor_steward assign_vacant and replace_incumbent final native gates only",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "machine": "0x8664",
+    "preferred_image_base": "0x140000000",
+    "image_size": "0x5C2D000"
+  },
+  "source_file": {
+    "path_from_game_root": "gui/window_council_potential_councillor.gui",
+    "size": 7657,
+    "sha256": "1D5F5B7422BADB13595D458F28D6A86BDF6162BA54350CF9EF32115BF556A956",
+    "required_gui_expressions": [
+      "visible = \"[And(Not( Character.IsCouncillor ), Not(CharacterListItem.GetCharacter.IsGuest))]\"",
+      "enabled = \"[And( PotentialCouncillorWindow.CanFireCouncillor, Not( PotentialCouncillorWindow.HasPendingInteraction( CharacterListItem.GetCharacter ) ) )]\"",
+      "visible = \"[And(And( Not( CharacterListItem.GetBool('can_swap') ), Character.IsCouncillor ), Not(CharacterListItem.GetCharacter.IsGuest))]\"",
+      "visible = \"[And(Character.IsPlayerInteractionShown('recruit_guest_interaction'), Character.IsGuest)]\""
+    ]
+  },
+  "predicates": {
+    "already_councillor": {
+      "gui_name": "Character.IsCouncillor",
+      "rva": "0x2667300",
+      "abi": "Microsoft x64: RCX generation-resolved CCharacter*, return AL bool",
+      "semantic": "engine predicate; do not substitute CCharacter+0x1B0 nonnull",
+      "registration_rva": "0x515BA0",
+      "registration_handler_rva": "0x26686C0"
+    },
+    "guest": {
+      "gui_name": "Character.IsGuest",
+      "rva": "0x18E2A10",
+      "abi": "Microsoft x64: RCX generation-resolved CCharacter*, return AL bool",
+      "semantic": "calls native character role enum 0x2614DC0 and checks EAX == 1",
+      "registration_rva": "0x504FE0",
+      "registration_handler_rva": "0x2621610"
+    },
+    "pending_interaction": {
+      "gui_name": "PotentialCouncillorWindow.HasPendingInteraction",
+      "rva": "0x2752220",
+      "abi": "Microsoft x64: RCX current-player pending manager*, EDX candidate signed full-generation CharacterID, return AL bool",
+      "semantic": "candidate-specific; scans manager+0x10 full-ID vector with signed count manager+0x1C and matches pending object+0x2F4 to candidate",
+      "manager_lookup_rva": "0x1058C00",
+      "manager_lookup_abi": "Microsoft x64: RCX zeroed window-like storage at least 0x598 bytes; reads current-player manager from game state and writes storage+0x588; storage+0x590 must be zero to avoid the separate cleanup path",
+      "manager_lookup_source": "*(module+0x570E068) CGameState -> +0xA0 game data -> +0xCEF8 eight-byte manager pointer array, signed count +0xCF04; match each entry+0x8 to signed full played CharacterID *(module+0x4FE7EE0)",
+      "missing_manager_result": "unavailable; do not submit or silently treat as no pending",
+      "registration_rva": "0x143480",
+      "registration_handler_rva": "0x105D590",
+      "window_getter_rva": "0x1059270"
+    },
+    "replacement_fireability": {
+      "gui_name": "CFireFromCouncilConfirmation::CanConfirm",
+      "rva": "0x105C770",
+      "abi": "Microsoft x64: RCX pointer to zeroed 0x170-byte confirmation footprint, return AL bool",
+      "synthetic_context": {
+        "minimum_readable_size": "0x168",
+        "recommended_footprint": "0x170",
+        "incumbent_signed_full_character_id_offset": "0x160",
+        "active_task_signed_full_id_offset": "0x164",
+        "view_pointer_offset_not_read_by_can_confirm": "0x168"
+      },
+      "constructor_rva": "0x105BA10",
+      "constructor_abi_evidence": "EDX incumbent signed full CharacterID -> +0x160, R8D active task signed full ID -> +0x164, R9 view pointer -> +0x168",
+      "semantic": "occupied replacement only; native CanConfirm chain includes councillor identity, fireability trigger and final native state predicates; direct body has no game-object stores or submit call",
+      "live_boundary": "paused application-main read-only admission and replacement allow/deny observations still required"
+    }
+  },
+  "instruction_spans": [
+    {"name": "is_councillor_registration", "rva": "0x515BA0", "end_rva": "0x515D02", "sha256": "B9D48B22CEC45298A17FE9FDABEAC5CFDA3DD25D500DFD060BBFE8AD2603AEC9"},
+    {"name": "is_councillor_handler", "rva": "0x26686C0", "end_rva": "0x26686F8", "sha256": "B5E3CF6C8E02C501C1A8F35163AB418DA94879B5B85B141BF338D21119D16E32"},
+    {"name": "is_councillor_leaf", "rva": "0x2667300", "end_rva": "0x266736C", "sha256": "20F6218357FC78A119C44F82D4DFF11B67FA6E9322349DD0DEDC15BFDA2F68D4"},
+    {"name": "is_guest_registration", "rva": "0x504FE0", "end_rva": "0x50514E", "sha256": "985AED0B55E2FAF8C2B5A1832B3BA242E2F39A9FAD1D4EC9EF32B686B079C36D"},
+    {"name": "is_guest_handler", "rva": "0x2621610", "end_rva": "0x2621648", "sha256": "FB49CEA67D364DCD023C7E4116C3C7856BDBD83AD7838161F2B65263C9022B78"},
+    {"name": "is_guest_leaf", "rva": "0x18E2A10", "end_rva": "0x18E2A24", "sha256": "56252F2D9B1926C22B473E324F8718802CEA395A2B70C086695ADEB0E99FA69D"},
+    {"name": "is_guest_role_enum", "rva": "0x2614DC0", "end_rva": "0x2614E62", "sha256": "E488EDD8EC91470D4C40901944C29AFF938BC5EC5C73DE13A89F41F8C92273DB"},
+    {"name": "pending_gui_registration", "rva": "0x143480", "end_rva": "0x14360B", "sha256": "AA9A9B2C972134F79AD9CB08D4D684D71D8C261F2AB74F21ECBF2D18CC3CB00E"},
+    {"name": "pending_gui_handler", "rva": "0x105D590", "end_rva": "0x105D635", "sha256": "05A68F7277CB6815C4692CF0085988363AE9AA6E73E264FF67358AF0B11DEC9C"},
+    {"name": "pending_gui_window_getter", "rva": "0x1059270", "end_rva": "0x1059287", "sha256": "7E74E567082F02F575316DE5B7867B94F8EF7823A4D9503E6A5DA94277D78BE0"},
+    {"name": "pending_manager_lookup", "rva": "0x1058C00", "end_rva": "0x1058C6D", "sha256": "7DB1A41012A4D946F95FB6AC6334BB8F485E9EE796FC2C57387B7660C423B468"},
+    {"name": "pending_candidate_leaf", "rva": "0x2752220", "end_rva": "0x27522C2", "sha256": "4024C7131C839EB9A3B0751242DC759ED8B41D830F8DDCD5DF95E56B3D9FCB78"},
+    {"name": "fire_confirmation_constructor_fields", "rva": "0x105BBD2", "end_rva": "0x105BBE7", "sha256": "8DFA98C38D8B85EE963A5D66695F01E2BC02ED01D8B580FE327D542E2E179BFB"},
+    {"name": "fire_confirmation_can_confirm", "rva": "0x105C770", "end_rva": "0x105C93C", "sha256": "4FDE6075164871FAEE7C3B7D4FF7136BFB9A8C968F141769A96C7D04AE57B2CC"}
+  ],
+  "relative_edges": [
+    {"name": "is_councillor_registration_to_handler", "instruction_rva": "0x515C77", "instruction_size": 7, "displacement_offset": 3, "target_rva": "0x26686C0"},
+    {"name": "is_councillor_handler_to_leaf", "instruction_rva": "0x26686D2", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x2667300"},
+    {"name": "is_guest_registration_to_handler", "instruction_rva": "0x5050C3", "instruction_size": 7, "displacement_offset": 3, "target_rva": "0x2621610"},
+    {"name": "is_guest_handler_to_leaf", "instruction_rva": "0x2621622", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x18E2A10"},
+    {"name": "is_guest_leaf_to_role_enum", "instruction_rva": "0x18E2A14", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x2614DC0"},
+    {"name": "pending_registration_to_handler", "instruction_rva": "0x143580", "instruction_size": 7, "displacement_offset": 3, "target_rva": "0x105D590"},
+    {"name": "pending_handler_to_window_getter", "instruction_rva": "0x105D604", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x1059270"},
+    {"name": "pending_window_getter_to_candidate_leaf", "instruction_rva": "0x1059282", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x2752220"},
+    {"name": "fire_confirmation_to_is_councillor", "instruction_rva": "0x105C7E1", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x2667300"},
+    {"name": "fire_confirmation_to_native_fireability", "instruction_rva": "0x105C871", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x293B610"}
+  ],
+  "ascii_evidence": [
+    {"name": "Character.IsCouncillor", "rva": "0x43284E8", "value": "IsCouncillor"},
+    {"name": "Character.IsGuest", "rva": "0x43254A0", "value": "IsGuest"},
+    {"name": "PotentialCouncillorWindow.HasPendingInteraction", "rva": "0x4119FA0", "value": "HasPendingInteraction"}
+  ],
+  "readiness": {
+    "offline_exact_build_verified": false,
+    "paused_gate_branches_live_verified": false,
+    "formal_assignment_live_verified": false,
+    "native_action_advertised": false,
+    "mcp_action_registered": false
+  }
+}
