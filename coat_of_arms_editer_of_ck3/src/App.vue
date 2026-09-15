@@ -16,7 +16,13 @@ import {
 } from './domain/assetPack'
 import { syntaxCapabilityRows } from './domain/capabilityMatrix'
 import { decodeFitImageFile, type DecodedFitImage } from './domain/imageInput'
-import { resizeFitImage, type FitImage, type FitTextureCandidate, type ImageFitResult } from './domain/imageFitter'
+import {
+  resizeFitImage,
+  type FitImage,
+  type FitTextureCandidate,
+  type ImageFitProgress,
+  type ImageFitResult,
+} from './domain/imageFitter'
 import { parseCoatOfArms } from './domain/parser'
 import {
   renderCoatOfArms,
@@ -24,7 +30,7 @@ import {
   resolveColor,
   type NamedColorMap,
 } from './domain/renderer'
-import { CK3_CLIPBOARD_MAX_BYTES, serializeCoatOfArms } from './domain/serializer'
+import { COAT_OF_ARMS_MCP_MAX_BYTES, serializeCoatOfArms } from './domain/serializer'
 import { validateCoatOfArms } from './domain/validation'
 import { scoreWithWebGl2, type WebGlScore } from './domain/webglScorer'
 import {
@@ -111,6 +117,8 @@ const fitStatus = ref('请选择一张图片')
 const fitResult = ref<ImageFitResult>()
 const fitWebGlScore = ref<WebGlScore | null>(null)
 const fitLayerBudget = ref(6)
+const fitProgressPercent = ref(0)
+const fitProgressLabel = ref('等待开始')
 let fitWorker: Worker | null = null
 let fitRunId = 0
 
@@ -120,15 +128,18 @@ const fitTerminationLabels: Record<ImageFitResult['provenance']['terminationReas
   no_emblems: '素材包没有可用徽记',
   no_improvement: '没有继续改善的构图',
   minimum_improvement: '改善低于阈值',
-  clipboard_limit: '达到 CK3 128 KiB 输入边界',
 }
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
+const outputBytes = computed(() => new TextEncoder().encode(output.value).length)
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
 const visibleDiagnostics = computed<Diagnostic[]>(() => {
   const items = [...diagnostics.value, ...validateCoatOfArms(coatOfArms.value)]
-  if (new TextEncoder().encode(output.value).length > CK3_CLIPBOARD_MAX_BYTES) {
-    items.push({ severity: 'error', message: '确定性导出超过原生 MCP 的 128 KiB 输入上限' })
+  if (outputBytes.value > COAT_OF_ARMS_MCP_MAX_BYTES) {
+    items.push({
+      severity: 'warning',
+      message: '代码超过当前开发期 MCP 的 128 KiB 安全合同；网页仍允许复制，但 CK3 原生粘贴边界尚未实测',
+    })
   }
   return items.filter((item, index) => items.findIndex((candidate) => (
     candidate.severity === item.severity && candidate.message === item.message
@@ -309,6 +320,8 @@ async function selectTargetImage(event: Event) {
   const file = input.files?.[0]
   if (!file) return
   cancelImageFit(false)
+  fitProgressPercent.value = 0
+  fitProgressLabel.value = '等待开始'
   try {
     targetImage.value = await decodeFitImageFile(file)
     fitResult.value = undefined
@@ -328,6 +341,10 @@ function cancelImageFit(notify = true) {
   fitWorker?.terminate()
   fitWorker = null
   if (fitBusy.value && notify) ElMessage.info('已取消图片拟合')
+  if (fitBusy.value) {
+    fitProgressPercent.value = 0
+    fitProgressLabel.value = notify ? '已取消' : '等待开始'
+  }
   fitBusy.value = false
 }
 
@@ -351,6 +368,8 @@ async function fitTargetImage() {
   fitBusy.value = true
   fitResult.value = undefined
   fitWebGlScore.value = null
+  fitProgressPercent.value = 0
+  fitProgressLabel.value = '正在准备完整素材索引'
   try {
     const patterns = loadedAssetPack.value.pack.assets
       .filter((item) => item.kind === 'pattern' && item.registration === 'designer_manifest')
@@ -387,12 +406,28 @@ async function fitTargetImage() {
     const worker = new Worker(new URL('./domain/imageFitter.worker.ts', import.meta.url), { type: 'module' })
     fitWorker = worker
     const target = targetImage.value.image
-    worker.onmessage = async (event: MessageEvent<{ ok: boolean, result?: ImageFitResult, error?: string }>) => {
+    worker.onmessage = async (event: MessageEvent<
+      | { kind: 'progress', progress: ImageFitProgress }
+      | { kind: 'result', ok: boolean, result?: ImageFitResult, error?: string }
+    >) => {
       if (runId !== fitRunId) return
+      if (event.data.kind === 'progress') {
+        const progress = event.data.progress
+        fitProgressPercent.value = progress.percent
+        const phase = progress.phase === 'background'
+          ? '背景匹配'
+          : progress.phase === 'coarse'
+            ? `第 ${progress.layer}/${progress.layerBudget} 层 · 全库粗筛`
+            : `第 ${progress.layer}/${progress.layerBudget} 层 · 候选精筛`
+        fitProgressLabel.value = `${phase} · ${progress.completed}/${progress.total} · 已评估 ${progress.evaluatedCandidates}`
+        return
+      }
       worker.terminate()
       fitWorker = null
       if (!event.data.ok || !event.data.result) {
         fitBusy.value = false
+        fitProgressPercent.value = 0
+        fitProgressLabel.value = '拟合失败'
         fitStatus.value = `拟合失败：${event.data.error ?? 'unknown'}`
         ElMessage.error(fitStatus.value)
         return
@@ -416,12 +451,16 @@ async function fitTargetImage() {
       } catch (error) {
         if (runId !== fitRunId) return
         fitBusy.value = false
+        fitProgressPercent.value = 0
+        fitProgressLabel.value = '结果素材校验失败'
         fitStatus.value = `拟合已完成，但完整 DDS 校验失败：${errorMessage(error)}`
         ElMessage.error(fitStatus.value)
         return
       }
       if (runId !== fitRunId) return
       fitBusy.value = false
+      fitProgressPercent.value = 100
+      fitProgressLabel.value = `完成 · 选中 ${result.provenance.selectedLayers} 层`
       patternTexture.value = selectedPatternTexture
       patternPreviewUrl.value = selectedPatternTexture ? decodedDdsToDataUrl(selectedPatternTexture) : ''
       emblemTextures.value = Object.fromEntries(selectedFullEmblems)
@@ -450,6 +489,8 @@ async function fitTargetImage() {
       worker.terminate()
       fitWorker = null
       fitBusy.value = false
+      fitProgressPercent.value = 0
+      fitProgressLabel.value = 'Worker 失败'
       fitStatus.value = `Worker 失败：${event.message}`
       ElMessage.error(fitStatus.value)
     }
@@ -477,6 +518,8 @@ async function fitTargetImage() {
   } catch (error) {
     if (runId !== fitRunId) return
     fitBusy.value = false
+    fitProgressPercent.value = 0
+    fitProgressLabel.value = '拟合失败'
     fitStatus.value = `拟合失败：${errorMessage(error)}`
     ElMessage.error(fitStatus.value)
   }
@@ -621,6 +664,10 @@ async function loadRuntimeFeatures() {
 async function probeInCk3(apply: boolean) {
   if (errorCount.value > 0) {
     ElMessage.error('请先修复解析错误，再发送确定性导出')
+    return
+  }
+  if (outputBytes.value > COAT_OF_ARMS_MCP_MAX_BYTES) {
+    ElMessage.error('代码超过当前开发期 MCP 的 128 KiB 安全合同；这不是已证明的 CK3 原生上限')
     return
   }
   mcpBusy.value = true
@@ -906,7 +953,7 @@ importSource()
             <span>图层搜索预算</span>
             <el-input-number v-model="fitLayerBudget" :min="1" :step="1" />
           </div>
-          <small class="fit-budget-note">不设产品层数上限，可输入 10000；无继续改善或接近 CK3 128 KiB 输入边界时会提前停止。</small>
+          <small class="fit-budget-note">不设产品层数上限，可输入 10000；残差无继续改善、改善低于阈值或用户取消时会提前停止。</small>
           <div class="fit-actions">
             <el-button type="primary" :loading="fitBusy" :disabled="!targetImage || !loadedAssetPack" @click="fitTargetImage">
               开始本地拟合
@@ -917,6 +964,14 @@ importSource()
         <div class="fit-report">
           <strong>运行状态</strong>
           <p>{{ fitStatus }}</p>
+          <div class="fit-progress">
+            <el-progress
+              :percentage="fitProgressPercent"
+              :status="fitResult && !fitBusy ? 'success' : undefined"
+              :stroke-width="10"
+            />
+            <small>{{ fitProgressLabel }}（进度表示当前搜索阶段）</small>
+          </div>
           <template v-if="fitResult">
             <dl>
               <div><dt>总损失</dt><dd>{{ fitResult.metrics.totalLoss.toFixed(5) }}</dd></div>
@@ -931,6 +986,14 @@ importSource()
           </template>
         </div>
       </div>
+      <el-alert
+        class="mcp-limit-note"
+        type="warning"
+        :closable="false"
+        show-icon
+        title="128 KiB 不是已证明的 CK3 原生粘贴上限"
+        description="它只是当前开发期 MCP probe/export 的防御性传输合同，且会在送入游戏前拦截。网页仍允许复制更大的代码；超过此值时仅不能使用开发期 MCP 实机验证。"
+      />
     </section>
 
     <main class="workspace">
@@ -959,8 +1022,8 @@ importSource()
           <div class="mcp-actions">
             <el-button :loading="mcpBusy" @click="openNativeDesigner">打开原生家徽页</el-button>
             <el-button :loading="mcpBusy" @click="enterNativeCustomMode">进入原生自定义模式</el-button>
-            <el-button :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(false)">原生检测</el-button>
-            <el-button type="primary" plain :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(true)">应用到设计器</el-button>
+            <el-button :loading="mcpBusy" :disabled="errorCount > 0 || outputBytes > COAT_OF_ARMS_MCP_MAX_BYTES" @click="probeInCk3(false)">原生检测</el-button>
+            <el-button type="primary" plain :loading="mcpBusy" :disabled="errorCount > 0 || outputBytes > COAT_OF_ARMS_MCP_MAX_BYTES" @click="probeInCk3(true)">应用到设计器</el-button>
             <el-button :loading="mcpBusy" @click="exportFromCk3">从 CK3 读取</el-button>
             <el-button type="success" plain :loading="mcpBusy" @click="commitNativeDesign">提交回角色设计器</el-button>
           </div>

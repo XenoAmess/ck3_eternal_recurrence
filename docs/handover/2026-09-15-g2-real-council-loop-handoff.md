@@ -135,7 +135,7 @@
 - 主仓禁止 merge，只能 rebase；共享 `master` 禁止强推。
 - MSVC 构建要先进入 VS 18 Developer Command Prompt，并使用 VS 自带 CMake/Ninja。PATH 上的 Cygwin Ninja 会把 Windows 路径交给 `/bin/sh`，导致 `cl.exe` 路径损坏。
 - exact source-contract 在独立 clone 中要显式配置：`-DXAR_CK3_EXECUTABLE_PATH="Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe"`。默认相对路径在 clone 中不存在时会产生验收环境 RED。
-- 删除 Windows clone/build 前先解析绝对路径并确认位于 `Z:\ck3_mod_rewrite_process_assets`；清只读属性后用同一 PowerShell/.NET 删除，不跨 shell 拼接递归删除命令。
+- 删除 Windows clone/build 前先用 Python 解析绝对路径并确认位于 `Z:\ck3_mod_rewrite_process_assets`；随后在同一 Python 进程内清除只读属性并递归删除，不跨 shell 拼接删除命令。
 - 当前与 G2 无关的长期分支 `codex/mod-shiren-import` 有独有提交，不得删除或顺手集成。
 - 日常验证按改动范围做聚焦测试；不要为单个 bug 无意义扩大到永久长跑或重复全量 CI。
 

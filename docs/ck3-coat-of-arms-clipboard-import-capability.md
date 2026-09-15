@@ -232,7 +232,7 @@ source_bytes
 binding
 ```
 
-输入先限制为非空 ASCII、无 NUL、最多 128 KiB，并以 base64 通过 named pipe；API 在编码前把 LF、CRLF、旧式 CR
+当前 MCP 合同先把输入限制为非空 ASCII、无 NUL、最多 128 KiB，并以 base64 通过 named pipe；API 在编码前把 LF、CRLF、旧式 CR
 统一为 Windows 剪贴板实际回读的 CRLF，SHA-256 与字节数绑定这份规范文本。原生侧写系统剪贴板后立刻 read-back 比较。
 该 ASCII 限制来自当前 CK3 reader 的真实行为：高位 UTF-8 字节会令外层函数提前退出，
 而且可能留下旧的 `CanPaste` 状态；首版若允许任意 Unicode 会制造假阳性。
@@ -250,8 +250,27 @@ binding
 export 的公开结果为闭合 schema，包含 `status`、`designer_observed`、`copy_invoked`、`clipboard_read`、
 `source`、`source_sha256`、`source_bytes`、`reason` 与同一 exact binding。成功状态只有 `exported`；已进入 designer callback
 但未能调用 Copy 或未能读取剪贴板时返回 `unavailable`，不会泄露上一次成功结果；超时未观察到 designer 则整次命令失败。
-当前实现限制输出为非空 ASCII、无 NUL、最多 128 KiB。2026-09-13 已在真实 CK3 进程中取得 `mcp-exported`，并与
+当前 MCP export 实现限制输出为非空 ASCII、无 NUL、最多 128 KiB。2026-09-13 已在真实 CK3 进程中取得 `mcp-exported`，并与
 `mcp-applied` 组成同会话 `mcp-roundtrip`；具体载荷与边界见 3.4。
+
+### 3.2.1 128 KiB 的证据等级与更正
+
+128 KiB **不是已经从 CK3 引擎测得的粘贴上限**。它是本项目在 commit
+`16755189c172772669a0d30456da1f977d6b6de0`（`Add MCP coat of arms source probe`）中为开发期桥接链自行选择的防御性上限：
+
+- Python 调用方在 `ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_source_probe_contract.py:18,141-142`
+  定义 `128 * 1024`，并在编码/发送前拒绝更大源码；
+- native 合同在 `ck3_autonomous_player/native_bridge/include/xar_bridge/coat_of_arms_designer_probe_v1.hpp:33-34`
+  重复同一常量；
+- named-pipe 接收层在 `native_bridge/src/bridge.cpp:10770-10784` 限制 base64 与解码结果，原生请求分派又在
+  `native_bridge/src/coat_of_arms_designer_probe_v1.cpp:280-284` 检查长度。两处都发生在调用 CK3 的 clipboard reader 之前。
+
+因此，现有测试只能证明“当前 MCP 合同接受 131,072 bytes、拒绝 131,073 bytes”，不能证明 CK3 自身也在这里拒绝。
+现有最大实机输入是第 3.5 节的 599-byte 浏览器载荷；15 例矩阵和 Copy 往返也都是数百字节。仓库没有把 131,072 与
+131,073 bytes 分别送进原生 reader 的边界实验。当前正确结论是：**大于 128 KiB 的代码不能经现有开发期 MCP probe/apply/export
+验收；CK3 原生粘贴究竟能接受多大仍为 unknown。** Web 平台据此只对超限代码显示警告并保留浏览器复制，不再终止拟合或声称
+“CK3 原生上限”。若以后要测精确边界，必须先版本化扩展 MCP 合同，再以同 build、同会话、相邻载荷通过原生 reader/Copy 回读闭环，
+不能从 Windows 剪贴板容量或桥接常量反推。
 
 ### 3.3 验证状态
 
@@ -837,8 +856,9 @@ CoatOfArms
 
 - parser 识别未知字段并给出带位置诊断，serializer 只输出稳定白名单；
 - parser 拒绝未声明、循环或重复的静态 `@变量`，以及 wrapper 外的顶层标量/游离值；
-- 结构化表单持续复核命名颜色或 `rgb`/`hsv` 三分量字面量、可打印 ASCII 资源名、有限数值与 128 KiB 原生输入上限；
-  因而导入后再手工填入伪 CK3 tagged block 或非法数值也会阻止复制和原生 MCP 请求；
+- 结构化表单持续复核命名颜色或 `rgb`/`hsv` 三分量字面量、可打印 ASCII 资源名与有限数值；
+  因而导入后再手工填入伪 CK3 tagged block 或非法数值也会阻止复制和原生 MCP 请求。超过 128 KiB 只警告并继续允许浏览器复制，
+  但阻止当前开发期 MCP 请求；
 - mask 表单保留输入中的非法 token 并给出 error，只允许原版语料/shader/MCP 共同支持的整数分区索引 1、2、3；
 - `src/domain/capabilityMatrix.ts` 把本报告第 5–7 节的保守子集投影成前端可见表格：每行固定语法、最小例子、
   `mcp-applied`/`mcp-detected`/`mcp-not-detected` 证据和 accept/warn/sanitize/reject 策略；测试要求可接受例子无 error、

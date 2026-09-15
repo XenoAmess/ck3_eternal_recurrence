@@ -1,6 +1,6 @@
 import type { CoatOfArms } from './types'
 
-export const CK3_CLIPBOARD_MAX_BYTES = 128 * 1024
+export const COAT_OF_ARMS_MCP_MAX_BYTES = 128 * 1024
 
 const indent = (level: number) => '    '.repeat(level)
 

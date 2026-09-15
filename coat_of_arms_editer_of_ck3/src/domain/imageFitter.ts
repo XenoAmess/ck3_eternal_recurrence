@@ -1,6 +1,5 @@
 import type { DecodedDds } from './dds'
 import { renderCoatOfArms, type RenderedCoatOfArms } from './renderer'
-import { CK3_CLIPBOARD_MAX_BYTES, serializeCoatOfArms } from './serializer'
 import type { CoatOfArms } from './types'
 
 export interface FitImage {
@@ -22,6 +21,17 @@ export interface ImageFitOptions {
   maxLayers?: number
   refinementCandidates?: number
   minRelativeLayerImprovement?: number
+  onProgress?: (progress: ImageFitProgress) => void
+}
+
+export interface ImageFitProgress {
+  phase: 'background' | 'coarse' | 'refine'
+  completed: number
+  total: number
+  percent: number
+  layer: number
+  layerBudget: number
+  evaluatedCandidates: number
 }
 
 export interface ImageFitMetrics {
@@ -43,7 +53,7 @@ export interface ImageFitResult {
     emblemAssets: number
     layerBudget: number
     selectedLayers: number
-    terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement' | 'clipboard_limit'
+    terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
   }
 }
@@ -71,6 +81,34 @@ function normalizeLayerBudget(value: number | undefined): number {
     throw new Error('图层搜索预算必须是非负安全整数')
   }
   return normalized
+}
+
+function reportProgress(
+  callback: ImageFitOptions['onProgress'],
+  phase: ImageFitProgress['phase'],
+  completed: number,
+  total: number,
+  layer: number,
+  layerBudget: number,
+  evaluatedCandidates: number,
+): void {
+  if (!callback) return
+  const boundedTotal = Math.max(1, total)
+  const boundedCompleted = clamp(completed, 0, boundedTotal)
+  callback({
+    phase,
+    completed: boundedCompleted,
+    total: boundedTotal,
+    percent: Math.round(boundedCompleted / boundedTotal * 100),
+    layer,
+    layerBudget,
+    evaluatedCandidates,
+  })
+}
+
+function shouldReportProgress(completed: number, total: number): boolean {
+  const interval = Math.max(1, Math.floor(total / 20))
+  return completed === total || completed % interval === 0
 }
 
 function validateImage(image: FitImage): void {
@@ -327,11 +365,15 @@ export function fitImageToCoatOfArms(
   const minRelativeLayerImprovement = clamp(options.minRelativeLayerImprovement ?? 0.005, 0, 1)
   if (!patterns.length) throw new Error('素材包没有可用于拟合的 pattern')
   const palette = dominantColors(target)
+  const backgroundPalettes = permutations(palette)
   let evaluated = 0
   let bestBackground: ScoredCandidate | null = null
   let bestPatternAsset: FitTextureCandidate | null = null
+  const backgroundTotal = patterns.length * backgroundPalettes.length
+  let backgroundCompleted = 0
+  reportProgress(options.onProgress, 'background', 0, backgroundTotal, 0, maxLayers, evaluated)
   for (const pattern of patterns) {
-    for (const colors of permutations(palette)) {
+    for (const colors of backgroundPalettes) {
       const coatOfArms: CoatOfArms = {
         outerKey: 'coa', parent: '', pattern: pattern.name,
         colors: colors.map(expression) as [string, string, string],
@@ -339,6 +381,13 @@ export function fitImageToCoatOfArms(
       }
       const candidate = score(coatOfArms, pattern.texture, {}, target, `${pattern.name}\0${colors.flat().join(',')}`)
       evaluated += 1
+      backgroundCompleted += 1
+      if (shouldReportProgress(backgroundCompleted, backgroundTotal)) {
+        reportProgress(
+          options.onProgress, 'background', backgroundCompleted, backgroundTotal,
+          0, maxLayers, evaluated,
+        )
+      }
       if (better(candidate, bestBackground)) {
         bestBackground = candidate
         bestPatternAsset = pattern
@@ -356,6 +405,8 @@ export function fitImageToCoatOfArms(
     const geometry = residualGeometry(target, best.rendered)
     const layerPalettes = permutations(residualColors(target, best.rendered))
     const coarse: { asset: FitTextureCandidate, candidate: ScoredCandidate }[] = []
+    let coarseCompleted = 0
+    reportProgress(options.onProgress, 'coarse', 0, emblems.length, layer + 1, maxLayers, evaluated)
     for (const emblem of emblems) {
       const colors = layerPalettes[0]
       const coatOfArms: CoatOfArms = {
@@ -373,7 +424,14 @@ export function fitImageToCoatOfArms(
       const key = `${best.key}\0L${layer}\0${emblem.name}\0coarse`
       const candidate = score(coatOfArms, bestPatternAsset.texture, emblemTextures, target, key)
       evaluated += 1
+      coarseCompleted += 1
       coarse.push({ asset: emblem, candidate })
+      if (shouldReportProgress(coarseCompleted, emblems.length)) {
+        reportProgress(
+          options.onProgress, 'coarse', coarseCompleted, emblems.length,
+          layer + 1, maxLayers, evaluated,
+        )
+      }
     }
     const shortlist = coarse
       .sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
@@ -386,12 +444,21 @@ export function fitImageToCoatOfArms(
     }
     const scales = [geometry.scale * 0.78, geometry.scale, geometry.scale * 1.22]
       .map((value) => clamp(value, 0.08, 1.8))
+    const rotations = [0, 45, 90, 135, 180, 225, 270, 315]
+    const flips = [1, -1]
+    const refinementTotal = shortlist.length * layerPalettes.length * positions.length
+      * scales.length * rotations.length * flips.length
+    let refinementCompleted = 0
+    reportProgress(
+      options.onProgress, 'refine', 0, refinementTotal,
+      layer + 1, maxLayers, evaluated,
+    )
     for (const { asset } of shortlist) {
       for (const colors of layerPalettes) {
         for (const position of positions) {
           for (const scaleValue of scales) {
-            for (const rotation of [0, 45, 90, 135, 180, 225, 270, 315]) {
-              for (const flip of [1, -1]) {
+            for (const rotation of rotations) {
+              for (const flip of flips) {
                 const coatOfArms: CoatOfArms = {
                   ...best.coatOfArms,
                   coloredEmblems: [...best.coatOfArms.coloredEmblems, {
@@ -407,7 +474,14 @@ export function fitImageToCoatOfArms(
                 const key = `${best.key}\0L${layer}\0${asset.name}\0${colors.flat().join(',')}\0${position.join(',')}\0${scaleValue}\0${rotation}\0${flip}`
                 const candidate = score(coatOfArms, bestPatternAsset.texture, emblemTextures, target, key)
                 evaluated += 1
+                refinementCompleted += 1
                 if (!layerBest || better(candidate, layerBest.candidate)) layerBest = { asset, candidate }
+                if (shouldReportProgress(refinementCompleted, refinementTotal)) {
+                  reportProgress(
+                    options.onProgress, 'refine', refinementCompleted, refinementTotal,
+                    layer + 1, maxLayers, evaluated,
+                  )
+                }
               }
             }
           }
@@ -421,13 +495,6 @@ export function fitImageToCoatOfArms(
     const relativeGain = (best.totalLoss - layerBest.candidate.totalLoss) / best.totalLoss
     if (relativeGain < minRelativeLayerImprovement) {
       terminationReason = 'minimum_improvement'
-      break
-    }
-    if (
-      new TextEncoder().encode(serializeCoatOfArms(layerBest.candidate.coatOfArms)).length
-      > CK3_CLIPBOARD_MAX_BYTES
-    ) {
-      terminationReason = 'clipboard_limit'
       break
     }
     best = layerBest.candidate

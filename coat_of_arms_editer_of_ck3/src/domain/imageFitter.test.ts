@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import type { DecodedDds } from './dds'
-import { fitImageToCoatOfArms, type FitImage, type FitTextureCandidate } from './imageFitter'
+import {
+  fitImageToCoatOfArms,
+  type FitImage,
+  type FitTextureCandidate,
+  type ImageFitProgress,
+} from './imageFitter'
 import { renderCoatOfArms } from './renderer'
 
 const texture = (name: 'solid' | 'split' | 'square'): DecodedDds => {
@@ -55,15 +60,27 @@ describe('browser image fitter', () => {
       }], texturedEmblems: [],
     }, { pattern: solid, coloredEmblems: { 'square.dds': square } }, { black: [0, 0, 0] }, size)
     expect(target).not.toBeNull()
+    const progress: ImageFitProgress[] = []
     const result = fitImageToCoatOfArms(
       asImage(target!.pixels, size),
       [candidate('solid.dds', solid)],
       [candidate('square.dds', square)],
-      { resolution: 32 },
+      { resolution: 32, onProgress: (update) => progress.push(update) },
     )
     expect(result.coatOfArms.coloredEmblems[0]?.texture).toBe('square.dds')
     expect(result.metrics.relativeImprovement).toBeGreaterThan(0.01)
     expect(result.provenance.searchBackend).toBe('cpu-reference')
+    expect(new Set(progress.map((update) => update.phase))).toEqual(new Set(['background', 'coarse', 'refine']))
+    for (const phase of ['background', 'coarse', 'refine'] as const) {
+      expect(progress.some((update) => update.phase === phase && update.percent === 100)).toBe(true)
+    }
+    expect(progress.every((update) => (
+      update.total > 0
+      && update.completed >= 0
+      && update.completed <= update.total
+      && update.percent >= 0
+      && update.percent <= 100
+    ))).toBe(true)
   })
 
   it('accepts a 10000-layer search budget without applying a product cap', () => {

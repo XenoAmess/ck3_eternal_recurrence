@@ -30,6 +30,7 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .image-drop small, .fit-report small { color: #81776b; }
 .fit-controls, .fit-report { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--line); background: rgba(15,13,11,.34); }
 .fit-controls p, .fit-report p { min-height: 36px; margin: 0; color: #9e9387; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.fit-progress { display: grid; gap: 6px; }
 .fit-budget, .fit-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .fit-budget { margin-top: auto; color: #a99e90; font-size: 12px; }
 .fit-budget-note { color: #81776b; line-height: 1.45; }
@@ -37,6 +38,7 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .fit-report dl div { padding: 8px; border: 1px solid var(--line); background: #151311; }
 .fit-report dt { color: #81776b; font-size: 10px; }
 .fit-report dd { margin: 5px 0 0; color: #dfc992; font: 12px "Cascadia Code", Consolas, monospace; }
+.mcp-limit-note { margin-top: 14px; }
 
 .workspace { max-width: 1820px; margin: 0 auto; display: grid; grid-template-columns: minmax(340px, .92fr) minmax(360px, .9fr) minmax(510px, 1.35fr); gap: 16px; align-items: start; }
 .panel { min-height: 780px; padding: 20px; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 22px 60px rgba(0, 0, 0, .22); backdrop-filter: blur(16px); }
