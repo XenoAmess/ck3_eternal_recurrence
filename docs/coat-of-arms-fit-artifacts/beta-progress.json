@@ -121,7 +121,7 @@
         {
             "id": "WP3",
             "status": "in_progress",
-            "commit": "d4c4c24c",
+            "commit": "86857b33",
             "commands": [
                 "pnpm exec vitest run src/domain/imageFitter.test.ts src/domain/imageFitter.seams.test.ts",
                 "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",

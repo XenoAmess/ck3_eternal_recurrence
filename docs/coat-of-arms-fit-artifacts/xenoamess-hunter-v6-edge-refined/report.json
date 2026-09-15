@@ -6,7 +6,8 @@
   "generatedAt": "2026-09-15T13:10:28.280Z",
   "sourceRevision": {
     "headCommit": "c043d78b2bbfa304c61e3245ffcbddbd04504ddd",
-    "workingTreePatchSha256": "F2D0C7D87666F8607D84BA60187FA92D402F699FA2768AD9E30FD08EF97C3B14"
+    "workingTreePatchSha256": "F2D0C7D87666F8607D84BA60187FA92D402F699FA2768AD9E30FD08EF97C3B14",
+    "committedRevision": "86857b33"
   },
   "input": {
     "originalFile": "xenoamess_hunter_4096_no_shade.svg",
