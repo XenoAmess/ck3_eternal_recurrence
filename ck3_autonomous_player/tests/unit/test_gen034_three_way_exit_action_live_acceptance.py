@@ -231,7 +231,6 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
                 source_capture_sha256=SOURCE_CAPTURE_SHA256,
             )
         )
-
         self.assertTrue(result["ok"])
         self.assertEqual(result["status"], "verified")
         self.assertTrue(result["gen034_closed"])
@@ -253,6 +252,126 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
                 "ck3_restore_checkpoint",
                 "ck3_take_snapshot",
             ],
+        )
+
+    def test_pending_white_peace_checkpoint_stops_at_event_without_reoffer(self) -> None:
+        gate = _authorized("white_peace")
+        read = _read_phase(gate)
+        before = read["before_snapshot"]["structured_content"]
+        action_step = gate["authorization"]["action"]["literal"]
+        pending = _with_history(
+            before, [*read["allowed_gameplay_commands"], action_step]
+        )
+        pending_save = {
+            "step": "save-checkpoint",
+            "accepted": True,
+            "status": "submitted",
+            "checkpoint": {"status": "saved", "sha256": "D" * 64},
+        }
+        pending_saved = _with_history(
+            pending,
+            [*read["allowed_gameplay_commands"], action_step, "save-checkpoint"],
+        )
+        pending_saved["revision"] += 1
+        pending_saved["native_revision"] += 1
+        interrupted = _with_history(
+            pending_saved,
+            [
+                *read["allowed_gameplay_commands"],
+                action_step,
+                "save-checkpoint",
+                "resume-map",
+            ],
+        )
+        interrupted["date_raw"] += 24
+        interrupted["revision"] += 1
+        interrupted["native_revision"] += 1
+        interrupted["active_event"] = {"instance_id": 7}
+        action_result = _action_result(gate, pending, nested=False)
+        action_result["war_termination_result"] = {
+            "status": "submitted_pending",
+            "war_id": gate["authorization"]["frame"]["war_id"],
+            "outcome": "white_peace",
+            "episode_run_id": gate["authorization"]["frame"]["episode_id"],
+            "starting_snapshot_id": gate["authorization"]["frame"]["snapshot_id"],
+            "observed_snapshot_id": pending["snapshot_id"],
+            "command_acknowledged": True,
+            "war_id_absent_after_ack": False,
+        }
+        client = _FakeClient(
+            [
+                before,
+                action_result,
+                pending,
+                pending_save,
+                pending_saved,
+                {"step": "resume-map", "accepted": True, "status": "submitted"},
+                interrupted,
+            ]
+        )
+
+        result = asyncio.run(
+            HARNESS._execute_action_tail(
+                client,
+                read_phase=read,
+                source_capture=_source_capture(),
+                source_capture_sha256=SOURCE_CAPTURE_SHA256,
+            )
+        )
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["pending_action"]["status"], "submitted_pending")
+        self.assertEqual(
+            result["pending_action"]["stop_reason"],
+            "event_interrupt_while_offer_pending",
+        )
+        self.assertEqual(result["issued_commands"].count(action_step), 1)
+        self.assertEqual(
+            result["issued_commands"],
+            [action_step, "save-checkpoint", "resume-map"],
+        )
+        self.assertNotIn(
+            "ck3_restore_checkpoint", [name for name, _arguments in client.calls]
+        )
+
+    def test_async_reply_observes_war_disappearance_then_pauses(self) -> None:
+        gate = _authorized("white_peace")
+        frame = gate["authorization"]["frame"]
+        pending = _read_phase(gate)["before_snapshot"]["structured_content"]
+        running = deepcopy(pending)
+        running["paused"] = False
+        running["date_raw"] += 9 * 24
+        running["revision"] += 2
+        running["native_revision"] += 2
+        applied_running = deepcopy(running)
+        applied_running["date_raw"] += 24
+        applied_running["revision"] += 1
+        applied_running["native_revision"] += 1
+        applied_running["active_wars"] = []
+        applied_paused = deepcopy(applied_running)
+        applied_paused["paused"] = True
+        applied_paused["revision"] += 1
+        applied_paused["native_revision"] += 1
+        client = _FakeClient(
+            [
+                {"step": "resume-map", "accepted": True, "status": "submitted"},
+                running,
+                applied_running,
+                {"step": "pause-map", "accepted": True, "status": "submitted"},
+                applied_paused,
+            ]
+        )
+
+        result = asyncio.run(
+            HARNESS._await_white_peace_reply(
+                client, initial=pending, war_id=frame["war_id"]
+            )
+        )
+        self.assertTrue(result["completed"])
+        self.assertEqual(result["reason"], "war_disappeared")
+        self.assertEqual(result["issued_commands"], ["resume-map", "pause-map"])
+        self.assertEqual(result["snapshot"]["date_raw"], frame["date_raw"] + 240)
+        self.assertNotIn(
+            "offer-white-peace", " ".join(name for name, _arguments in client.calls)
         )
 
     def test_continue_executes_once_without_claiming_gen034_closure(self) -> None:
@@ -456,6 +575,8 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
         self.assertNotIn("query-war-termination-exit-terms-v2", source)
         self.assertEqual(HARNESS.CONTINUE_SUCCESSOR_TIMEOUT_SECONDS, 5.0)
         self.assertEqual(HARNESS.CONTINUE_SUCCESSOR_POLL_SECONDS, 0.1)
+        self.assertEqual(HARNESS.WHITE_PEACE_REPLY_MAX_DAYS, 12)
+        self.assertEqual(HARNESS.WHITE_PEACE_REPLY_TIMEOUT_SECONDS, 45.0)
 
 
 if __name__ == "__main__":

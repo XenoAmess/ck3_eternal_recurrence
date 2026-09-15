@@ -351,3 +351,49 @@ model. They are not extra GEN-034-D postcondition gates because the milestone's
 accepted visible outcome is `WarID/loss/truce/resources -> checkpoint/cold
 restore`. Focused recommendation/action-gate suites pass `14/14` in normal and
 optimized Python. No CK3 process or public MCP/native schema was used or changed.
+
+## 2026-09-15: bounded asynchronous white-peace result
+
+The exact-build production GEN-004 loop established that an accepted
+`offer-white-peace-N` can return `submitted_pending` while the same WarID is
+still active. The original reply queue has `ai_min_reply_days=4` and
+`ai_max_reply_days=9`; the observed war disappeared on the tenth game-day
+advance after submission. This is a real D-path mismatch: the earlier managed
+executor queried cleanup and truce immediately after ACK, so a valid white-peace
+winner would fail before the original reply could apply. See
+[`war-termination.md`](war-termination.md) at its production normal-desktop
+evidence for the exact run and hashes.
+
+The managed D candidate now saves a pending-offer checkpoint, resumes the map
+once, and observes at most 12 game days within 45 wall-clock seconds. It never
+resubmits the offer. When an independent paused frame shows the old WarID gone,
+the existing exact-store cleanup, two persisted-truce reads, postwar save and
+true process-replacement cold restore remain mandatory. An event, pending
+interaction, missing typed frame, deadline or still-active WarID returns RED
+with the submitted action and pending checkpoint recorded; no six-item outcome
+is claimed. The pure postcondition accepts the submission's earlier
+`observed_snapshot_id` only for a typed `submitted_pending` result with
+`war_id_absent_after_ack=false`; the later independent postwar frame still has
+to satisfy all six material checks. A native `applied` result continues to bind
+its observation ID to the final frame.
+
+```mermaid
+flowchart TD
+    O["official same-frame recommendation"] --> A["one typed white-peace offer"]
+    A --> P{"old WarID absent on independent frame?"}
+    P -->|yes| V["six material checks + postwar save + cold restore"]
+    P -->|no, submitted_pending| S["save pending checkpoint"]
+    S --> R["one resume; bounded read-only reply observation"]
+    R -->|WarID gone, paused| V
+    R -->|event, interaction, timeout, or still active| RED["retain RED and pending action; no reoffer"]
+```
+
+This is a focused Python consumer/runner change with no public MCP schema,
+native ABI or `open_kaishek` version change. Focused normal and optimized
+tests cover asynchronous disappearance and interrupt retention. It is
+`static-ready / live=false`; R656's Raiktor white peace remained natively
+unavailable at war day 366, so C/D still need a legal same-frame production
+candidate. The strict frozen gold/prestige postcondition is unchanged. If
+ordinary finances change during an actual asynchronous reply, that real
+resource mismatch remains RED pending a narrow action-boundary observation;
+the executor does not relax the accepted G2 requirement.

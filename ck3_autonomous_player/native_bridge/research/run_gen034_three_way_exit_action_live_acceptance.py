@@ -3,8 +3,9 @@
 
 The runner first reuses the same-process recommendation sequence, then checks
 that its authorized paused frame is unchanged before submitting exactly one
-semantic action.  A termination result is followed only by exact-store
-cleanup, two persisted-truce reads, one checkpoint save and one cold restore.
+semantic action.  A pending white-peace reply is checkpointed before a bounded
+timeline wait; an observed termination is followed by exact-store cleanup,
+two persisted-truce reads, a postwar save and one cold restore.
 The command-line entry is live and must be run only by the exclusive CK3 owner;
 importing this module or testing ``_execute_action_tail`` starts no process.
 """
@@ -56,6 +57,9 @@ REPORT_KIND = "ck3_gen034_three_way_exit_action_live_acceptance"
 RESULT_SCHEMA = "xar.ck3.gen034_three_way_exit_action_live_acceptance.v1"
 CONTINUE_SUCCESSOR_TIMEOUT_SECONDS = 5.0
 CONTINUE_SUCCESSOR_POLL_SECONDS = 0.1
+WHITE_PEACE_REPLY_TIMEOUT_SECONDS = 45.0
+WHITE_PEACE_REPLY_POLL_SECONDS = 0.1
+WHITE_PEACE_REPLY_MAX_DAYS = 12
 
 
 class Gen034ActionRunnerError(RuntimeError):
@@ -158,6 +162,110 @@ def _war_opponent(
     if len(matches) != 1:
         return None
     return matches[0].get("primary_opponent_character_id")
+
+
+def _war_still_active(snapshot: dict[str, object], war_id: int) -> bool:
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list):
+        raise Gen034ActionRunnerError("reply frame has no typed active-war set")
+    return any(
+        isinstance(row, dict) and row.get("war_id") == war_id for row in wars
+    )
+
+
+async def _await_white_peace_reply(
+    client: Any,
+    *,
+    initial: dict[str, object],
+    war_id: int,
+) -> dict[str, object]:
+    """Observe one asynchronous native offer without ever resubmitting it."""
+
+    current = initial
+    issued: list[str] = []
+    observations = 1
+    starting_date = current.get("date_raw")
+    if isinstance(starting_date, bool) or not isinstance(starting_date, int):
+        raise Gen034ActionRunnerError("white-peace submission has no game date")
+    deadline = time.monotonic() + WHITE_PEACE_REPLY_TIMEOUT_SECONDS
+    reason = "recipient_reply_timeout"
+
+    if (
+        _war_still_active(current, war_id)
+        and current.get("paused") is True
+        and current.get("active_event") is None
+        and current.get("pending_character_interaction") is None
+    ):
+        revision = current.get("revision")
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            raise Gen034ActionRunnerError("white-peace submission has no revision")
+        resume_value = await client.call_tool(
+            "ck3_execute_step",
+            {"step": "resume-map", "expected_revision": revision},
+        )
+        base._structured(resume_value, tool_name="ck3_execute_step:reply-resume")
+        issued.append("resume-map")
+
+    while _war_still_active(current, war_id) and time.monotonic() < deadline:
+        if current.get("active_event") is not None:
+            reason = "event_interrupt_while_offer_pending"
+            break
+        if current.get("pending_character_interaction") is not None:
+            reason = "interaction_interrupt_while_offer_pending"
+            break
+        date_raw = current.get("date_raw")
+        if isinstance(date_raw, bool) or not isinstance(date_raw, int):
+            reason = "reply_frame_date_unavailable"
+            break
+        if date_raw - starting_date >= WHITE_PEACE_REPLY_MAX_DAYS * 24:
+            reason = "recipient_reply_day_bound_reached"
+            break
+        await asyncio.sleep(WHITE_PEACE_REPLY_POLL_SECONDS)
+        snapshot_value = await client.call_tool("ck3_take_snapshot", {})
+        current = base._structured(
+            snapshot_value, tool_name="ck3_take_snapshot:recipient-reply"
+        )
+        observations += 1
+
+    if current.get("paused") is not True:
+        revision = current.get("revision")
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            raise Gen034ActionRunnerError("reply frame has no pause revision")
+        pause_value = await client.call_tool(
+            "ck3_execute_step",
+            {"step": "pause-map", "expected_revision": revision},
+        )
+        base._structured(pause_value, tool_name="ck3_execute_step:reply-pause")
+        issued.append("pause-map")
+        pause_deadline = time.monotonic() + 5.0
+        while current.get("paused") is not True and time.monotonic() < pause_deadline:
+            await asyncio.sleep(WHITE_PEACE_REPLY_POLL_SECONDS)
+            snapshot_value = await client.call_tool("ck3_take_snapshot", {})
+            current = base._structured(
+                snapshot_value, tool_name="ck3_take_snapshot:reply-paused"
+            )
+            observations += 1
+
+    final_date = current.get("date_raw")
+    within_day_bound = bool(
+        isinstance(final_date, int)
+        and not isinstance(final_date, bool)
+        and 0 <= final_date - starting_date <= WHITE_PEACE_REPLY_MAX_DAYS * 24
+    )
+    completed = bool(
+        current.get("paused") is True
+        and within_day_bound
+        and current.get("active_event") is None
+        and current.get("pending_character_interaction") is None
+        and not _war_still_active(current, war_id)
+    )
+    return {
+        "completed": completed,
+        "reason": "war_disappeared" if completed else reason,
+        "snapshot": current,
+        "issued_commands": issued,
+        "observations": observations,
+    }
 
 
 def _authorized_frame_matches(
@@ -314,6 +422,76 @@ async def _execute_action_tail(
     post_result = await client.call_tool("ck3_take_snapshot", {})
     post = base._structured(post_result, tool_name="ck3_take_snapshot:post-action")
     issued_commands = [action_step]
+    reply_commands: list[str] = []
+    reply_observation = None
+    pending_checkpoint = None
+
+    if route == "white_peace" and _war_still_active(post, war_id):
+        pending_revision = post.get("revision")
+        if isinstance(pending_revision, bool) or not isinstance(
+            pending_revision, int
+        ):
+            raise Gen034ActionRunnerError("pending white-peace frame has no revision")
+        pending_save_value = await client.call_tool(
+            "ck3_save_checkpoint", {"expected_revision": pending_revision}
+        )
+        pending_checkpoint = base._structured(
+            pending_save_value, tool_name="ck3_save_checkpoint:pending-offer"
+        )
+        saved = pending_checkpoint.get("checkpoint")
+        if not isinstance(saved, dict) or saved.get("status") != "saved":
+            raise Gen034ActionRunnerError("pending offer checkpoint did not save")
+        issued_commands.append("save-checkpoint")
+        reply_commands.append("save-checkpoint")
+        pending_snapshot_value = await client.call_tool("ck3_take_snapshot", {})
+        pending_snapshot = base._structured(
+            pending_snapshot_value, tool_name="ck3_take_snapshot:pending-saved"
+        )
+        if not (
+            pending_snapshot.get("paused") is True
+            and pending_snapshot.get("date_raw") == post.get("date_raw")
+            and pending_snapshot.get("episode_run_id") == post.get("episode_run_id")
+            and _played_character_id(pending_snapshot) == _played_character_id(post)
+            and _war_still_active(pending_snapshot, war_id)
+        ):
+            raise Gen034ActionRunnerError(
+                "pending offer checkpoint crossed the war or player frame"
+            )
+        reply_observation = await _await_white_peace_reply(
+            client, initial=pending_snapshot, war_id=war_id
+        )
+        issued_commands.extend(reply_observation["issued_commands"])
+        reply_commands.extend(reply_observation["issued_commands"])
+        post = reply_observation["snapshot"]
+        if reply_observation["completed"] is not True:
+            return {
+                "schema": RESULT_SCHEMA,
+                "status": "red",
+                "route": route,
+                "read_phase": read_phase,
+                "action_result": action_result,
+                "post_snapshot": post,
+                "pending_action": {
+                    "step": action_step,
+                    "war_id": war_id,
+                    "status": "submitted_pending",
+                    "stop_reason": reply_observation["reason"],
+                },
+                "reply_observation": reply_observation,
+                "pending_checkpoint": pending_checkpoint,
+                "postwar_evidence": None,
+                "checkpoint_restore": None,
+                "postcondition": None,
+                "issued_commands": issued_commands,
+                "exit_action_commands": [action_step],
+                "checks": {
+                    "exactly_one_exit_action": issued_commands.count(action_step) == 1,
+                    "independent_war_disappearance": False,
+                    "no_duplicate_offer": issued_commands.count(action_step) == 1,
+                },
+                "gen034_closed": False,
+                "ok": False,
+            }
 
     if route == "continue":
         postcondition = provide_raiktor_three_way_exit_postcondition(
@@ -500,6 +678,7 @@ async def _execute_action_tail(
         expected_commands=[
             *read_commands,
             action_step,
+            *reply_commands,
             cleanup_step,
             truce_step,
             truce_step,
@@ -530,6 +709,8 @@ async def _execute_action_tail(
         "postwar_evidence": evidence,
         "checkpoint_restore": checkpoint_restore,
         "postcondition": postcondition,
+        "reply_observation": reply_observation,
+        "pending_checkpoint": pending_checkpoint,
         "issued_commands": issued_commands,
         "exit_action_commands": [action_step],
         "checks": checks,
@@ -643,7 +824,9 @@ def main(argv: list[str] | None = None) -> int:
                     "cold_checkpoint": True,
                     "ocr_used": False,
                     "visual_input_used": False,
-                    "time_advanced_only_if_continue_wins": True,
+                    "time_advanced_for_continue_or_pending_white_peace_reply": True,
+                    "white_peace_reply_max_game_days": WHITE_PEACE_REPLY_MAX_DAYS,
+                    "white_peace_reply_timeout_seconds": WHITE_PEACE_REPLY_TIMEOUT_SECONDS,
                     "maximum_ck3_launches": 2,
                     "continue_route_ck3_launches": 1,
                     "termination_route_ck3_launches": 2,
@@ -651,7 +834,8 @@ def main(argv: list[str] | None = None) -> int:
                     "war_exit_actions": 1,
                     "postwar_cleanup_queries": 1,
                     "persisted_truce_queries": 2,
-                    "termination_route_checkpoint_saves": 1,
+                    "termination_route_postwar_checkpoint_saves": 1,
+                    "pending_white_peace_checkpoint_saves": 1,
                     "termination_route_checkpoint_cold_restores": 1,
                     "continue_route_checkpoint_saves": 0,
                     "continue_route_checkpoint_cold_restores": 0,

@@ -210,13 +210,23 @@ def _action_submission_matches(
         raise ThreeWayExitPostconditionError(
             "war_termination_result must be an object"
         )
+    termination_status = termination.get("status")
+    observed_id = termination.get("observed_snapshot_id")
+    observation_bound = bool(
+        observed_id == post.get("snapshot_id")
+        if termination_status == "applied"
+        else termination_status == "submitted_pending"
+        and isinstance(observed_id, str)
+        and bool(observed_id)
+        and termination.get("war_id_absent_after_ack") is False
+    )
     return bool(
-        termination.get("status") in {"applied", "submitted_pending"}
+        termination_status in {"applied", "submitted_pending"}
         and termination.get("war_id") == action.get("war_id")
         and termination.get("outcome") == action.get("semantic_action")
         and termination.get("episode_run_id") == frame.get("episode_id")
         and termination.get("starting_snapshot_id") == frame.get("snapshot_id")
-        and termination.get("observed_snapshot_id") == post.get("snapshot_id")
+        and observation_bound
         and termination.get("command_acknowledged") is True
     )
 

@@ -241,6 +241,27 @@ class RaiktorThreeWayExitPostconditionTests(unittest.TestCase):
         self.assertEqual(result["route"], "surrender")
         self.assertTrue(result["gen034_closed"])
 
+    def test_async_white_peace_submission_binds_earlier_pending_observation(self) -> None:
+        inputs = _termination_inputs()
+        termination = inputs["action_result_value"]["war_termination_result"]
+        termination["status"] = "submitted_pending"
+        termination["observed_snapshot_id"] = "native:pending-offer"
+        termination["war_id_absent_after_ack"] = False
+
+        result = provide_raiktor_three_way_exit_postcondition(**inputs)
+        self.assertTrue(result["gen034_closed"])
+        self.assertTrue(
+            result["postcondition_receipt"]["checks"]["authorized_action_submitted"]
+        )
+
+        termination["war_id_absent_after_ack"] = True
+        rejected = provide_raiktor_three_way_exit_postcondition(**inputs)
+        self.assertFalse(rejected["gen034_closed"])
+        self.assertIn(
+            "postcondition_failed:authorized_action_submitted",
+            rejected["blockers"],
+        )
+
     def test_ack_without_observations_remains_evidence_required(self) -> None:
         gate = _authorized("white_peace")
         result = provide_raiktor_three_way_exit_postcondition(
