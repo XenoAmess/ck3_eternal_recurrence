@@ -222,9 +222,10 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // received-self incident, fixed ZhongGuo scoreboard-state and fixed
   // Workforce collective/rolling-three-cycle, AI-owned B1 case and Workforce
   // normal-exit/HC lifecycle snapshot and fail-closed scoreboard-action
-  // transport executors, the two Phase-2 closed business postconditions and
-  // the B3 manager-governance lifecycle snapshot and the fixed career-HC /
-  // workforce route-B postcondition and the full B1-cycle snapshot. A
+  // transport executors, the two Phase-2 closed business postconditions, the
+  // B3 manager-governance lifecycle snapshot, the fixed career-HC/workforce
+  // route-B postcondition, the full B1-cycle snapshot and the private realm-law
+  // submit/receipt lifecycle. A
   // separate fixed frontend slot is admitted by application-main ownership
   // without weakening the paused-gameplay admission of these slots.
   MainThreadQueryExecutorV1 permitted_executor = nullptr;
@@ -265,6 +266,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // cannot be populated by protocol input.
   MainThreadQueryExecutorV1 permitted_executor_quattuortrigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_quintrigintary = nullptr;
+  // Slot 36 belongs to the private realm-decision application-main lifecycle.
+  // Realm-law owns the following fixed slot 37.
   MainThreadQueryExecutorV1 permitted_executor_sextrigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_septentrigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_octotrigintary = nullptr;

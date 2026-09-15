@@ -396,6 +396,13 @@ add_library(xar_ck3_bridge SHARED
   src/marriage_proposal_resolution_journal_v1.cpp
   src/marriage_ranked_container_adapter_v1.cpp
   src/marriage_shared_glue_v1.cpp
+  src/realm_law_governance_snapshot_v1.cpp
+  src/realm_law_governance_source_adapter_v1.cpp
+  src/realm_law_enact_action_v1.cpp
+  src/realm_law_native_binder_v1.cpp
+  src/realm_law_enact_mutation_abi_v1.cpp
+  src/realm_law_native_shared_glue_v1.cpp
+  src/realm_law_application_main_v1.cpp
   src/pending_character_interaction_context_v1.cpp
   src/pending_character_interaction_context_v1_mailbox.cpp
   src/pending_character_interaction_context_v1_serializer.cpp

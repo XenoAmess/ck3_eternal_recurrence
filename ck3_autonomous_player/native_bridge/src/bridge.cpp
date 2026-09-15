@@ -36,6 +36,7 @@
 #include "xar_bridge/major_decision_found_kingdom_shared_glue_v1.hpp"
 #include "xar_bridge/marriage_candidate_internal_route_v1.hpp"
 #include "xar_bridge/marriage_shared_glue_v1.hpp"
+#include "xar_bridge/realm_law_application_main_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
 #include "xar_bridge/military_preparation_summary_v1_binding.hpp"
 #include "xar_bridge/military_preparation_summary_v1_private_probe.hpp"
@@ -6502,7 +6503,9 @@ public:
             ExecuteDomainConstructionApplicationMainRuntimeV1;
     environment.permitted_executor_sextrigintary =
         &xar::bridge::ExecuteMajorDecisionFoundKingdomSharedMailboxV1;
-    // Shared slot 37 remains reserved for Law. Marriage owns fixed slot 38.
+    environment.permitted_executor_septentrigintary =
+        &xar::bridge::ExecuteRealmLawApplicationMainV1;
+    // Marriage owns fixed slot 38.
     environment.permitted_executor_octotrigintary =
         &xar::bridge::ExecuteMarriageCandidateInternalRouteV1;
     environment.permitted_frontend_executor =

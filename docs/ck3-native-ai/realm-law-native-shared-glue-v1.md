@@ -68,8 +68,9 @@ and LAW5 binding path, exact command layout and single queue call, mutation ABI
 drift, upstream submit override, disabled mutation, target/proof drift, final
 legality denial and queue rejection.
 
-No CK3 instance was started for this package. Shared CMake/bridge registration,
-application-main mailbox scheduling, a real eligible paused submission and a
+LAW8 now compiles this glue into the shared DLL and registers its private fixed
+application-main executor as documented in
+`realm-law-application-main-v1.md`. A real eligible paused submission and a
 later effective-law/resource/succession receipt remain pending. Until that
 artifact exists, this component is neither `fixture-live` nor
 `production-live primitive`.
