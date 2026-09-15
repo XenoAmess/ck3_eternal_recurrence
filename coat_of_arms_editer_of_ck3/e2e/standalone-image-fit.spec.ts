@@ -89,15 +89,15 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
 
   const pngBase64 = await page.evaluate(() => {
     const canvas = document.createElement('canvas')
-    canvas.width = 64
-    canvas.height = 64
+    canvas.width = 300
+    canvas.height = 300
     const context = canvas.getContext('2d')!
     context.fillStyle = 'white'
-    context.fillRect(0, 0, 64, 64)
+    context.fillRect(0, 0, 300, 300)
     context.fillStyle = 'black'
-    context.fillRect(7, 20, 18, 24)
+    context.fillRect(33, 94, 84, 112)
     context.fillStyle = '#b41924'
-    context.fillRect(39, 20, 18, 24)
+    context.fillRect(183, 94, 84, 112)
     return canvas.toDataURL('image/png').split(',')[1]
   })
   await page.locator('.image-drop input').setInputFiles({
@@ -108,6 +108,7 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   await page.getByRole('button', { name: '开始本地拟合' }).click()
   await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图 · 选中 [2-6]\/6 层/)).toBeVisible({ timeout: 30_000 })
   await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100')
+  await expect(page.locator('.fit-report')).toContainText('300×300 → 56 / 96 / 192 / 256px')
   await expect(page.getByText(/完成 · 选中 [2-6] 层（进度表示当前搜索阶段）/)).toBeVisible()
   await expect(page.locator('.output-block pre')).toContainText('pattern_solid.dds')
   await expect(page.locator('.output-block pre')).toContainText('colored_emblem')

@@ -21,6 +21,9 @@ export interface FitTextureCandidate {
 
 export interface ImageFitOptions {
   resolution?: number
+  sourceWidth?: number
+  sourceHeight?: number
+  pyramidImages?: FitImage[]
   maxPatterns?: number
   maxEmblemCandidates?: number
   maxLayers?: number
@@ -49,6 +52,15 @@ export interface ImageFitMetrics {
   relativeImprovement: number
 }
 
+export type ImageFitReconstructionMode = 'semantic-search' | 'native-tile-paint' | 'hybrid-native-paint'
+
+export interface MultiscaleFitMetric {
+  resolution: number
+  colorLoss: number
+  edgeLoss: number
+  totalLoss: number
+}
+
 export interface NativeTileSeamMetric {
   resolution: number
   backgroundLeakPixels: number
@@ -67,13 +79,16 @@ export interface ImageFitResult {
   coatOfArms: CoatOfArms
   metrics: ImageFitMetrics
   provenance: {
-    algorithm: 'ck3-coa-browser-fit-v4-coverage-safe'
+    algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale'
     searchBackend: 'cpu-reference'
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
     rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-v1'
     randomSeed: null
     surfaceMaskApplied: boolean
+    sourceWidth: number
+    sourceHeight: number
     resolution: number
+    pyramidResolutions: number[]
     evaluatedCandidates: number
     patternAssets: number
     emblemAssets: number
@@ -83,8 +98,17 @@ export interface ImageFitResult {
     drawnInstances: number
     selectedLayers: number
     layerLosses: number[]
-    reconstructionMode: 'semantic-search' | 'native-tile-paint'
-    candidateLosses: { mode: 'semantic-search' | 'native-tile-paint', layers: number, totalLoss: number }[]
+    reconstructionMode: ImageFitReconstructionMode
+    candidateLosses: {
+      mode: ImageFitReconstructionMode
+      layers: number
+      totalLoss: number
+      edgeLoss: number
+      textureNames: string[]
+      multiscaleMetrics: MultiscaleFitMetric[]
+      passesPrimaryNonRegression: boolean
+    }[]
+    selectedMultiscaleMetrics: MultiscaleFitMetric[]
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
     nativeTileSeamValidation: NativeTileSeamValidation
@@ -1109,7 +1133,9 @@ function paintWithNativeTiles(
       patternAsset: state.patternAsset,
       selectedAssets: [...state.selectedAssets, brush],
       layerLosses: [...state.layerLosses, best.choice.candidate.totalLoss],
-      reconstructionMode: 'native-tile-paint',
+      reconstructionMode: initial.selectedAssets.length > 0
+        ? 'hybrid-native-paint'
+        : 'native-tile-paint',
       paintPlacements: [...state.paintPlacements, { tile, instance: acceptedInstance }],
     }
   }
@@ -1129,6 +1155,23 @@ export function fitImageToCoatOfArms(
   validateImage(image)
   const resolution = options.resolution ?? DEFAULT_RESOLUTION
   const target = resizeFitImage(image, resolution)
+  const sourceWidth = options.sourceWidth ?? image.width
+  const sourceHeight = options.sourceHeight ?? image.height
+  if (
+    !Number.isSafeInteger(sourceWidth)
+    || !Number.isSafeInteger(sourceHeight)
+    || sourceWidth < 1
+    || sourceHeight < 1
+  ) throw new Error('原始图片尺寸不合法')
+  const suppliedPyramid = options.pyramidImages ?? []
+  for (const pyramidImage of suppliedPyramid) validateImage(pyramidImage)
+  const pyramidTargets = new Map<number, FitImage>([[resolution, target]])
+  for (const pyramidImage of suppliedPyramid) {
+    if (pyramidImage.width === pyramidImage.height) {
+      pyramidTargets.set(pyramidImage.width, pyramidImage)
+    }
+  }
+  const pyramidResolutions = [...pyramidTargets.keys()].sort((left, right) => left - right)
   const surfaceMask = options.surfaceMask
   const namedColors = options.namedColors ?? {}
   const patterns = [...patternCandidates]
@@ -1207,7 +1250,11 @@ export function fitImageToCoatOfArms(
     ?? emblems.find((item) => item.name === 'ce_billet.dds')
     ?? emblems.find((item) => item.name === 'ce_circle.dds')
   let terminationReason: ImageFitResult['provenance']['terminationReason'] = 'layer_budget'
-  const semanticLayerBudget = maxLayers >= 128 && paintBrush ? 0 : Math.min(maxLayers, 6)
+  // Large-budget runs used to force this value to zero, which made the
+  // algorithm unconditionally collapse to a single rectangular texture.
+  // Keep a bounded semantic seed stage, then spend the remaining user budget
+  // painting the residual. The pure tile candidate remains as an ablation.
+  const semanticLayerBudget = Math.min(maxLayers, maxLayers >= 128 && paintBrush ? 1 : 6)
   for (let layer = 0; layer < semanticLayerBudget && emblems.length; layer += 1) {
     if (beam[0].candidate.totalLoss <= 1e-12) {
       terminationReason = 'exact_match'
@@ -1343,6 +1390,7 @@ export function fitImageToCoatOfArms(
     }
   }
   const finalists = [...beam]
+  let nativePaintBaseline: SearchState | undefined
   if (paintBrush && bestSolidBackground) {
     const solidState: SearchState = {
       candidate: bestSolidBackground.candidate,
@@ -1352,9 +1400,7 @@ export function fitImageToCoatOfArms(
       reconstructionMode: 'native-tile-paint',
       paintPlacements: [],
     }
-    // Keep raster-like reconstruction independent from semantic emblems. A
-    // numerically useful but visibly wrong large emblem is difficult to erase
-    // and caused the old "pile of unrelated icons" failure mode.
+    // Keep a pure raster-like reconstruction as the deterministic ablation.
     const paintState = paintWithNativeTiles(
       solidState,
       paintBrush,
@@ -1373,9 +1419,73 @@ export function fitImageToCoatOfArms(
     if (seamValidation.metrics.some((metric) => metric.backgroundLeakPixels > 0)) {
       throw new Error('原生块候选未通过 96/230/512 高分辨率覆盖门禁')
     }
+    nativePaintBaseline = paintState
     finalists.push(paintState)
+    const semanticSeed = beam
+      .filter((state) => state.selectedAssets.length > 0)
+      .sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
+        || left.candidate.key.localeCompare(right.candidate.key))[0]
+    if (semanticSeed) {
+      const hybridState = paintWithNativeTiles(
+        semanticSeed,
+        paintBrush,
+        target,
+        maxLayers,
+        surfaceMask,
+        namedColors,
+        evaluated,
+        options.onProgress,
+      )
+      const hybridSeamValidation = validateNativeTileSeams(
+        hybridState.paintPlacements,
+        target.width,
+        target.height,
+      )
+      if (hybridSeamValidation.metrics.some((metric) => metric.backgroundLeakPixels > 0)) {
+        throw new Error('混合原生块候选未通过 96/230/512 高分辨率覆盖门禁')
+      }
+      finalists.push(hybridState)
+    }
   }
-  const winner = finalists.sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
+  const emblemTextureMap = Object.fromEntries(emblems.map((item) => [item.name, item.texture]))
+  const candidateMultiscaleMetrics = new Map<SearchState, MultiscaleFitMetric[]>()
+  for (const state of finalists) {
+    const metrics = pyramidResolutions.map((pyramidResolution) => {
+      if (pyramidResolution === resolution) return {
+        resolution: pyramidResolution,
+        colorLoss: state.candidate.colorLoss,
+        edgeLoss: state.candidate.edgeLoss,
+        totalLoss: state.candidate.totalLoss,
+      }
+      const pyramidTarget = pyramidTargets.get(pyramidResolution)
+        ?? resizeFitImage(image, pyramidResolution)
+      const pyramidCandidate = score(
+        state.candidate.coatOfArms,
+        state.patternAsset.texture,
+        emblemTextureMap,
+        pyramidTarget,
+        state.candidate.key,
+        surfaceMask,
+        namedColors,
+      )
+      return {
+        resolution: pyramidResolution,
+        colorLoss: pyramidCandidate.colorLoss,
+        edgeLoss: pyramidCandidate.edgeLoss,
+        totalLoss: pyramidCandidate.totalLoss,
+      }
+    })
+    candidateMultiscaleMetrics.set(state, metrics)
+  }
+  const nonRegressingFinalists = nativePaintBaseline
+    ? finalists.filter((state) => (
+        state.candidate.totalLoss <= nativePaintBaseline!.candidate.totalLoss + 1e-12
+        && state.candidate.edgeLoss <= nativePaintBaseline!.candidate.edgeLoss + 1e-12
+      ))
+    : finalists
+  const winner = nonRegressingFinalists.sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
+    || (candidateMultiscaleMetrics.get(left)?.at(-1)?.edgeLoss ?? Number.POSITIVE_INFINITY)
+      - (candidateMultiscaleMetrics.get(right)?.at(-1)?.edgeLoss ?? Number.POSITIVE_INFINITY)
     || left.candidate.key.localeCompare(right.candidate.key))[0]
   const best = winner.candidate
   const selectedEmblemAssets = winner.selectedAssets
@@ -1387,7 +1497,7 @@ export function fitImageToCoatOfArms(
   if (!emblems.length) terminationReason = 'no_emblems'
   else if (best.totalLoss <= 1e-12) terminationReason = 'exact_match'
   else if (selectedEmblemAssets.length >= maxLayers) terminationReason = 'layer_budget'
-  else if (winner.reconstructionMode === 'native-tile-paint' || semanticLayerBudget < maxLayers) {
+  else if (winner.reconstructionMode !== 'semantic-search' || semanticLayerBudget < maxLayers) {
     terminationReason = 'no_improvement'
   }
   const improvement = initialLoss <= 1e-12 ? 0 : Math.max(0, (initialLoss - best.totalLoss) / initialLoss)
@@ -1400,13 +1510,16 @@ export function fitImageToCoatOfArms(
       relativeImprovement: improvement,
     },
     provenance: {
-      algorithm: 'ck3-coa-browser-fit-v4-coverage-safe',
+      algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale',
       searchBackend: 'cpu-reference',
       scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1',
       rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-v1',
       randomSeed: null,
       surfaceMaskApplied: Boolean(surfaceMask),
+      sourceWidth,
+      sourceHeight,
       resolution,
+      pyramidResolutions,
       evaluatedCandidates: evaluated.value,
       patternAssets: patterns.length,
       emblemAssets: emblems.length,
@@ -1421,7 +1534,15 @@ export function fitImageToCoatOfArms(
         mode: state.reconstructionMode,
         layers: state.selectedAssets.length,
         totalLoss: state.candidate.totalLoss,
+        edgeLoss: state.candidate.edgeLoss,
+        textureNames: [...new Set(state.selectedAssets.map((item) => item.name))],
+        multiscaleMetrics: candidateMultiscaleMetrics.get(state) ?? [],
+        passesPrimaryNonRegression: !nativePaintBaseline || (
+          state.candidate.totalLoss <= nativePaintBaseline.candidate.totalLoss + 1e-12
+          && state.candidate.edgeLoss <= nativePaintBaseline.candidate.edgeLoss + 1e-12
+        ),
       })),
+      selectedMultiscaleMetrics: candidateMultiscaleMetrics.get(winner) ?? [],
       terminationReason,
       selectedAssetSha256: [
         winner.patternAsset.assetSha256,

@@ -764,7 +764,9 @@ async function fitTargetImage() {
       }
       const reconstructionMode = result.provenance.reconstructionMode === 'native-tile-paint'
         ? '原生块多层重建'
-        : '语义元素搜索'
+        : result.provenance.reconstructionMode === 'hybrid-native-paint'
+          ? '语义元素 + 原生块混合重建'
+          : '语义元素搜索'
       fitStatus.value = `完成 · ${reconstructionMode} · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · 停止：${fitTerminationLabels[result.provenance.terminationReason]} · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
       ElMessage.success('多层原生元素构图已载入结构化编辑器，可继续调整并复制代码')
     }
@@ -798,6 +800,13 @@ async function fitTargetImage() {
       maxPatterns: patterns.length,
       maxEmblemCandidates: emblemCandidates.length,
       maxLayers: layerBudget,
+      sourceWidth: targetImage.value.originalWidth,
+      sourceHeight: targetImage.value.originalHeight,
+      pyramidImages: targetImage.value.pyramid.map((image) => ({
+        width: image.width,
+        height: image.height,
+        pixels: new Uint8ClampedArray(image.pixels),
+      })),
       refinementCandidates: 48,
       beamWidth: 2,
     }])
@@ -1297,7 +1306,8 @@ importSource()
               <div><dt>算法合同</dt><dd>{{ fitResult.provenance.algorithm }}</dd></div>
               <div><dt>相对改善</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
               <div><dt>GPU 交叉分</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : '不可用' }}</dd></div>
-              <div><dt>候选路径</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? '原生块' : '语义'} ${item.layers}层=${item.totalLoss.toFixed(4)}`).join('；') }}</dd></div>
+              <div><dt>输入/金字塔</dt><dd>{{ fitResult.provenance.sourceWidth }}×{{ fitResult.provenance.sourceHeight }} → {{ fitResult.provenance.pyramidResolutions.join(' / ') }}px</dd></div>
+              <div><dt>候选路径</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? '原生块' : item.mode === 'hybrid-native-paint' ? '混合' : '语义'} ${item.layers}层=${item.totalLoss.toFixed(4)} [${item.textureNames.join(', ') || '无纹章'}]`).join('；') }}</dd></div>
             </dl>
             <small>分数只用于同一算法和目标之间比较，不代表 CK3 像素一致率。结果已进入下方结构化编辑器。</small>
           </template>

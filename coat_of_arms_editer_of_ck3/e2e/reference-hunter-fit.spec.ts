@@ -9,12 +9,12 @@ import { serializeCoatOfArms } from '../src/domain/serializer'
 const layerBudget = '1024'
 const fixture = resolve('test-fixtures/xenoamess_hunter_1024_no_shade.png')
 const originalFixture = resolve('test-fixtures/xenoamess_hunter_4096_no_shade.svg')
-const artifactDirectory = resolve('test-results/reference-hunter-fit')
+const artifactDirectory = resolve('test-results/reference-hunter-v5-candidate')
 const assetPackDirectory = resolve('public/asset-packs/ck3-1.19.0.6')
-const historicalArtifact = resolve('../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v3/coat_of_arms.txt')
+const historicalArtifact = resolve('../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/coat_of_arms.txt')
 const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex').toUpperCase()
 
-test('fits the user-provided hunter reference with a 1024-layer ceiling', async ({ page }) => {
+test('evaluates hybrid and multiscale hunter candidates with a 1024-layer ceiling', async ({ page }) => {
   test.setTimeout(5 * 60 * 1000)
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', {
@@ -68,6 +68,13 @@ test('fits the user-provided hunter reference with a 1024-layer ceiling', async 
   expect(reparsedInstances).toBe(instanceCount)
   expect(serializeCoatOfArms(parsed.coatOfArms)).toBe(source)
   expect(evidence.provenance.layerBudget).toBe(1024)
+  expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v5-hybrid-multiscale')
+  expect(evidence.provenance.sourceWidth).toBe(1024)
+  expect(evidence.provenance.sourceHeight).toBe(1024)
+  expect(evidence.provenance.pyramidResolutions).toEqual([96, 192, 256])
+  expect(evidence.provenance.candidateLosses.map((item: { mode: string }) => item.mode)).toEqual(
+    expect.arrayContaining(['semantic-search', 'native-tile-paint', 'hybrid-native-paint']),
+  )
   expect(evidence.provenance.drawnInstances).toBe(drawnInstances)
   expect(evidence.provenance.nativeTileSeamValidation.status).toBe('passed')
   expect(evidence.provenance.nativeTileSeamValidation.metrics).toEqual(
@@ -156,9 +163,9 @@ test('fits the user-provided hunter reference with a 1024-layer ceiling', async 
   )
   const report = {
     schema: 'ck3-coa-hunter-fit-evidence-v1',
-    artifactVersion: 'xenoamess-hunter-v4',
-    predecessor: '../xenoamess-hunter-v3/',
-    status: 'browser-seam-fix-passed-native-pending',
+    artifactVersion: 'xenoamess-hunter-v5-candidate',
+    predecessor: '../xenoamess-hunter-v4-pruned/',
+    status: 'browser-quality-nonregression-passed-edge-improvement-pending',
     generatedAt: new Date().toISOString(),
     sourceRevision: {
       headCommit,
@@ -198,7 +205,7 @@ test('fits the user-provided hunter reference with a 1024-layer ceiling', async 
     },
     metrics: evidence.metrics,
     commonContractComparison: {
-      baselineArtifact: '../xenoamess-hunter-v3/coat_of_arms.txt',
+      baselineArtifact: '../xenoamess-hunter-v4-pruned/coat_of_arms.txt',
       baselineMetrics: historicalMetrics,
       candidateMetrics: evidence.metrics,
       tolerance: 1e-12,
@@ -228,8 +235,8 @@ test('fits the user-provided hunter reference with a 1024-layer ceiling', async 
     evidenceLevel: {
       browserRegression: 'passed',
       transferIntegrity: 'passed-for-browser-copy-interception-and-parse',
-      ck3ApplyCopyRoundTrip: 'pending-wp1',
-      nativePixelComparison: 'pending-wp1',
+      ck3ApplyCopyRoundTrip: 'not-run-for-non-advancing-v5-candidate',
+      nativePixelComparison: 'pending-mcp-framebuffer-capability',
     },
   }
   await writeFile(resolve(artifactDirectory, 'report.json'), `${JSON.stringify(report, null, 2)}\n`, 'utf8')

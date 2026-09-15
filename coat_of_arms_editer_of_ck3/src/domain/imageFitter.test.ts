@@ -306,7 +306,7 @@ describe('browser image fitter', () => {
       [candidate('square.dds', square)],
       { resolution: size, maxLayers: 3, minRelativeLayerImprovement: 0.0001 },
     )
-    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v4-coverage-safe')
+    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v5-hybrid-multiscale')
     expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(2)
     expect(result.coatOfArms.coloredEmblems).toHaveLength(result.provenance.selectedLayers)
     expect(result.provenance.drawnInstances).toBe(result.provenance.selectedLayers)
@@ -342,7 +342,9 @@ describe('browser image fitter', () => {
       [candidate('ce_block_02.dds', texture('neutralBlock'))],
       { resolution: size, maxLayers: 128 },
     )
-    expect(result.provenance.reconstructionMode).toBe('native-tile-paint')
+    expect(result.provenance.candidateLosses.map((item) => item.mode)).toEqual(
+      expect.arrayContaining(['native-tile-paint', 'hybrid-native-paint']),
+    )
     expect(result.provenance.selectedLayers).toBeGreaterThan(1)
     expect(result.provenance.selectedLayers).toBeLessThanOrEqual(128)
     expect(result.provenance.layerLosses).toHaveLength(result.provenance.selectedLayers + 1)
@@ -350,6 +352,45 @@ describe('browser image fitter', () => {
       expect(result.provenance.layerLosses[index]).toBeLessThan(result.provenance.layerLosses[index - 1])
     }
     expect(result.metrics.relativeImprovement).toBeGreaterThan(0.5)
+  })
+
+  it('enters a mixed semantic plus native paint path for a large budget', () => {
+    const size = 48
+    const solid = texture('solid')
+    const square = texture('square')
+    const block = texture('neutralBlock')
+    const target = renderCoatOfArms({
+      outerKey: 'coa', parent: '', pattern: 'pattern_solid.dds',
+      colors: ['rgb { 245 245 245 }', 'rgb { 245 245 245 }', 'rgb { 245 245 245 }'],
+      coloredEmblems: [
+        {
+          texture: 'semantic-square.dds', colors: ['black', 'black', 'black'], mask: [],
+          instances: [{ position: [0.5, 0.5], scale: [1.2, 0.72], rotation: 17.3, depth: 1 }],
+        },
+        {
+          texture: 'ce_block_02.dds',
+          colors: ['rgb { 210 25 30 }', 'rgb { 210 25 30 }', 'rgb { 210 25 30 }'], mask: [],
+          instances: [{ position: [0.82, 0.2], scale: [0.18, 0.14], rotation: 0, depth: 2 }],
+        },
+      ],
+      texturedEmblems: [],
+    }, {
+      pattern: solid,
+      coloredEmblems: { 'semantic-square.dds': square, 'ce_block_02.dds': block },
+    }, { black: [0, 0, 0] }, size)!
+    const result = fitImageToCoatOfArms(
+      asImage(target.pixels, size),
+      [candidate('pattern_solid.dds', solid)],
+      [candidate('semantic-square.dds', square), candidate('ce_block_02.dds', block)],
+      { resolution: size, maxLayers: 128 },
+    )
+    const purePaint = result.provenance.candidateLosses.find((item) => item.mode === 'native-tile-paint')
+    const hybrid = result.provenance.candidateLosses.find((item) => item.mode === 'hybrid-native-paint')
+    expect(purePaint).toBeDefined()
+    expect(hybrid).toBeDefined()
+    expect(hybrid!.textureNames).toEqual(expect.arrayContaining(['semantic-square.dds', 'ce_block_02.dds']))
+    expect(hybrid!.totalLoss).toBeLessThan(purePaint!.totalLoss)
+    expect(result.provenance.pyramidResolutions).toEqual([48])
   })
 
   it('keeps mixed-size native paint tiles seamless above the 96px search plane', () => {
