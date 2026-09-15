@@ -564,8 +564,8 @@ failure remain RED.
 
 `prepare_faction_targeting_row_probe_candidate.py` archives the exact pushed
 work-branch commit, copies the frozen save and option-enabled private binaries,
-generates the PowerShell entrypoint from the canonical manifest pipe, and runs
-only its `-DryRun` path. The generator compares every wrapper option with the
+generates the Python entrypoint from the canonical manifest pipe, and runs
+only its `--dry-run` path. The generator compares every launcher option with the
 runner parser and emits manifest/seal SHA-256 files. Runtime Python and all
 machine paths are explicit arguments or portable environment configuration;
 the bundle does not embed credentials or a fixed user path. Normal and Python

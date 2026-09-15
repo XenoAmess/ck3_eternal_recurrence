@@ -1,7 +1,7 @@
 """Create a sealed, no-launch R692 faction-row probe candidate.
 
 The candidate embeds a Git-archived source tree, frozen save, private bridge
-binaries, a generated PowerShell wrapper, and hashes for every live input.
+binaries, a generated Python launcher, and hashes for every live input.
 """
 
 from __future__ import annotations
@@ -252,7 +252,7 @@ def build_candidate(args: argparse.Namespace) -> dict[str, Any]:
         raise RuntimeError("candidate bootstrap is missing from archived commit")
 
     manifest_path = candidate / "candidate-manifest.json"
-    wrapper_path = candidate / "run-r692.ps1"
+    wrapper_path = candidate / "run-r692.py"
     manifest: dict[str, Any] = {
         "format_version": 1,
         "kind": "g2_m4_faction9_r692_paused_row_probe_candidate_v1",
@@ -350,28 +350,24 @@ def build_candidate(args: argparse.Namespace) -> dict[str, Any]:
         "canonical_prefix": "\\\\.\\pipe\\",
         "generated_wrapper": wrapper_path.name,
         "dry_run_required": True,
-        "powershell_execution_policy": "Bypass",
+        "python_runtime_argument_required": True,
     }
     _write_json(manifest_path, manifest)
     _write_checksum(manifest_path, candidate / "candidate-manifest.sha256")
 
     dry_run = subprocess.run(
         [
-            "powershell.exe",
-            "-NoProfile",
-            "-ExecutionPolicy",
-            "Bypass",
-            "-File",
-            str(wrapper_path),
-            "-Python",
             sys.executable,
-            "-GameDir",
+            str(wrapper_path),
+            "--python",
+            sys.executable,
+            "--game-dir",
             str(args.game_dir.resolve()),
-            "-ArtifactDir",
+            "--artifact-dir",
             str(candidate / "never-created-live-artifact"),
-            "-StateDir",
+            "--state-dir",
             str(candidate / "never-created-live-state"),
-            "-DryRun",
+            "--dry-run",
         ],
         check=False,
         capture_output=True,

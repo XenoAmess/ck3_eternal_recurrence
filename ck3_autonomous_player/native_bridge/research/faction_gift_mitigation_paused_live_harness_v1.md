@@ -41,7 +41,7 @@ dissolution or member departure.
 
 Standalone verification:
 
-```powershell
+```console
 py research/test_faction_gift_mitigation_paused_live_harness.py
 py -O research/test_faction_gift_mitigation_paused_live_harness.py
 ```

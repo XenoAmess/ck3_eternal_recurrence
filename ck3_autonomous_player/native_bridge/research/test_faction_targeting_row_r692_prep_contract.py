@@ -137,7 +137,7 @@ class R692ParameterContractTest(unittest.TestCase):
                 json.dumps({"next_live": {"unique_pipe": canonical}}),
                 encoding="utf-8",
             )
-            wrapper = root / "run-r692.ps1"
+            wrapper = root / "run-r692.py"
             wrapper.write_text(
                 WRAPPER.render_wrapper(
                     manifest_relative=manifest.name,
@@ -160,21 +160,17 @@ class R692ParameterContractTest(unittest.TestCase):
             )
             completed = subprocess.run(
                 [
-                    "powershell.exe",
-                    "-NoProfile",
-                    "-ExecutionPolicy",
-                    "Bypass",
-                    "-File",
-                    str(wrapper),
-                    "-Python",
                     sys.executable,
-                    "-GameDir",
+                    str(wrapper),
+                    "--python",
+                    sys.executable,
+                    "--game-dir",
                     str(root / "game"),
-                    "-ArtifactDir",
+                    "--artifact-dir",
                     str(root / "artifact"),
-                    "-StateDir",
+                    "--state-dir",
                     str(root / "state"),
-                    "-DryRun",
+                    "--dry-run",
                 ],
                 check=False,
                 capture_output=True,
