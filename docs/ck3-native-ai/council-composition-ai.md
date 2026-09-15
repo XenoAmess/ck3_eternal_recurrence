@@ -636,9 +636,20 @@ does not itself provide CK3 or Council capability evidence.
 
 ## COUNCIL16: sealed R692 candidate
 
-The replacement candidate is
-`g2-m4-council16-r692-5110fa1`. It advances only `R691 -> R692`, uses the new
-pipe `\\.\pipe\xar_ck3_bridge_g2_m4_council16_r692_5110fa1`, and contains a
+The first prep attempt used a 40-character harness identifier whose short
+prefix matched the builder commit, but the full value was not a Git object.
+Its import and inventory checks returned GREEN, but the missing provenance
+binding makes the attempt an overall no-launch RED. It did not start CK3,
+allocate R692, or modify R691. The RED receipt remains at
+`g2-m4-council16-r692-5110fa1-provenance-red.json`, SHA-256
+`84819851BD7C1EDD7040F9B1548AE343EA3735ADBFF142C163AC2720FAA03CDF`;
+the invalid executable directory was removed. The generator now requires the
+full harness value to resolve to a commit and requires all four harness files
+to match that commit before it writes an output directory.
+
+The final candidate is `g2-m4-council16-r692-9cdb430`. It advances only
+`R691 -> R692`, uses the new pipe
+`\\.\pipe\xar_ck3_bridge_g2_m4_council16_r692_9cdb430`, and contains a
 fresh profile with no process-control record. The prep copied only the 596
 rows sealed by the prior candidate, then replaced its executable Python source
 with the exact `ck3_autonomous_player/src` tree from integrated master
@@ -651,23 +662,24 @@ and `67CBFD8EAF69177E7615F9B10682B56DF7F4F09E04D8FF6E5FC44CCE0CE5EA57`
 respectively.
 
 The candidate-manifest SHA-256 is
-`A5A15BBDBFCFD8A0554FB8F39ABB0EB4C698E80B2B83CE227741153AF1A243E6`;
+`DE8597D9440F9F65AFD6976E1F55250777C323D3E914A734703A4F5D90E837FD`;
 the sealed-prep manifest SHA-256 is
-`27D0ACE3E5414C2C1C60E5B8C6F22467A385F93ED5C727CD0CCD835A4A52251A`.
+`F2AE0102A0D645F9FE4A71A010DF59D9048C3D3C1C860D47C8879100C6F85436`.
 The embedded runtime tree has Git OID
 `bcff5fae3647f57554a0456b236f0f791e1c3d27` and aggregate SHA-256
 `E3C828189C6994DE2EA4BF4F164001E9343A63C9B54F54A6EE0670A68E7DAA82`.
 This binds the COUNCIL15 pythoncom lifetime fix into the candidate without
 changing the bridge DLL, game files, public schema, planner, or MCP surface.
 
-All eight focused contract tests pass in normal and optimized Python modes.
-The only formal no-launch preflight passed in normal mode with candidate-local
-origins for all five imported modules, a matching 596-file sealed inventory,
-the private readiness contract GREEN, and zero CK3 processes before and after.
-It did not allocate R692 or create `live-r692`. The exact future execution is:
+All nine focused contract tests pass in normal and optimized Python modes. The
+final candidate's single formal no-launch preflight passed in normal mode with
+candidate-local origins for all five imported modules, a matching 596-file
+sealed inventory, the private readiness contract GREEN, and zero CK3 processes
+before and after. It did not allocate R692 or create `live-r692`. The exact
+future execution is:
 
 ```text
-Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite_process_assets\g2-m4-council16-r692-5110fa1\invoke_r692.py --runtime-config Z:\ck3_mod_rewrite_process_assets\g2-m4-council16-r692-5110fa1\operator-runtime.json
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite_process_assets\g2-m4-council16-r692-9cdb430\invoke_r692.py --runtime-config Z:\ck3_mod_rewrite_process_assets\g2-m4-council16-r692-9cdb430\operator-runtime.json
 ```
 
 The candidate has not been executed. Council steward-candidate capability
