@@ -93,6 +93,7 @@ from .war_entry_contract import (
     parse_query_war_entry_assessments_step,
     query_war_entry_assessments_step,
     require_war_entry_assessment_targets,
+    war_entry_assessment_target_scopes,
 )
 from .actual_contact_contract import (
     QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY,
@@ -1447,6 +1448,7 @@ class NativeHeadlessGameplayDriver:
         self._battle_control_snapshot_v1_query: dict[str, object] | None = None
         self._active_combat_retreat_v1_token: dict[str, object] | None = None
         self._war_entry_assessments_query: dict[str, object] | None = None
+        self._war_entry_assessments_two_read_trace: list[dict[str, object]] = []
         self._war_termination_options: dict[int, dict[str, object]] = {}
         self._war_termination_terms: dict[int, dict[str, object]] = {}
         self._war_termination_exit_terms: dict[
@@ -2264,6 +2266,11 @@ class NativeHeadlessGameplayDriver:
                 episode_run_id=episode_run_id,
             )
         )
+        war_entry_assessments_two_read_trace = (
+            self._war_entry_assessments_two_read_trace_for_snapshot(
+                {**snapshot, "episode_run_id": episode_run_id}
+            )
+        )
         if identity_changed:
             self._persist_driver_state()
         self._migrate_legacy_rollback_war_failures(snapshot)
@@ -2685,6 +2692,9 @@ class NativeHeadlessGameplayDriver:
                 if isinstance(war_entry_assessments_query, dict)
                 else None
             ),
+            "war_entry_assessments_two_read_trace_v1": (
+                war_entry_assessments_two_read_trace
+            ),
             "war_termination_options": war_termination_options,
             "war_termination_terms": war_termination_terms,
             "war_termination_exit_terms": war_termination_exit_terms,
@@ -2829,6 +2839,27 @@ class NativeHeadlessGameplayDriver:
                 "episode_run_id": episode_run_id,
                 "target_character_ids": list(targets),
             }
+
+    def _war_entry_assessments_two_read_trace_for_snapshot(
+        self, snapshot: dict[str, object]
+    ) -> list[dict[str, object]]:
+        """Expose only independent reads from this unchanged paused war frame."""
+        with self._driver_state_lock:
+            trace = copy.deepcopy(self._war_entry_assessments_two_read_trace)
+        if not trace:
+            return []
+        current = _active_war_power_frame_projection(
+            snapshot, trace[-1]["target_character_id"]
+        )
+        if current is None or current != trace[-1]["after_snapshot"]:
+            return []
+        if any(
+            entry["before_snapshot"] != current
+            or entry["after_snapshot"] != current
+            for entry in trace
+        ):
+            return []
+        return trace
 
     def _army_strength_cache_for_snapshot(
         self,
@@ -9000,6 +9031,9 @@ class NativeHeadlessGameplayDriver:
             )
         try:
             require_war_entry_assessment_targets(current, targets)
+            target_scopes = war_entry_assessment_target_scopes(starting, targets)
+            if war_entry_assessment_target_scopes(current, targets) != target_scopes:
+                raise ValueError("target scopes changed")
         except ValueError as error:
             raise BridgeUnavailableError(
                 "native war-entry target scope changed during query: "
@@ -9026,7 +9060,7 @@ class NativeHeadlessGameplayDriver:
                 "query_sequence": query_sequence,
                 "cache_binding": cache_binding,
             }
-        return {
+        observed = {
             **result,
             "status": "available",
             "war_entry_assessments": normalized,
@@ -9034,7 +9068,35 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": starting.get("native_revision"),
+            "target_scopes": target_scopes,
         }
+        if len(targets) == 1:
+            before_frame = _active_war_power_frame_projection(
+                starting, targets[0]
+            )
+            after_frame = _active_war_power_frame_projection(current, targets[0])
+            if before_frame is not None and before_frame == after_frame:
+                entry = {
+                    "target_character_id": targets[0],
+                    "before_snapshot": before_frame,
+                    "query": copy.deepcopy(observed),
+                    "after_snapshot": after_frame,
+                }
+                with self._driver_state_lock:
+                    previous = self._war_entry_assessments_two_read_trace
+                    if (
+                        len(previous) == 1
+                        and previous[0]["target_character_id"] == targets[0]
+                        and previous[0]["after_snapshot"] == before_frame
+                        and previous[0]["query"].get("query_sequence")
+                        == query_sequence - 1
+                    ):
+                        self._war_entry_assessments_two_read_trace = [
+                            previous[0], entry
+                        ]
+                    else:
+                        self._war_entry_assessments_two_read_trace = [entry]
+        return observed
 
     def _execute_combat_simulation_inputs_v3_query(
         self,
@@ -23928,6 +23990,59 @@ def _same_paused_native_frame(
         == after_diagnostics.get("connection_generation")
         and before.get("episode_run_id") == after.get("episode_run_id")
     )
+
+
+def _active_war_power_frame_projection(
+    snapshot: dict[str, object], opponent_character_id: int
+) -> dict[str, object] | None:
+    """Keep the actual independent paused reads needed by the war provider."""
+    wars = snapshot.get("active_wars")
+    played = snapshot.get("played_character")
+    diagnostics = snapshot.get("diagnostics")
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and isinstance(wars, list)
+        and isinstance(played, dict)
+        and isinstance(diagnostics, dict)
+    ):
+        return None
+    matching = [
+        war
+        for war in wars
+        if isinstance(war, dict)
+        and war.get("primary_opponent_character_id")
+        == opponent_character_id
+        and war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+    ]
+    if len(matching) != 1:
+        return None
+    war = matching[0]
+    return {
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "paused": True,
+        "map_ready": True,
+        "episode_run_id": snapshot.get("episode_run_id"),
+        "diagnostics": {
+            "connection_generation": diagnostics.get("connection_generation"),
+            "bridge_pid": diagnostics.get("bridge_pid"),
+        },
+        "played_character": {"character_id": played.get("character_id")},
+        "active_wars": [
+            {
+                "war_id": war.get("war_id"),
+                "player_side": war.get("player_side"),
+                "player_is_primary_war_leader": war.get(
+                    "player_is_primary_war_leader"
+                ),
+                "primary_opponent_character_id": opponent_character_id,
+            }
+        ],
+    }
 
 
 def _checkpoint_history_index(

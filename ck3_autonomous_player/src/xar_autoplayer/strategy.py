@@ -87,6 +87,7 @@ from .bridge.war_contract import (
     merge_armies_step,
     move_army_step,
     offer_white_peace_step,
+    surrender_war_step,
     parse_merge_armies_step,
     parse_battle_decision_epoch_advance_step,
     parse_committed_route_sentinel_advance_speed,
@@ -115,6 +116,7 @@ from .bridge.war_contract import (
 from .environment import write_json_atomic
 from .errors import AgentError
 from .runtime import utc_now
+from .raiktor_formal_exit import plan_raiktor_formal_exit
 from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
 )
@@ -5035,6 +5037,55 @@ def _white_peace_submission_cooldown(
 
 
 def choose_one_life_turn(
+    commands: list[dict[str, object]],
+    *,
+    snapshot: dict[str, object] | None = None,
+    action_steps: Iterable[str] | None = None,
+    bridge_capabilities: Iterable[str] | None = None,
+    next_run_plan: dict[str, object] | None = None,
+    battle_speed_readiness: dict[str, object] | None = None,
+) -> dict[str, object]:
+    """Choose an exact Raiktor exit first, then the existing bounded turn."""
+    steps = tuple(action_steps or ())
+    capabilities = tuple(bridge_capabilities or ())
+    formal = plan_raiktor_formal_exit(
+        snapshot,
+        _expanded_command_rows(commands),
+        action_steps=steps,
+        bridge_capabilities=capabilities,
+    )
+    if isinstance(formal, dict) and formal.get("status") != "continue_ready":
+        return formal
+    plan = _choose_one_life_turn_core(
+        commands,
+        snapshot=snapshot,
+        action_steps=steps,
+        bridge_capabilities=capabilities,
+        next_run_plan=next_run_plan,
+        battle_speed_readiness=battle_speed_readiness,
+    )
+    if not isinstance(formal, dict):
+        return plan
+    decision = formal["decision"]
+    war_id = decision["war_id"]
+    if plan.get("selected_step") in {
+        offer_white_peace_step(war_id), surrender_war_step(war_id)
+    }:
+        return {
+            "policy": "raiktor-formal-three-way-exit-v1",
+            "phase": "native_war_raiktor_threeway_conflicting_terminal",
+            "selected_step": None,
+            "reason": "bounded tactical planner chose a different terminal from the current three-way continue recommendation",
+            "war_exit_decision": decision,
+        }
+    return {
+        **plan,
+        "war_exit_decision": decision,
+        "bounded_continue_adapter": "existing-native-tactical-turn-v1",
+    }
+
+
+def _choose_one_life_turn_core(
     commands: list[dict[str, object]],
     *,
     snapshot: dict[str, object] | None = None,

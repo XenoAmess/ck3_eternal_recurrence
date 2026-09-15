@@ -311,6 +311,47 @@ class WarEntryNativeDriverTests(unittest.TestCase):
             result["war_entry_assessments"]["requested_target_character_ids"],
             [808],
         )
+        self.assertEqual(
+            result["target_scopes"],
+            [{"target_character_id": 808, "sources": ["active_war_primary_opponent"]}],
+        )
+
+    def test_two_independent_active_war_reads_bind_to_one_paused_frame(self) -> None:
+        driver, endpoint = _native_driver(
+            declarations=[], active_wars=[_active_war(808)]
+        )
+        sequence = 40
+
+        def answer(frame: dict[str, object]) -> None:
+            nonlocal sequence
+            if frame.get("type") != "execute_step":
+                return
+            sequence += 1
+            result = _result()
+            result["query_sequence"] = sequence
+            endpoint.publish({
+                "type": "command_result", "protocol_version": 1,
+                "request_id": frame["request_id"], "ok": True,
+                "result": result,
+            })
+
+        endpoint.send_hook = answer
+        revision = int(driver.take_snapshot()["revision"])
+        driver.execute_step(STEP, expected_revision=revision)
+        self.assertEqual(
+            len(driver.take_snapshot()["war_entry_assessments_two_read_trace_v1"]), 1
+        )
+        driver.execute_step(STEP, expected_revision=revision)
+        trace = driver.take_snapshot()["war_entry_assessments_two_read_trace_v1"]
+        self.assertEqual([row["query"]["query_sequence"] for row in trace], [41, 42])
+        self.assertEqual(trace[0]["after_snapshot"], trace[1]["before_snapshot"])
+        self.assertEqual(trace[1]["query"]["target_scopes"], [
+            {"target_character_id": 808, "sources": ["active_war_primary_opponent"]}
+        ])
+        endpoint.publish(_semantic_snapshot(6, active_wars=[_active_war(808)]))
+        self.assertEqual(
+            driver.take_snapshot()["war_entry_assessments_two_read_trace_v1"], []
+        )
 
     def test_out_of_scope_target_is_rejected_before_pipe_send(self) -> None:
         driver, endpoint = _native_driver()
