@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 import hashlib
 import importlib.util
 import json
@@ -92,6 +93,57 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         self.assertIn('"ck3_append_coat_of_arms_source_chunk_v2"', source)
         self.assertIn('"ck3_commit_coat_of_arms_source_upload_v2"', source)
         self.assertIn('"semantic_field_sequences_preserved"', source)
+
+    def test_runner_has_opt_in_route_bound_framebuffer_comparison(self) -> None:
+        source = RUNNER.read_text(encoding="utf-8")
+
+        self.assertIn('"--reference-preview"', source)
+        self.assertIn(
+            '"ck3_compare_frontend_coat_of_arms_framebuffer_v1"', source
+        )
+        self.assertIn('"--native-crop-output"', source)
+
+    def test_framebuffer_gate_and_crop_receipt_are_hash_bound(self) -> None:
+        module = _load_runner_module()
+        crop = b"native-png-fixture"
+        crop_sha256 = hashlib.sha256(crop).hexdigest().upper()
+        spatial = [[0.1 for _ in range(8)] for _ in range(8)]
+        call = {
+            "is_error": False,
+            "structured_content": {
+                "schema": "ck3-coat-of-arms-framebuffer-comparison-v1",
+                "routeStable": True,
+                "readOnly": True,
+                "usesOcr": False,
+                "usesKeyboard": False,
+                "usesMouse": False,
+                "comparison": {
+                    "bestMatch": {
+                        "locatorLoss": 0.2,
+                        "distinctMargin": 0.02,
+                        "cropPngBase64": base64.b64encode(crop).decode("ascii"),
+                        "cropPngSha256": crop_sha256,
+                    },
+                    "metrics": {
+                        "meanAbsoluteError": 0.1,
+                        "colorMse": 0.02,
+                        "edgeLoss": 0.1,
+                        "spatialMeanAbsoluteError8x8": spatial,
+                    },
+                },
+            },
+        }
+
+        gate = module._framebuffer_gate(call)
+
+        self.assertTrue(gate["ok"])
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "native.png"
+            receipt = module._write_native_crop(
+                output, {"reference_framebuffer": {**gate, "call": call}}
+            )
+            self.assertEqual(output.read_bytes(), crop)
+            self.assertEqual(receipt["sha256"], crop_sha256)
 
     def test_large_source_receipt_and_numeric_semantics_are_stable(self) -> None:
         module = _load_runner_module()

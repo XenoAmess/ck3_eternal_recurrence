@@ -6,8 +6,9 @@ injects the exact bridge DLL, and uses the official MCP SDK to prove the
 semantic route through ``coat_of_arms_designer``. Opt-in checks can collect a
 detect/apply/native-Copy matrix, census the native custom-mode pattern tree, or
 commit one design through the exact dynasty Finish button, reopen it, and
-compare native Copy bytes. It never sends mouse or keyboard input and never
-interprets pixels or OCR.
+compare native Copy bytes. A hash-bound canonical preview can also be compared
+to the full route-bound CK3 framebuffer through the managed MCP. It never sends
+mouse or keyboard input and never uses OCR.
 The opt-in Bookmarks model probe uses the same driver's private native pipe
 after the official MCP NewGame/Bookmarks sequence; it never selects a ruler.
 """
@@ -129,6 +130,17 @@ BEGIN_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_begin_coat_of_arms_source_upload_v2"
 APPEND_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_append_coat_of_arms_source_chunk_v2"
 COMMIT_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_commit_coat_of_arms_source_upload_v2"
 ABORT_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_abort_coat_of_arms_source_upload_v2"
+COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
+    "ck3_compare_frontend_coat_of_arms_framebuffer_v1"
+)
+FRAMEBUFFER_GATE_THRESHOLDS = {
+    "maximum_locator_loss": 0.45,
+    "minimum_distinct_margin": 0.005,
+    "maximum_mean_absolute_error": 0.18,
+    "maximum_color_mse": 0.06,
+    "maximum_edge_loss": 0.18,
+    "maximum_spatial_mean_absolute_error": 0.35,
+}
 SYNTAX_MATRIX = Path(__file__).with_name("coat_of_arms_syntax_matrix_v1.json")
 _PROFILE_EXCLUDES = frozenset(
     {"crashes", "dumps", "exceptions", "logs", "save games", "last_save.ck3"}
@@ -190,6 +202,19 @@ def _parser() -> argparse.ArgumentParser:
             "apply one source larger than the v1 request bound through the "
             "chunked v2 MCP contract, then perform native Copy"
         ),
+    )
+    parser.add_argument(
+        "--reference-preview",
+        type=Path,
+        help=(
+            "hash-bind one canonical PNG and compare it to CK3 after the "
+            "large source has been applied"
+        ),
+    )
+    parser.add_argument(
+        "--native-crop-output",
+        type=Path,
+        help="write the verified native framebuffer crop as an append-only PNG",
     )
     parser.add_argument("--output", type=Path, required=True)
     return parser
@@ -572,6 +597,98 @@ def _load_large_source(
         "line_endings_normalized": raw != wire,
         "structure": _source_structure(encoded.source),
         "semantic_projection": _projection_summary(projection),
+    }
+
+
+def _load_reference_preview(path: Path) -> tuple[str, dict[str, object]]:
+    resolved = path.resolve()
+    raw = resolved.read_bytes()
+    if not raw:
+        raise RuntimeError("reference preview is empty")
+    digest = hashlib.sha256(raw).hexdigest().upper()
+    return base64.b64encode(raw).decode("ascii"), {
+        "path": str(resolved),
+        "png_bytes": len(raw),
+        "png_sha256": digest,
+    }
+
+
+def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
+    body = _structured(call)
+    comparison = (
+        body.get("comparison")
+        if isinstance(body.get("comparison"), dict)
+        else {}
+    )
+    best = (
+        comparison.get("bestMatch")
+        if isinstance(comparison.get("bestMatch"), dict)
+        else {}
+    )
+    metrics = (
+        comparison.get("metrics")
+        if isinstance(comparison.get("metrics"), dict)
+        else {}
+    )
+    spatial = metrics.get("spatialMeanAbsoluteError8x8")
+    spatial_values = [
+        float(value)
+        for row in spatial
+        if isinstance(row, list)
+        for value in row
+        if isinstance(value, (int, float)) and not isinstance(value, bool)
+    ] if isinstance(spatial, list) else []
+    worst_spatial = max(spatial_values) if spatial_values else None
+    thresholds = FRAMEBUFFER_GATE_THRESHOLDS
+    checks = {
+        "call_not_error": call.get("is_error") is False,
+        "schema": body.get("schema")
+        == "ck3-coat-of-arms-framebuffer-comparison-v1",
+        "route_stable": body.get("routeStable") is True,
+        "read_only_no_ocr_or_input": (
+            body.get("readOnly") is True
+            and body.get("usesOcr") is False
+            and body.get("usesKeyboard") is False
+            and body.get("usesMouse") is False
+        ),
+        "locator_loss": (
+            isinstance(best.get("locatorLoss"), (int, float))
+            and not isinstance(best.get("locatorLoss"), bool)
+            and best["locatorLoss"] <= thresholds["maximum_locator_loss"]
+        ),
+        "distinct_margin": (
+            isinstance(best.get("distinctMargin"), (int, float))
+            and not isinstance(best.get("distinctMargin"), bool)
+            and best["distinctMargin"] >= thresholds["minimum_distinct_margin"]
+        ),
+        "mean_absolute_error": (
+            isinstance(metrics.get("meanAbsoluteError"), (int, float))
+            and not isinstance(metrics.get("meanAbsoluteError"), bool)
+            and metrics["meanAbsoluteError"]
+            <= thresholds["maximum_mean_absolute_error"]
+        ),
+        "color_mse": (
+            isinstance(metrics.get("colorMse"), (int, float))
+            and not isinstance(metrics.get("colorMse"), bool)
+            and metrics["colorMse"] <= thresholds["maximum_color_mse"]
+        ),
+        "edge_loss": (
+            isinstance(metrics.get("edgeLoss"), (int, float))
+            and not isinstance(metrics.get("edgeLoss"), bool)
+            and metrics["edgeLoss"] <= thresholds["maximum_edge_loss"]
+        ),
+        "worst_spatial_mean_absolute_error": (
+            worst_spatial is not None
+            and worst_spatial
+            <= thresholds["maximum_spatial_mean_absolute_error"]
+        ),
+    }
+    return {
+        "ok": all(checks.values()),
+        "thresholds": dict(thresholds),
+        "worst_spatial_mean_absolute_error": worst_spatial,
+        "checks": checks,
+        "call": call,
     }
 
 
@@ -1307,6 +1424,7 @@ async def _mcp_sequence(
     custom_mode_census: bool = False,
     commit_roundtrip: bool = False,
     large_source: tuple[str, dict[str, object]] | None = None,
+    reference_preview: tuple[str, dict[str, object]] | None = None,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
 ) -> dict[str, object]:
@@ -1381,6 +1499,11 @@ async def _mcp_sequence(
             if large_source is not None
             else set()
         )
+        framebuffer_required = (
+            {COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL}
+            if reference_preview is not None
+            else set()
+        )
         custom_mode_required = (
             {
                 INSPECT_COAT_OF_ARMS_TREE_TOOL,
@@ -1395,6 +1518,7 @@ async def _mcp_sequence(
             | matrix_required
             | commit_required
             | large_source_required
+            | framebuffer_required
             | custom_mode_required
         )
         schemas = {
@@ -1496,6 +1620,14 @@ async def _mcp_sequence(
         ):
             return red(
                 "large-source MCP tools do not have the expected closed schemas",
+                tool_schemas=schemas,
+            )
+        if reference_preview is not None and not _schema_has_required_fields(
+            schemas.get(COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL),
+            {"reference_png_base64", "reference_png_sha256"},
+        ):
+            return red(
+                "coat-of-arms framebuffer MCP tool does not have the expected schema",
                 tool_schemas=schemas,
             )
 
@@ -1852,6 +1984,37 @@ async def _mcp_sequence(
             checks["large_source_roundtrip_evidence_complete"] = (
                 large_source_result.get("ok") is True
             )
+        framebuffer_result: dict[str, object] | None = None
+        if reference_preview is not None:
+            if (
+                all(checks.values())
+                and large_source_result is not None
+                and large_source_result.get("ok") is True
+            ):
+                await asyncio.sleep(0.75)
+                preview_base64, preview_receipt = reference_preview
+                framebuffer_call = await _call(
+                    client,
+                    COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+                    {
+                        "reference_png_base64": preview_base64,
+                        "reference_png_sha256": preview_receipt["png_sha256"],
+                    },
+                )
+                record(framebuffer_call)
+                framebuffer_result = {
+                    **_framebuffer_gate(framebuffer_call),
+                    "reference": preview_receipt,
+                }
+            else:
+                framebuffer_result = {
+                    "ok": False,
+                    "error": "route or large-source checks failed before framebuffer comparison",
+                    "reference": reference_preview[1],
+                }
+            checks["reference_framebuffer_evidence_complete"] = (
+                framebuffer_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -1869,6 +2032,7 @@ async def _mcp_sequence(
             "syntax_matrix": matrix_result,
             "commit_roundtrip": commit_result,
             "large_source_roundtrip": large_source_result,
+            "reference_framebuffer": framebuffer_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -1885,6 +2049,44 @@ def _write_json(path: Path, payload: dict[str, object]) -> None:
     temporary.replace(path)
 
 
+def _write_native_crop(
+    path: Path, sequence: dict[str, object]
+) -> dict[str, object]:
+    framebuffer = sequence.get("reference_framebuffer")
+    call = framebuffer.get("call") if isinstance(framebuffer, dict) else None
+    body = _structured(call) if isinstance(call, dict) else {}
+    comparison = body.get("comparison")
+    best = (
+        comparison.get("bestMatch")
+        if isinstance(comparison, dict)
+        and isinstance(comparison.get("bestMatch"), dict)
+        else {}
+    )
+    encoded = best.get("cropPngBase64")
+    expected_sha256 = best.get("cropPngSha256")
+    if not isinstance(encoded, str) or not isinstance(expected_sha256, str):
+        raise RuntimeError("framebuffer result has no native crop payload")
+    try:
+        raw = base64.b64decode(encoded.encode("ascii"), validate=True)
+    except (UnicodeEncodeError, ValueError) as error:
+        raise RuntimeError("framebuffer crop base64 is malformed") from error
+    actual_sha256 = hashlib.sha256(raw).hexdigest().upper()
+    if actual_sha256 != expected_sha256:
+        raise RuntimeError("framebuffer crop SHA-256 mismatch")
+    resolved = path.resolve()
+    temporary = resolved.with_name(resolved.name + ".tmp")
+    if resolved.exists() or temporary.exists():
+        raise RuntimeError(f"native crop output already exists: {resolved}")
+    resolved.parent.mkdir(parents=True, exist_ok=True)
+    temporary.write_bytes(raw)
+    temporary.replace(resolved)
+    return {
+        "path": str(resolved),
+        "bytes": len(raw),
+        "sha256": actual_sha256,
+    }
+
+
 def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     started = time.monotonic()
     repository = Path(__file__).resolve().parents[3]
@@ -1898,6 +2100,19 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     bookmarks_model_private = bool(
         getattr(args, "bookmarks_model_private", False)
     )
+    reference_preview = (
+        _load_reference_preview(args.reference_preview)
+        if getattr(args, "reference_preview", None) is not None
+        else None
+    )
+    native_crop_output = getattr(args, "native_crop_output", None)
+    if (
+        reference_preview is not None
+        and getattr(args, "large_source", None) is None
+    ):
+        raise ValueError("--reference-preview requires --large-source")
+    if native_crop_output is not None and reference_preview is None:
+        raise ValueError("--native-crop-output requires --reference-preview")
     if bookmarks_model_private and not bookmarks_read_only:
         raise ValueError("--bookmarks-model-private requires --bookmarks-read-only")
     if bookmarks_read_only and (
@@ -1905,6 +2120,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or custom_mode_census
         or commit_roundtrip
         or getattr(args, "large_source", None) is not None
+        or reference_preview is not None
     ):
         raise ValueError("--bookmarks-read-only cannot run CoA actions")
     large_source = (
@@ -1945,6 +2161,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "commit_roundtrip_requested": commit_roundtrip,
         "large_source_requested": large_source is not None,
         "large_source_plan": large_source[1] if large_source else None,
+        "reference_preview_requested": reference_preview is not None,
+        "reference_preview_plan": (
+            reference_preview[1] if reference_preview else None
+        ),
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -2011,11 +2231,16 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 custom_mode_census=custom_mode_census,
                 commit_roundtrip=commit_roundtrip,
                 large_source=large_source,
+                reference_preview=reference_preview,
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
             )
         )
         report["sequence"] = sequence
+        if native_crop_output is not None:
+            report["native_crop"] = _write_native_crop(
+                native_crop_output, sequence
+            )
         if sequence.get("ok") is not True:
             raise RuntimeError("frontend MCP route sequence failed its checks")
     except BaseException as error:
