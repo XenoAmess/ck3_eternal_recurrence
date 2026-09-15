@@ -1,0 +1,150 @@
+import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
+import { expect, test } from '@playwright/test'
+import { parseCoatOfArms } from '../src/domain/parser'
+import { serializeCoatOfArms } from '../src/domain/serializer'
+
+interface PictureCase {
+  id: string
+  file: string
+  mimeType: string
+  bytes: number
+  width: number
+  height: number
+  sha256: string
+}
+
+const fixtureRoot = resolve('e2e/fixtures/pictures')
+const corpus = JSON.parse(await readFile(resolve(fixtureRoot, 'cases.json'), 'utf8')) as {
+  schema: string
+  sourceArchive: { name: string, bytes: number, sha256: string }
+  cases: PictureCase[]
+}
+const budget = Number.parseInt(process.env.COA_CORPUS_BUDGET ?? '128', 10)
+if (!Number.isSafeInteger(budget) || budget < 1) throw new Error('COA_CORPUS_BUDGET must be a positive safe integer')
+const artifactRoot = resolve('test-results/user-picture-quality-corpus', `budget-${budget}`)
+const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex').toUpperCase()
+
+test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
+  for (const picture of corpus.cases) {
+    test(`${picture.id}: ${picture.file}`, async ({ page }) => {
+      test.setTimeout(budget >= 1_024 ? 7 * 60_000 : 4 * 60_000)
+      const inputPath = resolve(fixtureRoot, picture.file)
+      const inputBytes = await readFile(inputPath)
+      expect(inputBytes.byteLength).toBe(picture.bytes)
+      expect(sha256(inputBytes)).toBe(picture.sha256)
+
+      await page.addInitScript(() => {
+        Object.defineProperty(navigator, 'clipboard', {
+          configurable: true,
+          value: {
+            writeText: async (text: string) => {
+              Object.assign(window, { __coaClipboardPayload: text })
+            },
+          },
+        })
+      })
+      await page.goto('/')
+      await expect(page.getByText(/ck3-1\.19\.0\.6-base-complete/)).toBeVisible({ timeout: 30_000 })
+      await page.locator('.fit-budget input').fill(String(budget))
+      await page.locator('.image-drop input').setInputFiles({
+        name: picture.file,
+        mimeType: picture.mimeType,
+        buffer: inputBytes,
+      })
+      await page.getByRole('button', { name: '开始本地拟合' }).click()
+      await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({
+        timeout: budget >= 1_024 ? 6 * 60_000 : 3 * 60_000,
+      })
+
+      const reportElement = page.locator('.fit-report')
+      const rawEvidence = await reportElement.getAttribute('data-fit-evidence')
+      if (!rawEvidence) throw new Error('missing machine-readable fit evidence')
+      const evidence = JSON.parse(rawEvidence)
+      expect(evidence.provenance.layerBudget).toBe(budget)
+      expect(evidence.provenance.surfaceMaskApplied).toBe(true)
+      expect(evidence.provenance.drawnInstances).toBeLessThanOrEqual(budget)
+
+      const fitPreviewUrl = await page.getByTestId('fit-preview').getAttribute('src')
+      const editorPreviewUrl = await page.getByTestId('editor-preview').getAttribute('src')
+      expect(fitPreviewUrl).toBe(editorPreviewUrl)
+      if (!editorPreviewUrl?.startsWith('data:image/png;base64,')) throw new Error('missing canonical preview')
+      const previewBytes = Buffer.from(editorPreviewUrl.slice('data:image/png;base64,'.length), 'base64')
+
+      await page.getByRole('button', { name: '复制 CK3 代码' }).click()
+      const source = await page.evaluate(() => (
+        (window as typeof window & { __coaClipboardPayload?: string }).__coaClipboardPayload ?? ''
+      ))
+      const parsed = parseCoatOfArms(source)
+      const parseErrors = parsed.diagnostics.filter((item) => item.severity === 'error')
+      const parsedInstances = parsed.coatOfArms.coloredEmblems.reduce(
+        (sum, emblem) => sum + emblem.instances.length,
+        0,
+      )
+      expect(parseErrors).toEqual([])
+      expect(parsedInstances).toBe(evidence.provenance.drawnInstances)
+      expect(serializeCoatOfArms(parsed.coatOfArms)).toBe(source)
+
+      const caseDirectory = resolve(artifactRoot, picture.id)
+      await mkdir(caseDirectory, { recursive: true })
+      await writeFile(resolve(caseDirectory, 'coat_of_arms.txt'), source, 'utf8')
+      await writeFile(resolve(caseDirectory, 'canonical-preview-230.png'), previewBytes)
+      await page.locator('.image-fit-panel').screenshot({ path: resolve(caseDirectory, 'input-and-fit-report.png') })
+      await page.locator('.preview-pane').screenshot({ path: resolve(caseDirectory, 'editor-preview-panel.png') })
+
+      const repository = resolve('..')
+      const headCommit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: repository, encoding: 'utf8' }).trim()
+      const patch = execFileSync(
+        'git',
+        ['diff', '--binary', 'HEAD', '--', 'coat_of_arms_editer_of_ck3'],
+        { cwd: repository },
+      )
+      const report = {
+        schema: 'ck3-coa-user-picture-quality-evidence-v1',
+        status: 'browser-passed-native-mcp-pending',
+        generatedAt: new Date().toISOString(),
+        sourceRevision: { headCommit, workingTreePatchSha256: sha256(patch) },
+        corpus: {
+          schema: corpus.schema,
+          sourceArchive: corpus.sourceArchive,
+          case: picture,
+        },
+        configuration: {
+          userDrawInstanceBudget: budget,
+          randomSeed: null,
+          scoringContract: evidence.provenance.scoringContract,
+          rendererContract: evidence.provenance.rendererContract,
+          surfaceMaskApplied: evidence.provenance.surfaceMaskApplied,
+        },
+        metrics: evidence.metrics,
+        provenance: evidence.provenance,
+        counts: {
+          userBudget: budget,
+          drawnInstances: evidence.provenance.drawnInstances,
+          logicalLayers: evidence.provenance.logicalLayers,
+          coloredEmblemBlocks: evidence.provenance.coloredEmblemBlocks,
+          utf8Bytes: Buffer.byteLength(source, 'utf8'),
+          lines: source ? (source.match(/\n/g)?.length ?? 0) + 1 : 0,
+        },
+        integrity: {
+          sourceSha256: sha256(source),
+          canonicalPreviewSha256: sha256(previewBytes),
+          fitAndEditorPreviewByteIdentical: true,
+          parseErrors: parseErrors.length,
+          serializeParseExact: true,
+          parsedInstances,
+        },
+        evidenceLevel: {
+          inputToBrowserFitMetrics: 'measured',
+          fitPreviewToEditorPreview: 'byte-identical',
+          ck3ApplyCopyRoundTrip: 'pending-mcp',
+          nativeSpatialPixelComparison: 'pending-mcp-framebuffer-capability',
+        },
+      }
+      await writeFile(resolve(caseDirectory, 'report.json'), `${JSON.stringify(report, null, 2)}\n`, 'utf8')
+      console.info(JSON.stringify({ case: picture.id, budget, metrics: evidence.metrics, counts: report.counts }))
+    })
+  }
+})

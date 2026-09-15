@@ -1,0 +1,74 @@
+{
+  "schema": "ck3-coa-user-picture-regression-corpus-v1",
+  "sourceArchive": {
+    "name": "pictures.zip",
+    "bytes": 6240071,
+    "sha256": "0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F"
+  },
+  "receivedAt": "2026-09-16T03:02:00+08:00",
+  "cases": [
+    {
+      "id": "picture-01",
+      "file": "718c36bc01a173d0c42c0d1131f67e31055244c7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 304708,
+      "width": 511,
+      "height": 512,
+      "sha256": "B52B0624A3C2B2114F66A6C7BA839880D1DC89ADAA91DE0F5CA6BFC302160CA6"
+    },
+    {
+      "id": "picture-02",
+      "file": "a124bc6bc3b435cc1fda251bff7f140d2ee23c42.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 75756,
+      "width": 300,
+      "height": 300,
+      "sha256": "57C8CCF223D6B8FC9F27A69D17B676AAB0FABBE3D656D633FAC013296F88BE36"
+    },
+    {
+      "id": "picture-03",
+      "file": "baiqi2.png",
+      "mimeType": "image/png",
+      "bytes": 314444,
+      "width": 527,
+      "height": 527,
+      "sha256": "4317C811A530993BE863D2C19CEAA66D547712FE26D6011EF1BC4CDEF000533F"
+    },
+    {
+      "id": "picture-04",
+      "file": "BV1bt421G7qL.png",
+      "mimeType": "image/png",
+      "bytes": 991529,
+      "width": 1080,
+      "height": 1080,
+      "sha256": "9E7B345F3857DB1B2F9EC5AE2550DCD16499B67D678CB3E07931931B2FE44F8C"
+    },
+    {
+      "id": "picture-05",
+      "file": "BV1oe411i7oF.png",
+      "mimeType": "image/png",
+      "bytes": 269075,
+      "width": 522,
+      "height": 522,
+      "sha256": "E9205ADE88047B7F920A90761C25302F133920503CC854E63446443401FCA7EB"
+    },
+    {
+      "id": "picture-06",
+      "file": "Cache_5d2e1902d7c282d2.png",
+      "mimeType": "image/png",
+      "bytes": 199390,
+      "width": 960,
+      "height": 905,
+      "sha256": "647BE9E8D39548480DA87E59A1487F94DF3D0A8316E48F4B746E36AED8A5B790"
+    },
+    {
+      "id": "picture-07",
+      "file": "人类化头像.png",
+      "mimeType": "image/png",
+      "bytes": 4091081,
+      "width": 2048,
+      "height": 2048,
+      "sha256": "31218C41C1756CC4641A70828B2C381E744C988B13FA1F376B73066E6564DF8A"
+    }
+  ]
+}

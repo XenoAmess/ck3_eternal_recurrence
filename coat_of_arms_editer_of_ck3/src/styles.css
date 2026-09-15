@@ -32,7 +32,15 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .fit-controls p, .fit-report p { min-height: 36px; margin: 0; color: #9e9387; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 .fit-progress { display: grid; gap: 6px; }
 .fit-result-image { display: grid; grid-template-columns: auto minmax(96px, 150px); align-items: center; gap: 12px; color: #b9aa98; font-size: 12px; }
-.fit-result-image img { width: 100%; aspect-ratio: 1; object-fit: contain; border: 1px solid var(--line); background: white; image-rendering: auto; }
+.fit-result-image img {
+  width: 100%;
+  aspect-ratio: 260 / 315;
+  object-fit: fill;
+  clip-path: polygon(4% 0, 96% 0, 96% 65%, 82% 83%, 50% 100%, 18% 83%, 4% 65%);
+  border: 1px solid var(--line);
+  background: white;
+  image-rendering: auto;
+}
 .fit-budget, .fit-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .fit-budget { margin-top: auto; color: #a99e90; font-size: 12px; }
 .fit-budget-note { color: #81776b; line-height: 1.45; }

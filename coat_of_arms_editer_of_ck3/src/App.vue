@@ -178,7 +178,6 @@ const fitBusy = ref(false)
 const fitStatus = ref('请选择一张图片')
 const fitResult = ref<ImageFitResult>()
 const fitWebGlScore = ref<WebGlScore | null>(null)
-const fitPreviewUrl = ref('')
 const fitLayerBudget = ref(6)
 const fitProgressPercent = ref(0)
 const fitProgressLabel = ref('等待开始')
@@ -349,6 +348,10 @@ const renderedPreviewUrl = computed(() => {
   )
   return rendered ? renderedCoatOfArmsToDataUrl(rendered) : ''
 })
+// The fit report and editor must never maintain independent render products.
+// Both surfaces display the same canonical shader-model frame so their pixels,
+// resolution, surface mask and named-color interpretation cannot drift.
+const fitPreviewUrl = computed(() => fitResult.value ? renderedPreviewUrl.value : '')
 
 const fallbackNamedColors: Record<string, string> = {
   black: '#22201e', blue: '#315b9a', green: '#497554', red: '#9b3c35',
@@ -683,7 +686,6 @@ async function importProject(event: Event) {
     fitCompressionSource.value = ''
     fitPruneEvidence.value = undefined
     fitPruneSource.value = ''
-    fitPreviewUrl.value = ''
     await loadCurrentTexturePreviews()
     ElMessage.success(`项目已恢复：${project.ck3Source.stats.drawnInstances} 个实例，SHA-256 已验证`)
   } catch (error) {
@@ -1018,7 +1020,6 @@ async function selectTargetImage(event: Event) {
     fitPruneEvidence.value = undefined
     fitPruneSource.value = ''
     fitWebGlScore.value = null
-    fitPreviewUrl.value = ''
     fitStatus.value = `${file.name} · ${targetImage.value.originalWidth}×${targetImage.value.originalHeight} · ${(file.size / 1024).toFixed(1)} KiB · 只在浏览器内处理`
   } catch (error) {
     targetImage.value = undefined
@@ -1338,7 +1339,7 @@ function pruneFitDocument() {
       },
       cloneDecodedDdsForWorker(patternTexture.value),
       workerEmblems,
-      undefined,
+      surfaceMask.value ? cloneDecodedDdsForWorker(surfaceMask.value) : undefined,
       Object.fromEntries(Object.entries(shaderNamedColors.value).map(([name, color]) => (
         [name, [...color]]
       ))),
@@ -1448,7 +1449,6 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
     fitPruneEvidence.value = undefined
     fitPruneSource.value = ''
     fitWebGlScore.value = null
-    fitPreviewUrl.value = ''
     fitProgressPercent.value = 0
   }
   fitProgressLabel.value = resumeCheckpoint ? '正在恢复安全 checkpoint' : '正在准备完整素材索引'
@@ -1566,11 +1566,14 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       const normalizedTarget = resizeFitImage(target, result.provenance.resolution)
       const rendered = renderCoatOfArms(
         result.coatOfArms,
-        { pattern: selectedPatternTexture, coloredEmblems: emblemTextures.value },
-        {},
+        {
+          pattern: selectedPatternTexture,
+          coloredEmblems: emblemTextures.value,
+          surfaceMask: surfaceMask.value,
+        },
+        shaderNamedColors.value,
         result.provenance.resolution,
       )
-      fitPreviewUrl.value = rendered ? renderedCoatOfArmsToDataUrl(rendered) : ''
       try {
         fitWebGlScore.value = rendered
           ? scoreWithWebGl2(normalizedTarget, { width: rendered.width, height: rendered.height, pixels: rendered.pixels })
@@ -1646,6 +1649,10 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
         beamWidth: 2,
         inputSha256: targetImage.value.sha256,
         assetPackManifestSha256: loadedAssetPack.value.manifestSha256,
+        surfaceMask: surfaceMask.value ? cloneDecodedDdsForWorker(surfaceMask.value) : undefined,
+        namedColors: Object.fromEntries(Object.entries(shaderNamedColors.value).map(([name, color]) => (
+          [name, [...color]]
+        ))),
         resumeCheckpoint,
       }],
     }
@@ -1902,7 +1909,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
             </div>
             <div v-if="fitPreviewUrl" class="fit-result-image">
               <span>{{ t('fitPlane') }}</span>
-              <img :src="fitPreviewUrl" :alt="t('fitResultAlt')">
+              <img data-testid="fit-preview" :src="fitPreviewUrl" :alt="t('fitResultAlt')">
             </div>
             <dl>
               <div><dt>{{ t('totalLoss') }}</dt><dd>{{ fitResult.metrics.totalLoss.toFixed(5) }}</dd></div>
@@ -2023,7 +2030,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         </div>
         <div class="preview-stage">
           <div ref="shieldElement" :class="['shield', { 'shader-bound': renderedPreviewUrl }]" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
-            <img v-if="renderedPreviewUrl" class="shader-preview" :src="renderedPreviewUrl" :alt="t('shaderPreviewAlt')" />
+            <img v-if="renderedPreviewUrl" data-testid="editor-preview" class="shader-preview" :src="renderedPreviewUrl" :alt="t('shaderPreviewAlt')" />
             <template v-else>
               <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" :alt="t('patternPreviewAlt')" />
               <div class="shield-light" :style="{ background: cssColor(coatOfArms.colors[1]) }" />
