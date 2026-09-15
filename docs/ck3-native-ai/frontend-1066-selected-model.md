@@ -22,14 +22,18 @@ GUI global slot RVA `0x576CC68` publishes the same object constructed by base `0
 
 The existing native bridge `research/README.md` “State anchors and widths” section identifies `CGameState+0x08` as an eight-byte `HistoricalDate` and only its low signed dword as published `date_raw`. The private frontend producer keeps the full Bookmark+0x38 launch qword; it does not invent a calendar conversion or compare an unclassified high dword. The paused map must independently publish the actual `date_raw` after StartGame.
 
+Exact `Date.GetStringLong` registration `0x493C0B/0x493C42` calls `0x2222910→0x2222410→0x2221FA0`. Cache updater `0x345B970` derives year/month/day from low signed raw with epoch `0x029C55C0`, 24 raw units per game day, 365 days per game year and original lookup tables at `0x4043000/0x4042E90`. For script `1066.9.15`, day-of-year index 257 yields low32 `43,800,000 + (1066×365+257)×24 = 53,144,328 = 0x032AEB08`. The high date-cache dword may still contain sentinels; the native private identity gate compares low32 only and preserves the full observed qword. A real paused Bookmarks frame must still prove this per-frame value before typed selection.
+
 ```mermaid
 flowchart TD
   A[Main menu] --> B[Typed NewGame]
   B --> C[Bookmarks selected model]
   C --> D[Selected Bookmark and Character key]
-  D -. unknown vector bound, key, group, date .-> E[Final native feudal check]
+  D -. live selected model identity unverified .-> E[Final native feudal check]
   E -. unknown paused map result .-> F[Typed StartGame]
   F -. unknown independent result .-> G[Paired checkpoint + production loop]
 ```
 
-The private probe reports selected indices and ABI diagnostics only. Identity readiness and StartGame remain disabled until the dashed branches have exact-build source and real paused evidence. The next useful CK3 wait is one controlled Bookmarks read-only model frame; no card selection or date advance is required.
+The private probe reports selected indices and ABI diagnostics only. Its per-frame identity condition is source-ready but has no real paused Bookmarks result yet; public selection and StartGame remain disabled. The next useful CK3 wait is one controlled Bookmarks read-only model frame; no card selection or date advance is required.
+
+The guarded native protocol-v1 read-only step is `probe-frontend-bookmark-model-v1` (`expected_revision=0`), compiled only with `XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=ON` and absent from public capability advertisement. Its `command_result.result` carries `private_scope=exact-build-bookmarks-model-v1`, source keys, selected/hover indices, collection count/capacity, full launch-date qword and low32, final government key, `candidate_identity_ready`, and a distinct `unavailable_reason`. The controlled runner's `--bookmarks-read-only --bookmarks-model-private` option first uses the public MCP NewGame and Bookmarks-tree path, then sends exactly one private read-only pipe query. This is an acceptance interface, not a production ruler-selection or StartGame capability. The eventual public MCP mapping and `open_kaishek` impact remain dependent on the live identity frame and typed selector result.

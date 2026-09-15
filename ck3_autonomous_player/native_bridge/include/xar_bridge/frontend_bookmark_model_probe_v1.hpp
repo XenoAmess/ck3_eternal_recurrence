@@ -23,6 +23,7 @@ struct FrontendBookmarkModelProbeV1 {
   std::string selected_bookmark_key;
   bool selected_bookmark_key_available = false;
   std::uint64_t selected_date_raw = 0;
+  std::uint32_t selected_date_low_raw = 0;
   bool selected_date_raw_available = false;
   std::int32_t selected_character_index = -1;
   std::int32_t hovered_character_index = -1;
@@ -43,6 +44,7 @@ struct FrontendBookmarkModelProbeV1 {
   std::int32_t supported_1066_candidate_index = -1;
   bool supported_1066_candidate_present = false;
   bool supported_1066_candidate_feudal = false;
+  bool supported_1066_date_matches = false;
   bool candidate_identity_ready = false;
   std::string unavailable_reason;
 };

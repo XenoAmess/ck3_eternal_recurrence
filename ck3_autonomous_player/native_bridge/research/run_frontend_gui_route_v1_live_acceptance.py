@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the closed MCP-only CK3 frontend route acceptance.
+"""Run the closed MCP CK3 frontend route acceptance.
 
 This runner launches one managed, non-debug CK3 process at the main menu,
 injects the exact bridge DLL, and uses the official MCP SDK to prove the
@@ -8,6 +8,8 @@ detect/apply/native-Copy matrix, census the native custom-mode pattern tree, or
 commit one design through the exact dynasty Finish button, reopen it, and
 compare native Copy bytes. It never sends mouse or keyboard input and never
 interprets pixels or OCR.
+The opt-in Bookmarks model probe uses the same driver's private native pipe
+after the official MCP NewGame/Bookmarks sequence; it never selects a ruler.
 """
 
 from __future__ import annotations
@@ -25,6 +27,7 @@ import subprocess
 import sys
 import time
 from typing import Any
+import uuid
 import winreg
 
 
@@ -153,6 +156,11 @@ def _parser() -> argparse.ArgumentParser:
         "--bookmarks-read-only",
         action="store_true",
         help="stop at the native Bookmarks route and save its bounded GUI tree",
+    )
+    parser.add_argument(
+        "--bookmarks-model-private",
+        action="store_true",
+        help="after MCP Bookmarks tree, capture one default-OFF private native selected-model frame without clicking",
     )
     parser.add_argument(
         "--syntax-matrix",
@@ -313,6 +321,71 @@ async def _call(
 def _structured(call: dict[str, object]) -> dict[str, object]:
     value = call.get("structured_content")
     return value if isinstance(value, dict) else {}
+
+
+def _call_private_bookmarks_model(
+    driver: NativeHeadlessGameplayDriver, timeout_seconds: float
+) -> dict[str, object]:
+    """One fixed read-only native-pipe ABI capture, outside public MCP tools."""
+    started = time.monotonic()
+    request_id = f"feudal-bm-model-{uuid.uuid4().hex[:12]}"
+    step = "probe-frontend-bookmark-model-v1"
+    if timeout_seconds <= 0:
+        return {
+            "tool": "private-native-bookmarks-model-v1",
+            "elapsed_seconds": 0,
+            "is_error": True,
+            "error": "bounded sequence expired before private model submit",
+            "submitted": False,
+        }
+    submitted = False
+    try:
+        driver.endpoint.send(
+            {
+                "type": "execute_step",
+                "protocol_version": 1,
+                "request_id": request_id,
+                "step": step,
+                "expected_revision": 0,
+            }
+        )
+        submitted = True
+        frame = driver.state.wait_for_command_result(
+            request_id, min(timeout_seconds, 15.0)
+        )
+    except Exception as error:
+        return {
+            "tool": "private-native-bookmarks-model-v1",
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+            "is_error": True,
+            "exception": f"{type(error).__name__}: {error}",
+            "submitted": submitted,
+        }
+    if frame is None:
+        return {
+            "tool": "private-native-bookmarks-model-v1",
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+            "is_error": True,
+            "error": "private native command_result timed out",
+            "submitted": submitted,
+            "timed_out": True,
+        }
+    result = frame.get("result")
+    envelope_valid = (
+        frame.get("type") == "command_result"
+        and frame.get("request_id") == request_id
+        and isinstance(result, dict)
+        and result.get("step") == step
+    )
+    return {
+        "tool": "private-native-bookmarks-model-v1",
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+        "is_error": frame.get("ok") is not True or not envelope_valid,
+        "submitted": True,
+        "envelope_valid": envelope_valid,
+        "structured_content": result if envelope_valid else {},
+        "raw_frame": frame,
+    }
 
 
 def _source_structure(source: str) -> dict[str, int]:
@@ -1235,6 +1308,7 @@ async def _mcp_sequence(
     commit_roundtrip: bool = False,
     large_source: tuple[str, dict[str, object]] | None = None,
     bookmarks_read_only: bool = False,
+    bookmarks_model_private: bool = False,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
@@ -1540,6 +1614,41 @@ async def _mcp_sequence(
                     and isinstance(inspection.get("widgets"), list)
                 ),
             }
+            private_model_call: dict[str, object] | None = None
+            private_model: dict[str, object] = {}
+            if bookmarks_model_private:
+                private_model_call = _call_private_bookmarks_model(
+                    driver, max(0.0, deadline - time.monotonic())
+                )
+                record(private_model_call)
+                private_model = _structured(private_model_call)
+                checks["private_native_model_frame"] = (
+                    private_model_call.get("is_error") is False
+                    and private_model.get("private_scope")
+                    == "exact-build-bookmarks-model-v1"
+                    and private_model.get("status")
+                    in {"identity_ready", "unavailable"}
+                )
+                checks["selected_1066_feudal_candidate"] = (
+                    private_model.get("candidate_identity_ready") is True
+                    and private_model.get("selected_bookmark_key")
+                    == "bm_1066_rags_to_riches"
+                    and private_model.get("supported_1066_government_key")
+                    == "feudal_government"
+                    and private_model.get("selected_date_low_raw")
+                    == 0x032AEB08
+                    and private_model.get("supported_1066_date_matches")
+                    is True
+                    and isinstance(
+                        private_model.get("supported_1066_candidate_index"),
+                        int,
+                    )
+                    and not isinstance(
+                        private_model.get("supported_1066_candidate_index"),
+                        bool,
+                    )
+                    and private_model["supported_1066_candidate_index"] >= 0
+                )
             return {
                 "mcp_sdk": "official-python-client",
                 "calls": calls,
@@ -1548,6 +1657,8 @@ async def _mcp_sequence(
                 "before": before,
                 "new_game": new_game,
                 "bookmarks_tree": inspection,
+                "private_bookmarks_model_call": private_model_call,
+                "private_bookmarks_model": private_model,
                 "tree_truncated": inspection.get("truncated"),
                 "read_only_after_new_game": True,
                 "ok": all(checks.values()),
@@ -1784,6 +1895,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     commit_roundtrip = bool(getattr(args, "commit_roundtrip", False))
     custom_mode_census = bool(getattr(args, "custom_mode_census", False))
     bookmarks_read_only = bool(getattr(args, "bookmarks_read_only", False))
+    bookmarks_model_private = bool(
+        getattr(args, "bookmarks_model_private", False)
+    )
+    if bookmarks_model_private and not bookmarks_read_only:
+        raise ValueError("--bookmarks-model-private requires --bookmarks-read-only")
     if bookmarks_read_only and (
         syntax_matrix is not None
         or custom_mode_census
@@ -1815,7 +1931,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "reason": "No frontend GUI or coat-of-arms domain exists in open_kaishek.",
         },
         "interaction_policy": {
-            "mcp_only": True,
+            "mcp_only": not bookmarks_model_private,
+            "mcp_baseline_private_native_read_only": bookmarks_model_private,
             "uses_ocr": False,
             "uses_keyboard": False,
             "uses_mouse": False,
@@ -1824,6 +1941,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "syntax_matrix_plan": syntax_matrix,
         "custom_mode_census_requested": custom_mode_census,
         "bookmarks_read_only_requested": bookmarks_read_only,
+        "bookmarks_model_private_requested": bookmarks_model_private,
         "commit_roundtrip_requested": commit_roundtrip,
         "large_source_requested": large_source is not None,
         "large_source_plan": large_source[1] if large_source else None,
@@ -1894,6 +2012,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 commit_roundtrip=commit_roundtrip,
                 large_source=large_source,
                 bookmarks_read_only=bookmarks_read_only,
+                bookmarks_model_private=bookmarks_model_private,
             )
         )
         report["sequence"] = sequence

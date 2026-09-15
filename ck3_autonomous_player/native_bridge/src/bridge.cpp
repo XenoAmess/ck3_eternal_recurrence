@@ -4397,6 +4397,94 @@ std::string FrontendGuiTreeInspectionResultFrame(
   return result;
 }
 
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+std::string FrontendBookmarkModelPrivateResultFrame(
+    std::string_view request_id, std::string_view step,
+    const xar::ck3_11906::FrontendBookmarkModelProbeV1 &probe) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":";
+  AppendJsonString(result, probe.candidate_identity_ready
+                               ? "identity_ready" : "unavailable");
+  result += ",\"private_scope\":\"exact-build-bookmarks-model-v1\"";
+  result += ",\"gui_chain_vtable_rvas\":[";
+  for (std::size_t i = 0; i < probe.gui_chain_vtable_rvas.size(); ++i) {
+    if (i != 0) result += ',';
+    result += Number(probe.gui_chain_vtable_rvas[i]);
+  }
+  result += "],\"interface_application_chain_level\":";
+  result += SignedNumber(probe.interface_application_chain_level);
+  result += ",\"setup_view_vtable_rva\":";
+  result += Number(probe.setup_view_vtable_rva);
+  result += ",\"setup_view_matches_bookmarks_root\":";
+  result += probe.setup_view_matches_bookmarks_root ? "true" : "false";
+  result += ",\"selected_bookmark_group_key\":";
+  if (probe.selected_bookmark_group_key_available) {
+    AppendJsonString(result, probe.selected_bookmark_group_key);
+  } else {
+    result += "null";
+  }
+  result += ",\"selected_bookmark_key\":";
+  if (probe.selected_bookmark_key_available) {
+    AppendJsonString(result, probe.selected_bookmark_key);
+  } else {
+    result += "null";
+  }
+  result += ",\"selected_date_raw\":";
+  result += probe.selected_date_raw_available
+                ? Number(probe.selected_date_raw) : "null";
+  result += ",\"selected_date_low_raw\":";
+  result += probe.selected_date_raw_available
+                ? Number(probe.selected_date_low_raw) : "null";
+  result += ",\"selected_character_index\":";
+  result += SignedNumber(probe.selected_character_index);
+  result += ",\"hovered_character_index\":";
+  result += SignedNumber(probe.hovered_character_index);
+  result += ",\"bookmark_character_count\":";
+  result += SignedNumber(probe.bookmark_character_count);
+  result += ",\"bookmark_character_capacity_raw\":";
+  result += Number(probe.bookmark_character_capacity_raw);
+  result += ",\"bookmark_character_allocator_raw\":";
+  result += SignedNumber(probe.bookmark_character_allocator_raw);
+  result += ",\"candidate_keys\":[";
+  if (probe.bookmark_character_keys_available) {
+    for (std::int32_t i = 0; i < probe.bookmark_character_count; ++i) {
+      if (i != 0) result += ',';
+      AppendJsonString(result,
+                       probe.bookmark_character_keys[
+                           static_cast<std::size_t>(i)]);
+    }
+  }
+  result += "],\"supported_1066_candidate_index\":";
+  result += SignedNumber(probe.supported_1066_candidate_index);
+  result += ",\"supported_1066_candidate_present\":";
+  result += probe.supported_1066_candidate_present ? "true" : "false";
+  result += ",\"supported_1066_government_key\":";
+  if (probe.government_type_keys_available &&
+      probe.supported_1066_candidate_index >= 0) {
+    AppendJsonString(
+        result,
+        probe.government_type_keys[static_cast<std::size_t>(
+            probe.supported_1066_candidate_index)]);
+  } else {
+    result += "null";
+  }
+  result += ",\"supported_1066_feudal\":";
+  result += probe.supported_1066_candidate_feudal ? "true" : "false";
+  result += ",\"supported_1066_date_matches\":";
+  result += probe.supported_1066_date_matches ? "true" : "false";
+  result += ",\"candidate_identity_ready\":";
+  result += probe.candidate_identity_ready ? "true" : "false";
+  result += ",\"unavailable_reason\":";
+  AppendJsonString(result, probe.unavailable_reason);
+  result += "}}";
+  return result;
+}
+#endif
+
 std::string_view TacticalDailySentinelStateName(
     xar::ck3_11906::TacticalDailySentinelStateV1 state) noexcept {
   using State = xar::ck3_11906::TacticalDailySentinelStateV1;
@@ -7286,6 +7374,10 @@ void RunConnectedSession(
                           xar::bridge::kMarriageRankedPrivateQueryStepV1
                    && step != kObservedHeirMarriagePrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kFrontendBookmarkModelProbeV1Step
+#endif
         ) {
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, step, false,
@@ -7318,6 +7410,10 @@ void RunConnectedSession(
                           kFrontendCoatOfArmsPatternGridInspectionV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
               step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step ||
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+              step == xar::ck3_11906::
+                          kFrontendBookmarkModelProbeV1Step ||
+#endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
               step == xar::ck3_11906::
                           kFrontendGuiStartSelectedBookmarkV1Step ||
@@ -7366,6 +7462,12 @@ void RunConnectedSession(
                                      kFrontendGuiPickAnyCharacterV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::pick_any_character;
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+              } else if (step == xar::ck3_11906::
+                                     kFrontendBookmarkModelProbeV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::probe_bookmark_model;
+#endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
               } else if (step == xar::ck3_11906::
                                      kFrontendGuiStartSelectedBookmarkV1Step) {
@@ -7451,6 +7553,13 @@ void RunConnectedSession(
                                                         inspect_coat_of_arms_pattern_grid) {
                     response = FrontendGuiTreeInspectionResultFrame(
                         request_id, step, query.result.tree_inspection);
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+                  } else if (query.operation == xar::ck3_11906::
+                                                    FrontendGuiRouteOperationV1::
+                                                        probe_bookmark_model) {
+                    response = FrontendBookmarkModelPrivateResultFrame(
+                        request_id, step, query.result.bookmark_model_probe);
+#endif
                   } else if (query.result.target_resolved &&
                              query.result.dispatch_invoked) {
                     response = CommandResultFrame(

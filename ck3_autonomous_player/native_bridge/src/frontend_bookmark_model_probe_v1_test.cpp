@@ -108,7 +108,9 @@ Fixture MakeFixture() {
   fixture.Put(0x9000 + 0x28, std::uint64_t{bookmark_key.size()});
   fixture.Put(0x9000 + 0x30, std::uint64_t{bookmark_key.size()});
   fixture.PutBytes(0xB000, bookmark_key);
-  fixture.Put(0x9000 + 0x38, std::uint64_t{0x12345678});
+  // Date+0x38 transfers this full qword into game setup. Only low32 encodes
+  // exact 1066.9.15; a sentinel upper cache must remain acceptable.
+  fixture.Put(0x9000 + 0x38, std::uint64_t{0xFFFFFFFF032AEB08});
   fixture.Put(0x9000 + 0x170, std::uint64_t{0xA000});
   fixture.Put(0x9000 + 0x178, std::uint32_t{5});
   fixture.Put(0x9000 + 0x17C, std::uint32_t{1});
@@ -164,7 +166,8 @@ int main() {
       !result.selected_bookmark_key_available ||
       result.selected_bookmark_key != "bm_1066_rags_to_riches" ||
       !result.selected_date_raw_available ||
-      result.selected_date_raw != 0x12345678 ||
+      result.selected_date_raw != 0xFFFFFFFF032AEB08 ||
+      result.selected_date_low_raw != 0x032AEB08 ||
       !result.bookmark_character_keys_available ||
       result.bookmark_character_count != 1 ||
       result.bookmark_character_keys[0] !=
@@ -174,9 +177,9 @@ int main() {
       !result.supported_1066_candidate_present ||
       result.supported_1066_candidate_index != 0 ||
       !result.supported_1066_candidate_feudal ||
-      result.candidate_identity_ready ||
-      result.unavailable_reason !=
-          "runtime_bookmark_date_unverified") {
+      !result.supported_1066_date_matches ||
+      !result.candidate_identity_ready ||
+      !result.unavailable_reason.empty()) {
     std::fprintf(stderr,
                  "verified frontend owner/model probe failed: reason=%s group=%s bookmark=%s count=%d candidate=%d feudal=%d government=%s\n",
                  result.unavailable_reason.c_str(),
@@ -188,11 +191,21 @@ int main() {
                  result.government_type_keys[0].c_str());
     return 1;
   }
+  fixture.Put(0x9000 + 0x38, std::uint64_t{0xFFFFFFFF032AEB09});
+  if (!Probe(fixture, result) || result.candidate_identity_ready ||
+      result.supported_1066_date_matches ||
+      result.unavailable_reason !=
+          "selected_bookmark_date_not_1066_09_15") {
+    std::fprintf(stderr, "wrong native launch date must block identity\n");
+    return 1;
+  }
+  fixture.Put(0x9000 + 0x38, std::uint64_t{0xFFFFFFFF032AEB08});
   fixture.Put(0x8000 + 0x108, std::uintptr_t{0});
   if (!Probe(fixture, result) ||
       result.selected_bookmark_group_key_available ||
       !result.selected_bookmark_key_available ||
-      !result.bookmark_character_keys_available) {
+      !result.bookmark_character_keys_available ||
+      !result.candidate_identity_ready) {
     std::fprintf(stderr, "cleared selected group is a legal bookmark state\n");
     return 1;
   }

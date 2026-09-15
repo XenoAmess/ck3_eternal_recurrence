@@ -1,6 +1,8 @@
 #include "xar_bridge/frontend_bookmark_model_probe_v1.hpp"
 
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 
 #include <cstring>
@@ -20,6 +22,7 @@ constexpr std::string_view kSupportedCharacterKey =
     "bookmark_rags_to_riches_petty_king_murchad";
 constexpr std::string_view kFeudalGovernmentKey = "feudal_government";
 constexpr std::uintptr_t kFinalGovernmentGetterRva = 0x2DAB260;
+constexpr std::uint32_t kSupportedDateLowRaw = 0x032AEB08;
 
 bool IsScriptKeyByte(char value) noexcept {
   return (value >= 'a' && value <= 'z') ||
@@ -216,6 +219,8 @@ bool ProbeFrontendBookmarkModelV1(
     return true;
   }
   output.selected_date_raw_available = true;
+  output.selected_date_low_raw =
+      static_cast<std::uint32_t>(output.selected_date_raw);
   if (!ReadAt(access, selected_bookmark, 0x170,
               output.bookmark_character_base_raw) ||
       !ReadAt(access, selected_bookmark, 0x178,
@@ -307,7 +312,18 @@ bool ProbeFrontendBookmarkModelV1(
   output.government_type_keys_available = true;
   output.supported_1066_candidate_feudal =
       output.government_type_keys[index] == kFeudalGovernmentKey;
-  output.unavailable_reason = "runtime_bookmark_date_unverified";
+  if (!output.supported_1066_candidate_feudal) {
+    output.unavailable_reason = "supported_1066_candidate_not_feudal";
+    return true;
+  }
+  output.supported_1066_date_matches =
+      output.selected_date_low_raw == kSupportedDateLowRaw;
+  if (!output.supported_1066_date_matches) {
+    output.unavailable_reason = "selected_bookmark_date_not_1066_09_15";
+    return true;
+  }
+  output.candidate_identity_ready = true;
+  output.unavailable_reason.clear();
   return true;
 }
 
