@@ -18,6 +18,7 @@ from xar_autoplayer.bridge.campaign_root_context_contract import (  # noqa: E402
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     _NativeCommandRejectedError,
 )
+from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
 from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
 
 
@@ -161,6 +162,21 @@ class R724CampaignRootReadRetryTests(unittest.TestCase):
         self.assertIn(
             _REJECTION, observed.exception.read_only_query_retry["second_error"]
         )
+
+    def test_initial_root_snapshot_failure_keeps_selected_step(self) -> None:
+        driver = _RejectedRootDriver()
+        service = self._service(driver)
+        with mock.patch.object(
+            driver, "take_snapshot",
+            side_effect=BridgeUnavailableError("root snapshot temporarily unavailable"),
+        ):
+            with self.assertRaises(BridgeUnavailableError) as observed:
+                service.auto_turn()
+        self.assertEqual(
+            observed.exception.selected_step,
+            QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+        )
+        self.assertEqual(driver.calls, [])
 
 
 if __name__ == "__main__":

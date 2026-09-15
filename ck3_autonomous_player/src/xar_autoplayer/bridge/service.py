@@ -702,13 +702,11 @@ class GameplayBridgeService:
             else None
         )
         event_option_number = parse_event_option_step(selected_step)
-        root_query_start = (
-            self.snapshot()
-            if selected_step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
-            else None
-        )
+        root_query_start = None
         root_query_retry = None
         try:
+            if selected_step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP:
+                root_query_start = self.snapshot()
             if (
                 event_option_number is not None
                 and isinstance(planned_event_id, int)
