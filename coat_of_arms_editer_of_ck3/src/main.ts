@@ -1,7 +1,51 @@
 import { createApp } from 'vue'
-import ElementPlus from 'element-plus'
+import {
+  ElAlert,
+  ElButton,
+  ElCollapse,
+  ElCollapseItem,
+  ElConfigProvider,
+  ElEmpty,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElInputNumber,
+  ElOption,
+  ElProgress,
+  ElScrollbar,
+  ElSelect,
+  ElSpace,
+  ElTabPane,
+  ElTable,
+  ElTableColumn,
+  ElTabs,
+  ElTag,
+} from 'element-plus'
 import 'element-plus/dist/index.css'
 import App from './App.vue'
 import './styles.css'
 
-createApp(App).use(ElementPlus).mount('#app')
+const app = createApp(App)
+for (const component of [
+  ElAlert,
+  ElButton,
+  ElCollapse,
+  ElCollapseItem,
+  ElConfigProvider,
+  ElEmpty,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElInputNumber,
+  ElOption,
+  ElProgress,
+  ElScrollbar,
+  ElSelect,
+  ElSpace,
+  ElTabPane,
+  ElTable,
+  ElTableColumn,
+  ElTabs,
+  ElTag,
+]) app.component(component.name!, component)
+app.mount('#app')
