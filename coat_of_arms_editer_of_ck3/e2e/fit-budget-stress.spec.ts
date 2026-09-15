@@ -144,7 +144,9 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     expect(evidence.provenance.nativeTileSearch.userBudgetAppliedWithoutClamp).toBe(budget)
     expect(evidence.provenance.drawnInstances).toBeLessThanOrEqual(budget)
     expect(evidence.provenance.evaluatedCandidates).toBeGreaterThan(evidence.provenance.drawnInstances)
-    observations.push({ budget, durationMs, ...evidence.provenance })
+    const observation = { budget, durationMs, ...evidence.provenance }
+    observations.push(observation)
+    console.info(JSON.stringify({ contract: contract.contract, observation }))
   }
 
   const finalEvidence = observations.at(-1)! as {
@@ -166,8 +168,9 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   expect(parsed.coatOfArms.coloredEmblems.reduce((sum, item) => sum + item.instances.length, 0))
     .toBe(finalEvidence.drawnInstances)
 
-  // Cancel during the expensive paint phase, then prove the worker slot can
-  // immediately start and complete a new run without stale-result pollution.
+  // Cancel during the expensive paint phase, then use the contract's minimal
+  // recovery probe to isolate worker-slot reuse from the already-measured
+  // 128-layer performance gate and prove there is no stale-result pollution.
   await page.locator('.fit-budget input').fill('10000')
   await page.getByRole('button', { name: '开始本地拟合' }).click()
   await expect(page.locator('.fit-progress small')).toContainText('原生矩形块残差细化', { timeout: 15_000 })
@@ -176,13 +179,16 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   await expect(page.locator('.fit-progress small')).toContainText('已取消')
   const cancellationLatencyMs = Date.now() - cancelStarted
   expect(cancellationLatencyMs).toBeLessThan(contract.maximumCancellationLatencyMs)
-  await page.locator('.fit-budget input').fill('128')
+  await page.locator('.fit-budget input').fill(String(contract.restartProbeBudget))
+  const restartStarted = Date.now()
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(report.locator('p')).toContainText('/128 层', {
-    timeout: contract.maximumDurationMs[128],
+  await expect(report.locator('p')).toContainText(`/${contract.restartProbeBudget} 层`, {
+    timeout: contract.maximumRestartRecoveryMs,
   })
+  const restartRecoveryMs = Date.now() - restartStarted
   const restartEvidence = JSON.parse((await report.getAttribute('data-fit-evidence'))!)
-  expect(restartEvidence.provenance.layerBudget).toBe(128)
+  expect(restartEvidence.provenance.layerBudget).toBe(contract.restartProbeBudget)
+  expect(restartRecoveryMs).toBeLessThan(contract.maximumRestartRecoveryMs)
 
   const heapAfter = await page.evaluate(() => (
     (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null
@@ -198,6 +204,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     contract: contract.contract,
     observations,
     cancellationLatencyMs,
+    restartRecoveryMs,
     restartBudget: restartEvidence.provenance.layerBudget,
     copiedUtf8Bytes,
     copiedLines,
