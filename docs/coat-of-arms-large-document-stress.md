@@ -1,7 +1,7 @@
 # CK3 家徽编辑器 10,000 实例完整文档压力证据
 
-状态：`WP5 in_progress / complete-document sub-gate passed`  
-日期：2026-09-15（Asia/Shanghai）  
+状态：`WP5 passed`
+日期：2026-09-16（Asia/Shanghai）
 合同：`ck3-coa-large-document-v1`
 
 ## 合同边界
@@ -89,5 +89,21 @@ pnpm exec playwright test e2e/large-document-stress.spec.ts --reporter=line
 pnpm build
 ```
 
-此证据只通过 WP5 的完整 10,000 实例文档子门禁。WP4 的真实 10,000 拟合预算、暂停/恢复/checkpoint、取消阶段矩阵和 GPU 批量
-候选搜索仍须独立验收；WP5 的直接画布拖拽/缩放/旋转和候选对比也仍待完成。
+## WP5 closure regression
+
+The final combined run at commit `9f41f719` passes all four browser packages:
+candidate comparison, bounded undo/autosave recovery, direct visual transforms,
+and the exact 10,000-instance document. The final large-document observation is
+import 4,189 ms, tail edit 885 ms, full copy 181 ms, project download 405 ms,
+autosave 1,407 ms, reload recovery 6,313 ms, 176,605,206 bytes same-page JS heap
+delta, 32 rendered instance cards, 10,000 copied instances, and zero non-GET
+requests. Every frozen gate passes.
+
+The same run exposed and fixed one editability defect: three candidate cards
+used a single flex row whose buttons could overflow into the next card, causing
+the later card to intercept clicks. Actions now use a bounded three-column grid;
+the E2E asserts every button rectangle remains within its owning card before it
+loads and deletes candidates.
+
+WP5 is therefore passed. This does not close WP4's independent real-fit GPU,
+pause/resume/cancel and resource-control scope.

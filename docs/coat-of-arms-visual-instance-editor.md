@@ -1,7 +1,7 @@
 # CK3 家徽可视化实例编辑证据
 
-状态：`WP5 in_progress / direct transform sub-gate passed`  
-日期：2026-09-15（Asia/Shanghai）  
+状态：`WP5 passed / direct transform gate passed`
+日期：2026-09-16（Asia/Shanghai）
 实现提交：`39e18a9d`
 
 ## 已实现合同
@@ -41,4 +41,5 @@ pnpm test
 pnpm build
 ```
 
-这只通过 WP5 的直接 transform 子门禁；候选对比、键盘微调/可访问性扩展，以及 WP4 拟合任务 pause/resume/checkpoint 仍待完成。
+候选对比、恢复、大文档和直接 transform 已在同一最终矩阵中 4/4 通过，WP5 已关闭。键盘微调/进一步可访问性增强属于后续体验优化；
+WP4 拟合任务 pause/resume/checkpoint 是独立门禁，不由本证据替代。
