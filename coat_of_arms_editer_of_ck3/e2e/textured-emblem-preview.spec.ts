@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto'
 import { expect, test } from '@playwright/test'
+import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
 
 function solidBgraDds(red: number, green: number, blue: number, alpha = 255): Buffer {
   const width = 4
@@ -45,17 +46,19 @@ test('composites the registered raw textured emblem through the standalone shade
       asset_sha256: digest.toUpperCase(), dds: { width: 4, height: 4, format: 'BGRA8' },
     }
   }
+  const manifestAssets = [
+    entry('pattern', 'pattern_solid.dds', solidBgraDds(255, 0, 0), 'designer_manifest'),
+    entry('colored_emblem', 'ce_block_02.dds', solidBgraDds(255, 255, 255), 'designer_manifest'),
+    entry('textured_emblem', '_default.dds', solidBgraDds(0, 255, 0, 128)),
+    entry('surface_mask', 'coa_mask_texture.dds', solidBgraDds(128, 128, 128)),
+  ]
   const manifest = {
     schema: 'ck3-coa-web-asset-pack-v1', schema_version: 1,
     pack_id: 'textured-preview-e2e', ck3_build: '1.19.0.6-test',
     source_manifest_sha256: 'E'.repeat(64),
     named_colors: { black: [0, 0, 0], white: [1, 1, 1] },
-    assets: [
-      entry('pattern', 'pattern_solid.dds', solidBgraDds(255, 0, 0), 'designer_manifest'),
-      entry('colored_emblem', 'ce_block_02.dds', solidBgraDds(255, 255, 255), 'designer_manifest'),
-      entry('textured_emblem', '_default.dds', solidBgraDds(0, 255, 0, 128)),
-      entry('surface_mask', 'coa_mask_texture.dds', solidBgraDds(128, 128, 128)),
-    ],
+    assets: manifestAssets,
+    vfs_receipt: syntheticBaseVfsReceipt(manifestAssets, 'E'.repeat(64)),
   }
   await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
     status: 200, contentType: 'application/json', body: JSON.stringify(manifest),

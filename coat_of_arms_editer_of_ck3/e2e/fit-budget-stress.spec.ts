@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto'
 import { expect, test } from '@playwright/test'
 import { FIT_BUDGET_STRESS_CONTRACT } from '../src/domain/fitBudgetContract'
 import { parseCoatOfArms } from '../src/domain/parser'
+import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
 
 function redChannelDds(): Buffer {
   const width = 4
@@ -77,16 +78,18 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
       dds: { width: 4, height: 4, format: 'BGRA8' },
     }
   }
+  const manifestAssets = [
+    entry('pattern', 'pattern_solid.dds', pattern),
+    entry('colored_emblem', 'ce_block_02.dds', emblem),
+    entry('textured_emblem', '_default.dds', emblem),
+    entry('surface_mask', 'coa_mask_texture.dds', surface, false),
+  ]
   const manifest = {
     schema: 'ck3-coa-web-asset-pack-v1', schema_version: 1,
     pack_id: 'fit-budget-e2e', ck3_build: '1.19.0.6-test',
     source_manifest_sha256: 'E'.repeat(64), named_colors: {},
-    assets: [
-      entry('pattern', 'pattern_solid.dds', pattern),
-      entry('colored_emblem', 'ce_block_02.dds', emblem),
-      entry('textured_emblem', '_default.dds', emblem),
-      entry('surface_mask', 'coa_mask_texture.dds', surface, false),
-    ],
+    assets: manifestAssets,
+    vfs_receipt: syntheticBaseVfsReceipt(manifestAssets, 'E'.repeat(64)),
   }
   await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
     status: 200, contentType: 'application/json', body: JSON.stringify(manifest),

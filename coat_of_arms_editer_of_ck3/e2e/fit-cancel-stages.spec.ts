@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 import { expect, test, type Page } from '@playwright/test'
 import { FIT_BUDGET_STRESS_CONTRACT } from '../src/domain/fitBudgetContract'
+import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
 
 function opaqueBgraDds(red: number, green: number, blue: number): Buffer {
   const width = 8
@@ -92,6 +93,12 @@ test('cancels and restarts cleanly from background, semantic refinement, and nat
     index === 0 ? 'ce_block_02.dds' : `ce_cancel_${String(index).padStart(2, '0')}.dds`,
     asset,
   ))
+  const manifestAssets = [
+    ...patterns,
+    ...emblems,
+    entry('textured_emblem', '_default.dds', asset),
+    entry('surface_mask', 'coa_mask_texture.dds', surface, false),
+  ]
   const manifest = {
     schema: 'ck3-coa-web-asset-pack-v1',
     schema_version: 1,
@@ -99,12 +106,8 @@ test('cancels and restarts cleanly from background, semantic refinement, and nat
     ck3_build: '1.19.0.6-test',
     source_manifest_sha256: 'C'.repeat(64),
     named_colors: {},
-    assets: [
-      ...patterns,
-      ...emblems,
-      entry('textured_emblem', '_default.dds', asset),
-      entry('surface_mask', 'coa_mask_texture.dds', surface, false),
-    ],
+    assets: manifestAssets,
+    vfs_receipt: syntheticBaseVfsReceipt(manifestAssets, 'C'.repeat(64)),
   }
   await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
     status: 200,

@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { expect, test } from '@playwright/test'
+import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
 
 function bgraDds(
   width: number,
@@ -76,32 +77,13 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
     entry('textured_emblem', '_default.dds', 0, emblem),
     entry('surface_mask', 'coa_mask_texture.dds', 0, surface, false),
   ]
-  const winnerSetSha256 = createHash('sha256').update(`${manifestAssets.map((item) => [
-    item.kind,
-    item.name,
-    item.asset_sha256,
-    `legacy/${item.name}`,
-  ].join('\0')).join('\n')}\n`, 'utf8').digest('hex').toUpperCase()
   const manifest = {
     schema: 'ck3-coa-web-asset-pack-v1', schema_version: 1,
     pack_id: 'synthetic-browser-e2e', ck3_build: '1.19.0.6-test',
     source_manifest_sha256: 'D'.repeat(64),
     named_colors: { black: [0, 0, 0], white: [1, 1, 1] },
     assets: manifestAssets,
-    vfs_receipt: {
-      schema: 'ck3-coa-vfs-receipt-v1', scope: 'base_game_only',
-      resolution_policy: 'single_source_no_conflicts', load_configuration_sha256: null,
-      winner_set_sha256: winnerSetSha256, resolved_asset_count: manifestAssets.length,
-      conflict_count: 0,
-      sources: [{
-        source_id: 'synthetic-base', source_kind: 'base_game', precedence_order: 0,
-        source_identity_sha256: 'D'.repeat(64),
-      }],
-      native_precedence_evidence: {
-        status: 'unverified', evidence_id: null, direct_path_winner_rule: 'unverified',
-        scope: 'synthetic browser fixture only', uncovered: ['all native VFS behavior'],
-      },
-    },
+    vfs_receipt: syntheticBaseVfsReceipt(manifestAssets, 'D'.repeat(64)),
   }
   await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
     status: 200, contentType: 'application/json', body: JSON.stringify(manifest),

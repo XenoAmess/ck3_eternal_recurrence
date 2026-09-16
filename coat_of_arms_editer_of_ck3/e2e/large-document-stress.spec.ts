@@ -7,6 +7,7 @@ import {
   serializeCoatOfArmsProject,
 } from '../src/domain/projectDocument'
 import { parseCoatOfArms } from '../src/domain/parser'
+import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
 
 function solidBgraDds(red: number, green: number, blue: number): Buffer {
   const width = 4
@@ -71,17 +72,19 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
       dds: { width: 4, height: 4, format: 'BGRA8' },
     }
   }
+  const manifestAssets = [
+    entry('pattern', 'pattern_solid.dds', pattern),
+    entry('colored_emblem', 'ce_block_02.dds', emblem),
+    entry('textured_emblem', '_default.dds', emblem),
+    entry('surface_mask', 'coa_mask_texture.dds', surface, false),
+  ]
   const manifest = {
     schema: 'ck3-coa-web-asset-pack-v1', schema_version: 1,
     pack_id: 'large-document-e2e', ck3_build: '1.19.0.6-test',
     source_manifest_sha256: 'D'.repeat(64),
     named_colors: { black: [0, 0, 0], white: [1, 1, 1] },
-    assets: [
-      entry('pattern', 'pattern_solid.dds', pattern),
-      entry('colored_emblem', 'ce_block_02.dds', emblem),
-      entry('textured_emblem', '_default.dds', emblem),
-      entry('surface_mask', 'coa_mask_texture.dds', surface, false),
-    ],
+    assets: manifestAssets,
+    vfs_receipt: syntheticBaseVfsReceipt(manifestAssets, 'D'.repeat(64)),
   }
   await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
     status: 200, contentType: 'application/json', body: JSON.stringify(manifest),
