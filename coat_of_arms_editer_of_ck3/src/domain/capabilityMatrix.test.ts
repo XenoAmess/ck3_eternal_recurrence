@@ -8,6 +8,7 @@ describe('CK3 clipboard syntax capability matrix', () => {
     const identities = syntaxCapabilityRows.map((row) => row.id)
     expect(new Set(identities).size).toBe(identities.length)
     expect(syntaxCapabilityRows.every((row) => row.evidence.startsWith('mcp-'))).toBe(true)
+    expect(syntaxCapabilityRows.every((row) => row.nativeEvidence.length > 0)).toBe(true)
     expect(syntaxCapabilityRows.every((row) => (
       ['parser', 'preview', 'editor', 'serializer'].every((stage) => (
         Boolean(row.coverage[stage as keyof typeof row.coverage])

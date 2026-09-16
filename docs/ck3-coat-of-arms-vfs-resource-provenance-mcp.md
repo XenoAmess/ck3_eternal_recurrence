@@ -45,11 +45,16 @@ R30 为 34/34 mount success、0 failure、0 overwrite；9 次 MCP 调用、0 omi
 
 直接影响不是“拟合图立刻更像”，而是提高 asset pack 的可信度：开发工具可以据实生成 direct-DDS source receipt，网页继续离线验证并消费 hash-bound winner set，避免把未解析的本地覆盖偷偷混进 pack。
 
-WP6 仍保持 `in_progress`，因为以下能力尚未闭合：
+R36 又通过官方 MCP client 对 exact 安装的全部 DLC source 做了结构化只读清点：29 份 `.dlc` 描述符中，没有任何内容树含
+CoA 候选目录，CoA TXT/DDS 均为 0。因此当前 1,630 项基础 pack 对这份 exact 安装不存在“漏掉已安装 DLC 直接 CoA 素材”的缺口。
+证据见 [`dlc-source-inventory-mcp-r36`](coat-of-arms-fit-artifacts/dlc-source-inventory-mcp-r36/README.md)。该结论不证明 entitlement，
+也不外推其他 build。
+
+以下能力继续作为明确限制，而不是被 direct-DDS projection 冒充已闭合：
 
 - CK3 内部 resolver/CoA registry 的结构化单资源 provenance；
 - `replace_path` 对注册前后时序的真实引擎语义；
-- definition merge 与 DLC/mod definition winner；
-- `textured_emblem` 的原生像素对照。
+- definition merge 与 mod definition winner。
 
-在这些缺口补齐前，浏览器只能把 direct-DDS projection 标为开发期来源证据，不能承诺与所有 CK3 资源解析路径完全一致。
+浏览器把 direct-DDS projection 标为开发期来源证据，不承诺与所有 CK3 资源解析路径完全一致。生产剪贴板路径不会展开
+`parent`，未知 definition/texture 会保真导出并明确提示；因此这些限制不会被静默转化成错误预览。

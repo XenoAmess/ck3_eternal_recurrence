@@ -1,0 +1,2058 @@
+{
+  "schema": "ck3-coat-of-arms-source-inventory-mcp-acceptance-v1",
+  "schema_version": 1,
+  "created_at": "2026-09-16T14:19:57.302676+00:00",
+  "interaction_policy": {
+    "official_mcp_client": true,
+    "read_only": true,
+    "launches_ck3": false,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false
+  },
+  "tool": {
+    "name": "ck3_query_coat_of_arms_installed_dlc_sources_v1",
+    "input_schema": {
+      "additionalProperties": false,
+      "required": [
+        "game_directory"
+      ],
+      "properties": [
+        "game_directory"
+      ]
+    }
+  },
+  "inventory": {
+    "schema": "ck3-coat-of-arms-installed-dlc-sources-v1",
+    "schema_version": 1,
+    "status": "indexed",
+    "ck3_build": "1.19.0.6",
+    "installed_descriptor_count": 29,
+    "dlc_with_coa_candidates": 0,
+    "coa_txt_file_count": 0,
+    "coa_dds_file_count": 0,
+    "items": [
+      {
+        "descriptor_relative_path": "dlc/dlc001_preorder/dlc001.dlc",
+        "descriptor_bytes": 264,
+        "descriptor_sha256": "26F0300C05A0F13600C7AFFC6637F623CDF130050CADB009C081AA9787D6ED09",
+        "name": "Garments of the Holy Roman Empire",
+        "localizable_name": "DLC001_PREORDER",
+        "steam_id": "1296730",
+        "content_relative_path": "dlc/dlc001_preorder",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc002_sp_day1/dlc002.dlc",
+        "descriptor_bytes": 256,
+        "descriptor_sha256": "6CF462A73B11F17508B17475B77989D751EC67A4C7C790BE5899DEE24E28EE8C",
+        "name": "Fashion of the Abbasid Court",
+        "localizable_name": "DLC002_SP_DAY1",
+        "steam_id": "1296731",
+        "content_relative_path": "dlc/dlc002_sp_day1",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc003_fp1/dlc003.dlc",
+        "descriptor_bytes": 234,
+        "descriptor_sha256": "B36C37B70E11F52AFFC6D22458C6654A59033D6757A690B211F1E1CB45CD7E02",
+        "name": "The Northern Lords",
+        "localizable_name": "DLC003_FP1",
+        "steam_id": "1303183",
+        "content_relative_path": "dlc/dlc003_fp1",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc004_ep1/dlc004.dlc",
+        "descriptor_bytes": 231,
+        "descriptor_sha256": "D39D0C95BE092A99850DCAFAE90316E457B9059D7A77EE8A9C79C7AA484A4F4A",
+        "name": "The Royal Court",
+        "localizable_name": "DLC004_EP1",
+        "steam_id": "1303182",
+        "content_relative_path": "dlc/dlc004_ep1",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc005_fp2/dlc005.dlc",
+        "descriptor_bytes": 234,
+        "descriptor_sha256": "C045849A8B71D22BA766E5CE9061AA7509BCBC10C8BD5B02D22A8A9680B4EB6A",
+        "name": "The Fate of Iberia",
+        "localizable_name": "DLC005_FP2",
+        "steam_id": "1303184",
+        "content_relative_path": "dlc/dlc005_fp2",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc006_bp1/dlc006.dlc",
+        "descriptor_bytes": 232,
+        "descriptor_sha256": "11DEBD589CA63CF5661CA3319AA321F35C77A34F441047445CBF932EE93DC901",
+        "name": "Friends and Foes",
+        "localizable_name": "DLC006_BP1",
+        "steam_id": "2114760",
+        "content_relative_path": "dlc/dlc006_bp1",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc007_ep2/dlc007.dlc",
+        "descriptor_bytes": 237,
+        "descriptor_sha256": "A7F6CF8D6AF1AA0CA2D3EDE352100B1DF64215ECC2D23C94088ED5DEDC0F20E5",
+        "name": "Tours and Tournaments",
+        "localizable_name": "DLC007_EP2",
+        "steam_id": "2311920",
+        "content_relative_path": "dlc/dlc007_ep2",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc008_sp2/dlc008.dlc",
+        "descriptor_bytes": 238,
+        "descriptor_sha256": "7B4620389D7C5CFDA699B3D4FE8DC249CFCB9EDCD887E47E6814099DF9A16EB7",
+        "name": "Elegance of the Empire",
+        "localizable_name": "DLC008_SP2",
+        "steam_id": "2311930",
+        "content_relative_path": "dlc/dlc008_sp2",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc009_bp2/dlc009.dlc",
+        "descriptor_bytes": 233,
+        "descriptor_sha256": "0572EEC211B1833410900CA29915C4B177EE4C12B41970428A1C6CD70700D6E0",
+        "name": "Wards and Wardens",
+        "localizable_name": "DLC009_BP2",
+        "steam_id": "2313541",
+        "content_relative_path": "dlc/dlc009_bp2",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc010_fp3/dlc010.dlc",
+        "descriptor_bytes": 232,
+        "descriptor_sha256": "B40F928E3FE8D7B4B303CB7F75710C2AFAA404F6A6D274438396C4E9606CC9AF",
+        "name": "Legacy of Persia",
+        "localizable_name": "DLC010_FP3",
+        "steam_id": "2313540",
+        "content_relative_path": "dlc/dlc010_fp3",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc011_ce1/dlc011.dlc",
+        "descriptor_bytes": 235,
+        "descriptor_sha256": "60B7007815A0E75C3476001E52A9F81E06F3CCFEC54BF0959445C2EADC8D826B",
+        "name": "Legends of the Dead",
+        "localizable_name": "DLC011_CE1",
+        "steam_id": "2671060",
+        "content_relative_path": "dlc/dlc011_ce1",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc012_afr/dlc012.dlc",
+        "descriptor_bytes": 236,
+        "descriptor_sha256": "16362178852DC4018F8BB28C7EC4CE50793E04757088D3D7EEF2E90A0B5FAFBE",
+        "name": "North African Attire",
+        "localizable_name": "DLC012_AFR",
+        "steam_id": "2671030",
+        "content_relative_path": "dlc/dlc012_afr",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc013_sp3/dlc013.dlc",
+        "descriptor_bytes": 237,
+        "descriptor_sha256": "0FC9EB18A059C30B73DF2B8EDF88C5138B2F11B9F8CF81A676B1A07A5CD4A295",
+        "name": "Couture of the Capets",
+        "localizable_name": "DLC013_SP3",
+        "steam_id": "2671040",
+        "content_relative_path": "dlc/dlc013_sp3",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc014_ep3/dlc014.dlc",
+        "descriptor_bytes": 230,
+        "descriptor_sha256": "CF896A36A257B0DA28B6A8F44896F001FF11C9F28C34A70916A478E8440A24B2",
+        "name": "Roads to Power",
+        "localizable_name": "DLC014_EP3",
+        "steam_id": "2671070",
+        "content_relative_path": "dlc/dlc014_ep3",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc015_bp3/dlc015.dlc",
+        "descriptor_bytes": 232,
+        "descriptor_sha256": "233032883EF251102892EBFBC0BE6F6AC1D728D993ED6FF50A6DFCFCEC57B9EA",
+        "name": "Wandering Nobles",
+        "localizable_name": "DLC015_BP3",
+        "steam_id": "2671080",
+        "content_relative_path": "dlc/dlc015_bp3",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc016_cp2/dlc016.dlc",
+        "descriptor_bytes": 237,
+        "descriptor_sha256": "3762AE8EFB5D3A2BA4D22BA1DBFF619E44297960337D4BC16D5EBC27906DD725",
+        "name": "West Slavic Attire",
+        "localizable_name": "DLC016_CP2",
+        "steam_id": "3275760",
+        "content_relative_path": "dlc/dlc016_cp2",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc017_cp3/dlc017.dlc",
+        "descriptor_bytes": 237,
+        "descriptor_sha256": "63A96E92B626E52B2B3045625CEE55BFFF12A85EC3A75BE062CDA94410538BA1",
+        "name": "Medieval Monuments",
+        "localizable_name": "DLC017_CP3",
+        "steam_id": "3315540",
+        "content_relative_path": "dlc/dlc017_cp3",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc018_cp4/dlc018.dlc",
+        "descriptor_bytes": 232,
+        "descriptor_sha256": "BAC8BEFDD772AE72D00C9613E2E114DCBA84F48F51B57DC82247C39791403442",
+        "name": "Arctic Attire",
+        "localizable_name": "DLC018_CP4",
+        "steam_id": "3315550",
+        "content_relative_path": "dlc/dlc018_cp4",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc019_sp4/dlc019.dlc",
+        "descriptor_bytes": 238,
+        "descriptor_sha256": "9F81F2D0EC72421A3C1027E81BEFE56A81AAD3E0D4AD79351EBD42F4FF9AA6AA",
+        "name": "Crowns of the World",
+        "localizable_name": "DLC019_SP4",
+        "steam_id": "3315500",
+        "content_relative_path": "dlc/dlc019_sp4",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc020_ce2/dlc020.dlc",
+        "descriptor_bytes": 238,
+        "descriptor_sha256": "7502AF9C7D1520604C7C5B97CD3BF1CB6B460F74D029AAA030A0654A8F4D2C7A",
+        "name": "Khans of the Steppe",
+        "localizable_name": "DLC020_CE2",
+        "steam_id": "3315510",
+        "content_relative_path": "dlc/dlc020_ce2",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc021_bp4/dlc021.dlc",
+        "descriptor_bytes": 230,
+        "descriptor_sha256": "D8A63874A4E76D995E8F76C07A1B87E2E5ECD375DCBB50369167235E1CAAD309",
+        "name": "Coronations",
+        "localizable_name": "DLC021_BP4",
+        "steam_id": "3315520",
+        "content_relative_path": "dlc/dlc021_bp4",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc022_ep4/dlc022.dlc",
+        "descriptor_bytes": 232,
+        "descriptor_sha256": "F5BD99A3A131854B205841E296FBC623E61CC58F0486AA3B4E8F8EF477EEC6A8",
+        "name": "All Under Heaven",
+        "localizable_name": "DLC022_EP4",
+        "steam_id": "3315530",
+        "content_relative_path": "dlc/dlc022_ep4",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc023_cp5/dlc023.dlc",
+        "descriptor_bytes": 247,
+        "descriptor_sha256": "22297C4B24D2465574257D7A9C474D0BCE7E761B4685F1D377922963A8A57222",
+        "name": "High Medieval Warfare Attire",
+        "localizable_name": "DLC023_CP5",
+        "steam_id": "3315560",
+        "content_relative_path": "dlc/dlc023_cp5",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc024_cp6/dlc024.dlc",
+        "descriptor_bytes": 233,
+        "descriptor_sha256": "069258CA5B9DE766C581F5DE6E04622A8B6D2738CEC1BAD28E8CF3A7F9ADBCD9",
+        "name": "Holy Buildings",
+        "localizable_name": "DLC024_CP6",
+        "steam_id": "3315570",
+        "content_relative_path": "dlc/dlc024_cp6",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc025_cp7/dlc025.dlc",
+        "descriptor_bytes": 239,
+        "descriptor_sha256": "45E6F78AAB704312695435E7C049800F4126B904B3F9573695B1C1FD063D8D35",
+        "name": "North Pacific Attire",
+        "localizable_name": "DLC025_CP7",
+        "steam_id": "3315580",
+        "content_relative_path": "dlc/dlc025_cp7",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc026_cp8/dlc026.dlc",
+        "descriptor_bytes": 237,
+        "descriptor_sha256": "480691694EACC216CA6920C3F2BAF11F45BE39814B276E1B6257ABE0FAF8128F",
+        "name": "East Asian Wonders",
+        "localizable_name": "DLC026_CP8",
+        "steam_id": "4232860",
+        "content_relative_path": "dlc/dlc026_cp8",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc027_cp9/dlc027.dlc",
+        "descriptor_bytes": 241,
+        "descriptor_sha256": "C27AC10EF013CE7299A55B0495A30F3C08D4472194D7D9524FC2FAE79BF83A45",
+        "name": "Celestial Court Attire",
+        "localizable_name": "DLC027_CP9",
+        "steam_id": "4232870",
+        "content_relative_path": "dlc/dlc027_cp9",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc028_sp5/dlc028.dlc",
+        "descriptor_bytes": 239,
+        "descriptor_sha256": "A213D547083A719049FDE8EA819179BA35EAB1AE5774F003141E5CB4AB04A128",
+        "name": "Symbols of Authority",
+        "localizable_name": "DLC028_SP5",
+        "steam_id": "4232890",
+        "content_relative_path": "dlc/dlc028_sp5",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      },
+      {
+        "descriptor_relative_path": "dlc/dlc029_mp1/dlc029.dlc",
+        "descriptor_bytes": 237,
+        "descriptor_sha256": "0CEE0C8D76DBB0A4FA686523340BD207D2BD166BECC0D5F4ACA3075B88BBD64C",
+        "name": "Songs of the Realm",
+        "localizable_name": "DLC029_MP1",
+        "steam_id": "3315590",
+        "content_relative_path": "dlc/dlc029_mp1",
+        "content_root_exists": true,
+        "has_coa_candidates": false,
+        "coa_txt_file_count": 0,
+        "coa_dds_file_count": 0,
+        "resource_candidates": {
+          "pattern_assets": {
+            "relative_directory": "gfx/coat_of_arms/patterns",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "colored_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/colored_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "textured_emblem_assets": {
+            "relative_directory": "gfx/coat_of_arms/textured_emblems",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "color_palette_definitions": {
+            "relative_directory": "gfx/coat_of_arms/color_palettes",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "emblem_layout_definitions": {
+            "relative_directory": "gfx/coat_of_arms/emblem_layouts",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "coat_of_arms_definitions": {
+            "relative_directory": "common/coat_of_arms/coat_of_arms",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "dynamic_definitions": {
+            "relative_directory": "common/coat_of_arms/dynamic_definitions",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "options": {
+            "relative_directory": "common/coat_of_arms/options",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          },
+          "template_lists": {
+            "relative_directory": "common/coat_of_arms/template_lists",
+            "directory_exists": false,
+            "txt": [],
+            "dds_count": 0
+          }
+        }
+      }
+    ],
+    "provenance": {
+      "mode": "installed-dlc-direct-file-inventory-static",
+      "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+      "dlc_relative_directory": "game/dlc",
+      "descriptor_pattern": "*/*.dlc",
+      "candidate_scan_depth": "direct-files-only",
+      "installed_files_observed": true,
+      "store_entitlement_observed": false,
+      "dlc_load_disabled_list_applied": false,
+      "engine_mount_observed": false,
+      "resource_merge_applied": false
+    }
+  },
+  "checks": {
+    "closed_input_schema": true,
+    "call_not_error": true,
+    "exact_build_bound": true,
+    "physical_inventory_only": true,
+    "descriptor_count_matches": true
+  },
+  "ok": true
+}

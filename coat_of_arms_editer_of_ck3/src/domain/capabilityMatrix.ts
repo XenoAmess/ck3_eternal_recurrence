@@ -9,6 +9,7 @@ export interface SyntaxCapabilityRow {
   example: string
   engineOutcome: string
   evidence: 'mcp-applied' | 'mcp-detected' | 'mcp-not-detected'
+  nativeEvidence: string
   editorPolicy: EditorPolicy
   coverage: {
     parser: CapabilityStage
@@ -29,7 +30,7 @@ export interface SyntaxCapabilityRow {
  * docs/ck3-coat-of-arms-clipboard-import-capability.md §5–§7.
  * Keep this list conservative: syntax not present here is not advertised.
  */
-const baseSyntaxCapabilityRows: readonly Omit<SyntaxCapabilityRow, 'coverage'>[] = [
+const baseSyntaxCapabilityRows: readonly Omit<SyntaxCapabilityRow, 'coverage' | 'nativeEvidence'>[] = [
   {
     id: 'wrapper',
     classification: 'supported',
@@ -91,13 +92,13 @@ const baseSyntaxCapabilityRows: readonly Omit<SyntaxCapabilityRow, 'coverage'>[]
     classification: 'supported',
     syntax: 'textured_emblem = { texture = "_default.dds" }',
     example: 'coa = { textured_emblem = { texture = "_default.dds" } }',
-    engineOutcome: 'applied; texture preserved by Copy',
+    engineOutcome: 'applied; texture preserved by Copy; calibrated framebuffer passed',
     evidence: 'mcp-applied',
     editorPolicy: 'warn',
-    note: '已证明 _default.dds 进入 designer working state；未证明最终像素或完整字段集。',
+    note: 'R35 已证明 _default.dds 的浏览器预览通过原生空间像素门禁；其他 texture 和更广字段集仍未证明。',
     english: {
-      syntax: 'textured_emblem = { texture = "_default.dds" }', engineOutcome: 'applied; texture preserved by Copy',
-      note: '_default.dds is proven to enter designer working state; final pixels and a broader field set are not proven.',
+      syntax: 'textured_emblem = { texture = "_default.dds" }', engineOutcome: 'applied; texture preserved by Copy; calibrated framebuffer passed',
+      note: 'R35 proves that the browser preview for _default.dds passes the native spatial pixel gates. Other textures and a broader field set remain unproven.',
     },
   },
   {
@@ -136,10 +137,10 @@ const baseSyntaxCapabilityRows: readonly Omit<SyntaxCapabilityRow, 'coverage'>[]
     engineOutcome: 'applied; parent reference preserved by Copy',
     evidence: 'mcp-applied',
     editorPolicy: 'warn',
-    note: '与 color1 共存和 parent-only 都可应用；编辑器保留引用，但继承后最终像素仍需 CK3 确认。',
+    note: 'R21 证明剪贴板预览保留 parent 但不物化继承；编辑器同样保留引用并只绘制显式字段。',
     english: {
       syntax: 'parent = c_england', engineOutcome: 'applied; parent reference preserved by Copy',
-      note: 'Both parent-only and parent with color1 apply. The editor preserves the reference; inherited final pixels still need CK3 confirmation.',
+      note: 'R21 proves the clipboard preview preserves parent without materializing inheritance. The editor likewise preserves the reference and renders explicit fields only.',
     },
   },
   {
@@ -233,10 +234,10 @@ const browserCoverage: Record<string, SyntaxCapabilityRow['coverage']> = {
   'core-render-description': { parser: 'full', preview: 'full', editor: 'full', serializer: 'full' },
   'hsv-and-comments': { parser: 'normalized', preview: 'full', editor: 'normalized', serializer: 'normalized' },
   'static-variable': { parser: 'normalized', preview: 'full', editor: 'normalized', serializer: 'normalized' },
-  'textured-default': { parser: 'full', preview: 'limited', editor: 'limited', serializer: 'full' },
+  'textured-default': { parser: 'full', preview: 'full', editor: 'limited', serializer: 'full' },
   'missing-resource': { parser: 'full', preview: 'missing', editor: 'limited', serializer: 'full' },
   'empty-or-defaulted': { parser: 'limited', preview: 'limited', editor: 'full', serializer: 'normalized' },
-  parent: { parser: 'full', preview: 'missing', editor: 'limited', serializer: 'full' },
+  parent: { parser: 'full', preview: 'limited', editor: 'limited', serializer: 'full' },
   'duplicate-scalar': { parser: 'normalized', preview: 'full', editor: 'full', serializer: 'normalized' },
   'multiple-root': { parser: 'rejected', preview: 'not-applicable', editor: 'rejected', serializer: 'not-applicable' },
   'body-only': { parser: 'rejected', preview: 'not-applicable', editor: 'rejected', serializer: 'not-applicable' },
@@ -245,8 +246,27 @@ const browserCoverage: Record<string, SyntaxCapabilityRow['coverage']> = {
   'unknown-field': { parser: 'rejected', preview: 'not-applicable', editor: 'rejected', serializer: 'not-applicable' },
 }
 
+const nativeEvidenceById: Readonly<Record<string, string>> = {
+  wrapper: '15-case MCP Apply/Copy matrix',
+  'core-render-description': 'R17/R18 calibrated native corpus',
+  'hsv-and-comments': '15-case MCP Apply/Copy matrix',
+  'static-variable': '15-case MCP Apply/Copy matrix',
+  'textured-default': 'R35 calibrated framebuffer + Copy/reapply',
+  'missing-resource': '15-case MCP detection matrix',
+  'empty-or-defaulted': '15-case MCP Apply/Copy matrix',
+  parent: 'R21 reference-free framebuffer matrix',
+  'duplicate-scalar': '15-case MCP Apply/Copy matrix',
+  'multiple-root': '15-case MCP Apply/Copy matrix',
+  'body-only': '15-case MCP rejection matrix',
+  'script-vm-families': '15-case MCP rejection matrix',
+  'template-dsl': '15-case MCP rejection matrix',
+  'unknown-field': '15-case MCP rejection matrix',
+}
+
 export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = baseSyntaxCapabilityRows.map((row) => {
   const coverage = browserCoverage[row.id]
+  const nativeEvidence = nativeEvidenceById[row.id]
   if (!coverage) throw new Error(`Capability row ${row.id} has no browser coverage matrix`)
-  return { ...row, coverage }
+  if (!nativeEvidence) throw new Error(`Capability row ${row.id} has no native evidence label`)
+  return { ...row, coverage, nativeEvidence }
 })

@@ -1,13 +1,14 @@
 # CK3 家徽编辑器 Beta 工作计划
 
-> 状态：执行中（2026-09-16）；WP0–WP5 与 WP7 已通过，仅 WP6 仍有未闭合门禁
+> 状态：Beta 门禁已通过（2026-09-16）；WP0–WP7 全部完成，未覆盖能力按矩阵显式降级
 >
 > 产品目录：`coat_of_arms_editer_of_ck3/`
 >
 > 目标：从 Alpha 的“可用近似器”推进到可验证、可压缩、可在大预算下稳定工作的纯浏览器 Beta。
 >
 > WP0 浏览器接缝修复、WP1 大载荷文本闭环、WP2 精确剪枝/压缩及压缩文本原生闭环均已通过；WP7 已删除
-> Quarkus/REST 生产残留并以完整 production 请求观测闭环。当前继续处理 WP6 的 VFS/资源覆盖剩余范围。
+> Quarkus/REST 生产残留并以完整 production 请求观测闭环。WP6 已用 R35 `textured_emblem` 像素对照、R36 DLC 来源清单与
+> 五列能力矩阵收口；运行时 definition registry 等非产品必需能力继续作为明确限制，不冒充已支持。
 > 128 KiB 已由真实 380,862-byte CK3 round-trip 明确证明只是旧桥合同，不是当前实测引擎上限。
 
 机器可读状态见 [`coat-of-arms-fit-artifacts/beta-progress.json`](coat-of-arms-fit-artifacts/beta-progress.json)，WP0 完整证据见
@@ -194,7 +195,7 @@ GPU 目前不代替 CPU 纹章正向渲染；它批量渲染 loss contribution �
 
 ### WP5：编辑体验与项目状态（P1，2–3 工程日）
 
-当前状态：`in_progress`。恰有 10,000 绘制实例的独立压力文档已通过完整序列化、复制、重新解析、项目保存恢复和尾部编辑；
+当前状态：`passed`。恰有 10,000 绘制实例的独立压力文档已通过完整序列化、复制、重新解析、项目保存恢复和尾部编辑；
 页面只物化 32 个实例卡，完整模型为 1,653,890 UTF-8 bytes / 70,014 行。首次同步整图预览令尾部编辑耗时 4,683 ms、越过
 预先冻结的 1,000 ms 门禁；延后超大文档实时预览后降至 724 ms。证据见
 [10,000 实例完整文档压力证据](coat-of-arms-large-document-stress.md)。`d265503e` 又通过有界撤销/重做、IndexedDB 单槽自动保存及
@@ -212,7 +213,7 @@ GPU 目前不代替 CPU 纹章正向渲染；它批量渲染 loss contribution �
 
 交付：`parent`/`textured_emblem` 合成；安全 SVG 栅格化；asset-pack 版本选择/导入；DLC/mod VFS receipt；Firefox/WebKit E2E；主 bundle code splitting；移动端退化策略；Service Worker/asset shard 缓存。
 
-当前状态：`in_progress`。安全 SVG、唯一注册 `_default.dds` 的 `textured_emblem` 浏览器 shader 模型、简体中文/英文、素材包目录
+当前状态：`passed`。安全 SVG、唯一注册 `_default.dds` 的 `textured_emblem` 浏览器 shader 模型、简体中文/英文、素材包目录
 导入、移动端退化、Service Worker 离线恢复、主 bundle code splitting 以及 Chromium/Firefox/WebKit 核心流程已经通过自动化门禁。
 Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/`，公网 canonical URL 与入口资源均
 回读 `200`；无尾斜杠地址为预期 `301`。部署证据见 `ck3-coat-of-arms-github-pages.md`。`parent` 引用现在会在预览区就地显示中英文边界、仍完整保留导出，不再静默冒充已合成。R21 的 MCP-only
@@ -239,8 +240,7 @@ byte-twin reference，6/6 Apply/Copy/capture 和 6 个预登记像素 pair gate 
 该 pair 的 `46,518/46,518` 个共同可见像素不同，MAE `0.3960397086`。R25 再以基础游戏独有 pattern 建立独立对照，4/4 原生流程
 正常，但“基础游戏资源会与 missing control 等价”的预登记假设也 RED：`47,786/47,786` 个共同可见像素不同，MAE
 `0.3996776478`。两个模组已由日志证明启用和挂载，后载描述符确含 `replace_path`；R24/R25 均冻结为反例，不能事后反转期待。
-下一工作包转为补运行时 VFS/CoA registry provenance 的结构化 MCP，再决定可支持的胜者模型。现仍未覆盖 DLC mount、闭合后的
-`replace_path` 结论和 definition merge，不能据此把 WP6 宣称为全部完成。证据见
+`replace_path` 不进入产品 winner 模型：R24/R25 的反例被保留，导入器不会按未经证明的删除语义静默丢资源。证据见
 [`vfs-winner-native-r22`](coat-of-arms-fit-artifacts/vfs-winner-native-r22/README.md) 与
 [`vfs-extended-native-r23`](coat-of-arms-fit-artifacts/vfs-extended-native-r23/README.md)、
 [`vfs-replace-path-native-r24`](coat-of-arms-fit-artifacts/vfs-replace-path-native-r24/README.md)、
@@ -258,8 +258,9 @@ lifecycle observer 的 35/35 A/B 快照一致。R26 的“四条即覆盖不足�
 R29/R30 又补上 `ck3_project_coat_of_arms_vfs_asset_winner_v1`：它从完整实时 mount receipt 有界检查目录/ZIP 的 direct DDS 字节，
 按 R22/R23 已实证的后挂载优先合同生成 hash-bound winner projection。R30 在 Steam 离线的 exact-build 会话中通过官方 MCP 实际查询
 四条路径；34/34 mount、四项 projection 与受管清理全部 GREEN，`pattern_solid.dds` 的 base ordinal 3 与 later-mod ordinal 34
-同时命中，投影 winner 为 34。该结果仍明确不是引擎内部 resolver 或 CoA registry 调用，也不执行 `replace_path`/definition merge；
-WP6 因此继续 `in_progress`。合同与边界见
+同时命中，投影 winner 为 34。该结果仍明确不是引擎内部 resolver 或 CoA registry 调用，也不执行 `replace_path`/definition merge。
+R36 随后用官方 MCP 清点 exact 安装的 29 份 DLC 描述符，实际 CoA TXT/DDS 候选均为 0；所以默认 pack 对当前 build 不存在已安装
+DLC 直接素材遗漏。合同与边界见
 [`ck3-coat-of-arms-vfs-resource-provenance-mcp.md`](ck3-coat-of-arms-vfs-resource-provenance-mcp.md)。
 
 MCP 优先补完已新增 exact-build 家徽定义索引/读取工具：可分页读取基础游戏 block、完整源码、别名链和来源 SHA-256，
@@ -267,6 +268,10 @@ MCP 优先补完已新增 exact-build 家徽定义索引/读取工具：可分�
 详见 [`ck3-coat-of-arms-parent-definition-mcp.md`](ck3-coat-of-arms-parent-definition-mcp.md)。R21 又新增 reference-free capture MCP，并用预先登记的量化噪声门限
 闭合 `parent` 剪贴板预览语义；证据见 [`parent-semantics-native-r21`](coat-of-arms-fit-artifacts/parent-semantics-native-r21/README.md)。
 这仍不冒充 title/dynasty 其他加载路径的继承语义或 DLC/mod VFS 胜者。
+
+页面能力矩阵现逐行显示 parser、preview、editor、serializer 和 native evidence，`textured_emblem` 绑定 R35，`parent` 绑定 R21；
+未知 texture/definition 只保真导出并显示限制，不静默消失。完整矩阵见
+[`ck3-coat-of-arms-editor-capability-matrix.md`](ck3-coat-of-arms-editor-capability-matrix.md)。
 
 退出条件：能力矩阵明确每种语法/资源在 parser、preview、editor、serializer、native evidence 五列的状态；不能预览的结构不得静默消失。
 

@@ -2172,6 +2172,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                 <template #default="{ row }">{{ capabilityStageLabel(row.coverage.serializer) }}</template>
               </el-table-column>
               <el-table-column prop="engineOutcome" :label="t('nativeResult')" min-width="170" show-overflow-tooltip />
+              <el-table-column prop="nativeEvidence" :label="t('nativeEvidence')" min-width="190" show-overflow-tooltip />
               <el-table-column prop="editorPolicy" :label="t('editorPolicy')" width="105" />
               <el-table-column prop="note" :label="t('boundary')" min-width="250" show-overflow-tooltip />
             </el-table>
