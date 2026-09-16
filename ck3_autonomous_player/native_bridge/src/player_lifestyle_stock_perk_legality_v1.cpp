@@ -139,6 +139,7 @@ bool ReadStableKey(const StockPerkLegalityAccessV1 &access,
 bool FrameValid(const StockPerkLegalityFrameV1 &frame) noexcept {
   return frame.episode_run_id[0] != 0 && frame.snapshot_id[0] != 0 &&
          frame.public_revision != 0 && frame.native_revision != 0 &&
+         frame.proof_epoch != 0 &&
          frame.date_raw > 0 && frame.paused && frame.map_ready &&
          frame.played_character_alive && frame.storage_round_trip &&
          frame.played_character != 0 && frame.played_character_id != 0 &&
@@ -277,6 +278,26 @@ Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
 
 } // namespace
 
+StockPerkLegalityEnvironmentV1 BindStockPerkLegalityEnvironmentV1(
+    std::uintptr_t module_base, bool exact_build_admitted,
+    std::string_view admitted_exe_sha256) noexcept {
+  StockPerkLegalityEnvironmentV1 output{};
+  output.exact_build_admitted = exact_build_admitted;
+  output.admitted_exe_sha256 = admitted_exe_sha256;
+  output.module_base = module_base;
+  if (!exact_build_admitted || module_base == 0 ||
+      admitted_exe_sha256 != kStockPerkLegalityExeSha256V1) {
+    return output;
+  }
+  output.get_character_perk_database =
+      reinterpret_cast<StockPerkGetDatabaseV1>(module_base +
+                                                kDatabaseGetterRva);
+  output.validate_perk_command =
+      reinterpret_cast<StockPerkValidateCommandV1>(module_base +
+                                                    kPerkValidatorRva);
+  return output;
+}
+
 StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
     const StockPerkLegalityEnvironmentV1 &env,
     const StockPerkLegalityAccessV1 &access) noexcept {
@@ -332,6 +353,7 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
   out.observed_target_owned = first.player_state.target_perk_owned;
   out.scanned_database_rows = first.span.count;
   out.validator_invoked_twice = true;
+  out.target_definition = first.target_definition;
   return out;
 }
 

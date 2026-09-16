@@ -23,6 +23,7 @@ struct StockPerkLegalityFrameV1 {
   std::array<char, 48> snapshot_id{};
   std::uint64_t public_revision = 0;
   std::uint64_t native_revision = 0;
+  std::uint64_t proof_epoch = 0;
   std::int32_t date_raw = 0;
   std::uint32_t played_character_id = 0xFFFFFFFFU;
   std::uintptr_t played_character = 0;
@@ -97,7 +98,15 @@ struct StockPerkLegalityResultV1 {
   bool observed_target_owned = false;
   std::int32_t scanned_database_rows = -1;
   bool validator_invoked_twice = false;
+  // Valid only for the captured application-main transaction. The private
+  // formal wire may use it for one immediate revalidation/submit; it must
+  // never be retained across another capture or published over JSON.
+  std::uintptr_t target_definition = 0;
 };
+
+StockPerkLegalityEnvironmentV1 BindStockPerkLegalityEnvironmentV1(
+    std::uintptr_t module_base, bool exact_build_admitted,
+    std::string_view admitted_exe_sha256) noexcept;
 
 // Private perk-only source. It evaluates a stock command twice, never submits
 // it and never reads, opens or binds the lifestyle GUI window. Unknown input

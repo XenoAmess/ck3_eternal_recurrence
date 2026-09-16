@@ -193,6 +193,11 @@ Failure ValidateState(const State &state) noexcept {
       state.legal_perk_candidates.data(),
       state.legal_perk_candidates.size(), false);
   if (candidate_failure != Failure::none) return candidate_failure;
+  if (state.legal_perk_candidates_policy_scoped &&
+      (state.legal_perk_candidate_status != CandidateStatus::available ||
+       state.legal_perk_candidate_count > 1)) {
+    return Failure::legal_perk_collection_invalid;
+  }
 
   if (!UniqueCandidateKeys(state.legal_focus_candidates,
                            state.legal_focus_candidate_count) ||
@@ -513,7 +518,7 @@ template <std::size_t Capacity>
 void AppendCandidateCollection(
     std::string &output, CandidateStatus status, CandidateFailure reason,
     const std::array<game::PlayerLifestyleLegalCandidateV1, Capacity> &values,
-    std::uint32_t count) {
+    std::uint32_t count, bool policy_scoped = false) {
   output += "{\"status\":";
   AppendEscaped(output,
                 status == CandidateStatus::available ? "available"
@@ -523,6 +528,7 @@ void AppendCandidateCollection(
     AppendEscaped(output, PlayerLifestyleCandidateCollectionFailureKeyV1(
                               reason));
   }
+  if (policy_scoped) output += ",\"scope\":\"policy_target\"";
   output += ",\"items\":[";
   for (std::uint32_t index = 0; index < count; ++index) {
     if (index != 0) output.push_back(',');
@@ -870,13 +876,14 @@ std::string SerializePlayerLifestyleSnapshotV1(
       output, snapshot.state.legal_focus_candidate_status,
       snapshot.state.legal_focus_candidate_unavailable_reason,
       snapshot.state.legal_focus_candidates,
-      snapshot.state.legal_focus_candidate_count);
+      snapshot.state.legal_focus_candidate_count, false);
   output += ",\"legal_perk_candidates\":";
   AppendCandidateCollection(
       output, snapshot.state.legal_perk_candidate_status,
       snapshot.state.legal_perk_candidate_unavailable_reason,
       snapshot.state.legal_perk_candidates,
-      snapshot.state.legal_perk_candidate_count);
+      snapshot.state.legal_perk_candidate_count,
+      snapshot.state.legal_perk_candidates_policy_scoped);
 
   output += ",\"readiness\":{\"current_focus_ready\":";
   AppendBool(output, snapshot.readiness.current_focus_ready);

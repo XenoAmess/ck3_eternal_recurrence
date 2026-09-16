@@ -89,6 +89,7 @@ struct Fixture {
     std::memcpy(frame.snapshot_id.data(), "native:23", sizeof("native:23"));
     frame.public_revision = 23;
     frame.native_revision = 7;
+    frame.proof_epoch = 7;
     frame.date_raw = 53178312;
     frame.played_character_id = global_player_id;
     frame.played_character =
@@ -210,8 +211,21 @@ void TestLegalWithoutWindow() {
               f.capture_calls == 3 && f.command_fields_valid,
           "both native validations must use the exact command in one frame");
   Require(result.scanned_database_rows == 1 &&
-              result.observed_unspent_points == 1,
+              result.observed_unspent_points == 1 &&
+              result.target_definition == f.database_rows[0],
           "complete observed database/player state must be published");
+}
+
+void TestProductionBinder() {
+  const auto bound = BindStockPerkLegalityEnvironmentV1(
+      Fixture::kModule, true, kStockPerkLegalityExeSha256V1);
+  Require(bound.module_base == Fixture::kModule &&
+              reinterpret_cast<std::uintptr_t>(
+                  bound.get_character_perk_database) ==
+                  Fixture::kModule + 0x88EC20 &&
+              reinterpret_cast<std::uintptr_t>(bound.validate_perk_command) ==
+                  Fixture::kModule + 0x25DFAF0,
+          "production binder must expose only the frozen exact functions");
 }
 
 void TestObservedNativeRejection() {
@@ -302,7 +316,8 @@ int main() {
     TestDuplicateDefinitionAndAbiMismatch();
     TestBoundedDatabaseWithoutCapacityGuess();
     TestFrameDriftAndManualReservationBoundary();
-    std::cout << "stock perk legality private fixture: 6/6 green\n";
+    TestProductionBinder();
+    std::cout << "stock perk legality private fixture: 7/7 green\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "stock perk legality private fixture RED: " << error.what()

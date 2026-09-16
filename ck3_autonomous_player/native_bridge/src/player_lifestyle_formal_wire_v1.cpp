@@ -107,6 +107,120 @@ bool CaptureWindowFrame(void *opaque,
   return true;
 }
 
+bool CaptureStockPerkFrame(void *opaque,
+                           StockPerkLegalityFrameV1 &output) noexcept {
+  auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
+  if (context == nullptr ||
+      context->snapshot_id.size() >= output.snapshot_id.size() ||
+      context->episode_run_id.size() >= output.episode_run_id.size()) {
+    return false;
+  }
+  std::uintptr_t character = 0;
+  game::Snapshot current{};
+  if (!CaptureCommon(*context, character, current)) return false;
+  output = {};
+  std::copy(context->episode_run_id.begin(), context->episode_run_id.end(),
+            output.episode_run_id.begin());
+  std::copy(context->snapshot_id.begin(), context->snapshot_id.end(),
+            output.snapshot_id.begin());
+  output.public_revision = context->expected_revision;
+  output.native_revision = context->expected_revision;
+  output.proof_epoch = PlayerLifestyleFormalFrameProofEpochV1(
+      context->expected_revision, context->stamp.pump_epoch);
+  output.date_raw = current.date_raw;
+  output.played_character_id =
+      static_cast<std::uint32_t>(current.played_character_id);
+  output.played_character = character;
+  output.paused = current.paused;
+  output.map_ready = current.map_ready;
+  output.played_character_alive = current.played_character_alive;
+  output.storage_round_trip = true;
+  return true;
+}
+
+bool ReadStockPerkPlayerState(
+    void *opaque, const StockPerkLegalityFrameV1 &frame,
+    StockPerkLegalityPlayerStateV1 &output) noexcept {
+  output = {};
+  auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
+  if (context == nullptr || context->snapshot == nullptr ||
+      context->snapshot->status !=
+          game::PlayerLifestyleSnapshotStatusV1::available ||
+      context->snapshot->player_character_id < 0 ||
+      static_cast<std::uint32_t>(context->snapshot->player_character_id) !=
+          frame.played_character_id ||
+      context->snapshot->public_revision != frame.public_revision ||
+      context->snapshot->native_revision != frame.native_revision ||
+      context->snapshot->proof_epoch != frame.proof_epoch ||
+      context->snapshot->date_raw != frame.date_raw ||
+      !context->snapshot->readiness.current_focus_ready ||
+      !context->snapshot->readiness.lifestyle_progress_ready ||
+      !context->snapshot->readiness.owned_perks_ready ||
+      !context->snapshot->readiness.same_frame_ready) {
+    return false;
+  }
+  const auto &state = context->snapshot->state;
+  if (!state.current_lifestyle_progress_present ||
+      state.current_lifestyle_progress.unspent_perk_points < 0 ||
+      !AssignPlayerLifestyleWindowStableKeyV1(
+          PlayerLifestyleStableKeyViewV1(
+              state.current_lifestyle_progress.lifestyle_key),
+          output.current_lifestyle_key)) {
+    return false;
+  }
+  output.unspent_perk_points =
+      state.current_lifestyle_progress.unspent_perk_points;
+  output.owned_perk_state_known = true;
+  output.target_perk_owned = false;
+  for (std::uint32_t index = 0; index < state.owned_perk_count; ++index) {
+    if (PlayerLifestyleStableKeyViewV1(state.owned_perk_keys[index]) ==
+        kStockPerkLegalityTargetV1) {
+      output.target_perk_owned = true;
+      break;
+    }
+  }
+  return true;
+}
+
+bool PublishStockPerkCandidates(
+    const StockPerkLegalityResultV1 &source,
+    game::PlayerLifestyleWindowCandidatesV1 &output) noexcept {
+  using Status = StockPerkLegalityStatusV1;
+  if (source.status != Status::observed_native_legal &&
+      source.status != Status::observed_native_illegal) {
+    return false;
+  }
+  output = {};
+  output.status = game::PlayerLifestyleWindowCandidatesStatusV1::available;
+  output.unavailable_reason =
+      game::PlayerLifestyleWindowCandidatesFailureV1::none;
+  std::copy(source.frame.snapshot_id.begin(), source.frame.snapshot_id.end(),
+            output.snapshot_id.begin());
+  output.public_revision = source.frame.public_revision;
+  output.native_revision = source.frame.native_revision;
+  output.proof_epoch = source.frame.proof_epoch;
+  output.date_raw = source.frame.date_raw;
+  output.player_character_id = source.frame.played_character_id;
+  // No focus definition source is available without the stock window. Keep
+  // that collection explicitly unavailable rather than claiming known-empty.
+  output.focus_status =
+      game::PlayerLifestyleWindowCollectionStatusV1::unavailable;
+  output.perk_status =
+      game::PlayerLifestyleWindowCollectionStatusV1::available;
+  output.perk_count = 1;
+  output.perks[0].key = source.target_key;
+  output.perks[0].lifestyle_key = source.lifestyle_key;
+  output.perks[0].can_select =
+      source.status == Status::observed_native_legal;
+  output.perks[0].can_select_ignore_cost = false;
+  output.readiness.bound_player_ready = true;
+  output.readiness.containers_ready = true;
+  output.readiness.perk_candidates_ready = true;
+  output.readiness.final_legality_ready = true;
+  output.readiness.same_frame_ready = true;
+  return true;
+}
+
 PlayerLifestyleWindowSourceReadResultV1 ReadWindowSource(
     void *opaque, std::uintptr_t module_base,
     std::uint32_t played_character_id,
@@ -150,9 +264,32 @@ bool ReadCandidates(PlayerLifestyleFormalWireContextV1 &context) noexcept {
       context.expected_revision, context.expected_snapshot.date_raw,
       static_cast<std::uint32_t>(
           context.expected_snapshot.played_character_id)};
-  return ReadPlayerLifestyleWindowCandidatesV1(environment, access, request,
-                                                *context.candidates) ==
-         game::ReadPlayerLifestyleWindowCandidatesResultV1::available;
+  if (ReadPlayerLifestyleWindowCandidatesV1(environment, access, request,
+                                             *context.candidates) ==
+      game::ReadPlayerLifestyleWindowCandidatesResultV1::available) {
+    context.stock_perk_result = {};
+    return true;
+  }
+  if (context.candidates->unavailable_reason !=
+      game::PlayerLifestyleWindowCandidatesFailureV1::
+          lifestyle_window_unbound_or_stale) {
+    return false;
+  }
+  const auto stock_environment = BindStockPerkLegalityEnvironmentV1(
+      context.module_base, true, kStockPerkLegalityExeSha256V1);
+  const StockPerkLegalityAccessV1 stock_access{
+      &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
+      &ReadStockPerkPlayerState};
+  context.stock_perk_result =
+      ReadStockPerkLegalityV1(stock_environment, stock_access);
+  if (!PublishStockPerkCandidates(context.stock_perk_result,
+                                  *context.candidates)) {
+    context.failure = "native_lifestyle_windowless_policy_perk_";
+    context.failure +=
+        StockPerkLegalityStatusKeyV1(context.stock_perk_result.status);
+    return false;
+  }
+  return true;
 }
 
 bool CapturePrecondition(
@@ -186,10 +323,27 @@ bool IsPaused(void *opaque) noexcept {
 bool SubmitPerk(void *opaque, game::PlayerLifestyleSelectionKindV1 kind,
                 const game::PlayerLifestyleWindowStableKeyV1 &key) noexcept {
   auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
-  return context != nullptr &&
-         kind == game::PlayerLifestyleSelectionKindV1::perk &&
-         SubmitPlayerLifestyleSelectionNativeAdapterV1(
-             &context->native_submit, kind, key);
+  if (context == nullptr ||
+      kind != game::PlayerLifestyleSelectionKindV1::perk) {
+    return false;
+  }
+  if (context->stock_perk_result.status ==
+          StockPerkLegalityStatusV1::observed_native_legal &&
+      PlayerLifestyleWindowStableKeyViewV1(key) ==
+          kStockPerkLegalityTargetV1 &&
+      context->stock_perk_result.target_definition != 0) {
+    context->native_submit.last_result =
+        DispatchResolvedPlayerLifestylePerkNativeAdapterV1(
+            context->native_submit.environment,
+            context->native_submit.access,
+            context->native_submit.played_character_id,
+            context->stock_perk_result.target_definition);
+    return context->native_submit.last_result ==
+        PlayerLifestyleSelectionNativeDispatchResultV1::
+            submitted_verification_pending;
+  }
+  return SubmitPlayerLifestyleSelectionNativeAdapterV1(
+      &context->native_submit, kind, key);
 }
 
 } // namespace
@@ -287,8 +441,10 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
         return true;
       }
       if (!ReadCandidates(*context)) {
-        context->failure = PlayerLifestyleFormalFinalCandidatesFailureV1(
-            context->candidates->unavailable_reason);
+        if (context->failure.empty()) {
+          context->failure = PlayerLifestyleFormalFinalCandidatesFailureV1(
+              context->candidates->unavailable_reason);
+        }
         return true;
       }
       context->precondition_result = BuildPlayerLifestyleFormalPreconditionV1(

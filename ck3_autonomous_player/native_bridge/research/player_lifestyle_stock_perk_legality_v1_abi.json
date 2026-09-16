@@ -1,6 +1,6 @@
 {
   "schema": "xar.player_lifestyle_stock_perk_legality_v1_abi",
-  "status": "static-ready-private-unwired",
+  "status": "static-ready-private-wired-awaiting-paused-live",
   "visibility": "private-not-advertised",
   "exact_build": {
     "ck3_version": "1.19.0.6",
@@ -36,11 +36,11 @@
   },
   "sampling": "application-main, one paused episode/player/snapshot/revision/date; verify played ID global and CCharacter+0x18, exact validator slot, complete bounded database; construct and evaluate the stock command twice from fresh source samples and reject drift before publishing an observed boolean",
   "unknown_policy": "unadmitted build, missing/duplicate definition, unreadable DB/member/key, unknown player points or owned state, missing storage identity, validator ABI mismatch/exception and frame drift remain unavailable. An observed validator false is a native rejection, never a successful action.",
-  "runtime_contract": "This is a private perk-only legality producer. The formal LIFE2/LIFE4/LIFE6/LIFE7 owner must explicitly bind it and still revalidate before one typed action, then require a fresh material postcondition and next production turn. No public query/action/capability is registered or advertised by this patch.",
-  "focused_static_tests": "manual MSVC /Od and /O2 standalone fixture compilation; tests cover legal without any window, known point/native rejection, unknown points/ownership, duplicate target, validator-slot mismatch, frame drift, wrong thread and unadmitted exact build",
+  "runtime_contract": "Private LIFE4 fallback is wired only when the ordinary window route returns lifestyle_window_unbound_or_stale. It publishes a policy-scoped perk collection while focus stays explicitly unavailable, revalidates the same resolved exact perk definition before one typed submit, and still requires a fresh material postcondition and next production turn. No public query/action/capability is registered or advertised.",
+  "focused_static_tests": "MSVC /W4 /WX /permissive- standalone /Od and /O2 fixtures for stock legality, formal partial precondition, semantic action and native resolved-perk dispatch; private bridge target built Debug and Release",
   "unverified_live": [
-    "No ordinary production paused snapshot was collected under the user's manual CK3/screen reservation.",
-    "No natural spendable perk point, native true, typed submit, acquired perk material result or next production turn consumption is proved here.",
-    "Focus fallback with zero perk points still needs an exact FocusType source or an independently verified automatic stock bind."
+    "R764 proved the ordinary production window route is unbound on a normal map-paused frame; this new fallback has not yet been loaded or queried in CK3.",
+    "No native true cutting_corners_perk result, typed submit, acquired perk material result or next production turn consumption is proved by this static patch.",
+    "Focus fallback still needs an exact window-independent FocusType source; focus remains explicitly unavailable and is never reported known-empty."
   ]
 }

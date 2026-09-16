@@ -18,8 +18,6 @@ _REQUIRED_READINESS = (
     "current_focus_ready",
     "lifestyle_progress_ready",
     "owned_perks_ready",
-    "legal_focus_candidates_ready",
-    "legal_perk_candidates_ready",
     "same_frame_ready",
 )
 
@@ -120,12 +118,14 @@ def choose_min_feudal_lifestyle_action(
     progress = snapshot.get("current_lifestyle_progress")
     if not isinstance(focus, Mapping) or not isinstance(progress, Mapping):
         return {**result, "status": "observation_unavailable"}
-    focus_keys = _available_keys(snapshot.get("legal_focus_candidates"), _STEWARDSHIP)
-    perk_keys = _available_keys(snapshot.get("legal_perk_candidates"), _STEWARDSHIP)
-    if focus_keys is None or perk_keys is None:
-        return {**result, "status": "legal_candidates_unavailable"}
-
     if focus.get("presence") == "present":
+        if readiness.get("legal_perk_candidates_ready") is not True:
+            return {**result, "status": "legal_candidates_unavailable"}
+        perk_keys = _available_keys(
+            snapshot.get("legal_perk_candidates"), _STEWARDSHIP
+        )
+        if perk_keys is None:
+            return {**result, "status": "legal_candidates_unavailable"}
         current_key = focus.get("key")
         current_lifestyle = focus.get("lifestyle_key")
         if (
@@ -156,6 +156,13 @@ def choose_min_feudal_lifestyle_action(
         return {**result, "status": "no_legal_minimum"}
     if focus.get("presence") != "absent" or progress.get("presence") != "absent":
         return {**result, "status": "observation_unavailable"}
+    if readiness.get("legal_focus_candidates_ready") is not True:
+        return {**result, "status": "legal_candidates_unavailable"}
+    focus_keys = _available_keys(
+        snapshot.get("legal_focus_candidates"), _STEWARDSHIP
+    )
+    if focus_keys is None:
+        return {**result, "status": "legal_candidates_unavailable"}
     if _WEALTH_FOCUS in focus_keys:
         # LIFE2 currently observes progress only for the current lifestyle.
         # When focus is absent, LIFE6 cannot capture its mandatory target

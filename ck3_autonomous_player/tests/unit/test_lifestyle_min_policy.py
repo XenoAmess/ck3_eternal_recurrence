@@ -74,6 +74,21 @@ class LifestyleMinPolicyTests(unittest.TestCase):
             "native-29829-ee172aa720db",
         )
 
+    def test_present_focus_needs_only_windowless_perk_collection(self) -> None:
+        snapshot = _complete_snapshot()
+        snapshot["legal_focus_candidates"] = {
+            "status": "unavailable",
+            "reason": "lifestyle_window_unavailable",
+            "items": [],
+        }
+        snapshot["legal_perk_candidates"]["scope"] = "policy_target"
+        snapshot["readiness"]["legal_focus_candidates_ready"] = False
+        result = _choose(snapshot)
+        self.assertEqual(result["status"], "recommend_action")
+        self.assertEqual(
+            result["selected_action"]["target_key"], "cutting_corners_perk"
+        )
+
     def test_absent_focus_requires_exact_target_progress_source(self) -> None:
         snapshot = _complete_snapshot()
         snapshot["current_focus"] = {"presence": "absent"}

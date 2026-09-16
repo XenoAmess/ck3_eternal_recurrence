@@ -59,8 +59,11 @@ void FillCandidates(game::PlayerLifestyleWindowCandidatesV1 &value) {
   value.player_character_id = 29829;
   value.readiness.final_legality_ready = true;
   value.readiness.same_frame_ready = true;
+  value.readiness.bound_player_ready = true;
+  value.readiness.containers_ready = true;
+  value.readiness.perk_candidates_ready = true;
   value.focus_status =
-      game::PlayerLifestyleWindowCollectionStatusV1::known_empty;
+      game::PlayerLifestyleWindowCollectionStatusV1::unavailable;
   value.perk_status =
       game::PlayerLifestyleWindowCollectionStatusV1::available;
   value.perk_count = 1;
@@ -124,7 +127,12 @@ int main() {
                 *candidates, *state) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::ready);
     Require(state->state.legal_perk_candidate_count == 1 &&
-            state->readiness.legal_perk_candidates_ready);
+            state->readiness.legal_perk_candidates_ready &&
+            !state->readiness.legal_focus_candidates_ready &&
+            state->state.legal_perk_candidates_policy_scoped &&
+            state->state.legal_focus_candidate_status ==
+                game::PlayerLifestyleCandidateCollectionStatusV1::
+                    unavailable);
     ++candidates->public_revision;
     Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(
                 candidates->public_revision, action_pump) !=
@@ -158,7 +166,7 @@ int main() {
                 *state, *candidates, "", *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::
                 episode_unavailable);
-    std::cout << "player_lifestyle_formal_precondition_v1_test: 7/7 GREEN\n";
+    std::cout << "player_lifestyle_formal_precondition_v1_test: 8/8 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

@@ -774,3 +774,44 @@ frame to remain at public revision `4` and native revision `3`. Public
 registration and advertising remain OFF. A rebuilt bounded candidate must
 also remove the old equality check from its external zero-action runner before
 the native LIFE4 owner-path stage can be observed.
+
+### R764 ordinary map-paused window binding RED and private fallback (2026-09-16)
+
+R764 used the private formal query on exact CK3 `1.19.0.6` / EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+Actor `29829` remained paused and alive at date raw `53178312`, with native
+snapshot `native:3`, public/native counters `4/3`, zero gameplay actions,
+zero UI inputs, and no date movement. The typed result was
+`native_lifestyle_final_candidates_lifestyle_window_unbound_or_stale`.
+The report is
+`C:/ck3_mod_rewrite_process_assets/g2-m4-life4-r764-formal-query-candidate-final545d-20260916/candidate/live-R764/report.json`
+(SHA-256 `50E63DF8955A6D315E4974E952785294A8B16AE71D9E266F5B2F0AE9BF996012`);
+the query artifact is `paused-life4-formal-query.json` in the same live root
+(SHA-256 `0175D2A1788F25EA9A788C0E278DC1198ABD748A3CFFAC32EBEBA15E22842033`).
+PID `33508` was fully reclaimed. This is a capability RED, not a Python
+revision/request mapping failure.
+
+The exact call chain explains the failure. `CCharacterLifestyleWindow` starts
+with `+0xF8 = -1`; only the stock `OpenGameViewData('lifestyle', GetPlayer.GetID)`
+binder at RVA `0xF48780` writes the character ID and refreshes the window.
+`CanSelectPerk` at RVA `0x132D640` rejects before command construction when
+that owner is unbound. A normal map-paused production frame therefore cannot
+use the GUI wrapper without first opening or mutating the window.
+
+The private fallback now uses the already frozen stock-command path instead:
+it resolves `cutting_corners_perk` from the exact CharacterPerk database getter
+RVA `0x88EC20`, binds current player identity and LIFE2 owned/point state in
+the same paused transaction, and evaluates the stock command validator RVA
+`0x25DFAF0` twice. The focus collection remains explicitly unavailable; it is
+not reported as an empty legal set. A legal target is revalidated once more
+immediately before one typed command-manager submit, after LIFE6 has captured
+two byte-equivalent preconditions. The pointer is transaction-local and is
+neither serialized nor retained across a later capture.
+
+This private source is `static-ready` and public registration/advertising stay
+OFF. MSVC `/W4 /WX /permissive-` focused fixtures pass in `/Od` and `/O2` for
+the stock resolver, partial formal precondition, and resolved-perk native
+adapter. The private bridge target also builds in Debug and Release. A new
+paused candidate must still prove the fallback result; a legal target then
+still needs typed submit, an independent later owned-perk/point receipt, and
+next-turn consumption. Window-independent focus enumeration remains unknown.

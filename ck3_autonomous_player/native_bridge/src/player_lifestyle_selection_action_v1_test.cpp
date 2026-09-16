@@ -227,6 +227,18 @@ void TestFocusAckIsPendingAndReceiptRereadsState() {
   Require(receipt.post_target_lifestyle_perk_points == 2);
 }
 
+void TestPerkSubmitAcceptsWindowIndependentPartialCollection() {
+  auto fixture = Base();
+  auto &candidates = fixture->precondition.candidates;
+  candidates.focus_status =
+      game::PlayerLifestyleWindowCollectionStatusV1::unavailable;
+  candidates.focus_count = 0;
+  candidates.readiness.owner_path_ready = false;
+  candidates.readiness.focus_candidates_ready = false;
+  const auto ack = SubmitExpected(*fixture, Kind::perk, "tax_man_perk");
+  Require(ack.kind == Kind::perk && fixture->submits == 1);
+}
+
 void TestPerkReceiptRequiresNewOwnedMembership() {
   auto fixture = Base();
   const auto ack = SubmitExpected(*fixture, Kind::perk, "tax_man_perk");
@@ -439,13 +451,14 @@ int main() {
     Require(ck3::PlayerLifestyleSelectionActionFailureClassKeyV1(
                 FailureClass::final_legality) == "final_legality");
     TestFocusAckIsPendingAndReceiptRereadsState();
+    TestPerkSubmitAcceptsWindowIndependentPartialCollection();
     TestPerkReceiptRequiresNewOwnedMembership();
     TestOnlyFinalCanSelectTargetCanSubmit();
     TestIncompleteStateAndPreSubmitDriftNeverSubmit();
     TestCommandBindingAndSubmitAreFailClosedAndSingleShot();
     TestReceiptFailuresAreExplicit();
     TestDistinctNativeFrameAndEpisodeAreRequired();
-    std::cout << "player_lifestyle_selection_action_v1_test: 7/7 GREEN\n";
+    std::cout << "player_lifestyle_selection_action_v1_test: 8/8 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

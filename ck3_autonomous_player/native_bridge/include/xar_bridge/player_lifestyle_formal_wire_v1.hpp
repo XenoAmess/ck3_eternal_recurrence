@@ -5,6 +5,7 @@
 #include "xar_bridge/player_lifestyle_formal_precondition_v1.hpp"
 #include "xar_bridge/player_lifestyle_current_state_only_v1.hpp"
 #include "xar_bridge/player_lifestyle_selection_native_adapter_v1.hpp"
+#include "xar_bridge/player_lifestyle_stock_perk_legality_v1.hpp"
 
 #include <memory>
 #include <string>
@@ -97,6 +98,7 @@ struct PlayerLifestyleFormalWireContextV1 {
   PlayerLifestyleWindowSourceAdapterEnvironmentV1 source_environment{};
   PlayerLifestyleWindowSourceAdapterAccessV1 source_access{};
   PlayerLifestyleSelectionNativeAdapterContextV1 native_submit{};
+  StockPerkLegalityResultV1 stock_perk_result{};
   game::PlayerLifestyleSelectionActionRequestV1 action_request{};
   game::PlayerLifestyleSelectionActionAckV1 pending_ack{};
   game::PlayerLifestyleSelectionActionReceiptV1 receipt{};

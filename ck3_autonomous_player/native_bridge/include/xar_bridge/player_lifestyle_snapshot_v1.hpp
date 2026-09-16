@@ -134,6 +134,9 @@ struct PlayerLifestyleStateV1 {
           PlayerLifestyleCandidateCollectionFailureV1::
               lifestyle_window_unavailable;
   std::uint32_t legal_perk_candidate_count = 0;
+  // True means this collection proves only the policy target named in its
+  // rows, not an exhaustive enumeration of every legal perk.
+  bool legal_perk_candidates_policy_scoped = false;
   std::array<PlayerLifestyleLegalCandidateV1,
              kPlayerLifestyleMaximumLegalPerkCandidatesV1>
       legal_perk_candidates{};

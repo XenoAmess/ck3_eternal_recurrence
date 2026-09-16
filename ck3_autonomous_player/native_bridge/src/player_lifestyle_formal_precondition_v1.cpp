@@ -50,10 +50,9 @@ Result BuildPlayerLifestyleFormalPreconditionV1(
       !state.readiness.current_focus_ready ||
       !state.readiness.owned_perks_ready ||
       !state.readiness.same_frame_ready ||
+      !candidates.readiness.perk_candidates_ready ||
       !candidates.readiness.final_legality_ready ||
       !candidates.readiness.same_frame_ready ||
-      candidates.focus_status ==
-          game::PlayerLifestyleWindowCollectionStatusV1::unavailable ||
       candidates.perk_status ==
           game::PlayerLifestyleWindowCollectionStatusV1::unavailable) {
     return Result::source_unavailable;
@@ -204,10 +203,10 @@ Result AttachPlayerLifestyleFinalCandidatesV1(
       !SameFrame(state, candidates) ||
       !candidates.readiness.final_legality_ready ||
       !candidates.readiness.same_frame_ready ||
-      candidates.focus_status ==
-          game::PlayerLifestyleWindowCollectionStatusV1::unavailable ||
-      candidates.perk_status ==
-          game::PlayerLifestyleWindowCollectionStatusV1::unavailable ||
+      (candidates.focus_status ==
+           game::PlayerLifestyleWindowCollectionStatusV1::unavailable &&
+       candidates.perk_status ==
+           game::PlayerLifestyleWindowCollectionStatusV1::unavailable) ||
       candidates.focus_count >
           game::kPlayerLifestyleMaximumLegalFocusCandidatesV1 ||
       candidates.perk_count >
@@ -242,16 +241,26 @@ Result AttachPlayerLifestyleFinalCandidatesV1(
     }
     ++target.legal_perk_candidate_count;
   }
-  target.legal_focus_candidate_status =
-      game::PlayerLifestyleCandidateCollectionStatusV1::available;
-  target.legal_perk_candidate_status =
-      game::PlayerLifestyleCandidateCollectionStatusV1::available;
-  target.legal_focus_candidate_unavailable_reason =
-      game::PlayerLifestyleCandidateCollectionFailureV1::none;
-  target.legal_perk_candidate_unavailable_reason =
-      game::PlayerLifestyleCandidateCollectionFailureV1::none;
-  state.readiness.legal_focus_candidates_ready = true;
-  state.readiness.legal_perk_candidates_ready = true;
+  if (candidates.focus_status !=
+      game::PlayerLifestyleWindowCollectionStatusV1::unavailable) {
+    target.legal_focus_candidate_status =
+        game::PlayerLifestyleCandidateCollectionStatusV1::available;
+    target.legal_focus_candidate_unavailable_reason =
+        game::PlayerLifestyleCandidateCollectionFailureV1::none;
+    state.readiness.legal_focus_candidates_ready = true;
+  }
+  if (candidates.perk_status !=
+      game::PlayerLifestyleWindowCollectionStatusV1::unavailable) {
+    target.legal_perk_candidate_status =
+        game::PlayerLifestyleCandidateCollectionStatusV1::available;
+    target.legal_perk_candidate_unavailable_reason =
+        game::PlayerLifestyleCandidateCollectionFailureV1::none;
+    state.readiness.legal_perk_candidates_ready = true;
+    target.legal_perk_candidates_policy_scoped =
+        !candidates.readiness.owner_path_ready &&
+        candidates.focus_status ==
+            game::PlayerLifestyleWindowCollectionStatusV1::unavailable;
+  }
   return Result::ready;
 }
 

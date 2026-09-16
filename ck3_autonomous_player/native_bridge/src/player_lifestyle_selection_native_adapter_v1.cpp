@@ -317,6 +317,36 @@ DispatchResult DispatchPlayerLifestyleSelectionNativeAdapterV1(
       : DispatchPerk(environment, source, played_character_id, target_key);
 }
 
+DispatchResult DispatchResolvedPlayerLifestylePerkNativeAdapterV1(
+    const PlayerLifestyleSelectionNativeAdapterEnvironmentV1 &environment,
+    const PlayerLifestyleSelectionNativeAdapterAccessV1 &access,
+    std::uint32_t played_character_id,
+    std::uintptr_t resolved_definition) noexcept {
+  if (played_character_id == 0xFFFFFFFFU || resolved_definition == 0) {
+    return DispatchResult::invalid_request;
+  }
+  if (!PlayerLifestyleSelectionNativeAdapterEnvironmentReadyV1(environment)) {
+    return DispatchResult::unavailable;
+  }
+  if (access.is_application_main_thread == nullptr ||
+      access.is_paused == nullptr ||
+      !access.is_application_main_thread(access.execution_context) ||
+      !access.is_paused(access.execution_context)) {
+    return DispatchResult::application_main_paused_required;
+  }
+  PerkSelectionCommandV1 command{};
+  command.primary_vtable = environment.perk_primary_vtable;
+  command.secondary_vtable = environment.perk_secondary_vtable;
+  command.played_character_id = played_character_id;
+  command.definition = resolved_definition;
+  if (!InvokeValidator(environment.validate_perk_command, &command)) {
+    return DispatchResult::command_validator_rejected;
+  }
+  return InvokeSubmit(environment, &command)
+      ? DispatchResult::submitted_verification_pending
+      : DispatchResult::submit_rejected;
+}
+
 bool SubmitPlayerLifestyleSelectionNativeAdapterV1(
     void *context, Kind kind, const StableKey &target_key) noexcept {
   auto *const adapter =

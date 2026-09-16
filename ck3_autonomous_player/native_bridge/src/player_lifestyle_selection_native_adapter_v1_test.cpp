@@ -455,6 +455,22 @@ void TestPerkUsesExactLayoutAndOneSubmit() {
          fixture->perk.object.address());
 }
 
+void TestResolvedPerkAvoidsWindowAndRevalidatesOnce() {
+  auto fixture = Base();
+  g_fixture = fixture.get();
+  Put(fixture->window, ck3::kLifestyleWindowBoundCharacterIdOffsetV1,
+      kPlayer + 1);
+  const auto result =
+      ck3::DispatchResolvedPlayerLifestylePerkNativeAdapterV1(
+          NativeEnvironment(*fixture), Access(*fixture), kPlayer,
+          fixture->perk.object.address());
+  assert(result == Dispatch::submitted_verification_pending);
+  assert(fixture->rtti_calls == 0 && fixture->perk_gate_calls == 0);
+  assert(fixture->perk_validator_calls == 1 && fixture->submit_calls == 1);
+  assert(LoadPointer(fixture->submitted_command, 0x28) ==
+         fixture->perk.object.address());
+}
+
 void TestEveryPreSubmitFailureAvoidsNativeSubmit() {
   {
     auto fixture = Base();
@@ -562,6 +578,7 @@ bool CaptureIntegratedPrecondition(
   state.available = true;
   state.paused = true;
   state.snapshot_id = candidates.snapshot_id;
+  Fixed(state.episode_run_id, "native-29829-ee172aa720db");
   state.public_revision = candidates.public_revision;
   state.native_revision = candidates.native_revision;
   state.proof_epoch = candidates.proof_epoch;
@@ -597,8 +614,8 @@ void TestLife6IntegrationKeepsSubmitPending() {
       &ck3::SubmitPlayerLifestyleSelectionNativeAdapterV1};
   const game::PlayerLifestyleSelectionActionRequestV1 request{
       "life7-native-action-1", Kind::focus,
-      "stewardship_wealth_focus", "life7-native-action-fixture", 71, 7001,
-      17, 54'336'000, kPlayer};
+      "stewardship_wealth_focus", "life7-native-action-fixture",
+      "native-29829-ee172aa720db", 71, 7001, 17, 54'336'000, kPlayer};
   game::PlayerLifestyleSelectionActionAckV1 ack{};
   assert(ck3::ExecutePlayerLifestyleSelectionActionV1(
              action_environment, action_access, request, ack) ==
@@ -642,10 +659,11 @@ int main() {
   TestExactProductionBindingAndCertification();
   TestFocusUsesExactLayoutAndOneSubmit();
   TestPerkUsesExactLayoutAndOneSubmit();
+  TestResolvedPerkAvoidsWindowAndRevalidatesOnce();
   TestEveryPreSubmitFailureAvoidsNativeSubmit();
   TestSubmitRejectionIsNeverRetriedOrReportedApplied();
   TestLife6IntegrationKeepsSubmitPending();
   TestBindingMismatchFailsClosed();
-  std::cout << "player lifestyle selection native adapter v1: 7/7 green\n";
+  std::cout << "player lifestyle selection native adapter v1: 8/8 green\n";
   return 0;
 }

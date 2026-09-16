@@ -131,6 +131,17 @@ DispatchPlayerLifestyleSelectionNativeAdapterV1(
     game::PlayerLifestyleSelectionKindV1 kind,
     const game::PlayerLifestyleWindowStableKeyV1 &target_key) noexcept;
 
+// Private window-independent perk dispatch. `resolved_definition` must come
+// from a same-transaction exact database resolver such as LIFE4's stock perk
+// legality source. This function performs the stock validator once more and
+// submits exactly once; it does not accept focus commands.
+PlayerLifestyleSelectionNativeDispatchResultV1
+DispatchResolvedPlayerLifestylePerkNativeAdapterV1(
+    const PlayerLifestyleSelectionNativeAdapterEnvironmentV1 &environment,
+    const PlayerLifestyleSelectionNativeAdapterAccessV1 &access,
+    std::uint32_t played_character_id, std::uintptr_t resolved_definition)
+    noexcept;
+
 // LIFE6-compatible thunk. true means the exact submit wrapper accepted one
 // heap clone for verification. It never means the focus/perk was applied.
 bool SubmitPlayerLifestyleSelectionNativeAdapterV1(

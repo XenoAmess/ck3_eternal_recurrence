@@ -86,6 +86,14 @@ bool CandidateSnapshotBoundToRequest(
     const game::PlayerLifestyleWindowCandidatesV1 &candidates,
     const game::PlayerLifestyleSelectionStateObservationV1 &state,
     const game::PlayerLifestyleSelectionActionRequestV1 &request) noexcept {
+  const bool requested_collection_ready =
+      request.kind == Kind::perk
+      ? candidates.readiness.perk_candidates_ready &&
+          candidates.perk_status !=
+              game::PlayerLifestyleWindowCollectionStatusV1::unavailable
+      : candidates.readiness.focus_candidates_ready &&
+          candidates.focus_status !=
+              game::PlayerLifestyleWindowCollectionStatusV1::unavailable;
   return candidates.status ==
           game::PlayerLifestyleWindowCandidatesStatusV1::available &&
       candidates.unavailable_reason ==
@@ -97,11 +105,9 @@ bool CandidateSnapshotBoundToRequest(
       candidates.date_raw == request.expected_date_raw &&
       candidates.player_character_id ==
           request.expected_player_character_id &&
-      candidates.readiness.owner_path_ready &&
       candidates.readiness.bound_player_ready &&
       candidates.readiness.containers_ready &&
-      candidates.readiness.focus_candidates_ready &&
-      candidates.readiness.perk_candidates_ready &&
+      requested_collection_ready &&
       candidates.readiness.final_legality_ready &&
       candidates.readiness.same_frame_ready && state.available &&
       state.paused &&
