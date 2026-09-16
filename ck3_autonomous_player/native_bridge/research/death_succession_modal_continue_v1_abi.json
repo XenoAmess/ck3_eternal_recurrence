@@ -1,38 +1,47 @@
 {
   "schema": "xar.ck3.death-succession-modal-continue-v1-abi",
-  "schema_version": 1,
+  "schema_version": 2,
   "game_version": "1.19.0.6",
   "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "step": "continue-death-succession-modal-v1",
   "capability_advertised": false,
   "public_mcp_registered": false,
-  "status": "static-ready-paused-live-pending",
+  "status": "static-ready-corrected-action-paused-live-pending",
   "private_compile_gate": {
     "cmake_option": "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1",
     "default": false,
-    "enabled_candidate_behavior": "admit exactly the fixed blocker query and typed Close before GameAdapter::supports_step, install their two owning-thread executor identities, and compile their private dispatch branches",
     "public_capability_effect": "none"
+  },
+  "stock_gui": {
+    "path": "game/gui/window_succession_event.gui",
+    "sha256": "5925DE3F28CD00FF8D50F345FC4DE389AFF06FA3A7D89955DDDAA613E2DA12E4",
+    "root": "succession_event_window",
+    "main_close_chain": "bottom close_button -> PdxGuiTriggerAllAnimations('ruler_transition_reset') -> animation on_finish -> SuccessionEventWindow.Close",
+    "lineage_close_chain": "lineage close_button -> SuccessionEventWindow.Close"
   },
   "source_artifacts": [
     {
       "path": "C:\\ck3_mod_rewrite_process_assets\\g2-m3-succession-close-abi-20260916\\succession-close-abi-v1.json",
-      "sha256": "BB5F3A315D3790DD3046CBA64DF98C0E06E22C044B249E697FD8514C5E89F8D9"
+      "sha256": "BB5F3A315D3790DD3046CBA64DF98C0E06E22C044B249E697FD8514C5E89F8D9",
+      "boundary": "v1 uniquely froze the generic view hide slot but did not locate the reflected SuccessionEventWindow.Close action"
     },
     {
       "path": "C:\\ck3_mod_rewrite_process_assets\\g2-m3-succession-controller-acquire-20260916\\succession-controller-acquire-v1.json",
       "sha256": "0F1D607C6CBD5D1FFF43A7C38DB9709E56524A23007C6B5AD24EB4086955BD00"
     }
   ],
-  "owning_thread_preconditions": {
-    "exact_build_admitted": true,
-    "paused": true,
-    "map_ready": true,
-    "expected_native_revision_and_date_match": true,
-    "played_character_alive_and_matches_episode_binding": true,
-    "fresh_timeline_identity": "death_succession_modal",
-    "can_continue": true,
-    "is_paused_by_succession": true,
-    "has_open_succession_for_played_character": true
+  "live_counterexample": {
+    "round": "R780",
+    "wrong_action": "controller vslot +0x20",
+    "strict_ack": true,
+    "later_query_count": 8,
+    "observation_revision_range": "7216..7272",
+    "observed": {
+      "identity": "none",
+      "is_paused_by_succession": true,
+      "has_open_succession": true
+    },
+    "conclusion": "vslot +0x20 only hid the game view; it did not submit CCloseSuccessionCommand or retire the active succession row"
   },
   "controller_acquisition": {
     "idler_root_slot_rva": "0x570F7B8",
@@ -50,11 +59,14 @@
   "predicates": {
     "is_paused_by_succession": {
       "core_rva": "0xA05A90",
-      "abi": "bool __fastcall(); AL result"
+      "abi": "bool __fastcall(); AL result",
+      "storage": "scans active succession rows and tests row+0x260"
     },
     "has_open_succession": {
       "core_rva": "0xA05B20",
-      "abi": "bool __fastcall(Character*); AL result"
+      "abi": "bool __fastcall(Character*); AL result",
+      "storage": "matches CharacterID against row+0xB0 and tests row+0x260",
+      "not_hud_history": true
     },
     "controller_open": {
       "vtable_slot_offset": "0x38",
@@ -62,27 +74,117 @@
       "abi": "bool __fastcall(CSuccessionEventWindow*); AL result"
     }
   },
-  "action": {
+  "generic_hide_excluded": {
     "controller_vtable_slot_offset": "0x20",
     "target_rva": "0x1006FB0",
-    "abi": "void __fastcall(CSuccessionEventWindow*); ignore RAX/AL",
+    "abi": "void __fastcall(CSuccessionEventWindow*)",
+    "effect": "hide the game view only",
+    "must_not_be_used_as_close": true
+  },
+  "reflected_close_action": {
+    "gui_callable_name": "SuccessionEventWindow.Close",
+    "controller_vtable_slot_offset": "0x88",
+    "generic_default_target_rva": "0x1007190",
+    "generic_default_flow": "mov rax,[rcx]; jmp qword ptr [rax+0x20]",
+    "succession_override_target_rva": "0xFD4870",
+    "abi": "void __fastcall(CSuccessionEventWindow* self); no explicit parameters; ignore RAX",
+    "thread_precondition": "application-main/GUI owning thread",
+    "flow": [
+      "invoke self vslot +0x20 to hide the view",
+      "under the native succession-state guards construct CCloseSuccessionCommand from current native state",
+      "submit the command through the locked command queue with channel flags 7",
+      "perform linked succession UI cleanup"
+    ],
+    "direct_call_xrefs": [
+      "0xD728A6",
+      "0xFD41A4",
+      "0xFD5A47",
+      "0xFD5A4F",
+      "0xFD5B3B"
+    ],
     "maximum_invocations_per_request": 1,
     "ack_material_result_verified": false
   },
-  "material_postcondition": {
-    "requires_later_application_main_observation_revision": true,
+  "close_command": {
+    "rtti_name": ".?AVCCloseSuccessionCommand@@",
+    "type_descriptor_rva": "0x54C0128",
+    "primary_vtable_rva": "0x4322358",
+    "secondary_vtable_rva": "0x4322328",
+    "primary_col_rva": "0x4962FB0",
+    "secondary_col_rva": "0x4962FD8",
+    "size": "0x28",
+    "layout": {
+      "0x00": "primary vtable",
+      "0x08": "flags byte; zero in the local construction",
+      "0x18": "secondary vtable",
+      "0x20": "CharacterID int32",
+      "0x24": "opaque succession-instance token int32"
+    },
+    "native_inputs": {
+      "current_player_character_id_slot_rva": "0x4FE7EE0",
+      "current_succession_token_slot_rva": "0x57625DC",
+      "clone_target_rva": "0x25EE070",
+      "command_manager_slot_rva": "0x57621F0",
+      "locked_queue_submit_rva": "0x341D990",
+      "channel_flags": 7
+    },
+    "typed_bridge_rule": "invoke reflected close vslot +0x88; never synthesize or submit the payload directly"
+  },
+  "close_command_executor": {
+    "secondary_vtable_slot_offset": "0x08",
+    "target_rva": "0x25EA9C0",
+    "game_state_slot_rva": "0x570E068",
+    "game_data_offset": "0xA0",
+    "row_array_offset": "0x1D548",
+    "row_count_offset": "0x1D554",
+    "row_character_id_offset": "0xB0",
+    "row_instance_token_offset": "0xD8",
+    "row_active_offset": "0x260",
+    "row_cleanup_object_offset": "0x268",
+    "row_cleanup_present_offset": "0x2C8",
+    "row_cleanup_target_rva": "0xA84DA0",
+    "material_effect": "match CharacterID and opaque token, require active row, write row+0x260=0, invoke and clear the row+0x2C8 cleanup state when present"
+  },
+  "owning_thread_preconditions": {
+    "exact_build_admitted": true,
+    "paused": true,
+    "map_ready": true,
+    "expected_native_revision_and_date_match": true,
+    "played_character_alive_and_matches_episode_binding": true,
+    "fresh_timeline_identity": "death_succession_modal",
+    "can_continue": true,
+    "is_paused_by_succession": true,
+    "has_open_succession_for_played_character": true,
+    "fresh_controller_vtable_rva": "0x4111E80",
+    "pending_action": false
+  },
+  "ack_and_material_postcondition": {
+    "ack_meaning": "the reflected method returned and its close command was submitted; material execution is not yet proven",
+    "wait_boundary": "a later application-main command-pump observation; observation_revision must advance but pump_epoch alone is not proof of a complete frame",
     "timeline_identity": "none",
     "is_paused_by_succession": false,
     "has_open_succession": false,
     "formal_followup": "life-advance",
-    "followup_requires": "date increases while successor episode binding remains unchanged"
+    "followup_requires": "date increases while successor episode binding remains unchanged",
+    "retry_rule": "after a strict ACK, query material state first and never blindly submit Close again"
   },
+  "resume_path_assessment": {
+    "clears_succession_row": false,
+    "conclusion": "formal resume/life-advance is a post-Close liveness proof, not a substitute for CCloseSuccessionCommand",
+    "required_order": "reflected Close -> later predicates false -> formal life-advance -> date increase"
+  },
+  "remaining_unknowns": [
+    "the semantic name of the opaque succession-instance token remains unknown; native Close owns it and callers must not synthesize it",
+    "the exact names of controller+0x1EC and controller+0x330 guards remain unknown; public identity/can_continue and native reflected Close own those branches",
+    "vslot +0x88 has not yet passed the frozen-build paused live gate"
+  ],
   "forbidden_inferences": [
     "ACK is not material success",
-    "do not retry an unknown action state without a fresh query",
+    "identity=none after vslot +0x20 is not succession finalization",
+    "HasOpenSuccession is not a historical HUD-record predicate on this exact build",
+    "resume or life-advance does not replace the reflected Close action",
     "do not use coordinates or generic clicking",
     "do not cache controller or native model pointers",
-    "do not dispatch controller vslot +0x18 as Close",
     "do not register or advertise the capability before frozen-build live acceptance"
   ]
 }

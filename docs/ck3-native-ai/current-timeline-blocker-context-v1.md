@@ -1,3 +1,18 @@
+# 2026-09-16 reflected Close correction
+
+R780 disproved the earlier mapping of `SuccessionEventWindow.Close` to
+controller vslot `+0x20`: that call hid the root, but eight later observations
+(`7216..7272`) retained `IsPausedBySuccession=true` and
+`HasOpenSuccession=true`. The exact reflected action is controller vslot
+`+0x88`, whose `CSuccessionEventWindow` override is RVA `0xFD4870`. It submits
+the RTTI-identified `CCloseSuccessionCommand`; executor RVA `0x25EA9C0` clears
+the matched active succession row at `row+0x260`. Both predicates read that
+active-row state. Therefore `HasOpenSuccession` is not a HUD-history marker,
+and formal resume/life-advance is a post-Close liveness check rather than the
+cleanup mechanism. The corrected contract and remaining live gate are in
+[death-succession-modal-continue-v1.md](death-succession-modal-continue-v1.md).
+Any older `+0x20 is Close` text retained below is historical and superseded.
+
 # 2026-09-16 exact-predicate update
 
 This update supersedes the older `blocks_simulation=unavailable` reverse-engineering boundary retained below as historical context. The exact-build controller-acquisition artifact closes both public predicate cores: `IsPausedBySuccession()` at RVA `0xA05A90` and `HasOpenSuccession(Character*)` at RVA `0xA05B20`. The private owning-thread query now publishes both as fail-closed typed booleans (`blocks_simulation` and `has_open_succession`). It resolves and round-trip validates the currently played `Character` from the frozen component storage before calling the second predicate. A read failure makes the whole query unavailable and is never mapped to `false`.
@@ -70,36 +85,23 @@ typed boolean 的 unavailable 状态必须携带 `value=null`。特别是
 
 ### `CSuccessionEventWindow.Close` exact-build ABI
 
-同一 `ck3.exe` 已冻结 `CSuccessionEventWindow` RTTI TypeDescriptor RVA `0x521FC90`、COL RVA `0x468A190` 与主 vtable RVA `0x4111E80`。vtable `+0x20`（slot 4）指向高置信 Close core RVA `0x1006FB0`。当前静态调用链为：
+同一 `ck3.exe` 已冻结 `CSuccessionEventWindow` RTTI TypeDescriptor RVA `0x521FC90`、COL RVA `0x468A190` 与主 vtable RVA `0x4111E80`。GUI 反射动作槽是 vtable `+0x88`（slot 17），该 controller 的专用 override 为 RVA `0xFD4870`：
 
 ```text
-CSuccessionEventWindow::vtable +0x20
-  -> 0x1006FB0 Close core
-  -> vtable +0x38 IsOpen
-  -> when open: view/widget +0x78 -> 0x369CB30(..., edx=0, r8=0) hide
-  -> when flags slot +0x50 == 0x800: observed global ingame/UI byte +0x11A1 = 1
-  -> 0x10071A0 manager/history finalization
+CSuccessionEventWindow::vtable +0x88
+  -> 0xFD4870 reflected Close
+  -> vtable +0x20 -> 0x1006FB0 hide view
+  -> construct and queue CCloseSuccessionCommand
+  -> executor 0x25EA9C0 matches character/token and clears row+0x260 active
 ```
 
-vtable `+0x18` 的 `0xFD4860 -> 0x1006F40` 是 **open path**，不是 Close。`+0x11A1` 写入的具体所有者和语义尚未冻结，也没有证据把它等同于 simulation-hold predicate。本文的只读查询不会调用上述任何函数；动作端属于后续独立工作包。
+vtable `+0x20` 只是通用 view hide；R780 已实证它不会清除 succession row。vtable `+0x18` 的 `0xFD4860 -> 0x1006F40` 是 **open path**，同样不是 Close。本文的只读查询不会调用上述任何函数；动作端必须按独立合同调用 `+0x88`，不得直接构造 command。
 
-## `blocks_simulation` 为什么仍是 unknown
+## `blocks_simulation` 与 `has_open_succession`
 
-`layer = confirmation` 证明窗口处于确认输入层，但它没有证明 CK3 的模拟时钟由哪个原生 predicate 持有。当前 mailbox 只能在 paused application-main frame 上安全复制 GUI 状态；该 paused 标记也是查询的执行前提，不能反过来当作窗口阻止时间的证据。
+exact-build predicate 已冻结：`IsPausedBySuccession()` RVA `0xA05A90` 扫描 active succession row 并读取 `row+0x260`；`HasOpenSuccession(Character*)` RVA `0xA05B20` 先按 `row+0xB0` 匹配 CharacterID，再读取同一 active 字段。读取失败时整个查询 fail closed，不得映射成 `false`。
 
-因此所有已识别 identity 都发布：
-
-```json
-{
-  "blocks_simulation": {
-    "status": "unavailable",
-    "value": null,
-    "unavailable_reason": "succession_simulation_block_predicate_not_frozen"
-  }
-}
-```
-
-禁止把 unknown/null 当成 `false`，也禁止依据 `confirmation` 层猜成 `true`。
+`HasOpenSuccession` 因此不是可回看的 HUD 历史记录。反射 Close command 的 executor 清除 `row+0x260` 后，两个 predicate 都应在后续独立 application-main 观测中变为 `false`。
 
 ## R775 的结论边界
 
@@ -114,20 +116,19 @@ flowchart TD
     A -. "下一次 paused typed query" .-> W{"succession_event_window\n有效可见?"}
     W -->|yes| I["identity / can_continue\n[static-ready; live pending]"]
     W -->|no| O["排除本窗口候选根因"]
-    I -. "exact native predicate 尚未冻结" .-> B["blocks_simulation\nunknown"]
-    B -. "唯一下一逆向点" .-> X["Close core 0x1006FB0\n0x369CB30 hide + 0x10071A0 finalize"]
+    I --> B["两个 exact native predicate\navailable"]
+    B --> X["反射 Close vslot +0x88\n0xFD4870 -> CCloseSuccessionCommand"]
 ```
 
-## 唯一下一逆向点与实机解锁门
+## 实机解锁门
 
-下一项逆向只从已冻结的 Close core `0x1006FB0` 继续，沿 `0x369CB30` hide 路径与 `0x10071A0` manager/history 收尾定位清除模拟 hold 的 exact-build predicate，并冻结能在 application-main frame 只读判断的值。现有 `+0x11A1` 写入只是一条观测，不足以承担该结论。不要扩展到通用 GUI 点击或任意窗口扫描。
+静态 ABI 已闭合，不再需要扩大到通用 GUI 逆向。下一项只是在同版本 paused checkpoint 上调用一次反射 Close vslot `+0x88`，等待独立 application-main command-pump 观测，并核验 root 消失和两个 predicate 同时为 `false`。
 
 private production wire 已完成。它进入 public capability/registry/advertisement 前仍必须完成：
 
 1. 在 R775 的安全 checkpoint 或语义等价自然死亡 checkpoint 上，通过 private wire 采集真实 paused frame，证明 root identity、`can_continue` 与屏幕/日期症状一致。
-2. 关闭继承窗口后的独立新 frame 证明 root 消失；随后正式 `life-advance` 使日期推进。
-3. 只有 exact predicate 与上述前后帧互证后，才把 `blocks_simulation` 从 unavailable 升级为 boolean。
-4. 同版本 live gate 关闭后，另行同步 adapter capability、public MCP registration 与下游 consumer；private wire 本身不构成能力广告证据。
+2. 调用 `+0x88` 后的独立新 frame 证明 root 消失且两个 predicate 为 `false`；随后正式 `life-advance` 使日期推进。
+3. 同版本 live gate 关闭后，另行同步 adapter capability、public MCP registration 与下游 consumer；private wire 本身不构成能力广告证据。
 
 ## MCP 与 open_kaishek 影响
 

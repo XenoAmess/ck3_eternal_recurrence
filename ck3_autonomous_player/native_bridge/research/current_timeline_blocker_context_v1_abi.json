@@ -40,18 +40,23 @@
     "rtti_type_descriptor_rva": "0x521FC90",
     "complete_object_locator_rva": "0x468A190",
     "primary_vtable_rva": "0x4111E80",
-    "close_vtable_slot_offset": "0x20",
-    "close_vtable_slot_index": 4,
-    "close_core_rva": "0x1006FB0",
+    "reflected_close_vtable_slot_offset": "0x88",
+    "reflected_close_vtable_slot_index": 17,
+    "reflected_close_override_rva": "0xFD4870",
+    "generic_action_default_rva": "0x1007190",
+    "generic_hide_vtable_slot_excluded": "0x20",
+    "generic_hide_target_rva": "0x1006FB0",
+    "close_command_type_descriptor_rva": "0x54C0128",
+    "close_command_executor_rva": "0x25EA9C0",
     "close_flow": [
-      "vtable_plus_0x38_is_open",
-      "when_open_view_widget_plus_0x78_then_0x369CB30_edx_0_r8_0_hide",
-      "flags_slot_plus_0x50_equals_0x800_then_observed_global_ingame_ui_plus_0x11A1_store_1",
-      "tail_0x10071A0_manager_history_finalize"
+      "vtable_plus_0x20_hide_view",
+      "construct_CCloseSuccessionCommand_from_native_current_character_and_opaque_token",
+      "locked_command_queue_submit_channel_flags_7",
+      "executor_match_character_and_token_then_clear_row_plus_0x260_active"
     ],
     "open_path_excluded": "vtable_plus_0x18_0xFD4860_to_0x1006F40",
     "query_invokes_close": false,
-    "evidence_boundary": "the observed +0x11A1 store is not yet identified as the simulation-hold predicate"
+    "evidence_boundary": "static ABI is closed; corrected reflected action still requires frozen-build paused live acceptance"
   },
   "identity_rules": {
     "death_succession_modal": "succession_event_window and bottom are effectively visible and an enabled visible close_button exists",
@@ -101,7 +106,7 @@
   },
   "next_live_gate": {
     "action_contract": "research/death_succession_modal_continue_v1_abi.json",
-    "required": "frozen-build private query and typed Close, later independent query proving root absent and both predicates false, then formal life-advance proving date increase",
+    "required": "invoke corrected controller vslot +0x88 once on the owning thread, then use a later independent query to prove root absent and both predicates false before formal life-advance proves date increase",
     "public_registration": "remains off until the same-version live gate passes"
   }
 }
