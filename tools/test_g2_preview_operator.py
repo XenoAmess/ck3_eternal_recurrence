@@ -13,6 +13,41 @@ from tools import g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_private_faction_round_is_narrowly_forwarded(self) -> None:
+        args = g2_preview_operator.parser().parse_args([
+            "run",
+            "--manifest",
+            "manifest.json",
+            "--output",
+            "attempt",
+            "--private-faction-round-id",
+            "R765",
+        ])
+        command = g2_preview_operator.native_auto_run_command(
+            ["python", "agent.py"],
+            turns=40,
+            timeout=7200,
+            readiness_timeout=300,
+            private_faction_round_id_value=args.private_faction_round_id,
+        )
+        self.assertEqual(command[-3:], [
+            "--allow-private-faction-gift-formal-trial",
+            "--private-faction-round-id",
+            "R765",
+        ])
+        self.assertNotIn("--allow-private-faction-gift-formal-trial", g2_preview_operator.native_auto_run_command(
+            ["python", "agent.py"],
+            turns=40,
+            timeout=7200,
+            readiness_timeout=300,
+            private_faction_round_id_value=None,
+        ))
+        with self.assertRaises(SystemExit):
+            g2_preview_operator.parser().parse_args([
+                "run", "--manifest", "manifest.json", "--output", "attempt",
+                "--private-faction-round-id", "<ALLOCATED_ROUND>",
+            ])
+
     def test_verify_zip_binds_exact_bytes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             archive = Path(directory) / "preview.zip"

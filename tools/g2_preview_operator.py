@@ -12,6 +12,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -91,6 +92,42 @@ def run_logged(command: list[str], stdout_path: Path, stderr_path: Path) -> int:
         with stderr_path.open("w", encoding="utf-8", newline="") as stderr_stream:
             completed = subprocess.run(command, stdout=stdout_stream, stderr=stderr_stream, check=False)
     return completed.returncode
+
+
+def private_faction_round_id(value: str) -> str:
+    if re.fullmatch(r"R[1-9][0-9]*", value) is None:
+        raise argparse.ArgumentTypeError(
+            "private faction round ID must be R followed by a positive integer"
+        )
+    return value
+
+
+def native_auto_run_command(
+    common: list[str],
+    *,
+    turns: int,
+    timeout: int,
+    readiness_timeout: int,
+    private_faction_round_id_value: str | None,
+) -> list[str]:
+    command = [
+        *common,
+        "native-auto-run",
+        "--turns",
+        str(turns),
+        "--timeout",
+        str(timeout),
+        "--readiness-timeout",
+        str(readiness_timeout),
+        "--cold-start-checkpoint",
+    ]
+    if private_faction_round_id_value is not None:
+        command.extend([
+            "--allow-private-faction-gift-formal-trial",
+            "--private-faction-round-id",
+            private_faction_round_id_value,
+        ])
+    return command
 
 
 def command_verify_zip(args: argparse.Namespace) -> int:
@@ -186,18 +223,15 @@ def command_run(args: argparse.Namespace) -> int:
     formal_stderr = output / "formal-stderr.txt"
     stop_path = manifest_path(manifest["state_dir"], "state_dir") / "native-auto-run.stop"
     print(f"Operator stop request file: {stop_path}", file=sys.stderr, flush=True)
+    private_faction_round = args.private_faction_round_id
     formal_exit = run_logged(
-        [
-            *common,
-            "native-auto-run",
-            "--turns",
-            str(turns),
-            "--timeout",
-            str(timeout),
-            "--readiness-timeout",
-            str(readiness_timeout),
-            "--cold-start-checkpoint",
-        ],
+        native_auto_run_command(
+            common,
+            turns=turns,
+            timeout=timeout,
+            readiness_timeout=readiness_timeout,
+            private_faction_round_id_value=private_faction_round,
+        ),
         formal_report,
         formal_stderr,
     )
@@ -211,6 +245,8 @@ def command_run(args: argparse.Namespace) -> int:
         "turns": turns,
         "timeout_seconds": timeout,
         "readiness_timeout_seconds": readiness_timeout,
+        "private_faction_gift_formal_trial": private_faction_round is not None,
+        "private_faction_round_id": private_faction_round,
         "checkpoint_sha256_after": sha256(save) if save.is_file() else None,
         "driver_state_sha256_after": sha256(driver_path) if driver_path.is_file() else None,
     })
@@ -282,6 +318,14 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--turns", type=int)
     run.add_argument("--timeout", type=int)
     run.add_argument("--readiness-timeout", type=int)
+    run.add_argument(
+        "--private-faction-round-id",
+        type=private_faction_round_id,
+        help=(
+            "enable the bounded unadvertised faction-gift formal route for "
+            "the allocated CK3 ownership round"
+        ),
+    )
     run.set_defaults(handler=command_run)
 
     request_stop = commands.add_parser("request-stop")
