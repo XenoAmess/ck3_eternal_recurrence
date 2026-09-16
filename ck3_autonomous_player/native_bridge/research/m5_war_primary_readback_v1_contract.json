@@ -1,0 +1,44 @@
+{
+  "schema": "xar.ck3.m5_war_primary_readback_source_contract_v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "status": "static-ready-unwired",
+  "registered": false,
+  "advertised": false,
+  "live_verified": false,
+  "native_calls_added": [],
+  "source": {
+    "header": "include/xar_bridge/m5_war_primary_readback_v1.hpp",
+    "implementation": "src/m5_war_primary_readback_v1.cpp",
+    "focused_test": "src/m5_war_primary_readback_v1_test.cpp"
+  },
+  "caller_signature": "ReadM5WarPrimaryReadbackV1(const M5WarPrimaryReadbackInputsV1&, M5WarPrimaryReadbackV1&) noexcept",
+  "already_existing_input_boundaries": [
+    "same native revision public game::Snapshot with played_character_gold, active_wars, player_armies",
+    "same native revision complete native query-declarable-wars list and one exactly matching chosen DeclarableWarSnapshot",
+    "same native revision one-target WarEntryAssessmentsV1 available/ready with effective target",
+    "same native revision available_primary_scope prewar primary CUnit/CArmy identities",
+    "same native revision available M5PrimaryArmySupplyObservationV1 from CArmy+0x180"
+  ],
+  "output": "one available_current_primary_slice with declaration identity, current treasury, active WarIDs, original one-target power ratio, and only current raised actor CArmy supply raw Q100000 independently matching public CUnitID/owner/province/route",
+  "legitimate_zero": [
+    "current treasury raw 0",
+    "raised actor army supply raw 0",
+    "empty current actor raised-army list when both independent sources are empty"
+  ],
+  "unavailable_if": [
+    "public/legal/assessment/prewar/supply native revisions or paused date differ",
+    "chosen native declaration tuple is absent or duplicated",
+    "assessment target/effective target does not bind the prewar primary defender",
+    "full-generation CUnit/CArmy supply identities differ from the prewar primary scope",
+    "public actor CUnit owner/province/route differs or a public actor army is omitted by the prewar scope"
+  ],
+  "excluded_and_unknown": [
+    "voluntary ally acceptance and attendance",
+    "future unraised/route-province supply or attrition",
+    "full campaign resource burn and legal exit exposure",
+    "first-heir marriage alliance or long-term commitment value",
+    "common M5 cross-domain utility calibration and selected typed action"
+  ],
+  "next_wire_owner": "coordinator after bridge.cpp/CMake writer releases files; private paused query only before any public advertisement"
+}
