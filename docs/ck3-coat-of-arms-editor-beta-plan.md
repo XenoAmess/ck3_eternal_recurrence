@@ -157,8 +157,9 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 旧 v1 pack 继续在浏览器内确定性计算同一特征，不产生网络或后端依赖。合同与验证见
 [`coat-of-arms-fit-index-v2.md`](coat-of-arms-fit-index-v2.md)。拟合器也已返回 1–3 个实际完整、同合同非支配的质量/边缘/实例数候选；
 每项经 depth 编码逐像素门禁，网页自动生成独立源码、计数与预览。合成浏览器用例实际产生 2 项，详见
-[`coat-of-arms-pareto-candidates.md`](coat-of-arms-pareto-candidates.md)。仍需把新合同跑入 hunter/七图用户语料并记录分布，故 WP3
-继续保持 `in_progress`。
+[`coat-of-arms-pareto-candidates.md`](coat-of-arms-pareto-candidates.md)。hunter 和七图用户语料的新合同已实跑；七图 7/7 都评估非方块 DDS，
+3/7 的质量优先结果实际选中非方块元素，其中 picture-02/07 相对最佳纯方块路径同时改善总损失与边缘损失。
+消融证据见七图 artifact 中的 `mixed-element-ablation.json`。仍需对最终交付候选补齐逐实例固定点剪枝门禁，故 WP3 继续保持 `in_progress`。
 
 退出条件：hunter v4/v5 的总损失不劣化、边缘损失严格优于 `0.04304`，且资源清单证明不再退化为无条件的单一矩形铺色器。
 
@@ -210,7 +211,7 @@ GPU 目前不代替 CPU 纹章正向渲染；它批量渲染 loss contribution �
 当前状态：`in_progress`。安全 SVG、唯一注册 `_default.dds` 的 `textured_emblem` 浏览器 shader 模型、简体中文/英文、素材包目录
 导入、移动端退化、Service Worker 离线恢复、主 bundle code splitting 以及 Chromium/Firefox/WebKit 核心流程已经通过自动化门禁。
 Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/`，公网 canonical URL 与入口资源均
-回读 `200`；无尾斜杠地址为预期 `301`。部署证据见 `ck3-coat-of-arms-github-pages.md`。`parent` 展开、DLC/mod VFS 胜者 receipt
+回读 `200`；无尾斜杠地址为预期 `301`。部署证据见 `ck3-coat-of-arms-github-pages.md`。`parent` 引用现在会在预览区就地显示中英文告警、仍完整保留导出，不再静默冒充已合成；`parent` 展开、DLC/mod VFS 胜者 receipt
 和更细的 asset shard 按需策略仍未完成。
 
 退出条件：能力矩阵明确每种语法/资源在 parser、preview、editor、serializer、native evidence 五列的状态；不能预览的结构不得静默消失。

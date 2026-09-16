@@ -36,6 +36,29 @@ input SHA-256, source revision plus worktree patch SHA-256, asset/scoring/
 renderer contracts, evaluated candidates, stop reason, counts and every
 candidate's source/preview SHA-256.
 
+## Mixed native-element ablation
+
+[`mixed-element-ablation.json`](mixed-element-ablation.json) deterministically
+projects every report's candidate ledger against its best comparable
+`ce_block_02.dds`-only path. All seven cases evaluated non-tile native DDS
+elements and all seven returned at least one mixed-element Pareto candidate.
+The quality-priority candidate actually selects non-tile elements in three
+cases:
+
+| Case | Selected non-tile DDS | Total-loss change vs pure tile | Edge-loss change vs pure tile | Interpretation |
+|---|---|---:|---:|---|
+| picture-02 | `ce_mena_polo_stick.dds` | -23.59% | -6.23% | improves both gates |
+| picture-05 | `ce_border_circle_metal.dds` | -7.71% | +3.72% | real Pareto trade-off; not an all-metric improvement |
+| picture-07 | `ce_pot.dds`, `ce_desdichado.dds` | -33.31% | -23.21% | improves both gates |
+
+The other four quality-priority results remain pure tile because their tested
+semantic/mixed candidates did not win the total-loss ordering; those candidates
+remain available as genuine lower-complexity or edge alternatives. This proves
+the search is not hard-wired to one rectangle while avoiding a false claim that
+every image benefits from a semantic emblem. The selected result in every row
+also retains the existing browser seam/parse/preview gates and its 7/7 native
+quality-priority Apply/Copy/pixel evidence.
+
 Evidence level is deliberately scoped: browser input-to-fit metrics, preview
 identity, source integrity and parse/serialize are measured and pass 7/7.
 The quality-priority document from every case was subsequently applied to CK3
@@ -57,3 +80,11 @@ pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --workers=1 --
 Expected result: `7 passed`; the measured run completed in 14.1 minutes on the
 maintainer workstation. Per-case `report.json` is authoritative for unrounded
 metrics and candidate coordinates.
+
+Regenerate and byte-check the mixed-element projection without rerunning the
+fits:
+
+```bat
+python coat_of_arms_editer_of_ck3\tools\summarize_mixed_element_evidence.py docs\coat-of-arms-fit-artifacts\user-picture-corpus-v14-pareto-budget-1024 docs\coat-of-arms-fit-artifacts\user-picture-corpus-v14-native-r18\summary.json docs\coat-of-arms-fit-artifacts\user-picture-corpus-v14-pareto-budget-1024\mixed-element-ablation.json
+python coat_of_arms_editer_of_ck3\tools\summarize_mixed_element_evidence.py docs\coat-of-arms-fit-artifacts\user-picture-corpus-v14-pareto-budget-1024 docs\coat-of-arms-fit-artifacts\user-picture-corpus-v14-native-r18\summary.json docs\coat-of-arms-fit-artifacts\user-picture-corpus-v14-pareto-budget-1024\mixed-element-ablation.json --check
+```

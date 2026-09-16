@@ -33,6 +33,10 @@
 - 用户 `pictures.zip` 的 7 张原图已逐张以 1,024 预算复跑；每张都产生 3 个可独立复制、精确重解析且互不支配的候选，
   共冻结 21 份完整代码与 21 张 230px 候选预览。7/7 当前候选、拟合预览和编辑器预览使用同一 canonical PNG 字节；
   质量优先结果为 586–1,024 个实际实例、232,313–403,676 UTF-8 bytes，未对自然收敛结果补无贡献层。
+- 七图同合同消融表明：7/7 都评估了非方块原生 DDS 且返回至少一个混合候选；3/7 的质量优先结果选中了非方块元素。
+  `picture-02` 相对最佳纯方块路径的总/边缘损失降低 `23.59% / 6.23%`，`picture-07` 降低
+  `33.31% / 23.21%`；`picture-05` 是总损失改善、边缘损失退化的真实 Pareto 权衡，不冒充全指标改善。
+  机器可读证据见 [`mixed-element-ablation.json`](coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/mixed-element-ablation.json)。
 - 完整 Vitest：18 个文件、83 项通过。
 - 独立浏览器拟合 E2E：合成 asset pack 与 exact 1.19.0.6 pack 共 2 项通过；观察到 `/api/` 请求为 0。
 - TypeScript 与生产构建通过。
@@ -55,4 +59,4 @@ pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line
 [`user-picture-corpus-v14-pareto-budget-1024`](coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/README.md)。
 质量优先候选的 v14 原生 Apply/Copy 与空间像素对照见
 [`user-picture-corpus-v14-native-r18`](coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/README.md)：浏览器 → CK3
-与 Copy → 重放均 7/7 通过。其余 14 个复杂度/边缘候选仍只有浏览器证据，因此 WP3 继续保持 `in_progress`。
+与 Copy → 重放均 7/7 通过。其余 14 个复杂度/边缘候选仍只有浏览器证据；且交付候选尚未全部重跑最终逐实例固定点剪枝，因此 WP3 继续保持 `in_progress`。

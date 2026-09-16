@@ -137,7 +137,8 @@
                 "pnpm run build",
                 "pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line",
                 "pnpm exec playwright test e2e/candidate-comparison.spec.ts --reporter=line",
-                "pnpm verify:production-boundary"
+                "pnpm verify:production-boundary",
+                "python coat_of_arms_editer_of_ck3/tools/summarize_mixed_element_evidence.py docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/summary.json docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/mixed-element-ablation.json --check"
             ],
             "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v6-pareto-pruned/",
             "keyMetrics": {
@@ -268,6 +269,19 @@
                 "paretoPictureCorpusNativeMaximumSpatialMeanAbsoluteError": 0.15839402377605438,
                 "paretoPictureCorpusNativeSummarySha256": "5255F643880849FBE2992D3D8F4F2EB37D5740E22DB44CD42A82F36CA0408D44",
                 "paretoPictureCorpusNativeRawReportSha256": "F25EAF97A955EF9995C727C9BD529E117EAFEFF89E7CD9150C85242250A1F426",
+                "mixedElementAblationSchema": "ck3-coa-mixed-native-element-ablation-summary-v1",
+                "mixedElementAblationEvidencePath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/mixed-element-ablation.json",
+                "mixedElementCasesEvaluatingNonTileDds": 7,
+                "mixedElementCasesWithMixedParetoCandidate": 7,
+                "mixedElementQualityPriorityCases": 3,
+                "mixedElementQualityPriorityImprovesTotalAndEdgeCases": 2,
+                "mixedElementPicture02RelativeTotalGain": 0.23593755418187246,
+                "mixedElementPicture02RelativeEdgeGain": 0.06226150956366437,
+                "mixedElementPicture07RelativeTotalGain": 0.333079563227019,
+                "mixedElementPicture07RelativeEdgeGain": 0.2320655589668505,
+                "mixedElementSelectedBrowserGates": "passed_7_of_7",
+                "mixedElementSelectedNativeGates": "passed_7_of_7",
+                "remainingWp3Gate": "final_delivery_candidates_exact_fixed_point_prune",
                 "nativeRoundTrip": "passed",
                 "nativeInputBytes": 262138,
                 "nativeInputBlocks": 297,
@@ -432,7 +446,7 @@
         "nonGetRequests": 0,
         "vitestFilesPassed": 16,
         "vitestTestsPassed": 82,
-        "parentComposition": "pending",
+        "parentComposition": "pending_with_bilingual_inline_preview_omission_warning",
         "texturedEmblemComposition": "browser_shader_model_passed_native_pixel_pending",
         "texturedEmblemExpectedCenterRgba": [32, 192, 95, 255],
         "simplifiedChineseEnglishUi": "passed",
@@ -450,7 +464,8 @@
         "mobileLayout": "passed",
         "mainBundleCodeSplitting": "passed",
         "assetPackDirectoryImport": "passed",
-        "assetPackVfsWinner": "pending"
+        "assetPackVfsWinner": "pending",
+        "parentPreviewBoundaryE2e": "passed_chinese_english_warning_and_parent_export_preserved"
       },
       "blockers": []
     },

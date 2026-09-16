@@ -1,0 +1,479 @@
+{
+  "schema": "ck3-coa-mixed-native-element-ablation-summary-v1",
+  "corpusRoot": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024",
+  "nativeSummaryReceipt": {
+    "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/summary.json",
+    "bytes": 63485,
+    "sha256": "58D3EB88FE4D02C959DC1CA8AAA839FC59CD7124E36C08EA5C4AB020BEFC8CCB"
+  },
+  "contracts": {
+    "comparison": "same input + scorer + renderer + resolution + surface mask",
+    "pureTileTexture": "ce_block_02.dds",
+    "qualityPriority": "first non-dominated candidate sorted by total loss"
+  },
+  "aggregate": {
+    "cases": 7,
+    "mixedQualityPriorityCases": 3,
+    "mixedQualityPriorityCasesImprovingTotalAndEdge": 2,
+    "casesWithMixedParetoCandidate": 7,
+    "browserGatesPassed": true,
+    "nativeQualityPriorityGatesPassed": true
+  },
+  "cases": [
+    {
+      "id": "picture-01",
+      "input": {
+        "file": "718c36bc01a173d0c42c0d1131f67e31055244c7.jpg",
+        "sha256": "B52B0624A3C2B2114F66A6C7BA839880D1DC89ADAA91DE0F5CA6BFC302160CA6",
+        "width": 511,
+        "height": 512
+      },
+      "reportReceipt": {
+        "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-01/report.json",
+        "bytes": 15930,
+        "sha256": "4BAB162D434724EB92702C9CD5A5411FF551282A3A2AC5A98AF522D40DD6C5FD"
+      },
+      "qualityPriority": {
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "nonTileTextures": [],
+        "drawnInstances": 1024,
+        "totalLoss": 0.01710284608792626,
+        "edgeLoss": 0.03607680964724156,
+        "reconstructionMode": "native-edge-refined"
+      },
+      "bestPureTileAblation": {
+        "mode": "native-edge-refined",
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "drawnInstances": 1024,
+        "totalLoss": 0.01710284608792626,
+        "edgeLoss": 0.03607680964724156
+      },
+      "gainAgainstPureTile": {
+        "totalLossAbsolute": 0.0,
+        "totalLossRelative": 0.0,
+        "edgeLossAbsolute": 0.0,
+        "edgeLossRelative": 0.0,
+        "improvesBoth": false
+      },
+      "searchCoverage": {
+        "evaluatedTextures": [
+          "ce_block_02.dds",
+          "ce_persian_sun_lion.dds"
+        ],
+        "evaluatedNonTileTextures": [
+          "ce_persian_sun_lion.dds"
+        ],
+        "mixedParetoCandidates": 2,
+        "paretoCandidates": 3
+      },
+      "browserGates": {
+        "parseErrors": 0,
+        "serializeParseExact": true,
+        "fitAndEditorPreviewByteIdentical": true,
+        "seamZeroAtAllMeasuredResolutions": true
+      },
+      "nativeQualityPriorityGates": {
+        "applyCopyInstanceAndBlockCountsPreserved": true,
+        "browserToNativePixelsPassed": true,
+        "copyReapplyPixelsPassed": true
+      }
+    },
+    {
+      "id": "picture-02",
+      "input": {
+        "file": "a124bc6bc3b435cc1fda251bff7f140d2ee23c42.jpg",
+        "sha256": "57C8CCF223D6B8FC9F27A69D17B676AAB0FABBE3D656D633FAC013296F88BE36",
+        "width": 300,
+        "height": 300
+      },
+      "reportReceipt": {
+        "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-02/report.json",
+        "bytes": 15911,
+        "sha256": "309BBA1A7C41C880AA0EC934FEEEDA260FDCDF10D7D3C4D49C87878CE2578E99"
+      },
+      "qualityPriority": {
+        "textures": [
+          "ce_mena_polo_stick.dds",
+          "ce_block_02.dds"
+        ],
+        "nonTileTextures": [
+          "ce_mena_polo_stick.dds"
+        ],
+        "drawnInstances": 586,
+        "totalLoss": 0.03314961733746022,
+        "edgeLoss": 0.06131414675245063,
+        "reconstructionMode": "native-high-resolution-edge-refined"
+      },
+      "bestPureTileAblation": {
+        "mode": "native-edge-refined",
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "drawnInstances": 593,
+        "totalLoss": 0.04338600531788332,
+        "edgeLoss": 0.0653851232276077
+      },
+      "gainAgainstPureTile": {
+        "totalLossAbsolute": 0.010236387980423103,
+        "totalLossRelative": 0.23593755418187246,
+        "edgeLossAbsolute": 0.00407097647515707,
+        "edgeLossRelative": 0.06226150956366437,
+        "improvesBoth": true
+      },
+      "searchCoverage": {
+        "evaluatedTextures": [
+          "ce_block_02.dds",
+          "ce_mena_polo_stick.dds"
+        ],
+        "evaluatedNonTileTextures": [
+          "ce_mena_polo_stick.dds"
+        ],
+        "mixedParetoCandidates": 3,
+        "paretoCandidates": 3
+      },
+      "browserGates": {
+        "parseErrors": 0,
+        "serializeParseExact": true,
+        "fitAndEditorPreviewByteIdentical": true,
+        "seamZeroAtAllMeasuredResolutions": true
+      },
+      "nativeQualityPriorityGates": {
+        "applyCopyInstanceAndBlockCountsPreserved": true,
+        "browserToNativePixelsPassed": true,
+        "copyReapplyPixelsPassed": true
+      }
+    },
+    {
+      "id": "picture-03",
+      "input": {
+        "file": "baiqi2.png",
+        "sha256": "4317C811A530993BE863D2C19CEAA66D547712FE26D6011EF1BC4CDEF000533F",
+        "width": 527,
+        "height": 527
+      },
+      "reportReceipt": {
+        "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-03/report.json",
+        "bytes": 15888,
+        "sha256": "EA9C4A157F73B4E5916A2B0C3093396F42E5316878AA8018B64B83AFBCD940B0"
+      },
+      "qualityPriority": {
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "nonTileTextures": [],
+        "drawnInstances": 1024,
+        "totalLoss": 0.019421617179545905,
+        "edgeLoss": 0.04197369932759263,
+        "reconstructionMode": "native-edge-refined"
+      },
+      "bestPureTileAblation": {
+        "mode": "native-edge-refined",
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "drawnInstances": 1024,
+        "totalLoss": 0.019421617179545905,
+        "edgeLoss": 0.04197369932759263
+      },
+      "gainAgainstPureTile": {
+        "totalLossAbsolute": 0.0,
+        "totalLossRelative": 0.0,
+        "edgeLossAbsolute": 0.0,
+        "edgeLossRelative": 0.0,
+        "improvesBoth": false
+      },
+      "searchCoverage": {
+        "evaluatedTextures": [
+          "ce_block_02.dds",
+          "ce_ordinary_fess_5.dds"
+        ],
+        "evaluatedNonTileTextures": [
+          "ce_ordinary_fess_5.dds"
+        ],
+        "mixedParetoCandidates": 2,
+        "paretoCandidates": 3
+      },
+      "browserGates": {
+        "parseErrors": 0,
+        "serializeParseExact": true,
+        "fitAndEditorPreviewByteIdentical": true,
+        "seamZeroAtAllMeasuredResolutions": true
+      },
+      "nativeQualityPriorityGates": {
+        "applyCopyInstanceAndBlockCountsPreserved": true,
+        "browserToNativePixelsPassed": true,
+        "copyReapplyPixelsPassed": true
+      }
+    },
+    {
+      "id": "picture-04",
+      "input": {
+        "file": "BV1bt421G7qL.png",
+        "sha256": "9E7B345F3857DB1B2F9EC5AE2550DCD16499B67D678CB3E07931931B2FE44F8C",
+        "width": 1080,
+        "height": 1080
+      },
+      "reportReceipt": {
+        "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-04/report.json",
+        "bytes": 15810,
+        "sha256": "87B5E29B1FB2BC1DFD2157F054E3CBC1355AB5409AEB353ED9D505C0869CFA55"
+      },
+      "qualityPriority": {
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "nonTileTextures": [],
+        "drawnInstances": 1024,
+        "totalLoss": 0.04693235092761686,
+        "edgeLoss": 0.0871759035302717,
+        "reconstructionMode": "native-edge-refined"
+      },
+      "bestPureTileAblation": {
+        "mode": "native-edge-refined",
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "drawnInstances": 1024,
+        "totalLoss": 0.04693235092761686,
+        "edgeLoss": 0.0871759035302717
+      },
+      "gainAgainstPureTile": {
+        "totalLossAbsolute": 0.0,
+        "totalLossRelative": 0.0,
+        "edgeLossAbsolute": 0.0,
+        "edgeLossRelative": 0.0,
+        "improvesBoth": false
+      },
+      "searchCoverage": {
+        "evaluatedTextures": [
+          "ce_block_02.dds",
+          "ce_border_shield_engrailed_02.dds",
+          "ce_ordinary_fess_5.dds"
+        ],
+        "evaluatedNonTileTextures": [
+          "ce_border_shield_engrailed_02.dds",
+          "ce_ordinary_fess_5.dds"
+        ],
+        "mixedParetoCandidates": 1,
+        "paretoCandidates": 3
+      },
+      "browserGates": {
+        "parseErrors": 0,
+        "serializeParseExact": true,
+        "fitAndEditorPreviewByteIdentical": true,
+        "seamZeroAtAllMeasuredResolutions": true
+      },
+      "nativeQualityPriorityGates": {
+        "applyCopyInstanceAndBlockCountsPreserved": true,
+        "browserToNativePixelsPassed": true,
+        "copyReapplyPixelsPassed": true
+      }
+    },
+    {
+      "id": "picture-05",
+      "input": {
+        "file": "BV1oe411i7oF.png",
+        "sha256": "E9205ADE88047B7F920A90761C25302F133920503CC854E63446443401FCA7EB",
+        "width": 522,
+        "height": 522
+      },
+      "reportReceipt": {
+        "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-05/report.json",
+        "bytes": 15874,
+        "sha256": "1E57D7FC093056F15BDCA0CEE8D15D17EEFD509C7F56F12ABF12E61DB72E3468"
+      },
+      "qualityPriority": {
+        "textures": [
+          "ce_border_circle_metal.dds",
+          "ce_block_02.dds"
+        ],
+        "nonTileTextures": [
+          "ce_border_circle_metal.dds"
+        ],
+        "drawnInstances": 904,
+        "totalLoss": 0.044505120096175355,
+        "edgeLoss": 0.08332907284007275,
+        "reconstructionMode": "native-high-resolution-edge-refined"
+      },
+      "bestPureTileAblation": {
+        "mode": "native-edge-refined",
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "drawnInstances": 1024,
+        "totalLoss": 0.04822183102430361,
+        "edgeLoss": 0.08034394349845177
+      },
+      "gainAgainstPureTile": {
+        "totalLossAbsolute": 0.003716710928128253,
+        "totalLossRelative": 0.07707527584871353,
+        "edgeLossAbsolute": -0.0029851293416209845,
+        "edgeLossRelative": -0.03715437918078428,
+        "improvesBoth": false
+      },
+      "searchCoverage": {
+        "evaluatedTextures": [
+          "ce_block_02.dds",
+          "ce_border_circle_metal.dds",
+          "ce_ermine.dds"
+        ],
+        "evaluatedNonTileTextures": [
+          "ce_border_circle_metal.dds",
+          "ce_ermine.dds"
+        ],
+        "mixedParetoCandidates": 2,
+        "paretoCandidates": 3
+      },
+      "browserGates": {
+        "parseErrors": 0,
+        "serializeParseExact": true,
+        "fitAndEditorPreviewByteIdentical": true,
+        "seamZeroAtAllMeasuredResolutions": true
+      },
+      "nativeQualityPriorityGates": {
+        "applyCopyInstanceAndBlockCountsPreserved": true,
+        "browserToNativePixelsPassed": true,
+        "copyReapplyPixelsPassed": true
+      }
+    },
+    {
+      "id": "picture-06",
+      "input": {
+        "file": "Cache_5d2e1902d7c282d2.png",
+        "sha256": "647BE9E8D39548480DA87E59A1487F94DF3D0A8316E48F4B746E36AED8A5B790",
+        "width": 960,
+        "height": 905
+      },
+      "reportReceipt": {
+        "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-06/report.json",
+        "bytes": 15864,
+        "sha256": "03B2212E127DC2DAD4E837D609F23664DD5BAF16213B16EF168185BA1CCE84EE"
+      },
+      "qualityPriority": {
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "nonTileTextures": [],
+        "drawnInstances": 1024,
+        "totalLoss": 0.006149263344276545,
+        "edgeLoss": 0.012749870884061962,
+        "reconstructionMode": "native-edge-refined"
+      },
+      "bestPureTileAblation": {
+        "mode": "native-edge-refined",
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "drawnInstances": 1024,
+        "totalLoss": 0.006149263344276545,
+        "edgeLoss": 0.012749870884061962
+      },
+      "gainAgainstPureTile": {
+        "totalLossAbsolute": 0.0,
+        "totalLossRelative": 0.0,
+        "edgeLossAbsolute": 0.0,
+        "edgeLossRelative": 0.0,
+        "improvesBoth": false
+      },
+      "searchCoverage": {
+        "evaluatedTextures": [
+          "ce_block_02.dds",
+          "ce_kamon_center.dds",
+          "ce_lotus_big.dds"
+        ],
+        "evaluatedNonTileTextures": [
+          "ce_kamon_center.dds",
+          "ce_lotus_big.dds"
+        ],
+        "mixedParetoCandidates": 1,
+        "paretoCandidates": 3
+      },
+      "browserGates": {
+        "parseErrors": 0,
+        "serializeParseExact": true,
+        "fitAndEditorPreviewByteIdentical": true,
+        "seamZeroAtAllMeasuredResolutions": true
+      },
+      "nativeQualityPriorityGates": {
+        "applyCopyInstanceAndBlockCountsPreserved": true,
+        "browserToNativePixelsPassed": true,
+        "copyReapplyPixelsPassed": true
+      }
+    },
+    {
+      "id": "picture-07",
+      "input": {
+        "file": "人类化头像.png",
+        "sha256": "31218C41C1756CC4641A70828B2C381E744C988B13FA1F376B73066E6564DF8A",
+        "width": 2048,
+        "height": 2048
+      },
+      "reportReceipt": {
+        "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-07/report.json",
+        "bytes": 16878,
+        "sha256": "5C191771E2215D803C3E6B48B4BDE3F6C6B22B4E406AC239F5040D93463DDEB9"
+      },
+      "qualityPriority": {
+        "textures": [
+          "ce_pot.dds",
+          "ce_block_02.dds",
+          "ce_desdichado.dds"
+        ],
+        "nonTileTextures": [
+          "ce_pot.dds",
+          "ce_desdichado.dds"
+        ],
+        "drawnInstances": 987,
+        "totalLoss": 0.04767803584367018,
+        "edgeLoss": 0.08157038858923499,
+        "reconstructionMode": "native-high-resolution-edge-refined"
+      },
+      "bestPureTileAblation": {
+        "mode": "native-edge-refined",
+        "textures": [
+          "ce_block_02.dds"
+        ],
+        "drawnInstances": 1024,
+        "totalLoss": 0.07148984078875924,
+        "edgeLoss": 0.10622051080231969
+      },
+      "gainAgainstPureTile": {
+        "totalLossAbsolute": 0.023811804945089055,
+        "totalLossRelative": 0.333079563227019,
+        "edgeLossAbsolute": 0.0246501222130847,
+        "edgeLossRelative": 0.2320655589668505,
+        "improvesBoth": true
+      },
+      "searchCoverage": {
+        "evaluatedTextures": [
+          "ce_block_02.dds",
+          "ce_desdichado.dds",
+          "ce_peacock_02.dds",
+          "ce_pot.dds"
+        ],
+        "evaluatedNonTileTextures": [
+          "ce_desdichado.dds",
+          "ce_peacock_02.dds",
+          "ce_pot.dds"
+        ],
+        "mixedParetoCandidates": 3,
+        "paretoCandidates": 3
+      },
+      "browserGates": {
+        "parseErrors": 0,
+        "serializeParseExact": true,
+        "fitAndEditorPreviewByteIdentical": true,
+        "seamZeroAtAllMeasuredResolutions": true
+      },
+      "nativeQualityPriorityGates": {
+        "applyCopyInstanceAndBlockCountsPreserved": true,
+        "browserToNativePixelsPassed": true,
+        "copyReapplyPixelsPassed": true
+      }
+    }
+  ]
+}
