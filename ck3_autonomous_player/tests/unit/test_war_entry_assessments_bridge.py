@@ -126,6 +126,63 @@ def _result(*, targets: list[int] | None = None) -> dict[str, object]:
     }
 
 
+def _r759_like_entry_snapshot(target: int = 909) -> dict[str, object]:
+    declaration = _declaration(target)
+    declaration.update(
+        {
+            "declaration_id": f"{target}-17--1",
+            "casus_belli_key": "individual_county_de_jure_cb",
+            "configuration_index": -1,
+            "target_title_ids": [777],
+        }
+    )
+    assessment = _row(target)
+    assessment.update(
+        {
+            "distance_raw": 0,
+            "actor_power_base_raw": 2_400_000_000,
+            "actor_network_contribution_raw": 0,
+            "actor_power_total_raw": 2_400_000_000,
+            "target_power_base_raw": 1_500_000_000,
+            "target_network_contribution_raw": 0,
+            "target_pre_adjustment_total_raw": 1_500_000_000,
+            "target_adjustment_delta_raw": 0,
+            "target_power_total_raw": 1_500_000_000,
+            "actual_power_ratio_raw": 62_500,
+        }
+    )
+    payload = _payload([target])
+    payload["assessments"] = [assessment]
+    return {
+        "snapshot_id": "native:5",
+        "revision": 6,
+        "native_revision": 5,
+        "date_raw": 53_171_400,
+        "played_character": {"character_id": 29_829, "alive": True},
+        "active_wars": [],
+        "player_armies": [],
+        "declarable_wars": [declaration],
+        "war_entry_assessments": payload,
+        "campaign_root_context": {
+            "schema_version": 1,
+            "status": "available",
+            "snapshot_revision": 5,
+            "date_raw": 53_171_400,
+            "player_character_id": 29_829,
+            "player_monthly_gold_income": {"raw": 400_000, "scale": 100_000},
+            "player_domain_size": 2,
+            "player_domain_limit": 5,
+            "player_targeting_faction_count": 0,
+            "government": {
+                "key": "feudal_government",
+                "flags": ["government_is_feudal", "government_is_settled"],
+                "native_flag_count": 2,
+            },
+            "readiness": {"ready": True},
+        },
+    }
+
+
 def _semantic_snapshot(
     revision: int = 5,
     *,
@@ -578,6 +635,92 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
         self.assertIsNone(eu["eu_lower_raw"])
         self.assertIn("combat_forecast", eu["missing_components"])
         self.assertFalse(eu["automatic_declaration_enabled"])
+
+    def test_strategy_declares_narrow_feudal_de_jure_overmatch_without_ids(self) -> None:
+        snapshot = _r759_like_entry_snapshot(target=909)
+        plan = choose_one_life_turn(
+            [{"index": 1, "command": "save-checkpoint", "ok": True}],
+            snapshot=snapshot,
+            action_steps={
+                "query-declarable-wars",
+                "query-war-entry-assessments-v1-1-909",
+                "declare-war-909-17--1",
+                "life-advance",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "native_war_declaration")
+        self.assertEqual(plan["selected_step"], "declare-war-909-17--1")
+        self.assertEqual(plan["decision"]["outcome"], "DECLARE")
+        self.assertTrue(plan["decision"]["automatic_declaration_enabled"])
+        self.assertEqual(
+            plan["decision"]["policy"],
+            "feudal-single-county-de-jure-overmatch-v1",
+        )
+        self.assertEqual(plan["declaration"]["target_title_ids"], [777])
+
+    def test_narrow_war_entry_gate_fails_closed_on_each_observed_boundary(self) -> None:
+        cases = {
+            "power_ratio": lambda snapshot: snapshot[
+                "war_entry_assessments"
+            ]["assessments"][0].update({"actual_power_ratio_raw": 66_668}),
+            "actor_network": lambda snapshot: snapshot[
+                "war_entry_assessments"
+            ]["assessments"][0].update(
+                {
+                    "actor_network_contribution_raw": 1,
+                    "actor_power_total_raw": 2_400_000_001,
+                }
+            ),
+            "target_adjustment": lambda snapshot: snapshot[
+                "war_entry_assessments"
+            ]["assessments"][0].update(
+                {
+                    "target_adjustment_delta_raw": -1,
+                    "target_power_total_raw": 1_499_999_999,
+                }
+            ),
+            "government": lambda snapshot: snapshot[
+                "campaign_root_context"
+            ]["government"].update(
+                {"key": "tribal_government", "flags": ["government_is_tribal"]}
+            ),
+            "faction": lambda snapshot: snapshot[
+                "campaign_root_context"
+            ].update({"player_targeting_faction_count": 1}),
+            "stale_root": lambda snapshot: snapshot[
+                "campaign_root_context"
+            ].update({"snapshot_revision": 4}),
+            "other_cb": lambda snapshot: snapshot["declarable_wars"][0].update(
+                {"casus_belli_key": "claim_cb"}
+            ),
+            "active_war": lambda snapshot: snapshot.update(
+                {"active_wars": [_active_war(808)]}
+            ),
+        }
+        for name, mutate in cases.items():
+            snapshot = _r759_like_entry_snapshot()
+            mutate(snapshot)
+            with self.subTest(name=name):
+                plan = choose_one_life_turn(
+                    [{"index": 1, "command": "save-checkpoint", "ok": True}],
+                    snapshot=snapshot,
+                    action_steps={
+                        "query-declarable-wars",
+                        "query-war-entry-assessments-v1-1-909",
+                        "declare-war-909-17--1",
+                        "life-advance",
+                    },
+                )
+                self.assertNotEqual(plan["phase"], "native_war_declaration")
+                if name != "active_war":
+                    self.assertEqual(
+                        plan["phase"], "native_war_entry_no_declare"
+                    )
+                    self.assertEqual(plan["selected_step"], "life-advance")
+                    self.assertEqual(
+                        plan["decision"]["outcome"], "NO_DECLARE"
+                    )
 
     def test_strategy_uses_same_frame_power_and_network_risk_to_rank_targets(self) -> None:
         risky = _payload([42])

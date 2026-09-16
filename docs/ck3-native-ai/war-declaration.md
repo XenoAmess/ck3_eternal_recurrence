@@ -430,9 +430,10 @@ flowchart TD
   模型；照抄原版会继续允许“合法且军力比勉强过门、实际却打不赢”的战争。
 - [static-confirmed] 当前 Python 差异和可直接实施的 fail-closed 契约见
   [player-war-entry-policy.md](player-war-entry-policy.md)。
-- [static-confirmed] 当前 bridge 无法提供 exact combat simulation 输入，详见
-  [combat-simulation-inputs.md](combat-simulation-inputs.md)；因此在这些输入闭合前，主动宣战应保持关闭，而不是
-  用 `GetPowerRatio` 假装成胜率。
+- [static-confirmed] 当前 bridge 无法提供完整 exact combat simulation forecast，详见
+  [combat-simulation-inputs.md](combat-simulation-inputs.md)。通用战争继续关闭；R759 的单郡法理窄门同时要求
+  same-frame feudal campaign-root、无 faction/domain 压力、正收入、双方 native network 为零和 3:2 自有军力覆盖，
+  不把 `GetPowerRatio` 解释成胜率。
 
 ## 未闭合清单
 
@@ -477,3 +478,24 @@ flowchart TD
 - [production-live] Current round R675 completed 12/12 ordinary planner turns: four fresh declaration queries, four same-frame one-target power queries and four NO_DECLARE 30-day advances. Date moved from 53787072 to 53789952. CK3 changed the preferred current target from 38436 to 83395 after the first advance, and the next declaration query propagated that change before any assessment.
 - [production-live] The run ended turn_limit / qualified / ok=true with no first blocker. Run log, final driver-state and checkpoint SHA-256 are D42D7EF7...32A5A, 0AD53440...1F53 and 223E4C65...16092. Cleanup is GREEN and CK3/injector are absent.
 - [inference] The declaration frame-binding now holds across repeated ordinary campaign cycles, so the R673 repair needs no broader replay. No registered target event appeared; G2-M2 remains 1/3.
+
+### R759 repeated legal target and conservative declaration slice
+
+- [production-live] R759 在 497-turn 正式运行里对同一合法
+  `31506-17--1 / individual_county_de_jure_cb / title 537` 完成 163 轮 declaration query、163 轮
+  application-main war-entry assessment 和 163 次 `NO_DECLARE`。日期跨过 5,123 游戏日；报告 SHA-256 为
+  `7DB9467289E1B9DA1F000AE34B094E61028E6C9AE81B227BC7A682A516D9AABB`。这证明完整模型永远未 ready 时，
+  旧策略在实际长期运行中没有任何能转为声明的分支。
+- [production-live] 每个 assessment 都与同 revision/date/actor 的 campaign-root query 配对。原生 ratio 全部落在
+  `56027..64634`，actor/target network contribution、distance、target adjustment 全为零；actor 自有 base 始终至少为
+  target final total 的 1.5 倍。campaign-root 始终是 `feudal_government`，targeting faction `0`、domain `2/5`、
+  月收入为正。
+- [counter-policy] `feudal-single-county-de-jure-overmatch-v1` 只覆盖这一字段形状，不绑定 CharacterID/TitleID。
+  必须保持 same-frame native legal declaration，单 target title、configuration/claimant 均 `-1`，exact CB key，标准封建、
+  faction `0`、domain 不超限、正收入、双方 network 为零、target adjustment/distance 为零、native ratio ≤ `66667`，
+  且 actor base ×2 ≥ target total ×3；typed declaration step 也必须仍在当前 action surface。任一条件缺失即回到
+  `NO_DECLARE`，其它 CB 不随此解锁。
+- [static-confirmed] exact CB 源 `00_dejure_war.txt` SHA-256
+  `D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE`。离线 R759 逐帧回放 163/163 均能选择同一
+  typed declaration，且聚焦 normal/optimized Python tests 验证阈值、network、adjustment、government、faction、stale root
+  和其它 CB 全部 fail closed。此处仍是静态策略 readiness；真实 declaration/WarID 后置状态等待独占 CK3 短复验。

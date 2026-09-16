@@ -154,6 +154,21 @@ _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
 _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP = (
     "war-objective-hold-sentinel-advance"
 )
+_CONSERVATIVE_FEUDAL_DE_JURE_WAR_ENTRY = {
+    "rule_id": "feudal-single-county-de-jure-overmatch-v1",
+    "casus_belli_key": "individual_county_de_jure_cb",
+    "source": "common/casus_belli_types/00_dejure_war.txt",
+    "source_sha256": (
+        "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE"
+    ),
+    # Native R is target total / actor total on scale 100000.  This narrow
+    # rule requires the actor's own adjusted base to cover at least 150% of
+    # the complete target total, with neither side depending on the native
+    # relationship-network lane.
+    "maximum_target_actor_ratio_raw": 66_667,
+    "minimum_actor_target_numerator": 3,
+    "minimum_actor_target_denominator": 2,
+}
 _BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
 _BATTLE_CONTROL_IDENTITY_PENDING_QUERY_ATTEMPTS = 3
 _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS = 45
@@ -495,6 +510,181 @@ def _same_frame_war_entry_assessments(
         for assessment in normalized["assessments"]:
             recovered[int(assessment["target_character_id"])] = assessment
     return recovered
+
+
+def _same_frame_campaign_root_context(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Recover a complete campaign-root row bound to this paused frame."""
+
+    if not isinstance(snapshot, dict):
+        return None
+    played_character = snapshot.get("played_character")
+    actor_id = (
+        played_character.get("character_id")
+        if isinstance(played_character, dict)
+        else None
+    )
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    if not (
+        isinstance(actor_id, int)
+        and not isinstance(actor_id, bool)
+        and isinstance(native_revision, int)
+        and not isinstance(native_revision, bool)
+        and isinstance(date_raw, int)
+        and not isinstance(date_raw, bool)
+    ):
+        return None
+    payloads: list[object] = [snapshot.get("campaign_root_context")]
+    for row in rows:
+        if (
+            _effective_command(row) != "query-campaign-root-context-v1"
+            or row.get("ok") is not True
+        ):
+            continue
+        result = _effective_command_result(row)
+        payloads.append(
+            result.get("campaign_root_context")
+            if isinstance(result, dict)
+            else None
+        )
+    for payload in reversed(payloads):
+        if not isinstance(payload, dict):
+            continue
+        readiness = payload.get("readiness")
+        if (
+            payload.get("status") == "available"
+            and payload.get("snapshot_revision") == native_revision
+            and payload.get("date_raw") == date_raw
+            and payload.get("player_character_id") == actor_id
+            and isinstance(readiness, dict)
+            and readiness.get("ready") is True
+        ):
+            return payload
+    return None
+
+
+def _conservative_feudal_de_jure_war_entry(
+    declaration: dict[str, object],
+    assessment: dict[str, object] | None,
+    campaign_root: dict[str, object] | None,
+    available_steps: set[str],
+    *,
+    at_peace: bool,
+) -> dict[str, object]:
+    """Admit one exact-build, no-network, single-county overmatch slice."""
+
+    rule = _CONSERVATIVE_FEUDAL_DE_JURE_WAR_ENTRY
+    declaration_id = declaration.get("declaration_id")
+    try:
+        declaration_step = (
+            declare_war_step(declaration_id)
+            if isinstance(declaration_id, str)
+            else None
+        )
+    except ValueError:
+        declaration_step = None
+    titles = declaration.get("target_title_ids")
+    government = (
+        campaign_root.get("government")
+        if isinstance(campaign_root, dict)
+        else None
+    )
+    government_flags = (
+        government.get("flags") if isinstance(government, dict) else None
+    )
+    monthly_income = (
+        campaign_root.get("player_monthly_gold_income")
+        if isinstance(campaign_root, dict)
+        else None
+    )
+    blockers: list[str] = []
+    if not at_peace:
+        blockers.append("active_war_blocks_conservative_entry")
+    if not (
+        declaration.get("source") == "native"
+        and declaration.get("casus_belli_key") == rule["casus_belli_key"]
+        and declaration.get("configuration_index") == -1
+        and declaration.get("claimant_character_id") == -1
+        and isinstance(titles, list)
+        and len(titles) == 1
+        and isinstance(titles[0], int)
+        and not isinstance(titles[0], bool)
+        and titles[0] > 0
+    ):
+        blockers.append("declaration_outside_single_county_de_jure_slice")
+    if not (
+        isinstance(government, dict)
+        and government.get("key") == "feudal_government"
+        and isinstance(government_flags, list)
+        and "government_is_feudal" in government_flags
+    ):
+        blockers.append("same_frame_standard_feudal_scope_unavailable")
+    if not (
+        isinstance(campaign_root, dict)
+        and campaign_root.get("player_targeting_faction_count") == 0
+        and isinstance(campaign_root.get("player_domain_size"), int)
+        and not isinstance(campaign_root.get("player_domain_size"), bool)
+        and isinstance(campaign_root.get("player_domain_limit"), int)
+        and not isinstance(campaign_root.get("player_domain_limit"), bool)
+        and int(campaign_root["player_domain_size"])
+        <= int(campaign_root["player_domain_limit"])
+        and isinstance(monthly_income, dict)
+        and monthly_income.get("scale") == WAR_ENTRY_FIXED_POINT_SCALE
+        and isinstance(monthly_income.get("raw"), int)
+        and not isinstance(monthly_income.get("raw"), bool)
+        and int(monthly_income["raw"]) > 0
+    ):
+        blockers.append("same_frame_peacetime_budget_scope_not_conservative")
+    if not isinstance(assessment, dict):
+        blockers.append("same_frame_native_power_assessment_unavailable")
+    else:
+        actor_base = int(assessment["actor_power_base_raw"])
+        actor_total = int(assessment["actor_power_total_raw"])
+        target_base = int(assessment["target_power_base_raw"])
+        target_pre_adjustment = int(
+            assessment["target_pre_adjustment_total_raw"]
+        )
+        target_total = int(assessment["target_power_total_raw"])
+        ratio = int(assessment["actual_power_ratio_raw"])
+        if not (
+            assessment.get("target_character_id")
+            == declaration.get("target_character_id")
+            and assessment.get("effective_target_character_id")
+            == declaration.get("target_character_id")
+            and actor_base > 0
+            and target_total > 0
+            and assessment.get("actor_network_contribution_raw") == 0
+            and actor_total == actor_base
+            and assessment.get("target_network_contribution_raw") == 0
+            and target_pre_adjustment == target_base
+            and assessment.get("target_adjustment_delta_raw") == 0
+            and target_total == target_pre_adjustment
+            and assessment.get("distance_raw") == 0
+            and 0 < ratio <= int(rule["maximum_target_actor_ratio_raw"])
+            and actor_base * int(rule["minimum_actor_target_denominator"])
+            >= target_total * int(rule["minimum_actor_target_numerator"])
+        ):
+            blockers.append("native_no_network_overmatch_gate_not_met")
+    if not (
+        isinstance(declaration_step, str)
+        and declaration_step in available_steps
+    ):
+        blockers.append("typed_declaration_step_unavailable")
+    return {
+        "status": "ready" if not blockers else "blocked",
+        "rule_id": rule["rule_id"],
+        "selected_step": declaration_step if not blockers else None,
+        "blockers": blockers,
+        "source": rule["source"],
+        "source_sha256": rule["source_sha256"],
+        "maximum_target_actor_ratio_raw": rule[
+            "maximum_target_actor_ratio_raw"
+        ],
+        "minimum_actor_target_power_ratio": "3/2",
+    }
 
 
 def _same_frame_pending_interaction_context(
@@ -9833,6 +10023,74 @@ def _choose_one_life_turn_core(
                     "rejected_war_entry_assessment": dict(assessment_row),
                     "rejected_war_entry_expected_utility": power_eu,
                 }
+        campaign_root = _same_frame_campaign_root_context(
+            rows, snapshot if isinstance(snapshot, dict) else None
+        )
+        conservative_entry = _conservative_feudal_de_jure_war_entry(
+            declaration,
+            assessment_row,
+            campaign_root,
+            available_steps,
+            at_peace=(
+                isinstance(snapshot, dict)
+                and isinstance(snapshot.get("active_wars"), list)
+                and not snapshot["active_wars"]
+            ),
+        )
+        if conservative_entry["status"] == "ready":
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_declaration",
+                "selected_step": conservative_entry["selected_step"],
+                "reason": (
+                    "declare one native-legal single-county de jure war only "
+                    "after the same paused frame proves standard feudal scope, "
+                    "positive income, no targeting faction or domain pressure, "
+                    "zero relationship-network dependence on either side, and "
+                    "at least a 3:2 actor-base power overmatch"
+                ),
+                "decision": {
+                    "policy": conservative_entry["rule_id"],
+                    "outcome": "DECLARE",
+                    "declaration_id": declaration.get("declaration_id"),
+                    "target_character_id": declaration.get(
+                        "target_character_id"
+                    ),
+                    "casus_belli_key": declaration.get("casus_belli_key"),
+                    "native_power_assessment_consumed": True,
+                    "campaign_root_context_consumed": True,
+                    "automatic_declaration_enabled": True,
+                    "native_ai_equivalent": False,
+                    "semantic_optimal": False,
+                    "scope": "standard_feudal_single_county_de_jure_overmatch",
+                },
+                "declaration": declaration,
+                "war_entry_assessment": dict(assessment_row),
+                "war_entry_expected_utility": power_eu,
+                "war_entry_minimum_gate": conservative_entry,
+                "campaign_root_context": {
+                    "snapshot_revision": campaign_root.get(
+                        "snapshot_revision"
+                    ),
+                    "date_raw": campaign_root.get("date_raw"),
+                    "player_character_id": campaign_root.get(
+                        "player_character_id"
+                    ),
+                    "government": campaign_root.get("government"),
+                    "player_monthly_gold_income": campaign_root.get(
+                        "player_monthly_gold_income"
+                    ),
+                    "player_domain_size": campaign_root.get(
+                        "player_domain_size"
+                    ),
+                    "player_domain_limit": campaign_root.get(
+                        "player_domain_limit"
+                    ),
+                    "player_targeting_faction_count": campaign_root.get(
+                        "player_targeting_faction_count"
+                    ),
+                },
+            }
         # The declaration row proves legality and the war-entry query now
         # contributes exact native power/network risk to candidate ordering
         # and the EU ledger.  It is still not a battle forecast, campaign-cost
