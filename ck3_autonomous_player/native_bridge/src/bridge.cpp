@@ -8188,6 +8188,12 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kFrontendBookmarkModelProbeV1Step
 #endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kFrontendGuiSelectSupported1066CharacterV1Step
+                   && step != xar::ck3_11906::
+                                  kFrontendGuiStartSelectedBookmarkV1Step
+#endif
         ) {
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, step, false,

@@ -61,3 +61,30 @@ selector and model options passed, as did seven focused controlled-runner
 ordering tests. This is source/ABI evidence only; no game action was run by
 this package. Public protocol registration and capability advertising remain
 OFF.
+
+## R747 typed selector admission RED
+
+R747 used the sealed fa7275 Release DLL and the same CK3 1.19.0.6 EXE SHA
+above. The official MCP NewGame/Bookmarks path produced a fresh native
+`identity_ready` model: the selected index was -1, the selected Bookmark was
+`bm_1066_rags_to_riches`, and the current Murchad key-derived target was
+index 0 among five distinct dynamic keys with final feudal government. The
+controlled runner sent one typed
+`select-frontend-supported-1066-character-v1` request and received
+`command_result.ok=false, error="unsupported native gameplay step"` in
+0.011 seconds. The selector and StartGame had not reached application-main;
+StartGame was not submitted. The failed artifact remains at
+`C:/g2feudal1066-live/candidate-typed-private-01/typed-private-live.json`
+with SHA-256
+`4A95DC44D368122D98371D026FC07DD423DE8BD97DA1B3BB96122E489C41B628`.
+
+The deterministic cause is the earlier top-level `bridge.cpp`
+`execute_step` admission check: it exempted the private Bookmarks model
+probe but omitted the two private selector/StartGame steps. The frontend
+mailbox mapping itself was compiled but unreachable. The narrow source fix
+exempts those two exact steps only when
+`XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1` is ON;
+the existing application-main legality checks, next-frame Bookmarks requery,
+ACK-pending semantics, public OFF state and unknown-action no-retry behavior
+still apply. This RED stays open until a new frozen DLL passes real paused
+frame/StartGame material results; a static build cannot close it.
