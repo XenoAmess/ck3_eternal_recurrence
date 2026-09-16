@@ -12148,6 +12148,105 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertIsNone(result["active_event"])
 
+    def test_composite_life_advance_preserves_unknown_event_for_typed_query(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            life_advance_timeout_seconds=1.0,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-event",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-3",
+                "game.command.set-speed-5",
+                "game.command.select-event-option-N",
+                "game.command.query-current-event-window-context-v1",
+            )
+        )
+        endpoint.publish(_snapshot(1, map_ready=False))
+        timers: list[threading.Timer] = []
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"step": step, "accepted": True},
+                }
+            )
+            if step == "set-speed-5":
+                endpoint.publish(_snapshot(3, speed=5))
+            elif step == "resume-map":
+                endpoint.publish(_snapshot(4, speed=5, paused=False))
+                timer = threading.Timer(
+                    0.01,
+                    lambda: endpoint.publish(
+                        _snapshot(
+                            5,
+                            date_raw=53_171_424,
+                            speed=5,
+                            paused=False,
+                            active_event={"instance_id": 52, "option_count": 2},
+                        )
+                    ),
+                )
+                timers.append(timer)
+                timer.start()
+            elif step == "pause-map":
+                endpoint.publish(
+                    _snapshot(
+                        6,
+                        date_raw=53_171_424,
+                        speed=5,
+                        active_event={"instance_id": 52, "option_count": 2},
+                    )
+                )
+
+        endpoint.send_hook = answer
+        starting_revision = int(driver.take_snapshot()["revision"])
+        ready_timer = threading.Timer(
+            0.1, lambda: endpoint.publish(_snapshot(2, map_ready=True))
+        )
+        timers.append(ready_timer)
+        ready_timer.start()
+
+        result = driver.execute_step(
+            "life-advance", expected_revision=starting_revision
+        )
+        for timer in timers:
+            timer.join(timeout=1.0)
+
+        commands = [
+            frame["step"]
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        self.assertEqual(
+            commands,
+            ["set-speed-5", "resume-map", "pause-map"],
+        )
+        self.assertEqual(result["ending_date_raw"], 53_171_424)
+        self.assertTrue(result["paused"])
+        self.assertEqual(result["event_resolution"], "typed_query_required")
+        self.assertEqual(result["ordinary_events"], [])
+        self.assertEqual(result["active_event"]["instance_id"], 52)
+        self.assertEqual(
+            [option["label"] for option in result["active_event"]["options"]],
+            [None, None],
+        )
+
     def test_composite_life_advance_can_stop_after_date_without_event(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(

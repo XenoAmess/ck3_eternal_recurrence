@@ -16909,40 +16909,58 @@ class NativeHeadlessGameplayDriver:
         event_resolution = "none"
         active_event = current.get("active_event")
         if isinstance(active_event, dict):
-            option_number = choose_event_option_number(active_event)
-            selection_step = (
-                event_option_step(option_number)
-                if option_number is not None
-                else None
-            )
+            capabilities = self.capabilities()
             if (
-                selection_step is not None
-                and selection_step in self.capabilities()["action_steps"]
+                capabilities.get(
+                    "current_event_window_context_v1_query_supported"
+                )
+                is True
+                and QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+                in capabilities["action_steps"]
             ):
-                event_instance_id = active_event.get("instance_id")
-                selection_result = self._execute_composite_primitive(
-                    selection_step, current
-                )
-                actions.append(
-                    {"step": selection_step, "result": selection_result}
-                )
-                ordinary_events.append(
-                    _native_ordinary_event(active_event, option_number)
-                )
-                current = self._wait_for_life_advance_snapshot(
-                    self.take_internal_semantic_snapshot(),
-                    lambda snapshot: _event_instance_id(snapshot)
-                    != event_instance_id,
-                    timeout_seconds=self.command_timeout_seconds,
-                )
-                if _event_instance_id(current) == event_instance_id:
-                    raise BridgeUnavailableError(
-                        "native event selection did not advance the active event"
-                    )
-                current = self._pause_life_advance(current, actions)
-                event_resolution = "selected"
+                # The snapshot event projection intentionally carries only a
+                # numeric instance and lossy presentation text.  Once the
+                # exact-build typed observer is present, leave the native
+                # auto-pause intact so the next policy turn can query event
+                # identity, shown/enabled options and semantic readiness.
+                # Selecting here would bypass that policy and, when title and
+                # labels are null, silently turn "unknown" into option one.
+                event_resolution = "typed_query_required"
             else:
-                event_resolution = "unsupported"
+                option_number = choose_event_option_number(active_event)
+                selection_step = (
+                    event_option_step(option_number)
+                    if option_number is not None
+                    else None
+                )
+                if (
+                    selection_step is not None
+                    and selection_step in capabilities["action_steps"]
+                ):
+                    event_instance_id = active_event.get("instance_id")
+                    selection_result = self._execute_composite_primitive(
+                        selection_step, current
+                    )
+                    actions.append(
+                        {"step": selection_step, "result": selection_result}
+                    )
+                    ordinary_events.append(
+                        _native_ordinary_event(active_event, option_number)
+                    )
+                    current = self._wait_for_life_advance_snapshot(
+                        self.take_internal_semantic_snapshot(),
+                        lambda snapshot: _event_instance_id(snapshot)
+                        != event_instance_id,
+                        timeout_seconds=self.command_timeout_seconds,
+                    )
+                    if _event_instance_id(current) == event_instance_id:
+                        raise BridgeUnavailableError(
+                            "native event selection did not advance the active event"
+                        )
+                    current = self._pause_life_advance(current, actions)
+                    event_resolution = "selected"
+                else:
+                    event_resolution = "unsupported"
 
         ending_date_raw = _date_raw(current, "ending snapshot")
         if exact_one_day and ending_date_raw > starting_date_raw + 24:
