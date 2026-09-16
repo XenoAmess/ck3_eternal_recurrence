@@ -47,3 +47,17 @@ re-evaluated after real selected-model, StartGame and paused campaign results.
 The existing Bookmarks model query is a version-bound read-only native
 research asset; public MCP mapping and general-asset registration remain
 pending. This private selector is not advertised as a general MCP asset.
+
+## FEUDAL-1066-PRIVATE-BRIDGE-GLUE source candidate
+
+The separate bridge glue package accepts the selector protocol step under the
+same default-OFF feature option as private StartGame, maps it to operation 13,
+and returns the native selector's refusal reason when no setter was submitted.
+Only a resolved target plus a submitted setter receives
+`acknowledged_verification_pending`; that ACK still requires an independent
+Bookmarks model requery before StartGame. The exact CK3 EXE SHA above was
+rechecked locally. Both /Od and /O2 bridge.cpp compilation with the private
+selector and model options passed, as did seven focused controlled-runner
+ordering tests. This is source/ABI evidence only; no game action was run by
+this package. Public protocol registration and capability advertising remain
+OFF.

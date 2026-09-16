@@ -8251,6 +8251,8 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
               step == xar::ck3_11906::
+                          kFrontendGuiSelectSupported1066CharacterV1Step ||
+              step == xar::ck3_11906::
                           kFrontendGuiStartSelectedBookmarkV1Step ||
 #endif
               step == xar::ck3_11906::
@@ -8304,6 +8306,10 @@ void RunConnectedSession(
                     FrontendGuiRouteOperationV1::probe_bookmark_model;
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiSelectSupported1066CharacterV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::select_supported_1066_character;
               } else if (step == xar::ck3_11906::
                                      kFrontendGuiStartSelectedBookmarkV1Step) {
                 query.operation = xar::ck3_11906::
@@ -8394,6 +8400,20 @@ void RunConnectedSession(
                                                         probe_bookmark_model) {
                     response = FrontendBookmarkModelPrivateResultFrame(
                         request_id, step, query.result.bookmark_model_probe);
+#endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+                  } else if (query.operation == xar::ck3_11906::
+                                                    FrontendGuiRouteOperationV1::
+                                                        select_supported_1066_character &&
+                             !query.result.dispatch_invoked) {
+                    const auto &reason =
+                        query.result.bookmark_selection.unavailable_reason;
+                    response = CommandResultFrame(
+                        request_id, step, false,
+                        reason.empty()
+                            ? std::string_view{
+                                  "current 1066 ruler selection was not submitted"}
+                            : std::string_view{reason});
 #endif
                   } else if (query.result.target_resolved &&
                              query.result.dispatch_invoked) {
