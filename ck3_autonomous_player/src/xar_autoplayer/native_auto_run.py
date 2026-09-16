@@ -96,6 +96,9 @@ _PENDING_INTERACTION_REPLY_STATUSES = {
     "reject-pending-character-interaction": "rejected",
     "acknowledge-pending-character-interaction": "acknowledged",
 }
+_DE_JURE_NO_SAFE_ROUTE_CB = "individual_county_de_jure_cb"
+_DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
+_DE_JURE_NO_SAFE_ROUTE_MIN_DAYS = 180
 
 
 def _registered_event_material_postcondition_issue(
@@ -3443,7 +3446,7 @@ def _white_peace_lifecycle_verified(
     if war_id is None or not isinstance(result, dict):
         return False
     action = result.get("war_termination_result")
-    if not isinstance(action, dict) or set(action) != {
+    base_fields = {
         "status",
         "war_id",
         "outcome",
@@ -3460,7 +3463,24 @@ def _white_peace_lifecycle_verified(
         "claimant_character_id",
         "target_title_ids",
         "remaining_active_war",
-    }:
+    }
+    de_jure_fields = {
+        "player_side",
+        "player_relative_war_score",
+        "war_duration_days",
+        "recipient_ai_acceptance_raw",
+    }
+    if not isinstance(action, dict):
+        return False
+    action_fields = set(action)
+    casus_belli = action.get("casus_belli")
+    de_jure_variant = bool(
+        isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key") == _DE_JURE_NO_SAFE_ROUTE_CB
+    )
+    if action_fields != (
+        base_fields | de_jure_fields if de_jure_variant else base_fields
+    ):
         return False
     before_semantic = before.get("_semantic")
     before_wars = (
@@ -3501,7 +3521,6 @@ def _white_peace_lifecycle_verified(
         if isinstance(before_semantic, dict)
         else None
     )
-    casus_belli = action.get("casus_belli")
     decision_status_raw = action.get("recipient_decision_status_raw")
     target_title_ids = action.get("target_title_ids")
     declared_target_title_ids = (
@@ -3528,16 +3547,10 @@ def _white_peace_lifecycle_verified(
         and not isinstance(decision_status_raw, bool)
         and decision_status_raw in {0, 1}
         and isinstance(casus_belli, dict)
-        and casus_belli.get("canonical_key") == "claim_cb"
         and set(casus_belli) == {"database_index", "canonical_key"}
         and isinstance(casus_belli.get("database_index"), int)
         and not isinstance(casus_belli.get("database_index"), bool)
         and casus_belli.get("database_index") >= 0
-        and isinstance(before_played, dict)
-        and isinstance(before_played.get("character_id"), int)
-        and not isinstance(before_played.get("character_id"), bool)
-        and action.get("claimant_character_id")
-        == before_played.get("character_id")
         and isinstance(target_title_ids, list)
         and bool(target_title_ids)
         and all(
@@ -3549,6 +3562,38 @@ def _white_peace_lifecycle_verified(
         and target_title_ids == declared_target_title_ids
     )
     if not common:
+        return False
+    claim_variant = bool(
+        casus_belli.get("canonical_key") == "claim_cb"
+        and isinstance(before_played, dict)
+        and isinstance(before_played.get("character_id"), int)
+        and not isinstance(before_played.get("character_id"), bool)
+        and action.get("claimant_character_id")
+        == before_played.get("character_id")
+    )
+    de_jure_variant = bool(
+        de_jure_variant
+        and casus_belli.get("database_index")
+        == _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX
+        and action.get("claimant_character_id") is None
+        and len(target_title_ids) == 1
+        and isinstance(before_war, dict)
+        and before_war.get("player_side") == "attacker"
+        and before_war.get("player_is_primary_war_leader") is True
+        and action.get("player_side") == "attacker"
+        and action.get("player_relative_war_score")
+        == before_war.get("player_relative_war_score")
+        and isinstance(action.get("player_relative_war_score"), int)
+        and not isinstance(action.get("player_relative_war_score"), bool)
+        and 0 < action.get("player_relative_war_score") < 100
+        and isinstance(action.get("war_duration_days"), int)
+        and not isinstance(action.get("war_duration_days"), bool)
+        and action.get("war_duration_days") >= _DE_JURE_NO_SAFE_ROUTE_MIN_DAYS
+        and isinstance(action.get("recipient_ai_acceptance_raw"), int)
+        and not isinstance(action.get("recipient_ai_acceptance_raw"), bool)
+        and action.get("recipient_ai_acceptance_raw") > 0
+    )
+    if not claim_variant and not de_jure_variant:
         return False
     if status == "applied":
         return bool(

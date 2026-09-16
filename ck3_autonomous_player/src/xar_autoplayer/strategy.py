@@ -154,6 +154,7 @@ _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
 _NEGATIVE_WAR_TERMINATION_REUSE_RAW = 7 * 24
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB = "individual_county_de_jure_cb"
+_DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -25
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
@@ -5039,6 +5040,90 @@ def _de_jure_no_safe_route_surrender_candidate(
     )
 
 
+def _de_jure_no_safe_route_white_peace_candidate(
+    war: dict[str, object],
+    options: object,
+) -> bool:
+    """Recognize only the R794 positive de-jure white-peace frame."""
+    if not isinstance(options, dict):
+        return False
+    score = war.get("player_relative_war_score")
+    duration = options.get("war_duration_days")
+    casus_belli = options.get("active_casus_belli_identity")
+    targeted_title_ids = war.get("targeted_title_ids")
+    option_rows = options.get("options")
+    white_peace = (
+        option_rows.get("white_peace")
+        if isinstance(option_rows, dict)
+        else None
+    )
+    response = (
+        white_peace.get("recipient_response")
+        if isinstance(white_peace, dict)
+        else None
+    )
+    acceptance = (
+        white_peace.get("ai_acceptance")
+        if isinstance(white_peace, dict)
+        else None
+    )
+    return bool(
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score") == score
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and 0 < score < 100
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and duration >= _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key")
+        == _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB
+        and casus_belli.get("database_index")
+        == _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX
+        and isinstance(targeted_title_ids, list)
+        and len(targeted_title_ids) == 1
+        and (
+            (target_title_id := _native_int(targeted_title_ids[0]))
+            is not None
+        )
+        and target_title_id > 0
+        and options.get("cb_allows_white_peace") is True
+        and isinstance(white_peace, dict)
+        and white_peace.get("outcome") == "white_peace"
+        and white_peace.get("hostage_variant") == "none"
+        and white_peace.get("context_constructed") is True
+        and white_peace.get("native_validator_passed") is True
+        and white_peace.get("available") is True
+        and white_peace.get("ai_acceptance_observable") is True
+        and isinstance(acceptance, dict)
+        and isinstance(acceptance.get("raw"), int)
+        and not isinstance(acceptance.get("raw"), bool)
+        and acceptance.get("raw") > 0
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    )
+
+
+def _de_jure_no_safe_route_white_peace_ready(
+    snapshot: dict[str, object],
+    war: dict[str, object],
+    options: object,
+) -> bool:
+    war_id = _native_int(war.get("war_id"))
+    return bool(
+        war_id is not None
+        and snapshot.get("paused") is True
+        and _same_frame_termination_row(snapshot, options, war_id)
+        and _de_jure_no_safe_route_white_peace_candidate(war, options)
+    )
+
+
 def _de_jure_no_safe_route_surrender_ready(
     snapshot: dict[str, object],
     war: dict[str, object],
@@ -5053,7 +5138,7 @@ def _de_jure_no_safe_route_surrender_ready(
     )
 
 
-def _de_jure_no_safe_route_surrender_plan(
+def _de_jure_no_safe_route_exit_plan(
     snapshot: dict[str, object],
     *,
     active_wars: list[dict[str, object]],
@@ -5062,15 +5147,22 @@ def _de_jure_no_safe_route_surrender_plan(
     active_war_summary: list[dict[str, object]],
     route_rejections: list[dict[str, object]],
 ) -> dict[str, object] | None:
-    """Choose the one native-legal terminal after route exhaustion."""
+    """Compare the three exact de-jure outcomes after route exhaustion."""
     for war in active_wars:
         if not isinstance(war, dict):
             continue
         war_id = _native_int(war.get("war_id"))
         options = termination_by_war_id.get(war_id) if war_id else None
-        if not _de_jure_no_safe_route_surrender_ready(snapshot, war, options):
+        if war_id is None or not isinstance(options, dict):
             continue
-        assert isinstance(options, dict) and war_id is not None
+        white_peace_ready = _de_jure_no_safe_route_white_peace_ready(
+            snapshot, war, options
+        )
+        surrender_ready = _de_jure_no_safe_route_surrender_ready(
+            snapshot, war, options
+        )
+        if not white_peace_ready and not surrender_ready:
+            continue
         option_rows = options["options"]
         white_peace = option_rows.get("white_peace")
         white_response = (
@@ -5078,13 +5170,47 @@ def _de_jure_no_safe_route_surrender_plan(
             if isinstance(white_peace, dict)
             else None
         )
-        step = surrender_war_step(war_id)
+        surrender = option_rows.get("surrender")
+        surrender_response = (
+            surrender.get("recipient_response")
+            if isinstance(surrender, dict)
+            else None
+        )
+        surrender_executable = bool(
+            isinstance(surrender, dict)
+            and surrender.get("outcome") == "attacker_defeat"
+            and surrender.get("hostage_variant") == "none"
+            and surrender.get("context_constructed") is True
+            and surrender.get("native_validator_passed") is True
+            and surrender.get("available") is True
+            and surrender.get("auto_accept_observable") is True
+            and surrender.get("auto_accept") is True
+            and isinstance(surrender_response, dict)
+            and surrender_response.get("status") == "available"
+            and surrender_response.get("would_accept_now") is True
+        )
+        selected_outcome = (
+            "white_peace" if white_peace_ready else "surrender"
+        )
+        step = (
+            offer_white_peace_step(war_id)
+            if white_peace_ready
+            else surrender_war_step(war_id)
+        )
         decision = {
-            "policy": "de-jure-no-safe-route-emergency-exit-v1",
-            "selected_outcome": "surrender",
+            "policy": (
+                "de-jure-no-safe-route-terminal-choice-v1"
+                if white_peace_ready
+                else "de-jure-no-safe-route-emergency-exit-v1"
+            ),
+            "selected_outcome": selected_outcome,
             "full_campaign_utility_ready": False,
             "candidates": {
-                "continue": {"legal": True, "executable": False},
+                "continue": {
+                    "legal": True,
+                    "executable": False,
+                    "reason": "no_safe_exact_route",
+                },
                 "white_peace": {
                     "legal": bool(
                         isinstance(white_peace, dict)
@@ -5096,11 +5222,20 @@ def _de_jure_no_safe_route_surrender_plan(
                         if isinstance(white_response, dict)
                         else None
                     ),
+                    "executable": white_peace_ready,
                 },
                 "surrender": {
-                    "legal": True,
-                    "executable": True,
-                    "recipient_would_accept_now": True,
+                    "legal": bool(
+                        isinstance(surrender, dict)
+                        and surrender.get("native_validator_passed") is True
+                        and surrender.get("available") is True
+                    ),
+                    "executable": surrender_executable,
+                    "recipient_would_accept_now": (
+                        surrender_response.get("would_accept_now")
+                        if isinstance(surrender_response, dict)
+                        else None
+                    ),
                 },
             },
             "war_score": war.get("player_relative_war_score"),
@@ -5110,24 +5245,33 @@ def _de_jure_no_safe_route_surrender_plan(
         if step not in available_steps:
             return {
                 "policy": "one-life-turn-v1",
-                "phase": "native_war_no_safe_route_surrender_unsupported",
+                "phase": "native_war_no_safe_route_exit_unsupported",
                 "selected_step": None,
                 "required_step": step,
                 "war_id": war_id,
                 "decision": decision,
-                "reason": "the sole executable native terminal is unreachable",
+                "reason": "the selected same-frame native terminal is unreachable",
                 "route_rejections": route_rejections,
                 "active_wars": active_war_summary,
             }
         return {
             "policy": "one-life-turn-v1",
-            "phase": "native_war_de_jure_no_safe_route_surrender",
+            "phase": (
+                "native_war_de_jure_no_safe_route_white_peace"
+                if white_peace_ready
+                else "native_war_de_jure_no_safe_route_surrender"
+            ),
             "selected_step": step,
             "war_id": war_id,
             "decision": decision,
             "reason": (
-                "all exact objective routes are unsafe and the same frame "
-                "proves surrender is the sole executable native terminal"
+                "all exact objective routes are unsafe; the same frame "
+                "compares continue, white peace, and surrender and selects "
+                + (
+                    "white peace over surrender"
+                    if white_peace_ready
+                    else "the sole executable surrender"
+                )
             ),
             "route_rejections": route_rejections,
             "active_wars": active_war_summary,
@@ -5309,6 +5453,7 @@ def _negative_war_termination_reuse(
         if (
             _claim_cb_white_peace_candidate(war, options)
             or _de_jure_no_safe_route_surrender_candidate(war, options)
+            or _de_jure_no_safe_route_white_peace_candidate(war, options)
         ):
             return None
         return {
@@ -9536,7 +9681,7 @@ def _choose_one_life_turn_core(
                         "active_wars": war_summary,
                     }
                 emergency_exit = (
-                    _de_jure_no_safe_route_surrender_plan(
+                    _de_jure_no_safe_route_exit_plan(
                         snapshot,
                         active_wars=active_wars,
                         termination_by_war_id=termination_by_war_id,
@@ -9563,7 +9708,7 @@ def _choose_one_life_turn_core(
             and preview_selected_target is None
         ):
             emergency_exit = (
-                _de_jure_no_safe_route_surrender_plan(
+                _de_jure_no_safe_route_exit_plan(
                     snapshot,
                     active_wars=active_wars,
                     termination_by_war_id=termination_by_war_id,

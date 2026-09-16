@@ -2336,6 +2336,81 @@ class NativeAutoRunTests(unittest.TestCase):
             )
         )
 
+    def test_r794_de_jure_white_peace_lifecycle_is_exact(self) -> None:
+        war = _white_peace_war()
+        war["player_relative_war_score"] = 47
+        war["targeted_title_ids"] = [537]
+        before = {
+            "snapshot_id": "native:1",
+            "date_raw": 53_150_016,
+            "episode_run_id": "native-707-r794",
+            "_semantic": {
+                "played_character": {"character_id": 707},
+                "active_wars": [war],
+            },
+        }
+        after = {
+            "snapshot_id": "native:2",
+            "date_raw": 53_150_016,
+            "episode_run_id": "native-707-r794",
+            "active_wars": [],
+        }
+        action = {
+            "status": "applied",
+            "war_id": 16_777_290,
+            "outcome": "white_peace",
+            "submitted_date_raw": 53_150_016,
+            "observed_date_raw": 53_150_016,
+            "episode_run_id": "native-707-r794",
+            "starting_snapshot_id": "native:1",
+            "observed_snapshot_id": "native:2",
+            "command_acknowledged": True,
+            "war_id_absent_after_ack": True,
+            "recipient_decision_status_raw": 0,
+            "recipient_would_accept_now": True,
+            "casus_belli": {
+                "database_index": 17,
+                "canonical_key": "individual_county_de_jure_cb",
+            },
+            "claimant_character_id": None,
+            "target_title_ids": [537],
+            "player_side": "attacker",
+            "player_relative_war_score": 47,
+            "war_duration_days": 224,
+            "recipient_ai_acceptance_raw": 1_100_000,
+            "remaining_active_war": None,
+        }
+        result = {"war_termination_result": action}
+
+        self.assertTrue(
+            native_auto_run_module._white_peace_lifecycle_verified(
+                "offer-white-peace-16777290",
+                result,
+                before=before,
+                after_snapshot=after,
+                evidence=["war_changed"],
+            )
+        )
+        for field, value in (
+            ("war_duration_days", 179),
+            ("player_relative_war_score", 0),
+            ("recipient_ai_acceptance_raw", 0),
+            ("target_title_ids", [537, 538]),
+            ("claimant_character_id", 707),
+        ):
+            with self.subTest(field=field):
+                malformed = copy.deepcopy(result)
+                malformed["war_termination_result"][field] = value
+                self.assertFalse(
+                    native_auto_run_module._white_peace_lifecycle_verified(
+                        "offer-white-peace-16777290",
+                        malformed,
+                        before=before,
+                        after_snapshot=after,
+                        evidence=["war_changed"],
+                    )
+                )
+
     def test_r767_surrender_lifecycle_requires_independent_war_removal(
         self,
     ) -> None:

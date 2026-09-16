@@ -10531,6 +10531,106 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         driver.capabilities()["action_steps"],
                     )
 
+    def test_r794_de_jure_white_peace_is_projected_and_typed(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        date_raw = 53_150_016
+        active_war = _war(
+            war_id=war_id,
+            score=47,
+            targeted_title_ids=[537],
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-options-N",
+                "game.command.offer-white-peace-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=date_raw,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[active_war],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            if step.startswith("query-war-termination-options-"):
+                result: dict[str, object] = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "query_sequence": 1,
+                    "war_termination_options": _termination_options(
+                        war_id,
+                        score=47,
+                        casus_belli_database_index=17,
+                        casus_belli_key="individual_county_de_jure_cb",
+                        war_duration_days=224,
+                        white_peace_acceptance_raw=1_100_000,
+                    ),
+                }
+            else:
+                self.assertEqual(step, "offer-white-peace-16777290")
+                endpoint.publish(
+                    _snapshot(
+                        41,
+                        date_raw=date_raw,
+                        played_character={
+                            "character_id": 707,
+                            "alive": True,
+                        },
+                        active_wars=[],
+                    )
+                )
+                result = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "submitted",
+                }
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+
+        endpoint.send_hook = answer
+        driver.execute_step("query-war-termination-options-16777290")
+        self.assertIn(
+            "offer-white-peace-16777290",
+            driver.capabilities()["action_steps"],
+        )
+        submitted = driver.execute_step("offer-white-peace-16777290")
+        action = submitted["war_termination_result"]
+
+        self.assertEqual(action["status"], "applied")
+        self.assertEqual(
+            action["casus_belli"],
+            {
+                "database_index": 17,
+                "canonical_key": "individual_county_de_jure_cb",
+            },
+        )
+        self.assertIsNone(action["claimant_character_id"])
+        self.assertEqual(action["target_title_ids"], [537])
+        self.assertEqual(action["player_relative_war_score"], 47)
+        self.assertEqual(action["war_duration_days"], 224)
+        self.assertEqual(action["recipient_ai_acceptance_raw"], 1_100_000)
+
     def test_r767_de_jure_emergency_surrender_is_one_shot_and_typed(
         self,
     ) -> None:

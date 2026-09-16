@@ -574,6 +574,7 @@ _MANAGED_RESTORE_TRANSACTION_STATUS = "awaiting_checkpoint_rebind"
 _START_NEXT_EPISODE_STEP = "start-next-episode"
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB = "individual_county_de_jure_cb"
+_DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -25
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _COLD_RESTORE_SOURCE = "native-session-cold-start"
@@ -1741,7 +1742,6 @@ class NativeHeadlessGameplayDriver:
                 isinstance(current_snapshot, dict)
                 and {
                     QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
-                    QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
                     OFFER_WHITE_PEACE_CAPABILITY,
                 }
                 <= bridge_capabilities
@@ -1752,7 +1752,7 @@ class NativeHeadlessGameplayDriver:
                     ):
                         continue
                     war_id = int(war["war_id"])
-                    ready, _, _ = _claim_cb_white_peace_readiness(
+                    ready, _, _ = _white_peace_readiness(
                         current_snapshot, war_id
                     )
                     cooldown = _white_peace_proposal_cooldown(
@@ -14603,13 +14603,12 @@ class NativeHeadlessGameplayDriver:
             }
         if not {
             QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
-            QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
             OFFER_WHITE_PEACE_CAPABILITY,
         } <= bridge_capabilities:
             raise BridgeUnavailableError(
                 "native white_peace submission lacks exact raw capabilities"
             )
-        ready, reason, evidence = _claim_cb_white_peace_readiness(
+        ready, reason, evidence = _white_peace_readiness(
             starting, war_id
         )
         if not ready:
@@ -14670,7 +14669,8 @@ class NativeHeadlessGameplayDriver:
         remaining_war = _war_by_id(current, war_id)
         status = "applied" if remaining_war is None else "submitted_pending"
         options = evidence["options"]
-        terms = evidence["terms"]
+        terms = evidence.get("terms")
+        war = evidence["war"]
         white_peace = evidence["white_peace"]
         response = white_peace["recipient_response"]
         return {
@@ -14695,11 +14695,32 @@ class NativeHeadlessGameplayDriver:
                 "casus_belli": copy.deepcopy(
                     options.get("active_casus_belli_identity")
                 ),
-                "claimant_character_id": terms.get(
-                    "claimant_character_id"
+                "claimant_character_id": (
+                    terms.get("claimant_character_id")
+                    if isinstance(terms, dict)
+                    else None
                 ),
                 "target_title_ids": copy.deepcopy(
                     terms.get("target_title_ids")
+                    if isinstance(terms, dict)
+                    else war.get("targeted_title_ids")
+                ),
+                **(
+                    {
+                        "player_side": options.get("player_side"),
+                        "player_relative_war_score": options.get(
+                            "player_relative_war_score"
+                        ),
+                        "war_duration_days": options.get(
+                            "war_duration_days"
+                        ),
+                        "recipient_ai_acceptance_raw": white_peace.get(
+                            "ai_acceptance", {}
+                        ).get("raw"),
+                    }
+                    if evidence.get("variant")
+                    == "de_jure_no_safe_route"
+                    else {}
                 ),
                 "remaining_active_war": (
                     copy.deepcopy(remaining_war)
@@ -24283,6 +24304,112 @@ def _claim_cb_white_peace_readiness(
         "terms": terms,
         "white_peace": white_peace,
     }
+
+
+def _de_jure_no_safe_route_white_peace_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    """Validate the exact R794 de-jure white-peace action frame."""
+    if snapshot.get("paused") is not True:
+        return False, "snapshot_not_paused", {}
+    war = _war_by_id(snapshot, war_id)
+    if not isinstance(war, dict):
+        return False, "war_not_active", {}
+    options = _termination_cache_row(
+        snapshot, "war_termination_options", war_id
+    )
+    if not isinstance(options, dict):
+        return False, "termination_options_missing", {}
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    expected_binding = {
+        "queried_snapshot_id": snapshot.get("snapshot_id"),
+        "queried_revision": snapshot.get("revision"),
+        "queried_native_revision": snapshot.get("native_revision"),
+        "queried_connection_generation": connection_generation,
+        "episode_run_id": snapshot.get("episode_run_id"),
+    }
+    if any(
+        options.get(key) != expected
+        for key, expected in expected_binding.items()
+    ):
+        return False, "termination_evidence_not_same_frame", {}
+    score = war.get("player_relative_war_score")
+    duration = options.get("war_duration_days")
+    casus_belli = options.get("active_casus_belli_identity")
+    targeted_title_ids = war.get("targeted_title_ids")
+    rows = options.get("options")
+    white_peace = rows.get("white_peace") if isinstance(rows, dict) else None
+    response = (
+        white_peace.get("recipient_response")
+        if isinstance(white_peace, dict)
+        else None
+    )
+    acceptance = (
+        white_peace.get("ai_acceptance")
+        if isinstance(white_peace, dict)
+        else None
+    )
+    if not (
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score") == score
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and 0 < score < 100
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and duration >= _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key")
+        == _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB
+        and casus_belli.get("database_index")
+        == _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX
+        and isinstance(targeted_title_ids, list)
+        and len(targeted_title_ids) == 1
+        and _positive_native_id(targeted_title_ids[0])
+        and options.get("cb_allows_white_peace") is True
+        and isinstance(white_peace, dict)
+        and white_peace.get("outcome") == "white_peace"
+        and white_peace.get("hostage_variant") == "none"
+        and white_peace.get("context_constructed") is True
+        and white_peace.get("native_validator_passed") is True
+        and white_peace.get("available") is True
+        and white_peace.get("ai_acceptance_observable") is True
+        and isinstance(acceptance, dict)
+        and isinstance(acceptance.get("raw"), int)
+        and not isinstance(acceptance.get("raw"), bool)
+        and acceptance.get("raw") > 0
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    ):
+        return False, "de_jure_white_peace_gate_failed", {}
+    return True, "ready", {
+        "variant": "de_jure_no_safe_route",
+        "war": war,
+        "options": options,
+        "white_peace": white_peace,
+    }
+
+
+def _white_peace_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    de_jure = _de_jure_no_safe_route_white_peace_readiness(snapshot, war_id)
+    if de_jure[0]:
+        return de_jure
+    claim = _claim_cb_white_peace_readiness(snapshot, war_id)
+    if claim[0]:
+        return claim
+    return False, f"de_jure={de_jure[1]}; claim={claim[1]}", {}
 
 
 def _de_jure_emergency_surrender_readiness(

@@ -736,6 +736,39 @@ def _termination_options(
     }
 
 
+def _de_jure_white_peace_options(
+    war_id: int = 88,
+    *,
+    score: int = 47,
+    duration_days: int = 224,
+) -> dict[str, object]:
+    options = _termination_options(
+        war_id, score=score, war_duration_days=duration_days
+    )
+    options["active_casus_belli_identity"] = {
+        "database_index": 17,
+        "canonical_key": "individual_county_de_jure_cb",
+    }
+    white_peace = options["options"]["white_peace"]
+    assert isinstance(white_peace, dict)
+    white_peace.update(
+        {
+            "native_validator_passed": True,
+            "available": True,
+            "ai_acceptance_observable": True,
+            "ai_acceptance": {"raw": 1_100_000, "scale": 100_000},
+            "auto_accept_observable": True,
+            "auto_accept": False,
+            "recipient_response": {
+                "status": "available",
+                "decision_status_raw": 0,
+                "would_accept_now": True,
+            },
+        }
+    )
+    return options
+
+
 def _raiktor_inbound_white_peace_options(
     war_id: int = 88,
     *,
@@ -1307,6 +1340,7 @@ def _native_war_plan(
     negative_reuse_expires_date_raw: int | None = None,
     additional_wars: list[dict[str, object]] | None = None,
     termination_options: list[dict[str, object]] | None = None,
+    targeted_title_ids: list[int] | None = None,
 ) -> dict[str, object]:
     controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
@@ -1362,6 +1396,7 @@ def _native_war_plan(
                             else []
                         ),
                         objective_province_states=objective_states,
+                        targeted_title_ids=targeted_title_ids,
                     ),
                     **(
                         {
@@ -2357,6 +2392,261 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertTrue(
             plan["decision"]["candidates"]["surrender"]["legal"]
+        )
+
+    def test_r794_de_jure_route_exhaustion_prefers_white_peace(self) -> None:
+        player = _army(
+            11,
+            soldiers=396,
+            province_id=52,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=400,
+            province_id=54,
+            controllable=False,
+            move_target_province_id=52,
+            army_state="moving",
+            route_province_ids=[16, 52],
+        )
+        options = _de_jure_white_peace_options()
+        options.update(
+            {
+                "queried_snapshot_id": "session:90",
+                "queried_revision": 90,
+                "queried_native_revision": 90,
+                "queried_connection_generation": 1,
+                "episode_run_id": None,
+            }
+        )
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=47,
+            date_raw=53_150_016,
+            objectives=[52],
+            objective_states=[
+                _objective_state(
+                    52,
+                    garrison_size=400,
+                    besieging_strength=396,
+                    active_siege=_active_siege(
+                        siege_id=6, army_id=11, days_left=None
+                    ),
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            targeted_title_ids=[537],
+            steps=(
+                "offer-white-peace-88",
+                "surrender-war-88",
+                "life-advance",
+            ),
+            termination_options=[options],
+        )
+
+        self.assertEqual(
+            plan["phase"], "native_war_de_jure_no_safe_route_white_peace"
+        )
+        self.assertEqual(plan["selected_step"], "offer-white-peace-88")
+        self.assertEqual(plan["decision"]["selected_outcome"], "white_peace")
+        self.assertFalse(
+            plan["decision"]["candidates"]["continue"]["executable"]
+        )
+        self.assertTrue(
+            plan["decision"]["candidates"]["white_peace"]["executable"]
+        )
+        self.assertTrue(
+            plan["decision"]["candidates"]["surrender"]["executable"]
+        )
+
+    def test_r794_de_jure_white_peace_rejects_nonexact_inputs(self) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemies = [
+            _army(21, soldiers=800, province_id=31, controllable=False),
+            _army(22, soldiers=700, province_id=52, controllable=False),
+        ]
+        base = _de_jure_white_peace_options()
+        base.update(
+            {
+                "queried_snapshot_id": "session:90",
+                "queried_revision": 90,
+                "queried_native_revision": 90,
+                "queried_connection_generation": 1,
+                "episode_run_id": None,
+            }
+        )
+        mutations = {
+            "zero_score": lambda row: row.update(
+                {"player_relative_war_score": 0}
+            ),
+            "wrong_cb_index": lambda row: row[
+                "active_casus_belli_identity"
+            ].update({"database_index": 18}),
+            "unknown_acceptance": lambda row: row["options"][
+                "white_peace"
+            ].update({"ai_acceptance_observable": False}),
+            "nonpositive_acceptance": lambda row: row["options"][
+                "white_peace"
+            ]["ai_acceptance"].update({"raw": 0}),
+            "recipient_rejects": lambda row: row["options"]["white_peace"][
+                "recipient_response"
+            ].update({"would_accept_now": False}),
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(name=name):
+                options = copy.deepcopy(base)
+                mutate(options)
+                score = int(options["player_relative_war_score"])
+                plan = _native_war_plan(
+                    player=player,
+                    enemies=enemies,
+                    score=score,
+                    date_raw=24_000,
+                    history=[
+                        _preview_row(
+                            1,
+                            origin=20,
+                            target=2585,
+                            date_raw=24_000,
+                            route=[31, 2585],
+                        ),
+                        _preview_row(
+                            2,
+                            origin=20,
+                            target=2510,
+                            date_raw=24_000,
+                            route=[52, 2510],
+                        ),
+                    ],
+                    objectives=[2585, 2510],
+                    targeted_title_ids=[537],
+                    steps=(
+                        "offer-white-peace-88",
+                        "surrender-war-88",
+                        "life-advance",
+                    ),
+                    termination_options=[options],
+                )
+                self.assertEqual(plan["phase"], "native_war_no_safe_exact_route")
+                self.assertIsNone(plan["selected_step"])
+
+        multi_target = _native_war_plan(
+            player=player,
+            enemies=enemies,
+            score=47,
+            date_raw=24_000,
+            history=[
+                _preview_row(
+                    1,
+                    origin=20,
+                    target=2585,
+                    date_raw=24_000,
+                    route=[31, 2585],
+                ),
+                _preview_row(
+                    2,
+                    origin=20,
+                    target=2510,
+                    date_raw=24_000,
+                    route=[52, 2510],
+                ),
+            ],
+            objectives=[2585, 2510],
+            targeted_title_ids=[537, 538],
+            steps=("offer-white-peace-88", "life-advance"),
+            termination_options=[copy.deepcopy(base)],
+        )
+        self.assertEqual(
+            multi_target["phase"], "native_war_no_safe_exact_route"
+        )
+        self.assertIsNone(multi_target["selected_step"])
+
+    def test_r794_de_jure_positive_query_bypasses_negative_lease(self) -> None:
+        queried = _termination_reuse_snapshot()
+        queried["active_wars"][0]["player_relative_war_score"] = 47
+        queried["active_wars"][0]["targeted_title_ids"] = [537]
+        options = _de_jure_white_peace_options()
+        history = [_termination_query_row(1, queried, options=options)]
+        current = _termination_reuse_snapshot(
+            date_raw=int(queried["date_raw"]) + 6 * 24,
+            wars=copy.deepcopy(queried["active_wars"]),
+            history=history,
+        )
+
+        plan = choose_one_life_turn(
+            history,
+            snapshot=current,
+            action_steps=(
+                "query-war-termination-options-88",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_termination_query")
+        self.assertEqual(
+            plan["selected_step"], "query-war-termination-options-88"
+        )
+
+    def test_r794_de_jure_white_peace_does_not_override_safe_route(self) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        options = _de_jure_white_peace_options()
+        options.update(
+            {
+                "queried_snapshot_id": "session:90",
+                "queried_revision": 90,
+                "queried_native_revision": 90,
+                "queried_connection_generation": 1,
+                "episode_run_id": None,
+            }
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[],
+            score=47,
+            date_raw=24_000,
+            history=[
+                _preview_row(
+                    1,
+                    origin=20,
+                    target=2585,
+                    date_raw=24_000,
+                    route=[30, 2585],
+                )
+            ],
+            objectives=[2585],
+            targeted_title_ids=[537],
+            steps=(
+                "move-army-11-to-2585",
+                "offer-white-peace-88",
+                "life-advance",
+            ),
+            termination_options=[options],
+        )
+
+        self.assertEqual(plan["selected_step"], "move-army-11-to-2585")
+        self.assertNotEqual(
+            plan["phase"], "native_war_de_jure_no_safe_route_white_peace"
         )
 
     def test_intersecting_candidate_requires_then_consumes_contact_horizon(
