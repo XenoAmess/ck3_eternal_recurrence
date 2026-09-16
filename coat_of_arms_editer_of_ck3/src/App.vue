@@ -1229,7 +1229,7 @@ function cancelInstancePrune(notify = true) {
   fitPruneRunId += 1
   fitPruneWorker?.terminate()
   fitPruneWorker = null
-  if (fitPruneBusy.value && notify) ElMessage.info('已取消精确剪枝；当前编辑结果保持不变')
+  if (fitPruneBusy.value && notify) ElMessage.info('已取消零退化剪枝；当前编辑结果保持不变')
   fitPruneBusy.value = false
   fitPruneProgress.value = undefined
 }
@@ -1281,7 +1281,7 @@ function pruneFitDocument() {
   const missing = [...new Set(coatOfArms.value.coloredEmblems.map((item) => item.texture))]
     .filter((name) => !emblemTextures.value[name])
   if (missing.length) {
-    ElMessage.error(`无法执行精确剪枝，缺少 ${missing.length} 个结果 DDS`)
+    ElMessage.error(`无法执行零退化剪枝，缺少 ${missing.length} 个结果 DDS`)
     return
   }
   cancelInstancePrune(false)
@@ -1302,7 +1302,7 @@ function pruneFitDocument() {
     fitPruneWorker = null
     fitPruneBusy.value = false
     fitPruneProgress.value = undefined
-    ElMessage.error(`精确剪枝 Worker 失败：${message}`)
+    ElMessage.error(`零退化剪枝 Worker 失败：${message}`)
   }
   worker.onmessage = (event: MessageEvent<
     | { kind: 'progress', progress: InstancePruneProgress }
@@ -1318,7 +1318,7 @@ function pruneFitDocument() {
     fitPruneBusy.value = false
     if (!event.data.ok || !event.data.result) {
       fitPruneProgress.value = undefined
-      ElMessage.error(`精确剪枝失败：${event.data.error ?? 'unknown'}`)
+      ElMessage.error(`零退化剪枝失败：${event.data.error ?? 'unknown'}`)
       return
     }
     const pruned = event.data.result
@@ -1354,7 +1354,7 @@ function pruneFitDocument() {
       evaluatedCandidates: pruned.receipt.evaluatedCandidates,
       percent: 100,
     }
-    ElMessage.success(`精确剪枝达到固定点：移除 ${pruned.receipt.removedInstances}，保留 ${pruned.receipt.drawnInstancesAfter}`)
+    ElMessage.success(`零退化剪枝达到固定点：移除 ${pruned.receipt.removedInstances}，保留 ${pruned.receipt.drawnInstancesAfter}`)
   }
   worker.onerror = (event) => {
     fail(event.message)
@@ -1381,10 +1381,13 @@ function pruneFitDocument() {
         [name, [...color]]
       ))),
       {
+        mode: 'metric-pareto',
         searchResolution: 96,
         validationResolutions: [230, 512],
         numericLossTolerance: 1e-12,
         allowedVisualDifferenceBytes: 0,
+        allowedCumulativeTotalLossIncrease: 0,
+        allowedCumulativeEdgeLossIncrease: 0,
       },
     ])
   } catch (error) {
