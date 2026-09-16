@@ -70,6 +70,21 @@ def source_round(manifest: dict[str, object]) -> str:
     return value
 
 
+def validate_expected_frame(frame: object) -> dict[str, object]:
+    require(isinstance(frame, dict) and frame.get("government_key") == "feudal_government"
+            and type(frame.get("played_character_id")) is int
+            and type(frame.get("date_raw")) is int
+            and frame["played_character_id"] > 0,
+            "ordinary-feudal paused anchor fields are absent")
+    incumbent = frame.get("steward_incumbent_character_id")
+    vacant = frame.get("steward_vacant", False)
+    require(type(vacant) is bool
+            and ((vacant is True and incumbent is None)
+                 or (vacant is False and type(incumbent) is int and incumbent > 0)),
+            "steward vacancy and incumbent identity are inconsistent")
+    return frame
+
+
 def verify_candidate(root: Path) -> dict[str, object]:
     root = root.resolve()
     manifest = json.loads((root / "candidate-manifest.json").read_text(encoding="utf-8"))
@@ -79,14 +94,7 @@ def verify_candidate(root: Path) -> dict[str, object]:
             and manifest.get("gameplay_actions") == 0,
             "Council scene candidate is not a sealed private read-only copy")
     frozen_source_round = source_round(manifest)
-    frame = manifest.get("expected_frame")
-    require(isinstance(frame, dict) and frame.get("government_key") == "feudal_government"
-            and type(frame.get("played_character_id")) is int
-            and type(frame.get("date_raw")) is int
-            and type(frame.get("steward_incumbent_character_id")) is int
-            and frame["played_character_id"] > 0
-            and frame["steward_incumbent_character_id"] > 0,
-            "ordinary-feudal paused anchor fields are absent")
+    frame = validate_expected_frame(manifest.get("expected_frame"))
     rows = manifest.get("frozen_files")
     require(isinstance(rows, list) and rows, "frozen file list is absent")
     for row in rows:
@@ -175,6 +183,7 @@ def validate_terminal(path: Path, manifest: dict[str, object],
     scene = inspect(path, sha256(path))
     frame = manifest["expected_frame"]
     require(scene["owner_character_id"] == frame["played_character_id"]
+            and scene["vacant"] == frame.get("steward_vacant", False)
             and scene["incumbent_character_id"] ==
             frame["steward_incumbent_character_id"]
             and scene["snapshot"]["date_raw"] == frame["date_raw"]
