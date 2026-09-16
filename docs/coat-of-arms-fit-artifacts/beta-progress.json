@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T12:10:00+08:00",
+  "updatedAt": "2026-09-16T12:45:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -121,7 +121,7 @@
         {
             "id": "WP3",
             "status": "in_progress",
-            "commit": "620ecddb",
+            "commit": "2af8048a",
             "commands": [
                 "pnpm exec vitest run src/domain/imageFitter.test.ts src/domain/imageFitter.seams.test.ts",
                 "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
@@ -248,6 +248,15 @@
                 "hunterV8ComplexityInstances": 989,
                 "hunterV8SeamGate": "passed_zero_leaks_at_96_230_512",
                 "fitIndexPaintGeometryRegression": "passed_bounds_center_separated_from_energy_centroid",
+                "paretoPictureCorpusStatus": "browser_passed_native_mcp_pending",
+                "paretoPictureCorpusEvidencePath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/",
+                "paretoPictureCorpusCasesPassed": 7,
+                "paretoPictureCorpusCandidatesFrozen": 21,
+                "paretoPictureCorpusPreviewIdentityCasesPassed": 7,
+                "paretoPictureCorpusDrawnInstanceRange": [586, 1024],
+                "paretoPictureCorpusUtf8ByteRange": [232313, 403676],
+                "candidatePreviewCanonicalResolution": 230,
+                "candidatePreviewScoringResolutionBug": "fixed_96px_presentation_replaced_by_230px_canonical",
                 "nativeRoundTrip": "passed",
                 "nativeInputBytes": 262138,
                 "nativeInputBlocks": 297,
@@ -413,6 +422,8 @@
         "pageVersionDisplay": "iso_timestamp_plus_8_digit_git_hash_passed",
         "pagesMountPath": "/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/",
         "pagesOfficialDeployment": "passed_run_35000503958_head_a35b0edd",
+        "pagesLatestDeploymentAttempt": "failed_run_35054874631_standalone_fit_functional_wait_timeout",
+        "pagesHostedFunctionalWaitFixCommit": "2af8048a",
         "pagesCanonicalHttpStatus": 200,
         "pagesNoTrailingSlashHttpStatus": 301,
         "pagesEntryJavascriptHttpStatus": 200,
@@ -536,6 +547,45 @@
         }
       },
       "blockers": []
+    },
+    {
+      "id": "USER-PICTURE-PARETO-PREVIEW-CONSISTENCY-V14",
+      "status": "in_progress",
+      "commit": "2af8048a",
+      "commands": [
+        "set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v14-pareto-budget-1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --workers=1 --reporter=line",
+        "set GITHUB_PAGES=true&& set COA_E2E_USE_PREVIEW=true&& pnpm exec playwright test e2e/standalone-image-fit.spec.ts --workers=1 --reporter=line",
+        "pnpm test",
+        "pnpm build",
+        "pnpm verify:production-boundary"
+      ],
+      "resultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/",
+      "keyMetrics": {
+        "sourceArchiveBytes": 6240071,
+        "sourceArchiveSha256": "0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F",
+        "browserCasesPassed": 7,
+        "browserCasesFailed": 0,
+        "userBudget": 1024,
+        "paretoCandidatesPerCase": 3,
+        "completeCandidateDocuments": 21,
+        "candidatePreviewResolution": 230,
+        "fitEditorCurrentCandidateByteIdentityCasesPassed": 7,
+        "parseSerializeExactCasesPassed": 7,
+        "drawnInstanceRange": [586, 1024],
+        "utf8ByteRange": [232313, 403676],
+        "minimumTotalLoss": 0.006149263344276545,
+        "maximumTotalLoss": 0.04767803584367018,
+        "minimumEdgeLoss": 0.012749870884061962,
+        "maximumEdgeLoss": 0.0871759035302717,
+        "minimumRelativeImprovement": 0.45234221534189745,
+        "maximumRelativeImprovement": 0.9408132307229519,
+        "vitest": "passed_18_files_83_tests",
+        "pagesModeStandaloneFit": "passed_2_of_2_local_regression",
+        "productionBoundary": "passed_zero_forbidden_markers"
+      },
+      "blockers": [
+        "v14 native MCP Apply/Copy and spatial framebuffer comparison are pending"
+      ]
     }
   ]
 }

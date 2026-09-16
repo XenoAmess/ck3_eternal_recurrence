@@ -1,10 +1,10 @@
-# R758 无 PowerShell 策略的正式预览入口
+# R758 纯 Python 正式预览入口
 
 状态：**本机同候选实机通过，可作为现有冻结 ZIP 的附加启动入口；尚未重新打包 ZIP。**
 
-候选目录为 `C:\g2feudal-r751-entry\candidate-python-operator-02`。交付 seal SHA-256 为 `B7FBAE2A2595515471889307DFA6D2745EE3B4ABCE74478A21CC7823B5597FBB`，operator manifest SHA-256 为 `8DE2915F720472431F3CD4E66373C9E4A09BF8AC21DC2AD0F52061F55B420367`。它不需要 `.ps1`，也不要求修改 Windows ExecutionPolicy。
+候选目录为 `C:\g2feudal-r751-entry\candidate-python-operator-02`。交付 seal SHA-256 为 `B7FBAE2A2595515471889307DFA6D2745EE3B4ABCE74478A21CC7823B5597FBB`，operator manifest SHA-256 为 `8DE2915F720472431F3CD4E66373C9E4A09BF8AC21DC2AD0F52061F55B420367`。它不需要旧式非 Python 启动包装，也不要求修改 Windows 脚本执行策略。
 
-在 `cmd.exe` 或 PowerShell 中使用同一条 Python 命令启动：
+在命令提示符中使用下列 Python 命令启动：
 
 ```text
 "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "C:\g2feudal-r751-entry\source-master-d7e6ef36\tools\g2_preview_operator.py" run --manifest "C:\g2feudal-r751-entry\candidate-python-operator-02\operator-manifest.json" --output "C:\g2feudal-r751-entry\candidate-python-operator-02\attempt-user-02" --turns 20 --timeout 390 --readiness-timeout 300
