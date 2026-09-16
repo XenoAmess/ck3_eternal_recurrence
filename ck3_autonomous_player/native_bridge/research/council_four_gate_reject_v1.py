@@ -18,6 +18,9 @@ PRIVATE_FLAGS = {
     "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "ON",
 }
 GATES = {
+    "already_councillor": (
+        "isolated_already_councillor_rejection_ids", "candidate_already_councillor"
+    ),
     "guest": ("isolated_guest_rejection_ids", "candidate_is_guest"),
     "candidate_pending": (
         "isolated_candidate_pending_rejection_ids", "pending_character_interaction"

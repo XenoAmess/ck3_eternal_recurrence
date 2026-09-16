@@ -13,7 +13,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--scene-terminal", type=Path, required=True)
     parser.add_argument("--scene-terminal-sha256", required=True)
-    parser.add_argument("--gate", choices=("guest", "candidate_pending",
+    parser.add_argument("--gate", choices=("already_councillor", "guest", "candidate_pending",
                                            "replacement_fireability_denial"),
                         required=True)
     parser.add_argument("--output-plan", type=Path, required=True)

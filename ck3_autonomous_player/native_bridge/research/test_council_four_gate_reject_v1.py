@@ -21,6 +21,7 @@ def scene(**overrides: object) -> dict[str, object]:
         "snapshot": {"paused": True, "date_raw": 53178264,
                      "native_revision": 3, "public_revision": 3,
                      "snapshot_id": "native:3"},
+        "isolated_already_councillor_rejection_ids": [],
         "isolated_guest_rejection_ids": [],
         "isolated_candidate_pending_rejection_ids": [],
         "isolated_replacement_fireability_denial_ids": [],
@@ -39,6 +40,7 @@ class CouncilFourGateRejectTests(unittest.TestCase):
 
     def test_each_gate_selects_only_its_isolated_native_provider_row(self) -> None:
         fields = {
+            "already_councillor": "isolated_already_councillor_rejection_ids",
             "guest": "isolated_guest_rejection_ids",
             "candidate_pending": "isolated_candidate_pending_rejection_ids",
             "replacement_fireability_denial":
