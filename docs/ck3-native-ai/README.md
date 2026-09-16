@@ -135,6 +135,9 @@
 - [static-confirmed + historical action live, material live pending] [heir-death-stress.md](heir-death-stress.md)
   冻结 `death_management.1007` 的唯一选项、distinct dead-character scope 与 authored `+20` 压力档案；R374 已有 instance
   advance，但当时没有压力字段，因此同角色 non-decreasing material 对账只到 static-ready，今后遇到时有界补证。
+- [static-confirmed, natural production loop pending] [g2-m2-natural-event-gap-2026-09-16.md](g2-m2-natural-event-gap-2026-09-16.md)
+  核对 `.0030` 与 `.1007` 的自然调用链、现有 query/recommend/action/material/next-turn 证据，冻结天朝旅行与近亲继承人死亡的
+  分场景 bounded 清单；离线实现无确定性缺口，force/simulate 只能作为局部证据。
 - [source-structured + implementation-confirmed, live pending] [event-campaign-utility.md](event-campaign-utility.md)
   为 G2-M2 三个 exact 目标事件发布 bounded objective 与 source-reviewed ordinal utility；两个多选事件均选择 native1，
   planner 显式记录目标、排名和替代原因，同时把跨域 numeric score 保持为未校准 null。
