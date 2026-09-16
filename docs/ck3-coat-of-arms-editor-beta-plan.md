@@ -219,6 +219,12 @@ Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_a
 原生 framebuffer 矩阵已证明角色设计器剪贴板路径同样不物化有效 `parent` definition，而显式 child 正常渲染；因此生产浏览器维持
 “保留 parent、只画显式字段”的行为。
 
+R35 已闭合 `_default.dds` `textured_emblem` 的原生像素对照：浏览器→原生 MAE `0.0072777048`、color MSE
+`0.0002390189`、edge loss `0.0271662716`、最差 8×8 空间 MAE `0.0292250253`，全部通过预声明门限；原生 Copy→重新 Apply
+的 MAE 为 `0.0000153959`，语义字段序列与 texture 保持。整轮 MCP-only、零 OCR/键鼠，清理后 CK3 进程树归零。证据见
+[`textured-emblem-native-r35`](coat-of-arms-fit-artifacts/textured-emblem-native-r35/README.md)。R32/R33 的启动超时和 R34 的旧尺寸合同
+假阴性均作为前驱保留，不覆盖失败证据。
+
 页面顶栏版本合同已经通过：每个 production build 显示 ISO 8601 构建时间戳与 Actions 从 `github.sha` 注入的 8 位 Git hash；
 `6eade3ab` 的 workflow `35076612146` 全部 build/deploy GREEN，随后公网 Playwright 从嵌套 canonical URL 精确回读
 `6eade3ab` 和 ISO 8601 时间戳。这个短标识用于定位线上字节来源，不替代完整 commit、asset-pack manifest SHA 或证据 SHA。

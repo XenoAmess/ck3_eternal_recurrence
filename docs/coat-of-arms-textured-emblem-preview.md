@@ -20,8 +20,12 @@ textured_emblem = { texture = "_default.dds" }
 | `_default.dds` | `697430F86ABD26B5056A8779E4BF78C7CB526A57B5AD13F02898BA64B89526CC` |
 | `coa_mask_texture.dds` | `5FA2A49DC59AEEBA19709B6BB3F9D0B017ACDE7DC576793705EAF85C7F33691E` |
 
-原生 MCP 证据已经证明上述 `textured_emblem` 结构可 Apply，并由 CK3 Copy 保留 texture。当前浏览器结果仍是源码模型证据，
-没有原生 framebuffer 空间像素回读，因此不声称 GPU 逐像素一致，也不外推未注册 texture 或额外字段。
+原生 MCP 证据已经证明上述 `textured_emblem` 结构可 Apply，并由 CK3 Copy 保留 texture。R35 又用 reference-free v3 标定和
+空间像素摘要闭合浏览器与原生 framebuffer 对照：MAE `0.0072777048`、color MSE `0.0002390189`、edge loss
+`0.0271662716`、最差 8×8 空间 MAE `0.0292250253`，均通过运行前冻结的门限。原生 Copy 后重新 Apply 的更严格对照也通过，
+MAE 仅 `0.0000153959`。完整证据见
+[`textured-emblem-native-r35`](coat-of-arms-fit-artifacts/textured-emblem-native-r35/README.md)。这证明当前 exact pack 唯一注册
+`_default.dds` 的浏览器模型在声明阈值内与原生一致；仍不声称逐像素完全相同，也不外推未注册 texture 或额外字段。
 
 ## 回归门禁
 
@@ -32,9 +36,10 @@ textured_emblem = { texture = "_default.dds" }
 ```text
 pnpm exec vitest run src/domain/renderer.test.ts
 pnpm exec playwright test e2e/textured-emblem-preview.spec.ts
+pnpm exec playwright test e2e/textured-emblem-native-reference.spec.ts
 pnpm test
 pnpm build
 ```
 
-源码工作包为 `c34b9100`。下一项预览合同是静态 parent registry、递归继承和覆盖语义；在该项通过前，`parent` 仍只保真
-解析/编辑/导出，不冒充浏览器已展开最终构图。
+浏览器实现工作包为 `c34b9100`，单样例与原生门禁修复为 `890da192`、`e7100297`。`parent` 的角色设计器剪贴板原生证据表明
+有效 parent 不会在该路径物化，因此页面继续保留引用、只绘制显式字段，不冒充展开最终 parent 构图。

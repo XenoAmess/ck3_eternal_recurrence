@@ -1,0 +1,2883 @@
+{
+  "schema": "ck3-frontend-gui-route-v1-live-acceptance",
+  "schema_version": 1,
+  "created_at": "2026-09-16T13:49:12.804657+00:00",
+  "repository_head": "890da192ea8bb05b583303133d1504f1e7a5784a",
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "No frontend GUI or coat-of-arms domain exists in open_kaishek."
+  },
+  "interaction_policy": {
+    "mcp_only": true,
+    "mcp_baseline_private_native_read_only": false,
+    "controlled_private_native_selection_start": false,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false
+  },
+  "syntax_matrix_requested": false,
+  "syntax_matrix_plan": null,
+  "custom_mode_census_requested": false,
+  "bookmarks_read_only_requested": false,
+  "bookmarks_model_private_requested": false,
+  "bookmarks_select_start_private_requested": false,
+  "ordinary_campaign_xar_off_seed_requested": false,
+  "commit_roundtrip_requested": false,
+  "large_source_requested": false,
+  "large_source_plan": null,
+  "reference_preview_requested": false,
+  "reference_preview_plan": null,
+  "picture_corpus_requested": false,
+  "single_reference_case_requested": true,
+  "picture_corpus_plan": [
+    {
+      "id": "textured-emblem-browser-r31",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\textured-emblem-browser-r31\\coat_of_arms.txt",
+        "raw_bytes": 162,
+        "raw_sha256": "cbbae28a851a8bc47a05659465414fcc0cc9a84b4dcc93f00fad861c49885c5b",
+        "wire_bytes": 172,
+        "wire_sha256": "2747fdfba0e2d6c0708f0295ec2eafb2882d174b13cd9af4638f852af316ea37",
+        "line_endings_normalized": true,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 1,
+          "instances": 0,
+          "utf8_bytes": 172,
+          "lines": 10
+        },
+        "semantic_projection": {
+          "sha256": "65d70672e78c01a24341c996737e00f588424dfc8ac454e5db51286c0226bebb",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\textured-emblem-browser-r31\\canonical-preview-230.png",
+        "png_bytes": 77004,
+        "png_sha256": "80CD0792179F4BE40D41F5C61114CB5B684C28A74EA25D59C398AA88C1625CCA"
+      }
+    }
+  ],
+  "parent_semantics_matrix_requested": false,
+  "parent_semantics_plan": null,
+  "vfs_winner_matrix_requested": false,
+  "vfs_winner_plan": null,
+  "vfs_extended_matrix_requested": false,
+  "vfs_extended_plan": null,
+  "vfs_replace_path_matrix_requested": false,
+  "vfs_replace_path_plan": null,
+  "vfs_mount_order_diagnostics_requested": false,
+  "vfs_mount_order_diagnostics_only": false,
+  "vfs_asset_projection_paths": [],
+  "vfs_mount_order_diagnostics_plan": null,
+  "vfs_asset_projection_plan": null,
+  "shared_ck3_slot": {
+    "mechanism": "exclusive_launch_lock + exclusive_state_lock",
+    "launch_lock_acquired": true,
+    "state_lock_acquired": true,
+    "released": true
+  },
+  "steam": {
+    "path": "D:\\Program Files (x86)\\Steam\\config\\loginusers.vdf",
+    "wants_offline_mode_values": [
+      "1"
+    ],
+    "offline": true
+  },
+  "profile": {
+    "source": "D:\\ck3_coa_vfs_replace_path_r25_source",
+    "target": "D:\\ck3_coa_textured_emblem_native_r33\\profile",
+    "pdx_settings_sha256": "3AFC0F3F9CA93B58F92C90FB14F4F54FFF473A3C4717ADF5FB60E0AD627F0BE6",
+    "source_settings_matched": true
+  },
+  "binary": {
+    "ck3_exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll": "C:\\xb\\coa-vfs-r27\\xar_ck3_bridge.dll",
+    "bridge_dll_sha256": "972092940989B6122FFFC5A1AFA8D8EB76660208B4C8BCF86F4333AB2EF90A9E",
+    "bridge_injector": "C:\\xb\\coa-vfs-r27\\xar_ck3_bridge_injector.exe",
+    "bridge_injector_sha256": "4736851542AC89B72D892E8AD430E063DA90EA8D7002005A898D6914ADD170B9"
+  },
+  "managed_pid": 26600,
+  "sequence": {
+    "mcp_sdk": "official-python-client",
+    "calls": [
+      {
+        "tool": "ck3_get_capabilities",
+        "arguments": {},
+        "elapsed_seconds": 0.135,
+        "is_error": false,
+        "structured_content": {
+          "format_version": 1,
+          "backend_id": "native-headless",
+          "mode": "native-headless",
+          "source": "injected-dll-named-pipe",
+          "latency": "realtime",
+          "headless": true,
+          "minimized_operation": true,
+          "visual_fallback": false,
+          "fallback_enabled": false,
+          "snapshot": false,
+          "wait_for_change": false,
+          "action_steps": [
+            "activate-frontend-coat-of-arms-custom-mode-v1",
+            "activate-frontend-coat-of-arms-designer-v1",
+            "activate-frontend-new-game-v1",
+            "activate-frontend-pick-any-character-v1",
+            "activate-frontend-ruler-designer-v1",
+            "activate-frontend-select-random-playable-v1",
+            "commit-frontend-dynasty-coat-of-arms-v1",
+            "export-coat-of-arms-source-v1",
+            "inspect-frontend-coat-of-arms-pattern-grid-v1",
+            "inspect-frontend-coat-of-arms-tree-v1",
+            "inspect-frontend-gui-tree-v1",
+            "pause-map",
+            "query-arrange-marriage-choices",
+            "query-declarable-wars",
+            "query-frontend-gui-route-v1",
+            "query-zhongguo-b1-cycle-snapshot-v1",
+            "query-zhongguo-manager-governance-snapshot-v1",
+            "query-zhongguo-manager-subordinate-selector-v1",
+            "research-cancel-tactical-daily-sentinel-v1-generation-N",
+            "research-query-tactical-daily-sentinel-v1",
+            "resume-map",
+            "save-checkpoint",
+            "set-speed-1",
+            "set-speed-2",
+            "set-speed-3",
+            "set-speed-4",
+            "set-speed-5"
+          ],
+          "bridge_capabilities": [
+            "bridge.identity",
+            "bridge.heartbeat",
+            "bridge.ping",
+            "game.state.snapshot",
+            "game.state.xar-one-life-settlement",
+            "game.state.map-ready",
+            "game.state.played-character",
+            "game.state.active-event",
+            "game.state.pending-character-interaction",
+            "game.state.active-wars",
+            "game.state.war-primary-opponent",
+            "game.state.war-objectives",
+            "game.state.war-objective-occupation",
+            "game.state.war-objective-fort-level",
+            "game.state.war-objective-garrison",
+            "game.state.war-objective-siege-progress",
+            "game.state.war-objective-assault",
+            "game.state.player-armies",
+            "game.state.army-routes",
+            "game.command.pause-map",
+            "game.command.resume-map",
+            "game.command.set-speed-1",
+            "game.command.set-speed-2",
+            "game.command.set-speed-3",
+            "game.command.set-speed-4",
+            "game.command.set-speed-5",
+            "game.command.research-arm-tactical-daily-sentinel-v1-N",
+            "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+            "game.command.research-query-tactical-daily-sentinel-v1",
+            "game.command.select-event-option-N",
+            "game.command.save-checkpoint",
+            "game.command.accept-pending-character-interaction",
+            "game.command.reject-pending-character-interaction",
+            "game.command.acknowledge-pending-character-interaction",
+            "game.command.raise-troops-default",
+            "game.command.preview-move-army-N-to-N",
+            "game.command.query-route-contact-horizon-v1-N",
+            "game.command.query-actual-contact-scope-v1-N",
+            "game.command.query-battle-control-snapshot-v1-N",
+            "game.command.query-battle-transition-v1-N",
+            "game.command.query-battle-terminal-transition-v1",
+            "game.command.query-battle-reinforcement-assignment-v1-N",
+            "game.command.move-army-N-to-N",
+            "game.command.disband-army-N",
+            "game.command.split-army-half-N",
+            "game.command.merge-armies-N-with-N",
+            "game.command.start-assault-N",
+            "game.command.stop-assault-N",
+            "game.command.query-declarable-wars",
+            "game.command.query-war-entry-assessments-v1-N",
+            "game.command.declare-war-N",
+            "game.command.enforce-demands-N",
+            "game.command.query-army-strengths-v1",
+            "game.command.query-campaign-root-context-v1",
+            "game.command.query-player-faction-alerts-v1",
+            "game.command.query-steward-develop-county-candidates-v1",
+            "game.command.query-zhongguo-case-snapshot-v1",
+            "game.command.query-zhongguo-b1-cycle-snapshot-v1",
+            "game.command.query-zhongguo-result-case-snapshot-v1",
+            "game.command.query-zhongguo-b2-pip-snapshot-v1",
+            "game.command.query-zhongguo-incident-snapshot-v1",
+            "game.command.query-zhongguo-manager-governance-snapshot-v1",
+            "game.command.query-zhongguo-manager-subordinate-selector-v1",
+            "game.command.query-zhongguo-scoreboard-state-v1",
+            "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+            "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+            "game.contract.zhongguo-review-now-action-v1-fail-closed",
+            "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+            "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
+            "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1",
+            "game.command.query-loaded-feature-manifest-v1",
+            "game.command.query-pending-character-interaction-context-v1",
+            "game.command.query-current-event-window-context-v1",
+            "game.command.probe-coat-of-arms-source-v1",
+            "game.command.export-coat-of-arms-source-v1",
+            "game.command.query-frontend-gui-route-v1",
+            "game.command.inspect-frontend-gui-tree-v1",
+            "game.command.inspect-frontend-coat-of-arms-tree-v1",
+            "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1",
+            "game.command.activate-frontend-new-game-v1",
+            "game.command.activate-frontend-pick-any-character-v1",
+            "game.command.activate-frontend-select-random-playable-v1",
+            "game.command.activate-frontend-ruler-designer-v1",
+            "game.command.activate-frontend-coat-of-arms-designer-v1",
+            "game.command.commit-frontend-dynasty-coat-of-arms-v1",
+            "game.command.activate-frontend-coat-of-arms-custom-mode-v1",
+            "game.command.center-map-on-landed-title-v1",
+            "game.command.set-played-character-v1-N",
+            "game.command.query-combat-simulation-inputs-v2-N",
+            "game.command.query-combat-simulation-inputs-v3-N",
+            "game.command.query-war-termination-options-N",
+            "game.command.query-war-termination-terms-v1-N",
+            "game.command.surrender-war-N",
+            "game.command.offer-white-peace-N",
+            "game.command.query-arrange-marriage-choices",
+            "game.command.arrange-marriage-N",
+            "game.adapter.exact-build",
+            "game.adapter.minimized-headless"
+          ],
+          "diagnostics": {
+            "protocol_version": 1,
+            "pipe_name": "\\\\.\\pipe\\xar_ck3_coa_textured_emblem_r33",
+            "connected": true,
+            "connection_generation": 1,
+            "bridge_pid": 26600,
+            "bridge_version": "0.1.0",
+            "hello": {
+              "type": "hello",
+              "protocol_version": 1,
+              "bridge_version": "0.1.0",
+              "pid": 26600,
+              "session_generation": 0,
+              "connection_generation": 1,
+              "architecture": "x86_64-windows-msvc",
+              "expected_ck3_version": "1.19.0.6",
+              "expected_ck3_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+              "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+              "game_adapter_status": "ready",
+              "ck3_build_match": true,
+              "capabilities": [
+                "bridge.identity",
+                "bridge.heartbeat",
+                "bridge.ping",
+                "game.state.snapshot",
+                "game.state.xar-one-life-settlement",
+                "game.state.map-ready",
+                "game.state.played-character",
+                "game.state.active-event",
+                "game.state.pending-character-interaction",
+                "game.state.active-wars",
+                "game.state.war-primary-opponent",
+                "game.state.war-objectives",
+                "game.state.war-objective-occupation",
+                "game.state.war-objective-fort-level",
+                "game.state.war-objective-garrison",
+                "game.state.war-objective-siege-progress",
+                "game.state.war-objective-assault",
+                "game.state.player-armies",
+                "game.state.army-routes",
+                "game.command.pause-map",
+                "game.command.resume-map",
+                "game.command.set-speed-1",
+                "game.command.set-speed-2",
+                "game.command.set-speed-3",
+                "game.command.set-speed-4",
+                "game.command.set-speed-5",
+                "game.command.research-arm-tactical-daily-sentinel-v1-N",
+                "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+                "game.command.research-query-tactical-daily-sentinel-v1",
+                "game.command.select-event-option-N",
+                "game.command.save-checkpoint",
+                "game.command.accept-pending-character-interaction",
+                "game.command.reject-pending-character-interaction",
+                "game.command.acknowledge-pending-character-interaction",
+                "game.command.raise-troops-default",
+                "game.command.preview-move-army-N-to-N",
+                "game.command.query-route-contact-horizon-v1-N",
+                "game.command.query-actual-contact-scope-v1-N",
+                "game.command.query-battle-control-snapshot-v1-N",
+                "game.command.query-battle-transition-v1-N",
+                "game.command.query-battle-terminal-transition-v1",
+                "game.command.query-battle-reinforcement-assignment-v1-N",
+                "game.command.move-army-N-to-N",
+                "game.command.disband-army-N",
+                "game.command.split-army-half-N",
+                "game.command.merge-armies-N-with-N",
+                "game.command.start-assault-N",
+                "game.command.stop-assault-N",
+                "game.command.query-declarable-wars",
+                "game.command.query-war-entry-assessments-v1-N",
+                "game.command.declare-war-N",
+                "game.command.enforce-demands-N",
+                "game.command.query-army-strengths-v1",
+                "game.command.query-campaign-root-context-v1",
+                "game.command.query-player-faction-alerts-v1",
+                "game.command.query-steward-develop-county-candidates-v1",
+                "game.command.query-zhongguo-case-snapshot-v1",
+                "game.command.query-zhongguo-b1-cycle-snapshot-v1",
+                "game.command.query-zhongguo-result-case-snapshot-v1",
+                "game.command.query-zhongguo-b2-pip-snapshot-v1",
+                "game.command.query-zhongguo-incident-snapshot-v1",
+                "game.command.query-zhongguo-manager-governance-snapshot-v1",
+                "game.command.query-zhongguo-manager-subordinate-selector-v1",
+                "game.command.query-zhongguo-scoreboard-state-v1",
+                "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+                "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+                "game.contract.zhongguo-review-now-action-v1-fail-closed",
+                "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+                "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
+                "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1",
+                "game.command.query-loaded-feature-manifest-v1",
+                "game.command.query-pending-character-interaction-context-v1",
+                "game.command.query-current-event-window-context-v1",
+                "game.command.probe-coat-of-arms-source-v1",
+                "game.command.export-coat-of-arms-source-v1",
+                "game.command.query-frontend-gui-route-v1",
+                "game.command.inspect-frontend-gui-tree-v1",
+                "game.command.inspect-frontend-coat-of-arms-tree-v1",
+                "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1",
+                "game.command.activate-frontend-new-game-v1",
+                "game.command.activate-frontend-pick-any-character-v1",
+                "game.command.activate-frontend-select-random-playable-v1",
+                "game.command.activate-frontend-ruler-designer-v1",
+                "game.command.activate-frontend-coat-of-arms-designer-v1",
+                "game.command.commit-frontend-dynasty-coat-of-arms-v1",
+                "game.command.activate-frontend-coat-of-arms-custom-mode-v1",
+                "game.command.center-map-on-landed-title-v1",
+                "game.command.set-played-character-v1-N",
+                "game.command.query-combat-simulation-inputs-v2-N",
+                "game.command.query-combat-simulation-inputs-v3-N",
+                "game.command.query-war-termination-options-N",
+                "game.command.query-war-termination-terms-v1-N",
+                "game.command.surrender-war-N",
+                "game.command.offer-white-peace-N",
+                "game.command.query-arrange-marriage-choices",
+                "game.command.arrange-marriage-N",
+                "game.adapter.exact-build",
+                "game.adapter.minimized-headless"
+              ]
+            },
+            "last_heartbeat": {
+              "type": "heartbeat",
+              "protocol_version": 1,
+              "sequence": 2,
+              "pid": 26600,
+              "monotonic_ms": 671544187,
+              "startup_failure_containment_enabled": true,
+              "startup_particle2_stage_recorder_enabled": false,
+              "startup_widget_null_flag_call_guard_enabled": true,
+              "startup_rbx_null_call_guard_enabled": true,
+              "cold_map_vfs_observer_enabled": true,
+              "named_path_583_root_observer_enabled": true,
+              "pdx_paths_583_producer_observer_enabled": true,
+              "vfs_mount_lifecycle_observer_enabled": true,
+              "physfs_mounted_data_observer_enabled": true,
+              "g2_truce_preview_entry_observer_enabled": true,
+              "zhongguo_scoreboard_production_candidate_enabled": false,
+              "zhongguo_scoreboard_production_capability_advertised": false,
+              "main_thread_query_mailbox_v1": {
+                "candidate_id": "application_main_thread_war_entry_v1",
+                "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+                "installed": true,
+                "sdl_poll_event_hook_installed": true,
+                "observed_sdl_poll_event_target": 140697881556784,
+                "stop": false,
+                "failure": 0,
+                "pump_epochs": 0,
+                "owner_verified_pump_epochs": 0,
+                "consecutive_verified": 0,
+                "published_sequence": 0,
+                "completed_sequence": 0,
+                "executor_started_requests": 0,
+                "executor_started_sequence": 0,
+                "executor_started_pump_epoch": 0,
+                "owner_tid": 0,
+                "current_tid": 0,
+                "rng_owner_tid": 0,
+                "tls_global": 0,
+                "tls_context": 0,
+                "tls_marker": 0,
+                "jomini_state": 0,
+                "game_state": 0,
+                "date_raw": 0,
+                "paused": false,
+                "stamp_read_success": false,
+                "executed_requests": 0,
+                "executor_submission_enabled": true,
+                "application_main_observed": false,
+                "paused_main_thread_observed": false,
+                "ready": false
+              },
+              "coat_of_arms_designer_probe_v1": {
+                "installed": true,
+                "failure": 0,
+                "observed_calls": 0,
+                "executed_requests": 0
+              },
+              "startup_particle2_null_guard_v1": {
+                "installed": true,
+                "failure": 0,
+                "suppressed_count": 0,
+                "suppressed_index_mask": 0,
+                "last_suppressed_index": 4294967295
+              },
+              "startup_particle2_consumer_null_guard_v1": {
+                "installed": true,
+                "failure": 0,
+                "suppressed_count": 0,
+                "missing_slot_mask": 0
+              },
+              "startup_particle2_stage_recorder_v1": {
+                "installed": false,
+                "patch_mask": 0,
+                "failure": 0,
+                "source_lookup_null_count": 0,
+                "variant_lookup_null_count": 0,
+                "backend_creation_null_count": 0
+              },
+              "startup_dx11_render_context_draw_guard_v1": {
+                "installed": true,
+                "failure": 0,
+                "suppressed_count": 0
+              },
+              "startup_localize_current_root_guard_v1": {
+                "installed": true,
+                "failure": 0,
+                "native_miss_count": 0
+              },
+              "startup_widget_null_flag_call_guard_v1": {
+                "installed": true,
+                "failure": 0,
+                "suppressed_count": 0
+              },
+              "startup_rbx_null_call_guard_v1": {
+                "installed": true,
+                "failure": 0,
+                "suppressed_count": 0
+              },
+              "cold_map_vfs_observer_v1": {
+                "private_build": true,
+                "read_only": true,
+                "installed": true,
+                "installed_mask": 7,
+                "failure_flags": 0,
+                "ctor_count": 0,
+                "ctor_descriptor": 0,
+                "ctor_data": 0,
+                "ctor_length": 0,
+                "ctor_flag": 0,
+                "ctor_word0": 0,
+                "ctor_word1": 0,
+                "variant_count": 0,
+                "variant_address": 0,
+                "variant_tag": 0,
+                "variant_payload": 0,
+                "variant_length": 0,
+                "variant_capacity": 0,
+                "variant_word0": 0,
+                "variant_word1": 0,
+                "poll_count": 0,
+                "poll_object": 0,
+                "poll_state": 0,
+                "poll_aux_state": 0,
+                "poll_variant_tag": 0,
+                "poll_payload": 0,
+                "poll_length": 0,
+                "poll_capacity": 0,
+                "poll_word0": 0,
+                "poll_word1": 0
+              },
+              "named_path_583_root_observer_v1": {
+                "private_build": true,
+                "read_only": true,
+                "guard": false,
+                "installed": true,
+                "installed_mask": 3,
+                "failure_flags": 0,
+                "resolver_count": 0,
+                "move_pre_count": 0,
+                "move_post_count": 0,
+                "correlation_miss_count": 0,
+                "sequence": 0,
+                "thread_id": 0,
+                "move_pre_seen": false,
+                "move_post_seen": false,
+                "move_result": 0,
+                "resolver": {
+                  "object": 0,
+                  "effective_data": 0,
+                  "length": 0,
+                  "capacity": 0,
+                  "word0": 0,
+                  "word1": 0,
+                  "null_result": false,
+                  "read_fault": false
+                },
+                "temporary_before": {
+                  "object": 0,
+                  "effective_data": 0,
+                  "length": 0,
+                  "capacity": 0,
+                  "word0": 0,
+                  "word1": 0,
+                  "null_result": false,
+                  "read_fault": false
+                },
+                "root_before": {
+                  "object": 0,
+                  "effective_data": 0,
+                  "length": 0,
+                  "capacity": 0,
+                  "word0": 0,
+                  "word1": 0,
+                  "null_result": false,
+                  "read_fault": false
+                },
+                "temporary_after": {
+                  "object": 0,
+                  "effective_data": 0,
+                  "length": 0,
+                  "capacity": 0,
+                  "word0": 0,
+                  "word1": 0,
+                  "null_result": false,
+                  "read_fault": false
+                },
+                "root_after": {
+                  "object": 0,
+                  "effective_data": 0,
+                  "length": 0,
+                  "capacity": 0,
+                  "word0": 0,
+                  "word1": 0,
+                  "null_result": false,
+                  "read_fault": false
+                }
+              },
+              "pdx_paths_583_producer_observer_v1": {
+                "private_build": true,
+                "read_only": true,
+                "guard": false,
+                "public_capability": false,
+                "installed": true,
+                "installed_mask": 31,
+                "failure_flags": 0,
+                "task_enter_count": 0,
+                "task_thread_id": 0,
+                "task_sequence": 0,
+                "paths_parser_enter_count": 0,
+                "checksummed_parser_enter_count": 0,
+                "other_parser_enter_count": 0,
+                "parser_source": 0,
+                "parser_thread_id": 0,
+                "parser_sequence": 0,
+                "insert_call_count": 0,
+                "key_583_insert_pre_count": 0,
+                "key_583_insert_post_count": 0,
+                "key_read_fault_count": 0,
+                "last_key": 0,
+                "last_hash": 0,
+                "insert_thread_id": 0,
+                "insert_sequence": 0,
+                "rhs_string": 0,
+                "result_pair": 0,
+                "native_result": 0,
+                "result_row": 0,
+                "result_inserted": false,
+                "result_pair_null": false,
+                "result_read_fault": false,
+                "paths_lookup": {
+                  "pre_count": 0,
+                  "return_count": 0,
+                  "raw_result": 0,
+                  "null_result": false,
+                  "thread_id": 0,
+                  "sequence": 0
+                },
+                "checksummed_lookup": {
+                  "pre_count": 0,
+                  "return_count": 0,
+                  "raw_result": 0,
+                  "null_result": false,
+                  "thread_id": 0,
+                  "sequence": 0
+                },
+                "task_table": {
+                  "map": 0,
+                  "rows": 0,
+                  "count": 0,
+                  "mask": 0,
+                  "max_probe": 0,
+                  "id_583_present": false,
+                  "id_583_row": 0,
+                  "read_fault": false
+                },
+                "table_before": {
+                  "map": 0,
+                  "rows": 0,
+                  "count": 0,
+                  "mask": 0,
+                  "max_probe": 0,
+                  "id_583_present": false,
+                  "id_583_row": 0,
+                  "read_fault": false
+                },
+                "table_after": {
+                  "map": 0,
+                  "rows": 0,
+                  "count": 0,
+                  "mask": 0,
+                  "max_probe": 0,
+                  "id_583_present": false,
+                  "id_583_row": 0,
+                  "read_fault": false
+                }
+              },
+              "vfs_mount_lifecycle_observer_v1": {
+                "private_build": true,
+                "read_only": true,
+                "guard": false,
+                "public_capability": false,
+                "installed": true,
+                "installed_mask": 15,
+                "failure_flags": 0,
+                "next_sequence": 0,
+                "core_init_count": 0,
+                "core_init_raw_al": 0,
+                "core_init_thread_id": 0,
+                "core_init_sequence": 0,
+                "publisher_entry_count": 0,
+                "publisher_return_count": 0,
+                "publisher_success_count": 0,
+                "publisher_failure_count": 0,
+                "publisher_correlation_miss_count": 0,
+                "publisher_slot_overwrite_count": 0,
+                "lookup_classification_fault_count": 0,
+                "core_init_manager": {
+                  "manager": 0,
+                  "head": 0,
+                  "ready_flag": 0,
+                  "read_fault": false
+                },
+                "latest_publisher": {
+                  "ordinal": 0,
+                  "entry_sequence": 0,
+                  "return_sequence": 0,
+                  "entry_thread_id": 0,
+                  "return_thread_id": 0,
+                  "raw_result": 0,
+                  "raw_rcx": 0,
+                  "backend": 0,
+                  "insert_mode": 0,
+                  "return_seen": false,
+                  "path": {
+                    "pointer": 0,
+                    "preview_length": 0,
+                    "terminated": false,
+                    "null_pointer": false,
+                    "read_fault": false,
+                    "preview": ""
+                  },
+                  "manager_before": {
+                    "manager": 0,
+                    "head": 0,
+                    "ready_flag": 0,
+                    "read_fault": false
+                  },
+                  "manager_after": {
+                    "manager": 0,
+                    "head": 0,
+                    "ready_flag": 0,
+                    "read_fault": false
+                  }
+                },
+                "publisher_slot_count": 0,
+                "publishers": [],
+                "paths_lookup": {
+                  "count": 0,
+                  "path_view": 0,
+                  "path_data": 0,
+                  "path_length": 0,
+                  "path_flag": 0,
+                  "thread_id": 0,
+                  "read_fault": false,
+                  "sequence": 0,
+                  "manager": {
+                    "manager": 0,
+                    "head": 0,
+                    "ready_flag": 0,
+                    "read_fault": false
+                  }
+                },
+                "checksummed_lookup": {
+                  "count": 0,
+                  "path_view": 0,
+                  "path_data": 0,
+                  "path_length": 0,
+                  "path_flag": 0,
+                  "thread_id": 0,
+                  "read_fault": false,
+                  "sequence": 0,
+                  "manager": {
+                    "manager": 0,
+                    "head": 0,
+                    "ready_flag": 0,
+                    "read_fault": false
+                  }
+                }
+              },
+              "physfs_mounted_data_observer_v1": {
+                "private_build": true,
+                "read_only": true,
+                "guard": false,
+                "public_capability": false,
+                "installed": true,
+                "failure_flags": 0,
+                "call_count": 0,
+                "success_count": 0,
+                "failure_count": 0,
+                "slot_overwrite_count": 0,
+                "row_count": 0,
+                "rows": []
+              }
+            },
+            "private_observers": {
+              "vfs_mount_lifecycle_observer_v1": {
+                "private_build": true,
+                "read_only": true,
+                "guard": false,
+                "public_capability": false,
+                "installed": true,
+                "installed_mask": 15,
+                "failure_flags": 0,
+                "next_sequence": 0,
+                "core_init_count": 0,
+                "core_init_raw_al": 0,
+                "core_init_thread_id": 0,
+                "core_init_sequence": 0,
+                "publisher_entry_count": 0,
+                "publisher_return_count": 0,
+                "publisher_success_count": 0,
+                "publisher_failure_count": 0,
+                "publisher_correlation_miss_count": 0,
+                "publisher_slot_overwrite_count": 0,
+                "lookup_classification_fault_count": 0,
+                "core_init_manager": {
+                  "manager": 0,
+                  "head": 0,
+                  "ready_flag": 0,
+                  "read_fault": false
+                },
+                "latest_publisher": {
+                  "ordinal": 0,
+                  "entry_sequence": 0,
+                  "return_sequence": 0,
+                  "entry_thread_id": 0,
+                  "return_thread_id": 0,
+                  "raw_result": 0,
+                  "raw_rcx": 0,
+                  "backend": 0,
+                  "insert_mode": 0,
+                  "return_seen": false,
+                  "path": {
+                    "pointer": 0,
+                    "preview_length": 0,
+                    "terminated": false,
+                    "null_pointer": false,
+                    "read_fault": false,
+                    "preview": ""
+                  },
+                  "manager_before": {
+                    "manager": 0,
+                    "head": 0,
+                    "ready_flag": 0,
+                    "read_fault": false
+                  },
+                  "manager_after": {
+                    "manager": 0,
+                    "head": 0,
+                    "ready_flag": 0,
+                    "read_fault": false
+                  }
+                },
+                "publisher_slot_count": 0,
+                "publishers": [],
+                "paths_lookup": {
+                  "count": 0,
+                  "path_view": 0,
+                  "path_data": 0,
+                  "path_length": 0,
+                  "path_flag": 0,
+                  "thread_id": 0,
+                  "read_fault": false,
+                  "sequence": 0,
+                  "manager": {
+                    "manager": 0,
+                    "head": 0,
+                    "ready_flag": 0,
+                    "read_fault": false
+                  }
+                },
+                "checksummed_lookup": {
+                  "count": 0,
+                  "path_view": 0,
+                  "path_data": 0,
+                  "path_length": 0,
+                  "path_flag": 0,
+                  "thread_id": 0,
+                  "read_fault": false,
+                  "sequence": 0,
+                  "manager": {
+                    "manager": 0,
+                    "head": 0,
+                    "ready_flag": 0,
+                    "read_fault": false
+                  }
+                }
+              },
+              "physfs_mounted_data_observer_v1": {
+                "private_build": true,
+                "read_only": true,
+                "guard": false,
+                "public_capability": false,
+                "installed": true,
+                "failure_flags": 0,
+                "call_count": 0,
+                "success_count": 0,
+                "failure_count": 0,
+                "slot_overwrite_count": 0,
+                "row_count": 0,
+                "rows": []
+              }
+            },
+            "last_pong": {
+              "type": "pong",
+              "protocol_version": 1,
+              "request_id": "python-1-4786cee3043a",
+              "pid": 26600
+            },
+            "last_error": null,
+            "semantic_state_available": false,
+            "rejected_state_snapshot_count": 0,
+            "last_rejected_state_snapshot": null,
+            "snapshot_publish_diagnostic_count": 0,
+            "last_snapshot_publish_diagnostic": null,
+            "transport_fatal_error": null
+          },
+          "composite_action_steps": [],
+          "battle_speed_readiness": {
+            "decision_sentinel_live_ready": true,
+            "committed_route_sentinel_live_ready": true,
+            "stationary_objective_hold_sentinel_live_ready": true,
+            "stationary_objective_hold_sentinel_canary_ready": true,
+            "committed_route_sentinel_speed_4_live_ready": false,
+            "committed_route_sentinel_speed_5_live_ready": false,
+            "stationary_objective_hold_sentinel_speed_4_live_ready": false,
+            "stationary_objective_hold_sentinel_speed_5_live_ready": false,
+            "terminal_sentinel_live_ready": true,
+            "overwhelming_matrix_live_ready": false,
+            "stationary_objective_hold_legacy_canary_flag_requested": false,
+            "noncombat_sentinel_timeline_speed": 3,
+            "route_contact_effective_timeline_speed": 3,
+            "noncombat_sentinel_high_speed_ab": false
+          },
+          "checkpoint_materialization": {
+            "configured": true,
+            "save_dir": "D:\\ck3_coa_textured_emblem_native_r33\\profile\\save games",
+            "filename": "xar_checkpoint.ck3"
+          },
+          "native_session_control": {
+            "configured": true,
+            "queue_dir": "D:\\ck3_coa_textured_emblem_native_r33\\native-session\\bridge",
+            "restore_checkpoint": false,
+            "driver_state_path": "D:\\ck3_coa_textured_emblem_native_r33\\native-session\\driver-state.json",
+            "driver_state_restored": false,
+            "driver_state_error": null,
+            "driver_state_restore_kind": null,
+            "episode_binding_state": "unbound",
+            "cold_candidate_rejection": null,
+            "episode_transition": null,
+            "episode_transition_error": null
+          },
+          "episode_seed": null,
+          "episode_character_id": null,
+          "episode_run_id": null,
+          "episode_identity_pending": false,
+          "one_life_terminal": false,
+          "one_life_terminal_reason": null,
+          "one_life_settlement_supported": true,
+          "army_routes_supported": true,
+          "move_route_preview_supported": true,
+          "route_contact_horizon_supported": true,
+          "actual_contact_scope_query_supported": true,
+          "battle_control_snapshot_v1_query_supported": true,
+          "battle_transition_v1_query_supported": true,
+          "battle_terminal_transition_v1_query_supported": true,
+          "battle_reinforcement_assignment_v1_query_supported": true,
+          "campaign_root_context_v1_query_supported": true,
+          "council_composition_candidates_v1_query_supported": false,
+          "steward_develop_county_candidates_v1_query_supported": true,
+          "player_faction_alerts_v1_query_supported": true,
+          "zhongguo_case_snapshot_v1_query_supported": true,
+          "zhongguo_b1_cycle_snapshot_v1_query_supported": true,
+          "zhongguo_ai_owned_case_snapshot_v1_query_supported": true,
+          "zhongguo_result_case_snapshot_v1_query_supported": true,
+          "zhongguo_b2_pip_snapshot_v1_query_supported": true,
+          "zhongguo_promotion_compensation_v1_query_supported": false,
+          "zhongguo_compensation_af5_snapshot_v1_query_supported": false,
+          "zhongguo_workforce_owner_snapshot_v1_query_supported": false,
+          "zhongguo_projects_metrics_v1_query_supported": false,
+          "zhongguo_career_hc_workforce_v1_query_supported": false,
+          "zhongguo_workforce_collective_snapshot_v1_query_supported": true,
+          "zhongguo_workforce_normal_exit_snapshot_v1_query_supported": true,
+          "zhongguo_incident_snapshot_v1_query_supported": true,
+          "zhongguo_manager_governance_snapshot_v1_query_supported": true,
+          "zhongguo_manager_subordinate_selector_v1_query_supported": true,
+          "zhongguo_scoreboard_state_v1_query_supported": true,
+          "zhongguo_scoreboard_action_v1_transport_wired": true,
+          "zhongguo_scoreboard_action_v1_supported": false,
+          "loaded_feature_manifest_v1_query_supported": true,
+          "pending_character_interaction_context_v1_query_supported": true,
+          "current_event_window_context_v1_query_supported": true,
+          "active_combat_retreat_v1_composition_supported": true,
+          "active_combat_retreat_v1_token_ready": false,
+          "army_strength_query_supported": true,
+          "combat_simulation_inputs_query_supported": true,
+          "combat_simulation_inputs_v3_query_supported": true,
+          "war_entry_assessments_query_supported": true,
+          "war_termination_query_supported": true,
+          "war_termination_terms_query_supported": true,
+          "war_termination_exit_terms_query_supported": false,
+          "surrender_war_supported": true,
+          "offer_white_peace_supported": true,
+          "war_objective_occupation_supported": true,
+          "war_objective_fort_level_supported": true,
+          "war_objective_garrison_supported": true,
+          "war_objective_siege_progress_supported": true,
+          "war_objective_assault_supported": true,
+          "one_life_settlement_status": null,
+          "continue_as_heir_after_death": false,
+          "transport_ready": true
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"format_version\": 1,\n  \"backend_id\": \"native-headless\",\n  \"mode\": \"native-headless\",\n  \"source\": \"injected-dll-named-pipe\",\n  \"latency\": \"realtime\",\n  \"headless\": true,\n  \"minimized_operation\": true,\n  \"visual_fallback\": false,\n  \"fallback_enabled\": false,\n  \"snapshot\": false,\n  \"wait_for_change\": false,\n  \"action_steps\": [\n    \"activate-frontend-coat-of-arms-custom-mode-v1\",\n    \"activate-frontend-coat-of-arms-designer-v1\",\n    \"activate-frontend-new-game-v1\",\n    \"activate-frontend-pick-any-character-v1\",\n    \"activate-frontend-ruler-designer-v1\",\n    \"activate-frontend-select-random-playable-v1\",\n    \"commit-frontend-dynasty-coat-of-arms-v1\",\n    \"export-coat-of-arms-source-v1\",\n    \"inspect-frontend-coat-of-arms-pattern-grid-v1\",\n    \"inspect-frontend-coat-of-arms-tree-v1\",\n    \"inspect-frontend-gui-tree-v1\",\n    \"pause-map\",\n    \"query-arrange-marriage-choices\",\n    \"query-declarable-wars\",\n    \"query-frontend-gui-route-v1\",\n    \"query-zhongguo-b1-cycle-snapshot-v1\",\n    \"query-zhongguo-manager-governance-snapshot-v1\",\n    \"query-zhongguo-manager-subordinate-selector-v1\",\n    \"research-cancel-tactical-daily-sentinel-v1-generation-N\",\n    \"research-query-tactical-daily-sentinel-v1\",\n    \"resume-map\",\n    \"save-checkpoint\",\n    \"set-speed-1\",\n    \"set-speed-2\",\n    \"set-speed-3\",\n    \"set-speed-4\",\n    \"set-speed-5\"\n  ],\n  \"bridge_capabilities\": [\n    \"bridge.identity\",\n    \"bridge.heartbeat\",\n    \"bridge.ping\",\n    \"game.state.snapshot\",\n    \"game.state.xar-one-life-settlement\",\n    \"game.state.map-ready\",\n    \"game.state.played-character\",\n    \"game.state.active-event\",\n    \"game.state.pending-character-interaction\",\n    \"game.state.active-wars\",\n    \"game.state.war-primary-opponent\",\n    \"game.state.war-objectives\",\n    \"game.state.war-objective-occupation\",\n    \"game.state.war-objective-fort-level\",\n    \"game.state.war-objective-garrison\",\n    \"game.state.war-objective-siege-progress\",\n    \"game.state.war-objective-assault\",\n    \"game.state.player-armies\",\n    \"game.state.army-routes\",\n    \"game.command.pause-map\",\n    \"game.command.resume-map\",\n    \"game.command.set-speed-1\",\n    \"game.command.set-speed-2\",\n    \"game.command.set-speed-3\",\n    \"game.command.set-speed-4\",\n    \"game.command.set-speed-5\",\n    \"game.command.research-arm-tactical-daily-sentinel-v1-N\",\n    \"game.command.research-cancel-tactical-daily-sentinel-v1-generation-N\",\n    \"game.command.research-query-tactical-daily-sentinel-v1\",\n    \"game.command.select-event-option-N\",\n    \"game.command.save-checkpoint\",\n    \"game.command.accept-pending-character-interaction\",\n    \"game.command.reject-pending-character-interaction\",\n    \"game.command.acknowledge-pending-character-interaction\",\n    \"game.command.raise-troops-default\",\n    \"game.command.preview-move-army-N-to-N\",\n    \"game.command.query-route-contact-horizon-v1-N\",\n    \"game.command.query-actual-contact-scope-v1-N\",\n    \"game.command.query-battle-control-snapshot-v1-N\",\n    \"game.command.query-battle-transition-v1-N\",\n    \"game.command.query-battle-terminal-transition-v1\",\n    \"game.command.query-battle-reinforcement-assignment-v1-N\",\n    \"game.command.move-army-N-to-N\",\n    \"game.command.disband-army-N\",\n    \"game.command.split-army-half-N\",\n    \"game.command.merge-armies-N-with-N\",\n    \"game.command.start-assault-N\",\n    \"game.command.stop-assault-N\",\n    \"game.command.query-declarable-wars\",\n    \"game.command.query-war-entry-assessments-v1-N\",\n    \"game.command.declare-war-N\",\n    \"game.command.enforce-demands-N\",\n    \"game.command.query-army-strengths-v1\",\n    \"game.command.query-campaign-root-context-v1\",\n    \"game.command.query-player-faction-alerts-v1\",\n    \"game.command.query-steward-develop-county-candidates-v1\",\n    \"game.command.query-zhongguo-case-snapshot-v1\",\n    \"game.command.query-zhongguo-b1-cycle-snapshot-v1\",\n    \"game.command.query-zhongguo-result-case-snapshot-v1\",\n    \"game.command.query-zhongguo-b2-pip-snapshot-v1\",\n    \"game.command.query-zhongguo-incident-snapshot-v1\",\n    \"game.command.query-zhongguo-manager-governance-snapshot-v1\",\n    \"game.command.query-zhongguo-manager-subordinate-selector-v1\",\n    \"game.command.query-zhongguo-scoreboard-state-v1\",\n    \"game.contract.zhongguo-scoreboard-action-v1-fail-closed\",\n    \"game.contract.zhongguo-promotion-source-progress-v1-fail-closed\",\n    \"game.contract.zhongguo-review-now-action-v1-fail-closed\",\n    \"game.command.query-zhongguo-workforce-collective-snapshot-v1\",\n    \"game.command.query-zhongguo-ai-owned-case-snapshot-v1\",\n    \"game.command.query-zhongguo-workforce-normal-exit-snapshot-v1\",\n    \"game.command.query-loaded-feature-manifest-v1\",\n    \"game.command.query-pending-character-interaction-context-v1\",\n    \"game.command.query-current-event-window-context-v1\",\n    \"game.command.probe-coat-of-arms-source-v1\",\n    \"game.command.export-coat-of-arms-source-v1\",\n    \"game.command.query-frontend-gui-route-v1\",\n    \"game.command.inspect-frontend-gui-tree-v1\",\n    \"game.command.inspect-frontend-coat-of-arms-tree-v1\",\n    \"game.command.inspect-frontend-coat-of-arms-pattern-grid-v1\",\n    \"game.command.activate-frontend-new-game-v1\",\n    \"game.command.activate-frontend-pick-any-character-v1\",\n    \"game.command.activate-frontend-select-random-playable-v1\",\n    \"game.command.activate-frontend-ruler-designer-v1\",\n    \"game.command.activate-frontend-coat-of-arms-designer-v1\",\n    \"game.command.commit-frontend-dynasty-coat-of-arms-v1\",\n    \"game.command.activate-frontend-coat-of-arms-custom-mode-v1\",\n    \"game.command.center-map-on-landed-title-v1\",\n    \"game.command.set-played-character-v1-N\",\n    \"game.command.query-combat-simulation-inputs-v2-N\",\n    \"game.command.query-combat-simulation-inputs-v3-N\",\n    \"game.command.query-war-termination-options-N\",\n    \"game.command.query-war-termination-terms-v1-N\",\n    \"game.command.surrender-war-N\",\n    \"game.command.offer-white-peace-N\",\n    \"game.command.query-arrange-marriage-choices\",\n    \"game.command.arrange-marriage-N\",\n    \"game.adapter.exact-build\",\n    \"game.adapter.minimized-headless\"\n  ],\n  \"diagnostics\": {\n    \"protocol_version\": 1,\n    \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_ck3_coa_textured_emblem_r33\",\n    \"connected\": true,\n    \"connection_generation\": 1,\n    \"bridge_pid\": 26600,\n    \"bridge_version\": \"0.1.0\",\n    \"hello\": {\n      \"type\": \"hello\",\n      \"protocol_version\": 1,\n      \"bridge_version\": \"0.1.0\",\n      \"pid\": 26600,\n      \"session_generation\": 0,\n      \"connection_generation\": 1,\n      \"architecture\": \"x86_64-windows-msvc\",\n      \"expected_ck3_version\": \"1.19.0.6\",\n      \"expected_ck3_sha256\": \"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\",\n      \"game_adapter_id\": \"ck3-1.19.0.6-msvc-x64\",\n      \"game_adapter_status\": \"ready\",\n      \"ck3_build_match\": true,\n      \"capabilities\": [\n        \"bridge.identity\",\n        \"bridge.heartbeat\",\n        \"bridge.ping\",\n        \"game.state.snapshot\",\n        \"game.state.xar-one-life-settlement\",\n        \"game.state.map-ready\",\n        \"game.state.played-character\",\n        \"game.state.active-event\",\n        \"game.state.pending-character-interaction\",\n        \"game.state.active-wars\",\n        \"game.state.war-primary-opponent\",\n        \"game.state.war-objectives\",\n        \"game.state.war-objective-occupation\",\n        \"game.state.war-objective-fort-level\",\n        \"game.state.war-objective-garrison\",\n        \"game.state.war-objective-siege-progress\",\n        \"game.state.war-objective-assault\",\n        \"game.state.player-armies\",\n        \"game.state.army-routes\",\n        \"game.command.pause-map\",\n        \"game.command.resume-map\",\n        \"game.command.set-speed-1\",\n        \"game.command.set-speed-2\",\n        \"game.command.set-speed-3\",\n        \"game.command.set-speed-4\",\n        \"game.command.set-speed-5\",\n        \"game.command.research-arm-tactical-daily-sentinel-v1-N\",\n        \"game.command.research-cancel-tactical-daily-sentinel-v1-generation-N\",\n        \"game.command.research-query-tactical-daily-sentinel-v1\",\n        \"game.command.select-event-option-N\",\n        \"game.command.save-checkpoint\",\n        \"game.command.accept-pending-character-interaction\",\n        \"game.command.reject-pending-character-interaction\",\n        \"game.command.acknowledge-pending-character-interaction\",\n        \"game.command.raise-troops-default\",\n        \"game.command.preview-move-army-N-to-N\",\n        \"game.command.query-route-contact-horizon-v1-N\",\n        \"game.command.query-actual-contact-scope-v1-N\",\n        \"game.command.query-battle-control-snapshot-v1-N\",\n        \"game.command.query-battle-transition-v1-N\",\n        \"game.command.query-battle-terminal-transition-v1\",\n        \"game.command.query-battle-reinforcement-assignment-v1-N\",\n        \"game.command.move-army-N-to-N\",\n        \"game.command.disband-army-N\",\n        \"game.command.split-army-half-N\",\n        \"game.command.merge-armies-N-with-N\",\n        \"game.command.start-assault-N\",\n        \"game.command.stop-assault-N\",\n        \"game.command.query-declarable-wars\",\n        \"game.command.query-war-entry-assessments-v1-N\",\n        \"game.command.declare-war-N\",\n        \"game.command.enforce-demands-N\",\n        \"game.command.query-army-strengths-v1\",\n        \"game.command.query-campaign-root-context-v1\",\n        \"game.command.query-player-faction-alerts-v1\",\n        \"game.command.query-steward-develop-county-candidates-v1\",\n        \"game.command.query-zhongguo-case-snapshot-v1\",\n        \"game.command.query-zhongguo-b1-cycle-snapshot-v1\",\n        \"game.command.query-zhongguo-result-case-snapshot-v1\",\n        \"game.command.query-zhongguo-b2-pip-snapshot-v1\",\n        \"game.command.query-zhongguo-incident-snapshot-v1\",\n        \"game.command.query-zhongguo-manager-governance-snapshot-v1\",\n        \"game.command.query-zhongguo-manager-subordinate-selector-v1\",\n        \"game.command.query-zhongguo-scoreboard-state-v1\",\n        \"game.contract.zhongguo-scoreboard-action-v1-fail-closed\",\n        \"game.contract.zhongguo-promotion-source-progress-v1-fail-closed\",\n        \"game.contract.zhongguo-review-now-action-v1-fail-closed\",\n        \"game.command.query-zhongguo-workforce-collective-snapshot-v1\",\n        \"game.command.query-zhongguo-ai-owned-case-snapshot-v1\",\n        \"game.command.query-zhongguo-workforce-normal-exit-snapshot-v1\",\n        \"game.command.query-loaded-feature-manifest-v1\",\n        \"game.command.query-pending-character-interaction-context-v1\",\n        \"game.command.query-current-event-window-context-v1\",\n        \"game.command.probe-coat-of-arms-source-v1\",\n        \"game.command.export-coat-of-arms-source-v1\",\n        \"game.command.query-frontend-gui-route-v1\",\n        \"game.command.inspect-frontend-gui-tree-v1\",\n        \"game.command.inspect-frontend-coat-of-arms-tree-v1\",\n        \"game.command.inspect-frontend-coat-of-arms-pattern-grid-v1\",\n        \"game.command.activate-frontend-new-game-v1\",\n        \"game.command.activate-frontend-pick-any-character-v1\",\n        \"game.command.activate-frontend-select-random-playable-v1\",\n        \"game.command.activate-frontend-ruler-designer-v1\",\n        \"game.command.activate-frontend-coat-of-arms-designer-v1\",\n        \"game.command.commit-frontend-dynasty-coat-of-arms-v1\",\n        \"game.command.activate-frontend-coat-of-arms-custom-mode-v1\",\n        \"game.command.center-map-on-landed-title-v1\",\n        \"game.command.set-played-character-v1-N\",\n        \"game.command.query-combat-simulation-inputs-v2-N\",\n        \"game.command.query-combat-simulation-inputs-v3-N\",\n        \"game.command.query-war-termination-options-N\",\n        \"game.command.query-war-termination-terms-v1-N\",\n        \"game.command.surrender-war-N\",\n        \"game.command.offer-white-peace-N\",\n        \"game.command.query-arrange-marriage-choices\",\n        \"game.command.arrange-marriage-N\",\n        \"game.adapter.exact-build\",\n        \"game.adapter.minimized-headless\"\n      ]\n    },\n    \"last_heartbeat\": {\n      \"type\": \"heartbeat\",\n      \"protocol_version\": 1,\n      \"sequence\": 2,\n      \"pid\": 26600,\n      \"monotonic_ms\": 671544187,\n      \"startup_failure_containment_enabled\": true,\n      \"startup_particle2_stage_recorder_enabled\": false,\n      \"startup_widget_null_flag_call_guard_enabled\": true,\n      \"startup_rbx_null_call_guard_enabled\": true,\n      \"cold_map_vfs_observer_enabled\": true,\n      \"named_path_583_root_observer_enabled\": true,\n      \"pdx_paths_583_producer_observer_enabled\": true,\n      \"vfs_mount_lifecycle_observer_enabled\": true,\n      \"physfs_mounted_data_observer_enabled\": true,\n      \"g2_truce_preview_entry_observer_enabled\": true,\n      \"zhongguo_scoreboard_production_candidate_enabled\": false,\n      \"zhongguo_scoreboard_production_capability_advertised\": false,\n      \"main_thread_query_mailbox_v1\": {\n        \"candidate_id\": \"application_main_thread_war_entry_v1\",\n        \"query_scope\": \"frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport\",\n        \"installed\": true,\n        \"sdl_poll_event_hook_installed\": true,\n        \"observed_sdl_poll_event_target\": 140697881556784,\n        \"stop\": false,\n        \"failure\": 0,\n        \"pump_epochs\": 0,\n        \"owner_verified_pump_epochs\": 0,\n        \"consecutive_verified\": 0,\n        \"published_sequence\": 0,\n        \"completed_sequence\": 0,\n        \"executor_started_requests\": 0,\n        \"executor_started_sequence\": 0,\n        \"executor_started_pump_epoch\": 0,\n        \"owner_tid\": 0,\n        \"current_tid\": 0,\n        \"rng_owner_tid\": 0,\n        \"tls_global\": 0,\n        \"tls_context\": 0,\n        \"tls_marker\": 0,\n        \"jomini_state\": 0,\n        \"game_state\": 0,\n        \"date_raw\": 0,\n        \"paused\": false,\n        \"stamp_read_success\": false,\n        \"executed_requests\": 0,\n        \"executor_submission_enabled\": true,\n        \"application_main_observed\": false,\n        \"paused_main_thread_observed\": false,\n        \"ready\": false\n      },\n      \"coat_of_arms_designer_probe_v1\": {\n        \"installed\": true,\n        \"failure\": 0,\n        \"observed_calls\": 0,\n        \"executed_requests\": 0\n      },\n      \"startup_particle2_null_guard_v1\": {\n        \"installed\": true,\n        \"failure\": 0,\n        \"suppressed_count\": 0,\n        \"suppressed_index_mask\": 0,\n        \"last_suppressed_index\": 4294967295\n      },\n      \"startup_particle2_consumer_null_guard_v1\": {\n        \"installed\": true,\n        \"failure\": 0,\n        \"suppressed_count\": 0,\n        \"missing_slot_mask\": 0\n      },\n      \"startup_particle2_stage_recorder_v1\": {\n        \"installed\": false,\n        \"patch_mask\": 0,\n        \"failure\": 0,\n        \"source_lookup_null_count\": 0,\n        \"variant_lookup_null_count\": 0,\n        \"backend_creation_null_count\": 0\n      },\n      \"startup_dx11_render_context_draw_guard_v1\": {\n        \"installed\": true,\n        \"failure\": 0,\n        \"suppressed_count\": 0\n      },\n      \"startup_localize_current_root_guard_v1\": {\n        \"installed\": true,\n        \"failure\": 0,\n        \"native_miss_count\": 0\n      },\n      \"startup_widget_null_flag_call_guard_v1\": {\n        \"installed\": true,\n        \"failure\": 0,\n        \"suppressed_count\": 0\n      },\n      \"startup_rbx_null_call_guard_v1\": {\n        \"installed\": true,\n        \"failure\": 0,\n        \"suppressed_count\": 0\n      },\n      \"cold_map_vfs_observer_v1\": {\n        \"private_build\": true,\n        \"read_only\": true,\n        \"installed\": true,\n        \"installed_mask\": 7,\n        \"failure_flags\": 0,\n        \"ctor_count\": 0,\n        \"ctor_descriptor\": 0,\n        \"ctor_data\": 0,\n        \"ctor_length\": 0,\n        \"ctor_flag\": 0,\n        \"ctor_word0\": 0,\n        \"ctor_word1\": 0,\n        \"variant_count\": 0,\n        \"variant_address\": 0,\n        \"variant_tag\": 0,\n        \"variant_payload\": 0,\n        \"variant_length\": 0,\n        \"variant_capacity\": 0,\n        \"variant_word0\": 0,\n        \"variant_word1\": 0,\n        \"poll_count\": 0,\n        \"poll_object\": 0,\n        \"poll_state\": 0,\n        \"poll_aux_state\": 0,\n        \"poll_variant_tag\": 0,\n        \"poll_payload\": 0,\n        \"poll_length\": 0,\n        \"poll_capacity\": 0,\n        \"poll_word0\": 0,\n        \"poll_word1\": 0\n      },\n      \"named_path_583_root_observer_v1\": {\n        \"private_build\": true,\n        \"read_only\": true,\n        \"guard\": false,\n        \"installed\": true,\n        \"installed_mask\": 3,\n        \"failure_flags\": 0,\n        \"resolver_count\": 0,\n        \"move_pre_count\": 0,\n        \"move_post_count\": 0,\n        \"correlation_miss_count\": 0,\n        \"sequence\": 0,\n        \"thread_id\": 0,\n        \"move_pre_seen\": false,\n        \"move_post_seen\": false,\n        \"move_result\": 0,\n        \"resolver\": {\n          \"object\": 0,\n          \"effective_data\": 0,\n          \"length\": 0,\n          \"capacity\": 0,\n          \"word0\": 0,\n          \"word1\": 0,\n          \"null_result\": false,\n          \"read_fault\": false\n        },\n        \"temporary_before\": {\n          \"object\": 0,\n          \"effective_data\": 0,\n          \"length\": 0,\n          \"capacity\": 0,\n          \"word0\": 0,\n          \"word1\": 0,\n          \"null_result\": false,\n          \"read_fault\": false\n        },\n        \"root_before\": {\n          \"object\": 0,\n          \"effective_data\": 0,\n          \"length\": 0,\n          \"capacity\": 0,\n          \"word0\": 0,\n          \"word1\": 0,\n          \"null_result\": false,\n          \"read_fault\": false\n        },\n        \"temporary_after\": {\n          \"object\": 0,\n          \"effective_data\": 0,\n          \"length\": 0,\n          \"capacity\": 0,\n          \"word0\": 0,\n          \"word1\": 0,\n          \"null_result\": false,\n          \"read_fault\": false\n        },\n        \"root_after\": {\n          \"object\": 0,\n          \"effective_data\": 0,\n          \"length\": 0,\n          \"capacity\": 0,\n          \"word0\": 0,\n          \"word1\": 0,\n          \"null_result\": false,\n          \"read_fault\": false\n        }\n      },\n      \"pdx_paths_583_producer_observer_v1\": {\n        \"private_build\": true,\n        \"read_only\": true,\n        \"guard\": false,\n        \"public_capability\": false,\n        \"installed\": true,\n        \"installed_mask\": 31,\n        \"failure_flags\": 0,\n        \"task_enter_count\": 0,\n        \"task_thread_id\": 0,\n        \"task_sequence\": 0,\n        \"paths_parser_enter_count\": 0,\n        \"checksummed_parser_enter_count\": 0,\n        \"other_parser_enter_count\": 0,\n        \"parser_source\": 0,\n        \"parser_thread_id\": 0,\n        \"parser_sequence\": 0,\n        \"insert_call_count\": 0,\n        \"key_583_insert_pre_count\": 0,\n        \"key_583_insert_post_count\": 0,\n        \"key_read_fault_count\": 0,\n        \"last_key\": 0,\n        \"last_hash\": 0,\n        \"insert_thread_id\": 0,\n        \"insert_sequence\": 0,\n        \"rhs_string\": 0,\n        \"result_pair\": 0,\n        \"native_result\": 0,\n        \"result_row\": 0,\n        \"result_inserted\": false,\n        \"result_pair_null\": false,\n        \"result_read_fault\": false,\n        \"paths_lookup\": {\n          \"pre_count\": 0,\n          \"return_count\": 0,\n          \"raw_result\": 0,\n          \"null_result\": false,\n          \"thread_id\": 0,\n          \"sequence\": 0\n        },\n        \"checksummed_lookup\": {\n          \"pre_count\": 0,\n          \"return_count\": 0,\n          \"raw_result\": 0,\n          \"null_result\": false,\n          \"thread_id\": 0,\n          \"sequence\": 0\n        },\n        \"task_table\": {\n          \"map\": 0,\n          \"rows\": 0,\n          \"count\": 0,\n          \"mask\": 0,\n          \"max_probe\": 0,\n          \"id_583_present\": false,\n          \"id_583_row\": 0,\n          \"read_fault\": false\n        },\n        \"table_before\": {\n          \"map\": 0,\n          \"rows\": 0,\n          \"count\": 0,\n          \"mask\": 0,\n          \"max_probe\": 0,\n          \"id_583_present\": false,\n          \"id_583_row\": 0,\n          \"read_fault\": false\n        },\n        \"table_after\": {\n          \"map\": 0,\n          \"rows\": 0,\n          \"count\": 0,\n          \"mask\": 0,\n          \"max_probe\": 0,\n          \"id_583_present\": false,\n          \"id_583_row\": 0,\n          \"read_fault\": false\n        }\n      },\n      \"vfs_mount_lifecycle_observer_v1\": {\n        \"private_build\": true,\n        \"read_only\": true,\n        \"guard\": false,\n        \"public_capability\": false,\n        \"installed\": true,\n        \"installed_mask\": 15,\n        \"failure_flags\": 0,\n        \"next_sequence\": 0,\n        \"core_init_count\": 0,\n        \"core_init_raw_al\": 0,\n        \"core_init_thread_id\": 0,\n        \"core_init_sequence\": 0,\n        \"publisher_entry_count\": 0,\n        \"publisher_return_count\": 0,\n        \"publisher_success_count\": 0,\n        \"publisher_failure_count\": 0,\n        \"publisher_correlation_miss_count\": 0,\n        \"publisher_slot_overwrite_count\": 0,\n        \"lookup_classification_fault_count\": 0,\n        \"core_init_manager\": {\n          \"manager\": 0,\n          \"head\": 0,\n          \"ready_flag\": 0,\n          \"read_fault\": false\n        },\n        \"latest_publisher\": {\n          \"ordinal\": 0,\n          \"entry_sequence\": 0,\n          \"return_sequence\": 0,\n          \"entry_thread_id\": 0,\n          \"return_thread_id\": 0,\n          \"raw_result\": 0,\n          \"raw_rcx\": 0,\n          \"backend\": 0,\n          \"insert_mode\": 0,\n          \"return_seen\": false,\n          \"path\": {\n            \"pointer\": 0,\n            \"preview_length\": 0,\n            \"terminated\": false,\n            \"null_pointer\": false,\n            \"read_fault\": false,\n            \"preview\": \"\"\n          },\n          \"manager_before\": {\n            \"manager\": 0,\n            \"head\": 0,\n            \"ready_flag\": 0,\n            \"read_fault\": false\n          },\n          \"manager_after\": {\n            \"manager\": 0,\n            \"head\": 0,\n            \"ready_flag\": 0,\n            \"read_fault\": false\n          }\n        },\n        \"publisher_slot_count\": 0,\n        \"publishers\": [],\n        \"paths_lookup\": {\n          \"count\": 0,\n          \"path_view\": 0,\n          \"path_data\": 0,\n          \"path_length\": 0,\n          \"path_flag\": 0,\n          \"thread_id\": 0,\n          \"read_fault\": false,\n          \"sequence\": 0,\n          \"manager\": {\n            \"manager\": 0,\n            \"head\": 0,\n            \"ready_flag\": 0,\n            \"read_fault\": false\n          }\n        },\n        \"checksummed_lookup\": {\n          \"count\": 0,\n          \"path_view\": 0,\n          \"path_data\": 0,\n          \"path_length\": 0,\n          \"path_flag\": 0,\n          \"thread_id\": 0,\n          \"read_fault\": false,\n          \"sequence\": 0,\n          \"manager\": {\n            \"manager\": 0,\n            \"head\": 0,\n            \"ready_flag\": 0,\n            \"read_fault\": false\n          }\n        }\n      },\n      \"physfs_mounted_data_observer_v1\": {\n        \"private_build\": true,\n        \"read_only\": true,\n        \"guard\": false,\n        \"public_capability\": false,\n        \"installed\": true,\n        \"failure_flags\": 0,\n        \"call_count\": 0,\n        \"success_count\": 0,\n        \"failure_count\": 0,\n        \"slot_overwrite_count\": 0,\n        \"row_count\": 0,\n        \"rows\": []\n      }\n    },\n    \"private_observers\": {\n      \"vfs_mount_lifecycle_observer_v1\": {\n        \"private_build\": true,\n        \"read_only\": true,\n        \"guard\": false,\n        \"public_capability\": false,\n        \"installed\": true,\n        \"installed_mask\": 15,\n        \"failure_flags\": 0,\n        \"next_sequence\": 0,\n        \"core_init_count\": 0,\n        \"core_init_raw_al\": 0,\n        \"core_init_thread_id\": 0,\n        \"core_init_sequence\": 0,\n        \"publisher_entry_count\": 0,\n        \"publisher_return_count\": 0,\n        \"publisher_success_count\": 0,\n        \"publisher_failure_count\": 0,\n        \"publisher_correlation_miss_count\": 0,\n        \"publisher_slot_overwrite_count\": 0,\n        \"lookup_classification_fault_count\": 0,\n        \"core_init_manager\": {\n          \"manager\": 0,\n          \"head\": 0,\n          \"ready_flag\": 0,\n          \"read_fault\": false\n        },\n        \"latest_publisher\": {\n          \"ordinal\": 0,\n          \"entry_sequence\": 0,\n          \"return_sequence\": 0,\n          \"entry_thread_id\": 0,\n          \"return_thread_id\": 0,\n          \"raw_result\": 0,\n          \"raw_rcx\": 0,\n          \"backend\": 0,\n          \"insert_mode\": 0,\n          \"return_seen\": false,\n          \"path\": {\n            \"pointer\": 0,\n            \"preview_length\": 0,\n            \"terminated\": false,\n            \"null_pointer\": false,\n            \"read_fault\": false,\n            \"preview\": \"\"\n          },\n          \"manager_before\": {\n            \"manager\": 0,\n            \"head\": 0,\n            \"ready_flag\": 0,\n            \"read_fault\": false\n          },\n          \"manager_after\": {\n            \"manager\": 0,\n            \"head\": 0,\n            \"ready_flag\": 0,\n            \"read_fault\": false\n          }\n        },\n        \"publisher_slot_count\": 0,\n        \"publishers\": [],\n        \"paths_lookup\": {\n          \"count\": 0,\n          \"path_view\": 0,\n          \"path_data\": 0,\n          \"path_length\": 0,\n          \"path_flag\": 0,\n          \"thread_id\": 0,\n          \"read_fault\": false,\n          \"sequence\": 0,\n          \"manager\": {\n            \"manager\": 0,\n            \"head\": 0,\n            \"ready_flag\": 0,\n            \"read_fault\": false\n          }\n        },\n        \"checksummed_lookup\": {\n          \"count\": 0,\n          \"path_view\": 0,\n          \"path_data\": 0,\n          \"path_length\": 0,\n          \"path_flag\": 0,\n          \"thread_id\": 0,\n          \"read_fault\": false,\n          \"sequence\": 0,\n          \"manager\": {\n            \"manager\": 0,\n            \"head\": 0,\n            \"ready_flag\": 0,\n            \"read_fault\": false\n          }\n        }\n      },\n      \"physfs_mounted_data_observer_v1\": {\n        \"private_build\": true,\n        \"read_only\": true,\n        \"guard\": false,\n        \"public_capability\": false,\n        \"installed\": true,\n        \"failure_flags\": 0,\n        \"call_count\": 0,\n        \"success_count\": 0,\n        \"failure_count\": 0,\n        \"slot_overwrite_count\": 0,\n        \"row_count\": 0,\n        \"rows\": []\n      }\n    },\n    \"last_pong\": {\n      \"type\": \"pong\",\n      \"protocol_version\": 1,\n      \"request_id\": \"python-1-4786cee3043a\",\n      \"pid\": 26600\n    },\n    \"last_error\": null,\n    \"semantic_state_available\": false,\n    \"rejected_state_snapshot_count\": 0,\n    \"last_rejected_state_snapshot\": null,\n    \"snapshot_publish_diagnostic_count\": 0,\n    \"last_snapshot_publish_diagnostic\": null,\n    \"transport_fatal_error\": null\n  },\n  \"composite_action_steps\": [],\n  \"battle_speed_readiness\": {\n    \"decision_sentinel_live_ready\": true,\n    \"committed_route_sentinel_live_ready\": true,\n    \"stationary_objective_hold_sentinel_live_ready\": true,\n    \"stationary_objective_hold_sentinel_canary_ready\": true,\n    \"committed_route_sentinel_speed_4_live_ready\": false,\n    \"committed_route_sentinel_speed_5_live_ready\": false,\n    \"stationary_objective_hold_sentinel_speed_4_live_ready\": false,\n    \"stationary_objective_hold_sentinel_speed_5_live_ready\": false,\n    \"terminal_sentinel_live_ready\": true,\n    \"overwhelming_matrix_live_ready\": false,\n    \"stationary_objective_hold_legacy_canary_flag_requested\": false,\n    \"noncombat_sentinel_timeline_speed\": 3,\n    \"route_contact_effective_timeline_speed\": 3,\n    \"noncombat_sentinel_high_speed_ab\": false\n  },\n  \"checkpoint_materialization\": {\n    \"configured\": true,\n    \"save_dir\": \"D:\\\\ck3_coa_textured_emblem_native_r33\\\\profile\\\\save games\",\n    \"filename\": \"xar_checkpoint.ck3\"\n  },\n  \"native_session_control\": {\n    \"configured\": true,\n    \"queue_dir\": \"D:\\\\ck3_coa_textured_emblem_native_r33\\\\native-session\\\\bridge\",\n    \"restore_checkpoint\": false,\n    \"driver_state_path\": \"D:\\\\ck3_coa_textured_emblem_native_r33\\\\native-session\\\\driver-state.json\",\n    \"driver_state_restored\": false,\n    \"driver_state_error\": null,\n    \"driver_state_restore_kind\": null,\n    \"episode_binding_state\": \"unbound\",\n    \"cold_candidate_rejection\": null,\n    \"episode_transition\": null,\n    \"episode_transition_error\": null\n  },\n  \"episode_seed\": null,\n  \"episode_character_id\": null,\n  \"episode_run_id\": null,\n  \"episode_identity_pending\": false,\n  \"one_life_terminal\": false,\n  \"one_life_terminal_reason\": null,\n  \"one_life_settlement_supported\": true,\n  \"army_routes_supported\": true,\n  \"move_route_preview_supported\": true,\n  \"route_contact_horizon_supported\": true,\n  \"actual_contact_scope_query_supported\": true,\n  \"battle_control_snapshot_v1_query_supported\": true,\n  \"battle_transition_v1_query_supported\": true,\n  \"battle_terminal_transition_v1_query_supported\": true,\n  \"battle_reinforcement_assignment_v1_query_supported\": true,\n  \"campaign_root_context_v1_query_supported\": true,\n  \"council_composition_candidates_v1_query_supported\": false,\n  \"steward_develop_county_candidates_v1_query_supported\": true,\n  \"player_faction_alerts_v1_query_supported\": true,\n  \"zhongguo_case_snapshot_v1_query_supported\": true,\n  \"zhongguo_b1_cycle_snapshot_v1_query_supported\": true,\n  \"zhongguo_ai_owned_case_snapshot_v1_query_supported\": true,\n  \"zhongguo_result_case_snapshot_v1_query_supported\": true,\n  \"zhongguo_b2_pip_snapshot_v1_query_supported\": true,\n  \"zhongguo_promotion_compensation_v1_query_supported\": false,\n  \"zhongguo_compensation_af5_snapshot_v1_query_supported\": false,\n  \"zhongguo_workforce_owner_snapshot_v1_query_supported\": false,\n  \"zhongguo_projects_metrics_v1_query_supported\": false,\n  \"zhongguo_career_hc_workforce_v1_query_supported\": false,\n  \"zhongguo_workforce_collective_snapshot_v1_query_supported\": true,\n  \"zhongguo_workforce_normal_exit_snapshot_v1_query_supported\": true,\n  \"zhongguo_incident_snapshot_v1_query_supported\": true,\n  \"zhongguo_manager_governance_snapshot_v1_query_supported\": true,\n  \"zhongguo_manager_subordinate_selector_v1_query_supported\": true,\n  \"zhongguo_scoreboard_state_v1_query_supported\": true,\n  \"zhongguo_scoreboard_action_v1_transport_wired\": true,\n  \"zhongguo_scoreboard_action_v1_supported\": false,\n  \"loaded_feature_manifest_v1_query_supported\": true,\n  \"pending_character_interaction_context_v1_query_supported\": true,\n  \"current_event_window_context_v1_query_supported\": true,\n  \"active_combat_retreat_v1_composition_supported\": true,\n  \"active_combat_retreat_v1_token_ready\": false,\n  \"army_strength_query_supported\": true,\n  \"combat_simulation_inputs_query_supported\": true,\n  \"combat_simulation_inputs_v3_query_supported\": true,\n  \"war_entry_assessments_query_supported\": true,\n  \"war_termination_query_supported\": true,\n  \"war_termination_terms_query_supported\": true,\n  \"war_termination_exit_terms_query_supported\": false,\n  \"surrender_war_supported\": true,\n  \"offer_white_peace_supported\": true,\n  \"war_objective_occupation_supported\": true,\n  \"war_objective_fort_level_supported\": true,\n  \"war_objective_garrison_supported\": true,\n  \"war_objective_siege_progress_supported\": true,\n  \"war_objective_assault_supported\": true,\n  \"one_life_settlement_status\": null,\n  \"continue_as_heir_after_death\": false,\n  \"transport_ready\": true\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 8.023,
+        "is_error": true,
+        "structured_content": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool ck3_query_frontend_gui_route_v1: native gameplay step failed: application-main frontend executor rejected request",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 8.012,
+        "is_error": true,
+        "structured_content": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool ck3_query_frontend_gui_route_v1: native gameplay step failed: application-main frontend executor rejected request",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 8.016,
+        "is_error": true,
+        "structured_content": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool ck3_query_frontend_gui_route_v1: native gameplay step failed: application-main frontend executor rejected request",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 8.011,
+        "is_error": true,
+        "structured_content": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool ck3_query_frontend_gui_route_v1: native gameplay step failed: application-main frontend executor rejected request",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 8.007,
+        "is_error": true,
+        "structured_content": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool ck3_query_frontend_gui_route_v1: native gameplay step failed: application-main frontend executor rejected request",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 8.014,
+        "is_error": true,
+        "structured_content": null,
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool ck3_query_frontend_gui_route_v1: native gameplay step failed: application-main frontend executor rejected request",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 1.312,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.014,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.02,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.034,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.028,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.029,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.017,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.028,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.02,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.027,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.02,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.028,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.017,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.033,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.027,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.03,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.027,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.02,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.028,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.017,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.023,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.028,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.022,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.017,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      },
+      {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.022,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      }
+    ],
+    "call_summary": {
+      "total": 883,
+      "omitted": 851,
+      "last_call": {
+        "tool": "ck3_query_frontend_gui_route_v1",
+        "arguments": {},
+        "elapsed_seconds": 0.021,
+        "is_error": false,
+        "structured_content": {
+          "schema": "ck3-frontend-gui-route-v1",
+          "schema_version": 1,
+          "step": "query-frontend-gui-route-v1",
+          "accepted": true,
+          "route": "unavailable",
+          "backend_id": "native-headless"
+        },
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"schema\": \"ck3-frontend-gui-route-v1\",\n  \"schema_version\": 1,\n  \"step\": \"query-frontend-gui-route-v1\",\n  \"accepted\": true,\n  \"route\": \"unavailable\",\n  \"backend_id\": \"native-headless\"\n}",
+            "annotations": null,
+            "meta": null
+          }
+        ]
+      }
+    },
+    "checks": {},
+    "error": "main_menu route was not observed",
+    "ok": false,
+    "tool_schemas": {
+      "ck3_abort_coat_of_arms_source_upload_v2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "upload_id": {
+            "title": "Upload Id",
+            "type": "string"
+          },
+          "generation": {
+            "title": "Generation",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "upload_id",
+          "generation"
+        ],
+        "title": "ck3_abort_coat_of_arms_source_upload_v2Arguments"
+      },
+      "ck3_activate_frontend_coat_of_arms_designer_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_activate_frontend_coat_of_arms_designer_v1Arguments"
+      },
+      "ck3_activate_frontend_new_game_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_activate_frontend_new_game_v1Arguments"
+      },
+      "ck3_activate_frontend_pick_any_character_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_activate_frontend_pick_any_character_v1Arguments"
+      },
+      "ck3_activate_frontend_prepare_custom_ruler_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_activate_frontend_prepare_custom_ruler_v1Arguments"
+      },
+      "ck3_activate_frontend_ruler_designer_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_activate_frontend_ruler_designer_v1Arguments"
+      },
+      "ck3_append_coat_of_arms_source_chunk_v2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "upload_id": {
+            "title": "Upload Id",
+            "type": "string"
+          },
+          "generation": {
+            "title": "Generation",
+            "type": "integer"
+          },
+          "chunk_index": {
+            "title": "Chunk Index",
+            "type": "integer"
+          },
+          "chunk_count": {
+            "title": "Chunk Count",
+            "type": "integer"
+          },
+          "chunk_encoding": {
+            "title": "Chunk Encoding",
+            "type": "string"
+          },
+          "chunk_bytes": {
+            "title": "Chunk Bytes",
+            "type": "integer"
+          },
+          "chunk_sha256": {
+            "title": "Chunk Sha256",
+            "type": "string"
+          },
+          "chunk_base64": {
+            "title": "Chunk Base64",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "apply": {
+            "title": "Apply",
+            "type": "boolean"
+          },
+          "expected_game_version": {
+            "title": "Expected Game Version",
+            "type": "string"
+          },
+          "expected_executable_sha256": {
+            "title": "Expected Executable Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "generation",
+          "chunk_index",
+          "chunk_count",
+          "chunk_encoding",
+          "chunk_bytes",
+          "chunk_sha256",
+          "chunk_base64",
+          "source_sha256",
+          "expected_revision",
+          "apply",
+          "expected_game_version",
+          "expected_executable_sha256"
+        ],
+        "title": "ck3_append_coat_of_arms_source_chunk_v2Arguments"
+      },
+      "ck3_begin_coat_of_arms_source_upload_v2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "total_bytes": {
+            "title": "Total Bytes",
+            "type": "integer"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "chunk_count": {
+            "title": "Chunk Count",
+            "type": "integer"
+          },
+          "chunk_encoding": {
+            "title": "Chunk Encoding",
+            "type": "string"
+          },
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "apply": {
+            "title": "Apply",
+            "type": "boolean"
+          },
+          "expected_game_version": {
+            "title": "Expected Game Version",
+            "type": "string"
+          },
+          "expected_executable_sha256": {
+            "title": "Expected Executable Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "total_bytes",
+          "source_sha256",
+          "chunk_count",
+          "chunk_encoding",
+          "expected_revision",
+          "apply",
+          "expected_game_version",
+          "expected_executable_sha256"
+        ],
+        "title": "ck3_begin_coat_of_arms_source_upload_v2Arguments"
+      },
+      "ck3_calibrate_frontend_coat_of_arms_framebuffer_v3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "calibration_id": {
+            "title": "Calibration Id",
+            "type": "string"
+          },
+          "phase": {
+            "title": "Phase",
+            "type": "string"
+          }
+        },
+        "required": [
+          "calibration_id",
+          "phase"
+        ],
+        "title": "ck3_calibrate_frontend_coat_of_arms_framebuffer_v3Arguments"
+      },
+      "ck3_commit_coat_of_arms_source_upload_v2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "upload_id": {
+            "title": "Upload Id",
+            "type": "string"
+          },
+          "generation": {
+            "title": "Generation",
+            "type": "integer"
+          },
+          "chunk_count": {
+            "title": "Chunk Count",
+            "type": "integer"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "apply": {
+            "title": "Apply",
+            "type": "boolean"
+          },
+          "expected_game_version": {
+            "title": "Expected Game Version",
+            "type": "string"
+          },
+          "expected_executable_sha256": {
+            "title": "Expected Executable Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "generation",
+          "chunk_count",
+          "source_sha256",
+          "expected_revision",
+          "apply",
+          "expected_game_version",
+          "expected_executable_sha256"
+        ],
+        "title": "ck3_commit_coat_of_arms_source_upload_v2Arguments"
+      },
+      "ck3_commit_frontend_dynasty_coat_of_arms_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_commit_frontend_dynasty_coat_of_arms_v1Arguments"
+      },
+      "ck3_compare_frontend_coat_of_arms_framebuffer_v3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "calibration_id": {
+            "title": "Calibration Id",
+            "type": "string"
+          },
+          "reference_png_base64": {
+            "title": "Reference Png Base64",
+            "type": "string"
+          },
+          "reference_png_sha256": {
+            "title": "Reference Png Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "calibration_id",
+          "reference_png_base64",
+          "reference_png_sha256"
+        ],
+        "title": "ck3_compare_frontend_coat_of_arms_framebuffer_v3Arguments"
+      },
+      "ck3_export_coat_of_arms_source_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_revision"
+        ],
+        "title": "ck3_export_coat_of_arms_source_v1Arguments"
+      },
+      "ck3_inspect_frontend_gui_tree_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_inspect_frontend_gui_tree_v1Arguments"
+      },
+      "ck3_prepare_frontend_coat_of_arms_framebuffer_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_prepare_frontend_coat_of_arms_framebuffer_v1Arguments"
+      },
+      "ck3_query_frontend_gui_route_v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ck3_query_frontend_gui_route_v1Arguments"
+      },
+      "ck3_take_snapshot": {
+        "type": "object",
+        "properties": {},
+        "title": "ck3_take_snapshotArguments"
+      }
+    },
+    "capabilities": {
+      "format_version": 1,
+      "backend_id": "native-headless",
+      "mode": "native-headless",
+      "source": "injected-dll-named-pipe",
+      "latency": "realtime",
+      "headless": true,
+      "minimized_operation": true,
+      "visual_fallback": false,
+      "fallback_enabled": false,
+      "snapshot": false,
+      "wait_for_change": false,
+      "action_steps": [
+        "activate-frontend-coat-of-arms-custom-mode-v1",
+        "activate-frontend-coat-of-arms-designer-v1",
+        "activate-frontend-new-game-v1",
+        "activate-frontend-pick-any-character-v1",
+        "activate-frontend-ruler-designer-v1",
+        "activate-frontend-select-random-playable-v1",
+        "commit-frontend-dynasty-coat-of-arms-v1",
+        "export-coat-of-arms-source-v1",
+        "inspect-frontend-coat-of-arms-pattern-grid-v1",
+        "inspect-frontend-coat-of-arms-tree-v1",
+        "inspect-frontend-gui-tree-v1",
+        "pause-map",
+        "query-arrange-marriage-choices",
+        "query-declarable-wars",
+        "query-frontend-gui-route-v1",
+        "query-zhongguo-b1-cycle-snapshot-v1",
+        "query-zhongguo-manager-governance-snapshot-v1",
+        "query-zhongguo-manager-subordinate-selector-v1",
+        "research-cancel-tactical-daily-sentinel-v1-generation-N",
+        "research-query-tactical-daily-sentinel-v1",
+        "resume-map",
+        "save-checkpoint",
+        "set-speed-1",
+        "set-speed-2",
+        "set-speed-3",
+        "set-speed-4",
+        "set-speed-5"
+      ],
+      "bridge_capabilities": [
+        "bridge.identity",
+        "bridge.heartbeat",
+        "bridge.ping",
+        "game.state.snapshot",
+        "game.state.xar-one-life-settlement",
+        "game.state.map-ready",
+        "game.state.played-character",
+        "game.state.active-event",
+        "game.state.pending-character-interaction",
+        "game.state.active-wars",
+        "game.state.war-primary-opponent",
+        "game.state.war-objectives",
+        "game.state.war-objective-occupation",
+        "game.state.war-objective-fort-level",
+        "game.state.war-objective-garrison",
+        "game.state.war-objective-siege-progress",
+        "game.state.war-objective-assault",
+        "game.state.player-armies",
+        "game.state.army-routes",
+        "game.command.pause-map",
+        "game.command.resume-map",
+        "game.command.set-speed-1",
+        "game.command.set-speed-2",
+        "game.command.set-speed-3",
+        "game.command.set-speed-4",
+        "game.command.set-speed-5",
+        "game.command.research-arm-tactical-daily-sentinel-v1-N",
+        "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+        "game.command.research-query-tactical-daily-sentinel-v1",
+        "game.command.select-event-option-N",
+        "game.command.save-checkpoint",
+        "game.command.accept-pending-character-interaction",
+        "game.command.reject-pending-character-interaction",
+        "game.command.acknowledge-pending-character-interaction",
+        "game.command.raise-troops-default",
+        "game.command.preview-move-army-N-to-N",
+        "game.command.query-route-contact-horizon-v1-N",
+        "game.command.query-actual-contact-scope-v1-N",
+        "game.command.query-battle-control-snapshot-v1-N",
+        "game.command.query-battle-transition-v1-N",
+        "game.command.query-battle-terminal-transition-v1",
+        "game.command.query-battle-reinforcement-assignment-v1-N",
+        "game.command.move-army-N-to-N",
+        "game.command.disband-army-N",
+        "game.command.split-army-half-N",
+        "game.command.merge-armies-N-with-N",
+        "game.command.start-assault-N",
+        "game.command.stop-assault-N",
+        "game.command.query-declarable-wars",
+        "game.command.query-war-entry-assessments-v1-N",
+        "game.command.declare-war-N",
+        "game.command.enforce-demands-N",
+        "game.command.query-army-strengths-v1",
+        "game.command.query-campaign-root-context-v1",
+        "game.command.query-player-faction-alerts-v1",
+        "game.command.query-steward-develop-county-candidates-v1",
+        "game.command.query-zhongguo-case-snapshot-v1",
+        "game.command.query-zhongguo-b1-cycle-snapshot-v1",
+        "game.command.query-zhongguo-result-case-snapshot-v1",
+        "game.command.query-zhongguo-b2-pip-snapshot-v1",
+        "game.command.query-zhongguo-incident-snapshot-v1",
+        "game.command.query-zhongguo-manager-governance-snapshot-v1",
+        "game.command.query-zhongguo-manager-subordinate-selector-v1",
+        "game.command.query-zhongguo-scoreboard-state-v1",
+        "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+        "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+        "game.contract.zhongguo-review-now-action-v1-fail-closed",
+        "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+        "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
+        "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1",
+        "game.command.query-loaded-feature-manifest-v1",
+        "game.command.query-pending-character-interaction-context-v1",
+        "game.command.query-current-event-window-context-v1",
+        "game.command.probe-coat-of-arms-source-v1",
+        "game.command.export-coat-of-arms-source-v1",
+        "game.command.query-frontend-gui-route-v1",
+        "game.command.inspect-frontend-gui-tree-v1",
+        "game.command.inspect-frontend-coat-of-arms-tree-v1",
+        "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1",
+        "game.command.activate-frontend-new-game-v1",
+        "game.command.activate-frontend-pick-any-character-v1",
+        "game.command.activate-frontend-select-random-playable-v1",
+        "game.command.activate-frontend-ruler-designer-v1",
+        "game.command.activate-frontend-coat-of-arms-designer-v1",
+        "game.command.commit-frontend-dynasty-coat-of-arms-v1",
+        "game.command.activate-frontend-coat-of-arms-custom-mode-v1",
+        "game.command.center-map-on-landed-title-v1",
+        "game.command.set-played-character-v1-N",
+        "game.command.query-combat-simulation-inputs-v2-N",
+        "game.command.query-combat-simulation-inputs-v3-N",
+        "game.command.query-war-termination-options-N",
+        "game.command.query-war-termination-terms-v1-N",
+        "game.command.surrender-war-N",
+        "game.command.offer-white-peace-N",
+        "game.command.query-arrange-marriage-choices",
+        "game.command.arrange-marriage-N",
+        "game.adapter.exact-build",
+        "game.adapter.minimized-headless"
+      ],
+      "diagnostics": {
+        "protocol_version": 1,
+        "pipe_name": "\\\\.\\pipe\\xar_ck3_coa_textured_emblem_r33",
+        "connected": true,
+        "connection_generation": 1,
+        "bridge_pid": 26600,
+        "bridge_version": "0.1.0",
+        "hello": {
+          "type": "hello",
+          "protocol_version": 1,
+          "bridge_version": "0.1.0",
+          "pid": 26600,
+          "session_generation": 0,
+          "connection_generation": 1,
+          "architecture": "x86_64-windows-msvc",
+          "expected_ck3_version": "1.19.0.6",
+          "expected_ck3_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+          "game_adapter_id": "ck3-1.19.0.6-msvc-x64",
+          "game_adapter_status": "ready",
+          "ck3_build_match": true,
+          "capabilities": [
+            "bridge.identity",
+            "bridge.heartbeat",
+            "bridge.ping",
+            "game.state.snapshot",
+            "game.state.xar-one-life-settlement",
+            "game.state.map-ready",
+            "game.state.played-character",
+            "game.state.active-event",
+            "game.state.pending-character-interaction",
+            "game.state.active-wars",
+            "game.state.war-primary-opponent",
+            "game.state.war-objectives",
+            "game.state.war-objective-occupation",
+            "game.state.war-objective-fort-level",
+            "game.state.war-objective-garrison",
+            "game.state.war-objective-siege-progress",
+            "game.state.war-objective-assault",
+            "game.state.player-armies",
+            "game.state.army-routes",
+            "game.command.pause-map",
+            "game.command.resume-map",
+            "game.command.set-speed-1",
+            "game.command.set-speed-2",
+            "game.command.set-speed-3",
+            "game.command.set-speed-4",
+            "game.command.set-speed-5",
+            "game.command.research-arm-tactical-daily-sentinel-v1-N",
+            "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+            "game.command.research-query-tactical-daily-sentinel-v1",
+            "game.command.select-event-option-N",
+            "game.command.save-checkpoint",
+            "game.command.accept-pending-character-interaction",
+            "game.command.reject-pending-character-interaction",
+            "game.command.acknowledge-pending-character-interaction",
+            "game.command.raise-troops-default",
+            "game.command.preview-move-army-N-to-N",
+            "game.command.query-route-contact-horizon-v1-N",
+            "game.command.query-actual-contact-scope-v1-N",
+            "game.command.query-battle-control-snapshot-v1-N",
+            "game.command.query-battle-transition-v1-N",
+            "game.command.query-battle-terminal-transition-v1",
+            "game.command.query-battle-reinforcement-assignment-v1-N",
+            "game.command.move-army-N-to-N",
+            "game.command.disband-army-N",
+            "game.command.split-army-half-N",
+            "game.command.merge-armies-N-with-N",
+            "game.command.start-assault-N",
+            "game.command.stop-assault-N",
+            "game.command.query-declarable-wars",
+            "game.command.query-war-entry-assessments-v1-N",
+            "game.command.declare-war-N",
+            "game.command.enforce-demands-N",
+            "game.command.query-army-strengths-v1",
+            "game.command.query-campaign-root-context-v1",
+            "game.command.query-player-faction-alerts-v1",
+            "game.command.query-steward-develop-county-candidates-v1",
+            "game.command.query-zhongguo-case-snapshot-v1",
+            "game.command.query-zhongguo-b1-cycle-snapshot-v1",
+            "game.command.query-zhongguo-result-case-snapshot-v1",
+            "game.command.query-zhongguo-b2-pip-snapshot-v1",
+            "game.command.query-zhongguo-incident-snapshot-v1",
+            "game.command.query-zhongguo-manager-governance-snapshot-v1",
+            "game.command.query-zhongguo-manager-subordinate-selector-v1",
+            "game.command.query-zhongguo-scoreboard-state-v1",
+            "game.contract.zhongguo-scoreboard-action-v1-fail-closed",
+            "game.contract.zhongguo-promotion-source-progress-v1-fail-closed",
+            "game.contract.zhongguo-review-now-action-v1-fail-closed",
+            "game.command.query-zhongguo-workforce-collective-snapshot-v1",
+            "game.command.query-zhongguo-ai-owned-case-snapshot-v1",
+            "game.command.query-zhongguo-workforce-normal-exit-snapshot-v1",
+            "game.command.query-loaded-feature-manifest-v1",
+            "game.command.query-pending-character-interaction-context-v1",
+            "game.command.query-current-event-window-context-v1",
+            "game.command.probe-coat-of-arms-source-v1",
+            "game.command.export-coat-of-arms-source-v1",
+            "game.command.query-frontend-gui-route-v1",
+            "game.command.inspect-frontend-gui-tree-v1",
+            "game.command.inspect-frontend-coat-of-arms-tree-v1",
+            "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1",
+            "game.command.activate-frontend-new-game-v1",
+            "game.command.activate-frontend-pick-any-character-v1",
+            "game.command.activate-frontend-select-random-playable-v1",
+            "game.command.activate-frontend-ruler-designer-v1",
+            "game.command.activate-frontend-coat-of-arms-designer-v1",
+            "game.command.commit-frontend-dynasty-coat-of-arms-v1",
+            "game.command.activate-frontend-coat-of-arms-custom-mode-v1",
+            "game.command.center-map-on-landed-title-v1",
+            "game.command.set-played-character-v1-N",
+            "game.command.query-combat-simulation-inputs-v2-N",
+            "game.command.query-combat-simulation-inputs-v3-N",
+            "game.command.query-war-termination-options-N",
+            "game.command.query-war-termination-terms-v1-N",
+            "game.command.surrender-war-N",
+            "game.command.offer-white-peace-N",
+            "game.command.query-arrange-marriage-choices",
+            "game.command.arrange-marriage-N",
+            "game.adapter.exact-build",
+            "game.adapter.minimized-headless"
+          ]
+        },
+        "last_heartbeat": {
+          "type": "heartbeat",
+          "protocol_version": 1,
+          "sequence": 2,
+          "pid": 26600,
+          "monotonic_ms": 671544187,
+          "startup_failure_containment_enabled": true,
+          "startup_particle2_stage_recorder_enabled": false,
+          "startup_widget_null_flag_call_guard_enabled": true,
+          "startup_rbx_null_call_guard_enabled": true,
+          "cold_map_vfs_observer_enabled": true,
+          "named_path_583_root_observer_enabled": true,
+          "pdx_paths_583_producer_observer_enabled": true,
+          "vfs_mount_lifecycle_observer_enabled": true,
+          "physfs_mounted_data_observer_enabled": true,
+          "g2_truce_preview_entry_observer_enabled": true,
+          "zhongguo_scoreboard_production_candidate_enabled": false,
+          "zhongguo_scoreboard_production_capability_advertised": false,
+          "main_thread_query_mailbox_v1": {
+            "candidate_id": "application_main_thread_war_entry_v1",
+            "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+            "installed": true,
+            "sdl_poll_event_hook_installed": true,
+            "observed_sdl_poll_event_target": 140697881556784,
+            "stop": false,
+            "failure": 0,
+            "pump_epochs": 0,
+            "owner_verified_pump_epochs": 0,
+            "consecutive_verified": 0,
+            "published_sequence": 0,
+            "completed_sequence": 0,
+            "executor_started_requests": 0,
+            "executor_started_sequence": 0,
+            "executor_started_pump_epoch": 0,
+            "owner_tid": 0,
+            "current_tid": 0,
+            "rng_owner_tid": 0,
+            "tls_global": 0,
+            "tls_context": 0,
+            "tls_marker": 0,
+            "jomini_state": 0,
+            "game_state": 0,
+            "date_raw": 0,
+            "paused": false,
+            "stamp_read_success": false,
+            "executed_requests": 0,
+            "executor_submission_enabled": true,
+            "application_main_observed": false,
+            "paused_main_thread_observed": false,
+            "ready": false
+          },
+          "coat_of_arms_designer_probe_v1": {
+            "installed": true,
+            "failure": 0,
+            "observed_calls": 0,
+            "executed_requests": 0
+          },
+          "startup_particle2_null_guard_v1": {
+            "installed": true,
+            "failure": 0,
+            "suppressed_count": 0,
+            "suppressed_index_mask": 0,
+            "last_suppressed_index": 4294967295
+          },
+          "startup_particle2_consumer_null_guard_v1": {
+            "installed": true,
+            "failure": 0,
+            "suppressed_count": 0,
+            "missing_slot_mask": 0
+          },
+          "startup_particle2_stage_recorder_v1": {
+            "installed": false,
+            "patch_mask": 0,
+            "failure": 0,
+            "source_lookup_null_count": 0,
+            "variant_lookup_null_count": 0,
+            "backend_creation_null_count": 0
+          },
+          "startup_dx11_render_context_draw_guard_v1": {
+            "installed": true,
+            "failure": 0,
+            "suppressed_count": 0
+          },
+          "startup_localize_current_root_guard_v1": {
+            "installed": true,
+            "failure": 0,
+            "native_miss_count": 0
+          },
+          "startup_widget_null_flag_call_guard_v1": {
+            "installed": true,
+            "failure": 0,
+            "suppressed_count": 0
+          },
+          "startup_rbx_null_call_guard_v1": {
+            "installed": true,
+            "failure": 0,
+            "suppressed_count": 0
+          },
+          "cold_map_vfs_observer_v1": {
+            "private_build": true,
+            "read_only": true,
+            "installed": true,
+            "installed_mask": 7,
+            "failure_flags": 0,
+            "ctor_count": 0,
+            "ctor_descriptor": 0,
+            "ctor_data": 0,
+            "ctor_length": 0,
+            "ctor_flag": 0,
+            "ctor_word0": 0,
+            "ctor_word1": 0,
+            "variant_count": 0,
+            "variant_address": 0,
+            "variant_tag": 0,
+            "variant_payload": 0,
+            "variant_length": 0,
+            "variant_capacity": 0,
+            "variant_word0": 0,
+            "variant_word1": 0,
+            "poll_count": 0,
+            "poll_object": 0,
+            "poll_state": 0,
+            "poll_aux_state": 0,
+            "poll_variant_tag": 0,
+            "poll_payload": 0,
+            "poll_length": 0,
+            "poll_capacity": 0,
+            "poll_word0": 0,
+            "poll_word1": 0
+          },
+          "named_path_583_root_observer_v1": {
+            "private_build": true,
+            "read_only": true,
+            "guard": false,
+            "installed": true,
+            "installed_mask": 3,
+            "failure_flags": 0,
+            "resolver_count": 0,
+            "move_pre_count": 0,
+            "move_post_count": 0,
+            "correlation_miss_count": 0,
+            "sequence": 0,
+            "thread_id": 0,
+            "move_pre_seen": false,
+            "move_post_seen": false,
+            "move_result": 0,
+            "resolver": {
+              "object": 0,
+              "effective_data": 0,
+              "length": 0,
+              "capacity": 0,
+              "word0": 0,
+              "word1": 0,
+              "null_result": false,
+              "read_fault": false
+            },
+            "temporary_before": {
+              "object": 0,
+              "effective_data": 0,
+              "length": 0,
+              "capacity": 0,
+              "word0": 0,
+              "word1": 0,
+              "null_result": false,
+              "read_fault": false
+            },
+            "root_before": {
+              "object": 0,
+              "effective_data": 0,
+              "length": 0,
+              "capacity": 0,
+              "word0": 0,
+              "word1": 0,
+              "null_result": false,
+              "read_fault": false
+            },
+            "temporary_after": {
+              "object": 0,
+              "effective_data": 0,
+              "length": 0,
+              "capacity": 0,
+              "word0": 0,
+              "word1": 0,
+              "null_result": false,
+              "read_fault": false
+            },
+            "root_after": {
+              "object": 0,
+              "effective_data": 0,
+              "length": 0,
+              "capacity": 0,
+              "word0": 0,
+              "word1": 0,
+              "null_result": false,
+              "read_fault": false
+            }
+          },
+          "pdx_paths_583_producer_observer_v1": {
+            "private_build": true,
+            "read_only": true,
+            "guard": false,
+            "public_capability": false,
+            "installed": true,
+            "installed_mask": 31,
+            "failure_flags": 0,
+            "task_enter_count": 0,
+            "task_thread_id": 0,
+            "task_sequence": 0,
+            "paths_parser_enter_count": 0,
+            "checksummed_parser_enter_count": 0,
+            "other_parser_enter_count": 0,
+            "parser_source": 0,
+            "parser_thread_id": 0,
+            "parser_sequence": 0,
+            "insert_call_count": 0,
+            "key_583_insert_pre_count": 0,
+            "key_583_insert_post_count": 0,
+            "key_read_fault_count": 0,
+            "last_key": 0,
+            "last_hash": 0,
+            "insert_thread_id": 0,
+            "insert_sequence": 0,
+            "rhs_string": 0,
+            "result_pair": 0,
+            "native_result": 0,
+            "result_row": 0,
+            "result_inserted": false,
+            "result_pair_null": false,
+            "result_read_fault": false,
+            "paths_lookup": {
+              "pre_count": 0,
+              "return_count": 0,
+              "raw_result": 0,
+              "null_result": false,
+              "thread_id": 0,
+              "sequence": 0
+            },
+            "checksummed_lookup": {
+              "pre_count": 0,
+              "return_count": 0,
+              "raw_result": 0,
+              "null_result": false,
+              "thread_id": 0,
+              "sequence": 0
+            },
+            "task_table": {
+              "map": 0,
+              "rows": 0,
+              "count": 0,
+              "mask": 0,
+              "max_probe": 0,
+              "id_583_present": false,
+              "id_583_row": 0,
+              "read_fault": false
+            },
+            "table_before": {
+              "map": 0,
+              "rows": 0,
+              "count": 0,
+              "mask": 0,
+              "max_probe": 0,
+              "id_583_present": false,
+              "id_583_row": 0,
+              "read_fault": false
+            },
+            "table_after": {
+              "map": 0,
+              "rows": 0,
+              "count": 0,
+              "mask": 0,
+              "max_probe": 0,
+              "id_583_present": false,
+              "id_583_row": 0,
+              "read_fault": false
+            }
+          },
+          "vfs_mount_lifecycle_observer_v1": {
+            "private_build": true,
+            "read_only": true,
+            "guard": false,
+            "public_capability": false,
+            "installed": true,
+            "installed_mask": 15,
+            "failure_flags": 0,
+            "next_sequence": 0,
+            "core_init_count": 0,
+            "core_init_raw_al": 0,
+            "core_init_thread_id": 0,
+            "core_init_sequence": 0,
+            "publisher_entry_count": 0,
+            "publisher_return_count": 0,
+            "publisher_success_count": 0,
+            "publisher_failure_count": 0,
+            "publisher_correlation_miss_count": 0,
+            "publisher_slot_overwrite_count": 0,
+            "lookup_classification_fault_count": 0,
+            "core_init_manager": {
+              "manager": 0,
+              "head": 0,
+              "ready_flag": 0,
+              "read_fault": false
+            },
+            "latest_publisher": {
+              "ordinal": 0,
+              "entry_sequence": 0,
+              "return_sequence": 0,
+              "entry_thread_id": 0,
+              "return_thread_id": 0,
+              "raw_result": 0,
+              "raw_rcx": 0,
+              "backend": 0,
+              "insert_mode": 0,
+              "return_seen": false,
+              "path": {
+                "pointer": 0,
+                "preview_length": 0,
+                "terminated": false,
+                "null_pointer": false,
+                "read_fault": false,
+                "preview": ""
+              },
+              "manager_before": {
+                "manager": 0,
+                "head": 0,
+                "ready_flag": 0,
+                "read_fault": false
+              },
+              "manager_after": {
+                "manager": 0,
+                "head": 0,
+                "ready_flag": 0,
+                "read_fault": false
+              }
+            },
+            "publisher_slot_count": 0,
+            "publishers": [],
+            "paths_lookup": {
+              "count": 0,
+              "path_view": 0,
+              "path_data": 0,
+              "path_length": 0,
+              "path_flag": 0,
+              "thread_id": 0,
+              "read_fault": false,
+              "sequence": 0,
+              "manager": {
+                "manager": 0,
+                "head": 0,
+                "ready_flag": 0,
+                "read_fault": false
+              }
+            },
+            "checksummed_lookup": {
+              "count": 0,
+              "path_view": 0,
+              "path_data": 0,
+              "path_length": 0,
+              "path_flag": 0,
+              "thread_id": 0,
+              "read_fault": false,
+              "sequence": 0,
+              "manager": {
+                "manager": 0,
+                "head": 0,
+                "ready_flag": 0,
+                "read_fault": false
+              }
+            }
+          },
+          "physfs_mounted_data_observer_v1": {
+            "private_build": true,
+            "read_only": true,
+            "guard": false,
+            "public_capability": false,
+            "installed": true,
+            "failure_flags": 0,
+            "call_count": 0,
+            "success_count": 0,
+            "failure_count": 0,
+            "slot_overwrite_count": 0,
+            "row_count": 0,
+            "rows": []
+          }
+        },
+        "private_observers": {
+          "vfs_mount_lifecycle_observer_v1": {
+            "private_build": true,
+            "read_only": true,
+            "guard": false,
+            "public_capability": false,
+            "installed": true,
+            "installed_mask": 15,
+            "failure_flags": 0,
+            "next_sequence": 0,
+            "core_init_count": 0,
+            "core_init_raw_al": 0,
+            "core_init_thread_id": 0,
+            "core_init_sequence": 0,
+            "publisher_entry_count": 0,
+            "publisher_return_count": 0,
+            "publisher_success_count": 0,
+            "publisher_failure_count": 0,
+            "publisher_correlation_miss_count": 0,
+            "publisher_slot_overwrite_count": 0,
+            "lookup_classification_fault_count": 0,
+            "core_init_manager": {
+              "manager": 0,
+              "head": 0,
+              "ready_flag": 0,
+              "read_fault": false
+            },
+            "latest_publisher": {
+              "ordinal": 0,
+              "entry_sequence": 0,
+              "return_sequence": 0,
+              "entry_thread_id": 0,
+              "return_thread_id": 0,
+              "raw_result": 0,
+              "raw_rcx": 0,
+              "backend": 0,
+              "insert_mode": 0,
+              "return_seen": false,
+              "path": {
+                "pointer": 0,
+                "preview_length": 0,
+                "terminated": false,
+                "null_pointer": false,
+                "read_fault": false,
+                "preview": ""
+              },
+              "manager_before": {
+                "manager": 0,
+                "head": 0,
+                "ready_flag": 0,
+                "read_fault": false
+              },
+              "manager_after": {
+                "manager": 0,
+                "head": 0,
+                "ready_flag": 0,
+                "read_fault": false
+              }
+            },
+            "publisher_slot_count": 0,
+            "publishers": [],
+            "paths_lookup": {
+              "count": 0,
+              "path_view": 0,
+              "path_data": 0,
+              "path_length": 0,
+              "path_flag": 0,
+              "thread_id": 0,
+              "read_fault": false,
+              "sequence": 0,
+              "manager": {
+                "manager": 0,
+                "head": 0,
+                "ready_flag": 0,
+                "read_fault": false
+              }
+            },
+            "checksummed_lookup": {
+              "count": 0,
+              "path_view": 0,
+              "path_data": 0,
+              "path_length": 0,
+              "path_flag": 0,
+              "thread_id": 0,
+              "read_fault": false,
+              "sequence": 0,
+              "manager": {
+                "manager": 0,
+                "head": 0,
+                "ready_flag": 0,
+                "read_fault": false
+              }
+            }
+          },
+          "physfs_mounted_data_observer_v1": {
+            "private_build": true,
+            "read_only": true,
+            "guard": false,
+            "public_capability": false,
+            "installed": true,
+            "failure_flags": 0,
+            "call_count": 0,
+            "success_count": 0,
+            "failure_count": 0,
+            "slot_overwrite_count": 0,
+            "row_count": 0,
+            "rows": []
+          }
+        },
+        "last_pong": {
+          "type": "pong",
+          "protocol_version": 1,
+          "request_id": "python-1-4786cee3043a",
+          "pid": 26600
+        },
+        "last_error": null,
+        "semantic_state_available": false,
+        "rejected_state_snapshot_count": 0,
+        "last_rejected_state_snapshot": null,
+        "snapshot_publish_diagnostic_count": 0,
+        "last_snapshot_publish_diagnostic": null,
+        "transport_fatal_error": null
+      },
+      "composite_action_steps": [],
+      "battle_speed_readiness": {
+        "decision_sentinel_live_ready": true,
+        "committed_route_sentinel_live_ready": true,
+        "stationary_objective_hold_sentinel_live_ready": true,
+        "stationary_objective_hold_sentinel_canary_ready": true,
+        "committed_route_sentinel_speed_4_live_ready": false,
+        "committed_route_sentinel_speed_5_live_ready": false,
+        "stationary_objective_hold_sentinel_speed_4_live_ready": false,
+        "stationary_objective_hold_sentinel_speed_5_live_ready": false,
+        "terminal_sentinel_live_ready": true,
+        "overwhelming_matrix_live_ready": false,
+        "stationary_objective_hold_legacy_canary_flag_requested": false,
+        "noncombat_sentinel_timeline_speed": 3,
+        "route_contact_effective_timeline_speed": 3,
+        "noncombat_sentinel_high_speed_ab": false
+      },
+      "checkpoint_materialization": {
+        "configured": true,
+        "save_dir": "D:\\ck3_coa_textured_emblem_native_r33\\profile\\save games",
+        "filename": "xar_checkpoint.ck3"
+      },
+      "native_session_control": {
+        "configured": true,
+        "queue_dir": "D:\\ck3_coa_textured_emblem_native_r33\\native-session\\bridge",
+        "restore_checkpoint": false,
+        "driver_state_path": "D:\\ck3_coa_textured_emblem_native_r33\\native-session\\driver-state.json",
+        "driver_state_restored": false,
+        "driver_state_error": null,
+        "driver_state_restore_kind": null,
+        "episode_binding_state": "unbound",
+        "cold_candidate_rejection": null,
+        "episode_transition": null,
+        "episode_transition_error": null
+      },
+      "episode_seed": null,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "episode_identity_pending": false,
+      "one_life_terminal": false,
+      "one_life_terminal_reason": null,
+      "one_life_settlement_supported": true,
+      "army_routes_supported": true,
+      "move_route_preview_supported": true,
+      "route_contact_horizon_supported": true,
+      "actual_contact_scope_query_supported": true,
+      "battle_control_snapshot_v1_query_supported": true,
+      "battle_transition_v1_query_supported": true,
+      "battle_terminal_transition_v1_query_supported": true,
+      "battle_reinforcement_assignment_v1_query_supported": true,
+      "campaign_root_context_v1_query_supported": true,
+      "council_composition_candidates_v1_query_supported": false,
+      "steward_develop_county_candidates_v1_query_supported": true,
+      "player_faction_alerts_v1_query_supported": true,
+      "zhongguo_case_snapshot_v1_query_supported": true,
+      "zhongguo_b1_cycle_snapshot_v1_query_supported": true,
+      "zhongguo_ai_owned_case_snapshot_v1_query_supported": true,
+      "zhongguo_result_case_snapshot_v1_query_supported": true,
+      "zhongguo_b2_pip_snapshot_v1_query_supported": true,
+      "zhongguo_promotion_compensation_v1_query_supported": false,
+      "zhongguo_compensation_af5_snapshot_v1_query_supported": false,
+      "zhongguo_workforce_owner_snapshot_v1_query_supported": false,
+      "zhongguo_projects_metrics_v1_query_supported": false,
+      "zhongguo_career_hc_workforce_v1_query_supported": false,
+      "zhongguo_workforce_collective_snapshot_v1_query_supported": true,
+      "zhongguo_workforce_normal_exit_snapshot_v1_query_supported": true,
+      "zhongguo_incident_snapshot_v1_query_supported": true,
+      "zhongguo_manager_governance_snapshot_v1_query_supported": true,
+      "zhongguo_manager_subordinate_selector_v1_query_supported": true,
+      "zhongguo_scoreboard_state_v1_query_supported": true,
+      "zhongguo_scoreboard_action_v1_transport_wired": true,
+      "zhongguo_scoreboard_action_v1_supported": false,
+      "loaded_feature_manifest_v1_query_supported": true,
+      "pending_character_interaction_context_v1_query_supported": true,
+      "current_event_window_context_v1_query_supported": true,
+      "active_combat_retreat_v1_composition_supported": true,
+      "active_combat_retreat_v1_token_ready": false,
+      "army_strength_query_supported": true,
+      "combat_simulation_inputs_query_supported": true,
+      "combat_simulation_inputs_v3_query_supported": true,
+      "war_entry_assessments_query_supported": true,
+      "war_termination_query_supported": true,
+      "war_termination_terms_query_supported": true,
+      "war_termination_exit_terms_query_supported": false,
+      "surrender_war_supported": true,
+      "offer_white_peace_supported": true,
+      "war_objective_occupation_supported": true,
+      "war_objective_fort_level_supported": true,
+      "war_objective_garrison_supported": true,
+      "war_objective_siege_progress_supported": true,
+      "war_objective_assault_supported": true,
+      "one_life_settlement_status": null,
+      "continue_as_heir_after_death": false,
+      "transport_ready": true
+    },
+    "last_route": {
+      "schema": "ck3-frontend-gui-route-v1",
+      "schema_version": 1,
+      "step": "query-frontend-gui-route-v1",
+      "accepted": true,
+      "route": "unavailable",
+      "backend_id": "native-headless"
+    }
+  },
+  "picture_corpus_native_crops": {
+    "status": "unavailable",
+    "error": "picture corpus result has no cases"
+  },
+  "cleanup": {
+    "nonce": "8ff705b3e86e44adbc39d93439ff3331",
+    "ck3_pid": 26600,
+    "ck3_creation_date": "20260916134914.121497+000",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 14616,
+    "watchdog_creation_date": "20260916134913.551691+000",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "D:\\ck3_coa_textured_emblem_native_r33\\control\\ck3.json": true,
+      "D:\\ck3_coa_textured_emblem_native_r33\\control\\watchdog-8ff705b3e86e44adbc39d93439ff3331.ready.json": true,
+      "D:\\ck3_coa_textured_emblem_native_r33\\control\\ck3.watchdog_error": true,
+      "D:\\ck3_coa_textured_emblem_native_r33\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  },
+  "error": "RuntimeError: frontend MCP route sequence failed its checks",
+  "elapsed_seconds": 305.895,
+  "ok": false
+}

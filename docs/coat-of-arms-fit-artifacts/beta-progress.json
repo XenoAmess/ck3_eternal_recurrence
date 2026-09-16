@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T21:30:00+08:00",
+  "updatedAt": "2026-09-16T22:12:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -439,7 +439,7 @@
     {
       "id": "WP6",
       "status": "in_progress",
-      "commit": "2861d3b3",
+      "commit": "e7100297",
       "commands": [
         "pnpm exec playwright test e2e/safe-svg-input.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/textured-emblem-preview.spec.ts --reporter=line",
@@ -472,7 +472,10 @@
         "pnpm test",
         "pnpm build",
         "pnpm exec vitest run src/domain/assetPack.test.ts --reporter=verbose",
-        "python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6"
+        "python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6",
+        "tools\\.venv\\Scripts\\python.exe -m pytest ck3_autonomous_player\\tests\\unit\\test_frontend_gui_route_v1_live_acceptance.py -q",
+        "set PYTHONPATH=ck3_autonomous_player\\src&& tools\\.venv\\Scripts\\python.exe ck3_autonomous_player\\native_bridge\\research\\run_frontend_gui_route_v1_live_acceptance.py --source-profile D:\\ck3_coa_textured_emblem_native_r34\\profile --state-dir D:\\ck3_coa_textured_emblem_native_r35 --game-dir C:\\SteamLibrary\\steamapps\\common\\CRUSAD~1 --bridge-pipe \\\\.\\pipe\\xar_ck3_coa_textured_emblem_r35 --bridge-dll C:\\xb\\coa-vfs-r27\\xar_ck3_bridge.dll --bridge-injector C:\\xb\\coa-vfs-r27\\xar_ck3_bridge_injector.exe --timeout 600 --single-reference-case docs\\coat-of-arms-fit-artifacts\\textured-emblem-browser-r31 --picture-crop-dir D:\\ck3_coa_textured_emblem_native_r35_crops --output D:\\ck3_coa_textured_emblem_native_r35_report.json",
+        "tools\\.venv\\Scripts\\python.exe coat_of_arms_editer_of_ck3\\tools\\summarize_native_picture_corpus.py docs\\coat-of-arms-fit-artifacts\\textured-emblem-native-r35\\report.json docs\\coat-of-arms-fit-artifacts\\textured-emblem-native-r35\\summary.json"
       ],
       "resultPath": "docs/coat-of-arms-safe-svg-input.md",
       "keyMetrics": {
@@ -486,8 +489,19 @@
         "vitestFilesPassed": 16,
         "vitestTestsPassed": 83,
         "parentComposition": "native_clipboard_path_does_not_materialize_parent_browser_preserves_reference_and_explicit_children_only",
-        "texturedEmblemComposition": "browser_shader_model_passed_native_pixel_pending",
+        "texturedEmblemComposition": "passed_browser_shader_model_and_calibrated_native_pixel_r35",
         "texturedEmblemExpectedCenterRgba": [32, 192, 95, 255],
+        "texturedEmblemNativeEvidencePath": "docs/coat-of-arms-fit-artifacts/textured-emblem-native-r35/",
+        "texturedEmblemNativeReportSha256": "C417943838093F62CE2AFF1B9BCDC3AFDBCE9A469A2F16D22F45D127FB085829",
+        "texturedEmblemNativeCasesPassed": 1,
+        "texturedEmblemNativeMeanAbsoluteError": 0.0072777047753334045,
+        "texturedEmblemNativeColorMse": 0.00023901888926047832,
+        "texturedEmblemNativeEdgeLoss": 0.027166271582245827,
+        "texturedEmblemNativeWorstSpatialMeanAbsoluteError": 0.029225025326013565,
+        "texturedEmblemCopyReapplyMeanAbsoluteError": 0.0000153958608279936,
+        "texturedEmblemCopyReapplyEdgeLoss": 0.00011590650683501735,
+        "texturedEmblemNativeInteraction": "mcp_only_no_ocr_keyboard_mouse_or_fixed_coordinates",
+        "texturedEmblemNativeCleanup": "passed_tree_gone_and_slot_released",
         "simplifiedChineseEnglishUi": "passed",
         "localePersistence": "local_storage_passed",
         "pageVersionDisplay": "iso_timestamp_plus_8_digit_git_hash_passed",
