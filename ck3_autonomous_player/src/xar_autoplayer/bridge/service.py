@@ -357,7 +357,19 @@ from .war_contract import (
     stop_assault_step,
     surrender_war_step,
 )
-from ..strategy import choose_one_life_turn, read_one_life_strategy
+from ..strategy import (
+    choose_one_life_turn,
+    consume_one_life_lifestyle_private_trial,
+    read_one_life_strategy,
+)
+from ..lifestyle_formal_consumer import (
+    PERK_SUBMIT_STEP as PRIVATE_LIFESTYLE_PERK_STEP,
+    RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP,
+    ROOT_QUERY_STEP as PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
+    latest_lifestyle_applied_receipt,
+    same_frame_feudal_peace_scope,
+    unresolved_lifestyle_perk_action,
+)
 
 
 class GameplayBridgeService:
@@ -582,6 +594,17 @@ class GameplayBridgeService:
                 next_run_plan=cross_run_plan,
                 battle_speed_readiness=battle_speed_readiness,
             )
+            if getattr(
+                self.driver, "allow_private_lifestyle_formal_trial", False
+            ) is True:
+                applied_life = latest_lifestyle_applied_receipt(
+                    planning_snapshot, history
+                )
+                if applied_life is not None:
+                    plan = {
+                        **plan,
+                        "lifestyle_receipt_consumed": applied_life,
+                    }
             if cross_run_plan is not None:
                 plan = {**plan, "cross_run_plan_used": cross_run_plan}
             routable_steps = set(available_steps)
@@ -620,19 +643,134 @@ class GameplayBridgeService:
                 "plan": _route_plan_to_available_step(
                     plan, routable_steps
                 ),
+                "_private_lifestyle_scope_v1": (
+                    same_frame_feudal_peace_scope(planning_snapshot, history)
+                    if getattr(
+                        self.driver, "allow_private_lifestyle_formal_trial", False
+                    ) is True
+                    else None
+                ),
+                "_private_lifestyle_pending_v1": (
+                    unresolved_lifestyle_perk_action(
+                        planning_snapshot, history
+                    )
+                    if getattr(
+                        self.driver, "allow_private_lifestyle_formal_trial", False
+                    ) is True
+                    else None
+                ),
             }
 
         if use_internal_view:
-            return internal_planning_view(snapshot, plan_from_view)
-        public_native_history = snapshot.get("native_command_history")
-        return plan_from_view(
-            snapshot,
-            (
-                public_native_history
-                if isinstance(public_native_history, list)
-                else []
-            ),
+            planned = internal_planning_view(snapshot, plan_from_view)
+        else:
+            public_native_history = snapshot.get("native_command_history")
+            planned = plan_from_view(
+                snapshot,
+                (
+                    public_native_history
+                    if isinstance(public_native_history, list)
+                    else []
+                ),
+            )
+        if getattr(
+            self.driver, "allow_private_lifestyle_formal_trial", False
+        ) is True:
+            return self._plan_private_lifestyle_trial_v1(
+                planned, available_steps
+            )
+        planned.pop("_private_lifestyle_scope_v1", None)
+        planned.pop("_private_lifestyle_pending_v1", None)
+        return planned
+
+    def _plan_private_lifestyle_trial_v1(
+        self, planned: dict[str, object], available_steps: set[str]
+    ) -> dict[str, object]:
+        """Read slot43 only after the normal planner selects peaceful time."""
+
+        scope = planned.pop("_private_lifestyle_scope_v1", None)
+        pending = planned.pop("_private_lifestyle_pending_v1", None)
+        plan = planned.get("plan")
+        if isinstance(pending, dict):
+            # The previous typed request may already have changed CK3.  A
+            # later paused frame is required before any new LIFE choice.
+            if not isinstance(plan, dict):
+                return planned
+            if plan.get("selected_step") != "life-advance":
+                return planned
+            pre_revision = pending.get("pre_public_revision")
+            if (
+                isinstance(pre_revision, int)
+                and not isinstance(pre_revision, bool)
+                and int(planned["revision"]) > pre_revision
+            ):
+                receipt_plan = {
+                    **plan,
+                    "phase": "lifestyle_perk_receipt_query",
+                    "selected_step": PRIVATE_LIFESTYLE_RECEIPT_STEP,
+                    "lifestyle_pending_action": pending,
+                    "reason": "confirm material HasPerk on a later paused frame",
+                }
+                return {
+                    **planned,
+                    "plan": _route_plan_to_available_step(
+                        receipt_plan,
+                        {PRIVATE_LIFESTYLE_RECEIPT_STEP},
+                    ),
+                }
+            return {
+                **planned,
+                "plan": {
+                    **plan,
+                    "lifestyle_pending_action": pending,
+                    "reason": "advance a bounded native interval to an independent receipt frame",
+                },
+            }
+        if not isinstance(plan, dict) or plan.get("selected_step") != "life-advance":
+            return planned
+        if not isinstance(scope, dict):
+            scope = {"status": "scope_unavailable"}
+        query = None
+        if scope.get("status") == "admitted":
+            reader = getattr(
+                self.driver, "query_player_lifestyle_formal_private_v1", None
+            )
+            query = (
+                reader(expected_revision=int(planned["revision"]))
+                if callable(reader)
+                else {"status": "private_query_route_missing"}
+            )
+            ending = self.snapshot()
+            if not (
+                ending.get("paused") is True
+                and ending.get("snapshot_id") == planned.get("snapshot_id")
+                and ending.get("revision") == planned.get("revision")
+            ):
+                query = {"status": "paused_frame_changed_during_private_query"}
+        consumed = consume_one_life_lifestyle_private_trial(
+            plan,
+            same_frame_feudal_scope=scope,
+            private_query=query,
         )
+        if (
+            consumed.get("selected_step") == PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP
+            and PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps
+        ):
+            consumed = {
+                **consumed,
+                "selected_step": None,
+                "required_step": PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
+                "reason": "bounded LIFE trial cannot observe feudal scope via the public root query",
+            }
+        routable = set(available_steps)
+        if callable(
+            getattr(self.driver, "submit_player_lifestyle_perk_private_v1", None)
+        ):
+            routable.add(PRIVATE_LIFESTYLE_PERK_STEP)
+        return {
+            **planned,
+            "plan": _route_plan_to_available_step(consumed, routable),
+        }
 
     def _strategy_state_dir(self):
         state_dir = getattr(self.driver, "state_dir", None)
@@ -758,6 +896,38 @@ class GameplayBridgeService:
                     candidate_character_id=assignment[
                         "candidate_character_id"
                     ],
+                    expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == PRIVATE_LIFESTYLE_PERK_STEP:
+                action = plan.get("lifestyle_action")
+                query = plan.get("lifestyle_query")
+                executor = getattr(
+                    self.driver, "submit_player_lifestyle_perk_private_v1", None
+                )
+                if not (
+                    isinstance(action, dict)
+                    and isinstance(query, dict)
+                    and callable(executor)
+                ):
+                    raise UnsupportedStepError(
+                        "controlled LIFE perk lacks a typed private executor"
+                    )
+                result = executor(
+                    query=query,
+                    action=action,
+                    expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == PRIVATE_LIFESTYLE_RECEIPT_STEP:
+                pending = plan.get("lifestyle_pending_action")
+                executor = getattr(
+                    self.driver, "query_player_lifestyle_receipt_private_v1", None
+                )
+                if not (isinstance(pending, dict) and callable(executor)):
+                    raise UnsupportedStepError(
+                        "controlled LIFE receipt lacks its pending action ID"
+                    )
+                result = executor(
+                    pending=pending,
                     expected_revision=int(planned["revision"]),
                 )
             else:

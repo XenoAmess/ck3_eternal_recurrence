@@ -1332,6 +1332,7 @@ class NativeHeadlessGameplayDriver:
         ),
         allow_route_contact_high_speed_ab: bool = False,
         allow_stationary_objective_hold_sentinel_canary: bool = False,
+        allow_private_lifestyle_formal_trial: bool = False,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
@@ -1382,6 +1383,10 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_stationary_objective_hold_sentinel_canary = (
             allow_stationary_objective_hold_sentinel_canary is True
+        )
+        # Exact slot43 is a controlled trial route, never a public capability.
+        self.allow_private_lifestyle_formal_trial = (
+            allow_private_lifestyle_formal_trial is True
         )
         self.state_dir = Path(state_dir) if state_dir is not None else None
         self.save_dir = Path(save_dir) if save_dir is not None else None
@@ -2086,6 +2091,47 @@ class NativeHeadlessGameplayDriver:
         return query_observed_heir_marriage_private_v1(
             self, expected_native_revision=expected_native_revision,
             timeout_seconds=timeout_seconds,
+        )
+
+    def query_player_lifestyle_formal_private_v1(
+        self, *, expected_revision: int | None = None
+    ) -> dict[str, object]:
+        """Controlled exact slot43 read; never enters public steps or MCP."""
+        from .player_lifestyle_private_transport_v1 import (
+            query_player_lifestyle_private_v1,
+        )
+
+        return query_player_lifestyle_private_v1(
+            self, expected_revision=expected_revision
+        )
+
+    def submit_player_lifestyle_perk_private_v1(
+        self,
+        *,
+        query: dict[str, object],
+        action: dict[str, object],
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """One controlled final-legal typed submit, with durable uncertainty."""
+        from .player_lifestyle_private_transport_v1 import (
+            submit_player_lifestyle_perk_private_v1,
+        )
+
+        return submit_player_lifestyle_perk_private_v1(
+            self, query=query, action=action,
+            expected_revision=expected_revision,
+        )
+
+    def query_player_lifestyle_receipt_private_v1(
+        self, *, pending: dict[str, object], expected_revision: int
+    ) -> dict[str, object]:
+        """Confirm a material HasPerk result on a later paused native frame."""
+        from .player_lifestyle_private_transport_v1 import (
+            query_player_lifestyle_receipt_private_v1,
+        )
+
+        return query_player_lifestyle_receipt_private_v1(
+            self, pending=pending, expected_revision=expected_revision,
         )
 
     def retain_succession_expectation_v1(

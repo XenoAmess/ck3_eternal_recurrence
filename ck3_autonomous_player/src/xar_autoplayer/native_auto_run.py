@@ -36,6 +36,7 @@ from .bridge.pending_character_interaction_context_contract import (
 from .bridge.council_assign_councillor_action_contract import (
     ASSIGN_COUNCILLOR_V1_STEP,
 )
+from .lifestyle_formal_consumer import RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP
 from .bridge.service import GameplayBridgeService
 from .bridge.settlement_contract import (
     normalize_fixed_score,
@@ -192,6 +193,7 @@ def native_auto_run(
     ),
     allow_route_contact_high_speed_ab: bool = False,
     allow_stationary_objective_hold_sentinel_canary: bool = False,
+    allow_private_lifestyle_formal_trial: bool = False,
     operator_stop_event: threading.Event | None = None,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
@@ -235,6 +237,13 @@ def native_auto_run(
         raise AgentError(
             f"{completion_contract} completion requires an exact cold-start "
             "checkpoint"
+        )
+    if (
+        allow_private_lifestyle_formal_trial is True
+        and completion_contract != "bounded"
+    ):
+        raise AgentError(
+            "private LIFE slot43 trial only admits a bounded contract"
         )
 
     ensure_state_path_safe(spec.state_dir)
@@ -432,6 +441,11 @@ def native_auto_run(
         }
         # NativeNamedPipeServer.start() completes in the constructor.  CK3 is
         # deliberately launched only after this endpoint can accept the DLL.
+        private_lifestyle_driver_options = (
+            {"allow_private_lifestyle_formal_trial": True}
+            if allow_private_lifestyle_formal_trial is True
+            else {}
+        )
         driver = NativeHeadlessGameplayDriver(
             config.pipe_name,
             state_dir=spec.state_dir,
@@ -443,6 +457,7 @@ def native_auto_run(
             allow_stationary_objective_hold_sentinel_canary=(
                 allow_stationary_objective_hold_sentinel_canary
             ),
+            **private_lifestyle_driver_options,
         )
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(
@@ -744,6 +759,29 @@ def native_auto_run(
             after = _compact_binding(driver.capabilities(), after_snapshot)
             current_attempt["after"] = _public_binding(after)
             evidence = _semantic_delta(before, after_snapshot, after)
+            if step == PRIVATE_LIFESTYLE_RECEIPT_STEP:
+                receipt = outcome.get("result")
+                if not (
+                    isinstance(receipt, dict)
+                    and receipt.get("status") == "applied"
+                    and receipt.get("postcondition_verified") is True
+                    and receipt.get("post_target_perk_owned") is True
+                    and receipt.get("post_snapshot_id")
+                    == after_snapshot.get("snapshot_id")
+                    and receipt.get("post_public_revision")
+                    == after_snapshot.get("revision")
+                    and receipt.get("episode_run_id")
+                    == after_snapshot.get("episode_run_id")
+                ):
+                    capture_first_failure(
+                        stage="lifestyle_receipt",
+                        kind="lifestyle_material_postcondition_failed",
+                        message="the private HasPerk receipt lost its independent published frame",
+                    )
+                    raise AgentError(
+                        "private LIFE receipt did not match the next paused game frame"
+                    )
+                evidence.append("lifestyle_has_perk_independent_later_frame")
             if "date_advanced" in evidence:
                 date_advanced = True
             if parse_event_option_step(step) is not None:
@@ -3196,6 +3234,12 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "exact_war_terminal_watch",
         "council_assignment",
         "council_decision",
+        "lifestyle_decision",
+        "lifestyle_action",
+        "lifestyle_pending_action",
+        "lifestyle_receipt_consumed",
+        "lifestyle_query_status",
+        "lifestyle_native_error",
         "exact_active_war_set_watch",
         "maximum_omitted_state_detection_lag_days",
         "omitted_native_watch_fields",
@@ -3330,6 +3374,13 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "connection_generation",
         "played_character_id",
         "played_character_alive",
+        "action_request_id",
+        "target_key",
+        "pre_public_revision",
+        "post_public_revision",
+        "post_snapshot_id",
+        "post_target_perk_owned",
+        "postcondition_verified",
         "query_sequence",
         "snapshot_revision",
         "queried_snapshot_id",
@@ -3453,6 +3504,8 @@ def _turn_class(
     if step is None:
         return "terminal" if isinstance(plan, dict) else "gameplay"
     if step.startswith("query-"):
+        return "query"
+    if step == PRIVATE_LIFESTYLE_RECEIPT_STEP:
         return "query"
     if step == "save-checkpoint":
         return "checkpoint"

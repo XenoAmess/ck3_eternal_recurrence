@@ -117,6 +117,7 @@ from .environment import write_json_atomic
 from .errors import AgentError
 from .runtime import utc_now
 from .raiktor_formal_exit import plan_raiktor_formal_exit
+from .lifestyle_formal_consumer import consume_lifestyle_private_query
 from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
 )
@@ -5083,6 +5084,25 @@ def choose_one_life_turn(
         "war_exit_decision": decision,
         "bounded_continue_adapter": "existing-native-tactical-turn-v1",
     }
+
+
+def consume_one_life_lifestyle_private_trial(
+    baseline_plan: dict[str, object],
+    *,
+    same_frame_feudal_scope: dict[str, object],
+    private_query: dict[str, object] | None,
+) -> dict[str, object]:
+    """Keep the existing forced-state/war choice, then consider one LIFE perk.
+
+    The caller invokes this only for a controlled slot43 candidate.  Normal
+    `choose_one_life_turn` and all public capability surfaces remain unchanged.
+    """
+
+    return consume_lifestyle_private_query(
+        baseline_plan,
+        scope=same_frame_feudal_scope,
+        query=private_query,
+    )
 
 
 def _choose_one_life_turn_core(
