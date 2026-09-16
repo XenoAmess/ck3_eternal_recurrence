@@ -996,6 +996,17 @@ class NativeProtocolState:
                 private_observers[
                     "g2_truce_preview_entry_observer_v1"
                 ] = dict(preview_observer)
+            vfs_mount_observer = heartbeat.get(
+                "vfs_mount_lifecycle_observer_v1"
+            )
+            if isinstance(vfs_mount_observer, dict):
+                # This remains a private, read-only startup diagnostic.  The
+                # bounded publisher array exposes mount order through the
+                # existing MCP diagnostics route without advertising a game
+                # action or inferring per-resource winner semantics.
+                private_observers[
+                    "vfs_mount_lifecycle_observer_v1"
+                ] = copy.deepcopy(vfs_mount_observer)
         return {
             "protocol_version": PROTOCOL_VERSION,
             "pipe_name": self.pipe_name,

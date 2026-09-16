@@ -246,6 +246,10 @@ struct VfsMountLifecycleObserverV1Diagnostics {
   std::uint64_t publisher_correlation_miss_count = 0;
   std::uint64_t publisher_slot_overwrite_count = 0;
   VfsMountPublisherDiagnosticsV1 latest_publisher{};
+  std::size_t publisher_slot_count = 0;
+  std::array<VfsMountPublisherDiagnosticsV1,
+             kVfsMountLifecyclePublisherSlotsV1>
+      publishers{};
   VfsSettingsLookupDiagnosticsV1 paths_lookup{};
   VfsSettingsLookupDiagnosticsV1 checksummed_lookup{};
   std::uint64_t lookup_classification_fault_count = 0;

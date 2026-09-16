@@ -17,6 +17,8 @@
     "RecordVfsMountPublisherEnterV1",
     "RecordVfsMountPublisherReturnV1",
     "RecordVfsSettingsLookupV1",
+    "publisher_slot_count",
+    "publishers",
     "publisher_correlation_miss_count",
     "lookup_classification_fault_count",
     "primary_thread_suspended_proven"
@@ -29,6 +31,8 @@
     "g_vfs_mount_lifecycle_observer_v1",
     "ReadVfsMountLifecycleObserverV1Diagnostics",
     "},\\\"vfs_mount_lifecycle_observer_v1\\\":{",
+    "\\\"publisher_slot_count\\\"",
+    "\\\"publishers\\\":[",
     "InstallVfsMountLifecycleObserverV1",
     "UninstallPdxPaths583ProducerObserverV1"
   ],

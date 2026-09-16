@@ -184,6 +184,17 @@ void TestReadOnlyLifecycleAndFiltering() {
   assert(diagnostics.publisher_success_count == 1);
   assert(diagnostics.publisher_failure_count == 1);
   assert(diagnostics.publisher_correlation_miss_count == 0);
+  assert(diagnostics.publisher_slot_count == 2);
+  assert(diagnostics.publishers[0].ordinal == 1);
+  assert(diagnostics.publishers[0].raw_result == 0);
+  assert(diagnostics.publishers[0].path.preview_length == 4);
+  assert(std::memcmp(diagnostics.publishers[0].path.preview.data(), "game",
+                     4) == 0);
+  assert(diagnostics.publishers[1].ordinal == 2);
+  assert(diagnostics.publishers[1].raw_result == 1);
+  assert(diagnostics.publishers[1].path.preview_length == 13);
+  assert(std::memcmp(diagnostics.publishers[1].path.preview.data(),
+                     "game/map_data", 13) == 0);
   assert(diagnostics.latest_publisher.entry_thread_id == 7);
   assert(diagnostics.latest_publisher.raw_result == 0);
   assert(diagnostics.latest_publisher.path.preview_length == 4);

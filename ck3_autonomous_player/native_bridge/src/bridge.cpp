@@ -1410,6 +1410,31 @@ void AppendVfsMountPath(
   result += '}';
 }
 
+void AppendVfsMountPublisher(
+    std::string &result,
+    const xar::bridge::VfsMountPublisherDiagnosticsV1 &value) {
+  result += "{\"ordinal\":";
+  result += Number(value.ordinal);
+#define XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(name) \
+  result += ",\"" #name "\":";                  \
+  result += Number(value.name)
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(entry_sequence);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(return_sequence);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(entry_thread_id);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(return_thread_id);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(raw_result);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(raw_rcx);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(backend);
+  XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE(insert_mode);
+#undef XAR_APPEND_VFS_MOUNT_PUBLISHER_VALUE
+  result += ",\"return_seen\":";
+  result += value.return_seen ? "true" : "false";
+  AppendVfsMountPath(result, "path", value.path);
+  AppendVfsMountManager(result, "manager_before", value.manager_before);
+  AppendVfsMountManager(result, "manager_after", value.manager_after);
+  result += '}';
+}
+
 void AppendVfsSettingsLookup(
     std::string &result, std::string_view name,
     const xar::bridge::VfsSettingsLookupDiagnosticsV1 &value) {
@@ -1967,33 +1992,19 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
 #undef XAR_APPEND_VFS_MOUNT_LIFECYCLE_FIELD
   AppendVfsMountManager(result, "core_init_manager",
                         vfs_mount_lifecycle_observer.core_init_manager);
-  result += ",\"latest_publisher\":{\"ordinal\":";
-  result += Number(vfs_mount_lifecycle_observer.latest_publisher.ordinal);
-#define XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(name) \
-  result += ",\"" #name "\":";                  \
-  result += Number(vfs_mount_lifecycle_observer.latest_publisher.name)
-  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(entry_sequence);
-  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(return_sequence);
-  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(entry_thread_id);
-  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(return_thread_id);
-  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(raw_result);
-  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(raw_rcx);
-  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(backend);
-  XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD(insert_mode);
-#undef XAR_APPEND_VFS_MOUNT_PUBLISHER_FIELD
-  result += ",\"return_seen\":";
-  result += vfs_mount_lifecycle_observer.latest_publisher.return_seen
-                ? "true"
-                : "false";
-  AppendVfsMountPath(result, "path",
-                     vfs_mount_lifecycle_observer.latest_publisher.path);
-  AppendVfsMountManager(
-      result, "manager_before",
-      vfs_mount_lifecycle_observer.latest_publisher.manager_before);
-  AppendVfsMountManager(
-      result, "manager_after",
-      vfs_mount_lifecycle_observer.latest_publisher.manager_after);
-  result += '}';
+  result += ",\"latest_publisher\":";
+  AppendVfsMountPublisher(
+      result, vfs_mount_lifecycle_observer.latest_publisher);
+  result += ",\"publisher_slot_count\":";
+  result += Number(vfs_mount_lifecycle_observer.publisher_slot_count);
+  result += ",\"publishers\":[";
+  for (std::size_t index = 0;
+       index < vfs_mount_lifecycle_observer.publisher_slot_count; ++index) {
+    if (index != 0) result += ',';
+    AppendVfsMountPublisher(
+        result, vfs_mount_lifecycle_observer.publishers[index]);
+  }
+  result += ']';
   AppendVfsSettingsLookup(result, "paths_lookup",
                           vfs_mount_lifecycle_observer.paths_lookup);
   AppendVfsSettingsLookup(result, "checksummed_lookup",

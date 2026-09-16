@@ -820,6 +820,20 @@ R25 支持的最窄结论是：在这个 exact 1.19.0.6 CoA pattern 夹具中，
 完整摘要见 [`vfs-replace-path-native-r25`](coat-of-arms-fit-artifacts/vfs-replace-path-native-r25/README.md)。下一步不再追加事后猜测的
 framebuffer 期待，而是优先补运行时资源来源/注册表 provenance 的结构化 MCP；该能力闭合前，正式 asset-pack 不推断 `replace_path` 胜者。
 
+### 5.12 2026-09-16 VFS 挂载顺序的结构化 MCP 诊断
+
+仓库已有的 exact-build、默认关闭、私有只读 `vfs_mount_lifecycle_observer_v1` 现在会把固定 64 槽发布表稳定读取、按
+`ordinal` 排序，并通过既有 `ck3_get_bridge_diagnostics` 返回 `publisher_slot_count` 与 `publishers`。每行包含挂载路径预览、
+进入/返回序号、线程、backend、insert mode、原始返回值和 manager 前后摘要。它不新增公开游戏 action，也不会进入正式网页运行链路。
+
+本工作包的 C++ 单测、exact-build source contract 与 Python 协议/MCP 集成测试均通过；测试同时固定了三条边界：最多返回 64 行、
+输出按真实发布序号排列、能力仍不出现在公开 capability 列表。静态合同与复现命令见
+[`ck3-coat-of-arms-vfs-mount-order-mcp.md`](ck3-coat-of-arms-vfs-mount-order-mcp.md)。
+
+这项能力只回答“观察到哪些挂载发布、以何顺序成功返回”，不等价于按逻辑资源路径查询最终 VFS winner，也不证明
+`replace_path` 对某个文件或 CoA registry 的效果。下一次原生运行必须先证明目标启动会话完整进入可验状态，再冻结 MCP 返回的发布表；
+若仍需单文件来源，则继续补有界资源解析/registry provenance，而不能从挂载顺序直接猜测。
+
 ## 6. 哪些 CK3 语法不能在这里执行
 
 | 语法族 | 能否执行 | 结论依据 |

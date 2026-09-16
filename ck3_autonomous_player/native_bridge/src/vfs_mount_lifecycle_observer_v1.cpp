@@ -1102,6 +1102,24 @@ ReadVfsMountLifecycleObserverV1Diagnostics(
   if (const auto *slot = FindPublisherBySequence(state, latest)) {
     result.latest_publisher = ReadPublisher(*slot);
   }
+  for (const auto &slot : state.publisher_slots) {
+    const auto first = slot.published_ordinal.load(std::memory_order_acquire);
+    if (first == 0) continue;
+    const auto publisher = ReadPublisher(slot);
+    const auto second = slot.published_ordinal.load(std::memory_order_acquire);
+    if (first != second || publisher.ordinal != second ||
+        result.publisher_slot_count >= result.publishers.size()) {
+      continue;
+    }
+    result.publishers[result.publisher_slot_count++] = publisher;
+  }
+  std::sort(
+      result.publishers.begin(),
+      result.publishers.begin() + result.publisher_slot_count,
+      [](const VfsMountPublisherDiagnosticsV1 &left,
+         const VfsMountPublisherDiagnosticsV1 &right) {
+        return left.ordinal < right.ordinal;
+      });
   result.paths_lookup = ReadLookup(state.paths_lookup);
   result.checksummed_lookup = ReadLookup(state.checksummed_lookup);
   result.lookup_classification_fault_count =
