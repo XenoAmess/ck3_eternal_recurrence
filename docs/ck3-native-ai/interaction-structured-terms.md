@@ -480,7 +480,7 @@ structured terms 完成：
 
 - ordinary non-war 的分类必须同时满足 exact same-frame/full-generation identity、完整 roles/routing/deadline/legality、
   `special_war_binding_not_applicable + special_data_present=false + 非三个 war-exit exact key`，并命中 exact-build 显式非战争非宗教
-  allowlist。当前有两个逐 definition 冻结的 exact key。`spar_with_knight_interaction` 使用原版
+  allowlist。当前有三个逐 definition 冻结的 exact key。`spar_with_knight_interaction` 使用原版
   `00_tradition_interactions.txt` 完整文件 SHA-256
   `E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3`，其第 1–200 行完整 block 明确 popup/pause、双方不在
   战争、accept 只启动 `FATALITY=no` bout，且没有 faith/religion/marriage、`special_interaction`、`target_type`、`auto_accept` 或
@@ -490,6 +490,12 @@ structured terms 完成：
   war-special payload，但 `war_sensitive=true`。当前 fallback 仍不消费尚未结构化的 option/payment、囚犯价值或战争杠杆，并会
   确定性拒绝一个 native-legal reject；具体原生树、10 年 refusal flag 与 production 首阻塞见
   [events-and-interactions.md](events-and-interactions.md#pay_ransom_interaction战后长跑首个真实-ordinary-pending)。
+  `ransom_interaction` 使用同一原版文件与 SHA，但绑定第 1711–2364 行的另一份完整 definition；它 authored
+  `special_interaction=ransom_interaction`，经 definition/effect/call tree 逐项确认属于普通 prison-ransom 而不是 war-special，且不含
+  宗教输入。其 reject 不付款、不释放，给 prisoner 写 10 年 refusal flag 并向 actor 发送 `.0131` letter；R770 真实 pending 因分类缺失
+  fail-closed，详见
+  [events-and-interactions.md](events-and-interactions.md#ransom_interactionr770-玩家作为付款方的真实-ordinary-pending)。该 key 在完成 cold replay
+  的 old-ID 消失、下一 turn non-repeat 与 paired checkpoint 前保持 static-ready，不能借 allowlist 宣称语义最优或 material live。
   `invite_to_activity_interaction` 因同 key 可覆盖 `activity_wedding`、当前 bridge 又没有 activity subtype，已明确移出 allowlist；前述
   special-war 三项**不是**通用 ordinary classifier。其它 definition 必须 `definition_unclassified` fail-closed，等待 typed classification
   或逐项 exact-definition 审计；不在本 fallback 中扩展宗教域；

@@ -601,6 +601,59 @@ ID `-2013265918`，definition 为 `arrange_marriage_interaction`；definition-bo
 `3980E4A2CD7F140A98488184C2095B3B41EF92EC80505B837177200705DD3973`。这把 negative signed snapshot/query/reply/
 old-ID advancement 升级为 production-live；婚姻语义边界另见 [marriage-and-alliance.md](marriage-and-alliance.md)。
 
+### `ransom_interaction`：R770 玩家作为付款方的真实 ordinary pending
+
+[exact-build source-reviewed / production RED / fix static-ready] 本小节绑定 CK3 `1.19.0.6`、EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，以及原版
+`game/common/character_interactions/00_prison_interactions.txt`（完整文件 SHA-256
+`3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B`）第 1711–2364 行的完整
+`ransom_interaction` definition。它属于 `interaction_category_prison`；第 1716 行虽声明
+`special_interaction=ransom_interaction`，但该 special identity 是赎金交互自身，不是宣战、参战或战争终局。完整 definition、
+`ransom_interaction_effect`（`00_prison_effects.txt` SHA-256
+`F745201EFD827EFF9F4AE8BF61060FE81D1048C47F7C7B487AB5476218D26A66`）及拒绝通知事件均没有
+faith/religion/doctrine/tenet/piety/holy-order 路径。因此只对这个 exact key 冻结分类
+`ordinary_non_war_nonreligious`、`domain=prison_ransom`；其发起权重会因 actor 或玩家 recipient 正在战争而归零，所以仍记
+`war_sensitive=true`，不能扩义为所有 `ransom*` 或 `special_interaction` 都是 ordinary。
+
+原版角色、接受与拒绝路径如下：
+
+- [static-confirmed] redirect（第 1718–1729 行）把原 target 保存为 `secondary_recipient`（囚犯），若囚犯不是 ruler
+  则把其 liege 保存为 `recipient`（付款方）；actor 是关押者。`on_accept` 第 1778–1900 行调用
+  `ransom_interaction_effect`，按八个 send option 的选中条款付款/给 hook、influence 或 herd，并释放囚犯。
+- [static-confirmed] `on_decline` 第 1903–1919 行不调用 `ransom_interaction_effect`，因此不付款、不释放。玩家 recipient
+  拒绝时给 `secondary_recipient` 写入 10 年 `character_ransom_refused_by_player`，然后给 actor 触发
+  `char_interaction.0131`。该事件位于
+  `events/interaction_events/character_interaction_events.txt:736–763`（SHA-256
+  `D238E0A3442F41C35AF35157D47A754CB200B72AB2A0184BAEFC86E63347A150`），只有一项确认按钮，没有额外 gameplay effect。
+- [static-confirmed] 因而 degraded reject 的脚本后置语义是“交易未执行、囚犯仍被关押、十年防重复 flag、actor 收到拒绝信”。
+  当前通用 typed runner 能直接验收的是旧 signed full pending ID 消失、下一正式 turn 不重复提交、随后 paired checkpoint；
+  囚犯关系与 10 年 flag 尚未发布为只读字段，不把它们伪报为本轮 material live。
+
+```mermaid
+flowchart TD
+    A["[static-confirmed] actor/imprisoner 向 recipient/payer 提出 ransom"] --> P["[static-confirmed] secondary_recipient = prisoner"]
+    P --> H{"[static-confirmed] recipient 是 AI？"}
+    H -->|是| N["[static-confirmed] ai_accept：关系、金币、dread 等"]
+    H -->|否，玩家| Q["[production-live observation] 建立 normal recipient pending"]
+    Q --> C{"[counter-policy] exact ransom key + non-war/nonreligious evidence + native legality"}
+    C -->|reject 合法且命令可达| R["[policy-design] deterministic degraded reject"]
+    C -. "identity/legality/special 任一未知" .-> U["[unknown] fail closed"]
+    R --> D["[static-confirmed] on_decline：不付款、不释放；10y flag；.0131 letter"]
+    D --> V["[required live] old ID 消失 → 下一 turn 不重复 → paired checkpoint"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+[production RED] R770 formal `native_auto_run` 在 commit `d036e2b1a26f8471e5e9eb4ca3bba2c6d65d6bb1`、
+`date_raw=53395584`、turn 111 读到 signed instance `-1845493753`：actor/imprisoner `34676`、player recipient/payer
+`31853`、secondary recipient/prisoner `36843`；age/expiration/remaining=`2/60/58`，accept/reject/block 均 native legal，
+ACK 非法，`special_data_present=false` 且 special-war binding 明确 not-applicable。策略因 key 尚未逐 definition 分类而正确
+fail-closed；report SHA-256
+`8D53F76DA5D2E200DAB22D18E285C1B7458E2EF9176278B5896D7134ACDC8C90`。本次实现只把 exact key 与上述 source hash
+加入既有 ordinary allowlist，使相同 frame 由 `ordinary-reject-unique-accept-v1` 选择一次 typed reject；它不会放宽 unknown、
+invalid、stale、opaque special 或其它 definition，也不宣称赎金效用完成。该修复在 R770 checkpoint cold replay 完成
+reject→独立 paused old-ID 消失→下一 turn 不重复→paired checkpoint 前仅为 static-ready，B0 保持开启。
+
 ### 我方首轮 inbound blocker-removal policy（不等价于原生 `ai_accept`）
 
 [implementation-confirmed / pay-ransom production-live / other allowlisted branches live=false] 原生 reply 树、四路 legality与 exact-build pending identity 已先按上文
@@ -616,13 +669,14 @@ age/expiry `0/60/60`、definition/context 各六个 send option 且全部未选�
    四路 legality 与 special-war classification。stale、unavailable、sender/actor 或 responder identity 不一致均不提交 reply。
 2. auto-accept notification 仍只走既有 enum-4 ACK，不进入本 fallback。
 3. `special_war_binding_not_applicable + special_data_present=false + 非三个 war-exit key` 只证明“未命中特殊战争 payload”，**不能**
-   证明任意 stock definition 都是普通非战争、非宗教互动。fallback 还必须命中 exact-build 显式 allowlist；当前只有两个逐定义审计的
+   证明任意 stock definition 都是普通非战争、非宗教互动。fallback 还必须命中 exact-build 显式 allowlist；当前只有三个逐定义审计的
    exact key。`spar_with_knight_interaction` 依据 `common/character_interactions/00_tradition_interactions.txt`（完整文件 SHA-256
    `E3B7330D8DFD9C82522D65629B6DD991D319B76B41C388CE483E351D829391E3`）第 1–200 行完整 definition：第 1–13 行固定
    common/popup/pause，第 49–50 行要求双方均不在战争，第 75–97 行 accept 只启动 `FATALITY=no` 的 bout，第 100–138 行是
    `ai_accept`；完整 block 不含 faith/religion/marriage、`special_interaction`、`target_type`、`auto_accept` 或 `on_decline`。
-   `pay_ransom_interaction` 则只依据上一小节冻结的 `00_prison_interactions.txt` 完整 definition 与 SHA，分类为
-   `domain=prison_ransom, war_sensitive=true`；当前 fallback 不消费它尚未结构化的 option/payment/prisoner utility。
+   `pay_ransom_interaction` 与 `ransom_interaction` 则只依据各自小节冻结的 `00_prison_interactions.txt` 完整 definition 与 SHA，
+   分类为 `domain=prison_ransom, war_sensitive=true`；后者 authored `special_interaction=ransom_interaction` 已逐定义证明不是
+   war-special。当前 fallback 不消费两者尚未结构化的 option/payment/prisoner utility。
    `invite_to_activity_interaction` 已移出 allowlist，因为同 key 可承载 `activity_wedding`，而当前 bridge 不发布 activity subtype。
    其它 stock、mod、仅名字看似 ordinary 的 definition 一律
    `definition_unclassified` fail-closed；以后只能由同样的 exact-definition 审计或 bridge 发布的 typed classification 扩表，不借此探索
@@ -659,7 +713,7 @@ structured exchange/effect、非 allowlisted target payload identity、campaign 
 | Python event normalization | 可消费显式 `enabled`/`strategy_score` | native 缺字段时会为每个 count row 补 `enabled=true`，无分数时按最低 option number 选第一项 | 不能作为 autonomous event policy |
 | pending interaction identity/action | `query-pending-character-interaction-context-v1` 已接入 exact-build application-main mailbox、native driver、service 与 MCP；完整 identity 合同为除 `-1` 外的 generation-bearing signed int32，`0` 结构合法；negative full ID `-2013265918` 已完成 production snapshot→typed query→reject→old-ID 消失，可发布完整 instance ID、stable key/hash、五 roles、generic target type key、send options、routing、deadline、auto-accept 与四路 legality；canonical `call_ally_interaction` 的 type-16/war target 已有 static/query typed `war:<id>` resolver 路径 | intermediary live、非 allowlisted generic target payload identity、structured terms/cost/effect preview，以及 call-ally typed target 的 paused production live artifact；当前 terms 必须 typed unavailable | `signed_pending_id_contract_ready=true`、`negative_signed_pending_id_live_ready=true`、`interaction_typed_query_wired=true`、`call_ally_war_target_query_ready=true`、`call_ally_war_target_live_ready=false`、`ordinary_interaction_live_ready=true`；`interaction_semantic_decision_ready=false` |
 | auto-accept notification | native object已有 flag；production Snapshot/query 已保留 locally routed notification；固定 enum-4 ACK action 会 fresh revalidate full ID/paused/route/flag，并等待旧 ID 推进；非宗教 definition-only fixture 已跨 fresh cold process 完成 query/query/ACK/旧 ID 消失 | 自然 stock notification 与 intermediary notification live 仍缺；enum-4 validator 仍不得作为 legality；fixture authored definition/terms 不是 stock 语义 | `notification_ack_static_ready=true`，`notification_ack_wired=true`，`notification_ack_fixture_live_ready=true` |
-| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；ordinary degraded reply 只对 `spar_with_knight_interaction` 与 `pay_ransom_interaction` 启用；`arrange_marriage_interaction` 另有 direct/unexpired-stock-deadline/zero-option reject-only 分支；任何未分类 definition 与 known/opaque war-special fail-closed；active war 同帧时 100% enforce-demands 无条件优先 | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility；marriage accept 的当前 score 与 secondary-pair postcondition；stale query 不复用；自然 stock/intermediary notification 仍待 live | exact `pay_ransom` 与 age-0 窄 `arrange_marriage` reject 均 production-live loop；R761 的 age-2 放宽为 static-ready、待 checkpoint cold replay；notification ACK 为 fixture-live；`spar`、unique-accept、marriage accept 与其它 definition 仍非 production-live；`interaction_semantic_decision_ready=false` |
+| current planner | 对 pending 先查同 snapshot/revision/full ID 的 typed context；auto-accept notification 只走固定 ACK；ordinary degraded reply 只对 `spar_with_knight_interaction`、`pay_ransom_interaction` 与 `ransom_interaction` 启用；`arrange_marriage_interaction` 另有 direct/unexpired-stock-deadline/zero-option reject-only 分支；任何未分类 definition 与 known/opaque war-special fail-closed；active war 同帧时 100% enforce-demands 无条件优先 | typed definition/subtype classification、完整 structured terms、按 interaction 类型的 campaign utility；marriage accept 的当前 score 与 secondary-pair postcondition；stale query 不复用；自然 stock/intermediary notification 仍待 live | exact `pay_ransom` 与 age-0 窄 `arrange_marriage` reject 均 production-live loop；R761 的 age-2 放宽及 R770 `ransom_interaction` 分类为 static-ready、待 checkpoint cold replay；notification ACK 为 fixture-live；`spar`、unique-accept、marriage accept 与其它 definition 仍非 production-live；`interaction_semantic_decision_ready=false` |
 
 [live-confirmed fixture-scoped] 2026-08-27 的 current-event Attempt4 在 seed PID `22976` 与 fresh-cold PID `43140`
 中保持完整 instance `17`、date `53175816`、canonical key `xar_event_window_live_fixture.1` 与逐字节相同 fixture；三条
@@ -681,7 +735,7 @@ stress 还精确实读 `affected_by_trait=false` 与本帧 `critical=false`。ar
 互动 typed query 现已能识别请求类型、角色、routing、options 与合法回复；canonical call-ally war target 另有
 static/query `war:<id>` identity，但其它 target payload 和结构化条款仍不足以做高质量取舍。
 普通 recipient pending 的 paused live 双查询已经闭合；planner 现会先查询同帧 typed context，再仅对 exact-definition allowlist 命中的
-`spar_with_knight_interaction` 或 `pay_ransom_interaction` 使用 ordinary reject-first fallback；其中后者的真实 reject→旧 full ID 消失→继续
+`spar_with_knight_interaction`、`pay_ransom_interaction` 或 `ransom_interaction` 使用 ordinary reject-first fallback；其中 `pay_ransom` 的真实 reject→旧 full ID 消失→继续
 推进/checkpoint 已 production-live。definition-bound `arrange_marriage_interaction` 的独立 zero-option reject-only 分支也已在 negative
 full ID 上完成同样 lifecycle。“special payload 不适用”本身不再被当作 ordinary 分类证据，所有其它 definition 与 known/opaque
 special 均停在 observation dependency。generic recipient notification 的 fixture-scoped

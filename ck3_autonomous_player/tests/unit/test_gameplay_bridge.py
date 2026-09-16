@@ -5493,6 +5493,106 @@ class GameplayBridgeTests(unittest.TestCase):
             },
         )
 
+    def test_planner_rejects_exact_build_ransom_pending(self) -> None:
+        context_result = _pending_context_result(
+            pending_id=-1_845_493_753,
+            revision=207,
+            native_revision=206,
+            date_raw=53_395_584,
+            definition_key="ransom_interaction",
+            actor_character_id=34_676,
+            recipient_character_id=31_853,
+            legality={
+                "accept": {
+                    "status": "available",
+                    "allowed": True,
+                    "reason": None,
+                },
+                "reject": {
+                    "status": "available",
+                    "allowed": True,
+                    "reason": None,
+                },
+                "block": {
+                    "status": "available",
+                    "allowed": True,
+                    "reason": None,
+                },
+                "acknowledge": {
+                    "status": "available",
+                    "allowed": False,
+                    "reason": "normal_reply_channel",
+                },
+            },
+        )
+        context = context_result["pending_character_interaction_context"]
+        assert isinstance(context, dict)
+        roles = context["roles"]
+        assert isinstance(roles, dict)
+        roles["secondary_recipient_character_id"] = 36_843
+        context["send_options"] = {
+            "exclusive": True,
+            "definition_count": 8,
+            "context_count": 8,
+            "rows": [
+                {
+                    "native_index": index,
+                    "selected": index == 2,
+                    "is_shown": index in (2, 4),
+                    "is_valid": index in (2, 4),
+                    "canonical_flag_status": "unavailable",
+                }
+                for index in range(8)
+            ],
+        }
+
+        plan = _plan_for_pending_context(
+            context_result,
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertEqual(
+            plan["phase"], "pending_character_interaction_degraded_reject"
+        )
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(decision["classification"], "ordinary_non_war")
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertFalse(decision["native_ai_equivalent"])
+        self.assertFalse(decision["semantic_optimal"])
+        self.assertEqual(
+            decision["definition_classification"],
+            {
+                "policy": "ck3-1.19.0.6-explicit-ordinary-nonreligious-v1",
+                "definition_key": "ransom_interaction",
+                "allowlisted": True,
+                "evidence": {
+                    "classification": "ordinary_non_war_nonreligious",
+                    "domain": "prison_ransom",
+                    "war_sensitive": True,
+                    "authored_special_interaction": "ransom_interaction",
+                    "source": (
+                        "common/character_interactions/"
+                        "00_prison_interactions.txt"
+                    ),
+                    "source_sha256": (
+                        "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64A"
+                        "A8243AA0C658F22B"
+                    ),
+                    "known_decline_effects": [
+                        "secondary_recipient:"
+                        "character_ransom_refused_by_player:10y",
+                        "actor:char_interaction.0131",
+                    ],
+                },
+            },
+        )
+
     def test_planner_rejects_exact_direct_zero_option_marriage_pending(
         self,
     ) -> None:

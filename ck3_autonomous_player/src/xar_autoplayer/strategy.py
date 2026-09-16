@@ -227,6 +227,20 @@ _DEGRADED_ORDINARY_INTERACTION_ALLOWLIST = {
             "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B"
         ),
     },
+    "ransom_interaction": {
+        "classification": "ordinary_non_war_nonreligious",
+        "domain": "prison_ransom",
+        "war_sensitive": True,
+        "authored_special_interaction": "ransom_interaction",
+        "source": "common/character_interactions/00_prison_interactions.txt",
+        "source_sha256": (
+            "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B"
+        ),
+        "known_decline_effects": [
+            "secondary_recipient:character_ransom_refused_by_player:10y",
+            "actor:char_interaction.0131",
+        ],
+    },
 }
 _DEGRADED_MARRIAGE_REJECT_ONLY_ALLOWLIST = {
     "arrange_marriage_interaction": {
