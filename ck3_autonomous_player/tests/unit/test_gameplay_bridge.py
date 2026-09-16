@@ -9183,6 +9183,60 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "life-advance")
         self.assertEqual(plan["siege_state"]["stall_days"], 4)
 
+    def test_exact_siege_combat_interrupt_resets_stall(self) -> None:
+        siege_army = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="sieging",
+        )
+        combat_army = _army(
+            11, soldiers=None, province_id=2585, controllable=True,
+            army_state="combat",
+        )
+        siege_state = _objective_state(
+            2585, active_siege=_active_siege()
+        )
+
+        def progress(
+            date_raw: int, player: dict[str, object]
+        ) -> dict[str, object]:
+            return _war_progress(
+                date_raw,
+                player=player,
+                enemies=[],
+                score=24,
+                objectives=[2585],
+                objective_states=[siege_state],
+            )
+
+        history = [
+            _advance_row(
+                1,
+                progress(24_000, siege_army),
+                progress(24_192, siege_army),
+            ),
+            _advance_row(
+                2,
+                progress(24_192, combat_army),
+                progress(24_336, siege_army),
+            ),
+        ]
+        plan = _native_war_plan(
+            player=siege_army,
+            enemies=[],
+            score=47,
+            date_raw=24_336,
+            history=history,
+            objective=2585,
+            objective_states=[siege_state],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            steps=("life-advance",),
+        )
+
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["siege_state"]["stall_days"], 0)
+
     def test_player_occupied_exact_objective_is_skipped(self) -> None:
         player = _army(
             11, soldiers=None, province_id=2585, controllable=True,

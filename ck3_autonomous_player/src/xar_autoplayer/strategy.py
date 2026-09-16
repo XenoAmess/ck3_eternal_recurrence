@@ -11870,6 +11870,35 @@ def _recent_exact_siege_stall_days(
         if before is None or after is None:
             stalled_days = 0
             continue
+        before_army_id = _native_int(before.get("besieging_army_id"))
+        after_army_id = _native_int(after.get("besieging_army_id"))
+        before_army = (
+            _progress_army(before_war, "player_armies", before_army_id)
+            if before_army_id is not None
+            else None
+        )
+        after_army = (
+            _progress_army(after_war, "player_armies", after_army_id)
+            if after_army_id is not None
+            else None
+        )
+        if not (
+            before_army_id is not None
+            and before_army_id == after_army_id
+            and isinstance(before_army, dict)
+            and isinstance(after_army, dict)
+            and _army_tactical_state(before_army) == "sieging"
+            and _army_tactical_state(after_army) == "sieging"
+            and _native_int(before_army.get("current_province_id"))
+            == province_id
+            and _native_int(after_army.get("current_province_id"))
+            == province_id
+        ):
+            # CK3 keeps the same SiegeID and primary-besieger flag while the
+            # army fights on the objective.  That interval cannot make siege
+            # work and therefore breaks, rather than extends, a stall streak.
+            stalled_days = 0
+            continue
         elapsed = max(0, (after_date - before_date) // 24)
         before_work = _fixed_raw(before.get("current_work"))
         after_work = _fixed_raw(after.get("current_work"))
