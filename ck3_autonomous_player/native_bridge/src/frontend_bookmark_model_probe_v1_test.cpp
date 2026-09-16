@@ -22,6 +22,7 @@ struct Region {
 
 struct Fixture {
   std::vector<Region> regions;
+  int setter_calls = 0;
 
   void Add(std::uintptr_t base, std::size_t size) {
     regions.push_back(Region{base, {}, size});
@@ -162,6 +163,18 @@ void *FakeFinalGovernment(void *, const void *character) noexcept {
              : nullptr;
 }
 
+bool FakeSelectedCharacterSetter(void *opaque, void *view,
+                                 const void *character) noexcept {
+  auto &fixture = *static_cast<Fixture *>(opaque);
+  if (view != reinterpret_cast<void *>(0x8000) ||
+      character != reinterpret_cast<const void *>(0xA000)) {
+    return false;
+  }
+  ++fixture.setter_calls;
+  fixture.Put(0x8000 + 0x158, std::int32_t{0});
+  return true;
+}
+
 bool Probe(Fixture &fixture,
            xar::ck3_11906::FrontendBookmarkModelProbeV1 &output,
            void *root = reinterpret_cast<void *>(0x2000)) {
@@ -176,10 +189,25 @@ bool Probe(Fixture &fixture,
       environment, access, root, output, &FakeFinalGovernment);
 }
 
+bool Select(Fixture &fixture,
+            xar::ck3_11906::FrontendBookmarkSelectionV1 &output) {
+  xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 environment{};
+  environment.module_base = kModuleBase;
+  environment.exact_build_admitted = true;
+  environment.gui_global_slot = reinterpret_cast<void **>(kGuiSlot);
+  xar::ck3_11906::ZhongguoScoreboardAccessV1 access{};
+  access.context = &fixture;
+  access.read_memory = &ReadFixture;
+  return xar::ck3_11906::SelectSupportedFeudalBookmarkCharacterV1(
+      environment, access, reinterpret_cast<void *>(0x2000),
+      output, &FakeFinalGovernment, &FakeSelectedCharacterSetter);
+}
+
 } // namespace
 
 int main() {
   using xar::ck3_11906::FrontendBookmarkModelProbeV1;
+  using xar::ck3_11906::FrontendBookmarkSelectionV1;
   auto fixture = MakeFixture();
   FrontendBookmarkModelProbeV1 result{};
   if (!Probe(fixture, result) || !result.model_indices_available ||
@@ -228,7 +256,32 @@ int main() {
                  result.government_type_keys[0].c_str());
     return 1;
   }
+  // A key-derived selector submits exactly once. The second independent
+  // probe reads view+0x158; the selector's same-frame read is diagnostic.
+  FrontendBookmarkSelectionV1 selection{};
+  if (!Select(fixture, selection) || !selection.owner_resolved ||
+      !selection.target_resolved || !selection.setter_invoked ||
+      !selection.same_frame_index_matches ||
+      selection.same_frame_selected_index != 0 ||
+      fixture.setter_calls != 1 ||
+      !Probe(fixture, result) || result.selected_character_index != 0) {
+    std::fprintf(stderr, "exact key-derived selector/requery failed\n");
+    return 1;
+  }
+  if (!Select(fixture, selection) || !selection.already_selected ||
+      selection.setter_invoked || fixture.setter_calls != 1) {
+    std::fprintf(stderr, "already selected role must not repeat setter\n");
+    return 1;
+  }
+  fixture.Put(0x8000 + 0x158, std::int32_t{-1});
   fixture.Put(0x9000 + 0x38, std::uint64_t{0xFFFFFFFF032AEB09});
+  if (!Select(fixture, selection) || selection.setter_invoked ||
+      fixture.setter_calls != 1 ||
+      selection.unavailable_reason !=
+          "selected_bookmark_date_not_1066_09_15") {
+    std::fprintf(stderr, "changed launch date must stop before setter\n");
+    return 1;
+  }
   if (!Probe(fixture, result) || result.candidate_identity_ready ||
       result.supported_1066_date_matches ||
       result.unavailable_reason !=
@@ -294,6 +347,18 @@ int main() {
     std::fprintf(stderr, "unique RTTI/root-matched registry view must recover\n");
     return 1;
   }
+  if (!Select(fixture, selection) ||
+      selection.before.verified_owner_route !=
+          "gui_context_registry" ||
+      !selection.owner_resolved || !selection.setter_invoked ||
+      !selection.same_frame_index_matches ||
+      fixture.setter_calls != 2 ||
+      !Probe(fixture, result) || result.selected_character_index != 0) {
+    std::fprintf(stderr,
+                 "R740-style unique GUI registry selector/requery failed\n");
+    return 1;
+  }
+  fixture.Put(0x8000 + 0x158, std::int32_t{-1});
   fixture.Put(0x9000 + 0x38, std::uint64_t{0xFFFFFFFF032AEB09});
   if (!Probe(fixture, result) || result.candidate_identity_ready ||
       result.verified_owner_route != "gui_context_registry" ||

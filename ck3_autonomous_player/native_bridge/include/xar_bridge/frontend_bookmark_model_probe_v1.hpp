@@ -62,11 +62,38 @@ using FrontendBookmarkGovernmentGetterV1 =
     void *(*)(void *opaque_context,
               const void *bookmark_character) noexcept;
 
+struct FrontendBookmarkSelectionV1 {
+  FrontendBookmarkModelProbeV1 before{};
+  bool owner_resolved = false;
+  bool target_resolved = false;
+  bool already_selected = false;
+  // Setter invocation is an irreversible submission marker, not evidence
+  // that the next independent Bookmarks frame has selected this character.
+  bool setter_invoked = false;
+  std::int32_t same_frame_selected_index = -1;
+  bool same_frame_index_matches = false;
+  std::string unavailable_reason;
+};
+
+using FrontendBookmarkSelectionSetterV1 =
+    bool (*)(void *opaque_context, void *setup_view,
+             const void *bookmark_character) noexcept;
+
 bool ProbeFrontendBookmarkModelV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
     FrontendBookmarkModelProbeV1 &output,
     FrontendBookmarkGovernmentGetterV1 fixture_government_getter =
         nullptr) noexcept;
+
+// May be invoked only by a verified application-main frontend mailbox slot.
+// The source key is resolved from the current selected Bookmark's native
+// collection; callers supply no CharacterID, widget path, pointer or index.
+bool SelectSupportedFeudalBookmarkCharacterV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
+    FrontendBookmarkSelectionV1 &output,
+    FrontendBookmarkGovernmentGetterV1 fixture_government_getter = nullptr,
+    FrontendBookmarkSelectionSetterV1 fixture_setter = nullptr) noexcept;
 
 } // namespace xar::ck3_11906

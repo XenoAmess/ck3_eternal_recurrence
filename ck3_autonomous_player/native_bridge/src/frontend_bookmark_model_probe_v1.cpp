@@ -517,4 +517,190 @@ bool ProbeFrontendBookmarkModelV1(
   return true;
 }
 
+bool SelectSupportedFeudalBookmarkCharacterV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
+    FrontendBookmarkSelectionV1 &output,
+    FrontendBookmarkGovernmentGetterV1 fixture_government_getter,
+    FrontendBookmarkSelectionSetterV1 fixture_setter) noexcept {
+  output = {};
+  if (!ProbeFrontendBookmarkModelV1(environment, access, bookmarks_root,
+                                    output.before,
+                                    fixture_government_getter)) {
+    output.unavailable_reason = "current_bookmarks_model_query_failed";
+    return true;
+  }
+  const auto &model = output.before;
+  if (!model.candidate_identity_ready ||
+      model.supported_1066_candidate_index < 0 ||
+      model.supported_1066_candidate_index >=
+          model.bookmark_character_count) {
+    output.unavailable_reason = model.unavailable_reason.empty()
+                                    ? "current_1066_candidate_not_ready"
+                                    : model.unavailable_reason;
+    return true;
+  }
+  if (model.selected_character_index ==
+      model.supported_1066_candidate_index) {
+    output.already_selected = true;
+    output.same_frame_selected_index = model.selected_character_index;
+    output.same_frame_index_matches = true;
+    return true;
+  }
+  if (model.selected_character_index != -1) {
+    output.unavailable_reason = "another_bookmark_character_is_selected";
+    return true;
+  }
+
+  // R740's sole owner route was the current GUI-context registry. The
+  // direct application/idler path is also accepted when its exact vtables,
+  // RTTI and independently named Bookmarks root all still match.
+  void *application = nullptr;
+  void *host = nullptr;
+  void *gui_context = nullptr;
+  if (!ReadAt(access, environment.gui_global_slot, 0, application) ||
+      !ReadAt(access, application, kZhongguoGuiChainFirstOffset, host) ||
+      !ReadAt(access, host, kZhongguoGuiChainSecondOffset, gui_context)) {
+    output.unavailable_reason = "current_frontend_owner_unreadable";
+    return true;
+  }
+  std::uint64_t application_vtable_rva = 0;
+  if (!ReadVtableRva(access, environment.module_base, application,
+                     application_vtable_rva) ||
+      application_vtable_rva != kInterfaceApplicationVtableRva) {
+    output.unavailable_reason = "current_frontend_application_replaced";
+    return true;
+  }
+  void *setup_view = nullptr;
+  if (model.verified_owner_route == "gui_context_registry") {
+    FrontendBookmarkModelProbeV1 owner_check{};
+    if (!ResolveRegisteredSetupView(access, environment.module_base,
+                                    gui_context, bookmarks_root,
+                                    owner_check, setup_view) ||
+        owner_check.registry_owner_match_count != 1) {
+      output.unavailable_reason =
+          owner_check.registry_owner_unavailable_reason.empty()
+              ? "current_bookmarks_owner_registry_unverified"
+              : owner_check.registry_owner_unavailable_reason;
+      return true;
+    }
+  } else if (model.verified_owner_route == "app_idler_chain") {
+    const void *previous = application;
+    for (std::size_t i = 0; i < kFrontendOwnerVtableRvas.size();
+         ++i) {
+      void *node = nullptr;
+      constexpr std::array<std::size_t, 3> kOwnerOffsets{0x78, 0x10,
+                                                          0x08};
+      std::uint64_t vtable_rva = 0;
+      if (!ReadAt(access, previous, kOwnerOffsets[i], node) ||
+          !ReadVtableRva(access, environment.module_base, node,
+                         vtable_rva) ||
+          vtable_rva != kFrontendOwnerVtableRvas[i]) {
+        output.unavailable_reason = "current_app_idler_owner_replaced";
+        return true;
+      }
+      if (i == 2) {
+        std::uint64_t handler_type_rva = 0;
+        if (!ReadRttiTypeRva(access, environment.module_base, node,
+                             handler_type_rva) ||
+            handler_type_rva != kFrontendHandlerRttiTypeRva) {
+          output.unavailable_reason = "current_app_handler_rtti_unverified";
+          return true;
+        }
+      }
+      previous = node;
+    }
+    std::uint64_t view_vtable_rva = 0;
+    std::uint64_t view_type_rva = 0;
+    void *view_root = nullptr;
+    if (!ReadAt(access, previous, 0x30, setup_view) ||
+        !ReadVtableRva(access, environment.module_base, setup_view,
+                       view_vtable_rva) ||
+        !ReadRttiTypeRva(access, environment.module_base, setup_view,
+                         view_type_rva) ||
+        view_vtable_rva != kFrontendSetupViewVtableRva ||
+        view_type_rva != kFrontendSetupViewRttiTypeRva ||
+        !ReadAt(access, setup_view, 0x78, view_root) ||
+        view_root != bookmarks_root) {
+      output.unavailable_reason = "current_app_bookmarks_view_unverified";
+      return true;
+    }
+  } else {
+    output.unavailable_reason = "current_bookmarks_owner_route_unknown";
+    return true;
+  }
+  output.owner_resolved = true;
+
+  void *selected_bookmark = nullptr;
+  std::uint64_t current_base = 0;
+  std::uint32_t current_count = 0;
+  std::uint64_t current_date = 0;
+  std::string current_bookmark_key;
+  std::int32_t selected_index = -1;
+  if (!ReadAt(access, setup_view, 0x150, selected_bookmark) ||
+      !ReadAt(access, setup_view, 0x158, selected_index) ||
+      selected_bookmark == nullptr ||
+      !ReadScriptKeySso(access, selected_bookmark, 0x18,
+                        current_bookmark_key) ||
+      current_bookmark_key != kSupportedBookmarkKey ||
+      !ReadAt(access, selected_bookmark, 0x38, current_date) ||
+      current_date != model.selected_date_raw ||
+      !ReadAt(access, selected_bookmark, 0x170, current_base) ||
+      !ReadAt(access, selected_bookmark, 0x17C, current_count) ||
+      current_base != model.bookmark_character_base_raw ||
+      current_count != model.bookmark_character_count_raw ||
+      selected_index != -1) {
+    output.unavailable_reason = "current_bookmarks_collection_changed";
+    return true;
+  }
+  const auto index = static_cast<std::uintptr_t>(
+      model.supported_1066_candidate_index);
+  const auto *target = reinterpret_cast<const void *>(
+      static_cast<std::uintptr_t>(current_base) +
+      index * kBookmarkCharacterStride);
+  void *parent_bookmark = nullptr;
+  std::string current_key;
+  if (!ReadAt(access, target, 0x130, parent_bookmark) ||
+      parent_bookmark != selected_bookmark ||
+      !ReadScriptKeySso(access, target, 0x08, current_key) ||
+      current_key != kSupportedCharacterKey) {
+    output.unavailable_reason = "current_bookmark_character_key_changed";
+    return true;
+  }
+  output.target_resolved = true;
+  if (fixture_setter == nullptr && access.read_memory != nullptr) {
+    output.unavailable_reason = "fixture_setter_required";
+    return true;
+  }
+
+  // Exact stock 0xF71460 invokes 0xF707E0(view, model element). The
+  // latter writes view+0x158 from element's offset in Bookmark+0x170.
+  // This is one submission. The independent following model frame, not
+  // this same-frame read or pipe ACK, proves whether it took effect.
+  output.setter_invoked = true;
+  if (fixture_setter != nullptr) {
+    if (!fixture_setter(access.context, setup_view, target)) {
+      output.unavailable_reason = "fixture_setter_rejected";
+      return true;
+    }
+  } else {
+    using NativeSetter = void (*)(void *, const void *);
+    const auto setter = reinterpret_cast<NativeSetter>(
+        environment.module_base + 0xF707E0);
+    setter(setup_view, target);
+  }
+  if (!ReadAt(access, setup_view, 0x158,
+              output.same_frame_selected_index)) {
+    output.unavailable_reason = "submitted_selection_index_unreadable";
+    return true;
+  }
+  output.same_frame_index_matches =
+      output.same_frame_selected_index ==
+      model.supported_1066_candidate_index;
+  if (!output.same_frame_index_matches) {
+    output.unavailable_reason = "submitted_selection_index_unconfirmed";
+  }
+  return true;
+}
+
 } // namespace xar::ck3_11906

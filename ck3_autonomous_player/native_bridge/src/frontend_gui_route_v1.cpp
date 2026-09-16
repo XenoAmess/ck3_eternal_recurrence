@@ -300,9 +300,8 @@ bool DispatchPickAnyCharacter(
 bool DispatchStartSelectedBookmark(
     FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (query.result.route != FrontendGuiRouteV1::bookmarks) return false;
-  // frontend_bookmarks.gui:144 and 2023-2029. The selected-character
-  // projection must be visible before the exact StartGame button is used.
-  // CanStart alone is not a selected-character identity proof.
+  // Do not infer the target from HasSelectedCharacter/CanStart. The current
+  // native model must still select the unique key-derived 1066 feudal role.
   ZhongguoScoreboardAccessV1 access{};
   void *root = nullptr;
   void *selected = nullptr;
@@ -312,6 +311,16 @@ bool DispatchStartSelectedBookmark(
       selected == nullptr) {
     return false;
   }
+  FrontendBookmarkModelProbeV1 model{};
+  if (!ProbeFrontendBookmarkModelV1(query.environment, access, root,
+                                    model) ||
+      !model.candidate_identity_ready ||
+      model.selected_character_index !=
+          model.supported_1066_candidate_index) {
+    return false;
+  }
+  // frontend_bookmarks.gui:144 and 2023-2029. The selected-character
+  // projection must be visible before the exact StartGame button is used.
   std::string runtime_name;
   void *vtable = nullptr;
   bool visible = false;
@@ -323,6 +332,34 @@ bool DispatchStartSelectedBookmark(
   }
   return DispatchFixedNamedWidget(query, FrontendGuiRouteV1::bookmarks,
                                   "frontend_bookmarks", "start_button");
+}
+
+bool DispatchSelectSupported1066Character(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::bookmarks) return false;
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *widget = nullptr;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access,
+                               "frontend_bookmarks",
+                               "frontend_bookmarks", root, widget) ||
+      root == nullptr || widget != root) {
+    return false;
+  }
+  if (!SelectSupportedFeudalBookmarkCharacterV1(
+          query.environment, access, root,
+          query.result.bookmark_selection)) {
+    return false;
+  }
+  query.result.target_resolved =
+      query.result.bookmark_selection.target_resolved;
+  query.result.dispatch_invoked =
+      query.result.bookmark_selection.setter_invoked;
+  query.result.native_handled =
+      query.result.bookmark_selection.same_frame_index_matches;
+  // An already selected or rejected current model never submits a new
+  // setter call. A submitted call remains unverified until a new frame.
+  return true;
 }
 
 bool DispatchSelectRandomPlayable(
@@ -519,6 +556,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   }
   if (!ResolveRoute(*query, query->result)) return false;
   if (query->operation == FrontendGuiRouteOperationV1::query) return true;
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::select_supported_1066_character) {
+    return DispatchSelectSupported1066Character(*query);
+  }
   if (query->operation == FrontendGuiRouteOperationV1::open_new_game) {
     return DispatchOpenNewGame(*query);
   }

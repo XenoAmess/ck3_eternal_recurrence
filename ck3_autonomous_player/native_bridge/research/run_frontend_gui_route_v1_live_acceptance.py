@@ -192,6 +192,15 @@ def _parser() -> argparse.ArgumentParser:
         help="after MCP Bookmarks tree, capture one default-OFF private native selected-model frame without clicking",
     )
     parser.add_argument(
+        "--bookmarks-select-start-private",
+        action="store_true",
+        help=(
+            "controlled exact-build 1066 path: key-derived private typed "
+            "selection, independent model requery, private StartGame, paused "
+            "public campaign-root and paired checkpoint; public MCP tools stay OFF"
+        ),
+    )
+    parser.add_argument(
         "--syntax-matrix",
         action="store_true",
         help="collect the checked-in CoA detect/apply/Copy matrix after routing",
@@ -441,6 +450,281 @@ def _call_private_bookmarks_model(
         "structured_content": result if envelope_valid else {},
         "raw_frame": frame,
     }
+
+
+def _private_1066_candidate_index(model: object) -> int:
+    """Use only this exact frame's selected Bookmark and native element keys."""
+    if not isinstance(model, dict):
+        raise ValueError("private 1066 model is not an object")
+    keys = model.get("candidate_keys")
+    index = model.get("supported_1066_candidate_index")
+    count = model.get("bookmark_character_count")
+    if (
+        model.get("private_scope") != "exact-build-bookmarks-model-v1"
+        or model.get("status") != "identity_ready"
+        or model.get("candidate_identity_ready") is not True
+        or model.get("setup_view_matches_bookmarks_root") is not True
+        or model.get("verified_owner_route")
+        not in {"gui_context_registry", "app_idler_chain"}
+        or model.get("selected_bookmark_key")
+        != "bm_1066_rags_to_riches"
+        or model.get("supported_1066_government_key")
+        != "feudal_government"
+        or model.get("supported_1066_date_matches") is not True
+        or model.get("selected_date_low_raw") != 0x032AEB08
+        or not isinstance(keys, list)
+        or not isinstance(count, int)
+        or isinstance(count, bool)
+        or len(keys) != count
+        or len(keys) < 1
+        or any(not isinstance(key, str) or not key for key in keys)
+        or len(set(keys)) != len(keys)
+        or not isinstance(index, int)
+        or isinstance(index, bool)
+        or not 0 <= index < count
+        or keys[index]
+        != "bookmark_rags_to_riches_petty_king_murchad"
+    ):
+        raise ValueError("current native 1066 feudal candidate identity is unproven")
+    return index
+
+
+def _call_private_frontend_action(
+    driver: NativeHeadlessGameplayDriver,
+    step: str,
+    timeout_seconds: float,
+) -> dict[str, object]:
+    """Submit one fixed typed action; uncertain ACK is never retried here."""
+    started = time.monotonic()
+    request_id = f"feudal-bm-action-{uuid.uuid4().hex[:12]}"
+    if timeout_seconds <= 0:
+        return {
+            "tool": "private-native-feudal-1066-action-v1",
+            "step": step,
+            "submitted": False,
+            "is_error": True,
+            "error": "bounded sequence expired before private action submit",
+        }
+    submitted = False
+    try:
+        driver.endpoint.send({
+            "type": "execute_step",
+            "protocol_version": 1,
+            "request_id": request_id,
+            "step": step,
+            "expected_revision": 0,
+        })
+        submitted = True
+        frame = driver.state.wait_for_command_result(
+            request_id, min(timeout_seconds, 15.0)
+        )
+    except Exception as error:
+        return {
+            "tool": "private-native-feudal-1066-action-v1",
+            "step": step,
+            "submitted": submitted,
+            "is_error": True,
+            "exception": f"{type(error).__name__}: {error}",
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+        }
+    if frame is None:
+        return {
+            "tool": "private-native-feudal-1066-action-v1",
+            "step": step,
+            "submitted": True,
+            "is_error": True,
+            "timed_out": True,
+            "error": "submitted private action has no command_result",
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+        }
+    result = frame.get("result")
+    envelope_valid = (
+        frame.get("type") == "command_result"
+        and frame.get("request_id") == request_id
+        and isinstance(result, dict)
+        and result.get("step") == step
+    )
+    return {
+        "tool": "private-native-feudal-1066-action-v1",
+        "step": step,
+        "submitted": True,
+        "is_error": frame.get("ok") is not True or not envelope_valid,
+        "envelope_valid": envelope_valid,
+        "structured_content": result if envelope_valid else {},
+        "raw_frame": frame,
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+    }
+
+
+def _controlled_private_feudal_start(
+    driver: NativeHeadlessGameplayDriver,
+    before_model: dict[str, object],
+    timeout_seconds: float,
+) -> dict[str, object]:
+    """One private selection and StartGame, each followed by separate state."""
+    deadline = time.monotonic() + timeout_seconds
+    calls: list[dict[str, object]] = []
+    flow: dict[str, object] = {
+        "scope": "controlled-private-exact-build-1066",
+        "public_query_action_advertised": False,
+        "selector_submitted": False,
+        "start_submitted": False,
+        "ok": False,
+        "calls": calls,
+    }
+
+    def stop(reason: str) -> dict[str, object]:
+        flow["error"] = reason
+        return flow
+
+    try:
+        target_index = _private_1066_candidate_index(before_model)
+    except ValueError as error:
+        return stop(str(error))
+    selected_index = before_model.get("selected_character_index")
+    if selected_index not in {-1, target_index}:
+        return stop("another native Bookmark character is selected")
+    flow["native_target_index_before"] = target_index
+    flow["selected_index_before"] = selected_index
+    if selected_index == -1:
+        selector = _call_private_frontend_action(
+            driver, "select-frontend-supported-1066-character-v1",
+            max(0.0, deadline - time.monotonic()),
+        )
+        calls.append(selector)
+        flow["selector_submitted"] = selector.get("submitted") is True
+        selector_result = _structured(selector)
+        if (
+            selector.get("is_error") is not False
+            or selector_result.get("accepted") is not True
+            or selector_result.get("status")
+            != "acknowledged_verification_pending"
+        ):
+            return stop("typed selection submitted or rejected without a verified next model; do not retry")
+    after_call = _call_private_bookmarks_model(
+        driver, max(0.0, deadline - time.monotonic())
+    )
+    calls.append(after_call)
+    after_model = _structured(after_call)
+    flow["next_native_model"] = after_model
+    if after_call.get("is_error") is not False:
+        return stop("independent post-selection native model unavailable")
+    try:
+        after_target_index = _private_1066_candidate_index(after_model)
+    except ValueError as error:
+        return stop(f"independent post-selection identity changed: {error}")
+    if (
+        after_model.get("selected_character_index") != after_target_index
+        or after_model.get("selected_bookmark_key")
+        != before_model.get("selected_bookmark_key")
+        or after_model.get("selected_date_raw")
+        != before_model.get("selected_date_raw")
+        or after_model.get("supported_1066_government_key")
+        != before_model.get("supported_1066_government_key")
+    ):
+        return stop("new native frame did not select the current key-matched role")
+    flow["independent_selected_model_verified"] = True
+
+    start = _call_private_frontend_action(
+        driver, "activate-frontend-start-selected-bookmark-v1",
+        max(0.0, deadline - time.monotonic()),
+    )
+    calls.append(start)
+    flow["start_submitted"] = start.get("submitted") is True
+    start_result = _structured(start)
+    if (
+        start.get("is_error") is not False
+        or start_result.get("accepted") is not True
+        or start_result.get("status") != "acknowledged_verification_pending"
+    ):
+        return stop("StartGame submitted or rejected without a paused map; do not retry")
+    flow["start_acknowledgement"] = start_result
+
+    paused_map: dict[str, object] | None = None
+    last_error: str | None = None
+    pause_submitted = False
+    while time.monotonic() < deadline:
+        try:
+            observed = driver.take_snapshot()
+        except Exception as error:
+            last_error = f"{type(error).__name__}: {error}"
+        else:
+            played = observed.get("played_character")
+            played_id = (
+                played.get("character_id")
+                if isinstance(played, dict)
+                else None
+            )
+            if (
+                isinstance(played_id, int)
+                and not isinstance(played_id, bool)
+                and played_id >= 1
+            ):
+                if observed.get("paused") is True:
+                    paused_map = observed
+                    break
+                if not pause_submitted:
+                    pause_submitted = True
+                    try:
+                        flow["typed_pause_map"] = driver.execute_step("pause-map")
+                    except Exception as error:
+                        last_error = f"typed pause-map: {type(error).__name__}: {error}"
+        remaining = deadline - time.monotonic()
+        if remaining > 0:
+            time.sleep(min(0.25, remaining))
+    if paused_map is None:
+        flow["last_map_error"] = last_error
+        return stop("StartGame submitted but independent paused player map was not observed")
+    flow["independent_paused_map"] = paused_map
+
+    try:
+        root = driver._execute_campaign_root_context_v1_query(
+            expected_revision=None
+        )
+    except Exception as error:
+        return stop(f"public paused campaign-root query failed: {type(error).__name__}: {error}")
+    flow["public_campaign_root"] = root
+    played = paused_map.get("played_character")
+    played_id = played.get("character_id") if isinstance(played, dict) else None
+    government = root.get("government")
+    if (
+        paused_map.get("date_raw")
+        != after_model.get("selected_date_low_raw")
+        or root.get("date_raw") != paused_map.get("date_raw")
+        or root.get("campaign_root_context_ready") is not True
+        or root.get("queried_native_revision")
+        != paused_map.get("native_revision")
+        or root.get("player_character_id") != played_id
+        or not isinstance(government, dict)
+        or government.get("key") != "feudal_government"
+    ):
+        return stop("independent paused-map/public root does not prove 1066 feudal player")
+    flow["independent_campaign_root_verified"] = True
+
+    try:
+        checkpoint = driver.execute_step("save-checkpoint")
+    except Exception as error:
+        return stop(f"paired checkpoint failed: {type(error).__name__}: {error}")
+    save_path = driver._checkpoint_path()
+    driver_state_path = driver._native_driver_state_path()
+    if (
+        save_path is None
+        or not save_path.is_file()
+        or save_path.stat().st_size <= 0
+        or not driver_state_path.is_file()
+        or driver_state_path.stat().st_size <= 0
+    ):
+        return stop("paired game save/driver state did not materialize")
+    flow["checkpoint_result"] = checkpoint
+    flow["paired_checkpoint"] = {
+        "game_save": str(save_path),
+        "game_save_sha256": _sha256(save_path),
+        "driver_state": str(driver_state_path),
+        "driver_state_sha256": _sha256(driver_state_path),
+    }
+    flow["ok"] = True
+    flow["status"] = "controlled_candidate_verified"
+    return flow
 
 
 def _source_structure(source: str) -> dict[str, int]:
@@ -1970,6 +2254,7 @@ async def _mcp_sequence(
     picture_corpus: list[dict[str, object]] | None = None,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
+    bookmarks_select_start_private: bool = False,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
@@ -2328,6 +2613,7 @@ async def _mcp_sequence(
             }
             private_model_call: dict[str, object] | None = None
             private_model: dict[str, object] = {}
+            private_start_flow: dict[str, object] | None = None
             if bookmarks_model_private:
                 private_model_call = _call_private_bookmarks_model(
                     driver, max(0.0, deadline - time.monotonic())
@@ -2361,6 +2647,14 @@ async def _mcp_sequence(
                     )
                     and private_model["supported_1066_candidate_index"] >= 0
                 )
+                if bookmarks_select_start_private:
+                    private_start_flow = _controlled_private_feudal_start(
+                        driver, private_model,
+                        max(0.0, deadline - time.monotonic()),
+                    )
+                    checks["controlled_private_1066_start"] = (
+                        private_start_flow.get("ok") is True
+                    )
             return {
                 "mcp_sdk": "official-python-client",
                 "calls": calls,
@@ -2371,8 +2665,9 @@ async def _mcp_sequence(
                 "bookmarks_tree": inspection,
                 "private_bookmarks_model_call": private_model_call,
                 "private_bookmarks_model": private_model,
+                "private_1066_start_flow": private_start_flow,
                 "tree_truncated": inspection.get("truncated"),
-                "read_only_after_new_game": True,
+                "read_only_after_new_game": not bookmarks_select_start_private,
                 "ok": all(checks.values()),
             }
 
@@ -2770,6 +3065,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     bookmarks_model_private = bool(
         getattr(args, "bookmarks_model_private", False)
     )
+    bookmarks_select_start_private = bool(
+        getattr(args, "bookmarks_select_start_private", False)
+    )
     reference_preview = (
         _load_reference_preview(args.reference_preview)
         if getattr(args, "reference_preview", None) is not None
@@ -2800,6 +3098,13 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         raise ValueError("--picture-crop-dir requires --picture-corpus")
     if bookmarks_model_private and not bookmarks_read_only:
         raise ValueError("--bookmarks-model-private requires --bookmarks-read-only")
+    if bookmarks_select_start_private and not (
+        bookmarks_read_only and bookmarks_model_private
+    ):
+        raise ValueError(
+            "--bookmarks-select-start-private requires both "
+            "--bookmarks-read-only and --bookmarks-model-private"
+        )
     if bookmarks_read_only and (
         syntax_matrix is not None
         or custom_mode_census
@@ -2834,7 +3139,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         },
         "interaction_policy": {
             "mcp_only": not bookmarks_model_private,
-            "mcp_baseline_private_native_read_only": bookmarks_model_private,
+            "mcp_baseline_private_native_read_only":
+                bookmarks_model_private and not bookmarks_select_start_private,
+            "controlled_private_native_selection_start":
+                bookmarks_select_start_private,
             "uses_ocr": False,
             "uses_keyboard": False,
             "uses_mouse": False,
@@ -2844,6 +3152,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "custom_mode_census_requested": custom_mode_census,
         "bookmarks_read_only_requested": bookmarks_read_only,
         "bookmarks_model_private_requested": bookmarks_model_private,
+        "bookmarks_select_start_private_requested":
+            bookmarks_select_start_private,
         "commit_roundtrip_requested": commit_roundtrip,
         "large_source_requested": large_source is not None,
         "large_source_plan": large_source[1] if large_source else None,
@@ -2930,6 +3240,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 picture_corpus=picture_corpus,
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
+                bookmarks_select_start_private=bookmarks_select_start_private,
             )
         )
         report["sequence"] = sequence

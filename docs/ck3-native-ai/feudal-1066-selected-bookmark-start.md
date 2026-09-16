@@ -1,6 +1,6 @@
 # 1066 标准封建书签开局：exact-build 原生路径
 
-状态：static-ready / live=false；本页只对应独立 1066 campaign seed 的前端起点，不证明 100 年或整局。
+状态：R740 有实机受控 frontend 私有模型只读帧；typed 选角、StartGame、普通 campaign 与初始 paired checkpoint 仍 live=false，不构成 production-live loop。本页不证明 100 年或整局。
 
 冻结 CK3 1.19.0.6，binaries/ck3.exe SHA-256
 2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86。
@@ -70,12 +70,43 @@ exact-build ABI 绑定，因此现阶段查询在生产驱动中明确拒绝，S
 冒充为 Murchad 的合法候选。控制候选编译选项
 XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON
 默认关闭；普通 DLL 不广告该 capability，正式 MCP 暂不注册动作或上述查询。
-下一次单实例受控前端 scene 首先采集原版 Bookmarks 的只读 native tree
-并核对动态 group/character 与 source，再绑定最窄的 native model identity
-query 与零参数 MCP 查询接口；若身份不能证明则在点击前停下。
+R740 单实例受控前端 scene 已采集原版 Bookmarks 的只读 native tree，
+并通过私有 native model 核对当前书签、五名动态人物、Murchad 的最终原生
+feudal government 与 1066.9.15 日期；零参数正式 MCP 查询仍未注册。
 现有 official-MCP frontend 验收 runner 的 --bookmarks-read-only 模式只执行
 已验证的 main_menu → typed New Game → Bookmarks，保存该页通用 native tree 后
 立即回收其受管实例；这个受控采集入口不选择角色、不提交 StartGame，
 输出仅是 ABI 施工输入而非普通 1066 seed 证据。
 确认目标后再接通 typed selection → StartGame → paused public root →
 初始存档/driver checkpoint → 正式 native_auto_run；任何一步失败保留 RED。
+
+## R740 增量：候选身份已读到，玩家尚未选中
+
+官方 MCP NewGame→Bookmarks 后的单独私有 native frame 位于
+C:/g2f7340ab/candidate-read-only-02/bookmarks-model-live.json，
+SHA-256 3AEDADD0656058E3A679D551FB11D33A971E274BC2E1018B096A32D135FB0652；
+源码和 DLL 均为 exact 0ab58c02dbe440a26a35b7840ad2595f0eae5746。
+唯一 GUI-context registry owner 与命名 Bookmarks root 相等；当前书签为
+bm_1066_rags_to_riches，运行时人物集合有五个不同 key，
+bookmark_rags_to_riches_petty_king_murchad 在该集合的当前 index 0，
+其原生最终政体是 feudal_government，日期低 32 位为 0x032AEB08。
+书签组 key 为 null，符合原版选择书签后的 group-clear 路径，不作失败或身份凭据。
+
+同帧 selected_character_index=-1。因此候选身份通过只读门，
+但 character_selection 与 StartGame 尚无合法已选玩家后置证据。
+下一受控动作必须在当前模型中以 key 找唯一 element，调用原版
+0xF707E0(view, element)，独立下一帧确认 selected_character_index
+等于该 key 的当前 index，再检查原版 start_button 火力。
+提交 StartGame 后不得因 ACK/加载等待盲重发；进入独立暂停地图、
+正式 campaign-root、相同玩家/日期/政体与初始 paired checkpoint
+均须实机验证。公共查询/动作未注册与未广告。
+
+~~~mermaid
+flowchart LR
+  A[正式 MCP NewGame] --> B[Bookmarks]
+  B --> C[私有原生模型 R740<br/>唯一 owner、书签、五名角色、最终政体]
+  C -->|当前 index = -1| D[typed 选角：当前 key 找 element]
+  D -. 尚未实机：下一帧 index 与 key 匹配 .-> E[原版 StartGame 按钮]
+  E -. 尚未实机：独立暂停地图与 campaign-root .-> F[paired checkpoint]
+  F -. 尚未实机 .-> G[普通 production campaign]
+~~~
