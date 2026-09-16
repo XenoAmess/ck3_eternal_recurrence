@@ -121,7 +121,7 @@
         {
             "id": "WP3",
             "status": "in_progress",
-            "commit": "c96a3fbd",
+            "commit": "3bf4b42a",
             "commands": [
                 "pnpm exec vitest run src/domain/imageFitter.test.ts src/domain/imageFitter.seams.test.ts",
                 "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
@@ -434,7 +434,7 @@
         "pagesMountPath": "/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/",
         "pagesOfficialDeployment": "passed_run_35000503958_head_a35b0edd",
         "pagesLatestDeploymentAttempt": "failed_run_35056760368_10000_budget_report_only_wait_timeout",
-        "pagesHostedFunctionalWaitFixCommit": "c96a3fbd",
+        "pagesHostedFunctionalWaitFixCommit": "3bf4b42a",
         "pagesCanonicalHttpStatus": 200,
         "pagesNoTrailingSlashHttpStatus": 301,
         "pagesEntryJavascriptHttpStatus": 200,
@@ -562,7 +562,7 @@
     {
       "id": "USER-PICTURE-PARETO-PREVIEW-CONSISTENCY-V14",
       "status": "passed",
-      "commit": "c96a3fbd",
+      "commit": "3bf4b42a",
       "commands": [
         "set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v14-pareto-budget-1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --workers=1 --reporter=line",
         "set GITHUB_PAGES=true&& set COA_E2E_USE_PREVIEW=true&& pnpm exec playwright test e2e/standalone-image-fit.spec.ts --workers=1 --reporter=line",
