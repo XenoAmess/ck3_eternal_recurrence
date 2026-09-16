@@ -797,7 +797,7 @@ reference-free capture 以及 6 个 pair gate 全部通过。Steam 离线，OCR�
 这把 scoped 原生证据扩展到“基础游戏 vs 启用目录 mod”及“较早目录 mod vs 较晚 archive mod”的已注册直接 DDS；仍不能外推到
 DLC mount、`replace_path`、definition merge 或其他资源类别。configured-resource catalog 也仍然只列候选，不自行推断胜者。
 
-### 5.11 2026-09-16 `replace_path` R24 反例与 R25 校正矩阵
+### 5.11 2026-09-16 `replace_path` R24/R25 双重反例
 
 R24 预登记“后载目录模组的 `replace_path="gfx/coat_of_arms/patterns"` 会让较早启用模组中仅有的 pattern 与从未存在的
 missing control 等价”。MCP-only Apply → Copy → 230×230 reference-free framebuffer 的传输、路由、捕获和清理全部正常，
@@ -810,8 +810,15 @@ missing control 等价”。MCP-only Apply → Copy → 230×230 reference-free 
 [`vfs-replace-path-native-r24`](coat-of-arms-fit-artifacts/vfs-replace-path-native-r24/README.md)。
 
 后继 R25 在运行前拆成两个独立断言：基础游戏独有 `pattern_checkers_06.dds` 应与 missing control 等价；较早启用模组独有 pattern
-应继续与 missing control、后载 reference 均不等价。只有这组新增基础对照通过后，才能把 `replace_path` 的边界写成“屏蔽基础目录，
-不抹掉其他已启用模组资源”；R25 尚未运行前仍保持待验。
+应继续与 missing control、后载 reference 均不等价。第二项通过，第一项再次被原生像素明确推翻：base-only 与 missing control 的
+`47,786/47,786` 个共同可见像素不同，MAE `0.3996776478`，最大通道误差 `201`；其余四个预登记“不等价”pair 均通过。4/4 Apply、
+native Copy、route-stable preparation、reference-free capture 及进程树清理全部正常。隔离 profile 的 `dlc_load.json`、描述符与 debug log
+分别证明两个模组按序启用、后载描述符确含 `replace_path`、两个 data root 均已挂载。因此不能把 RED 归因于漏载夹具。
+
+R25 支持的最窄结论是：在这个 exact 1.19.0.6 CoA pattern 夹具中，已加载的 `replace_path` 没有让基础游戏独有 pattern 或较早启用
+模组独有 pattern 表现为缺失。它不证明 CK3 全局忽略 `replace_path`，也不能回答每个资源实际由哪一层运行时 VFS/CoA registry 提供。
+完整摘要见 [`vfs-replace-path-native-r25`](coat-of-arms-fit-artifacts/vfs-replace-path-native-r25/README.md)。下一步不再追加事后猜测的
+framebuffer 期待，而是优先补运行时资源来源/注册表 provenance 的结构化 MCP；该能力闭合前，正式 asset-pack 不推断 `replace_path` 胜者。
 
 ## 6. 哪些 CK3 语法不能在这里执行
 
@@ -959,7 +966,7 @@ CoatOfArms
 
 尚未完成的下一阶段能力：
 
-- 继续补 DLC mount、`replace_path` 与 definition merge 的 VFS 胜者；R22 闭合两个目录模组冲突，R23 已闭合基础游戏/目录 mod 和目录 mod/archive mod 的已注册直接 DDS 冲突；R24 保留为“较早模组会被 replace_path 隐藏”假设的反例，R25 将新增基础游戏独有资源对照；
+- 继续补 DLC mount、`replace_path` 与 definition merge 的 VFS 胜者；R22 闭合两个目录模组冲突，R23 已闭合基础游戏/目录 mod 和目录 mod/archive mod 的已注册直接 DDS 冲突；R24/R25 分别冻结为“较早模组资源会被隐藏”和“基础游戏资源会被隐藏”两个假设的反例，下一步优先补运行时资源 provenance MCP；
 - 继续把现有受管 framebuffer primitive 扩展到更多 shader/asset/VFS 情形，并闭合浏览器源码模型与 native GPU 的剩余差异；
 - 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机应用并 Copy 保留的 `texture="_default.dds"` 形态以及素材原始像素。
 

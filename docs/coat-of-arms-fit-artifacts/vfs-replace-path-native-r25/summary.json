@@ -1,0 +1,118 @@
+{
+  "schema": "ck3-coa-vfs-replace-path-r25-summary-v1",
+  "status": "failed_pre_registered_base_game_hidden_hypothesis",
+  "created_at": "2026-09-16T11:12:42.206609+00:00",
+  "repository_head": "8a4114595172564227309f21250316e82fe68644",
+  "ck3_version": "1.19.0.6",
+  "interaction": "managed_typed_mcp_only_no_ocr_keyboard_mouse_or_fixed_coordinates",
+  "fixture_receipt_sha256": "CB98296481697372B6A7AF1E7CCDED6613ED92D53BCEA3020C6882783E3E9096",
+  "fixture_load_configuration_sha256": "07DFE579A0A3CD765AEC044C4356AF5CFB9B0D58128FFD2F463CB56EA080BF31",
+  "later_descriptor_sha256": "8B4E0AFF0B0A2BE3834E1BF3DD455094A8FDDD541096DBD1E8359CF80D75D4FD",
+  "raw_report": {
+    "path": "D:\\ck3_coa_vfs_replace_path_r25\\report.json",
+    "sha256": "6D130D2A979DA43948EA161FCB2A7CC058AEAC3D6806ACC672BF3D94757508DD",
+    "ok": false,
+    "failure_kind": "pre_registered_pixel_equivalence_gate_failed",
+    "elapsed_seconds": 419.009
+  },
+  "capture_noise_thresholds": {
+    "maximum_channel_error": 1,
+    "maximum_normalized_mean_absolute_error": 0.00001,
+    "maximum_alpha_differing_pixels": 0
+  },
+  "cases": [
+    {
+      "id": "base-only",
+      "apply_copy_capture": "passed",
+      "crop_bytes": 51674,
+      "crop_sha256": "A57250E8252150C110E2D15E6BF0E8EBF44ACCC9DEF7FE31A109BD303F8BF887"
+    },
+    {
+      "id": "replaced-earlier-only",
+      "apply_copy_capture": "passed",
+      "crop_bytes": 51651,
+      "crop_sha256": "A538F5D38B4D1EC1BEC8B5758642D7CE031FC9AD278D4083AF42EA7A742B5B25"
+    },
+    {
+      "id": "missing-control",
+      "apply_copy_capture": "passed",
+      "crop_bytes": 48471,
+      "crop_sha256": "6FBB3F8BFDFEA47220FE9A5F57F8D7DA11F7DAF2A82C62C77F7D6B75F613BFAE"
+    },
+    {
+      "id": "later-reference",
+      "apply_copy_capture": "passed",
+      "crop_bytes": 51916,
+      "crop_sha256": "7727F2188BF0A5322DE788F57A7F10F6010B48E92968B1EC3277BB579E994D46"
+    }
+  ],
+  "diagnostic_pairs": [
+    {
+      "first": "base-only",
+      "second": "missing-control",
+      "expected_equivalent": true,
+      "equivalent": false,
+      "gate_passed": false,
+      "common_visible_pixels": 47786,
+      "differing_visible_pixels": 47786,
+      "normalized_mean_absolute_error": 0.39967764781382353,
+      "maximum_channel_error": 201,
+      "alpha_differing_pixels": 0
+    },
+    {
+      "first": "base-only",
+      "second": "later-reference",
+      "expected_equivalent": false,
+      "equivalent": false,
+      "gate_passed": true,
+      "common_visible_pixels": 47786,
+      "differing_visible_pixels": 27423,
+      "normalized_mean_absolute_error": 0.2704351015926397,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0
+    },
+    {
+      "first": "replaced-earlier-only",
+      "second": "missing-control",
+      "expected_equivalent": false,
+      "equivalent": false,
+      "gate_passed": true,
+      "common_visible_pixels": 47786,
+      "differing_visible_pixels": 47786,
+      "normalized_mean_absolute_error": 0.3996766356761039,
+      "maximum_channel_error": 201,
+      "alpha_differing_pixels": 0
+    },
+    {
+      "first": "replaced-earlier-only",
+      "second": "later-reference",
+      "expected_equivalent": false,
+      "equivalent": false,
+      "gate_passed": true,
+      "common_visible_pixels": 47786,
+      "differing_visible_pixels": 27505,
+      "normalized_mean_absolute_error": 0.2704324481505098,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0
+    },
+    {
+      "first": "missing-control",
+      "second": "later-reference",
+      "expected_equivalent": false,
+      "equivalent": false,
+      "gate_passed": true,
+      "common_visible_pixels": 47786,
+      "differing_visible_pixels": 47786,
+      "normalized_mean_absolute_error": 0.376721926650653,
+      "maximum_channel_error": 201,
+      "alpha_differing_pixels": 0
+    }
+  ],
+  "load_evidence": {
+    "both_mods_enabled_in_debug_log": true,
+    "both_data_roots_mounted_in_debug_log": true,
+    "later_descriptor_contains_replace_path": true
+  },
+  "cleanup": "passed_tree_gone_watchdog_absent_control_files_removed_and_slot_released",
+  "successor": "runtime VFS or registered CoA resource provenance MCP feasibility investigation"
+}

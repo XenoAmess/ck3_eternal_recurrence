@@ -230,12 +230,15 @@ SHA-256 同时绑定 source、逻辑资源、资源 hash 和源相对路径；�
 启用目录 mod 的直接 DDS 覆盖基础游戏同路径 DDS，较晚启用的 ZIP archive mod 覆盖较早目录 mod 同路径 DDS。两组各自都有唯一名
 byte-twin reference，6/6 Apply/Copy/capture 和 6 个预登记像素 pair gate 全部通过。R24 首次运行 `replace_path` 原生矩阵，
 3/3 Apply/Copy/capture 与清理正常，但“后载 replace_path 会让较早模组独有 pattern 等价于 missing control”的预登记假设 RED：
-该 pair 的 `46,518/46,518` 个共同可见像素不同，MAE `0.3960397086`。R24 已冻结为反例，不能事后改门禁；R25 将新增基础游戏独有
-pattern 对照，分别验证基础目录是否被屏蔽、较早启用模组是否保留。现仍未覆盖 DLC mount、闭合后的 `replace_path` 结论和
-definition merge，不能据此把 WP6 宣称为全部完成。证据见
+该 pair 的 `46,518/46,518` 个共同可见像素不同，MAE `0.3960397086`。R25 再以基础游戏独有 pattern 建立独立对照，4/4 原生流程
+正常，但“基础游戏资源会与 missing control 等价”的预登记假设也 RED：`47,786/47,786` 个共同可见像素不同，MAE
+`0.3996776478`。两个模组已由日志证明启用和挂载，后载描述符确含 `replace_path`；R24/R25 均冻结为反例，不能事后反转期待。
+下一工作包转为补运行时 VFS/CoA registry provenance 的结构化 MCP，再决定可支持的胜者模型。现仍未覆盖 DLC mount、闭合后的
+`replace_path` 结论和 definition merge，不能据此把 WP6 宣称为全部完成。证据见
 [`vfs-winner-native-r22`](coat-of-arms-fit-artifacts/vfs-winner-native-r22/README.md) 与
 [`vfs-extended-native-r23`](coat-of-arms-fit-artifacts/vfs-extended-native-r23/README.md)、
-[`vfs-replace-path-native-r24`](coat-of-arms-fit-artifacts/vfs-replace-path-native-r24/README.md)。asset delivery 已由浏览器门禁闭合：1,630 项
+[`vfs-replace-path-native-r24`](coat-of-arms-fit-artifacts/vfs-replace-path-native-r24/README.md)、
+[`vfs-replace-path-native-r25`](coat-of-arms-fit-artifacts/vfs-replace-path-native-r25/README.md)。asset delivery 已由浏览器门禁闭合：1,630 项
 manifest 载入后首屏只请求当前构图所需的 4 个 DDS，不请求 6,631,424-byte RGBA index 或 2,266,632-byte shape-feature shard；首次拟合才请求
 这两个内容寻址 shard，并只把本例 DDS 请求增加到 5 个。Service Worker 会按 build version 隔离 cache，两个 shard 在线填充后在
 完全离线状态逐字节回读相同 SHA-256。该结论证明运行时按需加载与缓存，不改变 Pages artifact 本身约 147 MB 的静态授权素材规模。
