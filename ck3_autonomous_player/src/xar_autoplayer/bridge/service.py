@@ -8383,6 +8383,68 @@ class GameplayBridgeService:
             "connectionGeneration": before_binding["connection_generation"],
         }
 
+    def capture_frontend_coat_of_arms_framebuffer_v1(
+        self,
+        calibration_id: str,
+        side: int = 230,
+    ) -> dict[str, object]:
+        """Capture the native-UV-registered CoA surface without a reference."""
+
+        before_route = self.query_frontend_gui_route_v1()
+        if before_route.get("route") != "coat_of_arms_designer":
+            raise BridgeUnavailableError(
+                "coat-of-arms framebuffer capture requires the native designer route"
+            )
+        before_tree = self.inspect_frontend_coat_of_arms_tree_v1()
+        if not (
+            before_tree.get("status") == "available"
+            and before_tree.get("root_available") is True
+            and before_tree.get("scope_root_name") == "coat_of_arms_page"
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms framebuffer capture requires a visible native page root"
+            )
+        try:
+            before_binding = frontend_gui_route_binding_from_capabilities(
+                self.capabilities()
+            )
+            capture = self._coat_of_arms_framebuffer_calibrations_v3.capture(
+                before_binding["bridge_pid"], calibration_id, side
+            )
+            after_binding = frontend_gui_route_binding_from_capabilities(
+                self.capabilities()
+            )
+        except (ValueError, CoatOfArmsFramebufferError) as error:
+            raise BridgeUnavailableError(
+                f"coat-of-arms framebuffer capture failed closed: {error}"
+            ) from error
+        after_route = self.query_frontend_gui_route_v1()
+        after_tree = self.inspect_frontend_coat_of_arms_tree_v1()
+        if not (
+            before_binding == after_binding
+            and before_route == after_route
+            and after_route.get("route") == "coat_of_arms_designer"
+            and after_tree.get("status") == "available"
+            and after_tree.get("root_available") is True
+            and after_tree.get("scope_root_name") == "coat_of_arms_page"
+            and capture.get("bridgePid") == before_binding["bridge_pid"]
+            and capture.get("readOnly") is True
+            and capture.get("usesOcr") is False
+            and capture.get("usesKeyboard") is False
+            and capture.get("usesMouse") is False
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms route or native bridge binding changed during capture"
+            )
+        return {
+            **capture,
+            "route": "coat_of_arms_designer",
+            "routeStable": True,
+            "nativePageRootAvailableBefore": True,
+            "nativePageRootAvailableAfter": True,
+            "connectionGeneration": before_binding["connection_generation"],
+        }
+
     def prepare_frontend_coat_of_arms_framebuffer_v1(self) -> dict[str, object]:
         """Request foreground for the exact route-bound CK3 client."""
 

@@ -1,0 +1,806 @@
+{
+  "schema": "ck3-coat-of-arms-parent-semantics-evidence-v2",
+  "source_report": {
+    "path": "D:\\ck3_coa_parent_semantics_native_r21\\report.json",
+    "bytes": 4104921,
+    "sha256": "396B3CAD03E3BF7528E960FCDE5D0F4B03A221D089E71DF995DF5B0B9935F20D"
+  },
+  "repository_head": "b6425a0ecb10332436398de145f72e5d3df591f7",
+  "game_binary": {
+    "ck3_exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll": "C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge.dll",
+    "bridge_dll_sha256": "9DDC30CAF4373F4370E597DE42A3FADE5DC70AE597511D6654BBC13D4D14C987",
+    "bridge_injector": "C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge_injector.exe",
+    "bridge_injector_sha256": "880885ABBF26C0D4147CFB55B70C5608B581F40C4229099D44A610B5CD589137"
+  },
+  "interaction_policy": {
+    "mcp_only": true,
+    "mcp_baseline_private_native_read_only": false,
+    "controlled_private_native_selection_start": false,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false
+  },
+  "steam": {
+    "path": "D:\\Program Files (x86)\\Steam\\config\\loginusers.vdf",
+    "wants_offline_mode_values": [
+      "1"
+    ],
+    "offline": true
+  },
+  "elapsed_seconds": 213.592,
+  "cleanup": {
+    "ck3_pid": 3588,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    }
+  },
+  "calibration": {
+    "ok": true,
+    "calibration_id": "picture-corpus",
+    "checks": {
+      "red_applied": true,
+      "begin_captured": true,
+      "green_applied": true,
+      "surface_complete_captured": true,
+      "black_applied": true,
+      "anchor_base_captured": true,
+      "anchors_applied": true,
+      "anchors_complete_captured": true
+    },
+    "schema": "ck3-coat-of-arms-framebuffer-calibration-v3",
+    "schema_version": 3,
+    "framebuffer_size": [
+      2560,
+      1440
+    ],
+    "rect": [
+      817,
+      312,
+      968,
+      477
+    ],
+    "surface": {
+      "schema": "ck3-coat-of-arms-framebuffer-calibration-v2",
+      "rect": [
+        817,
+        312,
+        968,
+        477
+      ],
+      "difference_threshold": 48,
+      "candidate_component_count": 8,
+      "changed_pixels": 80454,
+      "selected_pixels": 20429,
+      "begin_pixel_sha256": "0B6E79452171B2A6E80E55AFF97729C05D2B59B1E16C2325C0EF2CEB390FDC36",
+      "complete_pixel_sha256": "C8C35FD4AC8D9F79BEE25FFB3E3EACD078FD61D89006D223381F6BE2C322C6D0",
+      "mask_png_sha256": "B820DB7C0546C556348FAEF70FA254218671F20626DAC236887BB7BAEF454191",
+      "reference_independent": true,
+      "fixed_screen_coordinates_used": false
+    },
+    "anchor_positions": [
+      [
+        0.3,
+        0.3
+      ],
+      [
+        0.5,
+        0.3
+      ],
+      [
+        0.7,
+        0.3
+      ],
+      [
+        0.3,
+        0.5
+      ],
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.7,
+        0.5
+      ],
+      [
+        0.3,
+        0.7
+      ],
+      [
+        0.5,
+        0.7
+      ],
+      [
+        0.7,
+        0.7
+      ]
+    ],
+    "observed_anchor_centers": [
+      [
+        861.5,
+        356.5
+      ],
+      [
+        891.5,
+        356.5
+      ],
+      [
+        921.5,
+        356.5
+      ],
+      [
+        861.5,
+        386.5
+      ],
+      [
+        891.5,
+        386.5
+      ],
+      [
+        921.5,
+        386.5
+      ],
+      [
+        861.5,
+        416.5
+      ],
+      [
+        891.5,
+        416.5
+      ],
+      [
+        921.5,
+        416.5
+      ]
+    ],
+    "canonical_to_framebuffer_affine": [
+      [
+        150.00000894069726,
+        1.2751355981198104e-15,
+        816.4999955296514
+      ],
+      [
+        -3.1878389952999047e-16,
+        150.00000894069726,
+        311.49999552965136
+      ]
+    ],
+    "reprojection_errors": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "maximum_reprojection_error": 0.0,
+    "maximum_allowed_reprojection_error": 2.5,
+    "anchor_base_pixel_sha256": "6A8D808CDD698D4909A3374DE76170C97DF7F3A76AE3D8CDF7D866BDC1619252",
+    "anchors_complete_pixel_sha256": "889E1C853A4D574CD3631C68CC124F3B970F03B5AF0BD6545687F7B96B84FFE7",
+    "reference_independent": true,
+    "uv_registered": true,
+    "fixed_screen_coordinates_used": false,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false,
+    "ready_for_comparison": true,
+    "route": "coat_of_arms_designer",
+    "route_stable": true,
+    "connection_generation": 1
+  },
+  "cases": [
+    {
+      "id": "parent-only",
+      "input": {
+        "path": "parent-semantics:parent-only",
+        "raw_bytes": 28,
+        "raw_sha256": "e236093fed50a89bd8ab0dcd96800759ea4225ae48403ef0801775a9a79e150c",
+        "wire_bytes": 28,
+        "wire_sha256": "e236093fed50a89bd8ab0dcd96800759ea4225ae48403ef0801775a9a79e150c",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 28,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "1b1d844b31181aa505a15cc2592a543450422be8107fa8d7106d5a4abd2861be",
+          "field_counts": {
+            "patterns": 0,
+            "textures": 0,
+            "colors": 0,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 1
+          }
+        }
+      },
+      "native_copy": {
+        "utf8_bytes": 53,
+        "sha256": "F883316F8FA1C8D5AB553BCEC3836A01B9542A4A88DEC9D7C798A237296C45A1",
+        "semantic_projection": {
+          "sha256": "64364f42b2a8ea2c7cea2f4d38a896b26254d08243a22e07cebf6a15aa3a16bd",
+          "field_counts": {
+            "patterns": 0,
+            "textures": 0,
+            "colors": 0,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 1
+          }
+        }
+      },
+      "capture": {
+        "path": "parent-only.png",
+        "bytes": 52061,
+        "sha256": "3C2E9E4D7B2642C05D401D8C46D35370CD0DE244C33428EF3BE9D2DF1AB68E89",
+        "payload_kind": "aligned-content-reference-free"
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "literal-england",
+      "input": {
+        "path": "parent-semantics:literal-england",
+        "raw_bytes": 215,
+        "raw_sha256": "cf5020f1e97dd5a877f1d272adeb9096dc809b28a62387d16d4b444ae920af23",
+        "wire_bytes": 215,
+        "wire_sha256": "cf5020f1e97dd5a877f1d272adeb9096dc809b28a62387d16d4b444ae920af23",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 215,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "0303df4454d650e56589e3185109d7227b8122dc87f06a240f5c6bc49f10cf79",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1,
+            "colors": 5,
+            "masks": 0,
+            "positions": 1,
+            "scales": 1,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy": {
+        "utf8_bytes": 241,
+        "sha256": "85DADCFCBF0E722191025E7ECDB94899573317152975CA5AE4D7FDFCE6C6DE0B",
+        "semantic_projection": {
+          "sha256": "eba9d4745f5440616d03ff381ff9579230f3a6c7021a75c9e68512e498039799",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1,
+            "colors": 5,
+            "masks": 0,
+            "positions": 0,
+            "scales": 1,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "capture": {
+        "path": "literal-england.png",
+        "bytes": 69792,
+        "sha256": "3F8E0DE97B6CCE255F1CA09D050A4677FDA8E6F503271EBDD2C25E3A04BD7754",
+        "payload_kind": "aligned-content-reference-free"
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "parent-override-blue",
+      "input": {
+        "path": "parent-semantics:parent-override-blue",
+        "raw_bytes": 42,
+        "raw_sha256": "bd3802f2742ad0b9955371c2653b3d91ea320cb04f9f8d58f77be5f124a126dd",
+        "wire_bytes": 42,
+        "wire_sha256": "bd3802f2742ad0b9955371c2653b3d91ea320cb04f9f8d58f77be5f124a126dd",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 42,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "5997fd57845dc419e57776fbc5c3640b956747bfdbefeeefe864461f1738bf57",
+          "field_counts": {
+            "patterns": 0,
+            "textures": 0,
+            "colors": 1,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 1
+          }
+        }
+      },
+      "native_copy": {
+        "utf8_bytes": 67,
+        "sha256": "991A0DFCA9262F3B79B2D9E73F08680BC1512D4C38813730FCAEF191C431958D",
+        "semantic_projection": {
+          "sha256": "ff443c086d8b584163c5839a94cdfa2d70dbd82861d7eb2c7cdf6761fbc6a466",
+          "field_counts": {
+            "patterns": 0,
+            "textures": 0,
+            "colors": 1,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 1
+          }
+        }
+      },
+      "capture": {
+        "path": "parent-override-blue.png",
+        "bytes": 52122,
+        "sha256": "680F1295B83939F6FF8DC504C29D0D091299FD70EA6C045690BD0894AABBBB93",
+        "payload_kind": "aligned-content-reference-free"
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "literal-override-blue",
+      "input": {
+        "path": "parent-semantics:literal-override-blue",
+        "raw_bytes": 216,
+        "raw_sha256": "d32e333625aa799c86618e0d33591a7f5b3b8fe31b8d76b32fb123f82f3ca335",
+        "wire_bytes": 216,
+        "wire_sha256": "d32e333625aa799c86618e0d33591a7f5b3b8fe31b8d76b32fb123f82f3ca335",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 216,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "8cacbfc105882e96e6aa1e55ae171f9e2e373d6d80fca3cef3db47d4cc93144a",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1,
+            "colors": 5,
+            "masks": 0,
+            "positions": 1,
+            "scales": 1,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy": {
+        "utf8_bytes": 242,
+        "sha256": "E55F722031FE578BB7C304D28B71252F65A0A608A433FF4D07B072C353446248",
+        "semantic_projection": {
+          "sha256": "fef71474015ebfe9ad1a46e525b5335fa8f0cefcc3e58d2769185c32a2616fa8",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1,
+            "colors": 5,
+            "masks": 0,
+            "positions": 0,
+            "scales": 1,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "capture": {
+        "path": "literal-override-blue.png",
+        "bytes": 69768,
+        "sha256": "91D2B778CC0FA5DBBAB598E14FAD3645D06CF48158E85B8EE44B4C202DAE1270",
+        "payload_kind": "aligned-content-reference-free"
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "parent-plus-child",
+      "input": {
+        "path": "parent-semantics:parent-plus-child",
+        "raw_bytes": 193,
+        "raw_sha256": "cba7ab26a53e0d1cb7d6074ca922d660d1b67402106ffb7fd6481102f5caa2da",
+        "wire_bytes": 193,
+        "wire_sha256": "cba7ab26a53e0d1cb7d6074ca922d660d1b67402106ffb7fd6481102f5caa2da",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 193,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "315bbe9644741ffc66d52117ac5d72d2a4b7926e988d5869d2cc02d128008b4a",
+          "field_counts": {
+            "patterns": 0,
+            "textures": 1,
+            "colors": 3,
+            "masks": 0,
+            "positions": 1,
+            "scales": 1,
+            "rotations": 0,
+            "depths": 1,
+            "parents": 1
+          }
+        }
+      },
+      "native_copy": {
+        "utf8_bytes": 228,
+        "sha256": "D8F8393CCA8C487E0F4149027AD2415B7725EDC12C6FD201230F9FC7623A4582",
+        "semantic_projection": {
+          "sha256": "4f7ff5aebd52eee8a0ce539f0c46faa61513896320da9c73906eec508e476f38",
+          "field_counts": {
+            "patterns": 0,
+            "textures": 1,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 1,
+            "rotations": 0,
+            "depths": 1,
+            "parents": 1
+          }
+        }
+      },
+      "capture": {
+        "path": "parent-plus-child.png",
+        "bytes": 52062,
+        "sha256": "0537BC3272571DAEE53297582C16BE9FB5136AB30001986EFC7FE8D8E147864B",
+        "payload_kind": "aligned-content-reference-free"
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "literal-plus-child",
+      "input": {
+        "path": "parent-semantics:literal-plus-child",
+        "raw_bytes": 390,
+        "raw_sha256": "aadff00cf77f1808af48796cc4d0bf742dd314799cb36674ad05a9b3b469544f",
+        "wire_bytes": 390,
+        "wire_sha256": "aadff00cf77f1808af48796cc4d0bf742dd314799cb36674ad05a9b3b469544f",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 390,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "d24ce1b0f32fa37595f8863992ab85d5f40a67bcb34ae09722f2cf5c7c72bf87",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 2,
+            "colors": 8,
+            "masks": 0,
+            "positions": 2,
+            "scales": 2,
+            "rotations": 0,
+            "depths": 2,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy": {
+        "utf8_bytes": 435,
+        "sha256": "BE4D2C8AC8792235CB60A7F7CA16A8F08B0E0DA47A6B6957C4DCFB9FFA714405",
+        "semantic_projection": {
+          "sha256": "3cf6dc3773f06e94c9a6bf4674328cca6d453f15f49902f4c11f280b408859fa",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 2,
+            "colors": 8,
+            "masks": 0,
+            "positions": 0,
+            "scales": 2,
+            "rotations": 0,
+            "depths": 2,
+            "parents": 0
+          }
+        }
+      },
+      "capture": {
+        "path": "literal-plus-child.png",
+        "bytes": 69888,
+        "sha256": "BB6111EFC74CEC3BFA892F5C54C8F95D8245CF928C69C943108F4E5B1F6651C1",
+        "payload_kind": "aligned-content-reference-free"
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "unresolved-parent-control",
+      "input": {
+        "path": "parent-semantics:unresolved-parent-control",
+        "raw_bytes": 28,
+        "raw_sha256": "6c88ade75953eb48afa83f39298b6c48c4aa8cae465ecfa5531705e6574a93b3",
+        "wire_bytes": 28,
+        "wire_sha256": "6c88ade75953eb48afa83f39298b6c48c4aa8cae465ecfa5531705e6574a93b3",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 28,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "34132a096904a2d0dc38fad0f69a249b32f1246bdf531743f53136b605b27429",
+          "field_counts": {
+            "patterns": 0,
+            "textures": 0,
+            "colors": 0,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 1
+          }
+        }
+      },
+      "native_copy": {
+        "utf8_bytes": 53,
+        "sha256": "3CC6AB960BAB4E463CD9DB0060861D96E045B5EEEE49D7053454D77CA83022D4",
+        "semantic_projection": {
+          "sha256": "9b603ec73a9ff559110715ba695341fbe913632ab74737adcd3ba6ecde626c8d",
+          "field_counts": {
+            "patterns": 0,
+            "textures": 0,
+            "colors": 0,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 1
+          }
+        }
+      },
+      "capture": {
+        "path": "unresolved-parent-control.png",
+        "bytes": 52030,
+        "sha256": "9ABBDD594149FF697CBACEF64FCEBB1021EE36DF549C26901B7B04F7FB822F7F",
+        "payload_kind": "aligned-content-reference-free"
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "first": "parent-only",
+      "second": "literal-england",
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 46518,
+      "mean_absolute_error": 0.2670837657332449,
+      "maximum_channel_error": 201,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "parent-override-blue",
+      "second": "literal-override-blue",
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 46518,
+      "mean_absolute_error": 0.3406234483130713,
+      "maximum_channel_error": 201,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "parent-plus-child",
+      "second": "literal-plus-child",
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 46422,
+      "mean_absolute_error": 0.26596847604427215,
+      "maximum_channel_error": 201,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    }
+  ],
+  "capture_noise_thresholds": {
+    "maximum_channel_error": 1,
+    "maximum_normalized_mean_absolute_error": 1e-05,
+    "maximum_alpha_differing_pixels": 0
+  },
+  "diagnostic_pairs": [
+    {
+      "first": "parent-only",
+      "second": "unresolved-parent-control",
+      "expected_equivalent_within_capture_noise": true,
+      "equivalent_within_capture_noise": true,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 252,
+      "mean_absolute_error": 7.221886418554122e-06,
+      "maximum_channel_error": 1,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "parent-only",
+      "second": "parent-override-blue",
+      "expected_equivalent_within_capture_noise": true,
+      "equivalent_within_capture_noise": true,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 290,
+      "mean_absolute_error": 8.205411806294956e-06,
+      "maximum_channel_error": 1,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "parent-only",
+      "second": "parent-plus-child",
+      "expected_equivalent_within_capture_noise": false,
+      "equivalent_within_capture_noise": false,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 3856,
+      "mean_absolute_error": 0.005757051806778288,
+      "maximum_channel_error": 32,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    }
+  ],
+  "supplementary_raw_pixel_pairs": [
+    {
+      "left": "parent-only",
+      "right": "unresolved-parent-control",
+      "width": 230,
+      "height": 230,
+      "pixel_exact": false,
+      "differing_pixels": 252,
+      "mean_absolute_channel_error": 0.001214555765595463,
+      "max_channel_error": 1,
+      "alpha_differing_pixels": 0,
+      "difference_bounds": {
+        "x": 3,
+        "y": 5,
+        "width": 213,
+        "height": 224
+      }
+    },
+    {
+      "left": "parent-only",
+      "right": "parent-override-blue",
+      "width": 230,
+      "height": 230,
+      "pixel_exact": false,
+      "differing_pixels": 290,
+      "mean_absolute_channel_error": 0.0013799621928166353,
+      "max_channel_error": 1,
+      "alpha_differing_pixels": 0,
+      "difference_bounds": {
+        "x": 3,
+        "y": 5,
+        "width": 213,
+        "height": 225
+      }
+    },
+    {
+      "left": "parent-only",
+      "right": "parent-plus-child",
+      "width": 230,
+      "height": 230,
+      "pixel_exact": false,
+      "differing_pixels": 3856,
+      "mean_absolute_channel_error": 0.9682041587901701,
+      "max_channel_error": 32,
+      "alpha_differing_pixels": 0,
+      "difference_bounds": {
+        "x": 3,
+        "y": 5,
+        "width": 216,
+        "height": 224
+      }
+    }
+  ],
+  "conclusion": {
+    "parent_is_preserved_by_native_copy": true,
+    "registered_parent_is_not_materialized_in_designer_preview": true,
+    "root_color_override_without_pattern_changes_preview": false,
+    "explicit_child_alongside_parent_changes_preview": true,
+    "formal_gate_available": true
+  },
+  "summary": {
+    "case_count": 7,
+    "case_passed": 7,
+    "pair_count": 3,
+    "pixel_exact_pairs": 0,
+    "all_pairs_comparable": true,
+    "diagnostic_pair_count": 3,
+    "supplementary_raw_pair_count": 3,
+    "parent_not_materialized_gate": true
+  }
+}

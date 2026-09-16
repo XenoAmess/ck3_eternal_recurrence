@@ -15,6 +15,7 @@ import win32process
 
 from xar_autoplayer.bridge.coat_of_arms_framebuffer import (
     CoatOfArmsFramebufferError,
+    capture_calibrated_framebuffer_v3,
     compare_reference_to_calibrated_framebuffer_v2,
     compare_reference_to_calibrated_framebuffer_v3,
     compare_reference_to_framebuffer_v1,
@@ -252,3 +253,22 @@ def test_anchor_calibration_removes_native_frame_geometry_from_uv_comparison() -
     assert result["bestMatch"]["rect"] == [60, 30, 261, 250]
     assert result["metrics"]["meanAbsoluteError"] < 0.025
     assert result["metrics"]["colorMse"] < 0.003
+
+    capture = capture_calibrated_framebuffer_v3(
+        observed, calibration, side=64
+    )
+    assert capture["referenceImageAccepted"] is False
+    assert capture["referenceUsedForLocalization"] is False
+    assert capture["referenceUsedForRegistration"] is False
+    assert capture["captureSide"] == 64
+    assert capture["rect"] == [60, 30, 261, 250]
+    aligned = Image.open(
+        BytesIO(base64.b64decode(capture["alignedContentPngBase64"]))
+    )
+    assert aligned.size == (64, 64)
+    assert aligned.mode == "RGBA"
+    assert hashlib.sha256(
+        base64.b64decode(capture["alignedContentPngBase64"])
+    ).hexdigest().upper() == capture["alignedContentPngSha256"]
+    with pytest.raises(CoatOfArmsFramebufferError, match="bounded range"):
+        capture_calibrated_framebuffer_v3(observed, calibration, side=10_000)

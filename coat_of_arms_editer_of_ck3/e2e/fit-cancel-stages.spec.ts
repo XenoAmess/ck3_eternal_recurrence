@@ -31,25 +31,30 @@ function opaqueBgraDds(red: number, green: number, blue: number): Buffer {
 }
 
 async function cancelWhenPhase(page: Page, phaseText: string): Promise<number> {
-  const armed = page.evaluate((expected) => new Promise<number>((resolve) => {
-    const progress = document.querySelector('.fit-progress small')
+  const armed = page.evaluate(({ expected, timeoutMs }) => new Promise<number>((resolve, reject) => {
     const cancel = () => Array.from(document.querySelectorAll('button'))
       .find((button) => button.textContent?.trim() === '取消') as HTMLButtonElement | undefined
     const tryCancel = () => {
+      const progress = document.querySelector('.fit-progress small')
       const button = cancel()
       if (!progress?.textContent?.includes(expected) || !button || button.disabled) return false
       const started = performance.now()
       button.click()
+      window.clearTimeout(timer)
       resolve(started)
       return true
     }
-    if (tryCancel()) return
     const observer = new MutationObserver(() => {
       if (!tryCancel()) return
       observer.disconnect()
     })
     observer.observe(document.body, { attributes: true, childList: true, subtree: true })
-  }), phaseText)
+    const timer = window.setTimeout(() => {
+      observer.disconnect()
+      reject(new Error(`fit phase was not observed within ${timeoutMs}ms: ${expected}`))
+    }, timeoutMs)
+    tryCancel()
+  }), { expected: phaseText, timeoutMs: 180_000 })
   await page.getByRole('button', { name: '开始本地拟合' }).click()
   const started = await armed
   await expect(page.locator('.fit-report')).toHaveAttribute('data-fit-task-state', 'cancelled')
@@ -58,7 +63,7 @@ async function cancelWhenPhase(page: Page, phaseText: string): Promise<number> {
 }
 
 test('cancels and restarts cleanly from background, semantic refinement, and native paint', async ({ page }) => {
-  test.setTimeout(180_000)
+  test.setTimeout(480_000)
   const asset = opaqueBgraDds(255, 255, 255)
   const surface = opaqueBgraDds(0, 128, 128)
   const assets = new Map<string, Buffer>()

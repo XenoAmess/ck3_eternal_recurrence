@@ -216,6 +216,27 @@ class CoatOfArmsFramebufferServiceTests(unittest.TestCase):
         self.assertTrue(comparison["routeStable"])
         self.assertEqual(comparison["connectionGeneration"], 7)
 
+        service = self._service()
+        service._coat_of_arms_framebuffer_calibrations_v3 = Mock()
+        service._coat_of_arms_framebuffer_calibrations_v3.capture.return_value = {
+            "schema": "ck3-coat-of-arms-framebuffer-capture-v1",
+            "bridgePid": 1234,
+            "readOnly": True,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
+
+        capture = service.capture_frontend_coat_of_arms_framebuffer_v1(
+            "corpus", 256
+        )
+
+        service._coat_of_arms_framebuffer_calibrations_v3.capture.assert_called_once_with(
+            1234, "corpus", 256
+        )
+        self.assertTrue(capture["routeStable"])
+        self.assertEqual(capture["connectionGeneration"], 7)
+
 
 if __name__ == "__main__":
     unittest.main()

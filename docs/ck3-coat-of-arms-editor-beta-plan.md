@@ -63,7 +63,7 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | P1 | 大预算控制尚未完整 | 128/1024/10,000 真实拟合、跨刷新持久 checkpoint 精确暂停/恢复、取消后重启与恰好 10,000 实例文档已通过；GPU 搜索覆盖扩大与同 run WebGL2 context 重建仍待完成。 |
 | P1 | 搜索仍偏贪心 | WebGL2 texture-array/atlas/reduction 已承担背景、语义晋级及 local 胜者排序并由 CPU reference 门禁；完整 transform population 与逐块残差候选仍为 CPU，尚无稳定的多候选 Pareto 自动输出。 |
 | P1 | 编辑体验尚未完整 | 32 卡片虚拟窗口、撤销/重做、项目保存恢复、直接变换、三候选对比及跨刷新持久 checkpoint 恢复已通过；更多拟合阶段的恢复与配额失败恢复仍待完成。 |
-| P1 | 预览合同仍不完整 | exact 1.19.0.6 唯一注册 `_default.dds` 的 `textured_emblem` shader 模型合成已通过；`parent` 尚未展开到浏览器预览，原生 framebuffer 像素对照仍待补。 |
+| P1 | 预览合同仍不完整 | exact 1.19.0.6 唯一注册 `_default.dds` 的 `textured_emblem` shader 模型合成已通过；R21 已证明原生剪贴板路径本身不物化 `parent`，浏览器据此保留引用且只画显式字段。其他 shader/VFS 情形的原生像素对照仍待补。 |
 | P2 | 输入/资产覆盖有限 | 安全 SVG、素材包目录导入、中英文、移动端、Service Worker 以及 Chromium/Firefox/WebKit 已通过；仍只有 1.19.0.6 基础包，没有 DLC/mod VFS 胜者 receipt，Pages asset pack 仍较大。 |
 
 ## 3. P0-1：红色分割线修复
@@ -211,12 +211,15 @@ GPU 目前不代替 CPU 纹章正向渲染；它批量渲染 loss contribution �
 当前状态：`in_progress`。安全 SVG、唯一注册 `_default.dds` 的 `textured_emblem` 浏览器 shader 模型、简体中文/英文、素材包目录
 导入、移动端退化、Service Worker 离线恢复、主 bundle code splitting 以及 Chromium/Firefox/WebKit 核心流程已经通过自动化门禁。
 Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/`，公网 canonical URL 与入口资源均
-回读 `200`；无尾斜杠地址为预期 `301`。部署证据见 `ck3-coat-of-arms-github-pages.md`。`parent` 引用现在会在预览区就地显示中英文告警、仍完整保留导出，不再静默冒充已合成；`parent` 展开、DLC/mod VFS 胜者 receipt
-和更细的 asset shard 按需策略仍未完成。
+回读 `200`；无尾斜杠地址为预期 `301`。部署证据见 `ck3-coat-of-arms-github-pages.md`。`parent` 引用现在会在预览区就地显示中英文边界、仍完整保留导出，不再静默冒充已合成。R21 的 MCP-only
+原生 framebuffer 矩阵已证明角色设计器剪贴板路径同样不物化有效 `parent` definition，而显式 child 正常渲染；因此生产浏览器维持
+“保留 parent、只画显式字段”的行为。DLC/mod VFS 胜者 receipt 和更细的 asset shard 按需策略仍未完成。
 
 MCP 优先补完已新增 exact-build 家徽定义索引/读取工具：可分页读取基础游戏 block、完整源码、别名链和来源 SHA-256，
 重复定义、循环或缺失目标全部 fail closed。真实 1.19.0.6 安装上的 `k_england` 和 `d_agder → c_agder` 已通过；
-详见 [`ck3-coat-of-arms-parent-definition-mcp.md`](ck3-coat-of-arms-parent-definition-mcp.md)。它不冒充已观测原生继承合成或 DLC/mod VFS 胜者。
+详见 [`ck3-coat-of-arms-parent-definition-mcp.md`](ck3-coat-of-arms-parent-definition-mcp.md)。R21 又新增 reference-free capture MCP，并用预先登记的量化噪声门限
+闭合 `parent` 剪贴板预览语义；证据见 [`parent-semantics-native-r21`](coat-of-arms-fit-artifacts/parent-semantics-native-r21/README.md)。
+这仍不冒充 title/dynasty 其他加载路径的继承语义或 DLC/mod VFS 胜者。
 
 退出条件：能力矩阵明确每种语法/资源在 parser、preview、editor、serializer、native evidence 五列的状态；不能预览的结构不得静默消失。
 

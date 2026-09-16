@@ -1011,6 +1011,14 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
                 },
             )
             self.assertFalse(calibrated.input_schema["additionalProperties"])
+            capture = tools[
+                "ck3_capture_frontend_coat_of_arms_framebuffer_v1"
+            ]
+            self.assertEqual(
+                set(capture.input_schema.get("required", [])),
+                {"calibration_id"},
+            )
+            self.assertFalse(capture.input_schema["additionalProperties"])
             query = await client.call_tool("ck3_query_frontend_gui_route_v1", {})
             self.assertFalse(query.is_error)
             self.assertEqual(query.structured_content["route"], "main_menu")

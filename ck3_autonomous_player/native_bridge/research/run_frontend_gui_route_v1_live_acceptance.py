@@ -20,6 +20,7 @@ import asyncio
 import base64
 from contextlib import ExitStack
 import hashlib
+from io import BytesIO
 import json
 from pathlib import Path
 import re
@@ -30,6 +31,9 @@ import time
 from typing import Any
 import uuid
 import winreg
+
+import numpy as np
+from PIL import Image
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
@@ -139,6 +143,9 @@ CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL = (
 COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL = (
     "ck3_compare_frontend_coat_of_arms_framebuffer_v3"
 )
+CAPTURE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
+    "ck3_capture_frontend_coat_of_arms_framebuffer_v1"
+)
 PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
     "ck3_prepare_frontend_coat_of_arms_framebuffer_v1"
 )
@@ -162,6 +169,78 @@ SYNTAX_MATRIX = Path(__file__).with_name("coat_of_arms_syntax_matrix_v1.json")
 _PROFILE_EXCLUDES = frozenset(
     {"crashes", "dumps", "exceptions", "logs", "save games", "last_save.ck3"}
 )
+
+PARENT_SEMANTICS_CASES = (
+    {
+        "id": "parent-only",
+        "source": "coa = { parent = k_england }",
+    },
+    {
+        "id": "literal-england",
+        "source": (
+            'coa = { pattern = "pattern_solid.dds" color1 = red color2 = white '
+            'colored_emblem = { texture = "ce_wyvern.dds" color1 = white '
+            'color2 = white color3 = red instance = { position = { 0.5 0.5 } '
+            'scale = { 0.9 0.9 } } } }'
+        ),
+    },
+    {
+        "id": "parent-override-blue",
+        "source": "coa = { parent = k_england color1 = blue }",
+    },
+    {
+        "id": "literal-override-blue",
+        "source": (
+            'coa = { pattern = "pattern_solid.dds" color1 = blue color2 = white '
+            'colored_emblem = { texture = "ce_wyvern.dds" color1 = white '
+            'color2 = white color3 = red instance = { position = { 0.5 0.5 } '
+            'scale = { 0.9 0.9 } } } }'
+        ),
+    },
+    {
+        "id": "parent-plus-child",
+        "source": (
+            'coa = { parent = k_england colored_emblem = { '
+            'texture = "ce_block_02.dds" color1 = black color2 = black '
+            'color3 = black instance = { position = { 0.5 0.5 } '
+            'scale = { 0.25 0.25 } depth = 99 } } }'
+        ),
+    },
+    {
+        "id": "literal-plus-child",
+        "source": (
+            'coa = { pattern = "pattern_solid.dds" color1 = red color2 = white '
+            'colored_emblem = { texture = "ce_wyvern.dds" color1 = white '
+            'color2 = white color3 = red instance = { position = { 0.5 0.5 } '
+            'scale = { 0.9 0.9 } depth = 0 } } colored_emblem = { '
+            'texture = "ce_block_02.dds" color1 = black color2 = black '
+            'color3 = black instance = { position = { 0.5 0.5 } '
+            'scale = { 0.25 0.25 } depth = 99 } } }'
+        ),
+    },
+    {
+        "id": "unresolved-parent-control",
+        "source": "coa = { parent = c_england }",
+    },
+)
+PARENT_SEMANTICS_PAIRS = (
+    ("parent-only", "literal-england"),
+    ("parent-override-blue", "literal-override-blue"),
+    ("parent-plus-child", "literal-plus-child"),
+)
+PARENT_SEMANTICS_DIAGNOSTIC_PAIRS = (
+    ("parent-only", "unresolved-parent-control", True),
+    ("parent-only", "parent-override-blue", True),
+    ("parent-only", "parent-plus-child", False),
+)
+# Predeclared for r21 and later. Independent 8-bit captures may differ by one
+# quantization level; anything larger, any alpha change, or a wider mean drift
+# is treated as a real renderer difference.
+PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS = {
+    "maximum_channel_error": 1,
+    "maximum_normalized_mean_absolute_error": 0.00001,
+    "maximum_alpha_differing_pixels": 0,
+}
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -254,6 +333,19 @@ def _parser() -> argparse.ArgumentParser:
         "--picture-crop-dir",
         type=Path,
         help="write one verified native crop per --picture-corpus case",
+    )
+    parser.add_argument(
+        "--parent-semantics-matrix",
+        action="store_true",
+        help=(
+            "apply a bounded k_england parent/literal matrix and capture each "
+            "native-UV surface through reference-free MCP"
+        ),
+    )
+    parser.add_argument(
+        "--parent-crop-dir",
+        type=Path,
+        help="write one hash-bound native crop per --parent-semantics-matrix case",
     )
     parser.add_argument("--output", type=Path, required=True)
     return parser
@@ -2237,6 +2329,244 @@ async def _collect_picture_corpus(
     }
 
 
+def _reference_free_capture_gate(call: dict[str, object]) -> dict[str, object]:
+    body = _structured(call)
+    capture = body.get("capture")
+    if not isinstance(capture, dict):
+        return {"ok": False, "error": "capture payload is missing"}
+    encoded = capture.get("alignedContentPngBase64")
+    expected_sha256 = capture.get("alignedContentPngSha256")
+    if not isinstance(encoded, str) or not isinstance(expected_sha256, str):
+        return {"ok": False, "error": "aligned capture payload is malformed"}
+    try:
+        raw = base64.b64decode(encoded.encode("ascii"), validate=True)
+    except (UnicodeEncodeError, ValueError) as error:
+        return {"ok": False, "error": f"capture base64 is malformed: {error}"}
+    actual_sha256 = hashlib.sha256(raw).hexdigest().upper()
+    checks = {
+        "call_not_error": call.get("is_error") is False,
+        "schema": body.get("schema")
+        == "ck3-coat-of-arms-framebuffer-capture-v1",
+        "route_stable": body.get("routeStable") is True,
+        "read_only": body.get("readOnly") is True,
+        "no_reference_accepted": capture.get("referenceImageAccepted") is False,
+        "no_reference_localization": capture.get("referenceUsedForLocalization")
+        is False,
+        "no_reference_registration": capture.get("referenceUsedForRegistration")
+        is False,
+        "no_fixed_coordinates": capture.get("fixedScreenCoordinatesUsed") is False,
+        "no_ocr": body.get("usesOcr") is False,
+        "no_keyboard": body.get("usesKeyboard") is False,
+        "no_mouse": body.get("usesMouse") is False,
+        "capture_side": capture.get("captureSide") == 230,
+        "hash_identity": actual_sha256 == expected_sha256,
+    }
+    return {
+        "ok": all(checks.values()),
+        "checks": checks,
+        "png_bytes": len(raw),
+        "png_sha256": actual_sha256,
+        "call": call,
+    }
+
+
+def _capture_pair_metrics(
+    first: dict[str, object], second: dict[str, object]
+) -> dict[str, object]:
+    def pixels(value: dict[str, object]) -> np.ndarray:
+        body = _structured(value["call"])
+        capture = body["capture"]
+        raw = base64.b64decode(
+            capture["alignedContentPngBase64"].encode("ascii"), validate=True
+        )
+        with Image.open(BytesIO(raw)) as image:
+            return np.asarray(image.convert("RGBA"), dtype=np.uint8)
+
+    first_pixels = pixels(first)
+    second_pixels = pixels(second)
+    if first_pixels.shape != second_pixels.shape:
+        return {
+            "comparable": False,
+            "first_shape": list(first_pixels.shape),
+            "second_shape": list(second_pixels.shape),
+        }
+    mask = np.logical_and(first_pixels[:, :, 3] > 0, second_pixels[:, :, 3] > 0)
+    rgb_diff = np.abs(
+        first_pixels[:, :, :3].astype(np.int16)
+        - second_pixels[:, :, :3].astype(np.int16)
+    )
+    selected = rgb_diff[mask]
+    if selected.size == 0:
+        raise RuntimeError("parent semantics pair has no common visible pixels")
+    differing = np.any(rgb_diff > 0, axis=2)
+    return {
+        "comparable": True,
+        "side": int(first_pixels.shape[0]),
+        "common_visible_pixels": int(np.count_nonzero(mask)),
+        "differing_visible_pixels": int(np.count_nonzero(differing & mask)),
+        "mean_absolute_error": float(np.mean(selected) / 255.0),
+        "maximum_channel_error": int(np.max(selected)),
+        "alpha_differing_pixels": int(
+            np.count_nonzero(first_pixels[:, :, 3] != second_pixels[:, :, 3])
+        ),
+        "pixel_exact": bool(np.array_equal(first_pixels, second_pixels)),
+    }
+
+
+def _capture_pair_is_equivalent(metrics: dict[str, object]) -> bool:
+    return bool(
+        metrics.get("comparable") is True
+        and isinstance(metrics.get("maximum_channel_error"), int)
+        and metrics["maximum_channel_error"]
+        <= PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS[
+            "maximum_channel_error"
+        ]
+        and isinstance(metrics.get("mean_absolute_error"), (int, float))
+        and not isinstance(metrics.get("mean_absolute_error"), bool)
+        and metrics["mean_absolute_error"]
+        <= PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS[
+            "maximum_normalized_mean_absolute_error"
+        ]
+        and isinstance(metrics.get("alpha_differing_pixels"), int)
+        and metrics["alpha_differing_pixels"]
+        <= PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS[
+            "maximum_alpha_differing_pixels"
+        ]
+    )
+
+
+async def _collect_parent_semantics_matrix(
+    client: Client,
+    record: Any,
+) -> dict[str, object]:
+    calibration = await _calibrate_picture_corpus_surface(client, record)
+    results: list[dict[str, object]] = []
+    capture_by_id: dict[str, dict[str, object]] = {}
+    for value in PARENT_SEMANTICS_CASES:
+        identifier = value["id"]
+        source = value["source"]
+        assert isinstance(identifier, str)
+        assert isinstance(source, str)
+        applied = await _apply_calibration_source(client, source, record)
+        export_call: dict[str, object] | None = None
+        preparation_call: dict[str, object] | None = None
+        capture_call: dict[str, object] | None = None
+        capture: dict[str, object] = {
+            "ok": False,
+            "error": "source apply or calibration failed before capture",
+        }
+        if applied.get("ok") is True and calibration.get("ok") is True:
+            snapshot_call = await _call(client, SNAPSHOT_TOOL)
+            record(snapshot_call)
+            revision = _structured(snapshot_call).get("revision")
+            if isinstance(revision, int) and not isinstance(revision, bool):
+                export_call = await _call(
+                    client,
+                    EXPORT_COAT_OF_ARMS_TOOL,
+                    {"expected_revision": revision},
+                )
+                record(export_call)
+            preparation_call = await _call(
+                client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL
+            )
+            record(preparation_call)
+            capture_call = await _call(
+                client,
+                CAPTURE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+                {
+                    "calibration_id": calibration["calibration_id"],
+                    "side": 230,
+                },
+            )
+            record(capture_call)
+            capture = _reference_free_capture_gate(capture_call)
+        exported = _structured(export_call or {})
+        exported_source = exported.get("source")
+        checks = {
+            "applied": applied.get("ok") is True,
+            "native_copy_exported": bool(
+                export_call is not None
+                and export_call.get("is_error") is False
+                and isinstance(exported_source, str)
+                and exported_source
+            ),
+            "prepared": bool(
+                preparation_call is not None
+                and preparation_call.get("is_error") is False
+                and _structured(preparation_call).get("routeStable") is True
+            ),
+            "reference_free_capture": capture.get("ok") is True,
+        }
+        result = {
+            "id": identifier,
+            "source": _source_receipt_from_text(
+                source, source_label=f"parent-semantics:{identifier}"
+            ),
+            "apply": applied,
+            "native_copy": export_call,
+            "native_copy_semantic_projection": (
+                _projection_summary(_semantic_projection(exported_source))
+                if isinstance(exported_source, str)
+                else None
+            ),
+            "preparation": preparation_call,
+            "capture": capture,
+            "checks": checks,
+            "ok": all(checks.values()),
+        }
+        results.append(result)
+        if capture.get("ok") is True:
+            capture_by_id[identifier] = capture
+    pair_metrics = []
+    for first_id, second_id in PARENT_SEMANTICS_PAIRS:
+        if first_id not in capture_by_id or second_id not in capture_by_id:
+            metrics = {"comparable": False, "reason": "capture missing"}
+        else:
+            metrics = _capture_pair_metrics(
+                capture_by_id[first_id], capture_by_id[second_id]
+            )
+        pair_metrics.append(
+            {"first": first_id, "second": second_id, **metrics}
+        )
+    diagnostic_metrics = []
+    for first_id, second_id, expected_equivalent in (
+        PARENT_SEMANTICS_DIAGNOSTIC_PAIRS
+    ):
+        if first_id not in capture_by_id or second_id not in capture_by_id:
+            metrics = {"comparable": False, "reason": "capture missing"}
+        else:
+            metrics = _capture_pair_metrics(
+                capture_by_id[first_id], capture_by_id[second_id]
+            )
+        equivalent = _capture_pair_is_equivalent(metrics)
+        diagnostic_metrics.append(
+            {
+                "first": first_id,
+                "second": second_id,
+                "expected_equivalent_within_capture_noise": expected_equivalent,
+                "equivalent_within_capture_noise": equivalent,
+                "gate_passed": equivalent is expected_equivalent,
+                **metrics,
+            }
+        )
+    return {
+        "schema": "ck3-coat-of-arms-parent-semantics-matrix-v2",
+        "case_count": len(results),
+        "framebuffer_calibration": calibration,
+        "capture_noise_thresholds": dict(
+            PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS
+        ),
+        "cases": results,
+        "pairs": pair_metrics,
+        "diagnostic_pairs": diagnostic_metrics,
+        "ok": bool(results)
+        and calibration.get("ok") is True
+        and all(result["ok"] is True for result in results)
+        and all(pair.get("comparable") is True for pair in pair_metrics)
+        and all(pair.get("gate_passed") is True for pair in diagnostic_metrics),
+    }
+
+
 def _summarize_pattern_grid(inspection: object) -> dict[str, object]:
     """Summarize only the bounded subtree below vanilla patterns_scrollbox."""
 
@@ -2374,6 +2704,7 @@ async def _mcp_sequence(
     large_source: tuple[str, dict[str, object]] | None = None,
     reference_preview: tuple[str, dict[str, object]] | None = None,
     picture_corpus: list[dict[str, object]] | None = None,
+    parent_semantics_matrix: bool = False,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
@@ -2464,6 +2795,18 @@ async def _mcp_sequence(
             if reference_preview is not None or picture_corpus is not None
             else set()
         )
+        parent_semantics_required = (
+            {
+                SNAPSHOT_TOOL,
+                PROBE_COAT_OF_ARMS_TOOL,
+                EXPORT_COAT_OF_ARMS_TOOL,
+                PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+                CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
+                CAPTURE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+            }
+            if parent_semantics_matrix
+            else set()
+        )
         custom_mode_required = (
             {
                 INSPECT_COAT_OF_ARMS_TREE_TOOL,
@@ -2479,6 +2822,7 @@ async def _mcp_sequence(
             | commit_required
             | large_source_required
             | framebuffer_required
+            | parent_semantics_required
             | custom_mode_required
         )
         schemas = {
@@ -2606,6 +2950,31 @@ async def _mcp_sequence(
         ):
             return red(
                 "coat-of-arms calibrated framebuffer MCP tools have unexpected schemas",
+                tool_schemas=schemas,
+            )
+        if parent_semantics_matrix and not (
+            _schema_is_zero_input(schemas.get(SNAPSHOT_TOOL))
+            and _schema_has_required_fields(
+                schemas.get(PROBE_COAT_OF_ARMS_TOOL),
+                {"source", "expected_revision", "apply"},
+            )
+            and _schema_has_required_fields(
+                schemas.get(EXPORT_COAT_OF_ARMS_TOOL), {"expected_revision"}
+            )
+            and _schema_is_zero_input(
+                schemas.get(PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL)
+            )
+            and _schema_has_required_fields(
+                schemas.get(CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL),
+                {"calibration_id", "phase"},
+            )
+            and _schema_has_required_fields(
+                schemas.get(CAPTURE_COAT_OF_ARMS_FRAMEBUFFER_TOOL),
+                {"calibration_id"},
+            )
+        ):
+            return red(
+                "parent semantics MCP tools do not have the expected closed schemas",
                 tool_schemas=schemas,
             )
         if (
@@ -3038,6 +3407,20 @@ async def _mcp_sequence(
             checks["picture_corpus_evidence_complete"] = (
                 corpus_result.get("ok") is True
             )
+        parent_semantics_result: dict[str, object] | None = None
+        if parent_semantics_matrix:
+            if all(checks.values()):
+                parent_semantics_result = await _collect_parent_semantics_matrix(
+                    client, record
+                )
+            else:
+                parent_semantics_result = {
+                    "ok": False,
+                    "error": "route checks failed before parent semantics matrix",
+                }
+            checks["parent_semantics_evidence_complete"] = (
+                parent_semantics_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -3057,6 +3440,7 @@ async def _mcp_sequence(
             "large_source_roundtrip": large_source_result,
             "reference_framebuffer": framebuffer_result,
             "picture_corpus": corpus_result,
+            "parent_semantics_matrix": parent_semantics_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -3174,6 +3558,53 @@ def _write_picture_corpus_crops(
     return receipts
 
 
+def _write_parent_semantics_crops(
+    path: Path, sequence: dict[str, object]
+) -> list[dict[str, object]]:
+    matrix = sequence.get("parent_semantics_matrix")
+    cases = matrix.get("cases") if isinstance(matrix, dict) else None
+    if not isinstance(cases, list) or not cases:
+        raise RuntimeError("parent semantics result has no cases")
+    root = path.resolve()
+    receipts: list[dict[str, object]] = []
+    for value in cases:
+        if not isinstance(value, dict) or not isinstance(value.get("id"), str):
+            raise RuntimeError("parent semantics result has a malformed case")
+        gated = value.get("capture")
+        call = gated.get("call") if isinstance(gated, dict) else None
+        body = _structured(call) if isinstance(call, dict) else {}
+        capture = body.get("capture")
+        if not isinstance(capture, dict):
+            continue
+        encoded = capture.get("alignedContentPngBase64")
+        expected_sha256 = capture.get("alignedContentPngSha256")
+        if not isinstance(encoded, str) or not isinstance(expected_sha256, str):
+            continue
+        raw = base64.b64decode(encoded.encode("ascii"), validate=True)
+        actual_sha256 = hashlib.sha256(raw).hexdigest().upper()
+        if actual_sha256 != expected_sha256:
+            raise RuntimeError("parent semantics crop SHA-256 mismatch")
+        output = root / f"{value['id']}.png"
+        temporary = output.with_name(output.name + ".tmp")
+        if output.exists() or temporary.exists():
+            raise RuntimeError(f"parent semantics crop already exists: {output}")
+        output.parent.mkdir(parents=True, exist_ok=True)
+        temporary.write_bytes(raw)
+        temporary.replace(output)
+        receipts.append(
+            {
+                "id": value["id"],
+                "path": str(output),
+                "bytes": len(raw),
+                "sha256": actual_sha256,
+                "payload_kind": "aligned-content-reference-free",
+            }
+        )
+    if len(receipts) != len(cases):
+        raise RuntimeError("parent semantics matrix did not produce every crop")
+    return receipts
+
+
 def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     started = time.monotonic()
     repository = Path(__file__).resolve().parents[3]
@@ -3202,6 +3633,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         else None
     )
     picture_crop_dir = getattr(args, "picture_crop_dir", None)
+    parent_semantics_matrix = bool(
+        getattr(args, "parent_semantics_matrix", False)
+    )
+    parent_crop_dir = getattr(args, "parent_crop_dir", None)
     if picture_corpus is not None and (
         getattr(args, "large_source", None) is not None
         or reference_preview is not None
@@ -3218,6 +3653,21 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         raise ValueError("--native-crop-output requires --reference-preview")
     if picture_crop_dir is not None and picture_corpus is None:
         raise ValueError("--picture-crop-dir requires --picture-corpus")
+    if parent_crop_dir is not None and not parent_semantics_matrix:
+        raise ValueError(
+            "--parent-crop-dir requires --parent-semantics-matrix"
+        )
+    if parent_semantics_matrix and (
+        syntax_matrix is not None
+        or custom_mode_census
+        or commit_roundtrip
+        or getattr(args, "large_source", None) is not None
+        or reference_preview is not None
+        or picture_corpus is not None
+    ):
+        raise ValueError(
+            "--parent-semantics-matrix cannot be combined with other CoA matrices"
+        )
     if bookmarks_model_private and not bookmarks_read_only:
         raise ValueError("--bookmarks-model-private requires --bookmarks-read-only")
     if bookmarks_select_start_private and not (
@@ -3234,6 +3684,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or getattr(args, "large_source", None) is not None
         or reference_preview is not None
         or picture_corpus is not None
+        or parent_semantics_matrix
     ):
         raise ValueError("--bookmarks-read-only cannot run CoA actions")
     large_source = (
@@ -3292,6 +3743,21 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             }
             for value in picture_corpus or []
         ],
+        "parent_semantics_matrix_requested": parent_semantics_matrix,
+        "parent_semantics_plan": (
+            [
+                {
+                    "id": value["id"],
+                    "source": _source_receipt_from_text(
+                        value["source"],
+                        source_label=f"parent-semantics:{value['id']}",
+                    ),
+                }
+                for value in PARENT_SEMANTICS_CASES
+            ]
+            if parent_semantics_matrix
+            else None
+        ),
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -3360,6 +3826,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 large_source=large_source,
                 reference_preview=reference_preview,
                 picture_corpus=picture_corpus,
+                parent_semantics_matrix=parent_semantics_matrix,
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,
@@ -3392,6 +3859,22 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 if (
                     isinstance(corpus_result, dict)
                     and corpus_result.get("cases")
+                ):
+                    raise
+        if parent_crop_dir is not None:
+            try:
+                report["parent_semantics_native_crops"] = (
+                    _write_parent_semantics_crops(parent_crop_dir, sequence)
+                )
+            except RuntimeError as error:
+                report["parent_semantics_native_crops"] = {
+                    "status": "unavailable",
+                    "error": str(error),
+                }
+                matrix_result = sequence.get("parent_semantics_matrix")
+                if (
+                    isinstance(matrix_result, dict)
+                    and matrix_result.get("cases")
                 ):
                     raise
         if sequence.get("ok") is not True:

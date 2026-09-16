@@ -1002,6 +1002,17 @@ def _ck3_compare_frontend_coat_of_arms_framebuffer_v3(
     )
 
 
+def _ck3_capture_frontend_coat_of_arms_framebuffer_v1(
+    service: GameplayBridgeService,
+    calibration_id: str,
+    side: int = 230,
+) -> dict[str, object]:
+    """Capture the calibrated native CoA surface without a reference image."""
+    return service.capture_frontend_coat_of_arms_framebuffer_v1(
+        calibration_id, side
+    )
+
+
 def _ck3_prepare_frontend_coat_of_arms_framebuffer_v1(
     service: GameplayBridgeService,
 ) -> dict[str, object]:
@@ -2026,6 +2037,16 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_capture_frontend_coat_of_arms_framebuffer_v1(
+        calibration_id: str,
+        side: int = 230,
+    ) -> dict[str, object]:
+        """Capture the native-UV-registered CoA surface without a reference."""
+        return _ck3_capture_frontend_coat_of_arms_framebuffer_v1(
+            service, calibration_id, side
+        )
+
+    @server.tool()
     def ck3_prepare_frontend_coat_of_arms_framebuffer_v1() -> dict[str, object]:
         """Prepare the route-bound CK3 framebuffer without key or mouse input."""
         return _ck3_prepare_frontend_coat_of_arms_framebuffer_v1(service)
@@ -2571,6 +2592,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_compare_frontend_coat_of_arms_framebuffer_v3"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_capture_frontend_coat_of_arms_framebuffer_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_prepare_frontend_coat_of_arms_framebuffer_v1"

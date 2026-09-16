@@ -15,12 +15,13 @@ test('parent inheritance is preserved but never silently presented as a complete
 
   const warning = page.getByTestId('parent-preview-boundary')
   await expect(warning).toContainText('parent = c_england')
-  await expect(warning).toContainText('预览不包含 parent 继承')
+  await expect(warning).toContainText('CK3 1.19.0.6')
+  await expect(warning).toContainText('不会把继承图案物化进预览')
 
   await expect(page.locator('.output-block pre')).toContainText('parent = c_england')
 
   await page.getByTestId('locale-select').click()
   await page.getByRole('option', { name: 'English', exact: true }).click()
-  await expect(warning).toContainText('browser does not yet resolve')
+  await expect(warning).toContainText('also preserves this reference without materializing')
   await expect(warning).toContainText('parent = c_england')
 })

@@ -257,6 +257,41 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         call["structured_content"]["calibration"]["referenceIndependent"] = False
         self.assertFalse(module._framebuffer_gate(call)["ok"])
 
+    def test_parent_semantics_capture_noise_gate_is_predeclared_and_strict(
+        self,
+    ) -> None:
+        module = _load_runner_module()
+        thresholds = module.PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS
+
+        self.assertEqual(thresholds["maximum_channel_error"], 1)
+        self.assertEqual(
+            thresholds["maximum_normalized_mean_absolute_error"], 0.00001
+        )
+        self.assertEqual(thresholds["maximum_alpha_differing_pixels"], 0)
+        self.assertTrue(
+            module._capture_pair_is_equivalent(
+                {
+                    "comparable": True,
+                    "maximum_channel_error": 1,
+                    "mean_absolute_error": 0.00001,
+                    "alpha_differing_pixels": 0,
+                }
+            )
+        )
+        for changed in (
+            {"maximum_channel_error": 2},
+            {"mean_absolute_error": 0.000011},
+            {"alpha_differing_pixels": 1},
+        ):
+            metrics = {
+                "comparable": True,
+                "maximum_channel_error": 1,
+                "mean_absolute_error": 0.00001,
+                "alpha_differing_pixels": 0,
+                **changed,
+            }
+            self.assertFalse(module._capture_pair_is_equivalent(metrics))
+
     def test_large_source_receipt_and_numeric_semantics_are_stable(self) -> None:
         module = _load_runner_module()
         raw = (

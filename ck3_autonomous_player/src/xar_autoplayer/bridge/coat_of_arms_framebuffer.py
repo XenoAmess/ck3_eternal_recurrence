@@ -757,6 +757,74 @@ def compare_reference_to_calibrated_framebuffer_v3(
     }
 
 
+def capture_calibrated_framebuffer_v3(
+    framebuffer: Image.Image,
+    calibration: CoatOfArmsFramebufferCalibrationV3,
+    *,
+    side: int = 230,
+) -> dict[str, object]:
+    """Capture the calibrated CoA surface without accepting a reference image."""
+
+    if framebuffer.size != calibration.framebuffer_size:
+        raise CoatOfArmsFramebufferError("framebuffer size changed after calibration")
+    if (
+        isinstance(side, bool)
+        or not isinstance(side, int)
+        or side < COAT_OF_ARMS_FRAMEBUFFER_V1_MINIMUM_REFERENCE_SIDE
+        or side > COAT_OF_ARMS_FRAMEBUFFER_V1_MAXIMUM_REFERENCE_SIDE
+    ):
+        raise CoatOfArmsFramebufferError("capture side is outside the bounded range")
+    frame_rgb = np.asarray(framebuffer.convert("RGB"), dtype=np.uint8)
+    pixel_to_framebuffer = calibration.canonical_to_framebuffer.copy()
+    denominator = max(1, side - 1)
+    pixel_to_framebuffer[:, :2] /= denominator
+    aligned_rgb = cv2.warpAffine(
+        frame_rgb,
+        pixel_to_framebuffer,
+        (side, side),
+        flags=cv2.INTER_LINEAR | cv2.WARP_INVERSE_MAP,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=(0, 0, 0),
+    )
+    full_mask = np.zeros((framebuffer.height, framebuffer.width), dtype=np.uint8)
+    left, top, right, bottom = calibration.rect
+    full_mask[top:bottom, left:right] = calibration.mask
+    aligned_mask = cv2.warpAffine(
+        full_mask,
+        pixel_to_framebuffer,
+        (side, side),
+        flags=cv2.INTER_NEAREST | cv2.WARP_INVERSE_MAP,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=0,
+    )
+    crop = framebuffer.convert("RGB").crop(calibration.rect)
+    crop_output = BytesIO()
+    crop.save(crop_output, format="PNG", optimize=True)
+    crop_png = crop_output.getvalue()
+    visible_surface = np.dstack((aligned_rgb, aligned_mask)).astype(np.uint8)
+    aligned_output = BytesIO()
+    Image.fromarray(visible_surface, mode="RGBA").save(
+        aligned_output, format="PNG", optimize=True
+    )
+    aligned_png = aligned_output.getvalue()
+    return {
+        "locatorContract": "two-solid-state-surface-nine-marker-affine-uv-v3",
+        "calibrationId": calibration.calibration_id,
+        "searchedWholeFramebuffer": False,
+        "referenceImageAccepted": False,
+        "referenceUsedForLocalization": False,
+        "referenceUsedForRegistration": False,
+        "fixedScreenCoordinatesUsed": False,
+        "captureSide": side,
+        "surfaceMaskPixels": int(np.count_nonzero(aligned_mask)),
+        "rect": list(calibration.rect),
+        "cropPngSha256": _sha256(crop_png),
+        "cropPngBase64": base64.b64encode(crop_png).decode("ascii"),
+        "alignedContentPngSha256": _sha256(aligned_png),
+        "alignedContentPngBase64": base64.b64encode(aligned_png).decode("ascii"),
+    }
+
+
 def _aligned_content(
     reference_rgb: np.ndarray,
     framebuffer: Image.Image,
@@ -1290,6 +1358,42 @@ class CoatOfArmsFramebufferCalibrationStoreV3:
             },
             "calibration": _calibration_receipt_v3(calibration),
             "comparison": comparison,
+            "readOnly": True,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
+
+    def capture(
+        self,
+        bridge_pid: int,
+        calibration_id: str,
+        side: int = 230,
+    ) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        calibration = self._calibrations.get(identifier)
+        if calibration is None:
+            raise CoatOfArmsFramebufferError("completed calibration is missing")
+        if calibration.bridge_pid != bridge_pid:
+            raise CoatOfArmsFramebufferError("native bridge PID differs from calibration")
+        framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        capture = capture_calibrated_framebuffer_v3(
+            framebuffer, calibration, side=side
+        )
+        return {
+            "schema": "ck3-coat-of-arms-framebuffer-capture-v1",
+            "schemaVersion": 1,
+            "capturedAt": datetime.now(timezone.utc).isoformat(),
+            "captureBackend": "windows-imagegrab-authenticated-client-framebuffer",
+            "bridgePid": bridge_pid,
+            "framebuffer": {
+                "width": framebuffer.width,
+                "height": framebuffer.height,
+                "pixelFormat": "RGB8",
+                "pixelSha256": _sha256(framebuffer.tobytes()),
+            },
+            "calibration": _calibration_receipt_v3(calibration),
+            "capture": capture,
             "readOnly": True,
             "usesOcr": False,
             "usesKeyboard": False,

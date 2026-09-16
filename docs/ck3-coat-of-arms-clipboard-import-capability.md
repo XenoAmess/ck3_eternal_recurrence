@@ -747,6 +747,23 @@ coa = {
 SHA-256 `0C5F2F88765224219F7F824DD9F1215E4D2B9EBAB024F0677B5F7506D8F5F84A`。它记录 `mcp_only=true`、OCR/键盘/鼠标全为 false、
 Steam 离线、共享锁释放、`cleanup_proven=true` 与 `tree_gone=true`。这些结论仍只绑定 exact build 与 designer working state，不等于上层 Finish/存档持久化或原生像素一致。
 
+### 5.8 2026-09-16 `parent` 原生像素矩阵
+
+MCP 新增不接受参考图的 `ck3_capture_frontend_coat_of_arms_framebuffer_v1`。它消费同一进程、route、generation 的 v3 affine calibration，
+只读返回有界的 230×230 对齐 PNG 与 SHA-256。R21 在 CK3 启动前登记了最大 1 个 8-bit 通道级、归一化 MAE `<=0.00001`、
+alpha 零差异的独立捕获噪声门限，然后完成七个 Apply → Copy → capture case。
+
+| 原生像素对照 | 结果 | 含义 |
+|---|---|---|
+| `parent=k_england` / `parent=c_england` | 门限内等价；MAE `0.0000072219`，max 1 | 有效数据库 parent 没有在角色设计器剪贴板预览中物化 |
+| `parent=k_england` / `parent=k_england color1=blue` | 门限内等价；MAE `0.0000082054`，max 1 | 缺少 pattern 时根颜色覆盖不改变这个预览 |
+| `parent=k_england` / 同 parent + 显式 child | 明显不等价；MAE `0.0057570518`，max 32 | 同级显式 child 正常参与渲染 |
+| parent case / 显式写出的 England pattern + wyvern | 三对均明显不等价；max 201 | 静态 definition 不能被当成剪贴板路径已经自动展开 |
+
+七个 case 全部通过，原生 Copy 继续保留 parent。紧凑证据、七张 crop、阈值和复现命令见
+[`parent-semantics-native-r21`](coat-of-arms-fit-artifacts/parent-semantics-native-r21/README.md)。这项结论只适用于 exact 1.19.0.6
+角色设计器剪贴板路径，不外推到 title/dynasty 数据库的其他加载路径。
+
 ## 6. 哪些 CK3 语法不能在这里执行
 
 | 语法族 | 能否执行 | 结论依据 |
@@ -797,7 +814,8 @@ template = {
 - `@变量` 声明与引用（简单静态替换会接受甚至应用，但产品应先展开为确定字面量）。
 
 `parent=<database id>` 已被证明是直接 render-description 字段，可应用并被 Copy 保留，因此不再归入 template DSL。
-但 Copy 不会展开它，引用的对象是否存在与继承后像素仍是独立验证层。Web 端若要提供随机生成，应在自己的数据模型中完成选择，再导出确定的纹理、颜色与实例。
+Copy 不会展开它；R21 进一步证明这个剪贴板路径的原生预览也不物化有效 parent。Web 端因此保留引用和显式子层，但不把静态 definition
+自动展开成所谓“原生预览”。若提供数据库 definition 浏览模式，必须与剪贴板预览分开标注。
 
 ## 8. 目前 MCP 能力仍缺什么
 
@@ -807,7 +825,8 @@ effective feature 与 script `has_dlc` truth 已有 production-live 原生 primi
 `main_menu → bookmarks → lobby 随机可玩角色 → ruler_designer → coat_of_arms_designer` 已达到
 `production-live primitive`；固定王朝 Finish 及提交后重开/Copy 一致性也已达到 `mcp-committed`。仍未通过 MCP 闭合的能力有：
 
-- 读取 CK3 原生 preview 的最终像素或直接导出 PNG（浏览器已能按随附 shader 源码离线合成，但不替代 native pixel）；
+- 通用读取任意 CoA preview 的最终像素或直接导出 PNG；当前已有校准后、有界、只适用于受管角色设计器路径的 reference-free capture primitive，
+  并已用于 `parent` 与七图语料验收，但不是任意 UI/构图的通用导出 API；
 - 完成整个角色创建，并验证进入战役后实际王朝/家族/头衔状态及跨存档持久化；
 - 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；现有 runtime feature truth 只证明
   gameplay gate，不提供 CoA VFS/registry winner；
@@ -892,7 +911,7 @@ CoatOfArms
 尚未完成的下一阶段能力：
 
 - 继续补 DLC/mod playset 合并与运行时注册证据；
-- CK3 原生 PNG/像素验证 primitive，用于闭合浏览器源码模型与 native GPU 的差异；
+- 继续把现有受管 framebuffer primitive 扩展到更多 shader/asset/VFS 情形，并闭合浏览器源码模型与 native GPU 的剩余差异；
 - 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机应用并 Copy 保留的 `texture="_default.dds"` 形态以及素材原始像素。
 
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与

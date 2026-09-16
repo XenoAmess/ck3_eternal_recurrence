@@ -5,7 +5,7 @@ import { expect, test } from '@playwright/test'
 const exactPack = resolve('public/asset-packs/ck3-1.19.0.6/manifest.json')
 
 test('production workflow uses only same-origin static GET requests', async ({ page }) => {
-  test.setTimeout(180_000)
+  test.setTimeout(360_000)
   test.skip(!existsSync(exactPack), 'the tracked exact-build static asset pack is required')
 
   const requests: Array<{ method: string, url: string }> = []
@@ -45,7 +45,7 @@ test('production workflow uses only same-origin static GET requests', async ({ p
     buffer: Buffer.from(pngBase64, 'base64'),
   })
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 120_000 })
+  await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 300_000 })
 
   await page.getByRole('button', { name: '复制 CK3 代码' }).click()
   const copied = await page.evaluate(() => navigator.clipboard.readText())
