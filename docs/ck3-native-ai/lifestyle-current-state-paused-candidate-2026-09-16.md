@@ -37,3 +37,24 @@ private query; the sole CK3 owner allocates the real `R{n}` and reclaims the
 process. Static tests and no-launch preflight do not confer paused-live or
 formal production-consumption status. Public query/action registration and
 capability advertising remain OFF.
+
+## R755 canonical snapshot-ID RED
+
+R755 reached the real paused production frame for actor `29829` on date raw
+`53178312`. The request carried `expected_snapshot_id = native:3` and native
+revision `3`, but the private read returned
+`native_lifestyle_current_state_invalid_request` before any native source
+sample. The report is
+`C:/ck3_mod_rewrite_process_assets/g2-m4-life2-typed-stage-candidate-final3cc-20260916/candidate/live-R755/report.json`
+(SHA-256 `B9FA0254D25D23300C23A09BA959A050D14B93535D8B4AB45193B0631CB50F98`).
+It records zero gameplay actions, no manual input/date advance, public
+registration/advertising OFF, and successful CK3 process reclamation.
+
+The failure is a source contract contradiction: application-main constructs
+snapshot identity as `native:<revision>`, while LIFE2 `ValidSnapshotId`
+previously rejected every colon. The minimum fix preserves existing
+colon-free fixture IDs and admits only `native:<positive uint64>` when its
+parsed value equals `expected_native_revision`; empty, zero, leading-zero,
+non-decimal, extra-colon, arbitrary-prefix, and overflow forms remain invalid.
+This is static-ready only. A candidate rebuilt from the integrated fix must
+repeat the paused private query before LIFE2 current state can be called live.

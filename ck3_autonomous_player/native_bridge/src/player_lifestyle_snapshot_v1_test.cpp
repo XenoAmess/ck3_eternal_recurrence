@@ -265,6 +265,50 @@ void TestFailureDoesNotPublishEmptyState() {
          "\"unavailable_reason\":\"native_source_read_failed\"}");
 }
 
+void TestCanonicalNativeSnapshotIds() {
+  auto valid = Base();
+  CopyFixed(valid.before.snapshot_id, "native:3");
+  valid.before.public_revision = 3;
+  valid.before.native_revision = 3;
+  valid.after = valid.before;
+  FillNormal(valid.first);
+  valid.second = valid.first;
+  const ck3::PlayerLifestyleSnapshotRequestV1 valid_request = {
+      "native:3", 3, 3, valid.before.date_raw,
+      valid.before.played_character_id};
+  game::PlayerLifestyleSnapshotV1 output{};
+  assert(ck3::ReadPlayerLifestyleSnapshotV1(
+             OfflineEnvironment(), OfflineAccess(valid), valid_request,
+             output) ==
+         game::ReadPlayerLifestyleSnapshotResultV1::available);
+  assert(valid.frame_calls == 2 && valid.source_calls == 2);
+
+  constexpr std::array<std::pair<std::string_view, std::uint64_t>, 8>
+      invalid_requests = {{{"native:", 3},
+                           {"native:0", 3},
+                           {"native:03", 3},
+                           {"native:-3", 3},
+                           {"native:3:4", 3},
+                           {"other:3", 3},
+                           {"native:18446744073709551616", 3},
+                           {"native:4", 3}}};
+  for (const auto &[snapshot_id, native_revision] : invalid_requests) {
+    auto invalid = Base();
+    FillNormal(invalid.first);
+    invalid.second = invalid.first;
+    const ck3::PlayerLifestyleSnapshotRequestV1 request = {
+        snapshot_id, 3, native_revision, invalid.before.date_raw,
+        invalid.before.played_character_id};
+    assert(ck3::ReadPlayerLifestyleSnapshotV1(
+               OfflineEnvironment(), OfflineAccess(invalid), request,
+               output) ==
+           game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
+    assert(output.unavailable_reason ==
+           game::PlayerLifestyleSnapshotFailureV1::invalid_request);
+    assert(invalid.frame_calls == 0 && invalid.source_calls == 0);
+  }
+}
+
 void TestSampleAndFrameDrift() {
   auto sample_drift = Base();
   FillNormal(sample_drift.first);
@@ -648,6 +692,7 @@ int main(int argc, char **argv) {
   assert(argc == 3);
   TestNormalAndNoFocusFixtures(argv[1], argv[2]);
   TestFailureDoesNotPublishEmptyState();
+  TestCanonicalNativeSnapshotIds();
   TestSampleAndFrameDrift();
   TestInvalidAndDuplicateStableKeys();
   TestMsvcStableKeyReader();

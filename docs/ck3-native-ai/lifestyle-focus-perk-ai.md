@@ -698,3 +698,18 @@ flowchart TD
 The new private `query_state_only` mode of the existing slot43 executor reads LIFE2 only and serializes the existing typed snapshot. It never calls the LIFE4 candidate reader, precondition evaluator, or native selection action. An unavailable candidate set remains `unavailable`, never a legal or known-empty set. The exact request binding, private response, and default-OFF admission are in `research/player_lifestyle_current_state_only_v1_contract.json`.
 
 Status: `static-ready`. The LIFE2 source fixture and formal wire compile pass focused `/Od` and `/O2`; the state-only step is now routed from `bridge.cpp` only in a candidate compiled with the existing default-OFF private LIFE flag. The bridge route itself passes focused `/Od` and `/O2` `/W4 /WX` compilation. It remains unregistered publicly and unadvertised. A real paused native readback and next production turn consumption remain required. The original window-bound candidate/action gate remains unknown in ordinary production frames until independently observed.
+
+### R755 canonical snapshot-ID RED (2026-09-16)
+
+The bounded paused LIFE2 query reached actor `29829`, date raw `53178312`, and
+snapshot `native:3`, then failed as
+`native_lifestyle_current_state_invalid_request` before source capture. The
+frozen report is
+`C:/ck3_mod_rewrite_process_assets/g2-m4-life2-typed-stage-candidate-final3cc-20260916/candidate/live-R755/report.json`
+(SHA-256 `B9FA0254D25D23300C23A09BA959A050D14B93535D8B4AB45193B0631CB50F98`).
+The exact source mismatch was deterministic: application-main supplies
+`native:<revision>`, but the LIFE2 validator admitted only colon-free IDs.
+The narrow repair accepts canonical `native:<positive uint64>` only when the
+number equals `expected_native_revision`, retaining the prior fixture grammar
+and rejecting all other colon forms. Public registration and advertising stay
+OFF; a new frozen private candidate and paused requery are still required.

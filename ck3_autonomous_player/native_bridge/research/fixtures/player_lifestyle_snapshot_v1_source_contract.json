@@ -33,6 +33,8 @@
     "Failure::owned_perk_key_read_failed",
     "native_sample_drift",
     "CandidateFailure::lifestyle_window_unavailable",
+    "ParseCanonicalNativeSnapshotId",
+    "parsed_native_revision == request.expected_native_revision",
     "if (first != second)",
     "ClassifyFrameDrift(before, after)",
     "SortKeys(output.state.owned_perk_keys",
@@ -43,6 +45,7 @@
   "required_test_tokens": [
     "TestNormalAndNoFocusFixtures",
     "TestFailureDoesNotPublishEmptyState",
+    "TestCanonicalNativeSnapshotIds",
     "TestSampleAndFrameDrift",
     "TestMsvcStableKeyReader",
     "TestNativeCurrentStateAndCandidateBoundary",

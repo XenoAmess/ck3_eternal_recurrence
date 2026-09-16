@@ -70,6 +70,15 @@
     "public_change": false,
     "live_status": "awaiting a new paused private query"
   },
+  "r755_snapshot_id_contract_red": {
+    "artifact": "C:/ck3_mod_rewrite_process_assets/g2-m4-life2-typed-stage-candidate-final3cc-20260916/candidate/live-R755/report.json",
+    "artifact_sha256": "B9FA0254D25D23300C23A09BA959A050D14B93535D8B4AB45193B0631CB50F98",
+    "observed": "the paused private LIFE2 request supplied expected_snapshot_id native:3 and expected native revision 3, then returned native_lifestyle_current_state_invalid_request with zero gameplay actions; CK3 was reclaimed",
+    "root_cause": "bridge.cpp emits the canonical native:<revision> snapshot identity, while ValidSnapshotId rejected every colon before source capture",
+    "private_fix": "accept only canonical native:<positive uint64> alongside the existing colon-free fixture IDs, require the parsed number to equal expected_native_revision, and reject arbitrary colon forms, zero, leading zero, non-decimal suffixes, and overflow",
+    "public_change": false,
+    "live_status": "static fix awaiting a newly frozen private candidate and paused requery"
+  },
   "fixtures": {
     "normal": "research/fixtures/player_lifestyle_snapshot_v1_normal.json",
     "no_focus": "research/fixtures/player_lifestyle_snapshot_v1_no_focus.json",

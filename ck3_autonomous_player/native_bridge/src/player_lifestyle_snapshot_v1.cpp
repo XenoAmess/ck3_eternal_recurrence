@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <cstring>
+#include <limits>
 
 namespace xar::ck3_11906 {
 namespace {
@@ -25,11 +26,36 @@ std::string_view FixedString(const std::array<char, Size> &value) noexcept {
   return {value.data(), static_cast<std::size_t>(end - value.begin())};
 }
 
+bool ParseCanonicalNativeSnapshotId(std::string_view value,
+                                    std::uint64_t &revision) noexcept {
+  constexpr std::string_view prefix = "native:";
+  if (!value.starts_with(prefix)) return false;
+
+  const auto digits = value.substr(prefix.size());
+  if (digits.empty() || digits.front() < '1' || digits.front() > '9') {
+    return false;
+  }
+  std::uint64_t parsed = 0;
+  for (const char character : digits) {
+    if (character < '0' || character > '9') return false;
+    const auto digit = static_cast<std::uint64_t>(character - '0');
+    if (parsed > (std::numeric_limits<std::uint64_t>::max() - digit) / 10) {
+      return false;
+    }
+    parsed = parsed * 10 + digit;
+  }
+  revision = parsed;
+  return true;
+}
+
 bool ValidSnapshotId(std::string_view value) noexcept {
   if (value.empty() ||
       value.size() >= game::kPlayerLifestyleSnapshotIdCapacityV1) {
     return false;
   }
+  std::uint64_t native_revision = 0;
+  if (ParseCanonicalNativeSnapshotId(value, native_revision)) return true;
+
   for (const char character : value) {
     if (!((character >= 'a' && character <= 'z') ||
           (character >= 'A' && character <= 'Z') ||
@@ -187,10 +213,20 @@ Failure ValidateState(const State &state) noexcept {
 }
 
 bool ValidRequest(const PlayerLifestyleSnapshotRequestV1 &request) noexcept {
-  return ValidSnapshotId(request.expected_snapshot_id) &&
-      request.expected_public_revision != 0 &&
-      request.expected_native_revision != 0 &&
-      request.expected_player_character_id != -1;
+  if (!ValidSnapshotId(request.expected_snapshot_id) ||
+      request.expected_public_revision == 0 ||
+      request.expected_native_revision == 0 ||
+      request.expected_player_character_id == -1) {
+    return false;
+  }
+
+  if (request.expected_snapshot_id.starts_with("native:")) {
+    std::uint64_t parsed_native_revision = 0;
+    return ParseCanonicalNativeSnapshotId(request.expected_snapshot_id,
+                                          parsed_native_revision) &&
+        parsed_native_revision == request.expected_native_revision;
+  }
+  return true;
 }
 
 Failure ValidateInitialFrame(
