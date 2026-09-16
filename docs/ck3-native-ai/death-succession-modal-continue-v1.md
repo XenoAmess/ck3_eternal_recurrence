@@ -2,8 +2,10 @@
 
 `continue-death-succession-modal-v1` is the minimum private action used to
 unblock the natural-death successor episode. Its current status is
-**static-ready; frozen-build paused live acceptance pending**. It is absent
-from the public capability registry and MCP tool list.
+**typed action static-ready; frozen-build action acceptance pending**. R777
+proved the fresh paused read-only precondition on the frozen build; it did not
+submit Close. The action remains absent from the public capability registry
+and MCP tool list.
 
 ## Frozen build and evidence
 
@@ -70,6 +72,44 @@ conditions:
 It then calls the formal `life-advance` step and requires the date to increase
 without changing the successor episode. A timeout or malformed ACK leaves the
 action state unknown; callers must query before any retry.
+
+## R777 source and formal bounded entry
+
+R777 observed the exact source at date `53411568`, played/episode Character
+`35465`, episode `native-35465-cbdf997e3d80`: identity
+`death_succession_modal`, `can_continue=true`,
+`blocks_simulation=true`, and `has_open_succession=true`. Its read-only query
+left the save unchanged and reclaimed CK3. This is a live query primitive,
+not evidence that Close works.
+
+The private formal action entry is:
+
+```text
+g2_preview_operator.py continue-death-succession-modal-v1
+  -> agent.py native-continue-death-succession-modal-v1
+  -> GameplayBridgeService.continue_death_succession_modal_private_v1
+```
+
+It admits only the sealed history-3 source pair:
+
+- checkpoint SHA-256 `2C0F4333AE186EE91F560AD7D14ABB2F2E29AAA1B4D2EACFEFE0C9A8E1E505E3`;
+- driver-state SHA-256 `C3FA1268FFA72B49936D36E4C49C7CEA182D3C18E2795DDC5586EFFF136200C9`;
+- ordinary history `continue-as-reconciled-successor`,
+  `query-campaign-root-context-v1`, `save-checkpoint` at indices 1..3.
+
+The operator requires an explicit monotonic `R<number>` round and
+`--expected-date-raw 53411568`. After a true cold restore it permits only:
+restore at history index 4, the private query and one Close (kept in the
+immutable report, not ordinary history), one formal `life-advance` at index 5,
+and one GREEN-only `save-checkpoint` at index 6. Marriage queries/actions,
+death-terminal replay, Python successor continuation, generic UI input, and
+all other gameplay are zero. The output checkpoint must have a later date,
+the same successor episode, and bytes different from the source checkpoint.
+
+The R778 operator manifest and output directory are candidate artifacts, so a
+launch command is recorded only after those paths and hashes are sealed. The
+subcommand itself exposes all required parameters through `--help`; it has no
+fallback to `native-auto-run` or a private UI harness.
 
 ```mermaid
 flowchart TD

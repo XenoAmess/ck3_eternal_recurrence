@@ -334,6 +334,39 @@ def parser() -> argparse.ArgumentParser:
         required=True,
         help="monotonic CK3 ownership round R<number>; keeps this route private",
     )
+    timeline_action_parser = commands.add_parser(
+        "native-continue-death-succession-modal-v1",
+        help=(
+            "run the single unadvertised exact-build death-succession typed "
+            "Close, independent postcondition, life-advance, and checkpoint"
+        ),
+    )
+    timeline_action_parser.add_argument("--timeout", type=float, default=390)
+    timeline_action_parser.add_argument(
+        "--readiness-timeout",
+        type=float,
+        default=300,
+        help="maximum seconds to wait for the paused R777 source frame",
+    )
+    timeline_action_parser.add_argument(
+        "--cold-start-checkpoint",
+        action="store_true",
+        help="launch and bind the exact sealed history-3 checkpoint (required)",
+    )
+    timeline_action_parser.add_argument(
+        "--private-timeline-action-round-id",
+        required=True,
+        help="monotonic CK3 ownership round R<number>; keeps this route private",
+    )
+    timeline_action_parser.add_argument(
+        "--expected-played-character-id", type=int, required=True
+    )
+    timeline_action_parser.add_argument(
+        "--expected-episode-run-id", required=True
+    )
+    timeline_action_parser.add_argument(
+        "--expected-date-raw", type=int, required=True
+    )
     one_generation_parser = commands.add_parser(
         "native-one-generation",
         help=(
@@ -549,6 +582,7 @@ def main(argv: list[str] | None = None) -> int:
                 "native-session",
                 "native-auto-run",
                 "native-query-current-timeline-blocker-context-v1",
+                "native-continue-death-succession-modal-v1",
                 "native-one-generation",
                 "native-next-episode",
             }
@@ -678,6 +712,25 @@ def main(argv: list[str] | None = None) -> int:
                 ),
                 cold_start_checkpoint=args.cold_start_checkpoint,
             )
+        elif args.command == "native-continue-death-succession-modal-v1":
+            from .timeline_blocker_action_run import (
+                continue_death_succession_modal_once,
+            )
+
+            result = continue_death_succession_modal_once(
+                spec,
+                timeout_seconds=args.timeout,
+                readiness_timeout_seconds=args.readiness_timeout,
+                private_timeline_action_round_id=(
+                    args.private_timeline_action_round_id
+                ),
+                expected_played_character_id=(
+                    args.expected_played_character_id
+                ),
+                expected_episode_run_id=args.expected_episode_run_id,
+                expected_date_raw=args.expected_date_raw,
+                cold_start_checkpoint=args.cold_start_checkpoint,
+            )
         elif args.command == "native-one-generation":
             from .one_generation_run import native_one_generation_run
 
@@ -757,6 +810,7 @@ def main(argv: list[str] | None = None) -> int:
         in {
             "native-auto-run",
             "native-query-current-timeline-blocker-context-v1",
+            "native-continue-death-succession-modal-v1",
             "native-one-generation",
             "native-next-episode",
             "native-one-generation-preflight",

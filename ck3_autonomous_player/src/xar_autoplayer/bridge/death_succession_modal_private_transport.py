@@ -242,6 +242,11 @@ def continue_death_succession_modal_private_v1(
         **copy.deepcopy(ack),
         "status": "materially_verified",
         "material_result_verified": True,
+        # Keep the submission receipt distinct from the independently
+        # observed material result.  The ACK explicitly says that it did not
+        # prove the Close took effect; only the later query and life-advance
+        # can promote this bounded operation to materially_verified.
+        "submission_ack": copy.deepcopy(ack),
         "initial_query": initial,
         "postcondition_query": post,
         "post_observation_revision": post_observation_revision,

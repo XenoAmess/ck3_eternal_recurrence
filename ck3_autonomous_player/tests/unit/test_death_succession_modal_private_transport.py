@@ -177,6 +177,7 @@ def test_private_typed_close_requires_independent_postcondition_and_date() -> No
     )
     assert result["status"] == "materially_verified"
     assert result["material_result_verified"] is True
+    assert result["submission_ack"]["material_result_verified"] is False
     assert result["post_observation_revision"] == 102
     assert result["ending_date_raw"] == DATE_RAW + 4
     assert [row["step"] for row in driver.endpoint.requests] == [
