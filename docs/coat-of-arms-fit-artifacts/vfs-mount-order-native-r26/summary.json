@@ -1,0 +1,56 @@
+{
+  "schema": "ck3-coat-of-arms-vfs-mount-order-native-r26-summary-v1",
+  "status": "failed",
+  "failure_class": "observer_coverage",
+  "ck3_build": "1.19.0.6",
+  "source_commit": "ce65ad84cd90e9d95957e6faa18e67daacd1e4d6",
+  "interaction": "managed_typed_mcp",
+  "steam_offline": true,
+  "runner": {
+    "timeout_seconds": 300,
+    "elapsed_seconds": 306.8,
+    "error": "main_menu route was not observed",
+    "cleanup_proven": true,
+    "tree_gone": true,
+    "watchdog_state_after": "absent"
+  },
+  "observer": {
+    "id": "vfs_mount_lifecycle_observer_v1",
+    "installed": true,
+    "installed_mask": 15,
+    "failure_flags": 0,
+    "publisher_entry_count": 4,
+    "publisher_return_count": 4,
+    "publisher_success_count": 4,
+    "publisher_failure_count": 0,
+    "publisher_slot_count": 4,
+    "paths": [
+      "C:/SteamLibrary/steamapps/common/Crusader Kings III/clausewitz",
+      "C:/SteamLibrary/steamapps/common/Crusader Kings III/jomini",
+      "C:/SteamLibrary/steamapps/common/Crusader Kings III/game",
+      "D:/ck3_coa_vfs_mount_order_r26_live/profile"
+    ],
+    "fixture_paths_observed": false
+  },
+  "independent_debug_log": {
+    "source": "virtualfilesystem_physfs.cpp:813",
+    "dlc_mount_count_before_fixture": 29,
+    "fixture_paths": [
+      "D:/ck3_coa_vfs_replace_path_r25_source/coa_vfs_replace_earlier",
+      "D:/ck3_coa_vfs_replace_path_r25_source/coa_vfs_replace_later"
+    ],
+    "fixture_paths_mounted": true,
+    "bytes": 327083,
+    "sha256": "3824e9933e4e9968e2c9972003dc837c8ec804b8ec94895c7b0b183643ade4f2"
+  },
+  "report": {
+    "path": "report.json",
+    "bytes": 181739,
+    "sha256": "6b00f44e704b997d795baccca5ec55d59197dae891240feb9662f29533ef29c7"
+  },
+  "conclusion": "The current observer covers root publisher calls but not the PhysFS mod and DLC mount path, so it cannot establish mod winner order.",
+  "next": [
+    "capture the explicit diagnostics MCP call before frontend route readiness",
+    "develop a bounded default-off private PhysFS mount observer"
+  ]
+}
