@@ -1,6 +1,6 @@
 # User picture corpus v12 — iterative mixed native-shape refinement
 
-Status: **7/7 browser gates passed; changed picture-05/07 native revalidation pending**.
+Status: **7/7 browser gates passed; native comparative gate failed, not promoted**.
 
 Source corpus: `pictures.zip`, 6,240,071 bytes,
 SHA-256 `0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F`。
@@ -33,8 +33,13 @@ picture-05/07 在 192px 与 256px 的 edge/total 也均不退化；例如 pictur
 每个用例保存完整 CK3 代码、canonical 230px PNG、拟合报告截图、编辑器预览截图和
 `report.json`。报告中的 `nativeShapeRefinement` 记录请求/完成 pass、实际评估数、可用基础形状族、
 接受纹理和停止原因。网页两处预览继续使用同一个 data URL、相同盾形投影，复制后解析/序列化和
-实例计数均为 7/7。当前原生结论只可由代码未变的 5 例继承；picture-05/07 必须经过新的结构化
-MCP Apply/Copy/framebuffer 后才能晋级。
+实例计数均为 7/7。
+
+r14 已对全部 7 例完成新的结构化 MCP Apply/Copy/framebuffer：绝对像素门禁和 Copy 再 Apply 都是
+7/7。由于跨会话采样存在漂移，r15 又在同一次校准中交替运行 v11/v12 picture-05/07，并重复采样。
+picture-05 的 v12 原生 MAE 比 v11 高约 0.000250，远大于约 0.000003 的重复漂移；picture-07 的
+差异则处于重复漂移量级，不能证明收益。因此本实验不晋级，当前交付基线仍为 v11。完整证据见
+`user-picture-corpus-v12-native-r14/` 与 `user-picture-corpus-v11-v12-native-ab-r15/`。
 
 验证：
 

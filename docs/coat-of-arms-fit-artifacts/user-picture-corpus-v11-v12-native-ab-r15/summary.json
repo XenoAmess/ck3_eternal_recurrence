@@ -1,0 +1,1814 @@
+{
+  "schema": "ck3-coat-of-arms-picture-corpus-native-summary-v1",
+  "source_report": {
+    "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-v12-native-ab-r15/raw-report.json",
+    "bytes": 22660681,
+    "sha256": "F0B428769C1072D46ACED35141F38144E4BA2C3D8EC1EA927422B5DE9CD6AA93"
+  },
+  "repository_head": "1080affac99a3734ef707da2507cf34aa16fc018",
+  "created_at": "2026-09-16T01:38:42.180620+00:00",
+  "elapsed_seconds": 248.579,
+  "steam": {
+    "path": "D:\\Program Files (x86)\\Steam\\config\\loginusers.vdf",
+    "wants_offline_mode_values": [
+      "1"
+    ],
+    "offline": true
+  },
+  "interaction_policy": {
+    "mcp_only": true,
+    "mcp_baseline_private_native_read_only": false,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false
+  },
+  "shared_ck3_slot": {
+    "mechanism": "exclusive_launch_lock + exclusive_state_lock",
+    "launch_lock_acquired": true,
+    "state_lock_acquired": true,
+    "released": true
+  },
+  "overall": {
+    "report_ok": false,
+    "report_error": "RuntimeError: frontend MCP route sequence failed its checks",
+    "sequence_ok": false,
+    "corpus_ok": false,
+    "case_count": 7,
+    "passed": 0,
+    "failed": 7,
+    "strict_roundtrip_passed": 0,
+    "native_pixel_passed": 7,
+    "copy_reapply_passed": 7,
+    "visual_passed": 7
+  },
+  "framebuffer_calibration": {
+    "ok": true,
+    "calibration_id": "picture-corpus",
+    "checks": {
+      "red_applied": true,
+      "begin_captured": true,
+      "green_applied": true,
+      "surface_complete_captured": true,
+      "black_applied": true,
+      "anchor_base_captured": true,
+      "anchors_applied": true,
+      "anchors_complete_captured": true
+    },
+    "failed_checks": [],
+    "receipt": {
+      "calibrationId": "picture-corpus",
+      "framebufferSize": [
+        2560,
+        1440
+      ],
+      "rect": [
+        818,
+        312,
+        965,
+        478
+      ],
+      "referenceIndependent": true,
+      "fixedScreenCoordinatesUsed": false,
+      "usesOcr": false,
+      "usesKeyboard": false,
+      "usesMouse": false,
+      "route": "coat_of_arms_designer",
+      "routeStable": true,
+      "schema": "ck3-coat-of-arms-framebuffer-calibration-v3",
+      "schemaVersion": 3,
+      "uvRegistered": true,
+      "anchorPositions": [
+        [
+          0.3,
+          0.3
+        ],
+        [
+          0.5,
+          0.3
+        ],
+        [
+          0.7,
+          0.3
+        ],
+        [
+          0.3,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.7,
+          0.5
+        ],
+        [
+          0.3,
+          0.7
+        ],
+        [
+          0.5,
+          0.7
+        ],
+        [
+          0.7,
+          0.7
+        ]
+      ],
+      "observedAnchorCenters": [
+        [
+          858.0,
+          361.0
+        ],
+        [
+          891.0,
+          361.0
+        ],
+        [
+          924.9500122070312,
+          361.04998779296875
+        ],
+        [
+          858.0,
+          395.0
+        ],
+        [
+          891.0,
+          395.0
+        ],
+        [
+          925.0,
+          395.0
+        ],
+        [
+          858.0,
+          428.0
+        ],
+        [
+          891.0,
+          428.0
+        ],
+        [
+          925.0,
+          428.0
+        ]
+      ],
+      "canonicalToFramebufferAffine": [
+        [
+          167.45835348731578,
+          0.04165649578273223,
+          807.5777741425642
+        ],
+        [
+          0.04165649603775969,
+          167.45835348719135,
+          310.92221587428423
+        ]
+      ],
+      "reprojectionErrors": [
+        0.24356427788734436,
+        0.3669452667236328,
+        0.1964353322982788,
+        0.37394317984580994,
+        0.46354249119758606,
+        0.3669452667236328,
+        0.21999980509281158,
+        0.37394317984580994,
+        0.24356427788734436
+      ],
+      "maximumReprojectionError": 0.46354249119758606,
+      "maximumAllowedReprojectionError": 2.5,
+      "anchorDifferenceThreshold": 48,
+      "anchorBasePixelSha256": "575A98CFAE2C9D55EBEECA4BC51B5519B684A368BB13E6CCB98AF4AC70115214",
+      "anchorsCompletePixelSha256": "734C33D0820C9296B3F5E5245101EC6F13BD72C747E01382F494B83A0153C722"
+    }
+  },
+  "cases": [
+    {
+      "id": "picture-01",
+      "ok": false,
+      "source": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-01\\coat_of_arms.txt",
+        "raw_bytes": 359771,
+        "raw_sha256": "348a551e090ba08f6347d68fcbc80db54382606d3b6f16facbcf14ef05578136",
+        "wire_bytes": 359771,
+        "wire_sha256": "348a551e090ba08f6347d68fcbc80db54382606d3b6f16facbcf14ef05578136",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 917,
+          "colored_emblem_blocks": 917,
+          "textured_emblem_blocks": 0,
+          "instances": 917,
+          "utf8_bytes": 359771,
+          "lines": 12844
+        },
+        "semantic_projection": {
+          "sha256": "5b9a65dbe4f68ee266276deb76afc9a0ed9a1b2ecb32816079e20c1410968be0",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 917,
+            "colors": 2754,
+            "masks": 0,
+            "positions": 917,
+            "scales": 917,
+            "rotations": 917,
+            "depths": 917,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-01\\canonical-preview-230.png",
+        "png_bytes": 68823,
+        "png_sha256": "1A1E5EE34FFEB14FC38CD28F0385BD15346F1AD5F481E838042E37AE6653A846"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 917,
+          "colored_emblem_blocks": 917,
+          "textured_emblem_blocks": 0,
+          "instances": 917,
+          "utf8_bytes": 227378,
+          "lines": 11928
+        },
+        "native_copy": {
+          "source_bytes": 227378,
+          "source_sha256": "a0a6b78a1971d616e4769d5f855996019ecaab0aab03f00e62b37e28f23e0add"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.1,
+          "maximum_color_mse": 0.03,
+          "maximum_edge_loss": 0.16,
+          "maximum_spatial_mean_absolute_error": 0.25
+        },
+        "worst_spatial_mean_absolute_error": 0.22522105276584625,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 30382,
+          "meanAbsoluteError": 0.04153667762875557,
+          "colorMse": 0.009599223732948303,
+          "edgeLoss": 0.1390768140554428
+        },
+        "best_match": {
+          "alignedContentPngSha256": "C7D42E95BE06AE2DFCBD0CC2C37B9432269743871E2D3293184492150E5DD601",
+          "cropPngSha256": "7B16C091A86EDF2B067A111A1559EB9059FC0EF239BF80446A06A1EC147D8C03"
+        }
+      },
+      "copy_reapply": {
+        "ok": true,
+        "error": null,
+        "reference": {
+          "png_bytes": 79030,
+          "png_sha256": "C7D42E95BE06AE2DFCBD0CC2C37B9432269743871E2D3293184492150E5DD601"
+        },
+        "roundtrip": {
+          "ok": true,
+          "binding_mode": "snapshot",
+          "chunk_count": 5,
+          "checks": {
+            "input_exceeds_v1_bound": true,
+            "begin_not_error": true,
+            "begin_receiving": true,
+            "all_chunks_sent": true,
+            "last_chunk_ready": true,
+            "commit_not_error": true,
+            "commit_applied": true,
+            "commit_source_identity": true,
+            "native_copy_exported": true,
+            "native_copy_exceeds_v1_bound": true,
+            "drawn_instance_count_preserved": true,
+            "logical_layer_count_preserved": true,
+            "colored_emblem_block_count_preserved": true,
+            "semantic_field_sequences_preserved": true
+          },
+          "failed_checks": [],
+          "semantic_checks": {
+            "patterns": true,
+            "textures": true,
+            "colors": true,
+            "masks": true,
+            "positions": true,
+            "scales": true,
+            "rotations": true,
+            "depths": true,
+            "parents": true
+          },
+          "failed_semantic_checks": [],
+          "output_structure": {
+            "logical_layers": 917,
+            "colored_emblem_blocks": 917,
+            "textured_emblem_blocks": 0,
+            "instances": 917,
+            "utf8_bytes": 227378,
+            "lines": 11928
+          },
+          "native_copy": {
+            "source_bytes": 227378,
+            "source_sha256": "a0a6b78a1971d616e4769d5f855996019ecaab0aab03f00e62b37e28f23e0add"
+          }
+        },
+        "framebuffer": {
+          "ok": true,
+          "checks": {
+            "call_not_error": true,
+            "schema": true,
+            "route_stable": true,
+            "read_only_no_ocr_or_input": true,
+            "reference_independent_localization": true,
+            "locator_loss": true,
+            "distinct_margin": true,
+            "mean_absolute_error": true,
+            "color_mse": true,
+            "edge_loss": true,
+            "worst_spatial_mean_absolute_error": true
+          },
+          "failed_checks": [],
+          "thresholds": {
+            "maximum_locator_loss": 0.45,
+            "minimum_distinct_margin": 0.005,
+            "maximum_mean_absolute_error": 0.01,
+            "maximum_color_mse": 0.001,
+            "maximum_edge_loss": 0.02,
+            "maximum_spatial_mean_absolute_error": 0.03
+          },
+          "worst_spatial_mean_absolute_error": 0.00021760587696917355,
+          "metrics": {
+            "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+            "maskPixels": 30382,
+            "meanAbsoluteError": 8.114540833048522e-05,
+            "colorMse": 3.182172463311872e-07,
+            "edgeLoss": 0.0003673485480248928
+          }
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-01\\native-crop.png",
+        "bytes": 79030,
+        "sha256": "C7D42E95BE06AE2DFCBD0CC2C37B9432269743871E2D3293184492150E5DD601",
+        "payload_kind": "aligned-content",
+        "kind": "original-apply"
+      },
+      "native_copy_reapplied_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-01\\native-copy-reapplied-crop.png",
+        "bytes": 78970,
+        "sha256": "37BF5DF22799CB0C1DBE844AC0A7FB5CF055F28B97C2303361F77E59F765B571",
+        "payload_kind": "aligned-content",
+        "kind": "copy-reapplied"
+      }
+    },
+    {
+      "id": "picture-02",
+      "ok": false,
+      "source": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-02\\coat_of_arms.txt",
+        "raw_bytes": 347131,
+        "raw_sha256": "feba8cf1f59eab32977e069d1b5b561bf4bb88fa9357897a02297a6b57e51053",
+        "wire_bytes": 359975,
+        "wire_sha256": "7f5114674f91a85c987b4bfc58ba84bce18ea9a96675fbe83879035bb64867a0",
+        "line_endings_normalized": true,
+        "structure": {
+          "logical_layers": 917,
+          "colored_emblem_blocks": 917,
+          "textured_emblem_blocks": 0,
+          "instances": 917,
+          "utf8_bytes": 359975,
+          "lines": 12844
+        },
+        "semantic_projection": {
+          "sha256": "97a20dfe8562a14fe2196d2a8bd618d69316d8fd984d57022aa340275e018553",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 917,
+            "colors": 2754,
+            "masks": 0,
+            "positions": 917,
+            "scales": 917,
+            "rotations": 917,
+            "depths": 917,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-02\\canonical-preview-230.png",
+        "png_bytes": 69366,
+        "png_sha256": "A90C65754070DA8EBD3E22091A8D3D7C62EA0B005709E5C4EE3C457B2D99DA77"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 917,
+          "colored_emblem_blocks": 917,
+          "textured_emblem_blocks": 0,
+          "instances": 917,
+          "utf8_bytes": 227461,
+          "lines": 11931
+        },
+        "native_copy": {
+          "source_bytes": 227461,
+          "source_sha256": "61a684a6ca2d1d2196b93172304ddea2320507a7908ad680cf1501428c856b77"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.1,
+          "maximum_color_mse": 0.03,
+          "maximum_edge_loss": 0.16,
+          "maximum_spatial_mean_absolute_error": 0.25
+        },
+        "worst_spatial_mean_absolute_error": 0.22518260776996613,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 30382,
+          "meanAbsoluteError": 0.041786737740039825,
+          "colorMse": 0.009708005003631115,
+          "edgeLoss": 0.1393161118030548
+        },
+        "best_match": {
+          "alignedContentPngSha256": "01738E4D33FB24147D4B47C026E5B22EE74D2D4215861B32342E319304FF0F1E",
+          "cropPngSha256": "C1A257B15BD7CD36DCA38B9CCE8B1C9D72F62B74D468BE99E4743E2F5384DB77"
+        }
+      },
+      "copy_reapply": {
+        "ok": true,
+        "error": null,
+        "reference": {
+          "png_bytes": 79116,
+          "png_sha256": "01738E4D33FB24147D4B47C026E5B22EE74D2D4215861B32342E319304FF0F1E"
+        },
+        "roundtrip": {
+          "ok": true,
+          "binding_mode": "snapshot",
+          "chunk_count": 5,
+          "checks": {
+            "input_exceeds_v1_bound": true,
+            "begin_not_error": true,
+            "begin_receiving": true,
+            "all_chunks_sent": true,
+            "last_chunk_ready": true,
+            "commit_not_error": true,
+            "commit_applied": true,
+            "commit_source_identity": true,
+            "native_copy_exported": true,
+            "native_copy_exceeds_v1_bound": true,
+            "drawn_instance_count_preserved": true,
+            "logical_layer_count_preserved": true,
+            "colored_emblem_block_count_preserved": true,
+            "semantic_field_sequences_preserved": true
+          },
+          "failed_checks": [],
+          "semantic_checks": {
+            "patterns": true,
+            "textures": true,
+            "colors": true,
+            "masks": true,
+            "positions": true,
+            "scales": true,
+            "rotations": true,
+            "depths": true,
+            "parents": true
+          },
+          "failed_semantic_checks": [],
+          "output_structure": {
+            "logical_layers": 917,
+            "colored_emblem_blocks": 917,
+            "textured_emblem_blocks": 0,
+            "instances": 917,
+            "utf8_bytes": 227461,
+            "lines": 11931
+          },
+          "native_copy": {
+            "source_bytes": 227461,
+            "source_sha256": "61a684a6ca2d1d2196b93172304ddea2320507a7908ad680cf1501428c856b77"
+          }
+        },
+        "framebuffer": {
+          "ok": true,
+          "checks": {
+            "call_not_error": true,
+            "schema": true,
+            "route_stable": true,
+            "read_only_no_ocr_or_input": true,
+            "reference_independent_localization": true,
+            "locator_loss": true,
+            "distinct_margin": true,
+            "mean_absolute_error": true,
+            "color_mse": true,
+            "edge_loss": true,
+            "worst_spatial_mean_absolute_error": true
+          },
+          "failed_checks": [],
+          "thresholds": {
+            "maximum_locator_loss": 0.45,
+            "minimum_distinct_margin": 0.005,
+            "maximum_mean_absolute_error": 0.01,
+            "maximum_color_mse": 0.001,
+            "maximum_edge_loss": 0.02,
+            "maximum_spatial_mean_absolute_error": 0.03
+          },
+          "worst_spatial_mean_absolute_error": 0.00035786174703389406,
+          "metrics": {
+            "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+            "maskPixels": 30382,
+            "meanAbsoluteError": 7.309969078050926e-05,
+            "colorMse": 2.8666548246292223e-07,
+            "edgeLoss": 0.0003330145264044404
+          }
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-02\\native-crop.png",
+        "bytes": 79116,
+        "sha256": "01738E4D33FB24147D4B47C026E5B22EE74D2D4215861B32342E319304FF0F1E",
+        "payload_kind": "aligned-content",
+        "kind": "original-apply"
+      },
+      "native_copy_reapplied_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-02\\native-copy-reapplied-crop.png",
+        "bytes": 79100,
+        "sha256": "56A1BA990416E0ACB447BDD2E66B1F6BB77E0CEEE4F51A4F4779161242DA3B78",
+        "payload_kind": "aligned-content",
+        "kind": "copy-reapplied"
+      }
+    },
+    {
+      "id": "picture-03",
+      "ok": false,
+      "source": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-03\\coat_of_arms.txt",
+        "raw_bytes": 388782,
+        "raw_sha256": "b8886fb578f3144752aea8801b46676f419bcbdb4b4705ddb0bc5958ee03e96a",
+        "wire_bytes": 388782,
+        "wire_sha256": "b8886fb578f3144752aea8801b46676f419bcbdb4b4705ddb0bc5958ee03e96a",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 986,
+          "colored_emblem_blocks": 986,
+          "textured_emblem_blocks": 0,
+          "instances": 986,
+          "utf8_bytes": 388782,
+          "lines": 13810
+        },
+        "semantic_projection": {
+          "sha256": "1b3c8b34574827b5619d57d03f3a4f1cf27edcb09b38d103cc3f99622a6ef446",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 986,
+            "colors": 2961,
+            "masks": 0,
+            "positions": 986,
+            "scales": 986,
+            "rotations": 986,
+            "depths": 986,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-03\\canonical-preview-230.png",
+        "png_bytes": 81812,
+        "png_sha256": "62BE424125ECD4720B38EB7584B9D6F433C46CBB1CD4026101C8A7F371A9DB76"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 986,
+          "colored_emblem_blocks": 986,
+          "textured_emblem_blocks": 0,
+          "instances": 986,
+          "utf8_bytes": 245163,
+          "lines": 12825
+        },
+        "native_copy": {
+          "source_bytes": 245163,
+          "source_sha256": "c8d67d3c9ffcb9c0386945d2de50e14592b30c12de4a2589c24663ca90f54d2f"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.1,
+          "maximum_color_mse": 0.03,
+          "maximum_edge_loss": 0.16,
+          "maximum_spatial_mean_absolute_error": 0.25
+        },
+        "worst_spatial_mean_absolute_error": 0.09281542897224426,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 30382,
+          "meanAbsoluteError": 0.025480514392256737,
+          "colorMse": 0.005011823493987322,
+          "edgeLoss": 0.08855295181274414
+        },
+        "best_match": {
+          "alignedContentPngSha256": "9A9B5C482258205514A2738E1454B4B694314489FAD53B495F821329E301D3B0",
+          "cropPngSha256": "76DE1ECA9BE524B436637756101CCD6DF7CF91D8D9AF8FDD4B622B0CE98F73E3"
+        }
+      },
+      "copy_reapply": {
+        "ok": true,
+        "error": null,
+        "reference": {
+          "png_bytes": 76663,
+          "png_sha256": "9A9B5C482258205514A2738E1454B4B694314489FAD53B495F821329E301D3B0"
+        },
+        "roundtrip": {
+          "ok": true,
+          "binding_mode": "snapshot",
+          "chunk_count": 5,
+          "checks": {
+            "input_exceeds_v1_bound": true,
+            "begin_not_error": true,
+            "begin_receiving": true,
+            "all_chunks_sent": true,
+            "last_chunk_ready": true,
+            "commit_not_error": true,
+            "commit_applied": true,
+            "commit_source_identity": true,
+            "native_copy_exported": true,
+            "native_copy_exceeds_v1_bound": true,
+            "drawn_instance_count_preserved": true,
+            "logical_layer_count_preserved": true,
+            "colored_emblem_block_count_preserved": true,
+            "semantic_field_sequences_preserved": true
+          },
+          "failed_checks": [],
+          "semantic_checks": {
+            "patterns": true,
+            "textures": true,
+            "colors": true,
+            "masks": true,
+            "positions": true,
+            "scales": true,
+            "rotations": true,
+            "depths": true,
+            "parents": true
+          },
+          "failed_semantic_checks": [],
+          "output_structure": {
+            "logical_layers": 986,
+            "colored_emblem_blocks": 986,
+            "textured_emblem_blocks": 0,
+            "instances": 986,
+            "utf8_bytes": 245163,
+            "lines": 12825
+          },
+          "native_copy": {
+            "source_bytes": 245163,
+            "source_sha256": "c8d67d3c9ffcb9c0386945d2de50e14592b30c12de4a2589c24663ca90f54d2f"
+          }
+        },
+        "framebuffer": {
+          "ok": true,
+          "checks": {
+            "call_not_error": true,
+            "schema": true,
+            "route_stable": true,
+            "read_only_no_ocr_or_input": true,
+            "reference_independent_localization": true,
+            "locator_loss": true,
+            "distinct_margin": true,
+            "mean_absolute_error": true,
+            "color_mse": true,
+            "edge_loss": true,
+            "worst_spatial_mean_absolute_error": true
+          },
+          "failed_checks": [],
+          "thresholds": {
+            "maximum_locator_loss": 0.45,
+            "minimum_distinct_margin": 0.005,
+            "maximum_mean_absolute_error": 0.01,
+            "maximum_color_mse": 0.001,
+            "maximum_edge_loss": 0.02,
+            "maximum_spatial_mean_absolute_error": 0.03
+          },
+          "worst_spatial_mean_absolute_error": 0.0001321178424404934,
+          "metrics": {
+            "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+            "maskPixels": 30382,
+            "meanAbsoluteError": 3.6055058444617316e-05,
+            "colorMse": 1.4139241955035686e-07,
+            "edgeLoss": 0.00017786587704904377
+          }
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-03\\native-crop.png",
+        "bytes": 76663,
+        "sha256": "9A9B5C482258205514A2738E1454B4B694314489FAD53B495F821329E301D3B0",
+        "payload_kind": "aligned-content",
+        "kind": "original-apply"
+      },
+      "native_copy_reapplied_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-03\\native-copy-reapplied-crop.png",
+        "bytes": 76644,
+        "sha256": "116CC504A1A6AB6CDA8574FF433D8A351A8842CF24C5BB1B783301BB5629CA57",
+        "payload_kind": "aligned-content",
+        "kind": "copy-reapplied"
+      }
+    },
+    {
+      "id": "picture-04",
+      "ok": false,
+      "source": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-04\\coat_of_arms.txt",
+        "raw_bytes": 375017,
+        "raw_sha256": "68bee80e814de9f6b2198ce2fb3830ecb0349e26184a2a186c6a3b78832b47e1",
+        "wire_bytes": 388827,
+        "wire_sha256": "d99bae6fd8b533bede39ed97886a9fa30e1ac933bc1ebcbea57694d420aed52e",
+        "line_endings_normalized": true,
+        "structure": {
+          "logical_layers": 986,
+          "colored_emblem_blocks": 986,
+          "textured_emblem_blocks": 0,
+          "instances": 986,
+          "utf8_bytes": 388827,
+          "lines": 13810
+        },
+        "semantic_projection": {
+          "sha256": "03c6b4975c1047de7db4e0bac3ece3342fb4f2ee5cdbdd597b7beb0eca4461f4",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 986,
+            "colors": 2961,
+            "masks": 0,
+            "positions": 986,
+            "scales": 986,
+            "rotations": 986,
+            "depths": 986,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-04\\canonical-preview-230.png",
+        "png_bytes": 82289,
+        "png_sha256": "56058501AB5BB95EF60344BA2E766EAB16886B60A2F30A0B5E753DCAAF9E8651"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 986,
+          "colored_emblem_blocks": 986,
+          "textured_emblem_blocks": 0,
+          "instances": 986,
+          "utf8_bytes": 245176,
+          "lines": 12826
+        },
+        "native_copy": {
+          "source_bytes": 245176,
+          "source_sha256": "38abc95b4763441666df9756f05f21a1691733f35a298bc80e3203d05ab0dbcd"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.1,
+          "maximum_color_mse": 0.03,
+          "maximum_edge_loss": 0.16,
+          "maximum_spatial_mean_absolute_error": 0.25
+        },
+        "worst_spatial_mean_absolute_error": 0.09282536059617996,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 30382,
+          "meanAbsoluteError": 0.025479869917035103,
+          "colorMse": 0.005012595094740391,
+          "edgeLoss": 0.0885428860783577
+        },
+        "best_match": {
+          "alignedContentPngSha256": "3757D5D0B4A9D955538FBD9FB0E59277BAB2A4F4BB4160B7CF46AD0183491EA0",
+          "cropPngSha256": "9991677F0D4DBC5FA9A6681A0B5673CDBA9A4D1436320F60CAA9F19B720140EC"
+        }
+      },
+      "copy_reapply": {
+        "ok": true,
+        "error": null,
+        "reference": {
+          "png_bytes": 76665,
+          "png_sha256": "3757D5D0B4A9D955538FBD9FB0E59277BAB2A4F4BB4160B7CF46AD0183491EA0"
+        },
+        "roundtrip": {
+          "ok": true,
+          "binding_mode": "snapshot",
+          "chunk_count": 5,
+          "checks": {
+            "input_exceeds_v1_bound": true,
+            "begin_not_error": true,
+            "begin_receiving": true,
+            "all_chunks_sent": true,
+            "last_chunk_ready": true,
+            "commit_not_error": true,
+            "commit_applied": true,
+            "commit_source_identity": true,
+            "native_copy_exported": true,
+            "native_copy_exceeds_v1_bound": true,
+            "drawn_instance_count_preserved": true,
+            "logical_layer_count_preserved": true,
+            "colored_emblem_block_count_preserved": true,
+            "semantic_field_sequences_preserved": true
+          },
+          "failed_checks": [],
+          "semantic_checks": {
+            "patterns": true,
+            "textures": true,
+            "colors": true,
+            "masks": true,
+            "positions": true,
+            "scales": true,
+            "rotations": true,
+            "depths": true,
+            "parents": true
+          },
+          "failed_semantic_checks": [],
+          "output_structure": {
+            "logical_layers": 986,
+            "colored_emblem_blocks": 986,
+            "textured_emblem_blocks": 0,
+            "instances": 986,
+            "utf8_bytes": 245176,
+            "lines": 12826
+          },
+          "native_copy": {
+            "source_bytes": 245176,
+            "source_sha256": "38abc95b4763441666df9756f05f21a1691733f35a298bc80e3203d05ab0dbcd"
+          }
+        },
+        "framebuffer": {
+          "ok": true,
+          "checks": {
+            "call_not_error": true,
+            "schema": true,
+            "route_stable": true,
+            "read_only_no_ocr_or_input": true,
+            "reference_independent_localization": true,
+            "locator_loss": true,
+            "distinct_margin": true,
+            "mean_absolute_error": true,
+            "color_mse": true,
+            "edge_loss": true,
+            "worst_spatial_mean_absolute_error": true
+          },
+          "failed_checks": [],
+          "thresholds": {
+            "maximum_locator_loss": 0.45,
+            "minimum_distinct_margin": 0.005,
+            "maximum_mean_absolute_error": 0.01,
+            "maximum_color_mse": 0.001,
+            "maximum_edge_loss": 0.02,
+            "maximum_spatial_mean_absolute_error": 0.03
+          },
+          "worst_spatial_mean_absolute_error": 0.00010311935329809785,
+          "metrics": {
+            "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+            "maskPixels": 30382,
+            "meanAbsoluteError": 2.1469539206009358e-05,
+            "colorMse": 8.419428354500269e-08,
+            "edgeLoss": 0.00011177927808603272
+          }
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-04\\native-crop.png",
+        "bytes": 76665,
+        "sha256": "3757D5D0B4A9D955538FBD9FB0E59277BAB2A4F4BB4160B7CF46AD0183491EA0",
+        "payload_kind": "aligned-content",
+        "kind": "original-apply"
+      },
+      "native_copy_reapplied_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-04\\native-copy-reapplied-crop.png",
+        "bytes": 76658,
+        "sha256": "EB6D603B29F654DE8B4DEFAA0B9A537D0CFBD3035209AAD14933457F355183EE",
+        "payload_kind": "aligned-content",
+        "kind": "copy-reapplied"
+      }
+    },
+    {
+      "id": "picture-05",
+      "ok": false,
+      "source": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-05\\coat_of_arms.txt",
+        "raw_bytes": 359771,
+        "raw_sha256": "348a551e090ba08f6347d68fcbc80db54382606d3b6f16facbcf14ef05578136",
+        "wire_bytes": 359771,
+        "wire_sha256": "348a551e090ba08f6347d68fcbc80db54382606d3b6f16facbcf14ef05578136",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 917,
+          "colored_emblem_blocks": 917,
+          "textured_emblem_blocks": 0,
+          "instances": 917,
+          "utf8_bytes": 359771,
+          "lines": 12844
+        },
+        "semantic_projection": {
+          "sha256": "5b9a65dbe4f68ee266276deb76afc9a0ed9a1b2ecb32816079e20c1410968be0",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 917,
+            "colors": 2754,
+            "masks": 0,
+            "positions": 917,
+            "scales": 917,
+            "rotations": 917,
+            "depths": 917,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-05\\canonical-preview-230.png",
+        "png_bytes": 68823,
+        "png_sha256": "1A1E5EE34FFEB14FC38CD28F0385BD15346F1AD5F481E838042E37AE6653A846"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 917,
+          "colored_emblem_blocks": 917,
+          "textured_emblem_blocks": 0,
+          "instances": 917,
+          "utf8_bytes": 227378,
+          "lines": 11928
+        },
+        "native_copy": {
+          "source_bytes": 227378,
+          "source_sha256": "a0a6b78a1971d616e4769d5f855996019ecaab0aab03f00e62b37e28f23e0add"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.1,
+          "maximum_color_mse": 0.03,
+          "maximum_edge_loss": 0.16,
+          "maximum_spatial_mean_absolute_error": 0.25
+        },
+        "worst_spatial_mean_absolute_error": 0.22522105276584625,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 30382,
+          "meanAbsoluteError": 0.04153968766331673,
+          "colorMse": 0.0096009885892272,
+          "edgeLoss": 0.1390833854675293
+        },
+        "best_match": {
+          "alignedContentPngSha256": "A663879CEC07ACF99731A00D74FFEC227C4B6AD8AD6F9C037D3D912C0298D68B",
+          "cropPngSha256": "9E0D1255B56FF6E330D3E23C8BE8887EE5E190846222105824132942064DB22F"
+        }
+      },
+      "copy_reapply": {
+        "ok": true,
+        "error": null,
+        "reference": {
+          "png_bytes": 79035,
+          "png_sha256": "A663879CEC07ACF99731A00D74FFEC227C4B6AD8AD6F9C037D3D912C0298D68B"
+        },
+        "roundtrip": {
+          "ok": true,
+          "binding_mode": "snapshot",
+          "chunk_count": 5,
+          "checks": {
+            "input_exceeds_v1_bound": true,
+            "begin_not_error": true,
+            "begin_receiving": true,
+            "all_chunks_sent": true,
+            "last_chunk_ready": true,
+            "commit_not_error": true,
+            "commit_applied": true,
+            "commit_source_identity": true,
+            "native_copy_exported": true,
+            "native_copy_exceeds_v1_bound": true,
+            "drawn_instance_count_preserved": true,
+            "logical_layer_count_preserved": true,
+            "colored_emblem_block_count_preserved": true,
+            "semantic_field_sequences_preserved": true
+          },
+          "failed_checks": [],
+          "semantic_checks": {
+            "patterns": true,
+            "textures": true,
+            "colors": true,
+            "masks": true,
+            "positions": true,
+            "scales": true,
+            "rotations": true,
+            "depths": true,
+            "parents": true
+          },
+          "failed_semantic_checks": [],
+          "output_structure": {
+            "logical_layers": 917,
+            "colored_emblem_blocks": 917,
+            "textured_emblem_blocks": 0,
+            "instances": 917,
+            "utf8_bytes": 227378,
+            "lines": 11928
+          },
+          "native_copy": {
+            "source_bytes": 227378,
+            "source_sha256": "a0a6b78a1971d616e4769d5f855996019ecaab0aab03f00e62b37e28f23e0add"
+          }
+        },
+        "framebuffer": {
+          "ok": true,
+          "checks": {
+            "call_not_error": true,
+            "schema": true,
+            "route_stable": true,
+            "read_only_no_ocr_or_input": true,
+            "reference_independent_localization": true,
+            "locator_loss": true,
+            "distinct_margin": true,
+            "mean_absolute_error": true,
+            "color_mse": true,
+            "edge_loss": true,
+            "worst_spatial_mean_absolute_error": true
+          },
+          "failed_checks": [],
+          "thresholds": {
+            "maximum_locator_loss": 0.45,
+            "minimum_distinct_margin": 0.005,
+            "maximum_mean_absolute_error": 0.01,
+            "maximum_color_mse": 0.001,
+            "maximum_edge_loss": 0.02,
+            "maximum_spatial_mean_absolute_error": 0.03
+          },
+          "worst_spatial_mean_absolute_error": 0.0002941176644526422,
+          "metrics": {
+            "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+            "maskPixels": 30382,
+            "meanAbsoluteError": 7.284154708031565e-05,
+            "colorMse": 2.8565312959472067e-07,
+            "edgeLoss": 0.0003380484413355589
+          }
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-05\\native-crop.png",
+        "bytes": 79035,
+        "sha256": "A663879CEC07ACF99731A00D74FFEC227C4B6AD8AD6F9C037D3D912C0298D68B",
+        "payload_kind": "aligned-content",
+        "kind": "original-apply"
+      },
+      "native_copy_reapplied_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-05\\native-copy-reapplied-crop.png",
+        "bytes": 78981,
+        "sha256": "94EB156493DA9069852C4D37AD3B9AB03A80A6B1D90AAF563CE7423153437665",
+        "payload_kind": "aligned-content",
+        "kind": "copy-reapplied"
+      }
+    },
+    {
+      "id": "picture-06",
+      "ok": false,
+      "source": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-06\\coat_of_arms.txt",
+        "raw_bytes": 347131,
+        "raw_sha256": "feba8cf1f59eab32977e069d1b5b561bf4bb88fa9357897a02297a6b57e51053",
+        "wire_bytes": 359975,
+        "wire_sha256": "7f5114674f91a85c987b4bfc58ba84bce18ea9a96675fbe83879035bb64867a0",
+        "line_endings_normalized": true,
+        "structure": {
+          "logical_layers": 917,
+          "colored_emblem_blocks": 917,
+          "textured_emblem_blocks": 0,
+          "instances": 917,
+          "utf8_bytes": 359975,
+          "lines": 12844
+        },
+        "semantic_projection": {
+          "sha256": "97a20dfe8562a14fe2196d2a8bd618d69316d8fd984d57022aa340275e018553",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 917,
+            "colors": 2754,
+            "masks": 0,
+            "positions": 917,
+            "scales": 917,
+            "rotations": 917,
+            "depths": 917,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-06\\canonical-preview-230.png",
+        "png_bytes": 69366,
+        "png_sha256": "A90C65754070DA8EBD3E22091A8D3D7C62EA0B005709E5C4EE3C457B2D99DA77"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 917,
+          "colored_emblem_blocks": 917,
+          "textured_emblem_blocks": 0,
+          "instances": 917,
+          "utf8_bytes": 227461,
+          "lines": 11931
+        },
+        "native_copy": {
+          "source_bytes": 227461,
+          "source_sha256": "61a684a6ca2d1d2196b93172304ddea2320507a7908ad680cf1501428c856b77"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.1,
+          "maximum_color_mse": 0.03,
+          "maximum_edge_loss": 0.16,
+          "maximum_spatial_mean_absolute_error": 0.25
+        },
+        "worst_spatial_mean_absolute_error": 0.22518260776996613,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 30382,
+          "meanAbsoluteError": 0.04178678244352341,
+          "colorMse": 0.009708257392048836,
+          "edgeLoss": 0.13931483030319214
+        },
+        "best_match": {
+          "alignedContentPngSha256": "661211008B819D4167CFBDC07F2D4B980DF30C8EBA8A624B1C5FCCBB9F5B9DA3",
+          "cropPngSha256": "F187D67DEB4F11F38DDBCC13E5F5CE2649DED70C18C45B42D4F9C27DC8A63F64"
+        }
+      },
+      "copy_reapply": {
+        "ok": true,
+        "error": null,
+        "reference": {
+          "png_bytes": 79116,
+          "png_sha256": "661211008B819D4167CFBDC07F2D4B980DF30C8EBA8A624B1C5FCCBB9F5B9DA3"
+        },
+        "roundtrip": {
+          "ok": true,
+          "binding_mode": "snapshot",
+          "chunk_count": 5,
+          "checks": {
+            "input_exceeds_v1_bound": true,
+            "begin_not_error": true,
+            "begin_receiving": true,
+            "all_chunks_sent": true,
+            "last_chunk_ready": true,
+            "commit_not_error": true,
+            "commit_applied": true,
+            "commit_source_identity": true,
+            "native_copy_exported": true,
+            "native_copy_exceeds_v1_bound": true,
+            "drawn_instance_count_preserved": true,
+            "logical_layer_count_preserved": true,
+            "colored_emblem_block_count_preserved": true,
+            "semantic_field_sequences_preserved": true
+          },
+          "failed_checks": [],
+          "semantic_checks": {
+            "patterns": true,
+            "textures": true,
+            "colors": true,
+            "masks": true,
+            "positions": true,
+            "scales": true,
+            "rotations": true,
+            "depths": true,
+            "parents": true
+          },
+          "failed_semantic_checks": [],
+          "output_structure": {
+            "logical_layers": 917,
+            "colored_emblem_blocks": 917,
+            "textured_emblem_blocks": 0,
+            "instances": 917,
+            "utf8_bytes": 227461,
+            "lines": 11931
+          },
+          "native_copy": {
+            "source_bytes": 227461,
+            "source_sha256": "61a684a6ca2d1d2196b93172304ddea2320507a7908ad680cf1501428c856b77"
+          }
+        },
+        "framebuffer": {
+          "ok": true,
+          "checks": {
+            "call_not_error": true,
+            "schema": true,
+            "route_stable": true,
+            "read_only_no_ocr_or_input": true,
+            "reference_independent_localization": true,
+            "locator_loss": true,
+            "distinct_margin": true,
+            "mean_absolute_error": true,
+            "color_mse": true,
+            "edge_loss": true,
+            "worst_spatial_mean_absolute_error": true
+          },
+          "failed_checks": [],
+          "thresholds": {
+            "maximum_locator_loss": 0.45,
+            "minimum_distinct_margin": 0.005,
+            "maximum_mean_absolute_error": 0.01,
+            "maximum_color_mse": 0.001,
+            "maximum_edge_loss": 0.02,
+            "maximum_spatial_mean_absolute_error": 0.03
+          },
+          "worst_spatial_mean_absolute_error": 0.00035786174703389406,
+          "metrics": {
+            "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+            "maskPixels": 30382,
+            "meanAbsoluteError": 8.118841651594266e-05,
+            "colorMse": 3.183859860200755e-07,
+            "edgeLoss": 0.00037444772897288203
+          }
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-06\\native-crop.png",
+        "bytes": 79116,
+        "sha256": "661211008B819D4167CFBDC07F2D4B980DF30C8EBA8A624B1C5FCCBB9F5B9DA3",
+        "payload_kind": "aligned-content",
+        "kind": "original-apply"
+      },
+      "native_copy_reapplied_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-06\\native-copy-reapplied-crop.png",
+        "bytes": 79093,
+        "sha256": "4C0BC911E13A65A54A69B55481DCA4F1C47B2698EE32581D6D8710BDDD3E0875",
+        "payload_kind": "aligned-content",
+        "kind": "copy-reapplied"
+      }
+    },
+    {
+      "id": "picture-07",
+      "ok": false,
+      "source": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-07\\coat_of_arms.txt",
+        "raw_bytes": 375017,
+        "raw_sha256": "68bee80e814de9f6b2198ce2fb3830ecb0349e26184a2a186c6a3b78832b47e1",
+        "wire_bytes": 388827,
+        "wire_sha256": "d99bae6fd8b533bede39ed97886a9fa30e1ac933bc1ebcbea57694d420aed52e",
+        "line_endings_normalized": true,
+        "structure": {
+          "logical_layers": 986,
+          "colored_emblem_blocks": 986,
+          "textured_emblem_blocks": 0,
+          "instances": 986,
+          "utf8_bytes": 388827,
+          "lines": 13810
+        },
+        "semantic_projection": {
+          "sha256": "03c6b4975c1047de7db4e0bac3ece3342fb4f2ee5cdbdd597b7beb0eca4461f4",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 986,
+            "colors": 2961,
+            "masks": 0,
+            "positions": 986,
+            "scales": 986,
+            "rotations": 986,
+            "depths": 986,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\ck3_coa_v11_v12_ab_source_r15\\picture-07\\canonical-preview-230.png",
+        "png_bytes": 82289,
+        "png_sha256": "56058501AB5BB95EF60344BA2E766EAB16886B60A2F30A0B5E753DCAAF9E8651"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 986,
+          "colored_emblem_blocks": 986,
+          "textured_emblem_blocks": 0,
+          "instances": 986,
+          "utf8_bytes": 245176,
+          "lines": 12826
+        },
+        "native_copy": {
+          "source_bytes": 245176,
+          "source_sha256": "38abc95b4763441666df9756f05f21a1691733f35a298bc80e3203d05ab0dbcd"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.1,
+          "maximum_color_mse": 0.03,
+          "maximum_edge_loss": 0.16,
+          "maximum_spatial_mean_absolute_error": 0.25
+        },
+        "worst_spatial_mean_absolute_error": 0.09282536059617996,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 30382,
+          "meanAbsoluteError": 0.025481246411800385,
+          "colorMse": 0.005011997651308775,
+          "edgeLoss": 0.08855721354484558
+        },
+        "best_match": {
+          "alignedContentPngSha256": "69D52DD56F96EB69C189309E0A764264C9ED01FFEDC5D377F525470A93193FBE",
+          "cropPngSha256": "121D07D970841AC3A2717257845A855E0231EB904FCB69E8AA64F5879BE8BC6A"
+        }
+      },
+      "copy_reapply": {
+        "ok": true,
+        "error": null,
+        "reference": {
+          "png_bytes": 76655,
+          "png_sha256": "69D52DD56F96EB69C189309E0A764264C9ED01FFEDC5D377F525470A93193FBE"
+        },
+        "roundtrip": {
+          "ok": true,
+          "binding_mode": "snapshot",
+          "chunk_count": 5,
+          "checks": {
+            "input_exceeds_v1_bound": true,
+            "begin_not_error": true,
+            "begin_receiving": true,
+            "all_chunks_sent": true,
+            "last_chunk_ready": true,
+            "commit_not_error": true,
+            "commit_applied": true,
+            "commit_source_identity": true,
+            "native_copy_exported": true,
+            "native_copy_exceeds_v1_bound": true,
+            "drawn_instance_count_preserved": true,
+            "logical_layer_count_preserved": true,
+            "colored_emblem_block_count_preserved": true,
+            "semantic_field_sequences_preserved": true
+          },
+          "failed_checks": [],
+          "semantic_checks": {
+            "patterns": true,
+            "textures": true,
+            "colors": true,
+            "masks": true,
+            "positions": true,
+            "scales": true,
+            "rotations": true,
+            "depths": true,
+            "parents": true
+          },
+          "failed_semantic_checks": [],
+          "output_structure": {
+            "logical_layers": 986,
+            "colored_emblem_blocks": 986,
+            "textured_emblem_blocks": 0,
+            "instances": 986,
+            "utf8_bytes": 245176,
+            "lines": 12826
+          },
+          "native_copy": {
+            "source_bytes": 245176,
+            "source_sha256": "38abc95b4763441666df9756f05f21a1691733f35a298bc80e3203d05ab0dbcd"
+          }
+        },
+        "framebuffer": {
+          "ok": true,
+          "checks": {
+            "call_not_error": true,
+            "schema": true,
+            "route_stable": true,
+            "read_only_no_ocr_or_input": true,
+            "reference_independent_localization": true,
+            "locator_loss": true,
+            "distinct_margin": true,
+            "mean_absolute_error": true,
+            "color_mse": true,
+            "edge_loss": true,
+            "worst_spatial_mean_absolute_error": true
+          },
+          "failed_checks": [],
+          "thresholds": {
+            "maximum_locator_loss": 0.45,
+            "minimum_distinct_margin": 0.005,
+            "maximum_mean_absolute_error": 0.01,
+            "maximum_color_mse": 0.001,
+            "maximum_edge_loss": 0.02,
+            "maximum_spatial_mean_absolute_error": 0.03
+          },
+          "worst_spatial_mean_absolute_error": 0.00012123755004722625,
+          "metrics": {
+            "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+            "maskPixels": 30382,
+            "meanAbsoluteError": 3.906682104570791e-05,
+            "colorMse": 1.5320323143441783e-07,
+            "edgeLoss": 0.0001906443649204448
+          }
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-07\\native-crop.png",
+        "bytes": 76655,
+        "sha256": "69D52DD56F96EB69C189309E0A764264C9ED01FFEDC5D377F525470A93193FBE",
+        "payload_kind": "aligned-content",
+        "kind": "original-apply"
+      },
+      "native_copy_reapplied_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-v12-native-ab-r15\\picture-07\\native-copy-reapplied-crop.png",
+        "bytes": 76646,
+        "sha256": "3D357453F7644F882745B8F22455C82D5F335AE05E4A64880A4835812A6FB032",
+        "payload_kind": "aligned-content",
+        "kind": "copy-reapplied"
+      }
+    }
+  ],
+  "cleanup": {
+    "nonce": "7b718ce83dfe4a43891bae5ffa1bb34a",
+    "ck3_pid": 29572,
+    "ck3_creation_date": "20260916013850.417659+000",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 11620,
+    "watchdog_creation_date": "20260916013849.083268+000",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "D:\\ck3_coa_v11_v12_native_ab_r15\\control\\ck3.json": true,
+      "D:\\ck3_coa_v11_v12_native_ab_r15\\control\\watchdog-7b718ce83dfe4a43891bae5ffa1bb34a.ready.json": true,
+      "D:\\ck3_coa_v11_v12_native_ab_r15\\control\\ck3.watchdog_error": true,
+      "D:\\ck3_coa_v11_v12_native_ab_r15\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  }
+}

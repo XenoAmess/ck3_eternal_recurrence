@@ -68,3 +68,16 @@ MSE 0.005396、edge 0.098117 和最坏空间块 0.108654。
 7/7。runner 按严格聚合合同返回 RED，这一状态与“两个像素一致性门禁 7/7 通过”同时保留，不能互相
 替代。完整证据见
 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-native-r13/`。
+
+## v12 混合形状与同会话 A/B
+
+`user-picture-corpus-v12-native-r14` 对 v12 全部 7 个用户案例重跑：网页 canonical → CK3 和 Copy
+再次 Apply 都是 7/7 像素门禁通过；最坏首次 MAE/MSE/edge/空间块为
+`0.041775 / 0.009702 / 0.139285 / 0.225221`。严格 source → Copy 字段序列仍因 02/05/07 的
+rotation 取整为 4/7。
+
+然而，未变代码案例在 r13/r14 间也表现出不可忽略的跨会话采样差异，所以这些绝对值不能证明 v12
+形状替换优于 v11。r15 将 v11/v12 的 picture-05/07 放入同一 CK3 会话并加入重复样本：picture-05
+的 v12 MAE 比 v11 高约 `0.000250`，而 v11 重复漂移约 `0.000003`；MSE/edge 同向退化。
+picture-07 的差异则落在重复漂移量级。结论是 v12 绝对兼容，但没有通过原生相对收益门禁，不能晋级。
+证据见 `user-picture-corpus-v11-v12-native-ab-r15/`。
