@@ -165,6 +165,28 @@ def test_planner_preserves_known_empty_and_requires_pre_submit_checkpoint(tmp_pa
     assert submit["plan"]["selected_step"] == route.SUBMIT_STEP
 
 
+def test_planner_refreshes_missing_same_frame_root_before_private_query(
+    tmp_path: Path,
+) -> None:
+    driver = Driver(tmp_path, snapshot())
+    planned = {"snapshot_id": "s10", "revision": 10,
+               "plan": {"selected_step": "life-advance"}}
+
+    query = route.plan_faction_gift_private_v1(
+        driver, planned, snapshot(), [], {"query-campaign-root-context-v1"}
+    )
+
+    assert query["plan"]["phase"] == "faction_gift_root_query"
+    assert query["plan"]["selected_step"] == "query-campaign-root-context-v1"
+    assert "faction_gift_private_candidate_v1" not in query["plan"]
+
+    blocked = route.plan_faction_gift_private_v1(
+        driver, planned, snapshot(), [], set()
+    )
+    assert blocked["plan"]["phase"] == "faction_gift_root_query_unavailable"
+    assert blocked["plan"]["selected_step"] is None
+
+
 def test_pending_routes_by_exact_process_identity(monkeypatch, tmp_path: Path) -> None:
     old = pending(tmp_path)
     current = snapshot(revision=413, native_revision=415)

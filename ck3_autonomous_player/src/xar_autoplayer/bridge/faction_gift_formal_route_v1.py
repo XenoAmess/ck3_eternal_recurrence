@@ -14,6 +14,7 @@ from typing import Mapping, Sequence
 import uuid
 
 from ..faction_gift_formal_candidate_v1 import (
+    ROOT_STEP,
     latest_same_frame_faction_root_v1,
 )
 from ..faction_gift_pending_v1 import (
@@ -133,6 +134,18 @@ def plan_faction_gift_private_v1(
                        "classify unresolved gift from independent cold-process facts"),
         }}
     root_view = latest_same_frame_faction_root_v1(snapshot, history)
+    if root_view.get("status") == "same_frame_root_not_observed":
+        if ROOT_STEP not in available_steps:
+            return {**planned, "plan": {**plan,
+                "phase": "faction_gift_root_query_unavailable",
+                "selected_step": None,
+                "reason": "private faction route lacks its same-frame public root query",
+            }}
+        return {**planned, "plan": {**plan,
+            "phase": "faction_gift_root_query",
+            "selected_step": ROOT_STEP,
+            "reason": "refresh current feudal faction count before any private gift query",
+        }}
     if root_view.get("status") == "known_empty":
         return {**planned, "plan": {**plan,
             "faction_gift_private_candidate_v1": {
