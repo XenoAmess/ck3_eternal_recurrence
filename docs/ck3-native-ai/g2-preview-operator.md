@@ -61,6 +61,30 @@ After eligibility is GREEN, confirm the prior process is dead, allocate a new ac
 python tools/g2_preview_operator.py run --manifest <frozen-operator-manifest.json> --output <new-formal-attempt-directory>
 ```
 
+For the bounded M3 blocker diagnosis only, the same formal operator also has a
+private, default-off single-query entry.  `R776A` is the evidence-slice label;
+the value passed to `--private-timeline-query-round-id` is the actual monotonic
+single-instance owner round and therefore remains `R<number>` (for that slice,
+`R776`).  The manifest must pin the source commit containing this entry and its
+same-source Release DLL/injector:
+
+```text
+python tools/g2_preview_operator.py query-current-timeline-blocker-context-v1 --manifest <frozen-R776A-operator-manifest.json> --output <new-R776A-read-only-attempt-directory> --private-timeline-query-round-id R776 --timeout 390 --readiness-timeout 300
+```
+
+This mode runs the existing no-launch one-generation preflight, then enters the
+production `agent.py native-query-current-timeline-blocker-context-v1` path.
+It owns one cold-start `native_session`, waits for one exact paused map-ready
+frame, calls `query-current-timeline-blocker-context-v1` exactly once, and
+recycles the process.  `GREEN_READ_ONLY` requires the query envelope to retain
+`private_build=true`, `read_only=true`, and `advertised=false`; the before and
+after save hash, driver-state hash, paused frame and date must be identical;
+managed process cleanup must be proven.  The receipt records the source commit,
+agent/operator hashes, actual round, query envelope and cleanup.  This entry has
+no planner, Close, marriage, `death-terminal`, Python successor continuation,
+date advance, checkpoint write, UI input or gameplay action path.  It remains
+private and cannot advertise the capability.
+
 The Python operator prints `Operator stop request file: <absolute path>` before launch and preserves complete UTF-8 stdout, stderr, preflight output, exit codes and a JSON receipt in the new attempt directory. The formal bounded run only passes the preview action slice when it makes a real nonempty policy decision from the exact natural request, submits one typed action, sees an independent later paused frame where the old full pending ID has disappeared, has a later successful strategy turn that does not repeat the action, saves a checkpoint **after** the action, and proves single-instance cleanup. `no_semantic_action`, timeout, RED and unexecuted are recorded separately. Existing historical same-seed behavior can guide scene selection but cannot substitute for this frozen combination's live result.
 
 The evidence checker is read-only and extracts the signed pending ID from the new report; it never takes a CharacterID or request ID as an operator action parameter:

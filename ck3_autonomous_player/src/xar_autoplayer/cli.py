@@ -310,6 +310,30 @@ def parser() -> argparse.ArgumentParser:
         "--private-faction-round-id",
         help="monotonic CK3 ownership round (R<number>) for the private trial",
     )
+    timeline_query_parser = commands.add_parser(
+        "native-query-current-timeline-blocker-context-v1",
+        help=(
+            "run one unadvertised exact-build paused timeline-blocker query "
+            "under production native-session ownership"
+        ),
+    )
+    timeline_query_parser.add_argument("--timeout", type=float, default=390)
+    timeline_query_parser.add_argument(
+        "--readiness-timeout",
+        type=float,
+        default=300,
+        help="maximum seconds to wait for a stable paused native map",
+    )
+    timeline_query_parser.add_argument(
+        "--cold-start-checkpoint",
+        action="store_true",
+        help="launch and bind the exact v2 xar_checkpoint save (required)",
+    )
+    timeline_query_parser.add_argument(
+        "--private-timeline-query-round-id",
+        required=True,
+        help="monotonic CK3 ownership round R<number>; keeps this route private",
+    )
     one_generation_parser = commands.add_parser(
         "native-one-generation",
         help=(
@@ -524,6 +548,7 @@ def main(argv: list[str] | None = None) -> int:
             in {
                 "native-session",
                 "native-auto-run",
+                "native-query-current-timeline-blocker-context-v1",
                 "native-one-generation",
                 "native-next-episode",
             }
@@ -639,6 +664,20 @@ def main(argv: list[str] | None = None) -> int:
                     **private_faction_options,
                     operator_stop_event=operator_stop_event,
                 )
+        elif args.command == "native-query-current-timeline-blocker-context-v1":
+            from .timeline_blocker_query_run import (
+                query_current_timeline_blocker_once,
+            )
+
+            result = query_current_timeline_blocker_once(
+                spec,
+                timeout_seconds=args.timeout,
+                readiness_timeout_seconds=args.readiness_timeout,
+                private_timeline_query_round_id=(
+                    args.private_timeline_query_round_id
+                ),
+                cold_start_checkpoint=args.cold_start_checkpoint,
+            )
         elif args.command == "native-one-generation":
             from .one_generation_run import native_one_generation_run
 
@@ -717,6 +756,7 @@ def main(argv: list[str] | None = None) -> int:
         args.command
         in {
             "native-auto-run",
+            "native-query-current-timeline-blocker-context-v1",
             "native-one-generation",
             "native-next-episode",
             "native-one-generation-preflight",

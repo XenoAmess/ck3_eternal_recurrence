@@ -126,3 +126,9 @@ private production wire 已完成。它进入 public capability/registry/adverti
 本提交把 schema 与 C++ reader 经 owning-thread mailbox、private bridge parser、Python driver/service 和内部 MCP helper 串通，但没有加入 adapter registry 或 public MCP tool list。现有公开 MCP 协议和 open_kaishek 可见组合不变，因此当前不要求 open_kaishek 发布新适配版本。
 
 同版本 live gate 关闭并准备公开注册时，open_kaishek 必须同步消费 `identity` 与两个 typed boolean，并保留 `blocks_simulation.status=unavailable`、`value=null` 的 fail-closed 语义。公开注册、consumer 适配和能力广告需要作为同一兼容版本组合交付；不得把本 private wire 的 static-ready 结果冒充为 live capability。
+
+## 正式单查询 operator（默认关闭）
+
+`tools/g2_preview_operator.py query-current-timeline-blocker-context-v1` 是该 private wire 的唯一正式实机入口。它复用 production preflight、`native_session` 单实例所有权、冷 checkpoint 加载和进程回收；内部 agent 子命令为 `native-query-current-timeline-blocker-context-v1`。只有显式提供 `--private-timeline-query-round-id R<number>` 才会构造带 `allow_private_current_timeline_blocker_query=True` 的 driver。普通 `native-auto-run`、公开 MCP registry、adapter capability 与能力广告均不受影响。
+
+一次运行只允许一条 `query-current-timeline-blocker-context-v1`。operator receipt 必须保留 source commit 与 agent/operator hash、实际 CK3 轮次、查询 envelope、查询前后 save/driver SHA-256、查询前后 `date_raw` 和 cleanup；只有这些值保持不变且进程树已回收时才返回 `GREEN_READ_ONLY`。该入口没有 Close、婚姻、`death-terminal`、Python successor continuation、日期推进、checkpoint 写入、UI 输入或 gameplay action 路径。R776A 是证据切片名；其实际单实例轮次仍按持久台账传 `R776`，不得把带字母的候选名冒充 CK3 轮次。

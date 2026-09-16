@@ -102,6 +102,49 @@ def private_faction_round_id(value: str) -> str:
     return value
 
 
+def private_timeline_query_round_id(value: str) -> str:
+    if re.fullmatch(r"R[1-9][0-9]*", value) is None:
+        raise argparse.ArgumentTypeError(
+            "private timeline query round ID must be R followed by a positive integer"
+        )
+    return value
+
+
+def frozen_source_identity(manifest: dict[str, Any]) -> dict[str, Any]:
+    source_repo = manifest_path(manifest["source_repo"], "source_repo")
+    expected_commit = manifest.get("source_commit")
+    if not isinstance(expected_commit, str) or re.fullmatch(
+        r"[0-9a-fA-F]{40}", expected_commit
+    ) is None:
+        raise ValueError("manifest field 'source_commit' must be a 40-character SHA")
+    actual_commit = subprocess.check_output(
+        ["git", "-C", str(source_repo), "rev-parse", "HEAD"], text=True
+    ).strip()
+    if actual_commit.casefold() != expected_commit.casefold():
+        raise ValueError(
+            f"frozen source commit mismatch: {actual_commit} != {expected_commit}"
+        )
+    dirty = subprocess.check_output(
+        ["git", "-C", str(source_repo), "status", "--porcelain"], text=True
+    ).strip()
+    if dirty:
+        raise ValueError("frozen source repository is dirty")
+    agent = source_repo / "ck3_autonomous_player" / "agent.py"
+    cli = source_repo / "ck3_autonomous_player" / "src" / "xar_autoplayer" / "cli.py"
+    operator = source_repo / "tools" / "g2_preview_operator.py"
+    for path in (agent, cli, operator):
+        if not path.is_file():
+            raise FileNotFoundError(path)
+    return {
+        "repo": str(source_repo),
+        "commit": actual_commit,
+        "agent_entry": str(agent),
+        "agent_entry_sha256": sha256(agent),
+        "agent_cli_sha256": sha256(cli),
+        "operator_sha256": sha256(operator),
+    }
+
+
 def native_auto_run_command(
     common: list[str],
     *,
@@ -128,6 +171,26 @@ def native_auto_run_command(
             private_faction_round_id_value,
         ])
     return command
+
+
+def timeline_blocker_query_command(
+    common: list[str],
+    *,
+    timeout: int,
+    readiness_timeout: int,
+    private_timeline_query_round_id_value: str,
+) -> list[str]:
+    return [
+        *common,
+        "native-query-current-timeline-blocker-context-v1",
+        "--timeout",
+        str(timeout),
+        "--readiness-timeout",
+        str(readiness_timeout),
+        "--cold-start-checkpoint",
+        "--private-timeline-query-round-id",
+        private_timeline_query_round_id_value,
+    ]
 
 
 def command_verify_zip(args: argparse.Namespace) -> int:
@@ -258,6 +321,164 @@ def command_run(args: argparse.Namespace) -> int:
     return formal_exit
 
 
+def command_query_current_timeline_blocker_context_v1(
+    args: argparse.Namespace,
+) -> int:
+    manifest_path_value = args.manifest.resolve()
+    manifest = load_manifest(manifest_path_value)
+    source = frozen_source_identity(manifest)
+    output = args.output.resolve()
+    if output.exists():
+        raise FileExistsError(f"attempt output already exists: {output}")
+    output.mkdir(parents=True)
+    save, driver_path, driver = current_checkpoint_identity(manifest)
+    character_id = episode_value(driver, manifest, "episode_character_id")
+    episode_run_id = episode_value(driver, manifest, "episode_run_id")
+    common = agent_command(manifest)
+    checkpoint_before = sha256(save)
+    driver_before = sha256(driver_path)
+    preflight = [
+        *common,
+        "native-one-generation-preflight",
+        "--expected-character-id",
+        str(character_id),
+        "--expected-episode-run-id",
+        str(episode_run_id),
+        "--expected-checkpoint-sha256",
+        checkpoint_before,
+        "--expected-driver-state-sha256",
+        driver_before,
+    ]
+    preflight_exit = run_logged(
+        preflight,
+        output / "preflight-stdout.txt",
+        output / "preflight-stderr.txt",
+    )
+    receipt: dict[str, Any] = {
+        "schema": "xar-g2-private-timeline-query-operator-v1",
+        "mode": "query-current-timeline-blocker-context-v1",
+        "manifest": str(manifest_path_value),
+        "output": str(output),
+        "source": source,
+        "round": args.private_timeline_query_round_id,
+        "private_build": True,
+        "advertised": False,
+        "checkpoint_sha256_before": checkpoint_before,
+        "driver_state_sha256_before": driver_before,
+        "preflight_exit_code": preflight_exit,
+        "gameplay_actions": 0,
+        "ui_inputs": 0,
+        "date_advance_actions": 0,
+        "close_actions": 0,
+        "marriage_actions": 0,
+        "death_terminal_actions": 0,
+        "python_successor_continuations": 0,
+    }
+    receipt_path = output / "operator-receipt.json"
+    if preflight_exit != 0:
+        receipt.update({"ok": False, "status": "preflight_blocked", "game_launched": False})
+        receipt_path.write_text(
+            json.dumps(receipt, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        return preflight_exit
+
+    timeout = args.timeout if args.timeout is not None else int(
+        manifest.get("timeout_seconds", 390)
+    )
+    readiness_timeout = (
+        args.readiness_timeout
+        if args.readiness_timeout is not None
+        else int(manifest.get("readiness_timeout_seconds", 300))
+    )
+    query_stdout = output / "query-report.json"
+    query_stderr = output / "query-stderr.txt"
+    query_exit = run_logged(
+        timeline_blocker_query_command(
+            common,
+            timeout=timeout,
+            readiness_timeout=readiness_timeout,
+            private_timeline_query_round_id_value=(
+                args.private_timeline_query_round_id
+            ),
+        ),
+        query_stdout,
+        query_stderr,
+    )
+    query_report: dict[str, Any] | None = None
+    query_report_error: str | None = None
+    try:
+        query_report = read_json(query_stdout)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+        query_report_error = f"{type(error).__name__}: {error}"
+
+    checkpoint_after = sha256(save) if save.is_file() else None
+    driver_after = sha256(driver_path) if driver_path.is_file() else None
+    query_checks = (
+        query_report.get("checks") if isinstance(query_report, dict) else None
+    )
+    ok = bool(
+        query_exit == 0
+        and isinstance(query_report, dict)
+        and query_report.get("ok") is True
+        and query_report.get("round") == args.private_timeline_query_round_id
+        and checkpoint_after == checkpoint_before
+        and driver_after == driver_before
+        and isinstance(query_checks, dict)
+        and query_checks.get("date_unchanged") is True
+        and query_checks.get("cleanup_proven") is True
+    )
+    receipt.update({
+        "ok": ok,
+        "status": "GREEN_READ_ONLY" if ok else "query_failed",
+        "game_launched": True,
+        "query_exit_code": query_exit,
+        "query_report": str(query_stdout),
+        "query_stderr": str(query_stderr),
+        "query_report_error": query_report_error,
+        "timeout_seconds": timeout,
+        "readiness_timeout_seconds": readiness_timeout,
+        "checkpoint_sha256_after": checkpoint_after,
+        "driver_state_sha256_after": driver_after,
+        "checkpoint_unchanged": checkpoint_after == checkpoint_before,
+        "driver_state_unchanged": driver_after == driver_before,
+        "date_before": (
+            query_report.get("before", {}).get("date_raw")
+            if isinstance(query_report, dict)
+            and isinstance(query_report.get("before"), dict)
+            else None
+        ),
+        "date_after": (
+            query_report.get("after", {}).get("date_raw")
+            if isinstance(query_report, dict)
+            and isinstance(query_report.get("after"), dict)
+            else None
+        ),
+        "date_unchanged": (
+            query_checks.get("date_unchanged")
+            if isinstance(query_checks, dict)
+            else False
+        ),
+        "query_envelope": (
+            query_report.get("query_envelope")
+            if isinstance(query_report, dict)
+            else None
+        ),
+        "cleanup": (
+            query_report.get("cleanup")
+            if isinstance(query_report, dict)
+            else None
+        ),
+        "agent_report": query_report,
+    })
+    receipt_path.write_text(
+        json.dumps(receipt, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    print(json.dumps(receipt, ensure_ascii=False))
+    return 0 if ok else (query_exit if query_exit != 0 else 1)
+
+
 def command_request_stop(args: argparse.Namespace) -> int:
     manifest = load_manifest(args.manifest.resolve())
     stop_path = manifest_path(manifest["state_dir"], "state_dir") / "native-auto-run.stop"
@@ -327,6 +548,26 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     run.set_defaults(handler=command_run)
+
+    timeline_query = commands.add_parser(
+        "query-current-timeline-blocker-context-v1"
+    )
+    timeline_query.add_argument("--manifest", type=Path, required=True)
+    timeline_query.add_argument("--output", type=Path, required=True)
+    timeline_query.add_argument("--timeout", type=int)
+    timeline_query.add_argument("--readiness-timeout", type=int)
+    timeline_query.add_argument(
+        "--private-timeline-query-round-id",
+        type=private_timeline_query_round_id,
+        required=True,
+        help=(
+            "enable the bounded unadvertised read-only query for the allocated "
+            "monotonic CK3 ownership round"
+        ),
+    )
+    timeline_query.set_defaults(
+        handler=command_query_current_timeline_blocker_context_v1
+    )
 
     request_stop = commands.add_parser("request-stop")
     request_stop.add_argument("--manifest", type=Path, required=True)
