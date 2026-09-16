@@ -1,6 +1,6 @@
 # User picture corpus v11 — final browser candidate
 
-Status: **7/7 browser gates passed; CK3 native revalidation pending**.
+Status: **7/7 browser gates passed; CK3 native pixel revalidation passed**.
 
 Source corpus: `pictures.zip`, 6,240,071 bytes,
 SHA-256 `0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F`.
@@ -29,9 +29,10 @@ Relative to v8, their total losses improved by approximately 3.82% / 7.71% / 8.0
 2.70% / 4.46% / 5.20%. The other four cases remained numerically identical.
 
 The directory contains each case's complete CK3 source, canonical 230px PNG, fit/report screenshot, editor
-preview screenshot and machine-readable `report.json`. Browser success does not extend the old v8 native
-framebuffer claim to these changed sources; v11 requires a fresh MCP Apply/Copy/framebuffer run before that
-claim can be made.
+preview screenshot and machine-readable `report.json`. The fresh v11 MCP Apply/Copy/framebuffer run is frozen
+separately at `../user-picture-corpus-v11-native-r13/`: browser canonical → CK3 is 7/7, and native Copy →
+re-Apply pixel equivalence is 7/7. Strict source → Copy field equality remains 4/7 because CK3 rounds
+fractional rotations in picture-02/05/07; the native evidence records this instead of normalizing it away.
 
 Reproduction used two filtered invocations to avoid rerunning already completed cases; omitting
 `COA_CORPUS_CASES` runs all seven:

@@ -54,3 +54,17 @@ reference。第二阶段使用更严格的 MAE 0.01、MSE 0.001、edge 0.02、�
 家徽表面实际输出中像素等价。原始输入到首次 Copy 的字段序列仍诚实报告为 4/7；r12 证明的是
 规范化文本自身可稳定二次往返且重绘等价，不是把字段变化忽略掉。完整证据在
 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-native-r12/`。
+
+## v11 高分辨率候选原生复验
+
+`user-picture-corpus-v11-native-r13` 在 commit `b3bd10b4` 上重新运行全部 7 例，未把 v8 的结果外推给
+发生变化的 picture-02/05/07。9 点校准最大重投影误差为 0.334 px；网页 canonical → 首次 CK3
+Apply 的 7 例全部通过既有 0.10 / 0.03 / 0.16 / 0.25 门禁。最坏实测值分别为 MAE 0.033104、
+MSE 0.005396、edge 0.098117 和最坏空间块 0.108654。
+
+原生 Copy 全文再次分块 Apply 的 7 例也全部通过严格像素门禁；最坏 MAE 为 0.0000793，最坏 MSE
+为 0.000000311，最坏 edge 为 0.000379，最坏空间块为 0.000236。02/05/07 的首次 source → Copy
+仍因 rotation 取整而只取得 4/7 严格字段序列通过；计数完整，Copy 文本自身的再次 round-trip 为
+7/7。runner 按严格聚合合同返回 RED，这一状态与“两个像素一致性门禁 7/7 通过”同时保留，不能互相
+替代。完整证据见
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-native-r13/`。

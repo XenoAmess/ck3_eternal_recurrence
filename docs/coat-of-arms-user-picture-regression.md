@@ -140,20 +140,27 @@ clip-path 和纵横比，并把辅助线改成默认隐藏、显式切换。E2E 
 clip-path、纵横比和默认辅助线状态。
 
 v11 浏览器门禁 7/7 通过；picture-01/03/04/06 在预算已满时数值精确不变。最终浏览器证据位于
-`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-preview-projection-budget-1024/`。由于
-02/05/07 的导出代码发生改变，v8 r11/r12 的原生结论不能自动外推；v11 的 MCP 原生复验仍待执行。
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-preview-projection-budget-1024/`。
+
+新的 r13 没有继承 v8 结论，而是对 v11 全部 7 例重新执行结构化 MCP Apply、Copy、UV 标定捕获、
+Copy 再 Apply。网页 canonical → CK3 为 7/7：最坏 MAE 0.033104、MSE 0.005396、edge
+0.098117、最坏空间块 0.108654，全部通过冻结门禁。Copy 再 Apply 也为 7/7，最坏 MAE 仅
+0.0000793。严格 source → Copy 字段序列仍为 4/7，因为 CK3 对 picture-02/05/07 的小数 rotation
+取整；实例/层/块计数完整，规范化后的 Copy 文本自身 7/7 稳定往返。证据位于
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-native-r13/`。
 
 | 检查 | 当前状态 | 当前证据能支持的结论 |
 |---|---|---|
 | 原图→浏览器拟合 | v11 已逐图量化 | 7 图均完成 1024 预算；02/05/07 高分层改善，仍不宣称照片级高保真 |
 | 下方预览→右侧预览 | v11 通过 | 7/7 canonical PNG、盾形 clip-path、纵横比一致；编辑辅助线默认隐藏 |
 | 完整复制→重新解析 | 通过 | 7/7 代码完整，实例计数一致，serialize/parse 精确闭环 |
-| CK3 Apply/Copy | v8 r11/r12 通过；v11 待验 | v8 为 7/7；v11 改变了 02/05/07 的代码，必须重新 Apply/Copy |
-| CK3 空间像素→右侧预览 | v8 通过；v11 待验 | v8 v3 UV 校准后 7/7 通过；不能把旧 framebuffer 结论外推给 v11 |
+| CK3 Apply/Copy | v11 r13 完成 | 7/7 计数完整、Copy 文本自身稳定回读；首次严格字段序列 4/7，02/05/07 有原生 rotation 取整 |
+| CK3 空间像素→右侧预览 | v11 r13 通过 | v3 UV 校准后 7/7 通过；外框排除在内容 mask 之外，逐图指标可追溯 |
 
 MCP 的当前定位、指标和隐私边界见
-`docs/ck3-coat-of-arms-framebuffer-comparison-v3.md`。v8 原生 Copy 再导入像素闭环已经完成；下一步是
-对 v11 改变的候选做新的结构化 MCP Apply/Copy/framebuffer 对照，再继续更丰富画笔和局部替换。
+`docs/ck3-coat-of-arms-framebuffer-comparison-v3.md`。v11 的预览一致性、原生 framebuffer 和 Copy
+再导入闭环现已完成；后续质量工作继续扩展更丰富画笔和高分辨率局部替换，不再把展示链或原生层序
+差异与“拟合本身仍可继续提升”混为一谈。
 
 ## 复现命令
 

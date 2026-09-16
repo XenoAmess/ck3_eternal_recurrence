@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T08:45:00+08:00",
+  "updatedAt": "2026-09-16T09:02:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -370,20 +370,24 @@
   "activeRegressions": [
     {
       "id": "USER-PICTURE-PREVIEW-AND-NATIVE-CONSISTENCY",
-      "status": "in_progress",
-      "commit": "fef2987c+working-tree-patch",
+      "status": "passed",
+      "commit": "b3bd10b4",
       "commands": [
         "pnpm exec playwright test e2e/user-picture-preview-consistency.spec.ts --reporter=line",
         "set COA_CORPUS_BUDGET=1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/fit-budget-stress.spec.ts",
         "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
         "pnpm test",
-        "pnpm build"
+        "pnpm build",
+        "set PYTHONPATH=ck3_autonomous_player\\src&& tools\\.venv\\Scripts\\python.exe ck3_autonomous_player\\native_bridge\\research\\run_frontend_gui_route_v1_live_acceptance.py --source-profile C:\\Users\\1\\Documents\\PARADO~1\\CRUSAD~1 --state-dir D:\\ck3_coa_picture_corpus_v11_native_r13 --game-dir C:\\SteamLibrary\\steamapps\\common\\CRUSAD~1 --bridge-pipe \\\\.\\pipe\\xar-coa-picture-corpus-v11-native-r13 --bridge-dll C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge.dll --bridge-injector C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge_injector.exe --timeout 420 --picture-corpus docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-preview-projection-budget-1024 --picture-crop-dir docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-native-r13 --output docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-native-r13\\raw-report.json",
+        "tools\\.venv\\Scripts\\python.exe coat_of_arms_editer_of_ck3\\tools\\summarize_native_picture_corpus.py docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-native-r13\\raw-report.json docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v11-native-r13\\summary.json"
       ],
-      "resultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-preview-projection-budget-1024/",
+      "resultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-native-r13/",
       "keyMetrics": {
         "sourceArchiveBytes": 6240071,
         "sourceArchiveSha256": "0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F",
+        "browserResultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-preview-projection-budget-1024/",
+        "nativeResultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-native-r13/",
         "corpusCases": 7,
         "previewConsistencyCasesPassed": 7,
         "previewConsistencyCasesFailed": 0,
@@ -419,17 +423,20 @@
         "nativePixelCasesFailed": 0,
         "nativeStrictSemanticRoundTripPassed": 4,
         "nativeCopyRotationNormalizationCases": 3,
-        "nativeMaximumMeanAbsoluteError": 0.04403514415025711,
-        "nativeMaximumColorMse": 0.010730518028140068,
-        "nativeMaximumEdgeLoss": 0.1404598504304886,
-        "nativeMaximumSpatialMeanAbsoluteError": 0.22522105276584625,
-        "nativeCalibrationMaximumReprojectionErrorPixels": 0.46354249119758606,
-        "nativeRawReportSha256": "FEC97D8F317C608D91F55106F19BA2B05A37A4863DF1133A464CB0FE05F0ABD2",
+        "nativeSourceRevision": "b3bd10b491e3f9658b7fb38c20a48f8f185ca08c",
+        "nativeRunnerAggregateStatus": "failed_expected_rotation_normalization",
+        "nativeMaximumMeanAbsoluteError": 0.03310401737689972,
+        "nativeMaximumColorMse": 0.005395947955548763,
+        "nativeMaximumEdgeLoss": 0.09811672568321228,
+        "nativeMaximumSpatialMeanAbsoluteError": 0.10865376144647598,
+        "nativeCalibrationMaximumReprojectionErrorPixels": 0.3335590362548828,
+        "nativeRawReportBytes": 22112617,
+        "nativeRawReportSha256": "8DCE71B2AADFD1ACD98D8B01DA7414BA147AA5CFA2D264277324D668A1625410",
         "nativeCopyReapplyCasesPassed": 7,
-        "nativeCopyReapplyMaximumMeanAbsoluteError": 0.00007714406092418358,
-        "nativeCopyReapplyMaximumColorMse": 3.025257626632083e-7,
-        "nativeCopyReapplyMaximumEdgeLoss": 0.0003448894713073969,
-        "nativeCopyReapplyMaximumSpatialMeanAbsoluteError": 0.0005228758091107011,
+        "nativeCopyReapplyMaximumMeanAbsoluteError": 0.00007931968866614625,
+        "nativeCopyReapplyMaximumColorMse": 3.11057590351993e-7,
+        "nativeCopyReapplyMaximumEdgeLoss": 0.0003789555048570037,
+        "nativeCopyReapplyMaximumSpatialMeanAbsoluteError": 0.00023562191927339882,
         "nativeCopyReapplyThresholds": {
           "meanAbsoluteError": 0.01,
           "colorMse": 0.001,
@@ -437,9 +444,7 @@
           "spatialMeanAbsoluteError": 0.03
         }
       },
-      "blockers": [
-        "The changed v11 picture-02, picture-05 and picture-07 sources still need a fresh typed-MCP CK3 Apply/Copy/framebuffer run; v8 r11/r12 native evidence cannot be inherited."
-      ]
+      "blockers": []
     }
   ]
 }
