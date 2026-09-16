@@ -81,3 +81,16 @@ rotation 取整为 4/7。
 的 v12 MAE 比 v11 高约 `0.000250`，而 v11 重复漂移约 `0.000003`；MSE/edge 同向退化。
 picture-07 的差异则落在重复漂移量级。结论是 v12 绝对兼容，但没有通过原生相对收益门禁，不能晋级。
 证据见 `user-picture-corpus-v11-v12-native-ab-r15/`。
+
+## v13 mip-aware renderer 与同帧重评
+
+r16 在 custom-ruler 导航阶段超时且零案例执行，按 fail-closed 合同只作为导航 RED 保留。独立 r17
+随后对 v13 的全部 7 个用户案例完成 Apply、Copy、framebuffer 和 Copy 再 Apply：两轮像素门禁均
+7/7 通过，严格 source 字段仍因 02/05/07 的 rotation 取整为 4/7。
+
+不同 CK3 会话会改变盾牌框体和 surface 呈现，故没有直接拿 r13 与 r17 的绝对指标判断优劣。
+`compare_native_aligned_previews.py` 在每一张完全相同的 r17 aligned native crop 上同时重评 v11 与
+v13 canonical preview，并复用 v3 eroded mask 与指标合同。v13 在 7/7 的 MAE 与 edge 上都更低：
+MAE 相对改善 5.53%–59.01%，edge 改善 4.36%–37.82%。这证明完整 DDS mip 链和三线性 LOD 改善了
+浏览器/原生一致性，v13 通过相对原生门禁。证据见
+`user-picture-corpus-v13-native-r17/same-native-reference-comparison.json`。

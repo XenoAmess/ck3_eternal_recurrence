@@ -151,15 +151,15 @@ Copy 再 Apply。网页 canonical → CK3 为 7/7：最坏 MAE 0.033104、MSE 0.
 
 | 检查 | 当前状态 | 当前证据能支持的结论 |
 |---|---|---|
-| 原图→浏览器拟合 | v11 已逐图量化；v12 实验未晋级 | 7 图均完成 1024 预算；v12 形状替换的浏览器微小收益未通过同会话原生比较 |
-| 下方预览→右侧预览 | v11 通过 | 7/7 canonical PNG、盾形 clip-path、纵横比一致；编辑辅助线默认隐藏 |
+| 原图→浏览器拟合 | v13 已逐图量化并晋级 | 7 图均完成 1024 预算；mip-aware 评分和 1% 双门禁已通过原生相对比较 |
+| 下方预览→右侧预览 | v13 通过 | 7/7 canonical PNG、盾形 clip-path、纵横比一致；编辑辅助线默认隐藏 |
 | 完整复制→重新解析 | 通过 | 7/7 代码完整，实例计数一致，serialize/parse 精确闭环 |
-| CK3 Apply/Copy | v11 r13 完成 | 7/7 计数完整、Copy 文本自身稳定回读；首次严格字段序列 4/7，02/05/07 有原生 rotation 取整 |
-| CK3 空间像素→右侧预览 | v11 r13 通过；v12 r14 绝对门禁通过但 A/B 未晋级 | v3 UV 校准后逐图可追溯；r15 证明 05 假收益、07 无可证收益 |
+| CK3 Apply/Copy | v13 r17 完成 | 7/7 计数完整、Copy 文本自身稳定回读；首次严格字段序列 4/7，02/05/07 有原生 rotation 取整 |
+| CK3 空间像素→右侧预览 | v13 r17 绝对与相对门禁通过 | 7/7 绝对像素通过；同一 r17 原生帧上 v13 对 v11 的 MAE/edge 也是 7/7 改善 |
 
 MCP 的当前定位、指标和隐私边界见
-`docs/ck3-coat-of-arms-framebuffer-comparison-v3.md`。v11 的预览一致性、原生 framebuffer 和 Copy
-再导入闭环现已完成；后续质量工作继续扩展更丰富画笔和高分辨率局部替换，不再把展示链或原生层序
+`docs/ck3-coat-of-arms-framebuffer-comparison-v3.md`。v13 的预览一致性、原生 framebuffer、同帧相对
+比较和 Copy 再导入闭环现已完成；后续质量工作继续扩展更丰富画笔和高分辨率局部替换，不再把展示链或原生层序
 差异与“拟合本身仍可继续提升”混为一谈。
 
 ## v12 迭代混合原生形状替换（2026-09-16）
@@ -196,8 +196,14 @@ v13 已让 DXT1/DXT5/BGRA8 解码、主 renderer、拟合 Worker 与剪枝 Worke
 采样 mip。另以 r15 失败区间校准 1% 双指标形状门禁。七图浏览器回归 7/7 通过；picture-05 不再
 接受 billet/字母，904 层自然收敛；picture-07 保留超过门槛的 `ce_desdichado`，987 层完成。
 两处预览仍字节同源，代码复制/解析计数完整。新 renderer 合同数值不与旧合同直接比较，完整证据在
-`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v13-mip-aware-budget-1024/`；新的 CK3 原生复验
-完成前仍标为 browser-only。
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v13-mip-aware-budget-1024/`。
+
+r16 在进入家徽页面前遇到一次 custom-ruler 前端竞态，零案例执行并 fail closed；该失败收据保留，
+不冒充图像证据。独立 r17 随后完成全部七例：浏览器→CK3 与 Copy→再 Apply 的像素门禁均为 7/7，
+严格字段 4/7 的唯一差异仍为 CK3 对 02/05/07 小数 rotation 的取整。跨会话绝对数值受原生框体/
+surface 状态影响，不能直接 A/B；因此用 r17 的每张同一 aligned native crop 同时重评 v11/v13。
+v13 的 MAE 改善 5.53%–59.01%，edge 改善 4.36%–37.82%，七例两项都更好，正式取代 v11。
+证据位于 `user-picture-corpus-v13-native-r16/` 与 `user-picture-corpus-v13-native-r17/`。
 
 ## 复现命令
 

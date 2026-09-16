@@ -1,6 +1,6 @@
 # User picture corpus v13 — DDS mip-aware renderer
 
-Status: **7/7 browser gates passed; CK3 native revalidation pending**.
+Status: **7/7 browser gates and 7/7 CK3 native pixel gates passed; promoted over v11**.
 
 Source corpus: `pictures.zip`, 6,240,071 bytes,
 SHA-256 `0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F`。
@@ -60,4 +60,8 @@ set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs\coat-of-arms-fit-
 ```
 
 每个 `picture-*` 目录保存完整代码、canonical PNG、拟合报告截图、编辑器预览截图和 JSON 收据。
-本目录与实现一起提交；原生结论必须由新的 MCP Apply/Copy/framebuffer 运行产生，不能继承 r14。
+本目录与实现一起提交；新的 r17 没有继承 r14，而是重新完成 7/7 MCP Apply/Copy/framebuffer 与
+Copy 再 Apply。绝对像素门禁两轮均为 7/7；严格 source 字段仍为 4/7，唯一差异是
+picture-02/05/07 的 CK3 rotation 取整。用同一批 r17 原生 aligned crop 同时重评 v11/v13 后，v13
+在 7/7 的 MAE 和 edge 上都更好：MAE 改善 5.53%–59.01%，edge 改善 4.36%–37.82%。完整证据见
+`../user-picture-corpus-v13-native-r17/`，v13 因而通过原生相对收益门禁并取代 v11 基线。
