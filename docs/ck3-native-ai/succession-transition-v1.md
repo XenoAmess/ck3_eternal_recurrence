@@ -163,6 +163,18 @@ separate lifecycle. Focused runner boundary tests pass `4/4` under normal and
 optimized Python. Production readiness still requires one bounded
 natural-death artifact proving the sequence against the exact build.
 
+The ordinary bounded owner now also consumes the exact succession timeline
+surface before it saves the new successor checkpoint. It first queries the
+private typed blocker context. An already-clear controller is recorded without
+an action; an exact death/succession modal is closed once through the reflected
+typed action and must independently report both succession predicates false
+plus a later date. Any other identity or unknown field is RED. The full
+R792/event/succession observation contract is recorded in
+[R793 ordinary natural-event and succession long-run contract](r793-natural-event-succession-long-run-contract.md).
+If that proof advance opens another typed player decision, the immediate
+successor checkpoint is deferred until a formal turn consumes the decision;
+the owner never saves through a known modal.
+
 ## R781 scope decision
 
 R781 used an `xar_on`, signed-pact checkpoint. Exact-source evidence shows its

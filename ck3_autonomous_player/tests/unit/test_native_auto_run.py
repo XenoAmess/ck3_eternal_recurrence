@@ -147,6 +147,8 @@ class _NativeAutoRunHarness:
             else []
         )
         self.history: list[dict[str, object]] = []
+        self.succession_modal_open = False
+        self.succession_close_opens_event = False
         self.succession_lifecycle = legacy_rogue_one_life_binding_v1()
         self.session_kwargs: dict[str, object] | None = None
         self.ready_snapshot_observed = False
@@ -161,6 +163,8 @@ class _NativeAutoRunHarness:
         route_contact_timeline_speed: int,
         allow_route_contact_high_speed_ab: bool,
         allow_stationary_objective_hold_sentinel_canary: bool,
+        allow_private_current_timeline_blocker_query: bool = False,
+        allow_private_death_succession_modal_continue: bool = False,
     ) -> "_FakeNativeDriver":
         self.events.append("driver_init")
         self.route_contact_timeline_speed = route_contact_timeline_speed
@@ -169,6 +173,12 @@ class _NativeAutoRunHarness:
         )
         self.allow_stationary_objective_hold_sentinel_canary = (
             allow_stationary_objective_hold_sentinel_canary
+        )
+        self.allow_private_current_timeline_blocker_query = (
+            allow_private_current_timeline_blocker_query
+        )
+        self.allow_private_death_succession_modal_continue = (
+            allow_private_death_succession_modal_continue
         )
         self.driver = _FakeNativeDriver(
             self,
@@ -761,11 +771,19 @@ class _NativeAutoRunHarness:
                 "snapshot_id": f"native:{self.native_revision}",
                 "revision": self.public_revision,
             }
-        elif action == "continue_natural_successor":
+        elif action in {
+            "continue_natural_successor",
+            "continue_natural_successor_clear",
+            "continue_natural_successor_event",
+        }:
             if (
                 not self.terminal
                 or self.terminal_reason != "played_character_changed"
-                or self.settlement is None
+                or (
+                    self.settlement is None
+                    and self.succession_lifecycle.get("lifecycle")
+                    != ORDINARY_CAMPAIGN_SUCCESSION
+                )
             ):
                 raise AssertionError(
                     "natural successor action lacks a completed transition"
@@ -785,6 +803,12 @@ class _NativeAutoRunHarness:
             self.terminal = False
             self.terminal_reason = None
             self.settlement = None
+            self.succession_modal_open = (
+                action != "continue_natural_successor_clear"
+            )
+            self.succession_close_opens_event = (
+                action == "continue_natural_successor_event"
+            )
             self.driver_state_restored = False
             self.driver_state_restore_kind = "natural_succession"
             self.episode_binding_state = "active_natural_successor"
@@ -795,6 +819,9 @@ class _NativeAutoRunHarness:
                 "backend_id": "native-headless",
                 "source": "native-played-character-transition",
                 "lifecycle_intent": "natural_succession",
+                "succession_lifecycle": copy.deepcopy(
+                    self.succession_lifecycle
+                ),
                 "predecessor_character_id": predecessor_character_id,
                 "successor_character_id": successor_character_id,
                 "source_episode_run_id": predecessor_run_id,
@@ -1145,6 +1172,85 @@ class _FakeGameplayService:
 
     def save_checkpoint(self, *, expected_revision: int) -> dict[str, object]:
         return self.harness.save_checkpoint(expected_revision=expected_revision)
+
+    @staticmethod
+    def _typed_boolean(value: bool) -> dict[str, object]:
+        return {
+            "status": "available",
+            "value": value,
+            "unavailable_reason": None,
+        }
+
+    def query_current_timeline_blocker_context_v1(
+        self, *, expected_revision: int
+    ) -> dict[str, object]:
+        assert self.harness.allow_private_current_timeline_blocker_query
+        assert expected_revision == self.harness.public_revision
+        modal = self.harness.succession_modal_open
+        context = {
+            "status": "available",
+            "identity": "death_succession_modal" if modal else "none",
+            "blocks_simulation": self._typed_boolean(modal),
+            "has_open_succession": self._typed_boolean(modal),
+            "can_continue": (
+                self._typed_boolean(True)
+                if modal
+                else {
+                    "status": "unavailable",
+                    "value": None,
+                    "unavailable_reason": (
+                        "no_supported_timeline_surface_visible"
+                    ),
+                }
+            ),
+        }
+        self.harness.events.append("query_successor_timeline")
+        return {"current_timeline_blocker_context": context}
+
+    def continue_death_succession_modal_private_v1(
+        self,
+        *,
+        expected_revision: int,
+        expected_played_character_id: int,
+        expected_episode_run_id: str,
+    ) -> dict[str, object]:
+        assert self.harness.allow_private_death_succession_modal_continue
+        assert expected_revision == self.harness.public_revision
+        assert expected_played_character_id == self.harness.played_character_id
+        assert expected_episode_run_id == self.harness.episode_run_id
+        assert self.harness.succession_modal_open
+        starting_date_raw = self.harness.date_raw
+        initial_query = self.query_current_timeline_blocker_context_v1(
+            expected_revision=expected_revision
+        )
+        self.harness.succession_modal_open = False
+        self.harness.date_raw += 24
+        self.harness.heartbeat_date_raw = self.harness.date_raw
+        self.harness.native_revision += 1
+        if self.harness.succession_close_opens_event:
+            self.harness.active_event_id = 901
+        ack = {
+            "accepted": True,
+            "status": "submitted",
+            "played_character_id": expected_played_character_id,
+            "close_invocations": 1,
+            "material_result_verified": False,
+        }
+        post_query = self.query_current_timeline_blocker_context_v1(
+            expected_revision=expected_revision
+        )
+        self.harness.events.append("close_successor_timeline")
+        return {
+            "status": "materially_verified",
+            "material_result_verified": True,
+            "starting_date_raw": starting_date_raw,
+            "ending_date_raw": self.harness.date_raw,
+            "ending_revision": self.harness.public_revision,
+            "ending_native_revision": self.harness.native_revision,
+            "submission_ack": ack,
+            "initial_query": initial_query,
+            "postcondition_query": post_query,
+        }
 
 
 class NativeAutoRunTests(unittest.TestCase):
@@ -3120,6 +3226,111 @@ class NativeAutoRunTests(unittest.TestCase):
                 "life-advance",
             ],
         )
+
+    def test_ordinary_natural_successor_clears_timeline_before_checkpoint(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            [
+                "natural_terminal_advance",
+                "continue_natural_successor",
+                "advance",
+            ],
+            checkpoint_every_eligible_advances=1,
+            succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        transition = report["natural_succession_transitions"][0]
+        timeline = transition["timeline_blocker_continuation"]
+        self.assertEqual(timeline["status"], "materially_cleared")
+        self.assertEqual(
+            timeline["initial_query"]["current_timeline_blocker_context"][
+                "identity"
+            ],
+            "death_succession_modal",
+        )
+        close_result = timeline["close_result"]
+        self.assertTrue(close_result["material_result_verified"])
+        self.assertGreater(
+            close_result["ending_date_raw"], close_result["starting_date_raw"]
+        )
+        self.assertFalse(harness.succession_modal_open)
+        self.assertTrue(harness.allow_private_current_timeline_blocker_query)
+        self.assertTrue(
+            harness.allow_private_death_succession_modal_continue
+        )
+        successor_checkpoint_index = next(
+            index
+            for index, event in enumerate(harness.events)
+            if event == "save_checkpoint"
+        )
+        self.assertLess(
+            harness.events.index("close_successor_timeline"),
+            successor_checkpoint_index,
+        )
+        successor_checkpoint = next(
+            row
+            for row in report["checkpoints"]
+            if row["phase"] == "natural_successor_checkpoint"
+        )
+        self.assertEqual(
+            successor_checkpoint["date_raw"], close_result["ending_date_raw"]
+        )
+
+    def test_ordinary_natural_successor_records_already_clear_without_close(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            [
+                "natural_terminal_advance",
+                "continue_natural_successor_clear",
+                "advance",
+            ],
+            checkpoint_every_eligible_advances=1,
+            succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        timeline = report["natural_succession_transitions"][0][
+            "timeline_blocker_continuation"
+        ]
+        self.assertEqual(timeline["status"], "already_clear")
+        self.assertIsNone(timeline["close_result"])
+        self.assertNotIn("close_successor_timeline", harness.events)
+
+    def test_ordinary_successor_defers_checkpoint_for_post_close_event(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            [
+                "natural_terminal_advance",
+                "continue_natural_successor_event",
+                "event",
+                "advance",
+            ],
+            checkpoint_every_eligible_advances=1,
+            succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        transition = report["natural_succession_transitions"][0]
+        self.assertEqual(
+            transition["successor_checkpoint"]["status"],
+            "deferred_player_decision",
+        )
+        self.assertNotIn(
+            "natural_successor_checkpoint",
+            [row["phase"] for row in report["checkpoints"]],
+        )
+        self.assertIn(
+            "periodic_checkpoint",
+            [row["phase"] for row in report["checkpoints"]],
+        )
+        self.assertIsNone(harness.active_event_id)
 
     def test_ordinary_campaign_rejects_rogue_strict_completion(self) -> None:
         with self.assertRaisesRegex(
