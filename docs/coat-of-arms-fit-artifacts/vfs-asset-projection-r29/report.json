@@ -1,0 +1,1076 @@
+{
+  "schema": "ck3-coat-of-arms-vfs-asset-projection-replay-v1",
+  "source_report": {
+    "path": "report.json",
+    "bytes": 1174238,
+    "sha256": "17FA7AFABD23C3EEAF79D346897DDC6984BE75E582F05A06067CD07E44B22093",
+    "repository_head": "62afdb91b62f42c1207fa84b856b0da5c7b09e31"
+  },
+  "queries": [
+    {
+      "schema": "ck3-coat-of-arms-vfs-asset-winner-projection-v1",
+      "schema_version": 1,
+      "status": "projected_direct_asset_winner",
+      "ck3_build": "1.19.0.6",
+      "logical_path": "gfx/coat_of_arms/patterns/pattern_checkers_06.dds",
+      "mount_count": 34,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "mount_ordinal": 3,
+          "source_kind": "base_game",
+          "source_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+          "content_kind": "directory",
+          "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_checkers_06.dds",
+          "asset_bytes": 43832,
+          "asset_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+          "dds": {
+            "width": 256,
+            "height": 256,
+            "mipmap_count": 9,
+            "four_cc_hex": "44585431"
+          }
+        }
+      ],
+      "winner": {
+        "mount_ordinal": 3,
+        "source_kind": "base_game",
+        "source_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+        "content_kind": "directory",
+        "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_checkers_06.dds",
+        "asset_bytes": 43832,
+        "asset_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+        "dds": {
+          "width": 256,
+          "height": 256,
+          "mipmap_count": 9,
+          "four_cc_hex": "44585431"
+        }
+      },
+      "inspected_mounts": [
+        {
+          "ordinal": 1,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\clausewitz",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 2,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\jomini",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 3,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+          "source_type": "directory",
+          "candidate_present": true
+        },
+        {
+          "ordinal": 4,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc016_cp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 5,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc009_bp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 6,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc015_bp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 7,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc007_ep2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 8,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc004_ep1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 9,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc003_fp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 10,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc005_fp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 11,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc028_sp5",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 12,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc029_mp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 13,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc014_ep3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 14,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc025_cp7",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 15,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc012_afr",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 16,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc017_cp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 17,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc011_ce1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 18,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc010_fp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 19,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc020_ce2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 20,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc024_cp6",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 21,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc023_cp5",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 22,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc001_preorder",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 23,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc006_bp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 24,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc002_sp_day1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 25,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc008_sp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 26,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc026_cp8",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 27,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc019_sp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 28,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc013_sp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 29,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc021_bp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 30,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc027_cp9",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 31,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc018_cp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 32,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc022_ep4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 33,
+          "path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_earlier",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 34,
+          "path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+          "source_type": "directory",
+          "candidate_present": false
+        }
+      ],
+      "provenance": {
+        "mode": "live-mount-receipt-plus-static-byte-projection",
+        "mount_observer": "physfs_mounted_data_observer_v1",
+        "mount_receipt_sha256": "558D4C5B034AB5EC231CBCCC891C7268A5F2F905591FFD74F0D483E4DD5A90D8",
+        "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "mount_order_observed": true,
+        "source_bytes_observed": true,
+        "later_mount_precedence_contract": "exact_1.19.0.6_direct_dds_r22_r23",
+        "engine_resolver_called": false,
+        "resource_registration_observed": false,
+        "replace_path_applied": false,
+        "definition_merge_applied": false,
+        "claim_scope": "direct_dds_path_winner_projection_only"
+      }
+    },
+    {
+      "schema": "ck3-coat-of-arms-vfs-asset-winner-projection-v1",
+      "schema_version": 1,
+      "status": "projected_direct_asset_winner",
+      "ck3_build": "1.19.0.6",
+      "logical_path": "gfx/coat_of_arms/patterns/pattern_xar_vfs_replaced_earlier.dds",
+      "mount_count": 34,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "mount_ordinal": 33,
+          "source_kind": "external_mount",
+          "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_earlier",
+          "content_kind": "directory",
+          "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_xar_vfs_replaced_earlier.dds",
+          "asset_bytes": 43832,
+          "asset_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+          "dds": {
+            "width": 256,
+            "height": 256,
+            "mipmap_count": 9,
+            "four_cc_hex": "44585431"
+          }
+        }
+      ],
+      "winner": {
+        "mount_ordinal": 33,
+        "source_kind": "external_mount",
+        "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_earlier",
+        "content_kind": "directory",
+        "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_xar_vfs_replaced_earlier.dds",
+        "asset_bytes": 43832,
+        "asset_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+        "dds": {
+          "width": 256,
+          "height": 256,
+          "mipmap_count": 9,
+          "four_cc_hex": "44585431"
+        }
+      },
+      "inspected_mounts": [
+        {
+          "ordinal": 1,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\clausewitz",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 2,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\jomini",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 3,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 4,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc016_cp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 5,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc009_bp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 6,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc015_bp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 7,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc007_ep2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 8,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc004_ep1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 9,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc003_fp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 10,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc005_fp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 11,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc028_sp5",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 12,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc029_mp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 13,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc014_ep3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 14,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc025_cp7",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 15,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc012_afr",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 16,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc017_cp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 17,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc011_ce1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 18,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc010_fp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 19,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc020_ce2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 20,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc024_cp6",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 21,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc023_cp5",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 22,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc001_preorder",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 23,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc006_bp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 24,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc002_sp_day1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 25,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc008_sp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 26,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc026_cp8",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 27,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc019_sp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 28,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc013_sp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 29,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc021_bp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 30,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc027_cp9",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 31,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc018_cp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 32,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc022_ep4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 33,
+          "path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_earlier",
+          "source_type": "directory",
+          "candidate_present": true
+        },
+        {
+          "ordinal": 34,
+          "path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+          "source_type": "directory",
+          "candidate_present": false
+        }
+      ],
+      "provenance": {
+        "mode": "live-mount-receipt-plus-static-byte-projection",
+        "mount_observer": "physfs_mounted_data_observer_v1",
+        "mount_receipt_sha256": "558D4C5B034AB5EC231CBCCC891C7268A5F2F905591FFD74F0D483E4DD5A90D8",
+        "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "mount_order_observed": true,
+        "source_bytes_observed": true,
+        "later_mount_precedence_contract": "exact_1.19.0.6_direct_dds_r22_r23",
+        "engine_resolver_called": false,
+        "resource_registration_observed": false,
+        "replace_path_applied": false,
+        "definition_merge_applied": false,
+        "claim_scope": "direct_dds_path_winner_projection_only"
+      }
+    },
+    {
+      "schema": "ck3-coat-of-arms-vfs-asset-winner-projection-v1",
+      "schema_version": 1,
+      "status": "projected_direct_asset_winner",
+      "ck3_build": "1.19.0.6",
+      "logical_path": "gfx/coat_of_arms/patterns/pattern_solid.dds",
+      "mount_count": 34,
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "mount_ordinal": 3,
+          "source_kind": "base_game",
+          "source_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+          "content_kind": "directory",
+          "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_solid.dds",
+          "asset_bytes": 11064,
+          "asset_sha256": "0EE08A10EE4C71278C0ACE98506DD2A520261B20E040B353B7DA4D13C0616C4A",
+          "dds": {
+            "width": 128,
+            "height": 128,
+            "mipmap_count": 8,
+            "four_cc_hex": "44585431"
+          }
+        },
+        {
+          "mount_ordinal": 34,
+          "source_kind": "external_mount",
+          "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+          "content_kind": "directory",
+          "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_solid.dds",
+          "asset_bytes": 11064,
+          "asset_sha256": "0EE08A10EE4C71278C0ACE98506DD2A520261B20E040B353B7DA4D13C0616C4A",
+          "dds": {
+            "width": 128,
+            "height": 128,
+            "mipmap_count": 8,
+            "four_cc_hex": "44585431"
+          }
+        }
+      ],
+      "winner": {
+        "mount_ordinal": 34,
+        "source_kind": "external_mount",
+        "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+        "content_kind": "directory",
+        "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_solid.dds",
+        "asset_bytes": 11064,
+        "asset_sha256": "0EE08A10EE4C71278C0ACE98506DD2A520261B20E040B353B7DA4D13C0616C4A",
+        "dds": {
+          "width": 128,
+          "height": 128,
+          "mipmap_count": 8,
+          "four_cc_hex": "44585431"
+        }
+      },
+      "inspected_mounts": [
+        {
+          "ordinal": 1,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\clausewitz",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 2,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\jomini",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 3,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+          "source_type": "directory",
+          "candidate_present": true
+        },
+        {
+          "ordinal": 4,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc016_cp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 5,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc009_bp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 6,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc015_bp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 7,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc007_ep2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 8,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc004_ep1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 9,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc003_fp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 10,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc005_fp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 11,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc028_sp5",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 12,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc029_mp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 13,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc014_ep3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 14,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc025_cp7",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 15,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc012_afr",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 16,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc017_cp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 17,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc011_ce1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 18,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc010_fp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 19,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc020_ce2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 20,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc024_cp6",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 21,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc023_cp5",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 22,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc001_preorder",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 23,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc006_bp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 24,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc002_sp_day1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 25,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc008_sp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 26,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc026_cp8",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 27,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc019_sp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 28,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc013_sp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 29,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc021_bp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 30,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc027_cp9",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 31,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc018_cp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 32,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc022_ep4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 33,
+          "path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_earlier",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 34,
+          "path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+          "source_type": "directory",
+          "candidate_present": true
+        }
+      ],
+      "provenance": {
+        "mode": "live-mount-receipt-plus-static-byte-projection",
+        "mount_observer": "physfs_mounted_data_observer_v1",
+        "mount_receipt_sha256": "558D4C5B034AB5EC231CBCCC891C7268A5F2F905591FFD74F0D483E4DD5A90D8",
+        "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "mount_order_observed": true,
+        "source_bytes_observed": true,
+        "later_mount_precedence_contract": "exact_1.19.0.6_direct_dds_r22_r23",
+        "engine_resolver_called": false,
+        "resource_registration_observed": false,
+        "replace_path_applied": false,
+        "definition_merge_applied": false,
+        "claim_scope": "direct_dds_path_winner_projection_only"
+      }
+    },
+    {
+      "schema": "ck3-coat-of-arms-vfs-asset-winner-projection-v1",
+      "schema_version": 1,
+      "status": "projected_direct_asset_winner",
+      "ck3_build": "1.19.0.6",
+      "logical_path": "gfx/coat_of_arms/patterns/pattern_xar_vfs_replace_later.dds",
+      "mount_count": 34,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "mount_ordinal": 34,
+          "source_kind": "external_mount",
+          "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+          "content_kind": "directory",
+          "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_xar_vfs_replace_later.dds",
+          "asset_bytes": 87536,
+          "asset_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+          "dds": {
+            "width": 256,
+            "height": 256,
+            "mipmap_count": 9,
+            "four_cc_hex": "44585435"
+          }
+        }
+      ],
+      "winner": {
+        "mount_ordinal": 34,
+        "source_kind": "external_mount",
+        "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+        "content_kind": "directory",
+        "asset_relative_path": "gfx/coat_of_arms/patterns/pattern_xar_vfs_replace_later.dds",
+        "asset_bytes": 87536,
+        "asset_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+        "dds": {
+          "width": 256,
+          "height": 256,
+          "mipmap_count": 9,
+          "four_cc_hex": "44585435"
+        }
+      },
+      "inspected_mounts": [
+        {
+          "ordinal": 1,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\clausewitz",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 2,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\jomini",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 3,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 4,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc016_cp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 5,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc009_bp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 6,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc015_bp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 7,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc007_ep2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 8,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc004_ep1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 9,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc003_fp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 10,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc005_fp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 11,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc028_sp5",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 12,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc029_mp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 13,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc014_ep3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 14,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc025_cp7",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 15,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc012_afr",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 16,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc017_cp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 17,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc011_ce1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 18,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc010_fp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 19,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc020_ce2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 20,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc024_cp6",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 21,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc023_cp5",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 22,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc001_preorder",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 23,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc006_bp1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 24,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc002_sp_day1",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 25,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc008_sp2",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 26,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc026_cp8",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 27,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc019_sp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 28,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc013_sp3",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 29,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc021_bp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 30,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc027_cp9",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 31,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc018_cp4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 32,
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc022_ep4",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 33,
+          "path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_earlier",
+          "source_type": "directory",
+          "candidate_present": false
+        },
+        {
+          "ordinal": 34,
+          "path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+          "source_type": "directory",
+          "candidate_present": true
+        }
+      ],
+      "provenance": {
+        "mode": "live-mount-receipt-plus-static-byte-projection",
+        "mount_observer": "physfs_mounted_data_observer_v1",
+        "mount_receipt_sha256": "558D4C5B034AB5EC231CBCCC891C7268A5F2F905591FFD74F0D483E4DD5A90D8",
+        "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "mount_order_observed": true,
+        "source_bytes_observed": true,
+        "later_mount_precedence_contract": "exact_1.19.0.6_direct_dds_r22_r23",
+        "engine_resolver_called": false,
+        "resource_registration_observed": false,
+        "replace_path_applied": false,
+        "definition_merge_applied": false,
+        "claim_scope": "direct_dds_path_winner_projection_only"
+      }
+    }
+  ],
+  "checks": {
+    "all_queries_have_winners": true,
+    "all_queries_bind_live_mounts": true,
+    "no_query_claims_engine_resolver": true
+  },
+  "ok": true
+}

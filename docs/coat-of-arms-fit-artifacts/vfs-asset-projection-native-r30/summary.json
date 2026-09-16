@@ -1,0 +1,214 @@
+{
+  "schema": "ck3-coat-of-arms-vfs-asset-projection-native-summary-v1",
+  "schema_version": 1,
+  "report": {
+    "path": "report.json",
+    "bytes": 1134964,
+    "sha256": "AA21DA1D45CB5DB3D2048A1EEE7DE3EF368DA9FFA5A1C3EC09442CEA1F4181C4",
+    "created_at": "2026-09-16T13:24:52.503159+00:00",
+    "repository_head_before_worktree_patch": "22a10e3966e482b78d2a85f0da00e1b5f4b0e3fc",
+    "elapsed_seconds": 10.641
+  },
+  "source_files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_frontend_gui_route_v1_live_acceptance.py",
+      "bytes": 203607,
+      "sha256": "AB00629D36133ABD4ABDFB71C14C5DC3265CF7361E5F0BBB329CBCCF46BBBD29"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 92129,
+      "sha256": "C55E24568835FFAF8AF3B06BD4D2B05AA2656A0CC9838E4F907D6AA91A4B80FB"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_vfs_resolution.py",
+      "bytes": 12957,
+      "sha256": "A453F3840DCBC51E9CC020A21089C36D843E803273926E2F64C365A7A7EDDBCB"
+    }
+  ],
+  "binary": {
+    "ck3_exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll": "C:\\xb\\coa-vfs-r27\\xar_ck3_bridge.dll",
+    "bridge_dll_sha256": "972092940989B6122FFFC5A1AFA8D8EB76660208B4C8BCF86F4333AB2EF90A9E",
+    "bridge_injector": "C:\\xb\\coa-vfs-r27\\xar_ck3_bridge_injector.exe",
+    "bridge_injector_sha256": "4736851542AC89B72D892E8AD430E063DA90EA8D7002005A898D6914ADD170B9"
+  },
+  "mount_observer": {
+    "kind": "physfs_mounted_data_observer_v1",
+    "call_count": 34,
+    "success_count": 34,
+    "failure_count": 0,
+    "slot_overwrite_count": 0,
+    "row_count": 34
+  },
+  "call_summary": {
+    "total": 9,
+    "omitted": 0,
+    "last_call": {
+      "tool": "ck3_project_coat_of_arms_vfs_asset_winner_v1",
+      "elapsed_seconds": 0.388,
+      "is_error": false
+    }
+  },
+  "queries": [
+    {
+      "logical_path": "gfx/coat_of_arms/patterns/pattern_checkers_06.dds",
+      "status": "projected_direct_asset_winner",
+      "mount_count": 34,
+      "candidate_count": 1,
+      "candidate_mount_ordinals": [
+        3
+      ],
+      "winner": {
+        "mount_ordinal": 3,
+        "source_kind": "base_game",
+        "source_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+        "content_kind": "directory",
+        "asset_bytes": 43832,
+        "asset_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+        "dds": {
+          "width": 256,
+          "height": 256,
+          "mipmap_count": 9,
+          "four_cc_hex": "44585431"
+        }
+      },
+      "mount_receipt_sha256": "558D4C5B034AB5EC231CBCCC891C7268A5F2F905591FFD74F0D483E4DD5A90D8",
+      "claim_scope": "direct_dds_path_winner_projection_only",
+      "engine_resolver_called": false,
+      "resource_registration_observed": false,
+      "replace_path_applied": false,
+      "definition_merge_applied": false,
+      "checks": {
+        "mcp_call_succeeded": true,
+        "requested_path_preserved": true,
+        "direct_dds_winner_projected": true,
+        "bounded_claim_scope_preserved": true
+      },
+      "ok": true
+    },
+    {
+      "logical_path": "gfx/coat_of_arms/patterns/pattern_xar_vfs_replaced_earlier.dds",
+      "status": "projected_direct_asset_winner",
+      "mount_count": 34,
+      "candidate_count": 1,
+      "candidate_mount_ordinals": [
+        33
+      ],
+      "winner": {
+        "mount_ordinal": 33,
+        "source_kind": "external_mount",
+        "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_earlier",
+        "content_kind": "directory",
+        "asset_bytes": 43832,
+        "asset_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+        "dds": {
+          "width": 256,
+          "height": 256,
+          "mipmap_count": 9,
+          "four_cc_hex": "44585431"
+        }
+      },
+      "mount_receipt_sha256": "558D4C5B034AB5EC231CBCCC891C7268A5F2F905591FFD74F0D483E4DD5A90D8",
+      "claim_scope": "direct_dds_path_winner_projection_only",
+      "engine_resolver_called": false,
+      "resource_registration_observed": false,
+      "replace_path_applied": false,
+      "definition_merge_applied": false,
+      "checks": {
+        "mcp_call_succeeded": true,
+        "requested_path_preserved": true,
+        "direct_dds_winner_projected": true,
+        "bounded_claim_scope_preserved": true
+      },
+      "ok": true
+    },
+    {
+      "logical_path": "gfx/coat_of_arms/patterns/pattern_solid.dds",
+      "status": "projected_direct_asset_winner",
+      "mount_count": 34,
+      "candidate_count": 2,
+      "candidate_mount_ordinals": [
+        3,
+        34
+      ],
+      "winner": {
+        "mount_ordinal": 34,
+        "source_kind": "external_mount",
+        "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+        "content_kind": "directory",
+        "asset_bytes": 11064,
+        "asset_sha256": "0EE08A10EE4C71278C0ACE98506DD2A520261B20E040B353B7DA4D13C0616C4A",
+        "dds": {
+          "width": 128,
+          "height": 128,
+          "mipmap_count": 8,
+          "four_cc_hex": "44585431"
+        }
+      },
+      "mount_receipt_sha256": "558D4C5B034AB5EC231CBCCC891C7268A5F2F905591FFD74F0D483E4DD5A90D8",
+      "claim_scope": "direct_dds_path_winner_projection_only",
+      "engine_resolver_called": false,
+      "resource_registration_observed": false,
+      "replace_path_applied": false,
+      "definition_merge_applied": false,
+      "checks": {
+        "mcp_call_succeeded": true,
+        "requested_path_preserved": true,
+        "direct_dds_winner_projected": true,
+        "bounded_claim_scope_preserved": true
+      },
+      "ok": true
+    },
+    {
+      "logical_path": "gfx/coat_of_arms/patterns/pattern_xar_vfs_replace_later.dds",
+      "status": "projected_direct_asset_winner",
+      "mount_count": 34,
+      "candidate_count": 1,
+      "candidate_mount_ordinals": [
+        34
+      ],
+      "winner": {
+        "mount_ordinal": 34,
+        "source_kind": "external_mount",
+        "source_path": "D:\\ck3_coa_vfs_replace_path_r25_source\\coa_vfs_replace_later",
+        "content_kind": "directory",
+        "asset_bytes": 87536,
+        "asset_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+        "dds": {
+          "width": 256,
+          "height": 256,
+          "mipmap_count": 9,
+          "four_cc_hex": "44585435"
+        }
+      },
+      "mount_receipt_sha256": "558D4C5B034AB5EC231CBCCC891C7268A5F2F905591FFD74F0D483E4DD5A90D8",
+      "claim_scope": "direct_dds_path_winner_projection_only",
+      "engine_resolver_called": false,
+      "resource_registration_observed": false,
+      "replace_path_applied": false,
+      "definition_merge_applied": false,
+      "checks": {
+        "mcp_call_succeeded": true,
+        "requested_path_preserved": true,
+        "direct_dds_winner_projected": true,
+        "bounded_claim_scope_preserved": true
+      },
+      "ok": true
+    }
+  ],
+  "evidence_boundary": "Official MCP invoked a deterministic direct-DDS projection over the complete exact-build live mount receipt and inspected source bytes. CK3's internal resolver/resource registry was not called; replace_path and definition merging remain outside this claim.",
+  "checks": {
+    "report_green": true,
+    "steam_offline": true,
+    "cleanup_proven": true,
+    "mount_observer_complete": true,
+    "all_requested_paths_returned_once": true,
+    "all_mcp_projections_green": true,
+    "all_winners_hash_bound": true,
+    "single_live_mount_receipt": true,
+    "claim_boundary_preserved": true
+  },
+  "ok": true
+}

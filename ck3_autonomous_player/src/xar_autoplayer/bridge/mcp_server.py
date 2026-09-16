@@ -17,6 +17,9 @@ from xar_autoplayer.coat_of_arms_dlc_sources import (
 from xar_autoplayer.coat_of_arms_load_configuration import (
     query_coat_of_arms_load_configuration_v1,
 )
+from xar_autoplayer.coat_of_arms_vfs_resolution import (
+    project_coat_of_arms_vfs_asset_winner_v1,
+)
 from xar_autoplayer.coat_of_arms_definitions import (
     query_coat_of_arms_definition_catalog_v1,
     read_coat_of_arms_definition_v1,
@@ -245,6 +248,19 @@ def _ck3_read_coat_of_arms_configured_resource_asset_v1(
         user_directory,
         kind,
         candidate_id,
+    )
+
+
+def _ck3_project_coat_of_arms_vfs_asset_winner_v1(
+    service: GameplayBridgeService,
+    game_directory: str,
+    logical_path: str,
+) -> dict[str, object]:
+    """Project a direct-DDS winner from the current exact-build mount receipt."""
+    return project_coat_of_arms_vfs_asset_winner_v1(
+        service.bridge_diagnostics(),
+        game_directory,
+        logical_path,
     )
 
 
@@ -2219,6 +2235,18 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_project_coat_of_arms_vfs_asset_winner_v1(
+        game_directory: str,
+        logical_path: str,
+    ) -> dict[str, object]:
+        """Project one direct DDS winner from complete live mount evidence."""
+        return _ck3_project_coat_of_arms_vfs_asset_winner_v1(
+            service,
+            game_directory,
+            logical_path,
+        )
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -2670,6 +2698,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_read_coat_of_arms_configured_resource_asset_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_project_coat_of_arms_vfs_asset_winner_v1"
     )
     return server
 

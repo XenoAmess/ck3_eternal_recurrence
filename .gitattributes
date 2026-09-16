@@ -22,3 +22,7 @@ docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v8-pareto-candidates/pareto-can
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-*/coat_of_arms.txt binary
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-*/pareto-candidate-*.txt binary
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v15-pruned-budget-1024/picture-*/candidate-*/coat_of_arms.txt binary
+
+# Frozen native MCP reports: preserve exact runner bytes for SHA-256 receipts.
+docs/coat-of-arms-fit-artifacts/vfs-asset-projection-r29/report.json binary
+docs/coat-of-arms-fit-artifacts/vfs-asset-projection-native-r30/report.json binary

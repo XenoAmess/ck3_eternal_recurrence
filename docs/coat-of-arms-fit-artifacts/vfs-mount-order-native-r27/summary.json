@@ -2,8 +2,8 @@
   "schema": "xar.ck3.coa.vfs-mount-order-live-summary.v1",
   "report": {
     "path": "report.json",
-    "bytes": 1115133,
-    "sha256": "DC65DD1DF5F16A8EC91D89B0D9AD9916887CF657C9B93F94D3B4FC709D097DA1",
+    "bytes": 1098881,
+    "sha256": "DF712BFE878BDF1134C78D7780A486465AF1A290526AF0372504C76E24168A1C",
     "repository_head": "62afdb91b62f42c1207fa84b856b0da5c7b09e31",
     "created_at": "2026-09-16T12:54:16.406109+00:00"
   },

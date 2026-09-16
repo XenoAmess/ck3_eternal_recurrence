@@ -114,6 +114,7 @@ PROBE_COAT_OF_ARMS_CAPABILITY = "game.command.probe-coat-of-arms-source-v1"
 EXPORT_COAT_OF_ARMS_CAPABILITY = "game.command.export-coat-of-arms-source-v1"
 QUERY_TOOL = "ck3_query_frontend_gui_route_v1"
 BRIDGE_DIAGNOSTICS_TOOL = "ck3_get_bridge_diagnostics"
+VFS_ASSET_PROJECTION_TOOL = "ck3_project_coat_of_arms_vfs_asset_winner_v1"
 INSPECT_TOOL = "ck3_inspect_frontend_gui_tree_v1"
 ACTIVATE_NEW_GAME_TOOL = "ck3_activate_frontend_new_game_v1"
 ACTIVATE_PICK_ANY_TOOL = "ck3_activate_frontend_pick_any_character_v1"
@@ -542,6 +543,15 @@ def _parser() -> argparse.ArgumentParser:
         help=(
             "stop the managed run after the bounded startup mount-order MCP "
             "receipt; requires --vfs-mount-order-diagnostics"
+        ),
+    )
+    parser.add_argument(
+        "--vfs-asset-projection-path",
+        action="append",
+        default=[],
+        help=(
+            "project one direct coat-of-arms DDS winner through the live MCP "
+            "mount receipt; repeatable and requires --vfs-mount-order-diagnostics"
         ),
     )
     parser.add_argument("--output", type=Path, required=True)
@@ -1935,6 +1945,75 @@ async def _collect_vfs_mount_order_diagnostics(
         "checks": checks,
         "observer": observer,
         "call": call,
+    }
+
+
+async def _collect_vfs_asset_projections(
+    client: Client,
+    record: Any,
+    game_directory: str,
+    logical_paths: tuple[str, ...],
+) -> dict[str, object]:
+    """Call the public MCP projection once per predeclared direct DDS path."""
+
+    projections: list[dict[str, object]] = []
+    for logical_path in logical_paths:
+        call = await _call(
+            client,
+            VFS_ASSET_PROJECTION_TOOL,
+            {
+                "game_directory": game_directory,
+                "logical_path": logical_path,
+            },
+        )
+        record(call)
+        body = _structured(call)
+        winner = body.get("winner")
+        provenance = body.get("provenance")
+        checks = {
+            "mcp_call_succeeded": call.get("is_error") is False,
+            "requested_path_preserved": body.get("logical_path") == logical_path,
+            "direct_dds_winner_projected": (
+                body.get("status") == "projected_direct_asset_winner"
+                and isinstance(winner, dict)
+                and isinstance(winner.get("asset_sha256"), str)
+                and len(winner["asset_sha256"]) == 64
+            ),
+            "bounded_claim_scope_preserved": (
+                isinstance(provenance, dict)
+                and provenance.get("mount_order_observed") is True
+                and provenance.get("source_bytes_observed") is True
+                and provenance.get("engine_resolver_called") is False
+                and provenance.get("resource_registration_observed") is False
+                and provenance.get("replace_path_applied") is False
+                and provenance.get("definition_merge_applied") is False
+                and provenance.get("claim_scope")
+                == "direct_dds_path_winner_projection_only"
+            ),
+        }
+        projections.append(
+            {
+                "logical_path": logical_path,
+                "call": call,
+                "projection": body,
+                "checks": checks,
+                "ok": all(checks.values()),
+            }
+        )
+    checks = {
+        "paths_requested": bool(logical_paths),
+        "paths_unique": len(logical_paths) == len(set(logical_paths)),
+        "all_projections_passed": bool(projections)
+        and all(value.get("ok") is True for value in projections),
+    }
+    return {
+        "schema": "ck3-coat-of-arms-vfs-asset-projection-live-run-v1",
+        "schema_version": 1,
+        "game_directory": game_directory,
+        "requested_paths": list(logical_paths),
+        "projections": projections,
+        "checks": checks,
+        "ok": all(checks.values()),
     }
 
 
@@ -3409,6 +3488,8 @@ async def _mcp_sequence(
     vfs_replace_path_matrix: bool = False,
     vfs_mount_order_diagnostics: bool = False,
     vfs_mount_order_diagnostics_only: bool = False,
+    vfs_asset_projection_paths: tuple[str, ...] = (),
+    game_directory: str | None = None,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
@@ -3422,6 +3503,7 @@ async def _mcp_sequence(
         "last_call": None,
     }
     vfs_mount_order_result: dict[str, object] | None = None
+    vfs_asset_projection_result: dict[str, object] | None = None
 
     def record(call: dict[str, object]) -> None:
         call_summary["total"] = int(call_summary["total"]) + 1
@@ -3443,6 +3525,8 @@ async def _mcp_sequence(
         }
         if vfs_mount_order_diagnostics:
             result["vfs_mount_order_diagnostics"] = vfs_mount_order_result
+        if vfs_asset_projection_paths:
+            result["vfs_asset_projections"] = vfs_asset_projection_result
         return result
 
     async with Client(create_server(driver)) as client:
@@ -3530,6 +3614,11 @@ async def _mcp_sequence(
             if vfs_mount_order_diagnostics
             else set()
         )
+        projection_required = (
+            {VFS_ASSET_PROJECTION_TOOL}
+            if vfs_asset_projection_paths
+            else set()
+        )
         required = (
             route_required
             | matrix_required
@@ -3539,6 +3628,7 @@ async def _mcp_sequence(
             | parent_semantics_required
             | custom_mode_required
             | diagnostics_required
+            | projection_required
         )
         schemas = {
             name: tools[name].input_schema
@@ -3573,6 +3663,14 @@ async def _mcp_sequence(
         ):
             return red(
                 "bridge diagnostics MCP tool is not a closed zero-input tool",
+                tool_schemas=schemas,
+            )
+        if vfs_asset_projection_paths and not _schema_has_required_fields(
+            schemas.get(VFS_ASSET_PROJECTION_TOOL),
+            {"game_directory", "logical_path"},
+        ):
+            return red(
+                "VFS asset projection MCP tool has an unexpected schema",
                 tool_schemas=schemas,
             )
         if (syntax_matrix is not None or commit_roundtrip) and not (
@@ -3779,11 +3877,29 @@ async def _mcp_sequence(
             vfs_mount_order_result = await _collect_vfs_mount_order_diagnostics(
                 client, record
             )
+            if vfs_asset_projection_paths:
+                if game_directory is None:
+                    return red(
+                        "VFS asset projection requires an explicit game directory"
+                    )
+                vfs_asset_projection_result = await _collect_vfs_asset_projections(
+                    client,
+                    record,
+                    game_directory,
+                    vfs_asset_projection_paths,
+                )
             if vfs_mount_order_diagnostics_only:
                 checks = {
                     "vfs_mount_order_diagnostics_complete": (
                         vfs_mount_order_result.get("ok") is True
-                    )
+                    ),
+                    "vfs_asset_projections_complete": (
+                        not vfs_asset_projection_paths
+                        or (
+                            isinstance(vfs_asset_projection_result, dict)
+                            and vfs_asset_projection_result.get("ok") is True
+                        )
+                    ),
                 }
                 return {
                     "mcp_sdk": "official-python-client",
@@ -3792,6 +3908,7 @@ async def _mcp_sequence(
                     "tool_schemas": schemas,
                     "capabilities": _structured(capability_call or {}),
                     "vfs_mount_order_diagnostics": vfs_mount_order_result,
+                    "vfs_asset_projections": vfs_asset_projection_result,
                     "diagnostics_only": True,
                     "checks": checks,
                     "ok": all(checks.values()),
@@ -4225,6 +4342,11 @@ async def _mcp_sequence(
                 isinstance(vfs_mount_order_result, dict)
                 and vfs_mount_order_result.get("ok") is True
             )
+        if vfs_asset_projection_paths:
+            checks["vfs_asset_projections_complete"] = (
+                isinstance(vfs_asset_projection_result, dict)
+                and vfs_asset_projection_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -4249,6 +4371,7 @@ async def _mcp_sequence(
             "vfs_extended_matrix": vfs_extended_result,
             "vfs_replace_path_matrix": vfs_replace_path_result,
             "vfs_mount_order_diagnostics": vfs_mount_order_result,
+            "vfs_asset_projections": vfs_asset_projection_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -4510,11 +4633,21 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     vfs_mount_order_diagnostics_only = bool(
         getattr(args, "vfs_mount_order_diagnostics_only", False)
     )
+    vfs_asset_projection_paths = tuple(
+        str(value) for value in getattr(args, "vfs_asset_projection_path", [])
+    )
     if vfs_mount_order_diagnostics_only and not vfs_mount_order_diagnostics:
         raise ValueError(
             "--vfs-mount-order-diagnostics-only requires "
             "--vfs-mount-order-diagnostics"
         )
+    if vfs_asset_projection_paths and not vfs_mount_order_diagnostics:
+        raise ValueError(
+            "--vfs-asset-projection-path requires "
+            "--vfs-mount-order-diagnostics"
+        )
+    if len(vfs_asset_projection_paths) != len(set(vfs_asset_projection_paths)):
+        raise ValueError("--vfs-asset-projection-path values must be unique")
     if picture_corpus is not None and (
         getattr(args, "large_source", None) is not None
         or reference_preview is not None
@@ -4791,6 +4924,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         ),
         "vfs_mount_order_diagnostics_requested": vfs_mount_order_diagnostics,
         "vfs_mount_order_diagnostics_only": vfs_mount_order_diagnostics_only,
+        "vfs_asset_projection_paths": list(vfs_asset_projection_paths),
         "vfs_mount_order_diagnostics_plan": (
             {
                 "transport": "official MCP ck3_get_bridge_diagnostics",
@@ -4804,6 +4938,25 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 ),
             }
             if vfs_mount_order_diagnostics
+            else None
+        ),
+        "vfs_asset_projection_plan": (
+            {
+                "transport": (
+                    "official MCP "
+                    "ck3_project_coat_of_arms_vfs_asset_winner_v1"
+                ),
+                "logical_paths": list(vfs_asset_projection_paths),
+                "success_contract": (
+                    "each direct DDS path has a hash-bound later-mount winner"
+                ),
+                "evidence_boundary": (
+                    "projection from live mount receipt plus source bytes; "
+                    "does not call CK3's internal resolver, observe resource "
+                    "registration, or apply replace_path/definition merging"
+                ),
+            }
+            if vfs_asset_projection_paths
             else None
         ),
     }
@@ -4930,6 +5083,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 vfs_mount_order_diagnostics_only=(
                     vfs_mount_order_diagnostics_only
                 ),
+                vfs_asset_projection_paths=vfs_asset_projection_paths,
+                game_directory=str(args.game_dir.resolve()),
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,

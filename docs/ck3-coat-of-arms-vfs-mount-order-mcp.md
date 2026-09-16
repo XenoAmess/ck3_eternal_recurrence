@@ -67,9 +67,11 @@ R28 使用相同两个有序目录 mod，在 Steam 离线下通过显式 `ck3_ge
 - 全部行 ordinal 严格递增、返回完整，observer 保持 private/read-only 且未成为 capability/action；
 - 受管进程树、watchdog 和共享槽位均完成清理。
 
-完整报告 SHA-256 为 `99D68962C2D76D340BF80956198D5917BCA529C2CD825701395DD76A759C3CDE`，见
+checked-in 报告 SHA-256 为 `17FA7AFABD23C3EEAF79D346897DDC6984BE75E582F05A06067CD07E44B22093`，见
 [vfs-mount-order-native-r28](coat-of-arms-fit-artifacts/vfs-mount-order-native-r28/README.md)。该结果证明受控会话的挂载顺序，
-但仍不宣称 `replace_path`、definition merge 或任意逻辑路径 winner；下一项能力仍是有界 VFS resolve/CoA registry provenance。
+但仍不宣称 `replace_path`、definition merge 或任意逻辑路径 winner。后续 R29/R30 已在这个完整回执之上补出 direct-DDS
+字节投影 MCP；它提升了单文件来源证据，但依然不冒充引擎内部 resolver/registry。见
+[direct-DDS 来源投影 MCP](ck3-coat-of-arms-vfs-resource-provenance-mcp.md)。
 
 ## 已通过门禁
 

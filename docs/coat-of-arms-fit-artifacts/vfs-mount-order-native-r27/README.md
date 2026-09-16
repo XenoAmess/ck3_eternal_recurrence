@@ -11,7 +11,7 @@ R27 是采样时序修复后的首个 exact `1.19.0.6` 原生运行。它证明�
 - Steam：全程离线
 - elapsed：12.398 秒
 - cleanup：进程树消失、watchdog 缺席、共享槽位释放
-- report：`1115133` bytes，SHA-256 `DC65DD1DF5F16A8EC91D89B0D9AD9916887CF657C9B93F94D3B4FC709D097DA1`
+- checked-in report：`1098881` bytes，SHA-256 `DF712BFE878BDF1134C78D7780A486465AF1A290526AF0372504C76E24168A1C`
 - bridge DLL：`3230720` bytes，SHA-256 `972092940989B6122FFFC5A1AFA8D8EB76660208B4C8BCF86F4333AB2EF90A9E`
 
 机器可读结果见 [summary.json](summary.json)，完整调用与清理回执见 [report.json](report.json)。后继证据为

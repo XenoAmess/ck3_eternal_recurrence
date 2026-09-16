@@ -546,6 +546,63 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             reversed_result["checks"]["fixture_mount_order_matches_dlc_load"]
         )
 
+    def test_vfs_asset_projection_collector_uses_public_mcp_and_bounds_claim(self) -> None:
+        module = _load_runner_module()
+        logical = "gfx/coat_of_arms/patterns/pattern_solid.dds"
+
+        class FakeClient:
+            def __init__(self) -> None:
+                self.calls: list[tuple[str, dict[str, object]]] = []
+
+            async def call_tool(self, name, arguments):
+                self.calls.append((name, dict(arguments)))
+                return SimpleNamespace(
+                    content=[],
+                    is_error=False,
+                    structured_content={
+                        "status": "projected_direct_asset_winner",
+                        "logical_path": logical,
+                        "winner": {"asset_sha256": "A" * 64},
+                        "provenance": {
+                            "mount_order_observed": True,
+                            "source_bytes_observed": True,
+                            "engine_resolver_called": False,
+                            "resource_registration_observed": False,
+                            "replace_path_applied": False,
+                            "definition_merge_applied": False,
+                            "claim_scope": "direct_dds_path_winner_projection_only",
+                        },
+                    },
+                )
+
+        client = FakeClient()
+        recorded = []
+        result = asyncio.run(
+            module._collect_vfs_asset_projections(
+                client,
+                recorded.append,
+                r"C:\CK3",
+                (logical,),
+            )
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(len(recorded), 1)
+        self.assertEqual(
+            client.calls,
+            [
+                (
+                    module.VFS_ASSET_PROJECTION_TOOL,
+                    {"game_directory": r"C:\CK3", "logical_path": logical},
+                )
+            ],
+        )
+        self.assertTrue(
+            result["projections"][0]["checks"][
+                "bounded_claim_scope_preserved"
+            ]
+        )
+
     def test_vfs_mount_order_diagnostics_run_before_frontend_route_wait(self) -> None:
         source = RUNNER.read_text(encoding="utf-8")
         sequence = source[source.index("async def _mcp_sequence(") :]

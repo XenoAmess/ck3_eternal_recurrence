@@ -246,8 +246,15 @@ manifest 载入后首屏只请求当前构图所需的 4 个 DDS，不请求 6,6
 R25 后的挂载顺序 MCP 已由 R28 原生收口：exact-build、默认关闭的 caller-local `physfs_mounted_data_observer_v1` 通过显式
 `ck3_get_bridge_diagnostics` 返回 34/34 次成功挂载、0 失败、0 覆写；29 个 DLC 后的两个 fixture ordinal 为 33、34，并与旧
 lifecycle observer 的 35/35 A/B 快照一致。R26 的“四条即覆盖不足”已勘误为过早快照，R27 则保留为发现 Python diagnostics whitelist
-漏项的过渡证据。该能力只证明 mount 路径、顺序与返回状态，不证明单资源最终 winner；VFS resolve/CoA registry provenance 仍待执行。合同见
+漏项的过渡证据。该能力只证明 mount 路径、顺序与返回状态。合同见
 [`ck3-coat-of-arms-vfs-mount-order-mcp.md`](ck3-coat-of-arms-vfs-mount-order-mcp.md)。
+
+R29/R30 又补上 `ck3_project_coat_of_arms_vfs_asset_winner_v1`：它从完整实时 mount receipt 有界检查目录/ZIP 的 direct DDS 字节，
+按 R22/R23 已实证的后挂载优先合同生成 hash-bound winner projection。R30 在 Steam 离线的 exact-build 会话中通过官方 MCP 实际查询
+四条路径；34/34 mount、四项 projection 与受管清理全部 GREEN，`pattern_solid.dds` 的 base ordinal 3 与 later-mod ordinal 34
+同时命中，投影 winner 为 34。该结果仍明确不是引擎内部 resolver 或 CoA registry 调用，也不执行 `replace_path`/definition merge；
+WP6 因此继续 `in_progress`。合同与边界见
+[`ck3-coat-of-arms-vfs-resource-provenance-mcp.md`](ck3-coat-of-arms-vfs-resource-provenance-mcp.md)。
 
 MCP 优先补完已新增 exact-build 家徽定义索引/读取工具：可分页读取基础游戏 block、完整源码、别名链和来源 SHA-256，
 重复定义、循环或缺失目标全部 fail closed。真实 1.19.0.6 安装上的 `k_england` 和 `d_agder → c_agder` 已通过；
