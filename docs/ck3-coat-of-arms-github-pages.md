@@ -36,13 +36,19 @@
    二进制 header 与容器头重新校验；
 2. `pnpm install --frozen-lockfile`，禁止 CI 静默改 lockfile；
 3. 运行全部 Vitest；
-4. 安装 Actions runner 的 Playwright Chromium，先让大预算拟合与完整图片拟合各自在独立 Playwright 进程执行，再运行其余无 CK3
-   浏览器 E2E；进程隔离释放重型用例的浏览器/Worker 状态，但不跳过任何 spec；
-5. 在 GitHub Pages 返回的真实仓库 `base_path` 后追加固定的 `/coat_of_arms_editer_of_ck3/`，以该嵌套路径执行 Vite production build；
-6. 对 `dist` 中复制后的 pack 再校验一次，将完整产物装入 Pages artifact 的 `coat_of_arms_editer_of_ck3/` 子目录并复核；
-7. 仅在上述步骤全部 GREEN 后，由 `github-pages` environment 发布。
+4. 安装 Actions runner 的 Playwright Chromium/Firefox/WebKit；对 production build 执行 128/1,024/10,000 真实预算、四阶段取消、
+   10,000 实例文档、独立素材包拟合、候选编辑、自动恢复、中英文、移动端、安全 SVG、`parent` 边界、
+   `textured_emblem`、可视化变换和零后端请求等门禁；WebGL 源模块动态 import 在 dev server 中独立验收，
+   不在 production `dist` 中伪造 `/src` 入口；
+5. 对七图 1,024 预算已冻结的 7 份报告、原生 summary 与混合元素消融 receipt 做确定性重建/字节校验。
+   完整七图研究基准仍是仓库回归用例，但不在每次 Pages push 上重跑：GitHub 托管 CPU 实测单图可超过 2–3 分钟，
+   把它混入部署曾导致功能正确的页面无法发布；该分层不改写既有实跑证据；
+6. 在 GitHub Pages 返回的真实仓库 `base_path` 后追加固定的 `/coat_of_arms_editer_of_ck3/`，以该嵌套路径执行 Vite production build；
+7. 对 `dist` 中复制后的 pack 再校验一次，将完整产物装入 Pages artifact 的 `coat_of_arms_editer_of_ck3/` 子目录并复核；
+8. 仅在上述步骤全部 GREEN 后，由 `github-pages` environment 发布。
 
-工作流权限限定为 `contents: read`、`pages: write`、`id-token: write`。并发组为 `pages`，在途正式部署不会被新的 push 强制取消。
+工作流权限限定为 `contents: read`、`pages: write`、`id-token: write`。并发组为 `pages`，只保留最新编辑器 commit 的部署 run；
+新 push 会取消已被取代的旧 run，而历史基准由仓库内 append-only artifact 保留。
 
 ## 已授权静态素材包
 

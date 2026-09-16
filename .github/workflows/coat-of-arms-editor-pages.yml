@@ -15,7 +15,9 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  # Only the newest editor commit should consume the single Pages deployment
+  # lane. Frozen benchmark artifacts preserve superseded run evidence.
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -61,6 +63,10 @@ jobs:
       - name: Run unit tests
         run: pnpm test
 
+      - name: Verify frozen seven-picture mixed-element evidence
+        working-directory: .
+        run: python coat_of_arms_editer_of_ck3/tools/summarize_mixed_element_evidence.py docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/summary.json docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/mixed-element-ablation.json --check
+
       - name: Build production acceptance artifact
         run: pnpm build
         env:
@@ -75,7 +81,7 @@ jobs:
       - name: Install headless browsers
         run: pnpm exec playwright install --with-deps chromium firefox webkit
 
-      - name: Run standalone browser acceptance
+      - name: Run production browser acceptance
         env:
           COA_E2E_USE_PREVIEW: "true"
           # GitHub-hosted CPU performance is recorded but is not the frozen
@@ -84,11 +90,21 @@ jobs:
         run: |
           pnpm exec playwright test e2e/fit-budget-stress.spec.ts
           pnpm exec playwright test e2e/standalone-image-fit.spec.ts
-          mapfile -t remaining_specs < <(find e2e -maxdepth 1 -name '*.spec.ts' ! -name 'fit-budget-stress.spec.ts' ! -name 'standalone-image-fit.spec.ts' ! -name 'service-worker-offline.spec.ts' ! -name 'reference-hunter*.spec.ts' -print | sort)
-          pnpm exec playwright test "${remaining_specs[@]}"
+          pnpm exec playwright test \
+            e2e/candidate-comparison.spec.ts \
+            e2e/editor-recovery.spec.ts \
+            e2e/fit-cancel-stages.spec.ts \
+            e2e/i18n.spec.ts \
+            e2e/large-document-stress.spec.ts \
+            e2e/mobile-layout.spec.ts \
+            e2e/parent-preview-boundary.spec.ts \
+            e2e/production-no-backend.spec.ts \
+            e2e/safe-svg-input.spec.ts \
+            e2e/textured-emblem-preview.spec.ts \
+            e2e/visual-transform-editor.spec.ts
 
-      - name: Run source-module research acceptance
-        run: pnpm exec playwright test e2e/reference-hunter*.spec.ts
+      - name: Run source-module WebGL acceptance
+        run: pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts
 
       - name: Run cross-browser core acceptance
         run: pnpm exec playwright test --config=playwright.cross-browser.config.ts
