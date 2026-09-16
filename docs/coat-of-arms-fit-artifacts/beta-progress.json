@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T12:45:00+08:00",
+  "updatedAt": "2026-09-16T13:00:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -121,7 +121,7 @@
         {
             "id": "WP3",
             "status": "in_progress",
-            "commit": "2af8048a",
+            "commit": "c96a3fbd",
             "commands": [
                 "pnpm exec vitest run src/domain/imageFitter.test.ts src/domain/imageFitter.seams.test.ts",
                 "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
@@ -248,7 +248,7 @@
                 "hunterV8ComplexityInstances": 989,
                 "hunterV8SeamGate": "passed_zero_leaks_at_96_230_512",
                 "fitIndexPaintGeometryRegression": "passed_bounds_center_separated_from_energy_centroid",
-                "paretoPictureCorpusStatus": "browser_passed_native_mcp_pending",
+                "paretoPictureCorpusStatus": "browser_7_of_7_and_quality_primary_native_pixel_7_of_7",
                 "paretoPictureCorpusEvidencePath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/",
                 "paretoPictureCorpusCasesPassed": 7,
                 "paretoPictureCorpusCandidatesFrozen": 21,
@@ -257,6 +257,17 @@
                 "paretoPictureCorpusUtf8ByteRange": [232313, 403676],
                 "candidatePreviewCanonicalResolution": 230,
                 "candidatePreviewScoringResolutionBug": "fixed_96px_presentation_replaced_by_230px_canonical",
+                "paretoPictureCorpusNativeEvidencePath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/",
+                "paretoPictureCorpusNativePixelCasesPassed": 7,
+                "paretoPictureCorpusNativeCopyReapplyCasesPassed": 7,
+                "paretoPictureCorpusNativeStrictSemanticCasesPassed": 4,
+                "paretoPictureCorpusNativeRotationNormalizationCases": 3,
+                "paretoPictureCorpusNativeMaximumMeanAbsoluteError": 0.03354012966156006,
+                "paretoPictureCorpusNativeMaximumColorMse": 0.006278323475271463,
+                "paretoPictureCorpusNativeMaximumEdgeLoss": 0.1077837198972702,
+                "paretoPictureCorpusNativeMaximumSpatialMeanAbsoluteError": 0.15839402377605438,
+                "paretoPictureCorpusNativeSummarySha256": "5255F643880849FBE2992D3D8F4F2EB37D5740E22DB44CD42A82F36CA0408D44",
+                "paretoPictureCorpusNativeRawReportSha256": "F25EAF97A955EF9995C727C9BD529E117EAFEFF89E7CD9150C85242250A1F426",
                 "nativeRoundTrip": "passed",
                 "nativeInputBytes": 262138,
                 "nativeInputBlocks": 297,
@@ -322,7 +333,7 @@
         "memoryEvidenceScope": "JavaScript heap delta only; excludes GPU and browser-process memory",
         "nonGetRequests": 0,
         "pauseResumeCheckpoint": "indexeddb_reload_persistence_passed",
-        "hostedReportOnlyResumeTimeout": "functional_wait_180s_performance_gate_not_enforced",
+        "hostedReportOnlyResumeTimeout": "functional_wait_420s_performance_gate_not_enforced",
         "hostedReportOnlyLocalRegression": "passed_2.2m",
         "gpuBatchSearch": "background_semantic_promotion_and_local_selection_passed",
         "gpuBatchBackend": "webgl2-texture-array-reduction-float-v1",
@@ -422,8 +433,8 @@
         "pageVersionDisplay": "iso_timestamp_plus_8_digit_git_hash_passed",
         "pagesMountPath": "/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/",
         "pagesOfficialDeployment": "passed_run_35000503958_head_a35b0edd",
-        "pagesLatestDeploymentAttempt": "failed_run_35054874631_standalone_fit_functional_wait_timeout",
-        "pagesHostedFunctionalWaitFixCommit": "2af8048a",
+        "pagesLatestDeploymentAttempt": "failed_run_35056760368_10000_budget_report_only_wait_timeout",
+        "pagesHostedFunctionalWaitFixCommit": "c96a3fbd",
         "pagesCanonicalHttpStatus": 200,
         "pagesNoTrailingSlashHttpStatus": 301,
         "pagesEntryJavascriptHttpStatus": 200,
@@ -550,14 +561,16 @@
     },
     {
       "id": "USER-PICTURE-PARETO-PREVIEW-CONSISTENCY-V14",
-      "status": "in_progress",
-      "commit": "2af8048a",
+      "status": "passed",
+      "commit": "c96a3fbd",
       "commands": [
         "set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v14-pareto-budget-1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --workers=1 --reporter=line",
         "set GITHUB_PAGES=true&& set COA_E2E_USE_PREVIEW=true&& pnpm exec playwright test e2e/standalone-image-fit.spec.ts --workers=1 --reporter=line",
         "pnpm test",
         "pnpm build",
-        "pnpm verify:production-boundary"
+        "pnpm verify:production-boundary",
+        "set PYTHONPATH=ck3_autonomous_player\\src&& tools\\.venv\\Scripts\\python.exe ck3_autonomous_player\\native_bridge\\research\\run_frontend_gui_route_v1_live_acceptance.py --source-profile C:\\Users\\1\\Documents\\PARADO~1\\CRUSAD~1 --state-dir D:\\ck3_coa_picture_corpus_v14_native_r18 --game-dir C:\\SteamLibrary\\steamapps\\common\\CRUSAD~1 --bridge-pipe \\\\.\\pipe\\xar-coa-picture-corpus-v14-native-r18 --bridge-dll C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge.dll --bridge-injector C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge_injector.exe --timeout 420 --picture-corpus docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v14-pareto-budget-1024 --picture-crop-dir docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v14-native-r18 --output docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v14-native-r18\\raw-report.json",
+        "tools\\.venv\\Scripts\\python.exe coat_of_arms_editer_of_ck3\\tools\\summarize_native_picture_corpus.py docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v14-native-r18\\raw-report.json docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v14-native-r18\\summary.json"
       ],
       "resultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/",
       "keyMetrics": {
@@ -581,11 +594,21 @@
         "maximumRelativeImprovement": 0.9408132307229519,
         "vitest": "passed_18_files_83_tests",
         "pagesModeStandaloneFit": "passed_2_of_2_local_regression",
-        "productionBoundary": "passed_zero_forbidden_markers"
+        "productionBoundary": "passed_zero_forbidden_markers",
+        "nativeMcpInteractionPolicy": "mcp_only_no_ocr_keyboard_mouse_or_fixed_coordinates",
+        "nativePixelCasesPassed": 7,
+        "nativeCopyReapplyCasesPassed": 7,
+        "nativeStrictSemanticRoundTripPassed": 4,
+        "nativeRotationNormalizationCases": 3,
+        "nativeMaximumMeanAbsoluteError": 0.03354012966156006,
+        "nativeMaximumColorMse": 0.006278323475271463,
+        "nativeMaximumEdgeLoss": 0.1077837198972702,
+        "nativeMaximumSpatialMeanAbsoluteError": 0.15839402377605438,
+        "nativeSummarySha256": "5255F643880849FBE2992D3D8F4F2EB37D5740E22DB44CD42A82F36CA0408D44",
+        "nativeRawReportSha256": "F25EAF97A955EF9995C727C9BD529E117EAFEFF89E7CD9150C85242250A1F426",
+        "nativeCleanup": "passed_tree_gone_and_locks_released"
       },
-      "blockers": [
-        "v14 native MCP Apply/Copy and spatial framebuffer comparison are pending"
-      ]
+      "blockers": []
     }
   ]
 }
