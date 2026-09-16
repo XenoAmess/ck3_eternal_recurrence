@@ -1,0 +1,63 @@
+{
+  "contract": "g2-m4-player-world-building-cost-direct-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-read-only-live-pending",
+  "exact_build": {
+    "version": "CK3 1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "exact_spans": [
+    {
+      "name": "stock_cost_builder",
+      "start_rva": "0x29190F0",
+      "end_rva_exclusive": "0x291938B",
+      "sha256": "20948386F340DEFDB0675F1BD940DCCA4E75E1986FAE9D47E7E49D14C416164E"
+    },
+    {
+      "name": "stock_player_final_legality_cost_call",
+      "start_rva": "0x295DCAA",
+      "end_rva_exclusive": "0x295DCC5",
+      "sha256": "F3E4D0350226B0295AA86F3A389CCE765EB18642BD4E37F1B861F8126AAC7D92"
+    },
+    {
+      "name": "stock_selected_row_cost_and_affordability",
+      "start_rva": "0x18D1835",
+      "end_rva_exclusive": "0x18D1924",
+      "sha256": "266352D8748E5F6DDFAD6A2BF9617654DB7302208372FCA27745AFAE6E968C19"
+    },
+    {
+      "name": "stock_player_gold_cost_branch",
+      "start_rva": "0x2CDD09D",
+      "end_rva_exclusive": "0x2CDD0F4",
+      "sha256": "E5AB62A9D7649AA495B9EF2254E129E79EDDFBEC3D5D6240A57DA93160E6297E"
+    }
+  ],
+  "observer": {
+    "entry_rva": "0x29190F0",
+    "caller_player_final_legality_rva": "0x295DCC0",
+    "caller_selected_row_rva": "0x18D184F",
+    "borrowed_inputs": "same paused application-main player/Province/CBuildingType/slot tuple after stock 0x295CD60 true",
+    "cost_field_offsets": ["CBuildingType+0x6F588", "CBuildingType+0x6F590"],
+    "native_output_bytes": 80,
+    "projected_selected_row_qword_indices": [0, 1, 2, 4, 5, 6, 8, 9],
+    "player_gold_branch": "0x295DCF4 calls 0x2CDCFF0. At 0x2CDD09D case0 reads cost raw[0], conditionally adds raw[7], and at 0x2CDD0C3..0x2CDD0E5 reads played CCharacter extension+0x100 gold. The deciding actor flag and other resource branches remain unknown.",
+    "spend_slot_business_names": "gold raw[0] with possible raw[7] extra; remaining resource identities unknown",
+    "player_gold_source": "played CCharacter+0x1A8 extension+0x100, signed Q100000; absent extension is stock zero",
+    "receipt": "advertised=false, read_only=true, legal_samples[].cost_raw_native[10] plus selected-row cost_raw_slots[8], player_gold_raw/scale, native_cost_evaluated; no native pointers persisted"
+  },
+  "readiness": {
+    "source_verified": true,
+    "normal_debug_test": true,
+    "optimized_release_test": true,
+    "paused_live_cost": false,
+    "all_resource_slot_mapping": false,
+    "cost_ready": false,
+    "construction_action_ready": false,
+    "public_query": false,
+    "public_action": false,
+    "mcp": false
+  },
+  "impact": "Private receipt is additive. No public schema, MCP, open_kaishek adapter, or production action changes in this candidate.",
+  "r739_boundary": "R739 established 981 definitions, 6 held barony/Province pairs and 512 native final-legality checks with 8 legal samples; this static cost candidate has no same-version paused cost receipt or material building result."
+}

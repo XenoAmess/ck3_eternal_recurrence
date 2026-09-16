@@ -18,4 +18,11 @@ struct PlayerWorldBuildingNativeCallAccessV1 final {
 BindCurrentProcessPlayerWorldBuildingFinalLegalityV1(
     PlayerWorldBuildingNativeCallAccessV1 &access) noexcept;
 
+// Exact player CanConstruct at 0x295DCC0 and stock selected-row helper at
+// 0x18D184F both invoke 0x29190F0 for a Province/CBuildingType pair. This
+// private callback copies the eight opaque spend slots before returning.
+[[nodiscard]] NativePlayerBuildingCostV1
+BindCurrentProcessPlayerWorldBuildingCostV1(
+    PlayerWorldBuildingNativeCallAccessV1 &access) noexcept;
+
 } // namespace xar::ck3_11906

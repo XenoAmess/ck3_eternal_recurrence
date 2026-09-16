@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <array>
 #include <cstring>
 #include <iostream>
 #include <unordered_map>
@@ -22,7 +23,9 @@ struct Fixture {
   bool main_thread = true;
   bool change_final_frame = false;
   bool validator_fails = false;
+  bool cost_fails = false;
   std::int32_t native_checks = 0;
+  std::int32_t cost_calls = 0;
   std::int32_t frame_reads = 0;
 
   template <typename T>
@@ -76,13 +79,33 @@ struct Fixture {
     return true;
   }
 
+  static bool CaptureCost(
+      void *context, std::int32_t actor, std::int32_t province_id,
+      std::uintptr_t province, std::int32_t building_type_id,
+      std::uintptr_t definition, std::int32_t slot,
+      std::array<std::int64_t, 10> &raw) noexcept {
+    auto &self = *static_cast<Fixture *>(context);
+    ++self.cost_calls;
+    if (self.cost_fails || actor != kActor || province_id != kProvince ||
+        province != 0x700000 || building_type_id != 22 ||
+        definition != 0xB10000 || slot != 1) {
+      return false;
+    }
+    raw = {10000000, 0, 500000, 0, 0, 0, 0, 800000, 0, 0};
+    return true;
+  }
+
   xar::ck3_11906::PlayerWorldBuildingSourceAccessV1 Access(
-      bool enable_final = true) {
+      bool enable_final = true, bool enable_cost = false) {
     xar::ck3_11906::PlayerWorldBuildingSourceAccessV1 result{};
     result.campaign = {this, Capture, IsMain, Read, nullptr};
     if (enable_final) {
       result.final_legality = &Validate;
       result.final_legality_context = this;
+    }
+    if (enable_cost) {
+      result.native_cost = &CaptureCost;
+      result.native_cost_context = this;
     }
     return result;
   }
@@ -121,6 +144,8 @@ Fixture Scene() {
   f.Put(0x400020 + static_cast<std::uintptr_t>(kActor) * 0x10 + 8,
         std::uintptr_t{0x420000});
   f.Put(0x420000 + 0x18, kActor);
+  f.Put(0x420000 + 0x1A8, std::uintptr_t{0x450000});
+  f.Put(0x450000 + 0x100, std::int64_t{49048276});
   f.Put(0x420000 + 0x1C8, std::uintptr_t{0});
   f.Put(0x420000 + 0x1B8, std::uintptr_t{0x430000});
   f.Put(0x430000 + 0x1E0, std::uintptr_t{0x440000});
@@ -207,6 +232,46 @@ int main() {
                         {kBarony, kProvince, 22, 1}} &&
                 !r.cost_ready && f.native_checks == 4,
             "same_frame_player_final_legality_sample_not_cost_or_action");
+  }
+  {
+    auto f = Scene();
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(true, true), {3, kProvince, 512, 8});
+    Require(r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::none &&
+                r.player_gold_observed && r.player_gold_raw == 49048276 &&
+                r.native_cost_evaluated && r.native_cost_checks == 1 &&
+                f.cost_calls == 1 && r.legal_samples.size() == 1 &&
+                r.legal_samples[0].native_cost_observed &&
+                r.legal_samples[0].cost_raw_slots ==
+                    std::array<std::int64_t, 8>{
+                        10000000, 0, 500000, 0, 0, 0, 0, 0} &&
+                r.legal_samples[0].cost_raw_native ==
+                    std::array<std::int64_t, 10>{
+                        10000000, 0, 500000, 0, 0,
+                        0, 0, 800000, 0, 0} &&
+                !r.cost_ready,
+            "same_paused_legal_tuple_has_opaque_stock_cost_and_player_gold");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x420000 + 0x1A8, std::uintptr_t{0x460000});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(true, true), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::player_gold_source &&
+                f.cost_calls == 0,
+            "missing_player_gold_read_is_unavailable_not_zero");
+  }
+  {
+    auto f = Scene();
+    f.cost_fails = true;
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(true, true), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::native_cost &&
+                f.cost_calls == 1,
+            "failed_stock_cost_is_red_not_free_construction");
   }
   {
     auto f = Scene();

@@ -2,13 +2,14 @@
 
 #include "player_held_construction_model_enumerator_v1.hpp"
 
+#include <array>
 #include <cstdint>
 #include <vector>
 
 namespace xar::ck3_11906 {
 
-// Private exact-build read only. Rows establish stock native final-legality
-// for one paused player/Province/definition/slot tuple; costs remain unknown.
+// Private exact-build read only. Rows bind stock player final-legality and
+// stock raw costs to one paused player/Province/definition/slot tuple.
 enum class PlayerWorldBuildingFailureV1 : std::uint8_t {
   none = 0,
   exact_build,
@@ -20,6 +21,8 @@ enum class PlayerWorldBuildingFailureV1 : std::uint8_t {
   definition_identity,
   province_slot_source,
   native_final_legality,
+  player_gold_source,
+  native_cost,
   frame_changed,
 };
 
@@ -52,6 +55,13 @@ struct PlayerWorldBuildingLegalSampleV1 final {
   std::int32_t province_id = -1;
   std::int32_t building_type_id = -1;
   std::int32_t slot_index = -1;
+  // Full 80-byte native output is retained because stock player affordability
+  // can conditionally add raw[7] to raw[0] before its gold comparison.
+  std::array<std::int64_t, 10> cost_raw_native{};
+  // Stock selected-row eight-slot spend projection, for comparison only.
+  // Resource meanings and player-specific extra cost remain unproven.
+  std::array<std::int64_t, 8> cost_raw_slots{};
+  bool native_cost_observed = false;
   friend bool operator==(const PlayerWorldBuildingLegalSampleV1 &,
                          const PlayerWorldBuildingLegalSampleV1 &) = default;
 };
@@ -63,6 +73,10 @@ struct PlayerWorldBuildingSourceResultV1 final {
   bool native_final_legality_evaluated = false;
   bool checks_truncated = false;
   bool cost_ready = false;
+  bool native_cost_evaluated = false;
+  bool player_gold_observed = false;
+  std::int64_t player_gold_raw = 0;
+  std::int32_t native_cost_checks = 0;
   std::uint64_t snapshot_revision = 0;
   std::int32_t date_raw = 0;
   std::int32_t player_character_id = -1;
@@ -77,10 +91,19 @@ using NativePlayerBuildingFinalLegalityV1 = bool (*)(
     std::int32_t province_id, std::uintptr_t building_definition,
     std::int32_t slot_index, bool &allowed) noexcept;
 
+using NativePlayerBuildingCostV1 = bool (*)(
+    void *context, std::int32_t actor_character_id,
+    std::int32_t province_id, std::uintptr_t province,
+    std::int32_t building_type_id, std::uintptr_t building_definition,
+    std::int32_t slot_index,
+    std::array<std::int64_t, 10> &cost_raw_native) noexcept;
+
 struct PlayerWorldBuildingSourceAccessV1 final {
   CampaignRootAccessV1 campaign;
   NativePlayerBuildingFinalLegalityV1 final_legality = nullptr;
   void *final_legality_context = nullptr;
+  NativePlayerBuildingCostV1 native_cost = nullptr;
+  void *native_cost_context = nullptr;
 };
 
 struct PlayerWorldBuildingSourceRequestV1 final {

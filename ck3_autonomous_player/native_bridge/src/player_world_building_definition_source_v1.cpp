@@ -18,6 +18,8 @@ constexpr std::uintptr_t kWorldBuildingManagerSlotRva = 0x570C108;
 constexpr std::uintptr_t kBuildingTypePrimaryVtableRva = 0x44046C0;
 constexpr std::uintptr_t kExactExeImageSize = 0x5C2D000;
 constexpr std::uintptr_t kGameStateSlotRva = 0x570E068;
+constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
+constexpr std::uintptr_t kCharacterFallbackSlotRva = 0x570C138;
 constexpr std::uintptr_t kGuiPlayerCharacterIdRva = 0x4FE7EE0;
 constexpr std::size_t kGameDataOffset = 0xA0;
 constexpr std::size_t kProvinceArrayOffset = 0x140;
@@ -29,9 +31,15 @@ constexpr std::size_t kRegistryDataOffset = 0x68;
 constexpr std::size_t kRegistryCapacityOffset = 0x70;
 constexpr std::size_t kRegistryCountOffset = 0x74;
 constexpr std::size_t kBuildingTypeIdentityOffset = 0x10;
+constexpr std::size_t kCharacterIdentityOffset = 0x18;
+constexpr std::size_t kCharacterExtensionOffset = 0x1A8;
+constexpr std::size_t kCharacterGoldOffset = 0x100;
+constexpr std::size_t kStorageDataOffset = 0x20;
+constexpr std::size_t kStorageCapacityOffset = 0x2C;
 constexpr std::int32_t kMaxWorldDefinitions = 16'384;
 constexpr std::int32_t kMaxProvinceSlots = 64;
 constexpr std::int32_t kMaxProvinceCount = 1'000'000;
+constexpr std::int32_t kMaxCharacterStorageCapacity = 4'194'304;
 
 bool Add(std::uintptr_t base, std::size_t offset,
          std::uintptr_t &out) noexcept {
@@ -135,7 +143,8 @@ bool ReadWorldDefinitions(const CampaignRootAccessV1 &access,
 
 bool ReadProvinceSlots(const CampaignRootAccessV1 &access,
                        std::uintptr_t module, std::int32_t province_id,
-                       std::int32_t &slot_count) noexcept {
+                       std::int32_t &slot_count,
+                       std::uintptr_t &province_pointer) noexcept {
   std::uintptr_t game_state = 0;
   std::uintptr_t game_data = 0;
   std::uintptr_t provinces = 0;
@@ -143,6 +152,7 @@ bool ReadProvinceSlots(const CampaignRootAccessV1 &access,
   std::int32_t province_count = 0;
   std::int32_t observed_id = -1;
   slot_count = 0;
+  province_pointer = 0;
   return Read(access, module, kGameStateSlotRva, game_state) &&
          game_state != 0 &&
          Read(access, game_state, kGameDataOffset, game_data) &&
@@ -160,7 +170,46 @@ bool ReadProvinceSlots(const CampaignRootAccessV1 &access,
          Read(access, province,
               kProvinceSlotsOffset + kProvinceSlotCountOffset,
               slot_count) &&
-         slot_count >= 0 && slot_count <= kMaxProvinceSlots;
+         slot_count >= 0 && slot_count <= kMaxProvinceSlots &&
+         (province_pointer = province) != 0;
+}
+
+bool ReadPlayedCharacterGold(const CampaignRootAccessV1 &access,
+                             std::uintptr_t module,
+                             std::int32_t played_character_id,
+                             std::int64_t &gold_raw) noexcept {
+  gold_raw = 0;
+  if (played_character_id <= 0) return false;
+  std::uintptr_t storage = 0;
+  std::uintptr_t fallback = 0;
+  std::uintptr_t data = 0;
+  std::uintptr_t character = 0;
+  std::uintptr_t extension = 0;
+  std::int32_t capacity = 0;
+  std::int32_t observed_id = -1;
+  if (!Read(access, module, kCharacterStorageSlotRva, storage) ||
+      !Read(access, module, kCharacterFallbackSlotRva, fallback) ||
+      storage == 0 || !Read(access, storage, kStorageDataOffset, data) ||
+      !Read(access, storage, kStorageCapacityOffset, capacity) ||
+      data == 0 || capacity <= 0 ||
+      capacity > kMaxCharacterStorageCapacity) {
+    return false;
+  }
+  const auto index = static_cast<std::uint32_t>(played_character_id) &
+                     0x00FFFFFFU;
+  if (index >= static_cast<std::uint32_t>(capacity) ||
+      !Read(access, data, static_cast<std::size_t>(index) * 0x10 + 8,
+            character) ||
+      character == 0 || character == fallback ||
+      !Read(access, character, kCharacterIdentityOffset, observed_id) ||
+      observed_id != played_character_id ||
+      !Read(access, character, kCharacterExtensionOffset, extension)) {
+    return false;
+  }
+  // The exact stock GetGold/war-finance source treats a missing extension
+  // as legitimate zero. A failed memory read is unavailable instead.
+  return extension == 0 ||
+         Read(access, extension, kCharacterGoldOffset, gold_raw);
 }
 
 PlayerWorldBuildingSourceResultV1 Failed(
@@ -248,11 +297,20 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
     if (access.final_legality != nullptr &&
         request.max_native_checks > 0 &&
         request.max_legal_samples > 0) {
+      if (access.native_cost != nullptr) {
+        if (!ReadPlayedCharacterGold(campaign, module_base,
+                                     before.played_character_id,
+                                     result.player_gold_raw)) {
+          return Failed(PlayerWorldBuildingFailureV1::player_gold_source);
+        }
+        result.player_gold_observed = true;
+      }
       bool stop = false;
       for (const auto &holding : sample_holding_order) {
         std::int32_t slot_count = 0;
+        std::uintptr_t province = 0;
         if (!ReadProvinceSlots(campaign, module_base, holding.province_id,
-                               slot_count)) {
+                               slot_count, province)) {
           return Failed(PlayerWorldBuildingFailureV1::province_slot_source);
         }
         for (const auto &[building_type_id, definition] : definitions) {
@@ -274,9 +332,25 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
             }
             ++result.final_legality_checks;
             if (allowed) {
-              result.legal_samples.push_back(
-                  {holding.barony_title_id, holding.province_id,
-                   building_type_id, slot});
+              PlayerWorldBuildingLegalSampleV1 sample{
+                  holding.barony_title_id, holding.province_id,
+                  building_type_id, slot};
+              if (access.native_cost != nullptr) {
+                if (!access.native_cost(
+                        access.native_cost_context,
+                        before.played_character_id, holding.province_id,
+                        province, building_type_id, definition, slot,
+                        sample.cost_raw_native)) {
+                  return Failed(PlayerWorldBuildingFailureV1::native_cost);
+                }
+                const auto &raw = sample.cost_raw_native;
+                sample.cost_raw_slots = {
+                    raw[0], raw[1], raw[2], raw[4],
+                    raw[5], raw[6], raw[8], raw[9]};
+                sample.native_cost_observed = true;
+                ++result.native_cost_checks;
+              }
+              result.legal_samples.push_back(sample);
             }
           }
           if (stop) break;
@@ -285,6 +359,8 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
       }
       result.native_final_legality_evaluated =
           result.final_legality_checks > 0;
+      result.native_cost_evaluated =
+          result.native_cost_checks > 0;
     }
     game::CampaignRootFrameV1 after{};
     if (!campaign.capture_frame(campaign.context, after) ||

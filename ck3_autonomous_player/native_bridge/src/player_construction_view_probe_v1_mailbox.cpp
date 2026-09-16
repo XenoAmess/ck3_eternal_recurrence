@@ -169,6 +169,10 @@ std::string_view WorldFailureKey(WorldFailure failure) noexcept {
       return "province_slot_source";
     case WorldFailure::native_final_legality:
       return "native_final_legality";
+    case WorldFailure::player_gold_source:
+      return "player_gold_source";
+    case WorldFailure::native_cost:
+      return "native_cost";
     case WorldFailure::frame_changed: return "frame_changed";
   }
   return "registry_source";
@@ -314,6 +318,9 @@ bool ExecutePlayerConstructionViewProbeMailboxV1(
               BindCurrentProcessPlayerWorldBuildingFinalLegalityV1(
                   native_call);
           world_access.final_legality_context = &native_call;
+          world_access.native_cost =
+              BindCurrentProcessPlayerWorldBuildingCostV1(native_call);
+          world_access.native_cost_context = &native_call;
           query->player_world_building_source_executed = true;
           query->player_world_building_sources =
               ReadPlayerWorldBuildingDefinitionSourcesV1(
@@ -460,6 +467,17 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
   json += ",\"native_final_legality_evaluated\":";
   json += world_available && world.native_final_legality_evaluated
               ? "true" : "false";
+  json += ",\"native_cost_evaluated\":";
+  json += world_available && world.native_cost_evaluated
+              ? "true" : "false";
+  json += ",\"native_cost_checks\":";
+  json += world_available ? std::to_string(world.native_cost_checks) : "null";
+  json += ",\"player_gold_raw\":";
+  json += world_available && world.player_gold_observed
+              ? std::to_string(world.player_gold_raw) : "null";
+  json += ",\"player_gold_scale\":";
+  json += world_available && world.player_gold_observed
+              ? "100000" : "null";
   json += ",\"checks_truncated\":";
   json += world_available && world.checks_truncated ? "true" : "false";
   json += ",\"cost_ready\":false,\"construction_action_ready\":false";
@@ -489,6 +507,32 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += std::to_string(sample.building_type_id);
       json += ",\"slot_index\":";
       json += std::to_string(sample.slot_index);
+      json += ",\"native_cost_observed\":";
+      json += sample.native_cost_observed ? "true" : "false";
+      json += ",\"cost_raw_slots\":";
+      if (sample.native_cost_observed) {
+        json += '[';
+        for (std::size_t cost_index = 0;
+             cost_index < sample.cost_raw_slots.size(); ++cost_index) {
+          if (cost_index != 0) json += ',';
+          json += std::to_string(sample.cost_raw_slots[cost_index]);
+        }
+        json += ']';
+      } else {
+        json += "null";
+      }
+      json += ",\"cost_raw_native\":";
+      if (sample.native_cost_observed) {
+        json += '[';
+        for (std::size_t cost_index = 0;
+             cost_index < sample.cost_raw_native.size(); ++cost_index) {
+          if (cost_index != 0) json += ',';
+          json += std::to_string(sample.cost_raw_native[cost_index]);
+        }
+        json += ']';
+      } else {
+        json += "null";
+      }
       json += '}';
     }
   }
