@@ -38,7 +38,8 @@ function bgraDds(
 }
 
 test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
-  test.setTimeout(180_000)
+  const completionTimeout = process.env.GITHUB_PAGES === 'true' ? 90_000 : 30_000
+  test.setTimeout(process.env.GITHUB_PAGES === 'true' ? 300_000 : 180_000)
   const apiRequests: string[] = []
   page.on('request', (request) => {
     if (new URL(request.url()).pathname.startsWith('/api/')) apiRequests.push(request.url())
@@ -118,7 +119,7 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   await expect(page.getByText(/target\.png/)).toBeVisible()
   await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0')
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图 · 选中 [2-6]\/6 层/)).toBeVisible({ timeout: 30_000 })
+  await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图 · 选中 [2-6]\/6 层/)).toBeVisible({ timeout: completionTimeout })
   await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100')
   await expect(page.locator('.fit-report')).toContainText('300×300 → 56 / 96 / 192 / 256px')
   await expect(page.getByText(/完成 · 选中 [2-6] 层（进度表示当前搜索阶段）/)).toBeVisible()
@@ -155,7 +156,8 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
 
 const localPack = resolve('public/asset-packs/ck3-1.19.0.6/manifest.json')
 test('runs against the locally generated exact-build asset pack', async ({ page }) => {
-  test.setTimeout(120_000)
+  const completionTimeout = process.env.GITHUB_PAGES === 'true' ? 180_000 : 90_000
+  test.setTimeout(process.env.GITHUB_PAGES === 'true' ? 300_000 : 120_000)
   test.skip(!existsSync(localPack), 'the exact-build static asset pack is missing from this checkout')
   const apiRequests: string[] = []
   page.on('request', (request) => {
@@ -179,7 +181,7 @@ test('runs against the locally generated exact-build asset pack', async ({ page 
     name: 'split-target.png', mimeType: 'image/png', buffer: Buffer.from(pngBase64, 'base64'),
   })
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 90_000 })
+  await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: completionTimeout })
   await expect(page.locator('.fit-report dl div').filter({ hasText: '预计算形状特征' }).locator('dd'))
     .toHaveText('1619 / 1619')
   await expect(page.locator('.output-block pre')).toContainText('pattern =')

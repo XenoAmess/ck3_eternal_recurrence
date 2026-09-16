@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { expect, test } from '@playwright/test'
+import { coatOfArmsDocumentStats } from '../src/domain/documentStats'
 import { parseCoatOfArms } from '../src/domain/parser'
 import { serializeCoatOfArms } from '../src/domain/serializer'
 
@@ -91,6 +92,50 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
         )
       }
 
+      const candidateCards = page.getByTestId('candidate-comparison').locator('.candidate-card')
+      const paretoCandidateCount = await candidateCards.count()
+      expect(paretoCandidateCount).toBeGreaterThanOrEqual(1)
+      expect(paretoCandidateCount).toBeLessThanOrEqual(3)
+      expect(evidence.paretoCandidates).toHaveLength(paretoCandidateCount)
+      const paretoCandidates = []
+      for (let index = 0; index < paretoCandidateCount; index += 1) {
+        const card = candidateCards.nth(index)
+        await card.getByRole('button', { name: '复制候选代码' }).click()
+        const candidateSource = await page.evaluate(() => (
+          (window as typeof window & { __coaClipboardPayload?: string }).__coaClipboardPayload ?? ''
+        ))
+        const candidateParsed = parseCoatOfArms(candidateSource)
+        const candidateErrors = candidateParsed.diagnostics.filter((item) => item.severity === 'error')
+        const candidateStats = coatOfArmsDocumentStats(candidateParsed.coatOfArms, candidateSource)
+        expect(candidateErrors).toEqual([])
+        expect(serializeCoatOfArms(candidateParsed.coatOfArms)).toBe(candidateSource)
+        expect(evidence.paretoCandidates[index].stats).toEqual(candidateStats)
+        const previewUrl = await card.locator('.candidate-shield-preview').getAttribute('src')
+        if (!previewUrl?.startsWith('data:image/png;base64,')) {
+          throw new Error(`missing Pareto candidate ${index + 1} preview`)
+        }
+        paretoCandidates.push({
+          index: index + 1,
+          source: candidateSource,
+          previewBytes: Buffer.from(previewUrl.slice('data:image/png;base64,'.length), 'base64'),
+          parseErrors: candidateErrors.length,
+          ...evidence.paretoCandidates[index],
+        })
+      }
+      for (const candidate of paretoCandidates) {
+        expect(paretoCandidates.some((other) => (
+          other !== candidate
+          && other.metrics.totalLoss <= candidate.metrics.totalLoss
+          && other.metrics.edgeLoss <= candidate.metrics.edgeLoss
+          && other.stats.drawnInstances <= candidate.stats.drawnInstances
+          && (
+            other.metrics.totalLoss < candidate.metrics.totalLoss
+            || other.metrics.edgeLoss < candidate.metrics.edgeLoss
+            || other.stats.drawnInstances < candidate.stats.drawnInstances
+          )
+        ))).toBe(false)
+      }
+
       const fitPreviewUrl = await page.getByTestId('fit-preview').getAttribute('src')
       const editorPreviewUrl = await page.getByTestId('editor-preview').getAttribute('src')
       expect(fitPreviewUrl).toBe(editorPreviewUrl)
@@ -132,6 +177,11 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       await mkdir(caseDirectory, { recursive: true })
       await writeFile(resolve(caseDirectory, 'coat_of_arms.txt'), source, 'utf8')
       await writeFile(resolve(caseDirectory, 'canonical-preview-230.png'), previewBytes)
+      for (const candidate of paretoCandidates) {
+        const suffix = String(candidate.index).padStart(2, '0')
+        await writeFile(resolve(caseDirectory, `pareto-candidate-${suffix}.txt`), candidate.source, 'utf8')
+        await writeFile(resolve(caseDirectory, `pareto-candidate-${suffix}.png`), candidate.previewBytes)
+      }
       await page.locator('.image-fit-panel').screenshot({ path: resolve(caseDirectory, 'input-and-fit-report.png') })
       await page.locator('.preview-pane').screenshot({ path: resolve(caseDirectory, 'editor-preview-panel.png') })
 
@@ -160,6 +210,19 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
           surfaceMaskApplied: evidence.provenance.surfaceMaskApplied,
         },
         metrics: evidence.metrics,
+        paretoCandidates: paretoCandidates.map((candidate) => ({
+          index: candidate.index,
+          sourceFile: `pareto-candidate-${String(candidate.index).padStart(2, '0')}.txt`,
+          previewFile: `pareto-candidate-${String(candidate.index).padStart(2, '0')}.png`,
+          sourceSha256: sha256(candidate.source),
+          previewSha256: sha256(candidate.previewBytes),
+          parseErrors: candidate.parseErrors,
+          metrics: candidate.metrics,
+          reconstructionMode: candidate.reconstructionMode,
+          textureNames: candidate.textureNames,
+          multiscaleMetrics: candidate.multiscaleMetrics,
+          stats: candidate.stats,
+        })),
         v5Budget1024Baseline: picture.v5Budget1024Baseline,
         provenance: evidence.provenance,
         counts: {

@@ -1630,7 +1630,6 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
                   surfaceMask: surfaceMask.value,
                 },
                 shaderNamedColors.value,
-                result.provenance.resolution,
               )
           return {
             id: `candidate-${++comparisonCandidateSequence}`,

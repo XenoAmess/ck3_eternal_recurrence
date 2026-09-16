@@ -30,6 +30,9 @@
   1,024 实例、总/边缘损失 `0.022678530903300246 / 0.03945563275337468`；复杂度优先项为
   989 实例、`0.028365430345243445 / 0.04705664835149984`。两项在
   总损失、边缘损失、实例数三维上互不支配。
+- 用户 `pictures.zip` 的 7 张原图已逐张以 1,024 预算复跑；每张都产生 3 个可独立复制、精确重解析且互不支配的候选，
+  共冻结 21 份完整代码与 21 张 230px 候选预览。7/7 当前候选、拟合预览和编辑器预览使用同一 canonical PNG 字节；
+  质量优先结果为 586–1,024 个实际实例、232,313–403,676 UTF-8 bytes，未对自然收敛结果补无贡献层。
 - 完整 Vitest：18 个文件、83 项通过。
 - 独立浏览器拟合 E2E：合成 asset pack 与 exact 1.19.0.6 pack 共 2 项通过；观察到 `/api/` 请求为 0。
 - TypeScript 与生产构建通过。
@@ -48,5 +51,6 @@ pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line
 
 本轮证明候选是实际完整模型、选择规则可复现、页面可渲染、复制和载入；没有把摘要数字冒充候选。hunter 证据见
 [`xenoamess-hunter-v8-pareto-candidates`](coat-of-arms-fit-artifacts/xenoamess-hunter-v8-pareto-candidates/README.md)。
-七图用户语料仍需在新候选合同下逐项重跑，记录每张图的 Pareto 项数、质量/复杂度坐标和纹理分布；完成前 WP3 继续保持
-`in_progress`。
+七图证据见
+[`user-picture-corpus-v14-pareto-budget-1024`](coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/README.md)。
+该浏览器证据不替代 CK3 原生 framebuffer：v14 的原生 Apply/Copy 与空间像素对照仍为待验，因此 WP3 继续保持 `in_progress`。
