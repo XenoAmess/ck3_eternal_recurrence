@@ -273,6 +273,58 @@ VFS_WINNER_DIAGNOSTIC_PAIRS = (
     ("shared-conflict", "load-order-1-reference", True),
     ("load-order-0-reference", "load-order-1-reference", False),
 )
+VFS_EXTENDED_CASES = (
+    {
+        "id": "base-conflict",
+        "source": (
+            'coa = { pattern = "pattern_checkers_06.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "base-original-reference",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_base_original.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "base-mod-reference",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_base_mod.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "archive-conflict",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_archive_shared.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "archive-directory-reference",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_archive_directory.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "archive-later-reference",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_archive_later.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+)
+VFS_EXTENDED_DIAGNOSTIC_PAIRS = (
+    ("base-conflict", "base-original-reference", False),
+    ("base-conflict", "base-mod-reference", True),
+    ("base-original-reference", "base-mod-reference", False),
+    ("archive-conflict", "archive-directory-reference", False),
+    ("archive-conflict", "archive-later-reference", True),
+    ("archive-directory-reference", "archive-later-reference", False),
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -391,6 +443,19 @@ def _parser() -> argparse.ArgumentParser:
         "--vfs-crop-dir",
         type=Path,
         help="write one hash-bound native crop per --vfs-winner-matrix case",
+    )
+    parser.add_argument(
+        "--vfs-extended-matrix",
+        action="store_true",
+        help=(
+            "apply the checked-in base/mod plus directory/archive CoA VFS "
+            "fixture and prove both conflicting DDS winners"
+        ),
+    )
+    parser.add_argument(
+        "--vfs-extended-crop-dir",
+        type=Path,
+        help="write one hash-bound native crop per --vfs-extended-matrix case",
     )
     parser.add_argument("--output", type=Path, required=True)
     return parser
@@ -2615,13 +2680,21 @@ async def _collect_parent_semantics_matrix(
 async def _collect_vfs_winner_matrix(
     client: Client,
     record: Any,
+    *,
+    extended: bool = False,
 ) -> dict[str, object]:
-    """Prove the checked-in two-mod DDS winner through native pixels."""
+    """Prove checked-in direct-DDS winners through native pixels."""
 
+    cases = VFS_EXTENDED_CASES if extended else VFS_WINNER_CASES
+    diagnostic_pairs = (
+        VFS_EXTENDED_DIAGNOSTIC_PAIRS
+        if extended
+        else VFS_WINNER_DIAGNOSTIC_PAIRS
+    )
     calibration = await _calibrate_picture_corpus_surface(client, record)
     results: list[dict[str, object]] = []
     capture_by_id: dict[str, dict[str, object]] = {}
-    for value in VFS_WINNER_CASES:
+    for value in cases:
         identifier = value["id"]
         source = value["source"]
         assert isinstance(identifier, str)
@@ -2679,7 +2752,12 @@ async def _collect_vfs_winner_matrix(
         result = {
             "id": identifier,
             "source": _source_receipt_from_text(
-                source, source_label=f"vfs-winner:{identifier}"
+                source,
+                source_label=(
+                    f"vfs-extended:{identifier}"
+                    if extended
+                    else f"vfs-winner:{identifier}"
+                ),
             ),
             "apply": applied,
             "native_copy": export_call,
@@ -2698,9 +2776,7 @@ async def _collect_vfs_winner_matrix(
             capture_by_id[identifier] = capture
 
     diagnostic_metrics = []
-    for first_id, second_id, expected_equivalent in (
-        VFS_WINNER_DIAGNOSTIC_PAIRS
-    ):
+    for first_id, second_id, expected_equivalent in diagnostic_pairs:
         if first_id not in capture_by_id or second_id not in capture_by_id:
             metrics = {"comparable": False, "reason": "capture missing"}
         else:
@@ -2721,14 +2797,25 @@ async def _collect_vfs_winner_matrix(
     gate_passed = bool(diagnostic_metrics) and all(
         pair.get("gate_passed") is True for pair in diagnostic_metrics
     )
-    return {
-        "schema": "ck3-coat-of-arms-vfs-winner-matrix-v1",
+    result = {
+        "schema": (
+            "ck3-coat-of-arms-vfs-extended-matrix-v1"
+            if extended
+            else "ck3-coat-of-arms-vfs-winner-matrix-v1"
+        ),
         "case_count": len(results),
         "predeclared_hypothesis": (
-            "enabled_mods load_order 1 owns a conflicting direct DDS path "
-            "over load_order 0"
+            (
+                "an enabled directory mod owns a conflicting base-game DDS path; "
+                "a later enabled archive mod owns a conflicting DDS path over an "
+                "earlier directory mod"
+            )
+            if extended
+            else (
+                "enabled_mods load_order 1 owns a conflicting direct DDS path "
+                "over load_order 0"
+            )
         ),
-        "inferred_winner_load_order": 1 if gate_passed else None,
         "framebuffer_calibration": calibration,
         "capture_noise_thresholds": dict(
             PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS
@@ -2740,6 +2827,18 @@ async def _collect_vfs_winner_matrix(
         and all(result["ok"] is True for result in results)
         and gate_passed,
     }
+    if extended:
+        result["inferred_winners"] = (
+            {
+                "base_vs_mod": "enabled-directory-mod",
+                "directory_vs_archive": "later-enabled-archive-mod",
+            }
+            if gate_passed
+            else None
+        )
+    else:
+        result["inferred_winner_load_order"] = 1 if gate_passed else None
+    return result
 
 
 def _summarize_pattern_grid(inspection: object) -> dict[str, object]:
@@ -2881,6 +2980,7 @@ async def _mcp_sequence(
     picture_corpus: list[dict[str, object]] | None = None,
     parent_semantics_matrix: bool = False,
     vfs_winner_matrix: bool = False,
+    vfs_extended_matrix: bool = False,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
@@ -3611,6 +3711,20 @@ async def _mcp_sequence(
             checks["vfs_winner_evidence_complete"] = (
                 vfs_winner_result.get("ok") is True
             )
+        vfs_extended_result: dict[str, object] | None = None
+        if vfs_extended_matrix:
+            if all(checks.values()):
+                vfs_extended_result = await _collect_vfs_winner_matrix(
+                    client, record, extended=True
+                )
+            else:
+                vfs_extended_result = {
+                    "ok": False,
+                    "error": "route checks failed before extended VFS matrix",
+                }
+            checks["vfs_extended_evidence_complete"] = (
+                vfs_extended_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -3632,6 +3746,7 @@ async def _mcp_sequence(
             "picture_corpus": corpus_result,
             "parent_semantics_matrix": parent_semantics_result,
             "vfs_winner_matrix": vfs_winner_result,
+            "vfs_extended_matrix": vfs_extended_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -3822,6 +3937,17 @@ def _write_vfs_winner_crops(
     )
 
 
+def _write_vfs_extended_crops(
+    path: Path, sequence: dict[str, object]
+) -> list[dict[str, object]]:
+    return _write_reference_free_matrix_crops(
+        path,
+        sequence,
+        matrix_key="vfs_extended_matrix",
+        label="extended VFS",
+    )
+
+
 def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     started = time.monotonic()
     repository = Path(__file__).resolve().parents[3]
@@ -3856,6 +3982,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     parent_crop_dir = getattr(args, "parent_crop_dir", None)
     vfs_winner_matrix = bool(getattr(args, "vfs_winner_matrix", False))
     vfs_crop_dir = getattr(args, "vfs_crop_dir", None)
+    vfs_extended_matrix = bool(getattr(args, "vfs_extended_matrix", False))
+    vfs_extended_crop_dir = getattr(args, "vfs_extended_crop_dir", None)
     if picture_corpus is not None and (
         getattr(args, "large_source", None) is not None
         or reference_preview is not None
@@ -3878,6 +4006,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         )
     if vfs_crop_dir is not None and not vfs_winner_matrix:
         raise ValueError("--vfs-crop-dir requires --vfs-winner-matrix")
+    if vfs_extended_crop_dir is not None and not vfs_extended_matrix:
+        raise ValueError(
+            "--vfs-extended-crop-dir requires --vfs-extended-matrix"
+        )
     if parent_semantics_matrix and (
         syntax_matrix is not None
         or custom_mode_census
@@ -3886,6 +4018,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or reference_preview is not None
         or picture_corpus is not None
         or vfs_winner_matrix
+        or vfs_extended_matrix
     ):
         raise ValueError(
             "--parent-semantics-matrix cannot be combined with other CoA matrices"
@@ -3898,9 +4031,23 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or reference_preview is not None
         or picture_corpus is not None
         or parent_semantics_matrix
+        or vfs_extended_matrix
     ):
         raise ValueError(
             "--vfs-winner-matrix cannot be combined with other CoA matrices"
+        )
+    if vfs_extended_matrix and (
+        syntax_matrix is not None
+        or custom_mode_census
+        or commit_roundtrip
+        or getattr(args, "large_source", None) is not None
+        or reference_preview is not None
+        or picture_corpus is not None
+        or parent_semantics_matrix
+        or vfs_winner_matrix
+    ):
+        raise ValueError(
+            "--vfs-extended-matrix cannot be combined with other CoA matrices"
         )
     if bookmarks_model_private and not bookmarks_read_only:
         raise ValueError("--bookmarks-model-private requires --bookmarks-read-only")
@@ -3920,6 +4067,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or picture_corpus is not None
         or parent_semantics_matrix
         or vfs_winner_matrix
+        or vfs_extended_matrix
     ):
         raise ValueError("--bookmarks-read-only cannot run CoA actions")
     large_source = (
@@ -4017,6 +4165,33 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             if vfs_winner_matrix
             else None
         ),
+        "vfs_extended_matrix_requested": vfs_extended_matrix,
+        "vfs_extended_plan": (
+            {
+                "predeclared_hypotheses": [
+                    "enabled directory mod owns the conflicting base-game direct DDS path",
+                    "later enabled archive mod owns the conflicting direct DDS path over the earlier directory mod",
+                ],
+                "cases": [
+                    {
+                        "id": value["id"],
+                        "source": _source_receipt_from_text(
+                            value["source"],
+                            source_label=f"vfs-extended:{value['id']}",
+                        ),
+                    }
+                    for value in VFS_EXTENDED_CASES
+                ],
+                "diagnostic_pairs": [
+                    list(value) for value in VFS_EXTENDED_DIAGNOSTIC_PAIRS
+                ],
+                "capture_noise_thresholds": dict(
+                    PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS
+                ),
+            }
+            if vfs_extended_matrix
+            else None
+        ),
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -4087,6 +4262,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 picture_corpus=picture_corpus,
                 parent_semantics_matrix=parent_semantics_matrix,
                 vfs_winner_matrix=vfs_winner_matrix,
+                vfs_extended_matrix=vfs_extended_matrix,
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,
@@ -4148,6 +4324,22 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                     "error": str(error),
                 }
                 matrix_result = sequence.get("vfs_winner_matrix")
+                if (
+                    isinstance(matrix_result, dict)
+                    and matrix_result.get("cases")
+                ):
+                    raise
+        if vfs_extended_crop_dir is not None:
+            try:
+                report["vfs_extended_native_crops"] = _write_vfs_extended_crops(
+                    vfs_extended_crop_dir, sequence
+                )
+            except RuntimeError as error:
+                report["vfs_extended_native_crops"] = {
+                    "status": "unavailable",
+                    "error": str(error),
+                }
+                matrix_result = sequence.get("vfs_extended_matrix")
                 if (
                     isinstance(matrix_result, dict)
                     and matrix_result.get("cases")
