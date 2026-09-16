@@ -1,12 +1,13 @@
 {
   "contract": "player_lifestyle_current_state_only_v1",
   "work_package": "G2-M4-LIFE-STATE-READONLY-B0",
-  "status": "static-ready; private route not yet connected; no paused live evidence",
+  "dispatch_work_package": "G2-M4-LIFE-STATE-PRIVATE-DISPATCH-B0",
+  "status": "static-ready; private route connected in source candidate under default-OFF flag; no paused live evidence",
   "ck3_exact_build": "1.19.0.6",
   "ck3_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "source": "existing LIFE2 ReadPlayerLifestyleSnapshotV1 via player_lifestyle_formal_wire_v1 slot43; current state is read from the played Character storage, independent of LIFE4 window-bound final candidate collections",
   "private_step": "private-query-player-lifestyle-current-state-v1",
-  "enabled_by": "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1 (default OFF); bridge.cpp private dispatch not yet connected",
+  "enabled_by": "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1 (default OFF); bridge.cpp private dispatch connected only when this flag is ON",
   "request_binding": [
     "expected_snapshot_id",
     "expected_revision",
@@ -24,5 +25,5 @@
   "failure": "native_lifestyle_current_state_unavailable; never promote unknown candidate collections to known_empty or legal",
   "public_registration": false,
   "capability_advertised": false,
-  "next_gate": "bridge.cpp private step dispatch by sole bridge writer, then one real paused native state readback and formal next-turn consumption before promotion"
+  "next_gate": "one real paused native state readback and formal next-turn consumption, without promoting LIFE4 final candidate legality, before any public registration or advertising"
 }

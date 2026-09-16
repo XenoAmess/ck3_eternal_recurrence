@@ -4830,6 +4830,13 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
   AppendJsonString(result, step);
   result += ",\"private_build\":true,\"advertised\":false,";
   if (context.mode == xar::ck3_11906::
+                          PlayerLifestyleFormalWireModeV1::query_state_only) {
+    result += "\"status\":\"available\",\"episode_run_id\":";
+    AppendJsonString(result, context.episode_run_id);
+    result += ",\"snapshot\":";
+    result += xar::ck3_11906::SerializePlayerLifestyleSnapshotV1(
+        *context.snapshot);
+  } else if (context.mode == xar::ck3_11906::
                           PlayerLifestyleFormalWireModeV1::query) {
     result += "\"status\":\"available\",\"episode_run_id\":";
     AppendJsonString(result, context.episode_run_id);
@@ -4917,7 +4924,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
           payload, "expected_snapshot_id", expected_snapshot_id, 48) ||
       !xar::bridge::JsonStringField(
           payload,
-          step == kPlayerLifestyleFormalPrivateQueryStepV1
+          step == kPlayerLifestyleFormalPrivateQueryStepV1 ||
+                  step == kPlayerLifestyleFormalPrivateCurrentStateStepV1
               ? "episode_run_id"
               : "expected_episode_run_id",
           episode_run_id, 64) ||
@@ -5001,9 +5009,11 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
   const auto mode =
       step == kPlayerLifestyleFormalPrivateQueryStepV1
           ? PlayerLifestyleFormalWireModeV1::query
-          : step == kPlayerLifestyleFormalPrivateSubmitStepV1
-                ? PlayerLifestyleFormalWireModeV1::submit_perk
-                : PlayerLifestyleFormalWireModeV1::verify_receipt;
+          : step == kPlayerLifestyleFormalPrivateCurrentStateStepV1
+                ? PlayerLifestyleFormalWireModeV1::query_state_only
+                : step == kPlayerLifestyleFormalPrivateSubmitStepV1
+                      ? PlayerLifestyleFormalWireModeV1::submit_perk
+                      : PlayerLifestyleFormalWireModeV1::verify_receipt;
   if (!InitializePlayerLifestyleFormalWireContextV1(
           *context, BindCurrentProcess(true), current, revision,
           episode_run_id, mode)) {
@@ -8163,6 +8173,8 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateQueryStepV1
                    && step != xar::ck3_11906::
+                                  kPlayerLifestyleFormalPrivateCurrentStateStepV1
+                   && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateSubmitStepV1
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateReceiptStepV1
@@ -8220,6 +8232,8 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
           if (step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateQueryStepV1 ||
+              step == xar::ck3_11906::
+                          kPlayerLifestyleFormalPrivateCurrentStateStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateSubmitStepV1 ||
               step == xar::ck3_11906::
