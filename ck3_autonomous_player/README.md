@@ -429,7 +429,7 @@ pipe/DLL 和 `-loadsave=xar_checkpoint` 重启。若旧进程的 CK3 窗口已�
 `native-auto-run` 与 development-only 的 `opening-step --step auto-run` 不是别名：前者全程只使用 native-headless bridge，
 不导入 OCR、视觉或桌面输入，并且只有真实语义推进才能让一次运行得到 `outcome=qualified`。
 运行中的 `native-auto-run` 会在 stderr 打印本次状态目录里的 `Operator stop request file` 绝对路径。
-在另一个 PowerShell 窗口执行 `Set-Content -LiteralPath '<打印的绝对路径>' -Value stop` 即可请求可控停止。
+在另一个 Python 进程执行 `python tools/g2_preview_operator.py request-stop --manifest <operator-manifest.json>` 即可请求可控停止。
 首次 Ctrl+C 也保留为能送达 SIGINT 的本地控制台操作。当前 typed turn 与独立后置校验完成后，它在安全的 paused 边界写入
 `xar_checkpoint.ck3`，然后回收受管 CK3。报告将这次操作记为
 `status=operator_stop_checkpointed / outcome=operator_stopped / ok=false`；正常落盘且清理 GREEN 时 CLI 退出码为 0，

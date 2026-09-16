@@ -51,7 +51,7 @@ pnpm verify:production-boundary
 set COA_E2E_USE_PREVIEW=true&& pnpm exec playwright test e2e/production-no-backend.spec.ts --reporter=line
 ```
 
-本报告中的 `set` 是 Windows `cmd.exe` 语法；项目没有使用 PowerShell。
+本报告中的 `set` 是 Windows `cmd.exe` 语法。
 
 ## 证据边界
 

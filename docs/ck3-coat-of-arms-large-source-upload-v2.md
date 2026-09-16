@@ -114,4 +114,4 @@ py ck3_autonomous_player\native_bridge\tools\build_fresh.py --build-dir C:\xb\co
 tools\.venv\Scripts\python.exe ck3_autonomous_player\native_bridge\research\run_frontend_gui_route_v1_live_acceptance.py --source-profile C:\Users\1\DOCUME~1\PARADO~1\CRUSAD~1 --state-dir D:\ck3_coa_hunter_v4_mcp_live_20260915_r03 --game-dir C:\SteamLibrary\steamapps\common\CRUSAD~1 --bridge-pipe \\.\pipe\xar-coa-hunter-v4-live12 --bridge-dll C:\xb\coa-wp1-v2-final\xar_ck3_bridge.dll --bridge-injector C:\xb\coa-wp1-v2-final\xar_ck3_bridge_injector.exe --timeout 600 --large-source docs\coat-of-arms-fit-artifacts\xenoamess-hunter-v4\coat_of_arms.txt --output artifacts\coa-clipboard-probe-2026-09-08\mcp-hunter-v4-large-source-live12.json
 ```
 
-以上是 `cmd.exe` 命令，不依赖或调用 PowerShell。
+以上命令由 `cmd.exe` 执行。
