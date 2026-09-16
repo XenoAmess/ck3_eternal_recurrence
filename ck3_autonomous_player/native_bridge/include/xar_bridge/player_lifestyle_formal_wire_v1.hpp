@@ -64,6 +64,20 @@ inline bool PlayerLifestyleAckProvesNoNativeSubmitV1(
   return false;
 }
 
+inline std::string PlayerLifestyleFormalStateFailureV1(
+    game::PlayerLifestyleSnapshotFailureV1 failure) {
+  std::string result{"native_lifestyle_current_state_"};
+  result += PlayerLifestyleSnapshotFailureKeyV1(failure);
+  return result;
+}
+
+inline std::string PlayerLifestyleFormalFinalCandidatesFailureV1(
+    game::PlayerLifestyleWindowCandidatesFailureV1 failure) {
+  std::string result{"native_lifestyle_final_candidates_"};
+  result += PlayerLifestyleWindowCandidatesFailureKeyV1(failure);
+  return result;
+}
+
 // One controlled candidate transaction. The bridge worker owns this object
 // until the fixed application-main mailbox ticket is terminal and reclaimed.
 // No public GameAdapter step or capability advertisement is installed.

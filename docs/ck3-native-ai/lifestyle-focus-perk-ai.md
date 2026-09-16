@@ -713,3 +713,36 @@ The narrow repair accepts canonical `native:<positive uint64>` only when the
 number equals `expected_native_revision`, retaining the prior fixture grammar
 and rejecting all other colon forms. Public registration and advertising stay
 OFF; a new frozen private candidate and paused requery are still required.
+
+### R757 LIFE2 live state and LIFE4 formal-query gate (2026-09-16)
+
+R757 proved the current-state half on the frozen exact build: the private
+state-only step read actor `29829` at date raw `53178312`, snapshot `native:3`,
+with `martial_authority_focus`, `martial_lifestyle`, one unspent point,
+thirteen used points, and seventeen owned perks. It performed zero gameplay
+actions and reclaimed CK3. The report is
+`C:/ck3_mod_rewrite_process_assets/g2-m4-life2-r757-canonical-id-candidate-final86b2-20260916/candidate/live-R757/report.json`
+(SHA-256 `794EDBE59ADDE6F38849D07140D8B248F1ADEE2F117AF8E7071A1FD55E7D88EB`).
+Because R757 deliberately called only the LIFE2 state step, its
+`lifestyle_window_unavailable` candidate fields do not establish whether the
+LIFE4 owner is bound.
+
+The next formal-query attempt had a deterministic pre-owner blocker in source.
+The formal wire passes the same production snapshot identity
+`native:<revision>` to LIFE2 and LIFE4. LIFE2 admitted that canonical form
+after the R755 repair, but LIFE4 still rejected every colon before frame
+capture, so a real formal query could never reach the exact window owner path.
+LIFE4 now accepts only `native:<positive uint64>` whose number equals
+`expected_native_revision`, keeps the previous colon-free fixture grammar,
+and rejects zero, leading zero, extra separators, overflow, foreign prefixes,
+and revision mismatch before any native read.
+
+Formal query failures are now stage-specific:
+`native_lifestyle_current_state_<reason>` for LIFE2 and
+`native_lifestyle_final_candidates_<reason>` for LIFE4. The next bounded
+private paused query therefore either returns the exact final legal candidate
+set or names the first real LIFE4 failure such as `owner_path_unavailable`,
+`lifestyle_window_unbound_or_stale`, `invalid_container`, or
+`materialization_unavailable`. This patch does not open, bind, refresh, or
+close the stock window. Public registration and advertising remain OFF, and
+the owner route remains `static-ready` until that private formal query is run.

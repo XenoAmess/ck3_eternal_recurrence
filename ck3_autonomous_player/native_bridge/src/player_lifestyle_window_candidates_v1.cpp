@@ -29,11 +29,36 @@ bool AssignFixed(std::string_view value,
   return true;
 }
 
+bool ParseCanonicalNativeSnapshotId(std::string_view value,
+                                    std::uint64_t &revision) noexcept {
+  constexpr std::string_view prefix = "native:";
+  if (!value.starts_with(prefix)) return false;
+
+  const auto digits = value.substr(prefix.size());
+  if (digits.empty() || digits.front() < '1' || digits.front() > '9') {
+    return false;
+  }
+  std::uint64_t parsed = 0;
+  for (const char character : digits) {
+    if (character < '0' || character > '9') return false;
+    const auto digit = static_cast<std::uint64_t>(character - '0');
+    if (parsed > (std::numeric_limits<std::uint64_t>::max() - digit) / 10) {
+      return false;
+    }
+    parsed = parsed * 10 + digit;
+  }
+  revision = parsed;
+  return true;
+}
+
 bool ValidSnapshotId(std::string_view value) noexcept {
   if (value.empty() ||
       value.size() >= game::kPlayerLifestyleWindowSnapshotIdCapacityV1) {
     return false;
   }
+  std::uint64_t native_revision = 0;
+  if (ParseCanonicalNativeSnapshotId(value, native_revision)) return true;
+
   for (const char character : value) {
     if (!((character >= 'a' && character <= 'z') ||
           (character >= 'A' && character <= 'Z') ||
@@ -78,10 +103,18 @@ bool StableKeyLess(
 
 bool ValidRequest(
     const PlayerLifestyleWindowCandidatesRequestV1 &request) noexcept {
-  return ValidSnapshotId(request.expected_snapshot_id) &&
-      request.expected_public_revision != 0 &&
-      request.expected_native_revision != 0 &&
-      request.expected_player_character_id != 0xFFFFFFFFU;
+  if (!ValidSnapshotId(request.expected_snapshot_id) ||
+      request.expected_public_revision == 0 ||
+      request.expected_native_revision == 0 ||
+      request.expected_player_character_id == 0xFFFFFFFFU) {
+    return false;
+  }
+  if (!request.expected_snapshot_id.starts_with("native:")) return true;
+
+  std::uint64_t snapshot_revision = 0;
+  return ParseCanonicalNativeSnapshotId(request.expected_snapshot_id,
+                                        snapshot_revision) &&
+      snapshot_revision == request.expected_native_revision;
 }
 
 Failure ValidateInitialFrame(

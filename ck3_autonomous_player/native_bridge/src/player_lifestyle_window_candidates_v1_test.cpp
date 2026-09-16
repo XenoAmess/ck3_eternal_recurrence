@@ -11,6 +11,7 @@
 #include <iostream>
 #include <memory>
 #include <string_view>
+#include <utility>
 
 namespace {
 
@@ -239,6 +240,44 @@ void TestAvailableStableCandidates() {
          fixture->observed_player == kPlayer);
 }
 
+void TestCanonicalNativeSnapshotIds() {
+  auto valid = Base();
+  Fixed(valid->before.snapshot_id, "native:3");
+  valid->before.public_revision = 3;
+  valid->before.native_revision = 3;
+  valid->after = valid->before;
+  const ck3::PlayerLifestyleWindowCandidatesRequestV1 valid_request = {
+      "native:3", 3, 3, valid->before.date_raw,
+      valid->before.played_character_id};
+  game::PlayerLifestyleWindowCandidatesV1 output{};
+  assert(ck3::ReadPlayerLifestyleWindowCandidatesV1(
+             Environment(), Access(*valid), valid_request, output) ==
+         game::ReadPlayerLifestyleWindowCandidatesResultV1::available);
+  assert(valid->frame_calls == 2 && valid->source_calls == 2);
+
+  constexpr std::array<std::pair<std::string_view, std::uint64_t>, 8>
+      invalid_requests = {{{"native:", 3},
+                           {"native:0", 3},
+                           {"native:03", 3},
+                           {"native:-3", 3},
+                           {"native:3:4", 3},
+                           {"other:3", 3},
+                           {"native:18446744073709551616", 3},
+                           {"native:4", 3}}};
+  for (const auto &[snapshot_id, native_revision] : invalid_requests) {
+    auto invalid = Base();
+    const ck3::PlayerLifestyleWindowCandidatesRequestV1 request = {
+        snapshot_id, 3, native_revision, invalid->before.date_raw,
+        invalid->before.played_character_id};
+    assert(ck3::ReadPlayerLifestyleWindowCandidatesV1(
+               Environment(), Access(*invalid), request, output) ==
+           game::ReadPlayerLifestyleWindowCandidatesResultV1::unavailable);
+    assert(output.unavailable_reason ==
+           game::PlayerLifestyleWindowCandidatesFailureV1::invalid_request);
+    assert(invalid->frame_calls == 0 && invalid->source_calls == 0);
+  }
+}
+
 void TestKnownEmptyIsAvailable() {
   auto fixture = Base();
   for (auto *sample : {&fixture->first, &fixture->second}) {
@@ -393,11 +432,12 @@ void TestAdmissionAndFailureVocabulary() {
 
 int main() {
   TestAvailableStableCandidates();
+  TestCanonicalNativeSnapshotIds();
   TestKnownEmptyIsAvailable();
   TestTypedUnboundAndOwnerFailures();
   TestContainerMaterializationAndCandidateFailures();
   TestBothFreshAcquisitionsAndDrift();
   TestAdmissionAndFailureVocabulary();
-  std::cout << "player_lifestyle_window_candidates_v1_test: 6/6 GREEN\n";
+  std::cout << "player_lifestyle_window_candidates_v1_test: 7/7 GREEN\n";
   return 0;
 }

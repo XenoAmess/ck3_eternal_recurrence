@@ -88,6 +88,17 @@ int main() {
     Require(action_pump > query_pump);
     Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(711, query_pump) ==
             ck3::PlayerLifestyleFormalFrameProofEpochV1(711, action_pump));
+    Require(ck3::PlayerLifestyleFormalStateFailureV1(
+                game::PlayerLifestyleSnapshotFailureV1::invalid_request) ==
+            "native_lifestyle_current_state_invalid_request");
+    Require(ck3::PlayerLifestyleFormalFinalCandidatesFailureV1(
+                game::PlayerLifestyleWindowCandidatesFailureV1::
+                    invalid_request) ==
+            "native_lifestyle_final_candidates_invalid_request");
+    Require(ck3::PlayerLifestyleFormalFinalCandidatesFailureV1(
+                game::PlayerLifestyleWindowCandidatesFailureV1::
+                    owner_path_unavailable) ==
+            "native_lifestyle_final_candidates_owner_path_unavailable");
     Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(711, action_pump) ==
             711);
     game::PlayerLifestyleSelectionActionAckV1 safe_reject{};

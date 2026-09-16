@@ -268,8 +268,7 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
     access.submit_native = &SubmitPerk;
     if (context->mode == PlayerLifestyleFormalWireModeV1::query_state_only) {
       if (!ReadState(*context)) {
-        context->failure = "native_lifestyle_current_state_";
-        context->failure += PlayerLifestyleSnapshotFailureKeyV1(
+        context->failure = PlayerLifestyleFormalStateFailureV1(
             context->snapshot->unavailable_reason);
         return true;
       }
@@ -282,8 +281,14 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
       return true;
     }
     if (context->mode == PlayerLifestyleFormalWireModeV1::query) {
-      if (!ReadState(*context) || !ReadCandidates(*context)) {
-        context->failure = "native_lifestyle_state_or_final_candidates_unavailable";
+      if (!ReadState(*context)) {
+        context->failure = PlayerLifestyleFormalStateFailureV1(
+            context->snapshot->unavailable_reason);
+        return true;
+      }
+      if (!ReadCandidates(*context)) {
+        context->failure = PlayerLifestyleFormalFinalCandidatesFailureV1(
+            context->candidates->unavailable_reason);
         return true;
       }
       context->precondition_result = BuildPlayerLifestyleFormalPreconditionV1(

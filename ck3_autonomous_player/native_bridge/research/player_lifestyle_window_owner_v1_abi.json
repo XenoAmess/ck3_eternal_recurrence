@@ -6,7 +6,7 @@
   "read_only": true,
   "live_validated": false,
   "game_process_started": false,
-  "status": "static-confirmed owner and final-gate seam; private observer not implemented",
+  "status": "static-ready private owner/final-gate observer; live binding awaiting",
   "exact_build": {
     "executable": {
       "path": "binaries/ck3.exe",
@@ -262,6 +262,25 @@
     "diagnostic_only": "window+0x78 reports stock widget attachment; the getters and final evaluators do not dereference it, so null is not by itself a passive-observer rejection",
     "failure": "return lifestyle_window_unbound_or_stale when +0xF8 is not the current full CharacterID; return a distinct invalid-container/materialization reason when a span fails validation; an empty, fully scanned stable candidate list is known-empty",
     "call_boundary": "GetFocuses/GetPerkTrees merely expose embedded models. Call CanSelectFocus/CanSelectPerk only with provenance-checked candidates. IgnoreCost is explanatory frontier state and never authorizes an action."
+  },
+  "r757_formal_query_gate": {
+    "life2_live_report": "C:/ck3_mod_rewrite_process_assets/g2-m4-life2-r757-canonical-id-candidate-final86b2-20260916/candidate/live-R757/report.json",
+    "life2_live_report_sha256": "794EDBE59ADDE6F38849D07140D8B248F1ADEE2F117AF8E7071A1FD55E7D88EB",
+    "observed": {
+      "snapshot_id": "native:3",
+      "player_character_id": 29829,
+      "current_focus": "martial_authority_focus",
+      "current_lifestyle": "martial_lifestyle",
+      "unspent_perk_points": 1,
+      "used_perk_points": 13,
+      "owned_perk_count": 17
+    },
+    "life4_in_r757": "not queried by the state-only step; no live window-binding conclusion",
+    "deterministic_blocker": "formal wire supplied native:<revision>, while the LIFE4 request validator rejected every colon before frame capture",
+    "repair": "accept only canonical native:<positive uint64> bound to expected_native_revision; retain colon-free fixture IDs; expose LIFE2 and LIFE4 typed failure stages separately",
+    "next_live_step": "one zero-action private formal query; publish candidates when available or preserve the first typed owner/binding/container/materialization/evaluator failure",
+    "public_registration": false,
+    "advertised": false
   },
   "resolved": [
     "portable exact-build root -> CIngameInterfaceHandler -> registered window owner path and owner round-trip",
