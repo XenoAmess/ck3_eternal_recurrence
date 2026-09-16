@@ -1,7 +1,7 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T22:12:00+08:00",
-  "overallStatus": "in_progress",
+  "updatedAt": "2026-09-16T22:54:00+08:00",
+  "overallStatus": "passed",
   "workPackages": [
     {
       "id": "WP0",
@@ -438,8 +438,8 @@
     },
     {
       "id": "WP6",
-      "status": "in_progress",
-      "commit": "e7100297",
+      "status": "passed",
+      "commit": "a11759b1",
       "commands": [
         "pnpm exec playwright test e2e/safe-svg-input.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/textured-emblem-preview.spec.ts --reporter=line",
@@ -475,9 +475,13 @@
         "python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6",
         "tools\\.venv\\Scripts\\python.exe -m pytest ck3_autonomous_player\\tests\\unit\\test_frontend_gui_route_v1_live_acceptance.py -q",
         "set PYTHONPATH=ck3_autonomous_player\\src&& tools\\.venv\\Scripts\\python.exe ck3_autonomous_player\\native_bridge\\research\\run_frontend_gui_route_v1_live_acceptance.py --source-profile D:\\ck3_coa_textured_emblem_native_r34\\profile --state-dir D:\\ck3_coa_textured_emblem_native_r35 --game-dir C:\\SteamLibrary\\steamapps\\common\\CRUSAD~1 --bridge-pipe \\\\.\\pipe\\xar_ck3_coa_textured_emblem_r35 --bridge-dll C:\\xb\\coa-vfs-r27\\xar_ck3_bridge.dll --bridge-injector C:\\xb\\coa-vfs-r27\\xar_ck3_bridge_injector.exe --timeout 600 --single-reference-case docs\\coat-of-arms-fit-artifacts\\textured-emblem-browser-r31 --picture-crop-dir D:\\ck3_coa_textured_emblem_native_r35_crops --output D:\\ck3_coa_textured_emblem_native_r35_report.json",
-        "tools\\.venv\\Scripts\\python.exe coat_of_arms_editer_of_ck3\\tools\\summarize_native_picture_corpus.py docs\\coat-of-arms-fit-artifacts\\textured-emblem-native-r35\\report.json docs\\coat-of-arms-fit-artifacts\\textured-emblem-native-r35\\summary.json"
+        "tools\\.venv\\Scripts\\python.exe coat_of_arms_editer_of_ck3\\tools\\summarize_native_picture_corpus.py docs\\coat-of-arms-fit-artifacts\\textured-emblem-native-r35\\report.json docs\\coat-of-arms-fit-artifacts\\textured-emblem-native-r35\\summary.json",
+        "set PYTHONPATH=ck3_autonomous_player\\src&& tools\\.venv\\Scripts\\python.exe -m pytest ck3_autonomous_player\\tests\\unit\\test_coat_of_arms_source_inventory_mcp_acceptance.py ck3_autonomous_player\\tests\\unit\\test_coat_of_arms_dlc_sources_v1.py -q",
+        "set PYTHONPATH=ck3_autonomous_player\\src&& tools\\.venv\\Scripts\\python.exe ck3_autonomous_player\\native_bridge\\research\\run_coat_of_arms_source_inventory_mcp.py --game-directory C:\\SteamLibrary\\steamapps\\common\\CRUSAD~1 --output D:\\ck3_coa_source_inventory_r36.json",
+        "pnpm test && pnpm build && pnpm verify:production-boundary",
+        "pnpm exec playwright test e2e/i18n.spec.ts --reporter=line"
       ],
-      "resultPath": "docs/coat-of-arms-safe-svg-input.md",
+      "resultPath": "docs/ck3-coat-of-arms-editor-capability-matrix.md",
       "keyMetrics": {
         "safeSvgRasterization": "passed",
         "maximumSvgBytes": 2097152,
@@ -486,8 +490,8 @@
         "maximumSvgDepth": 64,
         "externalResourceRequests": 0,
         "nonGetRequests": 0,
-        "vitestFilesPassed": 16,
-        "vitestTestsPassed": 83,
+        "vitestFilesPassed": 19,
+        "vitestTestsPassed": 88,
         "parentComposition": "native_clipboard_path_does_not_materialize_parent_browser_preserves_reference_and_explicit_children_only",
         "texturedEmblemComposition": "passed_browser_shader_model_and_calibrated_native_pixel_r35",
         "texturedEmblemExpectedCenterRgba": [32, 192, 95, 255],
@@ -505,10 +509,13 @@
         "simplifiedChineseEnglishUi": "passed",
         "localePersistence": "local_storage_passed",
         "pageVersionDisplay": "iso_timestamp_plus_8_digit_git_hash_passed",
-        "pageVersionPublicReadback": "passed_6eade3ab_plus_iso_timestamp_from_canonical_nested_pages_url",
+        "pageVersionPublicReadback": "passed_a11759b1_plus_iso_timestamp_from_canonical_nested_pages_url",
         "pagesMountPath": "/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/",
-        "pagesOfficialDeployment": "passed_run_35000503958_head_a35b0edd",
-        "pagesLatestDeploymentAttempt": "passed_run_35076612146_head_6eade3ab",
+        "pagesOfficialDeployment": "passed_run_35108632148_head_a11759b1",
+        "pagesLatestDeploymentAttempt": "passed_run_35108632148_head_a11759b1",
+        "pagesLatestBuildJob": "passed_25m17s_all_browser_webgl_offline_and_nested_artifact_gates",
+        "pagesLatestDeployJob": "passed_46s",
+        "pagesLatestPublicReadback": "passed_playwright_1_of_1_9_3s_expected_hash_a11759b1",
         "pagesHostedFunctionalWaitFixCommit": "3bf4b42a",
         "pagesCiRegressionFix": "worktree_validated_fresh_dom_phase_observer_plus_report_only_full_pack_wait_300s",
         "pagesCiRegressionLocalFitCancel": "passed_54_5s_four_stage_cancel_latency_15_to_20ms",
@@ -616,7 +623,21 @@
         "parentNativeExplicitChildMae": 0.005757051806778288,
         "parentNativeConclusion": "valid_parent_preserved_by_copy_but_not_materialized_in_ruler_designer_clipboard_preview_explicit_child_renders",
         "parentNativeInteraction": "mcp_only_no_ocr_keyboard_mouse_or_reference_image",
-        "parentNativeCleanup": "passed_tree_gone_and_slot_released"
+        "parentNativeCleanup": "passed_tree_gone_and_slot_released",
+        "capabilityMatrix": "passed_parser_preview_editor_serializer_native_evidence_columns",
+        "capabilityMatrixRows": 14,
+        "finalWp6Vitest": "passed_19_files_88_tests",
+        "finalWp6ProductionBuild": "passed",
+        "finalWp6ProductionBoundary": "passed_zero_of_5_forbidden_markers",
+        "finalWp6I18nBrowserRegression": "passed_1_of_1",
+        "installedDlcSourceInventoryMcp": "passed_exact_build_physical_inventory_only",
+        "installedDlcSourceInventoryEvidencePath": "docs/coat-of-arms-fit-artifacts/dlc-source-inventory-mcp-r36/",
+        "installedDlcSourceInventoryReportSha256": "E513966CA50B4C30D6BCD3B40682223B315CCB472229498639B669752AAA634D",
+        "installedDlcDescriptors": 29,
+        "installedDlcWithCoaCandidates": 0,
+        "installedDlcCoaTxtFiles": 0,
+        "installedDlcCoaDdsFiles": 0,
+        "runtimeRegistryBoundary": "not_claimed_unknown_definitions_and_textures_preserved_with_explicit_limitations"
       },
       "blockers": []
     },
