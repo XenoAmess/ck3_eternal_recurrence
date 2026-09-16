@@ -1,0 +1,177 @@
+"""Owner-only bounded paused M4 typed submit and independent material read.
+
+This is a controlled private acceptance helper for an already running,
+single-owner NativeHeadlessGameplayDriver. It does not launch CK3, manipulate
+the screen, open a county view, or advertise a public action. A lost command
+response is recorded as unknown; callers must query stock Province state
+before considering any new submit.
+"""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any
+
+from run_g2m4_paused_player_view_read import (
+    PRIVATE_STEP, _frame_binding, _read_step,
+)
+from run_g2m4_paused_player_world_building_source_read import (
+    run_owned_paused_player_world_building_source_read,
+)
+
+
+ACTION_STEP = "g2_player_world_building_action_private_v1"
+EXACT_EXE_SHA256 = "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+
+
+def _positive_int(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value > 0
+
+
+def _stock_material_match(
+    active: object, pending: dict[str, object], actor: int,
+) -> bool:
+    return isinstance(active, list) and any(
+        isinstance(row, dict) and row.get("active") is True
+        and row.get("barony_title_id") == pending.get("barony_title_id")
+        and row.get("province_id") == pending.get("province_id")
+        and row.get("building_type_id") == pending.get("building_type_id")
+        and row.get("slot_index") == pending.get("slot_index")
+        and row.get("initiator_character_id") == actor
+        for row in active
+    )
+
+
+def run_owned_paused_world_building_action(
+    driver: Any, frozen: dict[str, object], artifact_path: str | Path,
+    *, timeout_seconds: float = 12.0,
+) -> dict[str, object]:
+    artifact = Path(artifact_path)
+    report: dict[str, object] = {
+        "schema_version": 1,
+        "package_id": "G2-M4-CONSTRUCTION-COST-TO-ACTION-B0",
+        "controlled_private_action": True,
+        "advertised": False,
+        "status": "unexecuted",
+        "frozen": frozen,
+        "timeout_seconds_per_step": timeout_seconds,
+    }
+    try:
+        if str(frozen.get("ck3_exe_sha256", "")).casefold() != EXACT_EXE_SHA256:
+            report.update(status="red", issue="wrong_exact_build_manifest")
+            return report
+        before = _frame_binding(driver.state.semantic_snapshot())
+        report["starting_frame"] = before
+        if not _positive_int(before.get("native_revision")) or before.get("paused") is not True:
+            report.update(status="ineligible_scene", issue="not_paused_revision")
+            return report
+        preflight_path = artifact.with_name(artifact.stem + ".preflight.json")
+        preflight = run_owned_paused_player_world_building_source_read(
+            driver, frozen, preflight_path, timeout_seconds=timeout_seconds
+        )
+        report["preflight_path"] = str(preflight_path)
+        report["preflight_status"] = preflight.get("status")
+        report["preflight_issue"] = preflight.get("issue")
+        if preflight.get("status") not in {
+            "world_player_legality_observed", "world_player_cost_observed"
+        }:
+            report.update(status="red", issue="preflight_world_tuple_unavailable")
+            return report
+        world = preflight.get("player_world_building_sources")
+        if not isinstance(world, dict) or world.get("native_cost_evaluated") is not True:
+            report.update(status="red", issue="preflight_stock_cost_unavailable")
+            return report
+        if not isinstance(world.get("active_constructions"), list):
+            report.update(status="red", issue="preflight_active_state_unavailable")
+            return report
+        if _frame_binding(driver.state.semantic_snapshot()) != before:
+            report.update(status="red", issue="frame_changed_after_preflight")
+            return report
+        action_request_id, action_frame = _read_step(
+            driver, ACTION_STEP, before["native_revision"], timeout_seconds
+        )
+        report["action_request_id"] = action_request_id
+        report["action_frame"] = action_frame
+        if action_frame is None:
+            report.update(status="red_action_state_unknown", issue="action_response_timeout_query_state_before_retry")
+            return report
+        result = action_frame.get("result")
+        private_probe = result.get("private_probe") if isinstance(result, dict) else None
+        pending = private_probe.get("private_action") if isinstance(private_probe, dict) else None
+        if not isinstance(pending, dict):
+            report.update(status="red_action_state_unknown", issue="typed_action_receipt_missing_query_state_before_retry")
+            return report
+        report["pending_action"] = pending
+        if pending.get("status") != "pending_receipt" or pending.get("applied") is not False:
+            report.update(status="red" if pending.get("status") == "red" else "action_unready",
+                          issue=str(pending.get("native_failure") or pending.get("candidate_failure")))
+            return report
+        if (result.get("step") != ACTION_STEP or result.get("accepted") is not True
+                or pending.get("advertised") is not False
+                or pending.get("production_native_path") is not True
+                or pending.get("validator_calls") != 1
+                or pending.get("materialize_calls") != 1
+                or pending.get("receiver_calls") != 1
+                or not _positive_int(pending.get("receiver_command_sequence"))
+                or not _positive_int(pending.get("proof_epoch"))
+                or pending.get("actor_character_id") != before["played_character_id"]):
+            report.update(status="red_action_state_unknown", issue="pending_ack_shape_invalid_query_state_before_retry")
+            return report
+        tuples = world.get("legal_samples")
+        if not isinstance(tuples, list) or not any(
+            isinstance(row, dict)
+            and all(row.get(key) == pending.get(key) for key in (
+                "barony_title_id", "province_id", "building_type_id", "slot_index"))
+            and isinstance(row.get("cost_raw_native"), list)
+            and len(row["cost_raw_native"]) == 10
+            and row["cost_raw_native"][0] == pending.get("stock_gold_cost_raw")
+            and all(raw == 0 for raw in row["cost_raw_native"][1:])
+            for row in tuples
+        ):
+            report.update(status="red_action_state_unknown", issue="action_tuple_not_in_preflight_stock_cost_query_state_before_retry")
+            return report
+        report["status"] = "pending_ack_observed"
+        after = _frame_binding(driver.state.semantic_snapshot())
+        report["after_action_frame"] = after
+        if after.get("paused") is not True or not _positive_int(after.get("native_revision")):
+            report["issue"] = "next_paused_frame_unavailable_keep_pending"
+            return report
+        read_request_id, read_frame = _read_step(
+            driver, PRIVATE_STEP, after["native_revision"], timeout_seconds
+        )
+        report["material_read_request_id"] = read_request_id
+        report["material_read_frame"] = read_frame
+        if read_frame is None:
+            report.update(status="pending_receipt", issue="material_read_timeout_keep_pending")
+            return report
+        read_result = read_frame.get("result")
+        read_probe = read_result.get("private_probe") if isinstance(read_result, dict) else None
+        next_world = read_probe.get("player_world_building_sources") if isinstance(read_probe, dict) else None
+        next_epoch = read_probe.get("proof_epoch") if isinstance(read_probe, dict) else None
+        if (not isinstance(next_world, dict) or next_world.get("status") != "source_available"
+                or not _positive_int(next_epoch) or next_epoch <= pending["proof_epoch"]):
+            report.update(status="pending_receipt", issue="fresh_material_source_unavailable_keep_pending")
+            return report
+        report["material_world"] = next_world
+        if (next_world.get("player_character_id") == pending["actor_character_id"]
+                and next_world.get("date_raw") >= before["date_raw"]
+                and _stock_material_match(next_world.get("active_constructions"), pending,
+                                          pending["actor_character_id"])):
+            report["status"] = "independent_paused_material_observed"
+            report["material_proof_epoch"] = next_epoch
+            report["next_gate"] = "native_auto_run_or_ck3_auto_turn_next_policy_turn_consumes_construction_then_checkpoint_cold_restore"
+        else:
+            report.update(status="pending_receipt", issue="stock_active_construction_not_yet_matched_keep_pending")
+        return report
+    except Exception as error:
+        report.update(status="red_action_state_unknown",
+                      issue=f"{type(error).__name__}: {error}; query stock state before retry")
+        return report
+    finally:
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        artifact.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                            encoding="utf-8")
+
+
+__all__ = ["run_owned_paused_world_building_action"]

@@ -147,6 +147,16 @@ option(
   "Read the player HoldingView candidate-cache branch on paused application-main"
   OFF
 )
+option(
+  XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1
+  "Controlled exact-build stock-player construction submit; no public action"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
+  message(FATAL_ERROR
+    "Private world-building action needs its paused player world source")
+endif()
 
 option(
   XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1
@@ -402,6 +412,7 @@ add_library(xar_ck3_bridge SHARED
   src/player_held_construction_model_enumerator_v1.cpp
   src/player_world_building_definition_source_v1.cpp
   src/player_world_building_definition_source_v1_process.cpp
+  src/player_world_building_action_candidate_v1.cpp
   src/steward_develop_county_candidates_v1.cpp
   src/steward_develop_county_candidates_v1_mailbox.cpp
   src/steward_develop_county_candidates_v1_serializer.cpp
@@ -748,6 +759,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)

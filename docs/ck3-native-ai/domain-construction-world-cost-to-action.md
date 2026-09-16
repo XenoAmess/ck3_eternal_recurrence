@@ -1,0 +1,26 @@
+# CK3 1.19.0.6：玩家真实建筑成本到受控施工
+
+这是 [原生建设决策树](domain-construction-ai.md) 的 G2-M4 标准封建窄分支。冻结 CK3 EXE SHA-256 为 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；[ABI](../../ck3_autonomous_player/native_bridge/research/player_world_building_action_private_v1_abi.json) 和只读 [PE 校验器](../../ck3_autonomous_player/native_bridge/research/verify_player_world_building_action_private_v1.py) 固定原版调用及写入区间。其他 CK3 build 未验证。2026-09-16 R746 的真实 paused report SHA-256 为 `CBCC51B030FCCD54A44217B12BFF1E2DE6EA7AA4AB8569FB1CEE6F713C889F61`，来源为 exact agent `master@4ec36943` 的只读 slot42，仍没有施工动作。
+
+R746 在相同玩家、日期和 paused 帧取得 981 个原版 `CBuildingType` 定义、6 个玩家亲自持有的 barony/Province 对、512 次原版玩家 `CanConstruct` 判断，以及 **6 个实际合法成本元组**。六个元组是 barony 2103、Province 2635、建筑定义 12 或 24、槽位 1 至 3；数字只记录证据，正式候选从当帧原版 source 动态选出。玩家黄金是 signed Q100000 `50035659`。建筑 12 原版成本 `40000000`，建筑 24 为 `15000000`；十槽原始费用的其余九槽（含 `raw[7]`）都是零。按至少预留 `20000000` raw 黄金的确定预算规则，建筑 24 留下 `35035659` raw；建筑 12 只留下 `10035659` raw，故不选它。纯黄金之外的资源身份仍未映射；当任一非黄金 raw 槽非零时，本窄分支不提交，继续补原生观测。
+
+原版 building command validator `0x26CD410` 在 `0x26CD475..0x26CD4AB` 使用 `+0x2C` 的 BuildingTypeID 查 `0x864750/0x26D0F50` 原版定义管理器，并将 `+0x20` 玩家、`+0x24` Province、`+0x28` 施工槽及定义指针交给同一个 `0x295CD60` 玩家最终合法性/可负担性判定。R746 的槽位与 command selector 因此是同一个字段，仍须在**提交当帧**重新通过 validator。原版可负担性 `0x2CDD09D..0x2CDD0EF` 在一条条件分支将 `raw[7]` 加进黄金；R746 `raw[7]=0` 使该条件不改变六个元组的黄金费用，不需要猜触发标志。其他资源槽位在本候选都是零，不能借此宣称所有建设成本已解码。
+
+原版 command materializer 是 building 主 vtable `+0x40 → 0x26D0C60`。receiver `0x341D990` 以 flags 7 把 command 入队并给 sequence；受理只表示 `pending_receipt`。第二 vtable 的原版执行器 `0x26CD290` 经 `0x21F6860` 写入 Province `+0x620` 的活动施工：`+0x70` 为 `CBuildingType*`、`+0x78` 为施工槽、`+0xE0` 为发起 CharacterID。私有只读查询在下一独立 paused application-main proof epoch 中，将活动 pointer 与同帧已经验证的原版管理器指针配对后只序列化 scalar BuildingTypeID。只有活动施工的 Province、槽、定义与发起人都匹配前一提交，才可证明物质结果；同帧缓存值、队列 ACK 或单纯进程存活都不满足。后续正式 turn 消费与 checkpoint/cold restore 还须实机取得。
+
+```mermaid
+flowchart LR
+    W["R746: 标准封建玩家，同帧真实成本/合法元组"] --> B{"十槽费用仅黄金；保留至少 200 金？"}
+    B -->|否| U["unknown：补资源身份与余额，只读查询"]
+    B -->|是| S["动态选择最低成本合法槽"]
+    S --> V{"同帧原版 0x26CD410 再校验"}
+    V -->|拒绝| R["合法拒绝，无 command"]
+    V -->|允许| Q["typed materialize → receiver flags7，最多一次"]
+    Q --> A["pending ACK，待确认动作"]
+    A --> N{"下一独立 paused proof epoch 的 Province 活动施工状态"}
+    N -->|匹配| M["物质施工结果"]
+    N -->|未匹配| P["pending/RED：先查状态，不盲重试"]
+    M -. "待实机：正式下一 turn 与恢复" .-> T["两游戏年治理闭环"]
+```
+
+私有 action CMake 选项 `XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1` 默认 OFF，且仅能与已存在的 read probe 选项一同启用。实际运行前用 source save、EXE/DLL SHA、DLC/mod/profile、轮次与有界断言封候选；只有 CK3 唯一操作负责人可以运行。R746 只读结果不能被新代码的静态验证冒充为提交或后置结果。公共 query/action、MCP 广告与 G2-M4 完成状态仍关闭。新增 private receipt 字段为向后兼容的附加字段；当前没有公共 open_kaishek 适配器依赖，正式接口开放前须独立确认兼容矩阵。

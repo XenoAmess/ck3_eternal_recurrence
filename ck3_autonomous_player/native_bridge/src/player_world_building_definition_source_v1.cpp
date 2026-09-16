@@ -27,6 +27,12 @@ constexpr std::size_t kProvinceCountOffset = 0x14C;
 constexpr std::size_t kProvinceIdentityOffset = 0x10;
 constexpr std::size_t kProvinceSlotsOffset = 0x620;
 constexpr std::size_t kProvinceSlotCountOffset = 0x24;
+// Stock building command executor 0x26CD290 calls 0x21F6860; that routine
+// writes the in-progress CBuildingType* at slots+0x70, selected slot at
+// slots+0x78, and initiating CharacterID at slots+0xE0.
+constexpr std::size_t kProvinceActiveBuildingOffset = 0x70;
+constexpr std::size_t kProvinceActiveSlotOffset = 0x78;
+constexpr std::size_t kProvinceActiveInitiatorOffset = 0xE0;
 constexpr std::size_t kRegistryDataOffset = 0x68;
 constexpr std::size_t kRegistryCapacityOffset = 0x70;
 constexpr std::size_t kRegistryCountOffset = 0x74;
@@ -293,6 +299,44 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
                               result.definition_identity_diagnostic)) {
       return Failed(registry_failure,
                     result.definition_identity_diagnostic);
+    }
+    result.active_constructions.reserve(
+        result.directly_held_barony_provinces.size());
+    for (const auto &holding : result.directly_held_barony_provinces) {
+      std::int32_t slot_count = 0;
+      std::uintptr_t province = 0;
+      std::uintptr_t active_definition = 0;
+      if (!ReadProvinceSlots(campaign, module_base, holding.province_id,
+                             slot_count, province) ||
+          !Read(campaign, province,
+                kProvinceSlotsOffset + kProvinceActiveBuildingOffset,
+                active_definition)) {
+        return Failed(PlayerWorldBuildingFailureV1::construction_state);
+      }
+      PlayerWorldActiveConstructionV1 state{};
+      state.barony_title_id = holding.barony_title_id;
+      state.province_id = holding.province_id;
+      if (active_definition != 0) {
+        const auto match = std::find_if(
+            definitions.begin(), definitions.end(),
+            [active_definition](const auto &definition) {
+              return definition.second == active_definition;
+            });
+        if (match == definitions.end() ||
+            !Read(campaign, province,
+                  kProvinceSlotsOffset + kProvinceActiveSlotOffset,
+                  state.slot_index) ||
+            !Read(campaign, province,
+                  kProvinceSlotsOffset + kProvinceActiveInitiatorOffset,
+                  state.initiator_character_id) ||
+            state.slot_index < 0 || state.slot_index >= slot_count ||
+            state.initiator_character_id <= 0) {
+          return Failed(PlayerWorldBuildingFailureV1::construction_state);
+        }
+        state.active = true;
+        state.building_type_id = match->first;
+      }
+      result.active_constructions.push_back(state);
     }
     if (access.final_legality != nullptr &&
         request.max_native_checks > 0 &&

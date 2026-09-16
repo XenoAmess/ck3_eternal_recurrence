@@ -23,6 +23,7 @@ enum class PlayerWorldBuildingFailureV1 : std::uint8_t {
   native_final_legality,
   player_gold_source,
   native_cost,
+  construction_state,
   frame_changed,
 };
 
@@ -66,6 +67,20 @@ struct PlayerWorldBuildingLegalSampleV1 final {
                          const PlayerWorldBuildingLegalSampleV1 &) = default;
 };
 
+// Copied stock Province+0x620 active construction receipt. The engine's
+// CBuildingType pointer is mapped back to the same verified manager registry
+// before this scalar leaves application-main. A queue ACK cannot set active.
+struct PlayerWorldActiveConstructionV1 final {
+  std::int32_t barony_title_id = -1;
+  std::int32_t province_id = -1;
+  bool active = false;
+  std::int32_t building_type_id = -1;
+  std::int32_t slot_index = -1;
+  std::int32_t initiator_character_id = -1;
+  friend bool operator==(const PlayerWorldActiveConstructionV1 &,
+                         const PlayerWorldActiveConstructionV1 &) = default;
+};
+
 struct PlayerWorldBuildingSourceResultV1 final {
   PlayerWorldBuildingFailureV1 failure = PlayerWorldBuildingFailureV1::none;
   PlayerWorldDefinitionIdentityDiagnosticV1 definition_identity_diagnostic{};
@@ -83,6 +98,7 @@ struct PlayerWorldBuildingSourceResultV1 final {
   std::int32_t definition_source_count = 0;
   std::int32_t final_legality_checks = 0;
   std::vector<PlayerHeldHoldingSourceV1> directly_held_barony_provinces;
+  std::vector<PlayerWorldActiveConstructionV1> active_constructions;
   std::vector<PlayerWorldBuildingLegalSampleV1> legal_samples;
 };
 

@@ -1,0 +1,55 @@
+{
+  "contract": "g2-m4-player-world-building-action-private-v1",
+  "schema_version": 1,
+  "status": "exact-build-static-private-action-live-unexecuted",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "R746_live_input": {
+    "report_sha256": "CBCC51B030FCCD54A44217B12BFF1E2DE6EA7AA4AB8569FB1CEE6F713C889F61",
+    "actor_character_id": 29829,
+    "date_raw": 53178312,
+    "player_gold_raw_q100000": 50035659,
+    "stock_definitions": 981,
+    "personally_held_barony_provinces": 6,
+    "stock_final_legality_checks": 512,
+    "actual_legal_cost_tuples": 6,
+    "gold_only_types": [
+      {"building_type_id": 12, "stock_cost_raw_q100000": 40000000},
+      {"building_type_id": 24, "stock_cost_raw_q100000": 15000000}
+    ],
+    "six_tuple_scope": "barony 2103/province 2635/slots 1-3; IDs are evidence only, never action parameters"
+  },
+  "action_route": {
+    "private_step": "g2_player_world_building_action_private_v1",
+    "default_enabled": false,
+    "requires_read_probe_option": true,
+    "payload": "expected_revision only; actor/province/type/slot from same paused native source",
+    "budget_rule": "positive stock gold-only raw10 vector; every other raw qword including conditional raw[7] is zero; strict gold > cost; reserve at least 20000000 raw Q100000 after payment; choose cheapest then stable tuple ordering",
+    "R746_bounded_candidate": "type24 cost15000000, gold after35035659 raw; stock same-frame command validator still required",
+    "native_command_fields": "building command +0x20 actor, +0x24 province, +0x28 stock player slot, +0x2C BuildingTypeID",
+    "validator": "0x26CD410 uses 0x864750 manager/0x26D0F50 lookup then calls same 0x295CD60 stock player predicate",
+    "materialize": "command primary vtable +0x40, exact 0x26D0C60",
+    "receiver": "0x341D990 flags7, accepted sequence is pending ACK only",
+    "material_result": "fresh later paused application-main proof epoch reads Province+0x620+0x70 active CBuildingType pointer, +0x78 slot, +0xE0 initiating CharacterID; pointer is matched to exact manager before serializing type scalar",
+    "duplicate_submit": "one private action attempt until material status is independently queried; unresolved receiver or ownership never blind retried"
+  },
+  "exact_spans": [
+    {"name": "building_validator_stock_reentry", "start_rva": "0x26CD475", "end_rva_exclusive": "0x26CD4AB", "sha256": "DC4CAB7ED5B1FB0F135863418DF4D23A8AF109A24CCB5FDB0D0AFEB68B162F29"},
+    {"name": "command_execute_cost_and_debit", "start_rva": "0x26CD330", "end_rva_exclusive": "0x26CD3EE", "sha256": "4DCA569F6F5F1C1DE3EE01C3D836EDFEA76D050C0AE0808D89918B144E346B8C"},
+    {"name": "province_active_material_write", "start_rva": "0x21F689F", "end_rva_exclusive": "0x21F6A43", "sha256": "8A95C7FC2FB5872A881D94F703F3E7C1BAD4E6CF65984823688C6F34B74E1145"},
+    {"name": "player_conditional_gold_extra", "start_rva": "0x2CDD09D", "end_rva_exclusive": "0x2CDD0EF", "sha256": "674D1A7B4FF1A2625960CE851FA070F7AFF33F54E37001DFFEA3E9DDDC594EFB"}
+  ],
+  "readiness": {
+    "R746_stock_cost_live": true,
+    "stock_submit_source_verified": true,
+    "controlled_private_action_static": true,
+    "stock_command_submitted_live": false,
+    "independent_paused_material_state_live": false,
+    "next_production_turn_consumed": false,
+    "public_query_or_action_advertised": false
+  },
+  "impact": "Private additive source and default-OFF action step only. Public schema/MCP/open_kaishek route unchanged; controlled live evidence is still required before any formal action consumption claim."
+}

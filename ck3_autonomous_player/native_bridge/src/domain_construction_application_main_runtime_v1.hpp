@@ -2,6 +2,7 @@
 
 #include "domain_construction_shared_glue_v1.hpp"
 #include "domain_construction_cost_legality_live_observer_v1.hpp"
+#include "player_world_building_action_candidate_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <array>
@@ -105,6 +106,62 @@ struct DomainConstructionApplicationMainExecutionV1 final {
   const DomainConstructionApplicationMainRequestV1* request = nullptr;
   DomainConstructionApplicationMainResultV1* result = nullptr;
 };
+
+// Controlled stock-player world tuple route for the R746 cost/legality source.
+// It has no public command registration. A caller must retain this pointer-free
+// state across the next paused read; pending ACK never means applied.
+enum class PlayerWorldBuildingDirectActionPhaseV1 : std::uint8_t {
+  idle = 0,
+  rejected,
+  red,
+  pending_receipt,
+  applied,
+};
+
+enum class PlayerWorldBuildingDirectActionFailureV1 : std::uint8_t {
+  none = 0,
+  already_submitted,
+  frame_binding,
+  candidate_drift,
+  backend,
+  validator,
+  materialize,
+  receiver,
+  ownership,
+};
+
+struct PlayerWorldBuildingDirectActionStateV1 final {
+  PlayerWorldBuildingDirectActionPhaseV1 phase =
+      PlayerWorldBuildingDirectActionPhaseV1::idle;
+  PlayerWorldBuildingDirectActionFailureV1 failure =
+      PlayerWorldBuildingDirectActionFailureV1::none;
+  bool production_native_path = false;
+  std::uint32_t validator_calls = 0;
+  std::uint32_t materialize_calls = 0;
+  std::uint32_t receiver_calls = 0;
+  std::uint64_t receiver_command_sequence = 0;
+  ck3_11906::PlayerWorldBuildingActionCandidateV1 submitted;
+};
+
+struct PlayerWorldBuildingDirectActionRequestV1 final {
+  bool exact_build_admitted = false;
+  bool session_live = false;
+  bool offline_fixture = false;
+  std::uintptr_t module_base = 0;
+  const ck3_11906::PlayerWorldBuildingSourceResultV1* source = nullptr;
+  const ck3_11906::PlayerWorldBuildingActionCandidateV1* candidate = nullptr;
+  DomainConstructionExactNativeCallsV1 native_calls;
+};
+
+[[nodiscard]] bool SubmitPlayerWorldBuildingDirectActionV1(
+    PlayerWorldBuildingDirectActionStateV1& state,
+    const PlayerWorldBuildingDirectActionRequestV1& request,
+    const ck3_11906::MainThreadExecutionStampV1& stamp) noexcept;
+
+[[nodiscard]] bool ObservePlayerWorldBuildingDirectActionReceiptV1(
+    PlayerWorldBuildingDirectActionStateV1& state,
+    const ck3_11906::PlayerWorldBuildingSourceResultV1& fresh,
+    std::uint64_t fresh_proof_epoch) noexcept;
 
 [[nodiscard]] DomainConstructionExactNativeCallsV1
 BindCurrentProcessDomainConstructionExactNativeCallsV1(

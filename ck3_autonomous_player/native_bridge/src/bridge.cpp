@@ -251,6 +251,12 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
+// A second private submit is forbidden while the first command's material
+// status is unresolved. Cold recovery must query stock Province state first.
+static bool g_player_world_building_private_action_may_have_submitted_v1 =
+    false;
+#endif
 static xar::bridge::MarriageSharedGlueStateV1 g_marriage_shared_glue_v1{};
 static xar::bridge::MarriageCandidateInternalRouteStateV1
     g_marriage_candidate_internal_route_v1{};
@@ -8166,6 +8172,10 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kPlayerConstructionViewProbePrivateStepV1
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kPlayerWorldBuildingActionPrivateStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
                    && !xar::bridge::IsCouncilApplicationMainPrivateStepV1(step)
 #endif
@@ -9432,9 +9442,26 @@ void RunConnectedSession(
         }
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
         else if (step == xar::ck3_11906::
-                             kPlayerConstructionViewProbePrivateStepV1) {
+                             kPlayerConstructionViewProbePrivateStepV1
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
+                 || step == xar::ck3_11906::
+                                kPlayerWorldBuildingActionPrivateStepV1
+#endif
+                 ) {
+          bool request_private_action = false;
+          bool prior_action_unresolved = false;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
+          request_private_action =
+              step == xar::ck3_11906::kPlayerWorldBuildingActionPrivateStepV1;
+          prior_action_unresolved = request_private_action &&
+              g_player_world_building_private_action_may_have_submitted_v1;
+#endif
           std::uint64_t expected_revision = 0;
-          if (!xar::bridge::JsonUnsignedField(
+          if (prior_action_unresolved) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                     "prior private building command material state unresolved"));
+          } else if (!xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) ||
               expected_revision == 0) {
             connected = xar::bridge::WriteFrame(
@@ -9464,6 +9491,7 @@ void RunConnectedSession(
                   GetModuleHandleW(nullptr));
               query.expected_snapshot = current_snapshot;
               query.expected_revision = expected_revision;
+              query.request_private_action = request_private_action;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::
@@ -9475,6 +9503,12 @@ void RunConnectedSession(
                     pipe, CommandResultFrame(request_id, step, false,
                                              "private construction probe executor unavailable"));
               } else {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
+                if (request_private_action) {
+                  g_player_world_building_private_action_may_have_submitted_v1 =
+                      true;
+                }
+#endif
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
                     g_main_thread_query_mailbox_v1, query.ticket,
                     xar::ck3_11906::
@@ -9491,22 +9525,41 @@ void RunConnectedSession(
                 const bool stable =
                     wait == xar::ck3_11906::
                                 MainThreadQueryWaitResultV1::completed &&
-                    xar::game::ReadSnapshot(game, completion_snapshot) &&
-                    completion_snapshot == current_snapshot &&
-                    state_revision == expected_revision;
+                    (request_private_action ||
+                     (xar::game::ReadSnapshot(game, completion_snapshot) &&
+                      completion_snapshot == current_snapshot &&
+                      state_revision == expected_revision));
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1)
+                if (request_private_action &&
+                    (!query.private_action_candidate.ready ||
+                     (query.private_action_state.materialize_calls == 0 &&
+                      query.private_action_state.receiver_calls == 0))) {
+                  g_player_world_building_private_action_may_have_submitted_v1 =
+                      false;
+                }
+#endif
                 std::string response;
                 if (stable &&
                     query.completion == xar::ck3_11906::
                                             PlayerConstructionViewProbeMailboxCompletionV1::
                                                 completed) {
-                  const bool observed =
-                      query.result.status != xar::ck3::shared::
-                                                 PlayerConstructionViewProbeStatusV1::
-                                                     unavailable;
+                  const bool observed = request_private_action
+                      ? query.private_action_state.phase ==
+                          xar::ck3::shared::
+                              PlayerWorldBuildingDirectActionPhaseV1::
+                                  pending_receipt
+                      : query.result.status != xar::ck3::shared::
+                                                   PlayerConstructionViewProbeStatusV1::
+                                                       unavailable;
                   response = CommandResultFrame(
                       request_id, step, observed,
-                      observed ? "private construction cache branch observed"
-                               : "private construction cache branch unavailable");
+                      request_private_action
+                          ? observed
+                                ? "private stock building command pending receipt"
+                                : "private stock building command unavailable"
+                          : observed
+                                ? "private construction cache branch observed"
+                                : "private construction cache branch unavailable");
                   if (observed && response.size() >= 2 &&
                       response.substr(response.size() - 2) == "}}") {
                     response.resize(response.size() - 2);

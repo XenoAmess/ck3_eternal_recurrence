@@ -366,6 +366,170 @@ BindCurrentProcessDomainConstructionExactNativeCallsV1(
   return calls;
 }
 
+bool SubmitPlayerWorldBuildingDirectActionV1(
+    PlayerWorldBuildingDirectActionStateV1& state,
+    const PlayerWorldBuildingDirectActionRequestV1& request,
+    const ck3_11906::MainThreadExecutionStampV1& stamp) noexcept {
+  using Phase = PlayerWorldBuildingDirectActionPhaseV1;
+  using Failure = PlayerWorldBuildingDirectActionFailureV1;
+  if (state.phase != Phase::idle) {
+    state.failure = Failure::already_submitted;
+    return false;
+  }
+  state = {};
+  if (!request.exact_build_admitted || !request.session_live ||
+      request.module_base == 0 || request.source == nullptr ||
+      request.candidate == nullptr || stamp.thread_id == 0 ||
+      stamp.thread_id != GetCurrentThreadId() || !stamp.paused ||
+      stamp.tls_context == 0 || stamp.tls_main_thread_marker != 1 ||
+      stamp.pump_epoch == 0) {
+    state.phase = Phase::red;
+    state.failure = Failure::frame_binding;
+    return false;
+  }
+  const auto& source = *request.source;
+  const auto& candidate = *request.candidate;
+  if (!candidate.ready || !source.source_available ||
+      source.failure != ck3_11906::PlayerWorldBuildingFailureV1::none ||
+      !source.native_final_legality_evaluated ||
+      !source.native_cost_evaluated || !source.player_gold_observed ||
+      candidate.snapshot_revision != source.snapshot_revision ||
+      candidate.proof_epoch != stamp.pump_epoch ||
+      candidate.date_raw != stamp.date_raw ||
+      candidate.date_raw != source.date_raw ||
+      candidate.actor_character_id != source.player_character_id ||
+      candidate.player_gold_before_raw != source.player_gold_raw ||
+      candidate.stock_gold_cost_raw <= 0 ||
+      candidate.stock_gold_cost_raw >= source.player_gold_raw ||
+      candidate.gold_reserve_after_raw !=
+          source.player_gold_raw - candidate.stock_gold_cost_raw ||
+      !std::all_of(candidate.stock_cost_raw_native.begin() + 1,
+                   candidate.stock_cost_raw_native.end(),
+                   [](const std::int64_t raw) { return raw == 0; })) {
+    state.phase = Phase::red;
+    state.failure = Failure::candidate_drift;
+    return false;
+  }
+  const auto sample = std::find_if(
+      source.legal_samples.begin(), source.legal_samples.end(),
+      [&candidate](const auto& row) {
+        return row.native_cost_observed &&
+               row.barony_title_id == candidate.barony_title_id &&
+               row.province_id == candidate.province_id &&
+               row.building_type_id == candidate.building_type_id &&
+               row.slot_index == candidate.slot_index &&
+               row.cost_raw_native == candidate.stock_cost_raw_native;
+      });
+  const auto active = std::find_if(
+      source.active_constructions.begin(),
+      source.active_constructions.end(),
+      [&candidate](const auto& row) {
+        return row.barony_title_id == candidate.barony_title_id &&
+               row.province_id == candidate.province_id && !row.active;
+      });
+  if (sample == source.legal_samples.end() ||
+      active == source.active_constructions.end()) {
+    state.phase = Phase::red;
+    state.failure = Failure::candidate_drift;
+    return false;
+  }
+  auto calls = request.offline_fixture
+                   ? request.native_calls
+                   : BindCurrentProcessDomainConstructionExactNativeCallsV1(
+                         request.module_base);
+  if (!CallsComplete(calls) ||
+      request.offline_fixture == calls.production_exact_addresses) {
+    state.phase = Phase::red;
+    state.failure = Failure::backend;
+    return false;
+  }
+  ExactBackendContextV1 backend{request.module_base, calls, {}, false};
+  research::DomainConstructionNativeCommandContextV1 command{};
+  command.candidate_kind = CandidateKind::building_in_holding;
+  command.actor_or_holder_id = candidate.actor_character_id;
+  command.holding_province_id = candidate.province_id;
+  command.candidate_selector = candidate.slot_index;
+  command.building_type_id = candidate.building_type_id;
+  research::DomainConstructionTransientNativeSubmitContextV1 transient{};
+  bool allowed = false;
+  ++state.validator_calls;
+  if (!ValidateBackend(&backend, command, transient, allowed)) {
+    state.phase = Phase::red;
+    state.failure = Failure::validator;
+    return false;
+  }
+  if (!allowed) {
+    state.phase = Phase::rejected;
+    state.failure = Failure::validator;
+    return false;
+  }
+  std::uintptr_t owned_command = 0;
+  ++state.materialize_calls;
+  if (!MaterializeBackend(&backend, command, transient, owned_command) ||
+      owned_command == 0) {
+    if (owned_command != 0) (void)ReleaseBackend(&backend, owned_command);
+    state.phase = Phase::red;
+    state.failure = Failure::materialize;
+    return false;
+  }
+  bool accepted = false;
+  std::uint64_t sequence = 0;
+  ++state.receiver_calls;
+  const bool receiver_completed = ReceiveBackend(
+      &backend, owned_command, research::kDomainConstructionReceiverFlagsV1,
+      accepted, sequence);
+  const bool leftover_closed =
+      owned_command == 0 || ReleaseBackend(&backend, owned_command);
+  if (!leftover_closed || owned_command != 0) {
+    state.phase = Phase::red;
+    state.failure = Failure::ownership;
+    return false;
+  }
+  if (!receiver_completed || !accepted || sequence == 0) {
+    state.phase = receiver_completed && !accepted ? Phase::rejected
+                                                   : Phase::red;
+    state.failure = Failure::receiver;
+    return false;
+  }
+  state.phase = Phase::pending_receipt;
+  state.failure = Failure::none;
+  state.production_native_path = !request.offline_fixture;
+  state.receiver_command_sequence = sequence;
+  state.submitted = candidate;
+  return true;
+}
+
+bool ObservePlayerWorldBuildingDirectActionReceiptV1(
+    PlayerWorldBuildingDirectActionStateV1& state,
+    const ck3_11906::PlayerWorldBuildingSourceResultV1& fresh,
+    const std::uint64_t fresh_proof_epoch) noexcept {
+  if (state.phase != PlayerWorldBuildingDirectActionPhaseV1::pending_receipt ||
+      state.receiver_command_sequence == 0 ||
+      !state.submitted.ready || !fresh.source_available ||
+      fresh.failure != ck3_11906::PlayerWorldBuildingFailureV1::none ||
+      fresh_proof_epoch <= state.submitted.proof_epoch ||
+      fresh.snapshot_revision < state.submitted.snapshot_revision ||
+      fresh.date_raw < state.submitted.date_raw ||
+      fresh.player_character_id != state.submitted.actor_character_id) {
+    return false;
+  }
+  const auto& submitted = state.submitted;
+  const auto found = std::find_if(
+      fresh.active_constructions.begin(),
+      fresh.active_constructions.end(),
+      [&submitted](const auto& row) {
+        return row.active &&
+               row.barony_title_id == submitted.barony_title_id &&
+               row.province_id == submitted.province_id &&
+               row.building_type_id == submitted.building_type_id &&
+               row.slot_index == submitted.slot_index &&
+               row.initiator_character_id == submitted.actor_character_id;
+      });
+  if (found == fresh.active_constructions.end()) return false;
+  state.phase = PlayerWorldBuildingDirectActionPhaseV1::applied;
+  return true;
+}
+
 bool ExecuteDomainConstructionApplicationMainRuntimeV1(
     void* context,
     const ck3_11906::MainThreadExecutionStampV1& stamp) noexcept {

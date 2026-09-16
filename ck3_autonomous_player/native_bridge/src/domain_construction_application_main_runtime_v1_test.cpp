@@ -111,6 +111,11 @@ struct NativeFixture final {
   std::uint32_t receives = 0U;
   std::uint32_t releases = 0U;
   bool saw_exact_layout = false;
+  std::int32_t expected_actor = 1337;
+  std::int32_t expected_province = 17;
+  std::int32_t expected_slot = 4;
+  std::int32_t expected_building_type = 16777258;
+  bool validator_allows = true;
 };
 
 template <typename T>
@@ -130,11 +135,11 @@ bool ValidateBuilding(void* context, const void* command,
           kModuleBase + kDomainConstructionBuildingPrimaryVtableRvaV1 &&
       ReadField<std::uintptr_t>(command, 0x18U) ==
           kModuleBase + kDomainConstructionBuildingSecondaryVtableRvaV1 &&
-      ReadField<std::int32_t>(command, 0x20U) == 1337 &&
-      ReadField<std::int32_t>(command, 0x24U) == 17 &&
-      ReadField<std::int32_t>(command, 0x28U) == 4 &&
-      ReadField<std::int32_t>(command, 0x2CU) == 16777258;
-  allowed = fixture.saw_exact_layout;
+      ReadField<std::int32_t>(command, 0x20U) == fixture.expected_actor &&
+      ReadField<std::int32_t>(command, 0x24U) == fixture.expected_province &&
+      ReadField<std::int32_t>(command, 0x28U) == fixture.expected_slot &&
+      ReadField<std::int32_t>(command, 0x2CU) == fixture.expected_building_type;
+  allowed = fixture.saw_exact_layout && fixture.validator_allows;
   return true;
 }
 
@@ -316,6 +321,132 @@ void TestApplicationMainAdmissionAndCurrentBinding() {
   assert(production.release != nullptr);
 }
 
+void TestDirectWorldGoldOnlyCandidateAndFreshMaterial() {
+  using namespace xar::ck3_11906;
+  PlayerWorldBuildingSourceResultV1 source{};
+  source.source_available = true;
+  source.native_final_legality_evaluated = true;
+  source.native_cost_evaluated = true;
+  source.player_gold_observed = true;
+  source.snapshot_revision = 3;
+  source.date_raw = 777;
+  source.player_character_id = 29829;
+  source.player_gold_raw = 50035659;
+  source.active_constructions.push_back({2103, 2635, false, -1, -1, -1});
+  PlayerWorldBuildingLegalSampleV1 sample{};
+  sample.barony_title_id = 2103;
+  sample.province_id = 2635;
+  sample.building_type_id = 24;
+  sample.slot_index = 1;
+  sample.native_cost_observed = true;
+  sample.cost_raw_native[0] = 15000000;
+  source.legal_samples.push_back(sample);
+  PlayerWorldBuildingActionCandidateV1 candidate{};
+  candidate.ready = true;
+  candidate.failure = PlayerWorldBuildingActionFailureV1::none;
+  candidate.snapshot_revision = 3;
+  candidate.proof_epoch = 91;
+  candidate.date_raw = 777;
+  candidate.actor_character_id = 29829;
+  candidate.barony_title_id = 2103;
+  candidate.province_id = 2635;
+  candidate.building_type_id = 24;
+  candidate.slot_index = 1;
+  candidate.player_gold_before_raw = 50035659;
+  candidate.stock_gold_cost_raw = 15000000;
+  candidate.gold_reserve_after_raw = 35035659;
+  candidate.stock_cost_raw_native = sample.cost_raw_native;
+  NativeFixture native{};
+  native.expected_actor = 29829;
+  native.expected_province = 2635;
+  native.expected_slot = 1;
+  native.expected_building_type = 24;
+  PlayerWorldBuildingDirectActionRequestV1 request{};
+  request.exact_build_admitted = true;
+  request.session_live = true;
+  request.offline_fixture = true;
+  request.module_base = kModuleBase;
+  request.source = &source;
+  request.candidate = &candidate;
+  request.native_calls = Calls(native);
+  auto stamp = Stamp();
+  stamp.paused = true;
+  PlayerWorldBuildingDirectActionStateV1 state{};
+  assert(SubmitPlayerWorldBuildingDirectActionV1(state, request, stamp));
+  assert(state.phase == PlayerWorldBuildingDirectActionPhaseV1::pending_receipt);
+  assert(state.receiver_command_sequence == 7001);
+  assert(state.validator_calls == 1 && state.materialize_calls == 1 &&
+         state.receiver_calls == 1 && !state.production_native_path);
+  assert(native.saw_exact_layout && native.releases == 0);
+  assert(!SubmitPlayerWorldBuildingDirectActionV1(state, request, stamp));
+  assert(state.failure ==
+         PlayerWorldBuildingDirectActionFailureV1::already_submitted);
+  assert(native.building_validations == 1 && native.receives == 1);
+  auto fresh = source;
+  fresh.active_constructions[0] = {2103, 2635, true, 24, 1, 29829};
+  assert(!ObservePlayerWorldBuildingDirectActionReceiptV1(state, fresh, 91));
+  assert(ObservePlayerWorldBuildingDirectActionReceiptV1(state, fresh, 92));
+  assert(state.phase == PlayerWorldBuildingDirectActionPhaseV1::applied);
+}
+
+void TestDirectWorldValidatorRejectsWithoutQueue() {
+  using namespace xar::ck3_11906;
+  PlayerWorldBuildingSourceResultV1 source{};
+  source.source_available = true;
+  source.native_final_legality_evaluated = true;
+  source.native_cost_evaluated = true;
+  source.player_gold_observed = true;
+  source.snapshot_revision = 3;
+  source.date_raw = 777;
+  source.player_character_id = 29829;
+  source.player_gold_raw = 50035659;
+  source.active_constructions.push_back({2103, 2635, false, -1, -1, -1});
+  PlayerWorldBuildingLegalSampleV1 sample{};
+  sample.barony_title_id = 2103;
+  sample.province_id = 2635;
+  sample.building_type_id = 24;
+  sample.slot_index = 1;
+  sample.native_cost_observed = true;
+  sample.cost_raw_native[0] = 15000000;
+  source.legal_samples.push_back(sample);
+  PlayerWorldBuildingActionCandidateV1 candidate{};
+  candidate.ready = true;
+  candidate.snapshot_revision = 3;
+  candidate.proof_epoch = 91;
+  candidate.date_raw = 777;
+  candidate.actor_character_id = 29829;
+  candidate.barony_title_id = 2103;
+  candidate.province_id = 2635;
+  candidate.building_type_id = 24;
+  candidate.slot_index = 1;
+  candidate.player_gold_before_raw = 50035659;
+  candidate.stock_gold_cost_raw = 15000000;
+  candidate.gold_reserve_after_raw = 35035659;
+  candidate.stock_cost_raw_native = sample.cost_raw_native;
+  NativeFixture native{};
+  native.expected_actor = 29829;
+  native.expected_province = 2635;
+  native.expected_slot = 1;
+  native.expected_building_type = 24;
+  native.validator_allows = false;
+  PlayerWorldBuildingDirectActionRequestV1 request{};
+  request.exact_build_admitted = true;
+  request.session_live = true;
+  request.offline_fixture = true;
+  request.module_base = kModuleBase;
+  request.source = &source;
+  request.candidate = &candidate;
+  request.native_calls = Calls(native);
+  auto stamp = Stamp();
+  stamp.paused = true;
+  PlayerWorldBuildingDirectActionStateV1 state{};
+  assert(!SubmitPlayerWorldBuildingDirectActionV1(state, request, stamp));
+  assert(state.phase == PlayerWorldBuildingDirectActionPhaseV1::rejected);
+  assert(state.failure == PlayerWorldBuildingDirectActionFailureV1::validator);
+  assert(native.building_validations == 1 &&
+         native.materializations == 0 && native.receives == 0);
+}
+
 }  // namespace
 
 int main() {
@@ -323,5 +454,7 @@ int main() {
   TestHoldingCollectorRetainsBorrowedPointerOnlyForCall();
   TestFourReadDriftPreservesRed();
   TestApplicationMainAdmissionAndCurrentBinding();
+  TestDirectWorldGoldOnlyCandidateAndFreshMaterial();
+  TestDirectWorldValidatorRejectsWithoutQueue();
   return 0;
 }

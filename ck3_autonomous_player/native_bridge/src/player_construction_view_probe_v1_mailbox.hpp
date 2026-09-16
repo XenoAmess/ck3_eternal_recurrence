@@ -3,6 +3,8 @@
 #include "player_construction_view_probe_v1.hpp"
 #include "player_held_construction_model_enumerator_v1.hpp"
 #include "player_world_building_definition_source_v1.hpp"
+#include "player_world_building_action_candidate_v1.hpp"
+#include "domain_construction_application_main_runtime_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -16,6 +18,8 @@ namespace xar::ck3_11906 {
 
 inline constexpr const char* kPlayerConstructionViewProbePrivateStepV1 =
     "g2_player_construction_view_probe_v1";
+inline constexpr const char* kPlayerWorldBuildingActionPrivateStepV1 =
+    "g2_player_world_building_action_private_v1";
 
 enum class PlayerConstructionViewProbeMailboxCompletionV1 : std::uint8_t {
   not_executed = 0,
@@ -36,6 +40,11 @@ struct PlayerConstructionViewProbeMailboxContextV1 final {
   // eligibility. It carries only copied scalar IDs, never borrowed addresses.
   PlayerWorldBuildingSourceResultV1 player_world_building_sources{};
   bool player_world_building_source_executed = false;
+  bool request_private_action = false;
+  std::int64_t minimum_gold_reserve_raw = 20'000'000;
+  PlayerWorldBuildingActionCandidateV1 private_action_candidate{};
+  xar::ck3::shared::PlayerWorldBuildingDirectActionStateV1
+      private_action_state{};
   std::size_t player_model_definition_source_count = 0;
   // Null before an active view/model comparison, false on a failed binding,
   // true only when the already identity-checked view+0x108 equals the exact

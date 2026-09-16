@@ -171,6 +171,7 @@ Fixture Scene() {
   f.Put(0x720000 + kProvince * 8, std::uintptr_t{0x700000});
   f.Put(0x700000 + 0x10, kProvince);
   f.Put(0x700000 + 0x620 + 0x24, std::int32_t{2});
+  f.Put(0x700000 + 0x620 + 0x70, std::uintptr_t{0});
   // The R722-style CHoldingView mode-0 list is empty although the stock
   // CBuildingType manager vector contains two definitions.
   f.Put(0x900000 + 0x628, std::uintptr_t{0x910000});
@@ -223,7 +224,10 @@ int main() {
                 PlayerWorldBuildingFailureV1::none &&
                 r.definition_source_count == 2 &&
                 r.directly_held_barony_provinces ==
-                    std::vector<PlayerHeldHoldingSourceV1>{{kBarony, kProvince}},
+                    std::vector<PlayerHeldHoldingSourceV1>{{kBarony, kProvince}} &&
+                r.active_constructions ==
+                    std::vector<PlayerWorldActiveConstructionV1>{
+                        {kBarony, kProvince, false, -1, -1, -1}},
             "world_definitions_independent_of_closed_gui");
     Require(r.native_final_legality_evaluated &&
                 r.final_legality_checks == 4 && !r.checks_truncated &&
@@ -232,6 +236,31 @@ int main() {
                         {kBarony, kProvince, 22, 1}} &&
                 !r.cost_ready && f.native_checks == 4,
             "same_frame_player_final_legality_sample_not_cost_or_action");
+  }
+  {
+    auto f = Scene();
+    // The stock command executor's independent material state: not a queue
+    // ACK. Its native CBuildingType pointer is resolved to manager ID 22.
+    f.Put(0x700000 + 0x620 + 0x70, std::uintptr_t{0xB10000});
+    f.Put(0x700000 + 0x620 + 0x78, std::int32_t{1});
+    f.Put(0x700000 + 0x620 + 0xE0, kActor);
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(r.source_available && r.active_constructions ==
+                std::vector<PlayerWorldActiveConstructionV1>{
+                    {kBarony, kProvince, true, 22, 1, kActor}},
+            "stock_active_building_is_independent_material_receipt");
+  }
+  {
+    auto f = Scene();
+    f.Put(0x700000 + 0x620 + 0x70, std::uintptr_t{0xA20000});
+    f.Put(0x700000 + 0x620 + 0x78, std::int32_t{1});
+    f.Put(0x700000 + 0x620 + 0xE0, kActor);
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(false), {3, kProvince, 0, 0});
+    Require(!r.source_available &&
+                r.failure == PlayerWorldBuildingFailureV1::construction_state,
+            "active_type_outside_stock_manager_remains_red");
   }
   {
     auto f = Scene();

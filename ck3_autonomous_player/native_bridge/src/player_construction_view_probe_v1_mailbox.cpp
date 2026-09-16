@@ -173,9 +173,47 @@ std::string_view WorldFailureKey(WorldFailure failure) noexcept {
       return "player_gold_source";
     case WorldFailure::native_cost:
       return "native_cost";
+    case WorldFailure::construction_state:
+      return "construction_state";
     case WorldFailure::frame_changed: return "frame_changed";
   }
   return "registry_source";
+}
+
+std::string_view WorldActionCandidateFailureKey(
+    PlayerWorldBuildingActionFailureV1 failure) noexcept {
+  switch (failure) {
+    case PlayerWorldBuildingActionFailureV1::none: return "none";
+    case PlayerWorldBuildingActionFailureV1::source_unavailable:
+      return "source_unavailable";
+    case PlayerWorldBuildingActionFailureV1::frame_binding:
+      return "frame_binding";
+    case PlayerWorldBuildingActionFailureV1::resource_unknown:
+      return "resource_unknown";
+    case PlayerWorldBuildingActionFailureV1::active_construction:
+      return "active_construction";
+    case PlayerWorldBuildingActionFailureV1::no_budget_safe_candidate:
+      return "no_budget_safe_candidate";
+  }
+  return "source_unavailable";
+}
+
+std::string_view WorldActionNativeFailureKey(
+    xar::ck3::shared::PlayerWorldBuildingDirectActionFailureV1 failure)
+    noexcept {
+  using Failure = xar::ck3::shared::PlayerWorldBuildingDirectActionFailureV1;
+  switch (failure) {
+    case Failure::none: return "none";
+    case Failure::already_submitted: return "already_submitted";
+    case Failure::frame_binding: return "frame_binding";
+    case Failure::candidate_drift: return "candidate_drift";
+    case Failure::backend: return "backend";
+    case Failure::validator: return "validator";
+    case Failure::materialize: return "materialize";
+    case Failure::receiver: return "receiver";
+    case Failure::ownership: return "ownership";
+  }
+  return "backend";
 }
 
 std::string_view WorldDefinitionIdentityStageKey(
@@ -339,6 +377,27 @@ bool ExecutePlayerConstructionViewProbeMailboxV1(
             WorldFailure::frame_changed;
         query->player_world_building_source_executed = true;
       }
+      if (query->request_private_action &&
+          query->result.status != ProbeStatus::unavailable &&
+          query->player_world_building_source_executed &&
+          query->player_world_building_sources.source_available &&
+          query->player_world_building_sources.failure == WorldFailure::none &&
+          CaptureSameSnapshot(*query, stamp)) {
+        query->private_action_candidate =
+            SelectPlayerWorldBuildingActionCandidateV1(
+                query->player_world_building_sources, stamp.pump_epoch,
+                query->minimum_gold_reserve_raw);
+        if (query->private_action_candidate.ready) {
+          xar::ck3::shared::PlayerWorldBuildingDirectActionRequestV1 action{};
+          action.exact_build_admitted = true;
+          action.session_live = true;
+          action.module_base = query->module_base;
+          action.source = &query->player_world_building_sources;
+          action.candidate = &query->private_action_candidate;
+          (void)xar::ck3::shared::SubmitPlayerWorldBuildingDirectActionV1(
+              query->private_action_state, action, stamp);
+        }
+      }
     }
   }
   query->completion =
@@ -364,6 +423,8 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
   json += std::to_string(query.expected_revision);
   json += ",\"date_raw\":";
   json += std::to_string(query.expected_snapshot.date_raw);
+  json += ",\"proof_epoch\":";
+  json += std::to_string(query.execution_stamp.pump_epoch);
   json += ",\"holding_view_visibility\":{";
   json += "\"widget_key\":\"holding_view\",\"status\":\"";
   const auto visibility = result.holding_view_visibility;
@@ -494,6 +555,28 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += '}';
     }
   }
+  json += "],\"active_constructions\":[";
+  if (world_available) {
+    for (std::size_t index = 0; index < world.active_constructions.size();
+         ++index) {
+      if (index != 0) json += ',';
+      const auto& active = world.active_constructions[index];
+      json += "{\"barony_title_id\":";
+      json += std::to_string(active.barony_title_id);
+      json += ",\"province_id\":";
+      json += std::to_string(active.province_id);
+      json += ",\"active\":";
+      json += active.active ? "true" : "false";
+      json += ",\"building_type_id\":";
+      json += active.active ? std::to_string(active.building_type_id) : "null";
+      json += ",\"slot_index\":";
+      json += active.active ? std::to_string(active.slot_index) : "null";
+      json += ",\"initiator_character_id\":";
+      json += active.active ? std::to_string(active.initiator_character_id)
+                            : "null";
+      json += '}';
+    }
+  }
   json += "],\"legal_samples\":[";
   if (world_available) {
     for (std::size_t index = 0; index < world.legal_samples.size(); ++index) {
@@ -537,6 +620,60 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
     }
   }
   json += "]}";
+  if (query.request_private_action) {
+    using Phase =
+        xar::ck3::shared::PlayerWorldBuildingDirectActionPhaseV1;
+    const auto& choice = query.private_action_candidate;
+    const auto& action = query.private_action_state;
+    json += ",\"private_action\":{\"schema_version\":1,\"advertised\":false,\"status\":\"";
+    json += !choice.ready
+                ? "candidate_unready"
+                : action.phase == Phase::pending_receipt
+                      ? "pending_receipt"
+                      : action.phase == Phase::rejected
+                            ? "validator_or_receiver_rejected"
+                            : action.phase == Phase::red ? "red"
+                                                         : "not_executed";
+    json += "\",\"candidate_failure\":\"";
+    json += WorldActionCandidateFailureKey(choice.failure);
+    json += "\",\"native_failure\":\"";
+    json += WorldActionNativeFailureKey(action.failure);
+    json += "\",\"stock_candidate_ready\":";
+    json += choice.ready ? "true" : "false";
+    json += ",\"production_native_path\":";
+    json += action.production_native_path ? "true" : "false";
+    json += ",\"applied\":false,\"proof_epoch\":";
+    json += choice.ready ? std::to_string(choice.proof_epoch) : "null";
+    json += ",\"actor_character_id\":";
+    json += choice.ready ? std::to_string(choice.actor_character_id) : "null";
+    json += ",\"barony_title_id\":";
+    json += choice.ready ? std::to_string(choice.barony_title_id) : "null";
+    json += ",\"province_id\":";
+    json += choice.ready ? std::to_string(choice.province_id) : "null";
+    json += ",\"building_type_id\":";
+    json += choice.ready ? std::to_string(choice.building_type_id) : "null";
+    json += ",\"slot_index\":";
+    json += choice.ready ? std::to_string(choice.slot_index) : "null";
+    json += ",\"gold_before_raw\":";
+    json += choice.ready ? std::to_string(choice.player_gold_before_raw)
+                         : "null";
+    json += ",\"stock_gold_cost_raw\":";
+    json += choice.ready ? std::to_string(choice.stock_gold_cost_raw)
+                         : "null";
+    json += ",\"gold_after_reserve_raw\":";
+    json += choice.ready ? std::to_string(choice.gold_reserve_after_raw)
+                         : "null";
+    json += ",\"receiver_command_sequence\":";
+    json += action.receiver_command_sequence != 0
+                ? std::to_string(action.receiver_command_sequence) : "null";
+    json += ",\"validator_calls\":";
+    json += std::to_string(action.validator_calls);
+    json += ",\"materialize_calls\":";
+    json += std::to_string(action.materialize_calls);
+    json += ",\"receiver_calls\":";
+    json += std::to_string(action.receiver_calls);
+    json += '}';
+  }
   json += ",\"executor_invocations\":";
   json += std::to_string(query.executor_invocations);
   json += '}';
