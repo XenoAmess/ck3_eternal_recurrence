@@ -476,6 +476,19 @@ class _NativeAutoRunHarness:
                 "accepted": True,
                 "status": "queried",
             }
+        elif action == "lifestyle_receipt":
+            step = "private-query-player-lifestyle-receipt-v1"
+            result = {
+                "step": step,
+                "status": "applied",
+                "action_request_id": "life-perk-fixture",
+                "target_key": "cutting_corners_perk",
+                "post_snapshot_id": f"native:{self.native_revision}",
+                "post_public_revision": self.public_revision,
+                "episode_run_id": self.episode_run_id,
+                "post_target_perk_owned": True,
+                "postcondition_verified": True,
+            }
         elif action in {
             "advance",
             "raiktor_continue",
@@ -2723,6 +2736,21 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(
             report["auto_run"]["dirty_gameplay_since_checkpoint"]
         )
+
+    def test_lifestyle_material_receipt_is_gameplay_and_checkpoints_tail(self) -> None:
+        report, harness = self._run(["lifestyle_receipt"])
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 1)
+        self.assertEqual(report["auto_run"]["counts"]["gameplay"], 1)
+        self.assertEqual(report["auto_run"]["counts"]["query"], 0)
+        self.assertIn(
+            "lifestyle_has_perk_independent_later_frame",
+            report["auto_run"]["turns"][0]["evidence"],
+        )
+        self.assertEqual(report["checkpoints"][-1]["phase"], "final_checkpoint")
+        self.assertEqual(harness.events.count("save_checkpoint"), 1)
 
     def test_operator_stop_waits_for_verified_turn_and_saves_tail(self) -> None:
         report, harness = self._run(

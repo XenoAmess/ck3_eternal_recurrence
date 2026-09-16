@@ -3531,8 +3531,6 @@ def _turn_class(
         return "terminal" if isinstance(plan, dict) else "gameplay"
     if step.startswith("query-"):
         return "query"
-    if step == PRIVATE_LIFESTYLE_RECEIPT_STEP:
-        return "query"
     if step == "save-checkpoint":
         return "checkpoint"
     if step in _RECOVERY_STEPS:
