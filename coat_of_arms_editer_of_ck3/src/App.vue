@@ -2248,6 +2248,15 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
           <template #title>{{ t('largePreviewDeferred') }}</template>
         </el-alert>
         <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">{{ t('loadCurrentDds') }}</el-button>
+        <el-alert
+          v-if="coatOfArms.parent.trim()"
+          data-testid="parent-preview-boundary"
+          type="warning"
+          :closable="false"
+          show-icon
+        >
+          <template #title>{{ t('parentPreviewBoundary', { parent: coatOfArms.parent.trim() }) }}</template>
+        </el-alert>
         <el-alert type="info" :closable="false" show-icon>
           <template #title>{{ t('previewEvidenceBoundary') }}</template>
         </el-alert>
