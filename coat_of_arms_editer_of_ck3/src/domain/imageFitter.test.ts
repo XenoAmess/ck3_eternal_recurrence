@@ -421,6 +421,49 @@ describe('browser image fitter', () => {
     expect(result.metrics.relativeImprovement).toBeGreaterThan(0.5)
   })
 
+  it('uses the highest supplied pyramid level for non-regressing local detail repair', () => {
+    const size = 64
+    const solid = texture('solid')
+    const block = texture('neutralBlock')
+    const pixels = new Uint8ClampedArray(size * size * 4)
+    for (let y = 0; y < size; y += 1) {
+      for (let x = 0; x < size; x += 1) {
+        const offset = (y * size + x) * 4
+        const onDetail = (x === 31 || x === 32) && y >= 7 && y < 57
+        pixels.set(onDetail ? [15, 15, 15, 255] : [245, 245, 245, 255], offset)
+      }
+    }
+    const target = asImage(pixels, size)
+    const result = fitImageToCoatOfArms(
+      target,
+      [candidate('pattern_solid.dds', solid)],
+      [candidate('ce_block_02.dds', block)],
+      {
+        resolution: 16,
+        pyramidImages: [target],
+        maxLayers: 1024,
+      },
+    )
+    const baseline = result.provenance.candidateLosses.find(
+      (item) => item.mode === 'native-edge-refined',
+    ) ?? result.provenance.candidateLosses.find((item) => item.mode === 'native-tile-paint')
+    const highResolution = result.provenance.candidateLosses.find(
+      (item) => item.mode === 'native-high-resolution-edge-refined',
+    )
+    expect(result.provenance.highResolutionEdgeRepair).toMatchObject({
+      resolution: 64,
+      terminationReason: expect.stringMatching(/layer_budget|no_improvement/),
+    })
+    expect(result.provenance.highResolutionEdgeRepair.evaluatedCandidates).toBeGreaterThan(0)
+    expect(result.provenance.highResolutionEdgeRepair.acceptedLayers).toBeGreaterThan(0)
+    expect(baseline).toBeDefined()
+    expect(highResolution).toBeDefined()
+    expect(highResolution!.totalLoss).toBeLessThanOrEqual(baseline!.totalLoss)
+    expect(highResolution!.edgeLoss).toBeLessThanOrEqual(baseline!.edgeLoss)
+    expect(highResolution!.multiscaleMetrics.at(-1)!.edgeLoss)
+      .toBeLessThan(baseline!.multiscaleMetrics.at(-1)!.edgeLoss)
+  })
+
   it('resumes native paint from a versioned checkpoint without changing the result', () => {
     const size = 32
     const solid = texture('solid')

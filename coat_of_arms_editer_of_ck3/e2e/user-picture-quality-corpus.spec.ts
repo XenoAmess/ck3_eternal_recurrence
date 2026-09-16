@@ -25,13 +25,26 @@ const corpus = JSON.parse(await readFile(resolve(fixtureRoot, 'cases.json'), 'ut
 }
 const budget = Number.parseInt(process.env.COA_CORPUS_BUDGET ?? '128', 10)
 if (!Number.isSafeInteger(budget) || budget < 1) throw new Error('COA_CORPUS_BUDGET must be a positive safe integer')
+const requestedCaseIds = new Set(
+  (process.env.COA_CORPUS_CASES ?? '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean),
+)
+const unknownCaseIds = [...requestedCaseIds].filter(
+  (caseId) => !corpus.cases.some((picture) => picture.id === caseId),
+)
+if (unknownCaseIds.length) throw new Error(`COA_CORPUS_CASES contains unknown ids: ${unknownCaseIds.join(', ')}`)
+const selectedCases = requestedCaseIds.size
+  ? corpus.cases.filter((picture) => requestedCaseIds.has(picture.id))
+  : corpus.cases
 const artifactRoot = process.env.COA_CORPUS_ARTIFACT_ROOT
   ? resolve('..', process.env.COA_CORPUS_ARTIFACT_ROOT)
   : resolve('test-results/user-picture-quality-corpus', `budget-${budget}`)
 const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex').toUpperCase()
 
 test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
-  for (const picture of corpus.cases) {
+  for (const picture of selectedCases) {
     test(`${picture.id}: ${picture.file}`, async ({ page }) => {
       test.setTimeout(budget >= 1_024 ? 7 * 60_000 : 4 * 60_000)
       const inputPath = resolve(fixtureRoot, picture.file)
@@ -81,6 +94,23 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       const fitPreviewUrl = await page.getByTestId('fit-preview').getAttribute('src')
       const editorPreviewUrl = await page.getByTestId('editor-preview').getAttribute('src')
       expect(fitPreviewUrl).toBe(editorPreviewUrl)
+      await expect(page.getByTestId('visual-transform-box')).toHaveCount(0)
+      const currentCandidatePreview = page.getByTestId('current-candidate-preview')
+      await expect(currentCandidatePreview).toHaveAttribute('src', editorPreviewUrl!)
+      const previewProjection = await page.evaluate(() => {
+        const editor = document.querySelector<HTMLElement>('.shield')!
+        const candidate = document.querySelector<HTMLElement>('[data-testid="current-candidate-preview"]')!
+        const editorBounds = editor.getBoundingClientRect()
+        const candidateBounds = candidate.getBoundingClientRect()
+        return {
+          editorClipPath: getComputedStyle(editor).clipPath,
+          candidateClipPath: getComputedStyle(candidate).clipPath,
+          editorAspectRatio: editorBounds.width / editorBounds.height,
+          candidateAspectRatio: candidateBounds.width / candidateBounds.height,
+        }
+      })
+      expect(previewProjection.candidateClipPath).toBe(previewProjection.editorClipPath)
+      expect(previewProjection.candidateAspectRatio).toBeCloseTo(previewProjection.editorAspectRatio, 2)
       if (!editorPreviewUrl?.startsWith('data:image/png;base64,')) throw new Error('missing canonical preview')
       const previewBytes = Buffer.from(editorPreviewUrl.slice('data:image/png;base64,'.length), 'base64')
 

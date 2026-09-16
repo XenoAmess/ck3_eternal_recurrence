@@ -119,24 +119,48 @@ r12 已补齐上述独立验证：把 7 例首次 CK3 aligned crop 作为 refere
 记录为字段变化，但在当前原生家徽表面分辨率下已证明像素等价。r12 证据位于
 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-native-r12/`。
 
+## v11 高分辨率混合修复与统一展示投影（2026-09-16）
+
+继续排查发现，首版 256px 修复虽然存在，却接在已经耗尽 1,024 槽位的纯矩形 lane 后面；真正胜出的
+混合 lane（picture-02/05/07 分别只有 580/881/956 层）没有进入高分阶段。v9 因而 7 图全部与 v8
+一致，这个无收益实验保留在 `user-picture-corpus-v9-high-resolution-budget-1024/`，不冒充修复。
+
+v10/v11 把完整 DDS 纹理表和混合候选送入 256px 残差搜索。新层只有在 256px 总损失/边缘损失形成
+Pareto 改善、同时 96px 两项均不退化时才接受。picture-02/05/07 分别保留 60/36/30 个高分层：
+
+| 用例 | v8 实例→v11 | v8 总损失→v11 | v8 边缘→v11 | 总损失改善 | 边缘改善 |
+|---|---:|---:|---:|---:|---:|
+| picture-02 | 580→640 | 0.035329→0.033979 | 0.064976→0.063220 | 3.82% | 2.70% |
+| picture-05 | 881→917 | 0.057423→0.052995 | 0.100367→0.095896 | 7.71% | 4.46% |
+| picture-07 | 956→986 | 0.053918→0.049606 | 0.090944→0.086218 | 8.00% | 5.20% |
+
+另一个可见差异来自展示层而非 renderer：候选卡把同一 PNG 放进 1:1 正方形，主预览用 260:315
+盾形裁剪；主预览还默认显示黄色变换辅助线。v11 让三处引用同一个 canonical PNG、使用同一盾形
+clip-path 和纵横比，并把辅助线改成默认隐藏、显式切换。E2E 不再只比较 URL，还逐图比较计算后的
+clip-path、纵横比和默认辅助线状态。
+
+v11 浏览器门禁 7/7 通过；picture-01/03/04/06 在预算已满时数值精确不变。最终浏览器证据位于
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-preview-projection-budget-1024/`。由于
+02/05/07 的导出代码发生改变，v8 r11/r12 的原生结论不能自动外推；v11 的 MCP 原生复验仍待执行。
+
 | 检查 | 当前状态 | 当前证据能支持的结论 |
 |---|---|---|
-| 原图→浏览器拟合 | 已逐图量化 | 7 图均完成 1024 预算，但其中多图质量仍不可接受 |
-| 下方预览→右侧预览 | 通过 | 7/7 字节源和展示几何一致 |
+| 原图→浏览器拟合 | v11 已逐图量化 | 7 图均完成 1024 预算；02/05/07 高分层改善，仍不宣称照片级高保真 |
+| 下方预览→右侧预览 | v11 通过 | 7/7 canonical PNG、盾形 clip-path、纵横比一致；编辑辅助线默认隐藏 |
 | 完整复制→重新解析 | 通过 | 7/7 代码完整，实例计数一致，serialize/parse 精确闭环 |
-| CK3 Apply/Copy | v8 r11 已逐图执行 | 7/7 大载荷核心计数闭环通过；严格字段序列 4/7，picture-02/05/07 的 Copy 将小数 rotation 规范化为整数 |
-| CK3 空间像素→右侧预览 | 通过 | v3 原生 UV 校准后 7/7 通过预先冻结的四项像素门禁；原生框体不参与评分 |
+| CK3 Apply/Copy | v8 r11/r12 通过；v11 待验 | v8 为 7/7；v11 改变了 02/05/07 的代码，必须重新 Apply/Copy |
+| CK3 空间像素→右侧预览 | v8 通过；v11 待验 | v8 v3 UV 校准后 7/7 通过；不能把旧 framebuffer 结论外推给 v11 |
 
 MCP 的当前定位、指标和隐私边界见
-`docs/ck3-coat-of-arms-framebuffer-comparison-v3.md`。原生 Copy 再导入像素闭环已经完成；下一步
-继续高分辨率局部替换/边缘细化，用这 7 图逐图做改动前后消融。
+`docs/ck3-coat-of-arms-framebuffer-comparison-v3.md`。v8 原生 Copy 再导入像素闭环已经完成；下一步是
+对 v11 改变的候选做新的结构化 MCP Apply/Copy/framebuffer 对照，再继续更丰富画笔和局部替换。
 
 ## 复现命令
 
 ```bat
 cd coat_of_arms_editer_of_ck3
 pnpm exec playwright test e2e/user-picture-preview-consistency.spec.ts --reporter=line
-set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-budget-1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line
+set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs/coat-of-arms-fit-artifacts/user-picture-corpus-v11-preview-projection-budget-1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --workers=1
 pnpm test
 pnpm build
 ```

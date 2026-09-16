@@ -116,7 +116,14 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .candidate-comparison p { margin: 0 0 10px; color: #928778; font-size: 11px; line-height: 1.55; }
 .candidate-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .candidate-card { display: flex; min-width: 0; flex-direction: column; gap: 6px; padding: 8px; border: 1px solid #4d4437; background: rgba(28,24,19,.78); }
-.candidate-card img, .candidate-preview-placeholder { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; background: #141210; }
+.candidate-preview-frame, .candidate-preview-placeholder { display: grid; width: 100%; aspect-ratio: 1 / 1; place-items: center; background: #141210; }
+.candidate-shield-preview {
+  width: 82%;
+  aspect-ratio: 260 / 315;
+  object-fit: fill;
+  clip-path: polygon(4% 0, 96% 0, 96% 65%, 82% 83%, 50% 100%, 18% 83%, 4% 65%);
+  border: 1px solid var(--line);
+}
 .candidate-preview-placeholder { display: grid; place-items: center; color: #786d60; font-size: 11px; }
 .candidate-card strong { color: #d6bf84; font-size: 12px; }
 .candidate-card > span { overflow: hidden; color: #a99d8e; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }

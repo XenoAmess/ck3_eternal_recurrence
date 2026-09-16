@@ -13,6 +13,8 @@ async function center(locator: Locator) {
 
 test('directly moves, scales, rotates and undoes the selected CK3 instance', async ({ page }) => {
   await page.goto('/')
+  await expect(page.getByTestId('visual-transform-box')).toHaveCount(0)
+  await page.getByTestId('toggle-visual-guides').click()
   await expect(page.getByTestId('visual-transform-box')).toBeVisible()
   await expect(page.locator('[data-instance-index="0"]')).toHaveClass(/selected/)
 

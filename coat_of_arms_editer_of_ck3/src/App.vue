@@ -215,6 +215,7 @@ const HISTORY_DEBOUNCE_MS = 450
 const AUTOSAVE_DEBOUNCE_MS = 1_000
 const instanceWindowStart = ref(0)
 const selectedInstanceIndex = ref(0)
+const visualGuidesVisible = ref(false)
 const visualTransformMode = ref<'move' | 'scale' | 'rotate' | null>(null)
 const shieldElement = ref<HTMLElement>()
 let historyApplying = false
@@ -781,6 +782,7 @@ function selectInstanceForVisualEdit(index: number) {
     Math.max(0, Math.floor(index)),
     Math.max(0, (activeEmblem.value?.instances.length ?? 1) - 1),
   )
+  visualGuidesVisible.value = true
 }
 
 interface VisualTransformGesture {
@@ -1944,7 +1946,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               <div><dt>{{ t('gpuBatchSearch') }}</dt><dd>{{ fitResult.provenance.batchSearch.backend ?? 'CPU' }} · {{ fitResult.provenance.batchSearch.status }} · {{ fitResult.provenance.batchSearch.batches }} batch / {{ fitResult.provenance.batchSearch.candidates }} candidates · Δ {{ fitResult.provenance.batchSearch.maximumMetricDelta.toExponential(2) }}</dd></div>
               <div><dt>{{ t('gpuCrossScore') }}</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : t('unavailable') }}</dd></div>
               <div><dt>{{ t('inputPyramid') }}</dt><dd>{{ fitResult.provenance.sourceWidth }}×{{ fitResult.provenance.sourceHeight }} → {{ fitResult.provenance.pyramidResolutions.join(' / ') }}px</dd></div>
-              <div><dt>{{ t('candidatePaths') }}</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? t('nativeBlock') : item.mode === 'native-edge-refined' ? t('edgeRefined') : item.mode === 'hybrid-native-paint' ? t('hybrid') : t('semantic')} ${item.layers} ${t('layersShort')}=${item.totalLoss.toFixed(4)} [${item.textureNames.join(', ') || t('noEmblem')}]`).join(' · ') }}</dd></div>
+              <div><dt>{{ t('candidatePaths') }}</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? t('nativeBlock') : item.mode === 'native-edge-refined' ? t('edgeRefined') : item.mode === 'native-high-resolution-edge-refined' ? t('highResolutionRefined') : item.mode === 'hybrid-native-paint' ? t('hybrid') : t('semantic')} ${item.layers} ${t('layersShort')}=${item.totalLoss.toFixed(4)} [${item.textureNames.join(', ') || t('noEmblem')}]`).join(' · ') }}</dd></div>
             </dl>
             <small>{{ t('scoreBoundary') }}</small>
           </template>
@@ -2027,9 +2029,17 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
       <section class="preview-pane panel">
         <div class="panel-title">
           <div><span class="step">02</span><h2>{{ t('previewTitle') }}</h2></div>
-          <el-tag effect="plain" :type="renderedPreviewUrl ? 'success' : 'warning'">
-            {{ renderedPreviewUrl ? t('shaderModel', { count: shaderSourceCount }) : t('browserApproximation') }}
-          </el-tag>
+          <el-space>
+            <el-button
+              v-if="selectedInstance"
+              size="small"
+              data-testid="toggle-visual-guides"
+              @click="visualGuidesVisible = !visualGuidesVisible"
+            >{{ visualGuidesVisible ? t('hideVisualGuides') : t('showVisualGuides') }}</el-button>
+            <el-tag effect="plain" :type="renderedPreviewUrl ? 'success' : 'warning'">
+              {{ renderedPreviewUrl ? t('shaderModel', { count: shaderSourceCount }) : t('browserApproximation') }}
+            </el-tag>
+          </el-space>
         </div>
         <div class="preview-stage">
           <div ref="shieldElement" :class="['shield', { 'shader-bound': renderedPreviewUrl }]" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
@@ -2071,7 +2081,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                 </template>
               </div>
             </template>
-            <div v-if="selectedInstance" class="visual-transform-layer">
+            <div v-if="selectedInstance && visualGuidesVisible" class="visual-transform-layer">
               <div
                 class="visual-transform-box"
                 :class="{ active: visualTransformMode !== null }"
@@ -2112,7 +2122,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
             </div>
           </div>
         </div>
-        <p v-if="selectedInstance" class="visual-editor-help">
+        <p v-if="selectedInstance && visualGuidesVisible" class="visual-editor-help">
           {{ t('visualEditorHelp', { layer: selectedEmblem + 1, instance: selectedInstanceIndex + 1 }) }}
         </p>
         <section class="candidate-comparison" data-testid="candidate-comparison">
@@ -2125,7 +2135,14 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
           <p>{{ t('candidateBoundary') }}</p>
           <div v-if="comparisonRows.length" class="candidate-grid">
             <article v-for="candidate in comparisonRows" :key="candidate.id" class="candidate-card" :data-candidate-id="candidate.id">
-              <img v-if="candidate.previewUrl" :src="candidate.previewUrl" :alt="candidate.name" />
+              <div v-if="candidate.previewUrl" class="candidate-preview-frame">
+                <img
+                  :src="candidate.previewUrl"
+                  :alt="candidate.name"
+                  class="candidate-shield-preview"
+                  :data-testid="candidate.current ? 'current-candidate-preview' : undefined"
+                />
+              </div>
               <div v-else class="candidate-preview-placeholder">{{ t('previewDeferred') }}</div>
               <strong>{{ candidate.name }}</strong>
               <span>{{ t('candidateStats', { instances: candidate.stats.drawnInstances.toLocaleString(), blocks: candidate.stats.coloredEmblemBlocks.toLocaleString(), bytes: candidate.stats.utf8Bytes.toLocaleString() }) }}</span>

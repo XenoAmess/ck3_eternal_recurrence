@@ -107,6 +107,7 @@ export type ImageFitReconstructionMode =
   | 'semantic-search'
   | 'native-tile-paint'
   | 'native-edge-refined'
+  | 'native-high-resolution-edge-refined'
   | 'hybrid-native-paint'
 
 export interface MultiscaleFitMetric {
@@ -166,6 +167,13 @@ export interface ImageFitResult {
     }[]
     selectedMultiscaleMetrics: MultiscaleFitMetric[]
     baselineEdgeRepair: {
+      availableSlots: number
+      acceptedLayers: number
+      evaluatedCandidates: number
+      terminationReason: 'not_applicable' | 'layer_budget' | 'no_improvement'
+    }
+    highResolutionEdgeRepair: {
+      resolution: number | null
       availableSlots: number
       acceptedLayers: number
       evaluatedCandidates: number
@@ -1635,6 +1643,160 @@ function refinePaintedStateAtEdgeHotspots(
   return state
 }
 
+function refinePaintedStateAtHighResolution(
+  initial: SearchState,
+  brush: FitTextureCandidate,
+  emblemTextures: Record<string, DecodedDds>,
+  target: FitImage,
+  highResolutionTarget: FitImage,
+  maxLayers: number,
+  surfaceMask: DecodedDds | undefined,
+  namedColors: NamedColorMap,
+  evaluated: EvaluationCounter,
+  onProgress?: (progress: ImageFitProgress) => void,
+): SearchState {
+  const remaining = maxLayers - initial.selectedAssets.length
+  if (
+    remaining <= 0
+    || highResolutionTarget.width <= target.width
+    || highResolutionTarget.height <= target.height
+  ) return initial
+  let highResolutionCandidate = score(
+    initial.candidate.coatOfArms,
+    initial.patternAsset.texture,
+    emblemTextures,
+    highResolutionTarget,
+    `${initial.candidate.key}\0high-resolution:${highResolutionTarget.width}`,
+    surfaceMask,
+    namedColors,
+  )
+  evaluated.value += 1
+  const tiles = nativePaintTiles(
+    highResolutionTarget,
+    highResolutionCandidate.rendered,
+    remaining,
+  ).slice(0, remaining)
+  if (!tiles.length) return initial
+  const shape = textureShapeDescriptor(brush.texture)
+  const coverageFactors = [1, 1.04] as const
+  const total = Math.max(1, tiles.length * (coverageFactors.length + 1))
+  let completed = 0
+  let state = initial
+  reportProgress(
+    onProgress, 'refine', 0, total,
+    state.selectedAssets.length + 1, maxLayers, evaluated.value,
+  )
+  for (const tile of tiles) {
+    if (state.selectedAssets.length >= maxLayers) break
+    const focus: ResidualFocus = {
+      position: [
+        (tile.minimumX + tile.maximumX) / 2 / highResolutionTarget.width,
+        (tile.minimumY + tile.maximumY) / 2 / highResolutionTarget.height,
+      ],
+      scale: [
+        (tile.maximumX - tile.minimumX) / highResolutionTarget.width,
+        (tile.maximumY - tile.minimumY) / highResolutionTarget.height,
+      ],
+      descriptor: new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE),
+    }
+    const geometry = initialLayerGeometry(
+      focus,
+      { asset: brush, shape, rotation: 0, flip: 1, loss: 0 },
+      0.001,
+    )
+    let best: { choice: PaintLayerChoice, parameters: LayerParameters, scaleFactor: number } | null = null
+    for (const scaleFactor of coverageFactors) {
+      const parameters: LayerParameters = {
+        colors: [tile.color, tile.color, tile.color],
+        position: geometry.position,
+        scale: [geometry.scale[0] * scaleFactor, geometry.scale[1] * scaleFactor],
+        rotation: 0,
+        flip: 1,
+      }
+      const choice = paintLayerChoice(
+        highResolutionCandidate,
+        initial.patternAsset.texture,
+        surfaceMask,
+        namedColors,
+        highResolutionTarget,
+        brush,
+        parameters,
+        state.selectedAssets.length + 1,
+        evaluated,
+      )
+      completed += 1
+      const highResolutionImprovement = (
+        choice.candidate.totalLoss < highResolutionCandidate.totalLoss - 1e-12
+        && choice.candidate.edgeLoss <= highResolutionCandidate.edgeLoss + 1e-12
+      ) || (
+        choice.candidate.edgeLoss < highResolutionCandidate.edgeLoss - 1e-12
+        && choice.candidate.totalLoss <= highResolutionCandidate.totalLoss + 1e-12
+      )
+      if (
+        highResolutionImprovement
+        && (
+          !best
+          || choice.candidate.totalLoss < best.choice.candidate.totalLoss - 1e-12
+          || (
+            Math.abs(choice.candidate.totalLoss - best.choice.candidate.totalLoss) <= 1e-12
+            && (
+              choice.candidate.edgeLoss < best.choice.candidate.edgeLoss - 1e-12
+              || (
+                Math.abs(choice.candidate.edgeLoss - best.choice.candidate.edgeLoss) <= 1e-12
+                && scaleFactor < best.scaleFactor
+              )
+            )
+          )
+        )
+      ) best = { choice, parameters, scaleFactor }
+    }
+    if (best) {
+      const lowResolutionChoice = layerChoice(
+        state.candidate,
+        initial.patternAsset.texture,
+        surfaceMask,
+        namedColors,
+        target,
+        brush,
+        best.parameters,
+        state.selectedAssets.length + 1,
+        evaluated,
+      )
+      completed += 1
+      if (
+        lowResolutionChoice.candidate.totalLoss <= state.candidate.totalLoss + 1e-12
+        && lowResolutionChoice.candidate.edgeLoss <= state.candidate.edgeLoss + 1e-12
+      ) {
+        state = {
+          candidate: lowResolutionChoice.candidate,
+          patternAsset: state.patternAsset,
+          selectedAssets: [...state.selectedAssets, brush],
+          layerLosses: [...state.layerLosses, lowResolutionChoice.candidate.totalLoss],
+          reconstructionMode: 'native-high-resolution-edge-refined',
+          paintPlacements: state.paintPlacements,
+        }
+        highResolutionCandidate = {
+          ...best.choice.candidate,
+          coatOfArms: lowResolutionChoice.candidate.coatOfArms,
+        }
+      }
+    } else {
+      completed += 1
+    }
+    if (shouldReportProgress(completed, total)) {
+      reportProgress(
+        onProgress, 'refine', completed, total,
+        state.selectedAssets.length + 1, maxLayers, evaluated.value,
+      )
+    }
+  }
+  reportProgress(
+    onProgress, 'refine', total, total,
+    state.selectedAssets.length, maxLayers, evaluated.value,
+  )
+  return state
+}
+
 function refinePaintedStateWithNativeShape(
   initial: SearchState,
   emblems: FitTextureCandidate[],
@@ -1994,6 +2156,7 @@ export function fitImageToCoatOfArms(
     ?? emblems.find((item) => item.name === 'ce_billet.dds')
     ?? emblems.find((item) => item.name === 'ce_circle.dds')
   const emblemAssetMap = new Map(emblems.map((item) => [item.name, item]))
+  const emblemTextureMap = Object.fromEntries(emblems.map((item) => [item.name, item.texture]))
   let terminationReason: ImageFitResult['provenance']['terminationReason'] = 'layer_budget'
   // Large-budget runs used to force this value to zero, which made the
   // algorithm unconditionally collapse to a single rectangular texture.
@@ -2146,6 +2309,13 @@ export function fitImageToCoatOfArms(
     evaluatedCandidates: 0,
     terminationReason: 'not_applicable',
   }
+  let highResolutionEdgeRepair: ImageFitResult['provenance']['highResolutionEdgeRepair'] = {
+    resolution: null,
+    availableSlots: 0,
+    acceptedLayers: 0,
+    evaluatedCandidates: 0,
+    terminationReason: 'not_applicable',
+  }
   if (paintBrush && bestSolidBackground) {
     const solidState: SearchState = {
       candidate: bestSolidBackground.candidate,
@@ -2205,6 +2375,12 @@ export function fitImageToCoatOfArms(
         : 'no_improvement',
     }
     if (edgeRefinedPaintState !== paintState) finalists.push(edgeRefinedPaintState)
+    const highResolutionTarget = [...pyramidTargets.values()]
+      .filter((pyramidTarget) => (
+        pyramidTarget.width > target.width
+        && pyramidTarget.height > target.height
+      ))
+      .sort((left, right) => right.width - left.width || right.height - left.height)[0]
     const refinedPaintState = refinePaintedStateWithNativeShape(
       edgeRefinedPaintState,
       emblems,
@@ -2218,6 +2394,7 @@ export function fitImageToCoatOfArms(
       options.onProgress,
     )
     if (refinedPaintState !== edgeRefinedPaintState) finalists.push(refinedPaintState)
+    let highResolutionSeed = edgeRefinedPaintState
     const semanticSeed = beam
       .filter((state) => state.selectedAssets.length > 0)
       .sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
@@ -2248,9 +2425,40 @@ export function fitImageToCoatOfArms(
         throw new Error('混合原生块候选未通过 96/230/512 高分辨率覆盖门禁')
       }
       finalists.push(hybridState)
+      highResolutionSeed = hybridState
     }
+    const availableHighResolutionSlots = maxLayers - highResolutionSeed.selectedAssets.length
+    const evaluatedBeforeHighResolutionRepair = evaluated.value
+    const highResolutionPaintState = highResolutionTarget
+      ? refinePaintedStateAtHighResolution(
+          highResolutionSeed,
+          paintBrush,
+          emblemTextureMap,
+          target,
+          highResolutionTarget,
+          maxLayers,
+          surfaceMask,
+          namedColors,
+          evaluated,
+          options.onProgress,
+        )
+      : highResolutionSeed
+    const acceptedHighResolutionLayers = highResolutionPaintState.selectedAssets.length
+      - highResolutionSeed.selectedAssets.length
+    highResolutionEdgeRepair = {
+      resolution: highResolutionTarget?.width ?? null,
+      availableSlots: availableHighResolutionSlots,
+      acceptedLayers: acceptedHighResolutionLayers,
+      evaluatedCandidates: evaluated.value - evaluatedBeforeHighResolutionRepair,
+      terminationReason: !highResolutionTarget
+        ? 'not_applicable'
+        : availableHighResolutionSlots === 0
+          || acceptedHighResolutionLayers === availableHighResolutionSlots
+          ? 'layer_budget'
+          : 'no_improvement',
+    }
+    if (highResolutionPaintState !== highResolutionSeed) finalists.push(highResolutionPaintState)
   }
-  const emblemTextureMap = Object.fromEntries(emblems.map((item) => [item.name, item.texture]))
   const candidateMultiscaleMetrics = new Map<SearchState, MultiscaleFitMetric[]>()
   for (const state of finalists) {
     const metrics = pyramidResolutions.map((pyramidResolution) => {
@@ -2366,6 +2574,7 @@ export function fitImageToCoatOfArms(
       })),
       selectedMultiscaleMetrics: candidateMultiscaleMetrics.get(winner) ?? [],
       baselineEdgeRepair,
+      highResolutionEdgeRepair,
       terminationReason,
       selectedAssetSha256: [
         winner.patternAsset.assetSha256,
