@@ -105,6 +105,7 @@ COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY = (
 PROBE_COAT_OF_ARMS_CAPABILITY = "game.command.probe-coat-of-arms-source-v1"
 EXPORT_COAT_OF_ARMS_CAPABILITY = "game.command.export-coat-of-arms-source-v1"
 QUERY_TOOL = "ck3_query_frontend_gui_route_v1"
+BRIDGE_DIAGNOSTICS_TOOL = "ck3_get_bridge_diagnostics"
 INSPECT_TOOL = "ck3_inspect_frontend_gui_tree_v1"
 ACTIVATE_NEW_GAME_TOOL = "ck3_activate_frontend_new_game_v1"
 ACTIVATE_PICK_ANY_TOOL = "ck3_activate_frontend_pick_any_character_v1"
@@ -362,6 +363,10 @@ VFS_REPLACE_PATH_DIAGNOSTIC_PAIRS = (
     ("replaced-earlier-only", "later-reference", False),
     ("missing-control", "later-reference", False),
 )
+VFS_MOUNT_ORDER_EXPECTED_FRAGMENTS = (
+    "coa_vfs_replace_earlier",
+    "coa_vfs_replace_later",
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -506,6 +511,14 @@ def _parser() -> argparse.ArgumentParser:
         "--vfs-replace-path-crop-dir",
         type=Path,
         help="write one hash-bound native crop per --vfs-replace-path-matrix case",
+    )
+    parser.add_argument(
+        "--vfs-mount-order-diagnostics",
+        action="store_true",
+        help=(
+            "capture the default-OFF private VFS mount publisher table through "
+            "the official read-only MCP diagnostics tool after reaching the CoA page"
+        ),
     )
     parser.add_argument("--output", type=Path, required=True)
     return parser
@@ -1590,6 +1603,148 @@ def _schema_is_zero_input(schema: object) -> bool:
         and schema.get("properties") == {}
         and schema.get("required", []) == []
     )
+
+
+def _is_nonnegative_int(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+async def _collect_vfs_mount_order_diagnostics(
+    client: Client,
+    record: Any,
+) -> dict[str, object]:
+    """Capture one bounded private observer snapshot through public MCP diagnostics."""
+
+    call = await _call(client, BRIDGE_DIAGNOSTICS_TOOL)
+    record(call)
+    body = _structured(call)
+    private_observers = body.get("private_observers")
+    observer = (
+        private_observers.get("vfs_mount_lifecycle_observer_v1")
+        if isinstance(private_observers, dict)
+        else None
+    )
+    observer = observer if isinstance(observer, dict) else {}
+    publishers = observer.get("publishers")
+    rows = publishers if isinstance(publishers, list) else []
+    slot_count = observer.get("publisher_slot_count")
+
+    ordinals: list[int] = []
+    path_previews: list[str] = []
+    rows_complete = True
+    all_returns_seen = True
+    for row in rows:
+        if not isinstance(row, dict):
+            rows_complete = False
+            all_returns_seen = False
+            continue
+        ordinal = row.get("ordinal")
+        entry_sequence = row.get("entry_sequence")
+        return_sequence = row.get("return_sequence")
+        path = row.get("path")
+        preview = path.get("preview") if isinstance(path, dict) else None
+        if (
+            not _is_nonnegative_int(ordinal)
+            or ordinal == 0
+            or not _is_nonnegative_int(entry_sequence)
+            or entry_sequence == 0
+            or not _is_nonnegative_int(return_sequence)
+            or not isinstance(row.get("return_seen"), bool)
+            or not isinstance(preview, str)
+            or not preview
+            or not isinstance(row.get("manager_before"), dict)
+            or not isinstance(row.get("manager_after"), dict)
+        ):
+            rows_complete = False
+        if isinstance(ordinal, int) and not isinstance(ordinal, bool):
+            ordinals.append(ordinal)
+        if isinstance(preview, str):
+            path_previews.append(preview)
+        if row.get("return_seen") is not True:
+            all_returns_seen = False
+
+    folded_paths = [value.casefold() for value in path_previews]
+    expected_indices: dict[str, int | None] = {}
+    for fragment in VFS_MOUNT_ORDER_EXPECTED_FRAGMENTS:
+        folded_fragment = fragment.casefold()
+        expected_indices[fragment] = next(
+            (
+                index
+                for index, value in enumerate(folded_paths)
+                if folded_fragment in value
+            ),
+            None,
+        )
+    expected_positions = list(expected_indices.values())
+    expected_mounts_observed = all(
+        isinstance(value, int) for value in expected_positions
+    )
+    expected_mount_order = bool(
+        expected_mounts_observed
+        and expected_positions == sorted(expected_positions)
+        and len(set(expected_positions)) == len(expected_positions)
+    )
+
+    publisher_entry_count = observer.get("publisher_entry_count")
+    publisher_return_count = observer.get("publisher_return_count")
+    publisher_success_count = observer.get("publisher_success_count")
+    publisher_failure_count = observer.get("publisher_failure_count")
+    count_values_valid = all(
+        _is_nonnegative_int(value)
+        for value in (
+            publisher_entry_count,
+            publisher_return_count,
+            publisher_success_count,
+            publisher_failure_count,
+        )
+    )
+    counts_coherent = bool(
+        count_values_valid
+        and publisher_entry_count >= len(rows)
+        and publisher_return_count <= publisher_entry_count
+        and publisher_success_count + publisher_failure_count
+        == publisher_return_count
+    )
+    checks = {
+        "call_not_error": call.get("is_error") is False,
+        "observer_present": bool(observer),
+        "private_read_only_not_public": (
+            observer.get("private_build") is True
+            and observer.get("read_only") is True
+            and observer.get("public_capability") is False
+        ),
+        "installed_without_failure": (
+            observer.get("installed") is True
+            and observer.get("failure_flags") == 0
+        ),
+        "bounded_nonempty_snapshot": (
+            _is_nonnegative_int(slot_count)
+            and 0 < slot_count <= 64
+            and slot_count == len(rows)
+        ),
+        "publisher_rows_complete": rows_complete and bool(rows),
+        "publisher_ordinals_strictly_increasing": (
+            len(ordinals) == len(rows)
+            and all(
+                previous < current
+                for previous, current in zip(ordinals, ordinals[1:])
+            )
+        ),
+        "publisher_returns_complete": all_returns_seen and bool(rows),
+        "publisher_counts_coherent": counts_coherent,
+        "fixture_mounts_observed": expected_mounts_observed,
+        "fixture_mount_order_matches_dlc_load": expected_mount_order,
+    }
+    return {
+        "ok": all(checks.values()),
+        "scope": "bounded startup mount publisher order; no per-resource winner claim",
+        "expected_fragments": list(VFS_MOUNT_ORDER_EXPECTED_FRAGMENTS),
+        "expected_fragment_indices": expected_indices,
+        "path_previews": path_previews,
+        "checks": checks,
+        "observer": observer,
+        "call": call,
+    }
 
 
 async def _collect_syntax_matrix(
@@ -3061,6 +3216,7 @@ async def _mcp_sequence(
     vfs_winner_matrix: bool = False,
     vfs_extended_matrix: bool = False,
     vfs_replace_path_matrix: bool = False,
+    vfs_mount_order_diagnostics: bool = False,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
@@ -3172,6 +3328,11 @@ async def _mcp_sequence(
             if custom_mode_census
             else set()
         )
+        diagnostics_required = (
+            {BRIDGE_DIAGNOSTICS_TOOL}
+            if vfs_mount_order_diagnostics
+            else set()
+        )
         required = (
             route_required
             | matrix_required
@@ -3180,6 +3341,7 @@ async def _mcp_sequence(
             | framebuffer_required
             | parent_semantics_required
             | custom_mode_required
+            | diagnostics_required
         )
         schemas = {
             name: tools[name].input_schema
@@ -3207,6 +3369,13 @@ async def _mcp_sequence(
         ):
             return red(
                 "coat-of-arms custom-mode MCP tools are not closed zero-input tools",
+                tool_schemas=schemas,
+            )
+        if vfs_mount_order_diagnostics and not _schema_is_zero_input(
+            schemas.get(BRIDGE_DIAGNOSTICS_TOOL)
+        ):
+            return red(
+                "bridge diagnostics MCP tool is not a closed zero-input tool",
                 tool_schemas=schemas,
             )
         if (syntax_matrix is not None or commit_roundtrip) and not (
@@ -3819,6 +3988,20 @@ async def _mcp_sequence(
             checks["vfs_replace_path_evidence_complete"] = (
                 vfs_replace_path_result.get("ok") is True
             )
+        vfs_mount_order_result: dict[str, object] | None = None
+        if vfs_mount_order_diagnostics:
+            if all(checks.values()):
+                vfs_mount_order_result = (
+                    await _collect_vfs_mount_order_diagnostics(client, record)
+                )
+            else:
+                vfs_mount_order_result = {
+                    "ok": False,
+                    "error": "route checks failed before VFS mount-order diagnostics",
+                }
+            checks["vfs_mount_order_diagnostics_complete"] = (
+                vfs_mount_order_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -3842,6 +4025,7 @@ async def _mcp_sequence(
             "vfs_winner_matrix": vfs_winner_result,
             "vfs_extended_matrix": vfs_extended_result,
             "vfs_replace_path_matrix": vfs_replace_path_result,
+            "vfs_mount_order_diagnostics": vfs_mount_order_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -4094,6 +4278,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         getattr(args, "vfs_replace_path_matrix", False)
     )
     vfs_replace_path_crop_dir = getattr(args, "vfs_replace_path_crop_dir", None)
+    vfs_mount_order_diagnostics = bool(
+        getattr(args, "vfs_mount_order_diagnostics", False)
+    )
     if picture_corpus is not None and (
         getattr(args, "large_source", None) is not None
         or reference_preview is not None
@@ -4200,6 +4387,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or vfs_winner_matrix
         or vfs_extended_matrix
         or vfs_replace_path_matrix
+        or vfs_mount_order_diagnostics
     ):
         raise ValueError("--bookmarks-read-only cannot run CoA actions")
     large_source = (
@@ -4352,6 +4540,22 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             if vfs_replace_path_matrix
             else None
         ),
+        "vfs_mount_order_diagnostics_requested": vfs_mount_order_diagnostics,
+        "vfs_mount_order_diagnostics_plan": (
+            {
+                "transport": "official MCP ck3_get_bridge_diagnostics",
+                "observer": "vfs_mount_lifecycle_observer_v1",
+                "bounded_publisher_slots": 64,
+                "expected_fragments_in_order": list(
+                    VFS_MOUNT_ORDER_EXPECTED_FRAGMENTS
+                ),
+                "evidence_boundary": (
+                    "startup mount publisher order only; no per-resource winner claim"
+                ),
+            }
+            if vfs_mount_order_diagnostics
+            else None
+        ),
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -4424,6 +4628,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 vfs_winner_matrix=vfs_winner_matrix,
                 vfs_extended_matrix=vfs_extended_matrix,
                 vfs_replace_path_matrix=vfs_replace_path_matrix,
+                vfs_mount_order_diagnostics=vfs_mount_order_diagnostics,
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,

@@ -461,6 +461,88 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         )
         self.assertIn('"pattern_grid_census_recorded"', source)
 
+    def test_vfs_mount_order_diagnostics_are_bounded_and_ordered(self) -> None:
+        module = _load_runner_module()
+
+        def publisher(ordinal: int, preview: str) -> dict[str, object]:
+            return {
+                "ordinal": ordinal,
+                "entry_sequence": ordinal * 2,
+                "return_sequence": ordinal * 2 + 1,
+                "entry_thread_id": 10,
+                "return_thread_id": 10,
+                "raw_result": 1,
+                "raw_rcx": 100 + ordinal,
+                "backend": 200 + ordinal,
+                "insert_mode": 0,
+                "return_seen": True,
+                "path": {"preview": preview},
+                "manager_before": {},
+                "manager_after": {},
+            }
+
+        observer = {
+            "private_build": True,
+            "read_only": True,
+            "public_capability": False,
+            "installed": True,
+            "failure_flags": 0,
+            "publisher_entry_count": 2,
+            "publisher_return_count": 2,
+            "publisher_success_count": 2,
+            "publisher_failure_count": 0,
+            "publisher_slot_count": 2,
+            "publishers": [
+                publisher(1, "D:/profile/coa_vfs_replace_earlier"),
+                publisher(2, "D:/profile/coa_vfs_replace_later"),
+            ],
+        }
+
+        class FakeClient:
+            async def call_tool(self, name, arguments):
+                self.name = name
+                self.arguments = dict(arguments)
+                return SimpleNamespace(
+                    content=[],
+                    is_error=False,
+                    structured_content={
+                        "private_observers": {
+                            "vfs_mount_lifecycle_observer_v1": observer
+                        }
+                    },
+                )
+
+        client = FakeClient()
+        recorded = []
+        result = asyncio.run(
+            module._collect_vfs_mount_order_diagnostics(
+                client, recorded.append
+            )
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(client.name, module.BRIDGE_DIAGNOSTICS_TOOL)
+        self.assertEqual(client.arguments, {})
+        self.assertEqual(len(recorded), 1)
+        self.assertTrue(result["checks"]["fixture_mounts_observed"])
+        self.assertTrue(
+            result["checks"]["fixture_mount_order_matches_dlc_load"]
+        )
+
+        observer["publishers"].reverse()
+        reversed_result = asyncio.run(
+            module._collect_vfs_mount_order_diagnostics(
+                FakeClient(), lambda call: None
+            )
+        )
+        self.assertFalse(reversed_result["ok"])
+        self.assertFalse(
+            reversed_result["checks"]["publisher_ordinals_strictly_increasing"]
+        )
+        self.assertFalse(
+            reversed_result["checks"]["fixture_mount_order_matches_dlc_load"]
+        )
+
     def test_custom_mode_collector_records_materialized_pattern_subtree(
         self,
     ) -> None:
