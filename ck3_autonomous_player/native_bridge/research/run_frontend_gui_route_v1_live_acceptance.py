@@ -242,6 +242,38 @@ PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS = {
     "maximum_alpha_differing_pixels": 0,
 }
 
+VFS_WINNER_CASES = (
+    {
+        "id": "shared-conflict",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_shared.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "load-order-0-reference",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_first.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "load-order-1-reference",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_second.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+)
+# This is a predeclared hypothesis, not an assumption in the resolver.  The
+# live matrix fails closed unless the conflicting path matches only the later
+# enabled-mod reference within the independently fixed capture-noise bounds.
+VFS_WINNER_DIAGNOSTIC_PAIRS = (
+    ("shared-conflict", "load-order-0-reference", False),
+    ("shared-conflict", "load-order-1-reference", True),
+    ("load-order-0-reference", "load-order-1-reference", False),
+)
+
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -346,6 +378,19 @@ def _parser() -> argparse.ArgumentParser:
         "--parent-crop-dir",
         type=Path,
         help="write one hash-bound native crop per --parent-semantics-matrix case",
+    )
+    parser.add_argument(
+        "--vfs-winner-matrix",
+        action="store_true",
+        help=(
+            "apply the checked-in two-mod CoA VFS fixture and prove which "
+            "load-order reference owns the conflicting DDS path"
+        ),
+    )
+    parser.add_argument(
+        "--vfs-crop-dir",
+        type=Path,
+        help="write one hash-bound native crop per --vfs-winner-matrix case",
     )
     parser.add_argument("--output", type=Path, required=True)
     return parser
@@ -2567,6 +2612,136 @@ async def _collect_parent_semantics_matrix(
     }
 
 
+async def _collect_vfs_winner_matrix(
+    client: Client,
+    record: Any,
+) -> dict[str, object]:
+    """Prove the checked-in two-mod DDS winner through native pixels."""
+
+    calibration = await _calibrate_picture_corpus_surface(client, record)
+    results: list[dict[str, object]] = []
+    capture_by_id: dict[str, dict[str, object]] = {}
+    for value in VFS_WINNER_CASES:
+        identifier = value["id"]
+        source = value["source"]
+        assert isinstance(identifier, str)
+        assert isinstance(source, str)
+        applied = await _apply_calibration_source(client, source, record)
+        export_call: dict[str, object] | None = None
+        preparation_call: dict[str, object] | None = None
+        capture_call: dict[str, object] | None = None
+        capture: dict[str, object] = {
+            "ok": False,
+            "error": "source apply or calibration failed before capture",
+        }
+        if applied.get("ok") is True and calibration.get("ok") is True:
+            snapshot_call = await _call(client, SNAPSHOT_TOOL)
+            record(snapshot_call)
+            revision = _structured(snapshot_call).get("revision")
+            if isinstance(revision, int) and not isinstance(revision, bool):
+                export_call = await _call(
+                    client,
+                    EXPORT_COAT_OF_ARMS_TOOL,
+                    {"expected_revision": revision},
+                )
+                record(export_call)
+            preparation_call = await _call(
+                client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL
+            )
+            record(preparation_call)
+            capture_call = await _call(
+                client,
+                CAPTURE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+                {
+                    "calibration_id": calibration["calibration_id"],
+                    "side": 230,
+                },
+            )
+            record(capture_call)
+            capture = _reference_free_capture_gate(capture_call)
+        exported = _structured(export_call or {})
+        exported_source = exported.get("source")
+        checks = {
+            "applied": applied.get("ok") is True,
+            "native_copy_exported": bool(
+                export_call is not None
+                and export_call.get("is_error") is False
+                and isinstance(exported_source, str)
+                and exported_source
+            ),
+            "prepared": bool(
+                preparation_call is not None
+                and preparation_call.get("is_error") is False
+                and _structured(preparation_call).get("routeStable") is True
+            ),
+            "reference_free_capture": capture.get("ok") is True,
+        }
+        result = {
+            "id": identifier,
+            "source": _source_receipt_from_text(
+                source, source_label=f"vfs-winner:{identifier}"
+            ),
+            "apply": applied,
+            "native_copy": export_call,
+            "native_copy_semantic_projection": (
+                _projection_summary(_semantic_projection(exported_source))
+                if isinstance(exported_source, str)
+                else None
+            ),
+            "preparation": preparation_call,
+            "capture": capture,
+            "checks": checks,
+            "ok": all(checks.values()),
+        }
+        results.append(result)
+        if capture.get("ok") is True:
+            capture_by_id[identifier] = capture
+
+    diagnostic_metrics = []
+    for first_id, second_id, expected_equivalent in (
+        VFS_WINNER_DIAGNOSTIC_PAIRS
+    ):
+        if first_id not in capture_by_id or second_id not in capture_by_id:
+            metrics = {"comparable": False, "reason": "capture missing"}
+        else:
+            metrics = _capture_pair_metrics(
+                capture_by_id[first_id], capture_by_id[second_id]
+            )
+        equivalent = _capture_pair_is_equivalent(metrics)
+        diagnostic_metrics.append(
+            {
+                "first": first_id,
+                "second": second_id,
+                "expected_equivalent_within_capture_noise": expected_equivalent,
+                "equivalent_within_capture_noise": equivalent,
+                "gate_passed": equivalent is expected_equivalent,
+                **metrics,
+            }
+        )
+    gate_passed = bool(diagnostic_metrics) and all(
+        pair.get("gate_passed") is True for pair in diagnostic_metrics
+    )
+    return {
+        "schema": "ck3-coat-of-arms-vfs-winner-matrix-v1",
+        "case_count": len(results),
+        "predeclared_hypothesis": (
+            "enabled_mods load_order 1 owns a conflicting direct DDS path "
+            "over load_order 0"
+        ),
+        "inferred_winner_load_order": 1 if gate_passed else None,
+        "framebuffer_calibration": calibration,
+        "capture_noise_thresholds": dict(
+            PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS
+        ),
+        "cases": results,
+        "diagnostic_pairs": diagnostic_metrics,
+        "ok": bool(results)
+        and calibration.get("ok") is True
+        and all(result["ok"] is True for result in results)
+        and gate_passed,
+    }
+
+
 def _summarize_pattern_grid(inspection: object) -> dict[str, object]:
     """Summarize only the bounded subtree below vanilla patterns_scrollbox."""
 
@@ -2705,6 +2880,7 @@ async def _mcp_sequence(
     reference_preview: tuple[str, dict[str, object]] | None = None,
     picture_corpus: list[dict[str, object]] | None = None,
     parent_semantics_matrix: bool = False,
+    vfs_winner_matrix: bool = False,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
@@ -2804,7 +2980,7 @@ async def _mcp_sequence(
                 CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
                 CAPTURE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
             }
-            if parent_semantics_matrix
+            if parent_semantics_matrix or vfs_winner_matrix
             else set()
         )
         custom_mode_required = (
@@ -2952,7 +3128,7 @@ async def _mcp_sequence(
                 "coat-of-arms calibrated framebuffer MCP tools have unexpected schemas",
                 tool_schemas=schemas,
             )
-        if parent_semantics_matrix and not (
+        if (parent_semantics_matrix or vfs_winner_matrix) and not (
             _schema_is_zero_input(schemas.get(SNAPSHOT_TOOL))
             and _schema_has_required_fields(
                 schemas.get(PROBE_COAT_OF_ARMS_TOOL),
@@ -2974,7 +3150,7 @@ async def _mcp_sequence(
             )
         ):
             return red(
-                "parent semantics MCP tools do not have the expected closed schemas",
+                "reference-free CoA matrix MCP tools do not have the expected closed schemas",
                 tool_schemas=schemas,
             )
         if (
@@ -3421,6 +3597,20 @@ async def _mcp_sequence(
             checks["parent_semantics_evidence_complete"] = (
                 parent_semantics_result.get("ok") is True
             )
+        vfs_winner_result: dict[str, object] | None = None
+        if vfs_winner_matrix:
+            if all(checks.values()):
+                vfs_winner_result = await _collect_vfs_winner_matrix(
+                    client, record
+                )
+            else:
+                vfs_winner_result = {
+                    "ok": False,
+                    "error": "route checks failed before VFS winner matrix",
+                }
+            checks["vfs_winner_evidence_complete"] = (
+                vfs_winner_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -3441,6 +3631,7 @@ async def _mcp_sequence(
             "reference_framebuffer": framebuffer_result,
             "picture_corpus": corpus_result,
             "parent_semantics_matrix": parent_semantics_result,
+            "vfs_winner_matrix": vfs_winner_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -3558,18 +3749,22 @@ def _write_picture_corpus_crops(
     return receipts
 
 
-def _write_parent_semantics_crops(
-    path: Path, sequence: dict[str, object]
+def _write_reference_free_matrix_crops(
+    path: Path,
+    sequence: dict[str, object],
+    *,
+    matrix_key: str,
+    label: str,
 ) -> list[dict[str, object]]:
-    matrix = sequence.get("parent_semantics_matrix")
+    matrix = sequence.get(matrix_key)
     cases = matrix.get("cases") if isinstance(matrix, dict) else None
     if not isinstance(cases, list) or not cases:
-        raise RuntimeError("parent semantics result has no cases")
+        raise RuntimeError(f"{label} result has no cases")
     root = path.resolve()
     receipts: list[dict[str, object]] = []
     for value in cases:
         if not isinstance(value, dict) or not isinstance(value.get("id"), str):
-            raise RuntimeError("parent semantics result has a malformed case")
+            raise RuntimeError(f"{label} result has a malformed case")
         gated = value.get("capture")
         call = gated.get("call") if isinstance(gated, dict) else None
         body = _structured(call) if isinstance(call, dict) else {}
@@ -3583,11 +3778,11 @@ def _write_parent_semantics_crops(
         raw = base64.b64decode(encoded.encode("ascii"), validate=True)
         actual_sha256 = hashlib.sha256(raw).hexdigest().upper()
         if actual_sha256 != expected_sha256:
-            raise RuntimeError("parent semantics crop SHA-256 mismatch")
+            raise RuntimeError(f"{label} crop SHA-256 mismatch")
         output = root / f"{value['id']}.png"
         temporary = output.with_name(output.name + ".tmp")
         if output.exists() or temporary.exists():
-            raise RuntimeError(f"parent semantics crop already exists: {output}")
+            raise RuntimeError(f"{label} crop already exists: {output}")
         output.parent.mkdir(parents=True, exist_ok=True)
         temporary.write_bytes(raw)
         temporary.replace(output)
@@ -3601,8 +3796,30 @@ def _write_parent_semantics_crops(
             }
         )
     if len(receipts) != len(cases):
-        raise RuntimeError("parent semantics matrix did not produce every crop")
+        raise RuntimeError(f"{label} matrix did not produce every crop")
     return receipts
+
+
+def _write_parent_semantics_crops(
+    path: Path, sequence: dict[str, object]
+) -> list[dict[str, object]]:
+    return _write_reference_free_matrix_crops(
+        path,
+        sequence,
+        matrix_key="parent_semantics_matrix",
+        label="parent semantics",
+    )
+
+
+def _write_vfs_winner_crops(
+    path: Path, sequence: dict[str, object]
+) -> list[dict[str, object]]:
+    return _write_reference_free_matrix_crops(
+        path,
+        sequence,
+        matrix_key="vfs_winner_matrix",
+        label="VFS winner",
+    )
 
 
 def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
@@ -3637,6 +3854,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         getattr(args, "parent_semantics_matrix", False)
     )
     parent_crop_dir = getattr(args, "parent_crop_dir", None)
+    vfs_winner_matrix = bool(getattr(args, "vfs_winner_matrix", False))
+    vfs_crop_dir = getattr(args, "vfs_crop_dir", None)
     if picture_corpus is not None and (
         getattr(args, "large_source", None) is not None
         or reference_preview is not None
@@ -3657,6 +3876,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         raise ValueError(
             "--parent-crop-dir requires --parent-semantics-matrix"
         )
+    if vfs_crop_dir is not None and not vfs_winner_matrix:
+        raise ValueError("--vfs-crop-dir requires --vfs-winner-matrix")
     if parent_semantics_matrix and (
         syntax_matrix is not None
         or custom_mode_census
@@ -3664,9 +3885,22 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or getattr(args, "large_source", None) is not None
         or reference_preview is not None
         or picture_corpus is not None
+        or vfs_winner_matrix
     ):
         raise ValueError(
             "--parent-semantics-matrix cannot be combined with other CoA matrices"
+        )
+    if vfs_winner_matrix and (
+        syntax_matrix is not None
+        or custom_mode_census
+        or commit_roundtrip
+        or getattr(args, "large_source", None) is not None
+        or reference_preview is not None
+        or picture_corpus is not None
+        or parent_semantics_matrix
+    ):
+        raise ValueError(
+            "--vfs-winner-matrix cannot be combined with other CoA matrices"
         )
     if bookmarks_model_private and not bookmarks_read_only:
         raise ValueError("--bookmarks-model-private requires --bookmarks-read-only")
@@ -3685,6 +3919,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or reference_preview is not None
         or picture_corpus is not None
         or parent_semantics_matrix
+        or vfs_winner_matrix
     ):
         raise ValueError("--bookmarks-read-only cannot run CoA actions")
     large_source = (
@@ -3758,6 +3993,30 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             if parent_semantics_matrix
             else None
         ),
+        "vfs_winner_matrix_requested": vfs_winner_matrix,
+        "vfs_winner_plan": (
+            {
+                "predeclared_hypothesis": (
+                    "enabled_mods load_order 1 owns the conflicting direct DDS path"
+                ),
+                "cases": [
+                    {
+                        "id": value["id"],
+                        "source": _source_receipt_from_text(
+                            value["source"],
+                            source_label=f"vfs-winner:{value['id']}",
+                        ),
+                    }
+                    for value in VFS_WINNER_CASES
+                ],
+                "diagnostic_pairs": [list(value) for value in VFS_WINNER_DIAGNOSTIC_PAIRS],
+                "capture_noise_thresholds": dict(
+                    PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS
+                ),
+            }
+            if vfs_winner_matrix
+            else None
+        ),
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -3827,6 +4086,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 reference_preview=reference_preview,
                 picture_corpus=picture_corpus,
                 parent_semantics_matrix=parent_semantics_matrix,
+                vfs_winner_matrix=vfs_winner_matrix,
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,
@@ -3872,6 +4132,22 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                     "error": str(error),
                 }
                 matrix_result = sequence.get("parent_semantics_matrix")
+                if (
+                    isinstance(matrix_result, dict)
+                    and matrix_result.get("cases")
+                ):
+                    raise
+        if vfs_crop_dir is not None:
+            try:
+                report["vfs_winner_native_crops"] = _write_vfs_winner_crops(
+                    vfs_crop_dir, sequence
+                )
+            except RuntimeError as error:
+                report["vfs_winner_native_crops"] = {
+                    "status": "unavailable",
+                    "error": str(error),
+                }
+                matrix_result = sequence.get("vfs_winner_matrix")
                 if (
                     isinstance(matrix_result, dict)
                     and matrix_result.get("cases")

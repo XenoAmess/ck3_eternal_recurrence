@@ -1,0 +1,302 @@
+{
+  "schema": "ck3-coat-of-arms-vfs-winner-evidence-v1",
+  "status": "passed",
+  "created_at": "2026-09-16T07:46:28.135222+00:00",
+  "repository_head": "d497fb30e7fc940a179ec9ccaf88b779b001b8cf",
+  "exact_build": {
+    "ck3_exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll": "C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge.dll",
+    "bridge_dll_sha256": "9DDC30CAF4373F4370E597DE42A3FADE5DC70AE597511D6654BBC13D4D14C987",
+    "bridge_injector": "C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge_injector.exe",
+    "bridge_injector_sha256": "880885ABBF26C0D4147CFB55B70C5608B581F40C4229099D44A610B5CD589137"
+  },
+  "interaction_policy": {
+    "mcp_only": true,
+    "mcp_baseline_private_native_read_only": false,
+    "controlled_private_native_selection_start": false,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false
+  },
+  "steam": {
+    "offline": true
+  },
+  "fixture": {
+    "receipt_bytes": 2856,
+    "receipt_sha256": "9388CEFFE957B97F76C59088775019847B0DF2316C1E6C0D689E5A0F7E57F78A",
+    "load_configuration_sha256": "EC52511EEFE4AD0CA1ADB36C8F8C1D2CB8F1FC8F46079C7FFB2D3E94D16B02F4",
+    "shared_resource_name": "pattern_xar_vfs_shared.dds",
+    "enabled_mods": [
+      "mod/coa_vfs_fixture_first.mod",
+      "mod/coa_vfs_fixture_second.mod"
+    ],
+    "mods": [
+      {
+        "load_order": 0,
+        "registry_path": "mod/coa_vfs_fixture_first.mod",
+        "descriptor_sha256": "CC901715852349E0E7D6D6C7ECF093EE3CDFA83C061864E06B22C64C46F99B50",
+        "manifest_sha256": "F28DF4F2E9A7BE58C381168E915B7EBAF5579C3F5EF0AD604D49ED125EE0F5BF",
+        "source_dds_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+        "reference_name": "pattern_xar_vfs_first.dds"
+      },
+      {
+        "load_order": 1,
+        "registry_path": "mod/coa_vfs_fixture_second.mod",
+        "descriptor_sha256": "D5F9D19DD9882EEBCEC8B52BB2DDADD566F9F874EEDB066381CC7E88F04F13DB",
+        "manifest_sha256": "7143B878A6A633C7BEB68C849CA4AF9D55A00E5AD55AF93022CDB6811437DD61",
+        "source_dds_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+        "reference_name": "pattern_xar_vfs_second.dds"
+      }
+    ]
+  },
+  "predeclared_hypothesis": "enabled_mods load_order 1 owns a conflicting direct DDS path over load_order 0",
+  "inferred_winner_load_order": 1,
+  "capture_noise_thresholds": {
+    "maximum_channel_error": 1,
+    "maximum_normalized_mean_absolute_error": 1e-05,
+    "maximum_alpha_differing_pixels": 0
+  },
+  "cases": [
+    {
+      "id": "shared-conflict",
+      "source": {
+        "path": "vfs-winner:shared-conflict",
+        "raw_bytes": 91,
+        "raw_sha256": "36d114802dd8db4856372be1ee11bacde47472c10bd5c5b2866f3e00d9a04fa5",
+        "wire_bytes": 91,
+        "wire_sha256": "36d114802dd8db4856372be1ee11bacde47472c10bd5c5b2866f3e00d9a04fa5",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 91,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "34c2da5a3e9410727fcdad950598d99510f4edeafa13153655b8f0c544bb6e83",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "34c2da5a3e9410727fcdad950598d99510f4edeafa13153655b8f0c544bb6e83",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "load-order-0-reference",
+      "source": {
+        "path": "vfs-winner:load-order-0-reference",
+        "raw_bytes": 90,
+        "raw_sha256": "f159a92bdaa369a732474a06ba38bec5979e4c17b0a12777f690ce529752dc8d",
+        "wire_bytes": 90,
+        "wire_sha256": "f159a92bdaa369a732474a06ba38bec5979e4c17b0a12777f690ce529752dc8d",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 90,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "188526d7b0648989aa12565def468600a47e9014939e4601b56458a605060fec",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "188526d7b0648989aa12565def468600a47e9014939e4601b56458a605060fec",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "load-order-1-reference",
+      "source": {
+        "path": "vfs-winner:load-order-1-reference",
+        "raw_bytes": 91,
+        "raw_sha256": "2da0bef2e583810d2d9b767ee1577ac4f12015ac00ac24386769c78c501d8fac",
+        "wire_bytes": 91,
+        "wire_sha256": "2da0bef2e583810d2d9b767ee1577ac4f12015ac00ac24386769c78c501d8fac",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 91,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "1d623e9b58e78d47d1f28062b506a468f4459a881740a205f263de3933990ef9",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "1d623e9b58e78d47d1f28062b506a468f4459a881740a205f263de3933990ef9",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    }
+  ],
+  "diagnostic_pairs": [
+    {
+      "first": "shared-conflict",
+      "second": "load-order-0-reference",
+      "expected_equivalent_within_capture_noise": false,
+      "equivalent_within_capture_noise": false,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48271,
+      "differing_visible_pixels": 28203,
+      "mean_absolute_error": 0.2709360266241941,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "shared-conflict",
+      "second": "load-order-1-reference",
+      "expected_equivalent_within_capture_noise": true,
+      "equivalent_within_capture_noise": true,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48271,
+      "differing_visible_pixels": 282,
+      "mean_absolute_error": 7.690783908876125e-06,
+      "maximum_channel_error": 1,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "load-order-0-reference",
+      "second": "load-order-1-reference",
+      "expected_equivalent_within_capture_noise": false,
+      "equivalent_within_capture_noise": false,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48271,
+      "differing_visible_pixels": 28226,
+      "mean_absolute_error": 0.27093635158689444,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    }
+  ],
+  "native_crops": [
+    {
+      "id": "shared-conflict",
+      "path": "shared-conflict.png",
+      "bytes": 47706,
+      "sha256": "8B41017CEB862296216326205B313FC32071CDF668C695AF259EF53520BEBDF5",
+      "payload_kind": "aligned-content-reference-free"
+    },
+    {
+      "id": "load-order-0-reference",
+      "path": "load-order-0-reference.png",
+      "bytes": 48311,
+      "sha256": "700B06C2FFFC2EEAF65C35983C81CF669AA0F0BB541EE110633AAE94E320DD09",
+      "payload_kind": "aligned-content-reference-free"
+    },
+    {
+      "id": "load-order-1-reference",
+      "path": "load-order-1-reference.png",
+      "bytes": 47682,
+      "sha256": "D9084F54E79B4FEC44EBA30B306AA284F67FA6292807F5DAE6BE846D2609C69D",
+      "payload_kind": "aligned-content-reference-free"
+    }
+  ],
+  "cleanup": {
+    "cleanup_proven": true,
+    "tree_gone": true,
+    "contract_errors": []
+  },
+  "raw_report": {
+    "path": "D:\\ck3_coa_vfs_native_r22\\report.json",
+    "bytes": 2488214,
+    "sha256": "C512EB1BAFB6A63F6F9A626811EA34FF2DF2782D22D151F0F900867DF0DA1EDC"
+  },
+  "elapsed_seconds": 459.423
+}

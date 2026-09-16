@@ -7,6 +7,10 @@ test('switches the production UI between Simplified Chinese and English and pers
   await expect(page.getByTestId('page-version')).toContainText(
     /版本 \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z · [0-9a-f]{8}/i,
   )
+  await expect(page.getByTestId('asset-pack-vfs-receipt')).toContainText(
+    /VFS 收据：仅基础游戏.*胜者集 [0-9A-F]{12}/,
+    { timeout: 30_000 },
+  )
 
   await page.getByTestId('locale-select').click()
   await page.getByRole('option', { name: 'English', exact: true }).click()
@@ -17,6 +21,9 @@ test('switches the production UI between Simplified Chinese and English and pers
   await expect(page.getByRole('heading', { name: 'Composition preview' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Structured editor' })).toBeVisible()
   await expect(page.getByTestId('page-version')).toContainText(/^Version .+ · [0-9a-f]{8}$/i)
+  await expect(page.getByTestId('asset-pack-vfs-receipt')).toContainText(
+    /VFS receipt: base game only.*winner set [0-9A-F]{12}/,
+  )
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   await expect(page).toHaveTitle('Coat of Arms Workshop')
   expect(await page.evaluate(() => localStorage.getItem('ck3-coa-ui-locale-v1'))).toBe('en')

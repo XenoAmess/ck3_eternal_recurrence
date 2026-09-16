@@ -217,7 +217,17 @@ GPU 目前不代替 CPU 纹章正向渲染；它批量渲染 loss contribution �
 Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/`，公网 canonical URL 与入口资源均
 回读 `200`；无尾斜杠地址为预期 `301`。部署证据见 `ck3-coat-of-arms-github-pages.md`。`parent` 引用现在会在预览区就地显示中英文边界、仍完整保留导出，不再静默冒充已合成。R21 的 MCP-only
 原生 framebuffer 矩阵已证明角色设计器剪贴板路径同样不物化有效 `parent` definition，而显式 child 正常渲染；因此生产浏览器维持
-“保留 parent、只画显式字段”的行为。DLC/mod VFS 胜者 receipt 和更细的 asset shard 按需策略仍未完成。
+“保留 parent、只画显式字段”的行为。
+
+页面顶栏版本合同已经通过：每个 production build 显示 ISO 8601 构建时间戳与 Actions 从 `github.sha` 注入的 8 位 Git hash；
+`d497fb30` 的 workflow `35069324556` 全部 build/deploy GREEN，随后公网 Playwright 从嵌套 canonical URL 精确回读
+`d497fb30` 和时间戳。这个短标识用于定位线上字节来源，不替代完整 commit、asset-pack manifest SHA 或证据 SHA。
+
+R22 又以 MCP-only、零 OCR/键鼠的 reference-free framebuffer 矩阵证明：两个启用的目录模组注册并提供同名直接 DDS 路径时，
+后一个 `enabled_mods` 项胜出。基础静态 pack 现在带 `ck3-coa-vfs-receipt-v1`，浏览器会校验 1,630 项胜者清单 SHA-256，
+并明确显示 `base_game_only`；导入包可以携带 `resolved_overlay` 收据。该原生证据只覆盖目录模组间的已注册直接 DDS 冲突，
+基础游戏/模组、DLC mount、archive、`replace_path` 和 definition merge 仍未覆盖，不能据此把 WP6 宣称为全部完成。证据见
+[`vfs-winner-native-r22`](coat-of-arms-fit-artifacts/vfs-winner-native-r22/README.md)。更细的 asset shard 按需策略仍未完成。
 
 MCP 优先补完已新增 exact-build 家徽定义索引/读取工具：可分页读取基础游戏 block、完整源码、别名链和来源 SHA-256，
 重复定义、循环或缺失目标全部 fail closed。真实 1.19.0.6 安装上的 `k_england` 和 `d_agder → c_agder` 已通过；

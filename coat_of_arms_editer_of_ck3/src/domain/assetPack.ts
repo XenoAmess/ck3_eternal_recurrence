@@ -68,6 +68,33 @@ export interface WebAssetInventory {
   fit_eligible_registered: number
 }
 
+export type WebAssetVfsSourceKind = 'base_game' | 'dlc' | 'directory_mod' | 'archive_mod'
+
+export interface WebAssetVfsSource {
+  source_id: string
+  source_kind: WebAssetVfsSourceKind
+  precedence_order: number
+  source_identity_sha256: string
+}
+
+export interface WebAssetVfsReceipt {
+  schema: 'ck3-coa-vfs-receipt-v1'
+  scope: 'base_game_only' | 'resolved_overlay'
+  resolution_policy: 'single_source_no_conflicts' | 'later_enabled_source_wins_direct_path'
+  load_configuration_sha256: string | null
+  winner_set_sha256: string
+  resolved_asset_count: number
+  conflict_count: number
+  sources: WebAssetVfsSource[]
+  native_precedence_evidence: {
+    status: 'not_applicable' | 'scoped_passed' | 'unverified'
+    evidence_id: string | null
+    direct_path_winner_rule: 'not_applicable' | 'later_enabled_source_wins' | 'unverified'
+    scope: string
+    uncovered: string[]
+  }
+}
+
 export interface WebAssetPack {
   schema: 'ck3-coa-web-asset-pack-v1'
   schema_version: 1
@@ -78,6 +105,7 @@ export interface WebAssetPack {
   assets: WebAssetPackEntry[]
   fit_index?: WebFitIndex
   inventory?: WebAssetInventory
+  vfs_receipt: WebAssetVfsReceipt
 }
 
 export interface LoadedWebAssetPack {
@@ -103,6 +131,8 @@ const FIT_FEATURE_HEADER_BYTES = 32
 const FIT_FEATURE_SCALAR_BYTES = FIT_SHAPE_SCALAR_FIELDS.length * 8
 const FIT_FEATURE_DESCRIPTOR_BYTES = FIT_SHAPE_DESCRIPTOR_SIZE * FIT_SHAPE_DESCRIPTOR_SIZE * 4
 const FIT_FEATURE_RECORD_BYTES = FIT_FEATURE_SCALAR_BYTES + FIT_FEATURE_DESCRIPTOR_BYTES
+const MAX_VFS_SOURCES = 512
+const MAX_VFS_UNCOVERED = 32
 
 function record(value: unknown, label: string): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -260,6 +290,111 @@ function parseInventory(value: unknown): WebAssetInventory {
   }
 }
 
+function parseVfsReceipt(value: unknown, assets: WebAssetPackEntry[]): WebAssetVfsReceipt {
+  const item = record(value, 'vfs_receipt')
+  if (item.schema !== 'ck3-coa-vfs-receipt-v1') throw new Error('vfs_receipt schema 不支持')
+  if (!['base_game_only', 'resolved_overlay'].includes(String(item.scope))) {
+    throw new Error('vfs_receipt.scope 不支持')
+  }
+  if (!['single_source_no_conflicts', 'later_enabled_source_wins_direct_path'].includes(String(item.resolution_policy))) {
+    throw new Error('vfs_receipt.resolution_policy 不支持')
+  }
+  if (!Array.isArray(item.sources) || item.sources.length < 1 || item.sources.length > MAX_VFS_SOURCES) {
+    throw new Error('vfs_receipt.sources 数量不合法')
+  }
+  const sources = item.sources.map((value, index): WebAssetVfsSource => {
+    const source = record(value, `vfs_receipt.sources[${index}]`)
+    if (!['base_game', 'dlc', 'directory_mod', 'archive_mod'].includes(String(source.source_kind))) {
+      throw new Error(`vfs_receipt.sources[${index}].source_kind 不支持`)
+    }
+    return {
+      source_id: text(source.source_id, `vfs_receipt.sources[${index}].source_id`),
+      source_kind: source.source_kind as WebAssetVfsSourceKind,
+      precedence_order: integer(
+        source.precedence_order, `vfs_receipt.sources[${index}].precedence_order`, 0, MAX_VFS_SOURCES - 1,
+      ),
+      source_identity_sha256: text(
+        source.source_identity_sha256,
+        `vfs_receipt.sources[${index}].source_identity_sha256`,
+        SHA256,
+      ),
+    }
+  })
+  if (new Set(sources.map((source) => source.source_id)).size !== sources.length) {
+    throw new Error('vfs_receipt.sources source_id 不得重复')
+  }
+  if (new Set(sources.map((source) => source.precedence_order)).size !== sources.length) {
+    throw new Error('vfs_receipt.sources precedence_order 不得重复')
+  }
+  if (sources.some((source, index) => source.precedence_order !== index)) {
+    throw new Error('vfs_receipt.sources 必须按连续 precedence_order 排序')
+  }
+  const evidence = record(item.native_precedence_evidence, 'vfs_receipt.native_precedence_evidence')
+  if (!['not_applicable', 'scoped_passed', 'unverified'].includes(String(evidence.status))) {
+    throw new Error('vfs_receipt.native_precedence_evidence.status 不支持')
+  }
+  if (!['not_applicable', 'later_enabled_source_wins', 'unverified'].includes(String(evidence.direct_path_winner_rule))) {
+    throw new Error('vfs_receipt.native_precedence_evidence.direct_path_winner_rule 不支持')
+  }
+  if (evidence.evidence_id !== null && typeof evidence.evidence_id !== 'string') {
+    throw new Error('vfs_receipt.native_precedence_evidence.evidence_id 不合法')
+  }
+  if (!Array.isArray(evidence.uncovered) || evidence.uncovered.length > MAX_VFS_UNCOVERED) {
+    throw new Error('vfs_receipt.native_precedence_evidence.uncovered 数量不合法')
+  }
+  const scope = item.scope as WebAssetVfsReceipt['scope']
+  const resolutionPolicy = item.resolution_policy as WebAssetVfsReceipt['resolution_policy']
+  const loadConfigurationSha256 = item.load_configuration_sha256 === null
+    ? null
+    : text(item.load_configuration_sha256, 'vfs_receipt.load_configuration_sha256', SHA256)
+  const conflictCount = integer(item.conflict_count, 'vfs_receipt.conflict_count', 0, MAX_ASSETS)
+  if (scope === 'base_game_only') {
+    if (
+      sources.length !== 1
+      || sources[0].source_kind !== 'base_game'
+      || resolutionPolicy !== 'single_source_no_conflicts'
+      || loadConfigurationSha256 !== null
+      || conflictCount !== 0
+    ) throw new Error('base_game_only vfs_receipt 合同不一致')
+  } else if (
+    sources.length < 2
+    || !sources.some((source) => source.source_kind !== 'base_game')
+    || resolutionPolicy !== 'later_enabled_source_wins_direct_path'
+    || loadConfigurationSha256 === null
+  ) {
+    throw new Error('resolved_overlay vfs_receipt 合同不一致')
+  }
+  const evidenceId = evidence.evidence_id === null
+    ? null
+    : text(evidence.evidence_id, 'vfs_receipt.native_precedence_evidence.evidence_id')
+  const status = evidence.status as WebAssetVfsReceipt['native_precedence_evidence']['status']
+  const winnerRule = evidence.direct_path_winner_rule as WebAssetVfsReceipt['native_precedence_evidence']['direct_path_winner_rule']
+  if (status === 'scoped_passed' && (evidenceId === null || winnerRule !== 'later_enabled_source_wins')) {
+    throw new Error('scoped_passed VFS 原生证据缺少 id 或胜者规则')
+  }
+  return {
+    schema: 'ck3-coa-vfs-receipt-v1',
+    scope,
+    resolution_policy: resolutionPolicy,
+    load_configuration_sha256: loadConfigurationSha256,
+    winner_set_sha256: text(item.winner_set_sha256, 'vfs_receipt.winner_set_sha256', SHA256),
+    resolved_asset_count: integer(
+      item.resolved_asset_count, 'vfs_receipt.resolved_asset_count', assets.length, assets.length,
+    ),
+    conflict_count: conflictCount,
+    sources,
+    native_precedence_evidence: {
+      status,
+      evidence_id: evidenceId,
+      direct_path_winner_rule: winnerRule,
+      scope: text(evidence.scope, 'vfs_receipt.native_precedence_evidence.scope', SAFE_SOURCE_PATH),
+      uncovered: evidence.uncovered.map((value, index) => text(
+        value, `vfs_receipt.native_precedence_evidence.uncovered[${index}]`, SAFE_SOURCE_PATH,
+      )),
+    },
+  }
+}
+
 export function parseWebAssetPack(value: unknown): WebAssetPack {
   const source = record(value, 'asset pack')
   if (source.schema !== 'ck3-coa-web-asset-pack-v1' || source.schema_version !== 1) {
@@ -294,6 +429,7 @@ export function parseWebAssetPack(value: unknown): WebAssetPack {
   if (surfaceMasks !== 1) throw new Error('asset pack 必须包含且只包含一个 surface_mask')
   const fitIndex = source.fit_index === undefined ? undefined : parseFitIndex(source.fit_index, assets)
   const inventory = source.inventory === undefined ? undefined : parseInventory(source.inventory)
+  const vfsReceipt = parseVfsReceipt(source.vfs_receipt, assets)
   if (inventory) {
     const observed = {
       registered_patterns: assets.filter((item) => item.kind === 'pattern' && item.registration === 'designer_manifest').length,
@@ -325,6 +461,28 @@ export function parseWebAssetPack(value: unknown): WebAssetPack {
     assets,
     fit_index: fitIndex,
     inventory,
+    vfs_receipt: vfsReceipt,
+  }
+}
+
+function winnerSetBytes(assets: readonly WebAssetPackEntry[]): Uint8Array {
+  const rows = assets.map((entry) => [
+    entry.kind,
+    entry.name,
+    entry.asset_sha256,
+    entry.source_relative_path,
+  ].join('\0'))
+  return new TextEncoder().encode(`${rows.join('\n')}\n`)
+}
+
+export async function calculateWebAssetWinnerSetSha256(pack: WebAssetPack): Promise<string> {
+  return sha256Hex(winnerSetBytes(pack.assets))
+}
+
+export async function verifyWebAssetPackVfsReceipt(pack: WebAssetPack): Promise<void> {
+  const actual = await calculateWebAssetWinnerSetSha256(pack)
+  if (actual !== pack.vfs_receipt.winner_set_sha256) {
+    throw new Error('vfs_receipt winner_set_sha256 与资源胜者集不一致')
   }
 }
 
@@ -464,8 +622,10 @@ export async function loadWebAssetPack(
   } catch (error) {
     throw new Error(`asset pack manifest 不是合法 UTF-8 JSON：${String(error)}`)
   }
+  const pack = parseWebAssetPack(parsed)
+  await verifyWebAssetPackVfsReceipt(pack)
   return {
-    pack: parseWebAssetPack(parsed),
+    pack,
     manifestUrl: new URL(manifestUrl, window.location.href).href,
     manifestSha256: await sha256Hex(bytes),
   }
@@ -511,6 +671,7 @@ export async function loadWebAssetPackFiles(files: readonly File[]): Promise<Loa
     throw new Error(`asset pack manifest 不是合法 UTF-8 JSON：${String(error)}`)
   }
   const pack = parseWebAssetPack(parsed)
+  await verifyWebAssetPackVfsReceipt(pack)
   const required = [
     ...pack.assets.map((entry) => ({ path: entry.url, bytes: entry.asset_bytes })),
     ...(pack.fit_index ? [{ path: pack.fit_index.url, bytes: pack.fit_index.asset_bytes }] : []),

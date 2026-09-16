@@ -9,6 +9,8 @@ export interface CoatOfArmsProjectAssetPack {
   packId: string
   manifestSha256: string
   ck3Build: string
+  vfsScope?: 'base_game_only' | 'resolved_overlay'
+  vfsWinnerSetSha256?: string
 }
 
 export interface CoatOfArmsProjectDocument {
@@ -210,6 +212,17 @@ export async function parseCoatOfArmsProject(text: string): Promise<CoatOfArmsPr
       packId: expectString(value.packId, 'project.assetPack.packId'),
       manifestSha256: expectString(value.manifestSha256, 'project.assetPack.manifestSha256'),
       ck3Build: expectString(value.ck3Build, 'project.assetPack.ck3Build'),
+      ...(value.vfsScope === undefined ? {} : {
+        vfsScope: expectString(value.vfsScope, 'project.assetPack.vfsScope') as CoatOfArmsProjectAssetPack['vfsScope'],
+      }),
+      ...(value.vfsWinnerSetSha256 === undefined ? {} : {
+        vfsWinnerSetSha256: expectString(
+          value.vfsWinnerSetSha256, 'project.assetPack.vfsWinnerSetSha256',
+        ),
+      }),
+    }
+    if (assetPack.vfsScope !== undefined && !['base_game_only', 'resolved_overlay'].includes(assetPack.vfsScope)) {
+      throw new Error('project.assetPack.vfsScope 不支持')
     }
   }
   return {

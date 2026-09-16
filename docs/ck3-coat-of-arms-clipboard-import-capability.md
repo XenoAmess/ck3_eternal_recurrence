@@ -764,6 +764,23 @@ alpha 零差异的独立捕获噪声门限，然后完成七个 Apply → Copy �
 [`parent-semantics-native-r21`](coat-of-arms-fit-artifacts/parent-semantics-native-r21/README.md)。这项结论只适用于 exact 1.19.0.6
 角色设计器剪贴板路径，不外推到 title/dynasty 数据库的其他加载路径。
 
+### 5.9 2026-09-16 目录模组直接 DDS 的原生 VFS 胜者
+
+R22 使用隔离 profile 启用两个按顺序排列的目录模组；二者注册并提供同名
+`pattern_xar_vfs_shared.dds`，同时各自提供一份内容相同、名称唯一的参考 pattern。运行前固定假设为后一个
+`enabled_mods` 项胜出，并固定最大通道误差 `1`、归一化 MAE `<=0.00001`、alpha 差异像素 `0` 的重复捕获噪声门限。
+
+MCP-only Apply → Copy → reference-free framebuffer 结果显示，共享名与后项参考的 MAE 为 `0.0000076908`、最大通道误差 `1`，
+在门限内等价；共享名与前项参考的 MAE 为 `0.2709360266`、最大通道误差 `178`，明确不等价。因此 exact 1.19.0.6 的这个
+已注册直接 DDS 冲突夹具中，后一个启用目录模组是实际渲染胜者。三项诊断全部通过，Steam 离线，OCR、键盘和鼠标均未使用，
+进程树清理通过。证据见
+[`vfs-winner-native-r22`](coat-of-arms-fit-artifacts/vfs-winner-native-r22/README.md)。
+
+这一结果没有改变第 3 节 configured-resource catalog 的合同：该静态 MCP 仍只枚举候选并固定声明
+`resource_merge_applied=false`、`load_order_precedence_applied=false`，不会擅自把局部原生结果外推到 DLC、archive、
+`replace_path` 或 definition merge。正式网页则只消费带 `ck3-coa-vfs-receipt-v1` 的已解析 asset pack，并校验胜者集 SHA-256；
+当前内置 pack 的 scope 明确是 `base_game_only`。
+
 ## 6. 哪些 CK3 语法不能在这里执行
 
 | 语法族 | 能否执行 | 结论依据 |
@@ -910,15 +927,15 @@ CoatOfArms
 
 尚未完成的下一阶段能力：
 
-- 继续补 DLC/mod playset 合并与运行时注册证据；
+- 继续补基础游戏/模组、DLC mount、archive、`replace_path` 与 definition merge 的 VFS 胜者；R22 只闭合两个目录模组间的已注册直接 DDS 冲突；
 - 继续把现有受管 framebuffer primitive 扩展到更多 shader/asset/VFS 情形，并闭合浏览器源码模型与 native GPU 的剩余差异；
 - 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机应用并 Copy 保留的 `texture="_default.dds"` 形态以及素材原始像素。
 
-浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
-本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
+正式浏览器既不能也不需要启动本机 stdio MCP；生产 Quarkus/REST companion 已退役。原生研究只在开发验收中通过受管 typed MCP
+直接连接 native bridge，网页消费冻结的 asset pack、VFS receipt 与证据摘要，零 `/api/`、零本机服务依赖。
 
-当前前端有 Vitest `43/43` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
-Quarkus REST 测试 `18/18` 且 Maven test GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
+当前前端有 Vitest `86/86` parser/serializer/validator/capability-matrix/DDS/renderer/VFS-receipt 回归和 Vite production build 验收。
+后续扩展仍以本文的原生 MCP 证据为协议来源，
 不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
 
 ## 10. 辅助参考边界

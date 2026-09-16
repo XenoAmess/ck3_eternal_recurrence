@@ -22,6 +22,10 @@
 - 发布产物的资源 URL 均以 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/` 开头，没有覆盖仓库 Pages 根入口。
 - 正式简体中文/英文切换与持久化在同一 run 中通过；该结论不代表七种其他语言已翻译。
 
+同日后续 run [`35069324556`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/35069324556) 在 head
+`d497fb30e7fc940a179ec9ccaf88b779b001b8cf` 完成全部 build/deploy 门禁。部署后又从公网 canonical URL 运行
+`e2e/pages-deployment.spec.ts`，精确回读页面可见的 `d497fb30` 与 ISO 8601 构建时间戳，证明版本标识来自实际发布产物而非本地预览。
+
 ## 自动触发与发布门禁
 
 工作流在以下情况运行：
@@ -58,12 +62,17 @@
 |---|---:|
 | 路径 | `asset-packs/ck3-1.19.0.6/` |
 | pack id | `ck3-1.19.0.6-base-complete-42p-1578e-8aux` |
-| manifest SHA-256 | `F5BB089884F864ED5DF88DCF3C8CB2C8966E3E541284AE691C6EBC1A282FD36E` |
+| manifest SHA-256 | `27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96` |
 | registered pattern / emblem | 42 / 1,578 |
 | auxiliary / textured / surface mask | 8 / 1 / 1 |
 | 原版物理 DDS 覆盖 | 1,630 / 1,630；138,389,380 bytes |
 | 32×32 RGBA fit index | 1,619 个可粘贴注册项；6,631,424 bytes |
 | v2 shape feature sidecar | 1,619 项；2,266,632 bytes；SHA-256 `76429584…DC26` |
+| VFS receipt | `base_game_only`；1 source；0 conflict；1,630 项胜者集 SHA-256 `B0FB6AAD…2474` |
+
+VFS receipt 不把基础包冒充 playset：它明确声明没有读取启动配置。R22 的 scoped 原生证据只证明两个启用目录模组发生已注册
+直接 DDS 同路径冲突时后项胜出；未覆盖范围逐项写进 receipt。网页加载默认或本地 pack 时都会重算胜者集 SHA-256，缺失、计数或
+哈希不一致即拒绝载入。
 
 该授权记录只适用于本仓库当前 pack 的版本管理与 Pages 发布，不冒充所有权转移，也不自动放行以后从其他 CK3 build、DLC 或
 mod 提取的资源。其他 `ck3-*` 生成目录继续由 `.gitignore` 排除，只有显式审阅并添加精确 unignore 后才能进入发布树。

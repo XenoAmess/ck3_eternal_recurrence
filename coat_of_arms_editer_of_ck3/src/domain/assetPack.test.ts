@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { loadWebAssetPackFiles, parseWebAssetPack, readWebFitIndex } from './assetPack'
+import {
+  calculateWebAssetWinnerSetSha256,
+  loadWebAssetPackFiles,
+  parseWebAssetPack,
+  readWebFitIndex,
+  verifyWebAssetPackVfsReceipt,
+} from './assetPack'
 import { FIT_SHAPE_DESCRIPTOR_SIZE, FIT_SHAPE_SCALAR_FIELDS } from './shapeFeatures'
 
 const entry = {
@@ -31,6 +37,28 @@ const pack = () => ({
       asset_sha256: 'C'.repeat(64),
     },
   ],
+  vfs_receipt: {
+    schema: 'ck3-coa-vfs-receipt-v1',
+    scope: 'base_game_only',
+    resolution_policy: 'single_source_no_conflicts',
+    load_configuration_sha256: null,
+    winner_set_sha256: 'D'.repeat(64),
+    resolved_asset_count: 2,
+    conflict_count: 0,
+    sources: [{
+      source_id: 'ck3-base-1.19.0.6',
+      source_kind: 'base_game',
+      precedence_order: 0,
+      source_identity_sha256: 'B'.repeat(64),
+    }],
+    native_precedence_evidence: {
+      status: 'scoped_passed',
+      evidence_id: 'vfs-winner-native-r22',
+      direct_path_winner_rule: 'later_enabled_source_wins',
+      scope: 'two enabled directory mods with one conflicting registered direct DDS path',
+      uncovered: ['DLC mount precedence', 'archive mod precedence'],
+    },
+  },
 })
 
 describe('web asset pack contract', () => {
@@ -39,6 +67,24 @@ describe('web asset pack contract', () => {
     expect(parsed.ck3_build).toBe('1.19.0.6')
     expect(parsed.assets).toHaveLength(2)
     expect(parsed.named_colors.red).toEqual([0.8, 0.1, 0.1])
+    expect(parsed.vfs_receipt.scope).toBe('base_game_only')
+  })
+
+  it('fails closed when the VFS winner-set receipt does not bind the parsed inventory', async () => {
+    const parsed = parseWebAssetPack(pack())
+    await expect(verifyWebAssetPackVfsReceipt(parsed)).rejects.toThrow(/winner_set_sha256/)
+    parsed.vfs_receipt.winner_set_sha256 = await calculateWebAssetWinnerSetSha256(parsed)
+    await expect(verifyWebAssetPackVfsReceipt(parsed)).resolves.toBeUndefined()
+  })
+
+  it('requires load identity and a non-base source for resolved overlay receipts', () => {
+    const invalid = pack()
+    invalid.vfs_receipt = {
+      ...invalid.vfs_receipt,
+      scope: 'resolved_overlay',
+      resolution_policy: 'later_enabled_source_wins_direct_path',
+    }
+    expect(() => parseWebAssetPack(invalid)).toThrow(/resolved_overlay/)
   })
 
   it('rejects duplicate logical resources', () => {
@@ -164,6 +210,8 @@ describe('web asset pack contract', () => {
 
   it('loads a browser-selected directory without network access', async () => {
     const localPack = pack()
+    const parsed = parseWebAssetPack(localPack)
+    localPack.vfs_receipt.winner_set_sha256 = await calculateWebAssetWinnerSetSha256(parsed)
     const withPath = (file: File, path: string) => {
       Object.defineProperty(file, 'webkitRelativePath', { value: path })
       return file
@@ -185,7 +233,11 @@ describe('web asset pack contract', () => {
   })
 
   it('rejects an incomplete browser-selected directory', async () => {
-    const manifest = new File([JSON.stringify(pack())], 'manifest.json')
+    const incompletePack = pack()
+    incompletePack.vfs_receipt.winner_set_sha256 = await calculateWebAssetWinnerSetSha256(
+      parseWebAssetPack(incompletePack),
+    )
+    const manifest = new File([JSON.stringify(incompletePack)], 'manifest.json')
     await expect(loadWebAssetPackFiles([
       manifest,
       new File([new Uint8Array(128)], entry.url),

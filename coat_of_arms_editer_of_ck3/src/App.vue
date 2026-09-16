@@ -170,6 +170,28 @@ const defaultAssetPackUrl = import.meta.env.VITE_COA_ASSET_PACK_URL
 const loadedAssetPack = ref<LoadedWebAssetPack>()
 const assetPackBusy = ref(false)
 const assetPackStatus = ref('尚未载入独立素材包')
+const assetPackVfsStatus = computed(() => {
+  const receipt = loadedAssetPack.value?.pack.vfs_receipt
+  if (!receipt) return t('vfsReceiptUnavailable')
+  const scope = receipt.scope === 'base_game_only' ? t('vfsScopeBase') : t('vfsScopeOverlay')
+  const evidence = receipt.native_precedence_evidence.status === 'scoped_passed'
+    ? t('vfsNativeScoped')
+    : receipt.native_precedence_evidence.status === 'unverified'
+      ? t('vfsNativeUnverified')
+      : t('notApplicable')
+  return t('vfsReceiptSummary', {
+    scope,
+    sources: receipt.sources.length,
+    conflicts: receipt.conflict_count,
+    hash: receipt.winner_set_sha256.slice(0, 12),
+    evidence,
+  })
+})
+const assetPackRuntimeBoundary = computed(() => (
+  loadedAssetPack.value?.pack.vfs_receipt.scope === 'resolved_overlay'
+    ? t('resolvedOverlayBoundary')
+    : t('noLoadConfiguration')
+))
 const webAssetCache = new Map<string, DecodedDds>()
 let webFitIndexCache: {
   pack: LoadedWebAssetPack
@@ -602,6 +624,8 @@ function currentAssetPackReceipt() {
     packId: loaded.pack.pack_id,
     manifestSha256: loaded.manifestSha256,
     ck3Build: loaded.pack.ck3_build,
+    vfsScope: loaded.pack.vfs_receipt.scope,
+    vfsWinnerSetSha256: loaded.pack.vfs_receipt.winner_set_sha256,
   } : undefined
 }
 
@@ -1966,6 +1990,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <div class="fit-controls">
           <strong>{{ t('standalonePack') }}</strong>
           <p>{{ uiText(assetPackStatus) }}</p>
+          <p data-testid="asset-pack-vfs-receipt">{{ assetPackVfsStatus }}</p>
           <input
             ref="assetPackDirectoryInput"
             class="hidden-file-input"
@@ -2303,7 +2328,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <el-scrollbar height="690px">
           <p class="resource-note">
             {{ t('staticAssetBoundary') }}
-            {{ t('noLoadConfiguration') }}
+            {{ assetPackRuntimeBoundary }}
           </p>
           <el-form label-position="top">
             <div class="form-grid">

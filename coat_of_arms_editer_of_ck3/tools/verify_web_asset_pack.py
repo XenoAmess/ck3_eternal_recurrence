@@ -106,6 +106,92 @@ def verify(pack_directory: Path) -> dict[str, object]:
         total_bytes += len(data)
     if surface_masks != 1:
         raise ValueError("pack must contain exactly one surface_mask")
+    vfs_receipt = manifest.get("vfs_receipt")
+    if not isinstance(vfs_receipt, dict) or vfs_receipt.get("schema") != "ck3-coa-vfs-receipt-v1":
+        raise ValueError("pack must contain a supported vfs_receipt")
+    winner_rows = [
+        "\0".join(
+            (
+                str(item["kind"]),
+                str(item["name"]),
+                str(item["asset_sha256"]),
+                str(item["source_relative_path"]),
+            )
+        )
+        for item in assets
+    ]
+    winner_set_sha256 = digest(("\n".join(winner_rows) + "\n").encode("utf-8"))
+    if vfs_receipt.get("winner_set_sha256") != winner_set_sha256:
+        raise ValueError("vfs_receipt winner_set_sha256 does not bind the asset inventory")
+    if vfs_receipt.get("resolved_asset_count") != len(assets):
+        raise ValueError("vfs_receipt resolved_asset_count does not match assets")
+    conflict_count = vfs_receipt.get("conflict_count")
+    if not isinstance(conflict_count, int) or not 0 <= conflict_count <= len(assets):
+        raise ValueError("vfs_receipt conflict_count is invalid")
+    sources = vfs_receipt.get("sources")
+    if not isinstance(sources, list) or not 1 <= len(sources) <= 512:
+        raise ValueError("vfs_receipt sources are invalid")
+    source_ids: set[str] = set()
+    for index, source in enumerate(sources):
+        if not isinstance(source, dict):
+            raise ValueError(f"vfs_receipt sources[{index}] is not an object")
+        source_id = source.get("source_id")
+        if not isinstance(source_id, str) or not source_id or source_id in source_ids:
+            raise ValueError(f"vfs_receipt sources[{index}] source_id is invalid")
+        source_ids.add(source_id)
+        if source.get("source_kind") not in {"base_game", "dlc", "directory_mod", "archive_mod"}:
+            raise ValueError(f"vfs_receipt sources[{index}] source_kind is invalid")
+        if source.get("precedence_order") != index:
+            raise ValueError("vfs_receipt sources must have contiguous precedence order")
+        if not isinstance(source.get("source_identity_sha256"), str) or not SHA256.fullmatch(source["source_identity_sha256"]):
+            raise ValueError(f"vfs_receipt sources[{index}] identity is invalid")
+    scope = vfs_receipt.get("scope")
+    policy = vfs_receipt.get("resolution_policy")
+    load_sha256 = vfs_receipt.get("load_configuration_sha256")
+    if scope == "base_game_only":
+        if (
+            len(sources) != 1
+            or sources[0].get("source_kind") != "base_game"
+            or policy != "single_source_no_conflicts"
+            or load_sha256 is not None
+            or conflict_count != 0
+        ):
+            raise ValueError("base_game_only vfs_receipt contract is inconsistent")
+    elif scope == "resolved_overlay":
+        if (
+            len(sources) < 2
+            or not any(source.get("source_kind") != "base_game" for source in sources)
+            or policy != "later_enabled_source_wins_direct_path"
+            or not isinstance(load_sha256, str)
+            or not SHA256.fullmatch(load_sha256)
+        ):
+            raise ValueError("resolved_overlay vfs_receipt contract is inconsistent")
+    else:
+        raise ValueError("vfs_receipt scope is unsupported")
+    native_evidence = vfs_receipt.get("native_precedence_evidence")
+    if not isinstance(native_evidence, dict):
+        raise ValueError("vfs_receipt native precedence evidence is missing")
+    evidence_status = native_evidence.get("status")
+    winner_rule = native_evidence.get("direct_path_winner_rule")
+    if evidence_status not in {"not_applicable", "scoped_passed", "unverified"}:
+        raise ValueError("vfs_receipt native evidence status is invalid")
+    if winner_rule not in {"not_applicable", "later_enabled_source_wins", "unverified"}:
+        raise ValueError("vfs_receipt native evidence winner rule is invalid")
+    if evidence_status == "scoped_passed" and (
+        not isinstance(native_evidence.get("evidence_id"), str)
+        or not native_evidence["evidence_id"]
+        or winner_rule != "later_enabled_source_wins"
+    ):
+        raise ValueError("scoped VFS native evidence is incomplete")
+    if not isinstance(native_evidence.get("scope"), str) or not native_evidence["scope"]:
+        raise ValueError("vfs_receipt native evidence scope is invalid")
+    uncovered = native_evidence.get("uncovered")
+    if (
+        not isinstance(uncovered, list)
+        or len(uncovered) > 32
+        or any(not isinstance(item, str) or not item for item in uncovered)
+    ):
+        raise ValueError("vfs_receipt uncovered list is invalid")
     fit_index = manifest.get("fit_index")
     if not isinstance(fit_index, dict):
         raise ValueError("pack must contain a fit_index")
@@ -227,6 +313,11 @@ def verify(pack_directory: Path) -> dict[str, object]:
         "fit_feature_bytes": len(feature_data),
         "complete_raw_tree": inventory.get("complete_raw_tree"),
         "source_dds_total": inventory.get("source_dds_total"),
+        "vfs_scope": scope,
+        "vfs_sources": len(sources),
+        "vfs_conflicts": conflict_count,
+        "vfs_winner_set_sha256": winner_set_sha256,
+        "vfs_native_evidence": evidence_status,
         **totals,
     }
 

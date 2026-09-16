@@ -31086,5 +31086,35 @@
   "pack_id": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
   "schema": "ck3-coa-web-asset-pack-v1",
   "schema_version": 1,
-  "source_manifest_sha256": "92D9FBDCBE931DCB3694B0840558A8096EE090B9C0ACD4A6AB5F2DB7D6DA5F35"
+  "source_manifest_sha256": "92D9FBDCBE931DCB3694B0840558A8096EE090B9C0ACD4A6AB5F2DB7D6DA5F35",
+  "vfs_receipt": {
+    "conflict_count": 0,
+    "load_configuration_sha256": null,
+    "native_precedence_evidence": {
+      "direct_path_winner_rule": "later_enabled_source_wins",
+      "evidence_id": "vfs-winner-native-r22",
+      "scope": "two enabled directory mods with one conflicting registered direct DDS path",
+      "status": "scoped_passed",
+      "uncovered": [
+        "base game versus mod precedence",
+        "DLC mount precedence",
+        "archive mod precedence",
+        "replace_path semantics",
+        "definition merge semantics"
+      ]
+    },
+    "resolution_policy": "single_source_no_conflicts",
+    "resolved_asset_count": 1630,
+    "schema": "ck3-coa-vfs-receipt-v1",
+    "scope": "base_game_only",
+    "sources": [
+      {
+        "precedence_order": 0,
+        "source_id": "ck3-base-1.19.0.6",
+        "source_identity_sha256": "92D9FBDCBE931DCB3694B0840558A8096EE090B9C0ACD4A6AB5F2DB7D6DA5F35",
+        "source_kind": "base_game"
+      }
+    ],
+    "winner_set_sha256": "B0FB6AAD58818D5731D2996F467FEEBDEEF55B2E0D5C32DFBDA83F54F7222474"
+  }
 }

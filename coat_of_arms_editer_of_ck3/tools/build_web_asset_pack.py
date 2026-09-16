@@ -51,6 +51,21 @@ def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest().upper()
 
 
+def _winner_set_sha256(assets: list[dict[str, object]]) -> str:
+    rows = [
+        "\0".join(
+            (
+                str(item["kind"]),
+                str(item["name"]),
+                str(item["asset_sha256"]),
+                str(item["source_relative_path"]),
+            )
+        )
+        for item in assets
+    ]
+    return _sha256(("\n".join(rows) + "\n").encode("utf-8"))
+
+
 def _catalog_items(game_root: Path, kind: str, include_hidden: bool) -> tuple[list[dict[str, object]], dict[str, object]]:
     items: list[dict[str, object]] = []
     offset = 0
@@ -403,6 +418,7 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
         source_bytes = json.dumps(
             source_identity, ensure_ascii=False, sort_keys=True, separators=(",", ":")
         ).encode("utf-8")
+        source_manifest_sha256 = _sha256(source_bytes)
         named_colors = {
             str(item["name"]): [float(value) for value in item["rgb"]]
             for item in render_support["named_colors"]
@@ -418,7 +434,7 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
                 f"ck3-{build}-base-partial-{len(patterns)}p-{len(selected_emblems)}e"
             ),
             "ck3_build": build,
-            "source_manifest_sha256": _sha256(source_bytes),
+            "source_manifest_sha256": source_manifest_sha256,
             "named_colors": named_colors,
             "assets": assets,
             "fit_index": {
@@ -451,13 +467,43 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
                 "surface_masks": 1,
                 "fit_eligible_registered": len(fit_asset_indices),
             },
+            "vfs_receipt": {
+                "schema": "ck3-coa-vfs-receipt-v1",
+                "scope": "base_game_only",
+                "resolution_policy": "single_source_no_conflicts",
+                "load_configuration_sha256": None,
+                "winner_set_sha256": _winner_set_sha256(assets),
+                "resolved_asset_count": len(assets),
+                "conflict_count": 0,
+                "sources": [
+                    {
+                        "source_id": f"ck3-base-{build}",
+                        "source_kind": "base_game",
+                        "precedence_order": 0,
+                        "source_identity_sha256": source_manifest_sha256,
+                    }
+                ],
+                "native_precedence_evidence": {
+                    "status": "scoped_passed",
+                    "evidence_id": "vfs-winner-native-r22",
+                    "direct_path_winner_rule": "later_enabled_source_wins",
+                    "scope": "two enabled directory mods with one conflicting registered direct DDS path",
+                    "uncovered": [
+                        "base game versus mod precedence",
+                        "DLC mount precedence",
+                        "archive mod precedence",
+                        "replace_path semantics",
+                        "definition merge semantics",
+                    ],
+                },
+            },
         }
         manifest_bytes = (
             json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
         ).encode("utf-8")
         (temporary / "manifest.json").write_bytes(manifest_bytes)
-        (temporary / "manifest.sha256").write_text(
-            f"{_sha256(manifest_bytes)}  manifest.json\n", encoding="ascii"
+        (temporary / "manifest.sha256").write_bytes(
+            f"{_sha256(manifest_bytes)}  manifest.json\n".encode("ascii")
         )
         (temporary / "NOTICE.txt").write_text(
             "Generated from an explicit CK3 installation. The project owner confirmed this "

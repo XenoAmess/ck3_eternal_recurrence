@@ -37,11 +37,12 @@ manifest 的 `fit_index.schema` 为 `ck3-coa-fit-index-v2`，`features` 使用�
 | RGBA atlas SHA-256 | `6FA0A2FF6510730EDA5F64F55EEC81044209761C03E7FA4120CD1D14C21B0A2F` |
 | v2 feature bytes | 2,266,632 |
 | v2 feature SHA-256 | `76429584EE906D7E0B2AEA4163FF2ABF690E6254571CB267CE281B402063DC26` |
-| manifest bytes | 1,042,792 |
-| manifest SHA-256 | `F5BB089884F864ED5DF88DCF3C8CB2C8966E3E541284AE691C6EBC1A282FD36E` |
+| manifest bytes | 1,043,868 |
+| manifest SHA-256 | `27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96` |
 | 原 RGBA atlas 对比 | `fc /b`：无差异 |
 
 生成发生在独立临时目录；verifier 通过后才晋级 manifest 与新 sidecar，临时目录随后删除。构建只读明确的 CK3 1.19.0.6 根，
+当前 manifest 相比最初 v2 fit-index 证据只新增 VFS receipt；RGBA atlas 与 feature sidecar 的 bytes/SHA 均未改变。
 没有启动或连接游戏。
 
 ## 验证

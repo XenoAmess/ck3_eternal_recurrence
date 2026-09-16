@@ -12,6 +12,13 @@ describe('browser project document', () => {
     source.coloredEmblems[0].instances[0].rotation = 12.3
     const project = await createCoatOfArmsProject(source, {
       savedAt: '2026-09-15T00:00:00.000Z', selectedEmblem: 0,
+      assetPack: {
+        packId: 'ck3-1.19.0.6-base-complete',
+        manifestSha256: 'A'.repeat(64),
+        ck3Build: '1.19.0.6',
+        vfsScope: 'base_game_only',
+        vfsWinnerSetSha256: 'B'.repeat(64),
+      },
     })
     const restored = await parseCoatOfArmsProject(serializeCoatOfArmsProject(project))
 
@@ -19,6 +26,8 @@ describe('browser project document', () => {
     expect(restored.coatOfArms).not.toBe(source)
     expect(restored.ck3Source.sha256).toMatch(/^[0-9A-F]{64}$/)
     expect(restored.ck3Source.stats.drawnInstances).toBe(1)
+    expect(restored.assetPack?.vfsScope).toBe('base_game_only')
+    expect(restored.assetPack?.vfsWinnerSetSha256).toBe('B'.repeat(64))
   })
 
   it('fails closed on content, count, and version tampering', async () => {
