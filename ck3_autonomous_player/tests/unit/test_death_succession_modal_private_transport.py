@@ -202,6 +202,52 @@ def test_private_typed_close_requires_independent_postcondition_and_date() -> No
     ]
 
 
+def test_post_advance_snapshot_disagreement_preserves_all_action_evidence() -> None:
+    class _LaggingSnapshotDriver(_Driver):
+        def execute_step(
+            self, step: str, *, expected_revision: int
+        ) -> dict[str, object]:
+            assert step == "life-advance" and expected_revision == PUBLIC_REVISION
+            # Reproduce R781: the composite returns and is durably recorded as
+            # having advanced one day, while the immediately following public
+            # snapshot still presents the pre-advance frame.
+            return {
+                "step": step,
+                "backend_id": "native-headless",
+                "source": "native-composite",
+                "starting_date_raw": DATE_RAW,
+                "ending_date_raw": DATE_RAW + 24,
+                "elapsed_days": 1,
+                "paused": True,
+                "final_screen": "map_hud",
+            }
+
+    driver = _LaggingSnapshotDriver()
+    result = continue_death_succession_modal_private_v1(
+        driver,
+        expected_revision=PUBLIC_REVISION,
+        expected_played_character_id=CHARACTER_ID,
+        expected_episode_run_id=EPISODE_RUN_ID,
+    )
+
+    assert result["status"] == "post_advance_unconfirmed"
+    assert result["material_result_verified"] is False
+    assert result["submission_ack"]["close_invocations"] == 1
+    assert result["initial_query"]["current_timeline_blocker_context"][
+        "identity"
+    ] == "death_succession_modal"
+    assert result["postcondition_query"]["current_timeline_blocker_context"][
+        "identity"
+    ] == "none"
+    assert result["life_advance_result"]["ending_date_raw"] == DATE_RAW + 24
+    assert result["post_advance_snapshot"]["date_raw"] == DATE_RAW
+    assert "disagreed" in result["post_failure"]
+    assert sum(
+        request["step"] == CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP
+        for request in driver.endpoint.requests
+    ) == 1
+
+
 def test_postcondition_must_be_later_than_action() -> None:
     driver = _Driver()
     original = driver.state.wait_for_command_result

@@ -99,6 +99,44 @@ def _submitted_unconfirmed_result(
     }
 
 
+def _post_advance_unconfirmed_result(
+    *,
+    ack: dict[str, object],
+    initial: dict[str, object],
+    post_attempts: list[dict[str, object]],
+    date_raw: int,
+    snapshot: Mapping[str, object],
+    life_result: Mapping[str, object],
+    failure: str,
+) -> dict[str, object]:
+    """Preserve every submitted action when the final snapshot disagrees.
+
+    The native ``life-advance`` composite can already have advanced CK3 and
+    persisted its own material result before the transport performs its final
+    independent snapshot read.  Treating a disagreement as an exception loses
+    the Close ACK, post-Close queries, and the life-advance receipt, making the
+    run look action-free and unsafe to retry.  This result remains RED while
+    retaining the exact evidence needed to distinguish the two observations.
+    """
+
+    result = _submitted_unconfirmed_result(
+        ack=ack,
+        initial=initial,
+        post_attempts=post_attempts,
+        date_raw=date_raw,
+        snapshot=snapshot,
+        failure=failure,
+    )
+    result.update(
+        {
+            "status": "post_advance_unconfirmed",
+            "life_advance_result": copy.deepcopy(dict(life_result)),
+            "post_advance_snapshot": _post_query_binding(snapshot),
+        }
+    )
+    return result
+
+
 def continue_death_succession_modal_private_v1(
     driver: object,
     *,
@@ -406,8 +444,17 @@ def continue_death_succession_modal_private_v1(
         or final_date <= date_raw
         or _episode_binding(after_advance) != source_episode
     ):
-        raise BridgeUnavailableError(
-            "formal life-advance did not increase date after succession Close"
+        return _post_advance_unconfirmed_result(
+            ack=ack,
+            initial=initial,
+            post_attempts=post_attempts,
+            date_raw=date_raw,
+            snapshot=after_advance,
+            life_result=life_result,
+            failure=(
+                "formal life-advance result and independent snapshot disagreed "
+                "after succession Close"
+            ),
         )
     return {
         **copy.deepcopy(ack),
