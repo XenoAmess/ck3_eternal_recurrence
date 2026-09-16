@@ -1333,6 +1333,8 @@ class NativeHeadlessGameplayDriver:
         allow_route_contact_high_speed_ab: bool = False,
         allow_stationary_objective_hold_sentinel_canary: bool = False,
         allow_private_lifestyle_formal_trial: bool = False,
+        allow_private_faction_gift_formal_trial: bool = False,
+        private_faction_round_id: str | None = None,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
@@ -1387,6 +1389,22 @@ class NativeHeadlessGameplayDriver:
         # Exact slot43 is a controlled trial route, never a public capability.
         self.allow_private_lifestyle_formal_trial = (
             allow_private_lifestyle_formal_trial is True
+        )
+        self.allow_private_faction_gift_formal_trial = (
+            allow_private_faction_gift_formal_trial is True
+        )
+        if self.allow_private_faction_gift_formal_trial and not (
+            isinstance(private_faction_round_id, str)
+            and private_faction_round_id.startswith("R")
+            and private_faction_round_id[1:].isdigit()
+        ):
+            raise ValueError(
+                "private faction gift trial requires a monotonic R<number> round ID"
+            )
+        self.private_faction_round_id = (
+            private_faction_round_id
+            if self.allow_private_faction_gift_formal_trial
+            else None
         )
         self.state_dir = Path(state_dir) if state_dir is not None else None
         self.save_dir = Path(save_dir) if save_dir is not None else None
@@ -2131,6 +2149,53 @@ class NativeHeadlessGameplayDriver:
         )
 
         return query_player_lifestyle_receipt_private_v1(
+            self, pending=pending, expected_revision=expected_revision,
+        )
+
+    def query_faction_gift_private_candidate_v1(
+        self, *, snapshot: dict[str, object],
+        same_frame_root: dict[str, object], minimum_gold_reserve_raw: int,
+    ) -> dict[str, object]:
+        """Controlled paused faction read; absent from public steps and MCP."""
+        from .faction_gift_private_transport_v1 import (
+            query_faction_gift_private_candidate_v1,
+        )
+
+        return query_faction_gift_private_candidate_v1(
+            self, snapshot=snapshot, same_frame_root=same_frame_root,
+            minimum_gold_reserve_raw=minimum_gold_reserve_raw,
+        )
+
+    def submit_faction_gift_private_v1(
+        self, *, candidate: dict[str, object], checkpoint: dict[str, object],
+        expected_revision: int,
+    ) -> dict[str, object]:
+        from .faction_gift_formal_route_v1 import submit_faction_gift_private_v1
+
+        return submit_faction_gift_private_v1(
+            self, candidate=candidate, checkpoint=checkpoint,
+            expected_revision=expected_revision,
+        )
+
+    def query_faction_gift_receipt_private_v1(
+        self, *, pending: dict[str, object], expected_revision: int,
+    ) -> dict[str, object]:
+        from .faction_gift_formal_route_v1 import (
+            query_faction_gift_receipt_private_v1,
+        )
+
+        return query_faction_gift_receipt_private_v1(
+            self, pending=pending, expected_revision=expected_revision,
+        )
+
+    def query_faction_gift_cold_recovery_private_v1(
+        self, *, pending: dict[str, object], expected_revision: int,
+    ) -> dict[str, object]:
+        from .faction_gift_formal_route_v1 import (
+            query_faction_gift_cold_recovery_private_v1,
+        )
+
+        return query_faction_gift_cold_recovery_private_v1(
             self, pending=pending, expected_revision=expected_revision,
         )
 

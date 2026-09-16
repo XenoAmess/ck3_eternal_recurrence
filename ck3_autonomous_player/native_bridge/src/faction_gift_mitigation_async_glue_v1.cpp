@@ -641,6 +641,78 @@ bool SubmitFactionGiftThroughGenericInteractionDirectV1(
   return constructed && submitted;
 }
 
+bool CaptureFactionGiftColdRecoveryObservationV1(
+    const Bindings &bindings, std::uintptr_t module_base,
+    const game::Snapshot &current, std::uint64_t public_revision,
+    std::uint64_t native_revision, std::uint32_t source_faction_id,
+    std::uint32_t recipient_character_id,
+    game::FactionGiftMitigationObservationV1 &output) noexcept {
+  output = {};
+  if (!current.paused || !current.map_ready || !current.has_played_character ||
+      current.played_character_id <= 0 || public_revision == 0 ||
+      native_revision == 0 || source_faction_id == 0 ||
+      recipient_character_id == 0 ||
+      current.played_character_gold.scale < 0 ||
+      current.played_character_gold.scale >
+          (std::numeric_limits<std::uint32_t>::max)()) {
+    return false;
+  }
+  FactionGiftIndependentEntityV1 entity{};
+  if (!ReadFactionGiftIndependentEntityExact11906V1(
+          module_base, bindings, source_faction_id, entity)) {
+    return false;
+  }
+  void *const recipient = ResolveCharacter(bindings, recipient_character_id);
+  GiftOpinionReceiverResultV1 opinion{};
+  if (recipient == nullptr ||
+      !ReadGiftOpinionExact11906V1(
+          module_base, bindings, recipient_character_id,
+          static_cast<std::uint32_t>(current.played_character_id), opinion) ||
+      !opinion.query_complete) {
+    return false;
+  }
+  bool at_war = false;
+  if (entity.present &&
+      !ReadFactionAtWarExact11906V1(module_base, source_faction_id, at_war)) {
+    return false;
+  }
+  output.available = true;
+  output.paused = true;
+  output.snapshot_revision = public_revision;
+  output.native_snapshot_revision = native_revision;
+  output.observed_date_raw = current.date_raw;
+  output.player_resources_query_complete = true;
+  output.player_character_id =
+      static_cast<std::uint32_t>(current.played_character_id);
+  output.player_gold_raw = current.played_character_gold.raw;
+  output.player_gold_scale =
+      static_cast<std::uint32_t>(current.played_character_gold.scale);
+  output.source_faction_requery_complete = true;
+  output.queried_source_faction_id = source_faction_id;
+  output.source_faction_present = entity.present;
+  if (entity.present) {
+    output.source_faction_target_character_id = entity.target_character_id;
+    output.source_faction_targeting_player =
+        entity.target_character_id == output.player_character_id;
+    output.source_faction_at_war = at_war;
+    output.source_faction_leader_character_id = entity.leader_character_id;
+    output.source_faction_member_character_ids = entity.member_character_ids;
+    output.source_faction_metrics_available = entity.metrics_available;
+    output.source_faction_power_raw = entity.power_raw;
+    output.source_faction_discontent_raw = entity.discontent_raw;
+    output.source_faction_metric_scale = entity.metric_scale;
+  }
+  output.recipient_identity_resolved = true;
+  output.recipient_character_id = recipient_character_id;
+  output.recipient_alive =
+      LoadAt<void *>(recipient, kCharacterDeathDataOffset) == nullptr;
+  output.recipient_opinion_query_complete = true;
+  output.recipient_opinion_of_player = opinion.recipient_opinion_of_player;
+  output.gift_opinion_present = opinion.gift_opinion_present;
+  output.gift_opinion_modifier_value = opinion.gift_opinion_modifier_value;
+  return true;
+}
+
 bool ExecuteFactionGiftMitigationAsyncMailboxV1(
     void *context, const MainThreadExecutionStampV1 &stamp) noexcept {
   if (context == nullptr) return false;

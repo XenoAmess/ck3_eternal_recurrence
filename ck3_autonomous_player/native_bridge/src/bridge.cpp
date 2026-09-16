@@ -4418,6 +4418,139 @@ std::string FactionGiftPrivateResultFrameV1(
   return result;
 }
 
+struct FactionGiftColdRecoveryMailboxContextV1 {
+  xar::ck3_11906::MainThreadQueryMailboxV1 *mailbox = nullptr;
+  xar::ck3_11906::MainThreadQueryTicketV1 ticket{};
+  xar::ck3_11906::Bindings bindings{};
+  std::uintptr_t module_base = 0;
+  xar::game::Snapshot expected_snapshot{};
+  std::uint64_t expected_public_revision = 0;
+  std::uint32_t source_faction_id = 0;
+  std::uint32_t recipient_character_id = 0;
+  xar::game::FactionGiftMitigationObservationV1 observation{};
+  xar::ck3_11906::MainThreadExecutionStampV1 execution_stamp{};
+  bool completed = false;
+  std::string failure;
+};
+
+bool ExecuteFactionGiftColdRecoveryMailboxV1(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  using namespace xar::ck3_11906;
+  if (opaque == nullptr) return false;
+  auto &context =
+      *static_cast<FactionGiftColdRecoveryMailboxContextV1 *>(opaque);
+  context.completed = false;
+  context.failure.clear();
+  context.execution_stamp = stamp;
+  xar::game::Snapshot current{};
+  if (!stamp.paused || stamp.pump_epoch == 0 ||
+      !xar::ck3_11906::ReadSnapshot(context.bindings, current) ||
+      current != context.expected_snapshot) {
+    context.failure = "private_faction_cold_frame_changed";
+    return true;
+  }
+  if (!CaptureFactionGiftColdRecoveryObservationV1(
+          context.bindings, context.module_base, current,
+          context.expected_public_revision, stamp.pump_epoch,
+          context.source_faction_id, context.recipient_character_id,
+          context.observation)) {
+    context.failure = "private_faction_cold_independent_read_red";
+    return true;
+  }
+  context.completed = true;
+  return true;
+}
+
+std::string ExecuteFactionGiftColdRecoveryPrivateStepV1(
+    std::string_view request_id, std::string_view payload,
+    const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &published, std::uint64_t revision) {
+  using namespace xar::ck3_11906;
+  std::uint64_t expected_revision = 0;
+  std::uint64_t expected_date = 0;
+  std::uint64_t expected_player = 0;
+  std::uint64_t source_faction = 0;
+  std::uint64_t recipient = 0;
+  if (!xar::bridge::JsonUnsignedField(payload, "expected_revision",
+                                      expected_revision) ||
+      !xar::bridge::JsonUnsignedField(payload, "expected_date_raw",
+                                      expected_date) ||
+      !xar::bridge::JsonUnsignedField(
+          payload, "expected_player_character_id", expected_player) ||
+      !xar::bridge::JsonUnsignedField(
+          payload, "source_faction_id", source_faction) ||
+      !xar::bridge::JsonUnsignedField(
+          payload, "recipient_character_id", recipient) ||
+      revision == 0 || expected_revision != revision ||
+      expected_date > static_cast<std::uint64_t>(
+                          (std::numeric_limits<std::int32_t>::max)()) ||
+      expected_player == 0 || source_faction == 0 || recipient == 0 ||
+      expected_player > (std::numeric_limits<std::uint32_t>::max)() ||
+      source_faction > (std::numeric_limits<std::uint32_t>::max)() ||
+      recipient > (std::numeric_limits<std::uint32_t>::max)() ||
+      !published.paused || !published.map_ready ||
+      !published.has_played_character || !published.played_character_alive ||
+      published.date_raw < 0 ||
+      expected_date != static_cast<std::uint64_t>(published.date_raw) ||
+      expected_player !=
+          static_cast<std::uint64_t>(published.played_character_id)) {
+    return CommandResultFrame(
+        request_id, kFactionGiftPrivateColdRecoveryStepV1, false,
+        "private_faction_cold_frame_or_identity_invalid");
+  }
+  xar::game::Snapshot current{};
+  if (!xar::game::ReadSnapshot(game, current) || current != published) {
+    return CommandResultFrame(
+        request_id, kFactionGiftPrivateColdRecoveryStepV1, false,
+        "private_faction_cold_published_frame_stale");
+  }
+  FactionGiftColdRecoveryMailboxContextV1 context{};
+  context.mailbox = &g_main_thread_query_mailbox_v1;
+  context.bindings = BindCurrentProcess(true);
+  context.module_base = reinterpret_cast<std::uintptr_t>(
+      GetModuleHandleW(nullptr));
+  context.expected_snapshot = published;
+  context.expected_public_revision = revision;
+  context.source_faction_id = static_cast<std::uint32_t>(source_faction);
+  context.recipient_character_id = static_cast<std::uint32_t>(recipient);
+  const auto submit = TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &ExecuteFactionGiftColdRecoveryMailboxV1, &context, context.ticket);
+  if (submit != MainThreadQuerySubmitResultV1::submitted) {
+    return CommandResultFrame(
+        request_id, kFactionGiftPrivateColdRecoveryStepV1, false,
+        "private_faction_cold_application_main_unavailable");
+  }
+  auto wait = WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, context.ticket, 1'000);
+  while (wait == MainThreadQueryWaitResultV1::
+                     timeout_executor_already_running) {
+    wait = WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, context.ticket, 1'000);
+  }
+  const auto reclaimed = ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, context.ticket);
+  if (wait != MainThreadQueryWaitResultV1::completed ||
+      reclaimed != MainThreadQueryReclaimResultV1::reclaimed ||
+      !context.completed) {
+    return CommandResultFrame(
+        request_id, kFactionGiftPrivateColdRecoveryStepV1, false,
+        context.failure.empty() ? "private_faction_cold_mailbox_red"
+                                : context.failure);
+  }
+  FactionGiftMitigationAsyncContextV1 serialized{};
+  serialized.completion =
+      FactionGiftMitigationAsyncCompletionV1::unavailable;
+  serialized.source_faction_id = context.source_faction_id;
+  serialized.recipient_character_id = context.recipient_character_id;
+  serialized.observation = context.observation;
+  return FactionGiftPrivateResultFrameV1(
+      request_id, kFactionGiftPrivateColdRecoveryStepV1,
+      "independent_read_complete",
+      SerializeFactionGiftMitigationAsyncContextV1(serialized));
+}
+
 bool PollFactionGiftPrivateMailboxV1(std::uint32_t wait_ms) {
   using namespace xar::ck3_11906;
   if (!g_faction_gift_private_active_context_v1) return true;
@@ -8167,6 +8300,8 @@ void RunConnectedSession(
                                   kFactionGiftPrivateSubmitStepV1
                    && step != xar::ck3_11906::
                                   kFactionGiftPrivateReceiptStepV1
+                   && step != xar::ck3_11906::
+                                  kFactionGiftPrivateColdRecoveryStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
                    && step != xar::ck3_11906::
@@ -8215,7 +8350,9 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
           if (step == xar::ck3_11906::kFactionGiftPrivateQueryStepV1 ||
               step == xar::ck3_11906::kFactionGiftPrivateSubmitStepV1 ||
-              step == xar::ck3_11906::kFactionGiftPrivateReceiptStepV1) {
+              step == xar::ck3_11906::kFactionGiftPrivateReceiptStepV1 ||
+              step == xar::ck3_11906::
+                          kFactionGiftPrivateColdRecoveryStepV1) {
             if (!previous_snapshot.has_value()) {
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(
@@ -8223,7 +8360,13 @@ void RunConnectedSession(
                             "private faction published snapshot unavailable"));
             } else {
               connected = xar::bridge::WriteFrame(
-                  pipe, ExecuteFactionGiftPrivateStepV1(
+                  pipe,
+                  step == xar::ck3_11906::
+                              kFactionGiftPrivateColdRecoveryStepV1
+                      ? ExecuteFactionGiftColdRecoveryPrivateStepV1(
+                            request_id, incoming.payload, game,
+                            *previous_snapshot, state_revision)
+                      : ExecuteFactionGiftPrivateStepV1(
                             request_id, step, incoming.payload, game,
                             *previous_snapshot, state_revision));
             }

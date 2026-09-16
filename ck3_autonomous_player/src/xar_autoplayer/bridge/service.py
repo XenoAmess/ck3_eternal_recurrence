@@ -370,6 +370,12 @@ from ..lifestyle_formal_consumer import (
     same_frame_feudal_peace_scope,
     unresolved_lifestyle_perk_action,
 )
+from .faction_gift_formal_route_v1 import (
+    COLD_RECOVERY_STEP as PRIVATE_FACTION_COLD_RECOVERY_STEP,
+    RECEIPT_STEP as PRIVATE_FACTION_RECEIPT_STEP,
+    SUBMIT_STEP as PRIVATE_FACTION_SUBMIT_STEP,
+    plan_faction_gift_private_v1,
+)
 
 
 class GameplayBridgeService:
@@ -659,6 +665,24 @@ class GameplayBridgeService:
                     ) is True
                     else None
                 ),
+                "_private_faction_snapshot_v1": (
+                    planning_snapshot
+                    if getattr(
+                        self.driver,
+                        "allow_private_faction_gift_formal_trial",
+                        False,
+                    ) is True
+                    else None
+                ),
+                "_private_faction_history_v1": (
+                    history
+                    if getattr(
+                        self.driver,
+                        "allow_private_faction_gift_formal_trial",
+                        False,
+                    ) is True
+                    else None
+                ),
             }
 
         if use_internal_view:
@@ -676,11 +700,34 @@ class GameplayBridgeService:
         if getattr(
             self.driver, "allow_private_lifestyle_formal_trial", False
         ) is True:
-            return self._plan_private_lifestyle_trial_v1(
+            planned = self._plan_private_lifestyle_trial_v1(
                 planned, available_steps
             )
+            lifestyle_plan = planned.get("plan")
+            if (
+                isinstance(lifestyle_plan, dict)
+                and lifestyle_plan.get("selected_step") != "life-advance"
+            ):
+                planned.pop("_private_faction_snapshot_v1", None)
+                planned.pop("_private_faction_history_v1", None)
+                return planned
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
+        if getattr(
+            self.driver, "allow_private_faction_gift_formal_trial", False
+        ) is True:
+            faction_snapshot = planned.pop("_private_faction_snapshot_v1", None)
+            faction_history = planned.pop("_private_faction_history_v1", None)
+            if (
+                isinstance(faction_snapshot, dict)
+                and isinstance(faction_history, list)
+            ):
+                return plan_faction_gift_private_v1(
+                    self.driver, planned, faction_snapshot,
+                    faction_history, available_steps,
+                )
+        planned.pop("_private_faction_snapshot_v1", None)
+        planned.pop("_private_faction_history_v1", None)
         return planned
 
     def _plan_private_lifestyle_trial_v1(
@@ -925,6 +972,43 @@ class GameplayBridgeService:
                 if not (isinstance(pending, dict) and callable(executor)):
                     raise UnsupportedStepError(
                         "controlled LIFE receipt lacks its pending action ID"
+                    )
+                result = executor(
+                    pending=pending,
+                    expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == PRIVATE_FACTION_SUBMIT_STEP:
+                candidate = plan.get("faction_gift_action")
+                checkpoint = plan.get("faction_gift_pre_submit_checkpoint")
+                executor = getattr(
+                    self.driver, "submit_faction_gift_private_v1", None
+                )
+                if not (
+                    isinstance(candidate, dict)
+                    and isinstance(checkpoint, dict)
+                    and callable(executor)
+                ):
+                    raise UnsupportedStepError(
+                        "controlled faction gift lacks typed candidate/checkpoint"
+                    )
+                result = executor(
+                    candidate=candidate, checkpoint=checkpoint,
+                    expected_revision=int(planned["revision"]),
+                )
+            elif selected_step in {
+                PRIVATE_FACTION_RECEIPT_STEP,
+                PRIVATE_FACTION_COLD_RECOVERY_STEP,
+            }:
+                pending = plan.get("faction_gift_pending_action")
+                method = (
+                    "query_faction_gift_receipt_private_v1"
+                    if selected_step == PRIVATE_FACTION_RECEIPT_STEP
+                    else "query_faction_gift_cold_recovery_private_v1"
+                )
+                executor = getattr(self.driver, method, None)
+                if not (isinstance(pending, dict) and callable(executor)):
+                    raise UnsupportedStepError(
+                        "controlled faction gift verification lacks pending identity"
                     )
                 result = executor(
                     pending=pending,

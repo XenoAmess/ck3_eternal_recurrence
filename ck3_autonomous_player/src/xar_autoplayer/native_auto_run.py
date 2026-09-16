@@ -194,6 +194,8 @@ def native_auto_run(
     allow_route_contact_high_speed_ab: bool = False,
     allow_stationary_objective_hold_sentinel_canary: bool = False,
     allow_private_lifestyle_formal_trial: bool = False,
+    allow_private_faction_gift_formal_trial: bool = False,
+    private_faction_round_id: str | None = None,
     operator_stop_event: threading.Event | None = None,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
@@ -244,6 +246,21 @@ def native_auto_run(
     ):
         raise AgentError(
             "private LIFE slot43 trial only admits a bounded contract"
+        )
+    if (
+        allow_private_faction_gift_formal_trial is True
+        and completion_contract != "bounded"
+    ):
+        raise AgentError(
+            "private faction gift trial only admits a bounded contract"
+        )
+    if allow_private_faction_gift_formal_trial is True and not (
+        isinstance(private_faction_round_id, str)
+        and private_faction_round_id.startswith("R")
+        and private_faction_round_id[1:].isdigit()
+    ):
+        raise AgentError(
+            "private faction gift trial requires --private-faction-round-id R<number>"
         )
 
     ensure_state_path_safe(spec.state_dir)
@@ -446,6 +463,14 @@ def native_auto_run(
             if allow_private_lifestyle_formal_trial is True
             else {}
         )
+        private_faction_driver_options = (
+            {
+                "allow_private_faction_gift_formal_trial": True,
+                "private_faction_round_id": private_faction_round_id,
+            }
+            if allow_private_faction_gift_formal_trial is True
+            else {}
+        )
         driver = NativeHeadlessGameplayDriver(
             config.pipe_name,
             state_dir=spec.state_dir,
@@ -458,6 +483,7 @@ def native_auto_run(
                 allow_stationary_objective_hold_sentinel_canary
             ),
             **private_lifestyle_driver_options,
+            **private_faction_driver_options,
         )
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(

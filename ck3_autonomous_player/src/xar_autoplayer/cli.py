@@ -298,6 +298,18 @@ def parser() -> argparse.ArgumentParser:
             "default"
         ),
     )
+    native_auto_run_parser.add_argument(
+        "--allow-private-faction-gift-formal-trial",
+        action="store_true",
+        help=(
+            "enable the unadvertised exact-build faction gift submit/receipt "
+            "route for one bounded acceptance run"
+        ),
+    )
+    native_auto_run_parser.add_argument(
+        "--private-faction-round-id",
+        help="monotonic CK3 ownership round (R<number>) for the private trial",
+    )
     one_generation_parser = commands.add_parser(
         "native-one-generation",
         help=(
@@ -603,6 +615,14 @@ def main(argv: list[str] | None = None) -> int:
                 operator_stop_event,
                 stop_request_file=stop_request_file,
             ):
+                private_faction_options = (
+                    {
+                        "allow_private_faction_gift_formal_trial": True,
+                        "private_faction_round_id": args.private_faction_round_id,
+                    }
+                    if args.allow_private_faction_gift_formal_trial
+                    else {}
+                )
                 result = native_auto_run(
                     spec,
                     turn_count=args.turns,
@@ -616,6 +636,7 @@ def main(argv: list[str] | None = None) -> int:
                     allow_stationary_objective_hold_sentinel_canary=(
                         args.allow_stationary_objective_hold_sentinel_canary
                     ),
+                    **private_faction_options,
                     operator_stop_event=operator_stop_event,
                 )
         elif args.command == "native-one-generation":

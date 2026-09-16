@@ -21,6 +21,8 @@ inline constexpr std::string_view kFactionGiftPrivateSubmitStepV1 =
     "private-submit-faction-gift-member-v1";
 inline constexpr std::string_view kFactionGiftPrivateReceiptStepV1 =
     "private-query-faction-gift-receipt-v1";
+inline constexpr std::string_view kFactionGiftPrivateColdRecoveryStepV1 =
+    "private-query-faction-gift-cold-recovery-v1";
 
 enum class FactionGiftMitigationAsyncCompletionV1 : std::uint8_t {
   not_executed = 0,
@@ -96,6 +98,17 @@ bool SubmitFactionGiftThroughGenericInteractionDirectV1(
     const Bindings &bindings, std::uint32_t player_character_id,
     std::uint32_t recipient_character_id, std::string_view definition_key,
     std::uint64_t expected_definition_stable_hash) noexcept;
+
+// Read the persisted faction and recipient identities without consulting the
+// player's current targeting vector.  This is the native fact source used
+// after a real CK3 process replacement; process/checkpoint identity remains a
+// Python owner responsibility and is never inferred from this observation.
+bool CaptureFactionGiftColdRecoveryObservationV1(
+    const Bindings &bindings, std::uintptr_t module_base,
+    const game::Snapshot &current, std::uint64_t public_revision,
+    std::uint64_t native_revision, std::uint32_t source_faction_id,
+    std::uint32_t recipient_character_id,
+    game::FactionGiftMitigationObservationV1 &output) noexcept;
 
 bool ExecuteFactionGiftMitigationAsyncMailboxV1(
     void *context, const MainThreadExecutionStampV1 &stamp) noexcept;

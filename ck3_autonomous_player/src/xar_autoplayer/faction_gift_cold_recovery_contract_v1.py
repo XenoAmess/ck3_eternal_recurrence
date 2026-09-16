@@ -1,7 +1,7 @@
 """Typed material classifier for a faction gift after a real CK3 cold start.
 
-The native recovery query is still missing. The caller must supply an exact
-independent faction-storage/recipient/resource read from the new process;
+The private exact-build route supplies an independent faction-storage,
+recipient, and resource read from the new process;
 the current targeting vector and the previous process ACK are never evidence
 of application or dissolution. Revisions may reset across process starts.
 """

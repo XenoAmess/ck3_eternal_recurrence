@@ -825,6 +825,7 @@ if(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
       src/faction_gift_receivers_v1.cpp
       src/faction_gift_mitigation_integration_gate_v1.cpp
       src/faction_gift_mitigation_async_glue_v1.cpp
+      src/faction_gift_cold_recovery_v1.cpp
       PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-"
     )
   endif()
@@ -835,6 +836,7 @@ if(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
     src/faction_gift_receivers_v1.cpp
     src/faction_gift_mitigation_integration_gate_v1.cpp
     src/faction_gift_mitigation_async_glue_v1.cpp
+    src/faction_gift_cold_recovery_v1.cpp
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1=1
@@ -2558,6 +2560,26 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_faction_gift_mitigation_async_glue_v1
     COMMAND xar_ck3_faction_gift_mitigation_async_glue_v1_test
+  )
+
+  add_executable(xar_ck3_faction_gift_cold_recovery_v1_test
+    src/faction_gift_mitigation_action_v1.cpp
+    src/faction_gift_cold_recovery_v1.cpp
+    src/faction_gift_cold_recovery_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_faction_gift_cold_recovery_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_faction_gift_cold_recovery_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_faction_gift_cold_recovery_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_faction_gift_cold_recovery_v1
+    COMMAND xar_ck3_faction_gift_cold_recovery_v1_test
   )
 
   add_executable(
