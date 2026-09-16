@@ -467,18 +467,14 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         def publisher(ordinal: int, preview: str) -> dict[str, object]:
             return {
                 "ordinal": ordinal,
-                "entry_sequence": ordinal * 2,
-                "return_sequence": ordinal * 2 + 1,
-                "entry_thread_id": 10,
-                "return_thread_id": 10,
+                "thread_id": 10,
                 "raw_result": 1,
-                "raw_rcx": 100 + ordinal,
-                "backend": 200 + ordinal,
-                "insert_mode": 0,
-                "return_seen": True,
-                "path": {"preview": preview},
-                "manager_before": {},
-                "manager_after": {},
+                "success": True,
+                "preview_length": len(preview),
+                "terminated": True,
+                "null_pointer": False,
+                "read_fault": False,
+                "path": preview,
             }
 
         observer = {
@@ -487,12 +483,11 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             "public_capability": False,
             "installed": True,
             "failure_flags": 0,
-            "publisher_entry_count": 2,
-            "publisher_return_count": 2,
-            "publisher_success_count": 2,
-            "publisher_failure_count": 0,
-            "publisher_slot_count": 2,
-            "publishers": [
+            "call_count": 2,
+            "success_count": 2,
+            "failure_count": 0,
+            "row_count": 2,
+            "rows": [
                 publisher(1, "D:/profile/coa_vfs_replace_earlier"),
                 publisher(2, "D:/profile/coa_vfs_replace_later"),
             ],
@@ -506,8 +501,13 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
                     content=[],
                     is_error=False,
                     structured_content={
+                        "diagnostics": {
+                            "private_observers": {
+                                "physfs_mounted_data_observer_v1": observer
+                            }
+                        },
                         "private_observers": {
-                            "vfs_mount_lifecycle_observer_v1": observer
+                            "vfs_mount_lifecycle_observer_v1": {}
                         }
                     },
                 )
@@ -521,6 +521,9 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         )
 
         self.assertTrue(result["ok"])
+        self.assertEqual(
+            result["observer_kind"], "physfs_mounted_data_observer_v1"
+        )
         self.assertEqual(client.name, module.BRIDGE_DIAGNOSTICS_TOOL)
         self.assertEqual(client.arguments, {})
         self.assertEqual(len(recorded), 1)
@@ -529,7 +532,7 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             result["checks"]["fixture_mount_order_matches_dlc_load"]
         )
 
-        observer["publishers"].reverse()
+        observer["rows"].reverse()
         reversed_result = asyncio.run(
             module._collect_vfs_mount_order_diagnostics(
                 FakeClient(), lambda call: None

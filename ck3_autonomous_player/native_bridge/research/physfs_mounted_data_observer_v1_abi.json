@@ -1,0 +1,57 @@
+{
+  "schema": "xar.physfs_mounted_data_observer_v1.abi.v1",
+  "status": "live-passed-r28",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "discovery": {
+    "function_rva_begin": "0x3B5CC60",
+    "function_rva_end": "0x3B5D20E",
+    "unique_mounted_data_literal_rva": "0x4556E50",
+    "unique_literal_xref_rva": "0x3B5CEA7",
+    "source_file": "virtualfilesystem_physfs.cpp",
+    "source_line": 813
+  },
+  "hook": {
+    "name": "mounted_data_publisher_call",
+    "patch_rva": "0x3B5CE1D",
+    "target_rva": "0x3BE18C0",
+    "semantic_return_rva": "0x3B5CE22",
+    "patch_size": 5,
+    "anchor_hex": "E8 9E 4A 08 00",
+    "branch": "CALL",
+    "registers": "RDX=resolved mount C string; EAX=raw publisher result"
+  },
+  "state": {
+    "slots": 128,
+    "path_preview_bytes": 256,
+    "ordering": "one monotonically increasing post-call ordinal",
+    "overflow": "bounded ring; overwrite count is explicit"
+  },
+  "policy": {
+    "cmake_option": "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1",
+    "default_enabled": false,
+    "exact_build_only": true,
+    "initial_suspended_install": true,
+    "physical_patches": 1,
+    "single_near_rx_allocation": true,
+    "read_only": true,
+    "guard": false,
+    "public_capability": false,
+    "hook_path_allocation_mutex_qpc_or_win32_tid": false,
+    "requires": "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1"
+  },
+  "live_evidence": {
+    "run": "vfs-mount-order-native-r28",
+    "interaction": "managed_typed_mcp",
+    "steam_offline": true,
+    "call_count": 34,
+    "success_count": 34,
+    "failure_count": 0,
+    "slot_overwrite_count": 0,
+    "fixture_ordinals": [33, 34],
+    "report_sha256": "99D68962C2D76D340BF80956198D5917BCA529C2CD825701395DD76A759C3CDE"
+  }
+}

@@ -536,6 +536,14 @@ def _parser() -> argparse.ArgumentParser:
             "the official read-only MCP diagnostics tool after reaching the CoA page"
         ),
     )
+    parser.add_argument(
+        "--vfs-mount-order-diagnostics-only",
+        action="store_true",
+        help=(
+            "stop the managed run after the bounded startup mount-order MCP "
+            "receipt; requires --vfs-mount-order-diagnostics"
+        ),
+    )
     parser.add_argument("--output", type=Path, required=True)
     return parser
 
@@ -1717,22 +1725,74 @@ def _is_nonnegative_int(value: object) -> bool:
 async def _collect_vfs_mount_order_diagnostics(
     client: Client,
     record: Any,
+    settle_timeout_seconds: float = 60.0,
 ) -> dict[str, object]:
-    """Capture one bounded private observer snapshot through public MCP diagnostics."""
+    """Poll a bounded private observer until fixture mounts settle or timeout."""
 
-    call = await _call(client, BRIDGE_DIAGNOSTICS_TOOL)
-    record(call)
-    body = _structured(call)
-    private_observers = body.get("private_observers")
-    observer = (
-        private_observers.get("vfs_mount_lifecycle_observer_v1")
-        if isinstance(private_observers, dict)
-        else None
-    )
+    settle_deadline = time.monotonic() + max(0.0, settle_timeout_seconds)
+    poll_count = 0
+    call: dict[str, object] = {}
+    observer: object = None
+    observer_kind = "missing"
+    while True:
+        call = await _call(client, BRIDGE_DIAGNOSTICS_TOOL)
+        record(call)
+        poll_count += 1
+        body = _structured(call)
+        diagnostics = body.get("diagnostics")
+        private_observers = (
+            diagnostics.get("private_observers")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if not isinstance(private_observers, dict):
+            private_observers = body.get("private_observers")
+        observer = None
+        observer_kind = "missing"
+        if isinstance(private_observers, dict):
+            observer = private_observers.get(
+                "physfs_mounted_data_observer_v1"
+            )
+            if isinstance(observer, dict):
+                observer_kind = "physfs_mounted_data_observer_v1"
+            else:
+                observer = private_observers.get(
+                    "vfs_mount_lifecycle_observer_v1"
+                )
+                if isinstance(observer, dict):
+                    observer_kind = "vfs_mount_lifecycle_observer_v1"
+        candidate = observer if isinstance(observer, dict) else {}
+        candidate_rows = candidate.get(
+            "rows"
+            if observer_kind == "physfs_mounted_data_observer_v1"
+            else "publishers"
+        )
+        candidate_paths: list[str] = []
+        if isinstance(candidate_rows, list):
+            for row in candidate_rows:
+                if not isinstance(row, dict):
+                    continue
+                path = row.get("path")
+                preview = (
+                    path
+                    if isinstance(path, str)
+                    else path.get("preview") if isinstance(path, dict) else None
+                )
+                if isinstance(preview, str):
+                    candidate_paths.append(preview.casefold())
+        fixtures_settled = all(
+            any(fragment.casefold() in path for path in candidate_paths)
+            for fragment in VFS_MOUNT_ORDER_EXPECTED_FRAGMENTS
+        )
+        if fixtures_settled or time.monotonic() >= settle_deadline:
+            break
+        await asyncio.sleep(2.0)
+
     observer = observer if isinstance(observer, dict) else {}
-    publishers = observer.get("publishers")
-    rows = publishers if isinstance(publishers, list) else []
-    slot_count = observer.get("publisher_slot_count")
+    caller_local = observer_kind == "physfs_mounted_data_observer_v1"
+    published_rows = observer.get("rows" if caller_local else "publishers")
+    rows = published_rows if isinstance(published_rows, list) else []
+    slot_count = observer.get("row_count" if caller_local else "publisher_slot_count")
 
     ordinals: list[int] = []
     path_previews: list[str] = []
@@ -1744,28 +1804,42 @@ async def _collect_vfs_mount_order_diagnostics(
             all_returns_seen = False
             continue
         ordinal = row.get("ordinal")
-        entry_sequence = row.get("entry_sequence")
-        return_sequence = row.get("return_sequence")
-        path = row.get("path")
-        preview = path.get("preview") if isinstance(path, dict) else None
-        if (
-            not _is_nonnegative_int(ordinal)
-            or ordinal == 0
-            or not _is_nonnegative_int(entry_sequence)
-            or entry_sequence == 0
-            or not _is_nonnegative_int(return_sequence)
-            or not isinstance(row.get("return_seen"), bool)
-            or not isinstance(preview, str)
-            or not preview
-            or not isinstance(row.get("manager_before"), dict)
-            or not isinstance(row.get("manager_after"), dict)
-        ):
+        if caller_local:
+            preview = row.get("path")
+            row_complete = (
+                _is_nonnegative_int(ordinal)
+                and ordinal != 0
+                and _is_nonnegative_int(row.get("raw_result"))
+                and isinstance(row.get("success"), bool)
+                and isinstance(preview, str)
+                and bool(preview)
+            )
+            return_seen = True
+        else:
+            entry_sequence = row.get("entry_sequence")
+            return_sequence = row.get("return_sequence")
+            path = row.get("path")
+            preview = path.get("preview") if isinstance(path, dict) else None
+            row_complete = (
+                _is_nonnegative_int(ordinal)
+                and ordinal != 0
+                and _is_nonnegative_int(entry_sequence)
+                and entry_sequence != 0
+                and _is_nonnegative_int(return_sequence)
+                and isinstance(row.get("return_seen"), bool)
+                and isinstance(preview, str)
+                and bool(preview)
+                and isinstance(row.get("manager_before"), dict)
+                and isinstance(row.get("manager_after"), dict)
+            )
+            return_seen = row.get("return_seen") is True
+        if not row_complete:
             rows_complete = False
         if isinstance(ordinal, int) and not isinstance(ordinal, bool):
             ordinals.append(ordinal)
         if isinstance(preview, str):
             path_previews.append(preview)
-        if row.get("return_seen") is not True:
+        if not return_seen:
             all_returns_seen = False
 
     folded_paths = [value.casefold() for value in path_previews]
@@ -1790,10 +1864,20 @@ async def _collect_vfs_mount_order_diagnostics(
         and len(set(expected_positions)) == len(expected_positions)
     )
 
-    publisher_entry_count = observer.get("publisher_entry_count")
-    publisher_return_count = observer.get("publisher_return_count")
-    publisher_success_count = observer.get("publisher_success_count")
-    publisher_failure_count = observer.get("publisher_failure_count")
+    publisher_entry_count = observer.get(
+        "call_count" if caller_local else "publisher_entry_count"
+    )
+    publisher_return_count = (
+        publisher_entry_count
+        if caller_local
+        else observer.get("publisher_return_count")
+    )
+    publisher_success_count = observer.get(
+        "success_count" if caller_local else "publisher_success_count"
+    )
+    publisher_failure_count = observer.get(
+        "failure_count" if caller_local else "publisher_failure_count"
+    )
     count_values_valid = all(
         _is_nonnegative_int(value)
         for value in (
@@ -1824,7 +1908,7 @@ async def _collect_vfs_mount_order_diagnostics(
         ),
         "bounded_nonempty_snapshot": (
             _is_nonnegative_int(slot_count)
-            and 0 < slot_count <= 64
+            and 0 < slot_count <= (128 if caller_local else 64)
             and slot_count == len(rows)
         ),
         "publisher_rows_complete": rows_complete and bool(rows),
@@ -1843,6 +1927,8 @@ async def _collect_vfs_mount_order_diagnostics(
     return {
         "ok": all(checks.values()),
         "scope": "bounded startup mount publisher order; no per-resource winner claim",
+        "observer_kind": observer_kind,
+        "poll_count": poll_count,
         "expected_fragments": list(VFS_MOUNT_ORDER_EXPECTED_FRAGMENTS),
         "expected_fragment_indices": expected_indices,
         "path_previews": path_previews,
@@ -3322,6 +3408,7 @@ async def _mcp_sequence(
     vfs_extended_matrix: bool = False,
     vfs_replace_path_matrix: bool = False,
     vfs_mount_order_diagnostics: bool = False,
+    vfs_mount_order_diagnostics_only: bool = False,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
@@ -3692,6 +3779,23 @@ async def _mcp_sequence(
             vfs_mount_order_result = await _collect_vfs_mount_order_diagnostics(
                 client, record
             )
+            if vfs_mount_order_diagnostics_only:
+                checks = {
+                    "vfs_mount_order_diagnostics_complete": (
+                        vfs_mount_order_result.get("ok") is True
+                    )
+                }
+                return {
+                    "mcp_sdk": "official-python-client",
+                    "calls": calls,
+                    "call_summary": call_summary,
+                    "tool_schemas": schemas,
+                    "capabilities": _structured(capability_call or {}),
+                    "vfs_mount_order_diagnostics": vfs_mount_order_result,
+                    "diagnostics_only": True,
+                    "checks": checks,
+                    "ok": all(checks.values()),
+                }
 
         before_call: dict[str, object] | None = None
         before: dict[str, object] = {}
@@ -4403,6 +4507,14 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     vfs_mount_order_diagnostics = bool(
         getattr(args, "vfs_mount_order_diagnostics", False)
     )
+    vfs_mount_order_diagnostics_only = bool(
+        getattr(args, "vfs_mount_order_diagnostics_only", False)
+    )
+    if vfs_mount_order_diagnostics_only and not vfs_mount_order_diagnostics:
+        raise ValueError(
+            "--vfs-mount-order-diagnostics-only requires "
+            "--vfs-mount-order-diagnostics"
+        )
     if picture_corpus is not None and (
         getattr(args, "large_source", None) is not None
         or reference_preview is not None
@@ -4678,11 +4790,12 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             else None
         ),
         "vfs_mount_order_diagnostics_requested": vfs_mount_order_diagnostics,
+        "vfs_mount_order_diagnostics_only": vfs_mount_order_diagnostics_only,
         "vfs_mount_order_diagnostics_plan": (
             {
                 "transport": "official MCP ck3_get_bridge_diagnostics",
-                "observer": "vfs_mount_lifecycle_observer_v1",
-                "bounded_publisher_slots": 64,
+                "observer": "physfs_mounted_data_observer_v1",
+                "bounded_publisher_slots": 128,
                 "expected_fragments_in_order": list(
                     VFS_MOUNT_ORDER_EXPECTED_FRAGMENTS
                 ),
@@ -4814,6 +4927,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 vfs_extended_matrix=vfs_extended_matrix,
                 vfs_replace_path_matrix=vfs_replace_path_matrix,
                 vfs_mount_order_diagnostics=vfs_mount_order_diagnostics,
+                vfs_mount_order_diagnostics_only=(
+                    vfs_mount_order_diagnostics_only
+                ),
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,

@@ -1,0 +1,41 @@
+{
+  "schema": "xar.physfs_mounted_data_observer_v1.source_contract.v1",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "required_source_tokens": [
+    "kPhysfsMountedDataCallRvaV1 = 0x3B5CE1D",
+    "kPhysfsMountedDataPublisherRvaV1 = 0x3BE18C0",
+    "kPhysfsMountedDataLogLiteralRvaV1 = 0x4556E50",
+    "kPhysfsMountedDataSlotsV1 = 128",
+    "kPhysfsMountedDataPathBytesV1 = 256",
+    "kPhysfsMountedDataObserverInstalledByDefaultV1 = false",
+    "RecordPhysfsMountedDataV1",
+    "slot_overwrite_count",
+    "primary_thread_suspended_proven",
+    "EmitRelocatedCall"
+  ],
+  "required_integration_tokens": [
+    "src/physfs_mounted_data_observer_v1.cpp",
+    "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1=1",
+    "#include \"xar_bridge/physfs_mounted_data_observer_v1.hpp\"",
+    "kPhysfsMountedDataObserverEnabledV1",
+    "g_physfs_mounted_data_observer_v1",
+    "ReadPhysfsMountedDataObserverV1Diagnostics",
+    "physfs_mounted_data_observer_v1",
+    "\\\"rows\\\":[",
+    "InstallPhysfsMountedDataObserverV1",
+    "UninstallVfsMountLifecycleObserverV1"
+  ],
+  "forbidden_hook_path_tokens": [
+    "GetCurrentThreadId",
+    "QueryPerformanceCounter",
+    "std::mutex",
+    "std::vector",
+    "std::string",
+    "malloc",
+    "new "
+  ]
+}

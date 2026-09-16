@@ -243,10 +243,10 @@ manifest 载入后首屏只请求当前构图所需的 4 个 DDS，不请求 6,6
 这两个内容寻址 shard，并只把本例 DDS 请求增加到 5 个。Service Worker 会按 build version 隔离 cache，两个 shard 在线填充后在
 完全离线状态逐字节回读相同 SHA-256。该结论证明运行时按需加载与缓存，不改变 Pages artifact 本身约 147 MB 的静态授权素材规模。
 
-R25 后的第一项 MCP 补完已静态收口：exact-build、默认关闭的私有只读 VFS lifecycle observer 会稳定读取固定 64 槽发布表、按
-`ordinal` 排序，并经既有 `ck3_get_bridge_diagnostics` 返回有界 `publishers`。原生 C++ 单测、source contract 与 Python 协议/MCP
-集成测试均通过。该能力只证明 mount publisher 的路径摘要、顺序和返回状态，不证明单资源最终 winner；R26 原生回读以及后续必要的
-VFS resolve/CoA registry provenance 仍待执行。合同见
+R25 后的挂载顺序 MCP 已由 R28 原生收口：exact-build、默认关闭的 caller-local `physfs_mounted_data_observer_v1` 通过显式
+`ck3_get_bridge_diagnostics` 返回 34/34 次成功挂载、0 失败、0 覆写；29 个 DLC 后的两个 fixture ordinal 为 33、34，并与旧
+lifecycle observer 的 35/35 A/B 快照一致。R26 的“四条即覆盖不足”已勘误为过早快照，R27 则保留为发现 Python diagnostics whitelist
+漏项的过渡证据。该能力只证明 mount 路径、顺序与返回状态，不证明单资源最终 winner；VFS resolve/CoA registry provenance 仍待执行。合同见
 [`ck3-coat-of-arms-vfs-mount-order-mcp.md`](ck3-coat-of-arms-vfs-mount-order-mcp.md)。
 
 MCP 优先补完已新增 exact-build 家徽定义索引/读取工具：可分页读取基础游戏 block、完整源码、别名链和来源 SHA-256，

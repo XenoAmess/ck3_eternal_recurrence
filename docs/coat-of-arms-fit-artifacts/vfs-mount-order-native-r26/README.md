@@ -1,5 +1,9 @@
 # CK3 CoA VFS mount-order native R26 (observer coverage RED)
 
+> 2026-09-16 勘误：本文件以下内容保留 R26 当时的观测和判断，但“observer 只覆盖根 publisher”的根因结论已被 R27/R28
+> 否定。相同 observer 在等待挂载完成后记录了 35 条完整发布；R26 只有 4 条是因为快照过早，不是 hook 覆盖不足。
+> 最终结论与结构化 MCP GREEN 见 [R28](../vfs-mount-order-native-r28/README.md)。
+
 This artifact preserves the first exact-build live run of the bounded VFS
 mount-order diagnostic. It is a capability-coverage RED and must not be
 rewritten as a successful mod-order observation.

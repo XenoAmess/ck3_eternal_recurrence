@@ -44,6 +44,7 @@
 #include "xar_bridge/named_path_583_root_observer_v1.hpp"
 #include "xar_bridge/pdx_paths_583_producer_observer_v1.hpp"
 #include "xar_bridge/vfs_mount_lifecycle_observer_v1.hpp"
+#include "xar_bridge/physfs_mounted_data_observer_v1.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/current_timeline_blocker_context_v1_mailbox.hpp"
 #include "xar_bridge/death_succession_modal_continue_v1_mailbox.hpp"
@@ -174,6 +175,11 @@ constexpr bool kVfsMountLifecycleObserverEnabledV1 = true;
 #else
 constexpr bool kVfsMountLifecycleObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1)
+constexpr bool kPhysfsMountedDataObserverEnabledV1 = true;
+#else
+constexpr bool kPhysfsMountedDataObserverEnabledV1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1)
 constexpr bool kStartupParticle2StageRecorderEnabledV1 = true;
 #else
@@ -242,6 +248,8 @@ static_assert(!kPdxPaths583ProducerObserverEnabledV1 ||
               kNamedPath583RootObserverEnabledV1);
 static_assert(!kVfsMountLifecycleObserverEnabledV1 ||
               kPdxPaths583ProducerObserverEnabledV1);
+static_assert(!kPhysfsMountedDataObserverEnabledV1 ||
+              kVfsMountLifecycleObserverEnabledV1);
 static_assert(!(kPhase2PostCallObserverEnabledV1 &&
                 kPhase2PostCallListIdentityObserverEnabledV1));
 
@@ -295,6 +303,8 @@ static xar::bridge::PdxPaths583ProducerObserverV1State
     g_pdx_paths_583_producer_observer_v1{};
 static xar::bridge::VfsMountLifecycleObserverV1State
     g_vfs_mount_lifecycle_observer_v1{};
+static xar::bridge::PhysfsMountedDataObserverV1State
+    g_physfs_mounted_data_observer_v1{};
 static xar::bridge::Phase2CompletionObserverV1State
     g_phase2_completion_observer_v1{};
 static xar::bridge::Phase2PostCallObserverV1State
@@ -1435,6 +1445,36 @@ void AppendVfsMountPublisher(
   result += '}';
 }
 
+void AppendPhysfsMountedDataRow(
+    std::string &result,
+    const xar::bridge::PhysfsMountedDataRowDiagnosticsV1 &value) {
+  result += "{\"ordinal\":";
+  result += Number(value.ordinal);
+  result += ",\"thread_id\":";
+  result += Number(value.thread_id);
+  result += ",\"raw_result\":";
+  result += Number(value.raw_result);
+  result += ",\"success\":";
+  result += value.success ? "true" : "false";
+  const auto preview_length =
+      std::min<std::size_t>(value.preview_length, value.preview.size());
+  result += ",\"preview_length\":";
+  result += Number(preview_length);
+  result += ",\"terminated\":";
+  result += value.terminated ? "true" : "false";
+  result += ",\"null_pointer\":";
+  result += value.null_pointer ? "true" : "false";
+  result += ",\"read_fault\":";
+  result += value.read_fault ? "true" : "false";
+  result += ",\"path\":";
+  AppendJsonString(
+      result,
+      std::string_view(
+          reinterpret_cast<const char *>(value.preview.data()),
+          preview_length));
+  result += '}';
+}
+
 void AppendVfsSettingsLookup(
     std::string &result, std::string_view name,
     const xar::bridge::VfsSettingsLookupDiagnosticsV1 &value) {
@@ -1567,6 +1607,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       xar::bridge::ReadVfsMountLifecycleObserverV1Diagnostics(
           g_vfs_mount_lifecycle_observer_v1);
 #endif
+#if defined(XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1)
+  const auto physfs_mounted_data_observer =
+      xar::bridge::ReadPhysfsMountedDataObserverV1Diagnostics(
+          g_physfs_mounted_data_observer_v1);
+#endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
   const auto phase2_completion_observer =
       xar::bridge::ReadPhase2CompletionObserverV1Diagnostics(
@@ -1655,6 +1700,8 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += kPdxPaths583ProducerObserverEnabledV1 ? "true" : "false";
   result += ",\"vfs_mount_lifecycle_observer_enabled\":";
   result += kVfsMountLifecycleObserverEnabledV1 ? "true" : "false";
+  result += ",\"physfs_mounted_data_observer_enabled\":";
+  result += kPhysfsMountedDataObserverEnabledV1 ? "true" : "false";
   result += ",\"g2_truce_preview_entry_observer_enabled\":";
   result += kG2TrucePreviewEntryObserverEnabledV1 ? "true" : "false";
 #if defined(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)
@@ -2009,6 +2056,30 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
                           vfs_mount_lifecycle_observer.paths_lookup);
   AppendVfsSettingsLookup(result, "checksummed_lookup",
                           vfs_mount_lifecycle_observer.checksummed_lookup);
+#endif
+#if defined(XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1)
+  result += "},\"physfs_mounted_data_observer_v1\":{";
+  result += "\"private_build\":true,\"read_only\":true,\"guard\":false";
+  result += ",\"public_capability\":false,\"installed\":";
+  result += physfs_mounted_data_observer.installed ? "true" : "false";
+#define XAR_APPEND_PHYSFS_MOUNTED_DATA_FIELD(name) \
+  result += ",\"" #name "\":";                    \
+  result += Number(physfs_mounted_data_observer.name)
+  XAR_APPEND_PHYSFS_MOUNTED_DATA_FIELD(failure_flags);
+  XAR_APPEND_PHYSFS_MOUNTED_DATA_FIELD(call_count);
+  XAR_APPEND_PHYSFS_MOUNTED_DATA_FIELD(success_count);
+  XAR_APPEND_PHYSFS_MOUNTED_DATA_FIELD(failure_count);
+  XAR_APPEND_PHYSFS_MOUNTED_DATA_FIELD(slot_overwrite_count);
+  XAR_APPEND_PHYSFS_MOUNTED_DATA_FIELD(row_count);
+#undef XAR_APPEND_PHYSFS_MOUNTED_DATA_FIELD
+  result += ",\"rows\":[";
+  for (std::size_t index = 0;
+       index < physfs_mounted_data_observer.row_count; ++index) {
+    if (index != 0) result += ',';
+    AppendPhysfsMountedDataRow(result,
+                               physfs_mounted_data_observer.rows[index]);
+  }
+  result += ']';
 #endif
 #if defined(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)
   result += "},\"phase2_completion_observer_v1\":{";
@@ -15588,6 +15659,27 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
             g_vfs_mount_lifecycle_observer_v1, environment)) {
       // The private R281 observer set is installed before CK3 resumes. If the
       // successor transaction fails, restore every earlier compatible hook.
+      (void)xar::bridge::UninstallPdxPaths583ProducerObserverV1(
+          g_pdx_paths_583_producer_observer_v1);
+      (void)xar::bridge::UninstallNamedPath583RootObserverV1(
+          g_named_path_583_root_observer_v1);
+      (void)xar::bridge::UninstallColdMapVfsObserverV1(
+          g_cold_map_vfs_observer_v1);
+      return FALSE;
+    }
+  }
+  if (kPhysfsMountedDataObserverEnabledV1) {
+    xar::bridge::PhysfsMountedDataObserverEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallPhysfsMountedDataObserverV1(
+            g_physfs_mounted_data_observer_v1, environment)) {
+      // R27 is one suspended-start transaction. Restore the generic observer
+      // and its predecessors if the caller-local successor cannot be armed.
+      (void)xar::bridge::UninstallVfsMountLifecycleObserverV1(
+          g_vfs_mount_lifecycle_observer_v1);
       (void)xar::bridge::UninstallPdxPaths583ProducerObserverV1(
           g_pdx_paths_583_producer_observer_v1);
       (void)xar::bridge::UninstallNamedPath583RootObserverV1(

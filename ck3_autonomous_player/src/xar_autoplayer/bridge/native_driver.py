@@ -1011,6 +1011,17 @@ class NativeProtocolState:
                 private_observers[
                     "vfs_mount_lifecycle_observer_v1"
                 ] = copy.deepcopy(vfs_mount_observer)
+            physfs_mounted_data_observer = heartbeat.get(
+                "physfs_mounted_data_observer_v1"
+            )
+            if isinstance(physfs_mounted_data_observer, dict):
+                # Caller-local successor for the exact PhysFS "Mounted Data"
+                # path. It remains private/read-only and is only forwarded by
+                # the existing diagnostics route; it is never a capability or
+                # gameplay action.
+                private_observers[
+                    "physfs_mounted_data_observer_v1"
+                ] = copy.deepcopy(physfs_mounted_data_observer)
         return {
             "protocol_version": PROTOCOL_VERSION,
             "pipe_name": self.pipe_name,

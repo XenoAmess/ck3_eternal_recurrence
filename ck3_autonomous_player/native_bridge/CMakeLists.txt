@@ -84,6 +84,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1
+  "Observe the exact-build PhysFS Mounted Data publisher callsite"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1
   "Enable the read-only scoreboard production-evidence candidate without advertising production capability"
   OFF
@@ -399,6 +405,7 @@ add_library(xar_ck3_bridge SHARED
   src/named_path_583_root_observer_v1.cpp
   src/pdx_paths_583_producer_observer_v1.cpp
   src/vfs_mount_lifecycle_observer_v1.cpp
+  src/physfs_mounted_data_observer_v1.cpp
   src/actual_contact_scope_v1_mailbox.cpp
   src/battle_control_snapshot_v1_mailbox.cpp
   src/battle_reinforcement_assignment_v1_mailbox.cpp
@@ -679,6 +686,20 @@ if(XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1)
     XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1=1
     XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1=1
     XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1)
+  # Caller-local exact-build successor for the unique "Mounted Data" log
+  # path. Keep the generic lifecycle observer enabled for an A/B receipt.
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1
+    XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1=1
+    XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1=1
+    XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1=1
+    XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1=1
+    XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1=1
+    XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1)
@@ -4665,6 +4686,33 @@ if(BUILD_TESTING)
     NAME xar_ck3_native_bridge_vfs_mount_lifecycle_observer_v1_source_contract
     COMMAND ${Python3_EXECUTABLE}
       ${CMAKE_CURRENT_SOURCE_DIR}/research/test_vfs_mount_lifecycle_observer_v1_source_contract.py
+      --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
+      --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
+  )
+
+  add_executable(xar_ck3_physfs_mounted_data_observer_v1_test
+    src/physfs_mounted_data_observer_v1.cpp
+    src/physfs_mounted_data_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_physfs_mounted_data_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_physfs_mounted_data_observer_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_physfs_mounted_data_observer_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_physfs_mounted_data_observer_v1
+    COMMAND xar_ck3_physfs_mounted_data_observer_v1_test
+  )
+  add_test(
+    NAME xar_ck3_native_bridge_physfs_mounted_data_observer_v1_source_contract
+    COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/test_physfs_mounted_data_observer_v1_source_contract.py
       --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
       --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
   )
