@@ -84,6 +84,8 @@ fresh 1066 production start under the same prepared `xar_off` profile must
 create it and persist the lifecycle binding before this entry becomes runnable.
 Until that seed preparation is completed and live-verified, ordinary campaign
 succession remains static-ready rather than production-live.
+The controlled seed route and its evidence boundary are recorded in
+[FEUDAL-1066-START-B0](feudal-1066-private-start-glue.md#ordinary-xar_off-seed-binding).
 
 ## Deliberate omissions
 

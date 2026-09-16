@@ -88,3 +88,29 @@ the existing application-main legality checks, next-frame Bookmarks requery,
 ACK-pending semantics, public OFF state and unknown-action no-retry behavior
 still apply. This RED stays open until a new frozen DLL passes real paused
 frame/StartGame material results; a static build cannot close it.
+
+## Ordinary `xar_off` seed binding
+
+The controlled runner now has an explicit
+`--ordinary-campaign-xar-off-seed` mode. It is valid only together with
+`--bookmarks-read-only --bookmarks-model-private
+--bookmarks-select-start-private`. The supplied `--state-dir` must already
+have been prepared with `prepare-profile --xar-enabled xar_off`, and
+`--source-profile` must name that same state directory's `profile`; this mode
+does not copy or relabel another run. Before launching CK3 it performs the
+normal prepared-profile verification, requires exactly one
+`xar_enabled=xar_off` rule plus a valid environment digest, and rejects stale
+driver/checkpoint state. The driver is then created with an
+`ordinary_campaign_succession`/fresh-no-pact lifecycle binding.
+
+The public campaign-root must independently report `xar_off`, no `xar_on`,
+and ready selected-rule telemetry. The paired checkpoint gate additionally
+requires that the command result, persisted driver state, persisted
+`last_checkpoint`, and its command-history anchor all contain that exact
+binding. This prevents the earlier R750/R751 `xar_on` save from being
+relabelled as the standard ordinary campaign. The private start is only seed
+preparation: a new process must cold-restore the pair through formal
+`native-auto-run`, perform a non-empty strategy action, observe its independent
+postcondition and consume that result on a later turn before it can support a
+runnable ordinary preview claim. This mode is static-ready and has not yet
+been run on CK3.

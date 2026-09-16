@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import sys
 import tempfile
 import unittest
@@ -56,13 +57,20 @@ def action(step: str, *, acknowledged: bool = True):
 
 
 class FakeDriver:
-    def __init__(self, root: Path, *, pump_epochs: list[int] | None = None):
+    def __init__(
+        self,
+        root: Path,
+        *,
+        pump_epochs: list[int] | None = None,
+        succession_lifecycle: dict[str, object] | None = None,
+    ):
         self.save = root / "xar_checkpoint.ck3"
         self.state = root / "native_driver_state.json"
         self.executed: list[str] = []
         self.pump_epochs = pump_epochs or [10, 11]
         self.snapshot_reads = 0
         self.root_queries = 0
+        self.succession_lifecycle = succession_lifecycle
 
     def take_snapshot(self):
         epoch = self.pump_epochs[
@@ -95,14 +103,49 @@ class FakeDriver:
             "date_raw": 0x032AEB08,
             "player_character_id": 42,
             "government": {"key": "feudal_government"},
+            "selected_game_rule_tokens": (
+                ["normal_difficulty", "xar_off"]
+                if self.succession_lifecycle is not None
+                else []
+            ),
+            "readiness": {
+                "selected_game_rule_tokens_ready": True,
+            },
         }
 
     def execute_step(self, step: str):
         self.executed.append(step)
         if step == "save-checkpoint":
             self.save.write_bytes(b"checkpoint-fixture")
-            self.state.write_bytes(b'{"goal":"1066 campaign"}')
-            return {"step": step, "status": "saved"}
+            checkpoint = {
+                "status": "saved",
+                "succession_lifecycle": self.succession_lifecycle,
+                "history_index": 1,
+            }
+            result = {
+                "step": step,
+                "status": "saved",
+                "checkpoint": checkpoint,
+            }
+            self.state.write_text(
+                json.dumps(
+                    {
+                        "goal": "1066 campaign",
+                        "succession_lifecycle": self.succession_lifecycle,
+                        "last_checkpoint": checkpoint,
+                        "command_history": [
+                            {
+                                "index": 1,
+                                "command": "save-checkpoint",
+                                "ok": True,
+                                "result": result,
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            return result
         raise AssertionError(f"unexpected gameplay step: {step}")
 
     def _checkpoint_path(self):
@@ -113,6 +156,21 @@ class FakeDriver:
 
 
 class PrivateFeudalStartOrderingTests(unittest.TestCase):
+    @staticmethod
+    def _ordinary_lifecycle() -> dict[str, object]:
+        return route.bind_succession_lifecycle_from_environment_v1(
+            {
+                "environment_sha256": "d" * 64,
+                "rules": {
+                    "profile": [
+                        {"rule": "xar_enabled", "setting": "xar_off"}
+                    ]
+                },
+            },
+            lifecycle=route.ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+        )
+
     def test_source_model_failure_never_submits_an_action(self):
         with mock.patch.object(route, "_call_private_frontend_action") as submit:
             result = route._controlled_private_feudal_start(
@@ -231,6 +289,49 @@ class PrivateFeudalStartOrderingTests(unittest.TestCase):
             self.assertEqual(driver.root_queries, 0)
             self.assertEqual(driver.executed, [])
             self.assertEqual(submit.call_count, 2)
+
+    def test_ordinary_seed_persists_exact_lifecycle_in_checkpoint_pair(self):
+        steps = [
+            "select-frontend-supported-1066-character-v1",
+            "activate-frontend-start-selected-bookmark-v1",
+        ]
+        lifecycle = self._ordinary_lifecycle()
+        with tempfile.TemporaryDirectory(
+            dir=Path(__file__).resolve().parents[4]
+        ) as directory:
+            driver = FakeDriver(
+                Path(directory), succession_lifecycle=lifecycle
+            )
+            with (
+                mock.patch.object(
+                    route,
+                    "_call_private_frontend_action",
+                    side_effect=[action(step) for step in steps],
+                ),
+                mock.patch.object(
+                    route,
+                    "_call_private_bookmarks_model",
+                    return_value={
+                        "is_error": False,
+                        "structured_content": model(selected=0),
+                    },
+                ),
+            ):
+                result = route._controlled_private_feudal_start(
+                    driver,
+                    model(),
+                    1.0,
+                    expected_succession_lifecycle=lifecycle,
+                )
+
+        self.assertTrue(result["ok"], result.get("error"))
+        self.assertEqual(result["succession_lifecycle"], lifecycle)
+        self.assertEqual(
+            result["checkpoint_result"]["checkpoint"][
+                "succession_lifecycle"
+            ],
+            lifecycle,
+        )
 
 
 if __name__ == "__main__":

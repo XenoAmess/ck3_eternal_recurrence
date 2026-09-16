@@ -59,7 +59,15 @@ from xar_autoplayer.bridge.mcp_server import create_server  # noqa: E402
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
-from xar_autoplayer.environment import ensure_state_path_safe, make_spec  # noqa: E402
+from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: E402
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    bind_succession_lifecycle_from_environment_v1,
+)
+from xar_autoplayer.environment import (  # noqa: E402
+    ensure_state_path_safe,
+    make_spec,
+    verify_profile,
+)
 from xar_autoplayer.locking import (  # noqa: E402
     exclusive_launch_lock,
     exclusive_state_lock,
@@ -403,6 +411,14 @@ def _parser() -> argparse.ArgumentParser:
             "controlled exact-build 1066 path: key-derived private typed "
             "selection, independent model requery, private StartGame, paused "
             "public campaign-root and paired checkpoint; public MCP tools stay OFF"
+        ),
+    )
+    parser.add_argument(
+        "--ordinary-campaign-xar-off-seed",
+        action="store_true",
+        help=(
+            "use the already prepared state-dir xar_off profile and bind the "
+            "paired fresh-1066 checkpoint as an ordinary no-pact campaign seed"
         ),
     )
     parser.add_argument(
@@ -825,6 +841,8 @@ def _controlled_private_feudal_start(
     driver: NativeHeadlessGameplayDriver,
     before_model: dict[str, object],
     timeout_seconds: float,
+    *,
+    expected_succession_lifecycle: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """One private selection and StartGame, each followed by separate state."""
     deadline = time.monotonic() + timeout_seconds
@@ -1087,6 +1105,21 @@ def _controlled_private_feudal_start(
     ):
         return stop("independent paused-map/public root does not prove 1066 feudal player")
     flow["independent_campaign_root_verified"] = True
+    if expected_succession_lifecycle is not None:
+        readiness = root.get("readiness")
+        rule_tokens = root.get("selected_game_rule_tokens")
+        if (
+            not isinstance(readiness, dict)
+            or readiness.get("selected_game_rule_tokens_ready") is not True
+            or not isinstance(rule_tokens, list)
+            or not all(isinstance(value, str) for value in rule_tokens)
+            or "xar_off" not in rule_tokens
+            or "xar_on" in rule_tokens
+        ):
+            return stop(
+                "public campaign-root does not prove the selected xar_off rules"
+            )
+        flow["ordinary_xar_off_rules_verified"] = True
 
     try:
         checkpoint = driver.execute_step("save-checkpoint")
@@ -1102,6 +1135,78 @@ def _controlled_private_feudal_start(
         or driver_state_path.stat().st_size <= 0
     ):
         return stop("paired game save/driver state did not materialize")
+    if expected_succession_lifecycle is not None:
+        checkpoint_metadata = (
+            checkpoint.get("checkpoint")
+            if isinstance(checkpoint, dict)
+            else None
+        )
+        try:
+            persisted_driver = json.loads(
+                driver_state_path.read_text(encoding="utf-8-sig")
+            )
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            return stop(
+                "paired ordinary driver state is unreadable: "
+                f"{type(error).__name__}: {error}"
+            )
+        persisted_checkpoint = (
+            persisted_driver.get("last_checkpoint")
+            if isinstance(persisted_driver, dict)
+            else None
+        )
+        persisted_history = (
+            persisted_driver.get("command_history")
+            if isinstance(persisted_driver, dict)
+            else None
+        )
+        history_index = (
+            checkpoint_metadata.get("history_index")
+            if isinstance(checkpoint_metadata, dict)
+            else None
+        )
+        persisted_anchor = (
+            persisted_history[history_index - 1]
+            if (
+                isinstance(persisted_history, list)
+                and isinstance(history_index, int)
+                and not isinstance(history_index, bool)
+                and 1 <= history_index <= len(persisted_history)
+                and isinstance(persisted_history[history_index - 1], dict)
+            )
+            else None
+        )
+        anchor_result = (
+            persisted_anchor.get("result")
+            if isinstance(persisted_anchor, dict)
+            else None
+        )
+        anchor_checkpoint = (
+            anchor_result.get("checkpoint")
+            if isinstance(anchor_result, dict)
+            else None
+        )
+        if not (
+            isinstance(checkpoint_metadata, dict)
+            and checkpoint_metadata.get("succession_lifecycle")
+            == expected_succession_lifecycle
+            and isinstance(persisted_driver, dict)
+            and persisted_driver.get("succession_lifecycle")
+            == expected_succession_lifecycle
+            and isinstance(persisted_checkpoint, dict)
+            and persisted_checkpoint.get("succession_lifecycle")
+            == expected_succession_lifecycle
+            and isinstance(persisted_anchor, dict)
+            and persisted_anchor.get("command") == "save-checkpoint"
+            and persisted_anchor.get("ok") is True
+            and isinstance(anchor_checkpoint, dict)
+            and anchor_checkpoint.get("succession_lifecycle")
+            == expected_succession_lifecycle
+        ):
+            return stop(
+                "paired checkpoint did not persist the ordinary lifecycle binding"
+            )
+        flow["succession_lifecycle"] = expected_succession_lifecycle
     flow["checkpoint_result"] = checkpoint
     flow["paired_checkpoint"] = {
         "game_save": str(save_path),
@@ -3220,6 +3325,7 @@ async def _mcp_sequence(
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
+    expected_succession_lifecycle: dict[str, object] | None = None,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
@@ -3680,6 +3786,9 @@ async def _mcp_sequence(
                     private_start_flow = _controlled_private_feudal_start(
                         driver, private_model,
                         max(0.0, deadline - time.monotonic()),
+                        expected_succession_lifecycle=(
+                            expected_succession_lifecycle
+                        ),
                     )
                     checks["controlled_private_1066_start"] = (
                         private_start_flow.get("ok") is True
@@ -4264,6 +4373,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     bookmarks_select_start_private = bool(
         getattr(args, "bookmarks_select_start_private", False)
     )
+    ordinary_campaign_xar_off_seed = bool(
+        getattr(args, "ordinary_campaign_xar_off_seed", False)
+    )
     reference_preview = (
         _load_reference_preview(args.reference_preview)
         if getattr(args, "reference_preview", None) is not None
@@ -4386,6 +4498,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "--bookmarks-select-start-private requires both "
             "--bookmarks-read-only and --bookmarks-model-private"
         )
+    if ordinary_campaign_xar_off_seed and not bookmarks_select_start_private:
+        raise ValueError(
+            "--ordinary-campaign-xar-off-seed requires "
+            "--bookmarks-select-start-private"
+        )
     if bookmarks_read_only and (
         syntax_matrix is not None
         or custom_mode_census
@@ -4407,12 +4524,19 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     )
     state_dir = args.state_dir.resolve()
     output = args.output.resolve()
-    if state_dir.exists():
+    if ordinary_campaign_xar_off_seed:
+        if not state_dir.is_dir():
+            raise RuntimeError(
+                "ordinary xar_off seed requires an existing prepared state directory: "
+                f"{state_dir}"
+            )
+    elif state_dir.exists():
         raise RuntimeError(f"state directory already exists: {state_dir}")
     if output.exists() or output.with_name(output.name + ".tmp").exists():
         raise RuntimeError(f"artifact output already exists: {output}")
     ensure_state_path_safe(state_dir)
-    state_dir.mkdir(parents=True, exist_ok=False)
+    if not ordinary_campaign_xar_off_seed:
+        state_dir.mkdir(parents=True, exist_ok=False)
 
     report: dict[str, object] = {
         "schema": "ck3-frontend-gui-route-v1-live-acceptance",
@@ -4440,6 +4564,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "bookmarks_model_private_requested": bookmarks_model_private,
         "bookmarks_select_start_private_requested":
             bookmarks_select_start_private,
+        "ordinary_campaign_xar_off_seed_requested": (
+            ordinary_campaign_xar_off_seed
+        ),
         "commit_roundtrip_requested": commit_roundtrip,
         "large_source_requested": large_source is not None,
         "large_source_plan": large_source[1] if large_source else None,
@@ -4581,10 +4708,49 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     report["shared_ck3_slot"] = shared_slot
     try:
         report["steam"] = _steam_offline(steam_loginusers)
-        report["profile"] = _copy_profile(
-            args.source_profile, state_dir / "profile"
-        )
         spec = make_spec(state_dir, args.game_dir.resolve())
+        succession_lifecycle_binding: dict[str, object] | None = None
+        if ordinary_campaign_xar_off_seed:
+            source_profile = args.source_profile.resolve()
+            if source_profile != spec.profile_dir.resolve():
+                raise RuntimeError(
+                    "ordinary xar_off seed must use state-dir/profile in place; "
+                    f"received {source_profile}"
+                )
+            stale_driver_state = state_dir / "native-session" / "driver-state.json"
+            checkpoint_path = spec.profile_dir / "save games" / "xar_checkpoint.ck3"
+            if stale_driver_state.exists() or checkpoint_path.exists():
+                raise RuntimeError(
+                    "ordinary xar_off seed state already contains driver/checkpoint state"
+                )
+            try:
+                prepared_environment = verify_profile(spec, xar_enabled="xar_off")
+                succession_lifecycle_binding = (
+                    bind_succession_lifecycle_from_environment_v1(
+                        prepared_environment,
+                        lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+                        ordinary_campaign_no_pact=True,
+                    )
+                )
+            except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+                raise RuntimeError(
+                    "ordinary seed state is not a verified frozen xar_off "
+                    f"environment: {error}"
+                ) from error
+            report["profile"] = {
+                "mode": "prepared-in-place",
+                "source": str(source_profile),
+                "target": str(spec.profile_dir.resolve()),
+                "environment_sha256": prepared_environment.get(
+                    "environment_sha256"
+                ),
+                "xar_enabled": "xar_off",
+            }
+            report["succession_lifecycle"] = succession_lifecycle_binding
+        else:
+            report["profile"] = _copy_profile(
+                args.source_profile, spec.profile_dir
+            )
         dll = args.bridge_dll.resolve()
         injector = args.bridge_injector.resolve()
         binary = {
@@ -4612,16 +4778,25 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             dll_path=dll,
             injector_path=injector,
         )
+        driver_options: dict[str, object] = {}
+        if succession_lifecycle_binding is not None:
+            driver_options["succession_lifecycle_binding"] = (
+                succession_lifecycle_binding
+            )
         driver = NativeHeadlessGameplayDriver(
             config.pipe_name,
             state_dir=state_dir,
             save_dir=spec.profile_dir / "save games",
+            **driver_options,
         )
         handle = launch(
             spec,
             native_bridge=config,
             continue_last_save=False,
-            verify_prepared_profile=False,
+            verify_prepared_profile=ordinary_campaign_xar_off_seed,
+            prepared_xar_enabled=(
+                "xar_off" if ordinary_campaign_xar_off_seed else "xar_on"
+            ),
         )
         report["managed_pid"] = int(handle.process.pid)
         sequence = asyncio.run(
@@ -4642,6 +4817,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,
+                expected_succession_lifecycle=succession_lifecycle_binding,
             )
         )
         report["sequence"] = sequence
