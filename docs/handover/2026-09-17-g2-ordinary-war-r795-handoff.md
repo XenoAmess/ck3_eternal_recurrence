@@ -1,7 +1,9 @@
 # G2 ordinary campaign / R795 handoff
 
-交接时间：2026-09-17（Asia/Shanghai）  
-交接范围：可运行预览、普通封建连续运行、R794 战争 RED 修复、R795 冷恢复候选、Council 后续场景、MCP 升级迁移与 Git/CK3 现场。  
+交接时间：2026-09-17（Asia/Shanghai）
+
+交接范围：可运行预览、普通封建连续运行、R794 战争 RED 修复、R795 冷恢复候选、Council 后续场景、MCP 升级迁移与 Git/CK3 现场。
+
 权威 G2 合同：[`../autonomous-agent-progress/g2-requirements-v1.json`](../autonomous-agent-progress/g2-requirements-v1.json)
 
 ## 当前结论
