@@ -1,6 +1,7 @@
 #include "xar_bridge/current_timeline_blocker_context_v1.hpp"
 
 #include <array>
+#include <charconv>
 #include <string>
 
 namespace xar::ck3_11906 {
@@ -125,6 +126,42 @@ std::string_view IdentityName(Identity identity) {
     return "succession_select_destiny_modal";
   }
   return {};
+}
+
+bool ParseCanonicalPositiveIntegerField(std::string_view json,
+                                        std::string_view key,
+                                        std::uint64_t &output) noexcept {
+  output = 0;
+  const auto at = json.find(key);
+  if (at == std::string_view::npos ||
+      json.find(key, at + key.size()) != std::string_view::npos) {
+    return false;
+  }
+  auto begin = at + key.size();
+  while (begin < json.size() &&
+         (json[begin] == ' ' || json[begin] == '\t' ||
+          json[begin] == '\r' || json[begin] == '\n')) {
+    ++begin;
+  }
+  auto end = begin;
+  while (end < json.size() && json[end] >= '0' && json[end] <= '9') {
+    ++end;
+  }
+  auto delimiter = end;
+  while (delimiter < json.size() &&
+         (json[delimiter] == ' ' || json[delimiter] == '\t' ||
+          json[delimiter] == '\r' || json[delimiter] == '\n')) {
+    ++delimiter;
+  }
+  if (end == begin || (json[begin] == '0' && end - begin != 1U) ||
+      (delimiter < json.size() && json[delimiter] != ',' &&
+       json[delimiter] != '}')) {
+    return false;
+  }
+  const auto parsed =
+      std::from_chars(json.data() + begin, json.data() + end, output);
+  return parsed.ec == std::errc{} && parsed.ptr == json.data() + end &&
+         output > 0;
 }
 
 } // namespace
@@ -259,6 +296,17 @@ std::string SerializeCurrentTimelineBlockerContextV1(
   }
   output.push_back('}');
   return output;
+}
+
+bool ParseCurrentTimelineBlockerContextV1Step(
+    std::string_view step) noexcept {
+  return step == kCurrentTimelineBlockerContextV1Step;
+}
+
+bool ParseCurrentTimelineBlockerContextRequestV1(
+    std::string_view json, std::uint64_t &expected_revision) noexcept {
+  return ParseCanonicalPositiveIntegerField(
+      json, "\"expected_revision\":", expected_revision);
 }
 
 } // namespace xar::ck3_11906

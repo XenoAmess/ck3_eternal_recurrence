@@ -1338,6 +1338,7 @@ class NativeHeadlessGameplayDriver:
         allow_stationary_objective_hold_sentinel_canary: bool = False,
         allow_private_lifestyle_formal_trial: bool = False,
         allow_private_faction_gift_formal_trial: bool = False,
+        allow_private_current_timeline_blocker_query: bool = False,
         private_faction_round_id: str | None = None,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
@@ -1396,6 +1397,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_faction_gift_formal_trial = (
             allow_private_faction_gift_formal_trial is True
+        )
+        self.allow_private_current_timeline_blocker_query = (
+            allow_private_current_timeline_blocker_query is True
         )
         if self.allow_private_faction_gift_formal_trial and not (
             isinstance(private_faction_round_id, str)
@@ -2127,6 +2131,22 @@ class NativeHeadlessGameplayDriver:
             self,
             expected_native_revision=expected_native_revision,
             timeout_seconds=timeout_seconds,
+        )
+
+    def query_current_timeline_blocker_context_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Controlled read-only query; absent from public steps and tools."""
+        from .timeline_blocker_private_transport import (
+            query_current_timeline_blocker_context_private_v1,
+        )
+
+        return query_current_timeline_blocker_context_private_v1(
+            self,
+            expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
         )
 
     def query_observed_heir_marriage_private_v1(

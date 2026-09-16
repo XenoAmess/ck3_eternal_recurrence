@@ -116,4 +116,19 @@ int main() {
   ReadCurrentTimelineBlockerContextV1(invalid_request, source, output);
   assert(output.status == Status::unavailable &&
          output.unavailable_reason == "invalid_query_boundary");
+
+  std::uint64_t expected_revision = 0;
+  assert(ParseCurrentTimelineBlockerContextV1Step(
+      "query-current-timeline-blocker-context-v1"));
+  assert(!ParseCurrentTimelineBlockerContextV1Step(
+      "query-current-timeline-blocker-context-v2"));
+  assert(ParseCurrentTimelineBlockerContextRequestV1(
+      R"({"type":"execute_step","protocol_version":1,"request_id":"q","step":"query-current-timeline-blocker-context-v1","expected_revision":77})",
+      expected_revision));
+  assert(expected_revision == 77);
+  assert(!ParseCurrentTimelineBlockerContextRequestV1(
+      R"({"expected_revision":0})", expected_revision));
+  assert(!ParseCurrentTimelineBlockerContextRequestV1(
+      R"({"expected_revision":77,"expected_revision":78})",
+      expected_revision));
 }

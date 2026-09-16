@@ -451,6 +451,7 @@ add_library(xar_ck3_bridge SHARED
   src/combat_v3_serializer.cpp
   src/combat_v3_test_only.cpp
   src/current_timeline_blocker_context_v1.cpp
+  src/current_timeline_blocker_context_v1_mailbox.cpp
   src/current_timeline_blocker_context_v1_native.cpp
   src/event_window_context_v1.cpp
   src/event_window_context_v1_mailbox.cpp

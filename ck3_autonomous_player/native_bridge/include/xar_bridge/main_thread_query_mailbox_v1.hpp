@@ -280,6 +280,9 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // Fixed private LIFE2/LIFE4/LIFE6/LIFE7 executor, absent when its opt-in
   // candidate is disabled. This is not an open native-call slot.
   MainThreadQueryExecutorV1 permitted_executor_trioquadragintary = nullptr;
+  // Fixed private, read-only death/succession timeline surface query. Slot 44
+  // is protocol-inaccessible except through its one typed executor identity.
+  MainThreadQueryExecutorV1 permitted_executor_quattuorquadragintary = nullptr;
   // The frontend route executor is the only fixed callback admitted before a
   // gameplay/Jomini frame exists. It still runs at the exact SDL/CK3
   // application-main boundary and cannot be supplied by protocol data.
@@ -417,6 +420,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_unquadragintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_duoquadragintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_trioquadragintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_quattuorquadragintary = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes

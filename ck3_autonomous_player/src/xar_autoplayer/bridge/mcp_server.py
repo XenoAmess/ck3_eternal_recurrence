@@ -1093,6 +1093,16 @@ def _ck3_query_current_event_window_context_v1(
     )
 
 
+def _ck3_query_current_timeline_blocker_context_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Private read-only seam; intentionally absent from the MCP tool list."""
+    return service.query_current_timeline_blocker_context_v1(
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_preview_active_combat_retreat_v1(
     service: GameplayBridgeService,
     selected_public_cunit_id: int,

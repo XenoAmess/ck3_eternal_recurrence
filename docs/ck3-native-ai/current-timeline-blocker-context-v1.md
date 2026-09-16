@@ -2,7 +2,7 @@
 
 本文冻结 `current-timeline-blocker-context-v1` 的静态候选。它只回答当前是否出现原版死亡/继承、无继承人 game-over 或选择命运界面，以及原版 GUI 是否给出了当前可用的继续控件。它不点击界面，不提交动作，也不把输入模态等同于“阻止游戏时间”。
 
-当前状态是 **static-ready candidate / production wire 与 paused live 均未完成 / capability 未注册且未广告**。
+当前状态是 **private production wire static-ready / paused live 未完成 / capability、adapter registry 与 public MCP tool 均未注册且未广告**。
 
 ## 版本与直接证据
 
@@ -25,6 +25,27 @@ module + 0x576CC68
 ```
 
 查询只接受编译期固定的两个 root 和六个 descendant 名称，不接受 MCP 调用者提供的名称、路径或原生指针。实现复用 [`zhongguo_scoreboard_state_v1`](../../ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_scoreboard_state_v1.hpp) 已冻结并测试的 GUI owner、树遍历和可见性原语。
+
+## private production wire
+
+静态 reader 已通过固定的 application-main owning-thread mailbox 接入 bridge。内部 step 是
+`query-current-timeline-blocker-context-v1`，请求只接受一个 canonical positive integer
+`expected_revision`。bridge 把该 revision 与当前 paused、map-ready snapshot 逐项绑定，并把同一
+`snapshot_revision`、`date_raw` 与 `paused=true` 复制给 mailbox；executor 完成后再次核对 completion
+stamp，任一处变化都返回 unavailable，不会把旧帧结果重新标成当前结果。
+
+该 wire 有意保持私有：
+
+- native heartbeat 只把它列入 private query scope；没有加入 CK3 1.19.0.6 adapter capability registry；
+- result envelope 固定携带 `private_build=true`、`read_only=true`、`advertised=false`；
+- Python `NativeBridgeDriver` 只有显式启用 `allow_private_current_timeline_blocker_query=True` 才能调用；
+- service 只接受与调用前、调用后同一 paused snapshot revision/date 绑定的结果；
+- MCP 层只有下划线前缀的内部 helper，没有 `@server.tool()` 注册项；
+- 没有 Close 动作、选择命运动作、通用点击或婚姻处理。
+
+typed boolean 的 unavailable 状态必须携带 `value=null`。特别是
+`blocks_simulation.status=unavailable` 不能在 native、Python service 或内部 MCP helper 中转换成
+`false`。
 
 ## 原版窗口与继续路径
 
@@ -93,13 +114,15 @@ flowchart TD
 
 下一项逆向只从已冻结的 Close core `0x1006FB0` 继续，沿 `0x369CB30` hide 路径与 `0x10071A0` manager/history 收尾定位清除模拟 hold 的 exact-build predicate，并冻结能在 application-main frame 只读判断的值。现有 `+0x11A1` 写入只是一条观测，不足以承担该结论。不要扩展到通用 GUI 点击或任意窗口扫描。
 
-候选进入 production wire 前必须完成：
+private production wire 已完成。它进入 public capability/registry/advertisement 前仍必须完成：
 
-1. 将固定 executor 接入 application-main mailbox；工具不接受参数，query/action 仍不广告。
-2. 在 R775 的安全 checkpoint 或语义等价自然死亡 checkpoint 上采集真实 paused frame，证明 root identity、`can_continue` 与屏幕/日期症状一致。
-3. 关闭继承窗口后的独立新 frame 证明 root 消失；随后正式 `life-advance` 使日期推进。
-4. 只有 exact predicate 与上述前后帧互证后，才把 `blocks_simulation` 从 unavailable 升级为 boolean。
+1. 在 R775 的安全 checkpoint 或语义等价自然死亡 checkpoint 上，通过 private wire 采集真实 paused frame，证明 root identity、`can_continue` 与屏幕/日期症状一致。
+2. 关闭继承窗口后的独立新 frame 证明 root 消失；随后正式 `life-advance` 使日期推进。
+3. 只有 exact predicate 与上述前后帧互证后，才把 `blocks_simulation` 从 unavailable 升级为 boolean。
+4. 同版本 live gate 关闭后，另行同步 adapter capability、public MCP registration 与下游 consumer；private wire 本身不构成能力广告证据。
 
 ## MCP 与 open_kaishek 影响
 
-本提交新增 schema、C++ typed reader/native adapter 和 ABI 文档，但没有把命令加入 adapter registry、bridge command parser、Python service 或 MCP tool list；现有 MCP 和 open_kaishek 组合不变。将来接线是新增只读 capability，open_kaishek 需要同步理解 `identity` 与两个 typed boolean，并保留 `blocks_simulation.status=unavailable` 的 fail-closed 语义，直到同版本实机门关闭。
+本提交把 schema 与 C++ reader 经 owning-thread mailbox、private bridge parser、Python driver/service 和内部 MCP helper 串通，但没有加入 adapter registry 或 public MCP tool list。现有公开 MCP 协议和 open_kaishek 可见组合不变，因此当前不要求 open_kaishek 发布新适配版本。
+
+同版本 live gate 关闭并准备公开注册时，open_kaishek 必须同步消费 `identity` 与两个 typed boolean，并保留 `blocks_simulation.status=unavailable`、`value=null` 的 fail-closed 语义。公开注册、consumer 适配和能力广告需要作为同一兼容版本组合交付；不得把本 private wire 的 static-ready 结果冒充为 live capability。

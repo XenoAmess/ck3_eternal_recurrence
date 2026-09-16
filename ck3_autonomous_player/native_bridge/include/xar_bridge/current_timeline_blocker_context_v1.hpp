@@ -136,4 +136,8 @@ ReadCurrentTimelineBlockerContextNativeV1(
 std::string SerializeCurrentTimelineBlockerContextV1(
     const game::CurrentTimelineBlockerContextV1 &context);
 
+bool ParseCurrentTimelineBlockerContextV1Step(std::string_view step) noexcept;
+bool ParseCurrentTimelineBlockerContextRequestV1(
+    std::string_view json, std::uint64_t &expected_revision) noexcept;
+
 } // namespace xar::ck3_11906

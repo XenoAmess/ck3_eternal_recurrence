@@ -308,6 +308,10 @@ from .event_window_context_contract import (
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
     normalize_current_event_window_context_v1,
 )
+from .timeline_blocker_context_contract import (
+    QUERY_CURRENT_TIMELINE_BLOCKER_CONTEXT_V1_STEP,
+    normalize_current_timeline_blocker_context_v1,
+)
 from .pending_character_interaction_context_contract import (
     ACKNOWLEDGE_PENDING_CHARACTER_INTERACTION_STEP,
     QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_CAPABILITY,
@@ -8903,6 +8907,128 @@ class GameplayBridgeService:
                 "effect_indicators_ready"
             ],
             "current_event_window_context": normalized,
+        }
+
+    def query_current_timeline_blocker_context_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the fixed death/succession timeline surface while paused."""
+        snapshot = self.snapshot()
+        revision = snapshot.get("revision")
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        snapshot_id = snapshot.get("snapshot_id")
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError("expected_revision must be a non-negative integer")
+        if (
+            expected_revision != revision
+            or snapshot.get("paused") is not True
+            or snapshot.get("map_ready") is not True
+            or isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or native_revision <= 0
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+        ):
+            raise BridgeUnavailableError(
+                "timeline-blocker query lacks a stable paused snapshot binding"
+            )
+        reader = getattr(
+            self.driver, "query_current_timeline_blocker_context_v1", None
+        )
+        if not callable(reader):
+            raise UnsupportedStepError(
+                "selected backend has no private timeline-blocker query"
+            )
+        result = reader(expected_revision=expected_revision)
+        required_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "current_timeline_blocker_context",
+            "private_build",
+            "read_only",
+            "advertised",
+            "backend_id",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+            "date_raw",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != required_keys
+            or result.get("step")
+            != QUERY_CURRENT_TIMELINE_BLOCKER_CONTEXT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("private_build") is not True
+            or result.get("read_only") is not True
+            or result.get("advertised") is not False
+            or result.get("snapshot_revision") != native_revision
+            or result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+            or result.get("date_raw") != date_raw
+        ):
+            raise BridgeUnavailableError(
+                "timeline-blocker backend returned a malformed result"
+            )
+        try:
+            normalized = normalize_current_timeline_blocker_context_v1(
+                result.get("current_timeline_blocker_context"),
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"timeline-blocker result is malformed: {error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "timeline-blocker result status disagrees with its payload"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("snapshot_id") == snapshot_id
+            and current.get("revision") == revision
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("paused") is True
+            and current.get("map_ready") is True
+        ):
+            raise BridgeUnavailableError(
+                "timeline-blocker service query crossed its paused frame"
+            )
+        return {
+            **result,
+            "schema_version": 1,
+            "scope": "exact-current-timeline-blocker",
+            "source": {
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            "binding": {
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "expected_revision": expected_revision,
+            },
+            "current_timeline_blocker_context": normalized,
         }
 
     def query_pending_character_interaction_context_v1(
