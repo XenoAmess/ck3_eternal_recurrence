@@ -1,62 +1,123 @@
-# G2 标准封建可运行预览包（冻结版）
+# G2 标准封建可运行预览包（ordinary R783 冻结版）
 
-R706 已从这份精确 ZIP 的全新解压目录经正式 `native-auto-run` 完成 5/5 turn 实机冷启动、日期推进、新 checkpoint 和进程回收；R701–R704 已在同一普通 production campaign 证明正式非空动作、后续策略消费、可控停止及另一新轮次 cold restore。用户现在可用下述冻结包和已准备的 state 启动有界自动游玩。预览切片不改变正式 G2 里程碑状态，权威状态仍为 1/8。
+截至 2026-09-16，用户可以取得并启动本页所列的冻结 ZIP。R790 从该 ZIP 的全新解压目录完成只读资格验收；R791 通过正式 `native-auto-run` 继续同一战争目标并在安全 turn 边界受控停止、保存 checkpoint；R792 用另一个 CK3 进程从该 checkpoint 冷恢复 5/5 turn，没有重复已经生效的宣战。预览切片不改变正式 G2 里程碑，权威状态仍为 `1/8`（只完成 G2-M1）。
 
-## 获取与支持组合
+## 获取与冻结组合
 
-冻结 ZIP：`Z:\ck3_mod_rewrite_process_assets\g2-preview-bundle-d11268f1-eefc88e4\g2-preview-candidate-d11268f1-eefc88e4.zip`，81,958,760 字节，SHA-256 `0e233dcb024d1df3e6eb1a3534f1d160cf27b4609cec078cc2a1364551e44eb2`。同目录外部交付清单 `download-manifest.json` SHA-256 `c4af9c509cd31cd22ff1fff50d1f5f4ff29187181207edf9ba3bb284a8fb395e`（2026-09-16 只读复核），记录 R706 从该 ZIP 验证后的 `GO_BOUNDED_PREVIEW_EXACT_VALIDATED_HOST`、报告与 checkpoint 映射。包内 `candidate-manifest.json` SHA-256 为 `ff352e242a68fdc62268f40f78bb67088f4170b92449f82bbac98489e99bf730`；它封存时仍写 `NO_GO_PENDING_FORMAL_SMOKE_FROM_ZIP_LAYOUT`，通过后的状态在**外部**交付清单，ZIP 未为改状态无故重建。764 个 ZIP entry 的 CRC 与 763 个文件的逐文件 SHA 已通过。ZIP 不包含 CK3 本体。用户在本机可先核对：
+- ZIP：`D:\ck3_mod_rewrite_process_assets\g2-preview-ordinary-r783-stage-20260916T134805Z-6cfba744\g2-preview-ordinary-5ac64152-r783.zip`
+- ZIP SHA-256：`AA9CABB5D4CA709E55AB367A94D0C58A088AAD20D540B76F7990DAD1FC81517C`
+- 大小：80,971,362 字节；883 个唯一条目；CRC 与包内逐文件哈希验收 GREEN。
+- 包内 `candidate-manifest.json` SHA-256：`616C1E3B0943BD49CD85A261621CB0DF449A0F67B337085A7624E4C10FAEFB8F`。
+- 外部 GO 清单：同目录 `download-manifest.json`，SHA-256 `A5CB85FE0D9BF96EF844B68055532220498FE8E298F8B2769515EC026AAD4B1D`。
+- 实机资格凭据：同目录 `live-qualification-r790-r792.json`，SHA-256 `1EF45C2B14D43C6AA2E953D5BB0E56925F181CDC3819FA3ECE70BCC6F7E5361A`。
 
-```text
-python tools/g2_preview_operator.py verify-zip --zip Z:\ck3_mod_rewrite_process_assets\g2-preview-bundle-d11268f1-eefc88e4\g2-preview-candidate-d11268f1-eefc88e4.zip --expected-sha256 0e233dcb024d1df3e6eb1a3534f1d160cf27b4609cec078cc2a1364551e44eb2
+包内 candidate manifest 在封包时诚实保留 `NO_GO_PENDING_EXTRACTED_BUNDLE_LIVE_SMOKE`。ZIP 没有为改状态而重建；外部 GO 清单用 ZIP 精确 SHA 绑定封包后的 R790–R792 实机结果。ZIP 不包含 CK3、Steam 凭据、Python 虚拟环境、Workshop cache 或历史运行日志。
+
+冻结版本：
+
+| 项目 | 冻结值 |
+| --- | --- |
+| CK3 | `1.19.0.6` |
+| `ck3.exe` SHA-256 | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` |
+| Python agent/source | `5ac6415258d9dfd4eb4e4e72d644dd76008b896a` |
+| Native source | `320efe63b57959e6b314072acbe8043476cc56cf` |
+| Native DLL SHA-256 | `EB00E44D3FAD25F924566714EBED1EC60438651A90C10CEDB67E0E105B4E4CD2` |
+| Injector SHA-256 | `A25D31FED065F214EBCD18545DE7563848C2308FF5F666659DBEFFC1F5C0FDCB` |
+| 政体/生命周期 | `feudal_government` / `ordinary_campaign_succession` |
+| 游戏规则 | `xar_enabled=xar_off`，`ordinary_campaign_no_pact=true` |
+| Mod 加载顺序 | 只有 `mod/xar_autoplayer.mod` |
+| DLC 配置 | `disabled_dlcs=[]`；冻结主机发现 29 个 descriptor，未把账号 entitlement 冒充为独立验收 |
+| Production mod tree | `8471F6B4333D2D3D0C4DFB1BE1DFF11A586953AE7B920089DFC830164FBF0367`，86 个文件 |
+
+29 个已发现 descriptor 为：`dlc016_cp2`、`dlc007_ep2`、`dlc012_afr`、`dlc014_ep3`、`dlc011_ce1`、`dlc027_cp9`、`dlc003_fp1`、`dlc022_ep4`、`dlc001_preorder`、`dlc010_fp3`、`dlc004_ep1`、`dlc002_sp_day1`、`dlc029_mp1`、`dlc024_cp6`、`dlc009_bp2`、`dlc021_bp4`、`dlc026_cp8`、`dlc005_fp2`、`dlc008_sp2`、`dlc025_cp7`、`dlc013_sp3`、`dlc023_cp5`、`dlc017_cp3`、`dlc015_bp3`、`dlc006_bp1`、`dlc020_ce2`、`dlc028_sp5`、`dlc019_sp4`、`dlc018_cp4`。权威加载配置在包内 `config/dlc_load.json`。
+
+## 一次性准备
+
+1. 把 ZIP 解压到一个新目录。
+2. 把 `operator-manifest.template.json` 复制为 `operator-manifest.json`。
+3. 替换其中四类 `<ABSOLUTE_...>` 占位符：Python 3.11+ 可执行文件、解压包根目录、包含 `binaries\ck3.exe` 的 CK3 安装根目录，以及全新的可写 state 目录。包内源码、DLL、injector 和样本存档路径都从包根派生。
+4. 取得 CK3 单实例所有权，确认所有受管环境没有存活 CK3。
+5. 在解压包根目录运行：
+
+```powershell
+$Manifest = (Resolve-Path .\operator-manifest.json).Path
+$Python = (Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json).python
+& $Python .\repo\tools\g2_preview_operator.py prepare-state --manifest $Manifest --sample-dir .\sample-resume
+if ($LASTEXITCODE -ne 0) { throw "prepare-state failed" }
+$Operator = Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json
+$Rebind = Get-Content -LiteralPath (Join-Path $Operator.state_dir 'ordinary-seed-rebind-v1.json') -Raw | ConvertFrom-Json
+$Operator.environment_sha256 = $Rebind.environment.target_sha256
+$Operator.driver_state_sha256 = $Rebind.driver_state.target_sha256
+$Operator | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $Manifest -Encoding utf8
 ```
 
-实机冻结组合是 CK3 `1.19.0.6`，`ck3.exe` SHA-256 `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`；正式 Python agent/source commit `d11268f15b829a38d0f6e32cffe9d62b71aad306`；默认 Release native DLL/injector 来源 commit `eefc88e43859c422b562b4c0a9489c347fec3233`，SHA-256 分别为 `5143f1c6d6d25775b9d048d59050c5a465dcbad59d10b4e5837dbeba0bd5fdf5`、`9754f14ffb5079155f0cfd4908ed99a024c04585ef66bac75d38546deefea1b1`。政府范围仅 `feudal_government`。R706 production profile environment SHA-256 为 `c044ff66fc11ba23bf0162e6378b5c16f551a74b4b0820f175f5dc8aecf37554`、rules SHA-256 为 `6cca52869f5bc32de1b509dd63255f8847875134933e936f97125ebc6be092f7`、production mod tree SHA-256 为 `8471f6b4333d2d3d0c4dfb1be1dff11a586953ae7b920089dfc830164fbf0367`；`dlc_load.json` 明确唯一加载顺序 `enabled_mods=["mod/xar_autoplayer.mod"]`、`disabled_dlcs=[]`。R706 解压态 CK3 启动 `debug.log` 第 26–88 行实际列出下述 29 个 DLC descriptor 和 29 个 VFS DLC 内容挂载，另仅一个 `mod/xar_autoplayer.mod|Enabled`；该日志 SHA-256 为 `c4da047b73398fce19beea6c0be6dc89fa4da899166131bd881a32f687f21a32`。这是本次游戏加载内容证据，账号 entitlement 未独立核验。当前包内普通 production 样本已验；任意其他封建存档尚未因此自动取得支持资格。
+`prepare-state` 会生成并核验 production-only `xar_off` profile、复制成对 checkpoint/driver state、把其环境绑定迁移到本机，并执行零启动预检。它拒绝覆盖已有配对 state；不要手改存档或 driver state。
 
-```text
-dlc016_cp2, dlc007_ep2, dlc012_afr, dlc014_ep3, dlc011_ce1, dlc027_cp9,
-dlc003_fp1, dlc022_ep4, dlc001_preorder, dlc010_fp3, dlc004_ep1,
-dlc002_sp_day1, dlc029_mp1, dlc024_cp6, dlc009_bp2, dlc021_bp4,
-dlc026_cp8, dlc005_fp2, dlc008_sp2, dlc025_cp7, dlc013_sp3,
-dlc023_cp5, dlc017_cp3, dlc015_bp3, dlc006_bp1, dlc020_ce2,
-dlc028_sp5, dlc019_sp4, dlc018_cp4
+## 资格验收与正式自动游玩
+
+先为本次运行登记新的单调 CK3 轮次，再做两个 paused frame 的只读资格验收：
+
+```powershell
+$RunStamp = Get-Date -Format 'yyyyMMddTHHmmss'
+$Eligibility = Join-Path $PWD "runs\eligibility-$RunStamp"
+& $Python .\repo\tools\g2_preview_eligibility.py --manifest $Manifest --output $Eligibility
 ```
 
-## 本机正式启动
+资格 GREEN、旧进程完全回收后，启动正式 production 策略循环：
 
-下列路径是从上述**精确 ZIP**全新解压后实际校验的布局；这台已获授权的 Windows 宿主已有该解压目录和从包内样本生成的独立 production state。先取得 CK3 单实例所有权并确认所有受管环境的旧实例已经死亡。正式入口自行核对本机进程库存；其他机器失联不代表旧实例已死。
-
-```text
-python tools/g2_preview_operator.py run --manifest <frozen-operator-manifest.json> --output <new-user-preview-attempt-directory> --turns 20 --timeout 390 --readiness-timeout 300
+```powershell
+$RunStamp = Get-Date -Format 'yyyyMMddTHHmmss'
+$Formal = Join-Path $PWD "runs\formal-$RunStamp"
+& $Python .\repo\tools\g2_preview_operator.py run --manifest $Manifest --output $Formal --turns 20 --timeout 810 --readiness-timeout 720
 ```
 
-`native-auto-run` 是 production 策略循环，启动后自行查询、决策、提交 typed 动作、核对独立 paused 后置状态、推进日期并保存 checkpoint；上述 20-turn 窗口内无需人工代点、代选人物/互动 ID 或手动推进日期。`--turns 20` 与 390/300 秒有界参数在同 d112 agent 版本的 R701 实机使用；精确 ZIP 布局的 R706 另以 5 turn 冒烟。Python operator 会打印本次 `Operator stop request file: <state 目录的绝对路径>\native-auto-run.stop`，并在独立 attempt 目录分别保留完整 UTF-8 stdout、stderr、预检输出、退出码和 JSON receipt，禁止把两个流混成一个报告。当前解压态 state 已由 R706 继续到 date_raw `53192304`，save/driver 当前 SHA-256 分别是 `6e308a88b01a8ae0e7dc1a108eed7d4be17dab98b4404384366f1aeed65cdbc9`、`432cdef8d5476d8e4d534d25b7518c9c29fa24d578803201f6b4c85468afab09`；预检脚本每次读取实际当前 SHA，下一次运行会继续而非从旧样本重来。
+样本 checkpoint 已经包含 `WarID=5` 和 `ArmyID=33`。策略会消费持久化目标，不能重复宣战。R790 的全新解压冷启动实际耗时 636.443 秒，因此 720 秒 readiness bound 是实测值；同一已准备 state 的 R791、R792 分别耗时 95.229 秒和 75.368 秒。
 
-上面的路径是已验宿主的实际值。迁移 ZIP 到另一获授权机器或新目录时，先确认当地 `ck3.exe` 是上述 exact SHA，并把 operator manifest 的 `python`、`source_repo`、`game_dir`、`state_dir`、`dll` 和 `injector` 改为当地有权限的真实位置；将 ZIP 全新解压后的 `repo` 和 `native` 配套使用。**新** state 要从解压源码执行正式 `prepare-profile`、`verify-profile`，让 mod descriptor 指向当地生成的 production 投影，再把包内 `sample-resume/xar_checkpoint.ck3` 与 `sample-resume/driver-state.json` 原样复制到 state 的配对位置并用上面的正式预检。包内 `episode-seed.json` 仅作样本身份参考，不能替智能体改存档或动作结果。解压源码、只读查询能在其他授权环境使用，不等于该机器已核验可运行 CK3；ZIP 不含 Steam/个人凭据，账号与本地 CK3 授权由操作者各自取得。命令为：
+## 状态、受控停止与冷恢复
 
-```text
-python tools/g2_preview_operator.py prepare-state --manifest <local-operator-manifest.json> --sample-dir <extracted-package-sample-resume-directory>
+在另一终端从同一解压包根目录请求安全边界 checkpoint 后停止：
+
+```powershell
+$Manifest = (Resolve-Path .\operator-manifest.json).Path
+$Python = (Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json).python
+& $Python .\repo\tools\g2_preview_operator.py request-stop --manifest $Manifest
 ```
 
-## 状态、暂停、停止与恢复
+查询完成报告：
 
-运行中可用本机进程库存看 CK3 是否存活；`native-session\driver-state.json` 只表示已持久化的命令历史与最近 checkpoint，并非独立 live-status CLI。正式结果在 CLI 退出后读本次 `formal-report.txt`：
-
-```text
-python tools/g2_preview_operator.py status --report <attempt-directory>\formal-report.txt
+```powershell
+& $Python .\repo\tools\g2_preview_operator.py status --report (Join-Path $Formal 'formal-report.txt')
 ```
 
-主动“暂停”是在当前 turn 的安全边界请求 checkpoint 后停止进程，随后可冷恢复；Windows 上实测的正式方法是在**另一个 Python 进程**中核对启动 CLI 实际打印的 stop 路径，再执行：
+确认 CK3 进程树完全回收后，用新轮次和新输出目录冷恢复：
 
-```text
-python tools/g2_preview_operator.py request-stop --manifest <frozen-operator-manifest.json>
+```powershell
+$RunStamp = Get-Date -Format 'yyyyMMddTHHmmss'
+$ColdRestore = Join-Path $PWD "runs\cold-restore-$RunStamp"
+& $Python .\repo\tools\g2_preview_operator.py run --manifest $Manifest --output $ColdRestore --turns 5 --timeout 810 --readiness-timeout 720
 ```
 
-成功受控停止的正式结果为 `status=operator_stop_checkpointed`、`outcome=operator_stopped`、CLI 退出码 0、兼容配对 checkpoint、请求文件已消费清除、CK3 进程树已回收；这种提前停止的顶层 `ok=false` 不表示 RED，也不表示原定 turn 上限已完成。`operator_stop_checkpoint_deferred`、RED、超时、未执行、证据不足分别保留；强制 modal 或动作已提交但未确认时，先查 paused 实际结果和 receipt，不盲重试。控制台中断在已控台环境没有可靠到达 Python 停止处理器，不用它作为正式方法。
+位置：
 
-存档位于 state 的 `profile\save games\xar_checkpoint.ck3`，agent 配对状态是 `native-session\driver-state.json`，同一目录还有 `episode-seed.json`；CK3 日志在 state 的 `profile\logs\debug.log`、`error.log`，本次完整正式结果在 attempt 的 `formal-report.txt`。停止或有界结束且全部 CK3 进程回收后，保留 save/driver/版本关系，再在新轮次用上面的同一 Python operator `run` 命令恢复。预检读取**当前** save/driver SHA，不把旧证据的 driver SHA 悄悄恢复；新进程必须继续同一 episode/高层目标，不重复已生效动作。
+- 游戏 checkpoint：`<state_dir>\profile\save games\xar_checkpoint.ck3`
+- Agent state：`<state_dir>\native-session\driver-state.json`
+- CK3 日志：`<state_dir>\profile\logs\debug.log`、`error.log`
+- 停止请求：`<state_dir>\native-auto-run.stop`
+- 每次完整报告：命令指定的 `<output>\formal-report.txt`
 
-## 验收证据与限制
+R791 的正式状态是 `operator_stop_checkpointed/operator_stopped`，operator exit code 为 0、receipt 为 completed。因为操作者在 200-turn 上限前主动停止，报告顶层 `ok=false` 只表示未跑满原上限，不是 RED。超时、未执行、真正 RED 和证据不足仍分别记账。
 
-R701 d112 正式 20/20 turn 报告在 `Z:\ck3_mod_rewrite_process_assets\g2-preview-action-stop-d11268f1\action-live-attempt-1\formal-report.txt`，SHA-256 `e64060ab323da1bb24ec34c709d33b4dfdffdc6a8a471390587dc3ea1f9c0865d`：自然 `pay_ransom_interaction` → 正式唯一 typed reject → 独立下一 paused frame pending 消失 → 后续 turn 消费且未重复。R702 同 campaign 受控 stop 报告在 `...\stop-live-attempt-1\formal-report.txt`，SHA-256 `654e96110d8fe311c32cc153a45f0b35dd5b87abad67f19ad878b8ecd5e8cc00`。R703 d112 受控公共 paused 封建资格报告在 `...\eligibility-live-attempt-1\report.json`，SHA-256 `570a31dd4efbb7de2b8311558b3ce2fc023d38e31287da00b79f2c7e0a9cafe1`，只读查询无动作；它发生在 R701 动作与 R702 停止**之后**，不是 R701 同帧政府观测。R701 verifier 用真实 R703 资格报告通过 11/11。R704 新 CK3 进程正式 5/5 turn 冷恢复报告在 `...\cold-restore-after-eligibility-attempt-1\formal-report.txt`，SHA-256 `1097f1bd07a8ac7be52ddb7e09de0f3d794f0358e87a24c9fccf438817379aea`；同 episode、保守战争发现目标、日期前进、旧互动无第二次 reject，物理 checkpoint SHA-256 `5852f45fbd4a0c6cdda2b07d2e910a036dc46b0646699df378de245483c22e7d`。R706 **从冻结 ZIP 全新解压目录**正式 5/5 turn 报告在 `Z:\ck3_mod_rewrite_process_assets\g2-preview-package-smoke-d11268f1\formal-live-attempt-1\formal-report.txt`，SHA-256 `3f5cb8c2852a98bbf6fc2ccfb1f2731d9b0b040e30a92cd0bf98687e286c1822`；cold checkpoint 继续同 episode、日期 `53190696→53192304`、正式 `war-entry-minimal-defer-v1/NO_DECLARE` 保守战争发现目标、全历史旧 reject 仍只一次，新物理 checkpoint SHA-256 `6e308a88b01a8ae0e7dc1a108eed7d4be17dab98b4404384366f1aeed65cdbc9`，退出码 0、CK3 进程 0。该 WAR 策略明确 `semantic_optimal=false`，不广告成熟战争决策。
+## 实机证据
 
-已验价值局限于此普通 production 标准封建样本的有界自动游玩、自然赎金 pending 回复、保守战争发现与自动日期推进、可控停止及 cold restore。R706 包冒烟本身没有新增语义动作；真实非空动作、独立后置状态与下一 turn 消费直接来自**同 d112 Python/native/mod 冻结组合**的 R701，不能把 R706 的两次日期推进改写成新动作证据。议会四类门、战争终局、自然指定事件、自然继承人接续、和平建设/封臣治理、婚姻外交、整局 1066→1453、双独立种子及其他政府未通过正式主链，不注册或广告为本预览能力；R705 的真实战争 RED 独立保留处理。遇到范围内未知强制状态或缺关键观测时，保留 RED 并停止在 checkpoint/日志现场，不把 no-op 或人工救场称继续可用。
+| 轮次 | 结果 | 关键证据 |
+| --- | --- | --- |
+| R783 | 原始普通 production 闭环 | 正式 typed 宣战；独立下一 paused frame 出现 WarID 5；下一 turn 查询并消费 WarID 5；随后征兵、移动、战斗；20/20。报告 SHA `EF35A85242A95D3FE07A2C3EA8B5D6B3C932E38C49FFFC6E03A2D824AE459337`。 |
+| R790 | 精确 ZIP 全新解压资格 GREEN | 两个公共 paused frame 均为 `feudal_government`、`xar_off`、角色 31853、同 episode、WarID 5/ArmyID 33、无 event/pending；9/9，进程清理。报告 SHA `ED366D67FE1E1699BABD7749B193B93F76CD2261E7776912A1CCAE1002BDA6F4`。 |
+| R791 | 正式继续并受控停止 GREEN | 13/13 成功，6 个 gameplay turn；继续同一战争目标并出现 `start-assault-6`；安全停止 checkpoint SHA `318884F0DA24A5DC8388335E6FC82976400A91BA99A6E40D76FFCDAA8089148F`；进程清理。报告 SHA `7073FBD8B62C0F130EB99C6E169CB80F6EA41F1291D3A459A22CAFBA7B0E1F88`。 |
+| R792 | 新进程 cold restore GREEN | 从 R791 checkpoint 恢复同一角色、episode、目标；5/5，4 个 gameplay turn，零重复宣战；最终 checkpoint SHA `DE8BA3330DFC2586CEE4E754C2C3C43F7F41B5BDB52F2F2FDEA2A9C8C6AF2F1`；进程清理。报告 SHA `B1E8FA374421A7DF25C822E2E8451FEF5C5EEE907610D8E80BD851F4EF977F97`。 |
+
+## 支持边界
+
+当前只支持上述 exact build、标准封建、`xar_off`、单 mod 加载组合和包内普通 campaign continuation。它已验证有界 production 自动游玩、真实非空动作、后续消费、checkpoint、受控停止和 cold restore。
+
+尚未通过或不广告：1066→1453 首条整局、第二独立种子、议会四门和正式任命闭环、typed 战争终局及 truce/settlement、指定自然事件、同一普通 campaign 的自然继承完整恢复、两年治理、婚姻外交质量、其他政府和 G2 广矩阵。未知强制状态必须保留 RED 并停在可核验现场；动作结果不明时先查真实状态，不能盲重试。游戏升级也不会自动兼容，参见 [MCP/Native 地址定位与升级迁移评估](mcp-ck3-addressing-and-upgrade-migration.md)。
