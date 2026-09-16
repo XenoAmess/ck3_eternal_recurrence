@@ -1,0 +1,39 @@
+{
+  "schema": "xar.ck3.m5_primary_army_supply_source_abi_v1",
+  "game_version": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "status": "static-ready-unwired",
+  "production_wired": false,
+  "registered": false,
+  "advertised": false,
+  "live_current_primary_scope_verified": false,
+  "source": {
+    "stock_combat_selector_rva": "0x23049E0",
+    "existing_production_reader": "src/combat_v3.cpp:2848",
+    "operand": "CArmy+0x180 signed int64 raw at Q100000 scale",
+    "stock_supply_thresholds": "loaded combat-rule array; this module does not classify raw as a combat state",
+    "existing_live_boundary": "docs/ck3-native-ai/combat-simulation-inputs.md:495 combined-defensive paused combat scope"
+  },
+  "current_primary_binding": {
+    "upstream": "prewar_scope_v1 available_primary_scope from one paused native revision",
+    "carmy_storage_slot_rva": "0x570C730",
+    "storage_slots_offset": "0x20",
+    "storage_capacity_offset": "0x2C",
+    "slot_stride": "0x10",
+    "slot_object_offset": "0x08",
+    "full_generation_carmy_id_offset": "CArmy+0x10",
+    "public_cunit_id_backlink_offset": "CArmy+0x124",
+    "supply_raw_offset": "CArmy+0x180",
+    "same_frame": "two value-identical samples for each already-raised primary CArmy",
+    "zero": "0 raw is a legal observed value when identity and paused gates pass",
+    "empty": "zero currently-raised primary armies is an available empty current observation; unraised supply is unknown"
+  },
+  "excluded": [
+    "voluntary ally participation and acceptance",
+    "unraised future army supply",
+    "route province supply and attrition forecast",
+    "campaign resource burn and legal exit exposure",
+    "marriage alliance and long-commitment value"
+  ],
+  "next_live_gate": "wire only a private read-only query to an application-main paused prewar primary scope, retain same native revision and independently compare current supply to stock combat/army readback; keep public capability OFF until full gate"
+}
