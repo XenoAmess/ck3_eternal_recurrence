@@ -17,8 +17,24 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 class G2PreviewOperatorTest(unittest.TestCase):
     def test_eligibility_forwards_resolved_rule_to_live_stage(self) -> None:
+        legacy_binding = {
+            "schema": "xar.ck3.succession-lifecycle-binding/v1",
+            "lifecycle": "rogue_one_life",
+            "xar_enabled": "xar_on",
+            "pact_contract": "terminal_settlement_required",
+            "source": "legacy-driver-default",
+            "environment_sha256": None,
+        }
+        ordinary_binding = {
+            "schema": "xar.ck3.succession-lifecycle-binding/v1",
+            "lifecycle": "ordinary_campaign_succession",
+            "xar_enabled": "xar_off",
+            "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+            "source": "prepared-environment-manifest",
+            "environment_sha256": "e" * 64,
+        }
         cases = (
-            ({}, "xar_on"),
+            ({}, "xar_on", legacy_binding),
             (
                 {
                     "xar_enabled": "xar_off",
@@ -26,11 +42,12 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     "ordinary_campaign_no_pact": True,
                 },
                 "xar_off",
+                ordinary_binding,
             ),
         )
-        for lifecycle, expected in cases:
+        for lifecycle, expected_rule, expected_binding in cases:
             with (
-                self.subTest(expected=expected),
+                self.subTest(expected=expected_rule),
                 tempfile.TemporaryDirectory() as directory,
             ):
                 root = Path(directory)
@@ -71,7 +88,15 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     mock.patch.object(
                         g2_preview_eligibility,
                         "_preflight",
-                        return_value=(SimpleNamespace(), {"status": "ready"}),
+                        return_value=(
+                            SimpleNamespace(),
+                            {
+                                "status": "ready",
+                                "succession_lifecycle_binding": (
+                                    expected_binding
+                                ),
+                            },
+                        ),
                     ),
                     mock.patch.object(
                         g2_preview_eligibility,
@@ -96,7 +121,13 @@ class G2PreviewOperatorTest(unittest.TestCase):
                     run_live_stage.call_args.kwargs[
                         "prepared_xar_enabled"
                     ],
-                    expected,
+                    expected_rule,
+                )
+                self.assertEqual(
+                    run_live_stage.call_args.kwargs[
+                        "succession_lifecycle_binding"
+                    ],
+                    expected_binding,
                 )
 
     def test_lifecycle_manifest_is_complete_and_legacy_default_is_explicit(self) -> None:

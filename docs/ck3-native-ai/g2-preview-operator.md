@@ -109,7 +109,10 @@ the live public campaign-root rule tokens contain `xar_off` and exclude
 `xar_on`. Its controlled live stage passes that resolved `xar_off`/`xar_on`
 value into `native_session`, so the launch-time profile fingerprint uses the
 same rule contract as the preflight; older manifests keep the `xar_on`
-default.
+default. Before the pipe can adopt its first frame, the live stage also binds
+the exact preflight `succession_lifecycle_binding` onto the driver, matching
+production `native_auto_run`; a non-legacy contract fails closed when a driver
+does not expose that binder.
 
 For the bounded M3 blocker diagnosis only, the same formal operator also has a
 private, default-off single-query entry.  `R776A` is the evidence-slice label;

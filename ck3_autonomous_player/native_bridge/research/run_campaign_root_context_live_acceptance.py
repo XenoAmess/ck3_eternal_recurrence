@@ -41,6 +41,9 @@ from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
+from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: E402
+    legacy_rogue_one_life_binding_v1,
+)
 from xar_autoplayer.environment import (  # noqa: E402
     ensure_state_path_safe,
     is_relative_to,
@@ -699,6 +702,7 @@ def _run_live_stage(
     timeout: float,
     readiness_timeout: float,
     prepared_xar_enabled: str = "xar_on",
+    succession_lifecycle_binding: dict[str, object] | None = None,
 ) -> dict[str, object]:
     stop_event = threading.Event()
     session_done = threading.Event()
@@ -742,6 +746,20 @@ def _run_live_stage(
             state_dir=spec.state_dir,
             save_dir=spec.profile_dir / "save games",
         )
+        resolved_lifecycle_binding = (
+            succession_lifecycle_binding
+            if succession_lifecycle_binding is not None
+            else legacy_rogue_one_life_binding_v1()
+        )
+        bind_succession_lifecycle = getattr(
+            driver, "bind_succession_lifecycle_v1", None
+        )
+        if callable(bind_succession_lifecycle):
+            bind_succession_lifecycle(resolved_lifecycle_binding)
+        elif resolved_lifecycle_binding != legacy_rogue_one_life_binding_v1():
+            raise AgentError(
+                "selected succession lifecycle requires a binding-capable driver"
+            )
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(
             target=supervise,
