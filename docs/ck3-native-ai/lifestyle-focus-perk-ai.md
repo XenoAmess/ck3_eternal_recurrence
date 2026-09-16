@@ -681,3 +681,20 @@ checkpoint 的版本及 pending action 关联落盘；当前内存 pending ACK
 字段。open_kaishek main64cd 没有现成 LIFE 私有 consumer，
 本候选不要求下游立即改 schema；若未来公开能力，需先冻结
 typed 查询/动作/回执格式并派发被动 profile/资产适配。
+
+## G2-M4-LIFE-STATE-READONLY-B0: unbound-window current state seam (2026-09-16)
+
+Exact CK3 1.19.0.6, EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`. The existing LIFE2 `ReadPlayerLifestyleSnapshotV1` reads played-Character focus, lifestyle XP, perk points, and owned perks through the exact source. This does not require a bound LIFE4 lifestyle window; LIFE4 final focus/perk candidates do. Slot43's original formal query required both sources, so a normal window-unbound frame reported `native_lifestyle_state_or_final_candidates_unavailable` and erased usable LIFE2 state from the caller's view.
+
+```mermaid
+flowchart TD
+  A["Paused full-generation player frame"] --> B["LIFE2 exact played-Character state read"]
+  B -->|focus, XP, points, owned perks same-frame ready| C["private current-state-only response"]
+  B -->|state source unavailable or frame drift| U["typed unavailable"]
+  C --> D["LIFE4 final candidates remain unavailable while window unbound"]
+  D -. unknown final legality .-> E["window-bound focus/perk action gate"]
+```
+
+The new private `query_state_only` mode of the existing slot43 executor reads LIFE2 only and serializes the existing typed snapshot. It never calls the LIFE4 candidate reader, precondition evaluator, or native selection action. An unavailable candidate set remains `unavailable`, never a legal or known-empty set. The exact request binding, private response, and default-OFF admission are in `research/player_lifestyle_current_state_only_v1_contract.json`.
+
+Status: `static-ready`. The LIFE2 source fixture and formal wire compile pass focused `/Od` and `/O2`; the state-only step is not yet routed from `bridge.cpp`, registered publicly, or advertised. A real paused native readback and next production turn consumption remain required. The original window-bound candidate/action gate remains unknown in ordinary production frames until independently observed.

@@ -1,0 +1,28 @@
+{
+  "contract": "player_lifestyle_current_state_only_v1",
+  "work_package": "G2-M4-LIFE-STATE-READONLY-B0",
+  "status": "static-ready; private route not yet connected; no paused live evidence",
+  "ck3_exact_build": "1.19.0.6",
+  "ck3_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "source": "existing LIFE2 ReadPlayerLifestyleSnapshotV1 via player_lifestyle_formal_wire_v1 slot43; current state is read from the played Character storage, independent of LIFE4 window-bound final candidate collections",
+  "private_step": "private-query-player-lifestyle-current-state-v1",
+  "enabled_by": "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1 (default OFF); bridge.cpp private dispatch not yet connected",
+  "request_binding": [
+    "expected_snapshot_id",
+    "expected_revision",
+    "expected_date_raw",
+    "expected_player_character_id",
+    "episode_run_id"
+  ],
+  "required_same_frame_state": [
+    "current_focus_ready",
+    "lifestyle_progress_ready",
+    "owned_perks_ready",
+    "same_frame_ready"
+  ],
+  "response": "private command_result with status=available, episode_run_id and existing SerializePlayerLifestyleSnapshotV1 snapshot; final focus/perk candidate collections retain typed unavailable when LIFE4 window is unbound",
+  "failure": "native_lifestyle_current_state_unavailable; never promote unknown candidate collections to known_empty or legal",
+  "public_registration": false,
+  "capability_advertised": false,
+  "next_gate": "bridge.cpp private step dispatch by sole bridge writer, then one real paused native state readback and formal next-turn consumption before promotion"
+}

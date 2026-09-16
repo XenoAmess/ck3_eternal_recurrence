@@ -266,6 +266,15 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
     access.capture_receipt_state = &CaptureReceiptState;
     access.is_main_thread = &IsMain;
     access.submit_native = &SubmitPerk;
+    if (context->mode == PlayerLifestyleFormalWireModeV1::query_state_only) {
+      if (!ReadState(*context) ||
+          !PlayerLifestyleCurrentStateOnlyReadyV1(*context->snapshot)) {
+        context->failure = "native_lifestyle_current_state_unavailable";
+        return true;
+      }
+      context->completed = true;
+      return true;
+    }
     if (context->mode == PlayerLifestyleFormalWireModeV1::query) {
       if (!ReadState(*context) || !ReadCandidates(*context)) {
         context->failure = "native_lifestyle_state_or_final_candidates_unavailable";

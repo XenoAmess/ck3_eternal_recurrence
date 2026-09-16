@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/player_lifestyle_formal_precondition_v1.hpp"
+#include "xar_bridge/player_lifestyle_current_state_only_v1.hpp"
 #include "xar_bridge/player_lifestyle_selection_native_adapter_v1.hpp"
 
 #include <memory>
@@ -12,12 +13,16 @@ namespace xar::ck3_11906 {
 
 enum class PlayerLifestyleFormalWireModeV1 {
   query,
+  query_state_only,
   submit_perk,
   verify_receipt,
 };
 
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateQueryStepV1 =
     "private-query-player-lifestyle-formal-v1";
+inline constexpr std::string_view
+    kPlayerLifestyleFormalPrivateCurrentStateStepV1 =
+        "private-query-player-lifestyle-current-state-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateSubmitStepV1 =
     "private-select-player-lifestyle-perk-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateReceiptStepV1 =
