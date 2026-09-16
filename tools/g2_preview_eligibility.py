@@ -298,6 +298,7 @@ def main() -> int:
                 cold_start_checkpoint=True, save_checkpoint=False,
                 timeout=float(manifest["timeout_seconds"]),
                 readiness_timeout=float(manifest["readiness_timeout_seconds"]),
+                prepared_xar_enabled=report["lifecycle"]["xar_enabled"],
             )
             report["stage"] = stage
             checks = _qualify(manifest, stage, backend)

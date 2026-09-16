@@ -6,6 +6,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -15,6 +16,89 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_eligibility_forwards_resolved_rule_to_live_stage(self) -> None:
+        cases = (
+            ({}, "xar_on"),
+            (
+                {
+                    "xar_enabled": "xar_off",
+                    "succession_lifecycle": "ordinary_campaign_succession",
+                    "ordinary_campaign_no_pact": True,
+                },
+                "xar_off",
+            ),
+        )
+        for lifecycle, expected in cases:
+            with (
+                self.subTest(expected=expected),
+                tempfile.TemporaryDirectory() as directory,
+            ):
+                root = Path(directory)
+                output = root / "eligibility"
+                manifest = {
+                    **lifecycle,
+                    "source_repo": str(root / "repo"),
+                    "timeout_seconds": 390,
+                    "session_ceiling_seconds": 480,
+                    "readiness_timeout_seconds": 300,
+                    "pipe": r"\\.\pipe\eligibility-test",
+                    "dll": str(root / "bridge.dll"),
+                    "injector": str(root / "injector.exe"),
+                }
+                run_live_stage = mock.Mock(return_value={"ok": True})
+                backend = {
+                    "controlled": SimpleNamespace(
+                        _run_live_stage=run_live_stage
+                    ),
+                    "NativeBridgeLaunchConfig": mock.Mock(
+                        return_value=SimpleNamespace()
+                    ),
+                    "ck3_process_inventory": mock.Mock(
+                        return_value={"processes": []}
+                    ),
+                }
+                with (
+                    mock.patch.object(
+                        g2_preview_eligibility,
+                        "_read_manifest",
+                        return_value=manifest,
+                    ),
+                    mock.patch.object(
+                        g2_preview_eligibility,
+                        "_backend",
+                        return_value=backend,
+                    ),
+                    mock.patch.object(
+                        g2_preview_eligibility,
+                        "_preflight",
+                        return_value=(SimpleNamespace(), {"status": "ready"}),
+                    ),
+                    mock.patch.object(
+                        g2_preview_eligibility,
+                        "_qualify",
+                        return_value={"eligible": True},
+                    ),
+                    mock.patch.object(
+                        sys,
+                        "argv",
+                        [
+                            "g2_preview_eligibility.py",
+                            "--manifest",
+                            str(root / "manifest.json"),
+                            "--output",
+                            str(output),
+                        ],
+                    ),
+                    contextlib.redirect_stdout(io.StringIO()),
+                ):
+                    self.assertEqual(g2_preview_eligibility.main(), 0)
+                self.assertEqual(
+                    run_live_stage.call_args.kwargs[
+                        "prepared_xar_enabled"
+                    ],
+                    expected,
+                )
+
     def test_lifecycle_manifest_is_complete_and_legacy_default_is_explicit(self) -> None:
         self.assertEqual(
             g2_preview_operator.lifecycle_contract({}),

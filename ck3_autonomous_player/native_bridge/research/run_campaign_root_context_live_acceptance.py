@@ -698,6 +698,7 @@ def _run_live_stage(
     save_checkpoint: bool,
     timeout: float,
     readiness_timeout: float,
+    prepared_xar_enabled: str = "xar_on",
 ) -> dict[str, object]:
     stop_event = threading.Event()
     session_done = threading.Event()
@@ -727,6 +728,7 @@ def _run_live_stage(
                 poll_interval_seconds=0.05,
                 cold_start_checkpoint=cold_start_checkpoint,
                 stop_event=stop_event,
+                prepared_xar_enabled=prepared_xar_enabled,
             )
         except BaseException as error:
             session_state["error"] = f"{type(error).__name__}: {error}"

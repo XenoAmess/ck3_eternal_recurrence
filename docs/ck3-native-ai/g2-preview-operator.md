@@ -106,7 +106,10 @@ records the resolved contract.  The downstream run therefore receives
 one-life default.  The eligibility tool verifies the profile as `xar_off`,
 requires the exact lifecycle on the paired checkpoint/driver state, and checks
 the live public campaign-root rule tokens contain `xar_off` and exclude
-`xar_on`.
+`xar_on`. Its controlled live stage passes that resolved `xar_off`/`xar_on`
+value into `native_session`, so the launch-time profile fingerprint uses the
+same rule contract as the preflight; older manifests keep the `xar_on`
+default.
 
 For the bounded M3 blocker diagnosis only, the same formal operator also has a
 private, default-off single-query entry.  `R776A` is the evidence-slice label;
