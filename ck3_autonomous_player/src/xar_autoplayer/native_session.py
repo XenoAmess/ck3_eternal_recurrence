@@ -6,6 +6,7 @@ import the visual driver, OCR, screenshots, or desktop input modules.
 
 from __future__ import annotations
 
+import copy
 from contextlib import contextmanager
 import hashlib
 import json
@@ -720,6 +721,7 @@ def native_session(
     cold_start_checkpoint: bool = False,
     stop_event: threading.Event | None = None,
     verify_prepared_profile: bool = True,
+    prepared_xar_enabled: str = "xar_on",
     frontend_first_load_save_name: str | None = None,
     frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
@@ -806,6 +808,7 @@ def native_session(
                 cold_start_checkpoint=cold_start_checkpoint,
                 stop_event=stop_event,
                 verify_prepared_profile=verify_prepared_profile,
+                prepared_xar_enabled=prepared_xar_enabled,
                 frontend_first_load_save_name=frontend_first_load_save_name,
                 frontend_first_timeout_seconds=float(
                     frontend_first_timeout_seconds
@@ -826,6 +829,7 @@ def _native_session_locked(
     cold_start_checkpoint: bool = False,
     stop_event: threading.Event | None = None,
     verify_prepared_profile: bool = True,
+    prepared_xar_enabled: str = "xar_on",
     frontend_first_load_save_name: str | None = None,
     frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
@@ -965,6 +969,10 @@ def _native_session_locked(
         # Passing the validated config explicitly prevents environment changes
         # from selecting hybrid fallback between command parsing and launch.
         initial_launch_options: dict[str, object] = {"native_bridge": config}
+        if prepared_xar_enabled != "xar_on":
+            initial_launch_options["prepared_xar_enabled"] = (
+                prepared_xar_enabled
+            )
         if initial_checkpoint is None and frontend_first_target is None:
             initial_launch_options["continue_last_save"] = True
         elif initial_checkpoint is not None:
@@ -1649,6 +1657,11 @@ def validate_cold_start_checkpoint_for_pipe(
             f"cold checkpoint state is unavailable: {state_path}: {error}"
         ) from error
     checkpoint = payload.get("last_checkpoint") if isinstance(payload, dict) else None
+    persisted_lifecycle = (
+        payload.get("succession_lifecycle")
+        if isinstance(payload, dict)
+        else None
+    )
     if (
         not isinstance(payload, dict)
         or payload.get("format_version") != 2
@@ -1702,6 +1715,23 @@ def validate_cold_start_checkpoint_for_pipe(
         or saved.get("date_raw") != saved_date_raw
     ):
         raise AgentError("cold checkpoint history anchor does not match the save")
+    checkpoint_lifecycle = checkpoint.get("succession_lifecycle")
+    saved_lifecycle = saved.get("succession_lifecycle")
+    if any(
+        value is not None
+        for value in (
+            persisted_lifecycle,
+            checkpoint_lifecycle,
+            saved_lifecycle,
+        )
+    ) and not (
+        isinstance(persisted_lifecycle, dict)
+        and checkpoint_lifecycle == persisted_lifecycle
+        and saved_lifecycle == persisted_lifecycle
+    ):
+        raise AgentError(
+            "cold checkpoint succession lifecycle anchor is incomplete"
+        )
     checkpoint_path = (
         spec.profile_dir / "save games" / NATIVE_SESSION_CHECKPOINT_FILENAME
     )
@@ -1722,6 +1752,7 @@ def validate_cold_start_checkpoint_for_pipe(
         "sha256": digest,
         "saved_date_raw": saved_date_raw,
         "history_index": history_index,
+        "succession_lifecycle": copy.deepcopy(persisted_lifecycle),
     }
 
 

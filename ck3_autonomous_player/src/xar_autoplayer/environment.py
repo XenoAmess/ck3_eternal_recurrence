@@ -677,7 +677,9 @@ def agent_runtime_fingerprint() -> dict[str, object]:
     return runtime
 
 
-def prepare_profile(spec: EnvironmentSpec) -> dict[str, object]:
+def prepare_profile(
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on"
+) -> dict[str, object]:
     """Exclusively create/refresh the profile; refuse while any CK3 is active."""
     ensure_state_path_safe(spec.state_dir)
     with exclusive_state_lock(spec.state_dir, "prepare-profile"):
@@ -692,10 +694,12 @@ def prepare_profile(spec: EnvironmentSpec) -> dict[str, object]:
                 "refusing to prepare a profile while ck3.exe is running: "
                 + "; ".join(running)
             )
-        return _prepare_profile_locked(spec)
+        return _prepare_profile_locked(spec, xar_enabled=xar_enabled)
 
 
-def _prepare_profile_locked(spec: EnvironmentSpec) -> dict[str, object]:
+def _prepare_profile_locked(
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on"
+) -> dict[str, object]:
     """Create or refresh the profile without touching persistent tutorial state."""
     ensure_state_path_safe(spec.state_dir)
     identity = launcher_identity(spec.game_dir)
@@ -762,7 +766,7 @@ def _prepare_profile_locked(spec: EnvironmentSpec) -> dict[str, object]:
     write_outer_descriptor(
         spec.production_dir / "descriptor.mod", outer, spec.production_dir
     )
-    rules = rule_contract(spec.vanilla_rules)
+    rules = rule_contract(spec.vanilla_rules, xar_enabled=xar_enabled)
     presets_path = spec.profile_dir / "player" / "game_rules" / "presets.txt"
     dlc_load_path = spec.profile_dir / "dlc_load.json"
     settings_path = spec.profile_dir / "pdx_settings.txt"
@@ -852,11 +856,13 @@ def _prepare_profile_locked(spec: EnvironmentSpec) -> dict[str, object]:
     }
     payload["environment_sha256"] = _contract_digest(payload)
     write_json_atomic(spec.manifest_path, payload)
-    verify_profile(spec)
+    verify_profile(spec, xar_enabled=xar_enabled)
     return payload
 
 
-def verify_profile(spec: EnvironmentSpec) -> dict[str, object]:
+def verify_profile(
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on"
+) -> dict[str, object]:
     """Verify the prelaunch contract without reading persistent score storage."""
     ensure_state_path_safe(spec.state_dir)
     unsafe_marker = spec.state_dir / "control" / "unsafe-cleanup.json"
@@ -965,7 +971,9 @@ def verify_profile(spec: EnvironmentSpec) -> dict[str, object]:
         raise AgentError("game-rule preset bytes differ from the prepared contract")
     preset_text = presets_path.read_text(encoding="utf-8-sig")
     actual_settings, actual_ironman = parsed_preset_settings(preset_text)
-    current_rules = rule_contract(spec.vanilla_rules)
+    current_rules = rule_contract(
+        spec.vanilla_rules, xar_enabled=xar_enabled
+    )
     if manifest.get("rules") != current_rules:
         raise AgentError("game-rule source/profile fingerprint differs")
     expected_settings = [entry["setting"] for entry in current_rules["profile"]]

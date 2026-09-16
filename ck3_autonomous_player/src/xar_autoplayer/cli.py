@@ -167,11 +167,25 @@ def parser() -> argparse.ArgumentParser:
     commands = root.add_subparsers(dest="command", required=True)
     doctor_parser = commands.add_parser("doctor", help="check the host and safety boundary")
     doctor_parser.add_argument("--prepared", action="store_true")
-    commands.add_parser(
+    prepare_profile_parser = commands.add_parser(
         "prepare-profile",
         help="build production runtime and exact growth + 100%% single-mod profile",
     )
-    commands.add_parser("verify-profile", help="verify the prepared profile contract")
+    prepare_profile_parser.add_argument(
+        "--xar-enabled",
+        choices=("xar_on", "xar_off"),
+        default="xar_on",
+        help="freeze the main mod rule for this prepared profile",
+    )
+    verify_profile_parser = commands.add_parser(
+        "verify-profile", help="verify the prepared profile contract"
+    )
+    verify_profile_parser.add_argument(
+        "--xar-enabled",
+        choices=("xar_on", "xar_off"),
+        default="xar_on",
+        help="require the prepared profile to use this main mod rule",
+    )
     smoke_parser = commands.add_parser(
         "smoke", help="non-debug boot to visible main menu and prove the runtime load"
     )
@@ -641,11 +655,11 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "doctor":
             result = doctor(spec, require_prepared=args.prepared)
         elif args.command == "prepare-profile":
-            result = prepare_profile(spec)
+            result = prepare_profile(spec, xar_enabled=args.xar_enabled)
         elif args.command == "verify-profile":
             ensure_state_path_safe(spec.state_dir)
             with exclusive_state_lock(spec.state_dir, "verify-profile"):
-                result = verify_profile(spec)
+                result = verify_profile(spec, xar_enabled=args.xar_enabled)
         elif args.command == "recover-stale-control":
             from .recovery import recover_stale_control
 

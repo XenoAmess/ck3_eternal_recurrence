@@ -2411,6 +2411,7 @@ def launch(
     continue_last_save: bool = False,
     load_save_name: str | None = None,
     verify_prepared_profile: bool = True,
+    prepared_xar_enabled: str = "xar_on",
 ) -> SessionHandle:
     native_bridge = (
         native_bridge_launch_config_from_environment()
@@ -2418,7 +2419,7 @@ def launch(
         else validate_native_bridge_launch_config(native_bridge)
     )
     if verify_prepared_profile:
-        verify_profile(spec)
+        verify_profile(spec, xar_enabled=prepared_xar_enabled)
     if job_name is not None and not re.fullmatch(
         r"XarAutoplayer-Crash-[0-9a-f]{32}", job_name
     ):

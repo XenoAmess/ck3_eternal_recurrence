@@ -415,6 +415,41 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         self.assertTrue(any('"type": "native_session_ready"' in line for line in lines))
         self.assertTrue(any('"type": "native_session_status"' in line for line in lines))
 
+    def test_xar_off_profile_reaches_runtime_launch_verifier(self) -> None:
+        process = mock.Mock()
+        process.pid = 4243
+        process.poll.return_value = None
+        handle = SimpleNamespace(process=process)
+        shutdown = {"ok": True, "contract_errors": []}
+        config = _config(Path(self.temporary.name))
+        with mock.patch(
+            "xar_autoplayer.native_session.exclusive_launch_lock",
+            return_value=mock.MagicMock(),
+        ), mock.patch(
+            "xar_autoplayer.native_session.exclusive_state_lock",
+            return_value=mock.MagicMock(),
+        ), mock.patch(
+            "xar_autoplayer.native_session.launch", return_value=handle
+        ) as launch_mock, mock.patch(
+            "xar_autoplayer.native_session.stop_tracked", return_value=shutdown
+        ):
+            report = native_session(
+                self.spec,
+                timeout_seconds=1.0,
+                native_bridge=config,
+                input_stream=io.StringIO("stop\n"),
+                poll_interval_seconds=0.001,
+                prepared_xar_enabled="xar_off",
+            )
+
+        launch_mock.assert_called_once_with(
+            self.spec,
+            native_bridge=config,
+            prepared_xar_enabled="xar_off",
+            continue_last_save=True,
+        )
+        self.assertTrue(report["ok"])
+
     def test_frontend_first_warmup_loads_save_on_same_pipe(self) -> None:
         process_one = mock.Mock()
         process_one.pid = 4801

@@ -1308,6 +1308,7 @@ def load_native_driver_state_for_resume(
             or expectation_binding["episode_run_id"] != run_id
         ):
             raise ValueError("driver succession expectation changed episode")
+    lifecycle_migration_required = "succession_lifecycle" not in payload
     succession_lifecycle = normalize_succession_lifecycle_binding_v1(
         payload.get(
             "succession_lifecycle",
@@ -1331,6 +1332,9 @@ def load_native_driver_state_for_resume(
         "managed_restore_transaction": managed_restore_transaction,
         "succession_expectation": succession_expectation,
         "succession_lifecycle": succession_lifecycle,
+        "succession_lifecycle_migration_required": (
+            lifecycle_migration_required
+        ),
     }
 
 
@@ -6395,15 +6399,31 @@ class NativeHeadlessGameplayDriver:
         restored: dict[str, object] | None = None
         if first_connection:
             restored = self._read_driver_state()
-            if (
-                isinstance(restored, dict)
-                and restored.get("succession_lifecycle")
-                != self._succession_lifecycle
-            ):
-                raise BridgeUnavailableError(
-                    "persisted succession lifecycle differs from the frozen "
-                    "run profile"
+            if isinstance(restored, dict):
+                lifecycle_migration_required = bool(
+                    restored.get(
+                        "succession_lifecycle_migration_required"
+                    )
                 )
+                if lifecycle_migration_required:
+                    if not (
+                        self._succession_lifecycle["lifecycle"]
+                        == ROGUE_ONE_LIFE
+                        and self._succession_lifecycle["xar_enabled"]
+                        == "xar_on"
+                    ):
+                        raise BridgeUnavailableError(
+                            "legacy driver state is only compatible with the "
+                            "frozen rogue xar_on profile"
+                        )
+                elif (
+                    restored.get("succession_lifecycle")
+                    != self._succession_lifecycle
+                ):
+                    raise BridgeUnavailableError(
+                        "persisted succession lifecycle differs from the frozen "
+                        "run profile"
+                    )
 
         should_persist = False
         with self._driver_state_lock:

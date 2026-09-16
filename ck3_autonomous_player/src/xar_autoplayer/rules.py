@@ -15,6 +15,7 @@ MOD_RULES = (
     ("xar_inheritance", "xar_inherit_100"),
     ("xar_score_basis", "xar_score_growth"),
 )
+XAR_ENABLED_SETTINGS = ("xar_on", "xar_off")
 
 
 def declared_vanilla_rule_defaults(path: Path) -> list[tuple[str, str]]:
@@ -59,13 +60,21 @@ def declared_vanilla_rule_defaults(path: Path) -> list[tuple[str, str]]:
     return defaults
 
 
-def rule_contract(path: Path) -> dict[str, object]:
+def rule_contract(
+    path: Path, *, xar_enabled: str = "xar_on"
+) -> dict[str, object]:
+    if xar_enabled not in XAR_ENABLED_SETTINGS:
+        raise AgentError(f"unsupported xar_enabled setting: {xar_enabled!r}")
     profile = [
         {"rule": rule, "setting": setting}
         for rule, setting in declared_vanilla_rule_defaults(path)
     ]
+    mod_rules = (
+        ("xar_enabled", xar_enabled),
+        *MOD_RULES[1:],
+    )
     profile.extend(
-        {"rule": rule, "setting": setting} for rule, setting in MOD_RULES
+        {"rule": rule, "setting": setting} for rule, setting in mod_rules
     )
     settings = [entry["setting"] for entry in profile]
     if len(settings) != len(set(settings)):

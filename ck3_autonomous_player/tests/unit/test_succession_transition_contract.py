@@ -605,7 +605,7 @@ class SuccessionTransitionContractTests(unittest.TestCase):
             )
             restored.close()
 
-    def test_old_rogue_driver_state_rejects_ordinary_profile_restore(self) -> None:
+    def test_legacy_rogue_driver_state_migrates_to_rogue_profile(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             state_dir = Path(temporary)
             endpoint = _FakeEndpoint()
@@ -621,6 +621,48 @@ class SuccessionTransitionContractTests(unittest.TestCase):
             rogue.take_snapshot()
             rogue.close()
 
+            state_path = state_dir / "native-session" / "driver-state.json"
+            payload = json.loads(state_path.read_text(encoding="utf-8"))
+            payload.pop("succession_lifecycle")
+            state_path.write_text(json.dumps(payload), encoding="utf-8")
+
+            restored_endpoint = _FakeEndpoint(endpoint.pipe_name)
+            restored = NativeHeadlessGameplayDriver(
+                restored_endpoint.pipe_name,
+                endpoint=restored_endpoint,
+                state_dir=state_dir,
+            )
+            restored_endpoint.publish(_hello())
+            migrated = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                migrated["succession_lifecycle"],
+                legacy_rogue_one_life_binding_v1(),
+            )
+            restored.close()
+
+    def test_legacy_unbound_driver_state_rejects_ordinary_profile_restore(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = _FakeEndpoint()
+            rogue = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(_hello())
+            endpoint.publish(
+                _native_snapshot(20, character_id=100, date_raw=53_180_000)
+            )
+            rogue.take_snapshot()
+            rogue.close()
+
+            state_path = state_dir / "native-session" / "driver-state.json"
+            payload = json.loads(state_path.read_text(encoding="utf-8"))
+            payload.pop("succession_lifecycle")
+            state_path.write_text(json.dumps(payload), encoding="utf-8")
+
             ordinary_endpoint = _FakeEndpoint(endpoint.pipe_name)
             ordinary = NativeHeadlessGameplayDriver(
                 ordinary_endpoint.pipe_name,
@@ -629,7 +671,7 @@ class SuccessionTransitionContractTests(unittest.TestCase):
                 succession_lifecycle_binding=_ordinary_binding(),
             )
             with self.assertRaisesRegex(
-                BridgeUnavailableError, "persisted succession lifecycle"
+                BridgeUnavailableError, "legacy driver state"
             ):
                 ordinary_endpoint.publish(_hello())
             ordinary.close()

@@ -73,9 +73,17 @@ is derived from the prepared environment manifest:
 
 The no-pact assertion is not inferred from a missing settlement. This prevents
 an old signed-pact save from being relabelled as an ordinary campaign. The
-normal entry is `native-auto-run --succession-lifecycle
-ordinary_campaign_succession --ordinary-campaign-no-pact`; its manifest guard
-rejects the command unless the prepared profile selects `xar_off`.
+ordinary entry is `native-auto-run --cold-start-checkpoint
+--succession-lifecycle ordinary_campaign_succession
+--ordinary-campaign-no-pact`; its manifest guard rejects the command unless
+the prepared profile selects `xar_off`, and the checkpoint lifecycle must bind
+the same environment digest. An unanchored `continue_last_save` is rejected.
+
+This package does not manufacture that first ordinary checkpoint. A separate
+fresh 1066 production start under the same prepared `xar_off` profile must
+create it and persist the lifecycle binding before this entry becomes runnable.
+Until that seed preparation is completed and live-verified, ordinary campaign
+succession remains static-ready rather than production-live.
 
 ## Deliberate omissions
 
@@ -93,7 +101,9 @@ predecessor's `death-terminal` settlement. In
 settlement. Both paths expose `continue-as-reconciled-successor` only for a
 fully matched reconciliation. That continuation sends no CK3 command and
 performs no process restart. It keeps the current campaign and creates a fresh
-episode identity bound to CK3's already-played successor.
+episode identity bound to CK3's already-played successor. Before any later
+gameplay, the runner immediately saves and verifies a checkpoint whose episode
+identity and lifecycle match the successor.
 
 An unavailable or mismatched reconciliation blocks the continuation. The
 strategy does not fall back to `start-next-episode` for a
@@ -114,9 +124,10 @@ process or desktop input is needed for this static package.
 The native driver now exposes three private runner methods: retain a same-frame
 expectation, reconcile the retained expectation, and read the transition state.
 The retained expectation is an additive optional member of the existing
-`driver-state.json` v2 envelope. Old v1/v2 files without the member remain
-valid. A same-PID hot recovery restores it only after strict schema and episode
-identity validation.
+`driver-state.json` v2 envelope. Old v1/v2 files without the lifecycle member
+may migrate only to the legacy `rogue_one_life` plus `xar_on` profile; ordinary
+campaign restore rejects them. A same-PID hot recovery restores the retained
+expectation only after strict schema and episode identity validation.
 
 A cold checkpoint restore, immutable-seed episode start, Phase 2 source staging,
 or explicit operator player rebind clears both expectation and in-memory
@@ -132,7 +143,10 @@ command/restart, profile mismatch and unknown-lifecycle fail-closed behavior.
 The existing immutable-seed replay path is retained for its distinct rogue
 dead/missing-character terminal case. The focused succession suite passes
 `12/12` in normal and optimized Python; the directly affected bounded-runner
-suite passes `71/71` in both modes.
+suite passes `75/75` in both modes. The lifecycle/driver suite passes `13/13`,
+the native-session propagation suite passes `27/27`, and the explicit
+`xar_off` rule/profile prepare-and-verify tests pass in normal and optimized
+Python.
 
 The bounded `native-auto-run` owner records the frozen lifecycle before bridge
 startup. For the ordinary profile it treats a reconciled

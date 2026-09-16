@@ -231,6 +231,13 @@ def native_auto_run(
             "completion_contract must be 'bounded', 'one_generation', or "
             "'next_episode'"
         )
+    if (
+        succession_lifecycle == ORDINARY_CAMPAIGN_SUCCESSION
+        and completion_contract in strict_completion_contracts
+    ):
+        raise AgentError(
+            "ordinary campaign succession requires the bounded campaign contract"
+        )
     config = (
         native_bridge_launch_config_from_environment()
         if native_bridge is None
@@ -301,7 +308,24 @@ def native_auto_run(
     fixed_seed = (
         validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
         if completion_contract in strict_completion_contracts
+        or cold_start_checkpoint
         else None
+    )
+    if succession_lifecycle_binding["lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION:
+        if not cold_start_checkpoint or not isinstance(fixed_seed, dict):
+            raise AgentError(
+                "ordinary campaign succession requires an explicit frozen "
+                "cold-start checkpoint"
+            )
+        if fixed_seed.get("succession_lifecycle") != succession_lifecycle_binding:
+            raise AgentError(
+                "ordinary campaign checkpoint lifecycle differs from the "
+                "prepared environment"
+            )
+    session_profile_options = (
+        {"prepared_xar_enabled": "xar_off"}
+        if succession_lifecycle_binding["xar_enabled"] == "xar_off"
+        else {}
     )
     started_wall = utc_now()
     started = time.monotonic()
@@ -472,6 +496,7 @@ def native_auto_run(
                 poll_interval_seconds=poll_seconds,
                 cold_start_checkpoint=cold_start_checkpoint,
                 stop_event=stop_event,
+                **session_profile_options,
             )
         except BaseException as error:  # returned to the owning thread
             session_state["error"] = (
@@ -1072,6 +1097,42 @@ def native_auto_run(
                     "date_raw": natural_transition["date_raw"],
                 }
                 evidence.append("natural_successor_continued")
+                current_attempt["stage"] = "successor_checkpoint_preflight"
+                successor_checkpoint, _ = _materialize_checkpoint(
+                    service,
+                    driver,
+                    spec.profile_dir / "save games",
+                    session_done=session_done,
+                    session_state=session_state,
+                    timeout_seconds=min(
+                        readiness_timeout,
+                        max(0.001, run_deadline - time.monotonic()),
+                    ),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                if (
+                    successor_checkpoint.get("episode_character_id")
+                    != current_episode["episode_character_id"]
+                    or successor_checkpoint.get("episode_run_id")
+                    != current_episode["episode_run_id"]
+                    or successor_checkpoint.get("succession_lifecycle")
+                    != succession_lifecycle_binding
+                ):
+                    raise AgentError(
+                        "natural successor checkpoint differs from the new "
+                        "episode lifecycle"
+                    )
+                counts["checkpoint"] += 1
+                checkpoints.append(
+                    {
+                        "turn_index": turn_index,
+                        "phase": "natural_successor_checkpoint",
+                        **successor_checkpoint,
+                    }
+                )
+                current_attempt["stage"] = "successor_checkpoint_complete"
+                evidence.append("natural_successor_checkpoint_saved")
             counts[turn_class] += 1
             if (
                 turn_class == "gameplay"
@@ -3848,6 +3909,8 @@ def _verify_checkpoint_result(
         or checkpoint.get("episode_character_id")
         != snapshot.get("episode_character_id")
         or checkpoint.get("episode_run_id") != snapshot.get("episode_run_id")
+        or checkpoint.get("succession_lifecycle")
+        != snapshot.get("succession_lifecycle")
     ):
         raise AgentError("save-checkpoint materialization metadata is incomplete")
     try:
@@ -3887,6 +3950,8 @@ def _verify_checkpoint_result(
         or anchor_checkpoint.get("size") != size
         or anchor_checkpoint.get("sha256") != digest
         or anchor_checkpoint.get("date_raw") != date_raw
+        or anchor_checkpoint.get("succession_lifecycle")
+        != checkpoint.get("succession_lifecycle")
     ):
         raise AgentError("checkpoint history anchor does not match saved bytes")
     return {
@@ -3899,6 +3964,9 @@ def _verify_checkpoint_result(
         "mtime_ns": mtime_ns,
         "episode_character_id": checkpoint.get("episode_character_id"),
         "episode_run_id": checkpoint.get("episode_run_id"),
+        "succession_lifecycle": copy.deepcopy(
+            checkpoint.get("succession_lifecycle")
+        ),
     }
 
 

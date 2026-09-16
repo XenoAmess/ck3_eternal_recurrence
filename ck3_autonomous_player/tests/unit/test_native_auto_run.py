@@ -4,6 +4,7 @@ import contextlib
 import copy
 import hashlib
 import io
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -22,6 +23,12 @@ from xar_autoplayer.bridge.driver import (  # noqa: E402
     BridgeUnavailableError,
     PreSubmissionRevisionMismatchError,
     StepPostconditionError,
+)
+from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: E402
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    ROGUE_ONE_LIFE,
+    bind_succession_lifecycle_from_environment_v1,
+    legacy_rogue_one_life_binding_v1,
 )
 from xar_autoplayer.environment import EnvironmentSpec  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
@@ -140,6 +147,8 @@ class _NativeAutoRunHarness:
             else []
         )
         self.history: list[dict[str, object]] = []
+        self.succession_lifecycle = legacy_rogue_one_life_binding_v1()
+        self.session_kwargs: dict[str, object] | None = None
         self.ready_snapshot_observed = False
         self.driver: _FakeNativeDriver | None = None
 
@@ -186,6 +195,7 @@ class _NativeAutoRunHarness:
             raise AssertionError("native session lacks the shared stop event")
         if not isinstance(config, NativeBridgeLaunchConfig):
             raise AssertionError("native session lacks the validated launch config")
+        self.session_kwargs = dict(kwargs)
         self.events.append("session_start")
         if self.session_exits_immediately:
             self.events.append("session_return")
@@ -264,6 +274,9 @@ class _NativeAutoRunHarness:
             },
             "episode_character_id": self.episode_character_id,
             "episode_run_id": self.episode_run_id,
+            "succession_lifecycle": copy.deepcopy(
+                self.succession_lifecycle
+            ),
             "episode_identity_pending": False,
             "one_life_terminal": self.terminal,
             "one_life_terminal_reason": (
@@ -995,6 +1008,9 @@ class _NativeAutoRunHarness:
             "history_index": history_index,
             "episode_character_id": self.episode_character_id,
             "episode_run_id": self.episode_run_id,
+            "succession_lifecycle": copy.deepcopy(
+                self.succession_lifecycle
+            ),
         }
         result = {
             "step": "save-checkpoint",
@@ -1103,6 +1119,11 @@ class _FakeNativeDriver:
     def take_snapshot(self) -> dict[str, object]:
         return self.harness.snapshot()
 
+    def bind_succession_lifecycle_v1(self, binding: object) -> None:
+        if not isinstance(binding, dict):
+            raise AssertionError("fake lifecycle binding must be a mapping")
+        self.harness.succession_lifecycle = copy.deepcopy(binding)
+
     def close(self) -> None:
         self.harness.events.append("driver_close")
 
@@ -1160,13 +1181,42 @@ class NativeAutoRunTests(unittest.TestCase):
         reset_connection_generation_on_new_episode: bool = False,
         operator_stop_after_action_count: int | None = None,
         advance_pump_epochs: bool = True,
+        succession_lifecycle: str = ROGUE_ONE_LIFE,
+        ordinary_campaign_no_pact: bool = False,
+        cold_start_checkpoint: bool | None = None,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
+        use_cold_start_checkpoint = (
+            completion_contract in {"one_generation", "next_episode"}
+            or succession_lifecycle == ORDINARY_CAMPAIGN_SUCCESSION
+            if cold_start_checkpoint is None
+            else cold_start_checkpoint
+        )
+        if succession_lifecycle == ORDINARY_CAMPAIGN_SUCCESSION:
+            environment_manifest = {
+                "environment_sha256": "b" * 64,
+                "rules": {
+                    "profile": [
+                        {"rule": "xar_enabled", "setting": "xar_off"}
+                    ]
+                },
+            }
+            self.spec.manifest_path.parent.mkdir(parents=True, exist_ok=True)
+            self.spec.manifest_path.write_text(
+                json.dumps(environment_manifest),
+                encoding="utf-8",
+            )
+            expected_lifecycle = bind_succession_lifecycle_from_environment_v1(
+                environment_manifest,
+                lifecycle=succession_lifecycle,
+                ordinary_campaign_no_pact=ordinary_campaign_no_pact,
+            )
+        else:
+            expected_lifecycle = legacy_rogue_one_life_binding_v1()
         harness = _NativeAutoRunHarness(
             self.spec,
             actions,
             initial_unready_snapshot=initial_unready_snapshot,
-            cold_start=completion_contract
-            in {"one_generation", "next_episode"},
+            cold_start=use_cold_start_checkpoint,
             session_exits_immediately=session_exits_immediately,
             fail_save_checkpoint=fail_save_checkpoint,
             persistent_unavailable=persistent_unavailable,
@@ -1203,6 +1253,9 @@ class NativeAutoRunTests(unittest.TestCase):
                 "sha256": hashlib.sha256(_CHECKPOINT_PAYLOAD).hexdigest(),
                 "saved_date_raw": harness.date_raw,
                 "history_index": 1,
+                "succession_lifecycle": copy.deepcopy(
+                    expected_lifecycle
+                ),
             },
         ):
             report = native_auto_run_module.native_auto_run(
@@ -1216,11 +1269,10 @@ class NativeAutoRunTests(unittest.TestCase):
                 checkpoint_every_eligible_advances=(
                     checkpoint_every_eligible_advances
                 ),
-                cold_start_checkpoint=(
-                    completion_contract
-                    in {"one_generation", "next_episode"}
-                ),
+                cold_start_checkpoint=use_cold_start_checkpoint,
                 completion_contract=completion_contract,
+                succession_lifecycle=succession_lifecycle,
+                ordinary_campaign_no_pact=ordinary_campaign_no_pact,
                 allow_stationary_objective_hold_sentinel_canary=(
                     allow_stationary_objective_hold_sentinel_canary
                 ),
@@ -3044,6 +3096,20 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(
             report["checkpoints"][-1]["episode_character_id"], 808
         )
+        successor_checkpoint = next(
+            row
+            for row in report["checkpoints"]
+            if row["phase"] == "natural_successor_checkpoint"
+        )
+        self.assertEqual(
+            successor_checkpoint["succession_lifecycle"],
+            report["succession_lifecycle"],
+        )
+        self.assertEqual(
+            harness.history[successor_checkpoint["history_index"] - 1]
+            ["result"]["checkpoint"]["succession_lifecycle"],
+            report["succession_lifecycle"],
+        )
         self.assertEqual(
             [row["selected_step"] for row in report["auto_run"]["turns"]],
             [
@@ -3053,6 +3119,110 @@ class NativeAutoRunTests(unittest.TestCase):
                 "continue-as-reconciled-successor",
                 "life-advance",
             ],
+        )
+
+    def test_ordinary_campaign_rejects_rogue_strict_completion(self) -> None:
+        with self.assertRaisesRegex(
+            AgentError,
+            "ordinary campaign succession requires the bounded campaign contract",
+        ):
+            native_auto_run_module.native_auto_run(
+                self.spec,
+                turn_count=1,
+                timeout_seconds=2.0,
+                readiness_timeout_seconds=0.25,
+                native_bridge=self.config,
+                cold_start_checkpoint=True,
+                completion_contract="one_generation",
+                succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+                ordinary_campaign_no_pact=True,
+            )
+
+    def test_ordinary_campaign_rejects_unanchored_last_save(self) -> None:
+        with self.assertRaisesRegex(
+            AgentError, "requires an explicit frozen cold-start checkpoint"
+        ):
+            self._run(
+                ["advance"],
+                succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+                ordinary_campaign_no_pact=True,
+                cold_start_checkpoint=False,
+            )
+
+    def test_ordinary_campaign_rejects_different_environment_checkpoint(
+        self,
+    ) -> None:
+        environment_manifest = {
+            "environment_sha256": "b" * 64,
+            "rules": {
+                "profile": [
+                    {"rule": "xar_enabled", "setting": "xar_off"}
+                ]
+            },
+        }
+        self.spec.manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        self.spec.manifest_path.write_text(
+            json.dumps(environment_manifest), encoding="utf-8"
+        )
+        stale_manifest = copy.deepcopy(environment_manifest)
+        stale_manifest["environment_sha256"] = "c" * 64
+        stale_lifecycle = bind_succession_lifecycle_from_environment_v1(
+            stale_manifest,
+            lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+        )
+        with mock.patch.object(
+            native_auto_run_module,
+            "validate_cold_start_checkpoint_for_pipe",
+            return_value={"succession_lifecycle": stale_lifecycle},
+        ), self.assertRaisesRegex(
+            AgentError, "checkpoint lifecycle differs"
+        ):
+            native_auto_run_module.native_auto_run(
+                self.spec,
+                turn_count=1,
+                timeout_seconds=2.0,
+                readiness_timeout_seconds=0.25,
+                native_bridge=self.config,
+                cold_start_checkpoint=True,
+                completion_contract="bounded",
+                succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+                ordinary_campaign_no_pact=True,
+            )
+
+    def test_ordinary_campaign_uses_matching_cold_profile_binding(self) -> None:
+        report, harness = self._run(
+            ["advance"],
+            succession_lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+            cold_start_checkpoint=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "turn_limit")
+        lifecycle = report["succession_lifecycle"]
+        self.assertEqual(
+            lifecycle["lifecycle"], ORDINARY_CAMPAIGN_SUCCESSION
+        )
+        self.assertEqual(lifecycle["xar_enabled"], "xar_off")
+        self.assertEqual(report["fixed_seed"]["succession_lifecycle"], lifecycle)
+        self.assertEqual(harness.succession_lifecycle, lifecycle)
+        self.assertEqual(
+            harness.snapshot()["succession_lifecycle"], lifecycle
+        )
+        self.assertIsNotNone(harness.session_kwargs)
+        assert harness.session_kwargs is not None
+        self.assertEqual(
+            harness.session_kwargs["prepared_xar_enabled"], "xar_off"
+        )
+        checkpoint = report["checkpoints"][-1]
+        self.assertEqual(checkpoint["succession_lifecycle"], lifecycle)
+        history_checkpoint = harness.history[checkpoint["history_index"] - 1]
+        self.assertEqual(
+            history_checkpoint["result"]["checkpoint"][
+                "succession_lifecycle"
+            ],
+            lifecycle,
         )
 
     def test_next_episode_requires_seed_reload_gameplay_and_checkpoint(self) -> None:

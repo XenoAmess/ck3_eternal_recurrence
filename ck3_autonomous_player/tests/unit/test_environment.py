@@ -87,6 +87,47 @@ class RuleContractTests(unittest.TestCase):
         )
         self.assertFalse(contract["ironman"])
 
+    def test_explicit_xar_off_changes_only_the_enable_rule(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-rules-test-") as temporary:
+            path = Path(temporary) / "00_game_rules.txt"
+            path.write_text("fixture", encoding="utf-8")
+            vanilla = [("difficulty", "normal_difficulty")]
+            with mock.patch(
+                "xar_autoplayer.rules.declared_vanilla_rule_defaults",
+                return_value=vanilla,
+            ):
+                enabled = rule_contract(path)
+                disabled = rule_contract(path, xar_enabled="xar_off")
+
+        enabled_profile = enabled["profile"]
+        disabled_profile = disabled["profile"]
+        self.assertEqual(len(enabled_profile), len(disabled_profile))
+        self.assertEqual(
+            [entry["rule"] for entry in enabled_profile],
+            [entry["rule"] for entry in disabled_profile],
+        )
+        changed = [
+            (on, off)
+            for on, off in zip(enabled_profile, disabled_profile, strict=True)
+            if on != off
+        ]
+        self.assertEqual(
+            changed,
+            [
+                (
+                    {"rule": "xar_enabled", "setting": "xar_on"},
+                    {"rule": "xar_enabled", "setting": "xar_off"},
+                )
+            ],
+        )
+
+    def test_rejects_unknown_xar_enable_setting(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-rules-test-") as temporary:
+            path = Path(temporary) / "00_game_rules.txt"
+            path.write_text("fixture", encoding="utf-8")
+            with self.assertRaisesRegex(AgentError, "unsupported xar_enabled"):
+                rule_contract(path, xar_enabled="unknown")
+
 
 class ProcessCreationTimeTests(unittest.TestCase):
     def test_dmtf_and_cim_utc_formats_compare_as_the_same_instant(self) -> None:
@@ -192,6 +233,43 @@ class PreparedProfileTests(unittest.TestCase):
     def test_default_profile_has_no_python_product_version_pin(self) -> None:
         spec = make_spec(Path("C:/xar-state"), GAME_DIR)
         self.assertIsNone(spec.expected_game_version)
+
+    def test_prepare_verify_explicit_xar_off_keeps_default_xar_on(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-agent-test-") as temporary:
+            spec = EnvironmentSpec(Path(temporary).resolve(), GAME_DIR.resolve())
+            disabled = prepare_profile(spec, xar_enabled="xar_off")
+            self.assertEqual(
+                [
+                    row["setting"]
+                    for row in disabled["rules"]["profile"]
+                    if row["rule"] == "xar_enabled"
+                ],
+                ["xar_off"],
+            )
+            self.assertEqual(
+                verify_profile(spec, xar_enabled="xar_off")[
+                    "environment_sha256"
+                ],
+                disabled["environment_sha256"],
+            )
+            with self.assertRaises(AgentError):
+                verify_profile(spec)
+
+            enabled = prepare_profile(spec)
+            self.assertEqual(
+                [
+                    row["setting"]
+                    for row in enabled["rules"]["profile"]
+                    if row["rule"] == "xar_enabled"
+                ],
+                ["xar_on"],
+            )
+            self.assertEqual(
+                verify_profile(spec)["environment_sha256"],
+                enabled["environment_sha256"],
+            )
+            with self.assertRaises(AgentError):
+                verify_profile(spec, xar_enabled="xar_off")
 
     def test_game_upgrade_requires_reprepare_without_a_schema_migration(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-agent-test-") as temporary:
