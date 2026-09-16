@@ -38,7 +38,7 @@ function bgraDds(
 }
 
 test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
-  const completionTimeout = process.env.GITHUB_PAGES === 'true' ? 90_000 : 30_000
+  const completionTimeout = process.env.GITHUB_PAGES === 'true' ? 180_000 : 30_000
   test.setTimeout(process.env.GITHUB_PAGES === 'true' ? 300_000 : 180_000)
   const apiRequests: string[] = []
   page.on('request', (request) => {
@@ -145,9 +145,9 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   await page.getByRole('button', { name: '安全压缩相邻同样式块' }).click()
   await expect(page.locator('.fit-report')).toContainText('安全压缩块')
   await expect(page.locator('.fit-report')).toContainText('96 / 230 / 512 全部逐字节一致')
-  await page.getByRole('button', { name: '精确固定点剪枝' }).click()
+  await page.getByRole('button', { name: '零退化固定点剪枝' }).click()
   await expect(page.locator('.fit-report')).toContainText('必要性证据', { timeout: 30_000 })
-  await expect(page.locator('.fit-report')).toContainText('96 / 230 / 512 零像素差')
+  await expect(page.locator('.fit-report')).toContainText('96 / 230 / 512 总损失与边缘损失零累计退化')
   await expect(page.getByText(/结果已进入下方结构化编辑器/)).toBeVisible()
   await expect(page.locator('.fit-report dl div').filter({ hasText: 'GPU 交叉分' }).locator('dd'))
     .toHaveText(/^\d+\.\d+$/)

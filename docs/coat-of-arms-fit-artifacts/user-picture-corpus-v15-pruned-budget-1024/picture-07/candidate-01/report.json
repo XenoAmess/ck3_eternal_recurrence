@@ -1,0 +1,160 @@
+{
+  "schema": "ck3-coa-user-picture-final-candidate-prune-v1",
+  "status": "browser-passed-native-mcp-pending",
+  "generatedAt": "2026-09-16T07:24:32.499Z",
+  "predecessor": "../../user-picture-corpus-v14-pareto-budget-1024/picture-07/pareto-candidate-01.txt",
+  "sourceRevision": {
+    "headCommit": "4eda7a24a7cfccd4a604176d28ef88a21dc3cfe3",
+    "workingTreePatchSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "input": {
+    "case": {
+      "id": "picture-07",
+      "file": "人类化头像.png",
+      "mimeType": "image/png",
+      "bytes": 4091081,
+      "width": 2048,
+      "height": 2048,
+      "sha256": "31218C41C1756CC4641A70828B2C381E744C988B13FA1F376B73066E6564DF8A",
+      "v5Budget1024Baseline": {
+        "totalLoss": 0.053917745614779626,
+        "edgeLoss": 0.0909435300298849,
+        "relativeImprovement": 0.6430402889665416
+      }
+    },
+    "sourceUtf8Bytes": 388484,
+    "sourceSha256": "F86F28E9DB6DB11A59F26BDEC0B2F479953D30007DF1AD12B0FE7156D4360074",
+    "targetSha256": "31218C41C1756CC4641A70828B2C381E744C988B13FA1F376B73066E6564DF8A"
+  },
+  "assetPack": {
+    "packId": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
+    "build": "1.19.0.6",
+    "sourceManifestSha256": "92D9FBDCBE931DCB3694B0840558A8096EE090B9C0ACD4A6AB5F2DB7D6DA5F35"
+  },
+  "fixedGates": {
+    "scoringContract": "alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1",
+    "rendererContract": "cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4",
+    "assetContract": "decoded-exact-dds-mip-v1",
+    "searchResolution": 96,
+    "validationResolutions": [
+      230,
+      512
+    ],
+    "numericLossTolerance": 1e-12,
+    "allowedCumulativeTotalLossIncrease": 0,
+    "allowedCumulativeEdgeLossIncrease": 0
+  },
+  "elapsedMilliseconds": 388497,
+  "predecessorMetricReproduction": {
+    "reported": {
+      "colorLoss": 0.026905303515743367,
+      "edgeLoss": 0.08157038858923499,
+      "totalLoss": 0.04767803584367018,
+      "relativeImprovement": 0.684169215187566
+    },
+    "exactDdsRerender": {
+      "colorLoss": 0.028191503646213367,
+      "edgeLoss": 0.08452473790365925,
+      "totalLoss": 0.0495981326640428,
+      "relativeImprovement": 0
+    },
+    "totalLossDelta": 0.0019200968203726201,
+    "edgeLossDelta": 0.0029543493144242594,
+    "status": "historical-fit-index-metric-drift"
+  },
+  "counts": {
+    "before": 987,
+    "after": 893,
+    "removed": 94,
+    "logicalLayersAfter": 891,
+    "coloredEmblemBlocksAfter": 891,
+    "utf8BytesAfter": 350905,
+    "linesAfter": 12495
+  },
+  "metrics": [
+    {
+      "resolution": 96,
+      "initial": {
+        "colorLoss": 0.028191503646213367,
+        "edgeLoss": 0.08452473790365925,
+        "totalLoss": 0.0495981326640428
+      },
+      "final": {
+        "colorLoss": 0.02819331473738913,
+        "edgeLoss": 0.08450866846190229,
+        "totalLoss": 0.04959314915270413
+      }
+    },
+    {
+      "resolution": 230,
+      "initial": {
+        "colorLoss": 0.027756415241393412,
+        "edgeLoss": 0.04470926876719107,
+        "totalLoss": 0.03419849958119652
+      },
+      "final": {
+        "colorLoss": 0.02775482552758311,
+        "edgeLoss": 0.04470384660710809,
+        "totalLoss": 0.0341954535378026
+      }
+    },
+    {
+      "resolution": 512,
+      "initial": {
+        "colorLoss": 0.0275139075951711,
+        "edgeLoss": 0.023274689727797504,
+        "totalLoss": 0.025903004805569133
+      },
+      "final": {
+        "colorLoss": 0.02751328820918528,
+        "edgeLoss": 0.02327087119548842,
+        "totalLoss": 0.025901169743980473
+      }
+    }
+  ],
+  "necessity": {
+    "contract": "metric-pareto-leave-one-out-fixed-point-v1",
+    "fixedPointPasses": 2,
+    "evaluatedCandidates": 1880,
+    "retainedInstancesMeasured": 893,
+    "reasonCounts": {
+      "would-worsen-search-metric": 842,
+      "would-worsen-validation-metric": 51
+    },
+    "completeReceiptFile": "necessity-receipt.json.gz",
+    "completeReceiptUtf8Bytes": 556481,
+    "completeReceiptGzipBytes": 44358,
+    "completeReceiptSha256": "542C1314A4AD400306ED8F7D27540F087B13AD147792FB0C5F4215C5C2454C97",
+    "completeReceiptGzipSha256": "2E69DA73570AD512CA95FEC82001A78F6A7346F82890F44BB27D3EED40F0166D"
+  },
+  "output": {
+    "sourceFile": "coat_of_arms.txt",
+    "sourceSha256": "FE450A2928BFBF1EF270DBEA60DD917B6BD71E5DF9A93707326BD757A2305A1A",
+    "previewFile": "preview-512.png",
+    "previewSha256": "C61E2C45C4EC629182271C1943425E231CAADCAB7368117C447DD7AE717CD231",
+    "parseErrors": 0,
+    "serializeParseExact": true,
+    "pixelChecks": [
+      {
+        "resolution": 96,
+        "differingBytes": 21,
+        "maximumDifference": 25
+      },
+      {
+        "resolution": 230,
+        "differingBytes": 123,
+        "maximumDifference": 42
+      },
+      {
+        "resolution": 512,
+        "differingBytes": 617,
+        "maximumDifference": 73
+      }
+    ]
+  },
+  "evidenceLevel": {
+    "browserFixedPointPrune": "passed",
+    "ck3ApplyCopyRoundTrip": "pending-mcp",
+    "nativeSpatialPixelComparison": "pending-mcp"
+  }
+}

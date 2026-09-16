@@ -1,0 +1,20 @@
+coa = {
+    pattern = "pattern__solid_designer.dds"
+    color1 = rgb { 217 200 212 }
+    color2 = rgb { 232 214 215 }
+    color3 = rgb { 246 232 229 }
+
+    colored_emblem = {
+        texture = "ce_mena_polo_stick.dds"
+        color1 = rgb { 103 86 104 }
+        color2 = rgb { 89 73 101 }
+        color3 = rgb { 91 71 134 }
+
+        instance = {
+            position = { 0.7745669594948068 0.52774886489528 }
+            scale = { -1.708482770193336 2.1189057789186965 }
+            rotation = 141.5
+            depth = 1
+        }
+    }
+}

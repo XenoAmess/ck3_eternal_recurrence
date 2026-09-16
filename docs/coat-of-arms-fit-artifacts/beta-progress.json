@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T13:06:00+08:00",
+  "updatedAt": "2026-09-16T15:31:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -120,8 +120,8 @@
     },
         {
             "id": "WP3",
-            "status": "in_progress",
-            "commit": "3bf4b42a",
+            "status": "passed",
+            "commit": "4eda7a24",
             "commands": [
                 "pnpm exec vitest run src/domain/imageFitter.test.ts src/domain/imageFitter.seams.test.ts",
                 "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
@@ -138,9 +138,11 @@
                 "pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line",
                 "pnpm exec playwright test e2e/candidate-comparison.spec.ts --reporter=line",
                 "pnpm verify:production-boundary",
-                "python coat_of_arms_editer_of_ck3/tools/summarize_mixed_element_evidence.py docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/summary.json docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/mixed-element-ablation.json --check"
+                "python coat_of_arms_editer_of_ck3/tools/summarize_mixed_element_evidence.py docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/summary.json docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/mixed-element-ablation.json --check",
+                "set COA_RUN_FINAL_CANDIDATE_PRUNE=true&& set COA_PRUNE_ARTIFACT_ROOT=docs/coat-of-arms-fit-artifacts/user-picture-corpus-v15-pruned-budget-1024&& pnpm exec playwright test e2e/user-picture-final-candidate-prune.spec.ts --workers=3",
+                "python tools/summarize_final_candidate_prune.py ../docs/coat-of-arms-fit-artifacts/user-picture-corpus-v15-pruned-budget-1024 --check"
             ],
-            "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v6-pareto-pruned/",
+            "resultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v15-pruned-budget-1024/",
             "keyMetrics": {
                 "candidateStatus": "browser_quality_and_native_text_roundtrip_passed",
                 "sourceWidth": 1024,
@@ -281,7 +283,19 @@
                 "mixedElementPicture07RelativeEdgeGain": 0.2320655589668505,
                 "mixedElementSelectedBrowserGates": "passed_7_of_7",
                 "mixedElementSelectedNativeGates": "passed_7_of_7",
-                "remainingWp3Gate": "final_delivery_candidates_exact_fixed_point_prune",
+                "finalAssetScoringContract": "full-dds-rescore-pareto-v1",
+                "finalAssetContract": "decoded-exact-dds-mip-v1",
+                "finalCandidatePruneStatus": "passed_21_of_21",
+                "finalCandidatePruneEvidencePath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v15-pruned-budget-1024/",
+                "finalCandidateInstancesBefore": 17234,
+                "finalCandidateInstancesAfter": 16660,
+                "finalCandidateInstancesRemoved": 574,
+                "finalCandidateUtf8BytesBefore": 6785304,
+                "finalCandidateUtf8BytesAfter": 6469753,
+                "finalCandidateUtf8BytesRemoved": 315551,
+                "historicalFitIndexMetricDriftCandidates": 14,
+                "finalCandidateNecessityReceipts": "passed_complete_21_of_21",
+                "remainingWp3Gate": "passed",
                 "nativeRoundTrip": "passed",
                 "nativeInputBytes": 262138,
                 "nativeInputBlocks": 297,

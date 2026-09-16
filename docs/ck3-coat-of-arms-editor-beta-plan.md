@@ -1,13 +1,13 @@
 # CK3 家徽编辑器 Beta 工作计划
 
-> 状态：执行中（2026-09-16）；WP0–WP2 与 WP7 已通过，继续推进 WP3–WP6 未闭合门禁
+> 状态：执行中（2026-09-16）；WP0–WP5 与 WP7 已通过，仅 WP6 仍有未闭合门禁
 >
 > 产品目录：`coat_of_arms_editer_of_ck3/`
 >
 > 目标：从 Alpha 的“可用近似器”推进到可验证、可压缩、可在大预算下稳定工作的纯浏览器 Beta。
 >
 > WP0 浏览器接缝修复、WP1 大载荷文本闭环、WP2 精确剪枝/压缩及压缩文本原生闭环均已通过；WP7 已删除
-> Quarkus/REST 生产残留并以完整 production 请求观测闭环。当前继续处理 WP3–WP6 的剩余范围。
+> Quarkus/REST 生产残留并以完整 production 请求观测闭环。当前继续处理 WP6 的 VFS/资源覆盖剩余范围。
 > 128 KiB 已由真实 380,862-byte CK3 round-trip 明确证明只是旧桥合同，不是当前实测引擎上限。
 
 机器可读状态见 [`coat-of-arms-fit-artifacts/beta-progress.json`](coat-of-arms-fit-artifacts/beta-progress.json)，WP0 完整证据见
@@ -25,7 +25,7 @@ WP3 第二候选 [`xenoamess-hunter-v6-edge-refined`](coat-of-arms-fit-artifacts
 已越过该浏览器质量门禁：1,008 个实例的总损失为 `0.024123983862988356`、边缘损失为
 `0.040769084120764576`，并且 192/256 px 两项指标也同时优于 v4。其结构压缩把块数从 1,008 降至 299，exact 固定点剪枝
 又删除 2 个完全被覆盖的实例且 96/230/512 px 零像素变化。当前继续执行 Pareto 质量剪枝和 v6 原生文本闭环；在这些门禁完成前
-WP3 仍保持 `in_progress`。
+hunter 与七图最终候选的固定点剪枝现已全部闭合，WP3 状态为 `passed`。
 
 Pareto 质量剪枝现已通过：在 exact 固定点上继续删除 3 个可见但有害的实例，最终 1,003 个实例；96/230/512 px 的总损失与
 边缘损失全部下降。完整测量见
@@ -159,7 +159,11 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 每项经 depth 编码逐像素门禁，网页自动生成独立源码、计数与预览。合成浏览器用例实际产生 2 项，详见
 [`coat-of-arms-pareto-candidates.md`](coat-of-arms-pareto-candidates.md)。hunter 和七图用户语料的新合同已实跑；七图 7/7 都评估非方块 DDS，
 3/7 的质量优先结果实际选中非方块元素，其中 picture-02/07 相对最佳纯方块路径同时改善总损失与边缘损失。
-消融证据见七图 artifact 中的 `mixed-element-ablation.json`。仍需对最终交付候选补齐逐实例固定点剪枝门禁，故 WP3 继续保持 `in_progress`。
+消融证据见七图 artifact 中的 `mixed-element-ablation.json`。最终 21 个交付候选已在
+[`user-picture-corpus-v15-pruned-budget-1024`](coat-of-arms-fit-artifacts/user-picture-corpus-v15-pruned-budget-1024/README.md)
+完成 96/230/512px、总损失和边缘损失零累计退化的逐实例固定点剪枝：17,234 → 16,660 实例，代码总量减少
+315,551 UTF-8 bytes。该验收同时发现 v14 有 14/21 个混合候选沿用了 32px fit-index 搜索指标；产品现会在导出前用完整
+DDS/mip 重新评分并重新选 Pareto 前沿，最终指标、预览和代码绑定同一素材合同。WP3 状态为 `passed`。
 
 退出条件：hunter v4/v5 的总损失不劣化、边缘损失严格优于 `0.04304`，且资源清单证明不再退化为无条件的单一矩形铺色器。
 

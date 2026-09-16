@@ -1,0 +1,160 @@
+{
+  "schema": "ck3-coa-user-picture-final-candidate-prune-v1",
+  "status": "browser-passed-native-mcp-pending",
+  "generatedAt": "2026-09-16T07:08:40.183Z",
+  "predecessor": "../../user-picture-corpus-v14-pareto-budget-1024/picture-02/pareto-candidate-03.txt",
+  "sourceRevision": {
+    "headCommit": "4eda7a24a7cfccd4a604176d28ef88a21dc3cfe3",
+    "workingTreePatchSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "input": {
+    "case": {
+      "id": "picture-02",
+      "file": "a124bc6bc3b435cc1fda251bff7f140d2ee23c42.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 75756,
+      "width": 300,
+      "height": 300,
+      "sha256": "57C8CCF223D6B8FC9F27A69D17B676AAB0FABBE3D656D633FAC013296F88BE36",
+      "v5Budget1024Baseline": {
+        "totalLoss": 0.035329387447636564,
+        "edgeLoss": 0.0649763149160432,
+        "relativeImprovement": 0.41671898563220156
+      }
+    },
+    "sourceUtf8Bytes": 211694,
+    "sourceSha256": "7370F8F59BC80A87A89B77CF702DC8AFEA0F5D22AED5BCF2529642AC7B3B6FDE",
+    "targetSha256": "57C8CCF223D6B8FC9F27A69D17B676AAB0FABBE3D656D633FAC013296F88BE36"
+  },
+  "assetPack": {
+    "packId": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
+    "build": "1.19.0.6",
+    "sourceManifestSha256": "92D9FBDCBE931DCB3694B0840558A8096EE090B9C0ACD4A6AB5F2DB7D6DA5F35"
+  },
+  "fixedGates": {
+    "scoringContract": "alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1",
+    "rendererContract": "cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4",
+    "assetContract": "decoded-exact-dds-mip-v1",
+    "searchResolution": 96,
+    "validationResolutions": [
+      230,
+      512
+    ],
+    "numericLossTolerance": 1e-12,
+    "allowedCumulativeTotalLossIncrease": 0,
+    "allowedCumulativeEdgeLossIncrease": 0
+  },
+  "elapsedMilliseconds": 61435.800000071526,
+  "predecessorMetricReproduction": {
+    "reported": {
+      "colorLoss": 0.01729363072162457,
+      "edgeLoss": 0.06273142381267151,
+      "totalLoss": 0.0345599920962224,
+      "relativeImprovement": 0.42904171361789833
+    },
+    "exactDdsRerender": {
+      "colorLoss": 0.02089774221008309,
+      "edgeLoss": 0.06559142331548821,
+      "totalLoss": 0.03788134103013704,
+      "relativeImprovement": 0
+    },
+    "totalLossDelta": 0.003321348933914635,
+    "edgeLossDelta": 0.002859999502816707,
+    "status": "historical-fit-index-metric-drift"
+  },
+  "counts": {
+    "before": 528,
+    "after": 526,
+    "removed": 2,
+    "logicalLayersAfter": 526,
+    "coloredEmblemBlocksAfter": 526,
+    "utf8BytesAfter": 210887,
+    "linesAfter": 7371
+  },
+  "metrics": [
+    {
+      "resolution": 96,
+      "initial": {
+        "colorLoss": 0.02089774221008309,
+        "edgeLoss": 0.06559142331548821,
+        "totalLoss": 0.03788134103013704
+      },
+      "final": {
+        "colorLoss": 0.020909058748771886,
+        "edgeLoss": 0.0655590190434724,
+        "totalLoss": 0.037876043660758085
+      }
+    },
+    {
+      "resolution": 230,
+      "initial": {
+        "colorLoss": 0.019616028152619203,
+        "edgeLoss": 0.031148790610792055,
+        "totalLoss": 0.023998477886724885
+      },
+      "final": {
+        "colorLoss": 0.0196231330734884,
+        "edgeLoss": 0.031118251660353317,
+        "totalLoss": 0.02399127813649707
+      }
+    },
+    {
+      "resolution": 512,
+      "initial": {
+        "colorLoss": 0.01978671404270135,
+        "edgeLoss": 0.015906554840877045,
+        "totalLoss": 0.018312253546008114
+      },
+      "final": {
+        "colorLoss": 0.01979353853268742,
+        "edgeLoss": 0.015889199190555554,
+        "totalLoss": 0.018309889582677312
+      }
+    }
+  ],
+  "necessity": {
+    "contract": "metric-pareto-leave-one-out-fixed-point-v1",
+    "fixedPointPasses": 2,
+    "evaluatedCandidates": 1054,
+    "retainedInstancesMeasured": 526,
+    "reasonCounts": {
+      "would-worsen-search-metric": 520,
+      "would-worsen-validation-metric": 6
+    },
+    "completeReceiptFile": "necessity-receipt.json.gz",
+    "completeReceiptUtf8Bytes": 276176,
+    "completeReceiptGzipBytes": 24748,
+    "completeReceiptSha256": "10286EA5783EE78D35B8264B3A3FC5E1BE3E839725E955D05354B0ED98DF580F",
+    "completeReceiptGzipSha256": "6DF5DC49B7F5B9A459D91B7FB2039CA9FC3FB238D1C91372F4DCC5C1310F1959"
+  },
+  "output": {
+    "sourceFile": "coat_of_arms.txt",
+    "sourceSha256": "FAE9F9071CE3C6F7DF5557FF209CA2ECA704E8F8B84B94030B298675BD53E5C1",
+    "previewFile": "preview-512.png",
+    "previewSha256": "79F06AFFC13AF6E40756F62905568241FB5B25C48D14D1A3FEFB55118FA5385E",
+    "parseErrors": 0,
+    "serializeParseExact": true,
+    "pixelChecks": [
+      {
+        "resolution": 96,
+        "differingBytes": 24,
+        "maximumDifference": 63
+      },
+      {
+        "resolution": 230,
+        "differingBytes": 135,
+        "maximumDifference": 62
+      },
+      {
+        "resolution": 512,
+        "differingBytes": 725,
+        "maximumDifference": 64
+      }
+    ]
+  },
+  "evidenceLevel": {
+    "browserFixedPointPrune": "passed",
+    "ck3ApplyCopyRoundTrip": "pending-mcp",
+    "nativeSpatialPixelComparison": "pending-mcp"
+  }
+}
