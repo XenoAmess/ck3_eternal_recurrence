@@ -30,6 +30,12 @@ ORDINARY_LIFECYCLE_CONTRACT = {
     "succession_lifecycle": ORDINARY_CAMPAIGN_SUCCESSION,
     "ordinary_campaign_no_pact": True,
 }
+EMPTY_ACTIVE_CONTEXT_CONTRACT = {
+    "war_ids": [],
+    "army_ids": [],
+    "active_event": None,
+    "pending_character_interaction": None,
+}
 
 
 def _lifecycle_contract(manifest: dict[str, Any]) -> dict[str, Any]:
@@ -47,6 +53,52 @@ def _lifecycle_contract(manifest: dict[str, Any]) -> dict[str, Any]:
     if candidate not in (LEGACY_LIFECYCLE_CONTRACT, ORDINARY_LIFECYCLE_CONTRACT):
         raise ValueError("preview lifecycle manifest fields are inconsistent")
     return {**candidate, "source": "manifest"}
+
+
+def _active_context_contract(manifest: dict[str, Any]) -> dict[str, Any]:
+    """Return the exact paused context admitted by the frozen checkpoint.
+
+    Older preview manifests described an action-free seed, so omission retains
+    the original empty-context gate.  A continuation checkpoint must opt in
+    with exact war and army IDs; events and pending interactions remain absent
+    for this preview slice.
+    """
+
+    candidate = manifest.get("expected_active_context")
+    if candidate is None:
+        return {**EMPTY_ACTIVE_CONTEXT_CONTRACT, "source": "legacy-default"}
+    if not isinstance(candidate, dict):
+        raise ValueError("expected_active_context must be an object")
+    expected_fields = set(EMPTY_ACTIVE_CONTEXT_CONTRACT)
+    if set(candidate) != expected_fields:
+        raise ValueError(
+            "expected_active_context must contain exactly: "
+            + ", ".join(sorted(expected_fields))
+        )
+    for field in ("war_ids", "army_ids"):
+        values = candidate[field]
+        if not (
+            isinstance(values, list)
+            and all(isinstance(value, int) and value > 0 for value in values)
+            and len(values) == len(set(values))
+        ):
+            raise ValueError(
+                f"expected_active_context.{field} must be unique positive integers"
+            )
+    if (
+        candidate["active_event"] is not None
+        or candidate["pending_character_interaction"] is not None
+    ):
+        raise ValueError(
+            "preview eligibility only admits no active event and no pending interaction"
+        )
+    return {
+        "war_ids": sorted(candidate["war_ids"]),
+        "army_ids": sorted(candidate["army_ids"]),
+        "active_event": None,
+        "pending_character_interaction": None,
+        "source": "manifest",
+    }
 
 
 def _sha256(path: Path) -> str:
@@ -82,6 +134,7 @@ def _read_manifest(path: Path) -> dict[str, Any]:
     if manifest["supported_government"] != "feudal_government":
         raise ValueError("this preview operator check supports feudal_government")
     _lifecycle_contract(manifest)
+    _active_context_contract(manifest)
     if not (
         isinstance(manifest["timeout_seconds"], (int, float))
         and 0 < manifest["timeout_seconds"]
@@ -222,6 +275,7 @@ def _qualify(
         root.get("selected_game_rule_tokens") if isinstance(root, dict) else None
     )
     contract = _lifecycle_contract(manifest)
+    active_contract = _active_context_contract(manifest)
     selected_rules_match = True
     if contract["succession_lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION:
         selected_rules_match = (
@@ -241,8 +295,11 @@ def _qualify(
         "government_exact_feudal": isinstance(government, dict)
         and government.get("key") == manifest["supported_government"],
         "selected_rules_match_lifecycle": selected_rules_match,
-        "no_war_event_pending_army": isinstance(active, dict)
-        and active.get("war_ids") == [] and active.get("army_ids") == []
+        "active_context_matches_manifest": isinstance(active, dict)
+        and isinstance(active.get("war_ids"), list)
+        and isinstance(active.get("army_ids"), list)
+        and sorted(active["war_ids"]) == active_contract["war_ids"]
+        and sorted(active["army_ids"]) == active_contract["army_ids"]
         and active.get("active_event") is None
         and active.get("pending_character_interaction") is None,
         "source_save_unchanged": _sha256(Path(manifest["source_save"])).lower()
@@ -274,6 +331,7 @@ def main() -> int:
     try:
         manifest = _read_manifest(args.manifest)
         report["lifecycle"] = _lifecycle_contract(manifest)
+        report["expected_active_context"] = _active_context_contract(manifest)
         report["bounds"] = {
             "stage_timeout_seconds": manifest["timeout_seconds"],
             "native_session_ceiling_seconds": manifest["session_ceiling_seconds"],

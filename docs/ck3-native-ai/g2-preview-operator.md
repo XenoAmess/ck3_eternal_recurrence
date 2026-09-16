@@ -36,6 +36,12 @@ The manifest used by these tools has this interface. Fields shown in angle brack
   "session_ceiling_seconds": 480,
   "readiness_timeout_seconds": 300,
   "formal_turns": 20,
+  "expected_active_context": {
+    "war_ids": [5],
+    "army_ids": [33],
+    "active_event": null,
+    "pending_character_interaction": null
+  },
   "preview_action": {
     "kind": "pending_reply",
     "definition_key": "pay_ransom_interaction",
@@ -90,7 +96,7 @@ The operator then runs the reusable scope check. This starts and recycles at mos
 python tools/g2_preview_eligibility.py --manifest <frozen-operator-manifest.json> --output <new-evidence-directory>
 ```
 
-The exact frozen package replaces those three path values with validated paths. `GREEN_READ_ONLY` requires two managed same-version paused public campaign-root queries, the played episode/date, `government.key=feudal_government`, empty war/event/pending/army state, unchanged save and proven process cleanup. A null/unknown government, stale frame, timeout, surviving CK3 or nonempty mandatory pending state is not GREEN. The current bounded scene has 390 seconds for the stage, a 480-second underlying native-session ceiling (`390+90` grace), and 300 seconds for paused readiness. The owner's process ledger records the actual round; no tool assigns a round or assumes an expired lock means the old process died.
+The exact frozen package replaces those path values with validated paths. `GREEN_READ_ONLY` requires two managed same-version paused public campaign-root queries, the played episode/date, `government.key=feudal_government`, the exact frozen `expected_active_context`, unchanged save and proven process cleanup. A continuation checkpoint may name exact positive `war_ids` and `army_ids`; this R783 continuation therefore requires WarID 5 and ArmyID 33 instead of pretending that the campaign is action-free. Active events and pending interactions remain `null` for this preview slice. Omitting the additive field preserves the historical empty-context gate. Unknown IDs, duplicate IDs, a different war/army, a nonempty mandatory pending state, null/unknown government, stale frame, timeout or surviving CK3 is not GREEN. The readiness/stage/session values in the package must reflect the bounded window actually verified on its delivery host and retain the native-session cleanup grace. The owner's process ledger records the actual round; no tool assigns a round or assumes an expired lock means the old process died.
 
 After eligibility is GREEN, confirm the prior process is dead, allocate a new actual round, and invoke the **formal production entry** directly with values from the frozen manifest:
 
@@ -168,4 +174,4 @@ python tools/g2_preview_operator.py run --manifest <frozen-operator-manifest.jso
 
 The preflight must return `ready/ok=true` before launching. Verify the old action's material result first, retain the same episode/high-level goal, continue visible gameplay without repeating the consumed full ID, and save another checkpoint. Same-process reload or mere Python deserialization does not meet cold restore.
 
-The checker and operator path are reusable versioned assets for any authorized machine that can read the repository. Their use still depends on a legally installed, exact CK3 build and a host capable of running it; a read-only MCP query available on another machine does not certify that host can execute CK3. This tool set adds no native ABI, MCP schema or `open_kaishek` runtime protocol change. The frozen package must cite the actual live round/report and clearly limit supported gameplay; it is only ready for delivery after the semantic action, stop/checkpoint and new-round cold restore gates pass.
+The checker and operator path are reusable versioned assets for any authorized machine that can read the repository. Their use still depends on a legally installed, exact CK3 build and a host capable of running it; a read-only MCP query available on another machine does not certify that host can execute CK3. `expected_active_context` is an additive private operator-manifest field with an empty legacy default. It does not change the native ABI, MCP schema, public capability advertisement or `open_kaishek` runtime protocol, so no downstream adapter change is required. The frozen package must cite the actual live round/report and clearly limit supported gameplay; it is only ready for delivery after the semantic action, stop/checkpoint and new-round cold restore gates pass.

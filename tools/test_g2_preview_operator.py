@@ -16,6 +16,106 @@ from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_eligibility_active_context_contract_is_exact_and_additive(self) -> None:
+        self.assertEqual(
+            g2_preview_eligibility._active_context_contract({}),
+            {
+                "war_ids": [],
+                "army_ids": [],
+                "active_event": None,
+                "pending_character_interaction": None,
+                "source": "legacy-default",
+            },
+        )
+        manifest = {
+            "expected_active_context": {
+                "war_ids": [5],
+                "army_ids": [33],
+                "active_event": None,
+                "pending_character_interaction": None,
+            }
+        }
+        self.assertEqual(
+            g2_preview_eligibility._active_context_contract(manifest),
+            {
+                **manifest["expected_active_context"],
+                "source": "manifest",
+            },
+        )
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            g2_preview_eligibility._active_context_contract({
+                "expected_active_context": {"war_ids": [5]}
+            })
+        with self.assertRaisesRegex(ValueError, "unique positive"):
+            g2_preview_eligibility._active_context_contract({
+                "expected_active_context": {
+                    **manifest["expected_active_context"],
+                    "war_ids": [5, 5],
+                }
+            })
+
+    def test_eligibility_matches_frozen_continuation_context(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            checkpoint = state / "profile" / "save games" / "xar_checkpoint.ck3"
+            source = root / "source.ck3"
+            checkpoint.parent.mkdir(parents=True)
+            checkpoint.write_bytes(b"checkpoint")
+            source.write_bytes(b"checkpoint")
+            digest = hashlib.sha256(b"checkpoint").hexdigest()
+            manifest = {
+                "source_save": str(source),
+                "checkpoint_sha256": digest,
+                "state_dir": str(state),
+                "episode_character_id": 31853,
+                "date_raw": 53145000,
+                "supported_government": "feudal_government",
+                "xar_enabled": "xar_off",
+                "succession_lifecycle": "ordinary_campaign_succession",
+                "ordinary_campaign_no_pact": True,
+                "expected_active_context": {
+                    "war_ids": [5],
+                    "army_ids": [33],
+                    "active_event": None,
+                    "pending_character_interaction": None,
+                },
+            }
+            stage = {
+                "ok": True,
+                "readiness": {
+                    "played_character_id": 31853,
+                    "date_raw": 53145000,
+                    "active_context": {
+                        "war_ids": [5],
+                        "army_ids": [33],
+                        "active_event": None,
+                        "pending_character_interaction": None,
+                    },
+                },
+                "sequence": {
+                    "first_query": {
+                        "campaign_root_context": {
+                            "government": {"key": "feudal_government"},
+                            "selected_game_rule_tokens": ["xar_off"],
+                        }
+                    }
+                },
+            }
+            checks = g2_preview_eligibility._qualify(
+                manifest,
+                stage,
+                {"ck3_process_inventory": lambda: {"processes": []}},
+            )
+            self.assertTrue(checks["active_context_matches_manifest"])
+            self.assertTrue(all(checks.values()))
+            stage["readiness"]["active_context"]["war_ids"] = [6]
+            self.assertFalse(g2_preview_eligibility._qualify(
+                manifest,
+                stage,
+                {"ck3_process_inventory": lambda: {"processes": []}},
+            )["active_context_matches_manifest"])
+
     def test_eligibility_forwards_resolved_rule_to_live_stage(self) -> None:
         legacy_binding = {
             "schema": "xar.ck3.succession-lifecycle-binding/v1",
