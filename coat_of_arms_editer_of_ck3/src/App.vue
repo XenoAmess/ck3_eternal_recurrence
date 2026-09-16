@@ -29,6 +29,7 @@ import type {
   InstancePruneResult,
 } from './domain/coatOfArmsPruner'
 import { decodeFitImageFile, type DecodedFitImage } from './domain/imageInput'
+import { finalizeImageFitWithFullAssets } from './domain/fitFinalizer'
 import {
   resizeFitImage,
   type FitImage,
@@ -1574,12 +1575,7 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
         ElMessage.error(fitStatus.value)
         return
       }
-      const result = event.data.result
-      fitResult.value = result
-      coatOfArms.value = result.coatOfArms
-      source.value = serializeCoatOfArms(result.coatOfArms)
-      diagnostics.value = []
-      selectedEmblem.value = 0
+      let result = event.data.result
       const selectedPatternNames = new Set(result.paretoCandidates.map((item) => item.coatOfArms.pattern))
       const selectedPatternEntries = patterns.filter((item) => selectedPatternNames.has(item.name))
       const selectedEmblemNames = new Set(result.paretoCandidates.flatMap((candidate) => (
@@ -1611,13 +1607,44 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       fitProgressPercent.value = 100
       fitProgressLabel.value = `完成 · 选中 ${result.provenance.selectedLayers} 层`
       const selectedPatternTextures = Object.fromEntries(selectedFullPatterns)
-      const selectedPatternTexture = selectedPatternTextures[result.coatOfArms.pattern]
-      patternTexture.value = selectedPatternTexture
-      patternPreviewUrl.value = selectedPatternTexture ? decodedDdsToDataUrl(selectedPatternTexture) : ''
       emblemTextures.value = Object.fromEntries(selectedFullEmblems)
       emblemPreviewUrls.value = Object.fromEntries(
         Object.entries(emblemTextures.value).map(([name, decoded]) => [name, decodedDdsToDataUrl(decoded)]),
       )
+      try {
+        result = finalizeImageFitWithFullAssets(
+          result,
+          target,
+          {
+            patterns: selectedPatternTextures,
+            coloredEmblems: emblemTextures.value,
+            surfaceMask: surfaceMask.value,
+            patternAssetSha256: Object.fromEntries(selectedPatternEntries.map((item) => (
+              [item.name, item.asset_sha256]
+            ))),
+            emblemAssetSha256: Object.fromEntries(selectedEmblemEntries.map((item) => (
+              [item.name, item.asset_sha256]
+            ))),
+          },
+          shaderNamedColors.value,
+        ).result
+      } catch (error) {
+        fitBusy.value = false
+        fitTaskState.value = 'failed'
+        fitProgressPercent.value = 0
+        fitProgressLabel.value = '完整 DDS 复评失败'
+        fitStatus.value = `拟合搜索已完成，但导出素材复评失败：${errorMessage(error)}`
+        ElMessage.error(fitStatus.value)
+        return
+      }
+      fitResult.value = result
+      coatOfArms.value = result.coatOfArms
+      source.value = serializeCoatOfArms(result.coatOfArms)
+      diagnostics.value = []
+      selectedEmblem.value = 0
+      const selectedPatternTexture = selectedPatternTextures[result.coatOfArms.pattern]
+      patternTexture.value = selectedPatternTexture
+      patternPreviewUrl.value = selectedPatternTexture ? decodedDdsToDataUrl(selectedPatternTexture) : ''
       const metricContract = fitMetricContract(result)
       if (metricContract) {
         comparisonCandidates.value = result.paretoCandidates.map((candidate, index) => {

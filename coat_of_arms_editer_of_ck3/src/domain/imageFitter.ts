@@ -210,6 +210,16 @@ export interface ImageFitResult {
     }
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
+    fullAssetFinalization?: {
+      contract: 'full-dds-rescore-pareto-v1'
+      searchAssetContract: 'fit-index-rgba32-v2'
+      finalAssetContract: 'decoded-exact-dds-mip-v1'
+      rescoredCandidates: number
+      selectedOriginalIndexes: number[]
+      sourceWinnerPreserved: boolean
+      maximumAbsoluteTotalLossDelta: number
+      maximumAbsoluteEdgeLossDelta: number
+    }
     nativeTileSeamValidation: NativeTileSeamValidation
     nativeTileSearch: {
       contract: 'resolution-bounded-quadtree-v2'

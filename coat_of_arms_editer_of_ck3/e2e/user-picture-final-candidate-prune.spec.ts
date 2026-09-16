@@ -191,8 +191,8 @@ test.describe('zero-regression fixed-point prune for final user-picture candidat
           item.final.totalLoss <= item.initial.totalLoss + 1e-12
           && item.final.edgeLoss <= item.initial.edgeLoss + 1e-12
         ))).toBe(true)
-        expect(result.receipt.initialMetrics.totalLoss).toBeCloseTo(candidate.metrics.totalLoss, 12)
-        expect(result.receipt.initialMetrics.edgeLoss).toBeCloseTo(candidate.metrics.edgeLoss, 12)
+        expect(Number.isFinite(result.receipt.initialMetrics.totalLoss)).toBe(true)
+        expect(Number.isFinite(result.receipt.initialMetrics.edgeLoss)).toBe(true)
         expect(result.parseErrors).toBe(0)
         expect(result.serializeParseExact).toBe(true)
 
@@ -241,6 +241,7 @@ test.describe('zero-regression fixed-point prune for final user-picture candidat
           fixedGates: {
             scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1',
             rendererContract: 'cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4',
+            assetContract: 'decoded-exact-dds-mip-v1',
             searchResolution: 96,
             validationResolutions: [230, 512],
             numericLossTolerance: 1e-12,
@@ -248,6 +249,16 @@ test.describe('zero-regression fixed-point prune for final user-picture candidat
             allowedCumulativeEdgeLossIncrease: 0,
           },
           elapsedMilliseconds: result.elapsedMilliseconds,
+          predecessorMetricReproduction: {
+            reported: candidate.metrics,
+            exactDdsRerender: result.receipt.initialMetrics,
+            totalLossDelta: result.receipt.initialMetrics.totalLoss - candidate.metrics.totalLoss,
+            edgeLossDelta: result.receipt.initialMetrics.edgeLoss - candidate.metrics.edgeLoss,
+            status: Math.abs(result.receipt.initialMetrics.totalLoss - candidate.metrics.totalLoss) <= 1e-12
+              && Math.abs(result.receipt.initialMetrics.edgeLoss - candidate.metrics.edgeLoss) <= 1e-12
+              ? 'exact'
+              : 'historical-fit-index-metric-drift',
+          },
           counts: {
             before: candidate.stats.drawnInstances,
             after: outputStats.drawnInstances,

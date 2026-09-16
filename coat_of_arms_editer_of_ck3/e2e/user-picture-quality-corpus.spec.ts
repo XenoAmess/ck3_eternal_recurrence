@@ -83,6 +83,12 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       expect(evidence.provenance.layerBudget).toBe(budget)
       expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v6-budget-exhaustive-edge')
       expect(evidence.provenance.surfaceMaskApplied).toBe(true)
+      expect(evidence.provenance.fullAssetFinalization).toMatchObject({
+        contract: 'full-dds-rescore-pareto-v1',
+        searchAssetContract: 'fit-index-rgba32-v2',
+        finalAssetContract: 'decoded-exact-dds-mip-v1',
+      })
+      expect(evidence.provenance.fullAssetFinalization.rescoredCandidates).toBeGreaterThanOrEqual(1)
       expect(evidence.provenance.drawnInstances).toBeLessThanOrEqual(budget)
       if (budget === 1_024) {
         expect(evidence.metrics.totalLoss).toBeLessThanOrEqual(picture.v5Budget1024Baseline.totalLoss + 1e-12)
