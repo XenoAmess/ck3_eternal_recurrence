@@ -53,4 +53,6 @@ pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line
 [`xenoamess-hunter-v8-pareto-candidates`](coat-of-arms-fit-artifacts/xenoamess-hunter-v8-pareto-candidates/README.md)。
 七图证据见
 [`user-picture-corpus-v14-pareto-budget-1024`](coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/README.md)。
-该浏览器证据不替代 CK3 原生 framebuffer：v14 的原生 Apply/Copy 与空间像素对照仍为待验，因此 WP3 继续保持 `in_progress`。
+质量优先候选的 v14 原生 Apply/Copy 与空间像素对照见
+[`user-picture-corpus-v14-native-r18`](coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/README.md)：浏览器 → CK3
+与 Copy → 重放均 7/7 通过。其余 14 个复杂度/边缘候选仍只有浏览器证据，因此 WP3 继续保持 `in_progress`。

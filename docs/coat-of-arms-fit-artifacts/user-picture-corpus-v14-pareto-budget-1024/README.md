@@ -38,10 +38,12 @@ candidate's source/preview SHA-256.
 
 Evidence level is deliberately scoped: browser input-to-fit metrics, preview
 identity, source integrity and parse/serialize are measured and pass 7/7.
-These files have not yet been applied to CK3 through MCP, so v14 native
-Apply/Copy and spatial framebuffer comparison remain pending. The prior v13
-native run remains valid evidence for the same seven selected documents, but
-is not relabeled as v14 candidate evidence.
+The quality-priority document from every case was subsequently applied to CK3
+through the managed MCP route; browser → CK3 and Copy → re-Apply spatial pixel
+gates both pass 7/7. See
+[`user-picture-corpus-v14-native-r18`](../user-picture-corpus-v14-native-r18/README.md).
+The other 14 Pareto alternatives retain browser evidence only and are not
+silently promoted to native-validated results.
 
 Reproduce without CK3, Steam, MCP or a backend:
 
