@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import threading
 import time
@@ -62,15 +63,22 @@ def now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def source_round(manifest: dict[str, object]) -> str:
+    value = manifest.get("source_round")
+    require(isinstance(value, str) and re.fullmatch(r"R[1-9][0-9]*", value) is not None,
+            "Council scene candidate has no monotonic source round")
+    return value
+
+
 def verify_candidate(root: Path) -> dict[str, object]:
     root = root.resolve()
     manifest = json.loads((root / "candidate-manifest.json").read_text(encoding="utf-8"))
     require(isinstance(manifest, dict) and manifest.get("schema") == SCHEMA
             and manifest.get("status") == "sealed-no-launch"
-            and manifest.get("source_round") == "R739"
             and manifest.get("public_registered_or_advertised") is False
             and manifest.get("gameplay_actions") == 0,
-            "Council scene candidate is not a sealed private read-only R739 copy")
+            "Council scene candidate is not a sealed private read-only copy")
+    frozen_source_round = source_round(manifest)
     frame = manifest.get("expected_frame")
     require(isinstance(frame, dict) and frame.get("government_key") == "feudal_government"
             and type(frame.get("played_character_id")) is int
@@ -96,14 +104,14 @@ def verify_candidate(root: Path) -> dict[str, object]:
     require(source.open("rb").read(7) == b"SAV0101"
             and sha256(source) == sha256(target) == save_sha
             and sha256(driver_path) == manifest.get("source_driver_sha256"),
-            "R739 source/target SAV0101 and driver are not a frozen pair")
+            "source/target SAV0101 and driver are not a frozen pair")
     driver = json.loads(driver_path.read_text(encoding="utf-8"))
     checkpoint = driver.get("last_checkpoint")
     require(driver.get("format_version") == 2 and isinstance(checkpoint, dict)
             and checkpoint.get("sha256", "").upper() == save_sha
             and checkpoint.get("date_raw") == frame["date_raw"]
             and checkpoint.get("episode_character_id") == frame["played_character_id"],
-            "driver checkpoint does not belong to the R739 paused frame")
+            "driver checkpoint does not belong to the paused source frame")
     cache = (root / "candidate-bin" / "CMakeCache.txt").read_text(
         encoding="utf-8", errors="replace")
     require(manifest.get("private_build_flags") == PRIVATE_FLAGS
@@ -130,7 +138,7 @@ def verify_candidate(root: Path) -> dict[str, object]:
             str((root / "state" / "profile").resolve())
             and environment.get("environment_sha256") ==
             manifest.get("profile_environment_sha256") == _contract_digest(environment),
-            "relocated profile environment still refers to the old R739 workspace")
+            "relocated profile environment still refers to the source workspace")
     game = Path(str(manifest.get("game_dir", ""))).resolve()
     python = Path(str(manifest.get("operator_python", ""))).resolve()
     require(manifest.get("game_exe_sha256") == EXE_SHA
@@ -144,7 +152,7 @@ def verify_candidate(root: Path) -> dict[str, object]:
     require(isinstance(pipe, str) and pipe.startswith(r"\\.\pipe\xar_ck3_"),
             "candidate has no unique native pipe")
     return {"status": "ready-no-launch", "ck3_launched": False,
-            "source_round": "R739", "source_save_sha256": save_sha,
+            "source_round": frozen_source_round, "source_save_sha256": save_sha,
             "source_driver_sha256": manifest["source_driver_sha256"],
             "native_source_commit": manifest["native_source_commit"],
             "dll_sha256": manifest["dll_sha256"],
@@ -198,7 +206,7 @@ def run(root: Path, round_id: str, evidence: Path,
     report: dict[str, object] = {
         "schema": "xar.ck3.private.council-native-gate-scene-live/1.19.0.6-v1",
         "status": "preflight", "round": round_id, "started_at": now(),
-        "source_round": "R739", "private_query_only": True,
+        "source_round": source_round(manifest), "private_query_only": True,
         "gameplay_actions": 0, "public_registered_or_advertised": False,
         "controlled_rejection_gate_acceptance": "unverified_query_only",
         "bounded_seconds": manifest["bounded_seconds"],
@@ -248,7 +256,7 @@ def run(root: Path, round_id: str, evidence: Path,
                     and initial.get("episode_character_id") == frame["played_character_id"]
                     and initial.get("date_raw") == frame["date_raw"]
                     and type(initial.get("native_revision")) is int,
-                    "new process did not cold-load the frozen paused R739 scene")
+                    "new process did not cold-load the frozen paused source scene")
             advertised = driver.capabilities().get("capabilities")
             require(not isinstance(advertised, list)
                     or not PUBLIC_CAPABILITIES.intersection(advertised),
@@ -296,6 +304,8 @@ def run(root: Path, round_id: str, evidence: Path,
                                  "raw_terminal_sha256": sha256(terminal_path)}
             report["isolated_positive_counts"] = {
                 gate: len(scene[field]) for gate, field in {
+                    "already_councillor":
+                        "isolated_already_councillor_rejection_ids",
                     "guest": "isolated_guest_rejection_ids",
                     "candidate_pending": "isolated_candidate_pending_rejection_ids",
                     "replacement_fireability_denial":
