@@ -439,7 +439,7 @@
     {
       "id": "WP6",
       "status": "in_progress",
-      "commit": "4703a0b0",
+      "commit": "2861d3b3",
       "commands": [
         "pnpm exec playwright test e2e/safe-svg-input.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/textured-emblem-preview.spec.ts --reporter=line",
@@ -561,6 +561,7 @@
         "assetPackVfsMountOrderMcpR26Correction": "four_rows_were_an_early_snapshot_not_a_hook_coverage_limit",
         "assetPackVfsMountOrderMcpBoundary": "mount_publisher_order_and_return_state_only_not_per_resource_winner_or_replace_path_semantics",
         "assetPackVfsDirectDdsProjectionMcp": "passed_native_r30_four_of_four_hash_bound_winners_over_complete_live_mount_receipt",
+        "assetPackVfsDirectDdsProjectionCommit": "2861d3b3",
         "assetPackVfsDirectDdsProjectionMcpTool": "ck3_project_coat_of_arms_vfs_asset_winner_v1",
         "assetPackVfsDirectDdsProjectionReplayEvidencePath": "docs/coat-of-arms-fit-artifacts/vfs-asset-projection-r29/",
         "assetPackVfsDirectDdsProjectionNativeEvidencePath": "docs/coat-of-arms-fit-artifacts/vfs-asset-projection-native-r30/",
