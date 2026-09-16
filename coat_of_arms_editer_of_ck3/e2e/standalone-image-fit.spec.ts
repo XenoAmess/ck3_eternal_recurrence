@@ -43,6 +43,16 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   page.on('request', (request) => {
     if (new URL(request.url()).pathname.startsWith('/api/')) apiRequests.push(request.url())
   })
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: async (text: string) => {
+          Object.assign(window, { __copiedCoa: text })
+        },
+      },
+    })
+  })
   const pattern = bgraDds(16, 16, () => [255, 0, 0, 255])
   const emblem = bgraDds(16, 16, (x, y) => (
     x >= 4 && x < 12 && y >= 4 && y < 12 ? [255, 0, 0, 255] : [0, 0, 0, 0]
@@ -116,6 +126,15 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   await expect(comparison.locator('.candidate-card')).toHaveCount(2)
   await expect(comparison.getByText('同合同下非支配')).toHaveCount(2)
   await expect(comparison.locator('.candidate-shield-preview')).toHaveCount(2)
+  const candidateSources: string[] = []
+  for (const card of await comparison.locator('.candidate-card').all()) {
+    await card.getByRole('button', { name: '复制候选代码' }).click()
+    candidateSources.push(await page.evaluate(() => (
+      (window as unknown as { __copiedCoa?: string }).__copiedCoa ?? ''
+    )))
+  }
+  expect(candidateSources.every((item) => item.includes('coa = {'))).toBe(true)
+  expect(new Set(candidateSources).size).toBe(2)
   await expect(comparison).toContainText(/总损失 \d+\.\d+ · 边缘 \d+\.\d+/)
   await expect(comparison).toContainText('当前构图')
   await expect(page.locator('.output-block pre')).toContainText('pattern_solid.dds')

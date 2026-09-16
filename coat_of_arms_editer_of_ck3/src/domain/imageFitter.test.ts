@@ -651,10 +651,20 @@ describe('browser image fitter', () => {
   it('keeps mixed-size native paint tiles seamless above the 96px search plane', () => {
     const solid = texture('solid')
     const block = texture('neutralBlock')
+    const blockCandidate = candidate('ce_block_02.dds', block)
+    const blockFeatures = computeFitTextureShapeFeatures(block)
+    // A paint brush can have a skewed energy centroid despite full occupied
+    // bounds. Exact-pack v2 also stores the fully opaque vanilla block at
+    // 0.49999999999999634 rather than exactly 0.5 after summing 256x256
+    // samples. Coverage must use bounds, never the energy centroid.
+    blockCandidate.shapeFeatures = {
+      ...blockFeatures,
+      contentCenter: [0.45, 0.55],
+    }
     const result = fitImageToCoatOfArms(
       seamMosaic(32),
       [candidate('pattern_solid.dds', solid)],
-      [candidate('ce_block_02.dds', block)],
+      [blockCandidate],
       { resolution: 32, maxLayers: 128 },
     )
     expect(result.provenance.reconstructionMode).toBe('native-tile-paint')

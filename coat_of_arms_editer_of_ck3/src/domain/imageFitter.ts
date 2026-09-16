@@ -812,6 +812,37 @@ function initialLayerGeometry(
   }
 }
 
+/**
+ * A paint tile is a coverage contract, not a semantic shape placement. The
+ * energy centroid is useful for matching asymmetric emblems, but it can be
+ * displaced inside the occupied bounds (or differ from 0.5 by accumulated
+ * floating-point error for a solid block). Aligning that centroid can move a
+ * nominal tile edge across a high-resolution pixel center. Anchor the actual
+ * occupied bounds for rectangular paint instead.
+ */
+function paintTileGeometry(
+  focus: Pick<ResidualFocus, 'position' | 'scale'>,
+  shape: TextureShape,
+  minimumScale: number,
+): Pick<LayerParameters, 'position' | 'scale'> {
+  const [minimumX, minimumY, maximumX, maximumY] = shape.contentBounds
+  const contentWidth = Math.max(1e-12, maximumX - minimumX)
+  const contentHeight = Math.max(1e-12, maximumY - minimumY)
+  const scale: [number, number] = [
+    clamp(focus.scale[0] / contentWidth, minimumScale, 2.5),
+    clamp(focus.scale[1] / contentHeight, minimumScale, 2.5),
+  ]
+  const boundsCenterX = (minimumX + maximumX) / 2
+  const boundsCenterY = (minimumY + maximumY) / 2
+  return {
+    position: [
+      clamp(focus.position[0] - (boundsCenterX * 2 - 1) * scale[0] / 2, 0, 1),
+      clamp(focus.position[1] + (1 - boundsCenterY * 2) * scale[1] / 2, 0, 1),
+    ],
+    scale,
+  }
+}
+
 function residualColors(target: FitImage, rendered: RenderedCoatOfArms, count = 3): ByteRgb[] {
   const buckets = new Map<number, { weight: number, sums: [number, number, number] }>()
   for (let y = 0; y < target.height; y += 1) {
@@ -1482,8 +1513,7 @@ function paintWithNativeTiles(
       ],
       descriptor: new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE),
     }
-    const match: ShapeMatch = { asset: brush, shape, rotation: 0, flip: 1, loss: 0 }
-    const geometry = initialLayerGeometry(focus, match, 0.005)
+    const geometry = paintTileGeometry(focus, shape, 0.005)
     let best: { choice: PaintLayerChoice, scaleFactor: number } | null = null
     for (const scaleFactor of coverageFactors) {
       const choice = paintLayerChoice(
@@ -1644,11 +1674,7 @@ function refinePaintedStateAtEdgeHotspots(
         ],
         descriptor: new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE),
       }
-      const geometry = initialLayerGeometry(
-        focus,
-        { asset: brush, shape, rotation: 0, flip: 1, loss: 0 },
-        0.001,
-      )
+      const geometry = paintTileGeometry(focus, shape, 0.001)
       for (const scaleFactor of coverageFactors) {
         const choice = layerChoice(
           state.candidate,
@@ -1769,11 +1795,7 @@ function refinePaintedStateAtHighResolution(
       ],
       descriptor: new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE),
     }
-    const geometry = initialLayerGeometry(
-      focus,
-      { asset: brush, shape, rotation: 0, flip: 1, loss: 0 },
-      0.001,
-    )
+    const geometry = paintTileGeometry(focus, shape, 0.001)
     let best: { choice: PaintLayerChoice, parameters: LayerParameters, scaleFactor: number } | null = null
     for (const scaleFactor of coverageFactors) {
       const parameters: LayerParameters = {

@@ -42,6 +42,9 @@ function surfaceDds(): Buffer {
 test('runs real 128/1024/10000 browser fits without clamping and cancels a paint phase', async ({ page }) => {
   const contract = FIT_BUDGET_STRESS_CONTRACT
   const performanceGateEnforced = process.env.COA_E2E_PERFORMANCE_GATE !== 'report-only'
+  const resumeCompletionTimeoutMs = performanceGateEnforced
+    ? contract.maximumResumeDurationMs
+    : contract.reportOnlyMaximumDurationMs
   // Hosted Pages runners are intentionally report-only performance probes and
   // can spend ~250 seconds in the three real fits before pause/resume and
   // cancellation gates begin. Keep workstation thresholds strict while giving
@@ -236,14 +239,18 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   await recovery.getByRole('button', { name: '恢复拟合' }).click()
   await expect(report).toHaveAttribute('data-fit-task-state', 'paused')
   const persistentRestoreDurationMs = Date.now() - reloadStarted
-  expect(persistentRestoreDurationMs).toBeLessThan(contract.maximumResumeDurationMs)
+  if (performanceGateEnforced) {
+    expect(persistentRestoreDurationMs).toBeLessThan(contract.maximumResumeDurationMs)
+  }
   const resumeStarted = Date.now()
   await page.getByRole('button', { name: '继续', exact: true }).click()
   await expect(report).toHaveAttribute('data-fit-task-state', 'running')
-  await expect(report.locator('p')).toContainText('/128 层', { timeout: contract.maximumResumeDurationMs })
+  await expect(report.locator('p')).toContainText('/128 层', { timeout: resumeCompletionTimeoutMs })
   await expect(report).toHaveAttribute('data-fit-task-state', 'completed')
   const resumeDurationMs = Date.now() - resumeStarted
-  expect(resumeDurationMs).toBeLessThan(contract.maximumResumeDurationMs)
+  if (performanceGateEnforced) {
+    expect(resumeDurationMs).toBeLessThan(contract.maximumResumeDurationMs)
+  }
   const resumedRawEvidence = await report.getAttribute('data-fit-evidence')
   expect(resumedRawEvidence).toBeTruthy()
   const resumedEvidence = JSON.parse(resumedRawEvidence!) as {

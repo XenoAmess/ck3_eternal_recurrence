@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T11:30:25+08:00",
+  "updatedAt": "2026-09-16T12:10:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -240,6 +240,14 @@
                 "paretoCandidateUnitTests": "passed_83_of_83_full_suite",
                 "paretoCandidateBrowserTests": "passed_2_of_2_standalone_plus_1_of_1_manual_comparison",
                 "paretoCandidateEvidencePath": "docs/coat-of-arms-pareto-candidates.md",
+                "hunterV8ParetoEvidencePath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v8-pareto-candidates/",
+                "hunterV8ParetoCandidates": 2,
+                "hunterV8PrimaryInstances": 1024,
+                "hunterV8PrimaryTotalLoss": 0.022678530903300246,
+                "hunterV8PrimaryEdgeLoss": 0.03945563275337468,
+                "hunterV8ComplexityInstances": 989,
+                "hunterV8SeamGate": "passed_zero_leaks_at_96_230_512",
+                "fitIndexPaintGeometryRegression": "passed_bounds_center_separated_from_energy_centroid",
                 "nativeRoundTrip": "passed",
                 "nativeInputBytes": 262138,
                 "nativeInputBlocks": 297,
@@ -305,6 +313,8 @@
         "memoryEvidenceScope": "JavaScript heap delta only; excludes GPU and browser-process memory",
         "nonGetRequests": 0,
         "pauseResumeCheckpoint": "indexeddb_reload_persistence_passed",
+        "hostedReportOnlyResumeTimeout": "functional_wait_180s_performance_gate_not_enforced",
+        "hostedReportOnlyLocalRegression": "passed_2.2m",
         "gpuBatchSearch": "background_semantic_promotion_and_local_selection_passed",
         "gpuBatchBackend": "webgl2-texture-array-reduction-float-v1",
         "gpuBatchCandidates": 6,

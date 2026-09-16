@@ -83,6 +83,13 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 5. 在 96×96 搜索损失之外增加至少一个高分辨率 post-check。失败候选不得进入导出，即使低分辨率总损失更小。
 6. 重跑用户 hunter 图片，最大层数仍设 1024；生成 `xenoamess-hunter-v4` 的输入 receipt、参数、进度摘要、代码、浏览器渲染图、指标和 SHA-256。v3 保留并标记为“已知接缝缺陷的历史基线”。
 
+2026-09-16 的 fit-index v2 回归补充：预计算特征曾把纹理“能量重心”直接用于铺砖位置。该值适合语义形状匹配，却不等于占用边界中心；
+甚至完全不透明的 `ce_block_02.dds` 也会因 256×256 累加误差得到
+`0.49999999999999634`。在特定 230/512px 像素中心上，这足以把 nominal 边界移过采样点。当前实现令语义候选继续使用能量重心，
+铺砖路径则只按 `contentBounds` 的中心和跨度建立覆盖几何。带偏斜能量重心、完整占用边界的夹具在旧路径稳定失败，修复后
+96/230/512 均为零泄漏；hunter v8 同门禁通过。证据见
+[`xenoamess-hunter-v8-pareto-candidates`](coat-of-arms-fit-artifacts/xenoamess-hunter-v8-pareto-candidates/README.md)。
+
 ### 3.3 验收门禁
 
 - 合成相邻块夹具在 230px 和 512px 下，关闭 surface mask 的内部公共边界 `backgroundLeakPixels = 0`。

@@ -254,8 +254,19 @@ const activeFitPrune = computed(() => (
 const fitEvidenceJson = computed(() => {
   if (!fitResult.value) return ''
   const { layerLosses, selectedAssetSha256, ...provenance } = fitResult.value.provenance
+  const paretoCandidates = fitResult.value.paretoCandidates.map((candidate) => {
+    const candidateSource = serializeCoatOfArms(candidate.coatOfArms)
+    return {
+      metrics: candidate.metrics,
+      reconstructionMode: candidate.reconstructionMode,
+      textureNames: candidate.textureNames,
+      multiscaleMetrics: candidate.multiscaleMetrics,
+      stats: coatOfArmsDocumentStats(candidate.coatOfArms, candidateSource),
+    }
+  })
   return JSON.stringify({
     metrics: fitResult.value.metrics,
+    paretoCandidates,
     provenance,
     layerLossSummary: {
       count: layerLosses.length,
@@ -453,6 +464,15 @@ async function activateComparisonCandidate(candidate: CoatOfArmsComparisonCandid
   fitPruneSource.value = ''
   await loadCurrentTexturePreviews()
   ElMessage.success(`已载入${candidate.name}；完整源码进入当前编辑模型`)
+}
+
+async function copyComparisonCandidate(candidate: CoatOfArmsComparisonCandidate) {
+  try {
+    await navigator.clipboard.writeText(candidate.source)
+    ElMessage.success(`已复制${candidateDisplayName(candidate)}的完整 CK3 代码`)
+  } catch (error) {
+    ElMessage.error(`剪贴板写入失败：${errorMessage(error)}`)
+  }
 }
 
 function removeComparisonCandidate(candidateId: string) {
@@ -2214,6 +2234,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               <el-tag v-if="candidate.current" size="small" type="primary">{{ t('currentComposition') }}</el-tag>
               <div class="candidate-actions">
                 <el-button size="small" @click="activateComparisonCandidate(candidate)">{{ t('load') }}</el-button>
+                <el-button size="small" @click="copyComparisonCandidate(candidate)">{{ t('copyCandidate') }}</el-button>
                 <el-button size="small" type="danger" plain @click="removeComparisonCandidate(candidate.id)">{{ t('delete') }}</el-button>
               </div>
             </article>

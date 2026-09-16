@@ -3,13 +3,14 @@ import { execFileSync } from 'node:child_process'
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { expect, test } from '@playwright/test'
+import { coatOfArmsDocumentStats } from '../src/domain/documentStats'
 import { parseCoatOfArms } from '../src/domain/parser'
 import { serializeCoatOfArms } from '../src/domain/serializer'
 
 const layerBudget = '1024'
 const fixture = resolve('test-fixtures/xenoamess_hunter_1024_no_shade.png')
 const originalFixture = resolve('test-fixtures/xenoamess_hunter_4096_no_shade.svg')
-const artifactDirectory = resolve('test-results/reference-hunter-v7-budget-exhaustive-edge')
+const artifactDirectory = resolve('test-results/reference-hunter-v8-pareto-candidates')
 const assetPackDirectory = resolve('public/asset-packs/ck3-1.19.0.6')
 const historicalArtifact = resolve('../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/coat_of_arms.txt')
 const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex').toUpperCase()
@@ -44,13 +45,71 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
   const evidenceText = await page.locator('.fit-report').getAttribute('data-fit-evidence')
   if (!evidenceText) throw new Error('missing machine-readable fit evidence')
   const evidence = JSON.parse(evidenceText)
+  const candidateCards = page.getByTestId('candidate-comparison').locator('.candidate-card')
+  const paretoCandidateCount = await candidateCards.count()
+  expect(paretoCandidateCount).toBeGreaterThanOrEqual(1)
+  expect(paretoCandidateCount).toBeLessThanOrEqual(3)
+  expect(evidence.paretoCandidates).toHaveLength(paretoCandidateCount)
+  const paretoCandidates = []
+  for (let index = 0; index < paretoCandidateCount; index += 1) {
+    const card = candidateCards.nth(index)
+    await card.getByRole('button', { name: '复制候选代码' }).click()
+    const candidateSource = await page.evaluate(() => (
+      (window as typeof window & { __coaClipboardPayload?: string }).__coaClipboardPayload ?? ''
+    ))
+    const candidateParsed = parseCoatOfArms(candidateSource)
+    const candidateErrors = candidateParsed.diagnostics.filter((item) => item.severity === 'error')
+    const candidateInstances = candidateParsed.coatOfArms.coloredEmblems.reduce(
+      (total, emblem) => total + emblem.instances.length,
+      0,
+    )
+    expect(candidateErrors).toEqual([])
+    expect(serializeCoatOfArms(candidateParsed.coatOfArms)).toBe(candidateSource)
+    expect(evidence.paretoCandidates[index].stats.drawnInstances).toBe(candidateInstances)
+    await writeFile(
+      resolve(artifactDirectory, `pareto-candidate-${String(index + 1).padStart(2, '0')}.txt`),
+      candidateSource,
+      'utf8',
+    )
+    const candidatePreview = await card.locator('.candidate-shield-preview').getAttribute('src')
+    if (!candidatePreview?.startsWith('data:image/png;base64,')) {
+      throw new Error(`missing Pareto candidate ${index + 1} preview`)
+    }
+    const previewFile = `pareto-candidate-${String(index + 1).padStart(2, '0')}.png`
+    await writeFile(
+      resolve(artifactDirectory, previewFile),
+      Buffer.from(candidatePreview.slice('data:image/png;base64,'.length), 'base64'),
+    )
+    paretoCandidates.push({
+      index: index + 1,
+      sourceFile: `pareto-candidate-${String(index + 1).padStart(2, '0')}.txt`,
+      previewFile,
+      sourceSha256: sha256(candidateSource),
+      parseErrors: candidateErrors.length,
+      drawnInstances: candidateInstances,
+      ...evidence.paretoCandidates[index],
+    })
+  }
+  for (const candidate of paretoCandidates) {
+    expect(paretoCandidates.some((other) => (
+      other !== candidate
+      && other.metrics.totalLoss <= candidate.metrics.totalLoss
+      && other.metrics.edgeLoss <= candidate.metrics.edgeLoss
+      && other.drawnInstances <= candidate.drawnInstances
+      && (
+        other.metrics.totalLoss < candidate.metrics.totalLoss
+        || other.metrics.edgeLoss < candidate.metrics.edgeLoss
+        || other.drawnInstances < candidate.drawnInstances
+      )
+    ))).toBe(false)
+  }
   const drawnInstances = Number(reportText.match(/实际绘制实例\s+(\d+)/)?.[1])
   const logicalLayers = Number(reportText.match(/逻辑图层\s+(\d+)/)?.[1])
   const coloredEmblemBlocks = Number(reportText.match(/colored_emblem 块\s+(\d+)/)?.[1])
   const instanceCount = Number(reportText.match(/instance 数\s+(\d+)/)?.[1])
   const outputBytes = Buffer.byteLength(source, 'utf8')
-  const outputLines = source.match(/\n/g)?.length ?? 0
   const parsed = parseCoatOfArms(source)
+  const outputLines = coatOfArmsDocumentStats(parsed.coatOfArms, source).lines
   const parseErrors = parsed.diagnostics.filter((item) => item.severity === 'error')
   const reparsedInstances = parsed.coatOfArms.coloredEmblems.reduce(
     (total, emblem) => total + emblem.instances.length,
@@ -180,8 +239,8 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
   )
   const report = {
     schema: 'ck3-coa-hunter-fit-evidence-v1',
-    artifactVersion: 'xenoamess-hunter-v7-budget-exhaustive-edge',
-    predecessor: '../xenoamess-hunter-v6-edge-refined/',
+    artifactVersion: 'xenoamess-hunter-v8-pareto-candidates',
+    predecessor: '../xenoamess-hunter-v7-budget-exhaustive-edge/',
     status: 'browser-quality-improvement-passed-native-roundtrip-pending',
     generatedAt: new Date().toISOString(),
     sourceRevision: {
@@ -222,6 +281,7 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
       },
     },
     metrics: evidence.metrics,
+    paretoCandidates,
     commonContractComparison: {
       baselineArtifact: '../xenoamess-hunter-v4-pruned/coat_of_arms.txt',
       baselineMetrics: historicalMetrics,
