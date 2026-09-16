@@ -77,9 +77,13 @@ production `agent.py native-query-current-timeline-blocker-context-v1` path.
 It owns one cold-start `native_session`, waits for one exact paused map-ready
 frame, calls `query-current-timeline-blocker-context-v1` exactly once, and
 recycles the process.  `GREEN_READ_ONLY` requires the query envelope to retain
-`private_build=true`, `read_only=true`, and `advertised=false`; the before and
-after save hash, driver-state hash, paused frame and date must be identical;
-managed process cleanup must be proven.  The receipt records the source commit,
+`private_build=true`, `read_only=true`, and `advertised=false`; the save hash,
+paused frame, date and query-before/query-after command history must be
+identical.  The cold start may change the driver-state hash, but its history
+delta must be exactly one successful `native-session-cold-start`
+`restore-checkpoint` row bound to the pinned checkpoint, and the persisted
+post-run history must equal the query-after history.  Managed process cleanup
+must be proven.  The receipt records the source commit,
 agent/operator hashes, actual round, query envelope and cleanup.  This entry has
 no planner, Close, marriage, `death-terminal`, Python successor continuation,
 date advance, checkpoint write, UI input or gameplay action path.  It remains

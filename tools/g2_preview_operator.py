@@ -423,9 +423,11 @@ def command_query_current_timeline_blocker_context_v1(
         and query_report.get("ok") is True
         and query_report.get("round") == args.private_timeline_query_round_id
         and checkpoint_after == checkpoint_before
-        and driver_after == driver_before
         and isinstance(query_checks, dict)
         and query_checks.get("date_unchanged") is True
+        and query_checks.get("single_cold_restore_bookkeeping") is True
+        and query_checks.get("query_history_unchanged") is True
+        and query_checks.get("driver_history_matches_query_after") is True
         and query_checks.get("cleanup_proven") is True
     )
     receipt.update({
@@ -442,6 +444,16 @@ def command_query_current_timeline_blocker_context_v1(
         "driver_state_sha256_after": driver_after,
         "checkpoint_unchanged": checkpoint_after == checkpoint_before,
         "driver_state_unchanged": driver_after == driver_before,
+        "driver_state_cold_restore_bookkeeping_exact": (
+            query_checks.get("single_cold_restore_bookkeeping")
+            if isinstance(query_checks, dict)
+            else False
+        ),
+        "driver_state_query_history_unchanged": (
+            query_checks.get("query_history_unchanged")
+            if isinstance(query_checks, dict)
+            else False
+        ),
         "date_before": (
             query_report.get("before", {}).get("date_raw")
             if isinstance(query_report, dict)

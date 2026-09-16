@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import json
 from pathlib import Path
 from types import SimpleNamespace
 import tempfile
@@ -24,10 +25,11 @@ class _Driver:
 
 
 class _Service:
-    def __init__(self, driver):
+    def __init__(self, driver, *, history, append_after_query=None):
         self.driver = driver
         self.snapshot_calls = 0
         self.query_calls = 0
+        self.append_after_query = copy.deepcopy(append_after_query)
         self.frame = {
             "snapshot_id": "native-frame-18",
             "revision": 13,
@@ -36,6 +38,7 @@ class _Service:
             "paused": True,
             "map_ready": True,
             "played_character": {"character_id": 35465},
+            "native_command_history": copy.deepcopy(history),
         }
 
     def snapshot(self):
@@ -45,6 +48,10 @@ class _Service:
     def query_current_timeline_blocker_context_v1(self, *, expected_revision):
         self.query_calls += 1
         assert expected_revision == 13
+        if self.append_after_query is not None:
+            self.frame["native_command_history"].append(
+                copy.deepcopy(self.append_after_query)
+            )
         return {
             "step": subject.QUERY_STEP,
             "accepted": True,
@@ -62,6 +69,37 @@ class _Service:
             },
             "current_timeline_blocker_context": {"identity": "none"},
         }
+
+
+def _prior_history() -> list[dict[str, object]]:
+    return [
+        {"index": 1, "command": "continue-as-reconciled-successor", "ok": True},
+        {"index": 2, "command": "query-campaign-root-context-v1", "ok": True},
+        {"index": 3, "command": "save-checkpoint", "ok": True},
+    ]
+
+
+def _restore_entry(checkpoint_sha: str) -> dict[str, object]:
+    return {
+        "index": 4,
+        "command": "restore-checkpoint",
+        "ok": True,
+        "result": {
+            "step": "restore-checkpoint",
+            "accepted": True,
+            "status": "restored",
+            "backend_id": "native-headless",
+            "source": "native-session-cold-start",
+            "checkpoint": {
+                "sha256": checkpoint_sha,
+                "date_raw": 53411568,
+                "history_index": 3,
+            },
+            "restored_date_raw": 53411568,
+            "map_ready": True,
+            "lifecycle": {"previous_pid": 100, "pid": 200},
+        },
+    }
 
 
 class TimelineBlockerQueryRunTest(unittest.TestCase):
@@ -87,7 +125,24 @@ class TimelineBlockerQueryRunTest(unittest.TestCase):
             save.parent.mkdir(parents=True)
             driver_state.parent.mkdir(parents=True)
             save.write_bytes(b"checkpoint")
-            driver_state.write_bytes(b"driver-state")
+            checkpoint_sha = subject._sha256(save)
+            prior_history = _prior_history()
+            restore_entry = _restore_entry(checkpoint_sha)
+            before_driver_state = {
+                "format_version": 2,
+                "bridge_pid": 100,
+                "command_history": prior_history,
+                "succession_expectation": {"status": "available"},
+            }
+            after_driver_state = {
+                **before_driver_state,
+                "bridge_pid": 200,
+                "command_history": [*prior_history, restore_entry],
+                "succession_expectation": None,
+            }
+            driver_state.write_text(
+                json.dumps(before_driver_state), encoding="utf-8"
+            )
             spec = SimpleNamespace(state_dir=root, profile_dir=profile)
             config = NativeBridgeLaunchConfig(
                 mode="native-headless",
@@ -98,11 +153,17 @@ class TimelineBlockerQueryRunTest(unittest.TestCase):
             services: list[_Service] = []
 
             def service_factory(driver):
-                service = _Service(driver)
+                service = _Service(
+                    driver,
+                    history=[*prior_history, restore_entry],
+                )
                 services.append(service)
                 return service
 
             def session(*args, stop_event: threading.Event, **kwargs):
+                driver_state.write_text(
+                    json.dumps(after_driver_state), encoding="utf-8"
+                )
                 self.assertTrue(stop_event.wait(2.0))
                 return {
                     "ok": True,
@@ -133,8 +194,9 @@ class TimelineBlockerQueryRunTest(unittest.TestCase):
                     subject,
                     "validate_cold_start_checkpoint_for_pipe",
                     return_value={
-                        "sha256": subject._sha256(save),
+                        "sha256": checkpoint_sha,
                         "saved_date_raw": 53411568,
+                        "history_index": 3,
                     },
                 ),
                 mock.patch.object(subject, "NativeHeadlessGameplayDriver", _Driver),
@@ -158,6 +220,12 @@ class TimelineBlockerQueryRunTest(unittest.TestCase):
             self.assertEqual(report["forbidden_action_counts"]["gameplay"], 0)
             self.assertTrue(all(report["checks"].values()))
             self.assertTrue(report["cleanup"]["ok"])
+            self.assertNotEqual(
+                report["before"]["files"]["driver_state"]["sha256"],
+                report["after"]["files"]["driver_state"]["sha256"],
+            )
+            self.assertTrue(report["checks"]["single_cold_restore_bookkeeping"])
+            self.assertTrue(report["checks"]["query_history_unchanged"])
             self.assertEqual(
                 report["before"]["files"]["checkpoint"]["sha256"],
                 report["after"]["files"]["checkpoint"]["sha256"],
@@ -189,6 +257,39 @@ class TimelineBlockerQueryRunTest(unittest.TestCase):
                 cold_start_checkpoint=False,
                 native_bridge=config,
             )
+
+    def test_restore_proof_rejects_more_than_one_startup_history_row(self) -> None:
+        checkpoint_sha = "a" * 64
+        prior_history = _prior_history()
+        query_history = [
+            *prior_history,
+            _restore_entry(checkpoint_sha),
+            {"index": 5, "command": "close-active-event", "ok": True},
+        ]
+        proof = subject._cold_restore_bookkeeping(
+            {"bridge_pid": 100, "command_history": prior_history},
+            {"native_command_history": query_history},
+            {
+                "sha256": checkpoint_sha,
+                "saved_date_raw": 53411568,
+                "history_index": 3,
+            },
+        )
+        self.assertFalse(proof["exact"])
+
+    def test_query_history_delta_rejects_a_gameplay_action(self) -> None:
+        checkpoint_sha = "b" * 64
+        before_history = [*_prior_history(), _restore_entry(checkpoint_sha)]
+        after_history = [
+            *before_history,
+            {"index": 5, "command": "close-active-event", "ok": True},
+        ]
+        self.assertFalse(
+            subject._query_history_unchanged(
+                {"native_command_history": before_history},
+                {"native_command_history": after_history},
+            )
+        )
 
 
 if __name__ == "__main__":

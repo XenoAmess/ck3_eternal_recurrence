@@ -58,7 +58,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 "R776A",
             ])
 
-    def test_private_timeline_query_receipt_requires_unchanged_state_and_cleanup(
+    def test_private_timeline_query_receipt_allows_exact_cold_restore_bookkeeping(
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -95,7 +95,13 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 "round": "R776",
                 "before": {"date_raw": 53411568},
                 "after": {"date_raw": 53411568},
-                "checks": {"date_unchanged": True, "cleanup_proven": True},
+                "checks": {
+                    "date_unchanged": True,
+                    "single_cold_restore_bookkeeping": True,
+                    "query_history_unchanged": True,
+                    "driver_history_matches_query_after": True,
+                    "cleanup_proven": True,
+                },
                 "query_envelope": {
                     "step": "query-current-timeline-blocker-context-v1",
                     "private_build": True,
@@ -110,6 +116,15 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 if "native-one-generation-preflight" in command:
                     stdout_path.write_text("{}\n", encoding="utf-8")
                 else:
+                    driver.write_text(json.dumps({
+                        "episode_character_id": 35465,
+                        "episode_run_id": "native-35465-test",
+                        "command_history": [{
+                            "index": 1,
+                            "command": "restore-checkpoint",
+                            "ok": True,
+                        }],
+                    }), encoding="utf-8")
                     stdout_path.write_text(
                         json.dumps(agent_report) + "\n", encoding="utf-8"
                     )
@@ -141,7 +156,11 @@ class G2PreviewOperatorTest(unittest.TestCase):
             )
             self.assertEqual(receipt["status"], "GREEN_READ_ONLY")
             self.assertTrue(receipt["checkpoint_unchanged"])
-            self.assertTrue(receipt["driver_state_unchanged"])
+            self.assertFalse(receipt["driver_state_unchanged"])
+            self.assertTrue(
+                receipt["driver_state_cold_restore_bookkeeping_exact"]
+            )
+            self.assertTrue(receipt["driver_state_query_history_unchanged"])
             self.assertTrue(receipt["date_unchanged"])
             self.assertEqual(receipt["round"], "R776")
             self.assertEqual(receipt["gameplay_actions"], 0)
