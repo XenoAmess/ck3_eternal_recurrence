@@ -20,12 +20,15 @@ import zipfile
 
 FIRST_SOURCE = "pattern_checkers_06.dds"
 SECOND_SOURCE = "pattern_waves_01.dds"
+SOLID_SOURCE = "pattern_solid.dds"
 PATTERN_DIRECTORY = Path("game/gfx/coat_of_arms/patterns")
 BASE_ORIGINAL_REFERENCE = "pattern_xar_vfs_base_original.dds"
 BASE_MOD_REFERENCE = "pattern_xar_vfs_base_mod.dds"
 ARCHIVE_SHARED = "pattern_xar_vfs_archive_shared.dds"
 ARCHIVE_DIRECTORY_REFERENCE = "pattern_xar_vfs_archive_directory.dds"
 ARCHIVE_LATER_REFERENCE = "pattern_xar_vfs_archive_later.dds"
+REPLACED_EARLIER = "pattern_xar_vfs_replaced_earlier.dds"
+REPLACE_LATER_REFERENCE = "pattern_xar_vfs_replace_later.dds"
 
 
 def _sha256(path: Path) -> str:
@@ -381,6 +384,153 @@ def prepare_extended_fixture(
         raise
 
 
+def prepare_replace_path_fixture(
+    base_profile: Path, game_directory: Path, output: Path
+) -> dict[str, object]:
+    """Build a two-mod fixture whose later mod replaces the pattern directory."""
+
+    base_profile = base_profile.resolve()
+    game_directory = game_directory.resolve()
+    output = output.resolve()
+    settings = base_profile / "pdx_settings.txt"
+    patterns = game_directory / PATTERN_DIRECTORY
+    first_source = patterns / FIRST_SOURCE
+    second_source = patterns / SECOND_SOURCE
+    solid_source = patterns / SOLID_SOURCE
+    if not settings.is_file():
+        raise FileNotFoundError(f"base profile lacks pdx_settings.txt: {settings}")
+    if not all(path.is_file() for path in (first_source, second_source, solid_source)):
+        raise FileNotFoundError("exact-build replace_path fixture source DDS is missing")
+    if output.exists():
+        raise FileExistsError(f"output already exists: {output}")
+    temporary = output.with_name(f".{output.name}.building-{os.getpid()}")
+    if temporary.exists():
+        raise FileExistsError(f"temporary output already exists: {temporary}")
+    temporary.mkdir(parents=True)
+    try:
+        shutil.copy2(settings, temporary / "pdx_settings.txt")
+        registry = temporary / "mod"
+        registry.mkdir()
+
+        earlier_root = temporary / "coa_vfs_replace_earlier"
+        earlier_patterns = earlier_root / "gfx" / "coat_of_arms" / "patterns"
+        earlier_patterns.mkdir(parents=True)
+        shutil.copy2(first_source, earlier_patterns / REPLACED_EARLIER)
+        earlier_manifest = earlier_patterns / "60_xar_vfs_replace_earlier_patterns.txt"
+        _write_text(
+            earlier_manifest,
+            f"{REPLACED_EARLIER} = {{ colors = 2 }}\n",
+        )
+
+        later_root = temporary / "coa_vfs_replace_later"
+        later_patterns = later_root / "gfx" / "coat_of_arms" / "patterns"
+        later_patterns.mkdir(parents=True)
+        shutil.copy2(solid_source, later_patterns / SOLID_SOURCE)
+        shutil.copy2(second_source, later_patterns / REPLACE_LATER_REFERENCE)
+        later_manifest = later_patterns / "61_xar_vfs_replace_later_patterns.txt"
+        _write_text(
+            later_manifest,
+            "\n".join(
+                (
+                    f"{SOLID_SOURCE} = {{ colors = 1 }}",
+                    f"{REPLACE_LATER_REFERENCE} = {{ colors = 2 }}",
+                    "",
+                )
+            ),
+        )
+
+        descriptor_specs = (
+            (
+                "coa_vfs_replace_earlier.mod",
+                "XAR CoA VFS replace_path earlier fixture",
+                output / earlier_root.name,
+                False,
+            ),
+            (
+                "coa_vfs_replace_later.mod",
+                "XAR CoA VFS replace_path later fixture",
+                output / later_root.name,
+                True,
+            ),
+        )
+        enabled = []
+        descriptors = []
+        for filename, display_name, published_root, replaces in descriptor_specs:
+            descriptor = registry / filename
+            lines = [
+                f'name="{display_name}"',
+                'supported_version="1.19.*"',
+                'tags={ "Graphics" }',
+                f'path="{published_root.as_posix()}"',
+            ]
+            if replaces:
+                lines.append('replace_path="gfx/coat_of_arms/patterns"')
+            lines.append("")
+            _write_text(descriptor, "\n".join(lines))
+            registry_path = f"mod/{filename}"
+            enabled.append(registry_path)
+            descriptors.append(
+                {
+                    "registry_path": registry_path,
+                    "published_root": str(published_root.resolve()),
+                    "replace_paths": (
+                        ["gfx/coat_of_arms/patterns"] if replaces else []
+                    ),
+                    "descriptor_sha256": _sha256(descriptor),
+                }
+            )
+
+        load_configuration = temporary / "dlc_load.json"
+        load_configuration.write_text(
+            json.dumps(
+                {"enabled_mods": enabled, "disabled_dlcs": []},
+                ensure_ascii=False,
+                separators=(",", ":"),
+            ),
+            encoding="utf-8",
+            newline="\n",
+        )
+        receipt = {
+            "schema": "ck3-coat-of-arms-vfs-replace-path-fixture-v1",
+            "schema_version": 1,
+            "purpose": "native framebuffer proof that a later replace_path hides an earlier pattern directory",
+            "predeclared_hypothesis": (
+                "the earlier-only registered pattern behaves like a never-present missing control, "
+                "and both differ from the later replacement pattern"
+            ),
+            "enabled_mods": enabled,
+            "descriptors": descriptors,
+            "replace_path": "gfx/coat_of_arms/patterns",
+            "load_configuration_sha256": _sha256(load_configuration),
+            "pdx_settings_sha256": _sha256(temporary / "pdx_settings.txt"),
+            "earlier": {
+                "resource_name": REPLACED_EARLIER,
+                "source_sha256": _sha256(first_source),
+                "asset_sha256": _sha256(earlier_patterns / REPLACED_EARLIER),
+                "manifest_sha256": _sha256(earlier_manifest),
+            },
+            "later": {
+                "resource_name": REPLACE_LATER_REFERENCE,
+                "source_sha256": _sha256(second_source),
+                "asset_sha256": _sha256(
+                    later_patterns / REPLACE_LATER_REFERENCE
+                ),
+                "solid_source_sha256": _sha256(solid_source),
+                "solid_asset_sha256": _sha256(later_patterns / SOLID_SOURCE),
+                "manifest_sha256": _sha256(later_manifest),
+            },
+            "missing_control_name": "pattern_xar_vfs_missing_control.dds",
+        }
+        _write_text(
+            temporary / "vfs-replace-path-fixture-receipt.json",
+            json.dumps(receipt, ensure_ascii=False, indent=2) + "\n",
+        )
+        temporary.replace(output)
+        return receipt
+    except BaseException:
+        raise
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-profile", required=True, type=Path)
@@ -391,8 +541,21 @@ def main() -> int:
         action="store_true",
         help="build the base/mod plus directory/archive precedence fixture",
     )
+    parser.add_argument(
+        "--replace-path",
+        action="store_true",
+        help="build the later-mod pattern-directory replace_path fixture",
+    )
     args = parser.parse_args()
-    factory = prepare_extended_fixture if args.extended else prepare_fixture
+    if args.extended and args.replace_path:
+        parser.error("--extended and --replace-path are mutually exclusive")
+    factory = (
+        prepare_replace_path_fixture
+        if args.replace_path
+        else prepare_extended_fixture
+        if args.extended
+        else prepare_fixture
+    )
     receipt = factory(args.base_profile, args.game_dir, args.output)
     print(json.dumps(receipt, ensure_ascii=False, indent=2))
     return 0

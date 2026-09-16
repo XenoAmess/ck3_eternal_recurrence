@@ -325,6 +325,34 @@ VFS_EXTENDED_DIAGNOSTIC_PAIRS = (
     ("archive-conflict", "archive-later-reference", True),
     ("archive-directory-reference", "archive-later-reference", False),
 )
+VFS_REPLACE_PATH_CASES = (
+    {
+        "id": "replaced-earlier-only",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_replaced_earlier.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "missing-control",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_missing_control.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
+        "id": "later-reference",
+        "source": (
+            'coa = { pattern = "pattern_xar_vfs_replace_later.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+)
+VFS_REPLACE_PATH_DIAGNOSTIC_PAIRS = (
+    ("replaced-earlier-only", "missing-control", True),
+    ("replaced-earlier-only", "later-reference", False),
+    ("missing-control", "later-reference", False),
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -456,6 +484,19 @@ def _parser() -> argparse.ArgumentParser:
         "--vfs-extended-crop-dir",
         type=Path,
         help="write one hash-bound native crop per --vfs-extended-matrix case",
+    )
+    parser.add_argument(
+        "--vfs-replace-path-matrix",
+        action="store_true",
+        help=(
+            "apply the checked-in later-mod replace_path fixture and compare "
+            "the hidden earlier-only pattern to a missing control"
+        ),
+    )
+    parser.add_argument(
+        "--vfs-replace-path-crop-dir",
+        type=Path,
+        help="write one hash-bound native crop per --vfs-replace-path-matrix case",
     )
     parser.add_argument("--output", type=Path, required=True)
     return parser
@@ -2682,12 +2723,23 @@ async def _collect_vfs_winner_matrix(
     record: Any,
     *,
     extended: bool = False,
+    replace_path: bool = False,
 ) -> dict[str, object]:
     """Prove checked-in direct-DDS winners through native pixels."""
 
-    cases = VFS_EXTENDED_CASES if extended else VFS_WINNER_CASES
+    if extended and replace_path:
+        raise ValueError("extended and replace_path VFS matrices are mutually exclusive")
+    cases = (
+        VFS_REPLACE_PATH_CASES
+        if replace_path
+        else VFS_EXTENDED_CASES
+        if extended
+        else VFS_WINNER_CASES
+    )
     diagnostic_pairs = (
-        VFS_EXTENDED_DIAGNOSTIC_PAIRS
+        VFS_REPLACE_PATH_DIAGNOSTIC_PAIRS
+        if replace_path
+        else VFS_EXTENDED_DIAGNOSTIC_PAIRS
         if extended
         else VFS_WINNER_DIAGNOSTIC_PAIRS
     )
@@ -2754,6 +2806,9 @@ async def _collect_vfs_winner_matrix(
             "source": _source_receipt_from_text(
                 source,
                 source_label=(
+                    f"vfs-replace-path:{identifier}"
+                    if replace_path
+                    else
                     f"vfs-extended:{identifier}"
                     if extended
                     else f"vfs-winner:{identifier}"
@@ -2799,6 +2854,9 @@ async def _collect_vfs_winner_matrix(
     )
     result = {
         "schema": (
+            "ck3-coat-of-arms-vfs-replace-path-matrix-v1"
+            if replace_path
+            else
             "ck3-coat-of-arms-vfs-extended-matrix-v1"
             if extended
             else "ck3-coat-of-arms-vfs-winner-matrix-v1"
@@ -2806,6 +2864,12 @@ async def _collect_vfs_winner_matrix(
         "case_count": len(results),
         "predeclared_hypothesis": (
             (
+                "the earlier-only registered pattern behaves like a never-present "
+                "missing control after the later mod replaces gfx/coat_of_arms/patterns, "
+                "and both differ from the later replacement pattern"
+            )
+            if replace_path
+            else (
                 "an enabled directory mod owns a conflicting base-game DDS path; "
                 "a later enabled archive mod owns a conflicting DDS path over an "
                 "earlier directory mod"
@@ -2827,7 +2891,13 @@ async def _collect_vfs_winner_matrix(
         and all(result["ok"] is True for result in results)
         and gate_passed,
     }
-    if extended:
+    if replace_path:
+        result["inferred_replace_path_effect"] = (
+            "earlier-only-pattern-hidden"
+            if gate_passed
+            else None
+        )
+    elif extended:
         result["inferred_winners"] = (
             {
                 "base_vs_mod": "enabled-directory-mod",
@@ -2981,6 +3051,7 @@ async def _mcp_sequence(
     parent_semantics_matrix: bool = False,
     vfs_winner_matrix: bool = False,
     vfs_extended_matrix: bool = False,
+    vfs_replace_path_matrix: bool = False,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
@@ -3725,6 +3796,20 @@ async def _mcp_sequence(
             checks["vfs_extended_evidence_complete"] = (
                 vfs_extended_result.get("ok") is True
             )
+        vfs_replace_path_result: dict[str, object] | None = None
+        if vfs_replace_path_matrix:
+            if all(checks.values()):
+                vfs_replace_path_result = await _collect_vfs_winner_matrix(
+                    client, record, replace_path=True
+                )
+            else:
+                vfs_replace_path_result = {
+                    "ok": False,
+                    "error": "route checks failed before replace_path VFS matrix",
+                }
+            checks["vfs_replace_path_evidence_complete"] = (
+                vfs_replace_path_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -3747,6 +3832,7 @@ async def _mcp_sequence(
             "parent_semantics_matrix": parent_semantics_result,
             "vfs_winner_matrix": vfs_winner_result,
             "vfs_extended_matrix": vfs_extended_result,
+            "vfs_replace_path_matrix": vfs_replace_path_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -3948,6 +4034,17 @@ def _write_vfs_extended_crops(
     )
 
 
+def _write_vfs_replace_path_crops(
+    path: Path, sequence: dict[str, object]
+) -> list[dict[str, object]]:
+    return _write_reference_free_matrix_crops(
+        path,
+        sequence,
+        matrix_key="vfs_replace_path_matrix",
+        label="replace_path VFS",
+    )
+
+
 def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     started = time.monotonic()
     repository = Path(__file__).resolve().parents[3]
@@ -3984,6 +4081,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     vfs_crop_dir = getattr(args, "vfs_crop_dir", None)
     vfs_extended_matrix = bool(getattr(args, "vfs_extended_matrix", False))
     vfs_extended_crop_dir = getattr(args, "vfs_extended_crop_dir", None)
+    vfs_replace_path_matrix = bool(
+        getattr(args, "vfs_replace_path_matrix", False)
+    )
+    vfs_replace_path_crop_dir = getattr(args, "vfs_replace_path_crop_dir", None)
     if picture_corpus is not None and (
         getattr(args, "large_source", None) is not None
         or reference_preview is not None
@@ -4010,6 +4111,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         raise ValueError(
             "--vfs-extended-crop-dir requires --vfs-extended-matrix"
         )
+    if vfs_replace_path_crop_dir is not None and not vfs_replace_path_matrix:
+        raise ValueError(
+            "--vfs-replace-path-crop-dir requires --vfs-replace-path-matrix"
+        )
     if parent_semantics_matrix and (
         syntax_matrix is not None
         or custom_mode_census
@@ -4019,6 +4124,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or picture_corpus is not None
         or vfs_winner_matrix
         or vfs_extended_matrix
+        or vfs_replace_path_matrix
     ):
         raise ValueError(
             "--parent-semantics-matrix cannot be combined with other CoA matrices"
@@ -4032,6 +4138,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or picture_corpus is not None
         or parent_semantics_matrix
         or vfs_extended_matrix
+        or vfs_replace_path_matrix
     ):
         raise ValueError(
             "--vfs-winner-matrix cannot be combined with other CoA matrices"
@@ -4045,9 +4152,24 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or picture_corpus is not None
         or parent_semantics_matrix
         or vfs_winner_matrix
+        or vfs_replace_path_matrix
     ):
         raise ValueError(
             "--vfs-extended-matrix cannot be combined with other CoA matrices"
+        )
+    if vfs_replace_path_matrix and (
+        syntax_matrix is not None
+        or custom_mode_census
+        or commit_roundtrip
+        or getattr(args, "large_source", None) is not None
+        or reference_preview is not None
+        or picture_corpus is not None
+        or parent_semantics_matrix
+        or vfs_winner_matrix
+        or vfs_extended_matrix
+    ):
+        raise ValueError(
+            "--vfs-replace-path-matrix cannot be combined with other CoA matrices"
         )
     if bookmarks_model_private and not bookmarks_read_only:
         raise ValueError("--bookmarks-model-private requires --bookmarks-read-only")
@@ -4068,6 +4190,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or parent_semantics_matrix
         or vfs_winner_matrix
         or vfs_extended_matrix
+        or vfs_replace_path_matrix
     ):
         raise ValueError("--bookmarks-read-only cannot run CoA actions")
     large_source = (
@@ -4192,6 +4315,34 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             if vfs_extended_matrix
             else None
         ),
+        "vfs_replace_path_matrix_requested": vfs_replace_path_matrix,
+        "vfs_replace_path_plan": (
+            {
+                "predeclared_hypothesis": (
+                    "the earlier-only registered pattern behaves like a never-present "
+                    "missing control after the later mod replaces gfx/coat_of_arms/patterns, "
+                    "and both differ from the later replacement pattern"
+                ),
+                "cases": [
+                    {
+                        "id": value["id"],
+                        "source": _source_receipt_from_text(
+                            value["source"],
+                            source_label=f"vfs-replace-path:{value['id']}",
+                        ),
+                    }
+                    for value in VFS_REPLACE_PATH_CASES
+                ],
+                "diagnostic_pairs": [
+                    list(value) for value in VFS_REPLACE_PATH_DIAGNOSTIC_PAIRS
+                ],
+                "capture_noise_thresholds": dict(
+                    PARENT_SEMANTICS_CAPTURE_NOISE_THRESHOLDS
+                ),
+            }
+            if vfs_replace_path_matrix
+            else None
+        ),
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -4263,6 +4414,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 parent_semantics_matrix=parent_semantics_matrix,
                 vfs_winner_matrix=vfs_winner_matrix,
                 vfs_extended_matrix=vfs_extended_matrix,
+                vfs_replace_path_matrix=vfs_replace_path_matrix,
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,
@@ -4340,6 +4492,24 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                     "error": str(error),
                 }
                 matrix_result = sequence.get("vfs_extended_matrix")
+                if (
+                    isinstance(matrix_result, dict)
+                    and matrix_result.get("cases")
+                ):
+                    raise
+        if vfs_replace_path_crop_dir is not None:
+            try:
+                report["vfs_replace_path_native_crops"] = (
+                    _write_vfs_replace_path_crops(
+                        vfs_replace_path_crop_dir, sequence
+                    )
+                )
+            except RuntimeError as error:
+                report["vfs_replace_path_native_crops"] = {
+                    "status": "unavailable",
+                    "error": str(error),
+                }
+                matrix_result = sequence.get("vfs_replace_path_matrix")
                 if (
                     isinstance(matrix_result, dict)
                     and matrix_result.get("cases")

@@ -13,9 +13,13 @@ from ck3_autonomous_player.native_bridge.research.prepare_coat_of_arms_vfs_fixtu
     BASE_ORIGINAL_REFERENCE,
     FIRST_SOURCE,
     PATTERN_DIRECTORY,
+    REPLACED_EARLIER,
+    REPLACE_LATER_REFERENCE,
     SECOND_SOURCE,
+    SOLID_SOURCE,
     prepare_extended_fixture,
     prepare_fixture,
+    prepare_replace_path_fixture,
 )
 
 
@@ -116,6 +120,77 @@ class PrepareCoatOfArmsVfsFixtureTests(unittest.TestCase):
             self.assertNotIn(f"{FIRST_SOURCE} =", base_manifest)
             with self.assertRaises(FileExistsError):
                 prepare_extended_fixture(base_profile, root / "game", output)
+
+    def test_builds_later_pattern_directory_replace_path_fixture(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base_profile = root / "base-profile"
+            base_profile.mkdir()
+            (base_profile / "pdx_settings.txt").write_text(
+                "language=l_english\n", encoding="utf-8"
+            )
+            patterns = root / "game" / PATTERN_DIRECTORY
+            patterns.mkdir(parents=True)
+            (patterns / FIRST_SOURCE).write_bytes(b"DDS earlier fixture")
+            (patterns / SECOND_SOURCE).write_bytes(b"DDS later fixture")
+            (patterns / SOLID_SOURCE).write_bytes(b"DDS solid fixture")
+            output = root / "fixture"
+
+            receipt = prepare_replace_path_fixture(
+                base_profile, root / "game", output
+            )
+
+            self.assertEqual(
+                receipt["schema"], "ck3-coat-of-arms-vfs-replace-path-fixture-v1"
+            )
+            self.assertEqual(
+                receipt["descriptors"][1]["replace_paths"],
+                ["gfx/coat_of_arms/patterns"],
+            )
+            later_descriptor = (
+                output / "mod" / "coa_vfs_replace_later.mod"
+            ).read_text(encoding="utf-8")
+            self.assertIn(
+                'replace_path="gfx/coat_of_arms/patterns"', later_descriptor
+            )
+            self.assertEqual(
+                receipt["earlier"]["source_sha256"],
+                receipt["earlier"]["asset_sha256"],
+            )
+            self.assertEqual(
+                receipt["later"]["source_sha256"],
+                receipt["later"]["asset_sha256"],
+            )
+            self.assertEqual(
+                receipt["later"]["solid_source_sha256"],
+                receipt["later"]["solid_asset_sha256"],
+            )
+            self.assertNotEqual(
+                receipt["earlier"]["asset_sha256"],
+                receipt["later"]["asset_sha256"],
+            )
+            self.assertTrue(
+                (
+                    output
+                    / "coa_vfs_replace_earlier"
+                    / "gfx"
+                    / "coat_of_arms"
+                    / "patterns"
+                    / REPLACED_EARLIER
+                ).is_file()
+            )
+            self.assertTrue(
+                (
+                    output
+                    / "coa_vfs_replace_later"
+                    / "gfx"
+                    / "coat_of_arms"
+                    / "patterns"
+                    / REPLACE_LATER_REFERENCE
+                ).is_file()
+            )
+            with self.assertRaises(FileExistsError):
+                prepare_replace_path_fixture(base_profile, root / "game", output)
 
 
 if __name__ == "__main__":
