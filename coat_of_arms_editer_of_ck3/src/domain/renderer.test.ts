@@ -77,6 +77,81 @@ describe('shader-grounded coat-of-arms renderer', () => {
     ]))
   })
 
+  it('uses the decoded DDS mip chain for minified full-surface textures', () => {
+    const pixels = (size: number, rgba: [number, number, number, number]) => {
+      const result = new Uint8ClampedArray(size * size * 4)
+      for (let offset = 0; offset < result.length; offset += 4) result.set(rgba, offset)
+      return result
+    }
+    const pattern: DecodedDds = {
+      width: 4,
+      height: 4,
+      fourCC: 'BGRA8',
+      pixels: pixels(4, [255, 0, 0, 255]),
+      mipmaps: [
+        { width: 2, height: 2, pixels: pixels(2, [0, 255, 0, 255]) },
+        { width: 1, height: 1, pixels: pixels(1, [0, 0, 255, 255]) },
+      ],
+    }
+    const coatOfArms = createCoatOfArms()
+    coatOfArms.colors = ['rgb { 255 0 0 }', 'rgb { 0 255 0 }', 'rgb { 0 0 255 }']
+    coatOfArms.coloredEmblems = []
+
+    const result = renderCoatOfArms(
+      coatOfArms,
+      { pattern, coloredEmblems: {} },
+      {},
+      1,
+    )
+
+    expect(result?.pixels).toEqual(new Uint8ClampedArray([0, 0, 255, 255]))
+  })
+
+  it('uses transform-derived mip LOD for minified colored emblems', () => {
+    const solid = (
+      width: number,
+      height: number,
+      rgba: [number, number, number, number],
+    ) => {
+      const result = new Uint8ClampedArray(width * height * 4)
+      for (let offset = 0; offset < result.length; offset += 4) result.set(rgba, offset)
+      return result
+    }
+    const pattern: DecodedDds = {
+      width: 1,
+      height: 1,
+      fourCC: 'DXT1',
+      pixels: new Uint8ClampedArray([255, 0, 0, 255]),
+    }
+    const emblem: DecodedDds = {
+      width: 4,
+      height: 4,
+      fourCC: 'BGRA8',
+      pixels: solid(4, 4, [0, 0, 128, 255]),
+      mipmaps: [
+        { width: 2, height: 2, pixels: solid(2, 2, [0, 0, 128, 0]) },
+        { width: 1, height: 1, pixels: solid(1, 1, [0, 0, 128, 0]) },
+      ],
+    }
+    const coatOfArms = createCoatOfArms()
+    coatOfArms.colors = ['rgb { 0 0 0 }', 'rgb { 0 0 0 }', 'rgb { 0 0 0 }']
+    coatOfArms.coloredEmblems = [{
+      texture: 'minified.dds',
+      colors: ['rgb { 255 255 255 }', 'rgb { 255 255 255 }', 'rgb { 255 255 255 }'],
+      mask: [],
+      instances: [{ position: [0.5, 0.5], scale: [0.125, 0.125], rotation: 0, depth: 1 }],
+    }]
+
+    const result = renderCoatOfArms(
+      coatOfArms,
+      { pattern, coloredEmblems: { 'minified.dds': emblem } },
+      {},
+      8,
+    )
+
+    expect(result?.pixels.every((value, index) => index % 4 === 3 ? value === 255 : value === 0)).toBe(true)
+  })
+
   it('alpha-blends a raw textured emblem before colored emblems', () => {
     const pattern: DecodedDds = {
       width: 1, height: 1, fourCC: 'DXT1',

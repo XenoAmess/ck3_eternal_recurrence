@@ -139,7 +139,7 @@ export interface ImageFitResult {
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
-    rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-depth-descending-v3'
+    rendererContract: 'cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4'
     randomSeed: null
     surfaceMaskApplied: boolean
     sourceWidth: number
@@ -223,6 +223,26 @@ interface SearchState {
 type ByteRgb = [number, number, number]
 
 const DEFAULT_RESOLUTION = 40
+// r15 same-session native A/B showed that a 0.84% browser-only total-loss
+// improvement could reverse in CK3. Requiring both axes to clear 1% keeps
+// native-shape additions outside that measured false-positive band.
+const NATIVE_SHAPE_MINIMUM_RELATIVE_IMPROVEMENT = 0.01
+
+export function passesNativeShapeMaterialImprovementGate(
+  initial: Pick<ImageFitMetrics, 'totalLoss' | 'edgeLoss'>,
+  candidate: Pick<ImageFitMetrics, 'totalLoss' | 'edgeLoss'>,
+): boolean {
+  const minimumTotalImprovement = Math.max(
+    1e-12,
+    initial.totalLoss * NATIVE_SHAPE_MINIMUM_RELATIVE_IMPROVEMENT,
+  )
+  const minimumEdgeImprovement = Math.max(
+    1e-12,
+    initial.edgeLoss * NATIVE_SHAPE_MINIMUM_RELATIVE_IMPROVEMENT,
+  )
+  return candidate.totalLoss <= initial.totalLoss - minimumTotalImprovement
+    && candidate.edgeLoss <= initial.edgeLoss - minimumEdgeImprovement
+}
 
 function clamp(value: number, minimum: number, maximum: number): number {
   return Math.min(maximum, Math.max(minimum, value))
@@ -1878,8 +1898,10 @@ function refinePaintedStateWithNativeShape(
   let best: LayerChoice | null = null
   const accept = (choice: LayerChoice) => {
     completed += 1
-    const passesGate = choice.candidate.totalLoss <= initial.candidate.totalLoss + 1e-12
-      && choice.candidate.edgeLoss < initial.candidate.edgeLoss - 1e-12
+    const passesGate = passesNativeShapeMaterialImprovementGate(
+      initial.candidate,
+      choice.candidate,
+    )
     if (
       passesGate
       && (
@@ -2633,7 +2655,7 @@ export function fitImageToCoatOfArms(
         : 'cpu-reference',
       batchSearch,
       scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1',
-      rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-depth-descending-v3',
+      rendererContract: 'cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4',
       randomSeed: null,
       surfaceMaskApplied: Boolean(surfaceMask),
       sourceWidth,

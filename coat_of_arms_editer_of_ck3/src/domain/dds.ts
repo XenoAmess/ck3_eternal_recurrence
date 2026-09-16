@@ -3,6 +3,14 @@ export interface DecodedDds {
   height: number
   fourCC: 'DXT1' | 'DXT5' | 'BGRA8'
   pixels: Uint8ClampedArray
+  /** Smaller levels in file order; the top level remains in `pixels`. */
+  mipmaps?: DecodedDdsMip[]
+}
+
+export interface DecodedDdsMip {
+  width: number
+  height: number
+  pixels: Uint8ClampedArray
 }
 
 function uint32(data: Uint8Array, offset: number): number {
@@ -114,6 +122,58 @@ function writeBlock(
   }
 }
 
+function compressedLevelBytes(
+  width: number,
+  height: number,
+  blockBytes: number,
+): number {
+  return Math.ceil(width / 4) * Math.ceil(height / 4) * blockBytes
+}
+
+function decodeCompressedLevel(
+  data: Uint8Array,
+  offset: number,
+  width: number,
+  height: number,
+  fourCC: 'DXT1' | 'DXT5',
+): Uint8ClampedArray {
+  const blockBytes = fourCC === 'DXT1' ? 8 : 16
+  const blocksWide = Math.ceil(width / 4)
+  const blocksHigh = Math.ceil(height / 4)
+  const pixels = new Uint8ClampedArray(width * height * 4)
+  let blockOffset = offset
+  for (let blockY = 0; blockY < blocksHigh; blockY += 1) {
+    for (let blockX = 0; blockX < blocksWide; blockX += 1) {
+      writeBlock(data, blockOffset, blockX, blockY, width, height, pixels, fourCC)
+      blockOffset += blockBytes
+    }
+  }
+  return pixels
+}
+
+function decodeBgra8Level(
+  data: Uint8Array,
+  offset: number,
+  width: number,
+  height: number,
+): Uint8ClampedArray {
+  const pixels = new Uint8ClampedArray(width * height * 4)
+  const required = offset + pixels.length
+  for (let source = offset, target = 0; source < required; source += 4, target += 4) {
+    pixels[target] = data[source + 2]
+    pixels[target + 1] = data[source + 1]
+    pixels[target + 2] = data[source]
+    pixels[target + 3] = data[source + 3]
+  }
+  return pixels
+}
+
+function declaredMipLevels(data: Uint8Array, width: number, height: number): number {
+  const declared = uint32(data, 28)
+  const maximum = Math.floor(Math.log2(Math.max(width, height))) + 1
+  return Math.max(1, Math.min(declared || 1, maximum))
+}
+
 export function decodeDds(data: Uint8Array): DecodedDds {
   if (data.byteLength < 128 || String.fromCharCode(...data.subarray(0, 4)) !== 'DDS ') {
     throw new Error('不是 DDS 容器')
@@ -132,35 +192,49 @@ export function decodeDds(data: Uint8Array): DecodedDds {
     && uint32(data, 100) === 0x000000ff
     && uint32(data, 104) === 0xff000000
   if (bgra8) {
-    const required = 128 + width * height * 4
-    if (data.byteLength < required) throw new Error('DDS 顶层 mip 数据不完整')
-    const pixels = new Uint8ClampedArray(width * height * 4)
-    for (let source = 128, target = 0; source < required; source += 4, target += 4) {
-      pixels[target] = data[source + 2]
-      pixels[target + 1] = data[source + 1]
-      pixels[target + 2] = data[source]
-      pixels[target + 3] = data[source + 3]
+    const mipLevelCount = declaredMipLevels(data, width, height)
+    const levels: DecodedDdsMip[] = []
+    let offset = 128
+    for (let level = 0; level < mipLevelCount; level += 1) {
+      const levelWidth = Math.max(1, width >> level)
+      const levelHeight = Math.max(1, height >> level)
+      const levelBytes = levelWidth * levelHeight * 4
+      if (data.byteLength < offset + levelBytes) {
+        throw new Error(level === 0 ? 'DDS 顶层 mip 数据不完整' : 'DDS mip 数据不完整')
+      }
+      levels.push({
+        width: levelWidth,
+        height: levelHeight,
+        pixels: decodeBgra8Level(data, offset, levelWidth, levelHeight),
+      })
+      offset += levelBytes
     }
-    return { width, height, fourCC: 'BGRA8', pixels }
+    const [top, ...mipmaps] = levels
+    return { width, height, fourCC: 'BGRA8', pixels: top.pixels, mipmaps }
   }
   if (fourCC !== 'DXT1' && fourCC !== 'DXT5') {
     throw new Error(`暂不支持 DDS ${fourCC || 'unknown'} 压缩`)
   }
   const blockBytes = fourCC === 'DXT1' ? 8 : 16
-  const blocksWide = Math.ceil(width / 4)
-  const blocksHigh = Math.ceil(height / 4)
-  const required = 128 + blocksWide * blocksHigh * blockBytes
-  if (data.byteLength < required) throw new Error('DDS 顶层 mip 数据不完整')
-
-  const pixels = new Uint8ClampedArray(width * height * 4)
+  const mipLevelCount = declaredMipLevels(data, width, height)
+  const levels: DecodedDdsMip[] = []
   let offset = 128
-  for (let blockY = 0; blockY < blocksHigh; blockY += 1) {
-    for (let blockX = 0; blockX < blocksWide; blockX += 1) {
-      writeBlock(data, offset, blockX, blockY, width, height, pixels, fourCC)
-      offset += blockBytes
+  for (let level = 0; level < mipLevelCount; level += 1) {
+    const levelWidth = Math.max(1, width >> level)
+    const levelHeight = Math.max(1, height >> level)
+    const levelBytes = compressedLevelBytes(levelWidth, levelHeight, blockBytes)
+    if (data.byteLength < offset + levelBytes) {
+      throw new Error(level === 0 ? 'DDS 顶层 mip 数据不完整' : 'DDS mip 数据不完整')
     }
+    levels.push({
+      width: levelWidth,
+      height: levelHeight,
+      pixels: decodeCompressedLevel(data, offset, levelWidth, levelHeight, fourCC),
+    })
+    offset += levelBytes
   }
-  return { width, height, fourCC, pixels }
+  const [top, ...mipmaps] = levels
+  return { width, height, fourCC, pixels: top.pixels, mipmaps }
 }
 
 export function decodeDdsBase64(encoded: string): DecodedDds {

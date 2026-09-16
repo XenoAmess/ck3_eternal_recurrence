@@ -99,7 +99,9 @@ export function resolveColor(expression: string, namedColors: NamedColorMap): Rg
   return rgb.every((value) => value >= 0 && value <= 1) ? rgb : null
 }
 
-function pixel(texture: DecodedDds, x: number, y: number): [number, number, number, number] {
+type SampledTextureLevel = Pick<DecodedDds, 'width' | 'height' | 'pixels'>
+
+function pixel(texture: SampledTextureLevel, x: number, y: number): [number, number, number, number] {
   const offset = (y * texture.width + x) * 4
   return [
     texture.pixels[offset] / 255,
@@ -109,7 +111,11 @@ function pixel(texture: DecodedDds, x: number, y: number): [number, number, numb
   ]
 }
 
-function sample(texture: DecodedDds, u: number, v: number): [number, number, number, number] {
+function sampleLevel(
+  texture: SampledTextureLevel,
+  u: number,
+  v: number,
+): [number, number, number, number] {
   const wrappedU = ((u % 1) + 1) % 1
   const wrappedV = ((v % 1) + 1) % 1
   const x = wrappedU * texture.width - 0.5
@@ -132,6 +138,72 @@ function sample(texture: DecodedDds, u: number, v: number): [number, number, num
     mix(bottomLeft[channel], bottomRight[channel], tx),
     ty,
   )) as [number, number, number, number]
+}
+
+function sample(
+  texture: DecodedDds,
+  u: number,
+  v: number,
+  lod = 0,
+): [number, number, number, number] {
+  const mipmaps = texture.mipmaps ?? []
+  const clampedLod = Math.min(mipmaps.length, Math.max(0, lod))
+  const lowerIndex = Math.floor(clampedLod)
+  const upperIndex = Math.min(mipmaps.length, lowerIndex + 1)
+  const fraction = clampedLod - lowerIndex
+  const lowerLevel = lowerIndex === 0 ? texture : mipmaps[lowerIndex - 1]
+  const lower = sampleLevel(lowerLevel, u, v)
+  if (upperIndex === lowerIndex || fraction <= 1e-12) return lower
+  const upper = sampleLevel(mipmaps[upperIndex - 1], u, v)
+  return [
+    mix(lower[0], upper[0], fraction),
+    mix(lower[1], upper[1], fraction),
+    mix(lower[2], upper[2], fraction),
+    mix(lower[3], upper[3], fraction),
+  ]
+}
+
+function fullSurfaceMipLod(
+  texture: DecodedDds,
+  width: number,
+  height: number,
+): number {
+  return Math.max(0, Math.log2(Math.max(
+    texture.width / width,
+    texture.height / height,
+  )))
+}
+
+function instanceMipLod(
+  texture: DecodedDds,
+  width: number,
+  height: number,
+  instance: CoatOfArmsInstance,
+  options: CoatOfArmsRenderOptions,
+): number {
+  const scaleX = Math.max(1e-8, Math.abs(instance.scale[0]))
+  const scaleY = Math.max(1e-8, Math.abs(instance.scale[1]))
+  const radians = instance.rotation * (options.emblemRotationSign ?? -1) * Math.PI / 180
+  const cosine = Math.cos(radians)
+  const sine = Math.sin(radians)
+  let dUdx: number
+  let dVdx: number
+  let dUdy: number
+  let dVdy: number
+  if ((options.emblemTransformConvention ?? 'scale-after-rotation') === 'rotation-after-scale') {
+    dUdx = cosine / (scaleX * width)
+    dVdx = sine / (scaleY * width)
+    dUdy = -sine / (scaleX * height)
+    dVdy = cosine / (scaleY * height)
+  } else {
+    dUdx = cosine / (scaleX * width)
+    dVdx = sine / (scaleX * width)
+    dUdy = -sine / (scaleY * height)
+    dVdy = cosine / (scaleY * height)
+  }
+  const footprintX = Math.hypot(dUdx * texture.width, dVdx * texture.height)
+  const footprintY = Math.hypot(dUdy * texture.width, dVdy * texture.height)
+  return Math.max(0, Math.log2(Math.max(footprintX, footprintY)))
 }
 
 function resolvedColors(values: [string, string, string], namedColors: NamedColorMap): [Rgb, Rgb, Rgb] {
@@ -215,6 +287,11 @@ function drawInstance(
   options: CoatOfArmsRenderOptions = {},
 ) {
   const colors = resolvedColors(emblem.colors, namedColors)
+  const patternLod = fullSurfaceMipLod(pattern, width, height)
+  const surfaceMaskLod = surfaceMask
+    ? fullSurfaceMipLod(surfaceMask, width, height)
+    : 0
+  const emblemLod = instanceMipLod(emblemTexture, width, height, instance, options)
   const radians = instance.rotation * Math.PI / 180
   const absoluteCosine = Math.abs(Math.cos(radians))
   const absoluteSine = Math.abs(Math.sin(radians))
@@ -237,11 +314,11 @@ function drawInstance(
       const u = (x + 0.5) / width
       const local = instanceUv(u, v, instance, options)
       if (!local) continue
-      const emblemSample = sample(emblemTexture, local[0], local[1])
+      const emblemSample = sample(emblemTexture, local[0], local[1], emblemLod)
       let alpha = emblemSample[3]
       if (alpha <= 0) continue
       if (emblem.mask.length) {
-        const patternSample = sample(pattern, u, v)
+        const patternSample = sample(pattern, u, v, patternLod)
         alpha *= patternMaskAlpha(
           [patternSample[0], patternSample[1], patternSample[2]],
           emblem.mask,
@@ -252,7 +329,7 @@ function drawInstance(
         colors,
       )
       if (surfaceMask) {
-        const detail = sample(surfaceMask, u, v)
+        const detail = sample(surfaceMask, u, v, surfaceMaskLod)
         color = getOverlay(color, [detail[2], detail[2], detail[2]], 0.2)
         alpha *= detail[1] * 2
       }
@@ -275,15 +352,19 @@ function drawTexturedEmblem(
   surfaceMask: DecodedDds | undefined,
   texture: DecodedDds,
 ) {
+  const textureLod = fullSurfaceMipLod(texture, width, height)
+  const surfaceMaskLod = surfaceMask
+    ? fullSurfaceMipLod(surfaceMask, width, height)
+    : 0
   for (let y = 0; y < height; y += 1) {
     const v = (y + 0.5) / height
     for (let x = 0; x < width; x += 1) {
       const u = (x + 0.5) / width
-      const textureSample = sample(texture, u, v)
+      const textureSample = sample(texture, u, v, textureLod)
       let color: Rgb = [textureSample[0], textureSample[1], textureSample[2]]
       let alpha = textureSample[3]
       if (surfaceMask) {
-        const detail = sample(surfaceMask, u, v)
+        const detail = sample(surfaceMask, u, v, surfaceMaskLod)
         color = getOverlay(color, [detail[2], detail[2], detail[2]], 0.2)
         alpha *= detail[1] * 2
       }
@@ -339,17 +420,21 @@ export function renderCoatOfArms(
   if (!assets.pattern || size < 1 || !Number.isSafeInteger(size)) return null
   const result = new Uint8ClampedArray(size * size * 4)
   const colors = resolvedColors(coatOfArms.colors, namedColors)
+  const patternLod = fullSurfaceMipLod(assets.pattern, size, size)
+  const surfaceMaskLod = assets.surfaceMask
+    ? fullSurfaceMipLod(assets.surfaceMask, size, size)
+    : 0
   for (let y = 0; y < size; y += 1) {
     const v = (y + 0.5) / size
     for (let x = 0; x < size; x += 1) {
       const u = (x + 0.5) / size
-      const patternSample = sample(assets.pattern, u, v)
+      const patternSample = sample(assets.pattern, u, v, patternLod)
       let color = shadePattern(
         [patternSample[0], patternSample[1], patternSample[2]],
         colors,
       )
       if (assets.surfaceMask) {
-        const detail = sample(assets.surfaceMask, u, v)
+        const detail = sample(assets.surfaceMask, u, v, surfaceMaskLod)
         color = getOverlay(color, [detail[2], detail[2], detail[2]], 0.2)
       }
       const offset = (y * size + x) * 4

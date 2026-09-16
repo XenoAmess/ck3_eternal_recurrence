@@ -1213,6 +1213,11 @@ function cloneDecodedDdsForWorker(texture: DecodedDds): DecodedDds {
     height: texture.height,
     fourCC: texture.fourCC,
     pixels: new Uint8ClampedArray(texture.pixels),
+    mipmaps: texture.mipmaps?.map((mipmap) => ({
+      width: mipmap.width,
+      height: mipmap.height,
+      pixels: new Uint8ClampedArray(mipmap.pixels),
+    })),
   }
 }
 

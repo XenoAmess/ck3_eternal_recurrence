@@ -4,6 +4,7 @@ import {
   dominantColors,
   fitImageToCoatOfArms,
   measureImageFitLosses,
+  passesNativeShapeMaterialImprovementGate,
   resizeFitImage,
   selectMixedNativeShapeCandidateNames,
   type FitImage,
@@ -158,6 +159,17 @@ const seamLeakMetrics = (
 }
 
 describe('browser image fitter', () => {
+  it('rejects the measured browser-only shape gain and accepts a material mip-aware gain', () => {
+    expect(passesNativeShapeMaterialImprovementGate(
+      { totalLoss: 0.052995, edgeLoss: 0.095896 },
+      { totalLoss: 0.052549, edgeLoss: 0.094820 },
+    )).toBe(false)
+    expect(passesNativeShapeMaterialImprovementGate(
+      { totalLoss: 0.052810569499734915, edgeLoss: 0.08679505759266391 },
+      { totalLoss: 0.05118391010135082, edgeLoss: 0.08446813456742323 },
+    )).toBe(true)
+  })
+
   it('keeps descriptor leaders and every available primitive family in the mixed shortlist', () => {
     const ranked = [
       'semantic-a.dds', 'semantic-b.dds', 'semantic-c.dds', 'semantic-d.dds',

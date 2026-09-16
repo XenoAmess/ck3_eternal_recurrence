@@ -52,6 +52,22 @@ describe('DDS decoder', () => {
     expect([...decoded.pixels.slice(0, 4)]).toEqual([0, 0, 255, 255])
   })
 
+  it('decodes the declared compressed mip chain instead of discarding it', () => {
+    const data = dds('DXT1', [
+      0x00, 0xf8, 0xe0, 0x07,
+      0x00, 0x00, 0x00, 0x00,
+      0x1f, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+    ])
+    new DataView(data.buffer).setUint32(28, 2, true)
+
+    const decoded = decodeDds(data)
+
+    expect(decoded.mipmaps).toHaveLength(1)
+    expect(decoded.mipmaps?.[0]).toMatchObject({ width: 2, height: 2 })
+    expect([...decoded.mipmaps![0].pixels.slice(0, 4)]).toEqual([0, 0, 255, 255])
+  })
+
   it('decodes the uncompressed BGRA8 layout used by _default.dds', () => {
     const decoded = decodeDds(bgra8([10, 20, 30, 40]))
 

@@ -186,6 +186,19 @@ edge 也退化。picture-07 的差异处在重复漂移量级，不能证明原�
 不可迁移的微小假收益，**不晋级**；交付基线继续使用 v11。r14/r15 完整证据分别在
 `user-picture-corpus-v12-native-r14/` 和 `user-picture-corpus-v11-v12-native-ab-r15/`。
 
+## v13 DDS mip-aware renderer（2026-09-16）
+
+原版 DDS 并非单层图片：典型 128×128 DXT5 emblem 的 22,000-byte 文件含完整 64→1 mip 链；原版
+`coat_of_arms.fxh` 又明确启用 Linear mag/min/mip 与 Wrap。网页此前只解顶层 mip，因此缩小的字母、
+圆和细线在浏览器评分中比 CK3 更锐利，正好会制造 v12 已观测的假收益。
+
+v13 已让 DXT1/DXT5/BGRA8 解码、主 renderer、拟合 Worker 与剪枝 Worker 保留并按仿射导数三线性
+采样 mip。另以 r15 失败区间校准 1% 双指标形状门禁。七图浏览器回归 7/7 通过；picture-05 不再
+接受 billet/字母，904 层自然收敛；picture-07 保留超过门槛的 `ce_desdichado`，987 层完成。
+两处预览仍字节同源，代码复制/解析计数完整。新 renderer 合同数值不与旧合同直接比较，完整证据在
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v13-mip-aware-budget-1024/`；新的 CK3 原生复验
+完成前仍标为 browser-only。
+
 ## 复现命令
 
 ```bat
