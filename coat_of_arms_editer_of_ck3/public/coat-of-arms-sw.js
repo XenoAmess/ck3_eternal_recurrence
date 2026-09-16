@@ -55,6 +55,6 @@ self.addEventListener('fetch', (event) => {
 
   const relativePath = url.pathname.slice(scopeUrl.pathname.length)
   const immutable = relativePath.startsWith('assets/')
-    || /^asset-packs\/[^/]+\/assets\/[0-9a-f]{64}\.(?:dds|rgba)$/.test(relativePath)
+    || /^asset-packs\/[^/]+\/assets\/[0-9a-f]{64}\.(?:dds|rgba|fit)$/.test(relativePath)
   event.respondWith(immutable ? cacheFirst(request) : networkFirst(request))
 })

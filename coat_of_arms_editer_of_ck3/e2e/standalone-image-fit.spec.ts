@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { expect, test } from '@playwright/test'
 import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
@@ -163,11 +163,24 @@ test('runs against the locally generated exact-build asset pack', async ({ page 
   test.setTimeout(process.env.GITHUB_PAGES === 'true' ? 300_000 : 120_000)
   test.skip(!existsSync(localPack), 'the exact-build static asset pack is missing from this checkout')
   const apiRequests: string[] = []
+  const assetRequests: string[] = []
+  const localManifest = JSON.parse(readFileSync(localPack, 'utf8')) as {
+    assets: { url: string }[]
+    fit_index: { url: string, features?: { url: string } }
+  }
+  const fitShardUrls = [localManifest.fit_index.url, localManifest.fit_index.features?.url]
+    .filter((value): value is string => Boolean(value))
   page.on('request', (request) => {
-    if (new URL(request.url()).pathname.startsWith('/api/')) apiRequests.push(request.url())
+    const pathname = new URL(request.url()).pathname
+    if (pathname.startsWith('/api/')) apiRequests.push(request.url())
+    if (pathname.includes('/asset-packs/ck3-1.19.0.6/assets/')) assetRequests.push(pathname)
   })
   await page.goto('/')
   await expect(page.getByText(/ck3-1\.19\.0\.6-base-complete/)).toBeVisible({ timeout: 30_000 })
+  expect(assetRequests.some((path) => fitShardUrls.some((url) => path.endsWith(url)))).toBe(false)
+  const initialDdsRequests = new Set(assetRequests.filter((path) => path.endsWith('.dds')))
+  expect(initialDdsRequests.size).toBeGreaterThan(0)
+  expect(initialDdsRequests.size).toBeLessThan(localManifest.assets.length)
   const pngBase64 = await page.evaluate(() => {
     const canvas = document.createElement('canvas')
     canvas.width = 64
@@ -188,5 +201,17 @@ test('runs against the locally generated exact-build asset pack', async ({ page 
   await expect(page.locator('.fit-report dl div').filter({ hasText: '预计算形状特征' }).locator('dd'))
     .toHaveText('1619 / 1619')
   await expect(page.locator('.output-block pre')).toContainText('pattern =')
+  for (const shardUrl of fitShardUrls) {
+    expect(assetRequests.some((path) => path.endsWith(shardUrl))).toBe(true)
+  }
+  const requestedDds = new Set(assetRequests.filter((path) => path.endsWith('.dds')))
+  expect(requestedDds.size).toBeLessThan(localManifest.assets.length)
+  console.log(JSON.stringify({
+    contract: 'ck3-coa-asset-pack-on-demand-v1',
+    manifestAssets: localManifest.assets.length,
+    initialDdsRequests: initialDdsRequests.size,
+    fitShardRequests: fitShardUrls.length,
+    totalDdsRequests: requestedDds.size,
+  }))
   expect(apiRequests).toEqual([])
 })

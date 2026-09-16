@@ -42,7 +42,7 @@
 3. 运行全部 Vitest；
 4. 安装 Actions runner 的 Playwright Chromium/Firefox/WebKit；对 production build 执行 128/1,024/10,000 真实预算、四阶段取消、
    10,000 实例文档、独立素材包拟合、候选编辑、自动恢复、中英文、移动端、安全 SVG、`parent` 边界、
-   `textured_emblem`、可视化变换和零后端请求等门禁；WebGL 源模块动态 import 在 dev server 中独立验收，
+   `textured_emblem`、可视化变换、素材按需请求和零后端请求等门禁；WebGL 源模块动态 import 在 dev server 中独立验收，
    不在 production `dist` 中伪造 `/src` 入口；
 5. 对七图 1,024 预算已冻结的 7 份报告、原生 summary 与混合元素消融 receipt 做确定性重建/字节校验。
    完整七图研究基准仍是仓库回归用例，但不在每次 Pages push 上重跑：GitHub 托管 CPU 实测单图可超过 2–3 分钟，
@@ -69,6 +69,7 @@
 | 32×32 RGBA fit index | 1,619 个可粘贴注册项；6,631,424 bytes |
 | v2 shape feature sidecar | 1,619 项；2,266,632 bytes；SHA-256 `76429584…DC26` |
 | VFS receipt | `base_game_only`；1 source；0 conflict；1,630 项胜者集 SHA-256 `B0FB6AAD…2474` |
+| 浏览器按需读取 | 首屏 4 DDS、0 搜索 shard；首次拟合 2 搜索 shard、累计 5 DDS（`ck3-coa-asset-pack-on-demand-v1`） |
 
 VFS receipt 不把基础包冒充 playset：它明确声明没有读取启动配置。R22 的 scoped 原生证据只证明两个启用目录模组发生已注册
 直接 DDS 同路径冲突时后项胜出；未覆盖范围逐项写进 receipt。网页加载默认或本地 pack 时都会重算胜者集 SHA-256，缺失、计数或
@@ -78,6 +79,20 @@ VFS receipt 不把基础包冒充 playset：它明确声明没有读取启动配
 mod 提取的资源。其他 `ck3-*` 生成目录继续由 `.gitignore` 排除，只有显式审阅并添加精确 unignore 后才能进入发布树。
 完整性定义、隐藏项及 8 个未注册辅助文件清单见
 [`ck3-coat-of-arms-asset-inventory.md`](ck3-coat-of-arms-asset-inventory.md)。
+
+## 按需素材分片与离线缓存
+
+Pages artifact 必须保留完整授权 pack，浏览器运行时则不得因为打开页面就下载全部 1,630 个 DDS。manifest、32×32 RGBA 搜索索引、
+shape feature sidecar 与每个 DDS 都是独立资源；索引和 DDS 文件名绑定各自内容 SHA-256。首屏只读取 manifest 和当前构图实际需要的
+DDS，用户开始图片拟合时才读取两个完整库搜索 shard，最终全分辨率交叉评分再按候选读取少量 DDS。
+
+`e2e/standalone-image-fit.spec.ts` 在 exact pack 上记录 `ck3-coa-asset-pack-on-demand-v1`：manifest 共 1,630 项，首屏只请求 4 个 DDS，
+拟合时新增 2 个搜索 shard，整个用例累计只请求 5 个 DDS。门禁同时要求首屏不得提前请求 `.rgba`/`.fit`，且 DDS 请求数必须严格小于
+manifest 总项数。
+
+Service Worker 对 hash 命名的 `.dds`、`.rgba` 和 `.fit` 使用 cache-first；manifest 与入口使用 network-first，并按完整 build SHA
+隔离 cache、激活新版本时清理旧版本。`e2e/service-worker-offline.spec.ts` 会在线填充两个搜索 shard，记录 byte 数与 SHA-256，随后
+切断网络并从同一版本 cache 回读完全相同的 receipt。用户上传图片是 blob/file 数据，不进入这条同源 GET 缓存链路。
 
 ## 子路径与运行边界
 
