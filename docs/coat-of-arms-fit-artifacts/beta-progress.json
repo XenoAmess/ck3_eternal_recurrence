@@ -459,7 +459,9 @@
         "pnpm build&& set COA_E2E_USE_PREVIEW=true&& pnpm exec playwright test e2e/service-worker-offline.spec.ts --reporter=line",
         "set COA_EXPECTED_PAGES_HASH=d497fb30&& pnpm exec playwright test e2e/pages-deployment.spec.ts --reporter=line",
         "pnpm test",
-        "pnpm build"
+        "pnpm build",
+        "pnpm exec vitest run src/domain/assetPack.test.ts --reporter=verbose",
+        "python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6"
       ],
       "resultPath": "docs/coat-of-arms-safe-svg-input.md",
       "keyMetrics": {
@@ -505,6 +507,8 @@
         "assetPackVfsWinner": "passed_native_for_registered_direct_dds_conflict_between_two_enabled_directory_mods_r22_later_enabled_mod_wins_other_vfs_cases_uncovered",
         "assetPackVfsReceipt": "passed_base_game_only_default_pack_import_contract_and_1630_asset_winner_set_sha256_verification",
         "assetPackVfsReceiptSchema": "ck3-coa-vfs-receipt-v1",
+        "assetPackResolvedOverlayWinnerProvenance": "passed_source_id_required_declared_and_bound_into_winner_set_sha256",
+        "assetPackResolvedOverlayContractTests": "passed_valid_overlay_and_missing_source_fail_closed",
         "assetPackVfsWinnerSetSha256": "B0FB6AAD58818D5731D2996F467FEEBDEEF55B2E0D5C32DFBDA83F54F7222474",
         "assetPackVfsEvidencePath": "docs/coat-of-arms-fit-artifacts/vfs-winner-native-r22/",
         "assetPackVfsNativeWinnerLoadOrder": 1,

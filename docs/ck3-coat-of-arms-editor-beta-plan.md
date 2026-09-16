@@ -225,7 +225,8 @@ Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_a
 
 R22 又以 MCP-only、零 OCR/键鼠的 reference-free framebuffer 矩阵证明：两个启用的目录模组注册并提供同名直接 DDS 路径时，
 后一个 `enabled_mods` 项胜出。基础静态 pack 现在带 `ck3-coa-vfs-receipt-v1`，浏览器会校验 1,630 项胜者清单 SHA-256，
-并明确显示 `base_game_only`；导入包可以携带 `resolved_overlay` 收据。该原生证据只覆盖目录模组间的已注册直接 DDS 冲突，
+并明确显示 `base_game_only`；导入包可以携带 `resolved_overlay` 收据。overlay 中每个胜者必须声明已登记的 `source_id`，胜者集
+SHA-256 同时绑定 source、逻辑资源、资源 hash 和源相对路径；缺失或引用 receipt 外来源会 fail closed。该原生证据只覆盖目录模组间的已注册直接 DDS 冲突，
 基础游戏/模组、DLC mount、archive、`replace_path` 和 definition merge 仍未覆盖，不能据此把 WP6 宣称为全部完成。证据见
 [`vfs-winner-native-r22`](coat-of-arms-fit-artifacts/vfs-winner-native-r22/README.md)。asset delivery 已由浏览器门禁闭合：1,630 项
 manifest 载入后首屏只请求当前构图所需的 4 个 DDS，不请求 6,631,424-byte RGBA index 或 2,266,632-byte shape-feature shard；首次拟合才请求

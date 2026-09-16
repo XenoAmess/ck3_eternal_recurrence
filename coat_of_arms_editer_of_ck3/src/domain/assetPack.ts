@@ -25,6 +25,7 @@ export interface WebAssetPackEntry {
   asset_bytes: number
   asset_sha256: string
   source_relative_path: string
+  source_id: string | null
   registration: WebAssetRegistration
   fit_eligible: boolean
   dds: {
@@ -194,6 +195,9 @@ function parseEntry(value: unknown, index: number): WebAssetPackEntry {
       `assets[${index}].source_relative_path`,
       SAFE_SOURCE_PATH,
     ),
+    source_id: item.source_id === undefined || item.source_id === null
+      ? null
+      : text(item.source_id, `assets[${index}].source_id`),
     registration: registration as WebAssetRegistration,
     fit_eligible: fitEligible,
     dds: {
@@ -430,6 +434,18 @@ export function parseWebAssetPack(value: unknown): WebAssetPack {
   const fitIndex = source.fit_index === undefined ? undefined : parseFitIndex(source.fit_index, assets)
   const inventory = source.inventory === undefined ? undefined : parseInventory(source.inventory)
   const vfsReceipt = parseVfsReceipt(source.vfs_receipt, assets)
+  const receiptSourceIds = new Set(vfsReceipt.sources.map((item) => item.source_id))
+  if (vfsReceipt.scope === 'resolved_overlay') {
+    const missingSource = assets.findIndex((item) => item.source_id === null)
+    if (missingSource >= 0) throw new Error(`resolved_overlay assets[${missingSource}] 缺少 source_id`)
+    const unknownSource = assets.findIndex((item) => !receiptSourceIds.has(item.source_id!))
+    if (unknownSource >= 0) throw new Error(`resolved_overlay assets[${unknownSource}].source_id 不在 receipt sources`)
+  } else {
+    const unexpectedSource = assets.findIndex(
+      (item) => item.source_id !== null && !receiptSourceIds.has(item.source_id),
+    )
+    if (unexpectedSource >= 0) throw new Error(`base_game_only assets[${unexpectedSource}].source_id 不在 receipt sources`)
+  }
   if (inventory) {
     const observed = {
       registered_patterns: assets.filter((item) => item.kind === 'pattern' && item.registration === 'designer_manifest').length,
@@ -465,18 +481,19 @@ export function parseWebAssetPack(value: unknown): WebAssetPack {
   }
 }
 
-function winnerSetBytes(assets: readonly WebAssetPackEntry[]): Uint8Array {
-  const rows = assets.map((entry) => [
+function winnerSetBytes(pack: WebAssetPack): Uint8Array {
+  const rows = pack.assets.map((entry) => [
     entry.kind,
     entry.name,
     entry.asset_sha256,
+    ...(pack.vfs_receipt.scope === 'resolved_overlay' ? [entry.source_id!] : []),
     entry.source_relative_path,
   ].join('\0'))
   return new TextEncoder().encode(`${rows.join('\n')}\n`)
 }
 
 export async function calculateWebAssetWinnerSetSha256(pack: WebAssetPack): Promise<string> {
-  return sha256Hex(winnerSetBytes(pack.assets))
+  return sha256Hex(winnerSetBytes(pack))
 }
 
 export async function verifyWebAssetPackVfsReceipt(pack: WebAssetPack): Promise<void> {

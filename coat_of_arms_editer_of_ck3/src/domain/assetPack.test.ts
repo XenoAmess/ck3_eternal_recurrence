@@ -87,6 +87,59 @@ describe('web asset pack contract', () => {
     expect(() => parseWebAssetPack(invalid)).toThrow(/resolved_overlay/)
   })
 
+  it('binds every resolved-overlay winner to a declared source', async () => {
+    const overlay: any = pack()
+    overlay.assets = overlay.assets.map((item: Record<string, unknown>, index: number) => ({
+      ...item,
+      source_id: index === 0 ? 'ck3-base-1.19.0.6' : 'later-directory-mod',
+    }))
+    overlay.vfs_receipt = {
+      ...overlay.vfs_receipt,
+      scope: 'resolved_overlay',
+      resolution_policy: 'later_enabled_source_wins_direct_path',
+      load_configuration_sha256: 'E'.repeat(64),
+      conflict_count: 1,
+      sources: [
+        overlay.vfs_receipt.sources[0],
+        {
+          source_id: 'later-directory-mod',
+          source_kind: 'directory_mod',
+          precedence_order: 1,
+          source_identity_sha256: 'F'.repeat(64),
+        },
+      ],
+    }
+    const parsed = parseWebAssetPack(overlay)
+    overlay.vfs_receipt.winner_set_sha256 = await calculateWebAssetWinnerSetSha256(parsed)
+    const verified = parseWebAssetPack(overlay)
+
+    await expect(verifyWebAssetPackVfsReceipt(verified)).resolves.toBeUndefined()
+    expect(verified.assets.map((item) => item.source_id)).toEqual([
+      'ck3-base-1.19.0.6',
+      'later-directory-mod',
+    ])
+  })
+
+  it('rejects a resolved-overlay winner without source provenance', () => {
+    const overlay: any = pack()
+    overlay.vfs_receipt = {
+      ...overlay.vfs_receipt,
+      scope: 'resolved_overlay',
+      resolution_policy: 'later_enabled_source_wins_direct_path',
+      load_configuration_sha256: 'E'.repeat(64),
+      sources: [
+        overlay.vfs_receipt.sources[0],
+        {
+          source_id: 'later-directory-mod',
+          source_kind: 'directory_mod',
+          precedence_order: 1,
+          source_identity_sha256: 'F'.repeat(64),
+        },
+      ],
+    }
+    expect(() => parseWebAssetPack(overlay)).toThrow(/缺少 source_id/)
+  })
+
   it('rejects duplicate logical resources', () => {
     const duplicate = pack()
     duplicate.assets.push({ ...entry })

@@ -73,7 +73,9 @@
 
 VFS receipt 不把基础包冒充 playset：它明确声明没有读取启动配置。R22 的 scoped 原生证据只证明两个启用目录模组发生已注册
 直接 DDS 同路径冲突时后项胜出；未覆盖范围逐项写进 receipt。网页加载默认或本地 pack 时都会重算胜者集 SHA-256，缺失、计数或
-哈希不一致即拒绝载入。
+哈希不一致即拒绝载入。`resolved_overlay` 还要求每个输出胜者带一个 receipt 已登记的 `source_id`，其胜者哈希行包含
+`kind / name / asset SHA-256 / source_id / source_relative_path`；这样一个只有来源列表却未说明每项胜者来自何处的 overlay 会被拒绝。
+`base_game_only` 保持四字段 canonical 行和现有 `B0FB6AAD…2474`，不会因新增 overlay 约束改写已发布基础包身份。
 
 该授权记录只适用于本仓库当前 pack 的版本管理与 Pages 发布，不冒充所有权转移，也不自动放行以后从其他 CK3 build、DLC 或
 mod 提取的资源。其他 `ck3-*` 生成目录继续由 `.gitignore` 排除，只有显式审阅并添加精确 unignore 后才能进入发布树。

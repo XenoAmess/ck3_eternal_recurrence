@@ -109,24 +109,10 @@ def verify(pack_directory: Path) -> dict[str, object]:
     vfs_receipt = manifest.get("vfs_receipt")
     if not isinstance(vfs_receipt, dict) or vfs_receipt.get("schema") != "ck3-coa-vfs-receipt-v1":
         raise ValueError("pack must contain a supported vfs_receipt")
-    winner_rows = [
-        "\0".join(
-            (
-                str(item["kind"]),
-                str(item["name"]),
-                str(item["asset_sha256"]),
-                str(item["source_relative_path"]),
-            )
-        )
-        for item in assets
-    ]
-    winner_set_sha256 = digest(("\n".join(winner_rows) + "\n").encode("utf-8"))
-    if vfs_receipt.get("winner_set_sha256") != winner_set_sha256:
-        raise ValueError("vfs_receipt winner_set_sha256 does not bind the asset inventory")
     if vfs_receipt.get("resolved_asset_count") != len(assets):
         raise ValueError("vfs_receipt resolved_asset_count does not match assets")
     conflict_count = vfs_receipt.get("conflict_count")
-    if not isinstance(conflict_count, int) or not 0 <= conflict_count <= len(assets):
+    if not isinstance(conflict_count, int) or not 0 <= conflict_count <= 4096:
         raise ValueError("vfs_receipt conflict_count is invalid")
     sources = vfs_receipt.get("sources")
     if not isinstance(sources, list) or not 1 <= len(sources) <= 512:
@@ -157,6 +143,8 @@ def verify(pack_directory: Path) -> dict[str, object]:
             or conflict_count != 0
         ):
             raise ValueError("base_game_only vfs_receipt contract is inconsistent")
+        if any(item.get("source_id") not in {None, sources[0]["source_id"]} for item in assets):
+            raise ValueError("base_game_only asset source_id is not declared by the receipt")
     elif scope == "resolved_overlay":
         if (
             len(sources) < 2
@@ -166,8 +154,26 @@ def verify(pack_directory: Path) -> dict[str, object]:
             or not SHA256.fullmatch(load_sha256)
         ):
             raise ValueError("resolved_overlay vfs_receipt contract is inconsistent")
+        for index, item in enumerate(assets):
+            if not isinstance(item.get("source_id"), str) or item["source_id"] not in source_ids:
+                raise ValueError(f"resolved_overlay assets[{index}] source_id is not declared")
     else:
         raise ValueError("vfs_receipt scope is unsupported")
+    winner_rows = [
+        "\0".join(
+            (
+                str(item["kind"]),
+                str(item["name"]),
+                str(item["asset_sha256"]),
+                *([str(item["source_id"])] if scope == "resolved_overlay" else []),
+                str(item["source_relative_path"]),
+            )
+        )
+        for item in assets
+    ]
+    winner_set_sha256 = digest(("\n".join(winner_rows) + "\n").encode("utf-8"))
+    if vfs_receipt.get("winner_set_sha256") != winner_set_sha256:
+        raise ValueError("vfs_receipt winner_set_sha256 does not bind the asset inventory")
     native_evidence = vfs_receipt.get("native_precedence_evidence")
     if not isinstance(native_evidence, dict):
         raise ValueError("vfs_receipt native precedence evidence is missing")
