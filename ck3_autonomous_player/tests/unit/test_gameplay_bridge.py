@@ -189,6 +189,10 @@ def _arrange_marriage_context_result(
     secondary_recipient_character_id: int = 38_293,
     intermediary_character_id: int = -1,
     selected_option_index: int | None = None,
+    age_days: object = 0,
+    expiration_days: object = 60,
+    remaining_days: object = 60,
+    expiry_boundary_status: object = "not_reached",
 ) -> dict[str, object]:
     if legality is None:
         legality = {
@@ -230,10 +234,10 @@ def _arrange_marriage_context_result(
         }
     )
     context["deadline"] = {
-        "age_days": 0,
-        "expiration_days": 60,
-        "remaining_days": 60,
-        "expiry_boundary_status": "not_reached",
+        "age_days": age_days,
+        "expiration_days": expiration_days,
+        "remaining_days": remaining_days,
+        "expiry_boundary_status": expiry_boundary_status,
     }
     context["send_options"] = {
         "exclusive": False,
@@ -5392,6 +5396,89 @@ class GameplayBridgeTests(unittest.TestCase):
                     ],
                 },
             },
+        )
+
+    def test_planner_rejects_unexpired_aged_marriage_pending(self) -> None:
+        plan = _plan_for_pending_context(
+            _arrange_marriage_context_result(
+                age_days=2,
+                expiration_days=60,
+                remaining_days=58,
+            ),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "pending_arrange_marriage_reject_only")
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertEqual(decision["marriage_contract_gaps"], [])
+
+    def test_marriage_reject_only_requires_consistent_unexpired_deadline(
+        self,
+    ) -> None:
+        for deadline, expected_gap in (
+            (
+                {"age_days": None, "expiration_days": 60, "remaining_days": 58},
+                "marriage_unexpired_deadline_shape_mismatch",
+            ),
+            (
+                {"age_days": True, "expiration_days": 60, "remaining_days": 59},
+                "marriage_unexpired_deadline_shape_mismatch",
+            ),
+            (
+                {"age_days": 2, "expiration_days": 60, "remaining_days": 57},
+                "marriage_unexpired_deadline_shape_mismatch",
+            ),
+            (
+                {"age_days": 60, "expiration_days": 60, "remaining_days": 0},
+                "marriage_unexpired_deadline_shape_mismatch",
+            ),
+            (
+                {"age_days": 2, "expiration_days": 61, "remaining_days": 59},
+                "marriage_unexpired_deadline_shape_mismatch",
+            ),
+        ):
+            with self.subTest(deadline=deadline):
+                result = _arrange_marriage_context_result(
+                    age_days=deadline["age_days"],
+                    expiration_days=deadline["expiration_days"],
+                    remaining_days=deadline["remaining_days"],
+                )
+                plan = _plan_for_pending_context(
+                    result,
+                    action_steps=(
+                        "accept-pending-character-interaction",
+                        "reject-pending-character-interaction",
+                    ),
+                )
+                self.assertIsNone(plan["selected_step"])
+                self.assertIn(
+                    expected_gap, plan["decision"]["marriage_contract_gaps"]
+                )
+
+        result = _arrange_marriage_context_result(
+            age_days=2,
+            expiration_days=60,
+            remaining_days=58,
+            expiry_boundary_status="reached",
+        )
+        plan = _plan_for_pending_context(
+            result,
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertIn(
+            "marriage_unexpired_deadline_shape_mismatch",
+            plan["decision"]["marriage_contract_gaps"],
         )
 
     def test_marriage_reject_only_never_falls_through_to_unique_accept(

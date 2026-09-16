@@ -207,8 +207,26 @@ production-live loop，但不升级 accept、secondary-pair semantic outcome 或
 `player-as-AI ai_accept > 0 at send` 可以作为这一个 same-day、zero-option 请求的 accept 先验。它仍不能升级成
 “query-time raw 仍为正”：同一 native day 内其它 effect 也可能改变关系/资源，而 wire 没有重放或保存 acceptance evaluator。
 更关键的是，当前只能验证旧 pending ID 被消费，不能验证 `38993 ↔ 38293` 成婚/订婚或联盟结果。因此本轮不消费该先验
-做持久 accept，而选择可由现有 reply lifecycle 验证的 reject-only unblock。若请求已经跨日、option 改变或 frame binding
-不一致，连这条窄拒绝合同也不得复用。
+做持久 accept，而选择可由现有 reply lifecycle 验证的 reject-only unblock。跨日自身不会改变这个 reply 的类型或已知
+decline 结果；只有 deadline 缺失、类型错误、`remaining != expiration - age`、`age >= expiration`、boundary 已到、option 改变或
+frame binding 不一致时，连这条窄拒绝合同也不得复用。
+
+[production RED / static fix pending live replay] R761 的普通 production 长跑在 turn 251 遇到第二个自然
+`arrange_marriage_interaction`：pending full ID `-1040187385`，actor/recipient `34676/31853`，secondary pair
+`63759/36403`，direct local route，six-row option vector 全未选，reject 仍由同帧 native legality 标为合法且命令可达。
+它唯一没有通过既有窄合同的字段是 deadline 已自然老化为 `age=2 / expiration=60 / remaining=58 / not_reached`，策略因此以
+`marriage_same_day_deadline_shape_mismatch` 停止。formal report SHA-256 为
+`0EF048777C7968A3373BF4B2C4FE56737747926E502BBA3485A224AFC600A649`；最后安全 checkpoint 为
+`date_raw=53333040`、index `1116`、save SHA-256
+`387C84177A543BB768C5F10A1FB526B15BF3BC31539B310D0DD623D9132EDA3E`。
+
+该 RED 证明原来的 `age=0` 是过窄的 planner shape guard，而不是原生 reply 生命周期要求。exact-build pending ABI 已冻结
+`pending+0x5B8` 每日递增、全局 expiry 为 `60`，以及 `remaining=max(0, expiration-age)`；human-owned 请求在
+`age >= expiration` 的 daily pass 才进入到期处理。修复后的策略只接受 typed integer、`expiration==60`、
+`0 <= age < expiration`、`remaining == expiration-age > 0` 且 boundary 为 `not_reached` 的窗口。它仍保持
+definition、四角色、direct route、opaque special、zero-option vector、same-frame legality 和 action reachability 的全部旧门，
+也仍禁止落入 unique accept。此差异在新的冻结候选从上述 checkpoint cold resume 并观察旧 pending ID 消失及下一 paused
+turn 继续前，只能记为 **static-ready B0 fix**，不能记为新的 production-live reply 证据。
 
 ## 最小 G1 blocker-removal 合同
 
@@ -221,7 +239,8 @@ production-live loop，但不升级 accept、secondary-pair semantic outcome 或
    仍与 query 完全一致；
 5. `auto_accept_notification == false`、acknowledge 非法、reject 原生合法且 reject command 可达；
 6. six-row send-option vector 长度与 definition 相等，且本次所有 selected 均为 false；
-7. deadline 未到期，并且 action executor 能等待旧 full pending ID 消失/推进到下一 paused snapshot。
+7. deadline 是内部一致的 stock 60 天窗口：`0 <= age < 60`、`remaining == 60-age > 0`、boundary 为
+   `not_reached`；action executor 能等待旧 full pending ID 消失/推进到下一 paused snapshot。
 
 命中该窄规则时拒绝的依据与代价是：
 

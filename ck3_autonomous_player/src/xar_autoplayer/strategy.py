@@ -852,7 +852,7 @@ def _pending_interaction_evidence_gaps(
 def _arrange_marriage_reject_contract_gaps(
     context: dict[str, object],
 ) -> list[str]:
-    """Match only the exact direct, zero-option marriage blocker shape."""
+    """Match only the exact direct, unexpired zero-option marriage shape."""
 
     gaps: list[str] = []
     roles = context.get("roles")
@@ -884,14 +884,28 @@ def _arrange_marriage_reject_contract_gaps(
         gaps.append("marriage_direct_local_recipient_route_mismatch")
 
     deadline = context.get("deadline")
+    age_days = deadline.get("age_days") if isinstance(deadline, dict) else None
+    expiration_days = (
+        deadline.get("expiration_days") if isinstance(deadline, dict) else None
+    )
+    remaining_days = (
+        deadline.get("remaining_days") if isinstance(deadline, dict) else None
+    )
     if not (
         isinstance(deadline, dict)
-        and deadline.get("age_days") == 0
-        and deadline.get("expiration_days") == 60
-        and deadline.get("remaining_days") == 60
+        and isinstance(age_days, int)
+        and not isinstance(age_days, bool)
+        and isinstance(expiration_days, int)
+        and not isinstance(expiration_days, bool)
+        and expiration_days == 60
+        and isinstance(remaining_days, int)
+        and not isinstance(remaining_days, bool)
+        and 0 <= age_days < expiration_days
+        and remaining_days == expiration_days - age_days
+        and remaining_days > 0
         and deadline.get("expiry_boundary_status") == "not_reached"
     ):
-        gaps.append("marriage_same_day_deadline_shape_mismatch")
+        gaps.append("marriage_unexpired_deadline_shape_mismatch")
 
     terms = context.get("terms")
     special = terms.get("special_war_binding") if isinstance(terms, dict) else None
@@ -1802,10 +1816,11 @@ def _degraded_pending_interaction_decision(
         "deterministic_rule": (
             (
                 "for an exact same-frame arrange_marriage_interaction with a "
-                "direct local recipient, complete marriage roles, same-day "
-                "deadline, opaque marriage special payload, and six unselected "
-                "send options, reject only when native reject is legal and "
-                "executable; never fall through to unique accept"
+                "direct local recipient, complete marriage roles, an internally "
+                "consistent unexpired stock deadline, opaque marriage special "
+                "payload, and six unselected send options, reject only when "
+                "native reject is legal and executable; never fall through to "
+                "unique accept"
             )
             if classification == "known_marriage_special"
             else (
