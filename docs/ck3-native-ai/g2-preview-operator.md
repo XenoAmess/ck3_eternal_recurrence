@@ -27,6 +27,9 @@ The manifest used by these tools has this interface. Fields shown in angle brack
   "injector_sha256": "<injector SHA-256>",
   "environment_sha256": "<prepared profile environment SHA-256>",
   "production_tree_sha256": "<production mod projection SHA-256>",
+  "xar_enabled": "xar_off",
+  "succession_lifecycle": "ordinary_campaign_succession",
+  "ordinary_campaign_no_pact": true,
   "formal_report": "<new evidence directory/formal-report.txt>",
   "supported_government": "feudal_government",
   "timeout_seconds": 390,
@@ -43,9 +46,19 @@ The manifest used by these tools has this interface. Fields shown in angle brack
 }
 ```
 
+The three lifecycle fields are one indivisible support-profile contract for a
+standard-feudal ordinary candidate.  The operator rejects a partial or mixed
+triple: ordinary succession is admitted only as
+`xar_off` + `ordinary_campaign_succession` + `ordinary_campaign_no_pact=true`.
+The no-pact value is an assertion about a freshly created ordinary campaign;
+it cannot reclassify an older `xar_on`/pact save.  Historical preview manifests
+that omit all three fields retain the prior
+`xar_on`/`rogue_one_life`/`false` behavior and every new receipt records that
+choice as `source=legacy-default`; omission never means ordinary support.
+
 The expected action fields are **verification assertions**, never action arguments passed to the agent. The agent discovers the pending request and its signed full ID from a real paused frame and chooses the reply under its installed policy. If a checkpoint has an unconfirmed prior action, first query actual paused game state and its receipt; do not submit another reply blindly.
 
-First take exclusive CK3 ownership and confirm all managed CK3 processes are dead. For an independent fresh state, run the formal `prepare-profile` and `verify-profile` commands from the pinned candidate runtime, copy the immutable paired save to `state/profile/save games/xar_checkpoint.ck3` and driver state to `state/native-session/driver-state.json`, and run the existing no-launch `native-one-generation-preflight` with the episode/save/driver pins from the manifest. `prepare-profile` itself refuses while CK3 is running. Keep the source/copy SHA mapping and preflight report; a structurally valid preflight is not live evidence.
+First take exclusive CK3 ownership and confirm all managed CK3 processes are dead. For an independent fresh state, run the formal `prepare-profile --xar-enabled xar_off` and `verify-profile --xar-enabled xar_off` commands from the pinned candidate runtime, copy the immutable paired save to `state/profile/save games/xar_checkpoint.ck3` and driver state to `state/native-session/driver-state.json`, and run the existing no-launch `native-one-generation-preflight` with the episode/save/driver pins plus `--xar-enabled xar_off --succession-lifecycle ordinary_campaign_succession --ordinary-campaign-no-pact`. The preflight requires the prepared profile, driver state and checkpoint lifecycle binding to agree exactly before CK3 can launch. `prepare-profile` itself refuses while CK3 is running. Keep the source/copy SHA mapping and preflight report; a structurally valid preflight is not live evidence.
 
 The operator then runs the reusable scope check. This starts and recycles at most one CK3 process only when `--preflight-only` has passed and the global single-instance ledger assigns ownership. Each `--output` path is new and holds one attempt. The tool submits no input, date advance or gameplay action:
 
@@ -60,6 +73,16 @@ After eligibility is GREEN, confirm the prior process is dead, allocate a new ac
 ```text
 python tools/g2_preview_operator.py run --manifest <frozen-operator-manifest.json> --output <new-formal-attempt-directory>
 ```
+
+For the ordinary triple, this command forwards the same lifecycle contract to
+the no-launch preflight and to production `native-auto-run`; its receipt also
+records the resolved contract.  The downstream run therefore receives
+`--succession-lifecycle ordinary_campaign_succession` and
+`--ordinary-campaign-no-pact` instead of silently falling back to the rogue
+one-life default.  The eligibility tool verifies the profile as `xar_off`,
+requires the exact lifecycle on the paired checkpoint/driver state, and checks
+the live public campaign-root rule tokens contain `xar_off` and exclude
+`xar_on`.
 
 For the bounded M3 blocker diagnosis only, the same formal operator also has a
 private, default-off single-query entry.  `R776A` is the evidence-slice label;

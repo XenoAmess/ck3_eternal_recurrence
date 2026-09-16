@@ -429,6 +429,13 @@ pipe/DLL 和 `-loadsave=xar_checkpoint` 重启。若旧进程的 CK3 窗口已�
 `native-auto-run` 与 development-only 的 `opening-step --step auto-run` 不是别名：前者全程只使用 native-headless bridge，
 不导入 OCR、视觉或桌面输入，并且只有真实语义推进才能让一次运行得到 `outcome=qualified`。
 运行中的 `native-auto-run` 会在 stderr 打印本次状态目录里的 `Operator stop request file` 绝对路径。
+标准封建 ordinary 预览必须在 operator manifest 同时记录
+`xar_enabled=xar_off`、`succession_lifecycle=ordinary_campaign_succession` 和
+`ordinary_campaign_no_pact=true`。`g2_preview_operator.py` 会把同一三元组传给
+profile 准备/校验、零启动 preflight 和正式 `native-auto-run`，并写进 receipt；
+`g2_preview_eligibility.py` 还会核对 paired checkpoint/driver lifecycle 与实机
+public campaign-root 的 `xar_off` rule token。三字段部分缺失或互相冲突会在启动前拒绝。
+旧 manifest 三字段全部缺失时仅兼容为原有 `xar_on/rogue_one_life/false`，不会被解释成普通战役。
 在另一个 Python 进程执行 `python tools/g2_preview_operator.py request-stop --manifest <operator-manifest.json>` 即可请求可控停止。
 首次 Ctrl+C 也保留为能送达 SIGINT 的本地控制台操作。当前 typed turn 与独立后置校验完成后，它在安全的 paused 边界写入
 `xar_checkpoint.ck3`，然后回收受管 CK3。报告将这次操作记为

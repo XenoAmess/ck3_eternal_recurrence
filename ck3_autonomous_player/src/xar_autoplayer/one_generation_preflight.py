@@ -7,6 +7,12 @@ from pathlib import Path
 import uuid
 
 from .bridge.native_driver import load_native_driver_state_for_resume
+from .bridge.succession_transition_contract import (
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    ROGUE_ONE_LIFE,
+    bind_succession_lifecycle_from_environment_v1,
+    legacy_rogue_one_life_binding_v1,
+)
 from .environment import (
     EnvironmentSpec,
     ck3_process_inventory,
@@ -33,6 +39,9 @@ def native_one_generation_preflight(
     expected_episode_run_id: str | None = None,
     expected_checkpoint_sha256: str | None = None,
     expected_driver_state_sha256: str | None = None,
+    xar_enabled: str = "xar_on",
+    succession_lifecycle: str = ROGUE_ONE_LIFE,
+    ordinary_campaign_no_pact: bool = False,
 ) -> dict[str, object]:
     """Verify a durable G1 resume anchor without launching or driving CK3."""
     ensure_state_path_safe(spec.state_dir)
@@ -61,6 +70,9 @@ def native_one_generation_preflight(
             "driver_state_sha256": _normalize_digest(
                 expected_driver_state_sha256
             ),
+            "xar_enabled": xar_enabled,
+            "succession_lifecycle": succession_lifecycle,
+            "ordinary_campaign_no_pact": ordinary_campaign_no_pact,
         },
         "desktop_interaction": False,
         "ck3_launch_attempted": False,
@@ -91,8 +103,21 @@ def native_one_generation_preflight(
                     f"processes; observed {len(processes)}"
                 )
 
-            manifest = verify_profile(spec)
+            manifest = verify_profile(spec, xar_enabled=xar_enabled)
             report["profile"] = _profile_summary(manifest)
+            try:
+                lifecycle_binding = (
+                    bind_succession_lifecycle_from_environment_v1(
+                        manifest,
+                        lifecycle=succession_lifecycle,
+                        ordinary_campaign_no_pact=ordinary_campaign_no_pact,
+                    )
+                )
+            except ValueError as error:
+                raise AgentError(
+                    f"one-generation lifecycle contract is invalid: {error}"
+                ) from error
+            report["lifecycle"] = lifecycle_binding
             checkpoint = validate_cold_start_checkpoint_for_pipe(
                 spec, pipe_name
             )
@@ -115,6 +140,40 @@ def native_one_generation_preflight(
                     "one-generation driver state is not consumer-compatible "
                     "with this pipe or format"
                 )
+            driver_lifecycle = driver_state.get("succession_lifecycle")
+            checkpoint_lifecycle = checkpoint.get("succession_lifecycle")
+            legacy_binding = legacy_rogue_one_life_binding_v1()
+            if (
+                driver_lifecycle != lifecycle_binding
+                and not (
+                    succession_lifecycle == ROGUE_ONE_LIFE
+                    and driver_lifecycle == legacy_binding
+                )
+            ):
+                raise AgentError(
+                    "one-generation driver lifecycle differs from the "
+                    "prepared profile"
+                )
+            if (
+                succession_lifecycle == ORDINARY_CAMPAIGN_SUCCESSION
+                and checkpoint_lifecycle != lifecycle_binding
+            ):
+                raise AgentError(
+                    "one-generation ordinary checkpoint lifecycle differs "
+                    "from the prepared profile"
+                )
+            if (
+                succession_lifecycle == ROGUE_ONE_LIFE
+                and checkpoint_lifecycle is not None
+                and checkpoint_lifecycle not in (
+                    lifecycle_binding,
+                    legacy_binding,
+                )
+            ):
+                raise AgentError(
+                    "one-generation legacy checkpoint lifecycle differs "
+                    "from the prepared profile"
+                )
             driver_artifact = {
                 "path": str(driver_path),
                 "size": driver_path.stat().st_size,
@@ -125,6 +184,7 @@ def native_one_generation_preflight(
                     "episode_character_id"
                 ),
                 "episode_run_id": driver_state.get("episode_run_id"),
+                "succession_lifecycle": driver_lifecycle,
             }
             report["resume_anchor"] = {
                 "checkpoint": checkpoint,

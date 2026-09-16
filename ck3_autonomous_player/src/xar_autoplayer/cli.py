@@ -545,6 +545,26 @@ def parser() -> argparse.ArgumentParser:
         required=True,
         help="require this exact driver-state SHA-256",
     )
+    one_generation_preflight_parser.add_argument(
+        "--xar-enabled",
+        choices=("xar_on", "xar_off"),
+        default="xar_on",
+        help="require the prepared profile to use this main mod rule",
+    )
+    one_generation_preflight_parser.add_argument(
+        "--succession-lifecycle",
+        choices=(ROGUE_ONE_LIFE, ORDINARY_CAMPAIGN_SUCCESSION),
+        default=ROGUE_ONE_LIFE,
+        help="require this frozen succession lifecycle on the resume anchor",
+    )
+    one_generation_preflight_parser.add_argument(
+        "--ordinary-campaign-no-pact",
+        action="store_true",
+        help=(
+            "attest that an ordinary xar_off checkpoint comes from a fresh "
+            "campaign that never signed the Eternal Recurrence pact"
+        ),
+    )
     commands.add_parser(
         "strategy-review",
         help="show one-life episode history and the priorities for the next run",
@@ -835,6 +855,9 @@ def main(argv: list[str] | None = None) -> int:
                 expected_driver_state_sha256=(
                     args.expected_driver_state_sha256
                 ),
+                xar_enabled=args.xar_enabled,
+                succession_lifecycle=args.succession_lifecycle,
+                ordinary_campaign_no_pact=args.ordinary_campaign_no_pact,
             )
         elif args.command == "strategy-review":
             from .strategy import read_one_life_strategy

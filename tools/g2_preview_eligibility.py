@@ -18,6 +18,37 @@ import time
 from typing import Any
 
 
+ROGUE_ONE_LIFE = "rogue_one_life"
+ORDINARY_CAMPAIGN_SUCCESSION = "ordinary_campaign_succession"
+LEGACY_LIFECYCLE_CONTRACT = {
+    "xar_enabled": "xar_on",
+    "succession_lifecycle": ROGUE_ONE_LIFE,
+    "ordinary_campaign_no_pact": False,
+}
+ORDINARY_LIFECYCLE_CONTRACT = {
+    "xar_enabled": "xar_off",
+    "succession_lifecycle": ORDINARY_CAMPAIGN_SUCCESSION,
+    "ordinary_campaign_no_pact": True,
+}
+
+
+def _lifecycle_contract(manifest: dict[str, Any]) -> dict[str, Any]:
+    fields = tuple(LEGACY_LIFECYCLE_CONTRACT)
+    present = [field for field in fields if field in manifest]
+    if not present:
+        return {**LEGACY_LIFECYCLE_CONTRACT, "source": "legacy-default"}
+    if len(present) != len(fields):
+        missing = [field for field in fields if field not in manifest]
+        raise ValueError(
+            "preview lifecycle manifest is partial; lacks: "
+            + ", ".join(missing)
+        )
+    candidate = {field: manifest[field] for field in fields}
+    if candidate not in (LEGACY_LIFECYCLE_CONTRACT, ORDINARY_LIFECYCLE_CONTRACT):
+        raise ValueError("preview lifecycle manifest fields are inconsistent")
+    return {**candidate, "source": "manifest"}
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -50,6 +81,7 @@ def _read_manifest(path: Path) -> dict[str, Any]:
         raise ValueError(f"preview manifest lacks: {', '.join(missing)}")
     if manifest["supported_government"] != "feudal_government":
         raise ValueError("this preview operator check supports feudal_government")
+    _lifecycle_contract(manifest)
     if not (
         isinstance(manifest["timeout_seconds"], (int, float))
         and 0 < manifest["timeout_seconds"]
@@ -68,6 +100,10 @@ def _backend(repo: Path) -> dict[str, Any]:
     import run_campaign_root_context_live_acceptance as controlled  # noqa: PLC0415
     from xar_autoplayer.bridge.native_driver import (  # noqa: PLC0415
         load_native_driver_state_for_resume,
+    )
+    from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: PLC0415
+        bind_succession_lifecycle_from_environment_v1,
+        legacy_rogue_one_life_binding_v1,
     )
     from xar_autoplayer.environment import (  # noqa: PLC0415
         ck3_process_inventory,
@@ -95,9 +131,17 @@ def _preflight(manifest: dict[str, Any], backend: dict[str, Any]) -> tuple[Any, 
         raise RuntimeError("frozen agent source is dirty")
     state = Path(manifest["state_dir"]).resolve()
     spec = backend["make_spec"](state, Path(manifest["game_dir"]).resolve())
-    profile = backend["verify_profile"](spec)
+    contract = _lifecycle_contract(manifest)
+    profile = backend["verify_profile"](
+        spec, xar_enabled=contract["xar_enabled"]
+    )
     if profile["environment_sha256"].lower() != manifest["environment_sha256"].lower():
         raise RuntimeError("production-only profile differs from freeze")
+    lifecycle_binding = backend["bind_succession_lifecycle_from_environment_v1"](
+        profile,
+        lifecycle=contract["succession_lifecycle"],
+        ordinary_campaign_no_pact=contract["ordinary_campaign_no_pact"],
+    )
     _pin(spec.game_exe, manifest["game_exe_sha256"], "CK3 EXE")
     _pin(Path(manifest["source_save"]), manifest["checkpoint_sha256"], "immutable source save")
     _pin(
@@ -114,6 +158,32 @@ def _preflight(manifest: dict[str, Any], backend: dict[str, Any]) -> tuple[Any, 
     driver_state = backend["load_native_driver_state_for_resume"](
         state / "native-session" / "driver-state.json", manifest["pipe"]
     )
+    legacy_binding = backend["legacy_rogue_one_life_binding_v1"]()
+    driver_lifecycle = (
+        driver_state.get("succession_lifecycle")
+        if isinstance(driver_state, dict)
+        else None
+    )
+    checkpoint_lifecycle = checkpoint.get("succession_lifecycle")
+    if (
+        driver_lifecycle != lifecycle_binding
+        and not (
+            contract["succession_lifecycle"] == ROGUE_ONE_LIFE
+            and driver_lifecycle == legacy_binding
+        )
+    ):
+        raise RuntimeError("driver lifecycle differs from preview manifest")
+    if (
+        contract["succession_lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION
+        and checkpoint_lifecycle != lifecycle_binding
+    ):
+        raise RuntimeError("ordinary checkpoint lifecycle differs from preview manifest")
+    if (
+        contract["succession_lifecycle"] == ROGUE_ONE_LIFE
+        and checkpoint_lifecycle is not None
+        and checkpoint_lifecycle not in (lifecycle_binding, legacy_binding)
+    ):
+        raise RuntimeError("legacy checkpoint lifecycle differs from preview manifest")
     if not (
         isinstance(driver_state, dict)
         and driver_state.get("episode_character_id") == manifest["episode_character_id"]
@@ -127,6 +197,8 @@ def _preflight(manifest: dict[str, Any], backend: dict[str, Any]) -> tuple[Any, 
     return spec, {
         "status": "ready-no-launch", "source_commit": commit,
         "environment_sha256": profile["environment_sha256"],
+        "lifecycle": contract,
+        "succession_lifecycle_binding": lifecycle_binding,
         "checkpoint": checkpoint,
         "driver_state_sha256": manifest["driver_state_sha256"],
         "dll_sha256": manifest["dll_sha256"],
@@ -146,6 +218,18 @@ def _qualify(
     )
     active = readiness.get("active_context") if isinstance(readiness, dict) else None
     government = root.get("government") if isinstance(root, dict) else None
+    rule_tokens = (
+        root.get("selected_game_rule_tokens") if isinstance(root, dict) else None
+    )
+    contract = _lifecycle_contract(manifest)
+    selected_rules_match = True
+    if contract["succession_lifecycle"] == ORDINARY_CAMPAIGN_SUCCESSION:
+        selected_rules_match = (
+            isinstance(rule_tokens, list)
+            and all(isinstance(value, str) for value in rule_tokens)
+            and "xar_off" in rule_tokens
+            and "xar_on" not in rule_tokens
+        )
     state = Path(manifest["state_dir"])
     inventory = backend["ck3_process_inventory"]()
     return {
@@ -156,6 +240,7 @@ def _qualify(
         and readiness.get("date_raw") == manifest["date_raw"],
         "government_exact_feudal": isinstance(government, dict)
         and government.get("key") == manifest["supported_government"],
+        "selected_rules_match_lifecycle": selected_rules_match,
         "no_war_event_pending_army": isinstance(active, dict)
         and active.get("war_ids") == [] and active.get("army_ids") == []
         and active.get("active_event") is None
@@ -188,6 +273,7 @@ def main() -> int:
     }
     try:
         manifest = _read_manifest(args.manifest)
+        report["lifecycle"] = _lifecycle_contract(manifest)
         report["bounds"] = {
             "stage_timeout_seconds": manifest["timeout_seconds"],
             "native_session_ceiling_seconds": manifest["session_ceiling_seconds"],

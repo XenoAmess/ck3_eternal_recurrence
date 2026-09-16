@@ -64,14 +64,19 @@ class NativeOneGenerationPreflightTests(unittest.TestCase):
         }
         self.manifest = {
             "profile_dir": str(self.spec.profile_dir),
-            "environment_sha256": "environment-hash",
+            "environment_sha256": "e" * 64,
             "agent_runtime": {
                 "sha256": "runtime-hash",
                 "git": {"selected_runtime_revision": "runtime-revision"},
             },
             "game": {"executable_sha256": "ck3-hash"},
             "mod": {"production_tree_sha256": "production-hash"},
-            "rules": {"profile_sha256": "rules-hash"},
+            "rules": {
+                "profile_sha256": "rules-hash",
+                "profile": [
+                    {"rule": "xar_enabled", "setting": "xar_on"}
+                ],
+            },
         }
 
     def tearDown(self) -> None:
@@ -127,6 +132,46 @@ class NativeOneGenerationPreflightTests(unittest.TestCase):
             Path(report["report_path"]).read_text(encoding="utf-8")
         )
         self.assertEqual(persisted, report)
+
+    def test_ordinary_xar_off_profile_requires_exact_lifecycle_anchor(self) -> None:
+        binding = {
+            "schema": "xar.ck3.succession-lifecycle-binding/v1",
+            "lifecycle": "ordinary_campaign_succession",
+            "xar_enabled": "xar_off",
+            "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+            "source": "prepared-environment-manifest",
+            "environment_sha256": "e" * 64,
+        }
+        payload = json.loads(self.driver_path.read_text(encoding="utf-8"))
+        payload["succession_lifecycle"] = binding
+        self.driver_path.write_text(json.dumps(payload), encoding="utf-8")
+        self.driver_sha256 = hashlib.sha256(
+            self.driver_path.read_bytes()
+        ).hexdigest()
+        self.manifest["rules"]["profile"][0]["setting"] = "xar_off"
+        self.checkpoint["succession_lifecycle"] = binding
+
+        report = self._run(
+            xar_enabled="xar_off",
+            succession_lifecycle="ordinary_campaign_succession",
+            ordinary_campaign_no_pact=True,
+        )
+
+        self.assertTrue(report["ok"])
+        self.assertEqual(report["lifecycle"], binding)
+        self.assertEqual(
+            report["resume_anchor"]["driver_state"]["succession_lifecycle"],
+            binding,
+        )
+
+        self.checkpoint["succession_lifecycle"] = None
+        red = self._run(
+            xar_enabled="xar_off",
+            succession_lifecycle="ordinary_campaign_succession",
+            ordinary_campaign_no_pact=True,
+        )
+        self.assertFalse(red["ok"])
+        self.assertIn("ordinary checkpoint lifecycle differs", red["error"])
 
     def test_expected_identity_mismatch_is_a_persisted_red(self) -> None:
         report = self._run(expected_character_id=999)
@@ -276,6 +321,9 @@ class NativeOneGenerationPreflightTests(unittest.TestCase):
                     expected_episode_run_id=self.episode_run_id,
                     expected_checkpoint_sha256=self.checkpoint_sha256,
                     expected_driver_state_sha256=self.driver_sha256,
+                    xar_enabled="xar_on",
+                    succession_lifecycle="rogue_one_life",
+                    ordinary_campaign_no_pact=False,
                 )
                 self.assertIn(
                     f'"ok": {str(ok).lower()}', stdout.getvalue()

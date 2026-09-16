@@ -37,6 +37,18 @@ R781_INJECTOR_SHA256 = (
 R778_CHARACTER_ID = 35465
 R778_EPISODE_RUN_ID = "native-35465-cbdf997e3d80"
 R778_DATE_RAW = 53411568
+ROGUE_ONE_LIFE = "rogue_one_life"
+ORDINARY_CAMPAIGN_SUCCESSION = "ordinary_campaign_succession"
+LEGACY_LIFECYCLE_CONTRACT = {
+    "xar_enabled": "xar_on",
+    "succession_lifecycle": ROGUE_ONE_LIFE,
+    "ordinary_campaign_no_pact": False,
+}
+ORDINARY_LIFECYCLE_CONTRACT = {
+    "xar_enabled": "xar_off",
+    "succession_lifecycle": ORDINARY_CAMPAIGN_SUCCESSION,
+    "ordinary_campaign_no_pact": True,
+}
 
 
 def sha256(path: Path) -> str:
@@ -65,7 +77,47 @@ def load_manifest(path: Path) -> dict[str, Any]:
     for field in ("python", "source_repo", "state_dir", "game_dir", "pipe", "dll", "injector"):
         if not isinstance(manifest.get(field), str) or not manifest[field]:
             raise ValueError(f"manifest field {field!r} is required")
+    lifecycle_contract(manifest)
     return manifest
+
+
+def lifecycle_contract(manifest: dict[str, Any]) -> dict[str, Any]:
+    """Return one complete preview lifecycle contract.
+
+    Manifests created before ordinary-campaign support omitted all three
+    fields and retain the legacy xar_on/rogue-one-life behavior.  A manifest
+    that mentions any field must record the complete triple so an ordinary
+    candidate cannot be inferred or partially relabelled.
+    """
+
+    fields = tuple(LEGACY_LIFECYCLE_CONTRACT)
+    present = [field for field in fields if field in manifest]
+    if not present:
+        return {**LEGACY_LIFECYCLE_CONTRACT, "source": "legacy-default"}
+    if len(present) != len(fields):
+        missing = [field for field in fields if field not in manifest]
+        raise ValueError(
+            "preview lifecycle manifest is partial; lacks: "
+            + ", ".join(missing)
+        )
+    candidate = {field: manifest[field] for field in fields}
+    if candidate == LEGACY_LIFECYCLE_CONTRACT:
+        return {**candidate, "source": "manifest"}
+    if candidate == ORDINARY_LIFECYCLE_CONTRACT:
+        return {**candidate, "source": "manifest"}
+    raise ValueError("preview lifecycle manifest fields are inconsistent")
+
+
+def preflight_lifecycle_arguments(contract: dict[str, Any]) -> list[str]:
+    arguments = [
+        "--xar-enabled",
+        str(contract["xar_enabled"]),
+        "--succession-lifecycle",
+        str(contract["succession_lifecycle"]),
+    ]
+    if contract["ordinary_campaign_no_pact"] is True:
+        arguments.append("--ordinary-campaign-no-pact")
+    return arguments
 
 
 def agent_command(manifest: dict[str, Any]) -> list[str]:
@@ -180,6 +232,8 @@ def native_auto_run_command(
     timeout: int,
     readiness_timeout: int,
     private_faction_round_id_value: str | None,
+    succession_lifecycle: str = ROGUE_ONE_LIFE,
+    ordinary_campaign_no_pact: bool = False,
 ) -> list[str]:
     command = [
         *common,
@@ -191,7 +245,11 @@ def native_auto_run_command(
         "--readiness-timeout",
         str(readiness_timeout),
         "--cold-start-checkpoint",
+        "--succession-lifecycle",
+        succession_lifecycle,
     ]
+    if ordinary_campaign_no_pact:
+        command.append("--ordinary-campaign-no-pact")
     if private_faction_round_id_value is not None:
         command.extend([
             "--allow-private-faction-gift-formal-trial",
@@ -262,6 +320,7 @@ def command_verify_zip(args: argparse.Namespace) -> int:
 
 def command_prepare_state(args: argparse.Namespace) -> int:
     manifest = load_manifest(args.manifest.resolve())
+    lifecycle = lifecycle_contract(manifest)
     state_dir = manifest_path(manifest["state_dir"], "state_dir")
     sample_dir = args.sample_dir.resolve()
     save_source = sample_dir / "xar_checkpoint.ck3"
@@ -275,25 +334,32 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         if path.exists():
             raise FileExistsError(f"refusing to overwrite prepared state: {path}")
     common = agent_command(manifest)
-    if subprocess.run([*common, "prepare-profile"], check=False).returncode != 0:
+    profile_rule = ["--xar-enabled", str(lifecycle["xar_enabled"])]
+    if subprocess.run(
+        [*common, "prepare-profile", *profile_rule], check=False
+    ).returncode != 0:
         raise RuntimeError("production profile preparation failed")
     save_target.parent.mkdir(parents=True, exist_ok=True)
     driver_target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(save_source, save_target)
     shutil.copy2(driver_source, driver_target)
-    if subprocess.run([*common, "verify-profile"], check=False).returncode != 0:
+    if subprocess.run(
+        [*common, "verify-profile", *profile_rule], check=False
+    ).returncode != 0:
         raise RuntimeError("production profile verification failed")
     print(json.dumps({
         "ok": True,
         "state_dir": str(state_dir),
         "checkpoint_sha256": sha256(save_target),
         "driver_state_sha256": sha256(driver_target),
+        "lifecycle": lifecycle,
     }))
     return 0
 
 
 def command_run(args: argparse.Namespace) -> int:
     manifest = load_manifest(args.manifest.resolve())
+    lifecycle = lifecycle_contract(manifest)
     output = args.output.resolve()
     if output.exists():
         raise FileExistsError(f"attempt output already exists: {output}")
@@ -313,6 +379,7 @@ def command_run(args: argparse.Namespace) -> int:
         sha256(save),
         "--expected-driver-state-sha256",
         sha256(driver_path),
+        *preflight_lifecycle_arguments(lifecycle),
     ]
     preflight_exit = run_logged(
         preflight,
@@ -326,6 +393,7 @@ def command_run(args: argparse.Namespace) -> int:
         "checkpoint_sha256_before": sha256(save),
         "driver_state_sha256_before": sha256(driver_path),
         "preflight_exit_code": preflight_exit,
+        "lifecycle": lifecycle,
     }
     if preflight_exit != 0:
         receipt.update({"ok": False, "status": "preflight_blocked", "game_launched": False})
@@ -351,6 +419,10 @@ def command_run(args: argparse.Namespace) -> int:
             timeout=timeout,
             readiness_timeout=readiness_timeout,
             private_faction_round_id_value=private_faction_round,
+            succession_lifecycle=str(lifecycle["succession_lifecycle"]),
+            ordinary_campaign_no_pact=(
+                lifecycle["ordinary_campaign_no_pact"] is True
+            ),
         ),
         formal_report,
         formal_stderr,

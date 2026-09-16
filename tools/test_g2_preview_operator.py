@@ -7,13 +7,269 @@ import io
 import json
 from pathlib import Path
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest import mock
 
-from tools import g2_preview_operator
+from tools import g2_preview_eligibility, g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_lifecycle_manifest_is_complete_and_legacy_default_is_explicit(self) -> None:
+        self.assertEqual(
+            g2_preview_operator.lifecycle_contract({}),
+            {
+                "xar_enabled": "xar_on",
+                "succession_lifecycle": "rogue_one_life",
+                "ordinary_campaign_no_pact": False,
+                "source": "legacy-default",
+            },
+        )
+        ordinary = {
+            "xar_enabled": "xar_off",
+            "succession_lifecycle": "ordinary_campaign_succession",
+            "ordinary_campaign_no_pact": True,
+        }
+        self.assertEqual(
+            g2_preview_operator.lifecycle_contract(ordinary),
+            {**ordinary, "source": "manifest"},
+        )
+        self.assertEqual(
+            g2_preview_eligibility._lifecycle_contract(ordinary),
+            {**ordinary, "source": "manifest"},
+        )
+        with self.assertRaisesRegex(ValueError, "partial"):
+            g2_preview_operator.lifecycle_contract({"xar_enabled": "xar_off"})
+        with self.assertRaisesRegex(ValueError, "inconsistent"):
+            g2_preview_eligibility._lifecycle_contract({
+                **ordinary,
+                "ordinary_campaign_no_pact": False,
+            })
+
+    def test_prepare_state_forwards_ordinary_profile_rule(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            sample = root / "sample"
+            sample.mkdir()
+            (sample / "xar_checkpoint.ck3").write_bytes(b"checkpoint")
+            (sample / "driver-state.json").write_text("{}", encoding="utf-8")
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\ordinary-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+                "xar_enabled": "xar_off",
+                "succession_lifecycle": "ordinary_campaign_succession",
+                "ordinary_campaign_no_pact": True,
+            }), encoding="utf-8")
+            calls: list[list[str]] = []
+
+            def fake_run(command, check):
+                self.assertFalse(check)
+                calls.append(command)
+                return mock.Mock(returncode=0)
+
+            stdout = io.StringIO()
+            with (
+                mock.patch.object(
+                    g2_preview_operator.subprocess,
+                    "run",
+                    side_effect=fake_run,
+                ),
+                contextlib.redirect_stdout(stdout),
+            ):
+                result = g2_preview_operator.command_prepare_state(
+                    argparse.Namespace(manifest=manifest_path, sample_dir=sample)
+                )
+
+            self.assertEqual(result, 0)
+            self.assertEqual(calls[0][-3:], [
+                "prepare-profile", "--xar-enabled", "xar_off"
+            ])
+            self.assertEqual(calls[1][-3:], [
+                "verify-profile", "--xar-enabled", "xar_off"
+            ])
+            self.assertEqual(
+                json.loads(stdout.getvalue())["lifecycle"]["succession_lifecycle"],
+                "ordinary_campaign_succession",
+            )
+
+    def test_eligibility_preflight_binds_ordinary_profile_and_checkpoint(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            checkpoint = state / "profile" / "save games" / "xar_checkpoint.ck3"
+            driver_path = state / "native-session" / "driver-state.json"
+            game_exe = root / "game" / "binaries" / "ck3.exe"
+            source_save = root / "source.ck3"
+            dll = root / "bridge.dll"
+            injector = root / "injector.exe"
+            for path, payload in (
+                (checkpoint, b"checkpoint"),
+                (driver_path, b"driver"),
+                (game_exe, b"game"),
+                (source_save, b"checkpoint"),
+                (dll, b"dll"),
+                (injector, b"injector"),
+            ):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(payload)
+            binding = {
+                "schema": "xar.ck3.succession-lifecycle-binding/v1",
+                "lifecycle": "ordinary_campaign_succession",
+                "xar_enabled": "xar_off",
+                "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+                "source": "prepared-environment-manifest",
+                "environment_sha256": "e" * 64,
+            }
+            manifest = {
+                "source_repo": str(root / "repo"),
+                "source_commit": "a" * 40,
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "environment_sha256": "e" * 64,
+                "game_exe_sha256": hashlib.sha256(b"game").hexdigest(),
+                "source_save": str(source_save),
+                "checkpoint_sha256": hashlib.sha256(b"checkpoint").hexdigest(),
+                "driver_state_sha256": hashlib.sha256(b"driver").hexdigest(),
+                "dll": str(dll),
+                "dll_sha256": hashlib.sha256(b"dll").hexdigest(),
+                "injector": str(injector),
+                "injector_sha256": hashlib.sha256(b"injector").hexdigest(),
+                "pipe": r"\\.\pipe\ordinary-preview",
+                "episode_character_id": 31853,
+                "episode_run_id": "native-31853-test",
+                "date_raw": 53144328,
+                "xar_enabled": "xar_off",
+                "succession_lifecycle": "ordinary_campaign_succession",
+                "ordinary_campaign_no_pact": True,
+            }
+            verify_profile = mock.Mock(return_value={
+                "environment_sha256": "e" * 64,
+                "rules": {"profile": [
+                    {"rule": "xar_enabled", "setting": "xar_off"}
+                ]},
+            })
+            backend = {
+                "make_spec": mock.Mock(
+                    return_value=SimpleNamespace(game_exe=game_exe)
+                ),
+                "verify_profile": verify_profile,
+                "bind_succession_lifecycle_from_environment_v1": mock.Mock(
+                    return_value=binding
+                ),
+                "legacy_rogue_one_life_binding_v1": mock.Mock(
+                    return_value={"lifecycle": "rogue_one_life"}
+                ),
+                "validate_cold_start_checkpoint_for_pipe": mock.Mock(
+                    return_value={
+                        "saved_date_raw": 53144328,
+                        "succession_lifecycle": binding,
+                    }
+                ),
+                "load_native_driver_state_for_resume": mock.Mock(
+                    return_value={
+                        "episode_character_id": 31853,
+                        "episode_run_id": "native-31853-test",
+                        "succession_lifecycle": binding,
+                    }
+                ),
+                "ck3_process_inventory": mock.Mock(
+                    return_value={"processes": []}
+                ),
+            }
+
+            def git_output(command, text):
+                self.assertTrue(text)
+                return "a" * 40 + "\n" if "rev-parse" in command else ""
+
+            with mock.patch.object(
+                g2_preview_eligibility.subprocess,
+                "check_output",
+                side_effect=git_output,
+            ):
+                _spec, preflight = g2_preview_eligibility._preflight(
+                    manifest, backend
+                )
+
+            verify_profile.assert_called_once_with(
+                mock.ANY, xar_enabled="xar_off"
+            )
+            self.assertEqual(
+                preflight["succession_lifecycle_binding"], binding
+            )
+            self.assertEqual(
+                preflight["lifecycle"]["succession_lifecycle"],
+                "ordinary_campaign_succession",
+            )
+
+    def test_ordinary_run_forwards_preflight_formal_and_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            save = state / "profile" / "save games" / "xar_checkpoint.ck3"
+            driver = state / "native-session" / "driver-state.json"
+            save.parent.mkdir(parents=True)
+            driver.parent.mkdir(parents=True)
+            save.write_bytes(b"ordinary-checkpoint")
+            driver.write_text(json.dumps({
+                "episode_character_id": 31853,
+                "episode_run_id": "native-31853-test",
+            }), encoding="utf-8")
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\ordinary-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+                "xar_enabled": "xar_off",
+                "succession_lifecycle": "ordinary_campaign_succession",
+                "ordinary_campaign_no_pact": True,
+                "formal_turns": 3,
+                "timeout_seconds": 390,
+                "readiness_timeout_seconds": 300,
+            }), encoding="utf-8")
+            output = root / "attempt"
+            calls: list[list[str]] = []
+
+            def fake_run(command, stdout_path, stderr_path):
+                calls.append(command)
+                stdout_path.write_text("{}\n", encoding="utf-8")
+                stderr_path.write_text("", encoding="utf-8")
+                return 0
+
+            args = g2_preview_operator.parser().parse_args([
+                "run", "--manifest", str(manifest_path),
+                "--output", str(output),
+            ])
+            with mock.patch.object(
+                g2_preview_operator, "run_logged", side_effect=fake_run
+            ):
+                result = g2_preview_operator.command_run(args)
+
+            self.assertEqual(result, 0)
+            self.assertIn("--xar-enabled", calls[0])
+            self.assertIn("xar_off", calls[0])
+            self.assertIn("--ordinary-campaign-no-pact", calls[0])
+            self.assertIn("--succession-lifecycle", calls[1])
+            self.assertIn("ordinary_campaign_succession", calls[1])
+            self.assertIn("--ordinary-campaign-no-pact", calls[1])
+            receipt = json.loads(
+                (output / "operator-receipt.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(receipt["lifecycle"]["xar_enabled"], "xar_off")
+            self.assertTrue(
+                receipt["lifecycle"]["ordinary_campaign_no_pact"]
+            )
+
     def test_r778_checkpoint_binding_is_the_authoritative_sha256(self) -> None:
         self.assertEqual(
             g2_preview_operator.R778_SOURCE_CHECKPOINT_SHA256,
