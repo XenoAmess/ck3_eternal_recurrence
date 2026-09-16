@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T11:13:00+08:00",
+  "updatedAt": "2026-09-16T11:30:25+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -121,7 +121,7 @@
         {
             "id": "WP3",
             "status": "in_progress",
-            "commit": "fc27c72c",
+            "commit": "adaa4429",
             "commands": [
                 "pnpm exec vitest run src/domain/imageFitter.test.ts src/domain/imageFitter.seams.test.ts",
                 "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
@@ -134,7 +134,10 @@
                 "set VITE_DISABLE_SERVICE_WORKER=true&& pnpm build",
                 "set COA_E2E_USE_PREVIEW=true&& pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line",
                 "pnpm test",
-                "pnpm run build"
+                "pnpm run build",
+                "pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line",
+                "pnpm exec playwright test e2e/candidate-comparison.spec.ts --reporter=line",
+                "pnpm verify:production-boundary"
             ],
             "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v6-pareto-pruned/",
             "keyMetrics": {
@@ -229,6 +232,14 @@
                 "fitIndexBrowserPrecomputedFeatures": "passed_1619_of_1619",
                 "fitIndexV1Fallback": "passed",
                 "fitIndexEvidencePath": "docs/coat-of-arms-fit-index-v2.md",
+                "paretoCandidateContract": "total_loss+edge_loss+drawn_instances_non_dominated_v1",
+                "paretoCandidateMaximum": 3,
+                "paretoCandidateSyntheticObserved": 2,
+                "paretoCandidatePayload": "complete_editable_coat_of_arms_model",
+                "paretoCandidateDepthEncodingGate": "pixel_exact_passed_for_every_returned_candidate",
+                "paretoCandidateUnitTests": "passed_83_of_83_full_suite",
+                "paretoCandidateBrowserTests": "passed_2_of_2_standalone_plus_1_of_1_manual_comparison",
+                "paretoCandidateEvidencePath": "docs/coat-of-arms-pareto-candidates.md",
                 "nativeRoundTrip": "passed",
                 "nativeInputBytes": 262138,
                 "nativeInputBlocks": 297,
