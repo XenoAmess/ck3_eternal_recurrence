@@ -64,7 +64,7 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | P1 | 搜索仍偏贪心 | WebGL2 texture-array/atlas/reduction 已承担背景、语义晋级及 local 胜者排序并由 CPU reference 门禁；完整 transform population 与逐块残差候选仍为 CPU，尚无稳定的多候选 Pareto 自动输出。 |
 | P1 | 编辑体验尚未完整 | 32 卡片虚拟窗口、撤销/重做、项目保存恢复、直接变换、三候选对比及跨刷新持久 checkpoint 恢复已通过；更多拟合阶段的恢复与配额失败恢复仍待完成。 |
 | P1 | 预览合同仍不完整 | exact 1.19.0.6 唯一注册 `_default.dds` 的 `textured_emblem` shader 模型合成已通过；R21 已证明原生剪贴板路径本身不物化 `parent`，浏览器据此保留引用且只画显式字段。其他 shader/VFS 情形的原生像素对照仍待补。 |
-| P2 | 输入/资产覆盖有限 | 安全 SVG、素材包目录导入、中英文、移动端、Service Worker、按需素材分片以及 Chromium/Firefox/WebKit 已通过；基础包与目录模组直接 DDS 冲突已有 scoped receipt/evidence，但 DLC、archive mod、`replace_path` 和 definition merge 仍未覆盖。Pages 的静态素材目录仍约 147 MB，运行时不会整包下载。 |
+| P2 | 输入/资产覆盖有限 | 安全 SVG、素材包目录导入、中英文、移动端、Service Worker、按需素材分片以及 Chromium/Firefox/WebKit 已通过；目录 mod 覆盖基础 DDS、后载 archive mod 覆盖目录 mod，以及两个目录 mod 冲突均已有 scoped 原生证据，但 DLC、`replace_path` 和 definition merge 仍未覆盖。Pages 的静态素材目录仍约 147 MB，运行时不会整包下载。 |
 
 ## 3. P0-1：红色分割线修复
 
@@ -220,15 +220,18 @@ Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_a
 “保留 parent、只画显式字段”的行为。
 
 页面顶栏版本合同已经通过：每个 production build 显示 ISO 8601 构建时间戳与 Actions 从 `github.sha` 注入的 8 位 Git hash；
-`d497fb30` 的 workflow `35069324556` 全部 build/deploy GREEN，随后公网 Playwright 从嵌套 canonical URL 精确回读
-`d497fb30` 和时间戳。这个短标识用于定位线上字节来源，不替代完整 commit、asset-pack manifest SHA 或证据 SHA。
+`6eade3ab` 的 workflow `35076612146` 全部 build/deploy GREEN，随后公网 Playwright 从嵌套 canonical URL 精确回读
+`6eade3ab` 和 ISO 8601 时间戳。这个短标识用于定位线上字节来源，不替代完整 commit、asset-pack manifest SHA 或证据 SHA。
 
 R22 又以 MCP-only、零 OCR/键鼠的 reference-free framebuffer 矩阵证明：两个启用的目录模组注册并提供同名直接 DDS 路径时，
 后一个 `enabled_mods` 项胜出。基础静态 pack 现在带 `ck3-coa-vfs-receipt-v1`，浏览器会校验 1,630 项胜者清单 SHA-256，
 并明确显示 `base_game_only`；导入包可以携带 `resolved_overlay` 收据。overlay 中每个胜者必须声明已登记的 `source_id`，胜者集
-SHA-256 同时绑定 source、逻辑资源、资源 hash 和源相对路径；缺失或引用 receipt 外来源会 fail closed。该原生证据只覆盖目录模组间的已注册直接 DDS 冲突，
-基础游戏/模组、DLC mount、archive、`replace_path` 和 definition merge 仍未覆盖，不能据此把 WP6 宣称为全部完成。证据见
-[`vfs-winner-native-r22`](coat-of-arms-fit-artifacts/vfs-winner-native-r22/README.md)。asset delivery 已由浏览器门禁闭合：1,630 项
+SHA-256 同时绑定 source、逻辑资源、资源 hash 和源相对路径；缺失或引用 receipt 外来源会 fail closed。R23 在独立夹具中进一步证明：
+启用目录 mod 的直接 DDS 覆盖基础游戏同路径 DDS，较晚启用的 ZIP archive mod 覆盖较早目录 mod 同路径 DDS。两组各自都有唯一名
+byte-twin reference，6/6 Apply/Copy/capture 和 6 个预登记像素 pair gate 全部通过。现仍未覆盖 DLC mount、`replace_path` 和
+definition merge，不能据此把 WP6 宣称为全部完成。证据见
+[`vfs-winner-native-r22`](coat-of-arms-fit-artifacts/vfs-winner-native-r22/README.md) 与
+[`vfs-extended-native-r23`](coat-of-arms-fit-artifacts/vfs-extended-native-r23/README.md)。asset delivery 已由浏览器门禁闭合：1,630 项
 manifest 载入后首屏只请求当前构图所需的 4 个 DDS，不请求 6,631,424-byte RGBA index 或 2,266,632-byte shape-feature shard；首次拟合才请求
 这两个内容寻址 shard，并只把本例 DDS 请求增加到 5 个。Service Worker 会按 build version 隔离 cache，两个 shard 在线填充后在
 完全离线状态逐字节回读相同 SHA-256。该结论证明运行时按需加载与缓存，不改变 Pages artifact 本身约 147 MB 的静态授权素材规模。

@@ -777,9 +777,25 @@ MCP-only Apply → Copy → reference-free framebuffer 结果显示，共享名�
 [`vfs-winner-native-r22`](coat-of-arms-fit-artifacts/vfs-winner-native-r22/README.md)。
 
 这一结果没有改变第 3 节 configured-resource catalog 的合同：该静态 MCP 仍只枚举候选并固定声明
-`resource_merge_applied=false`、`load_order_precedence_applied=false`，不会擅自把局部原生结果外推到 DLC、archive、
+`resource_merge_applied=false`、`load_order_precedence_applied=false`，不会擅自把局部原生结果外推到基础游戏、DLC、archive、
 `replace_path` 或 definition merge。正式网页则只消费带 `ck3-coa-vfs-receipt-v1` 的已解析 asset pack，并校验胜者集 SHA-256；
 当前内置 pack 的 scope 明确是 `base_game_only`。
+
+### 5.10 2026-09-16 基础 DDS 与 archive 模组的扩展 VFS 胜者
+
+R23 保留 R22 不动，另建包含三个启用项的隔离 profile。第一组让目录 mod 直接覆盖基础游戏已有的
+`pattern_checkers_06.dds`，并为基础原件与 mod 替代件各注册唯一名 byte-twin reference；第二组让较早目录 mod 和较晚 ZIP
+archive mod 提供同一个已注册 DDS 路径，也为两侧各注册唯一名 reference。运行前仍固定最大通道误差 `1`、归一化 MAE
+`<=0.00001`、alpha 差异像素 `0` 的捕获噪声门限。
+
+exact 1.19.0.6 的 MCP-only 原生矩阵结果为：基础冲突项与 mod reference 的 MAE `0.000007525`，与基础 reference 的 MAE
+`0.269456278`；archive 冲突项与较晚 archive reference 的 MAE `0.000006176`，与较早目录 reference 的 MAE
+`0.269459245`。两组胜者比较都在预登记噪声门限内，败者比较均显著不同；6/6 Apply、native Copy、route-stable preparation、
+reference-free capture 以及 6 个 pair gate 全部通过。Steam 离线，OCR、键盘和鼠标均未使用，进程树清理通过。证据见
+[`vfs-extended-native-r23`](coat-of-arms-fit-artifacts/vfs-extended-native-r23/README.md)。
+
+这把 scoped 原生证据扩展到“基础游戏 vs 启用目录 mod”及“较早目录 mod vs 较晚 archive mod”的已注册直接 DDS；仍不能外推到
+DLC mount、`replace_path`、definition merge 或其他资源类别。configured-resource catalog 也仍然只列候选，不自行推断胜者。
 
 ## 6. 哪些 CK3 语法不能在这里执行
 
@@ -927,7 +943,7 @@ CoatOfArms
 
 尚未完成的下一阶段能力：
 
-- 继续补基础游戏/模组、DLC mount、archive、`replace_path` 与 definition merge 的 VFS 胜者；R22 只闭合两个目录模组间的已注册直接 DDS 冲突；
+- 继续补 DLC mount、`replace_path` 与 definition merge 的 VFS 胜者；R22 闭合两个目录模组冲突，R23 已闭合基础游戏/目录 mod 和目录 mod/archive mod 的已注册直接 DDS 冲突；
 - 继续把现有受管 framebuffer primitive 扩展到更多 shader/asset/VFS 情形，并闭合浏览器源码模型与 native GPU 的剩余差异；
 - 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机应用并 Copy 保留的 `texture="_default.dds"` 形态以及素材原始像素。
 

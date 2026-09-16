@@ -22,9 +22,9 @@
 - 发布产物的资源 URL 均以 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/` 开头，没有覆盖仓库 Pages 根入口。
 - 正式简体中文/英文切换与持久化在同一 run 中通过；该结论不代表七种其他语言已翻译。
 
-同日后续 run [`35069324556`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/35069324556) 在 head
-`d497fb30e7fc940a179ec9ccaf88b779b001b8cf` 完成全部 build/deploy 门禁。部署后又从公网 canonical URL 运行
-`e2e/pages-deployment.spec.ts`，精确回读页面可见的 `d497fb30` 与 ISO 8601 构建时间戳，证明版本标识来自实际发布产物而非本地预览。
+同日后续 run [`35076612146`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/35076612146) 在 head
+`6eade3ab6c4d04d9f8a0b638d79e3d25445c49a1` 完成全部 build/deploy 门禁。部署后又从公网 canonical URL 运行
+`e2e/pages-deployment.spec.ts`，精确回读页面可见的 `6eade3ab` 与 ISO 8601 构建时间戳，证明版本标识来自实际发布产物而非本地预览。
 
 ## 自动触发与发布门禁
 
@@ -71,8 +71,9 @@
 | VFS receipt | `base_game_only`；1 source；0 conflict；1,630 项胜者集 SHA-256 `B0FB6AAD…2474` |
 | 浏览器按需读取 | 首屏 4 DDS、0 搜索 shard；首次拟合 2 搜索 shard、累计 5 DDS（`ck3-coa-asset-pack-on-demand-v1`） |
 
-VFS receipt 不把基础包冒充 playset：它明确声明没有读取启动配置。R22 的 scoped 原生证据只证明两个启用目录模组发生已注册
-直接 DDS 同路径冲突时后项胜出；未覆盖范围逐项写进 receipt。网页加载默认或本地 pack 时都会重算胜者集 SHA-256，缺失、计数或
+VFS receipt 不把基础包冒充 playset：它明确声明没有读取启动配置。R22/R23 的 scoped 原生证据分别证明两个启用目录模组冲突时
+后项胜出、目录 mod 覆盖基础游戏直接 DDS，以及较晚 archive mod 覆盖较早目录 mod；DLC、`replace_path` 与 definition merge 等
+未覆盖范围仍逐项写进 receipt。网页加载默认或本地 pack 时都会重算胜者集 SHA-256，缺失、计数或
 哈希不一致即拒绝载入。`resolved_overlay` 还要求每个输出胜者带一个 receipt 已登记的 `source_id`，其胜者哈希行包含
 `kind / name / asset SHA-256 / source_id / source_relative_path`；这样一个只有来源列表却未说明每项胜者来自何处的 overlay 会被拒绝。
 `base_game_only` 保持四字段 canonical 行和现有 `B0FB6AAD…2474`，不会因新增 overlay 约束改写已发布基础包身份。

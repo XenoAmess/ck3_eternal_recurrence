@@ -1,0 +1,561 @@
+{
+  "schema": "ck3-coat-of-arms-vfs-extended-evidence-v1",
+  "status": "passed",
+  "created_at": "2026-09-16T09:24:04.100085+00:00",
+  "repository_head": "d2cddad56bfe9cbea367bf63b357654952a63723",
+  "exact_build": {
+    "ck3_exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll": "C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge.dll",
+    "bridge_dll_sha256": "9DDC30CAF4373F4370E597DE42A3FADE5DC70AE597511D6654BBC13D4D14C987",
+    "bridge_injector": "C:\\xb\\coa-wp1-v2-final\\xar_ck3_bridge_injector.exe",
+    "bridge_injector_sha256": "880885ABBF26C0D4147CFB55B70C5608B581F40C4229099D44A610B5CD589137"
+  },
+  "interaction_policy": {
+    "mcp_only": true,
+    "mcp_baseline_private_native_read_only": false,
+    "controlled_private_native_selection_start": false,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false
+  },
+  "steam": {
+    "offline": true
+  },
+  "fixture": {
+    "receipt_bytes": 3727,
+    "receipt_sha256": "30890F0D413B1C8DC6E1CD758B656A672CAB5BBCF694B25B4AB1F6D2E2ABA7CC",
+    "load_configuration_sha256": "BDCB40D91421B9A6723F425C54C28374EA19024BFF3FA03DC437252B8173EC09",
+    "enabled_mods": [
+      "mod/coa_vfs_extended_base_override.mod",
+      "mod/coa_vfs_extended_archive_directory.mod",
+      "mod/coa_vfs_extended_archive_later.mod"
+    ],
+    "descriptors": [
+      {
+        "registry_path": "mod/coa_vfs_extended_base_override.mod",
+        "location_kind": "path",
+        "published_location": "D:\\ck3_coa_vfs_native_r23_exact_source\\coa_vfs_extended_base_override",
+        "descriptor_sha256": "106396C10C5B227D2B375EAFA9460FE363BC728AB767C30E22DD5707C846BAA7"
+      },
+      {
+        "registry_path": "mod/coa_vfs_extended_archive_directory.mod",
+        "location_kind": "path",
+        "published_location": "D:\\ck3_coa_vfs_native_r23_exact_source\\coa_vfs_extended_archive_directory",
+        "descriptor_sha256": "4B52D51660867EDF7E601251F9142F22C931E4923175AD98C99B87B93274781D"
+      },
+      {
+        "registry_path": "mod/coa_vfs_extended_archive_later.mod",
+        "location_kind": "archive",
+        "published_location": "D:\\ck3_coa_vfs_native_r23_exact_source\\coa_vfs_extended_archive_later.zip",
+        "descriptor_sha256": "CF4389C80653927A0665AD7D33793422518A8C6FB57E1E488D9B98C1B92F72EA"
+      }
+    ],
+    "base_vs_mod": {
+      "conflicting_resource_name": "pattern_checkers_06.dds",
+      "base_source_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+      "base_reference_name": "pattern_xar_vfs_base_original.dds",
+      "base_reference_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+      "mod_source_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+      "mod_conflict_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+      "mod_reference_name": "pattern_xar_vfs_base_mod.dds",
+      "mod_reference_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+      "manifest_sha256": "991563A6F9E4F50CCC467A189192FFCBF8951595089F71C6A5D385F9A96552CB"
+    },
+    "directory_vs_archive": {
+      "conflicting_resource_name": "pattern_xar_vfs_archive_shared.dds",
+      "directory_source_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+      "directory_conflict_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+      "directory_reference_name": "pattern_xar_vfs_archive_directory.dds",
+      "directory_reference_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+      "directory_manifest_sha256": "DF07625B662AF95FBF66CA02EEF08E66619D8544607A64EA5CD6873438AF36B4",
+      "archive_source_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+      "archive_sha256": "3F2F49153266C98D68057ECC15D6339A7F79145D1685AAC35BC01E4DD1FDA944",
+      "archive_entries": [
+        "gfx/coat_of_arms/patterns/62_xar_vfs_archive_later_patterns.txt",
+        "gfx/coat_of_arms/patterns/pattern_xar_vfs_archive_later.dds",
+        "gfx/coat_of_arms/patterns/pattern_xar_vfs_archive_shared.dds"
+      ],
+      "archive_conflict_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+      "archive_reference_name": "pattern_xar_vfs_archive_later.dds",
+      "archive_reference_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C"
+    }
+  },
+  "predeclared_hypothesis": "an enabled directory mod owns a conflicting base-game DDS path; a later enabled archive mod owns a conflicting DDS path over an earlier directory mod",
+  "inferred_winners": {
+    "base_vs_mod": "enabled-directory-mod",
+    "directory_vs_archive": "later-enabled-archive-mod"
+  },
+  "capture_noise_thresholds": {
+    "maximum_channel_error": 1,
+    "maximum_normalized_mean_absolute_error": 1e-05,
+    "maximum_alpha_differing_pixels": 0
+  },
+  "cases": [
+    {
+      "id": "base-conflict",
+      "source": {
+        "path": "vfs-extended:base-conflict",
+        "raw_bytes": 88,
+        "raw_sha256": "2cb2a2380011e4fcab56df2ab0e756eec0f8af86aecef9a3d577e214a2fc1ea9",
+        "wire_bytes": 88,
+        "wire_sha256": "2cb2a2380011e4fcab56df2ab0e756eec0f8af86aecef9a3d577e214a2fc1ea9",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 88,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "6dac6230ecd939ed85590f5f6fefa94f7cf08c645c3ee433bddb97fd2ccf9a4e",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "6dac6230ecd939ed85590f5f6fefa94f7cf08c645c3ee433bddb97fd2ccf9a4e",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "base-original-reference",
+      "source": {
+        "path": "vfs-extended:base-original-reference",
+        "raw_bytes": 98,
+        "raw_sha256": "db1532c90b867597e26d35306c5e9525e4084bc0e7448430c8ee0355b9ca86a8",
+        "wire_bytes": 98,
+        "wire_sha256": "db1532c90b867597e26d35306c5e9525e4084bc0e7448430c8ee0355b9ca86a8",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 98,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "b2cdfdd01e18ac01acdd11c6097a257fff8e8488af33fec678247a659425f507",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "b2cdfdd01e18ac01acdd11c6097a257fff8e8488af33fec678247a659425f507",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "base-mod-reference",
+      "source": {
+        "path": "vfs-extended:base-mod-reference",
+        "raw_bytes": 93,
+        "raw_sha256": "6a2dda732a97c1af2380a90698eb77dcf49d7054a5736a727c039e577d20feb2",
+        "wire_bytes": 93,
+        "wire_sha256": "6a2dda732a97c1af2380a90698eb77dcf49d7054a5736a727c039e577d20feb2",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 93,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "49abc82d83bdb09c0565407a55e5e6449311cb0da4e7bcfafa9c24edbc41f2c7",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "49abc82d83bdb09c0565407a55e5e6449311cb0da4e7bcfafa9c24edbc41f2c7",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "archive-conflict",
+      "source": {
+        "path": "vfs-extended:archive-conflict",
+        "raw_bytes": 99,
+        "raw_sha256": "17b86bf6ba87a4f23215b2bb382a6c614f23b82c64a2762e7a0363e6a273b052",
+        "wire_bytes": 99,
+        "wire_sha256": "17b86bf6ba87a4f23215b2bb382a6c614f23b82c64a2762e7a0363e6a273b052",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 99,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "bdfe36806193044373e655e8138e735b5284f1c8c55c25e80e897cf312892f93",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "bdfe36806193044373e655e8138e735b5284f1c8c55c25e80e897cf312892f93",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "archive-directory-reference",
+      "source": {
+        "path": "vfs-extended:archive-directory-reference",
+        "raw_bytes": 102,
+        "raw_sha256": "2325072af824f1358811f43c219479d653cb89a9882356e432cadf5f6b3135eb",
+        "wire_bytes": 102,
+        "wire_sha256": "2325072af824f1358811f43c219479d653cb89a9882356e432cadf5f6b3135eb",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 102,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "311cda126b8c276c4b41ff2b370fa9aa362c1fd551bc2e694327f4afe9d8e7d6",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "311cda126b8c276c4b41ff2b370fa9aa362c1fd551bc2e694327f4afe9d8e7d6",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    },
+    {
+      "id": "archive-later-reference",
+      "source": {
+        "path": "vfs-extended:archive-later-reference",
+        "raw_bytes": 98,
+        "raw_sha256": "84a2b5bda313d897b6c73cdc0b1ff64d3f93d4fb045bceb6c54996d6ef02b94c",
+        "wire_bytes": 98,
+        "wire_sha256": "84a2b5bda313d897b6c73cdc0b1ff64d3f93d4fb045bceb6c54996d6ef02b94c",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 0,
+          "colored_emblem_blocks": 0,
+          "textured_emblem_blocks": 0,
+          "instances": 0,
+          "utf8_bytes": 98,
+          "lines": 1
+        },
+        "semantic_projection": {
+          "sha256": "ce389c1af99bc47c789b6cbc65a92b759178ffe356a1d381bd01f0fafbff1a00",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 0,
+            "colors": 3,
+            "masks": 0,
+            "positions": 0,
+            "scales": 0,
+            "rotations": 0,
+            "depths": 0,
+            "parents": 0
+          }
+        }
+      },
+      "native_copy_semantic_projection": {
+        "sha256": "ce389c1af99bc47c789b6cbc65a92b759178ffe356a1d381bd01f0fafbff1a00",
+        "field_counts": {
+          "patterns": 1,
+          "textures": 0,
+          "colors": 3,
+          "masks": 0,
+          "positions": 0,
+          "scales": 0,
+          "rotations": 0,
+          "depths": 0,
+          "parents": 0
+        }
+      },
+      "checks": {
+        "applied": true,
+        "native_copy_exported": true,
+        "prepared": true,
+        "reference_free_capture": true
+      }
+    }
+  ],
+  "diagnostic_pairs": [
+    {
+      "first": "base-conflict",
+      "second": "base-original-reference",
+      "expected_equivalent_within_capture_noise": false,
+      "equivalent_within_capture_noise": false,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48466,
+      "differing_visible_pixels": 28290,
+      "mean_absolute_error": 0.2694562780888914,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "base-conflict",
+      "second": "base-mod-reference",
+      "expected_equivalent_within_capture_noise": true,
+      "equivalent_within_capture_noise": true,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48466,
+      "differing_visible_pixels": 276,
+      "mean_absolute_error": 7.524984161122048e-06,
+      "maximum_channel_error": 1,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "base-original-reference",
+      "second": "base-mod-reference",
+      "expected_equivalent_within_capture_noise": false,
+      "equivalent_within_capture_noise": false,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48466,
+      "differing_visible_pixels": 28313,
+      "mean_absolute_error": 0.26945657477285473,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "archive-conflict",
+      "second": "archive-directory-reference",
+      "expected_equivalent_within_capture_noise": false,
+      "equivalent_within_capture_noise": false,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48466,
+      "differing_visible_pixels": 28292,
+      "mean_absolute_error": 0.2694592449285248,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "archive-conflict",
+      "second": "archive-later-reference",
+      "expected_equivalent_within_capture_noise": true,
+      "equivalent_within_capture_noise": true,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48466,
+      "differing_visible_pixels": 225,
+      "mean_absolute_error": 6.176420691386914e-06,
+      "maximum_channel_error": 1,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    },
+    {
+      "first": "archive-directory-reference",
+      "second": "archive-later-reference",
+      "expected_equivalent_within_capture_noise": false,
+      "equivalent_within_capture_noise": false,
+      "gate_passed": true,
+      "comparable": true,
+      "side": 230,
+      "common_visible_pixels": 48466,
+      "differing_visible_pixels": 28289,
+      "mean_absolute_error": 0.26945894824456146,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0,
+      "pixel_exact": false
+    }
+  ],
+  "native_crops": [
+    {
+      "id": "base-conflict",
+      "path": "base-conflict.png",
+      "bytes": 49850,
+      "sha256": "4D41CF32C6590D54A135B98241D5EA7BBCD23D1A6436DF4D1C830E41232840D7",
+      "payload_kind": "aligned-content-reference-free"
+    },
+    {
+      "id": "base-original-reference",
+      "path": "base-original-reference.png",
+      "bytes": 51127,
+      "sha256": "2EE50DAE82ED324D8BD5EA19BAF0156DD2CC6501CFF661CE88A6A40962D1C94B",
+      "payload_kind": "aligned-content-reference-free"
+    },
+    {
+      "id": "base-mod-reference",
+      "path": "base-mod-reference.png",
+      "bytes": 49832,
+      "sha256": "955E7D6F50E89DBFA7B2C23215C6326805B3438BE6D132A60999EBB955F6B657",
+      "payload_kind": "aligned-content-reference-free"
+    },
+    {
+      "id": "archive-conflict",
+      "path": "archive-conflict.png",
+      "bytes": 49859,
+      "sha256": "6566653B53B0B8B57885EE8A5B4AA51D95AF9BA16C60BE2F34733D5725EF99EA",
+      "payload_kind": "aligned-content-reference-free"
+    },
+    {
+      "id": "archive-directory-reference",
+      "path": "archive-directory-reference.png",
+      "bytes": 51151,
+      "sha256": "657426C9284F47A1DA39036FB2192FEEAB4182C7AC441FCB112CC3EEB5675F66",
+      "payload_kind": "aligned-content-reference-free"
+    },
+    {
+      "id": "archive-later-reference",
+      "path": "archive-later-reference.png",
+      "bytes": 49869,
+      "sha256": "A19DE92CE67BB0C6298E087355F75F63BA96CC2C4EB19C21AAC187BBEF0B5E15",
+      "payload_kind": "aligned-content-reference-free"
+    }
+  ],
+  "cleanup": {
+    "cleanup_proven": true,
+    "tree_gone": true,
+    "contract_errors": []
+  },
+  "raw_report": {
+    "path": "D:\\ck3_coa_vfs_native_r23_exact\\report.json",
+    "bytes": 3523886,
+    "sha256": "F8B3609BDFEE531605D992E08C017C0BE62D0D6760C4F94D3AEE978E7FB32230"
+  },
+  "elapsed_seconds": 410.001
+}
