@@ -9147,6 +9147,17 @@ def _choose_one_life_turn_core(
             # rejected candidates still fall through to the rest of the set.
             for objective_rank, province_id in enumerate(route_exact_candidates):
                 if province_id == current_province_id:
+                    if isinstance(exact_siege_rejection, dict):
+                        route_rejections.append(
+                            {
+                                "target_province_id": province_id,
+                                "status": "current_exact_siege_rejected",
+                                "siege_status": exact_siege_rejection.get(
+                                    "status"
+                                ),
+                            }
+                        )
+                        continue
                     if active_route_unsafe:
                         route_rejections.append(
                             {
