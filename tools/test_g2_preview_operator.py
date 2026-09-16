@@ -111,7 +111,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 if path == game_exe:
                     return g2_preview_operator.R778_CK3_EXE_SHA256
                 if path == dll:
-                    return g2_preview_operator.R778_PRIVATE_BRIDGE_SHA256
+                    return g2_preview_operator.R781_PRIVATE_BRIDGE_SHA256
                 if path == injector:
                     return g2_preview_operator.R778_INJECTOR_SHA256
                 return hashlib.sha256(path.read_bytes()).hexdigest()

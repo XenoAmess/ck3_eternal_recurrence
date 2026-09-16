@@ -28,8 +28,8 @@ R778_SOURCE_DRIVER_STATE_SHA256 = (
 R778_CK3_EXE_SHA256 = (
     "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 )
-R778_PRIVATE_BRIDGE_SHA256 = (
-    "0da2481fb431611c62bffaac35fbcb8b361b655e15e80b2d6469fc2389971ff8"
+R781_PRIVATE_BRIDGE_SHA256 = (
+    "4648c1c732b175d556effa11db71c8a16b4de122b941ad7a5e883a79272ee584"
 )
 R778_INJECTOR_SHA256 = (
     "fe371d1c296e55ef847853207d6e4d5188794a9c8ff4663b69e5acca35f6d566"
@@ -551,7 +551,7 @@ def command_query_current_timeline_blocker_context_v1(
 def command_continue_death_succession_modal_v1(
     args: argparse.Namespace,
 ) -> int:
-    """Run the sealed R778 action and emit a complete immutable receipt."""
+    """Run the sealed succession action and emit a complete immutable receipt."""
 
     manifest_path_value = args.manifest.resolve()
     manifest = load_manifest(manifest_path_value)
@@ -581,7 +581,7 @@ def command_continue_death_succession_modal_v1(
         and args.expected_date_raw == R778_DATE_RAW
         and runtime_identities["ck3_exe"]["sha256"] == R778_CK3_EXE_SHA256
         and runtime_identities["private_bridge"]["sha256"]
-        == R778_PRIVATE_BRIDGE_SHA256
+        == R781_PRIVATE_BRIDGE_SHA256
         and runtime_identities["injector"]["sha256"] == R778_INJECTOR_SHA256
     )
     receipt: dict[str, Any] = {
