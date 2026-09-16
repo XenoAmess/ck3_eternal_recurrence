@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import time
 import uuid
 from collections.abc import Mapping
 
@@ -14,6 +15,8 @@ from .timeline_blocker_private_transport import (
 CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP = (
     "continue-death-succession-modal-v1"
 )
+POST_CLOSE_QUERY_LIMIT = 8
+POST_CLOSE_QUERY_INTERVAL_SECONDS = 0.05
 
 
 def _episode_binding(snapshot: Mapping[str, object]) -> tuple[object, ...]:
@@ -30,6 +33,70 @@ def _positive_int(value: object, label: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
         raise BridgeUnavailableError(f"{label} must be a positive integer")
     return value
+
+
+def _post_query_binding(snapshot: Mapping[str, object]) -> dict[str, object]:
+    played = snapshot.get("played_character")
+    return {
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "paused": snapshot.get("paused"),
+        "map_ready": snapshot.get("map_ready"),
+        "episode_character_id": snapshot.get("episode_character_id"),
+        "episode_run_id": snapshot.get("episode_run_id"),
+        "played_character_id": (
+            played.get("character_id") if isinstance(played, Mapping) else None
+        ),
+        "played_character_alive": (
+            played.get("alive") if isinstance(played, Mapping) else None
+        ),
+    }
+
+
+def _submitted_unconfirmed_result(
+    *,
+    ack: dict[str, object],
+    initial: dict[str, object],
+    post_attempts: list[dict[str, object]],
+    date_raw: int,
+    snapshot: Mapping[str, object],
+    failure: str,
+) -> dict[str, object]:
+    last_query = next(
+        (
+            attempt.get("query")
+            for attempt in reversed(post_attempts)
+            if isinstance(attempt.get("query"), dict)
+        ),
+        None,
+    )
+    return {
+        **copy.deepcopy(ack),
+        "status": "submitted_unconfirmed",
+        "material_result_verified": False,
+        "submission_ack": copy.deepcopy(ack),
+        "initial_query": copy.deepcopy(initial),
+        "postcondition_queries": [
+            copy.deepcopy(attempt["query"])
+            for attempt in post_attempts
+            if isinstance(attempt.get("query"), dict)
+        ],
+        "postcondition_query": copy.deepcopy(last_query),
+        "post_observation_revision": (
+            last_query.get("observation_revision")
+            if isinstance(last_query, dict)
+            else None
+        ),
+        "post_query_attempts": copy.deepcopy(post_attempts),
+        "post_failure": failure,
+        "life_advance_result": None,
+        "starting_date_raw": date_raw,
+        "ending_date_raw": snapshot.get("date_raw"),
+        "ending_revision": snapshot.get("revision"),
+        "ending_native_revision": snapshot.get("native_revision"),
+    }
 
 
 def continue_death_succession_modal_private_v1(
@@ -180,40 +247,144 @@ def continue_death_succession_modal_private_v1(
         ack.get("action_observation_revision"), "action_observation_revision"
     )
 
-    after_ack = driver.take_snapshot()
+    try:
+        after_ack = driver.take_snapshot()
+    except Exception as error:
+        return _submitted_unconfirmed_result(
+            ack=ack,
+            initial=initial,
+            post_attempts=[],
+            date_raw=date_raw,
+            snapshot=before,
+            failure=(
+                "post-Close snapshot failed: "
+                f"{type(error).__name__}: {error}"
+            ),
+        )
     if (
         after_ack.get("revision") != expected_revision
         or after_ack.get("native_revision") != native_revision
         or after_ack.get("date_raw") != date_raw
         or _episode_binding(after_ack) != source_episode
     ):
-        raise BridgeUnavailableError(
-            "death-succession Close crossed its source episode before verification"
+        return _submitted_unconfirmed_result(
+            ack=ack,
+            initial=initial,
+            post_attempts=[],
+            date_raw=date_raw,
+            snapshot=after_ack,
+            failure=(
+                "death-succession Close crossed its source episode before "
+                "postcondition verification"
+            ),
         )
-    post = query_current_timeline_blocker_context_private_v1(
-        driver,
-        expected_revision=expected_revision,
-        timeout_seconds=timeout_seconds,
-    )
-    post_observation_revision = _positive_int(
-        post.get("observation_revision"), "post observation_revision"
-    )
-    post_context = post["current_timeline_blocker_context"]
+    deadline = time.monotonic() + float(timeout_seconds)
+    post_attempts: list[dict[str, object]] = []
+    post: dict[str, object] | None = None
+    last_snapshot = after_ack
+    prior_observation_revision = action_observation_revision
     false_field = {
         "status": "available",
         "value": False,
         "unavailable_reason": None,
     }
-    if (
-        post_observation_revision <= action_observation_revision
-        or post_context.get("status") != "available"
-        or post_context.get("identity") != "none"
-        or post_context.get("blocks_simulation") != false_field
-        or post_context.get("has_open_succession") != false_field
-    ):
-        raise BridgeUnavailableError(
-            "independent post-Close observation did not prove the modal cleared"
+    for attempt_number in range(1, POST_CLOSE_QUERY_LIMIT + 1):
+        if time.monotonic() >= deadline:
+            return _submitted_unconfirmed_result(
+                ack=ack,
+                initial=initial,
+                post_attempts=post_attempts,
+                date_raw=date_raw,
+                snapshot=last_snapshot,
+                failure="bounded post-Close query timeout expired",
+            )
+        attempt: dict[str, object] = {
+            "attempt": attempt_number,
+            "query": None,
+            "error": None,
+            "binding": None,
+        }
+        try:
+            query_before = driver.take_snapshot()
+            last_snapshot = query_before
+            attempt["binding"] = _post_query_binding(query_before)
+            if (
+                query_before.get("revision") != expected_revision
+                or query_before.get("native_revision") != native_revision
+                or query_before.get("date_raw") != date_raw
+                or query_before.get("paused") is not True
+                or query_before.get("map_ready") is not True
+                or _episode_binding(query_before) != source_episode
+            ):
+                raise BridgeUnavailableError(
+                    "post-Close query crossed the paused source episode binding"
+                )
+            remaining = max(0.001, deadline - time.monotonic())
+            post = query_current_timeline_blocker_context_private_v1(
+                driver,
+                expected_revision=expected_revision,
+                timeout_seconds=remaining,
+            )
+            attempt["query"] = copy.deepcopy(post)
+            post_observation_revision = _positive_int(
+                post.get("observation_revision"), "post observation_revision"
+            )
+            if post_observation_revision <= prior_observation_revision:
+                raise BridgeUnavailableError(
+                    "post-Close observation revision did not strictly increase"
+                )
+            prior_observation_revision = post_observation_revision
+            post_attempts.append(attempt)
+            post_context = post["current_timeline_blocker_context"]
+            if (
+                post_context.get("status") == "available"
+                and post_context.get("identity") == "none"
+                and post_context.get("blocks_simulation") == false_field
+                and post_context.get("has_open_succession") == false_field
+            ):
+                break
+            time.sleep(
+                min(
+                    POST_CLOSE_QUERY_INTERVAL_SECONDS,
+                    max(0.0, deadline - time.monotonic()),
+                )
+            )
+        except Exception as error:
+            attempt["error"] = f"{type(error).__name__}: {error}"
+            post_attempts.append(attempt)
+            return _submitted_unconfirmed_result(
+                ack=ack,
+                initial=initial,
+                post_attempts=post_attempts,
+                date_raw=date_raw,
+                snapshot=last_snapshot,
+                failure=attempt["error"],
+            )
+    else:
+        return _submitted_unconfirmed_result(
+            ack=ack,
+            initial=initial,
+            post_attempts=post_attempts,
+            date_raw=date_raw,
+            snapshot=last_snapshot,
+            failure=(
+                "bounded post-Close queries exhausted while the modal or "
+                "succession predicates remained uncleared"
+            ),
         )
+
+    if post is None:  # loop success cannot occur without a normalized query
+        return _submitted_unconfirmed_result(
+            ack=ack,
+            initial=initial,
+            post_attempts=post_attempts,
+            date_raw=date_raw,
+            snapshot=last_snapshot,
+            failure="post-Close query loop produced no material observation",
+        )
+    post_observation_revision = _positive_int(
+        post.get("observation_revision"), "post observation_revision"
+    )
 
     before_advance = driver.take_snapshot()
     if (
@@ -248,8 +419,15 @@ def continue_death_succession_modal_private_v1(
         # can promote this bounded operation to materially_verified.
         "submission_ack": copy.deepcopy(ack),
         "initial_query": initial,
+        "postcondition_queries": [
+            copy.deepcopy(attempt["query"])
+            for attempt in post_attempts
+            if isinstance(attempt.get("query"), dict)
+        ],
         "postcondition_query": post,
         "post_observation_revision": post_observation_revision,
+        "post_query_attempts": copy.deepcopy(post_attempts),
+        "post_failure": None,
         "life_advance_result": copy.deepcopy(life_result),
         "starting_date_raw": date_raw,
         "ending_date_raw": final_date,

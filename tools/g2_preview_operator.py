@@ -737,6 +737,22 @@ def command_continue_death_succession_modal_v1(
         if isinstance(action_result, dict)
         else None
     )
+    post_queries = (
+        action_result.get("postcondition_queries")
+        if isinstance(action_result, dict)
+        else None
+    )
+    post_query_attempts = (
+        action_result.get("post_query_attempts")
+        if isinstance(action_result, dict)
+        else None
+    )
+    submitted_unconfirmed = bool(
+        isinstance(action_report, dict)
+        and action_report.get("status") == "RED_SUBMITTED_UNCONFIRMED"
+        and isinstance(action_result, dict)
+        and action_result.get("status") == "submitted_unconfirmed"
+    )
     life_advance = (
         action_result.get("life_advance_result")
         if isinstance(action_result, dict)
@@ -745,7 +761,13 @@ def command_continue_death_succession_modal_v1(
     receipt.update(
         {
             "ok": ok,
-            "status": "GREEN_MATERIAL" if ok else "action_failed",
+            "status": (
+                "GREEN_MATERIAL"
+                if ok
+                else "RED_SUBMITTED_UNCONFIRMED"
+                if submitted_unconfirmed
+                else "action_failed"
+            ),
             "game_launched": True,
             "action_exit_code": action_exit,
             "action_report": str(action_stdout),
@@ -764,6 +786,13 @@ def command_continue_death_succession_modal_v1(
             "initial_query": initial_query,
             "submission_ack": submission_ack,
             "independent_postcondition_query": post_query,
+            "postcondition_queries": post_queries,
+            "post_query_attempts": post_query_attempts,
+            "post_failure": (
+                action_result.get("post_failure")
+                if isinstance(action_result, dict)
+                else None
+            ),
             "life_advance_result": life_advance,
             "checkpoint": checkpoint,
             "checks": checks,

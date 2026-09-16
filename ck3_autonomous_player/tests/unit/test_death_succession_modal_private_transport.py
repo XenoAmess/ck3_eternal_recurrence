@@ -7,9 +7,9 @@ import pytest
 
 from xar_autoplayer.bridge.death_succession_modal_private_transport import (
     CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP,
+    POST_CLOSE_QUERY_LIMIT,
     continue_death_succession_modal_private_v1,
 )
-from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.timeline_blocker_context_contract import (
     QUERY_CURRENT_TIMELINE_BLOCKER_CONTEXT_V1_STEP,
 )
@@ -88,26 +88,39 @@ class _Endpoint:
 
 
 class _State:
-    def __init__(self, endpoint: _Endpoint) -> None:
+    def __init__(
+        self,
+        endpoint: _Endpoint,
+        *,
+        query_identities: list[str] | None = None,
+    ) -> None:
         self.endpoint = endpoint
         self.query_count = 0
+        self.query_identities = query_identities or [
+            "death_succession_modal",
+            "none",
+        ]
 
     def wait_for_command_result(
         self, request_id: str, timeout_seconds: float
     ) -> dict[str, object]:
-        assert timeout_seconds == 30.0
+        assert 0.0 < timeout_seconds <= 30.0
         request = self.endpoint.request
         assert request is not None and request["request_id"] == request_id
         step = request["step"]
         if step == QUERY_CURRENT_TIMELINE_BLOCKER_CONTEXT_V1_STEP:
             self.query_count += 1
-            identity = "death_succession_modal" if self.query_count == 1 else "none"
+            identity = self.query_identities[
+                min(self.query_count - 1, len(self.query_identities) - 1)
+            ]
             result = {
                 "step": step,
                 "accepted": True,
                 "status": "available",
                 "query_sequence": self.query_count,
-                "observation_revision": 100 if self.query_count == 1 else 102,
+                "observation_revision": (
+                    100 if self.query_count == 1 else 100 + self.query_count
+                ),
                 "snapshot_revision": NATIVE_REVISION,
                 "current_timeline_blocker_context": _timeline(identity),
                 "private_build": True,
@@ -150,9 +163,11 @@ class _Driver:
     allow_private_current_timeline_blocker_query = True
     allow_private_death_succession_modal_continue = True
 
-    def __init__(self) -> None:
+    def __init__(self, *, query_identities: list[str] | None = None) -> None:
         self.endpoint = _Endpoint()
-        self.state = _State(self.endpoint)
+        self.state = _State(
+            self.endpoint, query_identities=query_identities
+        )
         self.snapshot = _snapshot()
 
     def take_snapshot(self) -> dict[str, object]:
@@ -202,13 +217,82 @@ def test_postcondition_must_be_later_than_action() -> None:
         return frame
 
     driver.state.wait_for_command_result = stale  # type: ignore[method-assign]
-    with pytest.raises(BridgeUnavailableError, match="independent post-Close"):
-        continue_death_succession_modal_private_v1(
-            driver,
-            expected_revision=PUBLIC_REVISION,
-            expected_played_character_id=CHARACTER_ID,
-            expected_episode_run_id=EPISODE_RUN_ID,
-        )
+    result = continue_death_succession_modal_private_v1(
+        driver,
+        expected_revision=PUBLIC_REVISION,
+        expected_played_character_id=CHARACTER_ID,
+        expected_episode_run_id=EPISODE_RUN_ID,
+    )
+    assert result["status"] == "submitted_unconfirmed"
+    assert result["submission_ack"]["close_invocations"] == 1
+    assert result["post_query_attempts"][0]["query"][
+        "observation_revision"
+    ] == 101
+    assert "strictly increase" in result["post_query_attempts"][0]["error"]
+    assert sum(
+        request["step"] == CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP
+        for request in driver.endpoint.requests
+    ) == 1
+
+
+def test_postcondition_can_clear_after_one_delayed_read_only_query() -> None:
+    driver = _Driver(
+        query_identities=[
+            "death_succession_modal",
+            "death_succession_modal",
+            "none",
+        ]
+    )
+    result = continue_death_succession_modal_private_v1(
+        driver,
+        expected_revision=PUBLIC_REVISION,
+        expected_played_character_id=CHARACTER_ID,
+        expected_episode_run_id=EPISODE_RUN_ID,
+    )
+    assert result["status"] == "materially_verified"
+    assert [
+        query["observation_revision"]
+        for query in result["postcondition_queries"]
+    ] == [102, 103]
+    assert [
+        query["current_timeline_blocker_context"]["identity"]
+        for query in result["postcondition_queries"]
+    ] == ["death_succession_modal", "none"]
+    assert sum(
+        request["step"] == CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP
+        for request in driver.endpoint.requests
+    ) == 1
+
+
+def test_never_cleared_is_persisted_as_submitted_unconfirmed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "xar_autoplayer.bridge.death_succession_modal_private_transport.time.sleep",
+        lambda _seconds: None,
+    )
+    driver = _Driver(query_identities=["death_succession_modal"])
+    result = continue_death_succession_modal_private_v1(
+        driver,
+        expected_revision=PUBLIC_REVISION,
+        expected_played_character_id=CHARACTER_ID,
+        expected_episode_run_id=EPISODE_RUN_ID,
+    )
+    assert result["status"] == "submitted_unconfirmed"
+    assert result["material_result_verified"] is False
+    assert result["submission_ack"]["close_invocations"] == 1
+    assert result["initial_query"]["observation_revision"] == 100
+    assert len(result["post_query_attempts"]) == POST_CLOSE_QUERY_LIMIT
+    assert [
+        query["observation_revision"]
+        for query in result["postcondition_queries"]
+    ] == list(range(102, 102 + POST_CLOSE_QUERY_LIMIT))
+    assert result["life_advance_result"] is None
+    assert driver.snapshot["date_raw"] == DATE_RAW
+    assert sum(
+        request["step"] == CONTINUE_DEATH_SUCCESSION_MODAL_V1_STEP
+        for request in driver.endpoint.requests
+    ) == 1
 
 
 def test_route_remains_private() -> None:

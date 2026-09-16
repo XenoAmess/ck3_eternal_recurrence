@@ -91,11 +91,19 @@ def test_r778_checkpoint_binding_is_the_authoritative_sha256() -> None:
 
 
 class _Service:
-    def __init__(self, driver: _Driver, *, save: Path, history: list[object]):
+    def __init__(
+        self,
+        driver: _Driver,
+        *,
+        save: Path,
+        history: list[object],
+        confirm_postcondition: bool = True,
+    ):
         self.driver = driver
         self.save = save
         self.action_calls = 0
         self.save_calls = 0
+        self.confirm_postcondition = confirm_postcondition
         self.frame: dict[str, object] = {
             "snapshot_id": "native-frame-18",
             "revision": 13,
@@ -145,6 +153,50 @@ class _Service:
             "source": {"paused": True},
             "current_timeline_blocker_context": _context("none"),
         }
+        if not self.confirm_postcondition:
+            posts = [
+                {
+                    "observation_revision": revision,
+                    "source": {"paused": True},
+                    "current_timeline_blocker_context": _context(
+                        "death_succession_modal"
+                    ),
+                }
+                for revision in range(4575, 4583)
+            ]
+            return {
+                **ack,
+                "status": "submitted_unconfirmed",
+                "material_result_verified": False,
+                "submission_ack": ack,
+                "initial_query": initial,
+                "postcondition_queries": posts,
+                "postcondition_query": posts[-1],
+                "post_observation_revision": 4582,
+                "post_query_attempts": [
+                    {
+                        "attempt": index,
+                        "query": query,
+                        "error": None,
+                        "binding": {
+                            "revision": 13,
+                            "native_revision": 18,
+                            "date_raw": DATE_RAW,
+                            "paused": True,
+                        },
+                    }
+                    for index, query in enumerate(posts, start=1)
+                ],
+                "post_failure": (
+                    "bounded post-Close queries exhausted while the modal "
+                    "or succession predicates remained uncleared"
+                ),
+                "life_advance_result": None,
+                "starting_date_raw": DATE_RAW,
+                "ending_date_raw": DATE_RAW,
+                "ending_revision": 13,
+                "ending_native_revision": 18,
+            }
         history = self.frame["native_command_history"]
         assert isinstance(history, list)
         history.append(
@@ -379,6 +431,142 @@ class TimelineBlockerActionRunTest(unittest.TestCase):
             "ok": True,
         }]}
         self.assertFalse(subject._exact_source_history(driver, checkpoint))
+
+    def test_submitted_unconfirmed_preserves_ack_queries_and_source_checkpoint(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            profile = root / "profile"
+            save = profile / "save games" / "xar_checkpoint.ck3"
+            driver_state = root / "native-session" / "driver-state.json"
+            save.parent.mkdir(parents=True)
+            driver_state.parent.mkdir(parents=True)
+            source_bytes = b"sealed-source-checkpoint"
+            save.write_bytes(source_bytes)
+            prior = _prior_history()
+            restore = _restore_entry(subject.EXPECTED_SOURCE_CHECKPOINT_SHA256)
+            before_driver = {
+                "format_version": 2,
+                "bridge_pid": 100,
+                "episode_character_id": CHARACTER_ID,
+                "episode_run_id": EPISODE_RUN_ID,
+                "command_history": prior,
+            }
+            driver_state.write_text(json.dumps(before_driver), encoding="utf-8")
+            spec = SimpleNamespace(state_dir=root, profile_dir=profile)
+            config = NativeBridgeLaunchConfig(
+                mode="native-headless",
+                pipe_name=r"\\.\pipe\timeline-action-unconfirmed-test",
+                dll_path=root / "bridge.dll",
+                injector_path=root / "injector.exe",
+            )
+            services: list[_Service] = []
+
+            def service_factory(driver):
+                service = _Service(
+                    driver,
+                    save=save,
+                    history=[*prior, restore],
+                    confirm_postcondition=False,
+                )
+                services.append(service)
+                return service
+
+            def session(*args, stop_event: threading.Event, **kwargs):
+                self.assertTrue(stop_event.wait(2.0))
+                driver_state.write_text(
+                    json.dumps(
+                        {
+                            **before_driver,
+                            "bridge_pid": 200,
+                            "command_history": copy.deepcopy(
+                                services[0].frame["native_command_history"]
+                            ),
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+                return {
+                    "ok": True,
+                    "exit_reason": "stop",
+                    "shutdown": {
+                        "ok": True,
+                        "tree_gone": True,
+                        "cleanup_proven": True,
+                    },
+                }
+
+            readiness = {
+                "snapshot_id": "native-frame-18",
+                "revision": 13,
+                "native_revision": 18,
+                "date_raw": DATE_RAW,
+                "paused": True,
+                "map_ready": True,
+            }
+
+            def sealed_sha(path: Path) -> str:
+                if path == save:
+                    return subject.EXPECTED_SOURCE_CHECKPOINT_SHA256
+                if path == driver_state and json.loads(
+                    path.read_text(encoding="utf-8")
+                ).get("bridge_pid") == 100:
+                    return subject.EXPECTED_SOURCE_DRIVER_STATE_SHA256
+                return hashlib.sha256(path.read_bytes()).hexdigest()
+
+            with (
+                mock.patch.object(subject, "ensure_state_path_safe"),
+                mock.patch.object(
+                    subject,
+                    "validate_native_bridge_launch_config",
+                    return_value=config,
+                ),
+                mock.patch.object(
+                    subject,
+                    "validate_cold_start_checkpoint_for_pipe",
+                    return_value={
+                        "sha256": subject.EXPECTED_SOURCE_CHECKPOINT_SHA256,
+                        "saved_date_raw": DATE_RAW,
+                        "history_index": 3,
+                    },
+                ),
+                mock.patch.object(subject, "_sha256", side_effect=sealed_sha),
+                mock.patch.object(subject, "NativeHeadlessGameplayDriver", _Driver),
+                mock.patch.object(
+                    subject, "GameplayBridgeService", side_effect=service_factory
+                ),
+                mock.patch.object(
+                    subject, "_wait_for_readiness", return_value=readiness
+                ),
+                mock.patch.object(subject, "native_session", side_effect=session),
+            ):
+                report = subject.continue_death_succession_modal_once(
+                    spec,
+                    timeout_seconds=390,
+                    readiness_timeout_seconds=300,
+                    private_timeline_action_round_id="R779",
+                    expected_played_character_id=CHARACTER_ID,
+                    expected_episode_run_id=EPISODE_RUN_ID,
+                    expected_date_raw=DATE_RAW,
+                    cold_start_checkpoint=True,
+                    native_bridge=config,
+                )
+
+            self.assertFalse(report["ok"])
+            self.assertEqual(report["status"], "RED_SUBMITTED_UNCONFIRMED")
+            self.assertEqual(
+                report["action_counts"],
+                {"close": 1, "life_advance": 0, "checkpoint": 0},
+            )
+            result = report["action_result"]
+            self.assertEqual(result["submission_ack"]["close_invocations"], 1)
+            self.assertEqual(len(result["postcondition_queries"]), 8)
+            self.assertEqual(len(result["post_query_attempts"]), 8)
+            self.assertTrue(report["checks"]["submitted_unconfirmed_preserved"])
+            self.assertEqual(save.read_bytes(), source_bytes)
+            self.assertEqual(services[0].action_calls, 1)
+            self.assertEqual(services[0].save_calls, 0)
 
 
 if __name__ == "__main__":

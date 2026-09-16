@@ -2,10 +2,12 @@
 
 `continue-death-succession-modal-v1` is the minimum private action used to
 unblock the natural-death successor episode. Its current status is
-**typed action static-ready; frozen-build action acceptance pending**. R777
-proved the fresh paused read-only precondition on the frozen build; it did not
-submit Close. The action remains absent from the public capability registry
-and MCP tool list.
+**typed action submitted once; material result still RED**. R777 proved the
+fresh paused read-only precondition. R778 then returned a strict ACK with
+`close_invocations=1`, but its immediate independent query still observed the
+modal and both succession predicates. The source checkpoint was unchanged and
+CK3 was reclaimed. The action remains absent from the public capability
+registry and MCP tool list.
 
 ## Frozen build and evidence
 
@@ -62,16 +64,31 @@ wrappers, cached pointers, and vslot `+0x18` are outside this contract.
 
 The command result is only an ACK and always carries
 `material_result_verified=false`. The private Python route accepts success only
-after a separate later application-main observation revision proves all three
-conditions:
+after a bounded sequence of separate, read-only application-main observations
+proves all three conditions in the same query:
 
 - GUI identity is `none`;
 - `HasOpenSuccession=false`;
 - `IsPausedBySuccession=false`.
 
-It then calls the formal `life-advance` step and requires the date to increase
-without changing the successor episode. A timeout or malformed ACK leaves the
-action state unknown; callers must query before any retry.
+`action_observation_revision` and query `observation_revision` are the exact
+build's `pump_epoch` from the SDL `PeekMessageW` return hook at RVA
+`0x3CE4222`. A larger value proves a later hook invocation, but not a complete
+GUI frame: one frame can call `PeekMessageW` more than once. Heartbeat sequence
+and heartbeat pump counters are liveness evidence only, not material Close
+evidence.
+
+After the strict ACK, the route never sends Close again. It keeps the paused
+date, native revision, and successor episode binding fixed and issues at most
+eight typed read-only queries. Every recorded observation revision must be
+strictly greater than the ACK and its predecessor. If the predicates do not
+clear, the result is `submitted_unconfirmed`; the immutable report retains the
+initial query, strict ACK, every post-query and binding, and reports one Close,
+zero life-advances, and zero checkpoints. Only a cleared query permits the
+formal `life-advance`, which must increase the date without changing the
+successor episode. A malformed pre-ACK response leaves action state unknown;
+once a strict ACK exists, callers must never retry Close without first
+resolving the submitted action through observation.
 
 ## R777 source and formal bounded entry
 
@@ -118,9 +135,9 @@ flowchart TD
     P -->|yes| A[Reacquire and validate controller]
     A --> C[Call typed Close once]
     C --> K[ACK: material result unverified]
-    K --> O[Later independent predicate and GUI observation]
+    K --> O[Bounded later typed read-only observations]
     O -->|root gone and both predicates false| L[Formal life-advance]
-    O -->|otherwise| R[RED; query before retry]
+    O -->|exhausted or binding changed| R[RED submitted_unconfirmed; never resend Close]
     L -->|date increased, episode unchanged| V[Materially verified]
 ```
 

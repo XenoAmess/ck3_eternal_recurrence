@@ -224,6 +224,124 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertFalse(receipt["submission_ack"]["material_result_verified"])
             self.assertEqual(receipt["checkpoint"]["history_index"], 6)
 
+            save.write_bytes(b"sealed")
+            driver.write_text(json.dumps({
+                "episode_character_id": 35465,
+                "episode_run_id": "native-35465-cbdf997e3d80",
+            }), encoding="utf-8")
+            red_output = root / "attempt-unconfirmed"
+
+            def fake_unconfirmed_run(command, stdout_path, stderr_path):
+                stderr_path.write_text("", encoding="utf-8")
+                if "native-one-generation-preflight" in command:
+                    stdout_path.write_text("{}\n", encoding="utf-8")
+                    return 0
+                ack = {
+                    "step": "continue-death-succession-modal-v1",
+                    "accepted": True,
+                    "status": "submitted",
+                    "close_invocations": 1,
+                    "material_result_verified": False,
+                }
+                post_queries = [
+                    {
+                        "observation_revision": revision,
+                        "current_timeline_blocker_context": {
+                            "identity": "death_succession_modal"
+                        },
+                    }
+                    for revision in (4575, 4576)
+                ]
+                report = {
+                    "ok": False,
+                    "status": "RED_SUBMITTED_UNCONFIRMED",
+                    "round": "R779",
+                    "checks": {"submitted_unconfirmed_preserved": True},
+                    "action_counts": {
+                        "close": 1, "life_advance": 0, "checkpoint": 0
+                    },
+                    "forbidden_action_counts": {
+                        "marriage": 0,
+                        "death_terminal": 0,
+                        "python_successor_continuation": 0,
+                        "generic_ui_input": 0,
+                        "other_gameplay": 0,
+                    },
+                    "action_result": {
+                        **ack,
+                        "status": "submitted_unconfirmed",
+                        "submission_ack": ack,
+                        "initial_query": {"observation_revision": 4573},
+                        "postcondition_queries": post_queries,
+                        "postcondition_query": post_queries[-1],
+                        "post_query_attempts": [
+                            {"attempt": index, "query": query, "error": None}
+                            for index, query in enumerate(post_queries, start=1)
+                        ],
+                        "post_failure": "bounded post-Close queries exhausted",
+                        "life_advance_result": None,
+                        "starting_date_raw": 53411568,
+                        "ending_date_raw": 53411568,
+                    },
+                    "checkpoint": None,
+                    "cleanup": {"ok": True, "tree_gone": True},
+                }
+                stdout_path.write_text(
+                    json.dumps(report) + "\n", encoding="utf-8"
+                )
+                return 1
+
+            red_args = g2_preview_operator.parser().parse_args([
+                "continue-death-succession-modal-v1",
+                "--manifest",
+                str(manifest),
+                "--output",
+                str(red_output),
+                "--private-timeline-action-round-id",
+                "R779",
+                "--expected-date-raw",
+                "53411568",
+            ])
+            with (
+                mock.patch.object(
+                    g2_preview_operator,
+                    "frozen_source_identity",
+                    return_value={"repo": str(root / "repo"), "commit": "c" * 40},
+                ),
+                mock.patch.object(
+                    g2_preview_operator, "sha256", side_effect=sealed_sha
+                ),
+                mock.patch.object(
+                    g2_preview_operator,
+                    "run_logged",
+                    side_effect=fake_unconfirmed_run,
+                ),
+            ):
+                red_result = (
+                    g2_preview_operator.command_continue_death_succession_modal_v1(
+                        red_args
+                    )
+                )
+            self.assertEqual(red_result, 1)
+            red_receipt = json.loads(
+                (red_output / "operator-receipt.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                red_receipt["status"], "RED_SUBMITTED_UNCONFIRMED"
+            )
+            self.assertEqual(red_receipt["close_actions"], 1)
+            self.assertEqual(red_receipt["life_advance_actions"], 0)
+            self.assertEqual(red_receipt["checkpoint_actions"], 0)
+            self.assertEqual(
+                red_receipt["submission_ack"]["close_invocations"], 1
+            )
+            self.assertEqual(len(red_receipt["postcondition_queries"]), 2)
+            self.assertEqual(len(red_receipt["post_query_attempts"]), 2)
+            self.assertEqual(
+                red_receipt["checkpoint_sha256_before"],
+                red_receipt["checkpoint_sha256_after"],
+            )
+
     def test_private_timeline_query_is_a_dedicated_single_query_command(self) -> None:
         args = g2_preview_operator.parser().parse_args([
             "query-current-timeline-blocker-context-v1",

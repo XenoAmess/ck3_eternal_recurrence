@@ -18,6 +18,9 @@ import threading
 import time
 
 from .bridge.native_driver import NativeHeadlessGameplayDriver
+from .bridge.death_succession_modal_private_transport import (
+    POST_CLOSE_QUERY_LIMIT,
+)
 from .bridge.service import GameplayBridgeService
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
@@ -131,6 +134,23 @@ def _exact_action_history(
         isinstance(history, list)
         and len(history) == len(commands)
         and checkpoint_history_index == len(commands)
+        and all(
+            isinstance(row, dict)
+            and row.get("index") == index
+            and row.get("command") == command
+            and row.get("ok") is True
+            for index, (row, command) in enumerate(
+                zip(history, commands, strict=True), start=1
+            )
+        )
+    )
+
+
+def _exact_submitted_unconfirmed_history(history: object) -> bool:
+    commands = (*EXPECTED_SOURCE_COMMANDS, "restore-checkpoint")
+    return bool(
+        isinstance(history, list)
+        and len(history) == len(commands)
         and all(
             isinstance(row, dict)
             and row.get("index") == index
@@ -340,8 +360,16 @@ def continue_death_succession_modal_once(
             )
         ):
             raise AgentError(
-                "private timeline action lacks a paused successor frame after life-advance"
+                "private timeline action lacks a paused successor frame after Close"
             )
+        if action_result.get("status") == "submitted_unconfirmed":
+            raise AgentError(
+                "typed Close was submitted once but bounded postcondition "
+                "queries did not prove the modal cleared: "
+                + str(action_result.get("post_failure") or "unknown")
+            )
+        if action_result.get("status") != "materially_verified":
+            raise AgentError("typed Close route returned an unknown material status")
         checkpoint_result = service.save_checkpoint(
             expected_revision=ending_revision
         )
@@ -446,7 +474,12 @@ def continue_death_succession_modal_once(
         before_driver_state, action_before, checkpoint_anchor
     )
     checkpoint_history = _snapshot_history(checkpoint_frame)
+    action_after_history = _snapshot_history(action_after)
     persisted_history = _command_history(after_driver_state)
+    submitted_unconfirmed = bool(
+        isinstance(action_result, dict)
+        and action_result.get("status") == "submitted_unconfirmed"
+    )
     checks = {
         "exact_source_history_1_through_3": _exact_source_history(
             before_driver_state, checkpoint_anchor
@@ -521,13 +554,31 @@ def continue_death_succession_modal_once(
         "persisted_history_matches_checkpoint_frame": bool(
             checkpoint_history is not None and persisted_history == checkpoint_history
         ),
+        "submitted_unconfirmed_preserved": bool(
+            not submitted_unconfirmed
+            or (
+                isinstance(submission_ack, dict)
+                and _exact_submitted_unconfirmed_history(action_after_history)
+                and persisted_history == action_after_history
+                and materialized_checkpoint is None
+                and after_files
+                and before_files["checkpoint"]["sha256"]
+                == after_files["checkpoint"]["sha256"]
+            )
+        ),
         "cleanup_proven": cleanup.get("ok") is True,
     }
     ok = primary_error is None and all(checks.values())
     return {
         "schema": "xar.ck3.private-death-succession-action-run-v1",
         "ok": ok,
-        "status": "GREEN_MATERIAL" if ok else "RED",
+        "status": (
+            "GREEN_MATERIAL"
+            if ok
+            else "RED_SUBMITTED_UNCONFIRMED"
+            if submitted_unconfirmed
+            else "RED"
+        ),
         "private_build": True,
         "advertised": False,
         "round": private_timeline_action_round_id,
@@ -546,12 +597,18 @@ def continue_death_succession_modal_once(
             "timeout_seconds": timeout,
             "readiness_timeout_seconds": readiness_timeout,
             "close_limit": 1,
+            "post_query_limit": POST_CLOSE_QUERY_LIMIT,
             "life_advance_limit": 1,
             "checkpoint_limit": 1,
         },
         "action_counts": {
             "close": 1 if isinstance(submission_ack, dict) else 0,
-            "life_advance": 1 if isinstance(action_result, dict) else 0,
+            "life_advance": (
+                1
+                if isinstance(action_result, dict)
+                and isinstance(action_result.get("life_advance_result"), dict)
+                else 0
+            ),
             "checkpoint": 1 if isinstance(materialized_checkpoint, dict) else 0,
         },
         "forbidden_action_counts": {
@@ -571,8 +628,12 @@ def continue_death_succession_modal_once(
         "checkpoint": copy.deepcopy(materialized_checkpoint),
         "after": {
             "files": after_files,
-            "frame": copy.deepcopy(checkpoint_frame),
-            "date_raw": checkpoint_frame.get("date_raw") if isinstance(checkpoint_frame, dict) else None,
+            "frame": copy.deepcopy(checkpoint_frame or action_after),
+            "date_raw": (
+                (checkpoint_frame or action_after).get("date_raw")
+                if isinstance(checkpoint_frame or action_after, dict)
+                else None
+            ),
         },
         "cold_restore_bookkeeping": restore_bookkeeping,
         "checks": checks,
