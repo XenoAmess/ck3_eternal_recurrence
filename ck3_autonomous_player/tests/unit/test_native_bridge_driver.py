@@ -10026,7 +10026,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         ):
             service.execute_step("offer-white-peace-16777290")
         with self.assertRaisesRegex(
-            BridgeUnavailableError, "structured_terms_v2"
+            BridgeUnavailableError, "fresh same-frame de-jure"
         ):
             service.execute_step("surrender-war-16777290")
         self.assertFalse(
@@ -10446,6 +10446,89 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         "offer-white-peace-16777290",
                         driver.capabilities()["action_steps"],
                     )
+
+    def test_r767_de_jure_emergency_surrender_is_one_shot_and_typed(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        active_war = _war(war_id=war_id, score=-44)
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-options-N",
+                "game.command.surrender-war-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[active_war],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            if step.startswith("query-war-termination-options-"):
+                result: dict[str, object] = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "query_sequence": 1,
+                    "war_termination_options": _termination_options(
+                        war_id,
+                        score=-44,
+                        white_peace_available=False,
+                        casus_belli_database_index=17,
+                        casus_belli_key="individual_county_de_jure_cb",
+                        war_duration_days=216,
+                    ),
+                }
+            else:
+                self.assertEqual(step, "surrender-war-16777290")
+                result = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "submitted",
+                }
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+
+        endpoint.send_hook = answer
+        driver.execute_step("query-war-termination-options-16777290")
+        self.assertIn(
+            "surrender-war-16777290",
+            driver.capabilities()["action_steps"],
+        )
+
+        submitted = driver.execute_step("surrender-war-16777290")
+        action = submitted["war_termination_result"]
+
+        self.assertEqual(action["status"], "submitted_pending")
+        self.assertEqual(action["outcome"], "attacker_defeat")
+        self.assertEqual(action["war_id"], war_id)
+        self.assertEqual(action["player_relative_war_score"], -44)
+        self.assertEqual(action["war_duration_days"], 216)
+        self.assertTrue(action["recipient_auto_accept"])
+        self.assertNotIn(
+            "surrender-war-16777290",
+            driver.capabilities()["action_steps"],
+        )
 
     def test_white_peace_direct_rejects_malformed_ack_and_stale_frame(
         self,
@@ -10903,7 +10986,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
         with self.assertRaisesRegex(
-            BridgeUnavailableError, "structured_terms_v2"
+            BridgeUnavailableError, "fresh same-frame de-jure"
         ):
             driver.execute_step("surrender-war-16777290")
         self.assertFalse(

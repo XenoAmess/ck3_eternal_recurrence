@@ -515,6 +515,7 @@ from .war_contract import (
     split_army_half_step,
     start_assault_step,
     stop_assault_step,
+    surrender_war_step,
     unavoidable_current_province_contact_in_horizon,
     war_objective_province_ids,
     war_termination_active_war_signature,
@@ -568,6 +569,9 @@ _CHECKPOINT_ANCHOR_STEPS = frozenset(
 _MANAGED_RESTORE_TRANSACTION_STATUS = "awaiting_checkpoint_rebind"
 _START_NEXT_EPISODE_STEP = "start-next-episode"
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
+_DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB = "individual_county_de_jure_cb"
+_DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -25
+_DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _COLD_RESTORE_SOURCE = "native-session-cold-start"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
 _NATIVE_WAR_ADVANCE_MAX_DAYS = 30
@@ -1654,6 +1658,7 @@ class NativeHeadlessGameplayDriver:
                     active_retreat_token_ready = True
         proof_steps: set[str] = set()
         white_peace_steps: set[str] = set()
+        emergency_surrender_steps: set[str] = set()
         # These helpers only read history.  Evaluate them while holding the
         # owning lock so capability projection neither deep-copies the full
         # transcript nor exposes the internal list outside this critical
@@ -1694,6 +1699,32 @@ class NativeHeadlessGameplayDriver:
                     )
                     if ready and cooldown is None:
                         white_peace_steps.add(offer_white_peace_step(war_id))
+            if (
+                isinstance(current_snapshot, dict)
+                and {
+                    QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
+                    SURRENDER_WAR_CAPABILITY,
+                }
+                <= bridge_capabilities
+            ):
+                for war in current_snapshot.get("active_wars", []):
+                    if not isinstance(war, dict) or not _positive_native_id(
+                        war.get("war_id")
+                    ):
+                        continue
+                    war_id = int(war["war_id"])
+                    ready, _, _ = _de_jure_emergency_surrender_readiness(
+                        current_snapshot, war_id
+                    )
+                    prior = _emergency_surrender_submission(
+                        self._command_history,
+                        war_id=war_id,
+                        episode_run_id=current_snapshot.get("episode_run_id"),
+                    )
+                    if ready and prior is None:
+                        emergency_surrender_steps.add(
+                            surrender_war_step(war_id)
+                        )
         if proof_steps:
             action_steps.update(proof_steps)
             composite_action_steps.extend(sorted(proof_steps))
@@ -1729,6 +1760,7 @@ class NativeHeadlessGameplayDriver:
         # than the frozen native/v2 exit tree: only a same-frame, recipient-
         # accepted, claim-preserving white peace can become a literal action.
         action_steps.update(white_peace_steps)
+        action_steps.update(emergency_surrender_steps)
         terminal_reason = (
             current_snapshot.get("one_life_terminal_reason")
             if isinstance(current_snapshot, dict)
@@ -5727,9 +5759,13 @@ class NativeHeadlessGameplayDriver:
                 step, expected_revision=expected_revision
             )
         if parse_surrender_war_step(step) is not None:
-            raise BridgeUnavailableError(
-                "native surrender submission requires structured_terms_v2 "
-                "and campaign decision readiness"
+            if step not in capabilities["action_steps"]:
+                raise BridgeUnavailableError(
+                    "native surrender submission lacks fresh same-frame "
+                    "de-jure emergency readiness"
+                )
+            return self._execute_native_war_step(
+                step, expected_revision=expected_revision
             )
         if is_native_war_step(step) and step in capabilities["action_steps"]:
             return self._execute_native_war_step(
@@ -14289,14 +14325,118 @@ class NativeHeadlessGameplayDriver:
         option_name = (
             "surrender" if surrender_war_id is not None else "white_peace"
         )
-        if option_name != "white_peace":
-            raise BridgeUnavailableError(
-                "native surrender submission remains disabled by the "
-                "minimal claim_cb counter-policy"
-            )
         bridge_capabilities = set(
             _string_list(self.state.capabilities().get("bridge_capabilities"))
         )
+        if option_name == "surrender":
+            if not {
+                QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
+                SURRENDER_WAR_CAPABILITY,
+            } <= bridge_capabilities:
+                raise BridgeUnavailableError(
+                    "native emergency surrender lacks exact raw capabilities"
+                )
+            ready, reason, evidence = (
+                _de_jure_emergency_surrender_readiness(starting, war_id)
+            )
+            if not ready:
+                raise BridgeUnavailableError(
+                    "native emergency surrender fresh validation failed: "
+                    + reason
+                )
+            if _emergency_surrender_submission(
+                self._history_snapshot(),
+                war_id=war_id,
+                episode_run_id=starting.get("episode_run_id"),
+            ) is not None:
+                raise BridgeUnavailableError(
+                    "native emergency surrender was already submitted for "
+                    "this active WarID"
+                )
+            result = self._execute_primitive_step(
+                step, expected_revision=selected_revision
+            )
+            if (
+                set(result) != {"step", "accepted", "status", "backend_id"}
+                or result.get("step") != step
+                or result.get("accepted") is not True
+                or result.get("status") != "submitted"
+            ):
+                raise BridgeUnavailableError(
+                    "native emergency surrender queue returned a malformed ACK"
+                )
+            current = self.take_snapshot()
+            starting_played = starting.get("played_character")
+            current_played = current.get("played_character")
+            starting_diagnostics = starting.get("diagnostics")
+            current_diagnostics = current.get("diagnostics")
+            if not (
+                current.get("paused") is True
+                and current.get("episode_run_id")
+                == starting.get("episode_run_id")
+                and isinstance(starting_diagnostics, dict)
+                and isinstance(current_diagnostics, dict)
+                and current_diagnostics.get("connection_generation")
+                == starting_diagnostics.get("connection_generation")
+                and current_diagnostics.get("bridge_pid")
+                == starting_diagnostics.get("bridge_pid")
+                and isinstance(starting_played, dict)
+                and isinstance(current_played, dict)
+                and current_played.get("character_id")
+                == starting_played.get("character_id")
+                and isinstance(starting.get("date_raw"), int)
+                and not isinstance(starting.get("date_raw"), bool)
+                and isinstance(current.get("date_raw"), int)
+                and not isinstance(current.get("date_raw"), bool)
+                and current.get("date_raw") == starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "native emergency surrender ACK lacks a fresh paused "
+                    "postcondition"
+                )
+            remaining_war = _war_by_id(current, war_id)
+            options = evidence["options"]
+            surrender = evidence["surrender"]
+            response = surrender["recipient_response"]
+            return {
+                **result,
+                "war_termination_result": {
+                    "status": (
+                        "applied"
+                        if remaining_war is None
+                        else "submitted_pending"
+                    ),
+                    "war_id": war_id,
+                    "outcome": "attacker_defeat",
+                    "submitted_date_raw": starting.get("date_raw"),
+                    "observed_date_raw": current.get("date_raw"),
+                    "episode_run_id": starting.get("episode_run_id"),
+                    "starting_snapshot_id": starting.get("snapshot_id"),
+                    "observed_snapshot_id": current.get("snapshot_id"),
+                    "command_acknowledged": True,
+                    "war_id_absent_after_ack": remaining_war is None,
+                    "recipient_decision_status_raw": response.get(
+                        "decision_status_raw"
+                    ),
+                    "recipient_would_accept_now": response.get(
+                        "would_accept_now"
+                    ),
+                    "recipient_auto_accept": surrender.get("auto_accept"),
+                    "casus_belli": copy.deepcopy(
+                        options.get("active_casus_belli_identity")
+                    ),
+                    "player_side": options.get("player_side"),
+                    "player_relative_war_score": options.get(
+                        "player_relative_war_score"
+                    ),
+                    "war_duration_days": options.get("war_duration_days"),
+                    "remaining_active_war": (
+                        copy.deepcopy(remaining_war)
+                        if isinstance(remaining_war, dict)
+                        else None
+                    ),
+                },
+            }
         if not {
             QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
             QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
@@ -23944,6 +24084,115 @@ def _claim_cb_white_peace_readiness(
         "terms": terms,
         "white_peace": white_peace,
     }
+
+
+def _de_jure_emergency_surrender_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    """Validate the same-frame native-positive half of the R767 B0 gate.
+
+    The strategy separately proves route exhaustion before selecting this
+    conditionally projected literal.
+    """
+    if snapshot.get("paused") is not True:
+        return False, "snapshot_not_paused", {}
+    war = _war_by_id(snapshot, war_id)
+    if not isinstance(war, dict):
+        return False, "war_not_active", {}
+    options = _termination_cache_row(
+        snapshot, "war_termination_options", war_id
+    )
+    if not isinstance(options, dict):
+        return False, "termination_options_missing", {}
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    expected_binding = {
+        "queried_snapshot_id": snapshot.get("snapshot_id"),
+        "queried_revision": snapshot.get("revision"),
+        "queried_native_revision": snapshot.get("native_revision"),
+        "queried_connection_generation": connection_generation,
+        "episode_run_id": snapshot.get("episode_run_id"),
+    }
+    if any(
+        options.get(key) != expected
+        for key, expected in expected_binding.items()
+    ):
+        return False, "termination_evidence_not_same_frame", {}
+    score = war.get("player_relative_war_score")
+    duration = options.get("war_duration_days")
+    casus_belli = options.get("active_casus_belli_identity")
+    rows = options.get("options")
+    surrender = rows.get("surrender") if isinstance(rows, dict) else None
+    response = (
+        surrender.get("recipient_response")
+        if isinstance(surrender, dict)
+        else None
+    )
+    if not (
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score") == score
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and score <= _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and duration >= _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key")
+        == _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB
+        and isinstance(surrender, dict)
+        and surrender.get("outcome") == "attacker_defeat"
+        and surrender.get("hostage_variant") == "none"
+        and surrender.get("context_constructed") is True
+        and surrender.get("native_validator_passed") is True
+        and surrender.get("available") is True
+        and surrender.get("auto_accept_observable") is True
+        and surrender.get("auto_accept") is True
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    ):
+        return False, "de_jure_emergency_surrender_gate_failed", {}
+    return True, "ready", {
+        "war": war,
+        "options": options,
+        "surrender": surrender,
+    }
+
+
+def _emergency_surrender_submission(
+    history: list[dict[str, object]],
+    *,
+    war_id: int,
+    episode_run_id: object,
+) -> dict[str, object] | None:
+    step = surrender_war_step(war_id)
+    for row in reversed(history):
+        if row.get("command") != step or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        action = (
+            result.get("war_termination_result")
+            if isinstance(result, dict)
+            else None
+        )
+        if (
+            isinstance(action, dict)
+            and action.get("war_id") == war_id
+            and action.get("outcome") == "attacker_defeat"
+            and action.get("episode_run_id") == episode_run_id
+            and action.get("status") in {"submitted_pending", "applied"}
+        ):
+            return action
+    return None
 
 
 def _white_peace_proposal_cooldown(

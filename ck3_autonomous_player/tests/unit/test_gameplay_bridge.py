@@ -1306,6 +1306,7 @@ def _native_war_plan(
     battle_speed_readiness: dict[str, object] | None = None,
     negative_reuse_expires_date_raw: int | None = None,
     additional_wars: list[dict[str, object]] | None = None,
+    termination_options: list[dict[str, object]] | None = None,
 ) -> dict[str, object]:
     controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
@@ -1377,6 +1378,7 @@ def _native_war_plan(
                 *(additional_wars or []),
             ],
             "player_armies": controlled,
+            "war_termination_options": termination_options or [],
         },
         execute=lambda _step, _revision: {},
         action_steps=steps,
@@ -2276,6 +2278,86 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["phase"], "native_war_no_safe_exact_route")
         self.assertIsNone(plan["selected_step"])
         self.assertEqual(plan["required_step"], "safe-exact-war-route")
+
+    def test_r767_de_jure_route_exhaustion_selects_one_native_surrender(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=20,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemies = [
+            _army(21, soldiers=800, province_id=31, controllable=False),
+            _army(22, soldiers=700, province_id=52, controllable=False),
+        ]
+        options = _termination_options(
+            score=-44, war_duration_days=216
+        )
+        options["active_casus_belli_identity"] = {
+            "database_index": 17,
+            "canonical_key": "individual_county_de_jure_cb",
+        }
+        options.update(
+            {
+                "queried_snapshot_id": "session:90",
+                "queried_revision": 90,
+                "queried_native_revision": 90,
+                "queried_connection_generation": 1,
+                "episode_run_id": None,
+            }
+        )
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=enemies,
+            score=-44,
+            date_raw=24_000,
+            history=[
+                _preview_row(
+                    1,
+                    origin=20,
+                    target=2585,
+                    date_raw=24_000,
+                    route=[31, 2585],
+                ),
+                _preview_row(
+                    2,
+                    origin=20,
+                    target=2510,
+                    date_raw=24_000,
+                    route=[52, 2510],
+                ),
+            ],
+            objectives=[2585, 2510],
+            steps=(
+                "move-army-11-to-2585",
+                "move-army-11-to-2510",
+                "surrender-war-88",
+                "life-advance",
+            ),
+            termination_options=[options],
+        )
+
+        self.assertEqual(
+            plan["phase"], "native_war_de_jure_no_safe_route_surrender"
+        )
+        self.assertEqual(plan["selected_step"], "surrender-war-88")
+        self.assertEqual(
+            plan["decision"]["selected_outcome"], "surrender"
+        )
+        self.assertFalse(
+            plan["decision"]["candidates"]["continue"]["executable"]
+        )
+        self.assertFalse(
+            plan["decision"]["candidates"]["white_peace"]["legal"]
+        )
+        self.assertTrue(
+            plan["decision"]["candidates"]["surrender"]["legal"]
+        )
 
     def test_intersecting_candidate_requires_then_consumes_contact_horizon(
         self,
@@ -10159,6 +10241,38 @@ class GameplayBridgeTests(unittest.TestCase):
             plan["selected_step"], "query-war-termination-options-88"
         )
         self.assertNotEqual(plan["selected_step"], "offer-white-peace-88")
+
+    def test_r767_positive_surrender_row_never_enters_negative_lease(
+        self,
+    ) -> None:
+        queried = _termination_reuse_snapshot()
+        queried["active_wars"][0]["player_relative_war_score"] = -44
+        positive = _termination_options(score=-44, war_duration_days=216)
+        positive["active_casus_belli_identity"] = {
+            "database_index": 17,
+            "canonical_key": "individual_county_de_jure_cb",
+        }
+        history = [_termination_query_row(1, queried, options=positive)]
+        current = _termination_reuse_snapshot(
+            date_raw=int(queried["date_raw"]) + 24,
+            wars=copy.deepcopy(queried["active_wars"]),
+            history=history,
+        )
+
+        plan = choose_one_life_turn(
+            history,
+            snapshot=current,
+            action_steps=(
+                "query-war-termination-options-88",
+                "surrender-war-88",
+                "life-advance",
+            ),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_termination_query")
+        self.assertEqual(
+            plan["selected_step"], "query-war-termination-options-88"
+        )
 
     def test_claim_cb_white_peace_planner_queries_terms_then_offers(self) -> None:
         without_terms = _ready_white_peace_snapshot(include_terms=False)

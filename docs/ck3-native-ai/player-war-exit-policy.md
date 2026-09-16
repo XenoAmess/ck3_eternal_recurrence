@@ -254,6 +254,43 @@ flowchart TD
   siege 或 termination acceptance 复核门。
 - [counter-policy] 使用滞回：只有候选结果相对当前策略超过明确安全裕量才切换，避免白和/继续反复振荡。
 
+### 2026-09-16 production B0：de-jure county 无安全路线时的窄投降门
+
+- [production-live] R767 的标准封建 production 循环在 `WarID=218103854`、玩家为 primary attacker、
+  `individual_county_de_jure_cb`、战分 `-44` 且战争已持续至少 `202` 日时停止。路线预览证明所有剩余
+  exact objective route 都被阻塞或与非撤退敌军相交；同帧原生终止查询同时证明：白和 validator=false，
+  victory validator=false，而无人物交换的 attacker defeat context 已构造、validator=true、available=true、
+  `auto_accept=true`，接收方 `would_accept_now=true`。因此这不是 unknown 被猜成失败，而是 production 已观测的
+  “继续没有可执行安全动作，且唯一原生合法终局为投降”状态。
+- [counter-policy] 为解除该实际 B0，production 允许一个窄 emergency contract：仅限 standard feudal、
+  `individual_county_de_jure_cb`、primary attacker、战分不高于 `-25`、持续至少 `180` 日、同 paused frame
+  的完整三选原生合法性，以及 tactical planner 已证明 `no_safe_exact_route`。先列出 continue / white peace /
+  surrender 三项；continue 因无安全路线不可执行，white peace 必须保留真实 validator/接受结果，只有 surrender
+  的 context、validator、available、auto-accept 和接收结果全部为真时才提交 `surrender-war-<WarID>`。
+- [counter-policy] 这个 contract 不声称已经得到完整 campaign EU 或通用 defeat-terms v2，也不扩展到其它 CB、
+  防守方、较短战争或仍有安全路线的帧。它只在已证明的死锁中选择唯一可执行合法终局；其它状态继续走原有
+  fail-closed / 完整比较路径。
+- [counter-policy] 历史正候选不得进入 7 日 negative-query lease。动作 ACK 后若 WarID 仍在，只允许同日推进一次
+  等待原生结算；随后若 WarID 仍未消失则停止并报告 unresolved postcondition，禁止重复提交。WarID 消失后的独立
+  paused observation 和下一 turn 消费仍是物质结果门。
+
+```mermaid
+flowchart TD
+    R["[production-live] exact routes 全部不安全"] --> F{"同 paused frame 三选查询新鲜?"}
+    F -->|no| Q["重新只读 query；禁止复用 negative lease"]
+    F -->|yes| C["比较 continue / white peace / surrender"]
+    C --> K{"de-jure county 窄门全部满足?"}
+    K -->|no| B["保留 no-safe-route RED"]
+    K -->|yes| S{"surrender 原生 validator / available / auto-accept / recipient 全真?"}
+    S -->|no| B
+    S -->|yes| O["只提交一次 surrender-war-WarID"]
+    O --> P{"独立 paused 帧 WarID 消失?"}
+    P -->|yes| N["下一 turn 消费 postwar 状态"]
+    P -->|同日 pending| A["只推进一次等待结算"]
+    A --> P
+    P -->|后续仍在| U["unresolved；禁止重提"]
+```
+
 ### 2026-08-28 production 反例：负终止评估按原生 7 日节拍复用
 
 - [production-live] 正式一代长跑 `ca52af74` 在战争仍活动、终止条件没有变化时，于每个新 paused 日期重复执行

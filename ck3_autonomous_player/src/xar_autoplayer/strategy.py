@@ -147,6 +147,9 @@ _NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
 _NEGATIVE_WAR_TERMINATION_REUSE_RAW = 7 * 24
+_DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB = "individual_county_de_jure_cb"
+_DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -25
+_DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
 _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
     "committed-route-sentinel-advance"
@@ -4959,6 +4962,158 @@ def _claim_cb_white_peace_candidate(
     )
 
 
+def _de_jure_no_safe_route_surrender_candidate(
+    war: dict[str, object],
+    options: object,
+) -> bool:
+    """Recognize the exact native-positive R767 emergency exit row.
+
+    Route exhaustion is checked at the only call site.  Keeping that tactical
+    fact out of this evidence predicate lets the negative-query lease reject a
+    historical positive surrender row before route planning reaches its final
+    branch.
+    """
+    if not isinstance(options, dict):
+        return False
+    score = war.get("player_relative_war_score")
+    duration = options.get("war_duration_days")
+    casus_belli = options.get("active_casus_belli_identity")
+    option_rows = options.get("options")
+    surrender = (
+        option_rows.get("surrender")
+        if isinstance(option_rows, dict)
+        else None
+    )
+    response = (
+        surrender.get("recipient_response")
+        if isinstance(surrender, dict)
+        else None
+    )
+    return bool(
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score") == score
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and score <= _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and duration >= _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key")
+        == _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB
+        and isinstance(surrender, dict)
+        and surrender.get("outcome") == "attacker_defeat"
+        and surrender.get("hostage_variant") == "none"
+        and surrender.get("context_constructed") is True
+        and surrender.get("native_validator_passed") is True
+        and surrender.get("available") is True
+        and surrender.get("auto_accept_observable") is True
+        and surrender.get("auto_accept") is True
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    )
+
+
+def _de_jure_no_safe_route_surrender_ready(
+    snapshot: dict[str, object],
+    war: dict[str, object],
+    options: object,
+) -> bool:
+    war_id = _native_int(war.get("war_id"))
+    return bool(
+        war_id is not None
+        and snapshot.get("paused") is True
+        and _same_frame_termination_row(snapshot, options, war_id)
+        and _de_jure_no_safe_route_surrender_candidate(war, options)
+    )
+
+
+def _de_jure_no_safe_route_surrender_plan(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    termination_by_war_id: dict[int, dict[str, object]],
+    available_steps: set[str],
+    active_war_summary: list[dict[str, object]],
+    route_rejections: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Choose the one native-legal terminal after route exhaustion."""
+    for war in active_wars:
+        if not isinstance(war, dict):
+            continue
+        war_id = _native_int(war.get("war_id"))
+        options = termination_by_war_id.get(war_id) if war_id else None
+        if not _de_jure_no_safe_route_surrender_ready(snapshot, war, options):
+            continue
+        assert isinstance(options, dict) and war_id is not None
+        option_rows = options["options"]
+        white_peace = option_rows.get("white_peace")
+        white_response = (
+            white_peace.get("recipient_response")
+            if isinstance(white_peace, dict)
+            else None
+        )
+        step = surrender_war_step(war_id)
+        decision = {
+            "policy": "de-jure-no-safe-route-emergency-exit-v1",
+            "selected_outcome": "surrender",
+            "full_campaign_utility_ready": False,
+            "candidates": {
+                "continue": {"legal": True, "executable": False},
+                "white_peace": {
+                    "legal": bool(
+                        isinstance(white_peace, dict)
+                        and white_peace.get("native_validator_passed") is True
+                        and white_peace.get("available") is True
+                    ),
+                    "recipient_would_accept_now": (
+                        white_response.get("would_accept_now")
+                        if isinstance(white_response, dict)
+                        else None
+                    ),
+                },
+                "surrender": {
+                    "legal": True,
+                    "executable": True,
+                    "recipient_would_accept_now": True,
+                },
+            },
+            "war_score": war.get("player_relative_war_score"),
+            "war_duration_days": options.get("war_duration_days"),
+            "casus_belli": dict(options["active_casus_belli_identity"]),
+        }
+        if step not in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_no_safe_route_surrender_unsupported",
+                "selected_step": None,
+                "required_step": step,
+                "war_id": war_id,
+                "decision": decision,
+                "reason": "the sole executable native terminal is unreachable",
+                "route_rejections": route_rejections,
+                "active_wars": active_war_summary,
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_de_jure_no_safe_route_surrender",
+            "selected_step": step,
+            "war_id": war_id,
+            "decision": decision,
+            "reason": (
+                "all exact objective routes are unsafe and the same frame "
+                "proves surrender is the sole executable native terminal"
+            ),
+            "route_rejections": route_rejections,
+            "active_wars": active_war_summary,
+        }
+    return None
+
 def _claim_cb_white_peace_base_ready(
     snapshot: dict[str, object],
     war: dict[str, object],
@@ -5131,7 +5286,10 @@ def _negative_war_termination_reuse(
             return None
         # Positive candidates are always current-frame-only.  In particular,
         # never turn a historical options row into a terms query or action.
-        if _claim_cb_white_peace_candidate(war, options):
+        if (
+            _claim_cb_white_peace_candidate(war, options)
+            or _de_jure_no_safe_route_surrender_candidate(war, options)
+        ):
             return None
         return {
             "status": "negative_assessment_reused",
@@ -5242,6 +5400,53 @@ def _white_peace_submission_cooldown(
     return None
 
 
+def _de_jure_surrender_submission_state(
+    commands: list[dict[str, object]],
+    *,
+    war_id: int,
+    date_raw: object,
+    episode_run_id: object,
+) -> dict[str, object] | None:
+    """Latch a terminal ACK until the old WarID independently disappears."""
+    expected_step = surrender_war_step(war_id)
+    for row in reversed(_history_after_latest_restore(commands)):
+        if _effective_command(row) != expected_step or row.get("ok") is not True:
+            continue
+        result = _effective_command_result(row)
+        action = (
+            result.get("war_termination_result")
+            if isinstance(result, dict)
+            else None
+        )
+        if not (
+            isinstance(action, dict)
+            and action.get("war_id") == war_id
+            and action.get("outcome") == "attacker_defeat"
+            and action.get("episode_run_id") == episode_run_id
+            and action.get("status") in {"submitted_pending", "applied"}
+        ):
+            continue
+        if isinstance(date_raw, bool) or not isinstance(date_raw, int):
+            return {"status": "invalid_current_date"}
+        submitted_date_raw = _native_int(action.get("submitted_date_raw"))
+        if submitted_date_raw is None:
+            return {"status": "malformed_submission_history"}
+        elapsed_raw = date_raw - submitted_date_raw
+        return {
+            "status": (
+                "same_day_pending"
+                if elapsed_raw == 0
+                and action.get("status") == "submitted_pending"
+                else "unresolved"
+            ),
+            "action_status": action.get("status"),
+            "submitted_date_raw": submitted_date_raw,
+            "elapsed_raw": elapsed_raw,
+            "history_index": row.get("index"),
+        }
+    return None
+
+
 def choose_one_life_turn(
     commands: list[dict[str, object]],
     *,
@@ -5277,6 +5482,18 @@ def choose_one_life_turn(
     if plan.get("selected_step") in {
         offer_white_peace_step(war_id), surrender_war_step(war_id)
     }:
+        emergency = plan.get("decision")
+        if (
+            isinstance(emergency, dict)
+            and emergency.get("policy")
+            == "de-jure-no-safe-route-emergency-exit-v1"
+            and plan.get("selected_step") == surrender_war_step(war_id)
+        ):
+            return {
+                **plan,
+                "formal_three_way_decision": decision,
+                "formal_continue_overridden_by_proven_route_exhaustion": True,
+            }
         return {
             "policy": "raiktor-formal-three-way-exit-v1",
             "phase": "native_war_raiktor_threeway_conflicting_terminal",
@@ -6642,6 +6859,68 @@ def _choose_one_life_turn_core(
                 or war_id <= 0
             ):
                 continue
+            surrender_state = _de_jure_surrender_submission_state(
+                rows,
+                war_id=war_id,
+                date_raw=(
+                    snapshot.get("date_raw")
+                    if isinstance(snapshot, dict)
+                    else None
+                ),
+                episode_run_id=(
+                    snapshot.get("episode_run_id")
+                    if isinstance(snapshot, dict)
+                    else None
+                ),
+            )
+            if isinstance(surrender_state, dict):
+                if surrender_state.get("status") == "same_day_pending":
+                    if "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_surrender_response_advance",
+                            "selected_step": "life-advance",
+                            "war_id": war_id,
+                            "decision": {
+                                "policy": (
+                                    "de-jure-no-safe-route-emergency-exit-v1"
+                                ),
+                                "outcome": "surrender",
+                                "status": "submitted_pending",
+                                "submission": surrender_state,
+                            },
+                            "reason": (
+                                "the surrender was submitted on this game date; "
+                                "advance once for native settlement without "
+                                "repeating the terminal action"
+                            ),
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_surrender_response_advance_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "war_id": war_id,
+                        "reason": (
+                            "a queued surrender requires one same-day advance; "
+                            "the terminal action must not be repeated"
+                        ),
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_surrender_postcondition_unresolved",
+                    "selected_step": None,
+                    "required_step": "old-WarID-disappearance",
+                    "war_id": war_id,
+                    "submission": surrender_state,
+                    "reason": (
+                        "a prior surrender ACK has not produced independent "
+                        "WarID disappearance; do not repeat the terminal action"
+                    ),
+                    "active_wars": war_summary,
+                }
             cooldown = _white_peace_submission_cooldown(
                 rows,
                 war_id=war_id,
@@ -9123,6 +9402,20 @@ def _choose_one_life_turn_core(
                         "route_rejections": route_rejections,
                         "active_wars": war_summary,
                     }
+                emergency_exit = (
+                    _de_jure_no_safe_route_surrender_plan(
+                        snapshot,
+                        active_wars=active_wars,
+                        termination_by_war_id=termination_by_war_id,
+                        available_steps=available_steps,
+                        active_war_summary=war_summary,
+                        route_rejections=route_rejections,
+                    )
+                    if isinstance(snapshot, dict)
+                    else None
+                )
+                if emergency_exit is not None:
+                    return emergency_exit
                 return {
                     "policy": "one-life-turn-v1",
                     "phase": "native_war_no_safe_exact_route",
@@ -9136,6 +9429,20 @@ def _choose_one_life_turn_core(
             active_route_unsafe
             and preview_selected_target is None
         ):
+            emergency_exit = (
+                _de_jure_no_safe_route_surrender_plan(
+                    snapshot,
+                    active_wars=active_wars,
+                    termination_by_war_id=termination_by_war_id,
+                    available_steps=available_steps,
+                    active_war_summary=war_summary,
+                    route_rejections=[passive_route_audit],
+                )
+                if isinstance(snapshot, dict)
+                else None
+            )
+            if emergency_exit is not None:
+                return emergency_exit
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_no_safe_exact_route",

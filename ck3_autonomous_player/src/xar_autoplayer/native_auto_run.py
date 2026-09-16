@@ -49,6 +49,7 @@ from .bridge.succession_transition_contract import (
 from .bridge.war_contract import (
     is_life_advance_step,
     parse_offer_white_peace_step,
+    parse_surrender_war_step,
     war_termination_active_war_signature,
 )
 from .environment import EnvironmentSpec, ensure_state_path_safe
@@ -905,7 +906,7 @@ def native_auto_run(
                 )
             if step == ASSIGN_COUNCILLOR_V1_STEP:
                 evidence.append("council_incumbent_changed")
-            white_peace_submission_pending = False
+            war_termination_submission_pending = False
             if parse_offer_white_peace_step(step) is not None:
                 result = outcome.get("result")
                 if not _white_peace_lifecycle_verified(
@@ -932,7 +933,37 @@ def native_auto_run(
                     "war_termination_result"
                 )
                 assert isinstance(war_termination_result, dict)
-                white_peace_submission_pending = (
+                war_termination_submission_pending = (
+                    war_termination_result.get("status")
+                    == "submitted_pending"
+                )
+            if parse_surrender_war_step(step) is not None:
+                result = outcome.get("result")
+                if not _emergency_surrender_lifecycle_verified(
+                    step,
+                    result,
+                    before=before,
+                    after_snapshot=after_snapshot,
+                    evidence=evidence,
+                ):
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="surrender_lifecycle_postcondition_failed",
+                        message=(
+                            "native emergency surrender lacks a typed "
+                            "same-WarID applied-or-pending postcondition"
+                        ),
+                    )
+                    raise AgentError(
+                        "native emergency surrender lacks a typed same-WarID "
+                        "applied-or-pending postcondition"
+                    )
+                assert isinstance(result, dict)
+                war_termination_result = result.get(
+                    "war_termination_result"
+                )
+                assert isinstance(war_termination_result, dict)
+                war_termination_submission_pending = (
                     war_termination_result.get("status")
                     == "submitted_pending"
                 )
@@ -1000,7 +1031,7 @@ def native_auto_run(
             if (
                 turn_class == "gameplay"
                 and evidence
-                and not white_peace_submission_pending
+                and not war_termination_submission_pending
             ):
                 visible_gameplay_turns += 1
                 if next_episode_transition is not None:
@@ -3102,6 +3133,88 @@ def _white_peace_lifecycle_verified(
         )
     return False
 
+
+def _emergency_surrender_lifecycle_verified(
+    step: str,
+    result: object,
+    *,
+    before: dict[str, object],
+    after_snapshot: dict[str, object],
+    evidence: list[str],
+) -> bool:
+    """Require a typed ACK plus independent old-WarID presence/absence."""
+    war_id = parse_surrender_war_step(step)
+    action = (
+        result.get("war_termination_result")
+        if isinstance(result, dict)
+        else None
+    )
+    before_semantic = before.get("_semantic")
+    before_wars = (
+        before_semantic.get("active_wars")
+        if isinstance(before_semantic, dict)
+        else None
+    )
+    after_wars = after_snapshot.get("active_wars")
+    before_war = next(
+        (
+            war
+            for war in (before_wars if isinstance(before_wars, list) else [])
+            if isinstance(war, dict) and war.get("war_id") == war_id
+        ),
+        None,
+    )
+    after_war = next(
+        (
+            war
+            for war in (after_wars if isinstance(after_wars, list) else [])
+            if isinstance(war, dict) and war.get("war_id") == war_id
+        ),
+        None,
+    )
+    cb = action.get("casus_belli") if isinstance(action, dict) else None
+    if not (
+        isinstance(action, dict)
+        and isinstance(before_war, dict)
+        and action.get("war_id") == war_id
+        and action.get("outcome") == "attacker_defeat"
+        and action.get("command_acknowledged") is True
+        and action.get("episode_run_id")
+        == before.get("episode_run_id")
+        == after_snapshot.get("episode_run_id")
+        and action.get("starting_snapshot_id") == before.get("snapshot_id")
+        and action.get("observed_snapshot_id")
+        == after_snapshot.get("snapshot_id")
+        and action.get("submitted_date_raw") == before.get("date_raw")
+        and action.get("observed_date_raw") == after_snapshot.get("date_raw")
+        and action.get("recipient_would_accept_now") is True
+        and action.get("recipient_auto_accept") is True
+        and isinstance(cb, dict)
+        and cb.get("canonical_key") == "individual_county_de_jure_cb"
+        and action.get("player_side") == "attacker"
+        and before_war.get("player_side") == "attacker"
+        and before_war.get("player_is_primary_war_leader") is True
+        and action.get("player_relative_war_score")
+        == before_war.get("player_relative_war_score")
+        and isinstance(action.get("war_duration_days"), int)
+        and action.get("war_duration_days") >= 180
+    ):
+        return False
+    if action.get("status") == "applied":
+        return bool(
+            after_war is None
+            and action.get("war_id_absent_after_ack") is True
+            and action.get("remaining_active_war") is None
+            and "war_changed" in evidence
+        )
+    remaining = action.get("remaining_active_war")
+    return bool(
+        action.get("status") == "submitted_pending"
+        and isinstance(after_war, dict)
+        and action.get("war_id_absent_after_ack") is False
+        and isinstance(remaining, dict)
+        and _semantic_digest(remaining) == _semantic_digest(after_war)
+    )
 
 def _same_native_frame(
     before: dict[str, object], after: dict[str, object]

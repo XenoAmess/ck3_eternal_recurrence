@@ -72,6 +72,18 @@ flowchart TD
 
 ## 三种结果不是三个按钮的同义词
 
+### R767 对原生树的 production 互证（2026-09-16）
+
+- [production-live] CK3 `1.19.0.6` 的 R767 同帧查询确认 primary attacker 可以在
+  `individual_county_de_jure_cb`、战分 `-44`、战争持续至少 `202` 日时构造无人物交换的 attacker-defeat
+  context；原生 validator、available、auto-accept 与接收方 `would_accept_now` 均为真。同期 white-peace 与
+  attacker-victory validator 均为假。该证据验证了本页“玩家发送结果不走 `ai_will_do` 的 -100/180 日门”结论，
+  但不补齐 defeat 的全部动态条款。
+- [production-live] 同一轮的实际停止原因是 tactical route tree 已穷尽所有 exact objective route；不是 native
+  surrender 不可用。Python 旧策略把这个真实正 surrender row 错当成 negative termination query，复用了 7 日，
+  随后在 `native_war_no_safe_exact_route` 停止。修复边界是让这个 exact positive row 强制刷新到当前 paused frame，
+  再由独立的窄 counter-policy 选择一次 typed 终局；原生 interaction 树、效用模型和通用 capability 定义不变。
+
 | 结果 | 原版 interaction | `on_accept` | 主要用途 |
 |---|---|---|---|
 | 进攻方胜利 | `end_war_attacker_victory_interaction` | `end_war = attacker` | 进攻方执行要求，或防守方承认进攻方胜利 |
