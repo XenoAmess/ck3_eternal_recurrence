@@ -9024,11 +9024,6 @@ def _choose_one_life_turn_core(
             # every objective for the shortest path.  This is not a fixed cap:
             # rejected candidates still fall through to the rest of the set.
             for objective_rank, province_id in enumerate(route_exact_candidates):
-                if province_id in blocked_province_ids:
-                    route_rejections.append(
-                        {"target_province_id": province_id, "status": "blocked"}
-                    )
-                    continue
                 if province_id == current_province_id:
                     if active_route_unsafe:
                         route_rejections.append(
@@ -9161,6 +9156,11 @@ def _choose_one_life_turn_core(
                         "target_province_id": province_id,
                     }
                     break
+                if province_id in blocked_province_ids:
+                    route_rejections.append(
+                        {"target_province_id": province_id, "status": "blocked"}
+                    )
+                    continue
                 preview = _fresh_move_route_preview(
                     rows,
                     army_id=army_id,

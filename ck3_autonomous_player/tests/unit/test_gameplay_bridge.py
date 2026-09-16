@@ -3624,6 +3624,69 @@ class GameplayBridgeTests(unittest.TestCase):
             "stationary_current_province_contact",
         )
 
+    def test_blocked_stationary_objective_still_queries_contact_horizon(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=900,
+            province_id=52,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        local_enemy = _army(
+            21,
+            soldiers=800,
+            province_id=52,
+            controllable=False,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        converging_enemy = _army(
+            21,
+            soldiers=800,
+            province_id=53,
+            controllable=False,
+            move_target_province_id=52,
+            army_state="moving",
+            route_province_ids=[52],
+        )
+        history = [
+            _advance_row(
+                1,
+                _war_progress(
+                    24_000,
+                    player=player,
+                    enemies=[local_enemy],
+                    score=0,
+                    objectives=[52],
+                ),
+                _war_progress(
+                    24_024,
+                    player=player,
+                    enemies=[converging_enemy],
+                    score=-44,
+                    objectives=[52],
+                ),
+            )
+        ]
+        query_step = query_route_contact_horizon_step(11, 52, (21,))
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=[converging_enemy],
+            score=-44,
+            date_raw=24_024,
+            history=history,
+            objective=52,
+            steps=(query_step, "life-advance"),
+            route_contact_horizon_supported=True,
+        )
+
+        self.assertEqual(plan["phase"], "native_war_stationary_contact_horizon")
+        self.assertEqual(plan["selected_step"], query_step)
+
     def test_route_preview_freshness_uses_date_origin_and_latest_restore(
         self,
     ) -> None:
