@@ -16,6 +16,8 @@
     "kPlayerLifestyleCurrentLifestyleGetterRvaV1",
     "kPlayerLifestyleXpGetterRvaV1",
     "kPlayerLifestyleOwnedPerksGetterRvaV1",
+    "current_focus_getter_failed",
+    "owned_perk_span_layout_invalid",
     "PlayerLifestyleFocusPresenceV1",
     "PlayerLifestyleCandidateCollectionStatusV1",
     "current_lifestyle_progress_present",
@@ -26,6 +28,9 @@
   "required_implementation_tokens": [
     "application_main_thread_required",
     "native_source_read_failed",
+    "Failure::current_focus_key_read_failed",
+    "Failure::lifestyle_xp_read_failed",
+    "Failure::owned_perk_key_read_failed",
     "native_sample_drift",
     "CandidateFailure::lifestyle_window_unavailable",
     "if (first != second)",
@@ -41,6 +46,7 @@
     "TestSampleAndFrameDrift",
     "TestMsvcStableKeyReader",
     "TestNativeCurrentStateAndCandidateBoundary",
+    "TestTypedNativeFailureKeys",
     "lifestyle_window_unavailable"
   ],
   "forbidden_shared_edits": [

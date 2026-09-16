@@ -62,6 +62,14 @@
     "same_frame_definition": "both complete native samples occur between matching paused frame captures",
     "pointer_policy": "native pointers are transient inputs and never serialized"
   },
+  "r749_typed_failure_resolution": {
+    "artifact": "C:/ck3_mod_rewrite_process_assets/g2-m4-life2-paused-candidate-20260916/candidate/live-R749/report.json",
+    "observed": "the same-frame private LIFE2 request reached slot43 on native:3, then returned native_lifestyle_current_state_unavailable with zero gameplay actions",
+    "root_observability_gap": "the formal wire collapsed every PlayerLifestyleSnapshotFailureV1 and every native getter/key/span failure to one generic error",
+    "private_fix": "current-state failures retain the exact getter, stable-key, focus-lifestyle binding, XP, or owned-perk span stage and the private formal wire returns that typed key",
+    "public_change": false,
+    "live_status": "awaiting a new paused private query"
+  },
   "fixtures": {
     "normal": "research/fixtures/player_lifestyle_snapshot_v1_normal.json",
     "no_focus": "research/fixtures/player_lifestyle_snapshot_v1_no_focus.json",

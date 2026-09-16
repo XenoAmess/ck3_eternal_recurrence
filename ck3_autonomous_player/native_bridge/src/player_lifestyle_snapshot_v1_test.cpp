@@ -14,6 +14,7 @@
 #include <iterator>
 #include <string>
 #include <string_view>
+#include <utility>
 
 namespace {
 
@@ -414,6 +415,8 @@ void *NativeLifestyle(void *) {
   return g_native == nullptr ? nullptr : g_native->lifestyle.data();
 }
 
+void *NativeNullObject(void *) { return nullptr; }
+
 std::int32_t NativeUnspent(void *, void *) { return 1; }
 std::int32_t NativeUsed(void *, void *) { return 1; }
 
@@ -423,8 +426,43 @@ std::int64_t *NativeXp(void *, std::int64_t *output, void *,
   return output;
 }
 
+std::int64_t *NativeNullXp(void *, std::int64_t *, void *, bool) {
+  return nullptr;
+}
+
 const void *NativePerks(void *) {
   return g_native == nullptr ? nullptr : &g_native->span;
+}
+
+const void *NativeNullPerks(void *) { return nullptr; }
+
+void TestTypedNativeFailureKeys() {
+  using Failure = game::PlayerLifestyleSnapshotFailureV1;
+  const std::array<std::pair<Failure, std::string_view>, 11> expected{{
+      {Failure::current_focus_getter_failed,
+       "current_focus_getter_failed"},
+      {Failure::focus_fallback_read_failed, "focus_fallback_read_failed"},
+      {Failure::current_focus_key_read_failed,
+       "current_focus_key_read_failed"},
+      {Failure::current_lifestyle_getter_failed,
+       "current_lifestyle_getter_failed"},
+      {Failure::current_lifestyle_key_read_failed,
+       "current_lifestyle_key_read_failed"},
+      {Failure::focus_lifestyle_binding_failed,
+       "focus_lifestyle_binding_failed"},
+      {Failure::lifestyle_xp_read_failed, "lifestyle_xp_read_failed"},
+      {Failure::lifestyle_xp_level_read_failed,
+       "lifestyle_xp_level_read_failed"},
+      {Failure::owned_perk_span_getter_failed,
+       "owned_perk_span_getter_failed"},
+      {Failure::owned_perk_span_layout_invalid,
+       "owned_perk_span_layout_invalid"},
+      {Failure::owned_perk_key_read_failed,
+       "owned_perk_key_read_failed"},
+  }};
+  for (const auto &[failure, key] : expected) {
+    assert(ck3::PlayerLifestyleSnapshotFailureKeyV1(failure) == key);
+  }
 }
 
 void TestNativeCurrentStateAndCandidateBoundary() {
@@ -504,6 +542,79 @@ void TestNativeCurrentStateAndCandidateBoundary() {
   assert(json.find("\"owned_perk_keys\":[\"heregeld_perk\","
                    "\"tax_man_perk\"]") != std::string::npos);
 
+  const auto expect_native_failure =
+      [&](game::PlayerLifestyleSnapshotFailureV1 expected) {
+        auto failed = Base();
+        failed.before.played_character = 0x22220000ULL;
+        failed.after = failed.before;
+        access.context = &failed;
+        output = {};
+        assert(ck3::ReadPlayerLifestyleSnapshotV1(
+                   environment, access, Request(), output) ==
+               game::ReadPlayerLifestyleSnapshotResultV1::unavailable);
+        assert(output.unavailable_reason == expected);
+        const auto failure_key =
+            ck3::PlayerLifestyleSnapshotFailureKeyV1(expected);
+        assert(ck3::SerializePlayerLifestyleSnapshotV1(output).find(
+                   std::string("\"unavailable_reason\":\"") +
+                   std::string(failure_key) + "\"") != std::string::npos);
+      };
+
+  environment.current_focus = &NativeNullObject;
+  expect_native_failure(
+      game::PlayerLifestyleSnapshotFailureV1::current_focus_getter_failed);
+  environment.current_focus = &NativeFocus;
+
+  std::uint64_t zero_size = 0;
+  std::memcpy(native.focus.data() +
+                  ck3::kPlayerLifestyleDatabaseStableKeyOffsetV1 + 0x10,
+              &zero_size, sizeof(zero_size));
+  expect_native_failure(
+      game::PlayerLifestyleSnapshotFailureV1::current_focus_key_read_failed);
+  WriteHeapKey(native.focus.data(),
+               ck3::kPlayerLifestyleDatabaseStableKeyOffsetV1,
+               focus_key, std::char_traits<char>::length(focus_key));
+
+  environment.current_lifestyle = &NativeNullObject;
+  expect_native_failure(
+      game::PlayerLifestyleSnapshotFailureV1::current_lifestyle_getter_failed);
+  environment.current_lifestyle = &NativeLifestyle;
+
+  std::uintptr_t unbound_lifestyle = 0;
+  std::memcpy(native.focus.data() +
+                  ck3::kPlayerLifestyleFocusLifestyleOffsetV1,
+              &unbound_lifestyle, sizeof(unbound_lifestyle));
+  expect_native_failure(
+      game::PlayerLifestyleSnapshotFailureV1::focus_lifestyle_binding_failed);
+  std::memcpy(native.focus.data() +
+                  ck3::kPlayerLifestyleFocusLifestyleOffsetV1,
+              &lifestyle_pointer, sizeof(lifestyle_pointer));
+
+  environment.lifestyle_xp = &NativeNullXp;
+  expect_native_failure(
+      game::PlayerLifestyleSnapshotFailureV1::lifestyle_xp_read_failed);
+  environment.lifestyle_xp = &NativeXp;
+
+  environment.unlocked_perks = &NativeNullPerks;
+  expect_native_failure(
+      game::PlayerLifestyleSnapshotFailureV1::owned_perk_span_getter_failed);
+  environment.unlocked_perks = &NativePerks;
+
+  native.span.count = static_cast<std::int32_t>(
+      game::kPlayerLifestyleMaximumOwnedPerksV1 + 1);
+  expect_native_failure(
+      game::PlayerLifestyleSnapshotFailureV1::owned_perk_span_layout_invalid);
+  native.span.count = 2;
+
+  std::memcpy(native.perk_a.data() +
+                  ck3::kPlayerLifestyleCharacterPerkStableKeyOffsetV1 + 0x10,
+              &zero_size, sizeof(zero_size));
+  expect_native_failure(
+      game::PlayerLifestyleSnapshotFailureV1::owned_perk_key_read_failed);
+  WriteInlineKey(native.perk_a.data(),
+                 ck3::kPlayerLifestyleCharacterPerkStableKeyOffsetV1,
+                 "tax_man_perk");
+
   auto no_focus_fixture = Base();
   access.context = &no_focus_fixture;
   native.fallback_focus =
@@ -540,6 +651,7 @@ int main(int argc, char **argv) {
   TestSampleAndFrameDrift();
   TestInvalidAndDuplicateStableKeys();
   TestMsvcStableKeyReader();
+  TestTypedNativeFailureKeys();
   TestNativeCurrentStateAndCandidateBoundary();
   TestBoundEnvironment();
   std::cout << "player-lifestyle-snapshot-v1 fixture passed\n";

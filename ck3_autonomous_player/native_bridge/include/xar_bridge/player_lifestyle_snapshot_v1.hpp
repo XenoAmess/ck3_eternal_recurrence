@@ -34,6 +34,17 @@ enum class PlayerLifestyleSnapshotFailureV1 : std::uint32_t {
   legal_perk_collection_invalid,
   duplicate_stable_key,
   native_sample_drift,
+  current_focus_getter_failed,
+  focus_fallback_read_failed,
+  current_focus_key_read_failed,
+  current_lifestyle_getter_failed,
+  current_lifestyle_key_read_failed,
+  focus_lifestyle_binding_failed,
+  lifestyle_xp_read_failed,
+  lifestyle_xp_level_read_failed,
+  owned_perk_span_getter_failed,
+  owned_perk_span_layout_invalid,
+  owned_perk_key_read_failed,
 };
 
 enum class PlayerLifestyleFocusPresenceV1 : std::uint32_t {

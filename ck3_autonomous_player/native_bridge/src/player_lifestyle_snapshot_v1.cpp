@@ -248,7 +248,7 @@ bool ReadPointer(const PlayerLifestyleSnapshotAccessV1 &access,
       access.read_memory(access.context, address, &output, sizeof(output));
 }
 
-bool ReadNativeSource(
+Failure ReadNativeSource(
     const PlayerLifestyleSnapshotEnvironmentV1 &environment,
     const PlayerLifestyleSnapshotAccessV1 &access,
     const PlayerLifestyleSnapshotFrameV1 &frame,
@@ -261,7 +261,7 @@ bool ReadNativeSource(
       environment.lifestyle_xp == nullptr ||
       environment.unlocked_perks == nullptr ||
       environment.focus_fallback_slot_address == 0) {
-    return false;
+    return Failure::native_bindings_unavailable;
   }
 
   output.player_character_id = frame.played_character_id;
@@ -277,11 +277,10 @@ bool ReadNativeSource(
 
   void *const character = reinterpret_cast<void *>(frame.played_character);
   void *const focus = environment.current_focus(character);
+  if (focus == nullptr) return Failure::current_focus_getter_failed;
   std::uintptr_t fallback_focus = 0;
   if (!ReadPointer(access, environment.focus_fallback_slot_address,
-                   fallback_focus) || focus == nullptr) {
-    return false;
-  }
+                   fallback_focus)) return Failure::focus_fallback_read_failed;
   if (reinterpret_cast<std::uintptr_t>(focus) == fallback_focus) {
     state.current_focus_presence = Presence::absent;
   } else {
@@ -291,23 +290,25 @@ bool ReadNativeSource(
             reinterpret_cast<std::uintptr_t>(focus) +
                 kPlayerLifestyleDatabaseStableKeyOffsetV1,
             state.current_focus_key)) {
-      return false;
+      return Failure::current_focus_key_read_failed;
     }
     void *const lifestyle = environment.current_lifestyle(character);
-    if (lifestyle == nullptr ||
-        !ReadPlayerLifestyleMsvcStableKeyV1(
+    if (lifestyle == nullptr) {
+      return Failure::current_lifestyle_getter_failed;
+    }
+    if (!ReadPlayerLifestyleMsvcStableKeyV1(
             access.context, access.read_memory,
             reinterpret_cast<std::uintptr_t>(lifestyle) +
                 kPlayerLifestyleDatabaseStableKeyOffsetV1,
             state.current_lifestyle_key)) {
-      return false;
+      return Failure::current_lifestyle_key_read_failed;
     }
     std::uintptr_t focus_lifestyle = 0;
     if (!ReadPointer(access, reinterpret_cast<std::uintptr_t>(focus) +
                                  kPlayerLifestyleFocusLifestyleOffsetV1,
                      focus_lifestyle) ||
         focus_lifestyle != reinterpret_cast<std::uintptr_t>(lifestyle)) {
-      return false;
+      return Failure::focus_lifestyle_binding_failed;
     }
 
     auto &progress = state.current_lifestyle_progress;
@@ -318,13 +319,15 @@ bool ReadNativeSource(
     if (environment.lifestyle_xp(character, &total, lifestyle, false) ==
             nullptr ||
         environment.lifestyle_xp(character, &within, lifestyle, true) ==
-            nullptr ||
-        !access.read_memory(
+            nullptr) {
+      return Failure::lifestyle_xp_read_failed;
+    }
+    if (!access.read_memory(
             access.context,
             reinterpret_cast<std::uintptr_t>(lifestyle) +
                 kPlayerLifestyleXpPerLevelOffsetV1,
             &progress.xp_per_level, sizeof(progress.xp_per_level))) {
-      return false;
+      return Failure::lifestyle_xp_level_read_failed;
     }
     progress.xp_total_raw = total;
     progress.xp_within_level_raw = within;
@@ -336,7 +339,7 @@ bool ReadNativeSource(
 
   const auto span = reinterpret_cast<std::uintptr_t>(
       environment.unlocked_perks(character));
-  if (span == 0) return false;
+  if (span == 0) return Failure::owned_perk_span_getter_failed;
   std::uintptr_t data = 0;
   std::int32_t count = 0;
   if (!ReadPointer(access, span, data) ||
@@ -347,7 +350,7 @@ bool ReadNativeSource(
       count > static_cast<std::int32_t>(
                   game::kPlayerLifestyleMaximumOwnedPerksV1) ||
       (count > 0 && data == 0)) {
-    return false;
+    return Failure::owned_perk_span_layout_invalid;
   }
   state.owned_perk_count = static_cast<std::uint32_t>(count);
   for (std::uint32_t index = 0; index < state.owned_perk_count; ++index) {
@@ -360,10 +363,10 @@ bool ReadNativeSource(
             access.context, access.read_memory,
             perk + kPlayerLifestyleCharacterPerkStableKeyOffsetV1,
             state.owned_perk_keys[index])) {
-      return false;
+      return Failure::owned_perk_key_read_failed;
     }
   }
-  return true;
+  return Failure::none;
 }
 
 void ClearUnavailable(Snapshot &output, Failure reason) noexcept {
@@ -642,14 +645,20 @@ game::ReadPlayerLifestyleSnapshotResultV1 ReadPlayerLifestyleSnapshotV1(
 
     PlayerLifestyleSourceSampleV1 first{};
     PlayerLifestyleSourceSampleV1 second{};
+    Failure source_failure = Failure::none;
     const auto read = [&](PlayerLifestyleSourceSampleV1 &sample) noexcept {
-      return environment.offline_fixture
-          ? access.read_offline_fixture_source(
-                access.context, before.played_character, sample)
-          : ReadNativeSource(environment, access, before, sample);
+      if (environment.offline_fixture) {
+        source_failure = access.read_offline_fixture_source(
+                             access.context, before.played_character, sample)
+                             ? Failure::none
+                             : Failure::native_source_read_failed;
+      } else {
+        source_failure = ReadNativeSource(environment, access, before, sample);
+      }
+      return source_failure == Failure::none;
     };
     if (!read(first) || !read(second)) {
-      ClearUnavailable(output, Failure::native_source_read_failed);
+      ClearUnavailable(output, source_failure);
       return Result::unavailable;
     }
     if (first.player_character_id != before.played_character_id ||
@@ -709,6 +718,23 @@ std::string_view PlayerLifestyleSnapshotFailureKeyV1(
   case not_paused: return "not_paused";
   case player_unavailable: return "player_unavailable";
   case native_source_read_failed: return "native_source_read_failed";
+  case current_focus_getter_failed: return "current_focus_getter_failed";
+  case focus_fallback_read_failed: return "focus_fallback_read_failed";
+  case current_focus_key_read_failed: return "current_focus_key_read_failed";
+  case current_lifestyle_getter_failed:
+    return "current_lifestyle_getter_failed";
+  case current_lifestyle_key_read_failed:
+    return "current_lifestyle_key_read_failed";
+  case focus_lifestyle_binding_failed:
+    return "focus_lifestyle_binding_failed";
+  case lifestyle_xp_read_failed: return "lifestyle_xp_read_failed";
+  case lifestyle_xp_level_read_failed:
+    return "lifestyle_xp_level_read_failed";
+  case owned_perk_span_getter_failed:
+    return "owned_perk_span_getter_failed";
+  case owned_perk_span_layout_invalid:
+    return "owned_perk_span_layout_invalid";
+  case owned_perk_key_read_failed: return "owned_perk_key_read_failed";
   case stable_key_invalid: return "stable_key_invalid";
   case current_focus_invariant_failed:
     return "current_focus_invariant_failed";
