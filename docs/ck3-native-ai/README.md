@@ -685,3 +685,4 @@ flowchart TD
   launched for this package.
 
 - [static-ready, production live pending] [Succession transition v1](succession-transition-v1.md) freezes the current per-title first-heir projection, reconciles only the predecessor estate after a real played-character transition, and starts a new one-life identity on the matched CK3 successor without a command or restart.
+- [static-ready candidate; production wire/live pending] [Current timeline blocker context v1](current-timeline-blocker-context-v1.md) uses the exact-build fixed GUI owner/tree ABI to distinguish the stock death/succession, game-over, and select-destiny surfaces and their direct continuation controls. `blocks_simulation` stays typed unavailable until the `SuccessionEventWindow.Close` to simulation-hold release chain is reversed and verified live; the capability remains unregistered and unadvertised.

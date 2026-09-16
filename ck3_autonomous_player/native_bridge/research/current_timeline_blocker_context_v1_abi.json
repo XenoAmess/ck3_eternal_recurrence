@@ -1,0 +1,85 @@
+{
+  "schema": "xar.ck3.current-timeline-blocker-context-v1-abi",
+  "schema_version": 1,
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "capability": "game.command.query-current-timeline-blocker-context-v1",
+  "step": "query-current-timeline-blocker-context-v1",
+  "capability_advertised": false,
+  "stock_gui": {
+    "path": "game/gui/window_succession_event.gui",
+    "sha256": "5925DE3F28CD00FF8D50F345FC4DE389AFF06FA3A7D89955DDDAA613E2DA12E4",
+    "header_lines_1_25_lf_utf8_sha256": "9C27A23C92F8370C2DCB985524443BA9A70D3EEDDB7F7F97DD4AE859D02C740B",
+    "bottom_lines_874_936_lf_utf8_sha256": "C46EF3B7BDDF381D2B0A71B267715B439BFC6E94A84D30720EDA53786D3EB11F",
+    "destiny_lines_939_1191_lf_utf8_sha256": "D631A2268892E8EEC195E1331ADAFC3198779C07B62C574D52C3E0083948003B"
+  },
+  "native_gui_abi": {
+    "source_contract": "research/zhongguo_scoreboard_state_v1_abi.json",
+    "gui_global_slot_rva": "0x576CC68",
+    "find_top_level_widget_rva": "0x36D0B20",
+    "widget_effective_hidden_offset": "0xD0",
+    "widget_effective_hidden_mask": "0x08",
+    "widget_effective_disabled_mask": "0x02",
+    "widget_children_offset": "0xF0",
+    "widget_child_count_offset": "0xFC",
+    "widget_runtime_name_offset": "0x1B8",
+    "fixed_roots": [
+      "succession_event_window",
+      "succession_select_destiny_window"
+    ],
+    "fixed_descendants": [
+      "bottom",
+      "close_button",
+      "menu_button",
+      "continue_button",
+      "continue_button_random",
+      "cancel_button"
+    ]
+  },
+  "succession_window_close_abi": {
+    "rtti_type_descriptor_rva": "0x521FC90",
+    "complete_object_locator_rva": "0x468A190",
+    "primary_vtable_rva": "0x4111E80",
+    "close_vtable_slot_offset": "0x20",
+    "close_vtable_slot_index": 4,
+    "close_core_rva": "0x1006FB0",
+    "close_flow": [
+      "vtable_plus_0x38_is_open",
+      "when_open_view_widget_plus_0x78_then_0x369CB30_edx_0_r8_0_hide",
+      "flags_slot_plus_0x50_equals_0x800_then_observed_global_ingame_ui_plus_0x11A1_store_1",
+      "tail_0x10071A0_manager_history_finalize"
+    ],
+    "open_path_excluded": "vtable_plus_0x18_0xFD4860_to_0x1006F40",
+    "query_invokes_close": false,
+    "evidence_boundary": "the observed +0x11A1 store is not yet identified as the simulation-hold predicate"
+  },
+  "identity_rules": {
+    "death_succession_modal": "succession_event_window and bottom are effectively visible and an enabled visible close_button exists",
+    "game_over_modal": "succession_event_window and enabled visible menu_button exist; stock visibility is Not(GetPlayerHeir.IsValid)",
+    "succession_select_destiny_modal": "succession_select_destiny_window is effectively visible",
+    "none": "neither fixed root is effectively visible"
+  },
+  "can_continue_rules": {
+    "death_succession_modal": "enabled visible close_button; stock close chain is bottom close_button -> ruler_transition_reset -> SuccessionEventWindow.Close, or lineage close_button -> SuccessionEventWindow.Close",
+    "game_over_modal": false,
+    "succession_select_destiny_modal": "enabled visible continue_button or continue_button_random",
+    "none": "unavailable"
+  },
+  "blocks_simulation": {
+    "status": "unavailable",
+    "reason": "confirmation layer is an input/presentation fact; no exact native predicate yet proves that this surface holds simulation time"
+  },
+  "readiness": {
+    "fixed_identity_static_ready": true,
+    "can_continue_static_ready": true,
+    "blocks_simulation_static_ready": false,
+    "application_main_mailbox_wire_ready": false,
+    "paused_live_ready": false,
+    "production_advertised": false
+  },
+  "unique_next_reverse_point": {
+    "entry": "CSuccessionEventWindow vtable slot 4 (+0x20), close core RVA 0x1006FB0",
+    "goal": "trace the 0x369CB30 hide path and 0x10071A0 manager/history finalization to identify and freeze the exact predicate that clears the simulation hold",
+    "prohibited_shortcut": "do not infer simulation blocking from layer=confirmation and do not add a generic click"
+  }
+}
