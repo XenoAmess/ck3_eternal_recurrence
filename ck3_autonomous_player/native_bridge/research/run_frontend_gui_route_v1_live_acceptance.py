@@ -677,6 +677,128 @@ def _controlled_private_feudal_start(
         return stop("StartGame submitted but independent paused player map was not observed")
     flow["independent_paused_map"] = paused_map
 
+    # StartGame can publish the player/map snapshot before its application-main
+    # load work returns through another SDL/Windows pump. A ready mailbox from
+    # the previous pump is only submission permission, not a fresh executor
+    # opportunity. Keep the same paused 1066 player binding and wait for one
+    # later pump, as initial production native_auto_run readiness already does.
+    first_played = paused_map.get("played_character")
+    first_played_id = (
+        first_played.get("character_id")
+        if isinstance(first_played, dict)
+        else None
+    )
+    first_diagnostics = paused_map.get("diagnostics")
+    first_bridge_pid = (
+        first_diagnostics.get("bridge_pid")
+        if isinstance(first_diagnostics, dict)
+        else None
+    )
+    first_connection_generation = (
+        first_diagnostics.get("connection_generation")
+        if isinstance(first_diagnostics, dict)
+        else None
+    )
+    if (
+        paused_map.get("map_ready") is not True
+        or paused_map.get("date_raw") != after_model.get("selected_date_low_raw")
+        or not isinstance(first_played_id, int)
+        or isinstance(first_played_id, bool)
+        or not isinstance(first_bridge_pid, int)
+        or isinstance(first_bridge_pid, bool)
+        or not isinstance(first_connection_generation, int)
+        or isinstance(first_connection_generation, bool)
+    ):
+        return stop("independent paused 1066 player binding is incomplete")
+
+    def pump_epoch(snapshot: dict[str, object]) -> int | None:
+        diagnostics = snapshot.get("diagnostics")
+        heartbeat = (
+            diagnostics.get("last_heartbeat")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        mailbox = (
+            heartbeat.get("main_thread_query_mailbox_v1")
+            if isinstance(heartbeat, dict)
+            else None
+        )
+        value = mailbox.get("pump_epochs") if isinstance(mailbox, dict) else None
+        return (
+            value
+            if isinstance(value, int) and not isinstance(value, bool) and value >= 0
+            else None
+        )
+
+    current_key = (
+        paused_map.get("snapshot_id"),
+        paused_map.get("native_revision"),
+    )
+    baseline_epoch = pump_epoch(paused_map)
+    last_epoch = baseline_epoch
+    if baseline_epoch is None:
+        return stop("application-main pump epoch is unknown after paused StartGame")
+    post_ready_map: dict[str, object] | None = None
+    while time.monotonic() < deadline:
+        try:
+            observed = driver.take_snapshot()
+        except Exception as error:
+            last_error = f"post-ready snapshot: {type(error).__name__}: {error}"
+        else:
+            observed_played = observed.get("played_character")
+            observed_id = (
+                observed_played.get("character_id")
+                if isinstance(observed_played, dict)
+                else None
+            )
+            observed_diagnostics = observed.get("diagnostics")
+            if (
+                observed.get("paused") is not True
+                or observed.get("map_ready") is not True
+                or observed.get("date_raw") != paused_map.get("date_raw")
+                or observed_id != first_played_id
+                or not isinstance(observed_diagnostics, dict)
+                or observed_diagnostics.get("bridge_pid") != first_bridge_pid
+                or observed_diagnostics.get("connection_generation")
+                != first_connection_generation
+            ):
+                return stop("paused StartGame player binding changed before public query")
+            last_epoch = pump_epoch(observed)
+            if last_epoch is None:
+                return stop("application-main pump epoch became unknown before public query")
+            next_key = (
+                observed.get("snapshot_id"),
+                observed.get("native_revision"),
+            )
+            if next_key != current_key:
+                current_key = next_key
+                baseline_epoch = last_epoch
+            elif last_epoch > baseline_epoch:
+                post_ready_map = observed
+                break
+        remaining = deadline - time.monotonic()
+        if remaining > 0:
+            time.sleep(min(0.25, remaining))
+    flow["post_ready_pump"] = {
+        "baseline_epoch": baseline_epoch,
+        "last_epoch": last_epoch,
+        "initial_snapshot_id": paused_map.get("snapshot_id"),
+        "initial_native_revision": paused_map.get("native_revision"),
+        "last_error": last_error,
+    }
+    if post_ready_map is None:
+        return stop("application-main pump did not advance on the stable paused 1066 player binding within the bounded window")
+    paused_map = post_ready_map
+    flow["post_ready_pump"].update(
+        {
+            "verified": True,
+            "snapshot_id": paused_map.get("snapshot_id"),
+            "native_revision": paused_map.get("native_revision"),
+            "date_raw": paused_map.get("date_raw"),
+            "player_character_id": first_played_id,
+        }
+    )
+
     try:
         root = driver._execute_campaign_root_context_v1_query(
             expected_revision=None

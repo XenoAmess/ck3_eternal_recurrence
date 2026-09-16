@@ -110,3 +110,32 @@ flowchart LR
   E -. 尚未实机：独立暂停地图与 campaign-root .-> F[paired checkpoint]
   F -. 尚未实机 .-> G[普通 production campaign]
 ~~~
+
+## R748 增量：StartGame 后首个公共读口的加载边界 RED
+
+exact CK3 1.19.0.6 EXE SHA-256
+2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86，
+受控候选源码 320efe63b57959e6b314072acbe8043476cc56cf，
+`C:/g2feudal-r747-b0/candidate-typed-private-02/typed-private-live.json`
+SHA-256 14A2957532C7444863B3B3C5F6789A4073BF50B39725DDDBBBA535A160EE237E。
+typed 选角 ACK 之后，独立书签模型确认 Murchad 当前 index 0 已选；
+StartGame ACK 之后，独立原生地图帧确认 `map_ready=true`、暂停、
+玩家 31853、书签日期 `0x032AEB08`。这些是相应动作的物质后置结果，
+尚未证明公共 campaign-root、存档或普通 production 自动游玩。
+
+紧随地图帧的公共 campaign-root mailbox 请求已提交，但八秒队列等待
+以 `timeout_cancelled_before_execution` 结束；application-main
+`pump_epochs=5390→5390`、executor started `257→257`。因此读口没有运行，
+不能以先前的 `ready=true` 心跳代替新的 paused application-main 边界。
+同轮 debug.log 显示 StartGame 原生生成从 10:53:49 到 10:53:57，
+10:54:00 仍进行第二次强封臣设置，10:54:08 仍清理军团；
+这支持首个公共读请求早于加载后下一次泵返回的生命周期排序判断，
+并不证明游戏主线程永远停止。
+
+既有 `native_auto_run` 初次加载资格要求同一稳定地图/玩家/日期帧上
+观察更晚的 application-main pump epoch。1066 受控 runner 原先在首个
+暂停地图帧后立即查询，遗漏该条件。最小补丁只在该受控 runner 内，
+保持同一玩家、书签日期、暂停地图、进程和连接身份，等后续 pump epoch
+后才发首个公共查询；窗口仍用原有 360 秒，过期保留 RED，不延长
+mailbox 八秒预算，也不重复选角或 StartGame。公共能力注册/广告仍关闭，
+新候选实机复验通过前，初始 checkpoint 和普通 campaign 仍待验。

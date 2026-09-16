@@ -56,21 +56,38 @@ def action(step: str, *, acknowledged: bool = True):
 
 
 class FakeDriver:
-    def __init__(self, root: Path):
+    def __init__(self, root: Path, *, pump_epochs: list[int] | None = None):
         self.save = root / "xar_checkpoint.ck3"
         self.state = root / "native_driver_state.json"
         self.executed: list[str] = []
+        self.pump_epochs = pump_epochs or [10, 11]
+        self.snapshot_reads = 0
+        self.root_queries = 0
 
     def take_snapshot(self):
+        epoch = self.pump_epochs[
+            min(self.snapshot_reads, len(self.pump_epochs) - 1)
+        ]
+        self.snapshot_reads += 1
         return {
             "paused": True,
+            "map_ready": True,
+            "snapshot_id": "native:3",
             "native_revision": 3,
             "revision": 3,
             "date_raw": 0x032AEB08,
             "played_character": {"character_id": 42},
+            "diagnostics": {
+                "bridge_pid": 99,
+                "connection_generation": 1,
+                "last_heartbeat": {
+                    "main_thread_query_mailbox_v1": {"pump_epochs": epoch}
+                },
+            },
         }
 
     def _execute_campaign_root_context_v1_query(self, *, expected_revision):
+        self.root_queries += 1
         assert expected_revision is None
         return {
             "campaign_root_context_ready": True,
@@ -174,10 +191,46 @@ class PrivateFeudalStartOrderingTests(unittest.TestCase):
             self.assertEqual(submit.call_count, 2)
             self.assertEqual(requery.call_count, 1)
             self.assertEqual(driver.executed, ["save-checkpoint"])
+            self.assertEqual(driver.root_queries, 1)
+            self.assertEqual(result["post_ready_pump"]["baseline_epoch"], 10)
+            self.assertEqual(result["post_ready_pump"]["last_epoch"], 11)
             self.assertEqual(
                 result["public_campaign_root"]["player_character_id"], 42
             )
             self.assertEqual(len(result["paired_checkpoint"]["game_save_sha256"]), 64)
+
+    def test_frozen_post_start_pump_blocks_public_query_and_checkpoint(self):
+        steps = [
+            "select-frontend-supported-1066-character-v1",
+            "activate-frontend-start-selected-bookmark-v1",
+        ]
+        with tempfile.TemporaryDirectory(
+            dir=Path(__file__).resolve().parents[4]
+        ) as directory:
+            driver = FakeDriver(Path(directory), pump_epochs=[5390])
+            with (
+                mock.patch.object(
+                    route, "_call_private_frontend_action",
+                    side_effect=[action(step) for step in steps],
+                ) as submit,
+                mock.patch.object(
+                    route, "_call_private_bookmarks_model",
+                    return_value={
+                        "is_error": False,
+                        "structured_content": model(selected=0),
+                    },
+                ),
+            ):
+                result = route._controlled_private_feudal_start(
+                    driver, model(), 0.04
+                )
+            self.assertFalse(result["ok"])
+            self.assertTrue(result["independent_selected_model_verified"])
+            self.assertEqual(result["post_ready_pump"]["baseline_epoch"], 5390)
+            self.assertEqual(result["post_ready_pump"]["last_epoch"], 5390)
+            self.assertEqual(driver.root_queries, 0)
+            self.assertEqual(driver.executed, [])
+            self.assertEqual(submit.call_count, 2)
 
 
 if __name__ == "__main__":
