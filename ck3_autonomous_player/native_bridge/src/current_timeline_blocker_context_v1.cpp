@@ -11,9 +11,6 @@ using Identity = xar::game::CurrentTimelineBlockerIdentityV1;
 using ReadResult = xar::game::ReadCurrentTimelineBlockerContextResultV1;
 using Status = xar::game::CurrentTimelineBlockerStatusV1;
 
-constexpr std::string_view kSimulationUnknown =
-    "succession_simulation_block_predicate_not_frozen";
-
 void SetUnknown(xar::game::TimelineBlockerTypedBooleanV1 &field,
                 std::string_view reason) {
   field.available = false;
@@ -36,6 +33,7 @@ void MakeUnavailable(const CurrentTimelineBlockerReadRequestV1 &request,
   output.date_raw = request.date_raw;
   output.unavailable_reason.assign(reason);
   SetUnknown(output.blocks_simulation, reason);
+  SetUnknown(output.has_open_succession, reason);
   SetUnknown(output.can_continue, reason);
 }
 
@@ -171,8 +169,9 @@ ReadResult ReadCurrentTimelineBlockerContextV1(
     const CurrentTimelineBlockerSourceV1 &source,
     xar::game::CurrentTimelineBlockerContextV1 &output) noexcept {
   try {
-    if (request.snapshot_revision == 0 || !request.paused ||
-        source.observe_fixed_widget == nullptr) {
+    if (request.snapshot_revision == 0 || request.played_character_id <= 0 ||
+        !request.paused || source.observe_fixed_widget == nullptr ||
+        source.observe_succession_predicates == nullptr) {
       MakeUnavailable(request, output, "invalid_query_boundary");
       return ReadResult::unavailable;
     }
@@ -209,7 +208,16 @@ ReadResult ReadCurrentTimelineBlockerContextV1(
     output.status = Status::available;
     output.snapshot_revision = request.snapshot_revision;
     output.date_raw = request.date_raw;
-    SetUnknown(output.blocks_simulation, kSimulationUnknown);
+    bool is_paused_by_succession = false;
+    bool has_open_succession = false;
+    if (!source.observe_succession_predicates(
+            source.context, request.played_character_id,
+            is_paused_by_succession, has_open_succession)) {
+      MakeUnavailable(request, output, "succession_predicate_observation_failed");
+      return ReadResult::unavailable;
+    }
+    SetKnown(output.blocks_simulation, is_paused_by_succession);
+    SetKnown(output.has_open_succession, has_open_succession);
 
     if (destiny_visible) {
       output.identity = Identity::succession_select_destiny_modal;
@@ -278,6 +286,8 @@ std::string SerializeCurrentTimelineBlockerContextV1(
   AppendJsonString(output, identity);
   output += ",\"blocks_simulation\":";
   AppendTypedBoolean(output, context.blocks_simulation);
+  output += ",\"has_open_succession\":";
+  AppendTypedBoolean(output, context.has_open_succession);
   output += ",\"can_continue\":";
   AppendTypedBoolean(output, context.can_continue);
   output += ",\"evidence_source\":{\"kind\":";

@@ -12,6 +12,7 @@
     "date_raw",
     "identity",
     "blocks_simulation",
+    "has_open_succession",
     "can_continue",
     "evidence_source",
     "unavailable_reason"
@@ -31,6 +32,7 @@
       ]
     },
     "blocks_simulation": {"$ref": "#/$defs/typedBoolean"},
+    "has_open_succession": {"$ref": "#/$defs/typedBoolean"},
     "can_continue": {"$ref": "#/$defs/typedBoolean"},
     "evidence_source": {
       "type": "object",

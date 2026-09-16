@@ -49,6 +49,7 @@ struct CurrentTimelineBlockerContextV1 {
   CurrentTimelineBlockerIdentityV1 identity =
       CurrentTimelineBlockerIdentityV1::none;
   TimelineBlockerTypedBooleanV1 blocks_simulation;
+  TimelineBlockerTypedBooleanV1 has_open_succession;
   TimelineBlockerTypedBooleanV1 can_continue;
   CurrentTimelineBlockerEvidenceV1 evidence;
   std::string unavailable_reason;
@@ -65,6 +66,8 @@ enum class ReadCurrentTimelineBlockerContextResultV1 : std::uint32_t {
 } // namespace xar::game
 
 namespace xar::ck3_11906 {
+
+struct Bindings;
 
 inline constexpr bool kCurrentTimelineBlockerContextV1CapabilityAdvertised =
     false;
@@ -109,12 +112,17 @@ using ObserveCurrentTimelineFixedWidgetV1 =
 struct CurrentTimelineBlockerReadRequestV1 {
   std::uint64_t snapshot_revision = 0;
   std::int32_t date_raw = 0;
+  std::int32_t played_character_id = -1;
   bool paused = false;
 };
+
+using ObserveCurrentSuccessionPredicatesV1 =
+    bool (*)(void *, std::int32_t, bool &, bool &) noexcept;
 
 struct CurrentTimelineBlockerSourceV1 {
   void *context = nullptr;
   ObserveCurrentTimelineFixedWidgetV1 observe_fixed_widget = nullptr;
+  ObserveCurrentSuccessionPredicatesV1 observe_succession_predicates = nullptr;
 };
 
 game::ReadCurrentTimelineBlockerContextResultV1
@@ -128,6 +136,7 @@ ReadCurrentTimelineBlockerContextV1(
 // caller-provided widget name or pointer.
 game::ReadCurrentTimelineBlockerContextResultV1
 ReadCurrentTimelineBlockerContextNativeV1(
+    const Bindings &bindings,
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access,
     const CurrentTimelineBlockerReadRequestV1 &request,

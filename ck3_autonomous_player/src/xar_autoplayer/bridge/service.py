@@ -8954,6 +8954,7 @@ class GameplayBridgeService:
             "accepted",
             "status",
             "query_sequence",
+            "observation_revision",
             "snapshot_revision",
             "current_timeline_blocker_context",
             "private_build",
@@ -9030,6 +9031,27 @@ class GameplayBridgeService:
             },
             "current_timeline_blocker_context": normalized,
         }
+
+    def continue_death_succession_modal_private_v1(
+        self,
+        *,
+        expected_revision: int,
+        expected_played_character_id: int,
+        expected_episode_run_id: str,
+    ) -> dict[str, object]:
+        """Private typed Close plus independent predicates and date proof."""
+        action = getattr(
+            self.driver, "continue_death_succession_modal_private_v1", None
+        )
+        if not callable(action):
+            raise UnsupportedStepError(
+                "selected backend has no private death-succession Close"
+            )
+        return action(
+            expected_revision=expected_revision,
+            expected_played_character_id=expected_played_character_id,
+            expected_episode_run_id=expected_episode_run_id,
+        )
 
     def query_pending_character_interaction_context_v1(
         self,

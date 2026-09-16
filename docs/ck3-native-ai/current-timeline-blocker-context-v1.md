@@ -1,3 +1,11 @@
+# 2026-09-16 exact-predicate update
+
+This update supersedes the older `blocks_simulation=unavailable` reverse-engineering boundary retained below as historical context. The exact-build controller-acquisition artifact closes both public predicate cores: `IsPausedBySuccession()` at RVA `0xA05A90` and `HasOpenSuccession(Character*)` at RVA `0xA05B20`. The private owning-thread query now publishes both as fail-closed typed booleans (`blocks_simulation` and `has_open_succession`). It resolves and round-trip validates the currently played `Character` from the frozen component storage before calling the second predicate. A read failure makes the whole query unavailable and is never mapped to `false`.
+
+The query wire is static-ready and frozen-build paused live acceptance remains pending. The paired private action is documented in [death-succession-modal-continue-v1.md](death-succession-modal-continue-v1.md). It invokes typed Close once, treats ACK as unverified, and requires a later application-main observation revision to prove the root disappeared and both predicates became false before formal `life-advance` can prove date movement. Query, action, adapter capability, and public MCP advertisement all remain OFF.
+
+---
+
 # CK3 1.19.0.6：死亡、继承与 game-over 时间线阻塞观测
 
 本文冻结 `current-timeline-blocker-context-v1` 的静态候选。它只回答当前是否出现原版死亡/继承、无继承人 game-over 或选择命运界面，以及原版 GUI 是否给出了当前可用的继续控件。它不点击界面，不提交动作，也不把输入模态等同于“阻止游戏时间”。

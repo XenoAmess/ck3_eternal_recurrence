@@ -46,6 +46,7 @@
 #include "xar_bridge/vfs_mount_lifecycle_observer_v1.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/current_timeline_blocker_context_v1_mailbox.hpp"
+#include "xar_bridge/death_succession_modal_continue_v1_mailbox.hpp"
 #include "xar_bridge/event_window_context_v1_mailbox.hpp"
 #include "xar_bridge/g2_truce_native_callsite_observer_v1.hpp"
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
@@ -6837,6 +6838,7 @@ std::string EventWindowContextResultFrame(
 
 std::string CurrentTimelineBlockerContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
+    std::uint64_t observation_revision,
     const xar::game::CurrentTimelineBlockerContextV1 &context) {
   const auto payload =
       xar::ck3_11906::SerializeCurrentTimelineBlockerContextV1(context);
@@ -6859,6 +6861,8 @@ std::string CurrentTimelineBlockerContextResultFrame(
   AppendJsonString(result, status);
   result += ",\"query_sequence\":";
   result += Number(query_sequence);
+  result += ",\"observation_revision\":";
+  result += Number(observation_revision);
   result += ",\"snapshot_revision\":";
   result += Number(context.snapshot_revision);
   result += ",\"current_timeline_blocker_context\":";
@@ -6866,6 +6870,51 @@ std::string CurrentTimelineBlockerContextResultFrame(
   result +=
       ",\"private_build\":true,\"read_only\":true,"
       "\"advertised\":false,\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
+std::string DeathSuccessionModalContinueResultFrame(
+    std::string_view request_id, std::uint64_t observation_revision,
+    const xar::game::DeathSuccessionModalContinueReceiptV1 &receipt) {
+  if (receipt.status !=
+          xar::game::DeathSuccessionModalContinueStatusV1::submitted ||
+      observation_revision == 0 || receipt.snapshot_revision == 0 ||
+      receipt.played_character_id <= 0 || !receipt.identity_verified ||
+      !receipt.can_continue_verified ||
+      !receipt.paused_by_succession_verified ||
+      !receipt.has_open_succession_verified ||
+      !receipt.controller_vtable_verified ||
+      !receipt.controller_open_verified || receipt.close_invocations != 1 ||
+      !receipt.unavailable_reason.empty()) {
+    return {};
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{\"step\":"
+      "\"continue-death-succession-modal-v1\","
+      "\"accepted\":true,\"status\":\"submitted\",";
+  result += "\"snapshot_revision\":";
+  result += Number(receipt.snapshot_revision);
+  result += ",\"date_raw\":";
+  result += Number(receipt.date_raw);
+  result += ",\"played_character_id\":";
+  result += Number(receipt.played_character_id);
+  result += ",\"action_observation_revision\":";
+  result += Number(observation_revision);
+  result +=
+      ",\"identity_verified\":true,"
+      "\"can_continue_verified\":true,"
+      "\"paused_by_succession_verified\":true,"
+      "\"has_open_succession_verified\":true,"
+      "\"controller_vtable_verified\":true,"
+      "\"controller_open_verified\":true,"
+      "\"close_invocations\":1,"
+      "\"material_result_verified\":false,"
+      "\"private_build\":true,\"advertised\":false,"
+      "\"backend_id\":\"native-headless\"}}";
   return result;
 }
 
@@ -7777,6 +7826,8 @@ public:
     environment.permitted_executor_quattuorquadragintary =
         &xar::ck3_11906::
             ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
+    environment.permitted_executor_quinquadragintary =
+        &xar::ck3_11906::ExecuteDeathSuccessionModalContinueMailboxV1;
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -12754,7 +12805,9 @@ void RunConnectedSession(
             if (!previous_snapshot.has_value() || state_revision == 0 ||
                 !xar::game::ReadSnapshot(game, current_snapshot) ||
                 current_snapshot != previous_snapshot.value() ||
-                !current_snapshot.paused || !current_snapshot.map_ready) {
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive) {
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
@@ -12772,6 +12825,8 @@ void RunConnectedSession(
                       true);
               query.request.snapshot_revision = expected_revision;
               query.request.date_raw = current_snapshot.date_raw;
+              query.request.played_character_id =
+                  current_snapshot.played_character_id;
               query.request.paused = true;
               query.expected_snapshot = current_snapshot;
 
@@ -12829,6 +12884,7 @@ void RunConnectedSession(
                   response = CurrentTimelineBlockerContextResultFrame(
                       request_id,
                       current_timeline_blocker_context_query_sequence + 1,
+                      query.execution_stamp.pump_epoch,
                       query.result);
                   if (!response.empty()) {
                     ++current_timeline_blocker_context_query_sequence;
@@ -12852,6 +12908,105 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main timeline-blocker result was not "
                       "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (xar::ck3_11906::
+                       ParseDeathSuccessionModalContinueV1Step(step)) {
+          xar::ck3_11906::DeathSuccessionModalContinueRequestV1 request{};
+          if (!xar::ck3_11906::ParseDeathSuccessionModalContinueRequestV1(
+                  incoming.payload, request)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "death-succession modal continue request is malformed"));
+          } else if (request.expected_snapshot_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "death-succession modal continue snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive ||
+                current_snapshot.date_raw != request.expected_date_raw ||
+                current_snapshot.played_character_id !=
+                    request.expected_played_character_id) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "death-succession modal continue frame changed or is not ready"));
+            } else {
+              xar::ck3_11906::DeathSuccessionModalContinueMailboxContextV1
+                  action{};
+              action.mailbox = &g_main_thread_query_mailbox_v1;
+              action.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              action.environment =
+                  xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              action.request = request;
+              action.expected_snapshot = current_snapshot;
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteDeathSuccessionModalContinueMailboxV1,
+                      &action, action.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "application-main death-succession modal continue executor is unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, action.ticket,
+                    xar::ck3_11906::
+                        kDeathSuccessionModalContinueV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, action.ticket,
+                      xar::ck3_11906::
+                          kDeathSuccessionModalContinueV1ExecutingWaitSliceMilliseconds);
+                }
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    action.completion ==
+                        xar::ck3_11906::
+                            DeathSuccessionModalContinueMailboxCompletionV1::
+                                completed) {
+                  response = DeathSuccessionModalContinueResultFrame(
+                      request_id, action.execution_stamp.pump_epoch,
+                      action.receipt);
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      DeathSuccessionModalContinueFailureMessageV1(
+                          wait, action.completion,
+                          action.receipt.unavailable_reason);
+                  response =
+                      CommandResultFrame(request_id, step, false, error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, action.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main death-succession modal continue result was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }

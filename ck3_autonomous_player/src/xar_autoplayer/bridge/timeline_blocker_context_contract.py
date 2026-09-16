@@ -21,6 +21,7 @@ _FIELDS = {
     "date_raw",
     "identity",
     "blocks_simulation",
+    "has_open_succession",
     "can_continue",
     "evidence_source",
     "unavailable_reason",
@@ -102,6 +103,9 @@ def normalize_current_timeline_blocker_context_v1(
     if identity not in _IDENTITIES:
         raise ValueError("current_timeline_blocker_context.identity is invalid")
     blocks = _typed_boolean(frame["blocks_simulation"], "blocks_simulation")
+    has_open = _typed_boolean(
+        frame["has_open_succession"], "has_open_succession"
+    )
     can_continue = _typed_boolean(frame["can_continue"], "can_continue")
     evidence = _exact_object(
         frame["evidence_source"], _EVIDENCE_FIELDS, "evidence_source"
@@ -109,7 +113,12 @@ def normalize_current_timeline_blocker_context_v1(
 
     if frame["status"] == "unavailable":
         _nonempty_string(frame["unavailable_reason"], "unavailable_reason")
-        if identity != "none" or blocks["status"] != "unavailable" or can_continue["status"] != "unavailable":
+        if (
+            identity != "none"
+            or blocks["status"] != "unavailable"
+            or has_open["status"] != "unavailable"
+            or can_continue["status"] != "unavailable"
+        ):
             raise ValueError("unavailable timeline-blocker frame became actionable")
         if any(evidence[field] != "" for field in _EVIDENCE_FIELDS):
             raise ValueError("unavailable timeline-blocker frame carries evidence")
@@ -117,12 +126,8 @@ def normalize_current_timeline_blocker_context_v1(
 
     if frame["unavailable_reason"] is not None:
         raise ValueError("available timeline-blocker frame carries a top-level reason")
-    if blocks != {
-        "status": "unavailable",
-        "value": None,
-        "unavailable_reason": "succession_simulation_block_predicate_not_frozen",
-    }:
-        raise ValueError("blocks_simulation must preserve the frozen unknown")
+    if blocks["status"] != "available" or has_open["status"] != "available":
+        raise ValueError("succession predicates must be available")
     if evidence["kind"] != "exact-build-stock-gui-plus-native-widget-state":
         raise ValueError("timeline-blocker evidence kind drifted")
     if evidence["path"] != "game/gui/window_succession_event.gui":

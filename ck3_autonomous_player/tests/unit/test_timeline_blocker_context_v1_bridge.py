@@ -75,11 +75,14 @@ def _frame(identity: str = "death_succession_modal") -> dict[str, object]:
         "date_raw": DATE_RAW,
         "identity": identity,
         "blocks_simulation": {
-            "status": "unavailable",
-            "value": None,
-            "unavailable_reason": (
-                "succession_simulation_block_predicate_not_frozen"
-            ),
+            "status": "available",
+            "value": identity != "none",
+            "unavailable_reason": None,
+        },
+        "has_open_succession": {
+            "status": "available",
+            "value": identity != "none",
+            "unavailable_reason": None,
         },
         "can_continue": can_continue,
         "evidence_source": {
@@ -99,6 +102,7 @@ def _native_result() -> dict[str, object]:
         "accepted": True,
         "status": "available",
         "query_sequence": 3,
+        "observation_revision": 120,
         "snapshot_revision": NATIVE_REVISION,
         "current_timeline_blocker_context": frame,
         "private_build": True,
@@ -167,7 +171,7 @@ class _ServiceDriver:
         }
 
 
-def test_contract_preserves_unknown_instead_of_coercing_false() -> None:
+def test_contract_preserves_exact_native_predicates() -> None:
     normalized = normalize_current_timeline_blocker_context_v1(
         _frame(),
         expected_date_raw=DATE_RAW,
@@ -175,10 +179,13 @@ def test_contract_preserves_unknown_instead_of_coercing_false() -> None:
     )
     assert normalized["identity"] == "death_succession_modal"
     assert normalized["can_continue"]["value"] is True
-    assert normalized["blocks_simulation"]["value"] is None
+    assert normalized["blocks_simulation"]["value"] is True
+    assert normalized["has_open_succession"]["value"] is True
     invalid = _frame()
-    invalid["blocks_simulation"]["value"] = False
-    with pytest.raises(ValueError, match="unavailable value must remain null"):
+    invalid["blocks_simulation"]["status"] = "unavailable"
+    invalid["blocks_simulation"]["value"] = None
+    invalid["blocks_simulation"]["unavailable_reason"] = "missing"
+    with pytest.raises(ValueError, match="succession predicates must be available"):
         normalize_current_timeline_blocker_context_v1(
             invalid,
             expected_date_raw=DATE_RAW,
@@ -228,7 +235,7 @@ def test_service_and_private_mcp_helper_preserve_binding() -> None:
         "date_raw": DATE_RAW,
         "expected_revision": PUBLIC_REVISION,
     }
-    assert result["current_timeline_blocker_context"]["blocks_simulation"]["value"] is None
+    assert result["current_timeline_blocker_context"]["blocks_simulation"]["value"] is True
 
 
 def test_capability_and_public_mcp_registry_remain_closed() -> None:

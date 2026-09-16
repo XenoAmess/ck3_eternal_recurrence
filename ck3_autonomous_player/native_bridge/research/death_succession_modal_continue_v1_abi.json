@@ -1,0 +1,82 @@
+{
+  "schema": "xar.ck3.death-succession-modal-continue-v1-abi",
+  "schema_version": 1,
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "step": "continue-death-succession-modal-v1",
+  "capability_advertised": false,
+  "public_mcp_registered": false,
+  "status": "static-ready-paused-live-pending",
+  "source_artifacts": [
+    {
+      "path": "C:\\ck3_mod_rewrite_process_assets\\g2-m3-succession-close-abi-20260916\\succession-close-abi-v1.json",
+      "sha256": "BB5F3A315D3790DD3046CBA64DF98C0E06E22C044B249E697FD8514C5E89F8D9"
+    },
+    {
+      "path": "C:\\ck3_mod_rewrite_process_assets\\g2-m3-succession-controller-acquire-20260916\\succession-controller-acquire-v1.json",
+      "sha256": "0F1D607C6CBD5D1FFF43A7C38DB9709E56524A23007C6B5AD24EB4086955BD00"
+    }
+  ],
+  "owning_thread_preconditions": {
+    "exact_build_admitted": true,
+    "paused": true,
+    "map_ready": true,
+    "expected_native_revision_and_date_match": true,
+    "played_character_alive_and_matches_episode_binding": true,
+    "fresh_timeline_identity": "death_succession_modal",
+    "can_continue": true,
+    "is_paused_by_succession": true,
+    "has_open_succession_for_played_character": true
+  },
+  "controller_acquisition": {
+    "idler_root_slot_rva": "0x570F7B8",
+    "idler_base_offset": "0x10",
+    "runtime_dynamic_cast_rva": "0x3E631F4",
+    "source_type_descriptor_rva": "0x501EF28",
+    "target_type_descriptor_rva": "0x501EF50",
+    "ingame_handler_offset": "0x88",
+    "handler_primary_vtable_rva": "0x40AF630",
+    "succession_controller_offset": "0x260",
+    "lineage_neighbor_offset_excluded": "0x268",
+    "controller_primary_vtable_rva": "0x4111E80",
+    "lifetime": "re-resolve and revalidate during every owning-thread callback; never cache"
+  },
+  "predicates": {
+    "is_paused_by_succession": {
+      "core_rva": "0xA05A90",
+      "abi": "bool __fastcall(); AL result"
+    },
+    "has_open_succession": {
+      "core_rva": "0xA05B20",
+      "abi": "bool __fastcall(Character*); AL result"
+    },
+    "controller_open": {
+      "vtable_slot_offset": "0x38",
+      "target_rva": "0xFD4B00",
+      "abi": "bool __fastcall(CSuccessionEventWindow*); AL result"
+    }
+  },
+  "action": {
+    "controller_vtable_slot_offset": "0x20",
+    "target_rva": "0x1006FB0",
+    "abi": "void __fastcall(CSuccessionEventWindow*); ignore RAX/AL",
+    "maximum_invocations_per_request": 1,
+    "ack_material_result_verified": false
+  },
+  "material_postcondition": {
+    "requires_later_application_main_observation_revision": true,
+    "timeline_identity": "none",
+    "is_paused_by_succession": false,
+    "has_open_succession": false,
+    "formal_followup": "life-advance",
+    "followup_requires": "date increases while successor episode binding remains unchanged"
+  },
+  "forbidden_inferences": [
+    "ACK is not material success",
+    "do not retry an unknown action state without a fresh query",
+    "do not use coordinates or generic clicking",
+    "do not cache controller or native model pointers",
+    "do not dispatch controller vslot +0x18 as Close",
+    "do not register or advertise the capability before frozen-build live acceptance"
+  ]
+}

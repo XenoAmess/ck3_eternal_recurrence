@@ -13,6 +13,9 @@ struct Fixture {
              kCurrentTimelineFixedWidgetCountV1>
       widgets{};
   bool readable = true;
+  bool predicates_readable = true;
+  bool is_paused_by_succession = false;
+  bool has_open_succession = false;
 };
 
 bool Observe(void *opaque, CurrentTimelineFixedWidgetV1 identity,
@@ -21,6 +24,15 @@ bool Observe(void *opaque, CurrentTimelineFixedWidgetV1 identity,
   if (!fixture.readable)
     return false;
   output = fixture.widgets[static_cast<std::size_t>(identity)];
+  return true;
+}
+
+bool ObservePredicates(void *opaque, std::int32_t character_id,
+                       bool &is_paused, bool &has_open) noexcept {
+  auto &fixture = *static_cast<Fixture *>(opaque);
+  if (!fixture.predicates_readable || character_id != 35'465) return false;
+  is_paused = fixture.is_paused_by_succession;
+  has_open = fixture.has_open_succession;
   return true;
 }
 
@@ -33,8 +45,9 @@ void Visible(Fixture &fixture, CurrentTimelineFixedWidgetV1 identity,
 }
 
 xar::game::CurrentTimelineBlockerContextV1 Read(Fixture &fixture) {
-  CurrentTimelineBlockerReadRequestV1 request{77, 53411568, true};
-  CurrentTimelineBlockerSourceV1 source{&fixture, &Observe};
+  CurrentTimelineBlockerReadRequestV1 request{77, 53411568, 35'465, true};
+  CurrentTimelineBlockerSourceV1 source{
+      &fixture, &Observe, &ObservePredicates};
   xar::game::CurrentTimelineBlockerContextV1 output{};
   ReadCurrentTimelineBlockerContextV1(request, source, output);
   return output;
@@ -50,21 +63,30 @@ int main() {
   auto output = Read(fixture);
   assert(output.status == Status::available &&
          output.identity == Identity::none);
-  assert(!output.blocks_simulation.available && !output.can_continue.available);
+  assert(output.blocks_simulation.available &&
+         !output.blocks_simulation.value &&
+         output.has_open_succession.available &&
+         !output.has_open_succession.value &&
+         !output.can_continue.available);
 
   Visible(fixture, CurrentTimelineFixedWidgetV1::succession_root);
   Visible(fixture, CurrentTimelineFixedWidgetV1::succession_bottom);
   Visible(fixture, CurrentTimelineFixedWidgetV1::succession_close);
+  fixture.is_paused_by_succession = true;
+  fixture.has_open_succession = true;
   output = Read(fixture);
   assert(output.status == Status::available &&
          output.identity == Identity::death_succession_modal);
   assert(output.can_continue.available && output.can_continue.value);
-  assert(!output.blocks_simulation.available);
+  assert(output.blocks_simulation.available &&
+         output.blocks_simulation.value);
+  assert(output.has_open_succession.available &&
+         output.has_open_succession.value);
   assert(output.evidence.decisive_widget_name == "close_button");
   auto serialized = SerializeCurrentTimelineBlockerContextV1(output);
   assert(serialized.find("\"identity\":\"death_succession_modal\"") !=
          std::string::npos);
-  assert(serialized.find("\"blocks_simulation\":{\"status\":\"unavailable\"") !=
+  assert(serialized.find("\"blocks_simulation\":{\"status\":\"available\",\"value\":true") !=
          std::string::npos);
 
   fixture = {};
@@ -110,8 +132,19 @@ int main() {
   assert(output.status == Status::unavailable &&
          output.unavailable_reason == "fixed_widget_observation_failed");
 
-  CurrentTimelineBlockerReadRequestV1 invalid_request{77, 53411568, false};
-  CurrentTimelineBlockerSourceV1 source{&fixture, &Observe};
+  fixture = {};
+  fixture.predicates_readable = false;
+  output = Read(fixture);
+  assert(output.status == Status::unavailable &&
+         output.unavailable_reason ==
+             "succession_predicate_observation_failed" &&
+         !output.blocks_simulation.available &&
+         !output.has_open_succession.available);
+
+  CurrentTimelineBlockerReadRequestV1 invalid_request{
+      77, 53411568, 35'465, false};
+  CurrentTimelineBlockerSourceV1 source{
+      &fixture, &Observe, &ObservePredicates};
   output = {};
   ReadCurrentTimelineBlockerContextV1(invalid_request, source, output);
   assert(output.status == Status::unavailable &&

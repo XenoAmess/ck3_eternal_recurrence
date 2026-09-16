@@ -66,20 +66,42 @@
     "none": "unavailable"
   },
   "blocks_simulation": {
-    "status": "unavailable",
-    "reason": "confirmation layer is an input/presentation fact; no exact native predicate yet proves that this surface holds simulation time"
+    "status": "available",
+    "source": "exact native IsPausedBySuccession core RVA 0xA05A90",
+    "fail_closed": "an unreadable predicate makes the entire query unavailable; it is never converted to false"
   },
   "readiness": {
     "fixed_identity_static_ready": true,
     "can_continue_static_ready": true,
-    "blocks_simulation_static_ready": false,
-    "application_main_mailbox_wire_ready": false,
+    "blocks_simulation_static_ready": true,
+    "application_main_mailbox_wire_ready": true,
     "paused_live_ready": false,
-    "production_advertised": false
+    "production_advertised": false,
+    "has_open_succession_static_ready": true
   },
-  "unique_next_reverse_point": {
-    "entry": "CSuccessionEventWindow vtable slot 4 (+0x20), close core RVA 0x1006FB0",
-    "goal": "trace the 0x369CB30 hide path and 0x10071A0 manager/history finalization to identify and freeze the exact predicate that clears the simulation hold",
-    "prohibited_shortcut": "do not infer simulation blocking from layer=confirmation and do not add a generic click"
+  "native_succession_predicates": {
+    "source_artifact": "C:\\ck3_mod_rewrite_process_assets\\g2-m3-succession-controller-acquire-20260916\\succession-controller-acquire-v1.json",
+    "source_sha256": "0F1D607C6CBD5D1FFF43A7C38DB9709E56524A23007C6B5AD24EB4086955BD00",
+    "is_paused_by_succession": {
+      "core_rva": "0xA05A90",
+      "abi": "bool __fastcall(); AL result",
+      "typed_field": "blocks_simulation"
+    },
+    "has_open_succession": {
+      "core_rva": "0xA05B20",
+      "abi": "bool __fastcall(Character*); AL result",
+      "typed_field": "has_open_succession"
+    },
+    "character_binding": "resolve the currently played character from the frozen component storage and verify the round-trip CharacterID"
+  },
+  "has_open_succession": {
+    "status": "available",
+    "source": "exact native HasOpenSuccession(Character*) core RVA 0xA05B20",
+    "fail_closed": "an unreadable character or predicate makes the entire query unavailable"
+  },
+  "next_live_gate": {
+    "action_contract": "research/death_succession_modal_continue_v1_abi.json",
+    "required": "frozen-build private query and typed Close, later independent query proving root absent and both predicates false, then formal life-advance proving date increase",
+    "public_registration": "remains off until the same-version live gate passes"
   }
 }

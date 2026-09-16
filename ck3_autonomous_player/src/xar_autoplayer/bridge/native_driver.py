@@ -1339,6 +1339,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_lifestyle_formal_trial: bool = False,
         allow_private_faction_gift_formal_trial: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
+        allow_private_death_succession_modal_continue: bool = False,
         private_faction_round_id: str | None = None,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
@@ -1400,6 +1401,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_current_timeline_blocker_query = (
             allow_private_current_timeline_blocker_query is True
+        )
+        self.allow_private_death_succession_modal_continue = (
+            allow_private_death_succession_modal_continue is True
         )
         if self.allow_private_faction_gift_formal_trial and not (
             isinstance(private_faction_round_id, str)
@@ -2146,6 +2150,26 @@ class NativeHeadlessGameplayDriver:
         return query_current_timeline_blocker_context_private_v1(
             self,
             expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def continue_death_succession_modal_private_v1(
+        self,
+        *,
+        expected_revision: int,
+        expected_played_character_id: int,
+        expected_episode_run_id: str,
+    ) -> dict[str, object]:
+        """Controlled typed Close; absent from public steps and tools."""
+        from .death_succession_modal_private_transport import (
+            continue_death_succession_modal_private_v1,
+        )
+
+        return continue_death_succession_modal_private_v1(
+            self,
+            expected_revision=expected_revision,
+            expected_played_character_id=expected_played_character_id,
+            expected_episode_run_id=expected_episode_run_id,
             timeout_seconds=self.command_timeout_seconds,
         )
 

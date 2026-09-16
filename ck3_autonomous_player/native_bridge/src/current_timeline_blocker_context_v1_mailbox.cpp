@@ -48,6 +48,8 @@ void MakeInternalUnavailable(
   query.result.unavailable_reason.assign(reason);
   query.result.blocks_simulation.available = false;
   query.result.blocks_simulation.unavailable_reason.assign(reason);
+  query.result.has_open_succession.available = false;
+  query.result.has_open_succession.unavailable_reason.assign(reason);
   query.result.can_continue.available = false;
   query.result.can_continue.unavailable_reason.assign(reason);
   query.read_result =
@@ -70,14 +72,18 @@ bool ValidTypedResult(
            !result.unavailable_reason.empty() &&
            !result.blocks_simulation.available &&
            !result.blocks_simulation.unavailable_reason.empty() &&
+           !result.has_open_succession.available &&
+           !result.has_open_succession.unavailable_reason.empty() &&
            !result.can_continue.available &&
            !result.can_continue.unavailable_reason.empty();
   }
   if (query.read_result !=
           game::ReadCurrentTimelineBlockerContextResultV1::available ||
       !result.unavailable_reason.empty() ||
-      result.blocks_simulation.available ||
-      result.blocks_simulation.unavailable_reason.empty() ||
+      !result.blocks_simulation.available ||
+      !result.blocks_simulation.unavailable_reason.empty() ||
+      !result.has_open_succession.available ||
+      !result.has_open_succession.unavailable_reason.empty() ||
       result.evidence.source_kind.empty() || result.evidence.source_path.empty()) {
     return false;
   }
@@ -112,6 +118,8 @@ bool ExecuteCurrentTimelineBlockerContextMailboxQueryV1(
     game::Snapshot snapshot{};
     if (!ReadSnapshot(query->bindings, snapshot) ||
         snapshot != query->expected_snapshot || !snapshot.paused ||
+        !snapshot.has_played_character ||
+        snapshot.played_character_id != query->request.played_character_id ||
         snapshot.date_raw != stamp.date_raw ||
         query->request.date_raw != stamp.date_raw) {
       MakeInternalUnavailable(*query, stamp, "state_changed");
@@ -120,7 +128,8 @@ bool ExecuteCurrentTimelineBlockerContextMailboxQueryV1(
       return true;
     }
     query->read_result = ReadCurrentTimelineBlockerContextNativeV1(
-        query->environment, query->access, query->request, query->result);
+        query->bindings, query->environment, query->access, query->request,
+        query->result);
     if (ValidTypedResult(*query, stamp)) {
       query->completion =
           CurrentTimelineBlockerContextMailboxCompletionV1::completed;

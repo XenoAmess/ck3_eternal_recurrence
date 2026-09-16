@@ -1103,6 +1103,20 @@ def _ck3_query_current_timeline_blocker_context_v1(
     )
 
 
+def _ck3_continue_death_succession_modal_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+    expected_played_character_id: int,
+    expected_episode_run_id: str,
+) -> dict[str, object]:
+    """Private R776 seam; intentionally absent from the MCP tool list."""
+    return service.continue_death_succession_modal_private_v1(
+        expected_revision=expected_revision,
+        expected_played_character_id=expected_played_character_id,
+        expected_episode_run_id=expected_episode_run_id,
+    )
+
+
 def _ck3_preview_active_combat_retreat_v1(
     service: GameplayBridgeService,
     selected_public_cunit_id: int,

@@ -89,6 +89,7 @@ def query_current_timeline_blocker_context_private_v1(
         "accepted",
         "status",
         "query_sequence",
+        "observation_revision",
         "snapshot_revision",
         "current_timeline_blocker_context",
         "private_build",
@@ -109,6 +110,9 @@ def query_current_timeline_blocker_context_private_v1(
         or isinstance(result.get("query_sequence"), bool)
         or not isinstance(result.get("query_sequence"), int)
         or result["query_sequence"] <= 0
+        or isinstance(result.get("observation_revision"), bool)
+        or not isinstance(result.get("observation_revision"), int)
+        or result["observation_revision"] <= 0
     ):
         raise BridgeUnavailableError("timeline-blocker private result shape changed")
     try:
