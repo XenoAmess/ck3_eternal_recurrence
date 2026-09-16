@@ -432,6 +432,8 @@
         "pnpm exec playwright test e2e/i18n.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/fit-budget-stress.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line",
+        "set PYTHONPATH=ck3_autonomous_player\\src&& tools\\.venv\\Scripts\\python.exe -m unittest ck3_autonomous_player.tests.unit.test_coat_of_arms_definition_catalog_v1 ck3_autonomous_player.tests.unit.test_coat_of_arms_resource_catalog_v1 ck3_autonomous_player.tests.unit.test_coat_of_arms_load_configuration_v1 ck3_autonomous_player.tests.unit.test_coat_of_arms_dlc_sources_v1 ck3_autonomous_player.tests.unit.test_coat_of_arms_configured_resources_v1 -v",
+        "set CK3_GAME_DIRECTORY=C:\\SteamLibrary\\steamapps\\common\\CRUSAD~1&& set PYTHONPATH=ck3_autonomous_player\\src&& tools\\.venv\\Scripts\\python.exe -m unittest ck3_autonomous_player.tests.unit.test_coat_of_arms_definition_catalog_v1.CoatOfArmsDefinitionCatalogV1Tests.test_exact_build_indexes_and_resolves_real_base_definitions -v",
         "pnpm test",
         "pnpm build"
       ],
@@ -465,7 +467,17 @@
         "mainBundleCodeSplitting": "passed",
         "assetPackDirectoryImport": "passed",
         "assetPackVfsWinner": "pending",
-        "parentPreviewBoundaryE2e": "passed_chinese_english_warning_and_parent_export_preserved"
+        "parentPreviewBoundaryE2e": "passed_chinese_english_warning_and_parent_export_preserved",
+        "parentDefinitionMcp": "passed_exact_build_static_source_and_unambiguous_alias_contract",
+        "parentDefinitionMcpTools": [
+          "ck3_query_coat_of_arms_definition_catalog_v1",
+          "ck3_read_coat_of_arms_definition_v1"
+        ],
+        "parentDefinitionMcpContractTests": "passed_5_of_5",
+        "parentDefinitionRelatedMcpTests": "passed_26_plus_1_skipped_exact_build_without_env",
+        "parentDefinitionExactBuildProbe": "passed_k_england_and_d_agder_to_c_agder",
+        "parentDefinitionEvidencePath": "docs/ck3-coat-of-arms-parent-definition-mcp.md",
+        "parentDefinitionBoundary": "static_base_source_only_no_variable_expansion_inheritance_materialization_or_vfs_winner_claim"
       },
       "blockers": []
     },

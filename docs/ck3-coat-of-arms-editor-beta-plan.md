@@ -214,6 +214,10 @@ Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_a
 回读 `200`；无尾斜杠地址为预期 `301`。部署证据见 `ck3-coat-of-arms-github-pages.md`。`parent` 引用现在会在预览区就地显示中英文告警、仍完整保留导出，不再静默冒充已合成；`parent` 展开、DLC/mod VFS 胜者 receipt
 和更细的 asset shard 按需策略仍未完成。
 
+MCP 优先补完已新增 exact-build 家徽定义索引/读取工具：可分页读取基础游戏 block、完整源码、别名链和来源 SHA-256，
+重复定义、循环或缺失目标全部 fail closed。真实 1.19.0.6 安装上的 `k_england` 和 `d_agder → c_agder` 已通过；
+详见 [`ck3-coat-of-arms-parent-definition-mcp.md`](ck3-coat-of-arms-parent-definition-mcp.md)。它不冒充已观测原生继承合成或 DLC/mod VFS 胜者。
+
 退出条件：能力矩阵明确每种语法/资源在 parser、preview、editor、serializer、native evidence 五列的状态；不能预览的结构不得静默消失。
 
 ### WP7：开发后端退役（P1，1–2 工程日，依赖 WP1）

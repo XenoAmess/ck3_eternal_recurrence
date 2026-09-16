@@ -17,6 +17,10 @@ from xar_autoplayer.coat_of_arms_dlc_sources import (
 from xar_autoplayer.coat_of_arms_load_configuration import (
     query_coat_of_arms_load_configuration_v1,
 )
+from xar_autoplayer.coat_of_arms_definitions import (
+    query_coat_of_arms_definition_catalog_v1,
+    read_coat_of_arms_definition_v1,
+)
 from xar_autoplayer.coat_of_arms_resources import (
     query_coat_of_arms_resource_catalog_v1,
     read_coat_of_arms_render_support_v1,
@@ -153,6 +157,29 @@ def _ck3_query_coat_of_arms_resource_catalog_v1(
         offset=offset,
         limit=limit,
     )
+
+
+def _ck3_query_coat_of_arms_definition_catalog_v1(
+    game_directory: str,
+    query: str | None = None,
+    offset: int = 0,
+    limit: int = 50,
+) -> dict[str, object]:
+    """Page exact-build static CoA definitions without claiming VFS state."""
+    return query_coat_of_arms_definition_catalog_v1(
+        game_directory,
+        query=query,
+        offset=offset,
+        limit=limit,
+    )
+
+
+def _ck3_read_coat_of_arms_definition_v1(
+    game_directory: str,
+    key: str,
+) -> dict[str, object]:
+    """Read source candidates and resolve only unambiguous static aliases."""
+    return read_coat_of_arms_definition_v1(game_directory, key)
 
 
 def _ck3_read_coat_of_arms_resource_asset_v1(
@@ -2058,6 +2085,29 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_coat_of_arms_definition_catalog_v1(
+        game_directory: str,
+        query: str | None = None,
+        offset: int = 0,
+        limit: int = 50,
+    ) -> dict[str, object]:
+        """Page exact-build static CoA definitions; no VFS winner claim."""
+        return _ck3_query_coat_of_arms_definition_catalog_v1(
+            game_directory,
+            query,
+            offset,
+            limit,
+        )
+
+    @server.tool()
+    def ck3_read_coat_of_arms_definition_v1(
+        game_directory: str,
+        key: str,
+    ) -> dict[str, object]:
+        """Read exact source and an unambiguous static alias chain only."""
+        return _ck3_read_coat_of_arms_definition_v1(game_directory, key)
+
+    @server.tool()
     def ck3_read_coat_of_arms_resource_asset_v1(
         game_directory: str,
         kind: str,
@@ -2548,6 +2598,12 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_coat_of_arms_resource_catalog_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_coat_of_arms_definition_catalog_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_read_coat_of_arms_definition_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_read_coat_of_arms_resource_asset_v1"
