@@ -147,6 +147,14 @@ class PrepareCoatOfArmsVfsFixtureTests(unittest.TestCase):
                 receipt["descriptors"][1]["replace_paths"],
                 ["gfx/coat_of_arms/patterns"],
             )
+            self.assertEqual(
+                receipt["base_hidden_candidate"]["resource_name"], FIRST_SOURCE
+            )
+            self.assertEqual(
+                receipt["base_hidden_candidate"]["source_sha256"],
+                receipt["earlier"]["source_sha256"],
+            )
+            self.assertEqual(len(receipt["predeclared_hypotheses"]), 2)
             later_descriptor = (
                 output / "mod" / "coa_vfs_replace_later.mod"
             ).read_text(encoding="utf-8")

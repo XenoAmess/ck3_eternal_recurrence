@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T15:31:00+08:00",
+  "updatedAt": "2026-09-16T19:10:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -527,6 +527,13 @@
           "baseVsMod": "enabled_directory_mod",
           "directoryVsArchive": "later_enabled_archive_mod"
         },
+        "assetPackVfsReplacePathR24Status": "failed_pre_registered_earlier_mod_hidden_hypothesis",
+        "assetPackVfsReplacePathR24EvidencePath": "docs/coat-of-arms-fit-artifacts/vfs-replace-path-native-r24/",
+        "assetPackVfsReplacePathR24CasesCaptured": 3,
+        "assetPackVfsReplacePathR24PassingPairs": 2,
+        "assetPackVfsReplacePathR24FailingPairs": 1,
+        "assetPackVfsReplacePathR24EarlierVsMissingMae": 0.3960397085729974,
+        "assetPackVfsReplacePathR24Conclusion": "later_replace_path_did_not_make_earlier_enabled_mod_pattern_missing_base_game_effect_pending_r25",
         "assetPackVfsNativeWinnerLoadOrder": 1,
         "assetPackVfsNativeSharedVsWinnerMae": 0.000007690783908876125,
         "assetPackVfsNativeSharedVsLoserMae": 0.2709360266241941,

@@ -387,7 +387,7 @@ def prepare_extended_fixture(
 def prepare_replace_path_fixture(
     base_profile: Path, game_directory: Path, output: Path
 ) -> dict[str, object]:
-    """Build a two-mod fixture whose later mod replaces the pattern directory."""
+    """Build a two-mod fixture that isolates base and earlier-mod replace_path effects."""
 
     base_profile = base_profile.resolve()
     game_directory = game_directory.resolve()
@@ -493,16 +493,24 @@ def prepare_replace_path_fixture(
         receipt = {
             "schema": "ck3-coat-of-arms-vfs-replace-path-fixture-v1",
             "schema_version": 1,
-            "purpose": "native framebuffer proof that a later replace_path hides an earlier pattern directory",
-            "predeclared_hypothesis": (
-                "the earlier-only registered pattern behaves like a never-present missing control, "
-                "and both differ from the later replacement pattern"
+            "purpose": (
+                "native framebuffer proof of whether later replace_path hides base-game "
+                "and earlier enabled-mod pattern resources"
             ),
+            "predeclared_hypotheses": [
+                "the base-game-only pattern behaves like a never-present missing control",
+                "the earlier enabled-mod pattern remains available and differs from both "
+                "the missing control and the later replacement pattern",
+            ],
             "enabled_mods": enabled,
             "descriptors": descriptors,
             "replace_path": "gfx/coat_of_arms/patterns",
             "load_configuration_sha256": _sha256(load_configuration),
             "pdx_settings_sha256": _sha256(temporary / "pdx_settings.txt"),
+            "base_hidden_candidate": {
+                "resource_name": FIRST_SOURCE,
+                "source_sha256": _sha256(first_source),
+            },
             "earlier": {
                 "resource_name": REPLACED_EARLIER,
                 "source_sha256": _sha256(first_source),

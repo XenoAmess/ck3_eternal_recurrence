@@ -1,0 +1,80 @@
+{
+  "schema": "ck3-coa-vfs-replace-path-r24-summary-v1",
+  "status": "failed_pre_registered_hypothesis",
+  "created_at": "2026-09-16T09:40:08.574759+00:00",
+  "repository_head": "ca510db1c572394859600ab50d292cfe62cb1f21",
+  "ck3_version": "1.19.0.6",
+  "interaction": "managed_typed_mcp_only_no_ocr_keyboard_mouse_or_fixed_coordinates",
+  "fixture_receipt_sha256": "8A27DD6227180FEFCB75EA3599FB2C09113FE4108DF6E21ADCFBB2DC1BBF5F55",
+  "raw_report": {
+    "path": "D:\\ck3_coa_vfs_replace_path_r24\\report.json",
+    "sha256": "1B095A14E9E31791F0F23E47DD82D952E00614D175223492E09F3FF56464772C",
+    "ok": false,
+    "failure_kind": "pre_registered_pixel_equivalence_gate_failed"
+  },
+  "capture_noise_thresholds": {
+    "maximum_channel_error": 1,
+    "maximum_normalized_mean_absolute_error": 0.00001,
+    "maximum_alpha_differing_pixels": 0
+  },
+  "cases": [
+    {
+      "id": "replaced-earlier-only",
+      "apply_copy_capture": "passed",
+      "crop_bytes": 55735,
+      "crop_sha256": "2733B0E20E930CAE82F98F510921EE24B1FF8E9FB7C8AC93CC32488D90730F33"
+    },
+    {
+      "id": "missing-control",
+      "apply_copy_capture": "passed",
+      "crop_bytes": 52064,
+      "crop_sha256": "3D7ED3FC2934162CDB01D451E476886BF3E0BE2B2B510564F386F5C83F8B5B21"
+    },
+    {
+      "id": "later-reference",
+      "apply_copy_capture": "passed",
+      "crop_bytes": 55360,
+      "crop_sha256": "67A8CDF090DA3BE67F5D5E36E7C512DB03692FDDEB940D7BB54818A637D6D607"
+    }
+  ],
+  "diagnostic_pairs": [
+    {
+      "first": "replaced-earlier-only",
+      "second": "missing-control",
+      "expected_equivalent": true,
+      "equivalent": false,
+      "gate_passed": false,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 46518,
+      "normalized_mean_absolute_error": 0.3960397085729974,
+      "maximum_channel_error": 201,
+      "alpha_differing_pixels": 0
+    },
+    {
+      "first": "replaced-earlier-only",
+      "second": "later-reference",
+      "expected_equivalent": false,
+      "equivalent": false,
+      "gate_passed": true,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 26865,
+      "normalized_mean_absolute_error": 0.26799060424146726,
+      "maximum_channel_error": 178,
+      "alpha_differing_pixels": 0
+    },
+    {
+      "first": "missing-control",
+      "second": "later-reference",
+      "expected_equivalent": false,
+      "equivalent": false,
+      "gate_passed": true,
+      "common_visible_pixels": 46518,
+      "differing_visible_pixels": 46518,
+      "normalized_mean_absolute_error": 0.3844581632185672,
+      "maximum_channel_error": 201,
+      "alpha_differing_pixels": 0
+    }
+  ],
+  "cleanup": "passed_tree_gone_and_slot_released",
+  "successor": "R25 adds a base-game-only control and expects the earlier enabled-mod resource to remain distinct from missing"
+}

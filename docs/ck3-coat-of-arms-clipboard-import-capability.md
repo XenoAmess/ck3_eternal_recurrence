@@ -797,6 +797,22 @@ reference-free capture 以及 6 个 pair gate 全部通过。Steam 离线，OCR�
 这把 scoped 原生证据扩展到“基础游戏 vs 启用目录 mod”及“较早目录 mod vs 较晚 archive mod”的已注册直接 DDS；仍不能外推到
 DLC mount、`replace_path`、definition merge 或其他资源类别。configured-resource catalog 也仍然只列候选，不自行推断胜者。
 
+### 5.11 2026-09-16 `replace_path` R24 反例与 R25 校正矩阵
+
+R24 预登记“后载目录模组的 `replace_path="gfx/coat_of_arms/patterns"` 会让较早启用模组中仅有的 pattern 与从未存在的
+missing control 等价”。MCP-only Apply → Copy → 230×230 reference-free framebuffer 的传输、路由、捕获和清理全部正常，
+但该等价门禁被真实像素明确推翻：两者 `46,518/46,518` 个共同可见像素不同，归一化 MAE `0.3960397086`，最大通道误差
+`201`。较早模组资源与后载模组 reference 的不等价门禁、missing control 与后载 reference 的不等价门禁均通过。
+
+因此 R24 必须保留为“预登记假设 RED”，不能通过事后放宽阈值或反转期待改写成 GREEN。它能支持的最窄结论是：在这个 exact
+1.19.0.6 两目录模组夹具中，后载 `replace_path` 没有让较早启用模组已经提供的 pattern 表现为缺失。它尚不能回答基础游戏同目录
+资源是否被屏蔽。完整摘要见
+[`vfs-replace-path-native-r24`](coat-of-arms-fit-artifacts/vfs-replace-path-native-r24/README.md)。
+
+后继 R25 在运行前拆成两个独立断言：基础游戏独有 `pattern_checkers_06.dds` 应与 missing control 等价；较早启用模组独有 pattern
+应继续与 missing control、后载 reference 均不等价。只有这组新增基础对照通过后，才能把 `replace_path` 的边界写成“屏蔽基础目录，
+不抹掉其他已启用模组资源”；R25 尚未运行前仍保持待验。
+
 ## 6. 哪些 CK3 语法不能在这里执行
 
 | 语法族 | 能否执行 | 结论依据 |
@@ -943,7 +959,7 @@ CoatOfArms
 
 尚未完成的下一阶段能力：
 
-- 继续补 DLC mount、`replace_path` 与 definition merge 的 VFS 胜者；R22 闭合两个目录模组冲突，R23 已闭合基础游戏/目录 mod 和目录 mod/archive mod 的已注册直接 DDS 冲突；
+- 继续补 DLC mount、`replace_path` 与 definition merge 的 VFS 胜者；R22 闭合两个目录模组冲突，R23 已闭合基础游戏/目录 mod 和目录 mod/archive mod 的已注册直接 DDS 冲突；R24 保留为“较早模组会被 replace_path 隐藏”假设的反例，R25 将新增基础游戏独有资源对照；
 - 继续把现有受管 framebuffer primitive 扩展到更多 shader/asset/VFS 情形，并闭合浏览器源码模型与 native GPU 的剩余差异；
 - 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机应用并 Copy 保留的 `texture="_default.dds"` 形态以及素材原始像素。
 

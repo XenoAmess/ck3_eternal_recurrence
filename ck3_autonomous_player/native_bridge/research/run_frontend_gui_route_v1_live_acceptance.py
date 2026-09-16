@@ -327,6 +327,13 @@ VFS_EXTENDED_DIAGNOSTIC_PAIRS = (
 )
 VFS_REPLACE_PATH_CASES = (
     {
+        "id": "base-only",
+        "source": (
+            'coa = { pattern = "pattern_checkers_06.dds" color1 = red '
+            'color2 = white color3 = black }'
+        ),
+    },
+    {
         "id": "replaced-earlier-only",
         "source": (
             'coa = { pattern = "pattern_xar_vfs_replaced_earlier.dds" color1 = red '
@@ -349,7 +356,9 @@ VFS_REPLACE_PATH_CASES = (
     },
 )
 VFS_REPLACE_PATH_DIAGNOSTIC_PAIRS = (
-    ("replaced-earlier-only", "missing-control", True),
+    ("base-only", "missing-control", True),
+    ("base-only", "later-reference", False),
+    ("replaced-earlier-only", "missing-control", False),
     ("replaced-earlier-only", "later-reference", False),
     ("missing-control", "later-reference", False),
 )
@@ -490,7 +499,7 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help=(
             "apply the checked-in later-mod replace_path fixture and compare "
-            "the hidden earlier-only pattern to a missing control"
+            "base-only plus earlier-mod patterns to a missing control"
         ),
     )
     parser.add_argument(
@@ -2864,9 +2873,9 @@ async def _collect_vfs_winner_matrix(
         "case_count": len(results),
         "predeclared_hypothesis": (
             (
-                "the earlier-only registered pattern behaves like a never-present "
-                "missing control after the later mod replaces gfx/coat_of_arms/patterns, "
-                "and both differ from the later replacement pattern"
+                "the base-game-only pattern behaves like a never-present missing control; "
+                "the earlier enabled-mod pattern remains available and differs from both "
+                "the missing control and the later replacement pattern"
             )
             if replace_path
             else (
@@ -2893,7 +2902,7 @@ async def _collect_vfs_winner_matrix(
     }
     if replace_path:
         result["inferred_replace_path_effect"] = (
-            "earlier-only-pattern-hidden"
+            "base-game-directory-hidden-earlier-enabled-mod-preserved"
             if gate_passed
             else None
         )
@@ -4318,11 +4327,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "vfs_replace_path_matrix_requested": vfs_replace_path_matrix,
         "vfs_replace_path_plan": (
             {
-                "predeclared_hypothesis": (
-                    "the earlier-only registered pattern behaves like a never-present "
-                    "missing control after the later mod replaces gfx/coat_of_arms/patterns, "
-                    "and both differ from the later replacement pattern"
-                ),
+                "predeclared_hypotheses": [
+                    "the base-game-only pattern behaves like a never-present missing control",
+                    "the earlier enabled-mod pattern remains available and differs from both "
+                    "the missing control and the later replacement pattern",
+                ],
                 "cases": [
                     {
                         "id": value["id"],
