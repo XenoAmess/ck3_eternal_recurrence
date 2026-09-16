@@ -40,9 +40,13 @@ function surfaceDds(): Buffer {
 }
 
 test('runs real 128/1024/10000 browser fits without clamping and cancels a paint phase', async ({ page }) => {
-  test.setTimeout(300_000)
   const contract = FIT_BUDGET_STRESS_CONTRACT
   const performanceGateEnforced = process.env.COA_E2E_PERFORMANCE_GATE !== 'report-only'
+  // Hosted Pages runners are intentionally report-only performance probes and
+  // can spend ~250 seconds in the three real fits before pause/resume and
+  // cancellation gates begin. Keep workstation thresholds strict while giving
+  // the slower hosted environment enough suite-level time to reach those gates.
+  test.setTimeout(performanceGateEnforced ? 300_000 : 600_000)
   const nonGetRequests: { method: string, url: string }[] = []
   page.on('request', (request) => {
     if (request.method() !== 'GET') nonGetRequests.push({ method: request.method(), url: request.url() })

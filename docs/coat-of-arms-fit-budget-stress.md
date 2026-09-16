@@ -33,6 +33,8 @@
 
 ## 浏览器实测
 
+### 初始基线
+
 环境：本机 Microsoft Edge headless、Vite 开发服务器、正式独立页面配置、合成静态 asset pack。随机种子为 `null`，输入由固定公式
 `palette[(x + 3y) mod 4]` 生成；scoring contract 为 `alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1`，renderer contract 为
 `cpu-rgba8-bilinear-clamp-pixel-center-v1`。
@@ -64,6 +66,24 @@ JavaScript heap 增量为 49,825,310 bytes；非 GET 请求为 0。高分辨率�
 
 DOM-less reference 同一 10,000 预算运行得到相同 1,824 实例、15,274 个候选、`no_improvement`、总/边缘损失完全一致，耗时
 7,966.64 ms。候选数与浏览器不同是该快速 reference 使用 8 个 refinement shortlist 名额，而生产页面使用 48；最终模型和损失一致。
+
+### 当前 renderer / Pareto 回归
+
+2026-09-16 在 `cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4`、生产 build 和同一确定性输入下复跑：
+
+| 用户预算 | 实际实例 / 块 | 候选评估 | 四叉树深度 | 停止原因 | 本机耗时 |
+| ---: | ---: | ---: | ---: | --- | ---: |
+| 128 | 128 / 128 | 1,798 | 4 | `layer_budget` | 4,929 ms |
+| 1,024 | 250 / 250 | 3,206 | 6 | `no_improvement` | 5,661 ms |
+| 10,000 | 2,320 / 2,320 | 205,654 | 7 | `no_improvement` | 101,289 ms |
+
+10,000 结果为 905,361 UTF-8 bytes / 32,487 行，完整复制、重新解析均为 2,320 块 / 2,320 实例；暂停 34 ms、刷新恢复
+3,231 ms、继续至完成 4,727 ms、取消 67 ms、新 run 首次进度 155 ms，JS heap 观测增量 8,037,940 bytes，非 GET 请求为 0。
+当前本机三个预算仍分别低于 15 / 45 / 180 秒的冻结门禁。
+
+GitHub Pages 的共享 Linux runner 属于 `report-only` 性能环境，同一轮观测约为 41.9 / 52.2 / 150.2 秒；前三次真实拟合已经消耗
+约 244 秒，原 300 秒整份 Playwright 用例上限会在随后的 pause/resume 阶段关闭浏览器。`report-only` 整份用例上限因此调整为
+600 秒，工作站的 300 秒总上限、三个单预算阈值以及暂停/恢复/取消门禁均保持不变；这不是放宽产品性能门禁。
 
 ## 复现命令
 
