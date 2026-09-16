@@ -21,9 +21,9 @@ constexpr std::ptrdiff_t kIngameHandlerOffset = 0x88;
 constexpr std::uintptr_t kIngameHandlerPrimaryVtableRva = 0x40AF630;
 constexpr std::ptrdiff_t kSuccessionControllerOffset = 0x260;
 constexpr std::uintptr_t kSuccessionControllerPrimaryVtableRva = 0x4111E80;
-constexpr std::ptrdiff_t kControllerCloseVslot = 0x20;
+constexpr std::ptrdiff_t kControllerCloseVslot = 0x88;
 constexpr std::ptrdiff_t kControllerOpenVslot = 0x38;
-constexpr std::uintptr_t kControllerCloseTargetRva = 0x1006FB0;
+constexpr std::uintptr_t kControllerCloseTargetRva = 0xFD4870;
 constexpr std::uintptr_t kControllerOpenTargetRva = 0xFD4B00;
 
 using RuntimeDynamicCastV1 = void *(__cdecl *)(void *, long, void *, void *,

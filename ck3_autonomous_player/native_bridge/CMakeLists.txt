@@ -3197,6 +3197,20 @@ if(BUILD_TESTING)
     COMMAND xar_ck3_death_succession_modal_continue_v1_test
   )
 
+  add_executable(xar_ck3_death_succession_modal_continue_v1_source_contract_test
+    src/death_succession_modal_continue_v1_source_contract_test.cpp
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_death_succession_modal_continue_v1_source_contract_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_death_succession_modal_continue_v1_source_contract
+    COMMAND xar_ck3_death_succession_modal_continue_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/death_succession_modal_continue_v1.cpp
+  )
+
   add_executable(xar_ck3_zhongguo_scoreboard_state_v1_mailbox_test
     src/zhongguo_scoreboard_state_v1_mailbox.cpp
     src/zhongguo_scoreboard_state_v1_mailbox_test.cpp

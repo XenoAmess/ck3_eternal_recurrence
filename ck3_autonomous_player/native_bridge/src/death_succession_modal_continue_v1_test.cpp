@@ -11,7 +11,7 @@ struct Fixture {
   bool resolve = true;
   bool open = true;
   bool close = true;
-  std::uint32_t close_calls = 0;
+  std::uint32_t close_attempts = 0;
 };
 
 bool Resolve(void *opaque, void *&output) noexcept {
@@ -29,9 +29,9 @@ bool Open(void *opaque, void *controller, bool &output) noexcept {
 
 bool Close(void *opaque, void *controller) noexcept {
   auto &fixture = *static_cast<Fixture *>(opaque);
-  if (controller != &fixture.controller || !fixture.close) return false;
-  ++fixture.close_calls;
-  return true;
+  if (controller != &fixture.controller) return false;
+  ++fixture.close_attempts;
+  return fixture.close;
 }
 
 xar::game::CurrentTimelineBlockerContextV1 Timeline() {
@@ -76,28 +76,36 @@ int main() {
          receipt.has_open_succession_verified &&
          receipt.controller_vtable_verified &&
          receipt.controller_open_verified);
-  assert(receipt.close_invocations == 1 && fixture.close_calls == 1);
+  assert(receipt.close_invocations == 1 && fixture.close_attempts == 1);
 
   fixture = {};
   auto timeline = Timeline();
   timeline.blocks_simulation.value = false;
   receipt = Run(fixture, timeline);
-  assert(receipt.status == Status::unavailable && fixture.close_calls == 0 &&
+  assert(receipt.status == Status::unavailable && fixture.close_attempts == 0 &&
          receipt.unavailable_reason == "not_paused_by_succession");
 
   fixture = {};
   timeline = Timeline();
   timeline.has_open_succession.value = false;
   receipt = Run(fixture, timeline);
-  assert(receipt.status == Status::unavailable && fixture.close_calls == 0 &&
+  assert(receipt.status == Status::unavailable && fixture.close_attempts == 0 &&
          receipt.unavailable_reason ==
              "played_character_has_no_open_succession");
 
   fixture = {};
   fixture.open = false;
   receipt = Run(fixture);
-  assert(receipt.status == Status::unavailable && fixture.close_calls == 0 &&
+  assert(receipt.status == Status::unavailable && fixture.close_attempts == 0 &&
          receipt.unavailable_reason == "succession_controller_not_open");
+
+  fixture = {};
+  fixture.close = false;
+  receipt = Run(fixture);
+  assert(receipt.status == Status::unavailable &&
+         receipt.close_invocations == 0 && fixture.close_attempts == 1 &&
+         receipt.unavailable_reason ==
+             "succession_controller_close_dispatch_failed");
 
   DeathSuccessionModalContinueRequestV1 request{};
   assert(ParseDeathSuccessionModalContinueV1Step(
