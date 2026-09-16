@@ -58,7 +58,31 @@ choice as `source=legacy-default`; omission never means ordinary support.
 
 The expected action fields are **verification assertions**, never action arguments passed to the agent. The agent discovers the pending request and its signed full ID from a real paused frame and chooses the reply under its installed policy. If a checkpoint has an unconfirmed prior action, first query actual paused game state and its receipt; do not submit another reply blindly.
 
-First take exclusive CK3 ownership and confirm all managed CK3 processes are dead. For an independent fresh state, run the formal `prepare-profile --xar-enabled xar_off` and `verify-profile --xar-enabled xar_off` commands from the pinned candidate runtime, copy the immutable paired save to `state/profile/save games/xar_checkpoint.ck3` and driver state to `state/native-session/driver-state.json`, and run the existing no-launch `native-one-generation-preflight` with the episode/save/driver pins plus `--xar-enabled xar_off --succession-lifecycle ordinary_campaign_succession --ordinary-campaign-no-pact`. The preflight requires the prepared profile, driver state and checkpoint lifecycle binding to agree exactly before CK3 can launch. `prepare-profile` itself refuses while CK3 is running. Keep the source/copy SHA mapping and preflight report; a structurally valid preflight is not live evidence.
+First take exclusive CK3 ownership and confirm all managed CK3 processes are dead. For an independent fresh state, use the formal operator entry; the sample directory contains the paired `xar_checkpoint.ck3` and `driver-state.json`:
+
+```text
+python tools/g2_preview_operator.py prepare-state --manifest <frozen-operator-manifest.json> --sample-dir <frozen-paired-seed-directory>
+```
+
+With the ordinary lifecycle triple, this one command runs `prepare-profile
+--xar-enabled xar_off`, copies the pair to its canonical target paths, runs
+`verify-profile --xar-enabled xar_off`, invokes the public agent subcommand
+`rebind-ordinary-seed-v1` with the manifest's exact persisted pipe, validates
+the versioned receipt at `<state-dir>/ordinary-seed-rebind-v1.json`, and then
+runs the ordinary-aware `native-one-generation-preflight` using the receipt's
+new driver hash and exact episode/save pins.  Its successful JSON output gives
+the receipt path and SHA-256 and records
+`ordinary_no_launch_preflight=passed`.  Any rebind, receipt or preflight RED
+returns nonzero before a CK3 launch path is reached.  Users do not invoke the
+private Python module or reconstruct preflight arguments.  A legacy manifest
+that omits the lifecycle triple retains the previous prepare/copy/verify
+behavior and does not run this migration.
+
+The preflight requires the prepared profile, driver state and checkpoint
+lifecycle binding to agree exactly before CK3 can launch. `prepare-profile`
+itself refuses while CK3 is running. Keep the source/copy SHA mapping, rebind
+receipt and preflight report; a structurally valid preflight is not live
+evidence.
 
 The operator then runs the reusable scope check. This starts and recycles at most one CK3 process only when `--preflight-only` has passed and the global single-instance ledger assigns ownership. Each `--output` path is new and holds one attempt. The tool submits no input, date advance or gameplay action:
 

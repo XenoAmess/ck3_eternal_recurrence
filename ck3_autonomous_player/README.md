@@ -253,6 +253,8 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-session --timeout 21600
 "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-auto-run --turns 20 --timeout 21600 --readiness-timeout 300 --cold-start-checkpoint
 "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --game-dir <CK3-dir> --bridge-mode disabled --bridge-pipe '<checkpoint-driver-state-pipe>' native-one-generation-preflight --expected-character-id <CharacterID> --expected-episode-run-id <episode-run-id> --expected-checkpoint-sha256 <checkpoint-sha256> --expected-driver-state-sha256 <driver-state-sha256>
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --game-dir <CK3-dir> rebind-ordinary-seed-v1 --expected-pipe '<checkpoint-driver-state-pipe>' --receipt <receipt.json>
+"tools\.venv\Scripts\python.exe" "tools\g2_preview_operator.py" prepare-state --manifest <frozen-operator-manifest.json> --sample-dir <frozen-paired-seed-directory>
 "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '<checkpoint-driver-state-pipe>' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
 ```
 
@@ -433,6 +435,12 @@ pipe/DLL 和 `-loadsave=xar_checkpoint` 重启。若旧进程的 CK3 窗口已�
 `xar_enabled=xar_off`、`succession_lifecycle=ordinary_campaign_succession` 和
 `ordinary_campaign_no_pact=true`。`g2_preview_operator.py` 会把同一三元组传给
 profile 准备/校验、零启动 preflight 和正式 `native-auto-run`，并写进 receipt；
+`prepare-state` 还会在复制 paired seed 后自动调用正式
+`agent.py rebind-ordinary-seed-v1`，用 driver 已持久化的 exact pipe 把三个
+lifecycle anchor 迁移到目标环境，持久化
+`<state-dir>/ordinary-seed-rebind-v1.json`，再用 receipt 中的新 driver hash 和
+episode/save pins 完成 ordinary no-launch preflight。用户不需要调用私有模块或手写
+preflight 参数；任一阶段失败都会在 CK3 启动前以非零退出。
 `g2_preview_eligibility.py` 还会核对 paired checkpoint/driver lifecycle 与实机
 public campaign-root 的 `xar_off` rule token。三字段部分缺失或互相冲突会在启动前拒绝。
 旧 manifest 三字段全部缺失时仅兼容为原有 `xar_on/rogue_one_life/false`，不会被解释成普通战役。

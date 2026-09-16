@@ -186,6 +186,24 @@ def parser() -> argparse.ArgumentParser:
         default="xar_on",
         help="require the prepared profile to use this main mod rule",
     )
+    ordinary_seed_rebind_parser = commands.add_parser(
+        "rebind-ordinary-seed-v1",
+        help=(
+            "rebind a copied ordinary xar_off checkpoint to this prepared "
+            "environment without launching CK3"
+        ),
+    )
+    ordinary_seed_rebind_parser.add_argument(
+        "--expected-pipe",
+        required=True,
+        help="require the copied driver state to retain this exact named pipe",
+    )
+    ordinary_seed_rebind_parser.add_argument(
+        "--receipt",
+        type=Path,
+        required=True,
+        help="write the versioned no-launch rebind receipt to this path",
+    )
     smoke_parser = commands.add_parser(
         "smoke", help="non-debug boot to visible main menu and prove the runtime load"
     )
@@ -647,7 +665,10 @@ def main(argv: list[str] | None = None) -> int:
                 f"{args.command} requires --bridge-mode native-headless; "
                 "use opening-dev-session for hybrid-fallback"
             )
-        if args.command != "native-one-generation-preflight":
+        if args.command not in {
+            "native-one-generation-preflight",
+            "rebind-ordinary-seed-v1",
+        }:
             configure_native_bridge_launch_environment(
                 args.bridge_mode,
                 pipe_name=args.bridge_pipe,
@@ -680,6 +701,15 @@ def main(argv: list[str] | None = None) -> int:
             ensure_state_path_safe(spec.state_dir)
             with exclusive_state_lock(spec.state_dir, "verify-profile"):
                 result = verify_profile(spec, xar_enabled=args.xar_enabled)
+        elif args.command == "rebind-ordinary-seed-v1":
+            from .environment import write_json_atomic
+            from .ordinary_seed_rebinder import rebind_ordinary_seed_v1
+
+            result = rebind_ordinary_seed_v1(
+                spec,
+                expected_pipe_name=args.expected_pipe,
+            )
+            write_json_atomic(args.receipt.resolve(), result)
         elif args.command == "recover-stale-control":
             from .recovery import recover_stale_control
 

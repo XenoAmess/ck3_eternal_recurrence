@@ -37,22 +37,26 @@ SHA-256, the unchanged save mapping, both post-rebind validator results, and
 the exact expectations needed by the subsequent no-launch preflight.  The
 receipt does not claim a cold restore or gameplay result.
 
-## Operator integration point
+## Formal CLI and operator integration
 
-After preparing the destination with `xar_enabled=xar_off`, copy the paired
-`xar_checkpoint.ck3` and `driver-state.json` into their canonical target
-locations, then run from the agent environment:
+The rebinder remains directly runnable as a module for focused development,
+but the supported agent CLI is:
 
 ```powershell
-python -m xar_autoplayer.ordinary_seed_rebinder `
+python ck3_autonomous_player\agent.py `
   --state-dir <prepared-state> `
   --game-dir <frozen-ck3-directory> `
+  rebind-ordinary-seed-v1 `
   --expected-pipe <persisted-pipe> `
   --receipt <artifact-directory>\ordinary-seed-rebind-v1.json
 ```
 
-The preview operator should pass the receipt's
-`no_launch_preflight_expectations` into the ordinary-aware no-launch preflight
-before it exposes a start/resume command.  The operator must not select a new
-pipe during this migration because pipe identity remains part of the cold
-checkpoint anchor.
+Users prepare portable ordinary preview state through
+`tools/g2_preview_operator.py prepare-state`.  After preparing the destination
+as `xar_off` and copying the paired artifacts, the operator calls this formal
+agent subcommand with the manifest's exact pipe.  It persists the receipt at
+`<state-dir>/ordinary-seed-rebind-v1.json`, validates its schema and lifecycle,
+then passes `no_launch_preflight_expectations` into the ordinary-aware
+no-launch preflight.  The operator never selects a new pipe because pipe
+identity remains part of the cold checkpoint anchor.  A failed rebind or
+preflight exits nonzero without launching CK3.

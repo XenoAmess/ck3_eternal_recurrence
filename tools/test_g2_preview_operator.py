@@ -72,6 +72,27 @@ class G2PreviewOperatorTest(unittest.TestCase):
             def fake_run(command, check):
                 self.assertFalse(check)
                 calls.append(command)
+                if "rebind-ordinary-seed-v1" in command:
+                    receipt_path = Path(command[command.index("--receipt") + 1])
+                    receipt_path.write_text(json.dumps({
+                        "schema": "xar.ck3.ordinary-seed-rebind/v1",
+                        "status": "rebound",
+                        "ok": True,
+                        "ck3_launch_attempted": False,
+                        "pipe_name": r"\\.\pipe\ordinary-preview",
+                        "no_launch_preflight_expectations": {
+                            "pipe_name": r"\\.\pipe\ordinary-preview",
+                            "expected_character_id": 31853,
+                            "expected_episode_run_id": "native-31853-test",
+                            "expected_checkpoint_sha256": "a" * 64,
+                            "expected_driver_state_sha256": "b" * 64,
+                            "xar_enabled": "xar_off",
+                            "succession_lifecycle": (
+                                "ordinary_campaign_succession"
+                            ),
+                            "ordinary_campaign_no_pact": True,
+                        },
+                    }), encoding="utf-8")
                 return mock.Mock(returncode=0)
 
             stdout = io.StringIO()
@@ -94,10 +115,112 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertEqual(calls[1][-3:], [
                 "verify-profile", "--xar-enabled", "xar_off"
             ])
+            self.assertIn("rebind-ordinary-seed-v1", calls[2])
+            self.assertEqual(
+                calls[2][calls[2].index("--expected-pipe") + 1],
+                r"\\.\pipe\ordinary-preview",
+            )
+            self.assertIn("native-one-generation-preflight", calls[3])
+            self.assertIn("--ordinary-campaign-no-pact", calls[3])
             self.assertEqual(
                 json.loads(stdout.getvalue())["lifecycle"]["succession_lifecycle"],
                 "ordinary_campaign_succession",
             )
+            preparation = json.loads(stdout.getvalue())
+            self.assertEqual(
+                preparation["ordinary_no_launch_preflight"], "passed"
+            )
+            self.assertTrue(
+                Path(preparation["ordinary_seed_rebind_receipt"]).is_file()
+            )
+
+    def test_prepare_state_legacy_manifest_keeps_original_two_commands(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            sample = root / "sample"
+            sample.mkdir()
+            (sample / "xar_checkpoint.ck3").write_bytes(b"checkpoint")
+            (sample / "driver-state.json").write_text("{}", encoding="utf-8")
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\legacy-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+            }), encoding="utf-8")
+            calls: list[list[str]] = []
+
+            def fake_run(command, check):
+                self.assertFalse(check)
+                calls.append(command)
+                return mock.Mock(returncode=0)
+
+            with mock.patch.object(
+                g2_preview_operator.subprocess, "run", side_effect=fake_run
+            ):
+                result = g2_preview_operator.command_prepare_state(
+                    argparse.Namespace(manifest=manifest_path, sample_dir=sample)
+                )
+
+            self.assertEqual(result, 0)
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(calls[0][-3:], [
+                "prepare-profile", "--xar-enabled", "xar_on"
+            ])
+            self.assertEqual(calls[1][-3:], [
+                "verify-profile", "--xar-enabled", "xar_on"
+            ])
+            self.assertFalse((state / "ordinary-seed-rebind-v1.json").exists())
+
+    def test_prepare_state_rebind_failure_blocks_preflight_without_run(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            sample = root / "sample"
+            sample.mkdir()
+            (sample / "xar_checkpoint.ck3").write_bytes(b"checkpoint")
+            (sample / "driver-state.json").write_text("{}", encoding="utf-8")
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\ordinary-preview",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+                "xar_enabled": "xar_off",
+                "succession_lifecycle": "ordinary_campaign_succession",
+                "ordinary_campaign_no_pact": True,
+            }), encoding="utf-8")
+            calls: list[list[str]] = []
+
+            def fake_run(command, check):
+                self.assertFalse(check)
+                calls.append(command)
+                return mock.Mock(
+                    returncode=(1 if "rebind-ordinary-seed-v1" in command else 0)
+                )
+
+            with (
+                mock.patch.object(
+                    g2_preview_operator.subprocess, "run", side_effect=fake_run
+                ),
+                self.assertRaisesRegex(RuntimeError, "rebind failed"),
+            ):
+                g2_preview_operator.command_prepare_state(
+                    argparse.Namespace(manifest=manifest_path, sample_dir=sample)
+                )
+
+            self.assertEqual(len(calls), 3)
+            self.assertTrue(all("native-auto-run" not in call for call in calls))
+            self.assertTrue(all(
+                "native-one-generation-preflight" not in call for call in calls
+            ))
 
     def test_eligibility_preflight_binds_ordinary_profile_and_checkpoint(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

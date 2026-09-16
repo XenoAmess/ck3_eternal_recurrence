@@ -3,6 +3,7 @@ from __future__ import annotations
 import contextlib
 import copy
 import hashlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -21,6 +22,8 @@ from xar_autoplayer.ordinary_seed_rebinder import (  # noqa: E402
     rebind_ordinary_seed_v1,
 )
 import xar_autoplayer.ordinary_seed_rebinder as rebinder_module  # noqa: E402
+import xar_autoplayer.cli as cli_module  # noqa: E402
+import xar_autoplayer.environment as environment_module  # noqa: E402
 
 
 def _binding(environment_sha256: str) -> dict[str, object]:
@@ -92,6 +95,50 @@ class OrdinarySeedRebinderTests(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
+
+    def test_agent_cli_exposes_no_launch_rebind_with_required_receipt(self) -> None:
+        receipt_path = self.spec.state_dir / "operator-rebind.json"
+        expected = {
+            "schema": ORDINARY_SEED_REBIND_V1_SCHEMA,
+            "status": "rebound",
+            "ok": True,
+            "ck3_launch_attempted": False,
+        }
+        stdout = io.StringIO()
+        with (
+            mock.patch.object(cli_module, "make_spec", return_value=self.spec),
+            mock.patch.object(
+                cli_module, "configure_native_bridge_launch_environment"
+            ) as configure,
+            mock.patch.object(
+                rebinder_module,
+                "rebind_ordinary_seed_v1",
+                return_value=expected,
+            ) as rebind,
+            mock.patch.object(
+                environment_module, "write_json_atomic"
+            ) as write_receipt,
+            contextlib.redirect_stdout(stdout),
+        ):
+            result = cli_module.main([
+                "--state-dir",
+                str(self.spec.state_dir),
+                "--game-dir",
+                str(self.spec.game_dir),
+                "rebind-ordinary-seed-v1",
+                "--expected-pipe",
+                self.pipe_name,
+                "--receipt",
+                str(receipt_path),
+            ])
+
+        self.assertEqual(result, 0)
+        configure.assert_not_called()
+        rebind.assert_called_once_with(
+            self.spec, expected_pipe_name=self.pipe_name
+        )
+        write_receipt.assert_called_once_with(receipt_path.resolve(), expected)
+        self.assertEqual(json.loads(stdout.getvalue()), expected)
 
     def _write_source(self, payload: dict[str, object]) -> None:
         self.driver_path.write_text(

@@ -49,6 +49,7 @@ ORDINARY_LIFECYCLE_CONTRACT = {
     "succession_lifecycle": ORDINARY_CAMPAIGN_SUCCESSION,
     "ordinary_campaign_no_pact": True,
 }
+ORDINARY_SEED_REBIND_V1_SCHEMA = "xar.ck3.ordinary-seed-rebind/v1"
 
 
 def sha256(path: Path) -> str:
@@ -333,6 +334,12 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     for path in (save_target, driver_target):
         if path.exists():
             raise FileExistsError(f"refusing to overwrite prepared state: {path}")
+    rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
+    if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
+        if rebind_receipt.exists():
+            raise FileExistsError(
+                f"refusing to overwrite ordinary rebind receipt: {rebind_receipt}"
+            )
     common = agent_command(manifest)
     profile_rule = ["--xar-enabled", str(lifecycle["xar_enabled"])]
     if subprocess.run(
@@ -347,13 +354,78 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         [*common, "verify-profile", *profile_rule], check=False
     ).returncode != 0:
         raise RuntimeError("production profile verification failed")
-    print(json.dumps({
+    preparation: dict[str, Any] = {
         "ok": True,
         "state_dir": str(state_dir),
         "checkpoint_sha256": sha256(save_target),
         "driver_state_sha256": sha256(driver_target),
         "lifecycle": lifecycle,
-    }))
+    }
+    if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
+        rebind_command = [
+            *common,
+            "rebind-ordinary-seed-v1",
+            "--expected-pipe",
+            str(manifest["pipe"]),
+            "--receipt",
+            str(rebind_receipt),
+        ]
+        if subprocess.run(rebind_command, check=False).returncode != 0:
+            raise RuntimeError("ordinary seed environment rebind failed")
+        receipt = read_json(rebind_receipt)
+        expectations = receipt.get("no_launch_preflight_expectations")
+        if (
+            receipt.get("schema") != ORDINARY_SEED_REBIND_V1_SCHEMA
+            or receipt.get("ok") is not True
+            or receipt.get("status") != "rebound"
+            or receipt.get("ck3_launch_attempted") is not False
+            or receipt.get("pipe_name") != manifest["pipe"]
+            or not isinstance(expectations, dict)
+            or expectations.get("pipe_name") != manifest["pipe"]
+            or expectations.get("xar_enabled") != "xar_off"
+            or expectations.get("succession_lifecycle")
+            != ORDINARY_CAMPAIGN_SUCCESSION
+            or expectations.get("ordinary_campaign_no_pact") is not True
+        ):
+            raise RuntimeError("ordinary seed rebind receipt is inconsistent")
+        character_id = expectations.get("expected_character_id")
+        episode_run_id = expectations.get("expected_episode_run_id")
+        checkpoint_sha256 = expectations.get("expected_checkpoint_sha256")
+        driver_state_sha256 = expectations.get("expected_driver_state_sha256")
+        if (
+            isinstance(character_id, bool)
+            or not isinstance(character_id, int)
+            or character_id <= 0
+            or not isinstance(episode_run_id, str)
+            or not episode_run_id
+            or not isinstance(checkpoint_sha256, str)
+            or len(checkpoint_sha256) != 64
+            or not isinstance(driver_state_sha256, str)
+            or len(driver_state_sha256) != 64
+        ):
+            raise RuntimeError("ordinary seed rebind receipt lacks preflight pins")
+        preflight = [
+            *common,
+            "native-one-generation-preflight",
+            "--expected-character-id",
+            str(character_id),
+            "--expected-episode-run-id",
+            episode_run_id,
+            "--expected-checkpoint-sha256",
+            checkpoint_sha256,
+            "--expected-driver-state-sha256",
+            driver_state_sha256,
+            *preflight_lifecycle_arguments(lifecycle),
+        ]
+        if subprocess.run(preflight, check=False).returncode != 0:
+            raise RuntimeError("ordinary seed no-launch preflight failed")
+        preparation.update({
+            "driver_state_sha256": sha256(driver_target),
+            "ordinary_seed_rebind_receipt": str(rebind_receipt.resolve()),
+            "ordinary_seed_rebind_receipt_sha256": sha256(rebind_receipt),
+            "ordinary_no_launch_preflight": "passed",
+        })
+    print(json.dumps(preparation))
     return 0
 
 
