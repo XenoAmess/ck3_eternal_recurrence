@@ -1752,8 +1752,16 @@ class NativeHeadlessGameplayDriver:
                     ):
                         continue
                     war_id = int(war["war_id"])
-                    ready, _, _ = _white_peace_readiness(
+                    ready, _, evidence = _white_peace_readiness(
                         current_snapshot, war_id
+                    )
+                    submission_fence = _white_peace_submission_fence(
+                        self._command_history,
+                        war_id=war_id,
+                        episode_run_id=current_snapshot.get(
+                            "episode_run_id"
+                        ),
+                        variant=evidence.get("variant"),
                     )
                     cooldown = _white_peace_proposal_cooldown(
                         self._command_history,
@@ -1761,7 +1769,11 @@ class NativeHeadlessGameplayDriver:
                         current_date_raw=current_snapshot.get("date_raw"),
                         episode_run_id=current_snapshot.get("episode_run_id"),
                     )
-                    if ready and cooldown is None:
+                    if (
+                        ready
+                        and submission_fence is None
+                        and cooldown is None
+                    ):
                         white_peace_steps.add(offer_white_peace_step(war_id))
             if (
                 isinstance(current_snapshot, dict)
@@ -14615,6 +14627,17 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native white_peace fresh validation failed: " + reason
             )
+        submission_fence = _white_peace_submission_fence(
+            self._history_snapshot(),
+            war_id=war_id,
+            episode_run_id=starting.get("episode_run_id"),
+            variant=evidence.get("variant"),
+        )
+        if submission_fence is not None:
+            raise BridgeUnavailableError(
+                "native de-jure white_peace submission is suppressed by "
+                "its same-episode one-shot WarID fence"
+            )
         cooldown = _white_peace_proposal_cooldown(
             self._history_snapshot(),
             war_id=war_id,
@@ -24567,6 +24590,45 @@ def _white_peace_proposal_cooldown(
                 "history_index": row.get("index"),
             }
         return None
+    return None
+
+
+def _white_peace_submission_fence(
+    history: list[dict[str, object]],
+    *,
+    war_id: int,
+    episode_run_id: object,
+    variant: object,
+) -> dict[str, object] | None:
+    """Keep the exact de-jure terminal one-shot while its WarID survives."""
+    if variant != "de_jure_no_safe_route":
+        return None
+    step = offer_white_peace_step(war_id)
+    for row in reversed(history):
+        if row.get("command") != step or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        action = (
+            result.get("war_termination_result")
+            if isinstance(result, dict)
+            else None
+        )
+        casus_belli = (
+            action.get("casus_belli") if isinstance(action, dict) else None
+        )
+        if (
+            isinstance(action, dict)
+            and isinstance(casus_belli, dict)
+            and casus_belli.get("canonical_key")
+            == _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB
+            and casus_belli.get("database_index")
+            == _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX
+            and action.get("war_id") == war_id
+            and action.get("outcome") == "white_peace"
+            and action.get("episode_run_id") == episode_run_id
+            and action.get("status") in {"submitted_pending", "applied"}
+        ):
+            return action
     return None
 
 
