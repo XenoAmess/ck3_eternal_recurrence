@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import time
 from typing import Any
 
 from run_g2m4_paused_player_view_read import (
@@ -41,6 +42,47 @@ def _stock_material_match(
         and row.get("initiator_character_id") == actor
         for row in active
     )
+
+
+def _wait_for_newer_paused_frame(
+    driver: Any,
+    previous: dict[str, object],
+    timeout_seconds: float,
+    *,
+    poll_interval_seconds: float = 0.05,
+) -> tuple[dict[str, object] | None, dict[str, object], str | None]:
+    """Wait until the bridge publishes the post-submit paused native frame.
+
+    The command ACK can arrive before ``semantic_snapshot`` advances beyond
+    the frame that admitted the command.  A private read against that old
+    revision is rejected by the bridge and must not be treated as material
+    evidence.  This wait performs no gameplay command and never retries the
+    submitted construction action.
+    """
+
+    previous_revision = previous.get("native_revision")
+    deadline = time.monotonic() + max(0.0, timeout_seconds)
+    last = _frame_binding(driver.state.semantic_snapshot())
+    while True:
+        revision = last.get("native_revision")
+        if _positive_int(revision) and _positive_int(previous_revision):
+            if revision < previous_revision:
+                return None, last, "post_action_native_revision_regressed_keep_pending"
+            if revision > previous_revision and last.get("paused") is True:
+                if (
+                    last.get("map_ready") is not True
+                    or last.get("played_character_id")
+                    != previous.get("played_character_id")
+                    or last.get("played_character_alive") is not True
+                    or last.get("date_raw") != previous.get("date_raw")
+                ):
+                    return None, last, "post_action_frame_identity_changed_keep_pending"
+                return last, last, None
+        now = time.monotonic()
+        if now >= deadline:
+            return None, last, "newer_paused_frame_timeout_keep_pending"
+        time.sleep(min(max(0.0, poll_interval_seconds), deadline - now))
+        last = _frame_binding(driver.state.semantic_snapshot())
 
 
 def run_owned_paused_world_building_action(
@@ -132,13 +174,16 @@ def run_owned_paused_world_building_action(
             report.update(status="red_action_state_unknown", issue="action_tuple_not_in_preflight_stock_cost_query_state_before_retry")
             return report
         report["status"] = "pending_ack_observed"
-        after = _frame_binding(driver.state.semantic_snapshot())
+        material_frame, after, frame_issue = _wait_for_newer_paused_frame(
+            driver, before, timeout_seconds
+        )
         report["after_action_frame"] = after
-        if after.get("paused") is not True or not _positive_int(after.get("native_revision")):
-            report["issue"] = "next_paused_frame_unavailable_keep_pending"
+        report["material_query_frame"] = material_frame
+        if material_frame is None:
+            report.update(status="pending_receipt", issue=frame_issue)
             return report
         read_request_id, read_frame = _read_step(
-            driver, PRIVATE_STEP, after["native_revision"], timeout_seconds
+            driver, PRIVATE_STEP, material_frame["native_revision"], timeout_seconds
         )
         report["material_read_request_id"] = read_request_id
         report["material_read_frame"] = read_frame
@@ -174,4 +219,7 @@ def run_owned_paused_world_building_action(
                             encoding="utf-8")
 
 
-__all__ = ["run_owned_paused_world_building_action"]
+__all__ = [
+    "_wait_for_newer_paused_frame",
+    "run_owned_paused_world_building_action",
+]
