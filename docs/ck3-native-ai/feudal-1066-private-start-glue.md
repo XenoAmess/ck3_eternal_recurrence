@@ -108,9 +108,33 @@ and ready selected-rule telemetry. The paired checkpoint gate additionally
 requires that the command result, persisted driver state, persisted
 `last_checkpoint`, and its command-history anchor all contain that exact
 binding. This prevents the earlier R750/R751 `xar_on` save from being
-relabelled as the standard ordinary campaign. The private start is only seed
-preparation: a new process must cold-restore the pair through formal
-`native-auto-run`, perform a non-empty strategy action, observe its independent
-postcondition and consume that result on a later turn before it can support a
-runnable ordinary preview claim. This mode is static-ready and has not yet
-been run on CK3.
+relabelled as the standard ordinary campaign.
+
+R782 exercised this seed path on the frozen build. A fresh CK3 process created
+the Murchad/1066/standard-feudal campaign with `xar_off`, wrote a lifecycle-bound
+checkpoint at `date_raw=53144328`, and returned the entire process tree to zero.
+The controlled live report is
+`C:/ck3_mod_rewrite_process_assets/g2-r782-ordinary-xar-off-seed-20260916/live-attempt-02`
+(SHA-256 `695234CFE699CA9145246FE0747D422CCE76FFFE31309148A222F5B05B70FBB1`);
+the seed save/driver pair is `94FA7F56...89F41` / `66EC923D...31C42`.
+
+R783 then launched a different CK3 PID through formal `native-auto-run`, cold
+restored that pair, and completed 20/20 bounded turns. Its strategy queried
+legal declarations and exact power in paused frame `native:8`, submitted one
+typed declaration, observed `war_changed` in independent frame `native:9`, and
+the next formal turn consumed WarID 5 through the termination-options query.
+Later turns raised ArmyID 33, observed gathering become regular, issued a
+previewed move, and reached combat before the final paired checkpoint. The
+formal report is
+`C:/ck3_mod_rewrite_process_assets/g2-r782-ordinary-xar-off-seed-20260916/r783-formal-attempt-03/stdout.jsonl`
+(SHA-256 `EF35A85242A95D3FE07A2C3EA8B5D6B3C932E38C49FFFC6E03A2D824AE459337`);
+the independent verdict is `r783-verdict.json` (SHA-256
+`8F9F6D1A278E4BD25BAD02371C585CA21F94077EC254AEFB30329C1223D9FA7F`).
+The final save/driver pair is `74294B03...EDF1A` / `354D4DE3...FE34B`, and
+cleanup was proven.
+
+This closes the live seed and same-state formal cold-restore gate. It does not
+yet make a portable ordinary preview ZIP: the operator must carry the
+`xar_off`/ordinary/no-pact triple, and a copied seed must be rebound to the
+target prepared environment without changing the CK3 save bytes. It also does
+not prove natural same-campaign succession or a 1066-to-1453 campaign.

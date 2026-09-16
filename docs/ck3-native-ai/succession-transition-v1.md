@@ -209,3 +209,28 @@ capture accepts an available or partial turn bundle and consumes only its
 same-frame ruler/succession fields, so neither optional selected-rule tokens nor
 the unsupported celestial ministry is allowed to hide the engine's current
 heir projection.
+
+## R782-R783 ordinary lifecycle bootstrap and cold restore
+
+R782 is the first real fresh `ordinary_campaign_succession` seed on the frozen
+CK3 build. The prepared environment had exactly `xar_enabled=xar_off`, the
+fresh/no-pact contract, environment SHA-256
+`C7B09849F0B61E9F6418D10D47506919586D54BCBDAA8A4FED5217E6400B089F`,
+and a public paused root for CharacterID 31853 in standard feudal government.
+The checkpoint result, persisted driver top level, `last_checkpoint`, and the
+matching history anchor carried the same lifecycle binding.
+
+R783 proved a true new-process cold restore of that pair through formal
+`native-auto-run`. Readiness reported `driver_state_restored=true`, restore kind
+`cold_checkpoint`, the same episode `native-31853-af642d76cb41`, and the same
+lifecycle/environment binding. The 20-turn run produced a typed declaration,
+independent active-war state, next-turn consumption, further army gameplay,
+two paired checkpoints, and complete process reclamation. Its final checkpoint
+at `date_raw=53145000` is save `74294B03...EDF1A`, driver
+`354D4DE3...FE34B`. Evidence and limits are recorded in
+`C:/ck3_mod_rewrite_process_assets/g2-r782-ordinary-xar-off-seed-20260916/r783-verdict.json`
+(SHA-256 `8F9F6D1A...D9FA7F`).
+
+No natural death occurred in R782/R783, so these rounds validate lifecycle
+binding and ordinary cold recovery but do not complete the natural-successor
+gate. G2-M3 and the global G2 authority therefore remain unchanged.
