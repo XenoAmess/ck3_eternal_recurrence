@@ -3894,6 +3894,90 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             self.assertEqual(persisted["bridge_pid"], 150000)
             self.assertEqual(len(persisted["command_history"]), 9)
 
+    def test_repeated_cold_checkpoint_resume_appends_each_pid_lineage(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            pipe_name = r"\\.\pipe\xar_repeated_cold_resume"
+            checkpoint_path, checkpoint = _write_driver_state_checkpoint_fixture(
+                state_dir,
+                pipe_name,
+                bridge_pid=1111,
+                character_id=707,
+                run_id="native-707-repeated-cold",
+            )
+
+            first_endpoint = FakeEndpoint(pipe_name)
+            first = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=first_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            first_endpoint.publish(
+                {**_hello("game.state.snapshot"), "pid": 215724}
+            )
+            first_endpoint.publish(
+                _snapshot(
+                    1,
+                    date_raw=int(checkpoint["date_raw"]),
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+            first_history = first.take_snapshot()["native_command_history"]
+            self.assertEqual(len(first_history), 9)
+            self.assertEqual(
+                first_history[-1]["result"]["lifecycle"],
+                {"previous_pid": 1111, "pid": 215724},
+            )
+            first.close()
+
+            second_endpoint = FakeEndpoint(pipe_name)
+            second = NativeHeadlessGameplayDriver(
+                pipe_name,
+                endpoint=second_endpoint,
+                state_dir=state_dir,
+                save_dir=checkpoint_path.parent,
+            )
+            second_endpoint.publish(
+                {**_hello("game.state.snapshot"), "pid": 181188}
+            )
+            second_endpoint.publish(
+                _snapshot(
+                    2,
+                    date_raw=int(checkpoint["date_raw"]),
+                    played_character={"character_id": 707, "alive": True},
+                )
+            )
+
+            second_history = second.take_snapshot()["native_command_history"]
+            self.assertEqual(
+                [row["command"] for row in second_history],
+                ["life-advance"] * 7
+                + ["save-checkpoint", "restore-checkpoint", "restore-checkpoint"],
+            )
+            self.assertEqual(
+                [row["index"] for row in second_history], list(range(1, 11))
+            )
+            self.assertEqual(
+                [
+                    row["result"]["lifecycle"]
+                    for row in second_history[-2:]
+                ],
+                [
+                    {"previous_pid": 1111, "pid": 215724},
+                    {"previous_pid": 215724, "pid": 181188},
+                ],
+            )
+            persisted = json.loads(
+                (
+                    state_dir / "native-session" / "driver-state.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(persisted["command_history"], second_history)
+            second.close()
+
     def test_restore_record_keeps_save_anchor_and_discards_factual_tail(
         self,
     ) -> None:

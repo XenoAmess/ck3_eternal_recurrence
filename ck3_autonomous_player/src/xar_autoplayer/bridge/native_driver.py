@@ -5912,13 +5912,27 @@ class NativeHeadlessGameplayDriver:
         with self._history_lock:
             if step == _RESTORE_CHECKPOINT_STEP:
                 if ok:
-                    history_index = _checkpoint_history_index(
+                    retained = _checkpoint_history_with_restore_lineage(
                         self._last_checkpoint, self._command_history
                     )
-                    if history_index is not None:
-                        self._command_history = self._command_history[
-                            :history_index
-                        ]
+                    if retained is not None:
+                        # Binding the replacement process writes a synthetic
+                        # cold-start row immediately so a daemon crash cannot
+                        # lose the process lineage.  The completed managed
+                        # request below replaces that one provisional row with
+                        # its richer lifecycle-queue result; earlier physical
+                        # restarts remain independent evidence rows.
+                        if (
+                            retained
+                            and isinstance(result, dict)
+                            and result.get("source")
+                            == "native-session-lifecycle-queue"
+                            and _same_restore_process_replacement(
+                                retained[-1].get("result"), result
+                            )
+                        ):
+                            retained.pop()
+                        self._command_history = retained
                     self._managed_restore_transaction = None
                 elif (
                     isinstance(self._managed_restore_transaction, dict)
@@ -6629,7 +6643,6 @@ class NativeHeadlessGameplayDriver:
             if self._pending_cold_candidate != candidate:
                 return
             if rejection is None:
-                history_index = int(checkpoint["history_index"])
                 rollback_war_failure = _derive_rollback_war_failure(
                     candidate["command_history"],
                     checkpoint=checkpoint,
@@ -6651,7 +6664,10 @@ class NativeHeadlessGameplayDriver:
                     )
                     else []
                 )
-                history = copy.deepcopy(candidate["command_history"][:history_index])
+                history = _checkpoint_history_with_restore_lineage(
+                    checkpoint, candidate["command_history"]
+                )
+                assert history is not None
                 previous_pid = candidate.get("bridge_pid")
                 synthetic_result = {
                     "step": _RESTORE_CHECKPOINT_STEP,
@@ -24489,6 +24505,77 @@ def _checkpoint_history_index(
             for key in ("sha256", "size", "date_raw")
         )
     ) else None
+
+
+def _proven_restore_lineage_row(
+    row: object, checkpoint: dict[str, object]
+) -> bool:
+    if not isinstance(row, dict):
+        return False
+    result = row.get("result")
+    restored_checkpoint = (
+        result.get("checkpoint") if isinstance(result, dict) else None
+    )
+    lifecycle = result.get("lifecycle") if isinstance(result, dict) else None
+    previous_pid = (
+        lifecycle.get("previous_pid") if isinstance(lifecycle, dict) else None
+    )
+    pid = lifecycle.get("pid") if isinstance(lifecycle, dict) else None
+    return bool(
+        row.get("command") == _RESTORE_CHECKPOINT_STEP
+        and row.get("ok") is True
+        and isinstance(result, dict)
+        and result.get("step") == _RESTORE_CHECKPOINT_STEP
+        and result.get("accepted") is True
+        and result.get("status") == "restored"
+        and result.get("backend_id") == "native-headless"
+        and result.get("source")
+        in (_COLD_RESTORE_SOURCE, "native-session-lifecycle-queue")
+        and result.get("restored_date_raw") == checkpoint.get("date_raw")
+        and result.get("map_ready") is True
+        and isinstance(restored_checkpoint, dict)
+        and all(
+            restored_checkpoint.get(key) == checkpoint.get(key)
+            for key in ("sha256", "size", "date_raw")
+        )
+        and _positive_native_id(previous_pid)
+        and _positive_native_id(pid)
+        and previous_pid != pid
+    )
+
+
+def _checkpoint_history_with_restore_lineage(
+    checkpoint: object,
+    history: list[dict[str, object]],
+) -> list[dict[str, object]] | None:
+    """Roll back gameplay facts while retaining physical restart evidence."""
+
+    history_index = _checkpoint_history_index(checkpoint, history)
+    if history_index is None or not isinstance(checkpoint, dict):
+        return None
+    retained = copy.deepcopy(history[:history_index])
+    for row in history[history_index:]:
+        if not _proven_restore_lineage_row(row, checkpoint):
+            continue
+        preserved = copy.deepcopy(row)
+        preserved["index"] = len(retained) + 1
+        retained.append(preserved)
+    return retained
+
+
+def _same_restore_process_replacement(left: object, right: object) -> bool:
+    if not isinstance(left, dict) or not isinstance(right, dict):
+        return False
+    left_lifecycle = left.get("lifecycle")
+    right_lifecycle = right.get("lifecycle")
+    return bool(
+        left.get("source") == _COLD_RESTORE_SOURCE
+        and isinstance(left_lifecycle, dict)
+        and isinstance(right_lifecycle, dict)
+        and left_lifecycle.get("previous_pid")
+        == right_lifecycle.get("previous_pid")
+        and left_lifecycle.get("pid") == right_lifecycle.get("pid")
+    )
 
 
 def _normalize_managed_restore_transaction(

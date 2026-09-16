@@ -115,8 +115,9 @@ marker。该字段不是通用 WAL，也不进入 snapshot 或事实 history。
 首个同时满足 `map_ready=true` 且含有效 played CharacterID 的 snapshot 才完成绑定：
 
 1. CharacterID、snapshot `date_raw`、checkpoint size/SHA-256 全部与锚点一致：恢复原
-   episode/run id，把 history 截到 `history_index`，丢弃存档之后发生但已被回滚的命令，再追加一条
-   `source=native-session-cold-start` 的 synthetic `restore-checkpoint`；若被丢弃 tail 的末端成功 move
+   episode/run id，把 history 的 gameplay 事实截到 `history_index`，丢弃存档之后发生但已被回滚的命令；
+   checkpoint 后已成功、且 checkpoint/date/PID lineage 全部匹配的 physical `restore-checkpoint` 行作为进程证据保留，
+   再追加一条 `source=native-session-cold-start` 的 synthetic `restore-checkpoint`；若被丢弃 tail 的末端成功 move
    仍有 unresolved active route，并能向前找到上述 restored-origin fresh entry move，才提炼新 advisory，
    再与同 scope 的既有列表合并、去重并截为两条；
 2. 任一项不一致：把当前角色作为新局创建新的 run id，清空旧 history/checkpoint；该首帧不是
