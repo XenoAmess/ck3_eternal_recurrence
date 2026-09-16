@@ -25,7 +25,12 @@ def _positive_int(value: object) -> bool:
 def query_player_lifestyle_private_v1(
     driver: object, *, expected_revision: int | None = None
 ) -> dict[str, object]:
-    """Query one paused frame; preserve an unavailable native result as RED evidence."""
+    """Query one paused frame; preserve an unavailable native result as RED evidence.
+
+    ``expected_revision`` is the Python/public snapshot revision used by the
+    caller to reject a stale plan.  The native mailbox is bound separately to
+    ``native_revision`` and ``native:<native_revision>``.
+    """
 
     if getattr(driver, "allow_private_lifestyle_formal_trial", False) is not True:
         return {"status": "trial_off", "step": QUERY_STEP}
@@ -40,14 +45,14 @@ def query_player_lifestyle_private_v1(
         starting.get("paused") is True
         and starting.get("map_ready") is True
         and _positive_int(revision)
-        and revision == native_revision
+        and _positive_int(native_revision)
         and isinstance(date_raw, int)
         and not isinstance(date_raw, bool)
         and date_raw >= 0
         and _positive_int(player_id)
         and isinstance(episode_run_id, str)
         and episode_run_id.startswith(f"native-{player_id}-")
-        and starting.get("snapshot_id") == f"native:{revision}"
+        and starting.get("snapshot_id") == f"native:{native_revision}"
         and (expected_revision is None or expected_revision == revision)
     ):
         return {"status": "paused_frame_unavailable", "step": QUERY_STEP}
@@ -94,7 +99,11 @@ def query_player_lifestyle_private_v1(
         and isinstance(life_snapshot, dict)
         and life_snapshot.get("status") == "available"
         and life_snapshot.get("snapshot_id") == starting["snapshot_id"]
-        and life_snapshot.get("public_revision") == revision
+        # The private native formal wire names its published native-frame
+        # revision ``public_revision``.  Python's public revision is an
+        # independent monotonic publication counter and may be ahead after a
+        # cold restore or a semantic republish.
+        and life_snapshot.get("public_revision") == native_revision
         and life_snapshot.get("native_revision") == native_revision
         and life_snapshot.get("proof_epoch") == native_revision
         and life_snapshot.get("date_raw") == date_raw

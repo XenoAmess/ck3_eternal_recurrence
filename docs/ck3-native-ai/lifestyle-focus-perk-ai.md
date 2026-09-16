@@ -746,3 +746,31 @@ set or names the first real LIFE4 failure such as `owner_path_unavailable`,
 `materialization_unavailable`. This patch does not open, bind, refresh, or
 close the stock window. Public registration and advertising remain OFF, and
 the owner route remains `static-ready` until that private formal query is run.
+
+### R760 public/native revision mapping RED (2026-09-16)
+
+R760 reached a healthy paused production frame for actor `29829` at date raw
+`53178312`, with Python/public revision `4`, native revision `3`, and canonical
+snapshot ID `native:3`. It stopped as `ineligible_scene` before the private
+formal query was sent. The report is
+`C:/ck3_mod_rewrite_process_assets/g2-m4-life4-r760-formal-query-candidate-final671e-20260916/candidate/live-R760/report.json`
+(SHA-256 `C105C49A03D17855E130E735F758E4315089F0A34F54CE31A1774B3270575D36`),
+and the read artifact is
+`C:/ck3_mod_rewrite_process_assets/g2-m4-life4-r760-formal-query-candidate-final671e-20260916/candidate/live-R760/paused-life4-formal-query.json`
+(SHA-256 `7447F9D742A877F32E8748F9964648BECAF27C866B4EB2701227B289C8CBD41A`).
+The bridge mailbox recorded `executed_requests=0`, so there is no raw pipe
+reply and none of the native LIFE2/LIFE4 typed precondition branches ran.
+
+The deterministic source error was a conflation of two revision domains. The
+runner and `query_player_lifestyle_private_v1` required public revision to
+equal native revision and formed the native snapshot identity from the public
+counter. A restored or republished Python snapshot can legitimately have a
+newer public counter while retaining the same native frame. The fixed private
+transport keeps the caller's expected public revision as its stale-plan guard,
+but sends `expected_revision=3` and `expected_snapshot_id=native:3` to the
+native mailbox. It validates the native formal snapshot's revision fields
+against native revision `3`, then independently requires the Python ending
+frame to remain at public revision `4` and native revision `3`. Public
+registration and advertising remain OFF. A rebuilt bounded candidate must
+also remove the old equality check from its external zero-action runner before
+the native LIFE4 owner-path stage can be observed.

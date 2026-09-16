@@ -44,10 +44,14 @@ def _life_snapshot() -> dict[str, object]:
     }
 
 
-def _game_frame(revision: int = 3) -> dict[str, object]:
+def _game_frame(
+    revision: int = 3, *, native_revision: int | None = None
+) -> dict[str, object]:
+    if native_revision is None:
+        native_revision = revision
     return {"paused": True, "map_ready": True,
-        "snapshot_id": f"native:{revision}", "revision": revision,
-        "native_revision": revision, "date_raw": 53178312,
+        "snapshot_id": f"native:{native_revision}", "revision": revision,
+        "native_revision": native_revision, "date_raw": 53178312,
         "episode_run_id": "native-29829-ee172aa720db",
         "played_character": {"character_id": 29829, "alive": True},
         "active_wars": []}
@@ -143,6 +147,23 @@ class _Driver:
 
 
 class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
+    def test_query_binds_native_frame_when_public_revision_is_ahead(self) -> None:
+        driver = _Driver()
+        driver.frame = _game_frame(4, native_revision=3)
+        query = query_player_lifestyle_private_v1(driver, expected_revision=4)
+        self.assertEqual(query["status"], "available")
+        self.assertEqual(driver.state.last["expected_revision"], 3)
+        self.assertEqual(driver.state.last["expected_snapshot_id"], "native:3")
+        self.assertEqual(query["source_frame"]["revision"], 4)
+        self.assertEqual(query["source_frame"]["native_revision"], 3)
+
+    def test_query_rejects_stale_expected_public_revision_without_send(self) -> None:
+        driver = _Driver()
+        driver.frame = _game_frame(4, native_revision=3)
+        query = query_player_lifestyle_private_v1(driver, expected_revision=3)
+        self.assertEqual(query["status"], "paused_frame_unavailable")
+        self.assertIsNone(driver.state.last)
+
     def test_independent_feudal_root_and_exact_slot43_select_one_typed_perk(self) -> None:
         driver = _Driver()
         scope = same_frame_feudal_peace_scope(driver.frame, _scope_root())
