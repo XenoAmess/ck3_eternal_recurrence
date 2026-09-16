@@ -150,7 +150,7 @@ const zhCN = {
   candidateComparison: '候选对比（{count}/{maximum}）',
   saveCurrentCandidate: '保存当前候选',
   fitCandidateName: '拟合候选 {index}',
-  candidateBoundary: '一次拟合可以产生 1–3 个不同的质量/复杂度 Pareto 候选；它们不是同一构图的重复预览。标有“当前构图”的卡片与上方构图预览共用同一份正式渲染。只有输入 SHA、评分器、renderer、分辨率与 surface mask 全部相同时才比较损失。',
+  candidateBoundary: '一次拟合可以产生 1–3 个不同的质量/复杂度 Pareto 候选；它们不是同一构图的重复预览。带蓝色当前标记的卡片与上方构图预览共用同一份正式渲染。只有输入 SHA、评分器、renderer、分辨率与 surface mask 全部相同时才比较损失。',
   previewDeferred: '预览延后',
   candidateStats: '{instances} 实例 · {blocks} 块 · {bytes} bytes',
   candidateLosses: '总损失 {total} · 边缘 {edge}',
