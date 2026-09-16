@@ -45,6 +45,10 @@ from .bridge.settlement_contract import (
 )
 from .bridge.succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    ROGUE_ONE_LIFE,
+    bind_succession_lifecycle_from_environment_v1,
+    legacy_rogue_one_life_binding_v1,
 )
 from .bridge.war_contract import (
     is_life_advance_step,
@@ -197,6 +201,8 @@ def native_auto_run(
     allow_private_lifestyle_formal_trial: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
+    succession_lifecycle: str = ROGUE_ONE_LIFE,
+    ordinary_campaign_no_pact: bool = False,
     operator_stop_event: threading.Event | None = None,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
@@ -265,6 +271,33 @@ def native_auto_run(
         )
 
     ensure_state_path_safe(spec.state_dir)
+    try:
+        if spec.manifest_path.is_file():
+            environment_manifest = json.loads(
+                spec.manifest_path.read_text(encoding="utf-8-sig")
+            )
+            succession_lifecycle_binding = (
+                bind_succession_lifecycle_from_environment_v1(
+                    environment_manifest,
+                    lifecycle=succession_lifecycle,
+                    ordinary_campaign_no_pact=ordinary_campaign_no_pact,
+                )
+            )
+        elif (
+            succession_lifecycle == ROGUE_ONE_LIFE
+            and ordinary_campaign_no_pact is not True
+        ):
+            # Unit/fake drivers predate the prepared-profile binding.  Real
+            # native-session startup still requires its environment manifest.
+            succession_lifecycle_binding = legacy_rogue_one_life_binding_v1()
+        else:
+            raise ValueError(
+                "ordinary campaign succession requires a prepared environment"
+            )
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+        raise AgentError(
+            f"succession lifecycle profile is not runnable: {error}"
+        ) from error
     fixed_seed = (
         validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
         if completion_contract in strict_completion_contracts
@@ -486,6 +519,15 @@ def native_auto_run(
             **private_lifestyle_driver_options,
             **private_faction_driver_options,
         )
+        bind_succession_lifecycle = getattr(
+            driver, "bind_succession_lifecycle_v1", None
+        )
+        if callable(bind_succession_lifecycle):
+            bind_succession_lifecycle(succession_lifecycle_binding)
+        elif succession_lifecycle_binding != legacy_rogue_one_life_binding_v1():
+            raise AgentError(
+                "selected succession lifecycle requires a binding-capable driver"
+            )
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(
             target=supervise,
@@ -1006,6 +1048,9 @@ def native_auto_run(
                             snapshot=after_snapshot,
                             binding=after,
                             before=before,
+                            succession_lifecycle=(
+                                succession_lifecycle_binding
+                            ),
                         )
                     )
                 except AgentError as error:
@@ -1050,12 +1095,23 @@ def native_auto_run(
                 )
             )
             if step == "death-terminal":
+                if (
+                    succession_lifecycle_binding["lifecycle"]
+                    != ROGUE_ONE_LIFE
+                ):
+                    raise AgentError(
+                        "ordinary campaign succession cannot execute the "
+                        "rogue death-terminal contract"
+                    )
                 try:
                     terminal_proof = _verify_one_generation_terminal(
                         outcome.get("result"),
                         snapshot=after_snapshot,
                         binding=after,
                         initial_episode=current_episode,
+                        succession_lifecycle=(
+                            succession_lifecycle_binding
+                        ),
                     )
                 except AgentError as error:
                     capture_first_failure(
@@ -1574,6 +1630,9 @@ def native_auto_run(
         "outcome": outcome,
         "ok": qualified,
         "completion_contract": completion_contract,
+        "succession_lifecycle": copy.deepcopy(
+            succession_lifecycle_binding
+        ),
         "cold_start_checkpoint": cold_start_checkpoint,
         "fixed_seed": fixed_seed,
         "bounds": {
@@ -1589,7 +1648,12 @@ def native_auto_run(
                 allow_stationary_objective_hold_sentinel_canary is True
             ),
         },
-        "identity": _identity(config, readiness, spec),
+        "identity": {
+            **_identity(config, readiness, spec),
+            "succession_lifecycle": copy.deepcopy(
+                succession_lifecycle_binding
+            ),
+        },
         "readiness": _public_binding(readiness) if readiness is not None else None,
         "readiness_diagnostics": readiness_timeout_diagnostics,
         "auto_run": {
@@ -2311,6 +2375,7 @@ def _verify_natural_succession_transition(
     snapshot: dict[str, object],
     binding: dict[str, object],
     before: dict[str, object],
+    succession_lifecycle: dict[str, object],
 ) -> dict[str, object]:
     """Prove a same-process new episode on CK3's played successor."""
 
@@ -2335,6 +2400,13 @@ def _verify_natural_succession_transition(
         "native_revision",
         "date_raw",
     )
+    lifecycle_result_matches = (
+        result.get("succession_lifecycle") == succession_lifecycle
+        or (
+            succession_lifecycle == legacy_rogue_one_life_binding_v1()
+            and result.get("succession_lifecycle") is None
+        )
+    )
     if (
         isinstance(predecessor_id, bool)
         or not isinstance(predecessor_id, int)
@@ -2352,6 +2424,7 @@ def _verify_natural_succession_transition(
         or result.get("status") != "continued"
         or result.get("source") != "native-played-character-transition"
         or result.get("lifecycle_intent") != "natural_succession"
+        or not lifecycle_result_matches
         or result.get("predecessor_character_id") != predecessor_id
         or result.get("successor_character_id") != successor_id
         or result.get("source_episode_run_id") != predecessor_run_id
@@ -2400,6 +2473,7 @@ def _verify_natural_succession_transition(
         "same_campaign_frame": True,
         "ck3_command_submitted": False,
         "process_restarted": False,
+        "succession_lifecycle": copy.deepcopy(succession_lifecycle),
         "reconciliation": copy.deepcopy(reconciliation),
         "predecessor_binding": _public_binding(before),
         "successor_episode_binding": _public_binding(binding),
@@ -2412,8 +2486,13 @@ def _verify_one_generation_terminal(
     snapshot: dict[str, object],
     binding: dict[str, object],
     initial_episode: dict[str, object] | None,
+    succession_lifecycle: dict[str, object],
 ) -> dict[str, object]:
     """Require a scored death settlement for the immutable episode character."""
+    if succession_lifecycle.get("lifecycle") != ROGUE_ONE_LIFE:
+        raise AgentError(
+            "death-terminal verification requires rogue_one_life"
+        )
     _verify_one_generation_binding(binding, initial_episode)
     assert isinstance(initial_episode, dict)
     expected_character_id = initial_episode["episode_character_id"]
@@ -2524,6 +2603,7 @@ def _verify_one_generation_terminal(
         "one_life_settlement": settlement,
         "record_persistence": persistence,
         "recorded_episode": recorded_episode,
+        "succession_lifecycle": copy.deepcopy(succession_lifecycle),
         "final_binding": _public_binding(binding),
     }
 

@@ -70,6 +70,12 @@ from .bridge.council_assign_councillor_action_contract import (
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    ROGUE_ONE_LIFE,
+    UNKNOWN_SUCCESSION_LIFECYCLE,
+    legacy_rogue_one_life_binding_v1,
+    normalize_succession_lifecycle_binding_v1,
+    unknown_succession_lifecycle_binding_v1,
 )
 from .bridge.war_contract import (
     MAX_ROUTE_CONTACT_HOSTILE_IDS,
@@ -5616,6 +5622,109 @@ def _choose_one_life_turn_core(
             if isinstance(snapshot, dict)
             else None
         )
+        raw_lifecycle = (
+            snapshot.get("succession_lifecycle")
+            if isinstance(snapshot, dict)
+            else None
+        )
+        try:
+            succession_lifecycle = normalize_succession_lifecycle_binding_v1(
+                raw_lifecycle
+                if raw_lifecycle is not None
+                else legacy_rogue_one_life_binding_v1()
+            )
+        except ValueError:
+            succession_lifecycle = unknown_succession_lifecycle_binding_v1()
+        lifecycle = succession_lifecycle["lifecycle"]
+        succession_reconciliation = (
+            snapshot.get("succession_reconciliation")
+            if isinstance(snapshot, dict)
+            else None
+        )
+        if lifecycle == UNKNOWN_SUCCESSION_LIFECYCLE:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "terminal_succession_lifecycle_unbound",
+                "selected_step": None,
+                "reason": (
+                    "the terminal frame has no valid frozen succession "
+                    "lifecycle binding"
+                ),
+                "terminal_reason": terminal_reason,
+                "episode_character_id": episode_character_id,
+                "succession_lifecycle": succession_lifecycle,
+                "continue_as_heir_after_death": False,
+                "heir_gameplay_actions": 0,
+            }
+        if lifecycle == ORDINARY_CAMPAIGN_SUCCESSION:
+            successor_continuation_ready = bool(
+                terminal_reason == "played_character_changed"
+                and isinstance(succession_reconciliation, dict)
+                and succession_reconciliation.get("status") == "available"
+                and succession_reconciliation.get("verdict") == "matched"
+                and succession_reconciliation.get("successor_match") is True
+                and succession_reconciliation.get(
+                    "title_distribution_match"
+                )
+                is True
+                and CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+                in available_steps
+            )
+            successor_reconciliation_red = bool(
+                terminal_reason == "played_character_changed"
+                and isinstance(succession_reconciliation, dict)
+                and succession_reconciliation.get("status") == "available"
+                and succession_reconciliation.get("verdict") != "matched"
+            )
+            successor_reconciliation_pending = bool(
+                terminal_reason == "played_character_changed"
+                and not successor_continuation_ready
+                and not successor_reconciliation_red
+            )
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": (
+                    "ordinary_successor_reconciliation_red"
+                    if successor_reconciliation_red
+                    else (
+                        "ordinary_successor_reconciliation_pending"
+                        if successor_reconciliation_pending
+                        else (
+                            "ordinary_successor_continuation_ready"
+                            if successor_continuation_ready
+                            else "ordinary_campaign_terminal_no_successor"
+                        )
+                    )
+                ),
+                "selected_step": (
+                    CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+                    if successor_continuation_ready
+                    else None
+                ),
+                "reason": (
+                    "the ordinary campaign can continue on CK3's reconciled "
+                    "played successor without a rogue settlement"
+                    if successor_continuation_ready
+                    else (
+                        "the observed successor or inherited predecessor "
+                        "estate disagrees with the retained expectation"
+                        if successor_reconciliation_red
+                        else (
+                            "the played successor still requires a matched "
+                            "predecessor-estate reconciliation"
+                            if successor_reconciliation_pending
+                            else "the ordinary campaign has no playable successor"
+                        )
+                    )
+                ),
+                "terminal_reason": terminal_reason,
+                "episode_character_id": episode_character_id,
+                "succession_lifecycle": succession_lifecycle,
+                "settlement_required": False,
+                "continue_as_heir_after_death": successor_continuation_ready,
+                "heir_gameplay_actions": 0,
+            }
+        assert lifecycle == ROGUE_ONE_LIFE
         completed_terminal = _latest_effective_result(rows, "death-terminal")
         if (
             isinstance(completed_terminal, dict)
@@ -5624,11 +5733,6 @@ def _choose_one_life_turn_core(
             and completed_terminal.get("settlement_status")
             in {None, "complete"}
         ):
-            succession_reconciliation = (
-                snapshot.get("succession_reconciliation")
-                if isinstance(snapshot, dict)
-                else None
-            )
             successor_continuation_ready = bool(
                 terminal_reason == "played_character_changed"
                 and isinstance(succession_reconciliation, dict)
@@ -5694,6 +5798,7 @@ def _choose_one_life_turn_core(
                 ),
                 "terminal_reason": terminal_reason,
                 "episode_character_id": episode_character_id,
+                "succession_lifecycle": succession_lifecycle,
                 "score": completed_terminal.get("score"),
                 "continue_as_heir_after_death": (
                     successor_continuation_ready
@@ -5721,6 +5826,7 @@ def _choose_one_life_turn_core(
                 ),
                 "terminal_reason": terminal_reason,
                 "episode_character_id": episode_character_id,
+                "succession_lifecycle": succession_lifecycle,
                 "continue_as_heir_after_death": False,
                 "heir_gameplay_actions": 0,
             }
@@ -5738,6 +5844,7 @@ def _choose_one_life_turn_core(
                 "reason": reason,
                 "terminal_reason": terminal_reason,
                 "episode_character_id": episode_character_id,
+                "succession_lifecycle": succession_lifecycle,
                 "played_character": (
                     dict(played_character)
                     if isinstance(played_character, dict)
@@ -5752,6 +5859,7 @@ def _choose_one_life_turn_core(
             "reason": "the backend cannot finalize the detected player death",
             "terminal_reason": terminal_reason,
             "episode_character_id": episode_character_id,
+            "succession_lifecycle": succession_lifecycle,
             "played_character": (
                 dict(played_character)
                 if isinstance(played_character, dict)

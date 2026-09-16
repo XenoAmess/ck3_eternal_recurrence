@@ -9,6 +9,10 @@
 - The expectation consumes `xar.ck3.turn-bundle/v1`; it adds no new native
   read. The post-transition comparator consumes the first paused successor
   snapshot and a same-frame successor turn bundle.
+- The same reconciliation now has two explicitly bound lifecycle consumers.
+  `rogue_one_life` preserves the mod's scored terminal settlement;
+  `ordinary_campaign_succession` is limited to a frozen `xar_off`, fresh
+  no-pact production campaign and can continue without that settlement.
 - Native AI decision-tree research is N/A for this component. It records and
   checks an engine state transition; it does not copy or counter an AI choice.
 
@@ -47,10 +51,31 @@ flowchart LR
   D --> E[paused successor turn bundle]
   E --> F[predecessor-estate reconciliation]
   F --> G{successor and title result}
-  G -->|match| H[finish predecessor settlement]
-  H --> J[bind a new episode to CK3's played successor]
   G -->|mismatch| I[typed reconciliation RED]
+  G -->|match| H{frozen lifecycle}
+  H -->|rogue_one_life| K[finish predecessor settlement]
+  K --> J[bind a new episode to CK3's played successor]
+  H -->|ordinary_campaign_succession| J
 ```
+
+## Frozen lifecycle binding
+
+The lifecycle is part of the driver state, semantic snapshot, checkpoint
+metadata, continuation receipt and `native-auto-run` report. Restoring a
+driver state under a different binding fails closed. The production binding
+is derived from the prepared environment manifest:
+
+| Lifecycle | Required rule/profile | Death behavior |
+| --- | --- | --- |
+| `rogue_one_life` | `xar_enabled=xar_on`; pact settlement remains required | Run and verify `death-terminal`, then continue only after a matched reconciliation |
+| `ordinary_campaign_succession` | `xar_enabled=xar_off` plus an explicit fresh-campaign/no-pact contract | Continue a matched real successor directly; do not register or execute `death-terminal` |
+| `unknown` | Missing, malformed or inconsistent binding | Register neither continuation nor settlement; stop on the terminal frame |
+
+The no-pact assertion is not inferred from a missing settlement. This prevents
+an old signed-pact save from being relabelled as an ordinary campaign. The
+normal entry is `native-auto-run --succession-lifecycle
+ordinary_campaign_succession --ordinary-campaign-no-pact`; its manifest guard
+rejects the command unless the prepared profile selects `xar_off`.
 
 ## Deliberate omissions
 
@@ -59,15 +84,16 @@ hypothetical law changes, or the actual holder of a title absent from the new
 player's holdings. These require additional native observations only when they
 block a concrete survival decision.
 
-The planner service now refreshes the retained expectation on each eligible
+The planner service refreshes the retained expectation on each eligible
 paused living frame. On `played_character_changed`, it queries the first
 eligible paused successor frame and reconciles the predecessor estate before
-planning another action. It first completes the predecessor's ordinary
-`death-terminal` settlement, then exposes
-`continue-as-reconciled-successor` only for a fully matched reconciliation.
-That continuation sends no CK3 command and performs no process restart. It
-keeps the current campaign and creates a fresh one-life episode identity bound
-to CK3's already-played successor.
+planning another action. In `rogue_one_life` it first completes the
+predecessor's `death-terminal` settlement. In
+`ordinary_campaign_succession` it does not require or advertise that terminal
+settlement. Both paths expose `continue-as-reconciled-successor` only for a
+fully matched reconciliation. That continuation sends no CK3 command and
+performs no process restart. It keeps the current campaign and creates a fresh
+episode identity bound to CK3's already-played successor.
 
 An unavailable or mismatched reconciliation blocks the continuation. The
 strategy does not fall back to `start-next-episode` for a
@@ -99,16 +125,20 @@ the runner must query a fresh turn bundle instead of reusing an earlier
 projection. A natural `played_character_changed` transition keeps the old
 expectation long enough to compare the first paused successor frame.
 
-The focused contract, service, strategy and driver suite passes `10/10` under
-normal and optimized Python. It covers automatic capture/reconciliation,
-same-PID recovery, matched successor continuation, zero CK3 command/restart,
-and fail-closed mismatch handling. The existing immutable-seed replay path is
-also retained for its distinct terminal case.
+The focused contract, service, strategy and driver suite covers automatic
+capture/reconciliation, same-PID recovery, ordinary matched continuation with
+no settlement, the unchanged rogue settlement prerequisite, zero CK3
+command/restart, profile mismatch and unknown-lifecycle fail-closed behavior.
+The existing immutable-seed replay path is retained for its distinct rogue
+dead/missing-character terminal case. The focused succession suite passes
+`12/12` in normal and optimized Python; the directly affected bounded-runner
+suite passes `71/71` in both modes.
 
-The ordinary bounded `native-auto-run` owner now treats a completed
-`played_character_changed` settlement as
-`natural_successor_continuation_pending`, executes the next planner turn, and
-verifies the continuation before resuming gameplay. Its report contains a
+The bounded `native-auto-run` owner records the frozen lifecycle before bridge
+startup. For the ordinary profile it treats a reconciled
+`played_character_changed` frame as continuation-ready without manufacturing
+an XAR settlement, executes the next planner turn, and verifies the
+continuation before resuming gameplay. Its report contains the lifecycle and a
 `natural_succession_transitions` ledger with the predecessor/successor IDs,
 old/new episode run IDs, matched reconciliation, unchanged process/frame proof,
 and explicit zero CK3 command/restart fields. The strict one-generation owner
@@ -116,6 +146,22 @@ still stops at death, and the immutable-seed next-episode owner keeps its own
 separate lifecycle. Focused runner boundary tests pass `4/4` under normal and
 optimized Python. Production readiness still requires one bounded
 natural-death artifact proving the sequence against the exact build.
+
+## R781 scope decision
+
+R781 used an `xar_on`, signed-pact checkpoint. Exact-source evidence shows its
+death carrier schedules `xar.1001`, and both authored options set
+`xa_quit_to_menu`. Leaving the event unanswered hard-pauses the game; selecting
+either option intentionally ends player control. This is the main mod's
+one-playable-life rule, not a generic event-resolution defect.
+
+R775/R781 therefore remain useful partial evidence for natural death, the real
+played-character change, title reconciliation and the first successor frame,
+but they cannot be continued as the formal ordinary campaign. Changing their
+rule, mod bytes or save flags would invalidate the frozen candidate. The next
+formal candidate must start as a fresh ordinary standard-feudal production
+save under the `xar_off` profile and collect successor gameplay, checkpoint and
+cold-restore evidence in that same campaign.
 
 ## R676 celestial council prerequisite RED
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import re
 from typing import Final
 
 from .turn_bundle_contract import TURN_BUNDLE_V1_SCHEMA
@@ -17,6 +18,25 @@ SUCCESSION_RECONCILIATION_V1_SCHEMA: Final = (
 CONTINUE_AS_RECONCILED_SUCCESSOR_STEP: Final = (
     "continue-as-reconciled-successor"
 )
+SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA: Final = (
+    "xar.ck3.succession-lifecycle-binding/v1"
+)
+ROGUE_ONE_LIFE: Final = "rogue_one_life"
+ORDINARY_CAMPAIGN_SUCCESSION: Final = "ordinary_campaign_succession"
+UNKNOWN_SUCCESSION_LIFECYCLE: Final = "unknown"
+_SUCCESSION_LIFECYCLES: Final = {
+    ROGUE_ONE_LIFE,
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    UNKNOWN_SUCCESSION_LIFECYCLE,
+}
+_LIFECYCLE_BINDING_FIELDS: Final = {
+    "schema",
+    "lifecycle",
+    "xar_enabled",
+    "pact_contract",
+    "source",
+    "environment_sha256",
+}
 _EXPECTATION_FIELDS: Final = {
     "schema",
     "status",
@@ -36,6 +56,140 @@ _EXPECTATION_BINDING_FIELDS: Final = {
     "episode_run_id",
     "episode_character_id",
 }
+
+
+def legacy_rogue_one_life_binding_v1() -> dict[str, object]:
+    """Return the pre-profile-binding behavior for old driver call sites."""
+
+    return {
+        "schema": SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA,
+        "lifecycle": ROGUE_ONE_LIFE,
+        "xar_enabled": "xar_on",
+        "pact_contract": "terminal_settlement_required",
+        "source": "legacy-driver-default",
+        "environment_sha256": None,
+    }
+
+
+def unknown_succession_lifecycle_binding_v1() -> dict[str, object]:
+    """Return an explicit fail-closed binding for an unclassified save."""
+
+    return {
+        "schema": SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA,
+        "lifecycle": UNKNOWN_SUCCESSION_LIFECYCLE,
+        "xar_enabled": None,
+        "pact_contract": "unknown",
+        "source": "unbound",
+        "environment_sha256": None,
+    }
+
+
+def normalize_succession_lifecycle_binding_v1(
+    value: object,
+) -> dict[str, object]:
+    """Validate the frozen support profile used across succession recovery."""
+
+    if not isinstance(value, dict) or set(value) != _LIFECYCLE_BINDING_FIELDS:
+        raise ValueError("succession lifecycle binding is malformed")
+    if value.get("schema") != SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA:
+        raise ValueError("succession lifecycle binding schema is malformed")
+    lifecycle = value.get("lifecycle")
+    if lifecycle not in _SUCCESSION_LIFECYCLES:
+        raise ValueError("succession lifecycle is malformed")
+    xar_enabled = value.get("xar_enabled")
+    pact_contract = value.get("pact_contract")
+    source = value.get("source")
+    environment_sha256 = value.get("environment_sha256")
+    if not isinstance(source, str) or not source:
+        raise ValueError("succession lifecycle source is malformed")
+    if environment_sha256 is not None and not (
+        isinstance(environment_sha256, str)
+        and re.fullmatch(r"[0-9a-f]{64}", environment_sha256)
+    ):
+        raise ValueError("succession lifecycle environment digest is malformed")
+    expected = {
+        ROGUE_ONE_LIFE: ("xar_on", "terminal_settlement_required"),
+        ORDINARY_CAMPAIGN_SUCCESSION: (
+            "xar_off",
+            "absent_by_fresh_campaign_xar_off_contract",
+        ),
+        UNKNOWN_SUCCESSION_LIFECYCLE: (None, "unknown"),
+    }[str(lifecycle)]
+    if (xar_enabled, pact_contract) != expected:
+        raise ValueError("succession lifecycle support profile is inconsistent")
+    if lifecycle == ORDINARY_CAMPAIGN_SUCCESSION and environment_sha256 is None:
+        raise ValueError(
+            "ordinary campaign succession requires a frozen environment"
+        )
+    return {
+        "schema": SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA,
+        "lifecycle": lifecycle,
+        "xar_enabled": xar_enabled,
+        "pact_contract": pact_contract,
+        "source": source,
+        "environment_sha256": environment_sha256,
+    }
+
+
+def bind_succession_lifecycle_from_environment_v1(
+    manifest: object,
+    *,
+    lifecycle: str,
+    ordinary_campaign_no_pact: bool = False,
+) -> dict[str, object]:
+    """Bind a run to one prepared rule profile without inferring save state.
+
+    The ordinary mode is intentionally explicit: the prepared profile must
+    select ``xar_off`` and the caller must attest that the candidate is a
+    fresh campaign in which no pact was signed.  A legacy ``xar_on`` save is
+    therefore never reclassified merely because its settlement is absent.
+    """
+
+    if not isinstance(manifest, dict):
+        raise ValueError("prepared environment manifest is malformed")
+    rules = manifest.get("rules")
+    profile = rules.get("profile") if isinstance(rules, dict) else None
+    if not isinstance(profile, list):
+        raise ValueError("prepared environment game-rule profile is malformed")
+    xar_settings = [
+        row.get("setting")
+        for row in profile
+        if isinstance(row, dict) and row.get("rule") == "xar_enabled"
+    ]
+    if len(xar_settings) != 1 or xar_settings[0] not in {"xar_on", "xar_off"}:
+        raise ValueError("prepared environment lacks one frozen xar_enabled rule")
+    environment_sha256 = manifest.get("environment_sha256")
+    if not (
+        isinstance(environment_sha256, str)
+        and re.fullmatch(r"[0-9a-f]{64}", environment_sha256)
+    ):
+        raise ValueError("prepared environment digest is malformed")
+    if lifecycle == ROGUE_ONE_LIFE:
+        if xar_settings[0] != "xar_on":
+            raise ValueError("rogue one-life mode requires frozen xar_on")
+        if ordinary_campaign_no_pact:
+            raise ValueError("rogue one-life mode cannot claim ordinary no-pact")
+        pact_contract = "terminal_settlement_required"
+    elif lifecycle == ORDINARY_CAMPAIGN_SUCCESSION:
+        if xar_settings[0] != "xar_off":
+            raise ValueError("ordinary campaign succession requires frozen xar_off")
+        if ordinary_campaign_no_pact is not True:
+            raise ValueError(
+                "ordinary campaign succession requires a fresh no-pact contract"
+            )
+        pact_contract = "absent_by_fresh_campaign_xar_off_contract"
+    else:
+        raise ValueError("production succession lifecycle must be explicit")
+    return normalize_succession_lifecycle_binding_v1(
+        {
+            "schema": SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA,
+            "lifecycle": lifecycle,
+            "xar_enabled": xar_settings[0],
+            "pact_contract": pact_contract,
+            "source": "prepared-environment-manifest",
+            "environment_sha256": environment_sha256,
+        }
+    )
 
 
 def _positive_int(value: object, name: str) -> int:

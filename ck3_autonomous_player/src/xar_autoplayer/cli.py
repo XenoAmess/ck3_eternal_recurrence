@@ -19,6 +19,10 @@ from .environment import (
     verify_profile,
 )
 from .errors import AgentError
+from .bridge.succession_transition_contract import (
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    ROGUE_ONE_LIFE,
+)
 from .locking import exclusive_state_lock
 from .next_episode_run import NEXT_EPISODE_CHECKPOINT_CADENCE
 from .one_generation_run import ONE_GENERATION_CHECKPOINT_CADENCE
@@ -269,6 +273,23 @@ def parser() -> argparse.ArgumentParser:
         "--cold-start-checkpoint",
         action="store_true",
         help="launch and bind the exact v2 xar_checkpoint save",
+    )
+    native_auto_run_parser.add_argument(
+        "--succession-lifecycle",
+        choices=(ROGUE_ONE_LIFE, ORDINARY_CAMPAIGN_SUCCESSION),
+        default=ROGUE_ONE_LIFE,
+        help=(
+            "frozen campaign lifecycle; ordinary succession is accepted "
+            "only for an xar_off fresh no-pact profile"
+        ),
+    )
+    native_auto_run_parser.add_argument(
+        "--ordinary-campaign-no-pact",
+        action="store_true",
+        help=(
+            "attest that the ordinary xar_off candidate began as a fresh "
+            "campaign and never signed the Eternal Recurrence pact"
+        ),
     )
     native_auto_run_parser.add_argument(
         "--route-contact-speed",
@@ -682,6 +703,20 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_faction_gift_formal_trial
                     else {}
                 )
+                succession_options = (
+                    {
+                        "succession_lifecycle": args.succession_lifecycle,
+                        "ordinary_campaign_no_pact": (
+                            args.ordinary_campaign_no_pact
+                        ),
+                    }
+                    if (
+                        args.succession_lifecycle
+                        != ROGUE_ONE_LIFE
+                        or args.ordinary_campaign_no_pact
+                    )
+                    else {}
+                )
                 result = native_auto_run(
                     spec,
                     turn_count=args.turns,
@@ -696,6 +731,7 @@ def main(argv: list[str] | None = None) -> int:
                         args.allow_stationary_objective_hold_sentinel_canary
                     ),
                     **private_faction_options,
+                    **succession_options,
                     operator_stop_event=operator_stop_event,
                 )
         elif args.command == "native-query-current-timeline-blocker-context-v1":

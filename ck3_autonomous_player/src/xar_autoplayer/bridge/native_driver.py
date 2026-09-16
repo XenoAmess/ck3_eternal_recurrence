@@ -163,7 +163,11 @@ from .player_faction_alerts_contract import (
 )
 from .succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    ROGUE_ONE_LIFE,
     freeze_succession_expectation_v1,
+    legacy_rogue_one_life_binding_v1,
+    normalize_succession_lifecycle_binding_v1,
     normalize_succession_expectation_v1,
     reconcile_succession_transition_v1,
 )
@@ -1304,6 +1308,12 @@ def load_native_driver_state_for_resume(
             or expectation_binding["episode_run_id"] != run_id
         ):
             raise ValueError("driver succession expectation changed episode")
+    succession_lifecycle = normalize_succession_lifecycle_binding_v1(
+        payload.get(
+            "succession_lifecycle",
+            legacy_rogue_one_life_binding_v1(),
+        )
+    )
     return {
         "format_version": format_version,
         "bridge_pid": persisted_bridge_pid,
@@ -1320,6 +1330,7 @@ def load_native_driver_state_for_resume(
         "rollback_war_failures_migration_required": migration_required,
         "managed_restore_transaction": managed_restore_transaction,
         "succession_expectation": succession_expectation,
+        "succession_lifecycle": succession_lifecycle,
     }
 
 
@@ -1352,6 +1363,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_current_timeline_blocker_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
         private_faction_round_id: str | None = None,
+        succession_lifecycle_binding: dict[str, object] | None = None,
     ) -> None:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
@@ -1428,6 +1440,13 @@ class NativeHeadlessGameplayDriver:
             private_faction_round_id
             if self.allow_private_faction_gift_formal_trial
             else None
+        )
+        self._succession_lifecycle = (
+            normalize_succession_lifecycle_binding_v1(
+                succession_lifecycle_binding
+            )
+            if succession_lifecycle_binding is not None
+            else legacy_rogue_one_life_binding_v1()
         )
         self.state_dir = Path(state_dir) if state_dir is not None else None
         self.save_dir = Path(save_dir) if save_dir is not None else None
@@ -1506,6 +1525,17 @@ class NativeHeadlessGameplayDriver:
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
         self.endpoint.start(self._ingest, self.state.mark_disconnected)
+
+    def bind_succession_lifecycle_v1(self, binding: object) -> None:
+        """Freeze the run profile before the first bridge session is adopted."""
+
+        normalized = normalize_succession_lifecycle_binding_v1(binding)
+        with self._driver_state_lock:
+            if self._session_bridge_pid is not None:
+                raise BridgeUnavailableError(
+                    "succession lifecycle cannot change after bridge adoption"
+                )
+            self._succession_lifecycle = normalized
 
     def _ingest(self, frame: dict[str, object]) -> None:
         frame_type = self.state.ingest(frame)
@@ -1785,7 +1815,11 @@ class NativeHeadlessGameplayDriver:
             if isinstance(current_snapshot, dict)
             else None
         )
-        if isinstance(terminal_reason, str):
+        lifecycle = self._succession_lifecycle["lifecycle"]
+        if (
+            isinstance(terminal_reason, str)
+            and lifecycle == ROGUE_ONE_LIFE
+        ):
             action_steps.add(_NATIVE_DEATH_TERMINAL_STEP)
             composite_action_steps.append(_NATIVE_DEATH_TERMINAL_STEP)
         with self._episode_identity_lock:
@@ -1799,7 +1833,13 @@ class NativeHeadlessGameplayDriver:
             )
         successor_continuation_ready = bool(
             terminal_reason == "played_character_changed"
-            and completed_terminal is not None
+            and (
+                lifecycle == ORDINARY_CAMPAIGN_SUCCESSION
+                or (
+                    lifecycle == ROGUE_ONE_LIFE
+                    and completed_terminal is not None
+                )
+            )
             and isinstance(succession_reconciliation, dict)
             and succession_reconciliation.get("status") == "available"
             and succession_reconciliation.get("verdict") == "matched"
@@ -2534,6 +2574,9 @@ class NativeHeadlessGameplayDriver:
             "one_life_terminal": terminal_reason is not None,
             "one_life_terminal_reason": terminal_reason,
             "one_life_settlement_status": settlement_status,
+            "succession_lifecycle": copy.deepcopy(
+                self._succession_lifecycle
+            ),
             "continue_as_heir_after_death": False,
             "succession_expectation": succession_expectation,
             "succession_reconciliation": succession_reconciliation,
@@ -6275,6 +6318,9 @@ class NativeHeadlessGameplayDriver:
             "succession_expectation": copy.deepcopy(
                 self._succession_expectation
             ),
+            "succession_lifecycle": copy.deepcopy(
+                self._succession_lifecycle
+            ),
         }
         # Keep an old-state migration recognizable across a crash before the
         # first playable snapshot supplies the restored physical origin.
@@ -6301,6 +6347,7 @@ class NativeHeadlessGameplayDriver:
             ),
             "managed_restore_transaction": self._managed_restore_transaction,
             "succession_expectation": self._succession_expectation,
+            "succession_lifecycle": self._succession_lifecycle,
         }
         # Keep an old-state migration recognizable across a crash before the
         # first playable snapshot supplies the restored physical origin.
@@ -6348,6 +6395,15 @@ class NativeHeadlessGameplayDriver:
         restored: dict[str, object] | None = None
         if first_connection:
             restored = self._read_driver_state()
+            if (
+                isinstance(restored, dict)
+                and restored.get("succession_lifecycle")
+                != self._succession_lifecycle
+            ):
+                raise BridgeUnavailableError(
+                    "persisted succession lifecycle differs from the frozen "
+                    "run profile"
+                )
 
         should_persist = False
         with self._driver_state_lock:
@@ -7029,6 +7085,9 @@ class NativeHeadlessGameplayDriver:
                     "sha256": None,
                     "date_raw": submitted_date_raw,
                     "strategy": "native-autosave-command-v1",
+                    "succession_lifecycle": copy.deepcopy(
+                        self._succession_lifecycle
+                    ),
                 },
                 "materialization": {
                     "available": False,
@@ -7049,6 +7108,9 @@ class NativeHeadlessGameplayDriver:
             "date_raw": submitted_date_raw,
             "overwrite_confirmed": before is not None,
             "strategy": "native-autosave-command-v1",
+            "succession_lifecycle": copy.deepcopy(
+                self._succession_lifecycle
+            ),
         }
         with self._driver_state_lock:
             checkpoint["history_index"] = len(self._command_history) + 1
@@ -15120,6 +15182,9 @@ class NativeHeadlessGameplayDriver:
             "saved_date_raw": checkpoint_saved_date_raw,
             "mtime_ns": mtime_ns,
             "strategy": "native-session-loadsave-exact-v2",
+            "succession_lifecycle": copy.deepcopy(
+                self._succession_lifecycle
+            ),
         }
         with self._driver_state_lock:
             rollback_war_failure = _derive_rollback_war_failure(
@@ -15364,8 +15429,14 @@ class NativeHeadlessGameplayDriver:
             reconciliation = copy.deepcopy(self._succession_reconciliation)
             predecessor_id = self._episode_character_id
             predecessor_run_id = self._episode_run_id
+            lifecycle = self._succession_lifecycle["lifecycle"]
             if (
-                completed_terminal is None
+                lifecycle
+                not in {ROGUE_ONE_LIFE, ORDINARY_CAMPAIGN_SUCCESSION}
+                or (
+                    lifecycle == ROGUE_ONE_LIFE
+                    and completed_terminal is None
+                )
                 or not isinstance(reconciliation, dict)
                 or reconciliation.get("status") != "available"
                 or reconciliation.get("verdict") != "matched"
@@ -15432,6 +15503,9 @@ class NativeHeadlessGameplayDriver:
             "backend_id": "native-headless",
             "source": "native-played-character-transition",
             "lifecycle_intent": "natural_succession",
+            "succession_lifecycle": copy.deepcopy(
+                self._succession_lifecycle
+            ),
             "predecessor_character_id": predecessor_id,
             "successor_character_id": actual_successor_id,
             "source_episode_run_id": predecessor_run_id,
@@ -15453,6 +15527,11 @@ class NativeHeadlessGameplayDriver:
         projected_settlement: dict[str, object] | None = None,
         settlement_source: str = "native-headless",
     ) -> dict[str, object]:
+        if self._succession_lifecycle["lifecycle"] != ROGUE_ONE_LIFE:
+            raise BridgeUnavailableError(
+                "death-terminal is reserved for the frozen rogue one-life "
+                "profile"
+            )
         snapshot = self.take_snapshot()
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")

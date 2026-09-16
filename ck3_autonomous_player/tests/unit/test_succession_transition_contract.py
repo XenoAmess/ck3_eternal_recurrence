@@ -14,18 +14,46 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from xar_autoplayer.bridge.succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    ROGUE_ONE_LIFE,
     SUCCESSION_EXPECTATION_V1_SCHEMA,
     SUCCESSION_RECONCILIATION_V1_SCHEMA,
+    bind_succession_lifecycle_from_environment_v1,
     freeze_succession_expectation_v1,
+    legacy_rogue_one_life_binding_v1,
     normalize_succession_expectation_v1,
     reconcile_succession_transition_v1,
+    unknown_succession_lifecycle_binding_v1,
 )
 from xar_autoplayer.bridge.campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
 )
+from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.strategy import choose_one_life_turn
+
+
+_ENVIRONMENT_SHA256 = "a" * 64
+
+
+def _manifest(xar_enabled: str) -> dict[str, object]:
+    return {
+        "environment_sha256": _ENVIRONMENT_SHA256,
+        "rules": {
+            "profile": [
+                {"rule": "xar_enabled", "setting": xar_enabled},
+            ]
+        },
+    }
+
+
+def _ordinary_binding() -> dict[str, object]:
+    return bind_succession_lifecycle_from_environment_v1(
+        _manifest("xar_off"),
+        lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+        ordinary_campaign_no_pact=True,
+    )
 
 
 class _FakeEndpoint:
@@ -325,6 +353,95 @@ class SuccessionTransitionContractTests(unittest.TestCase):
         self.assertIsNone(plan["selected_step"])
         self.assertFalse(plan["continue_as_heir_after_death"])
 
+    def test_support_profile_guard_requires_xar_off_and_fresh_no_pact(self) -> None:
+        ordinary = _ordinary_binding()
+        self.assertEqual(
+            ordinary["lifecycle"], ORDINARY_CAMPAIGN_SUCCESSION
+        )
+        self.assertEqual(ordinary["xar_enabled"], "xar_off")
+        with self.assertRaisesRegex(ValueError, "frozen xar_off"):
+            bind_succession_lifecycle_from_environment_v1(
+                _manifest("xar_on"),
+                lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+                ordinary_campaign_no_pact=True,
+            )
+        with self.assertRaisesRegex(ValueError, "fresh no-pact"):
+            bind_succession_lifecycle_from_environment_v1(
+                _manifest("xar_off"),
+                lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            )
+        rogue = bind_succession_lifecycle_from_environment_v1(
+            _manifest("xar_on"), lifecycle=ROGUE_ONE_LIFE
+        )
+        self.assertEqual(rogue["pact_contract"], "terminal_settlement_required")
+
+    def test_ordinary_matched_successor_does_not_require_death_terminal(self) -> None:
+        plan = choose_one_life_turn(
+            [],
+            snapshot={
+                "one_life_terminal_reason": "played_character_changed",
+                "episode_character_id": 100,
+                "succession_lifecycle": _ordinary_binding(),
+                "succession_reconciliation": {
+                    "status": "available",
+                    "verdict": "matched",
+                    "successor_match": True,
+                    "title_distribution_match": True,
+                },
+            },
+            action_steps=[
+                "death-terminal",
+                CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+            ],
+        )
+
+        self.assertEqual(
+            plan["selected_step"], CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+        )
+        self.assertFalse(plan["settlement_required"])
+
+    def test_rogue_and_unknown_lifecycles_remain_fail_closed(self) -> None:
+        snapshot = {
+            "one_life_terminal_reason": "played_character_changed",
+            "episode_character_id": 100,
+            "succession_reconciliation": {
+                "status": "available",
+                "verdict": "matched",
+                "successor_match": True,
+                "title_distribution_match": True,
+            },
+        }
+        rogue = choose_one_life_turn(
+            [],
+            snapshot={
+                **snapshot,
+                "succession_lifecycle": legacy_rogue_one_life_binding_v1(),
+            },
+            action_steps=[
+                "death-terminal",
+                CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+            ],
+        )
+        self.assertEqual(rogue["selected_step"], "death-terminal")
+
+        unknown = choose_one_life_turn(
+            [],
+            snapshot={
+                **snapshot,
+                "succession_lifecycle": (
+                    unknown_succession_lifecycle_binding_v1()
+                ),
+            },
+            action_steps=[
+                "death-terminal",
+                CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+            ],
+        )
+        self.assertEqual(
+            unknown["phase"], "terminal_succession_lifecycle_unbound"
+        )
+        self.assertIsNone(unknown["selected_step"])
+
     def test_persisted_expectation_normalizer_rejects_identity_drift(self) -> None:
         expectation = freeze_succession_expectation_v1(
             self.pre,
@@ -347,6 +464,7 @@ class SuccessionTransitionContractTests(unittest.TestCase):
                 endpoint.pipe_name,
                 endpoint=endpoint,
                 state_dir=state_dir,
+                succession_lifecycle_binding=_ordinary_binding(),
             )
             endpoint.publish(_hello())
             endpoint.publish(
@@ -386,6 +504,9 @@ class SuccessionTransitionContractTests(unittest.TestCase):
             state_path = state_dir / "native-session" / "driver-state.json"
             persisted = json.loads(state_path.read_text(encoding="utf-8"))
             self.assertEqual(persisted["succession_expectation"], retained)
+            self.assertEqual(
+                persisted["succession_lifecycle"], _ordinary_binding()
+            )
             driver.close()
 
             restored_endpoint = _FakeEndpoint(endpoint.pipe_name)
@@ -393,6 +514,7 @@ class SuccessionTransitionContractTests(unittest.TestCase):
                 restored_endpoint.pipe_name,
                 endpoint=restored_endpoint,
                 state_dir=state_dir,
+                succession_lifecycle_binding=_ordinary_binding(),
             )
             restored_endpoint.publish(_hello())
             restored_endpoint.publish(
@@ -451,22 +573,6 @@ class SuccessionTransitionContractTests(unittest.TestCase):
             )
 
             predecessor_run_id = transition["episode_run_id"]
-            restored._record_command(
-                "death-terminal",
-                ok=True,
-                result={
-                    "terminal": True,
-                    "settlement_status": "complete",
-                    "score": 123,
-                    "one_life_settlement": {"final_score": 123},
-                    "cross_run_strategy": {
-                        "recorded_episode": {
-                            "run_id": predecessor_run_id,
-                            "score": 123,
-                        }
-                    },
-                },
-            )
             self.assertIn(
                 CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
                 restored.capabilities()["action_steps"],
@@ -498,6 +604,35 @@ class SuccessionTransitionContractTests(unittest.TestCase):
                 CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
             )
             restored.close()
+
+    def test_old_rogue_driver_state_rejects_ordinary_profile_restore(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = _FakeEndpoint()
+            rogue = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(_hello())
+            endpoint.publish(
+                _native_snapshot(20, character_id=100, date_raw=53_180_000)
+            )
+            rogue.take_snapshot()
+            rogue.close()
+
+            ordinary_endpoint = _FakeEndpoint(endpoint.pipe_name)
+            ordinary = NativeHeadlessGameplayDriver(
+                ordinary_endpoint.pipe_name,
+                endpoint=ordinary_endpoint,
+                state_dir=state_dir,
+                succession_lifecycle_binding=_ordinary_binding(),
+            )
+            with self.assertRaisesRegex(
+                BridgeUnavailableError, "persisted succession lifecycle"
+            ):
+                ordinary_endpoint.publish(_hello())
+            ordinary.close()
 
 
 if __name__ == "__main__":
