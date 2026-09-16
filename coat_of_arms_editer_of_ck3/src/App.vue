@@ -387,10 +387,24 @@ const renderedPreviewUrl = computed(() => {
   )
   return rendered ? renderedCoatOfArmsToDataUrl(rendered) : ''
 })
+// Large documents deliberately avoid a synchronous full redraw on every
+// numeric edit. A completed fit, however, already represents an immutable
+// comparison candidate. Keep its one-time canonical render and reuse the
+// exact same pixels in both the main preview and the comparison card. The
+// source equality check makes the snapshot disappear as soon as the user
+// edits the model, so a stale candidate can never masquerade as the current
+// composition.
+const currentCandidatePreviewUrl = computed(() => (
+  comparisonRows.value.find((candidate) => candidate.current)?.previewUrl ?? ''
+))
+const canonicalPreviewUrl = computed(() => renderedPreviewUrl.value || currentCandidatePreviewUrl.value)
+const canonicalPreviewIsCandidateSnapshot = computed(() => (
+  !renderedPreviewUrl.value && Boolean(currentCandidatePreviewUrl.value)
+))
 // The fit report and editor must never maintain independent render products.
 // Both surfaces display the same canonical shader-model frame so their pixels,
 // resolution, surface mask and named-color interpretation cannot drift.
-const fitPreviewUrl = computed(() => fitResult.value ? renderedPreviewUrl.value : '')
+const fitPreviewUrl = computed(() => fitResult.value ? canonicalPreviewUrl.value : '')
 
 const fallbackNamedColors: Record<string, string> = {
   black: '#22201e', blue: '#315b9a', green: '#497554', red: '#9b3c35',
@@ -1671,10 +1685,17 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       patternPreviewUrl.value = selectedPatternTexture ? decodedDdsToDataUrl(selectedPatternTexture) : ''
       const metricContract = fitMetricContract(result)
       if (metricContract) {
+        const currentSource = serializeCoatOfArms(result.coatOfArms)
         comparisonCandidates.value = result.paretoCandidates.map((candidate, index) => {
           const candidateSource = serializeCoatOfArms(candidate.coatOfArms)
           const stats = coatOfArmsDocumentStats(candidate.coatOfArms, candidateSource)
-          const candidateRendered = stats.drawnInstances > 2_048
+          // The current fit result must always receive one canonical snapshot,
+          // even when live redraw is deferred for a large document. Other large
+          // alternatives may remain deferred until loaded; this keeps one fit
+          // completion from synchronously rendering several 10,000-instance
+          // documents while preserving exact top/card parity for the result
+          // the user is actually viewing.
+          const candidateRendered = stats.drawnInstances > 2_048 && candidateSource !== currentSource
             ? null
             : renderCoatOfArms(
                 candidate.coatOfArms,
@@ -2168,14 +2189,18 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               data-testid="toggle-visual-guides"
               @click="visualGuidesVisible = !visualGuidesVisible"
             >{{ visualGuidesVisible ? t('hideVisualGuides') : t('showVisualGuides') }}</el-button>
-            <el-tag effect="plain" :type="renderedPreviewUrl ? 'success' : 'warning'">
-              {{ renderedPreviewUrl ? t('shaderModel', { count: shaderSourceCount }) : t('browserApproximation') }}
+            <el-tag effect="plain" :type="canonicalPreviewUrl ? 'success' : 'warning'">
+              {{ canonicalPreviewIsCandidateSnapshot
+                ? t('canonicalCandidateSnapshot')
+                : canonicalPreviewUrl
+                  ? t('shaderModel', { count: shaderSourceCount })
+                  : t('browserApproximation') }}
             </el-tag>
           </el-space>
         </div>
         <div class="preview-stage">
-          <div ref="shieldElement" :class="['shield', { 'shader-bound': renderedPreviewUrl }]" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
-            <img v-if="renderedPreviewUrl" data-testid="editor-preview" class="shader-preview" :src="renderedPreviewUrl" :alt="t('shaderPreviewAlt')" />
+          <div ref="shieldElement" :class="['shield', { 'shader-bound': canonicalPreviewUrl }]" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
+            <img v-if="canonicalPreviewUrl" data-testid="editor-preview" class="shader-preview" :src="canonicalPreviewUrl" :alt="t('shaderPreviewAlt')" />
             <template v-else>
               <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" :alt="t('patternPreviewAlt')" />
               <div class="shield-light" :style="{ background: cssColor(coatOfArms.colors[1]) }" />
@@ -2299,7 +2324,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
           <strong>{{ coatOfArms.pattern || t('unspecifiedPattern') }}</strong>
           <span>{{ t('previewStats', { layers: coatOfArms.coloredEmblems.length, instances: drawnInstanceCount, textured: coatOfArms.texturedEmblems.length }) }}</span>
         </div>
-        <el-alert v-if="largeDocumentPreviewDeferred" type="warning" :closable="false" show-icon>
+        <el-alert v-if="largeDocumentPreviewDeferred && !canonicalPreviewUrl" type="warning" :closable="false" show-icon>
           <template #title>{{ t('largePreviewDeferred') }}</template>
         </el-alert>
         <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">{{ t('loadCurrentDds') }}</el-button>

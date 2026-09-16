@@ -193,6 +193,16 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     nativeTileSearch: { maximumDepth: number, pixelLeafCapacity: number }
   }
   expect(finalEvidence.drawnInstances).toBeGreaterThan(1_024)
+  // Regression for the public-page mismatch reported with a 4,151-instance
+  // result: crossing the live-redraw threshold must not replace the current
+  // fit with the 512-instance DOM approximation. The editor, fit report and
+  // current Pareto card must all reuse one canonical render snapshot.
+  expect(finalEvidence.drawnInstances).toBeGreaterThan(2_048)
+  const editorPreviewUrl = await page.getByTestId('editor-preview').getAttribute('src')
+  expect(editorPreviewUrl).toMatch(/^data:image\/png;base64,/)
+  await expect(page.getByTestId('fit-preview')).toHaveAttribute('src', editorPreviewUrl!)
+  await expect(page.getByTestId('current-candidate-preview')).toHaveAttribute('src', editorPreviewUrl!)
+  await expect(page.getByText('当前候选 · 正式渲染快照')).toBeVisible()
   expect(finalEvidence.nativeTileSearch).toMatchObject({ maximumDepth: 7, pixelLeafCapacity: 9_216 })
   expect(['exact_match', 'no_improvement']).toContain(finalEvidence.terminationReason)
   await page.getByRole('button', { name: '复制 CK3 代码' }).click()
