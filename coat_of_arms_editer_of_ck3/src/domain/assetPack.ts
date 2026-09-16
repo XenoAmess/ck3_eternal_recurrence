@@ -1,5 +1,10 @@
 import { decodeDds, type DecodedDds } from './dds'
 import type { NamedColorMap } from './renderer'
+import {
+  FIT_SHAPE_DESCRIPTOR_SIZE,
+  FIT_SHAPE_SCALAR_FIELDS,
+  type FitTextureShapeFeatures,
+} from './shapeFeatures'
 
 export type WebAssetKind =
   | 'pattern'
@@ -29,14 +34,27 @@ export interface WebAssetPackEntry {
   }
 }
 
+export interface WebFitShapeFeatures {
+  schema: 'ck3-coa-shape-features-v1'
+  format: 'F64LE_SCALARS_F32LE_DESCRIPTOR'
+  scalar_fields: string[]
+  descriptor_size: number
+  header_bytes: number
+  record_bytes: number
+  url: string
+  asset_bytes: number
+  asset_sha256: string
+}
+
 export interface WebFitIndex {
-  schema: 'ck3-coa-fit-index-v1'
+  schema: 'ck3-coa-fit-index-v1' | 'ck3-coa-fit-index-v2'
   format: 'RGBA8'
   resolution: number
   asset_indices: number[]
   url: string
   asset_bytes: number
   asset_sha256: string
+  features?: WebFitShapeFeatures
 }
 
 export interface WebAssetInventory {
@@ -76,10 +94,15 @@ const SHA256 = /^[0-9A-F]{64}$/
 const SAFE_NAME = /^[^\u0000-\u001f\u007f/\\]{1,512}$/u
 const SAFE_ASSET_URL = /^assets\/[0-9a-f]{64}\.dds$/
 const SAFE_INDEX_URL = /^assets\/[0-9a-f]{64}\.rgba$/
+const SAFE_FEATURE_URL = /^assets\/[0-9a-f]{64}\.fit$/
 const SAFE_SOURCE_PATH = /^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))[^\0]{1,512}$/
 const MAX_ASSETS = 4096
 const MAX_ASSET_BYTES = 16 * 1024 * 1024
 const MAX_SELECTED_PACK_FILES = MAX_ASSETS + 8
+const FIT_FEATURE_HEADER_BYTES = 32
+const FIT_FEATURE_SCALAR_BYTES = FIT_SHAPE_SCALAR_FIELDS.length * 8
+const FIT_FEATURE_DESCRIPTOR_BYTES = FIT_SHAPE_DESCRIPTOR_SIZE * FIT_SHAPE_DESCRIPTOR_SIZE * 4
+const FIT_FEATURE_RECORD_BYTES = FIT_FEATURE_SCALAR_BYTES + FIT_FEATURE_DESCRIPTOR_BYTES
 
 function record(value: unknown, label: string): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -153,7 +176,7 @@ function parseEntry(value: unknown, index: number): WebAssetPackEntry {
 
 function parseFitIndex(value: unknown, assets: WebAssetPackEntry[]): WebFitIndex {
   const item = record(value, 'fit_index')
-  if (item.schema !== 'ck3-coa-fit-index-v1' || item.format !== 'RGBA8') {
+  if (!['ck3-coa-fit-index-v1', 'ck3-coa-fit-index-v2'].includes(String(item.schema)) || item.format !== 'RGBA8') {
     throw new Error('fit_index schema/format 不支持')
   }
   if (!Array.isArray(item.asset_indices) || item.asset_indices.length < 1 || item.asset_indices.length > MAX_ASSETS) {
@@ -170,14 +193,53 @@ function parseFitIndex(value: unknown, assets: WebAssetPackEntry[]): WebFitIndex
   }
   const resolution = integer(item.resolution, 'fit_index.resolution', 8, 128)
   const expectedBytes = indices.length * resolution * resolution * 4
+  let features: WebFitShapeFeatures | undefined
+  if (item.schema === 'ck3-coa-fit-index-v2') {
+    const source = record(item.features, 'fit_index.features')
+    if (
+      source.schema !== 'ck3-coa-shape-features-v1'
+      || source.format !== 'F64LE_SCALARS_F32LE_DESCRIPTOR'
+    ) throw new Error('fit_index.features schema/format 不支持')
+    if (
+      !Array.isArray(source.scalar_fields)
+      || source.scalar_fields.length !== FIT_SHAPE_SCALAR_FIELDS.length
+      || source.scalar_fields.some((field, index) => field !== FIT_SHAPE_SCALAR_FIELDS[index])
+    ) throw new Error('fit_index.features.scalar_fields 不匹配')
+    const featureBytes = FIT_FEATURE_HEADER_BYTES + indices.length * FIT_FEATURE_RECORD_BYTES
+    features = {
+      schema: 'ck3-coa-shape-features-v1',
+      format: 'F64LE_SCALARS_F32LE_DESCRIPTOR',
+      scalar_fields: [...FIT_SHAPE_SCALAR_FIELDS],
+      descriptor_size: integer(
+        source.descriptor_size, 'fit_index.features.descriptor_size',
+        FIT_SHAPE_DESCRIPTOR_SIZE, FIT_SHAPE_DESCRIPTOR_SIZE,
+      ),
+      header_bytes: integer(
+        source.header_bytes, 'fit_index.features.header_bytes',
+        FIT_FEATURE_HEADER_BYTES, FIT_FEATURE_HEADER_BYTES,
+      ),
+      record_bytes: integer(
+        source.record_bytes, 'fit_index.features.record_bytes',
+        FIT_FEATURE_RECORD_BYTES, FIT_FEATURE_RECORD_BYTES,
+      ),
+      url: text(source.url, 'fit_index.features.url', SAFE_FEATURE_URL),
+      asset_bytes: integer(
+        source.asset_bytes, 'fit_index.features.asset_bytes', featureBytes, featureBytes,
+      ),
+      asset_sha256: text(source.asset_sha256, 'fit_index.features.asset_sha256', SHA256),
+    }
+  } else if (item.features !== undefined) {
+    throw new Error('fit_index v1 不得声明 v2 features')
+  }
   return {
-    schema: 'ck3-coa-fit-index-v1',
+    schema: item.schema as WebFitIndex['schema'],
     format: 'RGBA8',
     resolution,
     asset_indices: indices,
     url: text(item.url, 'fit_index.url', SAFE_INDEX_URL),
     asset_bytes: integer(item.asset_bytes, 'fit_index.asset_bytes', expectedBytes, expectedBytes),
     asset_sha256: text(item.asset_sha256, 'fit_index.asset_sha256', SHA256),
+    features,
   }
 }
 
@@ -269,6 +331,67 @@ export function parseWebAssetPack(value: unknown): WebAssetPack {
 export interface WebFitTexture {
   entry: WebAssetPackEntry
   texture: DecodedDds
+  shapeFeatures?: FitTextureShapeFeatures
+}
+
+function decodeFitShapeFeatures(
+  bytes: Uint8Array,
+  index: WebFitIndex,
+): FitTextureShapeFeatures[] {
+  const source = index.features
+  if (!source) return []
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
+  const magic = new TextDecoder('ascii', { fatal: true }).decode(bytes.subarray(0, 8))
+  if (magic !== 'CK3FIT2\0') throw new Error('fit features magic 不匹配')
+  const header = [
+    view.getUint32(8, true),
+    view.getUint32(12, true),
+    view.getUint32(16, true),
+    view.getUint32(20, true),
+    view.getUint32(24, true),
+    view.getUint32(28, true),
+  ]
+  if (
+    header[0] !== 2
+    || header[1] !== index.asset_indices.length
+    || header[2] !== index.resolution
+    || header[3] !== FIT_SHAPE_DESCRIPTOR_SIZE
+    || header[4] !== FIT_SHAPE_SCALAR_FIELDS.length
+    || header[5] !== FIT_FEATURE_RECORD_BYTES
+  ) throw new Error('fit features header 与 manifest 不匹配')
+  const bounded = (value: number, label: string) => {
+    if (!Number.isFinite(value) || value < 0 || value > 1) throw new Error(`${label} 超出 0..1`)
+    return value
+  }
+  return index.asset_indices.map((_, recordIndex) => {
+    const recordOffset = FIT_FEATURE_HEADER_BYTES + recordIndex * FIT_FEATURE_RECORD_BYTES
+    const scalars = Array.from({ length: FIT_SHAPE_SCALAR_FIELDS.length }, (_unused, scalarIndex) => (
+      bounded(
+        view.getFloat64(recordOffset + scalarIndex * 8, true),
+        `fit features[${recordIndex}].${FIT_SHAPE_SCALAR_FIELDS[scalarIndex]}`,
+      )
+    ))
+    if (scalars[0] > scalars[2] || scalars[1] > scalars[3]) {
+      throw new Error(`fit features[${recordIndex}] content bounds 顺序不合法`)
+    }
+    const descriptor = new Float32Array(FIT_SHAPE_DESCRIPTOR_SIZE * FIT_SHAPE_DESCRIPTOR_SIZE)
+    const descriptorOffset = recordOffset + FIT_FEATURE_SCALAR_BYTES
+    for (let descriptorIndex = 0; descriptorIndex < descriptor.length; descriptorIndex += 1) {
+      descriptor[descriptorIndex] = bounded(
+        view.getFloat32(descriptorOffset + descriptorIndex * 4, true),
+        `fit features[${recordIndex}].descriptor[${descriptorIndex}]`,
+      )
+    }
+    return {
+      contentBounds: [scalars[0], scalars[1], scalars[2], scalars[3]],
+      contentCenter: [scalars[4], scalars[5]],
+      contentSpan: [scalars[6], scalars[7]],
+      alphaEnergy: scalars[8],
+      channelEnergy: [scalars[9], scalars[10], scalars[11]],
+      contourEnergy: scalars[12],
+      descriptor,
+    }
+  })
 }
 
 export async function readWebFitIndex(
@@ -277,19 +400,34 @@ export async function readWebFitIndex(
 ): Promise<WebFitTexture[]> {
   const index = loaded.pack.fit_index
   if (!index) throw new Error('asset pack 没有完整搜索索引')
-  const assetUrl = new URL(index.url, loaded.manifestUrl)
   const manifestDirectory = new URL('.', loaded.manifestUrl)
-  if (!assetUrl.href.startsWith(manifestDirectory.href)) throw new Error('fit index URL 逃逸 manifest 目录')
-  const localFile = loaded.localFiles?.get(index.url)
-  const bytes = localFile
-    ? new Uint8Array(await localFile.arrayBuffer())
-    : await (async () => {
-        const response = await fetcher(assetUrl.href, { cache: 'force-cache' })
-        if (!response.ok) throw new Error(`asset pack fit index HTTP ${response.status}`)
-        return new Uint8Array(await response.arrayBuffer())
-      })()
-  if (bytes.byteLength !== index.asset_bytes) throw new Error('fit index 字节数不匹配')
-  if (await sha256Hex(bytes) !== index.asset_sha256) throw new Error('fit index SHA-256 不匹配')
+  const readBytes = async (url: string, expectedBytes: number, expectedSha256: string, label: string) => {
+    const resolvedUrl = new URL(url, loaded.manifestUrl)
+    if (!resolvedUrl.href.startsWith(manifestDirectory.href)) throw new Error(`${label} URL 逃逸 manifest 目录`)
+    const localFile = loaded.localFiles?.get(url)
+    const data = localFile
+      ? new Uint8Array(await localFile.arrayBuffer())
+      : await (async () => {
+          const response = await fetcher(resolvedUrl.href, { cache: 'force-cache' })
+          if (!response.ok) throw new Error(`${label} HTTP ${response.status}`)
+          return new Uint8Array(await response.arrayBuffer())
+        })()
+    if (data.byteLength !== expectedBytes) throw new Error(`${label} 字节数不匹配`)
+    if (await sha256Hex(data) !== expectedSha256) throw new Error(`${label} SHA-256 不匹配`)
+    return data
+  }
+  const [bytes, featureBytes] = await Promise.all([
+    readBytes(index.url, index.asset_bytes, index.asset_sha256, 'fit index'),
+    index.features
+      ? readBytes(
+          index.features.url,
+          index.features.asset_bytes,
+          index.features.asset_sha256,
+          'fit features',
+        )
+      : Promise.resolve(undefined),
+  ])
+  const shapeFeatures = featureBytes ? decodeFitShapeFeatures(featureBytes, index) : []
   const recordBytes = index.resolution * index.resolution * 4
   return index.asset_indices.map((assetIndex, recordIndex) => ({
     entry: loaded.pack.assets[assetIndex],
@@ -299,6 +437,7 @@ export async function readWebFitIndex(
       fourCC: 'BGRA8',
       pixels: new Uint8ClampedArray(bytes.slice(recordIndex * recordBytes, (recordIndex + 1) * recordBytes)),
     },
+    shapeFeatures: shapeFeatures[recordIndex],
   }))
 }
 
@@ -375,6 +514,9 @@ export async function loadWebAssetPackFiles(files: readonly File[]): Promise<Loa
   const required = [
     ...pack.assets.map((entry) => ({ path: entry.url, bytes: entry.asset_bytes })),
     ...(pack.fit_index ? [{ path: pack.fit_index.url, bytes: pack.fit_index.asset_bytes }] : []),
+    ...(pack.fit_index?.features
+      ? [{ path: pack.fit_index.features.url, bytes: pack.fit_index.features.asset_bytes }]
+      : []),
   ]
   for (const item of required) {
     const file = localFiles.get(item.path)

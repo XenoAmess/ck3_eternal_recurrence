@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { loadWebAssetPackFiles, parseWebAssetPack } from './assetPack'
+import { loadWebAssetPackFiles, parseWebAssetPack, readWebFitIndex } from './assetPack'
+import { FIT_SHAPE_DESCRIPTOR_SIZE, FIT_SHAPE_SCALAR_FIELDS } from './shapeFeatures'
 
 const entry = {
   kind: 'pattern',
@@ -84,6 +85,81 @@ describe('web asset pack contract', () => {
       asset_bytes: 16 * 16 * 4, asset_sha256: 'D'.repeat(64),
     }
     expect(() => parseWebAssetPack(indexed)).toThrow(/不可拟合资源/)
+  })
+
+  it('loads a hash-bound v2 shape-feature sidecar', async () => {
+    const resolution = 8
+    const rgba = new Uint8Array(resolution * resolution * 4).fill(127)
+    const recordBytes = FIT_SHAPE_SCALAR_FIELDS.length * 8
+      + FIT_SHAPE_DESCRIPTOR_SIZE * FIT_SHAPE_DESCRIPTOR_SIZE * 4
+    const featureBytes = new Uint8Array(32 + recordBytes)
+    featureBytes.set(new TextEncoder().encode('CK3FIT2\0'), 0)
+    const view = new DataView(featureBytes.buffer)
+    ;[2, 1, resolution, FIT_SHAPE_DESCRIPTOR_SIZE, FIT_SHAPE_SCALAR_FIELDS.length, recordBytes]
+      .forEach((value, index) => view.setUint32(8 + index * 4, value, true))
+    const scalars = [0, 0, 1, 1, 0.5, 0.5, 1, 1, 0.5, 0.1, 0.2, 0.3, 0.4]
+    scalars.forEach((value, index) => view.setFloat64(32 + index * 8, value, true))
+    const descriptorOffset = 32 + FIT_SHAPE_SCALAR_FIELDS.length * 8
+    for (let index = 0; index < FIT_SHAPE_DESCRIPTOR_SIZE ** 2; index += 1) {
+      view.setFloat32(descriptorOffset + index * 4, 0.25, true)
+    }
+    const digest = async (bytes: Uint8Array) => Array.from(
+      new Uint8Array(await crypto.subtle.digest('SHA-256', Uint8Array.from(bytes).buffer)),
+      (byte) => byte.toString(16).padStart(2, '0'),
+    ).join('').toUpperCase()
+    const rgbaSha = await digest(rgba)
+    const featureSha = await digest(featureBytes)
+    const indexed = pack() as ReturnType<typeof pack> & { fit_index: object }
+    indexed.fit_index = {
+      schema: 'ck3-coa-fit-index-v2', format: 'RGBA8', resolution,
+      asset_indices: [0], url: `assets/${rgbaSha.toLowerCase()}.rgba`,
+      asset_bytes: rgba.byteLength, asset_sha256: rgbaSha,
+      features: {
+        schema: 'ck3-coa-shape-features-v1',
+        format: 'F64LE_SCALARS_F32LE_DESCRIPTOR',
+        scalar_fields: [...FIT_SHAPE_SCALAR_FIELDS],
+        descriptor_size: FIT_SHAPE_DESCRIPTOR_SIZE,
+        header_bytes: 32,
+        record_bytes: recordBytes,
+        url: `assets/${featureSha.toLowerCase()}.fit`,
+        asset_bytes: featureBytes.byteLength,
+        asset_sha256: featureSha,
+      },
+    }
+    const parsed = parseWebAssetPack(indexed)
+    const fetcher = (async (input: string | URL | Request) => {
+      const url = String(input)
+      return new Response(url.endsWith('.fit') ? featureBytes : rgba)
+    }) as typeof fetch
+    const loaded = await readWebFitIndex({
+      pack: parsed,
+      manifestUrl: 'https://example.test/pack/manifest.json',
+      manifestSha256: 'E'.repeat(64),
+    }, fetcher)
+
+    expect(loaded).toHaveLength(1)
+    expect(loaded[0].shapeFeatures?.contentBounds).toEqual([0, 0, 1, 1])
+    expect(loaded[0].shapeFeatures?.channelEnergy[2]).toBeCloseTo(0.3)
+    expect(loaded[0].shapeFeatures?.contourEnergy).toBeCloseTo(0.4)
+    expect(loaded[0].shapeFeatures?.descriptor).toHaveLength(FIT_SHAPE_DESCRIPTOR_SIZE ** 2)
+    expect(loaded[0].shapeFeatures?.descriptor[0]).toBeCloseTo(0.25)
+  })
+
+  it('rejects a v2 feature sidecar with a mismatched scalar contract', () => {
+    const indexed = pack() as ReturnType<typeof pack> & { fit_index: object }
+    indexed.fit_index = {
+      schema: 'ck3-coa-fit-index-v2', format: 'RGBA8', resolution: 16,
+      asset_indices: [0], url: `assets/${'d'.repeat(64)}.rgba`,
+      asset_bytes: 16 * 16 * 4, asset_sha256: 'D'.repeat(64),
+      features: {
+        schema: 'ck3-coa-shape-features-v1',
+        format: 'F64LE_SCALARS_F32LE_DESCRIPTOR',
+        scalar_fields: ['wrong'], descriptor_size: FIT_SHAPE_DESCRIPTOR_SIZE,
+        header_bytes: 32, record_bytes: 1400,
+        url: `assets/${'e'.repeat(64)}.fit`, asset_bytes: 1432, asset_sha256: 'E'.repeat(64),
+      },
+    }
+    expect(() => parseWebAssetPack(indexed)).toThrow(/scalar_fields/)
   })
 
   it('loads a browser-selected directory without network access', async () => {

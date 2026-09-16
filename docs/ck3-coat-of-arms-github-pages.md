@@ -32,7 +32,8 @@
 
 构建必须按顺序通过：
 
-1. `verify_web_asset_pack.py` 对 manifest、完整 inventory、fit index 和全部 DDS 的路径、角色、字节数、SHA-256 与容器头重新校验；
+1. `verify_web_asset_pack.py` 对 manifest、完整 inventory、fit index/feature sidecar 和全部 DDS 的路径、角色、字节数、SHA-256、
+   二进制 header 与容器头重新校验；
 2. `pnpm install --frozen-lockfile`，禁止 CI 静默改 lockfile；
 3. 运行全部 Vitest；
 4. 安装 Actions runner 的 Playwright Chromium，先让大预算拟合与完整图片拟合各自在独立 Playwright 进程执行，再运行其余无 CK3
@@ -51,11 +52,12 @@
 |---|---:|
 | 路径 | `asset-packs/ck3-1.19.0.6/` |
 | pack id | `ck3-1.19.0.6-base-complete-42p-1578e-8aux` |
-| manifest SHA-256 | `AD7F0A911A2B4F002E923FEAB13716566D9A7B61447E9092504826FE6498FE91` |
+| manifest SHA-256 | `F5BB089884F864ED5DF88DCF3C8CB2C8966E3E541284AE691C6EBC1A282FD36E` |
 | registered pattern / emblem | 42 / 1,578 |
 | auxiliary / textured / surface mask | 8 / 1 / 1 |
 | 原版物理 DDS 覆盖 | 1,630 / 1,630；138,389,380 bytes |
 | 32×32 RGBA fit index | 1,619 个可粘贴注册项；6,631,424 bytes |
+| v2 shape feature sidecar | 1,619 项；2,266,632 bytes；SHA-256 `76429584…DC26` |
 
 该授权记录只适用于本仓库当前 pack 的版本管理与 Pages 发布，不冒充所有权转移，也不自动放行以后从其他 CK3 build、DLC 或
 mod 提取的资源。其他 `ck3-*` 生成目录继续由 `.gitignore` 排除，只有显式审阅并添加精确 unignore 后才能进入发布树。
@@ -68,6 +70,9 @@ Vite 本地开发默认 `base=/`。Actions 从 `actions/configure-pages` 取得�
 `/coat_of_arms_editer_of_ck3/` 后注入 `VITE_BASE_PATH`。因此脚本、Worker 和默认素材 manifest 都从
 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/` 解析，不会错误请求域名根目录或仓库 Pages 根目录。Pages artifact
 本身也保持同样的子目录层级；该工作流不在 `/ck3_eternal_recurrence/` 根入口生成编辑器副本或自动跳转。
+
+页面顶栏始终显示 production build 的 ISO 8601 时间戳与 8 位 Git hash。Actions 从部署目标 `github.sha` 注入 hash，时间戳在每次
+Vite build 时生成；该标识只用于定位静态页面版本，不替代 asset-pack manifest SHA 或证据 artifact 的完整 commit。
 
 Pages 是静态托管，不能也不应直接“执行 CK3”：
 

@@ -17,6 +17,7 @@ from io import BytesIO
 import json
 import os
 from pathlib import Path
+import struct
 import sys
 
 from PIL import Image
@@ -33,6 +34,17 @@ from xar_autoplayer.coat_of_arms_resources import (  # noqa: E402
 
 
 FIT_INDEX_RESOLUTION = 32
+FIT_SHAPE_DESCRIPTOR_SIZE = 18
+FIT_SHAPE_SCALAR_FIELDS = (
+    "content_min_x", "content_min_y", "content_max_x", "content_max_y",
+    "content_center_x", "content_center_y", "content_span_x", "content_span_y",
+    "alpha_energy", "red_energy", "green_energy", "blue_energy", "contour_energy",
+)
+FIT_FEATURE_HEADER_BYTES = 32
+FIT_FEATURE_RECORD_BYTES = (
+    len(FIT_SHAPE_SCALAR_FIELDS) * 8
+    + FIT_SHAPE_DESCRIPTOR_SIZE * FIT_SHAPE_DESCRIPTOR_SIZE * 4
+)
 
 
 def _sha256(data: bytes) -> str:
@@ -155,8 +167,111 @@ def _entry_from_path(
     }
 
 
-def _fit_index_bytes(game_root: Path, assets: list[dict[str, object]]) -> tuple[bytes, list[int]]:
+def _shape_feature_record(encoded: bytes) -> bytes:
+    pixel_count = FIT_INDEX_RESOLUTION * FIT_INDEX_RESOLUTION
+    intensity: list[float] = []
+    alpha_energy = 0.0
+    color_energy = 0.0
+    channel_sums = [0.0, 0.0, 0.0]
+    for index in range(pixel_count):
+        offset = index * 4
+        red, green, blue, alpha_byte = encoded[offset:offset + 4]
+        alpha = alpha_byte / 255
+        channels = (red / 255, green / 255, blue / 255)
+        value = alpha * max(channels)
+        intensity.append(value)
+        color_energy += value
+        alpha_energy += alpha
+        for channel_index, channel in enumerate(channels):
+            channel_sums[channel_index] += alpha * channel
+    if color_energy < alpha_energy * 0.05:
+        intensity = [encoded[index * 4 + 3] / 255 for index in range(pixel_count)]
+
+    minimum_x = FIT_INDEX_RESOLUTION
+    minimum_y = FIT_INDEX_RESOLUTION
+    maximum_x = -1
+    maximum_y = -1
+    weighted_x = 0.0
+    weighted_y = 0.0
+    total_weight = 0.0
+    for y in range(FIT_INDEX_RESOLUTION):
+        for x in range(FIT_INDEX_RESOLUTION):
+            weight = intensity[y * FIT_INDEX_RESOLUTION + x]
+            if weight < 0.04:
+                continue
+            minimum_x = min(minimum_x, x)
+            minimum_y = min(minimum_y, y)
+            maximum_x = max(maximum_x, x)
+            maximum_y = max(maximum_y, y)
+            weighted_x += (x + 0.5) * weight
+            weighted_y += (y + 0.5) * weight
+            total_weight += weight
+
+    contour_sum = 0.0
+    contour_samples = 0
+    for y in range(FIT_INDEX_RESOLUTION):
+        for x in range(FIT_INDEX_RESOLUTION):
+            value = intensity[y * FIT_INDEX_RESOLUTION + x]
+            if x + 1 < FIT_INDEX_RESOLUTION:
+                contour_sum += abs(value - intensity[y * FIT_INDEX_RESOLUTION + x + 1])
+                contour_samples += 1
+            if y + 1 < FIT_INDEX_RESOLUTION:
+                contour_sum += abs(value - intensity[(y + 1) * FIT_INDEX_RESOLUTION + x])
+                contour_samples += 1
+
+    if maximum_x < minimum_x or maximum_y < minimum_y:
+        bounds = (0.0, 0.0, 1.0, 1.0)
+        center = (0.5, 0.5)
+        span = (1.0, 1.0)
+        descriptor = [0.0] * (FIT_SHAPE_DESCRIPTOR_SIZE * FIT_SHAPE_DESCRIPTOR_SIZE)
+    else:
+        span_x = max(1, maximum_x - minimum_x + 1)
+        span_y = max(1, maximum_y - minimum_y + 1)
+        bounds = (
+            minimum_x / FIT_INDEX_RESOLUTION,
+            minimum_y / FIT_INDEX_RESOLUTION,
+            (maximum_x + 1) / FIT_INDEX_RESOLUTION,
+            (maximum_y + 1) / FIT_INDEX_RESOLUTION,
+        )
+        center = (
+            weighted_x / total_weight / FIT_INDEX_RESOLUTION if total_weight > 0 else 0.5,
+            weighted_y / total_weight / FIT_INDEX_RESOLUTION if total_weight > 0 else 0.5,
+        )
+        span = (span_x / FIT_INDEX_RESOLUTION, span_y / FIT_INDEX_RESOLUTION)
+        descriptor = []
+        for y in range(FIT_SHAPE_DESCRIPTOR_SIZE):
+            source_y = min(maximum_y, max(
+                minimum_y,
+                int(minimum_y + (y + 0.5) * span_y / FIT_SHAPE_DESCRIPTOR_SIZE),
+            ))
+            for x in range(FIT_SHAPE_DESCRIPTOR_SIZE):
+                source_x = min(maximum_x, max(
+                    minimum_x,
+                    int(minimum_x + (x + 0.5) * span_x / FIT_SHAPE_DESCRIPTOR_SIZE),
+                ))
+                descriptor.append(intensity[source_y * FIT_INDEX_RESOLUTION + source_x])
+
+    scalars = (
+        *bounds,
+        *center,
+        *span,
+        alpha_energy / pixel_count,
+        *(value / pixel_count for value in channel_sums),
+        contour_sum / contour_samples if contour_samples else 0.0,
+    )
+    record = struct.pack(f"<{len(scalars)}d", *scalars) + struct.pack(
+        f"<{len(descriptor)}f", *descriptor
+    )
+    if len(record) != FIT_FEATURE_RECORD_BYTES:
+        raise RuntimeError("fit feature record size mismatch")
+    return record
+
+
+def _fit_index_bytes(
+    game_root: Path, assets: list[dict[str, object]]
+) -> tuple[bytes, bytes, list[int]]:
     output = bytearray()
+    features = bytearray()
     asset_indices: list[int] = []
     for index, item in enumerate(assets):
         if item.get("fit_eligible") is not True:
@@ -171,8 +286,21 @@ def _fit_index_bytes(game_root: Path, assets: list[dict[str, object]]) -> tuple[
         if len(encoded) != expected:
             raise RuntimeError(f"fit index record size mismatch for {item['name']}")
         output.extend(encoded)
+        features.extend(_shape_feature_record(encoded))
         asset_indices.append(index)
-    return bytes(output), asset_indices
+    header = struct.pack(
+        "<8s6I",
+        b"CK3FIT2\0",
+        2,
+        len(asset_indices),
+        FIT_INDEX_RESOLUTION,
+        FIT_SHAPE_DESCRIPTOR_SIZE,
+        len(FIT_SHAPE_SCALAR_FIELDS),
+        FIT_FEATURE_RECORD_BYTES,
+    )
+    if len(header) != FIT_FEATURE_HEADER_BYTES:
+        raise RuntimeError("fit feature header size mismatch")
+    return bytes(output), header + bytes(features), asset_indices
 
 
 def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden: bool) -> dict[str, object]:
@@ -249,8 +377,11 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
                 "fit_eligible": False,
             }
         )
-        fit_bytes, fit_asset_indices = _fit_index_bytes(game_root, assets)
+        fit_bytes, fit_feature_bytes, fit_asset_indices = _fit_index_bytes(game_root, assets)
         fit_url, fit_sha = _write_content_addressed(asset_directory, fit_bytes, ".rgba")
+        fit_feature_url, fit_feature_sha = _write_content_addressed(
+            asset_directory, fit_feature_bytes, ".fit"
+        )
 
         coa_root = game_root / "game" / "gfx" / "coat_of_arms"
         source_dds_paths = {
@@ -291,13 +422,24 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
             "named_colors": named_colors,
             "assets": assets,
             "fit_index": {
-                "schema": "ck3-coa-fit-index-v1",
+                "schema": "ck3-coa-fit-index-v2",
                 "format": "RGBA8",
                 "resolution": FIT_INDEX_RESOLUTION,
                 "asset_indices": fit_asset_indices,
                 "url": fit_url,
                 "asset_bytes": len(fit_bytes),
                 "asset_sha256": fit_sha,
+                "features": {
+                    "schema": "ck3-coa-shape-features-v1",
+                    "format": "F64LE_SCALARS_F32LE_DESCRIPTOR",
+                    "scalar_fields": list(FIT_SHAPE_SCALAR_FIELDS),
+                    "descriptor_size": FIT_SHAPE_DESCRIPTOR_SIZE,
+                    "header_bytes": FIT_FEATURE_HEADER_BYTES,
+                    "record_bytes": FIT_FEATURE_RECORD_BYTES,
+                    "url": fit_feature_url,
+                    "asset_bytes": len(fit_feature_bytes),
+                    "asset_sha256": fit_feature_sha,
+                },
             },
             "inventory": {
                 "complete_raw_tree": complete_raw_tree,
@@ -336,6 +478,7 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
             "complete_raw_tree": complete_raw_tree,
             "fit_index_entries": len(fit_asset_indices),
             "fit_index_bytes": len(fit_bytes),
+            "fit_feature_bytes": len(fit_feature_bytes),
             "unique_dds": len(list((output / "assets").glob("*.dds"))),
             "asset_bytes": sum(path.stat().st_size for path in (output / "assets").glob("*.dds")),
         }

@@ -30966,9 +30966,34 @@
       1619
     ],
     "asset_sha256": "6FA0A2FF6510730EDA5F64F55EEC81044209761C03E7FA4120CD1D14C21B0A2F",
+    "features": {
+      "asset_bytes": 2266632,
+      "asset_sha256": "76429584EE906D7E0B2AEA4163FF2ABF690E6254571CB267CE281B402063DC26",
+      "descriptor_size": 18,
+      "format": "F64LE_SCALARS_F32LE_DESCRIPTOR",
+      "header_bytes": 32,
+      "record_bytes": 1400,
+      "scalar_fields": [
+        "content_min_x",
+        "content_min_y",
+        "content_max_x",
+        "content_max_y",
+        "content_center_x",
+        "content_center_y",
+        "content_span_x",
+        "content_span_y",
+        "alpha_energy",
+        "red_energy",
+        "green_energy",
+        "blue_energy",
+        "contour_energy"
+      ],
+      "schema": "ck3-coa-shape-features-v1",
+      "url": "assets/76429584ee906d7e0b2aea4163ff2abf690e6254571cb267ce281b402063dc26.fit"
+    },
     "format": "RGBA8",
     "resolution": 32,
-    "schema": "ck3-coa-fit-index-v1",
+    "schema": "ck3-coa-fit-index-v2",
     "url": "assets/6fa0a2ff6510730eda5f64f55eec81044209761c03e7fa4120cd1d14c21b0a2f.rgba"
   },
   "inventory": {

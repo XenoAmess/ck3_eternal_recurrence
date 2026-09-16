@@ -33,6 +33,10 @@ Paradox 素材的所有权，也不自动授权其他 build 或仓库。
 
 ## exact-build 完整素材包
 
+下表保留 Alpha v1 的历史冻结回执。Beta 工作线已在 2026-09-16 将同一批 RGBA atlas 无损升级为 fit-index v2；当前部署 pack 的
+manifest 为 1,042,792 bytes、SHA-256 `F5BB089884F864ED5DF88DCF3C8CB2C8966E3E541284AE691C6EBC1A282FD36E`，并新增
+2,266,632-byte 的哈希绑定特征 sidecar。当前回执以[素材清单](ck3-coat-of-arms-asset-inventory.md)为准，历史 Alpha 数字不据此改写。
+
 2026-09-15 从明确提供的 CK3 `1.19.0.6` 安装根生成，全程只读游戏文件，没有启动 CK3：
 
 | 字段 | 值 |
@@ -49,7 +53,7 @@ Paradox 素材的所有权，也不自动授权其他 build 或仓库。
 | 物理 DDS bytes | 138,389,380 |
 | 32×32 RGBA fit index | 1,619 项 / 6,631,424 bytes |
 
-`verify_web_asset_pack.py` 对源路径角色、长度、SHA-256、DDS header、完整 inventory 和 fit index 重新核对，结果为
+Alpha 时的 `verify_web_asset_pack.py` 对源路径角色、长度、SHA-256、DDS header、完整 inventory 和 fit index 重新核对，结果为
 `status=green`。1,619 项索引是 42 个 pattern 加 1,577 个可由已实证 ASCII reader 表达的 emblem。另一个注册资源
 `ce_mount_fleurdelisé.dds` 含高位字符；原生 reader 已知会拒绝高位 UTF-8，因此完整收录但不由拟合器生成。8 个未注册文件也
 只收录、不冒充可执行资源。完整盘点见

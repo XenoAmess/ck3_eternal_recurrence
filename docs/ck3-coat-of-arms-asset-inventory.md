@@ -76,15 +76,20 @@ manifest 将它们标成 `kind=auxiliary_colored_emblem`、`registration=unregis
 | 字段 | 值 |
 |---|---|
 | pack id | `ck3-1.19.0.6-base-complete-42p-1578e-8aux` |
-| manifest bytes | 1,042,018 |
-| manifest SHA-256 | `AD7F0A911A2B4F002E923FEAB13716566D9A7B61447E9092504826FE6498FE91` |
+| manifest bytes | 1,042,792 |
+| manifest SHA-256 | `F5BB089884F864ED5DF88DCF3C8CB2C8966E3E541284AE691C6EBC1A282FD36E` |
 | 物理资源项 | 1,630 |
 | 唯一 DDS payload | 1,626 |
 | fit index 条目 | 1,619（42 pattern + 1,577 可粘贴 registered emblem） |
 | fit index bytes | 6,631,424（32×32 RGBA8） |
+| fit feature sidecar | 2,266,632 bytes（1,619 × 1,400-byte record + 32-byte header） |
+| fit feature SHA-256 | `76429584EE906D7E0B2AEA4163FF2ABF690E6254571CB267CE281B402063DC26` |
 
-浏览器首先下载并校验 fit index，搜索完整注册库；只有选中的 pattern/emblem 才再下载全分辨率 DDS 进行预览和最终评分。
+浏览器首先下载并校验 fit index 与 v2 feature sidecar，搜索完整注册库；sidecar 为每项预计算归一化透明内容边界、质心、跨度、
+alpha/RGB 通道能量、轮廓能量及 18×18 形状描述符。只有选中的 pattern/emblem 才再下载全分辨率 DDS 进行预览和最终评分。
 这避免首轮拟合必须同时解码约 132 MiB 压缩 DDS及其更大的 RGBA 展开数据。
+
+完整二进制合同、v1 fallback 和验证范围见 [`coat-of-arms-fit-index-v2.md`](coat-of-arms-fit-index-v2.md)。
 
 ## 可复现门禁
 
@@ -98,6 +103,6 @@ python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
 
 builder 默认包含隐藏注册项并拒绝覆盖既有输出。完整模式会对原版 CoA DDS 树和 manifest 项做集合闭合；少一个源路径、多一个
 伪造路径或内容身份不一致都会失败。verifier 不读取或启动 CK3，会重新核对 1,630 个逻辑项、1,626 份 content-addressed
-DDS、fit index 的精确长度/SHA、注册角色、物理源路径唯一性和 inventory 计数。
+DDS、fit index/feature sidecar 的精确长度/SHA/header/数值边界、注册角色、物理源路径唯一性和 inventory 计数。
 
 素材版本管理与 Pages 发布依据项目所有者 2026-09-15 的明确授权。该项目政策记录不转移 Paradox 素材所有权。

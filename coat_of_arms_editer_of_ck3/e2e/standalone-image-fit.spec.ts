@@ -160,6 +160,8 @@ test('runs against the locally generated exact-build asset pack', async ({ page 
   })
   await page.getByRole('button', { name: '开始本地拟合' }).click()
   await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 90_000 })
+  await expect(page.locator('.fit-report dl div').filter({ hasText: '预计算形状特征' }).locator('dd'))
+    .toHaveText('1619 / 1619')
   await expect(page.locator('.output-block pre')).toContainText('pattern =')
   expect(apiRequests).toEqual([])
 })

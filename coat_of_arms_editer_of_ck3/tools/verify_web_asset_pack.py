@@ -6,13 +6,27 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path, PurePosixPath
 import re
+import struct
 
 
 SHA256 = re.compile(r"^[0-9A-F]{64}$")
 SAFE_URL = re.compile(r"^assets/[0-9a-f]{64}\.dds$")
 SAFE_INDEX_URL = re.compile(r"^assets/[0-9a-f]{64}\.rgba$")
+SAFE_FEATURE_URL = re.compile(r"^assets/[0-9a-f]{64}\.fit$")
+FIT_SHAPE_DESCRIPTOR_SIZE = 18
+FIT_SHAPE_SCALAR_FIELDS = (
+    "content_min_x", "content_min_y", "content_max_x", "content_max_y",
+    "content_center_x", "content_center_y", "content_span_x", "content_span_y",
+    "alpha_energy", "red_energy", "green_energy", "blue_energy", "contour_energy",
+)
+FIT_FEATURE_HEADER_BYTES = 32
+FIT_FEATURE_RECORD_BYTES = (
+    len(FIT_SHAPE_SCALAR_FIELDS) * 8
+    + FIT_SHAPE_DESCRIPTOR_SIZE * FIT_SHAPE_DESCRIPTOR_SIZE * 4
+)
 
 
 def digest(data: bytes) -> str:
@@ -95,7 +109,7 @@ def verify(pack_directory: Path) -> dict[str, object]:
     fit_index = manifest.get("fit_index")
     if not isinstance(fit_index, dict):
         raise ValueError("pack must contain a fit_index")
-    if fit_index.get("schema") != "ck3-coa-fit-index-v1" or fit_index.get("format") != "RGBA8":
+    if fit_index.get("schema") not in {"ck3-coa-fit-index-v1", "ck3-coa-fit-index-v2"} or fit_index.get("format") != "RGBA8":
         raise ValueError("unsupported fit_index schema/format")
     resolution = fit_index.get("resolution")
     indices = fit_index.get("asset_indices")
@@ -130,6 +144,57 @@ def verify(pack_directory: Path) -> dict[str, object]:
     if len(index_data) != expected_index_bytes or digest(index_data) != index_sha:
         raise ValueError("fit_index bytes/hash mismatch")
 
+    feature_data = b""
+    features = fit_index.get("features")
+    if fit_index.get("schema") == "ck3-coa-fit-index-v2":
+        if not isinstance(features, dict):
+            raise ValueError("fit_index v2 must declare features")
+        if (
+            features.get("schema") != "ck3-coa-shape-features-v1"
+            or features.get("format") != "F64LE_SCALARS_F32LE_DESCRIPTOR"
+            or features.get("scalar_fields") != list(FIT_SHAPE_SCALAR_FIELDS)
+            or features.get("descriptor_size") != FIT_SHAPE_DESCRIPTOR_SIZE
+            or features.get("header_bytes") != FIT_FEATURE_HEADER_BYTES
+            or features.get("record_bytes") != FIT_FEATURE_RECORD_BYTES
+        ):
+            raise ValueError("fit_index feature contract is invalid")
+        feature_url = features.get("url")
+        feature_sha = features.get("asset_sha256")
+        expected_feature_bytes = FIT_FEATURE_HEADER_BYTES + len(indices) * FIT_FEATURE_RECORD_BYTES
+        if not isinstance(feature_url, str) or not SAFE_FEATURE_URL.fullmatch(feature_url):
+            raise ValueError("fit feature URL is not content addressed")
+        if not isinstance(feature_sha, str) or not SHA256.fullmatch(feature_sha):
+            raise ValueError("fit feature SHA-256 is invalid")
+        feature_relative = PurePosixPath(feature_url)
+        feature_path = pack_directory.joinpath(*feature_relative.parts).resolve()
+        feature_data = feature_path.read_bytes()
+        if features.get("asset_bytes") != expected_feature_bytes:
+            raise ValueError("fit feature declared byte count is invalid")
+        if len(feature_data) != expected_feature_bytes or digest(feature_data) != feature_sha:
+            raise ValueError("fit feature bytes/hash mismatch")
+        header = struct.unpack_from("<8s6I", feature_data)
+        if header != (
+            b"CK3FIT2\0", 2, len(indices), resolution, FIT_SHAPE_DESCRIPTOR_SIZE,
+            len(FIT_SHAPE_SCALAR_FIELDS), FIT_FEATURE_RECORD_BYTES,
+        ):
+            raise ValueError("fit feature header does not match manifest")
+        for record_index in range(len(indices)):
+            record_offset = FIT_FEATURE_HEADER_BYTES + record_index * FIT_FEATURE_RECORD_BYTES
+            scalars = struct.unpack_from(
+                f"<{len(FIT_SHAPE_SCALAR_FIELDS)}d", feature_data, record_offset
+            )
+            descriptor = struct.unpack_from(
+                f"<{FIT_SHAPE_DESCRIPTOR_SIZE * FIT_SHAPE_DESCRIPTOR_SIZE}f",
+                feature_data,
+                record_offset + len(FIT_SHAPE_SCALAR_FIELDS) * 8,
+            )
+            if any(not math.isfinite(value) or not 0 <= value <= 1 for value in (*scalars, *descriptor)):
+                raise ValueError(f"fit feature record {record_index} contains an invalid value")
+            if scalars[0] > scalars[2] or scalars[1] > scalars[3]:
+                raise ValueError(f"fit feature record {record_index} has inverted bounds")
+    elif features is not None:
+        raise ValueError("fit_index v1 must not declare v2 features")
+
     inventory = manifest.get("inventory")
     if not isinstance(inventory, dict):
         raise ValueError("pack must contain an inventory")
@@ -158,6 +223,8 @@ def verify(pack_directory: Path) -> dict[str, object]:
         "asset_bytes": total_bytes,
         "fit_index_entries": len(indices),
         "fit_index_bytes": len(index_data),
+        "fit_index_schema": fit_index.get("schema"),
+        "fit_feature_bytes": len(feature_data),
         "complete_raw_tree": inventory.get("complete_raw_tree"),
         "source_dds_total": inventory.get("source_dds_total"),
         **totals,

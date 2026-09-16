@@ -6,6 +6,11 @@ import {
   type RenderedCoatOfArms,
 } from './renderer'
 import type { CoatOfArms, CoatOfArmsInstance, ColoredEmblem } from './types'
+import {
+  computeFitTextureShapeFeatures,
+  FIT_SHAPE_DESCRIPTOR_SIZE,
+  type FitTextureShapeFeatures,
+} from './shapeFeatures'
 
 export interface FitImage {
   width: number
@@ -17,6 +22,7 @@ export interface FitTextureCandidate {
   name: string
   assetSha256: string
   texture: DecodedDds
+  shapeFeatures?: FitTextureShapeFeatures
 }
 
 export interface ImageFitOptions {
@@ -149,6 +155,11 @@ export interface ImageFitResult {
     evaluatedCandidates: number
     patternAssets: number
     emblemAssets: number
+    shapeFeatureIndex: {
+      contract: 'ck3-coa-shape-features-v1'
+      indexedAssets: number
+      fallbackAssets: number
+    }
     layerBudget: number
     logicalLayers: number
     coloredEmblemBlocks: number
@@ -471,7 +482,7 @@ interface ResidualFocus {
   descriptor: Float32Array
 }
 
-const SHAPE_DESCRIPTOR_SIZE = 18
+const SHAPE_DESCRIPTOR_SIZE = FIT_SHAPE_DESCRIPTOR_SIZE
 
 const MIXED_NATIVE_PRIMITIVE_TEXTURES: readonly string[] = [
   'ce_block_02.dds',
@@ -624,87 +635,7 @@ function sampleDescriptor(descriptor: Float32Array, x: number, y: number): numbe
   )
 }
 
-interface TextureShape {
-  descriptor: Float32Array
-  contentCenter: [number, number]
-  contentSpan: [number, number]
-}
-
-function textureShapeDescriptor(texture: DecodedDds): TextureShape {
-  const intensity = new Float32Array(texture.width * texture.height)
-  let colorEnergy = 0
-  let alphaEnergy = 0
-  for (let index = 0; index < intensity.length; index += 1) {
-    const offset = index * 4
-    const alpha = texture.pixels[offset + 3] / 255
-    const color = Math.max(
-      texture.pixels[offset],
-      texture.pixels[offset + 1],
-      texture.pixels[offset + 2],
-    ) / 255
-    intensity[index] = alpha * color
-    colorEnergy += intensity[index]
-    alphaEnergy += alpha
-  }
-  if (colorEnergy < alphaEnergy * 0.05) {
-    for (let index = 0; index < intensity.length; index += 1) {
-      intensity[index] = texture.pixels[index * 4 + 3] / 255
-    }
-  }
-  let minimumX = texture.width
-  let minimumY = texture.height
-  let maximumX = -1
-  let maximumY = -1
-  let weightedX = 0
-  let weightedY = 0
-  let totalWeight = 0
-  for (let y = 0; y < texture.height; y += 1) {
-    for (let x = 0; x < texture.width; x += 1) {
-      const weight = intensity[y * texture.width + x]
-      if (weight < 0.04) continue
-      minimumX = Math.min(minimumX, x)
-      minimumY = Math.min(minimumY, y)
-      maximumX = Math.max(maximumX, x)
-      maximumY = Math.max(maximumY, y)
-      weightedX += (x + 0.5) * weight
-      weightedY += (y + 0.5) * weight
-      totalWeight += weight
-    }
-  }
-  if (maximumX < minimumX || maximumY < minimumY) {
-    return {
-      descriptor: new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE),
-      contentCenter: [0.5, 0.5],
-      contentSpan: [1, 1],
-    }
-  }
-  const spanX = Math.max(1, maximumX - minimumX + 1)
-  const spanY = Math.max(1, maximumY - minimumY + 1)
-  const result = new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE)
-  for (let y = 0; y < SHAPE_DESCRIPTOR_SIZE; y += 1) {
-    const sourceY = clamp(
-      Math.floor(minimumY + (y + 0.5) * spanY / SHAPE_DESCRIPTOR_SIZE),
-      minimumY,
-      maximumY,
-    )
-    for (let x = 0; x < SHAPE_DESCRIPTOR_SIZE; x += 1) {
-      const sourceX = clamp(
-        Math.floor(minimumX + (x + 0.5) * spanX / SHAPE_DESCRIPTOR_SIZE),
-        minimumX,
-        maximumX,
-      )
-      result[y * SHAPE_DESCRIPTOR_SIZE + x] = intensity[sourceY * texture.width + sourceX]
-    }
-  }
-  return {
-    descriptor: result,
-    contentCenter: [
-      totalWeight > 0 ? weightedX / totalWeight / texture.width : 0.5,
-      totalWeight > 0 ? weightedY / totalWeight / texture.height : 0.5,
-    ],
-    contentSpan: [spanX / texture.width, spanY / texture.height],
-  }
-}
+type TextureShape = FitTextureShapeFeatures
 
 function descriptorDistance(
   target: Float32Array,
@@ -761,7 +692,7 @@ function rankShapes(
   return emblems.map((asset, index) => {
     let descriptor = descriptors.get(asset.assetSha256)
     if (!descriptor) {
-      descriptor = textureShapeDescriptor(asset.texture)
+      descriptor = asset.shapeFeatures ?? computeFitTextureShapeFeatures(asset.texture)
       descriptors.set(asset.assetSha256, descriptor)
     }
     let best: ShapeMatch | null = null
@@ -1422,7 +1353,7 @@ function paintWithNativeTiles(
   const tiles = resumeCheckpoint
     ? resumeCheckpoint.tiles.map((tile) => ({ ...tile, color: [...tile.color] as ByteRgb }))
     : nativePaintTiles(target, initial.candidate.rendered, remaining).slice(0, remaining)
-  const shape = textureShapeDescriptor(brush.texture)
+  const shape = brush.shapeFeatures ?? computeFitTextureShapeFeatures(brush.texture)
   // The CPU reference renderer clips geometry at normalized instance bounds
   // and samples output pixel centers. Exact nominal coverage (factor 1) is
   // therefore the smallest proven crack-free footprint at every resolution;
@@ -1592,7 +1523,7 @@ function refinePaintedStateAtEdgeHotspots(
   // strictly improving slots unused in portrait fits.
   const maximumLayers = maxLayers - initial.selectedAssets.length
   if (maximumLayers <= 0) return state
-  const shape = textureShapeDescriptor(brush.texture)
+  const shape = brush.shapeFeatures ?? computeFitTextureShapeFeatures(brush.texture)
   const patchSizes = [[1, 1], [2, 1], [1, 2], [2, 2], [3, 1], [1, 3]] as const
   const coverageFactors = [1, 1.04] as const
   // Edge-search breadth is computational work, not a hidden layer clamp.
@@ -1739,7 +1670,7 @@ function refinePaintedStateAtHighResolution(
     remaining,
   ).slice(0, remaining)
   if (!tiles.length) return initial
-  const shape = textureShapeDescriptor(brush.texture)
+  const shape = brush.shapeFeatures ?? computeFitTextureShapeFeatures(brush.texture)
   const coverageFactors = [1, 1.04] as const
   const total = Math.max(1, tiles.length * (coverageFactors.length + 1))
   let completed = 0
@@ -2665,6 +2596,11 @@ export function fitImageToCoatOfArms(
       evaluatedCandidates: evaluated.value,
       patternAssets: patterns.length,
       emblemAssets: emblems.length,
+      shapeFeatureIndex: {
+        contract: 'ck3-coa-shape-features-v1',
+        indexedAssets: [...patterns, ...emblems].filter((item) => item.shapeFeatures).length,
+        fallbackAssets: [...patterns, ...emblems].filter((item) => !item.shapeFeatures).length,
+      },
       layerBudget: maxLayers,
       logicalLayers,
       coloredEmblemBlocks: best.coatOfArms.coloredEmblems.length,

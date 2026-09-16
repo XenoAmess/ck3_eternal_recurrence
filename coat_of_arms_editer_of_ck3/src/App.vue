@@ -82,6 +82,7 @@ import { translateRuntimeText, useUiI18n, type UiLocale } from './i18n'
 
 const { locale, setLocale, t } = useUiI18n()
 const elementPlusLocale = computed(() => locale.value === 'en' ? elementEn : elementZhCn)
+const buildVersion = `${__COA_BUILD_TIMESTAMP__} · ${__COA_GIT_HASH__}`
 
 function chooseLocale(value: string | number | boolean | undefined) {
   if (value === 'zh-CN' || value === 'en') setLocale(value as UiLocale)
@@ -1483,10 +1484,20 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       const indexed = await readCachedWebFitIndex(loadedAssetPack.value)
       patternCandidates = indexed
         .filter((item) => item.entry.kind === 'pattern')
-        .map((item) => ({ name: item.entry.name, assetSha256: item.entry.asset_sha256, texture: item.texture }))
+        .map((item) => ({
+          name: item.entry.name,
+          assetSha256: item.entry.asset_sha256,
+          texture: item.texture,
+          shapeFeatures: item.shapeFeatures,
+        }))
       emblemCandidates = indexed
         .filter((item) => item.entry.kind === 'colored_emblem')
-        .map((item) => ({ name: item.entry.name, assetSha256: item.entry.asset_sha256, texture: item.texture }))
+        .map((item) => ({
+          name: item.entry.name,
+          assetSha256: item.entry.asset_sha256,
+          texture: item.texture,
+          shapeFeatures: item.shapeFeatures,
+        }))
     } else {
       [patternCandidates, emblemCandidates] = await Promise.all([
         Promise.all(patterns.map(toCandidate)),
@@ -1637,6 +1648,14 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
         fourCC: item.texture.fourCC,
         pixels: new Uint8ClampedArray(item.texture.pixels),
       },
+      shapeFeatures: item.shapeFeatures ? {
+        ...item.shapeFeatures,
+        contentBounds: [...item.shapeFeatures.contentBounds],
+        contentCenter: [...item.shapeFeatures.contentCenter],
+        contentSpan: [...item.shapeFeatures.contentSpan],
+        channelEnergy: [...item.shapeFeatures.channelEnergy],
+        descriptor: new Float32Array(item.shapeFeatures.descriptor),
+      } : undefined,
     }))
     const request: FitWorkerStartRequest = {
       protocol: FIT_WORKER_PROTOCOL,
@@ -1799,6 +1818,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <p class="subtitle">{{ t('appSubtitle') }}</p>
       </div>
       <div class="top-actions">
+        <el-tag effect="plain" data-testid="page-version">{{ t('pageVersion', { version: buildVersion }) }}</el-tag>
         <el-tag :type="loadedAssetPack ? 'success' : 'warning'" effect="plain">
           {{ loadedAssetPack ? t('standaloneBound') : t('standaloneWaiting') }}
         </el-tag>
@@ -1926,6 +1946,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               <div><dt>{{ t('colorLoss') }}</dt><dd>{{ fitResult.metrics.colorLoss.toFixed(5) }}</dd></div>
               <div><dt>{{ t('edgeLoss') }}</dt><dd>{{ fitResult.metrics.edgeLoss.toFixed(5) }}</dd></div>
               <div><dt>{{ t('candidates') }}</dt><dd>{{ fitResult.provenance.evaluatedCandidates }}</dd></div>
+              <div><dt>{{ t('shapeFeatureIndex') }}</dt><dd>{{ fitResult.provenance.shapeFeatureIndex.indexedAssets }} / {{ fitResult.provenance.shapeFeatureIndex.indexedAssets + fitResult.provenance.shapeFeatureIndex.fallbackAssets }}</dd></div>
               <div><dt>{{ t('userBudget') }}</dt><dd>{{ t('drawingInstances', { count: fitResult.provenance.layerBudget }) }}</dd></div>
               <div><dt>{{ t('actualInstances') }}</dt><dd>{{ fitResult.provenance.drawnInstances }}</dd></div>
               <div><dt>{{ t('logicalLayers') }}</dt><dd>{{ fitResult.provenance.logicalLayers }}</dd></div>

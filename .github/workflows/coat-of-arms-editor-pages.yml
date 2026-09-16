@@ -66,6 +66,7 @@ jobs:
         env:
           VITE_BASE_PATH: "/"
           VITE_COA_CACHE_VERSION: "${{ github.sha }}"
+          VITE_COA_GIT_HASH: "${{ github.sha }}"
           VITE_DISABLE_SERVICE_WORKER: "true"
 
       - name: Verify zero-backend production bundle
@@ -99,6 +100,7 @@ jobs:
         env:
           VITE_BASE_PATH: "/"
           VITE_COA_CACHE_VERSION: "${{ github.sha }}"
+          VITE_COA_GIT_HASH: "${{ github.sha }}"
 
       - name: Run service worker offline acceptance
         run: pnpm exec playwright test e2e/service-worker-offline.spec.ts
@@ -110,6 +112,7 @@ jobs:
         env:
           VITE_BASE_PATH: "${{ steps.pages.outputs.base_path }}/coat_of_arms_editer_of_ck3/"
           VITE_COA_CACHE_VERSION: "${{ github.sha }}"
+          VITE_COA_GIT_HASH: "${{ github.sha }}"
 
       - name: Stage and verify nested Pages artifact
         run: |

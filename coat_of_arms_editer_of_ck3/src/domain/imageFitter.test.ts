@@ -13,6 +13,7 @@ import {
   type ImageFitProgress,
 } from './imageFitter'
 import { renderCoatOfArms } from './renderer'
+import { computeFitTextureShapeFeatures } from './shapeFeatures'
 import type { CoatOfArms } from './types'
 
 const texture = (name: 'solid' | 'split' | 'square' | 'neutralBlock'): DecodedDds => {
@@ -196,11 +197,17 @@ describe('browser image fitter', () => {
     }, { pattern: split, coloredEmblems: {} }, {}, size)
     expect(target).not.toBeNull()
     const patterns = [candidate('solid.dds', texture('solid')), candidate('split.dds', split)]
+    patterns[0].shapeFeatures = computeFitTextureShapeFeatures(patterns[0].texture)
     const first = fitImageToCoatOfArms(asImage(target!.pixels, size), patterns, [], { resolution: 32 })
     const second = fitImageToCoatOfArms(asImage(target!.pixels, size), patterns, [], { resolution: 32 })
     expect(first.coatOfArms.pattern).toBe('split.dds')
     expect(second.coatOfArms).toEqual(first.coatOfArms)
     expect(second.metrics).toEqual(first.metrics)
+    expect(first.provenance.shapeFeatureIndex).toEqual({
+      contract: 'ck3-coa-shape-features-v1',
+      indexedAssets: 1,
+      fallbackAssets: 1,
+    })
   })
 
   it('uses a batch scorer for background selection only after CPU-reference agreement', () => {

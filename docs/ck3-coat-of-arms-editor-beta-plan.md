@@ -144,6 +144,13 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 - 大预算路径从单一 `ce_block_02` 扩为矩形、圆、楔形和语义 emblem shortlist 的混合画笔；加入曲线感知分区和局部 replacement。
 - 预计算透明边界、轮廓、通道能量等 feature 到 fit index；输出 1–3 个质量/复杂度 Pareto 候选。
 
+当前状态：fit-index v2 的预计算部分已实现并通过独立 pack verifier。内置 exact 1.19.0.6 pack 保持原 6,631,424-byte RGBA atlas
+逐字节不变，新增 2,266,632-byte、SHA-256 `76429584EE906D7E0B2AEA4163FF2ABF690E6254571CB267CE281B402063DC26`
+的定长特征 sidecar；1619 项均带透明内容边界、质心/跨度、alpha/RGB 通道能量、轮廓能量及 18×18 描述符并传入 Worker。
+旧 v1 pack 继续在浏览器内确定性计算同一特征，不产生网络或后端依赖。合同与验证见
+[`coat-of-arms-fit-index-v2.md`](coat-of-arms-fit-index-v2.md)。Pareto 候选已有 1–3 项 UI/支配关系基础设施，但仍需把新的
+fit-index 口径跑入 hunter/用户图质量候选并完成新的浏览器质量证据，故 WP3 继续保持 `in_progress`。
+
 退出条件：hunter v4/v5 的总损失不劣化、边缘损失严格优于 `0.04304`，且资源清单证明不再退化为无条件的单一矩形铺色器。
 
 ### WP4：WebGL2 批量搜索与 10,000 层压力路径（P1，2–4 工程日）
