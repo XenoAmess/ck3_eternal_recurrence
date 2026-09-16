@@ -11,6 +11,7 @@ export interface CoatOfArmsComparisonCandidate {
   metrics?: ImageFitMetrics
   metricContract?: string
   previewUrl?: string
+  automaticFitIndex?: number
 }
 
 export type CandidateDominance = 'non-dominated' | 'dominated' | 'unmeasured'

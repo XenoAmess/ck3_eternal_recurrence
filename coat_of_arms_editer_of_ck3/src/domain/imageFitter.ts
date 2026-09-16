@@ -137,9 +137,18 @@ export interface NativeTileSeamValidation {
   metrics: NativeTileSeamMetric[]
 }
 
+export interface ImageFitParetoCandidate {
+  coatOfArms: CoatOfArms
+  metrics: ImageFitMetrics
+  reconstructionMode: ImageFitReconstructionMode
+  textureNames: string[]
+  multiscaleMetrics: MultiscaleFitMetric[]
+}
+
 export interface ImageFitResult {
   coatOfArms: CoatOfArms
   metrics: ImageFitMetrics
+  paretoCandidates: ImageFitParetoCandidate[]
   provenance: {
     algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge'
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
@@ -229,6 +238,74 @@ interface SearchState {
   layerLosses: number[]
   reconstructionMode: ImageFitResult['provenance']['reconstructionMode']
   paintPlacements: NativePaintPlacement[]
+}
+
+export interface FitCandidatePoint {
+  totalLoss: number
+  edgeLoss: number
+  drawnInstances: number
+  stableKey: string
+}
+
+const MAX_PARETO_FIT_CANDIDATES = 3
+
+/**
+ * Returns a small, deterministic quality/edge/complexity Pareto set. The
+ * first item is the lowest-loss candidate used as the editor's active result;
+ * the remaining slots preserve the lowest-complexity and lowest-edge extrema
+ * when those are distinct. No dominated or synthetic point is returned.
+ */
+export function selectParetoFitCandidateIndexes(
+  points: readonly FitCandidatePoint[],
+  maximum = MAX_PARETO_FIT_CANDIDATES,
+): number[] {
+  const limit = Math.max(0, Math.min(MAX_PARETO_FIT_CANDIDATES, Math.floor(maximum)))
+  if (limit === 0) return []
+  const uniqueIndexes = points
+    .map((_, index) => index)
+    .filter((index, position, indexes) => (
+      indexes.findIndex((candidate) => points[candidate].stableKey === points[index].stableKey) === position
+    ))
+  const front = uniqueIndexes.filter((index) => !uniqueIndexes.some((otherIndex) => {
+    if (index === otherIndex) return false
+    const point = points[index]
+    const other = points[otherIndex]
+    const noWorse = other.totalLoss <= point.totalLoss
+      && other.edgeLoss <= point.edgeLoss
+      && other.drawnInstances <= point.drawnInstances
+    const strictlyBetter = other.totalLoss < point.totalLoss
+      || other.edgeLoss < point.edgeLoss
+      || other.drawnInstances < point.drawnInstances
+    return noWorse && strictlyBetter
+  }))
+  const compareQuality = (left: number, right: number) => (
+    points[left].totalLoss - points[right].totalLoss
+    || points[left].edgeLoss - points[right].edgeLoss
+    || points[left].drawnInstances - points[right].drawnInstances
+    || points[left].stableKey.localeCompare(points[right].stableKey)
+  )
+  const byQuality = [...front].sort(compareQuality)
+  const byComplexity = [...front].sort((left, right) => (
+    points[left].drawnInstances - points[right].drawnInstances
+    || compareQuality(left, right)
+  ))
+  const byEdge = [...front].sort((left, right) => (
+    points[left].edgeLoss - points[right].edgeLoss
+    || compareQuality(left, right)
+  ))
+  const selected: number[] = []
+  for (const index of [byQuality[0], byComplexity[0], byEdge[0], ...byQuality]) {
+    if (index !== undefined && !selected.includes(index)) selected.push(index)
+    if (selected.length === limit) break
+  }
+  return selected
+}
+
+function stateDrawnInstanceCount(state: SearchState): number {
+  return state.candidate.coatOfArms.coloredEmblems.reduce(
+    (total, emblem) => total + emblem.instances.length,
+    0,
+  )
 }
 
 type ByteRgb = [number, number, number]
@@ -2537,27 +2614,48 @@ export function fitImageToCoatOfArms(
         && state.candidate.edgeLoss <= nativePaintBaseline!.candidate.edgeLoss + 1e-12
       ))
     : finalists
-  const winner = nonRegressingFinalists.sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
-    || (candidateMultiscaleMetrics.get(left)?.at(-1)?.edgeLoss ?? Number.POSITIVE_INFINITY)
-      - (candidateMultiscaleMetrics.get(right)?.at(-1)?.edgeLoss ?? Number.POSITIVE_INFINITY)
-    || left.candidate.key.localeCompare(right.candidate.key))[0]
+  const paretoIndexes = selectParetoFitCandidateIndexes(nonRegressingFinalists.map((state) => ({
+    totalLoss: state.candidate.totalLoss,
+    edgeLoss: state.candidate.edgeLoss,
+    drawnInstances: stateDrawnInstanceCount(state),
+    stableKey: state.candidate.key,
+  })))
+  const paretoStates = paretoIndexes.map((index) => nonRegressingFinalists[index])
+  const winner = paretoStates[0]
   const best = winner.candidate
-  const nativeCoatOfArms = encodeNativeDepthOrder(best.coatOfArms)
-  const nativeRendered = renderCoatOfArms(
-    nativeCoatOfArms,
-    {
-      pattern: winner.patternAsset.texture,
-      coloredEmblems: emblemTextureMap,
-      surfaceMask,
-    },
-    namedColors,
-    target.width,
-  )
-  if (
-    !nativeRendered
-    || nativeRendered.pixels.length !== best.rendered.pixels.length
-    || nativeRendered.pixels.some((value, index) => value !== best.rendered.pixels[index])
-  ) throw new Error('CK3 原生 depth 编码没有保持拟合器的最终构图')
+  const paretoCandidates: ImageFitParetoCandidate[] = paretoStates.map((state) => {
+    const nativeCandidate = encodeNativeDepthOrder(state.candidate.coatOfArms)
+    const nativeRendered = renderCoatOfArms(
+      nativeCandidate,
+      {
+        pattern: state.patternAsset.texture,
+        coloredEmblems: emblemTextureMap,
+        surfaceMask,
+      },
+      namedColors,
+      target.width,
+    )
+    if (
+      !nativeRendered
+      || nativeRendered.pixels.length !== state.candidate.rendered.pixels.length
+      || nativeRendered.pixels.some((value, index) => value !== state.candidate.rendered.pixels[index])
+    ) throw new Error('CK3 原生 depth 编码没有保持 Pareto 候选的最终构图')
+    return {
+      coatOfArms: nativeCandidate,
+      metrics: {
+        colorLoss: state.candidate.colorLoss,
+        edgeLoss: state.candidate.edgeLoss,
+        totalLoss: state.candidate.totalLoss,
+        relativeImprovement: initialLoss <= 1e-12
+          ? 0
+          : Math.max(0, (initialLoss - state.candidate.totalLoss) / initialLoss),
+      },
+      reconstructionMode: state.reconstructionMode,
+      textureNames: [...new Set(state.selectedAssets.map((item) => item.name))],
+      multiscaleMetrics: candidateMultiscaleMetrics.get(state) ?? [],
+    }
+  })
+  const nativeCoatOfArms = paretoCandidates[0].coatOfArms
   const selectedEmblemAssets = winner.selectedAssets
   const logicalLayers = best.coatOfArms.coloredEmblems.length + best.coatOfArms.texturedEmblems.length
   const drawnInstances = best.coatOfArms.coloredEmblems.reduce(
@@ -2579,6 +2677,7 @@ export function fitImageToCoatOfArms(
       totalLoss: best.totalLoss,
       relativeImprovement: improvement,
     },
+    paretoCandidates,
     provenance: {
       algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
       searchBackend: batchSearch.status === 'active'

@@ -8,7 +8,7 @@
 预算上限；每个候选仍可包含任意安全整数预算下实际生成的完整实例模型。
 
 每个候选绑定确定性 CK3 源码、逻辑图层、`colored_emblem` 块、实际绘制实例、UTF-8 bytes、行数和当前浏览器预览。拟合结束时自动
-保存当前候选；手工编辑也可显式保存。载入候选时从保存的完整源码重新解析，而不是从卡片摘要或预览图恢复。
+替换为算法返回的 1–3 个真实非支配完整构图；手工编辑也可显式保存。载入候选时从保存的完整源码重新解析，而不是从卡片摘要或预览图恢复。
 
 损失比较采用 fail-closed 合同：只有原始输入 SHA-256、评分器版本、renderer 版本、评分分辨率和 surface-mask 开关全部相同，才在
 总损失、边缘损失、绘制实例数三维上标记“同合同下非支配/被支配”。不同合同互不支配；没有精确拟合证据的手工快照只显示“未绑定
@@ -18,8 +18,9 @@
 
 - `comparisonCandidates.test.ts`：4 项通过，覆盖三候选合同、三维支配、无指标和跨合同隔离。
 - `candidate-comparison.spec.ts`：保存 3 个不同完整源码、阻止第 4 个对比槽、重新载入第 1 个、去重刷新、删除，并验证非 GET 请求为 0。
-- `standalone-image-fit.spec.ts`：真实浏览器拟合完成后自动出现带总/边缘损失的“同合同下非支配”候选，生产路径零 `/api/` 请求。
-- 全量 Vitest：15 个文件、74 项通过；生产 build 通过。
+- `imageFitter.test.ts`：三维 Pareto 选择去重、排除被支配项，并验证返回完整模型与活动模型/指标一致。
+- `standalone-image-fit.spec.ts`：合成浏览器拟合实际输出 2 个带总/边缘损失和独立预览的非支配候选，生产路径零 `/api/` 请求。
+- 全量 Vitest：18 个文件、83 项通过；生产 build 通过。
 
 复现命令（`coat_of_arms_editer_of_ck3/`）：
 
@@ -31,5 +32,5 @@ pnpm test
 pnpm build
 ```
 
-本子门禁不等于 WP3 已输出多个有质量收益的 hunter Pareto artifact；当前 hunter 仍只有一个晋级候选。它也不替代 WP4 的拟合
-pause/resume/checkpoint 或 GPU 批量搜索证据。
+本子门禁不等于 WP3 已输出多个有质量收益的 hunter Pareto artifact；hunter 与七图用户语料仍需按新合同重跑。它也不替代 WP4 的拟合
+pause/resume/checkpoint 或 GPU 批量搜索证据。完整选择合同见 `coat-of-arms-pareto-candidates.md`。

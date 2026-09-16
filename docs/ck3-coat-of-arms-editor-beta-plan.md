@@ -148,8 +148,10 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 逐字节不变，新增 2,266,632-byte、SHA-256 `76429584EE906D7E0B2AEA4163FF2ABF690E6254571CB267CE281B402063DC26`
 的定长特征 sidecar；1619 项均带透明内容边界、质心/跨度、alpha/RGB 通道能量、轮廓能量及 18×18 描述符并传入 Worker。
 旧 v1 pack 继续在浏览器内确定性计算同一特征，不产生网络或后端依赖。合同与验证见
-[`coat-of-arms-fit-index-v2.md`](coat-of-arms-fit-index-v2.md)。Pareto 候选已有 1–3 项 UI/支配关系基础设施，但仍需把新的
-fit-index 口径跑入 hunter/用户图质量候选并完成新的浏览器质量证据，故 WP3 继续保持 `in_progress`。
+[`coat-of-arms-fit-index-v2.md`](coat-of-arms-fit-index-v2.md)。拟合器也已返回 1–3 个实际完整、同合同非支配的质量/边缘/实例数候选；
+每项经 depth 编码逐像素门禁，网页自动生成独立源码、计数与预览。合成浏览器用例实际产生 2 项，详见
+[`coat-of-arms-pareto-candidates.md`](coat-of-arms-pareto-candidates.md)。仍需把新合同跑入 hunter/七图用户语料并记录分布，故 WP3
+继续保持 `in_progress`。
 
 退出条件：hunter v4/v5 的总损失不劣化、边缘损失严格优于 `0.04304`，且资源清单证明不再退化为无条件的单一矩形铺色器。
 

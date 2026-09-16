@@ -396,6 +396,12 @@ function currentFitMetrics(): { metrics: ImageFitMetrics, metricContract: string
   return metricContract ? { metrics: { ...result.metrics }, metricContract } : undefined
 }
 
+function candidateDisplayName(candidate: CoatOfArmsComparisonCandidate): string {
+  return candidate.automaticFitIndex === undefined
+    ? uiText(candidate.name)
+    : t('fitCandidateName', { index: candidate.automaticFitIndex + 1 })
+}
+
 function captureComparisonCandidate(
   name?: string,
   fitEvidence = currentFitMetrics(),
@@ -1551,14 +1557,17 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       source.value = serializeCoatOfArms(result.coatOfArms)
       diagnostics.value = []
       selectedEmblem.value = 0
-      const selectedPatternEntry = patterns.find((item) => item.name === result.coatOfArms.pattern)
-      const selectedEmblemNames = new Set(result.coatOfArms.coloredEmblems.map((item) => item.texture))
+      const selectedPatternNames = new Set(result.paretoCandidates.map((item) => item.coatOfArms.pattern))
+      const selectedPatternEntries = patterns.filter((item) => selectedPatternNames.has(item.name))
+      const selectedEmblemNames = new Set(result.paretoCandidates.flatMap((candidate) => (
+        candidate.coatOfArms.coloredEmblems.map((item) => item.texture)
+      )))
       const selectedEmblemEntries = emblems.filter((item) => selectedEmblemNames.has(item.name))
-      let selectedPatternTexture: DecodedDds | undefined
+      let selectedFullPatterns: (readonly [string, DecodedDds])[]
       let selectedFullEmblems: (readonly [string, DecodedDds])[]
       try {
-        [selectedPatternTexture, selectedFullEmblems] = await Promise.all([
-          selectedPatternEntry ? readPackTexture(selectedPatternEntry) : Promise.resolve(undefined),
+        [selectedFullPatterns, selectedFullEmblems] = await Promise.all([
+          Promise.all(selectedPatternEntries.map(async (item) => [item.name, await readPackTexture(item)] as const)),
           Promise.all(selectedEmblemEntries.map(async (item) => [item.name, await readPackTexture(item)] as const)),
         ])
       } catch (error) {
@@ -1578,12 +1587,43 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       clearStoredFitCheckpoint()
       fitProgressPercent.value = 100
       fitProgressLabel.value = `完成 · 选中 ${result.provenance.selectedLayers} 层`
+      const selectedPatternTextures = Object.fromEntries(selectedFullPatterns)
+      const selectedPatternTexture = selectedPatternTextures[result.coatOfArms.pattern]
       patternTexture.value = selectedPatternTexture
       patternPreviewUrl.value = selectedPatternTexture ? decodedDdsToDataUrl(selectedPatternTexture) : ''
       emblemTextures.value = Object.fromEntries(selectedFullEmblems)
       emblemPreviewUrls.value = Object.fromEntries(
         Object.entries(emblemTextures.value).map(([name, decoded]) => [name, decodedDdsToDataUrl(decoded)]),
       )
+      const metricContract = fitMetricContract(result)
+      if (metricContract) {
+        comparisonCandidates.value = result.paretoCandidates.map((candidate, index) => {
+          const candidateSource = serializeCoatOfArms(candidate.coatOfArms)
+          const stats = coatOfArmsDocumentStats(candidate.coatOfArms, candidateSource)
+          const candidateRendered = stats.drawnInstances > 2_048
+            ? null
+            : renderCoatOfArms(
+                candidate.coatOfArms,
+                {
+                  pattern: selectedPatternTextures[candidate.coatOfArms.pattern],
+                  coloredEmblems: emblemTextures.value,
+                  surfaceMask: surfaceMask.value,
+                },
+                shaderNamedColors.value,
+                result.provenance.resolution,
+              )
+          return {
+            id: `candidate-${++comparisonCandidateSequence}`,
+            name: `拟合候选 ${index + 1}`,
+            automaticFitIndex: index,
+            source: candidateSource,
+            stats,
+            metrics: { ...candidate.metrics },
+            metricContract,
+            previewUrl: candidateRendered ? renderedCoatOfArmsToDataUrl(candidateRendered) : undefined,
+          }
+        })
+      }
       const normalizedTarget = resizeFitImage(target, result.provenance.resolution)
       const rendered = renderCoatOfArms(
         result.coatOfArms,
@@ -1613,14 +1653,6 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
         ? `WebGL2 批量搜索 ${result.provenance.batchSearch.candidates} 候选 + CPU reference`
         : `CPU reference · WebGL2 批量搜索 ${result.provenance.batchSearch.status}`
       fitStatus.value = `完成 · ${reconstructionMode} · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · 停止：${fitTerminationLabels[result.provenance.terminationReason]} · ${batchStatus}${fitWebGlScore.value ? ' · 最终 RGBA8 交叉评分' : ''}`
-      const metricContract = fitMetricContract(result)
-      if (metricContract) {
-        captureComparisonCandidate(
-          `拟合 ${result.provenance.drawnInstances.toLocaleString()} 实例`,
-          { metrics: result.metrics, metricContract },
-          false,
-        )
-      }
       ElMessage.success('多层原生元素构图已载入结构化编辑器，可继续调整并复制代码')
     }
     worker.onerror = (event) => {
@@ -2164,13 +2196,13 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               <div v-if="candidate.previewUrl" class="candidate-preview-frame">
                 <img
                   :src="candidate.previewUrl"
-                  :alt="candidate.name"
+                  :alt="candidateDisplayName(candidate)"
                   class="candidate-shield-preview"
                   :data-testid="candidate.current ? 'current-candidate-preview' : undefined"
                 />
               </div>
               <div v-else class="candidate-preview-placeholder">{{ t('previewDeferred') }}</div>
-              <strong>{{ candidate.name }}</strong>
+              <strong>{{ candidateDisplayName(candidate) }}</strong>
               <span>{{ t('candidateStats', { instances: candidate.stats.drawnInstances.toLocaleString(), blocks: candidate.stats.coloredEmblemBlocks.toLocaleString(), bytes: candidate.stats.utf8Bytes.toLocaleString() }) }}</span>
               <template v-if="candidate.metrics">
                 <span>{{ t('candidateLosses', { total: candidate.metrics.totalLoss.toFixed(5), edge: candidate.metrics.edgeLoss.toFixed(5) }) }}</span>

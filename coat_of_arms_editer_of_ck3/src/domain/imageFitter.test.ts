@@ -7,6 +7,7 @@ import {
   passesNativeShapeMaterialImprovementGate,
   resizeFitImage,
   selectMixedNativeShapeCandidateNames,
+  selectParetoFitCandidateIndexes,
   type FitImage,
   type FitTextureCandidate,
   type ImageFitCheckpoint,
@@ -160,6 +161,23 @@ const seamLeakMetrics = (
 }
 
 describe('browser image fitter', () => {
+  it('returns at most three real non-dominated quality/complexity points', () => {
+    const points = [
+      { stableKey: 'best-quality', totalLoss: 0.08, edgeLoss: 0.09, drawnInstances: 24 },
+      { stableKey: 'best-complexity', totalLoss: 0.12, edgeLoss: 0.11, drawnInstances: 4 },
+      { stableKey: 'best-edge', totalLoss: 0.10, edgeLoss: 0.06, drawnInstances: 18 },
+      { stableKey: 'dominated', totalLoss: 0.13, edgeLoss: 0.12, drawnInstances: 25 },
+      { stableKey: 'best-quality', totalLoss: 0.08, edgeLoss: 0.09, drawnInstances: 24 },
+    ]
+    const selected = selectParetoFitCandidateIndexes(points)
+    expect(selected.map((index) => points[index].stableKey)).toEqual([
+      'best-quality', 'best-complexity', 'best-edge',
+    ])
+    expect(selected).toHaveLength(3)
+    expect(selected).not.toContain(3)
+    expect(selected).not.toContain(4)
+  })
+
   it('rejects the measured browser-only shape gain and accepts a material mip-aware gain', () => {
     expect(passesNativeShapeMaterialImprovementGate(
       { totalLoss: 0.052995, edgeLoss: 0.095896 },
@@ -455,6 +473,34 @@ describe('browser image fitter', () => {
       expect(result.provenance.layerLosses[index]).toBeLessThan(result.provenance.layerLosses[index - 1])
     }
     expect(result.metrics.relativeImprovement).toBeGreaterThan(0.5)
+    expect(result.paretoCandidates.length).toBeGreaterThanOrEqual(1)
+    expect(result.paretoCandidates.length).toBeLessThanOrEqual(3)
+    expect(result.paretoCandidates[0].coatOfArms).toEqual(result.coatOfArms)
+    expect(result.paretoCandidates[0].metrics).toEqual(result.metrics)
+    for (const candidate of result.paretoCandidates) {
+      const candidateInstances = candidate.coatOfArms.coloredEmblems.reduce(
+        (total, emblem) => total + emblem.instances.length,
+        0,
+      )
+      expect(candidateInstances).toBeLessThanOrEqual(128)
+      expect(result.paretoCandidates.some((other) => (
+        other !== candidate
+        && other.metrics.totalLoss <= candidate.metrics.totalLoss
+        && other.metrics.edgeLoss <= candidate.metrics.edgeLoss
+        && other.coatOfArms.coloredEmblems.reduce(
+          (total, emblem) => total + emblem.instances.length,
+          0,
+        ) <= candidateInstances
+        && (
+          other.metrics.totalLoss < candidate.metrics.totalLoss
+          || other.metrics.edgeLoss < candidate.metrics.edgeLoss
+          || other.coatOfArms.coloredEmblems.reduce(
+            (total, emblem) => total + emblem.instances.length,
+            0,
+          ) < candidateInstances
+        )
+      ))).toBe(false)
+    }
   })
 
   it('uses the highest supplied pyramid level for non-regressing local detail repair', () => {
