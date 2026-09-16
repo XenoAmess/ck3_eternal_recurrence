@@ -44,8 +44,9 @@ R26 在 Steam 离线、exact `1.19.0.6` 会话中启用了两个有序目录 mod
 
 这组相反证据把边界定位为：当前 hook 覆盖根 publisher 路径，未覆盖实际 DLC/mod 的 PhysFS mount 路径。四条记录不能用于判断
 mod winner、`replace_path` 或 registry provenance。300 秒冷启动尚未到 main menu，因此 runner 没有执行原定的显式
-`ck3_get_bridge_diagnostics` 调用；下一版 runner 要在 capability ready 后立刻保存该工具结果，同时开发独立的默认关闭、只读、有界
-PhysFS mount observer。完整证据见
+`ck3_get_bridge_diagnostics` 调用。当前 runner 已改为在 capability ready 后、等待 frontend route 之前立刻保存该工具结果，且所有后续
+RED 回执都会携带该诊断；这项传输修复的单元门禁为 `18/18`。原生直调仍待下一次有意义的 PhysFS observer 会话一起验收，避免只为
+重复已知四行根 publisher 而重启 CK3。接下来继续开发独立的默认关闭、只读、有界 PhysFS mount observer。完整证据见
 [vfs-mount-order-native-r26](coat-of-arms-fit-artifacts/vfs-mount-order-native-r26/README.md)。
 
 ## 已通过门禁

@@ -543,6 +543,22 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             reversed_result["checks"]["fixture_mount_order_matches_dlc_load"]
         )
 
+    def test_vfs_mount_order_diagnostics_run_before_frontend_route_wait(self) -> None:
+        source = RUNNER.read_text(encoding="utf-8")
+        sequence = source[source.index("async def _mcp_sequence(") :]
+
+        capture = sequence.index(
+            "vfs_mount_order_result = await _collect_vfs_mount_order_diagnostics("
+        )
+        route_wait = sequence.index(
+            "before_call: dict[str, object] | None = None"
+        )
+        self.assertLess(capture, route_wait)
+        self.assertIn(
+            'result["vfs_mount_order_diagnostics"] = vfs_mount_order_result',
+            sequence[:capture],
+        )
+
     def test_custom_mode_collector_records_materialized_pattern_subtree(
         self,
     ) -> None:

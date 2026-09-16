@@ -3228,6 +3228,7 @@ async def _mcp_sequence(
         "omitted": 0,
         "last_call": None,
     }
+    vfs_mount_order_result: dict[str, object] | None = None
 
     def record(call: dict[str, object]) -> None:
         call_summary["total"] = int(call_summary["total"]) + 1
@@ -3238,7 +3239,7 @@ async def _mcp_sequence(
             call_summary["omitted"] = int(call_summary["omitted"]) + 1
 
     def red(reason: str, **evidence: object) -> dict[str, object]:
-        return {
+        result = {
             "mcp_sdk": "official-python-client",
             "calls": calls,
             "call_summary": call_summary,
@@ -3247,6 +3248,9 @@ async def _mcp_sequence(
             "ok": False,
             **evidence,
         }
+        if vfs_mount_order_diagnostics:
+            result["vfs_mount_order_diagnostics"] = vfs_mount_order_result
+        return result
 
     async with Client(create_server(driver)) as client:
         listed = await client.list_tools()
@@ -3574,6 +3578,15 @@ async def _mcp_sequence(
                 last_capability=_structured(capability_call or {}),
             )
 
+        # Mount publication happens during cold startup, before the frontend
+        # route is necessarily available. Capture the explicit diagnostics tool
+        # as soon as the bridge contract is ready so a slow/failed route cannot
+        # discard the bounded startup evidence.
+        if vfs_mount_order_diagnostics:
+            vfs_mount_order_result = await _collect_vfs_mount_order_diagnostics(
+                client, record
+            )
+
         before_call: dict[str, object] | None = None
         before: dict[str, object] = {}
         while time.monotonic() < deadline:
@@ -3671,6 +3684,11 @@ async def _mcp_sequence(
                     checks["controlled_private_1066_start"] = (
                         private_start_flow.get("ok") is True
                     )
+            if vfs_mount_order_diagnostics:
+                checks["vfs_mount_order_diagnostics_complete"] = (
+                    isinstance(vfs_mount_order_result, dict)
+                    and vfs_mount_order_result.get("ok") is True
+                )
             return {
                 "mcp_sdk": "official-python-client",
                 "calls": calls,
@@ -3682,6 +3700,7 @@ async def _mcp_sequence(
                 "private_bookmarks_model_call": private_model_call,
                 "private_bookmarks_model": private_model,
                 "private_1066_start_flow": private_start_flow,
+                "vfs_mount_order_diagnostics": vfs_mount_order_result,
                 "tree_truncated": inspection.get("truncated"),
                 "read_only_after_new_game": not bookmarks_select_start_private,
                 "ok": all(checks.values()),
@@ -3988,19 +4007,10 @@ async def _mcp_sequence(
             checks["vfs_replace_path_evidence_complete"] = (
                 vfs_replace_path_result.get("ok") is True
             )
-        vfs_mount_order_result: dict[str, object] | None = None
         if vfs_mount_order_diagnostics:
-            if all(checks.values()):
-                vfs_mount_order_result = (
-                    await _collect_vfs_mount_order_diagnostics(client, record)
-                )
-            else:
-                vfs_mount_order_result = {
-                    "ok": False,
-                    "error": "route checks failed before VFS mount-order diagnostics",
-                }
             checks["vfs_mount_order_diagnostics_complete"] = (
-                vfs_mount_order_result.get("ok") is True
+                isinstance(vfs_mount_order_result, dict)
+                and vfs_mount_order_result.get("ok") is True
             )
         return {
             "mcp_sdk": "official-python-client",
