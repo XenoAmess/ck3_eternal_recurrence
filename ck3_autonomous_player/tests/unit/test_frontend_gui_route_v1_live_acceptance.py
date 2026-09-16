@@ -144,6 +144,9 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
                 for case in cases
             )
         )
+        self.assertTrue(
+            all(case["require_v1_bound_exceeded"] for case in cases)
+        )
 
     def test_single_reference_case_loader_reuses_calibrated_case_contract(self) -> None:
         module = _load_runner_module()
@@ -167,6 +170,35 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             loaded["preview_receipt"]["png_sha256"],
             hashlib.sha256(preview).hexdigest().upper(),
         )
+        self.assertFalse(loaded["require_v1_bound_exceeded"])
+
+    def test_source_size_contract_distinguishes_transport_and_reference_cases(
+        self,
+    ) -> None:
+        module = _load_runner_module()
+        bound = 128 * 1024
+
+        large_observations, large_checks = module._source_size_contract(
+            bound + 1,
+            bound + 2,
+            require_v1_bound_exceeded=True,
+        )
+        small_observations, small_checks = module._source_size_contract(
+            172,
+            214,
+            require_v1_bound_exceeded=False,
+        )
+        _, invalid_checks = module._source_size_contract(
+            172,
+            214,
+            require_v1_bound_exceeded=True,
+        )
+
+        self.assertTrue(all(large_checks.values()))
+        self.assertTrue(large_observations["input_exceeds_v1_bound"])
+        self.assertTrue(all(small_checks.values()))
+        self.assertFalse(small_observations["input_exceeds_v1_bound"])
+        self.assertFalse(all(invalid_checks.values()))
 
     def test_framebuffer_gate_and_crop_receipt_are_hash_bound(self) -> None:
         module = _load_runner_module()
@@ -448,6 +480,10 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         self.assertTrue(result["ok"])
         self.assertGreater(result["chunk_count"], 1)
         self.assertTrue(all(result["semantic_checks"].values()))
+        self.assertTrue(all(result["checks"].values()))
+        self.assertTrue(
+            result["size_observations"]["input_exceeds_v1_bound"]
+        )
         self.assertEqual(
             len(
                 [

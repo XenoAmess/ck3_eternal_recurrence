@@ -1266,6 +1266,35 @@ def _source_structure(source: str) -> dict[str, int]:
     }
 
 
+def _source_size_contract(
+    input_bytes: int,
+    native_copy_bytes: object,
+    *,
+    require_v1_bound_exceeded: bool,
+) -> tuple[dict[str, object], dict[str, bool]]:
+    input_exceeds = input_bytes > 128 * 1024
+    native_copy_exceeds = bool(
+        isinstance(native_copy_bytes, int)
+        and not isinstance(native_copy_bytes, bool)
+        and native_copy_bytes > 128 * 1024
+    )
+    observations: dict[str, object] = {
+        "requires_v1_bound_exceeded": require_v1_bound_exceeded,
+        "v1_bound_bytes": 128 * 1024,
+        "input_exceeds_v1_bound": input_exceeds,
+        "native_copy_exceeds_v1_bound": native_copy_exceeds,
+    }
+    checks = {
+        "input_size_contract": input_exceeds
+        if require_v1_bound_exceeded
+        else True,
+        "native_copy_size_contract": native_copy_exceeds
+        if require_v1_bound_exceeded
+        else True,
+    }
+    return observations, checks
+
+
 def _semantic_projection(source: str) -> dict[str, object]:
     flags = re.IGNORECASE | re.MULTILINE
 
@@ -1481,6 +1510,7 @@ def _load_picture_corpus(path: Path) -> list[dict[str, object]]:
                 "source_receipt": source_receipt,
                 "preview_base64": preview,
                 "preview_receipt": preview_receipt,
+                "require_v1_bound_exceeded": True,
             }
         )
     return cases
@@ -1504,6 +1534,7 @@ def _load_single_reference_case(path: Path) -> dict[str, object]:
         "source_receipt": source_receipt,
         "preview_base64": preview,
         "preview_receipt": preview_receipt,
+        "require_v1_bound_exceeded": False,
     }
 
 
@@ -2340,6 +2371,8 @@ async def _collect_large_source_roundtrip(
     source: str,
     receipt: dict[str, object],
     record: Any,
+    *,
+    require_v1_bound_exceeded: bool = True,
 ) -> dict[str, object]:
     capability_call = await _call(client, "ck3_get_capabilities")
     record(capability_call)
@@ -2481,8 +2514,13 @@ async def _collect_large_source_roundtrip(
         input_projection,
         output_projection,
     )
+    size_observations, size_checks = _source_size_contract(
+        len(payload),
+        exported.get("source_bytes"),
+        require_v1_bound_exceeded=require_v1_bound_exceeded,
+    )
     checks = {
-        "input_exceeds_v1_bound": len(payload) > 128 * 1024,
+        **size_checks,
         "begin_not_error": begin_call.get("is_error") is False,
         "begin_receiving": begun.get("status") == "receiving",
         "all_chunks_sent": all_chunks_sent,
@@ -2508,10 +2546,6 @@ async def _collect_large_source_roundtrip(
             export_call is not None
             and export_call.get("is_error") is False
             and exported.get("status") == "exported"
-        ),
-        "native_copy_exceeds_v1_bound": bool(
-            isinstance(exported.get("source_bytes"), int)
-            and exported["source_bytes"] > 128 * 1024
         ),
         "drawn_instance_count_preserved": bool(
             output_structure.get("instances") == input_structure["instances"]
@@ -2540,6 +2574,7 @@ async def _collect_large_source_roundtrip(
         "output_structure": output_structure,
         "output_semantic_projection": _projection_summary(output_projection),
         "semantic_checks": semantic_checks,
+        "size_observations": size_observations,
         "checks": checks,
     }
 
@@ -2766,13 +2801,21 @@ async def _collect_picture_corpus(
         source_receipt = value["source_receipt"]
         preview_base64 = value["preview_base64"]
         preview_receipt = value["preview_receipt"]
+        require_v1_bound_exceeded = value.get(
+            "require_v1_bound_exceeded", True
+        )
         assert isinstance(identifier, str)
         assert isinstance(source, str)
         assert isinstance(source_receipt, dict)
         assert isinstance(preview_base64, str)
         assert isinstance(preview_receipt, dict)
+        assert isinstance(require_v1_bound_exceeded, bool)
         roundtrip = await _collect_large_source_roundtrip(
-            client, source, source_receipt, record
+            client,
+            source,
+            source_receipt,
+            record,
+            require_v1_bound_exceeded=require_v1_bound_exceeded,
         )
         roundtrip_checks = roundtrip.get("checks")
         framebuffer_ready = bool(
@@ -2840,6 +2883,7 @@ async def _collect_picture_corpus(
                         source_label=f"{identifier}:native-copy",
                     ),
                     record,
+                    require_v1_bound_exceeded=require_v1_bound_exceeded,
                 )
                 reapply_checks = reapply_roundtrip.get("checks")
                 reapply_ready = bool(
