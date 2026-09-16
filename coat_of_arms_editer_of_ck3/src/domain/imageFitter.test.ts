@@ -5,6 +5,7 @@ import {
   fitImageToCoatOfArms,
   measureImageFitLosses,
   resizeFitImage,
+  selectMixedNativeShapeCandidateNames,
   type FitImage,
   type FitTextureCandidate,
   type ImageFitCheckpoint,
@@ -157,6 +158,22 @@ const seamLeakMetrics = (
 }
 
 describe('browser image fitter', () => {
+  it('keeps descriptor leaders and every available primitive family in the mixed shortlist', () => {
+    const ranked = [
+      'semantic-a.dds', 'semantic-b.dds', 'semantic-c.dds', 'semantic-d.dds',
+      'ce_triangle_mask.dds', 'ce_lozenge.dds', 'ce_circle.dds',
+      'ce_billet.dds', 'ce_block_02.dds', 'semantic-e.dds',
+    ]
+    const selected = selectMixedNativeShapeCandidateNames(ranked, 8)
+    expect(selected).toHaveLength(8)
+    expect(selected).toEqual(expect.arrayContaining([
+      'semantic-a.dds', 'semantic-b.dds', 'semantic-c.dds',
+      'ce_block_02.dds', 'ce_billet.dds', 'ce_circle.dds',
+      'ce_lozenge.dds', 'ce_triangle_mask.dds',
+    ]))
+    expect(selected).toEqual(ranked.filter((name) => selected.includes(name)))
+  })
+
   it('recovers a known two-color pattern deterministically', () => {
     const size = 32
     const split = texture('split')
@@ -557,6 +574,13 @@ describe('browser image fitter', () => {
     expect(hybrid!.textureNames).toEqual(expect.arrayContaining(['semantic-square.dds', 'ce_block_02.dds']))
     expect(hybrid!.totalLoss).toBeLessThan(purePaint!.totalLoss)
     expect(result.provenance.pyramidResolutions).toEqual([48])
+    expect(result.provenance.nativeShapeRefinement).toMatchObject({
+      requestedPasses: 3,
+      completedPasses: expect.any(Number),
+      evaluatedCandidates: expect.any(Number),
+    })
+    expect(result.provenance.nativeShapeRefinement.completedPasses).toBeGreaterThan(0)
+    expect(result.provenance.nativeShapeRefinement.evaluatedCandidates).toBeGreaterThan(0)
   })
 
   it('keeps mixed-size native paint tiles seamless above the 96px search plane', () => {

@@ -179,6 +179,15 @@ export interface ImageFitResult {
       evaluatedCandidates: number
       terminationReason: 'not_applicable' | 'layer_budget' | 'no_improvement'
     }
+    nativeShapeRefinement: {
+      requestedPasses: number
+      completedPasses: number
+      acceptedLayers: number
+      evaluatedCandidates: number
+      primitiveTextureNames: string[]
+      acceptedTextureNames: string[]
+      terminationReason: 'not_applicable' | 'layer_budget' | 'no_improvement' | 'pass_budget'
+    }
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
     nativeTileSeamValidation: NativeTileSeamValidation
@@ -443,6 +452,39 @@ interface ResidualFocus {
 }
 
 const SHAPE_DESCRIPTOR_SIZE = 18
+
+const MIXED_NATIVE_PRIMITIVE_TEXTURES: readonly string[] = [
+  'ce_block_02.dds',
+  'ce_billet.dds',
+  'ce_circle.dds',
+  'ce_lozenge.dds',
+  'ce_triangle_mask.dds',
+]
+
+/**
+ * Keeps the strongest descriptor matches while reserving real-render slots for
+ * the shipped rectangle, circle, lozenge and wedge-like primitive families.
+ * The returned order remains the descriptor order, so candidate enumeration
+ * never becomes a hidden tie-break.
+ */
+export function selectMixedNativeShapeCandidateNames(
+  rankedNames: readonly string[],
+  maximum: number,
+): string[] {
+  const rankedUnique = [...new Set(rankedNames)]
+  const requested = Number.isFinite(maximum) ? Math.floor(maximum) : 0
+  const limit = Math.max(0, Math.min(requested, rankedUnique.length))
+  if (limit === 0) return []
+  const reserved = MIXED_NATIVE_PRIMITIVE_TEXTURES
+    .filter((name) => rankedUnique.includes(name))
+    .slice(0, limit)
+  const selected = new Set<string>(reserved)
+  for (const name of rankedUnique) {
+    if (selected.size >= limit) break
+    selected.add(name)
+  }
+  return rankedUnique.filter((name) => selected.has(name))
+}
 
 function residualGeometry(
   target: FitImage,
@@ -1817,8 +1859,12 @@ function refinePaintedStateWithNativeShape(
   const refiners = emblems
   if (!refiners.length) return initial
   const focus = residualGeometry(target, initial.candidate.rendered)
-  const shortlist = rankShapes(focus, refiners, shapeDescriptors)
-    .slice(0, Math.min(12, shapeCandidateCount, refiners.length))
+  const ranked = rankShapes(focus, refiners, shapeDescriptors)
+  const shortlistNames = new Set(selectMixedNativeShapeCandidateNames(
+    ranked.map((item) => item.asset.name),
+    Math.min(12, shapeCandidateCount, refiners.length),
+  ))
+  const shortlist = ranked.filter((item) => shortlistNames.has(item.asset.name))
   const palettes = permutations(residualColors(target, initial.candidate.rendered))
   const coarseEvaluations = shortlist.length * palettes.length * 3 * 3
   const localPasses = [
@@ -2316,6 +2362,15 @@ export function fitImageToCoatOfArms(
     evaluatedCandidates: 0,
     terminationReason: 'not_applicable',
   }
+  let nativeShapeRefinement: ImageFitResult['provenance']['nativeShapeRefinement'] = {
+    requestedPasses: 0,
+    completedPasses: 0,
+    acceptedLayers: 0,
+    evaluatedCandidates: 0,
+    primitiveTextureNames: [],
+    acceptedTextureNames: [],
+    terminationReason: 'not_applicable',
+  }
   if (paintBrush && bestSolidBackground) {
     const solidState: SearchState = {
       candidate: bestSolidBackground.candidate,
@@ -2381,19 +2436,6 @@ export function fitImageToCoatOfArms(
         && pyramidTarget.height > target.height
       ))
       .sort((left, right) => right.width - left.width || right.height - left.height)[0]
-    const refinedPaintState = refinePaintedStateWithNativeShape(
-      edgeRefinedPaintState,
-      emblems,
-      shapeDescriptors,
-      target,
-      maxLayers,
-      surfaceMask,
-      namedColors,
-      evaluated,
-      shapeCandidateCount,
-      options.onProgress,
-    )
-    if (refinedPaintState !== edgeRefinedPaintState) finalists.push(refinedPaintState)
     let highResolutionSeed = edgeRefinedPaintState
     const semanticSeed = beam
       .filter((state) => state.selectedAssets.length > 0)
@@ -2427,6 +2469,54 @@ export function fitImageToCoatOfArms(
       finalists.push(hybridState)
       highResolutionSeed = hybridState
     }
+    // Spend a budget-scaled number of passes on scored native shapes before
+    // the final high-resolution block repair. This is deliberately a search
+    // sub-phase rather than a product layer cap: every pass is bounded by the
+    // user's remaining instance budget and stops at the first non-improvement.
+    const requestedShapePasses = hasSemanticAlternative
+      ? Math.min(
+          maxLayers - highResolutionSeed.selectedAssets.length,
+          Math.max(1, Math.ceil(Math.log2(maxLayers + 1) / 3)),
+        )
+      : 0
+    const evaluatedBeforeShapeRefinement = evaluated.value
+    const shapeSeedAssetCount = highResolutionSeed.selectedAssets.length
+    let completedShapePasses = 0
+    while (completedShapePasses < requestedShapePasses) {
+      const refined = refinePaintedStateWithNativeShape(
+        highResolutionSeed,
+        emblems,
+        shapeDescriptors,
+        target,
+        maxLayers,
+        surfaceMask,
+        namedColors,
+        evaluated,
+        shapeCandidateCount,
+        options.onProgress,
+      )
+      completedShapePasses += 1
+      if (refined === highResolutionSeed) break
+      highResolutionSeed = refined
+    }
+    const acceptedShapeAssets = highResolutionSeed.selectedAssets.slice(shapeSeedAssetCount)
+    nativeShapeRefinement = {
+      requestedPasses: requestedShapePasses,
+      completedPasses: completedShapePasses,
+      acceptedLayers: acceptedShapeAssets.length,
+      evaluatedCandidates: evaluated.value - evaluatedBeforeShapeRefinement,
+      primitiveTextureNames: MIXED_NATIVE_PRIMITIVE_TEXTURES
+        .filter((name) => emblemAssetMap.has(name)),
+      acceptedTextureNames: acceptedShapeAssets.map((item) => item.name),
+      terminationReason: requestedShapePasses === 0
+        ? 'not_applicable'
+        : highResolutionSeed.selectedAssets.length >= maxLayers
+          ? 'layer_budget'
+          : acceptedShapeAssets.length < requestedShapePasses
+            ? 'no_improvement'
+            : 'pass_budget',
+    }
+    if (acceptedShapeAssets.length > 0) finalists.push(highResolutionSeed)
     const availableHighResolutionSlots = maxLayers - highResolutionSeed.selectedAssets.length
     const evaluatedBeforeHighResolutionRepair = evaluated.value
     const highResolutionPaintState = highResolutionTarget
@@ -2575,6 +2665,7 @@ export function fitImageToCoatOfArms(
       selectedMultiscaleMetrics: candidateMultiscaleMetrics.get(winner) ?? [],
       baselineEdgeRepair,
       highResolutionEdgeRepair,
+      nativeShapeRefinement,
       terminationReason,
       selectedAssetSha256: [
         winner.patternAsset.assetSha256,

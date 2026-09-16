@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T09:02:00+08:00",
+  "updatedAt": "2026-09-16T09:34:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -168,6 +168,24 @@
                 "syntheticMixedBrushBenefitTest": "passed",
                 "primaryNonRegressionSelectionTest": "passed",
                 "wp3EdgeImprovementGate": "passed",
+                "mixedShapeBrowserCorpus": "passed_native_changed_cases_pending",
+                "mixedShapeCorpusCases": 7,
+                "mixedShapeNonRegressingCases": 7,
+                "mixedShapeImprovedCases": 2,
+                "mixedShapePicture05AcceptedTextures": [
+                    "ce_billet.dds",
+                    "ce_billet.dds",
+                    "ce_letter_j.dds",
+                    "ce_letter_i.dds"
+                ],
+                "mixedShapePicture05TotalLoss": 0.0525492143564626,
+                "mixedShapePicture05EdgeLoss": 0.09481964583736333,
+                "mixedShapePicture07AcceptedTextures": [
+                    "ce_circle.dds"
+                ],
+                "mixedShapePicture07TotalLoss": 0.049541354820795934,
+                "mixedShapePicture07EdgeLoss": 0.08578627558479553,
+                "mixedShapeEvidencePath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v12-mixed-shape-budget-1024/",
                 "nativeRoundTrip": "passed",
                 "nativeInputBytes": 262138,
                 "nativeInputBlocks": 297,
