@@ -614,12 +614,28 @@ FACTION16 已闭合这条私有静态入口。它不从任意 Character root 盲
 ## 尚未闭合的分支
 
 - targeting faction collection 的 paused live target/count 同 admission 验收，以及 leader/member vector；
-- faction row 的 final power/discontent getters 与同帧稳定读取；
+- faction row 的 final power/discontent getters 已有静态 exact-build 入口，paused application-main 真值与同帧稳定读取仍待实机；
 - 已闭合 receiver 的 paused application-main 实机取值，以及 private chain 后续公共 native/MCP/planner 接入；
 - gift auto-accept 的完成时序与 live postcondition 等待边界；
 - 一次赠礼对具体 faction membership/power/discontent 的因果影响。首版只重查，不预设变化。
 
 这些虚线分支都有明确施工入口，不允许长期以 `unknown` 作为策略停滞理由；也不能在未闭合前把 schema 中的 `null` 当作可用输入。
+
+### G2-M4-FACTION-NATIVE-ROUTE：exact-build 派系指标私有读取
+
+冻结 `1.19.0.6`、CK3 EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。原版 `FactionItem.GetDiscontent` 注册 callback `0x13952E0`，最终 leaf `0x13902F0`；`FactionItem.GetPower` 注册 callback `0x1395360`，最终 leaf `0x138F370`。两条 leaf 都只从 `FactionItem+0x00` 取完整派系 ID，按 faction storage `0x570C768` 解析并核对 `CFaction+0x10` 的代际身份；stock leaf 自身有 null-object fallback，我方 receiver 先独立解析并拒绝 fallback，不能把它返回的零值当作已观测结果。discontent leaf 从 `CFaction+0x28` 换算为原版 signed Q100000；power leaf 调用 `0x2376540` 的目标剩余兵力和 `0x2376850` 的派系成员兵力，发布原版 signed Q100000 比值，不自行猜兵力字段或派系危险阈值。
+
+`faction_gift_metric_receivers_v1_abi.json` 固定注册 callback、四个 native span hash、对象身份和 scale；同名 `source_contract.py --exe <ck3.exe>` 已在本地 exact EXE 上静态通过。C++ receiver 在暂停的 application-main 中调用原版最终 getter 前后核对完整派系身份、vtable、`CFaction+0x28`，并只发布两次一致的原版返回值；离线 fixture 为纯数据，不能替代实机 callback。当前私有 async observer 的一个真实 targeting member 可以获得 typed power/discontent 或独立 metric RED。这个结果仍是 `static-ready-private-no-paused-live`，尚无该版本 paused 指标值、赠礼后置条件或正式策略消费，不改变公共查询/动作广告。
+
+原版窗口刷新 `0x1392CBC..0x1392E9C` 没有过滤步骤：它从当前玩家 `CCharacter+0x1B8` land state 读取 `+0x120` 数据和 `+0x12C` 有符号 count，以 4 字节完整派系 ID 逐个复制为显示行。因此新增私有只读来源直接读取同一个 land-state vector，并以 faction storage `0x570C768`、`CFaction+0x10`、目标 `+0x40`、leader `+0x44`、成员 span `+0x48/+0x54`、成员 ID/owner `+0x08/+0x0C` 与 Character `+0x18` 完整代际身份闭合。最多 64 派系、每派系 64 成员；合法零 count 独立记为 known-empty。它两次读取完整来源并比较当前 paused frame，生成自己的 private capture epoch；不把 FACTION8 已封存的窗口 heartbeat 当作下一帧。这条来源仍需当前版本真实 paused snapshot 验证，且未发布公共 MCP。
+
+```mermaid
+flowchart TD
+    I["[static-confirmed] 玩家 land-state 完整派系 ID 列表"] --> G["[static-confirmed] 原版 GetPower / GetDiscontent leaf"]
+    G --> V["[static-ready] 私有双样本 metric receiver"]
+    V -. "[unknown] paused application-main 真值" .-> P["[live-pending] targeting member 同帧指标/赠礼 preview"]
+    P -. "[unknown] typed 赠礼与独立 receipt" .-> R["[live-pending] 金币、好感、派系下一帧重查"]
+```
 
 ### G2-M4-FACTION-MIN：正式候选选择的最小静态消费者
 
@@ -635,3 +651,9 @@ flowchart TD
     C -. "[unknown] 公共注册与正式策略消费" .-> A["[live-pending] typed gift submit"]
     A -. "[unknown] 独立 paused receipt/下一 turn" .-> R["[live-pending] 金币、gift_opinion、派系重查"]
 ```
+
+### G2-M4-FACTION-gift private no-UI route (2026-09-16)
+
+旧 FACTION8 窗口 callback 的 heartbeat 在受控验收后只封存一次，不能当作后续 paused frame 的独立重查。当前默认关闭的私有 `query / submit / receipt` 步骤改为每次查询通过既有 application-main campaign-root mailbox 读取当帧直属封臣，再直接读取玩家 land-state targeting-faction ID vector。typed submit 在新 application-main pulse 重查同一派系、recipient、stock gift 合法性与金币 reserve，只提交一次；receipt 在下一独立 paused revision 读取 faction storage 中的 full-generation entity、金币与 `gift_opinion`。targeting vector 缺席而 entity 仍存在时，不得报告 dissolved。未确认提交保持 pending，不盲重试；明确在执行前取消或在 idempotency claim 前拒绝时，下一次动作必须先重新查询。
+
+此包仅是 `static-ready-private-no-paused-live`：/Od 与 /O2 聚焦 fixture 覆盖已知空列表、合法 targeting member、外国 owner 拒绝、entity 仍存在、已知空 slot 和 metric drift RED；同两模式 `bridge.cpp` 私有选项只编译验证。paused snapshot、真实赠礼、独立后置条件、正式下一 turn 消费、冷恢复与公共 query/action 广告仍待实机闭合。接口变化只涉及默认关闭的私有 typed steps；公共 MCP、正式策略及 `open_kaishek` 当前消费接口不变。

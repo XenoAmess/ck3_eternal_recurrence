@@ -399,6 +399,28 @@ static bool g_faction_gift_mitigation_terminal_published_v1 = false;
 static std::uint32_t g_faction_gift_mitigation_last_submit_v1 = 0;
 static std::uint32_t g_faction_gift_mitigation_last_wait_v1 = 0;
 static std::uint32_t g_faction_gift_mitigation_last_reclaim_v1 = 0;
+static std::optional<xar::game::FactionGiftMitigationObservationV1>
+    g_faction_gift_private_last_query_v1{};
+static std::vector<std::int32_t> g_faction_gift_private_direct_vassals_v1{};
+static std::optional<xar::game::FactionGiftMitigationAckV1>
+    g_faction_gift_private_pending_ack_v1{};
+static bool g_faction_gift_private_action_may_have_submitted_v1 = false;
+enum class FactionGiftPrivateMailboxModeV1 : std::uint8_t {
+  query,
+  submit,
+  receipt,
+};
+static std::unique_ptr<xar::ck3_11906::FactionGiftMitigationAsyncContextV1>
+    g_faction_gift_private_active_context_v1{};
+static FactionGiftPrivateMailboxModeV1 g_faction_gift_private_active_mode_v1 =
+    FactionGiftPrivateMailboxModeV1::query;
+static std::optional<xar::game::FactionGiftMitigationReceiptV1>
+    g_faction_gift_private_last_receipt_v1{};
+static std::string g_faction_gift_private_last_native_payload_v1{};
+static std::string g_faction_gift_private_last_mailbox_error_v1{};
+static std::uint32_t g_faction_gift_private_last_failure_flags_v1 = 0;
+static bool g_faction_gift_private_last_known_empty_v1 = false;
+static std::string g_faction_gift_private_last_submit_status_v1{};
 #endif
 static xar::bridge::G2TrucePreviewEntryObserverV1State
     g_g2_truce_preview_entry_observer_v1{};
@@ -4365,6 +4387,422 @@ std::string CommandResultFrame(std::string_view request_id,
   return result;
 }
 
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+std::string FactionGiftPrivateResultFrameV1(
+    std::string_view request_id, std::string_view step,
+    std::string_view status, std::string_view native,
+    const xar::game::FactionGiftMitigationReceiptV1 *receipt = nullptr) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"private_build\":true,"
+            "\"advertised\":false,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"native\":";
+  result += native.empty() ? "null" : native;
+  result += ",\"receipt\":";
+  result += receipt == nullptr
+                ? "null"
+                : xar::ck3_11906::
+                      SerializeFactionGiftMitigationReceiptV1(*receipt);
+  result += "}}";
+  return result;
+}
+
+bool PollFactionGiftPrivateMailboxV1(std::uint32_t wait_ms) {
+  using namespace xar::ck3_11906;
+  if (!g_faction_gift_private_active_context_v1) return true;
+  auto &query = *g_faction_gift_private_active_context_v1;
+  const auto wait = WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.ticket, wait_ms);
+  if (wait == MainThreadQueryWaitResultV1::
+                  timeout_executor_already_running) {
+    return false;
+  }
+  const auto reclaimed = ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.ticket);
+  if (reclaimed != MainThreadQueryReclaimResultV1::reclaimed) {
+    g_faction_gift_private_last_mailbox_error_v1 =
+        "private_faction_mailbox_reclaim_red";
+    return false;
+  }
+  g_faction_gift_private_last_mailbox_error_v1.clear();
+  g_faction_gift_private_last_native_payload_v1 =
+      SerializeFactionGiftMitigationAsyncContextV1(query);
+  g_faction_gift_private_last_failure_flags_v1 = query.failure_flags;
+  g_faction_gift_private_last_known_empty_v1 =
+      query.direct_source_known_empty;
+  if (wait != MainThreadQueryWaitResultV1::completed) {
+    g_faction_gift_private_last_mailbox_error_v1 =
+        "private_faction_mailbox_terminal_red";
+    if (g_faction_gift_private_active_mode_v1 ==
+            FactionGiftPrivateMailboxModeV1::submit &&
+        wait == MainThreadQueryWaitResultV1::
+                    timeout_cancelled_before_execution &&
+        query.executor_invocations == 0) {
+      g_faction_gift_private_action_may_have_submitted_v1 = false;
+      g_faction_gift_private_last_query_v1.reset();
+      g_faction_gift_private_last_submit_status_v1 =
+          "cancelled_before_execution";
+    }
+  } else if (g_faction_gift_private_active_mode_v1 ==
+             FactionGiftPrivateMailboxModeV1::query) {
+    g_faction_gift_private_last_query_v1.reset();
+    if (query.failure_flags == faction_gift_async_failure_none &&
+        query.completion == FactionGiftMitigationAsyncCompletionV1::
+                                preview_ready &&
+        query.observation.available &&
+        query.observation.source_faction_metrics_available &&
+        query.observation.gift_preview.available) {
+      g_faction_gift_private_last_query_v1 = query.observation;
+      g_faction_gift_private_direct_vassals_v1 =
+          query.direct_landed_vassal_character_ids;
+    }
+  } else if (g_faction_gift_private_active_mode_v1 ==
+             FactionGiftPrivateMailboxModeV1::submit) {
+    g_faction_gift_private_last_query_v1.reset();
+    if (query.receipt_pending &&
+        query.ack.status == xar::game::FactionGiftMitigationAckStatusV1::
+                                submitted_verification_pending) {
+      g_faction_gift_private_pending_ack_v1 = query.ack;
+      g_faction_gift_private_last_submit_status_v1 =
+          "submitted_verification_pending";
+    } else if (!query.idempotency_claimed &&
+               query.ack.status == xar::game::
+                   FactionGiftMitigationAckStatusV1::rejected_before_submit &&
+               query.preflight_attempted) {
+      g_faction_gift_private_action_may_have_submitted_v1 = false;
+      g_faction_gift_private_last_submit_status_v1 =
+          "rejected_before_submit";
+    } else {
+      g_faction_gift_private_last_submit_status_v1 =
+          "unknown_submit_state";
+    }
+  } else if (g_faction_gift_private_pending_ack_v1.has_value() &&
+             query.failure_flags == faction_gift_async_failure_none &&
+             query.observation.available &&
+             query.observation.source_faction_requery_complete &&
+             query.observation.recipient_opinion_query_complete) {
+    xar::game::FactionGiftMitigationReceiptV1 receipt{};
+    VerifyFactionGiftMitigationReceiptV1(
+        *g_faction_gift_private_pending_ack_v1,
+        query.observation, receipt);
+    g_faction_gift_private_last_receipt_v1 = receipt;
+  }
+  g_faction_gift_private_active_context_v1.reset();
+  return true;
+}
+
+bool QueryFactionGiftPrivateDirectVassalsV1(
+    const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &published, std::uint64_t revision,
+    std::vector<std::int32_t> &direct_vassals) {
+  using namespace xar::ck3_11906;
+  direct_vassals.clear();
+  CampaignRootContextMailboxContextV1 root{};
+  root.mailbox = &g_main_thread_query_mailbox_v1;
+  root.bindings = BindCurrentProcess(true);
+  root.environment = BindCampaignRootNativeEnvironmentV1(
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true);
+  root.request.expected_snapshot_revision = revision;
+  root.expected_snapshot = published;
+  const auto submit = TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &ExecuteCampaignRootContextMailboxQueryV1, &root, root.ticket);
+  if (submit != MainThreadQuerySubmitResultV1::submitted) return false;
+  auto wait = WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, root.ticket,
+      kCampaignRootContextV1QueuedWaitBudgetMilliseconds);
+  while (wait == MainThreadQueryWaitResultV1::
+                     timeout_executor_already_running) {
+    wait = WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, root.ticket,
+        kCampaignRootContextV1ExecutingWaitSliceMilliseconds);
+  }
+  const auto reclaimed = ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, root.ticket);
+  xar::game::Snapshot after{};
+  const auto &result = root.result;
+  if (wait != MainThreadQueryWaitResultV1::completed ||
+      reclaimed != MainThreadQueryReclaimResultV1::reclaimed ||
+      root.completion != CampaignRootContextMailboxCompletionV1::completed ||
+      !xar::game::ReadSnapshot(game, after) || after != published ||
+      result.status != xar::game::CampaignRootContextStatusV1::available ||
+      !result.readiness.same_frame_ready ||
+      !result.readiness.direct_landed_vassals_ready ||
+      !result.readiness.player_targeting_factions_ready ||
+      result.snapshot_revision != revision ||
+      result.date_raw != published.date_raw ||
+      !result.player_character_id.has_value() ||
+      *result.player_character_id != published.played_character_id ||
+      !result.player_targeting_faction_count.has_value()) {
+    return false;
+  }
+  direct_vassals = result.direct_landed_vassal_character_ids;
+  std::sort(direct_vassals.begin(), direct_vassals.end());
+  return std::adjacent_find(direct_vassals.begin(), direct_vassals.end()) ==
+         direct_vassals.end();
+}
+
+std::string ExecuteFactionGiftPrivateStepV1(
+    std::string_view request_id, std::string_view step,
+    std::string_view payload, const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &published, std::uint64_t revision) {
+  using namespace xar::ck3_11906;
+  if (!PollFactionGiftPrivateMailboxV1(1'000)) {
+    return FactionGiftPrivateResultFrameV1(
+        request_id, step,
+        g_faction_gift_private_last_mailbox_error_v1.empty()
+            ? "pending_executor"
+            : "mailbox_red",
+        {});
+  }
+  std::uint64_t expected_revision = 0;
+  std::uint64_t expected_date = 0;
+  std::uint64_t expected_player = 0;
+  if (!xar::bridge::JsonUnsignedField(payload, "expected_revision",
+                                      expected_revision) ||
+      !xar::bridge::JsonUnsignedField(payload, "expected_date_raw",
+                                      expected_date) ||
+      !xar::bridge::JsonUnsignedField(
+          payload, "expected_player_character_id", expected_player) ||
+      revision == 0 || expected_revision != revision ||
+      expected_date > static_cast<std::uint64_t>(
+                          std::numeric_limits<std::int32_t>::max()) ||
+      expected_player == 0 ||
+      expected_player > static_cast<std::uint64_t>(
+                            std::numeric_limits<std::uint32_t>::max()) ||
+      !published.paused || !published.map_ready ||
+      !published.has_played_character ||
+      !published.played_character_alive ||
+      published.date_raw < 0 ||
+      expected_date != static_cast<std::uint64_t>(published.date_raw) ||
+      expected_player !=
+          static_cast<std::uint64_t>(published.played_character_id)) {
+    return CommandResultFrame(request_id, step, false,
+                              "private_faction_frame_invalid");
+  }
+  xar::game::Snapshot current{};
+  if (!xar::game::ReadSnapshot(game, current) ||
+      current != published) {
+    return CommandResultFrame(request_id, step, false,
+                              "private_faction_published_frame_stale");
+  }
+
+  auto context =
+      std::make_unique<FactionGiftMitigationAsyncContextV1>();
+  context->mailbox = &g_main_thread_query_mailbox_v1;
+  context->bindings = BindCurrentProcess(true);
+  context->module_base = reinterpret_cast<std::uintptr_t>(
+      GetModuleHandleW(nullptr));
+  context->expected_snapshot = published;
+  context->expected_public_revision = revision;
+  context->use_direct_source_rows = true;
+
+  FactionGiftPrivateMailboxModeV1 mode =
+      FactionGiftPrivateMailboxModeV1::query;
+  if (step == kFactionGiftPrivateQueryStepV1) {
+    if (!QueryFactionGiftPrivateDirectVassalsV1(
+            game, published, revision,
+            context->direct_landed_vassal_character_ids)) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "private_faction_fresh_campaign_root_unavailable");
+    }
+  } else if (step == kFactionGiftPrivateSubmitStepV1) {
+    mode = FactionGiftPrivateMailboxModeV1::submit;
+    std::string role;
+    std::uint64_t source = 0;
+    std::uint64_t recipient = 0;
+    std::uint64_t hash = 0;
+    std::uint64_t cost = 0;
+    std::uint64_t delta = 0;
+    std::uint64_t reserve = 0;
+    std::uint64_t prior_native = 0;
+    if (g_faction_gift_private_action_may_have_submitted_v1 ||
+        g_faction_gift_private_pending_ack_v1.has_value() ||
+        !g_faction_gift_private_last_query_v1.has_value() ||
+        !xar::bridge::JsonStringField(payload, "membership_role", role,
+                                      32) ||
+        !xar::bridge::JsonUnsignedField(payload,
+                                        "source_faction_id", source) ||
+        !xar::bridge::JsonUnsignedField(payload,
+                                        "recipient_character_id",
+                                        recipient) ||
+        !xar::bridge::JsonUnsignedField(payload,
+                                        "definition_stable_hash", hash) ||
+        !xar::bridge::JsonUnsignedField(payload,
+                                        "gold_cost_raw", cost) ||
+        !xar::bridge::JsonUnsignedField(payload,
+                                        "opinion_delta", delta) ||
+        !xar::bridge::JsonUnsignedField(payload,
+                                        "minimum_gold_reserve_raw",
+                                        reserve) ||
+        !xar::bridge::JsonUnsignedField(payload,
+                                        "expected_native_revision",
+                                        prior_native) ||
+        source == 0 || recipient == 0 || hash == 0 ||
+        cost == 0 || delta == 0 ||
+        source > std::numeric_limits<std::uint32_t>::max() ||
+        recipient > std::numeric_limits<std::uint32_t>::max() ||
+         cost > static_cast<std::uint64_t>(
+                    (std::numeric_limits<std::int64_t>::max)()) ||
+         delta > static_cast<std::uint64_t>(
+                     (std::numeric_limits<std::int32_t>::max)()) ||
+         reserve > static_cast<std::uint64_t>(
+                       (std::numeric_limits<std::int64_t>::max)()) ||
+        (role != "leader" && role != "character_member")) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "private_faction_action_or_pending_binding_invalid");
+    }
+    const auto &before = *g_faction_gift_private_last_query_v1;
+    const auto &preview = before.gift_preview;
+    const bool role_matches =
+        role == "leader"
+            ? before.source_faction_leader_character_id == recipient
+            : std::binary_search(
+                  before.source_faction_member_character_ids.begin(),
+                  before.source_faction_member_character_ids.end(),
+                  static_cast<std::uint32_t>(recipient));
+    if (before.snapshot_revision != revision ||
+        before.observed_date_raw != published.date_raw ||
+         before.player_character_id !=
+             static_cast<std::uint32_t>(published.played_character_id) ||
+        before.native_snapshot_revision != prior_native ||
+        before.queried_source_faction_id != source ||
+        before.recipient_character_id != recipient ||
+        !role_matches || !before.source_faction_metrics_available ||
+        !before.recipient_identity_resolved ||
+        !preview.available || !preview.interaction_legal ||
+        !preview.auto_accept ||
+        preview.definition_stable_hash != hash ||
+        preview.gold_cost_raw != static_cast<std::int64_t>(cost) ||
+        preview.opinion_delta != static_cast<std::int32_t>(delta) ||
+        before.player_gold_raw < static_cast<std::int64_t>(cost) ||
+        before.player_gold_raw - static_cast<std::int64_t>(cost) <
+            static_cast<std::int64_t>(reserve)) {
+      return CommandResultFrame(request_id, step, false,
+                                "private_faction_previous_query_drift");
+    }
+    context->direct_landed_vassal_character_ids =
+        g_faction_gift_private_direct_vassals_v1;
+    context->source_faction_id =
+        static_cast<std::uint32_t>(source);
+    context->recipient_character_id =
+        static_cast<std::uint32_t>(recipient);
+    context->prior_query_native_revision = prior_native;
+    context->execute_request = true;
+    auto &action = context->request;
+    action.request_id.assign(request_id);
+    action.idempotency_key.assign(request_id);
+    action.expected_revision = revision;
+    action.expected_native_revision = prior_native;
+    action.expected_date_raw = published.date_raw;
+    action.player_character_id =
+        static_cast<std::uint32_t>(published.played_character_id);
+    action.source_faction_id = context->source_faction_id;
+    action.recipient_character_id = context->recipient_character_id;
+    action.membership_role =
+        role == "leader"
+            ? xar::game::FactionGiftMembershipRoleV1::leader
+            : xar::game::FactionGiftMembershipRoleV1::character_member;
+    action.expected_definition_key = preview.definition_key;
+    action.expected_definition_stable_hash = hash;
+    action.expected_gold_cost_raw =
+        static_cast<std::int64_t>(cost);
+    action.expected_gold_scale = preview.gold_scale;
+    action.expected_opinion_delta =
+        static_cast<std::int32_t>(delta);
+    action.minimum_gold_reserve_raw =
+        static_cast<std::int64_t>(reserve);
+    action.minimum_gold_reserve_scale = preview.gold_scale;
+  } else {
+    mode = FactionGiftPrivateMailboxModeV1::receipt;
+    if (!g_faction_gift_private_pending_ack_v1.has_value() ||
+        !g_faction_gift_private_action_may_have_submitted_v1 ||
+        revision <=
+            g_faction_gift_private_pending_ack_v1->
+                pre_snapshot_revision ||
+        published.date_raw !=
+            g_faction_gift_private_pending_ack_v1->
+                pre_observed_date_raw) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "private_faction_pending_receipt_invalid");
+    }
+    context->direct_landed_vassal_character_ids =
+        g_faction_gift_private_direct_vassals_v1;
+    context->source_faction_id =
+        g_faction_gift_private_pending_ack_v1->source_faction_id;
+    context->recipient_character_id =
+        g_faction_gift_private_pending_ack_v1->recipient_character_id;
+    context->verify_receipt = true;
+    context->pending_ack = *g_faction_gift_private_pending_ack_v1;
+    g_faction_gift_private_last_receipt_v1.reset();
+  }
+  const auto submit = TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &ExecuteFactionGiftMitigationAsyncMailboxV1,
+      context.get(), context->ticket);
+  if (submit != MainThreadQuerySubmitResultV1::submitted) {
+    return CommandResultFrame(request_id, step, false,
+                              "private_faction_application_main_unavailable");
+  }
+  if (mode == FactionGiftPrivateMailboxModeV1::submit)
+    g_faction_gift_private_action_may_have_submitted_v1 = true;
+  g_faction_gift_private_active_mode_v1 = mode;
+  g_faction_gift_private_active_context_v1 = std::move(context);
+  if (!PollFactionGiftPrivateMailboxV1(8'000)) {
+    return FactionGiftPrivateResultFrameV1(
+        request_id, step,
+        g_faction_gift_private_last_mailbox_error_v1.empty()
+            ? "pending_executor"
+            : "mailbox_red",
+        {});
+  }
+  if (!g_faction_gift_private_last_mailbox_error_v1.empty()) {
+    return CommandResultFrame(
+        request_id, step, false,
+        g_faction_gift_private_last_mailbox_error_v1);
+  }
+  if (mode == FactionGiftPrivateMailboxModeV1::query) {
+    const std::string_view status =
+        g_faction_gift_private_last_failure_flags_v1 == 0
+            ? (g_faction_gift_private_last_known_empty_v1
+                   ? "known_empty"
+                   : g_faction_gift_private_last_query_v1.has_value()
+                         ? "preview_ready"
+                         : "no_legal_candidate")
+            : g_faction_gift_private_last_failure_flags_v1 ==
+                      faction_gift_async_failure_recipient
+                  ? "no_eligible_direct_vassal"
+                  : "receiver_red";
+    return FactionGiftPrivateResultFrameV1(
+        request_id, step, status,
+        g_faction_gift_private_last_native_payload_v1);
+  }
+  if (mode == FactionGiftPrivateMailboxModeV1::submit) {
+    return FactionGiftPrivateResultFrameV1(
+        request_id, step, g_faction_gift_private_last_submit_status_v1,
+        g_faction_gift_private_last_native_payload_v1);
+  }
+  if (!g_faction_gift_private_last_receipt_v1.has_value()) {
+    return FactionGiftPrivateResultFrameV1(
+        request_id, step, "independent_post_requery_pending",
+        g_faction_gift_private_last_native_payload_v1);
+  }
+  const auto &receipt = *g_faction_gift_private_last_receipt_v1;
+  return FactionGiftPrivateResultFrameV1(
+      request_id, step,
+      receipt.postcondition_verified ? "applied" : "postcondition_red",
+      g_faction_gift_private_last_native_payload_v1, &receipt);
+}
+#endif
+
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
 template <std::size_t N>
 std::string_view LifestyleFixed(const std::array<char, N> &value) noexcept {
@@ -7706,6 +8144,14 @@ void RunConnectedSession(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));
         } else if (!game.supports_step(step)
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+                   && step != xar::ck3_11906::
+                                  kFactionGiftPrivateQueryStepV1
+                   && step != xar::ck3_11906::
+                                  kFactionGiftPrivateSubmitStepV1
+                   && step != xar::ck3_11906::
+                                  kFactionGiftPrivateReceiptStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
                    && step != xar::ck3_11906::
                                   kPlayerConstructionViewProbePrivateStepV1
@@ -7738,6 +8184,23 @@ void RunConnectedSession(
           xar::ck3_11906::TacticalDailySentinelArmRequestV1
               tactical_sentinel_request{};
           std::uint64_t tactical_sentinel_cancel_generation = 0;
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+          if (step == xar::ck3_11906::kFactionGiftPrivateQueryStepV1 ||
+              step == xar::ck3_11906::kFactionGiftPrivateSubmitStepV1 ||
+              step == xar::ck3_11906::kFactionGiftPrivateReceiptStepV1) {
+            if (!previous_snapshot.has_value()) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "private faction published snapshot unavailable"));
+            } else {
+              connected = xar::bridge::WriteFrame(
+                  pipe, ExecuteFactionGiftPrivateStepV1(
+                            request_id, step, incoming.payload, game,
+                            *previous_snapshot, state_revision));
+            }
+          } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
           if (xar::bridge::IsCouncilApplicationMainPrivateStepV1(step)) {
             if (!previous_snapshot.has_value()) {

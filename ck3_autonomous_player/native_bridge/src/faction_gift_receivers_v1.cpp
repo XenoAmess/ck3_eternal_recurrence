@@ -1,10 +1,12 @@
 #include "xar_bridge/faction_gift_receivers_v1.hpp"
 
 #include <array>
+#include <algorithm>
 #include <cstddef>
 #include <cstring>
 #include <limits>
 #include <string>
+#include <utility>
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -255,6 +257,527 @@ bool ReadFactionAtWarExact11906V1(std::uintptr_t module_base,
     return false;
   }
   at_war = first.at_war;
+  return true;
+}
+
+bool ReadFactionMetricsFromExactFixtureV1(
+    const FactionMetricsExactFixtureV1 &fixture, std::uint32_t faction_id,
+    std::int64_t &power_raw, std::int64_t &discontent_raw) noexcept {
+  power_raw = 0;
+  discontent_raw = 0;
+  if (!fixture.available || faction_id == 0 ||
+      fixture.faction_identity_first != faction_id ||
+      fixture.faction_identity_second != faction_id ||
+      fixture.expected_faction_vtable == 0 ||
+      fixture.faction_vtable_first != fixture.expected_faction_vtable ||
+      fixture.faction_vtable_second != fixture.expected_faction_vtable ||
+      fixture.power_first != fixture.power_second ||
+      fixture.discontent_first != fixture.discontent_second) {
+    return false;
+  }
+  power_raw = fixture.power_first;
+  discontent_raw = fixture.discontent_first;
+  return true;
+}
+
+namespace {
+
+using FactionItemFixedGetterV1 = std::int64_t *(*)(
+    const std::uint32_t *faction_item_identity,
+    std::int64_t *fixed_output);
+
+struct FactionMetricsSampleV1 {
+  void *storage = nullptr;
+  void *faction = nullptr;
+  std::uintptr_t faction_vtable = 0;
+  std::uint32_t faction_identity = 0;
+  std::int64_t underlying_discontent = 0;
+  std::int64_t power_raw = 0;
+  std::int64_t discontent_raw = 0;
+
+  friend bool operator==(const FactionMetricsSampleV1 &,
+                         const FactionMetricsSampleV1 &) = default;
+};
+
+bool ReadFactionMetricsSampleV1(std::uintptr_t module_base,
+                                std::uint32_t faction_id,
+                                FactionMetricsSampleV1 &sample) noexcept {
+  sample = {};
+  std::uintptr_t storage_slot = 0;
+  std::uintptr_t fallback_slot = 0;
+  std::uintptr_t expected_vtable = 0;
+  std::uintptr_t power_leaf_rva = 0;
+  std::uintptr_t discontent_leaf_rva = 0;
+  void *fallback = nullptr;
+  if (faction_id == 0 ||
+      !AddRva(module_base, kFactionGiftFactionStorageSlotRvaV1,
+              storage_slot) ||
+      !AddRva(module_base, kFactionGiftFactionFallbackSlotRvaV1,
+              fallback_slot) ||
+      !AddRva(module_base, kFactionGiftFactionVtableRvaV1,
+              expected_vtable) ||
+      !AddRva(module_base, kFactionGiftPowerLeafRvaV1,
+              power_leaf_rva) ||
+      !AddRva(module_base, kFactionGiftDiscontentLeafRvaV1,
+              discontent_leaf_rva) ||
+      !TryLoad(reinterpret_cast<const void *>(storage_slot), 0,
+               sample.storage) ||
+      !TryLoad(reinterpret_cast<const void *>(fallback_slot), 0,
+               fallback) ||
+      sample.storage == nullptr || fallback == nullptr ||
+      !ResolveStoredExact(sample.storage, faction_id,
+                          kFactionIdentityOffset, sample.faction) ||
+      sample.faction == nullptr || sample.faction == fallback ||
+      !TryLoad(sample.faction, 0, sample.faction_vtable) ||
+      sample.faction_vtable != expected_vtable ||
+      !TryLoad(sample.faction, kFactionIdentityOffset,
+               sample.faction_identity) ||
+      sample.faction_identity != faction_id ||
+      !TryLoad(sample.faction, 0x28,
+               sample.underlying_discontent)) {
+    return false;
+  }
+
+  const auto get_power =
+      reinterpret_cast<FactionItemFixedGetterV1>(power_leaf_rva);
+  const auto get_discontent =
+      reinterpret_cast<FactionItemFixedGetterV1>(discontent_leaf_rva);
+  const std::uint32_t faction_item_identity = faction_id;
+  if (get_power(&faction_item_identity, &sample.power_raw) !=
+          &sample.power_raw ||
+      get_discontent(&faction_item_identity, &sample.discontent_raw) !=
+          &sample.discontent_raw) {
+    return false;
+  }
+  std::uintptr_t vtable_after = 0;
+  std::uint32_t identity_after = 0;
+  std::int64_t discontent_after = 0;
+  return TryLoad(sample.faction, 0, vtable_after) &&
+         TryLoad(sample.faction, kFactionIdentityOffset,
+                 identity_after) &&
+         TryLoad(sample.faction, 0x28, discontent_after) &&
+         vtable_after == sample.faction_vtable &&
+         identity_after == sample.faction_identity &&
+         discontent_after == sample.underlying_discontent;
+}
+
+} // namespace
+
+bool ReadFactionMetricsExact11906V1(std::uintptr_t module_base,
+                                    std::uint32_t faction_id,
+                                    std::int64_t &power_raw,
+                                    std::int64_t &discontent_raw) noexcept {
+  power_raw = 0;
+  discontent_raw = 0;
+  FactionMetricsSampleV1 first{};
+  FactionMetricsSampleV1 second{};
+  if (!ReadFactionMetricsSampleV1(module_base, faction_id, first) ||
+      !ReadFactionMetricsSampleV1(module_base, faction_id, second) ||
+      first != second) {
+    return false;
+  }
+  power_raw = first.power_raw;
+  discontent_raw = first.discontent_raw;
+  return true;
+}
+
+namespace {
+
+constexpr std::size_t kGiftPlayerLandStateOffsetV1 = 0x1B8;
+constexpr std::size_t kGiftTargetingIdsOffsetV1 = 0x120;
+constexpr std::size_t kGiftTargetingCountOffsetV1 = 0x12C;
+constexpr std::size_t kGiftFactionTargetOffsetV1 = 0x40;
+constexpr std::size_t kGiftFactionLeaderOffsetV1 = 0x44;
+constexpr std::size_t kGiftFactionMemberRowsOffsetV1 = 0x48;
+constexpr std::size_t kGiftFactionMemberCountOffsetV1 = 0x54;
+constexpr std::size_t kGiftMemberStrideV1 = 0x20;
+constexpr std::size_t kGiftMemberCharacterOffsetV1 = 0x08;
+constexpr std::size_t kGiftMemberOwnerOffsetV1 = 0x0C;
+
+struct DirectSourceSampleV1 {
+  void *player = nullptr;
+  void *land_state = nullptr;
+  void *source_ids = nullptr;
+  std::int32_t source_count = 0;
+  bridge::FactionTargetingRowProbeResultV1 rows{};
+};
+
+bool ReadDirectSourceSampleV1(
+    const FactionGiftDirectSourceStoresV1 &stores,
+    const bridge::FactionTargetingRowProbeBindingV1 &required,
+    DirectSourceSampleV1 &sample) noexcept {
+  sample = {};
+  if (!required.paused || required.proof_epoch == 0 ||
+      required.proof_epoch >
+          (std::numeric_limits<std::uint64_t>::max)() / 2 ||
+      required.snapshot_revision == 0 ||
+      required.player_character_id == 0 ||
+      stores.character_storage == nullptr ||
+      stores.faction_storage == nullptr ||
+      stores.faction_fallback == nullptr ||
+      stores.expected_faction_vtable == 0 ||
+      !ResolveStoredExact(stores.character_storage,
+                          required.player_character_id, 0x18,
+                          sample.player) ||
+      sample.player == nullptr ||
+      !TryLoad(sample.player, kGiftPlayerLandStateOffsetV1,
+               sample.land_state)) {
+    return false;
+  }
+  sample.rows.required_binding = required;
+  sample.rows.observed_binding = required;
+  sample.rows.published_generation = required.proof_epoch * 2;
+  if (sample.land_state != nullptr) {
+    if (!TryLoad(sample.land_state, kGiftTargetingIdsOffsetV1,
+                 sample.source_ids) ||
+        !TryLoad(sample.land_state, kGiftTargetingCountOffsetV1,
+                 sample.source_count) ||
+        sample.source_count < 0 ||
+        sample.source_count > static_cast<std::int32_t>(
+            bridge::kFactionTargetingRowObserverMaximumRowsV1) ||
+        (sample.source_count != 0 && sample.source_ids == nullptr)) {
+      return false;
+    }
+  }
+  sample.rows.faction_count =
+      static_cast<std::uint32_t>(sample.source_count);
+  for (std::int32_t index = 0; index < sample.source_count; ++index) {
+    auto &row = sample.rows.factions[static_cast<std::size_t>(index)];
+    if (!TryLoad(sample.source_ids,
+                 static_cast<std::size_t>(index) * sizeof(std::uint32_t),
+                 row.faction_id) ||
+        row.faction_id == 0) {
+      return false;
+    }
+    void *faction = nullptr;
+    std::uintptr_t vtable = 0;
+    std::uint32_t generation = 0;
+    if (!ResolveStoredExact(stores.faction_storage, row.faction_id,
+                            kFactionIdentityOffset, faction) ||
+        faction == nullptr || faction == stores.faction_fallback ||
+        !TryLoad(faction, 0, vtable) ||
+        vtable != stores.expected_faction_vtable ||
+        !TryLoad(faction, kFactionIdentityOffset, generation) ||
+        generation != row.faction_id ||
+        !TryLoad(faction, kGiftFactionTargetOffsetV1,
+                 row.target_character_id) ||
+        row.target_character_id != required.player_character_id) {
+      return false;
+    }
+    std::uint32_t raw_leader = 0;
+    if (!TryLoad(faction, kGiftFactionLeaderOffsetV1, raw_leader)) {
+      return false;
+    }
+    if (raw_leader != 0) {
+      void *leader = nullptr;
+      if (!ResolveStoredExact(stores.character_storage, raw_leader,
+                              0x18, leader) || leader == nullptr) {
+        return false;
+      }
+      row.leader_present = true;
+      row.leader_character_id = raw_leader;
+    }
+    void *members = nullptr;
+    std::int32_t member_count = 0;
+    if (!TryLoad(faction, kGiftFactionMemberRowsOffsetV1, members) ||
+        !TryLoad(faction, kGiftFactionMemberCountOffsetV1,
+                 member_count) ||
+        member_count < 0 ||
+        member_count > static_cast<std::int32_t>(
+            bridge::kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1) ||
+        (member_count != 0 && members == nullptr)) {
+      return false;
+    }
+    row.character_member_count =
+        static_cast<std::uint32_t>(member_count);
+    for (std::int32_t member_index = 0; member_index < member_count;
+         ++member_index) {
+      const auto offset = static_cast<std::size_t>(member_index) *
+                          kGiftMemberStrideV1;
+      std::uint32_t member_id = 0;
+      std::uint32_t owner_id = 0;
+      void *member_character = nullptr;
+      if (!TryLoad(members, offset + kGiftMemberCharacterOffsetV1,
+                   member_id) ||
+          !TryLoad(members, offset + kGiftMemberOwnerOffsetV1,
+                   owner_id) ||
+          owner_id != row.faction_id || member_id == 0 ||
+          !ResolveStoredExact(stores.character_storage, member_id,
+                              0x18, member_character) ||
+          member_character == nullptr) {
+        return false;
+      }
+      row.character_member_ids[static_cast<std::size_t>(member_index)] =
+          member_id;
+    }
+    auto begin = row.character_member_ids.begin();
+    auto end = begin + row.character_member_count;
+    std::sort(begin, end);
+    if (std::adjacent_find(begin, end) != end) return false;
+    row.leader_present_in_character_members =
+        row.leader_present &&
+        std::binary_search(begin, end, row.leader_character_id);
+  }
+  auto begin = sample.rows.factions.begin();
+  auto end = begin + sample.rows.faction_count;
+  std::sort(begin, end, [](const auto &a, const auto &b) {
+    return a.faction_id < b.faction_id;
+  });
+  for (auto row = begin + (begin != end ? 1 : 0); row != end; ++row) {
+    if ((row - 1)->faction_id == row->faction_id) return false;
+  }
+  sample.rows.terminal =
+      sample.source_count == 0
+          ? bridge::FactionTargetingRowProbeTerminalV1::known_empty
+          : bridge::FactionTargetingRowProbeTerminalV1::ready;
+  return true;
+}
+
+bool SameDirectSourceSampleV1(const DirectSourceSampleV1 &a,
+                              const DirectSourceSampleV1 &b) noexcept {
+  if (a.player != b.player || a.land_state != b.land_state ||
+      a.source_ids != b.source_ids ||
+      a.source_count != b.source_count ||
+      a.rows.faction_count != b.rows.faction_count ||
+      a.rows.terminal != b.rows.terminal) {
+    return false;
+  }
+  for (std::size_t index = 0; index < a.rows.faction_count; ++index) {
+    const auto &left = a.rows.factions[index];
+    const auto &right = b.rows.factions[index];
+    if (left.faction_id != right.faction_id ||
+        left.target_character_id != right.target_character_id ||
+        left.leader_present != right.leader_present ||
+        left.leader_character_id != right.leader_character_id ||
+        left.leader_present_in_character_members !=
+            right.leader_present_in_character_members ||
+        left.character_member_count != right.character_member_count) {
+      return false;
+    }
+    for (std::size_t member = 0;
+         member < left.character_member_count; ++member) {
+      if (left.character_member_ids[member] !=
+          right.character_member_ids[member]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+} // namespace
+
+bool ReadFactionGiftDirectTargetingRowsFromStoresV1(
+    const FactionGiftDirectSourceStoresV1 &stores,
+    const bridge::FactionTargetingRowProbeBindingV1 &required,
+    bridge::FactionTargetingRowProbeResultV1 &rows) noexcept {
+  rows = {};
+  DirectSourceSampleV1 first{};
+  DirectSourceSampleV1 second{};
+  if (!ReadDirectSourceSampleV1(stores, required, first) ||
+      !ReadDirectSourceSampleV1(stores, required, second) ||
+      !SameDirectSourceSampleV1(first, second)) {
+    return false;
+  }
+  rows = first.rows;
+  return true;
+}
+
+bool ReadFactionGiftDirectTargetingRowsExact11906V1(
+    std::uintptr_t module_base, const Bindings &bindings,
+    const bridge::FactionTargetingRowProbeBindingV1 &required,
+    bridge::FactionTargetingRowProbeResultV1 &rows) noexcept {
+  rows = {};
+  if (!bindings.enabled || bindings.character_storage_slot == nullptr) {
+    return false;
+  }
+  std::uintptr_t faction_slot = 0;
+  std::uintptr_t fallback_slot = 0;
+  FactionGiftDirectSourceStoresV1 stores{};
+  if (!AddRva(module_base, kFactionGiftFactionStorageSlotRvaV1,
+              faction_slot) ||
+      !AddRva(module_base, kFactionGiftFactionFallbackSlotRvaV1,
+              fallback_slot) ||
+      !AddRva(module_base, kFactionGiftFactionVtableRvaV1,
+              stores.expected_faction_vtable) ||
+      !TryLoad(bindings.character_storage_slot, 0,
+               stores.character_storage) ||
+      !TryLoad(reinterpret_cast<const void *>(faction_slot), 0,
+               stores.faction_storage) ||
+      !TryLoad(reinterpret_cast<const void *>(fallback_slot), 0,
+               stores.faction_fallback)) {
+    return false;
+  }
+  return ReadFactionGiftDirectTargetingRowsFromStoresV1(
+      stores, required, rows);
+}
+
+namespace {
+
+bool ReadIndependentEntitySampleV1(
+    const FactionGiftDirectSourceStoresV1 &stores,
+    std::uint32_t faction_id,
+    FactionGiftIndependentEntityV1 &entity) noexcept {
+  entity = {};
+  if (faction_id == 0 || stores.character_storage == nullptr ||
+      stores.faction_storage == nullptr ||
+      stores.faction_fallback == nullptr ||
+      stores.expected_faction_vtable == 0) {
+    return false;
+  }
+  void *faction = nullptr;
+  if (!ResolveStoredExact(stores.faction_storage, faction_id,
+                          kFactionIdentityOffset, faction)) {
+    return false;
+  }
+  if (faction == nullptr) return true; // Known absent full-generation slot.
+  std::uintptr_t vtable = 0;
+  std::uint32_t round_trip = 0;
+  if (faction == stores.faction_fallback ||
+      !TryLoad(faction, 0, vtable) ||
+      vtable != stores.expected_faction_vtable ||
+      !TryLoad(faction, kFactionIdentityOffset, round_trip) ||
+      round_trip != faction_id ||
+      !TryLoad(faction, kGiftFactionTargetOffsetV1,
+               entity.target_character_id) ||
+      entity.target_character_id == 0) {
+    return false;
+  }
+  void *target = nullptr;
+  if (!ResolveStoredExact(stores.character_storage,
+                          entity.target_character_id, 0x18, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::uint32_t leader_id = 0;
+  if (!TryLoad(faction, kGiftFactionLeaderOffsetV1, leader_id)) {
+    return false;
+  }
+  if (leader_id != 0) {
+    void *leader = nullptr;
+    if (!ResolveStoredExact(stores.character_storage, leader_id, 0x18,
+                            leader) || leader == nullptr) {
+      return false;
+    }
+    entity.leader_character_id = leader_id;
+  }
+  void *members = nullptr;
+  std::int32_t member_count = 0;
+  if (!TryLoad(faction, kGiftFactionMemberRowsOffsetV1, members) ||
+      !TryLoad(faction, kGiftFactionMemberCountOffsetV1, member_count) ||
+      member_count < 0 ||
+      member_count > static_cast<std::int32_t>(
+          bridge::kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1) ||
+      (member_count != 0 && members == nullptr)) {
+    return false;
+  }
+  for (std::int32_t index = 0; index < member_count; ++index) {
+    const auto offset = static_cast<std::size_t>(index) *
+                        kGiftMemberStrideV1;
+    std::uint32_t member_id = 0;
+    std::uint32_t owner_id = 0;
+    void *member = nullptr;
+    if (!TryLoad(members, offset + kGiftMemberCharacterOffsetV1,
+                 member_id) || member_id == 0 ||
+        !TryLoad(members, offset + kGiftMemberOwnerOffsetV1, owner_id) ||
+        owner_id != faction_id ||
+        !ResolveStoredExact(stores.character_storage, member_id, 0x18,
+                            member) || member == nullptr) {
+      return false;
+    }
+    entity.member_character_ids.push_back(member_id);
+  }
+  std::sort(entity.member_character_ids.begin(),
+            entity.member_character_ids.end());
+  if (std::adjacent_find(entity.member_character_ids.begin(),
+                         entity.member_character_ids.end()) !=
+      entity.member_character_ids.end()) {
+    return false;
+  }
+  std::uintptr_t vtable_after = 0;
+  std::uint32_t identity_after = 0;
+  std::uint32_t target_after = 0;
+  std::uint32_t leader_after = 0;
+  void *members_after = nullptr;
+  std::int32_t count_after = 0;
+  if (!TryLoad(faction, 0, vtable_after) || vtable_after != vtable ||
+      !TryLoad(faction, kFactionIdentityOffset, identity_after) ||
+      identity_after != faction_id ||
+      !TryLoad(faction, kGiftFactionTargetOffsetV1, target_after) ||
+      target_after != entity.target_character_id ||
+      !TryLoad(faction, kGiftFactionLeaderOffsetV1, leader_after) ||
+      leader_after != leader_id ||
+      !TryLoad(faction, kGiftFactionMemberRowsOffsetV1, members_after) ||
+      members_after != members ||
+      !TryLoad(faction, kGiftFactionMemberCountOffsetV1, count_after) ||
+      count_after != member_count) {
+    return false;
+  }
+  entity.present = true;
+  return true;
+}
+
+} // namespace
+
+bool ReadFactionGiftIndependentEntityFromStoresV1(
+    const FactionGiftDirectSourceStoresV1 &stores,
+    std::uint32_t faction_id,
+    FactionGiftIndependentEntityV1 &entity) noexcept {
+  entity = {};
+  FactionGiftIndependentEntityV1 first{};
+  FactionGiftIndependentEntityV1 second{};
+  if (!ReadIndependentEntitySampleV1(stores, faction_id, first) ||
+      !ReadIndependentEntitySampleV1(stores, faction_id, second) ||
+      first != second) {
+    return false;
+  }
+  entity = std::move(first);
+  return true;
+}
+
+bool ReadFactionGiftIndependentEntityExact11906V1(
+    std::uintptr_t module_base, const Bindings &bindings,
+    std::uint32_t faction_id,
+    FactionGiftIndependentEntityV1 &entity) noexcept {
+  entity = {};
+  if (!bindings.enabled || bindings.character_storage_slot == nullptr) {
+    return false;
+  }
+  std::uintptr_t faction_slot = 0;
+  std::uintptr_t fallback_slot = 0;
+  FactionGiftDirectSourceStoresV1 stores{};
+  if (!AddRva(module_base, kFactionGiftFactionStorageSlotRvaV1,
+              faction_slot) ||
+      !AddRva(module_base, kFactionGiftFactionFallbackSlotRvaV1,
+              fallback_slot) ||
+      !AddRva(module_base, kFactionGiftFactionVtableRvaV1,
+              stores.expected_faction_vtable) ||
+      !TryLoad(bindings.character_storage_slot, 0,
+               stores.character_storage) ||
+      !TryLoad(reinterpret_cast<const void *>(faction_slot), 0,
+               stores.faction_storage) ||
+      !TryLoad(reinterpret_cast<const void *>(fallback_slot), 0,
+               stores.faction_fallback) ||
+      !ReadFactionGiftIndependentEntityFromStoresV1(
+          stores, faction_id, entity)) {
+    return false;
+  }
+  if (!entity.present) return true;
+  FactionGiftIndependentEntityV1 after{};
+  std::int64_t power_raw = 0;
+  std::int64_t discontent_raw = 0;
+  if (!ReadFactionMetricsExact11906V1(
+          module_base, faction_id, power_raw, discontent_raw) ||
+      !ReadFactionGiftIndependentEntityFromStoresV1(
+          stores, faction_id, after) ||
+      entity != after) {
+    entity = {};
+    return false;
+  }
+  entity.power_raw = power_raw;
+  entity.discontent_raw = discontent_raw;
+  entity.metrics_available = true;
+  entity.metric_scale = kFactionGiftMetricScaleV1;
   return true;
 }
 

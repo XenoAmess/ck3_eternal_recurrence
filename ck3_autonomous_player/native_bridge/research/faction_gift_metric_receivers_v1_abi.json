@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "faction_item_identity_offset": 0,
+  "faction_storage_slot_rva": 91277160,
+  "faction_fallback_slot_rva": 91277048,
+  "faction_identity_offset": 16,
+  "faction_vtable_rva": 70275624,
+  "output_scale": 100000,
+  "getters": {
+    "FactionItem.GetDiscontent": {
+      "registration_callback_lea_rva": 2090599,
+      "callback_rva": 20533984,
+      "leaf_rva": 20513520,
+      "leaf_size": 326,
+      "leaf_sha256": "B0DF99CA08D376B6FE3DCCA0698496D81251CE81B3991C9B4F3A829B3B9A0CF0",
+      "semantic": "reads FactionItem+0x00 full faction ID, resolves storage and generation, reads CFaction+0x28 fixed discontent, writes stock Q100000 final getter value"
+    },
+    "FactionItem.GetPower": {
+      "registration_callback_lea_rva": 2091026,
+      "callback_rva": 20534112,
+      "leaf_rva": 20509552,
+      "leaf_size": 365,
+      "leaf_sha256": "BCBA58812DBD37C971E95B189A36B616D2E8BEA0A51C0612474A0FA79E368B97",
+      "semantic": "reads FactionItem+0x00 full faction ID, resolves storage and generation, calls target-minus-member strength and member strength leaves, writes stock Q100000 ratio"
+    }
+  },
+  "power_dependencies": {
+    "target_minus_member_strength": {
+      "rva": 37184832,
+      "size": 328,
+      "sha256": "E41B8F6FDC468CD8172383C07D0EEDBCCED236A98BB761C3F45155DA8164CCAD"
+    },
+    "member_strength": {
+      "rva": 37185616,
+      "size": 232,
+      "sha256": "C36B72F0321E34C3BA99412379BC6505BC1791787134CD4BC0D7F408268ECA45"
+    }
+  },
+  "direct_targeting_source": {
+    "stock_refresh_rva": 20524220,
+    "stock_refresh_size": 481,
+    "stock_refresh_sha256": "861418DB54D2C01893C6DD723D2A579FAD35F91ADA4F4167592C5C554ECE7B12",
+    "player_land_state_offset": 440,
+    "source_vector_data_offset": 288,
+    "source_vector_count_offset": 300,
+    "source_id_stride": 4,
+    "maximum_rows": 64,
+    "semantic": "stock FactionsWindow refresh copies each full-generation faction ID from the player's land-state vector to an inline FactionItem without filtering; this read-only source is independent of the UI row getter"
+  },
+  "publication": "resolve CFaction from the full ID and exact vtable before calling either getter; reject getter fallback; accept only paired stable identity, underlying discontent and final values on the same paused application-main frame",
+  "evidence_stage": "static-ready-private-no-paused-live"
+}

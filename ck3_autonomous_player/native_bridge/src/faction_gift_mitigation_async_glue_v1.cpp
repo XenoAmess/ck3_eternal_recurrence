@@ -186,6 +186,41 @@ bool FindFactionRow(const bridge::FactionTargetingRowProbeResultV1 &rows,
   return row != nullptr;
 }
 
+bool SelectDirectTargetingMemberV1(
+    const bridge::FactionTargetingRowProbeResultV1 &rows,
+    const std::vector<std::int32_t> &direct_landed_vassals,
+    std::uint32_t player_character_id, std::uint32_t &faction_id,
+    std::uint32_t &recipient_id) noexcept {
+  faction_id = 0;
+  recipient_id = 0;
+  if (rows.terminal != bridge::FactionTargetingRowProbeTerminalV1::ready)
+    return false;
+  const auto eligible = [&](std::uint32_t id) {
+    return id != 0 && id != player_character_id &&
+           std::binary_search(direct_landed_vassals.begin(),
+                              direct_landed_vassals.end(),
+                              static_cast<std::int32_t>(id));
+  };
+  for (std::size_t index = 0; index < rows.faction_count; ++index) {
+    const auto &row = rows.factions[index];
+    if (row.target_character_id != player_character_id) continue;
+    if (row.leader_present && eligible(row.leader_character_id)) {
+      faction_id = row.faction_id;
+      recipient_id = row.leader_character_id;
+      return true;
+    }
+    for (std::size_t member = 0;
+         member < row.character_member_count; ++member) {
+      const auto id = row.character_member_ids[member];
+      if (!eligible(id)) continue;
+      faction_id = row.faction_id;
+      recipient_id = id;
+      return true;
+    }
+  }
+  return false;
+}
+
 bool ReadRows(void *context,
               bridge::FactionTargetingRowProbeResultV1 &output) noexcept {
   output = static_cast<FactionGiftMitigationAsyncContextV1 *>(context)
@@ -240,18 +275,29 @@ bool ReadFaction(void *context,
   output.frame = required;
   output.queried_source_faction_id = faction_id;
   output.source_faction_present = true;
-  const bool read = query.offline_receivers_fixture
-                        ? ReadFactionAtWarFromExactStoresV1(
-                              query.faction_at_war_exact_stores, faction_id,
-                              output.source_faction_at_war)
-                        : ReadFactionAtWarExact11906V1(
-                              query.module_base, faction_id,
-                              output.source_faction_at_war);
+  const bool war_read = query.offline_receivers_fixture
+                            ? ReadFactionAtWarFromExactStoresV1(
+                                  query.faction_at_war_exact_stores,
+                                  faction_id, output.source_faction_at_war)
+                            : ReadFactionAtWarExact11906V1(
+                                  query.module_base, faction_id,
+                                  output.source_faction_at_war);
+  const bool metric_read = query.offline_receivers_fixture
+                               ? ReadFactionMetricsFromExactFixtureV1(
+                                     query.faction_metrics_exact_fixture,
+                                     faction_id, output.power_raw,
+                                     output.discontent_raw)
+                               : ReadFactionMetricsExact11906V1(
+                                     query.module_base, faction_id,
+                                     output.power_raw,
+                                     output.discontent_raw);
+  output.metrics_available = metric_read;
+  output.metric_scale = metric_read ? kFactionGiftMetricScaleV1 : 0;
   // Keep the source/details envelope readable so the async owner can publish
   // the dedicated receiver RED.  query_complete remains the only authority
   // for this field; the default false value is never accepted as an observed
   // no-war result when the exact receiver fails.
-  output.query_complete = read;
+  output.query_complete = war_read;
   return true;
 }
 
@@ -341,6 +387,106 @@ bool SubmitGift(void *context, std::uint32_t player_id,
   return SubmitFactionGiftThroughGenericInteractionDirectV1(
       static_cast<FactionGiftMitigationAsyncContextV1 *>(context)->bindings,
       player_id, recipient_id, key, stable_hash);
+}
+
+bool CaptureIndependentReceiptPostV1(
+    FactionGiftMitigationAsyncContextV1 &query,
+    const game::Snapshot &current,
+    const MainThreadExecutionStampV1 &stamp) noexcept {
+  const auto &ack = query.pending_ack;
+  if (ack.status != game::FactionGiftMitigationAckStatusV1::
+                        submitted_verification_pending ||
+      !ack.verification_pending ||
+      query.expected_public_revision <= ack.pre_snapshot_revision ||
+      stamp.pump_epoch <= ack.pre_native_snapshot_revision ||
+      current.date_raw != ack.pre_observed_date_raw ||
+      current.played_character_id <= 0 ||
+      static_cast<std::uint32_t>(current.played_character_id) !=
+          ack.player_character_id ||
+      query.source_faction_id != ack.source_faction_id ||
+      query.recipient_character_id != ack.recipient_character_id ||
+      current.played_character_gold.scale < 0 ||
+      current.played_character_gold.scale >
+          (std::numeric_limits<std::uint32_t>::max)()) {
+    query.failure_flags |= faction_gift_async_failure_frame;
+    return false;
+  }
+
+  FactionGiftIndependentEntityV1 entity{};
+  if (!ReadFactionGiftIndependentEntityExact11906V1(
+          query.module_base, query.bindings, query.source_faction_id,
+          entity)) {
+    query.failure_flags |=
+        faction_gift_async_failure_independent_entity_receiver;
+    return false;
+  }
+  const bridge::FactionTargetingRowProbeFactionV1 *source_row = nullptr;
+  const bool in_targeting_view = FindFactionRow(
+      query.targeting_rows, query.source_faction_id, source_row);
+  if (!entity.present && in_targeting_view) {
+    query.failure_flags |=
+        faction_gift_async_failure_independent_entity_receiver;
+    return false;
+  }
+  void *const recipient =
+      ResolveCharacter(query.bindings, query.recipient_character_id);
+  GiftOpinionReceiverResultV1 opinion{};
+  if (recipient == nullptr ||
+      !ReadGiftOpinionExact11906V1(
+          query.module_base, query.bindings,
+          query.recipient_character_id, ack.player_character_id,
+          opinion) || !opinion.query_complete) {
+    query.failure_flags |= faction_gift_async_failure_opinion_receiver;
+    return false;
+  }
+  bool at_war = false;
+  if (entity.present &&
+      !ReadFactionAtWarExact11906V1(
+          query.module_base, query.source_faction_id, at_war)) {
+    query.failure_flags |= faction_gift_async_failure_faction_war_receiver;
+    return false;
+  }
+
+  auto &post = query.observation;
+  post = {};
+  post.available = true;
+  post.paused = true;
+  post.snapshot_revision = query.expected_public_revision;
+  post.native_snapshot_revision = stamp.pump_epoch;
+  post.observed_date_raw = current.date_raw;
+  post.player_resources_query_complete = true;
+  post.player_character_id = ack.player_character_id;
+  post.player_gold_raw = current.played_character_gold.raw;
+  post.player_gold_scale =
+      static_cast<std::uint32_t>(current.played_character_gold.scale);
+  post.source_faction_requery_complete = true;
+  post.queried_source_faction_id = query.source_faction_id;
+  post.source_faction_present = entity.present;
+  if (entity.present) {
+    post.source_faction_target_character_id = entity.target_character_id;
+    post.source_faction_targeting_player =
+        entity.target_character_id == ack.player_character_id;
+    post.source_faction_at_war = at_war;
+    post.source_faction_leader_character_id =
+        entity.leader_character_id;
+    post.source_faction_member_character_ids =
+        entity.member_character_ids;
+    post.source_faction_metrics_available = entity.metrics_available;
+    post.source_faction_power_raw = entity.power_raw;
+    post.source_faction_discontent_raw = entity.discontent_raw;
+    post.source_faction_metric_scale = entity.metric_scale;
+  }
+  post.recipient_identity_resolved = true;
+  post.recipient_character_id = query.recipient_character_id;
+  post.recipient_alive =
+      LoadAt<void *>(recipient, kCharacterDeathDataOffset) == nullptr;
+  post.recipient_opinion_query_complete = true;
+  post.recipient_opinion_of_player =
+      opinion.recipient_opinion_of_player;
+  post.gift_opinion_present = opinion.gift_opinion_present;
+  post.gift_opinion_modifier_value =
+      opinion.gift_opinion_modifier_value;
+  return true;
 }
 
 std::string Quote(std::string_view value) {
@@ -504,12 +650,71 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
   query.failure_flags = faction_gift_async_failure_none;
   query.observation = {};
   query.ack = {};
+  query.preflight = {};
+  query.preflight_attempted = false;
   query.receipt_pending = false;
+  query.direct_source_known_empty = false;
   query.execution_stamp = stamp;
   if (!stamp.paused || stamp.pump_epoch == 0 ||
       stamp.date_raw != query.expected_snapshot.date_raw) {
     query.failure_flags |= faction_gift_async_failure_frame;
     return true;
+  }
+  if (query.use_direct_source_rows) {
+    game::Snapshot current{};
+    if (query.expected_public_revision == 0 ||
+        !ReadSnapshot(query.bindings, current) ||
+        current != query.expected_snapshot ||
+        !current.has_played_character ||
+        current.played_character_id <= 0 ||
+        !ReadFactionGiftDirectTargetingRowsExact11906V1(
+            query.module_base, query.bindings,
+            {true, stamp.pump_epoch, query.expected_public_revision,
+             current.date_raw,
+             static_cast<std::uint32_t>(current.played_character_id)},
+            query.targeting_rows)) {
+      query.failure_flags |= faction_gift_async_failure_frame;
+      return true;
+    }
+    query.direct_source_known_empty =
+        query.targeting_rows.terminal ==
+        bridge::FactionTargetingRowProbeTerminalV1::known_empty;
+    if (query.verify_receipt) {
+      CaptureIndependentReceiptPostV1(query, current, stamp);
+      return true;
+    }
+    if (query.direct_source_known_empty) return true;
+    if (query.source_faction_id == 0 || query.recipient_character_id == 0) {
+      if (!SelectDirectTargetingMemberV1(
+              query.targeting_rows,
+              query.direct_landed_vassal_character_ids,
+              static_cast<std::uint32_t>(current.played_character_id),
+              query.source_faction_id,
+              query.recipient_character_id)) {
+        query.failure_flags |= faction_gift_async_failure_recipient;
+        return true;
+      }
+    }
+    if (query.execute_request) {
+      if (query.prior_query_native_revision == 0 ||
+          query.request.expected_native_revision !=
+              query.prior_query_native_revision ||
+          query.request.expected_revision !=
+              query.expected_public_revision ||
+          query.request.expected_date_raw != current.date_raw ||
+          query.request.player_character_id !=
+              static_cast<std::uint32_t>(current.played_character_id) ||
+          query.request.source_faction_id != query.source_faction_id ||
+          query.request.recipient_character_id !=
+              query.recipient_character_id) {
+        query.failure_flags |= faction_gift_async_failure_frame;
+        return true;
+      }
+      // A subsequent paused application-main pulse can have a newer native
+      // epoch while the public gameplay frame and selected source remain the
+      // same. The certified action recaptures every field in this new epoch.
+      query.request.expected_native_revision = stamp.pump_epoch;
+    }
   }
 
   FactionGiftMitigationNativeBinderEnvironmentV1 environment{};
@@ -558,6 +763,9 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
   if (!query.observation.source_faction_requery_complete) {
     query.failure_flags |= faction_gift_async_failure_faction_war_receiver;
   }
+  if (!query.observation.source_faction_metrics_available) {
+    query.failure_flags |= faction_gift_async_failure_faction_metric_receiver;
+  }
   if (!query.observation.recipient_opinion_query_complete ||
       !query.observation.gift_preview.available) {
     query.failure_flags |= faction_gift_async_failure_opinion_receiver;
@@ -567,6 +775,17 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
           ? FactionGiftMitigationAsyncCompletionV1::preview_ready
           : FactionGiftMitigationAsyncCompletionV1::unavailable;
   if (query.execute_request) {
+    query.preflight_attempted = true;
+    if (EvaluateFactionGiftMitigationIntegrationGateV1(
+            binder, query.request, query.preflight) !=
+        FactionGiftMitigationIntegrationGateTerminalV1::ready) {
+      query.failure_flags |= faction_gift_async_failure_read_only_preflight;
+      query.ack.request_id = query.request.request_id;
+      query.ack.rejection_reason = query.preflight.first_red_reason;
+      query.ack.failure_class =
+          game::FactionGiftMitigationFailureClassV1::faction_binding;
+      return true;
+    }
     ExecuteFactionGiftMitigationSourceActionAdapterV1(
         MakeFactionGiftMitigationCertifiedActionEnvironmentV1(binder),
         access, query.request, query.ack);
@@ -604,6 +823,18 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
        faction_gift_async_failure_opinion_receiver) != 0) {
     append_red("gift_opinion_receiver_unavailable");
   }
+  if ((context.failure_flags &
+       faction_gift_async_failure_faction_metric_receiver) != 0) {
+    append_red("faction_metric_receiver_unavailable");
+  }
+  if ((context.failure_flags &
+       faction_gift_async_failure_read_only_preflight) != 0) {
+    append_red("faction_gift_read_only_preflight_red");
+  }
+  if ((context.failure_flags &
+       faction_gift_async_failure_independent_entity_receiver) != 0) {
+    append_red("independent_faction_entity_requery_unavailable");
+  }
   typed_reds += ']';
   std::string output =
       "{\"schema_version\":1,\"private\":true,\"completion\":" +
@@ -622,12 +853,40 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
       ",\"native_snapshot_revision\":" +
       std::to_string(observation.native_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(observation.observed_date_raw) +
+      ",\"observed_date_raw\":" +
+      std::to_string(observation.observed_date_raw) +
+      ",\"player_resources_query_complete\":" +
+      (observation.player_resources_query_complete ? "true" : "false") +
       ",\"player_character_id\":" +
       std::to_string(observation.player_character_id) +
       ",\"player_gold_raw\":" +
       std::to_string(observation.player_gold_raw) +
       ",\"player_gold_scale\":" +
       std::to_string(observation.player_gold_scale) +
+      ",\"source_faction_requery_complete\":" +
+      (observation.source_faction_requery_complete ? "true" : "false") +
+      ",\"queried_source_faction_id\":" +
+      std::to_string(observation.queried_source_faction_id) +
+      ",\"source_faction_present\":" +
+      (observation.source_faction_present ? "true" : "false") +
+      ",\"source_faction_target_character_id\":" +
+      std::to_string(observation.source_faction_target_character_id) +
+      ",\"source_faction_targeting_player\":" +
+      (observation.source_faction_targeting_player ? "true" : "false") +
+      ",\"source_faction_at_war\":" +
+      (observation.source_faction_at_war ? "true" : "false") +
+      ",\"source_faction_metrics_available\":" +
+      (observation.source_faction_metrics_available ? "true" : "false") +
+      ",\"source_faction_power_raw\":" +
+      std::to_string(observation.source_faction_power_raw) +
+      ",\"source_faction_discontent_raw\":" +
+      std::to_string(observation.source_faction_discontent_raw) +
+      ",\"source_faction_metric_scale\":" +
+      std::to_string(observation.source_faction_metric_scale) +
+      ",\"recipient_identity_resolved\":" +
+      (observation.recipient_identity_resolved ? "true" : "false") +
+      ",\"recipient_character_id\":" +
+      std::to_string(observation.recipient_character_id) +
       ",\"recipient_alive\":" +
       (observation.recipient_alive ? "true" : "false") +
       ",\"recipient_is_ai\":" +
@@ -644,7 +903,7 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
       (observation.gift_opinion_modifier_value.has_value()
            ? std::to_string(*observation.gift_opinion_modifier_value)
            : "null") +
-      ",\"preview\":{\"available\":" +
+      ",\"gift_preview\":{\"available\":" +
       (preview.available ? "true" : "false") +
       ",\"definition_key\":" + Quote(preview.definition_key) +
       ",\"definition_stable_hash\":" +
@@ -656,12 +915,29 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
       ",\"gold_cost_raw\":" + std::to_string(preview.gold_cost_raw) +
       ",\"gold_scale\":" + std::to_string(preview.gold_scale) +
       ",\"opinion_delta\":" + std::to_string(preview.opinion_delta) +
-      "}},\"receipt_pending\":" +
-      (context.receipt_pending ? "true" : "false");
+      "}";
+  output += ",\"source_faction_leader_character_id\":";
+  output += observation.source_faction_leader_character_id.has_value()
+                ? std::to_string(*observation.source_faction_leader_character_id)
+                : "null";
+  output += ",\"source_faction_member_character_ids\":[";
+  for (std::size_t index = 0;
+       index < observation.source_faction_member_character_ids.size();
+       ++index) {
+    if (index != 0) output += ',';
+    output += std::to_string(
+        observation.source_faction_member_character_ids[index]);
+  }
+  output += "]},\"receipt_pending\":";
+  output += context.receipt_pending ? "true" : "false";
   if (context.execute_request) {
     output += ",\"ack\":" + SerializeFactionGiftMitigationAckV1(context.ack);
+    output += ",\"preflight\":" +
+              SerializeFactionGiftMitigationIntegrationGateResultV1(
+                  context.preflight);
   } else {
     output += ",\"ack\":null";
+    output += ",\"preflight\":null";
   }
   output += ",\"executor_invocations\":" +
             std::to_string(context.executor_invocations) + "}";

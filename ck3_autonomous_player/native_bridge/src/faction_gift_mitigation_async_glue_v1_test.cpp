@@ -23,6 +23,10 @@ int g_lookup_count = 0;
 int g_construct_count = 0;
 xar::game::Snapshot g_snapshot{};
 alignas(16) std::array<std::byte, 0x200> g_character{};
+alignas(16) std::array<std::byte, 0x200> g_player_character{};
+std::array<std::byte, 0x140> g_land_state{};
+std::array<std::uint32_t, 1> g_targeting_ids{303};
+std::array<std::byte, 0x20> g_member_rows{};
 std::array<std::byte, 0x40> g_character_storage{};
 std::array<std::byte, 203 * 0x10> g_character_slots{};
 void *g_character_storage_pointer = g_character_storage.data();
@@ -151,6 +155,14 @@ int main() {
   Store(g_definition.data(), 0x2A48, std::uint8_t{1});
   Store(g_character.data(), 0x18, std::uint32_t{202});
   Store(g_character.data(), 0x1C8, static_cast<void *>(nullptr));
+  Store(g_player_character.data(), 0x18, std::uint32_t{101});
+  Store(g_player_character.data(), 0x1B8,
+        static_cast<void *>(g_land_state.data()));
+  Store(g_character_slots.data(), 101 * 0x10 + 0x08,
+        static_cast<void *>(g_player_character.data()));
+  Store(g_land_state.data(), 0x120,
+        static_cast<void *>(g_targeting_ids.data()));
+  Store(g_land_state.data(), 0x12C, std::int32_t{1});
   Store(g_character_slots.data(), 202 * 0x10 + 0x08,
         static_cast<void *>(g_character.data()));
   Store(g_character_storage.data(), 0x20,
@@ -168,6 +180,13 @@ int main() {
   g_null_war_vtable[1] = kNullAliveLeaf;
   Store(g_faction.data(), 0x00, g_faction_vtable.data());
   Store(g_faction.data(), 0x10, std::uint32_t{303});
+  Store(g_faction.data(), 0x40, std::uint32_t{101});
+  Store(g_faction.data(), 0x44, std::uint32_t{202});
+  Store(g_faction.data(), 0x48,
+        static_cast<void *>(g_member_rows.data()));
+  Store(g_faction.data(), 0x54, std::int32_t{1});
+  Store(g_member_rows.data(), 0x08, std::uint32_t{202});
+  Store(g_member_rows.data(), 0x0C, std::uint32_t{303});
   Store(g_faction.data(), 0x8C, std::uint32_t{404});
   Store(g_faction_slots.data(), 303 * 0x10 + 0x08,
         static_cast<void *>(g_faction.data()));
@@ -185,6 +204,77 @@ int main() {
   Store(g_war_fallback.data(), 0x08, std::uint32_t{0xFFFFFFFFU});
 
   const auto bindings = MakeBindings();
+  const xar::ck3_11906::FactionGiftDirectSourceStoresV1 direct_stores{
+      g_character_storage.data(), g_faction_storage.data(),
+      g_faction_fallback.data(),
+      reinterpret_cast<std::uintptr_t>(g_faction_vtable.data())};
+  const xar::bridge::FactionTargetingRowProbeBindingV1 direct_binding{
+      true, 12, 11, 100, 101};
+  xar::bridge::FactionTargetingRowProbeResultV1 direct_rows{};
+  if (!Check(xar::ck3_11906::
+                 ReadFactionGiftDirectTargetingRowsFromStoresV1(
+                     direct_stores, direct_binding, direct_rows) &&
+                 direct_rows.terminal == xar::bridge::
+                     FactionTargetingRowProbeTerminalV1::ready &&
+                 direct_rows.published_generation == 24 &&
+                 direct_rows.faction_count == 1 &&
+                 direct_rows.factions[0].faction_id == 303 &&
+                 direct_rows.factions[0].target_character_id == 101 &&
+                 direct_rows.factions[0].leader_character_id == 202 &&
+                 direct_rows.factions[0].character_member_count == 1 &&
+                 direct_rows.factions[0].character_member_ids[0] == 202,
+             "no-UI direct source identity/member fixture failed")) {
+    return 1;
+  }
+  Store(g_member_rows.data(), 0x0C, std::uint32_t{304});
+  if (!Check(!xar::ck3_11906::
+                 ReadFactionGiftDirectTargetingRowsFromStoresV1(
+                     direct_stores, direct_binding, direct_rows),
+             "foreign member owner accepted")) {
+    return 1;
+  }
+  Store(g_member_rows.data(), 0x0C, std::uint32_t{303});
+  Store(g_land_state.data(), 0x12C, std::int32_t{0});
+  xar::ck3_11906::FactionGiftIndependentEntityV1 independent{};
+  if (!Check(xar::ck3_11906::
+                 ReadFactionGiftIndependentEntityFromStoresV1(
+                     direct_stores, 303, independent) &&
+                 independent.present &&
+                 independent.target_character_id == 101 &&
+                 independent.member_character_ids ==
+                     std::vector<std::uint32_t>{202},
+             "entity must remain independently visible after targeting view empties")) {
+    return 1;
+  }
+  if (!Check(xar::ck3_11906::
+                 ReadFactionGiftDirectTargetingRowsFromStoresV1(
+                     direct_stores, direct_binding, direct_rows) &&
+                 direct_rows.terminal == xar::bridge::
+                     FactionTargetingRowProbeTerminalV1::known_empty &&
+                 direct_rows.faction_count == 0,
+             "legal no-targeting-faction vector was not known empty")) {
+    return 1;
+  }
+  Store(g_member_rows.data(), 0x0C, std::uint32_t{304});
+  if (!Check(!xar::ck3_11906::
+                 ReadFactionGiftIndependentEntityFromStoresV1(
+                     direct_stores, 303, independent),
+             "independent entity accepted foreign member ownership")) {
+    return 1;
+  }
+  Store(g_member_rows.data(), 0x0C, std::uint32_t{303});
+  Store(g_faction_slots.data(), 303 * 0x10 + 0x08,
+        static_cast<void *>(nullptr));
+  if (!Check(xar::ck3_11906::
+                 ReadFactionGiftIndependentEntityFromStoresV1(
+                     direct_stores, 303, independent) &&
+                 !independent.present,
+             "independent entity did not distinguish known absent slot")) {
+    return 1;
+  }
+  Store(g_faction_slots.data(), 303 * 0x10 + 0x08,
+        static_cast<void *>(g_faction.data()));
+  Store(g_land_state.data(), 0x12C, std::int32_t{1});
   xar::ck3_11906::GiftOpinionReceiverFixtureV1 gift_fixture{};
   gift_fixture.available = true;
   gift_fixture.recipient_identity_before = 202;
@@ -332,6 +422,12 @@ int main() {
       reinterpret_cast<std::uintptr_t>(g_war_vtable.data()),
       reinterpret_cast<std::uintptr_t>(g_null_war_vtable.data()),
       kAliveLeaf, kNullAliveLeaf};
+  query.faction_metrics_exact_fixture = {
+      true, 303, 303,
+      reinterpret_cast<std::uintptr_t>(g_faction_vtable.data()),
+      reinterpret_cast<std::uintptr_t>(g_faction_vtable.data()),
+      reinterpret_cast<std::uintptr_t>(g_faction_vtable.data()),
+      91'000, 91'000, 64'000, 64'000};
   query.gift_opinion_exact_fixture = gift_fixture;
   query.expected_snapshot = g_snapshot;
   query.targeting_rows.terminal =
@@ -369,6 +465,10 @@ int main() {
                  query.observation.recipient_is_ai &&
                  query.observation.recipient_is_direct_landed_vassal &&
                  query.observation.source_faction_requery_complete &&
+                 query.observation.source_faction_metrics_available &&
+                 query.observation.source_faction_power_raw == 91'000 &&
+                 query.observation.source_faction_discontent_raw == 64'000 &&
+                 query.observation.source_faction_metric_scale == 100'000 &&
                  query.observation.source_faction_at_war &&
                  query.observation.recipient_opinion_query_complete &&
                  query.observation.recipient_opinion_of_player == 0 &&
@@ -400,6 +500,22 @@ int main() {
                      recipient_opinion_query_complete &&
                  war_receiver_red.observation.gift_preview.available,
              "war receiver drift did not remain a local typed RED")) {
+    return 1;
+  }
+
+  auto metric_receiver_red = query;
+  metric_receiver_red.faction_metrics_exact_fixture.power_second += 1;
+  stamp.pump_epoch = 16;
+  if (!Check(xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1(
+                 &metric_receiver_red, stamp),
+             "metric receiver RED executor failed") ||
+      !Check(metric_receiver_red.failure_flags ==
+                 xar::ck3_11906::
+                     faction_gift_async_failure_faction_metric_receiver &&
+                 metric_receiver_red.observation.source_faction_requery_complete &&
+                 !metric_receiver_red.observation.source_faction_metrics_available &&
+                 metric_receiver_red.observation.gift_preview.available,
+             "metric drift did not remain a local typed RED")) {
     return 1;
   }
 
