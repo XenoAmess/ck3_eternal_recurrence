@@ -15,7 +15,7 @@ import time
 from typing import Any
 
 from run_g2m4_paused_player_view_read import (
-    PRIVATE_STEP, _frame_binding, _read_step,
+    PRIVATE_STEP, _frame_binding, _read_step, _scene_issue,
 )
 from run_g2m4_paused_player_world_building_source_read import (
     run_owned_paused_player_world_building_source_read,
@@ -24,6 +24,13 @@ from run_g2m4_paused_player_world_building_source_read import (
 
 ACTION_STEP = "g2_player_world_building_action_private_v1"
 EXACT_EXE_SHA256 = "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+PENDING_INTERACTION_STEPS = frozenset({
+    "query-pending-character-interaction-context-v1",
+    "accept-pending-character-interaction",
+    "reject-pending-character-interaction",
+    "block-pending-character-interaction",
+    "acknowledge-pending-character-interaction",
+})
 
 
 def _positive_int(value: object) -> bool:
@@ -83,6 +90,162 @@ def _wait_for_newer_paused_frame(
             return None, last, "newer_paused_frame_timeout_keep_pending"
         time.sleep(min(max(0.0, poll_interval_seconds), deadline - now))
         last = _frame_binding(driver.state.semantic_snapshot())
+
+
+def drain_official_pending_interactions_for_construction_read(
+    service: Any,
+    *,
+    max_turns: int = 4,
+) -> dict[str, object]:
+    """Use only formal ``auto_turn`` to clear a forced interaction scene.
+
+    Construction material reads are rejected while CK3 exposes an active
+    event or pending character interaction.  A formal turn may advance into
+    such a scene, so the acceptance runner must give the production planner a
+    bounded chance to query and answer it before issuing another private
+    construction read.  This helper never invokes the construction action or
+    a direct interaction reply.  A missing typed production handler remains a
+    capability RED with the planner's exact requirement attached.
+    """
+
+    if (
+        not isinstance(max_turns, int)
+        or isinstance(max_turns, bool)
+        or max_turns <= 0
+    ):
+        raise ValueError("max_turns must be a positive integer")
+
+    turns: list[dict[str, object]] = []
+    record: dict[str, object] = {
+        "schema_version": 1,
+        "status": "unexecuted",
+        "max_turns": max_turns,
+        "official_turns": turns,
+        "construction_action_submits": 0,
+        "construction_read_permitted": False,
+    }
+
+    for turn_number in range(1, max_turns + 1):
+        snapshot = service.snapshot()
+        binding = _frame_binding(snapshot)
+        pending = binding.get("pending_character_interaction")
+        record["last_frame"] = binding
+
+        if pending is None:
+            issue = _scene_issue(binding)
+            if issue is None:
+                record.update(
+                    status="scene_eligible",
+                    turns_used=turn_number - 1,
+                    construction_read_permitted=True,
+                )
+            else:
+                record.update(
+                    status="capability_red",
+                    issue=f"scene_not_eligible_after_pending_drain:{issue}",
+                    turns_used=turn_number - 1,
+                )
+            return record
+
+        before = {
+            "turn_number": turn_number,
+            "frame": binding,
+            "pending_character_interaction": pending,
+        }
+        try:
+            outcome = service.auto_turn()
+        except Exception as error:
+            before.update(
+                status="red_action_state_unknown",
+                error=f"{type(error).__name__}: {error}",
+            )
+            turns.append(before)
+            record.update(
+                status="red_action_state_unknown",
+                issue="official_pending_auto_turn_failed_stop_without_retry",
+                turns_used=turn_number,
+            )
+            return record
+
+        plan = outcome.get("plan") if isinstance(outcome, dict) else None
+        selected_step = (
+            outcome.get("selected_step")
+            if isinstance(outcome, dict)
+            else None
+        )
+        if selected_step is None and isinstance(plan, dict):
+            selected_step = plan.get("selected_step")
+        before["outcome"] = outcome
+        turns.append(before)
+
+        if not isinstance(outcome, dict) or outcome.get("status") != "executed":
+            record.update(
+                status="capability_red",
+                issue="official_pending_handler_unavailable",
+                turns_used=turn_number,
+                planner_phase=(
+                    plan.get("phase") if isinstance(plan, dict) else None
+                ),
+                required_step=(
+                    plan.get("required_step")
+                    if isinstance(plan, dict)
+                    else None
+                ),
+                required_capabilities=(
+                    plan.get("required_capabilities")
+                    if isinstance(plan, dict)
+                    else None
+                ),
+            )
+            return record
+        if selected_step not in PENDING_INTERACTION_STEPS:
+            record.update(
+                status="capability_red",
+                issue="unexpected_official_step_while_pending",
+                turns_used=turn_number,
+                selected_step=selected_step,
+                planner_phase=(
+                    plan.get("phase") if isinstance(plan, dict) else None
+                ),
+            )
+            return record
+
+    final_snapshot = service.snapshot()
+    final_binding = _frame_binding(final_snapshot)
+    record["last_frame"] = final_binding
+    issue = _scene_issue(final_binding)
+    if issue is None:
+        record.update(
+            status="scene_eligible",
+            turns_used=max_turns,
+            construction_read_permitted=True,
+        )
+        return record
+    last_outcome = turns[-1].get("outcome") if turns else None
+    last_plan = (
+        last_outcome.get("plan")
+        if isinstance(last_outcome, dict)
+        else None
+    )
+    record.update(
+        status="capability_red",
+        issue=f"bounded_pending_drain_exhausted:{issue}",
+        turns_used=max_turns,
+        planner_phase=(
+            last_plan.get("phase") if isinstance(last_plan, dict) else None
+        ),
+        required_step=(
+            last_plan.get("required_step")
+            if isinstance(last_plan, dict)
+            else None
+        ),
+        required_capabilities=(
+            last_plan.get("required_capabilities")
+            if isinstance(last_plan, dict)
+            else None
+        ),
+    )
+    return record
 
 
 def run_owned_paused_world_building_action(
@@ -220,6 +383,7 @@ def run_owned_paused_world_building_action(
 
 
 __all__ = [
+    "drain_official_pending_interactions_for_construction_read",
     "_wait_for_newer_paused_frame",
     "run_owned_paused_world_building_action",
 ]
