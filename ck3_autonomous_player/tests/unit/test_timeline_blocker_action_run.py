@@ -83,6 +83,13 @@ class _Driver:
         self.closed = True
 
 
+def test_r778_checkpoint_binding_is_the_authoritative_sha256() -> None:
+    assert subject.EXPECTED_SOURCE_CHECKPOINT_SHA256 == (
+        "2c0f4333ae186ee91f560ad7d14abb2f2e29aaa1b4d2eacfefe0c9a8e1e505e3"
+    )
+    assert len(subject.EXPECTED_SOURCE_CHECKPOINT_SHA256) == 64
+
+
 class _Service:
     def __init__(self, driver: _Driver, *, save: Path, history: list[object]):
         self.driver = driver

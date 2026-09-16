@@ -20,7 +20,7 @@ from typing import Any
 
 
 R778_SOURCE_CHECKPOINT_SHA256 = (
-    "2c0f4333ae186ee91f560ad7d14abb2f2e29aaa1b4d2eacfe0c9a8e1e505e3"
+    "2c0f4333ae186ee91f560ad7d14abb2f2e29aaa1b4d2eacfefe0c9a8e1e505e3"
 )
 R778_SOURCE_DRIVER_STATE_SHA256 = (
     "c3fa1268ffa72b49936d36e4c49c7cea182d3c18e2795ddc5586efff136200c9"

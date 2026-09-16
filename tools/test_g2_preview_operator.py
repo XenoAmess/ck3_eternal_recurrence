@@ -14,6 +14,13 @@ from tools import g2_preview_operator
 
 
 class G2PreviewOperatorTest(unittest.TestCase):
+    def test_r778_checkpoint_binding_is_the_authoritative_sha256(self) -> None:
+        self.assertEqual(
+            g2_preview_operator.R778_SOURCE_CHECKPOINT_SHA256,
+            "2c0f4333ae186ee91f560ad7d14abb2f2e29aaa1b4d2eacfefe0c9a8e1e505e3",
+        )
+        self.assertEqual(len(g2_preview_operator.R778_SOURCE_CHECKPOINT_SHA256), 64)
+
     def test_private_timeline_action_is_one_exact_bounded_command(self) -> None:
         args = g2_preview_operator.parser().parse_args([
             "continue-death-succession-modal-v1",
