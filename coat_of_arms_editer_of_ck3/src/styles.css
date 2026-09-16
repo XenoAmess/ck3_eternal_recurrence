@@ -127,7 +127,8 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .candidate-preview-placeholder { display: grid; place-items: center; color: #786d60; font-size: 11px; }
 .candidate-card strong { color: #d6bf84; font-size: 12px; }
 .candidate-card > span { overflow: hidden; color: #a99d8e; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-.candidate-actions { display: flex; gap: 5px; margin-top: auto; }
+.candidate-actions { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 5px; margin-top: auto; }
+.candidate-actions .el-button { width: 100%; min-width: 0; margin-left: 0 !important; padding-inline: 4px; }
 .pattern-texture { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; opacity: .72; }
 .shield-light { position: absolute; inset: 0 50% 0 0; opacity: .22; }
 .emblem-group { position: absolute; inset: 0; }

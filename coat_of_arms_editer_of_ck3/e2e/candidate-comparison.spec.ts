@@ -23,6 +23,14 @@ test('keeps three exact comparison snapshots and reloads one into the complete m
   await parentInput(page).fill('c_candidate_3')
   await save.click()
   await expect(comparison.locator('.candidate-card')).toHaveCount(3)
+  const actionsContainedByCards = await comparison.locator('.candidate-card').evaluateAll((cards) => cards.every((card) => {
+    const cardBounds = card.getBoundingClientRect()
+    return [...card.querySelectorAll<HTMLElement>('.candidate-actions .el-button')].every((button) => {
+      const buttonBounds = button.getBoundingClientRect()
+      return buttonBounds.left >= cardBounds.left - 0.5 && buttonBounds.right <= cardBounds.right + 0.5
+    })
+  }))
+  expect(actionsContainedByCards).toBe(true)
 
   await parentInput(page).fill('c_not_saved_fourth')
   await expect(save).toBeDisabled()
