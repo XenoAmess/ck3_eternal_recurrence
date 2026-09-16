@@ -1,6 +1,6 @@
 # CK3 家徽编辑器真实 10,000 拟合预算压力证据
 
-状态：`WP4 in_progress / real-fit-budget、reload-persistent checkpoint pause-resume、cancel-restart sub-gates passed`
+状态：`WP4 passed / real-fit-budget、reload-persistent checkpoint pause-resume、multi-stage cancel-restart passed`
 
 日期：2026-09-16（Asia/Shanghai）
 
@@ -90,6 +90,10 @@ GitHub Pages 的共享 Linux runner 属于 `report-only` 性能环境，同一�
 修改后本机生产 build 的 report-only 全流程在 2.2 分钟内通过：128 / 1,024 / 10,000 分别为
 4,958 / 5,583 / 101,914 ms，刷新恢复 3,341 ms、继续至完成 4,805 ms、取消 71 ms、重启进度 184 ms，非 GET 请求为 0。
 
+独立的 `ck3-coa-fit-multi-stage-cancel-v1` 又在背景匹配、全库轮廓粗筛、0.1° 级精筛和原生矩形块残差细化四个不同阶段
+主动终止 Worker，本机延迟分别为 17.9 / 17.4 / 20.8 / 14.5 ms，均低于预先冻结的 1,000 ms 门禁。每次取消后
+`data-fit-evidence` 为空；最后的新 run 能在 1,000 ms 内恢复进度并再次安全取消，证明 run ID/revision 隔离未留下旧结果。
+
 ## 复现命令
 
 在 `coat_of_arms_editer_of_ck3/` 中执行：
@@ -98,6 +102,7 @@ GitHub Pages 的共享 Linux runner 属于 `report-only` 性能环境，同一�
 pnpm exec vitest run src/domain/fitBudgetContract.test.ts --reporter=verbose
 pnpm exec vitest run src/domain/fitCheckpointStore.test.ts --reporter=verbose
 pnpm exec playwright test e2e/fit-budget-stress.spec.ts --reporter=line
+pnpm exec playwright test e2e/fit-cancel-stages.spec.ts --reporter=line
 pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts --reporter=line
 pnpm exec playwright test e2e/reference-hunter-fit.spec.ts --reporter=line
 pnpm test

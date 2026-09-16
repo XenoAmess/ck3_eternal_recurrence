@@ -166,16 +166,20 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 
 交付：texture-array/atlas、批量渲染和 reduction；Worker checkpoint；暂停、恢复、取消；128/1024/10,000 预算 benchmark；资产分片与按需加载。
 
-当前状态：`in_progress`。同一 96×96 高频压力图的 128 / 1,024 / 10,000 预算已在浏览器 Worker 中实际执行；10,000 原值未 clamp，
+当前状态：`passed`。同一 96×96 高频压力图的 128 / 1,024 / 10,000 预算已在浏览器 Worker 中实际执行；10,000 原值未 clamp，
 自然收敛到 1,824 个改善实例，评估 14,908 个候选，耗时 13,409 ms。绘制阶段取消延迟 57 ms，随后重启新 run 成功；完整复制
 711,661 bytes / 25,543 行并回读 1,824 实例。`ck3-coa-fit-checkpoint-v1` 与 `ck3-coa-persisted-fit-checkpoint-v1` 已通过跨刷新暂停/恢复：
 82 ms 内暂停并写入 IndexedDB，刷新、素材重载与状态恢复共 3,318 ms，继续搜索 3,239 ms；恢复结果与不中断的 128 预算结果逐字段一致，
 并以 run ID/revision 拒绝旧 Worker 消息。详见[真实拟合预算压力证据](coat-of-arms-fit-budget-stress.md)。
 
-WP4 仍因 GPU 尚未直接处理完整语义 transform population 与逐块残差候选、同 run context 重建及总进程/GPU 内存证据缺失而保持
-`in_progress`。`webgl2-texture-array-reduction-float-v1` 已在 Worker 内实测处理背景、语义晋级与 local 胜者排序；hunter 1024 为
+`webgl2-texture-array-reduction-float-v1` 已在 Worker 内实测处理背景、语义晋级与 local 胜者排序；hunter 1024 为
 6 batch / 354 candidates，GPU/CPU 最大指标差 `6.102908300942289e-8`，完整排序一致；真实
-context loss 会 fail closed 到 CPU，详见[WebGL2 批量搜索证据](coat-of-arms-webgl-batch-search.md)。
+context loss 会 fail closed 到 CPU。背景、语义粗筛、0.1° 精筛与原生块绘制四阶段的取消延迟实测为 14.5–20.8 ms，
+每次取消后均能启动新 run，无旧 revision 污染。详见[WebGL2 批量搜索证据](coat-of-arms-webgl-batch-search.md)。
+
+GPU 目前不代替 CPU 纹章正向渲染；它批量渲染 loss contribution 并做 reduction，而 CPU reference 仍计算全候选以便逐项校验。
+这满足“GPU 实际参与批量候选选择，CPU reference 保留”的门禁，不声称完整拟合已 GPU 化。JS heap 之外的 GPU/总进程内存
+在当前浏览器 API 不可靠观测，因此作为证据范围限制保留，而非写成已测。
 
 退出条件：
 

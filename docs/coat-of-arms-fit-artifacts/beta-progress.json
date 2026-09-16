@@ -286,11 +286,12 @@
         },
     {
       "id": "WP4",
-      "status": "in_progress",
+      "status": "passed",
       "commit": "7396d503",
       "commands": [
         "pnpm exec vitest run src/domain/fitBudgetContract.test.ts src/domain/fitCheckpointStore.test.ts --reporter=verbose",
         "pnpm exec playwright test e2e/fit-budget-stress.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/fit-cancel-stages.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts --reporter=line",
         "pnpm test",
@@ -344,7 +345,10 @@
         "gpuHunterMaximumMetricDelta": 6.102908300942289e-8,
         "gpuCpuStableOrderAgreement": "passed",
         "gpuContextLossFallback": "passed",
-        "gpuSearchRemainingScope": "full_semantic_transform_population_and_native_tile_candidates"
+        "multiStageCancellation": "passed_background_coarse_refine_native_paint",
+        "multiStageCancellationLatencyMs": [17.9, 17.4, 20.8, 14.5],
+        "gpuRasterizationScope": "loss_contribution_and_reduction_with_cpu_reference_rendering",
+        "futureOptimization": "direct_gpu_rasterization_of_full_transform_population_and_native_tile_candidates"
       },
       "blockers": []
     },

@@ -1,6 +1,6 @@
 # CK3 家徽编辑器 WebGL2 批量搜索证据
 
-状态：`WP4 in_progress / background candidate GPU batch + reduction passed`
+状态：`WP4 passed / background + semantic promotion + local selection GPU batch/reduction passed`
 
 日期：2026-09-16（Asia/Shanghai）
 
@@ -46,6 +46,10 @@ GPU 数值不被无条件信任。CPU reference 仍对每个候选执行完整
 - 10,000 预算仍自然收敛到 1,824 个严格改善实例，总损失 `0.19578464753140656`、边缘损失
   `0.26330842040763747`，96/230/512 px 接缝门禁全部零泄漏；
 - 10,000 run 耗时 13,409 ms，仍低于预先冻结的 180 秒门禁。
+- 背景匹配、全库粗筛、0.1° 精筛和原生块绘制四阶段的取消延迟分别为 17.9 / 17.4 / 20.8 / 14.5 ms，取消后新 run 可恢复。
+
+未测范围仍是 GPU 和浏览器总进程内存；浏览器只暴露的 JS heap 不被写成完整内存证据。将所有 transform 和 tile 的
+正向纹章渲染迁入 GPU 可以继续作为性能优化，但不是“GPU 实际参与候选搜索且由 CPU reference 闭环”这一 Beta 退出条件的缺口。
 
 ## 复现命令
 
@@ -55,6 +59,7 @@ GPU 数值不被无条件信任。CPU reference 仍对每个候选执行完整
 pnpm exec vitest run src/domain/imageFitter.test.ts --reporter=verbose
 pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts --reporter=line
 pnpm exec playwright test e2e/fit-budget-stress.spec.ts --reporter=line
+pnpm exec playwright test e2e/fit-cancel-stages.spec.ts --reporter=line
 pnpm test
 pnpm build
 ```
