@@ -31,8 +31,8 @@ R778_CK3_EXE_SHA256 = (
 R781_PRIVATE_BRIDGE_SHA256 = (
     "4648c1c732b175d556effa11db71c8a16b4de122b941ad7a5e883a79272ee584"
 )
-R778_INJECTOR_SHA256 = (
-    "fe371d1c296e55ef847853207d6e4d5188794a9c8ff4663b69e5acca35f6d566"
+R781_INJECTOR_SHA256 = (
+    "adedb7c40e09822c8f2dd6f2d7f23af86e88adc8ac7014b09ac083f05f7377dd"
 )
 R778_CHARACTER_ID = 35465
 R778_EPISODE_RUN_ID = "native-35465-cbdf997e3d80"
@@ -582,7 +582,7 @@ def command_continue_death_succession_modal_v1(
         and runtime_identities["ck3_exe"]["sha256"] == R778_CK3_EXE_SHA256
         and runtime_identities["private_bridge"]["sha256"]
         == R781_PRIVATE_BRIDGE_SHA256
-        and runtime_identities["injector"]["sha256"] == R778_INJECTOR_SHA256
+        and runtime_identities["injector"]["sha256"] == R781_INJECTOR_SHA256
     )
     receipt: dict[str, Any] = {
         "schema": "xar-g2-private-death-succession-action-operator-v1",

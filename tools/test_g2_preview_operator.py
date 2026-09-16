@@ -113,7 +113,7 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 if path == dll:
                     return g2_preview_operator.R781_PRIVATE_BRIDGE_SHA256
                 if path == injector:
-                    return g2_preview_operator.R778_INJECTOR_SHA256
+                    return g2_preview_operator.R781_INJECTOR_SHA256
                 return hashlib.sha256(path.read_bytes()).hexdigest()
 
             def fake_run(command, stdout_path, stderr_path):
