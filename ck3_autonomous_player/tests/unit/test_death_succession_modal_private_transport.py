@@ -221,3 +221,15 @@ def test_route_remains_private() -> None:
         / "native_bridge/src/ck3_11906_adapter.cpp"
     ).read_text(encoding="utf-8")
     assert "game.command.continue-death-succession-modal-v1" not in adapter
+    assert "game.command.query-current-timeline-blocker-context-v1" not in adapter
+    bridge = (
+        Path(__file__).parents[2] / "native_bridge/src/bridge.cpp"
+    ).read_text(encoding="utf-8")
+    assert (
+        "IsDeathSuccessionModalPrivateStepV1(step)" in bridge
+        and "ParseCurrentTimelineBlockerContextV1Step(step)" in bridge
+        and "ParseDeathSuccessionModalContinueV1Step(step)" in bridge
+    )
+    assert bridge.count(
+        "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1"
+    ) == 3

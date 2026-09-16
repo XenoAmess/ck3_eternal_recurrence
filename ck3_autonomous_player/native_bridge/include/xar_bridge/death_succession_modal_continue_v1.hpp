@@ -44,6 +44,12 @@ inline constexpr std::string_view kDeathSuccessionModalContinueV1Step =
 inline constexpr std::string_view kDeathSuccessionModalContinueV1Capability =
     "game.command.continue-death-succession-modal-v1";
 
+inline bool IsDeathSuccessionModalPrivateStepV1(
+    std::string_view step) noexcept {
+  return step == kCurrentTimelineBlockerContextV1Step ||
+         step == kDeathSuccessionModalContinueV1Step;
+}
+
 struct DeathSuccessionModalContinueRequestV1 {
   std::uint64_t expected_snapshot_revision = 0;
   std::int32_t expected_date_raw = 0;

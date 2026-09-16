@@ -7823,11 +7823,13 @@ public:
     environment.permitted_executor_duoquadragintary =
         &xar::ck3_11906::ExecutePlayerConstructionViewProbeMailboxV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
     environment.permitted_executor_quattuorquadragintary =
         &xar::ck3_11906::
             ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
     environment.permitted_executor_quinquadragintary =
         &xar::ck3_11906::ExecuteDeathSuccessionModalContinueMailboxV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -8430,6 +8432,10 @@ void RunConnectedSession(
                                   kFrontendGuiSelectSupported1066CharacterV1Step
                    && step != xar::ck3_11906::
                                   kFrontendGuiStartSelectedBookmarkV1Step
+#endif
+#if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
+                   && !xar::ck3_11906::
+                          IsDeathSuccessionModalPrivateStepV1(step)
 #endif
         ) {
           connected = xar::bridge::WriteFrame(
@@ -12786,6 +12792,7 @@ void RunConnectedSession(
               }
             }
           }
+#if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
         } else if (xar::ck3_11906::
                        ParseCurrentTimelineBlockerContextV1Step(step)) {
           std::uint64_t expected_revision = 0;
@@ -13012,6 +13019,7 @@ void RunConnectedSession(
               }
             }
           }
+#endif
         } else if (step == "query-declarable-wars") {
           declarable_wars.clear();
           if (!xar::game::ReadDeclarableWars(game, declarable_wars)) {

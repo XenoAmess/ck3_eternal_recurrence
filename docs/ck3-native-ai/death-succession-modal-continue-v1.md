@@ -88,5 +88,12 @@ flowchart TD
 
 The wire is private and opt-in at both Python driver seams. The native adapter
 capability registry, public MCP tool list, and open_kaishek-visible surface are
-unchanged. A same-version live acceptance must pass before any registration or
-advertisement change is considered.
+unchanged. Native admission additionally requires building the controlled
+candidate with
+`-DXAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1=ON`; the option defaults
+to `OFF` and gates the early step admission exception, both dispatch branches,
+and both owning-thread executor slots together. The early gate must use the
+fixed private-step classifier because neither step is allowed to enter
+`GameAdapter::supports_step` or public capability advertisement. A same-version
+live acceptance must pass before any registration or advertisement change is
+considered.

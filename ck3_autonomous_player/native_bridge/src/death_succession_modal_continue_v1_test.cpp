@@ -103,6 +103,11 @@ int main() {
   assert(ParseDeathSuccessionModalContinueV1Step(
       "continue-death-succession-modal-v1"));
   assert(!ParseDeathSuccessionModalContinueV1Step("continue-modal"));
+  assert(IsDeathSuccessionModalPrivateStepV1(
+      "query-current-timeline-blocker-context-v1"));
+  assert(IsDeathSuccessionModalPrivateStepV1(
+      "continue-death-succession-modal-v1"));
+  assert(!IsDeathSuccessionModalPrivateStepV1("pause-map"));
   assert(ParseDeathSuccessionModalContinueRequestV1(
       R"({"expected_revision":77,"expected_date_raw":53411568,"expected_played_character_id":35465})",
       request));

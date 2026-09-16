@@ -7,6 +7,12 @@
   "capability_advertised": false,
   "public_mcp_registered": false,
   "status": "static-ready-paused-live-pending",
+  "private_compile_gate": {
+    "cmake_option": "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1",
+    "default": false,
+    "enabled_candidate_behavior": "admit exactly the fixed blocker query and typed Close before GameAdapter::supports_step, install their two owning-thread executor identities, and compile their private dispatch branches",
+    "public_capability_effect": "none"
+  },
   "source_artifacts": [
     {
       "path": "C:\\ck3_mod_rewrite_process_assets\\g2-m3-succession-close-abi-20260916\\succession-close-abi-v1.json",

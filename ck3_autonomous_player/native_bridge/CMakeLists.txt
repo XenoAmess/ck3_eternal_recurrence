@@ -207,6 +207,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1
+  "Admit the unadvertised exact-build succession blocker query and typed Close"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1
   "Admit unadvertised exact-build LIFE2/LIFE4 query and LIFE6/LIFE7 perk candidate on application-main"
   OFF
@@ -869,6 +875,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
