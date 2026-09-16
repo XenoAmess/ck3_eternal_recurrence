@@ -3202,7 +3202,75 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "terminal_journal_cursors",
         "battle_terminal_cruise_assessments",
     )
-    return {key: plan.get(key) for key in keys if key in plan}
+    compact = {key: plan.get(key) for key in keys if key in plan}
+    war_exit = _compact_war_exit_decision(plan.get("war_exit_decision"))
+    if war_exit is not None:
+        compact["war_exit_decision"] = war_exit
+    return compact
+
+
+def _compact_war_exit_decision(value: object) -> dict[str, object] | None:
+    """Keep only the same-frame ranking and action certificate in success logs."""
+    if not isinstance(value, dict):
+        return None
+    utility = value.get("utility_comparison")
+    if not isinstance(utility, dict):
+        return None
+    options = utility.get("options")
+    comparison = utility.get("comparison")
+    if not isinstance(options, dict) or not isinstance(comparison, dict):
+        return None
+    if any(
+        not isinstance(options.get(name), dict)
+        for name in ("continue", "white_peace", "surrender")
+    ):
+        return None
+    frame = value.get("frame")
+    if not isinstance(frame, dict):
+        return None
+    decision_keys = (
+        "policy", "war_id", "recommended_outcome",
+        "recommendation_certificate_sha256", "outcome_gate_authorization_sha256",
+        "outcome_gate_authorized_literal", "same_frame_power_double_read",
+        "action_submitted", "independent_postcondition_verified",
+        "cold_restore_verified", "gen034_closed",
+    )
+    frame_keys = (
+        "snapshot_id", "snapshot_revision", "native_revision", "date_raw",
+        "connection_generation", "episode_run_id", "attacker_character_id",
+        "defender_character_id", "claimant_character_id", "process_id", "war_id",
+    )
+    option_keys = (
+        "eligible", "utility_raw", "hard_budget_breaches",
+        "execution_blockers", "measured_power_relation",
+        "tail_risk_penalty_raw", "uncertainty_penalty_raw",
+    )
+    comparison_keys = (
+        "status", "eligible_options", "winning_margin_raw",
+        "minimum_switch_margin_raw",
+    )
+    result = {
+        key: copy.deepcopy(value[key]) for key in decision_keys if key in value
+    }
+    result["frame"] = {
+        key: copy.deepcopy(frame[key]) for key in frame_keys if key in frame
+    }
+    result["utility_comparison"] = {
+        "schema_version": utility.get("schema_version"),
+        "utility_unit": utility.get("utility_unit"),
+        "options": {
+            name: {
+                key: copy.deepcopy(options[name][key])
+                for key in option_keys if key in options[name]
+            }
+            for name in ("continue", "white_peace", "surrender")
+        },
+        "comparison": {
+            key: copy.deepcopy(comparison[key])
+            for key in comparison_keys if key in comparison
+        },
+    }
+    return result
 
 
 def _compact_step_result(result: object) -> dict[str, object] | None:

@@ -478,6 +478,7 @@ class _NativeAutoRunHarness:
             }
         elif action in {
             "advance",
+            "raiktor_continue",
             "lagged_advance",
             "slow_advance",
             "terminal_advance",
@@ -490,6 +491,7 @@ class _NativeAutoRunHarness:
             starting_date_raw = self.date_raw
             if action in {
                 "advance",
+                "raiktor_continue",
                 "lagged_advance",
                 "slow_advance",
                 "terminal_advance",
@@ -866,6 +868,59 @@ class _NativeAutoRunHarness:
             "phase": "fixture",
             "selected_step": step,
         }
+        if action == "raiktor_continue":
+            synthetic_war_id = self.native_revision * 1000 + 17
+            plan["war_exit_decision"] = {
+                "policy": "raiktor-formal-three-way-exit-v1",
+                "war_id": synthetic_war_id,
+                "opponent_character_id": 97531,
+                "recommended_outcome": "continue",
+                "recommendation_certificate_sha256": "a" * 64,
+                "outcome_gate_authorization_sha256": "b" * 64,
+                "outcome_gate_authorized_literal": "continue",
+                "same_frame_power_double_read": True,
+                "action_submitted": False,
+                "frame": {
+                    "snapshot_id": f"native:{self.native_revision - 1}",
+                    "snapshot_revision": self.public_revision - 1,
+                    "native_revision": self.native_revision - 1,
+                    "date_raw": starting_date_raw,
+                    "war_id": synthetic_war_id,
+                    "private_machine_path": "ignored",
+                },
+                "utility_comparison": {
+                    "schema_version": 1,
+                    "utility_unit": "strategy_utility_q100000",
+                    "options": {
+                        "continue": {
+                            "eligible": True, "utility_raw": -4,
+                            "hard_budget_breaches": [], "execution_blockers": [],
+                            "measured_power_relation": "actor_stronger",
+                            "tail_risk_penalty_raw": 4,
+                            "ignored_internal_character_id": 97531,
+                        },
+                        "white_peace": {
+                            "eligible": True, "utility_raw": -20,
+                            "hard_budget_breaches": [], "execution_blockers": [],
+                            "uncertainty_penalty_raw": 3,
+                        },
+                        "surrender": {
+                            "eligible": False, "utility_raw": 10,
+                            "hard_budget_breaches": ["gold_budget_breached"],
+                            "execution_blockers": [],
+                            "uncertainty_penalty_raw": 2,
+                        },
+                    },
+                    "comparison": {
+                        "status": "static_recommendation_available",
+                        "eligible_options": ["continue", "white_peace"],
+                        "winning_margin_raw": 16,
+                        "minimum_switch_margin_raw": 5,
+                        "ignored_research_branch": "not published",
+                    },
+                },
+                "ignored_internal_payload": "not published",
+            }
         if step.startswith("select-event-option-"):
             plan["event_decision"] = {
                 "policy": "shown-enabled-death-cancel-native-order-v1",
@@ -1466,6 +1521,7 @@ class NativeAutoRunTests(unittest.TestCase):
         checkpoint = report["checkpoints"][0]
         self.assertEqual(checkpoint["phase"], "periodic_checkpoint")
         self.assertEqual(checkpoint["turn_index"], 4)
+
         self.assertEqual(checkpoint["eligible_advance_ordinal"], 3)
         path = Path(checkpoint["path"])
         self.assertEqual(path.read_bytes(), _CHECKPOINT_PAYLOAD)
@@ -1508,6 +1564,27 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertLess(events.index("session_stop"), events.index("session_return"))
         self.assertLess(events.index("session_return"), events.index("driver_close"))
         self.assertTrue(report["cleanup"]["ok"])
+
+    def test_success_auto_run_reports_only_same_frame_threeway_ranking(self) -> None:
+        report, _ = self._run(["raiktor_continue"])
+
+        self.assertTrue(report["ok"], report.get("error"))
+        turn = report["auto_run"]["turns"][0]
+        self.assertTrue(turn["ok"])
+        self.assertEqual(turn["class"], "gameplay")
+        decision = turn["plan"]["war_exit_decision"]
+        self.assertEqual(decision["recommended_outcome"], "continue")
+        self.assertEqual(decision["frame"]["date_raw"], turn["before"]["date_raw"])
+        self.assertEqual(
+            [decision["utility_comparison"]["options"][name]["utility_raw"]
+             for name in ("continue", "white_peace", "surrender")],
+            [-4, -20, 10],
+        )
+        self.assertEqual(decision["utility_comparison"]["comparison"]["winning_margin_raw"], 16)
+        self.assertNotIn("opponent_character_id", decision)
+        self.assertNotIn("private_machine_path", decision["frame"])
+        self.assertNotIn("ignored_internal_character_id", decision["utility_comparison"]["options"]["continue"])
+        self.assertNotIn("ignored_internal_payload", decision)
 
     def test_explicit_objective_hold_canary_flag_reaches_driver_and_report(
         self,

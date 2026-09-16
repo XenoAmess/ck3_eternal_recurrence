@@ -144,6 +144,12 @@ def plan_raiktor_formal_exit(
             "threeway_recommendation_or_action_gate_unready", war_id,
             blockers=[*recommendation.get("blockers", []), *gate.get("blockers", [])],
         )
+    try:
+        utility_comparison = _utility_comparison_trace(
+            recommendation["recommendation_certificate"]
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        return _blocked(f"same_frame_utility_trace_red:{type(error).__name__}:{error}", war_id)
     outcome = recommendation.get("recommended_outcome")
     decision = {
         "policy": POLICY,
@@ -152,6 +158,7 @@ def plan_raiktor_formal_exit(
         "frame": recommendation["recommendation_certificate"]["frame"],
         "recommended_outcome": outcome,
         "recommendation_certificate_sha256": recommendation["recommendation_certificate"]["certificate_sha256"],
+        "utility_comparison": utility_comparison,
         "outcome_gate_authorization_sha256": gate["authorization"]["authorization_sha256"],
         "outcome_gate_authorized_literal": gate["authorization"]["action"]["literal"],
         "same_frame_power_double_read": True,
@@ -174,6 +181,37 @@ def plan_raiktor_formal_exit(
         "selected_step": literal,
         "war_exit_decision": decision,
         "reason": "one same-frame legal terminal wins the versioned three-way utility comparison",
+    }
+
+
+def _utility_comparison_trace(certificate: dict[str, object]) -> dict[str, object]:
+    """Copy the versioned three-way ranking inputs without changing the choice."""
+    options = certificate["options"]
+    comparison = certificate["comparison"]
+    rows = {}
+    for name in ("continue", "white_peace", "surrender"):
+        option = options[name]
+        rows[name] = {
+            "eligible": option["eligible"],
+            "utility_raw": option["utility_raw"],
+            "hard_budget_breaches": list(option["hard_budget_breaches"]),
+            "execution_blockers": list(option.get("execution_blockers", [])),
+        }
+        if name == "continue":
+            rows[name]["measured_power_relation"] = option["measured_power_relation"]
+            rows[name]["tail_risk_penalty_raw"] = option["tail_risk_penalty_raw"]
+        else:
+            rows[name]["uncertainty_penalty_raw"] = option["uncertainty_penalty_raw"]
+    return {
+        "schema_version": 1,
+        "utility_unit": certificate["utility_unit"],
+        "options": rows,
+        "comparison": {
+            "status": comparison["status"],
+            "eligible_options": list(comparison["eligible_options"]),
+            "winning_margin_raw": comparison["winning_margin_raw"],
+            "minimum_switch_margin_raw": comparison["minimum_switch_margin_raw"],
+        },
     }
 
 
