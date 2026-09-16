@@ -473,9 +473,21 @@ def _parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--single-reference-case",
+        type=Path,
+        help=(
+            "apply one directory containing coat_of_arms.txt and "
+            "canonical-preview-230.png through the same calibrated v3 "
+            "native-pixel route as --picture-corpus"
+        ),
+    )
+    parser.add_argument(
         "--picture-crop-dir",
         type=Path,
-        help="write one verified native crop per --picture-corpus case",
+        help=(
+            "write one verified native crop per --picture-corpus or "
+            "--single-reference-case case"
+        ),
     )
     parser.add_argument(
         "--parent-semantics-matrix",
@@ -1472,6 +1484,27 @@ def _load_picture_corpus(path: Path) -> list[dict[str, object]]:
             }
         )
     return cases
+
+
+def _load_single_reference_case(path: Path) -> dict[str, object]:
+    resolved = path.resolve()
+    if not resolved.is_dir():
+        raise RuntimeError(f"single reference case directory is missing: {resolved}")
+    if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}", resolved.name) is None:
+        raise RuntimeError(
+            "single reference case directory name must be a safe 1-64 character id"
+        )
+    source, source_receipt = _load_large_source(resolved / "coat_of_arms.txt")
+    preview, preview_receipt = _load_reference_preview(
+        resolved / "canonical-preview-230.png"
+    )
+    return {
+        "id": resolved.name,
+        "source": source,
+        "source_receipt": source_receipt,
+        "preview_base64": preview,
+        "preview_receipt": preview_receipt,
+    }
 
 
 def _framebuffer_gate(
@@ -4614,6 +4647,22 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         if getattr(args, "picture_corpus", None) is not None
         else None
     )
+    single_reference_case = (
+        _load_single_reference_case(args.single_reference_case)
+        if getattr(args, "single_reference_case", None) is not None
+        else None
+    )
+    if picture_corpus is not None and single_reference_case is not None:
+        raise ValueError(
+            "--picture-corpus cannot be combined with --single-reference-case"
+        )
+    reference_cases = (
+        picture_corpus
+        if picture_corpus is not None
+        else [single_reference_case]
+        if single_reference_case is not None
+        else None
+    )
     picture_crop_dir = getattr(args, "picture_crop_dir", None)
     parent_semantics_matrix = bool(
         getattr(args, "parent_semantics_matrix", False)
@@ -4648,12 +4697,12 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         )
     if len(vfs_asset_projection_paths) != len(set(vfs_asset_projection_paths)):
         raise ValueError("--vfs-asset-projection-path values must be unique")
-    if picture_corpus is not None and (
+    if reference_cases is not None and (
         getattr(args, "large_source", None) is not None
         or reference_preview is not None
     ):
         raise ValueError(
-            "--picture-corpus cannot be combined with --large-source or --reference-preview"
+            "reference cases cannot be combined with --large-source or --reference-preview"
         )
     if (
         reference_preview is not None
@@ -4662,8 +4711,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         raise ValueError("--reference-preview requires --large-source")
     if native_crop_output is not None and reference_preview is None:
         raise ValueError("--native-crop-output requires --reference-preview")
-    if picture_crop_dir is not None and picture_corpus is None:
-        raise ValueError("--picture-crop-dir requires --picture-corpus")
+    if picture_crop_dir is not None and reference_cases is None:
+        raise ValueError(
+            "--picture-crop-dir requires --picture-corpus or --single-reference-case"
+        )
     if parent_crop_dir is not None and not parent_semantics_matrix:
         raise ValueError(
             "--parent-crop-dir requires --parent-semantics-matrix"
@@ -4684,7 +4735,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or commit_roundtrip
         or getattr(args, "large_source", None) is not None
         or reference_preview is not None
-        or picture_corpus is not None
+        or reference_cases is not None
         or vfs_winner_matrix
         or vfs_extended_matrix
         or vfs_replace_path_matrix
@@ -4698,7 +4749,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or commit_roundtrip
         or getattr(args, "large_source", None) is not None
         or reference_preview is not None
-        or picture_corpus is not None
+        or reference_cases is not None
         or parent_semantics_matrix
         or vfs_extended_matrix
         or vfs_replace_path_matrix
@@ -4712,7 +4763,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or commit_roundtrip
         or getattr(args, "large_source", None) is not None
         or reference_preview is not None
-        or picture_corpus is not None
+        or reference_cases is not None
         or parent_semantics_matrix
         or vfs_winner_matrix
         or vfs_replace_path_matrix
@@ -4726,7 +4777,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or commit_roundtrip
         or getattr(args, "large_source", None) is not None
         or reference_preview is not None
-        or picture_corpus is not None
+        or reference_cases is not None
         or parent_semantics_matrix
         or vfs_winner_matrix
         or vfs_extended_matrix
@@ -4820,13 +4871,14 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             reference_preview[1] if reference_preview else None
         ),
         "picture_corpus_requested": picture_corpus is not None,
+        "single_reference_case_requested": single_reference_case is not None,
         "picture_corpus_plan": [
             {
                 "id": value["id"],
                 "source": value["source_receipt"],
                 "reference": value["preview_receipt"],
             }
-            for value in picture_corpus or []
+            for value in reference_cases or []
         ],
         "parent_semantics_matrix_requested": parent_semantics_matrix,
         "parent_semantics_plan": (
@@ -5074,7 +5126,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 commit_roundtrip=commit_roundtrip,
                 large_source=large_source,
                 reference_preview=reference_preview,
-                picture_corpus=picture_corpus,
+                picture_corpus=reference_cases,
                 parent_semantics_matrix=parent_semantics_matrix,
                 vfs_winner_matrix=vfs_winner_matrix,
                 vfs_extended_matrix=vfs_extended_matrix,

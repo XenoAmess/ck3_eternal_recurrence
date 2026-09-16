@@ -1,0 +1,92 @@
+{
+  "schema": "ck3-coa-textured-emblem-browser-reference-v1",
+  "artifactVersion": "textured-emblem-browser-r31",
+  "status": "browser-reference-passed-native-pixel-pending",
+  "generatedAt": "2026-09-16T13:44:29.342Z",
+  "sourceRevision": {
+    "headCommit": "b56608e5fb5154ee768af228332c5f2d769b6dd2",
+    "workingTreePatchSha256": "F7ECF93EE331F3833FA1FEE3FBC3A2653F583756202A53E074B58E40B2429FFE"
+  },
+  "source": {
+    "file": "coat_of_arms.txt",
+    "asciiBytes": 162,
+    "sha256": "CBBAE28A851A8BC47A05659465414FCC0CC9A84B4DCC93F00FAD861C49885C5B",
+    "structure": {
+      "logicalLayers": 0,
+      "coloredEmblemBlocks": 0,
+      "texturedEmblemBlocks": 1,
+      "drawnInstances": 0
+    }
+  },
+  "reference": {
+    "file": "canonical-preview-230.png",
+    "dimensions": [
+      230,
+      230
+    ],
+    "pngBytes": 77004,
+    "sha256": "80CD0792179F4BE40D41F5C61114CB5B684C28A74EA25D59C398AA88C1625CCA",
+    "rendererContract": "exact-1.19.0.6-browser-cpu-renderer-v1",
+    "surfaceMaskApplied": true,
+    "colorSpace": "browser-srgb-byte-domain"
+  },
+  "assetPack": {
+    "packId": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
+    "ck3Build": "1.19.0.6",
+    "manifestSha256": "27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96",
+    "expectedManifestSha256": "27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96",
+    "manifestHashMatchesReceipt": true,
+    "sourceManifestSha256": "92D9FBDCBE931DCB3694B0840558A8096EE090B9C0ACD4A6AB5F2DB7D6DA5F35",
+    "selectedAssets": [
+      {
+        "kind": "pattern",
+        "name": "pattern_solid.dds",
+        "bytes": 11064,
+        "sha256": "0EE08A10EE4C71278C0ACE98506DD2A520261B20E040B353B7DA4D13C0616C4A"
+      },
+      {
+        "kind": "textured_emblem",
+        "name": "_default.dds",
+        "bytes": 49272,
+        "sha256": "697430F86ABD26B5056A8779E4BF78C7CB526A57B5AD13F02898BA64B89526CC"
+      },
+      {
+        "kind": "surface_mask",
+        "name": "coa_mask_texture.dds",
+        "bytes": 43832,
+        "sha256": "5FA2A49DC59AEEBA19709B6BB3F9D0B017ACDE7DC576793705EAF85C7F33691E"
+      }
+    ]
+  },
+  "nativeComparisonContract": {
+    "route": "calibrated-framebuffer-v3",
+    "calibration": "reference-independent-red-green-surface-plus-nine-uv-anchors",
+    "canonicalResolution": [
+      230,
+      230
+    ],
+    "thresholdsDeclaredBeforeNativeRun": {
+      "maximumMeanAbsoluteError": 0.1,
+      "maximumColorMse": 0.03,
+      "maximumEdgeLoss": 0.16,
+      "maximumSpatialMeanAbsoluteError8x8": 0.25
+    },
+    "copyReapplyThresholdsDeclaredBeforeNativeRun": {
+      "maximumMeanAbsoluteError": 0.01,
+      "maximumColorMse": 0.001,
+      "maximumEdgeLoss": 0.02,
+      "maximumSpatialMeanAbsoluteError8x8": 0.03
+    }
+  },
+  "privacy": {
+    "nonGetRequestCount": 0,
+    "nonGetRequests": [],
+    "userContentUploaded": false
+  },
+  "evidenceLevel": {
+    "browserRegression": "passed",
+    "transferIntegrity": "pending-native-run",
+    "ck3ApplyCopyRoundTrip": "pending-native-run",
+    "nativePixelComparison": "pending-native-run"
+  }
+}

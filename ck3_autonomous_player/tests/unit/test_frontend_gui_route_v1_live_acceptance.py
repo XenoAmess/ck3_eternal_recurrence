@@ -115,6 +115,7 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         )
         self.assertIn('"--native-crop-output"', source)
         self.assertIn('"--picture-corpus"', source)
+        self.assertIn('"--single-reference-case"', source)
         self.assertIn('"--picture-crop-dir"', source)
 
     def test_picture_corpus_loader_requires_all_seven_ordered_cases(self) -> None:
@@ -142,6 +143,29 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
                 case["source_receipt"]["structure"]["instances"] == 0
                 for case in cases
             )
+        )
+
+    def test_single_reference_case_loader_reuses_calibrated_case_contract(self) -> None:
+        module = _load_runner_module()
+        with tempfile.TemporaryDirectory() as directory:
+            case = Path(directory) / "textured-emblem-browser-r31"
+            case.mkdir()
+            (case / "coat_of_arms.txt").write_text(
+                'coa = {\n  textured_emblem = { texture = "_default.dds" }\n}\n',
+                encoding="ascii",
+            )
+            preview = b"single-reference-png"
+            (case / "canonical-preview-230.png").write_bytes(preview)
+
+            loaded = module._load_single_reference_case(case)
+
+        self.assertEqual(loaded["id"], "textured-emblem-browser-r31")
+        self.assertEqual(
+            loaded["source_receipt"]["structure"]["textured_emblem_blocks"], 1
+        )
+        self.assertEqual(
+            loaded["preview_receipt"]["png_sha256"],
+            hashlib.sha256(preview).hexdigest().upper(),
         )
 
     def test_framebuffer_gate_and_crop_receipt_are_hash_bound(self) -> None:

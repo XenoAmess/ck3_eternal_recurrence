@@ -1,0 +1,10 @@
+coa = {
+  pattern = "pattern_solid.dds"
+  color1 = rgb { 64 128 192 }
+  color2 = white
+  color3 = black
+
+  textured_emblem = {
+    texture = "_default.dds"
+  }
+}
