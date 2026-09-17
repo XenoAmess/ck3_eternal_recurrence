@@ -593,6 +593,17 @@ flowchart TD
   restore 的最小闭环，不扩展成通用学习或永久目标黑名单。
 - [inference][counter-policy] factual command history 仍在 restore anchor 截断；失败入口属于 advisory，不能
   复活已回滚分支中的 score、siege completion、cooldown 或 move intent。
+- [production RED / R849→R850] R849 的 h596 后分支从省 48 合法 preview/submit 到省 52，路线
+  `[50,53,52]` 仍在正常移动时由自然 `death_management.1000` 玩家事件打断；runner 只查询了 exact event
+  context，没有提交 option，并因 pending decision 保留 h596。R850 冷恢复同一 checkpoint 后，旧实现把这条
+  “被玩家决策打断的 active route”误生成为 `checkpoint_discarded_branch` failure，导致同帧重新 preview 后
+  `native_war_no_safe_exact_route`。这不是实际路线失败。
+- [implementation-confirmed / static-ready / live=false] rollback 派生现在只在 discarded epoch 的最后一条有效
+  命令是 available、单窗口、正 instance 的 typed current-event query，且该 epoch 从未提交任何 event option 时，
+  抑制本次 route-failure advisory。无 event query、query unavailable、query 不是 epoch 边界或曾提交 typed
+  event option 时仍沿用原来的 exact target+route 失败记忆。事实 history 仍按 checkpoint 截断，既有两入口上限、
+  same episode/checkpoint/war/army/origin 绑定与 unknown-side-effect 保护不变。R850 后尚需从未污染的 R849
+  driver 重新重绑并实机证明 fresh preview/move、`.1000` typed option、独立消失、下一 turn 与新 checkpoint。
 
 ```mermaid
 flowchart TD

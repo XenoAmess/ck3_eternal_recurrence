@@ -25671,6 +25671,13 @@ def _derive_rollback_war_failure_from_epoch(
                 latest_armies[int(army_id)] = army
     if failed_move is None:
         return None
+    if _epoch_ended_at_unresolved_player_event(rows):
+        # A decision modal can stop a bounded run while an otherwise healthy
+        # route is still active.  Restoring the preceding checkpoint rolls
+        # that move back, but it is not evidence that the route itself failed.
+        # Only suppress the advisory route-failure memory when the epoch ends
+        # on an exact typed event query and contains no event-option action.
+        return None
     move_army_id, move_target_id, preview = failed_move
 
     active_army = (
@@ -25761,6 +25768,44 @@ def _derive_rollback_war_failure_from_epoch(
         "restored_date_raw": restored_snapshot.get("date_raw"),
     }
     return _normalize_rollback_war_failure(failure)
+
+
+def _epoch_ended_at_unresolved_player_event(
+    rows: list[dict[str, object]],
+) -> bool:
+    """Recognize a queried but unacted player event at an epoch boundary."""
+
+    last_step: str | None = None
+    last_result: dict[str, object] | None = None
+    event_option_submitted = False
+    for row in rows:
+        step, result = _effective_native_history_entry(row)
+        if row.get("ok") is not True or not isinstance(result, dict):
+            continue
+        if parse_event_option_step(step) is not None:
+            event_option_submitted = True
+        last_step = step
+        last_result = result
+    if (
+        event_option_submitted
+        or last_step != QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+        or last_result is None
+        or last_result.get("accepted") is not True
+        or last_result.get("status") != "available"
+    ):
+        return False
+    context = last_result.get("current_event_window_context")
+    if not isinstance(context, dict):
+        return False
+    event_instance_id = last_result.get("current_event_instance_id")
+    return bool(
+        _positive_native_id(event_instance_id)
+        and context.get("status") == "available"
+        and context.get("window_match_count") == 1
+        and context.get("current_event_instance_id") == event_instance_id
+        and isinstance(context.get("event_definition_key"), str)
+        and bool(context.get("event_definition_key"))
+    )
 
 
 def _normalize_rollback_war_failure(value: object) -> dict[str, object] | None:

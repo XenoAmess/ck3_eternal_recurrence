@@ -4424,6 +4424,146 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             self.assertIsNone(new_episode["native_rollback_war_failure"])
             self.assertEqual(new_episode["native_rollback_war_failures"], [])
 
+    def test_player_event_interrupted_epoch_is_not_a_route_failure(self) -> None:
+        date_raw = 53_156_280
+        checkpoint = {
+            "sha256": "a" * 64,
+            "date_raw": date_raw,
+        }
+        restored_player = _army(
+            304,
+            province_id=48,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        restored_frame = _snapshot(
+            1,
+            date_raw=date_raw,
+            played_character={"character_id": 31_853, "alive": True},
+            active_wars=[
+                _war(
+                    25,
+                    allied_armies=[restored_player],
+                    war_objective_province_ids=[52],
+                )
+            ],
+            player_armies=[restored_player],
+        )
+        restored_snapshot = restored_frame["state"]
+        assert isinstance(restored_snapshot, dict)
+        route = [50, 53, 52]
+        preview = {
+            "status": "available",
+            "army_id": 304,
+            "origin_province_id": 48,
+            "target_province_id": 52,
+            "route_province_ids": route,
+            "previewed_date_raw": date_raw,
+        }
+        moving_army = _army(
+            304,
+            province_id=50,
+            move_target_province_id=52,
+            army_state="moving",
+            route_province_ids=[53, 52],
+        )
+        base_rows = [
+            {
+                "index": 1,
+                "command": "preview-move-army-304-to-52",
+                "ok": True,
+                "result": {"route_preview": preview},
+            },
+            {
+                "index": 2,
+                "command": "move-army-304-to-52",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "moving",
+                        "army_id": 304,
+                        "target_province_id": 52,
+                        "submitted_date_raw": date_raw,
+                    },
+                    "player_armies": [moving_army],
+                },
+            },
+        ]
+        event_query = {
+            "index": 3,
+            "command": "query-current-event-window-context-v1",
+            "ok": True,
+            "result": {
+                "accepted": True,
+                "status": "available",
+                "current_event_instance_id": 3,
+                "event_definition_key": "death_management.1000",
+                "current_event_window_context": {
+                    "status": "available",
+                    "window_match_count": 1,
+                    "current_event_instance_id": 3,
+                    "event_definition_key": "death_management.1000",
+                },
+            },
+        }
+
+        self.assertIsNone(
+            native_driver_module._derive_rollback_war_failure_from_epoch(
+                [*base_rows, event_query],
+                checkpoint=checkpoint,
+                restored_snapshot=restored_snapshot,
+                episode_run_id="native-31853-r849",
+            )
+        )
+
+        submitted_option = {
+            "index": 3,
+            "command": "select-event-option-2",
+            "ok": True,
+            "result": {"status": "postcondition_verified"},
+        }
+        negative_cases = {
+            "no player event query": base_rows,
+            "event option was submitted": [
+                *base_rows,
+                submitted_option,
+                {**event_query, "index": 4},
+            ],
+            "event query unavailable": [
+                *base_rows,
+                {
+                    **event_query,
+                    "result": {
+                        **event_query["result"],
+                        "status": "unavailable",
+                    },
+                },
+            ],
+            "event query is not the epoch boundary": [
+                *base_rows,
+                event_query,
+                {
+                    "index": 4,
+                    "command": "query-campaign-root-context-v1",
+                    "ok": True,
+                    "result": {"status": "available"},
+                },
+            ],
+        }
+        for label, rows in negative_cases.items():
+            with self.subTest(label=label):
+                failure = (
+                    native_driver_module._derive_rollback_war_failure_from_epoch(
+                        rows,
+                        checkpoint=checkpoint,
+                        restored_snapshot=restored_snapshot,
+                        episode_run_id="native-31853-r849",
+                    )
+                )
+                self.assertIsNotNone(failure)
+                self.assertEqual(failure["target_province_id"], 52)
+                self.assertEqual(failure["route_province_ids"], route)
+
     def test_legacy_singular_seeds_two_entry_migration_and_round_trips(
         self,
     ) -> None:
