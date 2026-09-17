@@ -11678,6 +11678,54 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(after_save["phase"], "native_war_discovery")
         self.assertEqual(after_save["selected_step"], "query-declarable-wars")
 
+    def test_native_war_planner_holds_peace_after_material_white_peace(self) -> None:
+        history = [
+            {"index": 1, "command": "save-checkpoint", "ok": True},
+            {
+                "index": 2,
+                "command": "offer-white-peace-88",
+                "ok": True,
+                "result": {
+                    "war_termination_result": {
+                        "status": "submitted_pending",
+                        "war_id": 88,
+                        "outcome": "white_peace",
+                        "submitted_date_raw": 1_000,
+                        "episode_run_id": "ordinary-episode",
+                    }
+                },
+            },
+            {"index": 3, "command": "disband-army-71", "ok": True},
+            {"index": 4, "command": "save-checkpoint", "ok": True},
+        ]
+        snapshot = {
+            **_snapshot(11, history),
+            "date_raw": 1_168,
+            "episode_run_id": "ordinary-episode",
+            "active_wars": [],
+            "player_armies": [],
+            "declarable_wars": [{"declaration_id": 1}],
+        }
+
+        plan = choose_one_life_turn(
+            history,
+            snapshot=snapshot,
+            action_steps=("life-advance", "query-declarable-wars"),
+        )
+
+        self.assertEqual(plan["phase"], "native_postwar_reentry_cooldown")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["postwar_reentry"]["war_id"], 88)
+        self.assertEqual(plan["postwar_reentry"]["remaining_raw"], 552)
+
+        snapshot["date_raw"] = 1_720
+        expired = choose_one_life_turn(
+            history,
+            snapshot=snapshot,
+            action_steps=("life-advance", "query-declarable-wars"),
+        )
+        self.assertNotEqual(expired["phase"], "native_postwar_reentry_cooldown")
+
     def test_typed_war_service_routes_exact_native_commands(self) -> None:
         player = _army(
             81, soldiers=1_300, province_id=50, controllable=True

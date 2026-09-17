@@ -5567,6 +5567,70 @@ def _white_peace_submission_cooldown(
     return None
 
 
+def _recent_postwar_reentry_cooldown(
+    commands: list[dict[str, object]],
+    *,
+    date_raw: object,
+    episode_run_id: object,
+    active_war_ids: set[int],
+) -> dict[str, object] | None:
+    """Keep a material terminal result peaceful for one bounded month.
+
+    R801 proved that CK3 could expose the same target/CB as declarable on the
+    very frame after an accepted white peace.  A legal declaration there
+    immediately recreated the war that the policy had just paid to end.  The
+    existing 30-day terminal-action horizon is therefore also the minimum
+    re-entry interval after the old WarID independently disappears.
+    """
+
+    if isinstance(date_raw, bool) or not isinstance(date_raw, int):
+        return None
+    for row in reversed(commands):
+        command = _effective_command(row)
+        if not isinstance(command, str) or not (
+            command.startswith("offer-white-peace-")
+            or command.startswith("surrender-war-")
+        ):
+            continue
+        result = _effective_command_result(row)
+        action = (
+            result.get("war_termination_result")
+            if isinstance(result, dict)
+            else None
+        )
+        if not (
+            isinstance(action, dict)
+            and action.get("episode_run_id") == episode_run_id
+            and action.get("status") in {"submitted_pending", "applied"}
+        ):
+            continue
+        war_id = action.get("war_id")
+        submitted_date_raw = action.get("submitted_date_raw")
+        if (
+            isinstance(war_id, bool)
+            or not isinstance(war_id, int)
+            or war_id in active_war_ids
+            or isinstance(submitted_date_raw, bool)
+            or not isinstance(submitted_date_raw, int)
+        ):
+            continue
+        elapsed_raw = date_raw - submitted_date_raw
+        if 0 <= elapsed_raw < _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW:
+            return {
+                "status": "cooldown",
+                "war_id": war_id,
+                "outcome": action.get("outcome"),
+                "submitted_date_raw": submitted_date_raw,
+                "elapsed_raw": elapsed_raw,
+                "remaining_raw": (
+                    _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW - elapsed_raw
+                ),
+                "history_index": row.get("index"),
+            }
+        return None
+    return None
+
+
 def _white_peace_no_safe_route_response_plan(
     commands: list[dict[str, object]],
     *,
@@ -10621,6 +10685,53 @@ def _choose_one_life_turn_core(
                 "reason": "the latest native marriage query was empty; advance time once before refreshing it",
                 "previous_marriage_intent": marriage_attempt,
             }
+
+    active_war_ids = {
+        war_id
+        for war_id in (
+            war.get("war_id")
+            for war in (
+                snapshot.get("active_wars", [])
+                if isinstance(snapshot, dict)
+                and isinstance(snapshot.get("active_wars"), list)
+                else []
+            )
+            if isinstance(war, dict)
+        )
+        if isinstance(war_id, int) and not isinstance(war_id, bool)
+    }
+    postwar_reentry = _recent_postwar_reentry_cooldown(
+        rows,
+        date_raw=(snapshot.get("date_raw") if isinstance(snapshot, dict) else None),
+        episode_run_id=(
+            snapshot.get("episode_run_id") if isinstance(snapshot, dict) else None
+        ),
+        active_war_ids=active_war_ids,
+    )
+    if isinstance(postwar_reentry, dict):
+        if "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_postwar_reentry_cooldown",
+                "selected_step": "life-advance",
+                "reason": (
+                    "the previous terminal war action has materialized; keep "
+                    "the verified peaceful state for the bounded 30-day "
+                    "horizon before considering another declaration"
+                ),
+                "postwar_reentry": postwar_reentry,
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_postwar_reentry_cooldown_unsupported",
+            "selected_step": None,
+            "required_step": "life-advance",
+            "reason": (
+                "the previous terminal war action is inside its peaceful "
+                "re-entry horizon, but this backend cannot advance time"
+            ),
+            "postwar_reentry": postwar_reentry,
+        }
 
     declaration_index = _latest_prefix_index(rows, "declare-war-")
     life_advance_index = _latest_life_advance_index(rows)
