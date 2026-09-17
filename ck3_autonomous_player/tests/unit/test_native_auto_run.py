@@ -143,9 +143,19 @@ class _NativeAutoRunHarness:
         )
         self.active_wars = (
             [_white_peace_war()]
-            if any(action.startswith("white_peace_") for action in actions)
+            if any(
+                action.startswith("white_peace_")
+                or action == "surrender_pending_then_applied"
+                for action in actions
+            )
             else []
         )
+        if any(
+            action == "surrender_pending_then_applied"
+            for action in actions
+        ):
+            self.active_wars[0]["player_relative_war_score"] = -9
+            self.active_wars[0]["war_duration_days"] = 266
         self.history: list[dict[str, object]] = []
         self.succession_modal_open = False
         self.succession_close_opens_event = False
@@ -680,6 +690,45 @@ class _NativeAutoRunHarness:
                     "target_title_ids": [2_388],
                     "remaining_active_war": remaining,
                 }
+        elif action == "surrender_pending_then_applied":
+            step = "surrender-war-16777290"
+            starting_snapshot_id = f"native:{self.native_revision}"
+            starting_date_raw = self.date_raw
+            old_war = copy.deepcopy(self.active_wars[0])
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "submitted",
+                "backend_id": "native-headless",
+                "war_termination_result": {
+                    "status": "submitted_pending",
+                    "war_id": 16_777_290,
+                    "outcome": "attacker_defeat",
+                    "submitted_date_raw": starting_date_raw,
+                    "observed_date_raw": starting_date_raw,
+                    "episode_run_id": self.episode_run_id,
+                    "starting_snapshot_id": starting_snapshot_id,
+                    "observed_snapshot_id": starting_snapshot_id,
+                    "command_acknowledged": True,
+                    "war_id_absent_after_ack": False,
+                    "recipient_decision_status_raw": 0,
+                    "recipient_would_accept_now": True,
+                    "recipient_auto_accept": True,
+                    "casus_belli": {
+                        "database_index": 17,
+                        "canonical_key": "individual_county_de_jure_cb",
+                    },
+                    "player_side": "attacker",
+                    "player_relative_war_score": -9,
+                    "war_duration_days": 266,
+                    "remaining_active_war": old_war,
+                },
+            }
+            # Match R852: the action's immediate observation retained the
+            # war, then the next independently published paused frame did not.
+            self.active_wars = []
+            self.native_revision += 1
+            self.public_revision += 1
         elif action == "start_next_episode":
             if not self.terminal or self.settlement is None:
                 raise AssertionError(
@@ -2300,6 +2349,82 @@ class NativeAutoRunTests(unittest.TestCase):
             native_auto_run_module._verify_pending_war_termination_checkpoint(
                 checkpoint, snapshot=snapshot, submitted_step=step
             )
+
+    def test_r853_runner_checkpoints_pending_surrender_applied_next_frame(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            ["surrender_pending_then_applied", "query"]
+        )
+
+        self.assertNotEqual(report["status"], "stopped_on_error")
+        self.assertEqual(report["auto_run"]["attempted_turns"], 2)
+        self.assertEqual(report["auto_run"]["successful_turns"], 2)
+        surrender_turn, next_turn = report["auto_run"]["turns"]
+        self.assertEqual(
+            surrender_turn["selected_step"], "surrender-war-16777290"
+        )
+        termination = surrender_turn["result"]["war_termination_result"]
+        self.assertEqual(termination["status"], "submitted_pending")
+        self.assertEqual(
+            termination["observed_snapshot_id"],
+            surrender_turn["before"]["snapshot_id"],
+        )
+        self.assertEqual(
+            termination["remaining_active_war"]["war_id"], 16_777_290
+        )
+        self.assertNotEqual(
+            surrender_turn["after"]["snapshot_id"],
+            surrender_turn["before"]["snapshot_id"],
+        )
+        self.assertEqual(
+            surrender_turn["after"]["active_context"]["war_ids"], []
+        )
+        self.assertEqual(
+            surrender_turn["evidence"],
+            [
+                "war_changed",
+                "war_termination_applied_after_pending_ack",
+                "war_termination_pending_checkpoint_saved",
+            ],
+        )
+        self.assertEqual(
+            next_turn["selected_step"], "query-declarable-wars"
+        )
+        self.assertEqual(len(report["checkpoints"]), 1)
+        checkpoint = report["checkpoints"][0]
+        self.assertEqual(
+            checkpoint["phase"], "war_termination_submitted_pending"
+        )
+        self.assertEqual(checkpoint["history_index"], 2)
+        self.assertEqual(
+            checkpoint["pending_action"],
+            {
+                "step": "surrender-war-16777290",
+                "war_id": 16_777_290,
+                "outcome": "attacker_defeat",
+                "status": "submitted_pending",
+                "action_history_index": 1,
+                "checkpoint_history_index": 2,
+                "date_raw": 53_171_400,
+                "episode_run_id": "native-707-test-run",
+            },
+        )
+        self.assertEqual(
+            [row["command"] for row in harness.history],
+            [
+                "surrender-war-16777290",
+                "save-checkpoint",
+                "query-declarable-wars",
+            ],
+        )
+        self.assertEqual(
+            sum(
+                row["command"] == "surrender-war-16777290"
+                for row in harness.history
+            ),
+            1,
+        )
 
     def test_white_peace_lifecycle_rejects_contradictory_identity_fields(
         self,
