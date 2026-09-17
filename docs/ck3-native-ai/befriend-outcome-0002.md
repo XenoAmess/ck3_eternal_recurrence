@@ -8,8 +8,11 @@
   `31853`，scheme owner 为非玩家 `31506`，保存 scopes 为
   `scheme, owner, artifact, target, scheme_failed`，snapshot authored option count 为 `4`，实际显示并可用的
   native rows 为 `(1, 2, 3)`。正式策略在动作前因 direct consumer 尚未支持该已登记 variant 而停止；没有提交动作。
-- [static-ready] 该帧精确匹配 failure variant。保守推荐为 authored option `3` / native `2` / rendered `1`；
-  修复只接通既有 exact-build 合同，不扩展通用事件广告。
+- [production-live loop for success projection; failure projection live-open] R861 从 R860 的 h961 安全 checkpoint
+  启动新 CK3 进程，丢弃未 checkpoint 的失败尾部后自然触发 success variant。正式 registry 选择 authored option `3` /
+  native `2` / rendered `1`，instance `5 -> null`，压力 `20 -> 60`、gold raw 保持 `49949715`，下一 formal query
+  和后续日期推进消费了 event absence；最终保存 h981 checkpoint。R860 的 failure variant 仍只有自然选择前 RED 与静态精确覆盖，
+  不冒充 post-fix live action。
 
 ## 原版入口与决策树
 
@@ -57,3 +60,8 @@ R339 在一个旧恢复窗口看到 success 与 failure 各一次只是一组 ob
   `Crusader Kings III/game/common/on_action/schemes/befriend_on_actions.txt:159-223`，SHA-256
   `58CE2CC8C86C5370DA15C9F5FBB8EBF9DAC89201FD4758F17254162040136B6D`。
 - R860 formal report SHA-256：`4BA536C7AF000F3BDA030025A8C3BB2E1B1898C11CA9A87310012191F4CE38F2`。
+- R861 formal report / final checkpoint / driver SHA-256：
+  `623BAB4FFE04BF125D039259E1CEEE8A8E1AD61B4336D40266FF6F95D31447A7` /
+  `6A8720C69D84593EA6026990CDF1A8423554AC3601AB50238BF455760ADC2D20` /
+  `488A52B44A9C6EBE3B4F3A47ECFC80FB62C8A93EBBB868433BCFD00E9243A5FC`；close ledger
+  `890EA1CC8CF8EBDF5B3939FFA666CF125C954F3FDB2BC505F366BA5D8DE7D7F4`。
