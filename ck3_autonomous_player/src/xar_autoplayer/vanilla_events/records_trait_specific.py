@@ -79,6 +79,26 @@ VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 1,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "trait_specific.9001": {
+        # R856 naturally exposed the ordinary subject-only projection.  The
+        # poetry helper can also publish poetry_romance_target for a different
+        # random theme; keep that unobserved source variant fail-closed.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "scope_types": {
+            "subject": "character",
+        },
+        "saved_scope_name_sets": (("subject",),),
+        "saved_scope_count": 1,
+        "boolean_scopes": (),
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "once-per-character-after-immediate-flag",
+    },
 }
 
 
@@ -332,6 +352,177 @@ VANILLA_TRAIT_SPECIFIC_ANALYSIS: Final[
             "trait or ten-year modifier mutation"
         ),
     },
+    "trait_specific.9001": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/trait_specific_events/trait_specific_events.txt": (
+                "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7"
+            ),
+            "common/on_action/yearly_on_actions.txt": (
+                "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+            ),
+            "common/on_action/yearly_groups_on_actions.txt": (
+                "D916E482A780F26CC1B1B27B582B675F90945AB808EB461A54A906EAAD0147C5"
+            ),
+            "common/scripted_triggers/00_available_for_events_triggers.txt": (
+                "5566A89A7D93BFB80DCF5A2F065BE0F058BE13E0B84470D1182B82D8D6384A44"
+            ),
+            "common/scripted_effects/00_poetry_effects.txt": (
+                "0BF4AACF776DC83AF32FC6FA6AEC93BCF01456CDE10DFC2E1C2E389A2CBB57FB"
+            ),
+            "common/traits/00_traits.txt": (
+                "079F0AB5C4224C505AB9F25BCA80D8DF296E5899BFAB26049CE5FE794DC0B042"
+            ),
+        },
+        "definition_lines": "1238-1400",
+        "trigger_lines": "1249-1255",
+        "immediate_lines": "1293-1301",
+        "option_lines": ("1305-1333", "1336-1364", "1367-1397"),
+        "after_line": "1400",
+        "base_yearly_pool_entry_line": "3031",
+        "fp1_yearly_group_entry_line": "28",
+        "caller_semantics": (
+            "the exact-build base yearly pool and the FP1 eligible yearly group "
+            "both contain this event; their runtime filtering and weighted draws "
+            "prevent attributing the R856 occurrence to one caller from the event "
+            "window alone"
+        ),
+        "trigger_boundary": (
+            "root must pass is_available_at_peace_adult, lack the permanent "
+            "had_event_trait_specific_9001 flag, and lack lifestyle_poet"
+        ),
+        "immediate_effect": (
+            "sets the permanent had-event flag, chooses a random poetry theme, "
+            "and saves the generated poem subject for localization"
+        ),
+        "source_possible_scope_variants": (
+            "R856 observed only character subject; the romance theme can also "
+            "publish boolean poetry_romance_target, which remains fail-closed "
+            "until an exact live projection is independently reviewed"
+        ),
+        "option_semantics": {
+            0: (
+                "adds permanent lifestyle_poet; arrogant can also receive a "
+                "medium stress loss"
+            ),
+            1: (
+                "when root lacks journaller, adds permanent journaller; content "
+                "can lose minor stress and ambitious can gain minor stress"
+            ),
+            2: (
+                "applies minor_stress_loss plus lazy/fickle stress relief or a "
+                "diligent stress gain"
+            ),
+        },
+        "native_ai_weights": {
+            0: (
+                "base 100 with boldness, compassion and sociability modifiers; "
+                "arrogant adds 20 and eligible culture adds 100"
+            ),
+            1: (
+                "base 50 with negative energy and sociability modifiers; content "
+                "adds 10 and ambitious subtracts 10"
+            ),
+            2: (
+                "base 25 with negative boldness and energy modifiers; lazy adds "
+                "50, fickle adds 30 and diligent subtracts 30"
+            ),
+        },
+        "selected_choice_effect_profile": {
+            "schema": "xar.ck3.vanilla-event-choice-effect",
+            "schema_version": 1,
+            "selected_native_option_index": 0,
+            "completeness": "selected-option-and-common-after-source-reviewed",
+            "selected_option_effects": [{
+                "domain": "trait",
+                "subject": "root",
+                "operation": "add_trait",
+                "trait": "lifestyle_poet",
+                "permanent": True,
+                "authored_resource_cost": "none",
+            }, {
+                "domain": "stress",
+                "subject": "root",
+                "operation": "stress_impact_if_trait",
+                "condition_trait": "arrogant",
+                "authored_value_key": "medium_stress_impact_loss",
+                "runtime_delta_exact": False,
+            }],
+            "common_after_effects": [{
+                "domain": "event_variable_cleanup",
+                "operation": "cleanup_poem_effect",
+                "variables": ["poetry_theme", "poem_subject"],
+            }],
+            "observable_postcondition": {
+                "metric": "active_event.instance_id",
+                "expected_relation": "selected_instance_absent",
+                "material_change_required_for_evidence": True,
+                "trait_state_observation_available": False,
+            },
+            "source_anchors": [
+                "events/trait_specific_events/trait_specific_events.txt:1305-1333",
+                "events/trait_specific_events/trait_specific_events.txt:1399-1400",
+                "common/scripted_effects/00_poetry_effects.txt:6-119",
+            ],
+            "source_sha256": {
+                "events/trait_specific_events/trait_specific_events.txt": (
+                    "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7"
+                ),
+                "common/scripted_effects/00_poetry_effects.txt": (
+                    "0BF4AACF776DC83AF32FC6FA6AEC93BCF01456CDE10DFC2E1C2E389A2CBB57FB"
+                ),
+            },
+        },
+        "selected_choice_campaign_utility_profile": {
+            "schema": "xar.ck3.vanilla-event-campaign-utility",
+            "schema_version": 1,
+            "selected_native_option_index": 0,
+            "objective_id": "acquire_long_term_poet_trait_from_one_time_event",
+            "comparison_kind": "source_reviewed_ordinal",
+            "selected_rank": 1,
+            "rank_count": 3,
+            "selected_utility": {
+                "material_direction": "benefit",
+                "outcome_variance": "deterministic_trait_gain",
+                "persistent_state_risk": "none_authored",
+                "resource_cost": "none_authored",
+                "timeline_value": "permanent_positive_trait",
+            },
+            "alternatives": [{
+                "native_option_index": 1,
+                "rank": 2,
+                "reason": "permanent journaller is useful but narrower in scope",
+            }, {
+                "native_option_index": 2,
+                "rank": 3,
+                "reason": "one-time stress relief spends the non-repeatable event",
+            }],
+            "cross_event_numeric_score": None,
+            "calibration_status": "not_calibrated",
+            "decision_scope": "bounded_timeline_continuation",
+        },
+        "after_effect": (
+            "cleanup_poem_effect clears the temporary poetry_theme and "
+            "poem_subject variables"
+        ),
+        "repeatability": (
+            "immediate permanently sets had_event_trait_specific_9001, so the "
+            "same character cannot naturally receive this event again"
+        ),
+        "safe_option_rationale": (
+            "native0 is legal in the R856 frame, has the highest base native AI "
+            "weight, adds a permanent beneficial trait without an authored "
+            "resource cost, and preserves timeline continuation"
+        ),
+        "observation_boundary": (
+            "the current bridge proves event-instance disappearance after a typed "
+            "choice but does not expose a generic character trait-set query; "
+            "lifestyle_poet therefore remains a source-authored expectation"
+        ),
+    },
 }
 
 
@@ -455,6 +646,53 @@ VANILLA_TRAIT_SPECIFIC_OBSERVATIONS: Final[
             "process_restart_required": False,
             "retained_red": True,
             "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }],
+    },
+    "trait_specific.9001": {
+        "exemplars": [{
+            "run": "R856",
+            "kind": "natural-pre-selection-live-red",
+            "red_classification": "bounded-player-decision-pending",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/g2-r856-poet-natural/formal-report.txt"
+            ),
+            "artifact_sha256": (
+                "05703538FEBEC2F86B9CD636DCA5FD234365E84C9FA81F0E303645F6FE9D538C"
+            ),
+            "driver_state_artifact": (
+                "_runtime/g2-r856-poet-natural/driver-state.json"
+            ),
+            "driver_state_artifact_sha256": (
+                "C6F4C6356E9734AB3F218F6907EA6D663FB81E0FB4B19B5852A7E65FBA51C792"
+            ),
+            "date_raw": 53208912,
+            "event_instance_id": 4,
+            "root_character_id": 31853,
+            "saved_character_ids": {
+                "subject": 1,
+            },
+            "saved_scope_raw_types": {
+                "subject": 4,
+            },
+            "rendered_native_option_indices": [0, 1, 2],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 209380,
+            "snapshot_id": "native:341",
+            "revision": 342,
+            "process_restart_required": False,
+            "retained_red": True,
+            "ordinary_campaign": True,
+            "xar_enabled": "xar_off",
+            "production_path": True,
+            "mcp_only": False,
             "fixture_used": False,
             "ocr_used": False,
             "coordinates_used": False,

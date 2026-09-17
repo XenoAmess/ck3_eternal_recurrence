@@ -26,11 +26,15 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
     materialize_vanilla_timeline_contract,
     query_vanilla_event_knowledge_v1,
 )
+from xar_autoplayer.vanilla_events.policy import (  # noqa: E402
+    recommend_registered_vanilla_event_option_v1,
+)
 import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 
 
 EVENT_KEY = "trait_specific.4001"
 HERBALIST_EVENT_KEY = "trait_specific.8001"
+POET_EVENT_KEY = "trait_specific.9001"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -78,6 +82,141 @@ def _boolean_scope(name: str) -> dict[str, object]:
 
 
 class TraitSpecificEventRecordTests(unittest.TestCase):
+    def test_poet_event_selects_exact_source_reviewed_trait_route(self) -> None:
+        contract = VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[POET_EVENT_KEY]
+        analysis = VANILLA_TRAIT_SPECIFIC_ANALYSIS[POET_EVENT_KEY]
+        exemplar = VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[POET_EVENT_KEY][
+            "exemplars"
+        ][0]
+
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+        self.assertEqual(contract["scope_types"], {"subject": "character"})
+        self.assertEqual(contract["saved_scope_name_sets"], (("subject",),))
+        self.assertEqual(contract["native_option_indices"], (0, 1, 2))
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertIn(
+            "poetry_romance_target",
+            analysis["source_possible_scope_variants"],
+        )
+        self.assertEqual(
+            analysis["source_sha256"][
+                "common/on_action/yearly_groups_on_actions.txt"
+            ],
+            "D916E482A780F26CC1B1B27B582B675F90945AB808EB461A54A906EAAD0147C5",
+        )
+        utility = analysis["selected_choice_campaign_utility_profile"]
+        self.assertEqual(
+            utility["objective_id"],
+            "acquire_long_term_poet_trait_from_one_time_event",
+        )
+        self.assertEqual(exemplar["run"], "R856")
+        self.assertEqual(exemplar["event_instance_id"], 4)
+        self.assertFalse(exemplar["selection_attempted"])
+        self.assertTrue(exemplar["retained_red"])
+        self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
+        self.assertRegex(exemplar["driver_state_artifact_sha256"], SHA256_PATTERN)
+
+    def test_poet_event_r856_shape_is_recommended_and_scope_drift_blocks(self) -> None:
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": POET_EVENT_KEY,
+            "current_event_instance_id": 4,
+            "date_raw": 53208912,
+            "root_scope": _character_scope("root", 31853)["scope"],
+            "saved_scopes": [_character_scope("subject", 1)],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+
+        recommendation = recommend_registered_vanilla_event_option_v1(
+            context,
+            played_character_id=31853,
+            snapshot_option_count=3,
+        )
+        self.assertEqual(recommendation["status"], "recommended")
+        self.assertEqual(recommendation["selected_option_number"], 1)
+        self.assertEqual(recommendation["selected_native_option_index"], 0)
+        self.assertEqual(recommendation["selected_rendered_index"], 0)
+        self.assertTrue(recommendation["campaign_utility_ready"])
+        self.assertEqual(
+            recommendation["choice_effect_profile"]["selected_option_effects"]
+            [0]["trait"],
+            "lifestyle_poet",
+        )
+
+        drifted = json.loads(json.dumps(context))
+        drifted["saved_scopes"].append(_boolean_scope("poetry_romance_target"))
+        blocked = recommend_registered_vanilla_event_option_v1(
+            drifted,
+            played_character_id=31853,
+            snapshot_option_count=3,
+        )
+        self.assertEqual(blocked["status"], "blocked")
+        self.assertEqual(
+            blocked["unavailable_reason"],
+            "registered_contract_projection_drift",
+        )
+
+    def test_poet_event_r856_shape_passes_production_checks(self) -> None:
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[POET_EVENT_KEY],
+            player=31853,
+            event_key=POET_EVENT_KEY,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53200000,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": POET_EVENT_KEY,
+            "current_event_instance_id": 4,
+            "date_raw": 53208912,
+            "root_scope": _character_scope("root", 31853)["scope"],
+            "saved_scopes": [_character_scope("subject", 1)],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53208912,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 4},
+            context=context,
+            event_key=POET_EVENT_KEY,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
     def test_herbalist_refusal_gold_effect_profile_is_queryable(self) -> None:
         response = query_vanilla_event_knowledge_v1(HERBALIST_EVENT_KEY)
         profile = response["analysis"]["selected_choice_effect_profile"]
@@ -294,13 +433,13 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 188)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 188)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 189)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 189)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 334)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 335)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY],

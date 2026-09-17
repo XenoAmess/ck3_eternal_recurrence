@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 82,
-    "caller_candidate_reference_count": 528,
+    "caller_candidate_reference_count": 530,
     "definition_file_count": 74,
-    "external_caller_event_count": 153,
+    "external_caller_event_count": 154,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 188,
+    "registered_event_count": 189,
     "same_file_only_caller_event_count": 35,
-    "unique_definition_count": 188
+    "unique_definition_count": 189
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "BF55DED8CEA75FC900DD41963FB285C272D9914E058492935953518A84A78BD5",
+  "dataset_sha256": "08229BBF4A07AD99382B53CC6F3057A8EA03CB8D67E79350BD0A04FEEF91E2FF",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5488,6 +5488,31 @@
       "definition": {
         "file_sha256": "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7",
         "line": 1148,
+        "relative_path": "events/trait_specific_events/trait_specific_events.txt"
+      },
+      "namespace": "trait_specific"
+    },
+    "trait_specific.9001": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "D916E482A780F26CC1B1B27B582B675F90945AB808EB461A54A906EAAD0147C5",
+          "kind": "exact-token-lexical-candidate",
+          "line": 28,
+          "relative_path": "common/on_action/yearly_groups_on_actions.txt"
+        },
+        {
+          "column": 8,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 3031,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7",
+        "line": 1238,
         "relative_path": "events/trait_specific_events/trait_specific_events.txt"
       },
       "namespace": "trait_specific"

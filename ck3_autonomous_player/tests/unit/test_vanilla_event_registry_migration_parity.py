@@ -370,8 +370,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 188)
-        self.assertEqual(len(key_memberships), 188)
+        self.assertEqual(sum(map(len, default_groups)), 189)
+        self.assertEqual(len(key_memberships), 189)
         self.assertEqual(
             {
                 event_key: indexes

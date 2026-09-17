@@ -73,7 +73,7 @@ source-authored expectation，不能把它冒充实机 material postcondition。
 - yearly pools：`game/common/on_action/yearly_on_actions.txt:2933-2936,3030-3031`，SHA-256
   `0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA`；FP1 group
   `game/common/on_action/yearly_groups_on_actions.txt:1-28`，SHA-256
-  `D916E482D012BB67C2BDCA7B46C7C8D65D7B22C3D9CBDF42377E63A1DE0147C5`。
+  `D916E482A780F26CC1B1B27B582B675F90945AB808EB461A54A906EAAD0147C5`。
 - 诗歌生成/清理：`game/common/scripted_effects/00_poetry_effects.txt:6-119`，SHA-256
   `0BF4AACF776DC83AF32FC6FA6AEC93BCF01456CDE10DFC2E1C2E389A2CBB57FB`。
 - trait 定义：`game/common/traits/00_traits.txt:5058-5078,10366-10410`，SHA-256
