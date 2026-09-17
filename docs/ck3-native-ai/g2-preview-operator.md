@@ -64,6 +64,17 @@ choice as `source=legacy-default`; omission never means ordinary support.
 
 The expected action fields are **verification assertions**, never action arguments passed to the agent. The agent discovers the pending request and its signed full ID from a real paused frame and chooses the reply under its installed policy. If a checkpoint has an unconfirmed prior action, first query actual paused game state and its receipt; do not submit another reply blindly.
 
+The outer `timeout_seconds` is a wall-clock ceiling for the whole formal run,
+including CK3 cold startup; it must be strictly greater than
+`readiness_timeout_seconds` and must cover the measured host startup tail plus
+the requested turn budget and cleanup grace. R795 proved that a `600` second
+outer timeout paired with `720` seconds of readiness allowance is invalid: the
+operator stopped at 602.96 seconds before semantic readiness, with zero turns
+and zero actions. On the same host, the already measured 636.443-second cold
+start requires the existing `810`/`720` formal pairing. This is an operator
+parameter correction, not capability evidence; preserve the no-launch receipt
+and allocate a new round rather than retrying the same invalid bound.
+
 First take exclusive CK3 ownership and confirm all managed CK3 processes are dead. For an independent fresh state, use the formal operator entry; the sample directory contains the paired `xar_checkpoint.ck3` and `driver-state.json`:
 
 ```text

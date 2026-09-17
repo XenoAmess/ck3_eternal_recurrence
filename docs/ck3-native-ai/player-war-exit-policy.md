@@ -467,8 +467,11 @@ flowchart LR
 
 planner 的确定顺序是 options → claim terms v1 → offer。direct execute 会 fresh 重验同一整套 cache/frame/identity/CB/validator/
 response/terms，而不是信任旧 plan。native queue 的 ACK 只表示 submitted：命令后当前 paused observation 中旧 full WarID 消失才记
-`applied`；仍在则记 `submitted_pending`，同日只 `life-advance` 一次等待 AI，再用持久 history 抑制 720 raw 内的同 WarID 重提。
-restore 后同样抑制；`+719` 不可重试、`+720` 可重试。strict runner 只把带 `war_changed` 的 WarID 消失算 visible gameplay；pending
+`applied`；仍在则记 `submitted_pending`，同日先 `life-advance` 一次等待 AI，再用持久 history 抑制 720 raw 内的同 WarID 重提。
+若 ordinary military OODA 随后仍证明全部 exact route 不安全，则在已实测的原生异步回复窗口内继续逐日推进，至提交后第十日的
+观察边界；期间绝不重查或重提同一 white peace。边界后旧 WarID 仍存在即停在
+`native_war_white_peace_postcondition_unresolved`，不得回落到无路线 blocker 或把 ACK 写成 applied。restore 后同样抑制；`+719`
+不可重试、`+720` 可重试。strict runner 只把带 `war_changed` 的 WarID 消失算 visible gameplay；pending
 submission 仍可审计地保留 decision/submission/result，但绝不冒充战争已结束或 run complete。
 
 ### 为什么当前允许、仍欠什么

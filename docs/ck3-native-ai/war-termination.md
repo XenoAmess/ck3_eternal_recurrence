@@ -1431,8 +1431,12 @@ flowchart TD
     C -->|yes| W["T3 offer-white-peace-full WarID"]
     W --> A{"fresh paused snapshot 中旧 WarID 消失?"}
     A -->|yes| X["applied；semantic war_changed"]
-    A -->|no| SP["submitted_pending；T4 同日 life-advance 一次"]
-    SP --> CD["同 WarID 720 raw 冷却；期间恢复军事 OODA"]
+    A -->|no| SP["submitted_pending；同日 life-advance 一次"]
+    SP --> M
+    M -->|全部 exact route 仍不安全| RW["逐日等待原生回复；提交后第十日为观察边界"]
+    RW -->|WarID 消失| X
+    RW -->|边界后仍存在| U["postcondition_unresolved；不重提"]
+    M --> CD["同 WarID 720 raw 冷却；有安全动作时继续军事 OODA"]
 ```
 
 所有 gate 必须同时成立：paused；options 与 claim terms v1 绑定同 snapshot/revision/native revision/date、connection
@@ -1452,8 +1456,11 @@ WarID/CB/validator/final response/claims 与 720 raw history cooldown，再走�
 `accepted=true`、`status=submitted`；随后读取命令后当前可用的 observation（不要求 snapshot/revision 必然推进），并只接受同
 bridge PID、connection generation、episode、played CharacterID、paused 且 date 未变化的绑定。WarID 消失才返回 typed
 `applied`；仍存在只返回 `submitted_pending` 和 after 的完整 war row。
-ACK 自身永不等于战争结束。pending 的同日下一 turn 只推进一次让 AI 处理；history 持久化后在 restore 中仍以 24 raw/day、
-30 日=`720` raw 抑制同 WarID 重复，`+719` 阻断、`+720` 才重开提议门。
+ACK 自身永不等于战争结束。pending 的同日下一 turn 先推进一次让 AI 处理；若此后 ordinary military OODA 没有任何安全 exact
+route，则不能在第一个游戏日就回到 `native_war_no_safe_exact_route`。原版已冻结 `ai_min_reply_days=4 / ai_max_reply_days=9`，且
+既有 production artifact 在第十次日推进才观察到 WarID 消失，因此该无路线分支逐日推进至提交后第十日的观察边界。每一步仍先
+重读 active WarID；WarID 消失即消费真实战后状态，边界后仍存在则停在 `native_war_white_peace_postcondition_unresolved`。
+history 持久化后在 restore 中仍以 24 raw/day、30 日=`720` raw 抑制同 WarID 重复，`+719` 阻断、`+720` 才重开提议门。
 
 ### production normal-desktop 证据与 live 边界
 
@@ -1476,8 +1483,10 @@ ACK 自身永不等于战争结束。pending 的同日下一 turn 只推进一�
   `NO_DECLARE`，最终仍可恢复。report SHA-256
   `C5E25F461827AB7266B59A8D3EE53A832918128EB4799625991839C6C6D08022`。
 - [implementation-confirmed] 一次 pending offer 后必须同日推进一次；此后同 WarID 在 720 raw 冷却期间跳过重复 termination
-  options/terms/offer query，恢复 ordinary military OODA。`+719` 不重提，`+720` 才重新获得查询/提议资格；WarID 先消失则直接
-  进入 residual-army disband 与战后保存。
+  options/terms/offer query并恢复 ordinary military OODA。有安全军事动作时继续正常 OODA；全部 exact route 仍不安全时，则按上述
+  十日观察边界逐日等待，而不是在第一个游戏日退出。`+719` 不重提，`+720` 才重新获得查询/提议资格；WarID 先消失则直接进入
+  residual-army disband 与战后保存。R796 在提交后仅推进一天便落入旧 `native_war_no_safe_exact_route`，由 commit `836ad237`
+  修正并以 normal 全文件 231 tests / 82 subtests、对应 focused `-O` 3 tests / 2 subtests 静态验证；该修复尚未获得新的 live 回放。
 - 以上只把当前 `claim_cb` primary-attacker 的“观察 → 白和提交 → 异步应用 → 解散 → 保存/冷恢复”升级为
   production-live loop。完整 dynamic v2、其它 CB、投降、作为防守方、多战争/hostage、付款/声望/战俘实际 delta 与高质量 continue-vs-exit
   效用仍未完成。
