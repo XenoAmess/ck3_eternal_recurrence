@@ -581,6 +581,28 @@ flowchart TD
     M --> R["[inference][counter-policy] bounded regroup intent; then re-evaluate"]
 ```
 
+### R864 主守方无领土目标时的首都驻防窄门
+
+- [live-confirmed] R864 正式运行在 CK3 `1.19.0.6`、source commit
+  `ee03bad5744ddd4c649143334ec83012cbffa060` 上，于 `date_raw=53280864` 观测到单一 active WarID
+  `150994969`：玩家是 primary defender、相对分数 `0`、exact objective 列表为空；唯一可控 ArmyID
+  `234881216` 已从 gathering 变为 regular，停在 fresh same-frame campaign-root capital Province `45`，无 target、
+  route、combat 或 retreat。敌军 ArmyID `184549393` 在 Province `28` gathering，亦无 target / route；当前
+  termination query 没有授权 white peace / victory，surrender 也不满足既有自动退出策略。正式 report
+  SHA-256 为 `53970EED5DB4B598E7C0831501A7C06CE03D581305B6628D33BB280910B9624E`。
+- [inference][counter-policy] 该帧不应 preview 或追逐敌军 Province `28`：route preview / contact horizon 只能证明
+  几何路线或接触时间，不能替代缺失的 exact combat forecast；combat-simulation-inputs v2/v3 也只是调用方给定
+  遭遇后的输入投影，不是可直接消费的胜负预测。
+- [inference][counter-policy] 仅在单一战争、primary defender、非终局分数 `-99..99`、空 exact objective、单一 regular stationary
+  controllable army、fresh same-frame capital 与 current 完全一致、termination 已得到“当前不选动作”证据，且
+  所有非撤退敌军仍是 gathering / no-target / empty-route，且全局 route / stationary threat / combat / retreat /
+  assault / pending write 审计均通过时，允许以既有 typed
+  `life-advance` 保持首都驻防。它仍受 active-war tactical horizon 约束：玩家军或战争分数变化、或敌方新路线产生
+  stationary threat 时提前暂停，否则最多运行既有七日窗口，随后重新取得 paused snapshot。
+- [inference][counter-policy] attacker、非首都、stale / missing campaign root、primary identity unknown、非空
+  objective、多个可控军、敌路命中首都、combat / retreat 或终局评估未完成均保持失败关闭。这个窄门不把
+  “守在首都”解释为接战安全，也不新增 native schema / ABI / MCP 能力。
+
 ### 连续恢复的有界失败入口记忆
 
 - [live-confirmed] 从同一 checkpoint origin `2598` 已观察到两条最终进入无安全出口并执行 restore 的入口：

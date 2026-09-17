@@ -10228,6 +10228,70 @@ def _choose_one_life_turn_core(
                     "route_rejections": stationary_threats,
                     "active_wars": war_summary,
                 }
+            defender_capital_hold = _primary_defender_capital_hold_input(
+                snapshot if isinstance(snapshot, dict) else {},
+                active_wars=active_wars,
+                controlled_armies=controlled_armies,
+                tactical_war=(
+                    tactical_war if isinstance(tactical_war, dict) else None
+                ),
+                pursuit_army=(
+                    pursuit_army if isinstance(pursuit_army, dict) else None
+                ),
+                exact_objective_province_ids=exact_objective_province_ids,
+                termination_by_war_id=termination_by_war_id,
+                war_summary=war_summary,
+                unsafe_armies=unsafe_armies,
+                active_assaults=active_assaults,
+            )
+            if defender_capital_hold is not None:
+                campaign_root = _same_frame_campaign_root_context(
+                    rows,
+                    snapshot if isinstance(snapshot, dict) else None,
+                )
+                if campaign_root is None:
+                    root_step = "query-campaign-root-context-v1"
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_defender_capital_hold_context",
+                        "selected_step": (
+                            root_step if root_step in available_steps else None
+                        ),
+                        "required_step": root_step,
+                        "reason": "the primary defender may hold only at a fresh same-frame exact campaign capital",
+                        "defensive_hold": defender_capital_hold,
+                        "active_wars": war_summary,
+                    }
+                capital_province_id = _native_int(
+                    campaign_root.get("capital_province_id")
+                )
+                if capital_province_id == current_province_id:
+                    defensive_hold = {
+                        **defender_capital_hold,
+                        "capital_province_id": capital_province_id,
+                        "campaign_root_snapshot_revision": campaign_root.get(
+                            "snapshot_revision"
+                        ),
+                        "campaign_root_date_raw": campaign_root.get("date_raw"),
+                    }
+                    if "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_defender_capital_hold_progress",
+                            "selected_step": "life-advance",
+                            "reason": "the primary defender has no exact territorial objective and its sole regular army is holding the fresh same-frame campaign capital; use the existing bounded tactical horizon and re-observe immediately on war, army, or stationary-threat change",
+                            "defensive_hold": defensive_hold,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_defender_capital_hold_progress_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "reason": "the exact primary-defender capital hold is ready but this backend cannot execute its bounded observation slice",
+                        "defensive_hold": defensive_hold,
+                        "active_wars": war_summary,
+                    }
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_counterpolicy_hold",
@@ -11836,6 +11900,134 @@ def _capital_regroup_input_ready(
             for enemy in enemies
         )
     )
+
+
+def _primary_defender_capital_hold_input(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+    tactical_war: dict[str, object] | None,
+    pursuit_army: dict[str, object] | None,
+    exact_objective_province_ids: list[int],
+    termination_by_war_id: dict[int, dict[str, object]],
+    war_summary: list[dict[str, object]],
+    unsafe_armies: list[dict[str, object]],
+    active_assaults: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Admit only the observed R864 primary-defender capital hold shape."""
+
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and len(active_wars) == 1
+        and tactical_war is active_wars[0]
+        and isinstance(tactical_war, dict)
+        and tactical_war.get("player_side") == "defender"
+        and tactical_war.get("player_is_primary_war_leader") is True
+        and isinstance(tactical_war.get("player_relative_war_score"), int)
+        and not isinstance(tactical_war.get("player_relative_war_score"), bool)
+        and -100 < int(tactical_war["player_relative_war_score"]) < 100
+        and exact_objective_province_ids == []
+        and len(controlled_armies) == 1
+        and pursuit_army is controlled_armies[0]
+        and not unsafe_armies
+        and not active_assaults
+    ):
+        return None
+    army = controlled_armies[0]
+    army_id = _native_int(army.get("army_id"))
+    current_province_id = _native_int(army.get("current_province_id"))
+    if not (
+        army_id is not None
+        and current_province_id is not None
+        and _army_tactical_state(army) == "regular"
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+        and "move_target_province_id" in army
+        and army.get("move_target_province_id") is None
+        and isinstance(army.get("route_province_ids"), list)
+        and not army["route_province_ids"]
+    ):
+        return None
+    enemies = [
+        enemy
+        for enemy in enemy_armies_from_wars(active_wars)
+        if _army_tactical_state(enemy) != "retreating"
+    ]
+    if not (
+        enemies
+        and len(enemies) <= MAX_ROUTE_CONTACT_HOSTILE_IDS
+        and all(
+            _native_int(enemy.get("army_id")) is not None
+            and _native_int(enemy.get("current_province_id")) is not None
+            and _army_tactical_state(enemy) == "gathering"
+            and "move_target_province_id" in enemy
+            and enemy.get("move_target_province_id") is None
+            and isinstance(enemy.get("route_province_ids"), list)
+            and not enemy["route_province_ids"]
+            for enemy in enemies
+        )
+    ):
+        return None
+    war_id = _native_int(tactical_war.get("war_id"))
+    summary = next(
+        (
+            row
+            for row in war_summary
+            if war_id is not None and row.get("war_id") == war_id
+        ),
+        None,
+    )
+    if war_id is None or not isinstance(summary, dict):
+        return None
+    reuse = summary.get("war_termination_negative_reuse")
+    options = termination_by_war_id.get(war_id)
+    if (
+        isinstance(reuse, dict)
+        and reuse.get("status") == "negative_assessment_reused"
+    ):
+        termination_evidence = {
+            "status": "negative_assessment_reused",
+            "queried_date_raw": reuse.get("queried_date_raw"),
+            "expires_date_raw": reuse.get("expires_date_raw"),
+        }
+    elif (
+        _same_frame_termination_row(snapshot, options, war_id)
+        and isinstance(options, dict)
+        and options.get("player_side") == "defender"
+        and options.get("player_is_primary_war_leader") is True
+        and options.get("player_relative_war_score")
+        == tactical_war.get("player_relative_war_score")
+        and not _claim_cb_white_peace_candidate(tactical_war, options)
+        and not _de_jure_no_safe_route_white_peace_candidate(
+            tactical_war, options
+        )
+        and not _de_jure_no_safe_route_surrender_candidate(
+            tactical_war, options
+        )
+    ):
+        termination_evidence = {
+            "status": "same_frame_no_authorized_exit",
+            "queried_snapshot_id": options.get("queried_snapshot_id"),
+            "queried_revision": options.get("queried_revision"),
+        }
+    else:
+        return None
+    return {
+        "status": "ready",
+        "war_id": war_id,
+        "army_id": army_id,
+        "current_province_id": current_province_id,
+        "termination_evidence": termination_evidence,
+        "enemy_army_ids": sorted(
+            int(enemy["army_id"])
+            for enemy in enemies
+            if _native_int(enemy.get("army_id")) is not None
+        ),
+    }
 
 
 def _current_exact_assault_state(
