@@ -8750,6 +8750,7 @@ class NativeHeadlessGameplayDriver:
             result = self._execute_primitive_step(
                 step,
                 expected_revision=selected_revision,
+                required_capability=QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
                 internal_semantic_snapshot=True,
             )
             if (
@@ -8842,6 +8843,7 @@ class NativeHeadlessGameplayDriver:
                 result = self._execute_primitive_step(
                     step,
                     expected_revision=selected_revision,
+                    required_capability=PREVIEW_MOVE_ARMY_CAPABILITY,
                     internal_semantic_snapshot=True,
                 )
             except _NativeCommandRejectedError as error:

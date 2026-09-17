@@ -2893,7 +2893,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         with self.assertRaisesRegex(UnsupportedStepError, "does not implement"):
             driver.execute_step("life-advance")
 
-    def test_fresh_exact_insufficient_siege_projects_capital_regroup_literals(
+    def test_fresh_exact_insufficient_siege_dispatches_capital_regroup_queries(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
@@ -2988,19 +2988,118 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             },
         }
 
+        preview_step = "preview-move-army-101-to-45"
+        horizon_step = query_route_contact_horizon_step(101, 45, (202,))
         steps = driver.capabilities()["action_steps"]
-        self.assertIn("preview-move-army-101-to-45", steps)
+        self.assertIn(preview_step, steps)
         self.assertIn("move-army-101-to-45", steps)
-        self.assertIn(
-            query_route_contact_horizon_step(101, 45, (202,)), steps
+        self.assertIn(horizon_step, steps)
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = frame["step"]
+            if step == preview_step:
+                result = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "route_preview": {
+                        "status": "available",
+                        "army_id": 101,
+                        "origin_province_id": 52,
+                        "target_province_id": 45,
+                        "route_province_ids": [52, 45],
+                    },
+                }
+            elif step == horizon_step:
+                result = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "query_sequence": 1,
+                    "snapshot_revision": snapshot["native_revision"],
+                    "route_contact_horizon": {
+                        "status": "available",
+                        "date_raw": snapshot["date_raw"],
+                        "snapshot_revision": snapshot["native_revision"],
+                        "subject_army_id": 101,
+                        "target_province_id": 45,
+                        "hostile_army_ids": [202],
+                        "subject_route": {
+                            "timeline_observable": True,
+                            "army_id": 101,
+                            "current_province_id": 52,
+                            "effective_origin_province_id": 52,
+                            "route_province_ids": [45],
+                            "arrival_date_raws": [
+                                int(snapshot["date_raw"]) + 48
+                            ],
+                        },
+                        "hostile_routes": [
+                            {
+                                "timeline_observable": True,
+                                "army_id": 202,
+                                "current_province_id": 54,
+                                "effective_origin_province_id": 54,
+                                "route_province_ids": [16, 52],
+                                "arrival_date_raws": [
+                                    int(snapshot["date_raw"]) + 24,
+                                    int(snapshot["date_raw"]) + 72,
+                                ],
+                            }
+                        ],
+                        "horizon_start_date_raw": snapshot["date_raw"],
+                        "horizon_end_date_raw": int(snapshot["date_raw"]) + 24,
+                        "one_day_contact_free": True,
+                        "conflicts": [],
+                    },
+                }
+            else:
+                self.fail(f"unexpected native command {step}")
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+
+        endpoint.send_hook = answer
+        preview = driver.execute_step(preview_step)
+        self.assertEqual(preview["route_preview"]["target_province_id"], 45)
+        horizon = driver.execute_step(horizon_step)
+        self.assertTrue(
+            horizon["route_contact_horizon"]["one_day_contact_free"]
         )
+        dispatched = [
+            frame["step"]
+            for frame in endpoint.frames
+            if frame.get("type") == "execute_step"
+        ]
+        self.assertEqual(dispatched, [preview_step, horizon_step])
 
         driver._campaign_root_context_query["cache_binding"][
             "native_revision"
         ] = int(snapshot["native_revision"]) - 1
         stale_steps = driver.capabilities()["action_steps"]
-        self.assertNotIn("preview-move-army-101-to-45", stale_steps)
+        self.assertNotIn(preview_step, stale_steps)
         self.assertNotIn("move-army-101-to-45", stale_steps)
+        self.assertNotIn(horizon_step, stale_steps)
+        with self.assertRaises(UnsupportedStepError):
+            driver.execute_step(preview_step)
+        with self.assertRaises(UnsupportedStepError):
+            driver.execute_step(horizon_step)
+        self.assertEqual(
+            [
+                frame["step"]
+                for frame in endpoint.frames
+                if frame.get("type") == "execute_step"
+            ],
+            [preview_step, horizon_step],
+        )
 
     def test_protocol_extension_routes_snapshot_and_command_result(self) -> None:
         endpoint = FakeEndpoint()

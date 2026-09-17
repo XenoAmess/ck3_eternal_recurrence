@@ -556,6 +556,17 @@ recovery，所有 cleanup proven，当前 checkpoint SHA-256 为
 - [inference][counter-policy] move 生效后保留有界 regroup intent：抵达首都后至少一个短观察窗口内只重新观测并
   推进，不在下一 turn 立即折返原目标；窗口到期、敌情变化或战争/军队 identity 变化后恢复正常逐候选评估。
   intent 只来自同 timeline 的已提交 move 与独立到达后置状态，不新增原生 strength/combat forecast 语义。
+- [production-blocker-live] R843 在同一 exact build/冻结 runtime 上先完成 termination query、两次 stationary
+  contact-horizon query 和两次 proof-bound advance；日期 `53154192` 再次达到上述 `399 < 400` 窄门后，正式
+  planner 选择 `preview-move-army-304-to-45`，但 Python primitive dispatch 在命令进入 DLL 前以
+  `UnsupportedStepError` 拒绝。根因是 driver-level fresh root projection 已把该 concrete capital literal 加入
+  `action_steps`，而 read-only preview 使用 internal semantic capability view，后者只包含原生参数化
+  `game.command.preview-move-army-N-to-N` 及普通目标投影，没有把额外 capital literal 重新绑定到参数化 capability。
+- [inference][counter-policy] 修复边界只补 dispatch binding：入口仍先以当前 driver-level `action_steps` 核对 exact
+  literal，随后 preview/horizon primitive 才分别使用已广告的参数化 capability。preview 仍为只读查询；move 仍须由
+  fresh preview、全敌 route audit 与必要 horizon 的 safe 结果选出，不能因参数化 capability 存在而直接提交。
+  root cache 只要 PID/generation/snapshot/date/actor 任一陈旧，capital literal 就从入口 capability 消失并 fail closed。
+  R843 没有显示 DLL 缺少命令模板或 ABI 字段，因而不要求 native DLL、公共 schema 或 MCP 变更。
 
 ```mermaid
 flowchart TD
