@@ -16,6 +16,14 @@ R695 私有终端 `F053530B...33D30` 与 R700 私有终端 `C0C31AC4...340E5`
 DLL 与旧 `dev3b_r639` save `9104CCB8...2CC63` 配对，仍没有后三类阳性。
 因此当前没有可合法执行这三种拒绝的实机场景；无需碰运气重跑旧存档。
 
+R863 又对比 R797 晚 3,585 游戏日的普通封建 h961 durable pair 做了一次新的 private
+query-only 实机读取。该帧有 10 个候选：already-councillor 独立阳性仍为
+`28925/30909/36567`，另有七个 ordinary 候选；guest、candidate-pending 与 replacement
+fireability denial 三个独立集合仍全部为空。运行保持 action OFF、gameplay action 0、
+native helper delta 0、日期/revision/save bytes 不变并完整回收 PID125360。报告/原生终端为
+`AC7ECA23...6F5D8` / `55A6C2D4...C0E24`。这不关闭新门；h961 已退休，不再无修改重查。
+Council 权威状态仍为 1/4，public query/action/ad 继续 OFF。
+
 当普通封建 production 运行自然产生新的阳性 paused 帧时，受控负责人应在**同一帧**
 封存原生 private gate 终端、游戏 checkpoint、对应 `driver-state.json` 与 exact-build
 action-ON DLL。`inspect_council_final_gate_scene.py` 必须从原生 provider 行给出以下独立
