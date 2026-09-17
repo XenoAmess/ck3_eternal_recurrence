@@ -177,6 +177,46 @@ def _chancellor_success_context(
     }
 
 
+def _prison_release_context(
+    *,
+    player_id: int = 29_829,
+    imprisoner_id: int = 32_309,
+    prisoner_id: int = 34_730,
+    background_id: int = 32_309,
+) -> dict[str, object]:
+    character_scopes = (
+        ("imprisoner", imprisoner_id),
+        ("prisoner", prisoner_id),
+        ("bg_override_char", background_id),
+        ("this_player", player_id),
+    )
+    saved_scopes = [
+        {
+            "name": "new_memory",
+            "name_identifier": 205,
+            "scope": _scope("character_memory"),
+        }
+    ]
+    saved_scopes.extend(
+        {
+            "name": name,
+            "name_identifier": index,
+            "scope": _scope("character", character_id=character_id),
+        }
+        for index, (name, character_id) in enumerate(character_scopes, start=206)
+    )
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "prison_notification.2002",
+        "root_scope": _scope("character", character_id=player_id),
+        "saved_scopes": saved_scopes,
+        "options": [_option(0, 0)],
+    }
+
+
 class VanillaEventRegistryPolicyTests(unittest.TestCase):
     def test_exact_tgp_travel_projection_selects_authored_option_two(
         self,
@@ -348,6 +388,69 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
                 self.assertEqual(result["status"], "blocked")
                 self.assertIn(failed_check, result["failed_checks"])
                 self.assertIsNone(result["selected_option_number"])
+
+    def test_prison_release_acknowledgement_requires_r840_role_shape(self) -> None:
+        recommended = recommend_registered_vanilla_event_option_v1(
+            _prison_release_context(),
+            played_character_id=29_829,
+            snapshot_option_count=1,
+        )
+
+        self.assertEqual(recommended["status"], "recommended")
+        self.assertEqual(recommended["selected_option_number"], 1)
+        self.assertEqual(recommended["selected_native_option_index"], 0)
+        self.assertEqual(recommended["selected_rendered_index"], 0)
+        self.assertEqual(recommended["failed_checks"], [])
+        self.assertFalse(recommended["semantic_optimal"])
+        self.assertFalse(recommended["campaign_utility_ready"])
+        self.assertIsNone(recommended["choice_effect_profile"])
+
+        drift_cases = (
+            (
+                {"player_id": 40_001},
+                29_829,
+                "root_character_id",
+            ),
+            (
+                {"imprisoner_id": 29_829},
+                29_829,
+                "scope:imprisoner:unique_character_excludes",
+            ),
+            (
+                {"prisoner_id": 32_309},
+                29_829,
+                "scope:prisoner:differs_from",
+            ),
+            (
+                {"background_id": 40_002},
+                29_829,
+                "scope:bg_override_char:matches_any",
+            ),
+        )
+        for changes, played_character_id, failed_check in drift_cases:
+            with self.subTest(failed_check=failed_check):
+                result = recommend_registered_vanilla_event_option_v1(
+                    _prison_release_context(**changes),
+                    played_character_id=played_character_id,
+                    snapshot_option_count=1,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIn(failed_check, result["failed_checks"])
+                self.assertIsNone(result["selected_option_number"])
+
+        missing_memory = _prison_release_context()
+        missing_memory["saved_scopes"] = [
+            row
+            for row in missing_memory["saved_scopes"]
+            if row["name"] != "new_memory"
+        ]
+        result = recommend_registered_vanilla_event_option_v1(
+            missing_memory,
+            played_character_id=29_829,
+            snapshot_option_count=1,
+        )
+        self.assertEqual(result["status"], "blocked")
+        self.assertIn("saved_scope_names_exact", result["failed_checks"])
 
     def test_natural_disaster_unregistered_projection_stays_blocked(self) -> None:
         result = recommend_registered_vanilla_event_option_v1(

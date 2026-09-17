@@ -804,6 +804,85 @@ class EventWindowContractTests(unittest.TestCase):
             plan["event_material_postcondition"]["starting_value"], 42
         )
 
+    def test_planner_uses_r840_prison_release_registry_acknowledgement(
+        self,
+    ) -> None:
+        player_id = 29_829
+        imprisoner_id = 32_309
+        prisoner_id = 34_730
+        frame = _frame()
+        frame["event_definition_key"] = "prison_notification.2002"
+        frame["root_scope"] = _scope(character_id=player_id)
+        frame["saved_scopes"] = [
+            {
+                "name": "imprisoner",
+                "name_identifier": 40,
+                "scope": _scope(character_id=imprisoner_id),
+            },
+            {
+                "name": "new_memory",
+                "name_identifier": 205,
+                "scope": _scope(
+                    raw_type_index=34,
+                    type_key="character_memory",
+                    character_id=None,
+                ),
+            },
+            {
+                "name": "prisoner",
+                "name_identifier": 9_073,
+                "scope": _scope(character_id=prisoner_id),
+            },
+            {
+                "name": "bg_override_char",
+                "name_identifier": 8_901,
+                "scope": _scope(character_id=imprisoner_id),
+            },
+            {
+                "name": "this_player",
+                "name_identifier": 20_544,
+                "scope": _scope(character_id=player_id),
+            },
+        ]
+        option = frame["options"][0]
+        option.update(
+            {
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+                "resolved_name": "Imprisonment is a cruelty.",
+            }
+        )
+        option["effect_indicators"]["rows"] = []
+        snapshot = _snapshot()
+        snapshot["played_character"] = {
+            "character_id": player_id,
+            "alive": True,
+        }
+        snapshot["active_event"]["option_count"] = 1
+
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "active_event_registry_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-1")
+        decision = plan["event_decision"]
+        self.assertEqual(decision["status"], "recommended")
+        self.assertEqual(decision["selected_native_option_index"], 0)
+        self.assertEqual(decision["failed_checks"], [])
+        self.assertFalse(decision["semantic_optimal"])
+        self.assertFalse(decision["campaign_utility_ready"])
+        self.assertNotIn("event_material_postcondition", plan)
+
     def test_planner_blocks_zero_enabled_materialized_rows(self) -> None:
         zero = _frame()
         plan = choose_one_life_turn(

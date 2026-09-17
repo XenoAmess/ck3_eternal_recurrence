@@ -417,7 +417,12 @@ _OPTION_VARIANT_FIELDS: Final = frozenset(
 )
 _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset({"natural_disaster.7031"})
 _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset({"death_management.1007"})
-_DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset({"chancellor_task.1104"})
+_DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
+    {
+        "chancellor_task.1104",
+        "prison_notification.2002",
+    }
+)
 
 
 def _option_projection_signature(contract: Mapping[str, object]) -> tuple[object, ...]:

@@ -945,3 +945,44 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
 - [production-live loop] R835 使用已交付 agent `9bacc5af`、native `881e1ba5` 和 exact CK3 1.19.0.6，从同一 R832 pair 做新进程冷恢复。第一次请求绑定 instance `-1795162109`、sender36108、recipient29829、prisoner63741；history678 查询给出 canonical key、五角色、direct recipient route、deadline `6/60/54` 和 accept/reject/block legal、ack illegal，history679 只提交 `reject-pending-character-interaction`。typed result 为 `rejected`，独立 paused `native:12` 中旧 ID 缺席。
 - [production-live loop] 同一 bounded run 又自然出现第二个 `ransom_interaction`（instance1929379854、sender32309、prisoner34730），history687→688 重复同一 query/typed-reject/独立 `native:17` disappearance 合同；随后正式战争发现/入场查询继续且没有重提旧 ID，history694 保存 paired checkpoint。20/20 turns、16 query、4 gameplay、1 checkpoint，report/driver/save SHA-256 分别为 `4ABB17D8...C1C2`、`99047F37...FDC0`、`B75E7606...DF30`，cleanup GREEN。
 - [bounded claim] R835 证明 current packaged runtime 会消费该 exact definition，不再复现 R834 的版本 B0；R772/R773 仍保留同定义的既有 action/cold-restore 证据。公共 snapshot 尚未发布 prisoner custody、十年 refusal flag或玩家资源 delta，因此不能宣称这些更强物质后置，也不能把本证据泛化到未 allowlist 的 interaction。
+
+### R840 自然 `prison_notification.2002`（静态修复，实机复验待办）
+
+- [production RED] R840 在 CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的正式 cold-restore
+  turn 3、日期 `53204136` 自然遇到 instance `8`。同帧 query 绑定 player/root `29829`、
+  imprisoner `32309`、prisoner `34730`、`bg_override_char=imprisoner`、`this_player=root` 和 opaque
+  `new_memory`；唯一 authored native `0` 为 shown+enabled。旧 consumer 因未显式准入该合同的四类
+  relational fields 返回 `registered_contract_requires_extended_consumer`，没有提交选项；这是真实续行 B0，
+  不是“单选项就任选”的授权。
+- [exact-build source-reviewed] `events/prison_events/prison_notification_events.txt:268-366`，文件 SHA-256
+  `56023FBADC5F56C98293B1FB4AB7D846AD957F115B2E329422A0DCAD283B6C7F`：`.2001` 在释放流程中保存
+  `prisoner`，为玩家保存 `this_player`，仅当 prisoner 是其 heir/primary heir/consort 时触发 `.2002`；
+  `.2002` 又要求 `imprisoner != root`、prisoner alive，并保存 `bg_override_char=imprisoner`。释放动作与
+  `new_memory` 已在弹窗前发生；`.2002` 的 sole authored option 没有 effect，只确认通知文本
+  “囚禁真是残酷。”。
+- [implementation-confirmed / static-ready / live=false] 最小 extended consumer 只为 stable key
+  `prison_notification.2002` 准入既有 registry 的 `character_scopes`、`unique_character_scope_excludes`、
+  `character_scope_matches_any`、`character_scope_differs_from`。它仍逐项要求 exact 五-scope 名称/类型、
+  `this_player=root`、prisoner/imprisoner 均非玩家且互异、background alias 指向 imprisoner，以及唯一 native
+  `0` shown+enabled；任一身份、alias、scope 或 option 漂移都 fail-closed。结果是 source-reviewed bounded
+  acknowledgement，继续标记 `native_ai_equivalent=false`、`semantic_optimal=false`，不声称经济最优或通用
+  囚犯策略。
+
+```mermaid
+flowchart TD
+    A["[exact-build] .2001 已执行 release_from_prison"] --> B{"[exact-build] prisoner 是玩家 heir/primary heir/consort？"}
+    B -->|否| N["[exact-build] .2003 hidden notification"]
+    B -->|是| C["[exact-build] .2002 popup；保存 this_player/prisoner/imprisoner/new_memory/bg alias"]
+    C --> D{"[implementation] exact root、五 scope、人物关系与 native 0 投影均匹配？"}
+    D -->|否| X["[implementation] typed contract drift；保持暂停"]
+    D -->|是| E["[implementation] select-event-option-1"]
+    E --> F["[live pending] 独立 paused frame 旧 instance 消失；后续正式 turn 消费"]
+    F -. "R840 尚未复验" .-> U["[unknown] current runtime 实机生命周期闭环"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+本补丁不改公共 schema、bridge/MCP 注册或能力广告。实机关闭该 RED 仍必须从 R839 的有效 paired checkpoint
+cold restore，在正式入口中只提交一次 typed option，独立 paused frame 证明 instance `8` 消失，再由后续正式 turn
+消费无 active event，并按现有生命周期规则 checkpoint；静态 GREEN 不能代替这些后置条件。
