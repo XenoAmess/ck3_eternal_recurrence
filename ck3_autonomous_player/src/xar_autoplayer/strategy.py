@@ -152,6 +152,7 @@ _NATIVE_RETREAT_MAX_GAME_DAYS = 30
 _NATIVE_SIEGE_STALL_GAME_DAYS = 7
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
+_WHITE_PEACE_NATIVE_RESPONSE_OBSERVATION_RAW = 10 * 24
 _NEGATIVE_WAR_TERMINATION_REUSE_RAW = 7 * 24
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB = "individual_county_de_jure_cb"
 _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
@@ -5550,6 +5551,7 @@ def _white_peace_submission_cooldown(
         if elapsed_raw < _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW:
             return {
                 "status": "cooldown",
+                "action_status": action.get("status"),
                 "submitted_date_raw": submitted_date_raw,
                 "elapsed_raw": elapsed_raw,
                 "remaining_raw": (
@@ -5563,6 +5565,87 @@ def _white_peace_submission_cooldown(
             }
         return None
     return None
+
+
+def _white_peace_no_safe_route_response_plan(
+    commands: list[dict[str, object]],
+    *,
+    war_id: int,
+    date_raw: object,
+    episode_run_id: object,
+    available_steps: set[str],
+    active_war_summary: list[dict[str, object]],
+    route_rejections: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Observe one submitted proposal through CK3's native reply window."""
+    submission = _white_peace_submission_cooldown(
+        commands,
+        war_id=war_id,
+        date_raw=date_raw,
+        episode_run_id=episode_run_id,
+    )
+    if not (
+        isinstance(submission, dict)
+        and submission.get("status") == "cooldown"
+        and submission.get("action_status") == "submitted_pending"
+    ):
+        return None
+    elapsed_raw = _native_int(submission.get("elapsed_raw"))
+    if elapsed_raw is None or elapsed_raw < 0:
+        return None
+    if elapsed_raw < _WHITE_PEACE_NATIVE_RESPONSE_OBSERVATION_RAW:
+        if "life-advance" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_white_peace_response_window_advance",
+                "selected_step": "life-advance",
+                "war_id": war_id,
+                "decision": {
+                    "policy": "claim-cb-minimal-white-peace-v1",
+                    "outcome": "white_peace",
+                    "status": "submitted_pending",
+                    "submission": submission,
+                    "response_observation_deadline_raw": (
+                        int(submission["submitted_date_raw"])
+                        + _WHITE_PEACE_NATIVE_RESPONSE_OBSERVATION_RAW
+                    ),
+                },
+                "reason": (
+                    "all exact routes remain unsafe while the sole white-peace "
+                    "proposal is inside CK3's observed asynchronous reply "
+                    "window; advance one day without resubmitting"
+                ),
+                "route_rejections": route_rejections,
+                "active_wars": active_war_summary,
+            }
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_white_peace_response_window_unsupported",
+            "selected_step": None,
+            "required_step": "life-advance",
+            "war_id": war_id,
+            "submission": submission,
+            "reason": (
+                "the submitted white-peace proposal is still inside the "
+                "native reply window, but no one-day advance is available"
+            ),
+            "route_rejections": route_rejections,
+            "active_wars": active_war_summary,
+        }
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_white_peace_postcondition_unresolved",
+        "selected_step": None,
+        "required_step": "old-WarID-disappearance",
+        "war_id": war_id,
+        "submission": submission,
+        "reason": (
+            "the native reply observation window elapsed with the old WarID "
+            "still present; do not repeat the terminal action"
+        ),
+        "route_rejections": route_rejections,
+        "active_wars": active_war_summary,
+    }
 
 
 def _de_jure_surrender_submission_state(
@@ -9680,6 +9763,29 @@ def _choose_one_life_turn_core(
                         "route_rejections": route_rejections,
                         "active_wars": war_summary,
                     }
+                white_peace_response = (
+                    _white_peace_no_safe_route_response_plan(
+                        rows,
+                        war_id=tactical_war_id,
+                        date_raw=(
+                            snapshot.get("date_raw")
+                            if isinstance(snapshot, dict)
+                            else None
+                        ),
+                        episode_run_id=(
+                            snapshot.get("episode_run_id")
+                            if isinstance(snapshot, dict)
+                            else None
+                        ),
+                        available_steps=available_steps,
+                        active_war_summary=war_summary,
+                        route_rejections=route_rejections,
+                    )
+                    if isinstance(tactical_war_id, int)
+                    else None
+                )
+                if white_peace_response is not None:
+                    return white_peace_response
                 emergency_exit = (
                     _de_jure_no_safe_route_exit_plan(
                         snapshot,
@@ -9707,6 +9813,29 @@ def _choose_one_life_turn_core(
             active_route_unsafe
             and preview_selected_target is None
         ):
+            white_peace_response = (
+                _white_peace_no_safe_route_response_plan(
+                    rows,
+                    war_id=tactical_war_id,
+                    date_raw=(
+                        snapshot.get("date_raw")
+                        if isinstance(snapshot, dict)
+                        else None
+                    ),
+                    episode_run_id=(
+                        snapshot.get("episode_run_id")
+                        if isinstance(snapshot, dict)
+                        else None
+                    ),
+                    available_steps=available_steps,
+                    active_war_summary=war_summary,
+                    route_rejections=[passive_route_audit],
+                )
+                if isinstance(tactical_war_id, int)
+                else None
+            )
+            if white_peace_response is not None:
+                return white_peace_response
             emergency_exit = (
                 _de_jure_no_safe_route_exit_plan(
                     snapshot,

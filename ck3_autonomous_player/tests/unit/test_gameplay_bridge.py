@@ -2466,6 +2466,106 @@ class GameplayBridgeTests(unittest.TestCase):
             plan["decision"]["candidates"]["surrender"]["executable"]
         )
 
+    def test_r796_no_safe_route_observes_one_white_peace_reply_window(
+        self,
+    ) -> None:
+        submitted_date_raw = 53_150_016
+        player = _army(
+            11,
+            soldiers=396,
+            province_id=52,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=400,
+            province_id=54,
+            controllable=False,
+            move_target_province_id=52,
+            army_state="moving",
+            route_province_ids=[16, 52],
+        )
+        history = [
+            {
+                "index": 267,
+                "command": "offer-white-peace-88",
+                "ok": True,
+                "result": {
+                    "war_termination_result": {
+                        "status": "submitted_pending",
+                        "war_id": 88,
+                        "outcome": "white_peace",
+                        "episode_run_id": None,
+                        "submitted_date_raw": submitted_date_raw,
+                    }
+                },
+            }
+        ]
+
+        for elapsed_raw in (24, 9 * 24):
+            with self.subTest(elapsed_raw=elapsed_raw):
+                plan = _native_war_plan(
+                    player=player,
+                    enemies=[enemy],
+                    score=47,
+                    date_raw=submitted_date_raw + elapsed_raw,
+                    history=history,
+                    objectives=[52],
+                    objective_states=[
+                        _objective_state(
+                            52,
+                            garrison_size=400,
+                            besieging_strength=396,
+                            active_siege=_active_siege(
+                                siege_id=6, army_id=11, days_left=None
+                            ),
+                        )
+                    ],
+                    occupation_supported=True,
+                    garrison_supported=True,
+                    siege_progress_supported=True,
+                    targeted_title_ids=[537],
+                    steps=("offer-white-peace-88", "life-advance"),
+                )
+                self.assertEqual(
+                    plan["phase"],
+                    "native_war_white_peace_response_window_advance",
+                )
+                self.assertEqual(plan["selected_step"], "life-advance")
+
+        expired = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=47,
+            date_raw=submitted_date_raw + 10 * 24,
+            history=history,
+            objectives=[52],
+            objective_states=[
+                _objective_state(
+                    52,
+                    garrison_size=400,
+                    besieging_strength=396,
+                    active_siege=_active_siege(
+                        siege_id=6, army_id=11, days_left=None
+                    ),
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            targeted_title_ids=[537],
+            steps=("offer-white-peace-88", "life-advance"),
+        )
+
+        self.assertEqual(
+            expired["phase"],
+            "native_war_white_peace_postcondition_unresolved",
+        )
+        self.assertIsNone(expired["selected_step"])
+        self.assertEqual(expired["required_step"], "old-WarID-disappearance")
+
     def test_r794_de_jure_white_peace_rejects_nonexact_inputs(self) -> None:
         player = _army(
             11,
