@@ -418,6 +418,17 @@ def build_frozen_repo(
         if path.exists():
             path.unlink()
     (git_dir / "info").mkdir(parents=True, exist_ok=True)
+    # ZIP only preserves file entries.  Keep the otherwise-empty directories
+    # that Git requires when recognizing a non-bare repository after a fresh
+    # extraction.
+    for relative in (
+        "refs/.keep",
+        "objects/info/.keep",
+        "objects/pack/.keep",
+    ):
+        marker = git_dir / relative
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.write_bytes(b"")
     config = (
         "[core]\n"
         "\trepositoryformatversion = 0\n"

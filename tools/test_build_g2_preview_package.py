@@ -297,6 +297,17 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
         self.assertNotIn("R783", json.dumps(manifest))
         self.assertNotIn("53145000", json.dumps(manifest))
 
+        extracted = self.root / "fresh-extraction"
+        with zipfile.ZipFile(first["zip_path"]) as archive:
+            archive.extractall(extracted)
+        self.assertEqual(
+            subprocess.check_output(
+                ["git", "-C", str(extracted / "repo"), "rev-parse", "HEAD"],
+                text=True,
+            ).strip(),
+            self.commit,
+        )
+
         equivalent_repo = self.root / "equivalent-source-repo"
         subprocess.run(
             ["git", "clone", "--no-local", "-q", str(self.repo), str(equivalent_repo)],
