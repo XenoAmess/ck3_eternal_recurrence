@@ -883,6 +883,79 @@ class EventWindowContractTests(unittest.TestCase):
         self.assertFalse(decision["campaign_utility_ready"])
         self.assertNotIn("event_material_postcondition", plan)
 
+    def test_planner_uses_r842_withering_mind_registry_acknowledgement(
+        self,
+    ) -> None:
+        player_id = 29_829
+        frame = _frame()
+        frame.update(
+            {
+                "date_raw": 53_204_496,
+                "current_event_instance_id": 9,
+                "event_definition_key": "health.7200",
+                "calculated_event_id": 4_577_200,
+                "runtime_stats_ordinal": 7_413,
+                "root_scope": _scope(character_id=player_id),
+                "saved_scopes": [],
+            }
+        )
+        option = frame["options"][0]
+        option.update(
+            {
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+                "resolved_name": "I should get back to bed...",
+                "unavailable_reason": "",
+            }
+        )
+        option["effect_indicators"]["rows"] = [
+            {
+                "kind": "trait",
+                "operation": "add",
+                "trait": {
+                    "status": "available",
+                    "native_id": 123,
+                    "key": "withering_mind",
+                },
+            }
+        ]
+        snapshot = _snapshot()
+        snapshot.update(
+            {
+                "date_raw": 53_204_496,
+                "played_character": {
+                    "character_id": player_id,
+                    "alive": True,
+                },
+            }
+        )
+        snapshot["active_event"] = {"instance_id": 9, "option_count": 1}
+
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "active_event_registry_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-1")
+        decision = plan["event_decision"]
+        self.assertEqual(decision["status"], "recommended")
+        self.assertEqual(decision["selected_option_number"], 1)
+        self.assertEqual(decision["selected_native_option_index"], 0)
+        self.assertEqual(decision["selected_rendered_index"], 0)
+        self.assertEqual(decision["failed_checks"], [])
+        self.assertFalse(decision["semantic_optimal"])
+        self.assertFalse(decision["campaign_utility_ready"])
+        self.assertNotIn("event_material_postcondition", plan)
+
     def test_planner_blocks_zero_enabled_materialized_rows(self) -> None:
         zero = _frame()
         plan = choose_one_life_turn(

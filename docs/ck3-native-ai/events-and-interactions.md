@@ -986,3 +986,50 @@ flowchart TD
 本补丁不改公共 schema、bridge/MCP 注册或能力广告。实机关闭该 RED 仍必须从 R839 的有效 paired checkpoint
 cold restore，在正式入口中只提交一次 typed option，独立 paused frame 证明 instance `8` 消失，再由后续正式 turn
 消费无 active event，并按现有生命周期规则 checkpoint；静态 GREEN 不能代替这些后置条件。
+
+### R842 自然 `health.7200`（direct projection 修复，实机复验待办）
+
+- [production RED] R842 在 CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的正式 cold-restore
+  日期 `53204496` 自然遇到 instance `9`。同一 paused frame 的公共 query 绑定 player/root `29829`、零个
+  saved scope，以及唯一 rendered/native `0` 的 shown+enabled option；indicator 子集显示
+  `add trait withering_mind`（native trait id `123`）。正式 planner 没有提交动作，而以
+  `registered_contract_projection_drift` fail-closed。
+- [exact-build source-reviewed] `events/health_events.txt:12065-12283`，文件 SHA-256
+  `8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB`：`.7200` 没有 immediate 或
+  saved scope；其唯一 authored option `health.7200.a` 只执行 `add_trait = withering_mind`。调用链为代码每年
+  对每个角色触发 `common/on_action/yearly_on_actions.txt:2675-2679` 的
+  `random_yearly_everyone_pulse`（文件 SHA-256
+  `0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA`），继而进入
+  `common/on_action/health_on_actions.txt:4-45` 的 `yearly_health_pulse`，其 random event 表在第 39 行以
+  权重 `30` 选择 `.7200`；后者文件 SHA-256
+  `253988DA3E14BE7CC9B86CAB2A3C15843B0CB8B273B2B4BC391EB287AEF0C94C`。
+- [root cause] shared registry 已有正确的 sole-option 语义（option number `1` / native `0`、零 scope），但
+  旧记录没有把直接 consumer 所需的四项投影边界写成显式字段。因此 `native_option_indices_exact` 因
+  `native_option_indices` 缺失而失败；`disabled_option_contract` 同时要求 native 列表 typed，即使实际没有
+  disabled option 仍失败；`saved_scope_names_exact` 因没有显式的合法空名称集合而失败；
+  `scope_types_cover_projection` 因没有显式空类型映射而失败。这不是 option 或 scope 的实机漂移。
+- [implementation-confirmed / static-ready / live=false] 最小修复只为 stable key `health.7200` 增加
+  `native_option_indices=(0,)`、`disabled_native_option_indices=()`、`saved_scope_name_sets=((),)`、
+  `scope_types={}`。既有 direct consumer 只有在 root=当前玩家、零 saved scope、唯一 native `0` 且
+  shown+enabled 时才选择 typed option 1；新增 scope、native remap 或 disabled sole option 均继续
+  fail-closed。该分支无可比较的另一个选项，因此仍是 bounded acknowledgement，
+  `semantic_optimal=false`，不把 source-defined 必然效果描述为策略优化。
+
+```mermaid
+flowchart TD
+    A["[exact-build] random_yearly_everyone_pulse"] --> B["[exact-build] yearly_health_pulse random list"]
+    B --> C["[exact-build] health.7200 自然 materialize；零 saved scope"]
+    C --> D{"[implementation] root、空 scope 集和唯一 native 0 投影均精确匹配？"}
+    D -->|否| X["[implementation] projection drift；保持暂停"]
+    D -->|是| E["[implementation] typed select-event-option-1"]
+    E --> F["[exact-build] authored effect add_trait withering_mind"]
+    F -. "R842 后续尚未执行" .-> U["[unknown] 独立 paused frame、trait 物质状态和下一正式 turn 消费"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+本修复不改公共 schema、MCP 注册、native ABI 或能力广告。实机关闭 R842 RED 仍须在正式入口只提交一次
+typed option，独立 paused frame 证明旧 instance `9` 消失并尽可能读取玩家 `withering_mind` 物质状态，再由
+后续正式 turn 消费无 active event；若公共 snapshot 暂不能读取该 trait，必须把“source-authored effect”和
+“已独立观测物质结果”分开报告，不能用 ACK 代替结果。
