@@ -387,6 +387,28 @@ def parser() -> argparse.ArgumentParser:
         required=True,
         help="monotonic CK3 ownership round R<number>; keeps this route private",
     )
+    outbound_white_peace_query_parser = commands.add_parser(
+        "native-query-outbound-war-white-peace-status-v1",
+        help=(
+            "cold-restore and issue one public sender-side pending "
+            "white-peace query without gameplay or date advance"
+        ),
+    )
+    outbound_white_peace_query_parser.add_argument("--war-id", type=int, required=True)
+    outbound_white_peace_query_parser.add_argument("--timeout", type=float, default=390)
+    outbound_white_peace_query_parser.add_argument(
+        "--readiness-timeout", type=float, default=300
+    )
+    outbound_white_peace_query_parser.add_argument(
+        "--cold-start-checkpoint",
+        action="store_true",
+        help="launch and bind the exact xar_checkpoint save (required)",
+    )
+    outbound_white_peace_query_parser.add_argument(
+        "--ownership-round-id",
+        required=True,
+        help="monotonic CK3 ownership round R<number>",
+    )
     timeline_action_parser = commands.add_parser(
         "native-continue-death-succession-modal-v1",
         help=(
@@ -655,6 +677,7 @@ def main(argv: list[str] | None = None) -> int:
                 "native-session",
                 "native-auto-run",
                 "native-query-current-timeline-blocker-context-v1",
+                "native-query-outbound-war-white-peace-status-v1",
                 "native-continue-death-succession-modal-v1",
                 "native-one-generation",
                 "native-next-episode",
@@ -812,6 +835,19 @@ def main(argv: list[str] | None = None) -> int:
                 ),
                 cold_start_checkpoint=args.cold_start_checkpoint,
             )
+        elif args.command == "native-query-outbound-war-white-peace-status-v1":
+            from .outbound_white_peace_status_query_run import (
+                query_outbound_white_peace_status_once,
+            )
+
+            result = query_outbound_white_peace_status_once(
+                spec,
+                war_id=args.war_id,
+                timeout_seconds=args.timeout,
+                readiness_timeout_seconds=args.readiness_timeout,
+                ownership_round_id=args.ownership_round_id,
+                cold_start_checkpoint=args.cold_start_checkpoint,
+            )
         elif args.command == "native-continue-death-succession-modal-v1":
             from .timeline_blocker_action_run import (
                 continue_death_succession_modal_once,
@@ -913,6 +949,7 @@ def main(argv: list[str] | None = None) -> int:
         in {
             "native-auto-run",
             "native-query-current-timeline-blocker-context-v1",
+            "native-query-outbound-war-white-peace-status-v1",
             "native-continue-death-succession-modal-v1",
             "native-one-generation",
             "native-next-episode",
