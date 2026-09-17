@@ -78,6 +78,9 @@ from xar_autoplayer.vanilla_events.records_diplomacy_majesty import (  # noqa: E
 from xar_autoplayer.vanilla_events.records_faction_demand import (  # noqa: E402
     VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS,
 )
+from xar_autoplayer.vanilla_events.records_fervor import (  # noqa: E402
+    VANILLA_FERVOR_TIMELINE_CONTRACTS,
+)
 from xar_autoplayer.vanilla_events.records_health import (  # noqa: E402
     VANILLA_HEALTH_TIMELINE_CONTRACTS,
 )
@@ -357,6 +360,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             VANILLA_CHANCELLOR_FOREIGN_AFFAIRS_TIMELINE_CONTRACTS,
             VANILLA_DIPLOMACY_MAJESTY_TIMELINE_CONTRACTS,
             VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS,
+            VANILLA_FERVOR_TIMELINE_CONTRACTS,
             VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS,
             VANILLA_YEARLY_TIMELINE_CONTRACTS,
             VANILLA_BP1_HOUSE_FEUD_TIMELINE_CONTRACTS,
@@ -370,8 +374,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 189)
-        self.assertEqual(len(key_memberships), 189)
+        self.assertEqual(sum(map(len, default_groups)), 190)
+        self.assertEqual(len(key_memberships), 190)
         self.assertEqual(
             {
                 event_key: indexes

@@ -447,7 +447,9 @@ _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
         "natural_disaster.7031",
     }
 )
-_DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset({"death_management.1007"})
+_DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset(
+    {"death_management.1007", "fervor.1002"}
+)
 _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
     {
         "befriend_outcome.0002",

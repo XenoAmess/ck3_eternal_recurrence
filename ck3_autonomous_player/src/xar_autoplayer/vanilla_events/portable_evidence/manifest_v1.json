@@ -220,6 +220,58 @@
       "sha256": "05703538febec2f86b9cd636dca5fd234365e84c9fa81f0e303645f6fe9d538c"
     },
     {
+      "blob_bytes": 5990,
+      "blob_path": "blobs/06807e780bff670dd8319b9a54270952990dd146bc5b069420dfde3e784b3f63.gz",
+      "blob_sha256": "6797ffe0909336e5f2e58132020d51f821bf971276370b014b38e5abac8015bd",
+      "bytes": 52559,
+      "evidence_id": "06807e780bff670dd8319b9a54270952990dd146bc5b069420dfde3e784b3f63",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "fervor.1002",
+          "logical_path": "events/religion_events/fervor_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 633
+        },
+        {
+          "caller_candidate_resolution": "same-definition-file-only",
+          "event_definition_key": "fervor.1002",
+          "logical_path": "events/religion_events/fervor_events.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 22,
+          "source_line": 556
+        },
+        {
+          "caller_candidate_resolution": "same-definition-file-only",
+          "event_definition_key": "fervor.1002",
+          "logical_path": "events/religion_events/fervor_events.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 23,
+          "source_line": 614
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "fervor.1002",
+          "logical_path": "events/religion_events/fervor_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "06807e780bff670dd8319b9a54270952990dd146bc5b069420dfde3e784b3f63"
+    },
+    {
       "blob_bytes": 14021,
       "blob_path": "blobs/0742fc261c844979e9b6311b297502172400b8b5a6a70743122ddb30de8b632d.gz",
       "blob_sha256": "73e7bf8f5a89e61786868b90418cc49d0bf59f8f9d307b340166de6aea3bcefb",
@@ -1601,6 +1653,16 @@
         {
           "caller_candidate_resolution": null,
           "event_definition_key": "death_management.1007",
+          "logical_path": "common/script_values/00_stress_values.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "fervor.1002",
           "logical_path": "common/script_values/00_stress_values.txt",
           "origin": "ck3_game",
           "provenance": "manually-reviewed-analysis-source",
@@ -4332,6 +4394,16 @@
       "kind": "source_definition",
       "media_type": "text/plain; charset=utf-8",
       "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "fervor.1002",
+          "logical_path": "common/on_action/religion_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
         {
           "caller_candidate_resolution": null,
           "event_definition_key": "great_holy_war.0011",
@@ -9726,6 +9798,16 @@
       "references": [
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "fervor.1002",
+          "logical_path": "common/script_values/00_basic_values.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "trait_specific.4001",
           "logical_path": "common/script_values/00_basic_values.txt",
           "origin": "ck3_game",
@@ -14867,13 +14949,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 298,
-    "generated_definition_references": 189,
-    "lexical_caller_candidate_references": 530,
-    "manually_reviewed_analysis_source_references": 295,
+    "evidence": 299,
+    "generated_definition_references": 190,
+    "lexical_caller_candidate_references": 532,
+    "manually_reviewed_analysis_source_references": 299,
     "observation_artifact_references": 114,
     "observation_artifacts": 98,
-    "references": 1128,
-    "source_definitions": 200
+    "references": 1135,
+    "source_definitions": 201
   }
 }

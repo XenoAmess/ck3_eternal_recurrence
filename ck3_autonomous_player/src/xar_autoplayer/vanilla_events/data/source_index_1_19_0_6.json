@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 82,
-    "caller_candidate_reference_count": 530,
-    "definition_file_count": 74,
+    "caller_candidate_file_count": 83,
+    "caller_candidate_reference_count": 532,
+    "definition_file_count": 75,
     "external_caller_event_count": 154,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 189,
-    "same_file_only_caller_event_count": 35,
-    "unique_definition_count": 189
+    "registered_event_count": 190,
+    "same_file_only_caller_event_count": 36,
+    "unique_definition_count": 190
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "08229BBF4A07AD99382B53CC6F3057A8EA03CB8D67E79350BD0A04FEEF91E2FF",
+  "dataset_sha256": "EA9F5CA222DEFFFCBB4DF04322AFA051E5BDA599183C9F159DC6ECCE60BCD06C",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -1822,6 +1822,31 @@
         "relative_path": "events/factions/faction_demands.txt"
       },
       "namespace": "faction_demand"
+    },
+    "fervor.1002": {
+      "caller_candidate_resolution": "same-definition-file-only",
+      "caller_candidates": [
+        {
+          "column": 22,
+          "file_sha256": "06807E780BFF670DD8319B9A54270952990DD146BC5B069420DFDE3E784B3F63",
+          "kind": "exact-token-lexical-candidate",
+          "line": 556,
+          "relative_path": "events/religion_events/fervor_events.txt"
+        },
+        {
+          "column": 23,
+          "file_sha256": "06807E780BFF670DD8319B9A54270952990DD146BC5B069420DFDE3E784B3F63",
+          "kind": "exact-token-lexical-candidate",
+          "line": 614,
+          "relative_path": "events/religion_events/fervor_events.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "06807E780BFF670DD8319B9A54270952990DD146BC5B069420DFDE3E784B3F63",
+        "line": 633,
+        "relative_path": "events/religion_events/fervor_events.txt"
+      },
+      "namespace": "fervor"
     },
     "great_holy_war.0011": {
       "caller_candidate_resolution": "external-definition-file",

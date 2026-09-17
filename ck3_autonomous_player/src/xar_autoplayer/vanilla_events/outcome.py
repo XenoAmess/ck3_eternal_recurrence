@@ -24,6 +24,10 @@ _SUPPORTED_CHOICES: Final = {
         "played_character.stress_points",
         "non_decreasing",
     ),
+    ("fervor.1002", 2): (
+        "played_character.stress_points",
+        "non_decreasing",
+    ),
 }
 _CHOICE_EFFECT_PROFILE_SCHEMA: Final = "xar.ck3.vanilla-event-choice-effect"
 _OBSERVATION_FIELDS: Final = {
