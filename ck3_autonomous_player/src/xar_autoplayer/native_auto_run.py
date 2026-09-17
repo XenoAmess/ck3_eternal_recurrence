@@ -1142,6 +1142,61 @@ def native_auto_run(
                     war_termination_result.get("status")
                     == "submitted_pending"
                 )
+            if war_termination_submission_pending:
+                if terminal_pending or modal_decision_pending:
+                    capture_first_failure(
+                        stage="checkpoint_preflight",
+                        kind="war_termination_pending_checkpoint_unsafe",
+                        message=(
+                            "submitted war termination reached a terminal or "
+                            "player-decision frame before its durable checkpoint"
+                        ),
+                    )
+                    raise AgentError(
+                        "submitted war termination cannot be checkpointed on a "
+                        "terminal or player-decision frame"
+                    )
+                current_attempt["stage"] = (
+                    "war_termination_pending_checkpoint_preflight"
+                )
+                checkpoint, checkpoint_snapshot = _materialize_checkpoint(
+                    service,
+                    driver,
+                    spec.profile_dir / "save games",
+                    session_done=session_done,
+                    session_state=session_state,
+                    timeout_seconds=min(
+                        readiness_timeout,
+                        max(0.001, run_deadline - time.monotonic()),
+                    ),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                pending_fence = _verify_pending_war_termination_checkpoint(
+                    checkpoint,
+                    snapshot=checkpoint_snapshot,
+                    submitted_step=step,
+                )
+                counts["checkpoint"] += 1
+                checkpoints.append(
+                    {
+                        "turn_index": turn_index,
+                        "phase": "war_termination_submitted_pending",
+                        "pending_action": pending_fence,
+                        **checkpoint,
+                    }
+                )
+                evidence.append("war_termination_pending_checkpoint_saved")
+                after_snapshot = checkpoint_snapshot
+                after = _compact_binding(
+                    driver.capabilities(), checkpoint_snapshot
+                )
+                current_attempt["after"] = _public_binding(after)
+                current_attempt["stage"] = (
+                    "war_termination_pending_checkpoint_complete"
+                )
+                eligible_since_checkpoint = 0
+                dirty_gameplay_since_checkpoint = False
             if completion_contract in strict_completion_contracts:
                 try:
                     if (
@@ -4306,6 +4361,85 @@ def _verify_checkpoint_result(
         "succession_lifecycle": copy.deepcopy(
             checkpoint.get("succession_lifecycle")
         ),
+    }
+
+
+def _verify_pending_war_termination_checkpoint(
+    checkpoint: object,
+    *,
+    snapshot: object,
+    submitted_step: str,
+) -> dict[str, object]:
+    """Prove the submitted termination row immediately precedes its save."""
+
+    history = (
+        snapshot.get("native_command_history")
+        if isinstance(snapshot, dict)
+        else None
+    )
+    checkpoint_index = (
+        checkpoint.get("history_index")
+        if isinstance(checkpoint, dict)
+        else None
+    )
+    action = (
+        history[checkpoint_index - 2]
+        if (
+            isinstance(history, list)
+            and type(checkpoint_index) is int
+            and 2 <= checkpoint_index <= len(history)
+        )
+        else None
+    )
+    result = action.get("result") if isinstance(action, dict) else None
+    termination = (
+        result.get("war_termination_result")
+        if isinstance(result, dict)
+        else None
+    )
+    war_id = parse_offer_white_peace_step(submitted_step)
+    expected_outcome = "white_peace"
+    if war_id is None:
+        war_id = parse_surrender_war_step(submitted_step)
+        expected_outcome = "attacker_defeat"
+    if not (
+        isinstance(checkpoint, dict)
+        and isinstance(snapshot, dict)
+        and type(checkpoint_index) is int
+        and isinstance(action, dict)
+        and action.get("index") == checkpoint_index - 1
+        and action.get("command") == submitted_step
+        and action.get("ok") is True
+        and isinstance(result, dict)
+        and result.get("step") == submitted_step
+        and isinstance(termination, dict)
+        and type(war_id) is int
+        and termination.get("status") == "submitted_pending"
+        and termination.get("war_id") == war_id
+        and termination.get("outcome") == expected_outcome
+        and termination.get("command_acknowledged") is True
+        and termination.get("war_id_absent_after_ack") is False
+        and termination.get("submitted_date_raw")
+        == termination.get("observed_date_raw")
+        == checkpoint.get("date_raw")
+        == snapshot.get("date_raw")
+        and checkpoint.get("episode_run_id")
+        == termination.get("episode_run_id")
+        == snapshot.get("episode_run_id")
+    ):
+        raise AgentError(
+            "submitted war termination is not immediately fenced by its "
+            "paired checkpoint history anchor"
+        )
+    return {
+        "step": submitted_step,
+        "war_id": war_id,
+        "outcome": expected_outcome,
+        "status": "submitted_pending",
+        "action_history_index": checkpoint_index - 1,
+        "checkpoint_history_index": checkpoint_index,
+        "date_raw": checkpoint.get("date_raw"),
+        "episode_run_id": checkpoint.get("episode_run_id"),
     }
 
 

@@ -2191,7 +2191,7 @@ class NativeAutoRunTests(unittest.TestCase):
     def test_white_peace_pending_is_recorded_but_not_visible_completion(
         self,
     ) -> None:
-        report, _harness = self._run(["white_peace_pending"])
+        report, harness = self._run(["white_peace_pending"])
 
         self.assertFalse(report["ok"])
         self.assertEqual(report["outcome"], "not_qualified")
@@ -2200,13 +2200,43 @@ class NativeAutoRunTests(unittest.TestCase):
         )
         self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
         turn = report["auto_run"]["turns"][0]
-        self.assertEqual(turn["evidence"], ["no_semantic_delta"])
+        self.assertEqual(
+            turn["evidence"],
+            ["war_termination_pending_checkpoint_saved"],
+        )
         termination = turn["result"]["war_termination_result"]
         self.assertEqual(termination["status"], "submitted_pending")
         self.assertFalse(termination["war_id_absent_after_ack"])
         self.assertEqual(
             termination["remaining_active_war"]["war_id"],
             16_777_290,
+        )
+        self.assertEqual(len(report["checkpoints"]), 1)
+        checkpoint = report["checkpoints"][0]
+        self.assertEqual(
+            checkpoint["phase"], "war_termination_submitted_pending"
+        )
+        self.assertEqual(checkpoint["history_index"], 2)
+        self.assertEqual(
+            checkpoint["pending_action"],
+            {
+                "step": "offer-white-peace-16777290",
+                "war_id": 16_777_290,
+                "outcome": "white_peace",
+                "status": "submitted_pending",
+                "action_history_index": 1,
+                "checkpoint_history_index": 2,
+                "date_raw": 53_171_400,
+                "episode_run_id": "native-707-test-run",
+            },
+        )
+        self.assertEqual(
+            [row["command"] for row in harness.history],
+            ["offer-white-peace-16777290", "save-checkpoint"],
+        )
+        self.assertLess(
+            harness.events.index("auto_turn:white_peace_pending"),
+            harness.events.index("save_checkpoint"),
         )
 
     def test_white_peace_ack_without_typed_end_state_stops_the_run(self) -> None:
@@ -2219,6 +2249,57 @@ class NativeAutoRunTests(unittest.TestCase):
             "white_peace_lifecycle_postcondition_failed",
         )
         self.assertEqual(report["auto_run"]["turns"], [])
+
+    def test_pending_surrender_checkpoint_requires_adjacent_action_row(
+        self,
+    ) -> None:
+        step = "surrender-war-5"
+        termination = {
+            "status": "submitted_pending",
+            "war_id": 5,
+            "outcome": "attacker_defeat",
+            "submitted_date_raw": 53_149_872,
+            "observed_date_raw": 53_149_872,
+            "episode_run_id": "native-31853-test",
+            "command_acknowledged": True,
+            "war_id_absent_after_ack": False,
+        }
+        action = {
+            "index": 1,
+            "command": step,
+            "ok": True,
+            "result": {
+                "step": step,
+                "war_termination_result": termination,
+            },
+        }
+        save = {"index": 2, "command": "save-checkpoint", "ok": True}
+        checkpoint = {
+            "history_index": 2,
+            "date_raw": 53_149_872,
+            "episode_run_id": "native-31853-test",
+        }
+        snapshot = {
+            "date_raw": 53_149_872,
+            "episode_run_id": "native-31853-test",
+            "native_command_history": [action, save],
+        }
+
+        self.assertEqual(
+            native_auto_run_module._verify_pending_war_termination_checkpoint(
+                checkpoint, snapshot=snapshot, submitted_step=step
+            )["outcome"],
+            "attacker_defeat",
+        )
+
+        query = {"index": 2, "command": "query-active-wars", "ok": True}
+        save["index"] = 3
+        checkpoint["history_index"] = 3
+        snapshot["native_command_history"] = [action, query, save]
+        with self.assertRaisesRegex(AgentError, "immediately fenced"):
+            native_auto_run_module._verify_pending_war_termination_checkpoint(
+                checkpoint, snapshot=snapshot, submitted_step=step
+            )
 
     def test_white_peace_lifecycle_rejects_contradictory_identity_fields(
         self,
