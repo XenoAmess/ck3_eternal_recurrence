@@ -22,3 +22,12 @@ R726 M4定义身份 private RED/CLI1，same paused 六块直辖地、private exe
 R727官方从R724安全配对点12/12/196.704s，军队5613→5615→5616并由下一正式turn消费，旧typed move一次且没有终局；新物理配对checkpoint date53193240/index151有效，CK3回收。原campaign-root拒绝在此版本未复现，retry-live分支没有触发；turn11 ArmyID真实消失，下一正式turn转原生战争终局查询，无B0卡死证据、原因unknown/B1 watch。War下个4–6turn冷候选准备中；M4 R726 definition_identity RED聚焦新私有诊断，FEUDAL/M5单job编译/协议广告OFF。预览GO、GEN0342/4、权威G21/8，1066首独立种子/百年/整局/双种子未验。
 
 R729 当前 CK3 存活实例 0，下一实机就绪队列含 FEUDAL final8ea selected-model（候选重冻中）、M4 final4fc private 失败阶段短复验（READY）与 M5 finalab raw0 只读复验（Release 重编中）；仅 /root 可操作单实例。团队容量 13 含协调者，W=12；当前有效独立 worker FEUDAL/M4/M5 三包，/root 负责报告、master 集成和实机。用户预览 GO、GEN-034 2/4、权威 G2 1/8 不变。open_kaishek main64cd4e0 与冻结预览 d112/eefc 已验；FEUDAL/M5 仍 private/ad OFF、无下游消费者，公开启用前先锁 typed 契约和被动适配。
+
+## 2026-09-17 R797-R802 current delivery override
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 标准封建有界预览 | GO，用户可获取；广告范围仍是冻结 R783 slice | 包内 `g2_preview_operator.py` / `native-auto-run` | ZIP `D:\ck3_mod_rewrite_process_assets\g2-preview-ordinary-r783-stage-20260916T134805Z-6cfba744\g2-preview-ordinary-5ac64152-r783.zip`，SHA `AA9CABB5...517C`；GO 清单 `A5CB85FE...4B1D` | R790-R792 资格证据不变；R800-R802 尚未进入 ZIP，不能扩大广告 | 包内 stop/checkpoint 与 R792 新进程恢复已验 | 新包需单独按现有 bounded contract 构建/合格化；/root | 冻结包无临时分支依赖 |
+| Council 四类 final gate | 1/4；R797 新场景仍无后三类正例，公共 OFF | 私有 gate-only query | R797 report `B6345292...4641` | 14 provider/11 ordinary；already3、guest0、pending0、replacement-denial0；gameplay/date/checkpoint0 | query-only cleanup GREEN，不是正式目标恢复 | 等 materially-different guest/pending/non-fireable scene；不重复 h260；/root | Council materializer `0aa366ef` 已 FF master；临时 refs 已清 |
+| Ordinary WarID5 terminal loop | **production-live loop for observed branch** | 正式 `native-auto-run`; recovery query `game.command.query-outbound-war-white-peace-status-v1-N` | commits `b9b6f249`/`881e1ba5`/`f5a8914d`/`36a25a55`/`c9c371b4`/`851c36dc`/`aba36a4e`; R801 report `E6E47677...48C6` | 同帧三择一→唯一 white peace→即时 pending checkpoint→独立 WarID5 消失→下一 turn 解散残军→和平 checkpoint | R802 新进程恢复 h289，零 reoffer/declare，正式推进32天并保存 h293 `DFC96CFD...71AF7` / `7C79FE4C...48EF0` | ordinary B0 已关；Raiktor GEN-034 C/D、自然继承、治理和整局仍开；/root | 所有代码均 ordinary FF 到 master，远端/local 临时分支即时删除 |
+| G2 权威状态 | **1/8**，仅 M1 complete | `g2-requirements-v1.json` | 定义与分母未变 | ordinary war closure 不自动完成任何正式 milestone | 无新增 milestone restore claim | 首整局、第二种子及余下矩阵继续；/root | 不适用 |
