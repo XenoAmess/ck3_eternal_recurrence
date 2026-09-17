@@ -9032,6 +9032,78 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 )
             )
 
+    def test_stationary_contact_query_projects_only_for_hostile_route_threat(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.war-objectives",
+                "game.state.army-routes",
+                "game.command.query-route-contact-horizon-v1-N",
+            )
+        )
+        player = _army(
+            101,
+            province_id=45,
+            move_target_province_id=None,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            31,
+            province_id=8_745,
+            controllable=False,
+            move_target_province_id=45,
+            army_state="moving",
+            route_province_ids=[8_747, 23, 8_749, 45],
+        )
+        threatening_war = _war(
+            allied_armies=[player],
+            enemy_armies=[enemy],
+            war_objective_province_ids=[],
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_281_056,
+                active_wars=[threatening_war],
+                player_armies=[player],
+            )
+        )
+        query_step = query_route_contact_horizon_step(101, 45, (31,))
+        self.assertIn(query_step, driver.capabilities()["action_steps"])
+        self.assertNotIn(
+            "preview-move-army-101-to-45",
+            driver.capabilities()["action_steps"],
+        )
+
+        route_away = {
+            **enemy,
+            "move_target_province_id": 46,
+            "route_province_ids": [8_747, 46],
+        }
+        endpoint.publish(
+            _snapshot(
+                41,
+                date_raw=53_281_056,
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[route_away],
+                        war_objective_province_ids=[],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+        self.assertNotIn(query_step, driver.capabilities()["action_steps"])
+
     def test_moving_contact_proof_covers_other_safe_armies_exact_day(
         self,
     ) -> None:

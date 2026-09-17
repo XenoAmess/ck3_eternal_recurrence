@@ -10210,6 +10210,179 @@ def _choose_one_life_turn_core(
                     "active_wars": war_summary,
                 }
             if stationary_threats:
+                defender_capital_contact = (
+                    _primary_defender_capital_hold_input(
+                        snapshot if isinstance(snapshot, dict) else {},
+                        active_wars=active_wars,
+                        controlled_armies=controlled_armies,
+                        tactical_war=(
+                            tactical_war
+                            if isinstance(tactical_war, dict)
+                            else None
+                        ),
+                        pursuit_army=(
+                            pursuit_army
+                            if isinstance(pursuit_army, dict)
+                            else None
+                        ),
+                        exact_objective_province_ids=(
+                            exact_objective_province_ids
+                        ),
+                        termination_by_war_id=termination_by_war_id,
+                        war_summary=war_summary,
+                        unsafe_armies=unsafe_armies,
+                        active_assaults=active_assaults,
+                        allow_observable_enemy_routes=True,
+                    )
+                )
+                if defender_capital_contact is not None:
+                    campaign_root = _same_frame_campaign_root_context(
+                        rows,
+                        snapshot if isinstance(snapshot, dict) else None,
+                    )
+                    if campaign_root is None:
+                        root_step = "query-campaign-root-context-v1"
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_defender_capital_contact_context",
+                            "selected_step": (
+                                root_step
+                                if root_step in available_steps
+                                else None
+                            ),
+                            "required_step": root_step,
+                            "reason": "a threatened primary-defender hold may query contact timing only at a fresh same-frame exact campaign capital",
+                            "defensive_hold": defender_capital_contact,
+                            "route_rejections": stationary_threats,
+                            "active_wars": war_summary,
+                        }
+                    capital_province_id = _native_int(
+                        campaign_root.get("capital_province_id")
+                    )
+                    if capital_province_id == current_province_id:
+                        defensive_hold = {
+                            **defender_capital_contact,
+                            "capital_province_id": capital_province_id,
+                            "campaign_root_snapshot_revision": (
+                                campaign_root.get("snapshot_revision")
+                            ),
+                            "campaign_root_date_raw": campaign_root.get(
+                                "date_raw"
+                            ),
+                        }
+                        contact_query_step = (
+                            query_route_contact_horizon_step(
+                                int(defensive_hold["army_id"]),
+                                int(capital_province_id),
+                                route_threat_enemy_ids,
+                            )
+                        )
+                        if not route_contact_scope_supported:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_defender_capital_contact_horizon_unsupported",
+                                "selected_step": None,
+                                "required_step": contact_query_step,
+                                "reason": "the threatened capital hold requires the existing complete-scope stationary contact-horizon capability",
+                                "defensive_hold": defensive_hold,
+                                "route_rejections": stationary_threats,
+                                "active_wars": war_summary,
+                            }
+                        contact_horizon = _fresh_route_contact_horizon(
+                            rows,
+                            snapshot,
+                            army_id=int(defensive_hold["army_id"]),
+                            origin_province_id=int(current_province_id),
+                            target_province_id=int(capital_province_id),
+                            hostile_army_ids=route_threat_enemy_ids,
+                            route_province_ids=[],
+                        )
+                        if contact_horizon is None:
+                            failed_query = (
+                                _current_frame_route_contact_query_failure(
+                                    rows,
+                                    snapshot,
+                                    contact_query_step,
+                                )
+                            )
+                            if failed_query is not None:
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": "native_war_defender_capital_contact_horizon_unavailable",
+                                    "selected_step": None,
+                                    "required_observation": "fresh-available-stationary-contact-horizon",
+                                    "reason": "the current-frame stationary capital contact query failed or returned no usable exact timeline; keep the map paused",
+                                    "defensive_hold": defensive_hold,
+                                    "contact_query_attempt": failed_query,
+                                    "route_rejections": stationary_threats,
+                                    "active_wars": war_summary,
+                                }
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_defender_capital_contact_horizon",
+                                "selected_step": (
+                                    contact_query_step
+                                    if contact_query_step in available_steps
+                                    else None
+                                ),
+                                "required_step": contact_query_step,
+                                "reason": "replace geometric convergence on the exact defender capital with the existing stationary one-day contact timeline",
+                                "defensive_hold": defensive_hold,
+                                "route_rejections": stationary_threats,
+                                "active_wars": war_summary,
+                            }
+                        contact_advance_step = (
+                            advance_route_contact_horizon_step(
+                                int(defensive_hold["army_id"]),
+                                int(capital_province_id),
+                                route_threat_enemy_ids,
+                            )
+                        )
+                        if contact_horizon.get("one_day_contact_free") is True:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_defender_capital_contact_horizon_progress",
+                                "selected_step": (
+                                    contact_advance_step
+                                    if contact_advance_step in available_steps
+                                    else None
+                                ),
+                                "required_step": contact_advance_step,
+                                "reason": "the fresh stationary timeline proves the exact defender capital contact-free for one day",
+                                "defensive_hold": defensive_hold,
+                                "contact_horizon": contact_horizon,
+                                "route_rejections": stationary_threats,
+                                "active_wars": war_summary,
+                            }
+                        if unavoidable_current_province_contact_in_horizon(
+                            contact_horizon
+                        ):
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_defender_capital_contact_transition",
+                                "selected_step": (
+                                    contact_advance_step
+                                    if contact_advance_step in available_steps
+                                    else None
+                                ),
+                                "required_step": contact_advance_step,
+                                "reason": "the exact defender-capital hold has an unavoidable current-province contact within the proof-bound day",
+                                "defensive_hold": defensive_hold,
+                                "contact_horizon": contact_horizon,
+                                "route_rejections": stationary_threats,
+                                "active_wars": war_summary,
+                            }
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_defender_capital_contact_horizon_blocked",
+                            "selected_step": None,
+                            "required_observation": "contact-free-or-unavoidable-current-province-stationary-horizon",
+                            "reason": "the fresh stationary capital horizon is neither contact-free nor an exact unavoidable current-province transition",
+                            "defensive_hold": defensive_hold,
+                            "contact_horizon": contact_horizon,
+                            "route_rejections": stationary_threats,
+                            "active_wars": war_summary,
+                        }
                 exact = current_province_id in exact_objective_province_ids
                 return {
                     "policy": "one-life-turn-v1",
@@ -11914,8 +12087,9 @@ def _primary_defender_capital_hold_input(
     war_summary: list[dict[str, object]],
     unsafe_armies: list[dict[str, object]],
     active_assaults: list[dict[str, object]],
+    allow_observable_enemy_routes: bool = False,
 ) -> dict[str, object] | None:
-    """Admit only the observed R864 primary-defender capital hold shape."""
+    """Admit the R864 idle hold or its R865 observable-route query shape."""
 
     if not (
         snapshot.get("paused") is True
@@ -11957,18 +12131,52 @@ def _primary_defender_capital_hold_input(
         for enemy in enemy_armies_from_wars(active_wars)
         if _army_tactical_state(enemy) != "retreating"
     ]
+    idle_gathering_enemies = all(
+        _native_int(enemy.get("army_id")) is not None
+        and _native_int(enemy.get("current_province_id")) is not None
+        and _army_tactical_state(enemy) == "gathering"
+        and enemy.get("in_combat") is False
+        and enemy.get("retreating") is False
+        and "move_target_province_id" in enemy
+        and enemy.get("move_target_province_id") is None
+        and isinstance(enemy.get("route_province_ids"), list)
+        and not enemy["route_province_ids"]
+        for enemy in enemies
+    )
+    observable_noncombat_enemies = all(
+        _native_int(enemy.get("army_id")) is not None
+        and _native_int(enemy.get("current_province_id")) is not None
+        and _army_tactical_state(enemy)
+        in {"gathering", "regular", "moving", "sieging", "embarked"}
+        and enemy.get("in_combat") is False
+        and enemy.get("retreating") is False
+        and "move_target_province_id" in enemy
+        and isinstance(enemy.get("route_province_ids"), list)
+        and all(
+            _native_int(province_id) is not None
+            for province_id in enemy["route_province_ids"]
+        )
+        and (
+            (
+                enemy.get("move_target_province_id") is None
+                and not enemy["route_province_ids"]
+            )
+            or (
+                _native_int(enemy.get("move_target_province_id")) is not None
+                and bool(enemy["route_province_ids"])
+                and enemy["route_province_ids"][-1]
+                == enemy.get("move_target_province_id")
+            )
+        )
+        for enemy in enemies
+    )
     if not (
         enemies
         and len(enemies) <= MAX_ROUTE_CONTACT_HOSTILE_IDS
-        and all(
-            _native_int(enemy.get("army_id")) is not None
-            and _native_int(enemy.get("current_province_id")) is not None
-            and _army_tactical_state(enemy) == "gathering"
-            and "move_target_province_id" in enemy
-            and enemy.get("move_target_province_id") is None
-            and isinstance(enemy.get("route_province_ids"), list)
-            and not enemy["route_province_ids"]
-            for enemy in enemies
+        and (
+            observable_noncombat_enemies
+            if allow_observable_enemy_routes
+            else idle_gathering_enemies
         )
     ):
         return None

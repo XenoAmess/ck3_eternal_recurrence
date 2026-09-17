@@ -23634,6 +23634,22 @@ def _action_steps(
                 and enemy.get("army_state_code") != 6
             }
         )
+        hostile_threat_province_ids: set[int] = set()
+        for enemy in enemy_armies_from_wars(wars):
+            if (
+                enemy.get("retreating") is True
+                or enemy.get("army_state") == "retreating"
+                or enemy.get("army_state_code") == 6
+            ):
+                continue
+            route = enemy.get("route_province_ids")
+            for province_id in (
+                enemy.get("current_province_id"),
+                enemy.get("move_target_province_id"),
+                *(route if isinstance(route, list) else []),
+            ):
+                if _positive_native_id(province_id):
+                    hostile_threat_province_ids.add(int(province_id))
         for army in controllable:
             army_id = army.get("army_id")
             if not isinstance(army_id, int):
@@ -23656,6 +23672,15 @@ def _action_steps(
                 and not _army_in_combat_or_retreat(army)
             )
             if same_province_route_clear_ready:
+                army_target_provinces.add(int(current_province_id))
+            if (
+                expand_route_contact_horizons
+                and stationary_contact_hold_ready
+                and int(current_province_id) in hostile_threat_province_ids
+            ):
+                # This advertises only the existing read-only same-current
+                # horizon.  Strategy still owns the primary-defender/capital
+                # gate and no move literal is authorized by this projection.
                 army_target_provinces.add(int(current_province_id))
             for province_id in army_target_provinces:
                 same_province_route_clear = bool(

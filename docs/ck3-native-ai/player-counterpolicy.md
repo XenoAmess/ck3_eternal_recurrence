@@ -603,6 +603,41 @@ flowchart TD
   objective、多个可控军、敌路命中首都、combat / retreat 或终局评估未完成均保持失败关闭。这个窄门不把
   “守在首都”解释为接战安全，也不新增 native schema / ABI / MCP 能力。
 
+### R865 敌军转向首都后的精确一日接触窄门
+
+- [production-blocker-live] R865 在 source commit
+  `351d4dfbcb37009de2f5d8eb7a73faade849eaad` 上从 history `1167` 继续。普通首都驻防先后两次命中：
+  `date_raw=53280840→53281008` 与 `53281008→53281056` 均选择
+  `native_war_defender_capital_hold_progress`；第二次有界推进在两日后因敌军意图变化提前暂停。玩家
+  ArmyID `234881216` 仍 regular stationary 于首都 Province `45`，而敌 ArmyID `184549393` 已发布
+  `target=45 / route=[8747,23,8749,45]`。旧策略先在通用 `stationary_threats` 分支返回
+  `native_war_no_safe_target`，没有先取得这条路线的一日 arrival timeline。正式 report SHA-256 为
+  `7D0843EDD1A7FC1B4ECC9C339EA95835CD371D34C9688DFB9F302FDFBFCD8524`，最终 driver SHA-256 为
+  `0E4A859AF2B1FFB21AFE4A1CDE7E600CD026F370FE7FCE18D27FCDE4D6E037DC`。
+- [static-confirmed] exact-build reader 已有 strict stationary same-current 路径：仅对可控、
+  `regular/sieging`、无 combat/retreat、明确无 target、空 active MovePath 且 request target 等于 current 的
+  subject，复用 `BuildActiveRouteTimeline` 发布覆盖一日闭区间的 stationary timeline。既有完整 hostile scope、
+  before/after paused equality、fresh frame binding 与 proof-bound one-day advance 均保持不变；因此本 RED
+  不需要新增 native 命令、ABI、schema 或 MCP 能力。
+- [inference][counter-policy] 普通 gathering/no-route hold 继续使用原有 `life-advance` 窄门，不放宽其敌军形状。
+  只有同一 primary-defender/单战争/单军/空 objective/非终局分数/当前不选终局动作/fresh exact capital
+  条件仍成立，且完整非撤退敌军 current/target/route 对当前首都形成几何 threat 时，才查询既有
+  `target=current` contact horizon。fresh `one_day_contact_free=true` 才执行 proof-bound one-day advance；
+  exact unavoidable-current proof 才进入既有严格接触转换；stale、unavailable、不完整或其它 conflict
+  全部保持暂停。attacker、非首都、unknown primary、combat、retreat 与 route-away 不取得本授权。
+
+```mermaid
+flowchart TD
+    H["[production-blocker-live] sole primary-defender army<br/>stationary at fresh exact capital"] --> T{"[live-confirmed] hostile current/target/full route<br/>threatens that capital?"}
+    T -->|no| I["[counter-policy] keep the original idle-gathering hold gate"]
+    T -->|yes| Q["[static-confirmed] query stationary target=current<br/>with complete hostile scope"]
+    Q -->|fresh contact-free| A["[counter-policy] proof-bound one-day advance"]
+    Q -->|fresh unavoidable-current| C["[counter-policy] strict contact transition"]
+    Q -->|stale / unavailable / other conflict| B["[counter-policy] keep paused"]
+    A --> R["[counter-policy] re-observe war, routes, combat and terminal options"]
+    C --> R
+```
+
 ### 连续恢复的有界失败入口记忆
 
 - [live-confirmed] 从同一 checkpoint origin `2598` 已观察到两条最终进入无安全出口并执行 restore 的入口：
