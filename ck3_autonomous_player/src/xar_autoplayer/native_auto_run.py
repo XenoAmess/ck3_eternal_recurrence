@@ -3720,10 +3720,8 @@ def _emergency_surrender_lifecycle_verified(
         == before.get("episode_run_id")
         == after_snapshot.get("episode_run_id")
         and action.get("starting_snapshot_id") == before.get("snapshot_id")
-        and action.get("observed_snapshot_id")
-        == after_snapshot.get("snapshot_id")
         and action.get("submitted_date_raw") == before.get("date_raw")
-        and action.get("observed_date_raw") == after_snapshot.get("date_raw")
+        and action.get("observed_date_raw") == before.get("date_raw")
         and action.get("recipient_would_accept_now") is True
         and action.get("recipient_auto_accept") is True
         and isinstance(cb, dict)
@@ -3757,19 +3755,33 @@ def _emergency_surrender_lifecycle_verified(
         return False
     if action.get("status") == "applied":
         return bool(
-            after_war is None
+            action.get("observed_snapshot_id")
+            == after_snapshot.get("snapshot_id")
+            and action.get("observed_date_raw")
+            == after_snapshot.get("date_raw")
+            and after_war is None
             and action.get("war_id_absent_after_ack") is True
             and action.get("remaining_active_war") is None
             and "war_changed" in evidence
         )
     remaining = action.get("remaining_active_war")
-    return bool(
+    if not (
         action.get("status") == "submitted_pending"
-        and isinstance(after_war, dict)
         and action.get("war_id_absent_after_ack") is False
         and isinstance(remaining, dict)
-        and _semantic_digest(remaining) == _semantic_digest(after_war)
-    )
+        and action.get("observed_snapshot_id") == before.get("snapshot_id")
+        and _semantic_digest(remaining) == _semantic_digest(before_war)
+    ):
+        return False
+    if isinstance(after_war, dict):
+        return _semantic_digest(remaining) == _semantic_digest(after_war)
+    # The executor can return its same-frame pending receipt immediately
+    # before the next independent paused snapshot publishes the war removal.
+    if "war_changed" not in evidence:
+        return False
+    evidence.append("war_termination_applied_after_pending_ack")
+    return True
+
 
 def _same_native_frame(
     before: dict[str, object], after: dict[str, object]

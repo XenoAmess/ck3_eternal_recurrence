@@ -2553,6 +2553,71 @@ class NativeAutoRunTests(unittest.TestCase):
             )
         )
 
+    def test_r852_pending_surrender_accepts_independent_later_war_removal(
+        self,
+    ) -> None:
+        war = _white_peace_war()
+        war["player_relative_war_score"] = -9
+        before = {
+            "snapshot_id": "native:30",
+            "date_raw": 53_157_360,
+            "episode_run_id": "native-31853-af642d76cb41",
+            "_semantic": {"active_wars": [war]},
+        }
+        after = {
+            "snapshot_id": "native:31",
+            "date_raw": 53_157_360,
+            "episode_run_id": "native-31853-af642d76cb41",
+            "active_wars": [],
+        }
+        action = {
+            "status": "submitted_pending",
+            "war_id": 16_777_290,
+            "outcome": "attacker_defeat",
+            "submitted_date_raw": 53_157_360,
+            "observed_date_raw": 53_157_360,
+            "episode_run_id": "native-31853-af642d76cb41",
+            "starting_snapshot_id": "native:30",
+            "observed_snapshot_id": "native:30",
+            "command_acknowledged": True,
+            "war_id_absent_after_ack": False,
+            "recipient_decision_status_raw": 0,
+            "recipient_would_accept_now": True,
+            "recipient_auto_accept": True,
+            "casus_belli": {
+                "database_index": 17,
+                "canonical_key": "individual_county_de_jure_cb",
+            },
+            "player_side": "attacker",
+            "player_relative_war_score": -9,
+            "war_duration_days": 266,
+            "remaining_active_war": copy.deepcopy(war),
+        }
+        result = {"war_termination_result": action}
+        evidence = ["war_changed"]
+
+        self.assertTrue(
+            native_auto_run_module._emergency_surrender_lifecycle_verified(
+                "surrender-war-16777290",
+                result,
+                before=before,
+                after_snapshot=after,
+                evidence=evidence,
+            )
+        )
+        self.assertIn(
+            "war_termination_applied_after_pending_ack", evidence
+        )
+        self.assertFalse(
+            native_auto_run_module._emergency_surrender_lifecycle_verified(
+                "surrender-war-16777290",
+                result,
+                before=before,
+                after_snapshot=after,
+                evidence=[],
+            )
+        )
+
     def test_r836_raiktor_surrender_lifecycle_requires_variant_and_war_removal(
         self,
     ) -> None:
