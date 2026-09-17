@@ -416,6 +416,13 @@ _OPTION_VARIANT_FIELDS: Final = frozenset(
     }
 )
 _SOURCE_BOUND_OPTION_VARIANT_FIELDS: Final = {
+    "befriend_outcome.0002": frozenset(
+        {
+            "saved_scope_count",
+            "saved_scope_name_sets",
+            "scope_types",
+        }
+    ),
     "death_management.1000": frozenset(
         {
             "boolean_scopes",
@@ -433,11 +440,17 @@ _SOURCE_BOUND_OPTION_VARIANT_FIELDS: Final = {
     ),
 }
 _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
-    {"death_management.1000", "health.1001", "natural_disaster.7031"}
+    {
+        "befriend_outcome.0002",
+        "death_management.1000",
+        "health.1001",
+        "natural_disaster.7031",
+    }
 )
 _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset({"death_management.1007"})
 _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
     {
+        "befriend_outcome.0002",
         "chancellor_task.1104",
         "death_management.1000",
         "health.1001",

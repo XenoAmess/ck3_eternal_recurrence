@@ -3341,7 +3341,11 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
-        self.assertEqual(contract["max_occurrences"], 2)
+        self.assertNotIn("max_occurrences", contract)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
 
         failure = copy.deepcopy(context)
         failure["current_event_instance_id"] = 93

@@ -32,6 +32,7 @@ _LEGACY_MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final[
             "scheme": "scheme",
             "owner": "character",
             "artifact": "artifact",
+            "target": "character",
             "scheme_successful": "flag",
         },
         "boolean_scopes": (),
@@ -54,6 +55,7 @@ _LEGACY_MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final[
                 "scheme": "scheme",
                 "owner": "character",
                 "artifact": "artifact",
+                "target": "character",
                 "scheme_successful": "flag",
             },
             "saved_scope_name_sets": ((
@@ -76,6 +78,7 @@ _LEGACY_MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final[
                 "scheme": "scheme",
                 "owner": "character",
                 "artifact": "artifact",
+                "target": "character",
                 "scheme_failed": "flag",
             },
             "saved_scope_name_sets": ((
@@ -95,7 +98,9 @@ _LEGACY_MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final[
         # R339 observed both source-authored outcomes in one long manager
         # recovery: critical success at 53217360, then failure at 53227704,
         # with distinct scheme owners and the exact reviewed projections.
-        "max_occurrences": 2,
+        # The source has no one-shot or total-occurrence limit: a later
+        # independent scheme may legally produce another target-side result.
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }
 

@@ -231,6 +231,10 @@
   [r418-b1-zero-survivor-liveness-red-2026-09-11.md](../phase2-promo/r418-b1-zero-survivor-liveness-red-2026-09-11.md)。artifact 树见
   [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 182 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
+- [static-ready after production-live RED] [befriend-outcome-0002.md](befriend-outcome-0002.md) 冻结 R860
+  自然 failure 投影、success/failure 两类 exact scope/option 形状和 authored3/native2 温和拒绝路线；R860 在动作前
+  fail-closed，故真实 typed action、独立后置状态与下一 turn 消费仍待自然复现。该事件按原版可重复触发，旧
+  `max_occurrences=2` 只是 observation，不再充当产品门。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]
   [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock
   `arrange_marriage_interaction` 的 AI→玩家专用发送前接受树、五角色 redirect、marriage special 分类、六项 option 与
