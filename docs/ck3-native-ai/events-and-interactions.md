@@ -937,3 +937,11 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   `caller_candidates_are_lexical_only=true`，不能由接口自动宣称调用边已证实。
   此处人工复核的月度 on_action → `.1103` → `.1104` 调用链与上述哈希，作为该接口可复用的
   exact-build 分析账本；不改变 MCP schema、注册或能力广告。
+
+### R834/R835 自然 `ransom_interaction` 版本恢复
+
+- [old-runtime RED] R834 从 R832 history669 冷恢复后自然出现 exact `ransom_interaction`：sender/imprisoner36108、player recipient/payer29829、secondary recipient/prisoner63741，reject native-legal且可达。封存 runtime `1f117ab8` 没有该 definition 的 explicit ordinary classification，因而零回复 fail-closed；report SHA-256 `943C374F269FD22E6322E0292EA904DD7ACD657A44E25334E2F6A63DC0D5258A`。
+- [scope guard] R832 源 profile 是 `xar_on / rogue_one_life`。一次把它重绑定成 ordinary `xar_off` 的无启动准备被 lifecycle/source-profile 校验拒绝；没有 CK3 轮次。该证据不得用于扩张普通预览支持范围。
+- [production-live loop] R835 使用已交付 agent `9bacc5af`、native `881e1ba5` 和 exact CK3 1.19.0.6，从同一 R832 pair 做新进程冷恢复。第一次请求绑定 instance `-1795162109`、sender36108、recipient29829、prisoner63741；history678 查询给出 canonical key、五角色、direct recipient route、deadline `6/60/54` 和 accept/reject/block legal、ack illegal，history679 只提交 `reject-pending-character-interaction`。typed result 为 `rejected`，独立 paused `native:12` 中旧 ID 缺席。
+- [production-live loop] 同一 bounded run 又自然出现第二个 `ransom_interaction`（instance1929379854、sender32309、prisoner34730），history687→688 重复同一 query/typed-reject/独立 `native:17` disappearance 合同；随后正式战争发现/入场查询继续且没有重提旧 ID，history694 保存 paired checkpoint。20/20 turns、16 query、4 gameplay、1 checkpoint，report/driver/save SHA-256 分别为 `4ABB17D8...C1C2`、`99047F37...FDC0`、`B75E7606...DF30`，cleanup GREEN。
+- [bounded claim] R835 证明 current packaged runtime 会消费该 exact definition，不再复现 R834 的版本 B0；R772/R773 仍保留同定义的既有 action/cold-restore 证据。公共 snapshot 尚未发布 prisoner custody、十年 refusal flag或玩家资源 delta，因此不能宣称这些更强物质后置，也不能把本证据泛化到未 allowlist 的 interaction。
