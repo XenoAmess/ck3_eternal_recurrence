@@ -230,6 +230,19 @@ def _withering_mind_context() -> dict[str, object]:
     }
 
 
+def _fragile_bones_context() -> dict[str, object]:
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "health.7500",
+        "root_scope": _scope("character", character_id=29_829),
+        "saved_scopes": [],
+        "options": [_option(0, 0)],
+    }
+
+
 class VanillaEventRegistryPolicyTests(unittest.TestCase):
     def test_exact_tgp_travel_projection_selects_authored_option_two(
         self,
@@ -526,6 +539,77 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         for label, changes, failed_check in drift_cases:
             with self.subTest(label=label):
                 context = _withering_mind_context()
+                context.update(changes)
+                result = recommend_registered_vanilla_event_option_v1(
+                    context,
+                    played_character_id=29_829,
+                    snapshot_option_count=1,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIn(failed_check, result["failed_checks"])
+                self.assertIsNone(result["selected_option_number"])
+
+    def test_fragile_bones_acknowledgement_requires_r844_exact_projection(
+        self,
+    ) -> None:
+        recommended = recommend_registered_vanilla_event_option_v1(
+            _fragile_bones_context(),
+            played_character_id=29_829,
+            snapshot_option_count=1,
+        )
+
+        self.assertEqual(recommended["status"], "recommended")
+        self.assertEqual(recommended["selected_option_number"], 1)
+        self.assertEqual(recommended["selected_native_option_index"], 0)
+        self.assertEqual(recommended["selected_rendered_index"], 0)
+        self.assertEqual(recommended["failed_checks"], [])
+        for restored_check in (
+            "disabled_option_contract",
+            "native_option_indices_exact",
+            "saved_scope_names_exact",
+            "scope_types_cover_projection",
+        ):
+            with self.subTest(restored_check=restored_check):
+                self.assertTrue(recommended["checks"][restored_check])
+        self.assertFalse(recommended["semantic_optimal"])
+        self.assertFalse(recommended["campaign_utility_ready"])
+        self.assertIsNone(recommended["choice_effect_profile"])
+
+        drift_cases: tuple[tuple[str, dict[str, object], str], ...] = (
+            (
+                "unexpected saved scope",
+                {
+                    "saved_scopes": [
+                        {
+                            "name": "unexpected",
+                            "name_identifier": 1,
+                            "scope": _scope("character", character_id=30_001),
+                        }
+                    ]
+                },
+                "saved_scope_names_exact",
+            ),
+            (
+                "native option remap",
+                {"options": [_option(0, 1)]},
+                "native_option_indices_exact",
+            ),
+            (
+                "disabled sole option",
+                {
+                    "options": [
+                        {
+                            **_option(0, 0),
+                            "enabled": False,
+                        }
+                    ]
+                },
+                "selected_native_option_enabled",
+            ),
+        )
+        for label, changes, failed_check in drift_cases:
+            with self.subTest(label=label):
+                context = _fragile_bones_context()
                 context.update(changes)
                 result = recommend_registered_vanilla_event_option_v1(
                     context,

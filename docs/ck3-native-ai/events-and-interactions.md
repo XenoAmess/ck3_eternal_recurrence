@@ -1033,3 +1033,50 @@ flowchart TD
 typed option，独立 paused frame 证明旧 instance `9` 消失并尽可能读取玩家 `withering_mind` 物质状态，再由
 后续正式 turn 消费无 active event；若公共 snapshot 暂不能读取该 trait，必须把“source-authored effect”和
 “已独立观测物质结果”分开报告，不能用 ACK 代替结果。
+
+### R844 自然 `health.7500`（exact projection 修复，实机复验待办）
+
+- [production RED] R844 在 CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的正式 cold-restore
+  日期 `53204496` 自然遇到 instance `8`。history `682` 的 paused query 绑定 player/root `29829`、零个
+  saved scope，以及唯一 rendered/native `0` 的 shown+enabled option；indicator 子集显示
+  `add trait fragile_bones`（native trait id `126`）。正式 planner 没有提交动作，而以
+  `registered_contract_projection_drift` fail-closed。
+- [exact-build source-reviewed] `events/health_events.txt:12628-12792`，文件 SHA-256
+  `8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB`：`.7500` 没有 immediate 或
+  saved scope；其唯一 authored option `health.7500.a` 只执行 `add_trait = fragile_bones`。调用链为代码每年
+  对每个角色触发 `common/on_action/yearly_on_actions.txt:2675-2679` 的
+  `random_yearly_everyone_pulse`（文件 SHA-256
+  `0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA`），继而进入
+  `common/on_action/health_on_actions.txt:4-45` 的 `yearly_health_pulse`；其 random event 表第 42 行以
+  权重 `30` 选择 `.7500`，该文件 SHA-256
+  `253988DA3E14BE7CC9B86CAB2A3C15843B0CB8B273B2B4BC391EB287AEF0C94C`。
+- [root cause] shared registry 已有该 exact key 的正确 sole-option 语义（option number `1` / native `0`、
+  零 scope），但旧记录没有显式写 direct consumer 所需的四项投影边界。因此
+  `native_option_indices_exact` 因 `native_option_indices` 缺失而失败；`disabled_option_contract` 同时要求
+  native 列表 typed，即使实际没有 disabled option 仍失败；`saved_scope_names_exact` 因没有合法的显式
+  空名称集合而失败；`scope_types_cover_projection` 因没有显式空类型映射而失败。这不是观测帧漂移。
+- [implementation-confirmed / static-ready / live=false] 最小修复只为 stable key `health.7500` 增加
+  `native_option_indices=(0,)`、`disabled_native_option_indices=()`、`saved_scope_name_sets=((),)`、
+  `scope_types={}`。既有 direct consumer 只有在 root=当前玩家、零 saved scope、唯一 native `0` 且
+  shown+enabled 时才选择 typed option 1；新增 scope、native remap 或 disabled sole option 均继续
+  fail-closed。没有增加“健康事件通用”分类或推断，也不把必经的单选项确认描述为策略优化；
+  `semantic_optimal=false` 保持不变。
+
+```mermaid
+flowchart TD
+    A["[exact-build] random_yearly_everyone_pulse"] --> B["[exact-build] yearly_health_pulse random list"]
+    B --> C["[exact-build] health.7500 自然 materialize；零 saved scope"]
+    C --> D{"[implementation] root、空 scope 集和唯一 native 0 投影均精确匹配？"}
+    D -->|否| X["[implementation] projection drift；保持暂停"]
+    D -->|是| E["[implementation] typed select-event-option-1"]
+    E --> F["[exact-build] authored effect add_trait fragile_bones"]
+    F -. "R844 后续尚未执行" .-> U["[unknown] 独立 paused frame、trait 物质状态和下一正式 turn 消费"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+本修复不改公共 schema、MCP 注册、native ABI 或能力广告。实机关闭 R844 RED 仍须在正式入口只提交一次
+typed option，独立 paused frame 证明旧 instance `8` 消失并尽可能读取玩家 `fragile_bones` 物质状态，再由
+后续正式 turn 消费无 active event；若公共 snapshot 暂不能读取该 trait，继续分别报告 source-authored effect
+与实际可观测后置，不能用 ACK 代替物质结果。
