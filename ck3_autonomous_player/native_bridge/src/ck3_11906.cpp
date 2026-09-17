@@ -2085,7 +2085,15 @@ bool HasDeclarableWarReadBindings(const Bindings &bindings) noexcept {
          bindings.get_casus_belli_type_database != nullptr &&
          bindings.get_character_interaction_database != nullptr &&
          bindings.evaluate_casus_belli != nullptr &&
-         bindings.destroy_valid_casus_belli_configuration != nullptr;
+         bindings.destroy_valid_casus_belli_configuration != nullptr &&
+         bindings.declare_war_interaction_offset != 0 &&
+         bindings.construct_character_interaction_context != nullptr &&
+         bindings.append_native_int_array_range != nullptr &&
+         bindings.refresh_character_interaction_context != nullptr &&
+         bindings.finalize_character_interaction_context != nullptr &&
+         bindings.validate_character_interaction_context != nullptr &&
+         bindings.destroy_character_interaction_context != nullptr &&
+         bindings.war_declaration_vtable != 0;
 }
 
 bool HasArrangeMarriageReadBindings(const Bindings &bindings) noexcept {
@@ -2422,10 +2430,76 @@ bool MaterializeCasusBelliChoices(
   return true;
 }
 
+enum class PrepareDeclareWarContextResult {
+  ready,
+  validation_failed,
+  unavailable,
+};
+
+PrepareDeclareWarContextResult PrepareDeclareWarContext(
+    const Bindings &bindings, std::int32_t played_character_id,
+    const DeclarableWarSnapshot &declaration, void *casus_belli_type,
+    CharacterInteractionContextStorage &context_storage) noexcept {
+  void *const interaction = ResolveCharacterInteraction(
+      bindings, bindings.declare_war_interaction_offset);
+  if (interaction == nullptr) {
+    return PrepareDeclareWarContextResult::unavailable;
+  }
+
+  void *const context = context_storage.bytes.data();
+  if (bindings.construct_character_interaction_context(
+          context, interaction, played_character_id,
+          declaration.target_character_id, nullptr, true) != context) {
+    return PrepareDeclareWarContextResult::unavailable;
+  }
+  void *const war_declaration = LoadAt<void *>(
+      context, kCharacterInteractionSpecialDataOffset);
+  if (war_declaration == nullptr ||
+      LoadAt<std::uintptr_t>(war_declaration, 0) !=
+          bindings.war_declaration_vtable) {
+    bindings.destroy_character_interaction_context(context);
+    return PrepareDeclareWarContextResult::unavailable;
+  }
+
+  StoreAt(war_declaration, kWarDeclarationCasusBelliOffset,
+          casus_belli_type);
+  void *const native_target_titles =
+      static_cast<std::byte *>(war_declaration) +
+      kWarDeclarationTargetTitlesOffset;
+  const auto destination_count = LoadAt<std::int32_t>(
+      native_target_titles, kNativeArrayCountOffset);
+  if (destination_count != 0) {
+    bindings.destroy_character_interaction_context(context);
+    return PrepareDeclareWarContextResult::unavailable;
+  }
+  if (!declaration.target_title_ids.empty()) {
+    bindings.append_native_int_array_range(
+        native_target_titles, 0, declaration.target_title_ids.data(),
+        declaration.target_title_ids.data() +
+            declaration.target_title_ids.size());
+  }
+  std::vector<std::int32_t> copied_target_titles;
+  if (!ReadNativeIntArray(native_target_titles, copied_target_titles) ||
+      copied_target_titles != declaration.target_title_ids) {
+    bindings.destroy_character_interaction_context(context);
+    return PrepareDeclareWarContextResult::unavailable;
+  }
+  StoreAt(war_declaration, kWarDeclarationClaimantOffset,
+          declaration.claimant_character_id);
+
+  bindings.refresh_character_interaction_context(context, true);
+  bindings.finalize_character_interaction_context(context);
+  if (!bindings.validate_character_interaction_context(context, nullptr)) {
+    bindings.destroy_character_interaction_context(context);
+    return PrepareDeclareWarContextResult::validation_failed;
+  }
+  return PrepareDeclareWarContextResult::ready;
+}
+
 bool ReadDeclarableWarsForTargetInternal(
     const Bindings &bindings, void *casus_belli_database,
     void *attacker_character, void *target_character,
-    std::int32_t target_character_id,
+    std::int32_t played_character_id, std::int32_t target_character_id,
     std::vector<DeclarableWarSnapshot> &output) noexcept {
   void *casus_belli_types = nullptr;
   std::int32_t casus_belli_type_count = 0;
@@ -2447,14 +2521,31 @@ bool ReadDeclarableWarsForTargetInternal(
         casus_belli_type, attacker_character, target_character,
         bindings.valid_casus_belli_configuration_scratch, false, false,
         nullptr);
+    std::vector<DeclarableWarSnapshot> choices;
     if (available && !MaterializeCasusBelliChoices(
                          bindings, casus_belli_type, target_character_id,
-                         index, output)) {
+                         index, choices)) {
       ClearValidCasusBelliConfigurations(bindings);
       return false;
     }
     if (!ClearValidCasusBelliConfigurations(bindings)) {
       return false;
+    }
+    for (auto &choice : choices) {
+      CharacterInteractionContextStorage context_storage{};
+      const auto preparation = PrepareDeclareWarContext(
+          bindings, played_character_id, choice, casus_belli_type,
+          context_storage);
+      if (preparation == PrepareDeclareWarContextResult::unavailable) {
+        return false;
+      }
+      if (preparation ==
+          PrepareDeclareWarContextResult::validation_failed) {
+        continue;
+      }
+      bindings.destroy_character_interaction_context(
+          context_storage.bytes.data());
+      output.push_back(std::move(choice));
     }
   }
   return true;
@@ -15925,7 +16016,8 @@ ReadDeclarableWarsResult ReadDeclarableWarsForTarget(
   if (attacker_character == nullptr ||
       !ReadDeclarableWarsForTargetInternal(
           bindings, casus_belli_database, attacker_character,
-          target_character, target_character_id, choices)) {
+          target_character, current.played_character_id,
+          target_character_id, choices)) {
     return ReadDeclarableWarsResult::unavailable;
   }
   output = std::move(choices);
@@ -15986,7 +16078,8 @@ bool ReadDeclarableWars(
     }
     if (!ReadDeclarableWarsForTargetInternal(
             bindings, casus_belli_database, attacker_character,
-            target_character, target_character_id, choices)) {
+            target_character, current.played_character_id,
+            target_character_id, choices)) {
       return false;
     }
   }
@@ -16000,14 +16093,7 @@ DeclareWarResult SubmitDeclareWar(
   if (!HasDeclarableWarReadBindings(bindings) ||
       bindings.command_manager == nullptr ||
       bindings.submit_command == nullptr ||
-      bindings.copy_native_int_array == nullptr ||
-      bindings.append_native_int_array_range == nullptr ||
-      bindings.construct_character_interaction_context == nullptr ||
-      bindings.refresh_character_interaction_context == nullptr ||
-      bindings.finalize_character_interaction_context == nullptr ||
-      bindings.validate_character_interaction_context == nullptr ||
       bindings.construct_send_character_interaction_command == nullptr ||
-      bindings.destroy_character_interaction_context == nullptr ||
       bindings.send_character_interaction_primary_vtable == 0 ||
       bindings.send_character_interaction_secondary_vtable == 0 ||
       bindings.war_declaration_vtable == 0) {
@@ -16072,92 +16158,21 @@ DeclareWarResult SubmitDeclareWar(
     ClearValidCasusBelliConfigurations(bindings);
     return DeclareWarResult::declaration_unavailable;
   }
-
-  void *const interaction = ResolveCharacterInteraction(
-      bindings, bindings.declare_war_interaction_offset);
-  if (interaction == nullptr) {
-    ClearValidCasusBelliConfigurations(bindings);
+  if (!ClearValidCasusBelliConfigurations(bindings)) {
     return DeclareWarResult::unavailable;
   }
 
   CharacterInteractionContextStorage context_storage{};
-  void *const context = context_storage.bytes.data();
-  if (bindings.construct_character_interaction_context(
-          context, interaction, current.played_character_id,
-          declaration.target_character_id, nullptr, true) != context) {
-    ClearValidCasusBelliConfigurations(bindings);
-    return DeclareWarResult::unavailable;
-  }
-  void *const war_declaration = LoadAt<void *>(
-      context, kCharacterInteractionSpecialDataOffset);
-  if (war_declaration == nullptr ||
-      LoadAt<std::uintptr_t>(war_declaration, 0) !=
-          bindings.war_declaration_vtable) {
-    ClearValidCasusBelliConfigurations(bindings);
-    bindings.destroy_character_interaction_context(context);
-    return DeclareWarResult::unavailable;
-  }
-
-  StoreAt(war_declaration, kWarDeclarationCasusBelliOffset,
-          casus_belli_type);
-  void *const native_target_titles =
-      static_cast<std::byte *>(war_declaration) +
-      kWarDeclarationTargetTitlesOffset;
-  void *configuration_data = nullptr;
-  std::int32_t configuration_count = 0;
-  if (!ReadValidCasusBelliConfigurationArray(
-          bindings, configuration_data, configuration_count)) {
-    bindings.destroy_character_interaction_context(context);
-    return DeclareWarResult::unavailable;
-  }
-  if (declaration.configuration_index >= 0) {
-    if (declaration.configuration_index >= configuration_count) {
-      ClearValidCasusBelliConfigurations(bindings);
-      bindings.destroy_character_interaction_context(context);
-      return DeclareWarResult::declaration_unavailable;
-    }
-    const auto *const configuration =
-        static_cast<const std::byte *>(configuration_data) +
-        static_cast<std::size_t>(declaration.configuration_index) *
-            kValidCasusBelliConfigurationSize;
-    bindings.copy_native_int_array(
-        native_target_titles,
-        configuration + kValidCasusBelliTargetTitlesOffset);
-  } else {
-    for (std::int32_t index = 0; index < configuration_count; ++index) {
-      const auto *const configuration =
-          static_cast<const std::byte *>(configuration_data) +
-          static_cast<std::size_t>(index) *
-              kValidCasusBelliConfigurationSize;
-      const void *const source =
-          configuration + kValidCasusBelliTargetTitlesOffset;
-      const auto source_count =
-          LoadAt<std::int32_t>(source, kNativeArrayCountOffset);
-      const auto *const source_data =
-          LoadAt<const std::int32_t *>(source, kNativeArrayDataOffset);
-      if (source_count <= 0) {
-        continue;
-      }
-      const auto destination_count = LoadAt<std::int32_t>(
-          native_target_titles, kNativeArrayCountOffset);
-      bindings.append_native_int_array_range(
-          native_target_titles, destination_count, source_data,
-          source_data + source_count);
-    }
-  }
-  StoreAt(war_declaration, kWarDeclarationClaimantOffset,
-          declaration.claimant_character_id);
-  if (!ClearValidCasusBelliConfigurations(bindings)) {
-    bindings.destroy_character_interaction_context(context);
-    return DeclareWarResult::unavailable;
-  }
-
-  bindings.refresh_character_interaction_context(context, true);
-  bindings.finalize_character_interaction_context(context);
-  if (!bindings.validate_character_interaction_context(context, nullptr)) {
-    bindings.destroy_character_interaction_context(context);
+  const auto preparation = PrepareDeclareWarContext(
+      bindings, current.played_character_id, declaration,
+      casus_belli_type, context_storage);
+  if (preparation == PrepareDeclareWarContextResult::validation_failed) {
     return DeclareWarResult::validation_failed;
   }
+  if (preparation == PrepareDeclareWarContextResult::unavailable) {
+    return DeclareWarResult::unavailable;
+  }
+  void *const context = context_storage.bytes.data();
 
   SendCharacterInteractionCommandStorage command_storage{};
   void *const command = command_storage.bytes.data();

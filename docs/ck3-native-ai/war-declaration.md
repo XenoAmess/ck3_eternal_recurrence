@@ -499,3 +499,23 @@ flowchart TD
   `D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE`。离线 R759 逐帧回放 163/163 均能选择同一
   typed declaration，且聚焦 normal/optimized Python tests 验证阈值、network、adjustment、government、faction、stale root
   和其它 CB 全部 fail closed。此处仍是静态策略 readiness；真实 declaration/WarID 后置状态等待独占 CK3 短复验。
+
+### R853 final interaction validator RED（2026-09-17）
+
+- [production-live] R853 在 WarID 25 投降、独立后帧战争消失、Army 304 解散及 postwar checkpoint 后，推进 34 天并于同一
+  paused frame 依次取得八条 `query-declarable-wars` row 和 target `31506` 的 war-entry assessment。策略随后只提交一次
+  `declare-war-31506-17--1`，但 CK3 的最终 declare-war interaction validator 拒绝该命令；没有 result 或独立 after frame，
+  因而不得声称新战争成立，也不得把拒绝原因直接命名为 truce。报告与 driver SHA-256 分别为
+  `A64457EBD8DB99C2E2237ED7FE4464A4B80A458BB62C181F23CE11C1A082A8DD`、
+  `9DA4E28B2D1C8711C5537AAB5CBAD70DAFFA2B7EEF1146EAAFC6AEA56C9ABDF3`。
+- [implementation-confirmed] 旧 `ReadDeclarableWarsForTargetInternal` 只运行 CB evaluator 并物化 configuration；
+  `SubmitDeclareWar` 在重新物化 exact tuple 后还会构造 `declare_war_interaction` context，填入 CB、claimant 与 target titles，
+  再执行 refresh、finalize 和 `validate_character_interaction_context`。因此旧查询的 “declarable” 实际只表示 evaluator-pass，
+  不能保证交互最终可发送；R853 是该差异的直接 production 复现。
+- [static-confirmed] 公共查询和提交现共用同一个 final-validation context helper。查询只保留 evaluator 物化且通过最终 interaction
+  validator 的 exact row；validator rejection 是合法空缺并被过滤，context/ABI 结构失败仍使整次查询 unavailable，不能伪装为
+  空列表。提交仍重新枚举 exact tuple 并再次验证，保留 query 与 submit 之间状态漂移时的 fail-closed 行为。Release/Debug
+  `xar_ck3_game_access_test` 均 GREEN，并覆盖选择性拒绝、全拒绝空集、combined titles 与原提交生命周期。
+- [compatibility] `DeclarableWarSnapshot`、pipe JSON、action literal、公开 ABI 与 MCP schema 均未改变；变化仅是
+  `declarable_wars` 不再广告最终 validator 会拒绝的 row，故需要新 DLL 哈希和同 checkpoint 的 R854 paused-live 复验，
+  不需要 open_kaishek 或 MCP consumer 适配。

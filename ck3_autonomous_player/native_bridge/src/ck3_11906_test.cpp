@@ -414,6 +414,7 @@ bool g_interaction_construct_called = false;
 bool g_interaction_refresh_called = false;
 bool g_interaction_finalize_called = false;
 bool g_interaction_validate_result = true;
+std::int32_t g_rejected_declaration_title_id = -1;
 bool g_send_interaction_construct_called = false;
 std::int32_t g_interaction_destroy_calls = 0;
 bool g_interaction_default_construct_called = false;
@@ -2822,8 +2823,19 @@ bool FixtureValidateCharacterInteractionContext(void *opaque_context,
   }
   const void *const expected_special_data =
       static_cast<void *>(g_war_declaration.data());
-  return g_interaction_validate_result && error_output == nullptr &&
-         declaration == expected_special_data;
+  if (!g_interaction_validate_result || error_output != nullptr ||
+      declaration != expected_special_data) {
+    return false;
+  }
+  const auto *const native_titles =
+      static_cast<const std::byte *>(declaration) + 0x10;
+  const std::int32_t *title_data = nullptr;
+  std::int32_t title_count = 0;
+  std::memcpy(&title_data, native_titles, sizeof(title_data));
+  std::memcpy(&title_count, native_titles + 0x0C, sizeof(title_count));
+  return g_rejected_declaration_title_id < 0 || title_count < 1 ||
+         title_data == nullptr ||
+         title_data[0] != g_rejected_declaration_title_id;
 }
 
 std::int64_t *FixtureReadCharacterInteractionAnswerScore(
@@ -8642,6 +8654,36 @@ int main() {
       !missing_declarations.empty()) {
     return Fail("missing declaration target was not rejected explicitly");
   }
+
+  g_rejected_declaration_title_id = 201;
+  g_interaction_destroy_calls = 0;
+  std::vector<xar::ck3_11906::DeclarableWarSnapshot>
+      final_validator_filtered_declarations;
+  if (xar::ck3_11906::ReadDeclarableWarsForTarget(
+          bindings, enemy_character_id,
+          final_validator_filtered_declarations) !=
+          xar::ck3_11906::ReadDeclarableWarsResult::available ||
+      final_validator_filtered_declarations.size() != 2 ||
+      final_validator_filtered_declarations[0] != declarations[0] ||
+      final_validator_filtered_declarations[1] != declarations[1] ||
+      g_interaction_destroy_calls != 3) {
+    return Fail("declarable-war query retained a final-validator rejection");
+  }
+  g_rejected_declaration_title_id = -1;
+
+  g_interaction_validate_result = false;
+  g_interaction_destroy_calls = 0;
+  std::vector<xar::ck3_11906::DeclarableWarSnapshot>
+      fully_rejected_declarations;
+  if (xar::ck3_11906::ReadDeclarableWarsForTarget(
+          bindings, enemy_character_id, fully_rejected_declarations) !=
+          xar::ck3_11906::ReadDeclarableWarsResult::available ||
+      !fully_rejected_declarations.empty() ||
+      g_interaction_destroy_calls != 3) {
+    return Fail(
+        "all-rejected declaration query did not return an available empty set");
+  }
+  g_interaction_validate_result = true;
 
   auto stale_declaration = declarations[1];
   stale_declaration.target_title_ids[0] = 999;
