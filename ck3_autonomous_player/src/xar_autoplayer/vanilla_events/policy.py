@@ -415,11 +415,23 @@ _OPTION_VARIANT_FIELDS: Final = frozenset(
         "snapshot_option_counts",
     }
 )
-_DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset({"natural_disaster.7031"})
+_SOURCE_BOUND_OPTION_VARIANT_FIELDS: Final = {
+    "death_management.1000": frozenset(
+        {
+            "boolean_scopes",
+            "saved_scope_count",
+            "saved_scope_name_sets",
+        }
+    ),
+}
+_DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
+    {"death_management.1000", "natural_disaster.7031"}
+)
 _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset({"death_management.1007"})
 _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
     {
         "chancellor_task.1104",
+        "death_management.1000",
         "prison_notification.2002",
     }
 )
@@ -443,20 +455,42 @@ def _resolve_option_variant_contract(
     context: Mapping[str, object],
     contract: Mapping[str, object],
     snapshot_option_count: int,
+    *,
+    event_definition_key: str,
 ) -> tuple[dict[str, object] | None, int | None, str | None]:
     raw_variants = _sequence(contract.get("option_variants"))
     if raw_variants is None:
         return dict(contract), None, None
 
     candidates: list[tuple[int | None, dict[str, object]]] = []
+    allowed_variant_fields = _OPTION_VARIANT_FIELDS.union(
+        _SOURCE_BOUND_OPTION_VARIANT_FIELDS.get(
+            event_definition_key, frozenset()
+        )
+    )
     for index, value in enumerate(raw_variants):
         if not isinstance(value, Mapping) or not set(value).issubset(
-            _OPTION_VARIANT_FIELDS
+            allowed_variant_fields
         ):
             return None, None, "registered_option_variant_contract_unsupported"
         effective = dict(contract)
         effective.pop("option_variants", None)
         effective.update(value)
+        if event_definition_key == "death_management.1000":
+            # The legacy record names the immediate-saved template flags in
+            # boolean_scopes.  Give those exact variant-local rows their
+            # engine type without weakening scope coverage for any other key.
+            scope_types = effective.get("scope_types")
+            boolean_scopes = _sequence(effective.get("boolean_scopes"))
+            if isinstance(scope_types, Mapping) and boolean_scopes is not None:
+                effective["scope_types"] = {
+                    **scope_types,
+                    **{
+                        name: "flag"
+                        for name in boolean_scopes
+                        if isinstance(name, str)
+                    },
+                }
         candidates.append((index, effective))
     base = dict(contract)
     base.pop("option_variants", None)
@@ -523,7 +557,10 @@ def recommend_registered_vanilla_event_option_v1(
     ):
         resolved, option_variant_index, variant_error = (
             _resolve_option_variant_contract(
-                event_context, contract, option_count
+                event_context,
+                contract,
+                option_count,
+                event_definition_key=event_key,
             )
         )
         if resolved is None:
@@ -546,6 +583,10 @@ def recommend_registered_vanilla_event_option_v1(
                 "character_scope_differs_from",
             }
         )
+    if event_key == "death_management.1000":
+        # The exact source saves one mutually exclusive flag for the liked or
+        # disliked spouse templates; the neutral template saves neither.
+        allowed_extended_fields.add("boolean_scopes")
     unsupported = sorted(
         field
         for field in _UNSUPPORTED_FIELDS

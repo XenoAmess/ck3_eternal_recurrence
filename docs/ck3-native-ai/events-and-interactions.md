@@ -1088,3 +1088,47 @@ typed option，独立 paused frame 证明旧 instance `8` 消失并尽可能读�
 - turn17 只提交一次 `select-event-option-1`。独立结束帧从 `native:19/revision20` 变为 `native:20/revision21`，旧 instance `8` 消失、active event 变为 null，`postcondition_verified=true`；turn18 的正式战争查询继续消费无 active event 的状态。history693/date53204928 随后保存为新配对 checkpoint。
 - report/checkpoint/driver SHA-256 为 `63CFCDD4...34D1`、`9893F8C1...C08C`、`8315217A...F83`。这为 R842 的 exact `prison_notification.2002` 链提供了独立自然复现和 cold-restore/checkpoint 证据；它不满足 G2-M2 指定的 `tgp_travel_events.0030` 或 `death_management.1007`。
 - `health.7500` 在修复后的 R846 没有出现。其 `a5db1e5d` 状态仍是 static-ready / live=false；不得用 R846 的 prison event 关闭 R844 的 health gate。
+
+### R849 自然 `death_management.1000`（配偶死亡三模板）
+
+- [production RED] R849 在标准封建 `xar_off` 连续运行中自然遇到 instance `3`。同一 paused frame 的
+  `current-event-window-context-v1` 绑定 player/root 与 `surviving_consort=31853`、
+  `dead_character=25583`，另有 `new_memory`、`deceased_character_stress`、`realm`；public snapshot 报告
+  三个 authored option，窗口只物化 rendered `0` / native `1`，且它是唯一 `shown=true && enabled=true`
+  的行。完整 effect preview 与 generic semantic readiness 均为 false；旧 direct consumer 又拒绝合同中的
+  relational fields 和 option variants，因此没有提交动作。
+- [exact-build source-reviewed] CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；原版
+  `events/death_events/death_management_events.txt` SHA-256 为
+  `31591A2F2D3A61E65853CC43B9BEF4B001FEB75EA1502861D2FB9AC054AB1FB7`。调用分支在
+  `:646-651` 只为 deceased consort 触发 `.1000`；定义位于 `:1105-1434`。immediate 的
+  `:1272-1297` 以 `if/else_if` 最多保存一个 `like` / `dislike` flag；三个 option 的 trigger 分别是
+  `exists like`（native `0`）、两者皆不存在（native `1`）和 `exists dislike`（native `2`），见
+  `:1327-1388`。因此这是三个互斥的 source template，不是任意事件的“取第一项”。
+- [implementation-confirmed / static-ready / live=false] direct consumer 只为 stable key
+  `death_management.1000` 准入既有 option variants、其 variant-local saved-scope 字段、boolean flag 类型，
+  以及既有 `character_scopes` / `unique_character_scope_excludes` 关系检查。每个模板仍须精确满足
+  root=当前玩家、surviving consort=玩家、dead character≠玩家、模板对应的 exact scope set、snapshot
+  authored count `3`，以及唯一 rendered+shown+enabled 行与 native `0/1/2` 的模板耦合；多一行、隐藏/禁用、
+  索引漂移或 scope/option 语义错配均 fail-closed。R849 中性帧将由 registry 选择 typed
+  `select-event-option-2`，`semantic_optimal=false` 保持不变。
+
+```mermaid
+flowchart TD
+    A["[exact-build] deceased character 是 ROOT consort"] --> B["[exact-build] death_management.1000"]
+    B --> C{"[exact-build] immediate 保存哪个互斥模板 flag？"}
+    C -->|like| L["[exact-build] sole rendered native 0"]
+    C -->|neither| N["[exact-build] sole rendered native 1"]
+    C -->|dislike| D["[exact-build] sole rendered native 2"]
+    L --> G{"[implementation] exact key/root/scopes/sole row/native coupling 全匹配？"}
+    N --> G
+    D --> G
+    G -->|否| X["[implementation] typed projection drift；保持暂停"]
+    G -->|是| S["[implementation] submit exactly one typed option"]
+    S -. "R849 修复后尚未实机复验" .-> U["[unknown] 独立 paused 后置、下一 turn 消费与 checkpoint"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+本补丁不改公共 schema、native ABI、MCP 注册或能力广告。R849 只有在正式入口提交一次 typed option、独立
+paused frame 证明旧 instance 消失、下一正式 turn 消费结果且按现有规则保存 checkpoint 后，才能关闭 live RED。
