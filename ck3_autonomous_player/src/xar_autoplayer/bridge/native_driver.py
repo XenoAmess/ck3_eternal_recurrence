@@ -1536,6 +1536,7 @@ class NativeHeadlessGameplayDriver:
         self._active_combat_retreat_v1_token: dict[str, object] | None = None
         self._war_entry_assessments_query: dict[str, object] | None = None
         self._war_entry_assessments_two_read_trace: list[dict[str, object]] = []
+        self._campaign_root_context_query: dict[str, object] | None = None
         self._war_termination_options: dict[int, dict[str, object]] = {}
         self._war_termination_terms: dict[int, dict[str, object]] = {}
         self._war_termination_exit_terms: dict[
@@ -1605,6 +1606,9 @@ class NativeHeadlessGameplayDriver:
             active_retreat_token = copy.deepcopy(
                 self._active_combat_retreat_v1_token
             )
+            campaign_root_context_query = copy.deepcopy(
+                self._campaign_root_context_query
+            )
         declarations = (
             copy.deepcopy(current_snapshot.get("declarable_wars"))
             if isinstance(current_snapshot, dict)
@@ -1621,6 +1625,38 @@ class NativeHeadlessGameplayDriver:
                 arrange_marriage_step(str(row["choice_id"]))
                 for row in marriage_choices
             )
+        capital_regroup_scope = _capital_regroup_capability_scope(
+            current_snapshot,
+            campaign_root_context_query,
+        )
+        if capital_regroup_scope is not None:
+            army_id = int(capital_regroup_scope["army_id"])
+            capital_province_id = int(
+                capital_regroup_scope["capital_province_id"]
+            )
+            hostile_army_ids = tuple(
+                int(value)
+                for value in capital_regroup_scope["hostile_army_ids"]
+            )
+            if PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities:
+                action_steps.add(
+                    preview_move_army_step(army_id, capital_province_id)
+                )
+            if MOVE_ARMY_CAPABILITY in bridge_capabilities:
+                action_steps.add(
+                    move_army_step(army_id, capital_province_id)
+                )
+            if (
+                QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY
+                in bridge_capabilities
+            ):
+                action_steps.add(
+                    query_route_contact_horizon_step(
+                        army_id,
+                        capital_province_id,
+                        hostile_army_ids,
+                    )
+                )
         composite_action_steps: list[str] = []
         if (
             result.get("snapshot") is True
@@ -10368,7 +10404,7 @@ class NativeHeadlessGameplayDriver:
             "unavailable_reason",
             "provenance",
         )
-        return {
+        response = {
             **result,
             "status": normalized["status"],
             "campaign_root_context": normalized,
@@ -10384,6 +10420,35 @@ class NativeHeadlessGameplayDriver:
             "queried_revision": starting.get("revision"),
             "queried_native_revision": native_revision,
         }
+        starting_diagnostics = starting.get("diagnostics")
+        played_character = starting.get("played_character")
+        actor_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        with self._driver_state_lock:
+            self._campaign_root_context_query = {
+                "campaign_root_context": copy.deepcopy(normalized),
+                "cache_binding": {
+                    "snapshot_id": starting.get("snapshot_id"),
+                    "revision": starting.get("revision"),
+                    "native_revision": native_revision,
+                    "date_raw": date_raw,
+                    "actor_character_id": actor_id,
+                    "bridge_pid": (
+                        starting_diagnostics.get("bridge_pid")
+                        if isinstance(starting_diagnostics, dict)
+                        else None
+                    ),
+                    "connection_generation": (
+                        starting_diagnostics.get("connection_generation")
+                        if isinstance(starting_diagnostics, dict)
+                        else None
+                    ),
+                },
+            }
+        return response
 
     def _execute_steward_develop_county_candidates_v1_query(
         self,
@@ -22851,6 +22916,164 @@ def _army_retreating(army: dict[str, object]) -> bool:
 
 def _army_known_merge_blocked(army: dict[str, object]) -> bool:
     return _army_in_combat_or_retreat(army)
+
+
+def _capital_regroup_capability_scope(
+    snapshot: object,
+    campaign_root_query: object,
+) -> dict[str, object] | None:
+    """Materialize only the R838 capital fallback's concrete literals."""
+
+    if not isinstance(snapshot, dict) or not isinstance(
+        campaign_root_query, dict
+    ):
+        return None
+    diagnostics = snapshot.get("diagnostics")
+    binding = campaign_root_query.get("cache_binding")
+    context = campaign_root_query.get("campaign_root_context")
+    played_character = snapshot.get("played_character")
+    actor_id = (
+        played_character.get("character_id")
+        if isinstance(played_character, dict)
+        else None
+    )
+    readiness = context.get("readiness") if isinstance(context, dict) else None
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and isinstance(diagnostics, dict)
+        and isinstance(binding, dict)
+        and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+        and binding.get("revision") == snapshot.get("revision")
+        and binding.get("native_revision") == snapshot.get("native_revision")
+        and binding.get("date_raw") == snapshot.get("date_raw")
+        and binding.get("actor_character_id") == actor_id
+        and binding.get("bridge_pid") == diagnostics.get("bridge_pid")
+        and binding.get("connection_generation")
+        == diagnostics.get("connection_generation")
+        and isinstance(context, dict)
+        and context.get("status") == "available"
+        and context.get("snapshot_revision")
+        == snapshot.get("native_revision")
+        and context.get("date_raw") == snapshot.get("date_raw")
+        and context.get("player_character_id") == actor_id
+        and isinstance(readiness, dict)
+        and readiness.get("ready") is True
+        and snapshot.get("war_objective_occupation_supported") is True
+        and snapshot.get("war_objective_garrison_supported") is True
+        and snapshot.get("war_objective_siege_progress_supported") is True
+        and snapshot.get("war_objective_assault_supported") is True
+    ):
+        return None
+    capital_province_id = context.get("capital_province_id")
+    if not _positive_native_id(capital_province_id):
+        return None
+    wars = snapshot.get("active_wars")
+    armies = snapshot.get("player_armies")
+    if not (
+        isinstance(wars, list)
+        and len(wars) == 1
+        and isinstance(wars[0], dict)
+        and isinstance(armies, list)
+    ):
+        return None
+    war = wars[0]
+    controlled = controllable_armies(
+        [army for army in armies if isinstance(army, dict)]
+    )
+    if not (
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and len(controlled) == 1
+    ):
+        return None
+    army = controlled[0]
+    army_id = army.get("army_id")
+    current_province_id = army.get("current_province_id")
+    named_state = army.get("army_state")
+    state_code = army.get("army_state_code")
+    if not (
+        _positive_native_id(army_id)
+        and _positive_native_id(current_province_id)
+        and current_province_id != capital_province_id
+        and (
+            isinstance(named_state, str)
+            and named_state.casefold() == "sieging"
+            or not isinstance(named_state, str)
+            and state_code == 3
+        )
+        and not _army_in_combat_or_retreat(army)
+        and "move_target_province_id" in army
+        and army.get("move_target_province_id") is None
+        and isinstance(army.get("route_province_ids"), list)
+        and not army["route_province_ids"]
+    ):
+        return None
+    objectives = war.get("war_objective_province_ids")
+    states = war.get("objective_province_states")
+    if not (
+        isinstance(objectives, list)
+        and objectives == [current_province_id]
+        and isinstance(states, list)
+        and len(states) == 1
+        and isinstance(states[0], dict)
+    ):
+        return None
+    objective = states[0]
+    siege = objective.get("active_siege")
+    garrison = objective.get("garrison_size")
+    strength = objective.get("besieging_strength")
+    if not (
+        objective.get("province_id") == current_province_id
+        and objective.get("occupation_observable") is True
+        and objective.get("is_occupied") is False
+        and objective.get("siege_observable") is True
+        and isinstance(siege, dict)
+        and _positive_native_id(siege.get("siege_id"))
+        and siege.get("besieging_army_id") == army_id
+        and siege.get("player_army_besieging") is True
+        and siege.get("assault_observable") is True
+        and siege.get("assault_in_progress") is False
+        and isinstance(garrison, int)
+        and not isinstance(garrison, bool)
+        and isinstance(strength, int)
+        and not isinstance(strength, bool)
+        and strength == 399
+        and garrison == 400
+    ):
+        return None
+    enemies = [
+        enemy
+        for enemy in enemy_armies_from_wars([war])
+        if not _army_retreating(enemy)
+    ]
+    if not enemies or len(enemies) > 64:
+        return None
+    hostile_army_ids: list[int] = []
+    for enemy in enemies:
+        enemy_id = enemy.get("army_id")
+        enemy_current = enemy.get("current_province_id")
+        enemy_route = enemy.get("route_province_ids")
+        enemy_target = enemy.get("move_target_province_id")
+        if not (
+            _positive_native_id(enemy_id)
+            and _positive_native_id(enemy_current)
+            and "move_target_province_id" in enemy
+            and (enemy_target is None or _positive_native_id(enemy_target))
+            and isinstance(enemy_route, list)
+            and all(_positive_native_id(value) for value in enemy_route)
+        ):
+            return None
+        hostile_army_ids.append(int(enemy_id))
+    if len(hostile_army_ids) != len(set(hostile_army_ids)):
+        return None
+    return {
+        "army_id": int(army_id),
+        "capital_province_id": int(capital_province_id),
+        "hostile_army_ids": sorted(hostile_army_ids),
+    }
 
 
 def _action_steps(

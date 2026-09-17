@@ -873,6 +873,24 @@ class CampaignRootContextV1NativeDriverTests(unittest.TestCase):
                 self.assertEqual(
                     result["queried_native_revision"], NATIVE_REVISION
                 )
+                cached = driver._campaign_root_context_query
+                self.assertIsInstance(cached, dict)
+                self.assertEqual(
+                    cached["campaign_root_context"],
+                    result["campaign_root_context"],
+                )
+                self.assertEqual(
+                    cached["cache_binding"],
+                    {
+                        "snapshot_id": "native:17",
+                        "revision": result["queried_revision"],
+                        "native_revision": NATIVE_REVISION,
+                        "date_raw": DATE_RAW,
+                        "actor_character_id": PLAYER_CHARACTER_ID,
+                        "bridge_pid": 6767,
+                        "connection_generation": 1,
+                    },
+                )
 
     def test_driver_rejects_malformed_envelope_and_frame_drift(self) -> None:
         driver, endpoint = _native_driver()

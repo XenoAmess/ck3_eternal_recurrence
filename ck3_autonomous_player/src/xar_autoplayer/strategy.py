@@ -150,6 +150,7 @@ _NATIVE_COLLISION_COOLDOWN_GAME_DAYS = 90
 _NATIVE_DEFEAT_SCORE_DROP = 20
 _NATIVE_RETREAT_MAX_GAME_DAYS = 30
 _NATIVE_SIEGE_STALL_GAME_DAYS = 7
+_NATIVE_CAPITAL_REGROUP_MIN_GAME_DAYS = 1
 _NATIVE_MOVE_RETRY_BACKOFF_DAYS = (7, 14, 30)
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
 _WHITE_PEACE_NATIVE_RESPONSE_OBSERVATION_RAW = 10 * 24
@@ -9414,8 +9415,44 @@ def _choose_one_life_turn_core(
             isinstance(passive_route_audit, dict)
             and passive_route_audit.get("status") == "unsafe"
         )
+        capital_regroup_intent = (
+            _capital_regroup_intent(
+                rows,
+                snapshot,
+                army_id=army_id,
+                war_id=tactical_war_id,
+            )
+            if (
+                isinstance(snapshot, dict)
+                and isinstance(army_id, int)
+                and isinstance(tactical_war_id, int)
+                and not stationary_threats
+                and not unsafe_armies
+            )
+            else None
+        )
+        if capital_regroup_intent is not None:
+            if "life-advance" in available_steps:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_capital_regroup_progress",
+                    "selected_step": "life-advance",
+                    "reason": "the army independently arrived at the same-campaign capital regroup target; hold one bounded observation day before reconsidering the exhausted siege",
+                    "regroup_intent": capital_regroup_intent,
+                    "active_wars": war_summary,
+                }
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_capital_regroup_progress_unsupported",
+                "selected_step": None,
+                "required_step": "life-advance",
+                "reason": "the bounded capital regroup intent is active but the backend cannot advance its observation day",
+                "regroup_intent": capital_regroup_intent,
+                "active_wars": war_summary,
+            }
         objective_kind = "pursuit"
         preview_selected_target: int | None = None
+        capital_regroup_target: int | None = None
         selected_route_audit: dict[str, object] | None = None
         route_preview_required = bool(
             move_route_preview_supported
@@ -9864,15 +9901,189 @@ def _choose_one_life_turn_core(
                 )
                 if emergency_exit is not None:
                     return emergency_exit
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_no_safe_exact_route",
-                    "selected_step": None,
-                    "required_step": "safe-exact-war-route",
-                    "reason": "every remaining exact objective route is blocked or observably intersects a non-retreating enemy",
-                    "route_rejections": route_rejections,
-                    "active_wars": war_summary,
-                }
+                capital_regroup_ready = _capital_regroup_input_ready(
+                    snapshot if isinstance(snapshot, dict) else {},
+                    active_wars=active_wars,
+                    controlled_armies=controlled_armies,
+                    tactical_war=(
+                        tactical_war
+                        if isinstance(tactical_war, dict)
+                        else None
+                    ),
+                    current_province_id=current_province_id,
+                    exact_objective_province_ids=(
+                        exact_objective_province_ids
+                    ),
+                    exact_siege_rejection=(
+                        exact_siege_rejection
+                        if isinstance(exact_siege_rejection, dict)
+                        else None
+                    ),
+                )
+                if capital_regroup_ready:
+                    campaign_root = _same_frame_campaign_root_context(
+                        rows,
+                        snapshot if isinstance(snapshot, dict) else None,
+                    )
+                    if campaign_root is None:
+                        root_step = "query-campaign-root-context-v1"
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_capital_regroup_context",
+                            "selected_step": (
+                                root_step
+                                if root_step in available_steps
+                                else None
+                            ),
+                            "required_step": root_step,
+                            "reason": "the exhausted exact siege may retreat only to a fresh same-frame campaign-root capital",
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
+                    capital_province_id = _native_int(
+                        campaign_root.get("capital_province_id")
+                    )
+                    if (
+                        capital_province_id is not None
+                        and capital_province_id != current_province_id
+                    ):
+                        preview = _fresh_move_route_preview(
+                            rows,
+                            army_id=army_id,
+                            origin_province_id=current_province_id,
+                            target_province_id=capital_province_id,
+                            date_raw=_native_int(snapshot.get("date_raw")),
+                        )
+                        preview_step = preview_move_army_step(
+                            army_id, capital_province_id
+                        )
+                        if preview is None:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_capital_regroup_preview",
+                                "selected_step": (
+                                    preview_step
+                                    if preview_step in available_steps
+                                    else None
+                                ),
+                                "required_step": preview_step,
+                                "reason": "preview the same-frame capital regroup route before leaving the insufficient exact siege",
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
+                        if preview.get("status") == "deferred":
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_capital_regroup_blocked",
+                                "selected_step": None,
+                                "required_step": "fresh-safe-capital-regroup-route",
+                                "reason": "the exact capital regroup preview is deferred; do not advance or submit an unconfirmed retreat",
+                                "route_preview": preview,
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
+                        regroup_audit = _audit_war_route(
+                            preview.get("route_province_ids"),
+                            origin_province_id=current_province_id,
+                            target_province_id=capital_province_id,
+                            enemies=route_threat_enemies,
+                        )
+                        if (
+                            regroup_audit.get("status") == "unsafe"
+                            and route_contact_scope_supported
+                        ):
+                            regroup_horizon = _fresh_route_contact_horizon(
+                                rows,
+                                snapshot,
+                                army_id=army_id,
+                                origin_province_id=current_province_id,
+                                target_province_id=capital_province_id,
+                                hostile_army_ids=route_threat_enemy_ids,
+                                route_province_ids=preview.get(
+                                    "route_province_ids"
+                                ),
+                            )
+                            horizon_step = query_route_contact_horizon_step(
+                                army_id,
+                                capital_province_id,
+                                route_threat_enemy_ids,
+                            )
+                            if regroup_horizon is None:
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": "native_war_capital_regroup_contact_horizon",
+                                    "selected_step": (
+                                        horizon_step
+                                        if horizon_step in available_steps
+                                        else None
+                                    ),
+                                    "required_step": horizon_step,
+                                    "reason": "the capital regroup route intersects hostile routing and requires a fresh exact contact horizon",
+                                    "route_preview": preview,
+                                    "route_audit": regroup_audit,
+                                    "route_rejections": route_rejections,
+                                    "active_wars": war_summary,
+                                }
+                            if (
+                                regroup_horizon.get("one_day_contact_free")
+                                is True
+                            ):
+                                regroup_audit = {
+                                    **regroup_audit,
+                                    "status": (
+                                        "safe_one_day_contact_horizon"
+                                    ),
+                                    "contact_horizon": regroup_horizon,
+                                }
+                        rollback_failure = _matching_rollback_war_failure(
+                            snapshot,
+                            war_id=tactical_war_id,
+                            army_id=army_id,
+                            origin_province_id=current_province_id,
+                            target_province_id=capital_province_id,
+                            route_province_ids=regroup_audit.get(
+                                "route_province_ids"
+                            ),
+                        )
+                        if (
+                            regroup_audit.get("status")
+                            in {"safe", "safe_one_day_contact_horizon"}
+                            and rollback_failure is None
+                        ):
+                            preview_selected_target = capital_province_id
+                            capital_regroup_target = capital_province_id
+                            selected_route_audit = {
+                                **regroup_audit,
+                                "selection": {
+                                    "policy": (
+                                        "insufficient_siege_capital_regroup"
+                                    ),
+                                    "evaluated_enemy_count": len(
+                                        route_threat_enemy_ids
+                                    ),
+                                },
+                            }
+                        else:
+                            route_rejections.append(
+                                {
+                                    **regroup_audit,
+                                    **(
+                                        {"failure": rollback_failure}
+                                        if rollback_failure is not None
+                                        else {}
+                                    ),
+                                }
+                            )
+                if preview_selected_target is None:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_no_safe_exact_route",
+                        "selected_step": None,
+                        "required_step": "safe-exact-war-route",
+                        "reason": "every remaining exact objective route and any eligible capital regroup route is blocked or unsafe",
+                        "route_rejections": route_rejections,
+                        "active_wars": war_summary,
+                    }
         if (
             active_route_unsafe
             and preview_selected_target is None
@@ -9926,8 +10137,16 @@ def _choose_one_life_turn_core(
         if preview_selected_target is not None:
             target_province_id = preview_selected_target
             enemy = None
-            target_source = "war_objective_province"
-            objective_kind = "siege"
+            target_source = (
+                "player_capital_regroup"
+                if preview_selected_target == capital_regroup_target
+                else "war_objective_province"
+            )
+            objective_kind = (
+                "regroup"
+                if preview_selected_target == capital_regroup_target
+                else "siege"
+            )
         elif exact_objective_province_ids:
             safe = [
                 province_id
@@ -11517,6 +11736,103 @@ def _current_exact_siege_status(
     if stall_days >= _NATIVE_SIEGE_STALL_GAME_DAYS:
         result["status"] = "stalled"
     return result
+
+
+def _capital_regroup_input_ready(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+    tactical_war: dict[str, object] | None,
+    current_province_id: int | None,
+    exact_objective_province_ids: list[int],
+    exact_siege_rejection: dict[str, object] | None,
+) -> bool:
+    """Admit only the observed R838 insufficient-siege retreat shape."""
+
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and len(active_wars) == 1
+        and tactical_war is active_wars[0]
+        and isinstance(tactical_war, dict)
+        and tactical_war.get("player_side") == "attacker"
+        and tactical_war.get("player_is_primary_war_leader") is True
+        and len(controlled_armies) == 1
+        and current_province_id is not None
+        and exact_objective_province_ids == [current_province_id]
+        and isinstance(exact_siege_rejection, dict)
+        and exact_siege_rejection.get("status")
+        == "insufficient_strength"
+        and snapshot.get("war_objective_occupation_supported") is True
+        and snapshot.get("war_objective_garrison_supported") is True
+        and snapshot.get("war_objective_siege_progress_supported") is True
+        and snapshot.get("war_objective_assault_supported") is True
+    ):
+        return False
+    army = controlled_armies[0]
+    army_id = _native_int(army.get("army_id"))
+    if not (
+        army_id is not None
+        and _native_int(army.get("current_province_id"))
+        == current_province_id
+        and _army_tactical_state(army) == "sieging"
+        and army.get("in_combat") is not True
+        and army.get("retreating") is not True
+        and "move_target_province_id" in army
+        and army.get("move_target_province_id") is None
+        and isinstance(army.get("route_province_ids"), list)
+        and not army["route_province_ids"]
+    ):
+        return False
+    states = tactical_war.get("objective_province_states")
+    if not isinstance(states, list) or len(states) != 1:
+        return False
+    state = states[0]
+    if not (
+        isinstance(state, dict)
+        and _native_int(state.get("province_id")) == current_province_id
+        and state.get("occupation_observable") is True
+        and state.get("is_occupied") is False
+        and state.get("siege_observable") is True
+    ):
+        return False
+    siege = state.get("active_siege")
+    garrison = _native_int(state.get("garrison_size"))
+    strength = _native_int(state.get("besieging_strength"))
+    if not (
+        isinstance(siege, dict)
+        and _native_int(siege.get("siege_id")) is not None
+        and _native_int(siege.get("besieging_army_id")) == army_id
+        and siege.get("player_army_besieging") is True
+        and siege.get("assault_observable") is True
+        and siege.get("assault_in_progress") is False
+        and strength == 399
+        and garrison == 400
+    ):
+        return False
+    enemies = [
+        enemy
+        for enemy in enemy_armies_from_wars(active_wars)
+        if _army_tactical_state(enemy) != "retreating"
+    ]
+    return bool(
+        enemies
+        and len(enemies) <= 64
+        and all(
+            _native_int(enemy.get("army_id")) is not None
+            and _native_int(enemy.get("current_province_id")) is not None
+            and "move_target_province_id" in enemy
+            and isinstance(enemy.get("route_province_ids"), list)
+            and all(
+                _native_int(province_id) is not None
+                for province_id in enemy["route_province_ids"]
+            )
+            for enemy in enemies
+        )
+    )
 
 
 def _current_exact_assault_state(
@@ -13596,6 +13912,206 @@ def _active_native_move_intent(
         "target_province_id": target_province_id,
         "elapsed_days": elapsed_days,
         "timeout_days": _NATIVE_MOVE_INTENT_MAX_GAME_DAYS,
+    }
+
+
+def _capital_regroup_intent(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    army_id: int,
+    war_id: int,
+) -> dict[str, object] | None:
+    """Hold one observed day after an exact capital-regroup arrival."""
+
+    scoped = _history_after_latest_restore(commands)
+    latest_position = -1
+    latest_row: dict[str, object] | None = None
+    target_province_id: int | None = None
+    for position in range(len(scoped) - 1, -1, -1):
+        row = scoped[position]
+        if _successful_merge_barrier(row, army_id):
+            return None
+        parsed = parse_move_army_step(_effective_command(row))
+        if parsed is None or parsed[0] != army_id:
+            continue
+        latest_position = position
+        latest_row = row
+        target_province_id = parsed[1]
+        break
+    if (
+        latest_row is None
+        or latest_row.get("ok") is not True
+        or target_province_id is None
+    ):
+        return None
+    result = _effective_command_result(latest_row)
+    action = result.get("war_action") if isinstance(result, dict) else None
+    submitted_date_raw = (
+        _native_int(action.get("submitted_date_raw"))
+        if isinstance(action, dict)
+        else None
+    )
+    if not (
+        isinstance(action, dict)
+        and action.get("status") in {"move_submitted", "moving", "arrived"}
+        and result.get("accepted") is not False
+        and _native_int(action.get("army_id")) in {None, army_id}
+        and _native_int(action.get("target_province_id"))
+        in {None, target_province_id}
+        and submitted_date_raw is not None
+    ):
+        return None
+    played_character = snapshot.get("played_character")
+    actor_id = (
+        _native_int(played_character.get("character_id"))
+        if isinstance(played_character, dict)
+        else None
+    )
+    historical_root: dict[str, object] | None = None
+    for row in reversed(scoped[:latest_position]):
+        if (
+            _effective_command(row) != "query-campaign-root-context-v1"
+            or row.get("ok") is not True
+        ):
+            continue
+        query_result = _effective_command_result(row)
+        candidate = (
+            query_result.get("campaign_root_context")
+            if isinstance(query_result, dict)
+            else None
+        )
+        readiness = (
+            candidate.get("readiness")
+            if isinstance(candidate, dict)
+            else None
+        )
+        if (
+            isinstance(candidate, dict)
+            and candidate.get("status") == "available"
+            and candidate.get("date_raw") == submitted_date_raw
+            and candidate.get("player_character_id") == actor_id
+            and candidate.get("capital_province_id") == target_province_id
+            and isinstance(readiness, dict)
+            and readiness.get("ready") is True
+        ):
+            historical_root = candidate
+            break
+    if historical_root is None:
+        return None
+    preview_origin: int | None = None
+    for row in reversed(scoped[:latest_position]):
+        if (
+            parse_preview_move_army_step(_effective_command(row))
+            != (army_id, target_province_id)
+            or row.get("ok") is not True
+        ):
+            continue
+        preview_result = _effective_command_result(row)
+        preview = (
+            preview_result.get("route_preview")
+            if isinstance(preview_result, dict)
+            else None
+        )
+        if (
+            isinstance(preview, dict)
+            and preview.get("status") == "available"
+            and preview.get("previewed_date_raw") == submitted_date_raw
+        ):
+            preview_origin = _native_int(
+                preview.get("origin_province_id")
+            )
+            break
+    active_wars = snapshot.get("active_wars")
+    bound_war = (
+        next(
+            (
+                war
+                for war in active_wars
+                if isinstance(war, dict) and war.get("war_id") == war_id
+            ),
+            None,
+        )
+        if isinstance(active_wars, list)
+        else None
+    )
+    if not (
+        preview_origin is not None
+        and isinstance(bound_war, dict)
+        and bound_war.get("player_side") == "attacker"
+        and bound_war.get("player_is_primary_war_leader") is True
+        and bound_war.get("war_objective_province_ids") == [preview_origin]
+    ):
+        return None
+    armies = snapshot.get("player_armies")
+    army = (
+        next(
+            (
+                row
+                for row in armies
+                if isinstance(row, dict) and row.get("army_id") == army_id
+            ),
+            None,
+        )
+        if isinstance(armies, list)
+        else None
+    )
+    if not (
+        isinstance(army, dict)
+        and _native_int(army.get("current_province_id"))
+        == target_province_id
+        and army.get("move_target_province_id") is None
+        and isinstance(army.get("route_province_ids"), list)
+        and not army["route_province_ids"]
+        and _army_tactical_state(army) not in {"combat", "retreating"}
+    ):
+        return None
+
+    arrival_date_raw: int | None = (
+        submitted_date_raw if action.get("status") == "arrived" else None
+    )
+    if arrival_date_raw is None:
+        for row in scoped[latest_position + 1 :]:
+            if (
+                not is_life_advance_step(_effective_command(row))
+                or row.get("ok") is not True
+            ):
+                continue
+            after_date_raw, after_war = _progress_slice(
+                row.get("result"), "war_progress_after", war_id
+            )
+            after_army = _progress_army(
+                after_war, "player_armies", army_id
+            )
+            if (
+                after_date_raw is not None
+                and isinstance(after_army, dict)
+                and _native_int(after_army.get("current_province_id"))
+                == target_province_id
+                and after_army.get("move_target_province_id") is None
+                and isinstance(after_army.get("route_province_ids"), list)
+                and not after_army["route_province_ids"]
+            ):
+                arrival_date_raw = after_date_raw
+                break
+    current_date_raw = _native_int(snapshot.get("date_raw"))
+    if current_date_raw is None:
+        return None
+    if arrival_date_raw is None:
+        arrival_date_raw = current_date_raw
+    if current_date_raw < arrival_date_raw:
+        return None
+    elapsed_days = (current_date_raw - arrival_date_raw) // 24
+    if elapsed_days >= _NATIVE_CAPITAL_REGROUP_MIN_GAME_DAYS:
+        return None
+    return {
+        "status": "holding",
+        "army_id": army_id,
+        "war_id": war_id,
+        "capital_province_id": target_province_id,
+        "arrival_date_raw": arrival_date_raw,
+        "elapsed_days": elapsed_days,
+        "minimum_days": _NATIVE_CAPITAL_REGROUP_MIN_GAME_DAYS,
     }
 
 

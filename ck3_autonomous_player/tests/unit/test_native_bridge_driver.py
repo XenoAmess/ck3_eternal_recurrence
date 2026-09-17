@@ -36,6 +36,7 @@ from xar_autoplayer.bridge.native_driver import (
     NativeHeadlessGameplayDriver,
     _active_siege_progress_states,
     _compact_war_progress_history_in_place,
+    _capital_regroup_capability_scope,
     _exact_route_contact_timeline_policy,
     _fresh_route_contact_advance_proofs,
     _fresh_route_contact_advance_steps,
@@ -2891,6 +2892,115 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             driver.take_snapshot()
         with self.assertRaisesRegex(UnsupportedStepError, "does not implement"):
             driver.execute_step("life-advance")
+
+    def test_fresh_exact_insufficient_siege_projects_capital_regroup_literals(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.army-routes",
+                "game.state.war-objectives",
+                "game.state.war-objective-occupation",
+                "game.state.war-objective-garrison",
+                "game.state.war-objective-siege-progress",
+                "game.state.war-objective-assault",
+                "game.command.move-army-N-to-N",
+                "game.command.preview-move-army-N-to-N",
+                "game.command.query-route-contact-horizon-v1-N",
+            )
+        )
+        player = _army(
+            101,
+            soldiers=399,
+            province_id=52,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            202,
+            soldiers=600,
+            province_id=54,
+            controllable=False,
+            move_target_province_id=52,
+            army_state="moving",
+            route_province_ids=[16, 52],
+        )
+        endpoint.publish(
+            _snapshot(
+                2,
+                date_raw=53_154_192,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[
+                    _war(
+                        allied_armies=[player],
+                        enemy_armies=[enemy],
+                        war_objective_province_ids=[52],
+                        objective_province_states=[
+                            _objective_state(
+                                52,
+                                garrison_size=400,
+                                besieging_strength=399,
+                                active_siege=_active_siege(
+                                    army_id=101,
+                                    assault_observable=True,
+                                    breach_level=2,
+                                    assault_in_progress=False,
+                                    can_start_assault=False,
+                                    can_stop_assault=False,
+                                    assault_daily_progress_raw=340_000,
+                                    assault_daily_casualties=0,
+                                ),
+                            )
+                        ],
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+        snapshot = driver.take_snapshot()
+        diagnostics = snapshot["diagnostics"]
+        self.assertIsInstance(diagnostics, dict)
+        driver._campaign_root_context_query = {
+            "campaign_root_context": {
+                "status": "available",
+                "snapshot_revision": snapshot["native_revision"],
+                "date_raw": snapshot["date_raw"],
+                "player_character_id": 707,
+                "capital_province_id": 45,
+                "readiness": {"ready": True},
+            },
+            "cache_binding": {
+                "snapshot_id": snapshot["snapshot_id"],
+                "revision": snapshot["revision"],
+                "native_revision": snapshot["native_revision"],
+                "date_raw": snapshot["date_raw"],
+                "actor_character_id": 707,
+                "bridge_pid": diagnostics["bridge_pid"],
+                "connection_generation": diagnostics[
+                    "connection_generation"
+                ],
+            },
+        }
+
+        steps = driver.capabilities()["action_steps"]
+        self.assertIn("preview-move-army-101-to-45", steps)
+        self.assertIn("move-army-101-to-45", steps)
+        self.assertIn(
+            query_route_contact_horizon_step(101, 45, (202,)), steps
+        )
+
+        driver._campaign_root_context_query["cache_binding"][
+            "native_revision"
+        ] = int(snapshot["native_revision"]) - 1
+        stale_steps = driver.capabilities()["action_steps"]
+        self.assertNotIn("preview-move-army-101-to-45", stale_steps)
+        self.assertNotIn("move-army-101-to-45", stale_steps)
 
     def test_protocol_extension_routes_snapshot_and_command_result(self) -> None:
         endpoint = FakeEndpoint()

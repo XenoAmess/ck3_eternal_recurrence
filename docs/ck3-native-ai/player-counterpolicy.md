@@ -535,6 +535,41 @@ recovery，所有 cleanup proven，当前 checkpoint SHA-256 为
 `12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`。这证明 post-fix 循环可以持续产生可见游戏
 进展，但不代表整局完成，也不使 `actual_contact_scope_ready` 变为 `true`。
 
+### R838 围城兵力不足时的首都集结窄门
+
+- [production-blocker-live] exact build `1.19.0.6` 的普通 campaign R838 在日期 `53154192` 观察到唯一可控军
+  `304` 位于唯一未占领战争目标 `52`；原生围城态为 active，玩家是 besieger，但 `besieging=399 <
+  garrison=400`、不能强攻，因而原 exact-objective 路线正确拒绝 `insufficient_strength`。
+- [production-blocker-live] 同帧两支非撤退敌军的 target/route 都经过 `52`；最近一次 contact horizon 只证明
+  到日期 `53154192` 无接触，敌军预计分别在 8 日、12 日后抵达，不能把已经消费完的 horizon 当作继续等待的
+  许可。
+- [production-blocker-live] 同一 paused native frame 的 campaign-root 查询给出玩家首都 `45`。终局查询仍为
+  score `+10`、战争第 `131` 日：white peace 不合法，surrender 虽合法但不满足既有 `score <= -25 &&
+  duration >= 180` 紧急门，因此本局面不是终局选择。
+- [inference][counter-policy] 首都只能在以下精确形状中成为一次性 regroup 候选：单场 active primary-attacker
+  战争、单个可控军、唯一未占领 exact objective 等于 current、该军正在为玩家围城且保持 R838 的
+  `besieging=399 < garrison=400`、无 assault/combat/retreat/已有 route/target、无 event/interaction/pending write，
+  且 campaign-root 结果与当前 PID/generation/snapshot/date/actor 同帧。任一输入缺失或陈旧都 fail closed。
+- [inference][counter-policy] 候选不能直接提交：先取得 current -> capital 的 fresh native preview，再按全部非撤退
+  敌军执行完整 route audit；若静态审计不能证明安全，再以相同 scope 查询必要的 contact horizon。只有 fresh
+  结果证明 safe 才允许一次 typed move；stale、unsafe 或 unknown 均保持暂停，原 `-25/180` 终局门不变。
+- [inference][counter-policy] move 生效后保留有界 regroup intent：抵达首都后至少一个短观察窗口内只重新观测并
+  推进，不在下一 turn 立即折返原目标；窗口到期、敌情变化或战争/军队 identity 变化后恢复正常逐候选评估。
+  intent 只来自同 timeline 的已提交 move 与独立到达后置状态，不新增原生 strength/combat forecast 语义。
+
+```mermaid
+flowchart TD
+    S["[live-confirmed] exact siege: 399 < 400"] --> G{"[inference][counter-policy] narrow single-war/single-army gate"}
+    G -->|stale/incomplete| H["[inference][counter-policy] hold paused; preserve terminal gate"]
+    G -->|fresh same-frame root| P["[inference][counter-policy] preview current -> capital"]
+    P --> A["[inference][counter-policy] audit every non-retreating enemy route"]
+    A -->|needs horizon| Q["[inference][counter-policy] exact contact-horizon query"]
+    A -->|safe| M["[inference][counter-policy] submit one move"]
+    Q -->|safe| M
+    Q -->|unsafe/unknown| H
+    M --> R["[inference][counter-policy] bounded regroup intent; then re-evaluate"]
+```
+
 ### 连续恢复的有界失败入口记忆
 
 - [live-confirmed] 从同一 checkpoint origin `2598` 已观察到两条最终进入无安全出口并执行 restore 的入口：
@@ -592,6 +627,7 @@ flowchart TD
 | P15 | [inference][counter-policy] | restore、战争结束、enemy ArmyID generation 改变 | 截断 ledger/history；新分支 age 从 0 开始 | 跨时间线复用 endpoint 黏性 |
 | P16 | [inference][counter-policy] | `war=16777290,date=53175984` 的双玩家/双敌快照 | 推荐 paused Merge recovery，随后 fresh preview；`2587` 保持 hazard | 追 `2581`、穿 `2587`、命名 `33554657`、直接 advance |
 | P17 | [inference][counter-policy] | 同一 checkpoint origin 连续两次 restore，入口分别为 `2585` / `2568` | 最新两条 advisory 都参与 exact route 比较；第三旧淘汰 | 单条覆盖后重演较早失败；把 target 永久拉黑 |
+| P18 | [inference][counter-policy] | R838 单场战争、Army `304` 在唯一目标 `52` 围城 `399 < 400`，fresh capital `45` | 同帧 preview + 全敌 route audit + 必要 horizon；safe 才单次 move，抵达后保持有界 regroup intent | 原地等敌、直接投降、跳过 preview、陈旧 root、下一 turn 立即折返 |
 
 ## 实现与验证边界
 

@@ -1228,6 +1228,30 @@ def _preview_row(
     }
 
 
+def _campaign_root_row(
+    index: int,
+    *,
+    date_raw: int,
+    capital_province_id: int,
+    actor_character_id: int = 707,
+) -> dict[str, object]:
+    return {
+        "index": index,
+        "command": "query-campaign-root-context-v1",
+        "ok": True,
+        "result": {
+            "campaign_root_context": {
+                "status": "available",
+                "snapshot_revision": 90,
+                "date_raw": date_raw,
+                "player_character_id": actor_character_id,
+                "capital_province_id": capital_province_id,
+                "readiness": {"ready": True},
+            }
+        },
+    }
+
+
 def _route_contact_row(
     index: int,
     *,
@@ -1366,6 +1390,7 @@ def _native_war_plan(
             "native_revision": 90,
             "diagnostics": {"connection_generation": 1},
             "episode_run_id": None,
+            "played_character": {"character_id": 707, "alive": True},
             "war_objective_occupation_supported": occupation_supported,
             "war_objective_fort_level_supported": fort_level_supported,
             "war_objective_garrison_supported": garrison_supported,
@@ -9322,6 +9347,270 @@ class GameplayBridgeTests(unittest.TestCase):
 
         self.assertEqual(plan["selected_step"], "move-army-11-to-2510")
         self.assertEqual(plan["pursuit"]["target_province_id"], 2510)
+
+    def test_insufficient_only_siege_uses_fresh_safe_capital_regroup(
+        self,
+    ) -> None:
+        date_raw = 24_000
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=52,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemies = [
+            _army(
+                21,
+                soldiers=600,
+                province_id=54,
+                controllable=False,
+                move_target_province_id=52,
+                army_state="moving",
+                route_province_ids=[16, 52],
+            ),
+            _army(
+                22,
+                soldiers=700,
+                province_id=16,
+                controllable=False,
+                move_target_province_id=52,
+                army_state="moving",
+                route_province_ids=[52],
+            ),
+        ]
+        objective_state = _objective_state(
+            52,
+            garrison_size=400,
+            besieging_strength=399,
+            active_siege=_active_siege(
+                army_id=11,
+                assault_observable=True,
+                breach_level=2,
+                assault_in_progress=False,
+                can_start_assault=False,
+                can_stop_assault=False,
+            ),
+        )
+        base = {
+            "player": player,
+            "enemies": enemies,
+            "score": 10,
+            "date_raw": date_raw,
+            "objective": 52,
+            "objective_states": [objective_state],
+            "occupation_supported": True,
+            "garrison_supported": True,
+            "siege_progress_supported": True,
+            "assault_supported": True,
+        }
+
+        query = _native_war_plan(
+            **base,
+            steps=("query-campaign-root-context-v1", "life-advance"),
+        )
+        self.assertEqual(query["phase"], "native_war_capital_regroup_context")
+        self.assertEqual(
+            query["selected_step"], "query-campaign-root-context-v1"
+        )
+
+        root = _campaign_root_row(
+            1, date_raw=date_raw, capital_province_id=45
+        )
+        preview = _native_war_plan(
+            **base,
+            history=[root],
+            steps=("preview-move-army-11-to-45", "life-advance"),
+        )
+        self.assertEqual(preview["phase"], "native_war_capital_regroup_preview")
+        self.assertEqual(
+            preview["selected_step"], "preview-move-army-11-to-45"
+        )
+
+        preview_row = _preview_row(
+            2,
+            army_id=11,
+            origin=52,
+            target=45,
+            date_raw=date_raw,
+            route=[51, 45],
+        )
+        move = _native_war_plan(
+            **base,
+            history=[root, preview_row],
+            steps=("move-army-11-to-45", "life-advance"),
+        )
+        self.assertEqual(move["selected_step"], "move-army-11-to-45")
+        self.assertEqual(
+            move["pursuit"]["target_source"], "player_capital_regroup"
+        )
+        self.assertEqual(move["pursuit"]["objective_kind"], "regroup")
+
+    def test_capital_regroup_stale_or_unsafe_evidence_fails_closed(
+        self,
+    ) -> None:
+        date_raw = 24_000
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=52,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=600,
+            province_id=51,
+            controllable=False,
+            move_target_province_id=45,
+            army_state="moving",
+            route_province_ids=[45],
+        )
+        objective_state = _objective_state(
+            52,
+            garrison_size=400,
+            besieging_strength=399,
+            active_siege=_active_siege(
+                army_id=11,
+                assault_observable=True,
+                assault_in_progress=False,
+                can_start_assault=False,
+                can_stop_assault=False,
+            ),
+        )
+        base = {
+            "player": player,
+            "enemies": [enemy],
+            "score": 10,
+            "date_raw": date_raw,
+            "objective": 52,
+            "objective_states": [objective_state],
+            "occupation_supported": True,
+            "garrison_supported": True,
+            "siege_progress_supported": True,
+            "assault_supported": True,
+            "route_contact_horizon_supported": True,
+        }
+        stale_root = _campaign_root_row(
+            1, date_raw=date_raw - 24, capital_province_id=45
+        )
+        stale = _native_war_plan(
+            **base,
+            history=[stale_root],
+            steps=("query-campaign-root-context-v1", "life-advance"),
+        )
+        self.assertEqual(stale["phase"], "native_war_capital_regroup_context")
+        self.assertEqual(
+            stale["selected_step"], "query-campaign-root-context-v1"
+        )
+
+        root = _campaign_root_row(
+            1, date_raw=date_raw, capital_province_id=45
+        )
+        preview = _preview_row(
+            2,
+            army_id=11,
+            origin=52,
+            target=45,
+            date_raw=date_raw,
+            route=[51, 45],
+        )
+        horizon_step = query_route_contact_horizon_step(11, 45, (21,))
+        query_horizon = _native_war_plan(
+            **base,
+            history=[root, preview],
+            steps=(horizon_step, "life-advance"),
+        )
+        self.assertEqual(
+            query_horizon["phase"],
+            "native_war_capital_regroup_contact_horizon",
+        )
+        self.assertEqual(query_horizon["selected_step"], horizon_step)
+
+        unsafe_horizon = _route_contact_row(
+            3,
+            army_id=11,
+            origin=52,
+            target=45,
+            date_raw=date_raw,
+            route=[51, 45],
+            hostile_ids=(21,),
+            contact_free=False,
+        )
+        blocked = _native_war_plan(
+            **base,
+            history=[root, preview, unsafe_horizon],
+            steps=("move-army-11-to-45", "life-advance"),
+        )
+        self.assertEqual(blocked["phase"], "native_war_no_safe_exact_route")
+        self.assertIsNone(blocked["selected_step"])
+
+    def test_capital_regroup_arrival_holds_before_turning_back(self) -> None:
+        date_raw = 24_024
+        player = _army(
+            11,
+            soldiers=399,
+            province_id=45,
+            controllable=True,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        enemy = _army(
+            21,
+            soldiers=600,
+            province_id=54,
+            controllable=False,
+            move_target_province_id=52,
+            army_state="moving",
+            route_province_ids=[16, 52],
+        )
+        root = _campaign_root_row(
+            1, date_raw=24_000, capital_province_id=45
+        )
+        preview = _preview_row(
+            2,
+            army_id=11,
+            origin=52,
+            target=45,
+            date_raw=24_000,
+            route=[51, 45],
+        )
+        move = {
+            "index": 3,
+            "command": "move-army-11-to-45",
+            "ok": True,
+            "result": {
+                "accepted": True,
+                "war_action": {
+                    "status": "moving",
+                    "army_id": 11,
+                    "target_province_id": 45,
+                    "submitted_date_raw": 24_000,
+                },
+            },
+        }
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=10,
+            date_raw=date_raw,
+            history=[root, preview, move],
+            objective=52,
+            objective_states=[_objective_state(52, active_siege=None)],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            assault_supported=True,
+            steps=("preview-move-army-11-to-52", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_capital_regroup_progress")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(
+            plan["regroup_intent"]["capital_province_id"], 45
+        )
 
     def test_rejected_exact_siege_does_not_advance_deferred_preview(
         self,
