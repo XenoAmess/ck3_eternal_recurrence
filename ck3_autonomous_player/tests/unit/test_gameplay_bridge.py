@@ -2419,6 +2419,99 @@ class GameplayBridgeTests(unittest.TestCase):
             plan["decision"]["candidates"]["surrender"]["legal"]
         )
 
+    def test_r851_negative_score_insufficient_siege_selects_surrender(
+        self,
+    ) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=52,
+            controllable=True,
+            army_state="sieging",
+            route_province_ids=[],
+        )
+        enemies = [
+            _army(
+                21,
+                soldiers=None,
+                province_id=45,
+                controllable=False,
+                army_state="sieging",
+                route_province_ids=[],
+            ),
+            _army(
+                22,
+                soldiers=None,
+                province_id=45,
+                controllable=False,
+                army_state="sieging",
+                route_province_ids=[],
+            ),
+        ]
+        options = _termination_options(score=-9, war_duration_days=266)
+        options["active_casus_belli_identity"] = {
+            "database_index": 17,
+            "canonical_key": "individual_county_de_jure_cb",
+        }
+        options.update(
+            {
+                "queried_snapshot_id": "session:90",
+                "queried_revision": 90,
+                "queried_native_revision": 90,
+                "queried_connection_generation": 1,
+                "episode_run_id": None,
+            }
+        )
+
+        plan = _native_war_plan(
+            player=player,
+            enemies=enemies,
+            score=-9,
+            date_raw=53_157_360,
+            objectives=[52],
+            objective_states=[
+                _objective_state(
+                    52,
+                    garrison_size=400,
+                    besieging_strength=396,
+                    active_siege=_active_siege(
+                        siege_id=6, army_id=11, days_left=None
+                    ),
+                )
+            ],
+            occupation_supported=True,
+            garrison_supported=True,
+            siege_progress_supported=True,
+            targeted_title_ids=[537],
+            steps=("surrender-war-88", "life-advance"),
+            termination_options=[options],
+        )
+
+        self.assertEqual(
+            plan["phase"], "native_war_de_jure_no_safe_route_surrender"
+        )
+        self.assertEqual(plan["selected_step"], "surrender-war-88")
+        self.assertEqual(plan["decision"]["selected_outcome"], "surrender")
+        self.assertFalse(
+            plan["decision"]["candidates"]["continue"]["executable"]
+        )
+        self.assertFalse(
+            plan["decision"]["candidates"]["white_peace"]["legal"]
+        )
+        self.assertTrue(
+            plan["decision"]["candidates"]["surrender"]["executable"]
+        )
+        self.assertEqual(
+            plan["route_rejections"],
+            [
+                {
+                    "target_province_id": 52,
+                    "status": "current_exact_siege_rejected",
+                    "siege_status": "insufficient_strength",
+                }
+            ],
+        )
+
     def test_r794_de_jure_route_exhaustion_prefers_white_peace(self) -> None:
         player = _army(
             11,

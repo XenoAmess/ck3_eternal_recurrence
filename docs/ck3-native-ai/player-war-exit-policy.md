@@ -648,3 +648,26 @@ flowchart TD
 Eight subsequent production turns consumed the existing target/route rather than resubmitting it. Enemy forces then contacted Army304 in Province52, and the planner moved to battle-control queries and decision-epoch advancement. Four post-move checkpoints were written. R845 report/final pair are `2A86B334...5D8E`, `94396905...5D84`, `720E53C2...C1F4`. No frame observed `current_province_id=45`, an empty arrival route or `status=arrived`; the strongest valid claim is safe preview → unique move → route/battle consumption, not capital arrival.
 
 R847 restored that exact history503 pair in a new CK3 process under agent `a5db1e5d`. Driver history504–521 contains zero new preview, move, assault or terminal commands. Formal turns re-queried battle and termination state, advanced two decision epochs, observed the battle resolve into Army304 native retreat, and consumed three one-day retreat frames. It saved history516 and final history521/date53155584; report/final pair are `DBA987B5...0CE7B`, `50993AC4...10031`, `8290560E...3F57E`. War25 remains active at player-relative score `-9`. This closes the post-move cold-restore/no-duplicate gate only; regroup arrival and the war terminal remain open.
+
+### 2026-09-17 R851 negative-score de-jure dead-end correction
+
+[production-live observation / static-ready counter-policy] R851 cold-restored
+the ordinary WarID25 campaign after the event-interrupted route fix. The
+production loop submitted one fresh move and independently consumed the
+natural `death_management.1000` result before Army304 reached Province52 and
+entered native `sieging`. The same paused frame then proved an exact tactical
+dead end: the only objective siege was `insufficient_strength`, no safe
+objective or capital-regroup route remained, score was `-9`, duration was 266
+days, white peace was native-unavailable, and surrender was native-valid,
+auto-accepted and reported `recipient_response.would_accept_now=true`. No terminal action was
+submitted in R851; its history612 pair remains recoverable.
+
+The bounded emergency rule therefore changes only its score ceiling from
+`<= -25` to `< 0`. All other gates remain unchanged: primary attacker, exact
+`individual_county_de_jure_cb`, at least 180 days, same-frame full WarID and
+termination row, no hostage variant, exhausted tactical continuation, and one
+typed terminal submission. Score zero or positive remains ineligible. This is
+an operational continuity exception, not a claim that the native AI uses the
+same threshold or that full campaign utility is ready. Live status remains
+pending until a new process submits the terminal once, observes material war
+disappearance, consumes it on a later turn, checkpoints, and cold-restores.

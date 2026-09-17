@@ -2520,3 +2520,23 @@ or public surrender policy. The action runner separately validates the source
 capture against the current full-generation regiment/army sets before mutation.
 Focused normal/optimized Python tests pass `29/29`, and the candidate-enabled
 MSVC Release DLL builds. No live status is promoted by this static result.
+
+## 2026-09-17 R851 ordinary de-jure termination frame
+
+[production-live observation] On exact build `1.19.0.6`, R851 observed
+WarID25 with the player as primary attacker, CB database index 17 /
+`individual_county_de_jure_cb`, player-relative score `-9`, duration 266 days,
+and targeted Title537. The same paused termination query exposed all three
+native outcomes: surrender was constructed, valid, available, auto-accepted
+and `recipient_response.would_accept_now=true`; white peace and victory were
+unavailable. Independently, the military planner proved that the sole exact
+objective at Province52 had reached `insufficient_strength` and that no safe
+objective or eligible capital-regroup route remained.
+
+This observation closes legality and acceptance for that frame, but not the
+material terminal result: R851 submitted no surrender action. It also does not
+infer a native-AI surrender threshold. The counter-policy may use the exact
+dead-end facts to avoid a permanent no-op while retaining the existing
+same-frame, CB, duration, identity and one-shot gates. War disappearance,
+postwar state, later-turn consumption and cold restore still require live
+evidence.

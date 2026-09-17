@@ -11160,7 +11160,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(query_count, 2)
         self.assertEqual(submission_count, 1)
 
-    def test_r767_de_jure_emergency_surrender_is_one_shot_and_typed(
+    def test_r851_de_jure_emergency_surrender_is_one_shot_and_typed(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
@@ -11170,7 +11170,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             command_timeout_seconds=0.1,
         )
         war_id = 16_777_290
-        active_war = _war(war_id=war_id, score=-44)
+        active_war = _war(war_id=war_id, score=-9)
         endpoint.publish(
             _hello(
                 "game.state.snapshot",
@@ -11198,11 +11198,11 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "query_sequence": 1,
                     "war_termination_options": _termination_options(
                         war_id,
-                        score=-44,
+                        score=-9,
                         white_peace_available=False,
                         casus_belli_database_index=17,
                         casus_belli_key="individual_county_de_jure_cb",
-                        war_duration_days=216,
+                        war_duration_days=266,
                     ),
                 }
             else:
@@ -11229,14 +11229,27 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             driver.capabilities()["action_steps"],
         )
 
+        zero_snapshot = copy.deepcopy(driver.take_snapshot())
+        zero_snapshot["active_wars"][0]["player_relative_war_score"] = 0
+        zero_snapshot["war_termination_options"][0][
+            "player_relative_war_score"
+        ] = 0
+        ready, reason, _ = (
+            native_driver_module._de_jure_emergency_surrender_readiness(
+                zero_snapshot, war_id
+            )
+        )
+        self.assertFalse(ready)
+        self.assertEqual(reason, "de_jure_emergency_surrender_gate_failed")
+
         submitted = driver.execute_step("surrender-war-16777290")
         action = submitted["war_termination_result"]
 
         self.assertEqual(action["status"], "submitted_pending")
         self.assertEqual(action["outcome"], "attacker_defeat")
         self.assertEqual(action["war_id"], war_id)
-        self.assertEqual(action["player_relative_war_score"], -44)
-        self.assertEqual(action["war_duration_days"], 216)
+        self.assertEqual(action["player_relative_war_score"], -9)
+        self.assertEqual(action["war_duration_days"], 266)
         self.assertTrue(action["recipient_auto_accept"])
         self.assertNotIn("surrender_variant", action)
         self.assertNotIn("absolute_war_scores_observable", action)

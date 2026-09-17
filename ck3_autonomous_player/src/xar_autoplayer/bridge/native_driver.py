@@ -579,7 +579,9 @@ _START_NEXT_EPISODE_STEP = "start-next-episode"
 _WHITE_PEACE_PROPOSAL_COOLDOWN_RAW = 30 * 24
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB = "individual_county_de_jure_cb"
 _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
-_DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -25
+# Keep the literal unavailable at zero/positive score, while admitting the
+# R851 negative-score route-exhaustion frame validated by the strategy.
+_DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -1
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _RAIKTOR_TERMINAL_CONTROL_SURRENDER_CB = "raiktor_claim_cb"
 _RAIKTOR_TERMINAL_CONTROL_SURRENDER_SCORE = -100

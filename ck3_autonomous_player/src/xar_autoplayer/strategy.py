@@ -157,7 +157,10 @@ _WHITE_PEACE_NATIVE_RESPONSE_OBSERVATION_RAW = 10 * 24
 _NEGATIVE_WAR_TERMINATION_REUSE_RAW = 7 * 24
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB = "individual_county_de_jure_cb"
 _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
-_DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -25
+# R851 proved that a long-running negative-score war can reach a deterministic
+# dead end before the older R767 -25 score sample. Keep zero/positive frames
+# out, but do not require another lost battle after every route is exhausted.
+_DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -1
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
 _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
