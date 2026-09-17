@@ -1384,6 +1384,8 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         },
         "scope_types": {
             "disease_type": "flag",
+            "physician": "character",
+            "sick_character": "character",
         },
         "boolean_scopes": (),
         "saved_scope_name_sets": ((
@@ -1404,6 +1406,10 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
             ),),
             "saved_scope_count": 2,
             "unique_character_scope_excludes": {},
+            "scope_types": {
+                "disease_type": "flag",
+                "sick_character": "character",
+            },
             "option_count": 2,
             "snapshot_option_count": 7,
             "native_option_indices": (0, 6),

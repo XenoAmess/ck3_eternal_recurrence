@@ -423,15 +423,24 @@ _SOURCE_BOUND_OPTION_VARIANT_FIELDS: Final = {
             "saved_scope_name_sets",
         }
     ),
+    "health.1001": frozenset(
+        {
+            "saved_scope_count",
+            "saved_scope_name_sets",
+            "scope_types",
+            "unique_character_scope_excludes",
+        }
+    ),
 }
 _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
-    {"death_management.1000", "natural_disaster.7031"}
+    {"death_management.1000", "health.1001", "natural_disaster.7031"}
 )
 _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset({"death_management.1007"})
 _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
     {
         "chancellor_task.1104",
         "death_management.1000",
+        "health.1001",
         "prison_notification.2002",
     }
 )

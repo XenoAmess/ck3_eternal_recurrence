@@ -1,9 +1,16 @@
-# CK3 1.19.0.6 `health.1006 → health.3001 → health.3101/3102 → health.3103 → health.1106/2202` 肺痨诊断、治疗与康复树
+# CK3 1.19.0.6 `health.1001/1006 → health.3001 → health.3101/3102 → health.3103 → health.1106/2202` 疾病诊断、治疗与康复树
 
 ## 状态与证据边界
 
 - [static-confirmed] 本专题绑定 CK3 `1.19.0.6`、Steam build `23530548` 与 `ck3.exe` SHA-256
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+- [paused live RED] R858 从 R857 h857 冷恢复后自然命中 `health.1001` instance `4`，`date_raw=53213088`。
+  root 与 `sick_character` 都是玩家 `31853`，`disease_type` 为 flag，没有 `physician`，saved scopes 严格为
+  `sick_character,disease_type`；snapshot authored option count 为 `7`，实际只渲染 native `0/6`。既有 registry
+  合同精确覆盖该形状，但当时 production direct consumer 尚未准入它，因而在提交前以
+  `registered_contract_requires_extended_consumer` 停止。没有动作 ACK，h857 checkpoint SHA-256
+  `74F1C5AB80EBC20B0A169895013CBFCFDC8DB0FBBE1AC8CC4C839E0A17D5E1FB` 保持不变；该 RED 只证明选择前观测，
+  不证明 `health.1001` 动作已实机闭合。
 - [historical live] R97 在有医师投影中选择 authored `7` / native `6` 不治疗；事件本身完成 advance，但玩家
   约 27 日后病死并造成 played-owner binding RED。这个结果只证明该实机链的后果，不把死亡期限写成通用规则。
 - [paused live RED] R416 attempt 05 在 PID `174656` / generation `1`、`date_raw=53864592` 命中 instance
@@ -55,6 +62,36 @@
   `125 -> 126`，且 `postcondition_verified=true`。该按钮只确认已经在 `immediate` 中完成的康复。
 
 ## 原版状态与入口
+
+### `health.1001` 普通疾病诊断树
+
+`health.1001` 的 `immediate` 先尝试保存当前宫廷医师，再施加普通疾病并保存 `sick_character` 与
+`disease_type`。因此 R858 窗口出现时疾病已经生效，按钮只决定后续治疗路线。当前无医师投影应选择 authored
+`1` / native `0`：它设置 30 日 `already_sick`、写入 `searching_for_physician`，并延迟调度 `health.3001`；
+native `6` 在无医师形态下不启动治疗。若精确投影包含一名非玩家医师，则选择 authored `4` / native `3`
+调用安全治疗；native `4` 为风险治疗，native `6` 为不治疗。
+
+```mermaid
+flowchart TD
+    A[health.1001<br/>普通疾病已在 immediate 施加] --> B{exact scope 中是否有 physician?}
+    B -- 否，R858 --> C[authored 1 / native 0<br/>启动寻医]
+    C --> D[30 日 already_sick<br/>延迟 health.3001]
+    B -- 是 --> E[authored 4 / native 3<br/>安全治疗]
+    B --> F[native 6 不治疗]
+    B --> G[native 4 风险治疗]
+```
+
+production consumer 只接受两组耦合形状：无医师时 scopes 必须恰为
+`sick_character:character,disease_type:flag` 且 native rows 恰为 `0,6`；有医师时还必须有
+`physician:character`、医师不得是玩家，且 rows 恰为 `3,4,6`。两种形状都要求
+`root == sick_character == player`；多出医师、患者错绑、scope 类型或 option 映射漂移时均停止而不提交。
+
+这棵树不读取 faith/doctrine。exact source 为 `events/health_events.txt:972-1272`，SHA-256
+`8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB`；寻医 helper 为
+`common/scripted_effects/20_health_effects.txt:2093-2107`，SHA-256
+`6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12`。
+
+### `health.1006` 肺痨入口
 
 事件 `immediate` 先调用 `save_court_physician_as_effect`，再调用
 `contract_disease_effect = { DISEASE = consumption TREATMENT_EVENT = no }`。后者在窗口出现前就保存
