@@ -1,6 +1,6 @@
 # `fervor.1002` 强制丑闻通知
 
-状态：`static-ready after production B1`; source-reviewed option 的真实动作、物质后置和下一 turn 消费仍待复验。
+状态：`static-ready after production B1`; R862 已在该修复下继续同一普通 campaign 100/100 turns，但事件未自然重现；source-reviewed option 的真实动作、物质后置和下一 turn 消费仍待复验。
 
 这个专题只处理 CK3 `1.19.0.6` 普通 campaign 中会阻塞时间推进的精确事件
 `fervor.1002`。它不提供 faith、doctrine、tenet、fervor、改宗、宗教改革或
@@ -83,3 +83,13 @@ contract。`scandal_type` payload 继续 opaque：选择 native `2` 不依赖其
 独立物质后置绑定 `played_character.stress_points non_decreasing`。窗口消失只能证明
 结构后置；source-reviewed 路线只有在 native `2` 的真实 stress 观测和下一 turn 消费
 完成后才能升级为 production-live。
+
+## R862 未重现边界
+
+R862 使用 master `d5fba52c` 从 R861 h981 成对 checkpoint 冷恢复，经正式
+`g2_preview_operator.py run -> native_auto_run` 完成 100/100 turns、50 次查询、
+50 次 gameplay、16 个 checkpoint，并推进 1,522 游戏日到 h1146。期间自然处理了
+`court_chaplain_task.0311/.0312`，但没有出现新的 `fervor.1002`。因此该运行只证明
+修复后的普通 campaign 可以继续，不证明本事件 option3/native2 的 live 后置；状态仍为
+static-ready/unadvertised。R862 report 与最终 pair 分别为 `EB6FF99B...A3233`、
+`442FC751...92AE2` / `B5C18328...2FE01`。
