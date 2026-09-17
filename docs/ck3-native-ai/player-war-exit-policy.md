@@ -604,3 +604,39 @@ owner-authored budget profile 与显式 owner-utility evaluation；frame 和四�
 返回 typed evidence blocker，certificate 保持 `null`。当前没有前两项真实 provider output，也没有
 owner-approved 数值或 utility artifact，所以本节不提升 recommendation/action/GEN-034。完整输入合同见
 [g2-raiktor-white-peace-comparison-provider-2026-09-06.md](g2-raiktor-white-peace-comparison-provider-2026-09-06.md)。
+
+### 2026-09-17 对手已取得 100 战分时的终局控制门
+
+[production-live outcome / counter-policy correction] R831 在 Raiktor primary-attacker
+`WarID=33554473` 到达 player-relative `-100` 后仍保持战争；R832 从该 paused frame 冷恢复，正式三路 provider
+因只看 `opponent_stronger` 固定尾险而继续推荐 `continue`。第一次 bounded sentinel 推进 11 游戏日后，CK3
+自然执行防守方胜利，期间没有提交 white peace 或 surrender。该结果证明：在这个 exact build 中，`-100`
+不是一般“预计会输”的代理，而是对手已经拥有可在下一次时间推进中先行结束战争的终局控制。把此时的
+`continue` 继续视为可保持到下一决策帧的候选，会丢失 GEN-034 所要求的唯一 action-bound 终局机会。
+
+这不会把战分改成通用止损阈值，也不修改原生 AI 树。`-99` 及更高分仍由完整 continue / white peace /
+surrender 效用比较决定；玩家手动投降依旧不需要原生 AI 的 `100` 战分加 `180` 日门。只有同一 paused
+options 查询同时证明以下全部事实时，才发布 `opponent_terminal_control=true`：玩家是 exact Raiktor 战争的
+primary attacker、player-relative 分数不高于 `-100`、absolute attacker/defender 分数可观测且互为相反数，
+并与 active-war row、WarID、角色、revision、native revision、date、connection、episode 和 PID 完全同帧。
+缺任一输入即 fail closed，不能推进日期。
+
+三路证书仍保留 `continue` 的原始 utility 与 measured-power trace，但给它加入
+`opponent_has_enforceable_terminal_war_score` blocker 并标为 ineligible；合法 white peace 与 surrender 仍按完整
+条款、预算和 margin 比较，不能硬编码成 surrender。若两种终局都不 ready，则本轮无动作并保持暂停。`+100`
+的己方 enforce-demands 优先级、已提交 terminal 的 fresh-status 防重门，以及 ACK 不等于物质结果的规则全部不变。
+
+```mermaid
+flowchart TD
+    F[Current paused Raiktor primary-attacker frame] --> Q{Same-frame options and absolute scores complete?}
+    Q -->|no| B[Block; do not advance time]
+    Q -->|yes| S{Player-relative score <= -100?}
+    S -->|no| U[Normal three-way utility comparison]
+    S -->|yes| T[Keep continue trace but mark it ineligible]
+    T --> E{Legal terminal wins terms and margin gate?}
+    E -->|white peace| W[Submit one typed white-peace action]
+    E -->|surrender| D[Submit one typed surrender action]
+    E -->|none| B
+    W --> P[Independent postwar result and cold restore]
+    D --> P
+```

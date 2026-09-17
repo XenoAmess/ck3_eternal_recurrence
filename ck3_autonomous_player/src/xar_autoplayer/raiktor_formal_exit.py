@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import Iterable
 
 from .bridge.war_contract import (
+    normalize_war_termination_options,
     offer_white_peace_step,
     query_war_termination_options_step,
     query_war_termination_terms_step,
@@ -20,7 +21,10 @@ from .simulation.raiktor_continue_vs_surrender_policy import canonical_policy_in
 from .simulation.raiktor_exit_utility_model_provider import provide_raiktor_exit_utility_model
 from .simulation.raiktor_owner_budget_profile_provider import provide_raiktor_owner_budget_profile
 from .simulation.raiktor_three_way_exit_action_gate import provide_raiktor_three_way_exit_action_gate
-from .simulation.raiktor_three_way_exit_recommendation import provide_raiktor_three_way_exit_recommendation
+from .simulation.raiktor_three_way_exit_recommendation import (
+    OPPONENT_TERMINAL_CONTROL_CONTRACT,
+    provide_raiktor_three_way_exit_recommendation,
+)
 from .simulation.raiktor_white_peace_narrow_projection_provider import provide_raiktor_white_peace_narrow_projection
 
 POLICY = "raiktor-formal-three-way-exit-v1"
@@ -127,11 +131,19 @@ def plan_raiktor_formal_exit(
         white = provide_raiktor_white_peace_narrow_projection(
             snapshot, options_query, terms_query, production_live=True,
         )
+        terminal_control = _opponent_terminal_control_input(
+            war=war,
+            war_id=war_id,
+            opponent_character_id=opponent,
+            options_query=options_query,
+            white_peace_projection=white,
+        )
         recommendation = provide_raiktor_three_way_exit_recommendation(
             white, terms_query.get("raiktor_surrender_aggregate_session"),
             dominance["campaign_dominance_certificate"],
             provide_raiktor_owner_budget_profile(None),
             provide_raiktor_exit_utility_model(),
+            terminal_control,
         )
         gate = provide_raiktor_three_way_exit_action_gate(
             recommendation, snapshot,
@@ -215,6 +227,61 @@ def _utility_comparison_trace(certificate: dict[str, object]) -> dict[str, objec
     }
 
 
+def _opponent_terminal_control_input(
+    *,
+    war: dict[str, object],
+    war_id: int,
+    opponent_character_id: int,
+    options_query: dict[str, object],
+    white_peace_projection: dict[str, object],
+) -> dict[str, object]:
+    normalized = normalize_war_termination_options(
+        options_query.get("war_termination_options"),
+        expected_war_id=war_id,
+    )
+    active_score = war.get("player_relative_war_score")
+    if isinstance(active_score, bool) or not isinstance(active_score, int):
+        raise ValueError("active Raiktor war score is unavailable")
+    if (
+        normalized["player_side"] != "attacker"
+        or normalized["player_is_primary_war_leader"] is not True
+        or normalized["absolute_war_scores_observable"] is not True
+        or normalized["player_relative_war_score"] != active_score
+        or normalized["attacker_war_score"] != active_score
+        or normalized["defender_war_score"] != -active_score
+    ):
+        raise ValueError(
+            "same-frame Raiktor terminal-control scores are incomplete or drifted"
+        )
+    observation = white_peace_projection.get("white_peace_observation")
+    frame = observation.get("frame") if isinstance(observation, dict) else None
+    if not isinstance(frame, dict) or (
+        frame.get("war_id") != war_id
+        or frame.get("primary_defender_character_id") != opponent_character_id
+    ):
+        raise ValueError("Raiktor terminal-control frame is unavailable")
+    return {
+        "schema_version": 1,
+        "contract": OPPONENT_TERMINAL_CONTROL_CONTRACT,
+        "status": "complete",
+        "frame": dict(frame),
+        "player_side": "attacker",
+        "player_is_primary_war_leader": True,
+        "player_relative_war_score": active_score,
+        "absolute_war_scores_observable": True,
+        "attacker_war_score": active_score,
+        "defender_war_score": -active_score,
+        "opponent_terminal_control": active_score <= -100,
+        "source_options_query_sha256": canonical_policy_input_sha256(
+            normalized
+        ),
+        "producer": {
+            "producer_id": "raiktor-formal-exit-terminal-control-v1",
+            "production_live_input": True,
+        },
+    }
+
+
 def _current_query(
     rows: list[dict[str, object]], snapshot: dict[str, object],
     step: str, *, episode_field: str,
@@ -270,4 +337,8 @@ def _blocked(
     }
 
 
-__all__ = ["POLICY", "TRACE_FIELD", "plan_raiktor_formal_exit"]
+__all__ = [
+    "POLICY",
+    "TRACE_FIELD",
+    "plan_raiktor_formal_exit",
+]

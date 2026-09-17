@@ -15,6 +15,7 @@ from xar_autoplayer.simulation.raiktor_campaign_dominance_provider import (  # n
 )
 from xar_autoplayer.simulation.raiktor_three_way_exit_recommendation import (  # noqa: E402
     CONTINUE_POSTCONDITIONS,
+    OPPONENT_TERMINAL_CONTROL_CONTRACT,
     PROVIDER_SCHEMA,
     TERMINATION_POSTCONDITIONS,
     ThreeWayExitRecommendationError,
@@ -103,6 +104,33 @@ def _complete(*, production_live: bool) -> list[dict[str, object]]:
     return values
 
 
+def _terminal_control(
+    projection: dict[str, object],
+    *,
+    score: int = 41,
+    production_live: bool,
+) -> dict[str, object]:
+    frame = projection["white_peace_observation"]["frame"]
+    return {
+        "schema_version": 1,
+        "contract": OPPONENT_TERMINAL_CONTROL_CONTRACT,
+        "status": "complete",
+        "frame": deepcopy(frame),
+        "player_side": "attacker",
+        "player_is_primary_war_leader": True,
+        "player_relative_war_score": score,
+        "absolute_war_scores_observable": True,
+        "attacker_war_score": score,
+        "defender_war_score": -score,
+        "opponent_terminal_control": score <= -100,
+        "source_options_query_sha256": "C" * 64,
+        "producer": {
+            "producer_id": "test-terminal-control-v1",
+            "production_live_input": production_live,
+        },
+    }
+
+
 def _provide(
     *,
     production_live: bool = False,
@@ -110,6 +138,7 @@ def _provide(
     allow_white_favor: bool = False,
     opponent_penalty: int | None = None,
     minimum_margin: int | None = None,
+    score: int = 41,
 ) -> dict[str, object]:
     projection, session, budget, model = _complete(
         production_live=production_live
@@ -131,7 +160,14 @@ def _provide(
         ] = opponent_penalty
     power = _dominance(projection, relation=relation)
     return provide_raiktor_three_way_exit_recommendation(
-        projection, session, power, budget, model
+        projection,
+        session,
+        power,
+        budget,
+        model,
+        _terminal_control(
+            projection, score=score, production_live=production_live
+        ),
     )
 
 
@@ -241,6 +277,7 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
             _dominance(projection),
             budget,
             model,
+            _terminal_control(projection, production_live=True),
         )
 
         self.assertEqual(result["recommended_outcome"], "continue")
@@ -271,6 +308,88 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
         )
         self.assertEqual(result["action_literal"], "resume-map")
 
+    def test_minus_100_excludes_continue_and_selects_legal_surrender(
+        self,
+    ) -> None:
+        result = _provide(production_live=True, score=-100)
+
+        self.assertEqual(result["recommended_outcome"], "surrender")
+        self.assertEqual(result["action_literal"], "surrender-war-50331699")
+        certificate = result["recommendation_certificate"]
+        self.assertEqual(
+            certificate["opponent_terminal_control"],
+            {
+                "active": True,
+                "player_relative_war_score": -100,
+                "attacker_war_score": -100,
+                "defender_war_score": 100,
+            },
+        )
+        continuing = certificate["options"]["continue"]
+        self.assertFalse(continuing["eligible"])
+        self.assertEqual(
+            continuing["execution_blockers"],
+            ["opponent_has_enforceable_terminal_war_score"],
+        )
+        self.assertEqual(continuing["utility_raw"], -50_000_000)
+
+    def test_minus_99_keeps_existing_continue_behavior(self) -> None:
+        result = _provide(production_live=True, score=-99)
+
+        self.assertEqual(result["recommended_outcome"], "continue")
+        self.assertEqual(result["action_literal"], "resume-map")
+        continuing = result["recommendation_certificate"]["options"][
+            "continue"
+        ]
+        self.assertTrue(continuing["eligible"])
+        self.assertEqual(continuing["execution_blockers"], [])
+
+    def test_minus_100_still_allows_white_peace_to_win(self) -> None:
+        result = _provide(
+            production_live=True,
+            allow_white_favor=True,
+            score=-100,
+        )
+
+        self.assertEqual(result["recommended_outcome"], "white_peace")
+        self.assertEqual(
+            result["action_literal"], "offer-white-peace-50331699"
+        )
+
+    def test_minus_100_with_no_legal_terminal_fails_closed(self) -> None:
+        terms = _terms_query()
+        projection = provide_raiktor_white_peace_narrow_projection(
+            _snapshot(),
+            _options_query(available=False, surrender_available=False),
+            terms,
+        )
+        projection["production_live"] = True
+        projection["white_peace_observation"]["producer"][
+            "production_live"
+        ] = True
+        _, session, budget, model = _inputs()
+
+        result = provide_raiktor_three_way_exit_recommendation(
+            projection,
+            session,
+            _dominance(projection),
+            budget,
+            model,
+            _terminal_control(
+                projection, score=-100, production_live=True
+            ),
+        )
+
+        self.assertFalse(result["recommendation_ready"])
+        self.assertFalse(result["action_ready"])
+        self.assertIsNone(result["action_literal"])
+        self.assertEqual(
+            result["recommendation_certificate"]["comparison"][
+                "eligible_options"
+            ],
+            [],
+        )
+
     def test_large_margin_requirement_remains_underdetermined(self) -> None:
         result = _provide(
             production_live=True,
@@ -286,7 +405,12 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
     def test_missing_dominance_is_a_typed_blocker(self) -> None:
         projection, session, budget, model = _complete(production_live=True)
         result = provide_raiktor_three_way_exit_recommendation(
-            projection, session, None, budget, model
+            projection,
+            session,
+            None,
+            budget,
+            model,
+            _terminal_control(projection, production_live=True),
         )
 
         self.assertIn("measured_power_dominance_unavailable", result["blockers"])
@@ -302,7 +426,49 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
             ThreeWayExitRecommendationError, "crossed paused frames"
         ):
             provide_raiktor_three_way_exit_recommendation(
-                projection, session, power, budget, model
+                projection,
+                session,
+                power,
+                budget,
+                model,
+                _terminal_control(projection, production_live=True),
+            )
+
+    def test_missing_terminal_control_fails_closed(self) -> None:
+        projection, session, budget, model = _complete(production_live=True)
+
+        result = provide_raiktor_three_way_exit_recommendation(
+            projection,
+            session,
+            _dominance(projection),
+            budget,
+            model,
+        )
+
+        self.assertEqual(
+            result["blockers"], ["opponent_terminal_control_unavailable"]
+        )
+        self.assertFalse(result["recommendation_ready"])
+        self.assertFalse(result["action_ready"])
+
+    def test_cross_frame_terminal_control_is_rejected(self) -> None:
+        projection, session, budget, model = _complete(production_live=True)
+        terminal_control = _terminal_control(
+            projection, production_live=True
+        )
+        terminal_control["frame"]["date_raw"] += 24
+
+        with self.assertRaisesRegex(
+            ThreeWayExitRecommendationError,
+            "terminal-control inputs crossed paused frames",
+        ):
+            provide_raiktor_three_way_exit_recommendation(
+                projection,
+                session,
+                _dominance(projection),
+                budget,
+                model,
+                terminal_control,
             )
 
 

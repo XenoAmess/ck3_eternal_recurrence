@@ -65,3 +65,31 @@ formal same-frame choice, one bounded typed action, independent next paused
 material result, checkpoint and new-process cold restore. GEN-034-D still
 requires a lawful newly created ordinary war with pre-war source-specific army
 capture, one legal terminal, material postwar/truce results and cold restore.
+
+## R831/R832 terminal-control correction, 2026-09-17
+
+R831 reached player-relative war score `-100` while `WarID=33554473` remained
+active. R832 cold-restored that exact frame. Its same-frame recommendation still
+ranked continue at `-50,000,000` above the legal surrender at `-91,125,000`
+because recommendation v5 had no war-score input and always marked continue
+eligible. White peace was unavailable. The bounded tactical sentinel then
+advanced 11 game days and CK3 ended the war naturally, with zero explicit
+terminal submissions. This is a production B0 for GEN-034-C/D: the material
+defeat is real, but it cannot satisfy an action-bound terminal contract.
+
+Recommendation v6 therefore consumes an explicit, hashed and frame-bound
+`opponent_terminal_control` input derived from the current normalized options
+query. For a same-frame Raiktor primary attacker at player-relative score
+`<= -100`, with observable mutually inverse attacker/defender absolute scores,
+continue remains in the three-option trace but is ineligible. The provider then
+compares only otherwise-legal white peace and surrender; it does not hard-code
+surrender or bypass terms, budgets, margin, action registration or the current
+action gate. Missing or cross-frame terminal-control evidence blocks the whole
+recommendation and cannot fall through to the tactical planner.
+
+The boundary is deliberately narrow. Score `-99` retains the existing utility
+behavior, own-side `+100` still returns to the higher-priority enforce-demands
+branch, and any previous unconfirmed terminal submission still requires fresh
+war status before another command. A terminal selection remains only an
+authorization: GEN-034 still requires exactly one submission, independent
+WarID/loss/truce/resource postconditions, checkpoint, and true cold restore.

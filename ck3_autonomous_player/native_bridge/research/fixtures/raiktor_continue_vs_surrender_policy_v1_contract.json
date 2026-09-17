@@ -14,7 +14,7 @@
     },
     {
       "path": "docs/ck3-native-ai/player-war-exit-policy.md",
-      "sha256": "0F1F7065EAB1388A06C150B09A2C01A2BB8E999BFEFF57CFE4460DAB9E7D5DC8",
+      "sha256": "42D97D9BDAB2E92D9B92EF6ACC109CAA6647B7FD81224DC9FBD22DC3FF6235CC",
       "semantic_contract": "continue and surrender require complete campaign evidence, explicit loss budgets and robust risk-adjusted utility comparison"
     },
     {

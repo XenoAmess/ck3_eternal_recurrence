@@ -1,11 +1,11 @@
 """Compose one bounded Raiktor continue/white-peace/surrender decision.
 
 This provider joins the production-capable immediate-exit evaluator with the
-same-frame measured strategic-power certificate.  Continuing the war is a
-strategy baseline minus the versioned power-relation tail penalty; it is not a
-campaign win forecast.  A production action literal is emitted only when all
-inputs are production-live, frame-bound, and one option wins by the configured
-minimum margin.
+same-frame measured strategic-power and opponent-terminal-control certificates.
+Continuing the war is a strategy baseline minus the versioned power-relation
+tail penalty; it is not a campaign win forecast.  A production action literal
+is emitted only when all inputs are production-live, frame-bound, and one
+option wins by the configured minimum margin.
 """
 
 from __future__ import annotations
@@ -25,9 +25,10 @@ from xar_autoplayer.simulation.raiktor_exit_utility_evaluator import (
 )
 
 
-CONTRACT = "raiktor-three-way-exit-recommendation-v5"
-PROVIDER_SCHEMA = "xar.ck3.raiktor_three_way_exit_recommendation.v4"
-PROVIDER_ID = "raiktor-three-way-exit-recommendation-provider-v4"
+CONTRACT = "raiktor-three-way-exit-recommendation-v6"
+PROVIDER_SCHEMA = "xar.ck3.raiktor_three_way_exit_recommendation.v5"
+PROVIDER_ID = "raiktor-three-way-exit-recommendation-provider-v5"
+OPPONENT_TERMINAL_CONTROL_CONTRACT = "raiktor-opponent-terminal-control-v1"
 UTILITY_UNIT = "strategy_utility_q100000"
 
 TERMINATION_POSTCONDITIONS = (
@@ -55,6 +56,7 @@ def provide_raiktor_three_way_exit_recommendation(
     power_dominance_certificate_value: object | None,
     budget_provider_value: object | None,
     model_provider_value: object | None,
+    opponent_terminal_control_value: object | None = None,
 ) -> dict[str, object]:
     """Return one three-way recommendation and, when live, one action plan."""
 
@@ -67,6 +69,8 @@ def provide_raiktor_three_way_exit_recommendation(
     blockers = list(immediate["blockers"])
     if power_dominance_certificate_value is None:
         blockers.append("measured_power_dominance_unavailable")
+    if opponent_terminal_control_value is None:
+        blockers.append("opponent_terminal_control_unavailable")
     if blockers:
         return _result(immediate=immediate, blockers=blockers)
 
@@ -95,17 +99,29 @@ def provide_raiktor_three_way_exit_recommendation(
     except ValueError as error:
         raise ThreeWayExitRecommendationError(str(error)) from error
     _require_same_frame(certificate["frame"], dominance["frame"])
+    terminal_control = _opponent_terminal_control(
+        opponent_terminal_control_value
+    )
+    _require_terminal_control_same_frame(
+        certificate["frame"], terminal_control["frame"]
+    )
 
     model = _model_from_provider(model_provider_value)
     relation = dominance["power"]["relation"]
     penalty = _continue_penalty(model, relation=relation)
+    continue_execution_blockers = (
+        ["opponent_has_enforceable_terminal_war_score"]
+        if terminal_control["opponent_terminal_control"] is True
+        else []
+    )
     continue_option = {
         "measured_power_relation": relation,
         "base_utility_raw": 0,
         "tail_risk_penalty_raw": penalty,
         "utility_raw": -penalty,
         "hard_budget_breaches": [],
-        "eligible": True,
+        "execution_blockers": continue_execution_blockers,
+        "eligible": not continue_execution_blockers,
         "campaign_outcome_forecast_ready": False,
     }
 
@@ -136,6 +152,7 @@ def provide_raiktor_three_way_exit_recommendation(
     production_inputs = (
         immediate.get("production_live_inputs") is True
         and dominance["producer"]["production_live_input"] is True
+        and terminal_control["producer"]["production_live_input"] is True
     )
     production_recommendation = bool(
         production_inputs and recommendation is not None
@@ -175,6 +192,17 @@ def provide_raiktor_three_way_exit_recommendation(
             ),
             "power_dominance_sha256": canonical_policy_input_sha256(dominance),
             "utility_model_sha256": canonical_policy_input_sha256(model),
+            "opponent_terminal_control_sha256": canonical_policy_input_sha256(
+                terminal_control
+            ),
+        },
+        "opponent_terminal_control": {
+            "active": terminal_control["opponent_terminal_control"],
+            "player_relative_war_score": terminal_control[
+                "player_relative_war_score"
+            ],
+            "attacker_war_score": terminal_control["attacker_war_score"],
+            "defender_war_score": terminal_control["defender_war_score"],
         },
         "options": options,
         "comparison": comparison,
@@ -193,6 +221,7 @@ def provide_raiktor_three_way_exit_recommendation(
             "measured_power_is_not_campaign_forecast": True,
             "continue_is_strategy_baseline_minus_tail_penalty": True,
             "native_execution_availability_excludes_immediate_options": True,
+            "opponent_terminal_control_excludes_continue": True,
             "checkpoint_replay_power_input": dominance["schema_version"] == 3,
             "action_submitted": False,
             "postcondition_verified": False,
@@ -335,6 +364,96 @@ def _require_same_frame(
     if actual != expected or None in expected.values():
         raise ThreeWayExitRecommendationError(
             "immediate-exit and power certificates crossed paused frames"
+        )
+
+
+def _opponent_terminal_control(value: object) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ThreeWayExitRecommendationError(
+            "opponent terminal-control input is malformed"
+        )
+    if (
+        value.get("schema_version") != 1
+        or value.get("contract") != OPPONENT_TERMINAL_CONTROL_CONTRACT
+        or value.get("status") != "complete"
+    ):
+        raise ThreeWayExitRecommendationError(
+            "opponent terminal-control identity drifted"
+        )
+    frame = value.get("frame")
+    if not isinstance(frame, dict):
+        raise ThreeWayExitRecommendationError(
+            "opponent terminal-control frame is malformed"
+        )
+    if (
+        value.get("player_side") != "attacker"
+        or value.get("player_is_primary_war_leader") is not True
+        or value.get("absolute_war_scores_observable") is not True
+    ):
+        raise ThreeWayExitRecommendationError(
+            "opponent terminal-control primary-attacker evidence is incomplete"
+        )
+    player_score = _signed_int(
+        value.get("player_relative_war_score"),
+        "opponent_terminal_control.player_relative_war_score",
+    )
+    attacker_score = _signed_int(
+        value.get("attacker_war_score"),
+        "opponent_terminal_control.attacker_war_score",
+    )
+    defender_score = _signed_int(
+        value.get("defender_war_score"),
+        "opponent_terminal_control.defender_war_score",
+    )
+    if player_score != attacker_score or defender_score != -attacker_score:
+        raise ThreeWayExitRecommendationError(
+            "opponent terminal-control war scores disagree"
+        )
+    active = value.get("opponent_terminal_control")
+    if not isinstance(active, bool) or active is not (player_score <= -100):
+        raise ThreeWayExitRecommendationError(
+            "opponent terminal-control classification drifted"
+        )
+    source_sha = value.get("source_options_query_sha256")
+    if not (
+        isinstance(source_sha, str)
+        and len(source_sha) == 64
+        and all(
+            character in "0123456789abcdefABCDEF"
+            for character in source_sha
+        )
+    ):
+        raise ThreeWayExitRecommendationError(
+            "opponent terminal-control source hash is malformed"
+        )
+    producer = value.get("producer")
+    if not isinstance(producer, dict) or not isinstance(
+        producer.get("production_live_input"), bool
+    ):
+        raise ThreeWayExitRecommendationError(
+            "opponent terminal-control producer is malformed"
+        )
+    return {
+        **value,
+        "frame": dict(frame),
+        "player_relative_war_score": player_score,
+        "attacker_war_score": attacker_score,
+        "defender_war_score": defender_score,
+        "opponent_terminal_control": active,
+        "producer": dict(producer),
+    }
+
+
+def _require_terminal_control_same_frame(
+    immediate_frame: object, terminal_frame: object
+) -> None:
+    if (
+        not isinstance(immediate_frame, dict)
+        or not isinstance(terminal_frame, dict)
+        or terminal_frame != immediate_frame
+    ):
+        raise ThreeWayExitRecommendationError(
+            "immediate-exit and terminal-control inputs crossed paused frames"
         )
 
 
@@ -525,6 +644,7 @@ def _nonnegative_int(value: object, name: str) -> int:
 __all__ = [
     "CONTRACT",
     "CONTINUE_POSTCONDITIONS",
+    "OPPONENT_TERMINAL_CONTROL_CONTRACT",
     "PROVIDER_ID",
     "PROVIDER_SCHEMA",
     "TERMINATION_POSTCONDITIONS",
