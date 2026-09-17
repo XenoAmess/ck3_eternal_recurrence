@@ -876,6 +876,7 @@ def finalize_no_launch(spec_path: Path) -> dict[str, Any]:
     for path in (state_save, state_driver, state_environment):
         if not path.is_file():
             raise FileNotFoundError(path)
+    state_environment_payload = read_json(state_environment)
     receipt_driver_target = receipt.get("driver_state", {}).get("target_sha256")
     receipt_environment_target = receipt.get("environment", {}).get("target_sha256")
     checks = {
@@ -893,7 +894,11 @@ def finalize_no_launch(spec_path: Path) -> dict[str, Any]:
         "target_pair_exact": sha256(state_save)
         == sample["checkpoint"]["sha256"].casefold()
         and sha256(state_driver) == receipt_driver_target,
-        "target_environment_exact": sha256(state_environment)
+        "target_environment_exact": state_environment_payload.get(
+            "environment_sha256"
+        )
+        == receipt_environment_target
+        and report.get("profile", {}).get("environment_sha256")
         == receipt_environment_target,
         "episode_exact": receipt.get("no_launch_preflight_expectations", {}).get("expected_character_id")
         == sample["episode_character_id"]

@@ -199,7 +199,14 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
         state_driver.parent.mkdir(parents=True, exist_ok=True)
         save.write_bytes(self.checkpoint.read_bytes())
         state_driver.write_bytes(b'{"rebound":true}\n')
-        environment.write_bytes(b'{"environment":"test"}\n')
+        environment_digest = "e" * 64
+        builder.write_json(
+            environment,
+            {
+                "environment": "test",
+                "environment_sha256": environment_digest,
+            },
+        )
         receipt = {
             "schema": builder.REBIND_SCHEMA,
             "status": "rebound",
@@ -210,7 +217,7 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
             "process_inventory": {"processes": []},
             "environment": {
                 "source_sha256": "a" * 64,
-                "target_sha256": builder.sha256(environment),
+                "target_sha256": environment_digest,
             },
             "driver_state": {
                 "source_sha256": builder.sha256(self.driver),
@@ -244,6 +251,7 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
                 "process_inventory": {"processes": []},
                 "profile": {
                     "agent_runtime_revision": self.commit,
+                    "environment_sha256": environment_digest,
                     "production_tree_sha256": self.spec["content"][
                         "production_tree"
                     ]["tree_sha256"],
