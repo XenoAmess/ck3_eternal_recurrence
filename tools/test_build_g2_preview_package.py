@@ -23,6 +23,7 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
         self.repo = self.root / "source-repo"
         self.repo.mkdir()
         required = {
+            ".gitignore": b"__pycache__/\n",
             "ck3_autonomous_player/agent.py": b"print('agent')\n",
             "ck3_autonomous_player/pyproject.toml": b"[project]\nname='test'\n",
             "ck3_autonomous_player/src/xar_autoplayer/cli.py": b"# cli\n",
@@ -306,6 +307,31 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
                 text=True,
             ).strip(),
             self.commit,
+        )
+        runtime_cache = (
+            extracted
+            / "repo"
+            / "ck3_autonomous_player"
+            / "src"
+            / "xar_autoplayer"
+            / "__pycache__"
+            / "runtime.cpython-313.pyc"
+        )
+        runtime_cache.parent.mkdir(parents=True)
+        runtime_cache.write_bytes(b"runtime cache")
+        self.assertEqual(
+            subprocess.check_output(
+                [
+                    "git",
+                    "-C",
+                    str(extracted / "repo"),
+                    "status",
+                    "--porcelain=v1",
+                    "--untracked-files=all",
+                ],
+                text=True,
+            ),
+            "",
         )
 
         equivalent_repo = self.root / "equivalent-source-repo"

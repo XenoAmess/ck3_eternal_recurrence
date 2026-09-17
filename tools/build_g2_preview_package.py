@@ -55,6 +55,7 @@ PROMOTION_GATES = {
     "single_instance_cleanup",
 }
 REQUIRED_REPO_FILES = (
+    ".gitignore",
     "ck3_autonomous_player/agent.py",
     "ck3_autonomous_player/pyproject.toml",
     "ck3_autonomous_player/src/xar_autoplayer/cli.py",
@@ -68,6 +69,7 @@ REQUIRED_REPO_FILES = (
     "XenoAmess_s_Eternal_Recurrence/descriptor.mod",
 )
 PACKAGE_REPO_PATHS = (
+    ".gitignore",
     "ck3_autonomous_player/agent.py",
     "ck3_autonomous_player/pyproject.toml",
     "ck3_autonomous_player/src",
