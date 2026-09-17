@@ -10,6 +10,7 @@ decision before any later run is allowed to offer white peace again.
 from __future__ import annotations
 
 import copy
+import json
 from pathlib import Path
 import re
 import threading
@@ -18,6 +19,10 @@ import time
 from .bridge.native_driver import NativeHeadlessGameplayDriver
 from .bridge.service import GameplayBridgeService
 from .bridge.war_contract import query_outbound_war_white_peace_status_step
+from .bridge.succession_transition_contract import (
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    bind_succession_lifecycle_from_environment_v1,
+)
 from .environment import EnvironmentSpec, ensure_state_path_safe
 from .errors import AgentError
 from .native_auto_run import (
@@ -110,6 +115,26 @@ def query_outbound_white_peace_status_once(
 
     ensure_state_path_safe(spec.state_dir)
     checkpoint = validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
+    try:
+        environment_manifest = json.loads(
+            spec.manifest_path.read_text(encoding="utf-8-sig")
+        )
+        succession_lifecycle_binding = (
+            bind_succession_lifecycle_from_environment_v1(
+                environment_manifest,
+                lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+                ordinary_campaign_no_pact=True,
+            )
+        )
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+        raise AgentError(
+            f"white-peace status lifecycle profile is not runnable: {error}"
+        ) from error
+    if checkpoint.get("succession_lifecycle") != succession_lifecycle_binding:
+        raise AgentError(
+            "white-peace status checkpoint lifecycle differs from the "
+            "prepared ordinary profile"
+        )
     save_path = spec.profile_dir / "save games" / "xar_checkpoint.ck3"
     driver_state_path = spec.state_dir / "native-session" / "driver-state.json"
     before_driver_state = _read_driver_state(driver_state_path)
@@ -159,6 +184,7 @@ def query_outbound_white_peace_status_once(
             config.pipe_name,
             state_dir=spec.state_dir,
             save_dir=spec.profile_dir / "save games",
+            succession_lifecycle_binding=succession_lifecycle_binding,
         )
         service = GameplayBridgeService(driver)
         session_thread = threading.Thread(
@@ -325,6 +351,9 @@ def query_outbound_white_peace_status_once(
                 "game.command.query-outbound-war-white-peace-status-v1-N"
             ),
             "checkpoint_anchor": copy.deepcopy(checkpoint),
+            "succession_lifecycle": copy.deepcopy(
+                succession_lifecycle_binding
+            ),
         },
         "bounds": {
             "timeout_seconds": timeout,

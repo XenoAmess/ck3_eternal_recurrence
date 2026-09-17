@@ -136,8 +136,34 @@ class OutboundWhitePeaceStatusQueryRunTest(unittest.TestCase):
                 json.dumps({"bridge_pid": 100, "command_history": prior}),
                 encoding="utf-8",
             )
+            lifecycle = {
+                "schema": "xar.ck3.succession-lifecycle-binding/v1",
+                "lifecycle": "ordinary_campaign_succession",
+                "xar_enabled": "xar_off",
+                "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+                "source": "prepared-environment-manifest",
+                "environment_sha256": "a" * 64,
+            }
+            manifest_path = profile / "xar-autoplayer-environment.json"
+            manifest_path.write_text(
+                json.dumps(
+                    {
+                        "rules": {
+                            "profile": [
+                                {"rule": "xar_enabled", "setting": "xar_off"}
+                            ]
+                        },
+                        "environment_sha256": "a" * 64,
+                    }
+                ),
+                encoding="utf-8",
+            )
             persisted = [*prior, restore]
-            spec = SimpleNamespace(state_dir=root, profile_dir=profile)
+            spec = SimpleNamespace(
+                state_dir=root,
+                profile_dir=profile,
+                manifest_path=manifest_path,
+            )
             config = NativeBridgeLaunchConfig(
                 mode="native-headless",
                 pipe_name=r"\\.\pipe\outbound-wp-test",
@@ -188,6 +214,7 @@ class OutboundWhitePeaceStatusQueryRunTest(unittest.TestCase):
                         "sha256": checkpoint_sha,
                         "saved_date_raw": 53149872,
                         "history_index": 1,
+                        "succession_lifecycle": lifecycle,
                     },
                 ),
                 mock.patch.object(subject, "NativeHeadlessGameplayDriver", _Driver),
@@ -212,6 +239,9 @@ class OutboundWhitePeaceStatusQueryRunTest(unittest.TestCase):
             self.assertEqual(report["round"], "R798")
             self.assertEqual(report["outbound_white_peace_status"]["state"], "exact_absent")
             self.assertEqual(services[0].query_calls, 1)
+            self.assertEqual(
+                report["source"]["succession_lifecycle"], lifecycle
+            )
             self.assertTrue(all(report["checks"].values()))
             self.assertEqual(report["forbidden_action_counts"]["gameplay"], 0)
             self.assertEqual(
