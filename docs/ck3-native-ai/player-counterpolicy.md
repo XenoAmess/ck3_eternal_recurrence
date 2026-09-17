@@ -598,22 +598,51 @@ flowchart TD
   context，没有提交 option，并因 pending decision 保留 h596。R850 冷恢复同一 checkpoint 后，旧实现把这条
   “被玩家决策打断的 active route”误生成为 `checkpoint_discarded_branch` failure，导致同帧重新 preview 后
   `native_war_no_safe_exact_route`。这不是实际路线失败。
-- [implementation-confirmed / static-ready / live=false] rollback 派生现在只在 discarded epoch 的最后一条有效
+- [implementation-confirmed / R850 static-ready] rollback 派生现在只在 discarded epoch 的最后一条有效
   命令是 available、单窗口、正 instance 的 typed current-event query，且该 epoch 从未提交任何 event option 时，
   抑制本次 route-failure advisory。无 event query、query unavailable、query 不是 epoch 边界或曾提交 typed
   event option 时仍沿用原来的 exact target+route 失败记忆。事实 history 仍按 checkpoint 截断，既有两入口上限、
-  same episode/checkpoint/war/army/origin 绑定与 unknown-side-effect 保护不变。R850 后尚需从未污染的 R849
-  driver 重新重绑并实机证明 fresh preview/move、`.1000` typed option、独立消失、下一 turn 与新 checkpoint。
+  same episode/checkpoint/war/army/origin 绑定与 unknown-side-effect 保护不变。R850 后要求从未污染 R849 driver
+  重新重绑，并实机证明 fresh preview/move、`.1000` typed option、独立消失、下一 turn 与新 checkpoint。
+- [production-live / R851] R851 将 R849 history596 checkpoint 与 source driver 重新绑定后，在新 CK3 进程冷恢复；
+  运行版本为 agent/runtime `53dd6eb7d63d5da5a95b8da480c23bd1bd67e869`、native
+  `881e1ba5467f3304d930faaa958cdafd24962370`、CK3 `1.19.0.6`；source checkpoint 与 rebound driver
+  SHA-256 分别为 `3bf22edf75005e0eacf42cc2e488177d77f7da55dad7b5af6629640ebd48f428`、
+  `b7d3da3e133c8f7d2986e389623d9667139117b3f69332f556842b2f1255839e`。恢复后的 driver 明确保持
+  `rollback_war_failure=null`、`rollback_war_failures=[]`，没有把 event-interrupted discarded branch 复活成
+  route-failure advisory。
+- [production-live route recovery] 同帧 fresh preview 给出 Army304 `48→52`、route `[50,53,52]`、
+  `previewed_date_raw=53156280`，随后 typed move 在同日进入 `moving`。speed-3 sentinel 先在 9 日内推进至省50、
+  route `[53,52]`；再运行 5 日时被自然 `death_management.1000` instance3 暂停，route 仍为 `[53,52]`。
+  typed option 的独立消失后，后续正式 turn 继续原路线：5 日到省53、route `[52]`，再 26 日到省52并进入
+  `sieging`。因此 R850 的“回滚路线失败”是假阳性；R851 已对这一 exact interrupted-epoch 形状给出实机反证。
+- [production-live durability] turn10 后 history612 保存新 paired checkpoint，date `53156736`；report、最终 driver、
+  checkpoint/episode seed SHA-256 分别为
+  `2f785e21237d215af8c5a8b4090c5d596b11795eaf608ab1664221053b2af816`、
+  `e5ab16deba854a5afecb7c2715fcbedc87d2143d2c89f6ff755a329fd79b236b`、
+  `409f84109463fd061c1a843442200714e62de6eeb7e53c3bb029934798418693`；cleanup 全项 GREEN。
+- [production B0 RED / safe-exit] R851 不是成功 run。turn13/date `53157360` 时 War25 仍为玩家主攻方、score
+  `-9`、duration `266`；Army304 已在唯一 exact objective 52 围城，但 route rejection 为
+  `current_exact_siege_rejected/insufficient_strength`。native termination 只允许且会接受 surrender，white peace
+  与 victory 均不可用；该 runtime 因 CB-specific terms 与 campaign outcome 尚不可知而没有自动终战，最终以
+  `native_war_no_safe_exact_route` 阻塞。后续 master `1e51e8af` 的 negative-score dead-end surrender 改动不在
+  R851 live artifact 中，不能由本轮背书；权威 G2/GEN 状态保持不变。
+- [bounded claim] R851 只实证“以 available、唯一窗口、正 instance 的 typed event query 结束且没有提交 option”的
+  discarded epoch 不应生成 route-failure advisory，以及这条具体路线随后可走通。它不证明所有 rollback route 安全，
+  不取消其它 exact failure-memory 绑定，也不证明 `.1000` 的选择语义最优或整局 OODA 完成。
 
 ```mermaid
 flowchart TD
     R["[live-confirmed] successful restore"] --> D["[inference][counter-policy] derive discarded-branch entry route"]
-    D --> S{"[inference][counter-policy] same episode/checkpoint/war/army/origin?"}
+    D --> E{"[implementation] discarded epoch 以 exact unresolved player-event query 结束？"}
+    E -->|是| I["[production-live/R851] 不生成 route-failure advisory；回到 fresh preview"]
+    E -->|否| S{"[inference][counter-policy] same episode/checkpoint/war/army/origin?"}
     S -->|no| C["[inference][counter-policy] start a new bounded list"]
     S -->|yes| U["[inference][counter-policy] exact target+route dedupe; newest first"]
     C --> K["[inference][counter-policy] retain at most two entries"]
     U --> K
     K --> P["[inference][counter-policy] fresh preview compares every retained entry"]
+    I --> P
     P -->|exact match| B["[inference][counter-policy] block this route only"]
     P -->|route changed| A["[inference][counter-policy] allow normal M×N audit"]
     B --> N["[inference][counter-policy] preview another exact objective or remain paused"]

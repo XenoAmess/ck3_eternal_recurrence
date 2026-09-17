@@ -1089,7 +1089,7 @@ typed option，独立 paused frame 证明旧 instance `8` 消失并尽可能读�
 - report/checkpoint/driver SHA-256 为 `63CFCDD4...34D1`、`9893F8C1...C08C`、`8315217A...F83`。这为 R842 的 exact `prison_notification.2002` 链提供了独立自然复现和 cold-restore/checkpoint 证据；它不满足 G2-M2 指定的 `tgp_travel_events.0030` 或 `death_management.1007`。
 - `health.7500` 在修复后的 R846 没有出现。其 `a5db1e5d` 状态仍是 static-ready / live=false；不得用 R846 的 prison event 关闭 R844 的 health gate。
 
-### R849 自然 `death_management.1000`（配偶死亡三模板）
+### R849→R851 自然 `death_management.1000`（配偶死亡三模板）
 
 - [production RED] R849 在标准封建 `xar_off` 连续运行中自然遇到 instance `3`。同一 paused frame 的
   `current-event-window-context-v1` 绑定 player/root 与 `surviving_consort=31853`、
@@ -1105,13 +1105,35 @@ typed option，独立 paused frame 证明旧 instance `8` 消失并尽可能读�
   `:1272-1297` 以 `if/else_if` 最多保存一个 `like` / `dislike` flag；三个 option 的 trigger 分别是
   `exists like`（native `0`）、两者皆不存在（native `1`）和 `exists dislike`（native `2`），见
   `:1327-1388`。因此这是三个互斥的 source template，不是任意事件的“取第一项”。
-- [implementation-confirmed / static-ready / live=false] direct consumer 只为 stable key
+- [implementation-confirmed / R850 static-ready] direct consumer 只为 stable key
   `death_management.1000` 准入既有 option variants、其 variant-local saved-scope 字段、boolean flag 类型，
   以及既有 `character_scopes` / `unique_character_scope_excludes` 关系检查。每个模板仍须精确满足
   root=当前玩家、surviving consort=玩家、dead character≠玩家、模板对应的 exact scope set、snapshot
   authored count `3`，以及唯一 rendered+shown+enabled 行与 native `0/1/2` 的模板耦合；多一行、隐藏/禁用、
   索引漂移或 scope/option 语义错配均 fail-closed。R849 中性帧将由 registry 选择 typed
   `select-event-option-2`，`semantic_optimal=false` 保持不变。
+- [production-live / R851 / definition-local closed loop] R851 从 R849 history596 的 paired checkpoint 在新 CK3
+  进程冷恢复，运行 agent/runtime commit `53dd6eb7d63d5da5a95b8da480c23bd1bd67e869`、native
+  `881e1ba5467f3304d930faaa958cdafd24962370`、CK3 `1.19.0.6`。日期 `53156616` 自然到达 instance `3`；
+  turn7 的公共查询重新绑定唯一窗口、root character `31853`、`surviving_consort:character=31853`、
+  `dead_character:character=25583`、`new_memory:character_memory`、`deceased_character_stress:value` 与
+  `realm:landed_title`，仍只物化 rendered `0` / native `1`。所有 exact registry
+  checks 通过且 `failed_checks=[]`；turn8/history608 仅提交一次 `select-event-option-2`。
+- [production-live postcondition / bounded] 独立 paused 后置从 `native:22/revision23` 变为
+  `native:23/revision24`，旧 instance `3` 消失、new instance 与 active event 均为 null，
+  `postcondition_verified=true`；玩家 stress `0→20`，gold raw 保持 `29788225`。turn9 从该 event-free frame
+  执行正式 War25 termination query，R851 新增 history 中只有一次 event query 与一次 typed option，未重放
+  已生效动作；turn10 后 history612 又写入 paired checkpoint。
+- [evidence] R851 report、最终 driver、history612 checkpoint/episode seed 的 SHA-256 依次为
+  `2f785e21237d215af8c5a8b4090c5d596b11795eaf608ab1664221053b2af816`、
+  `e5ab16deba854a5afecb7c2715fcbedc87d2143d2c89f6ff755a329fd79b236b`、
+  `409f84109463fd061c1a843442200714e62de6eeb7e53c3bb029934798418693`；checkpoint date 为
+  `53156736`。session 以 operator stop 收口，`session_report_ok/shutdown_ok/tree_gone/cleanup_proven/driver_closed`
+  均为 true。
+- [bounded claim] 这只把该 exact definition 的 source-reviewed bounded continuation 从 static-ready 推进到
+  production-live：registry 自己仍报告 `native_ai_equivalent=false`、`semantic_optimal=false`、
+  `semantic_decision_ready=false`，effect preview 也不完整。它既不证明 option 2 是语义最优，也不关闭广义
+  “自然事件门”、G2 或 GEN；R851 最终仍在 War25 safe-exit B0 阻塞，不能称为成功整局或完整 OODA。
 
 ```mermaid
 flowchart TD
@@ -1125,10 +1147,12 @@ flowchart TD
     D --> G
     G -->|否| X["[implementation] typed projection drift；保持暂停"]
     G -->|是| S["[implementation] submit exactly one typed option"]
-    S -. "R849 修复后尚未实机复验" .-> U["[unknown] 独立 paused 后置、下一 turn 消费与 checkpoint"]
+    S --> P["[production-live/R851] 独立 paused frame：old instance 消失；stress 0→20"]
+    P --> T["[production-live/R851] 下一正式 turn 消费 event-free frame；history612 checkpoint"]
+    T -. "完整 effect preview 与语义效用仍未闭合" .-> U["[unknown] 完整物质效果与 campaign utility"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U unknown;
 ```
 
-本补丁不改公共 schema、native ABI、MCP 注册或能力广告。R849 只有在正式入口提交一次 typed option、独立
-paused frame 证明旧 instance 消失、下一正式 turn 消费结果且按现有规则保存 checkpoint 后，才能关闭 live RED。
+本实现不改公共 schema、native ABI、MCP 注册或能力广告。R851 已关闭 R849 针对该 definition 的 typed action
+lifecycle RED；上述边界仍禁止把一次 bounded continuation 外推为通用事件语义、自然事件总门或 G2/GEN 完成。
