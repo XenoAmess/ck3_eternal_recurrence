@@ -152,6 +152,7 @@ class OutboundWhitePeaceStatusQueryRunTest(unittest.TestCase):
                 return service
 
             def session(*args, stop_event: threading.Event, **kwargs):
+                self.assertEqual(kwargs["prepared_xar_enabled"], "xar_off")
                 self.assertTrue(stop_event.wait(2.0))
                 driver_state.write_text(
                     json.dumps({"bridge_pid": 200, "command_history": persisted}),

@@ -147,6 +147,7 @@ def query_outbound_white_peace_status_once(
                 poll_interval_seconds=poll_seconds,
                 cold_start_checkpoint=True,
                 stop_event=stop_event,
+                prepared_xar_enabled="xar_off",
             )
         except BaseException as error:  # returned to the owning thread
             session_state["error"] = f"{type(error).__name__}: {error}"
