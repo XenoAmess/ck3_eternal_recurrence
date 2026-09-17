@@ -638,6 +638,46 @@ flowchart TD
     C --> R
 ```
 
+### R867 原生默认集结点成军后的守方驻留窄门
+
+- [production-blocker-live] R867 在 CK3 `1.19.0.6`、source commit
+  `bf8930ac48caa2db6bbccf112bd8708ff9699be7` 上从 history `1211` 冷恢复。turn 77 的 same-frame
+  termination query 证明单一 WarID `150994969` 中玩家是 primary defender、分数 `-50`、战争时长 `69`
+  日；native surrender 可用，但 CB-specific terms 不可观测，既有策略没有授权终局。turn 78 的
+  `raise-troops-default` 独立投影 ArmyID `184549472` 在 Province `8750` gathering；turn 79 的一日
+  `life-advance` 又证明该军在原地变为 regular。此时 exact objective 为空，首都 Province `45` 有一支
+  敌军围城、另三支沿完整 `route=[46]` 离开，所有路线均不命中玩家所在的 `8750`。turn 80 仍落入
+  `native_war_counterpolicy_hold`。正式 report、最终 driver 与 history `1340` checkpoint SHA-256 分别为
+  `EA07E451BE6741AD8AB92A4A0043183B6E9204C218D1B6CB8F7A4E574D34CBA0`、
+  `B98159253D0E8D5F7A8F946AF5E4FE8502C9B172A5A950F7D28A864F774A51EA`、
+  `BE4E0C730A1CFEE57F9E2B1A7C3C454055E5F09B07AB50A9FF088F1B94913C5A`。
+- [inference][counter-policy] 该帧不能复用 attacker-only capital regroup：敌军仍在首都且没有 exact combat
+  forecast，主动前往 Province `45` 没有安全依据。最小可执行动作是在原生刚生成的 rally province 保持
+  stationary，并复用既有 active-war tactical `life-advance`；当前存在敌 active route 时该 driver 窗口严格为
+  一日，随后重新读取战争、军队、路线、pending 与终局状态。
+- [inference][counter-policy] rally hold 必须由 durable factual tail 绑定：最新成功
+  `raise-troops-default` 只能生成当前唯一 ArmyID，结果必须证明同一玩家 owner、gathering、原生 rally
+  Province、无 target/route/combat/retreat；raise 前必须有同一 WarID、同一 episode/actor 的 primary-defender
+  termination query。raise 后每个 factual advance 都必须保持同一 WarID、ArmyID、Province，且状态只允许
+  gathering→regular 或 regular stationary。冷恢复只有在 restore checkpoint 的 `history_index` 已包含该 raise，
+  且 checkpoint actor/episode 与当前一致时才保留绑定。
+- [inference][counter-policy] 仅在单一战争、primary defender、非终局分数 `-99..99`、空 exact objective、
+  单一 regular stationary controllable army、fresh same-frame campaign root 明确证明 current 不是 capital、
+  termination 当前不选动作、完整敌军 current/target/route 与当前 rally 无 stationary threat，且无 event、pending
+  interaction、combat、retreat、assault、unsafe army 或未确认写入时才执行该 hold。attacker、unknown/non-primary、
+  stale/missing root、多个战争/军队、ArmyID/owner/Province 改变、任何 post-raise move/merge/split/disband/assault、
+  敌路线命中 rally、观测不完整或已授权终局均失败关闭。本窄门不新增 native ABI、schema、MCP 或能力广告。
+
+```mermaid
+flowchart TD
+    R["[production-blocker-live] native raise result<br/>one gathering army at rally"] --> B{"[counter-policy] durable WarID/ArmyID/owner/<br/>province + restore ancestry binding?"}
+    B -->|no| X["[counter-policy] keep paused"]
+    B -->|yes| S{"[counter-policy] primary defender / no objective /<br/>regular stationary / no rally threat?"}
+    S -->|no| X
+    S -->|yes| A["[counter-policy] bounded life-advance"]
+    A --> O["[counter-policy] re-observe after one-day route horizon<br/>or the existing route-free war ceiling"]
+```
+
 ### 连续恢复的有界失败入口记忆
 
 - [live-confirmed] 从同一 checkpoint origin `2598` 已观察到两条最终进入无安全出口并执行 restore 的入口：

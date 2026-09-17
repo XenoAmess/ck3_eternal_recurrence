@@ -10465,6 +10465,104 @@ def _choose_one_life_turn_core(
                         "defensive_hold": defensive_hold,
                         "active_wars": war_summary,
                     }
+            defender_native_rally_hold = _primary_defender_capital_hold_input(
+                snapshot if isinstance(snapshot, dict) else {},
+                active_wars=active_wars,
+                controlled_armies=controlled_armies,
+                tactical_war=(
+                    tactical_war if isinstance(tactical_war, dict) else None
+                ),
+                pursuit_army=(
+                    pursuit_army if isinstance(pursuit_army, dict) else None
+                ),
+                exact_objective_province_ids=exact_objective_province_ids,
+                termination_by_war_id=termination_by_war_id,
+                war_summary=war_summary,
+                unsafe_armies=unsafe_armies,
+                active_assaults=active_assaults,
+                allow_observable_enemy_routes=True,
+            )
+            native_rally_hold_binding = (
+                _primary_defender_native_rally_hold_binding(
+                    rows,
+                    snapshot if isinstance(snapshot, dict) else {},
+                    war_id=(
+                        tactical_war_id
+                        if isinstance(tactical_war_id, int)
+                        else None
+                    ),
+                    army_id=(
+                        pursuit_army.get("army_id")
+                        if isinstance(pursuit_army, dict)
+                        else None
+                    ),
+                    current_province_id=(
+                        current_province_id
+                        if isinstance(current_province_id, int)
+                        else None
+                    ),
+                )
+                if defender_native_rally_hold is not None
+                else None
+            )
+            if native_rally_hold_binding is not None:
+                campaign_root = _same_frame_campaign_root_context(
+                    rows,
+                    snapshot if isinstance(snapshot, dict) else None,
+                )
+                if campaign_root is None:
+                    root_step = "query-campaign-root-context-v1"
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_defender_native_rally_hold_context",
+                        "selected_step": (
+                            root_step if root_step in available_steps else None
+                        ),
+                        "required_step": root_step,
+                        "reason": "the primary-defender native-rally hold requires a fresh same-frame campaign root so an arbitrary noncapital province cannot inherit this authorization",
+                        "defensive_hold": defender_native_rally_hold,
+                        "native_rally_hold_binding": (
+                            native_rally_hold_binding
+                        ),
+                        "active_wars": war_summary,
+                    }
+                capital_province_id = _native_int(
+                    campaign_root.get("capital_province_id")
+                )
+                if (
+                    capital_province_id is not None
+                    and capital_province_id != current_province_id
+                ):
+                    defensive_hold = {
+                        **defender_native_rally_hold,
+                        "capital_province_id": capital_province_id,
+                        "campaign_root_snapshot_revision": campaign_root.get(
+                            "snapshot_revision"
+                        ),
+                        "campaign_root_date_raw": campaign_root.get("date_raw"),
+                    }
+                    if "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_defender_native_rally_hold_progress",
+                            "selected_step": "life-advance",
+                            "reason": "the sole primary-defender army is still stationary at the exact province produced by its durable native raise receipt; advance only through the existing active-war tactical horizon and re-observe immediately",
+                            "defensive_hold": defensive_hold,
+                            "native_rally_hold_binding": (
+                                native_rally_hold_binding
+                            ),
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_defender_native_rally_hold_progress_unsupported",
+                        "selected_step": None,
+                        "required_step": "life-advance",
+                        "reason": "the exact native-raised defender rally hold is ready, but this backend cannot execute its bounded observation slice",
+                        "defensive_hold": defensive_hold,
+                        "native_rally_hold_binding": native_rally_hold_binding,
+                        "active_wars": war_summary,
+                    }
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_counterpolicy_hold",
@@ -12235,6 +12333,290 @@ def _primary_defender_capital_hold_input(
             for enemy in enemies
             if _native_int(enemy.get("army_id")) is not None
         ),
+    }
+
+
+def _primary_defender_native_rally_hold_binding(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    war_id: int | None,
+    army_id: object,
+    current_province_id: int | None,
+) -> dict[str, object] | None:
+    """Bind a remote defender hold to one factual native raise receipt."""
+
+    current_army_id = _native_int(army_id)
+    played_character = snapshot.get("played_character")
+    actor_id = (
+        _native_int(played_character.get("character_id"))
+        if isinstance(played_character, dict)
+        else None
+    )
+    episode_run_id = snapshot.get("episode_run_id")
+    current_date_raw = _native_int(snapshot.get("date_raw"))
+    if not (
+        war_id is not None
+        and current_army_id is not None
+        and current_province_id is not None
+        and actor_id is not None
+        and current_date_raw is not None
+        and (episode_run_id is None or isinstance(episode_run_id, str))
+    ):
+        return None
+
+    current_armies = snapshot.get("player_armies")
+    current_army = next(
+        (
+            row
+            for row in current_armies
+            if isinstance(row, dict)
+            and _native_int(row.get("army_id")) == current_army_id
+        ),
+        None,
+    ) if isinstance(current_armies, list) else None
+    if not (
+        isinstance(current_army, dict)
+        and _native_int(current_army.get("owner_character_id")) == actor_id
+        and _native_int(current_army.get("current_province_id"))
+        == current_province_id
+    ):
+        return None
+
+    raise_position = -1
+    raise_row: dict[str, object] | None = None
+    for position in range(len(commands) - 1, -1, -1):
+        row = commands[position]
+        if _effective_command(row) != RAISE_TROOPS_STEP:
+            continue
+        raise_position = position
+        raise_row = row
+        break
+    if raise_row is None or raise_row.get("ok") is not True:
+        return None
+    raise_history_index = _native_int(raise_row.get("index"))
+    raise_result = _effective_command_result(raise_row)
+    raise_action = (
+        raise_result.get("war_action")
+        if isinstance(raise_result, dict)
+        else None
+    )
+    raised_army_ids = (
+        raise_action.get("raised_army_ids")
+        if isinstance(raise_action, dict)
+        else None
+    )
+    raised_armies = (
+        raise_result.get("player_armies")
+        if isinstance(raise_result, dict)
+        else None
+    )
+    raised_army = (
+        raised_armies[0]
+        if isinstance(raised_armies, list) and len(raised_armies) == 1
+        else None
+    )
+    if not (
+        raise_history_index is not None
+        and isinstance(raise_result, dict)
+        and raise_result.get("accepted") is True
+        and raise_result.get("status") == "submitted"
+        and isinstance(raise_action, dict)
+        and raise_action.get("status") == "raised"
+        and raised_army_ids == [current_army_id]
+        and isinstance(raised_army, dict)
+        and _native_int(raised_army.get("army_id")) == current_army_id
+        and _native_int(raised_army.get("owner_character_id")) == actor_id
+        and _native_int(raised_army.get("current_province_id"))
+        == current_province_id
+        and raised_army.get("controllable") is True
+        and _army_tactical_state(raised_army) == "gathering"
+        and raised_army.get("in_combat") is False
+        and raised_army.get("retreating") is False
+        and "move_target_province_id" in raised_army
+        and raised_army.get("move_target_province_id") is None
+        and isinstance(raised_army.get("route_province_ids"), list)
+        and not raised_army["route_province_ids"]
+    ):
+        return None
+
+    query_position = -1
+    query_row: dict[str, object] | None = None
+    query_step = query_war_termination_options_step(war_id)
+    for position in range(raise_position - 1, -1, -1):
+        row = commands[position]
+        if _effective_command(row) == query_step:
+            query_position = position
+            query_row = row
+            break
+    if query_row is None or query_row.get("ok") is not True:
+        return None
+    query_history_index = _native_int(query_row.get("index"))
+    query_result = _effective_command_result(query_row)
+    query_options = (
+        query_result.get("war_termination_options")
+        if isinstance(query_result, dict)
+        else None
+    )
+    query_context = (
+        query_result.get("termination_query_context")
+        if isinstance(query_result, dict)
+        else None
+    )
+    active_signature = (
+        query_context.get("active_war_signature")
+        if isinstance(query_context, dict)
+        else None
+    )
+    signature = (
+        active_signature[0]
+        if isinstance(active_signature, list) and len(active_signature) == 1
+        else None
+    )
+    query_date_raw = (
+        _native_int(query_context.get("queried_date_raw"))
+        if isinstance(query_context, dict)
+        else None
+    )
+    if not (
+        query_history_index is not None
+        and isinstance(query_result, dict)
+        and query_result.get("accepted") is True
+        and query_result.get("status") == "available"
+        and query_result.get("queried_episode_run_id") == episode_run_id
+        and isinstance(query_options, dict)
+        and _native_int(query_options.get("war_id")) == war_id
+        and query_options.get("player_side") == "defender"
+        and query_options.get("player_is_primary_war_leader") is True
+        and isinstance(query_context, dict)
+        and query_context.get("queried_episode_run_id") == episode_run_id
+        and _native_int(query_context.get("queried_character_id")) == actor_id
+        and query_date_raw is not None
+        and query_date_raw <= current_date_raw
+        and isinstance(signature, dict)
+        and _native_int(signature.get("war_id")) == war_id
+        and signature.get("player_side") == "defender"
+        and signature.get("player_is_primary_war_leader") is True
+    ):
+        return None
+
+    crossed_restore_history_indices: list[int] = []
+    for row in commands[query_position + 1 : raise_position]:
+        if _effective_command(row) != "restore-checkpoint":
+            continue
+        restore_result = _effective_command_result(row)
+        checkpoint = (
+            restore_result.get("checkpoint")
+            if isinstance(restore_result, dict)
+            else None
+        )
+        if not (
+            row.get("ok") is True
+            and isinstance(restore_result, dict)
+            and restore_result.get("status") == "restored"
+            and isinstance(checkpoint, dict)
+            and _native_int(checkpoint.get("history_index")) is not None
+            and int(checkpoint["history_index"]) >= query_history_index
+            and _native_int(checkpoint.get("episode_character_id"))
+            == actor_id
+            and checkpoint.get("episode_run_id") == episode_run_id
+        ):
+            return None
+
+    def stable_progress_army(army: dict[str, object] | None) -> bool:
+        return bool(
+            isinstance(army, dict)
+            and _native_int(army.get("army_id")) == current_army_id
+            and _native_int(army.get("current_province_id"))
+            == current_province_id
+            and _army_tactical_state(army) in {"gathering", "regular"}
+            and army.get("in_combat") is False
+            and army.get("retreating") is False
+            and "move_target_province_id" in army
+            and army.get("move_target_province_id") is None
+            and isinstance(army.get("route_province_ids"), list)
+            and not army["route_province_ids"]
+        )
+
+    for row in commands[raise_position + 1 :]:
+        command = _effective_command(row)
+        if command == "restore-checkpoint":
+            restore_result = _effective_command_result(row)
+            checkpoint = (
+                restore_result.get("checkpoint")
+                if isinstance(restore_result, dict)
+                else None
+            )
+            restore_history_index = _native_int(row.get("index"))
+            if not (
+                row.get("ok") is True
+                and restore_history_index is not None
+                and isinstance(restore_result, dict)
+                and restore_result.get("status") == "restored"
+                and isinstance(checkpoint, dict)
+                and _native_int(checkpoint.get("history_index")) is not None
+                and int(checkpoint["history_index"]) >= raise_history_index
+                and _native_int(checkpoint.get("episode_character_id"))
+                == actor_id
+                and checkpoint.get("episode_run_id") == episode_run_id
+            ):
+                return None
+            crossed_restore_history_indices.append(restore_history_index)
+            continue
+        parsed_move = parse_move_army_step(command)
+        parsed_split = parse_split_army_half_step(command)
+        parsed_merge = parse_merge_armies_step(command)
+        if (
+            command == RAISE_TROOPS_STEP
+            or parsed_move is not None
+            and parsed_move[0] == current_army_id
+            or parsed_split == current_army_id
+            or isinstance(parsed_merge, tuple)
+            and current_army_id in parsed_merge
+            or command == disband_army_step(current_army_id)
+            or command == "war-disband-armies"
+            or parse_start_assault_step(command) is not None
+            or parse_stop_assault_step(command) is not None
+        ):
+            return None
+        if not is_life_advance_step(command):
+            continue
+        if row.get("ok") is not True:
+            return None
+        result = _effective_command_result(row)
+        before_date, before_war = _progress_slice(
+            result, "war_progress_before", war_id
+        )
+        after_date, after_war = _progress_slice(
+            result, "war_progress_after", war_id
+        )
+        before_army = _progress_army(
+            before_war, "player_armies", current_army_id
+        )
+        after_army = _progress_army(
+            after_war, "player_armies", current_army_id
+        )
+        if not (
+            before_date is not None
+            and after_date is not None
+            and after_date >= before_date
+            and stable_progress_army(before_army)
+            and stable_progress_army(after_army)
+        ):
+            return None
+
+    return {
+        "status": "ready",
+        "war_id": war_id,
+        "army_id": current_army_id,
+        "owner_character_id": actor_id,
+        "rally_province_id": current_province_id,
+        "raise_history_index": raise_history_index,
+        "raise_snapshot_id": raise_result.get("snapshot_id"),
+        "raise_revision": raise_result.get("revision"),
+        "war_query_history_index": query_history_index,
+        "war_query_date_raw": query_date_raw,
+        "crossed_restore_history_indices": crossed_restore_history_indices,
     }
 
 

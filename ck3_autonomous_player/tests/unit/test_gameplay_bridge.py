@@ -601,6 +601,7 @@ def _war(
     war_objective_province_ids: list[int] | None = None,
     objective_province_states: list[dict[str, object]] | None = None,
     targeted_title_ids: list[int] | None = None,
+    war_duration_days: int = 203,
 ) -> dict[str, object]:
     return {
         "war_id": war_id,
@@ -611,7 +612,7 @@ def _war(
             enemy_primary_default_raise_province_id
         ),
         "player_relative_war_score": score,
-        "war_duration_days": 203,
+        "war_duration_days": war_duration_days,
         "allied_armies": allied_armies,
         "enemy_armies": enemy_armies,
         "war_objective_province_ids": war_objective_province_ids or [],
@@ -1142,6 +1143,54 @@ def _advance_row(
     }
 
 
+def _raise_troops_row(
+    index: int, army: dict[str, object]
+) -> dict[str, object]:
+    army_id = int(army["army_id"])
+    return {
+        "index": index,
+        "command": "raise-troops-default",
+        "ok": True,
+        "result": {
+            "step": "raise-troops-default",
+            "accepted": True,
+            "status": "submitted",
+            "war_action": {
+                "status": "raised",
+                "raised_army_ids": [army_id],
+            },
+            "player_armies": [copy.deepcopy(army)],
+            "snapshot_id": "session:91",
+            "revision": 91,
+        },
+    }
+
+
+def _restore_checkpoint_row(
+    index: int,
+    *,
+    checkpoint_history_index: int,
+    actor_character_id: int = 707,
+    episode_run_id: str | None = None,
+) -> dict[str, object]:
+    return {
+        "index": index,
+        "command": "restore-checkpoint",
+        "ok": True,
+        "result": {
+            "step": "restore-checkpoint",
+            "accepted": True,
+            "status": "restored",
+            "checkpoint": {
+                "status": "saved",
+                "history_index": checkpoint_history_index,
+                "episode_character_id": actor_character_id,
+                "episode_run_id": episode_run_id,
+            },
+        },
+    }
+
+
 def _assault_action_row(
     index: int,
     *,
@@ -1367,6 +1416,7 @@ def _native_war_plan(
     targeted_title_ids: list[int] | None = None,
     player_side: str = "attacker",
     player_is_primary_war_leader: bool | None = True,
+    war_duration_days: int = 203,
 ) -> dict[str, object]:
     controlled = list(players) if players is not None else [player]
     route_field_present = "route_province_ids" in player
@@ -1428,6 +1478,7 @@ def _native_war_plan(
                         ),
                         objective_province_states=objective_states,
                         targeted_title_ids=targeted_title_ids,
+                        war_duration_days=war_duration_days,
                     ),
                     **(
                         {
@@ -11457,6 +11508,400 @@ class GameplayBridgeTests(unittest.TestCase):
                     plan.get("phase"),
                     "native_war_defender_capital_contact_horizon",
                 )
+
+    def test_primary_defender_native_rally_hold_binds_r867_tail_and_restore(
+        self,
+    ) -> None:
+        queried_date_raw = 53_282_400
+        current_date_raw = 53_282_424
+        gathering = _army(
+            184_549_472,
+            soldiers=None,
+            province_id=8_750,
+            controllable=True,
+            army_state="gathering",
+            army_state_code=5,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        regular = {
+            **gathering,
+            "army_state": "regular",
+            "army_state_code": 1,
+        }
+        enemies = [
+            _army(
+                184_549_393,
+                soldiers=None,
+                province_id=45,
+                controllable=False,
+                army_state="sieging",
+                army_state_code=3,
+                route_province_ids=[],
+                in_combat=False,
+                retreating=False,
+            ),
+            *[
+                _army(
+                    army_id,
+                    soldiers=None,
+                    province_id=45,
+                    controllable=False,
+                    move_target_province_id=46,
+                    army_state="sieging",
+                    army_state_code=3,
+                    route_province_ids=[46],
+                    in_combat=False,
+                    retreating=False,
+                )
+                for army_id in (201_326_661, 234_881_097, 301_989_919)
+            ],
+        ]
+        queried_war = _war(
+            allied_armies=[gathering],
+            enemy_armies=copy.deepcopy(enemies),
+            score=-50,
+            player_side="defender",
+            player_is_primary_war_leader=True,
+            enemy_primary_default_raise_province_id=1_741,
+            war_duration_days=69,
+        )
+        queried_snapshot = {
+            **_snapshot(90),
+            "paused": True,
+            "map_ready": True,
+            "native_revision": 90,
+            "date_raw": queried_date_raw,
+            "episode_run_id": None,
+            "diagnostics": {"connection_generation": 1},
+            "played_character": {"character_id": 707, "alive": True},
+            "active_wars": [queried_war],
+            "player_armies": [gathering],
+        }
+        options = _termination_options(
+            score=-50, war_duration_days=69
+        )
+        options.update(
+            {
+                "player_side": "defender",
+                "player_is_primary_war_leader": True,
+            }
+        )
+        current_options = {
+            **copy.deepcopy(options),
+            "queried_snapshot_id": "session:90",
+            "queried_revision": 90,
+            "queried_native_revision": 90,
+            "queried_connection_generation": 1,
+            "episode_run_id": None,
+        }
+        termination_row = _termination_query_row(
+            1, queried_snapshot, options=options
+        )
+        before = _war_progress(
+            queried_date_raw,
+            player=gathering,
+            enemies=enemies,
+            score=-50,
+            fallback=1_741,
+        )
+        after = _war_progress(
+            current_date_raw,
+            player=regular,
+            enemies=enemies,
+            score=-50,
+            fallback=1_741,
+        )
+        root = _campaign_root_row(
+            4, date_raw=current_date_raw, capital_province_id=45
+        )
+        history = [
+            termination_row,
+            _raise_troops_row(2, gathering),
+            _advance_row(3, before, after),
+            root,
+        ]
+        base = {
+            "player": regular,
+            "enemies": enemies,
+            "score": -50,
+            "date_raw": current_date_raw,
+            "fallback": 1_741,
+            "steps": (
+                "query-war-termination-options-88",
+                "query-campaign-root-context-v1",
+                "life-advance",
+            ),
+            "player_side": "defender",
+            "war_duration_days": 69,
+            "termination_options": [current_options],
+        }
+
+        plan = _native_war_plan(**base, history=history)
+
+        self.assertEqual(
+            plan["phase"],
+            "native_war_defender_native_rally_hold_progress",
+        )
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(
+            plan["native_rally_hold_binding"],
+            {
+                "status": "ready",
+                "war_id": 88,
+                "army_id": 184_549_472,
+                "owner_character_id": 707,
+                "rally_province_id": 8_750,
+                "raise_history_index": 2,
+                "raise_snapshot_id": "session:91",
+                "raise_revision": 91,
+                "war_query_history_index": 1,
+                "war_query_date_raw": queried_date_raw,
+                "crossed_restore_history_indices": [],
+            },
+        )
+        self.assertEqual(plan["defensive_hold"]["capital_province_id"], 45)
+
+        restored_snapshot = copy.deepcopy(queried_snapshot)
+        restored_snapshot["date_raw"] = current_date_raw
+        restored_snapshot["active_wars"] = [
+            _war(
+                allied_armies=[regular],
+                enemy_armies=copy.deepcopy(enemies),
+                score=-50,
+                player_side="defender",
+                player_is_primary_war_leader=True,
+                enemy_primary_default_raise_province_id=1_741,
+                war_duration_days=69,
+            )
+        ]
+        restored_snapshot["player_armies"] = [regular]
+        restored_history = [
+            *history,
+            _restore_checkpoint_row(5, checkpoint_history_index=4),
+            _termination_query_row(6, restored_snapshot, options=options),
+            _campaign_root_row(
+                7, date_raw=current_date_raw, capital_province_id=45
+            ),
+        ]
+
+        restored = _native_war_plan(**base, history=restored_history)
+
+        self.assertEqual(
+            restored["phase"],
+            "native_war_defender_native_rally_hold_progress",
+        )
+        self.assertEqual(
+            restored["native_rally_hold_binding"][
+                "crossed_restore_history_indices"
+            ],
+            [5],
+        )
+
+    def test_primary_defender_native_rally_hold_fails_closed_outside_receipt(
+        self,
+    ) -> None:
+        queried_date_raw = 53_282_400
+        current_date_raw = 53_282_424
+        gathering = _army(
+            11,
+            soldiers=None,
+            province_id=8_750,
+            controllable=True,
+            army_state="gathering",
+            army_state_code=5,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        regular = {
+            **gathering,
+            "army_state": "regular",
+            "army_state_code": 1,
+        }
+        enemy = _army(
+            21,
+            soldiers=None,
+            province_id=45,
+            controllable=False,
+            move_target_province_id=46,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[46],
+            in_combat=False,
+            retreating=False,
+        )
+        queried_war = _war(
+            allied_armies=[gathering],
+            enemy_armies=[enemy],
+            score=-50,
+            player_side="defender",
+            player_is_primary_war_leader=True,
+            war_duration_days=69,
+        )
+        queried_snapshot = {
+            **_snapshot(90),
+            "paused": True,
+            "map_ready": True,
+            "native_revision": 90,
+            "date_raw": queried_date_raw,
+            "episode_run_id": None,
+            "diagnostics": {"connection_generation": 1},
+            "played_character": {"character_id": 707, "alive": True},
+            "active_wars": [queried_war],
+            "player_armies": [gathering],
+        }
+        options = _termination_options(
+            score=-50, war_duration_days=69
+        )
+        options.update(
+            {
+                "player_side": "defender",
+                "player_is_primary_war_leader": True,
+            }
+        )
+        current_options = {
+            **copy.deepcopy(options),
+            "queried_snapshot_id": "session:90",
+            "queried_revision": 90,
+            "queried_native_revision": 90,
+            "queried_connection_generation": 1,
+            "episode_run_id": None,
+        }
+        termination_row = _termination_query_row(
+            1, queried_snapshot, options=options
+        )
+        before = _war_progress(
+            queried_date_raw,
+            player=gathering,
+            enemies=[enemy],
+            score=-50,
+        )
+        after = _war_progress(
+            current_date_raw,
+            player=regular,
+            enemies=[enemy],
+            score=-50,
+        )
+        valid_history = [
+            termination_row,
+            _raise_troops_row(2, gathering),
+            _advance_row(3, before, after),
+            _campaign_root_row(
+                4, date_raw=current_date_raw, capital_province_id=45
+            ),
+        ]
+        base = {
+            "player": regular,
+            "enemies": [enemy],
+            "score": -50,
+            "date_raw": current_date_raw,
+            "fallback": 1_741,
+            "steps": (
+                "query-war-termination-options-88",
+                "query-campaign-root-context-v1",
+                "life-advance",
+            ),
+            "player_side": "defender",
+            "war_duration_days": 69,
+            "termination_options": [current_options],
+        }
+
+        missing_root = _native_war_plan(
+            **base, history=valid_history[:-1]
+        )
+        stale_root = copy.deepcopy(valid_history)
+        stale_root[-1]["result"]["campaign_root_context"][
+            "date_raw"
+        ] -= 24
+        stale_root_plan = _native_war_plan(**base, history=stale_root)
+        for plan in (missing_root, stale_root_plan):
+            self.assertEqual(
+                plan["phase"],
+                "native_war_defender_native_rally_hold_context",
+            )
+            self.assertEqual(
+                plan["selected_step"], "query-campaign-root-context-v1"
+            )
+
+        moved_history = [
+            *valid_history[:-1],
+            {
+                "index": 4,
+                "command": "move-army-11-to-45",
+                "ok": True,
+                "result": {
+                    "accepted": True,
+                    "war_action": {
+                        "status": "move_submitted",
+                        "army_id": 11,
+                        "target_province_id": 45,
+                    },
+                },
+            },
+            _campaign_root_row(
+                5, date_raw=current_date_raw, capital_province_id=45
+            ),
+        ]
+        stale_restore = [
+            *valid_history[:-1],
+            _restore_checkpoint_row(4, checkpoint_history_index=1),
+            _termination_query_row(5, queried_snapshot, options=options),
+            _campaign_root_row(
+                6, date_raw=current_date_raw, capital_province_id=45
+            ),
+        ]
+        wrong_army = {**regular, "army_id": 12}
+        wrong_province = {**regular, "current_province_id": 8_751}
+        route_to_rally = {
+            **enemy,
+            "move_target_province_id": 8_750,
+            "route_province_ids": [8_750],
+        }
+        cases = {
+            "missing_raise": {**base, "history": [valid_history[0], valid_history[-1]]},
+            "intervening_move": {**base, "history": moved_history},
+            "restore_before_raise": {**base, "history": stale_restore},
+            "wrong_army": {
+                **base,
+                "player": wrong_army,
+                "history": valid_history,
+            },
+            "wrong_province": {
+                **base,
+                "player": wrong_province,
+                "history": valid_history,
+            },
+            "enemy_route_hits_rally": {
+                **base,
+                "enemies": [route_to_rally],
+                "history": valid_history,
+            },
+            "attacker": {
+                **base,
+                "player_side": "attacker",
+                "history": valid_history,
+            },
+            "unknown_primary": {
+                **base,
+                "player_is_primary_war_leader": None,
+                "history": valid_history,
+            },
+            "terminal_score": {
+                **base,
+                "score": -100,
+                "history": valid_history,
+            },
+        }
+        for name, arguments in cases.items():
+            with self.subTest(name=name):
+                plan = _native_war_plan(**arguments)
+                self.assertNotEqual(
+                    plan.get("phase"),
+                    "native_war_defender_native_rally_hold_progress",
+                )
+                self.assertNotEqual(plan.get("selected_step"), "life-advance")
 
     def test_termination_query_is_projected_for_eu_without_auto_surrender(
         self,
