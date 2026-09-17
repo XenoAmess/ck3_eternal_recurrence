@@ -10889,6 +10889,150 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(action["player_relative_war_score"], -44)
         self.assertEqual(action["war_duration_days"], 216)
         self.assertTrue(action["recipient_auto_accept"])
+        self.assertNotIn("surrender_variant", action)
+        self.assertNotIn("absolute_war_scores_observable", action)
+        self.assertNotIn(
+            "surrender-war-16777290",
+            driver.capabilities()["action_steps"],
+        )
+
+    def test_r836_raiktor_terminal_control_surrender_is_strict_and_typed(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        active_war = _war(war_id=war_id, score=-100)
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-options-N",
+                "game.command.surrender-war-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[active_war],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            if step.startswith("query-war-termination-options-"):
+                result: dict[str, object] = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "query_sequence": 1,
+                    "war_termination_options": _termination_options(
+                        war_id,
+                        score=-100,
+                        white_peace_available=False,
+                        casus_belli_database_index=41,
+                        casus_belli_key="raiktor_claim_cb",
+                        war_duration_days=752,
+                    ),
+                }
+            else:
+                self.assertEqual(step, "surrender-war-16777290")
+                result = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "submitted",
+                }
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+
+        endpoint.send_hook = answer
+        driver.execute_step("query-war-termination-options-16777290")
+        source = driver.take_snapshot()
+        self.assertTrue(
+            native_driver_module._raiktor_terminal_control_surrender_readiness(
+                source, war_id
+            )[0]
+        )
+        mutations = {
+            "unpaused": lambda row: row.__setitem__("paused", False),
+            "not_primary": lambda row: row["active_wars"][0].__setitem__(
+                "player_is_primary_war_leader", False
+            ),
+            "stale_cache": lambda row: row["war_termination_options"][
+                0
+            ].__setitem__("queried_snapshot_id", "native:stale"),
+            "wrong_cb": lambda row: row["war_termination_options"][
+                0
+            ]["active_casus_belli_identity"].__setitem__(
+                "canonical_key", "claim_cb"
+            ),
+            "not_terminal": lambda row: (
+                row["active_wars"][0].__setitem__(
+                    "player_relative_war_score", -99
+                ),
+                row["war_termination_options"][0].__setitem__(
+                    "player_relative_war_score", -99
+                ),
+                row["war_termination_options"][0].__setitem__(
+                    "attacker_war_score", -99
+                ),
+                row["war_termination_options"][0].__setitem__(
+                    "defender_war_score", 99
+                ),
+            ),
+            "absolute_scores_unobserved": lambda row: row[
+                "war_termination_options"
+            ][0].__setitem__("absolute_war_scores_observable", False),
+            "absolute_scores_drifted": lambda row: row[
+                "war_termination_options"
+            ][0].__setitem__("defender_war_score", 99),
+            "native_rejected": lambda row: row["war_termination_options"][
+                0
+            ]["options"]["surrender"].__setitem__(
+                "native_validator_passed", False
+            ),
+            "recipient_rejected": lambda row: row[
+                "war_termination_options"
+            ][0]["options"]["surrender"]["recipient_response"].__setitem__(
+                "would_accept_now", False
+            ),
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(name=name):
+                candidate = copy.deepcopy(source)
+                mutate(candidate)
+                self.assertFalse(
+                    native_driver_module._raiktor_terminal_control_surrender_readiness(
+                        candidate, war_id
+                    )[0]
+                )
+
+        self.assertIn(
+            "surrender-war-16777290",
+            driver.capabilities()["action_steps"],
+        )
+        submitted = driver.execute_step("surrender-war-16777290")
+        action = submitted["war_termination_result"]
+        self.assertEqual(action["status"], "submitted_pending")
+        self.assertEqual(action["surrender_variant"], "raiktor_terminal_control")
+        self.assertEqual(action["casus_belli"]["canonical_key"], "raiktor_claim_cb")
+        self.assertEqual(action["player_relative_war_score"], -100)
+        self.assertTrue(action["absolute_war_scores_observable"])
+        self.assertEqual(action["attacker_war_score"], -100)
+        self.assertEqual(action["defender_war_score"], 100)
         self.assertNotIn(
             "surrender-war-16777290",
             driver.capabilities()["action_steps"],

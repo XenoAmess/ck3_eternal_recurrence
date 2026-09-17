@@ -99,6 +99,8 @@ _PENDING_INTERACTION_REPLY_STATUSES = {
 _DE_JURE_NO_SAFE_ROUTE_CB = "individual_county_de_jure_cb"
 _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
 _DE_JURE_NO_SAFE_ROUTE_MIN_DAYS = 180
+_RAIKTOR_TERMINAL_CONTROL_CB = "raiktor_claim_cb"
+_RAIKTOR_TERMINAL_CONTROL_SCORE = -100
 
 
 def _registered_event_material_postcondition_issue(
@@ -3725,15 +3727,33 @@ def _emergency_surrender_lifecycle_verified(
         and action.get("recipient_would_accept_now") is True
         and action.get("recipient_auto_accept") is True
         and isinstance(cb, dict)
-        and cb.get("canonical_key") == "individual_county_de_jure_cb"
         and action.get("player_side") == "attacker"
         and before_war.get("player_side") == "attacker"
         and before_war.get("player_is_primary_war_leader") is True
         and action.get("player_relative_war_score")
         == before_war.get("player_relative_war_score")
-        and isinstance(action.get("war_duration_days"), int)
-        and action.get("war_duration_days") >= 180
     ):
+        return False
+    variant = action.get("surrender_variant")
+    de_jure_variant = bool(
+        (variant is None or variant == "de_jure_no_safe_route")
+        and cb.get("canonical_key") == _DE_JURE_NO_SAFE_ROUTE_CB
+        and isinstance(action.get("war_duration_days"), int)
+        and action.get("war_duration_days")
+        >= _DE_JURE_NO_SAFE_ROUTE_MIN_DAYS
+    )
+    score = action.get("player_relative_war_score")
+    raiktor_variant = bool(
+        variant == "raiktor_terminal_control"
+        and cb.get("canonical_key") == _RAIKTOR_TERMINAL_CONTROL_CB
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and score == _RAIKTOR_TERMINAL_CONTROL_SCORE
+        and action.get("absolute_war_scores_observable") is True
+        and action.get("attacker_war_score") == score
+        and action.get("defender_war_score") == -score
+    )
+    if not de_jure_variant and not raiktor_variant:
         return False
     if action.get("status") == "applied":
         return bool(

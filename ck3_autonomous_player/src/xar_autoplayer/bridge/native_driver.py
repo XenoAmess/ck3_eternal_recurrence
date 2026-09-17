@@ -581,6 +581,8 @@ _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB = "individual_county_de_jure_cb"
 _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -25
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
+_RAIKTOR_TERMINAL_CONTROL_SURRENDER_CB = "raiktor_claim_cb"
+_RAIKTOR_TERMINAL_CONTROL_SURRENDER_SCORE = -100
 _COLD_RESTORE_SOURCE = "native-session-cold-start"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
 _NATIVE_WAR_ADVANCE_MAX_DAYS = 30
@@ -1793,7 +1795,7 @@ class NativeHeadlessGameplayDriver:
                     ):
                         continue
                     war_id = int(war["war_id"])
-                    ready, _, _ = _de_jure_emergency_surrender_readiness(
+                    ready, _, _ = _emergency_surrender_readiness(
                         current_snapshot, war_id
                     )
                     prior = _emergency_surrender_submission(
@@ -14631,8 +14633,8 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native emergency surrender lacks exact raw capabilities"
                 )
-            ready, reason, evidence = (
-                _de_jure_emergency_surrender_readiness(starting, war_id)
+            ready, reason, evidence = _emergency_surrender_readiness(
+                starting, war_id
             )
             if not ready:
                 raise BridgeUnavailableError(
@@ -14717,6 +14719,23 @@ class NativeHeadlessGameplayDriver:
                         "would_accept_now"
                     ),
                     "recipient_auto_accept": surrender.get("auto_accept"),
+                    **(
+                        {
+                            "surrender_variant": evidence.get("variant"),
+                            "absolute_war_scores_observable": options.get(
+                                "absolute_war_scores_observable"
+                            ),
+                            "attacker_war_score": options.get(
+                                "attacker_war_score"
+                            ),
+                            "defender_war_score": options.get(
+                                "defender_war_score"
+                            ),
+                        }
+                        if evidence.get("variant")
+                        == "raiktor_terminal_control"
+                        else {}
+                    ),
                     "casus_belli": copy.deepcopy(
                         options.get("active_casus_belli_identity")
                     ),
@@ -24649,6 +24668,99 @@ def _de_jure_emergency_surrender_readiness(
         "options": options,
         "surrender": surrender,
     }
+
+
+def _raiktor_terminal_control_surrender_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    """Admit only the exact paused Raiktor -100 terminal-control frame."""
+    if snapshot.get("paused") is not True:
+        return False, "snapshot_not_paused", {}
+    war = _war_by_id(snapshot, war_id)
+    if not isinstance(war, dict):
+        return False, "war_not_active", {}
+    options = _termination_cache_row(
+        snapshot, "war_termination_options", war_id
+    )
+    if not isinstance(options, dict):
+        return False, "termination_options_missing", {}
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    expected_binding = {
+        "queried_snapshot_id": snapshot.get("snapshot_id"),
+        "queried_revision": snapshot.get("revision"),
+        "queried_native_revision": snapshot.get("native_revision"),
+        "queried_connection_generation": connection_generation,
+        "episode_run_id": snapshot.get("episode_run_id"),
+    }
+    if any(
+        options.get(key) != expected
+        for key, expected in expected_binding.items()
+    ):
+        return False, "termination_evidence_not_same_frame", {}
+    score = war.get("player_relative_war_score")
+    casus_belli = options.get("active_casus_belli_identity")
+    rows = options.get("options")
+    surrender = rows.get("surrender") if isinstance(rows, dict) else None
+    response = (
+        surrender.get("recipient_response")
+        if isinstance(surrender, dict)
+        else None
+    )
+    if not (
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and score == _RAIKTOR_TERMINAL_CONTROL_SURRENDER_SCORE
+        and options.get("player_relative_war_score") == score
+        and options.get("absolute_war_scores_observable") is True
+        and options.get("attacker_war_score") == score
+        and options.get("defender_war_score") == -score
+        and options.get("active_casus_belli_present") is True
+        and isinstance(casus_belli, dict)
+        and casus_belli.get("canonical_key")
+        == _RAIKTOR_TERMINAL_CONTROL_SURRENDER_CB
+        and isinstance(surrender, dict)
+        and surrender.get("outcome") == "attacker_defeat"
+        and surrender.get("hostage_variant") == "none"
+        and surrender.get("context_constructed") is True
+        and surrender.get("native_validator_passed") is True
+        and surrender.get("available") is True
+        and surrender.get("auto_accept_observable") is True
+        and surrender.get("auto_accept") is True
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    ):
+        return False, "raiktor_terminal_control_surrender_gate_failed", {}
+    return True, "ready", {
+        "variant": "raiktor_terminal_control",
+        "war": war,
+        "options": options,
+        "surrender": surrender,
+    }
+
+
+def _emergency_surrender_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    de_jure = _de_jure_emergency_surrender_readiness(snapshot, war_id)
+    if de_jure[0]:
+        return True, de_jure[1], {
+            **de_jure[2],
+            "variant": "de_jure_no_safe_route",
+        }
+    raiktor = _raiktor_terminal_control_surrender_readiness(snapshot, war_id)
+    if raiktor[0]:
+        return raiktor
+    return False, f"de_jure={de_jure[1]}; raiktor={raiktor[1]}", {}
 
 
 def _emergency_surrender_submission(

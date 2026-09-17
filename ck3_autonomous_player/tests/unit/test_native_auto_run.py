@@ -2552,6 +2552,92 @@ class NativeAutoRunTests(unittest.TestCase):
                 evidence=[],
             )
         )
+
+    def test_r836_raiktor_surrender_lifecycle_requires_variant_and_war_removal(
+        self,
+    ) -> None:
+        war = _white_peace_war()
+        war["player_relative_war_score"] = -100
+        before = {
+            "snapshot_id": "native:1",
+            "date_raw": 53_385_072,
+            "episode_run_id": "native-707-r836",
+            "_semantic": {"active_wars": [war]},
+        }
+        after = {
+            "snapshot_id": "native:2",
+            "date_raw": 53_385_072,
+            "episode_run_id": "native-707-r836",
+            "active_wars": [],
+        }
+        action = {
+            "status": "applied",
+            "war_id": 16_777_290,
+            "outcome": "attacker_defeat",
+            "submitted_date_raw": 53_385_072,
+            "observed_date_raw": 53_385_072,
+            "episode_run_id": "native-707-r836",
+            "starting_snapshot_id": "native:1",
+            "observed_snapshot_id": "native:2",
+            "command_acknowledged": True,
+            "war_id_absent_after_ack": True,
+            "recipient_decision_status_raw": 0,
+            "recipient_would_accept_now": True,
+            "recipient_auto_accept": True,
+            "surrender_variant": "raiktor_terminal_control",
+            "casus_belli": {
+                "database_index": 41,
+                "canonical_key": "raiktor_claim_cb",
+            },
+            "player_side": "attacker",
+            "player_relative_war_score": -100,
+            "war_duration_days": 752,
+            "absolute_war_scores_observable": True,
+            "attacker_war_score": -100,
+            "defender_war_score": 100,
+            "remaining_active_war": None,
+        }
+        result = {"war_termination_result": action}
+        verify = native_auto_run_module._emergency_surrender_lifecycle_verified
+
+        self.assertTrue(
+            verify(
+                "surrender-war-16777290",
+                result,
+                before=before,
+                after_snapshot=after,
+                evidence=["war_changed"],
+            )
+        )
+        for field, value in (
+            ("surrender_variant", "de_jure_no_safe_route"),
+            ("player_relative_war_score", -99),
+            ("absolute_war_scores_observable", False),
+            ("attacker_war_score", -99),
+            ("defender_war_score", 99),
+        ):
+            with self.subTest(field=field):
+                malformed = copy.deepcopy(result)
+                malformed["war_termination_result"][field] = value
+                self.assertFalse(
+                    verify(
+                        "surrender-war-16777290",
+                        malformed,
+                        before=before,
+                        after_snapshot=after,
+                        evidence=["war_changed"],
+                    )
+                )
+        self.assertFalse(
+            verify(
+                "surrender-war-16777290",
+                result,
+                before=before,
+                after_snapshot={**after, "active_wars": [war]},
+                evidence=[],
+            )
+        )
+
     def test_session_exit_during_readiness_is_classified_as_session_exit(self) -> None:
         report, _harness = self._run(
             ["advance"], session_exits_immediately=True
