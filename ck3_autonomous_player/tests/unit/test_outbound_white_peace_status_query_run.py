@@ -105,6 +105,35 @@ def _restore_entry(checkpoint_sha: str) -> dict[str, object]:
 
 
 class OutboundWhitePeaceStatusQueryRunTest(unittest.TestCase):
+    def test_cold_restore_bookkeeping_accepts_truncated_post_checkpoint_tail(self) -> None:
+        checkpoint_sha = "a" * 64
+        checkpoint_entry = {"index": 1, "command": "save-checkpoint", "ok": True}
+        discarded_tail = [
+            {"index": 2, "command": "resume-map", "ok": True},
+            {"index": 3, "command": "pause-map", "ok": True},
+            {"index": 4, "command": "offer-white-peace", "ok": True},
+        ]
+        restore = _restore_entry(checkpoint_sha)
+
+        result = subject._cold_restore_bookkeeping(
+            {
+                "bridge_pid": 100,
+                "command_history": [checkpoint_entry, *discarded_tail],
+            },
+            {"native_command_history": [checkpoint_entry, restore]},
+            {
+                "sha256": checkpoint_sha,
+                "saved_date_raw": 53149872,
+                "history_index": 1,
+            },
+        )
+
+        self.assertTrue(result["exact"])
+        self.assertEqual(result["history_before_count"], 4)
+        self.assertEqual(result["history_at_query_count"], 2)
+        self.assertEqual(result["truncated_tail_count"], 3)
+        self.assertEqual(result["restore_entry"], restore)
+
     def test_cli_binds_war_and_ownership_round(self) -> None:
         args = cli.parser().parse_args(
             [

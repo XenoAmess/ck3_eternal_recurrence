@@ -81,12 +81,22 @@ def _cold_restore_bookkeeping(
 ) -> dict[str, object]:
     before_history = _command_history(before_driver_state)
     query_history = _snapshot_history(query_before)
+    checkpoint_history_index = checkpoint.get("history_index")
+    checkpoint_prefix = (
+        before_history[:checkpoint_history_index]
+        if before_history is not None
+        and isinstance(checkpoint_history_index, int)
+        and not isinstance(checkpoint_history_index, bool)
+        and checkpoint_history_index >= 0
+        and len(before_history) >= checkpoint_history_index
+        else None
+    )
     restore_entry = (
         query_history[-1]
-        if before_history is not None
+        if checkpoint_prefix is not None
         and query_history is not None
-        and len(query_history) == len(before_history) + 1
-        and query_history[:-1] == before_history
+        and len(query_history) == checkpoint_history_index + 1
+        and query_history[:-1] == checkpoint_prefix
         else None
     )
     result = restore_entry.get("result") if isinstance(restore_entry, dict) else None
@@ -96,8 +106,13 @@ def _cold_restore_bookkeeping(
     lifecycle = result.get("lifecycle") if isinstance(result, dict) else None
     prior_pid = before_driver_state.get("bridge_pid")
     current_pid = lifecycle.get("pid") if isinstance(lifecycle, dict) else None
-    expected_index = len(before_history) + 1 if before_history is not None else None
-    checkpoint_history_index = checkpoint.get("history_index")
+    expected_index = (
+        checkpoint_history_index + 1
+        if isinstance(checkpoint_history_index, int)
+        and not isinstance(checkpoint_history_index, bool)
+        and checkpoint_history_index >= 0
+        else None
+    )
     checkpoint_date = checkpoint.get("saved_date_raw")
     checkpoint_sha = checkpoint.get("sha256")
     exact = bool(
@@ -130,6 +145,14 @@ def _cold_restore_bookkeeping(
         ),
         "history_at_query_count": (
             len(query_history) if query_history is not None else None
+        ),
+        "truncated_tail_count": (
+            len(before_history) - checkpoint_history_index
+            if before_history is not None
+            and isinstance(checkpoint_history_index, int)
+            and not isinstance(checkpoint_history_index, bool)
+            and 0 <= checkpoint_history_index <= len(before_history)
+            else None
         ),
         "restore_entry": copy.deepcopy(restore_entry),
     }
