@@ -34,6 +34,7 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
             "tools/g2_preview_eligibility.py": b"# eligibility\n",
             "tools/build_g2_preview_package.py": b"# builder\n",
             "XenoAmess_s_Eternal_Recurrence/descriptor.mod": b'version="1"\n',
+            "artifacts/tracked-contract.json": b'{"tracked":true}\n',
         }
         for relative, data in required.items():
             path = self.repo / relative
@@ -288,6 +289,24 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
         self.assertNotIn("R783", json.dumps(manifest))
         self.assertNotIn("53145000", json.dumps(manifest))
 
+        equivalent_repo = self.root / "equivalent-source-repo"
+        subprocess.run(
+            ["git", "clone", "--no-local", "-q", str(self.repo), str(equivalent_repo)],
+            check=True,
+        )
+        equivalent = copy.deepcopy(self.spec)
+        equivalent["source"]["repo"] = str(equivalent_repo)
+        equivalent["output"]["stage_dir"] = str(self.root / "equivalent-stage")
+        equivalent_path = self.root / "equivalent-build-spec.json"
+        builder.write_json(equivalent_path, equivalent)
+        builder.stage(equivalent_path)
+        builder.finalize_no_launch(equivalent_path)
+        equivalent_download = builder.assemble(equivalent_path)
+        self.assertEqual(first["zip_sha256"], equivalent_download["zip_sha256"])
+        self.assertEqual(
+            first_bytes, Path(equivalent_download["zip_path"]).read_bytes()
+        )
+
     def test_contract_rejects_partial_lifecycle_and_invalid_bounds(self) -> None:
         partial = copy.deepcopy(self.spec)
         partial["lifecycle"].pop("ordinary_campaign_no_pact")
@@ -318,6 +337,119 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
         self.write_no_launch_evidence(launched=True)
         with self.assertRaisesRegex(ValueError, "no-launch finalization checks failed"):
             builder.finalize_no_launch(self.spec_path)
+
+    def test_promotion_binds_exact_zip_and_cold_restore_chain(self) -> None:
+        builder.stage(self.spec_path)
+        self.write_no_launch_evidence()
+        builder.finalize_no_launch(self.spec_path)
+        download = builder.assemble(self.spec_path)
+        zip_path = Path(download["zip_path"])
+        zip_before = zip_path.read_bytes()
+        qualification_root = self.root / "qualification"
+        qualification_root.mkdir()
+
+        def evidence_file(name: str, payload: dict[str, object]) -> dict[str, str]:
+            path = qualification_root / name
+            builder.write_json(path, payload)
+            return {"path": name, "sha256": builder.sha256(path)}
+
+        final_checkpoint = qualification_root / "final-checkpoint.ck3"
+        final_driver = qualification_root / "final-driver.json"
+        final_checkpoint.write_bytes(b"cold-final-checkpoint")
+        final_driver.write_bytes(b'{"cold":"final"}\n')
+        formal_checkpoint = "1" * 64
+        formal_driver = "2" * 64
+        cold_checkpoint = builder.sha256(final_checkpoint)
+        cold_driver = builder.sha256(final_driver)
+        rounds: dict[str, object] = {}
+        round_specs = (
+            (
+                "eligibility",
+                "R803",
+                {"ok": True, "status": "GREEN_READ_ONLY", "checks": {"all": True}},
+                None,
+            ),
+            (
+                "formal_stop",
+                "R804",
+                {
+                    "ok": False,
+                    "status": "operator_stop_checkpointed",
+                    "outcome": "operator_stopped",
+                },
+                {
+                    "ok": True,
+                    "status": "completed",
+                    "formal_exit_code": 0,
+                    "checkpoint_sha256_after": formal_checkpoint,
+                    "driver_state_sha256_after": formal_driver,
+                },
+            ),
+            (
+                "cold_restore",
+                "R805",
+                {"ok": True, "status": "turn_limit"},
+                {
+                    "ok": True,
+                    "status": "completed",
+                    "formal_exit_code": 0,
+                    "checkpoint_sha256_before": formal_checkpoint,
+                    "driver_state_sha256_before": formal_driver,
+                    "checkpoint_sha256_after": cold_checkpoint,
+                    "driver_state_sha256_after": cold_driver,
+                },
+            ),
+        )
+        for role, round_id, report, receipt in round_specs:
+            row: dict[str, object] = {
+                "round_id": round_id,
+                "report": evidence_file(f"{round_id}-report.json", report),
+                "closed_ledger": evidence_file(
+                    f"{round_id}-closed.json",
+                    {
+                        "round_id": round_id,
+                        "package_zip_sha256": download["zip_sha256"],
+                        "source_commit": self.commit,
+                        "cleanup": {"ok": True, "tree_gone": True},
+                    },
+                ),
+            }
+            if receipt is not None:
+                row["operator_receipt"] = evidence_file(
+                    f"{round_id}-receipt.json", receipt
+                )
+            rounds[role] = row
+        qualification = {
+            "schema": builder.QUALIFICATION_SCHEMA,
+            "package_zip_sha256": download["zip_sha256"],
+            "source_commit": self.commit,
+            "native_source_commit": "8" * 40,
+            "gates": {gate: True for gate in builder.PROMOTION_GATES},
+            "rounds": rounds,
+            "chain": {
+                "formal_checkpoint_after_sha256": formal_checkpoint,
+                "formal_driver_after_sha256": formal_driver,
+                "cold_checkpoint_before_sha256": formal_checkpoint,
+                "cold_driver_before_sha256": formal_driver,
+                "cold_checkpoint_after_sha256": cold_checkpoint,
+                "cold_driver_after_sha256": cold_driver,
+                "formal_process_id": 100,
+                "cold_process_id": 200,
+                "final_checkpoint": self.artifact(final_checkpoint),
+                "final_driver_state": self.artifact(final_driver),
+            },
+            "output": {"qualification_receipt": "live-qualification.json"},
+        }
+        qualification_path = qualification_root / "qualification-input.json"
+        builder.write_json(qualification_path, qualification)
+        promoted = builder.promote(self.spec_path, qualification_path)
+        self.assertEqual(promoted["status"], "GO_RUNNABLE_PREVIEW")
+        self.assertEqual(zip_before, zip_path.read_bytes())
+        receipt = builder.read_json(Path(promoted["qualification_receipt"]))
+        self.assertEqual(receipt["immutable_package"]["zip"]["zip_sha256"], download["zip_sha256"])
+        self.assertEqual(receipt["g2_authoritative"]["status"], "1/8")
+        external_download = builder.read_json(self.stage / "download-manifest.json")
+        self.assertEqual(external_download["status"], "GO_RUNNABLE_PREVIEW")
 
 
 if __name__ == "__main__":

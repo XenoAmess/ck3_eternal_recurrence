@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
@@ -27,6 +28,8 @@ INVENTORY_SCHEMA = "xar.ck3.preview-bundle-stage-sources/v2"
 ASSEMBLY_SCHEMA = "xar.ck3.preview-bundle-assembly/v3"
 NO_LAUNCH_SCHEMA = "xar.ck3.preview-package-no-launch-validation/v1"
 REBIND_SCHEMA = "xar.ck3.ordinary-seed-rebind/v1"
+QUALIFICATION_SCHEMA = "xar.ck3.preview-package-qualification-input/v1"
+GO_SCHEMA = "xar.ck3.preview-live-qualification/v2"
 CANDIDATE_KIND = "g2_standard_feudal_ordinary_preview_candidate"
 PENDING_STATUS = "NO_GO_PENDING_EXTRACTED_BUNDLE_LIVE_SMOKE"
 EXCLUSIONS = [
@@ -38,6 +41,19 @@ EXCLUSIONS = [
     "runtime logs/dumps",
     "mutable qualification state",
 ]
+PROMOTION_GATES = {
+    "fresh_extraction",
+    "eligibility_green",
+    "formal_production_entry",
+    "nonempty_strategy_action",
+    "independent_postcondition",
+    "next_turn_consumed",
+    "controlled_stop_checkpointed",
+    "cold_restore_new_process",
+    "same_high_level_goal",
+    "no_repeat_consumed_action",
+    "single_instance_cleanup",
+}
 REQUIRED_REPO_FILES = (
     "ck3_autonomous_player/agent.py",
     "ck3_autonomous_player/pyproject.toml",
@@ -50,6 +66,23 @@ REQUIRED_REPO_FILES = (
     "tools/g2_preview_eligibility.py",
     "tools/build_g2_preview_package.py",
     "XenoAmess_s_Eternal_Recurrence/descriptor.mod",
+)
+PACKAGE_REPO_PATHS = (
+    "ck3_autonomous_player/agent.py",
+    "ck3_autonomous_player/pyproject.toml",
+    "ck3_autonomous_player/src",
+    "ck3_autonomous_player/configs",
+    "ck3_autonomous_player/schemas",
+    "ck3_autonomous_player/strategies",
+    "ck3_autonomous_player/knowledge",
+    "ck3_autonomous_player/native_bridge/research/"
+    "run_campaign_root_context_live_acceptance.py",
+    "tools/build_release.py",
+    "tools/requirements-static.txt",
+    "tools/g2_preview_operator.py",
+    "tools/g2_preview_eligibility.py",
+    "tools/build_g2_preview_package.py",
+    "XenoAmess_s_Eternal_Recurrence",
 )
 
 
@@ -301,10 +334,14 @@ def load_spec(path: Path) -> tuple[dict[str, Any], Path]:
 
 
 def run_git(repo: Path, *arguments: str) -> str:
+    environment = os.environ.copy()
+    if arguments and arguments[0] == "status":
+        environment["GIT_OPTIONAL_LOCKS"] = "0"
     return subprocess.check_output(
         ["git", "-C", str(repo), *arguments],
         text=True,
         stderr=subprocess.STDOUT,
+        env=environment,
     ).strip()
 
 
@@ -326,52 +363,134 @@ def verify_source_repo(spec: dict[str, Any], base: Path) -> tuple[Path, str]:
     return repo, actual
 
 
-def ignored_repo_path(_directory: str, names: list[str]) -> set[str]:
-    blocked = {
-        ".venv",
-        "__pycache__",
-        ".pytest_cache",
-        "artifacts",
-        "dist",
-        "dumps",
-    }
-    return {name for name in names if name.casefold() in blocked or name.casefold().endswith((".pyc", ".pyo"))}
+def git_bytes(repo: Path, *arguments: str, stdin: bytes | None = None) -> bytes:
+    completed = subprocess.run(
+        ["git", "-C", str(repo), *arguments],
+        input=stdin,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        detail = completed.stderr.decode(errors="replace").strip()
+        raise ValueError(f"git {' '.join(arguments)} failed: {detail}")
+    return completed.stdout
 
 
-def copy_frozen_repo(source: Path, target: Path, canonical_remote: str) -> None:
-    shutil.copytree(source, target, ignore=ignored_repo_path)
-    for relative in (
-        ".git/logs",
-        ".git/FETCH_HEAD",
-        ".git/ORIG_HEAD",
-        ".git/index.lock",
-        ".git/gc.log",
-    ):
-        path = target / relative
+def ls_tree_rows(repo: Path, commit: str, *paths: str) -> list[tuple[str, str, str, str]]:
+    command = ["ls-tree", "-r", "-z", "--full-tree", commit]
+    if paths:
+        command.extend(["--", *paths])
+    rows: list[tuple[str, str, str, str]] = []
+    for raw in git_bytes(repo, *command).split(b"\0"):
+        if not raw:
+            continue
+        metadata, separator, name = raw.partition(b"\t")
+        if not separator:
+            raise ValueError("git ls-tree emitted a malformed row")
+        mode, kind, object_id = metadata.decode("ascii").split()
+        rows.append((mode, kind, object_id, name.decode("utf-8")))
+    return rows
+
+
+def write_git_object(target: Path, kind: str, object_id: str, data: bytes) -> None:
+    actual = git_bytes(target, "hash-object", "-t", kind, "-w", "--stdin", stdin=data)
+    if actual.decode("ascii").strip() != object_id:
+        raise ValueError(f"Git object identity differs for {kind} {object_id}")
+
+
+def build_frozen_repo(
+    source: Path,
+    target: Path,
+    commit: str,
+    canonical_remote: str,
+) -> None:
+    """Create a path-independent sparse checkout with deterministic Git metadata."""
+
+    target.mkdir(parents=True)
+    subprocess.run(["git", "init", "-q", str(target)], check=True)
+    git_dir = target / ".git"
+    for relative in ("hooks", "logs", "branches"):
+        path = git_dir / relative
         if path.is_dir():
             shutil.rmtree(path)
-        elif path.exists():
+    for relative in ("description", "FETCH_HEAD", "ORIG_HEAD", "index.lock"):
+        path = git_dir / relative
+        if path.exists():
             path.unlink()
-    remotes = run_git(target, "remote").splitlines()
-    for remote in remotes:
-        if remote and remote != "origin":
-            subprocess.run(["git", "-C", str(target), "remote", "remove", remote], check=True)
-    if "origin" in remotes:
-        subprocess.run(
-            ["git", "-C", str(target), "remote", "set-url", "origin", canonical_remote],
-            check=True,
-        )
-    else:
-        subprocess.run(
-            ["git", "-C", str(target), "remote", "add", "origin", canonical_remote],
-            check=True,
-        )
-    config = (target / ".git" / "config").read_text(encoding="utf-8")
+    (git_dir / "info").mkdir(parents=True, exist_ok=True)
+    config = (
+        "[core]\n"
+        "\trepositoryformatversion = 0\n"
+        "\tfilemode = false\n"
+        "\tbare = false\n"
+        "\tlogallrefupdates = false\n"
+        "\tsymlinks = false\n"
+        "\tignorecase = true\n"
+        "\tsparseCheckout = true\n"
+        "[remote \"origin\"]\n"
+        f"\turl = {canonical_remote}\n"
+        "\tfetch = +refs/heads/master:refs/remotes/origin/master\n"
+    )
     lowered = config.casefold()
     if any(token in lowered for token in ("extraheader", "authorization:", "password=", "token=")):
-        raise ValueError("copied Git config contains credential-bearing settings")
+        raise ValueError("canonical Git config contains credential-bearing settings")
+    (git_dir / "config").write_text(config, encoding="utf-8", newline="\n")
+    patterns = "".join(f"/{path}/\n" if "." not in PurePosixPath(path).name else f"/{path}\n" for path in PACKAGE_REPO_PATHS)
+    (git_dir / "info" / "sparse-checkout").write_text(
+        patterns, encoding="utf-8", newline="\n"
+    )
+
+    commit_bytes = git_bytes(source, "cat-file", "commit", commit)
+    write_git_object(target, "commit", commit, commit_bytes)
+    root_tree = run_git(source, "show", "-s", "--format=%T", commit)
+    tree_ids = {root_tree}
+    tree_output = git_bytes(
+        source, "ls-tree", "-r", "-t", "-z", "--full-tree", commit
+    )
+    for raw in tree_output.split(b"\0"):
+        if not raw:
+            continue
+        metadata = raw.partition(b"\t")[0].decode("ascii").split()
+        if len(metadata) == 3 and metadata[1] == "tree":
+            tree_ids.add(metadata[2])
+    for object_id in sorted(tree_ids):
+        write_git_object(
+            target,
+            "tree",
+            object_id,
+            git_bytes(source, "cat-file", "tree", object_id),
+        )
+    (git_dir / "HEAD").write_text(f"{commit}\n", encoding="ascii", newline="\n")
+    (git_dir / "shallow").write_text(f"{commit}\n", encoding="ascii", newline="\n")
+
+    all_rows = ls_tree_rows(source, commit)
+    selected_rows = ls_tree_rows(source, commit, *PACKAGE_REPO_PATHS)
+    selected_names = {row[3] for row in selected_rows}
+    for mode, kind, object_id, name in selected_rows:
+        if kind != "blob" or mode == "120000":
+            raise ValueError(f"package source path is not a regular blob: {name}")
+        data = git_bytes(source, "cat-file", "blob", object_id)
+        write_git_object(target, "blob", object_id, data)
+        destination = target / PurePosixPath(name)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(data)
+
+    index_rows = "".join(
+        f"{mode} {object_id}\t{name}\n" for mode, _kind, object_id, name in all_rows
+    ).encode("utf-8")
+    index_path = git_dir / "index"
+    if index_path.exists():
+        index_path.unlink()
+    git_bytes(target, "update-index", "--add", "--index-info", stdin=index_rows)
+    skipped = "".join(
+        f"{name}\n" for _mode, _kind, _object_id, name in all_rows if name not in selected_names
+    ).encode("utf-8")
+    if skipped:
+        git_bytes(target, "update-index", "--skip-worktree", "--stdin", stdin=skipped)
+    if run_git(target, "rev-parse", "HEAD").casefold() != commit:
+        raise ValueError("normalized source repository commit differs")
     if run_git(target, "status", "--porcelain=v1", "--untracked-files=all"):
-        raise ValueError("copied frozen source repository is dirty")
+        raise ValueError("normalized frozen source repository is dirty")
 
 
 def copy_verified(source: Path, target: Path, expected_sha: str) -> None:
@@ -462,13 +581,25 @@ initial active context is recorded exactly in `candidate-manifest.json`.
 
 ## One-time setup
 
-1. Extract the ZIP into a new directory.
-2. Copy `operator-manifest.template.json` to `operator-manifest.json`.
-3. Replace every `<ABSOLUTE_...>` token with the real Python 3.11+ executable,
-   this extracted root, CK3 install root, and a new empty writable state path.
-4. Confirm all managed hosts have zero CK3 processes and allocate the next
-   monotonic single-instance round.
-5. From the extracted root run:
+The qualified Windows runtime uses CPython 3.13 (the qualification host uses
+3.13.2). Extract the ZIP into a new directory, open PowerShell in that root,
+and install the package's exact pinned dependencies from its `pyproject.toml`:
+
+```powershell
+py -3.13 -m venv .xar-preview-venv
+$Python = (Resolve-Path .\.xar-preview-venv\Scripts\python.exe).Path
+& $Python -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
+if ($LASTEXITCODE -ne 0) {{ throw "runtime dependency installation failed" }}
+```
+
+Copy `operator-manifest.template.json` to `operator-manifest.json`. Replace the
+four `<ABSOLUTE_...>` tokens with `$Python`, this extracted package root, the
+CK3 install root containing `binaries\ck3.exe`, and a new empty writable state
+directory. The manifest pins and verifies the CK3 executable hash before any
+launch; paths for source, DLL, injector and save derive from the package root.
+
+Confirm all managed hosts have zero CK3 processes and allocate the next
+monotonic single-instance round. Then run:
 
 ```powershell
 $Manifest = (Resolve-Path .\operator-manifest.json).Path
@@ -567,9 +698,10 @@ def stage(spec_path: Path) -> dict[str, Any]:
         raise FileNotFoundError(game_executable)
     if sha256(game_executable) != spec["ck3"]["exe_sha256"].casefold():
         raise ValueError("build host CK3 executable hash differs")
-    copy_frozen_repo(
+    build_frozen_repo(
         source_repo,
         bundle / "repo",
+        source_commit,
         require_string(spec["source"]["canonical_remote_url"], "source.canonical_remote_url"),
     )
     if run_git(bundle / "repo", "rev-parse", "HEAD").casefold() != source_commit:
@@ -1063,12 +1195,303 @@ def assemble(spec_path: Path) -> dict[str, Any]:
     return download
 
 
+def qualification_artifact(
+    base: Path, value: object, field: str
+) -> tuple[dict[str, object], dict[str, Any]]:
+    path, digest = verify_artifact(base, value, field)
+    return (
+        {"path": str(path), "size": path.stat().st_size, "sha256": digest},
+        read_json(path),
+    )
+
+
+def atomic_json(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    if temporary.exists():
+        temporary.unlink()
+    temporary.write_bytes(json_bytes(value))
+    temporary.replace(path)
+
+
+def promote(spec_path: Path, qualification_path: Path) -> dict[str, Any]:
+    spec, spec_base = load_spec(spec_path)
+    qualification_path = qualification_path.resolve()
+    qualification = read_json(qualification_path)
+    qualification_base = qualification_path.parent
+    if qualification.get("schema") != QUALIFICATION_SCHEMA:
+        raise ValueError(f"qualification schema must be {QUALIFICATION_SCHEMA!r}")
+    gates = qualification.get("gates")
+    if not isinstance(gates, dict) or set(gates) != PROMOTION_GATES or not all(
+        value is True for value in gates.values()
+    ):
+        raise ValueError("qualification gates must be the exact all-GREEN promotion set")
+    stage_root = input_path(
+        spec_base, spec["output"]["stage_dir"], "output.stage_dir"
+    )
+    bundle = stage_root / "bundle"
+    config = read_json(stage_root / "staging-config.json")
+    if config.get("status") != "ASSEMBLED_PENDING_EXTRACTED_BUNDLE_LIVE_SMOKE":
+        raise ValueError("candidate is not assembled and pending live smoke")
+    archive = stage_root / config["zip_name"]
+    actual_zip = sha256(archive)
+    expected_zip = require_sha(
+        qualification.get("package_zip_sha256"),
+        "qualification.package_zip_sha256",
+    )
+    if actual_zip != expected_zip or config.get("zip_sha256") != expected_zip:
+        raise ValueError("qualification ZIP identity differs from assembled candidate")
+    before_bytes = archive.read_bytes()
+    verified_zip = verify_zip(archive, bundle)
+    with zipfile.ZipFile(archive) as zipped:
+        internal_bytes = zipped.read("candidate-manifest.json")
+    internal = json.loads(internal_bytes.decode("utf-8-sig"))
+    if not isinstance(internal, dict):
+        raise ValueError("candidate manifest inside ZIP is not an object")
+    source_commit = require_commit(
+        qualification.get("source_commit"), "qualification.source_commit"
+    )
+    native_commit = require_commit(
+        qualification.get("native_source_commit"),
+        "qualification.native_source_commit",
+    )
+    if (
+        source_commit != spec["source"]["commit"].casefold()
+        or source_commit != internal.get("source", {}).get("agent_commit")
+        or native_commit != spec["native"]["source_commit"].casefold()
+        or native_commit != internal.get("source", {}).get("native_source_commit")
+    ):
+        raise ValueError("qualification source/native pins differ")
+
+    rounds = require_object(qualification.get("rounds"), "qualification.rounds")
+    if set(rounds) != {"eligibility", "formal_stop", "cold_restore"}:
+        raise ValueError("qualification rounds must be eligibility/formal_stop/cold_restore")
+    round_numbers: list[int] = []
+    evidence: dict[str, Any] = {}
+    parsed: dict[str, dict[str, Any]] = {}
+    for role in ("eligibility", "formal_stop", "cold_restore"):
+        row = require_object(rounds[role], f"qualification.rounds.{role}")
+        round_id = require_string(row.get("round_id"), f"qualification.rounds.{role}.round_id")
+        if re.fullmatch(r"R[1-9][0-9]*", round_id) is None:
+            raise ValueError(f"invalid qualification round ID: {round_id}")
+        round_numbers.append(int(round_id[1:]))
+        required_artifacts = ["report", "closed_ledger"]
+        if role != "eligibility":
+            required_artifacts.append("operator_receipt")
+        evidence[role] = {"round_id": round_id}
+        parsed[role] = {}
+        for artifact_name in required_artifacts:
+            artifact, payload = qualification_artifact(
+                qualification_base,
+                row.get(artifact_name),
+                f"qualification.rounds.{role}.{artifact_name}",
+            )
+            evidence[role][artifact_name] = artifact
+            parsed[role][artifact_name] = payload
+        ledger = parsed[role]["closed_ledger"]
+        cleanup = ledger.get("cleanup")
+        if (
+            ledger.get("round_id") != round_id
+            or str(ledger.get("package_zip_sha256", "")).casefold() != expected_zip
+            or ledger.get("source_commit") != source_commit
+            or not isinstance(cleanup, dict)
+            or cleanup.get("ok") is not True
+            or cleanup.get("tree_gone") is not True
+        ):
+            raise ValueError(f"{role} closed ledger is not exact/clean")
+    if round_numbers != sorted(set(round_numbers)):
+        raise ValueError("qualification round IDs must be distinct and increasing")
+
+    eligibility = parsed["eligibility"]["report"]
+    eligibility_checks = eligibility.get("checks")
+    if (
+        eligibility.get("ok") is not True
+        or eligibility.get("status") != "GREEN_READ_ONLY"
+        or not isinstance(eligibility_checks, dict)
+        or not eligibility_checks
+        or not all(value is True for value in eligibility_checks.values())
+    ):
+        raise ValueError("fresh-extraction eligibility report is not fully GREEN")
+    formal = parsed["formal_stop"]["report"]
+    formal_receipt = parsed["formal_stop"]["operator_receipt"]
+    if not (
+        formal.get("ok") is False
+        and formal.get("status") == "operator_stop_checkpointed"
+        and formal.get("outcome") == "operator_stopped"
+        and formal_receipt.get("ok") is True
+        and formal_receipt.get("status") == "completed"
+        and formal_receipt.get("formal_exit_code") == 0
+    ):
+        raise ValueError("formal report/receipt is not a controlled checkpointed stop")
+    cold = parsed["cold_restore"]["report"]
+    cold_receipt = parsed["cold_restore"]["operator_receipt"]
+    if not (
+        cold.get("ok") is True
+        and cold.get("status") == "turn_limit"
+        and cold_receipt.get("ok") is True
+        and cold_receipt.get("status") == "completed"
+        and cold_receipt.get("formal_exit_code") == 0
+    ):
+        raise ValueError("cold-restore report/receipt is not GREEN")
+
+    chain = require_object(qualification.get("chain"), "qualification.chain")
+    for field in (
+        "formal_checkpoint_after_sha256",
+        "formal_driver_after_sha256",
+        "cold_checkpoint_before_sha256",
+        "cold_driver_before_sha256",
+        "cold_checkpoint_after_sha256",
+        "cold_driver_after_sha256",
+    ):
+        chain[field] = require_sha(chain.get(field), f"qualification.chain.{field}")
+    if (
+        chain["formal_checkpoint_after_sha256"]
+        != chain["cold_checkpoint_before_sha256"]
+        or chain["formal_driver_after_sha256"]
+        != chain["cold_driver_before_sha256"]
+    ):
+        raise ValueError("formal-stop and cold-restore paired state does not chain")
+    if (
+        formal_receipt.get("checkpoint_sha256_after")
+        != chain["formal_checkpoint_after_sha256"]
+        or formal_receipt.get("driver_state_sha256_after")
+        != chain["formal_driver_after_sha256"]
+        or cold_receipt.get("checkpoint_sha256_before")
+        != chain["cold_checkpoint_before_sha256"]
+        or cold_receipt.get("driver_state_sha256_before")
+        != chain["cold_driver_before_sha256"]
+        or cold_receipt.get("checkpoint_sha256_after")
+        != chain["cold_checkpoint_after_sha256"]
+        or cold_receipt.get("driver_state_sha256_after")
+        != chain["cold_driver_after_sha256"]
+    ):
+        raise ValueError("operator receipts do not match the declared pair chain")
+    previous_pid = chain.get("formal_process_id")
+    current_pid = chain.get("cold_process_id")
+    if (
+        not isinstance(previous_pid, int)
+        or isinstance(previous_pid, bool)
+        or not isinstance(current_pid, int)
+        or isinstance(current_pid, bool)
+        or previous_pid <= 0
+        or current_pid <= 0
+        or previous_pid == current_pid
+    ):
+        raise ValueError("cold restore must bind two distinct positive process IDs")
+    final_checkpoint, _ = verify_artifact(
+        qualification_base,
+        chain.get("final_checkpoint"),
+        "qualification.chain.final_checkpoint",
+    )
+    final_driver, _ = verify_artifact(
+        qualification_base,
+        chain.get("final_driver_state"),
+        "qualification.chain.final_driver_state",
+    )
+    if (
+        sha256(final_checkpoint) != chain["cold_checkpoint_after_sha256"]
+        or sha256(final_driver) != chain["cold_driver_after_sha256"]
+    ):
+        raise ValueError("frozen final pair differs from cold-restore receipt")
+
+    output_cfg = require_object(qualification.get("output"), "qualification.output")
+    receipt_path = input_path(
+        qualification_base,
+        output_cfg.get("qualification_receipt"),
+        "qualification.output.qualification_receipt",
+    )
+    if receipt_path.exists():
+        raise FileExistsError(receipt_path)
+    package_sha_before_promotion = sha256(archive)
+    receipt = {
+        "schema": GO_SCHEMA,
+        "status": "GO_RUNNABLE_PREVIEW",
+        "qualification_scope": "exact immutable ZIP only",
+        "g2_authoritative": {
+            "status": spec["release"]["g2_authoritative"],
+            "preview_does_not_complete_new_g2_milestone": True,
+        },
+        "immutable_package": {
+            "zip": {
+                "path": str(archive),
+                **verified_zip,
+                "modified_by_live_qualification": False,
+            },
+            "internal_candidate_manifest": {
+                "path": "candidate-manifest.json",
+                "sha256": hashlib.sha256(internal_bytes).hexdigest(),
+                "frozen_status": internal.get("status"),
+            },
+        },
+        "version_pins": {
+            "agent_commit": source_commit,
+            "native_source_commit": native_commit,
+            "ck3_exact_build": spec["ck3"]["exact_build"],
+            "ck3_exe_sha256": spec["ck3"]["exe_sha256"].casefold(),
+            "production_tree_sha256": config["production_tree_sha256"],
+        },
+        "gates": gates,
+        "live_evidence": evidence,
+        "paired_cold_restore": {
+            **chain,
+            "final_checkpoint": {
+                "path": str(final_checkpoint),
+                **file_row(final_checkpoint),
+            },
+            "final_driver_state": {
+                "path": str(final_driver),
+                **file_row(final_driver),
+            },
+        },
+        "supported_boundary": spec["release"]["supported_boundary"],
+        "known_limits": spec["release"]["unsupported_boundary"],
+        "qualification_input": {
+            "path": str(qualification_path),
+            "sha256": sha256(qualification_path),
+        },
+    }
+    atomic_json(receipt_path, receipt)
+    receipt_sha = sha256(receipt_path)
+    download_path = stage_root / "download-manifest.json"
+    download = read_json(download_path)
+    if download.get("zip_sha256") != expected_zip:
+        raise ValueError("download manifest ZIP identity differs before promotion")
+    download.update(
+        {
+            "status": "GO_RUNNABLE_PREVIEW",
+            "extracted_bundle_live_smoke": "GREEN",
+            "live_qualification_manifest": str(receipt_path),
+            "live_qualification_sha256": receipt_sha,
+            "qualification_scope": "exact immutable ZIP only",
+            "g2_authoritative": spec["release"]["g2_authoritative"],
+        }
+    )
+    atomic_json(download_path, download)
+    if archive.read_bytes() != before_bytes or sha256(archive) != package_sha_before_promotion:
+        raise ValueError("immutable ZIP changed during promotion")
+    config["status"] = "GO_RUNNABLE_PREVIEW"
+    config["live_qualification_sha256"] = receipt_sha
+    write_json(stage_root / "staging-config.json", config)
+    return {
+        "status": "GO_RUNNABLE_PREVIEW",
+        "zip_path": str(archive),
+        "zip_sha256": expected_zip,
+        "qualification_receipt": str(receipt_path),
+        "qualification_receipt_sha256": receipt_sha,
+        "download_manifest": str(download_path),
+        "download_manifest_sha256": sha256(download_path),
+    }
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     commands = result.add_subparsers(dest="command", required=True)
     for name in ("stage", "finalize-no-launch", "assemble"):
         command = commands.add_parser(name)
         command.add_argument("--config", type=Path, required=True)
+    promote_parser = commands.add_parser("promote")
+    promote_parser.add_argument("--config", type=Path, required=True)
+    promote_parser.add_argument("--qualification", type=Path, required=True)
     return result
 
 
@@ -1079,8 +1502,10 @@ def main() -> int:
             result = stage(args.config)
         elif args.command == "finalize-no-launch":
             result = finalize_no_launch(args.config)
-        else:
+        elif args.command == "assemble":
             result = assemble(args.config)
+        else:
+            result = promote(args.config, args.qualification)
     except (OSError, ValueError, subprocess.CalledProcessError, zipfile.BadZipFile) as error:
         print(json.dumps({"ok": False, "error": str(error)}, ensure_ascii=False), file=sys.stderr)
         return 1
