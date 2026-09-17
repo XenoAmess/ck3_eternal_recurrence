@@ -1080,3 +1080,11 @@ flowchart TD
 typed option，独立 paused frame 证明旧 instance `8` 消失并尽可能读取玩家 `fragile_bones` 物质状态，再由
 后续正式 turn 消费无 active event；若公共 snapshot 暂不能读取该 trait，继续分别报告 source-authored effect
 与实际可观测后置，不能用 ACK 代替物质结果。
+
+### R846 冷恢复中的自然事件闭环
+
+- [production-live] R846 在新的 CK3 进程中从 R839 history671 pair 冷恢复；旧 WarID `33554473` 从 readiness 起保持缺席，终局动作重放数为零。运行版本为 agent `a5db1e5d`、native `881e1ba5`、CK3 `1.19.0.6`。
+- 日期 `53204928` 自然 materialize 的定义是 `prison_notification.2002`，不是 `health.7500`。turn16 先执行公共 `query-current-event-window-context-v1`；exact registry 的 root、五个 named Character scope、唯一 rendered/native option `0`、shown/enabled 与所有 projection checks 均通过，`failed_checks=[]`。
+- turn17 只提交一次 `select-event-option-1`。独立结束帧从 `native:19/revision20` 变为 `native:20/revision21`，旧 instance `8` 消失、active event 变为 null，`postcondition_verified=true`；turn18 的正式战争查询继续消费无 active event 的状态。history693/date53204928 随后保存为新配对 checkpoint。
+- report/checkpoint/driver SHA-256 为 `63CFCDD4...34D1`、`9893F8C1...C08C`、`8315217A...F83`。这为 R842 的 exact `prison_notification.2002` 链提供了独立自然复现和 cold-restore/checkpoint 证据；它不满足 G2-M2 指定的 `tgp_travel_events.0030` 或 `death_management.1007`。
+- `health.7500` 在修复后的 R846 没有出现。其 `a5db1e5d` 状态仍是 static-ready / live=false；不得用 R846 的 prison event 关闭 R844 的 health gate。

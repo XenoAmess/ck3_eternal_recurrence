@@ -44,11 +44,13 @@
         "GEN-034-D pure postcondition verifier static-ready (normal/optimized focused suite 20/20)",
         "GEN-034-D source-bound cleanup/truce evidence composer static-ready (normal/optimized focused suite 26/26)",
         "GEN-034-D bounded action runner and termination-bound cleanup dispatch static-ready (normal/optimized focused suite 29/29; MSVC candidate build GREEN)",
-        "R661 immutable replay: production continue recommendation and one submitted resume, but no successor across 45 observations; fixture-scoped map-control RED"
+        "R661 immutable replay: production continue recommendation and one submitted resume, but no successor across 45 observations; fixture-scoped map-control RED",
+        "R839 production same-frame comparison made continue ineligible at the observed -100 terminal-control frame, found white peace unavailable, selected surrender as the sole eligible terminal, submitted surrender-war-33554473 exactly once, observed independent WarID and both-army disappearance, consumed the result on later formal turns and saved the history671 pair; report BD798BAE...1FEE6, checkpoint 5D040C7E...7B236, driver 842CCC35...97CC7",
+        "R846 restored the R839 pair in a new CK3 process, kept WarID33554473 absent with zero surrender replay, consumed later formal interaction/event work and saved a new history693 paired checkpoint; report 63CFCDD4...34D1, checkpoint 9893F8C1...C08C, driver 8315217A...F83"
       ],
       "planner_consumer": "three-way exit recommendation and one semantic exit action",
       "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
-      "open_blocker": "R459 map-control execution remains RED after an authorized first-command resume produced no successor; unchanged fixture retries are stopped. C still needs a reachable same-frame white-peace comparison and D still needs one terminating action plus material postconditions and cold restore."
+      "open_blocker": "GEN-034-C is complete on R839. GEN-034-D remains blocked_live because the terminating scene has no matching creation-time source capture and the fixed source-bound six-item certificate is incomplete: gold, prestige, directional truce plus persisted expiry, source-specific war-bound regiment destruction and postwar identity/recovery are not closed together. R846 proves new-process restore and a later paired checkpoint, but cannot manufacture the missing creation-time source binding."
     },
     {
       "id": "G2-M1",
@@ -88,7 +90,9 @@
         "played-character gold snapshot and trait_specific.8001 material comparator static-ready",
         "death_management.1007 scoped consumer and third material comparator static-ready",
         "three bounded campaign objective and ordinal utility profiles static-ready",
-        "R664 trait_specific.8001 production recommendation/action/material loop GREEN; report AB718B94A809C485683D2508133B3AF1AE750E55457096EB12753129E72EBC63"
+        "R664 trait_specific.8001 production recommendation/action/material loop GREEN; report AB718B94A809C485683D2508133B3AF1AE750E55457096EB12753129E72EBC63",
+        "R842 natural prison_notification.2002 production loop GREEN: exact registry query, one typed option, independent old-instance disappearance and next formal-turn consumption; report 60554323...24C2, close receipt EEB62CA4...F996",
+        "R846 independently cold-restored the R839 pair, naturally observed prison_notification.2002 again, performed one exact-registry typed option, consumed its absence on the next formal turn and saved history693; report 63CFCDD4...34D1"
       ],
       "planner_consumer": "event option utility policy",
       "visible_outcome": "resolve three natural events, including two multi-option events, and verify material state deltas",
@@ -168,7 +172,7 @@
   ],
   "current_work_package": {
     "id": "GEN-034",
-    "completed_packages": 2,
+    "completed_packages": 3,
     "total_packages": 4,
     "packages": [
       {
@@ -186,17 +190,17 @@
       {
         "id": "GEN-034-C",
         "name": "same-frame white-peace comparison",
-        "status": "blocked_live",
-        "latest_evidence": "Projection, immediate-exit evaluator and bounded two-query managed runner are static-ready; one production frame remains"
+        "status": "complete",
+        "latest_evidence": "R839 compared continue, white peace and surrender on one paused frame: continue was ineligible under complete primary-attacker terminal control, white peace was native-unavailable and surrender was the sole eligible result. It submitted surrender-war-33554473 once, verified typed raiktor_claim_cb/-100 terms, observed independent WarID and both-army disappearance, consumed the result later and saved history671; report BD798BAE...1FEE6, checkpoint 5D040C7E...7B236, driver 842CCC35...97CC7."
       },
       {
         "id": "GEN-034-D",
         "name": "three-way recommendation, one action and postwar verification",
         "status": "blocked_live",
-        "latest_evidence": "Production continue recommendation and revision-bound action admission are proven; R661 submitted one first-command resume with zero fresh reads but the immutable R459 frame stayed paused across 45 observations. Terminating action/material/cold-restore proof remains blocked_live."
+        "latest_evidence": "R839 proves one typed surrender, WarID and both-army disappearance, later formal-turn consumption and a paired checkpoint. R846 proves a new-process restore of that pair, zero terminal replay and a later history693 paired checkpoint. D remains blocked_live because R831/R839 lack a matching creation-time source capture and the fixed source-bound six-item certificate (gold, prestige, directional truce plus persisted expiry, source-specific regiment destruction and postwar identity/recovery) is not closed as one source-bound proof."
       }
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-15T13:08:15+08:00"
+  "updated_at": "2026-09-17T20:24:00+08:00"
 }

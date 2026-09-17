@@ -78,25 +78,38 @@ $Formal = Join-Path $PWD "runs\formal-$Stamp"
 
 ## 状态、受控停止与恢复
 
-从另一终端请求在安全 turn 边界保存 checkpoint 并停止：
+安全暂停与受控停止使用同一个操作：智能体会在安全 turn 边界保存成对 checkpoint/driver state，再退出 CK3；不支持把仍存活的 CK3 进程当作可恢复的“挂起”。恢复必须启动新进程。
+
+在另一个 PowerShell 中先进入 ZIP 的解压根目录，再重新取得全部变量：
 
 ```powershell
+$PackageRoot = (Resolve-Path .).Path
+$Manifest = (Resolve-Path (Join-Path $PackageRoot 'operator-manifest.json')).Path
+$Python = [string](Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json).python
+$RunOutput = Get-ChildItem -LiteralPath (Join-Path $PackageRoot 'runs') -Directory |
+  Sort-Object LastWriteTime -Descending | Select-Object -First 1
+if ($null -eq $RunOutput) { throw 'no preview run output exists' }
+
+# 状态：运行中会同时显示当前报告（或尚未完整写出的报告）和 CK3 进程。
+& $Python .\repo\tools\g2_preview_operator.py status --report (Join-Path $RunOutput.FullName 'formal-report.txt')
+
+# 安全暂停/停止：只调用一次，然后等待原 run 命令返回。
 & $Python .\repo\tools\g2_preview_operator.py request-stop --manifest $Manifest
+if ($LASTEXITCODE -ne 0) { throw 'controlled stop request failed' }
 ```
 
-查询报告：
+原 `run` 命令返回后再次执行 `status`。确认 CK3 与 injector 均已回收后，用新输出目录冷恢复同一目标：
 
 ```powershell
-& $Python .\repo\tools\g2_preview_operator.py status --report (Join-Path $Formal 'formal-report.txt')
-```
-
-确认进程树完全回收后，分配新轮次并使用新的输出目录冷恢复：
-
-```powershell
+if (@(Get-Process -Name ck3 -ErrorAction SilentlyContinue).Count -ne 0) { throw 'ck3.exe is still running' }
+if (@(Get-Process -Name xar_ck3_bridge_injector -ErrorAction SilentlyContinue).Count -ne 0) { throw 'injector is still running' }
 $Stamp = Get-Date -Format 'yyyyMMddTHHmmss'
-$ColdRestore = Join-Path $PWD "runs\cold-restore-$Stamp"
+$ColdRestore = Join-Path $PackageRoot "runs\cold-restore-$Stamp"
 & $Python .\repo\tools\g2_preview_operator.py run --manifest $Manifest --output $ColdRestore --turns 5 --timeout 810 --readiness-timeout 720
+if ($LASTEXITCODE -ne 0) { throw 'cold restore run failed' }
 ```
+
+`run` 会从 `<state_dir>` 当前成对 checkpoint/driver state 动态取得哈希并执行 no-launch preflight，不需要手工回填 manifest 哈希。
 
 - checkpoint：`<state_dir>\profile\save games\xar_checkpoint.ck3`
 - Agent state：`<state_dir>\native-session\driver-state.json`

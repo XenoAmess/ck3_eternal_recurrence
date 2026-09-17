@@ -1,4 +1,4 @@
-# G2 ordinary campaign / R795 handoff（更新至 R835）
+# G2 ordinary campaign / R795 handoff（更新至 R847）
 
 交接时间：2026-09-17（Asia/Shanghai）
 
@@ -14,11 +14,11 @@
 - live qualification SHA-256：`9F7DA87BDEDA3C3C41D50831C5D6EAB724F8DE669586090ED10B8D60B10C1AA3`
 - 启动、停止、checkpoint、cold restore 与支持边界：[`../ck3-native-ai/g2-preview-release.md`](../ck3-native-ai/g2-preview-release.md)
 
-这是可启动的 bounded ordinary preview，不是整局交付。G2 权威状态仍为 **1/8**（仅 M1），Council final gate **1/4**，GEN-034 **2/4**；首条 1066→1453 和第二种子都未验收。
+这是可启动的 bounded ordinary preview，不是整局交付。G2 权威状态仍为 **1/8**（仅 M1），Council final gate **1/4**，GEN-034 已由 R839 推进到 **3/4**；首条 1066→1453 和第二种子都未验收。
 
 ## Git 与冻结组合
 
-- 当前远端 `master`：`f00e57f1acfc1f71f7bac6e0e4a144d492013337`。
+- 本次报告同步前的代码基线：`master@a5db1e5dee523fb6f390c4463e76d8be0e1e6eae`；本文件自己的报告提交以 Git 历史为准。
 - 已交付包内 agent source：`9bacc5af2980cbd70767e8350f1262db60019e23`。
 - Native source：`881e1ba5467f3304d930faaa958cdafd24962370`。
 - CK3：`1.19.0.6`，EXE SHA `2D00FF31...DB86`。
@@ -51,18 +51,28 @@ R800 只读确认历史提交在 durable checkpoint 上为 `exact_absent`；R801
 - R835 改用已交付 `9bacc5af` agent / `881e1ba5` native 和独立 `xar_on` profile，冷恢复同一 R832 pair。20/20 turns、16 queries、4 gameplay 全绿；两次自然 `ransom_interaction` 分别在 history678→679 与 687→688 完成 exact query、一次 typed reject、独立 paused frame 旧 ID 消失，随后正式策略继续且 history694 成对 checkpoint。report `4ABB17D8...C1C2`、driver `99047F37...FDC0`、checkpoint `B75E7606...DF30`；WarID33554473 全程缺席，进程完全回收。
 - R835 只关闭旧 runtime 暴露的赎金连续运行 B0，且仅按其真实 `xar_on / rogue_one_life` 范围记账；它不扩张 ordinary preview 广告，也不关闭 GEN-034 或新的 G2 里程碑。
 
+## R839–R847 终局、事件与普通战争恢复增量
+
+- R839 在同一 paused frame 比较 continue / white peace / surrender：完整原生终局控制把 continue 判为 ineligible，white peace 为 native-unavailable，surrender 是唯一 eligible。正式入口只提交一次 `surrender-war-33554473`；独立后帧 WarID 与两军均消失，后续正式 turn 消费结果并保存 history671 配对 checkpoint。report `BD798BAE...1FEE6`、checkpoint `5D040C7E...7B236`、driver `842CCC35...97CC7`。因此 GEN-034-C 完成，权威 GEN-034 为 **3/4**。
+- GEN-034-D 仍为 `blocked_live`。R839 没有与终局匹配的 creation-time source capture；固定六项中的 gold、prestige、directional truce 与 persisted expiry、source-specific war-bound regiment destroyed、postwar identity/recovery 尚未作为一份 source-bound certificate 同时闭合。R846 虽从 R839 pair 做了真实新进程恢复、保持旧 WarID 缺席且零 surrender 重放，并保存新的 history693 配对 checkpoint，也不能补造缺失的创建时绑定。
+- R842 自然出现 `prison_notification.2002`，经 exact registry query 只提交一次 typed option，独立观察旧 instance 消失并由下一正式 turn 消费；随后 `health.7200` 暴露 projection drift。R844 又自然命中 `health.7500`，静态 exact projection 修复已进 `master@a5db1e5d`，但该定义尚未在修复后自然重现，所以保持“静态已修、实机待复验”。
+- R846 在修复后的新进程再次自然出现 `prison_notification.2002`，完成 query → 单次 typed option → 独立 disappearance → 下一 turn → history693 checkpoint；20/20、5 gameplay、15 query，report `63CFCDD4...34D1`，checkpoint `9893F8C1...C08C`，driver `8315217A...F83`。PowerShell 捕获层因正常 stderr 的 stop-file 提示返回过一次外层 code1，完整 JSON `ok=true`、CLI 逻辑与进程回收证据保留；不据此掩盖或重跑实机。
+- R845 关闭普通战争的 dynamic capital-preview dispatch B0：一次 read-only preview、一次 `move-army-304-to-45`，之后八个 route-progress turn 与 battle query/epoch 消费，四次 checkpoint，20/20、cleanup GREEN。Army304 在 Province52 被敌军截入战斗；没有 Province45 arrival frame，因此不能声称已到达首都。
+- R847 从 R845 的 history503 post-move pair 启动新 CK3 进程，10/10、CLI exit0。history503 后 preview/move/assault/terminal 新命令均为零；策略查询同一 battle/termination state，推进两个 battle epoch，观察战斗结束为 Army304 原生撤退，再消费三个逐日 retreat turn。history516/521 两次 checkpoint，最终 save `50993AC4...10031`、driver `8290560E...3F57E`、report `DBA987B5...0CE7B`，完全回收。它证明 post-move cold restore 与不重复动作，不证明首都抵达或 War25 终局。
+
 ## 下一单实例队列
 
-1. War：修复已实证的 Raiktor `-100` 资格缺口。只在同帧、primary-attacker、player-relative `<= -100` 的完整原生终局控制输入成立时，把 continue 留在 trace 但标为 ineligible；随后仍由合法 white peace/surrender 比较，输入不完整则 fail-closed。聚焦 normal/`-O` 通过后，从 R831 pre-terminal pair 启动一个新轮次，要求唯一 typed terminal、物质战后状态、下一 turn、paired checkpoint 与 cold restore。
+1. War / GEN-034-D：不再重复 R839 的终局动作。寻找或生成合同允许、带 matching creation-time source capture 的新 Raiktor 场景，在一次 source-bound certificate 内闭合固定六项后置及 cold restore；现有 R839/R846 证据继续复用。
 2. Council：R797 已证明 occupied-steward 场景只增加 already-councillor 证据，不重复该 checkpoint。等待真实 guest、candidate-pending 或 replacement-fireability denial 的 materially different scene；公共 query/action/广告保持 OFF。
-3. 普通 campaign：继续已交付 R806 ordinary pair，优先自然 `.0030` / `.1007`、同 campaign 自然继承和会卡住时间推进的治理状态；不得用本节 `xar_on` Raiktor pair 替换 ordinary 证据。
+3. 普通 campaign：从 R847 history521 pair 继续 War25 撤退/重整和后续终局；同时等待自然 `.0030` / `.1007`、同 campaign 自然继承和会卡住时间推进的治理状态。不得用 `xar_on` Raiktor pair 替换 ordinary 证据。
 4. 治理、家庭外交与 M6/M7 只补会阻塞标准封建连续运行的最小 typed 闭环，不开展展示、广矩阵或策略精雕。
 
 ## 当前现场与约束
 
-- R835 结束后 CK3 与 injector 盘点均为 0；下一次启动必须重新盘点并分配 R836 或更高实际空闲轮次。
+- R847 结束后 CK3 与 injector 盘点均为 0；下一次启动必须重新盘点并分配 R848 或更高实际空闲轮次。
 - Ordinary R806 mutable state：`D:\ck3_mod_rewrite_process_assets\g2-preview-ordinary-9bacc5af-r804-state`；最终 pair 在 `D:\ck3_mod_rewrite_process_assets\g2-preview-ordinary-9bacc5af-r802-qualification\final-pair-r806`。
 - Raiktor R835 资产：`C:\ck3_mod_rewrite_process_assets\g2-ransom-r835-current-runtime-xar-on-20260917`；R831/R832 原 pair 仍在 `C:\ck3_mod_rewrite_process_assets\g2-gen034-c-r807-raiktor-20260917`。两条 lifecycle 不得混用。
+- R839/R846 资产分别为 `C:\ck3_mod_rewrite_process_assets\g2-gen034-r839-surrender-bbf53990-20260917` 与 `C:\ck3_mod_rewrite_process_assets\g2-gen034-r846-health7500-cold-restore-a5db1e5d-20260917`；普通 R845/R847 资产分别为 `C:\ck3_mod_rewrite_process_assets\g2-ordinary-r845-capital-regroup-c1887eeb-20260917` 与 `C:\ck3_mod_rewrite_process_assets\g2-ordinary-r847-post-move-cold-restore-a5db1e5d-20260917`。
 - 当前 clean integration clone：`C:\workspace\g2-war-r794-no-safe-exit-20260917`；共享 `Z:` 工作区有历史改动，不 reset/clean。
 - 运行 artifact/checkpoint 继续写 `D:\ck3_mod_rewrite_process_assets`，轮次 ledger 在 `C:\ck3_mod_rewrite_process_assets\ck3-single-instance-rounds`。
 - 禁止 merge commit、强推 master、并发 CK3、改运行中加载文件、盲重提未确认动作、提前广告未验收能力，或把本包称为整局/G2 complete。
@@ -72,5 +82,5 @@ R800 只读确认历史提交在 durable checkpoint 上为 `exact_absent`；R801
 1. 本文与 [预览包交付页](../ck3-native-ai/g2-preview-release.md)；
 2. [G2 权威合同](../autonomous-agent-progress/g2-requirements-v1.json)；
 3. [`../autonomous-agent-progress/daily/2026-09-17.md`](../autonomous-agent-progress/daily/2026-09-17.md) 与 [`../autonomous-agent-progress/weekly/2026-W38.md`](../autonomous-agent-progress/weekly/2026-W38.md)；
-4. R832/R834/R835 与 R804/R805/R806 closed ledgers、formal reports、evidence seals 和 operator receipts；
+4. R839/R842/R845/R846/R847 与 R804/R805/R806 closed ledgers、formal reports、evidence seals 和 operator receipts；
 5. [`../ck3-native-ai/player-war-exit-policy.md`](../ck3-native-ai/player-war-exit-policy.md)、[`../ck3-native-ai/g2-preview-operator.md`](../ck3-native-ai/g2-preview-operator.md) 与 MCP 迁移文档。

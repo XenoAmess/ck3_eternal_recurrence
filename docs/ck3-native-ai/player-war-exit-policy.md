@@ -640,3 +640,11 @@ flowchart TD
     W --> P[Independent postwar result and cold restore]
     D --> P
 ```
+
+### 2026-09-17 R845–R847 ordinary capital-regroup recovery
+
+[production-live bounded] R845 cold-restored the safe ordinary WarID25 checkpoint after the exact siege route became untenable. On turn6 the planner issued a read-only `preview-move-army-304-to-45`; the same-frame native preview returned origin Province52, target Province45 and route `[45]` without revision change. Turn7 submitted `move-army-304-to-45` exactly once and received native moving state. No assault, retreat override, white peace, surrender or enforce action was submitted.
+
+Eight subsequent production turns consumed the existing target/route rather than resubmitting it. Enemy forces then contacted Army304 in Province52, and the planner moved to battle-control queries and decision-epoch advancement. Four post-move checkpoints were written. R845 report/final pair are `2A86B334...5D8E`, `94396905...5D84`, `720E53C2...C1F4`. No frame observed `current_province_id=45`, an empty arrival route or `status=arrived`; the strongest valid claim is safe preview → unique move → route/battle consumption, not capital arrival.
+
+R847 restored that exact history503 pair in a new CK3 process under agent `a5db1e5d`. Driver history504–521 contains zero new preview, move, assault or terminal commands. Formal turns re-queried battle and termination state, advanced two decision epochs, observed the battle resolve into Army304 native retreat, and consumed three one-day retreat frames. It saved history516 and final history521/date53155584; report/final pair are `DBA987B5...0CE7B`, `50993AC4...10031`, `8290560E...3F57E`. War25 remains active at player-relative score `-9`. This closes the post-move cold-restore/no-duplicate gate only; regroup arrival and the war terminal remain open.

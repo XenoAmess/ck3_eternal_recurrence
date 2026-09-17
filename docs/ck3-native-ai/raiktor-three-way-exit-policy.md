@@ -696,3 +696,13 @@ same restored event instance before the registry can authorize selection. The
 live command allowance is consequently one event selection plus one successor
 save; time and every war-exit action remain forbidden. This is static-ready
 until the next single bounded live attempt.
+
+## 2026-09-17 R839 production terminal and R846 recovery boundary
+
+[production-live / GEN-034-C complete] R839 exercised the corrected terminal-control gate on CK3 `1.19.0.6` with exact Raiktor WarID `33554473`. One paused frame carried complete primary-attacker and absolute/player-relative `-100` control. The provider retained continue in the trace but marked it ineligible, observed outbound white peace as native-unavailable, and selected surrender as the sole eligible terminal. The formal loop submitted `surrender-war-33554473` exactly once. Its typed receipt bound `raiktor_claim_cb`, player attacker, score `-100`, absolute attacker/defender `-100:+100`, and recipient acceptance.
+
+An independent later paused frame no longer contained the WarID or either frozen army. Later formal turns consumed the peaceful result and saved the history671 paired checkpoint. Report/checkpoint/driver are `BD798BAE...1FEE6`, `5D040C7E...7B236`, and `842CCC35...97CC7`. This closes GEN-034-C's same-frame comparison and unique semantic terminal action; it does not close GEN-034-D.
+
+R846 restored the exact R839 pair in a distinct CK3 process under agent `a5db1e5d`. WarID `33554473` remained absent, no surrender or alternative terminal action replayed, normal interaction/event work continued, and history693 was saved as a new pair (`9893F8C1...C08C` / `8315217A...F83`). Thus terminal recovery and later strategy consumption are production-live for this artifact.
+
+GEN-034-D remains `blocked_live`. R831/R839 did not capture the matching creation-time source attribution required by the fixed six-item contract. The observed WarID/army disappearance cannot retroactively prove exact gold, prestige, directional truce plus persisted expiry, source-specific war-bound regiment destruction, and postwar identity/recovery as one source-bound certificate. The next D run must start from a newly captured qualifying creation scene; repeating the already confirmed R839 terminal action is forbidden.
