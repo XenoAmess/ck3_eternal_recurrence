@@ -34,6 +34,9 @@ Its current first gameplay slice is intentionally small:
   100% war led by the player; paused
   `query-war-termination-options-<war_id>` now returns read-only native
   surrender/white-peace/victory contexts and exact war-score evidence;
+  `query-outbound-war-white-peace-status-v1-<war_id>` separately double-scans
+  the paused global interaction store and returns only a typed
+  `exact_present`/`exact_absent` sender-side receipt for the unique active war;
   `query-war-termination-terms-v1-<war_id>` separately returns the narrow
   claim-CB claimant/targets/claim-disposition slice. Native typed
   `surrender-war-<war_id>` and `offer-white-peace-<war_id>` both rebuild and

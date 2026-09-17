@@ -2447,6 +2447,17 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_outbound_war_white_peace_status(
+        war_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read the exact sender-side pending receipt for white peace."""
+        return service.query_outbound_war_white_peace_status(
+            war_id,
+            expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_war_termination_terms(
         war_id: int,
         expected_revision: int | None = None,

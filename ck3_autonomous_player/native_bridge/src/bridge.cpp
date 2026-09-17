@@ -7242,6 +7242,36 @@ std::string WarTerminationOptionsResultFrame(
   return result;
 }
 
+std::string OutboundWarWhitePeaceStatusResultFrame(
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
+    const xar::game::OutboundWarWhitePeaceStatusSnapshot &status) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result +=
+      ",\"accepted\":true,\"status\":\"available\",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"outbound_war_white_peace_status\":{\"schema_version\":1,";
+  result += "\"war_id\":";
+  result += SignedNumber(status.war_id);
+  result += ",\"actor_character_id\":";
+  result += SignedNumber(status.actor_character_id);
+  result += ",\"recipient_character_id\":";
+  result += SignedNumber(status.recipient_character_id);
+  result += ",\"state\":\"";
+  result += status.present ? "exact_present" : "exact_absent";
+  result += "\",\"present\":";
+  result += status.present ? "true" : "false";
+  result += ",\"pending_interaction_id\":";
+  result += SignedNumber(status.pending_interaction_id);
+  result += "}}}";
+  return result;
+}
+
 std::string WarTerminationTermsResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
@@ -7672,6 +7702,16 @@ std::optional<std::int32_t> WarTerminationQueryStep(
     std::string_view step) noexcept {
   constexpr std::string_view prefix =
       "query-war-termination-options-";
+  if (!step.starts_with(prefix)) {
+    return std::nullopt;
+  }
+  return PositiveNativeId(step.substr(prefix.size()));
+}
+
+std::optional<std::int32_t> OutboundWarWhitePeaceStatusQueryStep(
+    std::string_view step) noexcept {
+  constexpr std::string_view prefix =
+      "query-outbound-war-white-peace-status-v1-";
   if (!step.starts_with(prefix)) {
     return std::nullopt;
   }
@@ -8212,6 +8252,7 @@ struct WorkerState {
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t war_termination_query_sequence = 0;
+  std::uint64_t outbound_war_white_peace_status_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
   std::uint64_t raiktor_actual_truce_expiry_query_sequence = 0;
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
@@ -8349,6 +8390,8 @@ void RunConnectedSession(
       state.combat_inputs_query_sequence;
   auto &war_termination_query_sequence =
       state.war_termination_query_sequence;
+  auto &outbound_war_white_peace_status_query_sequence =
+      state.outbound_war_white_peace_status_query_sequence;
   auto &war_termination_terms_query_sequence =
       state.war_termination_terms_query_sequence;
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
@@ -13514,6 +13557,145 @@ void RunConnectedSession(
             connected = PublishSnapshot(pipe, game, previous_snapshot,
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
+          }
+        } else if (step.starts_with(
+                       "query-outbound-war-white-peace-status-v1-")) {
+          const auto war_id = OutboundWarWhitePeaceStatusQueryStep(step);
+          if (!war_id.has_value()) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "invalid query-outbound-war-white-peace-status-v1-"
+                          "<war_id> step"));
+          } else {
+            std::uint64_t expected_revision = 0;
+            if (!xar::ck3_11906::
+                    ParseCampaignRootContextExpectedRevisionV1(
+                        incoming.payload, expected_revision)) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "outbound white-peace status expected revision "
+                            "is malformed"));
+            } else if (expected_revision != state_revision) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "outbound white-peace status snapshot revision "
+                            "is stale"));
+            } else if (!previous_snapshot.has_value() ||
+                       state_revision == 0) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "outbound white-peace status admission snapshot "
+                            "is unavailable"));
+            } else {
+              xar::game::Snapshot admission_snapshot{};
+              if (!xar::game::ReadSnapshot(game, admission_snapshot)) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "outbound white-peace status admission "
+                              "snapshot read failed"));
+              } else if (admission_snapshot != previous_snapshot.value()) {
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+                if (connected) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "outbound white-peace status admission "
+                                "snapshot changed; retry after heartbeat"));
+                }
+              } else if (!admission_snapshot.paused ||
+                         !admission_snapshot.map_ready ||
+                         !admission_snapshot.has_played_character ||
+                         !admission_snapshot.played_character_alive) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "outbound white-peace status query requires a "
+                              "ready paused living player snapshot"));
+              } else {
+                xar::game::OutboundWarWhitePeaceStatusSnapshot status{};
+                const auto query_result =
+                    xar::game::ReadOutboundWarWhitePeaceStatus(
+                        game, war_id.value(), status);
+                xar::game::Snapshot completion_snapshot{};
+                if (!xar::game::ReadSnapshot(game, completion_snapshot)) {
+                  connected = xar::bridge::WriteFrame(
+                      pipe, CommandResultFrame(
+                                request_id, step, false,
+                                "outbound white-peace status completion "
+                                "snapshot read failed"));
+                } else if (completion_snapshot != admission_snapshot) {
+                  connected = PublishSnapshot(
+                      pipe, game, previous_snapshot, state_revision,
+                      checkpoint_submission, published_checkpoint_sequence);
+                  if (connected) {
+                    connected = xar::bridge::WriteFrame(
+                        pipe, CommandResultFrame(
+                                  request_id, step, false,
+                                  "outbound white-peace status completion "
+                                  "snapshot changed; retry after heartbeat"));
+                  }
+                } else if (
+                    query_result ==
+                    xar::game::ReadOutboundWarWhitePeaceStatusResult::
+                        available) {
+                  const auto next_query_sequence =
+                      outbound_war_white_peace_status_query_sequence + 1;
+                  connected = xar::bridge::WriteFrame(
+                      pipe, OutboundWarWhitePeaceStatusResultFrame(
+                                request_id, step, next_query_sequence,
+                                status));
+                  if (connected) {
+                    outbound_war_white_peace_status_query_sequence =
+                        next_query_sequence;
+                  }
+                } else {
+                  std::string_view error =
+                      "CK3 outbound white-peace status query is unavailable";
+                  if (query_result ==
+                      xar::game::ReadOutboundWarWhitePeaceStatusResult::
+                          requires_paused) {
+                    error = "CK3 outbound white-peace status query requires "
+                            "a paused map";
+                  } else if (query_result ==
+                             xar::game::
+                                 ReadOutboundWarWhitePeaceStatusResult::
+                                     no_played_character) {
+                    error = "no living played CK3 character";
+                  } else if (query_result ==
+                             xar::game::
+                                 ReadOutboundWarWhitePeaceStatusResult::
+                                     war_not_found) {
+                    error = "CK3 war was not found";
+                  } else if (query_result ==
+                             xar::game::
+                                 ReadOutboundWarWhitePeaceStatusResult::
+                                     player_not_participant) {
+                    error = "played CK3 character is not a war participant";
+                  } else if (query_result ==
+                             xar::game::
+                                 ReadOutboundWarWhitePeaceStatusResult::
+                                     player_not_war_leader) {
+                    error = "played CK3 character is not the war leader";
+                  } else if (query_result ==
+                             xar::game::
+                                 ReadOutboundWarWhitePeaceStatusResult::
+                                     state_changed) {
+                    error = "outbound white-peace status changed during the "
+                            "paused query; retry after heartbeat";
+                  }
+                  connected = xar::bridge::WriteFrame(
+                      pipe,
+                      CommandResultFrame(request_id, step, false, error));
+                }
+              }
+            }
           }
         } else if (step.starts_with(
                        "query-war-termination-options-")) {

@@ -248,6 +248,7 @@ struct Bindings {
   std::uintptr_t auto_save_secondary_vtable = 0;
   std::uintptr_t reply_character_interaction_primary_vtable = 0;
   std::uintptr_t reply_character_interaction_secondary_vtable = 0;
+  std::uintptr_t war_white_peace_special_vtable = 0;
   std::uintptr_t raise_troops_primary_vtable = 0;
   std::uintptr_t raise_troops_secondary_vtable = 0;
   std::uintptr_t move_army_primary_vtable = 0;
@@ -1052,6 +1053,17 @@ using game::ReadWarTerminationOptionsResult;
 ReadWarTerminationOptionsResult ReadWarTerminationOptions(
     const Bindings &bindings, std::int32_t war_id,
     WarTerminationOptionsSnapshot &output) noexcept;
+
+using game::OutboundWarWhitePeaceStatusSnapshot;
+using game::ReadOutboundWarWhitePeaceStatusResult;
+
+// Scans the exact-build global pending-interaction store twice while the
+// public paused snapshot remains unchanged.  This is the sender-side receipt
+// query needed before a recovery path may decide whether re-submission is
+// legal.
+ReadOutboundWarWhitePeaceStatusResult ReadOutboundWarWhitePeaceStatus(
+    const Bindings &bindings, std::int32_t war_id,
+    OutboundWarWhitePeaceStatusSnapshot &output) noexcept;
 
 using game::ReadWarTerminationTermsResult;
 

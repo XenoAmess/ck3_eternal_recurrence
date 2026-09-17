@@ -12520,6 +12520,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_query_combat_simulation_inputs_v3",
                     "ck3_query_war_entry_assessments",
                     "ck3_query_war_termination_options",
+                    "ck3_query_outbound_war_white_peace_status",
                     "ck3_query_war_termination_terms",
                     "ck3_surrender_war",
                     "ck3_offer_white_peace",

@@ -355,6 +355,7 @@ from .war_contract import (
     parse_committed_route_sentinel_advance_step,
     parse_war_objective_hold_sentinel_advance_step,
     player_armies_from_state,
+    query_outbound_war_white_peace_status_step,
     query_war_termination_options_step,
     query_war_termination_terms_step,
     start_assault_step,
@@ -2017,6 +2018,24 @@ class GameplayBridgeService:
         if not isinstance(options, dict) or options.get("war_id") != war_id:
             raise BridgeUnavailableError(
                 "native termination query lacks matching war_termination_options"
+            )
+        return {**result, "war_id": war_id}
+
+    def query_outbound_war_white_peace_status(
+        self,
+        war_id: int,
+        *,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read whether this player's white-peace proposal is still pending."""
+        step = query_outbound_war_white_peace_status_step(war_id)
+        result = self._execute_typed_war_step(
+            step, expected_revision=expected_revision
+        )
+        status = result.get("outbound_war_white_peace_status")
+        if not isinstance(status, dict) or status.get("war_id") != war_id:
+            raise BridgeUnavailableError(
+                "native outbound white-peace query lacks matching status"
             )
         return {**result, "war_id": war_id}
 

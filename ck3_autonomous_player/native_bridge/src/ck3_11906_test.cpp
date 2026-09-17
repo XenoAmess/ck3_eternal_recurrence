@@ -32,6 +32,10 @@ std::array<std::byte, 0x40> g_pending_storage{};
 std::array<std::byte, 0x20> g_pending_slots{};
 std::array<std::byte, 0x5C8> g_unrelated_pending_interaction{};
 std::array<std::byte, 0x5C8> g_pending_interaction{};
+std::array<std::byte, 0x40> g_white_peace_pending_definition{};
+std::array<std::byte, sizeof(std::uintptr_t)> g_white_peace_pending_special{};
+constexpr char g_white_peace_pending_definition_key[] =
+    "end_war_attacker_white_peace_interaction";
 std::array<std::byte, 0x40> g_character_storage{};
 std::array<std::byte, 0x80> g_character_slots{};
 std::array<std::byte, 0x1D0> g_played_character{};
@@ -4345,6 +4349,7 @@ int main() {
   bindings.auto_save_secondary_vtable = 0x88888888;
   bindings.reply_character_interaction_primary_vtable = 0x99999999;
   bindings.reply_character_interaction_secondary_vtable = 0xAAAAAAAA;
+  bindings.war_white_peace_special_vtable = 0xA0A0A0A0;
   bindings.raise_troops_primary_vtable = 0xBBBBBBBB;
   bindings.raise_troops_secondary_vtable = 0xCCCCCCCC;
   bindings.move_army_primary_vtable = 0xDDDDDDDD;
@@ -8855,6 +8860,61 @@ int main() {
       g_interaction_destroy_calls != 2) {
     return Fail("arrange-marriage did not use native context/queue lifecycle");
   }
+
+  // The responder-facing snapshot intentionally ignores this player-originated
+  // proposal.  The dedicated sender-side receipt must nevertheless distinguish
+  // an exact absent scan from the canonical white-peace pending component.
+  Store(g_pending_storage, 0x20,
+        static_cast<void *>(g_pending_slots.data()));
+  Store(g_pending_storage, 0x2C, std::int32_t{2});
+  Store(g_pending_slots, 0x18, static_cast<void *>(nullptr));
+  g_pending_storage_pointer = g_pending_storage.data();
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  xar::ck3_11906::OutboundWarWhitePeaceStatusSnapshot outbound_status{};
+  if (xar::ck3_11906::ReadOutboundWarWhitePeaceStatus(
+          bindings, active_war_id, outbound_status) !=
+          xar::ck3_11906::ReadOutboundWarWhitePeaceStatusResult::available ||
+      outbound_status.present ||
+      outbound_status.pending_interaction_id != -1 ||
+      outbound_status.war_id != active_war_id ||
+      outbound_status.actor_character_id != played_character_id ||
+      outbound_status.recipient_character_id != enemy_character_id) {
+    return Fail("outbound white-peace receipt did not prove exact absence");
+  }
+  Store(g_pending_interaction, 0x10, kInitialPendingInteractionId);
+  Store(g_pending_interaction, 0x2F0, played_character_id);
+  Store(g_pending_interaction, 0x2F4, enemy_character_id);
+  Store(g_pending_interaction, 0x18,
+        static_cast<void *>(g_white_peace_pending_definition.data()));
+  Store(g_pending_interaction, 0x348,
+        static_cast<void *>(g_white_peace_pending_special.data()));
+  Store(g_white_peace_pending_definition, 0x18,
+        static_cast<const char *>(g_white_peace_pending_definition_key));
+  Store(g_white_peace_pending_definition, 0x28,
+        std::size_t{sizeof(g_white_peace_pending_definition_key) - 1});
+  Store(g_white_peace_pending_definition, 0x30,
+        std::size_t{sizeof(g_white_peace_pending_definition_key) - 1});
+  Store(g_white_peace_pending_special, 0,
+        bindings.war_white_peace_special_vtable);
+  Store(g_pending_slots, 0x18,
+        static_cast<void *>(g_pending_interaction.data()));
+  if (xar::ck3_11906::ReadOutboundWarWhitePeaceStatus(
+          bindings, active_war_id, outbound_status) !=
+          xar::ck3_11906::ReadOutboundWarWhitePeaceStatusResult::available ||
+      !outbound_status.present ||
+      outbound_status.pending_interaction_id !=
+          kInitialPendingInteractionId) {
+    return Fail("outbound white-peace receipt did not prove exact presence");
+  }
+  Store(g_white_peace_pending_special, 0, std::uintptr_t{0xDEADBEEF});
+  if (xar::ck3_11906::ReadOutboundWarWhitePeaceStatus(
+          bindings, active_war_id, outbound_status) !=
+      xar::ck3_11906::ReadOutboundWarWhitePeaceStatusResult::unavailable) {
+    return Fail("outbound white-peace subtype mismatch did not fail closed");
+  }
+  Store(g_white_peace_pending_special, 0,
+        bindings.war_white_peace_special_vtable);
+  Store(jomini_state, 0x20, std::uint8_t{0});
 
   xar::ck3_11906::WarTerminationOptionsSnapshot termination_options{};
   if (xar::ck3_11906::ReadWarTerminationOptions(

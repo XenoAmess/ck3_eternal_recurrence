@@ -458,6 +458,7 @@ from .war_contract import (
     QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
     QUERY_ARMY_STRENGTHS_CAPABILITY,
     QUERY_ARMY_STRENGTHS_STEP,
+    QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY,
     QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY,
     QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
     RAISE_TROOPS_STEP,
@@ -488,6 +489,7 @@ from .war_contract import (
     normalize_active_wars,
     normalize_army_strengths,
     normalize_route_contact_horizon,
+    normalize_outbound_war_white_peace_status,
     normalize_war_termination_options,
     normalize_war_termination_terms,
     offer_white_peace_step,
@@ -504,6 +506,7 @@ from .war_contract import (
     parse_preview_move_army_step,
     parse_advance_route_contact_horizon_step,
     parse_query_route_contact_horizon_step,
+    parse_query_outbound_war_white_peace_status_step,
     parse_query_war_termination_options_step,
     parse_query_war_termination_terms_step,
     parse_split_army_half_step,
@@ -513,6 +516,7 @@ from .war_contract import (
     preview_move_army_step,
     query_route_contact_horizon_step,
     player_armies_from_state,
+    query_outbound_war_white_peace_status_step,
     query_war_termination_options_step,
     query_war_termination_terms_step,
     stationary_province_contact_free_in_horizon,
@@ -2113,6 +2117,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "war_termination_query_supported": (
                 QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY
+                in bridge_capabilities
+            ),
+            "outbound_war_white_peace_status_query_supported": (
+                QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY
                 in bridge_capabilities
             ),
             "war_termination_terms_query_supported": (
@@ -8208,6 +8216,9 @@ class NativeHeadlessGameplayDriver:
         termination_query_war_id = (
             parse_query_war_termination_options_step(step)
         )
+        outbound_white_peace_query_war_id = (
+            parse_query_outbound_war_white_peace_status_step(step)
+        )
         termination_terms_query_war_id = (
             parse_query_war_termination_terms_step(step)
         )
@@ -8219,6 +8230,7 @@ class NativeHeadlessGameplayDriver:
         )
         internal_read_only_query = bool(
             termination_query_war_id is not None
+            or outbound_white_peace_query_war_id is not None
             or termination_terms_query_war_id is not None
             or actual_truce_expiry_toward is not None
             or war_bound_loss_cleanup_war_id is not None
@@ -8387,6 +8399,13 @@ class NativeHeadlessGameplayDriver:
                 starting=starting,
                 selected_revision=selected_revision,
                 war_id=termination_terms_query_war_id,
+            )
+        if outbound_white_peace_query_war_id is not None:
+            return self._execute_outbound_war_white_peace_status_query(
+                step,
+                starting=starting,
+                selected_revision=selected_revision,
+                war_id=outbound_white_peace_query_war_id,
             )
         surrender_war_id = parse_surrender_war_step(step)
         white_peace_war_id = parse_offer_white_peace_step(step)
@@ -14303,6 +14322,106 @@ class NativeHeadlessGameplayDriver:
             **result,
             "war_termination_exit_terms": terms,
             "query_sequence": query_sequence,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
+
+    def _execute_outbound_war_white_peace_status_query(
+        self,
+        step: str,
+        *,
+        starting: dict[str, object],
+        selected_revision: int,
+        war_id: int,
+    ) -> dict[str, object]:
+        """Read an exact sender-side pending receipt without mutating CK3."""
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native outbound white-peace status requires a paused "
+                "snapshot"
+            )
+        if _war_by_id(starting, war_id) is None:
+            raise BridgeUnavailableError(
+                f"native outbound white-peace status requires active WarID "
+                f"{war_id}"
+            )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY
+            ),
+            internal_semantic_snapshot=True,
+        )
+        if (
+            set(result)
+            != {
+                "step",
+                "accepted",
+                "status",
+                "query_sequence",
+                "outbound_war_white_peace_status",
+                "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "available"
+        ):
+            raise BridgeUnavailableError(
+                "native outbound white-peace status returned malformed "
+                "metadata"
+            )
+        sequence = result.get("query_sequence")
+        if (
+            isinstance(sequence, bool)
+            or not isinstance(sequence, int)
+            or not 1 <= sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native outbound white-peace status lacks query_sequence"
+            )
+        try:
+            status = normalize_outbound_war_white_peace_status(
+                result.get("outbound_war_white_peace_status"),
+                expected_war_id=war_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native outbound white-peace status is malformed: {error}"
+            ) from error
+        played = starting.get("played_character")
+        if (
+            not isinstance(played, dict)
+            or status["actor_character_id"]
+            != played.get("character_id")
+        ):
+            raise BridgeUnavailableError(
+                "native outbound white-peace status actor mismatches the "
+                "paused player"
+            )
+        war = _war_by_id(starting, war_id)
+        if not isinstance(war, dict) or status[
+            "recipient_character_id"
+        ] != war.get("primary_opponent_character_id"):
+            raise BridgeUnavailableError(
+                "native outbound white-peace status recipient mismatches "
+                "the active war"
+            )
+        current = self.take_internal_semantic_snapshot()
+        if not _same_paused_native_frame(starting, current):
+            raise BridgeUnavailableError(
+                "native outbound white-peace status crossed a snapshot "
+                "revision"
+            )
+        if _war_by_id(current, war_id) is None:
+            raise BridgeUnavailableError(
+                "native outbound white-peace status returned after the war "
+                "ended"
+            )
+        return {
+            **result,
+            "outbound_war_white_peace_status": status,
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": starting.get("native_revision"),
@@ -22754,6 +22873,7 @@ def _action_steps(
     expand_enforce_demands = False
     advertise_army_strength_query = False
     expand_termination_queries = False
+    expand_outbound_white_peace_status_queries = False
     expand_termination_terms_queries = False
     expand_termination_exit_terms_queries = False
     expand_declare_wars = False
@@ -22939,6 +23059,11 @@ def _action_steps(
             continue
         elif capability == QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY:
             expand_termination_queries = True
+        elif (
+            capability
+            == QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY
+        ):
+            expand_outbound_white_peace_status_queries = True
         elif capability == QUERY_WAR_TERMINATION_TERMS_CAPABILITY:
             expand_termination_terms_queries = True
         elif capability == QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY:
@@ -22982,6 +23107,7 @@ def _action_steps(
                 QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
                 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
                 "query-war-termination-options-",
+                "query-outbound-war-white-peace-status-v1-",
                 "query-war-termination-terms-v1-",
                 QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX,
                 QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
@@ -23064,6 +23190,14 @@ def _action_steps(
             for war in wars
             if _positive_native_id(war.get("war_id"))
             and int(war["war_id"]) <= 2**31 - 1
+        )
+    if expand_outbound_white_peace_status_queries and paused is True:
+        steps.update(
+            query_outbound_war_white_peace_status_step(int(war["war_id"]))
+            for war in wars
+            if _positive_native_id(war.get("war_id"))
+            and int(war["war_id"]) <= 2**31 - 1
+            and war.get("player_is_primary_war_leader") is True
         )
     if expand_termination_terms_queries and paused is True:
         steps.update(

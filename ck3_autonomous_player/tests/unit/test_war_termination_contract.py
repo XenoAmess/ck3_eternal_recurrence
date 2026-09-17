@@ -9,12 +9,15 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.war_contract import (
+    normalize_outbound_war_white_peace_status,
     normalize_war_termination_options,
     offer_white_peace_step,
     parse_offer_white_peace_step,
     parse_query_war_termination_options_step,
+    parse_query_outbound_war_white_peace_status_step,
     parse_surrender_war_step,
     query_war_termination_options_step,
+    query_outbound_war_white_peace_status_step,
     surrender_war_step,
 )
 
@@ -120,6 +123,16 @@ class WarTerminationContractTests(unittest.TestCase):
             "offer-white-peace-16777290",
         )
         self.assertEqual(
+            query_outbound_war_white_peace_status_step(war_id),
+            "query-outbound-war-white-peace-status-v1-16777290",
+        )
+        self.assertEqual(
+            parse_query_outbound_war_white_peace_status_step(
+                "query-outbound-war-white-peace-status-v1-16777290"
+            ),
+            war_id,
+        )
+        self.assertEqual(
             parse_query_war_termination_options_step(
                 "query-war-termination-options-16777290"
             ),
@@ -153,8 +166,40 @@ class WarTerminationContractTests(unittest.TestCase):
                 self.assertIsNone(
                     parse_query_war_termination_options_step(step)
                 )
+                self.assertIsNone(
+                    parse_query_outbound_war_white_peace_status_step(step)
+                )
                 self.assertIsNone(parse_surrender_war_step(step))
                 self.assertIsNone(parse_offer_white_peace_step(step))
+
+    def test_outbound_white_peace_status_requires_exact_typed_consistency(
+        self,
+    ) -> None:
+        raw = {
+            "schema_version": 1,
+            "war_id": 16_777_290,
+            "actor_character_id": 707,
+            "recipient_character_id": 808,
+            "state": "exact_present",
+            "present": True,
+            "pending_interaction_id": 16_777_221,
+        }
+        self.assertEqual(
+            normalize_outbound_war_white_peace_status(
+                raw, expected_war_id=16_777_290
+            ),
+            raw,
+        )
+        for field, value in (
+            ("state", "exact_absent"),
+            ("present", False),
+            ("pending_interaction_id", -1),
+        ):
+            malformed = dict(raw)
+            malformed[field] = value
+            with self.subTest(field=field):
+                with self.assertRaises(ValueError):
+                    normalize_outbound_war_white_peace_status(malformed)
 
     def test_normalizer_preserves_unknown_validator_and_unavailable_domains(
         self,

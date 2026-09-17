@@ -124,6 +124,13 @@ public:
   virtual ReadWarTerminationOptionsResult read_war_termination_options(
       std::int32_t war_id,
       WarTerminationOptionsSnapshot &output) const noexcept = 0;
+  virtual ReadOutboundWarWhitePeaceStatusResult
+  read_outbound_war_white_peace_status(
+      std::int32_t, OutboundWarWhitePeaceStatusSnapshot &output) const
+      noexcept {
+    output = {};
+    return ReadOutboundWarWhitePeaceStatusResult::unavailable;
+  }
   virtual ReadWarTerminationTermsResult read_war_termination_terms(
       std::int32_t war_id,
       WarTerminationTermsSnapshot &output) const noexcept = 0;
@@ -313,6 +320,12 @@ inline ReadWarTerminationOptionsResult ReadWarTerminationOptions(
     const GameAdapter &game, std::int32_t war_id,
     WarTerminationOptionsSnapshot &output) noexcept {
   return game.read_war_termination_options(war_id, output);
+}
+inline ReadOutboundWarWhitePeaceStatusResult
+ReadOutboundWarWhitePeaceStatus(
+    const GameAdapter &game, std::int32_t war_id,
+    OutboundWarWhitePeaceStatusSnapshot &output) noexcept {
+  return game.read_outbound_war_white_peace_status(war_id, output);
 }
 inline ReadWarTerminationTermsResult ReadWarTerminationTerms(
     const GameAdapter &game, std::int32_t war_id,

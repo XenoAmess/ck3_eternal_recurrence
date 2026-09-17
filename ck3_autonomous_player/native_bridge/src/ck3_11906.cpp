@@ -606,6 +606,7 @@ constexpr std::uintptr_t kReplyCharacterInteractionPrimaryVtableRva =
     0x4082930;
 constexpr std::uintptr_t kReplyCharacterInteractionSecondaryVtableRva =
     0x4082900;
+constexpr std::uintptr_t kWarWhitePeaceSpecialVtableRva = 0x428EF88;
 constexpr std::uintptr_t kPendingCharacterInteractionStorageSlotRva =
     0x57BF1C8;
 constexpr std::uintptr_t kCharacterStorageSlotRva = 0x570C130;
@@ -845,11 +846,17 @@ constexpr std::size_t kComponentStorageCapacityOffset = 0x2C;
 constexpr std::size_t kComponentStorageSlotSize = 0x10;
 constexpr std::size_t kComponentStorageSlotObjectOffset = 0x08;
 constexpr std::size_t kPendingInteractionIdOffset = 0x10;
+constexpr std::size_t kPendingInteractionDefinitionOffset = 0x18;
 constexpr std::size_t kPendingInteractionSenderIdOffset = 0x2F0;
 constexpr std::size_t kPendingInteractionRecipientIdOffset = 0x2F4;
+constexpr std::size_t kPendingInteractionSpecialDataOffset = 0x348;
 constexpr std::size_t kPendingInteractionAlternateRecipientIdOffset = 0x300;
 constexpr std::size_t kPendingInteractionRoutingKindOffset = 0x5C0;
 constexpr std::size_t kPendingInteractionAutoAcceptOffset = 0x5C6;
+constexpr std::size_t kPendingInteractionDefinitionKeyOffset = 0x18;
+constexpr std::string_view kWhitePeaceInteractionDefinitionKey =
+    "end_war_attacker_white_peace_interaction";
+constexpr std::int32_t kMaximumPendingInteractionCapacity = 1'000'000;
 constexpr std::size_t kPlayerCharacterEntriesOffset = 0x58;
 constexpr std::size_t kPlayerCharacterEntryCountOffset = 0x64;
 constexpr std::size_t kPlayerCharacterIdOffset = 0xB0;
@@ -9550,6 +9557,8 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
       module + kReplyCharacterInteractionPrimaryVtableRva;
   result.reply_character_interaction_secondary_vtable =
       module + kReplyCharacterInteractionSecondaryVtableRva;
+  result.war_white_peace_special_vtable =
+      module + kWarWhitePeaceSpecialVtableRva;
   result.raise_troops_primary_vtable =
       module + kRaiseTroopsPrimaryVtableRva;
   result.raise_troops_secondary_vtable =
@@ -16607,6 +16616,183 @@ ReadWarTerminationOptionsResult ReadWarTerminationOptions(
     return ReadWarTerminationOptionsResult::unavailable;
   }
   return ReadWarTerminationOptionsResult::available;
+}
+
+ReadOutboundWarWhitePeaceStatusResult ReadOutboundWarWhitePeaceStatus(
+    const Bindings &bindings, std::int32_t war_id,
+    OutboundWarWhitePeaceStatusSnapshot &output) noexcept {
+  output = {};
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      *bindings.game_state_slot == nullptr ||
+      bindings.pending_character_interaction_storage_slot == nullptr ||
+      bindings.war_white_peace_special_vtable == 0) {
+    return ReadOutboundWarWhitePeaceStatusResult::unavailable;
+  }
+
+  Snapshot admission{};
+  if (!ReadSnapshot(bindings, admission)) {
+    return ReadOutboundWarWhitePeaceStatusResult::unavailable;
+  }
+  if (!admission.paused) {
+    return ReadOutboundWarWhitePeaceStatusResult::requires_paused;
+  }
+  if (!admission.has_played_character ||
+      !admission.played_character_alive) {
+    return ReadOutboundWarWhitePeaceStatusResult::no_played_character;
+  }
+
+  void *const game_state = *bindings.game_state_slot;
+  void *const war = ResolveWar(bindings, game_state, war_id);
+  if (war == nullptr || LoadAt<void *>(war, kWarEndedDataOffset) != nullptr) {
+    return ReadOutboundWarWhitePeaceStatusResult::war_not_found;
+  }
+  const auto primary_attacker_character_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryAttackerCharacterIdOffset);
+  const auto primary_defender_character_id = LoadAt<std::int32_t>(
+      war, kWarPrimaryDefenderCharacterIdOffset);
+  const bool player_is_primary_attacker =
+      primary_attacker_character_id == admission.played_character_id;
+  const bool player_is_primary_defender =
+      primary_defender_character_id == admission.played_character_id;
+  if (player_is_primary_attacker == player_is_primary_defender) {
+    const bool participant = std::any_of(
+        admission.active_wars.begin(), admission.active_wars.end(),
+        [war_id](const ActiveWarSnapshot &candidate) {
+          return candidate.war_id == war_id;
+        });
+    return participant
+               ? ReadOutboundWarWhitePeaceStatusResult::player_not_war_leader
+               : ReadOutboundWarWhitePeaceStatusResult::player_not_participant;
+  }
+  const auto recipient_character_id =
+      player_is_primary_attacker ? primary_defender_character_id
+                                 : primary_attacker_character_id;
+  if (recipient_character_id == -1) {
+    return ReadOutboundWarWhitePeaceStatusResult::unavailable;
+  }
+
+  // A pending special interaction records the actor/recipient pair and CK3's
+  // native subtype, not a directly readable WarID.  Bind the pair to this
+  // WarID only when the public paused snapshot proves it is the sole active
+  // war against that primary opponent.
+  std::size_t matching_wars = 0;
+  bool requested_war_published = false;
+  for (const auto &candidate : admission.active_wars) {
+    if (candidate.primary_opponent_character_id == recipient_character_id) {
+      ++matching_wars;
+      requested_war_published =
+          requested_war_published || candidate.war_id == war_id;
+    }
+  }
+  if (!requested_war_published || matching_wars != 1) {
+    return ReadOutboundWarWhitePeaceStatusResult::unavailable;
+  }
+
+  const auto scan = [&]() noexcept
+      -> std::optional<OutboundWarWhitePeaceStatusSnapshot> {
+    void *const storage =
+        *bindings.pending_character_interaction_storage_slot;
+    if (storage == nullptr) {
+      return std::nullopt;
+    }
+    void *const slots =
+        LoadAt<void *>(storage, kComponentStorageSlotsOffset);
+    const auto capacity =
+        LoadAt<std::int32_t>(storage, kComponentStorageCapacityOffset);
+    if (capacity < 0 || capacity > kMaximumPendingInteractionCapacity ||
+        (capacity > 0 && slots == nullptr)) {
+      return std::nullopt;
+    }
+
+    OutboundWarWhitePeaceStatusSnapshot observed{};
+    observed.war_id = war_id;
+    observed.actor_character_id = admission.played_character_id;
+    observed.recipient_character_id = recipient_character_id;
+    std::int32_t exact_matches = 0;
+    for (std::int32_t index = 0; index < capacity; ++index) {
+      const auto slot_offset = static_cast<std::size_t>(index) *
+                                   kComponentStorageSlotSize +
+                               kComponentStorageSlotObjectOffset;
+      void *const pending = LoadAt<void *>(slots, slot_offset);
+      if (pending == nullptr) {
+        continue;
+      }
+      const auto pending_id =
+          LoadAt<std::int32_t>(pending, kPendingInteractionIdOffset);
+      if ((static_cast<std::uint32_t>(pending_id) & 0x00FFFFFFU) !=
+          static_cast<std::uint32_t>(index)) {
+        continue;
+      }
+      if (LoadAt<std::int32_t>(pending,
+                               kPendingInteractionSenderIdOffset) !=
+              admission.played_character_id ||
+          LoadAt<std::int32_t>(pending,
+                               kPendingInteractionRecipientIdOffset) !=
+              recipient_character_id) {
+        continue;
+      }
+
+      void *const definition = LoadAt<void *>(
+          pending, kPendingInteractionDefinitionOffset);
+      std::string definition_key;
+      if (definition == nullptr ||
+          !ReadDatabaseObjectKey(definition,
+                                 kPendingInteractionDefinitionKeyOffset,
+                                 definition_key)) {
+        return std::nullopt;
+      }
+      void *const special_data =
+          LoadAt<void *>(pending, kPendingInteractionSpecialDataOffset);
+      const auto special_vtable =
+          special_data == nullptr
+              ? std::uintptr_t{0}
+              : LoadAt<std::uintptr_t>(special_data, 0);
+      const bool key_matches =
+          definition_key == kWhitePeaceInteractionDefinitionKey;
+      const bool subtype_matches =
+          special_vtable == bindings.war_white_peace_special_vtable;
+      if (key_matches != subtype_matches) {
+        return std::nullopt;
+      }
+      if (!key_matches) {
+        continue;
+      }
+      ++exact_matches;
+      observed.present = true;
+      observed.pending_interaction_id = pending_id;
+    }
+    if (exact_matches > 1) {
+      return std::nullopt;
+    }
+    return observed;
+  };
+
+  const auto first = scan();
+  Snapshot middle{};
+  if (!first.has_value() || !ReadSnapshot(bindings, middle) ||
+      middle != admission) {
+    return first.has_value()
+               ? ReadOutboundWarWhitePeaceStatusResult::state_changed
+               : ReadOutboundWarWhitePeaceStatusResult::unavailable;
+  }
+  const auto second = scan();
+  Snapshot completion{};
+  if (!second.has_value() || !ReadSnapshot(bindings, completion) ||
+      completion != admission || second.value() != first.value()) {
+    return second.has_value()
+               ? ReadOutboundWarWhitePeaceStatusResult::state_changed
+               : ReadOutboundWarWhitePeaceStatusResult::unavailable;
+  }
+  if (ResolveWar(bindings, game_state, war_id) != war ||
+      LoadAt<std::int32_t>(war, kWarPrimaryAttackerCharacterIdOffset) !=
+          primary_attacker_character_id ||
+      LoadAt<std::int32_t>(war, kWarPrimaryDefenderCharacterIdOffset) !=
+          primary_defender_character_id ||
+      LoadAt<void *>(war, kWarEndedDataOffset) != nullptr) {
+    return ReadOutboundWarWhitePeaceStatusResult::state_changed;
+  }
+  output = second.value();
+  return ReadOutboundWarWhitePeaceStatusResult::available;
 }
 
 bool ReadRaiktorGenericWarBoundCurrentForTerms(

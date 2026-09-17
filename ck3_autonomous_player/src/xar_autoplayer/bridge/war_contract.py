@@ -26,6 +26,9 @@ ENFORCE_DEMANDS_CAPABILITY = "game.command.enforce-demands-N"
 QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY = (
     "game.command.query-war-termination-options-N"
 )
+QUERY_OUTBOUND_WAR_WHITE_PEACE_STATUS_CAPABILITY = (
+    "game.command.query-outbound-war-white-peace-status-v1-N"
+)
 QUERY_WAR_TERMINATION_TERMS_CAPABILITY = (
     "game.command.query-war-termination-terms-v1-N"
 )
@@ -1620,6 +1623,13 @@ def query_war_termination_options_step(war_id: int) -> str:
     )
 
 
+def query_outbound_war_white_peace_status_step(war_id: int) -> str:
+    return (
+        "query-outbound-war-white-peace-status-v1-"
+        f"{_positive_int32_id(war_id, 'war_id')}"
+    )
+
+
 def query_war_termination_terms_step(war_id: int) -> str:
     return (
         "query-war-termination-terms-v1-"
@@ -2033,6 +2043,14 @@ def parse_enforce_demands_step(step: object) -> int | None:
 def parse_query_war_termination_options_step(step: object) -> int | None:
     return _parse_generation_war_step(
         step, prefix="query-war-termination-options-"
+    )
+
+
+def parse_query_outbound_war_white_peace_status_step(
+    step: object,
+) -> int | None:
+    return _parse_generation_war_step(
+        step, prefix="query-outbound-war-white-peace-status-v1-"
     )
 
 
@@ -2993,6 +3011,73 @@ def _normalize_war_termination_terms_provenance(
     return dict(expected)
 
 
+def normalize_outbound_war_white_peace_status(
+    value: object,
+    *,
+    expected_war_id: int | None = None,
+) -> dict[str, object]:
+    """Normalize one exact sender-side white-peace pending receipt."""
+    if not isinstance(value, dict) or set(value) != {
+        "schema_version",
+        "war_id",
+        "actor_character_id",
+        "recipient_character_id",
+        "state",
+        "present",
+        "pending_interaction_id",
+    }:
+        raise ValueError(
+            "native outbound_war_white_peace_status schema is malformed"
+        )
+    if value.get("schema_version") != 1:
+        raise ValueError(
+            "native outbound_war_white_peace_status version is unsupported"
+        )
+    war_id = _positive_int32_id(value.get("war_id"), "war_id")
+    if expected_war_id is not None and war_id != _positive_int32_id(
+        expected_war_id, "expected_war_id"
+    ):
+        raise ValueError(
+            "native outbound_war_white_peace_status WarID mismatch"
+        )
+    actor = _signed_int32(
+        value.get("actor_character_id"), "actor_character_id"
+    )
+    recipient = _signed_int32(
+        value.get("recipient_character_id"), "recipient_character_id"
+    )
+    if actor == -1 or recipient == -1 or actor == recipient:
+        raise ValueError(
+            "native outbound_war_white_peace_status roles are malformed"
+        )
+    present = _strict_bool(
+        value.get("present"), "outbound_war_white_peace_status.present"
+    )
+    state = value.get("state")
+    expected_state = "exact_present" if present else "exact_absent"
+    if state != expected_state:
+        raise ValueError(
+            "native outbound_war_white_peace_status state is inconsistent"
+        )
+    pending_id = _signed_int32(
+        value.get("pending_interaction_id"), "pending_interaction_id"
+    )
+    if (present and pending_id == -1) or (not present and pending_id != -1):
+        raise ValueError(
+            "native outbound_war_white_peace_status pending ID is "
+            "inconsistent"
+        )
+    return {
+        "schema_version": 1,
+        "war_id": war_id,
+        "actor_character_id": actor,
+        "recipient_character_id": recipient,
+        "state": expected_state,
+        "present": present,
+        "pending_interaction_id": pending_id,
+    }
+
+
 def normalize_war_termination_options(
     value: object,
     *,
@@ -3430,6 +3515,7 @@ def is_native_war_step(step: object) -> bool:
         or parse_stop_assault_step(step) is not None
         or parse_enforce_demands_step(step) is not None
         or parse_query_war_termination_options_step(step) is not None
+        or parse_query_outbound_war_white_peace_status_step(step) is not None
         or parse_query_war_termination_terms_step(step) is not None
         or parse_surrender_war_step(step) is not None
         or parse_offer_white_peace_step(step) is not None

@@ -109,5 +109,37 @@ int main(int argc, char **argv) {
     std::cerr << "war-termination retry/sequence contract is not exact\n";
     return 1;
   }
+  const auto outbound_begin = view.find(
+      "\"query-outbound-war-white-peace-status-v1-\"", session);
+  const auto outbound_end = view.find(
+      "\"query-war-termination-options-\"",
+      outbound_begin == std::string_view::npos ? 0 : outbound_begin + 1);
+  if (outbound_begin == std::string_view::npos ||
+      outbound_end == std::string_view::npos ||
+      outbound_begin >= outbound_end) {
+    std::cerr << "could not isolate outbound white-peace status branch\n";
+    return 1;
+  }
+  const auto outbound =
+      view.substr(outbound_begin, outbound_end - outbound_begin);
+  if (!AppearsInOrder(
+          outbound,
+          {
+              "ParseCampaignRootContextExpectedRevisionV1(",
+              "expected_revision != state_revision",
+              "ReadSnapshot(game, admission_snapshot)",
+              "admission_snapshot != previous_snapshot.value()",
+              "PublishSnapshot(",
+              "ReadOutboundWarWhitePeaceStatus(",
+              "ReadSnapshot(game, completion_snapshot)",
+              "completion_snapshot != admission_snapshot",
+              "PublishSnapshot(",
+              "OutboundWarWhitePeaceStatusResultFrame(",
+              "outbound_war_white_peace_status_query_sequence =",
+          }) ||
+      Count(outbound, "PublishSnapshot(") != 2) {
+    std::cerr << "outbound white-peace same-frame contract is not exact\n";
+    return 1;
+  }
   return 0;
 }

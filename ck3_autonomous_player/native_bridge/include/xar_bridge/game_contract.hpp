@@ -600,6 +600,23 @@ struct WarTerminationOptionsSnapshot {
                          const WarTerminationOptionsSnapshot &) = default;
 };
 
+// Exact-build, paused observation of a player-originated white-peace proposal
+// that is still present in CK3's global pending-interaction storage.  `present`
+// is a typed result, not an inference from the responder-facing notification
+// queue.  A false value is published only after two identical storage scans in
+// the same unchanged native snapshot.
+struct OutboundWarWhitePeaceStatusSnapshot {
+  std::int32_t war_id = -1;
+  std::int32_t actor_character_id = -1;
+  std::int32_t recipient_character_id = -1;
+  bool present = false;
+  std::int32_t pending_interaction_id = -1;
+
+  friend bool operator==(const OutboundWarWhitePeaceStatusSnapshot &,
+                         const OutboundWarWhitePeaceStatusSnapshot &) =
+      default;
+};
+
 // Narrow, source-pinned terms projection. The claim_cb branch remains the
 // complete claim-disposition slice. The raiktor_claim_cb branch publishes its
 // attacker-defeat disposition and authored formulas plus whichever isolated
@@ -1771,6 +1788,16 @@ enum class ReadWarTerminationOptionsResult {
   no_played_character,
   war_not_found,
   player_not_participant,
+  unavailable,
+};
+enum class ReadOutboundWarWhitePeaceStatusResult {
+  available,
+  requires_paused,
+  no_played_character,
+  war_not_found,
+  player_not_participant,
+  player_not_war_leader,
+  state_changed,
   unavailable,
 };
 enum class ReadWarTerminationTermsResult {

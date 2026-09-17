@@ -9946,6 +9946,73 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
 
+    def test_outbound_white_peace_status_is_same_frame_typed_query(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-outbound-war-white-peace-status-v1-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                39,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[_war(war_id=war_id, score=41)],
+            )
+        )
+        step = (
+            "query-outbound-war-white-peace-status-v1-16777290"
+        )
+        self.assertEqual(driver.capabilities()["action_steps"], [step])
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 1,
+                        "outbound_war_white_peace_status": {
+                            "schema_version": 1,
+                            "war_id": war_id,
+                            "actor_character_id": 707,
+                            "recipient_character_id": 808,
+                            "state": "exact_absent",
+                            "present": False,
+                            "pending_interaction_id": -1,
+                        },
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        selected_revision = int(driver.take_snapshot()["revision"])
+        result = driver.execute_step(
+            step, expected_revision=selected_revision
+        )
+        self.assertEqual(
+            result["outbound_war_white_peace_status"]["state"],
+            "exact_absent",
+        )
+        self.assertEqual(result["queried_revision"], selected_revision)
+        self.assertEqual(result["query_sequence"], 1)
+
     def test_war_termination_query_caches_exact_frame_and_gates_actions(
         self,
     ) -> None:

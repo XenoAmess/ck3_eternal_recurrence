@@ -35,7 +35,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 95;
+constexpr std::size_t kBaseCapabilityCount = 96;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
@@ -161,6 +161,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-combat-simulation-inputs-v2-N",
     "game.command.query-combat-simulation-inputs-v3-N",
     "game.command.query-war-termination-options-N",
+    "game.command.query-outbound-war-white-peace-status-v1-N",
     "game.command.query-war-termination-terms-v1-N",
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
     ck3_11906::kRaiktorActualTruceExpiryV1Capability,
@@ -313,6 +314,13 @@ public:
       std::int32_t war_id,
       WarTerminationOptionsSnapshot &output) const noexcept override {
     return ck3_11906::ReadWarTerminationOptions(bindings_, war_id, output);
+  }
+  ReadOutboundWarWhitePeaceStatusResult
+  read_outbound_war_white_peace_status(
+      std::int32_t war_id,
+      OutboundWarWhitePeaceStatusSnapshot &output) const noexcept override {
+    return ck3_11906::ReadOutboundWarWhitePeaceStatus(bindings_, war_id,
+                                                       output);
   }
   ReadWarTerminationTermsResult read_war_termination_terms(
       std::int32_t war_id,
