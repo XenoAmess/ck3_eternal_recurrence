@@ -519,3 +519,20 @@ flowchart TD
 - [compatibility] `DeclarableWarSnapshot`、pipe JSON、action literal、公开 ABI 与 MCP schema 均未改变；变化仅是
   `declarable_wars` 不再广告最终 validator 会拒绝的 row，故需要新 DLL 哈希和同 checkpoint 的 R854 paused-live 复验，
   不需要 open_kaishek 或 MCP consumer 适配。
+
+### R854 final-validator live closure（2026-09-17）
+
+- [production-live] R854 使用 native DLL
+  `28FC55A50B839E49EC25F66DE0E0AA2D77E1689E24D3919C8C9DF8A5A75EAE29`，从 R853 的安全 h624
+  checkpoint `DD9D73162C3229564563073539BAC720F230960B8A11BC6D3A3D8B191594A7ED` 启动新的 CK3
+  PID 72972。正式 cold restore 截断旧 h625–h630 失败尾并重新写入 h625；恢复后的旧投降、Army304 解散及
+  `declare-war-31506-17--1` 提交重放计数均为 0。
+- [production-live] 四次 fresh `query-declarable-wars`（h629、h632、h636、h639）都返回
+  `available` 且 row count 为 0。每次结果均被后续正式策略轮消费，四次 `life-advance` 将日期从
+  `53157360` 推进到 `53160840`，累计 145 游戏日；前后均无 war、army 或 event。最终 h640 checkpoint SHA-256
+  为 `36E13194914675D4C76ADA8A77AAC355A8F383D69BDE2E32A6E6EF4ADFBD66FC`。
+- [production-live] bounded run 为 `turn_limit / qualified / ok=true`，8/8 turns、无 first blocker；report/stdout
+  SHA-256 为 `848E56BD30B6473D4D7DAF50E51AFADC6B4E8A0B1478A14E70E518BC6845464A`，最终 driver SHA-256
+  为 `34FB1623DCCED1CB0F3CA0B495846F5F400B0E587E564E4524CB5348A1B4C754`，CK3/injector 均已回收。
+- [inference] 该 differential 关闭了 R853 exact scene 的“query 广告、submit final validator 拒绝”B0，并证明空合法集能被下一轮
+  正式策略消费。它没有提供合法宣战 positive case、新 WarID 或战果，也没有证明所有 CB 全局正确；h640 尚待后续新进程恢复。
