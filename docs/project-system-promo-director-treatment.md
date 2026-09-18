@@ -4,6 +4,9 @@
 > 副标题：**伪天司的辉煌愿景**
 > 核心命题：**我们不是在制作一个 Mod。我们在制造一套能够持续产出、游玩、测试、核验并发行内容的系统。**
 
+> 现行定位：本案保留为 8:20 预告与技术预演；体系正片已经转向
+> [30 分钟导演案](project-system-promo-30m-director-treatment.md)，不得把本案继续拉长冒充正片。
+
 ![《project因果律》无字主视觉](../images/project_causality/promo/project_causality_key_art.png)
 
 ## 0. 文档状态与边界

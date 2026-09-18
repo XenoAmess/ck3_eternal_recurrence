@@ -1,0 +1,89 @@
+{
+  "format_version": 1,
+  "kind": "project_causality_30m_chapter_gate_contract",
+  "duration_seconds_each": 20,
+  "near_silence_min_seconds": 0.8,
+  "maximum_text_layers": 2,
+  "gates": [
+    {
+      "id": "03-spell-declaration",
+      "start": 190,
+      "end": 210,
+      "chapter_zh": "咒",
+      "chapter_en": "SPELL",
+      "visual_asset": "../../../images/project_causality/promo/chapter_spell.png",
+      "palette": "ember-red-old-gold-cyan-flame",
+      "audio_signature": "single-low-bell-then-faint-heartbeat",
+      "declaration_zh": "咒。先看结果：玩家今天究竟得到了什么？",
+      "declaration_en": "SPELL — BEGIN WITH THE RESULT. WHAT DOES THE PLAYER RECEIVE TODAY?",
+      "match_cut": "cyan-flame-circle-to-terminal-pact-or-ember-eye",
+      "beats": [
+        {"start": 0, "end": 3, "purpose": "previous_argument_resolves_then_black"},
+        {"start": 3, "end": 7, "purpose": "chapter_material_and_identity_sound_enter"},
+        {"start": 7, "end": 12, "purpose": "character_action_and_chapter_name"},
+        {"start": 12, "end": 18, "purpose": "theme_declaration"},
+        {"start": 18, "end": 20, "purpose": "chapter_coordinate_and_match_cut"}
+      ]
+    },
+    {
+      "id": "10-method-declaration",
+      "start": 820,
+      "end": 840,
+      "chapter_zh": "术",
+      "chapter_en": "METHOD",
+      "visual_asset": "../../../images/project_causality/promo/chapter_method.png",
+      "palette": "cold-blue-cyan-green-paper-white",
+      "audio_signature": "page-turn-then-four-beat-mechanical-pulse",
+      "declaration_zh": "术。再追因果：这些结果，怎样被稳定制造？",
+      "declaration_en": "METHOD — TRACE THE CAUSE. HOW ARE THESE RESULTS MADE REPEATABLE?",
+      "match_cut": "generation-arrow-to-authoritative-document-rule",
+      "beats": [
+        {"start": 0, "end": 3, "purpose": "previous_argument_resolves_then_black"},
+        {"start": 3, "end": 7, "purpose": "chapter_material_and_identity_sound_enter"},
+        {"start": 7, "end": 12, "purpose": "character_action_and_chapter_name"},
+        {"start": 12, "end": 18, "purpose": "theme_declaration"},
+        {"start": 18, "end": 20, "purpose": "chapter_coordinate_and_match_cut"}
+      ]
+    },
+    {
+      "id": "17-principle-declaration",
+      "start": 1270,
+      "end": 1290,
+      "chapter_zh": "道",
+      "chapter_en": "PRINCIPLE",
+      "visual_asset": "../../../images/project_causality/promo/chapter_principle.png",
+      "palette": "black-ivory-warning-red",
+      "audio_signature": "mechanical-stop-near-silence-dry-seal",
+      "declaration_zh": "道。然后校准尺度：我们凭什么说，它是真的？",
+      "declaration_en": "PRINCIPLE — CALIBRATE THE MEASURE. WHAT LETS US CALL IT REAL?",
+      "match_cut": "warning-red-line-to-document-test-code-comparator",
+      "beats": [
+        {"start": 0, "end": 3, "purpose": "previous_argument_resolves_then_black"},
+        {"start": 3, "end": 7, "purpose": "chapter_material_and_identity_sound_enter"},
+        {"start": 7, "end": 12, "purpose": "character_action_and_chapter_name"},
+        {"start": 12, "end": 18, "purpose": "theme_declaration"},
+        {"start": 18, "end": 20, "purpose": "chapter_coordinate_and_match_cut"}
+      ]
+    },
+    {
+      "id": "22-vision-declaration",
+      "start": 1510,
+      "end": 1530,
+      "chapter_zh": "辉煌愿景",
+      "chapter_en": "GLORIOUS VISION",
+      "visual_asset": "../../../images/project_causality/promo/chapter_vision.png",
+      "palette": "glass-white-cyan-gold-convergence",
+      "audio_signature": "bright-return-of-bell-then-five-note-loop-theme",
+      "declaration_zh": "辉煌愿景。最后闭合因果：下一次创造，怎样从这一次生长？",
+      "declaration_en": "GLORIOUS VISION — CLOSE THE CAUSAL CHAIN. HOW DOES THE NEXT CREATION GROW FROM THIS ONE?",
+      "match_cut": "first-product-loop-line-closes-into-loop-a",
+      "beats": [
+        {"start": 0, "end": 3, "purpose": "previous_argument_resolves_then_black"},
+        {"start": 3, "end": 7, "purpose": "chapter_material_and_identity_sound_enter"},
+        {"start": 7, "end": 12, "purpose": "character_action_and_chapter_name"},
+        {"start": 12, "end": 18, "purpose": "theme_declaration"},
+        {"start": 18, "end": 20, "purpose": "chapter_coordinate_and_match_cut"}
+      ]
+    }
+  ]
+}
