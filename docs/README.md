@@ -7,7 +7,7 @@
 ## 总纲
 
 - [project-system-overview.md](project-system-overview.md) — **咒、术、道与辉煌愿景**：统一描述全部玩家产品、自动游玩智能体、`open_kaishek`、Promo、工程方法、设计哲学，以及由四个无限演进 Loop 构成的自动化内容生产、测试、核验和发行闭环
-- [project-system-promo-director-treatment.md](project-system-promo-director-treatment.md) — **《四重轮回》项目体系宣传片导演案**：四幕叙事、旁白初稿、镜头包、视听设计、证据边界与制作验收流程
+- [project-system-promo-director-treatment.md](project-system-promo-director-treatment.md) — **《project因果律》宣传片导演案**：四幕叙事、旁白初稿、镜头包、视听设计、证据边界与制作验收流程
 - [ck3-mod-development-paradigm.md](ck3-mod-development-paradigm.md) — **新建、维护与发布 CK3 Mod 的统一行为范式**：玩家行为合同、原版优先、垂直切片、单一权威来源、L0–L3、fresh-cache 发布闭环与 Definition of Done
 - [consolidation-inventory-2026-08-30.md](consolidation-inventory-2026-08-30.md) — 全产品、分支与脏工作树的 master 收口分类（merged / already-contained / superseded / unfinished-preserved）
 - [branch-management.md](branch-management.md) — master 单一集成线、短命分支 ledger、冻结证据 sidecar 与跨 common-dir/独立 clone 的完整清理流程
