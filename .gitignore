@@ -29,6 +29,9 @@ _runtime/
 
 # CK3 coat-of-arms live probe process assets (kept locally, not committed)
 artifacts/coa-clipboard-probe-*/
+# Project Causality rendered media and render cache (kept locally; source,
+# manifests and compact build records remain reviewable in the repository).
+artifacts/project-causality/
 # Local, payload-heavy CK3 CoA framebuffer reports. Checked-in summaries and
 # decoded crop PNGs retain the reviewable receipts without duplicated base64.
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v*-native-r*/raw-report.json

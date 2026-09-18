@@ -364,6 +364,26 @@ def _normalize_kind(value: str) -> str:
     return value.strip().lower().replace("-", "_").replace(" ", "_")
 
 
+def _chapter_narration_delay(chapter: Chapter) -> float:
+    value = chapter.raw.get("narration_delay_seconds", 0.0)
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ShowcaseError(
+            f"chapter '{chapter.chapter_id}' narration_delay_seconds must be a number"
+        )
+    return float(value)
+
+
+def _chapter_sound_effect(chapter: Chapter) -> Path | None:
+    value = chapter.raw.get("sound_effect")
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value.strip():
+        raise ShowcaseError(
+            f"chapter '{chapter.chapter_id}' sound_effect must be a path string"
+        )
+    return Path(value).resolve()
+
+
 def _safe_slug(value: str) -> str:
     slug = re.sub(r"[^A-Za-z0-9._-]+", "-", value.strip()).strip(".-")
     return (slug or "chapter")[:64]
@@ -470,6 +490,28 @@ def load_manifest(path: Path) -> tuple[dict[str, Any], list[Chapter]]:
         fit = _optional_string(raw, "fit", "contain").lower()
         if fit not in {"contain", "cover"}:
             raise ShowcaseError(f"{context}: 'fit' must be 'contain' or 'cover'")
+        narration_delay = _number(
+            raw, "narration_delay_seconds", 0.0, context, minimum=0.0
+        )
+        chapter_gate = raw.get("chapter_gate", False)
+        if not isinstance(chapter_gate, bool):
+            raise ShowcaseError(f"{context}: 'chapter_gate' must be a boolean")
+        if chapter_gate and kind != "still":
+            raise ShowcaseError(f"{context}: a chapter gate must use a still source")
+        if chapter_gate and narration_delay < 3.0:
+            raise ShowcaseError(
+                f"{context}: a chapter gate requires at least three seconds "
+                "before narration"
+            )
+        crop_embedded_lower_third = raw.get("crop_embedded_lower_third", False)
+        if not isinstance(crop_embedded_lower_third, bool):
+            raise ShowcaseError(
+                f"{context}: 'crop_embedded_lower_third' must be a boolean"
+            )
+        if crop_embedded_lower_third and kind != "video_clip":
+            raise ShowcaseError(
+                f"{context}: embedded lower-third cropping requires a video clip"
+            )
 
         source_specs: list[tuple[Path, str, str]] = []
         source_path: Path | None = None
@@ -501,6 +543,21 @@ def load_manifest(path: Path) -> tuple[dict[str, Any], list[Chapter]]:
                         manifest_directory=manifest_directory,
                     )
                 )
+
+        if "sound_effect" in raw:
+            if not chapter_gate:
+                raise ShowcaseError(
+                    f"{context}: sound_effect is currently limited to chapter gates"
+                )
+            sound_spec = _source_spec(
+                raw["sound_effect"],
+                role="sound-effect",
+                default_label="Chapter gate sound effect",
+                context=f"{context}.sound_effect",
+                manifest_directory=manifest_directory,
+            )
+            source_specs.append(sound_spec)
+            raw["sound_effect"] = str(sound_spec[0])
 
         for source, label, role in source_specs:
             pending_sources.append((source, label, role, context))
@@ -934,8 +991,10 @@ def synthesize_narration(
     chapter.tts_provider = str(metadata["provider"])
     chapter.tts_provider_version = str(metadata["provider_version"])
     chapter.tts_settings = dict(metadata["settings"])
+    narration_delay = _chapter_narration_delay(chapter)
     chapter.shot_duration_seconds = max(
-        chapter.min_duration_seconds, duration + chapter.tail_padding_seconds
+        chapter.min_duration_seconds,
+        narration_delay + duration + chapter.tail_padding_seconds,
     )
 
 
@@ -1219,6 +1278,34 @@ def render_still(chapter: Chapter, fonts: Fonts, destination: Path) -> None:
             f"could not decode still image for chapter '{chapter.chapter_id}': "
             f"{chapter.source_path}: {exc}"
         ) from exc
+    if chapter.raw.get("chapter_gate") is True:
+        shading = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 112))
+        image.alpha_composite(shading)
+        draw = ImageDraw.Draw(image, "RGBA")
+        accent = _classification_color(chapter.classification)
+        title_font = fonts.chinese(154, bold=True)
+        bounds = draw.textbbox((0, 0), chapter.title_zh, font=title_font)
+        title_width = bounds[2] - bounds[0]
+        title_height = bounds[3] - bounds[1]
+        title_x = (WIDTH - title_width) // 2
+        title_y = (HEIGHT - title_height) // 2 - 35
+        draw.rounded_rectangle(
+            (title_x - 86, title_y - 60, title_x + title_width + 86, title_y + title_height + 70),
+            radius=42,
+            fill=(4, 7, 13, 178),
+            outline=(*accent, 210),
+            width=4,
+        )
+        draw.text(
+            (title_x, title_y),
+            chapter.title_zh,
+            font=title_font,
+            fill=(250, 251, 254, 255),
+            stroke_width=2,
+            stroke_fill=(5, 8, 15, 230),
+        )
+        image.convert("RGB").save(destination, format="PNG", optimize=True)
+        return
     shading = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
     shade_draw = ImageDraw.Draw(shading, "RGBA")
     shade_draw.rectangle((0, 0, WIDTH, 330), fill=(4, 7, 14, 52))
@@ -1580,10 +1667,11 @@ def _chapter_subtitle_cues(
         raise ShowcaseError("internal error: chapter duration is not ready")
     if not chapter.subtitle_cue_blocks:
         raise ShowcaseError("internal error: subtitle cue layout is not ready")
-    local_start = min(0.20, chapter.shot_duration_seconds / 10)
+    narration_delay = _chapter_narration_delay(chapter)
+    local_start = narration_delay + min(0.20, chapter.shot_duration_seconds / 10)
     local_end = min(
         chapter.shot_duration_seconds - 0.10,
-        chapter.narration_duration_seconds + 0.25,
+        narration_delay + chapter.narration_duration_seconds + 0.25,
     )
     local_end = max(local_end, local_start + 0.20)
     if chapter.subtitle_secondary_lines:
@@ -1733,8 +1821,15 @@ def encode_segment(
         "+faststart",
         segment,
     ]
+    narration_delay = _chapter_narration_delay(chapter)
+    sound_effect_path = _chapter_sound_effect(chapter)
+    audio_delay_filter = (
+        f"adelay={int(round(narration_delay * 1000))}:all=1,"
+        if narration_delay > 0
+        else ""
+    )
     audio_filter = (
-        f"aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,"
+        f"{audio_delay_filter}aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,"
         f"apad,atrim=duration={_seconds(chapter.shot_duration_seconds)},"
         "asetpts=N/SR/TB"
     )
@@ -1743,8 +1838,14 @@ def encode_segment(
             raise ShowcaseError("internal error: video source was not probed")
         available_end = chapter.end_seconds or chapter.source_duration_seconds
         available = available_end - chapter.start_seconds
+        source_crop = (
+            "crop=ih*4/3:ih*3/4:(iw-ow)/2:0,"
+            if chapter.raw.get("crop_embedded_lower_third") is True
+            else ""
+        )
         video_filter = (
             f"[0:v]trim=duration={_seconds(available)},setpts=PTS-STARTPTS,"
+            f"{source_crop}"
             f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=decrease:flags=lanczos,"
             f"pad={WIDTH}:{HEIGHT}:(ow-iw)/2:(oh-ih)/2:color=0x060910,setsar=1,"
             f"fps={fps},tpad=stop_mode=clone:stop_duration={_seconds(chapter.shot_duration_seconds)},"
@@ -1776,11 +1877,27 @@ def encode_segment(
             *common_tail,
         ]
     else:
+        gate_fade = (
+            ",fade=t=in:st=3:d=4"
+            if chapter.raw.get("chapter_gate") is True
+            else ""
+        )
         video_filter = (
             f"[0:v]trim=duration={_seconds(chapter.shot_duration_seconds)},"
-            f"setpts=PTS-STARTPTS,fps={fps},ass=chapter.zh-CN.ass,format=yuv420p[v];"
-            f"[1:a]{audio_filter}[a]"
+            f"setpts=PTS-STARTPTS,fps={fps}{gate_fade},"
+            "ass=chapter.zh-CN.ass,format=yuv420p[v];"
+            f"[1:a]{audio_filter}" + ("[voice];" if sound_effect_path else "[a]")
         )
+        if sound_effect_path is not None:
+            effect_filter = (
+                f"[2:a]aresample=48000,"
+                "aformat=sample_fmts=fltp:channel_layouts=stereo,"
+                f"volume=0.42,apad,atrim=duration={_seconds(chapter.shot_duration_seconds)},"
+                "asetpts=N/SR/TB[fx];"
+                "[voice][fx]amix=inputs=2:duration=longest:normalize=0,"
+                "alimiter=limit=0.95[a]"
+            )
+            video_filter += effect_filter
         command = [
             ffmpeg,
             "-y",
@@ -1795,10 +1912,10 @@ def encode_segment(
             visual_path.name,
             "-i",
             chapter.narration_path,
-            "-filter_complex",
-            video_filter,
-            *common_tail,
         ]
+        if sound_effect_path is not None:
+            command.extend(["-i", sound_effect_path])
+        command.extend(["-filter_complex", video_filter, *common_tail])
     print(
         f"[{chapter.index + 1:02d}] encode {chapter.chapter_id}: "
         f"{chapter.shot_duration_seconds:.2f}s"
@@ -2194,6 +2311,40 @@ def build(args: argparse.Namespace) -> tuple[Path, Path]:
             ffprobe=ffprobe,
             force=args.force,
         )
+
+    if manifest.get("enforce_exact_total_seconds") is True:
+        overruns = [
+            (
+                chapter.chapter_id,
+                chapter.min_duration_seconds,
+                chapter.shot_duration_seconds or 0.0,
+            )
+            for chapter in chapters
+            if (chapter.shot_duration_seconds or 0.0)
+            > chapter.min_duration_seconds + 0.001
+        ]
+        if overruns:
+            details = "; ".join(
+                f"{chapter_id}: slot={slot:.3f}s required={required:.3f}s"
+                for chapter_id, slot, required in overruns
+            )
+            raise ShowcaseError(
+                "narration exceeds an exact-duration chapter slot; shorten the "
+                f"script or adjust the authoritative timeline: {details}"
+            )
+        expected_total = _number(
+            manifest,
+            "target_duration_seconds",
+            sum(chapter.min_duration_seconds for chapter in chapters),
+            "manifest",
+            minimum=0.1,
+        )
+        actual_total = sum(chapter.min_duration_seconds for chapter in chapters)
+        if abs(actual_total - expected_total) > 0.001:
+            raise ShowcaseError(
+                "exact-duration manifest chapter slots total "
+                f"{actual_total:.3f}s; expected {expected_total:.3f}s"
+            )
 
     for chapter in chapters:
         chapter_directory = build_directory / f"{chapter.index:03d}-{_safe_slug(chapter.chapter_id)}"

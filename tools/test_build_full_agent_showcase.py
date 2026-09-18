@@ -193,6 +193,50 @@ class EdgeTtsNarrationTests(unittest.TestCase):
             self.assertEqual(0.5, chapter.narration_duration_seconds)
             self.assertEqual(3.0, chapter.shot_duration_seconds)
 
+    def test_delayed_narration_is_included_in_duration_and_subtitle_timing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            chapter = self.chapter()
+            chapter.min_duration_seconds = 3.0
+            chapter.raw["narration_delay_seconds"] = 12.0
+            self.probe_duration = 4.25
+            with self.mocked_tts():
+                self.synthesize(chapter, directory)
+
+            self.assertEqual(17.0, chapter.shot_duration_seconds)
+            chapter.subtitle_lines = [chapter.subtitle_zh]
+            chapter.subtitle_cue_blocks = [[chapter.subtitle_zh]]
+            start, end, _text = showcase._chapter_subtitle_cues(chapter)[0]
+            self.assertAlmostEqual(12.2, start)
+            self.assertAlmostEqual(16.5, end)
+
+    def test_chapter_gate_manifest_requires_still_and_delayed_narration(self) -> None:
+        manifest = {
+            "format_version": 1,
+            "chapters": [
+                {
+                    "id": "gate",
+                    "type": "title_card",
+                    "title_en": "SPELL",
+                    "title_zh": "咒",
+                    "narration_en": "咒。先看结果。",
+                    "subtitle_zh": "咒。先看结果。",
+                    "status": {
+                        "en": "CHAPTER GATE",
+                        "zh": "章门",
+                        "classification": "chapter-gate-spell",
+                    },
+                    "chapter_gate": True,
+                    "narration_delay_seconds": 2.0,
+                }
+            ],
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "manifest.json"
+            path.write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+            with self.assertRaisesRegex(showcase.ShowcaseError, "must use a still"):
+                showcase.load_manifest(path)
+
     def test_matching_cache_is_reused(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)

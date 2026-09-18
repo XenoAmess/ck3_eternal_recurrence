@@ -80,6 +80,8 @@ class ProjectCausalityThirtyMinuteStructureTests(unittest.TestCase):
 
             asset_path = GATES_PATH.parent / gate["visual_asset"]
             self.assertTrue(asset_path.is_file(), asset_path)
+            sound_effect_path = GATES_PATH.parent / gate["sound_effect_asset"]
+            self.assertTrue(sound_effect_path.is_file(), sound_effect_path)
             palettes.add(gate["palette"])
             audio_signatures.add(gate["audio_signature"])
             visual_assets.add(asset_path.resolve())
