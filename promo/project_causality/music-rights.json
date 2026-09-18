@@ -1,0 +1,18 @@
+{
+  "format_version": 1,
+  "kind": "project_causality_music_rights",
+  "status": "pending-owner-operated-generation-and-review",
+  "provider": "Suno",
+  "model_target": "V5 or V5.5",
+  "instrumental": true,
+  "selected_track": null,
+  "account_plan_at_generation": null,
+  "generated_at": null,
+  "track_url_or_id": null,
+  "download_path": null,
+  "sha256": null,
+  "owner_attestation": null,
+  "external_publication_allowed": false,
+  "operator_boundary": "The repository owner will operate the Suno website. The current production agent must not open, log in to, or automate the Suno website.",
+  "notes": "Do not mark cleared until the repository owner records the generating account plan and confirms publication rights for the exact selected audio bytes."
+}

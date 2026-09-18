@@ -1,0 +1,115 @@
+{
+  "format_version": 1,
+  "kind": "project_causality_claim_ledger",
+  "freeze_commit": "909317ddc5d03b1283aacfb428b7803945175a03",
+  "claims": [
+    {
+      "id": "CLM-SYSTEM-001",
+      "subject": "project system",
+      "evidence_level": "documented-current-structure",
+      "allowed_zh": "本项目由独立玩家产品、自动玩家、工具与语义基础设施、证据与发行共同构成。",
+      "allowed_en": "The project combines player products, an autonomous player, semantic tooling, evidence and release.",
+      "sources": ["../../README.md", "../../docs/project-system-overview.md"],
+      "forbidden_extrapolation": "Do not claim that every component is fully automated or complete."
+    },
+    {
+      "id": "CLM-ER-001",
+      "subject": "Eternal Recurrence",
+      "evidence_level": "production-product",
+      "allowed_zh": "旗舰产品提供契约、祝福与诅咒、死亡计分和跨存档余烬循环。",
+      "allowed_en": "The flagship provides contracts, blessings and curses, death settlement and cross-save embers.",
+      "sources": ["../../docs/products/eternal-recurrence.md", "../../screenshots/gallery/01_pact.jpg", "../../screenshots/gallery/10_death_settlement.jpg"],
+      "forbidden_extrapolation": "Do not imply that a single recorded character demonstrates every contract or an uninterrupted natural lifetime."
+    },
+    {
+      "id": "CLM-VIVHITE-001",
+      "subject": "Vivhite Courtier",
+      "evidence_level": "production-product",
+      "allowed_zh": "白绮特供版独立完成廷臣配置、计价、创建与交付。",
+      "allowed_en": "The Vivhite edition independently configures, prices, creates and delivers a courtier.",
+      "sources": ["../../docs/vivhite-courtier.md", "../../images/vivhite_courtier_key_art.png"],
+      "forbidden_extrapolation": "Do not attribute recurrence, contracts or cross-save state to the standalone edition."
+    },
+    {
+      "id": "CLM-ZG361-001",
+      "subject": "ZhongGuo 361 public product",
+      "evidence_level": "production-product-public-scope",
+      "allowed_zh": "天朝 361 的公开能力包含京察、绩效榜、强制分布、PIP、晋升和政策卡。",
+      "allowed_en": "The public ZhongGuo 361 scope includes review, scoreboards, forced distribution, PIP, promotion and policy cards.",
+      "sources": ["../../mod_zhongguo_style/README.md", "../../mod_zhongguo_style/workshop/media/03_scoreboard.jpg"],
+      "forbidden_extrapolation": "Do not show or describe unpublished Phase 2, and do not call 361 policy cards 361 complete minigames."
+    },
+    {
+      "id": "CLM-PRODUCTS-001",
+      "subject": "independent mod portfolio",
+      "evidence_level": "production-product-matrix",
+      "allowed_zh": "牛来、体验优化、自动升级建筑、重整河山、肃清曼荼罗伪信和驱策朝贡国保持独立产品与发布边界。",
+      "allowed_en": "The smaller mods retain independent product and release boundaries.",
+      "sources": ["../../README.md", "../../workshop/ox_here_media/02_arrival_event.jpg", "../../workshop/auto_upgrade_buildings_media/03_policy_confirmation.jpg", "../../workshop/reclaim_the_motherland_media/03_restoration_confirm_live.jpg", "../../workshop/remove_mandala_media/01_live_acceptance_full.jpg", "../../workshop/tributary_expansion_directives_media/01_directed_war_live.jpg"],
+      "forbidden_extrapolation": "Do not claim that a matrix montage proves every complete gameplay loop."
+    },
+    {
+      "id": "CLM-COA-001",
+      "subject": "coat-of-arms editor",
+      "evidence_level": "production-web-tool",
+      "allowed_zh": "家徽编辑器在浏览器中解析、编辑、拟合并确定性序列化 CK3 家徽。",
+      "allowed_en": "The browser tool parses, edits, fits and deterministically serializes CK3 coats of arms.",
+      "sources": ["../../coat_of_arms_editer_of_ck3/README.md"],
+      "forbidden_extrapolation": "The production web page does not connect to CK3 or provide arbitrary script execution."
+    },
+    {
+      "id": "CLM-AGENT-001",
+      "subject": "CK3 autonomous player",
+      "evidence_level": "bounded-production-live-loops",
+      "allowed_zh": "自动玩家已经在受证明的有界场景中完成观察、决策、动作、后置验证与持久 checkpoint。",
+      "allowed_en": "The agent has completed observation, decision, action, postcondition verification and durable checkpoints in proven bounded scenes.",
+      "sources": ["../../docs/autonomous-agent-progress/README.md", "../../docs/autonomous-agent-progress/goal-and-roadmap.md"],
+      "forbidden_extrapolation": "Do not claim complete CK3 autonomy, all-domain coverage or consumer readiness."
+    },
+    {
+      "id": "CLM-DOCGEN-001",
+      "subject": "document and generator workflow",
+      "evidence_level": "repository-static-ready",
+      "allowed_zh": "权威文档和结构化数据通过生成器投影为脚本、GUI、本地化、测试与文档。",
+      "allowed_en": "Authoritative documents and structured data are projected into scripts, UI, localization, tests and documentation.",
+      "sources": ["../../AGENTS.md", "../../tools/contracts_data.py", "../../tools/gen_contracts.py"],
+      "forbidden_extrapolation": "Do not claim that all project content is generated from one universal schema."
+    },
+    {
+      "id": "CLM-MCP-001",
+      "subject": "MCP, native bridge and OCR boundaries",
+      "evidence_level": "mixed-static-and-bounded-live",
+      "allowed_zh": "结构化原生状态优先承担真值；OCR 只核对玩家可见呈现或在缺少原生能力时临时观测。",
+      "allowed_en": "Typed native state is the source of truth; OCR verifies visible presentation or temporarily fills an observation gap.",
+      "sources": ["../../docs/project-system-overview.md", "../../docs/ck3-local-api-mcp-feasibility.md", "../../docs/testing-workflow.md"],
+      "forbidden_extrapolation": "Do not present OCR as authoritative hidden state or MCP as an unrestricted production back door."
+    },
+    {
+      "id": "CLM-RELEASE-001",
+      "subject": "release and Workshop verification",
+      "evidence_level": "repository-and-product-specific-live",
+      "allowed_zh": "正式构建使用 allowlist 生成 staging、manifest 与可复现 ZIP；已发布产品还执行线上回读。",
+      "allowed_en": "Release builders create allowlisted staging, manifests and reproducible ZIPs; published products also use online readback.",
+      "sources": ["../../docs/workshop-publishing.md", "../../tools/build_release.py", "../../tools/build_vivhite_release.py"],
+      "forbidden_extrapolation": "Do not imply that every product is automatically uploaded or that all Workshop channels share one readiness state."
+    },
+    {
+      "id": "CLM-PRINCIPLE-001",
+      "subject": "project principles",
+      "evidence_level": "authoritative-project-policy",
+      "allowed_zh": "文档先行，文档高于测试，测试高于代码；真实状态高于成功回执。",
+      "allowed_en": "Documentation precedes tests, tests precede code, and true state outranks success receipts.",
+      "sources": ["../../README.md", "../../docs/project-system-overview.md"],
+      "forbidden_extrapolation": "This ordering does not excuse stale documentation; conflicts must be corrected at the authoritative layer."
+    },
+    {
+      "id": "CLM-LOOPS-001",
+      "subject": "four infinite loops",
+      "evidence_level": "vision-target-system",
+      "allowed_zh": "四个 Loop 是项目最终目标和演进模型。",
+      "allowed_en": "The four loops are the project's target system and evolution model.",
+      "sources": ["../../docs/project-system-overview.md"],
+      "forbidden_extrapolation": "Never present the complete four-loop target as already achieved; keep VISION / TARGET SYSTEM on screen."
+    }
+  ]
+}

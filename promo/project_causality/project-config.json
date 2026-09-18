@@ -1,0 +1,50 @@
+{
+  "format_version": 1,
+  "kind": "project_causality_promo_config",
+  "project": {
+    "id": "project-causality-820",
+    "title_zh": "《project因果律》",
+    "subtitle_zh": "伪天司的辉煌愿景",
+    "title_en": "Project Causality",
+    "subtitle_en": "The False Celestial Chancellor's Glorious Vision"
+  },
+  "freeze": {
+    "date_asia_shanghai": "2026-09-19",
+    "repository_commit": "909317ddc5d03b1283aacfb428b7803945175a03",
+    "ck3_exact_build": "1.19.0.6",
+    "open_kaishek_compat_commit_from_stable_projection": "a6542064546441f4c175c54f3dbf947d7385b768"
+  },
+  "picture": {
+    "duration_seconds": 500.0,
+    "width": 2560,
+    "height": 1440,
+    "frame_rate": 30,
+    "frame_count": 15000,
+    "codec": "h264",
+    "pixel_format": "yuv420p"
+  },
+  "audio": {
+    "sample_rate": 48000,
+    "channels": 2,
+    "narration_locale": "zh-CN",
+    "narration_voice": "zh-CN-XiaoxiaoNeural",
+    "music": "instrumental Suno V5/V5.5 score; pending generation and selection"
+  },
+  "subtitles": {
+    "primary": "zh-Hans",
+    "secondary": "en",
+    "burned_candidate": true,
+    "sidecar_required": true
+  },
+  "authorization": {
+    "local_candidate": true,
+    "external_upload": false,
+    "zhongguo_361_phase2": false
+  },
+  "authority": {
+    "director_treatment": "../../docs/project-system-promo-director-treatment.md",
+    "system_overview": "../../docs/project-system-overview.md",
+    "claims": "claims.json",
+    "timeline": "timeline.json"
+  }
+}

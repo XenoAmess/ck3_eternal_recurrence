@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "kind": "project_causality_human_review",
+  "candidate_path": null,
+  "candidate_sha256": null,
+  "reviewer": null,
+  "watched_at": null,
+  "continuous_1x_watch": false,
+  "checks": {
+    "duration_exactly_500_seconds_within_0_20_tolerance": null,
+    "video_2560x1440_30fps_h264_yuv420p": null,
+    "audio_48khz_stereo": null,
+    "narration_and_bilingual_subtitles_match": null,
+    "subtitle_safe_area_and_line_wrap": null,
+    "no_placeholder_or_test_ui": null,
+    "no_private_information": null,
+    "all_claims_bound_to_ledger": null,
+    "generated_art_never_presented_as_gameplay": null,
+    "vision_target_system_label_present": null,
+    "zhongguo_361_phase2_absent": null,
+    "agent_not_overclaimed": null,
+    "music_rights_record_complete": null,
+    "final_evidence_card_readable": null
+  },
+  "result": "pending-human-review",
+  "notes": []
+}

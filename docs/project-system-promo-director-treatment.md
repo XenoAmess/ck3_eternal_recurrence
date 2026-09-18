@@ -9,7 +9,7 @@
 ## 0. 文档状态与边界
 
 - 文档类型：体系级宣传片导演案 / director treatment。
-- 当前状态：**前期方案完成，尚未开始录制、合成、人工签核或外部发布。**
+- 当前状态：**精确 8:20 无音乐预演片已生成；音乐、补拍、连续人工审片、签核与外部发布尚未完成。**
 - 对应总纲：[咒、术、道与辉煌愿景](project-system-overview.md)。
 - 适用对象：本仓库、`open_kaishek`、Promo、Workshop MCP、CK3 自动游玩智能体及其他明确列入总纲的附属工程。
 - 本文不是成片完成证明，也不是录制或上传授权。真正开拍前仍须冻结 commit、版本、claim ledger、素材来源和发布范围。
@@ -43,7 +43,7 @@
 
 | 项目 | 方案 |
 |---|---|
-| 正片时长 | `8:20`，允许在 `8:00–8:50` 内因真实素材节奏微调 |
+| 正片时长 | 精确 `8:20`；画面为 `15000` frames at 30 fps |
 | 原始录制 | `2560×1440 / 60 fps`，完整桌面、无烧录字幕 |
 | 正式母版 | `2560×1440 / 30 fps`，H.264 高质量母版，48 kHz 立体声 |
 | 叙事语言 | 简体中文主旁白 |
@@ -213,7 +213,7 @@
 | 05:53–06:04 | “真实状态高于成功回执。一次点击、一个 ACK、一条 schema，都不能冒充玩家已经得到结果。” | `STATE > ACK` |
 | 06:04–06:14 | “证据有等级。research、fixture-live 和 production-live 之间，不能靠换一个词就跨过去。” | 证据阶梯 |
 | 06:14–06:21 | “原生事实先于我方策略，exact build 也是能力的一部分。” | CK3 build fingerprint 与原生决策树 |
-| 06:21–06:28 | “最终尺度不是测试数量，而是玩家是否得到真实、可见、可持续的价值。” | 测试数字淡出，玩家结果留下 |
+| 06:21–06:28 | “测试数量不是尺度。玩家价值必须真实、可见、可持续。” | 测试数字淡出，玩家结果留下 |
 
 ### 5.5 第四幕：辉煌愿景
 
@@ -423,7 +423,7 @@ PUBLIC / DEVELOPMENT / TOOL / CURRENT PRODUCTION-LIVE SCOPE
 1. 先按旁白节奏完成无特效 assembly cut；
 2. 任何素材不足优先改写旁白或缩短镜头，不用慢速拉伸制造假时长；
 3. 再加入四幕调色、lower-third、证据标签和 Loop 动画；
-4. 完成 TTS、音乐、声音设计和双语字幕；
+4. 完成 TTS、双语字幕和无音乐 picture lock；音乐由项目所有者在 picture lock 后操作 Suno 生成，再进入声音设计与混音；
 5. 正式候选必须零 placeholder、零测试 UI、零未授权隐私信息。
 
 退出条件：画面本身足以区分真实玩法、验收证据和愿景。
@@ -445,10 +445,10 @@ build、audit、review、signoff 与 export；以冻结版本真实 CLI 为准�
 
 ## 11. 建议的工程落点
 
-正式进入制作时，再创建项目 preset 和配置；本轮不预先伪造尚未存在的运行入口。
+制作工程已经落地；以下目录是当前权威入口：
 
 ```text
-promo/project_system_showcase/
+promo/project_causality/
 ├─ README.md
 ├─ project-config.json
 ├─ claims.json
@@ -457,21 +457,21 @@ promo/project_system_showcase/
 ├─ storyboard.md
 ├─ shot-list.md
 ├─ visual-style.md
+├─ music/
+│  └─ suno-score-plan.md
 ├─ music-rights.json
-└─ review-checklist.template.json
+├─ review-checklist.template.json
+└─ build-records/
+   └─ 2026-09-19-r1.json
 
-artifacts/project-system-showcase/<run-id>/
-├─ config-snapshot/
-├─ raw/
-├─ preserved/
-├─ selects/
-├─ audio/
-├─ subtitles/
+artifacts/project-causality/<run-id>/
+├─ project-causality-820-nomusic-previz.mp4
+├─ project-causality-820-nomusic-previz.video.json
+├─ project-causality-820.manifest.json
+├─ project-causality-820-contact-sheet.jpg
+├─ qa-*.png
 ├─ work/
-├─ audit/
-├─ review/
-├─ export/
-└─ run-manifest.json
+└─ 后续音乐、审片与正式导出产物
 ```
 
 大体积媒体不进入 Git。仓库只提交导演案、脚本、配置、清单、工具接线和最终 sidecar 索引；原始录像、失败 take、中间导出与成片永久保存在
@@ -537,13 +537,11 @@ artifacts/project-system-showcase/<run-id>/
 
 ## 14. 下一施工入口
 
-用户确认本导演案后，下一工作包不是立刻启动 CK3，而是：
+当前 `2026-09-19-r1` 已完成前四项并生成无音乐预演。下一施工入口是：
 
-1. 确认片名、`8:20` 时长和语言层级；
-2. 以拍摄冻结日的真实状态创建 claim ledger；
-3. 对既有素材做一次来源与 clean-span 盘点；
-4. 把旁白初稿冻结为逐 cue 双语脚本；
-5. 只为缺失的 production 镜头创建集中录制计划；
-6. 在获得明确录制指令后，再创建项目 preset、run 和外部 artifact 目录。
-
-这样可以先复用已有证据，再把真实缺口送进录制，而不是为了“看起来做了很多”重新拍摄整个项目。
+1. 项目所有者对 8:20 预演做一次 1× 连续观看，记录需要改写或换镜的时间码；
+2. 按 shot list 只补家徽编辑器、CLI、发布回读和被明确退回的动态镜头；
+3. picture lock 后，由项目所有者按 `music/suno-score-plan.md` 操作 Suno，交回候选音频与权利信息；
+4. 接入音乐和声音设计，执行全片响度、字幕、事实与隐私复核；
+5. 生成新的精确字节和 SHA-256，连续人工审片通过后再签核；
+6. 外部上传仍需单独明确授权。

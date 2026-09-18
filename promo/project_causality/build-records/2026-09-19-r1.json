@@ -1,0 +1,78 @@
+{
+  "format_version": 1,
+  "kind": "project_causality_non_music_previsualization_record",
+  "run_id": "2026-09-19-r1",
+  "status": "previsualization-awaiting-owner-review-and-music",
+  "freeze": {
+    "repository_commit": "909317ddc5d03b1283aacfb428b7803945175a03",
+    "ck3_exact_build": "1.19.0.6",
+    "timeline_sha256": "F6C2C909F52D167DCCA366F2A12E50940D7E361951CF8DE525F59044EB84AC2C",
+    "claims_sha256": "F4B1B07B4E0DED992502EE87BAC523FFD017F1303B28EBDB6AEEA6364D701292"
+  },
+  "artifact_root": "Z:\\ck3_mod_rewrite\\artifacts\\project-causality\\2026-09-19-r1",
+  "video": {
+    "filename": "project-causality-820-nomusic-previz.mp4",
+    "bytes": 41886186,
+    "sha256": "435F8E9A0CE82E8689217F73F494CFDD8E1F79FC6F8977E4C5DF1EFAE1AD061C",
+    "picture_duration_seconds": 500.0,
+    "container_duration_seconds": 500.021,
+    "frames": 15000,
+    "width": 2560,
+    "height": 1440,
+    "frame_rate": 30.0,
+    "video_codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio_codec": "aac",
+    "audio_sample_rate": 48000,
+    "audio_channels": 2,
+    "audio_language": "zho",
+    "mean_volume_db": -25.2,
+    "max_volume_db": -4.6
+  },
+  "sidecar": {
+    "filename": "project-causality-820-nomusic-previz.video.json",
+    "bytes": 100519,
+    "sha256": "09D1D4FC6545D322CEB8247890398E00CC5D427E101FE02A4EABFD0AF242BD30"
+  },
+  "materialized_manifest": {
+    "filename": "project-causality-820.manifest.json",
+    "bytes": 46142,
+    "sha256": "B66A1AC0F4A013055C123DA8898663DC69EDC99FF00AE3182B2331D7F6DA8D86"
+  },
+  "contact_sheet": {
+    "filename": "project-causality-820-contact-sheet.jpg",
+    "bytes": 125355,
+    "sha256": "32C2C790703F7464CD594F499E7B81D8D9191364030E8DA1D19F792B838BBD6E"
+  },
+  "production_web_capture": {
+    "source_url": "https://xenoamess.github.io/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/",
+    "filename": "coa-production-capture/coat-of-arms-editor-production.webm",
+    "bytes": 2759663,
+    "sha256": "CD1C66490DE5FCBF06B4B43E463F576B55DF7742AE35F6E73F5A274051BAC22F",
+    "boundary": "GET-only public production page; no login, upload, CK3, backend or MCP."
+  },
+  "checks": {
+    "timeline_35_cues_contiguous_500_seconds": "pass",
+    "claim_references_resolve": "pass",
+    "forbidden_zhongguo_361_phase_two_absent": "pass",
+    "source_files_and_video_ranges": "pass",
+    "chinese_primary_english_secondary_same_cue": "pass",
+    "exact_15000_video_frames": "pass",
+    "full_15000_frame_decode": "pass",
+    "media_codec_geometry_and_audio": "pass",
+    "coat_of_arms_production_web_get_only_capture": "pass",
+    "subtitle_safe_zone_spot_check": "pass",
+    "continuous_1x_human_review": "pending-owner",
+    "music_mix_and_rights": "pending-owner-operated-suno-generation",
+    "final_signoff": "not-authorized",
+    "external_publication": "not-authorized"
+  },
+  "known_previsualization_substitutions": [
+    "Coat-of-arms editor uses a production-web parse, preview and copy capture; a dedicated dynamic image-fit shot may still improve the fine cut.",
+    "Several product beats use verified stills rather than newly recorded clean motion footage.",
+    "Autonomous-player beats reuse bounded historical artifact segments and do not claim complete CK3 autonomy.",
+    "The four-loop chapter is a VISION / TARGET SYSTEM projection, not a current-completion claim.",
+    "No music or final sound design is present."
+  ],
+  "suno_operator_boundary": "The agent did not open, log in to, or automate the Suno website."
+}

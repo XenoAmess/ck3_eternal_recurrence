@@ -163,7 +163,7 @@ else:
 
 
 FORMAT_VERSION = 1
-BUILD_FORMAT_VERSION = 4
+BUILD_FORMAT_VERSION = 5
 WIDTH = 2560
 HEIGHT = 1440
 DEFAULT_FPS = 30
@@ -187,6 +187,8 @@ SUBTITLE_MARGIN_VERTICAL = 175
 SUBTITLE_MAX_TEXT_WIDTH = 1840
 SUBTITLE_MAX_TOTAL_LINES = 6
 SUBTITLE_MAX_LINES_PER_CUE = 3
+SUBTITLE_SECONDARY_FONT_SIZE = 30
+SUBTITLE_BILINGUAL_SEPARATOR = "\x1f"
 SUBTITLE_MAJOR_BREAKS = frozenset("。！？；!?;")
 SUBTITLE_MINOR_BREAKS = frozenset("，、：,:")
 
@@ -248,6 +250,9 @@ class Chapter:
     subtitle_lines: list[str] | None = None
     subtitle_line_widths: list[float] | None = None
     subtitle_cue_blocks: list[list[str]] | None = None
+    subtitle_secondary: str | None = None
+    subtitle_secondary_lines: list[str] | None = None
+    subtitle_secondary_line_widths: list[float] | None = None
 
 
 @dataclass(frozen=True)
@@ -453,6 +458,7 @@ def load_manifest(path: Path) -> tuple[dict[str, Any], list[Chapter]]:
         title_zh = _required_string(raw, "title_zh", context)
         narration_en = _required_string(raw, "narration_en", context)
         subtitle_zh = _required_string(raw, "subtitle_zh", context)
+        subtitle_secondary = _optional_string(raw, "subtitle_secondary") or None
         status = raw.get("status")
         if not isinstance(status, dict):
             raise ShowcaseError(f"{context}: 'status' must be an object")
@@ -526,6 +532,7 @@ def load_manifest(path: Path) -> tuple[dict[str, Any], list[Chapter]]:
                 "title_zh": title_zh,
                 "narration_en": narration_en,
                 "subtitle_zh": subtitle_zh,
+                "subtitle_secondary": subtitle_secondary,
                 "status_en": status_en,
                 "status_zh": status_zh,
                 "classification": classification,
@@ -1132,7 +1139,11 @@ def render_title_card(chapter: Chapter, fonts: Fonts, destination: Path) -> None
     accent = _classification_color(chapter.classification)
     draw.text(
         (176, 106),
-        "XAR  /  CK3 AUTONOMOUS AGENT",
+        _optional_string(
+            chapter.raw,
+            "brand_en",
+            "XAR  /  CK3 AUTONOMOUS AGENT",
+        ),
         font=fonts.english(27, bold=True),
         fill=(*accent, 255),
     )
@@ -1509,11 +1520,23 @@ def _balanced_subtitle_blocks(lines: Sequence[str]) -> list[list[str]]:
 
 def prepare_subtitle_layouts(chapters: Sequence[Chapter], fonts: Fonts) -> None:
     font = fonts.chinese(SUBTITLE_FONT_SIZE, bold=True)
+    secondary_font = fonts.english(SUBTITLE_SECONDARY_FONT_SIZE, bold=False)
     for chapter in chapters:
         lines, widths = layout_subtitle(chapter.subtitle_zh, font)
         chapter.subtitle_lines = lines
         chapter.subtitle_line_widths = widths
         chapter.subtitle_cue_blocks = _balanced_subtitle_blocks(lines)
+        if chapter.subtitle_secondary:
+            secondary_lines, secondary_widths = layout_subtitle(
+                chapter.subtitle_secondary, secondary_font
+            )
+            if len(lines) + len(secondary_lines) > 6:
+                raise ShowcaseError(
+                    f"chapter '{chapter.chapter_id}' bilingual subtitle requires "
+                    f"{len(lines) + len(secondary_lines)} lines; limit is 6"
+                )
+            chapter.subtitle_secondary_lines = secondary_lines
+            chapter.subtitle_secondary_line_widths = secondary_widths
 
 
 def _ass_document(cues: Sequence[tuple[float, float, str]]) -> str:
@@ -1533,10 +1556,20 @@ Style: Chinese,{SUBTITLE_FONT_NAME},{SUBTITLE_FONT_SIZE},&H00FFFFFF,&H000000FF,&
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
-    events = [
-        f"Dialogue: 0,{_ass_timestamp(start)},{_ass_timestamp(end)},Chinese,,0,0,0,,{{\\q2}}{_ass_escape(text)}"
-        for start, end, text in cues
-    ]
+    events: list[str] = []
+    for start, end, text in cues:
+        if SUBTITLE_BILINGUAL_SEPARATOR in text:
+            primary, secondary = text.split(SUBTITLE_BILINGUAL_SEPARATOR, 1)
+            payload = (
+                f"{{\\q2}}{_ass_escape(primary)}"
+                f"\\N{{\\fs{SUBTITLE_SECONDARY_FONT_SIZE}\\b0\\c&H00E8D8C0&}}"
+                f"{_ass_escape(secondary)}"
+            )
+        else:
+            payload = f"{{\\q2}}{_ass_escape(text)}"
+        events.append(
+            f"Dialogue: 0,{_ass_timestamp(start)},{_ass_timestamp(end)},Chinese,,0,0,0,,{payload}"
+        )
     return header + "\n".join(events) + "\n"
 
 
@@ -1553,6 +1586,16 @@ def _chapter_subtitle_cues(
         chapter.narration_duration_seconds + 0.25,
     )
     local_end = max(local_end, local_start + 0.20)
+    if chapter.subtitle_secondary_lines:
+        primary = "\n".join(chapter.subtitle_lines or [])
+        secondary = "\n".join(chapter.subtitle_secondary_lines)
+        return [
+            (
+                timeline_offset + local_start,
+                timeline_offset + local_end,
+                primary + SUBTITLE_BILINGUAL_SEPARATOR + secondary,
+            )
+        ]
     weights = [
         max(1, sum(len(line.replace(" ", "")) for line in block))
         for block in chapter.subtitle_cue_blocks
@@ -1685,7 +1728,7 @@ def encode_segment(
         "-ac",
         "2",
         "-metadata:s:a:0",
-        "language=eng",
+        f"language={_optional_string(chapter.raw, 'audio_language', 'eng')}",
         "-movflags",
         "+faststart",
         segment,
@@ -1954,15 +1997,21 @@ def write_sidecar(
                 },
                 "subtitle_layout": {
                     "lines": chapter.subtitle_lines,
+                    "secondary_lines": chapter.subtitle_secondary_lines,
                     "cue_blocks": chapter.subtitle_cue_blocks,
                     "line_widths_px": [
                         round(width, 2) for width in (chapter.subtitle_line_widths or [])
+                    ],
+                    "secondary_line_widths_px": [
+                        round(width, 2)
+                        for width in (chapter.subtitle_secondary_line_widths or [])
                     ],
                     "max_text_width_px": SUBTITLE_MAX_TEXT_WIDTH,
                     "ass_margin_left_px": SUBTITLE_MARGIN_HORIZONTAL,
                     "ass_margin_right_px": SUBTITLE_MARGIN_HORIZONTAL,
                     "font": SUBTITLE_FONT_NAME,
                     "font_size": SUBTITLE_FONT_SIZE,
+                    "secondary_font_size": SUBTITLE_SECONDARY_FONT_SIZE,
                     "max_lines_per_cue": SUBTITLE_MAX_LINES_PER_CUE,
                 },
                 "segment": {
