@@ -1030,6 +1030,7 @@ flowchart TB
 - 体验优化：[mod_xenoamess_quality_of_life/README.md](../mod_xenoamess_quality_of_life/README.md)
 - CK3 家徽编辑器：[coat_of_arms_editer_of_ck3/README.md](../coat_of_arms_editer_of_ck3/README.md)
 - Workshop MCP：[ck3_workshop_mcp/README.md](../ck3_workshop_mcp/README.md)
+- 体系宣传片导演案：[project-system-promo-director-treatment.md](project-system-promo-director-treatment.md)
 - 重整河山 Promo：[promo/reclaim_the_motherland/README.md](../promo/reclaim_the_motherland/README.md)
 - `open_kaishek` 独立仓库：<https://github.com/XenoAmess/open_kaishek>
 - 语法知识库：[grammar/README.md](grammar/README.md)
