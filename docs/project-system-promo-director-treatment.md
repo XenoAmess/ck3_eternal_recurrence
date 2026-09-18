@@ -4,6 +4,8 @@
 > 副标题：**伪天司的辉煌愿景**
 > 核心命题：**我们不是在制作一个 Mod。我们在制造一套能够持续产出、游玩、测试、核验并发行内容的系统。**
 
+![《project因果律》无字主视觉](../images/project_causality/promo/project_causality_key_art.png)
+
 ## 0. 文档状态与边界
 
 - 文档类型：体系级宣传片导演案 / director treatment。
@@ -114,12 +116,37 @@
 - RED 出现时不用警报，使用音乐瞬间抽空；
 - 四 Loop 闭合时，开场低钟以更明亮的音色再次出现。
 
+### 3.4 人物形象与贯穿规则
+
+项目主理人的人物形象是整支片的**视觉化身与引路者**。它把不同 Mod、工具、证据与四个 Loop 统一为同一个项目人格，但不扮演 CK3
+实机角色，也不把自动玩家拟人化成已经完成的通用智能体。
+
+人物身份以
+[`humanized_avatar_source.png`](../images/project_causality/character/humanized_avatar_source.png)
+为唯一权威参考：蓬松白色短发、红瞳、黑色高领斗篷、胸前红黑白圆形旋纹徽记与青色幽焰必须稳定。可复用透明立绘为
+[`humanized_avatar_anchor.png`](../images/project_causality/character/humanized_avatar_anchor.png)，完整资产合同与生成记录见
+[`images/project_causality/README.md`](../images/project_causality/README.md)。
+
+| 出场位置 | 视觉任务 | 使用资产 |
+|---|---|---|
+| 冷开场 | 只用青焰、红瞳或斗篷边缘的极短碎片建立悬念，不提前完整揭示 | 透明人物锚点局部合成 |
+| 片名 | 首次完整出现，作为《project因果律》的主理人化身 | [`project_causality_key_art.png`](../images/project_causality/promo/project_causality_key_art.png) |
+| 咒 | 向观众展示玩家能够直接得到的诸世界与产物 | [`chapter_spell.png`](../images/project_causality/promo/chapter_spell.png) |
+| 术 | 操纵文档、生成、观测、测试与发布之间的因果线 | [`chapter_method.png`](../images/project_causality/promo/chapter_method.png) |
+| 道 | 面对文档、测试、代码、真实状态与失败回流的秩序 | [`chapter_principle.png`](../images/project_causality/promo/chapter_principle.png) |
+| 辉煌愿景 | 见证四个无限演进 Loop 咬合并继续运转 | [`chapter_vision.png`](../images/project_causality/promo/chapter_vision.png) |
+| 终幕 | 从愿景图回到人物与徽记，青焰收束成项目入口和证据卡 | 主视觉 + 透明人物锚点 |
+
+人物只在片名、章节入口、关键转场和终幕承担叙事，不持续压在 gameplay 上。任何生成图都不烧录文字；中文标题、英文副标题、
+`DIAGRAM` 与 `VISION / TARGET SYSTEM` 标签由剪辑工程统一叠加。生成图必须保持“概念/愿景”身份，不能替代产品实机、自动玩家后置状态
+或发布回读证据。
+
 ## 4. 叙事结构与节奏
 
 | 时间 | 章节 | 叙事任务 | 主要画面 |
 |---|---|---|---|
 | 00:00–00:25 | 冷开场 | 用死亡、决策、自动操作和发布闪回制造疑问 | 死亡结算、地图动作、家徽编辑、manifest、Workshop 页面 |
-| 00:25–00:36 | 片名 | 宣布“这不是一个 Mod” | 因果线闭合为《project因果律》与副标题 |
+| 00:25–00:36 | 片名 | 宣布“这不是一个 Mod” | 青焰勾出人物轮廓，因果线闭合为《project因果律》与副标题 |
 | 00:36–01:35 | 咒 I：一生 | 用旗舰产品建立情感锚点 | 契约、祝福/诅咒、账簿、死亡结算、下一世 |
 | 01:35–02:38 | 咒 II：诸世界 | 快速展示其他独立玩家产品 | 白绮、361、牛来、QoL、建筑、后朝、曼荼罗、朝贡扩张 |
 | 02:38–03:14 | 咒 III：可调用的能力 | 从游戏产品转向网页工具和自动玩家 | 家徽编辑器、自动玩家 paused frame、checkpoint |
@@ -283,6 +310,9 @@
 
 所有愿景镜头右上角固定显示 `VISION / TARGET SYSTEM`。已经存在的环节可用实线，尚未闭合或只具局部能力的环节用虚线。
 
+本镜头包以 [`chapter_vision.png`](../images/project_causality/promo/chapter_vision.png) 作为情绪底图，但四个 Loop 的状态、实线/虚线边界与
+回流方向必须在剪辑工程中重新绘制为可审计矢量层；不能把插画里的视觉隐喻直接解释成能力事实。四幕章节卡及主视觉同样只作转场与叙事包装。
+
 ## 7. 产品露出策略
 
 本片不平均分配镜头。建议权重：
@@ -374,6 +404,7 @@ PUBLIC / DEVELOPMENT / TOOL / CURRENT PRODUCTION-LIVE SCOPE
 3. 历史素材通过则复用，不为形式重复录制；
 4. 缺失镜头进入新录制清单，污染或来源不明素材明确淘汰；
 5. 任何 fixture 素材只能进入“术”的证据段，并带标签。
+6. 锁定本片人物原图、透明锚点、主视觉和四幕章节图的 SHA-256；衍生裁切仍须回链原始资产。
 
 退出条件：每个正式 cue 有真实素材来源或被明确标记为愿景动画。
 
@@ -463,6 +494,8 @@ artifacts/project-system-showcase/<run-id>/
 - [ ] 无 loading、控制台、debug、验收决议、fixture 角色或测试水印；
 - [ ] CK3、浏览器和终端文字在正常观看距离下可读；
 - [ ] 愿景镜头始终有 `VISION / TARGET SYSTEM`；
+- [ ] 人物在片名、四幕入口和终幕中保持同一身份特征，且没有持续遮挡 gameplay；
+- [ ] 生成主视觉和章节图均被标作概念/愿景层，没有替代任何能力证据；
 - [ ] lower-third 不遮挡人物、选项、tooltip 或结果；
 - [ ] 所有产品名、版本和状态来自冻结日权威来源。
 
