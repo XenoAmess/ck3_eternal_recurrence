@@ -1,119 +1,118 @@
-# 琉焰卿的永恒轮回 - CK3 Roguelite / New Game+
+# 琉焰卿的永恒轮回与 CK3 自动化内容工坊
 
-## ……我将永不停歇地，一次次回到那个你还在的冬日
+> 从可玩的 Mod，到能够观察、决策、操作并核验 CK3 的自动玩家；从 Paradox 脚本工具链，到可复现的测试、发布与宣传体系。
 
-一位统治者、一条命、一次结算：死亡时称量真实分数，把跨过的**量化余烬位阶跨存档保存**，下一世再花费其副本换取强化。版本 **1.0.1**，实测基线 **CK3 1.19.0.6**。
+本仓库已经不是单个 Mod 的源码包。它是一组彼此独立发布、又共享工程方法与证据体系的 CK3 玩家产品、自动化能力和开发工具。
+《琉焰卿的永恒轮回》仍是旗舰产品，但不再代表仓库的全部。
 
-订阅地址： https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360
+每个 Mod 都有自己的启用条件、版本、构建器和发布边界。**不要把整个仓库直接安装成一个 Mod，也不要把开发源目录直接上传到
+Workshop。** 玩家应从具体产品入口安装；发布者应使用对应的 release builder 生成正式 staging。
 
-GitHub Release： https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/v1.0.1
+## 从这里开始
 
-> **1.0.1（2026-09-15）：** 消除地图运行期间的跨存档纪录逐帧扫描，并把生日契约的全局钩子前置过滤到真正相关的玩家；死亡结算改为同步、幂等发布后再写教程纪录，终幕事件加入专属画面。全部 700 档教程位、商店、祝福/诅咒、契约、计分与跨存档协议保持不变。
+| 你想做什么 | 入口 |
+|---|---|
+| 游玩旗舰 Roguelite / New Game+ | [《琉焰卿的永恒轮回》玩家手册](docs/products/eternal-recurrence.md) |
+| 查看全部玩家产品 | [玩家产品矩阵](#玩家产品) |
+| 了解整个项目为何存在、如何运转 | [咒、术、道与辉煌愿景](docs/project-system-overview.md) |
+| 查看自动游玩智能体的真实能力边界 | [进度中心](docs/autonomous-agent-progress/README.md) |
+| 开发或维护 CK3 Mod | [统一开发范式](docs/ck3-mod-development-paradigm.md) |
+| 查找机制、语法、测试和发布知识 | [docs 知识库](docs/README.md) |
+| 使用在线 CK3 家徽编辑器 | [打开 Web 产品](https://xenoamess.github.io/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/) |
 
-> **1.0.0 已发布（2026-08-21）：** 付费自定义廷臣 v2 提供七页生成目录、0–120 岁与六项 0–100 基础能力、动态文化/信仰及可选同家族。最终 85 文件候选的完整 release-gating CK3 套件、非 debug 普通/铁人终局、L0 与确定性构建均为 GREEN；九语言、干净截图、UI 裁切和缩略图已完成人工签核。Steam 强制重下载缓存与正式 manifest 已完成逐文件验证，完整证据见 [docs/release-qa-v1.0.0.md](docs/release-qa-v1.0.0.md)。
+## 项目版图
 
-> **⚠ 必须开启教程！** 游戏设置 → 教程（reactive advice）选「完整」或「警告」均可——**切勿「禁用」**。
->
-> <sub>原因：本 mod 的跨存档全局存储复用引擎的教程课程持久化机制（`tutorial.txt`）。禁用教程后，既有余烬位阶仍可读取和导入，但新课程不会完成与落盘，因此新纪录无法保存。</sub>
+项目由四类交付共同构成：
 
-## 玩法
+- **玩家产品**：可以独立安装和游玩的 CK3 Mod；
+- **自动玩家**：围绕观察、决策、操作、验证和记忆建设的长期自治工程；
+- **工具与语义基础设施**：生成器、MCP、native bridge、`open_kaishek`、网页工具与测试系统；
+- **证据与发行**：acceptance artifact、报告、截图、Promo、Workshop、manifest 和 deterministic ZIP。
 
-1. 游戏规则中启用「琉焰卿的永恒轮回」（默认启用）
-2. 开局弹出「终末之契」：接受则获得可成长特质【琉焰之视】（0–100 经验、每 10 经验一级，每级额外 +10% 压力获取）；特质悬浮提示会即时预览当前分数；拒绝则本局与无 mod 无异。历史余烬位阶为 0 时会进入首世说明并直接开始祝福流程，不再打开无商品可买的空商店
+### 玩家产品
 
-![终末之契](screenshots/gallery/01_pact.jpg)
+下表只提供稳定定位，不代替产品自己的 descriptor、README、发布记录和 fresh-cache 证据。公开版与开发树可能处于不同版本；
+“正式构建线”也不自动等于已经公开发布。
 
-![琉焰之视等级与即时分数](screenshots/gallery/07_glassfire_gaze.jpg)
+| 产品 | 面向玩家的交付 | 当前边界 | 入口 |
+|---|---|---|---|
+| **琉焰卿的永恒轮回** | 一位统治者、一条命、一次结算；祝福与诅咒、本世契约、死亡计分和跨存档余烬构成 Roguelite / New Game+ | 旗舰公开产品；真人玩家专用 | [玩家手册](docs/products/eternal-recurrence.md) · [Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360) |
+| **典造琉焰廷臣·白绮特供版** | 独立的付费廷臣定制、计价、创建与交付链 | 独立命名空间、独立发布线，可与旗舰双向共存 | [产品合同](docs/vivhite-courtier.md) · [Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3787304042) |
+| **天朝特色361制官员绩效考核** | 将 KPI、强制分布、京察、PIP、晋升和 361 项政策映射到天朝官僚体系 | Workshop 公开线与隔离开发线分开声明；不得把政策卡数量冒充 361 套小游戏 | [产品说明](mod_zhongguo_style/README.md) |
+| **牛来** | 召来特殊勇士并闭合廷臣、骑士、宫廷职位、关系与事件交付 | 小型独立 Mod；少数获明确授权允许 AI 低意愿使用的产品之一 | [产品说明](ox_here/README.md) |
+| **XenoAmess 的体验优化** | 自动继任保护、防止封臣上塞、自动防御援军和多项批处理决议 | 公开版与开发版分离；各功能复用原版合法性门禁 | [产品说明](mod_xenoamess_quality_of_life/README.md) |
+| **自动升级建筑（XenoAmess 维护版）** | 每 15 日按原版资格、资源和玩家策略升级直属地产建筑 | 经授权维护的独立产品；由 exact-build 建筑图生成升级规则 | [产品说明](mod_auto_upgrade_buildings/README.md) |
+| **重整河山** | 天命崩解、动态后朝、尊王诸侯与跨代复辟循环 | `0.4.0` 已完成独立发布闭环 | [产品说明](mod_reclaim_the_motherland/README.md) |
+| **肃清曼荼罗伪信** | 按规则清理全图曼荼罗政府与 Temple Citadel，并约束后续转制 | 独立产品、专用 release builder | [产品说明](mod_remove_mandala/README.md) |
+| **驱策朝贡国** | 宗主向直属 AI 朝贡国下达单县扩张命令，可选有限军费补贴 | `1.0.0` 正式线；威望、接受、宣战与补贴采用原子结算 | [产品说明](mod_tributary_expansion_directives/README.md) |
 
-3. 游戏规则可选择绝对/本世成长赛道，以及 0%/25%/50%/100% 余烬继承；推荐默认是本世成长 + 100% 继承，继承预算不另设上限。非零预算会打开四页「轮回当铺」，可购买六维属性、资源、借命层数、重抽、封印、恐怖值、正统性、暴政修正和 1133 分的免费宗教改革；高位阶另有 10000 分【万国贡火】、50000 分【借来一代】和 100000 分【六维登神】。普通商品每次购买后涨价 ×1.2；剩余分数开始此生时等量转为金币
+### 自动玩家与工具平台
 
-![轮回当铺](screenshots/gallery/02_reincarnation_shop.jpg)
+| 工程 | 解决的问题 | 真实边界 | 入口 |
+|---|---|---|---|
+| **CK3 自动游玩智能体** | 让智能体在真实 CK3 中持续执行“观察 → 决策 → 操作 → 验证 → 记忆” | 已有 production-live primitive 和有界 loop，但仍是本机研发系统，不是消费级全游戏 AI | [实现](ck3_autonomous_player/README.md) · [进度中心](docs/autonomous-agent-progress/README.md) · [机器状态](docs/project-state/current-state.json) |
+| **`open_kaishek`** | lossless parser、profile-aware validator、strict IR、finite Runtime 与差分认证 | 独立仓库、独立版本；每项语义按 capability 认证，`UNSUPPORTED` 不会被静默吞掉 | [独立仓库](https://github.com/XenoAmess/open_kaishek) |
+| **CK3 家徽编辑器** | 在浏览器中解析、编辑、拟合并确定性序列化 CK3 coat-of-arms 描述 | 生产网页为纯前端，不连接 CK3，不把剪贴板入口冒充通用脚本执行器 | [说明](coat_of_arms_editer_of_ck3/README.md) · [在线使用](https://xenoamess.github.io/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/) |
+| **CK3 Workshop MCP** | 将发布计划、Launcher UIA 和 Steamworks native 发布能力拆成可恢复、可审计的层 | 三层 readiness 分别声明；某一通道成功不外推为全部链路完成 | [说明](ck3_workshop_mcp/README.md) |
+| **Promo / Workshop / Release** | 把真实 GREEN 能力转化为截图、视频、描述、manifest、ZIP 和线上发行物 | 宣传必须绑定真实 artifact；工具存在不等于自动获得录制或发布授权 | [发布流程](docs/workshop-publishing.md) · [Promo 示例](promo/reclaim_the_motherland/README.md) |
 
-4. 契约接受后可随时从原生决议菜单打开「琉焰账簿」，只读查看当前分数、历史/候选/下一余烬位阶、距下一位阶差值、完成交易对数和拒绝次数；达到持久层上限时会明确标示
+自动玩家的“当前状态”是动态事实，不在此页写死轮次或完成比例。稳定投影以
+[`current-state.json`](docs/project-state/current-state.json) 为机器可读入口；完整能力、RED、live artifact 和下一阶段工作以
+[进度中心](docs/autonomous-agent-progress/README.md) 为准。单次 ACK、fixture 或 schema 字段不等于完整 OODA。
 
-![琉焰账簿](screenshots/gallery/05_glassfire_ledger.jpg)
+## 咒、术、道与辉煌愿景
 
-5. 琉焰卿的「垂青会」：开局及此后每 3 年，从带稀有度/构筑标签的 3 项祝福中领 1 项，再从 2 项诅咒中强制选择 1 项。每场恰好一对；每次拒绝最终结算 -1%。【琉焰之视】每 10 XP 解锁累积原生属性成长和逐步增加的重抽/封印奖励
+- **咒**是最终用户能够直接看到和调用的 Mod、工具、智能体能力与发行物；
+- **术**是组织文档、生成内容、构建 MCP、训练智能体、使用 OCR、测试与发布的方法；
+- **道**是文档先行、文档高于测试、测试高于代码，以及原生事实、证据等级和用户价值等判断原则；
+- **辉煌愿景**是让四个无限演进 Loop 咬合为自动化内容产出、测试、核验、游玩、展示和发行闭环。
 
-![三选一祝福与重抽](screenshots/gallery/03_blessing_choice.jpg)
-
-![二选一诅咒与封印](screenshots/gallery/04_curse_choice.jpg)
-
-6. 可从决议菜单选择征服者、织网者、圣徒、家主、贤王或享乐者契约。对应 CK3 行为提供增量进度和分数，3/6/10 进度会触发反馈并永久保存该契约 PB；详见 [docs/contracts-and-progression.md](docs/contracts-and-progression.md)
-
-![六类本世契约](screenshots/gallery/06_lifetime_contracts.jpg)
-
-7. 可从决议菜单付费典造一名真正属于当前宫廷的廷臣。七页契页提供 0–120 岁、六项 0–100 基础能力、五类原生特质目录、所有已载入文化与信仰，以及出身卑微或归入玩家家族；只有创建并交付成功后才扣一次游戏内金币，AI 没有入口
-
-![廷臣年龄与六项基础能力](screenshots/gallery/08_courtier_essentials.jpg)
-
-![廷臣文化、信仰与家族](screenshots/gallery/09_courtier_origin.jpg)
-
-8. 死亡时展示真实分数；只有它跨过新的余烬阈值时，才写入量化纪录（教程通知）。有继承人时确认完整结算后进入观察者模式；无可玩继承人时由原生继承窗显示八项结算并退出主菜单，均不可继续扮演后代
-
-![轮回终结与逐项计分](screenshots/gallery/10_death_settlement.jpg)
-
-**算分规则**：详见 [docs/scoring-rules.md](docs/scoring-rules.md)（逐条分列；游戏内死亡结算事件会展示当局逐项实况数值与完整公式）。
-
-截图来源、裁切范围与发布用途见 [workshop/main_screenshots.md](workshop/main_screenshots.md)。
-
-## 原理
-
-利用引擎全局持久化的 `tutorial.txt` 课程完成列表作为只增位存储，把真实分数向下量化为分层余烬位阶（粒度 1→1000 递增，上限 166,600，可扩展）。课程用 `trigger_transition` 自动完成，无需玩家点击；读取经由 customizable_localization → request 门控 GUI state → scripted_gui 桥接导入存档。详见 `docs/cross-save-persistence.md`。
-
-## 要求
-
-- 游戏设置中开启教程（reactive advice）
-- 单机定位（多人下各人纪录独立）
-
-## 一局有多长
-
-一局就是签约统治者的一生。30-50 年人生通常会经历约 10-17 次垂青会，每次最多两个模态窗口；统治者死亡即结算并结束，有继承人时转观察者，无继承人时退出主菜单。
-
-## FAQ
-
-- **能继续玩继承人吗？** 不能。契约只称量签约者的一生；有继承人时确认结算后进入观察者模式，无继承人时从原生继承窗退出主菜单。
-- **关闭教程会怎样？** 已有位阶仍能读取，但新位阶、契约 PB 和图鉴不会写入 `tutorial.txt`。
-- **能用于旧存档吗？** 推荐新开局；核心入口在开局规则和契约导入链上。
-- **兼容其他 mod 吗？** 无继承人结算会用生成器投影原生 `window_succession_event.gui`；覆盖同一 GUI 的其他 mod 会产生冲突。on_action、GUI 或相同资源键的其他未逐项验证组合也不作保证。
-
-## 挑战成绩模板
-
-提交成绩时建议附上：游戏版本、mod 版本、开局角色/自建点数、其他 mod、赛道、继承比例、开局余烬位阶、寿命、最终真实分数、量化位阶和结算截图。
-
-## 更新记录
-
-见 [CHANGELOG.md](CHANGELOG.md)。
-
-## 开发
-
-源码地址 https://github.com/XenoAmess/ck3_eternal_recurrence.git
-
-```text
-py -m pip install -r tools/requirements-static.txt
-py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py
-py tools/gen_pools.py
-py tools/gen_contracts.py
-py tools/gen_scoring.py
-py tools/gen_score_preview.py
-py tools/gen_courtier_creator.py
-py tools/gen_vivhite_courtier.py
-py tools/compose_decision_art.py
-py tools/compose_vivhite_key_art.py
-py tools/test_gen_no_heir_gui.py
-py tools/test_build_release.py
-py tools/test_build_vivhite_release.py
-py tools/validate_static.py
-py tools/validate_vivhite_static.py
-py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
-py tools/build_release.py --check
-py tools/build_vivhite_release.py --check
-py tools/build_release.py   # dist staging + manifest JSON + deterministic ZIP
-py tools/build_vivhite_release.py   # independent Vivhite staging
-"tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
-"tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py"
+```mermaid
+flowchart TB
+    H["人类愿景、价值判断与权威文档"] --> A["Loop A：玩家产品"]
+    A --> B["Loop B：智能体游玩与能力增长"]
+    A --> C["Loop C：工具链与语义认证"]
+    C --> A
+    C --> B
+    A --> D["Loop D：证据、宣传与发行"]
+    B --> D
+    D --> F["玩家反馈、运行数据与新故事"]
+    F --> H
+    B --> H
+    C --> H
 ```
 
-Windows CK3 acceptance 的固定依赖位于 `tools/requirements.txt`；CI/L0 只安装
-`tools/requirements-static.txt`。测试、调试与发布流程见 `AGENTS.md`、
-`docs/testing-workflow.md` 与 `docs/workshop-publishing.md`。
+四个 Loop 分别把玩法假设变成玩家产品、把真实 blocker 变成智能体能力、把新语义和 RED 变成可重复验证的工具，
+再把真实 GREEN 结果变成可信的发布与传播。完整定义、OCR/MCP 边界和最终全流程见
+[项目体系总纲](docs/project-system-overview.md)。
+
+## 文档与事实层级
+
+本项目以“文档先行，文档高于测试，测试高于代码”为工程纪律，但不同文档承担不同职责：
+
+1. [项目体系总纲](docs/project-system-overview.md) 定义全局概念、方法、哲学与愿景；
+2. [统一开发范式](docs/ck3-mod-development-paradigm.md) 定义新建、维护、验收和发布行为；
+3. 产品 README 与专题文档定义玩家合同、状态机和精确边界；
+4. 测试与 artifact 证明实现是否符合合同；
+5. 代码、生成物和 staging 是合同在特定版本上的投影。
+
+涉及实时状态时，机器可读状态、对应产品的 live artifact 与最新发布回读优先于本门户的概括。涉及 CK3 原生行为时，
+必须区分源码证据、静态推断、fixture-live 与 production-live，不用更响亮的措辞升级证据。
+
+## 开发、测试与发布
+
+开始修改前先阅读 [`AGENTS.md`](AGENTS.md)，再进入对应产品 README 和专题文档。全仓通用入口：
+
+- [知识库索引](docs/README.md)
+- [CK3 Mod 开发、维护与发布行为范式](docs/ck3-mod-development-paradigm.md)
+- [测试与实机验收流程](docs/testing-workflow.md)
+- [Workshop 发布流程](docs/workshop-publishing.md)
+- [产品与技术路线](docs/product-technical-roadmap.md)
+- [自动玩家终极目标与路线图](docs/autonomous-agent-progress/goal-and-roadmap.md)
+
+各产品的生成、校验、构建和验收命令保留在自己的 README、`AGENTS.md` 或测试专题中。正式发布只使用对应 builder 生成的
+allowlist staging；开发夹具、调试桥、acceptance-only 内容和仓库 README 不得混入 Workshop 运行树。
+
+## 许可证
+
+仓库许可证见 [LICENSE](LICENSE)。被维护的上游项目、CK3 原版素材、第三方依赖和各产品资产仍服从各自的来源与授权记录。

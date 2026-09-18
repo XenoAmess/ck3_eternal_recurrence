@@ -64,7 +64,9 @@
   但无法可靠写入新纪录。
 - 正式产品只面向真人玩家；AI 没有入口。
 
-主产品的权威玩家说明在仓库根目录 `README.md`，机制细节分别落在计分、契约、奖池、持久化、GUI 和发布专题中。
+主产品的权威玩家说明在
+[`docs/products/eternal-recurrence.md`](products/eternal-recurrence.md)，仓库根目录 `README.md` 作为整个项目体系的入口；
+机制细节分别落在计分、契约、奖池、持久化、GUI 和发布专题中。玩家手册不放进 Mod 源目录，以免违反正式构建 allowlist。
 
 ## 1.2 《典造琉焰廷臣·白绮特供版》：独立廷臣创造产品
 
@@ -1010,7 +1012,8 @@ flowchart TB
 
 ## 5. 权威入口
 
-- 项目玩家入口：仓库根目录 `README.md`
+- 项目总入口：[`README.md`](../README.md)
+- 旗舰 Mod 玩家手册：[`docs/products/eternal-recurrence.md`](products/eternal-recurrence.md)
 - 产品与技术路线：[product-technical-roadmap.md](product-technical-roadmap.md)
 - 现行 T0/T1/T2 状态：[project-state/current-state.json](project-state/current-state.json)
 - 自动玩家总入口：[autonomous-agent-progress/README.md](autonomous-agent-progress/README.md)
