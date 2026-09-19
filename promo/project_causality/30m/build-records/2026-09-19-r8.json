@@ -1,0 +1,77 @@
+{
+  "format_version": 1,
+  "project": "project因果律",
+  "subtitle": "伪天司的辉煌愿景",
+  "build_id": "2026-09-19-r8",
+  "kind": "non_music_picture_lock_candidate",
+  "build_source_parent_commit": "2f76f02259dfb55b4827cf3ab0b7aa7339dc018f",
+  "supersedes": {
+    "build_id": "2026-09-19-r7",
+    "reason": "Added the creator-value explanation, expanded the autonomous-player live-evidence section, and replaced all four chapter gates with integrated artistic inscriptions."
+  },
+  "artifact": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r8/project-causality-r8-nomusic-picture-lock.mp4",
+    "bytes": 1155186181,
+    "sha256": "CF5E9227C1052C54DA53D94A0FBEA4445F50F8F2160F863F69D3D4B27732BC0C",
+    "container_duration_seconds": 2024.797333,
+    "width": 2560,
+    "height": 1440,
+    "frame_rate": 30,
+    "video_frames": 60743,
+    "video_codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio_codec": "aac",
+    "audio_sample_rate": 48000,
+    "audio_channels": 2,
+    "mean_volume_db": -23.7,
+    "max_volume_db": -4.1
+  },
+  "sidecar": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r8/project-causality-r8-nomusic-picture-lock.video.json",
+    "bytes": 5070,
+    "sha256": "42E386F7FF7279EA0581521794F21C3FAEF9E58BBC29FA55D47357D0857B39CE"
+  },
+  "content": {
+    "creator_value_seconds": 180,
+    "creator_value_model": "two entry paths and four compounding gains",
+    "autonomous_player_seconds": 390,
+    "historical_robert_seconds": 300,
+    "current_native_loop_seconds": 90,
+    "chapter_gates": 4,
+    "chapter_gate_seconds_each": 20,
+    "narration": "zh-CN-XiaoxiaoNeural",
+    "music_included": false,
+    "suno_operated": false
+  },
+  "capability_boundary": {
+    "historical_robert": "Archived real observations from one fixed Robert 1066 Palermo regression. This is not current general war autonomy.",
+    "current_battle_hold": "production-live loop on the recorded exact build",
+    "current_owner_subset_retreat": "production-live loop on the recorded exact build",
+    "current_notification_ack": "fixture-live primitive, not a general notification policy"
+  },
+  "architecture": {
+    "figure_count": 12,
+    "new_figure": "12-two-entry-four-values",
+    "projection_mode": "native-mermaid-svg-full-topology",
+    "native_aspect_ratio_contract": [1.4, 2.45],
+    "rounded_nodes": true
+  },
+  "automated_acceptance": {
+    "architecture_source_render_manifest": "GREEN 12/12",
+    "media_probe": "GREEN",
+    "exact_frame_count": "GREEN 60743/60743",
+    "resolution_and_codec": "GREEN",
+    "audio_track_and_volume_probe": "GREEN",
+    "twenty_one_frame_contact_sheet_review": "GREEN",
+    "corrected_current_battle_hold_source_window": "GREEN; live CK3 map visible",
+    "chapter_gate_visual_review": "GREEN; inscriptions are integrated into each generated scene"
+  },
+  "review_status": "awaiting_continuous_owner_review",
+  "publication_authorized": false,
+  "remaining_work": [
+    "Project owner watches the complete r8 picture lock at 1x and reports time-coded changes.",
+    "Project owner manually generates and returns Suno candidates plus rights metadata.",
+    "Post-production conforms music to the 33:44 timeline and regenerates media receipts.",
+    "The music master receives a new complete continuous review before publication."
+  ]
+}

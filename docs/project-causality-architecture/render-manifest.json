@@ -40,7 +40,7 @@
       "source": "docs/project-causality-architecture/src/02-loop-a-player-products.mmd",
       "source_sha256": "F7CC15FF0A7AEFB09C0D45D88FA5CF7B8B3C492BD6BAF07EABD1D25ED12BF622",
       "svg": "docs/project-causality-architecture/rendered/02-loop-a-player-products.svg",
-      "svg_sha256": "61B03644EC1A7A8D7574A9CD1FFBC60C5A77D193EDB65FC2F0744052098EDE18",
+      "svg_sha256": "7889EFA8E7A860DB8B4F2B36B542AF718657A0FA063DCAC5422CF778EDA88CBD",
       "svg_geometry": {
         "view_box": [
           4.0,
@@ -53,7 +53,7 @@
       },
       "native_aspect_ratio": 1.928498,
       "png": "docs/project-causality-architecture/rendered/02-loop-a-player-products.png",
-      "png_sha256": "8C20B378FE8F452E25A71B367CF0A28CEEC9B51E47A23238926EA7E0E97243C8",
+      "png_sha256": "6EC2F8711842448FD6FEC15BE004EB9D695E27C2CDA9276A65878707B1AA5B5E",
       "png_width": 4200,
       "png_height": 2178
     },
@@ -194,7 +194,7 @@
       "source": "docs/project-causality-architecture/src/09-product-family.mmd",
       "source_sha256": "7441857EFAE3D95240B9D73D5B72F76E27FBEF3FB49FA08C759FB856871644D1",
       "svg": "docs/project-causality-architecture/rendered/09-product-family.svg",
-      "svg_sha256": "F5F448A80C8071041F1EBDF34925612F729BB87511726C38BC799D0B4E097923",
+      "svg_sha256": "5FA13B259C0F7B1F04A454EE2B89F9B974880B63F722B2E7C0E666E8E2511672",
       "svg_geometry": {
         "view_box": [
           4.0,
@@ -207,7 +207,7 @@
       },
       "native_aspect_ratio": 1.936238,
       "png": "docs/project-causality-architecture/rendered/09-product-family.png",
-      "png_sha256": "A2B7C19CD5DB4694A9E61BF909523FE2F2D06CA3501B161A0B8419737E59639F",
+      "png_sha256": "061B668234E08F1640B88158A073DEC5ADDA157249B4935ED7997789DB98348A",
       "png_width": 5466,
       "png_height": 2823
     },
@@ -254,6 +254,28 @@
       "png_sha256": "3B899E71BC0B522B87C51EB7800AF86643B99E99E586FBDE52F4A415C99296FC",
       "png_width": 4590,
       "png_height": 1965
+    },
+    {
+      "id": "12-two-entry-four-values",
+      "source": "docs/project-causality-architecture/src/12-two-entry-four-values.mmd",
+      "source_sha256": "388A02E040836E8CA1598E8A3D0CDD79805BED7E5830DC87B3E02E62C6CF6BB9",
+      "svg": "docs/project-causality-architecture/rendered/12-two-entry-four-values.svg",
+      "svg_sha256": "E03C5738438B6A5837B96918794E1E8A43C023477A5A0040EEFBF1AC1A21639A",
+      "svg_geometry": {
+        "view_box": [
+          4.0,
+          4.0,
+          1181.508544921875,
+          734.5
+        ],
+        "width": 1181.508544921875,
+        "height": 734.5
+      },
+      "native_aspect_ratio": 1.608589,
+      "png": "docs/project-causality-architecture/rendered/12-two-entry-four-values.png",
+      "png_sha256": "0B7CC3DE8CCCC3121457FF49F61268549A3644B100A2E824253B8E178E235838",
+      "png_width": 3546,
+      "png_height": 2205
     }
   ]
 }

@@ -321,6 +321,17 @@ def materialize_manifest(
                 )
             if "fit" in visual:
                 chapter["fit"] = visual["fit"]
+            if "integrated_chapter_title" in visual:
+                integrated_title = visual["integrated_chapter_title"]
+                if not isinstance(integrated_title, bool):
+                    raise ProjectCausalityThirtyMinuteError(
+                        f"{chapter['id']}.visual.integrated_chapter_title must be boolean"
+                    )
+                if integrated_title and segment.get("chapter_gate") is not True:
+                    raise ProjectCausalityThirtyMinuteError(
+                        f"{chapter['id']}.visual.integrated_chapter_title is limited to chapter gates"
+                    )
+                chapter["integrated_chapter_title"] = integrated_title
             if visual_type in {"still", "video_clip"}:
                 chapter["source"] = _resolve_source(
                     visual.get("source"), base, f"{chapter['id']}.visual.source"

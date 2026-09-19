@@ -60,6 +60,8 @@ class ProjectCausalityThirtyMinuteBuildTests(unittest.TestCase):
             self.assertEqual(20.0, row["min_duration_seconds"])
             self.assertEqual(12.0, row["narration_delay_seconds"])
             self.assertEqual("章门", row["status"]["zh"])
+            self.assertTrue(row["integrated_chapter_title"])
+            self.assertIn("artistic-v2.png", row["source"])
             self.assertTrue(Path(row["sound_effect"]).is_file())
 
     def test_removed_or_unreleased_material_is_absent(self) -> None:

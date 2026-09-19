@@ -9,13 +9,14 @@
 |---|---|---|---|
 | 00:00–00:03 | 前章最后一条因果线收束，切黑 | 前章音乐尾音自然衰减；至少 0.8 秒近静默 | 无 |
 | 00:03–00:07 | 本章材质与主色从黑中出现 | 本章唯一识别音进入 | 仅小号 `PROJECT CAUSALITY` |
-| 00:07–00:12 | 人物或章节主视觉完成一次明确动作 | 章名重音；不使用 trailer hit | 中文单字/四字章名为最大层级 |
+| 00:07–00:12 | 人物或章节主视觉完成一次明确动作，场景内章名完全显现 | 章名重音；不使用 trailer hit | 中文章名已经成为图像材质，不再叠加标题牌 |
 | 00:12–00:18 | 核心问题出现，人物停住 | 中文主题声明完整说完 | 中文主句 + 英文副句 |
 | 00:18–00:20 | 章名退到章节坐标，第一镜准备进入 | 下一章母题只露出第一个节拍 | 保留小型章节标识 |
 
 通用限制：
 
 - 章门内最多两层文字：章名与主题声明；
+- 章名必须存在于图像内部的契约、机械、石刻或天象材质中；严禁剪辑端再加黑色标题牌或第二套章名字体；
 - 不显示 `CURRENT`、证据等级、文件路径或产品名称；
 - 不使用自动玩家月报的通用标题模板；
 - 英文只做语义副标题，字号不超过中文的 55%；
@@ -29,7 +30,7 @@
 > **咒。先看结果：玩家今天究竟得到了什么？**
 > *SPELL — BEGIN WITH THE RESULT. WHAT DOES THE PLAYER RECEIVE TODAY?*
 
-- 主视觉：`images/project_causality/promo/chapter_spell.png`；人物从暗处侧身，手中青焰照亮真实产品界面的碎片。
+- 主视觉：`images/project_causality/promo/chapter_spell_artistic-v2.png`；“咒”是裂隙中的契约咒印，人物与青焰共同照亮它。
 - 主色：余烬红、旧金、青焰；黑场之后第一抹颜色来自青焰。
 - 识别音：低钟一次，随后是极轻的心跳/鼓点。
 - 进入镜头：青焰的圆形运动 match cut 到终末之契或琉焰之视的圆形徽记。
@@ -42,7 +43,7 @@
 > **术。再追因果：这些结果，怎样被稳定制造？**
 > *METHOD — TRACE THE CAUSE. HOW ARE THESE RESULTS MADE REPEATABLE?*
 
-- 主视觉：`images/project_causality/promo/chapter_method.png`；产品矩阵翻到背面，显出文档、schema 与生成箭头。
+- 主视觉：`images/project_causality/promo/chapter_method_artistic-v2.png`；“术”成为黄铜星仪的结构，产品矩阵从它向外展开。
 - 主色：冷蓝、青绿、纸白；余烬红必须在前 3 秒内退去。
 - 识别音：一次清晰翻页，接四拍克制机械脉冲。
 - 进入镜头：生成箭头 match cut 到真实权威文档中的一条规则。
@@ -55,7 +56,7 @@
 > **道。然后校准尺度：我们凭什么说，它是真的？**
 > *PRINCIPLE — CALIBRATE THE MEASURE. WHAT LETS US CALL IT REAL?*
 
-- 主视觉：`images/project_causality/promo/chapter_principle.png`；GREEN、ZIP 和回读记录被合上，只留一条红线切开 `ACK` 与 `STATE`。
+- 主视觉：`images/project_causality/promo/chapter_principle_artistic-v2.png`；“道”刻入裁决石壁，红线仍负责切开 `ACK` 与 `STATE`。
 - 主色：黑、象牙白、单一警示红；不保留术章节的发光数据流。
 - 识别音：机械脉冲立即停止，纸张落桌，近静默后一次干燥印章声。
 - 进入镜头：红线变成 `DOCUMENT > TEST > CODE` 的比较符号。
@@ -68,7 +69,7 @@
 > **辉煌愿景。最后闭合因果：下一次创造，怎样从这一次生长？**
 > *GLORIOUS VISION — CLOSE THE CAUSAL CHAIN. HOW DOES THE NEXT CREATION GROW FROM THIS ONE?*
 
-- 主视觉：`images/project_causality/promo/chapter_vision.png`；四条来自前文的因果线进入画面，但未完成部分保持虚线。
+- 主视觉：`images/project_causality/promo/chapter_vision_artistic-v2.png`；四条因果光环在天象中共同写出“辉煌愿景”。
 - 主色：前三星色汇合为琉璃白，边缘保留青焰；不能直接使用胜利金色铺满画面。
 - 识别音：开场低钟以更明亮音色回归，五音母题第一次完整出现。
 - 进入镜头：四条线中的产品线先闭合，进入 Loop A。

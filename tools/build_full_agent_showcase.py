@@ -1279,6 +1279,14 @@ def render_still(chapter: Chapter, fonts: Fonts, destination: Path) -> None:
             f"{chapter.source_path}: {exc}"
         ) from exc
     if chapter.raw.get("chapter_gate") is True:
+        if chapter.raw.get("integrated_chapter_title") is True:
+            # The chapter name already exists as a photographed/painted part of
+            # the scene. Keep only a restrained grade; a second typography
+            # layer would turn the authored inscription back into a title card.
+            shading = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 20))
+            image.alpha_composite(shading)
+            image.convert("RGB").save(destination, format="PNG", optimize=True)
+            return
         shading = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 112))
         image.alpha_composite(shading)
         draw = ImageDraw.Draw(image, "RGBA")

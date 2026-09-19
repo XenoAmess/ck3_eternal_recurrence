@@ -28,13 +28,18 @@
 | [`promo/chapter_method.png`](promo/chapter_method.png) | 1672×941 PNG | “术”章节卡 | `E829D6C80DD8ABE673EFAD1D92CBAACA123DF7EF98EDBF86A1CD57593C390DBF` |
 | [`promo/chapter_principle.png`](promo/chapter_principle.png) | 1672×941 PNG | “道”章节卡 | `3F91C832194483DEF2611CC6B756A0606611C29DDFEA0200CA53823B34E79D94` |
 | [`promo/chapter_vision.png`](promo/chapter_vision.png) | 1672×941 PNG | “辉煌愿景”章节卡与四 Loop 终幕 | `20651DBF9D9261E9605CAFF0DC3A695CBBC6A9C1A546BD21250EBB486DF421C8` |
+| [`promo/chapter_spell_artistic-v2.png`](promo/chapter_spell_artistic-v2.png) | 1672×941 PNG | 正片章门；“咒”成为裂隙内的契约咒印 | `13C4322C101232601EC6A84375B50BD06ABC2BF5D053BA65F379A448CD18C582` |
+| [`promo/chapter_method_artistic-v2.png`](promo/chapter_method_artistic-v2.png) | 1672×941 PNG | 正片章门；“术”成为黄铜星仪的结构 | `47D9A66195E8426C5EFC5ABA775201C0375E0773012CC15C05F7C01AF183952F` |
+| [`promo/chapter_principle_artistic-v2.png`](promo/chapter_principle_artistic-v2.png) | 1672×941 PNG | 正片章门；“道”成为裁决石壁的鎏金铭文 | `10B11C554FF7F9F7F859B35B18EAD108F5F68A74887462BC917413EFBD469E7B` |
+| [`promo/chapter_vision_artistic-v2.png`](promo/chapter_vision_artistic-v2.png) | 1672×941 PNG | 正片章门；“辉煌愿景”由四环天象共同书写 | `03101E40C323997E3B3E18341313EDBE64133FFF51F2B485C5B81117CB22DA3C` |
 
 ## 使用规则
 
-1. 图片中不烧录标题、字幕或状态标签；文字由剪辑工程统一叠加，以便修订与双语适配。
+1. 通用底图不烧录标题、字幕或状态标签；四张 `artistic-v2` 是经过明确授权的章门例外：只把中文章名作为场景内材质生成，剪辑层不得再次叠加章名卡。双语主题声明仍由字幕系统生成。
 2. 章节图只负责建立情绪和结构隐喻；产品功能、自动玩家能力和测试结论仍必须使用真实素材证明。
 3. 人物应出现在片名、四幕章节入口和终幕，但不持续覆盖实机画面，避免遮挡 UI 或把人物误认成产品功能。
 4. 二次生成必须继续以 `humanized_avatar_source.png` 为首要身份参考；不得只拿任一衍生图继续漂移。
 5. 如需裁切，优先保持脸、胸前徽记和青焰完整；不得镜像徽记、改色或替换其图形。
 
 完整生成输入见 [generation-prompts.md](generation-prompts.md)。
+四张场景内章名的生成合同与提示词见 [promo/ARTISTIC_CHAPTER_TITLES.md](promo/ARTISTIC_CHAPTER_TITLES.md)。

@@ -1,7 +1,7 @@
 # 《project因果律》体系正片工程
 
 本目录承接《project因果律：伪天司的辉煌愿景》体系说明片。目录名保留为 `30m` 以避免破坏已有构建路径；项目所有者允许最终成片落在
-20–30 分钟，本轮 picture lock 为 25:30。
+20–45 分钟，本轮 r8 picture lock 为 33:44.797。
 
 权威导演案为 [`docs/project-system-promo-30m-director-treatment.md`](../../../docs/project-system-promo-30m-director-treatment.md)；
 四个章节之间的主题声明见 [`chapter-interludes.md`](chapter-interludes.md)，架构图的原生 Mermaid 画幅与视频合同见
@@ -9,37 +9,39 @@
 
 ## 当前状态
 
-`2026-09-19-r7` 是当前无音乐 picture-lock 候选：
+`2026-09-19-r8` 是当前无音乐 picture-lock 候选：
 
-- 时长：视频轨 1,530 秒，45,900 帧；容器 1,530.021 秒；
+- 时长：容器 2,024.797 秒，60,743 帧；
 - 规格：2560×1440、30 fps、H.264 yuv420p、AAC 48 kHz 双声道；
 - 旁白：中文合成声线；简中主字幕与英文副字幕已烧录；
-- 结构：86 个原旁白 cue，四个章门各保留完整 20 秒；
-- 架构：11 张 Mermaid 原生拓扑全部进入影片，合计 398.667 秒；
-- 背景：使用基于角色设定生成的四张 CK3 / 中世纪奇幻场景，不直接贴原头像；
+- 价值：新增 3 分钟“两种入口、四类收益”，明确已有 Mod 与新作者怎样进入体系；
+- 实机：新增 5 分钟罗贝尔固定回归时间线与 90 秒当前原生循环；
+- 结构：四个 20 秒章门全部改用场景内艺术文字；
+- 架构：新增第 12 张 Mermaid 原生拓扑“两种入口、四类价值”；
+- 背景：四张章门图基于角色设定生成 CK3 / 中世纪奇幻场景，不直接贴原头像；
 - 音乐：未接入；没有打开、登录或自动操作 Suno；
 - 状态：仍等待项目所有者 1× 连续审片，未授权发布。
 
 本地产物：
 
 ```text
-artifacts/project-causality/2026-09-19-r7/
-├─ project-causality-r7-nomusic-picture-lock.mp4
-├─ project-causality-r7-nomusic-picture-lock.video.json
-├─ architecture-plates/
-└─ qa/contact-sheet-16.png
+artifacts/project-causality/2026-09-19-r8/
+├─ project-causality-r8-nomusic-picture-lock.mp4
+├─ project-causality-r8-nomusic-picture-lock.video.json
+├─ work/
+└─ qa/contact-sheet-r8.jpg
 ```
 
-视频 SHA-256：`F894CE57694229BE5DE9E92D510E2BB6F46F9E96732607FD5CB9857C4B7466A5`。机器可读记录见
-[`build-records/2026-09-19-r7.json`](build-records/2026-09-19-r7.json)，人工接力见
+视频 SHA-256：`CF5E9227C1052C54DA53D94A0FBEA4445F50F8F2160F863F69D3D4B27732BC0C`。机器可读记录见
+[`build-records/2026-09-19-r8.json`](build-records/2026-09-19-r8.json)，人工接力见
 [`owner-review-handoff.md`](owner-review-handoff.md)。
 
-r6 的 30:00 版本保留为源时间坐标和历史基线；r7 删除的只是已验证旁白尾部空停顿，没有压缩旁白语速或删除四个章门。r5 已被 owner
-以“文案太呆、机械朗读标题”明确否决，不再进入审片。
+r6/r7 保留为源时间坐标和历史基线。r8 没有把历史罗贝尔路径冒充当前通用战争自治；固定回归、production-live 与 fixture-live 在画面中
+持续分级。r5 已被 owner 以“文案太呆、机械朗读标题”明确否决，不再进入审片。
 
 ## 架构图合同
 
-11 张图全部使用 Mermaid `flowchart` 节点—连线拓扑，不再保留 `block-beta` 网格图。普通节点与分区外框在 Mermaid 渲染阶段生成圆角，
+12 张图全部使用 Mermaid `flowchart` 节点—连线拓扑，不再保留 `block-beta` 网格图。普通节点与分区外框在 Mermaid 渲染阶段生成圆角，
 判断节点保留菱形，人类/用户节点保留圆形或胶囊形。原生 SVG 纵横比必须位于 1.40–2.45；视频只做全拓扑高亮，不重排节点、不重画边、
 不裁掉返回路径。
 
@@ -59,16 +61,14 @@ r6 的 30:00 版本保留为源时间坐标和历史基线；r7 删除的只是�
 
 ```powershell
 py tools/render_project_causality_architecture.py
-py tools/render_project_causality_architecture_video.py `
-  --output artifacts/project-causality/2026-09-19-r7/architecture-plates
-py tools/build_project_causality_r7.py --preset veryfast
+py tools/build_project_causality_r8.py
 ```
 
 构建器只读取冻结素材并生成本地候选，不启动 CK3、不操作 Suno、不上传媒体。
 
 ## 后续顺序
 
-1. 项目所有者以 1× 连续观看 r7，按时间码给出必须修改项；
+1. 项目所有者以 1× 连续观看 r8，按时间码给出必须修改项；
 2. 项目所有者按 Suno 接力单手动生成并交回候选音轨与权利信息；
 3. 后期在锁定画面上完成选曲、裁切、ducking、响度与峰值控制；
 4. 音乐接入后重新完成一次全片连续审片；

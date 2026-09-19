@@ -30,6 +30,7 @@
 | 09 | 产品族与共享底座 | 多个 Mod、智能体和开发工具怎样共享工程能力而保持产品隔离？ | [源文件](src/09-product-family.mmd) | [高清图](rendered/09-product-family.png) |
 | 10 | 权威源与投影 | 为什么改数据源和生成器，而不是手补 generated files？ | [源文件](src/10-source-of-truth-projections.mmd) | [高清图](rendered/10-source-of-truth-projections.png) |
 | 11 | 四环飞轮 | 四个 Loop 怎样互相喂养，以及人类为什么始终位于系统内？ | [源文件](src/11-four-loop-flywheel.mmd) | [高清图](rendered/11-four-loop-flywheel.png) |
+| 12 | 两种入口、四类价值 | 已有 Mod 与新创作者怎样进入同一交付链，并分别得到开发、维护、测试与本体研究价值？ | [源文件](src/12-two-entry-four-values.mmd) | [高清图](rendered/12-two-entry-four-values.png) |
 
 ## 01｜整套系统
 
@@ -87,6 +88,14 @@ Official MCP、智能体或产品 runner 裁决。无论 GREEN 还是 RED，流�
 ### 四环咬合飞轮
 
 ![四环咬合飞轮](rendered/11-four-loop-flywheel.svg)
+
+### 两种入口、四类价值
+
+![两种入口、四类价值](rendered/12-two-entry-four-values.svg)
+
+已有 Mod 不必迁移到同一种创作方式：只要接入 profile、MCP 与 runner，就能获得无人值守的真实 CK3 验收与可复核证据。新创作者则可以
+从产品合同进入文档、生成、测试、实机、发行与反馈的完整闭环。两条入口最终汇入同一条可信交付链，并在开发、维护、测试与 CK3 本体研究
+四个方向持续产生复利。
 
 ## 视频化使用
 

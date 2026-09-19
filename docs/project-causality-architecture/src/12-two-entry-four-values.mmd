@@ -1,0 +1,48 @@
+flowchart LR
+    subgraph ENTRY["两种进入方式"]
+      direction TB
+      E1(["已有 Mod<br/>不改创作方式<br/>接入无人验收"])
+      E2(["只有想法 / 刚入门<br/>从产品合同开始<br/>进入创造闭环"])
+      E1 ~~~ E2
+    end
+
+    subgraph MAKE["定义与制造"]
+      direction TB
+      D(["文档与 Schema<br/>定义应该发生什么"])
+      G(["生成与实现<br/>投影为可运行内容"])
+      S(["静态与离线语义<br/>淘汰确定性错误"])
+      D --> G --> S
+    end
+
+    subgraph LIVE["真实 CK3 验收与交付"]
+      direction TB
+      M(["MCP + 智能体<br/>操作、游玩与观察"])
+      V(["独立后置核验<br/>画面 · typed state · artifact"])
+      R(["可复现发行<br/>staging · manifest · Workshop"])
+      M --> V --> R
+    end
+
+    subgraph VALUE["四类持续收益"]
+      direction TB
+      V1(["开发<br/>更快得到首个可玩版本"])
+      V2(["维护<br/>升级与回归不再靠人盯守"])
+      V3(["测试<br/>验证玩家真正经历的结果"])
+      V4(["CK3 本体研究<br/>原生行为成为可复现实验"])
+      V1 ~~~ V2 ~~~ V3 ~~~ V4
+    end
+
+    ENTRY -- "已有 Mod 接入验收<br/>新创作者进入全流程" --> MAKE
+    MAKE -- "把定义交给真实游戏" --> LIVE
+    LIVE -- "可信结果形成复利" --> VALUE
+    VALUE -. "真实反馈与 RED<br/>回写下一版合同" .-> MAKE
+
+    class E1,E2 entry;
+    class D,G,S engine;
+    class M capability;
+    class V,R evidence;
+    class V1,V2,V3,V4 value;
+    classDef entry fill:#402a1f,stroke:#ff8a4c,color:#fff6ef,stroke-width:3px;
+    classDef engine fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px;
+    classDef capability fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px;
+    classDef evidence fill:#31224b,stroke:#b796ff,color:#faf6ff,stroke-width:2px;
+    classDef value fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:2px;

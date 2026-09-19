@@ -110,7 +110,7 @@
       "status": {"en": "CHAPTER GATE", "zh": "章门", "classification": "chapter-gate-spell"},
       "claim_ids": ["CLM-SYSTEM-001"],
       "chapter_gate": true,
-      "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_spell.png", "fit": "cover"},
+      "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_spell_artistic-v2.png", "fit": "cover", "integrated_chapter_title": true},
       "lines": [
         {"seconds": 20, "zh": "先别问它们是怎样造出来的。此刻只看结果：一个玩家，今天究竟能拿到什么？", "en": "Do not ask how they were made—not yet. Look only at the result: what can a player actually receive today?"}
       ]
@@ -381,7 +381,7 @@
       "status": {"en": "CHAPTER GATE", "zh": "章门", "classification": "chapter-gate-method"},
       "claim_ids": ["CLM-DOCGEN-001"],
       "chapter_gate": true,
-      "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_method.png", "fit": "cover"},
+      "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_method_artistic-v2.png", "fit": "cover", "integrated_chapter_title": true},
       "lines": [
         {"seconds": 20, "zh": "结果已经摆在桌上。现在翻过桌面：它们怎样一次又一次，被稳定地造出来？", "en": "The results are on the table. Now turn it over: how are they made, reliably, again and again?"}
       ]
@@ -584,7 +584,7 @@
       "status": {"en": "CHAPTER GATE", "zh": "章门", "classification": "chapter-gate-principle"},
       "claim_ids": ["CLM-PRINCIPLE-001"],
       "chapter_gate": true,
-      "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_principle.png", "fit": "cover"},
+      "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_principle_artistic-v2.png", "fit": "cover", "integrated_chapter_title": true},
       "lines": [
         {"seconds": 20, "zh": "工具越多，越要回答一个冷酷的问题：我们凭什么相信，它真的发生过？", "en": "The more tools we build, the colder the question becomes: what lets us believe it truly happened?"}
       ]
@@ -711,7 +711,7 @@
       "status": {"en": "CHAPTER GATE", "zh": "章门", "classification": "chapter-gate-vision"},
       "claim_ids": ["CLM-LOOPS-001"],
       "chapter_gate": true,
-      "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_vision.png", "fit": "cover"},
+      "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_vision_artistic-v2.png", "fit": "cover", "integrated_chapter_title": true},
       "lines": [
         {"seconds": 20, "zh": "最后，不谈完成。只谈下一次创造，怎样从这一次留下的余烬里，继续生长。", "en": "Finally, do not speak of completion. Ask how the next creation grows from the embers this one leaves behind."}
       ]
