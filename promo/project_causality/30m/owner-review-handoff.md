@@ -5,16 +5,18 @@
 本地无音乐 picture-lock：
 
 ```text
-Z:\ck3_mod_rewrite\artifacts\project-causality\2026-09-19-r5\project-causality-30m-nomusic-picture-lock.mp4
+Z:\ck3_mod_rewrite\artifacts\project-causality\2026-09-19-r6\project-causality-30m-nomusic-picture-lock.mp4
 ```
 
 - 片长：视频轨精确 `1800.000 s`，容器 `1800.021 s`
 - 规格：`2560×1440`、30 fps、H.264 yuv420p、AAC 48 kHz 双声道
 - 视频帧：`54,000`
-- SHA-256：`DBDB9F5B6C3A57401405D0E10B427E3B76BCD6529247181C7C7D4F0656E07913`
+- SHA-256：`85D26DBDF6B58E8D2F7AB0462A5F29E5D04B8476DE70309D6C4BBA7A2DA746A1`
 - 旁白：中文合成声线 `zh-CN-XiaoxiaoNeural`
 - 字幕：简体中文主字幕 + 英文副字幕，均已烧录
 - 音乐：未接入；没有打开、登录或自动操作 Suno
+
+这是 owner 文案 RED 后的 `r6`。片名、副标题和四个章名只在画面中出现，旁白不再复述标签；86 段中文旁白均已重写，`r5` 不再进入审片。
 
 ## 2. 醒来后先做一次连续审片
 
@@ -47,7 +49,7 @@ Z:\ck3_mod_rewrite\artifacts\project-causality\2026-09-19-r5\project-causality-3
 WAV，并放到：
 
 ```text
-Z:\ck3_mod_rewrite\artifacts\project-causality\2026-09-19-r5\music\inbox\
+Z:\ck3_mod_rewrite\artifacts\project-causality\2026-09-19-r6\music\inbox\
 ```
 
 同时保存 track ID/分享 URL、模型版本、生成时间和商业使用权状态；不要把登录凭据写进仓库。只要告诉后期每轨保留 A 还是 B、文件路径和

@@ -7,22 +7,25 @@
 
 ## 当前状态
 
-`2026-09-19-r5` 已完成精确 `30:00` 的无音乐 picture-lock 候选：中文合成旁白、简中主字幕、英文副字幕、真实产品/工程/智能体证据画面、
+`2026-09-19-r6` 已完成精确 `30:00` 的无音乐 picture-lock 候选：中文合成旁白、简中主字幕、英文副字幕、真实产品/工程/智能体证据画面、
 四个独立章门和四种专属章门声效均已合成。视频轨为 `54,000` 帧；当前仍须经过项目所有者 1× 连续审片，且没有接入音乐，因此不能称为
 最终母版或已授权发布版本。
+
+`r6` 已根据项目所有者对 `r5` 的文案 RED 完成整片 86 段中文旁白重写：片名、副标题和章名只由画面声明，不再被旁白机械复述；旁白从
+“说明书式定义”改为“结果、冲突、判断、因果”的纪录片叙事。`r5` 仅保留为被取代的历史构建。
 
 大体积本地产物位于：
 
 ```text
-artifacts/project-causality/2026-09-19-r5/
+artifacts/project-causality/2026-09-19-r6/
 ├─ project-causality-30m-nomusic-picture-lock.mp4
 ├─ project-causality-30m-nomusic-picture-lock.video.json
 ├─ project-causality-30m.manifest.json
 └─ qa/
 ```
 
-视频 SHA-256：`DBDB9F5B6C3A57401405D0E10B427E3B76BCD6529247181C7C7D4F0656E07913`。完整机器可读记录见
-[`build-records/2026-09-19-r5.json`](build-records/2026-09-19-r5.json)，人工接力步骤见
+视频 SHA-256：`85D26DBDF6B58E8D2F7AB0462A5F29E5D04B8476DE70309D6C4BBA7A2DA746A1`。完整机器可读记录见
+[`build-records/2026-09-19-r6.json`](build-records/2026-09-19-r6.json)，人工接力步骤见
 [`owner-review-handoff.md`](owner-review-handoff.md)。
 
 ## 可复现输入
@@ -38,9 +41,9 @@ artifacts/project-causality/2026-09-19-r5/
 ```powershell
 py tools/generate_project_causality_chapter_sfx.py
 py tools/build_project_causality_30m.py `
-  --manifest-output artifacts/project-causality/2026-09-19-r5/project-causality-30m.manifest.json `
-  --output artifacts/project-causality/2026-09-19-r5/project-causality-30m-nomusic-picture-lock.mp4 `
-  --work-dir artifacts/project-causality/2026-09-19-r5/work
+  --manifest-output artifacts/project-causality/2026-09-19-r6/project-causality-30m.manifest.json `
+  --output artifacts/project-causality/2026-09-19-r6/project-causality-30m-nomusic-picture-lock.mp4 `
+  --work-dir artifacts/project-causality/2026-09-19-r6/work
 ```
 
 构建器只读取冻结素材并生成本地候选，不启动 CK3、不操作 Suno、不上传媒体。

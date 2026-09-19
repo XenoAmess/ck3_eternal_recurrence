@@ -18,14 +18,14 @@
           "seconds": 18,
           "title_zh": "一生终结，余烬留下",
           "title_en": "ONE LIFE ENDS. THE EMBERS REMAIN.",
-          "zh": "一名统治者死去。游戏结算他这一生的选择，把分数化成余烬，再让下一次开局继承其中的一部分。死亡在这里不是读档点，而是产品循环的出口。",
-          "en": "A ruler dies. The game settles a lifetime of choices, turns the score into embers, and lets a later run inherit part of them. Death is an exit from a product loop, not a reload point."
+          "zh": "一个统治者倒下，游戏却没有归零。他的选择化成余烬，穿过存档，落进下一段人生。死亡不再是句号，而是下一次开局的火种。",
+          "en": "A ruler falls, but the game does not reset. His choices become embers and enter another life. Death becomes the spark for the next run."
         },
         {
           "seconds": 18,
           "title_zh": "看似无关的结果",
           "title_en": "RESULTS THAT LOOK UNRELATED",
-          "zh": "另一边，官员榜单完成校准，自动玩家在动作后读取下一帧状态，家徽编辑器输出可粘贴文本，发布构建生成可复现的压缩包。它们表面上彼此无关。",
+          "zh": "镜头转开：官员榜单正在重新排位，自动玩家确认一次行动真正生效，家徽编辑器吐出可粘贴的文本，发布流水线封存同一组字节。看上去，它们谁也不认识谁。",
           "en": "Elsewhere, an official ranking is calibrated, an autonomous player reads the state after an action, a coat-of-arms editor emits pasteable text, and a release build creates a reproducible archive. They appear unrelated.",
           "visual": {"type": "still", "source": "../../../images/project_causality/promo/project_causality_key_art.png", "fit": "cover"}
         },
@@ -33,7 +33,7 @@
           "seconds": 19,
           "title_zh": "偶然，还是同一套系统",
           "title_en": "ACCIDENTS, OR ONE SYSTEM?",
-          "zh": "问题是：这些结果只是一次次手工完成的偶然，还是同一套系统在不同方向上的投影？如果是后者，我们就必须解释产品、方法、证据与未来怎样彼此咬合。",
+          "zh": "真正的问题，不是它们各自做成了什么；而是这些成功究竟靠运气，还是来自同一条可以重复的因果链。如果是后者，作品、方法、证据和未来，就必须彼此咬合。",
           "en": "The question is whether these are isolated manual accidents or projections of one system. If they form a system, we must explain how products, methods, evidence and future evolution interlock."
         }
       ]
@@ -51,18 +51,18 @@
       "lines": [
         {
           "seconds": 22,
-          "zh": "这套组合体叫《project因果律》，副标题是“伪天司的辉煌愿景”。它不是一个巨型 Mod 的别名，也不是把若干仓库放进同一目录后得到的集合。",
-          "en": "This system is Project Causality, subtitled The False Celestial Chancellor's Glorious Vision. It is neither another name for one giant mod nor a collection created merely by placing repositories together."
+          "zh": "这些散落的结果，被一条更深的因果链拴在了一起。不是把几个仓库堆成一个巨物，也不是给一群项目换上相同的招牌；而是让每件作品独立活着，又共享同一套记忆。",
+          "en": "These scattered results are bound by a deeper causal chain. They are neither repositories piled into one object nor unrelated projects wearing one badge. Each work lives independently while sharing one memory."
         },
         {
           "seconds": 22,
-          "zh": "每个玩家产品都可以独立安装、独立发布，并承担自己的承诺；但它们共享文档、生成、测试、实机观察、证据与发行方法。自动玩家和工具链也不是旁支。",
-          "en": "Each player product can be installed and released independently and carries its own promise. Yet they share documentation, generation, testing, live observation, evidence and release methods. The agent and toolchain are not side projects."
+          "zh": "一个模组可以单独安装，一件工具可以单独使用，一套能力也必须单独兑现承诺。但在它们身后，文档、生成、测试、实机观察、证据和发行正在共用同一副骨架。",
+          "en": "A mod can be installed alone, a tool used alone, and every capability must keep its own promise. Behind them, documentation, generation, testing, live observation, evidence and release share one skeleton."
         },
         {
           "seconds": 21,
-          "zh": "本片要证明的命题很简单：这些独立产物正在被组织成一套能够持续创造、游玩、测试、核验、发行，并从真实结果继续演进的内容系统。",
-          "en": "This film argues that these independent outputs are being organized into a content system that can repeatedly create, play, test, verify, release and evolve from real outcomes."
+          "zh": "真正要造的，从来不是一件更庞大的作品。要造的是一种能力：让创造能够被游玩，让游玩能够被检验，让检验能够抵达发行，再让真实结果反过来改写下一次创造。",
+          "en": "The aim is not one larger work. It is a capability: creation becomes playable, play becomes verifiable, verification reaches release, and real outcomes reshape the next creation."
         }
       ]
     },
@@ -81,22 +81,22 @@
           "seconds": 23,
           "title_zh": "咒，是直接结果",
           "title_en": "SPELL IS THE VISIBLE RESULT",
-          "zh": "我们用四个词理解它。咒，是玩家和开发者今天可以直接看到、安装、运行或调用的结果：Mod、网页工具、自动玩家、发布包与实机证据。",
+          "zh": "沿着这条因果链向里走，会经过四层。最外面是能够被触摸的结果：装得上的模组、用得了的网页、跑得起来的自动玩家，以及留下字节和画面的实机证据。",
           "en": "Four words map the system. Spell means the results players and developers can see, install, run or invoke today: mods, web tools, the autonomous player, releases and live evidence."
         },
         {
           "seconds": 23,
           "title_zh": "术与道",
           "title_en": "METHOD AND PRINCIPLE",
-          "zh": "术，是稳定制造这些结果的方法：怎样组织文档、生成内容、构建 MCP、训练智能体、选择 OCR，并把一次绿色验收送到正式发行。道，是发生冲突时的最高判断。",
+          "zh": "再往里，是让结果可以反复出现的方法：文档怎样组织，内容怎样生成，MCP 怎样长出眼睛和手，OCR 何时该用、何时必须禁用。更深一层，才是冲突发生时用来裁决的尺度。",
           "en": "Method is how results are made repeatably: organizing documents, generating content, building MCP capabilities, developing agents, choosing OCR, and carrying a green acceptance into release. Principle decides conflicts."
         },
         {
           "seconds": 24,
           "title_zh": "辉煌愿景",
           "title_en": "THE GLORIOUS VISION",
-          "zh": "辉煌愿景不是已经完成的事实，而是四个无限演进 Loop 构成的目标系统。接下来，我们先不看宏大蓝图；先从最朴素的问题开始：今天究竟有什么可用？",
-          "en": "The glorious vision is not a completed fact. It is a target system formed by four infinite loops. Before the grand design, we begin with the simplest question: what can be used today?"
+          "zh": "那幅最深的图景还没有完成：四条环路每次回到起点，都会带回新东西。宏图不该抢在事实前面，先把桌上的结果一件件摆出来。",
+          "en": "The deepest vision is unfinished: four loops return carrying something new. Ambition must not outrun fact, so first place the real results on the table."
         }
       ]
     },
@@ -112,7 +112,7 @@
       "chapter_gate": true,
       "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_spell.png", "fit": "cover"},
       "lines": [
-        {"seconds": 20, "zh": "咒。先看结果：玩家今天究竟得到了什么？", "en": "SPELL — BEGIN WITH THE RESULT. WHAT DOES THE PLAYER RECEIVE TODAY?"}
+        {"seconds": 20, "zh": "先别问它们是怎样造出来的。此刻只看结果：一个玩家，今天究竟能拿到什么？", "en": "Do not ask how they were made—not yet. Look only at the result: what can a player actually receive today?"}
       ]
     },
     {
@@ -130,21 +130,21 @@
           "seconds": 26,
           "title_zh": "一位统治者，一条命",
           "title_en": "ONE RULER. ONE LIFE.",
-          "zh": "旗舰产品《琉焰卿的永恒轮回》把 CK3 的一段统治者人生改造成 Roguelite 式挑战。一位统治者，一条命，一次结算；人生不再只是通往后代的过场。",
+          "zh": "在《琉焰卿的永恒轮回》里，一段 CK3 人生被压成一场肉鸽式挑战：一个统治者，一条命，一次结算。活着不再只是等继承人长大，而是必须回答这一生值多少分量。",
           "en": "The flagship, XenoAmess's Eternal Recurrence, turns one CK3 ruler's life into a roguelite challenge: one ruler, one life, one settlement. A lifetime is no longer merely a bridge to an heir."
         },
         {
           "seconds": 26,
           "title_zh": "终末之契",
           "title_en": "THE TERMINAL PACT",
-          "zh": "开局时，琉焰卿邀请玩家签下终末之契。玩家选择绝对成长或本世成长赛道，并决定多少余烬可以跨越存档。规则先成为明确交易，挑战才真正开始。",
-          "en": "At the opening, Lord Glassfire offers the Terminal Pact. The player chooses an absolute or lifetime track and decides how much ember may cross saves. The challenge begins only after its rules become an explicit bargain."
+          "zh": "开局不是领礼包，而是签终末之契：绝对成长还是只赌此生，多少余烬能越过存档，都由玩家选择。规则先成为看得见的交易，命运才开始收款。",
+          "en": "The run opens with a terminal pact: choose absolute growth or this life alone, and decide how many embers cross saves. Fate collects only after the bargain is visible."
         },
         {
           "seconds": 26,
           "title_zh": "祝福与诅咒",
           "title_en": "BLESSINGS AND CURSES",
-          "zh": "随后，玩家周期性从祝福中挑选力量，也从诅咒中承担代价。一百项祝福与一百项诅咒不是随机按钮墙，而是让同一局人生形成不同构筑的双向选择。",
+          "zh": "力量当然不会白送。祝福递来一只手，诅咒便从另一边索取代价。一百种祝福与一百种诅咒彼此牵制，让同一段人生长成完全不同的构筑，而不是一面随机按钮墙。",
           "en": "The player periodically chooses power from blessings and accepts costs from curses. One hundred blessings and one hundred curses are not a wall of random buttons; together they shape distinct builds within a single life.",
           "visual": {"type": "still", "source": "../../../screenshots/gallery/03_blessing_choice.jpg", "fit": "cover"}
         },
@@ -152,7 +152,7 @@
           "seconds": 26,
           "title_zh": "本世契约",
           "title_en": "LIFETIME CONTRACTS",
-          "zh": "本世契约再为这一生提出清晰目标：征服、织网、圣徒、家主、蓄王或享乐者。契约记录进度，死亡时兑现奖励，也让不同玩法可以在同一计分框架内比较。",
+          "zh": "接着，契约追问这一生究竟想成为什么：征服者、织网者、圣徒、家主、蓄王，还是享乐者。它一路记账，直到死亡时兑现，让彼此迥异的活法终于能够放上同一架秤。",
           "en": "Lifetime contracts give the life explicit goals: conquest, intrigue, sainthood, dynasty, hoarding crowns or pleasure. They record progress, settle at death, and make different play styles comparable within one scoring framework.",
           "visual": {"type": "still", "source": "../../../screenshots/gallery/06_lifetime_contracts.jpg", "fit": "cover"}
         },
@@ -160,7 +160,7 @@
           "seconds": 26,
           "title_zh": "琉焰之视与账簿",
           "title_en": "THE GLASSFIRE GAZE AND LEDGER",
-          "zh": "琉焰之视让成长成为角色身上的可见特质；琉焰账簿则展示即时分数、历史余烬、下一阈值和契约记录。玩家不必猜测系统怎样评价自己。",
+          "zh": "评价不能藏在幕后。琉焰之视把成长刻在角色身上，账簿则摊开即时分数、历史余烬、下一道门槛和契约进度。系统若要审判玩家，就必须先让玩家看见它的秤。",
           "en": "The Glassfire Gaze makes growth a visible character trait. The ledger exposes current score, historical embers, the next threshold and contract records, so the player does not have to guess how the system evaluates a life.",
           "visual": {"type": "still", "source": "../../../screenshots/gallery/05_glassfire_ledger.jpg", "fit": "cover"}
         },
@@ -168,15 +168,15 @@
           "seconds": 26,
           "title_zh": "当铺与廷臣定制",
           "title_en": "PAWNSHOP AND COURTIER CREATION",
-          "zh": "余烬可以在轮回当铺换成属性、资源、借命、重抽或封印。付费廷臣定制器则允许玩家配置身份与特质，在显示价格之后创建并交付角色。消费也必须拥有边界。",
-          "en": "Embers buy attributes, resources, borrowed life, rerolls or seals in the recurrence pawnshop. A paid courtier creator configures identity and traits, shows the price, then creates and delivers the character. Consumption also has boundaries.",
+          "zh": "余烬不是纪念品：它能换属性、资源、借命、重抽与封印，也能为廷臣配置身份和特质。价格先亮，角色再交付，消费同样要有契约。",
+          "en": "Embers buy attributes, resources, borrowed life, rerolls, seals, and custom courtiers. Price appears before delivery; spending follows a contract too.",
           "visual": {"type": "still", "source": "../../../screenshots/gallery/08_courtier_essentials.jpg", "fit": "cover"}
         },
         {
           "seconds": 26,
           "title_zh": "死亡结算与跨存档余烬",
           "title_en": "DEATH SETTLEMENT AND CROSS-SAVE EMBERS",
-          "zh": "签约统治者死亡时，系统逐项计分，把结果量化为余烬位阶，并写入跨存档存储。下一局可以导入并消费这些余烬。于是失败、完成与重来被连接成同一条因果链。",
+          "zh": "当签约者终于死去，征服、财富、声望、契约与代价被逐项结算，化成余烬位阶，写进跨存档记忆。下一局会把它们重新读出来。失败、完成和重来，从此不再互相失忆。",
           "en": "When the contracted ruler dies, the system scores each category, turns the result into an ember tier and writes it to cross-save storage. A later run can import and spend it, connecting failure, completion and return.",
           "visual": {"type": "still", "source": "../../../screenshots/gallery/10_death_settlement.jpg", "fit": "cover"}
         },
@@ -184,8 +184,8 @@
           "seconds": 28,
           "title_zh": "它明确不做什么",
           "title_en": "WHAT IT DELIBERATELY DOES NOT DO",
-          "zh": "它不会无限延长存档。结算后，有继承人便进入观察者模式，否则回到主菜单；仅真人玩家进入，跨存档写入需要教程。",
-          "en": "It never extends one save forever. Settlement ends in observer mode or the menu; only humans enter, and cross-save writes require tutorials."
+          "zh": "这不是无限续命：有继承人就退到观察者席，没有就回主菜单。只有真人玩家会踏进来，跨存档写入也明确依赖教程存储。边界本来就是规则。",
+          "en": "This is not endless life: settlement ends in observer mode or the menu. Only humans enter, and cross-save memory depends on tutorial storage. Boundaries are rules."
         }
       ]
     },
@@ -202,17 +202,17 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "白绮特供版把旗舰中的廷臣定制拆成一个完全独立的产品。玩家配置年龄、能力、教育、人格、遗传、健康、文化、信仰、性别和家族归属。",
+          "zh": "白绮特供版只从庞大轮回里取走一件事：创造一名真正属于玩家的廷臣。年龄、能力、教育、人格、遗传、健康、文化、信仰、性别与家族归属，都摆到台前。",
           "en": "The Vivhite edition extracts courtier creation from the flagship into a fully independent product. Players configure age, skills, education, personality, genetics, health, culture, faith, sex and dynasty placement."
         },
         {
           "seconds": 20,
-          "zh": "它只承担一条原子链：配置、计价、创建、交付、扣费。它不包含轮回、契约、祝福、诅咒、分数或跨存档状态。更小的产品必须拥有更小而准确的承诺。",
-          "en": "It owns one atomic chain: configure, price, create, deliver and charge. It contains no recurrence, contracts, blessings, curses, scoring or cross-save state. A smaller product must carry a smaller, accurate promise."
+          "zh": "它刻意只保留一条链：配置、计价、创建、交付、扣费。轮回、契约、祝福、诅咒、计分与跨存档，一概不带。做得少不是残缺，承诺得准才是完整。",
+          "en": "It keeps one chain: configure, price, create, deliver and charge. There is no recurrence, scoring or cross-save state. Doing less is not incomplete when the promise is exact."
         },
         {
           "seconds": 20,
-          "zh": "因此它拥有独立命名空间、独立 Workshop 身份、二十七文件发布白名单和双 Mod 兼容验收。玩家可以单独启用，也可以与旗舰同时使用，加载顺序不会混淆窗口和扣费。",
+          "zh": "正因为克制，它才配得上独立命名空间、独立创意工坊身份和二十七文件白名单。单独启用，或者与主模组并肩加载，两种顺序都必须认得自己的窗口，也只扣自己的钱。",
           "en": "It therefore has its own namespace, Workshop identity, twenty-seven-file release allowlist and dual-mod compatibility matrix. It can run alone or beside the flagship without mixing windows or charges across load order."
         }
       ]
@@ -230,18 +230,18 @@
       "lines": [
         {
           "seconds": 30,
-          "zh": "《天朝特色 361 制官员绩效考核》把绩效校准、强制分布、PIP、晋升与组织政治映射进 CK3 的天朝官僚体系。公爵及以上领主考核直属官员，结果进入持久榜单。",
+          "zh": "另一端，《天朝特色 361 制官员绩效考核》把现代组织里最冷酷的那套语言，塞进 CK3 官场：校准、强制分布、绩效改进、晋升与政治。高阶领主给直属官员打分，榜单不会在散会后消失。",
           "en": "ZhongGuo 361 maps calibration, forced distribution, performance-improvement plans, promotion and organizational politics into CK3's imperial bureaucracy. Eligible rulers review direct officials and persist the results on a scoreboard."
         },
         {
           "seconds": 30,
-          "zh": "成熟队列按三十、六十、十分成三点七五、三点五和三点二五档。优秀者获奖，末位者受罚并进入 PIP；晋升、致仕、降岗和留任成为制度后果。",
+          "zh": "当队列成熟，三十、六十、十的比例把人推入三点七五、三点五与三点二五。有人领奖，有人进入改进计划；晋升、致仕、降岗和留任，不再只是事件文案，而是制度落下的后果。",
           "en": "A mature cohort is forced into 3.75, 3.5 and 3.25 bands. Leaders earn rewards; the bottom tier is penalized and enters PIP, promotion, retirement or demotion.",
           "visual": {"type": "still", "source": "../../../mod_zhongguo_style/workshop/media/01_calibration_meeting.jpg", "fit": "cover"}
         },
         {
           "seconds": 30,
-          "zh": "编号一到三百六十一的政策卡进入共享组织账，再影响后续考核。但三百六十一张卡不等于三百六十一个完整小游戏。本片只展示公开能力，不用开发线替公开产品提前许诺。",
+          "zh": "编号一到三百六十一的政策卡进入同一本组织账，再反过来影响下一轮考核。但卡片的数量不是完成度的障眼法：三百六十一张卡，不等于三百六十一个小游戏。没公开的能力，就不借镜头提前出生。",
           "en": "Policy cards numbered one through three hundred sixty-one enter a shared organizational ledger and affect later reviews. They are not three hundred sixty-one complete minigames. This film shows public capabilities only and does not let development work pre-announce a product.",
           "visual": {"type": "still", "source": "../../../mod_zhongguo_style/workshop/media/08_policy_361_charter.jpg", "fit": "cover"}
         }
@@ -262,14 +262,14 @@
           "seconds": 17,
           "title_zh": "《牛来》",
           "title_en": "OX HERE",
-          "zh": "《牛来》解决的是一个趣味决议：召来拥有鲜明外观和高勇武的勇士，交付到当前宫廷，并通过事件确认结果。它的 AI 使用是经过单独授权的低概率例外。",
-          "en": "Ox Here is a focused comic decision: summon a visually distinct high-prowess warrior, deliver him to the current court, and confirm the result through an event. Its rare AI use is an explicitly authorized exception."
+          "zh": "有些作品不必背负世界。《牛来》只负责召来一名醒目而勇武的勇士，把他送进宫廷，再说一声：人，到了。电脑领主偶尔会用，但那是单独授权的例外。",
+          "en": "Ox Here summons one distinctive warrior, delivers him to court, and confirms his arrival. Rare computer use is a separately authorized exception."
         },
         {
           "seconds": 17,
           "title_zh": "《XenoAmess 的体验优化》",
           "title_en": "XENOAMESS QUALITY OF LIFE",
-          "zh": "体验优化 Mod 收纳高频操作：避免错误继任、拒绝被塞封臣、自动召集防御援军，以及批量改信、索款、赎囚和附条件释放。每项都可以选择和回退。",
+          "zh": "体验优化模组则盯着那些反复磨损耐心的瞬间：错误继任、强塞封臣、忘记召集防御援军，还有成批改信、索款与赎囚。它替玩家少点几百次，却不替玩家拿走选择权。",
           "en": "The quality-of-life mod collects frequent operations: avoiding unwanted succession, refusing dumped vassals, calling defensive allies, and batching conversion, payment, ransom and conditional release. Each feature is optional and reversible.",
           "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_spell.png", "fit": "cover"}
         },
@@ -277,7 +277,7 @@
           "seconds": 17,
           "title_zh": "《自动升级建筑》",
           "title_en": "AUTOMATIC BUILDING UPGRADES",
-          "zh": "自动升级建筑维护版每十五个游戏日检查玩家直属地产，依据原版资格、下一等级和费用形状升级。六百零五条升级边来自精确版本数据投影，不靠手工抄写。",
+          "zh": "自动升级建筑每十五天巡视直属地产。能不能升、下一级是什么、钱怎样付，都由原版规则回答。六百零五条路径来自精确版本的机器投影，不靠手抄。",
           "en": "The maintained automatic-building mod checks direct holdings every fifteen game days and upgrades by vanilla eligibility, next level and cost shape. Six hundred five upgrade edges are projected from exact-version data rather than copied by hand.",
           "visual": {"type": "still", "source": "../../../workshop/auto_upgrade_buildings_media/03_policy_confirmation.jpg", "fit": "cover"}
         },
@@ -285,7 +285,7 @@
           "seconds": 17,
           "title_zh": "《重整河山》",
           "title_en": "RECLAIM THE MOTHERLAND",
-          "zh": "《重整河山》重写中华霸权崩解后的失国与复辟：旧天子保留个人领地并建立后朝，重新控制足够法理土地后，才有资格宣称复辟。",
+          "zh": "《重整河山》关心的，是帝国崩塌以后还剩下什么。旧天子不会凭空蒸发：他带着个人领地建立后朝，直到重新握住足够的法理疆土，才有资格把“复辟”二字说出口。",
           "en": "Reclaim the Motherland rewrites loss and restoration after Chinese hegemony collapses. The former emperor keeps personal land and forms a successor court, then must regain enough de jure territory before restoration.",
           "visual": {"type": "still", "source": "../../../workshop/reclaim_the_motherland_media/03_restoration_confirm_live.jpg", "fit": "cover"}
         },
@@ -293,7 +293,7 @@
           "seconds": 16,
           "title_zh": "《肃清曼荼罗伪信》",
           "title_en": "REMOVE MANDALA FALSE FAITH",
-          "zh": "《肃清曼荼罗伪信》改变整张地图的制度环境：移除曼荼罗政府和特定地产，并把之后发生的转制重新导向公共钩子，同时保留周期检查作为兼容回退。",
+          "zh": "《肃清曼荼罗伪信》动的不是一个角色，而是整张地图的制度土壤。它清除目标政府与地产，截住后来发生的转制，再留下一道周期检查，防止漏网状态重新长回来。",
           "en": "Remove Mandala False Faith changes the entire map's institutional environment: it removes the government and designated holdings, redirects later conversions through a shared hook, and keeps a periodic compatibility sweep.",
           "visual": {"type": "still", "source": "../../../workshop/remove_mandala_media/01_live_acceptance_full.jpg", "fit": "cover"}
         },
@@ -301,7 +301,7 @@
           "seconds": 16,
           "title_zh": "《驱策朝贡国》",
           "title_en": "DIRECT THE TRIBUTARY",
-          "zh": "《驱策朝贡国》让玩家宗主指定朝贡国和相邻目标。朝贡国可以拒绝，也可以接受后发动专用战争；只有合法接受，威望与可选补贴才按照合同结算。",
+          "zh": "《驱策朝贡国》把命令变成谈判：宗主指定朝贡国与目标，对方可拒绝，也可接令出兵。只有合法接受，威望和补贴才会结算。",
           "en": "Direct the Tributary lets a player suzerain choose a tributary and adjacent target. The tributary may refuse or accept and start a dedicated war. Prestige and optional subsidy settle only after a legal acceptance.",
           "visual": {"type": "still", "source": "../../../workshop/tributary_expansion_directives_media/01_directed_war_live.jpg", "fit": "cover"}
         }
@@ -320,18 +320,18 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "家徽编辑器是一个独立的纯前端 Web 产品。它解析 CK3 家徽文本，把 pattern、颜色、emblem、mask 和 instance 变成结构化界面，再确定性地写回文本。",
+          "zh": "还有些需求，根本不该被塞进模组。家徽编辑器就在浏览器里拆开 CK3 文本，把图案、颜色、徽记、遮罩与实例变成可操作的结构，再一字不差地写回去。",
           "en": "The coat-of-arms editor is an independent client-side web product. It parses CK3 coat-of-arms text, exposes patterns, colors, emblems, masks and instances in a structured interface, then serializes deterministically."
         },
         {
           "seconds": 20,
-          "zh": "玩家还可以在浏览器本地导入图片，暂停、恢复或取消拟合搜索，比较质量与复杂度，再把最终描述复制到 CK3 原版的剪贴板入口。图片不会上传。",
-          "en": "Players can import an image locally, pause, resume or cancel fitting, compare quality against complexity, and copy the final description into CK3's native clipboard entry. The image is not uploaded."
+          "zh": "一张图片可以留在本机，慢慢拟合成家徽；搜索能暂停、恢复、取消，质量与复杂度由玩家取舍。最后交给 CK3 原版剪贴板的只是文本，图片不必离开浏览器。",
+          "en": "An image stays local while fitting can pause, resume or stop. The player balances quality against complexity, then sends only text to CK3's native clipboard entry."
         },
         {
           "seconds": 20,
-          "zh": "生产网页不安装、不启动、也不连接 CK3；它没有 MCP，更不能执行任意脚本。原生桥只存在于开发验收，用来证明复制、粘贴和原生渲染的边界。",
-          "en": "The production page neither installs, launches nor connects to CK3. It contains no MCP and cannot execute arbitrary scripts. A native bridge exists only in development acceptance to verify copy, paste and rendering boundaries."
+          "zh": "它最重要的能力，是知道自己不该做什么：生产网页不安装、不启动，也不连接 CK3，没有 MCP，更没有任意脚本。原生桥只在开发验收里出现，用来证明边界，而不是偷走边界。",
+          "en": "Its crucial ability is restraint: the production page never installs, launches or connects to CK3. The native bridge exists only in development acceptance to prove boundaries."
         }
       ]
     },
@@ -348,24 +348,24 @@
       "lines": [
         {
           "seconds": 22,
-          "zh": "自动玩家的基本单位不是点击，而是一个小型 OODA：读取暂停状态，形成有界决策，执行语义动作，再读取独立后置状态。动作结果随后写入 checkpoint 和 artifact。",
+          "zh": "自动玩家最容易被误解成一只会点按钮的手。其实它真正的单位是一圈闭环：先看清暂停的世界，再做一个有边界的决定，执行语义动作，最后从另一条路径确认世界真的变了。",
           "en": "The autonomous player's basic unit is not a click but a small OODA loop: read paused state, form a bounded decision, execute a semantic action, then read an independent postcondition and record it in checkpoints and artifacts."
         },
         {
           "seconds": 22,
-          "zh": "当前已有隔离运行、地图就绪、时间推进、保存与冷恢复，也有部分战争、事件、通知、婚姻和一代制死亡结算能力。固定生产种子已经留下可复验的完整寿命证据。",
+          "zh": "现在，它已经能隔离启动、等待地图、推进时间、保存并冷恢复，也能处理一部分战争、事件、通知、婚姻和一代制死亡结算。固定生产种子上，已经留下过一段可以复验的完整寿命。",
           "en": "Current capabilities include isolated runs, map readiness, time advancement, saving and cold restore, plus bounded war, event, notification, marriage and one-generation death settlement. A fixed production seed has reproducible full-lifetime evidence.",
           "visual": {"type": "video_clip", "source": "%XAR_WORKSPACE_ROOT%/artifacts/demos/2026-08-27/full-capability-showcase-sources/ck3-native-owner-subset-retreat-20260827-014658-029.mp4", "source_start": 80, "source_end": 88, "fit": "cover", "crop_embedded_lower_third": true}
         },
         {
           "seconds": 23,
-          "zh": "但它还不是通用高智商 CK3 玩家。局部战斗、单次事件或同一冻结条件下的完整寿命，不能外推为所有统治者、政府、DLC、事件和跨继承 campaign 都已覆盖。",
+          "zh": "但到这里必须踩刹车。一次战斗、一个事件，甚至同一冻结条件下的一生，都不能被吹成“它已经会玩 CK3”。换一个统治者、政府、扩展包或继承链，虚线仍然在那里。",
           "en": "It is not yet a general high-intelligence CK3 player. A bounded battle, one event or full lifetimes under one frozen condition cannot be extrapolated to every ruler, government, DLC, event and inherited campaign.",
           "visual": {"type": "evidence_card", "sources": ["../../../docs/autonomous-agent-progress/goal-and-roadmap.md", "../../../docs/autonomous-agent-progress/one-generation-blocker-ledger.md"], "body_zh": ["实线：冻结条件下完整寿命与局部战争", "虚线：跨统治者、政府、DLC 与继承 campaign"], "body_en": ["Solid: fixed-condition lifetimes and bounded war", "Dashed: rulers, governments, DLCs and inherited campaigns"]}
         },
         {
           "seconds": 23,
-          "zh": "真正的推进方式是追逐第一个可复现阻点。缺少决策字段时，下一项施工不是长期写下 unknown，而是冻结版本、逆向原生事实、补只读观察口，再回到策略与实机验证。",
+          "zh": "所以它追逐的不是漂亮演示，而是最先挡住整局游戏的那个真实问题。看不见，就冻结版本、逆向原生事实、补上一只只读的眼睛；看清以后，再谈策略，再回到实机。",
           "en": "Progress follows the first reproducible blocker. When a decision field is missing, the next task is not to preserve unknown forever; it is to freeze the build, recover native facts, add read-only observation, and return to policy and live verification.",
           "visual": {"type": "video_clip", "source": "%XAR_WORKSPACE_ROOT%/artifacts/demos/2026-08-27/full-capability-showcase-sources/ck3-native-owner-subset-retreat-20260827-014658-029.mp4", "source_start": 180, "source_end": 188, "fit": "cover", "crop_embedded_lower_third": true}
         }
@@ -383,7 +383,7 @@
       "chapter_gate": true,
       "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_method.png", "fit": "cover"},
       "lines": [
-        {"seconds": 20, "zh": "术。再追因果：这些结果，怎样被稳定制造？", "en": "METHOD — TRACE THE CAUSE. HOW ARE THESE RESULTS MADE REPEATABLE?"}
+        {"seconds": 20, "zh": "结果已经摆在桌上。现在翻过桌面：它们怎样一次又一次，被稳定地造出来？", "en": "The results are on the table. Now turn it over: how are they made, reliably, again and again?"}
       ]
     },
     {
@@ -399,19 +399,19 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "施工不是从代码文件开始，而是从权威文档开始。总纲解释产品为何存在，产品合同规定玩家可见承诺，机制专题描述状态机、输入、输出与边界。",
+          "zh": "一项功能真正开工前，先要回答的不是“改哪个文件”，而是“玩家最终会得到什么”。总纲解释它为何存在，产品合同写下可见承诺，机制专题再把状态、输入、输出与边界钉死。",
           "en": "Construction begins not in a code file but in authoritative documentation. The overview explains why a product exists; its contract defines the player-visible promise; specifications describe states, inputs, outputs and boundaries."
         },
         {
           "seconds": 20,
-          "zh": "测试流程说明怎样证明，ABI 与 MCP 合同规定精确版本的能力面，artifact 和发布记录标明哪次运行、哪组字节通过验收。文档各有职责。",
+          "zh": "接下来才轮到证明：测试流程规定怎样判，底层接口与 MCP 合同规定精确版本能看见什么、能做什么，证据归档与发布记录则回答——究竟是哪一次运行、哪一组字节通过了关卡。",
           "en": "Test workflows define proof; ABI and MCP contracts bind exact-build capability; artifacts and release records identify accepted runs and bytes.",
           "visual": {"type": "evidence_card", "sources": ["../../../docs/testing-workflow.md", "../../../docs/ck3-local-api-mcp-feasibility.md"], "body_zh": ["验收流程", "版本绑定能力", "冻结证据"], "body_en": ["Acceptance workflow", "Version-bound capability", "Frozen evidence"]}
         },
         {
           "seconds": 20,
-          "zh": "当文档出现 unknown，它不是永久免责标签，而是一张施工工单：缺语义就研究原版，缺状态就补观察口，缺证据就安排最小实机。未知必须指向下一步。",
-          "en": "An unknown in documentation is not a permanent disclaimer. It is a work order: research native semantics, add observation for missing state, or schedule the smallest live run for missing evidence. Every unknown points forward."
+          "zh": "文档里的“未知”不是免责，而是一张欠条：缺语义就读原版，缺状态就补观察口，缺证据就安排最小实机。每一个未知，都必须指向下一把铲子。",
+          "en": "An unknown is not a disclaimer but a debt: study native semantics, add missing observation, or run the smallest live test. Every unknown points to the next tool."
         }
       ]
     },
@@ -428,19 +428,19 @@
       "lines": [
         {
           "seconds": 25,
-          "zh": "以契约为例，名称、条件、目标、奖励和里程碑先进入一份结构化数据。生成器再把同一事实投影成 CK3 scripted effect、trait、GUI 所需键、本地化与规则文档。",
+          "zh": "同一个事实，绝不能靠五个人抄进五个文件。以契约为例，名称、条件、目标、奖励与里程碑先进入一份结构化数据，再由生成器投影成脚本效果、特质、界面键、本地化和规则文档。",
           "en": "For contracts, names, conditions, targets, rewards and milestones first enter structured data. A generator projects that same fact into CK3 effects, traits, GUI keys, localization and rule documentation."
         },
         {
           "seconds": 25,
-          "zh": "计分、祝福诅咒奖池、继承窗口和建筑升级图也使用同类方法。生成文件标记为 GENERATED FILE，不能手改；否则下一次生成会覆盖修补，也会制造两个真相。",
+          "zh": "计分、祝福诅咒奖池、继承窗口与建筑升级图都遵守同一规矩。标着“生成文件”的内容不能手改，因为一次看似聪明的补丁，会在下次生成时消失，还会偷偷制造第二个真相。",
           "en": "Scoring, blessing and curse pools, the succession projection and building upgrade graph use the same pattern. Generated files are not edited by hand; otherwise regeneration erases the patch and creates two truths.",
           "visual": {"type": "evidence_card", "sources": ["../../../tools/scoring_data.py", "../../../tools/pools_data.py", "../../../docs/blessing-curse-pools.md"], "body_zh": ["计分参数", "奖池数据", "权威表"], "body_en": ["Scoring parameters", "Pool data", "Authoritative table"]}
         },
         {
           "seconds": 25,
-          "zh": "稳定 ID 还需要独立冻结合同。修改奖池后，开发者必须先审阅权威表和 dispatcher 差异，再显式更新语义哈希。不能为了消除红灯，盲目刷新所谓正确答案。",
-          "en": "Stable identifiers also need a separate frozen contract. After changing a pool, developers review the authoritative table and dispatcher diff before explicitly updating its semantic hash. A red light cannot be erased by blindly refreshing the answer."
+          "zh": "稳定标识也有冻结契约：奖池改变后，先看权威表，再看分发差异，最后才更新语义哈希。红灯不是催你“全部接受”，而是在逼你解释世界为什么变了。",
+          "en": "Stable identifiers have a frozen contract: review the authority table and dispatch diff before updating its semantic hash. A red light demands an explanation, not blind acceptance."
         }
       ]
     },
@@ -457,17 +457,17 @@
       "lines": [
         {
           "seconds": 30,
-          "zh": "验证分为四层。静态层检查编码、命名空间、生成一致性和发布白名单；离线语义层穷举 CK3 外可以证明的规则，不浪费实机时间反复点击。",
-          "en": "Validation has four layers. Static checks cover encoding, namespaces, generation and release allowlists. Offline semantics exhaust rules provable outside CK3."
+          "zh": "证明也有层次：编码、命名空间、生成一致性和发布白名单，交给静态检查。能在 CK3 之外穷举的语义，留在离线世界；实机时间太贵，不该用来反复验证加法。",
+          "en": "Evidence has layers: static checks cover encoding, namespaces, generation and release allowlists. Rules provable outside CK3 stay offline; live time is too costly for arithmetic."
         },
         {
           "seconds": 30,
-          "zh": "实机能力层把必须由引擎裁决的语义放进冻结版本、隔离用户目录和最小矩阵。产品与长期层再检查跨局、跨版本、真实发行与回读。每层只回答自己有资格回答的问题。",
+          "zh": "只有必须由引擎裁决的部分，才进入冻结版本、隔离用户目录与最小矩阵。再往上，才是跨局、跨版本、真实发行与回读。每一层只说自己亲眼见过的话。",
           "en": "The live-capability layer places engine-dependent semantics into a frozen build, isolated user directory and minimal matrix. Product and long-term layers then test cross-run, cross-version and published behavior. Each layer answers only what it can justify."
         },
         {
           "seconds": 30,
-          "zh": "open_kaishek 为离线语义提供独立工具链：保留源码细节的 CST、按 profile 验证、严格 IR、有限运行时、trace 与 state delta，再用 CK3 做差分认证。它已有真实工作，但还不是完整 CK3 Runtime。",
+          "zh": "open_kaishek 把更多语义拉回离线：保留源码细节的语法树、按规则档验证、严格中间表示、有限运行时、轨迹与状态差，再交给 CK3 做最终裁决。它已经能干活，但还没有资格自称完整的 CK3 运行时。",
           "en": "open_kaishek provides an independent offline semantic chain: lossless CST, profile-aware validation, strict IR, finite runtime, traces and state deltas, followed by CK3 differential certification. It does real work today, but it is not a complete CK3 runtime."
         }
       ]
@@ -485,17 +485,17 @@
       "lines": [
         {
           "seconds": 25,
-          "zh": "一个可靠 MCP 查询先绑定精确 CK3 build 和 ABI，再规定输入、输出、线程、暂停条件、失败原因与不可用状态。字段存在但永远为空，不能冒充已经获得观察能力。",
+          "zh": "给游戏装上一双眼睛，第一步不是“多读几个字段”。每个 MCP 查询都要绑定精确版本和 ABI，写清输入、输出、线程、暂停条件与失败原因。一个永远为空的字段，不算眼睛。",
           "en": "A reliable MCP query first binds an exact CK3 build and ABI, then defines inputs, outputs, threading, pause requirements, failures and unavailable states. A field that exists but remains null is not an observation capability."
         },
         {
           "seconds": 25,
-          "zh": "语义动作不是把坐标包装成工具。它表达意图、检查前置条件、执行最小动作并返回 ACK，再让调用者从另一条路径读取后置状态。ACK 只证明请求被处理。",
+          "zh": "给它一只手，也不是把屏幕坐标包成工具。语义动作先说清意图，再检查前置条件，只执行最小改变。返回的 ACK 只说明请求被接住；世界是否改变，必须让另一双眼睛来回答。",
           "en": "A semantic action is not a wrapped coordinate. It checks intent and preconditions, acts minimally, returns ACK, then exposes an independent postcondition."
         },
         {
           "seconds": 25,
-          "zh": "权限同样属于合同。查询可以只读，动作可以限定到 acceptance userdir，发布能力要绑定目标与 durable receipt。MCP 是受约束的能力面，不是因为方便就能点击一切的万能后门。",
+          "zh": "能力越强，边界越要写进合同。查询可以只读，动作可以锁在验收目录，发布必须绑定目标与持久回执。MCP 不是为了方便而凿开的万能后门，而是一扇知道谁能进、能带走什么的门。",
           "en": "Permissions are part of the contract. Queries may be read-only, actions limited to an acceptance userdir, and publishing bound to a target and durable receipt. MCP is a constrained capability surface, not a universal back door."
         }
       ]
@@ -513,17 +513,17 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "同一帧 CK3 里，可见文字、按钮是否出现、遮挡和布局属于玩家看到的呈现，适合用 OCR、模板或截图核对。视觉在这里证明的是画面，而不是内存里的隐藏事实。",
+          "zh": "画面上的真相，应该让画面来证明。文字有没有出现，按钮是否可见，遮挡与布局是否正确，OCR、模板和截图都很合适。它们证明的是玩家看见了什么，不是内存深处藏着什么。",
           "en": "Within one CK3 frame, visible text, button presence, occlusion and layout are player-facing presentation and can be checked with OCR, templates or screenshots. Vision proves the frame, not hidden memory state."
         },
         {
           "seconds": 20,
-          "zh": "角色 ID、精确数值、合法性、真实目标与不可见列表，应优先读取原生 typed state。原生口还不存在时，视觉可以暂时成为眼睛；一旦可靠真值可读，就不能继续用 OCR 猜。",
+          "zh": "角色标识、精确数值、合法性、真实目标与不可见列表，则应交给类型化原生状态。原生接口还没长出来时，视觉可以暂时顶班；一旦真值可读，就不能继续隔着像素猜心。",
           "en": "Character identifiers, exact values, legality, true targets and hidden lists should come from native typed state. Vision may temporarily serve as an eye when no native port exists, but it must stop guessing once reliable truth is readable."
         },
         {
           "seconds": 20,
-          "zh": "禁区同样明确：纯玩家挑战不能借 MCP 作弊，生产家徽网页不能连接本机游戏，未授权路径不能获得动作能力。能力存在，不等于所有场景都能使用。",
+          "zh": "反过来，有些地方必须严禁 MCP：纯玩家挑战不能借它作弊，生产家徽网页不能碰本机游戏，未授权路径也不能突然长出动作能力。会做，不等于该做；能连，不等于该连。",
           "en": "Prohibitions remain explicit: no MCP cheating in player challenges, no local connection from the production web app, and no actions on unauthorized paths."
         }
       ]
@@ -541,12 +541,12 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "构建自动玩家时，先冻结 exact build 和原版 AI 决策树，再补策略需要的观察字段。然后定义最小动作，在暂停夹具中验证，最后进入生产场景读取真实后置状态。",
+          "zh": "自动玩家不是先学会按键，再假装理解世界。它先冻结精确版本，读清原版电脑玩家的决策树，补齐策略真正需要的观察；然后只定义最小动作，在暂停夹具里练习，最后才走进生产场景。",
           "en": "To build the agent, first freeze the exact build and native AI decision tree, then add observations required by policy. Define the smallest action, verify in a paused fixture, and finally read the real postcondition in production."
         },
         {
           "seconds": 20,
-          "zh": "通过的能力进入记忆、checkpoint 和能力账，失败则成为新 blocker。缺少观察时，策略只是猜测；先让世界可读，再让行动可证，最后才谈长期决策。",
+          "zh": "通过的能力写进记忆、检查点与能力账，失败则留下姓名，成为下一个阻点。看不见世界时，所谓策略只是猜。先让世界可读，再让行动可证，最后才配谈一场漫长的统治。",
           "en": "Passing capability enters memory and checkpoints; failure becomes the next blocker. First make the world readable, then actions provable, and only then plan long term."
         }
       ]
@@ -564,12 +564,12 @@
       "lines": [
         {
           "seconds": 15,
-          "zh": "GREEN 之后，正式构建器只把白名单文件投影进 staging，剥离验收代码，再生成 manifest 与确定性 ZIP。开发树本身不能直接冒充发布包。",
+          "zh": "测试变绿，还没到终点。正式构建只让白名单进入暂存目录，剥离验收代码，再生成清单和确定性压缩包。开发树不能冒充商品。",
           "en": "After green acceptance, release builders project only allowlisted files into staging, remove acceptance code, and generate a manifest and deterministic ZIP. The development tree is not the release package."
         },
         {
           "seconds": 15,
-          "zh": "Workshop 发布还需要持久 WAL、回执和 fresh-cache 回读。Promo 也属于这条链：它把已证明的能力转成可传播、可追溯，而且不过度宣称的交付物。",
+          "zh": "创意工坊发布还要留下持久日志、平台回执与全新缓存回读。宣传也逃不出这条纪律：镜头只能放大已经证明的东西，不能替尚未发生的能力提前作证。",
           "en": "Workshop publishing also needs durable WAL, receipts and fresh-cache readback. Promo belongs to this chain: it turns proven capability into a distributable, traceable deliverable without overstating it."
         }
       ]
@@ -586,7 +586,7 @@
       "chapter_gate": true,
       "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_principle.png", "fit": "cover"},
       "lines": [
-        {"seconds": 20, "zh": "道。然后校准尺度：我们凭什么说，它是真的？", "en": "PRINCIPLE — CALIBRATE THE MEASURE. WHAT LETS US CALL IT REAL?"}
+        {"seconds": 20, "zh": "工具越多，越要回答一个冷酷的问题：我们凭什么相信，它真的发生过？", "en": "The more tools we build, the colder the question becomes: what lets us believe it truly happened?"}
       ]
     },
     {
@@ -602,17 +602,17 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "文档先行不是先写一堆说明，而是先把玩家承诺变成可争论的对象。文档决定应该发生什么；没有这个尺度，测试只会保护现有行为。",
+          "zh": "代码会执行，却不会替我们决定什么叫正确。文档先行，不是先写一堆说明；是先把对玩家的承诺摆上桌，让所有人都能指出它哪里含糊、哪里荒唐。",
           "en": "Documentation-first makes the player promise debatable before implementation. Documents decide what should happen; otherwise tests merely preserve existing behavior."
         },
         {
           "seconds": 20,
-          "zh": "测试把文档转成可以判定的命题：输入是什么、输出是什么、哪些边界必须失败。代码负责实现命题。三者冲突时，应修正低层，而不是因为代码与测试都绿就篡改需求。",
+          "zh": "文档写下意图，测试把意图变成裁判能听懂的命题，代码负责服从。三者发生冲突，就从最低层向上修；不能因为代码和测试互相给了满分，就偷偷改掉玩家最初买到的承诺。",
           "en": "Tests turn the document into decidable propositions: inputs, outputs and boundaries that must fail. Code implements them. When layers conflict, correct the lower layer instead of rewriting requirements merely because code and tests are green."
         },
         {
           "seconds": 20,
-          "zh": "但文档也不能享有不受检验的权威。真实玩家结果证明文档错误时，应该更新权威合同，再更新测试与实现。这个顺序保护意图，也允许事实纠正意图。",
+          "zh": "当然，文档也不是神谕。真实玩家若证明承诺本身错了，就先改权威合同，再改测试，最后改实现。这个顺序不是崇拜文字，而是让每一次转向都留下理由。",
           "en": "Documents are not immune to evidence. When real player outcomes prove a document wrong, update the authoritative contract, then tests and implementation. This order protects intent while allowing facts to correct it."
         }
       ]
@@ -630,17 +630,17 @@
       "lines": [
         {
           "seconds": 15,
-          "zh": "一次点击只证明输入发生过，成功 ACK 只证明请求被受理，schema 字段只证明接口预留了位置。它们都不是最终结果。",
+          "zh": "按钮亮过，不等于事情成了。成功回执只说明请求被接住；接口里有一个字段，也只说明那里留过座位。它们离玩家真正得到结果，还隔着整个世界。",
           "en": "A click proves input, ACK proves acceptance, and a schema field proves a reserved interface. None proves the final result."
         },
         {
           "seconds": 15,
-          "zh": "动作完成必须由独立后置状态证明：部队真的移动，角色真的结婚，通知真的消失，资源真的扣除，下一次读取真的可以消费前一次结果。",
+          "zh": "唯一算数的，是独立后置状态：部队真的移动，角色真的结婚，通知真的消失，资源真的扣除，而且下一次读取，确实能消费上一次行动留下的现实。",
           "en": "Completion requires an independent postcondition: the army moved, the marriage exists, the notification disappeared, resources were charged, and the next read can consume the previous result."
         },
         {
           "seconds": 15,
-          "zh": "命令成功不能冒充 OODA 完成，单场 fixture 不能冒充长期循环，一个 provider 也不能代表整个发布通道。状态比回执更接近玩家事实。",
+          "zh": "所以，命令成功不能冒充观察与行动闭环，单场夹具不能冒充长局，一个提供方也不能替整条发布通道作保。回执属于机器，状态才接近玩家。",
           "en": "Command success is not a complete OODA loop; one fixture is not long-term behavior; one provider is not an entire release channel."
         }
       ]
@@ -658,17 +658,17 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "项目用明确等级描述证据：research、static-ready、fixture-live、production-live primitive、production-live loop，直到 complete。等级不是荣誉，而是允许说多大的话。",
+          "zh": "证据等级不是勋章，而是音量旋钮。从研究、静态就绪、夹具实机，到生产实机原子能力、生产实机闭环，最后才是完成。站在哪一级，就只能用那一级的声音说话。",
           "en": "Evidence is described explicitly: research, static-ready, fixture-live, production-live primitive, production-live loop, and complete. A level is not a medal; it limits how large a claim may be."
         },
         {
           "seconds": 20,
-          "zh": "把静态 schema 写成 live，把命令 ACK 写成 loop，或者把一个固定种子的成功写成所有 campaign，都在制造虚假进度。失败 attempt 应被保留，并区分 harness RED 与能力 RED。",
+          "zh": "把静态接口说成实机，把一张成功回执说成完整循环，把固定种子的成功吹成所有长局，都是在伪造进度。失败也不能擦掉：是验收框架坏了，还是能力真的不够，必须留下案底。",
           "en": "Calling a static schema live, calling an ACK a loop, or extending one seed to every campaign creates false progress. Failed attempts remain preserved, with harness red distinguished from capability red."
         },
         {
           "seconds": 15,
-          "zh": "CK3 版本、EXE 哈希、ABI 与原版决策树也属于能力本身。升级版本以后，旧地址和旧推断不能自动继承真值；能力必须重新绑定和复验。",
+          "zh": "CK3 版本、程序哈希、底层接口和原版决策树，本身都是能力。版本一变，旧地址与推断不会自动重生；只有重新验证，才有资格画回实线。",
           "en": "The CK3 version, executable hash, ABI and native decision tree are part of the capability. After an upgrade, old addresses and assumptions do not inherit truth; the capability must be rebound and reverified."
         }
       ]
@@ -686,18 +686,18 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "最终尺度不是测试数量，也不是证据链长度，而是玩家价值是否真实、可见、可持续。不能用形式完备掩盖功能贫乏，也不能为了理论风险无止境扩大施工。",
+          "zh": "可最后，尺度既不是测试数量，也不是证据链有多长。玩家能不能真实地看见价值，它能不能持续存在，才决定工程是否值得。形式再完备，也救不了一个无聊的结果。",
           "en": "The final measure is not test count or evidence-chain length, but whether player value is real, visible and sustainable. Formal completeness cannot hide weak functionality, and hypothetical risk cannot expand work without end."
         },
         {
           "seconds": 20,
-          "zh": "边界必须诚实：主产品默认只对真人生效，少数 AI 例外逐项授权；宗教通用域暂缓，生产网页不连接本机，未公开内容不进入宣传。",
+          "zh": "诚实也意味着知道哪里停手：主产品默认只对真人生效，电脑玩家例外逐项授权；宗教通用域暂缓，生产网页不碰本机，未公开的内容不借宣传片偷渡到现实。",
           "en": "Boundaries stay explicit: humans by default, individual AI exceptions, deferred general religion work, no local access from production web, and no unpublished claims."
         },
         {
           "seconds": 20,
-          "zh": "知识还必须在施工现场沉淀：语法坑进入错误索引，测试方法进入流程文档，机制定义回到专题合同。人类负责主题、价值、代价、边界与最终签核。",
-          "en": "Knowledge must settle where work happens: language pitfalls enter an error index, testing methods enter workflows, and mechanics return to authoritative specifications. Humans retain theme, value, cost, boundaries and final approval."
+          "zh": "每次踩坑，都要给后来者留路标：语法错误进入索引，测试方法回到流程，机制结论写进专题合同。机器负责重复与核验，主题、价值、代价、边界和最后那声“可以”，仍由人决定。",
+          "en": "Every failure leaves a signpost: syntax enters the error index, test methods return to workflows, and mechanics return to contracts. Machines repeat and verify; humans retain value, boundaries and final approval."
         }
       ]
     },
@@ -713,7 +713,7 @@
       "chapter_gate": true,
       "visual": {"type": "still", "source": "../../../images/project_causality/promo/chapter_vision.png", "fit": "cover"},
       "lines": [
-        {"seconds": 20, "zh": "辉煌愿景。最后闭合因果：下一次创造，怎样从这一次生长？", "en": "GLORIOUS VISION — CLOSE THE CAUSAL CHAIN. HOW DOES THE NEXT CREATION GROW FROM THIS ONE?"}
+        {"seconds": 20, "zh": "最后，不谈完成。只谈下一次创造，怎样从这一次留下的余烬里，继续生长。", "en": "Finally, do not speak of completion. Ask how the next creation grows from the embers this one leaves behind."}
       ]
     },
     {
@@ -729,12 +729,12 @@
       "lines": [
         {
           "seconds": 15,
-          "zh": "一次性交付会在版本更新、玩家反馈和新问题面前迅速老化。所谓无限演进，不是让 AI 脱离人类自己做一切。",
+          "zh": "一件作品最危险的时刻，往往是它被宣布完成的那一刻。版本会更新，玩家会走出设计者没见过的路，新的问题也会在旧答案上长出来。",
           "en": "A one-time delivery quickly ages under updates, player feedback and new problems. Infinite evolution does not mean letting AI do everything without humans."
         },
         {
           "seconds": 15,
-          "zh": "它要求每次交付都留下下一次可以消费的结构化输入：问题、合同、失败、证据和反馈。于是完成不是终点，而是下一轮拥有可靠起点。",
+          "zh": "无限演进不是让机器独自狂奔。每次交付都要留下下一次能消费的问题、合同、失败、证据与反馈。所谓完成，只是下一轮不再从失忆开始。",
           "en": "It requires every delivery to leave structured input for the next round: problems, contracts, failures, evidence and feedback. Completion becomes a reliable starting point rather than an endpoint."
         }
       ]
@@ -752,12 +752,12 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "Loop A 从玩家问题开始：把问题写成产品合同，经实现与生成进入真实游玩，再收集反馈、新故事和失败。它们回到下一版合同，重新定义应该做什么。",
+          "zh": "第一环从玩家的一次不满、一次幻想开始。它被写成产品合同，经实现与生成进入真实游玩；而玩家带回的新故事、意外与失败，又会钻回下一版合同，改写“应该做什么”。",
           "en": "Loop A begins with a player problem: write it as a product contract, carry it through implementation and generation into real play, then return feedback, new stories and failures to the next contract."
         },
         {
           "seconds": 20,
-          "zh": "轮回机制中的一生结算，或重整河山中的一次复辟，都可以暴露新的选择、平衡和叙事需求。产品不是完成后封存，而是在玩家行为中继续获得问题。",
+          "zh": "一生结算可能暴露新的构筑，一次复辟也可能逼出新的叙事。作品不是发布以后被封进玻璃柜；它活在玩家的选择里，也从玩家的选择里继续长出问题。",
           "en": "A lifetime settlement in Eternal Recurrence or a restoration in Reclaim the Motherland can expose new choice, balance and narrative needs. A product is not sealed after completion; play keeps giving it problems."
         }
       ]
@@ -775,12 +775,12 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "Loop B 从真实 blocker 开始：研究原版行为，补观察与动作，完成一条可验证 OODA，再延长无人接管时间。新的实机运行随后暴露下一个最先阻断 campaign 的问题。",
-          "en": "Loop B begins with a real blocker: study native behavior, add observations and actions, close a verifiable OODA loop, and extend unattended play. The next live run reveals the next blocker to the campaign."
+          "zh": "第二环从真实阻点开始：读原版行为，补观察与动作，闭合一圈可以验证的观察、判断、行动与复核，再把无人接管的时间向前推。新的实机运行，会亲手指出下一块绊脚石。",
+          "en": "The second loop begins with a real blocker: study native behavior, add observation and action, then close a verifiable loop. The next live run reveals the next obstacle."
         },
         {
           "seconds": 20,
-          "zh": "今天的完整寿命证据和局部战争循环是实线；不同统治者、政府、DLC 与普通跨继承 campaign 仍是虚线。愿景只指出方向，不能把虚线提前画成完成。",
+          "zh": "今天，完整寿命与局部战争已经画出实线；不同统治者、政府、扩展包和普通跨继承长局，仍然只能画成虚线。愿景可以把路照亮，却不能替脚步伪造里程。",
           "en": "Today's full-lifetime evidence and bounded war loops are solid lines. Different rulers, governments, DLCs and ordinary inherited campaigns remain dashed. Vision gives direction but cannot redraw targets as completed facts.",
           "visual": {"type": "evidence_card", "sources": ["../../../docs/autonomous-agent-progress/goal-and-roadmap.md", "%XAR_WORKSPACE_ROOT%/artifacts/demos/2026-08-27/ck3-autonomous-agent-full-capability-showcase-bilingual-20260827.video.json"], "body_zh": ["当前能力必须回链实机 artifact", "目标分支保持虚线，直到生产实机闭环"], "body_en": ["Current capability links back to live artifacts", "Target branches stay dashed until production-live closure"]}
         }
@@ -799,12 +799,12 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "Loop C 吃进新语义和真实 RED。解析器、validator、有限运行时、生成器与 MCP 把问题变成可重复实验，再用 CK3 差分裁决引擎专属部分。",
+          "zh": "第三环吞下新语义，也吞下真实的红灯。解析器、验证器、有限运行时、生成器与 MCP，把一次故障压成可以重复的实验；只有引擎专属的部分，才送回 CK3 裁决。",
           "en": "Loop C consumes new semantics and real red outcomes. Parsers, validators, finite runtimes, generators and MCP turn problems into repeatable experiments, while CK3 decides engine-specific behavior through differential checks."
         },
         {
           "seconds": 20,
-          "zh": "通过认证的语义成为下一批产品可以复用的能力，降低创建与验收成本。工具本身不是终点；如果不能返回产品和实机，它只是在孤立地积累技术。",
+          "zh": "一旦语义通过认证，它就不再只服务一次修复，而会成为下一批作品可以复用的能力。工具若不能回到产品、回到实机、回到玩家，它再精巧，也只是在仓库里自我繁殖。",
           "en": "Certified semantics become reusable capability for later products and lower creation and acceptance cost. Tooling is not an endpoint; if it does not return to products and live play, it accumulates technology in isolation."
         }
       ]
@@ -822,12 +822,12 @@
       "lines": [
         {
           "seconds": 20,
-          "zh": "Loop D 把 GREEN 变成冻结 artifact、可信展示、release 与 Workshop 发布物。镜头、claim、来源、构建字节和签核绑定在一起，宣传因此也是工程。",
+          "zh": "第四环负责把绿灯带出开发现场。冻结证据、可信展示、发布包与创意工坊成品，把镜头、声明、来源、构建字节和签核绑在一起。宣传不是给工程化妆，它本身也是工程。",
           "en": "Loop D turns green into frozen artifacts, credible presentation, releases and Workshop items. Shots, claims, sources, build bytes and approval are bound together, making promotion part of engineering."
         },
         {
           "seconds": 20,
-          "zh": "外部世界带回下载、评论、故障和新需求。它们回到权威文档，成为下一轮产品与工具的输入。发行因此闭合，而不是把文件扔出去。",
+          "zh": "然后，外部世界把下载、评论、故障与新需求送回来。它们重新进入权威文档，成为下一轮产品和工具的燃料。发行不是把文件扔过墙，而是把墙外的声音带回炉火。",
           "en": "Downloads, comments, failures and new needs return to authoritative documents as inputs for later products and tools. Release becomes a closed loop."
         }
       ]
@@ -845,12 +845,12 @@
       "lines": [
         {
           "seconds": 18,
-          "zh": "四环不是平行流水线：产品制造智能体的真实场景，智能体暴露语义缺口，工具降低修复成本，证据与发行把反馈送回产品合同。",
+          "zh": "四条环路并排摆着，只是一张好看的流程图。真正运转时，产品为智能体制造真实场景，智能体撕开语义缺口，工具降低修复成本，证据与发行再把外部反馈送回产品合同。",
           "en": "The loops interlock: products create agent scenarios, agents expose semantic gaps, tools reduce repair cost, and release returns feedback to product contracts."
         },
         {
           "seconds": 17,
-          "zh": "人类没有退出系统。人类仍然决定值得创造什么、什么代价不能接受、什么事实足以公开。自动化负责重复劳动、真实验证，以及让失败成为下一次施工入口。",
+          "zh": "人始终站在环路中央。什么值得创造，什么代价不能接受，什么事实足以公开，这些决定不能外包。自动化负责不厌其烦地重复、核验，并把每一次失败整理成下一扇门。",
           "en": "Humans do not leave the system. They decide what is worth creating, which costs are unacceptable, and what evidence is sufficient to publish. Automation handles repetition, verification and turning failure into the next entrance."
         }
       ]
@@ -868,18 +868,18 @@
       "lines": [
         {
           "seconds": 15,
-          "zh": "现在再看开场的死亡结算，它背后不再只是一张事件图。那里有玩家合同、权威数据、生成器、引擎观察、实机验证、发布证据与下一轮输入。",
-          "en": "Return to the opening death settlement. It is no longer merely an event image. Behind it are player contracts, authoritative data, generators, engine observation, live verification, release evidence and input for another round."
+          "zh": "回头看最初那场死亡，它已不只是一张事件图。背后站着玩家合同、权威数据、生成器、引擎观察、实机证据，以及一条准备再次点燃的因果链。",
+          "en": "Return to the opening death: it is no longer merely an event image. Behind it stand player contracts, authoritative data, generators, live evidence, and a causal chain ready to ignite again."
         },
         {
           "seconds": 15,
-          "zh": "当前能力与目标愿景仍然不同。实线必须有证据，虚线必须保留边界；只要每次交付都让下一次更可靠，因果链就在继续闭合。",
+          "zh": "今天的能力仍小于愿景。实线必须有证据，虚线必须保留边界。只要每次交付都让下一次少点猜测、多点确定，环路就在收紧。",
           "en": "Current capability differs from target vision. Solid lines need evidence, dashed lines keep boundaries, and each delivery should make the next more reliable."
         },
         {
           "seconds": 15,
-          "zh": "我们不是在完成一个 Mod。我们在让下一次创造，拥有自己的轮回。这里是《project因果律》——伪天司的辉煌愿景。",
-          "en": "We are not finishing a mod. We are giving the next creation a recurrence of its own. This is Project Causality — The False Celestial Chancellor's Glorious Vision."
+          "zh": "要做的，不是把一个模组做完。是让每一次创造，都为下一次留下可以点燃的余烬。然后，让因结成果，让果重新成为因。",
+          "en": "The work is not to finish one mod. It is to leave every creation enough ember to ignite the next—until cause becomes result, and every result becomes cause again."
         }
       ]
     }

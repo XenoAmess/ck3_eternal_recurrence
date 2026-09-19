@@ -239,7 +239,7 @@ no heroic fanfare
 每条至少保留 A/B 两个原始候选，优先下载 WAV；没有 WAV 时保留 Suno 原始下载格式，不要预先转码。放入：
 
 ```text
-artifacts/project-causality/2026-09-19-r5/music/inbox/
+artifacts/project-causality/2026-09-19-r6/music/inbox/
 ├─ 00-prologue-a.*
 ├─ 00-prologue-b.*
 ├─ 01a-spell-products-a.*

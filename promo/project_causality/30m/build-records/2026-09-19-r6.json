@@ -1,0 +1,81 @@
+{
+  "format_version": 1,
+  "project": "project因果律",
+  "subtitle": "伪天司的辉煌愿景",
+  "build_id": "2026-09-19-r6",
+  "kind": "non_music_picture_lock_candidate",
+  "production_baseline_commit": "972abe34621684739ffdfc44a65aa763e68562da",
+  "supersedes": {
+    "build_id": "2026-09-19-r5",
+    "reason": "Owner rejected meta narration and specification-like copy; all 86 Chinese narration cues were rewritten, including silent visual-only project and chapter titles."
+  },
+  "artifact": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r6/project-causality-30m-nomusic-picture-lock.mp4",
+    "bytes": 230517768,
+    "sha256": "85D26DBDF6B58E8D2F7AB0462A5F29E5D04B8476DE70309D6C4BBA7A2DA746A1",
+    "container_duration_seconds": 1800.021333,
+    "video_duration_seconds": 1800.0,
+    "width": 2560,
+    "height": 1440,
+    "frame_rate": 30,
+    "video_frames": 54000,
+    "video_codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio_codec": "aac",
+    "audio_sample_rate": 48000,
+    "audio_channels": 2,
+    "mean_volume_db": -24.1,
+    "max_volume_db": -4.1
+  },
+  "sidecar": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r6/project-causality-30m-nomusic-picture-lock.video.json",
+    "bytes": 286927,
+    "sha256": "1ED22A4DDAD30AFC45CBD9EAF9ABE1A6D52DAB466B2BE43A16479639B537013E"
+  },
+  "manifest": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r6/project-causality-30m.manifest.json",
+    "bytes": 145698,
+    "sha256": "7EDCDE5A63A01038541B191005888FB4DD912210E9FECADC68F304EE48F0772C"
+  },
+  "content": {
+    "macro_segments": 31,
+    "rendered_cues": 86,
+    "rewritten_chinese_narration_cues": 86,
+    "spoken_project_title": false,
+    "spoken_project_subtitle": false,
+    "spoken_chapter_labels": false,
+    "chapter_gates": 4,
+    "narration": "zh-CN-XiaoxiaoNeural",
+    "subtitles": [
+      "Simplified Chinese primary burned subtitles",
+      "English secondary burned subtitles"
+    ],
+    "music_included": false,
+    "suno_operated": false,
+    "radio_script_sha256": "6E400A3345970BF0B7B2827DDBD39E30F7401B543BFF0BA46A4D992B49988DDC"
+  },
+  "chapter_gates": [
+    {"id": "spell", "start_seconds": 190, "end_seconds": 210, "sound_effect": "spell-low-bell.wav"},
+    {"id": "method", "start_seconds": 820, "end_seconds": 840, "sound_effect": "method-page-pulse.wav"},
+    {"id": "principle", "start_seconds": 1270, "end_seconds": 1290, "sound_effect": "principle-dry-seal.wav"},
+    {"id": "vision", "start_seconds": 1510, "end_seconds": 1530, "sound_effect": "vision-five-note-rise.wav"}
+  ],
+  "automated_acceptance": {
+    "media_probe": "GREEN",
+    "exact_frame_count": "GREEN",
+    "sidecar_video_hash_match": "GREEN",
+    "all_narration_within_exact_slots_at_normal_rate": "GREEN",
+    "spoken_title_and_production_note_guard": "GREEN",
+    "bilingual_subtitle_safe_area": "GREEN",
+    "chapter_gate_silence_effect_declaration_pattern": "GREEN",
+    "title_gate_and_finale_frame_review": "GREEN"
+  },
+  "review_status": "awaiting_continuous_owner_review",
+  "publication_authorized": false,
+  "remaining_work": [
+    "Project owner watches the complete r6 picture lock at 1x and reports time-coded changes.",
+    "Project owner manually generates and returns Suno candidates plus rights metadata.",
+    "Post-production mixes selected music and regenerates all media receipts.",
+    "The music master receives a new complete continuous review before any publication decision."
+  ]
+}

@@ -68,6 +68,42 @@ class ProjectCausalityThirtyMinuteBuildTests(unittest.TestCase):
         self.assertNotIn("phase 2", serialized)
         self.assertNotIn("二期", serialized)
 
+    def test_spoken_copy_does_not_read_titles_or_production_notes(self) -> None:
+        spoken_zh = "\n".join(
+            line["zh"]
+            for segment in self.script["segments"]
+            for line in segment["lines"]
+        )
+        spoken_en = "\n".join(
+            line["en"]
+            for segment in self.script["segments"]
+            for line in segment["lines"]
+        )
+        for forbidden in (
+            "project因果律",
+            "伪天司的辉煌愿景",
+            "副标题",
+            "本片要证明",
+            "这套组合体叫",
+        ):
+            self.assertNotIn(forbidden, spoken_zh)
+        for forbidden in (
+            "Project Causality",
+            "False Celestial Chancellor",
+            "This film argues",
+            "subtitled",
+        ):
+            self.assertNotIn(forbidden, spoken_en)
+        declarations = {
+            segment["id"]: segment["lines"][0]["zh"]
+            for segment in self.script["segments"]
+            if segment.get("chapter_gate") is True
+        }
+        self.assertFalse(declarations["03-spell-declaration"].startswith("咒"))
+        self.assertFalse(declarations["10-method-declaration"].startswith("术"))
+        self.assertFalse(declarations["17-principle-declaration"].startswith("道"))
+        self.assertFalse(declarations["22-vision-declaration"].startswith("辉煌愿景"))
+
     def test_video_sources_are_raw_or_production_captures_not_edited_segments(self) -> None:
         manifest = film.materialize_manifest()
         sources = [
