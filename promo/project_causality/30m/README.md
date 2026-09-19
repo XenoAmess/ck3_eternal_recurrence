@@ -9,7 +9,9 @@
 
 ## 当前状态
 
-`2026-09-19-r9` 是当前无音乐 picture-lock 候选：
+`2026-09-19-r10-owner-voice` 是当前无音乐审片候选。它逐帧复用 r9 picture lock，
+将 Edge TTS 替换为项目所有者明确授权的单份声音样本所驱动的 IndexTTS 2.5 旁白；
+原始声音样本与模型权重均留在 Git 忽略的私有 artifact 中。r9 的画面事实如下：
 
 - 时长：容器 2,054.788 秒，61,643 帧；
 - 规格：2560×1440、30 fps、H.264 yuv420p、AAC 48 kHz 双声道；
@@ -66,9 +68,14 @@ r6/r7/r8 保留为源时间坐标和历史基线。r9 把当天同一逻辑战�
 ```powershell
 py tools/render_project_causality_architecture.py
 py tools/build_project_causality_r9.py
+& <IndexTTS-Python> tools/build_project_causality_owner_voice.py `
+  --index-repo <IndexTTS仓库> --voice-reference <授权声音样本WAV>
 ```
 
 构建器只读取冻结素材并生成本地候选，不启动 CK3、不操作 Suno、不上传媒体。
+IndexTTS 构建器把 98 条完整旁白按最终镜头槽位合成并缓存，以高质量保音高/保共振时间压缩处理少量超长句，
+保留四个章门音效，再直接复制 r9 的 H.264 视频流完成封装。构建记录见
+[`build-records/2026-09-19-r10-owner-voice.json`](build-records/2026-09-19-r10-owner-voice.json)。
 
 ## 后续顺序
 

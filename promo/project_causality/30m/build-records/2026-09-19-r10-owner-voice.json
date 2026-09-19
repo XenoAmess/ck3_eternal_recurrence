@@ -1,0 +1,55 @@
+{
+  "schema": "project-causality-build-record.v1",
+  "build_id": "2026-09-19-r10-owner-voice",
+  "status": "owner-voice-non-music-review-candidate",
+  "publication_authorized": false,
+  "video": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r10-owner-voice/project-causality-r10-owner-voice-nomusic.mp4",
+    "sha256": "46F85E0CEB618A1092BBE323E4D015BABE321D1BC8A635779A2A2CC3E8209BFD",
+    "bytes": 1473623265,
+    "duration_seconds": 2054.788,
+    "frames": 61643,
+    "width": 2560,
+    "height": 1440,
+    "fps": "30/1",
+    "video_codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio_codec": "aac",
+    "sample_rate": 48000,
+    "channels": 2
+  },
+  "picture": {
+    "source_build": "2026-09-19-r9",
+    "video_stream_copied_without_reencoding": true,
+    "content_changes": false
+  },
+  "narration": {
+    "provider": "IndexTTS-2.5",
+    "provider_revision": "ee40fa7d6c6b8a2c7f06105f9f1e65775b74868c",
+    "mode": "natural-reference-emotion",
+    "authorized_owner_reference_sha256": "85E721DBF938592AB7D75025EDF3404813EB765D469415DC3E55F8C6BCD0AE0B",
+    "raw_reference_committed": false,
+    "cue_count": 98,
+    "master_track_sha256": "E358E4913D9C6CEEA9B9A9614F9BCBC8FB93AB8FF6081B81FDB2B52646CB0170",
+    "integrated_loudness_lufs": -16.0,
+    "true_peak_dbfs": -1.3,
+    "fit_policy": "Rubber Band high-quality tempo fit with pitch and formants preserved",
+    "maximum_fit_tempo": 1.583447,
+    "cues_above_1_4x": 4
+  },
+  "music": {
+    "included": false,
+    "suno_operated": false
+  },
+  "qa": {
+    "timeline_plan": "GREEN: 98 complete cues cover all 61643 frames",
+    "chapter_boundary_integrity": "GREEN: no source edit cuts through a narration cue",
+    "media_probe": "GREEN",
+    "exact_frame_count": "GREEN",
+    "picture_stream_copy": "GREEN",
+    "audio_loudness": "GREEN",
+    "continuous_human_review": "PENDING"
+  },
+  "builder": "tools/build_project_causality_owner_voice.py",
+  "review_note": "This is a local non-music review candidate. Publication remains unauthorized until owner review and the later owner-operated music pass."
+}
