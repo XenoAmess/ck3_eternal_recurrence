@@ -17,9 +17,7 @@ svg {
 .cluster-label span,
 .cluster-label p {
   color: #f4f8ff !important;
-  font-size: 19px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.02em;
 }
 
 .edgeLabel {

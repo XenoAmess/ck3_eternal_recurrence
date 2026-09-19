@@ -1,20 +1,47 @@
-block-beta
-    columns 3
-    B1["长局暴露<br/>第一个真实 blocker"] B2["冻结事实边界<br/>CK3 build · EXE SHA · seed · checkpoint"] B3["原生研究<br/>数据定义 · 调用链 · 决策树 · unknown"]
-    B6["接入智能体<br/>world model · candidate · planner · executor"] B5["补足动作<br/>最小 semantic action · 合法性 · generation"] B4["补足观察<br/>只读 bridge → typed MCP query → paused snapshot"]
-    B7["production OODA<br/>观察 → 决策 → 操作 → 独立后置验证"] B8["沉淀<br/>checkpoint · outcome · 反例 · 能力债"] B9["↺ 更长无人接管<br/>跨事件 / 战争 / 家庭 / 继承<br/>并暴露下一个 blocker"]
-    space BR["ACK≠成功<br/>新状态不成立就形成新的 blocker"] space
+flowchart LR
+    subgraph DISCOVERY["01｜blocker 与原生研究"]
+      direction TB
+      B1(("长局遇到<br/>第一个 blocker"))
+      B2["冻结事实边界<br/>build · EXE SHA · seed · checkpoint"]
+      B3["原生研究<br/>数据定义 · 调用链 · 决策树 · unknown"]
+      B1 --> B2 --> B3
+    end
 
-    B1 --> B2 --> B3 --> B4 --> B5 --> B6 --> B7 --> B8 --> B9
-    B7 -.-> BR
+    subgraph CAPABILITY["02｜观察与动作能力面"]
+      direction TB
+      B4["只读 observation<br/>bridge → typed query → paused snapshot"]
+      B5["semantic action<br/>重验 actor · target · legality · generation"]
+      B4 --> B5
+    end
 
-    style B1 fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
-    style B2 fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
-    style B3 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
-    style B4 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
-    style B5 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
-    style B6 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
-    style B7 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
-    style B8 fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:2px
-    style B9 fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:2px
-    style BR fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
+    subgraph AUTONOMY["03｜production OODA"]
+      direction TB
+      B6["World model + Planner<br/>候选 · 收益 · 风险 · 长期目标"]
+      B7{"production OODA<br/>下一真实状态成立？"}
+      B8[("checkpoint · outcome<br/>反例 · 能力债")]
+      B6 --> B7
+      B7 -- "成立" --> B8
+    end
+
+    B9(("更长无人接管<br/>暴露下一个 blocker"))
+    BR["ACK ≠ 成功<br/>状态不成立即形成新 blocker"]
+
+    B3 --> B4
+    B5 --> B6
+    B7 -- "不成立" --> BR
+    BR -. "补观察或动作，不伪造成功" .-> B4
+    B8 --> B9
+    B9 == "继续深入长局" ==> B1
+
+    class B1,B9 loop;
+    class B2,B3 research;
+    class B4,B5 capability;
+    class B6,B7 agent;
+    class B8 evidence;
+    class BR red;
+    classDef loop fill:#402a1f,stroke:#ff8a4c,color:#fff6ef,stroke-width:3px;
+    classDef research fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px;
+    classDef capability fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px;
+    classDef agent fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:2px;
+    classDef evidence fill:#31224b,stroke:#b796ff,color:#faf6ff,stroke-width:2px;
+    classDef red fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px;

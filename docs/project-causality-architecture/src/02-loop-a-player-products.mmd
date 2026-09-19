@@ -1,19 +1,42 @@
-block-beta
-    columns 2
-    A1["玩家问题 / 玩法假设<br/>值得创造什么？"] A2["权威产品合同<br/>DomainSpec · 状态机 · 验收条件"]
-    A4["分层验收<br/>静态 → 离线语义 → CK3 实机 → production"] A3["结构化制造<br/>数据表 · 生成器 · Mod / GUI / 本地化 / 素材"]
-    A5["真实游玩<br/>玩家 + 自动玩家"] A6["可观察结果<br/>体验 · 平衡 · 故障 · 新故事"]
-    A7["↺ 下一版假设<br/>修订合同与优先级"] AR["RED：保留证据<br/>回到最早错误层，而非修饰结果"]
+flowchart LR
+    subgraph DEFINE["01｜价值定义"]
+      direction TB
+      A1(("玩家问题<br/>玩法假设"))
+      A2["权威产品合同<br/>DomainSpec · 状态机 · 验收条件"]
+      A1 --> A2
+    end
 
-    A1 --> A2 --> A3 --> A4
-    A4 --> A5 --> A6 --> A7
-    A4 -.-> AR
+    subgraph BUILD["02｜产品投影"]
+      direction TB
+      A3{{"结构化制造<br/>数据表 · 生成器 · Mod / GUI / 本地化 / 素材"}}
+      A4{"分层验收<br/>合同与真实结果一致？"}
+      A3 --> A4
+    end
 
-    style A1 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
-    style A2 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
-    style A3 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
-    style A4 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
-    style A5 fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:2px
-    style A6 fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:2px
-    style A7 fill:#402a1f,stroke:#ff8a4c,color:#fff6ef,stroke-width:3px
-    style AR fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
+    subgraph REALITY["03｜现实裁决"]
+      direction TB
+      A5(["真实游玩<br/>玩家 + 自动玩家"])
+      A6[("体验 · 平衡<br/>故障 · 新故事")]
+      A5 --> A6
+    end
+
+    A7(("下一版假设<br/>修订合同与优先级"))
+    AR["保留 RED 与原始证据<br/>回到最早错误层"]
+
+    A2 --> A3
+    A4 -- "GREEN" --> A5
+    A4 -- "RED" --> AR
+    AR -. "修订规范，不修饰结果" .-> A2
+    A6 --> A7
+    A7 == "进入下一轮" ==> A1
+
+    class A1,A7 loop;
+    class A2 authority;
+    class A3,A4 build;
+    class A5,A6 live;
+    class AR red;
+    classDef loop fill:#402a1f,stroke:#ff8a4c,color:#fff6ef,stroke-width:3px;
+    classDef authority fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px;
+    classDef build fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px;
+    classDef live fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:2px;
+    classDef red fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px;
