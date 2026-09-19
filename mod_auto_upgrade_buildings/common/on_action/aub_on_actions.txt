@@ -1,0 +1,19 @@
+﻿# Preserve the enabled state and the exact player-selected policy across ordinary
+# player succession. on_death runs while root is still the dying player, so the
+# three character flags remain readable and player_heir is the live carrier.
+on_death = {
+	on_actions = {
+		aub_on_player_death
+	}
+}
+
+aub_on_player_death = {
+	trigger = {
+		is_ai = no
+		has_character_flag = enable_auto_build
+		exists = player_heir
+	}
+	effect = {
+		aub_transfer_auto_build_to_player_heir_effect = yes
+	}
+}

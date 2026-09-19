@@ -25,6 +25,7 @@ ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 RUNTIME_FILES = frozenset(
     {
         "common/decisions/build_decision.txt",
+        "common/on_action/aub_on_actions.txt",
         "common/scripted_effects/build_scripted_effect.txt",
         "common/scripted_triggers/aub_building_triggers.txt",
         "descriptor.mod",

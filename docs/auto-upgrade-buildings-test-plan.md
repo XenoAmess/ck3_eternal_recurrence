@@ -1,7 +1,7 @@
 # “自动升级建筑”1.19.0.6 维护验收计划
 
 状态：L0 已完成；当前 source-live 核心实机矩阵已由
-`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013` 验收为 GREEN。扩展边界矩阵仍保留为后续计划，不把静态解析、
+`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0042` 验收为 GREEN。扩展边界矩阵仍保留为后续计划，不把静态解析、
 命令 ACK 或未执行的场景冒充实机功能 GREEN。
 
 ## 冻结环境
@@ -17,12 +17,12 @@
 1. 只有真人玩家可见并执行启用/禁用决议；AI 没有入口。
 2. 启用后恰好建立一条自续循环；首次检查在 1–2 日内，后续每 15 日一次；重复启用、读档或旧排队事件不会并行倍增循环。
 3. 每轮只遍历玩家直接持有的 province，不扫描全地图，不处理附庸直辖地。
-4. 只升级已经存在的普通建筑；主建筑、公国、特殊、部落、游牧、曼荼罗、great project 和其他非普通体系保持不变。
+4. 只升级已经存在且属于 605 条适用边的建筑；覆盖普通、主建筑、公国、特殊、部落与曼荼罗神殿城塞小建筑，排除住所、游牧／牧民 N/A 对象、曼荼罗都城 Great Project、终级建筑及其他不适用体系。
 5. 下一等级必须满足本 mod 承诺的革新与地产等级条件；有正在进行的建设时不强制替换建筑。
 6. 同一建筑链每轮最多升级一级；升级与一次扣款属于同一成功路径。
 7. 国库足额时只扣国库；国库不足且个人金钱足额时只扣个人金钱；两者不足时建筑和两种资源都不变化。
 8. 禁用后已排队检查可以到达，但必须零副作用且不得续排；重新启用能建立一条新循环。
-9. 保存/重载后 `enable_auto_build` 保持，且循环不丢失、不重复。
+9. 保存/重载后 `enable_auto_build` 保持；玩家死亡并继续扮演继承人后，启用、资金与超直辖策略迁移到新玩家，且循环不丢失、不重复。
 
 ## L0：离线静态门
 
@@ -61,3 +61,14 @@ userdir 删除、受保护资料不变与退出后双源零进程。artifact 位
 R0006（legacy `R410`）仍作为原始 environment RED 历史证据保存在
 `D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`，不为迁移编号而改名；后续已确认其根因为同任务遗留的全盘
 `rg.exe` 扫描造成 D 盘 I/O 竞争。Steam 在全部实机轮次中保持离线，本任务没有执行 Workshop fresh-cache 或上传验证。
+
+## 4.0.1 增量矩阵
+
+R0042 在同一个隔离进程内新增并通过六项发布阻断断言：
+
+- `citadel_shrine_01 → citadel_shrine_02`、`sacred_pool_01 → sacred_pool_02`、`vihara_halls_01 → vihara_halls_02` 均通过正式 `auto_build.0004` 生产扫描，而不是直接调用测试 effect；
+- 真实玩家死亡并点击原版“继续扮演”后，新玩家保留 `enable_auto_build`；
+- 新玩家同时保留测试选择的 `aub_funding_personal_only` 与 `aub_pause_when_over_domain_limit`，且没有错误残留 `aub_funding_treasury_only`；
+- fixture 在死亡前移除全局 seed，继承后仍观察到唯一 `aub_auto_build_loop_started`，证明生产迁移 effect 重新建立循环。
+
+该轮同时复跑既有资金、直辖边界、主建筑／普通／公国／特殊／混合资源／负路径矩阵，无 `AUBT: TEST FAIL`，项目诊断为 0；顶层报告 SHA-256 为 `012D1E4F8E43DADB39443DB2FD3838B2ED74BC7F74565D2CF7749B8BB6AFC806`。

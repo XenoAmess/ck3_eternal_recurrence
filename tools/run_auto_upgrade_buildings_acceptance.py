@@ -101,7 +101,12 @@ REQUIRED_MARKERS = (
     "AUBT: TEST PASS main_tribal_mixed_cost",
     "AUBT: TEST PASS regular_tribal",
     "AUBT: TEST PASS main_temple_citadel",
-    "AUBT: TEST PASS temple_citadel_unique",
+    "AUBT: TEST PASS mandala_citadel_shrine",
+    "AUBT: TEST PASS mandala_sacred_pool",
+    "AUBT: TEST PASS mandala_vihara_halls",
+    "AUBT: TEST PASS succession_enabled_retained",
+    "AUBT: TEST PASS succession_policy_retained",
+    "AUBT: TEST PASS succession_loop_retained",
     "AUBT: TEST PASS duchy_capital",
     "AUBT: TEST PASS special_gold",
     "AUBT: TEST PASS scripted_cost_resources",
@@ -740,6 +745,7 @@ def run_cell(
     keep_userdir: bool,
     run_identity: live_ids.LiveRunIdentity,
     art_only: bool = False,
+    core_only: bool = False,
 ) -> dict[str, object]:
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
@@ -789,7 +795,14 @@ def run_cell(
         acceptance.navigate_lobby(artifacts)
         isolated.wait_for_gameplay_hud(artifacts)
         acceptance.ensure_game_paused(artifacts, "04_gameplay")
-        policy_ui = exercise_policy_selector_ui(artifacts)
+        policy_ui = (
+            {
+                "skipped": True,
+                "reason": "core-only regression cell; production state seeded by external fixture",
+            }
+            if core_only
+            else exercise_policy_selector_ui(artifacts)
+        )
         if art_only:
             ensure_final_pause_by_date(artifacts, "06_art_only_map")
             diagnostics.extend(project_diagnostics(userdir, artifacts, "07_art_only"))
@@ -801,6 +814,7 @@ def run_cell(
             "last_check": 0.0,
             "dismissed": 0,
             "dismissed_by_kind": {},
+            "quick_attempts": 0,
         }
 
         def dismiss_known_vanilla_interruption() -> None:
@@ -818,6 +832,7 @@ def run_cell(
                     "教宗和皇帝都可以保留他们的土地",
                 ),
                 ("war_declared", "已宣战", "召集部队"),
+                ("succession", "你已过世", "继续扮演"),
             ):
                 if acceptance.find_ocr_text(
                     image,
@@ -828,12 +843,38 @@ def run_cell(
                     matched = (kind, title_text, option_text)
                     break
             if matched is None:
+                interruption_state["quick_attempts"] += 1
+                selected = acceptance.quick_stall_and_recover(
+                    artifacts,
+                    "auto_upgrade_buildings",
+                    interruption_state["quick_attempts"],
+                    allow_succession=True,
+                )
+                if selected is not None:
+                    interruption_state["dismissed"] += 1
+                    dismissed_by_kind = interruption_state["dismissed_by_kind"]
+                    recovery_kind = selected.get("layout_fallback", "generic_event")
+                    dismissed_by_kind[recovery_kind] = (
+                        dismissed_by_kind.get(recovery_kind, 0) + 1
+                    )
+                    if recovery_kind != "succession_continue":
+                        acceptance.set_speed_five_and_unpause(
+                            artifacts,
+                            f"resume_after_quick_{interruption_state['quick_attempts']}",
+                            require_progress=False,
+                        )
+                    log(f"dismissed conservative quick recovery {recovery_kind}")
                 return
             kind, title_text, option_text = matched
+            option_region = (
+                (0.45, 0.55, 0.80, 0.90)
+                if kind == "succession"
+                else acceptance.FULL_SCREEN_REGION
+            )
             option = acceptance.find_ocr_text(
                 image,
                 option_text,
-                acceptance.FULL_SCREEN_REGION,
+                option_region,
                 contains=True,
             )
             sequence = interruption_state["dismissed"] + 1
@@ -868,16 +909,14 @@ def run_cell(
                 raise acceptance.RunnerError(
                     f"known vanilla {kind} interruption did not close after selection"
                 )
-            before = acceptance.read_hud_game_day(after)
-            acceptance.pyautogui.press("5")
-            progress_deadline = time.time() + 4
-            while time.time() < progress_deadline:
-                current = acceptance.read_hud_game_day()
-                if before is not None and current is not None and current > before:
-                    break
-                time.sleep(acceptance.POLL_INTERVAL_S)
-            else:
-                acceptance.pyautogui.press("space")
+            # Closing a vanilla interruption can leave the timeline either paused
+            # or already running. Reuse the runner's date-confirmed resume helper
+            # instead of toggling Space after an inconclusive four-second probe.
+            acceptance.set_speed_five_and_unpause(
+                artifacts,
+                f"resume_after_{kind}_{sequence}",
+                require_progress=False,
+            )
             interruption_state["dismissed"] = sequence
             dismissed_by_kind = interruption_state["dismissed_by_kind"]
             dismissed_by_kind[kind] = dismissed_by_kind.get(kind, 0) + 1
@@ -943,6 +982,18 @@ def run_cell(
                 "temple_citadel",
             ],
             "regular_building_families": ["feudal", "tribal", "temple_citadel"],
+            "mandala_minor_buildings": [
+                "citadel_shrine",
+                "sacred_pool",
+                "vihara_halls",
+            ],
+            "player_succession": {
+                "real_death_and_continue": True,
+                "enabled_state_retained": True,
+                "funding_policy_retained": "personal_only",
+                "domain_policy_retained": "pause_when_over_limit",
+                "unique_loop_retained": True,
+            },
             "building_types": ["regular", "duchy_capital", "special"],
             "mixed_resource_costs": ["gold+prestige", "gold+piety", "scripted_cost"],
             "negative_paths": [
@@ -1079,6 +1130,7 @@ def main(
     preflight_only: bool = False,
     skip_open_kaishek: bool = False,
     art_only: bool = False,
+    core_only: bool = False,
 ) -> int:
     preflight(skip_open_kaishek)
     if preflight_only:
@@ -1108,6 +1160,7 @@ def main(
             keep_userdir,
             run_identity,
             art_only,
+            core_only,
         )
     result = report["result"]
     error_reason = report["error_reason"]
@@ -1151,6 +1204,8 @@ def main(
         },
         "acceptance_scope": (
             "focused-decision-art-load" if art_only else "full-product-matrix"
+            if not core_only
+            else "core-product-matrix-with-fixture-seeded-default-policy"
         ),
     }
     write_json(artifacts / "report.json", matrix)
@@ -1174,6 +1229,11 @@ if __name__ == "__main__":
         action="store_true",
         help="open the policy decision and preserve focused custom-art evidence only",
     )
+    parser.add_argument(
+        "--core-only",
+        action="store_true",
+        help="skip the production decision UI and seed its default state in the external fixture",
+    )
     arguments = parser.parse_args()
     try:
         raise SystemExit(
@@ -1183,6 +1243,7 @@ if __name__ == "__main__":
                 arguments.preflight,
                 arguments.skip_open_kaishek,
                 arguments.art_only,
+                arguments.core_only,
             )
         )
     except (acceptance.RunnerError, live_ids.LiveRunIdError) as error:

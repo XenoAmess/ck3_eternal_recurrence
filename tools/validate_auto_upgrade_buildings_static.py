@@ -176,7 +176,7 @@ def validate(
     errors = builder.source_errors(MOD)
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     expected_descriptor = (
-        'version="4.0.0"\n'
+        'version="4.0.1"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
         'supported_version="1.19.0.6"\n'
@@ -185,11 +185,13 @@ def validate(
         errors.append("descriptor.mod differs from the 1.19.0.6 maintenance contract")
 
     decisions = text("common/decisions/build_decision.txt")
+    on_actions = text("common/on_action/aub_on_actions.txt")
     events = text("events/auto_build.txt")
     effects = text("common/scripted_effects/build_scripted_effect.txt")
     triggers = text("common/scripted_triggers/aub_building_triggers.txt")
     for relative, value in (
         ("common/decisions/build_decision.txt", decisions),
+        ("common/on_action/aub_on_actions.txt", on_actions),
         ("events/auto_build.txt", events),
         ("common/scripted_effects/build_scripted_effect.txt", effects),
         ("common/scripted_triggers/aub_building_triggers.txt", triggers),
@@ -214,7 +216,9 @@ def validate(
         "0005",
     ]:
         errors.append("event inventory must preserve compatibility 0003/0004 and unique loop 0005")
-    combined = decisions + "\n" + events + "\n" + effects + "\n" + triggers
+    combined = (
+        decisions + "\n" + on_actions + "\n" + events + "\n" + effects + "\n" + triggers
+    )
     if "AUBT:" in combined or "aubt_" in combined or "aubt." in combined:
         errors.append("acceptance fixture markers leaked into production runtime")
     if "prev" in decisions + "\n" + events + "\n" + effects:
@@ -393,6 +397,50 @@ def validate(
         errors.append("unreferenced upstream auto_build.0001 must not be restored")
     if effects.count("aub_start_global_loop_effect = {") != 1:
         errors.append("global loop seed effect must be defined exactly once")
+    death_hook = extract_block(on_actions, "on_death")
+    succession_hook = extract_block(on_actions, "aub_on_player_death")
+    succession_transfer = extract_block(
+        effects, "aub_transfer_auto_build_to_player_heir_effect"
+    )
+    if death_hook is None or succession_hook is None or succession_transfer is None:
+        errors.append("player-succession transfer hook/effect is incomplete")
+    else:
+        if death_hook.count("aub_on_player_death") != 1 or "effect = {" in death_hook:
+            errors.append("on_death must append exactly one non-destructive child on_action")
+        for fragment in (
+            "is_ai = no",
+            "has_character_flag = enable_auto_build",
+            "exists = player_heir",
+            "aub_transfer_auto_build_to_player_heir_effect = yes",
+        ):
+            if succession_hook.count(fragment) != 1:
+                errors.append(f"player-succession hook drifted: {fragment}")
+        for flag in (
+            "aub_funding_treasury_only",
+            "aub_funding_personal_only",
+            "aub_pause_when_over_domain_limit",
+        ):
+            if succession_transfer.count(f"remove_character_flag = {flag}") != 1:
+                errors.append(f"successor policy is not normalized: {flag}")
+            if succession_transfer.count(f"add_character_flag = {flag}") != 1:
+                errors.append(f"successor policy is not transferred: {flag}")
+            if succession_transfer.count(
+                f"root = {{ has_character_flag = {flag} }}"
+            ) != 1:
+                errors.append(f"successor policy does not read the dying player: {flag}")
+        if succession_transfer.count("add_character_flag = enable_auto_build") != 1:
+            errors.append("successor does not retain the enabled state exactly once")
+        if succession_transfer.count("aub_start_global_loop_effect = yes") != 1:
+            errors.append("successor does not re-seed the unique global loop")
+    for root in ("citadel_shrine_01", "sacred_pool_01", "vihara_halls_01"):
+        chain = extract_block(effects, f"aub_upgrade_chain_{root}_effect")
+        if chain is None:
+            errors.append(f"Mandala minor-building chain is missing: {root}")
+            continue
+        if f"has_building_or_higher = {root}" not in effects:
+            errors.append(f"Mandala minor-building dispatcher is missing: {root}")
+        if f"# {root}: 7 frozen upgrade edge(s)" not in effects:
+            errors.append(f"Mandala minor-building edge inventory drifted: {root}")
     if effects.count("aub_upgrade_chain_") != len(CHAINS) * 2:
         errors.append("generated building chain call/definition inventory drifted")
     if effects.count("aub_can_upgrade_to_") != len(EDGES):
@@ -621,7 +669,12 @@ def validate(
         "AUBT: TEST PASS main_tribal_mixed_cost",
         "AUBT: TEST PASS regular_tribal",
         "AUBT: TEST PASS main_temple_citadel",
-        "AUBT: TEST PASS temple_citadel_unique",
+        "AUBT: TEST PASS mandala_citadel_shrine",
+        "AUBT: TEST PASS mandala_sacred_pool",
+        "AUBT: TEST PASS mandala_vihara_halls",
+        "AUBT: TEST PASS succession_enabled_retained",
+        "AUBT: TEST PASS succession_policy_retained",
+        "AUBT: TEST PASS succession_loop_retained",
         "AUBT: TEST PASS duchy_capital",
         "AUBT: TEST PASS special_gold",
         "AUBT: TEST PASS scripted_cost_resources",
@@ -662,6 +715,11 @@ def validate(
     ):
         if fragment not in fixture_script:
             errors.append(f"acceptance resource-route contract missing: {fragment}")
+    if "change_government = mandala_government" in fixture_script:
+        errors.append("acceptance fixture must not force the transition-only Mandala government")
+    for event_id in ("aubt.10 = {", "aubt.12 = {"):
+        if event_id not in fixture_script:
+            errors.append(f"acceptance serial Mandala scan event missing: {event_id}")
     if re.search(r"(?m)^\s*remove_gold\s*=", fixture_script):
         errors.append("acceptance fixture uses unsupported CK3 1.19 remove_gold effect")
     if "mandala_capital_" in fixture_script:
@@ -673,8 +731,8 @@ def validate(
         workshop_description = WORKSHOP_DESCRIPTION.read_text(encoding="utf-8")
         for fragment in (
             "[h1]自动升级建筑（XenoAmess维护版）[/h1]",
-            "Version 4.0.0 · CK3 1.19.0.6",
-            "[h1]4.0.0 更新记录[/h1]",
+            "Version 4.0.1 · CK3 1.19.0.6",
+            "[h1]4.0.1 更新记录[/h1]",
             "[h1]原作、致谢与授权[/h1]",
             "[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3596580780]自动升级建筑（新版）[/url]",
             "致谢：[/b]感谢原 Mod 作者的创作与维护劳动，本维护版以原作提供的玩法和内容为基础。",

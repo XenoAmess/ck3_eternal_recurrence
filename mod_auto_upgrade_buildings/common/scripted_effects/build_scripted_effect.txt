@@ -9,6 +9,36 @@ aub_start_global_loop_effect = {
 	}
 }
 
+aub_transfer_auto_build_to_player_heir_effect = {
+	if = {
+		limit = {
+			has_character_flag = enable_auto_build
+			exists = player_heir
+		}
+		player_heir = {
+			# The successor must receive one exact policy, even if that character
+			# already carried stale flags from an earlier player-controlled life.
+			remove_character_flag = aub_funding_treasury_only
+			remove_character_flag = aub_funding_personal_only
+			remove_character_flag = aub_pause_when_over_domain_limit
+			add_character_flag = enable_auto_build
+			if = {
+				limit = { root = { has_character_flag = aub_funding_treasury_only } }
+				add_character_flag = aub_funding_treasury_only
+			}
+			else_if = {
+				limit = { root = { has_character_flag = aub_funding_personal_only } }
+				add_character_flag = aub_funding_personal_only
+			}
+			if = {
+				limit = { root = { has_character_flag = aub_pause_when_over_domain_limit } }
+				add_character_flag = aub_pause_when_over_domain_limit
+			}
+			aub_start_global_loop_effect = yes
+		}
+	}
+}
+
 aub_pay_gold_building_cost_effect = {
 	if = {
 		limit = { scope:aub_payer = { has_character_flag = aub_funding_treasury_only } }
