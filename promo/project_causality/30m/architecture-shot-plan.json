@@ -4,6 +4,11 @@
     "title": "《project因果律》",
     "subtitle": "伪天司的辉煌愿景",
     "duration_seconds": 1800,
+    "duration_semantics": "r6 source timeline only; not a final runtime lock",
+    "accepted_final_duration_seconds": [1200, 1800],
+    "editorial_target_seconds": 1530,
+    "preferred_final_duration_seconds": [1440, 1620],
+    "timeline_basis": "2026-09-19-r6 source timecode",
     "width": 2560,
     "height": 1440,
     "fps": 30
@@ -31,8 +36,12 @@
     "canonical_source": "docs/project-causality-architecture/src/*.mmd",
     "preferred_render_source": "docs/project-causality-architecture/rendered/*.svg",
     "subtitles_added_after_architecture_render": true,
-    "diagram_screen_time_seconds": 466,
-    "diagram_screen_time_ratio": 0.2589
+    "runtime_locked": false,
+    "source_plan_diagram_screen_time_seconds": 466,
+    "source_plan_diagram_screen_time_ratio": 0.2589,
+    "target_final_diagram_screen_time_seconds": [360, 430],
+    "target_final_diagram_screen_time_ratio": [0.24, 0.28],
+    "retime_rule": "Preserve semantic beat order and evidence cutaways; trim repeated topology holds before trimming causal nodes."
   },
   "shots": [
     {
