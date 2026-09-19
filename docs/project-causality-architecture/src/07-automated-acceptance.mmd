@@ -1,19 +1,53 @@
-block-beta
-    columns 4
-    I["A1｜权威输入<br/>产品合同 · schema · 数据表 · 原版快照"] G["A2｜生成 / 投影<br/>Mod · GUI · loc · tests · docs"] L0["A3｜静态 L0<br/>BOM · 引用 · scope · parity · build"] OKQ["A4｜open_kaishek 分流<br/>是否覆盖该语义子集？"]
-    BLD["B1｜release builder<br/>production-only staging + manifest"] NA["NOT_APPLICABLE / UNSUPPORTED<br/>记录原因，不伪造 GREEN"] OK["离线 preflight<br/>CST → profile → IR / Runtime / replay"] NOTE["边界<br/>离线结果只加速，绝不升级为 CK3 live"]
-    ISO["B2｜隔离与保护<br/>备份 · 一次性 userdir · 锁 · Steam offline"] RUN["B3｜验收入口<br/>主 Mod · 白绮 · 牛来 · 361 · agent runners"] CK["C1｜exact-build CK3<br/>加载真实 production 投影"] MCP["C2｜bridge + Official MCP<br/>版本 · generation · capabilities"]
-    CLS["C5｜独立判定<br/>真实状态是否与合同一致？"] POST["C4｜后置验证<br/>typed state · paused frame · 必要 OCR / UI"] OODA["C3｜runner / 智能体 OODA<br/>观察 → 决策 → semantic action"] space
-    GREEN["GREEN<br/>冻结 artifact · report · media · hashes"] GCLEAN["受控回收<br/>停止进程 · 恢复现场 · 释放锁"] RCLEAN["受控回收<br/>停止进程 · 恢复现场 · 释放锁"] RED["RED<br/>区分 product / capability / harness / environment"]
-    GATE["发布候选<br/>fresh-cache / Workshop 回读 / claim 审计"] space space NEXT["↺ 最小下一施工入口<br/>修订合同、工具或能力后再验"]
+flowchart LR
+    subgraph AUTHORING["权威输入与离线分流"]
+        direction TB
+        I["A1｜权威输入<br/>产品合同 · schema · 数据表 · 原版快照"]
+        G["A2｜生成 / 投影<br/>Mod · GUI · loc · tests · docs"]
+        L0["A3｜静态 L0<br/>BOM · 引用 · scope · parity · build"]
+        OKQ{"A4｜open_kaishek<br/>是否覆盖该语义子集？"}
+        OK["离线 preflight<br/>CST → profile → IR / Runtime / replay"]
+        NA["NOT_APPLICABLE / UNSUPPORTED<br/>记录原因，不伪造 GREEN"]
+        NOTE["边界<br/>离线结果只加速，绝不升级为 CK3 live"]
+        I --> G --> L0 --> OKQ
+        OKQ -- "支持" --> OK
+        OKQ -- "不支持" --> NA
+        OK -.-> NOTE
+    end
 
-    I --> G --> L0 --> OKQ
-    OKQ -- "支持" --> OK --> BLD
-    OKQ -- "不支持" --> NA --> BLD
-    OK -.-> NOTE
-    BLD --> ISO --> RUN --> CK --> MCP --> OODA --> POST --> CLS
-    CLS -- "一致" --> GREEN --> GCLEAN --> GATE
-    CLS -- "不一致 / 超时 / 环境故障" --> RED --> RCLEAN --> NEXT
+    subgraph DELIVERY["production 投影与隔离"]
+        direction TB
+        BLD["B1｜release builder<br/>production-only staging + manifest"]
+        ISO["B2｜隔离与保护<br/>备份 · 一次性 userdir · 锁 · Steam offline"]
+        RUN["B3｜验收入口<br/>主 Mod · 白绮 · 牛来 · 361 · agent runners"]
+        BLD --> ISO --> RUN
+    end
+
+    subgraph LIVE["exact-build 实机闭环"]
+        direction TB
+        CK["C1｜exact-build CK3<br/>加载真实 production 投影"]
+        MCP["C2｜bridge + Official MCP<br/>版本 · generation · capabilities"]
+        OODA["C3｜runner / 智能体 OODA<br/>观察 → 决策 → semantic action"]
+        POST["C4｜后置验证<br/>typed state · paused frame · 必要 OCR / UI"]
+        CLS{"C5｜独立判定<br/>真实状态是否与合同一致？"}
+        CK --> MCP --> OODA --> POST --> CLS
+    end
+
+    subgraph VERDICT["证据、回收与发布裁决"]
+        direction TB
+        GREEN["GREEN<br/>冻结 artifact · report · media · hashes"]
+        GCLEAN["受控回收<br/>停止进程 · 恢复现场 · 释放锁"]
+        GATE["发布候选<br/>fresh-cache / Workshop 回读 / claim 审计"]
+        RED["RED<br/>区分 product / capability / harness / environment"]
+        RCLEAN["受控回收<br/>停止进程 · 恢复现场 · 释放锁"]
+        NEXT["↺ 最小下一施工入口<br/>修订合同、工具或能力后再验"]
+        GREEN --> GCLEAN --> GATE
+        RED --> RCLEAN --> NEXT
+    end
+
+    AUTHORING -->|"支持与不支持都必须留痕"| DELIVERY
+    DELIVERY -->|"只让 production 投影进游戏"| LIVE
+    LIVE -->|"一致：GREEN；不一致：RED"| VERDICT
+    VERDICT -. "修订合同、工具或能力后重跑" .-> AUTHORING
 
     style I fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
     style G fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px

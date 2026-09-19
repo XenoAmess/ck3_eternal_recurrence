@@ -1,34 +1,26 @@
-flowchart LR
-    subgraph DEFINE["01｜价值定义"]
-      direction TB
+flowchart TB
+    subgraph FORWARD["上行｜价值定义 → 产品投影 → 分层验收"]
+      direction LR
       A1(("玩家问题<br/>玩法假设"))
       A2["权威产品合同<br/>DomainSpec · 状态机 · 验收条件"]
-      A1 --> A2
-    end
-
-    subgraph BUILD["02｜产品投影"]
-      direction TB
       A3{{"结构化制造<br/>数据表 · 生成器 · Mod / GUI / 本地化 / 素材"}}
       A4{"分层验收<br/>合同与真实结果一致？"}
-      A3 --> A4
+      AR["保留 RED 与原始证据<br/>回到最早错误层"]
+      A1 --> A2 --> A3 --> A4
+      A4 -- "RED" --> AR
+      AR -. "修订规范，不修饰结果" .-> A2
     end
 
-    subgraph REALITY["03｜现实裁决"]
-      direction TB
+    subgraph RETURN["下行｜真实游玩 → 现实反馈 → 下一版假设"]
+      direction RL
       A5(["真实游玩<br/>玩家 + 自动玩家"])
       A6[("体验 · 平衡<br/>故障 · 新故事")]
-      A5 --> A6
+      A7(("下一版假设<br/>修订合同与优先级"))
+      A5 --> A6 --> A7
     end
 
-    A7(("下一版假设<br/>修订合同与优先级"))
-    AR["保留 RED 与原始证据<br/>回到最早错误层"]
-
-    A2 --> A3
-    A4 -- "GREEN" --> A5
-    A4 -- "RED" --> AR
-    AR -. "修订规范，不修饰结果" .-> A2
-    A6 --> A7
-    A7 == "进入下一轮" ==> A1
+    FORWARD -- "GREEN：进入真实世界" --> RETURN
+    RETURN == "进入下一轮" ==> FORWARD
 
     class A1,A7 loop;
     class A2 authority;

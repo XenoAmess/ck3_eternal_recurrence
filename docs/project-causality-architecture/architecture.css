@@ -28,15 +28,18 @@ svg {
   stroke-width: 2.2px;
 }
 
+/* Rounded engineering nodes are part of the Mermaid render, not post-processing. */
+g.node rect {
+  rx: 18px !important;
+  ry: 18px !important;
+}
+
+g.cluster rect {
+  rx: 24px !important;
+  ry: 24px !important;
+}
+
 .marker {
   fill: #91a9c0 !important;
   stroke: #91a9c0 !important;
-}
-
-/* Mermaid block diagrams currently emit an empty `undefined` spacer node. */
-g.node[id$="-undefined"] rect,
-g.node[id$="-undefined"] path,
-g.node[id$="-undefined"] polygon {
-  fill: transparent !important;
-  stroke: transparent !important;
 }

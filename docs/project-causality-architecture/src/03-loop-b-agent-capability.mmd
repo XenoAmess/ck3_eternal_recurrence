@@ -1,37 +1,29 @@
-flowchart LR
-    subgraph DISCOVERY["01｜blocker 与原生研究"]
-      direction TB
+flowchart TB
+    subgraph DISCOVERY["发现与解锁｜从 blocker 到可调用能力"]
+      direction LR
       B1(("长局遇到<br/>第一个 blocker"))
       B2["冻结事实边界<br/>build · EXE SHA · seed · checkpoint"]
       B3["原生研究<br/>数据定义 · 调用链 · 决策树 · unknown"]
-      B1 --> B2 --> B3
-    end
-
-    subgraph CAPABILITY["02｜观察与动作能力面"]
-      direction TB
       B4["只读 observation<br/>bridge → typed query → paused snapshot"]
       B5["semantic action<br/>重验 actor · target · legality · generation"]
-      B4 --> B5
+      B1 --> B2 --> B3 --> B4 --> B5
     end
 
-    subgraph AUTONOMY["03｜production OODA"]
-      direction TB
+    subgraph OODA["运行与回传｜production OODA 到下一 blocker"]
+      direction RL
       B6["World model + Planner<br/>候选 · 收益 · 风险 · 长期目标"]
       B7{"production OODA<br/>下一真实状态成立？"}
       B8[("checkpoint · outcome<br/>反例 · 能力债")]
+      B9(("更长无人接管<br/>暴露下一个 blocker"))
+      BR["ACK ≠ 成功<br/>状态不成立即形成新 blocker"]
       B6 --> B7
-      B7 -- "成立" --> B8
+      B7 -- "成立" --> B8 --> B9
+      B7 -- "不成立" --> BR
+      BR -. "补观察或动作，不伪造成功" .-> B6
     end
 
-    B9(("更长无人接管<br/>暴露下一个 blocker"))
-    BR["ACK ≠ 成功<br/>状态不成立即形成新 blocker"]
-
-    B3 --> B4
-    B5 --> B6
-    B7 -- "不成立" --> BR
-    BR -. "补观察或动作，不伪造成功" .-> B4
-    B8 --> B9
-    B9 == "继续深入长局" ==> B1
+    DISCOVERY -- "能力进入真实策略" --> OODA
+    OODA == "继续深入长局" ==> DISCOVERY
 
     class B1,B9 loop;
     class B2,B3 research;

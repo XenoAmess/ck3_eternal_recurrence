@@ -4,8 +4,17 @@
   "deterministicIds": true,
   "deterministicIDSeed": "project-causality-architecture-v1",
   "fontFamily": "Microsoft YaHei UI, Noto Sans CJK SC, Segoe UI, sans-serif",
+  "layout": "elk",
+  "elk": {
+    "mergeEdges": false,
+    "nodePlacementStrategy": "NETWORK_SIMPLEX",
+    "nodePlacementAlignment": "BALANCED",
+    "cycleBreakingStrategy": "GREEDY_MODEL_ORDER",
+    "considerModelOrder": "NODES_AND_EDGES",
+    "keepEntryNodeOnTop": true
+  },
   "flowchart": {
-    "curve": "basis",
+    "curve": "linear",
     "htmlLabels": true,
     "nodeSpacing": 42,
     "rankSpacing": 58,

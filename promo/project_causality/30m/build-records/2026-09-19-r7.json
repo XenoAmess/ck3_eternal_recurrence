@@ -1,0 +1,83 @@
+{
+  "format_version": 1,
+  "project": "project因果律",
+  "subtitle": "伪天司的辉煌愿景",
+  "build_id": "2026-09-19-r7",
+  "kind": "non_music_picture_lock_candidate",
+  "build_source_parent_commit": "aba6af95bd6ca703e61b1abfe99135a421e3cde2",
+  "supersedes": {
+    "build_id": "2026-09-19-r6",
+    "reason": "Retimed the 30:00 source to 25:30 by removing verified cue-tail slack, then integrated the native-Mermaid architecture atlas and generated chapter atmospheres."
+  },
+  "artifact": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r7/project-causality-r7-nomusic-picture-lock.mp4",
+    "bytes": 178377392,
+    "sha256": "F894CE57694229BE5DE9E92D510E2BB6F46F9E96732607FD5CB9857C4B7466A5",
+    "container_duration_seconds": 1530.020688,
+    "video_duration_seconds": 1530.0,
+    "width": 2560,
+    "height": 1440,
+    "frame_rate": 30,
+    "video_frames": 45900,
+    "video_codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio_codec": "aac",
+    "audio_sample_rate": 48000,
+    "audio_channels": 2,
+    "mean_volume_db": -23.4,
+    "max_volume_db": -4.1
+  },
+  "sidecar": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r7/project-causality-r7-nomusic-picture-lock.video.json",
+    "bytes": 120832,
+    "sha256": "0D39D1835DB87DC688B8BCD958EA1E56F43257D66276F0AE256EF315F5E01327"
+  },
+  "architecture": {
+    "figure_count": 11,
+    "video_plate_count": 58,
+    "architecture_seconds": 398.6666666666667,
+    "projection_mode": "native-mermaid-svg-full-topology-with-emphasis-only",
+    "node_reflow": false,
+    "all_sources_use_flowchart": true,
+    "native_aspect_ratio_range": [1.466, 2.393],
+    "rounded_nodes": true,
+    "plate_manifest_sha256": "7C3B691DF9189623CC110FD91B18C526FFAB5CF808C859ADE641CE3EA171C76F",
+    "atlas_manifest_sha256": "9B18EC03A2AE85D71EB46E310649BCDA98F5736E4351E459CC592CEBD6F20F93",
+    "shot_plan_sha256": "2FBA4F81FF4688A3F8C27B465765C946D38FB4CE99814B788C94F03A402F7D72"
+  },
+  "content": {
+    "rendered_cues": 86,
+    "chapter_gates": 4,
+    "chapter_gate_seconds_each": 20,
+    "narration": "zh-CN-XiaoxiaoNeural",
+    "subtitles": [
+      "Simplified Chinese primary burned subtitles",
+      "English secondary burned subtitles"
+    ],
+    "generated_atmosphere_scenes": 4,
+    "raw_avatar_composited": false,
+    "music_included": false,
+    "suno_operated": false
+  },
+  "automated_acceptance": {
+    "architecture_source_render_manifest": "GREEN 11/11",
+    "architecture_video_plate_manifest": "GREEN 58/58",
+    "media_probe": "GREEN",
+    "exact_frame_count": "GREEN 45900/45900",
+    "resolution_and_codec": "GREEN",
+    "audio_track_and_volume_probe": "GREEN",
+    "sixteen_frame_contact_sheet_review": "GREEN",
+    "blackdetect": "GREEN; only four intentional 3.166667-second chapter-gate black transitions",
+    "silencedetect": "GREEN; longest detected interval 7.446979 seconds at a chapter transition",
+    "chapter_gate_duration_lock": "GREEN 4 x 20 seconds"
+  },
+  "review_status": "awaiting_continuous_owner_review",
+  "publication_authorized": false,
+  "remaining_work": [
+    "Project owner watches the complete r7 picture lock at 1x and reports time-coded changes.",
+    "Project owner manually generates and returns Suno candidates plus rights metadata.",
+    "Post-production mixes selected music and regenerates all media receipts.",
+    "The music master receives a new complete continuous review before any publication decision."
+  ]
+}
+

@@ -6,6 +6,7 @@ flowchart TB
       D["产品 / 机制 / ABI 文档"]
       S["Schema / DomainSpec / 数据表"]
       V["原版 exact-build 快照 / 版本合同"]
+      D ~~~ S ~~~ V
     end
 
     GEN["生成器 / 投影器<br/>确定性展开与格式适配"]
@@ -17,35 +18,29 @@ flowchart TB
       P3["DDS / thumbnail / Workshop media"]
       P4["测试向量 / fixture / 文档表格"]
       P5["production-only staging"]
+      P1 ~~~ P2 ~~~ P3 ~~~ P4 ~~~ P5
     end
 
-    subgraph DELIVERY["从一致性检查到真实环境回读"]
+    subgraph DELIVERY["一致性检查、真实环境回读与返工入口"]
       direction LR
       PARITY["Parity / closure guards<br/>重建对比 · 引用闭包 · allowlist · hash"]
       REL["Deterministic ZIP + manifest"]
       LIVE["CK3 / Workshop / 浏览器真实结果"]
       FIX{"结果偏离权威来源？"}
+      RET1["↺ 实现错误<br/>回到生成器 / 投影器"]
+      RET2["↺ 需求变化 / 现实推翻文档<br/>先修订权威文档 / Schema"]
+      BAN["禁止直接补丁 generated files"]
       PARITY --> REL --> LIVE --> FIX
+      FIX -- "实现错误" --> RET1
+      FIX -- "权威变化" --> RET2
+      FIX -.-> BAN
     end
 
-    O --> D
-    O --> S
-    V --> D
-    D --> GEN
-    S --> GEN
-    V --> GEN
-    GEN --> P1
-    GEN --> P2
-    GEN --> P3
-    GEN --> P4
-    P1 --> P5
-    P2 --> P5
-    P3 --> P5
-    P4 --> PARITY
-    P5 --> PARITY
-    FIX -- "实现错误" --> RET1["↺ 回到生成器 / 投影器"]
-    FIX -- "需求变化 / 现实推翻文档" --> RET2["↺ 先修订权威文档 / Schema"]
-    FIX -.-> BAN["禁止直接补丁 generated files"]
+    O -- "约束含义" --> AUTH
+    AUTH -- "权威输入" --> GEN
+    GEN -- "一次生成，多种投影" --> PROJ
+    PROJ -- "同源闭包" --> DELIVERY
+    DELIVERY -. "返工必须回到正确源头" .-> AUTH
 
     class O human;
     class D,S,V auth;
@@ -53,8 +48,7 @@ flowchart TB
     class P1,P2,P3,P4,P5 projection;
     class PARITY,REL verify;
     class LIVE live;
-    class FIX decision;
-    class RET1,RET2 decision;
+    class FIX,RET1,RET2 decision;
     class BAN forbidden;
     classDef human fill:#4a2034,stroke:#ff8bb2,color:#fff7fb,stroke-width:3px;
     classDef auth fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px;

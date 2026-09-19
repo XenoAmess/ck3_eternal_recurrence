@@ -35,8 +35,8 @@
 
 ![《project因果律》整体架构](rendered/01-overall-system.svg)
 
-这张图用于总览或影片第一张“地图”。从上到下是人的价值判断、道的裁决、术的生产与验证、咒的可见产物；四个 Loop 把产物重新变成
-下一轮结构化输入。它刻意不把“辉煌愿景”画成已经完成的无人系统。
+这张图用于总览或影片第一张“地图”。四个原生 Mermaid 分区并列成适合宽屏阅读的因果链：人的价值判断与“道”的裁决，约束“术”的
+生产与验证，并落到“咒”的可见产物；四个 Loop 再把产物变成下一轮结构化输入。它刻意不把“辉煌愿景”画成已经完成的无人系统。
 
 ## 02–05｜四个无限演进 Loop
 
@@ -90,7 +90,8 @@ Official MCP、智能体或产品 runner 裁决。无论 GREEN 还是 RED，流�
 
 ## 视频化使用
 
-30 分钟正片不会把这些长图直接缩放成 16:9 插图。逐图时间码、安全区、局部巡航、四环实机插镜与 11 号图的横向重排规则见
+正片只使用 Mermaid 原生生成的节点坐标与边。后期可以在同一 SVG 坐标系里缩放镜头、降低非当前节点亮度，但禁止重新排列节点或重画边。
+逐图时间码、安全区、全拓扑高亮与四环实机插镜规则见
 [《架构图视频化导演方案》](video-integration-2560x1440.md)；机器可读分镜见
 [`promo/project_causality/30m/architecture-shot-plan.json`](../../promo/project_causality/30m/architecture-shot-plan.json)。
 
@@ -103,5 +104,13 @@ py tools/render_project_causality_architecture.py
 py tools/render_project_causality_architecture.py --check
 ```
 
-渲染器固定为 `@mermaid-js/mermaid-cli@11.12.0`。`render-manifest.json` 记录主题、源文件、SVG、PNG 的 SHA-256 和画布尺寸；`--check`
-用它发现 Mermaid 源与图片不同步。视频后期优先使用 SVG，剪辑软件不兼容 SVG 时再使用对应 PNG。
+渲染器固定为 `@mermaid-js/mermaid-cli@11.17.0`，使用 Mermaid 自带的 ELK 布局支持。源图原生纵横比必须位于 `1.40–2.45`；渲染器会读取
+SVG 的真实 `viewBox` 并拒绝不满足范围的图。这是源图合同，不是导出后裁图。`render-manifest.json` 记录主题、源文件、SVG、PNG 的 SHA-256、
+画布尺寸和原生纵横比；`--check` 用它发现 Mermaid 源与图片不同步。
+
+宽屏布局采用三条 Mermaid 原生规则：顶层方向负责全局横向骨架；子图内部方向负责局部阅读顺序；需要稳定同层关系时使用不可见边 `~~~`。
+Mermaid 明确说明：只要子图内部节点直接连向子图外，子图自己的方向就会被忽略，因此跨域关系优先连接整个 subgraph，再由域内节点承接语义。
+`mmdc -w/-H` 只控制浏览器视口，不能修复图的原生纵横比。参考：
+[Flowchart 语法与 subgraph 限制](https://mermaid.js.org/syntax/flowchart.html)、
+[Mermaid 布局配置](https://mermaid.js.org/config/layouts)、
+[Mermaid CLI](https://github.com/mermaid-js/mermaid-cli)。

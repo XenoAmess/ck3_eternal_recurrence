@@ -1,27 +1,47 @@
-block-beta
-    columns 3
-    F1["共享底座 1｜权威文档<br/>Schema · 数据表 · 产品合同"] F2["共享底座 2｜结构化制造<br/>生成器 · 静态校验 · release builders"] F3["共享底座 3｜离线语义<br/>open_kaishek preflight"]
-    space F5["共享底座 5｜证据与发行<br/>artifact · Workshop · GitHub · Promo"] F4["共享底座 4｜实机能力<br/>CK3 · native bridge · MCP · OCR"]
-    M1["玩家产品｜旗舰、人物与制度<br/>《琉焰卿的永恒轮回》<br/>《白绮特供版》·《天朝特色361》"] M2["玩家产品｜轻量玩法与体验工具<br/>《牛来》·《XenoAmess的体验优化》<br/>《自动升级建筑》维护版"] M3["玩家产品｜世界规则与外交<br/>《重整河山》·《肃清曼荼罗伪信》<br/>《驱策朝贡国》"]
-    T1["开发者产品｜游玩与语义<br/>CK3 自动游玩智能体 · open_kaishek"] T2["开发者产品｜创作与发布<br/>CK3 家徽编辑器 · CK3 Workshop MCP"] T3["开发者产品｜证据与传播<br/>Promo · show-off · evidence tooling"]
-    PA["玩家产品族出口"] space DA["开发者产品族出口"]
-    space USERS["用户<br/>玩家 · Mod 作者 · 项目操作者"] space
-    space FEEDBACK["↺ 外部现实<br/>真实游玩 · 下载物 · 故障 · 新需求<br/>分别回到各产品权威合同"] space
+flowchart TB
+    subgraph FOUNDATION["共享工程底座"]
+        direction LR
+        F1["权威文档<br/>Schema · 数据表 · 产品合同"]
+        F2["结构化制造<br/>生成器 · 静态校验 · release builders"]
+        F3["离线语义<br/>open_kaishek preflight"]
+        F4["实机能力<br/>CK3 · native bridge · MCP · OCR"]
+        F5["证据与发行<br/>artifact · Workshop · GitHub · Promo"]
+        F1 --> F2 --> F3 --> F4 --> F5
+    end
 
-    F1 --> F2 --> F3 --> F4 --> F5
-    F2 --> M2
-    F3 --> T1
-    F4 --> T2
-    F5 --> T3
-    M1 --> PA
-    M2 --> PA
-    M3 --> PA
-    T1 --> DA
-    T2 --> DA
-    T3 --> DA
-    PA --> USERS
-    DA --> USERS
+    subgraph PRODUCTS["共享底座投影出的两类产品"]
+        direction LR
+    subgraph PLAYER["玩家产品族"]
+        direction TB
+        M1["旗舰、人物与制度<br/>《琉焰卿的永恒轮回》<br/>《白绮特供版》·《天朝特色361》"]
+        M2["轻量玩法与体验工具<br/>《牛来》·《XenoAmess的体验优化》<br/>《自动升级建筑》维护版"]
+        M3["世界规则与外交<br/>《重整河山》·《肃清曼荼罗伪信》<br/>《驱策朝贡国》"]
+        PA["玩家产品族出口"]
+        M1 --> PA
+        M2 --> PA
+        M3 --> PA
+    end
+
+    subgraph DEVELOPER["开发者产品族"]
+        direction TB
+        T1["游玩与语义<br/>CK3 自动游玩智能体 · open_kaishek"]
+        T2["创作与发布<br/>CK3 家徽编辑器 · CK3 Workshop MCP"]
+        T3["证据与传播<br/>Promo · show-off · evidence tooling"]
+        DA["开发者产品族出口"]
+        T1 --> DA
+        T2 --> DA
+        T3 --> DA
+    end
+    PLAYER ~~~ DEVELOPER
+    end
+
+    USERS(["用户<br/>玩家 · Mod 作者 · 项目操作者"])
+    FEEDBACK["↺ 外部现实<br/>真实游玩 · 下载物 · 故障 · 新需求<br/>分别回到各产品权威合同"]
+
+    FOUNDATION -->|"同一套工程能力"| PRODUCTS
+    PRODUCTS --> USERS
     USERS --> FEEDBACK
+    FEEDBACK -. "问题进入各自产品合同" .-> FOUNDATION
 
     style F1 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
     style F2 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px

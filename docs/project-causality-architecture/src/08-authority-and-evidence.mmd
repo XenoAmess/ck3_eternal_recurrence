@@ -1,15 +1,41 @@
-block-beta
-    columns 4
-    N1["规范权威 1<br/>所有者明确意图与项目级约束"] N2["规范权威 2<br/>权威产品 / 机制 / ABI 文档与 Schema"] N3["规范权威 3<br/>测试合同"] N4["规范权威 4<br/>实现代码"]
-    F1["经验事实 1<br/>CK3 exact-build 行为 + 冻结 artifact"] F2["经验事实 2<br/>可复现实机测试"] F3["经验事实 3<br/>离线 / 静态测试与源码推断"] F4["经验事实 4<br/>进度摘要与宣传表述"]
-    space C["裁决｜规范与事实冲突？"] R1["保留 RED 与原始证据"] R2["先修订权威文档 / Schema"]
-    space WARN["禁止<br/>用宣传、ACK 或测试数量改写事实"] READY["readiness 只随新增证据升级<br/>research → static-ready → fixture-live<br/>→ production-live primitive → loop → complete"] R3["再修测试，最后修代码"]
+flowchart LR
+    subgraph NORM["规范权威｜应该发生什么"]
+        direction TB
+        N1["规范权威 1<br/>所有者明确意图与项目级约束"]
+        N2["规范权威 2<br/>权威产品 / 机制 / ABI 文档与 Schema"]
+        N3["规范权威 3<br/>测试合同"]
+        N4["规范权威 4<br/>实现代码"]
+        N1 --> N2 --> N3 --> N4
+    end
 
-    N1 --> N2 --> N3 --> N4 --> C
-    F1 --> F2 --> F3 --> F4 --> C
-    C -- "是" --> R1 --> R2 --> R3 --> READY
-    C -- "否" --> READY
-    READY -.-> WARN
+    subgraph FACT["经验事实｜实际上发生什么"]
+        direction TB
+        F1["经验事实 1<br/>CK3 exact-build 行为 + 冻结 artifact"]
+        F2["经验事实 2<br/>可复现实机测试"]
+        F3["经验事实 3<br/>离线 / 静态测试与源码推断"]
+        F4["经验事实 4<br/>进度摘要与宣传表述"]
+        F1 --> F2 --> F3 --> F4
+    end
+
+    C{"裁决<br/>规范与事实冲突？"}
+
+    subgraph REPAIR["冲突回写"]
+        direction TB
+        R1["保留 RED<br/>与原始证据"]
+        R2["先修订权威<br/>文档 / Schema"]
+        R3["再修测试<br/>最后修代码"]
+        R1 --> R2 --> R3
+    end
+
+    READY["readiness 只随新增证据升级<br/>research → static-ready → fixture-live<br/>→ production-live primitive → loop → complete"]
+    WARN["禁止<br/>用宣传、ACK 或测试数量改写事实"]
+
+    NORM -->|"规范输入"| C
+    FACT -->|"经验输入"| C
+    C -- "冲突" --> REPAIR
+    C -- "一致" --> READY
+    REPAIR --> READY
+    READY -. "边界" .-> WARN
 
     style N1 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
     style N2 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px

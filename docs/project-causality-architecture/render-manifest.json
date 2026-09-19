@@ -1,243 +1,259 @@
 {
   "schema": "project-causality-architecture-render-manifest.v1",
-  "renderer": "@mermaid-js/mermaid-cli@11.12.0",
+  "renderer": "@mermaid-js/mermaid-cli@11.17.0",
   "background": "#07111f",
   "png_scale": 3,
+  "native_video_aspect_contract": {
+    "minimum": 1.4,
+    "maximum": 2.45,
+    "semantic": "Mermaid source layout; no downstream node reflow"
+  },
   "config": "docs/project-causality-architecture/mermaid-config.json",
-  "config_sha256": "830270B2FB1AFD1080C42CBE1C47F82834FBB38373AFDACFCABBBA2342D9D3D5",
+  "config_sha256": "7919557402B59E626DC9A809EE5DC217D825DEB41B2221B7765EF1CAFBDA7E7D",
   "css": "docs/project-causality-architecture/architecture.css",
-  "css_sha256": "7026225C3C936194811BD2CBEF9E0CADEE80ECBB218373BEE4CCB639A82109DE",
+  "css_sha256": "059A082AE35DE578C42EC3955315C48ED237E2CECC9A9A3405224F30101EA71E",
   "figures": [
     {
       "id": "01-overall-system",
       "source": "docs/project-causality-architecture/src/01-overall-system.mmd",
-      "source_sha256": "FB5852F6384F7C7B96809997D4EB50A097B02CABA6C6EBA1B3A10E9447EAA1C8",
+      "source_sha256": "A8885794B6E54C2B2A0E678AEB82E714397E348BA4AF550E806DEEC22CA44C85",
       "svg": "docs/project-causality-architecture/rendered/01-overall-system.svg",
-      "svg_sha256": "CD97088034981AE5D61DD4656DE4368BA3BD55D446058181B508EFC51FD7580A",
+      "svg_sha256": "A2B800A80425CAEF5343647EA8893757DB95B549CA061D0636DAE38403648E39",
       "svg_geometry": {
         "view_box": [
-          0.0,
-          0.0,
-          1842.578125,
-          2025.5
+          4.0,
+          4.0,
+          1981.0,
+          904.5
         ],
-        "width": 1842.578125,
-        "height": 2025.5
+        "width": 1981.0,
+        "height": 904.5
       },
+      "native_aspect_ratio": 2.19016,
       "png": "docs/project-causality-architecture/rendered/01-overall-system.png",
-      "png_sha256": "D03B4E66F6C9FB9874CD983A61CFC3F69B8ACDCE8F5293FB52B672C3035256CC",
-      "png_width": 5529,
-      "png_height": 6078
+      "png_sha256": "B5F30248D6C17F97978FBFFB52FEBFF0832A408267FA6D9E7ED82C3C045D4D97",
+      "png_width": 5943,
+      "png_height": 2715
     },
     {
       "id": "02-loop-a-player-products",
       "source": "docs/project-causality-architecture/src/02-loop-a-player-products.mmd",
-      "source_sha256": "576233C5B439D1D742DBF17D7DE5352073D8474B57C5E6F4D2463DC787F37C19",
+      "source_sha256": "F7CC15FF0A7AEFB09C0D45D88FA5CF7B8B3C492BD6BAF07EABD1D25ED12BF622",
       "svg": "docs/project-causality-architecture/rendered/02-loop-a-player-products.svg",
-      "svg_sha256": "C4E4392359A3899AF6A6CACA9DF95C875F4D7D5E1DA8D550EB8BA0B839E8300C",
+      "svg_sha256": "61B03644EC1A7A8D7574A9CD1FFBC60C5A77D193EDB65FC2F0744052098EDE18",
       "svg_geometry": {
         "view_box": [
-          0.0,
-          0.0,
-          2121.140625,
-          477.99072265625
+          4.0,
+          4.0,
+          1399.125,
+          725.5
         ],
-        "width": 2121.140625,
-        "height": 477.99072265625
+        "width": 1399.125,
+        "height": 725.5
       },
+      "native_aspect_ratio": 1.928498,
       "png": "docs/project-causality-architecture/rendered/02-loop-a-player-products.png",
-      "png_sha256": "77FB6BB1027573B4CC30A15188009FC6ACB05B6BEA3F415AD2EE972BD6875CDF",
-      "png_width": 6366,
-      "png_height": 1434
+      "png_sha256": "8C20B378FE8F452E25A71B367CF0A28CEEC9B51E47A23238926EA7E0E97243C8",
+      "png_width": 4200,
+      "png_height": 2178
     },
     {
       "id": "03-loop-b-agent-capability",
       "source": "docs/project-causality-architecture/src/03-loop-b-agent-capability.mmd",
-      "source_sha256": "145ADD69D2252E9CEAAB68CDE118FBB44A15A1AC1CCCA0D0E7F6E077C1F4E454",
+      "source_sha256": "EFC27EE438071560913135948420D75F97F4499140443C2F81B6AB33B9957E48",
       "svg": "docs/project-causality-architecture/rendered/03-loop-b-agent-capability.svg",
-      "svg_sha256": "94BD37BA0E29C55DADC62EA40FDF3FEAA447F81577C17EF83F579F3DF6C293F1",
+      "svg_sha256": "2AEFF778A7E8C5B321C41E543FDCC57C8410197DC1330BB8661753E90808FC12",
       "svg_geometry": {
         "view_box": [
-          0.0,
-          0.0,
-          2822.5625,
-          559.3203125
+          4.0,
+          4.0,
+          1347.78125,
+          741.0625
         ],
-        "width": 2822.5625,
-        "height": 559.3203125
+        "width": 1347.78125,
+        "height": 741.0625
       },
+      "native_aspect_ratio": 1.818715,
       "png": "docs/project-causality-architecture/rendered/03-loop-b-agent-capability.png",
-      "png_sha256": "074E5EEE3110EDAADF01AD528247F900CC526813BD2A74476D006BF5D29A12EC",
-      "png_width": 8469,
-      "png_height": 1680
+      "png_sha256": "7CABC80BE3D5B8321058EF2A43E273500249B8FCFFF3CC069C98420F27042718",
+      "png_width": 4044,
+      "png_height": 2226
     },
     {
       "id": "04-loop-c-tooling-semantics",
       "source": "docs/project-causality-architecture/src/04-loop-c-tooling-semantics.mmd",
-      "source_sha256": "9441B466FD0DBF609D3D9EB5975E7059924999A9BEBF372344CF64AD7259DF09",
+      "source_sha256": "1E66B5BC8B7A210E35A57EA5E19A03A4949525937EDDA955E794CAD326A44E3B",
       "svg": "docs/project-causality-architecture/rendered/04-loop-c-tooling-semantics.svg",
-      "svg_sha256": "D4212582527C0BC176E155EB378D7D5739AE257DBE1999C3D752B4F1AD084CF4",
+      "svg_sha256": "FB083316F56E24D698DFFD53BDB3C10E614E1A50627FEFDFF272B3A60B9802FD",
       "svg_geometry": {
         "view_box": [
-          0.0,
-          0.0,
-          2981.71875,
-          718.34765625
+          4.0,
+          4.0,
+          1725.984375,
+          780.609375
         ],
-        "width": 2981.71875,
-        "height": 718.34765625
+        "width": 1725.984375,
+        "height": 780.609375
       },
+      "native_aspect_ratio": 2.211073,
       "png": "docs/project-causality-architecture/rendered/04-loop-c-tooling-semantics.png",
-      "png_sha256": "565AE4CFA191E25ECB619F81E140D2E54B178BF6B90661FCB87113CE6FD0884E",
-      "png_width": 8946,
-      "png_height": 2157
+      "png_sha256": "A72E3DAB70FB01AE2527B57F081F2C481B875E04E737967F2479C25A11FF3A0B",
+      "png_width": 5178,
+      "png_height": 2343
     },
     {
       "id": "05-loop-d-evidence-release",
       "source": "docs/project-causality-architecture/src/05-loop-d-evidence-release.mmd",
-      "source_sha256": "D8E441976690AF171918825E66BDEAC1CA403144AB5A3172EA5F15F9E4B55475",
+      "source_sha256": "89792334BA3853B4B81CE6FF531EAE57E4AA8686630E119F175B9F67338CFE81",
       "svg": "docs/project-causality-architecture/rendered/05-loop-d-evidence-release.svg",
-      "svg_sha256": "D7935FFC076CA5D981A39EE787F6BB24525EAC7AC59D2870A6487F402B9C40DF",
+      "svg_sha256": "B5C95FD29A5209CBA26E7F72B8788FEE2479080A7402BBEC5C5DC9523F25317D",
       "svg_geometry": {
         "view_box": [
-          0.0,
-          0.0,
-          2579.5,
-          622.6640625
+          4.0,
+          4.0,
+          1361.5,
+          929.0
         ],
-        "width": 2579.5,
-        "height": 622.6640625
+        "width": 1361.5,
+        "height": 929.0
       },
+      "native_aspect_ratio": 1.465554,
       "png": "docs/project-causality-architecture/rendered/05-loop-d-evidence-release.png",
-      "png_sha256": "E93C4651F8650D34C21B2587B31B1F82950DDE8B9719825D0166DCCC6A9992B0",
-      "png_width": 7740,
-      "png_height": 1869
+      "png_sha256": "4F82ED3CDC500C6B1AEB5B4E1383BD5707AA61853AC14BF7A4533D6BD51899D5",
+      "png_width": 4086,
+      "png_height": 2787
     },
     {
       "id": "06-agent-mcp-architecture",
       "source": "docs/project-causality-architecture/src/06-agent-mcp-architecture.mmd",
-      "source_sha256": "E6DBC753183175D8F4C301A78AB1C730A5B9D6123DF15CF67E56D886714C71B2",
+      "source_sha256": "C6349504A18818BE4E96A9AF9A2B07A4328C2759ED8C9F92259B183E80ECA9B3",
       "svg": "docs/project-causality-architecture/rendered/06-agent-mcp-architecture.svg",
-      "svg_sha256": "C6E9B49EF0FD1FA02E8424094A144E4426F4B5FD1F2B07E452FBCFB5F96F5479",
+      "svg_sha256": "2BBE4B58E3D7ACB1BE55EFBC8451A2FD16C7E3E9F2711B6E577F65C489491FDD",
       "svg_geometry": {
         "view_box": [
-          0.0,
-          0.0,
-          2192.3984375,
-          1787.0
+          4.0,
+          4.0,
+          2534.296875,
+          1059.0
         ],
-        "width": 2192.3984375,
-        "height": 1787.0
+        "width": 2534.296875,
+        "height": 1059.0
       },
+      "native_aspect_ratio": 2.393104,
       "png": "docs/project-causality-architecture/rendered/06-agent-mcp-architecture.png",
-      "png_sha256": "46DD9498673854EE9A942F290379F1B6103526B68E697E966D05EDAAAE5295F9",
-      "png_width": 6579,
-      "png_height": 5361
+      "png_sha256": "4231494EA58BBB8EE09D0A3B7995A8FF6364E9EB4B0CDCFEF0501AB8673EEFE4",
+      "png_width": 7605,
+      "png_height": 3177
     },
     {
       "id": "07-automated-acceptance",
       "source": "docs/project-causality-architecture/src/07-automated-acceptance.mmd",
-      "source_sha256": "8FB07F63830831F15C59F1EBEA04DB25E14D55B6A35DB8FF4EEFCE846993AD2C",
+      "source_sha256": "57C26A27F732BE7EF2B40040607EAA404B1DC7F1C20F70EF229A592BC9FAD8ED",
       "svg": "docs/project-causality-architecture/rendered/07-automated-acceptance.svg",
-      "svg_sha256": "9D4FF7A960510F0A209B33E498F1A6C67E44BE2E721C5B264051BA7D537D3B1E",
+      "svg_sha256": "6096105925AEAAC4A0C038C12BB76EEB9DC5905A56D6A2EE3C8A6F6BD07F935E",
       "svg_geometry": {
         "view_box": [
-          -5.0,
-          -263.5,
-          1756.0,
-          527.0
+          4.0,
+          4.0,
+          2640.5,
+          1186.5
         ],
-        "width": 1756.0,
-        "height": 527.0
+        "width": 2640.5,
+        "height": 1186.5
       },
+      "native_aspect_ratio": 2.225453,
       "png": "docs/project-causality-architecture/rendered/07-automated-acceptance.png",
-      "png_sha256": "9463F4A5420C2031782332C3F5654770094CF145A98043BBE375F9288C4B7447",
-      "png_width": 2352,
-      "png_height": 708
+      "png_sha256": "C50216287B9EB2095935E2FC89A5A6A0044274ACC705FA13CA36FB3E6C9AB708",
+      "png_width": 7923,
+      "png_height": 3561
     },
     {
       "id": "08-authority-and-evidence",
       "source": "docs/project-causality-architecture/src/08-authority-and-evidence.mmd",
-      "source_sha256": "E2CD44A4FEEA0C6F037A1DC77D39EBD1B1522A2203C7F59CA96C53F822BC8497",
+      "source_sha256": "15531E1CCE682E5204A06FEAEC28862AC241B2D30C36BB35198AD3EFD6C3E671",
       "svg": "docs/project-causality-architecture/rendered/08-authority-and-evidence.svg",
-      "svg_sha256": "22266E94945228972EB041291E2452EE3001B08E60EB57DA2E7B399BF3C00D08",
+      "svg_sha256": "FE9865354AF80DBD8BE069956A6EB2B56E1E48D2704BCED191FF5F8D9B90BE3E",
       "svg_geometry": {
         "view_box": [
-          -5.0,
-          -252.25,
-          1725.0,
-          504.5
+          4.0,
+          4.0,
+          1670.109375,
+          1132.5
         ],
-        "width": 1725.0,
-        "height": 504.5
+        "width": 1670.109375,
+        "height": 1132.5
       },
+      "native_aspect_ratio": 1.47471,
       "png": "docs/project-causality-architecture/rendered/08-authority-and-evidence.png",
-      "png_sha256": "7F3E819468EC7991CF3C9E9E94DD1111440ECBA55B92A06801076B34DA00FB3C",
-      "png_width": 2352,
-      "png_height": 690
+      "png_sha256": "8F82314DAC95A1AA4F978012D0324D725E1E7BC699D4EB0FCCF5812AA46EDC90",
+      "png_width": 5013,
+      "png_height": 3399
     },
     {
       "id": "09-product-family",
       "source": "docs/project-causality-architecture/src/09-product-family.mmd",
-      "source_sha256": "F0364D60354ED13C7A88FC89BC1F08AA75077F0F47751D2B63580F443E75AE13",
+      "source_sha256": "7441857EFAE3D95240B9D73D5B72F76E27FBEF3FB49FA08C759FB856871644D1",
       "svg": "docs/project-causality-architecture/rendered/09-product-family.svg",
-      "svg_sha256": "C6DD93CE2316BA759294A61D8D488C7EB17F4182F26CB4DB3387FD2868056FFF",
+      "svg_sha256": "F5F448A80C8071041F1EBDF34925612F729BB87511726C38BC799D0B4E097923",
       "svg_geometry": {
         "view_box": [
-          -5.0,
-          -403.0,
-          1022.9375,
-          806.0
+          4.0,
+          4.0,
+          1822.0,
+          941.0
         ],
-        "width": 1022.9375,
-        "height": 806.0
+        "width": 1822.0,
+        "height": 941.0
       },
+      "native_aspect_ratio": 1.936238,
       "png": "docs/project-causality-architecture/rendered/09-product-family.png",
-      "png_sha256": "BCBAABCA71F1656FAC39C43E1E364AA8521D32FED367C266E39DDA2830A6BBD6",
-      "png_width": 2352,
-      "png_height": 1854
+      "png_sha256": "A2B7C19CD5DB4694A9E61BF909523FE2F2D06CA3501B161A0B8419737E59639F",
+      "png_width": 5466,
+      "png_height": 2823
     },
     {
       "id": "10-source-of-truth-projections",
       "source": "docs/project-causality-architecture/src/10-source-of-truth-projections.mmd",
-      "source_sha256": "DB66DFC4AD8C21942BA01FDA847CCDFE56376317878B7D64E3FAB29E6538DE5F",
+      "source_sha256": "8C6B84170D558CF50485C7AC74E9F1D3EC99E379FA97E49082066B4B5DEB7873",
       "svg": "docs/project-causality-architecture/rendered/10-source-of-truth-projections.svg",
-      "svg_sha256": "D410C14C0DC78AF1C6E6034C14C183F228FBC55E0139FE6EDEFFE6A93366BE60",
+      "svg_sha256": "7F92E95BF005BB62FD30DF0A080D681DCD6A6A069D798CE2CE0141BEFBA1296E",
       "svg_geometry": {
         "view_box": [
-          0.0,
-          0.0,
-          1288.38671875,
-          1720.5
+          4.0,
+          4.0,
+          2023.3125,
+          1173.0
         ],
-        "width": 1288.38671875,
-        "height": 1720.5
+        "width": 2023.3125,
+        "height": 1173.0
       },
+      "native_aspect_ratio": 1.724904,
       "png": "docs/project-causality-architecture/rendered/10-source-of-truth-projections.png",
-      "png_sha256": "03C0C190EA858724063D9FFA9E5AD4E4229397C4DFC2CCD401DC5CC15CF65B7A",
-      "png_width": 3867,
-      "png_height": 5163
+      "png_sha256": "032D438BAAC9C6E9DBC87B63E1083C7620FF9B5240F7731ECC7101501ED1ED23",
+      "png_width": 6072,
+      "png_height": 3519
     },
     {
       "id": "11-four-loop-flywheel",
       "source": "docs/project-causality-architecture/src/11-four-loop-flywheel.mmd",
-      "source_sha256": "5A41E9D792B508FD76B2776C5E7B2AE0DD94CB6CA5028E645136A4EC4D24C60A",
+      "source_sha256": "14A2521B7A775238018D2AD087868A83C3F085CC87C2E7EC2EA237447B03F101",
       "svg": "docs/project-causality-architecture/rendered/11-four-loop-flywheel.svg",
-      "svg_sha256": "CB014CA242F6DB9CEA7B891AD339FA467F436E5E51B703258610316171B11DC4",
+      "svg_sha256": "557E48E4FE7CE86BE81D391B3736C127FFD89C36053ADF539FA1E80375BEE554",
       "svg_geometry": {
         "view_box": [
-          0.0,
-          0.0,
-          898.8125,
-          1102.5
+          4.0,
+          4.0,
+          1529.59375,
+          654.5
         ],
-        "width": 898.8125,
-        "height": 1102.5
+        "width": 1529.59375,
+        "height": 654.5
       },
+      "native_aspect_ratio": 2.337042,
       "png": "docs/project-causality-architecture/rendered/11-four-loop-flywheel.png",
-      "png_sha256": "9C2D04E6211721FD5777048E956F90FF3BFF2332CDAF116BC04470F1BEB34FB4",
-      "png_width": 2697,
-      "png_height": 3309
+      "png_sha256": "3B899E71BC0B522B87C51EB7800AF86643B99E99E586FBDE52F4A415C99296FC",
+      "png_width": 4590,
+      "png_height": 1965
     }
   ]
 }

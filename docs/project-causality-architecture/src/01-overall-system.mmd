@@ -1,30 +1,35 @@
-flowchart TB
-    H["人类：愿景 · 价值判断 · 审美 · 发布签核"]
-
-    subgraph DAO["道｜裁决系统"]
+flowchart LR
+    subgraph GOVERN["道｜人类意图与裁决系统"]
+      direction TB
+      H["人类<br/>愿景 · 价值判断 · 审美 · 发布签核"]
       D1["规范权威<br/>所有者意图 ＞ 文档 / Schema ＞ 测试 ＞ 代码"]
       D2["经验事实<br/>CK3 exact-build + 冻结 artifact ＞ 推断与宣传"]
       D3["边界<br/>版本绑定 · 证据分级 · 玩家价值优先 · 诚实声明"]
+      H --> D1 --> D2 --> D3
     end
 
-    subgraph SHU["术｜生产与验证系统"]
+    subgraph METHOD["术｜生产、实机验证与交付系统"]
+      direction TB
       S1["定义<br/>产品合同 · DomainSpec · 原生决策树"]
       S2["制造<br/>数据源 · 生成器 · 素材投影"]
       S3["语义工具<br/>open_kaishek · profile · Runtime · replay"]
       S4["实机能力<br/>native bridge · MCP · OCR / UI"]
       S5["执行与裁决<br/>智能体 · runners · CK3 · evidence"]
       S6["交付<br/>production staging · manifest · ZIP · Promo"]
+      S1 --> S2 --> S3 --> S4 <--> S5 --> S6
     end
 
-    subgraph ZHOU["咒｜用户与开发者可直接得到的产物"]
+    subgraph PRODUCTS["咒｜用户与开发者可直接得到的产物"]
+      direction TB
       Z1["玩家产品族<br/>旗舰轮回 + 独立 Mod"]
       Z2["自动游玩智能体<br/>有界 production-live OODA"]
       Z3["开发者产品<br/>open_kaishek · 家徽编辑器 · Workshop MCP"]
       Z4["公开交付<br/>Workshop · GitHub Release · 文档 · 影片"]
+      Z1 ~~~ Z2 ~~~ Z3 ~~~ Z4
     end
 
     subgraph VISION["辉煌愿景｜四环飞轮"]
-      direction LR
+      direction TB
       A(("A<br/>玩家产品"))
       B(("B<br/>智能体能力"))
       C(("C<br/>工具与语义"))
@@ -33,26 +38,10 @@ flowchart TB
       E -. "外部反馈进入下一轮" .-> A
     end
 
-    H --> D1
-    H --> D3
-    D1 --> S1
-    D2 --> S4
-    D3 --> S5
-    S1 --> S2
-    S1 --> S3
-    S2 --> S5
-    S3 --> S5
-    S4 <--> S5
-    S5 --> S6
-    S2 --> Z1
-    S5 --> Z2
-    S3 --> Z3
-    S6 --> Z4
-    Z1 --> A
-    Z2 --> B
-    Z3 --> C
-    Z4 --> E
-    E -. "反馈 · RED · 新故事 · 新版本" .-> H
+    GOVERN -- "权威约束" --> METHOD
+    METHOD -- "真实结果形成产品、工具与交付" --> PRODUCTS
+    PRODUCTS -- "分别进入四个演进环" --> VISION
+    VISION -. "反馈 · RED · 新故事 · 新版本" .-> GOVERN
 
     class H human;
     class D1,D2,D3 dao;

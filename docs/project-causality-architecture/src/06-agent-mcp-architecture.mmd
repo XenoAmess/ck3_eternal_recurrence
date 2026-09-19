@@ -1,6 +1,6 @@
-flowchart TB
+flowchart LR
     subgraph GAME["CK3 exact-build｜最终裁决"]
-      direction LR
+      direction TB
       G1["原生对象 / GUI tree / 游戏时钟"]
       G2["玩家可见画面"]
       G3["新 paused frame<br/>真实后置状态"]
@@ -9,7 +9,7 @@ flowchart TB
     end
 
     subgraph CAP["MCP 能力平面"]
-      direction LR
+      direction TB
       N1["exact-build C++ adapter<br/>版本与 EXE SHA 绑定"]
       N2["主线程 mailbox / named pipe<br/>generation · timeout · stale rejection"]
       N3["typed wire schema<br/>stable identity · readiness · error semantics"]
@@ -21,8 +21,8 @@ flowchart TB
       A --> M1
     end
 
-    subgraph AGENT["自动游玩智能体"]
-      direction LR
+    subgraph AGENT["自动游玩智能体｜OODA 与长期记忆"]
+      direction TB
       P1["Supervisor<br/>隔离 userdir · 启停 · 锁 · 回收"]
       P2["Perception<br/>typed query + 合法 OCR / UI"]
       P3["World model<br/>角色 · 资源 · 战争 · 事件 · 长期目标"]
@@ -30,30 +30,24 @@ flowchart TB
       P5["Executor<br/>MCP action / 原生快捷键 / 必要 UI"]
       P6["Verifier<br/>独立读取，而非相信 ACK"]
       P7["Episode manager + Memory<br/>checkpoint · death · outcome · 能力债"]
-      P1 --> P2 --> P3 --> P4 --> P5
-      P6 --> P7 --> P3
+      P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
+      P7 -. "经验进入下一轮 world model" .-> P3
     end
 
     subgraph EVIDENCE["证据与边界"]
-      direction LR
+      direction TB
       E1["action / result journal"]
       E2["paused snapshot · screenshot · OCR mapping"]
       E3["artifact · hash · readiness level"]
       E4["禁止<br/>任意内存写 · debug 改结果 · 隐藏信息泄露"]
+      E1 --> E2 --> E3
+      E4 -. "能力面与策略边界" .-> E1
     end
 
-    G1 --> N1
-    Q --> P2
-    P5 --> A
-    G3 --> Q
-    G2 --> P2
-    G3 --> P6
-    G2 --> P6
-    P5 -. "ACK：只表示接收 / 执行阶段" .-> P6
-    P5 --> E1
-    P6 --> E2 --> E3
-    E4 -. "能力面约束" .-> N1
-    E4 -. "正式策略约束" .-> P4
+    GAME -- "原生状态" --> CAP
+    CAP -- "typed query / semantic action" --> AGENT
+    AGENT -- "新状态回到 CK3，再独立读取" --> GAME
+    AGENT -- "journal + snapshot + outcome" --> EVIDENCE
 
     class G1,G2,G3 game;
     class N1,N2,N3,M1,Q,A cap;

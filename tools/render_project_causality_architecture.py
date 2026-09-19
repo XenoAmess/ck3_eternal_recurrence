@@ -23,9 +23,11 @@ RENDERED = ATLAS / "rendered"
 CONFIG = ATLAS / "mermaid-config.json"
 CSS = ATLAS / "architecture.css"
 MANIFEST = ATLAS / "render-manifest.json"
-MERMAID_PACKAGE = "@mermaid-js/mermaid-cli@11.12.0"
+MERMAID_PACKAGE = "@mermaid-js/mermaid-cli@11.17.0"
 BACKGROUND = "#07111f"
 PNG_SCALE = 3
+MIN_VIDEO_ASPECT = 1.40
+MAX_VIDEO_ASPECT = 2.45
 
 
 def sha256(path: Path) -> str:
@@ -87,7 +89,9 @@ def render_one(npx: str, source: Path, destination: Path) -> None:
         str(PNG_SCALE),
         "-q",
     ]
-    subprocess.run(command, cwd=ROOT, check=True)
+    environment = os.environ.copy()
+    environment.setdefault("PUPPETEER_SKIP_DOWNLOAD", "true")
+    subprocess.run(command, cwd=ROOT, env=environment, check=True)
 
 
 def expected_sources() -> list[Path]:
@@ -103,6 +107,13 @@ def build_manifest(sources: list[Path]) -> dict[str, object]:
         svg = RENDERED / f"{source.stem}.svg"
         png = RENDERED / f"{source.stem}.png"
         width, height = png_dimensions(png)
+        geometry = svg_dimensions(svg)
+        aspect_ratio = float(geometry["width"]) / float(geometry["height"])
+        if not MIN_VIDEO_ASPECT <= aspect_ratio <= MAX_VIDEO_ASPECT:
+            raise ValueError(
+                f"{source.name} native Mermaid aspect ratio {aspect_ratio:.3f} "
+                f"is outside {MIN_VIDEO_ASPECT:.2f}..{MAX_VIDEO_ASPECT:.2f}"
+            )
         figures.append(
             {
                 "id": source.stem,
@@ -110,7 +121,8 @@ def build_manifest(sources: list[Path]) -> dict[str, object]:
                 "source_sha256": sha256(source),
                 "svg": svg.relative_to(ROOT).as_posix(),
                 "svg_sha256": sha256(svg),
-                "svg_geometry": svg_dimensions(svg),
+                "svg_geometry": geometry,
+                "native_aspect_ratio": round(aspect_ratio, 6),
                 "png": png.relative_to(ROOT).as_posix(),
                 "png_sha256": sha256(png),
                 "png_width": width,
@@ -122,6 +134,11 @@ def build_manifest(sources: list[Path]) -> dict[str, object]:
         "renderer": MERMAID_PACKAGE,
         "background": BACKGROUND,
         "png_scale": PNG_SCALE,
+        "native_video_aspect_contract": {
+            "minimum": MIN_VIDEO_ASPECT,
+            "maximum": MAX_VIDEO_ASPECT,
+            "semantic": "Mermaid source layout; no downstream node reflow",
+        },
         "config": CONFIG.relative_to(ROOT).as_posix(),
         "config_sha256": sha256(CONFIG),
         "css": CSS.relative_to(ROOT).as_posix(),

@@ -1,37 +1,31 @@
-flowchart LR
-    D1(("真实 GREEN<br/>产品结果 / capability"))
-
-    subgraph TRUST["01｜证据与声明"]
-      direction TB
+flowchart TB
+    subgraph TRUST["证据与声明｜从真实 GREEN 到可公开事实"]
+      direction LR
+      D1(("真实 GREEN<br/>产品结果 / capability"))
       D2[("冻结 artifact<br/>trace · screenshot · video · hash")]
       D3["Claim / Evidence 映射<br/>能力 · 版本 · 来源 · 限制"]
       D4{"来源绑定与内容核验<br/>事实足够公开？"}
-      D2 --> D3 --> D4
+      HOLD["证据不足<br/>保持原 readiness，不升级声明"]
+      D1 --> D2 --> D3 --> D4
+      D4 -- "不足" --> HOLD
     end
 
-    subgraph DELIVERY["02｜发行与展示"]
-      direction TB
+    subgraph DELIVERY["发行与回读｜下载物、展示与外部现实"]
+      direction RL
       D5["确定性发布<br/>production staging · manifest · ZIP"]
       D6["可信展示<br/>报告 · show-off · Promo · Workshop media"]
+      D7(("公开出口<br/>Workshop · GitHub Release · 文档 · 影片"))
+      D8[("外部现实<br/>fresh-cache · 下载 · 玩家反馈 · 故障")]
+      D9(("下一版权威入口<br/>新需求 · 新 RED"))
+      REBUILD["线上字节不一致<br/>重建并重新回读"]
+      D5 --> D7
+      D6 --> D7 --> D8 --> D9
+      D8 -- "下载物不一致" --> REBUILD
+      REBUILD -.-> D5
     end
 
-    D7(("公开出口<br/>Workshop · GitHub Release · 文档 · 影片"))
-    D8[("外部现实<br/>fresh-cache · 下载 · 玩家反馈 · 故障")]
-    D9(("下一版权威入口<br/>新需求 · 新 RED"))
-    HOLD["证据不足<br/>保持原 readiness，不升级声明"]
-    REBUILD["线上字节不一致<br/>重建并重新回读"]
-
-    D1 --> D2
-    D4 -- "足够" --> D5
-    D4 -- "足够" --> D6
-    D4 -- "不足" --> HOLD
-    D5 --> D7
-    D6 --> D7
-    D7 --> D8
-    D8 -- "产品与叙事反馈" --> D9
-    D8 -- "下载物不一致" --> REBUILD
-    REBUILD -.-> D5
-    D9 == "回写合同，进入下一轮" ==> D1
+    TRUST -- "足够：发布与展示" --> DELIVERY
+    DELIVERY == "回写合同，进入下一轮" ==> TRUST
 
     class D1,D9 loop;
     class D2,D3,D4 evidence;
