@@ -115,3 +115,12 @@ Steam 在下载核验后恢复离线，未注销账号。发布事实、构建�
 - 原生 Steamworks MCP 更新同一物品 `3800124956` 成功，Submit 返回 `EResult=1`，receipt SHA-256 为 `88D5BBFE43417EEDE738E266B4AD5FE7A2434A0602311F411709E2766D03CD9D`。公开读取确认 creator、AppID、public visibility、标题和完整 BBCode 均正确。
 - 旧 14 文件缓存先移动到可恢复目录 `3800124956.before-v2.0.0-20260912-223342`；从不存在的目标路径重新下载得到 15 文件／700,669 字节，并严格通过正式 manifest 的 inventory、size 与 SHA-256 校验。缓存 `descriptor.mod` 没有 `remote_file_id`。
 - Steam 于 22:41（Asia/Shanghai）恢复离线并保持客户端运行；CK3 未在本发布工作包中启动。永久事实见 [2.0.0 changelog](release-changelogs/auto-upgrade-buildings/2.0.0.md)。
+
+## 2026-09-19 继承连续性与曼荼罗小建筑复核
+
+- 用户反馈把两个现象连在了一起：上一代已启用自动建造，死亡并切换继承人后功能停止；同时观察到曼荼罗神殿城塞的小建筑没有继续升级。
+- 根因是 `enable_auto_build`、资金策略和超直辖策略均为角色 flag，4.0.0 没有在玩家死亡时迁移到 `player_heir`。唯一全局循环仍存在，但新玩家没有启用 flag，后续扫描会跳过他，因此表象也会覆盖曼荼罗建筑。
+- 4.0.1 通过非破坏式 `on_death` 子 on_action，在死亡角色作用域读取启用与策略状态，规范化继承人的旧 flag，迁移启用／资金／超直辖状态，并复用唯一全局循环。未启用自动建造的玩家和 AI 不触发迁移。
+- 静态图谱原本已包含 `citadel_shrine_01`、`sacred_pool_01`、`vihara_halls_01` 三条链，各 7 条升级边；本轮没有发现 dispatcher 缺边。曼荼罗都城 Great Project 的 4 条边仍按设计排除。
+- CK3 1.19.0.6 隔离实机 `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0042` 在 465.514 秒内 GREEN：正式生产扫描分别通过要塞神殿、圣池、精舍厅的一级升级；随后制造真实玩家死亡、点击继续扮演继承人，并通过启用状态、个人资金策略＋超直辖暂停策略、唯一循环三项继承断言。项目诊断为 0，产品／fixture 运行树未改变，受保护存储未改变，CK3 受控退出。
+- R0042 顶层报告位于 `C:\Users\1\AppData\Local\Temp\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0042\report.json`，SHA-256 为 `012D1E4F8E43DADB39443DB2FD3838B2ED74BC7F74565D2CF7749B8BB6AFC806`；被测 17 文件生产投影 tree SHA-256 为 `33B761221A3A8080AEF07FFA54BF5AF65D90489635EBD2BF9A241A4EBC860DA7`。

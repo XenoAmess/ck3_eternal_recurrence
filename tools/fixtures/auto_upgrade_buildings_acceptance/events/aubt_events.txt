@@ -6,6 +6,17 @@ aubt.0 = {
 	immediate = {
 		debug_log = "AUBT: TEST BEGIN source-live"
 		set_global_variable = { name = aubt_player value = this }
+		# Core-only runner cells skip the already-released decision surface and seed
+		# the legacy/default policy here. Full cells arrive with the same state from
+		# the real production decision, so this branch remains inactive there.
+		if = {
+			limit = { NOT = { has_character_flag = enable_auto_build } }
+			remove_character_flag = aub_funding_treasury_only
+			remove_character_flag = aub_funding_personal_only
+			remove_character_flag = aub_pause_when_over_domain_limit
+			add_character_flag = enable_auto_build
+			debug_log = "AUBT: OBSERVED core_only_default_policy_seeded"
+		}
 		if = {
 			limit = {
 				has_character_flag = enable_auto_build
@@ -646,6 +657,10 @@ aubt.10 = {
 				limit = { NOT = { has_innovation = innovation_plenary_assemblies } }
 				add_innovation = innovation_plenary_assemblies
 			}
+			if = {
+				limit = { NOT = { has_innovation = innovation_city_planning } }
+				add_innovation = innovation_city_planning
+			}
 		}
 		capital_province = { set_global_variable = { name = aubt_province value = this } }
 		# Main and duchy building target gates read the province culture, which
@@ -656,10 +671,14 @@ aubt.10 = {
 					limit = { NOT = { has_innovation = innovation_battlements } }
 					add_innovation = innovation_battlements
 				}
-				if = {
-					limit = { NOT = { has_innovation = innovation_castle_baileys } }
-					add_innovation = innovation_castle_baileys
-				}
+			if = {
+				limit = { NOT = { has_innovation = innovation_castle_baileys } }
+				add_innovation = innovation_castle_baileys
+			}
+			if = {
+				limit = { NOT = { has_innovation = innovation_city_planning } }
+				add_innovation = innovation_city_planning
+			}
 			}
 		}
 
@@ -801,7 +820,9 @@ aubt.10 = {
 		}
 		else = { debug_log = "AUBT: TEST FAIL main_temple_citadel" }
 
-		# Temple-citadel unique ordinary building.
+		# First production regression for one Temple-citadel unique ordinary building.
+		# This point already has a stable source slot, so route it through the same
+		# character event and directly-owned-province iterator used during play.
 		global_var:aubt_province = {
 			if = { limit = { has_building = citadel_shrine_02 } remove_building = citadel_shrine_02 }
 			else_if = { limit = { has_building = citadel_shrine_01 } remove_building = citadel_shrine_01 }
@@ -809,13 +830,35 @@ aubt.10 = {
 			scope:aub_payer = { save_scope_as = holder }
 			scope:aub_payer = { save_scope_as = build_owner }
 			county = { save_scope_as = county }
-			aub_upgrade_chain_citadel_shrine_01_effect = yes
-			if = {
-				limit = { has_building = citadel_shrine_02 }
-				debug_log = "AUBT: TEST PASS temple_citadel_unique"
-			}
-			else = { debug_log = "AUBT: TEST FAIL temple_citadel_unique" }
 		}
+		add_character_flag = enable_auto_build
+		trigger_event = auto_build.0004
+		if = {
+			limit = { global_var:aubt_province = { has_building = citadel_shrine_02 } }
+			debug_log = "AUBT: TEST PASS mandala_citadel_shrine"
+		}
+		else = { debug_log = "AUBT: TEST FAIL mandala_citadel_shrine" }
+		global_var:aubt_province = {
+			remove_building = citadel_shrine_02
+			add_building = sacred_pool_01
+		}
+		trigger_event = auto_build.0004
+		if = {
+			limit = { global_var:aubt_province = { has_building = sacred_pool_02 } }
+			debug_log = "AUBT: TEST PASS mandala_sacred_pool"
+		}
+		else = { debug_log = "AUBT: TEST FAIL mandala_sacred_pool" }
+		global_var:aubt_province = {
+			remove_building = sacred_pool_02
+			add_building = vihara_halls_01
+		}
+		trigger_event = auto_build.0004
+		if = {
+			limit = { global_var:aubt_province = { has_building = vihara_halls_02 } }
+			debug_log = "AUBT: TEST PASS mandala_vihara_halls"
+		}
+		else = { debug_log = "AUBT: TEST FAIL mandala_vihara_halls" }
+		remove_character_flag = enable_auto_build
 
 		# Scripted costs: one prestige route and one piety route.
 		global_var:aubt_province = {
@@ -931,6 +974,59 @@ aubt.10 = {
 		}
 		else = { debug_log = "AUBT: TEST FAIL nomad_herder_na" }
 
+		# Cause one real player death after the full building matrix. The successor
+		# event is queued before death because a delayed event on the dying root would
+		# be discarded by CK3.
+		remove_global_variable = aub_auto_build_loop_started
+		remove_character_flag = aub_funding_treasury_only
+		remove_character_flag = aub_funding_personal_only
+		remove_character_flag = aub_pause_when_over_domain_limit
+		add_character_flag = aub_funding_personal_only
+		add_character_flag = aub_pause_when_over_domain_limit
+		add_character_flag = enable_auto_build
+		if = {
+			limit = { exists = player_heir player_heir = { is_alive = yes } }
+			player_heir = {
+				remove_character_flag = enable_auto_build
+				remove_character_flag = aub_funding_treasury_only
+				remove_character_flag = aub_funding_personal_only
+				remove_character_flag = aub_pause_when_over_domain_limit
+				trigger_event = { id = aubt.12 days = 1 }
+			}
+			debug_log = "AUBT: OBSERVED real_player_death_armed"
+			death = { death_reason = death_old_age }
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL succession_enabled_retained"
+			debug_log = "AUBT: TEST FAIL succession_policy_retained"
+			debug_log = "AUBT: TEST FAIL succession_loop_retained"
+		}
+	}
+}
+
+aubt.12 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = { is_ai = no has_character_flag = enable_auto_build }
+			debug_log = "AUBT: TEST PASS succession_enabled_retained"
+		}
+		else = { debug_log = "AUBT: TEST FAIL succession_enabled_retained" }
+		if = {
+			limit = {
+				has_character_flag = aub_funding_personal_only
+				has_character_flag = aub_pause_when_over_domain_limit
+				NOT = { has_character_flag = aub_funding_treasury_only }
+			}
+			debug_log = "AUBT: TEST PASS succession_policy_retained"
+		}
+		else = { debug_log = "AUBT: TEST FAIL succession_policy_retained" }
+		if = {
+			limit = { has_global_variable = aub_auto_build_loop_started }
+			debug_log = "AUBT: TEST PASS succession_loop_retained"
+		}
+		else = { debug_log = "AUBT: TEST FAIL succession_loop_retained" }
 		debug_log = "AUBT: TEST DONE source-live"
 		trigger_event = aubt.900
 	}
