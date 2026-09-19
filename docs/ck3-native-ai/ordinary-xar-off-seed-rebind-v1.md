@@ -42,13 +42,8 @@ receipt does not claim a cold restore or gameplay result.
 The rebinder remains directly runnable as a module for focused development,
 but the supported agent CLI is:
 
-```powershell
-python ck3_autonomous_player\agent.py `
-  --state-dir <prepared-state> `
-  --game-dir <frozen-ck3-directory> `
-  rebind-ordinary-seed-v1 `
-  --expected-pipe <persisted-pipe> `
-  --receipt <artifact-directory>\ordinary-seed-rebind-v1.json
+```text
+python ck3_autonomous_player\agent.py --state-dir <prepared-state> --game-dir <frozen-ck3-directory> rebind-ordinary-seed-v1 --expected-pipe <persisted-pipe> --receipt <artifact-directory>\ordinary-seed-rebind-v1.json
 ```
 
 Users prepare portable ordinary preview state through
@@ -57,6 +52,8 @@ as `xar_off` and copying the paired artifacts, the operator calls this formal
 agent subcommand with the manifest's exact pipe.  It persists the receipt at
 `<state-dir>/ordinary-seed-rebind-v1.json`, validates its schema and lifecycle,
 then passes `no_launch_preflight_expectations` into the ordinary-aware
-no-launch preflight.  The operator never selects a new pipe because pipe
+no-launch preflight.  After that gate passes, it verifies the rebound driver
+bytes and atomically records the environment and driver hashes in the operator
+manifest.  The operator never selects a new pipe because pipe
 identity remains part of the cold checkpoint anchor.  A failed rebind or
 preflight exits nonzero without launching CK3.
