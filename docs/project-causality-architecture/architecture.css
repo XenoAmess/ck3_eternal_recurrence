@@ -1,0 +1,44 @@
+svg {
+  background: #07111f;
+}
+
+.nodeLabel,
+.edgeLabel,
+.cluster-label {
+  font-family: "Microsoft YaHei UI", "Noto Sans CJK SC", "Segoe UI", sans-serif !important;
+}
+
+.nodeLabel p,
+.edgeLabel p {
+  line-height: 1.35;
+  margin: 0;
+}
+
+.cluster-label span,
+.cluster-label p {
+  color: #f4f8ff !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
+.edgeLabel {
+  color: #dcecff !important;
+}
+
+.flowchart-link {
+  stroke-width: 2.2px;
+}
+
+.marker {
+  fill: #91a9c0 !important;
+  stroke: #91a9c0 !important;
+}
+
+/* Mermaid block diagrams currently emit an empty `undefined` spacer node. */
+g.node[id$="-undefined"] rect,
+g.node[id$="-undefined"] path,
+g.node[id$="-undefined"] polygon {
+  fill: transparent !important;
+  stroke: transparent !important;
+}

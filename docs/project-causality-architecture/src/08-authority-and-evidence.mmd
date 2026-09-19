@@ -1,0 +1,27 @@
+block-beta
+    columns 4
+    N1["规范权威 1<br/>所有者明确意图与项目级约束"] N2["规范权威 2<br/>权威产品 / 机制 / ABI 文档与 Schema"] N3["规范权威 3<br/>测试合同"] N4["规范权威 4<br/>实现代码"]
+    F1["经验事实 1<br/>CK3 exact-build 行为 + 冻结 artifact"] F2["经验事实 2<br/>可复现实机测试"] F3["经验事实 3<br/>离线 / 静态测试与源码推断"] F4["经验事实 4<br/>进度摘要与宣传表述"]
+    space C["裁决｜规范与事实冲突？"] R1["保留 RED 与原始证据"] R2["先修订权威文档 / Schema"]
+    space WARN["禁止<br/>用宣传、ACK 或测试数量改写事实"] READY["readiness 只随新增证据升级<br/>research → static-ready → fixture-live<br/>→ production-live primitive → loop → complete"] R3["再修测试，最后修代码"]
+
+    N1 --> N2 --> N3 --> N4 --> C
+    F1 --> F2 --> F3 --> F4 --> C
+    C -- "是" --> R1 --> R2 --> R3 --> READY
+    C -- "否" --> READY
+    READY -.-> WARN
+
+    style N1 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
+    style N2 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
+    style N3 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
+    style N4 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
+    style F1 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
+    style F2 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
+    style F3 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
+    style F4 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
+    style C fill:#402a1f,stroke:#ff8a4c,color:#fff6ef,stroke-width:3px
+    style R1 fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
+    style R2 fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
+    style R3 fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
+    style WARN fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
+    style READY fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:3px

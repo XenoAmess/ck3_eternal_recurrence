@@ -1,0 +1,32 @@
+flowchart TB
+    H(("人类<br/>决定何物值得创造<br/>签核事实与审美"))
+    A["Loop A｜玩家产品<br/>问题 → 合同 → 生成 → 游玩 → 新故事"]
+    B["Loop B｜智能体能力<br/>blocker → 观察 / 动作 → OODA → 更长长局"]
+    C["Loop C｜工具与语义<br/>真实 RED → Runtime / MCP → 差分 → 复用"]
+    D["Loop D｜证据与发行<br/>GREEN → artifact → 可信展示 → 外部反馈"]
+    P["玩家与外部世界<br/>体验 · 下载物 · 版本变化 · 故障"]
+
+    H --> A
+    A -- "提供真实世界与评价目标" --> B
+    B -- "暴露观察、策略与产品缺口" --> C
+    C -- "降低制造与验证成本" --> A
+    A -- "交付可见内容" --> D
+    B -- "交付真实能力与长局结果" --> D
+    C -- "交付已知语义与证据边界" --> D
+    D --> P
+    P -- "反馈、RED 与新故事" --> H
+    B -. "结果与能力债" .-> H
+    C -. "版本失效与 unsupported" .-> H
+
+    class H human;
+    class A product;
+    class B agent;
+    class C tool;
+    class D evidence;
+    class P public;
+    classDef human fill:#4a2034,stroke:#ff8bb2,color:#fff7fb,stroke-width:4px;
+    classDef product fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:3px;
+    classDef agent fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:3px;
+    classDef tool fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:3px;
+    classDef evidence fill:#402a1f,stroke:#ff8a4c,color:#fff6ef,stroke-width:3px;
+    classDef public fill:#31224b,stroke:#b796ff,color:#faf6ff,stroke-width:3px;

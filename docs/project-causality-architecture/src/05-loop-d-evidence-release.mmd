@@ -1,0 +1,21 @@
+block-beta
+    columns 3
+    D1["真实 GREEN<br/>产品结果 / production capability"] D2["冻结证据<br/>artifact · trace · 截图 · 录像 · hash"] D3["Claim / Evidence 映射<br/>能力、版本、来源与限制逐项绑定"]
+    D6["公开出口<br/>Workshop · GitHub Release · 文档 · Promo"] D5["确定性交付<br/>production staging · manifest · ZIP"] D4["内容核验<br/>画面来源 · 双语字幕 · 视觉审计 · 人工签核"]
+    D7["外部现实<br/>fresh-cache · 下载 · 玩家反馈 · 故障"] D8["↺ 回写权威入口<br/>新需求 · 新 RED · 下一版合同"] DR1["证据不足：不升级声明"]
+    DR2["线上字节不同：重建并重新回读"] space space
+
+    D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> D7 --> D8
+    D2 -.-> DR1
+    D7 -.-> DR2
+
+    style D1 fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:3px
+    style D2 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
+    style D3 fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:2px
+    style D4 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
+    style D5 fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px
+    style D6 fill:#31224b,stroke:#b796ff,color:#faf6ff,stroke-width:2px
+    style D7 fill:#31224b,stroke:#b796ff,color:#faf6ff,stroke-width:2px
+    style D8 fill:#402a1f,stroke:#ff8a4c,color:#fff6ef,stroke-width:3px
+    style DR1 fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px
+    style DR2 fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px

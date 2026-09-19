@@ -1,0 +1,66 @@
+flowchart TB
+    O["所有者意图<br/>玩法价值 · 边界 · 叙事人格"]
+
+    subgraph AUTH["单一权威来源｜只在这里修改含义"]
+      direction LR
+      D["产品 / 机制 / ABI 文档"]
+      S["Schema / DomainSpec / 数据表"]
+      V["原版 exact-build 快照 / 版本合同"]
+    end
+
+    GEN["生成器 / 投影器<br/>确定性展开与格式适配"]
+
+    subgraph PROJ["派生投影｜带 GENERATED 标记时禁止手改"]
+      direction LR
+      P1["CK3 scripts / effects / values"]
+      P2["GUI / localization / traits / events"]
+      P3["DDS / thumbnail / Workshop media"]
+      P4["测试向量 / fixture / 文档表格"]
+      P5["production-only staging"]
+    end
+
+    subgraph DELIVERY["从一致性检查到真实环境回读"]
+      direction LR
+      PARITY["Parity / closure guards<br/>重建对比 · 引用闭包 · allowlist · hash"]
+      REL["Deterministic ZIP + manifest"]
+      LIVE["CK3 / Workshop / 浏览器真实结果"]
+      FIX{"结果偏离权威来源？"}
+      PARITY --> REL --> LIVE --> FIX
+    end
+
+    O --> D
+    O --> S
+    V --> D
+    D --> GEN
+    S --> GEN
+    V --> GEN
+    GEN --> P1
+    GEN --> P2
+    GEN --> P3
+    GEN --> P4
+    P1 --> P5
+    P2 --> P5
+    P3 --> P5
+    P4 --> PARITY
+    P5 --> PARITY
+    FIX -- "实现错误" --> RET1["↺ 回到生成器 / 投影器"]
+    FIX -- "需求变化 / 现实推翻文档" --> RET2["↺ 先修订权威文档 / Schema"]
+    FIX -.-> BAN["禁止直接补丁 generated files"]
+
+    class O human;
+    class D,S,V auth;
+    class GEN generator;
+    class P1,P2,P3,P4,P5 projection;
+    class PARITY,REL verify;
+    class LIVE live;
+    class FIX decision;
+    class RET1,RET2 decision;
+    class BAN forbidden;
+    classDef human fill:#4a2034,stroke:#ff8bb2,color:#fff7fb,stroke-width:3px;
+    classDef auth fill:#302916,stroke:#f3c96b,color:#fff8e7,stroke-width:2px;
+    classDef generator fill:#102b47,stroke:#55c8ff,color:#f4f8ff,stroke-width:3px;
+    classDef projection fill:#31224b,stroke:#b796ff,color:#faf6ff,stroke-width:2px;
+    classDef verify fill:#182536,stroke:#91a9c0,color:#edf4fb,stroke-width:2px;
+    classDef live fill:#123939,stroke:#38d6c5,color:#effffd,stroke-width:3px;
+    classDef decision fill:#402a1f,stroke:#ff8a4c,color:#fff6ef,stroke-width:3px;
+    classDef forbidden fill:#4b2024,stroke:#ff6b6b,color:#fff5f5,stroke-width:2px;

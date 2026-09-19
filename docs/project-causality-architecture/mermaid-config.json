@@ -1,0 +1,35 @@
+{
+  "theme": "base",
+  "darkMode": true,
+  "deterministicIds": true,
+  "deterministicIDSeed": "project-causality-architecture-v1",
+  "fontFamily": "Microsoft YaHei UI, Noto Sans CJK SC, Segoe UI, sans-serif",
+  "flowchart": {
+    "curve": "basis",
+    "htmlLabels": true,
+    "nodeSpacing": 42,
+    "rankSpacing": 58,
+    "padding": 16,
+    "useMaxWidth": false
+  },
+  "themeVariables": {
+    "background": "#07111f",
+    "primaryColor": "#112b48",
+    "primaryTextColor": "#f4f8ff",
+    "primaryBorderColor": "#55c8ff",
+    "secondaryColor": "#153b3d",
+    "secondaryTextColor": "#f4f8ff",
+    "secondaryBorderColor": "#38d6c5",
+    "tertiaryColor": "#3b2d18",
+    "tertiaryTextColor": "#fff8e7",
+    "tertiaryBorderColor": "#f3c96b",
+    "lineColor": "#91a9c0",
+    "textColor": "#f4f8ff",
+    "mainBkg": "#112b48",
+    "nodeBorder": "#55c8ff",
+    "clusterBkg": "#0b1a2b",
+    "clusterBorder": "#31516f",
+    "edgeLabelBackground": "#07111f",
+    "fontSize": "17px"
+  }
+}

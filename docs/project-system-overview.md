@@ -3,7 +3,9 @@
 > 状态：项目级总纲
 > 项目副标题：伪天司的辉煌愿景
 > 覆盖范围：本仓库及 `open_kaishek`、Promo 等附属工程
-> 最近整理：2026-09-18（Asia/Shanghai）
+> 最近整理：2026-09-19（Asia/Shanghai）
+
+> 配套视觉索引：[《project因果律》系统架构图册](project-causality-architecture/README.md)（整体系统、四个 Loop、自动玩家 + MCP、自动化验收及补充架构）
 
 ## 0. 本文回答什么
 
