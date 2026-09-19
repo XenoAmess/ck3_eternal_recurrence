@@ -58,6 +58,7 @@ from xar_autoplayer.opening_smoke import (  # noqa: E402
     _panel_summary,
     _choose_one_life_dynasty_action,
     _palermo_map_targets,
+    _palermo_ruler_panel_visible,
     _pause_menu_visible,
     _save_window_visible,
     _same_generic_event,
@@ -690,6 +691,26 @@ class OpeningContractTests(unittest.TestCase):
             ),
         )
         self.assertEqual(_palermo_map_targets(frame), ((672, 1261),))
+
+    def test_palermo_ruler_panel_does_not_accept_bottom_map_tooltip(self) -> None:
+        tooltip_only = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span("拜莱尔姆谢赫国", (811, 1325), (729, 1311, 893, 1340)),
+            ),
+        )
+        selected_panel = SimpleNamespace(
+            client_rect=(0, 0, 2560, 1440),
+            spans=(
+                span(
+                    "拜莱尔姆谢赫，优素福·伊本·阿卜杜拉",
+                    (273, 432),
+                    (9, 419, 537, 445),
+                ),
+            ),
+        )
+        self.assertFalse(_palermo_ruler_panel_visible(tooltip_only))
+        self.assertTrue(_palermo_ruler_panel_visible(selected_panel))
 
     def test_lifestyle_state_records_selected_authority_focus(self) -> None:
         state = _extract_lifestyle_state(

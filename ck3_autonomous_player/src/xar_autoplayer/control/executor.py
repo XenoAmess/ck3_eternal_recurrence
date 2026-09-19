@@ -224,7 +224,11 @@ class _InternalControlLease:
 
 
 class VisibleUiDriver:
-    TOKEN_TTL_SECONDS = 5.0
+    # A 2560x1440 production capture plus OCR and durable evidence write takes
+    # 6–7 seconds on the recording workstation while FFmpeg is active.  Keep
+    # the lease above that measured latency; the immediate pre-input pixel,
+    # foreground and cursor guards remain authoritative.
+    TOKEN_TTL_SECONDS = 12.0
     TARGET_PATCH_PADDING = 12
     PHASE_B_ALLOWED_CONTROLS = frozenset({"main_menu.new_game"})
 

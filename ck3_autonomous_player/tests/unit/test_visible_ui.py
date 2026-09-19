@@ -389,6 +389,37 @@ class WindowBindingTests(unittest.TestCase):
             with self.assertRaisesRegex(AgentError, "unauthenticated"):
                 BoundGameWindow.bind_session(self._session(executable), executable)
 
+    def test_equivalent_wmi_and_toolhelp_creation_times_keep_binding(self) -> None:
+        executable = Path("C:/game/binaries/ck3.exe")
+        process = mock.Mock(pid=123)
+        process.poll.return_value = None
+        process.image_path.return_value = str(executable)
+        session = types.SimpleNamespace(
+            process=process,
+            ck3_creation_date="20260919094409.602938+000",
+        )
+        initial = {
+            "pid": 123,
+            "parent_pid": os.getpid(),
+            "name": "ck3.exe",
+            "creation_date": "20260919094409.602938+000",
+            "executable": str(executable),
+        }
+        equivalent = {
+            **initial,
+            "creation_date": "2026-09-19T09:44:09.6029380Z",
+        }
+        with mock.patch(
+            "xar_autoplayer.runtime._process_identity",
+            side_effect=[initial, equivalent],
+        ), mock.patch(
+            "xar_autoplayer.vision.window._eligible_windows",
+            return_value=[(456, (0, 0, 2560, 1440))],
+        ):
+            binding = BoundGameWindow.bind_session(session, executable)
+            verified = binding.verify_process()
+        self.assertEqual(verified["pid"], 123)
+
     def test_acquire_foreground_never_synthesizes_alt_or_focus(self) -> None:
         binding = object.__new__(BoundGameWindow)
         with mock.patch.object(BoundGameWindow, "require_foreground") as require:
@@ -1635,13 +1666,13 @@ class UiDriverSafetyTests(unittest.TestCase):
                 side_effect=[
                     issued_at + 1.0,
                     fresh_basis + 1.0,
-                    fresh_basis + 6.0,
+                    fresh_basis + 13.0,
                 ],
             ):
                 with self.assertRaisesRegex(
                     AgentError, "fresh visible control lease expired before pointer input"
                 ):
-                    driver.click_visible_control(token, timeout_seconds=1)
+                    driver.click_visible_control(token, timeout_seconds=20)
             send_click.assert_not_called()
             window.capture_patch.assert_not_called()
             receipt = json.loads(
@@ -1684,13 +1715,13 @@ class UiDriverSafetyTests(unittest.TestCase):
                     fresh_basis + 0.25,
                     fresh_basis + 0.5,
                     hover_basis + 0.25,
-                    hover_basis + 6.0,
+                    hover_basis + 13.0,
                 ],
             ):
                 with self.assertRaisesRegex(
                     AgentError, "hover visible control lease expired at input submission"
                 ):
-                    driver.click_visible_control(token, timeout_seconds=10)
+                    driver.click_visible_control(token, timeout_seconds=20)
             send_click.assert_not_called()
             self.assertEqual(window.require_cursor_target.call_count, 2)
             receipt = json.loads(
@@ -2002,12 +2033,12 @@ class UiDriverSafetyTests(unittest.TestCase):
             self.assertEqual(
                 fresh_lease["expires_monotonic"]
                 - fresh_lease["issued_monotonic"],
-                5.0,
+                12.0,
             )
             self.assertEqual(
                 hover_lease["expires_monotonic"]
                 - hover_lease["issued_monotonic"],
-                5.0,
+                12.0,
             )
             self.assertEqual(
                 fresh_lease["parent_authority_sha256"],

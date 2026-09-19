@@ -1,0 +1,50 @@
+{
+  "schema": "project-causality-build-record.v1",
+  "build_id": "2026-09-19-r9",
+  "status": "non-music-picture-lock-candidate-awaiting-owner-review",
+  "publication_authorized": false,
+  "video": {
+    "relative_path": "artifacts/project-causality/2026-09-19-r9/project-causality-r9-nomusic-picture-lock.mp4",
+    "sha256": "9CC13837A6D1613190AE72AB70A2C2DF8A5F095510A5678510CE85B568B6D1E5",
+    "bytes": 1466705843,
+    "duration_seconds": 2054.788,
+    "frames": 61643,
+    "width": 2560,
+    "height": 1440,
+    "fps": "30/1",
+    "video_codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio_codec": "aac",
+    "sample_rate": 48000,
+    "channels": 2
+  },
+  "changes": [
+    "Replaced the incorrect coat-of-arms visual with a fresh production-editor recording.",
+    "Replaced the complete old autonomous-player section with seven minutes of fresh Robert 1066 to Palermo benchmark footage.",
+    "Kept the fixed-benchmark boundary explicit and removed the old archival/native-primitive montage."
+  ],
+  "qa": {
+    "media_probe": "GREEN",
+    "exact_frame_count": "GREEN",
+    "coa_and_agent_contact_sheet": "GREEN",
+    "full_film_sample_contact_sheet": "GREEN",
+    "new_material_blackdetect": "GREEN: only the expected 3.233333-second chapter-gate black frame at 19:54",
+    "mean_volume_db": -23.8,
+    "max_volume_db": -4.1,
+    "focused_agent_tests": "99 passed, 1 skipped",
+    "gameplay_milestones": "GREEN",
+    "shutdown_attestation": "RED: watchdog already absent; final CK3 process inventory empty"
+  },
+  "music": {
+    "included": false,
+    "suno_operated": false,
+    "operator": "project owner"
+  },
+  "builder": "tools/build_project_causality_r9.py",
+  "agent_manifest": "promo/project_causality/r9/agent-showcase.json",
+  "next_steps": [
+    "Project owner watches the complete r9 picture lock at 1x and returns time-coded changes.",
+    "Project owner manually provides Suno candidates and rights metadata.",
+    "Mix music, regenerate the sidecar and hash, and perform a final continuous review."
+  ]
+}

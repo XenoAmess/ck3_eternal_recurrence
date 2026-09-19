@@ -145,6 +145,7 @@ ROBERT_DEVELOPMENT_COUNTY_CANDIDATE_POINTS = (
 PALERMO_VISIBLE_LABEL_FALLBACK = (672, 1261)
 PALERMO_HOLY_WAR_GOAL_FALLBACK = (1690, 452)
 PALERMO_FORT_DESTINATION_FALLBACK = (1200, 650)
+PALERMO_RULER_PANEL_REGION = (0.0, 0.15, 0.28, 0.55)
 CHILD_PORTRAIT_FIRST_CENTER_X = 45
 CHILD_PORTRAIT_COLUMN_WIDTH = 85
 CHILD_PORTRAIT_CENTER_BELOW_HEADER = 52
@@ -1281,6 +1282,18 @@ def _palermo_map_targets(frame: object) -> tuple[tuple[int, int], ...]:
     return tuple(dict.fromkeys(span.center for span in matches))
 
 
+def _palermo_ruler_panel_visible(frame: object) -> bool:
+    """Distinguish the selected ruler panel from a map-hover tooltip."""
+    return bool(
+        _spans_with_text(
+            frame,
+            "拜莱尔姆谢赫",
+            contains=True,
+            region=PALERMO_RULER_PANEL_REGION,
+        )
+    )
+
+
 _OPENING_REPLAY_CHECKS = {
     "council-panel": _council_panel_visible,
     "steward-development-targeting": _steward_development_targeting_active,
@@ -1973,8 +1986,14 @@ def _drive_opening(
         control_id: str,
         expected_post_screen: str,
         post_predicate: object,
+        contains: bool = False,
     ) -> tuple[object, object]:
-        issued = _spans_with_text(source, text, region=region)
+        issued = _spans_with_text(
+            source,
+            text,
+            region=region,
+            contains=contains,
+        )
         if len(issued) != 1:
             raise AgentError(
                 f"{control_id} lacks one visible {text!r} target: {len(issued)}"
@@ -1982,7 +2001,12 @@ def _drive_opening(
         fresh = driver.capture_once()
         fresh_matches = [
             item
-            for item in _spans_with_text(fresh, text, region=region)
+            for item in _spans_with_text(
+                fresh,
+                text,
+                region=region,
+                contains=contains,
+            )
             if abs(item.center[0] - issued[0].center[0]) <= 20
             and abs(item.center[1] - issued[0].center[1]) <= 20
         ]
@@ -2895,6 +2919,22 @@ def _drive_opening(
 
     def review_palermo_war_target() -> dict[str, object]:
         driver = new_driver()
+        # A resumed save can leave the cursor over Palermo and therefore keep
+        # a ruler tooltip visible.  Clear that hover before OCR so tooltip text
+        # cannot be mistaken for the actual map label or selected ruler panel.
+        neutral_point = (1320, 800)
+        window.require_foreground()
+        window.require_unobscured(neutral_point)
+        import pyautogui
+
+        pyautogui.FAILSAFE = True
+        pyautogui.moveTo(
+            window.client_rect[0] + neutral_point[0],
+            window.client_rect[1] + neutral_point[1],
+            duration=0.12,
+        )
+        time.sleep(0.35)
+        window.require_cursor_target(neutral_point)
         source = driver.observe_stable(
             "map_hud",
             min(
@@ -2904,6 +2944,23 @@ def _drive_opening(
             stable_frames=2,
         )
         candidates = _palermo_map_targets(source.latest)
+        finder_state: dict[str, object] | None = None
+        if not candidates:
+            # A restored save preserves its camera.  The old absolute label
+            # coordinate is valid only for the original opening view; after a
+            # zoom or pan it may point at empty terrain.  Re-anchor through
+            # CK3's visible title finder, which centers Palermo, then use the
+            # same centered fort point already used by the marching workflow.
+            finder_state = find_palermo_title()
+            source = driver.observe_stable(
+                "map_hud",
+                min(
+                    INSTANT_UI_TRANSITION_TIMEOUT_SECONDS,
+                    _remaining(deadline, "finder-centered Palermo target map"),
+                ),
+                stable_frames=2,
+            )
+            candidates = _palermo_map_targets(source.latest)
         issued_point = (
             min(
                 candidates,
@@ -2913,9 +2970,13 @@ def _drive_opening(
                 ),
             )
             if candidates
-            else PALERMO_VISIBLE_LABEL_FALLBACK
+            else PALERMO_FORT_DESTINATION_FALLBACK
         )
-        target_source = "visible OCR" if candidates else "same-session observed label"
+        target_source = (
+            "visible OCR"
+            if candidates
+            else "visible title finder centered Palermo fort"
+        )
         point = issued_point
         window.require_foreground()
         window.require_unobscured(point)
@@ -2930,9 +2991,6 @@ def _drive_opening(
                 "expected_post_screen": "palermo_title_selection",
             },
         )
-        import pyautogui
-
-        pyautogui.FAILSAFE = True
         pyautogui.moveTo(
             window.client_rect[0] + point[0],
             window.client_rect[1] + point[1],
@@ -2946,8 +3004,11 @@ def _drive_opening(
                 "Palermo target selection was partial: "
                 f"accepted={accepted}, last_error={last_error}"
             )
-        first = driver.capture_once()
-        second = driver.capture_once()
+        first, second = wait_for_custom_state(
+            driver,
+            _palermo_ruler_panel_visible,
+            "Palermo ruler selection panel",
+        )
         visible_text: list[str] = []
         for item in getattr(second, "spans", ()):
             text = str(getattr(item, "text", "")).strip()
@@ -2980,16 +3041,17 @@ def _drive_opening(
                 second.observation_id,
             ],
             "visible_text": visible_text,
+            "title_finder": finder_state,
             "policy_boundary": "reversible visible map selection only",
         }
 
     def review_palermo_interactions() -> dict[str, object]:
         driver = new_driver()
         source = driver.capture_once()
-        if not _spans_with_text(source, "拜莱尔姆谢赫", contains=True):
+        if not _palermo_ruler_panel_visible(source):
             review_palermo_war_target()
             source = driver.capture_once()
-        if not _spans_with_text(source, "拜莱尔姆谢赫", contains=True):
+        if not _palermo_ruler_panel_visible(source):
             raise AgentError("Palermo ruler is not visibly selected")
         portrait_point = (150, 180)
         window.require_foreground()
@@ -3075,6 +3137,7 @@ def _drive_opening(
             post_predicate=lambda frame: bool(
                 _spans_with_text(frame, "选择宣战理由", contains=True)
             ),
+            contains=True,
         )
         visible_text: list[str] = []
         for item in getattr(second, "spans", ()):

@@ -12,6 +12,7 @@ import time
 import uuid
 
 from .model import Rect
+from ..environment import same_process_creation_time
 from ..errors import AgentError
 
 
@@ -496,7 +497,12 @@ class BoundGameWindow:
             or process.poll() is not None
             or identity is None
             or str(identity.get("name", "")).casefold() != "ck3.exe"
-            or identity.get("creation_date") != creation_date
+            or not (
+                identity.get("creation_date") == creation_date
+                or same_process_creation_time(
+                    identity.get("creation_date"), creation_date
+                )
+            )
             or int(identity.get("parent_pid", 0)) != os.getpid()
             or not _same_executable(handle_image, expected_executable)
             or (
@@ -533,7 +539,12 @@ class BoundGameWindow:
             identity is None
             or str(identity.get("name", "")).casefold() != "ck3.exe"
             or int(identity.get("parent_pid", -1)) != self.parent_pid
-            or identity.get("creation_date") != self.creation_date
+            or not (
+                identity.get("creation_date") == self.creation_date
+                or same_process_creation_time(
+                    identity.get("creation_date"), self.creation_date
+                )
+            )
             or (wmi_executable and not _same_executable(wmi_executable, self.executable))
             or not _same_executable(self.process.image_path(), self.executable)
         ):
