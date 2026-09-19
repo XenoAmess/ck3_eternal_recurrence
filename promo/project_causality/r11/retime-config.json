@@ -1,0 +1,125 @@
+{
+  "format_version": 1,
+  "schema": "project-causality-r11-natural-voice-retime.v1",
+  "inputs": {
+    "r6": "artifacts/project-causality/2026-09-19-r6/project-causality-30m.manifest.json",
+    "value": "promo/project_causality/r8/value-showcase.json",
+    "gates": "promo/project_causality/r8/chapter-gates-showcase.json",
+    "agent": "promo/project_causality/r9/agent-showcase.json"
+  },
+  "clean_video_overrides": [
+    {
+      "id": "coat-of-arms-editor-r9-clean-capture",
+      "master": "artifacts/project-causality/2026-09-19-r9/coa-production-capture/coat-of-arms-editor-r9.webm",
+      "source_start_seconds": 0,
+      "source_end_seconds": 53.4,
+      "cue_ids": [
+        "08-coat-of-arms-editor-01",
+        "08-coat-of-arms-editor-02",
+        "08-coat-of-arms-editor-03"
+      ],
+      "continuity": "one clean capture, divided proportionally without source-time gaps"
+    }
+  ],
+  "composition": [
+    {
+      "source": "r6",
+      "starts_with": ["00-", "01-", "02-"],
+      "expected_count": 9
+    },
+    {
+      "source": "value",
+      "all": true,
+      "expected_count": 6
+    },
+    {
+      "source": "gates",
+      "ids": ["spell-gate-r8"],
+      "expected_count": 1
+    },
+    {
+      "source": "r6",
+      "starts_with": [
+        "04-eternal-recurrence-",
+        "05-vivhite-",
+        "06-zhongguo-361-public-",
+        "07-independent-products-",
+        "08-coat-of-arms-editor-"
+      ],
+      "expected_count": 23
+    },
+    {
+      "source": "agent",
+      "all": true,
+      "expected_count": 10
+    },
+    {
+      "source": "gates",
+      "ids": ["method-gate-r8"],
+      "expected_count": 1
+    },
+    {
+      "source": "r6",
+      "starts_with": [
+        "10-documents-",
+        "11-generation-",
+        "12-validation-open-kaishek-",
+        "13-mcp-",
+        "14-ocr-boundary-",
+        "15-agent-construction-",
+        "16-release-promo-"
+      ],
+      "expected_count": 19
+    },
+    {
+      "source": "gates",
+      "ids": ["principle-gate-r8"],
+      "expected_count": 1
+    },
+    {
+      "source": "r6",
+      "starts_with": [
+        "18-doc-test-code-",
+        "19-state-over-ack-",
+        "20-evidence-exact-build-",
+        "21-value-boundaries-"
+      ],
+      "expected_count": 12
+    },
+    {
+      "source": "gates",
+      "ids": ["vision-gate-r8"],
+      "expected_count": 1
+    },
+    {
+      "source": "r6",
+      "starts_with": [
+        "23-why-loops-",
+        "24-loop-a-",
+        "25-loop-b-",
+        "26-loop-c-",
+        "27-loop-d-",
+        "28-interlock-human-",
+        "29-finale-"
+      ],
+      "expected_count": 15
+    }
+  ],
+  "timing": {
+    "narration_tail_hold_seconds": 1.25,
+    "subtitle_tail_hold_seconds": 1.0,
+    "maximum_film_seconds": 3600,
+    "provisional_agent_showcase_seconds": 480,
+    "agent_showcase_minimum_seconds": 360,
+    "agent_showcase_maximum_seconds": 720
+  },
+  "contracts": {
+    "expected_cue_count": 98,
+    "expected_gate_count": 4,
+    "gate_narration_delay_seconds": 12,
+    "subtitle_block_policy": "paired-balanced",
+    "audio_tempo_filter_allowed": false,
+    "old_burned_subtitle_video_allowed": false,
+    "continuous_robert_master_required_for_render": true
+  }
+}

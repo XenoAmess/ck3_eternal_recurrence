@@ -1677,12 +1677,20 @@ def _chapter_subtitle_cues(
         raise ShowcaseError("internal error: subtitle cue layout is not ready")
     narration_delay = _chapter_narration_delay(chapter)
     local_start = narration_delay + min(0.20, chapter.shot_duration_seconds / 10)
+    subtitle_tail_hold = _number(
+        chapter.raw,
+        "subtitle_tail_hold_seconds",
+        0.25,
+        f"chapter '{chapter.chapter_id}'",
+        minimum=0.0,
+    )
     local_end = min(
         chapter.shot_duration_seconds - 0.10,
-        narration_delay + chapter.narration_duration_seconds + 0.25,
+        narration_delay + chapter.narration_duration_seconds + subtitle_tail_hold,
     )
     local_end = max(local_end, local_start + 0.20)
-    if chapter.subtitle_secondary_lines:
+    paired_blocks = chapter.raw.get("subtitle_block_policy") == "paired-balanced"
+    if chapter.subtitle_secondary_lines and not paired_blocks:
         primary = "\n".join(chapter.subtitle_lines or [])
         secondary = "\n".join(chapter.subtitle_secondary_lines)
         return [
@@ -1692,27 +1700,63 @@ def _chapter_subtitle_cues(
                 primary + SUBTITLE_BILINGUAL_SEPARATOR + secondary,
             )
         ]
-    weights = [
-        max(1, sum(len(line.replace(" ", "")) for line in block))
-        for block in chapter.subtitle_cue_blocks
-    ]
+    primary_blocks = chapter.subtitle_cue_blocks
+    secondary_blocks: list[list[str]] = [[] for _ in primary_blocks]
+    if paired_blocks and chapter.subtitle_secondary_lines:
+        block_count = max(
+            len(primary_blocks),
+            math.ceil(
+                len(chapter.subtitle_secondary_lines) / SUBTITLE_MAX_LINES_PER_CUE
+            ),
+        )
+
+        def distribute(lines: Sequence[str], count: int) -> list[list[str]]:
+            if len(lines) < count:
+                # A secondary-language summary is sometimes deliberately much
+                # shorter than the primary copy.  Keep it visible with every
+                # primary block instead of producing a nominally bilingual cue
+                # whose first half contains no secondary text.
+                return [list(lines) for _ in range(count)]
+            result: list[list[str]] = []
+            for index in range(count):
+                start = round(index * len(lines) / count)
+                end = round((index + 1) * len(lines) / count)
+                result.append(list(lines[start:end]))
+            return result
+
+        primary_blocks = distribute(chapter.subtitle_lines or [], block_count)
+        secondary_blocks = distribute(chapter.subtitle_secondary_lines, block_count)
+    weights = []
+    for primary, secondary in zip(primary_blocks, secondary_blocks):
+        weights.append(
+            max(
+                1,
+                sum(len(line.replace(" ", "")) for line in primary)
+                + sum(len(line.replace(" ", "")) for line in secondary),
+            )
+        )
     total_weight = sum(weights)
     duration = local_end - local_start
     cues: list[tuple[float, float, str]] = []
     cursor = local_start
     consumed_weight = 0
-    for index, (block, weight) in enumerate(zip(chapter.subtitle_cue_blocks, weights)):
+    for index, (primary, secondary, weight) in enumerate(
+        zip(primary_blocks, secondary_blocks, weights)
+    ):
         consumed_weight += weight
         block_end = (
             local_end
             if index == len(weights) - 1
             else local_start + duration * consumed_weight / total_weight
         )
+        payload = "\n".join(primary)
+        if secondary:
+            payload += SUBTITLE_BILINGUAL_SEPARATOR + "\n".join(secondary)
         cues.append(
             (
                 timeline_offset + cursor,
                 timeline_offset + block_end,
-                "\n".join(block),
+                payload,
             )
         )
         cursor = block_end
@@ -1851,8 +1895,16 @@ def encode_segment(
             if chapter.raw.get("crop_embedded_lower_third") is True
             else ""
         )
+        playback_rate = _number(
+            chapter.raw,
+            "source_playback_rate",
+            1.0,
+            f"chapter '{chapter.chapter_id}'",
+            minimum=0.01,
+        )
         video_filter = (
-            f"[0:v]trim=duration={_seconds(available)},setpts=PTS-STARTPTS,"
+            f"[0:v]trim=duration={_seconds(available)},"
+            f"setpts=(PTS-STARTPTS)/{playback_rate:.9f},"
             f"{source_crop}"
             f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=decrease:flags=lanczos,"
             f"pad={WIDTH}:{HEIGHT}:(ow-iw)/2:(oh-ih)/2:color=0x060910,setsar=1,"

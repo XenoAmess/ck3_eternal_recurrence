@@ -1,0 +1,17 @@
+{
+  "schema": "project-causality-r11-robert-continuous-edit.v1",
+  "master": "artifacts/project-causality/2026-09-20-r11-robert/robert-1066-continuous-clean.mkv",
+  "continuity": "Every source interval must start on the preceding interval's end. Speed may change only at a boundary; source time may never jump backwards or skip forwards.",
+  "spans": [
+    {"cue_id": "fresh-ruler-selection", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "opening-events", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "character-development", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "realm-review", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "palermo-target", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "declare-war", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "raise-and-move", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "war-loop-recovery", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "enforce-victory", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1},
+    {"cue_id": "postwar-close", "source_start_seconds": 0, "source_end_seconds": 0, "playback_rate": 1}
+  ]
+}
