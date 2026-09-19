@@ -5,6 +5,7 @@
   "build_id": "2026-09-19-r7",
   "kind": "non_music_picture_lock_candidate",
   "build_source_parent_commit": "aba6af95bd6ca703e61b1abfe99135a421e3cde2",
+  "delivery_commit": "c08ce1b9fbb1d84f8fac5fa22d68ce9ff32610f8",
   "supersedes": {
     "build_id": "2026-09-19-r6",
     "reason": "Retimed the 30:00 source to 25:30 by removing verified cue-tail slack, then integrated the native-Mermaid architecture atlas and generated chapter atmospheres."
@@ -80,4 +81,3 @@
     "The music master receives a new complete continuous review before any publication decision."
   ]
 }
-
