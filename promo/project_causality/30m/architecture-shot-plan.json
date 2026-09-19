@@ -1,0 +1,336 @@
+{
+  "schema": "project-causality-architecture-shot-plan.v1",
+  "film": {
+    "title": "《project因果律》",
+    "subtitle": "伪天司的辉煌愿景",
+    "duration_seconds": 1800,
+    "width": 2560,
+    "height": 1440,
+    "fps": 30
+  },
+  "safe_areas": {
+    "action_safe": [96, 72, 2464, 1368],
+    "primary_reading": [120, 90, 2440, 980],
+    "subtitle_exclusion": [220, 930, 2340, 1325],
+    "compact_title": [120, 72, 2440, 250]
+  },
+  "legibility": {
+    "minimum_node_text_px": 36,
+    "minimum_edge_label_px": 32,
+    "minimum_reading_hold_seconds": 4,
+    "maximum_simultaneous_reading_nodes": 5,
+    "camera_transition_frames": [12, 18],
+    "full_topology_hold_seconds": [2, 4],
+    "inactive_opacity": [0.16, 0.24],
+    "context_opacity": [0.55, 0.70]
+  },
+  "policy": {
+    "preserve_aspect_ratio": true,
+    "allow_cover_crop": false,
+    "allow_uniform_full_graph_pan": false,
+    "canonical_source": "docs/project-causality-architecture/src/*.mmd",
+    "preferred_render_source": "docs/project-causality-architecture/rendered/*.svg",
+    "subtitles_added_after_architecture_render": true,
+    "diagram_screen_time_seconds": 466,
+    "diagram_screen_time_ratio": 0.2589
+  },
+  "shots": [
+    {
+      "id": "arch-09-system-thesis",
+      "segment_id": "01-project-thesis",
+      "diagram_id": "09-product-family",
+      "source_aspect_ratio": 1.269,
+      "start_seconds": 69,
+      "end_seconds": 95,
+      "diagram_seconds": 26,
+      "mode": "layer_reveal",
+      "purpose": "说明独立产品为何共享同一工程骨架",
+      "beats": [
+        {"start": 69, "end": 73, "kind": "diagram", "view": "topology_silhouette", "focus": ["F1", "F2", "F3", "F4", "F5"]},
+        {"start": 73, "end": 81, "kind": "diagram", "view": "foundation_lane", "focus": ["F1", "F2", "F3", "F4", "F5"]},
+        {"start": 81, "end": 87, "kind": "diagram", "view": "player_products", "focus": ["M1", "M2", "M3", "PA"]},
+        {"start": 87, "end": 92, "kind": "diagram", "view": "developer_products", "focus": ["T1", "T2", "T3", "DA"]},
+        {"start": 92, "end": 95, "kind": "diagram", "view": "feedback_exit", "focus": ["USERS", "FEEDBACK"]}
+      ]
+    },
+    {
+      "id": "arch-01-four-layer-map",
+      "segment_id": "02-four-layer-map",
+      "diagram_id": "01-overall-system",
+      "source_aspect_ratio": 0.910,
+      "start_seconds": 125,
+      "end_seconds": 170,
+      "diagram_seconds": 45,
+      "mode": "semantic_vertical_tour",
+      "purpose": "建立咒、术、道、辉煌愿景四层地图",
+      "beats": [
+        {"start": 125, "end": 129, "kind": "diagram", "view": "topology_silhouette", "focus": ["H", "D1", "S1", "Z1", "A"]},
+        {"start": 129, "end": 140, "kind": "diagram", "view": "spell_layer", "focus": ["Z1", "Z2", "Z3", "Z4"]},
+        {"start": 140, "end": 153, "kind": "diagram", "view": "method_layer", "focus": ["S1", "S2", "S3", "S4", "S5", "S6"]},
+        {"start": 153, "end": 161, "kind": "diagram", "view": "principle_layer", "focus": ["H", "D1", "D2", "D3"]},
+        {"start": 161, "end": 170, "kind": "diagram", "view": "vision_layer", "focus": ["A", "B", "C", "E"]}
+      ]
+    },
+    {
+      "id": "arch-06-agent-current-state",
+      "segment_id": "09-agent-current-state",
+      "diagram_id": "06-agent-mcp-architecture",
+      "source_aspect_ratio": 1.227,
+      "start_seconds": 775,
+      "end_seconds": 795,
+      "diagram_seconds": 20,
+      "mode": "match_cut_node_tour",
+      "purpose": "把实机小型 OODA 映射到观察、动作和独立验证",
+      "beats": [
+        {"start": 775, "end": 781, "kind": "diagram", "view": "game_to_query", "focus": ["G1", "G3", "N1", "N2", "N3", "M1", "Q"]},
+        {"start": 781, "end": 789, "kind": "diagram", "view": "agent_ooda", "focus": ["P2", "P3", "P4", "P5"]},
+        {"start": 789, "end": 795, "kind": "diagram", "view": "postcondition", "focus": ["G2", "G3", "P6", "E2", "E3"]}
+      ]
+    },
+    {
+      "id": "arch-10-generation-projection",
+      "segment_id": "11-generation",
+      "diagram_id": "10-source-of-truth-projections",
+      "source_aspect_ratio": 0.749,
+      "start_seconds": 906,
+      "end_seconds": 935,
+      "diagram_seconds": 29,
+      "mode": "vertical_four_stop",
+      "purpose": "解释单一权威来源与生成投影",
+      "beats": [
+        {"start": 906, "end": 912, "kind": "diagram", "view": "authority", "focus": ["O", "D", "S", "V"]},
+        {"start": 912, "end": 920, "kind": "diagram", "view": "generator", "focus": ["D", "S", "V", "GEN"]},
+        {"start": 920, "end": 928, "kind": "diagram", "view": "projections", "focus": ["GEN", "P1", "P2", "P3", "P4", "P5"]},
+        {"start": 928, "end": 935, "kind": "diagram", "view": "delivery_and_return", "focus": ["PARITY", "REL", "LIVE", "FIX", "RET1", "RET2", "BAN"]}
+      ]
+    },
+    {
+      "id": "arch-07-acceptance",
+      "segment_id": "12-validation-open-kaishek",
+      "diagram_id": "07-automated-acceptance",
+      "source_aspect_ratio": 3.332,
+      "start_seconds": 985,
+      "end_seconds": 1020,
+      "diagram_seconds": 35,
+      "mode": "path_highlight_two_window",
+      "purpose": "说明离线语义、真实 CK3、智能体与发布门如何接力",
+      "beats": [
+        {"start": 985, "end": 989, "kind": "diagram", "view": "topology_silhouette", "focus": ["I", "OKQ", "CK", "CLS", "GREEN", "RED"]},
+        {"start": 989, "end": 999, "kind": "diagram", "view": "offline_lane", "focus": ["I", "G", "L0", "OKQ", "OK", "NA", "NOTE"]},
+        {"start": 999, "end": 1010, "kind": "diagram", "view": "production_lane", "focus": ["BLD", "ISO", "RUN", "CK", "MCP", "OODA"]},
+        {"start": 1010, "end": 1020, "kind": "diagram", "view": "verdict_lane", "focus": ["POST", "CLS", "GREEN", "GCLEAN", "GATE", "RED", "RCLEAN", "NEXT"]}
+      ]
+    },
+    {
+      "id": "arch-06-mcp-construction",
+      "segment_id": "13-mcp",
+      "diagram_id": "06-agent-mcp-architecture",
+      "source_aspect_ratio": 1.227,
+      "start_seconds": 1072,
+      "end_seconds": 1105,
+      "diagram_seconds": 33,
+      "mode": "vertical_lane_tour",
+      "purpose": "解释 typed query、semantic action、ACK 与后置验证",
+      "beats": [
+        {"start": 1072, "end": 1076, "kind": "diagram", "view": "topology_silhouette", "focus": ["G1", "N1", "P1", "E1"]},
+        {"start": 1076, "end": 1087, "kind": "diagram", "view": "capability_plane", "focus": ["G1", "N1", "N2", "N3", "M1", "Q", "A"]},
+        {"start": 1087, "end": 1096, "kind": "diagram", "view": "planner_executor", "focus": ["P2", "P3", "P4", "P5"]},
+        {"start": 1096, "end": 1105, "kind": "diagram", "view": "verifier_evidence", "focus": ["G2", "G3", "P6", "P7", "E1", "E2", "E3", "E4"]}
+      ]
+    },
+    {
+      "id": "arch-06-ocr-boundary",
+      "segment_id": "14-ocr-boundary",
+      "diagram_id": "06-agent-mcp-architecture",
+      "source_aspect_ratio": 1.227,
+      "start_seconds": 1150,
+      "end_seconds": 1172,
+      "diagram_seconds": 22,
+      "mode": "live_split_screen_extraction",
+      "purpose": "区分玩家可见画面、OCR 映射与 typed state",
+      "beats": [
+        {"start": 1150, "end": 1161, "kind": "diagram_split", "view": "visible_perception", "focus": ["G2", "P2", "P6", "E2"], "live_side": "left_60_percent"},
+        {"start": 1161, "end": 1172, "kind": "diagram_split", "view": "typed_state_priority", "focus": ["G1", "G3", "N1", "N3", "Q", "P6"], "live_side": "left_60_percent"}
+      ]
+    },
+    {
+      "id": "arch-08-normative-authority",
+      "segment_id": "18-doc-test-code",
+      "diagram_id": "08-authority-and-evidence",
+      "source_aspect_ratio": 3.419,
+      "start_seconds": 1297,
+      "end_seconds": 1327,
+      "diagram_seconds": 30,
+      "mode": "single_rail",
+      "purpose": "只讲规范权威：意图、文档、测试、代码",
+      "beats": [
+        {"start": 1297, "end": 1314, "kind": "diagram", "view": "normative_order", "focus": ["N1", "N2", "N3", "N4"]},
+        {"start": 1314, "end": 1327, "kind": "diagram", "view": "conflict_resolution", "focus": ["N4", "C", "R1", "R2", "R3"]}
+      ]
+    },
+    {
+      "id": "arch-06-state-over-ack",
+      "segment_id": "19-state-over-ack",
+      "diagram_id": "06-agent-mcp-architecture",
+      "source_aspect_ratio": 1.227,
+      "start_seconds": 1358,
+      "end_seconds": 1375,
+      "diagram_seconds": 17,
+      "mode": "edge_argument",
+      "purpose": "证明 ACK 只是执行阶段，状态才是结果",
+      "beats": [
+        {"start": 1358, "end": 1365, "kind": "diagram", "view": "ack_is_not_state", "focus": ["P5", "P6"]},
+        {"start": 1365, "end": 1375, "kind": "diagram", "view": "independent_postcondition", "focus": ["G2", "G3", "Q", "P6", "E2", "E3"]}
+      ]
+    },
+    {
+      "id": "arch-08-empirical-readiness",
+      "segment_id": "20-evidence-exact-build",
+      "diagram_id": "08-authority-and-evidence",
+      "source_aspect_ratio": 3.419,
+      "start_seconds": 1402,
+      "end_seconds": 1432,
+      "diagram_seconds": 30,
+      "mode": "single_rail",
+      "purpose": "只讲经验事实与 readiness 升级",
+      "beats": [
+        {"start": 1402, "end": 1417, "kind": "diagram", "view": "empirical_order", "focus": ["F1", "F2", "F3", "F4", "C"]},
+        {"start": 1417, "end": 1432, "kind": "diagram", "view": "red_to_readiness", "focus": ["C", "R1", "R2", "R3", "READY", "WARN"]}
+      ]
+    },
+    {
+      "id": "arch-11-vision-intro",
+      "segment_id": "23-why-loops",
+      "diagram_id": "11-four-loop-flywheel",
+      "source_aspect_ratio": 0.815,
+      "start_seconds": 1534,
+      "end_seconds": 1556,
+      "diagram_seconds": 22,
+      "mode": "video_reflow_16x9",
+      "purpose": "声明四环是互相喂养的系统，而不是四条并列流水线",
+      "beats": [
+        {"start": 1534, "end": 1541, "kind": "diagram", "view": "incomplete_ring", "focus": ["H", "A", "B", "C", "D", "P"]},
+        {"start": 1541, "end": 1550, "kind": "diagram", "view": "loop_feeding", "focus": ["A", "B", "C", "D"]},
+        {"start": 1550, "end": 1556, "kind": "diagram", "view": "human_and_external_reality", "focus": ["P", "H"]}
+      ]
+    },
+    {
+      "id": "arch-02-loop-a",
+      "segment_id": "24-loop-a",
+      "diagram_id": "02-loop-a-player-products",
+      "source_aspect_ratio": 4.438,
+      "start_seconds": 1560,
+      "end_seconds": 1600,
+      "diagram_seconds": 28,
+      "mode": "wide_two_window_with_live_cutaway",
+      "purpose": "玩家产品环：从问题到合同、实机与下一版",
+      "beats": [
+        {"start": 1560, "end": 1563, "kind": "diagram", "view": "topology_silhouette", "focus": ["A1", "A4", "A6", "A7"]},
+        {"start": 1563, "end": 1572, "kind": "diagram", "view": "definition_and_build", "focus": ["A1", "A2", "A3", "A4"]},
+        {"start": 1572, "end": 1584, "kind": "live_cutaway", "view": "player_choice_to_result", "preferred_sources": ["eternal_recurrence", "reclaim_the_motherland"]},
+        {"start": 1584, "end": 1594, "kind": "diagram", "view": "reality_to_next_version", "focus": ["A5", "A6", "A7", "A1"]},
+        {"start": 1594, "end": 1600, "kind": "diagram", "view": "red_return", "focus": ["A4", "AR", "A2"]}
+      ]
+    },
+    {
+      "id": "arch-03-loop-b",
+      "segment_id": "25-loop-b",
+      "diagram_id": "03-loop-b-agent-capability",
+      "source_aspect_ratio": 5.046,
+      "start_seconds": 1600,
+      "end_seconds": 1640,
+      "diagram_seconds": 28,
+      "mode": "wide_three_window_with_live_cutaway",
+      "purpose": "智能体能力环：真实 blocker 驱动新的观察与动作",
+      "beats": [
+        {"start": 1600, "end": 1603, "kind": "diagram", "view": "topology_silhouette", "focus": ["B1", "B4", "B7", "B9"]},
+        {"start": 1603, "end": 1612, "kind": "diagram", "view": "blocker_and_research", "focus": ["B1", "B2", "B3", "B4", "B5"]},
+        {"start": 1612, "end": 1624, "kind": "live_cutaway", "view": "production_ooda_and_artifact", "preferred_sources": ["paused_snapshot", "semantic_action", "checkpoint_artifact"]},
+        {"start": 1624, "end": 1634, "kind": "diagram", "view": "ooda_to_next_blocker", "focus": ["B6", "B7", "B8", "B9", "B1"]},
+        {"start": 1634, "end": 1640, "kind": "diagram", "view": "failed_postcondition", "focus": ["B7", "BR", "B4"]}
+      ]
+    },
+    {
+      "id": "arch-04-loop-c",
+      "segment_id": "26-loop-c",
+      "diagram_id": "04-loop-c-tooling-semantics",
+      "source_aspect_ratio": 4.151,
+      "start_seconds": 1640,
+      "end_seconds": 1680,
+      "diagram_seconds": 28,
+      "mode": "wide_three_window_with_live_cutaway",
+      "purpose": "工具与语义环：离线模型经 exact-build 差分后才能复用",
+      "beats": [
+        {"start": 1640, "end": 1643, "kind": "diagram", "view": "topology_silhouette", "focus": ["C1", "C2", "C6", "C7", "C9"]},
+        {"start": 1643, "end": 1652, "kind": "diagram", "view": "new_semantics_to_runtime", "focus": ["C1", "C2", "C3", "C4", "C5"]},
+        {"start": 1652, "end": 1664, "kind": "live_cutaway", "view": "trace_and_differential", "preferred_sources": ["open_kaishek_trace", "ck3_state_delta", "differential_result"]},
+        {"start": 1664, "end": 1674, "kind": "diagram", "view": "exact_build_certification", "focus": ["C5", "CK3", "C6", "C7", "C8", "C9"]},
+        {"start": 1674, "end": 1680, "kind": "diagram", "view": "difference_red_return", "focus": ["C6", "RED", "C2"]}
+      ]
+    },
+    {
+      "id": "arch-05-loop-d",
+      "segment_id": "27-loop-d",
+      "diagram_id": "05-loop-d-evidence-release",
+      "source_aspect_ratio": 4.143,
+      "start_seconds": 1680,
+      "end_seconds": 1720,
+      "diagram_seconds": 28,
+      "mode": "wide_three_window_with_live_cutaway",
+      "purpose": "证据与发行环：GREEN 转化为可信交付并回收外部现实",
+      "beats": [
+        {"start": 1680, "end": 1683, "kind": "diagram", "view": "topology_silhouette", "focus": ["D1", "D4", "D7", "D8", "D9"]},
+        {"start": 1683, "end": 1692, "kind": "diagram", "view": "green_to_claim", "focus": ["D1", "D2", "D3", "D4"]},
+        {"start": 1692, "end": 1704, "kind": "live_cutaway", "view": "release_and_publication", "preferred_sources": ["release_manifest", "workshop_page", "promo_frame"]},
+        {"start": 1704, "end": 1714, "kind": "diagram", "view": "delivery_to_feedback", "focus": ["D5", "D6", "D7", "D8", "D9", "D1"]},
+        {"start": 1714, "end": 1720, "kind": "diagram", "view": "hold_and_rebuild", "focus": ["D4", "HOLD", "D8", "REBUILD", "D5"]}
+      ]
+    },
+    {
+      "id": "arch-11-interlock-human",
+      "segment_id": "28-interlock-human",
+      "diagram_id": "11-four-loop-flywheel",
+      "source_aspect_ratio": 0.815,
+      "start_seconds": 1722,
+      "end_seconds": 1753,
+      "diagram_seconds": 31,
+      "mode": "video_reflow_16x9_with_avatar",
+      "purpose": "显示四环互相喂养，并把人的价值判断放回系统中心",
+      "avatar_source": "images/project_causality/character/humanized_avatar_anchor.png",
+      "beats": [
+        {"start": 1722, "end": 1728, "kind": "diagram", "view": "avatar_center_and_four_loops", "focus": ["H", "A", "B", "C", "D"]},
+        {"start": 1728, "end": 1738, "kind": "diagram", "view": "product_agent_tool_feeding", "focus": ["A", "B", "C"]},
+        {"start": 1738, "end": 1747, "kind": "diagram", "view": "all_to_evidence", "focus": ["A", "B", "C", "D"]},
+        {"start": 1747, "end": 1753, "kind": "diagram", "view": "external_reality_returns_to_human", "focus": ["D", "P", "H"]}
+      ]
+    },
+    {
+      "id": "arch-01-finale-collapse",
+      "segment_id": "29-finale",
+      "diagram_id": "01-overall-system",
+      "source_aspect_ratio": 0.910,
+      "start_seconds": 1768,
+      "end_seconds": 1782,
+      "diagram_seconds": 14,
+      "mode": "causal_spine_collapse",
+      "purpose": "将四层与四环压回一条可复述的因果脊柱",
+      "beats": [
+        {"start": 1768, "end": 1774, "kind": "diagram", "view": "products_to_method", "focus": ["Z1", "Z2", "Z3", "Z4", "S2", "S3", "S4", "S5"]},
+        {"start": 1774, "end": 1782, "kind": "diagram", "view": "method_to_principle_to_vision", "focus": ["S1", "D1", "D2", "D3", "H", "A", "B", "C", "E"]}
+      ]
+    }
+  ],
+  "coverage": [
+    "01-overall-system",
+    "02-loop-a-player-products",
+    "03-loop-b-agent-capability",
+    "04-loop-c-tooling-semantics",
+    "05-loop-d-evidence-release",
+    "06-agent-mcp-architecture",
+    "07-automated-acceptance",
+    "08-authority-and-evidence",
+    "09-product-family",
+    "10-source-of-truth-projections",
+    "11-four-loop-flywheel"
+  ]
+}

@@ -32,6 +32,7 @@ artifacts/project-causality/2026-09-19-r6/
 
 - [`radio-script.json`](radio-script.json)：31 个宏段、86 个实际旁白 cue，精确覆盖 1,800 秒；
 - [`structure.json`](structure.json)：30 个论证段与结尾的宏观时间合同；
+- [`architecture-shot-plan.json`](architecture-shot-plan.json)：11 张架构图在 2560×1440 成片中的逐镜时间码、焦点节点、安全区和实机插镜合同；
 - [`chapter-gates.json`](chapter-gates.json)：四个 20 秒章门、主题宣言与声效绑定；
 - [`sfx/`](sfx/)：由 `tools/generate_project_causality_chapter_sfx.py` 确定性生成的四个 PCM 声效；
 - [`music/suno-score-plan.md`](music/suno-score-plan.md)：项目所有者手动生成配乐时使用的六轨接力单。

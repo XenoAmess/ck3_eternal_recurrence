@@ -320,6 +320,10 @@ GREEN → artifact → 可信展示 → release/Workshop → 外部反馈 → �
 7. **Music and sound**：项目所有者操作 Suno，后期完成剪裁、ducking、音效与响度；
 8. **Continuous review**：完整 1× 观看、事实审计、隐私检查、签核与最终导出。
 
+第 5 步的 2560×1440 具体镜头设计已经拆到
+[《架构图视频化导演方案》](project-causality-architecture/video-integration-2560x1440.md)。该方案明确禁止把纵向图或超宽图直接拉伸/缩放进成片，并为
+11 张图逐一规定了时间码、阅读安全区、相机视窗和实机插镜。
+
 当前 8:20 无音乐预演中的人物资产、部分实机 selects、中文声线、双语字幕技术和来源 sidecar 可以复用；其时间线、镜头密度和标题卡节奏
 不能直接扩展成 30 分钟正片。
 

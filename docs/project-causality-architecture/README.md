@@ -88,6 +88,12 @@ Official MCP、智能体或产品 runner 裁决。无论 GREEN 还是 RED，流�
 
 ![四环咬合飞轮](rendered/11-four-loop-flywheel.svg)
 
+## 视频化使用
+
+30 分钟正片不会把这些长图直接缩放成 16:9 插图。逐图时间码、安全区、局部巡航、四环实机插镜与 11 号图的横向重排规则见
+[《架构图视频化导演方案》](video-integration-2560x1440.md)；机器可读分镜见
+[`promo/project_causality/30m/architecture-shot-plan.json`](../../promo/project_causality/30m/architecture-shot-plan.json)。
+
 ## 修改与渲染
 
 只修改 `src/*.mmd`、`mermaid-config.json` 或 `architecture.css`。渲染物由脚本统一生成，不直接修补 SVG/PNG：
