@@ -1,6 +1,12 @@
 {
   "schema": "project-causality-r14-music-selection.v1",
-  "status": "awaiting-owner-operated-continuations",
+  "status": "awaiting-five-final-whole-song-downloads",
+  "download_budget": {
+    "remaining_before_continuations": 8,
+    "planned_final_downloads": 5,
+    "reserved_rework_downloads": 3,
+    "download_intermediate_candidates": false
+  },
   "source_directory": "C:/Users/xenoa/OneDrive/Project因果律/音乐/inbox",
   "audit_directory": "artifacts/project-causality/2026-09-20-r14/music-audit",
   "tracks": [
@@ -20,7 +26,8 @@
         {
           "from_seconds": 340.0,
           "duration_seconds": 330.0,
-          "expected_files": ["01-spell-continue-a.wav", "01-spell-continue-b.wav"]
+          "browser_a_b_audition_only": true,
+          "expected_final_download": "01-spell-final.wav"
         }
       ]
     },
@@ -33,7 +40,8 @@
         {
           "from_seconds": 340.0,
           "duration_seconds": 225.0,
-          "expected_files": ["02-robert-continue-a.wav", "02-robert-continue-b.wav"]
+          "browser_a_b_audition_only": true,
+          "expected_final_download": "02-robert-final.wav"
         }
       ]
     },
@@ -46,12 +54,14 @@
         {
           "from_seconds": 340.0,
           "duration_seconds": 360.0,
-          "expected_files": ["03-method-continue1-a.wav", "03-method-continue1-b.wav"]
+          "browser_a_b_audition_only": true,
+          "download": false
         },
         {
           "from_seconds": 680.0,
           "duration_seconds": 120.0,
-          "expected_files": ["03-method-continue2-a.wav", "03-method-continue2-b.wav"],
+          "browser_a_b_audition_only": true,
+          "expected_final_download": "03-method-final.wav",
           "depends_on_selected_previous_continuation": true
         }
       ]
@@ -65,7 +75,8 @@
         {
           "from_seconds": 250.0,
           "duration_seconds": 180.0,
-          "expected_files": ["04-principle-continue-a.wav", "04-principle-continue-b.wav"]
+          "browser_a_b_audition_only": true,
+          "expected_final_download": "04-principle-final.wav"
         }
       ]
     },
@@ -78,7 +89,8 @@
         {
           "from_seconds": 340.0,
           "duration_seconds": 360.0,
-          "expected_files": ["05-vision-continue-a.wav", "05-vision-continue-b.wav"]
+          "browser_a_b_audition_only": true,
+          "expected_final_download": "05-vision-final.wav"
         }
       ]
     }

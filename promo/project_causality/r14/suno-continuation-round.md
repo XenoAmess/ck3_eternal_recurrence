@@ -2,16 +2,20 @@
 
 第一轮 12 个 WAV 已完成媒体、响度和频谱审计。本轮只操作下面 5 条入选母带；`00-prologue-a` 已经足够长，不续写。
 
+## 下载额度规则
+
+当前只剩 8 次下载额度。本轮生成出的 A/B 候选全部先在 Suno 网页内试听，**不要下载候选文件**。每个章节选定最终版本并生成 Whole Song 后，只下载该章的一条最终整曲：五个长章节共消耗 5 次，保留 3 次用于返工。
+
 ## 操作总表
 
 | 顺序 | Suno 中选择的母带 | Continue from | Duration | 下一步 |
 |---:|---|---:|---:|---|
-| 1 | `01-spell-a` | `05:40` | `05:30` | 两个候选都下载 |
-| 2 | `02-robert-b` | `05:40` | `03:45` | 两个候选都下载 |
-| 3 | `03-method-a` | `05:40` | `06:00` | 先从两个候选中选一条，再做第 4 步 |
-| 4 | 第 3 步入选后的整曲 | `11:20` | `02:00` | 两个候选都下载 |
-| 5 | `04-principle-a` | `04:10` | `03:00` | 两个候选都下载 |
-| 6 | `05-vision-a` | `05:40` | `06:00` | 两个候选都下载 |
+| 1 | `01-spell-a` | `05:40` | `05:30` | 网页试听 A/B，选一条，Whole Song 只下载 1 次 |
+| 2 | `02-robert-b` | `05:40` | `03:45` | 网页试听 A/B，选一条，Whole Song 只下载 1 次 |
+| 3 | `03-method-a` | `05:40` | `06:00` | 网页试听 A/B，选一条，不下载，直接做第 4 步 |
+| 4 | 第 3 步入选后的整曲 | `11:20` | `02:00` | 网页试听 A/B，选一条，Whole Song 只下载 1 次 |
+| 5 | `04-principle-a` | `04:10` | `03:00` | 网页试听 A/B，选一条，Whole Song 只下载 1 次 |
+| 6 | `05-vision-a` | `05:40` | `06:00` | 网页试听 A/B，选一条，Whole Song 只下载 1 次 |
 
 `04-principle-a` 实际只生成到 `04:33.600`，因此这里使用 `04:10 + 03:00`；不要再照旧表填写 `05:40 + 01:30`。
 
@@ -33,7 +37,7 @@
 [End]
 ```
 
-下载命名：`01-spell-continue-a.wav`、`01-spell-continue-b.wav`。
+网页内选定 A/B 后，生成 Whole Song，只下载并命名为 `01-spell-final.wav`。
 
 ## 2 — 罗贝尔
 
@@ -53,7 +57,7 @@
 [End]
 ```
 
-下载命名：`02-robert-continue-a.wav`、`02-robert-continue-b.wav`。
+网页内选定 A/B 后，生成 Whole Song，只下载并命名为 `02-robert-final.wav`。
 
 ## 3、4 — 术
 
@@ -71,7 +75,7 @@
 [Interlude - verification waits]
 ```
 
-下载命名：`03-method-continue1-a.wav`、`03-method-continue1-b.wav`。先选出其中一条，再打开它形成的整曲，从 `11:20` 续写，Duration=`02:00`：
+不要下载 Continue 1。直接在网页试听 A/B，选出其中一条，再打开它形成的整曲，从 `11:20` 续写，Duration=`02:00`：
 
 ```text
 [Continue - final proof]
@@ -83,7 +87,7 @@
 [End]
 ```
 
-下载命名：`03-method-continue2-a.wav`、`03-method-continue2-b.wav`。
+第二次续写仍先在网页试听 A/B。选定后生成 Whole Song，只下载并命名为 `03-method-final.wav`。
 
 ## 5 — 道
 
@@ -99,7 +103,7 @@
 [End]
 ```
 
-下载命名：`04-principle-continue-a.wav`、`04-principle-continue-b.wav`。
+网页内选定 A/B 后，生成 Whole Song，只下载并命名为 `04-principle-final.wav`。
 
 ## 6 — 辉煌愿景
 
@@ -119,7 +123,7 @@
 [End]
 ```
 
-下载命名：`05-vision-continue-a.wav`、`05-vision-continue-b.wav`。
+网页内选定 A/B 后，生成 Whole Song，只下载并命名为 `05-vision-final.wav`。
 
 ## 交回位置
 
@@ -129,4 +133,24 @@
 C:/Users/xenoa/OneDrive/Project因果律/音乐/inbox/
 ```
 
-第 3 步需要先选择 Continue 1 的 A/B 才能执行第 4 步；其余步骤可以独立完成。不要对未入选的第一轮候选执行续写。
+最终 inbox 只需要新增 5 个文件：
+
+```text
+01-spell-final.wav
+02-robert-final.wav
+03-method-final.wav
+04-principle-final.wav
+05-vision-final.wav
+```
+
+第 3 步需要先在网页内选择 Continue 1 的 A/B 才能执行第 4 步；其余步骤可以独立完成。不要对未入选的第一轮候选执行续写，也不要下载任何中间候选。
+
+| 用途 | 下载次数 |
+|---|---:|
+| 咒最终整曲 | 1 |
+| 罗贝尔最终整曲 | 1 |
+| 术最终整曲 | 1 |
+| 道最终整曲 | 1 |
+| 辉煌愿景最终整曲 | 1 |
+| 保留返工额度 | 3 |
+| 合计 | 8 |
