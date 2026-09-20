@@ -39,7 +39,7 @@ py tools\build_project_causality_music_preview.py ^
 - OneDrive：`Project因果律/审片/Project_Causality_r18_Music_Open_No_Duck_No_Gate_SFX.*`
 - 英文字幕：`Project_Causality_r18.en.srt`；从 r18 最终 MP4 的内嵌英语轨直接导出，共 274 条，覆盖 `00:00:00.200–00:47:14.232`
 - OneDrive 英文字幕：`Project因果律/审片/Project_Causality_r18_Music_Open_No_Duck_No_Gate_SFX.en.srt`
-- 英文字幕 SHA-256：`5EDCEBC542169355F0C045CF314E4E454F0965F6B57A0CD63E38C381B8CA4DB3`
+- 英文字幕 SHA-256：`DB752E20A666E0913AFC96DEAA37BEBF16B99E73414A81DE836BD25B64ED40C7`
 - 时长：`47:14.915`；2560×1440、H.264、AAC 48 kHz stereo
 - 响度：`-16.0 LUFS integrated / 4.2 LU LRA / -1.5 dBFS true peak`
 - SHA-256：`E7ACAC3C0C47655EDBB247FAF724ECDD332FE75A6D2E7674C9E8E0274BD5BA28`
