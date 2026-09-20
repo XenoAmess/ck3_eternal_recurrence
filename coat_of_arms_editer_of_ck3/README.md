@@ -14,6 +14,8 @@ Vue 3 + Element Plus + TypeScript 实现的独立 CK3 静态纹章代码编辑�
   exact 1.19.0.6 pack 覆盖基础游戏 CoA 目录 1,630/1,630 个 DDS，自动拟合只使用 1,577 个可粘贴 registered emblem；
 - 用户决定搜索预算，产品不设置 12、1,024 或 10,000 等硬上限，也不静默 clamp。预算是最大候选数，不承诺无贡献层；
 - Web Worker 提供运行、暂停、刷新后恢复、取消、自然收敛和失败隔离；checkpoint 绑定输入 SHA-256、素材包及搜索游标；
+- 安全 checkpoint 可导出为 `ck3-coa-portable-fit-checkpoint-v1` 文件，payload 由 SHA-256 绑定；导入会重新检查文件大小、
+  RGBA 编码、输入/素材包身份、预算、算法和搜索游标，为 IndexedDB 配额失败或站点数据丢失提供人工恢复路径；
 - WebGL2 texture-array 与 GPU reduction 批量排序背景和原生图形候选，并以 CPU reference 检查指标及完整稳定排序；
   WebGL2 不可用、上下文丢失或超出误差门禁时 fail closed 到 CPU；
 - 大预算原生 tile 路径使用覆盖安全和高分辨率接缝门禁，避免旧 0.96 缩放暴露底色规则网格；
@@ -74,4 +76,5 @@ Quarkus backend 与浏览器 REST client 已在 Beta WP7 退役。原生研究�
 
 已完成的原生 Apply/Copy、王朝 Finish、15 例语法矩阵和大于 128 KiB 的分块 MCP v2 证据均保留在
 [`../docs/ck3-coat-of-arms-clipboard-import-capability.md`](../docs/ck3-coat-of-arms-clipboard-import-capability.md)。
-当前未完成的原生 framebuffer 空间像素对照、DLC/mod effective VFS winner 和战役持久化仍按证据范围标为待验。
+当前尚未覆盖的 shader/VFS 组合原生 framebuffer、通用 DLC/mod runtime definition winner 和战役保存/重载持久化仍按证据范围标为待验；
+Gamma/1.0 收口顺序见 [`../docs/ck3-coat-of-arms-editor-gamma-plan.md`](../docs/ck3-coat-of-arms-editor-gamma-plan.md)。

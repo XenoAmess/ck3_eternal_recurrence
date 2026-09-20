@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
   createPersistedFitCheckpoint,
+  parsePortableFitCheckpoint,
   restorePersistedFitInput,
+  serializePortableFitCheckpoint,
   validatePersistedFitCheckpoint,
 } from './fitCheckpointStore'
 import type { DecodedFitImage } from './imageInput'
@@ -87,5 +89,28 @@ describe('persisted fit checkpoint', () => {
       ...record,
       input: { ...record.input, sha256: 'C'.repeat(64) },
     })).toThrow('身份、预算或搜索游标不一致')
+  })
+
+  it('exports and imports a SHA-bound portable checkpoint with typed RGBA restored', async () => {
+    const record = createPersistedFitCheckpoint(
+      checkpoint(), input(), { packId: 'test-pack', manifestSha256: 'B'.repeat(64) },
+      '2026-09-21T00:00:00.000Z',
+    )
+    const text = await serializePortableFitCheckpoint(record)
+    const restored = await parsePortableFitCheckpoint(text)
+    expect(restored).toEqual(record)
+    expect(restored.input.image.pixels).toBeInstanceOf(Uint8ClampedArray)
+    expect(restored.input.image.pixels).not.toBe(record.input.image.pixels)
+    expect(text).toContain('ck3-coa-portable-fit-checkpoint-v1')
+  })
+
+  it('rejects tampered portable payloads before restoring search state', async () => {
+    const record = createPersistedFitCheckpoint(
+      checkpoint(), input(), { packId: 'test-pack', manifestSha256: 'B'.repeat(64) },
+    )
+    const envelope = JSON.parse(await serializePortableFitCheckpoint(record))
+    envelope.payload.layerBudget = 99
+    await expect(parsePortableFitCheckpoint(JSON.stringify(envelope)))
+      .rejects.toThrow('payload SHA-256 不一致')
   })
 })

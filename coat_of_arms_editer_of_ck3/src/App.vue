@@ -50,8 +50,11 @@ import {
   clearPersistedFitCheckpoint,
   createPersistedFitCheckpoint,
   loadPersistedFitCheckpoint,
+  parsePortableFitCheckpoint,
+  PORTABLE_FIT_CHECKPOINT_MAX_BYTES,
   restorePersistedFitInput,
   savePersistedFitCheckpoint,
+  serializePortableFitCheckpoint,
   type PersistedFitCheckpoint,
 } from './domain/fitCheckpointStore'
 import { parseCoatOfArms } from './domain/parser'
@@ -145,6 +148,7 @@ const textureBusy = ref(false)
 const clipboardBusy = ref(false)
 const projectFileBusy = ref(false)
 const projectFileInput = ref<HTMLInputElement>()
+const fitCheckpointFileInput = ref<HTMLInputElement>()
 const assetPackDirectoryInput = ref<HTMLInputElement>()
 const undoHistory = ref<{ source: string, utf8Bytes: number }[]>([])
 const redoHistory = ref<{ source: string, utf8Bytes: number }[]>([])
@@ -557,6 +561,59 @@ function downloadTextFile(name: string, text: string, type: string) {
   anchor.download = name
   anchor.click()
   URL.revokeObjectURL(url)
+}
+
+function openFitCheckpointFilePicker() {
+  fitCheckpointFileInput.value?.click()
+}
+
+async function exportFitCheckpointFile() {
+  const checkpoint = fitCheckpoint.value
+  if (!checkpoint) {
+    ElMessage.warning('当前还没有可导出的安全 checkpoint')
+    return
+  }
+  try {
+    const record = checkpointRecord(checkpoint)
+    const text = await serializePortableFitCheckpoint(record)
+    downloadTextFile(
+      `ck3-coat-of-arms-fit-${record.savedAt.replaceAll(':', '-')}.coa-fit-checkpoint.json`,
+      text,
+      'application/json;charset=utf-8',
+    )
+    ElMessage.success('便携拟合 checkpoint 已导出；文件包含 SHA-256 完整性绑定')
+  } catch (error) {
+    ElMessage.error(`便携拟合 checkpoint 导出失败：${errorMessage(error)}`)
+  }
+}
+
+async function importFitCheckpointFile(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  try {
+    if (fitBusy.value || fitTaskState.value === 'paused') {
+      throw new Error('请先取消当前拟合，再导入另一个 checkpoint')
+    }
+    if (file.size > PORTABLE_FIT_CHECKPOINT_MAX_BYTES) {
+      throw new Error('便携拟合 checkpoint 超过 24 MiB 安全上限')
+    }
+    const record = await parsePortableFitCheckpoint(await file.text())
+    recoverableFitCheckpoint.value = record
+    fitCheckpointPersistenceStatus.value = 'pending'
+    try {
+      await enqueueFitCheckpointStorage(() => savePersistedFitCheckpoint(record))
+      fitCheckpointPersistenceStatus.value = 'saved'
+      ElMessage.success('便携拟合 checkpoint 已校验并写入浏览器恢复槽')
+    } catch (error) {
+      fitCheckpointPersistenceStatus.value = 'failed'
+      ElMessage.warning(`checkpoint 已在当前标签页校验，可直接恢复；浏览器恢复槽写入失败：${errorMessage(error)}`)
+    }
+  } catch (error) {
+    ElMessage.error(`便携拟合 checkpoint 导入失败：${errorMessage(error)}`)
+  } finally {
+    input.value = ''
+  }
 }
 
 function sourceEntry(value: string) {
@@ -2021,6 +2078,14 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
             multiple
             @change="importAssetPackDirectory"
           >
+          <input
+            ref="fitCheckpointFileInput"
+            class="hidden-file-input"
+            data-testid="fit-checkpoint-file-input"
+            type="file"
+            accept="application/json,.json"
+            @change="importFitCheckpointFile"
+          >
           <div class="fit-actions">
             <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">{{ t('reloadPack') }}</el-button>
             <el-button :loading="assetPackBusy" @click="openAssetPackDirectoryPicker">{{ t('importPackDirectory') }}</el-button>
@@ -2039,10 +2104,13 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
             <el-button :disabled="!fitBusy || !fitCheckpoint" @click="pauseImageFit">{{ t('pauseFit') }}</el-button>
             <el-button v-if="fitTaskState === 'paused'" type="primary" plain @click="resumeImageFit">{{ t('resumeFit') }}</el-button>
             <el-button :disabled="!fitBusy && fitTaskState !== 'paused'" @click="cancelImageFit()">{{ t('cancel') }}</el-button>
+            <el-button :disabled="fitBusy || fitTaskState === 'paused'" @click="openFitCheckpointFilePicker">{{ t('importFitCheckpointFile') }}</el-button>
+            <el-button :disabled="!fitCheckpoint" @click="exportFitCheckpointFile">{{ t('exportFitCheckpointFile') }}</el-button>
             <el-button :disabled="fitBusy || fitPruneBusy || !fitResult" @click="compressFitDocument">{{ t('compressBlocks') }}</el-button>
             <el-button :loading="fitPruneBusy" :disabled="fitBusy || fitPruneBusy || !fitResult" @click="pruneFitDocument">{{ t('exactPrune') }}</el-button>
             <el-button v-if="fitPruneBusy" @click="cancelInstancePrune()">{{ t('cancelPrune') }}</el-button>
           </div>
+          <small class="fit-budget-note">{{ t('portableCheckpointHelp') }}</small>
         </div>
         <div class="fit-report" :data-fit-evidence="fitEvidenceJson" :data-fit-task-state="fitTaskState" :data-fit-checkpoint-persistence="fitCheckpointPersistenceStatus">
           <strong>{{ t('runStatus') }}</strong>

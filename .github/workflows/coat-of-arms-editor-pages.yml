@@ -98,6 +98,7 @@ jobs:
             e2e/large-document-stress.spec.ts \
             e2e/mobile-layout.spec.ts \
             e2e/parent-preview-boundary.spec.ts \
+            e2e/portable-fit-checkpoint.spec.ts \
             e2e/production-no-backend.spec.ts \
             e2e/safe-svg-input.spec.ts \
             e2e/textured-emblem-preview.spec.ts \

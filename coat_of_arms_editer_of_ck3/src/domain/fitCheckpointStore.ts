@@ -7,6 +7,9 @@ const STORE_NAME = 'fit-state'
 const CHECKPOINT_KEY = 'latest'
 const SHA256 = /^[A-F0-9]{64}$/
 
+export const PORTABLE_FIT_CHECKPOINT_SCHEMA = 'ck3-coa-portable-fit-checkpoint-v1'
+export const PORTABLE_FIT_CHECKPOINT_MAX_BYTES = 24 * 1024 * 1024
+
 export interface PersistedFitCheckpoint {
   schema: 'ck3-coa-persisted-fit-checkpoint-v1'
   savedAt: string
@@ -28,6 +31,23 @@ export interface PersistedFitCheckpoint {
   }
   layerBudget: number
   checkpoint: ImageFitCheckpoint
+}
+
+interface PortableFitImage {
+  width: number
+  height: number
+  pixelsBase64: string
+}
+
+interface PortableFitCheckpointEnvelope {
+  schema: typeof PORTABLE_FIT_CHECKPOINT_SCHEMA
+  payloadSha256: string
+  payload: Omit<PersistedFitCheckpoint, 'input'> & {
+    input: Omit<PersistedFitCheckpoint['input'], 'image' | 'pyramid'> & {
+      image: PortableFitImage
+      pyramid: PortableFitImage[]
+    }
+  }
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -106,6 +126,122 @@ export function validatePersistedFitCheckpoint(value: unknown): PersistedFitChec
 
 function cloneImage(image: FitImage): FitImage {
   return { width: image.width, height: image.height, pixels: new Uint8ClampedArray(image.pixels) }
+}
+
+function encodeBase64(bytes: Uint8ClampedArray): string {
+  let binary = ''
+  const chunkSize = 0x8000
+  for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(offset, offset + chunkSize))
+  }
+  return btoa(binary)
+}
+
+function portableImage(image: FitImage): PortableFitImage {
+  return { width: image.width, height: image.height, pixelsBase64: encodeBase64(image.pixels) }
+}
+
+function decodePortableImage(value: unknown, label: string): FitImage {
+  if (!isObject(value)) throw new Error(`${label} 不是对象`)
+  const width = value.width
+  const height = value.height
+  const pixelsBase64 = value.pixelsBase64
+  if (
+    !Number.isSafeInteger(width) || !Number.isSafeInteger(height)
+    || (width as number) < 1 || (height as number) < 1
+    || (width as number) > 256 || (height as number) > 256
+    || typeof pixelsBase64 !== 'string'
+  ) throw new Error(`${label} 的尺寸或 RGBA 编码无效`)
+  const expectedBytes = (width as number) * (height as number) * 4
+  const expectedBase64Length = Math.ceil(expectedBytes / 3) * 4
+  if (
+    pixelsBase64.length !== expectedBase64Length
+    || !/^[A-Za-z0-9+/]*={0,2}$/.test(pixelsBase64)
+  ) throw new Error(`${label} 的 RGBA 编码长度无效`)
+  let binary: string
+  try {
+    binary = atob(pixelsBase64)
+  } catch {
+    throw new Error(`${label} 的 RGBA Base64 无效`)
+  }
+  if (binary.length !== expectedBytes) throw new Error(`${label} 的 RGBA 数据长度无效`)
+  const pixels = new Uint8ClampedArray(expectedBytes)
+  for (let index = 0; index < binary.length; index += 1) pixels[index] = binary.charCodeAt(index)
+  if (encodeBase64(pixels) !== pixelsBase64) throw new Error(`${label} 的 RGBA Base64 不是规范编码`)
+  return { width: width as number, height: height as number, pixels }
+}
+
+async function sha256Utf8(value: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))
+  return [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase()
+}
+
+function portablePayload(record: PersistedFitCheckpoint): PortableFitCheckpointEnvelope['payload'] {
+  return {
+    ...record,
+    input: {
+      ...record.input,
+      image: portableImage(record.input.image),
+      pyramid: record.input.pyramid.map(portableImage),
+    },
+  }
+}
+
+export async function serializePortableFitCheckpoint(record: PersistedFitCheckpoint): Promise<string> {
+  const validated = validatePersistedFitCheckpoint(record)
+  const payload = portablePayload(validated)
+  const payloadText = JSON.stringify(payload)
+  const envelope: PortableFitCheckpointEnvelope = {
+    schema: PORTABLE_FIT_CHECKPOINT_SCHEMA,
+    payloadSha256: await sha256Utf8(payloadText),
+    payload,
+  }
+  const result = `${JSON.stringify(envelope, null, 2)}\n`
+  if (new TextEncoder().encode(result).length > PORTABLE_FIT_CHECKPOINT_MAX_BYTES) {
+    throw new Error('便携拟合 checkpoint 超过 24 MiB 安全上限')
+  }
+  return result
+}
+
+export async function parsePortableFitCheckpoint(text: string): Promise<PersistedFitCheckpoint> {
+  if (new TextEncoder().encode(text).length > PORTABLE_FIT_CHECKPOINT_MAX_BYTES) {
+    throw new Error('便携拟合 checkpoint 超过 24 MiB 安全上限')
+  }
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(text)
+  } catch {
+    throw new Error('便携拟合 checkpoint 不是合法 JSON')
+  }
+  if (!isObject(parsed) || parsed.schema !== PORTABLE_FIT_CHECKPOINT_SCHEMA) {
+    throw new Error('便携拟合 checkpoint 版本不兼容')
+  }
+  if (typeof parsed.payloadSha256 !== 'string' || !SHA256.test(parsed.payloadSha256)) {
+    throw new Error('便携拟合 checkpoint 缺少合法的 payload SHA-256')
+  }
+  const payload = parsed.payload
+  if (!isObject(payload)) throw new Error('便携拟合 checkpoint 缺少 payload')
+  const actualSha256 = await sha256Utf8(JSON.stringify(payload))
+  if (actualSha256 !== parsed.payloadSha256) {
+    throw new Error('便携拟合 checkpoint payload SHA-256 不一致')
+  }
+  const input = payload.input
+  if (!isObject(input) || !Array.isArray(input.pyramid)) {
+    throw new Error('便携拟合 checkpoint 缺少输入金字塔')
+  }
+  return validatePersistedFitCheckpoint({
+    ...payload,
+    input: {
+      ...input,
+      image: decodePortableImage(input.image, 'portable checkpoint input.image'),
+      pyramid: input.pyramid.map((image, index) => (
+        decodePortableImage(image, `portable checkpoint input.pyramid[${index}]`)
+      )),
+    },
+  })
 }
 
 export function createPersistedFitCheckpoint(
