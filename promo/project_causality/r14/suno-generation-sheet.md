@@ -4,7 +4,7 @@
 
 ## 第一轮只做什么
 
-先生成 6 条章节母带，每条点击一次 Generate，保留 Suno 同时给出的 A/B 两个候选，共 12 个原始文件。第一轮不要 Continue、Remaster 或 Cover。待试听选出母带后，只对咒、罗贝尔、术、辉煌愿景的入选版本做 Continue。
+先生成 6 条章节母带，每条点击一次 Generate，保留 Suno 同时给出的 A/B 两个候选，共 12 个原始文件。第一轮不要 Continue、Remaster 或 Cover。待试听选出母带后，再对咒、罗贝尔、术、道、辉煌愿景的入选版本执行表内续写；其中“术”需要两次续写。每一次 Generate 或 Continue 的 Duration 都不超过 Suno 当前允许的 `06:00`。
 
 ## 通用设置
 
@@ -14,23 +14,25 @@
 | Model | V5.5 优先；若账户没有则 V5 |
 | Instrumental | On |
 | Lyrics | 只放下列结构标签，不放说明文字或歌词 |
-| Duration | 每轨填写下列唯一具体值，不填写范围 |
+| Duration | 每次 Generate / Continue 填写下列唯一具体值；最高 `06:00` |
 | Style Influence | 默认 80% |
 | Weirdness | 默认 30% |
 | Exclude Styles | 使用每轨给出的 4 项，不再追加 |
 | 生成次数 | 每轨先生成 1 次，保留自动产生的 A/B 两版 |
 | 下载 | WAV 或账户允许的最高原始质量；不要预先归一化、转码或降噪 |
 
-当前 Suno 表单使用单一具体时长。下列 Duration 必须逐轨照填；结构标签只负责段落与情绪弧线，不再承担时长控制。数值已经包含后期裁切、交叉淡化和旁白 ducking 的余量。六条音乐共享“黑暗奇幻档案 + 克制机械脉冲 + 五音余烬母题”，但每章改变密度。
+当前 Suno 表单使用单一具体时长，且最高只能选择 `06:00`。下列 Duration 必须逐项照填；结构标签只负责段落与情绪弧线。续写从母带或上一段入选版本的指定时间开始，最终由后期裁切、交叉淡化和旁白 ducking 对齐。六条音乐共享“黑暗奇幻档案 + 克制机械脉冲 + 五音余烬母题”，但每章改变密度。
 
-| Track | 成片覆盖 | 第一轮母带 Duration | 母带入选后的 Continue Duration |
-|---|---:|---:|---:|
-| 00 — Cold Open / Prologue | `00:00–03:57` | `04:30` | 不续写 |
-| 01 — Spell / Visible Products | `03:57–14:29` | `08:00` | `03:30` |
-| 02 — Robert / Autonomous Campaign | `14:29–23:22` | `08:00` | `01:30` |
-| 03 — Method / Production Chain | `23:22–35:50` | `08:00` | `05:00` |
-| 04 — Principle / Evidence Has Weight | `35:50–42:30` | `07:00` | 不续写 |
-| 05 — Radiant Vision / Recurrence | `42:30–53:52` | `08:00` | `04:00` |
+| Track | 成片覆盖 | 第一轮母带 | 第二阶段 Continue 1 | 第三阶段 Continue 2 | 可用总长 |
+|---|---:|---:|---:|---:|---:|
+| 00 — Cold Open / Prologue | `00:00–03:57` | `04:30` | 不续写 | 不续写 | `04:30` |
+| 01 — Spell / Visible Products | `03:57–14:29` | `06:00` | 从 `05:40` 续写 `05:30` | 不续写 | `11:10` |
+| 02 — Robert / Autonomous Campaign | `14:29–23:22` | `06:00` | 从 `05:40` 续写 `03:45` | 不续写 | `09:25` |
+| 03 — Method / Production Chain | `23:22–35:50` | `06:00` | 从 `05:40` 续写 `06:00` | 从 `11:20` 续写 `02:00` | `13:20` |
+| 04 — Principle / Evidence Has Weight | `35:50–42:30` | `06:00` | 从 `05:40` 续写 `01:30` | 不续写 | `07:10` |
+| 05 — Radiant Vision / Recurrence | `42:30–53:52` | `06:00` | 从 `05:40` 续写 `06:00` | 不续写 | `11:40` |
+
+表中的“可用总长”已经扣除了 Continue 起点前的重叠部分，不是把各次 Duration 简单相加；每章都留有裁切余量。
 
 ## 00 — Cold Open / Prologue
 
@@ -73,8 +75,8 @@ no trailer braams
 ## 01 — Spell / Visible Products
 
 - 覆盖：`03:57–14:29`
-- 第一轮母带 Duration：`08:00`
-- 第二阶段 Continue Duration：`03:30`
+- 第一轮母带 Duration：`06:00`
+- 第二阶段：从母带 `05:40` Continue，Duration：`05:30`
 - Weirdness：30%
 - Style Influence：82%
 
@@ -95,15 +97,7 @@ Dark-fantasy orchestral documentary score, low strings, frame drums, hammered du
 
 [Interlude - inheritance deepens]
 
-[Development - systems awaken]
-
-[Bridge - proof over promise]
-
-[Finale - visible result]
-
-[Outro - controlled momentum]
-
-[End]
+[Development - systems gathering]
 ```
 
 ### Exclude Styles
@@ -115,11 +109,29 @@ no heroic fanfare
 no pop drums
 ```
 
+### Continue 1 Lyrics Box
+
+母带入选后，从 `05:40` 续写 `05:30`，Style Box 与 Exclude Styles 不变：
+
+```text
+[Continue - systems awaken]
+
+[Development - many products converge]
+
+[Bridge - proof over promise]
+
+[Finale - visible result]
+
+[Outro - controlled momentum]
+
+[End]
+```
+
 ## 02 — Robert / Autonomous Campaign
 
 - 覆盖：`14:29–23:22`
-- 第一轮母带 Duration：`08:00`
-- 第二阶段 Continue Duration：`01:30`
+- 第一轮母带 Duration：`06:00`
+- 第二阶段：从母带 `05:40` Continue，Duration：`03:45`
 - Weirdness：25%
 - Style Influence：85%
 
@@ -140,15 +152,7 @@ Medieval strategic documentary score, low-string ostinato, frame drums, muted br
 
 [Interlude - target weighed]
 
-[Development - deliberate march]
-
-[Bridge - controlled conflict]
-
-[Finale - earned victory]
-
-[Outro - campaign continues]
-
-[End]
+[Development - decision commits]
 ```
 
 ### Exclude Styles
@@ -160,11 +164,30 @@ no trailer braams
 no action bombast
 ```
 
+### Continue 1 Lyrics Box
+
+母带入选后，从 `05:40` 续写 `03:45`，Style Box 与 Exclude Styles 不变：
+
+```text
+[Continue - deliberate march]
+
+[Development - battlefield adapts]
+
+[Bridge - controlled conflict]
+
+[Finale - earned victory]
+
+[Outro - campaign continues]
+
+[End]
+```
+
 ## 03 — Method / Production Chain
 
 - 覆盖：`23:22–35:50`
-- 第一轮母带 Duration：`08:00`
-- 第二阶段 Continue Duration：`05:00`
+- 第一轮母带 Duration：`06:00`
+- 第二阶段：从母带 `05:40` Continue，Duration：`06:00`
+- 第三阶段：从 Continue 1 入选整曲的 `11:20` Continue，Duration：`02:00`
 - Weirdness：30%
 - Style Influence：85%
 
@@ -185,15 +208,7 @@ Orchestral-electronic process score, pizzicato low strings, paper percussion, mo
 
 [Interlude - offline semantics]
 
-[Development - state exposed]
-
-[Break - visible evidence only]
-
-[Bridge - release chain closes]
-
-[Outro - methods return evidence]
-
-[End]
+[Development - machinery turns]
 ```
 
 ### Exclude Styles
@@ -205,10 +220,41 @@ no festival drums
 no busy lead synth
 ```
 
+### Continue 1 Lyrics Box
+
+母带入选后，从 `05:40` 续写 `06:00`，Style Box 与 Exclude Styles 不变：
+
+```text
+[Continue - state exposed]
+
+[Development - interfaces align]
+
+[Break - visible evidence only]
+
+[Development - release path measured]
+
+[Interlude - verification waits]
+```
+
+### Continue 2 Lyrics Box
+
+先选定 Continue 1 的 A/B；再从入选整曲的 `11:20` 续写 `02:00`，Style Box 与 Exclude Styles 不变：
+
+```text
+[Continue - final proof]
+
+[Bridge - release chain closes]
+
+[Outro - methods return evidence]
+
+[End]
+```
+
 ## 04 — Principle / Evidence Has Weight
 
 - 覆盖：`35:50–42:30`
-- Duration：`07:00`
+- 第一轮母带 Duration：`06:00`
+- 第二阶段：从母带 `05:40` Continue，Duration：`01:30`
 - Weirdness：20%
 - Style Influence：88%
 
@@ -230,10 +276,6 @@ Sparse dark chamber score, low cello, distant ancient bell and dry paper percuss
 [Bridge - hierarchy of evidence]
 
 [Development - boundaries held]
-
-[Outro - verdict suspended]
-
-[End]
 ```
 
 ### Exclude Styles
@@ -245,11 +287,23 @@ no drum kit
 no cinematic boom
 ```
 
+### Continue 1 Lyrics Box
+
+母带入选后，从 `05:40` 续写 `01:30`，Style Box 与 Exclude Styles 不变：
+
+```text
+[Continue - verdict forms]
+
+[Outro - verdict suspended]
+
+[End]
+```
+
 ## 05 — Radiant Vision / Recurrence
 
 - 覆盖：`42:30–53:52`
-- 第一轮母带 Duration：`08:00`
-- 第二阶段 Continue Duration：`04:00`，并承担最终 CTA
+- 第一轮母带 Duration：`06:00`
+- 第二阶段：从母带 `05:40` Continue，Duration：`06:00`，并承担最终 CTA
 - Weirdness：35%
 - Style Influence：82%
 
@@ -270,15 +324,7 @@ Visionary orchestral-electronic documentary finale, rising strings, glass harmon
 
 [Interlude - human judgment remains]
 
-[Development - results become causes]
-
-[Bridge - retrospective luminous]
-
-[Finale - disciplined ascent]
-
-[Outro - recurrence continues]
-
-[End]
+[Development - recurrence gathers]
 ```
 
 ### Exclude Styles
@@ -288,6 +334,24 @@ no vocals
 no choir
 no EDM drop
 no heroic fanfare
+```
+
+### Continue 1 Lyrics Box
+
+母带入选后，从 `05:40` 续写 `06:00`，Style Box 与 Exclude Styles 不变：
+
+```text
+[Continue - results become causes]
+
+[Development - four loops interlock]
+
+[Bridge - retrospective luminous]
+
+[Finale - disciplined ascent]
+
+[Outro - recurrence continues]
+
+[End]
 ```
 
 ## 交回格式
@@ -319,4 +383,4 @@ no heroic fanfare
 - 结尾突然截断、无法自然裁切：优先淘汰。
 - Track 02 必须像真实策略推进，不像预告片大战；Track 04 必须是全片最稀疏的一首；Track 05 可以明亮，但不能变成英雄颂歌。
 
-选出母带后，再为 01、02、03、05 分别按 `03:30`、`01:30`、`05:00`、`04:00` 续写，并另行指定 Continue 起点和续写标签。不要在母带选择前自行续写。
+选出母带后，严格按总表顺序续写：01=`05:30`，02=`03:45`，03=`06:00` 后再 `02:00`，04=`01:30`，05=`06:00`。所有单次 Duration 均不超过 `06:00`。每一步都先在 A/B 中选出入选版本，再从该版本继续；不要同时从两个候选分叉续写。
