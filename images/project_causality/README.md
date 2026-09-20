@@ -32,6 +32,7 @@
 | [`promo/chapter_method_artistic-v2.png`](promo/chapter_method_artistic-v2.png) | 1672×941 PNG | 正片章门；“术”成为黄铜星仪的结构 | `47D9A66195E8426C5EFC5ABA775201C0375E0773012CC15C05F7C01AF183952F` |
 | [`promo/chapter_principle_artistic-v2.png`](promo/chapter_principle_artistic-v2.png) | 1672×941 PNG | 正片章门；“道”成为裁决石壁的鎏金铭文 | `10B11C554FF7F9F7F859B35B18EAD108F5F68A74887462BC917413EFBD469E7B` |
 | [`promo/chapter_vision_artistic-v2.png`](promo/chapter_vision_artistic-v2.png) | 1672×941 PNG | 正片章门；“辉煌愿景”由四环天象共同书写 | `03101E40C323997E3B3E18341313EDBE64133FFF51F2B485C5B81117CB22DA3C` |
+| [`promo/bilibili_cover_causal_loop_r18-v2.png`](promo/bilibili_cover_causal_loop_r18-v2.png) | 1920×1080 PNG | Bilibili 封面；因果闭环、Mod 创造/验证与自主决策游玩智能体 | `410296AE830924733D38F04BF5466AEB25F0668FCB76D5DF397B8C09A2B95CAF` |
 
 ## 使用规则
 
@@ -43,3 +44,4 @@
 
 完整生成输入见 [generation-prompts.md](generation-prompts.md)。
 四张场景内章名的生成合同与提示词见 [promo/ARTISTIC_CHAPTER_TITLES.md](promo/ARTISTIC_CHAPTER_TITLES.md)。
+Bilibili 封面的生成记录见 [promo/bilibili_cover_causal_loop_r18-v2.prompt.md](promo/bilibili_cover_causal_loop_r18-v2.prompt.md)。
