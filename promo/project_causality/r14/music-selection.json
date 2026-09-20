@@ -1,0 +1,86 @@
+{
+  "schema": "project-causality-r14-music-selection.v1",
+  "status": "awaiting-owner-operated-continuations",
+  "source_directory": "C:/Users/xenoa/OneDrive/Project因果律/音乐/inbox",
+  "audit_directory": "artifacts/project-causality/2026-09-20-r14/music-audit",
+  "tracks": [
+    {
+      "chapter": "prologue",
+      "selected_file": "00-prologue-a.wav",
+      "sha256": "3CF250DBEAC3477DD095EB633178456B86F8279E2F61E8DE81DC00A84F487BB9",
+      "duration_seconds": 269.96,
+      "continuations": []
+    },
+    {
+      "chapter": "spell",
+      "selected_file": "01-spell-a.wav",
+      "sha256": "8EDBA5FB8ADC3E493057E937F1FE83253A935D436C0B4920121CF39C54633C07",
+      "duration_seconds": 359.88,
+      "continuations": [
+        {
+          "from_seconds": 340.0,
+          "duration_seconds": 330.0,
+          "expected_files": ["01-spell-continue-a.wav", "01-spell-continue-b.wav"]
+        }
+      ]
+    },
+    {
+      "chapter": "robert",
+      "selected_file": "02-robert-b.wav",
+      "sha256": "D80AA20E41621DBF3CA64695B9D19287F6B7A0CAC9F635F504C4ACDB03A81091",
+      "duration_seconds": 359.92,
+      "continuations": [
+        {
+          "from_seconds": 340.0,
+          "duration_seconds": 225.0,
+          "expected_files": ["02-robert-continue-a.wav", "02-robert-continue-b.wav"]
+        }
+      ]
+    },
+    {
+      "chapter": "method",
+      "selected_file": "03-method-a.wav",
+      "sha256": "9C92BC5BF771022B53AFAD6053344646D638B4EE98313E20B06734D5ADCC88CD",
+      "duration_seconds": 359.56,
+      "continuations": [
+        {
+          "from_seconds": 340.0,
+          "duration_seconds": 360.0,
+          "expected_files": ["03-method-continue1-a.wav", "03-method-continue1-b.wav"]
+        },
+        {
+          "from_seconds": 680.0,
+          "duration_seconds": 120.0,
+          "expected_files": ["03-method-continue2-a.wav", "03-method-continue2-b.wav"],
+          "depends_on_selected_previous_continuation": true
+        }
+      ]
+    },
+    {
+      "chapter": "principle",
+      "selected_file": "04-principle-a.wav",
+      "sha256": "93E826A935D9A212D2A0FD4281EF3C224D2A0BDBA60E629D9B78DF812389B6B1",
+      "duration_seconds": 273.6,
+      "continuations": [
+        {
+          "from_seconds": 250.0,
+          "duration_seconds": 180.0,
+          "expected_files": ["04-principle-continue-a.wav", "04-principle-continue-b.wav"]
+        }
+      ]
+    },
+    {
+      "chapter": "vision",
+      "selected_file": "05-vision-a.wav",
+      "sha256": "2C57086686F2736A0DE3CEE84DBAF7AF60DD7DDCEFE775026F9766DDF87A7691",
+      "duration_seconds": 359.64,
+      "continuations": [
+        {
+          "from_seconds": 340.0,
+          "duration_seconds": 360.0,
+          "expected_files": ["05-vision-continue-a.wav", "05-vision-continue-b.wav"]
+        }
+      ]
+    }
+  ]
+}
