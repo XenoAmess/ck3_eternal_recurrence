@@ -37,6 +37,7 @@ from xar_autoplayer.bridge.war_contract import (
 )
 from xar_autoplayer.strategy import (
     _battle_sentinel_advance_validation,
+    _battle_control_transition,
     choose_one_life_turn,
 )
 
@@ -1001,6 +1002,33 @@ class BattleControlStrategyTests(unittest.TestCase):
             "same_combat_reopened",
         )
 
+    def test_same_combat_main_reinforcement_restarts_phase_day(self) -> None:
+        before = _battle_frame()
+        before["phase_day"] = 12
+        after = _next_battle_frame()
+        after["phase_day"] = 1
+        after["defender"]["ordered_armies"].append(
+            _army_identity(404, 505, 36_110)
+        )
+        sentinel = _sentinel_advance_row(
+            2,
+            step=DECISION_SENTINEL_STEP,
+            elapsed_days=1,
+        )["result"]
+
+        accepted = _battle_control_transition(before, after, sentinel)
+        self.assertEqual(accepted["status"], "same_combat_reopened")
+        self.assertTrue(accepted["main_reopened_by_reinforcement"])
+        self.assertTrue(accepted["reinforcement_strictly_added"])
+
+        unexplained = copy.deepcopy(after)
+        unexplained["defender"]["ordered_armies"] = copy.deepcopy(
+            before["defender"]["ordered_armies"]
+        )
+        rejected = _battle_control_transition(before, unexplained, sentinel)
+        self.assertEqual(rejected["status"], "invalid")
+        self.assertIn("regressed", rejected["reason"])
+
     def test_nonfinal_battle_result_id_remains_ongoing(self) -> None:
         frame = _battle_frame()
         frame["battle_result_id"] = 553_648_135
@@ -1173,6 +1201,41 @@ def _pursuit_battle_frame() -> dict[str, object]:
         }
     )
     return frame
+
+
+def _maneuver_battle_frame() -> dict[str, object]:
+    frame = _battle_frame()
+    frame.update({"phase": "maneuver", "phase_raw": 0, "phase_day": 1})
+    frame["legality"].update({"phase": "maneuver", "phase_raw": 0})
+    return frame
+
+
+def _exhaust_defender(frame: dict[str, object]) -> None:
+    defender = frame["defender"]
+    entries = defender["levy_entries"] + defender["men_at_arms_entries"]
+    hard_by_owner: dict[int, int] = {}
+    for entry in entries:
+        entry["current_fighting_raw"] = 0
+        entry["entry_strength_raw"] = 0
+        hard = int(entry["starting_raw"]) - int(entry["soft_casualties_raw"])
+        entry["hard_casualties_raw"] = hard
+        owner = int(entry["owner_character_id"])
+        hard_by_owner[owner] = hard_by_owner.get(owner, 0) + hard
+    for row in defender["participant_hard_ledger"]:
+        row["hard_casualties_raw"] = hard_by_owner.get(
+            int(row["participant_character_id"]), 0
+        )
+    hard_total = sum(hard_by_owner.values())
+    defender.update(
+        {
+            "stored_current_fighting_raw": 0,
+            "stored_levy_current_fighting_raw": 0,
+            "derived_current_fighting_raw": 0,
+            "derived_main_fighting_entry_hard_casualties_raw": hard_total,
+            "participant_hard_total_raw": hard_total,
+            "side_strength_raw": 0,
+        }
+    )
 
 
 def _rebind_battle_frame(
@@ -2218,6 +2281,82 @@ class BattleSentinelStrategyTests(unittest.TestCase):
             "sentinel_completion_invalid",
             rejected["battle_transition"]["sentinel_validation"]["errors"],
         )
+
+    def test_terminal_cruise_accepts_maneuver_to_proven_won_pursuit(self) -> None:
+        before = _maneuver_battle_frame()
+        after = _pursuit_battle_frame()
+        elapsed_days = 15
+        after["snapshot_revision"] = NATIVE_REVISION + elapsed_days
+        after["observed_date_raw"] = DATE_RAW + elapsed_days * 24
+        after["legality"]["elapsed_whole_days"] = elapsed_days
+        _exhaust_defender(after)
+        history = [
+            _battle_query_row(1, before),
+            _terminal_cursor_query_row(2, before),
+            _sentinel_advance_row(
+                3,
+                step=TERMINAL_SENTINEL_STEP,
+                elapsed_days=elapsed_days,
+            ),
+            _battle_query_row(4, after),
+        ]
+
+        plan = self._plan(
+            history,
+            after,
+            steps=(
+                STEP,
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+
+        transition = _battle_control_transition(
+            before, after, history[2]["result"]
+        )
+        self.assertEqual(transition["status"], "same_combat_advanced")
+        self.assertTrue(transition["terminal_pursuit_skip"])
+        self.assertEqual(transition["actual_elapsed_days"], elapsed_days)
+        self.assertEqual(
+            plan["phase"], "native_war_battle_terminal_cursor_query"
+        )
+
+    def test_multiday_phase_skip_requires_zero_strength_losing_side(self) -> None:
+        before = _maneuver_battle_frame()
+        after = _pursuit_battle_frame()
+        elapsed_days = 15
+        after["snapshot_revision"] = NATIVE_REVISION + elapsed_days
+        after["observed_date_raw"] = DATE_RAW + elapsed_days * 24
+        after["legality"]["elapsed_whole_days"] = elapsed_days
+        history = [
+            _battle_query_row(1, before),
+            _terminal_cursor_query_row(2, before),
+            _sentinel_advance_row(
+                3,
+                step=TERMINAL_SENTINEL_STEP,
+                elapsed_days=elapsed_days,
+            ),
+            _battle_query_row(4, after),
+        ]
+
+        rejected = self._plan(
+            history,
+            after,
+            steps=(
+                STEP,
+                "life-advance",
+                DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+
+        self.assertEqual(
+            rejected["phase"], "native_war_battle_transition_invalid"
+        )
+        self.assertIn("skipped", rejected["battle_transition"]["reason"])
 
     def test_native_pause_stop_is_a_valid_decision_epoch(self) -> None:
         before = _battle_frame()

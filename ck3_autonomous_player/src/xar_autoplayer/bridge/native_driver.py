@@ -363,8 +363,12 @@ from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+    ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_STEP,
     ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY,
     ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP,
+    PROBE_FRONTEND_BOOKMARK_MODEL_V1_CAPABILITY,
+    PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP,
     QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_CAPABILITY,
     QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP,
     ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
@@ -585,6 +589,7 @@ _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -1
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _RAIKTOR_TERMINAL_CONTROL_SURRENDER_CB = "raiktor_claim_cb"
 _RAIKTOR_TERMINAL_CONTROL_SURRENDER_SCORE = -100
+_TERMINAL_SCORE_SURRENDER_SCORE = -100
 _COLD_RESTORE_SOURCE = "native-session-cold-start"
 _RESTORE_MAP_STABLE_SECONDS = 0.5
 _NATIVE_WAR_ADVANCE_MAX_DAYS = 30
@@ -4253,22 +4258,177 @@ class NativeHeadlessGameplayDriver:
 
     def query_frontend_selected_1066_feudal_candidate_v1(
         self,
+        expected_character_name_key: str = (
+            "bookmark_rags_to_riches_petty_king_murchad"
+        ),
     ) -> dict[str, object]:
         """Read native bookmark group, bookmark, and selected model identity."""
-        raw = self._execute_primitive_step(
-            QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP,
+        model = self._execute_primitive_step(
+            PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP,
             expected_revision=0,
             required_capability=(
-                QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_CAPABILITY
+                PROBE_FRONTEND_BOOKMARK_MODEL_V1_CAPABILITY
             ),
             allow_frontend_revision_zero=True,
         )
+        keys = model.get("candidate_keys")
+        target_index = model.get("supported_1066_candidate_index")
+        selected_index = model.get("selected_character_index")
+        if not (
+            model.get("accepted") is True
+            and model.get("status") == "identity_ready"
+            and model.get("candidate_identity_ready") is True
+            and model.get("selected_bookmark_group_key")
+            in {None, "bm_group_1066"}
+            and model.get("selected_bookmark_key") == "bm_1066_rags_to_riches"
+            and isinstance(model.get("selected_date_raw"), int)
+            and not isinstance(model.get("selected_date_raw"), bool)
+            and isinstance(model.get("selected_date_low_raw"), int)
+            and not isinstance(model.get("selected_date_low_raw"), bool)
+            and model.get("selected_date_low_raw") > 0
+            and isinstance(keys, list)
+            and isinstance(target_index, int)
+            and not isinstance(target_index, bool)
+            and 0 <= target_index < len(keys)
+            and keys[target_index] == expected_character_name_key
+            and selected_index == target_index
+            and model.get("supported_1066_government_key")
+            == "feudal_government"
+            and model.get("supported_1066_feudal") is True
+            and model.get("supported_1066_date_matches") is True
+        ):
+            raise BridgeUnavailableError(
+                "native bookmark model does not prove the requested selected "
+                "1066 feudal character; "
+                f"status={model.get('status')!r}, "
+                f"selected_index={selected_index!r}, "
+                f"target_index={target_index!r}, "
+                f"target_key={keys[target_index] if isinstance(keys, list) and isinstance(target_index, int) and not isinstance(target_index, bool) and 0 <= target_index < len(keys) else None!r}, "
+                f"requested_key={expected_character_name_key!r}, "
+                f"unavailable_reason={model.get('unavailable_reason')!r}"
+            )
+        raw = {
+            "step": QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP,
+            "accepted": True,
+            "status": "ready",
+            "route": "bookmarks",
+            "selected_bookmark_group_key": model[
+                "selected_bookmark_group_key"
+            ],
+            "selected_bookmark_key": model["selected_bookmark_key"],
+            "selected_character_name_key": keys[target_index],
+            "selected_character_government_key": model[
+                "supported_1066_government_key"
+            ],
+            # The native Bookmark date qword can retain an upper cache
+            # sentinel.  CK3's campaign date and every public snapshot use
+            # the signed low32 semantic value.
+            "selected_bookmark_start_date_raw": model[
+                "selected_date_low_raw"
+            ],
+            "query_sequence": max(1, int(self._request_sequence)),
+            "backend_id": model.get("backend_id"),
+        }
         try:
-            return normalize_frontend_selected_1066_feudal_candidate_v1(raw)
+            return normalize_frontend_selected_1066_feudal_candidate_v1(
+                raw,
+                expected_character_name_key=expected_character_name_key,
+            )
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native 1066 feudal selected-candidate query is malformed: {error}"
             ) from error
+
+    def activate_frontend_start_1066_bookmark_character_v1(
+        self,
+        character_name_key: str,
+    ) -> dict[str, object]:
+        """Select one exact-build 1066 bookmark character and start its map."""
+        if not isinstance(character_name_key, str) or not character_name_key:
+            raise ValueError("character_name_key must be a non-empty string")
+        before = self.query_frontend_gui_route_v1()
+        if before.get("route") != "bookmarks":
+            raise BridgeUnavailableError(
+                "frontend bookmark-character start requires the bookmarks route"
+            )
+        model = self._execute_primitive_step(
+            PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP,
+            expected_revision=0,
+            required_capability=PROBE_FRONTEND_BOOKMARK_MODEL_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        keys = model.get("candidate_keys")
+        target_index = model.get("supported_1066_candidate_index")
+        selected_index = model.get("selected_character_index")
+        if not (
+            model.get("candidate_identity_ready") is True
+            and isinstance(keys, list)
+            and isinstance(target_index, int)
+            and not isinstance(target_index, bool)
+            and 0 <= target_index < len(keys)
+            and keys[target_index] == character_name_key
+            and isinstance(selected_index, int)
+            and not isinstance(selected_index, bool)
+            and -1 <= selected_index < len(keys)
+        ):
+            raise BridgeUnavailableError(
+                "exact-build bridge is not bound to the requested 1066 "
+                "bookmark character"
+            )
+        selection_acknowledgement: dict[str, object] | None = None
+        if selected_index != target_index:
+            selection_acknowledgement = self._execute_primitive_step(
+                ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_STEP,
+                expected_revision=0,
+                required_capability=(
+                    ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_CAPABILITY
+                ),
+                allow_frontend_revision_zero=True,
+            )
+        # Native selection is one submission.  Its same-frame index is only
+        # diagnostic because the Bookmarks view may publish the new selected
+        # model on a later UI frame.  Poll the independent read-only probe;
+        # never repeat the setter merely because the first requery is early.
+        selection_deadline = (
+            time.monotonic()
+            + min(10.0, self.frontend_transition_timeout_seconds)
+        )
+        last_selection_error: BridgeUnavailableError | None = None
+        selected: dict[str, object] | None = None
+        while time.monotonic() < selection_deadline:
+            try:
+                selected = (
+                    self.query_frontend_selected_1066_feudal_candidate_v1(
+                        expected_character_name_key=character_name_key
+                    )
+                )
+            except BridgeUnavailableError as error:
+                last_selection_error = error
+            else:
+                break
+            remaining = selection_deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(0.1, remaining))
+        if selected is None:
+            raise BridgeUnavailableError(
+                "submitted 1066 bookmark selection did not publish the "
+                "requested native character before the transition deadline; "
+                f"last probe failed: {last_selection_error}"
+            )
+        started = self.activate_frontend_start_selected_bookmark_v1(
+            expected_character_name_key=character_name_key,
+            selected_candidate=selected,
+        )
+        return {
+            **started,
+            "schema": "ck3-frontend-1066-bookmark-character-start-v1",
+            "action": "select_and_start_1066_bookmark_character",
+            "requested_character_name_key": character_name_key,
+            "selection_acknowledgement": selection_acknowledgement,
+            "uses_ocr": False,
+            "uses_keyboard": False,
+            "uses_mouse": False,
+        }
 
     def inspect_frontend_gui_tree_v1(self) -> dict[str, object]:
         """Read a bounded native GUI-name census on the main thread."""
@@ -4475,6 +4635,10 @@ class NativeHeadlessGameplayDriver:
 
     def activate_frontend_start_selected_bookmark_v1(
         self,
+        expected_character_name_key: str = (
+            "bookmark_rags_to_riches_petty_king_murchad"
+        ),
+        selected_candidate: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Start only the selected bookmark ruler; prove a new paused map."""
         before = self.query_frontend_gui_route_v1()
@@ -4482,9 +4646,19 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "frontend StartGame requires the bookmarks route"
             )
-        selected_candidate = (
-            self.query_frontend_selected_1066_feudal_candidate_v1()
-        )
+        if selected_candidate is None:
+            if expected_character_name_key == (
+                "bookmark_rags_to_riches_petty_king_murchad"
+            ):
+                selected_candidate = (
+                    self.query_frontend_selected_1066_feudal_candidate_v1()
+                )
+            else:
+                selected_candidate = (
+                    self.query_frontend_selected_1066_feudal_candidate_v1(
+                        expected_character_name_key=expected_character_name_key
+                    )
+                )
         acknowledgement = self._execute_primitive_step(
             ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP,
             expected_revision=0,
@@ -4531,6 +4705,9 @@ class NativeHeadlessGameplayDriver:
                 "frontend StartGame was submitted but no paused player map "
                 f"was independently observed; last snapshot error: {last_error}"
             )
+        after_snapshot = self._wait_for_frontend_start_post_ready_pump_v1(
+            after_snapshot
+        )
         campaign_root = self._execute_campaign_root_context_v1_query(
             expected_revision=None
         )
@@ -4541,12 +4718,135 @@ class NativeHeadlessGameplayDriver:
                 selected_candidate=selected_candidate,
                 after_snapshot=after_snapshot,
                 campaign_root=campaign_root,
+                expected_character_name_key=expected_character_name_key,
             )
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"frontend StartGame submitted; paused-map feudal "
                 f"postcondition failed: {error}"
             ) from error
+
+    def _wait_for_frontend_start_post_ready_pump_v1(
+        self,
+        starting: dict[str, object],
+    ) -> dict[str, object]:
+        """Wait for one stable paused ApplicationMain pump after StartGame.
+
+        StartGame can publish the first player/map snapshot while the load
+        callback still owns the current pump.  Submitting an ApplicationMain
+        query on that frame can therefore time out before execution.  A later
+        pump on the same paused date/player binding is submission permission;
+        it is not inferred from elapsed wall time.
+        """
+
+        def pump_epoch(snapshot: dict[str, object]) -> int | None:
+            diagnostics = snapshot.get("diagnostics")
+            heartbeat = (
+                diagnostics.get("last_heartbeat")
+                if isinstance(diagnostics, dict)
+                else None
+            )
+            mailbox = (
+                heartbeat.get("main_thread_query_mailbox_v1")
+                if isinstance(heartbeat, dict)
+                else None
+            )
+            value = (
+                mailbox.get("pump_epochs")
+                if isinstance(mailbox, dict)
+                else None
+            )
+            return (
+                value
+                if isinstance(value, int)
+                and not isinstance(value, bool)
+                and value >= 0
+                else None
+            )
+
+        played = starting.get("played_character")
+        player_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        diagnostics = starting.get("diagnostics")
+        bridge_pid = (
+            diagnostics.get("bridge_pid")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        baseline_epoch = pump_epoch(starting)
+        if not (
+            starting.get("paused") is True
+            and starting.get("map_ready") is True
+            and isinstance(player_id, int)
+            and not isinstance(player_id, bool)
+            and isinstance(bridge_pid, int)
+            and not isinstance(bridge_pid, bool)
+            and isinstance(connection_generation, int)
+            and not isinstance(connection_generation, bool)
+            and baseline_epoch is not None
+        ):
+            raise BridgeUnavailableError(
+                "paused StartGame binding lacks an ApplicationMain pump epoch"
+            )
+        current_key = (
+            starting.get("snapshot_id"),
+            starting.get("native_revision"),
+        )
+        deadline = (
+            time.monotonic()
+            + min(30.0, self.frontend_transition_timeout_seconds)
+        )
+        last_epoch = baseline_epoch
+        while time.monotonic() < deadline:
+            observed = self.take_snapshot()
+            observed_played = observed.get("played_character")
+            observed_id = (
+                observed_played.get("character_id")
+                if isinstance(observed_played, dict)
+                else None
+            )
+            observed_diagnostics = observed.get("diagnostics")
+            if not (
+                observed.get("paused") is True
+                and observed.get("map_ready") is True
+                and observed.get("date_raw") == starting.get("date_raw")
+                and observed_id == player_id
+                and isinstance(observed_diagnostics, dict)
+                and observed_diagnostics.get("bridge_pid") == bridge_pid
+                and observed_diagnostics.get("connection_generation")
+                == connection_generation
+            ):
+                raise BridgeUnavailableError(
+                    "paused StartGame player binding changed before its "
+                    "post-ready ApplicationMain pump"
+                )
+            last_epoch = pump_epoch(observed)
+            if last_epoch is None:
+                raise BridgeUnavailableError(
+                    "ApplicationMain pump epoch disappeared after StartGame"
+                )
+            next_key = (
+                observed.get("snapshot_id"),
+                observed.get("native_revision"),
+            )
+            if next_key != current_key:
+                current_key = next_key
+                baseline_epoch = last_epoch
+            elif last_epoch > baseline_epoch:
+                return observed
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(0.25, remaining))
+        raise BridgeUnavailableError(
+            "ApplicationMain pump did not advance on the stable paused "
+            f"StartGame binding; baseline={baseline_epoch}, last={last_epoch}"
+        )
 
     def activate_frontend_prepare_custom_ruler_v1(self) -> dict[str, object]:
         """Open the lobby, select one playable, and prove designer access."""
@@ -14802,7 +15102,10 @@ class NativeHeadlessGameplayDriver:
                             ),
                         }
                         if evidence.get("variant")
-                        == "raiktor_terminal_control"
+                        in {
+                            "raiktor_terminal_control",
+                            "terminal_score_defeat",
+                        }
                         else {}
                     ),
                     "casus_belli": copy.deepcopy(
@@ -22990,10 +23293,51 @@ def _capital_regroup_capability_scope(
     if not (
         war.get("player_side") == "attacker"
         and war.get("player_is_primary_war_leader") is True
-        and len(controlled) == 1
+        and controlled
     ):
         return None
-    army = controlled[0]
+    sole_state = (
+        controlled[0].get("army_state").casefold()
+        if len(controlled) == 1
+        and isinstance(controlled[0].get("army_state"), str)
+        else None
+    )
+    coalition_regroup_scope = bool(
+        len(controlled) > 1
+        or sole_state in {"regular", "moving"}
+    )
+    if coalition_regroup_scope:
+        away_subjects = [
+            army
+            for army in controlled
+            if _positive_native_id(army.get("current_province_id"))
+            and army.get("current_province_id") != capital_province_id
+            and not _army_in_combat_or_retreat(army)
+        ]
+        if not (
+            len(away_subjects) == 1
+            and all(
+                not _army_in_combat_or_retreat(candidate)
+                and (
+                    candidate is away_subjects[0]
+                    or (
+                        candidate.get("current_province_id")
+                        == capital_province_id
+                        and _army_is_known_stationary(candidate)
+                        and candidate.get("move_target_province_id") is None
+                        and isinstance(
+                            candidate.get("route_province_ids"), list
+                        )
+                        and not candidate["route_province_ids"]
+                    )
+                )
+                for candidate in controlled
+            )
+        ):
+            return None
+        army = away_subjects[0]
+    else:
+        army = controlled[0]
     army_id = army.get("army_id")
     current_province_id = army.get("current_province_id")
     named_state = army.get("army_state")
@@ -23003,51 +23347,70 @@ def _capital_regroup_capability_scope(
         and _positive_native_id(current_province_id)
         and current_province_id != capital_province_id
         and (
-            isinstance(named_state, str)
-            and named_state.casefold() == "sieging"
-            or not isinstance(named_state, str)
-            and state_code == 3
+            coalition_regroup_scope
+            and (
+                isinstance(named_state, str)
+                and named_state.casefold()
+                in {"regular", "moving", "sieging"}
+                or not isinstance(named_state, str)
+                and state_code in {1, 3, 7}
+            )
+            or not coalition_regroup_scope
+            and (
+                isinstance(named_state, str)
+                and named_state.casefold() == "sieging"
+                or not isinstance(named_state, str)
+                and state_code == 3
+            )
         )
         and not _army_in_combat_or_retreat(army)
         and "move_target_province_id" in army
-        and army.get("move_target_province_id") is None
+        and (
+            army.get("move_target_province_id") is None
+            or coalition_regroup_scope
+            and _positive_native_id(army.get("move_target_province_id"))
+        )
         and isinstance(army.get("route_province_ids"), list)
-        and not army["route_province_ids"]
+        and (
+            coalition_regroup_scope
+            or not army["route_province_ids"]
+        )
     ):
         return None
-    objectives = war.get("war_objective_province_ids")
-    states = war.get("objective_province_states")
-    if not (
-        isinstance(objectives, list)
-        and objectives == [current_province_id]
-        and isinstance(states, list)
-        and len(states) == 1
-        and isinstance(states[0], dict)
-    ):
-        return None
-    objective = states[0]
-    siege = objective.get("active_siege")
-    garrison = objective.get("garrison_size")
-    strength = objective.get("besieging_strength")
-    if not (
-        objective.get("province_id") == current_province_id
-        and objective.get("occupation_observable") is True
-        and objective.get("is_occupied") is False
-        and objective.get("siege_observable") is True
-        and isinstance(siege, dict)
-        and _positive_native_id(siege.get("siege_id"))
-        and siege.get("besieging_army_id") == army_id
-        and siege.get("player_army_besieging") is True
-        and siege.get("assault_observable") is True
-        and siege.get("assault_in_progress") is False
-        and isinstance(garrison, int)
-        and not isinstance(garrison, bool)
-        and isinstance(strength, int)
-        and not isinstance(strength, bool)
-        and strength == 399
-        and garrison == 400
-    ):
-        return None
+    if not coalition_regroup_scope:
+        objectives = war.get("war_objective_province_ids")
+        states = war.get("objective_province_states")
+        if not (
+            isinstance(objectives, list)
+            and objectives == [current_province_id]
+            and isinstance(states, list)
+            and len(states) == 1
+            and isinstance(states[0], dict)
+        ):
+            return None
+        objective = states[0]
+        siege = objective.get("active_siege")
+        garrison = objective.get("garrison_size")
+        strength = objective.get("besieging_strength")
+        if not (
+            objective.get("province_id") == current_province_id
+            and objective.get("occupation_observable") is True
+            and objective.get("is_occupied") is False
+            and objective.get("siege_observable") is True
+            and isinstance(siege, dict)
+            and _positive_native_id(siege.get("siege_id"))
+            and siege.get("besieging_army_id") == army_id
+            and siege.get("player_army_besieging") is True
+            and siege.get("assault_observable") is True
+            and siege.get("assault_in_progress") is False
+            and isinstance(garrison, int)
+            and not isinstance(garrison, bool)
+            and isinstance(strength, int)
+            and not isinstance(strength, bool)
+            and strength == 399
+            and garrison == 400
+        ):
+            return None
     enemies = [
         enemy
         for enemy in enemy_armies_from_wars([war])
@@ -25000,6 +25363,82 @@ def _raiktor_terminal_control_surrender_readiness(
     }
 
 
+def _terminal_score_surrender_readiness(
+    snapshot: dict[str, object], war_id: int
+) -> tuple[bool, str, dict[str, object]]:
+    """Admit any exact native -100 attacker defeat before automatic removal."""
+
+    if snapshot.get("paused") is not True:
+        return False, "snapshot_not_paused", {}
+    war = _war_by_id(snapshot, war_id)
+    if not isinstance(war, dict):
+        return False, "war_not_active", {}
+    options = _termination_cache_row(
+        snapshot, "war_termination_options", war_id
+    )
+    if not isinstance(options, dict):
+        return False, "termination_options_missing", {}
+    diagnostics = snapshot.get("diagnostics")
+    connection_generation = (
+        diagnostics.get("connection_generation")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    expected_binding = {
+        "queried_snapshot_id": snapshot.get("snapshot_id"),
+        "queried_revision": snapshot.get("revision"),
+        "queried_native_revision": snapshot.get("native_revision"),
+        "queried_connection_generation": connection_generation,
+        "episode_run_id": snapshot.get("episode_run_id"),
+    }
+    if any(
+        options.get(key) != expected
+        for key, expected in expected_binding.items()
+    ):
+        return False, "termination_evidence_not_same_frame", {}
+    score = war.get("player_relative_war_score")
+    rows = options.get("options")
+    surrender = rows.get("surrender") if isinstance(rows, dict) else None
+    response = (
+        surrender.get("recipient_response")
+        if isinstance(surrender, dict)
+        else None
+    )
+    if not (
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and score == _TERMINAL_SCORE_SURRENDER_SCORE
+        and options.get("player_relative_war_score") == score
+        and options.get("absolute_war_scores_observable") is True
+        and options.get("attacker_war_score") == score
+        and options.get("defender_war_score") == -score
+        and options.get("active_casus_belli_present") is True
+        and isinstance(options.get("active_casus_belli_identity"), dict)
+        and isinstance(surrender, dict)
+        and surrender.get("outcome") == "attacker_defeat"
+        and surrender.get("hostage_variant") == "none"
+        and surrender.get("context_constructed") is True
+        and surrender.get("native_validator_passed") is True
+        and surrender.get("available") is True
+        and surrender.get("auto_accept_observable") is True
+        and surrender.get("auto_accept") is True
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    ):
+        return False, "terminal_score_surrender_gate_failed", {}
+    return True, "ready", {
+        "variant": "terminal_score_defeat",
+        "war": war,
+        "options": options,
+        "surrender": surrender,
+    }
+
+
 def _emergency_surrender_readiness(
     snapshot: dict[str, object], war_id: int
 ) -> tuple[bool, str, dict[str, object]]:
@@ -25012,7 +25451,13 @@ def _emergency_surrender_readiness(
     raiktor = _raiktor_terminal_control_surrender_readiness(snapshot, war_id)
     if raiktor[0]:
         return raiktor
-    return False, f"de_jure={de_jure[1]}; raiktor={raiktor[1]}", {}
+    terminal = _terminal_score_surrender_readiness(snapshot, war_id)
+    if terminal[0]:
+        return terminal
+    return False, (
+        f"de_jure={de_jure[1]}; raiktor={raiktor[1]}; "
+        f"terminal={terminal[1]}"
+    ), {}
 
 
 def _emergency_surrender_submission(

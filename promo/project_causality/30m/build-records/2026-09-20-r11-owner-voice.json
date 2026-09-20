@@ -1,0 +1,67 @@
+{
+  "schema": "project-causality-build-record.v1",
+  "build_id": "2026-09-20-r11-owner-voice",
+  "status": "owner-voice-non-music-review-candidate",
+  "publication_authorized": false,
+  "video": {
+    "relative_path": "artifacts/project-causality/2026-09-20-r11/project-causality-r11-owner-voice-nomusic.mp4",
+    "sha256": "C776E5D21490A5D425B931DAB2DBB959B3DEB959CCAB54B6ED3C4DC2F28903B4",
+    "bytes": 469237898,
+    "duration_seconds": 2403.880013,
+    "frames": 72101,
+    "width": 2560,
+    "height": 1440,
+    "nominal_fps": "30/1",
+    "video_codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio_codec": "aac",
+    "sample_rate": 48000,
+    "channels": 2
+  },
+  "narration": {
+    "provider": "IndexTTS-2.5",
+    "provider_revision": "ee40fa7d6c6b8a2c7f06105f9f1e65775b74868c",
+    "mode": "natural-reference-emotion",
+    "authorized_owner_reference_sha256": "85E721DBF938592AB7D75025EDF3404813EB765D469415DC3E55F8C6BCD0AE0B",
+    "raw_reference_committed": false,
+    "cue_count": 98,
+    "tempo_modified": false
+  },
+  "subtitles": {
+    "kind": "burned bilingual ASS",
+    "block_count": 107,
+    "minimum_tail_after_narration_seconds": 1.0,
+    "maximum_zh_width_px": 1834,
+    "maximum_en_width_px": 1836.94,
+    "width_limit_px": 1840
+  },
+  "robert_mcp_showcase": {
+    "source_relative_path": "artifacts/project-causality/2026-09-20-robert-mcp-streak-r30/robert-mcp-showcase-continuous-6m25s.mp4",
+    "source_sha256": "08C5A46300641CC0141AD1FDDD6BC22F93C61A8C92147E5036A8BDB65F469245",
+    "duration_seconds": 384.966667,
+    "playback_rate": 1.0,
+    "continuity": "single chronological source interval from visible Robert selection through first victory and into the follow-on defensive war; no source-time jumps or reordering",
+    "interaction_policy": "MCP-only; no OCR, keyboard, mouse, fixed coordinates or fixed war target",
+    "proven_result": "one dynamic-target attacker victory",
+    "continuation": "the agent takes over follow-on defensive WarID 23 and continues observing and planning; the film ends before that war resolves and makes no claim about its outcome"
+  },
+  "music": {
+    "included": false,
+    "suno_operated": false,
+    "operator": "project owner"
+  },
+  "qa": {
+    "media_probe": "GREEN",
+    "subtitle_timing_and_width_contract": "GREEN",
+    "ten_frame_visual_contact_sheet": "GREEN",
+    "selection_victory_and_continuation_frames": "GREEN",
+    "mean_volume_db": -21.0,
+    "max_volume_db": -2.9,
+    "focused_python_tests": "372 passed, 132 subtests passed",
+    "native_frontend_fixture": "GREEN",
+    "continuous_human_review": "PENDING"
+  },
+  "builder": "tools/build_project_causality_r11.py",
+  "sidecar_relative_path": "artifacts/project-causality/2026-09-20-r11/project-causality-r11-owner-voice-nomusic.video.json",
+  "review_note": "This is the completed local no-music review candidate. Publication remains unauthorized until owner continuous review and the later owner-operated music pass."
+}

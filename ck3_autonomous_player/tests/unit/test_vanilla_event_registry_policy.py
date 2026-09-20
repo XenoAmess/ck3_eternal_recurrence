@@ -114,6 +114,34 @@ def _trait_gold_context() -> dict[str, object]:
     return context
 
 
+def _hostile_scheme_context() -> dict[str, object]:
+    scope_rows = (
+        ("scheme", "scheme", None),
+        ("owner", "character", 31_549),
+        ("artifact", "artifact", None),
+        ("target", "character", PLAYER),
+        ("spymaster", "character", 34_867),
+        ("discovery_chance", "value", None),
+    )
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "hostile_scheme_discovery.2001",
+        "root_scope": _scope("character", character_id=PLAYER),
+        "saved_scopes": [
+            {
+                "name": name,
+                "name_identifier": index + 1,
+                "scope": _scope(type_key, character_id=character_id),
+            }
+            for index, (name, type_key, character_id) in enumerate(scope_rows)
+        ],
+        "options": [_option(0, 0)],
+    }
+
+
 def _heir_death_context(*, dead_character_id: int = 39_246) -> dict[str, object]:
     return {
         "schema": "current-event-window-context-v1",
@@ -243,7 +271,57 @@ def _fragile_bones_context() -> dict[str, object]:
     }
 
 
+def _health_3104_punishment_context() -> dict[str, object]:
+    scope_rows = (
+        ("epidemic", "epidemic", None),
+        ("disease_type", "flag", None),
+        ("sick_character", "character", 29_829),
+        ("new_memory", "character_memory", None),
+        ("high_skill_option", "character", 41_567),
+        ("low_skill_option", "character", 65_487),
+        ("physician", "character", 41_567),
+        ("background_terrain_scope", "province", None),
+        ("treatment_picker", "character", 29_829),
+        ("treatment", "flag", None),
+        ("outcome", "flag", None),
+        ("portrait", "character", 41_567),
+    )
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "health.3104",
+        "root_scope": _scope("character", character_id=29_829),
+        "saved_scopes": [
+            {
+                "name": name,
+                "name_identifier": index + 260,
+                "scope": _scope(type_key, character_id=character_id),
+            }
+            for index, (name, type_key, character_id) in enumerate(scope_rows)
+        ],
+        "options": [_option(0, 0), _option(1, 1), _option(2, 2)],
+    }
+
+
 class VanillaEventRegistryPolicyTests(unittest.TestCase):
+    def test_health_3104_r19_three_option_variant_spares_physician(
+        self,
+    ) -> None:
+        result = recommend_registered_vanilla_event_option_v1(
+            _health_3104_punishment_context(),
+            played_character_id=29_829,
+            snapshot_option_count=3,
+        )
+
+        self.assertEqual(result["status"], "recommended")
+        self.assertEqual(result["selected_option_number"], 1)
+        self.assertEqual(result["selected_native_option_index"], 0)
+        self.assertEqual(result["selected_rendered_index"], 0)
+        self.assertEqual(result["matched_option_variant_index"], 0)
+        self.assertEqual(result["failed_checks"], [])
+
     def test_exact_tgp_travel_projection_selects_authored_option_two(
         self,
     ) -> None:
@@ -669,6 +747,19 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             result["unavailable_reason"],
             "event_definition_key_not_registered",
         )
+
+    def test_hostile_scheme_notification_uses_exact_relational_projection(
+        self,
+    ) -> None:
+        result = recommend_registered_vanilla_event_option_v1(
+            _hostile_scheme_context(),
+            played_character_id=PLAYER,
+            snapshot_option_count=1,
+        )
+
+        self.assertEqual(result["status"], "recommended")
+        self.assertEqual(result["selected_native_option_index"], 0)
+        self.assertEqual(result["failed_checks"], [])
 
     def test_registered_scope_drift_blocks_without_selecting(self) -> None:
         context = _context()

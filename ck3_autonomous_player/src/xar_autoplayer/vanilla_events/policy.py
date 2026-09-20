@@ -438,12 +438,29 @@ _SOURCE_BOUND_OPTION_VARIANT_FIELDS: Final = {
             "unique_character_scope_excludes",
         }
     ),
+    "health.1010": frozenset(
+        {
+            "saved_scope_count",
+            "saved_scope_name_sets",
+            "scope_types",
+            "unique_character_scope_excludes",
+        }
+    ),
+    "health.3104": frozenset(
+        {
+            "saved_scope_count",
+            "saved_scope_name_sets",
+            "scope_types",
+        }
+    ),
 }
 _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
     {
         "befriend_outcome.0002",
         "death_management.1000",
         "health.1001",
+        "health.1010",
+        "health.3104",
         "natural_disaster.7031",
     }
 )
@@ -453,12 +470,102 @@ _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset(
 _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
     {
         "befriend_outcome.0002",
+        "chancellor_task.1004",
         "chancellor_task.1104",
         "death_management.1000",
         "health.1001",
+        "health.1010",
+        "health.3001",
+        "health.3101",
+        "health.3103",
+        "health.3104",
+        "hostile_scheme_discovery.2001",
         "prison_notification.2002",
     }
 )
+_DIRECT_SCOPE_VARIANT_EVENT_KEYS: Final = frozenset(
+    {"health.3001", "health.3101", "health.3103"}
+)
+_SCOPE_VARIANT_FIELDS: Final = frozenset(
+    {
+        "character_scopes",
+        "character_scope_differs_from",
+        "character_scope_matches_any",
+        "saved_scope_count",
+        "saved_scope_names",
+        "scope_types",
+        "unique_character_scope_excludes",
+    }
+)
+
+
+def _resolve_scope_variant_contract(
+    context: Mapping[str, object],
+    contract: Mapping[str, object],
+) -> tuple[dict[str, object] | None, int | None, str | None]:
+    """Resolve one exact saved-scope variant without weakening base checks."""
+    raw_variants = _sequence(contract.get("scope_variants"))
+    base = dict(contract)
+    base.pop("scope_variants", None)
+    if raw_variants is None:
+        return base, None, None
+    raw_scopes = context.get("saved_scopes")
+    scopes = raw_scopes if isinstance(raw_scopes, list) else []
+    actual_names = tuple(
+        row.get("name") if isinstance(row, Mapping) else None
+        for row in scopes
+    )
+    if (
+        any(not isinstance(name, str) for name in actual_names)
+        or len(set(actual_names)) != len(actual_names)
+    ):
+        return None, None, "registered_scope_variant_context_malformed"
+    for index, value in enumerate(raw_variants):
+        if not isinstance(value, Mapping) or not set(value).issubset(
+            _SCOPE_VARIANT_FIELDS
+        ):
+            return None, None, "registered_scope_variant_contract_unsupported"
+        expected_names = _sequence(value.get("saved_scope_names"))
+        if expected_names and set(actual_names) == set(expected_names):
+            effective = {**base, **dict(value)}
+            effective.pop("saved_scope_names", None)
+            effective["saved_scope_name_sets"] = (tuple(expected_names),)
+            return effective, index, None
+    return base, None, None
+
+
+def _with_relational_character_scope_types(
+    contract: Mapping[str, object],
+) -> dict[str, object]:
+    """Make relationship-declared character scopes type-checkable."""
+    effective = dict(contract)
+    raw_types = effective.get("scope_types")
+    scope_types = dict(raw_types) if isinstance(raw_types, Mapping) else {}
+    names: set[str] = set()
+    for field in (
+        "character_scopes",
+        "unique_character_scope_excludes",
+        "character_scope_matches_any",
+        "character_scope_differs_from",
+    ):
+        value = effective.get(field)
+        if not isinstance(value, Mapping):
+            continue
+        names.update(str(name) for name in value)
+        if field in {
+            "character_scope_matches_any",
+            "character_scope_differs_from",
+        }:
+            for related in value.values():
+                sequence = _sequence(related)
+                if sequence is not None:
+                    names.update(
+                        str(name) for name in sequence if isinstance(name, str)
+                    )
+    for name in names:
+        scope_types.setdefault(name, "character")
+    effective["scope_types"] = scope_types
+    return effective
 
 
 def _option_projection_signature(contract: Mapping[str, object]) -> tuple[object, ...]:
@@ -595,6 +702,23 @@ def recommend_registered_vanilla_event_option_v1(
                 checks={"option_variant_projection": False},
             )
         contract = resolved
+    if (
+        event_key in _DIRECT_SCOPE_VARIANT_EVENT_KEYS
+        and _active(contract.get("scope_variants"))
+    ):
+        resolved_scope, _scope_variant_index, scope_variant_error = (
+            _resolve_scope_variant_contract(event_context, contract)
+        )
+        if resolved_scope is None:
+            return _response(
+                status="blocked",
+                event_key=event_key,
+                reason=scope_variant_error,
+                checks={"scope_variant_projection": False},
+            )
+        contract = resolved_scope
+    if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS:
+        contract = _with_relational_character_scope_types(contract)
     allowed_extended_fields: set[str] = set()
     if event_key in _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS:
         allowed_extended_fields.add("unique_character_scope_excludes")
@@ -611,6 +735,12 @@ def recommend_registered_vanilla_event_option_v1(
         # The exact source saves one mutually exclusive flag for the liked or
         # disliked spouse templates; the neutral template saves neither.
         allowed_extended_fields.add("boolean_scopes")
+    if event_key in {"health.3001", "hostile_scheme_discovery.2001"}:
+        # This source-authored card is unique in the short physician-search
+        # chain, while the hostile-scheme discovery card is one notification
+        # for the captured scheme lineage. The current window identity and
+        # exact option/scope projection are still revalidated before selection.
+        allowed_extended_fields.add("max_occurrences")
     unsupported = sorted(
         field
         for field in _UNSUPPORTED_FIELDS

@@ -1,0 +1,17 @@
+{
+  "schema": "project-causality-r11-robert-continuous-edit.v1",
+  "master": "artifacts/project-causality/2026-09-20-robert-mcp-streak-r30/robert-mcp-showcase-continuous-6m25s.mp4",
+  "continuity": "R30 source time is continuous from the visible Robert selection screen through the first explicit victory and into the unsolicited defensive war. No OCR, mouse, keyboard, fixed coordinates, source-time jumps, or reordered shots.",
+  "spans": [
+    {"cue_id": "fresh-ruler-selection", "source_start_seconds": 0.0, "source_end_seconds": 32.059678, "playback_rate": 1.0},
+    {"cue_id": "opening-events", "source_start_seconds": 32.059678, "source_end_seconds": 71.691692, "playback_rate": 1.0},
+    {"cue_id": "character-development", "source_start_seconds": 71.691692, "source_end_seconds": 116.838445, "playback_rate": 1.0},
+    {"cue_id": "realm-review", "source_start_seconds": 116.838445, "source_end_seconds": 152.613316, "playback_rate": 1.0},
+    {"cue_id": "dynamic-target-selection", "source_start_seconds": 152.613316, "source_end_seconds": 192.663289, "playback_rate": 1.0},
+    {"cue_id": "declare-war", "source_start_seconds": 192.663289, "source_end_seconds": 230.632445, "playback_rate": 1.0},
+    {"cue_id": "raise-and-move", "source_start_seconds": 230.632445, "source_end_seconds": 263.052032, "playback_rate": 1.0},
+    {"cue_id": "war-loop-recovery", "source_start_seconds": 263.052032, "source_end_seconds": 301.543637, "playback_rate": 1.0},
+    {"cue_id": "enforce-victory", "source_start_seconds": 301.543637, "source_end_seconds": 341.062181, "playback_rate": 1.0},
+    {"cue_id": "postwar-close", "source_start_seconds": 341.062181, "source_end_seconds": 384.966667, "playback_rate": 1.0}
+  ]
+}

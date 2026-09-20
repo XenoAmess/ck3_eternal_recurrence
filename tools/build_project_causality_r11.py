@@ -628,6 +628,10 @@ def render(
     )
     payload = _load_json(sidecar)
     payload["kind"] = "project_causality_r11_natural_owner_voice_candidate"
+    payload["language"] = {
+        "primary": "Simplified Chinese authorized-owner-reference narration and burned subtitles",
+        "secondary": "English in-frame titles and burned subtitles",
+    }
     payload["r11"] = {
         "plan": str(plan_path),
         "plan_sha256": _sha256(plan_path),

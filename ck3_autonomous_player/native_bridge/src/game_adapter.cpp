@@ -417,7 +417,15 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kFrontendGuiOpenNewGameV1Capability;
   } else if (step == ck3_11906::kFrontendGuiPickAnyCharacterV1Step) {
     capability = ck3_11906::kFrontendGuiPickAnyCharacterV1Capability;
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+  } else if (step == ck3_11906::kFrontendBookmarkModelProbeV1Step) {
+    capability = ck3_11906::kFrontendBookmarkModelProbeV1Capability;
+#endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+  } else if (step ==
+             ck3_11906::kFrontendGuiSelectSupported1066CharacterV1Step) {
+    capability =
+        ck3_11906::kFrontendGuiSelectSupported1066CharacterV1Capability;
   } else if (step == ck3_11906::kFrontendGuiStartSelectedBookmarkV1Step) {
     capability = ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability;
 #endif

@@ -264,6 +264,55 @@ def materialize_cues() -> list[Cue]:
     return cues
 
 
+def overlay_narration_manifest(
+    cues: Sequence[Cue], *, manifest_path: Path, source_label: str
+) -> list[Cue]:
+    """Replace one source slice's cue ids/text without changing the old timeline.
+
+    R11 rebuilds the picture from clean manifests, but its natural-voice cache
+    deliberately retains the stable 98-slot numbering established by R10.
+    This overlay lets revised narration be synthesized into those same slots
+    without remuxing the obsolete R9 picture lock.
+    """
+
+    payload = load_json(manifest_path)
+    chapters = payload.get("chapters")
+    if not isinstance(chapters, list) or not chapters:
+        raise BuildError(f"narration manifest has no chapters: {manifest_path}")
+    replacements: list[tuple[str, str]] = []
+    for index, chapter in enumerate(chapters):
+        if not isinstance(chapter, dict):
+            raise BuildError(f"narration manifest chapter {index} is not an object")
+        cue_id = chapter.get("id")
+        text = chapter.get("narration_en")
+        if not isinstance(cue_id, str) or not cue_id.strip():
+            raise BuildError(f"narration manifest chapter {index} lacks an id")
+        if not isinstance(text, str) or not text.strip():
+            raise BuildError(f"narration manifest chapter {cue_id} lacks narration_en")
+        replacements.append((cue_id.strip(), text.strip()))
+
+    positions = [index for index, cue in enumerate(cues) if cue.source_label == source_label]
+    if len(positions) != len(replacements):
+        raise BuildError(
+            f"narration overlay has {len(replacements)} chapters but source slice "
+            f"{source_label} has {len(positions)} slots"
+        )
+    result = list(cues)
+    for position, (cue_id, text) in zip(positions, replacements):
+        old = result[position]
+        result[position] = Cue(
+            index=old.index,
+            cue_id=cue_id,
+            text=text,
+            start=old.start,
+            end=old.end,
+            narration_delay=old.narration_delay,
+            sound_effect=old.sound_effect,
+            source_label=old.source_label,
+        )
+    return result
+
+
 def git_revision(path: Path) -> str:
     result = subprocess.run(
         ["git", "-C", str(path), "rev-parse", "HEAD"],
@@ -613,6 +662,16 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--output", type=Path)
     result.add_argument("--force", action="store_true")
     result.add_argument("--plan-only", action="store_true")
+    result.add_argument(
+        "--narration-manifest",
+        type=Path,
+        help="overlay cue ids and narration_en for the fresh Robert source slice",
+    )
+    result.add_argument(
+        "--synthesize-only",
+        action="store_true",
+        help="update the natural WAV cache without rebuilding the obsolete R10 picture lock",
+    )
     return result
 
 
@@ -621,6 +680,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     args.index_repo = args.index_repo.expanduser().resolve()
     args.model_dir = (args.model_dir or args.index_repo / "checkpoints").expanduser().resolve()
     args.voice_reference = args.voice_reference.expanduser().resolve()
+    args.narration_manifest = (
+        args.narration_manifest.expanduser().resolve()
+        if args.narration_manifest
+        else None
+    )
     args.picture = args.picture.expanduser().resolve()
     args.output_dir = args.output_dir.expanduser().resolve()
     args.output = (args.output or args.output_dir / "project-causality-r10-owner-voice-nomusic.mp4").expanduser().resolve()
@@ -639,6 +703,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             raise BuildError(f"{label} is missing: {path}")
 
     cues = materialize_cues()
+    if args.narration_manifest is not None:
+        if not args.narration_manifest.is_file():
+            raise BuildError(f"narration manifest is missing: {args.narration_manifest}")
+        cues = overlay_narration_manifest(
+            cues,
+            manifest_path=args.narration_manifest,
+            source_label="fresh-robert-agent",
+        )
     print(
         f"PLAN: {len(cues)} complete cues, {TOTAL_FRAMES} frames, "
         f"{TOTAL_SECONDS:.6f}s",
@@ -666,6 +738,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         generated_dir=generated_dir,
         force=args.force,
     )
+    if args.synthesize_only:
+        print(f"SYNTHESIS CACHE: {generated_dir}", flush=True)
+        return 0
     track, cue_rows = render_audio_track(
         cues,
         ffmpeg=ffmpeg,

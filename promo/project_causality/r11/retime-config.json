@@ -109,7 +109,7 @@
     "narration_tail_hold_seconds": 1.25,
     "subtitle_tail_hold_seconds": 1.0,
     "maximum_film_seconds": 3600,
-    "provisional_agent_showcase_seconds": 480,
+    "provisional_agent_showcase_seconds": 384.966667,
     "agent_showcase_minimum_seconds": 360,
     "agent_showcase_maximum_seconds": 720
   },

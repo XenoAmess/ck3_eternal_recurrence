@@ -25,8 +25,13 @@ constexpr std::uintptr_t kMaxExactImageRva = 0x6000000;
 constexpr std::uintptr_t kBookmarkCharacterStride = 0x1A0;
 constexpr std::string_view kSupportedBookmarkKey =
     "bm_1066_rags_to_riches";
+#if defined(XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1)
+constexpr std::string_view kSupportedCharacterKey =
+    "bookmark_rags_to_riches_duke_robert";
+#else
 constexpr std::string_view kSupportedCharacterKey =
     "bookmark_rags_to_riches_petty_king_murchad";
+#endif
 constexpr std::string_view kFeudalGovernmentKey = "feudal_government";
 constexpr std::uintptr_t kFinalGovernmentGetterRva = 0x2DAB260;
 constexpr std::uint32_t kSupportedDateLowRaw = 0x032AEB08;
@@ -547,11 +552,6 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
     output.same_frame_index_matches = true;
     return true;
   }
-  if (model.selected_character_index != -1) {
-    output.unavailable_reason = "another_bookmark_character_is_selected";
-    return true;
-  }
-
   // R740's sole owner route was the current GUI-context registry. The
   // direct application/idler path is also accepted when its exact vtables,
   // RTTI and independently named Bookmarks root all still match.
@@ -649,7 +649,12 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
       !ReadAt(access, selected_bookmark, 0x17C, current_count) ||
       current_base != model.bookmark_character_base_raw ||
       current_count != model.bookmark_character_count_raw ||
-      selected_index != -1) {
+      // CK3 normally opens Bookmarks with another featured character
+      // selected.  Replacing that selection is the native UI's ordinary
+      // operation; require only that the selection has not changed since
+      // the identity probe.  The independent post-submit probe below the
+      // Python facade still proves that the requested key became selected.
+      selected_index != model.selected_character_index) {
     output.unavailable_reason = "current_bookmarks_collection_changed";
     return true;
   }

@@ -3074,6 +3074,56 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertTrue(
             horizon["route_contact_horizon"]["one_day_contact_free"]
         )
+
+        moving_main = _army(
+            101,
+            soldiers=399,
+            province_id=60,
+            move_target_province_id=52,
+            army_state="moving",
+            route_province_ids=[51, 52],
+        )
+        capital_sibling = _army(
+            303,
+            soldiers=250,
+            province_id=45,
+            army_state="regular",
+            route_province_ids=[],
+        )
+        coalition_snapshot = copy.deepcopy(snapshot)
+        coalition_snapshot["player_armies"] = [moving_main, capital_sibling]
+        coalition_snapshot["active_wars"][0]["allied_armies"] = [
+            moving_main,
+            capital_sibling,
+        ]
+        coalition_scope = _capital_regroup_capability_scope(
+            coalition_snapshot,
+            driver._campaign_root_context_query,
+        )
+        self.assertEqual(
+            coalition_scope,
+            {
+                "army_id": 101,
+                "capital_province_id": 45,
+                "hostile_army_ids": [202],
+            },
+        )
+        single_moving_snapshot = copy.deepcopy(coalition_snapshot)
+        single_moving_snapshot["player_armies"] = [moving_main]
+        single_moving_snapshot["active_wars"][0]["allied_armies"] = [
+            moving_main
+        ]
+        self.assertEqual(
+            _capital_regroup_capability_scope(
+                single_moving_snapshot,
+                driver._campaign_root_context_query,
+            ),
+            {
+                "army_id": 101,
+                "capital_province_id": 45,
+                "hostile_army_ids": [202],
+            },
+        )
         dispatched = [
             frame["step"]
             for frame in endpoint.frames
@@ -11471,6 +11521,90 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "surrender-war-16777290",
             driver.capabilities()["action_steps"],
         )
+
+    def test_terminal_score_surrender_advertises_for_any_native_cb(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        war_id = 16_777_290
+        active_war = _war(war_id=war_id, score=-100)
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.query-war-termination-options-N",
+                "game.command.surrender-war-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[active_war],
+            )
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            step = str(frame["step"])
+            if step.startswith("query-war-termination-options-"):
+                result: dict[str, object] = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "query_sequence": 1,
+                    "war_termination_options": _termination_options(
+                        war_id,
+                        score=-100,
+                        white_peace_available=False,
+                        casus_belli_database_index=40,
+                        casus_belli_key="minor_religious_war",
+                        war_duration_days=329,
+                    ),
+                }
+            else:
+                self.assertEqual(step, "surrender-war-16777290")
+                result = {
+                    "step": step,
+                    "accepted": True,
+                    "status": "submitted",
+                }
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": result,
+                }
+            )
+
+        endpoint.send_hook = answer
+        driver.execute_step("query-war-termination-options-16777290")
+        source = driver.take_snapshot()
+        ready, reason, evidence = (
+            native_driver_module._terminal_score_surrender_readiness(
+                source, war_id
+            )
+        )
+        self.assertTrue(ready, reason)
+        self.assertEqual(evidence["variant"], "terminal_score_defeat")
+        self.assertIn(
+            "surrender-war-16777290",
+            driver.capabilities()["action_steps"],
+        )
+
+        submitted = driver.execute_step("surrender-war-16777290")
+        action = submitted["war_termination_result"]
+        self.assertEqual(action["status"], "submitted_pending")
+        self.assertEqual(action["outcome"], "attacker_defeat")
+        self.assertEqual(action["surrender_variant"], "terminal_score_defeat")
+        self.assertEqual(action["player_relative_war_score"], -100)
+        self.assertEqual(action["attacker_war_score"], -100)
+        self.assertEqual(action["defender_war_score"], 100)
 
     def test_white_peace_direct_rejects_malformed_ack_and_stale_frame(
         self,

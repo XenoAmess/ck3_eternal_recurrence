@@ -237,6 +237,12 @@ option(
 )
 
 option(
+  XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1
+  "Bind the exact-build supported 1066 bookmark candidate to Duke Robert"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1
   "Admit exact Council final gates only in the unadvertised controlled action candidate"
   OFF
@@ -928,6 +934,11 @@ if(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1
   )
 endif()
+if(XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1=1
+  )
+endif()
 if(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1=1
@@ -1108,6 +1119,11 @@ if(BUILD_TESTING)
   target_compile_definitions(
     xar_ck3_frontend_bookmark_model_probe_v1_test PRIVATE
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1)
+    target_compile_definitions(
+      xar_ck3_frontend_bookmark_model_probe_v1_test PRIVATE
+      XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1=1)
+  endif()
   if(MSVC)
     target_compile_options(
       xar_ck3_frontend_bookmark_model_probe_v1_test PRIVATE

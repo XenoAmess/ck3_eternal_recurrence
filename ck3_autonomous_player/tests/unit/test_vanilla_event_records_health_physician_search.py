@@ -19,6 +19,9 @@ from xar_autoplayer.vanilla_events import (  # noqa: E402
 from xar_autoplayer.vanilla_events.portable_evidence import (  # noqa: E402
     query_vanilla_event_evidence_index_v1,
 )
+from xar_autoplayer.vanilla_events.policy import (  # noqa: E402
+    recommend_registered_vanilla_event_option_v1,
+)
 from xar_autoplayer.vanilla_events.records_health import (  # noqa: E402
     VANILLA_HEALTH_ANALYSIS,
     VANILLA_HEALTH_OBSERVATIONS,
@@ -206,6 +209,25 @@ class HealthPhysicianSearchEventRecordTests(unittest.TestCase):
                 self.assertEqual(resolved["saved_scope_count"], 6 if inherited else 4)
                 self.assertEqual(resolved["selected_option_number"], 2)
                 self.assertEqual(resolved["selected_native_option_index"], 1)
+
+    def test_wartime_combat_scope_variant_selects_high_skill_physician(self) -> None:
+        context = _context(inherited_diagnosis_scopes=False)
+        context["saved_scopes"] = [
+            _scope("combat_side", "combat_side"),
+            _scope("commander", "character", character_id=32904),
+            _scope("sick_character", "character", character_id=32904),
+            _scope("high_skill_option", "character", character_id=49718),
+            _scope("low_skill_option", "character", character_id=36369),
+        ]
+        result = recommend_registered_vanilla_event_option_v1(
+            context,
+            played_character_id=32904,
+            snapshot_option_count=5,
+        )
+        self.assertEqual("recommended", result["status"], result)
+        self.assertEqual(2, result["selected_option_number"])
+        self.assertEqual(1, result["selected_native_option_index"])
+        self.assertTrue(all(result["checks"].values()), result)
 
     def test_registry_runtime_source_and_evidence_share_reviewed_record(self) -> None:
         self.assertIs(DEFAULT_VANILLA_EVENT_ANALYSIS[EVENT_KEY], (

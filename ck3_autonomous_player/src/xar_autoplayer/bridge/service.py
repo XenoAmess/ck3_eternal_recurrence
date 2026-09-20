@@ -8603,6 +8603,39 @@ class GameplayBridgeService:
             )
         return result
 
+    def activate_frontend_start_1066_bookmark_character_v1(
+        self,
+        character_name_key: str,
+    ) -> dict[str, object]:
+        """Select one exact-build 1066 bookmark character and start its map."""
+        activate = getattr(
+            self.driver,
+            "activate_frontend_start_1066_bookmark_character_v1",
+            None,
+        )
+        if not callable(activate):
+            raise UnsupportedStepError(
+                "selected backend has no native 1066 bookmark-character start"
+            )
+        result = activate(character_name_key)
+        if (
+            not isinstance(result, dict)
+            or result.get("schema")
+            != "ck3-frontend-1066-bookmark-character-start-v1"
+            or result.get("schema_version") != 1
+            or result.get("postcondition_verified") is not True
+            or result.get("requested_character_name_key")
+            != character_name_key
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native 1066 bookmark-character start lacks its independent "
+                "paused-map postcondition"
+            )
+        return result
+
     def activate_frontend_prepare_custom_ruler_v1(self) -> dict[str, object]:
         """Select a featured ruler and prove the custom-ruler lobby is ready."""
 

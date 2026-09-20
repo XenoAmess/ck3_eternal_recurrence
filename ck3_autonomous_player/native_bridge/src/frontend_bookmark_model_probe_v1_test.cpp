@@ -13,6 +13,13 @@ namespace {
 
 constexpr std::uintptr_t kModuleBase = 0x140000000;
 constexpr std::uintptr_t kGuiSlot = kModuleBase + 0x576CC68;
+#if defined(XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1)
+constexpr std::string_view kExpectedCharacterKey =
+    "bookmark_rags_to_riches_duke_robert";
+#else
+constexpr std::string_view kExpectedCharacterKey =
+    "bookmark_rags_to_riches_petty_king_murchad";
+#endif
 
 struct Region {
   std::uintptr_t base = 0;
@@ -142,13 +149,11 @@ Fixture MakeFixture() {
   fixture.Put(0x9000 + 0x178, std::uint32_t{5});
   fixture.Put(0x9000 + 0x17C, std::uint32_t{1});
   fixture.Put(0x9000 + 0x180, std::int32_t{-1});
-  constexpr std::string_view character_key =
-      "bookmark_rags_to_riches_petty_king_murchad";
   fixture.Put(0xA000 + 0x08, std::uintptr_t{0xC000});
-  fixture.Put(0xA000 + 0x18, std::uint64_t{character_key.size()});
-  fixture.Put(0xA000 + 0x20, std::uint64_t{character_key.size()});
+  fixture.Put(0xA000 + 0x18, std::uint64_t{kExpectedCharacterKey.size()});
+  fixture.Put(0xA000 + 0x20, std::uint64_t{kExpectedCharacterKey.size()});
   fixture.Put(0xA000 + 0x130, std::uintptr_t{0x9000});
-  fixture.PutBytes(0xC000, character_key);
+  fixture.PutBytes(0xC000, kExpectedCharacterKey);
   constexpr std::string_view government_key = "feudal_government";
   fixture.Put(0xE000 + 0x18, std::uintptr_t{0xF000});
   fixture.Put(0xE000 + 0x28, std::uint64_t{government_key.size()});
@@ -235,8 +240,7 @@ int main() {
       result.selected_date_low_raw != 0x032AEB08 ||
       !result.bookmark_character_keys_available ||
       result.bookmark_character_count != 1 ||
-      result.bookmark_character_keys[0] !=
-          "bookmark_rags_to_riches_petty_king_murchad" ||
+      result.bookmark_character_keys[0] != kExpectedCharacterKey ||
       !result.government_type_keys_available ||
       result.government_type_keys[0] != "feudal_government" ||
       !result.supported_1066_candidate_present ||

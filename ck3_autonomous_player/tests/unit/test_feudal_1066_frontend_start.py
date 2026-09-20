@@ -10,8 +10,10 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.frontend_gui_route_contract import (
+    ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_STEP,
     ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY,
     ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP,
+    PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP,
     QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP,
     normalize_frontend_selected_1066_feudal_candidate_v1,
     normalize_frontend_start_selected_bookmark_v1,
@@ -75,6 +77,81 @@ def _candidate() -> dict[str, object]:
 
 
 class FeudalSelectedBookmarkStartTests(unittest.TestCase):
+    def test_robert_exact_build_selection_and_start_are_zero_input(self) -> None:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        driver.frontend_transition_timeout_seconds = 0.02
+        driver._request_sequence = 10
+        driver.query_frontend_gui_route_v1 = _before
+        driver.take_snapshot = _paused_map
+        driver._wait_for_frontend_start_post_ready_pump_v1 = lambda value: value
+        driver._execute_campaign_root_context_v1_query = (
+            lambda *, expected_revision: _root()
+        )
+        robert_key = "bookmark_rags_to_riches_duke_robert"
+        calls: list[str] = []
+        probe_count = 0
+
+        def execute(step: str, **_: object) -> dict[str, object]:
+            nonlocal probe_count
+            calls.append(step)
+            if step == PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP:
+                probe_count += 1
+                return {
+                    "step": step,
+                    "accepted": True,
+                    "status": "identity_ready",
+                    "candidate_identity_ready": True,
+                    "selected_bookmark_group_key": (
+                        "bm_group_1066" if probe_count == 1 else None
+                    ),
+                    "selected_bookmark_key": "bm_1066_rags_to_riches",
+                    "selected_date_raw": 53178312,
+                    "selected_date_low_raw": 53178312,
+                    "candidate_keys": [
+                        "bookmark_rags_to_riches_petty_king_murchad",
+                        "bookmark_rags_to_riches_duchess_matilda",
+                        "bookmark_rags_to_riches_emir_yahya",
+                        "bookmark_rags_to_riches_duke_vratislav",
+                        robert_key,
+                    ],
+                    "supported_1066_candidate_index": 4,
+                    # CK3 opens this bookmark with a different candidate
+                    # selected.  The semantic action must replace that
+                    # selection, not require an artificial empty selection.
+                    "selected_character_index": 0 if probe_count == 1 else 4,
+                    "supported_1066_government_key": "feudal_government",
+                    "supported_1066_feudal": True,
+                    "supported_1066_date_matches": True,
+                    "backend_id": "native-headless",
+                }
+            return _ack() if step == ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP else {
+                "step": step,
+                "accepted": True,
+                "status": "acknowledged_verification_pending",
+                "backend_id": "native-headless",
+            }
+
+        driver._execute_primitive_step = execute
+        result = driver.activate_frontend_start_1066_bookmark_character_v1(
+            robert_key
+        )
+        self.assertEqual(
+            result["schema"],
+            "ck3-frontend-1066-bookmark-character-start-v1",
+        )
+        self.assertEqual(result["requested_character_name_key"], robert_key)
+        self.assertTrue(result["postcondition_verified"])
+        self.assertFalse(result["uses_ocr"])
+        self.assertEqual(
+            calls,
+            [
+                PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP,
+                ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_STEP,
+                PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP,
+                ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP,
+            ],
+        )
+
     def test_ack_only_or_other_government_cannot_verify_start(self) -> None:
         incomplete = _candidate_raw()
         incomplete["selected_character_name_key"] = None
@@ -117,6 +194,7 @@ class FeudalSelectedBookmarkStartTests(unittest.TestCase):
         driver.query_frontend_gui_route_v1 = _before
         driver.query_frontend_selected_1066_feudal_candidate_v1 = _candidate
         driver.take_snapshot = _paused_map
+        driver._wait_for_frontend_start_post_ready_pump_v1 = lambda value: value
         driver._execute_campaign_root_context_v1_query = (
             lambda *, expected_revision: _root()
         )
@@ -180,7 +258,7 @@ class FeudalSelectedBookmarkStartTests(unittest.TestCase):
             driver.activate_frontend_start_selected_bookmark_v1()
         self.assertEqual(
             calls,
-            [QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP],
+            [PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP],
         )
 
 

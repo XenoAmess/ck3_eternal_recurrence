@@ -1050,6 +1050,16 @@ def _ck3_activate_frontend_pick_any_character_v1(
     return service.activate_frontend_pick_any_character_v1()
 
 
+def _ck3_activate_frontend_start_1066_bookmark_character_v1(
+    service: GameplayBridgeService,
+    character_name_key: str,
+) -> dict[str, object]:
+    """Select an exact-build 1066 bookmark character and start its map."""
+    return service.activate_frontend_start_1066_bookmark_character_v1(
+        character_name_key
+    )
+
+
 def _ck3_activate_frontend_prepare_custom_ruler_v1(
     service: GameplayBridgeService,
 ) -> dict[str, object]:
@@ -2102,6 +2112,16 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_activate_frontend_pick_any_character_v1(service)
 
     @server.tool()
+    def ck3_activate_frontend_start_1066_bookmark_character_v1(
+        character_name_key: str,
+    ) -> dict[str, object]:
+        """Select a native 1066 bookmark character and verify its paused map."""
+        return _ck3_activate_frontend_start_1066_bookmark_character_v1(
+            service,
+            character_name_key,
+        )
+
+    @server.tool()
     def ck3_activate_frontend_prepare_custom_ruler_v1() -> dict[str, object]:
         """Select one featured ruler and open a designer-ready lobby."""
         return _ck3_activate_frontend_prepare_custom_ruler_v1(service)
@@ -2667,6 +2687,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_activate_frontend_pick_any_character_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_activate_frontend_start_1066_bookmark_character_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_activate_frontend_prepare_custom_ruler_v1"

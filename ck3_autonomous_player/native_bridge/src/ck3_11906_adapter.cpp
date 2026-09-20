@@ -54,6 +54,9 @@ constexpr std::size_t kCapabilityCount =
     + 2
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+    + 2
+#endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
     + 1
 #endif
     ;
@@ -148,7 +151,11 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kFrontendCoatOfArmsPatternGridInspectionV1Capability,
     ck3_11906::kFrontendGuiOpenNewGameV1Capability,
     ck3_11906::kFrontendGuiPickAnyCharacterV1Capability,
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
+    ck3_11906::kFrontendBookmarkModelProbeV1Capability,
+#endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+    ck3_11906::kFrontendGuiSelectSupported1066CharacterV1Capability,
     ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability,
 #endif
     ck3_11906::kFrontendGuiSelectRandomPlayableV1Capability,

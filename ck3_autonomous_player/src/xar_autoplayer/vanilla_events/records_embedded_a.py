@@ -454,6 +454,33 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (3, 4, 6),
         "selected_option_number": 7,
         "selected_native_option_index": 6,
+        "option_variants": ({
+            # Project Causality R14 observed the player contracting smallpox
+            # without a retained physician scope. CK3 rendered only native
+            # 0 (call for a physician) and native 6 (decline treatment). The
+            # epidemic, disease flag, player-patient and new memory remained
+            # exact typed scopes. Choose the physician-search route instead
+            # of knowingly declining treatment.
+            "saved_scope_name_sets": ((
+                "epidemic",
+                "disease_type",
+                "sick_character",
+                "new_memory",
+            ),),
+            "saved_scope_count": 4,
+            "unique_character_scope_excludes": {},
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "sick_character": "character",
+                "new_memory": "character_memory",
+            },
+            "option_count": 2,
+            "snapshot_option_count": 7,
+            "native_option_indices": (0, 6),
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+        },),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "stress_threshold.2202": {

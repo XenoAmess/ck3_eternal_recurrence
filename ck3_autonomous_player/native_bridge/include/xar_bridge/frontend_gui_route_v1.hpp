@@ -47,6 +47,9 @@ inline constexpr std::string_view kFrontendGuiStartSelectedBookmarkV1Capability 
 inline constexpr std::string_view kFrontendGuiStartSelectedBookmarkV1Step =
     "activate-frontend-start-selected-bookmark-v1";
 inline constexpr std::string_view
+    kFrontendGuiSelectSupported1066CharacterV1Capability =
+        "game.command.activate-frontend-select-supported-1066-character-v1";
+inline constexpr std::string_view
     kFrontendGuiSelectSupported1066CharacterV1Step =
         "select-frontend-supported-1066-character-v1";
 inline constexpr std::string_view kFrontendGuiSelectRandomPlayableV1Capability =

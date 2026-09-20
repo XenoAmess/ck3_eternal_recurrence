@@ -1510,6 +1510,28 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
                 "low_skill_option",
             ),
             "saved_scope_count": 6,
+        }, {
+            # Project Causality R12 observed the same physician-search event
+            # after a wartime health incident. The event carried the current
+            # combat side and commander instead of disease/epidemic scopes,
+            # while preserving the player patient and the same high/low
+            # candidate option projection. Bind that exact native shape.
+            "character_scopes": {
+                "sick_character": 32904,
+                "commander": 32904,
+            },
+            "scope_types": {
+                "combat_side": "combat_side",
+                "commander": "character",
+            },
+            "saved_scope_names": (
+                "combat_side",
+                "commander",
+                "sick_character",
+                "high_skill_option",
+                "low_skill_option",
+            ),
+            "saved_scope_count": 5,
         },),
         "option_count": 3,
         "snapshot_option_count": 5,
@@ -1823,6 +1845,46 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         "selected_option_number": 1,
         "selected_native_option_index": 0,
         "option_variants": ({
+            # Project Causality R19 reached the epidemic-aware recruitment
+            # path with both physician candidates retained. Robert's traits
+            # made all three authored result rows visible. Treatment failure
+            # was already applied in immediate, so native 0 remains the only
+            # continuation that neither imprisons nor executes the physician.
+            "option_count": 3,
+            "snapshot_option_count": 3,
+            "native_option_indices": (0, 1, 2),
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "saved_scope_name_sets": ((
+                "epidemic",
+                "disease_type",
+                "sick_character",
+                "new_memory",
+                "high_skill_option",
+                "low_skill_option",
+                "physician",
+                "background_terrain_scope",
+                "treatment_picker",
+                "treatment",
+                "outcome",
+                "portrait",
+            ),),
+            "saved_scope_count": 12,
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "sick_character": "character",
+                "new_memory": "character_memory",
+                "high_skill_option": "character",
+                "low_skill_option": "character",
+                "physician": "character",
+                "background_terrain_scope": "province",
+                "treatment_picker": "character",
+                "treatment": "flag",
+                "outcome": "flag",
+                "portrait": "character",
+            },
+        }, {
             # R369 entered the same failure result from the epidemic-aware
             # measles treatment path. Vanilla retained epidemic/new_memory,
             # while the punishment options were not available, leaving only
@@ -1858,7 +1920,7 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
                 "portrait": "character",
                 "background_terrain_scope": "province",
             },
-        },),
+        }),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "health.1101": {

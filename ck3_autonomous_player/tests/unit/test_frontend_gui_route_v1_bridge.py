@@ -471,6 +471,21 @@ class _FrontendDriver:
     def activate_frontend_pick_any_character_v1(self) -> dict[str, object]:
         return _pick_any_character_action()
 
+    def activate_frontend_start_1066_bookmark_character_v1(
+        self,
+        character_name_key: str,
+    ) -> dict[str, object]:
+        return {
+            "schema": "ck3-frontend-1066-bookmark-character-start-v1",
+            "schema_version": 1,
+            "status": "verified",
+            "postcondition_verified": True,
+            "requested_character_name_key": character_name_key,
+            "uses_ocr": False,
+            "uses_keyboard": False,
+            "uses_mouse": False,
+        }
+
     def activate_frontend_prepare_custom_ruler_v1(self) -> dict[str, object]:
         return _prepare_custom_ruler_action()
 
@@ -983,6 +998,16 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             ):
                 self.assertEqual(tools[name].input_schema.get("required", []), [])
                 self.assertFalse(tools[name].input_schema["additionalProperties"])
+            bookmark_start = tools[
+                "ck3_activate_frontend_start_1066_bookmark_character_v1"
+            ]
+            self.assertEqual(
+                bookmark_start.input_schema.get("required", []),
+                ["character_name_key"],
+            )
+            self.assertFalse(
+                bookmark_start.input_schema["additionalProperties"]
+            )
             framebuffer = tools[
                 "ck3_compare_frontend_coat_of_arms_framebuffer_v1"
             ]
@@ -1056,6 +1081,21 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(pick_any.is_error)
             self.assertTrue(
                 pick_any.structured_content["postcondition_verified"]
+            )
+            robert_start = await client.call_tool(
+                "ck3_activate_frontend_start_1066_bookmark_character_v1",
+                {
+                    "character_name_key": (
+                        "bookmark_rags_to_riches_duke_robert"
+                    )
+                },
+            )
+            self.assertFalse(robert_start.is_error)
+            self.assertEqual(
+                robert_start.structured_content[
+                    "requested_character_name_key"
+                ],
+                "bookmark_rags_to_riches_duke_robert",
             )
             prepare = await client.call_tool(
                 "ck3_activate_frontend_prepare_custom_ruler_v1", {}

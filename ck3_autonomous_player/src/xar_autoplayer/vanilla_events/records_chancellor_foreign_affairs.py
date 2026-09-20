@@ -12,10 +12,41 @@ VANILLA_CHANCELLOR_FOREIGN_AFFAIRS_TIMELINE_CONTRACTS: Final[
 ] = {
     "chancellor_task.1004": {
         # This source-defined letter has exactly one unconditional option.  The
-        # R445 frame was identified visually, so campaign scope identities stay
-        # out of the portable contract until a native paused frame observes them.
+        # R16 Project Causality capture closed the native paused projection:
+        # councillor and active_councillor are the same non-player character,
+        # councillor_liege is the player, and neighbor is a distinct non-player
+        # character. The sole option merely acknowledges the already-applied
+        # opinion loss.
         "date_policy": "product-observation-window",
         "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {
+            "councillor_liege": PLAYER_SENTINEL,
+        },
+        "unique_character_scope_excludes": {
+            "councillor": (PLAYER_SENTINEL,),
+            "active_councillor": (PLAYER_SENTINEL,),
+            "neighbor": (PLAYER_SENTINEL,),
+        },
+        "character_scope_matches_any": {
+            "councillor": ("active_councillor",),
+            "active_councillor": ("councillor",),
+        },
+        "character_scope_differs_from": {
+            "neighbor": ("councillor", "active_councillor"),
+        },
+        "scope_types": {
+            "councillor": "character",
+            "councillor_liege": "character",
+            "active_councillor": "character",
+            "neighbor": "character",
+        },
+        "saved_scope_name_sets": ((
+            "councillor",
+            "councillor_liege",
+            "active_councillor",
+            "neighbor",
+        ),),
+        "saved_scope_count": 4,
         "option_count": 1,
         "snapshot_option_count": 1,
         "native_option_indices": (0,),
@@ -71,10 +102,10 @@ VANILLA_CHANCELLOR_FOREIGN_AFFAIRS_ANALYSIS: Final[
             "five-year message cooldown conditions"
         ),
         "scope_boundary": (
-            "R445 proves the rendered letter and localized option, but no native "
-            "event-window query was attached. Dynamic councillor and neighbor "
-            "identities therefore remain observation-pending and are not encoded "
-            "as campaign constants"
+            "R445 proved the rendered letter. Project Causality R16 added a "
+            "native paused event-window projection and closed the councillor, "
+            "liege, active-councillor, and neighbor relationships without "
+            "encoding campaign-specific character IDs"
         ),
         "immediate_effect": None,
         "option_semantics": {

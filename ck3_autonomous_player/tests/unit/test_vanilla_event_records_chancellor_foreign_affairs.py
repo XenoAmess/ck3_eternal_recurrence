@@ -24,6 +24,9 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
     materialize_vanilla_timeline_contract,
     query_vanilla_event_knowledge_v1,
 )
+from xar_autoplayer.vanilla_events.policy import (  # noqa: E402
+    recommend_registered_vanilla_event_option_v1,
+)
 from xar_autoplayer.vanilla_events.source_index import (  # noqa: E402
     query_vanilla_event_source_provenance_v1,
 )
@@ -41,7 +44,10 @@ class ChancellorForeignAffairsRecordTests(unittest.TestCase):
 
         self.assertEqual(contract["root_character_id"], "$player")
         self.assertNotIn("date_raw", contract)
-        self.assertNotIn("character_scopes", contract)
+        self.assertEqual(
+            contract["character_scopes"], {"councillor_liege": "$player"}
+        )
+        self.assertEqual(contract["saved_scope_count"], 4)
         self.assertEqual(contract["option_count"], 1)
         self.assertEqual(contract["snapshot_option_count"], 1)
         self.assertEqual(contract["native_option_indices"], (0,))
@@ -50,6 +56,84 @@ class ChancellorForeignAffairsRecordTests(unittest.TestCase):
         rebound = materialize_vanilla_timeline_contract(contract, 29829)
         self.assertEqual(rebound["root_character_id"], 29829)
         self.assertEqual(contract["root_character_id"], "$player")
+
+    def test_r16_native_scope_projection_selects_only_option(self) -> None:
+        player = 29_829
+
+        def scope(character_id: int) -> dict[str, object]:
+            return {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": character_id,
+                },
+            }
+
+        saved = (
+            ("councillor", 32_716),
+            ("councillor_liege", player),
+            ("active_councillor", 32_716),
+            ("neighbor", 37_011),
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "snapshot_revision": 1,
+            "date_raw": 53_151_144,
+            "current_event_instance_id": 1,
+            "window_match_count": 1,
+            "unavailable_reason": None,
+            "event_definition_key": EVENT_KEY,
+            "calculated_event_id": 1_001_004,
+            "runtime_stats_ordinal": 1,
+            "root_scope": scope(player),
+            "saved_scopes": [
+                {
+                    "name": name,
+                    "name_identifier": index + 50,
+                    "scope": scope(character_id),
+                }
+                for index, (name, character_id) in enumerate(saved)
+            ],
+            "options": [{
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+                "resolved_name": "acknowledge",
+                "unavailable_reason": "",
+                "effect_indicators": {
+                    "status": "available",
+                    "coverage": (
+                        "played-character-event-icon-indicators-1.19.0.6-v1"
+                    ),
+                    "complete_effect_set": False,
+                    "rows": [],
+                },
+                "effect_preview": {"status": "unavailable"},
+                "resource_deltas": {"status": "unavailable"},
+                "relationship_deltas": {"status": "unavailable"},
+            }],
+            "readiness": {},
+            "provenance": {},
+        }
+
+        result = recommend_registered_vanilla_event_option_v1(
+            context,
+            played_character_id=player,
+            snapshot_option_count=1,
+        )
+
+        self.assertEqual(result["status"], "recommended")
+        self.assertEqual(result["selected_native_option_index"], 0)
+        self.assertEqual(result["failed_checks"], [])
 
     def test_analysis_freezes_call_chain_and_unavoidable_effect(self) -> None:
         analysis = VANILLA_CHANCELLOR_FOREIGN_AFFAIRS_ANALYSIS[EVENT_KEY]

@@ -45,6 +45,18 @@ ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY: Final = (
 ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP: Final = (
     "activate-frontend-start-selected-bookmark-v1"
 )
+PROBE_FRONTEND_BOOKMARK_MODEL_V1_CAPABILITY: Final = (
+    "game.command.probe-frontend-bookmark-model-v1"
+)
+PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP: Final = (
+    "probe-frontend-bookmark-model-v1"
+)
+ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-select-supported-1066-character-v1"
+)
+ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_STEP: Final = (
+    "select-frontend-supported-1066-character-v1"
+)
 QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_CAPABILITY: Final = (
     "game.command.query-frontend-selected-1066-feudal-candidate-v1"
 )
@@ -440,8 +452,17 @@ def normalize_frontend_pick_any_character_v1(
 
 def normalize_frontend_selected_1066_feudal_candidate_v1(
     result: object,
+    *,
+    expected_character_name_key: str = (
+        "bookmark_rags_to_riches_petty_king_murchad"
+    ),
 ) -> dict[str, object]:
     """Accept only native model identity, never a repeated GUI widget name."""
+    if not isinstance(expected_character_name_key, str) or not (
+        expected_character_name_key.startswith("bookmark_rags_to_riches_")
+        and len(expected_character_name_key) <= 128
+    ):
+        raise ValueError("expected bookmark character key is invalid")
     if not isinstance(result, dict):
         raise ValueError("frontend selected-candidate query must be an object")
     if (
@@ -450,10 +471,14 @@ def normalize_frontend_selected_1066_feudal_candidate_v1(
         or result.get("accepted") is not True
         or result.get("status") != "ready"
         or result.get("route") != "bookmarks"
-        or result.get("selected_bookmark_group_key") != "bm_group_1066"
+        # CK3 clears the group projection to a native sentinel after a
+        # featured character is selected.  The exact bookmark key, start
+        # date, character key and government remain the authoritative tuple.
+        or result.get("selected_bookmark_group_key")
+        not in {None, "bm_group_1066"}
         or result.get("selected_bookmark_key") != "bm_1066_rags_to_riches"
         or result.get("selected_character_name_key")
-        != "bookmark_rags_to_riches_petty_king_murchad"
+        != expected_character_name_key
         or result.get("selected_character_government_key")
         != "feudal_government"
         or not isinstance(result.get("selected_bookmark_start_date_raw"), int)
@@ -464,7 +489,8 @@ def normalize_frontend_selected_1066_feudal_candidate_v1(
         or result["query_sequence"] < 1
     ):
         raise ValueError(
-            "native frontend candidate does not prove selected 1066 feudal Murchad"
+            "native frontend candidate does not prove the requested 1066 "
+            "feudal bookmark character"
         )
     return {
         "schema": "ck3-frontend-selected-1066-feudal-candidate-v1",
@@ -495,6 +521,9 @@ def normalize_frontend_start_selected_bookmark_v1(
     selected_candidate: dict[str, object],
     after_snapshot: dict[str, object],
     campaign_root: dict[str, object],
+    expected_character_name_key: str = (
+        "bookmark_rags_to_riches_petty_king_murchad"
+    ),
 ) -> dict[str, object]:
     """Require a new paused map and independent feudal campaign-root result."""
     if not isinstance(acknowledgement, dict):
@@ -514,11 +543,11 @@ def normalize_frontend_start_selected_bookmark_v1(
         or selected_candidate.get("status") != "ready"
         or selected_candidate.get("read_only") is not True
         or selected_candidate.get("selected_bookmark_group_key")
-        != "bm_group_1066"
+        not in {None, "bm_group_1066"}
         or selected_candidate.get("selected_bookmark_key")
         != "bm_1066_rags_to_riches"
         or selected_candidate.get("selected_character_name_key")
-        != "bookmark_rags_to_riches_petty_king_murchad"
+        != expected_character_name_key
         or selected_candidate.get("selected_character_government_key")
         != "feudal_government"
         or selected_candidate.get("selected_bookmark_start_date_raw")

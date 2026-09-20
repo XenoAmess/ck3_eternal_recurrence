@@ -494,6 +494,48 @@ flowchart LR
 - [unknown] GUI predictor 自身是否做完整战斗仿真不属于本文已闭合范围；即使未来闭合，也不能未经校准就把
   它的等级或 advantage edge 当作概率。
 
+## 2026-09-20 罗贝尔连续录制：宗教战争联军风险
+
+- [production-live] 宣传片连续录制 R22 在原版、空 mod 列表、零 OCR、零键鼠输入下，由官方 MCP 动态比较全部合法目标。宣战前
+  `query-war-entry-assessments` 对 CharacterID `31549` 给出 actor base
+  `3904000000`、target base/total `1332000000`、network contribution `0`；按这份宣战前战略读数，这是全部候选中风险最低的一项。
+- [production-live] `minor_religious_war` 建立后，paused active-war frame 随后物化为 **5 支 allied CUnit 对 7 支 enemy CUnit**。
+  这证明单一目标统治者的宣战前战略 power 不能代表战争建立后的完整参战军队集合；对宗教战争尤其不能把
+  `target_network_contribution_raw=0` 解释成“不会出现共同防守者”。
+- [production-live] R22 的 route preview 与首次 contact horizon 都合法，但 committed-route sentinel 的既有证据明确写着
+  `hostile_route_change_detection=not_watched_until_combat_id_transition`。军队在这段盲区继续向唯一目标推进，第一次战斗失败，最终战分
+  `-100`；MCP 在同一终局帧提交 `surrender-war-6`，得到 explicit `attacker_defeat`。录像位于
+  `artifacts/project-causality/2026-09-20-robert-mcp-streak-r22/robert-1066-mcp-streak-continuous.mkv`，
+  SHA-256 `761EB96E52FE65B427FDB8174D87065E9D6AB81D6ABD3B5D5BD19AE4D1804328`。这是失败路径证据，不是宣传片胜场。
+- [counter-policy, static-ready] 每个 paused、非 gathering/combat/retreat 的 active-war frame，在提交或继续进攻路线前消费
+  `query-army-strengths-v1`。只把双方 materialized CUnit 的 current/max soldiers 与 base power 总量命名为
+  `operational_routing_risk_not_battle_win_odds`；任何字段都不得冒充 `0x19186E0` ratio 或胜率。
+- [counter-policy, static-ready] 选择任何进攻路线前，若多支可控军队仍在同一省且都 idle，先把 strength query 证明的最强 stack 与
+  一支 sibling 做原生 Merge，逐 turn 合并，不再让主力单独出发而把可用兵力留在集结点。当敌方 current soldiers 或 base power
+  超过友方总量 25% 时，再关闭长段 committed-route sentinel，时间推进退化为逐 paused frame 重查。若 exact route/contact 变为 unsafe，则先查询 fresh
+  campaign capital、预览精确回撤路线，再在可达时回撤/驻留；敌军路线重新开放目标后才恢复进攻。该策略是对 R22 盲区的最小修复，
+  尚待下一条完整胜负实机录像升级为 production-live loop。
+
+```mermaid
+flowchart LR
+    A["paused active-war frame"] --> Q{"same-frame army strengths ready?"}
+    Q -->|no| M["MCP query-army-strengths-v1"]
+    M --> A
+    Q -->|yes| G{"same-province idle siblings?"}
+    G -->|yes| J["native Merge into strongest stack"]
+    J --> A
+    G -->|no| R{"hostile operational overmatch?"}
+    R -->|no| P["normal exact route / sentinel policy"]
+    R -->|yes| D["disable long route sentinel\nrecheck each paused frame"]
+    D --> H{"route/contact still safe?"}
+    H -->|yes| S["bounded advance toward objective"]
+    H -->|no| C["fresh campaign-capital query\n+ exact retreat preview"]
+    C --> A
+    R -. "not a win probability" .-> U["unknown: exact native encounter ratio"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
 ## 可复用的 native 锚点
 
 宣战与战争终止的后续审计已经完成：看到 “military strength” 文字不等于调用了本页的战术接战 ratio；
@@ -588,6 +630,78 @@ rg -a -b -o 'CalcCombatPredictionAndEdgesChangingAdvantage' 'Crusader Kings III\
 | `0x184B3A4..0x184B566` | 撤退 `<=0.45`、别处兵力、更好防守地形及无退路时 code `2` 分支 |
 
 ## 未闭合清单
+
+### 2026-09-20 R25：联军物化后的兵力重查与不可读路线
+
+- [production-live] R25 在 `minor_religious_war` 建立后，MCP 同帧强度查询读到玩家四军
+  `1245 + 250 + 250 + 250 = 1995`，敌方三军 `329 + 1169 + 1905 = 3403`。第三支敌军是在主力已经
+  出发后才进入 active-war 敌军集合，因此“只在发现敌军压倒时合并”仍然太晚；出征前同省 idle 军队必须无条件先原生合并，
+  再预览进攻路线。
+- [production-live] 对敌军 ArmyID `70` 的 `query-route-contact-horizon` 返回
+  `CK3 route arrival timeline is unavailable (role=hostile, path=hostile_active, stage=route_duration_read)`。
+  这是原生只读时间线不可用，不是 CK3 崩溃，也不能用 OCR 猜测到达时间。失败命令保留在 driver history index `105`；
+  后续策略必须在同帧禁止重问，并将受影响路线按不可精确验证处理，转而检查其他目标或回撤路线。
+- [production-live] 录像位于
+  `artifacts/project-causality/2026-09-20-robert-mcp-streak-r25/robert-1066-mcp-streak-continuous.mkv`，SHA-256
+  `775E2369FD158780480BC3F7A6B9D56B08BBB08C0769C6BD5659F4BEB40CD413`；`report.json` SHA-256
+  `1FF550D1669B9B1C78DE78E0E41CD29858D58EB1C8282C0BA215D6096D2A27EB`。该 run 为 capability RED，
+  仅证明上述动态联军与查询失败边界，不算宣传片胜场。
+- [static-ready] 反制策略现为：同帧军力查询 → 同省多军先逐次合并到最强 stack → 才允许进攻；路线时间线查询失败时，
+  录制器保留 MCP 错误原文并继续取新快照，策略消费失败历史、拒绝原路线，绝不切换 OCR/鼠标/键盘，也不伪造 ETA。
+- [production-live] R26 动态评估 7 个合法目标后选择 CharacterID `33422`；actor base `4010000000`，目标保守军力
+  `1290000000`，风险类为 `preferred_3_to_2_overmatch`。战争物化后出现一支在外主力 ArmyID `107` 与三支仍在首都
+  `2619` 的可控军队；策略正确要求 `preview-move-army-107-to-2619`，但 driver 的 capital-regroup concrete capability
+  仍仅覆盖旧的“单军、399 对 400 围城”形态，连续三次保持 paused/blocked 后由录制器停止。该 run 的录像 SHA-256
+  `C9DC5049778A1DC02EEDCCFE5BC2D069B80BDD2FBD77D5DCF75CEBCB5C7187B3`，报告 SHA-256
+  `41401F1CEF59C46A3D684A0F3DFBB04F33D9E39FD76739E11C3E06F6A72C0A8E`；仍为 capability RED。
+- [static-ready] capital-regroup concrete capability 现同时覆盖一个严格的新形态：恰好一支非首都、非 combat/retreat 的
+  `regular/moving/sieging` 主体，其他全部可控军队均为首都 idle 驻军。driver 只发布到同帧原生 campaign-root capital 的
+  preview/move/contact-query literals；是否真正撤回仍由同帧军力压制与 unsafe route 的策略门判断。
+- [production-live] R27 进入 CombatID `33554435`。连续原生帧显示：`maneuver day 1` 时双方 CUnit 为
+  `51` 对 `62`；`main day 0` 时敌方 `16777235` 加入；`main day 12` 时双方 derived current fighting raw 为
+  `81993619` 对 `244957`；6 日 exact battle sentinel 后，同一 CombatID 的敌方 CUnit `61` 新加入，主战阶段日重置为
+  `main day 1`，双方为 `80008067` 对 `21378343`，winner 仍为 `none`。旧校验把同阶段 `12 -> 1` 一律当作回退，
+  因而 paused RED；这不是战败。录像 SHA-256
+  `7D832D69B8399C9C7E6E85D3EE59B198AFA7CC45EF437A1D432EBB98E22F4274`，报告 SHA-256
+  `C570A742B1F957DD027003ABBA14DD52991070BA6FBA3F8B4EA58F7D492901D2`。
+- [static-ready] 同 CombatID 的主战阶段日重置现在只在以下合取下合法：exact multi-day sentinel 完整闭合、双方旧 CUnit
+  集合分别是新集合的子集且至少一侧严格新增、没有任何旧 CUnit 消失、winner/forced winner 均仍为 `none`、重置后的
+  phase day 不超过本次实耗日数。该转移记为 `same_combat_reopened`；没有严格增援证据的同阶段回退继续判 invalid。
+- [production-live] R28 仅物化一支在外的可控整军 ArmyID `57`。敌军路线变化后，策略在 overmatch 与 unsafe objective
+  合取下请求 `preview-move-army-57-to-2619`；driver 仍把 `len(controlled)==1` 全部送入旧的“sieging 399/400”特例，
+  因而未发布动作并 paused RED。录像 SHA-256
+  `5B305E29B30C5777814B7DE6463F3381B865838509744548B4B2F293C536471E`，报告 SHA-256
+  `9F2963E940BA06B4AC907AF9EF7EEBDAD8ABAD247B3D1C2D0169370E543E699A`。
+- [static-ready] 单支非首都 `regular/moving` 军队现与多军形态共用 coalition-regroup concrete capability projection；
+  单支 `sieging` 军队仍保留旧的精确围城特例。能力发布只让策略能够预览/移动到同帧原生首都，实际选择仍要求同帧军力
+  overmatch 与已拒绝的进攻路线。
+- [production-live] R29 的主力 ArmyID `16777258` 推进到 Province `2627` 后，目标 `2638` 的继续路线与首都
+  `2619` 的回撤路线都必须经过 `2633`；四支敌军已在 `2633`，第五支敌军也以 `2633` 为目标，因此两条路线均被
+  exact route audit 否决。策略没有冒险穿越，但旧实现只能 paused blocked，不能主动取消已经提交的进攻路线。
+  录像 SHA-256 `180FBFDCE1AE0CADF4E0CACA68817727489C688CCA1490CB423F0EEC9A1F92F6`，报告 SHA-256
+  `DA9ED9A48829937B0F93C147E6AA18B190CBFA2C4639ADA25CBC69F76C91A7A4`。
+- [static-ready] 当进攻与首都回撤均不安全且主力仍有 committed route 时，策略先提交原生
+  `move-army-<id>-to-<current Province>` 清路并原地驻留；这不是时间推进。下一 paused 帧若主力已 stationary、当前位置
+  没有敌军、没有 stationary threat 且敌方仍为 operational overmatch，则只推进一日并重新查询兵力和全部路线；敌军进入
+  接触范围时仍由 contact/battle OODA 接管。该 hold 不允许跨日哨兵，也不推断胜率。
+
+- [production-live loop] R30 在纯原版、`enabled_mods=[]` 环境中从可见的 1066 罗贝尔选人界面开始，前端进入游戏、
+  开局状态绑定、合法宣战集合、逐目标军力评估、宣战、集结、行军、战斗、围城与执行要求全部走 native bridge/MCP；
+  `uses_ocr=false`、`uses_keyboard=false`、`uses_mouse=false`、`fixed_coordinates=false`。动态排序选择 CharacterID `31549`
+  的 WarID `6`（objective ProvinceID `2638`），并在母带约 `00:06:38` 取得 `attacker_victory`；这闭合了一条真实的
+  “观察 → 评估全部合法目标 → 选择 → 宣战 → 作战 → 胜利核验”进攻 production-live loop，不要求预设对手。
+- [production-live continuation] 首胜同帧自动出现防御 WarID `23`。智能体接管新战争并继续运行约二十分钟，读到玩家相对分数约 `-44`，
+  其中 occupation 约 `+94`（进攻方）与 ticking 约 `-50`（防守方），但当前 bridge 只发布主目标 `2638`，没有发布
+  该战争全部被占省份集合，因此无法诚实规划逐省收复。该 run 在操作员边界被中止：它记录“智能体继续游玩”，但不把
+  尚未结束的战争计算为胜负。补齐全量占领观测后，可继续延长这条多战争实机。
+- [production-live evidence] R30 连续母带 `robert-1066-mcp-streak-continuous.mkv` 时长 `00:27:18.666`，SHA-256
+  `FECD2972DA7305EAF138BEFF6184ED94F804227278E035066973E68F58636D46`；用于宣传片的连续源区间
+  `robert-mcp-showcase-continuous-6m25s.mp4` 时长 `00:06:24.967`，SHA-256
+  `08C5A46300641CC0141AD1FDDD6BC22F93C61A8C92147E5036A8BDB65F469245`。该区间从罗贝尔选人画面连续前进到
+  首胜及后续防御战，没有源时间跳切、倒序或重排。`report.json`、`target-evaluations.jsonl`、`war-ledger.jsonl`
+  的 SHA-256 分别为 `2E85F101459099F457313C5DE800C383A9984AF7F542BEF7CBA3A0C127503E1D`、
+  `AFBD289069DCCF98AFFE3B188CF1225DB997E89C12D83235E1C960C3A2C292DD`、
+  `27E11359BD320FC66B8CAC3A635C62F04ACD792D82E1B671BD588C73AB909F6C`。
 
 - [unknown] `0x19186E0` 的原生函数名、`mode` 枚举、arg 5 业务名及全部 flag bit。
 - [unknown] 八个 cache lane、九个 relation lane、selected lane 和 secondary metric 的正式枚举/字段名。

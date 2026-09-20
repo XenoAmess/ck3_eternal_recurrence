@@ -79,6 +79,7 @@ from .bridge.succession_transition_contract import (
 )
 from .bridge.war_contract import (
     MAX_ROUTE_CONTACT_HOSTILE_IDS,
+    QUERY_ARMY_STRENGTHS_STEP,
     RAISE_TROOPS_STEP,
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
@@ -162,6 +163,7 @@ _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
 # out, but do not require another lost battle after every route is exhausted.
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -1
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
+_TERMINAL_SCORE_SURRENDER_SCORE = -100
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
 _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
     "committed-route-sentinel-advance"
@@ -4131,7 +4133,68 @@ def _battle_control_transition(
     after_day = int(after["phase_day"])
     phase_path_legal = False
     pursuit_reopened_to_main = False
-    if after_phase == before_phase:
+    main_reopened_by_reinforcement = False
+    terminal_pursuit_skip = False
+    before_side_armies = {
+        role: {
+            _native_int(row.get("public_cunit_id"))
+            for row in (
+                side.get("ordered_armies", [])
+                if isinstance(side, dict)
+                and isinstance(side.get("ordered_armies"), list)
+                else []
+            )
+            if isinstance(row, dict)
+            and _native_int(row.get("public_cunit_id")) is not None
+        }
+        for role, side in (
+            ("attacker", before.get("attacker")),
+            ("defender", before.get("defender")),
+        )
+    }
+    after_side_armies = {
+        role: {
+            _native_int(row.get("public_cunit_id"))
+            for row in (
+                side.get("ordered_armies", [])
+                if isinstance(side, dict)
+                and isinstance(side.get("ordered_armies"), list)
+                else []
+            )
+            if isinstance(row, dict)
+            and _native_int(row.get("public_cunit_id")) is not None
+        }
+        for role, side in (
+            ("attacker", after.get("attacker")),
+            ("defender", after.get("defender")),
+        )
+    }
+    reinforcement_strictly_added = bool(
+        all(
+            before_side_armies[role].issubset(after_side_armies[role])
+            for role in ("attacker", "defender")
+        )
+        and any(
+            before_side_armies[role] != after_side_armies[role]
+            for role in ("attacker", "defender")
+        )
+    )
+    if (
+        after_phase == before_phase == 1
+        and after_day < before_day
+        and isinstance(sentinel_validation, dict)
+        and sentinel_validation.get("valid") is True
+        and 0 <= after_day <= actual_elapsed_days
+        and after.get("winner_side") == "none"
+        and after.get("forced_winner_side") == "none"
+        and reinforcement_strictly_added
+    ):
+        # CK3 restarts the main-phase day counter when a new army joins the
+        # same CombatID.  Accept only a strict per-side superset under the
+        # exact multi-day sentinel; an unexplained regression remains RED.
+        phase_path_legal = True
+        main_reopened_by_reinforcement = True
+    elif after_phase == before_phase:
         phase_path_legal = (
             before_day <= after_day <= before_day + actual_elapsed_days
         )
@@ -4151,6 +4214,26 @@ def _battle_control_transition(
             0 <= after_day <= before_day + actual_elapsed_days
         )
         pursuit_reopened_to_main = True
+    elif (
+        isinstance(sentinel_validation, dict)
+        and sentinel_validation.get("valid") is True
+        and before_phase < 2
+        and after_phase == 2
+        and after_phase - before_phase <= actual_elapsed_days
+        and 0 <= after_day <= actual_elapsed_days
+        and after.get("winner_side") in {"attacker", "defender"}
+    ):
+        winner_side = str(after["winner_side"])
+        losing_side = (
+            after.get("defender")
+            if winner_side == "attacker"
+            else after.get("attacker")
+        )
+        terminal_pursuit_skip = bool(
+            isinstance(losing_side, dict)
+            and losing_side.get("derived_current_fighting_raw") == 0
+        )
+        phase_path_legal = terminal_pursuit_skip
     if not phase_path_legal:
         return {
             **common,
@@ -4180,18 +4263,29 @@ def _battle_control_transition(
         **common,
         "status": (
             "same_combat_reopened"
-            if pursuit_reopened_to_main
+            if pursuit_reopened_to_main or main_reopened_by_reinforcement
             else "same_combat_advanced"
         ),
         "reason": (
-            "the same CombatID legally reopened from pursuit into main with "
-            "its winner reset"
+            "the same CombatID legally restarted its main-phase day counter "
+            "after a strict participant reinforcement under the exact "
+            "multi-day sentinel"
+            if main_reopened_by_reinforcement
+            else "the same CombatID legally reopened from pursuit into main "
+            "with its winner reset"
             if pursuit_reopened_to_main
+            else "the same CombatID reached a proven terminal pursuit state "
+            "during one reconciled multi-day native sentinel advance"
+            if terminal_pursuit_skip
             else "the same CombatID has a legal bounded phase/day or exact "
             "casualty-ledger transition"
         ),
         "phase_day_changed": phase_day_changed,
         "ledger_changed": ledger_changed,
+        "pursuit_reopened_to_main": pursuit_reopened_to_main,
+        "main_reopened_by_reinforcement": main_reopened_by_reinforcement,
+        "reinforcement_strictly_added": reinforcement_strictly_added,
+        "terminal_pursuit_skip": terminal_pursuit_skip,
     }
 
 
@@ -5031,6 +5125,53 @@ def _de_jure_no_safe_route_surrender_candidate(
         and isinstance(casus_belli, dict)
         and casus_belli.get("canonical_key")
         == _DE_JURE_NO_SAFE_ROUTE_SURRENDER_CB
+        and isinstance(surrender, dict)
+        and surrender.get("outcome") == "attacker_defeat"
+        and surrender.get("hostage_variant") == "none"
+        and surrender.get("context_constructed") is True
+        and surrender.get("native_validator_passed") is True
+        and surrender.get("available") is True
+        and surrender.get("auto_accept_observable") is True
+        and surrender.get("auto_accept") is True
+        and isinstance(response, dict)
+        and response.get("status") == "available"
+        and response.get("would_accept_now") is True
+    )
+
+
+def _terminal_score_surrender_ready(
+    snapshot: dict[str, object],
+    war: dict[str, object],
+    options: object,
+) -> bool:
+    """Accept a native-proven defeat before CK3 auto-removes the WarID."""
+
+    if not isinstance(options, dict):
+        return False
+    war_id = _native_int(war.get("war_id"))
+    score = _native_int(war.get("player_relative_war_score"))
+    rows = options.get("options")
+    surrender = rows.get("surrender") if isinstance(rows, dict) else None
+    response = (
+        surrender.get("recipient_response")
+        if isinstance(surrender, dict)
+        else None
+    )
+    return bool(
+        war_id is not None
+        and snapshot.get("paused") is True
+        and _same_frame_termination_row(snapshot, options, war_id)
+        and war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is True
+        and options.get("player_side") == "attacker"
+        and options.get("player_is_primary_war_leader") is True
+        and score == _TERMINAL_SCORE_SURRENDER_SCORE
+        and options.get("player_relative_war_score") == score
+        and options.get("absolute_war_scores_observable") is True
+        and options.get("attacker_war_score") == score
+        and options.get("defender_war_score") == -score
+        and options.get("active_casus_belli_present") is True
+        and isinstance(options.get("active_casus_belli_identity"), dict)
         and isinstance(surrender, dict)
         and surrender.get("outcome") == "attacker_defeat"
         and surrender.get("hostage_variant") == "none"
@@ -7439,6 +7580,47 @@ def _choose_one_life_turn_core(
                         "active_wars": war_summary,
                     }
                 continue
+            if (
+                isinstance(snapshot, dict)
+                and _terminal_score_surrender_ready(snapshot, war, options)
+            ):
+                step = surrender_war_step(war_id)
+                if step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_terminal_score_surrender",
+                        "selected_step": step,
+                        "war_id": war_id,
+                        "decision": {
+                            "policy": "terminal-score-defeat-receipt-v1",
+                            "selected_outcome": "surrender",
+                            "player_relative_war_score": (
+                                war.get("player_relative_war_score")
+                            ),
+                            "native_validator_passed": True,
+                            "recipient_would_accept_now": True,
+                        },
+                        "reason": (
+                            "the exact same-frame native termination row "
+                            "proves a fully lost -100 attacker war and an "
+                            "immediately accepted surrender; submit it before "
+                            "CK3 auto-removes the WarID so defeat has an "
+                            "explicit MCP receipt"
+                        ),
+                        "active_wars": war_summary,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_terminal_score_surrender_unsupported",
+                    "selected_step": None,
+                    "required_step": step,
+                    "war_id": war_id,
+                    "reason": (
+                        "the exact native row proves terminal defeat, but the "
+                        "surrender literal is not currently executable"
+                    ),
+                    "active_wars": war_summary,
+                }
             if not (
                 isinstance(snapshot, dict)
                 and _claim_cb_white_peace_base_ready(
@@ -7838,6 +8020,91 @@ def _choose_one_life_turn_core(
             if isinstance(tactical_war, dict)
             else None
         )
+        strength_balance = (
+            _same_frame_army_strength_balance(snapshot, tactical_war_id)
+            if isinstance(snapshot, dict)
+            and isinstance(tactical_war_id, int)
+            else None
+        )
+        strength_query_status = (
+            snapshot.get("army_strengths_status")
+            if isinstance(snapshot, dict)
+            else None
+        )
+        if (
+            isinstance(tactical_war_id, int)
+            and route_threat_enemy_ids
+            and strength_balance is None
+            and strength_query_status is None
+            and isinstance(snapshot, dict)
+            and snapshot.get("paused") is True
+            and QUERY_ARMY_STRENGTHS_STEP in available_steps
+            and all(
+                _army_tactical_state(army)
+                not in {"combat", "retreating", "gathering"}
+                for army in controlled_armies
+            )
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_army_strength_query",
+                "selected_step": QUERY_ARMY_STRENGTHS_STEP,
+                "required_step": QUERY_ARMY_STRENGTHS_STEP,
+                "reason": (
+                    "read the exact current soldiers and native AI base "
+                    "power for every published army on both war sides before "
+                    "committing or advancing an offensive route"
+                ),
+                "war_id": tactical_war_id,
+                "army_strength_scope": {
+                    "player_army_ids": sorted(
+                        int(army["army_id"])
+                        for army in controlled_armies
+                        if _native_int(army.get("army_id")) is not None
+                    ),
+                    "enemy_army_ids": list(route_threat_enemy_ids),
+                },
+                "active_wars": war_summary,
+            }
+        if isinstance(strength_balance, dict):
+            for summary in war_summary:
+                if summary.get("war_id") == tactical_war_id:
+                    summary["army_strength_balance"] = dict(
+                        strength_balance
+                    )
+                    break
+        consolidation = (
+            _preoffensive_army_consolidation(
+                snapshot,
+                controlled_armies=controlled_armies,
+                war_id=tactical_war_id,
+            )
+            if isinstance(snapshot, dict)
+            and isinstance(tactical_war_id, int)
+            and isinstance(strength_balance, dict)
+            else None
+        )
+        if isinstance(consolidation, dict):
+            consolidation_step = consolidation["step"]
+            if (
+                isinstance(consolidation_step, str)
+                and consolidation_step in available_steps
+            ):
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_preoffensive_army_consolidation",
+                    "selected_step": consolidation_step,
+                    "reason": (
+                        "the exact post-declaration strength query shows "
+                        "multiple same-province idle player stacks; merge "
+                        "the strongest stack with one sibling before "
+                        "choosing an offensive route"
+                    ),
+                    "war_id": tactical_war_id,
+                    "consolidation": consolidation,
+                    "army_strength_balance": strength_balance,
+                    "active_wars": war_summary,
+                }
         tactical_enemies = [
             army
             for army in enemy_armies_from_wars(
@@ -8864,6 +9131,13 @@ def _choose_one_life_turn_core(
                     battle_speed_gates[
                         "committed_route_sentinel_live_ready"
                     ]
+                    and not (
+                        isinstance(strength_balance, dict)
+                        and strength_balance.get(
+                            "hostile_operational_overmatch"
+                        )
+                        is True
+                    )
                     and _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
                     in available_steps
                     and complete_route_watch_set
@@ -8974,7 +9248,23 @@ def _choose_one_life_turn_core(
                             observed_route_target,
                             route_threat_enemy_ids,
                         )
-                        if horizon_step in available_steps:
+                        failed_query = (
+                            _current_frame_route_contact_query_failure(
+                                rows,
+                                snapshot,
+                                horizon_step,
+                            )
+                        )
+                        if failed_query is not None:
+                            passive_route_audit = {
+                                **passive_route_audit,
+                                "status": "blocked",
+                                "reason": (
+                                    "route_contact_timeline_unavailable"
+                                ),
+                                "contact_query_attempt": failed_query,
+                            }
+                        elif horizon_step in available_steps:
                             return {
                                 "policy": "one-life-turn-v1",
                                 "phase": "native_war_route_contact_horizon",
@@ -8983,15 +9273,16 @@ def _choose_one_life_turn_core(
                                 "route_audit": passive_route_audit,
                                 "active_wars": war_summary,
                             }
-                        return {
-                            "policy": "one-life-turn-v1",
-                            "phase": "native_war_route_contact_horizon_unsupported",
-                            "selected_step": None,
-                            "required_step": horizon_step,
-                            "reason": "the intersecting active route requires a fresh exact one-day contact horizon",
-                            "route_audit": passive_route_audit,
-                            "active_wars": war_summary,
-                        }
+                        elif horizon_step not in available_steps:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_route_contact_horizon_unsupported",
+                                "selected_step": None,
+                                "required_step": horizon_step,
+                                "reason": "the intersecting active route requires a fresh exact one-day contact horizon",
+                                "route_audit": passive_route_audit,
+                                "active_wars": war_summary,
+                            }
                     if (
                         isinstance(contact_horizon, dict)
                         and contact_horizon.get("one_day_contact_free") is True
@@ -9519,6 +9810,24 @@ def _choose_one_life_turn_core(
                                 )
                             )
                             if stationary_contact_horizon is None:
+                                failed_query = (
+                                    _current_frame_route_contact_query_failure(
+                                        rows,
+                                        snapshot,
+                                        stationary_query_step,
+                                    )
+                                )
+                                if failed_query is not None:
+                                    route_rejections.append(
+                                        {
+                                            "target_province_id": province_id,
+                                            "status": "contact_timeline_unavailable",
+                                            "conflicts": stationary_threats,
+                                            "contact_query_attempt": failed_query,
+                                        }
+                                    )
+                                    blocked_province_ids.add(province_id)
+                                    continue
                                 if stationary_query_step in available_steps:
                                     return {
                                         "policy": "one-life-turn-v1",
@@ -9753,6 +10062,22 @@ def _choose_one_life_turn_core(
                         horizon_step = query_route_contact_horizon_step(
                             army_id, province_id, route_threat_enemy_ids
                         )
+                        failed_query = (
+                            _current_frame_route_contact_query_failure(
+                                rows,
+                                snapshot,
+                                horizon_step,
+                            )
+                        )
+                        if failed_query is not None:
+                            unavailable_audit = {
+                                **audit,
+                                "status": "contact_timeline_unavailable",
+                                "contact_query_attempt": failed_query,
+                            }
+                            route_rejections.append(unavailable_audit)
+                            blocked_province_ids.add(province_id)
+                            continue
                         if horizon_step in available_steps:
                             return {
                                 "policy": "one-life-turn-v1",
@@ -9923,7 +10248,45 @@ def _choose_one_life_turn_core(
                         else None
                     ),
                 )
-                if capital_regroup_ready:
+                capital_hold_ready = _attacker_capital_hold_input_ready(
+                    snapshot if isinstance(snapshot, dict) else {},
+                    active_wars=active_wars,
+                    controlled_armies=controlled_armies,
+                    tactical_war=(
+                        tactical_war
+                        if isinstance(tactical_war, dict)
+                        else None
+                    ),
+                    current_province_id=current_province_id,
+                    exact_objective_province_ids=(
+                        exact_objective_province_ids
+                    ),
+                    route_rejections=route_rejections,
+                )
+                coalition_regroup_ready = (
+                    _outnumbered_attacker_regroup_input_ready(
+                        snapshot if isinstance(snapshot, dict) else {},
+                        active_wars=active_wars,
+                        controlled_armies=controlled_armies,
+                        tactical_war=(
+                            tactical_war
+                            if isinstance(tactical_war, dict)
+                            else None
+                        ),
+                        current_province_id=current_province_id,
+                        route_rejections=route_rejections,
+                        strength_balance=(
+                            strength_balance
+                            if isinstance(strength_balance, dict)
+                            else None
+                        ),
+                    )
+                )
+                if (
+                    capital_regroup_ready
+                    or capital_hold_ready
+                    or coalition_regroup_ready
+                ):
                     campaign_root = _same_frame_campaign_root_context(
                         rows,
                         snapshot if isinstance(snapshot, dict) else None,
@@ -9947,6 +10310,50 @@ def _choose_one_life_turn_core(
                         campaign_root.get("capital_province_id")
                     )
                     if (
+                        capital_province_id == current_province_id
+                        and (
+                            capital_regroup_ready
+                            or capital_hold_ready
+                            or coalition_regroup_ready
+                        )
+                    ):
+                        if "life-advance" in available_steps:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": (
+                                    "native_war_capital_regroup_hold_progress"
+                                ),
+                                "selected_step": "life-advance",
+                                "reason": (
+                                    "every exact offensive route is unsafe, "
+                                    "but the attacker is already at "
+                                    "its fresh same-frame capital; hold there "
+                                    "for one bounded slice and re-query the "
+                                    "war termination and route state"
+                                ),
+                                "capital_province_id": capital_province_id,
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": (
+                                "native_war_capital_regroup_hold_unsupported"
+                            ),
+                            "selected_step": None,
+                            "required_step": "life-advance",
+                            "reason": (
+                                "the exhausted attacker is already holding "
+                                "its fresh same-frame capital, but the backend "
+                                "cannot execute a bounded observation slice"
+                            ),
+                            "capital_province_id": capital_province_id,
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
+                    if (
+                        (capital_regroup_ready or coalition_regroup_ready)
+                        and
                         capital_province_id is not None
                         and capital_province_id != current_province_id
                     ):
@@ -9970,7 +10377,11 @@ def _choose_one_life_turn_core(
                                     else None
                                 ),
                                 "required_step": preview_step,
-                                "reason": "preview the same-frame capital regroup route before leaving the insufficient exact siege",
+                                "reason": (
+                                    "preview the same-frame capital regroup "
+                                    "route before leaving the unsafe offensive "
+                                    "route"
+                                ),
                                 "route_rejections": route_rejections,
                                 "active_wars": war_summary,
                             }
@@ -10012,22 +10423,40 @@ def _choose_one_life_turn_core(
                                 route_threat_enemy_ids,
                             )
                             if regroup_horizon is None:
-                                return {
-                                    "policy": "one-life-turn-v1",
-                                    "phase": "native_war_capital_regroup_contact_horizon",
-                                    "selected_step": (
-                                        horizon_step
-                                        if horizon_step in available_steps
-                                        else None
-                                    ),
-                                    "required_step": horizon_step,
-                                    "reason": "the capital regroup route intersects hostile routing and requires a fresh exact contact horizon",
-                                    "route_preview": preview,
-                                    "route_audit": regroup_audit,
-                                    "route_rejections": route_rejections,
-                                    "active_wars": war_summary,
-                                }
+                                failed_query = (
+                                    _current_frame_route_contact_query_failure(
+                                        rows,
+                                        snapshot,
+                                        horizon_step,
+                                    )
+                                )
+                                if failed_query is not None:
+                                    regroup_audit = {
+                                        **regroup_audit,
+                                        "status": (
+                                            "contact_timeline_unavailable"
+                                        ),
+                                        "contact_query_attempt": failed_query,
+                                    }
+                                else:
+                                    return {
+                                        "policy": "one-life-turn-v1",
+                                        "phase": "native_war_capital_regroup_contact_horizon",
+                                        "selected_step": (
+                                            horizon_step
+                                            if horizon_step in available_steps
+                                            else None
+                                        ),
+                                        "required_step": horizon_step,
+                                        "reason": "the capital regroup route intersects hostile routing and requires a fresh exact contact horizon",
+                                        "route_preview": preview,
+                                        "route_audit": regroup_audit,
+                                        "route_rejections": route_rejections,
+                                        "active_wars": war_summary,
+                                    }
                             if (
+                                isinstance(regroup_horizon, dict)
+                                and
                                 regroup_horizon.get("one_day_contact_free")
                                 is True
                             ):
@@ -10059,7 +10488,9 @@ def _choose_one_life_turn_core(
                                 **regroup_audit,
                                 "selection": {
                                     "policy": (
-                                        "insufficient_siege_capital_regroup"
+                                        "outnumbered_coalition_capital_regroup"
+                                        if coalition_regroup_ready
+                                        else "insufficient_siege_capital_regroup"
                                     ),
                                     "evaluated_enemy_count": len(
                                         route_threat_enemy_ids
@@ -10078,6 +10509,70 @@ def _choose_one_life_turn_core(
                                 }
                             )
                 if preview_selected_target is None:
+                    current_hold_step = (
+                        move_army_step(army_id, current_province_id)
+                        if isinstance(army_id, int)
+                        and isinstance(current_province_id, int)
+                        else None
+                    )
+                    active_route_can_be_cancelled = bool(
+                        active_route_unsafe
+                        and isinstance(pursuit_army, dict)
+                        and isinstance(
+                            pursuit_army.get("route_province_ids"), list
+                        )
+                        and pursuit_army["route_province_ids"]
+                        and isinstance(current_hold_step, str)
+                    )
+                    if (
+                        active_route_can_be_cancelled
+                        and current_hold_step in available_steps
+                    ):
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_cancel_unsafe_route_hold",
+                            "selected_step": current_hold_step,
+                            "reason": "both the offensive continuation and capital regroup route are unsafe; cancel the committed route at the current Province before the next exact observation",
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
+                    enemy_current_province_ids = {
+                        _native_int(enemy.get("current_province_id"))
+                        for enemy in route_threat_enemies
+                        if _native_int(enemy.get("current_province_id"))
+                        is not None
+                    }
+                    defensive_hold_ready = bool(
+                        isinstance(strength_balance, dict)
+                        and strength_balance.get(
+                            "hostile_operational_overmatch"
+                        )
+                        is True
+                        and isinstance(pursuit_army, dict)
+                        and _army_tactical_state(pursuit_army) == "regular"
+                        and pursuit_army.get("in_combat") is not True
+                        and pursuit_army.get("retreating") is not True
+                        and pursuit_army.get("move_target_province_id")
+                        is None
+                        and isinstance(
+                            pursuit_army.get("route_province_ids"), list
+                        )
+                        and not pursuit_army["route_province_ids"]
+                        and isinstance(current_province_id, int)
+                        and current_province_id
+                        not in enemy_current_province_ids
+                        and not stationary_threats
+                        and not unsafe_armies
+                    )
+                    if defensive_hold_ready and "life-advance" in available_steps:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_no_safe_route_defensive_hold_progress",
+                            "selected_step": "life-advance",
+                            "reason": "all exact offensive and capital routes are unsafe under hostile operational overmatch; hold the current uncontested Province for one bounded day and re-query every route and army strength",
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
                     return {
                         "policy": "one-life-turn-v1",
                         "phase": "native_war_no_safe_exact_route",
@@ -12173,6 +12668,141 @@ def _capital_regroup_input_ready(
     )
 
 
+def _attacker_capital_hold_input_ready(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+    tactical_war: dict[str, object] | None,
+    current_province_id: int | None,
+    exact_objective_province_ids: list[int],
+    route_rejections: list[dict[str, object]],
+) -> bool:
+    """Admit the observed R18 defeated-armies-at-capital hold shape."""
+
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and len(active_wars) == 1
+        and tactical_war is active_wars[0]
+        and isinstance(tactical_war, dict)
+        and tactical_war.get("player_side") == "attacker"
+        and tactical_war.get("player_is_primary_war_leader") is True
+        and (_native_int(tactical_war.get("player_relative_war_score")) or 0)
+        < 0
+        and current_province_id is not None
+        and exact_objective_province_ids
+        and current_province_id not in exact_objective_province_ids
+        and controlled_armies
+        and len(controlled_armies) <= 64
+    ):
+        return False
+    if not all(
+        _native_int(army.get("army_id")) is not None
+        and _native_int(army.get("current_province_id"))
+        == current_province_id
+        and _army_tactical_state(army) == "regular"
+        and army.get("in_combat") is not True
+        and army.get("retreating") is not True
+        and army.get("move_target_province_id") is None
+        and isinstance(army.get("route_province_ids"), list)
+        and not army["route_province_ids"]
+        for army in controlled_armies
+    ):
+        return False
+    expected_targets = set(exact_objective_province_ids)
+    rejected_targets = {
+        _native_int(rejection.get("target_province_id"))
+        for rejection in route_rejections
+        if isinstance(rejection, dict)
+        and (
+            rejection.get("status") == "blocked"
+            or (
+                rejection.get("status") == "unavailable"
+                and rejection.get("reason") == "route_does_not_reach_target"
+            )
+        )
+    }
+    if not expected_targets.issubset(rejected_targets):
+        return False
+    enemies = [
+        enemy
+        for enemy in enemy_armies_from_wars(active_wars)
+        if _army_tactical_state(enemy) != "retreating"
+    ]
+    return bool(
+        enemies
+        and all(
+            _native_int(enemy.get("army_id")) is not None
+            and _native_int(enemy.get("current_province_id"))
+            in expected_targets
+            and enemy.get("in_combat") is not True
+            and enemy.get("retreating") is not True
+            for enemy in enemies
+        )
+    )
+
+
+def _outnumbered_attacker_regroup_input_ready(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+    tactical_war: dict[str, object] | None,
+    current_province_id: int | None,
+    route_rejections: list[dict[str, object]],
+    strength_balance: dict[str, object] | None,
+) -> bool:
+    """Permit a live attacker to break an unsafe route under coalition risk."""
+
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and len(active_wars) == 1
+        and tactical_war is active_wars[0]
+        and isinstance(tactical_war, dict)
+        and tactical_war.get("player_side") == "attacker"
+        and tactical_war.get("player_is_primary_war_leader") is True
+        and isinstance(tactical_war.get("player_relative_war_score"), int)
+        and -100 < int(tactical_war["player_relative_war_score"]) < 100
+        and isinstance(current_province_id, int)
+        and controlled_armies
+        and len(controlled_armies) <= 64
+        and isinstance(strength_balance, dict)
+        and strength_balance.get("hostile_operational_overmatch") is True
+        and route_rejections
+        and any(
+            rejection.get("status") in {"unsafe", "blocked"}
+            for rejection in route_rejections
+            if isinstance(rejection, dict)
+        )
+    ):
+        return False
+    regroup_subjects = [
+        army
+        for army in controlled_armies
+        if _native_int(army.get("current_province_id"))
+        == current_province_id
+        and _army_tactical_state(army) in {"regular", "moving", "sieging"}
+        and army.get("in_combat") is not True
+        and army.get("retreating") is not True
+    ]
+    return bool(
+        len(regroup_subjects) == 1
+        and _native_int(regroup_subjects[0].get("army_id")) is not None
+        and all(
+            _native_int(army.get("army_id")) is not None
+            and army.get("in_combat") is not True
+            and army.get("retreating") is not True
+            for army in controlled_armies
+        )
+    )
+
+
 def _primary_defender_capital_hold_input(
     snapshot: dict[str, object],
     *,
@@ -12806,6 +13436,150 @@ def _review_all_player_assaults(
     )
 
 
+def _preoffensive_army_consolidation(
+    snapshot: dict[str, object],
+    *,
+    controlled_armies: list[dict[str, object]],
+    war_id: int,
+) -> dict[str, object] | None:
+    """Select one exact same-province merge before an offensive march."""
+
+    if not (
+        snapshot.get("paused") is True
+        and len(controlled_armies) > 1
+    ):
+        return None
+    provinces = {
+        _native_int(army.get("current_province_id"))
+        for army in controlled_armies
+    }
+    if len(provinces) != 1 or None in provinces:
+        return None
+    if not all(
+        _native_int(army.get("army_id")) is not None
+        and _army_tactical_state(army) == "regular"
+        and army.get("in_combat") is not True
+        and army.get("retreating") is not True
+        and army.get("move_target_province_id") is None
+        and isinstance(army.get("route_province_ids"), list)
+        and not army["route_province_ids"]
+        for army in controlled_armies
+    ):
+        return None
+    strengths = {
+        int(row["army_id"]): int(row["current_soldiers"])
+        for row in snapshot.get("army_strengths", [])
+        if isinstance(row, dict)
+        and row.get("status") == "available"
+        and row.get("scope_role") == "player"
+        and isinstance(row.get("war_ids"), list)
+        and war_id in row["war_ids"]
+        and _native_int(row.get("army_id")) is not None
+        and _native_int(row.get("current_soldiers")) is not None
+    }
+    army_ids = {
+        int(army["army_id"])
+        for army in controlled_armies
+        if _native_int(army.get("army_id")) is not None
+    }
+    if set(strengths) != army_ids:
+        return None
+    ordered = sorted(army_ids, key=lambda army_id: (-strengths[army_id], army_id))
+    destination_army_id, source_army_id = ordered[:2]
+    return {
+        "status": "ready",
+        "war_id": war_id,
+        "province_id": next(iter(provinces)),
+        "destination_army_id": destination_army_id,
+        "destination_current_soldiers": strengths[destination_army_id],
+        "source_army_id": source_army_id,
+        "source_current_soldiers": strengths[source_army_id],
+        "remaining_player_army_ids": ordered[2:],
+        "step": merge_armies_step(destination_army_id, source_army_id),
+    }
+
+
+def _same_frame_army_strength_balance(
+    snapshot: dict[str, object], war_id: int | None
+) -> dict[str, object] | None:
+    """Summarize the exact paused strength query as an operational risk gate.
+
+    This is deliberately not a battle-win forecast.  It only records the
+    current published force totals after every participant has materialized,
+    so a post-declaration coalition cannot be mistaken for the single ruler
+    assessed before the war began.
+    """
+
+    if not (
+        isinstance(war_id, int)
+        and not isinstance(war_id, bool)
+        and war_id > 0
+        and snapshot.get("paused") is True
+        and snapshot.get("army_strengths_status") == "available"
+        and isinstance(snapshot.get("army_strengths"), list)
+    ):
+        return None
+    rows = [
+        row
+        for row in snapshot["army_strengths"]
+        if isinstance(row, dict)
+        and row.get("status") == "available"
+        and isinstance(row.get("war_ids"), list)
+        and war_id in row["war_ids"]
+    ]
+    if not rows:
+        return None
+    friendly = [
+        row
+        for row in rows
+        if row.get("scope_role") in {"player", "active_war_ally"}
+    ]
+    enemies = [
+        row for row in rows if row.get("scope_role") == "active_war_enemy"
+    ]
+    if not friendly or not enemies:
+        return None
+    numeric_fields = (
+        "current_soldiers",
+        "maximum_soldiers",
+        "ai_base_power_raw",
+    )
+    if any(
+        _native_int(row.get(field)) is None
+        for row in [*friendly, *enemies]
+        for field in numeric_fields
+    ):
+        return None
+
+    def total(group: list[dict[str, object]], field: str) -> int:
+        return sum(int(row[field]) for row in group)
+
+    friendly_current = total(friendly, "current_soldiers")
+    enemy_current = total(enemies, "current_soldiers")
+    friendly_power_raw = total(friendly, "ai_base_power_raw")
+    enemy_power_raw = total(enemies, "ai_base_power_raw")
+    # Requiring a 25% hostile margin keeps this a conservative operational
+    # routing signal instead of pretending raw soldiers are battle odds.
+    hostile_operational_overmatch = bool(
+        enemy_current * 4 > friendly_current * 5
+        or enemy_power_raw * 4 > friendly_power_raw * 5
+    )
+    return {
+        "status": "available",
+        "war_id": war_id,
+        "friendly_army_ids": sorted(int(row["army_id"]) for row in friendly),
+        "enemy_army_ids": sorted(int(row["army_id"]) for row in enemies),
+        "friendly_current_soldiers": friendly_current,
+        "enemy_current_soldiers": enemy_current,
+        "friendly_maximum_soldiers": total(friendly, "maximum_soldiers"),
+        "enemy_maximum_soldiers": total(enemies, "maximum_soldiers"),
+        "friendly_ai_base_power_raw": friendly_power_raw,
+        "enemy_ai_base_power_raw": enemy_power_raw,
+        "hostile_operational_overmatch": hostile_operational_overmatch,
+        "interpretation": "operational_routing_risk_not_battle_win_odds",
+    }
+
+
 def _native_int(value: object) -> int | None:
     return value if isinstance(value, int) and not isinstance(value, bool) else None
 
@@ -12852,16 +13626,20 @@ def _noncombat_sentinel_timeline_speed(
 
 
 def _army_tactical_state(army: dict[str, object]) -> str | None:
+    # CK3 can keep the retreat bit set while the named movement state changes
+    # to ``embarked``.  The native sentinel admission already treats those
+    # explicit booleans as authoritative; give them the same precedence here
+    # so the planner never submits a committed-route sentinel for a retreat.
+    if army.get("retreating") is True:
+        return "retreating"
+    if army.get("in_combat") is True:
+        return "combat"
     named = army.get("army_state")
     if isinstance(named, str):
         return named.casefold()
     code = _native_int(army.get("army_state_code"))
     if code is not None:
         return {2: "combat", 3: "sieging", 6: "retreating", 7: "moving"}.get(code)
-    if army.get("retreating") is True:
-        return "retreating"
-    if army.get("in_combat") is True:
-        return "combat"
     return None
 
 
@@ -14075,6 +14853,13 @@ def _moving_route_contact_horizon_conjunction(
         army_id = _native_int(army.get("army_id"))
         if army_id is None or army_id == subject_army_id:
             continue
+        tactical_state = _army_tactical_state(army)
+        if tactical_state in {"combat", "retreating", "gathering"}:
+            # CK3 can retain a route target and remaining-route array on the
+            # exact frame where an army enters combat. It is no longer a
+            # moving sibling for the global route-time conjunction; combat
+            # control owns its next transition.
+            continue
         target_province_id = _native_int(
             army.get("move_target_province_id")
         )
@@ -14089,8 +14874,6 @@ def _moving_route_contact_horizon_conjunction(
             and current_province_id > 0
             and route
             and route[-1] == target_province_id
-            and _army_tactical_state(army)
-            not in {"combat", "retreating", "gathering"}
         ):
             result["conflicting"].append(
                 {
