@@ -48,8 +48,7 @@
 最小 `GITHUB_TOKEN` 权限为：
 
 - `contents: read`：读取默认分支检查器；
-- `pull-requests: read`：读取 PR 与提交作者；
-- `issues: write`：创建或更新一条带隐藏 marker 的机器人评论；
+- `pull-requests: write`：读取 PR 与提交作者，并创建或更新一条带隐藏 marker 的机器人评论；
 - `statuses: write`：在 PR head SHA 上写入 `CLA / signed`。
 
 不用仓库 secret。第三方 action 只有按完整 commit SHA 固定的官方 `actions/checkout`。
