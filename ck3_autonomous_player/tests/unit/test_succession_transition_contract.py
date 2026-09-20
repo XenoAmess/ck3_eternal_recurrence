@@ -175,8 +175,17 @@ def _row(title_id: int, heir_id: int | None, *, primary: bool) -> dict[str, obje
     return {
         "title": {"title_id": title_id, "tier_raw": 4 if primary else 2, "tier_key": "kingdom" if primary else "county"},
         "first_heir_character_id": heir_id,
+        "capital_province_id": None if primary else title_id + 1_000,
         "primary": primary,
     }
+
+
+def _legacy_row(
+    title_id: int, heir_id: int | None, *, primary: bool
+) -> dict[str, object]:
+    row = _row(title_id, heir_id, primary=primary)
+    del row["capital_province_id"]
+    return row
 
 
 class SuccessionTransitionContractTests(unittest.TestCase):
@@ -235,6 +244,56 @@ class SuccessionTransitionContractTests(unittest.TestCase):
             [row["title"]["title_id"] for row in result["title_expectations"]],
             [10, 11, 12, 13],
         )
+        self.assertTrue(
+            all(
+                set(row) == {"title", "first_heir_character_id", "primary"}
+                for row in result["title_expectations"]
+            )
+        )
+
+    def test_legacy_three_field_rows_remain_recovery_compatible(self) -> None:
+        legacy = _bundle(
+            character_id=100,
+            snapshot_id="native:20",
+            revision=7,
+            native_revision=20,
+            date_raw=53_180_000,
+            title_rows=[
+                _legacy_row(10, 200, primary=True),
+                _legacy_row(11, 200, primary=False),
+            ],
+            primary_heir=200,
+        )
+
+        result = freeze_succession_expectation_v1(
+            legacy,
+            episode_run_id="native-100-legacy-recovery",
+            episode_character_id=100,
+        )
+
+        self.assertEqual(
+            [row["title"]["title_id"] for row in result["title_expectations"]],
+            [10, 11],
+        )
+        self.assertTrue(
+            all(
+                set(row) == {"title", "first_heir_character_id", "primary"}
+                for row in result["title_expectations"]
+            )
+        )
+
+    def test_rejects_malformed_current_capital_province(self) -> None:
+        malformed = copy.deepcopy(self.pre)
+        malformed["succession_state"]["value"]["partition"]["value"][
+            "title_heirs"
+        ][1]["capital_province_id"] = False
+
+        with self.assertRaisesRegex(ValueError, "capital province"):
+            freeze_succession_expectation_v1(
+                malformed,
+                episode_run_id="native-100-malformed-capital",
+                episode_character_id=100,
+            )
 
     def test_reconciles_only_titles_owned_by_the_predecessor(self) -> None:
         expectation = freeze_succession_expectation_v1(

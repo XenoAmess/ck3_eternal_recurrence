@@ -272,11 +272,17 @@ def _succession_partition(
     normalized_rows: list[dict[str, object]] = []
     seen: set[int] = set()
     primary_rows = 0
+    current_row_fields = {
+        "title",
+        "first_heir_character_id",
+        "capital_province_id",
+        "primary",
+    }
+    legacy_row_fields = current_row_fields - {"capital_province_id"}
     for index, row in enumerate(rows):
-        if not isinstance(row, dict) or set(row) != {
-            "title",
-            "first_heir_character_id",
-            "primary",
+        if not isinstance(row, dict) or frozenset(row) not in {
+            frozenset(current_row_fields),
+            frozenset(legacy_row_fields),
         }:
             raise ValueError(f"{name} title-heir row {index} is malformed")
         title = row.get("title")
@@ -296,6 +302,12 @@ def _succession_partition(
         if heir is not None:
             heir = _positive_int(
                 heir, f"{name} title-heir row {index} first heir"
+            )
+        capital_province_id = row.get("capital_province_id")
+        if capital_province_id is not None:
+            _positive_int(
+                capital_province_id,
+                f"{name} title-heir row {index} capital province",
             )
         normalized_rows.append(
             {

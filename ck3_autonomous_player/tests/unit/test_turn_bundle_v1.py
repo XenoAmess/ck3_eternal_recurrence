@@ -145,6 +145,7 @@ def _root(*, available: bool = True) -> dict[str, object]:
                         "tier_key": "kingdom",
                     },
                     "first_heir_character_id": 88,
+                    "capital_province_id": None,
                     "primary": True,
                 },
                 {
@@ -154,6 +155,7 @@ def _root(*, available: bool = True) -> dict[str, object]:
                         "tier_key": "county",
                     },
                     "first_heir_character_id": 77,
+                    "capital_province_id": 70,
                     "primary": False,
                 },
             ]
@@ -296,6 +298,13 @@ class TurnBundleV1Tests(unittest.TestCase):
         self.assertEqual(
             succession["partition"]["value"]["risk_state"],
             "split_successors",
+        )
+        self.assertEqual(
+            [
+                row["capital_province_id"]
+                for row in succession["partition"]["value"]["title_heirs"]
+            ],
+            [None, 70],
         )
         self.assertTrue(succession["partition"]["value"]["split_risk"])
         self.assertTrue(
