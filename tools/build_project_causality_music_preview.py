@@ -182,6 +182,12 @@ def main() -> int:
         default="project-causality-suno-base-loop-preview.mp4",
     )
     parser.add_argument(
+        "--ducking-mode",
+        choices=("chapter", "none"),
+        default="chapter",
+        help="Use chapter-specific narration ducking or keep music level independent of speech.",
+    )
+    parser.add_argument(
         "--reuse-rendered-output",
         action="store_true",
         help="Skip the mix render and rerun media QA plus sidecar generation on the existing output.",
@@ -242,35 +248,42 @@ def main() -> int:
         label = f"chapter{index - 1}"
         chapter_labels.append(label)
         filters.extend(chapter_filter(index, chapter, label))
-    filters.append(
-        f"[0:a:0]aresample=48000,asetpts=PTS-STARTPTS,asplit=2[voice][keyroot]"
-    )
-    raw_keys = [f"key{index}raw" for index in range(len(chapters))]
-    filters.append(
-        f"[keyroot]asplit={len(chapters)}"
-        + "".join(f"[{label}]" for label in raw_keys)
-    )
-    ducked_labels: list[str] = []
-    for index, chapter in enumerate(chapters):
-        key_label = f"key{index}"
-        ducked_label = f"ducked{index}"
-        ducked_labels.append(ducked_label)
+    if args.ducking_mode == "chapter":
         filters.append(
-            f"[{raw_keys[index]}]atrim=start={float(chapter['start']):.3f}:"
-            f"end={float(chapter['end']):.3f},asetpts=PTS-STARTPTS[{key_label}]"
+            "[0:a:0]aresample=48000,asetpts=PTS-STARTPTS,"
+            "asplit=2[voice][keyroot]"
         )
+        raw_keys = [f"key{index}raw" for index in range(len(chapters))]
         filters.append(
-            f"[{chapter_labels[index]}][{key_label}]sidechaincompress="
-            f"threshold={float(chapter['threshold']):.3f}:ratio={float(chapter['ratio']):g}:"
-            f"attack={int(chapter['attack_ms'])}:release={int(chapter['release_ms'])}:"
-            f"knee=6:makeup=1[{ducked_label}]"
+            f"[keyroot]asplit={len(chapters)}"
+            + "".join(f"[{label}]" for label in raw_keys)
         )
+        bed_labels: list[str] = []
+        for index, chapter in enumerate(chapters):
+            key_label = f"key{index}"
+            bed_label = f"ducked{index}"
+            bed_labels.append(bed_label)
+            filters.append(
+                f"[{raw_keys[index]}]atrim=start={float(chapter['start']):.3f}:"
+                f"end={float(chapter['end']):.3f},asetpts=PTS-STARTPTS[{key_label}]"
+            )
+            filters.append(
+                f"[{chapter_labels[index]}][{key_label}]sidechaincompress="
+                f"threshold={float(chapter['threshold']):.3f}:"
+                f"ratio={float(chapter['ratio']):g}:"
+                f"attack={int(chapter['attack_ms'])}:"
+                f"release={int(chapter['release_ms'])}:"
+                f"knee=6:makeup=1[{bed_label}]"
+            )
+    else:
+        filters.append("[0:a:0]aresample=48000,asetpts=PTS-STARTPTS[voice]")
+        bed_labels = chapter_labels
     filters.append(
-        "".join(f"[{label}]" for label in ducked_labels)
-        + f"concat=n={len(chapters)}:v=0:a=1,highpass=f=70,lowpass=f=14000[ducked]"
+        "".join(f"[{label}]" for label in bed_labels)
+        + f"concat=n={len(chapters)}:v=0:a=1,highpass=f=70,lowpass=f=14000[bed]"
     )
     filters.append(
-        "[voice][ducked]amix=inputs=2:weights='1 1':normalize=0,"
+        "[voice][bed]amix=inputs=2:weights='1 1':normalize=0,"
         "loudnorm=I=-16:LRA=7:TP=-1.5,aresample=48000:async=1:first_pts=0,asetpts=N/SR/TB[mix]"
     )
     command.extend(
@@ -302,7 +315,7 @@ def main() -> int:
             "-movflags",
             "+faststart",
             "-metadata:s:a:0",
-            "title=Owner narration plus music-forward Suno preview",
+            "title=Owner narration plus Suno music comparison",
             str(output),
         ]
     )
@@ -323,25 +336,39 @@ def main() -> int:
     if not args.skip_full_decode:
         run(["ffmpeg", "-v", "error", "-i", str(output), "-f", "null", "NUL"])
     payload = {
-        "schema": "project-causality-suno-base-loop-preview.v3",
+        "schema": "project-causality-suno-base-loop-preview.v4",
         "status": "review-preview-not-publication-master",
         "source_video": str(args.source_video),
         "source_video_sha256": sha256(args.source_video),
         "output": str(output),
         "output_sha256": sha256(output),
         "duration_seconds": duration,
-        "mix_profile": MIX_PROFILE,
+        "mix_profile": (
+            MIX_PROFILE
+            if args.ducking_mode == "chapter"
+            else f"{MIX_PROFILE}-no-duck"
+        ),
+        "ducking_mode": args.ducking_mode,
         "crossfade_seconds": CROSSFADE_SECONDS,
         "chapter_mix": [
-            {
-                "name": chapter["name"],
-                "gain": chapter["gain"],
-                "threshold": chapter["threshold"],
-                "ratio": chapter["ratio"],
-                "attack_ms": chapter["attack_ms"],
-                "release_ms": chapter["release_ms"],
-                "knee": 6,
-            }
+            (
+                {
+                    "name": chapter["name"],
+                    "gain": chapter["gain"],
+                    "ducking": "none",
+                }
+                if args.ducking_mode == "none"
+                else {
+                    "name": chapter["name"],
+                    "gain": chapter["gain"],
+                    "ducking": "sidechain",
+                    "threshold": chapter["threshold"],
+                    "ratio": chapter["ratio"],
+                    "attack_ms": chapter["attack_ms"],
+                    "release_ms": chapter["release_ms"],
+                    "knee": 6,
+                }
+            )
             for chapter in chapters
         ],
         "selected_tracks": selected,
@@ -350,7 +377,14 @@ def main() -> int:
         "limitations": [
             "Long chapters loop the selected base master because no continuations are included.",
             "This preview is for judging music direction, transitions, and narration masking only.",
-        ],
+        ]
+        + (
+            [
+                "Speech-keyed ducking is intentionally disabled in this comparison; music may mask narration."
+            ]
+            if args.ducking_mode == "none"
+            else []
+        ),
     }
     sidecar.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(output)
