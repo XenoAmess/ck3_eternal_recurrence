@@ -332,7 +332,15 @@ def synthesize_cues(
     voice_reference: Path,
     generated_dir: Path,
     force: bool,
+    duration_factor: float = 1.0,
+    interval_silence_ms: int = 200,
 ) -> None:
+    if not 0.5 <= duration_factor <= 2.0:
+        raise BuildError(f"duration_factor must be within 0.5-2.0: {duration_factor}")
+    if not 0 <= interval_silence_ms <= 2000:
+        raise BuildError(
+            f"interval_silence_ms must be within 0-2000: {interval_silence_ms}"
+        )
     cues = list(cues)
     reference_hash = sha256(voice_reference)
     model_revision = git_revision(index_repo)
@@ -344,12 +352,14 @@ def synthesize_cues(
         fingerprint = hashlib.sha256(
             json.dumps(
                 {
-                    "format": 1,
+                    "format": 2,
                     "text": cue.text,
                     "reference_sha256": reference_hash,
                     "model_revision": model_revision,
                     "mode": "natural-reference-emotion",
                     "language": "ZH",
+                    "duration_factor": duration_factor,
+                    "interval_silence_ms": interval_silence_ms,
                 },
                 ensure_ascii=False,
                 sort_keys=True,
@@ -399,19 +409,23 @@ def synthesize_cues(
             lang="ZH",
             output_path=str(temporary),
             verbose=False,
+            duration_factor=duration_factor,
+            interval_silence=interval_silence_ms,
             text_normalization=True,
         )
         if not temporary.is_file() or temporary.stat().st_size == 0:
             raise BuildError(f"IndexTTS produced no audio for {cue.cue_id}")
         os.replace(temporary, wav)
         payload = {
-            "format_version": 1,
+            "format_version": 2,
             "fingerprint": fingerprint,
             "cue_id": cue.cue_id,
             "provider": "IndexTTS-2.5",
             "mode": "natural-reference-emotion",
             "model_revision": model_revision,
             "reference_sha256": reference_hash,
+            "duration_factor": duration_factor,
+            "interval_silence_ms": interval_silence_ms,
             "text_sha256": hashlib.sha256(cue.text.encode("utf-8")).hexdigest().upper(),
             "wav_sha256": sha256(wav),
         }

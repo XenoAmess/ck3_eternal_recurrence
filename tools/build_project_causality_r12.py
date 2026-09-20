@@ -96,8 +96,44 @@ def use_continuous_agent_timing(chapters: Sequence[showcase.Chapter]) -> None:
         chapter.raw["r12_timing_authority"] = "continuous-robert-source-span"
 
 
-def audio_catalog(directories: Sequence[Path]) -> dict[tuple[str, str], tuple[Path, dict[str, Any]]]:
-    result: dict[tuple[str, str], tuple[Path, dict[str, Any]]] = {}
+def apply_compact_pacing_holds(
+    chapters: Sequence[showcase.Chapter], config: dict[str, Any]
+) -> None:
+    """Let r15 narration own ordinary shot length without collapsing chapter gates.
+
+    Product cards and engineering plates previously retained their older editorial
+    floors after the narration became shorter.  That moved the saved TTS time into
+    long silent tails.  The compact pacing pass releases those floors while keeping
+    the four explicit chapter declarations and the continuous Robert span map.
+    """
+    timing = config.get("timing", {})
+    if not isinstance(timing, dict) or not timing.get("compact_non_agent_visual_holds"):
+        return
+    agent_ids = {chapter.chapter_id for chapter in r11._agent_chapters(chapters)}
+    for chapter in chapters:
+        if chapter.chapter_id in agent_ids or chapter.raw.get("chapter_gate") is True:
+            continue
+        chapter.min_duration_seconds = 0.0
+        chapter.raw["r15_timing_authority"] = "narration-plus-tail"
+
+
+def tts_profile(config: dict[str, Any]) -> tuple[float, int]:
+    raw = config.get("tts", {})
+    if not isinstance(raw, dict):
+        raise R12BuildError("tts must be an object")
+    duration_factor = float(raw.get("duration_factor", 1.0))
+    interval_silence_ms = int(raw.get("interval_silence_ms", 200))
+    if not 0.5 <= duration_factor <= 2.0:
+        raise R12BuildError("tts.duration_factor must be within 0.5-2.0")
+    if not 0 <= interval_silence_ms <= 2000:
+        raise R12BuildError("tts.interval_silence_ms must be within 0-2000")
+    return duration_factor, interval_silence_ms
+
+
+def audio_catalog(
+    directories: Sequence[Path],
+) -> dict[tuple[str, str, float, int], tuple[Path, dict[str, Any]]]:
+    result: dict[tuple[str, str, float, int], tuple[Path, dict[str, Any]]] = {}
     for directory in directories:
         if not directory.is_dir():
             continue
@@ -110,7 +146,11 @@ def audio_catalog(directories: Sequence[Path]) -> dict[tuple[str, str], tuple[Pa
             digest = metadata.get("text_sha256")
             wav = metadata_path.with_suffix(".wav")
             if isinstance(cue_id, str) and isinstance(digest, str) and wav.is_file():
-                result[(cue_id, digest.upper())] = (wav.resolve(), metadata)
+                profile = (
+                    float(metadata.get("duration_factor", 1.0)),
+                    int(metadata.get("interval_silence_ms", 200)),
+                )
+                result[(cue_id, digest.upper(), *profile)] = (wav.resolve(), metadata)
     return result
 
 
@@ -123,12 +163,19 @@ def synthesize_missing_audio(
     index_repo: Path,
     model_dir: Path,
     voice_reference: Path,
+    config: dict[str, Any],
     enabled: bool,
 ) -> None:
     catalog = audio_catalog([old_audio, *fallback_audio, new_audio])
+    duration_factor, interval_silence_ms = tts_profile(config)
     pending: list[owner_voice.Cue] = []
     for chapter in chapters:
-        key = (chapter.chapter_id, text_hash(chapter.narration_en))
+        key = (
+            chapter.chapter_id,
+            text_hash(chapter.narration_en),
+            duration_factor,
+            interval_silence_ms,
+        )
         if key not in catalog:
             pending.append(
                 owner_voice.Cue(
@@ -157,6 +204,8 @@ def synthesize_missing_audio(
         voice_reference=voice_reference,
         generated_dir=new_audio,
         force=False,
+        duration_factor=duration_factor,
+        interval_silence_ms=interval_silence_ms,
     )
 
 
@@ -170,10 +219,16 @@ def attach_audio(
 ) -> None:
     catalog = audio_catalog([old_audio, *fallback_audio, new_audio])
     timing = config["timing"]
+    duration_factor, interval_silence_ms = tts_profile(config)
     tail = float(timing["narration_tail_hold_seconds"])
     subtitle_tail = float(timing["subtitle_tail_hold_seconds"])
     for chapter in chapters:
-        key = (chapter.chapter_id, text_hash(chapter.narration_en))
+        key = (
+            chapter.chapter_id,
+            text_hash(chapter.narration_en),
+            duration_factor,
+            interval_silence_ms,
+        )
         found = catalog.get(key)
         if found is None:
             raise R12BuildError(f"narration cache is missing for {chapter.chapter_id}")
@@ -187,7 +242,12 @@ def attach_audio(
         chapter.voice = "authorized-owner-reference"
         chapter.tts_provider = "IndexTTS-2.5"
         chapter.tts_provider_version = str(metadata.get("model_revision", "unknown"))
-        chapter.tts_settings = {"mode": "natural-reference-emotion", "tempo": "1.0"}
+        chapter.tts_settings = {
+            "mode": "natural-reference-emotion",
+            "duration_factor": duration_factor,
+            "interval_silence_ms": interval_silence_ms,
+            "playback_tempo": 1.0,
+        }
         chapter.tail_padding_seconds = tail
         chapter.shot_duration_seconds = max(
             float(chapter.min_duration_seconds), delay + duration + tail
@@ -575,6 +635,24 @@ def load_edit_config(config_path: Path) -> dict[str, Any]:
             "policy": "retain engineering depth while restoring natural spoken Chinese",
         }
         return base
+    if schema == "project-causality-r15-pacing-edit.v1":
+        base_path = r11._root_path(requested.get("base_config"), "base_config")
+        base = copy.deepcopy(load_edit_config(base_path))
+        timing_override = requested.get("timing", {})
+        tts_override = requested.get("tts", {})
+        if not isinstance(timing_override, dict) or not isinstance(tts_override, dict):
+            raise R12BuildError("r15 timing and tts overrides must be objects")
+        base["schema"] = schema
+        base["edition"] = "r15"
+        base["base_config"] = str(base_path)
+        base["timing"] = {**base["timing"], **timing_override}
+        base["tts"] = {**base.get("tts", {}), **tts_override}
+        base["r15_pacing"] = {
+            "source_config": str(config_path),
+            "source_base": str(base_path),
+            "policy": "recommended owner-voice pace with compact phrase and cue spacing",
+        }
+        return base
     if schema != "project-causality-r13-hook-edit.v1":
         raise R12BuildError(f"unsupported edit config schema: {config_path}")
     base_path = r11._root_path(requested.get("base_config"), "base_config")
@@ -635,6 +713,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         apply_text_overrides(chapters, config)
         validate_text_integrity(chapters)
         use_continuous_agent_timing(chapters)
+        apply_compact_pacing_holds(chapters, config)
         english = {
             chapter.chapter_id: str(chapter.subtitle_secondary or chapter.title_en)
             for chapter in chapters
@@ -652,6 +731,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             index_repo=index_repo,
             model_dir=model_dir,
             voice_reference=voice_reference,
+            config=config,
             enabled=args.synthesize,
         )
         attach_audio(

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a no-continuation Suno music preview for Project Causality r14."""
+"""Build a chapter-aware no-continuation Suno music preview."""
 
 from __future__ import annotations
 
@@ -11,14 +11,13 @@ import subprocess
 from pathlib import Path
 
 
-FILM_DURATION = 3232.292
-CHAPTERS = [
-    {"name": "prologue", "start": 0.0, "end": 237.0, "file": "00-prologue-a.wav", "repeats": 1},
-    {"name": "spell", "start": 237.0, "end": 869.0, "file": "01-spell-a.wav", "repeats": 2},
-    {"name": "robert", "start": 869.0, "end": 1402.0, "file": "02-robert-b.wav", "repeats": 2},
-    {"name": "method", "start": 1402.0, "end": 2150.0, "file": "03-method-a.wav", "repeats": 3},
-    {"name": "principle", "start": 2150.0, "end": 2550.0, "file": "04-principle-a.wav", "repeats": 2},
-    {"name": "vision", "start": 2550.0, "end": FILM_DURATION, "file": "05-vision-a.wav", "repeats": 2},
+TRACKS = [
+    {"name": "prologue", "file": "00-prologue-a.wav"},
+    {"name": "spell", "file": "01-spell-a.wav"},
+    {"name": "robert", "file": "02-robert-b.wav"},
+    {"name": "method", "file": "03-method-a.wav"},
+    {"name": "principle", "file": "04-principle-a.wav"},
+    {"name": "vision", "file": "05-vision-a.wav"},
 ]
 CROSSFADE_SECONDS = 12.0
 MUSIC_GAIN = 0.24
@@ -81,6 +80,7 @@ def probe(path: Path) -> dict[str, object]:
             "format=duration",
             "-show_entries",
             "stream=index,codec_type,codec_name,sample_rate,channels",
+            "-show_chapters",
             "-of",
             "json",
             str(path),
@@ -129,6 +129,10 @@ def main() -> int:
     parser.add_argument("--music-dir", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument(
+        "--output-name",
+        default="project-causality-suno-base-loop-preview.mp4",
+    )
+    parser.add_argument(
         "--reuse-rendered-output",
         action="store_true",
         help="Skip the mix render and rerun media QA plus sidecar generation on the existing output.",
@@ -141,15 +145,39 @@ def main() -> int:
     args = parser.parse_args()
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    output = args.output_dir / "project-causality-r14-suno-base-loop-preview.mp4"
-    sidecar = args.output_dir / "project-causality-r14-suno-base-loop-preview.json"
+    output = args.output_dir / args.output_name
+    sidecar = output.with_suffix(".json")
+
+    source_media = probe(args.source_video)
+    film_duration = float(source_media["format"]["duration"])
+    source_chapters = source_media.get("chapters", [])
+    if not isinstance(source_chapters, list) or len(source_chapters) < 7:
+        raise RuntimeError("Source video must contain the eight Project Causality chapters")
+    starts = [float(chapter["start_time"]) for chapter in source_chapters]
+    boundaries = [0.0, starts[2], starts[3], starts[4], starts[5], starts[6], film_duration]
 
     command = ["ffmpeg", "-y", "-hide_banner", "-i", str(args.source_video)]
+    chapters: list[dict[str, object]] = []
     selected: list[dict[str, object]] = []
-    for chapter in CHAPTERS:
-        music_path = args.music_dir / str(chapter["file"])
+    for index, track in enumerate(TRACKS):
+        music_path = args.music_dir / str(track["file"])
         if not music_path.is_file():
             raise FileNotFoundError(music_path)
+        track_duration = float(probe(music_path)["format"]["duration"])
+        chapter_duration = boundaries[index + 1] - boundaries[index]
+        repeats = 1
+        covered = track_duration
+        while covered + 0.01 < chapter_duration:
+            repeats += 1
+            covered += track_duration - CROSSFADE_SECONDS
+        chapter = {
+            **track,
+            "start": boundaries[index],
+            "end": boundaries[index + 1],
+            "repeats": repeats,
+            "track_duration_seconds": track_duration,
+        }
+        chapters.append(chapter)
         command.extend(["-i", str(music_path)])
         selected.append(
             {
@@ -161,13 +189,13 @@ def main() -> int:
 
     filters: list[str] = []
     chapter_labels: list[str] = []
-    for index, chapter in enumerate(CHAPTERS, start=1):
+    for index, chapter in enumerate(chapters, start=1):
         label = f"chapter{index - 1}"
         chapter_labels.append(label)
         filters.extend(chapter_filter(index, chapter, label))
     filters.append(
         "".join(f"[{label}]" for label in chapter_labels)
-        + f"concat=n={len(CHAPTERS)}:v=0:a=1,highpass=f=70,lowpass=f=14000,volume={MUSIC_GAIN}[music]"
+        + f"concat=n={len(chapters)}:v=0:a=1,highpass=f=70,lowpass=f=14000,volume={MUSIC_GAIN}[music]"
     )
     filters.extend(
         [
@@ -218,7 +246,7 @@ def main() -> int:
 
     media = probe(output)
     duration = float(media["format"]["duration"])
-    if abs(duration - FILM_DURATION) > 0.1:
+    if abs(duration - film_duration) > 0.1:
         raise RuntimeError(f"Unexpected output duration: {duration}")
     stream_types = [stream["codec_type"] for stream in media["streams"]]
     if stream_types.count("video") != 1 or stream_types.count("audio") != 1 or stream_types.count("subtitle") != 1:
@@ -227,7 +255,7 @@ def main() -> int:
     if not args.skip_full_decode:
         run(["ffmpeg", "-v", "error", "-i", str(output), "-f", "null", "NUL"])
     payload = {
-        "schema": "project-causality-r14-suno-base-loop-preview.v1",
+        "schema": "project-causality-suno-base-loop-preview.v2",
         "status": "review-preview-not-publication-master",
         "source_video": str(args.source_video),
         "source_video_sha256": sha256(args.source_video),

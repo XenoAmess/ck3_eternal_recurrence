@@ -1,0 +1,13 @@
+{
+  "schema": "project-causality-r15-pacing-edit.v1",
+  "base_config": "promo/project_causality/r14/edit-config.json",
+  "tts": {
+    "duration_factor": 0.9,
+    "interval_silence_ms": 100
+  },
+  "timing": {
+    "compact_non_agent_visual_holds": true,
+    "narration_tail_hold_seconds": 0.55,
+    "subtitle_tail_hold_seconds": 0.55
+  }
+}
