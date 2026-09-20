@@ -275,6 +275,13 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 
 ## Git 约定
 
+### 外部贡献与 CLA
+
+- 外部贡献必须遵守根目录 `CLA.md` 与 `CONTRIBUTING.md`，并在对应 PR 中由每个被检查器识别的贡献账号发表配置中规定的精确签署声明。
+- `CLA / signed` 是 `master` 的必需提交状态。CLA 检查器只允许从默认分支运行，禁止在 `pull_request_target` 或 `issue_comment` 高权限上下文中检出、构建、导入或执行 PR head、fork artifact 或其他贡献者可控代码。
+- `cla:manual` 只允许维护者在已经核验企业 CLA、线下签名、无法映射作者或等效证据后添加；标签是审计记录，不是绕过入口。
+- 实质修改 CLA 时必须提升版本，并同步更新 `CLA.md`、`.github/cla-config.json`、`CONTRIBUTING.md` 和检查器测试。完整运维合同见 `docs/cla-bot.md`。
+
 ### Codex 跨任务通知
 
 - 每个独立 Codex 任务使用 `D:\workspace\.codex-task-bus\bin\codex_task_bus.py` 登记并轮询状态；完整协议与命令见

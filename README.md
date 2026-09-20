@@ -106,6 +106,8 @@ flowchart TB
 
 开始修改前先阅读 [`AGENTS.md`](AGENTS.md)，再进入对应产品 README 和专题文档。全仓通用入口：
 
+- [贡献指南](CONTRIBUTING.md)
+- [贡献者许可协议（CLA）](CLA.md)
 - [知识库索引](docs/README.md)
 - [CK3 Mod 开发、维护与发布行为范式](docs/ck3-mod-development-paradigm.md)
 - [测试与实机验收流程](docs/testing-workflow.md)
@@ -119,3 +121,4 @@ allowlist staging；开发夹具、调试桥、acceptance-only 内容和仓库 R
 ## 许可证
 
 仓库许可证见 [LICENSE](LICENSE)。被维护的上游项目、CK3 原版素材、第三方依赖和各产品资产仍服从各自的来源与授权记录。
+外部贡献还须按 [贡献指南](CONTRIBUTING.md) 在对应 PR 中签署 [CLA](CLA.md)；自动门禁状态为 `CLA / signed`。

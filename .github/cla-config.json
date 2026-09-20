@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "document": "CLA.md",
+  "acceptance_statement": "I have read and agree to the Contributor License Agreement (CLA), version 1.0, and I confirm that I have authority to grant the rights for my contribution.",
+  "status_context": "CLA / signed",
+  "comment_marker": "<!-- project-causality-cla-check:v1 -->",
+  "exempt_users": [
+    "XenoAmess"
+  ],
+  "manual_override_labels": [
+    "cla:manual"
+  ],
+  "require_commit_authors": true
+}

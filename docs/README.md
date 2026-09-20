@@ -14,6 +14,7 @@
 - [consolidation-inventory-2026-08-30.md](consolidation-inventory-2026-08-30.md) — 全产品、分支与脏工作树的 master 收口分类（merged / already-contained / superseded / unfinished-preserved）
 - [branch-management.md](branch-management.md) — master 单一集成线、短命分支 ledger、冻结证据 sidecar 与跨 common-dir/独立 clone 的完整清理流程
 - [codex-task-bus.md](codex-task-bus.md) — 同机 Codex 任务状态、共享资源与完成通知约定
+- [cla-bot.md](cla-bot.md) — **贡献者许可与签署门禁**：按 PR 电子签署、贡献者识别、`CLA / signed` 状态、人工覆盖和版本升级流程
 
 ## 机制篇
 
