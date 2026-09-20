@@ -1,0 +1,151 @@
+{
+  "format_version": 1,
+  "schema": "project-causality-r12-publication-edit.v1",
+  "inputs": {
+    "r6": "artifacts/project-causality/2026-09-19-r6/project-causality-30m.manifest.json",
+    "value": "promo/project_causality/r8/value-showcase.json",
+    "gates": "promo/project_causality/r8/chapter-gates-showcase.json",
+    "agent": "promo/project_causality/r9/agent-showcase.json",
+    "custom": "promo/project_causality/r12/custom-showcase.json"
+  },
+  "composition": [
+    {"source": "custom", "ids": ["opening-final-thesis"], "expected_count": 1},
+    {"source": "value", "ids": ["value-thesis", "existing-mod-entry", "new-creator-entry"], "expected_count": 3},
+    {"source": "gates", "ids": ["spell-gate-r8"], "expected_count": 1},
+    {"source": "value", "ids": ["base-game-research-value"], "expected_count": 1},
+    {"source": "r6", "starts_with": ["04-eternal-recurrence-", "05-vivhite-", "06-zhongguo-361-public-", "07-independent-products-", "08-coat-of-arms-editor-"], "expected_count": 23},
+    {"source": "agent", "all": true, "expected_count": 10},
+    {"source": "custom", "ids": ["spell-deep-native-state", "spell-deep-command-and-ledger", "spell-deep-ooda-evidence"], "expected_count": 3},
+    {"source": "custom", "ids": ["spell-value-closure"], "expected_count": 1},
+    {"source": "gates", "ids": ["method-gate-r8"], "expected_count": 1},
+    {"source": "value", "ids": ["development-value"], "expected_count": 1},
+    {"source": "custom", "ids": ["method-one-change", "method-authority-generation", "method-offline-open-kashek", "method-live-mcp", "method-release-memory"], "expected_count": 5},
+    {"source": "r6", "starts_with": ["10-documents-", "11-generation-", "12-validation-open-kaishek-", "13-mcp-", "14-ocr-boundary-", "15-agent-construction-", "16-release-promo-"], "expected_count": 19},
+    {"source": "custom", "ids": ["method-value-closure"], "expected_count": 1},
+    {"source": "gates", "ids": ["principle-gate-r8"], "expected_count": 1},
+    {"source": "value", "ids": ["maintenance-testing-value"], "expected_count": 1},
+    {"source": "custom", "ids": ["principle-result-readback"], "expected_count": 1},
+    {"source": "r6", "starts_with": ["18-doc-test-code-", "19-state-over-ack-", "20-evidence-exact-build-", "21-value-boundaries-"], "expected_count": 12},
+    {"source": "custom", "ids": ["principle-value-closure"], "expected_count": 1},
+    {"source": "gates", "ids": ["vision-gate-r8"], "expected_count": 1},
+    {"source": "r6", "starts_with": ["23-why-loops-", "24-loop-a-", "25-loop-b-", "26-loop-c-", "27-loop-d-", "28-interlock-human-"], "expected_count": 12},
+    {"source": "r6", "starts_with": ["00-", "01-", "02-"], "expected_count": 9},
+    {"source": "r6", "starts_with": ["29-finale-"], "expected_count": 3},
+    {"source": "custom", "ids": ["vision-value-closure"], "expected_count": 1},
+    {"source": "custom", "ids": ["cta-two-entrances", "cta-final-causality"], "expected_count": 2}
+  ],
+  "clean_video_overrides": [
+    {
+      "id": "coat-of-arms-editor-r9-clean-capture",
+      "master": "artifacts/project-causality/2026-09-19-r9/coa-production-capture/coat-of-arms-editor-r9.webm",
+      "source_start_seconds": 0,
+      "source_end_seconds": 53.4,
+      "cue_ids": ["08-coat-of-arms-editor-01", "08-coat-of-arms-editor-02", "08-coat-of-arms-editor-03"],
+      "continuity": "one clean capture, divided proportionally without source-time gaps"
+    }
+  ],
+  "visual_overrides": {
+    "24-loop-a-01": {"source": "artifacts/project-causality/2026-09-20-r12/assets/loop-a-motion.mp4", "start_seconds": 0, "end_seconds": 25},
+    "24-loop-a-02": {"source": "artifacts/project-causality/2026-09-20-r12/assets/loop-a-motion.mp4", "start_seconds": 25, "end_seconds": 50},
+    "25-loop-b-01": {"source": "artifacts/project-causality/2026-09-20-r12/assets/loop-b-motion.mp4", "start_seconds": 0, "end_seconds": 25},
+    "25-loop-b-02": {"source": "artifacts/project-causality/2026-09-20-r12/assets/loop-b-motion.mp4", "start_seconds": 25, "end_seconds": 50},
+    "26-loop-c-01": {"source": "artifacts/project-causality/2026-09-20-r12/assets/loop-c-motion.mp4", "start_seconds": 0, "end_seconds": 25},
+    "26-loop-c-02": {"source": "artifacts/project-causality/2026-09-20-r12/assets/loop-c-motion.mp4", "start_seconds": 25, "end_seconds": 50},
+    "27-loop-d-01": {"source": "artifacts/project-causality/2026-09-20-r12/assets/loop-d-motion.mp4", "start_seconds": 0, "end_seconds": 25},
+    "27-loop-d-02": {"source": "artifacts/project-causality/2026-09-20-r12/assets/loop-d-motion.mp4", "start_seconds": 25, "end_seconds": 50}
+  },
+  "text_overrides": {
+    "fresh-ruler-selection": {
+      "title_zh": "从稳定主菜单开始",
+      "title_en": "START AT THE STABLE CK3 MAIN MENU",
+      "narration_en": "画面从已经稳定显示的 CK3 主菜单开始。智能体通过 MCP 进入新游戏，打开一零六六年书签，选择罗贝尔，然后启动一盘完全原版的新局。这里没有预制战斗，也没有 OCR 和鼠标坐标；选人、开局和后续操作都由游戏内部状态驱动。",
+      "subtitle_zh": "画面从已经稳定显示的 CK3 主菜单开始。智能体通过 MCP 进入新游戏，打开一零六六年书签，选择罗贝尔，然后启动一盘完全原版的新局。这里没有预制战斗，也没有 OCR 和鼠标坐标；选人、开局和后续操作都由游戏内部状态驱动。",
+      "subtitle_secondary": "From the stable CK3 main menu, MCP opens a fresh 1066 game, selects Robert, and starts without OCR, mouse coordinates, or a prepared save."
+    },
+    "opening-events": {
+      "title_zh": "先把开局该做的事做完",
+      "title_en": "HANDLE THE OPENING BEFORE CHOOSING A WAR",
+      "narration_en": "进入地图后，智能体先读取罗贝尔的人物、家庭、资源、领地和军事情况，保存开局检查点，再评估当前能够采取的行动。它不是一落地就冲向预设敌人，而是先建立这一局自己的世界模型。",
+      "subtitle_zh": "进入地图后，智能体先读取罗贝尔的人物、家庭、资源、领地和军事情况，保存开局检查点，再评估当前能够采取的行动。它不是一落地就冲向预设敌人，而是先建立这一局自己的世界模型。",
+      "subtitle_secondary": "The agent reads Robert's family, resources, realm, and military state before deciding what this particular campaign should do."
+    },
+    "character-development": {
+      "title_zh": "发生什么，就处理什么",
+      "title_en": "HANDLE WHAT THE CAMPAIGN ACTUALLY PRESENTS",
+      "narration_en": "这局开场没有弹出需要选择的事件，所以镜头不会从别处借一段事件决策来冒充连续实机。事件选择能力存在于同一套接口里；但在这条母带中，智能体只处理本局真实出现的状态，然后继续寻找最有价值的下一步。",
+      "subtitle_zh": "这局开场没有弹出需要选择的事件，所以镜头不会从别处借一段事件决策来冒充连续实机。事件选择能力存在于同一套接口里；但在这条母带中，智能体只处理本局真实出现的状态，然后继续寻找最有价值的下一步。",
+      "subtitle_secondary": "No event choice appeared in this take, so none is fabricated. The agent handles only what this continuous campaign actually presents."
+    },
+    "realm-review": {
+      "title_zh": "战争不是一段固定脚本",
+      "title_en": "A WAR IS NOT A FIXED MACRO",
+      "narration_en": "战争开始以后，军队、敌军、路线、补给和战果都会变化。智能体每推进一段时间，就重新读取局势，让新的状态决定下一步。旧军队编号、旧路线和旧目标不会被当成永远有效的答案。",
+      "subtitle_zh": "战争开始以后，军队、敌军、路线、补给和战果都会变化。智能体每推进一段时间，就重新读取局势，让新的状态决定下一步。旧军队编号、旧路线和旧目标不会被当成永远有效的答案。",
+      "subtitle_secondary": "Army, enemy, route, supply, and war score keep changing. The agent re-reads the campaign and replans instead of replaying a fixed macro."
+    },
+    "dynamic-target-selection": {
+      "title_zh": "让智能体自己评估对手",
+      "title_en": "LET THE AGENT CHOOSE THE OPPONENT",
+      "narration_en": "宣战前，智能体枚举当前所有合法对手，比较宣战理由、目标和双方能够投入的军力，再按公开规则排序。影片没有规定罗贝尔必须打下某个名字；只要它从这一局的真实候选里选出更好的目标，并能解释为什么。",
+      "subtitle_zh": "宣战前，智能体枚举当前所有合法对手，比较宣战理由、目标和双方能够投入的军力，再按公开规则排序。影片没有规定罗贝尔必须打下某个名字；只要它从这一局的真实候选里选出更好的目标，并能解释为什么。",
+      "subtitle_secondary": "The agent ranks every legal opponent by cause, target, and effective military strength. The film does not prescribe a named enemy."
+    },
+    "declare-war": {
+      "title_zh": "发出宣战，还要确认战争真的开始",
+      "title_en": "DECLARE, THEN VERIFY THE WAR EXISTS",
+      "narration_en": "智能体提交宣战之后，不会把“命令已收到”当成胜利。它重新读取游戏，确认新的战争确实存在，对手和目标也与计划一致。只有这些事实成立，才进入集结和行军。",
+      "subtitle_zh": "智能体提交宣战之后，不会把“命令已收到”当成胜利。它重新读取游戏，确认新的战争确实存在，对手和目标也与计划一致。只有这些事实成立，才进入集结和行军。",
+      "subtitle_secondary": "After declaring war, the agent reads the game again and verifies that the intended war, opponent, and target truly exist."
+    },
+    "raise-and-move": {
+      "title_zh": "集结、选军、行军",
+      "title_en": "RAISE, SELECT, AND MOVE",
+      "narration_en": "随后，智能体集结军队，读取己方部队、敌军、补给、目标和可用路线，再下达移动与接敌指令。每次局势变化以后都重新观察，而不是把屏幕上的某个位置写成永不改变的答案。",
+      "subtitle_zh": "随后，智能体集结军队，读取己方部队、敌军、补给、目标和可用路线，再下达移动与接敌指令。每次局势变化以后都重新观察，而不是把屏幕上的某个位置写成永不改变的答案。",
+      "subtitle_secondary": "The agent raises armies, reads friendly and hostile forces, supply, targets, and routes, then moves and re-observes."
+    },
+    "war-loop-recovery": {
+      "title_zh": "战场变化，就重新规划",
+      "title_en": "REPLAN WHEN THE WAR CHANGES",
+      "narration_en": "行军、接战、围城和战果并不会按一条直线发生。智能体持续观察阻挡它的事件和战场变化，必要时重新选择行动。一次战斗失利不等于整场战争失败；它关注的是怎样把仍然可赢的战争继续打下去。",
+      "subtitle_zh": "行军、接战、围城和战果并不会按一条直线发生。智能体持续观察阻挡它的事件和战场变化，必要时重新选择行动。一次战斗失利不等于整场战争失败；它关注的是怎样把仍然可赢的战争继续打下去。",
+      "subtitle_secondary": "Marches, battles, sieges, and interruptions change the plan. The agent replans and keeps a winnable war moving."
+    },
+    "enforce-victory": {
+      "title_zh": "赢下战争，再重新评估世界",
+      "title_en": "WIN THE WAR, THEN REASSESS THE WORLD",
+      "narration_en": "达到胜利条件后，智能体执行结束战争，并再次确认旧战争已经消失、进攻方胜利已经写入游戏。第一场胜利不是脚本终点；同一时间出现的新战争，会成为下一轮观察和规划的输入。",
+      "subtitle_zh": "达到胜利条件后，智能体执行结束战争，并再次确认旧战争已经消失、进攻方胜利已经写入游戏。第一场胜利不是脚本终点；同一时间出现的新战争，会成为下一轮观察和规划的输入。",
+      "subtitle_secondary": "The agent enforces victory, verifies the old war has ended, then treats the new world state as the next planning input."
+    },
+    "postwar-close": {
+      "title_zh": "就这样，智能体继续游玩",
+      "title_en": "THE AGENT CONTINUES THE CAMPAIGN",
+      "narration_en": "首场胜利刚被确认，罗贝尔就被卷入新的防御战争。智能体没有停在胜利弹窗，也没有把第一场战争当成终点；它接管新的局势，继续读取战果、军队、敌军和路线。镜头在这里收束，游戏仍在继续。",
+      "subtitle_zh": "首场胜利刚被确认，罗贝尔就被卷入新的防御战争。智能体没有停在胜利弹窗，也没有把第一场战争当成终点；它接管新的局势，继续读取战果、军队、敌军和路线。镜头在这里收束，游戏仍在继续。",
+      "subtitle_secondary": "A new defensive war begins immediately. The agent takes over the changed situation and continues playing beyond the first victory."
+    },
+    "27-loop-d-02": {
+      "narration_en": "然后，外部世界把下载、评论、故障与新需求送回来。它们重新进入权威文档，成为下一轮产品和工具的燃料。发行不是把文件扔过墙，而是把墙外的声音带回炉火。",
+      "subtitle_zh": "然后，外部世界把下载、评论、故障与新需求送回来。它们重新进入权威文档，成为下一轮产品和工具的燃料。发行不是把文件扔过墙，而是把墙外的声音带回炉火。",
+      "subtitle_secondary": "Downloads, comments, failures and new needs return to authoritative documents as inputs for later products and tools. Release becomes a closed loop."
+    }
+  },
+  "timing": {
+    "narration_tail_hold_seconds": 1.25,
+    "subtitle_tail_hold_seconds": 1.0,
+    "maximum_film_seconds": 3600,
+    "agent_showcase_minimum_seconds": 360,
+    "agent_showcase_maximum_seconds": 720
+  },
+  "contracts": {
+    "expected_cue_count": 114,
+    "expected_gate_count": 4,
+    "gate_narration_delay_seconds": 12,
+    "subtitle_block_policy": "paired-balanced",
+    "audio_tempo_filter_allowed": false,
+    "burned_subtitle_language": "zh-Hans",
+    "separate_subtitle_language": "en",
+    "continuous_robert_master_required_for_render": true
+  }
+}

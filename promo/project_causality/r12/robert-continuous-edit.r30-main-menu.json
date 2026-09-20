@@ -1,0 +1,17 @@
+{
+  "schema": "project-causality-r11-robert-continuous-edit.v1",
+  "master": "artifacts/project-causality/2026-09-20-r12/robert-mcp-showcase-main-menu-continuous.mp4",
+  "continuity": "R30 raw source remains chronological from the real CK3 main menu through Robert selection, the first verified victory, and the follow-on defensive war. The initial real main-menu frame is held for three editorial seconds so viewers can establish the starting state; no gameplay source-time jump or shot reordering follows.",
+  "spans": [
+    {"cue_id": "fresh-ruler-selection", "source_start_seconds": 0.0, "source_end_seconds": 35.559678, "playback_rate": 1.0},
+    {"cue_id": "opening-events", "source_start_seconds": 35.559678, "source_end_seconds": 75.191692, "playback_rate": 1.0},
+    {"cue_id": "character-development", "source_start_seconds": 75.191692, "source_end_seconds": 120.338445, "playback_rate": 1.0},
+    {"cue_id": "realm-review", "source_start_seconds": 120.338445, "source_end_seconds": 156.113316, "playback_rate": 1.0},
+    {"cue_id": "dynamic-target-selection", "source_start_seconds": 156.113316, "source_end_seconds": 196.163289, "playback_rate": 1.0},
+    {"cue_id": "declare-war", "source_start_seconds": 196.163289, "source_end_seconds": 234.132445, "playback_rate": 1.0},
+    {"cue_id": "raise-and-move", "source_start_seconds": 234.132445, "source_end_seconds": 266.552032, "playback_rate": 1.0},
+    {"cue_id": "war-loop-recovery", "source_start_seconds": 266.552032, "source_end_seconds": 305.043637, "playback_rate": 1.0},
+    {"cue_id": "enforce-victory", "source_start_seconds": 305.043637, "source_end_seconds": 344.562181, "playback_rate": 1.0},
+    {"cue_id": "postwar-close", "source_start_seconds": 344.562181, "source_end_seconds": 388.466667, "playback_rate": 1.0}
+  ]
+}
