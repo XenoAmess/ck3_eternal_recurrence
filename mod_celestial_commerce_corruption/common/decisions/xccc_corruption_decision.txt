@@ -1,0 +1,29 @@
+﻿xccc_corruption_policy_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/xccc_corruption_decision.dds" }
+	title = xccc_corruption_policy_decision
+	desc = xccc_corruption_policy_decision_desc
+	selection_tooltip = xccc_corruption_policy_decision_tooltip
+	confirm_text = xccc_corruption_policy_decision_confirm
+	decision_group_type = major
+	cooldown = { years = 3 }
+	ai_check_interval = 36
+
+	is_shown = {
+		is_landed = yes
+		is_independent_ruler = no
+		government_has_flag = government_has_merit
+		has_tgp_dlc_trigger = yes
+		NOT = { has_character_flag = xccc_never_corrupt }
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	effect = {
+		custom_tooltip = xccc_corruption_policy_effect_tooltip
+		trigger_event = { id = xccc.1001 }
+	}
+}

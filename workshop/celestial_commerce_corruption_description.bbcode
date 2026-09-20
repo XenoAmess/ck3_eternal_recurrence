@@ -1,0 +1,28 @@
+[h1]天朝制允许经商&贪腐框架（XenoAmess维护版）[/h1]
+
+面向 CK3 1.19.0.6 的非官方维护版：让天朝制角色进入原版易货与商旅规则，并提供四档持续生效的贪腐政策。
+
+[list]
+[*]天朝政府允许使用易货资源；宴会等原版活动会沿用 1.19 自带的易货成本分支。
+[*]天朝属官可通过决议选择四档贪腐政策，把 75% 的基础税率分别降至 70%、65%、60% 或 50%。
+[*]更深的贪腐会提高易货产出，但同时损害功绩、领地民望、普遍好感、压力与建设效率。
+[*]可以暂时收手，或为当前角色永久关闭这套贪腐决议。
+[/list]
+
+[h1]Compatibility fixes[/h1]
+
+[list]
+[*]Removed the obsolete full override of [code]feast.txt[/code]. CK3 1.19 already routes feast costs through [code]government_allows = barter[/code].
+[*]Removed the obsolete full override of [code]window_county_view.gui[/code], preserving current shortcuts and special-building UI.
+[*]Rebased [code]celestial_government[/code] on the exact 1.19.0.6 definition and retained only the intentional [code]barter = yes[/code] delta.
+[*]Updated the renamed accolade modifier and current decision interval syntax.
+[*]Namespaced the corruption traits, decision, event, script values, flags, art, and localization.
+[/list]
+
+Requires the All Under Heaven content that provides the Celestial government and Merit systems. No other mod dependency.
+
+[h1]来源与署名 / Provenance[/h1]
+
+本维护版经原作者许可，基于 HydroWood 的 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3596263413]Corruption & Trading under the Celestial government[/url]（上游物品 3596263413、内嵌提交 [code]9faf3bc[/code]）。XenoAmess 维护版不是上游物品的官方更新，不会覆盖或冒用上游 Workshop ID。
+
+版本：1.0.0；支持 CK3 1.19.0.6。

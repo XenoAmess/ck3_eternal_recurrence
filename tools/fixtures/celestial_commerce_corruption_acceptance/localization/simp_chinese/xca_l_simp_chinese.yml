@@ -1,0 +1,6 @@
+﻿l_simp_chinese:
+ xca_acceptance:0 "天朝经商验收"
+ xca_initialize_decision:0 "开始天朝经商贪腐实机验收"
+ xca_initialize_decision_desc:0 "切换到当前版本的天朝官员，并执行正式贪腐决议。"
+ xca_initialize_decision_tooltip:0 "准备隔离的实机验收场景。"
+ xca_initialize_decision_confirm:0 "切换至验收官员"

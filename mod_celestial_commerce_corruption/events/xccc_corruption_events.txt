@@ -1,0 +1,138 @@
+﻿namespace = xccc
+
+xccc.1001 = {
+	type = character_event
+	title = xccc.1001.t
+	desc = xccc.1001.desc
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	theme = stewardship_wealth_focus
+	override_background = { reference = alley_night }
+	trigger = { is_independent_ruler = no }
+
+	option = {
+		name = xccc.1001.a
+		trigger = { NOT = { has_trait = xccc_corruption_1 } }
+		remove_trait = xccc_corruption_2
+		remove_trait = xccc_corruption_3
+		remove_trait = xccc_corruption_4
+		add_trait = xccc_corruption_1
+		custom_tooltip = xccc.1001.a.tt
+		ai_chance = {
+			base = 10
+			modifier = { factor = 5 has_trait = fickle }
+			modifier = { factor = 1 has_trait = greedy }
+			modifier = {
+				factor = 1.5
+				OR = { has_trait = arbitrary has_trait = callous }
+			}
+			modifier = {
+				factor = 0
+				OR = { has_trait = honest has_trait = just has_trait = craven }
+			}
+		}
+	}
+
+	option = {
+		name = xccc.1001.b
+		trigger = { NOT = { has_trait = xccc_corruption_2 } }
+		remove_trait = xccc_corruption_1
+		remove_trait = xccc_corruption_3
+		remove_trait = xccc_corruption_4
+		add_trait = xccc_corruption_2
+		custom_tooltip = xccc.1001.b.tt
+		ai_chance = {
+			base = 10
+			modifier = { factor = 2 has_trait = greedy }
+			modifier = {
+				factor = 3
+				OR = { has_trait = arbitrary has_trait = callous }
+			}
+			modifier = {
+				factor = 0
+				OR = { has_trait = honest has_trait = just has_trait = craven }
+			}
+		}
+	}
+
+	option = {
+		name = xccc.1001.c
+		trigger = { NOT = { has_trait = xccc_corruption_3 } }
+		remove_trait = xccc_corruption_1
+		remove_trait = xccc_corruption_2
+		remove_trait = xccc_corruption_4
+		add_trait = xccc_corruption_3
+		custom_tooltip = xccc.1001.c.tt
+		ai_chance = {
+			base = 10
+			modifier = { factor = 3 has_trait = greedy }
+			modifier = {
+				factor = 2
+				OR = { has_trait = arbitrary has_trait = callous }
+			}
+			modifier = {
+				factor = 0
+				OR = { has_trait = honest has_trait = just has_trait = craven }
+			}
+		}
+	}
+
+	option = {
+		name = xccc.1001.d
+		trigger = { NOT = { has_trait = xccc_corruption_4 } }
+		remove_trait = xccc_corruption_1
+		remove_trait = xccc_corruption_2
+		remove_trait = xccc_corruption_3
+		add_trait = xccc_corruption_4
+		custom_tooltip = xccc.1001.d.tt
+		ai_chance = {
+			base = 10
+			modifier = { factor = 4 has_trait = greedy }
+			modifier = {
+				factor = 1.5
+				OR = { has_trait = arbitrary has_trait = callous }
+			}
+			modifier = {
+				factor = 0.01
+				OR = { has_trait = honest has_trait = just has_trait = craven }
+			}
+		}
+	}
+
+	option = {
+		name = xccc.1001.f
+		remove_trait = xccc_corruption_1
+		remove_trait = xccc_corruption_2
+		remove_trait = xccc_corruption_3
+		remove_trait = xccc_corruption_4
+		custom_tooltip = xccc.1001.f.tt
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				OR = { has_trait = honest has_trait = just }
+			}
+			modifier = { factor = 0.1 has_trait = greedy }
+		}
+	}
+
+	option = {
+		name = xccc.1001.e
+		remove_trait = xccc_corruption_1
+		remove_trait = xccc_corruption_2
+		remove_trait = xccc_corruption_3
+		remove_trait = xccc_corruption_4
+		custom_tooltip = xccc.1001.e.tt
+		add_character_flag = xccc_never_corrupt
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 5
+				OR = { has_trait = honest has_trait = just }
+			}
+			modifier = { factor = 0.01 has_trait = greedy }
+		}
+	}
+}

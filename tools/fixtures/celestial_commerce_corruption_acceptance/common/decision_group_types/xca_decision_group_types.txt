@@ -1,0 +1,4 @@
+﻿xca_acceptance = {
+	sort_order = 157
+	gui_tags = { big_button }
+}

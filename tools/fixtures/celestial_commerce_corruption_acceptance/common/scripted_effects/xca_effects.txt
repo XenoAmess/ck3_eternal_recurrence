@@ -1,0 +1,91 @@
+﻿# External exact-build fixture. This tree is never part of release staging.
+
+xca_fail_effect = {
+	debug_log = "XCA: TEST FAIL fixture_preconditions_or_product_contract"
+	debug_log = "XCA: TEST DONE celestial_commerce_corruption"
+}
+
+xca_initialize_effect = {
+	if = {
+		limit = { has_character_flag = xca_initialize_pending }
+		remove_character_flag = xca_initialize_pending
+		add_character_flag = xca_fixture_initialized
+		debug_log = "XCA: TEST BEGIN celestial_commerce_corruption"
+		character:han_8052 = { save_scope_as = xca_song_emperor }
+		if = {
+			limit = {
+				exists = scope:xca_song_emperor
+				scope:xca_song_emperor = {
+					is_alive = yes
+					is_ai = yes
+					is_landed = yes
+					is_independent_ruler = yes
+					has_title = title:h_china
+					government_has_flag = government_is_celestial
+					government_allows = barter
+				}
+			}
+			debug_log = "XCA: TEST PASS celestial_government_allows_barter"
+			scope:xca_song_emperor = { add_character_flag = xca_setup_pending }
+			set_player_character = scope:xca_song_emperor
+			debug_log = "XCA: TEST PASS switched_to_song_emperor"
+		}
+		else = { xca_fail_effect = yes }
+	}
+}
+
+xca_setup_effect = {
+	if = {
+		limit = { has_character_flag = xca_setup_pending }
+		remove_character_flag = xca_setup_pending
+		ordered_vassal = {
+			limit = {
+				is_ai = yes
+				is_alive = yes
+				is_adult = yes
+				is_landed = yes
+				is_independent_ruler = no
+				government_has_flag = government_has_merit
+			}
+			order_by = current_military_strength
+			position = 0
+			save_scope_as = xca_official
+		}
+		if = {
+			limit = { exists = scope:xca_official }
+			scope:xca_official = { add_character_flag = xca_verify_policy_pending }
+			set_player_character = scope:xca_official
+			debug_log = "XCA: TEST PASS switched_to_celestial_official"
+		}
+		else = { xca_fail_effect = yes }
+	}
+}
+
+xca_verify_policy_effect = {
+	if = {
+		limit = { has_character_flag = xca_verify_policy_pending }
+		remove_character_flag = xca_verify_policy_pending
+		set_variable = {
+			name = xca_tax_after_tier_four
+			value = xccc_celestial_tax_default
+		}
+		change_variable = {
+			name = xca_tax_after_tier_four
+			subtract = xccc_corruption_4_tax_deduction
+		}
+		if = {
+			limit = {
+				is_independent_ruler = no
+				government_has_flag = government_has_merit
+				government_allows = barter
+				has_trait = xccc_corruption_4
+				var:xca_tax_after_tier_four = 0.50
+			}
+			debug_log = "XCA: TEST PASS corruption_tier_four_applied"
+			debug_log = "XCA: TEST PASS tier_four_tax_rate_is_fifty_percent"
+			debug_log = "XCA: TEST PASS production_decision_event_round_trip"
+			debug_log = "XCA: TEST DONE celestial_commerce_corruption"
+		}
+		else = { xca_fail_effect = yes }
+	}
+}

@@ -1,0 +1,93 @@
+﻿xccc_corruption_1 = {
+	icon = "xccc_corruption_1.dds"
+	shown_in_ruler_designer = no
+	birth = 0
+	random_creation = 0
+	liege_opinion = -10
+	county_opinion_add = -10
+	monthly_barter_goods = 0.5
+	monthly_barter_goods_mult = 0.05
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { NOT = { exists = this } }
+				desc = trait_xccc_corruption_1_desc
+			}
+			desc = trait_xccc_corruption_1_character_desc
+		}
+	}
+}
+
+xccc_corruption_2 = {
+	icon = "xccc_corruption_2.dds"
+	shown_in_ruler_designer = no
+	birth = 0
+	random_creation = 0
+	liege_opinion = -20
+	county_opinion_add = -30
+	general_opinion = -5
+	monthly_barter_goods = 1
+	monthly_barter_goods_mult = 0.1
+	monthly_merit = -0.5
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { NOT = { exists = this } }
+				desc = trait_xccc_corruption_2_desc
+			}
+			desc = trait_xccc_corruption_2_character_desc
+		}
+	}
+}
+
+xccc_corruption_3 = {
+	icon = "xccc_corruption_3.dds"
+	shown_in_ruler_designer = no
+	birth = 0
+	random_creation = 0
+	liege_opinion = -30
+	county_opinion_add = -50
+	general_opinion = -10
+	monthly_barter_goods = 1.5
+	monthly_barter_goods_mult = 0.2
+	monthly_merit = -1
+	stress_gain_mult = 0.2
+	stress_loss_mult = -0.2
+	build_speed = 0.1
+	build_gold_cost = 0.1
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { NOT = { exists = this } }
+				desc = trait_xccc_corruption_3_desc
+			}
+			desc = trait_xccc_corruption_3_character_desc
+		}
+	}
+}
+
+xccc_corruption_4 = {
+	icon = "xccc_corruption_4.dds"
+	shown_in_ruler_designer = no
+	birth = 0
+	random_creation = 0
+	liege_opinion = -50
+	county_opinion_add = -80
+	general_opinion = -20
+	monthly_barter_goods = 2
+	monthly_barter_goods_mult = 0.3
+	monthly_merit = -2
+	stress_gain_mult = 0.3
+	stress_loss_mult = -0.3
+	build_speed = 0.25
+	build_gold_cost = 0.25
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { NOT = { exists = this } }
+				desc = trait_xccc_corruption_4_desc
+			}
+			desc = trait_xccc_corruption_4_character_desc
+		}
+	}
+}

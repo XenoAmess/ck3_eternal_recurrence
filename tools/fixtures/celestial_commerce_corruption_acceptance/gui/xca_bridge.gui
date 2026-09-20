@@ -1,0 +1,25 @@
+﻿window = {
+	name = "xca_bridge_window"
+	size = { 1 1 }
+	layer = tutorial
+	position = { 0 0 }
+	visible = "[GetPlayer.IsValid]"
+	alwaystransparent = yes
+	state = { name = _show using = Animation_FadeIn_Quick }
+	state = { name = _hide using = Animation_FadeOut_Quick }
+	state = {
+		name = "xca_initialize"
+		trigger_when = "[GetScriptedGui('xca_initialize_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		on_start = "[GetScriptedGui('xca_initialize_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+	state = {
+		name = "xca_setup"
+		trigger_when = "[GetScriptedGui('xca_setup_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		on_start = "[GetScriptedGui('xca_setup_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+	state = {
+		name = "xca_verify_policy"
+		trigger_when = "[GetScriptedGui('xca_verify_policy_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		on_start = "[GetScriptedGui('xca_verify_policy_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
+}
