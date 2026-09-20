@@ -1,0 +1,1 @@
+﻿gui/xca_bridge.gui = xca_bridge_window

@@ -51,6 +51,9 @@ REQUIRED_MARKERS = (
     "OXA: TEST PASS champion_salary_zero",
     "OXA: TEST DONE standalone",
 )
+ACCEPTANCE_LABEL = "OX HERE"
+ARTIFACT_PREFIX = "oxa"
+USERDIR_PREFIX = "oxu"
 
 OPEN_KAISHEK_PREFLIGHT_RESULT: dict[str, object] | None = None
 
@@ -736,7 +739,7 @@ def main(
     OPEN_KAISHEK_PREFLIGHT_RESULT = None
     preflight()
     if preflight_only:
-        print("OX HERE ACCEPTANCE PREFLIGHT: GREEN")
+        print(f"{ACCEPTANCE_LABEL} ACCEPTANCE PREFLIGHT: GREEN")
         return 0
     if artifacts_dir:
         artifacts = Path(artifacts_dir).expanduser().resolve()
@@ -749,9 +752,9 @@ def main(
     else:
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         artifacts = Path(tempfile.gettempdir()) / (
-            f"oxa_{stamp}_{uuid.uuid4().hex[:8]}"
+            f"{ARTIFACT_PREFIX}_{stamp}_{uuid.uuid4().hex[:8]}"
         )
-    userdir = artifacts.with_name(f"oxu_{uuid.uuid4().hex[:8]}")
+    userdir = artifacts.with_name(f"{USERDIR_PREFIX}_{uuid.uuid4().hex[:8]}")
     steam_root = terminal.steam_userdata_root()
     workshop_roots = isolated.steam_workshop_app_roots(steam_root)
     isolated.registered_workshop_targets(workshop_roots)
@@ -786,7 +789,7 @@ def main(
         ),
     }
     write_json(artifacts / "report.json", matrix)
-    print("\n===== OX HERE ACCEPTANCE =====")
+    print(f"\n===== {ACCEPTANCE_LABEL} ACCEPTANCE =====")
     print(f"cell                    {report['result']}")
     print(
         "protected storage       "

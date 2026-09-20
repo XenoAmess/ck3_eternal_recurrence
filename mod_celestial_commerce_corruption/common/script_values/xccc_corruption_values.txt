@@ -1,0 +1,7 @@
+﻿# Celestial corruption policy values.
+# The default obligation remains vanilla's 0.75; each policy diverts a share.
+xccc_celestial_tax_default = 0.75
+xccc_corruption_1_tax_deduction = 0.05
+xccc_corruption_2_tax_deduction = 0.10
+xccc_corruption_3_tax_deduction = 0.15
+xccc_corruption_4_tax_deduction = 0.25

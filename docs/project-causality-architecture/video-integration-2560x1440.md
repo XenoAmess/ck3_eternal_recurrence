@@ -112,7 +112,7 @@
 
 ## 7. 实现与验收
 
-```powershell
+```text
 py tools/render_project_causality_architecture.py
 py tools/render_project_causality_architecture.py --check
 py tools/render_project_causality_architecture_video.py --output artifacts/project-causality/2026-09-19-r7/architecture-plates

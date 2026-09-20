@@ -47,6 +47,7 @@ Workshop。** 玩家应从具体产品入口安装；发布者应使用对应的
 | **重整河山** | 天命崩解、动态后朝、尊王诸侯与跨代复辟循环 | `0.4.0` 已完成独立发布闭环 | [产品说明](mod_reclaim_the_motherland/README.md) |
 | **肃清曼荼罗伪信** | 按规则清理全图曼荼罗政府与 Temple Citadel，并约束后续转制 | 独立产品、专用 release builder | [产品说明](mod_remove_mandala/README.md) |
 | **驱策朝贡国** | 宗主向直属 AI 朝贡国下达单县扩张命令，可选有限军费补贴 | `1.0.0` 正式线；威望、接受、宣战与补贴采用原子结算 | [产品说明](mod_tributary_expansion_directives/README.md) |
+| **天朝制允许经商&贪腐框架（XenoAmess维护版）** | 为天朝政府恢复原生易货规则，并提供四档持续贪腐政策与税赋代价 | `1.0.0` 已发布；静态门禁、CK3 1.19.0.6 简中实机、全新订阅缓存与公开回读 GREEN | [产品说明](mod_celestial_commerce_corruption/README.md) · [Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463) |
 
 ### 自动玩家与工具平台
 
@@ -105,6 +106,8 @@ flowchart TB
 
 开始修改前先阅读 [`AGENTS.md`](AGENTS.md)，再进入对应产品 README 和专题文档。全仓通用入口：
 
+- [贡献指南](CONTRIBUTING.md)
+- [贡献者许可协议（CLA）](CLA.md)
 - [知识库索引](docs/README.md)
 - [CK3 Mod 开发、维护与发布行为范式](docs/ck3-mod-development-paradigm.md)
 - [测试与实机验收流程](docs/testing-workflow.md)
@@ -118,3 +121,4 @@ allowlist staging；开发夹具、调试桥、acceptance-only 内容和仓库 R
 ## 许可证
 
 仓库许可证见 [LICENSE](LICENSE)。被维护的上游项目、CK3 原版素材、第三方依赖和各产品资产仍服从各自的来源与授权记录。
+外部贡献还须按 [贡献指南](CONTRIBUTING.md) 在对应 PR 中签署 [CLA](CLA.md)；自动门禁状态为 `CLA / signed`。

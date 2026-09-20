@@ -1,0 +1,40 @@
+﻿celestial_obligations = {
+	obligation_levels = {
+		default = {
+			levies = {
+				value = 0.3
+			}
+
+			# Vanilla 1.19.0.6 obligation, extended by the selected corruption policy.
+			tax = {
+				value = xccc_celestial_tax_default
+
+				if = {
+					limit = {
+						scope:subject = { has_trait = xccc_corruption_1 }
+					}
+					subtract = xccc_corruption_1_tax_deduction
+				}
+				else_if = {
+					limit = {
+						scope:subject = { has_trait = xccc_corruption_2 }
+					}
+					subtract = xccc_corruption_2_tax_deduction
+				}
+				else_if = {
+					limit = {
+						scope:subject = { has_trait = xccc_corruption_3 }
+					}
+					subtract = xccc_corruption_3_tax_deduction
+				}
+				else_if = {
+					limit = {
+						scope:subject = { has_trait = xccc_corruption_4 }
+					}
+					subtract = xccc_corruption_4_tax_deduction
+				}
+				min = 0
+			}
+		}
+	}
+}

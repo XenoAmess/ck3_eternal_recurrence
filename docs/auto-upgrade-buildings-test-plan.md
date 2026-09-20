@@ -12,6 +12,13 @@
 - 上游来源与字节：[auto-upgrade-buildings-upstream.md](auto-upgrade-buildings-upstream.md)
 - Steam：后续静态检查与 CK3 验收期间保持离线
 
+## 自动化观测优先级
+
+- 功能断言优先使用原生 MCP/桥接语义：GUI tree/route、暂停地图 snapshot、精确状态读取、fixture marker 与日志增量。OCR 功能断言数必须为 0。
+- 玩家可见性优先读取原生 GUI 节点或 data context；截图只可作为补充人工证据，不得替代 building ID、资源、flag、循环数或费用等状态断言。
+- 语义接口不能辨认当前界面时，本轮必须 fail closed 为 RED 并保存 GUI tree/route 诊断；禁止自动回退到 OCR、坐标猜测或未验证点击。
+- 实时费用可达性调研及零 OCR 探针见 [auto-upgrade-buildings-dynamic-cost-feasibility.md](auto-upgrade-buildings-dynamic-cost-feasibility.md)。
+
 ## 玩家可证伪合同
 
 1. 只有真人玩家可见并执行启用/禁用决议；AI 没有入口。
@@ -36,7 +43,7 @@
 ## L1–L3：单进程隔离实机矩阵
 
 使用 production projection、外置 fixture 与一次性 `-userdir`，直接启动本地 `ck3.exe`；不启动 PDX Launcher，Steam 保持离线。
-启动前后均以 `Get-Process` 和 WMI 双源清点 CK3。
+启动前后均由 Python runner 结合原生 Toolhelp32/tasklist 进行双源 CK3 进程清点。
 
 R0013 当前在同一进程中串行覆盖：
 
@@ -44,12 +51,12 @@ R0013 当前在同一进程中串行覆盖：
 - 首次检查、禁用状态跨 16 日不再升级、重新启用后新循环建立并可干净停止；
 - 国库足额、无国库且个人足额、两者都不可用三种实机资金分支；
 - `outposts_01 → outposts_02` 成功路径每轮只升一级；
-- 结果事件可见并由 OCR 确认，运行树、受保护真实资料与进程清理合同保持不变。
+- 结果事件可见；历史 R0013 曾以 OCR 留下补充截图，但功能结论只由升级前后 building ID、资源和调度 marker 给出。后续轮次遵循上面的零 OCR 功能断言门禁。
 
 以下扩展场景尚未由 R0013 独立覆盖，继续作为后续矩阵，而不是本轮已验证事实：decision 可见性、不可用革新、正在建设、全部
 排除类别、新征服直辖地，以及保存/重载后的 flag 与单循环行为。
 
-fixture 以升级前后 building ID、国库、个人金钱、日期与调度 marker 形成断言；UI 截图只证明玩家可见结果。报告必须绑定 source/runtime
+fixture 以升级前后 building ID、国库、个人金钱、日期与调度 marker 形成断言；GUI tree/data context 或人工截图只证明玩家可见结果。报告必须绑定 source/runtime
 tree hash、Git commit、CK3 build/EXE hash、日志增量、进程清理及失败 artifact。当前任务不执行 Workshop fresh-cache 发布层验证。
 
 当前实机证据：`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013` 在 C 盘 CK3 1.19.0.6 上于 402.065 秒完成并 GREEN。

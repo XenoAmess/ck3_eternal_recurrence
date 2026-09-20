@@ -30,48 +30,37 @@
 
 ## 一次性准备
 
-把 ZIP 解压到新目录，在该目录打开 PowerShell。资格主机使用 CPython 3.13.2；按包内声明安装运行依赖：
+把 ZIP 解压到新目录，在该目录打开普通命令提示符。资格主机使用 CPython 3.13.2；按包内声明安装运行依赖：
 
-```powershell
+```text
 py -3.13 -m venv .xar-preview-venv
-$Python = (Resolve-Path .\.xar-preview-venv\Scripts\python.exe).Path
-& $Python -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
-if ($LASTEXITCODE -ne 0) { throw "runtime dependency installation failed" }
+.xar-preview-venv\Scripts\python.exe -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
 ```
 
 复制 `operator-manifest.template.json` 为 `operator-manifest.json`，替换四类占位符：`<ABSOLUTE_PYTHON_EXE>`、`<ABSOLUTE_EXTRACTED_PACKAGE_ROOT>`、包含 `binaries\ck3.exe` 的 `<ABSOLUTE_CK3_INSTALL_ROOT>`，以及全新空目录 `<ABSOLUTE_NEW_EMPTY_STATE_DIRECTORY>`。取得 CK3 单实例所有权并确认所有受管主机无存活 CK3 后运行：
 
-```powershell
-$Manifest = (Resolve-Path .\operator-manifest.json).Path
-$Python = (Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json).python
-& $Python .\repo\tools\g2_preview_operator.py prepare-state --manifest $Manifest --sample-dir .\sample-resume
-if ($LASTEXITCODE -ne 0) { throw "prepare-state failed" }
-$Operator = Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json
-$Rebind = Get-Content -LiteralPath (Join-Path $Operator.state_dir 'ordinary-seed-rebind-v1.json') -Raw | ConvertFrom-Json
-$Operator.environment_sha256 = $Rebind.environment.target_sha256
-$Operator.driver_state_sha256 = $Rebind.driver_state.target_sha256
-$Operator | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $Manifest -Encoding utf8
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py prepare-state --manifest .\operator-manifest.json --sample-dir .\sample-resume
 ```
 
-`prepare-state` 复制成对 checkpoint/driver state、把环境绑定迁移到本机并执行零启动预检；它拒绝覆盖已有 state。不要猜哈希、手改存档或 driver state。
+`prepare-state` 复制成对 checkpoint/driver state、把环境绑定迁移到本机并执行零启动预检；它还会核对重绑后的 driver 字节，并把环境与 driver 哈希原子写回 manifest。它拒绝覆盖已有 state。不要猜哈希、手改存档或 driver state。
 
 ## 启动自动游玩
 
 先登记新的单调 CK3 轮次，再做两个 paused frame 的只读资格验收：
 
-```powershell
-$Stamp = Get-Date -Format 'yyyyMMddTHHmmss'
-$Eligibility = Join-Path $PWD "runs\eligibility-$Stamp"
-& $Python .\repo\tools\g2_preview_eligibility.py --manifest $Manifest --output $Eligibility
-if ($LASTEXITCODE -ne 0) { throw "eligibility failed" }
+每次 attempt 先分配新的单调输出编号；下例的 `R1001` 只作占位：
+
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output .\runs\eligibility-R1001
 ```
 
 资格 GREEN 且旧进程完全回收后，从正式 production 入口启动：
 
-```powershell
-$Stamp = Get-Date -Format 'yyyyMMddTHHmmss'
-$Formal = Join-Path $PWD "runs\formal-$Stamp"
-& $Python .\repo\tools\g2_preview_operator.py run --manifest $Manifest --output $Formal --turns 20 --timeout 810 --readiness-timeout 720
+为正式运行再分配一个新编号；下例的 `R1002` 只作占位：
+
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\formal-R1002 --turns 20 --timeout 810 --readiness-timeout 720
 ```
 
 包内样本从 WarID 5 终局后的和平 checkpoint 开始。R805 实际运行经公共查询选择新的合法战争、typed 宣战、独立观察 WarID 25、下一 turn 消费、征兵、行军和战斗；旧 `offer-white-peace-5` 没有重放。
@@ -80,33 +69,17 @@ $Formal = Join-Path $PWD "runs\formal-$Stamp"
 
 安全暂停与受控停止使用同一个操作：智能体会在安全 turn 边界保存成对 checkpoint/driver state，再退出 CK3；不支持把仍存活的 CK3 进程当作可恢复的“挂起”。恢复必须启动新进程。
 
-在另一个 PowerShell 中先进入 ZIP 的解压根目录，再重新取得全部变量：
+在另一个普通命令提示符中进入 ZIP 解压根目录。状态命令显式指向本轮报告；安全暂停/停止只调用一次，然后等待原 `run` 命令返回：
 
-```powershell
-$PackageRoot = (Resolve-Path .).Path
-$Manifest = (Resolve-Path (Join-Path $PackageRoot 'operator-manifest.json')).Path
-$Python = [string](Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json).python
-$RunOutput = Get-ChildItem -LiteralPath (Join-Path $PackageRoot 'runs') -Directory |
-  Sort-Object LastWriteTime -Descending | Select-Object -First 1
-if ($null -eq $RunOutput) { throw 'no preview run output exists' }
-
-# 状态：运行中会同时显示当前报告（或尚未完整写出的报告）和 CK3 进程。
-& $Python .\repo\tools\g2_preview_operator.py status --report (Join-Path $RunOutput.FullName 'formal-report.txt')
-
-# 安全暂停/停止：只调用一次，然后等待原 run 命令返回。
-& $Python .\repo\tools\g2_preview_operator.py request-stop --manifest $Manifest
-if ($LASTEXITCODE -ne 0) { throw 'controlled stop request failed' }
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py status --report .\runs\formal-R1002\formal-report.txt
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py request-stop --manifest .\operator-manifest.json
 ```
 
-原 `run` 命令返回后再次执行 `status`。确认 CK3 与 injector 均已回收后，用新输出目录冷恢复同一目标：
+原 `run` 命令返回后再次执行 `status`，确认返回 JSON 的 `ck3_processes=[]`，并按 operator receipt 确认 injector 已回收。随后分配新的输出编号冷恢复同一目标；下例的 `R1003` 只作占位：
 
-```powershell
-if (@(Get-Process -Name ck3 -ErrorAction SilentlyContinue).Count -ne 0) { throw 'ck3.exe is still running' }
-if (@(Get-Process -Name xar_ck3_bridge_injector -ErrorAction SilentlyContinue).Count -ne 0) { throw 'injector is still running' }
-$Stamp = Get-Date -Format 'yyyyMMddTHHmmss'
-$ColdRestore = Join-Path $PackageRoot "runs\cold-restore-$Stamp"
-& $Python .\repo\tools\g2_preview_operator.py run --manifest $Manifest --output $ColdRestore --turns 5 --timeout 810 --readiness-timeout 720
-if ($LASTEXITCODE -ne 0) { throw 'cold restore run failed' }
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\cold-restore-R1003 --turns 5 --timeout 810 --readiness-timeout 720
 ```
 
 `run` 会从 `<state_dir>` 当前成对 checkpoint/driver state 动态取得哈希并执行 no-launch preflight，不需要手工回填 manifest 哈希。

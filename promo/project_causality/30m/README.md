@@ -65,11 +65,10 @@ r6/r7/r8 保留为源时间坐标和历史基线。r9 把当天同一逻辑战�
 
 构建入口：
 
-```powershell
+```text
 py tools/render_project_causality_architecture.py
 py tools/build_project_causality_r9.py
-& <IndexTTS-Python> tools/build_project_causality_owner_voice.py `
-  --index-repo <IndexTTS仓库> --voice-reference <授权声音样本WAV>
+<IndexTTS-Python> tools/build_project_causality_owner_voice.py --index-repo <IndexTTS仓库> --voice-reference <授权声音样本WAV>
 ```
 
 构建器只读取冻结素材并生成本地候选，不启动 CK3、不操作 Suno、不上传媒体。

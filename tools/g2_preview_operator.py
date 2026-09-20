@@ -16,6 +16,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from typing import Any
 
 
@@ -65,6 +66,34 @@ def read_json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"expected a JSON object: {path}")
     return value
+
+
+def write_json_atomic(path: Path, value: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        newline="",
+        dir=path.parent,
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+        delete=False,
+    ) as stream:
+        temporary = Path(stream.name)
+        json.dump(value, stream, indent=2, ensure_ascii=False)
+        stream.write("\n")
+    try:
+        temporary.replace(path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def receipt_target_sha256(receipt: dict[str, Any], section: str) -> str:
+    section_value = receipt.get(section)
+    value = section_value.get("target_sha256") if isinstance(section_value, dict) else None
+    if not isinstance(value, str) or re.fullmatch(r"[0-9a-fA-F]{64}", value) is None:
+        raise RuntimeError(f"ordinary seed rebind receipt lacks {section}.target_sha256")
+    return value.casefold()
 
 
 def manifest_path(value: Any, field: str) -> Path:
@@ -320,7 +349,8 @@ def command_verify_zip(args: argparse.Namespace) -> int:
 
 
 def command_prepare_state(args: argparse.Namespace) -> int:
-    manifest = load_manifest(args.manifest.resolve())
+    manifest_file = args.manifest.resolve()
+    manifest = load_manifest(manifest_file)
     lifecycle = lifecycle_contract(manifest)
     state_dir = manifest_path(manifest["state_dir"], "state_dir")
     sample_dir = args.sample_dir.resolve()
@@ -419,8 +449,18 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         ]
         if subprocess.run(preflight, check=False).returncode != 0:
             raise RuntimeError("ordinary seed no-launch preflight failed")
+        environment_sha256 = receipt_target_sha256(receipt, "environment")
+        rebound_driver_sha256 = receipt_target_sha256(receipt, "driver_state")
+        actual_driver_sha256 = sha256(driver_target)
+        if rebound_driver_sha256 != actual_driver_sha256:
+            raise RuntimeError("ordinary seed rebind driver hash does not match prepared state")
+        manifest["environment_sha256"] = environment_sha256
+        manifest["driver_state_sha256"] = rebound_driver_sha256
+        write_json_atomic(manifest_file, manifest)
         preparation.update({
-            "driver_state_sha256": sha256(driver_target),
+            "environment_sha256": environment_sha256,
+            "driver_state_sha256": rebound_driver_sha256,
+            "manifest_updated": str(manifest_file),
             "ordinary_seed_rebind_receipt": str(rebind_receipt.resolve()),
             "ordinary_seed_rebind_receipt_sha256": sha256(rebind_receipt),
             "ordinary_no_launch_preflight": "passed",

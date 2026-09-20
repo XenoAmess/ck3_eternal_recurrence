@@ -108,7 +108,7 @@ Official MCP、智能体或产品 runner 裁决。无论 GREEN 还是 RED，流�
 
 只修改 `src/*.mmd`、`mermaid-config.json` 或 `architecture.css`。渲染物由脚本统一生成，不直接修补 SVG/PNG：
 
-```powershell
+```text
 py tools/render_project_causality_architecture.py
 py tools/render_project_causality_architecture.py --check
 ```

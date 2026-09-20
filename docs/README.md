@@ -14,6 +14,7 @@
 - [consolidation-inventory-2026-08-30.md](consolidation-inventory-2026-08-30.md) — 全产品、分支与脏工作树的 master 收口分类（merged / already-contained / superseded / unfinished-preserved）
 - [branch-management.md](branch-management.md) — master 单一集成线、短命分支 ledger、冻结证据 sidecar 与跨 common-dir/独立 clone 的完整清理流程
 - [codex-task-bus.md](codex-task-bus.md) — 同机 Codex 任务状态、共享资源与完成通知约定
+- [cla-bot.md](cla-bot.md) — **贡献者许可与签署门禁**：按 PR 电子签署、贡献者识别、`CLA / signed` 状态、人工覆盖和版本升级流程
 
 ## 机制篇
 
@@ -42,6 +43,7 @@
 - [tributary-expansion-directives-test-plan.md](tributary-expansion-directives-test-plan.md) — 《驱策朝贡国》1.0.0 的威望/军费结算、定向单县战争、L0–L3 与 fresh-cache 发布验收合同
 - [tributary-expansion-directives-acceptance-1.0.0.md](tributary-expansion-directives-acceptance-1.0.0.md) — 《驱策朝贡国》R0009 源正式投影与 R0010 新鲜 Workshop 缓存双 GREEN、公开回读、RED lineage 与诚实 live gap
 - [tributary-expansion-directives-release-localization-review-1.0.0.md](tributary-expansion-directives-release-localization-review-1.0.0.md) — 九语言候选生成、人工拦截与发布级 token 审阅记录
+- [celestial-commerce-corruption-acceptance-1.0.0.md](celestial-commerce-corruption-acceptance-1.0.0.md) — “天朝制允许经商&贪腐框架（XenoAmess维护版）”的上游兼容性审计、Workshop `3804807463` 发布、1.19.0.6 简中订阅缓存实机 GREEN 与授权确认记录；正式发布记录见 [1.0.0 changelog](release-changelogs/celestial-commerce-corruption/1.0.0.md)
 - [workshop-publishing-mcp.md](workshop-publishing-mcp.md) — Paradox/Steam 实际发布协议、上传窗口资料故障与 `ck3_workshop_mcp` 实现入口
 - [desktop-coordinate-mapping.md](desktop-coordinate-mapping.md) — 任意屏幕/预览宽高比的显式换算、点击回执与英文输入法/文本读回合同
 - [vivhite-courtier.md](vivhite-courtier.md) — **白绮特供独立版**：隔离边界、ervc 命名空间、生成/构建/验收与独立 Workshop 契约
@@ -56,3 +58,4 @@
 - [court-position-mechanics.md](court-position-mechanics.md) — Royal Court 宫廷职位、勇士自动任命与定向零薪资的静态机制记录
 
 - [grammar/](grammar/README.md) — CK3 Paradox 脚本语法梳理与踩坑合集
+- [Celestial Commerce & Corruption 1.0.0 localization review](celestial-commerce-corruption-localization-review-1.0.0.md) — nine-language candidate provenance, terminology review, static contract, and remaining human sign-off limit.

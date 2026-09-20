@@ -595,18 +595,18 @@ initial active context is recorded exactly in `candidate-manifest.json`.
 ## One-time setup
 
 The qualified Windows runtime uses CPython 3.13 (the qualification host uses
-3.13.2). Extract the ZIP into a new directory, open PowerShell in that root,
-and install the package's exact pinned dependencies from its `pyproject.toml`:
+3.13.2). Extract the ZIP into a new directory, open a command prompt in that
+root, and install the package's exact pinned dependencies from its
+`pyproject.toml`:
 
-```powershell
+```text
 py -3.13 -m venv .xar-preview-venv
-$Python = (Resolve-Path .\.xar-preview-venv\Scripts\python.exe).Path
-& $Python -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
-if ($LASTEXITCODE -ne 0) {{ throw "runtime dependency installation failed" }}
+.xar-preview-venv\Scripts\python.exe -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
 ```
 
 Copy `operator-manifest.template.json` to `operator-manifest.json`. Replace the
-four `<ABSOLUTE_...>` tokens with `$Python`, this extracted package root, the
+four `<ABSOLUTE_...>` tokens with the virtual-environment Python executable,
+this extracted package root, the
 CK3 install root containing `binaries\ck3.exe`, and a new empty writable state
 directory. The manifest pins and verifies the CK3 executable hash before any
 launch; paths for source, DLL, injector and save derive from the package root.
@@ -614,38 +614,29 @@ launch; paths for source, DLL, injector and save derive from the package root.
 Confirm all managed hosts have zero CK3 processes and allocate the next
 monotonic single-instance round. Then run:
 
-```powershell
-$Manifest = (Resolve-Path .\operator-manifest.json).Path
-$Python = (Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json).python
-& $Python .\repo\tools\g2_preview_operator.py prepare-state --manifest $Manifest --sample-dir .\sample-resume
-if ($LASTEXITCODE -ne 0) {{ throw "prepare-state failed" }}
-$Operator = Get-Content -LiteralPath $Manifest -Raw | ConvertFrom-Json
-$Rebind = Get-Content -LiteralPath (Join-Path $Operator.state_dir 'ordinary-seed-rebind-v1.json') -Raw | ConvertFrom-Json
-$Operator.environment_sha256 = $Rebind.environment.target_sha256
-$Operator.driver_state_sha256 = $Rebind.driver_state.target_sha256
-$Operator | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $Manifest -Encoding utf8
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py prepare-state --manifest .\operator-manifest.json --sample-dir .\sample-resume
 ```
 
 Do not type or guess the rebound hashes. `prepare-state` refuses to overwrite
-an existing pair and performs the production-only no-launch preflight.
+an existing pair, performs the production-only no-launch preflight, verifies
+the rebound driver bytes, and atomically records both rebound hashes in the
+operator manifest.
 
 ## Read-only eligibility and bounded production play
 
-```powershell
-$Stamp = Get-Date -Format 'yyyyMMddTHHmmss'
-$Eligibility = Join-Path $PWD "runs\eligibility-$Stamp"
-& $Python .\repo\tools\g2_preview_eligibility.py --manifest $Manifest --output $Eligibility
-if ($LASTEXITCODE -ne 0) {{ throw "eligibility failed" }}
+Choose fresh monotonic output IDs for every attempt; the examples below use
+`R1001` and `R1002` only as placeholders.
 
-$Stamp = Get-Date -Format 'yyyyMMddTHHmmss'
-$Formal = Join-Path $PWD "runs\formal-$Stamp"
-& $Python .\repo\tools\g2_preview_operator.py run --manifest $Manifest --output $Formal --turns {bounds['formal_turns']} --timeout {bounds['timeout_seconds']} --readiness-timeout {bounds['readiness_timeout_seconds']}
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output .\runs\eligibility-R1001
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\formal-R1002 --turns {bounds['formal_turns']} --timeout {bounds['timeout_seconds']} --readiness-timeout {bounds['readiness_timeout_seconds']}
 ```
 
 For a controlled checkpointed stop, from another terminal run:
 
-```powershell
-& $Python .\repo\tools\g2_preview_operator.py request-stop --manifest $Manifest
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py request-stop --manifest .\operator-manifest.json
 ```
 
 After complete process reclamation, allocate a new round and invoke the same

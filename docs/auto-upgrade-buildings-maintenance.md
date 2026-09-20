@@ -73,9 +73,9 @@
   `feudal_government` 验证个人金币路径，并新增静态门拒绝已证伪的 `remove_gold` effect。
 - `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013`：402.065 秒内完成核心 source-live 矩阵并取得 GREEN；国库优先且
   `outposts_01 → outposts_02` 每轮只升一级、停用后零建筑副作用、无国库时只走个人金币、重新启用后的循环可干净停止、两种资金
-  都不足时建筑不变，五项 marker 全部 PASS；验收结果事件由 OCR 看见并关闭。产品相关诊断为 0，产品 release tree
+  都不足时建筑不变，五项 marker 全部 PASS；历史 OCR 只留下结果事件的补充玩家视角，功能结论来自 building ID、资源和 marker。产品相关诊断为 0，产品 release tree
   SHA-256 为 `E0B95B5228670633EB7DBFAFA13F2B4555C6B72BCDD12242CA208B1F7DB2224F`，运行前后产品/fixture tree 均不变，
-  临时 userdir 已删除，受保护 Steam/CK3 真实资料未改变，退出后 Get-Process/WMI 均为 0。报告与截图保存在
+  临时 userdir 已删除，受保护 Steam/CK3 真实资料未改变，退出后 Python Toolhelp32/tasklist 双源均为 0。报告与截图保存在
   `C:\Users\1\AppData\Local\Temp\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013`。
 - R0013 后的第一轮发布前文案工作只把 descriptor 名称统一为“自动升级建筑（XenoAmess维护版）”，并新增 README/Workshop BBCode 与
   对应静态合同；事件、决议、scripted effect、本地化和图片字节均未改变，因此未重复启动 CK3。该中间 7 文件离线构建 tree
@@ -124,3 +124,10 @@ Steam 在下载核验后恢复离线，未注销账号。发布事实、构建�
 - 静态图谱原本已包含 `citadel_shrine_01`、`sacred_pool_01`、`vihara_halls_01` 三条链，各 7 条升级边；本轮没有发现 dispatcher 缺边。曼荼罗都城 Great Project 的 4 条边仍按设计排除。
 - CK3 1.19.0.6 隔离实机 `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0042` 在 465.514 秒内 GREEN：正式生产扫描分别通过要塞神殿、圣池、精舍厅的一级升级；随后制造真实玩家死亡、点击继续扮演继承人，并通过启用状态、个人资金策略＋超直辖暂停策略、唯一循环三项继承断言。项目诊断为 0，产品／fixture 运行树未改变，受保护存储未改变，CK3 受控退出。
 - R0042 顶层报告位于 `C:\Users\1\AppData\Local\Temp\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0042\report.json`，SHA-256 为 `012D1E4F8E43DADB39443DB2FD3838B2ED74BC7F74565D2CF7749B8BB6AFC806`；被测 17 文件生产投影 tree SHA-256 为 `33B761221A3A8080AEF07FFA54BF5AF65D90489635EBD2BF9A241A4EBC860DA7`。
+
+## 2026-09-20 实时费用减免可达性调研
+
+- exact-build 原版 GUI 与私有只读观察器均证明引擎内部存在包含当前作用域修正的最终费用；人物、county/province 和 holding-specific 修正都会参与这套引擎路径。
+- 纯数据 Mod 脚本既不能读取聚合后的 modifier/最终 `GUIPotentialBuildingItem.GetCost`，也不能对指定普通建筑调用原版 `Construct` 入口；手工维护修正白名单会成为不完整近似。
+- 本轮因此判定为不可施工，没有修改产品、提升版本或上传 Workshop。完整证据与重新评估条件见 [实时费用减免可达性调研](auto-upgrade-buildings-dynamic-cost-feasibility.md)。
+- 新探针采用 MCP-first/fail-closed 合同，功能断言 OCR 数为 0；语义前端被 DLC list overlay 阻断时保存原生 GUI tree 并 RED，未回退到桌面识别或点击。

@@ -1,0 +1,27 @@
+﻿xca_initialize_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = xca_initialize_pending
+	}
+	effect = { xca_initialize_effect = yes }
+}
+
+xca_setup_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = xca_setup_pending
+	}
+	effect = { xca_setup_effect = yes }
+}
+
+xca_verify_policy_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = xca_verify_policy_pending
+		has_trait = xccc_corruption_4
+	}
+	effect = { xca_verify_policy_effect = yes }
+}

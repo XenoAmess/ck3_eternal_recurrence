@@ -1,0 +1,6 @@
+﻿l_english:
+ xca_acceptance:0 "Celestial Commerce Acceptance"
+ xca_initialize_decision:0 "Start Celestial Commerce Live Acceptance"
+ xca_initialize_decision_desc:0 "Switch to a current-build celestial official and exercise the production decision."
+ xca_initialize_decision_tooltip:0 "Prepare the isolated live acceptance scenario."
+ xca_initialize_decision_confirm:0 "Switch to the test official"

@@ -8,6 +8,7 @@
 - `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 19 文件 staging
 - `mod_reclaim_the_motherland/` — “重整河山”独立版源目录；Workshop item id：**3798404599**；正式发布只使用 `build_reclaim_the_motherland_release.py` 生成的 28 文件 staging
 - `mod_tributary_expansion_directives/` — “驱策朝贡国 / Tributary Expansion Directives”独立版源目录；Workshop item id：**3801490405**；正式发布只使用 `build_tributary_expansion_directives_release.py` 生成的 16 文件 staging
+- `mod_celestial_commerce_corruption/` — “天朝制允许经商&贪腐框架（XenoAmess维护版）”源码；维护版 Workshop item id：**3804807463**；上游 **3596263413** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_celestial_commerce_corruption_release.py` 生成的 22 文件 staging；上游未携带许可证，仓库所有者已于 2026-09-20 明确确认取得原作者再分发与发布许可，授权原件待补档
 - `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 16 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
@@ -106,6 +107,10 @@ py tools/build_reclaim_the_motherland_release.py            # 生成 28 文件 s
 py tools/build_tributary_expansion_directives_release.py --check # 驱策朝贡国临时双构建
 py tools/build_tributary_expansion_directives_release.py    # 生成 16 文件 staging、manifest 与 ZIP
 py tools/run_tributary_expansion_directives_acceptance.py --preflight # 驱策朝贡国外置夹具与实机环境预检
+py tools/build_celestial_commerce_corruption_release.py --check # 天朝经商贪腐维护版临时双构建
+py tools/build_celestial_commerce_corruption_release.py     # 生成 22 文件 staging、manifest 与 ZIP
+py tools/run_celestial_commerce_corruption_acceptance.py --preflight # 天朝经商贪腐外置夹具与实机环境预检
+py tools/compose_celestial_commerce_corruption_workshop_media.py --artifacts <run> # GREEN 贪腐事件截图 → 一张低于 2 MB JPEG
 py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 43 条建筑链
 py tools/build_auto_upgrade_buildings_release.py --check    # 自动升级建筑临时双构建
 py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 staging、manifest 与 ZIP
@@ -206,10 +211,12 @@ py tools/test_gen_no_heir_gui.py
 py tools/test_build_release.py
 py tools/test_build_vivhite_release.py
 py tools/test_build_auto_upgrade_buildings_release.py
+py tools/test_build_celestial_commerce_corruption_release.py
 py tools/validate_python_only.py
 py tools/validate_static.py
 py tools/validate_vivhite_static.py
 py tools/validate_auto_upgrade_buildings_static.py
+py tools/validate_celestial_commerce_corruption_static.py
 py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
 py tools/build_release.py --check
 py tools/build_vivhite_release.py --check
@@ -267,6 +274,13 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 - 完整调用边界、提示词、审计清单和交付格式见 `docs/localization-workflow.md`，执行发布国际化前必须先读。
 
 ## Git 约定
+
+### 外部贡献与 CLA
+
+- 外部贡献必须遵守根目录 `CLA.md` 与 `CONTRIBUTING.md`，并在对应 PR 中由每个被检查器识别的贡献账号发表配置中规定的精确签署声明。
+- `CLA / signed` 是 `master` 的必需提交状态。CLA 检查器只允许从默认分支运行，禁止在 `pull_request_target` 或 `issue_comment` 高权限上下文中检出、构建、导入或执行 PR head、fork artifact 或其他贡献者可控代码。
+- `cla:manual` 只允许维护者在已经核验企业 CLA、线下签名、无法映射作者或等效证据后添加；标签是审计记录，不是绕过入口。
+- 实质修改 CLA 时必须提升版本，并同步更新 `CLA.md`、`.github/cla-config.json`、`CONTRIBUTING.md` 和检查器测试。完整运维合同见 `docs/cla-bot.md`。
 
 ### Codex 跨任务通知
 

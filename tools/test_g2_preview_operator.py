@@ -295,12 +295,18 @@ class G2PreviewOperatorTest(unittest.TestCase):
                         "ok": True,
                         "ck3_launch_attempted": False,
                         "pipe_name": r"\\.\pipe\ordinary-preview",
+                        "environment": {"target_sha256": "c" * 64},
+                        "driver_state": {
+                            "target_sha256": hashlib.sha256(b"{}").hexdigest(),
+                        },
                         "no_launch_preflight_expectations": {
                             "pipe_name": r"\\.\pipe\ordinary-preview",
                             "expected_character_id": 31853,
                             "expected_episode_run_id": "native-31853-test",
                             "expected_checkpoint_sha256": "a" * 64,
-                            "expected_driver_state_sha256": "b" * 64,
+                            "expected_driver_state_sha256": hashlib.sha256(
+                                b"{}"
+                            ).hexdigest(),
                             "xar_enabled": "xar_off",
                             "succession_lifecycle": (
                                 "ordinary_campaign_succession"
@@ -348,6 +354,13 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertTrue(
                 Path(preparation["ordinary_seed_rebind_receipt"]).is_file()
             )
+            updated_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            self.assertEqual(updated_manifest["environment_sha256"], "c" * 64)
+            self.assertEqual(
+                updated_manifest["driver_state_sha256"],
+                hashlib.sha256(b"{}").hexdigest(),
+            )
+            self.assertEqual(preparation["manifest_updated"], str(manifest_path))
 
     def test_prepare_state_legacy_manifest_keeps_original_two_commands(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -390,6 +403,10 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 "verify-profile", "--xar-enabled", "xar_on"
             ])
             self.assertFalse((state / "ordinary-seed-rebind-v1.json").exists())
+            self.assertNotIn(
+                "environment_sha256",
+                json.loads(manifest_path.read_text(encoding="utf-8")),
+            )
 
     def test_prepare_state_rebind_failure_blocks_preflight_without_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

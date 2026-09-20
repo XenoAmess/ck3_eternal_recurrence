@@ -1,0 +1,62 @@
+name: CLA bot
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
+  issue_comment:
+    types: [created, edited, deleted]
+  workflow_dispatch:
+    inputs:
+      pull_request_number:
+        description: Pull request number to recheck
+        required: true
+        type: number
+
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
+
+concurrency:
+  group: cla-${{ github.event.pull_request.number || github.event.issue.number || inputs.pull_request_number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check signatures
+    if: >-
+      github.event_name == 'pull_request_target' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request &&
+       github.event.comment.user.type != 'Bot')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Trusted base branch only. Never check out or execute pull-request code in
+      # this privileged workflow.
+      - name: Check out trusted CLA checker
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/cla-config.json
+            /CLA.md
+            /tools/cla_check.py
+            /tools/test_cla_check.py
+
+      - name: Test checker
+        run: python3 tools/test_cla_check.py
+
+      - name: Record trusted CLA revision
+        run: echo "CLA_DOCUMENT_REF=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Check CLA signatures
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLA_PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pull_request_number }}
+          CLA_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python3 tools/cla_check.py
