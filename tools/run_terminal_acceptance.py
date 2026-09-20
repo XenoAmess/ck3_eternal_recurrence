@@ -19,6 +19,8 @@ import run_acceptance as acceptance
 REAL_PROFILE = acceptance.ORIGINAL_USER_DIR
 STEAM_APP_ID = "1158310"
 POSTFLIGHT_STABILITY_SECONDS = 5
+FILE_DIGEST_LOCK_RETRY_SECONDS = 30
+FILE_DIGEST_LOCK_RETRY_INTERVAL_SECONDS = 0.25
 HARNESS_FILES = (
     acceptance.ROOT / "tools" / "run_acceptance.py",
     acceptance.ROOT / "tools" / "run_terminal_acceptance.py",
@@ -26,11 +28,28 @@ HARNESS_FILES = (
 )
 
 
-def file_digest(path):
-    return {
-        "size": path.stat().st_size,
-        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-    }
+def file_digest(path, retry_seconds=FILE_DIGEST_LOCK_RETRY_SECONDS):
+    """Hash a protected file after bounded retries for transient Windows locks.
+
+    Steam can briefly open ``remotecache.vdf`` without sharing read access while
+    a game process is shutting down.  A missing or persistently unreadable file
+    must still fail the protected-storage gate; only ``PermissionError`` is
+    retried, and the digest is always computed from bytes that were actually
+    read.
+    """
+    deadline = time.monotonic() + retry_seconds
+    while True:
+        try:
+            payload = path.read_bytes()
+            return {
+                "size": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+            }
+        except PermissionError:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise
+            time.sleep(min(FILE_DIGEST_LOCK_RETRY_INTERVAL_SECONDS, remaining))
 
 
 def real_profile_snapshot():
