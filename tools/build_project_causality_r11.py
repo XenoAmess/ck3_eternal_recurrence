@@ -436,6 +436,9 @@ def apply_robert_edit(
 def validate_timeline(chapters: Sequence[showcase.Chapter], config: dict[str, Any]) -> None:
     contracts = config.get("contracts", {})
     timing = config.get("timing", {})
+    gate_sfx_policy = str(contracts.get("gate_sound_effect_policy", "preserve"))
+    if gate_sfx_policy not in {"preserve", "remove"}:
+        raise R11BuildError(f"unsupported gate sound-effect policy: {gate_sfx_policy}")
     gates = [chapter for chapter in chapters if chapter.raw.get("chapter_gate") is True]
     if len(gates) != contracts.get("expected_gate_count"):
         raise R11BuildError(f"final composition has {len(gates)} chapter gates")
@@ -443,8 +446,11 @@ def validate_timeline(chapters: Sequence[showcase.Chapter], config: dict[str, An
     for chapter in gates:
         if abs(float(chapter.raw.get("narration_delay_seconds", 0.0)) - expected_delay) > 1e-6:
             raise R11BuildError(f"gate delay changed for {chapter.chapter_id}")
-        if not any(source.role == "sound-effect" for source in chapter.sources):
+        has_sound_effect = any(source.role == "sound-effect" for source in chapter.sources)
+        if gate_sfx_policy == "preserve" and not has_sound_effect:
             raise R11BuildError(f"gate sound effect is missing for {chapter.chapter_id}")
+        if gate_sfx_policy == "remove" and has_sound_effect:
+            raise R11BuildError(f"gate sound effect remains for {chapter.chapter_id}")
     for chapter in chapters:
         delay = float(chapter.raw.get("narration_delay_seconds", 0.0))
         floor = delay + float(chapter.narration_duration_seconds or 0.0) + float(
@@ -563,7 +569,13 @@ def write_plan(
         "render_policy": {
             "clean_manifest_sources_only": True,
             "old_burned_subtitle_picture_lock_allowed": False,
-            "chapter_gate_delay_and_sfx_preserved": True,
+            "chapter_gate_delay_preserved": True,
+            "chapter_gate_sfx_policy": config.get("contracts", {}).get(
+                "gate_sound_effect_policy", "preserve"
+            ),
+            "chapter_gate_delay_and_sfx_preserved": config.get("contracts", {}).get(
+                "gate_sound_effect_policy", "preserve"
+            ) == "preserve",
             "render_requires_continuous_robert_master": True,
         },
         "subtitles": {"path": str(ass_path), "sha256": _sha256(ass_path)},

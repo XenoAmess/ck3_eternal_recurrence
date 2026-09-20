@@ -71,6 +71,24 @@ def apply_text_overrides(
             chapter.raw[name] = value.strip()
 
 
+def apply_chapter_gate_sound_effect_policy(
+    chapters: Sequence[showcase.Chapter], config: dict[str, Any]
+) -> None:
+    policy = str(config.get("contracts", {}).get("gate_sound_effect_policy", "preserve"))
+    if policy == "preserve":
+        return
+    if policy != "remove":
+        raise R12BuildError(f"unsupported gate sound-effect policy: {policy}")
+    for chapter in chapters:
+        if chapter.raw.get("chapter_gate") is not True:
+            continue
+        chapter.raw.pop("sound_effect", None)
+        chapter.raw["chapter_gate_sound_effect_policy"] = "removed-by-owner"
+        chapter.sources = [
+            source for source in chapter.sources if source.role != "sound-effect"
+        ]
+
+
 def validate_text_integrity(chapters: Sequence[showcase.Chapter]) -> None:
     """Reject lossy-decoded copy before it reaches subtitles or owner-voice TTS."""
     fields = ("title_en", "title_zh", "narration_en", "subtitle_zh", "subtitle_secondary")
@@ -706,6 +724,25 @@ def load_edit_config(config_path: Path) -> dict[str, Any]:
             "policy": "owner-selected no-duck master with two final Chinese copy changes",
         }
         return base
+    if schema == "project-causality-r18-audio-edit.v1":
+        base_path = r11._root_path(requested.get("base_config"), "base_config")
+        base = copy.deepcopy(load_edit_config(base_path))
+        policy = requested.get("gate_sound_effect_policy")
+        if policy != "remove":
+            raise R12BuildError("r18 gate_sound_effect_policy must be 'remove'")
+        base["schema"] = schema
+        base["edition"] = "r18"
+        base["base_config"] = str(base_path)
+        base["contracts"] = {
+            **base.get("contracts", {}),
+            "gate_sound_effect_policy": policy,
+        }
+        base["r18_audio"] = {
+            "source_config": str(config_path),
+            "source_base": str(base_path),
+            "policy": "remove four legacy chapter-gate sound effects",
+        }
+        return base
     if schema != "project-causality-r13-hook-edit.v1":
         raise R12BuildError(f"unsupported edit config schema: {config_path}")
     base_path = r11._root_path(requested.get("base_config"), "base_config")
@@ -764,6 +801,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         chapters, manifests = r11.materialize_chapters(config)
         apply_text_overrides(chapters, config)
+        apply_chapter_gate_sound_effect_policy(chapters, config)
         validate_text_integrity(chapters)
         use_continuous_agent_timing(chapters)
         apply_compact_pacing_holds(chapters, config)

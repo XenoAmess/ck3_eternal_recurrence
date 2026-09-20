@@ -1,0 +1,5 @@
+{
+  "schema": "project-causality-r18-audio-edit.v1",
+  "base_config": "promo/project_causality/r17/edit-config.json",
+  "gate_sound_effect_policy": "remove"
+}
