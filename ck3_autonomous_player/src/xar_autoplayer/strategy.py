@@ -597,6 +597,50 @@ def _same_frame_campaign_root_context(
     return None
 
 
+def _complete_player_held_county_capital_province_ids(
+    campaign_root: dict[str, object],
+) -> list[int] | None:
+    """Return the complete directly-held county-capital set, or unknown.
+
+    Historical v1 campaign-root rows did not carry the additive county
+    capital field.  They remain readable for restore compatibility, but must
+    never be mistaken for a complete empty defensive-objective set.
+    """
+
+    readiness = campaign_root.get("readiness")
+    partition = campaign_root.get("held_title_partition")
+    if not (
+        isinstance(readiness, dict)
+        and readiness.get("held_title_partition_ready") is True
+        and isinstance(partition, list)
+    ):
+        return None
+    candidates: list[tuple[int, int]] = []
+    for row in partition:
+        if not isinstance(row, dict):
+            return None
+        title = row.get("title")
+        if not isinstance(title, dict):
+            return None
+        title_id = _native_int(title.get("title_id"))
+        tier_raw = _native_int(title.get("tier_raw"))
+        if title_id is None or tier_raw is None:
+            return None
+        if tier_raw != 2:
+            continue
+        province_id = _native_int(row.get("capital_province_id"))
+        if province_id is None:
+            return None
+        candidates.append((title_id, province_id))
+    if not candidates:
+        return None
+    candidates.sort()
+    province_ids = [province_id for _, province_id in candidates]
+    if len(province_ids) != len(set(province_ids)):
+        return None
+    return province_ids
+
+
 def _conservative_feudal_de_jure_war_entry(
     declaration: dict[str, object],
     assessment: dict[str, object] | None,
@@ -9756,6 +9800,113 @@ def _choose_one_life_turn_core(
             for province_id in exact_objective_province_ids
             if province_id in siege_objective_province_ids
         ]
+        route_candidate_source = "war_objective_province"
+        defender_safe_objective_input = (
+            _primary_defender_capital_hold_input(
+                snapshot if isinstance(snapshot, dict) else {},
+                active_wars=active_wars,
+                controlled_armies=controlled_armies,
+                tactical_war=(
+                    tactical_war if isinstance(tactical_war, dict) else None
+                ),
+                pursuit_army=(
+                    pursuit_army if isinstance(pursuit_army, dict) else None
+                ),
+                exact_objective_province_ids=exact_objective_province_ids,
+                termination_by_war_id=termination_by_war_id,
+                war_summary=war_summary,
+                unsafe_armies=unsafe_armies,
+                active_assaults=active_assaults,
+                allow_observable_enemy_routes=True,
+            )
+            if stationary_threats and not route_exact_candidates
+            else None
+        )
+        safe_objective_rally_binding = (
+            _primary_defender_native_rally_hold_binding(
+                rows,
+                snapshot if isinstance(snapshot, dict) else {},
+                war_id=(
+                    tactical_war_id
+                    if isinstance(tactical_war_id, int)
+                    else None
+                ),
+                army_id=(
+                    pursuit_army.get("army_id")
+                    if isinstance(pursuit_army, dict)
+                    else None
+                ),
+                current_province_id=(
+                    current_province_id
+                    if isinstance(current_province_id, int)
+                    else None
+                ),
+            )
+            if defender_safe_objective_input is not None
+            else None
+        )
+        if (
+            defender_safe_objective_input is not None
+            and safe_objective_rally_binding is not None
+        ):
+            campaign_root = _same_frame_campaign_root_context(
+                rows,
+                snapshot if isinstance(snapshot, dict) else None,
+            )
+            county_capitals = (
+                _complete_player_held_county_capital_province_ids(
+                    campaign_root
+                )
+                if isinstance(campaign_root, dict)
+                else None
+            )
+            if county_capitals is None:
+                root_step = "query-campaign-root-context-v1"
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_safe_objective_context",
+                    "selected_step": (
+                        root_step if root_step in available_steps else None
+                    ),
+                    "required_step": root_step,
+                    "reason": "the threatened primary defender requires a complete same-frame directly-held county-capital set before claiming that no alternate objective exists",
+                    "defensive_hold": defender_safe_objective_input,
+                    "native_rally_hold_binding": safe_objective_rally_binding,
+                    "route_rejections": stationary_threats,
+                    "active_wars": war_summary,
+                }
+            route_exact_candidates = [
+                province_id
+                for province_id in county_capitals
+                if province_id != current_province_id
+            ]
+            route_candidate_source = "player_held_county_capital"
+            if not route_exact_candidates:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_no_alternate_player_held_county",
+                    "selected_step": None,
+                    "required_observation": "broader-safe-war-objective-candidates",
+                    "reason": "the complete directly-held county-capital set contains no alternate Province; broader native objective candidates remain unobserved",
+                    "candidate_province_ids": county_capitals,
+                    "defensive_hold": defender_safe_objective_input,
+                    "native_rally_hold_binding": safe_objective_rally_binding,
+                    "route_rejections": stationary_threats,
+                    "active_wars": war_summary,
+                }
+            if not route_preview_required:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_safe_objective_route_preview_unsupported",
+                    "selected_step": None,
+                    "required_observation": "fresh-native-route-preview",
+                    "reason": "directly-held county fallback candidates are observed, but none may be selected without the native route preview",
+                    "candidate_province_ids": route_exact_candidates,
+                    "defensive_hold": defender_safe_objective_input,
+                    "native_rally_hold_binding": safe_objective_rally_binding,
+                    "route_rejections": stationary_threats,
+                    "active_wars": war_summary,
+                }
         if (
             route_preview_required
             and isinstance(army_id, int)
@@ -10142,7 +10293,12 @@ def _choose_one_life_turn_core(
                 selected_route_audit = {
                     **audit,
                     "selection": {
-                        "policy": "first_safe_ranked_exact_objective",
+                        "policy": (
+                            "first_safe_player_held_county_capital"
+                            if route_candidate_source
+                            == "player_held_county_capital"
+                            else "first_safe_ranked_exact_objective"
+                        ),
                         "route_hops": len(
                             audit.get("route_province_ids", [])
                         ),
@@ -10156,6 +10312,20 @@ def _choose_one_life_turn_core(
                 }
                 break
             if preview_selected_target is None:
+                if route_candidate_source == "player_held_county_capital":
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_no_safe_player_held_county_route",
+                        "selected_step": None,
+                        "required_observation": "broader-safe-war-objective-candidates",
+                        "reason": "every observed directly-held county-capital fallback route is blocked or unsafe; keep the map paused until broader native objective candidates are observable",
+                        "candidate_province_ids": route_exact_candidates,
+                        "native_rally_hold_binding": (
+                            safe_objective_rally_binding
+                        ),
+                        "route_rejections": route_rejections,
+                        "active_wars": war_summary,
+                    }
                 if isinstance(stationary_contact_transition, dict):
                     stationary_advance_step = stationary_contact_transition.get(
                         "advance_step"
@@ -10638,11 +10808,12 @@ def _choose_one_life_turn_core(
             target_source = (
                 "player_capital_regroup"
                 if preview_selected_target == capital_regroup_target
-                else "war_objective_province"
+                else route_candidate_source
             )
             objective_kind = (
                 "regroup"
                 if preview_selected_target == capital_regroup_target
+                or route_candidate_source == "player_held_county_capital"
                 else "siege"
             )
         elif exact_objective_province_ids:

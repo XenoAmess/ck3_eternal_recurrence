@@ -164,6 +164,7 @@ struct Fixture {
   std::int64_t health_raw = 275'000;
   std::uint32_t health_calls = 0;
   bool domain_available = true;
+  bool title_province_available = true;
   std::int32_t domain_size = 6;
   std::int32_t domain_limit = 7;
   std::uint32_t domain_size_calls = 0;
@@ -512,6 +513,17 @@ void *__fastcall ResolvePrimaryTitle(void *character) noexcept {
   return nullptr;
 }
 
+void *__fastcall ResolveTitleProvince(void *title) noexcept {
+  if (g_fixture == nullptr || !g_fixture->title_province_available) {
+    return nullptr;
+  }
+  if (title == Address(g_fixture->primary_title) ||
+      title == Address(g_fixture->secondary_title)) {
+    return g_fixture->resolved_capital;
+  }
+  return nullptr;
+}
+
 std::int64_t *__fastcall ResolveMonthlyGoldIncome(
     std::int64_t *output, void *character, void *optional_breakdown,
     void *evaluation_context) noexcept {
@@ -735,6 +747,7 @@ xar::ck3_11906::CampaignRootNativeEnvironmentV1 Environment(Fixture &fixture) {
   environment.council_value_progress_maximum =
       &ResolveCouncilValueProgressMaximum;
   environment.primary_title = &ResolvePrimaryTitle;
+  environment.title_province = &ResolveTitleProvince;
   environment.capital_province = &ResolveCapital;
   environment.immediate_liege = &ResolveImmediateLiege;
   environment.top_liege = &ResolveTopLiege;
@@ -826,9 +839,11 @@ bool TestAvailableAndSerializer() {
       expected_partition{
           {{Fixture::kPrimaryTitleId, 6, "hegemony"},
            Fixture::kFirstSuccessorId,
+           std::nullopt,
            true},
           {{Fixture::kSecondaryTitleId, 2, "county"},
            Fixture::kSecondSuccessorId,
+           5,
            false}};
   if (xar::ck3_11906::ReadCampaignRootContextV1(
           environment, access, request, result) !=
@@ -974,10 +989,11 @@ bool TestAvailableAndSerializer() {
       "\"primary_title_succession_character_ids\":[201326600,218103817],"
       "\"held_title_partition\":[{\"title\":{\"title_id\":83886081,"
       "\"tier_raw\":6,\"tier_key\":\"hegemony\"},"
-      "\"first_heir_character_id\":201326600,\"primary\":true},{"
+      "\"first_heir_character_id\":201326600,"
+      "\"capital_province_id\":null,\"primary\":true},{"
       "\"title\":{\"title_id\":234881028,\"tier_raw\":2,"
       "\"tier_key\":\"county\"},\"first_heir_character_id\":"
-      "218103817,\"primary\":false}],"
+      "218103817,\"capital_province_id\":5,\"primary\":false}],"
       "\"capital_province_id\":5,"
       "\"immediate_liege_character_id\":50331650,"
       "\"top_liege_character_id\":67108867,\"independent\":false,"
@@ -1145,8 +1161,20 @@ bool TestMalformedHeldTitlePartitionIsTypedUnavailable() {
   const auto access = Access(fixture);
   const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
   xar::game::CampaignRootContextV1 result{};
+  if (xar::ck3_11906::ReadCampaignRootContextV1(
+          environment, access, request, result) !=
+          xar::game::ReadCampaignRootContextResultV1::unavailable ||
+      !ClearedUnavailable(result, "held_title_partition_unavailable")) {
+    return false;
+  }
+
+  Fixture missing_county_capital;
+  missing_county_capital.title_province_available = false;
+  const auto missing_environment = Environment(missing_county_capital);
+  const auto missing_access = Access(missing_county_capital);
+  result = {};
   return xar::ck3_11906::ReadCampaignRootContextV1(
-             environment, access, request, result) ==
+             missing_environment, missing_access, request, result) ==
              xar::game::ReadCampaignRootContextResultV1::unavailable &&
          ClearedUnavailable(result, "held_title_partition_unavailable");
 }

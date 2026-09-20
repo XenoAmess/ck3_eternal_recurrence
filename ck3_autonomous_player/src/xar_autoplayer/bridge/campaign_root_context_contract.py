@@ -54,8 +54,12 @@ _PRIMARY_TITLE_FIELDS: Final = {"title_id", "tier_raw", "tier_key"}
 _HELD_TITLE_PARTITION_FIELDS: Final = {
     "title",
     "first_heir_character_id",
+    "capital_province_id",
     "primary",
 }
+_LEGACY_HELD_TITLE_PARTITION_FIELDS: Final = (
+    _HELD_TITLE_PARTITION_FIELDS - {"capital_province_id"}
+)
 _FIXED_POINT_FIELDS: Final = {"raw", "scale"}
 _RELATED_CHARACTER_FIELDS: Final = {
     "character_id",
@@ -443,7 +447,14 @@ def _normalize_held_title_partition(
     primary_count = 0
     for index, item in enumerate(value):
         name = f"held_title_partition[{index}]"
-        row = _exact_object(item, _HELD_TITLE_PARTITION_FIELDS, name)
+        if not isinstance(item, dict) or frozenset(item) not in {
+            frozenset(_HELD_TITLE_PARTITION_FIELDS),
+            frozenset(_LEGACY_HELD_TITLE_PARTITION_FIELDS),
+        }:
+            raise ValueError(
+                f"{name} must contain exactly the current or legacy v1 fields"
+            )
+        row = item
         title = _exact_object(
             row.get("title"), _PRIMARY_TITLE_FIELDS, f"{name}.title"
         )
@@ -464,6 +475,16 @@ def _normalize_held_title_partition(
             row.get("first_heir_character_id"),
             f"{name}.first_heir_character_id",
         )
+        capital_province_id = _optional_positive_int32(
+            row.get("capital_province_id"),
+            f"{name}.capital_province_id",
+        )
+        if "capital_province_id" in row and (
+            (tier_raw == 2) is not (capital_province_id is not None)
+        ):
+            raise ValueError(
+                f"{name}.capital_province_id must be present only for a county"
+            )
         if first_heir == player_character_id:
             raise ValueError("held title first heir cannot be its holder")
         primary = _bool(row.get("primary"), f"{name}.primary")
@@ -481,6 +502,7 @@ def _normalize_held_title_partition(
             {
                 "title": normalized_title,
                 "first_heir_character_id": first_heir,
+                "capital_province_id": capital_province_id,
                 "primary": primary,
             }
         )

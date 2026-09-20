@@ -123,6 +123,10 @@ flowchart TD
 - [static-confirmed] objective 最终变成“向哪个 province 移动或在哪个 province 驻守”的候选评分，不是
   直接对某个画面上的军队对象持续跟随。
 - [static-confirmed] `enemy_unit_province` 只会为 AI 能看见的敌军 stack 产生候选。
+- [static-confirmed] `own capital` / `own province` 是原生 objective 候选，不能在
+  `war_objective_province_ids=[]` 时推断为不存在。对我方 paused bridge，直属 county 的 own-province
+  最小投影使用同一 exact-build title-to-province resolver `RVA 0x20B6B20`；更广的封臣领地、盟军目标与
+  原生 preliminary score 仍未由这个投影覆盖。
 - [static-confirmed] 从所有 potential goals 中，每个 unit stack 只对 preliminary top
   `MIN_GOALS_PER_STACK=10` 做包含 pathfinding 在内的 final evaluation。
 - [unknown] block 内各类候选的完整去重顺序、所有 modifier 的精确算术顺序、同分处理和 path cost 公式尚未闭合。

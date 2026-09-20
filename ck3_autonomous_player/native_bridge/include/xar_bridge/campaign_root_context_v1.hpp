@@ -28,6 +28,9 @@ struct CampaignRootTitleV1 {
 struct CampaignRootHeldTitleSuccessionV1 {
   CampaignRootTitleV1 title;
   std::optional<std::int32_t> first_heir_character_id;
+  // Exact-build title -> Province projection for directly held counties.
+  // Higher-tier titles deliberately expose no synthetic province.
+  std::optional<std::int32_t> capital_province_id;
   bool primary = false;
 
   friend bool operator==(const CampaignRootHeldTitleSuccessionV1 &,
@@ -234,6 +237,7 @@ inline constexpr std::uintptr_t kCampaignRootGameRuleTokenFallbackSlotRva =
     0x57D7430;
 
 inline constexpr std::uintptr_t kCampaignRootPrimaryTitleRva = 0x25F3350;
+inline constexpr std::uintptr_t kCampaignRootTitleProvinceRva = 0x20B6B20;
 inline constexpr std::uintptr_t kCampaignRootMonthlyGoldIncomeRva = 0x28DBE90;
 inline constexpr std::uintptr_t kCampaignRootHealthRva = 0x2619AD0;
 inline constexpr std::uintptr_t kCampaignRootDomainSizeRva = 0x260BA50;
@@ -309,6 +313,7 @@ struct CampaignRootNativeEnvironmentV1 {
   NativeCampaignRootCouncilValueProgressV1 council_value_progress_maximum =
       nullptr;
   NativeCampaignRootCharacterResolverV1 primary_title = nullptr;
+  NativeCampaignRootCharacterResolverV1 title_province = nullptr;
   NativeCampaignRootCharacterResolverV1 capital_province = nullptr;
   NativeCampaignRootCharacterResolverV1 immediate_liege = nullptr;
   NativeCampaignRootCharacterResolverV1 top_liege = nullptr;

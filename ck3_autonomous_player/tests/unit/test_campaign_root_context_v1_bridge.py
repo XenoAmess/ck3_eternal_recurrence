@@ -267,6 +267,7 @@ def _frame(
                         "tier_key": "hegemony",
                     },
                     "first_heir_character_id": 98_765,
+                    "capital_province_id": None,
                     "primary": True,
                 },
                 {
@@ -276,6 +277,7 @@ def _frame(
                         "tier_key": "county",
                     },
                     "first_heir_character_id": 87_654,
+                    "capital_province_id": 43,
                     "primary": False,
                 },
             ]
@@ -464,6 +466,28 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             ],
             45_678,
         )
+        self.assertEqual(
+            normalized["held_title_partition"][1]["capital_province_id"],
+            43,
+        )
+
+    def test_legacy_held_title_rows_remain_readable_but_unobserved(self) -> None:
+        frame = _frame()
+        for row in frame["held_title_partition"]:
+            row.pop("capital_province_id")
+
+        normalized = normalize_campaign_root_context_v1(
+            frame,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+
+        self.assertTrue(
+            all(
+                row["capital_province_id"] is None
+                for row in normalized["held_title_partition"]
+            )
+        )
 
     def test_available_distinguishes_every_legal_absence(self) -> None:
         frame = _frame()
@@ -591,6 +615,9 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
                         {
                             "title": copy.deepcopy(frame["primary_title"]),
                             "first_heir_character_id": 98_765,
+                            "capital_province_id": (
+                                43 if tier_raw == 2 else None
+                            ),
                             "primary": True,
                         }
                     ]

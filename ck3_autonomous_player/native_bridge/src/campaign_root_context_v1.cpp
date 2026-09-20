@@ -264,6 +264,7 @@ bool EnvironmentIsExact(
       environment.council_value_progress_current == nullptr ||
       environment.council_value_progress_maximum == nullptr ||
       environment.primary_title == nullptr ||
+      environment.title_province == nullptr ||
       environment.capital_province == nullptr ||
       environment.immediate_liege == nullptr ||
       environment.top_liege == nullptr || environment.government == nullptr ||
@@ -799,10 +800,25 @@ bool ReadHeldTitlePartition(
       }
       first_heir_character_id = character_id;
     }
+    std::optional<std::int32_t> capital_province_id;
+    if (tier_raw == 2) {
+      void *capital_province = nullptr;
+      std::int32_t province_id = -1;
+      if (!InvokeResolver(environment.title_province, title,
+                          capital_province) ||
+          capital_province == nullptr ||
+          !ReadValue(access, capital_province, kProvinceIdentityOffset,
+                     province_id) ||
+          province_id <= 0) {
+        return false;
+      }
+      capital_province_id = province_id;
+    }
     try {
       output.held_title_partition.push_back({
           {title_id, tier_raw, std::string(TierKey(tier_raw))},
           first_heir_character_id,
+          capital_province_id,
           output.primary_title.has_value() &&
               output.primary_title->title_id == title_id});
     } catch (...) {
@@ -1936,6 +1952,9 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
   output.primary_title = reinterpret_cast<
       NativeCampaignRootCharacterResolverV1>(
       module_base + kCampaignRootPrimaryTitleRva);
+  output.title_province = reinterpret_cast<
+      NativeCampaignRootCharacterResolverV1>(
+      module_base + kCampaignRootTitleProvinceRva);
   output.capital_province = reinterpret_cast<
       NativeCampaignRootCharacterResolverV1>(
       module_base + kCampaignRootCapitalProvinceRva);

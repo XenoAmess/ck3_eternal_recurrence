@@ -491,6 +491,7 @@ def build_turn_bundle_v1(
             if not isinstance(row, dict) or set(row) != {
                 "title",
                 "first_heir_character_id",
+                "capital_province_id",
                 "primary",
             }:
                 raise ValueError(f"held-title partition row {index} is malformed")

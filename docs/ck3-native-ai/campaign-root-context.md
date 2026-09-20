@@ -84,11 +84,13 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     {
       "title": {"title_id": 67890, "tier_raw": 4, "tier_key": "kingdom"},
       "first_heir_character_id": 23457,
+      "capital_province_id": null,
       "primary": true
     },
     {
       "title": {"title_id": 67891, "tier_raw": 2, "tier_key": "county"},
       "first_heir_character_id": 23458,
+      "capital_province_id": 43,
       "primary": false
     }
   ],
@@ -212,6 +214,10 @@ exact-build `GetDomainSize`/`GetDomainLimit` core；任一调用失败、值域�
 
 `held_title_partition` is an all-or-nothing, title-ID-sorted projection of the
 current engine first heir for every personally held county-or-higher title.
+Each current producer row also exposes `capital_province_id`: the exact-build
+title-to-province resolver supplies a positive ProvinceID for a county, while
+higher tiers publish `null`. A failure to resolve any held county makes the
+whole partition unavailable; it is never encoded as a legal empty candidate.
 It is empty for a proven landless or barony-only root. Any invalid held-title
 span, title/holder generation mismatch, invalid tier, invalid first heir or
 primary-title disagreement returns `held_title_partition_unavailable` for the
@@ -607,6 +613,27 @@ held-title vector and contains the current engine first heir. This closes the
 static partition input described in [held-title succession partition
 v1](held-title-partition-v1.md). The council extension below closes the other
 M1 component input; both still share one bounded two-scene live read.
+
+## 2026-09-21 held-county capital extension
+
+R873 proved that an empty `war_objective_province_ids` vector did not justify
+the planner's claim that no alternate safe objective existed: the frozen
+native army-controller tree includes own-capital and own-province candidates,
+but the public paused root exposed only title identities. The existing
+`game.command.query-campaign-root-context-v1` reader now reuses frozen
+title-to-province resolver RVA `0x20B6B20` and adds
+`capital_province_id` to every `held_title_partition` row. The value is
+positive exactly for `tier_raw=2`; higher tiers use `null`. The same-frame,
+all-or-nothing partition readiness remains the completeness proof.
+
+This is an additive v1 schema change with no new command or MCP capability ID.
+Our Python consumer accepts historical rows without the field and normalizes
+them to `null`, but strategy treats those rows as unobserved and re-queries;
+it never treats them as a complete empty county set. Strict downstream
+consumers, including an open_kaishek adapter that asserts exact row fields,
+must accept the new property before pairing with this producer. Until that
+adapter is verified, cross-repository compatibility is pending rather than
+implicitly claimed.
 
 ## 2026-09-13 typed council extension
 

@@ -213,6 +213,10 @@ bool ValidHeldTitlePartition(
         value.title.title_id == previous_title_id ||
         value.title.tier_raw < 2 || value.title.tier_raw > 6 ||
         TierKey(value.title.tier_raw) != value.title.tier_key ||
+        (value.title.tier_raw == 2) !=
+            value.capital_province_id.has_value() ||
+        (value.capital_province_id.has_value() &&
+         *value.capital_province_id <= 0) ||
         (value.first_heir_character_id.has_value() &&
          (*value.first_heir_character_id <= 0 ||
           *value.first_heir_character_id == player_character_id)) ||
@@ -886,6 +890,8 @@ std::string SerializeCampaignRootContextV1(
     AppendJsonString(output, row.title.tier_key);
     output += "},\"first_heir_character_id\":";
     AppendOptionalInt32(output, row.first_heir_character_id);
+    output += ",\"capital_province_id\":";
+    AppendOptionalInt32(output, row.capital_province_id);
     output += ",\"primary\":";
     output += row.primary ? "true" : "false";
     output.push_back('}');

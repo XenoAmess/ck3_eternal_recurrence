@@ -678,6 +678,37 @@ flowchart TD
     A --> O["[counter-policy] re-observe after one-day route horizon<br/>or the existing route-free war ceiling"]
 ```
 
+### R873 受威胁原生集结点的直属伯爵领换位候选
+
+- [production RED] R873 在 CK3 `1.19.0.6`、agent commit `c7f4392b` 的 material formal stop 中，玩家唯一
+  regular 军 ArmyID `184549472` 以 `2` 人停在原生集结 Province `8750`；敌 ArmyID `301989919` 的完整
+  `route=[45,8750]` 明确汇入该点，敌方总兵力 `7833`、玩家总兵力 `2`。战争 objective 为空且首都
+  Province `45` 已被占领。旧 planner 返回 `query-safe-war-objectives`，却没有查询或枚举任何替代候选，
+  因而“no alternate target”不是完整观测结论。
+- [static-confirmed] 原生树已经包含 `own capital` / `own province` 候选。最小修复不猜目的地，也不直接
+  surrender：fresh same-frame campaign root 必须完整发布所有直属 county 的 `capital_province_id`；旧行缺字段、
+  任一 county resolver 失败、重复 ProvinceID 或集合为空都保持 unknown。候选按 held-title ID 稳定顺序，排除当前
+  Province 后逐一复用既有 native move preview、完整敌军 current/target/route audit、必要的 one-day contact
+  horizon 与 rollback route memory。只向第一个 fully safe 候选提交一次 move。
+- [counter-policy] 此 fallback 只接在 R867 durable native-rally binding 后，且继续要求单战争、primary defender、
+  单一 regular stationary army、空 exact objective、非终局、无 event/pending/combat/retreat/assault/unknown write。
+  没有替代直属 county，或所有已观测路线 blocked/unsafe 时，结果是显式 RED、`selected_step=null`、零 material
+  action，并继续要求更广的 native safe-objective observation；不得回落到 life advance、white peace 或 surrender。
+- [static-ready / live=false] normal 与 optimized fixture 覆盖缺字段先查询、完整候选逐条 preview、只选 safe、
+  无替代/唯一替代不安全时零动作。修复后实机必须从冻结的 h1347 完整 driver/checkpoint pair 冷恢复，在不超过
+  20 turns / 1 material action 内验证真实候选、独立移动后置状态与下一 turn 消费；未完成该实机门前不得把本项写成 live。
+
+```mermaid
+flowchart TD
+    T["[production RED] durable native rally<br/>enemy route threatens current Province"] --> R{"[static-confirmed] fresh complete held-county<br/>capital projection?"}
+    R -->|no / legacy| Q["[counter-policy] query campaign root; keep paused"]
+    R -->|yes| C["[counter-policy] exclude current Province;<br/>title-ID stable candidate order"]
+    C --> P["[counter-policy] native route preview + enemy route audit"]
+    P -->|first fully safe| M["[counter-policy] submit exactly one move"]
+    P -->|none safe / no alternate| X["[counter-policy] explicit RED; zero action;<br/>require broader native candidates"]
+    M --> O["[live gate] independent post-state + next-turn consumption"]
+```
+
 ### 连续恢复的有界失败入口记忆
 
 - [live-confirmed] 从同一 checkpoint origin `2598` 已观察到两条最终进入无安全出口并执行 restore 的入口：
