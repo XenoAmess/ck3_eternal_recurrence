@@ -12,15 +12,63 @@ from pathlib import Path
 
 
 TRACKS = [
-    {"name": "prologue", "file": "00-prologue-a.wav"},
-    {"name": "spell", "file": "01-spell-a.wav"},
-    {"name": "robert", "file": "02-robert-b.wav"},
-    {"name": "method", "file": "03-method-a.wav"},
-    {"name": "principle", "file": "04-principle-a.wav"},
-    {"name": "vision", "file": "05-vision-a.wav"},
+    {
+        "name": "prologue",
+        "file": "00-prologue-a.wav",
+        "gain": 0.33,
+        "threshold": 0.020,
+        "ratio": 8,
+        "attack_ms": 20,
+        "release_ms": 500,
+    },
+    {
+        "name": "spell",
+        "file": "01-spell-a.wav",
+        "gain": 0.31,
+        "threshold": 0.019,
+        "ratio": 9,
+        "attack_ms": 20,
+        "release_ms": 550,
+    },
+    {
+        "name": "robert",
+        "file": "02-robert-b.wav",
+        "gain": 0.35,
+        "threshold": 0.022,
+        "ratio": 7,
+        "attack_ms": 15,
+        "release_ms": 450,
+    },
+    {
+        "name": "method",
+        "file": "03-method-a.wav",
+        "gain": 0.33,
+        "threshold": 0.019,
+        "ratio": 9,
+        "attack_ms": 20,
+        "release_ms": 550,
+    },
+    {
+        "name": "principle",
+        "file": "04-principle-a.wav",
+        "gain": 0.38,
+        "threshold": 0.019,
+        "ratio": 9,
+        "attack_ms": 20,
+        "release_ms": 550,
+    },
+    {
+        "name": "vision",
+        "file": "05-vision-a.wav",
+        "gain": 0.36,
+        "threshold": 0.022,
+        "ratio": 7,
+        "attack_ms": 15,
+        "release_ms": 450,
+    },
 ]
 CROSSFADE_SECONDS = 12.0
-MUSIC_GAIN = 0.24
+MIX_PROFILE = "music-forward-v1"
 
 
 def run(command: list[str], *, capture: bool = False) -> subprocess.CompletedProcess[str]:
@@ -64,7 +112,8 @@ def chapter_filter(input_index: int, chapter: dict[str, object], output_label: s
     fade_out_start = duration - fade_out
     pieces.append(
         f"{source}atrim=duration={duration:.3f},asetpts=PTS-STARTPTS,"
-        f"afade=t=in:st=0:d=2,afade=t=out:st={fade_out_start:.3f}:d={fade_out:.3f}"
+        f"afade=t=in:st=0:d=2,afade=t=out:st={fade_out_start:.3f}:d={fade_out:.3f},"
+        f"volume={float(chapter['gain']):.3f}"
         f"[{output_label}]"
     )
     return pieces
@@ -194,16 +243,35 @@ def main() -> int:
         chapter_labels.append(label)
         filters.extend(chapter_filter(index, chapter, label))
     filters.append(
-        "".join(f"[{label}]" for label in chapter_labels)
-        + f"concat=n={len(chapters)}:v=0:a=1,highpass=f=70,lowpass=f=14000,volume={MUSIC_GAIN}[music]"
+        f"[0:a:0]aresample=48000,asetpts=PTS-STARTPTS,asplit=2[voice][keyroot]"
     )
-    filters.extend(
-        [
-            "[0:a:0]aresample=48000,asetpts=PTS-STARTPTS,asplit=2[voice][key]",
-            "[music][key]sidechaincompress=threshold=0.018:ratio=10:attack=20:release=600:knee=6:makeup=1[ducked]",
-            "[voice][ducked]amix=inputs=2:weights='1 1':normalize=0,"
-            "loudnorm=I=-16:LRA=7:TP=-1.5,aresample=48000:async=1:first_pts=0,asetpts=N/SR/TB[mix]",
-        ]
+    raw_keys = [f"key{index}raw" for index in range(len(chapters))]
+    filters.append(
+        f"[keyroot]asplit={len(chapters)}"
+        + "".join(f"[{label}]" for label in raw_keys)
+    )
+    ducked_labels: list[str] = []
+    for index, chapter in enumerate(chapters):
+        key_label = f"key{index}"
+        ducked_label = f"ducked{index}"
+        ducked_labels.append(ducked_label)
+        filters.append(
+            f"[{raw_keys[index]}]atrim=start={float(chapter['start']):.3f}:"
+            f"end={float(chapter['end']):.3f},asetpts=PTS-STARTPTS[{key_label}]"
+        )
+        filters.append(
+            f"[{chapter_labels[index]}][{key_label}]sidechaincompress="
+            f"threshold={float(chapter['threshold']):.3f}:ratio={float(chapter['ratio']):g}:"
+            f"attack={int(chapter['attack_ms'])}:release={int(chapter['release_ms'])}:"
+            f"knee=6:makeup=1[{ducked_label}]"
+        )
+    filters.append(
+        "".join(f"[{label}]" for label in ducked_labels)
+        + f"concat=n={len(chapters)}:v=0:a=1,highpass=f=70,lowpass=f=14000[ducked]"
+    )
+    filters.append(
+        "[voice][ducked]amix=inputs=2:weights='1 1':normalize=0,"
+        "loudnorm=I=-16:LRA=7:TP=-1.5,aresample=48000:async=1:first_pts=0,asetpts=N/SR/TB[mix]"
     )
     command.extend(
         [
@@ -234,7 +302,7 @@ def main() -> int:
             "-movflags",
             "+faststart",
             "-metadata:s:a:0",
-            "title=Owner narration plus Suno base-loop preview",
+            "title=Owner narration plus music-forward Suno preview",
             str(output),
         ]
     )
@@ -255,22 +323,27 @@ def main() -> int:
     if not args.skip_full_decode:
         run(["ffmpeg", "-v", "error", "-i", str(output), "-f", "null", "NUL"])
     payload = {
-        "schema": "project-causality-suno-base-loop-preview.v2",
+        "schema": "project-causality-suno-base-loop-preview.v3",
         "status": "review-preview-not-publication-master",
         "source_video": str(args.source_video),
         "source_video_sha256": sha256(args.source_video),
         "output": str(output),
         "output_sha256": sha256(output),
         "duration_seconds": duration,
-        "music_gain": MUSIC_GAIN,
+        "mix_profile": MIX_PROFILE,
         "crossfade_seconds": CROSSFADE_SECONDS,
-        "sidechain": {
-            "threshold": 0.018,
-            "ratio": 10,
-            "attack_ms": 20,
-            "release_ms": 600,
-            "knee": 6,
-        },
+        "chapter_mix": [
+            {
+                "name": chapter["name"],
+                "gain": chapter["gain"],
+                "threshold": chapter["threshold"],
+                "ratio": chapter["ratio"],
+                "attack_ms": chapter["attack_ms"],
+                "release_ms": chapter["release_ms"],
+                "knee": 6,
+            }
+            for chapter in chapters
+        ],
         "selected_tracks": selected,
         "media": media,
         "loudness_summary": loudness(output),
