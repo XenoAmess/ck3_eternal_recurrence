@@ -653,6 +653,36 @@ def load_edit_config(config_path: Path) -> dict[str, Any]:
             "policy": "recommended owner-voice pace with compact phrase and cue spacing",
         }
         return base
+    if schema == "project-causality-r16-vision-edit.v1":
+        base_path = r11._root_path(requested.get("base_config"), "base_config")
+        base = copy.deepcopy(load_edit_config(base_path))
+        overrides = requested.get("text_overrides")
+        if not isinstance(overrides, dict) or not overrides:
+            raise R12BuildError("r16 text_overrides must be a non-empty object")
+        merged_overrides = dict(base.get("text_overrides", {}))
+        for chapter_id, fields in overrides.items():
+            if not isinstance(fields, dict):
+                raise R12BuildError(f"r16 override must be an object: {chapter_id}")
+            current = dict(merged_overrides.get(chapter_id, {}))
+            current.update(fields)
+            merged_overrides[chapter_id] = current
+        base["schema"] = schema
+        base["edition"] = "r16"
+        base["base_config"] = str(base_path)
+        base["text_overrides"] = merged_overrides
+        clean_video_overrides = requested.get("clean_video_overrides")
+        if clean_video_overrides is not None:
+            if not isinstance(clean_video_overrides, list):
+                raise R12BuildError("r16 clean_video_overrides must be an array")
+            base["clean_video_overrides"] = list(
+                base.get("clean_video_overrides", [])
+            ) + clean_video_overrides
+        base["r16_vision"] = {
+            "source_config": str(config_path),
+            "source_base": str(base_path),
+            "policy": "imperious vision chapter with preserved engineering claims",
+        }
+        return base
     if schema != "project-causality-r13-hook-edit.v1":
         raise R12BuildError(f"unsupported edit config schema: {config_path}")
     base_path = r11._root_path(requested.get("base_config"), "base_config")

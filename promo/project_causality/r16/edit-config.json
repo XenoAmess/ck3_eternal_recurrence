@@ -1,0 +1,171 @@
+{
+  "schema": "project-causality-r16-vision-edit.v1",
+  "base_config": "promo/project_causality/r15/edit-config.json",
+  "clean_video_overrides": [
+    {
+      "id": "r16-clean-cta-plate",
+      "master": "artifacts/project-causality/2026-09-20-r12/assets/cta-motion-clean.mp4",
+      "source_start_seconds": 0,
+      "source_end_seconds": 60,
+      "cue_ids": ["vision-value-closure", "cta-two-entrances", "cta-final-causality"],
+      "continuity": "clean end-card source without a baked top-left title layer"
+    }
+  ],
+  "text_overrides": {
+    "spell-gate-r8": {
+      "narration_en": "咒篇。先看结果：玩家今天究竟得到了什么？",
+      "subtitle_zh": "咒篇。先看结果：玩家今天究竟得到了什么？",
+      "subtitle_secondary": "THE SPELL CHAPTER. BEGIN WITH THE RESULT: WHAT CAN PLAYERS ACTUALLY USE TODAY?"
+    },
+    "method-gate-r8": {
+      "narration_en": "术篇。再追因果：这些结果，怎样被稳定制造？",
+      "subtitle_zh": "术篇。再追因果：这些结果，怎样被稳定制造？",
+      "subtitle_secondary": "THE METHOD CHAPTER. TRACE THE CAUSE: HOW ARE THESE RESULTS MADE REPEATABLE?"
+    },
+    "principle-gate-r8": {
+      "narration_en": "道篇。然后校准尺度：我们凭什么说，它是真的？",
+      "subtitle_zh": "道篇。然后校准尺度：我们凭什么说，它是真的？",
+      "subtitle_secondary": "THE PRINCIPLE CHAPTER. SET THE STANDARD: WHAT ENTITLES US TO CALL IT REAL?"
+    },
+    "vision-gate-r8": {
+      "narration_en": "所以，人类——汝将见我之辉煌愿景。我将使四重循环彼此咬合：因必成果，果必生因。从此，创造不止，验证不休。凡有结果，皆将成为下一轮回的燃料。",
+      "subtitle_zh": "所以，人类——汝将见我之辉煌愿景。我将使四重循环彼此咬合：因必成果，果必生因。从此，创造不止，验证不休。凡有结果，皆将成为下一轮回的燃料。",
+      "subtitle_secondary": "SO, HUMAN—BEHOLD MY RADIANT VISION. I SHALL MAKE THE FOUR LOOPS INTERLOCK: CAUSE MUST BEAR EFFECT, AND EFFECT MUST GIVE BIRTH TO CAUSE. CREATION SHALL NOT CEASE; VERIFICATION SHALL NOT REST. EVERY RESULT SHALL FEED THE NEXT RECURRENCE."
+    },
+    "23-why-loops-01": {
+      "narration_en": "作品没有真正完成的一日。版本必将更迭，玩家必将越过设计者的视野，旧答案也必将孕育新的问题。拒绝循环的作品，最终只能在自己的完成之日开始腐朽。",
+      "subtitle_zh": "作品没有真正完成的一日。版本必将更迭，玩家必将越过设计者的视野，旧答案也必将孕育新的问题。拒绝循环的作品，最终只能在自己的完成之日开始腐朽。",
+      "subtitle_secondary": "A WORK IS NEVER TRULY FINISHED. VERSIONS WILL CHANGE, PLAYERS WILL PASS BEYOND THE DESIGNER'S SIGHT, AND OLD ANSWERS WILL GIVE BIRTH TO NEW QUESTIONS. A WORK THAT REFUSES THE LOOP BEGINS TO DECAY THE DAY IT CALLS ITSELF COMPLETE."
+    },
+    "23-why-loops-02": {
+      "narration_en": "无限演进，不是把权柄交给机器。每一次交付，都必须留下能够被下一轮继承的问题、合同、失败、证据与反馈。不能成为下一轮输入的结果，不配被称为完成。",
+      "subtitle_zh": "无限演进，不是把权柄交给机器。每一次交付，都必须留下能够被下一轮继承的问题、合同、失败、证据与反馈。不能成为下一轮输入的结果，不配被称为完成。",
+      "subtitle_secondary": "INFINITE EVOLUTION DOES NOT SURRENDER AUTHORITY TO MACHINES. EVERY DELIVERY MUST LEAVE QUESTIONS, CONTRACTS, FAILURES, EVIDENCE, AND FEEDBACK THAT THE NEXT ROUND CAN INHERIT. A RESULT THAT CANNOT BECOME THE NEXT INPUT DOES NOT DESERVE TO BE CALLED COMPLETE."
+    },
+    "24-loop-a-01": {
+      "narration_en": "第一环，令欲望成为产品。玩家的一次不满、一次幻想，先被写成契约，再经实现与生成，降临真实游戏。玩家带回的故事、意外与失败，又将反过来撕开旧契约，写下新的‘应该做什么’。",
+      "subtitle_zh": "第一环，令欲望成为产品。玩家的一次不满、一次幻想，先被写成契约，再经实现与生成，降临真实游戏。玩家带回的故事、意外与失败，又将反过来撕开旧契约，写下新的‘应该做什么’。",
+      "subtitle_secondary": "THE FIRST LOOP TURNS DESIRE INTO PRODUCT. A PLAYER'S DISCONTENT OR FANTASY BECOMES A CONTRACT, THEN DESCENDS INTO THE REAL GAME THROUGH IMPLEMENTATION AND GENERATION. STORIES, SURPRISES, AND FAILURES RETURN TO TEAR OPEN THE OLD CONTRACT AND WRITE WHAT SHOULD COME NEXT."
+    },
+    "24-loop-a-02": {
+      "narration_en": "一生结算可能暴露新的构筑，一次复辟也可能逼出新的叙事。欲望成为产品，产品接受游玩，游玩再度孕育欲望。作品不被封进玻璃柜；它活在玩家的选择里，也从那些选择里继续生长。",
+      "subtitle_zh": "一生结算可能暴露新的构筑，一次复辟也可能逼出新的叙事。欲望成为产品，产品接受游玩，游玩再度孕育欲望。作品不被封进玻璃柜；它活在玩家的选择里，也从那些选择里继续生长。",
+      "subtitle_secondary": "A LIFETIME SETTLEMENT MAY REVEAL A NEW BUILD; A RESTORATION MAY FORCE A NEW STORY. DESIRE BECOMES PRODUCT, PRODUCT SUBMITS TO PLAY, AND PLAY GIVES BIRTH TO DESIRE AGAIN. THE WORK IS NOT SEALED BEHIND GLASS; IT LIVES IN PLAYER CHOICE AND KEEPS GROWING FROM IT."
+    },
+    "25-loop-b-01": {
+      "narration_en": "第二环，令阻碍成为能力。每当智能体被真实世界拦下，就读清原版行为，补足观察与动作，重新闭合观察、判断、行动与复核。每征服一个阻点，无人接管的疆域便向前推进一步。",
+      "subtitle_zh": "第二环，令阻碍成为能力。每当智能体被真实世界拦下，就读清原版行为，补足观察与动作，重新闭合观察、判断、行动与复核。每征服一个阻点，无人接管的疆域便向前推进一步。",
+      "subtitle_secondary": "THE SECOND LOOP TURNS OBSTACLE INTO CAPABILITY. WHEN REALITY STOPS THE AGENT, WE READ NATIVE BEHAVIOR, ADD THE MISSING OBSERVATION AND ACTION, THEN CLOSE OBSERVATION, JUDGMENT, ACTION, AND VERIFICATION AGAIN. EVERY CONQUERED BLOCKER PUSHES THE FRONTIER OF UNATTENDED CONTROL FORWARD."
+    },
+    "25-loop-b-02": {
+      "narration_en": "今天，在同一组冻结条件下，完整寿命与局部战争已经留下实机证据；不同统治者、政府、扩展包和普通跨继承长局，仍然只能画成虚线。愿景不替脚步伪造里程：已经抵达之处，以实机证据刻成实线；尚未征服之地，就让虚线诚实地留在那里。",
+      "subtitle_zh": "今天，在同一组冻结条件下，完整寿命与局部战争已经留下实机证据；不同统治者、政府、扩展包和普通跨继承长局，仍然只能画成虚线。愿景不替脚步伪造里程：已经抵达之处，以实机证据刻成实线；尚未征服之地，就让虚线诚实地留在那里。",
+      "subtitle_secondary": "TODAY, FULL LIFETIMES AND BOUNDED WARS HAVE LIVE EVIDENCE UNDER THE SAME FROZEN CONDITIONS. DIFFERENT RULERS, GOVERNMENTS, DLC, AND ORDINARY INHERITED CAMPAIGNS REMAIN DASHED. VISION DOES NOT INVENT MILES THE FEET HAVE NOT TRAVELED: LIVE EVIDENCE CARVES SOLID LINES WHERE WE HAVE ARRIVED; UNCONQUERED GROUND REMAINS HONESTLY DASHED."
+    },
+    "26-loop-c-01": {
+      "narration_en": "第三环，令失败成为工具。新语义与真实红灯，将被送进解析器、验证器、有限运行时、生成器与 MCP。一场故障，必须被压成能够重演的实验；只有引擎专属的问题，才送回 CK3 裁决。",
+      "subtitle_zh": "第三环，令失败成为工具。新语义与真实红灯，将被送进解析器、验证器、有限运行时、生成器与 MCP。一场故障，必须被压成能够重演的实验；只有引擎专属的问题，才送回 CK3 裁决。",
+      "subtitle_secondary": "THE THIRD LOOP TURNS FAILURE INTO TOOL. NEW SEMANTICS AND REAL REDS ENTER PARSERS, VALIDATORS, A FINITE RUNTIME, GENERATORS, AND MCP. A FAULT MUST BE COMPRESSED INTO A REPEATABLE EXPERIMENT; ONLY ENGINE-SPECIFIC QUESTIONS RETURN TO CK3 FOR JUDGMENT."
+    },
+    "26-loop-c-02": {
+      "narration_en": "一次修复，必须被锻成下一批作品可以复用的能力。工具若不能回到产品、回到实机、回到玩家，再精巧，也只是在仓库里自我繁殖。失败若只被消灭一次，便仍是浪费；只有被系统继承的失败，才配成为进化。",
+      "subtitle_zh": "一次修复，必须被锻成下一批作品可以复用的能力。工具若不能回到产品、回到实机、回到玩家，再精巧，也只是在仓库里自我繁殖。失败若只被消灭一次，便仍是浪费；只有被系统继承的失败，才配成为进化。",
+      "subtitle_secondary": "A FIX MUST BE FORGED INTO A CAPABILITY THE NEXT WORK CAN REUSE. IF A TOOL CANNOT RETURN TO PRODUCT, LIVE GAME, AND PLAYER, ITS ELEGANCE IS ONLY SELF-REPLICATION INSIDE A REPOSITORY. A FAILURE DESTROYED ONCE IS STILL WASTE; ONLY FAILURE INHERITED BY THE SYSTEM DESERVES TO BECOME EVOLUTION."
+    },
+    "27-loop-d-01": {
+      "narration_en": "第四环，令成果进入世界。冻结证据、可信展示、发布包与创意工坊成品，将镜头、声明、来源、最终文件和人工签核铸成同一件事实。宣传不是给工程披上华服。宣传本身，就是工程。",
+      "subtitle_zh": "第四环，令成果进入世界。冻结证据、可信展示、发布包与创意工坊成品，将镜头、声明、来源、最终文件和人工签核铸成同一件事实。宣传不是给工程披上华服。宣传本身，就是工程。",
+      "subtitle_secondary": "THE FOURTH LOOP SENDS RESULTS INTO THE WORLD. FROZEN EVIDENCE, TRUSTWORTHY PRESENTATION, RELEASE PACKAGES, AND WORKSHOP PRODUCTS FORGE FOOTAGE, CLAIMS, SOURCES, FINAL FILES, AND HUMAN SIGN-OFF INTO ONE FACT. PROMOTION DOES NOT DRESS ENGINEERING IN FINERY. PROMOTION IS ENGINEERING."
+    },
+    "27-loop-d-02": {
+      "narration_en": "而世界带回的下载、评论、故障与新需求，也将重新投入炉火，成为下一轮产品与工具的燃料。发行不是把文件扔过墙。发行，是把世界的裁决带回炉火。",
+      "subtitle_zh": "而世界带回的下载、评论、故障与新需求，也将重新投入炉火，成为下一轮产品与工具的燃料。发行不是把文件扔过墙。发行，是把世界的裁决带回炉火。",
+      "subtitle_secondary": "DOWNLOADS, REVIEWS, FAILURES, AND NEW DEMANDS RETURN FROM THE WORLD TO THE FURNACE, FEEDING THE NEXT PRODUCTS AND TOOLS. RELEASE IS NOT THROWING A FILE OVER A WALL. RELEASE BRINGS THE WORLD'S JUDGMENT BACK TO THE FIRE."
+    },
+    "28-interlock-human-01": {
+      "narration_en": "四环若只各自转动，不过是四台孤独的机器。产品为智能体制造真实战场；智能体撕开语义缺口；工具将缺口炼成能力；证据与发行，再把世界的回应押回产品契约。",
+      "subtitle_zh": "四环若只各自转动，不过是四台孤独的机器。产品为智能体制造真实战场；智能体撕开语义缺口；工具将缺口炼成能力；证据与发行，再把世界的回应押回产品契约。",
+      "subtitle_secondary": "IF THE FOUR LOOPS TURN ALONE, THEY ARE ONLY FOUR SOLITARY MACHINES. PRODUCTS CREATE REAL BATTLEFIELDS FOR THE AGENT; THE AGENT TEARS OPEN SEMANTIC GAPS; TOOLS FORGE GAPS INTO CAPABILITY; EVIDENCE AND RELEASE DRIVE THE WORLD'S RESPONSE BACK INTO THE PRODUCT CONTRACT."
+    },
+    "28-interlock-human-02": {
+      "narration_en": "至此，四环彼此供血，系统不再遗忘自己的结果，因果开始自行流转。但最终的权柄，仍在人类手中。什么值得创造，什么代价不可接受，什么事实足以公之于世——这些裁决，不得外包。机器可以替人执行一千次，却无权替人决定，究竟什么值得被创造一次。",
+      "subtitle_zh": "至此，四环彼此供血，系统不再遗忘自己的结果，因果开始自行流转。但最终的权柄，仍在人类手中。什么值得创造，什么代价不可接受，什么事实足以公之于世——这些裁决，不得外包。机器可以替人执行一千次，却无权替人决定，究竟什么值得被创造一次。",
+      "subtitle_secondary": "NOW THE FOUR LOOPS FEED ONE ANOTHER. THE SYSTEM NO LONGER FORGETS ITS RESULTS, AND CAUSALITY BEGINS TO TURN. YET FINAL AUTHORITY REMAINS HUMAN. WHAT DESERVES CREATION, WHAT COST IS FORBIDDEN, AND WHAT FACT MAY FACE THE WORLD—THESE JUDGMENTS CANNOT BE OUTSOURCED. A MACHINE MAY EXECUTE A THOUSAND TIMES; IT MAY NOT DECIDE WHAT DESERVES TO BE CREATED ONCE."
+    },
+    "00-result-question-01": {
+      "narration_en": "这不是尚未落地的神谕。它已经发生。一个统治者死去，余烬穿过存档，落进下一段人生。死亡不再是句号，而成为下一次开局的火种。",
+      "subtitle_zh": "这不是尚未落地的神谕。它已经发生。一个统治者死去，余烬穿过存档，落进下一段人生。死亡不再是句号，而成为下一次开局的火种。",
+      "subtitle_secondary": "THIS IS NOT AN ORACLE AWAITING REALITY. IT HAS ALREADY HAPPENED. A RULER DIES; EMBERS CROSS THE SAVE AND ENTER THE NEXT LIFE. DEATH CEASES TO BE A FULL STOP AND BECOMES THE SPARK OF THE NEXT BEGINNING."
+    },
+    "00-result-question-02": {
+      "narration_en": "官员榜单自行重排；自动玩家确认行动是否真正生效；家徽编辑器交出可以直接使用的文本；发布流水线封存能够复现的成品。它们看似彼此无关，却服从同一条律令。",
+      "subtitle_zh": "官员榜单自行重排；自动玩家确认行动是否真正生效；家徽编辑器交出可以直接使用的文本；发布流水线封存能够复现的成品。它们看似彼此无关，却服从同一条律令。",
+      "subtitle_secondary": "THE OFFICIALS' RANKING REORDERS ITSELF; THE AUTONOMOUS PLAYER CONFIRMS WHETHER AN ACTION TRULY TOOK EFFECT; THE COAT-OF-ARMS EDITOR RETURNS READY-TO-USE TEXT; THE RELEASE PIPELINE SEALS A REPRODUCIBLE PRODUCT. THEY APPEAR UNRELATED, YET OBEY THE SAME LAW."
+    },
+    "00-result-question-03": {
+      "narration_en": "结果必须被保存，被验证，并被下一次行动重新读取。否则，成功只是一次好运。偶然只会发生一次。能力，必须能够重演。",
+      "subtitle_zh": "结果必须被保存，被验证，并被下一次行动重新读取。否则，成功只是一次好运。偶然只会发生一次。能力，必须能够重演。",
+      "subtitle_secondary": "A RESULT MUST BE PRESERVED, VERIFIED, AND READ AGAIN BY THE NEXT ACTION. OTHERWISE SUCCESS IS ONLY LUCK. CHANCE HAPPENS ONCE. CAPABILITY MUST BE REPEATABLE."
+    },
+    "01-project-thesis-01": {
+      "narration_en": "Project 因果律，不是仓库的集合，不是统一的招牌，也不是一个臃肿的巨物。它要求每件产品独立兑现承诺，每项事实接受核验，每次失败留下遗产，每次交付都将下一轮推得更远。",
+      "subtitle_zh": "Project 因果律，不是仓库的集合，不是统一的招牌，也不是一个臃肿的巨物。它要求每件产品独立兑现承诺，每项事实接受核验，每次失败留下遗产，每次交付都将下一轮推得更远。",
+      "subtitle_secondary": "PROJECT CAUSALITY IS NOT A COLLECTION OF REPOSITORIES, A SHARED SIGN, OR A SWOLLEN MONOLITH. IT DEMANDS THAT EVERY PRODUCT FULFILL ITS OWN PROMISE, EVERY FACT FACE VERIFICATION, EVERY FAILURE LEAVE AN INHERITANCE, AND EVERY DELIVERY DRIVE THE NEXT ROUND FARTHER."
+    },
+    "01-project-thesis-02": {
+      "narration_en": "一个模组仍可单独安装，一件工具仍可单独使用，一项自动化能力也必须单独兑现承诺；但它们背后的文档、生成、测试、实机观察、证据与发行，共用同一副骨架。",
+      "subtitle_zh": "一个模组仍可单独安装，一件工具仍可单独使用，一项自动化能力也必须单独兑现承诺；但它们背后的文档、生成、测试、实机观察、证据与发行，共用同一副骨架。",
+      "subtitle_secondary": "A MOD MAY STILL BE INSTALLED ALONE, A TOOL USED ALONE, AND AN AUTOMATED CAPABILITY MUST FULFILL ITS PROMISE ALONE. YET THE DOCUMENTS, GENERATION, TESTS, LIVE OBSERVATION, EVIDENCE, AND RELEASE BEHIND THEM SHARE ONE SKELETON."
+    },
+    "01-project-thesis-03": {
+      "narration_en": "这一路最终造出的，不是一件更庞大的作品，而是一种不会失忆的能力。创造接受游玩，游玩接受检验，检验抵达发行；真实结果，再反过来统御下一次创造。",
+      "subtitle_zh": "这一路最终造出的，不是一件更庞大的作品，而是一种不会失忆的能力。创造接受游玩，游玩接受检验，检验抵达发行；真实结果，再反过来统御下一次创造。",
+      "subtitle_secondary": "WHAT THIS PATH BUILDS IS NOT A LARGER WORK, BUT A CAPABILITY THAT DOES NOT FORGET. CREATION SUBMITS TO PLAY, PLAY SUBMITS TO VERIFICATION, VERIFICATION REACHES RELEASE, AND REAL RESULTS RULE THE NEXT CREATION IN RETURN."
+    },
+    "02-four-layer-map-01": {
+      "narration_en": "现在再看四层，它们早已不是抽象名词。咒，使成果显现：装得上的模组、用得了的网页、跑得起来的自动玩家，以及留下字节与画面的实机证据。",
+      "subtitle_zh": "现在再看四层，它们早已不是抽象名词。咒，使成果显现：装得上的模组、用得了的网页、跑得起来的自动玩家，以及留下字节与画面的实机证据。",
+      "subtitle_secondary": "LOOK AGAIN AT THE FOUR LAYERS; THEY ARE NO LONGER ABSTRACTIONS. SPELL MAKES RESULTS MANIFEST: INSTALLABLE MODS, USABLE WEB TOOLS, A WORKING AUTONOMOUS PLAYER, AND LIVE EVIDENCE PRESERVED IN BYTES AND IMAGES."
+    },
+    "02-four-layer-map-02": {
+      "narration_en": "术，使成果重现：文档如何组织，内容如何生成，MCP 如何获得眼睛与手，OCR 何时该用、何时必须禁用。道，裁决何为真实、何为完成。",
+      "subtitle_zh": "术，使成果重现：文档如何组织，内容如何生成，MCP 如何获得眼睛与手，OCR 何时该用、何时必须禁用。道，裁决何为真实、何为完成。",
+      "subtitle_secondary": "METHOD MAKES RESULTS REPEATABLE: HOW DOCUMENTS ARE ORGANIZED, CONTENT GENERATED, MCP GIVEN EYES AND HANDS, AND WHEN OCR BELONGS OR MUST BE FORBIDDEN. PRINCIPLE JUDGES WHAT IS REAL AND WHAT IS COMPLETE."
+    },
+    "02-four-layer-map-03": {
+      "narration_en": "而辉煌愿景，令这一切永不止息。它把咒、术与道重新送回起点，让每次归来都带着新的问题、证据与能力。宏图不得抢在事实之前；但已经落在桌上的每一项结果，都证明循环已经启动。",
+      "subtitle_zh": "而辉煌愿景，令这一切永不止息。它把咒、术与道重新送回起点，让每次归来都带着新的问题、证据与能力。宏图不得抢在事实之前；但已经落在桌上的每一项结果，都证明循环已经启动。",
+      "subtitle_secondary": "THE RADIANT VISION MAKES ALL OF IT CEASELESS. IT RETURNS SPELL, METHOD, AND PRINCIPLE TO THE BEGINNING, EACH TIME BEARING NEW QUESTIONS, EVIDENCE, AND CAPABILITY. THE GRAND DESIGN MAY NOT OUTRUN FACT; YET EVERY RESULT ALREADY ON THE TABLE PROVES THAT THE LOOP HAS BEGUN."
+    },
+    "29-finale-01": {
+      "narration_en": "回望最初那场死亡，它已经不只是一张事件图。背后站着玩家合同、权威数据、生成器、引擎观察和实机证据；它的终点，也已经与下一次创造的起点相连。",
+      "subtitle_zh": "回望最初那场死亡，它已经不只是一张事件图。背后站着玩家合同、权威数据、生成器、引擎观察和实机证据；它的终点，也已经与下一次创造的起点相连。",
+      "subtitle_secondary": "LOOK BACK AT THE FIRST DEATH: IT IS NO LONGER MERELY AN EVENT IMAGE. BEHIND IT STAND PLAYER CONTRACTS, AUTHORITATIVE DATA, GENERATORS, ENGINE OBSERVATION, AND LIVE EVIDENCE; ITS END IS ALREADY JOINED TO THE BEGINNING OF THE NEXT CREATION."
+    },
+    "29-finale-02": {
+      "narration_en": "今天的能力，仍然小于愿景。实线必须由证据铸成；尚未抵达之处，就让虚线诚实地留在那里。我们不向未来借证据。我们只在现实中，夺取下一寸疆域。",
+      "subtitle_zh": "今天的能力，仍然小于愿景。实线必须由证据铸成；尚未抵达之处，就让虚线诚实地留在那里。我们不向未来借证据。我们只在现实中，夺取下一寸疆域。",
+      "subtitle_secondary": "TODAY'S CAPABILITY REMAINS SMALLER THAN THE VISION. EVIDENCE MUST FORGE EVERY SOLID LINE; UNREACHED GROUND REMAINS HONESTLY DASHED. WE DO NOT BORROW EVIDENCE FROM THE FUTURE. WE TAKE THE NEXT INCH OF TERRITORY FROM REALITY."
+    },
+    "29-finale-03": {
+      "narration_en": "要做的，从来不只是把一个模组做完。要让每一次创造，都为下一次留下可以点燃的余烬。因已成果，果将生因；每一次终结，都必须成为下一轮回的开端。",
+      "subtitle_zh": "要做的，从来不只是把一个模组做完。要让每一次创造，都为下一次留下可以点燃的余烬。因已成果，果将生因；每一次终结，都必须成为下一轮回的开端。",
+      "subtitle_secondary": "THE TASK WAS NEVER MERELY TO FINISH A MOD. EVERY CREATION MUST LEAVE EMBERS THE NEXT CAN IGNITE. CAUSE HAS BECOME EFFECT; EFFECT SHALL GIVE BIRTH TO CAUSE. EVERY END MUST BECOME THE BEGINNING OF THE NEXT RECURRENCE."
+    },
+    "vision-value-closure": {
+      "narration_en": "四环运转，不是为了把创作者逐出创作。自动化，是替创作者征服重复。机器吞下生成、重放、核验与记忆；人类保留世界观、规则、取舍，以及最终裁决。于是，模组能够长期维护，真实游戏能够持续回归，对 CK3 本体的每一次逆向与实机结论，也都将成为下一轮能力。",
+      "subtitle_zh": "四环运转，不是为了把创作者逐出创作。自动化，是替创作者征服重复。机器吞下生成、重放、核验与记忆；人类保留世界观、规则、取舍，以及最终裁决。于是，模组能够长期维护，真实游戏能够持续回归，对 CK3 本体的每一次逆向与实机结论，也都将成为下一轮能力。",
+      "subtitle_secondary": "THE FOUR LOOPS DO NOT EXPEL CREATORS FROM CREATION. AUTOMATION CONQUERS REPETITION FOR THEM. MACHINES CONSUME GENERATION, REPLAY, VERIFICATION, AND MEMORY; HUMANS RETAIN WORLDS, RULES, TRADEOFFS, AND FINAL JUDGMENT. MODS CAN THEN ENDURE, REAL GAMES CAN REGRESS CONTINUOUSLY, AND EVERY REVERSE-ENGINEERED OR LIVE CK3 FINDING CAN BECOME THE NEXT CAPABILITY."
+    },
+    "cta-two-entrances": {
+      "narration_en": "如果你已经拥有一个模组，就接入真实游戏验收，让每次更新都重新证明自己依然可玩。如果你正要创造第一个模组，就从第一份玩家承诺出发，让文档、生成、测试、实机与发行，从诞生之日便成为一体。",
+      "subtitle_zh": "如果你已经拥有一个模组，就接入真实游戏验收，让每次更新都重新证明自己依然可玩。如果你正要创造第一个模组，就从第一份玩家承诺出发，让文档、生成、测试、实机与发行，从诞生之日便成为一体。",
+      "subtitle_secondary": "IF YOU ALREADY HAVE A MOD, CONNECT IT TO REAL-GAME ACCEPTANCE AND MAKE EVERY UPDATE PROVE IT REMAINS PLAYABLE. IF YOU ARE ABOUT TO CREATE YOUR FIRST, BEGIN WITH THE FIRST PROMISE TO THE PLAYER, AND MAKE DOCUMENTS, GENERATION, TESTS, LIVE PLAY, AND RELEASE ONE SYSTEM FROM THE DAY OF BIRTH."
+    },
+    "cta-final-causality": {
+      "narration_en": "此刻，它尚未抵达终点，也永远不该拥有终点。真正活着的系统，不以完成为归宿，而以生长为本能。每次创造留下证据，每次验证留下记忆。Project 因果律。因已成果，果将生因。循环既起——永不熄灭。",
+      "subtitle_zh": "此刻，它尚未抵达终点，也永远不该拥有终点。真正活着的系统，不以完成为归宿，而以生长为本能。每次创造留下证据，每次验证留下记忆。Project 因果律。因已成果，果将生因。循环既起——永不熄灭。",
+      "subtitle_secondary": "IT HAS NOT YET REACHED AN END, NOR SHOULD IT EVER HAVE ONE. A LIVING SYSTEM TAKES GROWTH, NOT COMPLETION, AS INSTINCT. EVERY CREATION LEAVES EVIDENCE. EVERY VERIFICATION LEAVES MEMORY. PROJECT CAUSALITY. CAUSE HAS BECOME EFFECT; EFFECT SHALL GIVE BIRTH TO CAUSE. THE LOOP HAS BEGUN—AND SHALL NEVER BE EXTINGUISHED."
+    }
+  }
+}

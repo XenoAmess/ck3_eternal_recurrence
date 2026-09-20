@@ -47,7 +47,7 @@ def cover(image: Image.Image, size: tuple[int, int]) -> Image.Image:
     return ImageOps.fit(image.convert("RGB"), size, method=Image.Resampling.LANCZOS)
 
 
-def draw_end_card(path: Path) -> None:
+def draw_end_card(path: Path, *, include_header: bool = True) -> None:
     base = cover(Image.open(KEY_ART), (WIDTH, HEIGHT))
     base = ImageEnhance.Brightness(base).enhance(0.82)
     overlay = Image.new("RGBA", base.size, (4, 10, 24, 0))
@@ -62,8 +62,9 @@ def draw_end_card(path: Path) -> None:
     pale = (206, 218, 231, 255)
     cyan = (105, 215, 226, 255)
 
-    draw.text((150, 110), "PROJECT CAUSALITY", font=font(42, bold=True), fill=gold)
-    draw.text((150, 176), "因果律不是口号，而是一条可以运行的链。", font=font(70, bold=True), fill=ivory)
+    if include_header:
+        draw.text((150, 110), "PROJECT CAUSALITY", font=font(42, bold=True), fill=gold)
+        draw.text((150, 176), "因果律不是口号，而是一条可以运行的链。", font=font(70, bold=True), fill=ivory)
     draw.text((150, 292), "已有 Mod", font=font(46, bold=True), fill=cyan)
     draw.text((150, 354), "接入无人化、可重放的真实 CK3 验收", font=font(40), fill=ivory)
     draw.text((150, 446), "新创作者", font=font(46, bold=True), fill=cyan)
@@ -206,8 +207,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     if not ffmpeg:
         raise AssetBuildError("ffmpeg is required")
     end_card = output / "project-causality-r12-end-card.png"
+    clean_end_card = output / "project-causality-r16-end-card-clean.png"
     thumbnail = output / "project-causality-r12-thumbnail.jpg"
     draw_end_card(end_card)
+    draw_end_card(clean_end_card, include_header=False)
     draw_thumbnail(thumbnail)
     jobs = {
         "opening-system-motion.mp4": (
@@ -279,8 +282,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             ],
         ),
         "cta-motion.mp4": (60.0, [end_card, end_card]),
+        "cta-motion-clean.mp4": (60.0, [clean_end_card, clean_end_card]),
     }
-    selected = {"cta-motion.mp4"} if args.cta_only else set(jobs)
+    selected = {"cta-motion.mp4", "cta-motion-clean.mp4"} if args.cta_only else set(jobs)
     for name, (duration, images) in jobs.items():
         if name not in selected:
             continue
