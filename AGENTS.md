@@ -8,7 +8,7 @@
 - `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 19 文件 staging
 - `mod_reclaim_the_motherland/` — “重整河山”独立版源目录；Workshop item id：**3798404599**；正式发布只使用 `build_reclaim_the_motherland_release.py` 生成的 28 文件 staging
 - `mod_tributary_expansion_directives/` — “驱策朝贡国 / Tributary Expansion Directives”独立版源目录；Workshop item id：**3801490405**；正式发布只使用 `build_tributary_expansion_directives_release.py` 生成的 16 文件 staging
-- `mod_celestial_commerce_corruption/` — “天朝制允许经商&贪腐框架（XenoAmess维护版）”源码；上游 Workshop item id：**3596263413** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_celestial_commerce_corruption_release.py` 生成的 22 文件 staging；上游未携带许可证，仓库所有者已于 2026-09-20 明确确认取得原作者再分发与发布许可，授权原件待补档
+- `mod_celestial_commerce_corruption/` — “天朝制允许经商&贪腐框架（XenoAmess维护版）”源码；维护版 Workshop item id：**3804807463**；上游 **3596263413** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_celestial_commerce_corruption_release.py` 生成的 22 文件 staging；上游未携带许可证，仓库所有者已于 2026-09-20 明确确认取得原作者再分发与发布许可，授权原件待补档
 - `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 16 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
@@ -108,7 +108,7 @@ py tools/build_tributary_expansion_directives_release.py --check # 驱策朝贡�
 py tools/build_tributary_expansion_directives_release.py    # 生成 16 文件 staging、manifest 与 ZIP
 py tools/run_tributary_expansion_directives_acceptance.py --preflight # 驱策朝贡国外置夹具与实机环境预检
 py tools/build_celestial_commerce_corruption_release.py --check # 天朝经商贪腐维护版临时双构建
-py tools/build_celestial_commerce_corruption_release.py     # 生成 15 文件 staging、manifest 与 ZIP
+py tools/build_celestial_commerce_corruption_release.py     # 生成 22 文件 staging、manifest 与 ZIP
 py tools/run_celestial_commerce_corruption_acceptance.py --preflight # 天朝经商贪腐外置夹具与实机环境预检
 py tools/compose_celestial_commerce_corruption_workshop_media.py --artifacts <run> # GREEN 贪腐事件截图 → 一张低于 2 MB JPEG
 py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 43 条建筑链

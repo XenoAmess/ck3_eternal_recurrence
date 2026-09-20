@@ -47,7 +47,7 @@ Workshop。** 玩家应从具体产品入口安装；发布者应使用对应的
 | **重整河山** | 天命崩解、动态后朝、尊王诸侯与跨代复辟循环 | `0.4.0` 已完成独立发布闭环 | [产品说明](mod_reclaim_the_motherland/README.md) |
 | **肃清曼荼罗伪信** | 按规则清理全图曼荼罗政府与 Temple Citadel，并约束后续转制 | 独立产品、专用 release builder | [产品说明](mod_remove_mandala/README.md) |
 | **驱策朝贡国** | 宗主向直属 AI 朝贡国下达单县扩张命令，可选有限军费补贴 | `1.0.0` 正式线；威望、接受、宣战与补贴采用原子结算 | [产品说明](mod_tributary_expansion_directives/README.md) |
-| **天朝制允许经商&贪腐框架（XenoAmess维护版）** | 为天朝政府恢复原生易货规则，并提供四档持续贪腐政策与税赋代价 | `1.0.0` 开发、静态门禁与 CK3 1.19.0.6 简中实机验收 GREEN；按仓库所有者确认的原作者许可进入发布流程 | [产品说明](mod_celestial_commerce_corruption/README.md) |
+| **天朝制允许经商&贪腐框架（XenoAmess维护版）** | 为天朝政府恢复原生易货规则，并提供四档持续贪腐政策与税赋代价 | `1.0.0` 已发布；静态门禁、CK3 1.19.0.6 简中实机、全新订阅缓存与公开回读 GREEN | [产品说明](mod_celestial_commerce_corruption/README.md) · [Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463) |
 
 ### 自动玩家与工具平台
 

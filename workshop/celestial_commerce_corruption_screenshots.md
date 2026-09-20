@@ -11,4 +11,6 @@
 | ---: | --- | --- | --- | --- | ---: | --- |
 | 1 | Production corruption-policy event with all four policy tiers and both opt-out choices | `575,343,1895,1086` | `workshop/celestial_commerce_corruption_media/01_corruption_policy_event.jpg` | 1320×743 | 207,392 | `9389BA9756890C872263B6E6B5D3CB5ABE782C9D57C7A02FCFF9084EBFC0E953` |
 
-The repository owner attested on 2026-09-20 that the original author authorized redistribution and publication of this maintained edition. The permission artifact remains pending archival while the owner is away. Workshop item ID, public media URL, and anonymous readback are populated only after the actual upload succeeds.
+The repository owner attested on 2026-09-20 that the original author authorized redistribution and publication of this maintained edition. The permission artifact remains pending archival while the owner is away.
+
+The exact JPEG above was uploaded to maintained Workshop item [`3804807463`](https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463). The owner-page post-save readback shows it as the primary public media strip image (`22_public_with_media.png`, SHA-256 `BD3E424FBCF0315277DF55F20477ECD98C4185753EA8769E6F1CD668D9C16AF3`). Repeated anonymous HTML fetches from the release machine received Steam HTTP 429, so this ledger does not claim an independently downloaded CDN byte comparison; the tracked upload bytes and owner-page visual readback remain the frozen evidence.
