@@ -32,6 +32,7 @@
     "council_value_progress_current_rva": "0x2D650A0",
     "council_value_progress_maximum_rva": "0x2D65390",
     "primary_title_rva": "0x25F3350",
+    "title_province_rva": "0x20B6B20",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
     "top_liege_rva": "0x2613600",
@@ -214,6 +215,12 @@
   },
   "held_title_partition": {
     "published_field": "held_title_partition",
+    "row_fields": [
+      "title",
+      "first_heir_character_id",
+      "capital_province_id",
+      "primary"
+    ],
     "character_land_state_offset": "0x1B8",
     "held_title_vector": {
       "data_offset": "0x1E0",
@@ -238,6 +245,18 @@
     "maximum_held_title_count": 4096,
     "validation": "every listed title resolves through LandedTitle storage, reports the player as holder, has a valid tier, and exposes either no first heir or a generation-valid non-holder CharacterID",
     "semantics": "current engine-calculated first heir for each personally held county-or-higher title; null means the title successor vector is currently empty",
+    "capital_province_projection": {
+      "published_field": "held_title_partition[].capital_province_id",
+      "resolver_rva": "0x20B6B20",
+      "resolver_end_rva_exclusive": "0x20B6B99",
+      "resolver_size": "0x79",
+      "resolver_sha256": "9A2A89B5B17FC268A799098790F099E970858C84E86D8D539D50AD916AFD820B",
+      "signature": "void* __fastcall(void* landed_title)",
+      "province_identity_offset": "0x10",
+      "county_semantics": "tier_raw 2 requires a non-null resolver result with a positive ProvinceID",
+      "higher_tier_semantics": "tier_raw 3 through 6 publishes null; no synthetic ProvinceID is inferred",
+      "failure_semantics": "a resolver failure, null county result, unreadable ProvinceID, or non-positive ProvinceID makes the complete held-title partition unavailable"
+    },
     "excluded_semantics": [
       "succession law",
       "claims",

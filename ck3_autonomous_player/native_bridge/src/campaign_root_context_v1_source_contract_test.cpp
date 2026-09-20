@@ -79,6 +79,7 @@ int main(int argc, char **argv) {
       kCampaignRootCouncilValueProgressCurrentRva != 0x2D650A0 ||
       kCampaignRootCouncilValueProgressMaximumRva != 0x2D65390 ||
       kCampaignRootPrimaryTitleRva != 0x25F3350 ||
+      kCampaignRootTitleProvinceRva != 0x20B6B20 ||
       kCampaignRootCapitalProvinceRva != 0x2606760 ||
       kCampaignRootImmediateLiegeRva != 0x2613480 ||
       kCampaignRootTopLiegeRva != 0x2613600 ||
@@ -97,6 +98,8 @@ int main(int argc, char **argv) {
                     "CampaignRootCouncilStatusV1",
                     "auxiliary_vacancies_complete",
                     "NativeCampaignRootCouncilValueProgressV1",
+                    "std::optional<std::int32_t> capital_province_id",
+                    "NativeCampaignRootCharacterResolverV1 title_province",
                     "game.command.query-campaign-root-context-v1",
                     "ck3-1.19.0.6-native-campaign-root-context-v1"}) ||
       !ContainsAll(reader,
@@ -124,6 +127,8 @@ int main(int argc, char **argv) {
                     "ReadPrimaryTitleSuccession",
                     "primary_title_succession_unavailable",
                     "ReadHeldTitlePartition",
+                    "environment.title_province",
+                    "kCampaignRootTitleProvinceRva",
                     "held_title_partition_unavailable",
                     "ReadCouncil",
                     "council_unavailable",
@@ -170,6 +175,7 @@ int main(int argc, char **argv) {
                     "\\\"related_character_contexts\\\"",
                     "\\\"primary_title_succession_character_ids\\\"",
                     "\\\"held_title_partition\\\"",
+                    "AppendOptionalInt32(output, row.capital_province_id)",
                     "\\\"held_title_partition_ready\\\"",
                     "\\\"council\\\"",
                     "\\\"council_ready\\\"",
@@ -231,6 +237,10 @@ int main(int argc, char **argv) {
                     "\"related_character_contexts\"",
                     "\"primary_title_succession\"",
                     "\"held_title_partition\"",
+                    "\"title_province_rva\": \"0x20B6B20\"",
+                    "\"published_field\": "
+                    "\"held_title_partition[].capital_province_id\"",
+                    "9A2A89B5B17FC268A799098790F099E970858C84E86D8D539D50AD916AFD820B",
                     "D7C6700177B5401E712DA7913FE46468C7868450A12488422005E5CBAAFB19A9",
                     "8D3696555ADB3F338244D1E8872C3721707D7B90EEE7E6AD95DD38020195EEA2",
                     "\"council\"",
