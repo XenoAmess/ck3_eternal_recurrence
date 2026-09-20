@@ -35,6 +35,26 @@ Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\build_project_causality_
 - SHA-256：`423B3506969369AF95BDA51974186955BAE802169C8496AD3344E3C2E7D99F03`
 - 音乐：无；继续按项目所有者要求延后
 
+## 现有母带循环预览版
+
+为避免在只剩 8 次 Suno 下载额度时盲目消耗续写下载，先用六首已入选母带制作了一条完整审片版。开场母带单次使用，其余长章节按章循环，并在循环点做 12 秒交叉淡化；旁白出现时由 sidechain 自动压低音乐。这个版本只用于判断音乐方向、章节情绪、转场和人声遮蔽，不作为发布母版。
+
+- 路径：`artifacts/project-causality/2026-09-20-r14-music-preview/project-causality-r14-suno-base-loop-preview.mp4`
+- 时长：53:52.357
+- 声音：AAC 双声道，48 kHz；综合响度 -16.0 LUFS，LRA 4.6 LU，True Peak -1.5 dBFS
+- 字幕与章节：保留英语可选字幕轨、两条 data sidecar 轨及 8 个章节
+- SHA-256：`35AB0CBFA80E53EE01F5BA98440E39F6DAB3DD685B065CAF2E7C760FCC3FA4C2`
+- 已知限制：长章节会听到同一母带的结构回环；最终版仍需以网页试听后下载的 Whole Song 取代这些循环
+
+复现命令：
+
+```bat
+py tools\build_project_causality_music_preview.py ^
+  --source-video artifacts\project-causality\2026-09-20-r14\project-causality-r14-owner-voice-nomusic.mp4 ^
+  --music-dir artifacts\project-causality\2026-09-20-r14\music-audit\selected ^
+  --output-dir artifacts\project-causality\2026-09-20-r14-music-preview
+```
+
 ## 验收
 
 - 119 个 cue 全部生成并封装，其中 45 个 cue 使用本轮新文案与新旁白。
@@ -45,4 +65,4 @@ Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\build_project_causality_
 - 结尾 Steam 创意工坊卡仍列出 9 项已发布 Mod，包含《牛来》ID `3790635143`。
 - 旧审计中的报告式术语、制作过程口吻、内部路线图句和第二次开场提示语均由机器合同检查为不存在。
 
-当前文件仍是无音乐审片成片，sidecar 保持 `publication_authorized: false`，等待项目所有者连续审片与后续配乐决策。
+无音乐版仍是画面与旁白基线；循环配乐版是音乐方向预览。两者都保持 `publication_authorized: false`，等待项目所有者连续审片与最终 Whole Song 配乐决策。
