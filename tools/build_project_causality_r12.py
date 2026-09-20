@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Build the publication-oriented, no-music Project Causality r12 film."""
+"""Build the publication-oriented, no-music Project Causality film."""
 
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import math
@@ -26,6 +27,7 @@ DEFAULT_OLD_AUDIO = (
     ROOT / "artifacts/project-causality/2026-09-19-r10-owner-voice/work/generated-cues"
 )
 DEFAULT_NEW_AUDIO = DEFAULT_OUTPUT_DIR / "work/generated-cues"
+DEFAULT_FALLBACK_AUDIO = DEFAULT_OUTPUT_DIR / "work/generated-cues"
 DEFAULT_INDEX_REPO = ROOT / "artifacts/project-causality/private/index-tts"
 DEFAULT_VOICE_REFERENCE = (
     ROOT / "artifacts/project-causality/private/voice/owner-reference-indextts.wav"
@@ -117,12 +119,13 @@ def synthesize_missing_audio(
     *,
     old_audio: Path,
     new_audio: Path,
+    fallback_audio: Sequence[Path],
     index_repo: Path,
     model_dir: Path,
     voice_reference: Path,
     enabled: bool,
 ) -> None:
-    catalog = audio_catalog([old_audio, new_audio])
+    catalog = audio_catalog([old_audio, *fallback_audio, new_audio])
     pending: list[owner_voice.Cue] = []
     for chapter in chapters:
         key = (chapter.chapter_id, text_hash(chapter.narration_en))
@@ -163,8 +166,9 @@ def attach_audio(
     config: dict[str, Any],
     old_audio: Path,
     new_audio: Path,
+    fallback_audio: Sequence[Path],
 ) -> None:
-    catalog = audio_catalog([old_audio, new_audio])
+    catalog = audio_catalog([old_audio, *fallback_audio, new_audio])
     timing = config["timing"]
     tail = float(timing["narration_tail_hold_seconds"])
     subtitle_tail = float(timing["subtitle_tail_hold_seconds"])
@@ -302,15 +306,24 @@ def timeline_starts(chapters: Sequence[showcase.Chapter]) -> dict[str, float]:
 
 def chapter_markers(chapters: Sequence[showcase.Chapter]) -> list[tuple[str, float]]:
     starts = timeline_starts(chapters)
-    values = [
-        ("开场｜为什么需要 project 因果律", starts[chapters[0].chapter_id]),
+    values: list[tuple[str, float]] = []
+    if chapters[0].chapter_id.startswith("hook-"):
+        values.extend(
+            [
+                ("冷开场｜每次改动之后，它还活着吗", 0.0),
+                ("开场｜为什么需要 project 因果律", starts["opening-final-thesis"]),
+            ]
+        )
+    else:
+        values.append(("开场｜为什么需要 project 因果律", 0.0))
+    values.extend([
         ("咒｜今天已经可以使用的产品", starts["spell-gate-r8"]),
         ("罗贝尔｜从主菜单开始的连续自主游玩", starts["fresh-ruler-selection"]),
         ("术｜一条改动怎样走到发布", starts["method-gate-r8"]),
         ("道｜什么才算真的完成", starts["principle-gate-r8"]),
         ("辉煌愿景｜四个无限演进 Loop", starts["vision-gate-r8"]),
         ("从这里开始｜已有 Mod 与新创作者", starts["cta-two-entrances"]),
-    ]
+    ])
     return values
 
 
@@ -372,6 +385,8 @@ def render(
     preset: str,
     crf: int,
 ) -> Path:
+    edition = str(config.get("edition", "r12"))
+    stem = f"project-causality-{edition}"
     ffmpeg = showcase.find_program(ffmpeg_override, "ffmpeg")
     ffprobe = showcase.find_program(ffprobe_override, "ffprobe", sibling_of=ffmpeg)
     fonts = showcase.find_fonts()
@@ -393,16 +408,16 @@ def render(
             force=force,
         )
 
-    chinese_ass = work / "project-causality-r12.zh-Hans.ass"
+    chinese_ass = work / f"{stem}.zh-Hans.ass"
     showcase.write_global_ass(chapters, chinese_ass)
-    english_srt = output_dir / "project-causality-r12.en.srt"
-    chapters_meta = work / "project-causality-r12.ffmetadata"
-    youtube_chapters = output_dir / "project-causality-r12.chapters.txt"
+    english_srt = output_dir / f"{stem}.en.srt"
+    chapters_meta = work / f"{stem}.ffmetadata"
+    youtube_chapters = output_dir / f"{stem}.chapters.txt"
     write_english_srt(chapters, english, english_srt)
     write_chapter_metadata(chapters, chapters_meta)
     write_youtube_chapters(chapters, youtube_chapters)
 
-    intermediate = work / "project-causality-r12-intermediate.mp4"
+    intermediate = work / f"{stem}-intermediate.mp4"
     showcase.concat_segments(
         chapters,
         build_directory=work,
@@ -479,12 +494,12 @@ def render(
         ffprobe=ffprobe,
     )
     payload = r11._load_json(sidecar)
-    payload["kind"] = "project_causality_r12_publication_candidate_no_music"
+    payload["kind"] = f"project_causality_{edition}_publication_candidate_no_music"
     payload["language"] = {
         "primary": "Simplified Chinese authorized-owner-reference narration and burned subtitles",
         "secondary": "selectable English mov_text subtitle track",
     }
-    payload["r12"] = {
+    payload[edition] = {
         "plan": str(plan_path),
         "plan_sha256": r11._sha256(plan_path),
         "audio_tempo_modified": False,
@@ -510,6 +525,13 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--robert-edit", type=Path, required=True)
     result.add_argument("--old-audio-dir", type=Path, default=DEFAULT_OLD_AUDIO)
     result.add_argument("--new-audio-dir", type=Path, default=DEFAULT_NEW_AUDIO)
+    result.add_argument(
+        "--fallback-audio-dir",
+        action="append",
+        type=Path,
+        default=[DEFAULT_FALLBACK_AUDIO],
+        help="Additional narration cache; may be repeated.",
+    )
     result.add_argument("--index-repo", type=Path, default=DEFAULT_INDEX_REPO)
     result.add_argument("--model-dir", type=Path)
     result.add_argument("--voice-reference", type=Path, default=DEFAULT_VOICE_REFERENCE)
@@ -523,27 +545,65 @@ def parser() -> argparse.ArgumentParser:
     return result
 
 
+def load_edit_config(config_path: Path) -> dict[str, Any]:
+    """Load r12 directly or derive the r13 cold-open edit from the frozen r12 body."""
+    requested = r11._load_json(config_path)
+    schema = requested.get("schema")
+    if schema == "project-causality-r12-publication-edit.v1":
+        requested.setdefault("edition", "r12")
+        return requested
+    if schema != "project-causality-r13-hook-edit.v1":
+        raise R12BuildError(f"unsupported edit config schema: {config_path}")
+    base_path = r11._root_path(requested.get("base_config"), "base_config")
+    base = copy.deepcopy(r11._load_json(base_path))
+    if base.get("schema") != "project-causality-r12-publication-edit.v1":
+        raise R12BuildError(f"r13 base config is not the frozen r12 edit: {base_path}")
+    expected = requested.get("hook_expected_count")
+    if not isinstance(expected, int) or expected <= 0:
+        raise R12BuildError("hook_expected_count must be a positive integer")
+    base["schema"] = "project-causality-r13-hook-edit.v1"
+    base["edition"] = "r13"
+    base["base_config"] = str(base_path)
+    base["inputs"] = dict(base["inputs"])
+    base["inputs"]["hook"] = requested.get("hook_showcase")
+    base["composition"] = [
+        {"source": "hook", "all": True, "expected_count": expected}
+    ] + list(base["composition"])
+    base["contracts"] = dict(base["contracts"])
+    base["contracts"]["expected_cue_count"] = (
+        int(base["contracts"]["expected_cue_count"]) + expected
+    )
+    base["r13_cold_open"] = {
+        "source_config": str(config_path),
+        "source_base": str(base_path),
+        "hook_showcase": requested.get("hook_showcase"),
+        "hook_cue_count": expected,
+        "body_policy": "r12 body narration and ordering remain unchanged",
+    }
+    return base
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
         config_path = args.config.expanduser().resolve()
-        config = r11._load_json(config_path)
-        if config.get("schema") != "project-causality-r12-publication-edit.v1":
-            raise R12BuildError(f"unsupported r12 config schema: {config_path}")
+        config = load_edit_config(config_path)
+        edition = str(config.get("edition", "r12"))
         output_dir = args.output_dir.expanduser().resolve()
         output_dir.mkdir(parents=True, exist_ok=True)
         output = (
             args.output.expanduser().resolve()
             if args.output
-            else output_dir / "project-causality-r12-owner-voice-nomusic.mp4"
+            else output_dir / f"project-causality-{edition}-owner-voice-nomusic.mp4"
         )
         plan_path = (
             args.plan_output.expanduser().resolve()
             if args.plan_output
-            else output_dir / "project-causality-r12.build-plan.json"
+            else output_dir / f"project-causality-{edition}.build-plan.json"
         )
         old_audio = args.old_audio_dir.expanduser().resolve()
         new_audio = args.new_audio_dir.expanduser().resolve()
+        fallback_audio = [path.expanduser().resolve() for path in args.fallback_audio_dir]
         index_repo = args.index_repo.expanduser().resolve()
         model_dir = (args.model_dir or index_repo / "checkpoints").expanduser().resolve()
         voice_reference = args.voice_reference.expanduser().resolve()
@@ -565,12 +625,19 @@ def main(argv: Sequence[str] | None = None) -> int:
             chapters,
             old_audio=old_audio,
             new_audio=new_audio,
+            fallback_audio=fallback_audio,
             index_repo=index_repo,
             model_dir=model_dir,
             voice_reference=voice_reference,
             enabled=args.synthesize,
         )
-        attach_audio(chapters, config=config, old_audio=old_audio, new_audio=new_audio)
+        attach_audio(
+            chapters,
+            config=config,
+            old_audio=old_audio,
+            new_audio=new_audio,
+            fallback_audio=fallback_audio,
+        )
         r11.apply_clean_video_overrides(chapters, config)
         robert_edit = args.robert_edit.expanduser().resolve()
         agent = r11._agent_chapters(chapters)
@@ -594,7 +661,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             chapters=chapters,
             robert_edit=robert_edit,
         )
-        plan["schema"] = "project-causality-r12-build-plan.v1"
+        plan["schema"] = f"project-causality-{edition}-build-plan.v1"
         plan["subtitle_strategy"] = {
             "burned": "Simplified Chinese",
             "selectable": "English",

@@ -1,0 +1,8 @@
+{
+  "schema": "project-causality-r13-hook-edit.v1",
+  "edition": "r13",
+  "base_config": "promo/project_causality/r12/edit-config.json",
+  "hook_showcase": "promo/project_causality/r13/hook-showcase.json",
+  "hook_expected_count": 5,
+  "purpose": "Prepend a result-first cold open without changing the r12 body narration or Robert continuity."
+}

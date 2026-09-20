@@ -69,13 +69,28 @@ def draw_end_card(path: Path) -> None:
     draw.text((150, 446), "新创作者", font=font(46, bold=True), fill=cyan)
     draw.text((150, 508), "从玩家承诺出发，走完创作、测试、核验与发行", font=font(40), fill=ivory)
 
-    box = (150, 650, 2410, 1185)
+    box = (150, 625, 2410, 1195)
     draw.rounded_rectangle(box, radius=36, fill=(5, 13, 31, 205), outline=(244, 199, 112, 170), width=3)
-    draw.text((220, 712), "代码与文档", font=font(34, bold=True), fill=gold)
-    draw.text((220, 766), "github.com/XenoAmess/ck3_eternal_recurrence", font=font(42), fill=ivory)
-    draw.text((220, 876), "Steam 创意工坊", font=font(34, bold=True), fill=gold)
-    draw.text((220, 930), "琉焰卿的永恒轮回  ·  3784706360", font=font(40), fill=pale)
-    draw.text((220, 994), "白绮特供独立版      ·  3787304042", font=font(40), fill=pale)
+    draw.text((220, 672), "代码与文档", font=font(30, bold=True), fill=gold)
+    draw.text((220, 716), "github.com/XenoAmess/ck3_eternal_recurrence", font=font(34), fill=ivory)
+    draw.text((220, 785), "Steam 创意工坊 · 9 项已上架", font=font(30, bold=True), fill=gold)
+    workshop_items = [
+        ("琉焰卿的永恒轮回", "3784706360"),
+        ("白绮特供独立版", "3787304042"),
+        ("天朝特色361制官员绩效考核", "3792585972"),
+        ("牛来", "3790635143"),
+        ("XenoAmess 的体验优化", "3798133925"),
+        ("自动升级建筑（维护版）", "3800124956"),
+        ("重整河山", "3798404599"),
+        ("肃清曼荼罗伪信", "3797711947"),
+        ("驱策朝贡国", "3801490405"),
+    ]
+    for index, (name, item_id) in enumerate(workshop_items):
+        column = 0 if index < 5 else 1
+        row = index if index < 5 else index - 5
+        x = 220 + column * 1110
+        y = 838 + row * 50
+        draw.text((x, y), f"{name}  ·  {item_id}", font=font(29), fill=pale)
     draw.text((150, 1298), "让每一次创造，都为下一次留下可以点燃的余烬。", font=font(40), fill=ivory)
     path.parent.mkdir(parents=True, exist_ok=True)
     base.convert("RGB").save(path, quality=95)
@@ -179,6 +194,7 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     result.add_argument("--force", action="store_true")
+    result.add_argument("--cta-only", action="store_true")
     result.add_argument("--ffmpeg")
     return result
 
@@ -264,7 +280,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         ),
         "cta-motion.mp4": (60.0, [end_card, end_card]),
     }
+    selected = {"cta-motion.mp4"} if args.cta_only else set(jobs)
     for name, (duration, images) in jobs.items():
+        if name not in selected:
+            continue
         motion_clip(ffmpeg, images, output / name, duration=duration, force=args.force)
     print(f"ASSETS: {output}", flush=True)
     return 0
