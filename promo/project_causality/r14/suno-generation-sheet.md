@@ -14,18 +14,28 @@
 | Model | V5.5 优先；若账户没有则 V5 |
 | Instrumental | On |
 | Lyrics | 只放下列结构标签，不放说明文字或歌词 |
+| Duration | 每轨填写下列唯一具体值，不填写范围 |
 | Style Influence | 默认 80% |
 | Weirdness | 默认 30% |
 | Exclude Styles | 使用每轨给出的 4 项，不再追加 |
 | 生成次数 | 每轨先生成 1 次，保留自动产生的 A/B 两版 |
 | 下载 | WAV 或账户允许的最高原始质量；不要预先归一化、转码或降噪 |
 
-Suno 没有精确时长参数。结构标签数量是主要时长控制手段；生成稍长后由后期裁切、交叉淡化和旁白 ducking 对齐。六条音乐共享“黑暗奇幻档案 + 克制机械脉冲 + 五音余烬母题”，但每章改变密度。
+当前 Suno 表单使用单一具体时长。下列 Duration 必须逐轨照填；结构标签只负责段落与情绪弧线，不再承担时长控制。数值已经包含后期裁切、交叉淡化和旁白 ducking 的余量。六条音乐共享“黑暗奇幻档案 + 克制机械脉冲 + 五音余烬母题”，但每章改变密度。
+
+| Track | 成片覆盖 | 第一轮母带 Duration | 母带入选后的 Continue Duration |
+|---|---:|---:|---:|
+| 00 — Cold Open / Prologue | `00:00–03:57` | `04:30` | 不续写 |
+| 01 — Spell / Visible Products | `03:57–14:29` | `08:00` | `03:30` |
+| 02 — Robert / Autonomous Campaign | `14:29–23:22` | `08:00` | `01:30` |
+| 03 — Method / Production Chain | `23:22–35:50` | `08:00` | `05:00` |
+| 04 — Principle / Evidence Has Weight | `35:50–42:30` | `07:00` | 不续写 |
+| 05 — Radiant Vision / Recurrence | `42:30–53:52` | `08:00` | `04:00` |
 
 ## 00 — Cold Open / Prologue
 
 - 覆盖：`00:00–03:57`
-- 目标生成长度：`04:20–05:15`
+- Duration：`04:30`
 - Weirdness：35%
 - Style Influence：80%
 
@@ -63,8 +73,8 @@ no trailer braams
 ## 01 — Spell / Visible Products
 
 - 覆盖：`03:57–14:29`
-- 母带目标：`07:20–08:00`
-- 后续：入选版本再 Continue 约 3–4 分钟
+- 第一轮母带 Duration：`08:00`
+- 第二阶段 Continue Duration：`03:30`
 - Weirdness：30%
 - Style Influence：82%
 
@@ -108,8 +118,8 @@ no pop drums
 ## 02 — Robert / Autonomous Campaign
 
 - 覆盖：`14:29–23:22`
-- 母带目标：`07:20–08:00`
-- 后续：入选版本再 Continue 约 1.5–2.5 分钟
+- 第一轮母带 Duration：`08:00`
+- 第二阶段 Continue Duration：`01:30`
 - Weirdness：25%
 - Style Influence：85%
 
@@ -153,8 +163,8 @@ no action bombast
 ## 03 — Method / Production Chain
 
 - 覆盖：`23:22–35:50`
-- 母带目标：`07:20–08:00`
-- 后续：入选版本再 Continue 约 4.5–5.5 分钟
+- 第一轮母带 Duration：`08:00`
+- 第二阶段 Continue Duration：`05:00`
 - Weirdness：30%
 - Style Influence：85%
 
@@ -198,7 +208,7 @@ no busy lead synth
 ## 04 — Principle / Evidence Has Weight
 
 - 覆盖：`35:50–42:30`
-- 目标生成长度：`06:30–07:20`
+- Duration：`07:00`
 - Weirdness：20%
 - Style Influence：88%
 
@@ -238,8 +248,8 @@ no cinematic boom
 ## 05 — Radiant Vision / Recurrence
 
 - 覆盖：`42:30–53:52`
-- 母带目标：`07:20–08:00`
-- 后续：入选版本再 Continue 约 3.5–4.5 分钟，并承担最终 CTA
+- 第一轮母带 Duration：`08:00`
+- 第二阶段 Continue Duration：`04:00`，并承担最终 CTA
 - Weirdness：35%
 - Style Influence：82%
 
@@ -309,4 +319,4 @@ no heroic fanfare
 - 结尾突然截断、无法自然裁切：优先淘汰。
 - Track 02 必须像真实策略推进，不像预告片大战；Track 04 必须是全片最稀疏的一首；Track 05 可以明亮，但不能变成英雄颂歌。
 
-选出母带后，再为 01、02、03、05 分别指定 Continue 起点和续写标签。不要在母带选择前自行续写。
+选出母带后，再为 01、02、03、05 分别按 `03:30`、`01:30`、`05:00`、`04:00` 续写，并另行指定 Continue 起点和续写标签。不要在母带选择前自行续写。
