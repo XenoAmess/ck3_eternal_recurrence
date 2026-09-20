@@ -63,21 +63,42 @@ R802 包内的旧 operator 会复制成对 checkpoint/driver state、把环境�
 
 ## 启动自动游玩
 
-先登记新的单调 CK3 轮次，再做两个 paused frame 的只读资格验收：
-
-每次 attempt 先分配新的单调输出编号；下例的 `R1001` 只作占位：
+每个会启动 CK3 的 attempt 都必须在静态/preflight 已通过、且再次确认全机无 CK3/injector 进程后，先从**当前仓库 master 根目录**分配一个机器与 mod 作用域内的正式编号。R802 冻结包早于该分配器，因此不要从 ZIP 内寻找或复制它：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output .\runs\eligibility-R1001
+py tools\ck3_live_run_id.py machine
+py tools\ck3_live_run_id.py allocate --mod eternal-recurrence
+```
+
+把第二条命令返回的完整 JSON 原样保存为该 attempt artifact 根目录的 `live-run-identity.json`；其中 `run_id` 是正式编号。R802 operator 的 `--output` 指向该 artifact 根目录下尚不存在的 `operator` 子目录，这样分配记录会在启动前存在，又不会触发 operator 的“一次性输出目录已存在”拒绝。以下命令从 ZIP 解压根开始；`<当前仓库master根目录>` 只替换为本机当前仓库的绝对路径：
+
+```text
+set "XAR_R802_ROOT=%CD%"
+mkdir "%XAR_R802_ROOT%\runs\eligibility-attempt"
+cd /d <当前仓库master根目录>
+py tools\ck3_live_run_id.py allocate --mod eternal-recurrence > "%XAR_R802_ROOT%\runs\eligibility-attempt\live-run-identity.json"
+cd /d "%XAR_R802_ROOT%"
+```
+
+随后回到 ZIP 解压根目录，做两个 paused frame 的只读资格验收：
+
+```text
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output .\runs\eligibility-attempt\operator
 ```
 
 资格 GREEN 且旧进程完全回收后，从正式 production 入口启动：
 
-为正式运行再分配一个新编号；下例的 `R1002` 只作占位：
+为正式运行重复上述 process-zero 检查，再执行以下分配并启动：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\formal-R1002 --turns 20 --timeout 810 --readiness-timeout 720
+mkdir "%XAR_R802_ROOT%\runs\formal-attempt"
+cd /d <当前仓库master根目录>
+py tools\ck3_live_run_id.py allocate --mod eternal-recurrence > "%XAR_R802_ROOT%\runs\formal-attempt\live-run-identity.json"
+cd /d "%XAR_R802_ROOT%"
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\formal-attempt\operator --turns 20 --timeout 810 --readiness-timeout 720
 ```
+
+每轮结束后，从 `live-run-identity.json` 读取完整 `run_id`，再从当前仓库 master 根目录用 `tools\ck3_live_run_id.py status` 记录 `completed-green` 或 `completed-red`；真实 RED 不得标成 GREEN。一次 attempt 的目录名不得复用，失败重跑必须新建目录并重新分配编号。
 
 包内样本从 WarID 5 终局后的和平 checkpoint 开始。R805 实际运行经公共查询选择新的合法战争、typed 宣战、独立观察 WarID 25、下一 turn 消费、征兵、行军和战斗；旧 `offer-white-peace-5` 没有重放。
 
@@ -88,14 +109,18 @@ R802 包内的旧 operator 会复制成对 checkpoint/driver state、把环境�
 在另一个普通命令提示符中进入 ZIP 解压根目录。状态命令显式指向本轮报告；安全暂停/停止只调用一次，然后等待原 `run` 命令返回：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py status --report .\runs\formal-R1002\formal-report.txt
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py status --report .\runs\formal-attempt\operator\formal-report.txt
 .xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py request-stop --manifest .\operator-manifest.json
 ```
 
-原 `run` 命令返回后再次执行 `status`，确认返回 JSON 的 `ck3_processes=[]`，并按 operator receipt 确认 injector 已回收。随后分配新的输出编号冷恢复同一目标；下例的 `R1003` 只作占位：
+原 `run` 命令返回后再次执行 `status`，确认返回 JSON 的 `ck3_processes=[]`，并按 operator receipt 确认 injector 已回收。随后再次执行 process-zero 检查，再分配新正式编号并冷恢复同一目标：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\cold-restore-R1003 --turns 5 --timeout 810 --readiness-timeout 720
+mkdir "%XAR_R802_ROOT%\runs\cold-restore-attempt"
+cd /d <当前仓库master根目录>
+py tools\ck3_live_run_id.py allocate --mod eternal-recurrence > "%XAR_R802_ROOT%\runs\cold-restore-attempt\live-run-identity.json"
+cd /d "%XAR_R802_ROOT%"
+.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\cold-restore-attempt\operator --turns 5 --timeout 810 --readiness-timeout 720
 ```
 
 `run` 会从 `<state_dir>` 当前成对 checkpoint/driver state 动态取得哈希并执行 no-launch preflight，不需要手工回填 manifest 哈希。
