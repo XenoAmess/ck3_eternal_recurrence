@@ -54,7 +54,8 @@
 不用仓库 secret。第三方 action 只有按完整 commit SHA 固定的官方 `actions/checkout`。
 
 GitHub 将 `issue_comment` 和 `pull_request_target` 工作流关联到默认分支 SHA，而非 PR head；因此检查器通过 commit statuses API 明确把
-结果写到 PR head SHA。分支保护应把 `CLA / signed` 设为 `master` 的必需状态。
+结果写到 PR head SHA。Bot 评论中的 CLA 链接则固定到本次实际检出的受信默认分支 commit，使签署版本可以永久复核。
+分支保护应把 `CLA / signed` 设为 `master` 的必需状态。
 
 `pull_request_target` 是高权限事件。仓库的 Actions event policy 必须允许它；任何后续修改都不得加入 PR head checkout、PR artifact
 下载或对 PR 内容的代码执行。GitHub 的官方安全说明：

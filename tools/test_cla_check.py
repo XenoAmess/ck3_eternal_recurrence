@@ -136,6 +136,12 @@ class ClaCheckTests(unittest.TestCase):
             cla_check.next_link(header), "https://api.github.test/items?page=2"
         )
 
+    def test_document_url_pins_the_trusted_revision(self) -> None:
+        self.assertEqual(
+            cla_check.document_url("owner/repo", "legal/CLA 1.1.md", "abc123"),
+            "https://github.com/owner/repo/blob/abc123/legal/CLA%201.1.md",
+        )
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

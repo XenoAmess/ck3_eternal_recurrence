@@ -202,6 +202,11 @@ def signature_records(
     return records
 
 
+def document_url(repository: str, document: str, revision: str) -> str:
+    quoted_path = urllib.parse.quote(document, safe="/")
+    return f"https://github.com/{repository}/blob/{revision}/{quoted_path}"
+
+
 def evaluate(
     config: dict[str, Any],
     pull_request: dict[str, Any],
@@ -370,9 +375,10 @@ def main() -> int:
         f"/repos/{repository}/issues/{pr_number}/comments?per_page=100"
     )
     evaluation = evaluate(config, pull_request, commits, comments)
-    quoted_path = urllib.parse.quote(str(config["document"]), safe="/")
-    cla_url = (
-        f"https://github.com/{repository}/blob/{pull_request['base']['sha']}/{quoted_path}"
+    cla_url = document_url(
+        repository,
+        str(config["document"]),
+        os.environ.get("CLA_DOCUMENT_REF") or str(pull_request["base"]["sha"]),
     )
     comment_body = render_comment(config, evaluation, cla_url)
     upsert_bot_comment(

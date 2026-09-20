@@ -51,6 +51,9 @@ jobs:
       - name: Test checker
         run: python3 tools/test_cla_check.py
 
+      - name: Record trusted CLA revision
+        run: echo "CLA_DOCUMENT_REF=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
       - name: Check CLA signatures
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
