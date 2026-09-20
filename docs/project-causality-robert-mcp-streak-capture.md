@@ -77,3 +77,18 @@ R30 已经闭合第一条完整进攻 loop，但没有把第二场战争包装�
 | `war-ledger.jsonl` | WarID 开始与结算账本 | `27E11359BD320FC66B8CAC3A635C62F04ACD792D82E1B671BD588C73AB909F6C` |
 
 宣传片采用上述 `95s..480s` 的单一连续区间，源时间没有跳切、倒退或重排。画面中的第一场胜利可以作为 production-live 证据；后续防御战展示智能体接管新的 War ID 并继续游玩，不宣称尚未发生的第二场结果。
+
+## 录制历史现场收口（2026-09-20）
+
+R30 完成后，工作区还遗留两类未提交现场。评审结论如下：
+
+- `opening_smoke.py` 与 `run_project_causality_robert_benchmark.py` 的未提交修改属于已经被 R30 取代的固定巴勒莫旧基准。它们同时保留 OCR、鼠标和固定路线行为，与最终公开的 MCP-only、动态择敌能力不是同一条实现路径，因此还原到已提交版本，不作为正式能力提交。
+- 根目录 `nb1/`、`nb2/`、`nb2vs/`、`nb2w/`、`nb3vs/`、`nb4vs/`、`nb5vs/` 均为可重建的 CMake/Ninja 临时目录。除 `nb5vs` 外，其余目录只属于编译候选或工具链试验；七个目录在证据冻结后全部删除，共释放约 214 MB。
+- R30 的 `report.json` 明确绑定 `nb5vs` 中的 bridge DLL 与 injector。删除临时构建树前，两个精确二进制已复制到 `artifacts/project-causality/2026-09-20-robert-mcp-streak-r30/frozen-native/`，并由同目录 `manifest.json` 记录来源、字节数、哈希和原报告哈希。
+
+| 冻结文件 | 字节 | SHA-256 |
+|---|---:|---|
+| `frozen-native/xar_ck3_bridge.dll` | 3,147,776 | `49A70AF2294ACFB52624B52298F2C068F3150EC332BA5F5ABB7415AD24A72728` |
+| `frozen-native/xar_ck3_bridge_injector.exe` | 39,936 | `A9C9D29E0D8C6F0774600B1F7BA8CC248CA180D3C5BD705017EBAC6F87722CF4` |
+
+冻结前后两个哈希逐字节一致。原 `report.json` 未改写，仍保持 SHA-256 `2E85F101459099F457313C5DE800C383A9984AF7F542BEF7CBA3A0C127503E1D`。因此，本次收口清除了已被替代的施工现场，但没有损失 R30 实机证据所引用的确切原生二进制。
