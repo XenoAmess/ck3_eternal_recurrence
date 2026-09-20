@@ -30,6 +30,13 @@
 
 ## 一次性准备
 
+> **冻结包说明：**R802 ZIP 内的 `QUICKSTART.md` 和
+> `repo\tools\g2_preview_operator.py` 都是 `9bacc5af` 的不可变字节；包内
+> QUICKSTART 仍记录最初通过资格验收时的 PowerShell 等价流程。当前这份
+> 外部指南只在命令语法上覆盖包内 QUICKSTART，提供经 no-launch 实测的纯
+> `cmd.exe` / CPython 步骤；它不修改 ZIP、不把 R802 冒充成最新 master，也
+> 不允许用 master 上较新的 operator 覆盖包内脚本。
+
 把 ZIP 解压到新目录，在该目录打开普通命令提示符。资格主机使用 CPython 3.13.2；按包内声明安装运行依赖：
 
 ```text
@@ -43,7 +50,16 @@ py -3.13 -m venv .xar-preview-venv
 .xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py prepare-state --manifest .\operator-manifest.json --sample-dir .\sample-resume
 ```
 
-`prepare-state` 复制成对 checkpoint/driver state、把环境绑定迁移到本机并执行零启动预检；它还会核对重绑后的 driver 字节，并把环境与 driver 哈希原子写回 manifest。它拒绝覆盖已有 state。不要猜哈希、手改存档或 driver state。
+R802 包内的旧 operator 会复制成对 checkpoint/driver state、把环境绑定迁移到本机并执行零启动预检，但它早于自动回写 manifest 的实现。命令成功后，立即用同一个包内虚拟环境执行下面的确定性同步；该命令只读取 `<state_dir>\ordinary-seed-rebind-v1.json` 的两个 `target_sha256`，经临时文件替换 `operator-manifest.json`，不启动 CK3：
+
+```text
+.xar-preview-venv\Scripts\python.exe -c "import json,pathlib; p=pathlib.Path(r'.\operator-manifest.json'); m=json.loads(p.read_text(encoding='utf-8-sig')); r=json.loads((pathlib.Path(m['state_dir'])/'ordinary-seed-rebind-v1.json').read_text(encoding='utf-8-sig')); m['environment_sha256']=r['environment']['target_sha256']; m['driver_state_sha256']=r['driver_state']['target_sha256']; t=p.with_name(p.name+'.sync.tmp'); t.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n',encoding='utf-8'); t.replace(p)"
+.xar-preview-venv\Scripts\python.exe -c "import json,pathlib; p=pathlib.Path(r'.\operator-manifest.json'); m=json.loads(p.read_text(encoding='utf-8-sig')); r=json.loads((pathlib.Path(m['state_dir'])/'ordinary-seed-rebind-v1.json').read_text(encoding='utf-8-sig')); assert m['environment_sha256']==r['environment']['target_sha256']; assert m['driver_state_sha256']==r['driver_state']['target_sha256']; print('manifest rebind hashes synchronized')"
+```
+
+不要手抄或猜测哈希，也不要手改存档或 driver state。`prepare-state` 拒绝覆盖已有 state；若上述同步或断言失败，停止并保留现场，不得进入 eligibility 或正式运行。
+
+这一步已于 2026-09-21 对精确 R802 ZIP 的全新解压目录完成 no-launch 等价验证：源 checkpoint 字节未变，manifest 的环境哈希 `A15A64F260674CD6EA0720301129E20B62B2A990202EA4F4DC7C108B293B36FB` 与 driver 哈希 `4BA00A2C6A28AD3ACB81C4869AC30498B33BDCE665959D2BC46EF6207AB8E1F6` 分别等于 rebind receipt 的两个 target，receipt 与 preflight 都记录 `ck3_launch_attempted=false` 且进程库存为空；receipt SHA-256 为 `C2576D2AF7B57B294729F0319C70CC5E5096FEB74946511E54B341DB30C690D8`，preflight report SHA-256 为 `1F4EA5C524F090B7C56AB9A7F9BD4C170A1D25C12A91FA762F5594E45A38630E`。这只验证 cmd/CPython 准备步骤与原资格流程等价，不新增能力、不替代 R804–R806 实机资格。
 
 ## 启动自动游玩
 
