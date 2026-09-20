@@ -683,6 +683,29 @@ def load_edit_config(config_path: Path) -> dict[str, Any]:
             "policy": "imperious vision chapter with preserved engineering claims",
         }
         return base
+    if schema == "project-causality-r17-copy-edit.v1":
+        base_path = r11._root_path(requested.get("base_config"), "base_config")
+        base = copy.deepcopy(load_edit_config(base_path))
+        overrides = requested.get("text_overrides")
+        if not isinstance(overrides, dict) or not overrides:
+            raise R12BuildError("r17 text_overrides must be a non-empty object")
+        merged_overrides = dict(base.get("text_overrides", {}))
+        for chapter_id, fields in overrides.items():
+            if not isinstance(fields, dict):
+                raise R12BuildError(f"r17 override must be an object: {chapter_id}")
+            current = dict(merged_overrides.get(chapter_id, {}))
+            current.update(fields)
+            merged_overrides[chapter_id] = current
+        base["schema"] = schema
+        base["edition"] = "r17"
+        base["base_config"] = str(base_path)
+        base["text_overrides"] = merged_overrides
+        base["r17_copy"] = {
+            "source_config": str(config_path),
+            "source_base": str(base_path),
+            "policy": "owner-selected no-duck master with two final Chinese copy changes",
+        }
+        return base
     if schema != "project-causality-r13-hook-edit.v1":
         raise R12BuildError(f"unsupported edit config schema: {config_path}")
     base_path = r11._root_path(requested.get("base_config"), "base_config")
