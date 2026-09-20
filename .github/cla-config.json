@@ -1,7 +1,7 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "document": "CLA.md",
-  "acceptance_statement": "I have read and agree to the Contributor License Agreement (CLA), version 1.1, and I confirm that I have authority to grant the rights for my contribution.",
+  "acceptance_statement": "I have read and agree to the Contributor License Agreement (CLA), version 1.2, and I confirm that I have authority to grant the rights for my contribution.",
   "status_context": "CLA / signed",
   "comment_marker": "<!-- project-causality-cla-check:v1 -->",
   "exempt_users": [

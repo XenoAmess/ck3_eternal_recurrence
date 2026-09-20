@@ -41,7 +41,7 @@ Every account reported by the checker must post this exact comment on the pull
 request:
 
 ```text
-I have read and agree to the Contributor License Agreement (CLA), version 1.1, and I confirm that I have authority to grant the rights for my contribution.
+I have read and agree to the Contributor License Agreement (CLA), version 1.2, and I confirm that I have authority to grant the rights for my contribution.
 ```
 
 The checker covers the pull-request author and GitHub-linked commit authors. If

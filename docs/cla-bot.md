@@ -7,7 +7,7 @@
 
 权威文件：
 
-- 法律文本：`CLA.md`，当前版本 `1.1`；
+- 法律文本：`CLA.md`，当前版本 `1.2`；
 - 贡献流程：`CONTRIBUTING.md`；
 - 机器配置：`.github/cla-config.json`；
 - 检查器：`tools/cla_check.py`；

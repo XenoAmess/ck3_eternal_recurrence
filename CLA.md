@@ -1,6 +1,6 @@
 # Project Causality Contributor License Agreement
 
-Version 1.1 — effective 2026-09-20
+Version 1.2 — effective 2026-09-20
 
 This Contributor License Agreement (the **Agreement**) governs Contributions
 submitted to the `XenoAmess/ck3_eternal_recurrence` repository and the
@@ -50,13 +50,7 @@ license or other terms, including copyleft, permissive, commercial, or
 proprietary terms. If the Contribution is accepted into a Project release, the
 accepted version will also be made available under the outbound license or
 licenses used for the Project when the Contribution was submitted. This does
-not require a later version or release to use the same outbound license, and it
-does not revoke rights already granted for copies previously released under the
-GNU General Public License or another license.
-
-This Agreement grants rights only in the Contribution. It does not permit the
-Maintainer to relicense third-party material for which the Maintainer has not
-separately obtained sufficient rights.
+not require a later version or release to use the same outbound license.
 
 Where applicable law does not permit a moral right to be licensed, You waive
 and agree not to assert that right against the Maintainer, the Project, or
@@ -116,7 +110,7 @@ origin of a Contribution or comply with notice requirements.
 For each pull request, You accept this Agreement by posting the exact statement
 below as a comment from the GitHub account associated with Your Contribution:
 
-> I have read and agree to the Contributor License Agreement (CLA), version 1.1, and I confirm that I have authority to grant the rights for my contribution.
+> I have read and agree to the Contributor License Agreement (CLA), version 1.2, and I confirm that I have authority to grant the rights for my contribution.
 
 By posting that statement, You intend the comment to be Your electronic
 signature. The public GitHub account, comment text, timestamp, URL, pull request,
@@ -142,7 +136,7 @@ Contribution relates.
 
 # project因果律贡献者许可协议（中文参考译文）
 
-版本 1.1——2026-09-20 生效
+版本 1.2——2026-09-20 生效
 
 本译文仅供阅读便利。英文正文为权威文本；两种文本不一致时，以英文正文为准。
 
@@ -175,9 +169,7 @@ Contribution relates.
 
 上述授权明确允许维护者将贡献单独、作为本项目的一部分，或作为其他产品的一部分，在任何许可证或其他条款下许可或再许可，
 包括 copyleft、宽松、商业或专有条款。如果贡献被接纳进入某个项目版本，该已接纳版本也会在贡献提交时项目使用的对外许可证下提供。
-这不要求以后的版本或发行继续使用相同对外许可证，也不撤销已经就先前依 GNU 通用公共许可证或其他许可证发布的副本所授予的权利。
-
-本协议只授予贡献本身的权利。对于维护者未另行取得充分权利的第三方材料，本协议不允许维护者对其重新许可。
+这不要求以后的版本或发行继续使用相同对外许可证。
 
 如果适用法律不允许许可精神权利，您在法律允许的最大范围内放弃该权利，并同意不对维护者、本项目或依本协议
 行使权利的接收者主张该权利。
@@ -216,7 +208,7 @@ Contribution relates.
 
 对于每个拉取请求，您须使用与贡献关联的 GitHub 账号发表以下完全一致的评论以接受本协议：
 
-> I have read and agree to the Contributor License Agreement (CLA), version 1.1, and I confirm that I have authority to grant the rights for my contribution.
+> I have read and agree to the Contributor License Agreement (CLA), version 1.2, and I confirm that I have authority to grant the rights for my contribution.
 
 发表该声明即表示您有意以该评论作为电子签名。公开的 GitHub 账号、评论正文、时间戳、URL、拉取请求及关联提交共同构成
 签署记录。自动检查只报告该记录是否存在；签署记录本身是您的评论。
