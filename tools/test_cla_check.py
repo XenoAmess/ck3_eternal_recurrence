@@ -8,7 +8,7 @@ import cla_check
 
 STATEMENT = (
     "I have read and agree to the Contributor License Agreement (CLA), version "
-    "1.0, and I confirm that I have authority to grant the rights for my contribution."
+    "1.1, and I confirm that I have authority to grant the rights for my contribution."
 )
 CONFIG = {
     "acceptance_statement": STATEMENT,
@@ -16,7 +16,7 @@ CONFIG = {
     "exempt_users": ["XenoAmess"],
     "manual_override_labels": ["cla:manual"],
     "require_commit_authors": True,
-    "version": "1.0",
+    "version": "1.1",
 }
 
 
@@ -55,7 +55,7 @@ def signed(login: str, body: str = STATEMENT) -> dict:
 class ClaCheckTests(unittest.TestCase):
     def test_repository_config_matches_cla_document(self) -> None:
         loaded = cla_check.load_config()
-        self.assertEqual(loaded["version"], "1.0")
+        self.assertEqual(loaded["version"], "1.1")
         self.assertEqual(loaded["acceptance_statement"], STATEMENT)
 
     def test_exact_signature_passes_for_pr_and_commit_authors(self) -> None:
