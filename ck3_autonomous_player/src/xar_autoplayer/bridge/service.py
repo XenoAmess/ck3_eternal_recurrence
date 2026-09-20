@@ -888,11 +888,34 @@ class GameplayBridgeService:
         plan = planned.get("plan")
         selected_step = plan.get("selected_step") if isinstance(plan, dict) else None
         if not isinstance(selected_step, str) or not selected_step:
+            succession_lifecycle = (
+                plan.get("succession_lifecycle")
+                if isinstance(plan, dict)
+                else None
+            )
+            has_succession_reconciliation_route = all(
+                callable(getattr(self.driver, method, None))
+                for method in (
+                    "retain_succession_expectation_v1",
+                    "reconcile_retained_succession_transition_v1",
+                )
+            )
+            legacy_rogue_terminal_without_reconciliation = bool(
+                isinstance(plan, dict)
+                and plan.get("phase")
+                == "terminal_successor_reconciliation_pending"
+                and isinstance(succession_lifecycle, dict)
+                and succession_lifecycle.get("lifecycle") == "rogue_one_life"
+                and not has_succession_reconciliation_route
+            )
             return {
                 "status": (
                     "terminal"
                     if isinstance(plan, dict)
-                    and plan.get("phase") == "terminal_complete"
+                    and (
+                        plan.get("phase") == "terminal_complete"
+                        or legacy_rogue_terminal_without_reconciliation
+                    )
                     else "blocked"
                 ),
                 "plan": plan,

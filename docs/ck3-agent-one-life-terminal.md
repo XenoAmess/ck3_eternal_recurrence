@@ -43,7 +43,10 @@ Native 的两个 `CFixedPoint` 分数以显式 `{raw, scale}` 传输。Python �
 `hybrid-fallback` 只合并 native 与 Data Mod 明确发布的 semantic capability 和 snapshot 投影；
 读取结算不会触发 OCR、恢复窗口或键鼠输入。若 native DLL 尚无结算 capability、Data Mod 已发布
 匹配 payload，`hybrid-fallback` 由 native driver 消费该 semantic payload、等待纪录位并记录 episode；
-Data Mod 和视觉 backend 都不会执行终局输入动作。
+Data Mod 和视觉 backend 都不会执行终局输入动作。配置化 hybrid 不公开私有继承核对入口时，已完成
+`rogue_one_life` 结算后的下一次 `auto_turn` 返回 `terminal`，而不是停在永远无法解除的
+`terminal_successor_reconciliation_pending`；这只结束该 legacy 一代制 episode，不允许继承人 gameplay，
+也不改变 `ordinary_campaign_succession` 必须完成真实继承核对后才能继续的门。
 
 ## 跨局成就归一
 
