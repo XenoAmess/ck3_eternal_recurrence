@@ -546,12 +546,35 @@ def parser() -> argparse.ArgumentParser:
 
 
 def load_edit_config(config_path: Path) -> dict[str, Any]:
-    """Load r12 directly or derive the r13 cold-open edit from the frozen r12 body."""
+    """Load r12 or derive later editorial passes without duplicating the frozen body."""
     requested = r11._load_json(config_path)
     schema = requested.get("schema")
     if schema == "project-causality-r12-publication-edit.v1":
         requested.setdefault("edition", "r12")
         return requested
+    if schema == "project-causality-r14-copy-polish.v1":
+        base_path = r11._root_path(requested.get("base_config"), "base_config")
+        base = copy.deepcopy(load_edit_config(base_path))
+        overrides = requested.get("text_overrides")
+        if not isinstance(overrides, dict) or not overrides:
+            raise R12BuildError("r14 text_overrides must be a non-empty object")
+        merged_overrides = dict(base.get("text_overrides", {}))
+        for cue_id, values in overrides.items():
+            if not isinstance(cue_id, str) or not isinstance(values, dict):
+                raise R12BuildError(f"invalid r14 text override: {cue_id}")
+            merged_values = dict(merged_overrides.get(cue_id, {}))
+            merged_values.update(values)
+            merged_overrides[cue_id] = merged_values
+        base["schema"] = schema
+        base["edition"] = "r14"
+        base["base_config"] = str(base_path)
+        base["text_overrides"] = merged_overrides
+        base["r14_copy_polish"] = {
+            "source_config": str(config_path),
+            "source_base": str(base_path),
+            "policy": "retain engineering depth while restoring natural spoken Chinese",
+        }
+        return base
     if schema != "project-causality-r13-hook-edit.v1":
         raise R12BuildError(f"unsupported edit config schema: {config_path}")
     base_path = r11._root_path(requested.get("base_config"), "base_config")

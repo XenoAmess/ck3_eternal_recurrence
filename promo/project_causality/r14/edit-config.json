@@ -1,0 +1,231 @@
+{
+  "schema": "project-causality-r14-copy-polish.v1",
+  "base_config": "promo/project_causality/r13/edit-config.json",
+  "text_overrides": {
+    "existing-mod-entry": {
+      "narration_en": "如果作品已经存在，作者不必改变自己的创作方式。只需要为关键界面和规则接上一层轻量适配，启动、存档、游戏内操作、结果核验与证据归档，就能交给自动验收流程。以后每次升级，都能无人值守地重放同一条玩家路径，并把成功或失败留下来。",
+      "subtitle_zh": "如果作品已经存在，作者不必改变自己的创作方式。只需要为关键界面和规则接上一层轻量适配，启动、存档、游戏内操作、结果核验与证据归档，就能交给自动验收流程。以后每次升级，都能无人值守地重放同一条玩家路径，并把成功或失败留下来。",
+      "subtitle_secondary": "If the work already exists, the author does not need to change how they create. A lightweight adaptation around key interfaces and rules is enough; startup, saves, in-game actions, result checks, and evidence archiving can then pass to the automated acceptance flow. Every upgrade can replay the same player journey unattended and preserve success or failure."
+    },
+    "base-game-research-value": {
+      "narration_en": "它的边界也不止于 Mod。我们先锁定游戏版本，弄清原生 AI 和内部状态，再用只读接口把自动化真正需要的信息交出来。这样，CK3 本体的行为也能成为可重复的实验。模组作者得到更可靠的兼容性判断，本体机制研究也拥有可以自动复现的观察、动作和结果。",
+      "subtitle_zh": "它的边界也不止于 Mod。我们先锁定游戏版本，弄清原生 AI 和内部状态，再用只读接口把自动化真正需要的信息交出来。这样，CK3 本体的行为也能成为可重复的实验。模组作者得到更可靠的兼容性判断，本体机制研究也拥有可以自动复现的观察、动作和结果。",
+      "subtitle_secondary": "Its reach also extends beyond mods. We first lock the game build, understand the native AI and internal state, then expose only the information automation actually needs through read-only interfaces. CK3 itself can then become a repeatable experiment. Mod authors gain more reliable compatibility judgments, while base-game research gains observations, actions, and outcomes that can be reproduced automatically."
+    },
+    "04-eternal-recurrence-04": {
+      "narration_en": "接着，契约追问这一生究竟想成为什么：征服者、织网者、圣徒、家主、贤王，还是享乐者。它一路记账，直到死亡时兑现，让彼此迥异的活法终于能够放上同一架秤。",
+      "subtitle_zh": "接着，契约追问这一生究竟想成为什么：征服者、织网者、圣徒、家主、贤王，还是享乐者。它一路记账，直到死亡时兑现，让彼此迥异的活法终于能够放上同一架秤。",
+      "subtitle_secondary": "Then the contract asks what this life intends to become: conqueror, webweaver, saint, patriarch, wise ruler, or hedonist. It keeps the account until death settles it, so radically different lives can finally be placed on the same scale."
+    },
+    "05-vivhite-03": {
+      "narration_en": "正因为只做这一件事，它才能拥有独立名字、独立工坊页面，以及一份只允许二十七个正式文件进入发布包的清单。单独启用，或者与主模组并肩加载，两种顺序都必须认得自己的窗口，也只扣自己的钱。",
+      "subtitle_zh": "正因为只做这一件事，它才能拥有独立名字、独立工坊页面，以及一份只允许二十七个正式文件进入发布包的清单。单独启用，或者与主模组并肩加载，两种顺序都必须认得自己的窗口，也只扣自己的钱。",
+      "subtitle_secondary": "Because it does only this one thing, it can own a separate name, a separate Workshop page, and a release list that admits only twenty-seven formal files. Whether enabled alone or beside the main mod, both load orders must find their own window and charge only their own price."
+    },
+    "06-zhongguo-361-public-02": {
+      "narration_en": "当参与考核的人数足够多，三成优秀、六成合格、一成待改进，分别对应三点七五、三点五和三点二五。有人领奖，有人进入改进计划。晋升、致仕、降岗和留任，不再只是事件文案，而是制度落下的后果。",
+      "subtitle_zh": "当参与考核的人数足够多，三成优秀、六成合格、一成待改进，分别对应三点七五、三点五和三点二五。有人领奖，有人进入改进计划。晋升、致仕、降岗和留任，不再只是事件文案，而是制度落下的后果。",
+      "subtitle_secondary": "When enough officials enter the review, thirty percent are outstanding, sixty percent are qualified, and ten percent enter improvement; the groups map to 3.75, 3.5, and 3.25. Some receive rewards and others enter improvement plans. Promotion, retirement, demotion, and retention become institutional consequences rather than mere event copy."
+    },
+    "06-zhongguo-361-public-03": {
+      "narration_en": "编号一到三百六十一的政策卡统一进入组织账本，再反过来影响下一轮考核。但卡片的数量不是完成度的障眼法：三百六十一张卡，不等于三百六十一个小游戏。没有真正实现的能力，片中就不会展示。",
+      "subtitle_zh": "编号一到三百六十一的政策卡统一进入组织账本，再反过来影响下一轮考核。但卡片的数量不是完成度的障眼法：三百六十一张卡，不等于三百六十一个小游戏。没有真正实现的能力，片中就不会展示。",
+      "subtitle_secondary": "Policy cards numbered one through 361 enter one shared organizational ledger and influence the next review. But quantity is not camouflage for completeness: 361 cards do not mean 361 separate minigames. If a capability does not truly exist, the film does not show it."
+    },
+    "07-independent-products-03": {
+      "narration_en": "自动升级建筑每十五天巡视直属地产。能不能升、下一级是什么、钱怎样付，都由原版规则回答。当前版本的六百零五条建筑路径全部由机器自动提取，不靠手抄。",
+      "subtitle_zh": "自动升级建筑每十五天巡视直属地产。能不能升、下一级是什么、钱怎样付，都由原版规则回答。当前版本的六百零五条建筑路径全部由机器自动提取，不靠手抄。",
+      "subtitle_secondary": "Automatic Building Upgrades inspects directly held land every fifteen days. The base game decides whether an upgrade is legal, what comes next, and how the price is paid. All 605 building paths are extracted automatically from the current game build, not copied by hand."
+    },
+    "08-coat-of-arms-editor-03": {
+      "narration_en": "它最重要的能力，是边界清楚。正式网页只处理玩家交给它的文本和图片；它不会安装或启动 CK3，也不会连接游戏，更不会运行任意脚本。原生桥只在开发验收里出现，用来证明这条边界确实成立。",
+      "subtitle_zh": "它最重要的能力，是边界清楚。正式网页只处理玩家交给它的文本和图片；它不会安装或启动 CK3，也不会连接游戏，更不会运行任意脚本。原生桥只在开发验收里出现，用来证明这条边界确实成立。",
+      "subtitle_secondary": "Its most important strength is a clear boundary. The released website handles only the text and images the player gives it; it neither installs nor launches CK3, never connects to the game, and never runs arbitrary scripts. A native bridge appears only in development acceptance to prove that the boundary holds."
+    },
+    "fresh-ruler-selection": {
+      "narration_en": "画面从已经稳定显示的 CK3 主菜单开始。智能体通过 MCP 进入新游戏，打开一零六六年书签，选择罗贝尔，然后启动一盘完全原版的新局。整个过程都由 MCP 读取并改变游戏状态；画面识别和固定屏幕坐标都没有参与。",
+      "subtitle_zh": "画面从已经稳定显示的 CK3 主菜单开始。智能体通过 MCP 进入新游戏，打开一零六六年书签，选择罗贝尔，然后启动一盘完全原版的新局。整个过程都由 MCP 读取并改变游戏状态；画面识别和固定屏幕坐标都没有参与。",
+      "subtitle_secondary": "The frame begins on a stable CK3 main menu. Through MCP, the agent enters New Game, opens the 1066 bookmark, selects Robert, and starts a completely vanilla campaign. The entire sequence reads and changes game state through MCP; image recognition and fixed screen coordinates do not participate."
+    },
+    "character-development": {
+      "narration_en": "地图上的每一步，都来自这一局真实出现的状态。人物、资源、领地、事件和可执行动作，共同进入同一套决策接口。智能体据此寻找当前最有价值的下一步。",
+      "subtitle_zh": "地图上的每一步，都来自这一局真实出现的状态。人物、资源、领地、事件和可执行动作，共同进入同一套决策接口。智能体据此寻找当前最有价值的下一步。",
+      "subtitle_secondary": "Every step on the map comes from the state that actually appears in this campaign. Characters, resources, holdings, events, and available actions enter one decision interface. The agent uses them to find the most valuable next step."
+    },
+    "realm-review": {
+      "narration_en": "战争开始以后，军队、敌军、路线、补给和战果都会变化。智能体每推进一段时间，就重新读取局势，让新的状态决定下一步。它不会假定上一刻的军队、路线和目标永远有效；每一步都要由最新局势重新确认。",
+      "subtitle_zh": "战争开始以后，军队、敌军、路线、补给和战果都会变化。智能体每推进一段时间，就重新读取局势，让新的状态决定下一步。它不会假定上一刻的军队、路线和目标永远有效；每一步都要由最新局势重新确认。",
+      "subtitle_secondary": "Once war begins, armies, enemies, routes, supply, and war score keep changing. At each interval, the agent reads the situation again and lets the new state choose what comes next. It never assumes that an earlier army, route, or target remains valid; every step must be confirmed against the latest situation."
+    },
+    "dynamic-target-selection": {
+      "narration_en": "宣战前，智能体枚举当前所有合法对手，比较宣战理由、目标和双方能够投入的军力，再按公开规则排序。因此，目标不是提前写死的。智能体只从本局实际可选的对手中挑出更好的目标，并给出理由。",
+      "subtitle_zh": "宣战前，智能体枚举当前所有合法对手，比较宣战理由、目标和双方能够投入的军力，再按公开规则排序。因此，目标不是提前写死的。智能体只从本局实际可选的对手中挑出更好的目标，并给出理由。",
+      "subtitle_secondary": "Before declaring war, the agent enumerates every legal opponent, compares casus belli, targets, and forces both sides can commit, then ranks them by public rules. The target is therefore not written in advance. The agent chooses a stronger option only among the opponents available in this campaign, and explains why."
+    },
+    "spell-deep-native-state": {
+      "narration_en": "刚才那段连续实机之所以能够核验，是因为底层先锁定了 CK3 的精确版本，并校验程序本身与底层接口约定，也就是 ABI。MCP 不靠画面猜测，而是读取这一版本里的原生人物、战争、军队和前端模型。游戏更新以后，这套对应关系必须重新验证。",
+      "subtitle_zh": "刚才那段连续实机之所以能够核验，是因为底层先锁定了 CK3 的精确版本，并校验程序本身与底层接口约定，也就是 ABI。MCP 不靠画面猜测，而是读取这一版本里的原生人物、战争、军队和前端模型。游戏更新以后，这套对应关系必须重新验证。",
+      "subtitle_secondary": "The continuous gameplay can be verified because its foundations first lock the exact CK3 build and check the executable and low-level interface contract, or ABI. MCP does not guess from the screen; it reads the native characters, wars, armies, and front-end model for that build. When the game updates, those bindings must be verified again."
+    },
+    "spell-deep-command-and-ledger": {
+      "narration_en": "动作工具返回“已接收”，只说明命令送到了。宣战是否成立，要看独立快照里是否真的出现新的战争编号、交战双方和目标。择敌也有完整账本：所有合法候选、宣战理由和修正后的军力都会留下来，任何人都能重新算一遍。",
+      "subtitle_zh": "动作工具返回“已接收”，只说明命令送到了。宣战是否成立，要看独立快照里是否真的出现新的战争编号、交战双方和目标。择敌也有完整账本：所有合法候选、宣战理由和修正后的军力都会留下来，任何人都能重新算一遍。",
+      "subtitle_secondary": "When an action tool says accepted, it only means the command arrived. A declaration counts only when a fresh independent snapshot contains the new war ID, both sides, and the target. Target choice also keeps a complete ledger: every legal candidate, casus belli, and adjusted force estimate remains available for anyone to recalculate."
+    },
+    "spell-deep-ooda-evidence": {
+      "narration_en": "这里所说的战争闭环，不是机械地重复几个命令。观察、判断、行动和独立复核，每一步都必须使用上一步刚刚产生的真实状态。单个动作在实机里成功，只能证明这一招能用；整条链在真实战局里反复闭合，才能证明智能体真的会打这场战争。",
+      "subtitle_zh": "这里所说的战争闭环，不是机械地重复几个命令。观察、判断、行动和独立复核，每一步都必须使用上一步刚刚产生的真实状态。单个动作在实机里成功，只能证明这一招能用；整条链在真实战局里反复闭合，才能证明智能体真的会打这场战争。",
+      "subtitle_secondary": "A war loop is not a machine repeating several commands. Observation, judgment, action, and independent verification must each consume the real state produced by the previous step. A single action succeeding in the live game proves only that one move works; the whole chain must close repeatedly in a real war before the agent can be said to fight it."
+    },
+    "spell-value-closure": {
+      "narration_en": "于是，咒这一章最后留下的，不是一串模组名字，也不只是一次罗贝尔的胜利。它证明的是：创作者可以把一个想法交给机器反复实现，让它进入真实游戏、自己行动，再把结果带回来。已有模组从这里获得无人值守的稳定验收，新创作者从这里获得一条走得通的起点。下一次你想改一个机制，不必再问“我敢不敢动”，而可以问：“这条链会怎样替这次改动作证？”",
+      "subtitle_zh": "于是，咒这一章最后留下的，不是一串模组名字，也不只是一次罗贝尔的胜利。它证明的是：创作者可以把一个想法交给机器反复实现，让它进入真实游戏、自己行动，再把结果带回来。已有模组从这里获得无人值守的稳定验收，新创作者从这里获得一条走得通的起点。下一次你想改一个机制，不必再问“我敢不敢动”，而可以问：“这条链会怎样替这次改动作证？”",
+      "subtitle_secondary": "The Spell chapter leaves behind more than a list of mods or one victory by Robert. It proves that a creator can give an idea to a machine, let it repeatedly implement that idea, enter the real game, act, and bring the result back. Existing mods gain stable unattended acceptance, while new creators gain a viable starting point. The next time you change a mechanic, you no longer have to ask, 'Do I dare touch it?' You can ask, 'How will this chain prove the change?'"
+    },
+    "10-documents-02": {
+      "narration_en": "接下来才轮到证明。测试流程规定怎样判；底层接口与 MCP 合同说明当前版本能看见什么、能做什么；证据归档与发布记录则回答，究竟是哪一次运行、哪一组文件通过了关卡。",
+      "subtitle_zh": "接下来才轮到证明。测试流程规定怎样判；底层接口与 MCP 合同说明当前版本能看见什么、能做什么；证据归档与发布记录则回答，究竟是哪一次运行、哪一组文件通过了关卡。",
+      "subtitle_secondary": "Proof comes next. The testing process defines how to judge; low-level interfaces and MCP contracts state what the current build can see and do; evidence archives and release records identify the exact run and exact files that passed the gate."
+    },
+    "11-generation-03": {
+      "narration_en": "稳定标识还有自己的冻结契约。奖池改变后，先看权威表，再看分发差异，最后才更新记录这套含义的指纹。红灯不是催你把一切照单全收，而是要求你解释：世界为什么变了？",
+      "subtitle_zh": "稳定标识还有自己的冻结契约。奖池改变后，先看权威表，再看分发差异，最后才更新记录这套含义的指纹。红灯不是催你把一切照单全收，而是要求你解释：世界为什么变了？",
+      "subtitle_secondary": "Stable identifiers have a frozen contract of their own. After the pool changes, review the authority table, then the dispatch diff, and only then update the fingerprint that records the meaning. A red light does not ask you to accept everything; it asks why the world changed."
+    },
+    "12-validation-open-kaishek-03": {
+      "narration_en": "open-kashek 把更多语义拉回离线。它保留源码细节，按规则档检查，再用受限运行环境记录每一步状态变化；只有剩下的引擎问题，才交给 CK3。它已经能承担大量离线验收，但不会冒充完整的 CK3 运行时。",
+      "subtitle_zh": "open-kashek 把更多语义拉回离线。它保留源码细节，按规则档检查，再用受限运行环境记录每一步状态变化；只有剩下的引擎问题，才交给 CK3。它已经能承担大量离线验收，但不会冒充完整的 CK3 运行时。",
+      "subtitle_secondary": "open-kashek pulls more semantics back offline. It preserves source detail, checks against the rule documents, and records every state transition inside a restricted runtime; only the remaining engine questions go to CK3. It can already carry a great deal of offline acceptance, but it never pretends to be a complete CK3 runtime."
+    },
+    "13-mcp-01": {
+      "narration_en": "给游戏装上一双眼睛，第一步不是多读几个字段。每个 MCP 查询都要绑定明确版本和底层接口，写清输入、输出、线程、暂停条件与失败原因。一个永远为空的字段，不算眼睛。",
+      "subtitle_zh": "给游戏装上一双眼睛，第一步不是多读几个字段。每个 MCP 查询都要绑定明确版本和底层接口，写清输入、输出、线程、暂停条件与失败原因。一个永远为空的字段，不算眼睛。",
+      "subtitle_secondary": "The first step in giving the game eyes is not reading more fields. Every MCP query is tied to a defined build and low-level interface, with inputs, outputs, thread, pause conditions, and failure reasons spelled out. A field that is always empty is not an eye."
+    },
+    "13-mcp-02": {
+      "narration_en": "给它一只手，也不是把屏幕坐标包成工具。每个语义动作先说清意图，再检查前置条件，只执行最小改变。工具回答‘已经接收’，只说明请求送到了；世界是否真的改变，必须再用独立状态复核。",
+      "subtitle_zh": "给它一只手，也不是把屏幕坐标包成工具。每个语义动作先说清意图，再检查前置条件，只执行最小改变。工具回答‘已经接收’，只说明请求送到了；世界是否真的改变，必须再用独立状态复核。",
+      "subtitle_secondary": "Giving it a hand does not mean wrapping screen coordinates as tools. Each semantic action states its intent, checks its preconditions, and makes only the smallest change. When a tool says accepted, that only means the request arrived; an independent state read must still verify whether the world actually changed."
+    },
+    "13-mcp-03": {
+      "narration_en": "能力越强，边界越要写进合同。查询可以保持只读，动作可以限制在验收环境，发布动作还必须明确目标，并留下可以追踪的回执。MCP 不是为了方便而凿开的万能后门，而是一扇知道谁能进、能带走什么的门。",
+      "subtitle_zh": "能力越强，边界越要写进合同。查询可以保持只读，动作可以限制在验收环境，发布动作还必须明确目标，并留下可以追踪的回执。MCP 不是为了方便而凿开的万能后门，而是一扇知道谁能进、能带走什么的门。",
+      "subtitle_secondary": "The stronger the capability, the more clearly its boundary belongs in the contract. Queries can remain read-only, actions can be limited to the acceptance environment, and release actions must name their target and leave a traceable receipt. MCP is not a universal backdoor opened for convenience, but a door that knows who may enter and what they may carry out."
+    },
+    "14-ocr-boundary-03": {
+      "narration_en": "反过来，有些地方必须严禁 MCP：纯玩家挑战不能借接口作弊；正式发布的家徽网页不能接触本机游戏；没有授权的流程，也不能凭空获得动作能力。会做，不等于该做；能连，不等于该连。",
+      "subtitle_zh": "反过来，有些地方必须严禁 MCP：纯玩家挑战不能借接口作弊；正式发布的家徽网页不能接触本机游戏；没有授权的流程，也不能凭空获得动作能力。会做，不等于该做；能连，不等于该连。",
+      "subtitle_secondary": "Conversely, MCP is forbidden in some places: a pure player challenge cannot cheat through an interface; the released coat-of-arms website cannot touch the local game; an unauthorized flow cannot suddenly gain actions. Being able to do something does not mean we should; being able to connect does not mean we should."
+    },
+    "15-agent-construction-02": {
+      "narration_en": "通过的能力写进记忆、检查点与能力清单；失败则留下明确的问题名称，成为下一项要解决的阻点。看不见世界时，所谓策略只是猜。先让世界可读，再让行动可证，最后才配谈一场漫长的统治。",
+      "subtitle_zh": "通过的能力写进记忆、检查点与能力清单；失败则留下明确的问题名称，成为下一项要解决的阻点。看不见世界时，所谓策略只是猜。先让世界可读，再让行动可证，最后才配谈一场漫长的统治。",
+      "subtitle_secondary": "Capabilities that pass are written into memory, checkpoints, and the capability inventory; failures keep a clear problem name and become the next blocker. Strategy is only guessing when the world cannot be seen. Make the world readable, make actions provable, and only then speak of a long reign."
+    },
+    "16-release-promo-01": {
+      "narration_en": "测试变绿，还没到终点。正式构建只把白名单里的文件送进发布暂存区，剥离验收代码，再生成清单和可以重复得到同一结果的压缩包。开发树不能冒充商品。",
+      "subtitle_zh": "测试变绿，还没到终点。正式构建只把白名单里的文件送进发布暂存区，剥离验收代码，再生成清单和可以重复得到同一结果的压缩包。开发树不能冒充商品。",
+      "subtitle_secondary": "Passing tests is not the end. The formal build copies only allowlisted files into release staging, removes acceptance code, then produces a manifest and an archive that can be reproduced byte for byte. A development tree cannot pretend to be the product."
+    },
+    "method-value-closure": {
+      "narration_en": "权威文档、生成器、离线验收、游戏接口、视觉核验、自动玩家、发布构建和证据归档，看起来像很多零件。合在一起，它们只解决一件事：让一次改动有清楚的起点、可追的路径和可复现的终点。最实用的行动，不是一次接入全部，而是选一个最痛的功能，从权威定义开始，把它走通到真实游戏和发布包。第一条链闭合，后面的链才有模板。",
+      "subtitle_zh": "权威文档、生成器、离线验收、游戏接口、视觉核验、自动玩家、发布构建和证据归档，看起来像很多零件。合在一起，它们只解决一件事：让一次改动有清楚的起点、可追的路径和可复现的终点。最实用的行动，不是一次接入全部，而是选一个最痛的功能，从权威定义开始，把它走通到真实游戏和发布包。第一条链闭合，后面的链才有模板。",
+      "subtitle_secondary": "Authority documents, generators, offline acceptance, game interfaces, visual checks, the autonomous player, release builds, and evidence archives may look like many separate parts. Together they solve one problem: giving every change a clear start, a traceable path, and a reproducible end. The practical move is not to adopt everything at once, but to choose the most painful feature and carry it from authority definition to the real game and release package. Once the first chain closes, the rest have a template."
+    },
+    "maintenance-testing-value": {
+      "narration_en": "对维护和测试而言，版本升级不再从零开始猜。静态门禁先淘汰确定性错误，真实 CK3 再按玩家会经历的顺序完成操作，最后用画面、结构化状态、日志和发布清单交叉核验。一次明确的失败，不只是一句结论，而是下一次修复可以直接读取的输入。",
+      "subtitle_zh": "对维护和测试而言，版本升级不再从零开始猜。静态门禁先淘汰确定性错误，真实 CK3 再按玩家会经历的顺序完成操作，最后用画面、结构化状态、日志和发布清单交叉核验。一次明确的失败，不只是一句结论，而是下一次修复可以直接读取的输入。",
+      "subtitle_secondary": "For maintenance and testing, a version upgrade no longer starts from guesswork. Static gates remove deterministic errors, real CK3 follows the order a player would experience, and visuals, structured state, logs, and release manifests cross-check the result. A clearly identified failure is not just a verdict; it becomes input the next repair can consume."
+    },
+    "19-state-over-ack-02": {
+      "narration_en": "唯一算数的，是独立读取到的后置状态。部队真的移动，角色真的结婚，通知真的消失，资源真的扣除；下一次判断，也确实能够使用上一次行动留下的新现实。",
+      "subtitle_zh": "唯一算数的，是独立读取到的后置状态。部队真的移动，角色真的结婚，通知真的消失，资源真的扣除；下一次判断，也确实能够使用上一次行动留下的新现实。",
+      "subtitle_secondary": "The only thing that counts is an independently read post-state. The army moved, the character married, the notification disappeared, and the resource was spent; the next judgment can actually use the new reality left by the previous action."
+    },
+    "19-state-over-ack-03": {
+      "narration_en": "所以，命令成功不能冒充观察与行动的闭环，单个场景不能冒充长局，任何一个接口也不能独自替整条发布通道作保。回执属于机器，状态才接近玩家。",
+      "subtitle_zh": "所以，命令成功不能冒充观察与行动的闭环，单个场景不能冒充长局，任何一个接口也不能独自替整条发布通道作保。回执属于机器，状态才接近玩家。",
+      "subtitle_secondary": "A successful command cannot impersonate a closed observation-and-action loop, one scenario cannot impersonate a long campaign, and no interface can vouch for the entire release channel by itself. Receipts belong to machines; state is closer to the player."
+    },
+    "20-evidence-exact-build-01": {
+      "narration_en": "证据等级不是勋章，而是音量旋钮。从早期研究、静态就绪、夹具中的实机验证，到真实环境里可用的单个动作、能够持续闭合的完整循环，最后才是完成。证据站在哪一级，公开表达就只能用那一级的音量。",
+      "subtitle_zh": "证据等级不是勋章，而是音量旋钮。从早期研究、静态就绪、夹具中的实机验证，到真实环境里可用的单个动作、能够持续闭合的完整循环，最后才是完成。证据站在哪一级，公开表达就只能用那一级的音量。",
+      "subtitle_secondary": "Evidence levels are not medals but volume controls. From early research and static readiness, through live tests in fixtures, to individual actions working in production and complete loops that keep closing, only then do we reach complete. Public claims may speak only as loudly as the evidence permits."
+    },
+    "20-evidence-exact-build-02": {
+      "narration_en": "把离线接口说成实机，把一张成功回执说成完整循环，把固定剧本的一次成功吹成所有长局都可靠，都是在伪造进度。失败也不能擦掉：是验收框架坏了，还是能力真的不够，必须留下案底。",
+      "subtitle_zh": "把离线接口说成实机，把一张成功回执说成完整循环，把固定剧本的一次成功吹成所有长局都可靠，都是在伪造进度。失败也不能擦掉：是验收框架坏了，还是能力真的不够，必须留下案底。",
+      "subtitle_secondary": "Calling an offline interface live, calling one accepted command a complete loop, or turning one successful fixed script into reliability across all long campaigns all falsify progress. Failure cannot be erased either: whether the harness broke or the capability fell short must remain on record."
+    },
+    "20-evidence-exact-build-03": {
+      "narration_en": "CK3 版本、程序哈希、底层接口和原版决策树，共同构成能力成立的地基。版本一变，旧地址与旧推断不会自动重生；只有重新验证，才有资格把虚线重新画成实线。",
+      "subtitle_zh": "CK3 版本、程序哈希、底层接口和原版决策树，共同构成能力成立的地基。版本一变，旧地址与旧推断不会自动重生；只有重新验证，才有资格把虚线重新画成实线。",
+      "subtitle_secondary": "The CK3 build, executable hash, low-level interfaces, and native decision trees form the foundation on which a capability stands. When the build changes, old addresses and inferences do not revive automatically; only fresh verification may turn the dashed line solid again."
+    },
+    "21-value-boundaries-02": {
+      "narration_en": "诚实也意味着知道哪里停手：主产品默认只对真人玩家生效，电脑玩家的例外逐项授权；纯网页工具不接触本机游戏，尚未公开的能力也不借宣传片提前出现。",
+      "subtitle_zh": "诚实也意味着知道哪里停手：主产品默认只对真人玩家生效，电脑玩家的例外逐项授权；纯网页工具不接触本机游戏，尚未公开的能力也不借宣传片提前出现。",
+      "subtitle_secondary": "Honesty also means knowing where to stop: the main product affects human players by default and AI exceptions are authorized one by one; a pure web tool does not touch the local game, and unannounced capabilities do not enter reality through a trailer."
+    },
+    "25-loop-b-01": {
+      "narration_en": "第二环从真实阻点开始。先读清原版行为，再补足观察和动作，让观察、判断、行动与复核完整闭合一次。每闭合一次，智能体能够独立接管的时间就再向前一步；新的实机运行，也会亲手指出下一块绊脚石。",
+      "subtitle_zh": "第二环从真实阻点开始。先读清原版行为，再补足观察和动作，让观察、判断、行动与复核完整闭合一次。每闭合一次，智能体能够独立接管的时间就再向前一步；新的实机运行，也会亲手指出下一块绊脚石。",
+      "subtitle_secondary": "The second loop begins with a real blocker. First understand native behavior, then add the missing observation and action, and close one full round of observing, judging, acting, and verifying. Each closure pushes unattended control a little farther; each new live run exposes the next obstacle."
+    },
+    "25-loop-b-02": {
+      "narration_en": "今天，在同一组冻结条件下，完整寿命与局部战争都已经留下实机证据。不同统治者、政府、扩展包和普通跨继承长局，仍然只能画成虚线。愿景可以把路照亮，却不能替脚步伪造里程。",
+      "subtitle_zh": "今天，在同一组冻结条件下，完整寿命与局部战争都已经留下实机证据。不同统治者、政府、扩展包和普通跨继承长局，仍然只能画成虚线。愿景可以把路照亮，却不能替脚步伪造里程。",
+      "subtitle_secondary": "Today, under the same frozen conditions, full lifetimes and bounded wars both have live evidence. Different rulers, governments, DLCs, and ordinary inherited campaigns remain dashed. A vision may light the road, but it cannot invent distance the feet have not traveled."
+    },
+    "27-loop-d-01": {
+      "narration_en": "第四环负责把绿灯带出开发现场。冻结证据、可信展示、发布包与创意工坊成品，把镜头、公开声明、来源、最终文件和人工确认绑在一起。宣传不是给工程化妆，它本身也是工程。",
+      "subtitle_zh": "第四环负责把绿灯带出开发现场。冻结证据、可信展示、发布包与创意工坊成品，把镜头、公开声明、来源、最终文件和人工确认绑在一起。宣传不是给工程化妆，它本身也是工程。",
+      "subtitle_secondary": "The fourth loop carries the green light beyond development. Frozen evidence, trustworthy presentation, release packages, and Workshop products bind footage, public claims, sources, final files, and human approval together. Promotion does not apply makeup to engineering; it is engineering."
+    },
+    "00-result-question-01": {
+      "narration_en": "把四条环路重新落回一名玩家身上：一个统治者倒下，游戏却没有归零。他的选择化成余烬，穿过存档，落进下一段人生。于是，死亡不再是句号，而是下一次开局的火种。",
+      "subtitle_zh": "把四条环路重新落回一名玩家身上：一个统治者倒下，游戏却没有归零。他的选择化成余烬，穿过存档，落进下一段人生。于是，死亡不再是句号，而是下一次开局的火种。",
+      "subtitle_secondary": "Bring the four loops back to one player: a ruler falls, yet the game does not reset to zero. His choices become embers, cross the save boundary, and enter the next life. Death is therefore no longer a full stop, but the spark of the next beginning."
+    },
+    "00-result-question-02": {
+      "narration_en": "同一套思路也出现在别处。官员榜单重新排位；自动玩家复核行动是否生效；家徽编辑器交出可粘贴的文本；发布流水线封存能够复现的成品。它们表面各自独立，背后却在回答同一个问题。",
+      "subtitle_zh": "同一套思路也出现在别处。官员榜单重新排位；自动玩家复核行动是否生效；家徽编辑器交出可粘贴的文本；发布流水线封存能够复现的成品。它们表面各自独立，背后却在回答同一个问题。",
+      "subtitle_secondary": "The same idea appears elsewhere. The officials' ranking updates; the autonomous player checks whether an action took effect; the coat-of-arms editor returns pasteable text; the release pipeline seals a reproducible product. They look independent, yet answer the same question underneath."
+    },
+    "00-result-question-03": {
+      "narration_en": "这些成功究竟只是一次好运，还是来自一条能够重复的因果链？前面的产品、方法、证据和四个循环已经给出答案：它们必须彼此咬合，结果才会留下来。",
+      "subtitle_zh": "这些成功究竟只是一次好运，还是来自一条能够重复的因果链？前面的产品、方法、证据和四个循环已经给出答案：它们必须彼此咬合，结果才会留下来。",
+      "subtitle_secondary": "Are these successes only moments of luck, or do they come from a causal chain that can be repeated? The products, methods, evidence, and four loops already shown give the answer: they must interlock for results to endure."
+    },
+    "01-project-thesis-01": {
+      "narration_en": "回望整部片子，散落的结果正是被这条因果链拴在一起。我们没有把几个仓库堆成一个巨物，也没有只给它们换上相同的招牌。每件作品仍可独立活着，却共享同一套能够积累的记忆。",
+      "subtitle_zh": "回望整部片子，散落的结果正是被这条因果链拴在一起。我们没有把几个仓库堆成一个巨物，也没有只给它们换上相同的招牌。每件作品仍可独立活着，却共享同一套能够积累的记忆。",
+      "subtitle_secondary": "Looking back across the film, the scattered results are tied together by this causal chain. We did not pile several repositories into one giant object, nor merely give them the same sign. Each work remains independently alive while sharing a memory that can accumulate."
+    },
+    "01-project-thesis-02": {
+      "narration_en": "所以，一个模组可以单独安装，一件工具可以单独使用，一项自动化能力也必须单独兑现承诺。与此同时，它们背后的文档、生成、测试、实机观察、证据和发行，共用同一副骨架。",
+      "subtitle_zh": "所以，一个模组可以单独安装，一件工具可以单独使用，一项自动化能力也必须单独兑现承诺。与此同时，它们背后的文档、生成、测试、实机观察、证据和发行，共用同一副骨架。",
+      "subtitle_secondary": "A mod can therefore be installed alone, a tool used alone, and an automated capability must fulfill its promise alone. At the same time, the documents, generation, tests, live observation, evidence, and release behind them share one skeleton."
+    },
+    "01-project-thesis-03": {
+      "narration_en": "这一路最终造出的，不是一件更庞大的作品，而是一种能够持续下去的能力。创造可以被游玩，游玩可以被检验，检验可以抵达发行；真实结果再反过来改写下一次创造。",
+      "subtitle_zh": "这一路最终造出的，不是一件更庞大的作品，而是一种能够持续下去的能力。创造可以被游玩，游玩可以被检验，检验可以抵达发行；真实结果再反过来改写下一次创造。",
+      "subtitle_secondary": "What this journey ultimately builds is not a larger work, but a capability that can continue. Creation can be played, play can be verified, verification can reach release, and real results can rewrite the next creation."
+    },
+    "02-four-layer-map-01": {
+      "narration_en": "现在再回看四层，它们已经不再是抽象名词。咒，是装得上的模组、用得了的网页、跑得起来的自动玩家，以及留下字节和画面的实机证据。",
+      "subtitle_zh": "现在再回看四层，它们已经不再是抽象名词。咒，是装得上的模组、用得了的网页、跑得起来的自动玩家，以及留下字节和画面的实机证据。",
+      "subtitle_secondary": "Look back at the four layers now, and they are no longer abstractions. Spell is the installable mod, the usable website, the autonomous player that runs, and live evidence preserved in files and images."
+    },
+    "02-four-layer-map-02": {
+      "narration_en": "术，让这些结果能够反复出现：文档如何组织，内容如何生成，MCP 如何获得眼睛和手，OCR 何时该用、何时必须禁用。道，则在冲突发生时决定什么才算完成。",
+      "subtitle_zh": "术，让这些结果能够反复出现：文档如何组织，内容如何生成，MCP 如何获得眼睛和手，OCR 何时该用、何时必须禁用。道，则在冲突发生时决定什么才算完成。",
+      "subtitle_secondary": "Method makes those results repeatable: how documents are organized, how content is generated, how MCP gains eyes and hands, and when OCR belongs or must be forbidden. Principle decides what counts as complete when those parts conflict."
+    },
+    "02-four-layer-map-03": {
+      "narration_en": "而辉煌愿景把四层送回循环：每次回到起点，都带回新的问题、证据和能力。我们没有让宏图抢在事实前面；桌上的每一件结果，都已经证明这条路正在运行。",
+      "subtitle_zh": "而辉煌愿景把四层送回循环：每次回到起点，都带回新的问题、证据和能力。我们没有让宏图抢在事实前面；桌上的每一件结果，都已经证明这条路正在运行。",
+      "subtitle_secondary": "The Radiant Vision returns all four layers to the loop: every arrival at the starting point brings back new questions, evidence, and capability. The grand design did not outrun the facts; every result on the table now shows that the road is already running."
+    }
+  }
+}
