@@ -283,6 +283,19 @@ def _prison_release_context(
     }
 
 
+def _r0072_infirm_context() -> dict[str, object]:
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "health.7000",
+        "root_scope": _scope("character", character_id=31_853),
+        "saved_scopes": [],
+        "options": [_option(0, 0)],
+    }
+
+
 def _withering_mind_context() -> dict[str, object]:
     return {
         "schema": "current-event-window-context-v1",
@@ -601,6 +614,59 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "blocked")
         self.assertIn("saved_scope_names_exact", result["failed_checks"])
+
+    def test_r0072_infirm_onset_exact_projection_only(self) -> None:
+        context = _r0072_infirm_context()
+        recommended = recommend_registered_vanilla_event_option_v1(
+            context,
+            played_character_id=31_853,
+            snapshot_option_count=1,
+        )
+        self.assertEqual(recommended["status"], "recommended")
+        self.assertEqual(recommended["selected_option_number"], 1)
+        self.assertEqual(recommended["selected_native_option_index"], 0)
+        self.assertEqual(recommended["selected_rendered_index"], 0)
+        self.assertEqual(recommended["failed_checks"], [])
+        for restored_check in (
+            "saved_scope_names_exact",
+            "scope_types_cover_projection",
+            "native_option_indices_exact",
+            "disabled_option_contract",
+        ):
+            self.assertTrue(recommended["checks"][restored_check])
+
+        for label, changes, failed_check in (
+            (
+                "unexpected saved scope",
+                {
+                    "saved_scopes": [
+                        {
+                            "name": "unexpected",
+                            "name_identifier": 1,
+                            "scope": _scope("character", character_id=30_001),
+                        }
+                    ]
+                },
+                "saved_scope_names_exact",
+            ),
+            ("native remap", {"options": [_option(0, 1)]}, "native_option_indices_exact"),
+            (
+                "disabled sole option",
+                {"options": [{**_option(0, 0), "enabled": False}]},
+                "selected_native_option_enabled",
+            ),
+        ):
+            with self.subTest(label=label):
+                drifted = _r0072_infirm_context()
+                drifted.update(changes)
+                result = recommend_registered_vanilla_event_option_v1(
+                    drifted,
+                    played_character_id=31_853,
+                    snapshot_option_count=1,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIn(failed_check, result["failed_checks"])
+                self.assertIsNone(result["selected_option_number"])
 
     def test_withering_mind_acknowledgement_requires_r842_exact_projection(
         self,

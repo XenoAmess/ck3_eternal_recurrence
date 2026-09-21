@@ -1024,15 +1024,19 @@ _LEGACY_MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS: Final[
 ] = {
     "health.7000": {
         # Vanilla onset of infirmity.  Exact CK3 1.19.0.6 source and the R117
-        # native event context both expose one unavoidable acknowledgement:
-        # no saved scopes, one rendered/native option, and an infirm trait
-        # indicator.  There is no alternate branch to optimize.
+        # native event context both expose one unavoidable choice: no saved
+        # scopes and one rendered/native option. It adds infirm and has
+        # lazy/diligent-dependent stress impact; no alternate branch exists.
         "date_raw": 53152296,
         "root_character_id": 29037,
         "character_scopes": {},
         "boolean_scopes": (),
         "saved_scope_count": 0,
+        "scope_types": {},
+        "saved_scope_name_sets": ((),),
         "option_count": 1,
+        "native_option_indices": (0,),
+        "disabled_native_option_indices": (),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
