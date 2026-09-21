@@ -64,14 +64,28 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 
 ### G1：运行生命周期与配额恢复（P0/P1，1–2 工程日，依赖 G0）
 
+状态：`passed`（2026-09-21）。
+
 交付：
 
-- 对 `QuotaExceededError`、IndexedDB blocked/abort、站点存储不可用分别给出可操作状态，不吞掉失败原因。
-- 增加存储估算和写入前大小说明；估算只作提示，不能替代真实事务结果。
-- 将安全 checkpoint 扩展到当前未覆盖的高成本阶段；每种恢复必须绑定 run revision，禁止旧 worker 结果污染新 run。
-- 为 WebGL context loss 建立同 run 重建或显式 CPU fallback 合同，并证明恢复后指标仍由 CPU reference 门禁。
+- `QuotaExceededError`、IndexedDB blocked/abort、站点存储不可用现在进入稳定分类，并在页面给出便携导出、关闭旧标签页、
+  释放站点空间或重试等可操作状态；合法导入不会因持久槽失败而从当前标签页消失。
+- 页面显示 checkpoint 自身估算体积及 StorageManager 报告的剩余空间；提示明确声明估算不替代真实 IndexedDB 事务结果。
+- 高成本阶段审计确认：可随预算扩张的 baseline/hybrid 原生块阶段均已有逐游标 checkpoint；语义种子最多六层，最终复评为
+  原子提交，二者继续采用确定性重启而不伪造部分恢复。Worker 消息继续以 `runId + revision` 双重门禁隔离，旧 revision
+  的 progress/checkpoint/result 均不能污染新 run。
+- WebGL context loss 保持同次拟合内显式 CPU fallback；GPU 批评分只有同时通过 CPU 数值容差与排序一致性才标为 active。
 
 退出条件：故障注入 E2E 覆盖 quota、blocked、context lost 和刷新/导入恢复；无未捕获 promise；恢复前后模型与指标一致。
+
+完成证据：
+
+- `pnpm test`：20 files / 93 tests GREEN；浏览器存储分类、容量估算、checkpoint 体积与 portable round-trip 均在其中。
+- `pnpm exec playwright test e2e/portable-fit-checkpoint.spec.ts`：正常跨刷新、hash 篡改拒绝、quota 降级和 blocked 降级 4/4 GREEN。
+- `pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts`：真实 WebGL2 与 CPU reference 一致，并在 context loss 后 fail closed，1/1 GREEN；
+  image fitter 单测同时覆盖同 run 的 `context_lost_fallback` CPU 结果。
+- IndexedDB request/transaction 的异常路径在退出前显式 abort 并等待事务终态，避免遗留未观察 promise；`pnpm build` 与
+  `pnpm verify:production-boundary` GREEN。
 
 ### G2：原生 framebuffer 证据收口（P0，1–2 工程日 + CK3 槽位）
 

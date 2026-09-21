@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   createPersistedFitCheckpoint,
+  estimatePersistedFitCheckpointBytes,
   parsePortableFitCheckpoint,
   restorePersistedFitInput,
   serializePortableFitCheckpoint,
@@ -102,6 +103,10 @@ describe('persisted fit checkpoint', () => {
     expect(restored.input.image.pixels).toBeInstanceOf(Uint8ClampedArray)
     expect(restored.input.image.pixels).not.toBe(record.input.image.pixels)
     expect(text).toContain('ck3-coa-portable-fit-checkpoint-v1')
+    expect(estimatePersistedFitCheckpointBytes(restored)).toBeGreaterThan(
+      restored.input.image.pixels.byteLength + restored.input.pyramid[0].pixels.byteLength,
+    )
+    expect(estimatePersistedFitCheckpointBytes(restored)).toBeLessThan(new TextEncoder().encode(text).length)
   })
 
   it('rejects tampered portable payloads before restoring search state', async () => {

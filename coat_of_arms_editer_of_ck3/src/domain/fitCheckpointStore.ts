@@ -1,5 +1,6 @@
 import type { DecodedFitImage } from './imageInput'
 import type { FitImage, ImageFitCheckpoint } from './imageFitter'
+import { asBrowserStorageError, BrowserStorageError } from './browserStorage'
 
 const DATABASE_NAME = 'ck3-coa-fit-checkpoint'
 const DATABASE_VERSION = 1
@@ -244,6 +245,29 @@ export async function parsePortableFitCheckpoint(text: string): Promise<Persiste
   })
 }
 
+export function estimatePersistedFitCheckpointBytes(record: PersistedFitCheckpoint): number {
+  const validated = validatePersistedFitCheckpoint(record)
+  const pixelBytes = validated.input.image.pixels.byteLength
+    + validated.input.pyramid.reduce((sum, image) => sum + image.pixels.byteLength, 0)
+  const metadata = {
+    ...validated,
+    input: {
+      ...validated.input,
+      image: {
+        width: validated.input.image.width,
+        height: validated.input.image.height,
+        pixelsBytes: validated.input.image.pixels.byteLength,
+      },
+      pyramid: validated.input.pyramid.map((image) => ({
+        width: image.width,
+        height: image.height,
+        pixelsBytes: image.pixels.byteLength,
+      })),
+    },
+  }
+  return pixelBytes + new TextEncoder().encode(JSON.stringify(metadata)).length
+}
+
 export function createPersistedFitCheckpoint(
   checkpoint: ImageFitCheckpoint,
   input: DecodedFitImage,
@@ -289,12 +313,17 @@ export function restorePersistedFitInput(record: PersistedFitCheckpoint): Decode
 function requestResult<T>(request: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
     request.onsuccess = () => resolve(request.result)
-    request.onerror = () => reject(request.error ?? new Error('IndexedDB 拟合 checkpoint 请求失败'))
+    request.onerror = () => reject(asBrowserStorageError(
+      request.error ?? new Error('IndexedDB 拟合 checkpoint 请求失败'),
+      '请求',
+    ))
   })
 }
 
 function openDatabase(): Promise<IDBDatabase> {
-  if (!globalThis.indexedDB) return Promise.reject(new Error('当前浏览器不支持 IndexedDB'))
+  if (!globalThis.indexedDB) {
+    return Promise.reject(new BrowserStorageError('unavailable', '打开拟合 checkpoint IndexedDB'))
+  }
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DATABASE_NAME, DATABASE_VERSION)
     request.onupgradeneeded = () => {
@@ -302,39 +331,68 @@ function openDatabase(): Promise<IDBDatabase> {
       if (!database.objectStoreNames.contains(STORE_NAME)) database.createObjectStore(STORE_NAME)
     }
     request.onsuccess = () => resolve(request.result)
-    request.onerror = () => reject(request.error ?? new Error('无法打开拟合 checkpoint IndexedDB'))
-    request.onblocked = () => reject(new Error('拟合 checkpoint IndexedDB 被其他页面阻止'))
+    request.onerror = () => reject(asBrowserStorageError(
+      request.error ?? new Error('无法打开拟合 checkpoint IndexedDB'),
+      '打开拟合 checkpoint IndexedDB',
+      'unavailable',
+    ))
+    request.onblocked = () => reject(new BrowserStorageError('blocked', '打开拟合 checkpoint IndexedDB'))
   })
 }
 
 async function withStore<T>(
   mode: IDBTransactionMode,
+  operation: string,
   action: (store: IDBObjectStore) => IDBRequest<T>,
 ): Promise<T> {
   const database = await openDatabase()
   try {
     const transaction = database.transaction(STORE_NAME, mode)
-    const result = await requestResult(action(transaction.objectStore(STORE_NAME)))
-    await new Promise<void>((resolve, reject) => {
+    const transactionResult = new Promise<void>((resolve, reject) => {
       transaction.oncomplete = () => resolve()
-      transaction.onabort = () => reject(transaction.error ?? new Error('拟合 checkpoint IndexedDB 事务中止'))
-      transaction.onerror = () => reject(transaction.error ?? new Error('拟合 checkpoint IndexedDB 事务失败'))
+      transaction.onabort = () => reject(asBrowserStorageError(
+        transaction.error ?? new DOMException('拟合 checkpoint IndexedDB 事务中止', 'AbortError'),
+        operation,
+        'aborted',
+      ))
+      transaction.onerror = () => reject(asBrowserStorageError(
+        transaction.error ?? new Error('拟合 checkpoint IndexedDB 事务失败'),
+        operation,
+      ))
     })
+    let request: IDBRequest<T>
+    try {
+      request = action(transaction.objectStore(STORE_NAME))
+    } catch (error) {
+      try { transaction.abort() } catch { /* The transaction may already be inactive. */ }
+      await transactionResult.catch(() => undefined)
+      throw error
+    }
+    const result = await requestResult(request).catch(async (error) => {
+      try { transaction.abort() } catch { /* The request may already have aborted it. */ }
+      await transactionResult.catch(() => undefined)
+      throw error
+    })
+    await transactionResult
     return result
+  } catch (error) {
+    throw asBrowserStorageError(error, operation)
   } finally {
     database.close()
   }
 }
 
 export async function savePersistedFitCheckpoint(record: PersistedFitCheckpoint): Promise<void> {
-  await withStore('readwrite', (store) => store.put(validatePersistedFitCheckpoint(record), CHECKPOINT_KEY))
+  await withStore('readwrite', '写入拟合 checkpoint', (store) => (
+    store.put(validatePersistedFitCheckpoint(record), CHECKPOINT_KEY)
+  ))
 }
 
 export async function loadPersistedFitCheckpoint(): Promise<PersistedFitCheckpoint | null> {
-  const value = await withStore('readonly', (store) => store.get(CHECKPOINT_KEY))
+  const value = await withStore('readonly', '读取拟合 checkpoint', (store) => store.get(CHECKPOINT_KEY))
   return value === undefined ? null : validatePersistedFitCheckpoint(value)
 }
 
 export async function clearPersistedFitCheckpoint(): Promise<void> {
-  await withStore('readwrite', (store) => store.delete(CHECKPOINT_KEY))
+  await withStore('readwrite', '删除拟合 checkpoint', (store) => store.delete(CHECKPOINT_KEY))
 }

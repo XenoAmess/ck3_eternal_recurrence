@@ -49,6 +49,7 @@ import {
 import {
   clearPersistedFitCheckpoint,
   createPersistedFitCheckpoint,
+  estimatePersistedFitCheckpointBytes,
   loadPersistedFitCheckpoint,
   parsePortableFitCheckpoint,
   PORTABLE_FIT_CHECKPOINT_MAX_BYTES,
@@ -57,6 +58,12 @@ import {
   serializePortableFitCheckpoint,
   type PersistedFitCheckpoint,
 } from './domain/fitCheckpointStore'
+import {
+  classifyBrowserStorageFailure,
+  inspectBrowserStorage,
+  type BrowserStorageEstimate,
+  type BrowserStorageFailureKind,
+} from './domain/browserStorage'
 import { parseCoatOfArms } from './domain/parser'
 import {
   createCoatOfArmsProject,
@@ -218,6 +225,9 @@ const fitTaskState = ref<FitTaskState>('idle')
 const fitCheckpoint = shallowRef<ImageFitCheckpoint>()
 const recoverableFitCheckpoint = shallowRef<PersistedFitCheckpoint>()
 const fitCheckpointPersistenceStatus = ref<'empty' | 'pending' | 'saved' | 'failed'>('empty')
+const fitCheckpointEstimatedBytes = ref(0)
+const fitStorageEstimate = ref<BrowserStorageEstimate>()
+const fitStorageFailureKind = ref<BrowserStorageFailureKind | ''>('')
 const fitCompressionEvidence = ref<{
   receipt: StructuralCompressionReceipt
   pixelExactResolutions: number[]
@@ -599,15 +609,18 @@ async function importFitCheckpointFile(event: Event) {
       throw new Error('便携拟合 checkpoint 超过 24 MiB 安全上限')
     }
     const record = await parsePortableFitCheckpoint(await file.text())
+    await refreshFitStorageEstimate(record)
     recoverableFitCheckpoint.value = record
     fitCheckpointPersistenceStatus.value = 'pending'
     try {
       await enqueueFitCheckpointStorage(() => savePersistedFitCheckpoint(record))
       fitCheckpointPersistenceStatus.value = 'saved'
+      fitStorageFailureKind.value = ''
       ElMessage.success('便携拟合 checkpoint 已校验并写入浏览器恢复槽')
     } catch (error) {
       fitCheckpointPersistenceStatus.value = 'failed'
-      ElMessage.warning(`checkpoint 已在当前标签页校验，可直接恢复；浏览器恢复槽写入失败：${errorMessage(error)}`)
+      fitStorageFailureKind.value = classifyBrowserStorageFailure(error)
+      ElMessage.warning(`checkpoint 已在当前标签页校验，可直接恢复；${storageFailureGuidance(error)}`)
     }
   } catch (error) {
     ElMessage.error(`便携拟合 checkpoint 导入失败：${errorMessage(error)}`)
@@ -1175,6 +1188,55 @@ function checkpointRecord(checkpoint: ImageFitCheckpoint): PersistedFitCheckpoin
   })
 }
 
+function formatStorageBytes(bytes: number | null | undefined): string {
+  if (bytes === null || bytes === undefined) return 'unknown'
+  if (bytes < 1024) return `${bytes.toFixed(0)} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KiB`
+  return `${(bytes / 1024 / 1024).toFixed(2)} MiB`
+}
+
+function storageFailureGuidance(error: unknown): string {
+  const kind = classifyBrowserStorageFailure(error)
+  if (kind === 'quota') return t('storageFailureQuota')
+  if (kind === 'blocked') return t('storageFailureBlocked')
+  if (kind === 'unavailable') return t('storageFailureUnavailable')
+  if (kind === 'aborted') return t('storageFailureAborted')
+  return t('storageFailureUnknown', { detail: errorMessage(error) })
+}
+
+const fitStorageSummary = computed(() => {
+  if (!fitCheckpointEstimatedBytes.value) return ''
+  const checkpoint = formatStorageBytes(fitCheckpointEstimatedBytes.value)
+  const estimate = fitStorageEstimate.value
+  if (estimate?.status === 'available' && estimate.remainingBytes !== null) {
+    return t('checkpointStorageEstimate', {
+      checkpoint,
+      remaining: formatStorageBytes(estimate.remainingBytes),
+    })
+  }
+  return t('checkpointStorageEstimateUnavailable', { checkpoint })
+})
+
+const fitStorageFailureSummary = computed(() => {
+  if (fitStorageFailureKind.value === 'quota') return t('storageFailureQuota')
+  if (fitStorageFailureKind.value === 'blocked') return t('storageFailureBlocked')
+  if (fitStorageFailureKind.value === 'unavailable') return t('storageFailureUnavailable')
+  if (fitStorageFailureKind.value === 'aborted') return t('storageFailureAborted')
+  if (fitStorageFailureKind.value === 'unknown') {
+    return t('storageFailureUnknown', { detail: t('unavailable') })
+  }
+  return ''
+})
+
+async function refreshFitStorageEstimate(record: PersistedFitCheckpoint): Promise<void> {
+  fitCheckpointEstimatedBytes.value = estimatePersistedFitCheckpointBytes(record)
+  fitStorageEstimate.value = await inspectBrowserStorage()
+}
+
+function updateFitCheckpointSize(record: PersistedFitCheckpoint): void {
+  fitCheckpointEstimatedBytes.value = estimatePersistedFitCheckpointBytes(record)
+}
+
 function scheduleStoredFitCheckpoint(checkpoint: ImageFitCheckpoint) {
   pendingFitCheckpoint = checkpoint
   fitCheckpointPersistenceStatus.value = 'pending'
@@ -1186,15 +1248,22 @@ function scheduleStoredFitCheckpoint(checkpoint: ImageFitCheckpoint) {
     let record: PersistedFitCheckpoint
     try {
       record = checkpointRecord(pending)
+      updateFitCheckpointSize(record)
     } catch {
       fitCheckpointPersistenceStatus.value = 'failed'
       return
     }
     void enqueueFitCheckpointStorage(async () => {
       await savePersistedFitCheckpoint(record)
-      if (pendingFitCheckpoint === pending) fitCheckpointPersistenceStatus.value = 'saved'
-    }).catch(() => {
-      if (pendingFitCheckpoint === pending) fitCheckpointPersistenceStatus.value = 'failed'
+      if (pendingFitCheckpoint === pending) {
+        fitCheckpointPersistenceStatus.value = 'saved'
+        fitStorageFailureKind.value = ''
+      }
+    }).catch((error) => {
+      if (pendingFitCheckpoint === pending) {
+        fitCheckpointPersistenceStatus.value = 'failed'
+        fitStorageFailureKind.value = classifyBrowserStorageFailure(error)
+      }
     })
   }, 500)
 }
@@ -1206,31 +1275,38 @@ async function persistStoredFitCheckpointNow(): Promise<void> {
   if (!checkpoint) return
   fitCheckpointPersistenceStatus.value = 'pending'
   const record = checkpointRecord(checkpoint)
+  await refreshFitStorageEstimate(record)
   await enqueueFitCheckpointStorage(() => savePersistedFitCheckpoint(record))
   if (pendingFitCheckpoint === checkpoint || fitCheckpoint.value === checkpoint) {
     fitCheckpointPersistenceStatus.value = 'saved'
+    fitStorageFailureKind.value = ''
   }
 }
 
-function clearStoredFitCheckpoint() {
+function clearStoredFitCheckpoint(): Promise<void> {
   if (fitCheckpointSaveTimer !== undefined) window.clearTimeout(fitCheckpointSaveTimer)
   fitCheckpointSaveTimer = undefined
   pendingFitCheckpoint = undefined
   fitCheckpointPersistenceStatus.value = 'empty'
+  fitCheckpointEstimatedBytes.value = 0
+  fitStorageEstimate.value = undefined
   recoverableFitCheckpoint.value = undefined
-  void enqueueFitCheckpointStorage(clearPersistedFitCheckpoint).catch(() => undefined)
+  return enqueueFitCheckpointStorage(clearPersistedFitCheckpoint)
 }
 
 async function discoverFitCheckpoint() {
   try {
     const record = await loadPersistedFitCheckpoint()
     if (record) {
+      await refreshFitStorageEstimate(record)
       recoverableFitCheckpoint.value = record
       fitCheckpointPersistenceStatus.value = 'saved'
+      fitStorageFailureKind.value = ''
     }
   } catch (error) {
     fitCheckpointPersistenceStatus.value = 'failed'
-    fitStatus.value = `持久拟合 checkpoint 不可读：${errorMessage(error)}`
+    fitStorageFailureKind.value = classifyBrowserStorageFailure(error)
+    fitStatus.value = `持久拟合 checkpoint 不可读：${storageFailureGuidance(error)}`
   }
 }
 
@@ -1266,9 +1342,14 @@ async function restoreFitCheckpoint() {
 }
 
 async function discardFitCheckpoint() {
-  clearStoredFitCheckpoint()
-  await fitCheckpointStorageQueue
-  ElMessage.info('已丢弃持久拟合 checkpoint')
+  try {
+    await clearStoredFitCheckpoint()
+    fitStorageFailureKind.value = ''
+    ElMessage.info('已丢弃持久拟合 checkpoint')
+  } catch (error) {
+    fitStorageFailureKind.value = classifyBrowserStorageFailure(error)
+    ElMessage.error(`无法丢弃持久拟合 checkpoint：${storageFailureGuidance(error)}`)
+  }
 }
 
 function cancelImageFit(notify = true) {
@@ -1284,7 +1365,10 @@ function cancelImageFit(notify = true) {
   }
   fitBusy.value = false
   fitCheckpoint.value = undefined
-  clearStoredFitCheckpoint()
+  void clearStoredFitCheckpoint().catch((error) => {
+    fitStorageFailureKind.value = classifyBrowserStorageFailure(error)
+    fitStatus.value = `拟合已取消，但旧 checkpoint 删除失败：${storageFailureGuidance(error)}`
+  })
   fitTaskState.value = notify && wasActive ? 'cancelled' : 'idle'
 }
 
@@ -1309,7 +1393,9 @@ async function pauseImageFit() {
     ElMessage.info('图片拟合已在安全 checkpoint 暂停并持久保存')
   } catch (error) {
     fitCheckpointPersistenceStatus.value = 'failed'
-    ElMessage.warning(`图片拟合已暂停，但 checkpoint 持久保存失败：${errorMessage(error)}`)
+    fitStorageFailureKind.value = classifyBrowserStorageFailure(error)
+    fitStatus.value = `拟合已暂停；内存 checkpoint 仍可继续，${storageFailureGuidance(error)}`
+    ElMessage.warning(fitStatus.value)
   }
 }
 
@@ -1698,7 +1784,10 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       fitBusy.value = false
       fitTaskState.value = 'completed'
       fitCheckpoint.value = undefined
-      clearStoredFitCheckpoint()
+      void clearStoredFitCheckpoint().catch((error) => {
+        fitStorageFailureKind.value = classifyBrowserStorageFailure(error)
+        fitStatus.value = `拟合已完成，但旧 checkpoint 删除失败：${storageFailureGuidance(error)}`
+      })
       fitProgressPercent.value = 100
       fitProgressLabel.value = `完成 · 选中 ${result.provenance.selectedLayers} 层`
       const selectedPatternTextures = Object.fromEntries(selectedFullPatterns)
@@ -2112,7 +2201,15 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
           </div>
           <small class="fit-budget-note">{{ t('portableCheckpointHelp') }}</small>
         </div>
-        <div class="fit-report" :data-fit-evidence="fitEvidenceJson" :data-fit-task-state="fitTaskState" :data-fit-checkpoint-persistence="fitCheckpointPersistenceStatus">
+        <div
+          class="fit-report"
+          data-testid="fit-report"
+          :data-fit-evidence="fitEvidenceJson"
+          :data-fit-task-state="fitTaskState"
+          :data-fit-checkpoint-persistence="fitCheckpointPersistenceStatus"
+          :data-fit-storage-failure="fitStorageFailureKind"
+          :data-fit-checkpoint-estimated-bytes="fitCheckpointEstimatedBytes"
+        >
           <strong>{{ t('runStatus') }}</strong>
           <p>{{ uiText(fitStatus) }}</p>
           <div class="fit-progress">
@@ -2126,6 +2223,8 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               {{ t('checkpointReady', { lane: fitCheckpoint.lane, completed: fitCheckpoint.nextTileIndex, total: fitCheckpoint.tileCount }) }} ·
               {{ fitCheckpointPersistenceStatus === 'saved' ? t('checkpointSaved') : fitCheckpointPersistenceStatus === 'failed' ? t('checkpointFailed') : t('checkpointPending') }}
             </small>
+            <small v-if="fitStorageSummary">{{ fitStorageSummary }}</small>
+            <small v-if="fitStorageFailureSummary" class="warning-text">{{ fitStorageFailureSummary }}</small>
           </div>
           <template v-if="fitResult">
             <div v-if="fitPruneProgress" class="fit-progress">

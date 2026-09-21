@@ -103,3 +103,61 @@ test('rejects a portable checkpoint whose payload changed after hashing', async 
   await expect(page.getByText(/payload SHA-256 不一致/)).toBeVisible()
   await expect(page.getByTestId('fit-checkpoint-recovery')).toHaveCount(0)
 })
+
+test('keeps an imported checkpoint recoverable when IndexedDB quota is exhausted', async ({ page }) => {
+  await page.addInitScript(() => {
+    const originalPut = IDBObjectStore.prototype.put
+    IDBObjectStore.prototype.put = function (value, key) {
+      if ((value as { schema?: string } | null)?.schema === 'ck3-coa-persisted-fit-checkpoint-v1') {
+        throw new DOMException('injected quota exhaustion', 'QuotaExceededError')
+      }
+      return key === undefined
+        ? originalPut.call(this, value)
+        : originalPut.call(this, value, key)
+    }
+  })
+  await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
+    status: 503,
+    contentType: 'text/plain',
+    body: 'asset pack intentionally unavailable for portable checkpoint isolation',
+  }))
+  await page.goto('/')
+  await page.getByTestId('fit-checkpoint-file-input').setInputFiles({
+    name: 'quota-fallback.coa-fit-checkpoint.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(portableCheckpoint()),
+  })
+
+  await expect(page.getByTestId('fit-checkpoint-recovery')).toContainText('portable-checkpoint.png')
+  await expect(page.getByTestId('fit-report')).toHaveAttribute('data-fit-storage-failure', 'quota')
+  await expect(page.getByTestId('fit-report')).toHaveAttribute('data-fit-checkpoint-persistence', 'failed')
+  await expect(page.getByTestId('fit-report')).toContainText(/浏览器存储空间不足/)
+})
+
+test('reports a blocked recovery slot without discarding the imported checkpoint', async ({ page }) => {
+  await page.addInitScript(() => {
+    IDBFactory.prototype.open = function () {
+      const request = {} as IDBOpenDBRequest
+      window.setTimeout(() => {
+        request.onblocked?.call(request, new Event('blocked') as IDBVersionChangeEvent)
+      }, 0)
+      return request
+    }
+  })
+  await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
+    status: 503,
+    contentType: 'text/plain',
+    body: 'asset pack intentionally unavailable for portable checkpoint isolation',
+  }))
+  await page.goto('/')
+  await page.getByTestId('fit-checkpoint-file-input').setInputFiles({
+    name: 'blocked-fallback.coa-fit-checkpoint.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(portableCheckpoint()),
+  })
+
+  await expect(page.getByTestId('fit-checkpoint-recovery')).toContainText('portable-checkpoint.png')
+  await expect(page.getByTestId('fit-report')).toHaveAttribute('data-fit-storage-failure', 'blocked')
+  await expect(page.getByTestId('fit-report')).toHaveAttribute('data-fit-checkpoint-persistence', 'failed')
+  await expect(page.getByTestId('fit-report')).toContainText(/浏览器存储被另一个标签页或旧连接阻止/)
+})
