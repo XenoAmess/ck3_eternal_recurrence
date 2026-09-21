@@ -261,3 +261,39 @@ flowchart TD
   hostage 或 dynamic terms 宣称为 complete。
 - 我方策略设计仍属于 [player-war-exit-policy.md](player-war-exit-policy.md)；本文只给出可消费的原生事实和最小输入，
   不实现 planner。
+
+## R0050：-100 分的封臣化主防守战，军事继续与投降分离
+
+- [production RED] `formal-R0050` 在 CK3 `1.19.0.6` 的 turn 32、战争 `150994969` / `vassalization_cb`、
+  `duration_days=153`、玩家主防守方 score `-100` 停于 `native_war_no_safe_target`。唯一 Army `301989888`
+  在 Province `8750` 仅 2 人；敌军 `184549393`、`301989919` 的已观测路线正向该点收敛。此前已做同帧
+  接触证明约束下的受控逐日推进，turn 32 没有新的实质动作；本次报告未独立记录 EXE SHA，不能据此
+  宣称本轮重新核验了二进制哈希。
+- [static-confirmed] 本文冻结的 `1.19.0.6` 原版 `common/character_interactions/00_war.txt` 普通 AI 主防守方
+  主动投降条件为攻击方 score `100` **且**保持 maximum war score 至少 `180` 日；单凭战争已持续 `153` 日、
+  当前 score `-100` 不能推出 180 日持续时长，也不能推出 interaction 调度会在哪一日执行。军事
+  controller 的守卫 `own capital` / `own province` 候选与终止 interaction 是独立树。
+- [static-confirmed] exact 原版 `common/casus_belli_types/00_vassalization.txt` 的 `on_victory` 通过
+  `create_title_and_vassal_change(type=swear_fealty)` 与 defender `change_liege(liege=attacker)` 改写隶属，
+  另含声望和停战效果；因此“合法且对方会接受的 surrender”不等于“无害的继续手段”。当前 native
+  `termination_terms` / `campaign_outcome_forecast` 仍未知，不得仅凭 ACK 或 score 猜测结果并自动投降。
+- [inference / counter-policy input] `-100` 只能解除现有原生集结点守备观测的人工分数截断，不能解除
+  同帧 campaign-root、直属领首府的完整投影、native preview、全敌军 scope、one-day contact horizon、
+  有效军队绑定、未知动作和 pending interaction 拒绝；无已证安全候选或完整 horizon 时仍 RED 零动作。
+  不把普通 `life-advance` 或任何战争终止动作列作这次修复的 fallback。
+- [unknown] 当前交战方/战役的动态投降条款、maximum-score 起始日期、敌军未来调度与当前接触后的
+  物质结果均没有 R0050 独立后置证据。只有新制品在真实 paused frame 重新查 root/route/horizon 并推进、
+  下一 turn 消费结果后，才可把本修复从静态候选升为 production-live。
+
+```mermaid
+flowchart TD
+    R["[live-confirmed] R0050 score -100 / threatened rally"] --> N{"[static-confirmed] native AI surrender<br/>attacker 100 + max-score 180d?"}
+    N -. "[unknown] max-score onset / scheduler" .-> U["[unknown] actual native termination timing"]
+    R --> C["[counter-policy] military continuation independent of surrender"]
+    C --> P{"fresh root + complete hostiles + native route/contact proof?"}
+    P -->|yes| A["one bounded nonterminal action; re-observe"]
+    P -->|no| X["RED / zero action / fill missing observation"]
+    R -. "[unknown] dynamic vassalization terms" .-> S["no automatic surrender"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,S unknown;
+```

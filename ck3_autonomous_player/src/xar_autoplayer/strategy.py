@@ -9846,6 +9846,7 @@ def _choose_one_life_turn_core(
                 unsafe_armies=unsafe_armies,
                 active_assaults=active_assaults,
                 allow_observable_enemy_routes=True,
+                allow_defeat_score_contact=True,
             )
             if stationary_threats and not route_exact_candidates
             else None
@@ -11110,6 +11111,7 @@ def _choose_one_life_turn_core(
                         unsafe_armies=unsafe_armies,
                         active_assaults=active_assaults,
                         allow_observable_enemy_routes=True,
+                        allow_defeat_score_contact=True,
                     )
                 )
                 if defender_capital_contact is not None:
@@ -13198,8 +13200,9 @@ def _primary_defender_capital_hold_input(
     unsafe_armies: list[dict[str, object]],
     active_assaults: list[dict[str, object]],
     allow_observable_enemy_routes: bool = False,
+    allow_defeat_score_contact: bool = False,
 ) -> dict[str, object] | None:
-    """Admit the R864 idle hold or its R865 observable-route query shape."""
+    """Admit idle hold or proof-bound threatened-route observation."""
 
     if not (
         snapshot.get("paused") is True
@@ -13213,7 +13216,14 @@ def _primary_defender_capital_hold_input(
         and tactical_war.get("player_is_primary_war_leader") is True
         and isinstance(tactical_war.get("player_relative_war_score"), int)
         and not isinstance(tactical_war.get("player_relative_war_score"), bool)
-        and -100 < int(tactical_war["player_relative_war_score"]) < 100
+        and (
+            -100 < int(tactical_war["player_relative_war_score"]) < 100
+            or (
+                tactical_war["player_relative_war_score"] == -100
+                and allow_observable_enemy_routes
+                and allow_defeat_score_contact
+            )
+        )
         and exact_objective_province_ids == []
         and len(controlled_armies) == 1
         and pursuit_army is controlled_armies[0]
