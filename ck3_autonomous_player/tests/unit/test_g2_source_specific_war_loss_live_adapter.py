@@ -162,6 +162,29 @@ def _profile_expectations(template: Path) -> dict[str, str]:
     }
 
 
+def _prepared_profile_assets_fixture(template: Path) -> dict[str, object]:
+    expected = _profile_expectations(template)
+    settings_sha256 = expected["expected_profile_settings_sha256"]
+    shadercache_sha256 = expected["expected_shadercache_tree_sha256"]
+    return {
+        "schema": ADAPTER.STARTUP_PROFILE_ASSETS_SCHEMA,
+        "status": "GREEN",
+        "profile_ready": True,
+        "settings": {
+            "source_sha256": settings_sha256,
+            "destination_sha256": settings_sha256,
+            "source_bytes": template.stat().st_size,
+            "destination_bytes": template.stat().st_size,
+        },
+        "shadercache": {
+            "tree_sha256": shadercache_sha256,
+            "file_count": 4,
+            "bytes": 64,
+            "source_manifest": {"tree_sha256": shadercache_sha256},
+        },
+    }
+
+
 def _installed_game_root() -> Path:
     candidates = (
         ADAPTER.REPOSITORY_ROOT / "Crusader Kings III",
@@ -1161,6 +1184,280 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             )
             self.assertTrue((userdir / "pdx_settings.txt").is_file())
             self.assertTrue((userdir / "shadercache").is_dir())
+
+    def test_formal_candidate_state_prepares_verifies_copies_then_rebinds(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            artifact = root / "candidate-attempt"
+            artifact.mkdir()
+            template = _write_profile_settings_template(root)
+            assets = _prepared_profile_assets_fixture(template)
+            checkpoint = root / "source" / "xar_checkpoint.ck3"
+            driver_state = root / "source" / "driver-state.json"
+            checkpoint.parent.mkdir()
+            checkpoint.write_bytes(b"source-checkpoint")
+            driver_state.write_bytes(b"source-driver-state")
+            environment_sha256 = "E" * 64
+            order: list[str] = []
+
+            def inventory() -> list[dict[str, object]]:
+                order.append("process-zero")
+                return []
+
+            def prepare(spec: object) -> dict[str, object]:
+                order.append("prepare-profile")
+                self.assertEqual(
+                    spec.state_dir,
+                    root / "candidate-attempt-formal-state",
+                )
+                return {"environment_sha256": environment_sha256}
+
+            def copy_assets(*_args: object) -> dict[str, object]:
+                order.append("startup-profile-assets")
+                return assets
+
+            def verify(_spec: object) -> dict[str, object]:
+                order.append("verify-profile")
+                return {"environment_sha256": environment_sha256}
+
+            def rebind(spec: object, **kwargs: object) -> dict[str, object]:
+                order.append("typed-rogue-lifecycle-rebind")
+                self.assertEqual(kwargs["expected_pipe_name"], r"\\.\pipe\candidate")
+                self.assertEqual(
+                    (spec.profile_dir / "save games" / "xar_checkpoint.ck3").read_bytes(),
+                    checkpoint.read_bytes(),
+                )
+                self.assertEqual(
+                    (spec.state_dir / "native-session" / "driver-state.json").read_bytes(),
+                    driver_state.read_bytes(),
+                )
+                return {
+                    "status": "rebound",
+                    "ok": True,
+                    "ck3_launch_attempted": False,
+                }
+
+            with (
+                mock.patch.object(ADAPTER, "prepare_profile", side_effect=prepare),
+                mock.patch.object(
+                    ADAPTER,
+                    "prepare_startup_profile_assets",
+                    side_effect=copy_assets,
+                ),
+                mock.patch.object(ADAPTER, "verify_profile", side_effect=verify),
+            ):
+                spec, receipt = ADAPTER.prepare_formal_candidate_state(
+                    artifact_dir=artifact,
+                    game_dir=root / "game",
+                    profile_settings_template=template,
+                    **_profile_expectations(template),
+                    source_checkpoint=checkpoint,
+                    expected_checkpoint_sha256=ADAPTER._sha256_file(checkpoint),
+                    source_driver_state=driver_state,
+                    expected_driver_state_sha256=ADAPTER._sha256_file(driver_state),
+                    expected_pipe_name=r"\\.\pipe\candidate",
+                    process_inventory=inventory,
+                    lifecycle_rebinder=rebind,
+                )
+
+            self.assertEqual(
+                order,
+                [
+                    "process-zero",
+                    "prepare-profile",
+                    "startup-profile-assets",
+                    "verify-profile",
+                    "typed-rogue-lifecycle-rebind",
+                ],
+            )
+            self.assertEqual(
+                receipt["stage_order"],
+                [
+                    "process-zero",
+                    "prepare-profile",
+                    "startup-profile-assets",
+                    "verify-profile",
+                    "copy-source-seed",
+                    "typed-rogue-lifecycle-rebind",
+                ],
+            )
+            self.assertEqual(receipt["status"], "GREEN")
+            self.assertTrue(receipt["native_auto_run_ready"])
+            self.assertFalse(receipt["process_created_before_gate_completed"])
+            self.assertEqual(spec.state_dir, root / "candidate-attempt-formal-state")
+            persisted = json.loads(
+                (artifact / "formal-candidate-state.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(persisted, receipt)
+
+    def test_formal_candidate_prepare_failure_blocks_native_auto_run(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            artifact = root / "candidate-attempt"
+            artifact.mkdir()
+            template = _write_profile_settings_template(root)
+            checkpoint = root / "xar_checkpoint.ck3"
+            driver_state = root / "driver-state.json"
+            checkpoint.write_bytes(b"checkpoint")
+            driver_state.write_bytes(b"driver")
+            native_auto_run = mock.Mock()
+            copy_assets = mock.Mock()
+            verify = mock.Mock()
+            with (
+                mock.patch.object(
+                    ADAPTER,
+                    "prepare_profile",
+                    side_effect=ADAPTER.AgentError("git fingerprint unavailable"),
+                ),
+                mock.patch.object(
+                    ADAPTER, "prepare_startup_profile_assets", copy_assets
+                ),
+                mock.patch.object(ADAPTER, "verify_profile", verify),
+                mock.patch.object(ADAPTER, "native_auto_run", native_auto_run),
+                self.assertRaisesRegex(
+                    ADAPTER.LiveAdapterError,
+                    "prepare-profile blocked native_auto_run",
+                ),
+            ):
+                ADAPTER.prepare_formal_candidate_state(
+                    artifact_dir=artifact,
+                    game_dir=root / "game",
+                    profile_settings_template=template,
+                    **_profile_expectations(template),
+                    source_checkpoint=checkpoint,
+                    expected_checkpoint_sha256=ADAPTER._sha256_file(checkpoint),
+                    source_driver_state=driver_state,
+                    expected_driver_state_sha256=ADAPTER._sha256_file(driver_state),
+                    expected_pipe_name=r"\\.\pipe\candidate",
+                    process_inventory=lambda: [],
+                    lifecycle_rebinder=mock.Mock(),
+                )
+
+            copy_assets.assert_not_called()
+            verify.assert_not_called()
+            native_auto_run.assert_not_called()
+            persisted = json.loads(
+                (artifact / "formal-candidate-state.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(persisted["status"], "BLOCKED")
+            self.assertEqual(persisted["stage"], "prepare-profile")
+
+    def test_formal_candidate_verify_failure_blocks_native_auto_run(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            artifact = root / "candidate-attempt"
+            artifact.mkdir()
+            template = _write_profile_settings_template(root)
+            checkpoint = root / "xar_checkpoint.ck3"
+            driver_state = root / "driver-state.json"
+            checkpoint.write_bytes(b"checkpoint")
+            driver_state.write_bytes(b"driver")
+            assets = _prepared_profile_assets_fixture(template)
+            native_auto_run = mock.Mock()
+            rebind = mock.Mock()
+            with (
+                mock.patch.object(
+                    ADAPTER,
+                    "prepare_profile",
+                    return_value={"environment_sha256": "E" * 64},
+                ),
+                mock.patch.object(
+                    ADAPTER,
+                    "prepare_startup_profile_assets",
+                    return_value=assets,
+                ),
+                mock.patch.object(
+                    ADAPTER,
+                    "verify_profile",
+                    side_effect=ADAPTER.AgentError("pinned settings contract differs"),
+                ),
+                mock.patch.object(ADAPTER, "native_auto_run", native_auto_run),
+                self.assertRaisesRegex(
+                    ADAPTER.LiveAdapterError,
+                    "verify-profile blocked native_auto_run",
+                ),
+            ):
+                ADAPTER.prepare_formal_candidate_state(
+                    artifact_dir=artifact,
+                    game_dir=root / "game",
+                    profile_settings_template=template,
+                    **_profile_expectations(template),
+                    source_checkpoint=checkpoint,
+                    expected_checkpoint_sha256=ADAPTER._sha256_file(checkpoint),
+                    source_driver_state=driver_state,
+                    expected_driver_state_sha256=ADAPTER._sha256_file(driver_state),
+                    expected_pipe_name=r"\\.\pipe\candidate",
+                    process_inventory=lambda: [],
+                    lifecycle_rebinder=rebind,
+                )
+
+            rebind.assert_not_called()
+            native_auto_run.assert_not_called()
+            persisted = json.loads(
+                (artifact / "formal-candidate-state.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(persisted["status"], "BLOCKED")
+            self.assertEqual(persisted["stage"], "verify-profile")
+
+    def test_formal_candidate_requires_typed_rebinder_before_native_auto_run(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            artifact = root / "candidate-attempt"
+            artifact.mkdir()
+            template = _write_profile_settings_template(root)
+            checkpoint = root / "xar_checkpoint.ck3"
+            driver_state = root / "driver-state.json"
+            checkpoint.write_bytes(b"checkpoint")
+            driver_state.write_bytes(b"driver")
+            assets = _prepared_profile_assets_fixture(template)
+            native_auto_run = mock.Mock()
+            with (
+                mock.patch.object(
+                    ADAPTER,
+                    "prepare_profile",
+                    return_value={"environment_sha256": "E" * 64},
+                ),
+                mock.patch.object(
+                    ADAPTER,
+                    "prepare_startup_profile_assets",
+                    return_value=assets,
+                ),
+                mock.patch.object(
+                    ADAPTER,
+                    "verify_profile",
+                    return_value={"environment_sha256": "E" * 64},
+                ),
+                mock.patch.object(ADAPTER, "native_auto_run", native_auto_run),
+                self.assertRaisesRegex(
+                    ADAPTER.LiveAdapterError,
+                    "typed rogue lifecycle rebinder is not integrated",
+                ),
+            ):
+                ADAPTER.prepare_formal_candidate_state(
+                    artifact_dir=artifact,
+                    game_dir=root / "game",
+                    profile_settings_template=template,
+                    **_profile_expectations(template),
+                    source_checkpoint=checkpoint,
+                    expected_checkpoint_sha256=ADAPTER._sha256_file(checkpoint),
+                    source_driver_state=driver_state,
+                    expected_driver_state_sha256=ADAPTER._sha256_file(driver_state),
+                    expected_pipe_name=r"\\.\pipe\candidate",
+                    process_inventory=lambda: [],
+                    lifecycle_rebinder=None,
+                )
+
+            native_auto_run.assert_not_called()
+            persisted = json.loads(
+                (artifact / "formal-candidate-state.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(persisted["status"], "BLOCKED")
+            self.assertEqual(
+                persisted["stage"], "typed-rogue-lifecycle-rebind"
+            )
+            self.assertFalse(persisted["native_auto_run_ready"])
 
     def test_launch_discovers_exact_target_through_toolhelp_after_cim_denial(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

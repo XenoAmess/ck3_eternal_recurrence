@@ -64,10 +64,17 @@ from xar_autoplayer.bridge.war_contract import (  # noqa: E402
     parse_offer_white_peace_step,
     parse_surrender_war_step,
 )
-from xar_autoplayer.environment import EnvironmentSpec  # noqa: E402
+from xar_autoplayer.environment import (  # noqa: E402
+    EnvironmentSpec,
+    prepare_profile,
+    verify_profile,
+)
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.locking import exclusive_launch_lock  # noqa: E402
 from xar_autoplayer.native_auto_run import native_auto_run  # noqa: E402
+from xar_autoplayer.rogue_checkpoint_rebinder import (  # noqa: E402
+    rebind_rogue_checkpoint_v1,
+)
 from xar_autoplayer import runtime as autoplay_runtime  # noqa: E402
 from xar_autoplayer.runtime import NativeBridgeLaunchConfig  # noqa: E402
 
@@ -77,10 +84,12 @@ PREFLIGHT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_preflight.v
 REPORT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_run.v1"
 PREFLIGHT_STATUS = "READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE"
 STARTUP_PROFILE_ASSETS_SCHEMA = "xar.ck3.startup_profile_assets.v1"
+FORMAL_CANDIDATE_STATE_SCHEMA = "xar.ck3.gen034_d_formal_candidate_state.v1"
 TARGET_EVENT = "bookmark.1071.a"
 CHANCELLOR_TASK_1004_OPTION = "可怕的误会"
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_g2_source_"
 EXPECTED_GAME_VERSION = "1.19.0.6"
+ROGUE_LIFECYCLE_REBINDER = rebind_rogue_checkpoint_v1
 
 
 class LiveAdapterError(ValueError):
@@ -813,6 +822,186 @@ def prepare_startup_profile_assets(
             "startup profile assets are not ready", receipt
         )
     return _startup_profile_assets_receipt(evidence, status="GREEN")
+
+
+def _copy_formal_candidate_artifact(
+    source_path: Path,
+    destination_path: Path,
+    expected_sha256: object,
+    *,
+    label: str,
+) -> dict[str, object]:
+    source = source_path.expanduser().resolve()
+    destination = destination_path.expanduser().resolve()
+    expected = _sha256_text(expected_sha256, f"{label} SHA-256")
+    if not source.is_file():
+        raise LiveAdapterError(f"{label} is unavailable: {source}")
+    source_sha256 = _sha256_file(source)
+    source_bytes = source.stat().st_size
+    if source_bytes <= 0 or source_sha256 != expected:
+        raise LiveAdapterError(f"{label} differs from its source receipt")
+    if destination.exists():
+        raise LiveAdapterError(f"fresh {label} destination already exists")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, destination)
+    destination_sha256 = _sha256_file(destination)
+    destination_bytes = destination.stat().st_size
+    if destination_sha256 != source_sha256 or destination_bytes != source_bytes:
+        raise LiveAdapterError(f"copied {label} differs from its source")
+    return {
+        "source": str(source),
+        "source_sha256": source_sha256,
+        "source_bytes": source_bytes,
+        "destination": str(destination),
+        "destination_sha256": destination_sha256,
+        "destination_bytes": destination_bytes,
+    }
+
+
+def prepare_formal_candidate_state(
+    *,
+    artifact_dir: Path,
+    game_dir: Path,
+    profile_settings_template: Path,
+    expected_profile_settings_sha256: object,
+    expected_shadercache_tree_sha256: object,
+    source_checkpoint: Path,
+    expected_checkpoint_sha256: object,
+    source_driver_state: Path,
+    expected_driver_state_sha256: object,
+    expected_pipe_name: str,
+    process_inventory: Callable[[], list[dict[str, object]]],
+    lifecycle_rebinder: Callable[..., dict[str, object]] | None,
+) -> tuple[EnvironmentSpec, dict[str, object]]:
+    """Prepare a fresh formal state after source cleanup, without launching CK3."""
+
+    artifact = artifact_dir.expanduser().resolve()
+    state_dir = artifact.with_name(f"{artifact.name}-formal-state")
+    receipt_path = artifact / "formal-candidate-state.json"
+    spec = EnvironmentSpec(
+        state_dir=state_dir,
+        game_dir=game_dir.expanduser().resolve(),
+        expected_game_version=EXPECTED_GAME_VERSION,
+    )
+    receipt: dict[str, object] = {
+        "schema": FORMAL_CANDIDATE_STATE_SCHEMA,
+        "status": "PREPARING",
+        "stage": "process-zero",
+        "state_dir": str(spec.state_dir),
+        "profile_dir": str(spec.profile_dir),
+        "manifest_path": str(spec.manifest_path),
+        "process_created_before_gate_completed": False,
+        "native_auto_run_ready": False,
+        "stage_order": [],
+    }
+    stage_order = receipt["stage_order"]
+    assert isinstance(stage_order, list)
+    try:
+        if not artifact.is_dir():
+            raise LiveAdapterError(f"candidate artifact directory is unavailable: {artifact}")
+        if state_dir.exists():
+            raise LiveAdapterError(
+                f"formal candidate state is not fresh: {state_dir}"
+            )
+        inventory = process_inventory()
+        running = _ck3_rows(inventory)
+        if running:
+            raise LiveAdapterError(
+                f"formal candidate preparation requires process-zero: {running}"
+            )
+        receipt["process_inventory"] = copy.deepcopy(inventory)
+        stage_order.append("process-zero")
+
+        receipt["stage"] = "prepare-profile"
+        prepared_environment = prepare_profile(spec)
+        prepared_sha256 = _sha256_text(
+            prepared_environment.get("environment_sha256"),
+            "prepared environment SHA-256",
+        )
+        receipt["prepared_environment_sha256"] = prepared_sha256
+        stage_order.append("prepare-profile")
+
+        receipt["stage"] = "startup-profile-assets"
+        startup_assets = prepare_startup_profile_assets(
+            spec.profile_dir, profile_settings_template
+        )
+        startup_assets["frozen_binding"] = _prepared_profile_binding(
+            startup_assets,
+            expected_settings_sha256=expected_profile_settings_sha256,
+            expected_shadercache_tree_sha256=expected_shadercache_tree_sha256,
+        )
+        receipt["startup_profile_assets"] = startup_assets
+        stage_order.append("startup-profile-assets")
+
+        receipt["stage"] = "verify-profile"
+        verified_environment = verify_profile(spec)
+        verified_sha256 = _sha256_text(
+            verified_environment.get("environment_sha256"),
+            "verified environment SHA-256",
+        )
+        if verified_sha256 != prepared_sha256:
+            raise LiveAdapterError(
+                "verified environment differs from the prepared environment"
+            )
+        receipt["verified_environment_sha256"] = verified_sha256
+        stage_order.append("verify-profile")
+
+        receipt["stage"] = "copy-source-seed"
+        receipt["checkpoint"] = _copy_formal_candidate_artifact(
+            source_checkpoint,
+            spec.profile_dir / "save games" / "xar_checkpoint.ck3",
+            expected_checkpoint_sha256,
+            label="source checkpoint",
+        )
+        receipt["driver_state"] = _copy_formal_candidate_artifact(
+            source_driver_state,
+            spec.state_dir / "native-session" / "driver-state.json",
+            expected_driver_state_sha256,
+            label="source driver state",
+        )
+        stage_order.append("copy-source-seed")
+
+        receipt["stage"] = "typed-rogue-lifecycle-rebind"
+        if lifecycle_rebinder is None:
+            raise LiveAdapterError(
+                "typed rogue lifecycle rebinder is not integrated; "
+                "formal native_auto_run remains blocked"
+            )
+        rebind = lifecycle_rebinder(
+            spec,
+            expected_pipe_name=expected_pipe_name,
+        )
+        if (
+            not isinstance(rebind, dict)
+            or rebind.get("ok") is not True
+            or rebind.get("status") != "rebound"
+            or rebind.get("ck3_launch_attempted") is not False
+        ):
+            raise LiveAdapterError("typed rogue lifecycle rebinder did not pass")
+        receipt["lifecycle_rebind"] = copy.deepcopy(rebind)
+        stage_order.append("typed-rogue-lifecycle-rebind")
+        receipt.update(
+            {
+                "status": "GREEN",
+                "stage": "ready-before-native-auto-run",
+                "native_auto_run_ready": True,
+            }
+        )
+    except Exception as error:
+        receipt.update(
+            {
+                "status": "BLOCKED",
+                "error": f"{type(error).__name__}: {error}",
+            }
+        )
+        _write_json_atomic(receipt_path, receipt)
+        if isinstance(error, LiveAdapterError):
+            raise
+        raise LiveAdapterError(
+            f"formal candidate state {receipt['stage']} blocked native_auto_run: {error}"
+        ) from error
+    _write_json_atomic(receipt_path, receipt)
+    return spec, receipt
 
 
 def _load_manifest(
@@ -2448,6 +2637,7 @@ def main(argv: list[str] | None = None) -> int:
         candidate_auto_run: dict[str, object] | None = None
         action_runner_input: dict[str, object] | None = None
         runtime_before_candidate: dict[str, object] | None = None
+        formal_candidate_state: dict[str, object] | None = None
         if args.candidate_terminal_intercept:
             candidate_lifecycle = _object(
                 result.get("lifecycle_result"), "candidate lifecycle result"
@@ -2468,6 +2658,12 @@ def main(argv: list[str] | None = None) -> int:
             )
             if not isinstance(pipe_name, str) or not pipe_name:
                 raise LiveAdapterError("candidate checkpoint lacks its native pipe")
+            checkpoint = _object(
+                candidate_lifecycle.get("checkpoint"), "candidate checkpoint"
+            )
+            driver_state = _object(
+                candidate_lifecycle.get("driver_state"), "candidate driver state"
+            )
             runtime_dependency = _object(
                 _checked.get("runtime_manifest"),
                 "candidate runtime manifest dependency",
@@ -2489,10 +2685,31 @@ def main(argv: list[str] | None = None) -> int:
                 raise LiveAdapterError(
                     f"runtime closure drifted before formal native_auto_run: {error}"
                 ) from error
-            spec = EnvironmentSpec(
-                state_dir=operations.state_dir,
+            if (
+                operations.profile_settings_template is None
+                or operations.expected_profile_settings_sha256 is None
+                or operations.expected_shadercache_tree_sha256 is None
+            ):
+                raise LiveAdapterError(
+                    "formal candidate profile assets were not frozen by preflight"
+                )
+            spec, formal_candidate_state = prepare_formal_candidate_state(
+                artifact_dir=args.artifact_dir.resolve(),
                 game_dir=paths.game_executable.parent.parent,
-                expected_game_version=EXPECTED_GAME_VERSION,
+                profile_settings_template=operations.profile_settings_template,
+                expected_profile_settings_sha256=(
+                    operations.expected_profile_settings_sha256
+                ),
+                expected_shadercache_tree_sha256=(
+                    operations.expected_shadercache_tree_sha256
+                ),
+                source_checkpoint=Path(str(checkpoint.get("path"))),
+                expected_checkpoint_sha256=checkpoint.get("sha256"),
+                source_driver_state=Path(str(driver_state.get("path"))),
+                expected_driver_state_sha256=driver_state.get("sha256"),
+                expected_pipe_name=pipe_name,
+                process_inventory=operations.process_inventory,
+                lifecycle_rebinder=ROGUE_LIFECYCLE_REBINDER,
             )
             candidate_auto_run = native_auto_run(
                 spec,
@@ -2518,7 +2735,7 @@ def main(argv: list[str] | None = None) -> int:
             )
             action_runner_input = _freeze_action_runner_input(
                 artifact_dir=args.artifact_dir.resolve(),
-                state_dir=operations.state_dir,
+                state_dir=spec.state_dir,
                 paths=paths,
                 source_capture_path=(args.artifact_dir / "capture.json").resolve(),
                 source_capture_sha256=source_capture_sha256,
@@ -2554,6 +2771,7 @@ def main(argv: list[str] | None = None) -> int:
             "startup_profile_assets": copy.deepcopy(
                 operations._startup_profile_assets
             ),
+            "formal_candidate_state": formal_candidate_state,
             "resume_checkpoint": copy.deepcopy(operations._resume_checkpoint),
             "outer_owner": result,
             "candidate_native_auto_run": candidate_auto_run,
@@ -2598,6 +2816,20 @@ def main(argv: list[str] | None = None) -> int:
             "startup_profile_assets": (
                 copy.deepcopy(operations._startup_profile_assets)
                 if operations is not None
+                else None
+            ),
+            "formal_candidate_state_receipt": (
+                str(
+                    (
+                        args.artifact_dir.resolve()
+                        / "formal-candidate-state.json"
+                    )
+                )
+                if args.artifact_dir is not None
+                and (
+                    args.artifact_dir.resolve()
+                    / "formal-candidate-state.json"
+                ).is_file()
                 else None
             ),
             "resume_checkpoint": (
