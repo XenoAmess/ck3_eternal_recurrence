@@ -2,8 +2,8 @@
   "schema": "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1",
   "status": "static-ready-live-command-default-off",
   "created_at": "2026-09-05T17:10:00+08:00",
-  "candidate_source_commit": "23c1b15ae1cebb969b9a43d11d46e2890eb79b47",
-  "candidate_source_change": "GEN034-D frozen continuation and action recovery",
+  "candidate_source_commit": "55429bfbc1c6409f3747ce9a8e257eff19642a1a",
+  "candidate_source_change": "GEN034-D cold continuation readiness budget",
   "default_off": true,
   "live_executed": false,
   "paths": {
@@ -40,7 +40,7 @@
     "run_acceptance": "B5E99A7B835DA5D2FFB237296567984683B401D42E14FDD5EA272707ADF9F156",
     "profile_settings_guard": "2E4EC85C3B3496DDAB0ED18E0D8D7010B08DC7B337B7546E36FA5E38A11696A6",
     "native_runtime": "6224AFAF1AA675F28E1825F90862EF8E89747F91ECC34864ABA090A757EF057C",
-    "runtime_manifest": "41D97741CA804135A8730186B691552DBF8B11BA9623366204DEF3AE93CC5DE5"
+    "runtime_manifest": "EF05222DA1C124F27A9EDEAFE3C4A3A5A1012331D3125D529CBBAF78F4E8A492"
   },
   "timeouts": {
     "process_discovery_seconds": 30,

@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "23c1b15ae1cebb969b9a43d11d46e2890eb79b47",
+  "source_commit": "55429bfbc1c6409f3747ce9a8e257eff19642a1a",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
@@ -29,7 +29,7 @@
     "tools/run_zg361_phase2_seed_capture.py"
   ],
   "file_count": 481,
-  "tree_sha256": "C40670F2624043DCDF78B41E3F3930C6B6FF5D640733E5EF4DE0EB3241686818",
+  "tree_sha256": "8DDCFEA7D07CA61C03181791CC27AF6B3E3C98FB984A1436F81B425A38132154",
   "files": [
     {
       "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
@@ -663,8 +663,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_gen034_d_candidate_continuation.py",
-      "bytes": 22301,
-      "sha256": "0C4CFF046BAF8F9ED537915C2BFCF3AA529CA1E1ACA23131A10998F2EBED147C"
+      "bytes": 22647,
+      "sha256": "79D95E3B2636141A9C7F03131123646E7EB4CA56D99F6C0104575B2DF107189D"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_gen034_three_way_exit_action_live_acceptance.py",
