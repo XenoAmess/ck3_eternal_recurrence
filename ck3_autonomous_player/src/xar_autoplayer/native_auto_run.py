@@ -37,6 +37,7 @@ from .bridge.council_assign_councillor_action_contract import (
     ASSIGN_COUNCILLOR_V1_STEP,
 )
 from .lifestyle_formal_consumer import RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP
+from .construction_formal_consumer import RECEIPT_STEP as PRIVATE_CONSTRUCTION_RECEIPT_STEP
 from .bridge.service import GameplayBridgeService
 from .bridge.settlement_contract import (
     normalize_fixed_score,
@@ -303,6 +304,7 @@ def native_auto_run(
     allow_route_contact_high_speed_ab: bool = False,
     allow_stationary_objective_hold_sentinel_canary: bool = False,
     allow_private_lifestyle_formal_trial: bool = False,
+    allow_private_construction_formal_trial: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
@@ -372,6 +374,8 @@ def native_auto_run(
         raise AgentError(
             "private LIFE slot43 trial only admits a bounded contract"
         )
+    if allow_private_construction_formal_trial is True and completion_contract != "bounded":
+        raise AgentError("private construction trial only admits a bounded contract")
     if (
         allow_private_faction_gift_formal_trial is True
         and completion_contract != "bounded"
@@ -670,6 +674,11 @@ def native_auto_run(
             **private_lifestyle_driver_options,
             **private_faction_driver_options,
             **ordinary_succession_driver_options,
+        )
+        # This controlled, private Python route does not change the native
+        # driver's public action registration or capability advertisement.
+        driver.allow_private_construction_formal_trial = (
+            allow_private_construction_formal_trial is True
         )
         bind_succession_lifecycle = getattr(
             driver, "bind_succession_lifecycle_v1", None
@@ -1149,6 +1158,33 @@ def native_auto_run(
                         "private LIFE receipt did not match the next paused game frame"
                     )
                 evidence.append("lifestyle_has_perk_independent_later_frame")
+            if step == PRIVATE_CONSTRUCTION_RECEIPT_STEP:
+                receipt = outcome.get("result")
+                if (
+                    isinstance(receipt, dict)
+                    and receipt.get("status") == "restored_before_action"
+                    and receipt.get("postcondition_verified") is True
+                    and receipt.get("post_snapshot_id") == after_snapshot.get("snapshot_id")
+                    and receipt.get("post_public_revision") == after_snapshot.get("revision")
+                    and receipt.get("episode_run_id") == after_snapshot.get("episode_run_id")
+                ):
+                    evidence.append("construction_prior_action_rolled_back_by_cold_restore")
+                else:
+                    if not (
+                        isinstance(receipt, dict)
+                        and receipt.get("status") == "applied"
+                        and receipt.get("postcondition_verified") is True
+                        and receipt.get("post_snapshot_id") == after_snapshot.get("snapshot_id")
+                        and receipt.get("post_public_revision") == after_snapshot.get("revision")
+                        and receipt.get("episode_run_id") == after_snapshot.get("episode_run_id")
+                    ):
+                        capture_first_failure(
+                            stage="construction_receipt",
+                            kind="construction_material_postcondition_failed",
+                            message="private construction receipt lost its independent paused frame",
+                        )
+                        raise AgentError("private construction receipt does not match paused game frame")
+                    evidence.append("construction_active_independent_later_frame")
             if "date_advanced" in evidence:
                 date_advanced = True
             if parse_event_option_step(step) is not None:
@@ -4157,6 +4193,9 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "lifestyle_action",
         "lifestyle_pending_action",
         "lifestyle_receipt_consumed",
+        "construction_private_query",
+        "construction_pending_action",
+        "construction_receipt_consumed",
         "lifestyle_query_status",
         "lifestyle_native_error",
         "exact_active_war_set_watch",

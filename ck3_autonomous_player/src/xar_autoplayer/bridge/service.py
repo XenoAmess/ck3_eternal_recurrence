@@ -376,6 +376,16 @@ from ..lifestyle_formal_consumer import (
     same_frame_feudal_peace_scope,
     unresolved_lifestyle_perk_action,
 )
+from ..construction_formal_consumer import (
+    SUBMIT_STEP as PRIVATE_CONSTRUCTION_SUBMIT_STEP,
+    RECEIPT_STEP as PRIVATE_CONSTRUCTION_RECEIPT_STEP,
+    plan_construction_private,
+    read_construction_ledger,
+)
+from .domain_construction_private_transport_v1 import (
+    _identity as construction_process_identity,
+    submit_construction_private, query_construction_receipt,
+)
 from .faction_gift_formal_route_v1 import (
     COLD_RECOVERY_STEP as PRIVATE_FACTION_COLD_RECOVERY_STEP,
     RECEIPT_STEP as PRIVATE_FACTION_RECEIPT_STEP,
@@ -617,6 +627,20 @@ class GameplayBridgeService:
                         **plan,
                         "lifestyle_receipt_consumed": applied_life,
                     }
+            if (
+                getattr(self.driver, "allow_private_construction_formal_trial", False) is True
+                and state_dir is not None
+            ):
+                applied_construction = read_construction_ledger(state_dir).get("applied")
+                if (
+                    isinstance(applied_construction, dict)
+                    and applied_construction.get("episode_run_id") == planning_snapshot.get("episode_run_id")
+                    and construction_process_identity(self.driver) == (
+                        applied_construction.get("post_bridge_pid"),
+                        applied_construction.get("post_bridge_creation_date"),
+                    )
+                ):
+                    plan = {**plan, "construction_receipt_consumed": applied_construction}
             if cross_run_plan is not None:
                 plan = {**plan, "cross_run_plan_used": cross_run_plan}
             routable_steps = set(available_steps)
@@ -689,6 +713,16 @@ class GameplayBridgeService:
                     ) is True
                     else None
                 ),
+                "_private_construction_snapshot_v1": (
+                    planning_snapshot
+                    if getattr(self.driver, "allow_private_construction_formal_trial", False) is True
+                    else None
+                ),
+                "_private_construction_history_v1": (
+                    history
+                    if getattr(self.driver, "allow_private_construction_formal_trial", False) is True
+                    else None
+                ),
             }
 
         if use_internal_view:
@@ -716,6 +750,8 @@ class GameplayBridgeService:
             ):
                 planned.pop("_private_faction_snapshot_v1", None)
                 planned.pop("_private_faction_history_v1", None)
+                planned.pop("_private_construction_snapshot_v1", None)
+                planned.pop("_private_construction_history_v1", None)
                 return planned
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
@@ -728,12 +764,23 @@ class GameplayBridgeService:
                 isinstance(faction_snapshot, dict)
                 and isinstance(faction_history, list)
             ):
-                return plan_faction_gift_private_v1(
+                planned = plan_faction_gift_private_v1(
                     self.driver, planned, faction_snapshot,
                     faction_history, available_steps,
                 )
         planned.pop("_private_faction_snapshot_v1", None)
         planned.pop("_private_faction_history_v1", None)
+        construction_snapshot = planned.pop("_private_construction_snapshot_v1", None)
+        construction_history = planned.pop("_private_construction_history_v1", None)
+        if (
+            getattr(self.driver, "allow_private_construction_formal_trial", False) is True
+            and isinstance(construction_snapshot, dict)
+            and isinstance(construction_history, list)
+        ):
+            return plan_construction_private(
+                self.driver, planned, construction_snapshot,
+                construction_history, available_steps,
+            )
         return planned
 
     def _plan_private_lifestyle_trial_v1(
@@ -1030,6 +1077,20 @@ class GameplayBridgeService:
                 result = executor(
                     pending=pending,
                     expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == PRIVATE_CONSTRUCTION_SUBMIT_STEP:
+                query = plan.get("construction_private_query")
+                if not isinstance(query, dict):
+                    raise UnsupportedStepError("controlled construction lacks typed candidate")
+                result = submit_construction_private(
+                    self.driver, query=query, expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == PRIVATE_CONSTRUCTION_RECEIPT_STEP:
+                pending = plan.get("construction_pending_action")
+                if not isinstance(pending, dict):
+                    raise UnsupportedStepError("controlled construction receipt lacks pending identity")
+                result = query_construction_receipt(
+                    self.driver, pending=pending, expected_revision=int(planned["revision"]),
                 )
             elif selected_step == PRIVATE_FACTION_SUBMIT_STEP:
                 candidate = plan.get("faction_gift_action")
