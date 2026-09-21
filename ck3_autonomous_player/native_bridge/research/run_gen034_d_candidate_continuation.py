@@ -71,6 +71,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-injector", type=Path)
     parser.add_argument("--candidate-turn-limit", type=int, default=256)
     parser.add_argument("--candidate-timeout", type=float, default=1800.0)
+    parser.add_argument("--readiness-timeout", type=float, default=720.0)
     parser.add_argument("--authorize-private-live", action="store_true")
     return parser
 
@@ -325,6 +326,15 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "candidate timeout",
         maximum=7200.0,
     )
+    readiness_timeout = _positive_seconds(
+        args.readiness_timeout,
+        "readiness timeout",
+        maximum=3600.0,
+    )
+    if timeout <= readiness_timeout:
+        raise ContinuationError(
+            "candidate timeout must be greater than readiness timeout"
+        )
 
     runtime_root = args.runtime_root.expanduser().resolve()
     runtime_identity = _clean_runtime_root(runtime_root)
@@ -479,7 +489,7 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             spec,
             turn_count=turn_limit,
             timeout_seconds=timeout,
-            readiness_timeout_seconds=timeouts.bridge_attach_seconds,
+            readiness_timeout_seconds=readiness_timeout,
             cold_start_checkpoint=True,
             native_bridge=NativeBridgeLaunchConfig(
                 mode="native-headless",

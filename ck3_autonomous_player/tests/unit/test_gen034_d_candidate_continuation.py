@@ -87,6 +87,7 @@ class Gen034DCandidateContinuationTests(unittest.TestCase):
             bridge_injector=None,
             candidate_turn_limit=256,
             candidate_timeout=1800.0,
+            readiness_timeout=720.0,
             authorize_private_live=True,
         )
         self.paths = RUNNER.adapter.AdapterPaths(
@@ -242,6 +243,7 @@ class Gen034DCandidateContinuationTests(unittest.TestCase):
             verify_runtime = RUNNER.adapter.verify_runtime_file_manifest
             prepare = RUNNER.adapter.prepare_formal_candidate_state
             freeze = RUNNER.adapter._freeze_action_runner_input
+            native = RUNNER.adapter.native_auto_run
             report, exit_code = RUNNER.run_continuation(self.args)
 
             self.assertEqual(exit_code, 0)
@@ -291,7 +293,22 @@ class Gen034DCandidateContinuationTests(unittest.TestCase):
                 freeze.call_args.kwargs["expected_shadercache_tree_sha256"],
                 "C" * 64,
             )
+            self.assertEqual(
+                native.call_args.kwargs["readiness_timeout_seconds"],
+                720.0,
+            )
             stack.close()
+
+    def test_candidate_timeout_must_exceed_readiness_timeout(self) -> None:
+        self.args.candidate_timeout = 600.0
+
+        with self.assertRaisesRegex(
+            RUNNER.ContinuationError,
+            "candidate timeout must be greater than readiness timeout",
+        ):
+            RUNNER.run_continuation(self.args)
+
+        self.assertFalse(self.attempt.exists())
 
     def test_candidate_red_is_persisted_and_never_freezes_action_input(self) -> None:
         failed = {
