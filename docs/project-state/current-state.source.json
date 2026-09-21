@@ -1,7 +1,7 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-13T21:22:00+08:00",
+  "updated_at": "2026-09-22T00:00:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
@@ -213,11 +213,14 @@
     "program": "G2",
     "result": "ACTIVE",
     "percentage": null,
-    "progress_basis": "visible OODA milestones; 1/8 complete",
+    "progress_basis": "visible OODA milestones; 2/8 complete",
     "open_gates": [
-      "GEN-034"
+      "G2-M2",
+      "G2-M3",
+      "G2-M4"
     ],
     "closed_gates": [
+      "G2-M0",
       "G2-M1"
     ],
     "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md"
@@ -227,7 +230,7 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041",
     "compat_commit": "a6542064546441f4c175c54f3dbf947d7385b768",
-    "public_interface_delta": "NO_NEW_DELTA_G2_M1_LIVE_EVIDENCE_ONLY",
+    "public_interface_delta": "NO_NEW_DELTA_G2_M0_INTERNAL_PYTHON_FIX_AND_LIVE_EVIDENCE",
     "live_sync_source": "repository_provenance.t2_live_source"
   },
   "live_red_source": {

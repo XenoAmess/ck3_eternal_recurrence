@@ -2660,3 +2660,35 @@ not relax success or action gates and changes no native ABI, public MCP schema,
 or `open_kaishek` interface. Focused direct consumers pass normal and optimized
 Python `140/140`; a new frozen canonical round is still required before
 GEN-034-D can close.
+
+## 2026-09-21 R0043 source-bound Raiktor closure
+
+[production-live loop / complete] R0043 executed the corrected same-session
+terminal callback on exact CK3 `1.19.0.6`. On one paused frame
+`native:50/revision 51/date 53190816`, continue and surrender were eligible,
+white peace was native-unavailable, and the formal policy selected surrender by
+`11,661,500`. Driver history contains exactly one terminal command,
+`surrender-war-16777285` at h1989.
+
+The independent successor frame proved that WarID `16777285` was absent, gold
+changed `65753016 -> 43253016`, prestige changed
+`233114400 -> 133114400`, the directional persisted truce from player `29829`
+to opponent `35991` lasted 1825 days with expiry `53234616`, and all 24
+source-bound persistent/current regiments were destroyed. The action-frame
+CArmy set remained part of the strict cleanup binding; only the volatile
+creation-to-action CArmy-container equality was removed by the R0042 repair.
+
+h1993 saved checkpoint SHA-256
+`A89BCF2642E0136B6624AC42F76BDC2314FA01427B3EC62B64A51FBFCBDFB296`.
+h1994 then performed a real cold restore with PID `77580 -> 41264`; h1995 and
+h1996 used the formal public loop to consume the restored peaceful state and
+disband the residual army, with zero surrender replay. Outer and native report
+SHA-256 values are
+`9294D8B8D6F8B5485FB69A3B0E1C0E5AAC8F13F6D5D7FB996D3160DC890513EE`
+and
+`2B726601160586AEEF71E4204441EDD13D50C697F6EAF6975514E68DA5AC82D6`.
+
+This closes GEN-034-D and, together with A/B/C, closes GEN-034 and G2-M0.
+Broader CB/ruler/campaign matrices remain later-milestone work; they do not
+reopen this fixed visible outcome. Native ABI, public MCP and `open_kaishek`
+interfaces did not change.

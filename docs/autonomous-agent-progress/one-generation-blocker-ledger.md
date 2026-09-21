@@ -1,6 +1,6 @@
 # 一代人自治：阻塞与能力债账本
 
-## 2026-09-21 R0036-R0042 GEN-034-D replay and same-session repair ledger
+## 2026-09-21 R0036-R0043 GEN-034-D replay and same-session closure ledger
 
 | Delivery gate / capability | Status | Formal entry | Artifact / source | Actual game and next-turn evidence | Restore evidence | B0/B1 gap / owner | Branch cleanup |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -8,13 +8,13 @@
 | Pre-action cold-restore authorization replay | capability RED retained; zero action | frozen R0039 action runner | R0040 report `A6A4B981...6858` | Same date/war/score/duration, but restored target total changed `22889080000 -> 16433600000`, ratio `226973 -> 162959`, and recommendation flipped `surrender -> continue`; authorization rejected before submit | Cleanup and external CK3/injector process-zero GREEN; no postwar checkpoint because no action occurred | Do not retry the stale authorization. The default-off repair keeps intercept and one action on the same driver/frame; focused normal/`-O` each `130/130` GREEN; run one new canonical live round | no native ABI/public MCP/open_kaishek change; live closure pending |
 | Same-session dynamic terminal advertisement | capability RED retained; zero action; narrow static repair GREEN | terminal callback on the producing driver/frame | R0041 report `850F14F0...609D`; agent `1353324a`; PID `136748` | `41/41` turns; surrender again won by `11,661,500`; callback's four read-only queries were GREEN, but capabilities had been captured before they refreshed the dynamic WarID literal, so action gate blocked on `recommended_action_step_not_advertised` | No action or postwar save/restore; source triplet unchanged; candidate cleanup and process-zero GREEN | Refresh capabilities after option/power/terms reads, then run one new canonical round; normal/`-O` combined suites each `142/142`; `/root` | fix branch active; no native ABI/public MCP/open_kaishek change |
 | Stable source identity after natural army merge | capability RED retained; zero action; narrow static repair GREEN | terminal callback on the producing driver/frame | R0042 outer `B3D441DC...0CE`; native `42A41260...410`; final driver `BDB3E2A5...A65`; agent `a466ac14`; PID `106896` | `41/41` turns; refreshed action gate authorized `surrender-war-16777285`, then the pre-action source check rejected six creation CArmy containers versus one current merged container. WarID plus all 24 persistent/current regiment IDs were identical; h1985-h1988 are read-only and no terminal command exists | h1984 checkpoint `1A11C221...581` remains recoverable; cleanup/tree reclaim GREEN and a fresh external inventory was zero | Bind source→active on stable WarID/persistent/current regiment identity; retain complete active set including current CArmy for active→cleanup; recursively retain async leaf errors; normal/`-O` direct consumers each `140/140`; `/root` | temporary repair ref requires cleanup after linear master delivery; no native ABI/public MCP/open_kaishek change |
+| GEN-034-D source-bound terminal closure | **complete**; G2-M0 visible outcome closed | formal `native_auto_run` same-session terminal callback | R0043 outer `9294D8B8...13EE`; native `2B726601...2D6`; driver `EB46D74F...E4F`; agent `8ec1153e` | One paused frame compared continue/white peace/surrender and submitted only h1989 `surrender-war-16777285`; the independent post frame proved WarID absence, exact gold/prestige deltas, directional persisted truce and destruction of all 24 source-bound regiments; h1995/h1996 next formal cycle consumed the peaceful state and disbanded the residual army without surrender replay | h1993 checkpoint `A89BCF26...B296`; h1994 replaced PID `77580→41264`, retained postwar resources/truce/WarID absence; cleanup/tree reclaim and fresh external process-zero GREEN | None for M0. Continue with ordinary production natural-event, succession and governance gates; `/root` | `8ec1153e` is on remote master and its temporary implementation branch is deleted; frozen runtime worktree remains an evidence dependency until artifact retirement |
 
 R0036 was voided after obsolete CLI aliases failed before launch; R0037 was a
 prelaunch wrong-DLL-path RED; R0038 reused an already post-intercept pair and
 therefore completed `64/64` turns without a new terminal interception. Those
-attempts and R0041/R0042 are retained but do not promote capability. Authority remains G2
-`1/8`, Council `1/4`, GEN-034 `3/4` until the new same-session live chain is
-GREEN.
+attempts and R0041/R0042 are retained as RED history. R0043 closes the same-session chain, so authority is now G2
+`2/8`, Council remains `1/4`, and GEN-034 is `4/4`.
 
 ## 2026-09-21 R0034-R0035 GEN-034-D action-runner lifecycle ledger
 

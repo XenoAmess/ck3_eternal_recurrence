@@ -10,13 +10,13 @@ G2 的终点是能够跨继承、跨玩法域持续完成“观察 → 决策 �
 `start-next-episode` 和第二寿命证明了进程接管、恢复与 episode 生命周期；它们不等于普通 campaign 的真实继承，也不等于
 整套玩法覆盖。
 
-G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **1/8 complete**。以后只汇报 `完成里程碑/8`、当前里程碑及其子包，
+G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **2/8 complete**。以后只汇报 `完成里程碑/8`、当前里程碑及其子包，
 不再汇报没有固定分母的“G2 90%”。旧 `T1=90%` 只曾表示 GEN-034 这个窄战争退出包接近当时定义的收口，且随着真实证据
 改写了剩余输入，它已失去可比性。
 
 | 里程碑 | 优先级 | 当前状态 | 可见验收结果 |
 |---|---:|---|---|
-| G2-M0 GEN-034 三路战争退出 | P0 | in progress | 同帧比较继续、白和、投降；只提交一次；验证战后并冷恢复 |
+| G2-M0 GEN-034 三路战争退出 | P0 | complete | 同帧比较继续、白和、投降；只提交一次；验证战后并冷恢复 |
 | G2-M1 实体发现与 core turn bundle | P1-A | complete | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
 | G2-M2 自然事件语义闭环 | P1-B | in progress | 三个自然事件按目标评分并验证结果，至少两个为多选 |
 | G2-M3 继承与 realm survival | P1-C | in progress | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
@@ -32,7 +32,7 @@ G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **1/8 complete*
 
 ## 当前 P0：GEN-034
 
-GEN-034 当前是 **2/4 子包完成**，但已有重要前置原语：R459 已真实提交一次 surrender，证明 source-specific
+GEN-034 当前是 **4/4 子包完成**。R459 已真实提交一次 surrender，证明 source-specific
 `3000→0`、persisted truce expiry `53227656` 与战后生命周期；R471 已在同一 paused frame 两次读取玩家
 `13075500000`、对手 `16770900000` 的 strategic power，原生 ratio 为 `128262/100000`。
 
@@ -40,8 +40,8 @@ GEN-034 当前是 **2/4 子包完成**，但已有重要前置原语：R459 已�
 
 1. `GEN-034-A`（**complete**）：把 R471 strategic-power 原语接成 policy-level campaign dominance certificate；
 2. `GEN-034-B`（**complete**）：提供有版本、来源、仓库默认值和显式 operator override 的 strategy budget/profile；
-3. `GEN-034-C`：在同一 paused frame 取得 white-peace terms 与 utility comparison；
-4. `GEN-034-D`：三路 recommendation → 一次 semantic action → WarID/loss/truce/resources 后置 → checkpoint/cold restore。
+3. `GEN-034-C`（**complete**）：在同一 paused frame 取得 white-peace terms 与 utility comparison；
+4. `GEN-034-D`（**complete**）：三路 recommendation → 一次 semantic action → WarID/loss/truce/resources 后置 → checkpoint/cold restore。
 
 旧的 index `9/10`、root shape 与 Truce vtable 枚举已被后续证据淘汰。不得再以它们作为当前入口。source attribution、
 pre/loss、实际 expiry 和 active-war strategic power 已有证据，不得重复跑这些已关闭的单字段场景。
@@ -55,9 +55,7 @@ operator override 必须绑定默认 profile ID/version，实际输入按源文�
 `GEN-034-A` 已由 `raiktor_campaign_dominance_provider.py` 和 hash-bound CLI 闭合。R471 receipt 为
 `Z:\ck3_mod_rewrite\_runtime\g2-gen034-a-campaign-dominance-20260912\r471-certificate.json`，SHA-256
 `AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569`。它只发布实测兵力关系；campaign forecast、exit utility、
-recommendation 与 action 均保持关闭。`GEN-034-C/D` 需要 CK3 时必须服从 G2 单实例轮次规则与当前 owner 的 CK3 使用限制。
-下一次 live 只允许一个有界 paused 场景，完成同帧 white-peace comparison；若输入齐全则在同一受管会话继续唯一 action 与
-postwar 验证。单字段修复只跑聚焦测试和这一个场景，不扩成永久长跑。
+recommendation 与 action 均保持关闭。该旧 A 包本身不授权动作；C/D 的动作授权与结果由 R0043 的完整生产闭环单独证明。
 
 `GEN-034-D` 已补齐通用 `played_character_prestige` paused-snapshot 字段，复用条款 reader 的 exact-build
 `extension+0x130` leaf。这样旧 WarID 消失后仍能比较冻结的 attacker prestige 余额与预期 delta。该字段目前仅
@@ -74,6 +72,18 @@ recommendation certificate 已把 D 的后置门冻结成可执行数据：玩�
 角色、episode、日期、资源及 WarID 缺失。六项全部成立才允许 `gen034_closed=true`。continue 路线只核对 successor revision、
 日期、同一战事和角色，永远不关闭 GEN-034。该合同为 `static-ready / live=false`，普通和 optimized 聚焦套件各 `20/20` GREEN；
 它没有新增 MCP/native schema，也没有执行 CK3。
+
+### R0043 GEN-034-D production closure
+
+R0043 在 exact CK3 `1.19.0.6` 的同一 paused frame `native:50/revision 51/date 53190816` 比较 continue、white peace 与
+surrender；正式策略选择并仅提交一次 `surrender-war-16777285`。独立后帧确认 WarID 消失、gold
+`65753016→43253016`、prestige `233114400→133114400`、玩家 `29829` 指向对手 `35991` 的 1825 日 persisted truce
+（expiry `53234616`）以及全部 24 个 source-bound regiment destroyed。h1993 checkpoint SHA-256 为
+`A89BCF2642E0136B6624AC42F76BDC2314FA01427B3EC62B64A51FBFCBDFB296`；h1994 将 PID `77580→41264` 真冷恢复，h1995/h1996
+由正式下一循环消费恢复后的和平状态并解散残军，surrender replay 为零。outer/native report SHA-256 分别为
+`9294D8B8D6F8B5485FB69A3B0E1C0E5AAC8F13F6D5D7FB996D3160DC890513EE` 与
+`2B726601160586AEEF71E4204441EDD13D50C697F6EAF6975514E68DA5AC82D6`。因此 GEN-034 A-D 为 `4/4`，G2-M0 为
+`complete`，固定 G2 完成数为 `2/8`。
 
 ## GEN-034 后的固定顺序
 
@@ -115,7 +125,7 @@ native index 与 enabled 投影全部匹配时，planner 采用登记的 source-
 已登记 key 若投影漂移、目标选项 disabled，或合同需要尚未实现的人物关系、scope/option variant、动态 native prefix、occurrence 上限、延后选择或场景失效
 语义，planner 返回 `active_event_registry_contract_blocked` 并保持不输入；未知 key 才继续旧 degraded fallback。该子包为
 `static-ready / live=false`，普通与 optimized 聚焦测试各 `30/30` GREEN。它没有改变 current-window、registry 或 MCP 公共 schema，
-没有独立完成 M2；当前固定总进度 `1/8` 来自 M1。M2 仍需 variant-aware consumer、event-context-v2 结构化效果、campaign objective 评分，以及三个
+没有独立完成 M2；当前固定总进度 `2/8` 来自 M0 与 M1。M2 仍需 variant-aware consumer、event-context-v2 结构化效果、campaign objective 评分，以及三个
 自然事件（至少两个多选）的动作与物质状态后置实机证据。
 
 为关闭其中一个真实后置缺口，通用 native state snapshot 已在 `played_character` 上增加可选 `stress_points`。它复用
@@ -160,7 +170,7 @@ optimized 聚焦测试各 `27/27` GREEN。
 
 主 DLL 与 native fixture GREEN，Python normal/optimized 聚焦测试各 `30/30` GREEN；状态仍为 `static-ready / live=false`。
 `.0030` 与 `.8001` 各只待一次 bounded live action 证明，不为任一单事件启动长跑。连同下述第三条静态路径，G2-M2 仍需
-campaign objective 评分与三个 production event loops；当前固定总进度为 `1/8`。详见
+campaign objective 评分与三个 production event loops；当前固定总进度为 `2/8`。详见
 [`played-character-gold.md`](../ck3-native-ai/played-character-gold.md)。
 
 第三条静态 material path 现选定已有真实证据的 `death_management.1007`。R374 已证明唯一 authored1/native0 的 event instance
@@ -170,7 +180,7 @@ advance；本包为该 key 精确消费 distinct `dead_character` scope，发布
 
 该 comparator 为 `static-ready / live=false`。R374 的旧 hot park 没有 durable checkpoint，不能冒充可冷恢复输入；今后只在正常
 campaign 自然再遇时顺手做一次 bounded 前后对账，不为 `.1007` 单独长跑。至此三个目标事件均已有静态 material comparator，但
-三条 production material loops 与跨事件 campaign objective 评分仍未闭合，所以 G2-M2 继续 in progress；当前总进度为 `1/8`。
+三条 production material loops 与跨事件 campaign objective 评分仍未闭合，所以 G2-M2 继续 in progress；当前总进度为 `2/8`。
 详见 [`heir-death-stress.md`](../ck3-native-ai/heir-death-stress.md)。
 
 三个目标事件的 bounded campaign objective/utility 输入也已 static-ready。每个 analysis record 现发布 versioned ordinal profile；
@@ -188,8 +198,8 @@ event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这
 
 ## 报告规则
 
-- 总进度只写 `G2-Mx / 8`，当前为 `1/8`；
-- 当前工作包另写 `完成子包/总子包`，当前 GEN-034 为 `2/4`；
+- 总进度只写 `G2-Mx / 8`，当前为 `2/8`；
+- 当前工作包另写 `完成子包/总子包`，GEN-034 已为 `4/4`；
 - query/tool 数量只作 surface inventory，不得换算为玩法完成率；
 - 任何 `live` 提升必须链接 paused artifact；ACK、schema、单元测试和单场 fixture 不得冒充 OODA；
 - 对已取得证据的输入直接复用，新的 live 只验证本包新增的最小事实或动作后置。

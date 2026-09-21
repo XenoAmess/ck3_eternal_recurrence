@@ -16,7 +16,7 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 进入第三个 episode。该结果完成了同一冻结 seed 的 G2 全寿命重复门；它仍不代表不同 ruler/政府/DLC、普通 campaign
 跨继承或全游戏自治已经完成。
 
-现行 G2 使用固定八项可见 OODA 分母，当前为 `1/8`；G2-M1 的实体发现与 core turn bundle 已完成双场景 production-live 验收。需求、状态和施工顺序以
+现行 G2 使用固定八项可见 OODA 分母，当前为 `2/8`；G2-M0 的三路战争退出与 G2-M1 的实体发现/core turn bundle 已完成。需求、状态和施工顺序以
 [`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读 JSON 为准。
 
 ## 导航
@@ -37,6 +37,10 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 - [2026-09-11 天朝二期 P1 / AF5 收尾交接](../handover/2026-09-11-t0-p1-af5-handoff.md)
 - [2026-09-13 T0 人工测试冻结与 G2 优先级指令](../handover/2026-09-13-t0-manual-test-hold-and-g2-priority.md)
 - [日/周计划会制度与模板](meetings/README.md)
+- [2026-09-22 早会](meetings/daily/2026-09-22.md)
+- [2026-09-21 日报（已收口）](daily/2026-09-21.md)
+- [2026-09-22 日报（滚动）](daily/2026-09-22.md)
+- [2026-W39 周报（滚动）](weekly/2026-W39.md)
 - [2026-09-04 早会](meetings/daily/2026-09-04.md)
 - [2026-09-10 早会](meetings/daily/2026-09-10.md)
 - [2026-09-11 交接早会](meetings/daily/2026-09-11.md)

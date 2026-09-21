@@ -10,8 +10,8 @@
   "completion_denominator": {
     "kind": "visible_ooda_milestones",
     "total": 8,
-    "complete": 1,
-    "progress_label": "1/8",
+    "complete": 2,
+    "progress_label": "2/8",
     "percent_reporting_allowed": false
   },
   "historical_prerequisites": [
@@ -31,7 +31,7 @@
       "id": "G2-M0",
       "name": "GEN-034 three-way war exit",
       "priority": "P0",
-      "status": "in_progress",
+      "status": "complete",
       "latest_evidence": [
         "R459",
         "R471",
@@ -46,11 +46,12 @@
         "GEN-034-D bounded action runner and termination-bound cleanup dispatch static-ready (normal/optimized focused suite 29/29; MSVC candidate build GREEN)",
         "R661 immutable replay: production continue recommendation and one submitted resume, but no successor across 45 observations; fixture-scoped map-control RED",
         "R839 production same-frame comparison made continue ineligible at the observed -100 terminal-control frame, found white peace unavailable, selected surrender as the sole eligible terminal, submitted surrender-war-33554473 exactly once, observed independent WarID and both-army disappearance, consumed the result on later formal turns and saved the history671 pair; report BD798BAE...1FEE6, checkpoint 5D040C7E...7B236, driver 842CCC35...97CC7",
-        "R846 restored the R839 pair in a new CK3 process, kept WarID33554473 absent with zero surrender replay, consumed later formal interaction/event work and saved a new history693 paired checkpoint; report 63CFCDD4...34D1, checkpoint 9893F8C1...C08C, driver 8315217A...F83"
+        "R846 restored the R839 pair in a new CK3 process, kept WarID33554473 absent with zero surrender replay, consumed later formal interaction/event work and saved a new history693 paired checkpoint; report 63CFCDD4...34D1, checkpoint 9893F8C1...C08C, driver 8315217A...F83",
+        "R0043 production same-frame Raiktor closure selected surrender-war-16777285 once after comparing continue, white peace and surrender, verified WarID absence, exact gold/prestige deltas, directional persisted truce, destruction of all 24 source-bound regiments, postwar checkpoint A89BCF2642E0136B6624AC42F76BDC2314FA01427B3EC62B64A51FBFCBDFB296, replacement-PID cold restore and next formal-turn consumption without terminal replay; outer report 9294D8B8D6F8B5485FB69A3B0E1C0E5AAC8F13F6D5D7FB996D3160DC890513EE, native report 2B726601160586AEEF71E4204441EDD13D50C697F6EAF6975514E68DA5AC82D6"
       ],
       "planner_consumer": "three-way exit recommendation and one semantic exit action",
       "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
-      "open_blocker": "GEN-034-C is complete on R839. GEN-034-D remains blocked_live because the terminating scene has no matching creation-time source capture and the fixed source-bound six-item certificate is incomplete: gold, prestige, directional truce plus persisted expiry, source-specific war-bound regiment destruction and postwar identity/recovery are not closed together. R846 proves new-process restore and a later paired checkpoint, but cannot manufacture the missing creation-time source binding."
+      "open_blocker": "none for the M0 visible outcome; broader CB, ruler and campaign matrices remain assigned to later milestones"
     },
     {
       "id": "G2-M1",
@@ -172,7 +173,7 @@
   ],
   "current_work_package": {
     "id": "GEN-034",
-    "completed_packages": 3,
+    "completed_packages": 4,
     "total_packages": 4,
     "packages": [
       {
@@ -196,11 +197,11 @@
       {
         "id": "GEN-034-D",
         "name": "three-way recommendation, one action and postwar verification",
-        "status": "blocked_live",
-        "latest_evidence": "R839 proves one typed surrender, WarID and both-army disappearance, later formal-turn consumption and a paired checkpoint. R846 proves a new-process restore of that pair, zero terminal replay and a later history693 paired checkpoint. D remains blocked_live because R831/R839 lack a matching creation-time source capture and the fixed source-bound six-item certificate (gold, prestige, directional truce plus persisted expiry, source-specific regiment destruction and postwar identity/recovery) is not closed as one source-bound proof."
+        "status": "complete",
+        "latest_evidence": "R0043 compared continue, white peace and surrender on one paused frame and submitted surrender-war-16777285 exactly once. An independent successor frame verified WarID absence, gold 65753016 to 43253016, prestige 233114400 to 133114400, directional persisted truce 29829 to 35991 for 1825 days with expiry 53234616, and destruction of all 24 source-bound regiments. It saved checkpoint A89BCF2642E0136B6624AC42F76BDC2314FA01427B3EC62B64A51FBFCBDFB296, cold-restored PID 77580 to 41264, consumed the result on the next formal turn and did not replay surrender; outer report 9294D8B8D6F8B5485FB69A3B0E1C0E5AAC8F13F6D5D7FB996D3160DC890513EE, native report 2B726601160586AEEF71E4204441EDD13D50C697F6EAF6975514E68DA5AC82D6."
       }
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-17T20:24:00+08:00"
+  "updated_at": "2026-09-22T00:00:00+08:00"
 }

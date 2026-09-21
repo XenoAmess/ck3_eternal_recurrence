@@ -1,6 +1,6 @@
-# G2 交付门增量台账（2026-09-16 00:43 Asia/Shanghai）
+# G2 交付门增量台账（更新至 2026-09-22 Asia/Shanghai）
 
-权威 g2-requirements-v1.json 仍为 1/8，仅 G2-M1 complete。可运行预览是额外交付切片；受控查询、静态实现和有界战术均不自动完成正式里程碑。CK3 按持久单实例 R{n} 台账追溯，RED、未执行和证据不足分开记账。
+权威 g2-requirements-v1.json 当前为 2/8，G2-M0 与 G2-M1 complete。可运行预览是额外交付切片；受控查询、静态实现和有界战术均不自动完成正式里程碑。CK3 按持久单实例 R{n} 台账追溯，RED、未执行和证据不足分开记账。
 
 | 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -31,3 +31,12 @@ R729 当前 CK3 存活实例 0，下一实机就绪队列含 FEUDAL final8ea sel
 | Council 四类 final gate | 1/4；R797 新场景仍无后三类正例，公共 OFF | 私有 gate-only query | R797 report `B6345292...4641` | 14 provider/11 ordinary；already3、guest0、pending0、replacement-denial0；gameplay/date/checkpoint0 | query-only cleanup GREEN，不是正式目标恢复 | 等 materially-different guest/pending/non-fireable scene；不重复 h260；/root | Council materializer `0aa366ef` 已 FF master；临时 refs 已清 |
 | Ordinary WarID5 terminal loop | **production-live loop for observed branch** | 正式 `native-auto-run`; recovery query `game.command.query-outbound-war-white-peace-status-v1-N` | commits `b9b6f249`/`881e1ba5`/`f5a8914d`/`36a25a55`/`c9c371b4`/`851c36dc`/`aba36a4e`; R801 report `E6E47677...48C6` | 同帧三择一→唯一 white peace→即时 pending checkpoint→独立 WarID5 消失→下一 turn 解散残军→和平 checkpoint | R802 新进程恢复 h289，零 reoffer/declare，正式推进32天并保存 h293 `DFC96CFD...71AF7` / `7C79FE4C...48EF0` | ordinary B0 已关；Raiktor GEN-034 C/D、自然继承、治理和整局仍开；/root | 所有代码均 ordinary FF 到 master，远端/local 临时分支即时删除 |
 | G2 权威状态 | **1/8**，仅 M1 complete | `g2-requirements-v1.json` | 定义与分母未变 | ordinary war closure 不自动完成任何正式 milestone | 无新增 milestone restore claim | 首整局、第二种子及余下矩阵继续；/root | 不适用 |
+
+## 2026-09-22 current delivery override
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 标准封建有界预览 | **GO，用户可获取、启动、停止和冷恢复**；范围仍为冻结 R888 slice | 包内 `g2_preview_operator.py` / `native_auto_run` | ZIP `D:\ck3_mod_rewrite_process_assets\g2-preview-ordinary-r888-d559faa6-stage-20260921\g2-preview-ordinary-d559faa6-r888.zip`, SHA `F7FAC0F5...18E9F6`; qualification SHA `0A74F822...E2757` | R0019 正式非空动作、独立后置与下一 turn 消费；R0020/R0022 新进程继续同一目标；R0021 受控停止 | final pair h1484 checkpoint `7121CCE3...386F`, driver `E9B7730E...4674` | 任意用户存档、自然事件/继承、Council 与整局仍未广告；`/root` | 冻结包不依赖临时 Git 分支 |
+| GEN-034 / G2-M0 | **complete；4/4** | formal `native_auto_run` same-session terminal callback | agent `8ec1153e`; R0043 outer `9294D8B8...13EE`, native `2B726601...2D6` | 同帧三择一，唯一 `surrender-war-16777285`；独立验证 WarID、资源、方向性 truce、24 regiments；下一正式 turn 消费且零重放 | checkpoint `A89BCF26...B296`; PID `77580→41264` 真冷恢复；cleanup GREEN | M0 无剩余 blocker；后续推进 M2/M3/M4 和整局 | implementation branch 已删；runtime worktree仅作为冻结证据依赖保留 |
+| 下一普通 production continuation | **READY after no-launch refreeze** | current-master `g2_preview_operator.py run` / `native_auto_run` | 输入 R891 h1484 pair `7121CCE3...386F` / `E9B7730E...4674` | 目标为 100-turn bounded ordinary continuation；自然 `.0030`/`.1007`、自然死亡只在真实 encounter 时收集 | 必须从新 PID 冷恢复并输出新 paired checkpoint、cleanup/process-zero | 先在 Z: 重冻 current-master operator manifest/profile/rebind/preflight；不重扫 R884 初始场景；`/root` | 新候选尚无 Git 分支依赖 |
+| G2 权威状态 | **2/8**，M0/M1 complete | `g2-requirements-v1.json` | 固定定义与分母未变 | R0043 完整闭合 M0 visible outcome | M0 recovery chain complete | M2/M3/M4、首整局、第二种子及余下矩阵继续；`/root` | 不适用 |
