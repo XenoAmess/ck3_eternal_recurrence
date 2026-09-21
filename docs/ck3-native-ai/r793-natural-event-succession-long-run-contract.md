@@ -144,3 +144,32 @@ native index 1, one typed selection, same CharacterID with
 `post_stress < pre_stress`, one later formal turn, and a paired checkpoint.
 Timeout or a bounded slice without the event is `evidence_not_observed`, not
 GREEN and not RED.
+
+## R0077 source-bound event routing (2026-09-22)
+
+The frozen CK3 `1.19.0.6` executable remains SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The exact `events/travel_events/tgp_travel_events.txt:368-377` trigger requires
+both `has_tgp_dlc_trigger = yes` and `has_government = celestial_government`,
+plus an eligible travelling adult and land location. Its source file SHA-256 is
+`42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37`.
+Thus `tgp_travel_events.0030` cannot naturally occur in the frozen standard-
+feudal R0077 ordinary campaign. Do not force it there or count its absence as
+a failure or a completed G2-M2 event gate; keep its natural action/material
+loop for a separately eligible celestial/TGP scene. The two authored options
+and current `travel_plan`/`poem_province` strict projection remain consistent
+with the exact source and R555 paused observation.
+
+The exact `events/death_events/death_management_events.txt:1949-2057`
+(SHA-256 `31591A2F2D3A61E65853CC43B9BEF4B001FEB75EA1502861D2FB9AC054AB1FB7`)
+has one authored option, native index 0, with `minor_stress_impact_gain`.
+R0077 can opportunistically capture the existing R374-compatible strict
+three-scope shape (`new_memory`, `dead_character`,
+`deceased_character_stress`) on an ordinary natural heir death. The source
+also conditionally carries a `killer` scope and may save `known_killer`; its
+extended-family dispatch may lack `new_memory`. Those are source-possible but
+not yet a paused typed variant observation, so their projection and production
+consumer remain **unknown**. If such a shape occurs, retain the real paused
+frame and RED for narrow exact-build review; do not treat missing scopes as
+false or accept a generic one-option click. No registry, action, public MCP,
+or G2 authority status changes follow from this desk review.
