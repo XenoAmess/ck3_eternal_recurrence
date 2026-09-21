@@ -89,6 +89,8 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 
 ### G2：原生 framebuffer 证据收口（P0，1–2 工程日 + CK3 槽位）
 
+状态：`prepared`（2026-09-21；[R38 门限、输入与交互政策](coat-of-arms-fit-artifacts/xenoamess-hunter-v8-native-r38/README.md)已在首次 live attempt 前冻结）。
+
 交付：
 
 - 对当前最终 Pareto 文档而非历史候选执行 MCP-only Apply → calibration → framebuffer → Copy/reapply。

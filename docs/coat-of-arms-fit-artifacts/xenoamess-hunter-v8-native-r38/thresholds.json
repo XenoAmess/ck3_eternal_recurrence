@@ -1,0 +1,47 @@
+{
+  "schema": "ck3-coat-of-arms-gamma-native-thresholds-v1",
+  "status": "frozen-before-live-run",
+  "frozenAt": "2026-09-21",
+  "ck3": {
+    "build": "1.19.0.6",
+    "executableBytes": 95206008,
+    "executableSha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "source": {
+    "artifact": "../xenoamess-hunter-v8-pareto-candidates/coat_of_arms.txt",
+    "bytes": 389675,
+    "sha256": "C645E429633AD818028D5A2FFE29C9FE1D6364F16102764DEC86EE87B94D1FF0",
+    "coloredEmblems": 1024,
+    "instances": 1024
+  },
+  "reference": {
+    "artifact": "../xenoamess-hunter-v8-pareto-candidates/pareto-candidate-01.png",
+    "bytes": 10342,
+    "sha256": "485119A59F96B1A6B2CC436742BFF025C8D9B021EBB95B21CF050DF52C03BB92"
+  },
+  "calibration": {
+    "maximumReprojectionErrorPixels": 2.5
+  },
+  "browserToCk3": {
+    "maximumLocatorLoss": 0.45,
+    "minimumDistinctMargin": 0.005,
+    "maximumMeanAbsoluteError": 0.1,
+    "maximumColorMeanSquaredError": 0.03,
+    "maximumEdgeLoss": 0.16,
+    "maximumWorstSpatialBlockError": 0.25
+  },
+  "copyReapply": {
+    "maximumMeanAbsoluteError": 0.01,
+    "maximumColorMeanSquaredError": 0.001,
+    "maximumEdgeLoss": 0.02,
+    "maximumWorstSpatialBlockError": 0.03
+  },
+  "interactionPolicy": {
+    "mcpOnly": true,
+    "usesOcr": false,
+    "usesKeyboard": false,
+    "usesMouse": false,
+    "preserveFailedAttempts": true,
+    "thresholdsMayChangeAfterRun": false
+  }
+}
