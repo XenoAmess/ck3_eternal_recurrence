@@ -81,10 +81,15 @@ class Driver:
         if self.timeout_action and request["step"] == transport.ACTION_NATIVE:
             return None
         revision = request["expected_revision"]
+        query_epoch = (
+            4662 if self.r753_truncated_samples and revision == 3
+            else 4682 if self.r753_truncated_samples and revision == 4
+            else revision * 10
+        )
         if request["step"] == transport.QUERY_NATIVE:
             result = {"step": transport.QUERY_NATIVE, "accepted": True,
                 "private_probe": {"advertised": False,
-                    "snapshot_revision": revision, "proof_epoch": revision,
+                    "snapshot_revision": revision, "proof_epoch": query_epoch,
                     "date_raw": 53_178_312,
                     "player_world_building_sources": {
                         **world(revision, active=revision >= 4 or self.active_construction),
@@ -110,11 +115,14 @@ class Driver:
                     "status": "pending_receipt", "applied": False,
                     "advertised": False, "production_native_path": True,
                     "validator_calls": 1, "materialize_calls": 1, "receiver_calls": 1,
-                    "receiver_command_sequence": 1, "proof_epoch": revision,
+                    "receiver_command_sequence": 1,
+                    "proof_epoch": 4664 if self.r753_truncated_samples else query_epoch + 2,
                     "actor_character_id": 29829, "barony_title_id": 2103,
                     "province_id": 2635, "building_type_id": 24,
                     "slot_index": 1, "stock_gold_cost_raw": 15_000_000,
-                    "gold_before_raw": 50_000_000}}}
+                    "gold_before_raw": (
+                        50_035_659 if self.r753_truncated_samples else 50_000_000
+                    )}}}
         return {"type": "command_result", "protocol_version": 1,
                 "request_id": request_id, "ok": True, "result": result}
 
@@ -136,6 +144,26 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             self.assertEqual(query["candidate"]["slot_index"], 1)
             self.assertEqual(query["candidate"]["stock_gold_cost_raw"], 15_000_000)
             self.assertEqual(query["candidate"]["gold_before_raw"], 50_035_659)
+
+    def test_r753_query_ack_material_epochs_are_independent(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.r753_truncated_samples = True
+            with mock.patch.object(transport, "_identity", return_value=(123, "t1")):
+                query = transport.query_construction_private(driver, expected_revision=3)
+                self.assertEqual(query["proof_epoch"], 4662)
+                pending = transport.submit_construction_private(
+                    driver, query=query, expected_revision=3,
+                )
+                self.assertEqual(pending["status"], "submitted_verification_pending")
+                self.assertEqual(pending["pre_proof_epoch"], 4664)
+                self.assertEqual(read_construction_ledger(driver.state_dir)["pending"], pending)
+                driver.snapshot = frame(4)
+                receipt = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4,
+                )
+                self.assertEqual(receipt["post_proof_epoch"], 4682)
+                self.assertTrue(receipt["postcondition_verified"])
 
     def test_unknown_gold_is_red_not_no_legal_building(self):
         with TemporaryDirectory() as location:
@@ -248,7 +276,7 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 self.assertEqual(next_plan["plan"]["selected_step"], RECEIPT_STEP)
                 receipt = transport.query_construction_receipt(driver, pending=pending,
                                                                expected_revision=1)
-                self.assertEqual(receipt["post_proof_epoch"], 1)
+                self.assertEqual(receipt["post_proof_epoch"], 10)
                 self.assertTrue(receipt["postcondition_verified"])
 
     def test_restoring_older_checkpoint_clears_stale_applied_only_after_material_read(self):

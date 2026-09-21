@@ -201,13 +201,15 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
             and ack.get("validator_calls") == ack.get("materialize_calls")
             == ack.get("receiver_calls") == 1
             and _positive(ack.get("receiver_command_sequence"))
-            and ack.get("proof_epoch") == pending["pre_proof_epoch"]
+            and _positive(ack.get("proof_epoch"))
+            and ack["proof_epoch"] > pending["pre_proof_epoch"]
             and ack.get("actor_character_id") == pending["actor_character_id"]
             and all(ack.get(key) == candidate.get(key) for key in (*TUPLE_KEYS,
                                                                    "stock_gold_cost_raw", "gold_before_raw"))):
         raise StepPostconditionError("construction ACK unknown; preserve pending action",
                                      selected_step=SUBMIT_STEP, step_result=pending)
     pending = {**pending, "status": "submitted_verification_pending",
+               "pre_proof_epoch": ack["proof_epoch"],
                "native_ack": dict(ack)}
     write_construction_ledger(state_dir, {**ledger, "pending": pending})
     driver._record_command(SUBMIT_STEP, ok=True, result=pending)
