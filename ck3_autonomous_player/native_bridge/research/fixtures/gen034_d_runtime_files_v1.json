@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "4ab01e24dce0b06710c2a233de8f1e3f81bf2720",
+  "source_commit": "5d5226edee05e88a6453b71275fe65c3c29b96d5",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
@@ -29,7 +29,7 @@
     "tools/run_zg361_phase2_seed_capture.py"
   ],
   "file_count": 479,
-  "tree_sha256": "8A686799573E109FB727EFE82ACDE6C24AA1424BEEDCAB2D421A12783C4725D4",
+  "tree_sha256": "8B1BE3A85A3659453A842242DE6DBC79134A7566CBDD737EF2CD227D3F1DB8CE",
   "files": [
     {
       "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
@@ -68,8 +68,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/audit_coa_campaign_checkpoint_v1.py",
-      "bytes": 5193,
-      "sha256": "E82675D72C1F4AE8732BCD3B6BC9B406E937CFB2370F8D589FF0A56F5A38FDC0"
+      "bytes": 5510,
+      "sha256": "B25CE84D951791A86B5A1C0D9659F2525B8FD9ECBCFC7C5578E7D5177D2343C3"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/build_particle2_factory_debug_capture.py",
@@ -1538,8 +1538,8 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
-      "bytes": 1104442,
-      "sha256": "9BCA7F7E148AE2674004CE0B846DC574949F2EE2404871B2BE20C669747DE5E6"
+      "bytes": 1105697,
+      "sha256": "6CF91859D4D6CD8A767E45BB418A7DB5A3335AB27EF0AE5F7A77FBA5286F9890"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/pending_character_interaction_context_contract.py",
@@ -2153,8 +2153,8 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
-      "bytes": 676490,
-      "sha256": "27E427AD6AB69E8E0A23591A93513649D02510F99437C9CA0D777F0C65226D75"
+      "bytes": 688565,
+      "sha256": "E0AB2A5F3AB057876ADB99F6962C6226D4775FBD8238708B83AD3B5C0210CFDF"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/throughput_report.py",
