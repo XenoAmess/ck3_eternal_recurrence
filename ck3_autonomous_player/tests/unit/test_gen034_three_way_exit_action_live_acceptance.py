@@ -5,7 +5,9 @@ from __future__ import annotations
 import asyncio
 from copy import deepcopy
 import importlib.util
+import json
 from pathlib import Path
+import tempfile
 from types import SimpleNamespace
 import sys
 import unittest
@@ -205,6 +207,65 @@ class Gen034ActionRunnerCheckpointRebindTests(unittest.TestCase):
             source,
         )
         self.assertIn("after_prepare_profile=after_prepare_profile", source)
+
+    def test_rebound_driver_lifecycle_is_read_back_for_driver_binding(self) -> None:
+        binding = {
+            "schema": "xar.ck3.succession-lifecycle-binding/v1",
+            "lifecycle": "rogue_one_life",
+            "xar_enabled": "xar_on",
+            "pact_contract": "terminal_settlement_required",
+            "source": "prepared-environment-manifest",
+            "environment_sha256": "a" * 64,
+        }
+        with tempfile.TemporaryDirectory() as raw:
+            driver_state = Path(raw) / "driver-state.json"
+            driver_state.write_text(
+                json.dumps({"succession_lifecycle": binding}),
+                encoding="utf-8",
+            )
+            observed = HARNESS.base._persisted_succession_lifecycle(
+                driver_state
+            )
+
+        self.assertEqual(observed, binding)
+        self.assertIsNot(observed, binding)
+
+    def test_rebound_driver_lifecycle_rejects_non_normalizable_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            driver_state = Path(raw) / "driver-state.json"
+            driver_state.write_text(
+                json.dumps(
+                    {
+                        "succession_lifecycle": {
+                            "schema": "xar.ck3.succession-lifecycle-binding/v1",
+                            "lifecycle": "rogue_one_life",
+                            "xar_enabled": "xar_on",
+                            "pact_contract": "terminal_settlement_required",
+                            "source": "prepared-environment-manifest",
+                            "environment_sha256": "A" * 64,
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                HARNESS.base.AgentError,
+                "rebound driver-state lifecycle binding is malformed",
+            ):
+                HARNESS.base._persisted_succession_lifecycle(driver_state)
+
+    def test_action_runner_base_binds_rebound_lifecycle_before_launch(self) -> None:
+        source = HARNESS.base.__file__
+        self.assertIsNotNone(source)
+        text = Path(str(source)).read_text(encoding="utf-8")
+        self.assertIn(
+            "driver_succession_lifecycle = _persisted_succession_lifecycle(",
+            text,
+        )
+        self.assertIn(
+            "succession_lifecycle_binding=driver_succession_lifecycle",
+            text,
+        )
 
 
 def _termination_fixture(

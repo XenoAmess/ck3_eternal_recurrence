@@ -1,5 +1,17 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-09-21 R0034-R0035 GEN-034-D action-runner lifecycle ledger
+
+| Delivery gate / capability | Status | Formal entry | Artifact / source | Actual game and next-turn evidence | Restore evidence | B0/B1 gap / owner | Branch cleanup |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Long-war terminal candidate | production candidate GREEN; action not submitted | formal `native_auto_run` -> terminal intercept | R0034 outer `A0DBA3F2...002FF`; native `37EB0706...668D`; frozen input `51847A20...9EEC`; source `e0dbcefe` | Turn41 retained exact option/power/terms certificate; surrender beat continue by `11,661,500`; literal `surrender-war-16777285`; all boundaries retained `action_submitted=false` | New h1984/date53190816 checkpoint `27E1EB29...EC36` and driver `87D195FF...489F`; candidate cleanup GREEN and process count zero | Execute only emitted action in a distinct canonical round; verify material postwar/later turn/checkpoint/cold restore; `/root` | source package integrated on master; frozen runtime remains active until successor action candidate is retired |
+| Rebound lifecycle handoff into action driver | R0035 capability RED retained; minimal static repair GREEN; replay pending | emitted GEN-034 action runner command | R0035 report `52CB1007...0E1F`; rebound environment `bc4540a2...dfca -> 2a5f9500...774f` | Driver pipe rejected the legacy default before readiness; `mcp_sequence=null`, therefore no terminal query/submission/result occurred; immutable source pair unchanged | Runner cleanup and external process-zero GREEN; failed writable attempt retired, R0034 h1984 pair remains the retry source | Freeze repaired runtime, allocate new round, re-emit/rebind an unchanged authorized runner command, then complete action/postcondition/restore; `/root` | repair branch active until linear master delivery and immediate cleanup |
+
+This repair changes only the private live action runner's use of an existing
+validated succession-lifecycle binding. Native ABI, public MCP and
+`open_kaishek` are `NO-CODE-CHANGE`. Authority remains G2 `1/8`, Council `1/4`,
+GEN-034 `3/4`.
+
 ## 2026-09-21 R0033 GEN-034-D action-step projection ledger
 
 | Delivery gate / capability | Status | Formal entry | Artifact / source | Actual game and next-turn evidence | Restore evidence | B0/B1 gap / owner | Branch cleanup |

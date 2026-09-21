@@ -35,6 +35,9 @@ from xar_autoplayer.bridge.mcp_server import create_server  # noqa: E402
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
+from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: E402
+    normalize_succession_lifecycle_binding_v1,
+)
 from xar_autoplayer.bridge.war_contract import (  # noqa: E402
     QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
     query_war_termination_terms_step,
@@ -187,6 +190,26 @@ def _driver_anchor(path: Path) -> dict[str, object]:
         "command_history_count": len(value.get("command_history", [])),
         "last_checkpoint": copy.deepcopy(checkpoint),
     }
+
+
+def _persisted_succession_lifecycle(path: Path) -> dict[str, object]:
+    """Read the lifecycle that a checkpoint rebinder actually persisted."""
+
+    try:
+        value = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AgentError(
+            f"rebound driver-state JSON is unavailable: {error}"
+        ) from error
+    binding = value.get("succession_lifecycle") if isinstance(value, dict) else None
+    if not isinstance(binding, dict):
+        raise AgentError("rebound driver-state lifecycle binding is malformed")
+    try:
+        return normalize_succession_lifecycle_binding_v1(binding)
+    except ValueError as error:
+        raise AgentError(
+            f"rebound driver-state lifecycle binding is malformed: {error}"
+        ) from error
 
 
 def _apply_checkpoint_rebinder(
@@ -660,6 +683,7 @@ def _run(
     inputs: dict[str, object] | None = None
     anchor: dict[str, object] | None = None
     checkpoint_rebinding: dict[str, object] | None = None
+    driver_succession_lifecycle: dict[str, object] | None = None
     cold_validation: dict[str, object] | None = None
     readiness: dict[str, object] | None = None
     mcp_sequence: dict[str, object] | None = None
@@ -754,6 +778,13 @@ def _run(
             pipe_name,
             checkpoint_rebinder,
         )
+        if checkpoint_rebinding is not None:
+            driver_succession_lifecycle = _persisted_succession_lifecycle(
+                state_driver
+            )
+            preparation["driver_succession_lifecycle"] = copy.deepcopy(
+                driver_succession_lifecycle
+            )
         cold_validation = validate_cold_start_checkpoint_for_pipe(spec, pipe_name)
         config = NativeBridgeLaunchConfig(
             mode=PURE_NATIVE_MODE,
@@ -783,6 +814,7 @@ def _run(
             pipe_name,
             state_dir=spec.state_dir,
             save_dir=spec.profile_dir / "save games",
+            succession_lifecycle_binding=driver_succession_lifecycle,
         )
         session_thread = threading.Thread(
             target=supervise,
