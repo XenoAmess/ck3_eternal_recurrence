@@ -360,6 +360,14 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--allow-private-construction-formal-trial",
+        action="store_true",
+        help=(
+            "enable the unadvertised exact-build construction submit/receipt "
+            "route for one bounded native-auto-run acceptance run"
+        ),
+    )
+    native_auto_run_parser.add_argument(
         "--private-faction-round-id",
         help="monotonic CK3 ownership round (R<number>) for the private trial",
     )
@@ -790,6 +798,11 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_faction_gift_formal_trial
                     else {}
                 )
+                private_construction_options = (
+                    {"allow_private_construction_formal_trial": True}
+                    if args.allow_private_construction_formal_trial
+                    else {}
+                )
                 succession_options = (
                     {
                         "succession_lifecycle": args.succession_lifecycle,
@@ -818,6 +831,7 @@ def main(argv: list[str] | None = None) -> int:
                         args.allow_stationary_objective_hold_sentinel_canary
                     ),
                     **private_faction_options,
+                    **private_construction_options,
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )

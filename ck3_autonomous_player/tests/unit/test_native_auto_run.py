@@ -1554,6 +1554,17 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(
             args.allow_stationary_objective_hold_sentinel_canary
         )
+        self.assertFalse(args.allow_private_construction_formal_trial)
+
+    def test_parser_exposes_private_bounded_construction_opt_in(self) -> None:
+        args = cli.parser().parse_args([
+            "--bridge-mode", "native-headless",
+            "native-auto-run", "--turns", "20", "--timeout", "900",
+            "--allow-private-construction-formal-trial",
+        ])
+        self.assertTrue(args.allow_private_construction_formal_trial)
+        self.assertEqual(args.turns, 20)
+        self.assertEqual(args.timeout, 900)
 
     def test_parser_exposes_strict_one_generation_runner(self) -> None:
         args = cli.parser().parse_args(
@@ -4440,6 +4451,32 @@ class NativeAutoRunTests(unittest.TestCase):
                     run_mock.call_args.kwargs["operator_stop_event"],
                     threading.Event,
                 )
+
+    def test_cli_wires_private_construction_only_when_explicitly_enabled(self) -> None:
+        with mock.patch.object(
+            cli, "make_spec", return_value=self.spec
+        ), mock.patch.object(
+            cli, "configure_native_bridge_launch_environment",
+            return_value=self.config,
+        ), mock.patch.object(
+            native_auto_run_module, "native_auto_run",
+            return_value={"ok": False, "status": "blocked", "outcome": "failed"},
+        ) as run_mock, contextlib.redirect_stdout(io.StringIO()):
+            code = cli.main([
+                "--bridge-mode", "native-headless",
+                "--bridge-dll", str(self.dll_path),
+                "--bridge-injector", str(self.injector_path),
+                "native-auto-run", "--turns", "20", "--timeout", "900",
+                "--allow-private-construction-formal-trial",
+            ])
+        self.assertEqual(code, 1)
+        self.assertEqual(run_mock.call_count, 1)
+        self.assertIs(
+            run_mock.call_args.kwargs["allow_private_construction_formal_trial"],
+            True,
+        )
+        self.assertEqual(run_mock.call_args.kwargs["turn_count"], 20)
+        self.assertEqual(run_mock.call_args.kwargs["timeout_seconds"], 900)
 
     def test_cli_reports_checkpointed_operator_stop_separately_from_qualification(self) -> None:
         stopped = {
