@@ -36,7 +36,20 @@ R0040 followed that fail-closed rule: it submitted no terminal action and
 cleaned up the CK3 process. The same-session orchestration is an internal,
 default-off Python runner path; it changes no native ABI, public MCP schema, or
 `open_kaishek` compatibility surface. Focused normal and optimized suites each
-pass `130/130`; production-live closure remains pending a fresh round.
+pass `130/130`.
+
+R0041 then reached the intended same-session callback with the original
+R0039 power tuple and surrender recommendation, but stopped before mutation on
+`recommended_action_step_not_advertised`. The cause was query ordering, not a
+new game-state mismatch: the callback fetched capabilities before its four
+read-only option/power/terms queries refreshed the WarID-bound terminal cache.
+The bridge advertised the surrender capability, while its dynamic literal was
+still absent from that earlier capability snapshot. The runner now refreshes
+capabilities after those four queries and before the action gate. A focused
+fixture proves the literal is absent before the terms query and present after
+it; the combined normal and optimized suites each pass `142/142`. R0041
+submitted no terminal action, retained immutable sources, and cleaned up all
+managed processes. Production-live closure remains pending one fresh round.
 
 ## Problem and reuse decision
 

@@ -183,11 +183,6 @@ async def _run_mcp_sequence(
     async with Client(server) as client:
         listed = await client.list_tools()
         tool_names = sorted(tool.name for tool in listed.tools)
-        capabilities_result = await client.call_tool("ck3_get_capabilities", {})
-        records.append(capabilities_result)
-        capabilities = base._structured(
-            capabilities_result, tool_name="ck3_get_capabilities"
-        )
         before_result = await client.call_tool("ck3_take_snapshot", {})
         records.append(before_result)
         before = base._structured(
@@ -254,6 +249,16 @@ async def _run_mcp_sequence(
         records.append(after_result)
         after = base._structured(
             after_result, tool_name="ck3_take_snapshot:after"
+        )
+        # Terminal literals are projected from the freshly cached options and
+        # terms queries above.  Reading capabilities before those queries can
+        # expose the bridge capability while omitting its current WarID-bound
+        # action literal, even though the recommendation on this same frame is
+        # actionable.  Refresh only after all four read-only evidence commands.
+        capabilities_result = await client.call_tool("ck3_get_capabilities", {})
+        records.append(capabilities_result)
+        capabilities = base._structured(
+            capabilities_result, tool_name="ck3_get_capabilities"
         )
 
     dominance = provide_raiktor_campaign_dominance(

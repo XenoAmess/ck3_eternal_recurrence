@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+import asyncio
+from copy import deepcopy
 import importlib.util
 from pathlib import Path
 import sys
+from types import SimpleNamespace
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -152,6 +156,138 @@ class Gen034ThreeWayRecommendationLiveAcceptanceTests(unittest.TestCase):
         self.assertLess(
             source.index('"ck3_query_war_entry_assessments", power_arguments'),
             source.index('"ck3_query_war_termination_options", arguments'),
+        )
+
+    def test_capabilities_refresh_after_terminal_evidence_queries(self) -> None:
+        expected_action = f"surrender-war-{WAR_ID}"
+        tool_names = [
+            "ck3_get_capabilities",
+            "ck3_take_snapshot",
+            "ck3_query_war_termination_options",
+            "ck3_query_war_termination_terms",
+            "ck3_query_war_entry_assessments",
+        ]
+
+        class FakeClient:
+            calls: list[str] = []
+
+            def __init__(self, _server: object) -> None:
+                pass
+
+            async def __aenter__(self) -> "FakeClient":
+                return self
+
+            async def __aexit__(self, *_args: object) -> None:
+                return None
+
+            async def list_tools(self) -> SimpleNamespace:
+                return SimpleNamespace(
+                    tools=[SimpleNamespace(name=name) for name in tool_names]
+                )
+
+            async def call_tool(
+                self, name: str, _arguments: dict[str, object]
+            ) -> SimpleNamespace:
+                self.calls.append(name)
+                if name == "ck3_get_capabilities":
+                    action_steps = (
+                        [expected_action]
+                        if "ck3_query_war_termination_terms" in self.calls
+                        else []
+                    )
+                    value = {
+                        "bridge_capabilities": [
+                            HARNESS.base.QUERY_WAR_TERMINATION_TERMS_CAPABILITY,
+                        ],
+                        "action_steps": action_steps,
+                    }
+                else:
+                    value = {
+                        "revision": 11,
+                        "date_raw": 22,
+                        "paused": True,
+                        "played_character": {"character_id": 33},
+                        "active_wars": [
+                            {
+                                "war_id": WAR_ID,
+                                "primary_opponent_character_id": DEFENDER_ID,
+                            }
+                        ],
+                    }
+                return SimpleNamespace(
+                    structured_content=deepcopy(value),
+                    is_error=False,
+                    content=[],
+                )
+
+        def action_gate(
+            recommendation: dict[str, object],
+            _snapshot: dict[str, object],
+            capabilities: dict[str, object],
+        ) -> dict[str, object]:
+            ready = expected_action in capabilities["action_steps"]
+            return {
+                "action_ready": ready,
+                "action_literal": expected_action if ready else None,
+            }
+
+        recommendation = {
+            "production_recommendation_ready": True,
+            "action_literal": expected_action,
+        }
+        patches = (
+            mock.patch.dict(
+                sys.modules, {"mcp": SimpleNamespace(Client=FakeClient)}
+            ),
+            mock.patch.object(
+                HARNESS.base, "create_server", return_value=object()
+            ),
+            mock.patch.object(
+                HARNESS.base, "_same_paused_binding", return_value=True
+            ),
+            mock.patch.object(
+                HARNESS.power, "_active_war", return_value={"war_id": WAR_ID}
+            ),
+            mock.patch.object(
+                HARNESS,
+                "provide_raiktor_campaign_dominance",
+                return_value={
+                    "certificate_available": True,
+                    "campaign_dominance_certificate": {},
+                },
+            ),
+            mock.patch.object(
+                HARNESS, "_compose_recommendation", return_value=recommendation
+            ),
+            mock.patch.object(
+                HARNESS,
+                "provide_raiktor_three_way_exit_action_gate",
+                side_effect=action_gate,
+            ),
+            mock.patch.object(
+                HARNESS,
+                "_history_checks",
+                return_value={"exact_read_only_command_delta": True},
+            ),
+        )
+        with patches[0], patches[1], patches[2], patches[3], patches[4], patches[
+            5
+        ], patches[6], patches[7]:
+            result = asyncio.run(
+                HARNESS._run_mcp_sequence(
+                    object(),
+                    war_id=WAR_ID,
+                    expected_character_id=33,
+                    expected_date_raw=22,
+                    opponent_character_id=DEFENDER_ID,
+                )
+            )
+
+        self.assertTrue(result["ok"])
+        self.assertTrue(result["checks"]["exactly_one_action_planned"])
+        self.assertGreater(
+            FakeClient.calls.index("ck3_get_capabilities"),
+            FakeClient.calls.index("ck3_query_war_termination_terms"),
         )
 
 
