@@ -41,7 +41,6 @@ from xar_autoplayer.bridge.native_driver import (
     _army_move_postcondition,
     _fresh_route_contact_advance_proofs,
     _fresh_route_contact_advance_steps,
-    _fresh_same_province_route_clear_steps,
     _is_deferred_read_only_history_step,
     _life_advance_horizon_days,
     _life_advance_progressed,
@@ -7145,6 +7144,62 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "move-army-101-to-77", driver.capabilities()["action_steps"]
         )
 
+    def test_native_move_ack_with_unchanged_frames_remains_red(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.01,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-wars",
+                "game.state.war-primary-opponent",
+                "game.command.move-army-N-to-N",
+            )
+        )
+        player = _army(101, soldiers=1_500, province_id=11)
+        enemy = _army(
+            202,
+            soldiers=2_400,
+            province_id=33,
+            controllable=False,
+        )
+        unchanged = _snapshot(
+            40,
+            active_wars=[_war(allied_armies=[player], enemy_armies=[enemy])],
+            player_armies=[player],
+        )
+        endpoint.publish(unchanged)
+        starting = driver.take_snapshot()
+        self.assertIn(
+            "move-army-101-to-33", driver.capabilities()["action_steps"]
+        )
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"status": "submitted"},
+                }
+            )
+            endpoint.publish(copy.deepcopy(unchanged))
+
+        endpoint.send_hook = answer
+        with self.assertRaisesRegex(
+            BridgeUnavailableError, "did not target province 33"
+        ):
+            driver.execute_step(
+                "move-army-101-to-33",
+                expected_revision=starting["revision"],
+            )
+
     def test_native_route_preview_expands_and_records_date_and_origin(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
@@ -7225,7 +7280,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             [11, 31, 31, 2585],
         )
 
-    def test_routed_controllable_army_projects_same_province_route_clear(self) -> None:
+    def test_routed_controllable_army_does_not_project_same_province_move_as_clear(
+        self,
+    ) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
             endpoint.pipe_name,
@@ -7321,99 +7378,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             "queried_episode_run_id": snapshot["episode_run_id"],
         }
         driver._record_command(query_step, ok=True, result=result)
-        self.assertIn(
+        self.assertNotIn(
             "move-army-184549472-to-8750",
             driver.capabilities()["action_steps"],
         )
-
-        stale = copy.deepcopy(result)
-        stale["queried_revision"] = snapshot["revision"] - 1
-        self.assertNotIn(
-            "move-army-184549472-to-8750",
-            _fresh_same_province_route_clear_steps(
-                snapshot,
-                [{"index": 1, "command": query_step, "ok": True, "result": stale}],
-            ),
-        )
-        wrong_route = copy.deepcopy(result)
-        wrong_route["route_contact_horizon"]["subject_route"][
-            "route_province_ids"
-        ] = [46]
-        self.assertNotIn(
-            "move-army-184549472-to-8750",
-            _fresh_same_province_route_clear_steps(
-                snapshot,
-                [
-                    {
-                        "index": 1,
-                        "command": query_step,
-                        "ok": True,
-                        "result": wrong_route,
-                    }
-                ],
-            ),
-        )
-
-        cleared = _army(
-            184_549_472,
-            province_id=8750,
-            move_target_province_id=None,
-            route_province_ids=[],
-            army_state="regular",
-            army_state_code=1,
-        )
-        timer: threading.Timer | None = None
-
-        def publish_cleared_route() -> None:
-            endpoint.publish(
-                _snapshot(
-                    42,
-                    active_wars=[
-                        _war(allied_armies=[cleared], enemy_armies=[enemy])
-                    ],
-                    player_armies=[cleared],
-                )
+        with self.assertRaisesRegex(
+            UnsupportedStepError, "does not implement gameplay step"
+        ):
+            driver.execute_step(
+                "move-army-184549472-to-8750",
+                expected_revision=snapshot["revision"],
             )
-
-        def answer(frame: dict[str, object]) -> None:
-            nonlocal timer
-            if frame.get("type") != "execute_step":
-                return
-            endpoint.publish(
-                {
-                    "type": "command_result",
-                    "protocol_version": 1,
-                    "request_id": frame["request_id"],
-                    "ok": True,
-                    "result": {"status": "submitted"},
-                }
-            )
-            endpoint.publish(
-                _snapshot(
-                    41,
-                    active_wars=[
-                        _war(allied_armies=[routed], enemy_armies=[enemy])
-                    ],
-                    player_armies=[routed],
-                )
-            )
-            timer = threading.Timer(0.01, publish_cleared_route)
-            timer.start()
-
-        endpoint.send_hook = answer
-        action = driver.execute_step(
-            "move-army-184549472-to-8750",
-            expected_revision=snapshot["revision"],
-        )
-        if timer is not None:
-            timer.join(timeout=0.2)
-        self.assertEqual(action["war_action"]["status"], "arrived")
-        self.assertEqual(
-            action["player_armies"][0]["route_province_ids"], []
-        )
-
-        cleared_steps = driver.capabilities()["action_steps"]
-        self.assertNotIn("move-army-184549472-to-8750", cleared_steps)
 
     def test_same_province_route_clear_requires_new_strict_stationary_frame(
         self,
@@ -7490,7 +7465,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
 
-    def test_r885_live_shape_projects_same_province_route_clear(self) -> None:
+    def test_r886_live_shape_withdraws_same_province_move_cancel(self) -> None:
         date_raw = 53_282_952
         subject = _army(
             184_549_472,
@@ -7536,19 +7511,32 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 army_state_code=7,
             ),
         ]
-        snapshot = {
-            "snapshot_id": "native:3",
-            "revision": 4,
-            "native_revision": 3,
-            "date_raw": date_raw,
-            "paused": True,
-            "episode_run_id": "native-31853-af642d76cb41",
-            "diagnostics": {"connection_generation": 1},
-            "player_armies": [subject],
-            "active_wars": [
-                _war(allied_armies=[subject], enemy_armies=hostiles)
-            ],
-        }
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.active-wars",
+                "game.state.army-routes",
+                "game.command.move-army-N-to-N",
+                "game.command.query-route-contact-horizon-v1-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                3,
+                date_raw=date_raw,
+                active_wars=[
+                    _war(allied_armies=[subject], enemy_armies=hostiles)
+                ],
+                player_armies=[subject],
+            )
+        )
+        snapshot = driver.take_snapshot()
         step = query_route_contact_horizon_step(
             184_549_472,
             45,
@@ -7642,21 +7630,33 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         ],
                     },
                     "backend_id": "native-headless",
-                    "queried_snapshot_id": "native:3",
-                    "queried_revision": 4,
-                    "queried_native_revision": 3,
-                    "queried_connection_generation": 1,
-                    "queried_episode_run_id": (
-                        "native-31853-af642d76cb41"
-                    ),
+                    "queried_snapshot_id": snapshot["snapshot_id"],
+                    "queried_revision": snapshot["revision"],
+                    "queried_native_revision": snapshot["native_revision"],
+                    "queried_connection_generation": snapshot[
+                        "diagnostics"
+                    ]["connection_generation"],
+                    "queried_episode_run_id": snapshot.get("episode_run_id"),
                 },
             },
         ]
 
-        self.assertEqual(
-            _fresh_same_province_route_clear_steps(snapshot, history),
-            {"move-army-184549472-to-8750"},
+        driver._record_command(
+            step,
+            ok=True,
+            result=history[-1]["result"],
         )
+        self.assertNotIn(
+            "move-army-184549472-to-8750",
+            driver.capabilities()["action_steps"],
+        )
+        with self.assertRaisesRegex(
+            UnsupportedStepError, "does not implement gameplay step"
+        ):
+            driver.execute_step(
+                "move-army-184549472-to-8750",
+                expected_revision=snapshot["revision"],
+            )
 
     def test_actual_contact_scope_is_atomic_and_combat_v3_ready(self) -> None:
         endpoint = FakeEndpoint()

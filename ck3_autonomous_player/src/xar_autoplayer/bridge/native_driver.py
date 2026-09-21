@@ -1771,7 +1771,6 @@ class NativeHeadlessGameplayDriver:
                     composite_action_steps.append(order_step)
                     active_retreat_token_ready = True
         proof_steps: set[str] = set()
-        route_cancel_steps: set[str] = set()
         white_peace_steps: set[str] = set()
         emergency_surrender_steps: set[str] = set()
         # These helpers only read history.  Evaluate them while holding the
@@ -1779,19 +1778,6 @@ class NativeHeadlessGameplayDriver:
         # transcript nor exposes the internal list outside this critical
         # section.
         with self._history_lock:
-            if (
-                {
-                    MOVE_ARMY_CAPABILITY,
-                    QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY,
-                }
-                <= bridge_capabilities
-                and isinstance(current_snapshot, dict)
-            ):
-                route_cancel_steps = (
-                    _fresh_same_province_route_clear_steps(
-                        current_snapshot, self._command_history
-                    )
-                )
             if (
                 QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY
                 in bridge_capabilities
@@ -1867,7 +1853,6 @@ class NativeHeadlessGameplayDriver:
         if proof_steps:
             action_steps.update(proof_steps)
             composite_action_steps.extend(sorted(proof_steps))
-        action_steps.update(route_cancel_steps)
         if (
             QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY in bridge_capabilities
             and isinstance(current_snapshot, dict)
@@ -24134,114 +24119,6 @@ def _route_contact_hostile_ids(
             }
         )
     )
-
-
-def _fresh_same_province_route_clear_steps(
-    snapshot: dict[str, object],
-    history: list[dict[str, object]],
-) -> set[str]:
-    """Authorize route cancellation only from one exact paused query frame."""
-    if snapshot.get("paused") is not True:
-        return set()
-    hostiles = _route_contact_hostile_ids(snapshot)
-    if not 0 < len(hostiles) <= 64:
-        return set()
-    diagnostics = snapshot.get("diagnostics")
-    connection_generation = (
-        diagnostics.get("connection_generation")
-        if isinstance(diagnostics, dict)
-        else None
-    )
-    date_raw = snapshot.get("date_raw")
-    native_revision = snapshot.get("native_revision")
-    if (
-        isinstance(date_raw, bool)
-        or not isinstance(date_raw, int)
-        or isinstance(native_revision, bool)
-        or not isinstance(native_revision, int)
-        or native_revision <= 0
-    ):
-        return set()
-
-    steps: set[str] = set()
-    seen_queries: set[tuple[int, int, tuple[int, ...]]] = set()
-    scoped_history = _native_history_after_latest_restore(history)
-    for row in reversed(scoped_history):
-        command, result = _effective_native_history_entry(row)
-        query = parse_query_route_contact_horizon_step(command)
-        if query is None or query in seen_queries:
-            continue
-        seen_queries.add(query)
-        subject_army_id, target_province_id, requested_hostiles = query
-        if row.get("ok") is not True or requested_hostiles != hostiles:
-            continue
-        subject = _army_by_id(snapshot, subject_army_id)
-        horizon = (
-            result.get("route_contact_horizon")
-            if isinstance(result, dict)
-            else None
-        )
-        try:
-            normalized_horizon = normalize_route_contact_horizon(
-                horizon,
-                expected_subject_army_id=subject_army_id,
-                expected_target_province_id=target_province_id,
-                expected_hostile_army_ids=hostiles,
-                expected_date_raw=date_raw,
-                expected_snapshot_revision=native_revision,
-            )
-        except ValueError:
-            continue
-        subject_route = normalized_horizon.get("subject_route")
-        proof_route = _canonical_timed_route(subject_route)
-        current_province_id = (
-            subject.get("current_province_id")
-            if isinstance(subject, dict)
-            else None
-        )
-        state = subject.get("army_state") if isinstance(subject, dict) else None
-        state_code = (
-            subject.get("army_state_code")
-            if isinstance(subject, dict)
-            else None
-        )
-        moving = bool(
-            isinstance(state, str)
-            and state.casefold() == "moving"
-            or not isinstance(state, str)
-            and state_code == 7
-        )
-        if not (
-            isinstance(subject, dict)
-            and subject.get("controllable") is True
-            and moving
-            and not _army_in_combat_or_retreat(subject)
-            and _positive_native_id(current_province_id)
-            and _positive_native_id(subject.get("move_target_province_id"))
-            and subject.get("move_target_province_id") == target_province_id
-            and current_province_id != target_province_id
-            and isinstance(proof_route, list)
-            and proof_route
-            and proof_route[-1] == target_province_id
-            and isinstance(subject_route, dict)
-            and subject_route.get("army_id") == subject_army_id
-            and subject_route.get("current_province_id")
-            == current_province_id
-            and normalized_horizon.get("status") == "available"
-            and result.get("queried_snapshot_id")
-            == snapshot.get("snapshot_id")
-            and result.get("queried_revision") == snapshot.get("revision")
-            and result.get("queried_native_revision") == native_revision
-            and result.get("queried_connection_generation")
-            == connection_generation
-            and result.get("queried_episode_run_id")
-            == snapshot.get("episode_run_id")
-        ):
-            continue
-        steps.add(
-            move_army_step(subject_army_id, int(current_province_id))
-        )
-    return steps
 
 
 def _fresh_route_contact_advance_steps(

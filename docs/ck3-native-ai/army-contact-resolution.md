@@ -982,3 +982,45 @@ R885 使用 agent commit `fc8d18e49ba483ba2009724ea32bac4b5a0f7062` 的短复验
 - [pending live] R885 RED 仍需新制品短复验关闭：正式 turn 应选择 typed same-current move，随后只能由严格更新的
   paused frame（同 ArmyID/current、target `null`、route `[]`、stationary、非 combat/retreat）判定成功，并由下一 turn
   消费。静态回归不冒充这项 live closure。
+
+### 2026-09-21 R886 correction: same-current move is not a route cancel
+
+Frozen scope remains CK3 `1.19.0.6`, EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+R886 (canonical R0017) ran agent commit
+`f8ba01effb1bef1334cb38eb3e868b6d60885e36`. Its formal report is
+`C:\b\g2-preview-ordinary-f8ba01ef-r886-extracted\runs\r886-route-cancel-short\formal-report.txt`
+(SHA-256 `6160075EB73E9A38BDC380C1E3F68AED9C91258CEEA49A5E184472AD52842F03`);
+the final driver state is
+`C:\b\g2-preview-ordinary-f8ba01ef-r886-state\native-session\driver-state.json`
+(SHA-256 `A621F05CAD7411164B57F99C2C2246F84EDE3F67B7CCBDFACA7744DC831C9226`).
+
+- [production-live blocker] The formal planner selected exactly
+  `move-army-184549472-to-8750`. History index `1450` then failed with
+  `native move-army-184549472 did not target province 8750`. The primitive
+  handler returned `submitted`: Python reached the semantic wait, and the
+  mailbox executed-request count advanced to `1`. `SubmitMoveArmy` currently
+  ignores the boolean return from `submit_command`, so that receipt is not
+  proof that CK3 queued or applied the order. CK3 published no new native or
+  public revision and retained target/route `45/[45]`. The observable outcome
+  is a no-op, not a route clear; no native rejection was surfaced to Python.
+- [static-confirmed exact-build constraint] `CHaltUnitsCommand` is a distinct
+  command, not a `CMoveArmyCommand` flag (see `native_bridge/research/README.md`).
+  After movement commitment it can only retain the old route front; a route
+  with the single remaining entry `[45]` is rejected by halt eligibility.
+  R886's current `8750`, effective origin `45`, route `[45]` shape is therefore
+  not recoverable in place by either same-current move or Halt.
+- [counter-policy correction] A same-current move literal is no longer
+  advertised as route cancellation, and both planner branches ignore such a
+  literal even if an external fixture injects it. The strict postcondition is
+  retained as fail-closed protection, but it is not claimed reachable for this
+  committed one-entry route. Ordinary cross-province move projection and
+  `moving/arrived` semantics are unchanged.
+- [recovery boundary] This frame has no proven legal in-place alternative:
+  white peace is unavailable, surrender terms/campaign outcome are not
+  observable and automatic generic surrender remains disabled, and all exact
+  routes are unsafe. Resume must use an earlier safe checkpoint from before
+  the committed move; the unchanged R886 checkpoint remains evidence, not a
+  retry source. A future native Halt capability cannot close this exact shape.
+  Live closure is pending a safe-checkpoint continuation that chooses a route
+  before commitment; static tests do not promote this blocker to GREEN.

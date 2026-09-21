@@ -10679,33 +10679,6 @@ def _choose_one_life_turn_core(
                                 }
                             )
                 if preview_selected_target is None:
-                    current_hold_step = (
-                        move_army_step(army_id, current_province_id)
-                        if isinstance(army_id, int)
-                        and isinstance(current_province_id, int)
-                        else None
-                    )
-                    active_route_can_be_cancelled = bool(
-                        active_route_unsafe
-                        and isinstance(pursuit_army, dict)
-                        and isinstance(
-                            pursuit_army.get("route_province_ids"), list
-                        )
-                        and pursuit_army["route_province_ids"]
-                        and isinstance(current_hold_step, str)
-                    )
-                    if (
-                        active_route_can_be_cancelled
-                        and current_hold_step in available_steps
-                    ):
-                        return {
-                            "policy": "one-life-turn-v1",
-                            "phase": "native_war_cancel_unsafe_route_hold",
-                            "selected_step": current_hold_step,
-                            "reason": "both the offensive continuation and capital regroup route are unsafe; cancel the committed route at the current Province before the next exact observation",
-                            "route_rejections": route_rejections,
-                            "active_wars": war_summary,
-                        }
                     enemy_current_province_ids = {
                         _native_int(enemy.get("current_province_id"))
                         for enemy in route_threat_enemies
@@ -10793,31 +10766,6 @@ def _choose_one_life_turn_core(
             )
             if emergency_exit is not None:
                 return emergency_exit
-            current_hold_step = (
-                move_army_step(army_id, current_province_id)
-                if isinstance(army_id, int)
-                and isinstance(current_province_id, int)
-                else None
-            )
-            if (
-                isinstance(pursuit_army, dict)
-                and isinstance(pursuit_army.get("route_province_ids"), list)
-                and pursuit_army["route_province_ids"]
-                and isinstance(current_hold_step, str)
-                and current_hold_step in available_steps
-            ):
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_cancel_unsafe_route_hold",
-                    "selected_step": current_hold_step,
-                    "reason": (
-                        "the active route became unsafe; cancel the committed "
-                        "route at the current Province before the next exact "
-                        "observation"
-                    ),
-                    "route_rejections": [passive_route_audit],
-                    "active_wars": war_summary,
-                }
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_no_safe_exact_route",

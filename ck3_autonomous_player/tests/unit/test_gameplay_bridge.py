@@ -5610,9 +5610,9 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-20", "life-advance"),
         )
         self.assertEqual(
-            current_only["phase"], "native_war_cancel_unsafe_route_hold"
+            current_only["phase"], "native_war_no_safe_exact_route"
         )
-        self.assertEqual(current_only["selected_step"], "move-army-11-to-20")
+        self.assertIsNone(current_only["selected_step"])
 
         r885_player = _army(
             184_549_472,
@@ -5633,7 +5633,7 @@ class GameplayBridgeTests(unittest.TestCase):
             army_state_code=1,
             route_province_ids=[],
         )
-        r885_cancel = _native_war_plan(
+        r886_no_pseudo_cancel = _native_war_plan(
             player=r885_player,
             enemies=[r885_enemy],
             score=-50,
@@ -5643,11 +5643,10 @@ class GameplayBridgeTests(unittest.TestCase):
             player_side="defender",
         )
         self.assertEqual(
-            r885_cancel["phase"], "native_war_cancel_unsafe_route_hold"
+            r886_no_pseudo_cancel["phase"],
+            "native_war_no_safe_exact_route",
         )
-        self.assertEqual(
-            r885_cancel["selected_step"], "move-army-184549472-to-8750"
-        )
+        self.assertIsNone(r886_no_pseudo_cancel["selected_step"])
 
         r885_without_literal = _native_war_plan(
             player=r885_player,
