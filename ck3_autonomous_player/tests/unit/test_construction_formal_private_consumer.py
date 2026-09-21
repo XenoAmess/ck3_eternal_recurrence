@@ -17,9 +17,11 @@ from xar_autoplayer.construction_formal_consumer import (
 )
 
 
-def frame(revision: int = 3, *, episode: str = "native-29829-e1") -> dict[str, object]:
+def frame(revision: int = 3, *, episode: str = "native-29829-e1",
+          public_revision: int | None = None) -> dict[str, object]:
     return {"paused": True, "map_ready": True, "snapshot_id": f"native:{revision}",
-            "revision": revision, "native_revision": revision,
+            "revision": revision if public_revision is None else public_revision,
+            "native_revision": revision,
             "date_raw": 53_178_312, "episode_run_id": episode,
             "played_character": {"character_id": 29829, "alive": True},
             "active_event": None, "pending_character_interaction": None,
@@ -188,6 +190,21 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 outcome = service.auto_turn()
             self.assertEqual(outcome["selected_step"], SUBMIT_STEP)
             self.assertEqual(outcome["result"]["status"], "submitted_verification_pending")
+
+    def test_r0060_public_revision_after_native_root_query_reaches_construction(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.allow_private_construction_formal_trial = True
+            # R0060's real root query bound native:3 / public revision 4.
+            driver.snapshot = frame(3, public_revision=4)
+            driver.recorded.extend([(row["command"], row["result"]) for row in root(3)])
+            service = GameplayBridgeService(driver)
+            with mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn",
+                            return_value={"selected_step": "life-advance", "phase": "peacetime"}):
+                planned = service.plan_turn()
+            self.assertEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+            self.assertEqual(driver.requests[0]["step"], transport.QUERY_NATIVE)
+            self.assertNotIn(SUBMIT_STEP, driver.capabilities()["action_steps"])
 
     def test_scope_before_private_query_and_non_advertised_choice(self):
         with TemporaryDirectory() as location:

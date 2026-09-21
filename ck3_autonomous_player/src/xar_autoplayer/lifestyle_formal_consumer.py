@@ -93,7 +93,8 @@ def same_frame_feudal_peace_scope(
     revision = snapshot.get("native_revision")
     if not (
         _positive(revision)
-        and snapshot.get("revision") == revision
+        and _positive(snapshot.get("revision"))
+        and snapshot.get("snapshot_id") == f"native:{revision}"
         and _positive(player_id)
         and isinstance(snapshot.get("date_raw"), int)
     ):

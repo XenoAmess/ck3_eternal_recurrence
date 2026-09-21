@@ -24,3 +24,5 @@ flowchart LR
 ```
 
 私有 action CMake 选项 `XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1` 默认 OFF，且仅能与已存在的 read probe 选项一同启用。实际运行前用 source save、EXE/DLL SHA、DLC/mod/profile、轮次与有界断言封候选；只有 CK3 唯一操作负责人可以运行。R746 只读结果不能被新代码的静态验证冒充为提交或后置结果。公共 query/action、MCP 广告与 G2-M4 完成状态仍关闭。新增 private receipt 字段为向后兼容的附加字段；当前没有公共 open_kaishek 适配器依赖，正式接口开放前须独立确认兼容矩阵。
+
+R0060（2026-09-22，agent `fadc2e5b`）的正式 `native-auto-run` 20 turn 技术完成，但无建设 query/submit/receipt；这是建设正式闭环的证据不足，不是成功。driver-state 第 444、448、450、455、461、465 条公共 root query 均确认同一封建玩家；原生帧 `native_revision` 与 public `revision` 分别为 3/4、8/9、14/15、21/22、28/29、35/36。Python 和平封建 scope 错将两种 revision 要求相等，因而在 private 建设查询前返回 `scope_unavailable`。R0060 形状回归已证明这一失败，并改用 `snapshot_id = native:<native_revision>` 与 root 的原生 `snapshot_revision`、日期、角色共同绑定同一帧，同时只要求 public revision 有效。此补丁仍待新版本实机正式动作、独立后帧、下一 turn 消费及冷恢复复验，公共能力继续关闭。
