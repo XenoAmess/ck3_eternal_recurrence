@@ -38,8 +38,10 @@ from xar_autoplayer.bridge.native_driver import (
     _compact_war_progress_history_in_place,
     _capital_regroup_capability_scope,
     _exact_route_contact_timeline_policy,
+    _army_move_postcondition,
     _fresh_route_contact_advance_proofs,
     _fresh_route_contact_advance_steps,
+    _fresh_same_province_route_clear_steps,
     _is_deferred_read_only_history_step,
     _life_advance_horizon_days,
     _life_advance_progressed,
@@ -7237,19 +7239,22 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "game.state.army-routes",
                 "game.command.move-army-N-to-N",
                 "game.command.preview-move-army-N-to-N",
+                "game.command.query-route-contact-horizon-v1-N",
             )
         )
         routed = _army(
-            83_886_341,
-            province_id=2596,
-            move_target_province_id=2604,
-            route_province_ids=[2595, 2603, 2604],
+            184_549_472,
+            province_id=8750,
+            move_target_province_id=45,
+            route_province_ids=[],
+            army_state="moving",
+            army_state_code=7,
         )
         enemy = _army(
             357,
             province_id=2564,
-            move_target_province_id=2596,
-            route_province_ids=[2582, 2587, 2597, 2596],
+            move_target_province_id=45,
+            route_province_ids=[45],
             controllable=False,
         )
         endpoint.publish(
@@ -7263,33 +7268,227 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
 
         routed_steps = driver.capabilities()["action_steps"]
-        self.assertIn(
-            "preview-move-army-83886341-to-2596", routed_steps
-        )
-        self.assertIn("move-army-83886341-to-2596", routed_steps)
+        query_step = query_route_contact_horizon_step(184_549_472, 45, (357,))
+        self.assertIn(query_step, routed_steps)
+        self.assertNotIn("move-army-184549472-to-8750", routed_steps)
         self.assertNotIn("move-army-357-to-2564", routed_steps)
 
+        snapshot = driver.take_snapshot()
+        date_raw = snapshot["date_raw"]
+        native_revision = snapshot["native_revision"]
+        result = {
+            "step": query_step,
+            "accepted": True,
+            "status": "available",
+            "query_sequence": 1,
+            "snapshot_revision": native_revision,
+            "route_contact_horizon": {
+                "status": "available",
+                "date_raw": date_raw,
+                "snapshot_revision": native_revision,
+                "subject_army_id": 184_549_472,
+                "target_province_id": 45,
+                "hostile_army_ids": [357],
+                "subject_route": {
+                    "timeline_observable": True,
+                    "army_id": 184_549_472,
+                    "current_province_id": 8750,
+                    "effective_origin_province_id": 8750,
+                    "route_province_ids": [45],
+                    "arrival_date_raws": [date_raw + 24],
+                },
+                "hostile_routes": [
+                    {
+                        "timeline_observable": True,
+                        "army_id": 357,
+                        "current_province_id": 2564,
+                        "effective_origin_province_id": 2564,
+                        "route_province_ids": [45],
+                        "arrival_date_raws": [date_raw + 24],
+                    }
+                ],
+                "horizon_start_date_raw": date_raw,
+                "horizon_end_date_raw": date_raw + 24,
+                "one_day_contact_free": True,
+                "conflicts": [],
+            },
+            "queried_snapshot_id": snapshot["snapshot_id"],
+            "queried_revision": snapshot["revision"],
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": snapshot["diagnostics"][
+                "connection_generation"
+            ],
+            "queried_episode_run_id": snapshot["episode_run_id"],
+        }
+        driver._record_command(query_step, ok=True, result=result)
+        self.assertIn(
+            "move-army-184549472-to-8750",
+            driver.capabilities()["action_steps"],
+        )
+
+        stale = copy.deepcopy(result)
+        stale["queried_revision"] = snapshot["revision"] - 1
+        self.assertNotIn(
+            "move-army-184549472-to-8750",
+            _fresh_same_province_route_clear_steps(
+                snapshot,
+                [{"index": 1, "command": query_step, "ok": True, "result": stale}],
+            ),
+        )
+        wrong_route = copy.deepcopy(result)
+        wrong_route["route_contact_horizon"]["subject_route"][
+            "route_province_ids"
+        ] = [46]
+        self.assertNotIn(
+            "move-army-184549472-to-8750",
+            _fresh_same_province_route_clear_steps(
+                snapshot,
+                [
+                    {
+                        "index": 1,
+                        "command": query_step,
+                        "ok": True,
+                        "result": wrong_route,
+                    }
+                ],
+            ),
+        )
+
         cleared = _army(
-            83_886_341,
-            province_id=2596,
+            184_549_472,
+            province_id=8750,
             move_target_province_id=None,
             route_province_ids=[],
+            army_state="regular",
+            army_state_code=1,
         )
-        endpoint.publish(
-            _snapshot(
-                41,
-                active_wars=[
-                    _war(allied_armies=[cleared], enemy_armies=[enemy])
-                ],
-                player_armies=[cleared],
+        timer: threading.Timer | None = None
+
+        def publish_cleared_route() -> None:
+            endpoint.publish(
+                _snapshot(
+                    42,
+                    active_wars=[
+                        _war(allied_armies=[cleared], enemy_armies=[enemy])
+                    ],
+                    player_armies=[cleared],
+                )
             )
+
+        def answer(frame: dict[str, object]) -> None:
+            nonlocal timer
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {"status": "submitted"},
+                }
+            )
+            endpoint.publish(
+                _snapshot(
+                    41,
+                    active_wars=[
+                        _war(allied_armies=[routed], enemy_armies=[enemy])
+                    ],
+                    player_armies=[routed],
+                )
+            )
+            timer = threading.Timer(0.01, publish_cleared_route)
+            timer.start()
+
+        endpoint.send_hook = answer
+        action = driver.execute_step(
+            "move-army-184549472-to-8750",
+            expected_revision=snapshot["revision"],
+        )
+        if timer is not None:
+            timer.join(timeout=0.2)
+        self.assertEqual(action["war_action"]["status"], "arrived")
+        self.assertEqual(
+            action["player_armies"][0]["route_province_ids"], []
         )
 
         cleared_steps = driver.capabilities()["action_steps"]
-        self.assertNotIn(
-            "preview-move-army-83886341-to-2596", cleared_steps
+        self.assertNotIn("move-army-184549472-to-8750", cleared_steps)
+
+    def test_same_province_route_clear_requires_new_strict_stationary_frame(
+        self,
+    ) -> None:
+        starting_army = _army(
+            184_549_472,
+            province_id=8750,
+            move_target_province_id=45,
+            route_province_ids=[45],
+            army_state="moving",
+            army_state_code=7,
         )
-        self.assertNotIn("move-army-83886341-to-2596", cleared_steps)
+        starting = {
+            "revision": 40,
+            "native_revision": 39,
+            "player_armies": [starting_army],
+        }
+        unchanged = copy.deepcopy(starting)
+        self.assertIsNone(
+            _army_move_postcondition(
+                unchanged,
+                184_549_472,
+                8750,
+                require_route=True,
+                starting_snapshot=starting,
+            )
+        )
+
+        old_route_survives = copy.deepcopy(starting)
+        old_route_survives.update({"revision": 41, "native_revision": 40})
+        self.assertIsNone(
+            _army_move_postcondition(
+                old_route_survives,
+                184_549_472,
+                8750,
+                require_route=True,
+                starting_snapshot=starting,
+            )
+        )
+
+        cleared_army = _army(
+            184_549_472,
+            province_id=8750,
+            move_target_province_id=None,
+            route_province_ids=[],
+            army_state="regular",
+            army_state_code=1,
+        )
+        cleared = {
+            "revision": 41,
+            "native_revision": 40,
+            "player_armies": [cleared_army],
+        }
+        self.assertEqual(
+            _army_move_postcondition(
+                cleared,
+                184_549_472,
+                8750,
+                require_route=True,
+                starting_snapshot=starting,
+            ),
+            "arrived",
+        )
+
+        wrong_subject = copy.deepcopy(cleared)
+        wrong_subject["player_armies"][0]["army_id"] = 184_549_473
+        self.assertIsNone(
+            _army_move_postcondition(
+                wrong_subject,
+                184_549_472,
+                8750,
+                require_route=True,
+                starting_snapshot=starting,
+            )
+        )
 
     def test_actual_contact_scope_is_atomic_and_combat_v3_ready(self) -> None:
         endpoint = FakeEndpoint()

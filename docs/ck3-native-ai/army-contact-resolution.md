@@ -921,3 +921,39 @@ army state helpers                   : 0x22771F0, 0x2277290, 0x2277E80
 post-combat Province rescan           : 0x220D2A0, caller 0x230AE86
 relation / holding predicates         : 0x2900470, 0x2900710, 0x290CD60
 ```
+
+## 2026-09-21 R883：危险 active route 的同省取消门
+
+冻结范围仍为 CK3 `1.19.0.6`、EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+R883（canonical R0014）的 ordinary production continuation 在 paused date
+`53282952` 观察到玩家 ArmyID `184549472` 当前位于 Province `8750`，已提交
+target/remaining route 指向 `45`，而同帧敌军 current/target/route envelope 已覆盖该路线；策略正确停止于
+`native_war_no_safe_exact_route`，没有日期推进、游戏动作或未确认副作用。报告位于
+`C:\b\g2-preview-ordinary-7d215435-r878-extracted\runs\r883-war-continuation\formal-report.txt`，
+SHA-256 为 `5AD4771EFBF27314C9A79FF7A376C7628B9214CE18D8D81E0EC2F522B5158EC0`。
+
+- [live-confirmed] 顶层 `player_armies` row 不足以投影同省取消 literal；完整 active route 由同一 paused frame 的
+  `route_contact_horizon.subject_route` 提供。旧 capability projection 因而没有广告
+  `move-army-184549472-to-8750`。
+- [static-ready counter-policy] 同省取消 literal 现在只由 fresh route-contact query 产生。query 必须绑定同一
+  snapshot/public revision/native revision/date/episode/connection，hostile scope 必须完整；玩家 ArmyID 必须仍可控、
+  明确处于 moving、非 combat/retreat，顶层 move target 必须等于 query target，query subject current 必须等于
+  顶层 current，且其非空 route 必须以该 target 结束。仅顶层非空 route 不再直接授权 mutation。
+- [static-ready postcondition] 对 `target == starting current Province` 的命令，`current == target` 不再构成成功。
+  后置条件要求 public/native revision 均严格前进，同一 ArmyID 仍可控且位置不变，move target 为 `null`、route 为
+  `[]`、状态为 stationary，并且不在 combat/retreat。普通异省移动的 `moving/arrived` 语义保持不变。
+- [pending live] 上述修复尚未关闭 R883 B0。必须从未污染的 R882 checkpoint/driver pair 以新制品执行短复验，看到
+  typed cancel、独立清空帧、下一正式 turn 消费，再以新 PID cold restore 验证目标延续且不重复提交。
+
+```mermaid
+flowchart LR
+    S["paused player Army + active war"] --> Q["fresh route-contact query"]
+    Q --> B{"same frame and exact Army/target/current/route binding?"}
+    B -->|no| X["do not advertise cancel"]
+    B -->|yes| A["advertise move-army to current Province"]
+    A --> C["native command ACK"]
+    C --> P{"new public + native revision; target null; route empty; stationary?"}
+    P -->|no| W["keep waiting / RED on timeout"]
+    P -->|yes| G["arrived semantics; next turn re-observes"]
+```
