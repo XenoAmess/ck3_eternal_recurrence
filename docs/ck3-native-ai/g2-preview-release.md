@@ -1,6 +1,6 @@
 # G2 标准封建预览：R888 历史资格与当前交付门
 
-**当前可独立启动的用户交付：NO-GO（2026-09-22）。** 下文 R888 是冻结的历史实机资格记录，不是当前默认用户包：原 ZIP 缺包内 canonical run-ID 分配器，无法独立执行文内完整启动/收口步骤。不能修改该冻结 ZIP 或沿用其外部 GO 收据为新包盖章。h1380 自包含候选 R0053 40/40 技术 GREEN 却无非空 typed 动作；h1662 旧 b7 ZIP R0056 有 typed 征兵却在 turn58 战争 RED；最终 master `fadc2e5` 的新 ZIP SHA `BBCF366E...FC74DA` 已在 R0058 60/60 完成 typed 征兵、独立后置与后续消费，但 R0059 冷续遇 `grant_vassal_interaction` 未分类 B0，尚未发出受控停止请求。三者都不是当前可交付包；新修复制品仍须重验受影响分支、停止和真正 cold restore。权威 G2 是 `2/8`（仅 M0/M1 complete），预览切片不新增正式里程碑。
+**当前可独立启动的用户交付：NO-GO（2026-09-22）。** 下文 R888 是冻结的历史实机资格记录，不是当前默认用户包：原 ZIP 缺包内 canonical run-ID 分配器，无法独立执行文内完整启动/收口步骤。不能修改该冻结 ZIP 或沿用其外部 GO 收据为新包盖章。h1380 自包含候选 R0053 40/40 技术 GREEN 却无非空 typed 动作；h1662 旧 b7 ZIP R0056 有 typed 征兵却在 turn58 战争 RED；master `fadc2e5` 的 PRV-004 ZIP 在 R0058 60/60 有真实征兵却 R0059 冷续遇 `grant_vassal_interaction` 未分类 B0。精确 `master@3da54dc` 的 PRV-005 ZIP SHA `F5EB7657...B282CD` 在 R0062 60/60 有正式动作闭环、R0064 受控停止且成对 checkpoint，但 R0065 从该 pair 的不同 PID 冷恢复第17 turn 遇自然九选项事件 `stress_threshold_special.1001`，现有正式事件消费者不支持并 RED，未盲选。冷恢复进程和前16轮不替代整个使用范围可连续运行；新修复制品仍须事件合同及受影响实机复验。权威 G2 是 `2/8`（仅 M0/M1 complete），预览切片不新增正式里程碑。
 
 截至 2026-09-21，R888 原本按当时限定证据完成 fresh-extraction 只读资格、生产循环、受控停止和新进程 cold restore，并由外部收据标为 `GO_RUNNABLE_PREVIEW`。以下记录保留其原始制品哈希与证据映射供审计；在新的自包含 ZIP 完成全部产品门以前，不应把其中命令当作当前可交付操作指南。
 
