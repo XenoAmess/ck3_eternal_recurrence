@@ -29,6 +29,7 @@
 - [ck3-local-api-mcp-feasibility.md](ck3-local-api-mcp-feasibility.md) — CK3 双后端与 MCP 高效模式：OCR/键鼠 baseline、日志/`run` 数据 Mod 桥、薄 DLL + named pipe、原生 command 逆向锚点与逐能力 hybrid 迁移路线
 - [ck3-coat-of-arms-clipboard-import-capability.md](ck3-coat-of-arms-clipboard-import-capability.md) — CK3 角色设计器纹章剪贴板的原生调用链、可导入 render-description 字段、非 effect 执行边界与 Web 编辑器合同
 - [ck3-coat-of-arms-editor-gamma-plan.md](ck3-coat-of-arms-editor-gamma-plan.md) — 家徽编辑器 Beta 后的 Gamma/1.0 收口计划：便携拟合 checkpoint、配额与 WebGL 恢复、原生 framebuffer、战役持久化、runtime VFS/registry 边界和 Pages 发布门禁
+- [ck3-coat-of-arms-editor-delta-q-plan.md](ck3-coat-of-arms-editor-delta-q-plan.md) — 家徽编辑器 Delta-Q/拟合质量 2.0：冻结 benchmark、感知评分、原生素材检索、结构感知联合搜索、稀疏残差修复与 CK3/Pages 收口
 - [ck3-native-version-adapters.md](ck3-native-version-adapters.md) — CK3 EXE 升级时的 native 失效语义、稳定 Game API/逐版本 ABI 边界、adapter registry、逐 capability 迁移与最小化实机验收契约
 - [ck3-native-title-map-navigation-contract.md](ck3-native-title-map-navigation-contract.md) — **CK3 1.19.0.6 fixture-live**：MCP 按 stable landed-title key 解析头衔并居中地图的输入、typed result、camera settled ACK、错误语义、零 OCR/键鼠 fallback 与实机证据边界
 - [ck3-native-ai/](ck3-native-ai/README.md) — CK3 1.19.0.6 原生 AI 决策树：军队控制、战斗预测与真实结算、宣战、白和/投降，以及对应的玩家 counter-policy；所有主题均含证据等级、版本边界和 Mermaid 图
