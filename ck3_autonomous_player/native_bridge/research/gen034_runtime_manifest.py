@@ -182,10 +182,8 @@ def verify_runtime_file_manifest(
 def _write_json_atomic(path: Path, payload: dict[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".tmp")
-    temporary.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    with temporary.open("w", encoding="utf-8", newline="\n") as destination:
+        destination.write(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
     os.replace(temporary, path)
 
 
