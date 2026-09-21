@@ -4,7 +4,9 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 import zipfile
@@ -33,6 +35,9 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
             "tools/requirements-static.txt": b"\n",
             "tools/g2_preview_operator.py": b"# operator\n",
             "tools/g2_preview_eligibility.py": b"# eligibility\n",
+            "tools/ck3_live_run_id.py": (
+                Path(builder.__file__).with_name("ck3_live_run_id.py").read_bytes()
+            ),
             "tools/build_g2_preview_package.py": b"# builder\n",
             "XenoAmess_s_Eternal_Recurrence/descriptor.mod": b'version="1"\n',
             "artifacts/tracked-contract.json": b'{"tracked":true}\n',
@@ -280,9 +285,27 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
             names = archive.namelist()
             self.assertEqual(len(names), len(set(names)))
             self.assertNotIn("ck3.exe", {Path(name).name.casefold() for name in names})
+            self.assertIn("repo/tools/ck3_live_run_id.py", names)
             manifest = json.loads(archive.read("candidate-manifest.json"))
             template = json.loads(archive.read("operator-manifest.template.json"))
+            quickstart = archive.read("QUICKSTART.md").decode("utf-8")
         self.assertEqual(manifest["source"]["agent_commit"], self.commit)
+        self.assertEqual(
+            manifest["source"]["run_id_allocator_entry"],
+            "repo/tools/ck3_live_run_id.py",
+        )
+        self.assertEqual(
+            manifest["formal_entry"]["allocate_run_id"],
+            "repo/tools/ck3_live_run_id.py allocate",
+        )
+        self.assertEqual(
+            manifest["formal_entry"]["record_run_status"],
+            "repo/tools/ck3_live_run_id.py status",
+        )
+        self.assertIn("included in this package", quickstart)
+        self.assertIn("non-`C:`", quickstart)
+        self.assertIn("%XAR_PREVIEW_ROOT%\\live-run-ids-v1", quickstart)
+        self.assertIn("never initialize a blank ledger", quickstart)
         self.assertEqual(manifest["sample_resume"]["history_index"], 293)
         self.assertEqual(manifest["sample_resume"]["saved_date_raw"], 53150976)
         self.assertEqual(
@@ -301,6 +324,100 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
         extracted = self.root / "fresh-extraction"
         with zipfile.ZipFile(first["zip_path"]) as archive:
             archive.extractall(extracted)
+        allocator = extracted / "repo" / "tools" / "ck3_live_run_id.py"
+        allocator_state = self.root / "portable-live-run-ids"
+        allocated = json.loads(
+            subprocess.check_output(
+                [
+                    sys.executable,
+                    str(allocator),
+                    "allocate",
+                    "--mod",
+                    "eternal-recurrence",
+                    "--state-root",
+                    str(allocator_state),
+                    "--machine-id",
+                    "preview-portable-test",
+                ],
+                text=True,
+            )
+        )
+        self.assertEqual(
+            allocated["run_id"],
+            "preview-portable-test--eternal-recurrence--R0001",
+        )
+        recorded = json.loads(
+            subprocess.check_output(
+                [
+                    sys.executable,
+                    str(allocator),
+                    "status",
+                    "--run-id",
+                    allocated["run_id"],
+                    "--mod",
+                    "eternal-recurrence",
+                    "--machine-id",
+                    "preview-portable-test",
+                    "--status",
+                    "completed-green",
+                    "--reason",
+                    "fresh-extraction no-launch packaging test",
+                    "--state-root",
+                    str(allocator_state),
+                ],
+                text=True,
+            )
+        )
+        self.assertEqual(recorded["run_id"], allocated["run_id"])
+        self.assertEqual(recorded["status"], "completed-green")
+        migrated_state = self.root / "migrated-live-run-ids"
+        shutil.copytree(allocator_state, migrated_state)
+        continued = json.loads(
+            subprocess.check_output(
+                [
+                    sys.executable,
+                    str(allocator),
+                    "allocate",
+                    "--mod",
+                    "eternal-recurrence",
+                    "--state-root",
+                    str(migrated_state),
+                    "--machine-id",
+                    "preview-portable-test",
+                ],
+                text=True,
+            )
+        )
+        self.assertEqual(
+            continued["run_id"],
+            "preview-portable-test--eternal-recurrence--R0002",
+        )
+        original_counter = json.loads(
+            (
+                allocator_state
+                / "preview-portable-test"
+                / "eternal-recurrence"
+                / "counter.json"
+            ).read_text(encoding="utf-8")
+        )
+        migrated_counter = json.loads(
+            (
+                migrated_state
+                / "preview-portable-test"
+                / "eternal-recurrence"
+                / "counter.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertEqual(original_counter["last_sequence"], 1)
+        self.assertEqual(migrated_counter["last_sequence"], 2)
+        self.assertTrue(
+            (
+                allocator_state
+                / "preview-portable-test"
+                / "eternal-recurrence"
+                / "statuses.jsonl"
+            ).is_file()
+        )
         self.assertEqual(
             subprocess.check_output(
                 ["git", "-C", str(extracted / "repo"), "rev-parse", "HEAD"],

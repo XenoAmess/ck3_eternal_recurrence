@@ -13,6 +13,8 @@
 
 包内 candidate manifest 保留封包时的 `NO_GO_PENDING_EXTRACTED_BUNDLE_LIVE_SMOKE` 状态；外部 GO 收据绑定精确 ZIP 哈希，晋升没有改写 ZIP。包中不含 CK3 本体、个人凭据、Python 虚拟环境、Workshop cache、可变运行状态或历史运行日志。
 
+> **R888 可移植性更正（2026-09-21）：**上述冻结 ZIP 本身没有包含 `tools/ck3_live_run_id.py`，所以原文要求另备当前 master checkout 才能分配/收口 canonical run ID，并不满足自包含操作要求。R888 的 ZIP、哈希和既有实机资格保持原样；不能原地补文件。当前源码已把分配器纳入下一候选包，并把下述命令改为包内入口。新的 ZIP 仍须重新打包并完成独立 fresh-extraction 实机资格后，才能取代 R888；本次静态修复本身不是新包资格。
+
 | 项目 | 冻结值 |
 | --- | --- |
 | CK3 | `1.19.0.6` |
@@ -30,51 +32,66 @@
 
 R888 有意复用上述 exact-build native DLL/injector；`d559faa6` 增加的是 Python 侧的 stationary current-rally contact-horizon 策略与恢复回归，之后的无关 native 源码变化没有进入本制品。
 
-## 一次性准备
+## 下一候选的一次性准备（尚待重新打包/资格）
 
-把 ZIP 解压到一个全新目录，在该目录打开普通 `cmd.exe`。资格主机使用 CPython 3.13.2；按包内固定依赖创建运行环境：
+先选择一个实际存在、可写且空间足够的非 `C:` 盘根目录。ZIP 解压根、venv、canonical run-ID 持久状态、游戏/agent state、每轮 runs 输出以及 `TEMP`/`TMP` 必须全部实际落在这个非 `C:` 根下；禁止用解析回 `C:` 的 junction、符号链接或环境变量绕过。以下仅以 `Z:\ck3-g2-preview` 为例，把下一候选 ZIP 解压到 `Z:\ck3-g2-preview\package`，并在该解压根打开普通 `cmd.exe`：
 
 ```text
-py -3.13 -m venv .xar-preview-venv
-.xar-preview-venv\Scripts\python.exe -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
+set "XAR_PREVIEW_ROOT=Z:\ck3-g2-preview"
+set "XAR_PREVIEW_PACKAGE=%XAR_PREVIEW_ROOT%\package"
+set "XAR_PREVIEW_PYTHON=%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe"
+REM 仅从未登记过的新宿主使用下一行的新空 ledger；已有宿主见下文。
+set "XAR_LIVE_RUN_ID_ROOT=%XAR_PREVIEW_ROOT%\live-run-ids-v1"
+set "TEMP=%XAR_PREVIEW_ROOT%\temp"
+set "TMP=%XAR_PREVIEW_ROOT%\temp"
+mkdir "%TEMP%"
+mkdir "%XAR_PREVIEW_ROOT%\runs"
+cd /d "%XAR_PREVIEW_PACKAGE%"
+py -3.13 -m venv "%XAR_PREVIEW_ROOT%\venv"
+"%XAR_PREVIEW_PYTHON%" -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
 ```
 
 复制 `operator-manifest.template.json` 为 `operator-manifest.json`，只替换模板已有的四类占位符：
 
-- `<ABSOLUTE_PYTHON_EXE>`：刚创建的 `.xar-preview-venv\Scripts\python.exe` 绝对路径；
-- `<ABSOLUTE_EXTRACTED_PACKAGE_ROOT>`：当前解压根；
+- `<ABSOLUTE_PYTHON_EXE>`：刚创建的 `%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe` 展开后的绝对路径；
+- `<ABSOLUTE_EXTRACTED_PACKAGE_ROOT>`：`%XAR_PREVIEW_PACKAGE%` 展开后的绝对路径；
 - `<ABSOLUTE_CK3_INSTALL_ROOT>`：包含 `binaries\ck3.exe` 的 CK3 根；
-- `<ABSOLUTE_NEW_EMPTY_STATE_DIRECTORY>`：一个全新、空的本机可写目录。
+- `<ABSOLUTE_NEW_EMPTY_STATE_DIRECTORY>`：全新且为空的 `%XAR_PREVIEW_ROOT%\state` 展开后的绝对路径。
 
-不要改模板中的版本、哈希、角色、战争、军队、管道或 preview action。确认所有受管主机都没有存活的 CK3 后运行：
+JSON 中必须填写展开后的绝对路径，不要把 `%...%` 变量文字原样写进去。不要改模板中的版本、哈希、角色、战争、军队、管道或 preview action。确认所有受管主机都没有存活的 CK3 后运行：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py prepare-state --manifest .\operator-manifest.json --sample-dir .\sample-resume
+"%XAR_PREVIEW_PYTHON%" .\repo\tools\g2_preview_operator.py prepare-state --manifest .\operator-manifest.json --sample-dir .\sample-resume
 ```
 
 `prepare-state` 会复制成对 checkpoint/driver state、绑定本机环境、执行 production-only no-launch preflight，并自动把实际 environment/driver 哈希回写 manifest。不要手抄哈希，不要手改存档或 driver state；该命令拒绝覆盖已有 state。
 
+上面的新空 `%XAR_PREVIEW_ROOT%\live-run-ids-v1` **只适用于从未登记过的新宿主**。已有受管宿主不得因换 ZIP、venv 或路径而从空 ledger 重新分配 `R0001`：
+
+- 若唯一权威 ledger 已在合规非 `C:` 盘，`XAR_LIVE_RUN_ID_ROOT` 必须继续指向它，不要求把它塞进本次 preview root；
+- 若旧权威 ledger 实际在 `C:`，先停止所有 allocator writer，完整迁移 counter、allocation history 和 status history 到一个非 `C:` 根，逐文件核验后让所有调用方一次性切到新根，并停止使用旧根；
+- 禁止只迁移 `counter.json`，禁止把旧/新两份同时作为可写 root，也禁止为了方便新建空 root。迁移后的第一次 allocate 必须接续原 `last_sequence`。
+
 ## 启动自动游玩
 
-在本项目受管环境，每次会启动 CK3 的 attempt 都必须先确认 process-zero，并用当前 master 的分配器取得正式编号。先在当前仓库 master 根目录打开 `cmd.exe`，资格主机验证过的持久根和分配命令为：
+在本项目受管环境，每次会启动 CK3 的 attempt 都必须先确认 process-zero，并用包内分配器取得正式编号。继续在 ZIP 解压根的 `cmd.exe` 中运行；不再依赖外部仓库 checkout，也不允许回退到 `%LOCALAPPDATA%` 等可能实际位于 `C:` 的默认根：
 
 ```text
-set "XAR_LIVE_RUN_ID_ROOT=%LOCALAPPDATA%\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\Local\XarCk3Acceptance\live-run-ids-v1"
-py tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR_LIVE_RUN_ID_ROOT%"
+"%XAR_PREVIEW_PYTHON%" .\repo\tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR_LIVE_RUN_ID_ROOT%"
 ```
 
-若宿主使用不同的 Python 安装形态，应使用该宿主已经登记的同一持久根，不能静默回退默认根。把分配器返回的完整 JSON 保存到 attempt 根目录；不要预先创建下面命令的 `--output` 目录。
+把分配器返回的完整 JSON 保存到 `%XAR_PREVIEW_ROOT%\runs` 下对应 attempt 的旁路收据；不要预先创建下面命令的 `--output` 目录。此处的 `XAR_LIVE_RUN_ID_ROOT` 必须按上一节选择新宿主空根或已有宿主唯一权威/已核验迁移根，不能静默回退默认根。
 
 新宿主第一次使用时先运行只读资格：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output .\runs\eligibility-RNNNN
+"%XAR_PREVIEW_PYTHON%" .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output "%XAR_PREVIEW_ROOT%\runs\eligibility-RNNNN"
 ```
 
 资格 GREEN、旧进程完全回收并再次取得新编号后，从正式 production 入口启动一个有界连续窗口：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\formal-RNNNN --turns 40 --timeout 810 --readiness-timeout 720
+"%XAR_PREVIEW_PYTHON%" .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output "%XAR_PREVIEW_ROOT%\runs\formal-RNNNN" --turns 40 --timeout 810 --readiness-timeout 720
 ```
 
 `RNNNN` 必须替换为刚分配的本轮编号；每轮使用新的输出目录。命令启动后不需要人工代点、推进日期或补参数。它通过正式 `native_auto_run` / `ck3_auto_turn` 循环观察、选择、提交 typed action、读取独立后置帧并在后续 turn 消费。
@@ -84,8 +101,8 @@ py tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR
 状态查询和受控停止在另一个 `cmd.exe` 中运行：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py status --report .\runs\formal-RNNNN\formal-report.txt
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py request-stop --manifest .\operator-manifest.json
+"%XAR_PREVIEW_PYTHON%" .\repo\tools\g2_preview_operator.py status --report "%XAR_PREVIEW_ROOT%\runs\formal-RNNNN\formal-report.txt"
+"%XAR_PREVIEW_PYTHON%" .\repo\tools\g2_preview_operator.py request-stop --manifest .\operator-manifest.json
 ```
 
 只发送一次 stop，然后等待原 `run` 返回。成功的主动停止由以下两项共同证明：formal report 为 `operator_stop_checkpointed/operator_stopped`；operator receipt 为 `completed`、`formal_exit_code=0`。formal 顶层 `ok=false` 只表示没有跑满原 turn 上限，不代表 RED。
@@ -93,7 +110,7 @@ py tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR
 原进程完全回收后，重新核对 process-zero、分配新编号，并用同一 manifest、同一 state directory 和新的 output 目录恢复：
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\cold-restore-RNNNN --turns 40 --timeout 810 --readiness-timeout 720
+"%XAR_PREVIEW_PYTHON%" .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output "%XAR_PREVIEW_ROOT%\runs\cold-restore-RNNNN" --turns 40 --timeout 810 --readiness-timeout 720
 ```
 
 `run` 会动态读取当前成对 checkpoint/driver state，先核对已执行动作的实际状态，再继续同一高层目标；不得手工回填旧哈希、复用旧 output 目录或盲重试已生效动作。
@@ -104,7 +121,13 @@ py tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR
 - 停止请求：`<ABSOLUTE_NEW_EMPTY_STATE_DIRECTORY>\native-auto-run.stop`
 - 每轮报告：命令指定的 `<output>\formal-report.txt`
 
-这里的 `<ABSOLUTE_NEW_EMPTY_STATE_DIRECTORY>` 是模板占位符所代表的实际目录，不要把尖括号文字原样用于命令。每轮结束后，用分配时返回的完整 `run_id` 调用 `ck3_live_run_id.py status`，如实记录 `completed-green` 或 `completed-red`。RED、超时、未执行和证据不足分别记账。
+这里的 `<ABSOLUTE_NEW_EMPTY_STATE_DIRECTORY>` 是模板占位符所代表的实际目录，不要把尖括号文字原样用于命令。每轮结束后，用分配时返回的完整 `run_id` 调用同一包内脚本，如实记录 `completed-green` 或 `completed-red`：
+
+```text
+"%XAR_PREVIEW_PYTHON%" .\repo\tools\ck3_live_run_id.py status --run-id <FULL_RUN_ID> --mod eternal-recurrence --status completed-green --reason "bounded preview completed" --state-root "%XAR_LIVE_RUN_ID_ROOT%"
+```
+
+RED、超时、未执行和证据不足分别记账；不要把它们改写成成功。
 
 ## 实机资格证据
 

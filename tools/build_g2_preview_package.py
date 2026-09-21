@@ -65,6 +65,7 @@ REQUIRED_REPO_FILES = (
     "tools/requirements-static.txt",
     "tools/g2_preview_operator.py",
     "tools/g2_preview_eligibility.py",
+    "tools/ck3_live_run_id.py",
     "tools/build_g2_preview_package.py",
     "XenoAmess_s_Eternal_Recurrence/descriptor.mod",
 )
@@ -83,6 +84,7 @@ PACKAGE_REPO_PATHS = (
     "tools/requirements-static.txt",
     "tools/g2_preview_operator.py",
     "tools/g2_preview_eligibility.py",
+    "tools/ck3_live_run_id.py",
     "tools/build_g2_preview_package.py",
     "XenoAmess_s_Eternal_Recurrence",
 )
@@ -595,27 +597,44 @@ initial active context is recorded exactly in `candidate-manifest.json`.
 ## One-time setup
 
 The qualified Windows runtime uses CPython 3.13 (the qualification host uses
-3.13.2). Extract the ZIP into a new directory, open a command prompt in that
-root, and install the package's exact pinned dependencies from its
-`pyproject.toml`:
+3.13.2). Choose an existing writable non-`C:` drive and create one new
+preview root there. The ZIP extraction root, virtual environment, persistent
+run-ID state, mutable game/agent state, per-attempt output, and task temp
+directories must all resolve to real locations below that non-`C:` root; do
+not use a junction or environment-variable value that resolves back to `C:`.
+For example, after extracting the ZIP to
+`Z:\ck3-g2-preview\package`, open `cmd.exe` there and run:
 
 ```text
-py -3.13 -m venv .xar-preview-venv
-.xar-preview-venv\Scripts\python.exe -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
+set "XAR_PREVIEW_ROOT=Z:\ck3-g2-preview"
+set "TEMP=%XAR_PREVIEW_ROOT%\temp"
+set "TMP=%XAR_PREVIEW_ROOT%\temp"
+mkdir "%TEMP%"
+py -3.13 -m venv "%XAR_PREVIEW_ROOT%\venv"
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" -m pip install --disable-pip-version-check .\repo\ck3_autonomous_player
 ```
 
 Copy `operator-manifest.template.json` to `operator-manifest.json`. Replace the
 four `<ABSOLUTE_...>` tokens with the virtual-environment Python executable,
-this extracted package root, the
-CK3 install root containing `binaries\ck3.exe`, and a new empty writable state
-directory. The manifest pins and verifies the CK3 executable hash before any
-launch; paths for source, DLL, injector and save derive from the package root.
+this extracted package root, the CK3 install root containing
+`binaries\ck3.exe`, and the new empty
+`%XAR_PREVIEW_ROOT%\state` directory. Use expanded absolute paths in JSON, not
+literal `%...%` variables. Create `%XAR_PREVIEW_ROOT%\runs` for run output.
+Only a never-before-registered host may start with a new empty
+`%XAR_PREVIEW_ROOT%\live-run-ids-v1`. An existing managed host must keep using
+its one authoritative non-`C:` ledger. If its registered ledger is on `C:`,
+stop every allocator writer, migrate the complete counter/history/status tree
+once to the non-`C:` root, verify it, and permanently switch all writers;
+never initialize a blank ledger or write both old and new copies. The manifest
+pins and verifies the CK3 executable hash before any launch; paths for source,
+DLL, injector and save derive from the package root.
 
 Confirm all managed hosts have zero CK3 processes and allocate the next
-monotonic single-instance round. Then run:
+monotonic single-instance round with the allocator included in this package:
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py prepare-state --manifest .\operator-manifest.json --sample-dir .\sample-resume
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR_PREVIEW_ROOT%\live-run-ids-v1"
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_operator.py prepare-state --manifest .\operator-manifest.json --sample-dir .\sample-resume
 ```
 
 Do not type or guess the rebound hashes. `prepare-state` refuses to overwrite
@@ -629,14 +648,14 @@ Choose fresh monotonic output IDs for every attempt; the examples below use
 `R1001` and `R1002` only as placeholders.
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output .\runs\eligibility-R1001
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output .\runs\formal-R1002 --turns {bounds['formal_turns']} --timeout {bounds['timeout_seconds']} --readiness-timeout {bounds['readiness_timeout_seconds']}
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output "%XAR_PREVIEW_ROOT%\runs\eligibility-R1001"
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output "%XAR_PREVIEW_ROOT%\runs\formal-R1002" --turns {bounds['formal_turns']} --timeout {bounds['timeout_seconds']} --readiness-timeout {bounds['readiness_timeout_seconds']}
 ```
 
 For a controlled checkpointed stop, from another terminal run:
 
 ```text
-.xar-preview-venv\Scripts\python.exe .\repo\tools\g2_preview_operator.py request-stop --manifest .\operator-manifest.json
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_operator.py request-stop --manifest .\operator-manifest.json
 ```
 
 After complete process reclamation, allocate a new round and invoke the same
@@ -645,6 +664,13 @@ After complete process reclamation, allocate a new round and invoke the same
 `<state_dir>\native-session\driver-state.json`; logs:
 `<state_dir>\profile\logs`. Unknown forced states and RED remain failures. Do
 not retry an action whose material result is unconfirmed.
+
+After each attempt, record the returned full `run_id` with the same bundled
+allocator and persistent state root:
+
+```text
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\ck3_live_run_id.py status --run-id <FULL_RUN_ID> --mod eternal-recurrence --status completed-green --reason "bounded preview completed" --state-root "%XAR_PREVIEW_ROOT%\live-run-ids-v1"
+```
 """
 
 
@@ -1024,6 +1050,7 @@ def candidate_manifest(
             "python_entry": "repo/ck3_autonomous_player/agent.py",
             "operator_entry": "repo/tools/g2_preview_operator.py",
             "eligibility_entry": "repo/tools/g2_preview_eligibility.py",
+            "run_id_allocator_entry": "repo/tools/ck3_live_run_id.py",
             "package_builder": "repo/tools/build_g2_preview_package.py",
             "native_dll": "native/xar_ck3_bridge.dll",
             "native_injector": "native/xar_ck3_bridge_injector.exe",
@@ -1050,9 +1077,11 @@ def candidate_manifest(
         "formal_entry": {
             "prepare": "repo/tools/g2_preview_operator.py prepare-state",
             "eligibility": "repo/tools/g2_preview_eligibility.py",
+            "allocate_run_id": "repo/tools/ck3_live_run_id.py allocate",
             "run": "repo/tools/g2_preview_operator.py run",
             "stop": "repo/tools/g2_preview_operator.py request-stop",
             "status": "repo/tools/g2_preview_operator.py status",
+            "record_run_status": "repo/tools/ck3_live_run_id.py status",
             "verify_zip": "repo/tools/g2_preview_operator.py verify-zip",
             "bridge_mode": "native-headless",
             "cold_start_checkpoint": True,
