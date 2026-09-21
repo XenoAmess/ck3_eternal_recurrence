@@ -73,6 +73,49 @@ def _payload(
 
 
 class WarTerminationTermsLiveAcceptanceChecksTests(unittest.TestCase):
+    def test_optional_after_prepare_profile_hook_returns_receipt(self) -> None:
+        calls: list[object] = []
+        spec = object()
+
+        def prepare(value: object) -> dict[str, object]:
+            calls.append(value)
+            return {"status": "GREEN", "profile_ready": True}
+
+        receipt = HARNESS._apply_after_prepare_profile(spec, prepare)
+
+        self.assertEqual(calls, [spec])
+        self.assertEqual(
+            receipt,
+            {"status": "GREEN", "profile_ready": True},
+        )
+
+    def test_absent_after_prepare_profile_hook_preserves_existing_callers(self) -> None:
+        self.assertIsNone(HARNESS._apply_after_prepare_profile(object(), None))
+
+    def test_after_prepare_profile_hook_must_return_receipt(self) -> None:
+        with self.assertRaisesRegex(
+            HARNESS.AgentError,
+            "after-prepare-profile hook did not return a receipt",
+        ):
+            HARNESS._apply_after_prepare_profile(
+                object(),
+                lambda _spec: None,
+            )
+
+    def test_profile_hook_runs_between_prepare_and_verify_and_is_reported(self) -> None:
+        source = SCRIPT.read_text(encoding="utf-8")
+        prepared = source.index("prepared = prepare_profile(spec)")
+        profile_hook = source.index(
+            "after_prepare_profile_receipt = _apply_after_prepare_profile("
+        )
+        verified = source.index("verified = verify_profile(spec)")
+        self.assertLess(prepared, profile_hook)
+        self.assertLess(profile_hook, verified)
+        self.assertIn(
+            '"after_prepare_profile": after_prepare_profile_receipt',
+            source,
+        )
+
     def test_optional_checkpoint_rebinder_receives_projected_pipe(self) -> None:
         calls: list[tuple[object, str | None]] = []
         spec = object()

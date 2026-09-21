@@ -205,6 +205,18 @@ def _apply_checkpoint_rebinder(
     return receipt
 
 
+def _apply_after_prepare_profile(
+    spec: Any,
+    after_prepare_profile: Callable[[Any], dict[str, object]] | None,
+) -> dict[str, object] | None:
+    if after_prepare_profile is None:
+        return None
+    receipt = after_prepare_profile(spec)
+    if not isinstance(receipt, dict):
+        raise AgentError("after-prepare-profile hook did not return a receipt")
+    return receipt
+
+
 def _diagnostics(capabilities: object) -> dict[str, object]:
     if not isinstance(capabilities, dict):
         return {}
@@ -615,6 +627,7 @@ def _run(
     report_kind: str = "ck3_war_termination_terms_four_domain_live_acceptance",
     policy_override: dict[str, object] | None = None,
     checkpoint_rebinder: Callable[..., dict[str, object]] | None = None,
+    after_prepare_profile: Callable[[Any], dict[str, object]] | None = None,
 ) -> tuple[dict[str, object], int]:
     started_wall = utc_now()
     started = time.monotonic()
@@ -643,6 +656,7 @@ def _run(
     driver_closed = False
     session_started = False
     preparation: dict[str, object] | None = None
+    after_prepare_profile_receipt: dict[str, object] | None = None
     inputs: dict[str, object] | None = None
     anchor: dict[str, object] | None = None
     checkpoint_rebinding: dict[str, object] | None = None
@@ -686,6 +700,10 @@ def _run(
         state_dir = attempt / "state"
         spec = make_spec(state_dir, args.game_dir.expanduser().resolve())
         prepared = prepare_profile(spec)
+        after_prepare_profile_receipt = _apply_after_prepare_profile(
+            spec,
+            after_prepare_profile,
+        )
         verified = verify_profile(spec)
         state_checkpoint = (
             spec.profile_dir / "save games" / NATIVE_SESSION_CHECKPOINT_FILENAME
@@ -715,6 +733,7 @@ def _run(
             ),
             "checkpoint_path": str(state_checkpoint),
             "driver_state_path": str(state_driver),
+            "after_prepare_profile": after_prepare_profile_receipt,
         }
         expected_product_tree = getattr(
             args, "expected_production_tree_sha256", None

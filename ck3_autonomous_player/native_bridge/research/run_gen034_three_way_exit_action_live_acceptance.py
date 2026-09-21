@@ -30,6 +30,7 @@ for candidate in (RESEARCH_ROOT, PACKAGE_ROOT):
         sys.path.insert(0, str(candidate))
 
 import run_gen034_three_way_recommendation_live_acceptance as recommendation  # noqa: E402
+import run_g2_source_specific_war_loss_live_adapter as live_adapter  # noqa: E402
 import run_raiktor_surrender_session_binding_live_acceptance as preflight  # noqa: E402
 import run_war_termination_terms_live_acceptance as base  # noqa: E402
 from gen034_candidate_authorization import (  # noqa: E402
@@ -87,6 +88,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.description = __doc__
     parser.add_argument("--source-capture", type=Path, required=True)
     parser.add_argument("--expected-source-capture-sha256", required=True)
+    parser.add_argument("--profile-settings-template", type=Path, required=True)
+    parser.add_argument("--expected-profile-settings-sha256", required=True)
+    parser.add_argument("--expected-shadercache-tree-sha256", required=True)
     parser.add_argument("--runtime-manifest", type=Path, required=True)
     parser.add_argument("--runtime-root", type=Path, required=True)
     parser.add_argument("--expected-runtime-manifest-sha256", required=True)
@@ -926,6 +930,25 @@ def _load_source_capture(path: Path, expected_sha256: str) -> dict[str, object]:
     return value
 
 
+def _prepare_action_runner_profile(
+    spec: Any,
+    *,
+    profile_settings_template: Path,
+    expected_profile_settings_sha256: object,
+    expected_shadercache_tree_sha256: object,
+) -> dict[str, object]:
+    receipt = live_adapter.prepare_startup_profile_assets(
+        spec.profile_dir,
+        profile_settings_template,
+    )
+    receipt["frozen_binding"] = live_adapter._prepared_profile_binding(
+        receipt,
+        expected_settings_sha256=expected_profile_settings_sha256,
+        expected_shadercache_tree_sha256=expected_shadercache_tree_sha256,
+    )
+    return receipt
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
@@ -973,6 +996,16 @@ def main(argv: list[str] | None = None) -> int:
                 _exact_build_proof,
                 opponent_character_id=args.opponent_character_id,
             )
+            after_prepare_profile = functools.partial(
+                _prepare_action_runner_profile,
+                profile_settings_template=args.profile_settings_template,
+                expected_profile_settings_sha256=(
+                    args.expected_profile_settings_sha256
+                ),
+                expected_shadercache_tree_sha256=(
+                    args.expected_shadercache_tree_sha256
+                ),
+            )
             payload, exit_code = base._run(
                 args,
                 sequence_runner=sequence_runner,
@@ -1004,6 +1037,7 @@ def main(argv: list[str] | None = None) -> int:
                     "broad_loaded_effect_preview_enabled": False,
                 },
                 checkpoint_rebinder=rebind_rogue_checkpoint_v1,
+                after_prepare_profile=after_prepare_profile,
             )
             payload["no_launch_preflight"] = preflight_payload
             payload["source_capture"] = preflight_payload["source_capture"]

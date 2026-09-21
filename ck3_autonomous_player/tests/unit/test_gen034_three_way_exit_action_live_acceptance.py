@@ -9,6 +9,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import sys
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -143,6 +144,56 @@ class _FakeClient:
 
 
 class Gen034ActionRunnerCheckpointRebindTests(unittest.TestCase):
+    def test_parser_requires_frozen_profile_inputs(self) -> None:
+        actions = {
+            option
+            for action in HARNESS._parser()._actions
+            if action.required
+            for option in action.option_strings
+        }
+        self.assertTrue(
+            {
+                "--profile-settings-template",
+                "--expected-profile-settings-sha256",
+                "--expected-shadercache-tree-sha256",
+            }.issubset(actions)
+        )
+
+    def test_profile_hook_reuses_adapter_copy_and_binding(self) -> None:
+        spec = SimpleNamespace(profile_dir=Path("isolated-profile"))
+        receipt = {"status": "GREEN", "profile_ready": True}
+        binding = {
+            "status": "verified",
+            "settings_sha256": "A" * 64,
+            "shadercache_tree_sha256": "B" * 64,
+        }
+        with mock.patch.object(
+            HARNESS.live_adapter,
+            "prepare_startup_profile_assets",
+            return_value=receipt,
+        ) as prepare, mock.patch.object(
+            HARNESS.live_adapter,
+            "_prepared_profile_binding",
+            return_value=binding,
+        ) as bind:
+            result = HARNESS._prepare_action_runner_profile(
+                spec,
+                profile_settings_template=Path("template/pdx_settings.txt"),
+                expected_profile_settings_sha256="A" * 64,
+                expected_shadercache_tree_sha256="B" * 64,
+            )
+
+        prepare.assert_called_once_with(
+            spec.profile_dir,
+            Path("template/pdx_settings.txt"),
+        )
+        bind.assert_called_once_with(
+            receipt,
+            expected_settings_sha256="A" * 64,
+            expected_shadercache_tree_sha256="B" * 64,
+        )
+        self.assertEqual(result["frozen_binding"], binding)
+
     def test_action_runner_wires_typed_rogue_checkpoint_rebinder(self) -> None:
         source = SCRIPT.read_text(encoding="utf-8")
         self.assertIn(
@@ -153,6 +204,7 @@ class Gen034ActionRunnerCheckpointRebindTests(unittest.TestCase):
             "checkpoint_rebinder=rebind_rogue_checkpoint_v1",
             source,
         )
+        self.assertIn("after_prepare_profile=after_prepare_profile", source)
 
 
 def _termination_fixture(
