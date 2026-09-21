@@ -2,16 +2,21 @@
 
 ## Current boundary
 
-This package is **static-ready; live not executed**. It prepares the one allowed
-new Raiktor creation-time run for GEN-034-D, captures the six source executions,
-hands the same process to the production `native_auto_run` loop, and intercepts
-the first matching terminal plan before submission. It does not close GEN-034-D,
-does not change the authoritative G2 count, and does not reuse R458 as final
-evidence.
+This package is now **production-live capture / terminal continuation RED**.
+Canonical R0024 captured the six source executions from one new Raiktor
+creation and handed the same process to production `native_auto_run`, but that
+call did not return a matching terminal intercept. No terminal action was
+submitted. GEN-034-D therefore remains `3/4`, the authoritative G2 count
+remains `1/8`, and R458 is not reused as final evidence.
 
-R884 had been reclaimed and process inventory contained no CK3, bridge injector,
-or native-agent process before this package was prepared. No CK3 process was
-started while building or verifying it.
+The package was integrated through
+`fd69f836455e0a81721d877de25b22a3bc52d1dc`; the live attempt ran from current
+`origin/master@08cfd3df8d22b5548f4cafa190f5fa6f41895af3`. R884 and all newer
+preview runs had been reclaimed before the GEN034-D run. R0024 cleanup closed
+the driver and left no CK3 process. The next blocker is to persist the exact
+`native_auto_run` return at this boundary and perform a focused resume/replay
+verification from the frozen safe pair, not to launch another natural-source
+search.
 
 Final candidate tip: `b9e3357dfb14825092e66d9b92acc4e5347b070a`.
 The previously reviewed `fe64549f3e89488d905a280895cfefa5271e2a17`
@@ -66,20 +71,51 @@ The generic exit-terms reader remains disabled.
   assertions outside tests being disabled under `-O` is the only warning).
 - Python compilation and `git diff --check`: passed.
 
-No non-hash functional failure remains in the builder or runner tests. Live
-evidence is deliberately still absent.
+No non-hash functional failure remained in the pre-launch builder or runner
+tests. The subsequent live evidence and its RED boundary are recorded below.
 
-## The one next live command
+## R0023 / R0024 live result
 
-First acquire the single CK3 slot and perform a fresh process-zero check. Then
-execute the `candidate_command` array in `gen034-d-candidate-bundle.json`
-argv-for-argv. Its current rendered command is:
+- Canonical R0023 (legacy R892) was allocated, then immediately marked
+  `voided` because `candidate-live-run-preflight.json` already existed. The
+  close reason is `preflight-output-preexisted-no-process-created`; no CK3 or
+  injector process was created and it contributes no live evidence.
+- Canonical R0024 (legacy R893) is `completed-red`. The exact run report is
+  `candidate-live-attempt-01/report.json`, SHA-256
+  `2813E802D8FC39BB2E5161447A1D94C054BC28CA1648BE5AA57024BB6DAC0315`.
+  Its failure is `formal native_auto_run did not reach a matching terminal
+  intercept`.
+- `candidate-live-attempt-01/capture.json`, SHA-256
+  `FF76C8E14DA90959303DEF32AB601C6DA44C4D737AA1484E342CD70DC3B7EB04`,
+  is GREEN and contains exactly six source-bound executions for natural
+  `bookmark.1071.a`, actor `29829`, and WarID `16777285`. The read-only observer
+  restored its breakpoint byte and detached successfully.
+- The safe recovery checkpoint is
+  `candidate-state/profile/save games/xar_checkpoint.ck3`, history `1`, date
+  `53173176`, SHA-256
+  `2661E9F0717521BBE7F8B7D8554331CA56F1D850D7FE9186704D3B7125A8F8D9`.
+  Its paired driver state is
+  `candidate-state/native-session/driver-state.json`, SHA-256
+  `BC0B9BD103C8265F67B1F6ECE77DE79CE85F5FCA23F310F4D034895C7B8B7ADD`.
+- No matching terminal plan was intercepted, no terminal action was submitted,
+  and `candidate-live-attempt-01/action-runner-input.json` was not emitted.
+  The action runner is therefore not authorized yet.
+- Cleanup is GREEN: driver closed, PID `106748` was reclaimed, and
+  `remaining_ck3=[]`. The six-source capture is reusable evidence, but it is
+  not a terminal result, postwar certificate, cold restore, or GEN-034-D
+  completion.
+
+## Consumed live command
+
+The command below was the exact argv used for R0024. It is retained only for
+provenance. Do **not** rerun it to create another natural source while the safe
+R0024 capture/checkpoint pair remains valid.
 
 ```powershell
 & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B "Z:\ck3_mod_rewrite_process_assets\g2-gen034-d-runtime-b9e3357d-20260921\ck3_autonomous_player\native_bridge\research\run_g2_source_specific_war_loss_live_adapter.py" --manifest "Z:\ck3_mod_rewrite_process_assets\g2-gen034-d-candidate-b9e3357d-20260921\g2_source_specific_war_loss_live_adapter_v1_manifest.json" --preflight-output "Z:\ck3_mod_rewrite_process_assets\g2-gen034-d-candidate-b9e3357d-20260921\candidate-live-run-preflight.json" --artifact-dir "Z:\ck3_mod_rewrite_process_assets\g2-gen034-d-candidate-b9e3357d-20260921\candidate-live-attempt-01" --userdir "Z:\ck3_mod_rewrite_process_assets\g2-gen034-d-candidate-b9e3357d-20260921\candidate-state\profile" --profile-settings-template "Z:\ck3_mod_rewrite_process_assets\g2-gen034-r707-masterf342-20260915\state\profile\pdx_settings.txt" --expected-profile-settings-sha256 592AB6C67BF24600FA3679509F63E0688DDF45A372FE709E71D7F35CD48F5244 --expected-shadercache-tree-sha256 43896A031A779E8816E6B4F9B2C402C748BABF4B98BF500730A55DFBCF0907CD --game-root "Z:\ck3_mod_rewrite\Crusader Kings III" --capture-executable "Z:\ck3_mod_rewrite_process_assets\zg361\g2-source-specific-war-loss-provider-r450-20260911\build-msvc\Release\xar_ck3_raiktor_war_bound_private_capture_v1.exe" --bridge-dll "Z:\ck3_mod_rewrite_process_assets\g2-gen034-d-private-f342-20260915\build\Release\xar_ck3_bridge.dll" --bridge-injector "Z:\ck3_mod_rewrite_process_assets\g2-gen034-d-private-f342-20260915\build\Release\xar_ck3_bridge_injector.exe" --expected-character-id 29829 --candidate-terminal-intercept --candidate-turn-limit 256 --candidate-timeout 1800.0 --authorize-private-live
 ```
 
-This command must finish with all of these assertions:
+The original command contract was:
 
 1. One new natural Raiktor creation supplies exactly six source-bound capture
    records, and the bridge continues on the same CK3 PID.
@@ -91,13 +127,31 @@ This command must finish with all of these assertions:
    immutable source capture, checkpoint, driver state, identity, and the only
    valid action-runner argv.
 
-Do not substitute a private terminal action and do not enable the generic terms
-reader. On RED, retain `candidate-live-attempt-01` and do not retry the terminal
-action blindly.
+R0024 satisfied item 1 and retained a safe checkpoint, but did not reach item 2;
+items 3-4 were consequently not closed. Do not substitute a private terminal
+action, enable the generic terms reader, overwrite `candidate-live-attempt-01`,
+or retry a terminal action blindly.
+
+## Next focused continuation
+
+1. Persist the complete production `native_auto_run` return at the current RED
+   boundary, including the first blocker/terminal-selection state needed to
+   explain why no matching intercept was returned.
+2. Add only the focused normal/optimized regression for that persisted return
+   and the existing R0024 resume pair; do not broaden the runner or acceptance
+   matrix.
+3. Re-run from the frozen history-1 checkpoint plus paired driver state in one
+   managed CK3 process. Reuse the immutable six-source capture and confirm it is
+   not generated a second time.
+4. If and only if formal `native_auto_run` returns a matching terminal plan,
+   freeze the pre-submit checkpoint and emit the action-runner input. Then use
+   the existing action-runner continuation below. On another RED, preserve the
+   new return artifact and reclaim the process without submitting a terminal
+   action.
 
 ## Action-runner continuation
 
-After the candidate succeeds, execute only the `runner_command` emitted in
+After the focused continuation succeeds, execute only the `runner_command` emitted in
 `candidate-live-attempt-01/action-runner-input.json`. It is generated from the
 actual WarID, character, date, checkpoint, driver state, and capture hashes, so
 it cannot be written correctly before the live candidate exists.
