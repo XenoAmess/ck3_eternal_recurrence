@@ -52,6 +52,8 @@ from .bridge.succession_transition_contract import (
 )
 from .bridge.war_contract import (
     is_life_advance_step,
+    observe_merge_armies_postcondition_v1,
+    parse_merge_armies_step,
     parse_offer_white_peace_step,
     parse_surrender_war_step,
     war_termination_active_war_signature,
@@ -1012,6 +1014,38 @@ def native_auto_run(
                 if step == "save-checkpoint"
                 else _runner_semantic_snapshot(driver)
             )
+            merge_observation: dict[str, object] | None = None
+            if parse_merge_armies_step(step) is not None:
+                result = outcome.get("result")
+                merge_observation = observe_merge_armies_postcondition_v1(
+                    step, result, after_snapshot
+                )
+                if merge_observation.get("status") != "applied":
+                    current_attempt["stage"] = (
+                        "merge_postcondition_observation"
+                    )
+                if isinstance(result, dict):
+                    result["merge_postcondition"] = copy.deepcopy(
+                        merge_observation
+                    )
+                    current_attempt["result"] = copy.deepcopy(result)
+                after = _compact_binding(
+                    driver.capabilities(), after_snapshot
+                )
+                current_attempt["after"] = _public_binding(after)
+                if merge_observation.get("status") != "applied":
+                    capture_first_failure(
+                        stage="merge_postcondition_observation",
+                        kind="merge_result_postcondition_pending",
+                        message=(
+                            "native merge ACK lacks an independently published "
+                            "exact source-removal postcondition"
+                        ),
+                    )
+                    raise AgentError(
+                        "native merge result remains pending; the exact merge "
+                        "receipt was retained and the command was not resubmitted"
+                    )
             terminal_pending = bool(
                 after_snapshot.get("one_life_terminal") is True
                 or isinstance(
@@ -1022,6 +1056,13 @@ def native_auto_run(
             after = _compact_binding(driver.capabilities(), after_snapshot)
             current_attempt["after"] = _public_binding(after)
             evidence = _semantic_delta(before, after_snapshot, after)
+            if (
+                isinstance(merge_observation, dict)
+                and merge_observation.get("status") == "applied"
+            ):
+                evidence.append(
+                    "army_merge_source_removed_independent_paused_frame"
+                )
             if step == PRIVATE_LIFESTYLE_RECEIPT_STEP:
                 receipt = outcome.get("result")
                 if not (
@@ -1881,7 +1922,9 @@ def native_auto_run(
                 error.readiness_diagnostics
             )
         if isinstance(current_attempt, dict):
-            if isinstance(error, BridgeUnavailableError):
+            if isinstance(
+                error, (BridgeUnavailableError, UnsupportedStepError)
+            ):
                 error_plan = getattr(error, "plan", None)
                 error_selected_step = getattr(error, "selected_step", None)
                 if isinstance(error_plan, dict):
@@ -4185,6 +4228,8 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "event_material_postcondition",
         "council_assign_councillor_ack",
         "council_assign_councillor_receipt",
+        "war_action",
+        "merge_postcondition",
     )
     compact = {key: result.get(key) for key in keys if key in result}
     if "interaction_result" in result:

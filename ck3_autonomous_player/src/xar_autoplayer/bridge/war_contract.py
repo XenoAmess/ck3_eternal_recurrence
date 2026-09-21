@@ -2015,6 +2015,313 @@ def parse_merge_armies_step(step: object) -> tuple[int, int] | None:
     return destination, source
 
 
+def observe_merge_armies_postcondition_v1(
+    step: object,
+    result: object,
+    snapshot: object,
+) -> dict[str, object]:
+    """Classify one merge receipt against a later paused public frame.
+
+    A native queue ACK is not proof that CK3 removed the source army.  The
+    receipt therefore carries the exact pre-submit army set and, for new
+    producers, the paused frame/identity binding.  Only an independently
+    published frame with the exact source-removal delta may consume a
+    ``merge_submitted`` receipt.  Older unbound receipts remain pending
+    instead of being guessed from a later army set.
+    """
+    parsed = parse_merge_armies_step(step)
+    action = result.get("war_action") if isinstance(result, dict) else None
+    if parsed is None or not isinstance(action, dict):
+        return {
+            "status": "receipt_invalid",
+            "reason": "merge receipt is absent or malformed",
+        }
+    destination_army_id, source_army_id = parsed
+    receipt_status = action.get("status")
+    before_raw = action.get("player_army_ids_before")
+    if not (
+        receipt_status in {"merge_submitted", "merge_applied"}
+        and action.get("destination_army_id") == destination_army_id
+        and action.get("source_army_id") == source_army_id
+        and isinstance(before_raw, list)
+    ):
+        return {
+            "status": "receipt_invalid",
+            "reason": "merge receipt identity or status is malformed",
+            "destination_army_id": destination_army_id,
+            "source_army_id": source_army_id,
+        }
+    before_ids = [
+        int(army_id)
+        for army_id in before_raw
+        if isinstance(army_id, int)
+        and not isinstance(army_id, bool)
+        and 0 < army_id <= 2**31 - 1
+    ]
+    if (
+        len(before_ids) != len(before_raw)
+        or len(set(before_ids)) != len(before_ids)
+        or before_ids != sorted(before_ids)
+        or destination_army_id not in before_ids
+        or source_army_id not in before_ids
+    ):
+        return {
+            "status": "receipt_invalid",
+            "reason": "merge receipt pre-submit army set is malformed",
+            "destination_army_id": destination_army_id,
+            "source_army_id": source_army_id,
+        }
+    submitted_date_raw = action.get("submitted_date_raw")
+    if (
+        isinstance(submitted_date_raw, bool)
+        or not isinstance(submitted_date_raw, int)
+        or submitted_date_raw < 0
+    ):
+        return {
+            "status": "receipt_invalid",
+            "reason": "merge receipt submitted date is malformed",
+            "destination_army_id": destination_army_id,
+            "source_army_id": source_army_id,
+        }
+    submitted_snapshot_id = action.get("submitted_snapshot_id")
+    submitted_revision = action.get("submitted_public_revision")
+    submitted_native_revision = action.get("submitted_native_revision")
+    submitted_episode_run_id = action.get("submitted_episode_run_id")
+    observed_snapshot_id = action.get("observed_snapshot_id")
+    observed_revision = action.get("observed_public_revision")
+    observed_native_revision = action.get("observed_native_revision")
+    observed_date_raw = action.get("observed_date_raw")
+    observed_episode_run_id = action.get("observed_episode_run_id")
+    after_raw = action.get("player_army_ids_after")
+    durable_applied = bool(
+        receipt_status == "merge_applied"
+        and action.get("postcondition_verified") is True
+        and action.get("source_army_id_absent") is True
+        and isinstance(submitted_snapshot_id, str)
+        and submitted_snapshot_id
+        and isinstance(submitted_revision, int)
+        and not isinstance(submitted_revision, bool)
+        and submitted_revision >= 0
+        and isinstance(submitted_native_revision, int)
+        and not isinstance(submitted_native_revision, bool)
+        and submitted_native_revision >= 0
+        and isinstance(submitted_episode_run_id, str)
+        and submitted_episode_run_id
+        and isinstance(observed_snapshot_id, str)
+        and observed_snapshot_id
+        and observed_snapshot_id != submitted_snapshot_id
+        and isinstance(observed_revision, int)
+        and not isinstance(observed_revision, bool)
+        and observed_revision > submitted_revision
+        and isinstance(observed_native_revision, int)
+        and not isinstance(observed_native_revision, bool)
+        and observed_native_revision > submitted_native_revision
+        and isinstance(observed_date_raw, int)
+        and not isinstance(observed_date_raw, bool)
+        and observed_date_raw >= submitted_date_raw
+        and observed_episode_run_id == submitted_episode_run_id
+        and isinstance(after_raw, list)
+        and after_raw == sorted(set(before_ids) - {source_army_id})
+    )
+    if durable_applied:
+        return {
+            "status": "applied",
+            "destination_army_id": destination_army_id,
+            "source_army_id": source_army_id,
+            "receipt_status": receipt_status,
+            "receipt_bound": True,
+            "independently_published": True,
+            "postcondition_consumed": True,
+            "submitted_snapshot_id": submitted_snapshot_id,
+            "submitted_public_revision": submitted_revision,
+            "submitted_native_revision": submitted_native_revision,
+            "observed_snapshot_id": observed_snapshot_id,
+            "observed_public_revision": observed_revision,
+            "observed_native_revision": observed_native_revision,
+            "player_army_ids_before": before_ids,
+            "current_player_army_ids": list(after_raw),
+        }
+    if not isinstance(snapshot, dict):
+        return {
+            "status": "postcondition_unavailable",
+            "reason": "merge postcondition snapshot is unavailable",
+            "destination_army_id": destination_army_id,
+            "source_army_id": source_army_id,
+        }
+    armies_raw = snapshot.get("player_armies")
+    if not isinstance(armies_raw, list):
+        return {
+            "status": "postcondition_unavailable",
+            "reason": "merge postcondition lacks player armies",
+            "destination_army_id": destination_army_id,
+            "source_army_id": source_army_id,
+        }
+    controllable = [
+        army
+        for army in armies_raw
+        if isinstance(army, dict) and army.get("controllable") is True
+    ]
+    current_ids = [
+        int(army["army_id"])
+        for army in controllable
+        if isinstance(army.get("army_id"), int)
+        and not isinstance(army.get("army_id"), bool)
+        and 0 < int(army["army_id"]) <= 2**31 - 1
+    ]
+    if len(current_ids) != len(controllable) or len(set(current_ids)) != len(
+        current_ids
+    ):
+        return {
+            "status": "postcondition_inconsistent",
+            "reason": "merge postcondition army identity set is malformed",
+            "destination_army_id": destination_army_id,
+            "source_army_id": source_army_id,
+        }
+    current_set = set(current_ids)
+    destination = next(
+        (
+            army
+            for army in controllable
+            if army.get("army_id") == destination_army_id
+        ),
+        None,
+    )
+    source = next(
+        (
+            army
+            for army in controllable
+            if army.get("army_id") == source_army_id
+        ),
+        None,
+    )
+    destination_owner_character_id = action.get(
+        "destination_owner_character_id"
+    )
+    destination_province_id = action.get("destination_province_id")
+    source_owner_character_id = action.get("source_owner_character_id")
+    source_province_id = action.get("source_province_id")
+    receipt_bound = bool(
+        isinstance(submitted_snapshot_id, str)
+        and submitted_snapshot_id
+        and isinstance(submitted_revision, int)
+        and not isinstance(submitted_revision, bool)
+        and submitted_revision >= 0
+        and isinstance(submitted_native_revision, int)
+        and not isinstance(submitted_native_revision, bool)
+        and submitted_native_revision >= 0
+        and isinstance(submitted_episode_run_id, str)
+        and submitted_episode_run_id
+        and isinstance(destination_owner_character_id, int)
+        and not isinstance(destination_owner_character_id, bool)
+        and destination_owner_character_id > 0
+        and isinstance(destination_province_id, int)
+        and not isinstance(destination_province_id, bool)
+        and destination_province_id > 0
+        and isinstance(source_owner_character_id, int)
+        and not isinstance(source_owner_character_id, bool)
+        and source_owner_character_id > 0
+        and isinstance(source_province_id, int)
+        and not isinstance(source_province_id, bool)
+        and source_province_id > 0
+    )
+    observed_revision = snapshot.get("revision")
+    observed_native_revision = snapshot.get("native_revision")
+    independently_published = bool(
+        receipt_bound
+        and snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("episode_run_id") == submitted_episode_run_id
+        and isinstance(observed_revision, int)
+        and not isinstance(observed_revision, bool)
+        and observed_revision > submitted_revision
+        and isinstance(observed_native_revision, int)
+        and not isinstance(observed_native_revision, bool)
+        and observed_native_revision > submitted_native_revision
+        and snapshot.get("snapshot_id") != submitted_snapshot_id
+        and isinstance(snapshot.get("date_raw"), int)
+        and not isinstance(snapshot.get("date_raw"), bool)
+        and int(snapshot["date_raw"]) >= submitted_date_raw
+    )
+
+    def same_bound_army(
+        army: object, *, owner_character_id: object, province_id: object
+    ) -> bool:
+        return bool(
+            isinstance(army, dict)
+            and (
+                not receipt_bound
+                or (
+                    army.get("owner_character_id") == owner_character_id
+                    and army.get("current_province_id") == province_id
+                )
+            )
+        )
+
+    exact_applied = bool(
+        current_set == set(before_ids) - {source_army_id}
+        and same_bound_army(
+            destination,
+            owner_character_id=destination_owner_character_id,
+            province_id=destination_province_id,
+        )
+        and source is None
+    )
+    exact_unchanged = bool(
+        current_set == set(before_ids)
+        and same_bound_army(
+            destination,
+            owner_character_id=destination_owner_character_id,
+            province_id=destination_province_id,
+        )
+        and same_bound_army(
+            source,
+            owner_character_id=source_owner_character_id,
+            province_id=source_province_id,
+        )
+    )
+    common = {
+        "destination_army_id": destination_army_id,
+        "source_army_id": source_army_id,
+        "receipt_status": receipt_status,
+        "receipt_bound": receipt_bound,
+        "independently_published": independently_published,
+        "submitted_snapshot_id": submitted_snapshot_id,
+        "submitted_public_revision": submitted_revision,
+        "submitted_native_revision": submitted_native_revision,
+        "observed_snapshot_id": snapshot.get("snapshot_id"),
+        "observed_public_revision": observed_revision,
+        "observed_native_revision": observed_native_revision,
+        "player_army_ids_before": before_ids,
+        "current_player_army_ids": sorted(current_set),
+    }
+    if exact_applied:
+        return {
+            "status": "postcondition_observed_unconsumed",
+            "reason": "source removal was not persisted in the merge command receipt",
+            **common,
+        }
+    if exact_unchanged:
+        return {
+            "status": (
+                "pending_observed"
+                if independently_published
+                else "pending_same_frame"
+            ),
+            **common,
+        }
+    if not receipt_bound and receipt_status == "merge_submitted":
+        return {
+            "status": "postcondition_unbound",
+            "reason": "legacy merge ACK lacks an independent-frame binding",
+            **common,
+        }
+    return {
+        "status": "postcondition_inconsistent",
+        "reason": "paused army set is neither the exact pre-submit nor source-removal set",
+        **common,
+    }
+
+
 def parse_start_assault_step(step: object) -> int | None:
     return _parse_assault_step(step, prefix="start-assault-")
 

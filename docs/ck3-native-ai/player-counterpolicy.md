@@ -422,6 +422,13 @@ flowchart TD
 - [inference][counter-policy] `merge_submitted` 不是完成；至少要重新观察 destination ID / owner / province
   保留、source 消失和玩家可控 ID 集合精确减少 source。完整边界见
   [ck3-native-merge-contract.md](../ck3-native-merge-contract.md)。
+- [live-confirmed] GEN-034-D `R0028` 在同一 paused frame 对普通战前整军返回一次
+  `merge_submitted`，但即时 snapshot 没有语义变化；下一 turn 又选出同一 literal，随后在 Python 动态 capability
+  检查阶段被拒绝。第一次 ACK 可能已异步生效，但缺少独立后置帧，不能据此宣称完成或再次提交。
+- [inference][counter-policy] 所有 merge（不只 split recovery）都必须保留 exact receipt。正式 driver 在一次提交后
+  有界等待新的 paused revision；只有 destination 绑定保持、source 消失且可控军 ID 集合精确减一，才持久记录
+  `merge_applied`。超时保留 `merge_submitted` 并 fail closed；策略不得重发或推进日期，冷恢复只能回到动作前的
+  durable checkpoint 后重新判定。
 - [inference][counter-policy] Merge 后不假定 destination 继承哪条活动 route；保持暂停，取得新 snapshot，
   再用当前 origin/date fresh preview 后才允许推进。
 

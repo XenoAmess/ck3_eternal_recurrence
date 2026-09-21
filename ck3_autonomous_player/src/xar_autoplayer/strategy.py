@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 from typing import Iterable
@@ -92,6 +93,7 @@ from .bridge.war_contract import (
     enemy_armies_from_wars,
     is_life_advance_step,
     merge_armies_step,
+    observe_merge_armies_postcondition_v1,
     move_army_step,
     offer_white_peace_step,
     surrender_war_step,
@@ -8058,6 +8060,32 @@ def _choose_one_life_turn_core(
                 "active_wars": war_summary,
             }
 
+        # Exact split/merge recovery above owns its merge receipt.  The
+        # generic fence is for independent consolidation merges such as the
+        # R0028 pre-offensive action; applying both lifecycles would turn a
+        # completed split recovery into an unresolved generic ACK.
+        merge_lifecycle = (
+            None
+            if isinstance(split_recovery, dict)
+            else _latest_merge_result_lifecycle(
+                rows,
+                snapshot if isinstance(snapshot, dict) else {},
+            )
+        )
+        if (
+            isinstance(merge_lifecycle, dict)
+            and merge_lifecycle.get("status") != "applied"
+        ):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_merge_result_pending",
+                "selected_step": None,
+                "required_step": "fresh-paused-merge-postcondition",
+                "reason": "the latest merge receipt lacks an independently published exact source-removal postcondition; keep the map paused and do not resubmit or advance time",
+                "merge_result_lifecycle": merge_lifecycle,
+                "active_wars": war_summary,
+            }
+
         tactical_war = _stable_tactical_war(active_wars)
         tactical_war_id = (
             tactical_war.get("war_id")
@@ -15046,6 +15074,61 @@ def _split_merge_recovery(
             "submitted_date_raw": _native_int(action.get("submitted_date_raw")),
             "player_army_ids_before": sorted(before_set),
         }
+    return None
+
+
+def _latest_merge_result_lifecycle(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+) -> dict[str, object] | None:
+    """Fence every merge ACK, including non-split consolidation merges."""
+    failed_duplicates: list[dict[str, object]] = []
+    for row in reversed(_history_after_latest_restore(commands)):
+        step = _effective_command(row)
+        parsed = parse_merge_armies_step(step)
+        if parsed is None:
+            continue
+        if row.get("ok") is not True:
+            failed_duplicates.append(
+                {
+                    "status": "submission_failed",
+                    "destination_army_id": parsed[0],
+                    "source_army_id": parsed[1],
+                    "merge_step": step,
+                    "history_index": _native_int(row.get("index")),
+                    "error": row.get("error"),
+                }
+            )
+            continue
+        if failed_duplicates and any(
+            failure.get("merge_step") != step
+            for failure in failed_duplicates
+        ):
+            return failed_duplicates[0]
+        result = _effective_command_result(row)
+        observed = observe_merge_armies_postcondition_v1(
+            step, result, snapshot
+        )
+        lifecycle = {
+            **observed,
+            "merge_step": step,
+            "history_index": _native_int(row.get("index")),
+            "war_action": (
+                copy.deepcopy(result.get("war_action"))
+                if isinstance(result, dict)
+                else None
+            ),
+        }
+        if failed_duplicates:
+            lifecycle["duplicate_attempt"] = copy.deepcopy(
+                failed_duplicates[0]
+            )
+            lifecycle["duplicate_attempts"] = copy.deepcopy(
+                failed_duplicates
+            )
+        return lifecycle
+    if failed_duplicates:
+        return failed_duplicates[0]
     return None
 
 

@@ -1631,6 +1631,37 @@ class GameplayBridgeTests(unittest.TestCase):
                 self.assertIsNone(routed["selected_step"])
                 self.assertEqual(routed["required_step"], step)
 
+    def test_auto_turn_attaches_plan_to_unsupported_pre_send_failure(
+        self,
+    ) -> None:
+        step = "merge-armies-101-with-303"
+        planned = {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_preoffensive_army_consolidation",
+            "selected_step": step,
+        }
+
+        def reject(_step: str, _revision: int | None) -> dict[str, object]:
+            raise UnsupportedStepError(
+                "native DLL does not implement gameplay step " + step
+            )
+
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(7),
+            execute=reject,
+            action_steps=(step,),
+        )
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=planned,
+        ):
+            with self.assertRaises(UnsupportedStepError) as raised:
+                GameplayBridgeService(driver).auto_turn()
+
+        self.assertEqual(raised.exception.selected_step, step)
+        self.assertEqual(raised.exception.plan, planned)
+
     def test_war_contract_preserves_adapter_objective_order(self) -> None:
         normalized = normalize_active_wars(
             [
@@ -2310,6 +2341,224 @@ class GameplayBridgeTests(unittest.TestCase):
             plan["phase"], "native_war_preoffensive_army_consolidation"
         )
         self.assertEqual(plan["selected_step"], "merge-armies-51-with-79")
+
+    def test_generic_merge_ack_fences_resubmit_and_time_advance(self) -> None:
+        armies = [
+            _army(
+                army_id,
+                soldiers=soldiers,
+                province_id=20,
+                controllable=True,
+                army_state="regular",
+                route_province_ids=[],
+            )
+            for army_id, soldiers in ((51, 1_209), (79, 250))
+        ]
+        history = [
+            {
+                "index": 9,
+                "command": "merge-armies-51-with-79",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "merge_submitted",
+                        "destination_army_id": 51,
+                        "source_army_id": 79,
+                        "submitted_date_raw": 24_000,
+                        "player_army_ids_before": [51, 79],
+                    }
+                },
+            }
+        ]
+
+        plan = _native_war_plan(
+            player=armies[0],
+            players=armies,
+            enemies=[],
+            score=0,
+            date_raw=24_000,
+            history=history,
+            objective=2585,
+            steps=("merge-armies-51-with-79", "life-advance"),
+        )
+
+        self.assertEqual(plan["phase"], "native_war_merge_result_pending")
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["merge_result_lifecycle"]["status"],
+            "pending_same_frame",
+        )
+        self.assertEqual(
+            plan["merge_result_lifecycle"]["history_index"], 1
+        )
+
+        duplicate_history = [
+            history[0],
+            {
+                "index": 10,
+                "command": "merge-armies-51-with-79",
+                "ok": False,
+                "error": (
+                    "UnsupportedStepError: native DLL does not implement "
+                    "gameplay step merge-armies-51-with-79"
+                ),
+            },
+            {
+                "index": 11,
+                "command": "merge-armies-51-with-79",
+                "ok": False,
+                "error": (
+                    "UnsupportedStepError: repeated pre-send capability "
+                    "rejection for merge-armies-51-with-79"
+                ),
+            },
+        ]
+        duplicate = _native_war_plan(
+            player=armies[0],
+            players=armies,
+            enemies=[],
+            score=0,
+            date_raw=24_000,
+            history=duplicate_history,
+            objective=2585,
+            steps=("merge-armies-51-with-79", "life-advance"),
+        )
+        lifecycle = duplicate["merge_result_lifecycle"]
+        self.assertEqual(duplicate["phase"], "native_war_merge_result_pending")
+        self.assertIsNone(duplicate["selected_step"])
+        self.assertEqual(lifecycle["status"], "pending_same_frame")
+        self.assertEqual(lifecycle["history_index"], 1)
+        self.assertEqual(
+            lifecycle["duplicate_attempt"]["status"], "submission_failed"
+        )
+        self.assertEqual(len(lifecycle["duplicate_attempts"]), 2)
+
+    def test_generic_merge_receipt_before_restore_does_not_poison_branch(
+        self,
+    ) -> None:
+        armies = [
+            _army(
+                army_id,
+                soldiers=soldiers,
+                province_id=20,
+                controllable=True,
+                army_state="regular",
+                route_province_ids=[],
+            )
+            for army_id, soldiers in ((51, 1_209), (79, 250))
+        ]
+        history = [
+            {
+                "index": 1,
+                "command": "merge-armies-51-with-79",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "merge_submitted",
+                        "destination_army_id": 51,
+                        "source_army_id": 79,
+                        "submitted_date_raw": 23_999,
+                        "player_army_ids_before": [51, 79],
+                    }
+                },
+            },
+            {
+                "index": 2,
+                "command": "restore-checkpoint",
+                "ok": True,
+                "result": {"status": "restored"},
+            },
+        ]
+        strengths = [
+            {
+                "status": "available",
+                "army_id": army_id,
+                "scope_role": "player",
+                "war_ids": [88],
+                "current_soldiers": soldiers,
+                "maximum_soldiers": soldiers,
+                "ai_base_power_raw": soldiers * 100_000,
+            }
+            for army_id, soldiers in ((51, 1_209), (79, 250))
+        ]
+
+        plan = _native_war_plan(
+            player=armies[0],
+            players=armies,
+            enemies=[],
+            score=0,
+            date_raw=24_000,
+            history=history,
+            objective=2585,
+            steps=(
+                QUERY_ARMY_STRENGTHS_STEP,
+                "merge-armies-51-with-79",
+                "life-advance",
+            ),
+            army_strengths=strengths,
+            army_strengths_status="available",
+        )
+
+        self.assertNotEqual(plan["phase"], "native_war_merge_result_pending")
+
+    def test_consumed_merge_receipt_stays_closed_after_future_army_changes(
+        self,
+    ) -> None:
+        current_armies = [
+            _army(
+                901,
+                soldiers=1_500,
+                province_id=31,
+                controllable=True,
+                army_state="regular",
+                route_province_ids=[],
+            )
+        ]
+        history = [
+            {
+                "index": 1,
+                "command": "merge-armies-51-with-79",
+                "ok": True,
+                "result": {
+                    "war_action": {
+                        "status": "merge_applied",
+                        "destination_army_id": 51,
+                        "source_army_id": 79,
+                        "submitted_date_raw": 23_900,
+                        "submitted_snapshot_id": "native:40",
+                        "submitted_public_revision": 40,
+                        "submitted_native_revision": 40,
+                        "submitted_episode_run_id": "native-707-old-war",
+                        "destination_owner_character_id": 707,
+                        "destination_province_id": 20,
+                        "source_owner_character_id": 707,
+                        "source_province_id": 20,
+                        "player_army_ids_before": [51, 79],
+                        "postcondition_verified": True,
+                        "source_army_id_absent": True,
+                        "player_army_ids_after": [51],
+                        "observed_snapshot_id": "native:41",
+                        "observed_public_revision": 41,
+                        "observed_native_revision": 41,
+                        "observed_date_raw": 23_900,
+                        "observed_episode_run_id": "native-707-old-war",
+                    }
+                },
+            }
+        ]
+
+        plan = _native_war_plan(
+            player=current_armies[0],
+            players=current_armies,
+            enemies=[],
+            score=0,
+            date_raw=24_000,
+            history=history,
+            objective=2585,
+            steps=("life-advance",),
+        )
+
+        self.assertNotEqual(plan["phase"], "native_war_merge_result_pending")
 
     def test_route_audit_preserves_a_later_return_to_physical_origin(
         self,

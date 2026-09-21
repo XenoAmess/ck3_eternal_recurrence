@@ -574,6 +574,7 @@ _NATIVE_EXACT_DAY_ADVANCE_PRIMITIVES = frozenset(
     {"set-speed-1", "resume-map", "pause-map"}
 )
 DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED = 3
+_MERGE_POSTCONDITION_WAIT_SECONDS = 3.0
 _CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 _EPISODE_SEED_FILENAME = "xar_episode_seed.ck3"
 _EPISODE_SEED_METADATA_FILENAME = "episode-seed.json"
@@ -9228,19 +9229,52 @@ class NativeHeadlessGameplayDriver:
                 step, expected_revision=selected_revision
             )
             immediate = self.take_snapshot()
-            player_army_ids_immediate = _controllable_army_ids(immediate)
-            destination_immediate = _army_by_id(
-                immediate, destination_army_id
-            )
-            merge_applied = bool(
-                isinstance(destination_immediate, dict)
-                and destination_immediate.get("owner_character_id")
-                == destination_before.get("owner_character_id")
-                and destination_immediate.get("current_province_id")
-                == destination_province_id
-                and _army_by_id(immediate, source_army_id) is None
-                and player_army_ids_immediate
-                == set(player_army_ids_before) - {source_army_id}
+
+            def exact_merge_postcondition(
+                observed: dict[str, object],
+            ) -> bool:
+                observed_revision = observed.get("revision")
+                observed_native_revision = observed.get("native_revision")
+                destination_observed = _army_by_id(
+                    observed, destination_army_id
+                )
+                return bool(
+                    observed.get("paused") is True
+                    and observed.get("map_ready") is True
+                    and observed.get("episode_run_id")
+                    == starting.get("episode_run_id")
+                    and isinstance(observed_revision, int)
+                    and not isinstance(observed_revision, bool)
+                    and observed_revision > selected_revision
+                    and isinstance(observed_native_revision, int)
+                    and not isinstance(observed_native_revision, bool)
+                    and observed_native_revision
+                    > int(starting["native_revision"])
+                    and observed.get("snapshot_id")
+                    != starting.get("snapshot_id")
+                    and isinstance(destination_observed, dict)
+                    and destination_observed.get("owner_character_id")
+                    == destination_before.get("owner_character_id")
+                    and destination_observed.get("current_province_id")
+                    == destination_province_id
+                    and _army_by_id(observed, source_army_id) is None
+                    and _controllable_army_ids(observed)
+                    == set(player_army_ids_before) - {source_army_id}
+                )
+
+            observed = immediate
+            if not exact_merge_postcondition(observed):
+                observed = self._wait_for_snapshot(
+                    observed,
+                    exact_merge_postcondition,
+                    timeout_seconds=min(
+                        _MERGE_POSTCONDITION_WAIT_SECONDS,
+                        self.command_timeout_seconds,
+                    ),
+                )
+            merge_applied = exact_merge_postcondition(observed)
+            player_army_ids_observed = sorted(
+                _controllable_army_ids(observed)
             )
             return {
                 **result,
@@ -9253,7 +9287,39 @@ class NativeHeadlessGameplayDriver:
                     "destination_army_id": destination_army_id,
                     "source_army_id": source_army_id,
                     "submitted_date_raw": submitted_date_raw,
+                    "submitted_snapshot_id": starting.get("snapshot_id"),
+                    "submitted_public_revision": starting.get("revision"),
+                    "submitted_native_revision": starting.get(
+                        "native_revision"
+                    ),
+                    "submitted_episode_run_id": starting.get(
+                        "episode_run_id"
+                    ),
+                    "destination_owner_character_id": (
+                        destination_before.get("owner_character_id")
+                    ),
+                    "destination_province_id": destination_province_id,
+                    "source_owner_character_id": source_before.get(
+                        "owner_character_id"
+                    ),
+                    "source_province_id": source_before.get(
+                        "current_province_id"
+                    ),
                     "player_army_ids_before": player_army_ids_before,
+                    "postcondition_verified": merge_applied,
+                    "source_army_id_absent": (
+                        _army_by_id(observed, source_army_id) is None
+                    ),
+                    "player_army_ids_after": player_army_ids_observed,
+                    "observed_snapshot_id": observed.get("snapshot_id"),
+                    "observed_public_revision": observed.get("revision"),
+                    "observed_native_revision": observed.get(
+                        "native_revision"
+                    ),
+                    "observed_date_raw": observed.get("date_raw"),
+                    "observed_episode_run_id": observed.get(
+                        "episode_run_id"
+                    ),
                 },
             }
 

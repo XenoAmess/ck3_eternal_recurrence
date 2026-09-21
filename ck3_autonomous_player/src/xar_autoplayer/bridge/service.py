@@ -1073,7 +1073,7 @@ class GameplayBridgeService:
                     selected_step,
                     expected_revision=int(planned["revision"]),
                 )
-        except BridgeUnavailableError as error:
+        except (BridgeUnavailableError, UnsupportedStepError) as error:
             # Preserve the exact planner context for every bridge failure.
             # The concrete exception type remains the sole authority on
             # whether a request was sent; plan attachment only proves which
@@ -1082,7 +1082,8 @@ class GameplayBridgeService:
             error.selected_step = selected_step
             error.plan = copy.deepcopy(plan)
             if (
-                selected_step != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+                not isinstance(error, BridgeUnavailableError)
+                or selected_step != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
                 or getattr(error, "native_error", None)
                 != "campaign-root snapshot changed or is not ready"
                 or not isinstance(root_query_start, dict)

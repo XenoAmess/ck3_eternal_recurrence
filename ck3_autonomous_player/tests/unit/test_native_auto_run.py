@@ -23,6 +23,7 @@ from xar_autoplayer.bridge.driver import (  # noqa: E402
     BridgeUnavailableError,
     PreSubmissionRevisionMismatchError,
     StepPostconditionError,
+    UnsupportedStepError,
 )
 from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: E402
     ORDINARY_CAMPAIGN_SUCCESSION,
@@ -148,6 +149,24 @@ class _NativeAutoRunHarness:
                 or action == "surrender_pending_then_applied"
                 for action in actions
             )
+            else []
+        )
+        self.player_armies = (
+            [
+                {
+                    "army_id": 101,
+                    "owner_character_id": 707,
+                    "current_province_id": 11,
+                    "controllable": True,
+                },
+                {
+                    "army_id": 303,
+                    "owner_character_id": 707,
+                    "current_province_id": 11,
+                    "controllable": True,
+                },
+            ]
+            if any(action.startswith("merge_") for action in actions)
             else []
         )
         if any(
@@ -318,7 +337,7 @@ class _NativeAutoRunHarness:
                 self.pending_character_interaction
             ),
             "active_wars": copy.deepcopy(self.active_wars),
-            "player_armies": [],
+            "player_armies": copy.deepcopy(self.player_armies),
             "native_command_history": copy.deepcopy(self.history),
             "diagnostics": self._diagnostics(),
         }
@@ -368,6 +387,17 @@ class _NativeAutoRunHarness:
             failure.selected_step = (
                 "query-route-contact-horizon-v1-101-to-3610-h-1-31"
             )
+            raise failure
+        if action == "opaque_known_noncheckpoint_unsupported_failure":
+            failure = UnsupportedStepError(
+                "native DLL does not implement gameplay step "
+                "merge-armies-101-with-303"
+            )
+            failure.plan = {
+                "phase": "native_war_preoffensive_army_consolidation",
+                "selected_step": "merge-armies-101-with-303",
+            }
+            failure.selected_step = "merge-armies-101-with-303"
             raise failure
         if action == "opaque_pre_submission_revision_mismatch":
             self.actions.insert(0, action)
@@ -508,6 +538,36 @@ class _NativeAutoRunHarness:
                 "step": step,
                 "accepted": True,
                 "status": "queried",
+            }
+        elif action == "merge_pending":
+            step = "merge-armies-101-with-303"
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "merge_submitted",
+                "war_action": {
+                    "status": "merge_submitted",
+                    "destination_army_id": 101,
+                    "source_army_id": 303,
+                    "submitted_date_raw": self.date_raw,
+                    "submitted_snapshot_id": f"native:{self.native_revision}",
+                    "submitted_public_revision": self.public_revision,
+                    "submitted_native_revision": self.native_revision,
+                    "submitted_episode_run_id": self.episode_run_id,
+                    "destination_owner_character_id": 707,
+                    "destination_province_id": 11,
+                    "source_owner_character_id": 707,
+                    "source_province_id": 11,
+                    "player_army_ids_before": [101, 303],
+                    "postcondition_verified": False,
+                    "source_army_id_absent": False,
+                    "player_army_ids_after": [101, 303],
+                    "observed_snapshot_id": f"native:{self.native_revision}",
+                    "observed_public_revision": self.public_revision,
+                    "observed_native_revision": self.native_revision,
+                    "observed_date_raw": self.date_raw,
+                    "observed_episode_run_id": self.episode_run_id,
+                },
             }
         elif action == "lifestyle_receipt":
             step = "private-query-player-lifestyle-receipt-v1"
@@ -3319,6 +3379,62 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertTrue(blocker["recoverable_from_checkpoint"])
         self.assertEqual(
             blocker["last_durable_checkpoint"], report["checkpoints"][-1]
+        )
+
+    def test_unsupported_pre_send_failure_keeps_latest_checkpoint(self) -> None:
+        report, _harness = self._run(
+            [
+                "query",
+                "advance",
+                "advance",
+                "advance",
+                "opaque_known_noncheckpoint_unsupported_failure",
+            ],
+            completion_contract="one_generation",
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(len(report["checkpoints"]), 1)
+        blocker = report["first_blocker"]
+        self.assertEqual(
+            blocker["selected_step"], "merge-armies-101-with-303"
+        )
+        self.assertEqual(blocker["error_type"], "UnsupportedStepError")
+        self.assertFalse(blocker["checkpoint_recovery_invalidated"])
+        self.assertTrue(blocker["recoverable_from_checkpoint"])
+        self.assertEqual(
+            blocker["last_durable_checkpoint"], report["checkpoints"][-1]
+        )
+
+    def test_pending_merge_receipt_fails_closed_without_resubmit(self) -> None:
+        report, harness = self._run(
+            ["merge_pending", "merge_duplicate_should_not_run"],
+            completion_contract="one_generation",
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["auto_run"]["attempted_turns"], 1)
+        self.assertEqual(harness.auto_turn_count, 1)
+        self.assertEqual(
+            [event for event in harness.events if event.startswith("auto_turn:")],
+            ["auto_turn:merge_pending"],
+        )
+        blocker = report["first_blocker"]
+        self.assertEqual(
+            blocker["stage"], "merge_postcondition_observation"
+        )
+        self.assertEqual(
+            blocker["kind"], "merge_result_postcondition_pending"
+        )
+        self.assertFalse(blocker["checkpoint_recovery_invalidated"])
+        self.assertTrue(blocker["recoverable_from_checkpoint"])
+        self.assertEqual(blocker["last_durable_checkpoint"], report["fixed_seed"])
+        self.assertEqual(
+            blocker["result"]["war_action"]["status"], "merge_submitted"
+        )
+        self.assertEqual(
+            blocker["result"]["merge_postcondition"]["status"],
+            "pending_same_frame",
         )
 
     def test_pre_submission_revision_race_refreshes_before_and_replans(self) -> None:

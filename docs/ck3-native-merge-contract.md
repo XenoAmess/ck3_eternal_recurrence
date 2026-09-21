@@ -150,12 +150,19 @@ partial/unknown capability 以及 adapter 自报的 literal 都不会泄漏进 `
 同样要求完整 ASCII 正十进制 int32 且 distinct；合法 literal 被 `is_native_war_step` 固定为 pure-native，MCP
 通过通用 `ck3_execute_step` 调用，不另建 Merge RPC。planner 当前刻意不自动选择 Merge。
 
-driver 在 primitive 前保存排序后的可控 ID 集合及 destination/source 状态。primitive 后只读一次 immediate
-snapshot，不等待也不推进：destination 必须保留同一 ID、owner 与 ProvinceID，source 必须完全消失，且 after
-可控 ID 集合必须精确等于 before 减 source；三项同时成立才返回上层 `merge_applied`，否则一律
-`merge_submitted`。目的军移动/换 owner、source 仅失去 controllable、额外新增或移除其他军都不会被误判为完成。
-这些 Python/MCP 边界有确定性 unit fixture；上述两次 CK3 实机结果另外闭合了延迟
-snapshot 后置条件，但不把 immediate `merge_submitted` 提升为无条件 `merge_applied`。
+driver 在 primitive 前保存排序后的可控 ID 集合、destination/source 状态和 paused revision 绑定。queue ACK 后
+不推进日期，也不再次提交，而是在同一 command bound 内最多等待三秒的新 paused snapshot：destination 必须保留
+同一 ID、owner 与 ProvinceID，source 必须完全消失，且 after 可控 ID 集合必须精确等于 before 减 source；同时
+public/native revision 都必须增长、snapshot ID 必须变化且 episode 不变。全部成立才把独立后置绑定持久记录为
+`merge_applied`，否则保留 `merge_submitted` 并由正式 runner fail closed。目的军移动/换 owner、source 仅失去
+controllable、额外新增或移除其他军都不会被误判为完成。这些 Python/MCP 边界有确定性 unit fixture，其中延迟
+1.6 秒才发布的帧仍可闭合；上述 CK3 实机“两秒内”证据落在当前有界窗口内，但 queue ACK 本身仍不构成完成。
+
+2026-09-21 的 GEN-034-D `R0028` 暴露了 generic pre-offensive merge 没有消费 receipt 的 B0：首次
+`merge_submitted` 后即时帧无变化，下一 turn 又选择同一 literal，并在第二次发送前的动态 capability 检查被拒绝。
+当前策略在 latest restore epoch 内统一消费所有 merge receipt；pending/inconsistent 状态保持暂停且禁止重发或
+推进，已持久闭合的 `merge_applied` receipt 不会因未来军队集合变化重新变成 pending。连续的同 pair pre-send
+失败也不能遮蔽更早的成功 ACK。
 
 ## 版本迁移与解耦
 

@@ -1560,8 +1560,11 @@ Complete validation owns same-province, destination/source combat, owner,
 land/naval, destination retreat/movement-lock and raid-territory gates. The
 bulk executor wrapper/core are `0x26B9F60/0x2948680`: compatible sources are
 transferred into the destination, destination identity is preserved, and the
-source CUnit/CArmy is removed. The only stable success is `merge_submitted`;
-a later paused snapshot must prove destination remains and source disappears.
+source CUnit/CArmy is removed. The native queue's only stable success is
+`merge_submitted`; the Python driver waits within one finite command bound for
+a separately published paused frame and persists `merge_applied` only when the
+destination remains, the source disappears, and the exact controllable-army
+set loses only that source.
 For Split Half recovery, preserve the desired original army as destination and
 add siege-ID/backlink continuity when it is the besieging army. On 2026-08-24,
 `merge-armies-83886341-with-67108903` returned `merge_submitted`; within two

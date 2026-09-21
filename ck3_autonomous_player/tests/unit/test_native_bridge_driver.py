@@ -6811,6 +6811,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         driver = NativeHeadlessGameplayDriver(
             endpoint.pipe_name,
             endpoint=endpoint,
+            command_timeout_seconds=0.05,
         )
         endpoint.publish(
             _hello(
@@ -6878,16 +6879,21 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             expected_revision=int(driver.take_snapshot()["revision"]),
         )
 
+        action = result["war_action"]
+        self.assertEqual(action["status"], "merge_submitted")
+        self.assertEqual(action["destination_army_id"], 101)
+        self.assertEqual(action["source_army_id"], 303)
+        self.assertEqual(action["submitted_date_raw"], 53_171_400)
         self.assertEqual(
-            result["war_action"],
-            {
-                "status": "merge_submitted",
-                "destination_army_id": 101,
-                "source_army_id": 303,
-                "submitted_date_raw": 53_171_400,
-                "player_army_ids_before": [101, 303, 404, 505, 606],
-            },
+            action["player_army_ids_before"], [101, 303, 404, 505, 606]
         )
+        self.assertEqual(
+            action["player_army_ids_after"], [101, 303, 404, 505, 606]
+        )
+        self.assertEqual(action["submitted_snapshot_id"], "native:40")
+        self.assertEqual(action["observed_snapshot_id"], "native:40")
+        self.assertFalse(action["postcondition_verified"])
+        self.assertFalse(action["source_army_id_absent"])
         self.assertEqual(
             [
                 frame["step"]
@@ -6950,10 +6956,89 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
 
         self.assertEqual(result["war_action"]["status"], "merge_applied")
+        self.assertTrue(result["war_action"]["postcondition_verified"])
+        self.assertEqual(
+            result["war_action"]["observed_snapshot_id"], "native:41"
+        )
+        self.assertGreater(
+            result["war_action"]["observed_public_revision"],
+            result["war_action"]["submitted_public_revision"],
+        )
         self.assertEqual(
             result["war_action"]["player_army_ids_before"],
             [101, 303, 404],
         )
+
+    def test_merge_armies_waits_for_independent_paused_removal(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=2.2,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.command.merge-armies-N-with-N",
+            )
+        )
+        destination = _army(101, province_id=11)
+        source = _army(303, province_id=11)
+        unaffected = _army(404, province_id=12)
+        endpoint.publish(
+            _snapshot(
+                40,
+                date_raw=53_171_400,
+                player_armies=[destination, source, unaffected],
+            )
+        )
+        publish_timer: threading.Timer | None = None
+
+        def answer(frame: dict[str, object]) -> None:
+            nonlocal publish_timer
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "merge_submitted",
+                    },
+                }
+            )
+            publish_timer = threading.Timer(
+                1.6,
+                endpoint.publish,
+                args=(
+                    _snapshot(
+                        41,
+                        date_raw=53_171_400,
+                        player_armies=[destination, unaffected],
+                    ),
+                ),
+            )
+            publish_timer.start()
+
+        endpoint.send_hook = answer
+        try:
+            result = GameplayBridgeService(driver).execute_step(
+                "merge-armies-101-with-303"
+            )
+        finally:
+            if publish_timer is not None:
+                publish_timer.join(timeout=1.0)
+
+        action = result["war_action"]
+        self.assertEqual(action["status"], "merge_applied")
+        self.assertTrue(action["postcondition_verified"])
+        self.assertTrue(action["source_army_id_absent"])
+        self.assertEqual(action["observed_snapshot_id"], "native:41")
+        self.assertEqual(action["player_army_ids_after"], [101, 404])
 
     def test_merge_armies_does_not_guess_from_partial_immediate_state(
         self,
@@ -6986,6 +7071,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 driver = NativeHeadlessGameplayDriver(
                     endpoint.pipe_name,
                     endpoint=endpoint,
+                    command_timeout_seconds=0.05,
                 )
                 endpoint.publish(
                     _hello(
