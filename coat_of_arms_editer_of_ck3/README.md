@@ -36,6 +36,11 @@ Alpha 基线见
 Beta 工作包和机器可读状态见
 [`../docs/ck3-coat-of-arms-editor-beta-plan.md`](../docs/ck3-coat-of-arms-editor-beta-plan.md)。
 
+下一轮拟合质量技术规划见
+[`docs/fitting-quality-epsilon-q-plan.md`](docs/fitting-quality-epsilon-q-plan.md)：以已发布的 Delta-Q v9 为基线，
+优先推进多分辨率选优、固定实例预算下的联合优化与轮廓细节重建；质量相同时再减少游戏内绘制实例和输出大小。
+该文档是后续实施规划，不代表所列新能力已经实现。
+
 ## 在线版本
 
 GitHub Pages 正式入口：
