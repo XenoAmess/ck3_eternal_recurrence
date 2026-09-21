@@ -2027,3 +2027,10 @@ remains `1/8` pending one bounded exact-build natural-death artifact.
 The runnable user preview remains the independently qualified R888 artifact;
 this policy candidate does not replace or invalidate it. Authority remains G2
 `1/8`, Council `1/4`, GEN-034 `3/4` until the live terminal chain closes.
+
+## 2026-09-22 R0044–R0046 ordinary current-rally repair and continuation
+
+| Delivery gate / capability | Status | Formal entry | Artifact / source | Actual game and next-turn evidence | Restore evidence | B0/B1 gap / owner | Branch cleanup |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Timed-unsafe county fallback to native rally | B0 closed for observed exact branch; production-live | `g2_preview_operator.py run` → formal `native_auto_run` | R0044 RED `EDE952DC...2B08`; original fix `72a88f29` → master `0636a81f`; R0045 GREEN `00296B7E...E877` | R0044 advanced three proven days then skipped rally query when both county routes were timed-unsafe. R0045 queried `8750`, advanced twice, and subsequent formal turns consumed each result | R0045 new process restored R0044 h1511 `DFB93843...14A2F`, discarded six read-only tail rows, saved h1536 `2205BC09...8171` / `AA064220...76A9`; cleanup proven | Wider objective quality remains open; this B0 required no new observation/ABI/MCP. `/root` | feature remote/local branch deleted after rebase/linear master push; detached runtime retained only while current continuation uses it |
+| Ordinary h1536→h1662 continuation | GREEN bounded prefix; 100-year/full campaign open | same formal production entry | R0046 report `E1513900...D684`; final pair `03D08AE8...B301` / `13BFB01D...A842` | 100/100, +28 days. Exact stationary contact materialized; next turn queried battle-control and executed battle epoch; old army disappeared, then formal raise created Army251658580 and later turns continued | Distinct R0046 process restored h1536; six checkpoints plus h1662 final pair; cleanup/process-zero GREEN | Natural `.0030`/`.1007`, player death/succession, Council three gates, 100-year/full campaign remain open; `/root` | no new source branch; runtime/current artifact retained for next bounded continuation |
