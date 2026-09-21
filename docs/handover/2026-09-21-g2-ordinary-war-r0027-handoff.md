@@ -31,7 +31,7 @@
   SHA-256 `C8767DACA714C355AB63A5E2198BF155E87AB26AAD5D9CED7473178CDA8A0E7E`，状态 READY。
 - 正确冻结解释器只能用 `Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe`，SHA-256
   `D70FCED7F461F38F9F224D8673FB74E96E4FACB4283FF4E8697543B457FEA8A0`；不要改用系统 `py` 或 `py -3.13`。
-- 当前 CK3 / injector 进程为 0；Git 只剩当前 `master` worktree，没有活动临时分支或运行 worktree。
+- 当前 CK3 / injector 进程为 0；本地 Git 只剩当前 `master` 分支/worktree，没有运行 worktree。
 
 聚焦 continuation/runtime-manifest/live-adapter/native-auto-run 测试已在 normal 与 `-O` 各通过 `132/132`；runtime
 manifest verify GREEN。没有为该局部修复重跑全量 CI。
@@ -101,6 +101,10 @@ attempt 目录当作下一轮可写 state。
   build artifact。`%TEMP%` 仅删除超过两天的文件，共 40,505 个、13,331,638,693 bytes（约 12.42 GiB）；52 个锁定文件跳过。
 - 当前 `C:\workspace` 只剩 `ACM_JAVA`、`elona_cheat` 与本仓库；前两者是无关用户目录，未删除。运行 artifact、日志、
   checkpoint 保留在独立的 `D:` / `Z:` 证据目录，不能当垃圾清理。
+- GitHub 上仍真实存在的 `codex/mod-shiren-import` 与 `codex/project-causality-film-20260919` 没有删除：前者仍含多项
+  master 尚未拥有的 Shiren/文档提交，后者仍含 `089bf807`、`d9b86836` 两项未合入的 r18 英文字幕提交。三条已经
+  patch-equivalent 的旧 G2 remote-tracking refs 对应 master `84dcbcee`、`08cfd3df`、`c74abf8f`；远端已不存在，失效本地
+  引用已精确清除。
 
 ## 兼容与广告边界
 
