@@ -5,18 +5,21 @@
 This package is now **production-live capture / terminal continuation RED**.
 Canonical R0024 captured the six source executions from one new Raiktor
 creation and handed the same process to production `native_auto_run`, but that
-call did not return a matching terminal intercept. No terminal action was
-submitted. GEN-034-D therefore remains `3/4`, the authoritative G2 count
-remains `1/8`, and R458 is not reused as final evidence.
+call failed during prelaunch profile validation, before the planner or turn
+limit could run. The deterministic return is `session_exit` / `failed` with
+`attempted_turns=0`, so no matching terminal intercept or terminal action was
+possible. GEN-034-D therefore remains `3/4`, the authoritative G2 count remains
+`1/8`, and R458 is not reused as final evidence.
 
 The package was integrated through
 `fd69f836455e0a81721d877de25b22a3bc52d1dc`; the live attempt ran from current
 `origin/master@08cfd3df8d22b5548f4cafa190f5fa6f41895af3`. R884 and all newer
 preview runs had been reclaimed before the GEN034-D run. R0024 cleanup closed
-the driver and left no CK3 process. The next blocker is to persist the exact
-`native_auto_run` return at this boundary and perform a focused resume/replay
-verification from the frozen safe pair, not to launch another natural-source
-search.
+the driver and left no CK3 process. Read-only `verify_profile` reproduces the
+root cause: the formal profile lacks `xar-autoplayer-environment.json`. The next
+fix is to run the supported formal profile prepare/verify flow on a successor
+continuation from the frozen safe pair; do not hand-author the manifest or
+launch another natural-source search.
 
 Final candidate tip: `b9e3357dfb14825092e66d9b92acc4e5347b070a`.
 The previously reviewed `fe64549f3e89488d905a280895cfefa5271e2a17`
@@ -84,7 +87,11 @@ tests. The subsequent live evidence and its RED boundary are recorded below.
   `candidate-live-attempt-01/report.json`, SHA-256
   `2813E802D8FC39BB2E5161447A1D94C054BC28CA1648BE5AA57024BB6DAC0315`.
   Its failure is `formal native_auto_run did not reach a matching terminal
-  intercept`.
+  intercept`. The verified underlying failure occurs in formal prelaunch:
+  `candidate-state/profile/xar-autoplayer-environment.json` is absent, and a
+  read-only `verify_profile` reproduces that missing-manifest error. The return
+  is deterministically `session_exit` / `failed` / `attempted_turns=0`; this is
+  not a planner or `candidate-turn-limit` outcome.
 - `candidate-live-attempt-01/capture.json`, SHA-256
   `FF76C8E14DA90959303DEF32AB601C6DA44C4D737AA1484E342CD70DC3B7EB04`,
   is GREEN and contains exactly six source-bound executions for natural
@@ -99,7 +106,8 @@ tests. The subsequent live evidence and its RED boundary are recorded below.
   `BC0B9BD103C8265F67B1F6ECE77DE79CE85F5FCA23F310F4D034895C7B8B7ADD`.
 - No matching terminal plan was intercepted, no terminal action was submitted,
   and `candidate-live-attempt-01/action-runner-input.json` was not emitted.
-  The action runner is therefore not authorized yet.
+  R0024 is immutable and the action runner cannot be invoked directly; it is
+  therefore not authorized yet.
 - Cleanup is GREEN: driver closed, PID `106748` was reclaimed, and
   `remaining_ck3=[]`. The six-source capture is reusable evidence, but it is
   not a terminal result, postwar certificate, cold restore, or GEN-034-D
@@ -134,15 +142,18 @@ or retry a terminal action blindly.
 
 ## Next focused continuation
 
-1. Persist the complete production `native_auto_run` return at the current RED
-   boundary, including the first blocker/terminal-selection state needed to
-   explain why no matching intercept was returned.
-2. Add only the focused normal/optimized regression for that persisted return
-   and the existing R0024 resume pair; do not broaden the runner or acceptance
-   matrix.
-3. Re-run from the frozen history-1 checkpoint plus paired driver state in one
+1. Keep R0024 and `candidate-live-attempt-01` immutable. Prepare a successor
+   continuation profile from the frozen history-1 checkpoint and paired driver
+   state through the supported formal profile-preparation flow; do not create
+   `xar-autoplayer-environment.json` by hand.
+2. Run the formal read-only `verify_profile` gate and require it to pass before
+   starting CK3. Add only the focused normal/optimized regression for this
+   prepare/verify boundary; do not broaden the runner or acceptance matrix.
+3. After the prelaunch gate passes, re-run production `native_auto_run` in one
    managed CK3 process. Reuse the immutable six-source capture and confirm it is
-   not generated a second time.
+   not generated a second time. The current `session_exit` / `failed` /
+   `attempted_turns=0` result is pre-planner and must not be attributed to the
+   planner or turn limit.
 4. If and only if formal `native_auto_run` returns a matching terminal plan,
    freeze the pre-submit checkpoint and emit the action-runner input. Then use
    the existing action-runner continuation below. On another RED, preserve the
