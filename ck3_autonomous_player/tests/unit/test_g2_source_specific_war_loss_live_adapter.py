@@ -251,6 +251,62 @@ def _relocate_runtime_binaries(
 
 
 class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
+    def test_candidate_auto_run_report_is_persisted_before_red_validation(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            artifact = Path(temp) / "artifact"
+            report = {
+                "ok": False,
+                "status": "blocked",
+                "outcome": "not_reached",
+                "blocker": "fixture-blocker",
+            }
+
+            with self.assertRaisesRegex(
+                ADAPTER.LiveAdapterError,
+                "status='blocked'.*blocker='fixture-blocker'",
+            ):
+                ADAPTER._record_and_validate_candidate_auto_run_report(
+                    artifact,
+                    report,
+                )
+
+            persisted = json.loads(
+                (artifact / "candidate-native-auto-run-report.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(persisted, report)
+            self.assertFalse(
+                (artifact / "candidate-native-auto-run-report.json.tmp").exists()
+            )
+
+    def test_candidate_auto_run_report_accepts_the_bound_intercept(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            artifact = Path(temp) / "artifact"
+            report = {
+                "ok": True,
+                "status": "candidate_terminal_intercepted",
+                "outcome": "candidate_intercepted",
+            }
+
+            report_path = (
+                ADAPTER._record_and_validate_candidate_auto_run_report(
+                    artifact,
+                    report,
+                )
+            )
+
+            self.assertEqual(
+                report_path,
+                artifact / "candidate-native-auto-run-report.json",
+            )
+            self.assertEqual(
+                json.loads(report_path.read_text(encoding="utf-8")),
+                report,
+            )
+
     def test_candidate_interceptor_stops_only_the_bound_formal_terminal(self) -> None:
         interceptor = ADAPTER._candidate_terminal_interceptor(88, "A" * 64)
         self.assertIsNone(

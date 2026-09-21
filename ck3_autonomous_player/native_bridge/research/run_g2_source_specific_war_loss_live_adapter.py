@@ -347,6 +347,26 @@ def _write_json_atomic(path: Path, payload: dict[str, object]) -> None:
     os.replace(temporary, path)
 
 
+def _record_and_validate_candidate_auto_run_report(
+    artifact_dir: Path,
+    report: dict[str, object],
+) -> Path:
+    report_path = artifact_dir / "candidate-native-auto-run-report.json"
+    _write_json_atomic(report_path, report)
+    if (
+        report.get("ok") is not True
+        or report.get("status") != "candidate_terminal_intercepted"
+        or report.get("outcome") != "candidate_intercepted"
+    ):
+        blocker = report.get("blocker", report.get("reason"))
+        raise LiveAdapterError(
+            "formal native_auto_run did not reach a matching terminal intercept "
+            f"(status={report.get('status')!r}, "
+            f"outcome={report.get('outcome')!r}, blocker={blocker!r})"
+        )
+    return report_path
+
+
 def inspect_resume_checkpoint(
     resume_save: Path | None,
     resume_save_sha256: str | None,
@@ -2492,15 +2512,10 @@ def main(argv: list[str] | None = None) -> int:
                     source_capture_sha256,
                 ),
             )
-            if (
-                candidate_auto_run.get("ok") is not True
-                or candidate_auto_run.get("status")
-                != "candidate_terminal_intercepted"
-                or candidate_auto_run.get("outcome") != "candidate_intercepted"
-            ):
-                raise LiveAdapterError(
-                    "formal native_auto_run did not reach a matching terminal intercept"
-                )
+            _record_and_validate_candidate_auto_run_report(
+                args.artifact_dir.resolve(),
+                candidate_auto_run,
+            )
             action_runner_input = _freeze_action_runner_input(
                 artifact_dir=args.artifact_dir.resolve(),
                 state_dir=operations.state_dir,
