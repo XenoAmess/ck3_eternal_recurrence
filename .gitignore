@@ -36,6 +36,7 @@ artifacts/project-causality/
 # decoded crop PNGs retain the reviewable receipts without duplicated base64.
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v*-native-r*/raw-report.json
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-*-native-*-r*/raw-report.json
+docs/coat-of-arms-fit-artifacts/delta-q-native-r*/raw-report.json
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v6-native-r1/
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v6-native-r2/
 docs/coat-of-arms-fit-artifacts/user-picture-corpus-v6-native-r3/

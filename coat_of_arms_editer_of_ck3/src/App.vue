@@ -295,6 +295,7 @@ const fitEvidenceJson = computed(() => {
     const candidateSource = serializeCoatOfArms(candidate.coatOfArms)
     return {
       metrics: candidate.metrics,
+      perceptualMetricsV2: candidate.perceptualMetricsV2,
       reconstructionMode: candidate.reconstructionMode,
       textureNames: candidate.textureNames,
       multiscaleMetrics: candidate.multiscaleMetrics,
@@ -1736,7 +1737,9 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
             ? `第 ${progress.layer}/${progress.layerBudget} 层 · 全库轮廓粗筛`
             : progress.phase === 'refine'
               ? `第 ${progress.layer}/${progress.layerBudget} 层 · 全角度与 0.1° 级精筛`
-              : `原生矩形块残差细化 · 最多 ${progress.layerBudget} 层`
+              : progress.phase === 'paint'
+                ? `原生矩形块残差细化 · 最多 ${progress.layerBudget} 层`
+                : '有界 Pareto 多尺度复评'
         fitProgressLabel.value = `${phase} · ${progress.completed}/${progress.total} · 已评估 ${progress.evaluatedCandidates}`
         return
       }

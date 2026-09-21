@@ -1,0 +1,1798 @@
+coa = {
+    pattern = "pattern__solid_designer.dds"
+    color1 = rgb { 217 200 212 }
+    color2 = rgb { 232 214 215 }
+    color3 = rgb { 246 232 229 }
+
+    colored_emblem = {
+        texture = "ce_letter_c.dds"
+        color1 = rgb { 103 86 104 }
+        color2 = rgb { 89 73 101 }
+        color3 = rgb { 91 71 134 }
+
+        instance = {
+            position = { 0.5827175363872067 0.5644639078791177 }
+            scale = { -1.8924636367999998 2.1715836491999996 }
+            rotation = 6.5
+            depth = 128
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 215 200 203 }
+        color2 = rgb { 215 200 203 }
+        color3 = rgb { 215 200 203 }
+
+        instance = {
+            position = { 0.28125 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 127
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 124 102 125 }
+        color2 = rgb { 124 102 125 }
+        color3 = rgb { 124 102 125 }
+
+        instance = {
+            position = { 0.59375 0.53125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 126
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 125 107 133 }
+        color2 = rgb { 125 107 133 }
+        color3 = rgb { 125 107 133 }
+
+        instance = {
+            position = { 0.21875 0.21875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 125
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 214 197 205 }
+        color2 = rgb { 214 197 205 }
+        color3 = rgb { 214 197 205 }
+
+        instance = {
+            position = { 0.28125 0.03125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 124
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 200 182 198 }
+        color2 = rgb { 200 182 198 }
+        color3 = rgb { 200 182 198 }
+
+        instance = {
+            position = { 0.40625 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 123
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 215 199 206 }
+        color2 = rgb { 215 199 206 }
+        color3 = rgb { 215 199 206 }
+
+        instance = {
+            position = { 0.46875 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 122
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 145 131 140 }
+        color2 = rgb { 145 131 140 }
+        color3 = rgb { 145 131 140 }
+
+        instance = {
+            position = { 0.21875 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 121
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 94 77 130 }
+        color2 = rgb { 94 77 130 }
+        color3 = rgb { 94 77 130 }
+
+        instance = {
+            position = { 0.78125 0.34375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 120
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 174 163 172 }
+        color2 = rgb { 174 163 172 }
+        color3 = rgb { 174 163 172 }
+
+        instance = {
+            position = { 0.84375 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 119
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 125 108 156 }
+        color2 = rgb { 125 108 156 }
+        color3 = rgb { 125 108 156 }
+
+        instance = {
+            position = { 0.71875 0.34375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 118
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 122 97 152 }
+        color2 = rgb { 122 97 152 }
+        color3 = rgb { 122 97 152 }
+
+        instance = {
+            position = { 0.09375 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 117
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 193 178 182 }
+        color2 = rgb { 193 178 182 }
+        color3 = rgb { 193 178 182 }
+
+        instance = {
+            position = { 0.21875 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 116
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 221 202 208 }
+        color2 = rgb { 221 202 208 }
+        color3 = rgb { 221 202 208 }
+
+        instance = {
+            position = { 0.96875 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 115
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 209 192 200 }
+        color2 = rgb { 209 192 200 }
+        color3 = rgb { 209 192 200 }
+
+        instance = {
+            position = { 0.90625 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 114
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 164 141 147 }
+        color2 = rgb { 164 141 147 }
+        color3 = rgb { 164 141 147 }
+
+        instance = {
+            position = { 0.34375 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 113
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 130 110 157 }
+        color2 = rgb { 130 110 157 }
+        color3 = rgb { 130 110 157 }
+
+        instance = {
+            position = { 0.15625 0.34375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 112
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 139 120 161 }
+        color2 = rgb { 139 120 161 }
+        color3 = rgb { 139 120 161 }
+
+        instance = {
+            position = { 0.03125 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 111
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 180 158 163 }
+        color2 = rgb { 180 158 163 }
+        color3 = rgb { 180 158 163 }
+
+        instance = {
+            position = { 0.40625 0.03125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 110
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 183 151 190 }
+        color2 = rgb { 183 151 190 }
+        color3 = rgb { 183 151 190 }
+
+        instance = {
+            position = { 0.46875 0.09375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 109
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 173 156 174 }
+        color2 = rgb { 173 156 174 }
+        color3 = rgb { 173 156 174 }
+
+        instance = {
+            position = { 0.90625 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 108
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 151 132 143 }
+        color2 = rgb { 151 132 143 }
+        color3 = rgb { 151 132 143 }
+
+        instance = {
+            position = { 0.28125 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 107
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 146 114 164 }
+        color2 = rgb { 146 114 164 }
+        color3 = rgb { 146 114 164 }
+
+        instance = {
+            position = { 0.09375 0.53125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 106
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 169 155 176 }
+        color2 = rgb { 169 155 176 }
+        color3 = rgb { 169 155 176 }
+
+        instance = {
+            position = { 0.28125 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 105
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 176 160 172 }
+        color2 = rgb { 176 160 172 }
+        color3 = rgb { 176 160 172 }
+
+        instance = {
+            position = { 0.34375 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 104
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 234 220 222 }
+        color2 = rgb { 234 220 222 }
+        color3 = rgb { 234 220 222 }
+
+        instance = {
+            position = { 0.40625 0.21875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 103
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 142 116 169 }
+        color2 = rgb { 142 116 169 }
+        color3 = rgb { 142 116 169 }
+
+        instance = {
+            position = { 0.03125 0.53125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 102
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 138 119 165 }
+        color2 = rgb { 138 119 165 }
+        color3 = rgb { 138 119 165 }
+
+        instance = {
+            position = { 0.71875 0.28125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 101
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 170 151 168 }
+        color2 = rgb { 170 151 168 }
+        color3 = rgb { 170 151 168 }
+
+        instance = {
+            position = { 0.15625 0.46875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 100
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 208 193 198 }
+        color2 = rgb { 208 193 198 }
+        color3 = rgb { 208 193 198 }
+
+        instance = {
+            position = { 0.96875 0.21875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 99
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 165 138 169 }
+        color2 = rgb { 165 138 169 }
+        color3 = rgb { 165 138 169 }
+
+        instance = {
+            position = { 0.40625 0.09375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 98
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 214 197 211 }
+        color2 = rgb { 214 197 211 }
+        color3 = rgb { 214 197 211 }
+
+        instance = {
+            position = { 0.53125 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 97
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 173 148 160 }
+        color2 = rgb { 173 148 160 }
+        color3 = rgb { 173 148 160 }
+
+        instance = {
+            position = { 0.34375 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 96
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 193 172 195 }
+        color2 = rgb { 193 172 195 }
+        color3 = rgb { 193 172 195 }
+
+        instance = {
+            position = { 0.34375 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 95
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 97 77 123 }
+        color2 = rgb { 97 77 123 }
+        color3 = rgb { 97 77 123 }
+
+        instance = {
+            position = { 0.78125 0.28125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 94
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 185 158 158 }
+        color2 = rgb { 185 158 158 }
+        color3 = rgb { 185 158 158 }
+
+        instance = {
+            position = { 0.53125 0.53125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 93
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 184 169 193 }
+        color2 = rgb { 184 169 193 }
+        color3 = rgb { 184 169 193 }
+
+        instance = {
+            position = { 0.65625 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 92
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 168 145 169 }
+        color2 = rgb { 168 145 169 }
+        color3 = rgb { 168 145 169 }
+
+        instance = {
+            position = { 0.15625 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 91
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 161 141 173 }
+        color2 = rgb { 161 141 173 }
+        color3 = rgb { 161 141 173 }
+
+        instance = {
+            position = { 0.15625 0.40625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 90
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 171 157 177 }
+        color2 = rgb { 171 157 177 }
+        color3 = rgb { 171 157 177 }
+
+        instance = {
+            position = { 0.96875 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 89
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 151 125 167 }
+        color2 = rgb { 151 125 167 }
+        color3 = rgb { 151 125 167 }
+
+        instance = {
+            position = { 0.09375 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 88
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 173 160 188 }
+        color2 = rgb { 173 160 188 }
+        color3 = rgb { 173 160 188 }
+
+        instance = {
+            position = { 0.71875 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 87
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 159 147 164 }
+        color2 = rgb { 159 147 164 }
+        color3 = rgb { 159 147 164 }
+
+        instance = {
+            position = { 0.84375 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 86
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 194 175 190 }
+        color2 = rgb { 194 175 190 }
+        color3 = rgb { 194 175 190 }
+
+        instance = {
+            position = { 0.65625 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 85
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 210 198 210 }
+        color2 = rgb { 210 198 210 }
+        color3 = rgb { 210 198 210 }
+
+        instance = {
+            position = { 0.90625 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 84
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 186 163 165 }
+        color2 = rgb { 186 163 165 }
+        color3 = rgb { 186 163 165 }
+
+        instance = {
+            position = { 0.65625 0.53125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 83
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 172 158 177 }
+        color2 = rgb { 172 158 177 }
+        color3 = rgb { 172 158 177 }
+
+        instance = {
+            position = { 0.21875 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 82
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 154 126 177 }
+        color2 = rgb { 154 126 177 }
+        color3 = rgb { 154 126 177 }
+
+        instance = {
+            position = { 0.09375 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 81
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 178 161 178 }
+        color2 = rgb { 178 161 178 }
+        color3 = rgb { 178 161 178 }
+
+        instance = {
+            position = { 0.15625 0.53125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 80
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 173 148 177 }
+        color2 = rgb { 173 148 177 }
+        color3 = rgb { 173 148 177 }
+
+        instance = {
+            position = { 0.09375 0.46875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 79
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 160 141 163 }
+        color2 = rgb { 160 141 163 }
+        color3 = rgb { 160 141 163 }
+
+        instance = {
+            position = { 0.84375 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 78
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 181 164 180 }
+        color2 = rgb { 181 164 180 }
+        color3 = rgb { 181 164 180 }
+
+        instance = {
+            position = { 0.15625 0.28125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 77
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 172 149 174 }
+        color2 = rgb { 172 149 174 }
+        color3 = rgb { 172 149 174 }
+
+        instance = {
+            position = { 0.28125 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 76
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 167 153 176 }
+        color2 = rgb { 167 153 176 }
+        color3 = rgb { 167 153 176 }
+
+        instance = {
+            position = { 0.96875 0.28125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 75
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 137 120 155 }
+        color2 = rgb { 137 120 155 }
+        color3 = rgb { 137 120 155 }
+
+        instance = {
+            position = { 0.71875 0.21875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 74
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 144 128 139 }
+        color2 = rgb { 144 128 139 }
+        color3 = rgb { 144 128 139 }
+
+        instance = {
+            position = { 0.34375 0.03125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 73
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 134 113 147 }
+        color2 = rgb { 134 113 147 }
+        color3 = rgb { 134 113 147 }
+
+        instance = {
+            position = { 0.84375 0.40625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 72
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 162 146 167 }
+        color2 = rgb { 162 146 167 }
+        color3 = rgb { 162 146 167 }
+
+        instance = {
+            position = { 0.78125 0.71875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 71
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 149 138 165 }
+        color2 = rgb { 149 138 165 }
+        color3 = rgb { 149 138 165 }
+
+        instance = {
+            position = { 0.84375 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 70
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 148 136 167 }
+        color2 = rgb { 148 136 167 }
+        color3 = rgb { 148 136 167 }
+
+        instance = {
+            position = { 0.84375 0.71875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 69
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 152 139 159 }
+        color2 = rgb { 152 139 159 }
+        color3 = rgb { 152 139 159 }
+
+        instance = {
+            position = { 0.78125 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 68
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 144 129 162 }
+        color2 = rgb { 144 129 162 }
+        color3 = rgb { 144 129 162 }
+
+        instance = {
+            position = { 0.90625 0.71875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 67
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 143 128 150 }
+        color2 = rgb { 143 128 150 }
+        color3 = rgb { 143 128 150 }
+
+        instance = {
+            position = { 0.78125 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 66
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 112 95 116 }
+        color2 = rgb { 112 95 116 }
+        color3 = rgb { 112 95 116 }
+
+        instance = {
+            position = { 0.28125 0.09375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 65
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 145 132 161 }
+        color2 = rgb { 145 132 161 }
+        color3 = rgb { 145 132 161 }
+
+        instance = {
+            position = { 0.84375 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 64
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 150 127 141 }
+        color2 = rgb { 150 127 141 }
+        color3 = rgb { 150 127 141 }
+
+        instance = {
+            position = { 0.46875 0.03125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 63
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 106 85 130 }
+        color2 = rgb { 106 85 130 }
+        color3 = rgb { 106 85 130 }
+
+        instance = {
+            position = { 0.78125 0.21875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 62
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 235 221 216 }
+        color2 = rgb { 235 221 216 }
+        color3 = rgb { 235 221 216 }
+
+        instance = {
+            position = { 0.21875 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 61
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 143 113 169 }
+        color2 = rgb { 143 113 169 }
+        color3 = rgb { 143 113 169 }
+
+        instance = {
+            position = { 0.53125 0.09375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 60
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 177 159 174 }
+        color2 = rgb { 177 159 174 }
+        color3 = rgb { 177 159 174 }
+
+        instance = {
+            position = { 0.34375 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 59
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 147 136 162 }
+        color2 = rgb { 147 136 162 }
+        color3 = rgb { 147 136 162 }
+
+        instance = {
+            position = { 0.90625 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 58
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 114 104 131 }
+        color2 = rgb { 114 104 131 }
+        color3 = rgb { 114 104 131 }
+
+        instance = {
+            position = { 0.78125 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 57
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 207 190 201 }
+        color2 = rgb { 207 190 201 }
+        color3 = rgb { 207 190 201 }
+
+        instance = {
+            position = { 0.09375 0.40625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 56
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 123 107 140 }
+        color2 = rgb { 123 107 140 }
+        color3 = rgb { 123 107 140 }
+
+        instance = {
+            position = { 0.78125 0.40625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 55
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 127 102 142 }
+        color2 = rgb { 127 102 142 }
+        color3 = rgb { 127 102 142 }
+
+        instance = {
+            position = { 0.84375 0.34375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 54
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 190 176 195 }
+        color2 = rgb { 190 176 195 }
+        color3 = rgb { 190 176 195 }
+
+        instance = {
+            position = { 0.59375 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 53
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 157 138 155 }
+        color2 = rgb { 157 138 155 }
+        color3 = rgb { 157 138 155 }
+
+        instance = {
+            position = { 0.53125 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 52
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 176 140 141 }
+        color2 = rgb { 176 140 141 }
+        color3 = rgb { 176 140 141 }
+
+        instance = {
+            position = { 0.59375 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 51
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 202 182 199 }
+        color2 = rgb { 202 182 199 }
+        color3 = rgb { 202 182 199 }
+
+        instance = {
+            position = { 0.09375 0.34375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 50
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 199 171 180 }
+        color2 = rgb { 199 171 180 }
+        color3 = rgb { 199 171 180 }
+
+        instance = {
+            position = { 0.40625 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 49
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 218 202 197 }
+        color2 = rgb { 218 202 197 }
+        color3 = rgb { 218 202 197 }
+
+        instance = {
+            position = { 0.15625 0.21875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 48
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 186 159 162 }
+        color2 = rgb { 186 159 162 }
+        color3 = rgb { 186 159 162 }
+
+        instance = {
+            position = { 0.34375 0.71875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 47
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 184 155 162 }
+        color2 = rgb { 184 155 162 }
+        color3 = rgb { 184 155 162 }
+
+        instance = {
+            position = { 0.65625 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 46
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 143 119 158 }
+        color2 = rgb { 143 119 158 }
+        color3 = rgb { 143 119 158 }
+
+        instance = {
+            position = { 0.65625 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 45
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 177 160 176 }
+        color2 = rgb { 177 160 176 }
+        color3 = rgb { 177 160 176 }
+
+        instance = {
+            position = { 0.28125 0.71875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 44
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 90 69 125 }
+        color2 = rgb { 90 69 125 }
+        color3 = rgb { 90 69 125 }
+
+        instance = {
+            position = { 0.71875 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 43
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 108 86 127 }
+        color2 = rgb { 108 86 127 }
+        color3 = rgb { 108 86 127 }
+
+        instance = {
+            position = { 0.90625 0.46875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 42
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 126 114 137 }
+        color2 = rgb { 126 114 137 }
+        color3 = rgb { 126 114 137 }
+
+        instance = {
+            position = { 0.46875 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 41
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 145 116 149 }
+        color2 = rgb { 145 116 149 }
+        color3 = rgb { 145 116 149 }
+
+        instance = {
+            position = { 0.96875 0.46875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 40
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 133 116 147 }
+        color2 = rgb { 133 116 147 }
+        color3 = rgb { 133 116 147 }
+
+        instance = {
+            position = { 0.84375 0.53125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 39
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 182 153 188 }
+        color2 = rgb { 182 153 188 }
+        color3 = rgb { 182 153 188 }
+
+        instance = {
+            position = { 0.15625 0.71875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 38
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 137 121 161 }
+        color2 = rgb { 137 121 161 }
+        color3 = rgb { 137 121 161 }
+
+        instance = {
+            position = { 0.96875 0.71875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 37
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 174 149 170 }
+        color2 = rgb { 174 149 170 }
+        color3 = rgb { 174 149 170 }
+
+        instance = {
+            position = { 0.34375 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 36
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 113 90 151 }
+        color2 = rgb { 113 90 151 }
+        color3 = rgb { 113 90 151 }
+
+        instance = {
+            position = { 0.90625 0.53125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 35
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 119 93 135 }
+        color2 = rgb { 119 93 135 }
+        color3 = rgb { 119 93 135 }
+
+        instance = {
+            position = { 0.84375 0.28125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 34
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 216 199 210 }
+        color2 = rgb { 216 199 210 }
+        color3 = rgb { 216 199 210 }
+
+        instance = {
+            position = { 0.09375 0.28125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 33
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 178 162 182 }
+        color2 = rgb { 178 162 182 }
+        color3 = rgb { 178 162 182 }
+
+        instance = {
+            position = { 0.28125 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 32
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 172 157 180 }
+        color2 = rgb { 172 157 180 }
+        color3 = rgb { 172 157 180 }
+
+        instance = {
+            position = { 0.28125 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 31
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 126 118 144 }
+        color2 = rgb { 126 118 144 }
+        color3 = rgb { 126 118 144 }
+
+        instance = {
+            position = { 0.78125 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 30
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 64 58 92 }
+        color2 = rgb { 64 58 92 }
+        color3 = rgb { 64 58 92 }
+
+        instance = {
+            position = { 0.84375 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 29
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 169 149 165 }
+        color2 = rgb { 169 149 165 }
+        color3 = rgb { 169 149 165 }
+
+        instance = {
+            position = { 0.46875 0.90625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 28
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 190 159 196 }
+        color2 = rgb { 190 159 196 }
+        color3 = rgb { 190 159 196 }
+
+        instance = {
+            position = { 0.09375 0.71875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 27
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 176 153 174 }
+        color2 = rgb { 176 153 174 }
+        color3 = rgb { 176 153 174 }
+
+        instance = {
+            position = { 0.40625 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 26
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 234 214 210 }
+        color2 = rgb { 234 214 210 }
+        color3 = rgb { 234 214 210 }
+
+        instance = {
+            position = { 0.84375 0.03125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 25
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 125 110 153 }
+        color2 = rgb { 125 110 153 }
+        color3 = rgb { 125 110 153 }
+
+        instance = {
+            position = { 0.90625 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 24
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 117 91 154 }
+        color2 = rgb { 117 91 154 }
+        color3 = rgb { 117 91 154 }
+
+        instance = {
+            position = { 0.96875 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 23
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 212 194 205 }
+        color2 = rgb { 212 194 205 }
+        color3 = rgb { 212 194 205 }
+
+        instance = {
+            position = { 0.03125 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 22
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 119 97 156 }
+        color2 = rgb { 119 97 156 }
+        color3 = rgb { 119 97 156 }
+
+        instance = {
+            position = { 0.90625 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 21
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 178 153 194 }
+        color2 = rgb { 178 153 194 }
+        color3 = rgb { 178 153 194 }
+
+        instance = {
+            position = { 0.15625 0.78125 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 20
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 164 148 168 }
+        color2 = rgb { 164 148 168 }
+        color3 = rgb { 164 148 168 }
+
+        instance = {
+            position = { 0.53125 0.96875 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 19
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 209 180 183 }
+        color2 = rgb { 209 180 183 }
+        color3 = rgb { 209 180 183 }
+
+        instance = {
+            position = { 0.65625 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 18
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 181 158 180 }
+        color2 = rgb { 181 158 180 }
+        color3 = rgb { 181 158 180 }
+
+        instance = {
+            position = { 0.34375 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 17
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 235 218 214 }
+        color2 = rgb { 235 218 214 }
+        color3 = rgb { 235 218 214 }
+
+        instance = {
+            position = { 0.96875 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 16
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 66 62 88 }
+        color2 = rgb { 66 62 88 }
+        color3 = rgb { 66 62 88 }
+
+        instance = {
+            position = { 0.84375 0.15625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 15
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 201 179 187 }
+        color2 = rgb { 201 179 187 }
+        color3 = rgb { 201 179 187 }
+
+        instance = {
+            position = { 0.40625 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 14
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 119 91 150 }
+        color2 = rgb { 119 91 150 }
+        color3 = rgb { 119 91 150 }
+
+        instance = {
+            position = { 0.59375 0.09375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 13
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 197 176 187 }
+        color2 = rgb { 197 176 187 }
+        color3 = rgb { 197 176 187 }
+
+        instance = {
+            position = { 0.28125 0.59375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 12
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 230 211 210 }
+        color2 = rgb { 230 211 210 }
+        color3 = rgb { 230 211 210 }
+
+        instance = {
+            position = { 0.90625 0.09375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 11
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 186 162 173 }
+        color2 = rgb { 186 162 173 }
+        color3 = rgb { 186 162 173 }
+
+        instance = {
+            position = { 0.65625 0.84375 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 10
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 200 174 203 }
+        color2 = rgb { 200 174 203 }
+        color3 = rgb { 200 174 203 }
+
+        instance = {
+            position = { 0.15625 0.65625 }
+            scale = { 0.0625 0.0625 }
+            rotation = 0
+            depth = 9
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 100 82 106 }
+        color2 = rgb { 100 82 106 }
+        color3 = rgb { 100 82 106 }
+
+        instance = {
+            position = { 0.3020833333333333 0.052083333333333336 }
+            scale = { 0.020833333333333332 0.020833333333333332 }
+            rotation = 0
+            depth = 8
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 78 66 87 }
+        color2 = rgb { 78 66 87 }
+        color3 = rgb { 78 66 87 }
+
+        instance = {
+            position = { 0.1875 0.20833333333333334 }
+            scale = { 0.020833333333333332 0.020833333333333332 }
+            rotation = 0
+            depth = 7
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 89 73 96 }
+        color2 = rgb { 89 73 96 }
+        color3 = rgb { 89 73 96 }
+
+        instance = {
+            position = { 0.3125 0.041666666666666664 }
+            scale = { 0.020833333333333332 0.020833333333333332 }
+            rotation = 0
+            depth = 6
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 104 80 80 }
+        color2 = rgb { 104 80 80 }
+        color3 = rgb { 104 80 80 }
+
+        instance = {
+            position = { 0.5416666666666666 0.8541666666666666 }
+            scale = { 0.020833333333333332 0.020833333333333332 }
+            rotation = 0
+            depth = 5
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 213 185 218 }
+        color2 = rgb { 213 185 218 }
+        color3 = rgb { 213 185 218 }
+
+        instance = {
+            position = { 0.8541666666666666 0.3333333333333333 }
+            scale = { 0.020833333333333332 0.020833333333333332 }
+            rotation = 0
+            depth = 4
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 230 208 222 }
+        color2 = rgb { 230 208 222 }
+        color3 = rgb { 230 208 222 }
+
+        instance = {
+            position = { 0.08333333333333333 0.6875 }
+            scale = { 0.020833333333333332 0.020833333333333332 }
+            rotation = 0
+            depth = 3
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 203 187 207 }
+        color2 = rgb { 203 187 207 }
+        color3 = rgb { 203 187 207 }
+
+        instance = {
+            position = { 0.24479166666666666 0.17708333333333334 }
+            scale = { 0.010416666666666666 0.020833333333333332 }
+            rotation = 0
+            depth = 2
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_block_02.dds"
+        color1 = rgb { 226 208 214 }
+        color2 = rgb { 226 208 214 }
+        color3 = rgb { 226 208 214 }
+
+        instance = {
+            position = { 0.9479166666666666 0.8854166666666666 }
+            scale = { 0.020833333333333332 0.020833333333333332 }
+            rotation = 0
+            depth = 1
+        }
+    }
+}

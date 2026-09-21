@@ -127,7 +127,7 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
   expect(reparsedInstances).toBe(instanceCount)
   expect(serializeCoatOfArms(parsed.coatOfArms)).toBe(source)
   expect(evidence.provenance.layerBudget).toBe(1024)
-  expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v7-structure-retrieval')
+  expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v9-quality-first')
   expect(evidence.provenance.sourceWidth).toBe(1024)
   expect(evidence.provenance.sourceHeight).toBe(1024)
   expect(evidence.provenance.pyramidResolutions).toEqual([96, 192, 256])

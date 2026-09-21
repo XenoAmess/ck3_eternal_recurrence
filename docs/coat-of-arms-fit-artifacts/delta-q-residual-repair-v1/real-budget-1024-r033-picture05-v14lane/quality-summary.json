@@ -1,0 +1,63 @@
+{
+  "schema": "ck3-coa-delta-q-quality-summary-v1",
+  "baseline": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-perceptual-shadow-v1\\real-v14-shadow-report.json",
+  "finalRoot": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-residual-repair-v1\\real-budget-1024-r033-picture05-v14lane",
+  "cases": [
+    {
+      "id": "picture-05",
+      "baselinePerceptualLossV2": 0.033297615785497954,
+      "selectedPerceptualLossV2": 0.03108825375033092,
+      "selectedRelativeImprovement": 0.06635195893302591,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.03108825375033092,
+      "bestParetoRelativeImprovement": 0.06635195893302591,
+      "selectedLegacyTotalLoss": 0.043193318126229736,
+      "selectedLegacyEdgeLoss": 0.08173422819648604,
+      "baselineLegacyTotalLoss": 0.044505120096175355,
+      "baselineLegacyEdgeLoss": 0.08332907284007275,
+      "legacyTotalNonRegression": true,
+      "legacyEdgeNonRegression": true,
+      "fitElapsedMilliseconds": 136368,
+      "drawnInstances": 923,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 923,
+          "legacyTotalLoss": 0.043193318126229736,
+          "legacyEdgeLoss": 0.08173422819648604,
+          "perceptualLossV2": 0.03108825375033092
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "hybrid-native-paint",
+          "drawnInstances": 870,
+          "legacyTotalLoss": 0.050085588978976386,
+          "legacyEdgeLoss": 0.0884135780819998,
+          "perceptualLossV2": 0.03509985825678853
+        },
+        {
+          "index": 3,
+          "reconstructionMode": "native-edge-refined",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.04833323965275137,
+          "legacyEdgeLoss": 0.08045994850791169,
+          "perceptualLossV2": 0.03633458194015959
+        }
+      ]
+    }
+  ],
+  "aggregates": {
+    "caseCount": 1,
+    "selectedMedianRelativeImprovement": 0.06635195893302591,
+    "selectedWorstRelativeImprovement": 0.06635195893302591,
+    "bestParetoMedianRelativeImprovement": 0.06635195893302591,
+    "bestParetoWorstRelativeImprovement": 0.06635195893302591,
+    "totalFitMilliseconds": 136368,
+    "totalFitMinutes": 2.2728,
+    "performanceLimitMilliseconds": 1057500,
+    "legacyTotalNonRegressionCases": 1,
+    "legacyEdgeNonRegressionCases": 1,
+    "withinLayerBudget": true
+  }
+}

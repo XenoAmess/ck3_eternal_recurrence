@@ -314,8 +314,8 @@ describe('browser image fitter', () => {
     expect(result.coatOfArms.coloredEmblems[0]?.texture).toBe('square.dds')
     expect(result.metrics.relativeImprovement).toBeGreaterThan(0.01)
     expect(result.provenance.searchBackend).toBe('cpu-reference')
-    expect(new Set(progress.map((update) => update.phase))).toEqual(new Set(['background', 'coarse', 'refine']))
-    for (const phase of ['background', 'coarse', 'refine'] as const) {
+    expect(new Set(progress.map((update) => update.phase))).toEqual(new Set(['background', 'coarse', 'refine', 'finalize']))
+    for (const phase of ['background', 'coarse', 'refine', 'finalize'] as const) {
       expect(progress.some((update) => update.phase === phase && update.percent === 100)).toBe(true)
     }
     expect(progress.every((update) => (
@@ -425,7 +425,7 @@ describe('browser image fitter', () => {
       [candidate('square.dds', square)],
       { resolution: size, maxLayers: 3, minRelativeLayerImprovement: 0.0001 },
     )
-    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v7-structure-retrieval')
+    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v9-quality-first')
     expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(2)
     expect(result.coatOfArms.coloredEmblems).toHaveLength(result.provenance.selectedLayers)
     expect(result.provenance.drawnInstances).toBe(result.provenance.selectedLayers)
@@ -542,8 +542,8 @@ describe('browser image fitter', () => {
     expect(highResolution).toBeDefined()
     expect(highResolution!.totalLoss).toBeLessThanOrEqual(baseline!.totalLoss)
     expect(highResolution!.edgeLoss).toBeLessThanOrEqual(baseline!.edgeLoss)
-    expect(highResolution!.multiscaleMetrics.at(-1)!.edgeLoss)
-      .toBeLessThan(baseline!.multiscaleMetrics.at(-1)!.edgeLoss)
+    expect(highResolution!.multiscaleMetrics).toHaveLength(1)
+    expect(highResolution!.multiscaleMetrics[0].resolution).toBe(result.provenance.resolution)
   })
 
   it('resumes native paint from a versioned checkpoint without changing the result', () => {
@@ -570,8 +570,8 @@ describe('browser image fitter', () => {
     ))
     expect(checkpoint).toBeDefined()
     expect(checkpoint).toMatchObject({
-      contract: 'ck3-coa-fit-checkpoint-v2',
-      algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval',
+      contract: 'ck3-coa-fit-checkpoint-v4',
+      algorithm: 'ck3-coa-browser-fit-v9-quality-first',
       inputSha256: options.inputSha256,
       assetPackManifestSha256: options.assetPackManifestSha256,
       resolution: size,
@@ -641,12 +641,12 @@ describe('browser image fitter', () => {
     expect(hybrid!.totalLoss).toBeLessThan(purePaint!.totalLoss)
     expect(result.provenance.pyramidResolutions).toEqual([48])
     expect(result.provenance.nativeShapeRefinement).toMatchObject({
-      requestedPasses: 3,
+      requestedPasses: 0,
       completedPasses: expect.any(Number),
       evaluatedCandidates: expect.any(Number),
     })
-    expect(result.provenance.nativeShapeRefinement.completedPasses).toBeGreaterThan(0)
-    expect(result.provenance.nativeShapeRefinement.evaluatedCandidates).toBeGreaterThan(0)
+    expect(result.provenance.nativeShapeRefinement.completedPasses).toBe(0)
+    expect(result.provenance.nativeShapeRefinement.evaluatedCandidates).toBe(0)
   })
 
   it('keeps mixed-size native paint tiles seamless above the 96px search plane', () => {

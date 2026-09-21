@@ -1,0 +1,56 @@
+{
+  "schema": "ck3-coa-delta-q-quality-summary-v1",
+  "baseline": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-perceptual-shadow-v1\\real-v14-shadow-report.json",
+  "finalRoot": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-residual-repair-v1\\real-budget-1024-r032-picture05-legacy36",
+  "cases": [
+    {
+      "id": "picture-05",
+      "baselinePerceptualLossV2": 0.033297615785497954,
+      "selectedPerceptualLossV2": 0.033648421986694245,
+      "selectedRelativeImprovement": -0.010535475075938525,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.033648421986694245,
+      "bestParetoRelativeImprovement": -0.010535475075938525,
+      "selectedLegacyTotalLoss": 0.04549744063781572,
+      "selectedLegacyEdgeLoss": 0.08463262840772189,
+      "fitElapsedMilliseconds": 324037,
+      "drawnInstances": 943,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 943,
+          "legacyTotalLoss": 0.04549744063781572,
+          "legacyEdgeLoss": 0.08463262840772189,
+          "perceptualLossV2": 0.033648421986694245
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "hybrid-native-paint",
+          "drawnInstances": 883,
+          "legacyTotalLoss": 0.05271771616160328,
+          "legacyEdgeLoss": 0.09128008716164547,
+          "perceptualLossV2": 0.037954589743787376
+        },
+        {
+          "index": 3,
+          "reconstructionMode": "native-edge-refined",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.04833323965275137,
+          "legacyEdgeLoss": 0.08045994850791169,
+          "perceptualLossV2": 0.03633458194015959
+        }
+      ]
+    }
+  ],
+  "aggregates": {
+    "caseCount": 1,
+    "selectedMedianRelativeImprovement": -0.010535475075938525,
+    "selectedWorstRelativeImprovement": -0.010535475075938525,
+    "bestParetoMedianRelativeImprovement": -0.010535475075938525,
+    "bestParetoWorstRelativeImprovement": -0.010535475075938525,
+    "totalFitMilliseconds": 324037,
+    "totalFitMinutes": 5.400616666666667,
+    "performanceLimitMilliseconds": 1057500
+  }
+}

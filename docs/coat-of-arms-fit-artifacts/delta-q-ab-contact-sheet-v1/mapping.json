@@ -1,0 +1,119 @@
+{
+  "schema": "ck3-coa-delta-q-anonymous-ab-v1",
+  "status": "pending-human-review",
+  "assignment": "sha256(delta-q-ab-v1:<case-id>)[0] parity",
+  "sheet": {
+    "path": "contact-sheet.png",
+    "width": 762,
+    "height": 1962,
+    "sha256": "819712307D3E7EFA3C136925283E89F19F8192D592535E2DB68948FA7C0F1F7D"
+  },
+  "cases": [
+    {
+      "id": "picture-01",
+      "input": {
+        "path": "coat_of_arms_editer_of_ck3/e2e/fixtures/pictures/718c36bc01a173d0c42c0d1131f67e31055244c7.jpg",
+        "sha256": "B52B0624A3C2B2114F66A6C7BA839880D1DC89ADAA91DE0F5CA6BFC302160CA6"
+      },
+      "A": {
+        "role": "v14",
+        "sha256": "C8C894D089008E91FB8C48897716C41273BED25AFEDFED9D0947C08BA3E52587"
+      },
+      "B": {
+        "role": "delta-q",
+        "sha256": "1DF064DB1CB1C69CA1D1B9693951950A38D41560E7B13558F30E20D563E43F17"
+      }
+    },
+    {
+      "id": "picture-02",
+      "input": {
+        "path": "coat_of_arms_editer_of_ck3/e2e/fixtures/pictures/a124bc6bc3b435cc1fda251bff7f140d2ee23c42.jpg",
+        "sha256": "57C8CCF223D6B8FC9F27A69D17B676AAB0FABBE3D656D633FAC013296F88BE36"
+      },
+      "A": {
+        "role": "v14",
+        "sha256": "C869B50E63E270DF05FCE80078D9CD8F2CB6A1E38C48F0DF0F35E4799CDBDF5C"
+      },
+      "B": {
+        "role": "delta-q",
+        "sha256": "BA3200D30957C263EB011CBEE9B28EC818CC9C30AE5E46B7BE42E6256AD53555"
+      }
+    },
+    {
+      "id": "picture-03",
+      "input": {
+        "path": "coat_of_arms_editer_of_ck3/e2e/fixtures/pictures/baiqi2.png",
+        "sha256": "4317C811A530993BE863D2C19CEAA66D547712FE26D6011EF1BC4CDEF000533F"
+      },
+      "A": {
+        "role": "v14",
+        "sha256": "9268F5C9CD557775A97C27E50DD6A93952C724C23F2D0C7A344D5A1A4578F465"
+      },
+      "B": {
+        "role": "delta-q",
+        "sha256": "08BA5FEBB41361EBECD45EFA03893A47DE99C92291AAF76EB626C19009190E1A"
+      }
+    },
+    {
+      "id": "picture-04",
+      "input": {
+        "path": "coat_of_arms_editer_of_ck3/e2e/fixtures/pictures/BV1bt421G7qL.png",
+        "sha256": "9E7B345F3857DB1B2F9EC5AE2550DCD16499B67D678CB3E07931931B2FE44F8C"
+      },
+      "A": {
+        "role": "delta-q",
+        "sha256": "9F46E4EB7F73EFF7595592FA473F8582D51C62B4A9FCCB2FEA999FB256AC8D8F"
+      },
+      "B": {
+        "role": "v14",
+        "sha256": "D9D66C7338EDAE17D8A6C4C14CD51C88EBE595B19339A350232BA64B246D942C"
+      }
+    },
+    {
+      "id": "picture-05",
+      "input": {
+        "path": "coat_of_arms_editer_of_ck3/e2e/fixtures/pictures/BV1oe411i7oF.png",
+        "sha256": "E9205ADE88047B7F920A90761C25302F133920503CC854E63446443401FCA7EB"
+      },
+      "A": {
+        "role": "delta-q",
+        "sha256": "670E80238BFE71236E9394EC8178BF635DEB696BFD33C5138EAB623B7D27FB7A"
+      },
+      "B": {
+        "role": "v14",
+        "sha256": "49A0051878853D1E7CDC284A7EEE408A23B6F3CADA788EAAD6C41F6610479CF1"
+      }
+    },
+    {
+      "id": "picture-06",
+      "input": {
+        "path": "coat_of_arms_editer_of_ck3/e2e/fixtures/pictures/Cache_5d2e1902d7c282d2.png",
+        "sha256": "647BE9E8D39548480DA87E59A1487F94DF3D0A8316E48F4B746E36AED8A5B790"
+      },
+      "A": {
+        "role": "delta-q",
+        "sha256": "DB061D66F66CF6BCF099845EF939451B9628E7CEABB1D0C74A6ED9E46F803BA1"
+      },
+      "B": {
+        "role": "v14",
+        "sha256": "52B7B87E5F9CC34A0206D0377CE1A3496B34084E8A55BCC30DB92F003FF20CB6"
+      }
+    },
+    {
+      "id": "picture-07",
+      "input": {
+        "path": "coat_of_arms_editer_of_ck3/e2e/fixtures/pictures/人类化头像.png",
+        "sha256": "31218C41C1756CC4641A70828B2C381E744C988B13FA1F376B73066E6564DF8A"
+      },
+      "A": {
+        "role": "v14",
+        "sha256": "D0D4E2AC19C57F960416A72947FDB777C63E9283A38ADAB0A8BEB05BA7E488A8"
+      },
+      "B": {
+        "role": "delta-q",
+        "sha256": "AB3212415CD3FBE061535BB071CD5AB221813E44884B1B06C772A620BC772EAA"
+      }
+    }
+  ],
+  "boundary": "Machine-generated review material only; no human preference or signoff is inferred."
+}

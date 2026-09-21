@@ -47,7 +47,7 @@ const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes
 test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
   for (const picture of selectedCases) {
     test(`${picture.id}: ${picture.file}`, async ({ page }) => {
-      test.setTimeout(budget >= 1_024 ? 7 * 60_000 : 4 * 60_000)
+      test.setTimeout(budget >= 1_024 ? 15 * 60_000 : 6 * 60_000)
       const inputPath = resolve(fixtureRoot, picture.file)
       const inputBytes = await readFile(inputPath)
       expect(inputBytes.byteLength).toBe(picture.bytes)
@@ -74,7 +74,7 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       const fitStartedAt = Date.now()
       await page.getByRole('button', { name: '开始本地拟合' }).click()
       await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({
-        timeout: budget >= 1_024 ? 6 * 60_000 : 3 * 60_000,
+        timeout: budget >= 1_024 ? 14 * 60_000 : 5 * 60_000,
       })
       const fitElapsedMilliseconds = Date.now() - fitStartedAt
 
@@ -83,10 +83,10 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       if (!rawEvidence) throw new Error('missing machine-readable fit evidence')
       const evidence = JSON.parse(rawEvidence)
       expect(evidence.provenance.layerBudget).toBe(budget)
-      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v7-structure-retrieval')
+      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v9-quality-first')
       expect(evidence.provenance.surfaceMaskApplied).toBe(true)
       expect(evidence.provenance.fullAssetFinalization).toMatchObject({
-        contract: 'full-dds-rescore-pareto-v1',
+        contract: 'full-dds-rescore-repair-pareto-v3',
         searchAssetContract: 'fit-index-rgba32-v2',
         finalAssetContract: 'decoded-exact-dds-mip-v1',
       })
@@ -133,11 +133,13 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       for (const candidate of paretoCandidates) {
         expect(paretoCandidates.some((other) => (
           other !== candidate
+          && other.perceptualMetricsV2.totalLoss <= candidate.perceptualMetricsV2.totalLoss
           && other.metrics.totalLoss <= candidate.metrics.totalLoss
           && other.metrics.edgeLoss <= candidate.metrics.edgeLoss
           && other.stats.drawnInstances <= candidate.stats.drawnInstances
           && (
-            other.metrics.totalLoss < candidate.metrics.totalLoss
+            other.perceptualMetricsV2.totalLoss < candidate.perceptualMetricsV2.totalLoss
+            || other.metrics.totalLoss < candidate.metrics.totalLoss
             || other.metrics.edgeLoss < candidate.metrics.edgeLoss
             || other.stats.drawnInstances < candidate.stats.drawnInstances
           )

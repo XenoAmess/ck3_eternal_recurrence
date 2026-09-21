@@ -26,6 +26,7 @@ import {
   rankAssetRetrievalV2,
   type AssetRetrievalDescriptorV2,
 } from './assetRetrieval'
+import type { StructuralCompressionReceipt } from './coatOfArmsOptimizer'
 
 export interface FitImage {
   width: number
@@ -82,7 +83,7 @@ export interface ImageFitBatchSearchReceipt {
 }
 
 export interface ImageFitProgress {
-  phase: 'background' | 'coarse' | 'refine' | 'paint'
+  phase: 'background' | 'coarse' | 'refine' | 'paint' | 'finalize'
   completed: number
   total: number
   percent: number
@@ -92,8 +93,8 @@ export interface ImageFitProgress {
 }
 
 export interface ImageFitCheckpoint {
-  contract: 'ck3-coa-fit-checkpoint-v2'
-  algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval'
+  contract: 'ck3-coa-fit-checkpoint-v4'
+  algorithm: 'ck3-coa-browser-fit-v9-quality-first'
   lane: 'baseline' | 'hybrid'
   inputSha256: string
   assetPackManifestSha256: string
@@ -161,18 +162,25 @@ export interface ImageFitParetoCandidate {
   multiscaleMetrics: MultiscaleFitMetric[]
 }
 
+export interface ExactAssetResidualRepairReceipt {
+  attempted: boolean
+  acceptedLayers: number
+  evaluatedCandidates: number
+  perceptualAcceptedLayers: number
+}
+
 export interface ImageFitResult {
   coatOfArms: CoatOfArms
   metrics: ImageFitMetrics
   paretoCandidates: ImageFitParetoCandidate[]
   provenance: {
-    algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval'
+    algorithm: 'ck3-coa-browser-fit-v9-quality-first'
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
     perceptualScoringShadow: {
       contract: typeof PERCEPTUAL_FIT_SCORING_CONTRACT
-      status: 'shadow-only'
+      status: 'shadow-only' | 'full-dds-bounded-selection'
       backend: 'cpu-reference'
       selected: PerceptualFitMetricsV2
     }
@@ -197,12 +205,19 @@ export interface ImageFitResult {
       fineShortlist: number
       rotations: number
       mirrors: number
+      legacySafetyLane: {
+        contract: 'legacy-dice-mse-12-angle-v1'
+        reservedRanks: 8
+        denseLegacyFirstRanks: 48
+      }
     }
     structureSearch: {
       contract: 'salient-components-depth-ordered-beam-v1'
       semanticLayerBudget: number
+      completedSemanticLayers: number
       beamWidth: number
       residualComponentsPerBeam: 2
+      legacyPrimaryFocusApplied: boolean
       layerOrder: 'foreground-append-then-native-depth-encode'
     }
     layerBudget: number
@@ -247,7 +262,7 @@ export interface ImageFitResult {
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
     fullAssetFinalization?: {
-      contract: 'full-dds-rescore-pareto-v1'
+      contract: 'full-dds-rescore-repair-pareto-v3'
       searchAssetContract: 'fit-index-rgba32-v2'
       finalAssetContract: 'decoded-exact-dds-mip-v1'
       rescoredCandidates: number
@@ -255,6 +270,29 @@ export interface ImageFitResult {
       sourceWinnerPreserved: boolean
       maximumAbsoluteTotalLossDelta: number
       maximumAbsoluteEdgeLossDelta: number
+      exactResidualRepair: {
+        contract: 'exact-dds-residual-tile-perceptual-v2'
+        attemptedCandidates: number
+        repairedCandidates: number
+        acceptedLayers: number
+        perceptualAcceptedLayers: number
+        evaluatedCandidates: number
+        maximumAdditionalLayersPerCandidate: 144
+      }
+      perceptualColorRefinement: {
+        contract: 'linear-light-native-tile-recolor-v1'
+        evaluatedVariants: number
+        selectedBlend: number
+        selectionPolicy: 'perceptual-v2-first-output-size-on-exact-tie'
+        variants: Array<{
+          originalIndex: number
+          blend: number
+          totalLoss: number
+          edgeLoss: number
+          perceptualLossV2: number
+        }>
+      }
+      structuralCompression: StructuralCompressionReceipt
     }
     nativeTileSeamValidation: NativeTileSeamValidation
     nativeTileSearch: {
@@ -644,6 +682,7 @@ export function residualGeometry(
   target: FitImage,
   rendered: RenderedCoatOfArms,
   componentRank = 0,
+  legacyPrimary = false,
 ): ResidualFocus {
   const weights = residualWeights(target, rendered)
   const maximumWeight = Math.max(...weights)
@@ -652,51 +691,88 @@ export function residualGeometry(
     scale: [0.5, 0.5],
     descriptor: new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE),
   }
-  // A high cutoff fragments multicolour and anti-aliased emblems into thin
-  // strokes. Keep low-energy silhouette pixels, then bridge only a bounded
-  // two-pixel gap so separated subjects remain distinct.
-  const threshold = Math.max(8, maximumWeight * 0.08)
-  const visited = new Uint8Array(weights.length)
-  const components: { pixels: number[], weight: number, seed: number }[] = []
-  for (let seed = 0; seed < weights.length; seed += 1) {
-    if (visited[seed] || weights[seed] < threshold) continue
-    const component: number[] = []
-    const queue = [seed]
-    visited[seed] = 1
-    let componentWeight = 0
-    for (let cursor = 0; cursor < queue.length; cursor += 1) {
-      const index = queue[cursor]
-      component.push(index)
-      componentWeight += weights[index]
-      const x = index % target.width
-      const y = Math.floor(index / target.width)
-      const neighbors: number[] = []
-      for (let deltaY = -2; deltaY <= 2; deltaY += 1) {
-        for (let deltaX = -2; deltaX <= 2; deltaX += 1) {
-          if (deltaX === 0 && deltaY === 0) continue
-          const neighborX = x + deltaX
-          const neighborY = y + deltaY
-          if (
-            neighborX >= 0 && neighborX < target.width
-            && neighborY >= 0 && neighborY < target.height
-          ) neighbors.push(neighborY * target.width + neighborX)
+  let selected: number[] = []
+  if (legacyPrimary) {
+    // The primary lane preserves the original high-threshold four-neighbour
+    // component. It is a regression safety contract for single-subject images
+    // whose best semantic seed only becomes useful after residual painting.
+    const threshold = Math.max(18, maximumWeight * 0.22)
+    const visited = new Uint8Array(weights.length)
+    let selectedWeight = -1
+    for (let seed = 0; seed < weights.length; seed += 1) {
+      if (visited[seed] || weights[seed] < threshold) continue
+      const component: number[] = []
+      const queue = [seed]
+      visited[seed] = 1
+      let componentWeight = 0
+      for (let cursor = 0; cursor < queue.length; cursor += 1) {
+        const index = queue[cursor]
+        component.push(index)
+        componentWeight += weights[index]
+        const x = index % target.width
+        const y = Math.floor(index / target.width)
+        for (const neighbor of [
+          x > 0 ? index - 1 : -1,
+          x + 1 < target.width ? index + 1 : -1,
+          y > 0 ? index - target.width : -1,
+          y + 1 < target.height ? index + target.width : -1,
+        ]) {
+          if (neighbor >= 0 && !visited[neighbor] && weights[neighbor] >= threshold) {
+            visited[neighbor] = 1
+            queue.push(neighbor)
+          }
         }
       }
-      for (const neighbor of neighbors) {
-        if (neighbor >= 0 && !visited[neighbor] && weights[neighbor] >= threshold) {
-          visited[neighbor] = 1
-          queue.push(neighbor)
-        }
+      if (componentWeight > selectedWeight) {
+        selected = component
+        selectedWeight = componentWeight
       }
     }
-    components.push({ pixels: component, weight: componentWeight, seed })
+  } else {
+    // The secondary lane keeps Q3's low-energy silhouette bridge and selects
+    // the next disconnected salient component for multi-subject composition.
+    const threshold = Math.max(8, maximumWeight * 0.08)
+    const visited = new Uint8Array(weights.length)
+    const components: { pixels: number[], weight: number, seed: number }[] = []
+    for (let seed = 0; seed < weights.length; seed += 1) {
+      if (visited[seed] || weights[seed] < threshold) continue
+      const component: number[] = []
+      const queue = [seed]
+      visited[seed] = 1
+      let componentWeight = 0
+      for (let cursor = 0; cursor < queue.length; cursor += 1) {
+        const index = queue[cursor]
+        component.push(index)
+        componentWeight += weights[index]
+        const x = index % target.width
+        const y = Math.floor(index / target.width)
+        for (let deltaY = -2; deltaY <= 2; deltaY += 1) {
+          for (let deltaX = -2; deltaX <= 2; deltaX += 1) {
+            if (deltaX === 0 && deltaY === 0) continue
+            const neighborX = x + deltaX
+            const neighborY = y + deltaY
+            const neighbor = neighborY * target.width + neighborX
+            if (
+              neighborX >= 0 && neighborX < target.width
+              && neighborY >= 0 && neighborY < target.height
+              && !visited[neighbor]
+              && weights[neighbor] >= threshold
+            ) {
+              visited[neighbor] = 1
+              queue.push(neighbor)
+            }
+          }
+        }
+      }
+      components.push({ pixels: component, weight: componentWeight, seed })
+    }
+    components.sort((left, right) => right.weight - left.weight || left.seed - right.seed)
+    selected = components[Math.min(componentRank, components.length - 1)]?.pixels ?? []
+    const geometryThreshold = Math.max(18, maximumWeight * 0.22)
+    const geometrySelected = selected.filter((index) => weights[index] >= geometryThreshold)
+    if (geometrySelected.length) selected = geometrySelected
   }
-  components.sort((left, right) => right.weight - left.weight || left.seed - right.seed)
-  let selected = components[Math.max(0, Math.min(componentRank, components.length - 1))]?.pixels ?? []
   if (!selected.length) selected = [...weights.keys()]
-  const geometryThreshold = Math.max(18, maximumWeight * 0.22)
-  const geometrySelected = selected.filter((index) => weights[index] >= geometryThreshold)
-  if (geometrySelected.length) selected = geometrySelected
   let minimumX = target.width
   let minimumY = target.height
   let maximumX = -1
@@ -761,12 +837,68 @@ export interface ShapeMatch {
   loss: number
 }
 
+function sampleLegacyDescriptor(descriptor: Float32Array, x: number, y: number): number {
+  if (x < 0 || y < 0 || x > 1 || y > 1) return 0
+  const sourceX = x * (SHAPE_DESCRIPTOR_SIZE - 1)
+  const sourceY = y * (SHAPE_DESCRIPTOR_SIZE - 1)
+  const x0 = Math.floor(sourceX)
+  const y0 = Math.floor(sourceY)
+  const x1 = Math.min(SHAPE_DESCRIPTOR_SIZE - 1, x0 + 1)
+  const y1 = Math.min(SHAPE_DESCRIPTOR_SIZE - 1, y0 + 1)
+  const tx = sourceX - x0
+  const ty = sourceY - y0
+  const at = (sampleX: number, sampleY: number) => descriptor[sampleY * SHAPE_DESCRIPTOR_SIZE + sampleX]
+  return (
+    at(x0, y0) * (1 - tx) * (1 - ty)
+    + at(x1, y0) * tx * (1 - ty)
+    + at(x0, y1) * (1 - tx) * ty
+    + at(x1, y1) * tx * ty
+  )
+}
+
+function legacyDescriptorDistance(
+  target: Float32Array,
+  candidate: Float32Array,
+  rotation: number,
+  flip: number,
+): number {
+  const radians = -rotation * Math.PI / 180
+  const cosine = Math.cos(radians)
+  const sine = Math.sin(radians)
+  const rotatedSpan = Math.abs(cosine) + Math.abs(sine)
+  let overlap = 0
+  let targetEnergy = 0
+  let candidateEnergy = 0
+  let squaredError = 0
+  for (let y = 0; y < SHAPE_DESCRIPTOR_SIZE; y += 1) {
+    for (let x = 0; x < SHAPE_DESCRIPTOR_SIZE; x += 1) {
+      const centeredX = ((x + 0.5) / SHAPE_DESCRIPTOR_SIZE - 0.5) * rotatedSpan
+      const centeredY = ((y + 0.5) / SHAPE_DESCRIPTOR_SIZE - 0.5) * rotatedSpan
+      let sourceX = cosine * centeredX + sine * centeredY + 0.5
+      const sourceY = -sine * centeredX + cosine * centeredY + 0.5
+      if (flip < 0) sourceX = 1 - sourceX
+      const candidateValue = sampleLegacyDescriptor(candidate, sourceX, sourceY)
+      const targetValue = target[y * SHAPE_DESCRIPTOR_SIZE + x]
+      overlap += Math.min(targetValue, candidateValue)
+      targetEnergy += targetValue
+      candidateEnergy += candidateValue
+      const delta = targetValue - candidateValue
+      squaredError += delta * delta
+    }
+  }
+  const diceLoss = targetEnergy + candidateEnergy > 1e-8
+    ? 1 - 2 * overlap / (targetEnergy + candidateEnergy)
+    : 1
+  return diceLoss * 0.7 + squaredError / target.length * 0.3
+}
+
 function rankShapes(
   focus: ResidualFocus,
   emblems: FitTextureCandidate[],
   descriptors: Map<string, TextureShape>,
   retrievalDescriptors: Map<string, AssetRetrievalDescriptorV2>,
   onItem?: (completed: number) => void,
+  denseLegacyFirst = false,
 ): ShapeMatch[] {
   const target = computeAssetRetrievalDescriptorV2(focus.descriptor)
   const candidates = emblems.map((asset, index) => {
@@ -787,13 +919,46 @@ function rankShapes(
       descriptor: retrieval,
     }
   })
-  return rankAssetRetrievalV2(target, candidates).map((match) => ({
+  const primary = rankAssetRetrievalV2(target, candidates).map((match) => ({
     ...match.item,
     mask: [],
     rotation: match.rotation,
     flip: match.flip,
     loss: match.loss,
   }))
+  // Retrieval v2 owns the main ordering, while eight interleaved positions
+  // preserve the strongest candidates from the previous Dice/MSE descriptor.
+  // The real renderer still decides the winner. This safety lane prevents a
+  // complementary semantic seed from disappearing merely because it looks
+  // weak in isolation before native-block residual painting.
+  const legacy = candidates.map(({ item }) => {
+    let best: ShapeMatch | null = null
+    for (let rotation = 0; rotation < 360; rotation += 30) {
+      for (const flip of [1, -1] as const) {
+        const loss = legacyDescriptorDistance(focus.descriptor, item.shape.descriptor, rotation, flip)
+        if (!best || loss < best.loss) {
+          best = { ...item, mask: [], rotation, flip, loss }
+        }
+      }
+    }
+    return best!
+  }).sort((left, right) => left.loss - right.loss || left.asset.name.localeCompare(right.asset.name))
+  const merged: ShapeMatch[] = []
+  const seen = new Set<string>()
+  const append = (match: ShapeMatch | undefined) => {
+    if (!match || seen.has(match.asset.name)) return
+    seen.add(match.asset.name)
+    merged.push(match)
+  }
+  if (denseLegacyFirst) {
+    for (const match of legacy.slice(0, 48)) append(match)
+  }
+  for (let index = 0; index < primary.length; index += 1) {
+    append(primary[index])
+    if (index < 8) append(legacy[index])
+  }
+  for (const match of legacy) append(match)
+  return merged
 }
 
 const STRUCTURE_MASK_HYPOTHESES: readonly number[][] = [
@@ -1372,35 +1537,45 @@ function nativePaintTiles(
   layerBudget: number,
 ): PaintTile[] {
   const maximumDepth = nativeTileMaximumDepth(target, layerBudget)
-  const leaves: PaintTile[] = []
-  const visit = (
-    minimumX: number,
-    minimumY: number,
-    maximumX: number,
-    maximumY: number,
-    depth: number,
-  ) => {
-    const tile = paintTileStats(target, rendered, minimumX, minimumY, maximumX, maximumY)
-    const width = maximumX - minimumX
-    const height = maximumY - minimumY
-    if (depth >= maximumDepth || width <= 1 || height <= 1 || tile.variance <= 0.0002) {
-      leaves.push(tile)
-      return
+  const collectLeaves = (varianceFloor: number): PaintTile[] => {
+    const leaves: PaintTile[] = []
+    const visit = (
+      minimumX: number,
+      minimumY: number,
+      maximumX: number,
+      maximumY: number,
+      depth: number,
+    ) => {
+      const tile = paintTileStats(target, rendered, minimumX, minimumY, maximumX, maximumY)
+      const width = maximumX - minimumX
+      const height = maximumY - minimumY
+      if (depth >= maximumDepth || width <= 1 || height <= 1 || tile.variance <= varianceFloor) {
+        leaves.push(tile)
+        return
+      }
+      const middleX = minimumX + Math.floor(width / 2)
+      const middleY = minimumY + Math.floor(height / 2)
+      for (const [left, top, right, bottom] of [
+        [minimumX, minimumY, middleX, middleY],
+        [middleX, minimumY, maximumX, middleY],
+        [minimumX, middleY, middleX, maximumY],
+        [middleX, middleY, maximumX, maximumY],
+      ]) {
+        if (right > left && bottom > top) visit(left, top, right, bottom, depth + 1)
+      }
     }
-    const middleX = minimumX + Math.floor(width / 2)
-    const middleY = minimumY + Math.floor(height / 2)
-    for (const [left, top, right, bottom] of [
-      [minimumX, minimumY, middleX, middleY],
-      [middleX, minimumY, maximumX, middleY],
-      [minimumX, middleY, middleX, maximumY],
-      [middleX, middleY, maximumX, maximumY],
-    ]) {
-      if (right > left && bottom > top) visit(left, top, right, bottom, depth + 1)
-    }
+    visit(0, 0, target.width, target.height, 0)
+    return leaves.filter((tile) => tile.residual > 1e-8)
   }
-  visit(0, 0, target.width, target.height, 0)
+  const coarseLeaves = collectLeaves(layerBudget >= 512 ? 0.001 : 0.0002)
+  // A coarse tree that already occupies most of the user's budget describes a
+  // high-detail residual. Re-expand only that lane at the lower variance floor
+  // so the last slots become real fine detail instead of expensive hotspot
+  // patches. Simpler portraits keep the much smaller coarse tree.
+  const leaves = layerBudget >= 512 && coarseLeaves.length >= layerBudget * 0.85
+    ? collectLeaves(0.0002)
+    : coarseLeaves
   return leaves
-    .filter((tile) => tile.residual > 1e-8)
     .sort((left, right) => right.residual - left.residual
       || left.minimumY - right.minimumY
       || left.minimumX - right.minimumX)
@@ -1478,8 +1653,8 @@ function checkpointFromPaintState(
   evaluatedCandidates: number,
 ): ImageFitCheckpoint {
   return {
-    contract: 'ck3-coa-fit-checkpoint-v2',
-    algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval',
+    contract: 'ck3-coa-fit-checkpoint-v4',
+    algorithm: 'ck3-coa-browser-fit-v9-quality-first',
     lane: context.lane,
     inputSha256: context.inputSha256,
     assetPackManifestSha256: context.assetPackManifestSha256,
@@ -1614,7 +1789,7 @@ function paintWithNativeTiles(
   checkpointContext?.onCheckpoint?.(checkpointFromPaintState(
     checkpointContext, state(), tiles, resumeIndex, evaluated.value,
   ))
-  const checkpointInterval = Math.max(1, Math.ceil(tiles.length / 100))
+  const checkpointInterval = Math.max(1, Math.ceil(tiles.length / 20))
   for (let tileIndex = resumeIndex; tileIndex < tiles.length; tileIndex += 1) {
     const tile = tiles[tileIndex]
     const focus: ResidualFocus = {
@@ -1693,6 +1868,165 @@ function paintWithNativeTiles(
   return state()
 }
 
+/**
+ * Repairs a bounded search-frontier candidate against the exact decoded DDS
+ * bytes used by export. The compact fit-index projection can shift a good
+ * mixed candidate just outside the final legacy frontier. At most 64 native
+ * residual tiles, 16 legacy-safe edge patches and 64 calibrated perceptual
+ * patches are therefore proposed before final Pareto selection. This remains
+ * bounded and never consumes more than the user's remaining draw-instance
+ * budget.
+ */
+export function repairImageFitCandidateWithExactAssets(
+  candidate: ImageFitParetoCandidate,
+  target: FitImage,
+  assets: {
+    pattern: DecodedDds
+    coloredEmblems: Record<string, DecodedDds>
+    surfaceMask?: DecodedDds
+  },
+  layerBudget: number,
+  namedColors: NamedColorMap = {},
+): { candidate: ImageFitParetoCandidate, receipt: ExactAssetResidualRepairReceipt } {
+  const maximumResidualLayers = 64
+  const maximumEdgeLayers = 16
+  const currentInstances = candidate.coatOfArms.coloredEmblems.reduce(
+    (total, emblem) => total + emblem.instances.length,
+    0,
+  )
+  const brushTexture = assets.coloredEmblems['ce_block_02.dds']
+  const attempted = Boolean(
+    brushTexture
+    && currentInstances < layerBudget
+    && (
+      candidate.reconstructionMode === 'hybrid-native-paint'
+      || candidate.reconstructionMode === 'native-high-resolution-edge-refined'
+    ),
+  )
+  if (!attempted || !brushTexture) {
+    return {
+      candidate,
+      receipt: {
+        attempted: false,
+        acceptedLayers: 0,
+        evaluatedCandidates: 0,
+        perceptualAcceptedLayers: 0,
+      },
+    }
+  }
+  const patternAsset: FitTextureCandidate = {
+    name: candidate.coatOfArms.pattern,
+    assetSha256: 'exact-finalizer-pattern',
+    texture: assets.pattern,
+  }
+  const assetByName = new Map<string, FitTextureCandidate>()
+  const selectedAssets = candidate.coatOfArms.coloredEmblems.flatMap((emblem) => {
+    const texture = assets.coloredEmblems[emblem.texture]
+    if (!texture) throw new Error(`完整 DDS 残差修补缺少 colored_emblem：${emblem.texture}`)
+    let asset = assetByName.get(emblem.texture)
+    if (!asset) {
+      asset = { name: emblem.texture, assetSha256: 'exact-finalizer-emblem', texture }
+      assetByName.set(emblem.texture, asset)
+    }
+    return emblem.instances.map(() => asset!)
+  })
+  const brush: FitTextureCandidate = assetByName.get('ce_block_02.dds') ?? {
+    name: 'ce_block_02.dds',
+    assetSha256: 'exact-finalizer-emblem',
+    texture: brushTexture,
+  }
+  const internalCoat = encodeNativeDepthOrder(candidate.coatOfArms)
+  const initialCandidate = score(
+    internalCoat,
+    assets.pattern,
+    assets.coloredEmblems,
+    target,
+    `exact-residual:${candidate.reconstructionMode}`,
+    assets.surfaceMask,
+    namedColors,
+  )
+  const initial: SearchState = {
+    candidate: initialCandidate,
+    patternAsset,
+    selectedAssets,
+    layerLosses: [initialCandidate.totalLoss],
+    reconstructionMode: candidate.reconstructionMode,
+    paintPlacements: [],
+  }
+  const evaluated: EvaluationCounter = { value: 0 }
+  const boundedBudget = Math.min(layerBudget, currentInstances + maximumResidualLayers)
+  const repaired = paintWithNativeTiles(
+    initial,
+    brush,
+    target,
+    boundedBudget,
+    assets.surfaceMask,
+    namedColors,
+    evaluated,
+  )
+  const edgeBudget = Math.min(layerBudget, repaired.selectedAssets.length + maximumEdgeLayers)
+  const edgeRepaired = refinePaintedStateAtEdgeHotspots(
+    repaired,
+    brush,
+    target,
+    edgeBudget,
+    assets.surfaceMask,
+    namedColors,
+    evaluated,
+  )
+  const perceptualBudget = Math.min(layerBudget, edgeRepaired.selectedAssets.length + 64)
+  const perceptualRepaired = refinePaintedStateForPerceptualQuality(
+    edgeRepaired,
+    brush,
+    target,
+    perceptualBudget,
+    assets.surfaceMask,
+    namedColors,
+    evaluated,
+  )
+  const acceptedLayers = perceptualRepaired.selectedAssets.length - selectedAssets.length
+  const perceptualAcceptedLayers = perceptualRepaired.selectedAssets.length
+    - edgeRepaired.selectedAssets.length
+  if (acceptedLayers === 0) {
+    return {
+      candidate,
+      receipt: {
+        attempted: true,
+        acceptedLayers: 0,
+        evaluatedCandidates: evaluated.value,
+        perceptualAcceptedLayers: 0,
+      },
+    }
+  }
+  const nativeCoat = encodeNativeDepthOrder(perceptualRepaired.candidate.coatOfArms)
+  return {
+    candidate: {
+      ...candidate,
+      coatOfArms: nativeCoat,
+      metrics: {
+        colorLoss: perceptualRepaired.candidate.colorLoss,
+        edgeLoss: perceptualRepaired.candidate.edgeLoss,
+        totalLoss: perceptualRepaired.candidate.totalLoss,
+        relativeImprovement: candidate.metrics.relativeImprovement,
+      },
+      perceptualMetricsV2: measurePerceptualFitMetricsV2(target, perceptualRepaired.candidate.rendered),
+      textureNames: [...new Set([...candidate.textureNames, brush.name])],
+      multiscaleMetrics: [{
+        resolution: target.width,
+        colorLoss: perceptualRepaired.candidate.colorLoss,
+        edgeLoss: perceptualRepaired.candidate.edgeLoss,
+        totalLoss: perceptualRepaired.candidate.totalLoss,
+      }],
+    },
+    receipt: {
+      attempted: true,
+      acceptedLayers,
+      evaluatedCandidates: evaluated.value,
+      perceptualAcceptedLayers,
+    },
+  }
+}
+
 function edgeResidualHotspots(
   target: FitImage,
   rendered: RenderedCoatOfArms,
@@ -1752,8 +2086,7 @@ function refinePaintedStateAtEdgeHotspots(
   // Edge-search breadth is computational work, not a hidden layer clamp.
   // Scale it with the user's budget so the 128-instance reference point does
   // not pay the same 32-hotspot exhaustive pass as 512+ instance runs.
-  const normalizedHotspotBudget = Math.min(maxLayers, 1_024) / 1_024
-  const hotspotLimit = Math.max(1, Math.floor(32 * normalizedHotspotBudget * normalizedHotspotBudget))
+  const hotspotLimit = Math.max(1, Math.min(16, Math.ceil(maxLayers / 64)))
   for (let layer = 0; layer < maximumLayers; layer += 1) {
     const hotspots = edgeResidualHotspots(target, state.candidate.rendered, hotspotLimit)
     const rectangles = new Map<string, [number, number, number, number]>()
@@ -1852,6 +2185,261 @@ function refinePaintedStateAtEdgeHotspots(
       reconstructionMode: 'native-edge-refined',
       paintPlacements: [...state.paintPlacements, { tile: best.tile, instance: acceptedInstance }],
     }
+  }
+  return state
+}
+
+const LINEAR_CHANNEL_LUT = Float64Array.from({ length: 256 }, (_, value) => {
+  const normalized = value / 255
+  return normalized <= 0.04045
+    ? normalized / 12.92
+    : ((normalized + 0.055) / 1.055) ** 2.4
+})
+
+function linearChannel(value: number): number {
+  return LINEAR_CHANNEL_LUT[value]
+}
+
+function srgbChannelFromLinear(value: number): number {
+  const bounded = clamp(value, 0, 1)
+  const normalized = bounded <= 0.0031308
+    ? bounded * 12.92
+    : 1.055 * bounded ** (1 / 2.4) - 0.055
+  return Math.round(normalized * 255)
+}
+
+function linearAverageTileColor(
+  target: FitImage,
+  minimumX: number,
+  minimumY: number,
+  maximumX: number,
+  maximumY: number,
+): ByteRgb {
+  const sums = [0, 0, 0]
+  let weight = 0
+  for (let y = minimumY; y < maximumY; y += 1) {
+    for (let x = minimumX; x < maximumX; x += 1) {
+      const offset = (y * target.width + x) * 4
+      const alpha = target.pixels[offset + 3] / 255
+      if (alpha <= 0) continue
+      weight += alpha
+      for (let channel = 0; channel < 3; channel += 1) {
+        sums[channel] += linearChannel(target.pixels[offset + channel]) * alpha
+      }
+    }
+  }
+  return sums.map((sum) => srgbChannelFromLinear(sum / Math.max(weight, 1e-12))) as ByteRgb
+}
+
+/**
+ * Fast ordering proxy for the calibrated v2 score. Full v2 (including the
+ * distance transform and topology terms) remains the acceptance authority;
+ * this proxy only keeps that expensive calculation to the strongest few
+ * proposals in each local-repair pass.
+ */
+function perceptualRepairProxy(
+  target: FitImage,
+  rendered: RenderedCoatOfArms,
+): number {
+  let colorLoss = 0
+  let colorWeight = 0
+  let gradientLoss = 0
+  let gradientWeight = 0
+  const linearLuminance = (pixels: Uint8ClampedArray, offset: number) => (
+    linearChannel(pixels[offset]) * 0.2126
+    + linearChannel(pixels[offset + 1]) * 0.7152
+    + linearChannel(pixels[offset + 2]) * 0.0722
+  )
+  for (let y = 0; y < target.height; y += 1) {
+    for (let x = 0; x < target.width; x += 1) {
+      const offset = (y * target.width + x) * 4
+      const alpha = target.pixels[offset + 3] / 255
+      if (alpha <= 0) continue
+      for (let channel = 0; channel < 3; channel += 1) {
+        const delta = linearChannel(target.pixels[offset + channel])
+          - linearChannel(rendered.pixels[offset + channel])
+        colorLoss += delta * delta * alpha
+      }
+      colorWeight += alpha
+      for (const previous of [
+        x > 0 ? offset - 4 : -1,
+        y > 0 ? offset - target.width * 4 : -1,
+      ]) {
+        if (previous < 0) continue
+        const pairWeight = Math.min(alpha, target.pixels[previous + 3] / 255)
+        const targetGradient = linearLuminance(target.pixels, offset)
+          - linearLuminance(target.pixels, previous)
+        const renderedGradient = linearLuminance(rendered.pixels, offset)
+          - linearLuminance(rendered.pixels, previous)
+        gradientLoss += Math.abs(targetGradient - renderedGradient) * pairWeight
+        gradientWeight += pairWeight
+      }
+    }
+  }
+  return (colorLoss / Math.max(colorWeight * 3, 1e-12)) * 0.67
+    + (gradientLoss / Math.max(gradientWeight, 1e-12)) * 0.33
+}
+
+function perceptualResidualHotspots(
+  target: FitImage,
+  rendered: RenderedCoatOfArms,
+  limit: number,
+): { x: number, y: number, error: number }[] {
+  const hotspots: { x: number, y: number, error: number }[] = []
+  const linearLuminance = (pixels: Uint8ClampedArray, offset: number) => (
+    linearChannel(pixels[offset]) * 0.2126
+    + linearChannel(pixels[offset + 1]) * 0.7152
+    + linearChannel(pixels[offset + 2]) * 0.0722
+  )
+  for (let y = 0; y < target.height; y += 1) {
+    for (let x = 0; x < target.width; x += 1) {
+      const offset = (y * target.width + x) * 4
+      const alpha = target.pixels[offset + 3] / 255
+      if (alpha <= 0) continue
+      let colorError = 0
+      for (let channel = 0; channel < 3; channel += 1) {
+        const delta = linearChannel(target.pixels[offset + channel])
+          - linearChannel(rendered.pixels[offset + channel])
+        colorError += delta * delta / 3
+      }
+      let edgeError = 0
+      for (const previous of [
+        x > 0 ? offset - 4 : -1,
+        y > 0 ? offset - target.width * 4 : -1,
+      ]) {
+        if (previous < 0) continue
+        edgeError += Math.abs(
+          (linearLuminance(target.pixels, offset) - linearLuminance(target.pixels, previous))
+          - (linearLuminance(rendered.pixels, offset) - linearLuminance(rendered.pixels, previous)),
+        )
+      }
+      const error = alpha * (colorError * 0.67 + edgeError * 0.33)
+      if (error > 1e-12) hotspots.push({ x, y, error })
+    }
+  }
+  return hotspots
+    .sort((left, right) => right.error - left.error || left.y - right.y || left.x - right.x)
+    .slice(0, limit)
+}
+
+function refinePaintedStateForPerceptualQuality(
+  initial: SearchState,
+  brush: FitTextureCandidate,
+  target: FitImage,
+  maxLayers: number,
+  surfaceMask: DecodedDds | undefined,
+  namedColors: NamedColorMap,
+  evaluated: EvaluationCounter,
+): SearchState {
+  let state = initial
+  const maximumLayers = maxLayers - initial.selectedAssets.length
+  if (maximumLayers <= 0) return state
+  const legacyTotalLimit = initial.candidate.totalLoss * 1.03 + 1e-12
+  const legacyEdgeLimit = initial.candidate.edgeLoss * 1.03 + 1e-12
+  const shape = brush.shapeFeatures ?? computeFitTextureShapeFeatures(brush.texture)
+  const patchSizes = [
+    [1, 1], [2, 1], [1, 2], [2, 2], [3, 1], [1, 3], [3, 2], [2, 3],
+    [4, 1], [1, 4], [4, 2], [2, 4],
+  ] as const
+  const coverageFactors = [1, 1.04] as const
+  let currentPerceptual = measurePerceptualFitMetricsV2(target, state.candidate.rendered).totalLoss
+  let currentProxy = perceptualRepairProxy(target, state.candidate.rendered)
+  for (let layer = 0; layer < maximumLayers; layer += 1) {
+    const hotspots = [...new Map([
+      ...edgeResidualHotspots(target, state.candidate.rendered, 16),
+      ...perceptualResidualHotspots(target, state.candidate.rendered, 16),
+    ].map((hotspot) => [`${hotspot.x},${hotspot.y}`, hotspot])).values()]
+    const rectangles = new Map<string, [number, number, number, number]>()
+    for (const hotspot of hotspots) {
+      for (const [width, height] of patchSizes) {
+        const minimumX = clamp(hotspot.x - Math.floor((width - 1) / 2), 0, target.width - width)
+        const minimumY = clamp(hotspot.y - Math.floor((height - 1) / 2), 0, target.height - height)
+        const rectangle: [number, number, number, number] = [
+          minimumX, minimumY, minimumX + width, minimumY + height,
+        ]
+        rectangles.set(rectangle.join(','), rectangle)
+      }
+    }
+    const proposals: Array<{ choice: LayerChoice, tile: PaintTile, proxy: number }> = []
+    for (const [minimumX, minimumY, maximumX, maximumY] of rectangles.values()) {
+      const tile = paintTileStats(
+        target, state.candidate.rendered,
+        minimumX, minimumY, maximumX, maximumY,
+      )
+      const geometry = paintTileGeometry({
+        position: [
+          (minimumX + maximumX) / 2 / target.width,
+          (minimumY + maximumY) / 2 / target.height,
+        ],
+        scale: [
+          (maximumX - minimumX) / target.width,
+          (maximumY - minimumY) / target.height,
+        ],
+      }, shape, 0.001)
+      const linearColor = linearAverageTileColor(
+        target, minimumX, minimumY, maximumX, maximumY,
+      )
+      const colorCandidates: ByteRgb[] = [tile.color]
+      if (linearColor.some((value, channel) => value !== tile.color[channel])) {
+        colorCandidates.push(linearColor)
+      }
+      for (const color of colorCandidates) {
+        for (const scaleFactor of coverageFactors) {
+        const choice = layerChoice(
+          state.candidate,
+          state.patternAsset.texture,
+          surfaceMask,
+          namedColors,
+          target,
+          brush,
+          {
+            colors: [color, color, color],
+            mask: [],
+            position: geometry.position,
+            scale: [geometry.scale[0] * scaleFactor, geometry.scale[1] * scaleFactor],
+            rotation: 0,
+            flip: 1,
+          },
+          state.selectedAssets.length + 1,
+          evaluated,
+        )
+        if (
+          choice.candidate.totalLoss > legacyTotalLimit
+          || choice.candidate.edgeLoss > legacyEdgeLimit
+        ) continue
+        const proxy = perceptualRepairProxy(target, choice.candidate.rendered)
+        if (proxy >= currentProxy - 1e-12) continue
+        proposals.push({ choice, tile, proxy })
+        proposals.sort((left, right) => left.proxy - right.proxy
+          || left.choice.candidate.key.localeCompare(right.choice.candidate.key))
+        if (proposals.length > 3) proposals.length = 3
+        }
+      }
+    }
+    let accepted: { choice: LayerChoice, tile: PaintTile, perceptual: number, proxy: number } | null = null
+    for (const proposal of proposals) {
+      const perceptual = measurePerceptualFitMetricsV2(
+        target,
+        proposal.choice.candidate.rendered,
+      ).totalLoss
+      if (perceptual < currentPerceptual - 1e-12) {
+        accepted = { ...proposal, perceptual }
+        break
+      }
+    }
+    if (!accepted) break
+    const acceptedEmblems = accepted.choice.candidate.coatOfArms.coloredEmblems
+    const acceptedInstance = acceptedEmblems[acceptedEmblems.length - 1].instances[0]
+    state = {
+      candidate: accepted.choice.candidate,
+      patternAsset: state.patternAsset,
+      selectedAssets: [...state.selectedAssets, brush],
+      layerLosses: [...state.layerLosses, accepted.choice.candidate.totalLoss],
+      reconstructionMode: 'native-edge-refined',
+      paintPlacements: [...state.paintPlacements, { tile: accepted.tile, instance: acceptedInstance }],
+    }
+    currentPerceptual = accepted.perceptual
+    currentProxy = accepted.proxy
   }
   return state
 }
@@ -2031,7 +2619,7 @@ function refinePaintedStateWithNativeShape(
   const ranked = rankShapes(focus, refiners, shapeDescriptors, retrievalDescriptors)
   const shortlistNames = new Set(selectMixedNativeShapeCandidateNames(
     ranked.map((item) => item.asset.name),
-    Math.min(12, shapeCandidateCount, refiners.length),
+    Math.min(8, shapeCandidateCount, refiners.length),
   ))
   const shortlist = ranked.filter((item) => shortlistNames.has(item.asset.name))
   const palettes = permutations(residualColors(target, initial.candidate.rendered))
@@ -2221,8 +2809,8 @@ export function fitImageToCoatOfArms(
   const resumeCheckpoint = options.resumeCheckpoint
   if (resumeCheckpoint) {
     if (
-      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v2'
-      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v7-structure-retrieval'
+      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v4'
+      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v9-quality-first'
     ) throw new Error('拟合 checkpoint 版本不兼容')
     if (
       resumeCheckpoint.inputSha256 !== inputSha256
@@ -2387,16 +2975,31 @@ export function fitImageToCoatOfArms(
   // painting the residual. The pure tile candidate remains as an ablation.
   const hasSemanticAlternative = !paintBrush
     || emblems.some((item) => item.name !== paintBrush.name)
-  const semanticLayerBudget = Math.min(
+  const configuredSemanticLayerBudget = Math.min(
     maxLayers,
     !hasSemanticAlternative
       ? 0
       : maxLayers >= 1_024
-        ? 5
-        : maxLayers >= 128
+        ? 3
+        : maxLayers >= 512
           ? 3
+          : maxLayers >= 128
+            ? 1
           : 6,
   )
+  const legacyPrimaryFocusApplied = Boolean(
+    maxLayers >= 512
+    && bestSolidBackground
+    && nativePaintTiles(target, bestSolidBackground.candidate.rendered, maxLayers).length
+      >= maxLayers * 0.85,
+  )
+  // Dense inputs keep the legacy primary focus as one branch, but do not stop
+  // the Q3 beam after one layer: multi-element portraits need the later
+  // semantic layers before residual painting. The finalizer compares both the
+  // best one-layer safety seed and the best multi-layer structure seed.
+  const semanticLayerBudget = configuredSemanticLayerBudget
+  let completedSemanticLayers = 0
+  const semanticFrontier: SearchState[] = []
   for (let layer = 0; layer < semanticLayerBudget && emblems.length; layer += 1) {
     if (beam[0].candidate.totalLoss <= 1e-12) {
       terminationReason = 'exact_match'
@@ -2410,7 +3013,12 @@ export function fitImageToCoatOfArms(
       // the second beam state to cover the next disconnected salient region.
       // This prevents two-element coats from repeatedly fitting the same
       // dominant component without multiplying the bounded frontier.
-      const focus = residualGeometry(target, state.candidate.rendered, Math.min(stateIndex, 1))
+      const focus = residualGeometry(
+        target,
+        state.candidate.rendered,
+        Math.min(stateIndex, 1),
+        legacyPrimaryFocusApplied && (layer === 0 || stateIndex === 0),
+      )
       reportProgress(options.onProgress, 'coarse', 0, emblems.length, layer + 1, maxLayers, evaluated.value)
       const rankedShapes = rankShapes(focus, emblems, shapeDescriptors, retrievalDescriptors, (completed) => {
         if (shouldReportProgress(completed, emblems.length)) {
@@ -2419,7 +3027,7 @@ export function fitImageToCoatOfArms(
             layer + 1, maxLayers, evaluated.value,
           )
         }
-      })
+      }, legacyPrimaryFocusApplied)
       const palettes = permutations(residualColors(target, state.candidate.rendered))
       const shortlist: ShapeMatch[] = []
       for (const [assetRank, match] of rankedShapes.entries()) {
@@ -2429,7 +3037,7 @@ export function fitImageToCoatOfArms(
         // ambiguous to use as a descriptor-level identity signal. Probe them
         // only for the strongest retrieval candidates, then let rendered loss
         // decide whether the occlusion is useful.
-        if (assetRank < 4) {
+        if (!legacyPrimaryFocusApplied && assetRank < 4) {
           for (const mask of structureMasksByPattern.get(state.patternAsset.name) ?? []) {
             if (shortlist.length >= shapeCandidateCount) break
             shortlist.push({ ...match, mask })
@@ -2546,8 +3154,18 @@ export function fitImageToCoatOfArms(
     } else {
       beam = rankedExpansions.slice(0, activeBeamWidth)
     }
+    semanticFrontier.push(...beam)
+    completedSemanticLayers = layer + 1
+    if (
+      layer === 0
+      && semanticLayerBudget > 1
+      && (bestBackground.totalLoss - beam[0].candidate.totalLoss)
+        / Math.max(bestBackground.totalLoss, 1e-12) < 0.12
+    ) break
   }
-  const finalists = [...beam]
+  const finalists = [...new Map(
+    [...semanticFrontier, ...beam].map((state) => [state.candidate.key, state]),
+  ).values()]
   let nativePaintBaseline: SearchState | undefined
   let baselineEdgeRepair: ImageFitResult['provenance']['baselineEdgeRepair'] = {
     availableSlots: 0,
@@ -2630,53 +3248,79 @@ export function fitImageToCoatOfArms(
         : 'no_improvement',
     }
     if (edgeRefinedPaintState !== paintState) finalists.push(edgeRefinedPaintState)
+    // Candidate proposal uses the 192px refinement plane. The 256px pyramid
+    // remains an exact final-rescore gate, but evaluating every speculative
+    // patch there made a 128-instance run exceed three minutes. 192px is still
+    // 4x the pixel count of the 96px search plane and keeps the local edge
+    // decision materially higher-resolution without hiding the 256px result.
     const highResolutionTarget = [...pyramidTargets.values()]
       .filter((pyramidTarget) => (
         pyramidTarget.width > target.width
         && pyramidTarget.height > target.height
+        && pyramidTarget.width <= 192
+        && pyramidTarget.height <= 192
       ))
       .sort((left, right) => right.width - left.width || right.height - left.height)[0]
     let highResolutionSeed = edgeRefinedPaintState
-    const semanticSeed = beam
+    const rankedSemanticSeeds = [...semanticFrontier, ...beam]
       .filter((state) => state.selectedAssets.length > 0)
       .sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
-        || left.candidate.key.localeCompare(right.candidate.key))[0]
-    if (semanticSeed) {
-      const hybridState = paintWithNativeTiles(
-        semanticSeed,
-        paintBrush,
-        target,
-        maxLayers,
-        surfaceMask,
-        namedColors,
-        evaluated,
-        options.onProgress,
-        {
-          lane: 'hybrid', inputSha256, assetPackManifestSha256,
-          resolution, sourceWidth, sourceHeight, layerBudget: maxLayers,
-          resumeCheckpoint, onCheckpoint: options.onCheckpoint,
-          emblemAssets: emblemAssetMap,
-        },
-      )
-      const hybridSeamValidation = validateNativeTileSeams(
-        hybridState.paintPlacements,
-        target.width,
-        target.height,
-      )
-      if (hybridSeamValidation.metrics.some((metric) => metric.backgroundLeakPixels > 0)) {
-        throw new Error('混合原生块候选未通过 96/230/512 高分辨率覆盖门禁')
+        || left.candidate.key.localeCompare(right.candidate.key))
+    const denseResidualNeedsHybrid = paintState.selectedAssets.length >= maxLayers * 0.85
+    const semanticSeeds = legacyPrimaryFocusApplied
+      ? [...new Map([
+          rankedSemanticSeeds[0],
+          rankedSemanticSeeds.find((state) => state.selectedAssets.length === 1),
+        ].filter((state): state is SearchState => Boolean(state)).map(
+          (state) => [state.candidate.key, state],
+        )).values()]
+      : rankedSemanticSeeds.slice(0, 1)
+    const hybridStates: SearchState[] = []
+    for (const semanticSeed of semanticSeeds) {
+      const semanticSeedCompetitive = semanticSeed.candidate.totalLoss <= paintState.candidate.totalLoss * 1.25
+        && semanticSeed.candidate.edgeLoss <= paintState.candidate.edgeLoss * 1.25
+      if (semanticSeedCompetitive || denseResidualNeedsHybrid) {
+        const hybridState = paintWithNativeTiles(
+          semanticSeed,
+          paintBrush,
+          target,
+          maxLayers,
+          surfaceMask,
+          namedColors,
+          evaluated,
+          options.onProgress,
+          {
+            lane: 'hybrid', inputSha256, assetPackManifestSha256,
+            resolution, sourceWidth, sourceHeight, layerBudget: maxLayers,
+            resumeCheckpoint, onCheckpoint: options.onCheckpoint,
+            emblemAssets: emblemAssetMap,
+          },
+        )
+        const hybridSeamValidation = validateNativeTileSeams(
+          hybridState.paintPlacements,
+          target.width,
+          target.height,
+        )
+        if (hybridSeamValidation.metrics.some((metric) => metric.backgroundLeakPixels > 0)) {
+          throw new Error('混合原生块候选未通过 96/230/512 高分辨率覆盖门禁')
+        }
+        finalists.push(hybridState)
+        hybridStates.push(hybridState)
       }
-      finalists.push(hybridState)
-      highResolutionSeed = hybridState
     }
-    // Spend a budget-scaled number of passes on scored native shapes before
-    // the final high-resolution block repair. This is deliberately a search
-    // sub-phase rather than a product layer cap: every pass is bounded by the
-    // user's remaining instance budget and stops at the first non-improvement.
+    highResolutionSeed = hybridStates
+      .sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
+        || left.candidate.key.localeCompare(right.candidate.key))[0]
+      ?? highResolutionSeed
+    // Native-shape repair has steep diminishing returns because every accepted
+    // pass reruns full-library retrieval plus all-angle local optimization.
+    // The pre-paint semantic stage already searches native shapes. Repeating
+    // full-library retrieval after hundreds of paint blocks did not produce a
+    // selected candidate in the frozen corpus and duplicated expensive work.
     const requestedShapePasses = hasSemanticAlternative
       ? Math.min(
           maxLayers - highResolutionSeed.selectedAssets.length,
-          Math.max(1, Math.ceil(Math.log2(maxLayers + 1) / 3)),
+          0,
         )
       : 0
     const evaluatedBeforeShapeRefinement = evaluated.value
@@ -2750,35 +3394,6 @@ export function fitImageToCoatOfArms(
     }
     if (highResolutionPaintState !== highResolutionSeed) finalists.push(highResolutionPaintState)
   }
-  const candidateMultiscaleMetrics = new Map<SearchState, MultiscaleFitMetric[]>()
-  for (const state of finalists) {
-    const metrics = pyramidResolutions.map((pyramidResolution) => {
-      if (pyramidResolution === resolution) return {
-        resolution: pyramidResolution,
-        colorLoss: state.candidate.colorLoss,
-        edgeLoss: state.candidate.edgeLoss,
-        totalLoss: state.candidate.totalLoss,
-      }
-      const pyramidTarget = pyramidTargets.get(pyramidResolution)
-        ?? resizeFitImage(image, pyramidResolution)
-      const pyramidCandidate = score(
-        state.candidate.coatOfArms,
-        state.patternAsset.texture,
-        emblemTextureMap,
-        pyramidTarget,
-        state.candidate.key,
-        surfaceMask,
-        namedColors,
-      )
-      return {
-        resolution: pyramidResolution,
-        colorLoss: pyramidCandidate.colorLoss,
-        edgeLoss: pyramidCandidate.edgeLoss,
-        totalLoss: pyramidCandidate.totalLoss,
-      }
-    })
-    candidateMultiscaleMetrics.set(state, metrics)
-  }
   const nonRegressingFinalists = nativePaintBaseline
     ? finalists.filter((state) => (
         state.candidate.totalLoss <= nativePaintBaseline!.candidate.totalLoss + 1e-12
@@ -2792,6 +3407,34 @@ export function fitImageToCoatOfArms(
     stableKey: state.candidate.key,
   })))
   const paretoStates = paretoIndexes.map((index) => nonRegressingFinalists[index])
+  // Search assets are compact fit-index projections. Their only authoritative
+  // score is the primary search plane; the exact-DDS finalizer immediately
+  // rerenders the bounded Pareto frontier at every pyramid resolution. Doing
+  // the same 192/256px work here was both redundant and extremely expensive
+  // for 100+ native blocks, so intermediate diagnostics retain primary metrics
+  // and the finalizer remains the single source of multiscale truth.
+  const candidateMultiscaleMetrics = new Map<SearchState, MultiscaleFitMetric[]>()
+  const multiscaleStates = [...new Set([...paretoStates, ...finalists])]
+  const multiscaleTotal = Math.max(1, multiscaleStates.length)
+  let multiscaleCompleted = 0
+  reportProgress(
+    options.onProgress, 'finalize', 0, multiscaleTotal,
+    paretoStates[0]?.selectedAssets.length ?? 0, maxLayers, evaluated.value,
+  )
+  for (const state of multiscaleStates) {
+    const metrics = [{
+      resolution,
+      colorLoss: state.candidate.colorLoss,
+      edgeLoss: state.candidate.edgeLoss,
+      totalLoss: state.candidate.totalLoss,
+    }]
+    candidateMultiscaleMetrics.set(state, metrics)
+    multiscaleCompleted += 1
+    reportProgress(
+      options.onProgress, 'finalize', multiscaleCompleted, multiscaleTotal,
+      state.selectedAssets.length, maxLayers, evaluated.value,
+    )
+  }
   const winner = paretoStates[0]
   const best = winner.candidate
   const paretoCandidates: ImageFitParetoCandidate[] = paretoStates.map((state) => {
@@ -2851,7 +3494,7 @@ export function fitImageToCoatOfArms(
     },
     paretoCandidates,
     provenance: {
-      algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval',
+      algorithm: 'ck3-coa-browser-fit-v9-quality-first',
       searchBackend: batchSearch.status === 'active'
         ? 'webgl2-batch+cpu-reference'
         : 'cpu-reference',
@@ -2884,12 +3527,19 @@ export function fitImageToCoatOfArms(
         fineShortlist: ASSET_RETRIEVAL_FINE_SHORTLIST,
         rotations: 24,
         mirrors: 2,
+        legacySafetyLane: {
+          contract: 'legacy-dice-mse-12-angle-v1',
+          reservedRanks: 8,
+          denseLegacyFirstRanks: 48,
+        },
       },
       structureSearch: {
         contract: 'salient-components-depth-ordered-beam-v1',
         semanticLayerBudget,
+        completedSemanticLayers,
         beamWidth,
         residualComponentsPerBeam: 2,
+        legacyPrimaryFocusApplied,
         layerOrder: 'foreground-append-then-native-depth-encode',
       },
       layerBudget: maxLayers,

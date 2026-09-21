@@ -83,14 +83,30 @@ describe('full DDS image-fit finalization', () => {
 
     expect(finalized.receipt.selectedOriginalIndexes).toEqual([1])
     expect(finalized.receipt.sourceWinnerPreserved).toBe(false)
-    expect(finalized.result.coatOfArms).toBe(red)
+    expect(finalized.result.coatOfArms).toEqual({ ...red, rootPresence: undefined })
     expect(finalized.result.metrics.totalLoss).toBeLessThan(0.00001)
     expect(finalized.receipt.candidates[0].finalMetrics.totalLoss)
       .toBeGreaterThan(finalized.result.metrics.totalLoss)
     expect(finalized.result.provenance.fullAssetFinalization).toMatchObject({
-      contract: 'full-dds-rescore-pareto-v1',
+      contract: 'full-dds-rescore-repair-pareto-v3',
       finalAssetContract: 'decoded-exact-dds-mip-v1',
       selectedOriginalIndexes: [1],
+      exactResidualRepair: {
+        contract: 'exact-dds-residual-tile-perceptual-v2',
+        attemptedCandidates: 0,
+        repairedCandidates: 0,
+      },
+      perceptualColorRefinement: {
+        contract: 'linear-light-native-tile-recolor-v1',
+        evaluatedVariants: 0,
+        selectedBlend: 0,
+        selectionPolicy: 'perceptual-v2-first-output-size-on-exact-tie',
+      },
+      structuralCompression: {
+        strategy: 'adjacent-equal-style-v1',
+        exactStructureOnly: true,
+        mergedBlocks: 0,
+      },
     })
     expect(finalized.result.provenance.nativeTileSeamValidation.status).toBe('not-applicable')
   })

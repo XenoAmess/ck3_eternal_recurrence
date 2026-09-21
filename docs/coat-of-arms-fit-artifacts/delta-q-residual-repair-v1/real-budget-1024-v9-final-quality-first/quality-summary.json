@@ -1,0 +1,308 @@
+{
+  "schema": "ck3-coa-delta-q-quality-summary-v1",
+  "baseline": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-perceptual-shadow-v1\\real-v14-shadow-report.json",
+  "finalRoot": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-residual-repair-v1\\real-budget-1024-v9-final-quality-first",
+  "cases": [
+    {
+      "id": "picture-01",
+      "baselinePerceptualLossV2": 0.027693072897323926,
+      "selectedPerceptualLossV2": 0.02656672052851327,
+      "selectedRelativeImprovement": 0.040672711655610434,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.02656672052851327,
+      "bestParetoRelativeImprovement": 0.040672711655610434,
+      "selectedLegacyTotalLoss": 0.01987553064526475,
+      "selectedLegacyEdgeLoss": 0.04306149488304081,
+      "baselineLegacyTotalLoss": 0.01710284608792626,
+      "baselineLegacyEdgeLoss": 0.03607680964724156,
+      "legacyTotalNonRegression": false,
+      "legacyEdgeNonRegression": false,
+      "fitElapsedMilliseconds": 310211,
+      "drawnInstances": 739,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 739,
+          "legacyTotalLoss": 0.01987553064526475,
+          "legacyEdgeLoss": 0.04306149488304081,
+          "perceptualLossV2": 0.02656672052851327
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "native-edge-refined",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.017209656499247526,
+          "legacyEdgeLoss": 0.03628496913430936,
+          "perceptualLossV2": 0.028026412208810282
+        },
+        {
+          "index": 3,
+          "reconstructionMode": "hybrid-native-paint",
+          "drawnInstances": 684,
+          "legacyTotalLoss": 0.020579793281408097,
+          "legacyEdgeLoss": 0.04433842677696051,
+          "perceptualLossV2": 0.027584944669810298
+        }
+      ]
+    },
+    {
+      "id": "picture-02",
+      "baselinePerceptualLossV2": 0.042067555954651434,
+      "selectedPerceptualLossV2": 0.029923162428353665,
+      "selectedRelativeImprovement": 0.2886878795475865,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.029923162428353665,
+      "bestParetoRelativeImprovement": 0.2886878795475865,
+      "selectedLegacyTotalLoss": 0.028721413638985182,
+      "selectedLegacyEdgeLoss": 0.06088349511953868,
+      "baselineLegacyTotalLoss": 0.03314961733746022,
+      "baselineLegacyEdgeLoss": 0.06131414675245063,
+      "legacyTotalNonRegression": true,
+      "legacyEdgeNonRegression": true,
+      "fitElapsedMilliseconds": 266222,
+      "drawnInstances": 729,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 729,
+          "legacyTotalLoss": 0.028721413638985182,
+          "legacyEdgeLoss": 0.06088349511953868,
+          "perceptualLossV2": 0.029923162428353665
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 729,
+          "legacyTotalLoss": 0.028671990518943462,
+          "legacyEdgeLoss": 0.06088896665779777,
+          "perceptualLossV2": 0.0299253346283552
+        },
+        {
+          "index": 3,
+          "reconstructionMode": "semantic-search",
+          "drawnInstances": 1,
+          "legacyTotalLoss": 0.046506342156506744,
+          "legacyEdgeLoss": 0.0661498511136911,
+          "perceptualLossV2": 0.06873474405000235
+        }
+      ]
+    },
+    {
+      "id": "picture-03",
+      "baselinePerceptualLossV2": 0.02047207390043614,
+      "selectedPerceptualLossV2": 0.020465604052411834,
+      "selectedRelativeImprovement": 0.0003160328580177567,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.020465604052411834,
+      "bestParetoRelativeImprovement": 0.0003160328580177567,
+      "selectedLegacyTotalLoss": 0.01955259845625063,
+      "selectedLegacyEdgeLoss": 0.0422235130517391,
+      "baselineLegacyTotalLoss": 0.019421617179545905,
+      "baselineLegacyEdgeLoss": 0.04197369932759263,
+      "legacyTotalNonRegression": false,
+      "legacyEdgeNonRegression": false,
+      "fitElapsedMilliseconds": 283333,
+      "drawnInstances": 1024,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-edge-refined",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.01955259845625063,
+          "legacyEdgeLoss": 0.0422235130517391,
+          "perceptualLossV2": 0.020465604052411834
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "hybrid-native-paint",
+          "drawnInstances": 818,
+          "legacyTotalLoss": 0.021759658195755163,
+          "legacyEdgeLoss": 0.04620568179985787,
+          "perceptualLossV2": 0.021008374439112663
+        },
+        {
+          "index": 3,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 835,
+          "legacyTotalLoss": 0.021739671393192234,
+          "legacyEdgeLoss": 0.04612072220609717,
+          "perceptualLossV2": 0.021010116074028244
+        }
+      ]
+    },
+    {
+      "id": "picture-04",
+      "baselinePerceptualLossV2": 0.04102906697422002,
+      "selectedPerceptualLossV2": 0.03205787695826857,
+      "selectedRelativeImprovement": 0.21865449734911985,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.03205787695826857,
+      "bestParetoRelativeImprovement": 0.21865449734911985,
+      "selectedLegacyTotalLoss": 0.043056079643540246,
+      "selectedLegacyEdgeLoss": 0.08701321282007866,
+      "baselineLegacyTotalLoss": 0.04693235092761686,
+      "baselineLegacyEdgeLoss": 0.0871759035302717,
+      "legacyTotalNonRegression": true,
+      "legacyEdgeNonRegression": true,
+      "fitElapsedMilliseconds": 409528,
+      "drawnInstances": 971,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 971,
+          "legacyTotalLoss": 0.043056079643540246,
+          "legacyEdgeLoss": 0.08701321282007866,
+          "perceptualLossV2": 0.03205787695826857
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "hybrid-native-paint",
+          "drawnInstances": 959,
+          "legacyTotalLoss": 0.0433831149156533,
+          "legacyEdgeLoss": 0.08704904026783421,
+          "perceptualLossV2": 0.03260302081008343
+        }
+      ]
+    },
+    {
+      "id": "picture-05",
+      "baselinePerceptualLossV2": 0.033297615785497954,
+      "selectedPerceptualLossV2": 0.025489701424271725,
+      "selectedRelativeImprovement": 0.23448869166863276,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.025489701424271725,
+      "bestParetoRelativeImprovement": 0.23448869166863276,
+      "selectedLegacyTotalLoss": 0.03874846503556583,
+      "selectedLegacyEdgeLoss": 0.07459022083682615,
+      "baselineLegacyTotalLoss": 0.044505120096175355,
+      "baselineLegacyEdgeLoss": 0.08332907284007275,
+      "legacyTotalNonRegression": true,
+      "legacyEdgeNonRegression": true,
+      "fitElapsedMilliseconds": 399938,
+      "drawnInstances": 922,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 922,
+          "legacyTotalLoss": 0.03874846503556583,
+          "legacyEdgeLoss": 0.07459022083682615,
+          "perceptualLossV2": 0.025489701424271725
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 922,
+          "legacyTotalLoss": 0.038098132271897546,
+          "legacyEdgeLoss": 0.07446795484229805,
+          "perceptualLossV2": 0.025721756262913547
+        },
+        {
+          "index": 3,
+          "reconstructionMode": "hybrid-native-paint",
+          "drawnInstances": 905,
+          "legacyTotalLoss": 0.03896381426550745,
+          "legacyEdgeLoss": 0.07517702672831691,
+          "perceptualLossV2": 0.026371268610111853
+        }
+      ]
+    },
+    {
+      "id": "picture-06",
+      "baselinePerceptualLossV2": 0.0067614843097486095,
+      "selectedPerceptualLossV2": 0.0064103275944443,
+      "selectedRelativeImprovement": 0.051934856196888174,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.0064103275944443,
+      "bestParetoRelativeImprovement": 0.051934856196888174,
+      "selectedLegacyTotalLoss": 0.006177637123324506,
+      "selectedLegacyEdgeLoss": 0.012812598933922371,
+      "baselineLegacyTotalLoss": 0.006149263344276545,
+      "baselineLegacyEdgeLoss": 0.012749870884061962,
+      "legacyTotalNonRegression": false,
+      "legacyEdgeNonRegression": false,
+      "fitElapsedMilliseconds": 185861,
+      "drawnInstances": 1024,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-edge-refined",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.006177637123324506,
+          "legacyEdgeLoss": 0.012812598933922371,
+          "perceptualLossV2": 0.0064103275944443
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "native-tile-paint",
+          "drawnInstances": 722,
+          "legacyTotalLoss": 0.017900960221775654,
+          "legacyEdgeLoss": 0.03278536755099118,
+          "perceptualLossV2": 0.01084084677409197
+        }
+      ]
+    },
+    {
+      "id": "picture-07",
+      "baselinePerceptualLossV2": 0.040000095382362585,
+      "selectedPerceptualLossV2": 0.03306923374362563,
+      "selectedRelativeImprovement": 0.17327112779318546,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.03306923374362563,
+      "bestParetoRelativeImprovement": 0.17327112779318546,
+      "selectedLegacyTotalLoss": 0.04155278748889158,
+      "selectedLegacyEdgeLoss": 0.07489983515678765,
+      "baselineLegacyTotalLoss": 0.04767803584367018,
+      "baselineLegacyEdgeLoss": 0.08157038858923499,
+      "legacyTotalNonRegression": true,
+      "legacyEdgeNonRegression": true,
+      "fitElapsedMilliseconds": 361038,
+      "drawnInstances": 1024,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.04155278748889158,
+          "legacyEdgeLoss": 0.07489983515678765,
+          "perceptualLossV2": 0.03306923374362563
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.04066963840182395,
+          "legacyEdgeLoss": 0.07437243093852154,
+          "perceptualLossV2": 0.03369889028973276
+        },
+        {
+          "index": 3,
+          "reconstructionMode": "hybrid-native-paint",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.0408420276264268,
+          "legacyEdgeLoss": 0.07384679793655441,
+          "perceptualLossV2": 0.03397231721576715
+        }
+      ]
+    }
+  ],
+  "aggregates": {
+    "caseCount": 7,
+    "selectedMedianRelativeImprovement": 0.17327112779318546,
+    "selectedWorstRelativeImprovement": 0.0003160328580177567,
+    "bestParetoMedianRelativeImprovement": 0.17327112779318546,
+    "bestParetoWorstRelativeImprovement": 0.0003160328580177567,
+    "totalFitMilliseconds": 2216131,
+    "totalFitMinutes": 36.935516666666665,
+    "generationLatencyRole": "diagnostic-only",
+    "formerPerformanceReferenceMilliseconds": 1057500,
+    "perceptualMedianGatePassed": true,
+    "perceptualWorstCaseGatePassed": true,
+    "legacyTotalNonRegressionCases": 4,
+    "legacyEdgeNonRegressionCases": 4,
+    "withinLayerBudget": true
+  }
+}

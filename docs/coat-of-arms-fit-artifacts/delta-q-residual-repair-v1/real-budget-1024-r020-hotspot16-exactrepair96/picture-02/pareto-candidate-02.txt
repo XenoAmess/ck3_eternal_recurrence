@@ -1,0 +1,48 @@
+coa = {
+    pattern = "pattern__solid_designer.dds"
+    color1 = rgb { 217 200 212 }
+    color2 = rgb { 232 214 215 }
+    color3 = rgb { 246 232 229 }
+
+    colored_emblem = {
+        texture = "ce_letter_c.dds"
+        color1 = rgb { 103 86 104 }
+        color2 = rgb { 89 73 101 }
+        color3 = rgb { 91 71 134 }
+
+        instance = {
+            position = { 0.5827175363872067 0.5644639078791177 }
+            scale = { -1.8924636367999998 2.1715836491999996 }
+            rotation = 6.5
+            depth = 3
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_tiger_calligraphy.dds"
+        color1 = rgb { 217 201 212 }
+        color2 = rgb { 232 215 215 }
+        color3 = rgb { 246 232 230 }
+
+        instance = {
+            position = { 0.5429398050206256 0.6346511845071385 }
+            scale = { -1.007 1.474877538461538 }
+            rotation = 193.5
+            depth = 2
+        }
+    }
+
+    colored_emblem = {
+        texture = "ce_letter_e.dds"
+        color1 = rgb { 234 216 215 }
+        color2 = rgb { 246 232 230 }
+        color3 = rgb { 91 71 134 }
+
+        instance = {
+            position = { 0.4366890303841409 0.5616013890676204 }
+            scale = { 1.2628252948067653 1.716193468294107 }
+            rotation = 131.5
+            depth = 1
+        }
+    }
+}

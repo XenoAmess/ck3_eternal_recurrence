@@ -1,0 +1,56 @@
+{
+  "schema": "ck3-coa-delta-q-quality-summary-v1",
+  "baseline": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-perceptual-shadow-v1\\real-v14-shadow-report.json",
+  "finalRoot": "..\\docs\\coat-of-arms-fit-artifacts\\delta-q-residual-repair-v1\\real-budget-1024-r031-picture05-legacy-seed",
+  "cases": [
+    {
+      "id": "picture-05",
+      "baselinePerceptualLossV2": 0.033297615785497954,
+      "selectedPerceptualLossV2": 0.03633458194015959,
+      "selectedRelativeImprovement": -0.09120671504607597,
+      "bestParetoIndex": 1,
+      "bestParetoPerceptualLossV2": 0.03633458194015959,
+      "bestParetoRelativeImprovement": -0.09120671504607597,
+      "selectedLegacyTotalLoss": 0.04833323965275137,
+      "selectedLegacyEdgeLoss": 0.08045994850791169,
+      "fitElapsedMilliseconds": 308801,
+      "drawnInstances": 1024,
+      "paretoCandidates": [
+        {
+          "index": 1,
+          "reconstructionMode": "native-edge-refined",
+          "drawnInstances": 1024,
+          "legacyTotalLoss": 0.04833323965275137,
+          "legacyEdgeLoss": 0.08045994850791169,
+          "perceptualLossV2": 0.03633458194015959
+        },
+        {
+          "index": 2,
+          "reconstructionMode": "hybrid-native-paint",
+          "drawnInstances": 801,
+          "legacyTotalLoss": 0.05598904872213531,
+          "legacyEdgeLoss": 0.09277215422901529,
+          "perceptualLossV2": 0.055621068655198634
+        },
+        {
+          "index": 3,
+          "reconstructionMode": "native-high-resolution-edge-refined",
+          "drawnInstances": 940,
+          "legacyTotalLoss": 0.048489692079457275,
+          "legacyEdgeLoss": 0.09108282204054781,
+          "perceptualLossV2": 0.040033522901874
+        }
+      ]
+    }
+  ],
+  "aggregates": {
+    "caseCount": 1,
+    "selectedMedianRelativeImprovement": -0.09120671504607597,
+    "selectedWorstRelativeImprovement": -0.09120671504607597,
+    "bestParetoMedianRelativeImprovement": -0.09120671504607597,
+    "bestParetoWorstRelativeImprovement": -0.09120671504607597,
+    "totalFitMilliseconds": 308801,
+    "totalFitMinutes": 5.146683333333334,
+    "performanceLimitMilliseconds": 1057500
+  }
+}

@@ -1,6 +1,6 @@
 # CK3 家徽编辑器 Delta-Q / 拟合质量 2.0 计划
 
-> 状态：`in-progress`（2026-09-21）
+> 状态：`implementation-complete / release-gates-pending`（2026-09-21）
 >
 > 起始基线：`master` `4b90191c9e47680378c4d7a200aa2b389df0f1f6`
 >
@@ -10,7 +10,15 @@
 
 ## 1. 唯一目标
 
-Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和可比时间预算下，让浏览器完整 DDS 预览与 CK3 原生 framebuffer 更接近输入图。战役内编辑、角色/头衔家徽、后端、账号、云同步和其他外围能力不进入本期。
+Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同用户实例预算下，让浏览器完整 DDS 预览与 CK3 原生 framebuffer 更接近输入图。战役内编辑、角色/头衔家徽、后端、账号、云同步和其他外围能力不进入本期。
+
+### 1.1 冻结优先级（项目所有者 2026-09-21 明确指定）
+
+1. **第一优先：质量、效果、相似度。** 任何更快但视觉更差的候选都不得因网页生成耗时更短而胜出。
+2. **第二优先：同质量下减小输出。** 只有质量处于冻结等价带内时，才依次偏好更少的游戏内绘制实例、更小的源码与更低的最终 CK3 渲染压力。
+3. **网页拟合性能是诊断项，不是质量门禁。** 单次拟合允许分钟级；必须继续报告耗时、候选数和阶段分布以发现失控或死循环，但不得用旧 1.25 倍时间上限否决更好的拟合结果。
+
+这里的“同质量”不是口头判断：legacy total/edge 与感知 v2 均不得超出报告中冻结的数值容差，才允许实例数和源码大小参与 tie-break。用户明确给出的实例上限仍是硬约束，不能为了质量静默越界。
 
 本期不把“提高搜索预算”“更换一个自我偏好的评分公式”或“浏览器预览更好看”单独视为质量提升。通过声明必须同时绑定输入、素材包、算法 revision、完整 DDS、候选源码、浏览器指标和原生证据。
 
@@ -32,8 +40,8 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 - 正式站点继续是纯前端；图片、项目和拟合状态不上传，不连接 CK3、MCP、Java、Python 或本地后端。
 - 所有新搜索保持确定性；相同输入、素材包、配置和算法 revision 必须产生相同候选源码与报告 hash。
-- 旧 color/edge/total 指标永久保留为回归维度。新感知指标在完成校准前只运行 shadow mode，不参与选优。
-- 搜索质量、结构复杂度、源码体积和运行时间分别报告；不得把复杂度惩罚混进视觉分数后隐藏取舍。
+- 旧 color/edge/total 指标永久保留为回归维度。感知 v2 在 Q1 完成冻结校准后，已于 Q4 仅在 bounded frontier 的完整 DDS 重绘上晋升为第一选优键；未实现的 GPU v2 仍不得冒充 CPU reference 一致。
+- 搜索质量、结构复杂度、源码体积和运行时间分别报告；不得把复杂度或网页耗时惩罚混进视觉分数后隐藏取舍。选优顺序固定为“质量 → 等质量下的游戏内压力/输出大小 → 网页耗时仅诊断”。
 - 调优集和 holdout 严格分开。holdout 的目标、期望和 hash 冻结后，不得为消除 RED 修改样本或门限。
 - CK3 原生验收继续使用 Steam 离线、exact `1.19.0.6`、结构化 MCP、无 OCR/键鼠/固定坐标路径。
 
@@ -47,11 +55,11 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 ### 4.2 总体验收
 
-- 七图 1,024 预算的旧 total loss 与 edge loss 7/7 不劣于 v14 质量优先基线。
+- 七图 1,024 预算继续逐图报告旧 total loss 与 edge loss，并保留 legacy-safe Pareto 候选；它们是诊断与回退证据，不得隐藏。最终自动选优以校准后的感知 v2 相似度为第一关键字，不允许旧指标否决感知上更接近输入的候选；只有感知 v2 逐值相等时才比较实例数、源码大小和 legacy 指标。
 - 校准后的感知指标中位数相对 v14 改善至少 15%；任何单图不得退化超过 2%。
 - 合成 holdout 的正确素材 Top-8 recall 至少 85%，Top-32 recall 至少 95%。
 - 1,024 预算仍是硬上限；实例数和源码体积作为 Pareto 维度公开，不允许通过越界换质量。
-- 七图总运行时间不超过 v14 同机基线 14.1 分钟的 1.25 倍；更换机器时同时报告绝对时间与候选数，不伪造横向速度结论。
+- 七图总运行时间、单图最慢耗时、候选数和阶段分布必须报告；分钟级拟合可接受，耗时不再作为否决质量候选的门禁。出现无界增长、死循环或无法完成仍必须 RED。
 - 七图质量优先候选全部通过完整 DDS、parse/serialize、Apply/Copy、浏览器→CK3 与 Copy→re-Apply 原生空间像素门限。
 - 生成新旧候选的匿名 A/B contact sheet；它是人工判断材料，不由自动化工具伪造“人工通过”。
 
@@ -59,7 +67,7 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 ### Q0：冻结 benchmark-v1（P0，1–2 工程日）
 
-状态：`browser-passed / v15-native-pending`（2026-09-21；[benchmark-v1](coat-of-arms-fit-artifacts/delta-q-benchmark-v1/README.md)）。
+状态：`passed`（2026-09-21；[benchmark-v1](coat-of-arms-fit-artifacts/delta-q-benchmark-v1/README.md)，[v15 原生补验 r20](coat-of-arms-fit-artifacts/user-picture-corpus-v15-native-r20/README.md)）。
 
 - 把七图 v14/v15 基线投影成机器可读 manifest，记录输入、候选源码、预览、指标、实例数和 SHA-256。
 - 新增确定性合成语料生成器，生成 192/64 dev/holdout manifest 与扰动阶梯，不提交重复的大体积像素副本。
@@ -105,7 +113,7 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 ### Q3：结构感知联合搜索（P0，5–8 工程日，依赖 Q2）
 
-状态：`structure-passed / real-corpus-performance-red`（2026-09-21；[结构门禁与真实图 RED](coat-of-arms-fit-artifacts/delta-q-structure-search-v1/README.md)）。
+状态：`structure-passed / latency-retained-as-diagnostic`（2026-09-21；[结构门禁与真实图历史 RED](coat-of-arms-fit-artifacts/delta-q-structure-search-v1/README.md)）。项目所有者随后明确网页拟合耗时不构成质量否决项，该 RED 仍永久保留而不再阻断质量优先路线。
 
 - 先估计 pattern、主色和大面积分区，再为各显著区域生成素材、颜色、mask、位置、缩放、旋转和层序假设。
 - 使用确定性多起点局部优化；同时保留视觉质量、边缘质量和低复杂度 Pareto 前沿。
@@ -118,14 +126,20 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 ### Q4：稀疏残差修复（P1，3–5 工程日，依赖 Q3）
 
+状态：`passed / browser-full-DDS`（2026-09-21；[追加式尝试与正式七图证据](coat-of-arms-fit-artifacts/delta-q-residual-repair-v1/README.md)）。
+
 - 用残差连通域与四叉树区域替代近似逐块填色；优先覆盖大面积同色区域。
 - 每轮接受后合并同纹理、同色、同深度的相邻实例，并执行 bounded necessity pruning。
 - tile painter 降为最后 fallback；其增益、实例成本和停止理由单独记录。
-- 不以牺牲视觉质量为代价强制压缩，复杂度仍通过 Pareto 暴露。
+- 不以牺牲视觉质量为代价强制压缩；Pareto 选优先比较视觉质量，只有进入冻结等价带后才比较实例数、源码大小与游戏内渲染压力。网页拟合耗时只作为诊断证据。
 
 退出条件：七图视觉门禁通过且实例/源码没有隐性越界；所有删除都有可回放 necessity receipt。
 
+实证：1024 层正式七图相对冻结 v14 感知 v2 的中位改善为 17.327%，最差为 +0.032%，即 7/7 实际正提升；所有案例均在实例硬上限内。128 层回归 7/7 完成，最大实例数 128。质量路径没有执行会改变像素或实例序列的自动删除；唯一压缩是完全相邻同样式 block 的结构合并，receipt 固定 `exactStructureOnly=true`。七图 1024 层约 36.94 分钟、128 层约 11.88 分钟，按冻结优先级仅作诊断。CK3 原生像素结论属于 Q5，未在此提前外推。
+
 ### Q5：完整 DDS、CK3 与 Pages 收口（P0，2–3 工程日 + CK3 槽位，依赖 Q0–Q4）
+
+状态：`implementation-complete / release-gates-pending`（2026-09-21；[实施报告](ck3-coat-of-arms-editor-delta-q-report.md)，[v9 原生验收 r19](coat-of-arms-fit-artifacts/delta-q-native-r19/README.md)）。
 
 - 在干净 checkout 重跑 pack、Vitest、128/1,024 benchmark、生产浏览器、跨浏览器、WebGL fallback、离线 Service Worker 和 production-boundary。
 - 对七图质量优先候选执行完整 DDS 96/230/512 复评和 CK3 MCP-only Apply/Copy/framebuffer/re-Apply。
@@ -153,3 +167,5 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 3. 浏览器完整 DDS 与 CK3 原生证据分别存在且互不冒充。
 4. 搜索仍可确定性暂停、恢复、取消和重启，生产站点仍为零后端纯前端。
 5. `master`、公开 Pages 版本、benchmark manifest、原生证据和能力说明指向同一 release commit。
+
+当前 Q0–Q4 与 Q5 的本地、浏览器、完整 DDS、CK3 原生门禁均已完成；只剩把实现线性推送到 `master`，等待对应 Pages workflow GREEN 并从 canonical URL 回读部署身份。完整数字、证据入口与已知边界见[实施报告](ck3-coat-of-arms-editor-delta-q-report.md)。

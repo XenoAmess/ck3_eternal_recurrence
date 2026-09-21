@@ -278,9 +278,10 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     terminationReason: (baseline128Evidence!.provenance as Record<string, unknown>).terminationReason,
   })
 
-  // Cancel during the expensive paint phase, then use the contract's minimal
-  // recovery probe to isolate worker-slot reuse from the already-measured
-  // 128-layer performance gate and prove there is no stale-result pollution.
+  // Cancel during the expensive paint phase, then let the contract's minimal
+  // recovery probe finish. A one-layer probe may complete before Playwright can
+  // click Cancel again; requiring its own completed evidence is the stronger,
+  // race-free proof that the worker slot was reused without stale pollution.
   await page.locator('.fit-budget input').fill('10000')
   await page.getByRole('button', { name: '开始本地拟合' }).click()
   await expect(page.locator('.fit-progress small').first()).toContainText('原生矩形块残差细化', { timeout: 15_000 })
@@ -297,10 +298,16 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   })
   const restartProgressLatencyMs = Date.now() - restartStarted
   expect(restartProgressLatencyMs).toBeLessThan(contract.maximumRestartProgressLatencyMs)
-  await page.getByRole('button', { name: '取消', exact: true }).click()
-  await expect(page.locator('.fit-progress small').first()).toContainText('已取消')
-  await page.waitForTimeout(250)
-  await expect(report).toHaveAttribute('data-fit-evidence', '')
+  await expect(report).toHaveAttribute('data-fit-task-state', 'completed', {
+    timeout: contract.maximumDurationMs[128],
+  })
+  const restartedRawEvidence = await report.getAttribute('data-fit-evidence')
+  expect(restartedRawEvidence).toBeTruthy()
+  const restartedEvidence = JSON.parse(restartedRawEvidence!) as {
+    provenance: { layerBudget: number, drawnInstances: number }
+  }
+  expect(restartedEvidence.provenance.layerBudget).toBe(contract.restartProbeBudget)
+  expect(restartedEvidence.provenance.drawnInstances).toBeLessThanOrEqual(contract.restartProbeBudget)
 
   const heapAfter = await page.evaluate(() => (
     (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null
@@ -320,7 +327,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     pauseLatencyMs,
     persistentRestoreDurationMs,
     resumeDurationMs,
-    pauseResumeContract: 'ck3-coa-fit-checkpoint-v2',
+    pauseResumeContract: 'ck3-coa-fit-checkpoint-v4',
     cancellationLatencyMs,
     restartProgressLatencyMs,
     restartBudget: contract.restartProbeBudget,

@@ -1,0 +1,699 @@
+{
+  "schema": "ck3-coa-user-picture-quality-evidence-v1",
+  "status": "browser-passed-native-mcp-pending",
+  "generatedAt": "2026-09-21T12:07:28.548Z",
+  "sourceRevision": {
+    "headCommit": "d044e7523dc87ffa4613da2e9a72b2328abf31f8",
+    "workingTreePatchSha256": "AA860024CB4A097F7B9FA538EC9A4829C62A5CB5BED76248D8A5DF1179F9DD5E"
+  },
+  "corpus": {
+    "schema": "ck3-coa-user-picture-regression-corpus-v1",
+    "sourceArchive": {
+      "name": "pictures.zip",
+      "bytes": 6240071,
+      "sha256": "0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F"
+    },
+    "case": {
+      "id": "picture-04",
+      "file": "BV1bt421G7qL.png",
+      "mimeType": "image/png",
+      "bytes": 991529,
+      "width": 1080,
+      "height": 1080,
+      "sha256": "9E7B345F3857DB1B2F9EC5AE2550DCD16499B67D678CB3E07931931B2FE44F8C",
+      "v5Budget1024Baseline": {
+        "totalLoss": 0.05555435165758835,
+        "edgeLoss": 0.10627171230677081,
+        "relativeImprovement": 0.5762956515223989
+      }
+    }
+  },
+  "configuration": {
+    "userDrawInstanceBudget": 1024,
+    "randomSeed": null,
+    "scoringContract": "alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1",
+    "rendererContract": "cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4",
+    "surfaceMaskApplied": true
+  },
+  "metrics": {
+    "colorLoss": 0.016114610922436053,
+    "edgeLoss": 0.08701321282007866,
+    "totalLoss": 0.043056079643540246,
+    "relativeImprovement": 0.6834940288426821
+  },
+  "paretoCandidates": [
+    {
+      "index": 1,
+      "sourceFile": "pareto-candidate-01.txt",
+      "previewFile": "pareto-candidate-01.png",
+      "sourceSha256": "D7C6305E0091C6B7C95E4AF6AAE5230B0EBDB9D4B83C5304A89568B58E605815",
+      "previewSha256": "9F46E4EB7F73EFF7595592FA473F8582D51C62B4A9FCCB2FEA999FB256AC8D8F",
+      "parseErrors": 0,
+      "metrics": {
+        "colorLoss": 0.016114610922436053,
+        "edgeLoss": 0.08701321282007866,
+        "totalLoss": 0.043056079643540246,
+        "relativeImprovement": 0.6834940288426821
+      },
+      "perceptualMetricsV2": {
+        "linearColorLoss": 0.028006804579280037,
+        "multiscaleColorLoss": 0.0035006265720450326,
+        "edgeGradientLoss": 0.07473503268944587,
+        "bidirectionalEdgeDistanceLoss": 0.0013870844678722741,
+        "structureLoss": 0.15869549014342685,
+        "totalLoss": 0.03205787695826857,
+        "structure": {
+          "edgeMassLoss": 0.20378233424433706,
+          "edgeCentroidLoss": 0.01628797514762001,
+          "componentCountLoss": 0.10457516339869281,
+          "enclosedRegionCountLoss": 0.41046831955922863,
+          "targetComponents": 153,
+          "renderedComponents": 137,
+          "targetEnclosedRegions": 363,
+          "renderedEnclosedRegions": 214
+        }
+      },
+      "reconstructionMode": "native-high-resolution-edge-refined",
+      "textureNames": [
+        "ce_ordinary_fess_5.dds",
+        "ce_falcon.dds",
+        "ce_letter_i.dds",
+        "ce_block_02.dds"
+      ],
+      "multiscaleMetrics": [
+        {
+          "resolution": 96,
+          "colorLoss": 0.016114610922436053,
+          "edgeLoss": 0.08701321282007866,
+          "totalLoss": 0.043056079643540246
+        },
+        {
+          "resolution": 192,
+          "colorLoss": 0.01235735195664424,
+          "edgeLoss": 0.05020016473539295,
+          "totalLoss": 0.026737620812568752
+        },
+        {
+          "resolution": 256,
+          "colorLoss": 0.015244325224472381,
+          "edgeLoss": 0.050136290729525065,
+          "totalLoss": 0.028503272116392402
+        }
+      ],
+      "stats": {
+        "logicalLayers": 969,
+        "coloredEmblemBlocks": 969,
+        "texturedEmblemBlocks": 0,
+        "drawnInstances": 971,
+        "utf8Bytes": 382875,
+        "lines": 13587
+      }
+    },
+    {
+      "index": 2,
+      "sourceFile": "pareto-candidate-02.txt",
+      "previewFile": "pareto-candidate-02.png",
+      "sourceSha256": "241A3CAC95E372DB2C2BDFE680B8C5F83BC4FA5214B4D8519D740305C016B420",
+      "previewSha256": "F1C55046FE8918FE6B3AEB3BC8BFBC22241F0129391399FF6E2449FEAFF6A69A",
+      "parseErrors": 0,
+      "metrics": {
+        "colorLoss": 0.016620128409477897,
+        "edgeLoss": 0.08704904026783421,
+        "totalLoss": 0.0433831149156533,
+        "relativeImprovement": 0.6810899870149126
+      },
+      "perceptualMetricsV2": {
+        "linearColorLoss": 0.028664967047249596,
+        "multiscaleColorLoss": 0.003518735582523665,
+        "edgeGradientLoss": 0.07552450270716692,
+        "bidirectionalEdgeDistanceLoss": 0.0014382233118682215,
+        "structureLoss": 0.16252790477207768,
+        "totalLoss": 0.03260302081008343,
+        "structure": {
+          "edgeMassLoss": 0.20163945360778207,
+          "edgeCentroidLoss": 0.016186135764268392,
+          "componentCountLoss": 0.1111111111111111,
+          "enclosedRegionCountLoss": 0.4325068870523416,
+          "targetComponents": 153,
+          "renderedComponents": 136,
+          "targetEnclosedRegions": 363,
+          "renderedEnclosedRegions": 206
+        }
+      },
+      "reconstructionMode": "hybrid-native-paint",
+      "textureNames": [
+        "ce_ordinary_fess_5.dds",
+        "ce_falcon.dds",
+        "ce_letter_i.dds",
+        "ce_block_02.dds"
+      ],
+      "multiscaleMetrics": [
+        {
+          "resolution": 96,
+          "colorLoss": 0.016620128409477897,
+          "edgeLoss": 0.08704904026783421,
+          "totalLoss": 0.0433831149156533
+        },
+        {
+          "resolution": 192,
+          "colorLoss": 0.012878151498887247,
+          "edgeLoss": 0.05038367560139269,
+          "totalLoss": 0.027130250657839316
+        },
+        {
+          "resolution": 256,
+          "colorLoss": 0.01575324766791422,
+          "edgeLoss": 0.05035690911867394,
+          "totalLoss": 0.02890263901920291
+        }
+      ],
+      "stats": {
+        "logicalLayers": 959,
+        "coloredEmblemBlocks": 959,
+        "texturedEmblemBlocks": 0,
+        "drawnInstances": 959,
+        "utf8Bytes": 378971,
+        "lines": 13433
+      }
+    }
+  ],
+  "perceptualMetricsV2": {
+    "linearColorLoss": 0.028006804579280037,
+    "multiscaleColorLoss": 0.0035006265720450326,
+    "edgeGradientLoss": 0.07473503268944587,
+    "bidirectionalEdgeDistanceLoss": 0.0013870844678722741,
+    "structureLoss": 0.15869549014342685,
+    "totalLoss": 0.03205787695826857,
+    "structure": {
+      "edgeMassLoss": 0.20378233424433706,
+      "edgeCentroidLoss": 0.01628797514762001,
+      "componentCountLoss": 0.10457516339869281,
+      "enclosedRegionCountLoss": 0.41046831955922863,
+      "targetComponents": 153,
+      "renderedComponents": 137,
+      "targetEnclosedRegions": 363,
+      "renderedEnclosedRegions": 214
+    }
+  },
+  "fitElapsedMilliseconds": 414242,
+  "v5Budget1024Baseline": {
+    "totalLoss": 0.05555435165758835,
+    "edgeLoss": 0.10627171230677081,
+    "relativeImprovement": 0.5762956515223989
+  },
+  "provenance": {
+    "algorithm": "ck3-coa-browser-fit-v9-quality-first",
+    "searchBackend": "webgl2-batch+cpu-reference",
+    "batchSearch": {
+      "requested": true,
+      "backend": "webgl2-texture-array-reduction-float-v1",
+      "status": "active",
+      "batches": 14,
+      "candidates": 558,
+      "maximumBatchSize": 128,
+      "cpuReferenceTolerance": 0.000002,
+      "maximumMetricDelta": 4.553620247538248e-8,
+      "cpuReferenceAgreement": true
+    },
+    "scoringContract": "alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1",
+    "perceptualScoringShadow": {
+      "contract": "linear-rgb40-multiscale30-gradient20-bidirectional-edge7-structure3-shadow-v2",
+      "status": "full-dds-bounded-selection",
+      "backend": "cpu-reference",
+      "selected": {
+        "linearColorLoss": 0.028006804579280037,
+        "multiscaleColorLoss": 0.0035006265720450326,
+        "edgeGradientLoss": 0.07473503268944587,
+        "bidirectionalEdgeDistanceLoss": 0.0013870844678722741,
+        "structureLoss": 0.15869549014342685,
+        "totalLoss": 0.03205787695826857,
+        "structure": {
+          "edgeMassLoss": 0.20378233424433706,
+          "edgeCentroidLoss": 0.01628797514762001,
+          "componentCountLoss": 0.10457516339869281,
+          "enclosedRegionCountLoss": 0.41046831955922863,
+          "targetComponents": 153,
+          "renderedComponents": 137,
+          "targetEnclosedRegions": 363,
+          "renderedEnclosedRegions": 214
+        }
+      }
+    },
+    "rendererContract": "cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4",
+    "randomSeed": null,
+    "surfaceMaskApplied": true,
+    "sourceWidth": 1080,
+    "sourceHeight": 1080,
+    "resolution": 96,
+    "pyramidResolutions": [
+      96,
+      192,
+      256
+    ],
+    "evaluatedCandidates": 53868,
+    "patternAssets": 42,
+    "emblemAssets": 1577,
+    "shapeFeatureIndex": {
+      "contract": "ck3-coa-shape-features-v1",
+      "indexedAssets": 1619,
+      "fallbackAssets": 0
+    },
+    "assetRetrievalIndex": {
+      "contract": "ck3-coa-asset-retrieval-sdf-hu-radial-orientation-topology-v2",
+      "source": "content-addressed-fit-features-derived",
+      "fineShortlist": 128,
+      "rotations": 24,
+      "mirrors": 2,
+      "legacySafetyLane": {
+        "contract": "legacy-dice-mse-12-angle-v1",
+        "reservedRanks": 8,
+        "denseLegacyFirstRanks": 48
+      }
+    },
+    "structureSearch": {
+      "contract": "salient-components-depth-ordered-beam-v1",
+      "semanticLayerBudget": 3,
+      "completedSemanticLayers": 3,
+      "beamWidth": 2,
+      "residualComponentsPerBeam": 2,
+      "legacyPrimaryFocusApplied": true,
+      "layerOrder": "foreground-append-then-native-depth-encode"
+    },
+    "layerBudget": 1024,
+    "logicalLayers": 969,
+    "coloredEmblemBlocks": 969,
+    "drawnInstances": 971,
+    "selectedLayers": 971,
+    "reconstructionMode": "native-high-resolution-edge-refined",
+    "candidateLosses": [
+      {
+        "mode": "semantic-search",
+        "layers": 1,
+        "totalLoss": 0.10243337636830177,
+        "edgeLoss": 0.1124885286659894,
+        "textureNames": [
+          "ce_ordinary_fess_5.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.09627054108907386,
+            "edgeLoss": 0.1124885286659894,
+            "totalLoss": 0.10243337636830177
+          }
+        ],
+        "passesPrimaryNonRegression": false
+      },
+      {
+        "mode": "semantic-search",
+        "layers": 1,
+        "totalLoss": 0.10959568925466188,
+        "edgeLoss": 0.11499961115545419,
+        "textureNames": [
+          "ce_border_shield_engrailed_02.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.10628360808966016,
+            "edgeLoss": 0.11499961115545419,
+            "totalLoss": 0.10959568925466188
+          }
+        ],
+        "passesPrimaryNonRegression": false
+      },
+      {
+        "mode": "semantic-search",
+        "layers": 2,
+        "totalLoss": 0.09099189271862751,
+        "edgeLoss": 0.11610037211499127,
+        "textureNames": [
+          "ce_ordinary_fess_5.dds",
+          "ce_falcon.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.07560282470150134,
+            "edgeLoss": 0.11610037211499127,
+            "totalLoss": 0.09099189271862751
+          }
+        ],
+        "passesPrimaryNonRegression": false
+      },
+      {
+        "mode": "semantic-search",
+        "layers": 2,
+        "totalLoss": 0.1094249096269123,
+        "edgeLoss": 0.1147666185272077,
+        "textureNames": [
+          "ce_border_shield_engrailed_02.dds",
+          "ce_stripes_horizontal_15.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.10615095901060222,
+            "edgeLoss": 0.1147666185272077,
+            "totalLoss": 0.1094249096269123
+          }
+        ],
+        "passesPrimaryNonRegression": false
+      },
+      {
+        "mode": "semantic-search",
+        "layers": 3,
+        "totalLoss": 0.08466753774673094,
+        "edgeLoss": 0.1159975332306708,
+        "textureNames": [
+          "ce_ordinary_fess_5.dds",
+          "ce_falcon.dds",
+          "ce_letter_i.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.06546528245012263,
+            "edgeLoss": 0.1159975332306708,
+            "totalLoss": 0.08466753774673094
+          }
+        ],
+        "passesPrimaryNonRegression": false
+      },
+      {
+        "mode": "semantic-search",
+        "layers": 3,
+        "totalLoss": 0.10931861966860076,
+        "edgeLoss": 0.11460694703114212,
+        "textureNames": [
+          "ce_border_shield_engrailed_02.dds",
+          "ce_stripes_horizontal_15.dds",
+          "ce_african_pattern_triangles_03.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.10607738676897867,
+            "edgeLoss": 0.11460694703114212,
+            "totalLoss": 0.10931861966860076
+          }
+        ],
+        "passesPrimaryNonRegression": false
+      },
+      {
+        "mode": "native-tile-paint",
+        "layers": 889,
+        "totalLoss": 0.05649834414272813,
+        "edgeLoss": 0.10204196212133429,
+        "textureNames": [
+          "ce_block_02.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.028584513768743706,
+            "edgeLoss": 0.10204196212133429,
+            "totalLoss": 0.05649834414272813
+          }
+        ],
+        "passesPrimaryNonRegression": true
+      },
+      {
+        "mode": "native-edge-refined",
+        "layers": 1024,
+        "totalLoss": 0.047039831697844585,
+        "edgeLoss": 0.08733493339084533,
+        "textureNames": [
+          "ce_block_02.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.022342833886005414,
+            "edgeLoss": 0.08733493339084533,
+            "totalLoss": 0.047039831697844585
+          }
+        ],
+        "passesPrimaryNonRegression": true
+      },
+      {
+        "mode": "hybrid-native-paint",
+        "layers": 871,
+        "totalLoss": 0.04954171593212838,
+        "edgeLoss": 0.09736560591890207,
+        "textureNames": [
+          "ce_ordinary_fess_5.dds",
+          "ce_falcon.dds",
+          "ce_letter_i.dds",
+          "ce_block_02.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.02023029948862192,
+            "edgeLoss": 0.09736560591890207,
+            "totalLoss": 0.04954171593212838
+          }
+        ],
+        "passesPrimaryNonRegression": true
+      },
+      {
+        "mode": "hybrid-native-paint",
+        "layers": 900,
+        "totalLoss": 0.0527252522831651,
+        "edgeLoss": 0.10090121400122516,
+        "textureNames": [
+          "ce_ordinary_fess_5.dds",
+          "ce_block_02.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.02319804993983796,
+            "edgeLoss": 0.10090121400122516,
+            "totalLoss": 0.0527252522831651
+          }
+        ],
+        "passesPrimaryNonRegression": true
+      },
+      {
+        "mode": "native-high-resolution-edge-refined",
+        "layers": 889,
+        "totalLoss": 0.048736203050686364,
+        "edgeLoss": 0.09639363900713739,
+        "textureNames": [
+          "ce_ordinary_fess_5.dds",
+          "ce_falcon.dds",
+          "ce_letter_i.dds",
+          "ce_block_02.dds"
+        ],
+        "multiscaleMetrics": [
+          {
+            "resolution": 96,
+            "colorLoss": 0.019526806819313153,
+            "edgeLoss": 0.09639363900713739,
+            "totalLoss": 0.048736203050686364
+          }
+        ],
+        "passesPrimaryNonRegression": true
+      }
+    ],
+    "selectedMultiscaleMetrics": [
+      {
+        "resolution": 96,
+        "colorLoss": 0.016114610922436053,
+        "edgeLoss": 0.08701321282007866,
+        "totalLoss": 0.043056079643540246
+      },
+      {
+        "resolution": 192,
+        "colorLoss": 0.01235735195664424,
+        "edgeLoss": 0.05020016473539295,
+        "totalLoss": 0.026737620812568752
+      },
+      {
+        "resolution": 256,
+        "colorLoss": 0.015244325224472381,
+        "edgeLoss": 0.050136290729525065,
+        "totalLoss": 0.028503272116392402
+      }
+    ],
+    "baselineEdgeRepair": {
+      "availableSlots": 135,
+      "acceptedLayers": 135,
+      "evaluatedCandidates": 25920,
+      "terminationReason": "layer_budget"
+    },
+    "highResolutionEdgeRepair": {
+      "resolution": 192,
+      "availableSlots": 153,
+      "acceptedLayers": 18,
+      "evaluatedCandidates": 392,
+      "terminationReason": "no_improvement"
+    },
+    "nativeShapeRefinement": {
+      "requestedPasses": 0,
+      "completedPasses": 0,
+      "acceptedLayers": 0,
+      "evaluatedCandidates": 0,
+      "primitiveTextureNames": [
+        "ce_block_02.dds",
+        "ce_billet.dds",
+        "ce_circle.dds",
+        "ce_lozenge.dds",
+        "ce_triangle_mask.dds"
+      ],
+      "acceptedTextureNames": [],
+      "terminationReason": "not_applicable"
+    },
+    "terminationReason": "layer_budget",
+    "nativeTileSeamValidation": {
+      "status": "not-applicable",
+      "samplingContract": "pixel-center-hard-geometry-v1",
+      "metrics": []
+    },
+    "nativeTileSearch": {
+      "contract": "resolution-bounded-quadtree-v2",
+      "searchWidth": 96,
+      "searchHeight": 96,
+      "maximumDepth": 6,
+      "pixelLeafCapacity": 9216,
+      "userBudgetAppliedWithoutClamp": 1024
+    },
+    "fullAssetFinalization": {
+      "contract": "full-dds-rescore-repair-pareto-v3",
+      "searchAssetContract": "fit-index-rgba32-v2",
+      "finalAssetContract": "decoded-exact-dds-mip-v1",
+      "rescoredCandidates": 11,
+      "selectedOriginalIndexes": [
+        2,
+        1
+      ],
+      "sourceWinnerPreserved": false,
+      "maximumAbsoluteTotalLossDelta": 0.006158601016475085,
+      "maximumAbsoluteEdgeLossDelta": 0.010316565651067866,
+      "exactResidualRepair": {
+        "contract": "exact-dds-residual-tile-perceptual-v2",
+        "attemptedCandidates": 2,
+        "repairedCandidates": 2,
+        "acceptedLayers": 170,
+        "perceptualAcceptedLayers": 117,
+        "evaluatedCandidates": 150898,
+        "maximumAdditionalLayersPerCandidate": 144
+      },
+      "perceptualColorRefinement": {
+        "contract": "linear-light-native-tile-recolor-v1",
+        "evaluatedVariants": 8,
+        "selectedBlend": 0,
+        "maximumLegacyTolerance": 0.03,
+        "variants": [
+          {
+            "originalIndex": 1,
+            "blend": 0,
+            "totalLoss": 0.0433831149156533,
+            "edgeLoss": 0.08704904026783421,
+            "perceptualLossV2": 0.03260302081008343
+          },
+          {
+            "originalIndex": 1,
+            "blend": 0.25,
+            "totalLoss": 0.04355002280828965,
+            "edgeLoss": 0.08719324784464243,
+            "perceptualLossV2": 0.03272349631571184
+          },
+          {
+            "originalIndex": 1,
+            "blend": 0.5,
+            "totalLoss": 0.043807015087289854,
+            "edgeLoss": 0.08739090684930796,
+            "perceptualLossV2": 0.032887104321395015
+          },
+          {
+            "originalIndex": 1,
+            "blend": 0.75,
+            "totalLoss": 0.04413354688050596,
+            "edgeLoss": 0.08762640051223372,
+            "perceptualLossV2": 0.03308300270370417
+          },
+          {
+            "originalIndex": 1,
+            "blend": 1,
+            "totalLoss": 0.044546840630428144,
+            "edgeLoss": 0.08792896859950164,
+            "perceptualLossV2": 0.033236908488524855
+          },
+          {
+            "originalIndex": 2,
+            "blend": 0,
+            "totalLoss": 0.043056079643540246,
+            "edgeLoss": 0.08701321282007866,
+            "perceptualLossV2": 0.03205787695826857
+          },
+          {
+            "originalIndex": 2,
+            "blend": 0.25,
+            "totalLoss": 0.04321408664185585,
+            "edgeLoss": 0.08716568271360103,
+            "perceptualLossV2": 0.03214153680622016
+          },
+          {
+            "originalIndex": 2,
+            "blend": 0.5,
+            "totalLoss": 0.04348884441814508,
+            "edgeLoss": 0.08739694191821479,
+            "perceptualLossV2": 0.03235369873506765
+          },
+          {
+            "originalIndex": 2,
+            "blend": 0.75,
+            "totalLoss": 0.04383119161302852,
+            "edgeLoss": 0.08765945733762281,
+            "perceptualLossV2": 0.03256275159945205
+          },
+          {
+            "originalIndex": 2,
+            "blend": 1,
+            "totalLoss": 0.04425995971865608,
+            "edgeLoss": 0.08798601788920092,
+            "perceptualLossV2": 0.032686744935301056
+          }
+        ]
+      },
+      "structuralCompression": {
+        "strategy": "adjacent-equal-style-v1",
+        "exactStructureOnly": true,
+        "coloredEmblemBlocksBefore": 971,
+        "coloredEmblemBlocksAfter": 969,
+        "mergedBlocks": 2,
+        "drawnInstancesBefore": 971,
+        "drawnInstancesAfter": 971,
+        "utf8BytesBefore": 383228,
+        "utf8BytesAfter": 382875,
+        "linesBefore": 13600,
+        "linesAfter": 13586
+      }
+    }
+  },
+  "counts": {
+    "userBudget": 1024,
+    "drawnInstances": 971,
+    "logicalLayers": 969,
+    "coloredEmblemBlocks": 969,
+    "utf8Bytes": 382875,
+    "lines": 13587
+  },
+  "integrity": {
+    "sourceSha256": "D7C6305E0091C6B7C95E4AF6AAE5230B0EBDB9D4B83C5304A89568B58E605815",
+    "canonicalPreviewSha256": "9F46E4EB7F73EFF7595592FA473F8582D51C62B4A9FCCB2FEA999FB256AC8D8F",
+    "fitAndEditorPreviewByteIdentical": true,
+    "parseErrors": 0,
+    "serializeParseExact": true,
+    "parsedInstances": 971
+  },
+  "evidenceLevel": {
+    "inputToBrowserFitMetrics": "measured",
+    "fitPreviewToEditorPreview": "byte-identical",
+    "ck3ApplyCopyRoundTrip": "pending-mcp",
+    "nativeSpatialPixelComparison": "pending-mcp-framebuffer-capability"
+  }
+}
