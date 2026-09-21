@@ -11,10 +11,24 @@ permissions:
 jobs:
   static:
     runs-on: windows-latest
+    env:
+      TEMP: ${{ runner.temp }}
+      TMP: ${{ runner.temp }}
+      PIP_CACHE_DIR: ${{ runner.temp }}\pip-cache
+      PYTHONPYCACHEPREFIX: ${{ runner.temp }}\python-bytecode
+      XDG_CACHE_HOME: ${{ runner.temp }}\cache
     defaults:
       run:
         shell: cmd
     steps:
+      - name: Require non-C task workspace and temp
+        run: |
+          if /I "%GITHUB_WORKSPACE:~0,2%"=="C:" exit /b 1
+          if /I "%RUNNER_TEMP:~0,2%"=="C:" exit /b 1
+          if /I "%TEMP:~0,2%"=="C:" exit /b 1
+          if /I "%TMP:~0,2%"=="C:" exit /b 1
+          if /I "%PIP_CACHE_DIR:~0,2%"=="C:" exit /b 1
+          if /I "%PYTHONPYCACHEPREFIX:~0,2%"=="C:" exit /b 1
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
@@ -26,6 +40,10 @@ jobs:
           cache-dependency-path: |
             tools/requirements-static.txt
             tools/requirements-promo-toolchain.txt
+      - name: Install task packages outside C
+        run: |
+          python -m venv "%RUNNER_TEMP%\g2-static-venv"
+          echo %RUNNER_TEMP%\g2-static-venv\Scripts>>"%GITHUB_PATH%"
       - name: Install static dependencies
         run: python -m pip install -r tools/requirements-static.txt
       - name: Install released promo toolchain
