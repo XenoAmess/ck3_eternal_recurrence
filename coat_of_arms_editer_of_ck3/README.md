@@ -76,5 +76,8 @@ Quarkus backend 与浏览器 REST client 已在 Beta WP7 退役。原生研究�
 
 已完成的原生 Apply/Copy、王朝 Finish、15 例语法矩阵和大于 128 KiB 的分块 MCP v2 证据均保留在
 [`../docs/ck3-coat-of-arms-clipboard-import-capability.md`](../docs/ck3-coat-of-arms-clipboard-import-capability.md)。
+当前最终 1,024 实例 Pareto 候选的 CK3 Apply、校准 framebuffer 与 Copy/reapply 已在
+[`../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v8-native-r38/README.md`](../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v8-native-r38/README.md)
+通过预冻结门限；该证据不声称 GPU 逐字节一致。
 当前尚未覆盖的 shader/VFS 组合原生 framebuffer、通用 DLC/mod runtime definition winner 和战役保存/重载持久化仍按证据范围标为待验；
 Gamma/1.0 收口顺序见 [`../docs/ck3-coat-of-arms-editor-gamma-plan.md`](../docs/ck3-coat-of-arms-editor-gamma-plan.md)。

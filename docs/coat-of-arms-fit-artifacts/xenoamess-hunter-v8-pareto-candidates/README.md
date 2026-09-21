@@ -21,8 +21,8 @@ fit-index v2 的能量重心被错误用于铺砖几何后产生的高分辨率�
 
 `report.json` 记录了基准 commit、工作区补丁 SHA-256、输入/素材包 SHA-256、
 评分与 renderer 合同、配置、计数、逐候选指标和前驱关系。浏览器回归与浏览器复制传输
-已通过；该 v8 候选尚未进行 CK3 Apply/Copy 或 framebuffer 对照，因此不能据此宣称原生
-像素一致。
+已通过；后续 [R38 原生证据](../xenoamess-hunter-v8-native-r38/README.md)已对 Pareto 01 完成
+CK3 Apply、校准 framebuffer、Copy/reapply，并通过预冻结门限。该结果仍不等于 GPU 逐字节一致。
 
 ```bat
 cd coat_of_arms_editer_of_ck3

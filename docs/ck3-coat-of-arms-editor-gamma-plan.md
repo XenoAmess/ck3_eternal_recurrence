@@ -89,7 +89,7 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 
 ### G2：原生 framebuffer 证据收口（P0，1–2 工程日 + CK3 槽位）
 
-状态：`prepared`（2026-09-21；[R38 门限、输入与交互政策](coat-of-arms-fit-artifacts/xenoamess-hunter-v8-native-r38/README.md)已在首次 live attempt 前冻结）。
+状态：`passed`（2026-09-21；[R38 门限、输入、结果与原生 crop](coat-of-arms-fit-artifacts/xenoamess-hunter-v8-native-r38/README.md)）。
 
 交付：
 
@@ -98,6 +98,14 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 - 为已支持 shader 路径更新能力矩阵；未覆盖 texture/shader 继续保真导出并显示“无原生像素证据”。
 
 退出条件：目标矩阵有 hash-bound 报告、原始 framebuffer、摘要与 exact commit；网页不声称 GPU 逐字节一致。
+
+完成证据：
+
+- 门限在 live attempt 前提交于 `c7943033bdd079167e8e4e7482f5912497e65af1`；随后未调整。
+- CK3 `1.19.0.6`、Steam 离线、fresh userdir、MCP-only R38 为 1/1 GREEN；原始报告 4,014,852 bytes，SHA-256 `B3FE3032F5C8ACB5496FFC78D1317AF6BE579124A5BCD51094D0408A5177F6C8`。
+- 最终 Pareto 01 的 1,024 实例语义 Copy 完整；浏览器→CK3 的 MAE/MSE/edge/worst spatial 为 `0.0461952 / 0.0185736 / 0.118908 / 0.125018`，均在预冻结门限内。
+- Copy/reapply 的对应指标为 `0.0000524955 / 0.000000205865 / 0.000186073 / 0.000299564`；两张 framebuffer-derived crop 已逐字节入库。
+- runner 结束后 CK3 进程树清空，Steam 保持离线；结果明确不外推未验 shader/VFS 组合，不声称 GPU 逐字节一致。
 
 ### G3：战役持久化（P0/P1，1–3 工程日 + CK3 槽位，依赖 G2 的稳定捕获能力）
 

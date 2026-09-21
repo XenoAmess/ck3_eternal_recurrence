@@ -7,7 +7,7 @@
 | 语法/资源 | Parser | Preview | Editor | Serializer | Native evidence | Beta 边界 |
 | --- | --- | --- | --- | --- | --- | --- |
 | `coa = { ... }` wrapper | 完整 | 完整 | 归一化 | 归一化 | 15-case MCP Apply/Copy | 导出统一使用 `coa`。 |
-| pattern、三色、`colored_emblem`、`instance`、mask、变换与 depth | 完整 | 完整 | 完整 | 完整 | R17/R18 七图原生像素与 Copy/reapply | 浏览器指标通过预声明像素门限，不声称 GPU 逐字节相同。 |
+| pattern、三色、`colored_emblem`、`instance`、mask、变换与 depth | 完整 | 完整 | 完整 | 完整 | R17/R18 七图 + R38 最终 1,024 实例 Pareto 原生像素与 Copy/reapply | 浏览器指标通过预声明像素门限，不声称 GPU 逐字节相同。 |
 | 注释与 `hsv` | 归一化 | 完整 | 归一化 | 归一化 | 15-case MCP Apply/Copy | 注释丢弃，HSV 按原生 Copy 结果转 RGB。 |
 | 静态 `@变量` | 归一化 | 完整 | 归一化 | 归一化 | 15-case MCP Apply/Copy | 只接受无循环、可静态展开的字面量引用。 |
 | `_default.dds` `textured_emblem` | 完整 | 完整 | 受限 | 完整 | R35 校准 framebuffer + Copy/reapply | exact build 唯一注册 texture；其他名字保留但不伪预览。 |
@@ -33,6 +33,7 @@
 
 - [剪贴板导入能力](ck3-coat-of-arms-clipboard-import-capability.md)
 - [七图原生像素闭环](coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/README.md)
+- [最终 Pareto 01 原生像素与 Copy/reapply R38](coat-of-arms-fit-artifacts/xenoamess-hunter-v8-native-r38/README.md)
 - [`textured_emblem` R35](coat-of-arms-fit-artifacts/textured-emblem-native-r35/README.md)
 - [`parent` R21](coat-of-arms-fit-artifacts/parent-semantics-native-r21/README.md)
 - [DLC 来源 R36](coat-of-arms-fit-artifacts/dlc-source-inventory-mcp-r36/README.md)
