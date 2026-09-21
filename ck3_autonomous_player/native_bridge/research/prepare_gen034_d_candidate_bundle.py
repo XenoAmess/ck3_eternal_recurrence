@@ -11,6 +11,12 @@ import os
 from pathlib import Path
 import sys
 
+from gen034_runtime_manifest import (
+    RuntimeManifestError,
+    build_runtime_file_manifest,
+    verify_runtime_file_manifest,
+)
+
 
 RESEARCH_ROOT = Path(__file__).resolve().parent
 REPOSITORY_ROOT = RESEARCH_ROOT.parents[2]
@@ -19,6 +25,7 @@ OUTER_NAME = "g2_source_specific_war_loss_outer_owner_v1_manifest.json"
 LIFECYCLE_NAME = "g2_source_specific_war_loss_lifecycle_v1_manifest.json"
 LIVE_NAME = "g2_source_specific_war_loss_live_adapter_v1_manifest.json"
 BUNDLE_NAME = "gen034-d-candidate-bundle.json"
+RUNTIME_MANIFEST_NAME = "gen034-d-runtime-files-v1.json"
 
 
 class CandidateBundleError(ValueError):
@@ -56,6 +63,52 @@ def _write(path: Path, value: dict[str, object]) -> None:
 def _resolve_template_path(value: object, *, repository_root: Path) -> Path:
     path = Path(str(value)).expanduser()
     return path.resolve() if path.is_absolute() else (repository_root / path).resolve()
+
+
+def _profile_asset_binding(template_value: Path) -> dict[str, object]:
+    template = template_value.expanduser().resolve()
+    cache_root = template.parent / "shadercache"
+    if not template.is_file() or not cache_root.is_dir():
+        raise CandidateBundleError("profile settings/shadercache source pair is missing")
+    symlinks = [path for path in cache_root.rglob("*") if path.is_symlink()]
+    if symlinks:
+        raise CandidateBundleError("profile shadercache contains symlinks")
+    entries: list[dict[str, object]] = []
+    lane_counts: dict[str, dict[str, int]] = {}
+    total_bytes = 0
+    for path in sorted(item for item in cache_root.rglob("*") if item.is_file()):
+        relative = path.relative_to(cache_root).as_posix()
+        size = path.stat().st_size
+        total_bytes += size
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        entries.append({"path": relative, "bytes": size, "sha256": digest})
+        for lane in ("dx11/ps_5_0", "dx11/vs_5_0"):
+            if relative.startswith(lane + "/"):
+                suffix = path.suffix.lower()
+                counts = lane_counts.setdefault(lane, {})
+                counts[suffix] = counts.get(suffix, 0) + 1
+    if not entries or total_bytes <= 0 or not all(
+        lane_counts.get(lane, {}).get(suffix, 0) > 0
+        for lane in ("dx11/ps_5_0", "dx11/vs_5_0")
+        for suffix in (".bin", ".scache")
+    ):
+        raise CandidateBundleError("profile shadercache is not a complete warm DX11 pair")
+    canonical = json.dumps(
+        entries, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return {
+        "settings": {
+            "path": str(template),
+            "bytes": template.stat().st_size,
+            "sha256": _sha256(template),
+        },
+        "shadercache": {
+            "path": str(cache_root),
+            "file_count": len(entries),
+            "bytes": total_bytes,
+            "tree_sha256": hashlib.sha256(canonical).hexdigest().upper(),
+        },
+    }
 
 
 def _materialize_manifest(
@@ -128,6 +181,18 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
     outer_path = output_dir / OUTER_NAME
     lifecycle_path = output_dir / LIFECYCLE_NAME
     live_path = output_dir / LIVE_NAME
+    runtime_manifest_path = output_dir / RUNTIME_MANIFEST_NAME
+    _write(
+        runtime_manifest_path,
+        build_runtime_file_manifest(
+            repository_root, source_commit=args.source_commit
+        ),
+    )
+    runtime_source_closure = verify_runtime_file_manifest(
+        runtime_manifest_path,
+        runtime_root=repository_root,
+    )
+    profile_asset_binding = _profile_asset_binding(args.profile_settings_template)
     _write(
         outer_path,
         _materialize_manifest(
@@ -148,7 +213,10 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
         LIVE_NAME,
         runtime_paths=runtime_paths,
         repository_root=repository_root,
-        output_paths={"outer_owner_manifest": outer_path},
+        output_paths={
+            "outer_owner_manifest": outer_path,
+            "runtime_manifest": runtime_manifest_path,
+        },
     )
     _write(live_path, live)
     command = [
@@ -173,6 +241,10 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
         str(profile_dir),
         "--profile-settings-template",
         str(args.profile_settings_template.expanduser().resolve()),
+        "--expected-profile-settings-sha256",
+        str(profile_asset_binding["settings"]["sha256"]),
+        "--expected-shadercache-tree-sha256",
+        str(profile_asset_binding["shadercache"]["tree_sha256"]),
         "--game-root",
         str(args.game_root.expanduser().resolve()),
         "--capture-executable",
@@ -199,6 +271,7 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
             "lifecycle": _verify_manifest(lifecycle_path),
             "live_adapter": _verify_manifest(live_path),
         },
+        "runtime_source_closure": runtime_source_closure,
         "release_binaries": {
             name: {
                 "path": str(path.expanduser().resolve()),
@@ -207,9 +280,7 @@ def build_bundle(args: argparse.Namespace) -> dict[str, object]:
             }
             for name, path in runtime_paths.items()
         },
-        "profile_settings_template": str(
-            args.profile_settings_template.expanduser().resolve()
-        ),
+        "startup_profile_assets": profile_asset_binding,
         "candidate_command": command,
         "boundaries": {
             "ck3_started": False,
@@ -240,12 +311,33 @@ def verify_bundle(output_dir: Path) -> dict[str, object]:
         frozen = manifests.get(name)
         if not isinstance(frozen, dict) or frozen.get("sha256") != receipt["sha256"]:
             raise CandidateBundleError(f"candidate manifest receipt drifted: {name}")
+    frozen_runtime = bundle.get("runtime_source_closure")
+    if not isinstance(frozen_runtime, dict):
+        raise CandidateBundleError("candidate bundle lacks runtime source closure")
+    runtime_receipt = verify_runtime_file_manifest(
+        root / RUNTIME_MANIFEST_NAME,
+        runtime_root=Path(str(frozen_runtime.get("runtime_root"))),
+        expected_manifest_sha256=str(frozen_runtime.get("manifest_sha256")),
+    )
+    if runtime_receipt != frozen_runtime:
+        raise CandidateBundleError("candidate runtime source closure receipt drifted")
+    frozen_profile = bundle.get("startup_profile_assets")
+    if not isinstance(frozen_profile, dict):
+        raise CandidateBundleError("candidate bundle lacks startup profile binding")
+    settings = frozen_profile.get("settings")
+    if not isinstance(settings, dict):
+        raise CandidateBundleError("candidate startup profile binding is malformed")
+    profile_receipt = _profile_asset_binding(Path(str(settings.get("path"))))
+    if profile_receipt != frozen_profile:
+        raise CandidateBundleError("candidate startup profile assets drifted")
     return {
         "schema": "xar.ck3.gen034_d_candidate_bundle_verify.v1",
         "status": "verified-no-launch",
         "bundle": str(bundle_path),
         "bundle_sha256": _sha256(bundle_path),
         "manifests": verified,
+        "runtime_source_closure": runtime_receipt,
+        "startup_profile_assets": profile_receipt,
         "ck3_started": False,
     }
 
@@ -287,7 +379,13 @@ def main(argv: list[str] | None = None) -> int:
                     "build inputs are missing: " + ", ".join(missing)
                 )
             result = build_bundle(args)
-    except (OSError, UnicodeError, json.JSONDecodeError, CandidateBundleError) as error:
+    except (
+        OSError,
+        UnicodeError,
+        json.JSONDecodeError,
+        CandidateBundleError,
+        RuntimeManifestError,
+    ) as error:
         print(f"ERROR: {type(error).__name__}: {error}", file=sys.stderr)
         return 2
     print(json.dumps(result, ensure_ascii=False, indent=2))

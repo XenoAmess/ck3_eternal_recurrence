@@ -1,0 +1,2420 @@
+{
+  "schema": "xar.ck3.gen034_d_runtime_files.v1",
+  "source_commit": "working-tree-a944e42f-review-fix",
+  "algorithm": "sha256(canonical-json[path,bytes,sha256])",
+  "selection": {
+    "recursive_python_roots": [
+      "ck3_autonomous_player/src/xar_autoplayer",
+      "ck3_autonomous_player/native_bridge/research"
+    ],
+    "exact_files": [
+      "tools/run_acceptance.py",
+      "tools/run_zg361_phase2_seed_capture.py"
+    ]
+  },
+  "required_paths": [
+    "ck3_autonomous_player/native_bridge/research/gen034_candidate_authorization.py",
+    "ck3_autonomous_player/native_bridge/research/gen034_runtime_manifest.py",
+    "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_lifecycle.py",
+    "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_live_adapter.py",
+    "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_outer_owner.py",
+    "ck3_autonomous_player/native_bridge/research/run_gen034_three_way_exit_action_live_acceptance.py",
+    "ck3_autonomous_player/native_bridge/research/run_gen034_three_way_recommendation_live_acceptance.py",
+    "ck3_autonomous_player/native_bridge/research/run_raiktor_surrender_session_binding_live_acceptance.py",
+    "ck3_autonomous_player/native_bridge/research/run_raiktor_war_bound_private_capture_v1.py",
+    "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+    "ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py",
+    "tools/run_acceptance.py",
+    "tools/run_zg361_phase2_seed_capture.py"
+  ],
+  "file_count": 477,
+  "tree_sha256": "AB1955C2444E1E384722E92F921819BC4F95E0405A4BCC88908EEB1DE3B4EAA3",
+  "files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
+      "bytes": 22127,
+      "sha256": "C92000ED3BFDC8007ADA9514AF9E0C44DF24537B92EAFEC383D5D764E4725C78"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/analyze_g2_evaluated_days_private_capture.py",
+      "bytes": 18179,
+      "sha256": "0D01FE9FD4AE7D6BAFEB96EDE9E02E962C3BCF36BF2247D185F2AE526E6E5BEE"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/analyze_g2_truce_native_callsite_observer_live.py",
+      "bytes": 19757,
+      "sha256": "FEEE7E0037B0A9FEFFB6D4FA5160756930B0C8711CFD2701A69CC596D85CA424"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_post_call_list_identity_live.py",
+      "bytes": 10356,
+      "sha256": "45106FF0796D9C3F3A12CFDA46F7B877678746D76EACA6903DEAF986D05976B2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_post_call_live.py",
+      "bytes": 15569,
+      "sha256": "69AFF8E41B7B8F91756F112C145ABACB0F5AB86335E704BE5881E365FE21E622"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_producer_histogram_live.py",
+      "bytes": 20180,
+      "sha256": "9B9B95170B1AABD30D14B31932C8143F4B42DE5BA89AE0165E57A2D10AF49D9E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_wrapper_entry_live.py",
+      "bytes": 12569,
+      "sha256": "F463C5DD99AF29B35CE2B38FF6B8F5618F71DBEACD9D91A7AA6DBD2EA67AD690"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/build_particle2_factory_debug_capture.py",
+      "bytes": 3894,
+      "sha256": "C0B8DABA9221E977A7B0BE482EBBD1CD1EF381B7AEBBC50742A2819DAAB4E7D5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/candidate_runtime_identity.py",
+      "bytes": 8439,
+      "sha256": "A103FCB89EC2BC1F05067E6DC93631889F7847ED06FF46BB01F5BD3F61C7D830"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/candidate_runtime_import_probe.py",
+      "bytes": 2127,
+      "sha256": "73C6403EDF77B8E5B1D100CE7FAD5B71E795B8881280D8E6C7B85153B8565E3A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/council16_candidate_runtime_identity.py",
+      "bytes": 8451,
+      "sha256": "66A40A67DD5FA3E6A2AFFD5435F1AD1F560FB160210D39760518C91995634837"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/council16_candidate_runtime_import_probe.py",
+      "bytes": 2129,
+      "sha256": "95C8DFF235890333D81F35C05E92B6631DE28CB48E8E38852851E088C7021D6C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/council18_candidate_runtime_identity.py",
+      "bytes": 8450,
+      "sha256": "4F19FE93167C8FB6AD88D2E5812D705AD605D90694F331AB27AC4B65CD356B89"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/council18_candidate_runtime_import_probe.py",
+      "bytes": 2128,
+      "sha256": "20B2B792518BDDC37E3AE7955F22FEB9C16D80B0457B9759C4BF3FEBD69418F3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/council_four_gate_reject_v1.py",
+      "bytes": 8485,
+      "sha256": "B078D5ADC5B259195B59EEE639541E7F766B3E6F66D860ACC513AA15568ED861"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/culture_innovation_v1_source_contract.py",
+      "bytes": 12709,
+      "sha256": "67FE33FBDF5897A889DBF30A7CAE3E8B3B6BA5FF1037AF618CE71095713CA33C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/disasm_ck3.py",
+      "bytes": 1514,
+      "sha256": "82EC4C2F631B2BFC4040832D5571453E238C27BDAA8C43AF0494461EA4A71703"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_bridge_observer_state_from_minidump.py",
+      "bytes": 22952,
+      "sha256": "723F48C62D87CE88E3E7E4183946B57547B2C83EA140C7A172D6A023B4DFC582"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_g2_actual_truce_expiry_abi.py",
+      "bytes": 9639,
+      "sha256": "6338236DE201380A7FA3ADF489C5E4A0918E2CECCEA90E20ECAEDF37CBA19E0F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_callsite_activation.py",
+      "bytes": 11106,
+      "sha256": "4E524ECE005ADBD611634FC862DD23D503B399354179BD411B3ABB31BCD05073"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_context_lifetime_v2.py",
+      "bytes": 9187,
+      "sha256": "6A44E42581E8A1328EE73DCA7095990B2E6CB94090621D43622588477D8CFA60"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_evaluator_abi.py",
+      "bytes": 13865,
+      "sha256": "1E781A8D6E15495464387151A616E314CD9C058F147B9BED65F9BC724DB38DCA"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_next_layer_rtti.py",
+      "bytes": 12357,
+      "sha256": "DA615D4FF0E916178D44CF3C1411FDED4816DF7066A25543CD9324C28D3D8686"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_preview_entry_observer_seam.py",
+      "bytes": 10761,
+      "sha256": "FE33B68E8B662D6070217030CAFE65848E9CF41330732F30368950BE5A63919B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_g2_truce_residual_rtti.py",
+      "bytes": 15046,
+      "sha256": "6BB45FBFC736572E1755DAD9F0242F695C4729D2D71BA38BB137CD711F3723FC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_completion_consumer.py",
+      "bytes": 8984,
+      "sha256": "F4EF4572B56EBCB1B69927D66094BAC9DC350B99501093C019882F3BC9B5DB17"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_completion_wrapper_callers.py",
+      "bytes": 15315,
+      "sha256": "81E3771693F01E9933ABE9C21113B1F7362D9CF4E8EF7244BA092D20AFF54C7E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_concrete_owner.py",
+      "bytes": 10985,
+      "sha256": "311CE24028AC6CCBCF38081C62A7F9F638D08DAFA43704450471E6DA91644A45"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_next_edge.py",
+      "bytes": 9558,
+      "sha256": "D18E793E9B9F54CB54D883D7A6A367E20E7E736034AC921C3A978E077BCED998"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_outer_callers.py",
+      "bytes": 8508,
+      "sha256": "CC5B1362AA442CA39DE3FC88892CF45113A96F4EA1EEF63D525D4666AA4C4788"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_runtime_owner.py",
+      "bytes": 8757,
+      "sha256": "C3FFF00252D40D1A750AF761FB706EC5A310636ACB22B3873139BDCD57DC3168"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_loader_callback_slice.py",
+      "bytes": 28774,
+      "sha256": "FFDEE0D7CFA006F9F5841932F06627BA9BC23116B052CA03E3EFCA8C67E70A2C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_outer_completion_edge.py",
+      "bytes": 6540,
+      "sha256": "37A74EC8D556372A9A1DDCB6D7067F79E2629C706AB21F48C54B376663DBFA4F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_runtime_caller_3407d9c.py",
+      "bytes": 11004,
+      "sha256": "0CF9AC76CCFFA0BFD3270415D2243F9D383C778B8E2D87EC4B71CCDC15C1DB57"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_selected_outer_callers.py",
+      "bytes": 8633,
+      "sha256": "E7CB892B91AC8F6FAEB4673A772952E1909C2C698F50606DAE0358342762D67F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/extract_phase2_slot2_817c20_identity.py",
+      "bytes": 12938,
+      "sha256": "A680E4FE144B6733C0A7636FAFEE00E592EA38A075308C160C45E7CD427E7153"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/faction_gift_metric_receivers_v1_source_contract.py",
+      "bytes": 2630,
+      "sha256": "36AEA3AB6EFF0EF434D2A7ADC7C326EDB9CF14EED60485558D9091120BF69C67"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/faction_gift_mitigation_paused_live_harness.py",
+      "bytes": 20798,
+      "sha256": "C2BA60F9D561885B9B2E2627019BF50C00A8D853D15404BD81780215B342A691"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/faction_leader_character_members_v1_source_contract.py",
+      "bytes": 16648,
+      "sha256": "F78A3636E91AB7622C9D5E0A4F8D10156B3DDE96D797A0753D82C06507A79B2B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/faction_target_character_count_equivalence_v1_source_contract.py",
+      "bytes": 12646,
+      "sha256": "C5B633BF0BF7C39A267F85865076972778A436686B17B228FA0837F2D43E865D"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/faction_targeting_row_observer_v1_source_contract.py",
+      "bytes": 16995,
+      "sha256": "0710BB0975917696DE724D6DDE1FC29DA24D05A3671122116D322906C4719E0B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/faction_targeting_row_probe_v1_source_contract.py",
+      "bytes": 13165,
+      "sha256": "18B24552ED0C1BE7BBAD98EF067C0DA53CA95BEFFEA88E946075142A5BC865CC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/find_member_refs.py",
+      "bytes": 2088,
+      "sha256": "A12BF95ED2F04F47AD056F4F78021AF6BBB6D4F2CD2A72C5E52194A1C4CEF2EF"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/find_rtti.py",
+      "bytes": 3791,
+      "sha256": "D3FF6FDB12A411382C78BB3C7F5E87F5BBBE090783A38010B7329B26A92DB51A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/find_string_xrefs.py",
+      "bytes": 6203,
+      "sha256": "B0821EE50603CD1754D6270C395CF1F2746D6B7B36AACB11DE26ECA704C46144"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/find_xrefs.py",
+      "bytes": 3604,
+      "sha256": "44D62715ABB513A19F60B7B9A52C2912F4BEB42DAC27A9A7F8C3D2365D5E5025"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/gen034_candidate_authorization.py",
+      "bytes": 2990,
+      "sha256": "76A17E418657F18F3BEF84DC5068941B81F192B803B844769D464E278A5FB2F5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/gen034_runtime_manifest.py",
+      "bytes": 8679,
+      "sha256": "704C9A9B2EBD6728ACDACF4F271976D6B37C1861203FB6B5C510A6A29B91F064"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/generate_bounded_private_probe_wrapper.py",
+      "bytes": 9972,
+      "sha256": "3A48050340B6DCE80CE37D94CC0D61D28DED20304C923467E5A725E8BCB23348"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/generate_domain_construction_one_day_candidate.py",
+      "bytes": 25580,
+      "sha256": "243681354C4D46D933DC4AABB1A4CFF7C5DE6B5A55F75466A0DBC0CE95A9215F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/inspect_council_final_gate_scene.py",
+      "bytes": 9908,
+      "sha256": "49F6C9C52498AE4761BB34A0CA512D072E3E0BB10D3696AE031527DF03EE3A36"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/json_input_contract.py",
+      "bytes": 1548,
+      "sha256": "14FD2B5C725D8BE1D63E8F04992180577F18E083D3F63DFFDF97EAF31A1E2770"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/make_phase2_producer_identity_observer_manifest.py",
+      "bytes": 4138,
+      "sha256": "62C74DF20C56AE3B87BB31E827B0AD341F5E8C15BB352EA9CB269621183F2469"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/materialize_council_native_gate_scene_candidate_v1.py",
+      "bytes": 15834,
+      "sha256": "3A050E3FC651144EEBBDBB544A3C2280EDA4B513580F280681976374B96E862B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_coat_of_arms_vfs_fixture.py",
+      "bytes": 22906,
+      "sha256": "BBF1D0A6C455B60D7154CE540E7441168BB3D8DCD95BA414B1CB17F9D4CD9D54"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council12_r690_bom_safe_candidate.py",
+      "bytes": 19772,
+      "sha256": "6588DF18C9137CECAA82D8DC6A71CBDD6C1DC4313FC6BC426F9E4368E5C97D10"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council13_r691_driver_contract_candidate.py",
+      "bytes": 23396,
+      "sha256": "3A15BB0FDA4A9997E13F97DCAE256AD0E223FA36FD0E86028CAD06EDF83E141C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council14_r691_self_contained_runtime_candidate.py",
+      "bytes": 25876,
+      "sha256": "72BF7316FDE3680CB406AAB2CF75D46AD273C1973C401389628C1F02B90568E9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council16_r692_sealed_candidate.py",
+      "bytes": 23108,
+      "sha256": "9D242DA149C4007BBEFFFE42B4067DBEFE19C5B949B5211E108B430A8C88C772"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council18_r693_sealed_candidate.py",
+      "bytes": 30416,
+      "sha256": "B867C32F46126816E8029ED91C9BBD38E8751FE1F8496F4FB4B109B3CB84CD02"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council_four_gate_reject_plan.py",
+      "bytes": 1780,
+      "sha256": "A12075A1C6C8751D3D214D566D73EB5414547A327BEB915D578A84010C6E2C63"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council_r694_query_candidate.py",
+      "bytes": 8340,
+      "sha256": "5F56FDD5D07FF09432621E3C57315AE937DA24C266FD956B285C6F93DD0E6316"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council_r695_gate_candidate.py",
+      "bytes": 10232,
+      "sha256": "460190F842FCD12738B734662D8F0A376AAFD017B9B5D2C29157AE315C234782"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council_r696_checkpoint_readonly_v2.py",
+      "bytes": 7896,
+      "sha256": "094A2DD5A9654AC685BB8DE824EB2F11CBD1ABB0EB7A764C9B1DBFA3C5FAA732"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_council_r696_controlled_candidate.py",
+      "bytes": 10784,
+      "sha256": "4657695A151723FC90A1767E4F509C783F9D429A2796B39CBED3FD6267BDC3AD"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_faction_targeting_row_probe_candidate.py",
+      "bytes": 16636,
+      "sha256": "F8F521382A48B82DA6AD10C6A38A8F9A8E4CAAF36CB1B515978229B3FC89585C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_campaign_dominance_certificate.py",
+      "bytes": 6276,
+      "sha256": "3E68933EF947EDF9D82702214C900A644A3E1D13D770196F8E3DAADB2353743E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py",
+      "bytes": 28487,
+      "sha256": "A0EC625775A71B3360D9473E72F6ED00CFB2F4629D4D078850609047C3BEFBF7"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_index7_targeted_readiness300.py",
+      "bytes": 8864,
+      "sha256": "584C496253D36C74ACC5D7D2938D8F9BCE7142680642B276A066D48B4DBE27B3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_cleanup_expiry_current_pin_capture.py",
+      "bytes": 16950,
+      "sha256": "31C85845F6F17E0DC42FDBF1544E130B767084EB57E2E4EFF55464C4255C5FD7"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_comparison_intake.py",
+      "bytes": 20651,
+      "sha256": "D1D3E7C73D05659B62919E1A1BD4CDC30F4E7669E5EBFAA674CD5C6BEA81897B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_retention_expiry_capture.py",
+      "bytes": 26465,
+      "sha256": "EA4B81A037C59B20F64E3E6800E9BEC7E4DE8EC856C1D0029639EDF620498E04"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_same_frame_white_peace_comparison.py",
+      "bytes": 6156,
+      "sha256": "7B29CA89FF6DAB63E6EB2299680D760CC44DAD06C0F5191DA917CE4153CC0CCC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_source_specific_comparison_intake.py",
+      "bytes": 23432,
+      "sha256": "2CD74C646A05B5F28D12E806350710564530A7CCA5CB624D080D0B89E730115C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_source_specific_operator_profile.py",
+      "bytes": 13579,
+      "sha256": "455329728CFF24B309E9E96B20772DA7D1908225DEFB3DA0A7B16CF56C793711"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_strategy_budget_profile.py",
+      "bytes": 2230,
+      "sha256": "5F6814B5A351FD8920E67F74D41682731C96795CC9E166B3C6CEC4BAE1B3FF44"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_g2_three_way_exit_file_intake.py",
+      "bytes": 14082,
+      "sha256": "507A02D756084ABBCAB3DCAA5685DFD88E423545B77A66606FF9EFAA28213697"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_gen034_checkpoint_replay_recommendation.py",
+      "bytes": 14441,
+      "sha256": "31A02CB6F3C97269C00876D92B17C9F7A372B326ABD7DE7252839793905CF2C5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_gen034_d_candidate_bundle.py",
+      "bytes": 15494,
+      "sha256": "6FCA0A746889CB3B2528204E763B4C95BC5F96BEBFF80B181FEB815AE7C2B0AD"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/prepare_raiktor_source_specific_war_loss_capture.py",
+      "bytes": 10059,
+      "sha256": "6286921CF0782FE47EFFEC911BCD93697FF6F77BA99CD815784E957DD0A80D9E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/replay_coat_of_arms_vfs_asset_projection.py",
+      "bytes": 3609,
+      "sha256": "87B707CFC518E0FE2A8089C7990432DAC5715F719892F1C508424CC5C30A357A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_active_combat_retreat_live_acceptance.py",
+      "bytes": 23956,
+      "sha256": "1BAEB448B6731A55904E91ADB13AC74800F8125F1217DEC211E14349DF945FE8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_active_war_strategic_power_live_acceptance.py",
+      "bytes": 14972,
+      "sha256": "A364FCFB89AAD6C25DABAB72AD708BB564793B484B79B983AB3DCE11ACC10679"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_battle_control_live_acceptance.py",
+      "bytes": 14599,
+      "sha256": "3B26583DAD9A8A5836D91344930ECEA26E76BB8190FF3C93346FBA6BE8AC14BB"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_battle_reinforcement_assignment_live_acceptance.py",
+      "bytes": 43201,
+      "sha256": "FC8D51350182230C5094DF1E181CEC738417F5A0843B9206DEA948F57F0A5375"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_battle_reinforcement_join_live_acceptance.py",
+      "bytes": 72295,
+      "sha256": "28579B9D8482DE4D43987D7E4F7CDE8CDF89B19F078D844CC0381BC2EE3291E3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py",
+      "bytes": 115314,
+      "sha256": "22F30CB7B0A63B8C247A3E6945A0F534D9571FEDE688E2663BE7B1CE5CBF255E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_battle_terminal_journal_live_acceptance.py",
+      "bytes": 63540,
+      "sha256": "639F1F082FA99CEE1C97EC806EDB44944A4BF0196D27EC11EFE550F656ED35C4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_campaign_root_context_live_acceptance.py",
+      "bytes": 49548,
+      "sha256": "01EB003A8005992D8B6B319A139691605D93C5D073336A0BF1909695FB79329E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_campaign_root_context_two_scene_live_acceptance.py",
+      "bytes": 24184,
+      "sha256": "2722BF115BE1D4E0804CAD642E4CA1A866C02FDB29775F502FA7CA85C6EEC911"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_coat_of_arms_source_inventory_mcp.py",
+      "bytes": 5102,
+      "sha256": "09C0EFDCF979DC0CB4493EF464032D0D3490716C5186209B0F3A2649BA27E31E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_council_four_gate_reject_v1.py",
+      "bytes": 12450,
+      "sha256": "F5BA5C7F6697D24B2D8E524F6A0B49899FF0C41076D2902F03A5E3C65669AAD2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_council_native_gate_scene_v1.py",
+      "bytes": 20883,
+      "sha256": "0BC422C4656120AAA79F6D130A5E1C424CFAD93551A2ED9A31E821C53CED94E5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_council_r694_query.py",
+      "bytes": 15899,
+      "sha256": "66CB717434717349545ECEFC89CD02134BC1D8F32E08E799115DDAB46F35F00E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_council_r695_final_gates.py",
+      "bytes": 19284,
+      "sha256": "7F6F3C1F38F284CD00A9166D891EE08B8FE61FB74E71A3DF73C850A39AD12B28"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_council_r696_checkpoint_readonly_v2.py",
+      "bytes": 19048,
+      "sha256": "4D6731FD5AD0303A40E3F9151D850339DFEFABFC1B7A0A04EE719A614CF7725F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_council_r696_controlled_replace.py",
+      "bytes": 32402,
+      "sha256": "B34423A757A434C2E9DC88D0818852913816B908C4667498F0EC67A69BA1EDB9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_current_event_nonempty_effect_indicators_live_acceptance.py",
+      "bytes": 17299,
+      "sha256": "05563518839C6D715AB93E936E73E252A2724EAC92D31418F9E7C695D9DC7638"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_current_event_scopes_live_acceptance.py",
+      "bytes": 21476,
+      "sha256": "37B38A653250D2E0BC0F0A50F6B7E3292051C8E35EA50676C595B479CC96B5B9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_current_event_window_context_live_acceptance.py",
+      "bytes": 88233,
+      "sha256": "99C9C7673C51B0B144365D255F7164D221D5B8CA4CBE3B94A5F970886C31D13C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_application_main_runtime_v1_tests.py",
+      "bytes": 7174,
+      "sha256": "D4F02D9025795411F07A3A630B3491B7FF66D8977BB761D9F17EEF3A9CFD54AA"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_candidate_cost_legality_decoder_v1_tests.py",
+      "bytes": 4012,
+      "sha256": "32956CFB164DB4CC3BA980C3CF8201C822BF41EC2E74D6EFB9BBAC50F82DF01A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_candidate_identity_decoder_v1_tests.py",
+      "bytes": 4020,
+      "sha256": "D5F8173E44E75E466BD95EF336D9616C0743D64ADC96D64D0239187F979A39CD"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_cost_gate_collector_v1_tests.py",
+      "bytes": 2403,
+      "sha256": "E1E767A928A4BCDA52F2137B0CC3A4FDEA321E79C971B8502B71E1CD28E3FEB2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_cost_legality_live_observer_v1_tests.py",
+      "bytes": 4077,
+      "sha256": "F5EDAD9A7E59766979C10BE5B3EFF50A89DCDA2D91ADDC6375E0F755DB414C51"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_native_submit_adapter_v1_tests.py",
+      "bytes": 3866,
+      "sha256": "572C156819EB02466B36228F275476948460F66DADBE9AB36A2A11DFDAA5C28D"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_one_day_candidate.py",
+      "bytes": 19339,
+      "sha256": "05E12A436905555C79FC67949118CA8AEAA596C7CA454EAAE758D9D8177C3C88"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_semantic_action_core_v1_tests.py",
+      "bytes": 3785,
+      "sha256": "A7EECC34803AC7E781385E3F1379CF8A74D22AE369C03D7D613EDA31E26888EB"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_domain_construction_shared_glue_v1_tests.py",
+      "bytes": 3589,
+      "sha256": "18C62FEC6889C20BC54B5CBF64E77EDC19AA57C86A55A938B5C3EE81185737E9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_faction_targeting_row_private_probe_live.py",
+      "bytes": 23598,
+      "sha256": "5D13F13815F7EE237CA8E614F2034AFE6C34078625384112B2FF3177BB0BDC32"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_frontend_gui_route_v1_live_acceptance.py",
+      "bytes": 206906,
+      "sha256": "4F188EC11B0B7F8FBB06170135A90BEDC60801579CB171E55BCEB2F8CD9D8A4B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_live_acceptance.py",
+      "bytes": 15368,
+      "sha256": "6F1787BE4923F24F9C44FBB8DDD4FF531C1EC93B329309263771B2DB6EFE241C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_receipt.py",
+      "bytes": 35714,
+      "sha256": "40696417F3BBD841E79116612697654C48868C90534BDFC0FDF43E161FDB47C8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_lifecycle.py",
+      "bytes": 39653,
+      "sha256": "E76E693BA2D60D8DA74B3038994085951AE4017B1EF97BBC69F1C4FE7D9E1415"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_live_adapter.py",
+      "bytes": 104429,
+      "sha256": "CEDB6B4C41C2585866E0386332B967E3EBACCB37E640F18855E816CEAF1F3959"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_outer_owner.py",
+      "bytes": 24649,
+      "sha256": "D162CDD681961989838B0F26D29DDCC6E9ED98420F8FA1BF5D4F636E110737FF"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2_truce_native_callsite_observer_live.py",
+      "bytes": 26931,
+      "sha256": "5C0F335A3F3E1EFC92DC4F1B867D3DB4F4DBD3B3EA20F2B6C04A434CD8F63B50"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2m4_paused_player_model_source_read.py",
+      "bytes": 4366,
+      "sha256": "2BC72725A1C2C7A7C63D75D3A57FF0C96F2CC4BBFED0F856F7263FFDD4746B4F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2m4_paused_player_view_read.py",
+      "bytes": 13898,
+      "sha256": "8CBEBF0CF6D63A87F4B7E792E20E481AA2DCF606904D99D7DB564C56A60D506A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2m4_paused_player_world_building_source_read.py",
+      "bytes": 6557,
+      "sha256": "BA72CCFC073858E46BDFF9A5721C597E7F56EFACF6D1533833960C29502752EA"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2m4_paused_world_building_action.py",
+      "bytes": 17074,
+      "sha256": "18CEF69ECA9237E8AF8266B8D6AD380E77CA4740DD3A283FC05DA81AE64C8B24"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2m4_player_view_live_candidate.py",
+      "bytes": 15938,
+      "sha256": "6F77C695027C7B7A7DAA4FF96A6E48E6C83DBC69D57D0EE350A771FCAB717A69"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_g2m4_slot42_model_read_v1_tests.py",
+      "bytes": 1764,
+      "sha256": "C6261ACCFF5D033590D914DE71628437A6C1723C9D4D2A97C4766703749437BF"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_gen034_checkpoint_replay_action_live_acceptance.py",
+      "bytes": 13934,
+      "sha256": "D21939C0E65A4E9D3D6B3988FF3AF304FEB208B6CB0F2BA16B41A505219F5757"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_gen034_three_way_exit_action_live_acceptance.py",
+      "bytes": 41206,
+      "sha256": "80BB84344AAF6E46BC1D8A7B340E19D7EF51BFD43473943630C77DEBCB8A373D"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_gen034_three_way_recommendation_live_acceptance.py",
+      "bytes": 15157,
+      "sha256": "D779AAFF555B7437637C4E04597F018362FBD64666741AAC783A144C5583854B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_gen034_white_peace_evaluation_live_acceptance.py",
+      "bytes": 12205,
+      "sha256": "0707FF795EAC588DE7DF8AB99E95CA74A41BDD0BBFD2FA21098884ACEFBBE92F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_gen034_white_peace_horizon_checkpoint.py",
+      "bytes": 23783,
+      "sha256": "AB4AB816D87C03569D3F6892674051EF6621928725788B0F5CDE5DAD17989D7D"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_gen034_white_peace_horizon_registered_event.py",
+      "bytes": 22720,
+      "sha256": "C1587D8EB043DFC8D4BDE91201E4AC6E4F343AC4915B1EA4658F4792AB6C7106"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_loaded_feature_manifest_live_acceptance.py",
+      "bytes": 44246,
+      "sha256": "99BF6085B508943D0FBB8ECE0E7423AE088E71ECFE8291293408500D58434CC9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_military_preparation_summary_private_probe_live.py",
+      "bytes": 19556,
+      "sha256": "1B40FD2A2C75E6ECEE03288A17A80573089E6C803F675487F15FE11CB3C170FC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_owner_subset_ai_reassignment_rejoin_live_acceptance.py",
+      "bytes": 90363,
+      "sha256": "B79AC8284C6228065A10A59550408162BCB81B14FE81889B8B33A9970C491D8B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_owner_subset_reinforcement_rejoin_live_acceptance.py",
+      "bytes": 73338,
+      "sha256": "BE96B0641DF28DC532586D0C1F2FDBC949B9ECC8958F30E9DE24A9E47FE12137"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_owner_subset_retreat_live_acceptance.py",
+      "bytes": 56331,
+      "sha256": "C68AD0EF8EBD9D91DA75BFC138D63197A1C5451264F7282C9CF5E5B4321D02EF"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_pending_character_interaction_context_live_acceptance.py",
+      "bytes": 83484,
+      "sha256": "8E24B06992EE448C2D867BFE553661061A5C23F31F06C6CB445A50C236822069"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_pending_character_interaction_notification_ack_live_acceptance.py",
+      "bytes": 95167,
+      "sha256": "33C5CB3AAFADE4D314D30CA6A02378C14E46535B18D9F5E1C441983150F6F360"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_pending_character_interaction_special_war_binding_live_acceptance.py",
+      "bytes": 49130,
+      "sha256": "B6F95DF4D9BB806FDDA537D7BA58E06AEF02F0CD355FDA06AE1783F38252AE64"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_planner_battle_control_live_acceptance.py",
+      "bytes": 42741,
+      "sha256": "BF46CEE47DDB6D4EB26267D7386B01F3DC3FB6269379E53E1A7F7BD5C7839BB6"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_construction_view_mailbox_executor_v1_tests.py",
+      "bytes": 2420,
+      "sha256": "B40076EAC446CAF039DE8AC7F467D8DB4AF8D801CCF9A13FFCB6006CFBB5252E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_construction_view_probe_v1_tests.py",
+      "bytes": 3319,
+      "sha256": "45B309C7087950FE7D54F210BC3BEB1332A6849E5EAA44A61F981D0F5FEA5AC9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_held_construction_model_enumerator_v1_tests.py",
+      "bytes": 1634,
+      "sha256": "9FBB556DCD8256508E7C09D30F69BD15A3189EC042D88654C910FEAE46D23021"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_lifestyle_current_state_paused_candidate.py",
+      "bytes": 13574,
+      "sha256": "B2D995ABCD9895A30E001F22008EF67895E64A170A7C31A0EF3ED08F6339247A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_lifestyle_current_state_read.py",
+      "bytes": 9010,
+      "sha256": "83C42DD2EA9C984E5E6BF3D1E11DD49A7BBA56F3845299F63F9D406E6CA4A98E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_world_building_action_candidate_v1_tests.py",
+      "bytes": 1686,
+      "sha256": "9E7348806AA3D1406CA2D399E6DAA9F6D7FEDBFC94D8AC920E954C327517AEEB"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_world_building_action_private_v1_tests.py",
+      "bytes": 3104,
+      "sha256": "A130FE40069DC19A897CB38E926361D4138846397A74B25C91E53A75ABE046DE"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_world_building_definition_source_v1_tests.py",
+      "bytes": 2766,
+      "sha256": "453C3F03093B2DE0D65067CEA8622B2479BEC5BDEE7E17AA515796A054354829"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_player_world_definition_identity_diagnostic_serializer_test.py",
+      "bytes": 2858,
+      "sha256": "3D3A2C1BF786621ED00E65D7F50FB93C3967F55439DF77E348AB936E334EB637"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_generic_war_bound_current_live_acceptance.py",
+      "bytes": 18226,
+      "sha256": "C046C8654C20505A39D220C044AE87E2ADE736C19449244C64EACFE8B5D6B202"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_generic_war_bound_rbx_guarded_live_acceptance.py",
+      "bytes": 18234,
+      "sha256": "8AF53384362443F8151905A9C34211F472477DDC8F0FB34713A3A8630077FBE1"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_generic_war_bound_widget_guarded_live_acceptance.py",
+      "bytes": 18240,
+      "sha256": "A1A155043249552AD488C42CBF6EA981452D0C15A213C06510E8A49154C77177"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_surrender_session_binding_live_acceptance.py",
+      "bytes": 16001,
+      "sha256": "F4C79953F3F27736FD19310599C1C6FFB92307B79ABC4805C09F25CEAEA4C891"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_raiktor_war_bound_private_capture_v1.py",
+      "bytes": 39837,
+      "sha256": "4E091C123DF0876ED81607B4AA6B7D3800F477FCA33E84BF146E8D71B66C76C6"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_registered_event_checkpoint_continuation.py",
+      "bytes": 19150,
+      "sha256": "FDE56F529479CBDD200B839D51DDA38BAEE82C5D9E11F1E2B74728B3C99703A9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_registered_event_horizon_material_live_acceptance.py",
+      "bytes": 35351,
+      "sha256": "E7B248D22CE7EB1C2FC608B6280A6F7D5ABBD5BC8C94AC6CB7046CA5394C4F43"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_registered_event_material_live_acceptance.py",
+      "bytes": 25656,
+      "sha256": "C87D3AB41A2B4C21CAFCC9E68A5015EDF4A45A0783E3425B42510469E868F73F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_three_cunit_owner_subset_reassignment_live_acceptance.py",
+      "bytes": 124101,
+      "sha256": "8805D9A8F6745569F5BCAE58E1B885B034F65A538CE71AD9A4EEDFA007C5E345"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_title_map_navigation_v1_live_acceptance.py",
+      "bytes": 54951,
+      "sha256": "313A5253027688C55508E7298CD057AEA5C5EE65416C1AEBDB43E95FA75DA087"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
+      "bytes": 35883,
+      "sha256": "59DD75089B3C5F7579F394D7AF9C2E3BD1FBE5B9C060AD5CAA9080E481835689"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/scan_anchors.py",
+      "bytes": 6596,
+      "sha256": "85548EF8E2D27A7AF070E9AAC6358571D9A71DD8BC7AAC9717E59EDAA182EC71"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/seal_council_native_gate_scene_candidate_v1.py",
+      "bytes": 12409,
+      "sha256": "8ED4BB79F32353BF2EAE109BF71EEC4FE928C8AAB6BA239A4F125DFB45A42315"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/seal_g2m4_player_view_live_candidate.py",
+      "bytes": 12509,
+      "sha256": "EDA81C1AC972B2AB2247E68215F3819C5BD727BF8837B9129C2931D9BA113042"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/summarize_coat_of_arms_vfs_asset_projection.py",
+      "bytes": 8872,
+      "sha256": "69B0EB8DD97D05C860B62060397FAF62CACB10048C185A5B0A33579B4C83732E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/summarize_coat_of_arms_vfs_extended_matrix.py",
+      "bytes": 11867,
+      "sha256": "4603423C092713862FF8572DC86AD5288310E59FABA9D4504A82A16F65719ED5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/summarize_coat_of_arms_vfs_winner_matrix.py",
+      "bytes": 10485,
+      "sha256": "275E1EE0DE920DC55A236B774E03ECD5F2D4C464E7E765E3B138271ECF8CBEA9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/summarize_parent_semantics_matrix.py",
+      "bytes": 14208,
+      "sha256": "9AC74788E1EA132C5D1DB352D80070C87A23B846BC116F3B20EC77A44DCF6EB2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/summarize_vfs_mount_order_diagnostics.py",
+      "bytes": 5268,
+      "sha256": "ADA4FC0BB0F0534768CFC089D71D2C79D150958D29EFA934E9290FDD05324D48"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_active_scheme_paused_live_harness_v1_private.py",
+      "bytes": 13409,
+      "sha256": "1E98AE9B3CB48051CB63FEBF5CDDF377A35BBD42E5CE36B6E6E2535842A6AD64"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_active_scheme_paused_live_native_glue_v1_private.py",
+      "bytes": 3596,
+      "sha256": "9191DC32709EE0772387BCEACE2F066109AFC6FECCC9029E4C0B63C1F22D94CC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_active_scheme_precondition_command_binders_v1_private.py",
+      "bytes": 3527,
+      "sha256": "0C8557B92F8784C0C476250DA9AFA8CF190586A56005912FFAB733E3E4513245"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_actual_contact_scope_v1_contract.py",
+      "bytes": 17573,
+      "sha256": "06C0B338D250C3600CB4B87708454B38BAE6279BE8B01EE2770426321DEE4522"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_build_particle2_factory_debug_capture.py",
+      "bytes": 1221,
+      "sha256": "0599B089786B4F22C9CE937E2A5BE8AFBE24CB10BDCFB8D2D4CD51437262912E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_campaign_root_context_live_acceptance.py",
+      "bytes": 5274,
+      "sha256": "FCF1208EE50D5953CD94636D9175E3F8551889A39537C2FD158B147A0DFE767A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council14_r691_self_contained_runtime.py",
+      "bytes": 7367,
+      "sha256": "15E85D6092003D892CCC7874CFAB7BC794B945FB8600DB77F5EB85E77D7E2F0A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council16_r692_sealed_candidate.py",
+      "bytes": 10892,
+      "sha256": "2BB82006700B94EAD962F2F6DAD0D1EDE57D393BE5D48903065CF88E8E324932"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council18_r693_sealed_candidate.py",
+      "bytes": 13112,
+      "sha256": "73038DB863856E660F69CB276B11C9AC1F43631862001676588EDC44D6AFD8EC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council_application_main_private_transport_source.py",
+      "bytes": 2631,
+      "sha256": "4FC875D6ACFD5D439729F1D4A0293B6D30F0C662FEE2FD6DAD9368DE96727BB6"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council_composition_steward_candidates_binding_v1_source_contract.py",
+      "bytes": 6247,
+      "sha256": "DB2101DB62DE2BD9110C90B9EE089661F05C3D76D9960F1A517561313C081E03"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council_composition_steward_candidates_reader_v1_source_contract.py",
+      "bytes": 7317,
+      "sha256": "E280622762CEEBA92E4649B11894A8B9975750F4D943DBCB6CF01BD474A10874"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council_composition_steward_r684_live_contract.py",
+      "bytes": 10029,
+      "sha256": "72D7E0F84EEBACC7794677E031D81F2DD79F9148659526901D42AB94E882602A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council_four_gate_reject_v1.py",
+      "bytes": 3377,
+      "sha256": "8C1B64BC771CF7DB51C717E3D0929DA39CA951F6D8E08BD00E52BC76D557AEC4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_council_native_gate_scene_runner_v1.py",
+      "bytes": 1933,
+      "sha256": "A90AA96CF28E45CA90035CC952D80766C1BD5CC59B892086BF2466178ABDB554"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_domain_construction_application_main_runtime_v1_source_contract.py",
+      "bytes": 4659,
+      "sha256": "14E43EFFDAE608963B2139C310965743750D9FBA63481FDF7D0A92422EA7E319"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_domain_construction_candidate_cost_legality_decoder_v1_source_contract.py",
+      "bytes": 11577,
+      "sha256": "8EC13D2D184458089EA79E7C055ED98321F137935F9C3FBDCB063FC47A9C4580"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_domain_construction_candidate_identity_decoder_v1_source_contract.py",
+      "bytes": 8173,
+      "sha256": "03461521AB5FDBB757F03C664311D5F6B0D3FB616D950B8ABF6C9EAA883A4345"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_domain_construction_candidate_observer_v1_source_contract.py",
+      "bytes": 6548,
+      "sha256": "CD8082E342665D1A726B35B0F6CBC401A60213AAF82E5DC2D46934454B131C2E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_domain_construction_cost_gate_collector_v1_source_contract.py",
+      "bytes": 2291,
+      "sha256": "0DE4655775D9893087BC5EC8010E0CC31287A85C95DD62865CFFD8417F1FE39E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_domain_construction_cost_legality_live_observer_v1_source_contract.py",
+      "bytes": 10616,
+      "sha256": "7BEF5158E6181E0040B4B1BCCF6FD9D9641A947E588023AD137154E7BE365D2E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_domain_construction_native_submit_adapter_v1_source_contract.py",
+      "bytes": 8394,
+      "sha256": "52620D414B89999208EB25362E328ED03E84C8AE703CF44579062C8703BD3FE4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_domain_construction_runtime_callsite_observer_v1_source_contract.py",
+      "bytes": 7825,
+      "sha256": "650B4EF3F72B164CDCC55C82EC619C80C58230BF9AE53EA94999D0273A27B857"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_extract_bridge_observer_state_from_minidump.py",
+      "bytes": 7399,
+      "sha256": "2288C8106B25E760BED80B816D8F0D2459EF74213CABEC920124B341F084122B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_faction_gift_mitigation_paused_live_harness.py",
+      "bytes": 12786,
+      "sha256": "6013E8DB994F82B78F88112FC407DAE2062F1E600738C606CD46BF42F1AC8A3B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_faction_targeting_row_r692_prep_contract.py",
+      "bytes": 9304,
+      "sha256": "7227896F82FC7B8F4DC83015545AD3AB8AFBA958886E3DD133DF3424ED23EC09"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_frontend_1066_private_start_runner.py",
+      "bytes": 12522,
+      "sha256": "957224A55507091AEBBEC70B00135638302CC9F0F7BA2353848660C7868F236C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_frontend_bookmarks_model_private_runner.py",
+      "bytes": 3195,
+      "sha256": "7AB565E3345B4AD609797ECE32B0C7D242136F93E38597D76C5622526970A5C4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_g2m4_construction_pending_drain.py",
+      "bytes": 7156,
+      "sha256": "DD463B4880A8A4A9250D65C5397B1F7C7E82A6AD7A1B04B1EFAE4A9EDD60B870"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_g2m4_model_candidate_entry.py",
+      "bytes": 1846,
+      "sha256": "4F0DC7BC1BAF450BD6220F0D7DA0E1B938C00A623BFE6691FC0E60197E941D94"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_g2m4_paused_world_building_action_post_submit_sync.py",
+      "bytes": 3285,
+      "sha256": "E9D8FC39AA5A7E76CECAB836677536281CDD6EACDE73D6FDC99B83D831297B04"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_g2m4_world_candidate_entry.py",
+      "bytes": 1054,
+      "sha256": "799C7BA688C8CFB2AE6D37756632D76D69F168E6513552F176B3DDB4FC171A3E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_generate_bounded_private_probe_wrapper.py",
+      "bytes": 4137,
+      "sha256": "F75D110A04B6505DE60E81E6D4D5E51998E138EEE5E781AA3105E8BD9AC6045B"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_generate_domain_construction_one_day_candidate.py",
+      "bytes": 4149,
+      "sha256": "A8E649A23F0D6C5A9D3BB25C907E9C84B72CD18B062A6A528595594F93617F95"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_bridge_binder_v1_standalone.py",
+      "bytes": 4511,
+      "sha256": "10E186C50FE3C2B6FBA12516559255DF6AA5B6A5F43D7686D4B6F528003013F8"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_observer_v1_source_contract.py",
+      "bytes": 5418,
+      "sha256": "A724F13FEE70F40D7917E6AA14C18045C8AA1CD3C61D95DAE1D57CBEFEA43BE3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_observer_v1_standalone.py",
+      "bytes": 4184,
+      "sha256": "757CB72D0FFD01503C6AAB0F2282A9E2F2C193CA4D42F7245078916E9F0E82FF"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_source_adapter_v1_standalone.py",
+      "bytes": 4248,
+      "sha256": "EA54C2C25F9DF0D8913E0F3F17C63AB569EE088596A5C6AD06B6EDCDBD20A5CC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_json_input_contract.py",
+      "bytes": 2727,
+      "sha256": "0F21812DE3A5A8CD377164D7A5790E4E7C5F25F61537B9E1E9DFDAA65E30B46F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_materialize_council_native_gate_scene_candidate_v1.py",
+      "bytes": 3882,
+      "sha256": "09F41EBDE86C9E92E17BAE0EF1DCA9ED5D95A8B38E2A122FFD368F2CC30990DB"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_named_path_583_root_observer_v1_source_contract.py",
+      "bytes": 5795,
+      "sha256": "7A46853B1A6DB827947A3D0BB6E77E28209F65AC17AC46DCA0B92BF785E5C0B5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_nonreligious_law_contract_succession_native_tree_v1.py",
+      "bytes": 8792,
+      "sha256": "D6BF1699975EA3E0CA9165A4AA0A2AB4BBD8AA0E1E6D8B036D7D173E78858039"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_pdx_paths_583_producer_observer_v1_source_contract.py",
+      "bytes": 6300,
+      "sha256": "C86E2C24C474E642E83998E98F337CE1F568B10A5801F39C94BBA8444371963E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_physfs_mounted_data_observer_v1_source_contract.py",
+      "bytes": 5821,
+      "sha256": "CACB975ABA98B05E7D8EAF4B2ECF3D1A47B338CAB1A0DAA3F1CC7F03F26248C1"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_prewar_scope_v1_contract.py",
+      "bytes": 18069,
+      "sha256": "5562ACFEF48137EEFC1D7572294CD6ED8F3108CF087CDEE7A360B378601CA990"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_run_g2m4_paused_player_model_source_read.py",
+      "bytes": 3737,
+      "sha256": "9E090894B986D0E98E054AA423DE51B15BBCD5896CB9A33FF21CC9F4CA621724"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_run_g2m4_paused_player_view_read.py",
+      "bytes": 8432,
+      "sha256": "F1CCA17EF929FE8522B20F837DDADCAD9358D921BC77DC6684428816ED3228D9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_run_g2m4_paused_player_world_building_source_read.py",
+      "bytes": 4123,
+      "sha256": "7F3ACABD437F671D8E4BA8795B7980EEE0B304F9A40D24EE74B9FC3298C9C0B3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_run_player_lifestyle_current_state_read.py",
+      "bytes": 5508,
+      "sha256": "415C83AD0DCC3573773D84254F39092FE9774634BD697F1A1F6E54E2F832B5EB"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_validate_private_probe_readiness_contract.py",
+      "bytes": 5271,
+      "sha256": "BC8CBCD88D4D6DBFB50F622E9D92A4A5687B3A4B23C421571C55491FA9A3FEC1"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/test_vfs_mount_lifecycle_observer_v1_source_contract.py",
+      "bytes": 6355,
+      "sha256": "63360271740785391FAD185EF912A9E87BBBEEF5228D5D49E9E362C815CB213D"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/validate_private_probe_readiness_contract.py",
+      "bytes": 12549,
+      "sha256": "8CC22D50276A7113B961A17803B1D30ACF551857CFA2182EAAF3A7CAA55DF7FC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_active_scheme_definition_resolver_1_19_0_6_abi.py",
+      "bytes": 6892,
+      "sha256": "77C93EDAF9C003BE9810A2BFF7438067100A71F89E6E3108947259F4B6D73335"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_active_scheme_paused_live_harness_v1_private.py",
+      "bytes": 5955,
+      "sha256": "D418470078A07057695C5BE601311A6DB5735B57C330E1D75186A0B1EDDA1EB7"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_active_scheme_precondition_command_binders_1_19_0_6_abi.py",
+      "bytes": 6867,
+      "sha256": "32F3D95187520A27CA7FE44A4E37D88A926EE50253A3D66CC794C2337BE213C4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_character_interaction_preview_v1.py",
+      "bytes": 9389,
+      "sha256": "B794F4ED38A99AB466BFF097B88E35CF66BA8869B65622F821BA3B955F3433D0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_character_interaction_preview_v1_source_adapter.py",
+      "bytes": 9463,
+      "sha256": "6D5BB3367759FF9028ADC3A3EABAEA4377AF051A893DB6875D6F654F50DF766E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_character_interaction_proposal_action_core_v1.py",
+      "bytes": 5856,
+      "sha256": "B3B44D575A0DABD6BF1A209ECCFAD1A6FA344D592B74AAB92A9434E36C97018D"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_character_interaction_proposal_native_binder_v1.py",
+      "bytes": 9939,
+      "sha256": "5ADDE718F7308545CAAC1D3772D2E9E0DA6095472A23C86971C15E5E9EDD7B0E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_character_interaction_proposal_payload_source_extension_v1.py",
+      "bytes": 10901,
+      "sha256": "D87BAD0F946F33F2E52F9592E329671E96678B9A934BB7183C7D4DFC55DFBD34"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_core_diplomatic_proposals_v1_contract.py",
+      "bytes": 10558,
+      "sha256": "3EE0DBC469D6EF2A40C7C372972A18B14C1A6FB07C8D6DDEB6220704F437511F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_council_application_main_v1_source.py",
+      "bytes": 4725,
+      "sha256": "57135EBCF3753328FC5311FB0369A6072388D40034EF9C5879D36D423FB1F104"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_council_assignment_action_1_19_0_6.py",
+      "bytes": 10839,
+      "sha256": "3669096204E3017B786D86AEF70397A24DA88B0B7E25F9DAF41BD7224955F638"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_council_final_gates_1_19_0_6.py",
+      "bytes": 5080,
+      "sha256": "F842B4BD6A27A44E808EB5C4155568A5FC67C76DC934F0477A7BFA6E74FEEC1E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_council_natural_gate_scene_no_launch.py",
+      "bytes": 10341,
+      "sha256": "B9727E67DA4E630AEEADFFB1979DEFC3B397BEAB39BB469C00AD920A6136668D"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_council_r694_query_prep.py",
+      "bytes": 5460,
+      "sha256": "55B4E2935232C0E5E4585B7A1B5E78837FEC7827E5F7FB3F6E5FD48A4224FEAD"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_council_r695_gate_prep.py",
+      "bytes": 7155,
+      "sha256": "FBC020BF58C4FC4EAD290AB880795CC77EDA7D1E1153100002BB409BCF67DE88"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_council_r696_controlled_prep.py",
+      "bytes": 7474,
+      "sha256": "B0D71C454C8478482F872408CA956124E13B79E884068C240BEDCCBC068FB724"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_event_option_abi.py",
+      "bytes": 6762,
+      "sha256": "803435DC78F269C1364D654A9A7BBFFCFBDD75D189C4076206466F2D12CD2200"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_event_window_context_abi.py",
+      "bytes": 41519,
+      "sha256": "CBA17F0FB3D1F4B9B35BAF8B55A93AC6D28CF9E45D5350215F6777548368F185"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_faction_at_war_receiver_v1.py",
+      "bytes": 8330,
+      "sha256": "212DE31B7ECAB2C1631E5A8E22C4450E0DB43A608D4442D03D29340D89FCAB06"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_faction_gift_opinion_receivers_v1.py",
+      "bytes": 15356,
+      "sha256": "EE8BF0C9F105FD87E19D46F190A71BFE204580FCE3A3E43405A3C2B8ACD2D7DA"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_g2_open_kaishek_compatibility.py",
+      "bytes": 48458,
+      "sha256": "94E8562A0FA983A4D6DAD97C2E8C623C32E42A92B5B6C8ED7FF8BC3F89A187C9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_g2_truce_native_callsite_observer_candidate.py",
+      "bytes": 8791,
+      "sha256": "5824E8EC82BE89D6873702738FC4BBCE61B517D754A612F22B68ABF1D95E9E36"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_gift_opinion_receivers_v1.py",
+      "bytes": 7332,
+      "sha256": "C419DBC1A922F2153ED7F7AC48588CC073EC2FCB71A905B8BFDBDD438F6B0168"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_government_runtime_adapter_1_19_0_6.py",
+      "bytes": 20142,
+      "sha256": "F895C7F7948AB70A746EA5CB5A51A362AC019AB6EDB04621FAA74E72CBF88C79"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_native_submit_abi_v1.py",
+      "bytes": 19069,
+      "sha256": "418FFB844CFD6EF13F6EC4E198ACD2242889E9D8BFDCB596D79C9D70BB131B72"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_source.py",
+      "bytes": 14117,
+      "sha256": "FE5D50E52C1DB90C3EEC8D0EA82CEF7F3BBE4DD98D1FAF66D7FDDC985C477335"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_marriage_container_outcome_abi_v1.py",
+      "bytes": 4259,
+      "sha256": "8355524222DC8250BF554DFA57455A3DFC2F0086A9AA89A575C39F80E49CD897"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_marriage_matchmaking_observer_v1.py",
+      "bytes": 4926,
+      "sha256": "B34F85DAC52FAFFC936EE6B9E9D3F4DE02A68953035FAD7A570B2F1BE779F26A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_military_preparation_live_profile.py",
+      "bytes": 5897,
+      "sha256": "CDC585145A37AF2BC028CC223965BC151115C04874FF4ECBC0956B493850ABE5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_military_preparation_summary_v1_binding_abi.py",
+      "bytes": 2930,
+      "sha256": "AFF8EDE547D84E58CC950027A0840F257F66791B7DAAABB03E37317050F31E74"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_non_religious_activity_native_tree_1_19_0_6.py",
+      "bytes": 14962,
+      "sha256": "FD020049A74F80820D4C147E43C38B4B768FA6192229B8C53BB9FAA8B8A5C579"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_nonreligious_prisoner_management_native_tree_1_19_0_6.py",
+      "bytes": 15453,
+      "sha256": "D322E5CEFE8D50BDD6E8FF0D0E335350B8BE865A289985A4C880FBAD7AD40A2C"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_pending_character_interaction_context_v1_abi.py",
+      "bytes": 27753,
+      "sha256": "9D9615EBB1F999361FCCCD22C49E61BB837666B33D5C67F8FADBB93A84EBC369"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_player_construction_view_probe_v1.py",
+      "bytes": 3802,
+      "sha256": "3EB8D0E157349F13442CBA4ADF3BF434BB629AA5199E440D9586CEA8F485AFFE"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_player_held_construction_model_enumerator_v1.py",
+      "bytes": 1404,
+      "sha256": "D50ADDEFB5769B309E1867F9A82067C525B1E2F4799BA76AAF6E6C57C8F0E94A"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_player_lifestyle_snapshot_v1.py",
+      "bytes": 7072,
+      "sha256": "FF4201A69C68B17219D80537839BABF6BA6C79CB42EA62FB4E939B29EF99E85F"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_player_lifestyle_window_owner_v1.py",
+      "bytes": 9575,
+      "sha256": "0C736E0A1C947BEC5C9172AC1054C0E3924A47A29FBD516E54C05A13DDC17CFD"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_player_world_building_action_private_v1.py",
+      "bytes": 2608,
+      "sha256": "6338868E4B608C5A3A2D9EB386A4ACBA9AF3B512BCF844724EF5E666F5A476C0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_player_world_building_cost_direct_v1.py",
+      "bytes": 1850,
+      "sha256": "C2FA5C29609783A6805AD81961E2F3F5F1E4E9001CBB1790938EF271A142541D"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_player_world_building_definition_source_v1.py",
+      "bytes": 5868,
+      "sha256": "F4E7A32C4E5513048518B7A58CD3F358F238F1ED05D3F564AC34C725137A80A2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_generic_war_bound_guarded_retry.py",
+      "bytes": 12849,
+      "sha256": "7CEFAEF0BDD05FBD5390B4356A16D2BACAC8ED0BACFC2F89D158A9F46AAC3762"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_generic_war_bound_normal_desktop.py",
+      "bytes": 8793,
+      "sha256": "2B9D54F8044DE4CA2934F630E2424A4310CB21EFAD9B286F0C7B368A1B7E38D7"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_generic_war_bound_rbx_guarded_retry.py",
+      "bytes": 5155,
+      "sha256": "751829B1223FEF162B350D886380BFC09D351DD1808A7E54AC7C201F4937604E"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_generic_war_bound_widget_guarded_retry.py",
+      "bytes": 5266,
+      "sha256": "C158475AE2BC0BCB8463B1D1A3A39F70F6564DAE9A8A940091FC000F055F91F5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_spawn_army_execute_v1.py",
+      "bytes": 7326,
+      "sha256": "A6FEF375185074F5CAC107334DFCED17083FE75B873CF0A8EA27D3A4F5CCAC72"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_raiktor_truce_evaluator_callsite_v1.py",
+      "bytes": 5564,
+      "sha256": "048BD4459D14994FB30658361037669CA9A969B56D50FCA84FA02DC7B7A40543"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_realm_law_enact_mutation_v1.py",
+      "bytes": 10217,
+      "sha256": "A4356AD221618ADCBF8B566D6E46248B6DF5441533C60D78C9A1CDA3704DC0CF"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/verify_scheme_state_1_19_0_6_abi.py",
+      "bytes": 7436,
+      "sha256": "84F9C01EA40CFD659D39C67AB283523D756262510538A8AE59FAEB70533C4893"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/__init__.py",
+      "bytes": 87,
+      "sha256": "9211E760E9BBEA5E995C3C81FC9F221EF754598015F21018E37F923D94ECA8AB"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/__init__.py",
+      "bytes": 3636,
+      "sha256": "61A874EB64E700570697ECA035B36E969F86BF1748D76B0338F4527644686E4A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/active_combat_retreat_contract.py",
+      "bytes": 31643,
+      "sha256": "B14D73DAC0B9DD966D5AD39CE0120D918193D50CA75EACB233EF6F8A11C651D7"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/actual_contact_contract.py",
+      "bytes": 13658,
+      "sha256": "935A5BD549F3A23E9E170289FE523D8E81726BEA09DF6B48CF4FE231BD091329"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/battle_control_contract.py",
+      "bytes": 37854,
+      "sha256": "65FBEEF2D2E1E06461A4305F928701391B856CE4960FD29D98C1E0E593A9C2AC"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/battle_reinforcement_assignment_contract.py",
+      "bytes": 21554,
+      "sha256": "87B95C0A5F2C8DCCB185B1DEC34E5946283B1B6ABF3168902F46ED90BCA00DE5"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/battle_terminal_transition_contract.py",
+      "bytes": 34544,
+      "sha256": "4F2228BDB1B29F11D6CCF63C44BC855535C1AC634FCC6DA5DFB32BF23DC4ECE1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/battle_transition_contract.py",
+      "bytes": 9265,
+      "sha256": "C80989B335E99E7143AE5511C9FED4EACE32F6EA55E2043EA85C394820BF940A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "bytes": 37508,
+      "sha256": "6F7ADFC245CA340CCF8F6CF9A95BEA6546192ED0B87962C7E496A1EA48B93FED"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_framebuffer.py",
+      "bytes": 57331,
+      "sha256": "ABC75BFC0E2AEEE9DFC7DCFCB29E0F7B9932F4B53F969069D8187FC6EBCA31D0"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_source_export_contract.py",
+      "bytes": 8110,
+      "sha256": "502000A436A555C2105B78D4C716671F77E0F7A3E18D7A93E71E871567BD476D"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_source_probe_contract.py",
+      "bytes": 22989,
+      "sha256": "7569DFE659BE07FBDBD3EA1246E9C5126CD9F138D4976A02816373D7C796421A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_source_upload_v2.py",
+      "bytes": 15370,
+      "sha256": "9644507D9EE5FA942D94A53CEF906F243044A79D3DCC4769E4D762C8CE28B5DB"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/combat_contract.py",
+      "bytes": 122554,
+      "sha256": "85EDD826000F3F75E4E3BB670146D2D9A575E3014F948C5F7941FFCEC12C8575"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/combat_phase_contract.py",
+      "bytes": 80821,
+      "sha256": "78285D803CB4B28EA69D14CE3DE650E50EBB22D23F2ECF2992E1186DD343356F"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/council_assign_councillor_action_contract.py",
+      "bytes": 13829,
+      "sha256": "1CBE97FFFA7148D3D084D13AC8DB16848A8999199EA69056BB048FE44D86AB69"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/council_composition_candidates_contract.py",
+      "bytes": 10516,
+      "sha256": "1EBA0801E737A02A0D7B2D37844B47C5E99A16E96C5F33121B3FDDFD6BB36B2D"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/death_succession_modal_private_transport.py",
+      "bytes": 18038,
+      "sha256": "B6DCEC196AEEED341AD5D31A8380BC654707F5B76439B4F15917CA680E1A5F41"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/declaration_contract.py",
+      "bytes": 3808,
+      "sha256": "B5ED2EB40F8F52298886D764259501559A551B4096ECAA839E39FA45A12E151C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/driver.py",
+      "bytes": 20571,
+      "sha256": "571C3776AC958D38D15906412F7F7AF24CC6BE098D62341A479EC905F48A9C31"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/entity_directory_contract.py",
+      "bytes": 10098,
+      "sha256": "70DD4A84ADC94E937D3BCE85CD4262BEC0BBC523EAB444C143EF66818C3ED9BC"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/event_contract.py",
+      "bytes": 7433,
+      "sha256": "5966EC5BBEB4F676430F38CE1BDE14D7EC378739E858847CFBF0295AA9DDFC13"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/event_window_context_contract.py",
+      "bytes": 17210,
+      "sha256": "DB127A31F58AC9FF1ED689F434146495799A7DCC426D494F0095CB0F4E78ADB3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "bytes": 16171,
+      "sha256": "34618C32359CC6639F5F75E06FA5F7CAA7F4661DD711358C2810F9CCCE99EAD6"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/faction_gift_plan_augmentation_v1.py",
+      "bytes": 2657,
+      "sha256": "8928E767B641439429DCD98A99EBEFDB5397C7EF4020E1324B3FEF7BAB80D9C3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/faction_gift_private_transport_v1.py",
+      "bytes": 5006,
+      "sha256": "3090C728C556AAB367EE3AF62EA0A6F361C0868BFF9C51E990C7AD41E2452A3C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/frontend_gui_route_contract.py",
+      "bytes": 37493,
+      "sha256": "AC5082E027CB9EC4FF49B3C1AD3D7638B4BA9A01169B2D41886C19797D68AE3D"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/loaded_feature_manifest_contract.py",
+      "bytes": 14105,
+      "sha256": "90DBD8CCBE780408831A2BA38B6B0DC9AA52504D76111F03C8C0E0E699DFAEC2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/marriage_contract.py",
+      "bytes": 3370,
+      "sha256": "F85B94E237F7EC4BAA7CB872B29514CEC4210AFCA583FC51075114E6E7E4DB71"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/marriage_matchmaking_contract.py",
+      "bytes": 6219,
+      "sha256": "029274DEE0E262D380AD36DA8C168986CEF94B2BAE2C574279924185FA741063"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/marriage_matchmaking_private_transport.py",
+      "bytes": 12623,
+      "sha256": "277275102CC5A0B34B2B95EEBB787EE93F5CE3A6DC7BE53618EFD1796EB2032D"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 93320,
+      "sha256": "260BF0A26673A1DEC16580FEBB622E39A9F1F9CB2749E1DCCBA743479D18BD08"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mod_driver.py",
+      "bytes": 18029,
+      "sha256": "1E1650D31BDC95D6676CA58DE1FCFE09B662C9CEBCDB09410A224D7A7E99B7FA"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1100364,
+      "sha256": "8F95C547EC1901DFB4D4C2197834028EF1C5F413F89B22101E490E04ADD0B729"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/pending_character_interaction_context_contract.py",
+      "bytes": 40377,
+      "sha256": "D8FBBD295F015012317536BDCA2E7ED555C3144FBDD59C5E82A87C8117F60609"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_faction_alerts_contract.py",
+      "bytes": 25363,
+      "sha256": "4C753F42A2785B02A2CAB45C7FB56A872031AED6580EF6D60E933583D693C8B8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_lifestyle_private_transport_v1.py",
+      "bytes": 15357,
+      "sha256": "C66385FA2B12238AA20CA4B0B526FE1212E5F1915141ADF4D951689B9CB01400"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_vitals_contract.py",
+      "bytes": 11580,
+      "sha256": "E7BE0216B2A37AC39F4545F9F8C352F9BCD0BB79BA6709067BF8B9771D8D1D0A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/prewar_scope_contract.py",
+      "bytes": 13002,
+      "sha256": "A27D84E8F1005AFF925672FAEB60B7C4F9258D9A7D0374C10042CB568436025F"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_actual_truce_expiry_contract.py",
+      "bytes": 5399,
+      "sha256": "55FE165E5C001CD6858C4C47345FC8343DC270C9D77B7DB9678E2D5596CF405C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_source_specific_war_loss_contract.py",
+      "bytes": 11381,
+      "sha256": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_public_aggregate.py",
+      "bytes": 12770,
+      "sha256": "C425E654CCAA11B609226ADAD5B45C29DE3263568960CC8F68D0B8813284D68A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_session_binding_contract.py",
+      "bytes": 12527,
+      "sha256": "6BBD1733E985692572D92F9BAE9C77C0CF878572B062857DEFBF52348907AE3E"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_six_domain_contract.py",
+      "bytes": 21494,
+      "sha256": "A7D0892B1DD8979A92A45291F2491416A11CAE7A64A0D9074BA458C4563F0DBD"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py",
+      "bytes": 12695,
+      "sha256": "DFC96575678C9C3CD9A72372EE1EA675FAD7ABDDC318A1B61CDA896B5F1BBF57"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_truce_probe.py",
+      "bytes": 8723,
+      "sha256": "2BD5CA2DF151FF0C42EB3C00AE3CB2A59A9E669D81B47183A457D9958DB6B64E"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_loss_cleanup_contract.py",
+      "bytes": 4393,
+      "sha256": "11C7B77842676251BDB1516472CB15D4115105D4A7B3AB5B994B3430F5F48C61"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_regiment_contract.py",
+      "bytes": 17106,
+      "sha256": "314C814F56638466580B073E7C926420B588F70F201E94FEF5B1B96100783205"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 448711,
+      "sha256": "8B5A4DDDAF912366CE33CFBD4C8D066C43A5DDCA48919646A8351BBFCF13E7E0"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/session_driver.py",
+      "bytes": 8233,
+      "sha256": "A43476DB7553B6E872FC4F53ED670395E9B5174E9A8DE6A21A02483FE98481E4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/session_queue.py",
+      "bytes": 8684,
+      "sha256": "15FF3F87F9C5362971198508D41E08C17FADEEA227983B6F38543F48A6E77906"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/set_played_character_contract.py",
+      "bytes": 1259,
+      "sha256": "CFDA4F0CC4DEB230369C500B6AC75DFE9FECECF52530623272E46F8BD6524A30"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/settlement_contract.py",
+      "bytes": 7694,
+      "sha256": "647D7F558A18326682817F53D55CBF600CED2754B72B6FDC84D6244C807C6BBD"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/steward_develop_county_action_contract.py",
+      "bytes": 14182,
+      "sha256": "3A029FC7016922ADB773E7EE8192B8C0A12A95E097F08976C0BD1F70DF24BE12"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/steward_develop_county_contract.py",
+      "bytes": 12473,
+      "sha256": "28FFB05A915CB52D0380EF602F30E99701045EC791BDBB1422740A9ADA83FD40"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py",
+      "bytes": 25706,
+      "sha256": "44767DABCB3C4DA938E95A00DFF11461883A61F1AF21DA14654DBEBC764F2F0C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/timeline_blocker_context_contract.py",
+      "bytes": 5624,
+      "sha256": "4B7CB728141FEF3EB10D4CAF2A90AD71004E6C93893EAF6F76DDAA4F6B0BC38F"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/timeline_blocker_private_transport.py",
+      "bytes": 5649,
+      "sha256": "9A97A8F7B88BC6E2C4D26CE7FC9799900CC00D8FCC6868350BC4791B3F6429D7"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/title_map_navigation_contract.py",
+      "bytes": 16065,
+      "sha256": "8AE8E4B568D91D062948C581FFE19B05788E64957AB691F963748EF51476053F"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/turn_bundle_contract.py",
+      "bytes": 23743,
+      "sha256": "0126D5F5190FEEB341E8D97F237C318769000FE3CD0E993F41021AD7D851FF34"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "bytes": 131915,
+      "sha256": "138CA5DAFFA99EDE68B29CCF292FBDDCF64DC72346A3E628223EED54B563DB2E"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_entry_contract.py",
+      "bytes": 20510,
+      "sha256": "C6B06F4FB1C98E6118A640B8BE174A5D3B844763B0CDFF49F8EBDC72544A724C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_exit_terms_contract.py",
+      "bytes": 26244,
+      "sha256": "3DA7A5CE3871920C91C5568374491C30B32C8D19366EE32CC32884C376817ED9"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_ai_owned_case_action.py",
+      "bytes": 23961,
+      "sha256": "D03EFEAEF400D305EAD33C85AA4A6B69FBFFCD77C18D5C19990CC1AE1A63217D"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_ai_owned_case_snapshot_contract.py",
+      "bytes": 32410,
+      "sha256": "58EB3A6341D43C5B3932F786FA16C58E5D9B92227F846057070CDB69FF0EFC75"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_b1_cycle_snapshot_contract.py",
+      "bytes": 14610,
+      "sha256": "247729B653D2ECCA49A894024C9AB6E6450FB74FE17BD559174ECA166291F06D"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_b2_pip_snapshot_contract.py",
+      "bytes": 39892,
+      "sha256": "E6CA1C8F711F24F25AC128D93E3336E92C945261443BBBD1B107247F8DA19B77"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_career_hc_workforce_postcondition_contract.py",
+      "bytes": 14671,
+      "sha256": "398210553C74FDEFA800B77F1287570598E4C2C4C73BE35F243BEC889BC14C76"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_case_snapshot_contract.py",
+      "bytes": 32905,
+      "sha256": "AC2530429B0ED193382275EFF57EA1B8FA3FB57DAC3C9E3612FEA21791953E50"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_compensation_af5_snapshot_contract.py",
+      "bytes": 8528,
+      "sha256": "48CFF74BA84A0A4F614C8071078C4066FE5AF5FDF04F7AC7DDA9121728E25744"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_incident_action_cell.py",
+      "bytes": 33987,
+      "sha256": "021CB2A7C27CE6E7134C6C282C0CAB1B8804C9807C1A132F94232E57C8AB594B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_incident_snapshot_contract.py",
+      "bytes": 26537,
+      "sha256": "FB795FD95BCC927B6A4D50AA885C284B9E33D99A9D0896306B572843C06EFFCF"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_manager_governance_snapshot_contract.py",
+      "bytes": 33526,
+      "sha256": "C7F07A53C4752CC11E859E47176124E092A791B8D87880EE3882AC88F31E767A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_manager_subordinate_selector_contract.py",
+      "bytes": 8166,
+      "sha256": "26E5E2CE6DDC13C496AC497C476DE3EBF935788B386AE6FDF5A58C049332A7B7"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_projects_metrics_postcondition_contract.py",
+      "bytes": 14013,
+      "sha256": "B2DBA9EE76457D0EC72BD87464EEC145618E76482BB77D4B6687A03C88A60436"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_promotion_compensation_postcondition_contract.py",
+      "bytes": 10028,
+      "sha256": "9A155B821EC4D9E7C27ECA014D381DBD5EA48401DE52DB3112D045AD569B1F04"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_promotion_source_progress_contract.py",
+      "bytes": 10516,
+      "sha256": "9F8ACF825ED2DF8410484F48A5DA979F0FB290056CF5080936E1C52409D21094"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_result_case_snapshot_contract.py",
+      "bytes": 23333,
+      "sha256": "7EB341D0F4094536A92CE20762C6B939D5B68DAFF19F61DA44C8AB636DB42AC4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_scoreboard_action_batch.py",
+      "bytes": 20199,
+      "sha256": "7DB68ED539CA71F88F2F0E705559A17748934BAD579E6609E92CF3B71A665EC5"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_scoreboard_action_cell.py",
+      "bytes": 12683,
+      "sha256": "9DF06F5FC8BC2E24B4EBFB9A00E060182AED046915D1AA1A6578D964F9A23D77"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_scoreboard_action_contract.py",
+      "bytes": 34564,
+      "sha256": "5859100B242207F358DDDEB65A9A5FEB517EA647D9704551688F3E5C080CF8EF"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_scoreboard_state_contract.py",
+      "bytes": 18067,
+      "sha256": "AFE199408D36DFC28980E3588E1832AA27715A3A90572AE7200BBBD6A935D9BD"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_workforce_collective_snapshot_contract.py",
+      "bytes": 31932,
+      "sha256": "E91AC95EC075959610060DB0B5335201B5D0D952DA931A2495AA1BA4CE7FAA31"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_workforce_normal_exit_snapshot_contract.py",
+      "bytes": 36181,
+      "sha256": "60261C642D5500F2E465986E64CD43389E5BFEFF6CECFA8CA91D2DA8ABB08EB3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/zhongguo_workforce_owner_snapshot_contract.py",
+      "bytes": 7926,
+      "sha256": "2678B31A11E25DB5CB1AA59C948F8A7EFB74B6C067770DD5308FBD916CC7BB78"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/cli.py",
+      "bytes": 36727,
+      "sha256": "7DD7328684DF43E34464B380D429443BC4F400246084EEFC96447DC750B385BA"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_configured_resources.py",
+      "bytes": 24795,
+      "sha256": "76D4F32811C7891BC139089F5B19CF24B28A32509430681CAEE237A93B527E70"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_definitions.py",
+      "bytes": 14797,
+      "sha256": "40BD60756831108A3C4A75532F1DBB624A2F02BED44D3F0540DEB6B746620075"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_dlc_sources.py",
+      "bytes": 5261,
+      "sha256": "14E0248CFE4973B2FDC805FF96CD0D7EA15ACF78592D660A2BD49C34AA116694"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_load_configuration.py",
+      "bytes": 10507,
+      "sha256": "89B91A89CC05834D78CA61187D45196EEBC1911EA50CC74509A40E143B3E6504"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_resources.py",
+      "bytes": 26408,
+      "sha256": "FB3831D8A9B0111D2E8A1C20B820105DFA49AF8BAB09F2B6606991823DB5D4F6"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_vfs_resolution.py",
+      "bytes": 12957,
+      "sha256": "A453F3840DCBC51E9CC020A21089C36D843E803273926E2F64C365A7A7EDDBCB"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/codex_mcp_setup.py",
+      "bytes": 42141,
+      "sha256": "9EE4AD18A67A77E6CE600D70DBF89FD7E081EB81DAB6F9764B6ED1E234CB7A19"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/companion_profile.py",
+      "bytes": 9989,
+      "sha256": "17672D1E4B947513FBD6DC0B1B99D3A809A3A5BAF145A3D6023F021A69EB3C72"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/control/__init__.py",
+      "bytes": 116,
+      "sha256": "B74498AC561AC00E0F908D34D2C14970F17DCA71F4F37A9AB0719CD35694B00B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/control/executor.py",
+      "bytes": 51381,
+      "sha256": "067ECA475B7119FE389FB5767A4749D778E2F4FD3FADFD506299A4686732BFE3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/crash_probe.py",
+      "bytes": 143772,
+      "sha256": "EF758A2062546F43687E05421301E55DDBBE55A2E37EFBC5CE284B55722171B5"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/environment.py",
+      "bytes": 50058,
+      "sha256": "A8922021F5523350D74223858CB161CEC26215A041AFDEED3BC9AFB62E8B8FE6"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/errors.py",
+      "bytes": 294,
+      "sha256": "8BAEDACA3D7F38B485D132503A3DDEFD33E70A6089CB93B485D052D017C2A3B2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/faction_gift_cold_recovery_contract_v1.py",
+      "bytes": 7051,
+      "sha256": "72B408EAA65728470EE75A252AF704C0586AFFB1E81E8094D6ADCB8487A44429"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/faction_gift_formal_candidate_v1.py",
+      "bytes": 7086,
+      "sha256": "718BB95A9126E8923613CD0B15C7FC0BAC561CEF15DA79EB4079464FA6405D57"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/faction_gift_pending_v1.py",
+      "bytes": 13656,
+      "sha256": "2152C3E2C7F48BAD6864C06D43A6E32E731736A72E65DF5B134250A156450293"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/faction_gift_policy_v1.py",
+      "bytes": 9308,
+      "sha256": "569526B7DEA244704AE946DA2892475058A3C5B2B8F310B75D0E3E2C88159F15"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/gameplay_runner.py",
+      "bytes": 4112,
+      "sha256": "D34431715EA0E2F5A851E291B4EB3EBAE9D27D9A4CD3402D8AF59B67F844D654"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/integrity.py",
+      "bytes": 9853,
+      "sha256": "F175628866D36ACB47EC078FFDE12FD9F00F0BCC19F4FF097DA6294E37645F5C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/joint_candidate_ledger.py",
+      "bytes": 3318,
+      "sha256": "7BE481AC5A5C8795D97FBF3F03DF2BEAB91671AA8996C2B1C1A425A0055B6665"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/lifestyle_formal_consumer.py",
+      "bytes": 8203,
+      "sha256": "BD2392A116D96FCBB7EA49743A618814CC1E8CFF65EC9BA9E3B0A1F26F8EC765"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/lifestyle_min_policy.py",
+      "bytes": 8425,
+      "sha256": "A477BD91A1528D59A482D4041915762C8072227CD9E86C6417DDD852D665DBEC"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/locking.py",
+      "bytes": 4309,
+      "sha256": "72A470224E5B40682590A91618187C6F07728CD75C5A4C8045EC298A902FBEAD"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/menu_smoke.py",
+      "bytes": 275404,
+      "sha256": "6EB5484091346E0C8D41B70867392BF3CA16D08B6251DDBAA3263D0513276F3E"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py",
+      "bytes": 188092,
+      "sha256": "77A5D1168F8F8D0B0DC13C6D4D0D08BEDCA3A1C7DC483DA40E477330C40C0866"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "bytes": 73946,
+      "sha256": "DC97D499B452088B41DA1201E51BD9CC21CD9E9BB82E3F16948896BAA38E9754"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/navigation/__init__.py",
+      "bytes": 170,
+      "sha256": "CFFC58760580F0759DEA09F5BD45724DE74743B3B78B529594E548E98BC3D0E3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/navigation/new_game.py",
+      "bytes": 1265,
+      "sha256": "2D6F33937D2381FC49A2E439111FCD787F2E5C13D90B0670B6BB6892128FD4F3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/next_episode_run.py",
+      "bytes": 11453,
+      "sha256": "1B05F6E20BF95B8CED95EDB3705B3691DBC991A44B35BE2E56CA201FEBA4EC77"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/one_generation_preflight.py",
+      "bytes": 12118,
+      "sha256": "15F2C4E54D6C79B70478704754020823816735A769167AB3A05625A26B142963"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/one_generation_run.py",
+      "bytes": 14322,
+      "sha256": "7CDA9E75714AEF7A323BE5450E0DF5F4723843EC3844554976225485819B4954"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/opening_smoke.py",
+      "bytes": 297594,
+      "sha256": "F0E36C506EAF8A5278D28E1C3CC0FC9486346BB90DDC4B91BA6322C130BA9B2B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/operator_mcp.py",
+      "bytes": 36169,
+      "sha256": "3EBA76062623C2B4AFED9B130DEE1630996343AA1D5A85235F71C9C6EA0693B5"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_seed_rebinder.py",
+      "bytes": 13972,
+      "sha256": "951BFFC4E7B9300450C7A9AB3DC5191C67507D490F8BE5D8EB5D62F727C85A4C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/outbound_white_peace_status_query_run.py",
+      "bytes": 14641,
+      "sha256": "D56E3320DAC3C21F5ED8E061A3D4884084DCDE4204E6A5CFB10B0C17D6993B99"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/process_watchdog.py",
+      "bytes": 14944,
+      "sha256": "2884D2942E0F89A6A1A61D5469716108EFED5A0628C12979EBAA5B08F28AF4DD"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/raiktor_formal_exit.py",
+      "bytes": 14666,
+      "sha256": "39C5255AC208B0771FCAFC30B3E8549C7F2BAA28FCC2F7C3008030A4A181F377"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/recovery.py",
+      "bytes": 48788,
+      "sha256": "B78DD97FD1F1C4012D46176C202B43544AA8FFB28C817C9CDBC2307C1A2D43D1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/rules.py",
+      "bytes": 3989,
+      "sha256": "2AC79E8F3F9DB8AC4D9596B932EB825902135CABBC65120B50AC7711F942C5DB"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "bytes": 140820,
+      "sha256": "6224AFAF1AA675F28E1825F90862EF8E89747F91ECC34864ABA090A757EF057C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/__init__.py",
+      "bytes": 3109,
+      "sha256": "30F370007FE5C4ED9BE08A3B0E8A4DCDD86DED50404DB216EF0079A787A5C692"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/battle_terminal_cruise_policy.py",
+      "bytes": 11793,
+      "sha256": "F990AC76CE4622A5355FFB5439FD22BF7D7233C7D9B986283CA3F9C8D136C0E1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/candidate_source_proof.py",
+      "bytes": 5505,
+      "sha256": "E8A7F0442425D82BE92C53093B18BF11EB8B99B8AA0BA2AE0CE3C4381B320B7D"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/combat_core.py",
+      "bytes": 45034,
+      "sha256": "C191CF4AB8CE45B0E67368EF420C7B87CE4B92560CE9942F65AE0273CD812048"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/combat_decision_contract.py",
+      "bytes": 21176,
+      "sha256": "4768CE371E951B14C438B09C420717363FB217210F0774637395B5EFC1FAE862"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/combat_input.py",
+      "bytes": 32861,
+      "sha256": "923BDAE4206F466F7E43D9B9EE50750F4C9601F44F4FC0F42F59B4940D8DE049"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/loaded_playset_proof.py",
+      "bytes": 21303,
+      "sha256": "3C4E900EACD78F89048CD7981BEE2E74A07D18EC547024ECB5086ADF142EA649"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/phase_event_evaluator.py",
+      "bytes": 118358,
+      "sha256": "551750E810827E0F7CA3AC1F9FEF21574110BD42B997B60F3B57AE41A2DFCD95"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/phase_event_manifest.py",
+      "bytes": 13566,
+      "sha256": "124D5BA996C4C654B1931AF34CB9ED63BB064DFC31DA19900ECC944D7D853DDD"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_campaign_dominance_provider.py",
+      "bytes": 20378,
+      "sha256": "D4771C3E4CDD4D516C80AE3F76175F884432AF1B2A633290CCF4466DE6496586"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_checkpoint_replay_recommendation_provider.py",
+      "bytes": 8034,
+      "sha256": "EE5CAA42E0468FE8F3F7CC4C47B470A4CA4FAB82BD56EF70EA2E854FF8D3C150"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_continue_vs_surrender_policy.py",
+      "bytes": 30496,
+      "sha256": "B97856B3FCD67EE8E8A606D4E6BA7DAE223D23F954FFD933A34BB5D7ABE724C2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_exit_utility_evaluator.py",
+      "bytes": 23685,
+      "sha256": "B4FB360791AA2CB7472C43017F6E3DD3847A755F11F9ECF13C0ABEEC72725470"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_exit_utility_model_provider.py",
+      "bytes": 12037,
+      "sha256": "5CA89FFC6FBDBA10DFE18A977130814C3D14FD96E41BFA1C343957AB4DDF2D04"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_owner_budget_profile_provider.py",
+      "bytes": 13100,
+      "sha256": "67CA0957A36617D3DD6DC092A9BD484E335FFB54E6705192F5495531748F95C4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_owner_exit_utility_model_provider.py",
+      "bytes": 12654,
+      "sha256": "2C37AAA8B1D3EA5C6BA85B79C630DFFF5039A87EF7BDC2764F5C741CC8765DA2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_same_frame_white_peace_comparator.py",
+      "bytes": 21866,
+      "sha256": "AF604A12977BD7002CFF5FED4EDD77190855FDB23C3B58440D889BF085A4A9E8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_surrender_execution_policy.py",
+      "bytes": 13851,
+      "sha256": "AC55E6115BAA8424EEA4370679C8C87A95A1B28107E2DD5D062464901B709940"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_three_way_exit_action_gate.py",
+      "bytes": 11909,
+      "sha256": "C000021EF96F3D8796086CF89027EF3BFB934811FE1625248D00333D4DABF5F0"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_three_way_exit_intake.py",
+      "bytes": 7183,
+      "sha256": "CABDFC4433CB5375EC8159D84CD2CC0DED45D43ABF2C3823D163A8743248D3E6"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_three_way_exit_policy.py",
+      "bytes": 43240,
+      "sha256": "B07C89779709E5B9D2E3DFFAAB406856B84FB79A05A1DF0B09850C4D17E32DEA"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_three_way_exit_postcondition.py",
+      "bytes": 23978,
+      "sha256": "65FFD6D247FDE28E931B9D1BE7A957A967D404CC6A873F1504186D0AAB12C667"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_three_way_exit_postwar_evidence.py",
+      "bytes": 17319,
+      "sha256": "4AA13D0F311DC390539999941B668B1B6595558BAD10E5BB448DD851FBBEB028"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_three_way_exit_recommendation.py",
+      "bytes": 24372,
+      "sha256": "830854930C097F74D99648C74527063D75733109C56F49A23BECDF7079F2F4C7"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_white_peace_comparison_contracts.py",
+      "bytes": 9214,
+      "sha256": "4F14EF293DE8FE8A29B42507EA5EB531475A96EF1A06220E7E4B570DB4B09A66"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_white_peace_comparison_provider.py",
+      "bytes": 9986,
+      "sha256": "FC9E3E0566AEDA64338448DBE328EEB27F90833CD9536C2D19A1571655F14EE5"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/raiktor_white_peace_narrow_projection_provider.py",
+      "bytes": 23729,
+      "sha256": "8692831E8C00A68081B142B7FA2732BFA6F775DC8AF6B464B82651DE3BE0C2EE"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/research_envelope.py",
+      "bytes": 17480,
+      "sha256": "6614A0369AC073FE8E15509585984FFCB2DBB601CCC8E0423B494C53B2A05398"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/startup_control.py",
+      "bytes": 18200,
+      "sha256": "37794C5EEB6A9C5B01D8B5328C847FAB4CC6FACBC5A527A455B2B39AAFB3AACD"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/startup_slot0_probe.py",
+      "bytes": 36019,
+      "sha256": "9C0DEA130EB6527356767EB0E4855AAE9E8949616D5B8F2AA22118D638323C96"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 677964,
+      "sha256": "BB00B097269BB5F8D3AC3F1FB1F47A7F2BA9FCE1BD2D54DBB756E2795B54B010"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/throughput_report.py",
+      "bytes": 18749,
+      "sha256": "193383927313ED291E4613674E71E2C93EFD80EE0FF033F853AF4E70A141A4EF"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/timeline_blocker_action_run.py",
+      "bytes": 24528,
+      "sha256": "76B5A5363E2CD83C0B97AA55EE97548D85A64EB485A74D80699E8FA8C6896FFE"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/timeline_blocker_query_run.py",
+      "bytes": 17792,
+      "sha256": "0D435CBC62F1881BD2ADD8E00E2FF6C84EB3AB0108F90286B43FAC0B81BF9BB7"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/__init__.py",
+      "bytes": 11854,
+      "sha256": "4DBA9B3FA1017F70718A5D6861D32CD18AA898BE3242273F96AA97C1480E7AA9"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/bookmark_raiktor_policy.py",
+      "bytes": 7846,
+      "sha256": "C82E67925D34F6E283FB49C98956C85151BA472C2234EFEC5A38CC566898B558"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/discovery.py",
+      "bytes": 14579,
+      "sha256": "962966AD9AD18666F138E0B491F1FA68172CC149FC81261E0302534D8DF4A0D2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/outcome.py",
+      "bytes": 10446,
+      "sha256": "601B55F38A8BA2EDF8BA59252A3E81F695944963361A90D7493AC6302F576C49"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/policy.py",
+      "bytes": 29841,
+      "sha256": "4F10A2B859B179D53D1CF9D883BB5328F5C247AF087C2DC8DE1DB1ADE05A7C79"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/portable_evidence.py",
+      "bytes": 33010,
+      "sha256": "FECDEC3F78349A2D25B24DC29AAF342D48893764375547171DE3D9F06545B29E"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_analysis_embedded_a.py",
+      "bytes": 62595,
+      "sha256": "337FF02ADCC554D9C691290C37D740B408988FEDC396BD0EF557774F9F79626A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_analysis_embedded_b.py",
+      "bytes": 32738,
+      "sha256": "C2FF72388269B3B7DC767C9C9AEF2AD28310A66548A54C5A89EBB1C98D35DA4A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_analysis_embedded_c.py",
+      "bytes": 17215,
+      "sha256": "1BD7C56B82BDF39CA7A377F80DEA25BE7F2101DB0698E10565F602FF3F6C023F"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_analysis_manager_a.py",
+      "bytes": 12563,
+      "sha256": "2BDA79FFC117151BCC2358E50E5ECFA1E4FFEA08A19A37C9A4D7D58A9161085B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_analysis_manager_b.py",
+      "bytes": 23226,
+      "sha256": "953A3638881A129C23E0F3BBA5985C1F5378B34A70C6FDAEEC4FA04EB73BB752"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_analysis_vanilla_shards.py",
+      "bytes": 20656,
+      "sha256": "F1B9D1B3F63EBCC8B3FF562CDF219E9D361C95AB4FB18C46E286AD0CDD1A02AC"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_artifact.py",
+      "bytes": 7576,
+      "sha256": "F6FB38F06512B99CB8AC8335021ECDBB8A786AA98192553D5895E9D22595A458"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_bp1_house_feud.py",
+      "bytes": 11727,
+      "sha256": "26FB865ECDC4E9A8F2B4BC9D7E0742796C69EA3F193E97CF23BAED46A471230B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_bp1_yearly.py",
+      "bytes": 17291,
+      "sha256": "4AD2026B06BA75C7E185FD5DB8DE277A2021AE6D7D80B2A5693AF72A8E0046D7"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_chancellor_foreign_affairs.py",
+      "bytes": 6883,
+      "sha256": "53C7F7E273BF40052D3F07BBD6FE647C231952614C300BD612EB45DC76D975AA"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_death_management.py",
+      "bytes": 11525,
+      "sha256": "8B21500ADF05ABD70EDDCE1ADE8683D7F0F374D3ACF234DB41BFFDE73FE8E058"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_diplomacy_majesty.py",
+      "bytes": 7596,
+      "sha256": "557AFED6A127D58CBC4812F1EDC7DCEC087A72139409593B3E889DBA09EF023A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_embedded.py",
+      "bytes": 622,
+      "sha256": "D20161C581DB02F1AE5657C7284254BCCB162871AA0A0E297E75AB1DCB0D1AF9"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_embedded_a.py",
+      "bytes": 60808,
+      "sha256": "B51A9176A126F678C9951B2EABC9141E60263739F56F1C856C71548B6029151E"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_embedded_b.py",
+      "bytes": 64840,
+      "sha256": "BC28602DE5984112D9F0E0F8AEAB51941B5FD9D7A5F83A27172D21726348F1D0"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_embedded_c.py",
+      "bytes": 38977,
+      "sha256": "B3E5251974ECDBD0E6D29CA7E6CEE3CF5B66DF7C1F2ED6F514A80E8CE726701B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_ep3_landless_admin.py",
+      "bytes": 7126,
+      "sha256": "647C2F77C444B89334E0E2FE67B815EFDEEC3474CB6851E5212BF71547551A97"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_epidemic.py",
+      "bytes": 18906,
+      "sha256": "1E5DC897579954BAB0689BD61356764CBF741EBC2ED5693ED233210C5B7E3B33"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_faction_demand.py",
+      "bytes": 24950,
+      "sha256": "13F9C373EFE8CD487859DE4D7377AED5D4EF1A9D66548BE3F963409DAC931778"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_fervor.py",
+      "bytes": 10997,
+      "sha256": "172106C5AABD5F4E2D6D255883D06A17B8504A5E51ADDF151B5AE96CBE00B69E"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_health.py",
+      "bytes": 53823,
+      "sha256": "7AAB81FA161A1E148756E5FCD293628CC15B24217B5D1B2725226E2E745D123A"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_manager_a.py",
+      "bytes": 96778,
+      "sha256": "D630FE26671512469C6E641C463CBD6E4DD9C4F6E0B3F955945B84151F12BE33"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_manager_b.py",
+      "bytes": 63605,
+      "sha256": "59E65D77950830DABDD7E0D7D4EED5AE891C8FA254480CD76B4ED9D097302DA9"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_pay_homage.py",
+      "bytes": 8945,
+      "sha256": "F7361709D20A2713687CDE1E368B1D986BC8FF549C8EA7EFE5F42C894D48A18C"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_prebootstrap.py",
+      "bytes": 2264,
+      "sha256": "14A160B855EBBC0AAAB3D78579C58EE6C1F2B04CE564195401F8864169BE63AB"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_tgp_dynastic_cycle.py",
+      "bytes": 30080,
+      "sha256": "DA142FFA213E47F48CADC93477D1A1A9CFA77C66730BFAA3EF47A5A775C28BE2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_tgp_japan_yearly.py",
+      "bytes": 7159,
+      "sha256": "7DE881FC23D42DB359AB403B01C807311DE226A345A8C5A845594253E4339476"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_tgp_movement.py",
+      "bytes": 19089,
+      "sha256": "F54090583431EABD23E3B21796483D80C97C41C43A1D9C3568E7E3B82D895E2B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_tgp_travel.py",
+      "bytes": 7928,
+      "sha256": "9C5AC650ADD19E23D8262F6D7A54DED2D7566BBD4B224ABCC544CA3B433A0AA9"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_tgp_treasury.py",
+      "bytes": 9678,
+      "sha256": "BDD5C1C5FF6497008E2A9940459C817CFF9F31A75EB5C9B17C0B0A4FCC1CA2AC"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_trait_specific.py",
+      "bytes": 30929,
+      "sha256": "F2AA4AFDF142B78FC4408B4403396EB8863EAF1D64F9C1F984700730678D17A1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_vanilla_shards.py",
+      "bytes": 57379,
+      "sha256": "8CFCAFCC5B536C0051B1668EB310D59BFA7834744CC658CC99CA84CEDF514C03"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_vassal_interaction.py",
+      "bytes": 7549,
+      "sha256": "A3FB5AB109AE6F3AE3FA36B24D1597D4D5BD242B6812120A1B2D265B4646F429"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_yearly.py",
+      "bytes": 16173,
+      "sha256": "E8754C010132FEE40A5B6BC4D4C885DD54F648F0C4D6B7F91F373AF447CD0205"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/registry.py",
+      "bytes": 14153,
+      "sha256": "9D81716542888CA9EF64BC2E5FBE11A44FE16D8B3F244DD1DA415AE189CE7E89"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/source_index.py",
+      "bytes": 14551,
+      "sha256": "959DF0ED0D704A10AC4D0CE2CC57ABD0C6FACC52EFD204EFF8F84210E552F5DF"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vision/__init__.py",
+      "bytes": 528,
+      "sha256": "6A7C559ED1D13ACAEE13DF1476FADFA951FB8F17FA4A365646DCF762429738E3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vision/classifier.py",
+      "bytes": 25934,
+      "sha256": "E63124F59A2BFD5C7011AB70286DB6AAFCD038F4B6D9DE07B381DDDFA700E254"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vision/model.py",
+      "bytes": 6513,
+      "sha256": "4EC730D06841F098C3CCF146ED0E071D5A0AE795B6E7F6C34E9C849AA6CA919B"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vision/ocr.py",
+      "bytes": 4905,
+      "sha256": "F290E516CFB4CDAEB9C675D32AB4DB35E8DD7115883C1CD250968ECDBC227A64"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vision/window.py",
+      "bytes": 56367,
+      "sha256": "1AF3E4AD6190C3A3FC941A9B57B3ADA022046AACFAF3A550F8989500A0C73F2E"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/windows_process.py",
+      "bytes": 3307,
+      "sha256": "173C2473E576DE4F1827E31BC10467E9D9E935DCB6DCA86C0FC532F7C10A4C56"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/windows_uia.py",
+      "bytes": 5279,
+      "sha256": "59B84C073131FE691CFA43180BB37C804ABCF154FF834EC4706CF95D66CD9542"
+    },
+    {
+      "path": "tools/run_acceptance.py",
+      "bytes": 190724,
+      "sha256": "B5E99A7B835DA5D2FFB237296567984683B401D42E14FDD5EA272707ADF9F156"
+    },
+    {
+      "path": "tools/run_zg361_phase2_seed_capture.py",
+      "bytes": 292464,
+      "sha256": "2E4EC85C3B3496DDAB0ED18E0D8D7010B08DC7B337B7546E36FA5E38A11696A6"
+    }
+  ]
+}

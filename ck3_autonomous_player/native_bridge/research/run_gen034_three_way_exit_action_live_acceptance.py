@@ -32,6 +32,15 @@ for candidate in (RESEARCH_ROOT, PACKAGE_ROOT):
 import run_gen034_three_way_recommendation_live_acceptance as recommendation  # noqa: E402
 import run_raiktor_surrender_session_binding_live_acceptance as preflight  # noqa: E402
 import run_war_termination_terms_live_acceptance as base  # noqa: E402
+from gen034_candidate_authorization import (  # noqa: E402
+    CandidateAuthorizationError,
+    require_matching_terminal_authorization_v1,
+    terminal_authorization_v1,
+)
+from gen034_runtime_manifest import (  # noqa: E402
+    RuntimeManifestError,
+    verify_runtime_file_manifest,
+)
 from xar_autoplayer.bridge.raiktor_actual_truce_expiry_contract import (  # noqa: E402
     QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_CAPABILITY,
     QUERY_RAIKTOR_ACTUAL_TRUCE_EXPIRY_V1_STEP_PREFIX,
@@ -75,7 +84,34 @@ def _parser() -> argparse.ArgumentParser:
     parser.description = __doc__
     parser.add_argument("--source-capture", type=Path, required=True)
     parser.add_argument("--expected-source-capture-sha256", required=True)
+    parser.add_argument("--runtime-manifest", type=Path, required=True)
+    parser.add_argument("--runtime-root", type=Path, required=True)
+    parser.add_argument("--expected-runtime-manifest-sha256", required=True)
+    parser.add_argument("--expected-terminal-step", required=True)
+    parser.add_argument(
+        "--expected-terminal-outcome",
+        choices=("white_peace", "surrender"),
+        required=True,
+    )
+    parser.add_argument("--expected-terminal-authorization-sha256", required=True)
     return parser
+
+
+def _verify_runtime_admission(
+    runtime_manifest: Path,
+    runtime_root: Path,
+    expected_runtime_manifest_sha256: str,
+) -> dict[str, object]:
+    try:
+        return verify_runtime_file_manifest(
+            runtime_manifest,
+            runtime_root=runtime_root,
+            expected_manifest_sha256=expected_runtime_manifest_sha256,
+        )
+    except RuntimeManifestError as error:
+        raise Gen034ActionRunnerError(
+            f"GEN-034-D runtime source admission failed: {error}"
+        ) from error
 
 
 def _exact_build_proof(
@@ -357,6 +393,40 @@ def _same_saved_semantics(
         and _played_character_id(after_save) == _played_character_id(post)
         and _war_opponent(after_save, war_id) is None
     )
+
+
+def _require_recomputed_terminal_selection(
+    read_phase: dict[str, object],
+    *,
+    source_capture_sha256: str,
+    expected_terminal_step: str,
+    expected_terminal_outcome: str,
+    expected_terminal_authorization_sha256: str,
+) -> dict[str, object]:
+    authorization = normalize_raiktor_three_way_exit_authorization(
+        read_phase.get("action_gate")
+    )
+    action = authorization["action"]
+    frame = authorization.get("frame")
+    if not isinstance(frame, dict):
+        raise Gen034ActionRunnerError("recommendation authorization lacks its frame")
+    try:
+        return require_matching_terminal_authorization_v1(
+            terminal_authorization_v1(
+                selected_step=action.get("literal"),
+                recommended_outcome=action.get("semantic_action"),
+                war_id=action.get("war_id"),
+                opponent_character_id=frame.get("primary_defender_character_id"),
+                source_capture_sha256=source_capture_sha256,
+            ),
+            expected_step=expected_terminal_step,
+            expected_outcome=expected_terminal_outcome,
+            expected_sha256=expected_terminal_authorization_sha256,
+        )
+    except CandidateAuthorizationError as error:
+        raise Gen034ActionRunnerError(
+            f"terminal selection authorization mismatch: {error}"
+        ) from error
 
 
 async def _execute_action_tail(
@@ -775,6 +845,12 @@ async def _run_mcp_sequence(
     opponent_character_id: int,
     source_capture: dict[str, object],
     source_capture_sha256: str,
+    runtime_manifest: Path,
+    runtime_root: Path,
+    expected_runtime_manifest_sha256: str,
+    expected_terminal_step: str,
+    expected_terminal_outcome: str,
+    expected_terminal_authorization_sha256: str,
 ) -> dict[str, object]:
     """Keep recommendation and action phases on the same managed driver."""
 
@@ -789,21 +865,39 @@ async def _run_mcp_sequence(
         )
         if read_phase.get("ok") is not True:
             raise Gen034ActionRunnerError("recommendation phase returned RED")
+        runtime_before_action = _verify_runtime_admission(
+            runtime_manifest,
+            runtime_root,
+            expected_runtime_manifest_sha256,
+        )
+        terminal_authorization = _require_recomputed_terminal_selection(
+            read_phase,
+            source_capture_sha256=source_capture_sha256,
+            expected_terminal_step=expected_terminal_step,
+            expected_terminal_outcome=expected_terminal_outcome,
+            expected_terminal_authorization_sha256=(
+                expected_terminal_authorization_sha256
+            ),
+        )
         from mcp import Client
 
         server = base.create_server(driver)
         async with Client(server) as client:
-            return await _execute_action_tail(
+            result = await _execute_action_tail(
                 client,
                 read_phase=read_phase,
                 source_capture=source_capture,
                 source_capture_sha256=source_capture_sha256,
             )
+            result["runtime_before_action"] = runtime_before_action
+            result["terminal_authorization"] = terminal_authorization
+            return result
     except BaseException as error:
         return {
             "schema": RESULT_SCHEMA,
             "status": "red",
             "read_phase": read_phase,
+            "runtime_before_action": locals().get("runtime_before_action"),
             "sequence_error": f"{type(error).__name__}: {error}",
             "gen034_closed": False,
             "ok": False,
@@ -832,6 +926,11 @@ def _load_source_capture(path: Path, expected_sha256: str) -> dict[str, object]:
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
+        runtime_preflight = _verify_runtime_admission(
+            args.runtime_manifest,
+            args.runtime_root,
+            args.expected_runtime_manifest_sha256,
+        )
         source_capture = _load_source_capture(
             args.source_capture,
             args.expected_source_capture_sha256,
@@ -846,6 +945,7 @@ def main(argv: list[str] | None = None) -> int:
             "sha256": source_capture_sha256,
             "normalized": True,
         }
+        preflight_payload["runtime_source_closure"] = runtime_preflight
         if args.preflight_only or preflight_exit != 0:
             payload = preflight_payload
             exit_code = preflight_exit
@@ -855,6 +955,16 @@ def main(argv: list[str] | None = None) -> int:
                 opponent_character_id=args.opponent_character_id,
                 source_capture=source_capture,
                 source_capture_sha256=source_capture_sha256,
+                runtime_manifest=args.runtime_manifest,
+                runtime_root=args.runtime_root,
+                expected_runtime_manifest_sha256=(
+                    args.expected_runtime_manifest_sha256
+                ),
+                expected_terminal_step=args.expected_terminal_step,
+                expected_terminal_outcome=args.expected_terminal_outcome,
+                expected_terminal_authorization_sha256=(
+                    args.expected_terminal_authorization_sha256
+                ),
             )
             exact_build_runner = functools.partial(
                 _exact_build_proof,

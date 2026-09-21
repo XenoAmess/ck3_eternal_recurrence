@@ -232,6 +232,40 @@ def _termination_fixture(
 
 
 class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
+    def test_recomputed_terminal_selection_must_match_frozen_authorization(self) -> None:
+        gate = _authorized("white_peace")
+        read = _read_phase(gate)
+        action = gate["authorization"]["action"]
+        frame = gate["authorization"]["frame"]
+        frozen = HARNESS.terminal_authorization_v1(
+            selected_step=action["literal"],
+            recommended_outcome=action["semantic_action"],
+            war_id=action["war_id"],
+            opponent_character_id=frame["primary_defender_character_id"],
+            source_capture_sha256=SOURCE_CAPTURE_SHA256,
+        )
+
+        admitted = HARNESS._require_recomputed_terminal_selection(
+            read,
+            source_capture_sha256=SOURCE_CAPTURE_SHA256,
+            expected_terminal_step=action["literal"],
+            expected_terminal_outcome=action["semantic_action"],
+            expected_terminal_authorization_sha256=frozen["sha256"],
+        )
+        self.assertEqual(admitted, frozen)
+
+        with self.assertRaisesRegex(
+            HARNESS.Gen034ActionRunnerError,
+            "terminal selection authorization mismatch",
+        ):
+            HARNESS._require_recomputed_terminal_selection(
+                read,
+                source_capture_sha256=SOURCE_CAPTURE_SHA256,
+                expected_terminal_step=action["literal"],
+                expected_terminal_outcome="surrender",
+                expected_terminal_authorization_sha256=frozen["sha256"],
+            )
+
     def test_white_peace_executes_once_then_closes_all_six_checks(self) -> None:
         read, client = _termination_fixture()
         result = asyncio.run(

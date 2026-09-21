@@ -44,6 +44,14 @@ for candidate in (RESEARCH_ROOT, PACKAGE_ROOT, PROJECT_TOOLS):
 
 import run_g2_source_specific_war_loss_outer_owner as outer  # noqa: E402
 import run_raiktor_war_bound_private_capture_v1 as source_ui  # noqa: E402
+from gen034_candidate_authorization import (  # noqa: E402
+    CandidateAuthorizationError,
+    terminal_authorization_v1,
+)
+from gen034_runtime_manifest import (  # noqa: E402
+    RuntimeManifestError,
+    verify_runtime_file_manifest,
+)
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
@@ -681,6 +689,79 @@ def inspect_startup_profile_settings_template(
     }
 
 
+def _profile_source_binding(
+    source_pair: dict[str, object],
+    *,
+    expected_settings_sha256: object,
+    expected_shadercache_tree_sha256: object,
+) -> dict[str, object]:
+    settings = _object(source_pair.get("settings"), "profile source settings")
+    shadercache = _object(
+        source_pair.get("shadercache"), "profile source shadercache"
+    )
+    expected_settings = _sha256_text(
+        expected_settings_sha256, "expected profile settings SHA-256"
+    )
+    expected_shadercache = _sha256_text(
+        expected_shadercache_tree_sha256,
+        "expected shadercache tree SHA-256",
+    )
+    actual_settings = _sha256_text(
+        settings.get("sha256"), "profile settings SHA-256"
+    )
+    actual_shadercache = _sha256_text(
+        shadercache.get("tree_sha256"), "shadercache tree SHA-256"
+    )
+    if actual_settings != expected_settings or actual_shadercache != expected_shadercache:
+        raise LiveAdapterError("startup profile source digests differ from the frozen candidate")
+    return {
+        "status": "verified",
+        "settings_sha256": actual_settings,
+        "shadercache_tree_sha256": actual_shadercache,
+        "shadercache_file_count": shadercache.get("file_count"),
+        "shadercache_bytes": shadercache.get("bytes"),
+    }
+
+
+def _prepared_profile_binding(
+    receipt: dict[str, object],
+    *,
+    expected_settings_sha256: object,
+    expected_shadercache_tree_sha256: object,
+) -> dict[str, object]:
+    settings = _object(receipt.get("settings"), "prepared profile settings")
+    shadercache = _object(receipt.get("shadercache"), "prepared shadercache")
+    expected_settings = _sha256_text(
+        expected_settings_sha256, "expected profile settings SHA-256"
+    )
+    expected_shadercache = _sha256_text(
+        expected_shadercache_tree_sha256,
+        "expected shadercache tree SHA-256",
+    )
+    source_settings = _sha256_text(
+        settings.get("source_sha256"), "prepared source settings SHA-256"
+    )
+    destination_settings = _sha256_text(
+        settings.get("destination_sha256"),
+        "prepared destination settings SHA-256",
+    )
+    copied_shadercache = _sha256_text(
+        shadercache.get("tree_sha256"), "prepared shadercache tree SHA-256"
+    )
+    if not (
+        source_settings == destination_settings == expected_settings
+        and copied_shadercache == expected_shadercache
+    ):
+        raise LiveAdapterError("prepared startup profile differs from frozen digests")
+    return {
+        "status": "verified",
+        "settings_sha256": destination_settings,
+        "shadercache_tree_sha256": copied_shadercache,
+        "shadercache_file_count": shadercache.get("file_count"),
+        "shadercache_bytes": shadercache.get("bytes"),
+    }
+
+
 def prepare_startup_profile_assets(
     userdir: Path,
     profile_settings_template: Path,
@@ -724,6 +805,7 @@ def _load_manifest(
     capture_executable: Path | None = None,
     bridge_dll: Path | None = None,
     bridge_injector: Path | None = None,
+    runtime_root: Path = REPOSITORY_ROOT,
 ) -> tuple[dict[str, object], AdapterPaths, AdapterTimeouts, dict[str, dict[str, object]]]:
     manifest = _object(
         json.loads(manifest_path.read_text(encoding="utf-8-sig")), "manifest"
@@ -751,6 +833,9 @@ def _load_manifest(
         or composition.get("resume_checkpoint_copy_gate_integrated") is not True
         or composition.get("read_only_pretermination_probe_integrated") is not True
         or composition.get("candidate_terminal_intercept_integrated") is not True
+        or composition.get("runtime_source_closure_integrated") is not True
+        or composition.get("profile_source_digests_required") is not True
+        or composition.get("terminal_authorization_bound") is not True
         or composition.get("launch_fail_closed") is not True
     ):
         raise LiveAdapterError("live-adapter composition drifted")
@@ -773,6 +858,7 @@ def _load_manifest(
         "run_acceptance",
         "profile_settings_guard",
         "native_runtime",
+        "runtime_manifest",
     }
     checked: dict[str, dict[str, object]] = {}
     for name in sorted(required):
@@ -803,6 +889,19 @@ def _load_manifest(
             "size": path.stat().st_size,
             "sha256": actual,
         }
+    try:
+        runtime_verification = verify_runtime_file_manifest(
+            Path(str(checked["runtime_manifest"]["path"])),
+            runtime_root=runtime_root,
+            expected_manifest_sha256=str(
+                checked["runtime_manifest"]["sha256"]
+            ),
+        )
+    except RuntimeManifestError as error:
+        raise LiveAdapterError(
+            f"runtime source closure admission failed: {error}"
+        ) from error
+    checked["runtime_manifest"]["runtime_verification"] = runtime_verification
     if checked["game_executable"]["sha256"] != EXPECTED_EXE_SHA256:
         raise LiveAdapterError("game executable is not exact CK3 1.19.0.6")
 
@@ -889,6 +988,9 @@ def run_no_launch_preflight(
     bridge_injector: Path | None = None,
     resume_save: Path | None = None,
     resume_save_sha256: str | None = None,
+    runtime_root: Path = REPOSITORY_ROOT,
+    expected_profile_settings_sha256: str | None = None,
+    expected_shadercache_tree_sha256: str | None = None,
 ) -> dict[str, object]:
     if output_path.exists():
         raise LiveAdapterError(f"output path already exists: {output_path}")
@@ -901,6 +1003,7 @@ def run_no_launch_preflight(
         capture_executable=capture_executable,
         bridge_dll=bridge_dll,
         bridge_injector=bridge_injector,
+        runtime_root=runtime_root,
     )
     before = copy.deepcopy(process_inventory())
     after = copy.deepcopy(process_inventory())
@@ -917,19 +1020,41 @@ def run_no_launch_preflight(
         "path": str(profile_template) if profile_template is not None else None,
         "inspection": "deferred-to-live-copy",
     }
-    if inspect_profile_settings_template:
+    expected_profile_binding_requested = (
+        expected_profile_settings_sha256 is not None
+        or expected_shadercache_tree_sha256 is not None
+    )
+    if expected_profile_binding_requested and (
+        expected_profile_settings_sha256 is None
+        or expected_shadercache_tree_sha256 is None
+    ):
+        raise LiveAdapterError(
+            "expected profile settings and shadercache digests must be supplied together"
+        )
+    if inspect_profile_settings_template or expected_profile_binding_requested:
         if profile_template is None:
             raise LiveAdapterError(
                 "profile-settings-template is required for startup preflight"
             )
+        source_pair = inspect_startup_profile_settings_template(profile_template)
+        frozen_binding = (
+            _profile_source_binding(
+                source_pair,
+                expected_settings_sha256=expected_profile_settings_sha256,
+                expected_shadercache_tree_sha256=(
+                    expected_shadercache_tree_sha256
+                ),
+            )
+            if expected_profile_binding_requested
+            else None
+        )
         profile_template_evidence = {
             "required": True,
             "selected": True,
             "path": str(profile_template),
             "inspection": "validated-without-copy",
-            "source_pair": inspect_startup_profile_settings_template(
-                profile_template
-            ),
+            "source_pair": source_pair,
+            "frozen_binding": frozen_binding,
         }
     resume_checkpoint = inspect_resume_checkpoint(resume_save, resume_save_sha256)
     report = {
@@ -957,6 +1082,8 @@ def run_no_launch_preflight(
             "default_off": True,
             "startup_profile_asset_gate": True,
             "profile_settings_template_required": True,
+            "profile_source_digests_required": expected_profile_binding_requested,
+            "runtime_source_closure_required": True,
             "asset_failure_blocks_before_process_creation": True,
             "resume_checkpoint_optional": True,
             "resume_checkpoint_hash_and_version_gate": True,
@@ -997,6 +1124,8 @@ class ConcreteLiveOperations:
         artifact_dir: Path,
         userdir: Path,
         profile_settings_template: Path | None = None,
+        expected_profile_settings_sha256: str | None = None,
+        expected_shadercache_tree_sha256: str | None = None,
         resume_save: Path | None = None,
         resume_save_sha256: str | None = None,
         read_only_pretermination_probe: bool = False,
@@ -1017,6 +1146,10 @@ class ConcreteLiveOperations:
             profile_settings_template.expanduser().resolve()
             if profile_settings_template is not None
             else None
+        )
+        self.expected_profile_settings_sha256 = expected_profile_settings_sha256
+        self.expected_shadercache_tree_sha256 = (
+            expected_shadercache_tree_sha256
         )
         self.resume_save = (
             resume_save.expanduser().resolve() if resume_save is not None else None
@@ -1159,6 +1292,20 @@ class ConcreteLiveOperations:
             raise LiveAdapterError(
                 f"startup profile asset gate blocked CK3 launch: {error}"
             ) from error
+        if (
+            self.expected_profile_settings_sha256 is None
+            or self.expected_shadercache_tree_sha256 is None
+        ):
+            raise LiveAdapterError(
+                "frozen profile settings and shadercache digests are required before CK3 launch"
+            )
+        self._startup_profile_assets["frozen_binding"] = _prepared_profile_binding(
+            self._startup_profile_assets,
+            expected_settings_sha256=self.expected_profile_settings_sha256,
+            expected_shadercache_tree_sha256=(
+                self.expected_shadercache_tree_sha256
+            ),
+        )
         _write_json_atomic(
             self.artifact_dir / "startup-profile-assets.json",
             self._startup_profile_assets,
@@ -1849,6 +1996,14 @@ def _parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--expected-profile-settings-sha256",
+        help="frozen SHA-256 of the selected full pdx_settings.txt",
+    )
+    parser.add_argument(
+        "--expected-shadercache-tree-sha256",
+        help="frozen full-tree SHA-256 of the sibling warm shadercache",
+    )
+    parser.add_argument(
         "--game-root",
         type=Path,
         help=(
@@ -2016,6 +2171,9 @@ def _freeze_action_runner_input(
     source_capture_path: Path,
     source_capture_sha256: str,
     candidate_report: dict[str, object],
+    runtime_manifest_path: Path,
+    runtime_manifest_sha256: str,
+    runtime_root: Path,
 ) -> dict[str, object]:
     interception = _object(
         candidate_report.get("candidate_interception"), "candidate interception"
@@ -2044,6 +2202,34 @@ def _freeze_action_runner_input(
     driver_state_sha256 = _sha256_file(driver_state_path)
     if checkpoint_sha256 != str(checkpoint.get("sha256", "")).upper():
         raise LiveAdapterError("candidate checkpoint changed before input freeze")
+    selected_step = interception.get("selected_step")
+    recommended_outcome = decision.get("recommended_outcome")
+    try:
+        terminal_authorization = terminal_authorization_v1(
+            selected_step=selected_step,
+            recommended_outcome=recommended_outcome,
+            war_id=war_id,
+            opponent_character_id=opponent_character_id,
+            source_capture_sha256=source_capture_sha256,
+        )
+    except CandidateAuthorizationError as error:
+        raise LiveAdapterError(
+            f"candidate terminal authorization could not be frozen: {error}"
+        ) from error
+    runtime_manifest = runtime_manifest_path.expanduser().resolve()
+    runtime_manifest_expected = _sha256_text(
+        runtime_manifest_sha256, "runtime manifest SHA-256"
+    )
+    try:
+        runtime_receipt = verify_runtime_file_manifest(
+            runtime_manifest,
+            runtime_root=runtime_root,
+            expected_manifest_sha256=runtime_manifest_expected,
+        )
+    except RuntimeManifestError as error:
+        raise LiveAdapterError(
+            f"action-runner runtime source closure drifted: {error}"
+        ) from error
     runner = RESEARCH_ROOT / "run_gen034_three_way_exit_action_live_acceptance.py"
     command = [
         sys.executable,
@@ -2077,6 +2263,18 @@ def _freeze_action_runner_input(
         str(source_capture_path.resolve()),
         "--expected-source-capture-sha256",
         source_capture_sha256,
+        "--runtime-manifest",
+        str(runtime_manifest),
+        "--runtime-root",
+        str(runtime_root.expanduser().resolve()),
+        "--expected-runtime-manifest-sha256",
+        runtime_manifest_expected,
+        "--expected-terminal-step",
+        str(terminal_authorization["payload"]["selected_step"]),
+        "--expected-terminal-outcome",
+        str(terminal_authorization["payload"]["recommended_outcome"]),
+        "--expected-terminal-authorization-sha256",
+        str(terminal_authorization["sha256"]),
     ]
     frozen = {
         "schema": "xar.ck3.gen034_d_candidate_action_runner_input.v1",
@@ -2095,13 +2293,15 @@ def _freeze_action_runner_input(
             "sha256": driver_state_sha256,
             "size": driver_state_path.stat().st_size,
         },
+        "runtime_source_closure": runtime_receipt,
         "identity": {
             "war_id": war_id,
             "expected_character_id": character_id,
             "expected_date_raw": date_raw,
             "opponent_character_id": opponent_character_id,
         },
-        "selected_step": interception.get("selected_step"),
+        "selected_step": selected_step,
+        "terminal_authorization": terminal_authorization,
         "action_submitted": False,
         "runner_command": command,
         "required_assertions": [
@@ -2146,6 +2346,13 @@ def main(argv: list[str] | None = None) -> int:
             bridge_injector=args.bridge_injector,
             resume_save=args.resume_save,
             resume_save_sha256=args.resume_save_sha256,
+            runtime_root=REPOSITORY_ROOT,
+            expected_profile_settings_sha256=(
+                args.expected_profile_settings_sha256
+            ),
+            expected_shadercache_tree_sha256=(
+                args.expected_shadercache_tree_sha256
+            ),
         )
         if args.verify_only:
             print(json.dumps(preflight, ensure_ascii=False, indent=2))
@@ -2180,6 +2387,7 @@ def main(argv: list[str] | None = None) -> int:
             capture_executable=args.capture_executable,
             bridge_dll=args.bridge_dll,
             bridge_injector=args.bridge_injector,
+            runtime_root=REPOSITORY_ROOT,
         )
         operations = ConcreteLiveOperations(
             paths=paths,
@@ -2187,6 +2395,12 @@ def main(argv: list[str] | None = None) -> int:
             artifact_dir=args.artifact_dir,
             userdir=args.userdir,
             profile_settings_template=args.profile_settings_template,
+            expected_profile_settings_sha256=(
+                args.expected_profile_settings_sha256
+            ),
+            expected_shadercache_tree_sha256=(
+                args.expected_shadercache_tree_sha256
+            ),
             resume_save=args.resume_save,
             resume_save_sha256=args.resume_save_sha256,
             read_only_pretermination_probe=args.read_only_pretermination_probe,
@@ -2213,6 +2427,7 @@ def main(argv: list[str] | None = None) -> int:
         )
         candidate_auto_run: dict[str, object] | None = None
         action_runner_input: dict[str, object] | None = None
+        runtime_before_candidate: dict[str, object] | None = None
         if args.candidate_terminal_intercept:
             candidate_lifecycle = _object(
                 result.get("lifecycle_result"), "candidate lifecycle result"
@@ -2233,6 +2448,27 @@ def main(argv: list[str] | None = None) -> int:
             )
             if not isinstance(pipe_name, str) or not pipe_name:
                 raise LiveAdapterError("candidate checkpoint lacks its native pipe")
+            runtime_dependency = _object(
+                _checked.get("runtime_manifest"),
+                "candidate runtime manifest dependency",
+            )
+            runtime_manifest_path = Path(
+                str(runtime_dependency.get("path"))
+            ).resolve()
+            runtime_manifest_sha256 = _sha256_text(
+                runtime_dependency.get("sha256"),
+                "candidate runtime manifest SHA-256",
+            )
+            try:
+                runtime_before_candidate = verify_runtime_file_manifest(
+                    runtime_manifest_path,
+                    runtime_root=REPOSITORY_ROOT,
+                    expected_manifest_sha256=runtime_manifest_sha256,
+                )
+            except RuntimeManifestError as error:
+                raise LiveAdapterError(
+                    f"runtime closure drifted before formal native_auto_run: {error}"
+                ) from error
             spec = EnvironmentSpec(
                 state_dir=operations.state_dir,
                 game_dir=paths.game_executable.parent.parent,
@@ -2272,6 +2508,9 @@ def main(argv: list[str] | None = None) -> int:
                 source_capture_path=(args.artifact_dir / "capture.json").resolve(),
                 source_capture_sha256=source_capture_sha256,
                 candidate_report=candidate_auto_run,
+                runtime_manifest_path=runtime_manifest_path,
+                runtime_manifest_sha256=runtime_manifest_sha256,
+                runtime_root=REPOSITORY_ROOT,
             )
         probe_result = (
             _object(result.get("lifecycle_result"), "read-only probe result")
@@ -2303,6 +2542,7 @@ def main(argv: list[str] | None = None) -> int:
             "resume_checkpoint": copy.deepcopy(operations._resume_checkpoint),
             "outer_owner": result,
             "candidate_native_auto_run": candidate_auto_run,
+            "runtime_before_candidate": runtime_before_candidate,
             "action_runner_input": action_runner_input,
             "cleanup": copy.deepcopy(operations._cleanup_receipt),
             "truce_diagnostic": _truce_diagnostic_receipt(operations),

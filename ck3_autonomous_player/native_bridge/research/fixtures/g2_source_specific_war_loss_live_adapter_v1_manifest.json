@@ -21,10 +21,11 @@
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt",
     "run_acceptance": "tools/run_acceptance.py",
     "profile_settings_guard": "tools/run_zg361_phase2_seed_capture.py",
-    "native_runtime": "ck3_autonomous_player/src/xar_autoplayer/runtime.py"
+    "native_runtime": "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+    "runtime_manifest": "ck3_autonomous_player/native_bridge/research/fixtures/gen034_d_runtime_files_v1.json"
   },
   "sha256": {
-    "adapter": "5CE9E78A171C341E2CBB70EA4ED515A92B65E8E92E0836BCE8ACA67F08686AE8",
+    "adapter": "CEDB6B4C41C2585866E0386332B967E3EBACCB37E640F18855E816CEAF1F3959",
     "outer_owner_runner": "D162CDD681961989838B0F26D29DDCC6E9ED98420F8FA1BF5D4F636E110737FF",
     "outer_owner_manifest": "4A92C9225724FA4EF98522428C12B639659253E3B2BD9827E254BD76DE7B89EC",
     "lifecycle_runner": "E76E693BA2D60D8DA74B3038994085951AE4017B1EF97BBC69F1C4FE7D9E1415",
@@ -38,7 +39,8 @@
     "bookmark_events": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF",
     "run_acceptance": "B5E99A7B835DA5D2FFB237296567984683B401D42E14FDD5EA272707ADF9F156",
     "profile_settings_guard": "2E4EC85C3B3496DDAB0ED18E0D8D7010B08DC7B337B7546E36FA5E38A11696A6",
-    "native_runtime": "6224AFAF1AA675F28E1825F90862EF8E89747F91ECC34864ABA090A757EF057C"
+    "native_runtime": "6224AFAF1AA675F28E1825F90862EF8E89747F91ECC34864ABA090A757EF057C",
+    "runtime_manifest": "9BEB9C0A00476276E2E50D710E86310C3A7BB99F6DB6DB8EBB0EE6B7406C5789"
   },
   "timeouts": {
     "process_discovery_seconds": 30,
@@ -74,7 +76,10 @@
     "resume_checkpoint_copy_gate_integrated": true,
     "launch_fail_closed": true,
     "read_only_pretermination_probe_integrated": true,
-    "candidate_terminal_intercept_integrated": true
+    "candidate_terminal_intercept_integrated": true,
+    "runtime_source_closure_integrated": true,
+    "profile_source_digests_required": true,
+    "terminal_authorization_bound": true
   },
   "ocr_boundary": {
     "used": true,
@@ -87,6 +92,9 @@
     "command_available": true,
     "profile_settings_template_required": true,
     "warm_shadercache_required": true,
+    "expected_profile_settings_sha256_required": true,
+    "expected_shadercache_tree_sha256_required": true,
+    "runtime_source_closure_manifest_required": true,
     "profile_asset_failure_blocks_before_process_creation": true,
     "profile_asset_evidence_required": true,
     "profile_asset_evidence_fields": [

@@ -152,6 +152,16 @@ def _write_profile_settings_template(root: Path) -> Path:
     return template
 
 
+def _profile_expectations(template: Path) -> dict[str, str]:
+    source_pair = ADAPTER.inspect_startup_profile_settings_template(template)
+    return {
+        "expected_profile_settings_sha256": source_pair["settings"]["sha256"],
+        "expected_shadercache_tree_sha256": source_pair["shadercache"][
+            "tree_sha256"
+        ],
+    }
+
+
 def _installed_game_root() -> Path:
     candidates = (
         ADAPTER.REPOSITORY_ROOT / "Crusader Kings III",
@@ -185,6 +195,11 @@ def _write_self_contained_manifest(
     dependencies = root / "dependencies"
     dependencies.mkdir()
     for name in manifest["paths"]:
+        if name == "runtime_manifest":
+            runtime_manifest = ADAPTER.REPOSITORY_ROOT / manifest["paths"][name]
+            manifest["paths"][name] = str(runtime_manifest.resolve())
+            manifest["sha256"][name] = ADAPTER._sha256_file(runtime_manifest)
+            continue
         if name in {"game_executable", "bookmark_events"}:
             manifest["paths"][name] = str(root / "manifest-missing" / name)
             continue
@@ -292,6 +307,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                         "war_exit_decision": {
                             "war_id": 88,
                             "opponent_character_id": 99,
+                            "recommended_outcome": "surrender",
                         }
                     },
                     "checkpoint": {
@@ -305,14 +321,24 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 }
             }
 
-            frozen = ADAPTER._freeze_action_runner_input(
-                artifact_dir=artifact,
-                state_dir=state,
-                paths=_paths(root),
-                source_capture_path=source_capture,
-                source_capture_sha256="A" * 64,
-                candidate_report=candidate_report,
-            )
+            runtime_path = root / "runtime.json"
+            runtime_path.write_text("{}", encoding="utf-8")
+            with mock.patch.object(
+                ADAPTER,
+                "verify_runtime_file_manifest",
+                return_value={"status": "verified"},
+            ):
+                frozen = ADAPTER._freeze_action_runner_input(
+                    artifact_dir=artifact,
+                    state_dir=state,
+                    paths=_paths(root),
+                    source_capture_path=source_capture,
+                    source_capture_sha256="A" * 64,
+                    candidate_report=candidate_report,
+                    runtime_manifest_path=runtime_path,
+                    runtime_manifest_sha256=ADAPTER._sha256_file(runtime_path),
+                    runtime_root=root,
+                )
 
             self.assertEqual(frozen["identity"]["war_id"], 88)
             self.assertFalse(frozen["action_submitted"])
@@ -321,6 +347,14 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 ADAPTER._sha256_file(checkpoint),
             )
             self.assertTrue((artifact / "action-runner-input.json").is_file())
+            self.assertEqual(
+                frozen["terminal_authorization"]["payload"]["selected_step"],
+                "surrender-war-88",
+            )
+            self.assertIn(
+                "--expected-terminal-authorization-sha256",
+                frozen["runner_command"],
+            )
 
     def test_resume_checkpoint_requires_an_exact_hash_bound_save(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -352,6 +386,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 artifact_dir=root / "artifacts",
                 userdir=userdir,
                 profile_settings_template=template,
+                **_profile_expectations(template),
                 resume_save=save,
                 resume_save_sha256=digest,
                 process_inventory=lambda: [],
@@ -424,6 +459,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 artifact_dir=root / "artifacts",
                 userdir=userdir,
                 profile_settings_template=template,
+                **_profile_expectations(template),
                 process_inventory=lambda: [],
                 suspended_process_factory=lambda *_args: process,
                 run_process=run_process,
@@ -664,6 +700,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 output,
                 process_inventory=unchanged_inventory,
                 profile_settings_template=template,
+                **_profile_expectations(template),
                 inspect_profile_settings_template=True,
                 game_root=_installed_game_root(),
             )
@@ -712,6 +749,51 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 report["requested_live_mode"], "read-only-pre-termination"
             )
             self.assertEqual(json.loads(output.read_text(encoding="utf-8")), report)
+
+    def test_profile_digest_tamper_is_rejected_before_process_creation(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            template = _write_profile_settings_template(root)
+            frozen = _profile_expectations(template)
+            (template.parent / "shadercache" / "dx11" / "ps_5_0" / "ps_5_0.bin").write_bytes(
+                b"tampered-shader"
+            )
+            with self.assertRaisesRegex(
+                ADAPTER.LiveAdapterError,
+                "startup profile source digests differ",
+            ):
+                ADAPTER.run_no_launch_preflight(
+                    MANIFEST,
+                    root / "preflight.json",
+                    process_inventory=lambda: [],
+                    profile_settings_template=template,
+                    game_root=_installed_game_root(),
+                    **frozen,
+                )
+
+    def test_prepared_profile_digest_mismatch_never_calls_suspended_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            template = _write_profile_settings_template(root)
+            (root / "userdir").mkdir()
+            launch = mock.Mock()
+            operations = ADAPTER.ConcreteLiveOperations(
+                paths=_paths(root),
+                timeouts=_timeouts(),
+                artifact_dir=root / "artifacts",
+                userdir=root / "userdir",
+                profile_settings_template=template,
+                expected_profile_settings_sha256="A" * 64,
+                expected_shadercache_tree_sha256="B" * 64,
+                process_inventory=lambda: [],
+                suspended_process_factory=launch,
+            )
+            with self.assertRaisesRegex(
+                ADAPTER.LiveAdapterError,
+                "prepared startup profile differs",
+            ):
+                asyncio.run(operations.launch_normal_event_process(object()))
+            launch.assert_not_called()
 
     def test_manifest_pins_concrete_same_pid_composition(self) -> None:
         manifest, paths, timeouts, checked = ADAPTER._load_manifest(
@@ -768,11 +850,12 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                     repo_root=root,
                     process_inventory=lambda: [],
                     profile_settings_template=template,
+                    **_profile_expectations(template),
                     inspect_profile_settings_template=True,
                     game_root=game_root,
                 )
 
-        self.assertEqual(len(report["dependencies"]), 15)
+        self.assertEqual(len(report["dependencies"]), 16)
         self.assertTrue(report["game_source_binding"]["exact_hashes_verified"])
         self.assertEqual(
             report["dependencies"]["game_executable"]["path"],
@@ -988,6 +1071,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 artifact_dir=root / "artifacts",
                 userdir=userdir,
                 profile_settings_template=template,
+                **_profile_expectations(template),
                 process_inventory=lambda: [],
                 suspended_process_factory=launch,
                 run_process=run_process,
@@ -1044,6 +1128,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 artifact_dir=root / "artifacts",
                 userdir=userdir,
                 profile_settings_template=template,
+                **_profile_expectations(template),
                 suspended_process_factory=mock.Mock(return_value=process),
                 run_process=mock.Mock(return_value=_Completed()),
             )
@@ -1100,6 +1185,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 artifact_dir=root / "artifacts",
                 userdir=userdir,
                 profile_settings_template=template,
+                **_profile_expectations(template),
                 process_inventory=lambda: [],
                 suspended_process_factory=lambda *_args, **_kwargs: process,
                 run_process=run_process,
