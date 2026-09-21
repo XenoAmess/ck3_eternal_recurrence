@@ -61,7 +61,10 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     normalize_frontend_start_lobby_selected_character_v1,
 )
 from xar_autoplayer.bridge.mcp_server import create_server
-from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.native_driver import (
+    NativeHeadlessGameplayDriver,
+    _NativeCommandRejectedError,
+)
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.service import GameplayBridgeService
 
@@ -906,6 +909,46 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
                 after_snapshot=snapshot,
                 campaign_root=campaign_root,
             )
+
+    def test_frontend_start_retries_only_campaign_root_completion_race(
+        self,
+    ) -> None:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        observations: list[object] = [
+            _NativeCommandRejectedError(
+                "campaign-root completion snapshot changed; first"
+            ),
+            _NativeCommandRejectedError(
+                "campaign-root completion snapshot changed; second"
+            ),
+            {"campaign_root_context_ready": True},
+        ]
+
+        def query(*, expected_revision: int | None) -> dict[str, object]:
+            self.assertIsNone(expected_revision)
+            observation = observations.pop(0)
+            if isinstance(observation, BaseException):
+                raise observation
+            assert isinstance(observation, dict)
+            return observation
+
+        driver._execute_campaign_root_context_v1_query = query
+        result, attempts, retry_errors = (
+            driver._wait_for_frontend_start_campaign_root_v1()
+        )
+        self.assertTrue(result["campaign_root_context_ready"])
+        self.assertEqual(attempts, 3)
+        self.assertEqual(len(retry_errors), 2)
+
+        def different_rejection(**_kwargs: object) -> dict[str, object]:
+            raise _NativeCommandRejectedError("different native rejection")
+
+        driver._execute_campaign_root_context_v1_query = different_rejection
+        with self.assertRaisesRegex(
+            _NativeCommandRejectedError,
+            "different native rejection",
+        ):
+            driver._wait_for_frontend_start_campaign_root_v1()
 
     def test_native_driver_opens_coa_with_revision_zero_and_proves_route(
         self,

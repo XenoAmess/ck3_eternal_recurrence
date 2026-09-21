@@ -5227,22 +5227,55 @@ class NativeHeadlessGameplayDriver:
         after_snapshot = self._wait_for_frontend_start_post_ready_pump_v1(
             after_snapshot
         )
-        campaign_root = self._execute_campaign_root_context_v1_query(
-            expected_revision=None
-        )
+        (
+            campaign_root,
+            campaign_root_attempt_count,
+            campaign_root_retry_errors,
+        ) = self._wait_for_frontend_start_campaign_root_v1()
         try:
-            return normalize_frontend_start_lobby_selected_character_v1(
+            result = normalize_frontend_start_lobby_selected_character_v1(
                 acknowledgement,
                 before=before,
                 before_inspection=before_inspection,
                 after_snapshot=after_snapshot,
                 campaign_root=campaign_root,
             )
+            result["campaign_root_attempt_count"] = (
+                campaign_root_attempt_count
+            )
+            result["campaign_root_retry_errors"] = (
+                campaign_root_retry_errors
+            )
+            return result
         except ValueError as error:
             raise BridgeUnavailableError(
                 "native custom-ruler Start postcondition failed: "
                 f"{error}"
             ) from error
+
+    def _wait_for_frontend_start_campaign_root_v1(
+        self,
+    ) -> tuple[dict[str, object], int, list[str]]:
+        """Retry only the native same-frame completion race after Start."""
+
+        retry_errors: list[str] = []
+        for attempt in range(1, 4):
+            try:
+                campaign_root = self._execute_campaign_root_context_v1_query(
+                    expected_revision=None
+                )
+            except _NativeCommandRejectedError as error:
+                if not error.native_error.startswith(
+                    "campaign-root completion snapshot changed"
+                ):
+                    raise
+                retry_errors.append(error.native_error)
+                if attempt == 3:
+                    raise
+                time.sleep(0.1)
+                continue
+            return campaign_root, attempt, retry_errors
+        raise AssertionError("bounded campaign-root retry exhausted")
 
     def _center_map_on_landed_title_v1_unrecorded(
         self,
