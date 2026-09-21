@@ -246,3 +246,53 @@ at `date_raw=53145000` is save `74294B03...EDF1A`, driver
 No natural death occurred in R782/R783, so these rounds validate lifecycle
 binding and ordinary cold recovery but do not complete the natural-successor
 gate. G2-M3 and the global G2 authority therefore remain unchanged.
+
+## R0075 ordinary natural succession: native build mismatch RED
+
+CK3 `1.19.0.6`, EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`;
+PRV-007 agent commit `b56c068764ca767d0662d8f8414d9f01fec61d09` used native
+DLL SHA-256 `DA06EFC38BD3F32D83FE4C057737794A2AEEB6472BD928E119464B8AC2335F99`
+from native source `434f832d79ca79605218c0e8faba1a00f0bc6b6c`.
+R0075 naturally changed played CharacterID `31853 -> 36403` at
+`date_raw=53302824` in the same ordinary campaign/PID. The predicted successor
+and inherited TitleIDs `524, 525, 530` matched. The new episode bound without a
+CK3 command or restart. These are production-live succession/reconciliation
+observations, not successor gameplay or natural-continuation completion.
+The next formal turn attempted the private typed
+`query-current-timeline-blocker-context-v1` and native returned
+`unsupported native gameplay step` before a blocker result or successor
+checkpoint. No option/Close was submitted. The frozen R0075 evidence manifest
+is `Z:/ck3_mod_rewrite_process_assets/g2-preview-prv007-r0075-natural-succession-red-20260922/evidence-manifest.json`
+(SHA-256 `42E8BDCDD598E82DC63FFB3855425EF6AB29F2F5CA14107C058A9DBA0DB9803D`).
+
+The source already implements both the exact read-only query and reflected
+typed Close. `native_bridge/CMakeLists.txt` defaults
+`XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1=OFF`; that macro guards
+the owning-thread executors, native step admission and query/Close dispatch in
+`native_bridge/src/bridge.cpp`. The frozen DLL contains neither typed step
+literal, matching the observed unsupported-step response. This is a compiled
+native feature mismatch against Python's ordinary-successor consumer, not a
+missing successor field that can be mapped to false or a reason to skip the
+timeline check. A new, separately identified DLL must be built with that
+private option `ON`; public adapter registration and MCP advertisement remain
+unchanged. The ordinary preview packager now rejects DLLs missing either
+private step. Static binary presence is only packaging evidence; a fresh
+paused query and independent Close/result proof are still live gates.
+
+```mermaid
+flowchart LR
+    A["R0075 natural death and matched title distribution"] --> B["same-PID successor 36403"]
+    B --> C["typed timeline-blocker query"]
+    C -->|"old DLL: unsupported step"| R["RED; no successor checkpoint/gameplay"]
+    C -. "new DLL: paused query not yet observed" .-> Q{"typed blocker identity and predicates"}
+    Q -. "death modal: Close result not yet observed" .-> D["independent clear predicates and date advance"]
+    Q -. "already clear: not yet observed" .-> D
+    D -. "not yet observed" .-> E["paired successor checkpoint and later gameplay"]
+```
+
+The R0075 post-RED driver is a newly bound successor state, not a matching
+pair for its pre-death save. The last physically frozen compatible pair is the
+R0074 checkpoint/driver (save SHA-256 `B836D93E...92683`, driver SHA-256
+`4C7278F0...364D3`). Do not stitch the R0075 files or claim a cold restore
+until a real paired checkpoint is produced by the new version.

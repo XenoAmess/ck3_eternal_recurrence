@@ -32,6 +32,10 @@ QUALIFICATION_SCHEMA = "xar.ck3.preview-package-qualification-input/v1"
 GO_SCHEMA = "xar.ck3.preview-live-qualification/v2"
 CANDIDATE_KIND = "g2_standard_feudal_ordinary_preview_candidate"
 PENDING_STATUS = "NO_GO_PENDING_EXTRACTED_BUNDLE_LIVE_SMOKE"
+REQUIRED_ORDINARY_SUCCESSION_NATIVE_STEPS = (
+    b"query-current-timeline-blocker-context-v1",
+    b"continue-death-succession-modal-v1",
+)
 EXCLUSIONS = [
     "CK3 executable/body",
     "personal credentials",
@@ -194,6 +198,22 @@ def verify_artifact(base: Path, value: object, field: str) -> tuple[Path, str]:
     if actual != expected:
         raise ValueError(f"{field} hash differs: {actual} != {expected}")
     return path, actual
+
+
+def verify_ordinary_succession_native_steps(dll: Path) -> None:
+    """Reject the exact R0075 Python/native mismatch before packaging."""
+    binary = dll.read_bytes()
+    missing = [
+        step.decode("ascii")
+        for step in REQUIRED_ORDINARY_SUCCESSION_NATIVE_STEPS
+        if step not in binary
+    ]
+    if missing:
+        raise ValueError(
+            "native.dll lacks ordinary succession private steps "
+            "(build with XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1=ON): "
+            + ", ".join(missing)
+        )
 
 
 def expected_context(value: object) -> dict[str, Any]:
@@ -743,6 +763,8 @@ def stage(spec_path: Path) -> dict[str, Any]:
         ("injector", "native/xar_ck3_bridge_injector.exe"),
     ):
         path, digest = verify_artifact(base, spec["native"][field], f"native.{field}")
+        if field == "dll":
+            verify_ordinary_succession_native_steps(path)
         copy_plan.append((path, bundle / destination, digest, f"native.{field}"))
     for field, destination in (
         ("checkpoint", "sample-resume/xar_checkpoint.ck3"),
