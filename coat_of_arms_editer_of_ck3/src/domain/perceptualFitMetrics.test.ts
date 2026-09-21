@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { measurePerceptualFitMetricsV2, type PerceptualImage } from './perceptualFitMetrics'
+import {
+  measurePerceptualFitMetricsV2,
+  measurePerceptualFitMetricsV3,
+  PERCEPTUAL_FIT_SCORING_CONTRACT,
+  PERCEPTUAL_FIT_SCORING_CONTRACT_V3,
+  type PerceptualImage,
+} from './perceptualFitMetrics'
 
 function picture(
   width: number,
@@ -57,5 +63,50 @@ describe('perceptual fit metrics v2 shadow contract', () => {
     const metrics = measurePerceptualFitMetricsV2(ring, filled)
     expect(metrics.structureLoss).toBeGreaterThan(0)
     expect(metrics.structure.targetEnclosedRegions).not.toBe(metrics.structure.renderedEnclosedRegions)
+  })
+})
+
+describe('perceptual fit metrics v3 enclosed-region contract', () => {
+  it('keeps v2 versioned while removing its false hole across split border regions', () => {
+    const splitBoundary = picture(32, 32, (x) => (
+      x < 16 ? [10, 10, 10, 255] : [245, 245, 245, 255]
+    ))
+    expect(PERCEPTUAL_FIT_SCORING_CONTRACT).toMatch(/-v2$/)
+    expect(PERCEPTUAL_FIT_SCORING_CONTRACT_V3).toMatch(/-v3$/)
+    expect(measurePerceptualFitMetricsV2(splitBoundary, splitBoundary).structure.targetEnclosedRegions)
+      .toBe(1)
+    expect(measurePerceptualFitMetricsV3(splitBoundary, splitBoundary).structure.targetEnclosedRegions)
+      .toBe(0)
+  })
+
+  it('distinguishes a closed hole from an edge boundary open to the canvas', () => {
+    const closed = picture(40, 40, (x, y) => (
+      x >= 9 && x < 31 && y >= 9 && y < 31
+        ? [245, 245, 245, 255]
+        : [10, 10, 10, 255]
+    ))
+    const open = picture(40, 40, (x, y) => (
+      x >= 9 && y >= 9 && y < 31
+        ? [245, 245, 245, 255]
+        : [10, 10, 10, 255]
+    ))
+    expect(measurePerceptualFitMetricsV3(closed, closed).structure.targetEnclosedRegions).toBe(1)
+    expect(measurePerceptualFitMetricsV3(open, open).structure.targetEnclosedRegions).toBe(0)
+  })
+
+  it('is deterministic for a fine diagonal immediately around the frozen edge threshold', () => {
+    const diagonal = (level: number) => picture(40, 40, (x, y) => (
+      x > y ? [level, level, level, 255] : [0, 0, 0, 255]
+    ))
+    const below = diagonal(60)
+    const above = diagonal(64)
+    const first = measurePerceptualFitMetricsV3(above, above)
+    const second = measurePerceptualFitMetricsV3(above, above)
+    expect(first).toEqual(second)
+    const belowMetrics = measurePerceptualFitMetricsV3(below, below)
+    expect(belowMetrics.structure.targetComponents).toBe(2)
+    expect(belowMetrics.structure.targetEnclosedRegions).toBe(0)
+    expect(first.structure.targetComponents).toBe(1)
+    expect(first.structure.targetEnclosedRegions).toBe(0)
   })
 })

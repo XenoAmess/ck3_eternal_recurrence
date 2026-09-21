@@ -93,8 +93,8 @@ export interface ImageFitProgress {
 }
 
 export interface ImageFitCheckpoint {
-  contract: 'ck3-coa-fit-checkpoint-v4'
-  algorithm: 'ck3-coa-browser-fit-v9-quality-first'
+  contract: 'ck3-coa-fit-checkpoint-v5'
+  algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first'
   lane: 'baseline' | 'hybrid'
   inputSha256: string
   assetPackManifestSha256: string
@@ -174,7 +174,7 @@ export interface ImageFitResult {
   metrics: ImageFitMetrics
   paretoCandidates: ImageFitParetoCandidate[]
   provenance: {
-    algorithm: 'ck3-coa-browser-fit-v9-quality-first'
+    algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first'
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
@@ -262,7 +262,7 @@ export interface ImageFitResult {
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
     fullAssetFinalization?: {
-      contract: 'full-dds-rescore-repair-pareto-v3'
+      contract: 'full-dds-epsilon-multiscale-joint-contour-v4'
       searchAssetContract: 'fit-index-rgba32-v2'
       finalAssetContract: 'decoded-exact-dds-mip-v1'
       rescoredCandidates: number
@@ -283,7 +283,7 @@ export interface ImageFitResult {
         contract: 'linear-light-native-tile-recolor-v1'
         evaluatedVariants: number
         selectedBlend: number
-        selectionPolicy: 'perceptual-v2-first-output-size-on-exact-tie'
+        selectionPolicy: 'multiscale-v2-no-regression-then-output-size-on-exact-tie'
         variants: Array<{
           originalIndex: number
           blend: number
@@ -291,6 +291,46 @@ export interface ImageFitResult {
           edgeLoss: number
           perceptualLossV2: number
         }>
+      }
+      multiscaleSelection: {
+        contract: 'epsilon-q-e0-perceptual-v2-96-230-512-w20-45-35-v1'
+        scales: readonly [96, 230, 512]
+        incumbentLoss: number
+        selectedLoss: number
+        eligibleCandidates: number
+        rejectedForScaleRegression: number
+        selectedVariant: 'search-incumbent' | 'exact-repair' | 'recolor' | 'contour-replacement' | 'joint-refinement'
+      }
+      jointRefinement: {
+        contract: 'exact-dds-fixed-budget-coordinate-replacement-v1'
+        deterministic: true
+        renderer: 'complete-decoded-dds'
+        evaluationBudget: number
+        objectiveEvaluations: number
+        evaluatedMoves: number
+        acceptedMoves: unknown[]
+        lossBefore: number
+        lossAfter: number
+        drawnInstancesBefore: number
+        drawnInstancesAfter: number
+        keptIncumbent: boolean
+        stages: unknown[]
+        terminationReason: 'complete' | 'no-improvement' | 'evaluation-budget'
+      }
+      contourRefinement: {
+        contract: 'epsilon-q-contour-fixed-budget-replacement-v1'
+        attempted: boolean
+        emittedProposals: number
+        evaluatedCandidates: number
+        fullBudgetReplacements: number
+        acceptedCandidateAdded: boolean
+        analysis: unknown
+      }
+      qualityEquivalentPruning: {
+        contract: 'epsilon-q-quality-equivalent-prune-v1'
+        attempted: boolean
+        skippedReason: 'disabled' | 'draw-count-limit' | null
+        receipt: unknown
       }
       structuralCompression: StructuralCompressionReceipt
     }
@@ -331,7 +371,8 @@ export interface FitCandidatePoint {
   stableKey: string
 }
 
-const MAX_PARETO_FIT_CANDIDATES = 3
+const DEFAULT_PARETO_FIT_CANDIDATES = 3
+const MAX_INTERNAL_PARETO_FIT_CANDIDATES = 12
 
 /**
  * Returns a small, deterministic quality/edge/complexity Pareto set. The
@@ -341,9 +382,9 @@ const MAX_PARETO_FIT_CANDIDATES = 3
  */
 export function selectParetoFitCandidateIndexes(
   points: readonly FitCandidatePoint[],
-  maximum = MAX_PARETO_FIT_CANDIDATES,
+  maximum = DEFAULT_PARETO_FIT_CANDIDATES,
 ): number[] {
-  const limit = Math.max(0, Math.min(MAX_PARETO_FIT_CANDIDATES, Math.floor(maximum)))
+  const limit = Math.max(0, Math.min(MAX_INTERNAL_PARETO_FIT_CANDIDATES, Math.floor(maximum)))
   if (limit === 0) return []
   const uniqueIndexes = points
     .map((_, index) => index)
@@ -1653,8 +1694,8 @@ function checkpointFromPaintState(
   evaluatedCandidates: number,
 ): ImageFitCheckpoint {
   return {
-    contract: 'ck3-coa-fit-checkpoint-v4',
-    algorithm: 'ck3-coa-browser-fit-v9-quality-first',
+    contract: 'ck3-coa-fit-checkpoint-v5',
+    algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first',
     lane: context.lane,
     inputSha256: context.inputSha256,
     assetPackManifestSha256: context.assetPackManifestSha256,
@@ -2809,8 +2850,8 @@ export function fitImageToCoatOfArms(
   const resumeCheckpoint = options.resumeCheckpoint
   if (resumeCheckpoint) {
     if (
-      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v4'
-      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v9-quality-first'
+      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v5'
+      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v10-epsilon-quality-first'
     ) throw new Error('拟合 checkpoint 版本不兼容')
     if (
       resumeCheckpoint.inputSha256 !== inputSha256
@@ -2980,9 +3021,9 @@ export function fitImageToCoatOfArms(
     !hasSemanticAlternative
       ? 0
       : maxLayers >= 1_024
-        ? 3
+        ? 8
         : maxLayers >= 512
-          ? 3
+          ? 6
           : maxLayers >= 128
             ? 1
           : 6,
@@ -3047,7 +3088,7 @@ export function fitImageToCoatOfArms(
       // Full-circle transform fitting is the expensive stage. The descriptor
       // shortlist is broad, then real-render coarse scoring promotes only the
       // best three assets to continuous local optimization.
-      const localCandidateCount = Math.min(3, shortlist.length)
+      const localCandidateCount = Math.min(8, shortlist.length)
       const refinementTotal = shortlist.length * palettes.length * 3 * 3
         + localCandidateCount * (144 + 5 * (9 + 9 + 5 + 2 + palettes.length) + 13)
       let refinementCompleted = 0
@@ -3405,7 +3446,7 @@ export function fitImageToCoatOfArms(
     edgeLoss: state.candidate.edgeLoss,
     drawnInstances: stateDrawnInstanceCount(state),
     stableKey: state.candidate.key,
-  })))
+  })), 8)
   const paretoStates = paretoIndexes.map((index) => nonRegressingFinalists[index])
   // Search assets are compact fit-index projections. Their only authoritative
   // score is the primary search plane; the exact-DDS finalizer immediately
@@ -3494,7 +3535,7 @@ export function fitImageToCoatOfArms(
     },
     paretoCandidates,
     provenance: {
-      algorithm: 'ck3-coa-browser-fit-v9-quality-first',
+      algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first',
       searchBackend: batchSearch.status === 'active'
         ? 'webgl2-batch+cpu-reference'
         : 'cpu-reference',

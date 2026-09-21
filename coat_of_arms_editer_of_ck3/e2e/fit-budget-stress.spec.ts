@@ -330,7 +330,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     pauseLatencyMs,
     persistentRestoreDurationMs,
     resumeDurationMs,
-    pauseResumeContract: 'ck3-coa-fit-checkpoint-v4',
+    pauseResumeContract: 'ck3-coa-fit-checkpoint-v5',
     cancellationLatencyMs,
     restartProgressLatencyMs,
     restartBudget: contract.restartProbeBudget,

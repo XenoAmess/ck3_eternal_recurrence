@@ -1,6 +1,9 @@
 export const PERCEPTUAL_FIT_SCORING_CONTRACT =
   'linear-rgb40-multiscale30-gradient20-bidirectional-edge7-structure3-shadow-v2' as const
 
+export const PERCEPTUAL_FIT_SCORING_CONTRACT_V3 =
+  'linear-rgb40-multiscale30-gradient20-bidirectional-edge7-structure3-border-flood-v3' as const
+
 export interface PerceptualImage {
   width: number
   height: number
@@ -25,6 +28,8 @@ export interface PerceptualFitMetricsV2 {
     renderedEnclosedRegions: number
   }
 }
+
+export interface PerceptualFitMetricsV3 extends PerceptualFitMetricsV2 {}
 
 const SQRT_TWO = Math.SQRT2
 
@@ -258,7 +263,7 @@ function countComponents(mask: Uint8Array, width: number, height: number, foregr
   return components
 }
 
-function countEnclosedRegions(mask: Uint8Array, width: number, height: number): number {
+function countEnclosedRegionsLegacyV2(mask: Uint8Array, width: number, height: number): number {
   const inverted = new Uint8Array(mask.length)
   for (let index = 0; index < mask.length; index += 1) inverted[index] = mask[index] ? 0 : 1
   const allBackgroundComponents = countComponents(inverted, width, height, true)
@@ -275,13 +280,62 @@ function countEnclosedRegions(mask: Uint8Array, width: number, height: number): 
   return Math.max(0, allBackgroundComponents - touchesBorder)
 }
 
+function countEnclosedRegionsV3(mask: Uint8Array, width: number, height: number): number {
+  const visited = new Uint8Array(mask.length)
+  const queue = new Int32Array(mask.length)
+  let first = 0
+  let last = 0
+  const enqueueBackground = (index: number) => {
+    if (mask[index] || visited[index]) return
+    visited[index] = 1
+    queue[last++] = index
+  }
+  for (let x = 0; x < width; x += 1) {
+    enqueueBackground(x)
+    enqueueBackground((height - 1) * width + x)
+  }
+  for (let y = 1; y + 1 < height; y += 1) {
+    enqueueBackground(y * width)
+    enqueueBackground(y * width + width - 1)
+  }
+  while (first < last) {
+    const index = queue[first++]
+    const x = index % width
+    const y = Math.floor(index / width)
+    if (x > 0) enqueueBackground(index - 1)
+    if (x + 1 < width) enqueueBackground(index + 1)
+    if (y > 0) enqueueBackground(index - width)
+    if (y + 1 < height) enqueueBackground(index + width)
+  }
+
+  let enclosedRegions = 0
+  for (let start = 0; start < mask.length; start += 1) {
+    if (mask[start] || visited[start]) continue
+    enclosedRegions += 1
+    first = 0
+    last = 0
+    enqueueBackground(start)
+    while (first < last) {
+      const index = queue[first++]
+      const x = index % width
+      const y = Math.floor(index / width)
+      if (x > 0) enqueueBackground(index - 1)
+      if (x + 1 < width) enqueueBackground(index + 1)
+      if (y > 0) enqueueBackground(index - width)
+      if (y + 1 < height) enqueueBackground(index + width)
+    }
+  }
+  return enclosedRegions
+}
+
 function normalizedCountDifference(left: number, right: number): number {
   return Math.min(1, Math.abs(left - right) / Math.max(1, left, right))
 }
 
-export function measurePerceptualFitMetricsV2(
+function measurePerceptualFitMetrics(
   targetImage: PerceptualImage,
   renderedImage: PerceptualImage,
+  countEnclosedRegions: (mask: Uint8Array, width: number, height: number) => number,
 ): PerceptualFitMetricsV2 {
   validatePair(targetImage, renderedImage)
   const target = linearChannels(targetImage)
@@ -350,4 +404,22 @@ export function measurePerceptualFitMetricsV2(
       renderedEnclosedRegions,
     },
   }
+}
+
+export function measurePerceptualFitMetricsV2(
+  targetImage: PerceptualImage,
+  renderedImage: PerceptualImage,
+): PerceptualFitMetricsV2 {
+  return measurePerceptualFitMetrics(
+    targetImage,
+    renderedImage,
+    countEnclosedRegionsLegacyV2,
+  )
+}
+
+export function measurePerceptualFitMetricsV3(
+  targetImage: PerceptualImage,
+  renderedImage: PerceptualImage,
+): PerceptualFitMetricsV3 {
+  return measurePerceptualFitMetrics(targetImage, renderedImage, countEnclosedRegionsV3)
 }

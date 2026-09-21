@@ -83,12 +83,22 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       if (!rawEvidence) throw new Error('missing machine-readable fit evidence')
       const evidence = JSON.parse(rawEvidence)
       expect(evidence.provenance.layerBudget).toBe(budget)
-      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v9-quality-first')
+      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v10-epsilon-quality-first')
       expect(evidence.provenance.surfaceMaskApplied).toBe(true)
       expect(evidence.provenance.fullAssetFinalization).toMatchObject({
-        contract: 'full-dds-rescore-repair-pareto-v3',
+        contract: 'full-dds-epsilon-multiscale-joint-contour-v4',
         searchAssetContract: 'fit-index-rgba32-v2',
         finalAssetContract: 'decoded-exact-dds-mip-v1',
+        multiscaleSelection: {
+          contract: 'epsilon-q-e0-perceptual-v2-96-230-512-w20-45-35-v1',
+          scales: [96, 230, 512],
+        },
+        jointRefinement: {
+          contract: 'exact-dds-fixed-budget-coordinate-replacement-v1',
+        },
+        contourRefinement: {
+          contract: 'epsilon-q-contour-fixed-budget-replacement-v1',
+        },
       })
       expect(evidence.provenance.fullAssetFinalization.rescoredCandidates).toBeGreaterThanOrEqual(1)
       expect(evidence.provenance.drawnInstances).toBeLessThanOrEqual(budget)

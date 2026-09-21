@@ -79,6 +79,10 @@ describe('full DDS image-fit finalization', () => {
     const finalized = finalizeImageFitWithFullAssets(searchResult, target, {
       patterns: { 'solid.dds': pattern },
       coloredEmblems: { 'opaque.dds': opaque },
+    }, {}, {
+      jointRefinementEvaluations: 0,
+      contourReplacementEvaluations: 0,
+      pruneDrawnInstanceLimit: 0,
     })
 
     expect(finalized.receipt.selectedOriginalIndexes).toEqual([1])
@@ -88,7 +92,7 @@ describe('full DDS image-fit finalization', () => {
     expect(finalized.receipt.candidates[0].finalMetrics.totalLoss)
       .toBeGreaterThan(finalized.result.metrics.totalLoss)
     expect(finalized.result.provenance.fullAssetFinalization).toMatchObject({
-      contract: 'full-dds-rescore-repair-pareto-v3',
+      contract: 'full-dds-epsilon-multiscale-joint-contour-v4',
       finalAssetContract: 'decoded-exact-dds-mip-v1',
       selectedOriginalIndexes: [1],
       exactResidualRepair: {
@@ -100,7 +104,25 @@ describe('full DDS image-fit finalization', () => {
         contract: 'linear-light-native-tile-recolor-v1',
         evaluatedVariants: 0,
         selectedBlend: 0,
-        selectionPolicy: 'perceptual-v2-first-output-size-on-exact-tie',
+        selectionPolicy: 'multiscale-v2-no-regression-then-output-size-on-exact-tie',
+      },
+      multiscaleSelection: {
+        contract: 'epsilon-q-e0-perceptual-v2-96-230-512-w20-45-35-v1',
+        scales: [96, 230, 512],
+        selectedVariant: 'exact-repair',
+      },
+      jointRefinement: {
+        contract: 'exact-dds-fixed-budget-coordinate-replacement-v1',
+        evaluationBudget: 0,
+      },
+      contourRefinement: {
+        contract: 'epsilon-q-contour-fixed-budget-replacement-v1',
+        attempted: false,
+      },
+      qualityEquivalentPruning: {
+        contract: 'epsilon-q-quality-equivalent-prune-v1',
+        attempted: false,
+        skippedReason: 'disabled',
       },
       structuralCompression: {
         strategy: 'adjacent-equal-style-v1',

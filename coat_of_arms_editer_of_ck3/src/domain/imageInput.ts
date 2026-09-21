@@ -56,7 +56,11 @@ export async function decodeFitImageFile(file: File, size = 96): Promise<Decoded
     ) throw new Error('图片尺寸必须在 1..4096 像素')
     const maximumSourceSpan = Math.max(bitmap.width, bitmap.height)
     const primaryResolution = Math.min(size, maximumSourceSpan)
-    const pyramidResolutions = [...new Set([primaryResolution, 96, 192, 256]
+    // Keep the historical 96/192/256 search planes while retaining two exact
+    // source-derived evaluation planes. Epsilon-Q final selection consumes
+    // 96/230/512 directly instead of enlarging the already-downsampled 96px
+    // target and thereby losing the fine contours it is meant to preserve.
+    const pyramidResolutions = [...new Set([primaryResolution, 96, 192, 230, 256, 512]
       .filter((resolution) => resolution <= maximumSourceSpan))]
       .sort((left, right) => left - right)
     const renderAt = (resolution: number) => {

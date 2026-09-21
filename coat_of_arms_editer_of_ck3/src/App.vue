@@ -1722,6 +1722,7 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
     const worker = new Worker(new URL('./domain/imageFitter.worker.ts', import.meta.url), { type: 'module' })
     fitWorker = worker
     const target = targetImage.value.image
+    const targetPyramid = targetImage.value.pyramid
     worker.onmessage = async (event: MessageEvent<FitWorkerResponse>) => {
       if (
         runId !== fitRunId
@@ -1765,6 +1766,16 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       const selectedEmblemNames = new Set(result.paretoCandidates.flatMap((candidate) => (
         candidate.coatOfArms.coloredEmblems.map((item) => item.texture)
       )))
+      // Epsilon-Q full-DDS refinement may perform fixed-budget 1→1
+      // replacements with these verified native primitives even when coarse
+      // search did not already select them.
+      for (const texture of [
+        'ce_block_02.dds',
+        'ce_billet.dds',
+        'ce_circle.dds',
+        'ce_lozenge.dds',
+        'ce_triangle_mask.dds',
+      ]) selectedEmblemNames.add(texture)
       const selectedEmblemEntries = emblems.filter((item) => selectedEmblemNames.has(item.name))
       let selectedFullPatterns: (readonly [string, DecodedDds])[]
       let selectedFullEmblems: (readonly [string, DecodedDds])[]
@@ -1814,6 +1825,7 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
             ))),
           },
           shaderNamedColors.value,
+          { targetPyramid },
         ).result
       } catch (error) {
         fitBusy.value = false
@@ -1950,7 +1962,7 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
           pixels: new Uint8ClampedArray(image.pixels),
         })),
         refinementCandidates: 48,
-        beamWidth: 2,
+        beamWidth: 4,
         inputSha256: targetImage.value.sha256,
         assetPackManifestSha256: loadedAssetPack.value.manifestSha256,
         surfaceMask: surfaceMask.value ? cloneDecodedDdsForWorker(surfaceMask.value) : undefined,

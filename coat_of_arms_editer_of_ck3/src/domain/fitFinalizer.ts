@@ -9,10 +9,33 @@ import {
   type ImageFitParetoCandidate,
   type ImageFitResult,
 } from './imageFitter'
-import { measurePerceptualFitMetricsV2 } from './perceptualFitMetrics'
-import { renderCoatOfArms, type NamedColorMap } from './renderer'
-import type { CoatOfArms } from './types'
+import {
+  measurePerceptualFitMetricsV2,
+  measurePerceptualFitMetricsV3,
+  type PerceptualFitMetricsV2,
+  type PerceptualFitMetricsV3,
+} from './perceptualFitMetrics'
+import {
+  createFitQualityObjective,
+  fitQualityHasNoScaleRegression,
+  FIT_QUALITY_OBJECTIVE_CONTRACT,
+  FIT_QUALITY_SCALES,
+  type FitQualityObjective,
+  type FitQualityScale,
+} from './fitQualityObjective'
+import {
+  proposeContourCandidates,
+  type ContourPrimitiveAsset,
+  type ContourProposalResult,
+} from './fitContourProposals'
+import {
+  refineCoatOfArmsJointly,
+  type JointRefinementReceipt,
+} from './fitJointRefinement'
+import { renderCoatOfArms, type NamedColorMap, type RenderedCoatOfArms } from './renderer'
+import type { CoatOfArms, ColoredEmblem } from './types'
 import { structurallyCompressCoatOfArms, type StructuralCompressionReceipt } from './coatOfArmsOptimizer'
+import { pruneRedundantInstances, type InstancePruneReceipt } from './coatOfArmsPruner'
 
 export interface FullAssetFitAssets {
   patterns: Record<string, DecodedDds>
@@ -22,17 +45,38 @@ export interface FullAssetFitAssets {
   emblemAssetSha256?: Record<string, string>
 }
 
+export interface FullAssetFitFinalizationOptions {
+  /** Source-derived targets take precedence over resizing the search plane. */
+  targetPyramid?: FitImage[]
+  /** Bounded exact-DDS coordinate/replacement evaluations; zero disables E2. */
+  jointRefinementEvaluations?: number
+  /** Bounded full-budget contour replacements; zero disables E3/E4. */
+  contourReplacementEvaluations?: number
+  /** Exact 96/230/512 leave-one-out runs only at or below this draw count. */
+  pruneDrawnInstanceLimit?: number
+}
+
+export interface MultiscalePerceptualReceipt {
+  resolution: FitQualityScale
+  v2: PerceptualFitMetricsV2
+  v3: PerceptualFitMetricsV3
+}
+
 export interface FullAssetCandidateReceipt {
   originalIndex: number
   recolorBlend: number
+  variant: 'search-incumbent' | 'exact-repair' | 'recolor' | 'contour-replacement' | 'joint-refinement'
   searchMetrics: ImageFitMetrics
   finalMetrics: ImageFitMetrics
   perceptualLossV2: number
+  multiscalePerceptual: MultiscalePerceptualReceipt[]
+  qualityObjective: FitQualityObjective
+  passesIncumbentScaleGate: boolean
   drawnInstances: number
 }
 
 export interface FullAssetFitFinalizationReceipt {
-  contract: 'full-dds-rescore-repair-pareto-v3'
+  contract: 'full-dds-epsilon-multiscale-joint-contour-v4'
   searchAssetContract: 'fit-index-rgba32-v2'
   finalAssetContract: 'decoded-exact-dds-mip-v1'
   candidates: FullAssetCandidateReceipt[]
@@ -53,7 +97,7 @@ export interface FullAssetFitFinalizationReceipt {
     contract: 'linear-light-native-tile-recolor-v1'
     evaluatedVariants: number
     selectedBlend: number
-    selectionPolicy: 'perceptual-v2-first-output-size-on-exact-tie'
+    selectionPolicy: 'multiscale-v2-no-regression-then-output-size-on-exact-tie'
     variants: Array<{
       originalIndex: number
       blend: number
@@ -61,6 +105,31 @@ export interface FullAssetFitFinalizationReceipt {
       edgeLoss: number
       perceptualLossV2: number
     }>
+  }
+  multiscaleSelection: {
+    contract: typeof FIT_QUALITY_OBJECTIVE_CONTRACT
+    scales: readonly [96, 230, 512]
+    incumbentLoss: number
+    selectedLoss: number
+    eligibleCandidates: number
+    rejectedForScaleRegression: number
+    selectedVariant: FullAssetCandidateReceipt['variant']
+  }
+  jointRefinement: JointRefinementReceipt
+  contourRefinement: {
+    contract: 'epsilon-q-contour-fixed-budget-replacement-v1'
+    attempted: boolean
+    emittedProposals: number
+    evaluatedCandidates: number
+    fullBudgetReplacements: number
+    acceptedCandidateAdded: boolean
+    analysis: ContourProposalResult<string>['analysis'] | null
+  }
+  qualityEquivalentPruning: {
+    contract: 'epsilon-q-quality-equivalent-prune-v1'
+    attempted: boolean
+    skippedReason: 'disabled' | 'draw-count-limit' | null
+    receipt: InstancePruneReceipt | null
   }
   structuralCompression: StructuralCompressionReceipt
 }
@@ -163,6 +232,155 @@ function recolorNativePaintTiles(
   }
 }
 
+type CandidateVariant = FullAssetCandidateReceipt['variant']
+
+interface FinalizerCandidateEntry {
+  candidate: ImageFitParetoCandidate
+  originalIndex: number
+  recolorBlend: number
+  variant: CandidateVariant
+}
+
+interface RescoredFinalizerCandidate extends FinalizerCandidateEntry {
+  searchMetrics: ImageFitMetrics
+  drawnInstances: number
+  qualityObjective: FitQualityObjective
+  multiscalePerceptual: MultiscalePerceptualReceipt[]
+  passesIncumbentScaleGate: boolean
+}
+
+function cloneCoatOfArms(coatOfArms: CoatOfArms): CoatOfArms {
+  return {
+    ...coatOfArms,
+    colors: [...coatOfArms.colors],
+    coloredEmblems: coatOfArms.coloredEmblems.map((emblem) => ({
+      ...emblem,
+      colors: [...emblem.colors],
+      mask: [...emblem.mask],
+      instances: emblem.instances.map((instance) => ({
+        ...instance,
+        position: [...instance.position],
+        scale: [...instance.scale],
+      })),
+    })),
+    texturedEmblems: coatOfArms.texturedEmblems.map((emblem) => ({ ...emblem })),
+    rootPresence: coatOfArms.rootPresence ? {
+      pattern: coatOfArms.rootPresence.pattern,
+      colors: [...coatOfArms.rootPresence.colors],
+    } : undefined,
+  }
+}
+
+function primitiveFamily(texture: string): ContourPrimitiveAsset<string>['family'] | null {
+  if (texture === 'ce_block_02.dds' || texture === 'ce_billet.dds') return 'block'
+  if (texture === 'ce_circle.dds') return 'circle'
+  if (texture === 'ce_lozenge.dds') return 'diamond'
+  if (texture === 'ce_triangle_mask.dds') return 'wedge'
+  return null
+}
+
+function contourPrimitiveAssets(assets: FullAssetFitAssets): ContourPrimitiveAsset<string>[] {
+  return Object.keys(assets.coloredEmblems)
+    .flatMap((texture): ContourPrimitiveAsset<string>[] => {
+      const family = primitiveFamily(texture)
+      if (!family) return []
+      return [{
+        id: texture,
+        identity: assets.emblemAssetSha256?.[texture] ?? texture,
+        texture,
+        family,
+        mask: [1],
+      }]
+    })
+}
+
+function replaceInstanceWithContour(
+  source: CoatOfArms,
+  flatInstanceIndex: number,
+  proposal: ContourProposalResult<string>['proposals'][number],
+): CoatOfArms {
+  const coatOfArms = cloneCoatOfArms(source)
+  let cursor = 0
+  let victimDepth = proposal.instance.depth
+  for (let blockIndex = 0; blockIndex < coatOfArms.coloredEmblems.length; blockIndex += 1) {
+    const block = coatOfArms.coloredEmblems[blockIndex]
+    if (flatInstanceIndex >= cursor + block.instances.length) {
+      cursor += block.instances.length
+      continue
+    }
+    const localIndex = flatInstanceIndex - cursor
+    victimDepth = block.instances[localIndex].depth
+    block.instances.splice(localIndex, 1)
+    if (!block.instances.length) coatOfArms.coloredEmblems.splice(blockIndex, 1)
+    break
+  }
+  const expression = `rgb { ${proposal.targetColor.join(' ')} }`
+  const replacement: ColoredEmblem = {
+    texture: proposal.texture,
+    colors: [expression, expression, expression],
+    mask: [...proposal.mask],
+    instances: [{
+      ...proposal.instance,
+      position: [...proposal.instance.position],
+      scale: [...proposal.instance.scale],
+      depth: victimDepth,
+    }],
+  }
+  coatOfArms.coloredEmblems.push(replacement)
+  return coatOfArms
+}
+
+function appendContour(
+  source: CoatOfArms,
+  proposal: ContourProposalResult<string>['proposals'][number],
+): CoatOfArms {
+  const coatOfArms = cloneCoatOfArms(source)
+  const expression = `rgb { ${proposal.targetColor.join(' ')} }`
+  coatOfArms.coloredEmblems.push({
+    texture: proposal.texture,
+    colors: [expression, expression, expression],
+    mask: [...proposal.mask],
+    instances: [{
+      ...proposal.instance,
+      position: [...proposal.instance.position],
+      scale: [...proposal.instance.scale],
+    }],
+  })
+  return coatOfArms
+}
+
+function smallestAreaInstanceIndexes(coatOfArms: CoatOfArms, maximum: number): number[] {
+  let flatIndex = 0
+  return coatOfArms.coloredEmblems.flatMap((emblem) => emblem.instances.map((instance) => ({
+    index: flatIndex++,
+    area: Math.abs(instance.scale[0] * instance.scale[1]),
+    depth: instance.depth,
+  })))
+    .sort((left, right) => left.area - right.area || right.depth - left.depth || left.index - right.index)
+    .slice(0, maximum)
+    .map((item) => item.index)
+}
+
+function disabledJointReceipt(coatOfArms: CoatOfArms, loss: number): JointRefinementReceipt {
+  const instances = coatOfArms.coloredEmblems.reduce((sum, emblem) => sum + emblem.instances.length, 0)
+  return {
+    contract: 'exact-dds-fixed-budget-coordinate-replacement-v1',
+    deterministic: true,
+    renderer: 'complete-decoded-dds',
+    evaluationBudget: 0,
+    objectiveEvaluations: 0,
+    evaluatedMoves: 0,
+    acceptedMoves: [],
+    lossBefore: loss,
+    lossAfter: loss,
+    drawnInstancesBefore: instances,
+    drawnInstancesAfter: instances,
+    keptIncumbent: true,
+    stages: [],
+    terminationReason: 'no-improvement',
+  }
+}
+
 /**
  * The fit index deliberately uses 32px RGBA projections for fast search.
  * Export, editor preview and CK3 use the exact decoded DDS and mip chain.
@@ -174,15 +392,22 @@ export function finalizeImageFitWithFullAssets(
   inputTarget: FitImage,
   assets: FullAssetFitAssets,
   namedColors: NamedColorMap = {},
+  options: FullAssetFitFinalizationOptions = {},
 ): { result: ImageFitResult, receipt: FullAssetFitFinalizationReceipt } {
   if (!searchResult.paretoCandidates.length) throw new Error('完整 DDS 复评没有输入候选')
   const resolutions = [...new Set([
     searchResult.provenance.resolution,
     ...searchResult.provenance.pyramidResolutions,
-  ])]
-  const targets = new Map(resolutions.map((resolution) => (
-    [resolution, resizeFitImage(inputTarget, resolution)]
-  )))
+    ...FIT_QUALITY_SCALES,
+  ])].sort((left, right) => left - right)
+  const sourceTargets = [inputTarget, ...(options.targetPyramid ?? [])]
+    .filter((target) => target.width === target.height)
+    .sort((left, right) => right.width - left.width)
+  const targets = new Map(resolutions.map((resolution) => {
+    const exact = sourceTargets.find((target) => target.width === resolution)
+    const source = exact ?? sourceTargets[0] ?? inputTarget
+    return [resolution, exact ?? resizeFitImage(source, resolution)]
+  }))
   const primaryTarget = targets.get(searchResult.provenance.resolution)!
   const repairReceipts: Array<ReturnType<typeof repairImageFitCandidateWithExactAssets>['receipt']> = []
   const repairOriginalIndexes = new Set(searchResult.paretoCandidates
@@ -223,17 +448,54 @@ export function finalizeImageFitWithFullAssets(
     repairReceipts.push(repaired.receipt)
     return repaired.candidate
   })
-  const candidateEntries = repairedCandidates.flatMap((candidate, originalIndex) => {
-    if (!repairOriginalIndexes.has(originalIndex)) return [{ candidate, originalIndex, recolorBlend: 0 }]
+  const candidateEntries: FinalizerCandidateEntry[] = repairedCandidates.flatMap((candidate, originalIndex) => {
+    if (!repairOriginalIndexes.has(originalIndex)) {
+      return [{ candidate, originalIndex, recolorBlend: 0, variant: 'exact-repair' as const }]
+    }
     const variants = [0.25, 0.5, 0.75, 1]
       .map((blend) => ({ candidate: recolorNativePaintTiles(candidate, primaryTarget, blend), blend }))
       .filter((item): item is { candidate: ImageFitParetoCandidate, blend: number } => Boolean(item.candidate))
-      .map((item) => ({ candidate: item.candidate, originalIndex, recolorBlend: item.blend }))
-    return [{ candidate, originalIndex, recolorBlend: 0 }, ...variants]
+      .map((item) => ({
+        candidate: item.candidate,
+        originalIndex,
+        recolorBlend: item.blend,
+        variant: 'recolor' as const,
+      }))
+    return [{
+      candidate,
+      originalIndex,
+      recolorBlend: 0,
+      variant: 'exact-repair' as const,
+    }, ...variants]
   })
-  const rescored = candidateEntries.map(({ candidate, originalIndex, recolorBlend }) => {
+  // The exact search winner is the immutable non-regression incumbent. Repair,
+  // recolor, contour and joint candidates may replace it only if every frozen
+  // 96/230/512 perceptual-v2 member is no worse.
+  candidateEntries.unshift({
+    candidate: searchResult.paretoCandidates[0],
+    originalIndex: 0,
+    recolorBlend: 0,
+    variant: 'search-incumbent',
+  })
+  const seenCandidateModels = new Set<CoatOfArms>()
+  for (let index = 0; index < candidateEntries.length;) {
+    const model = candidateEntries[index].candidate.coatOfArms
+    if (seenCandidateModels.has(model)) candidateEntries.splice(index, 1)
+    else {
+      seenCandidateModels.add(model)
+      index += 1
+    }
+  }
+
+  const rescore = ({
+    candidate,
+    originalIndex,
+    recolorBlend,
+    variant,
+  }: FinalizerCandidateEntry): Omit<RescoredFinalizerCandidate, 'passesIncumbentScaleGate'> => {
     const pattern = assets.patterns[candidate.coatOfArms.pattern]
     if (!pattern) throw new Error(`完整 DDS 复评缺少 pattern：${candidate.coatOfArms.pattern}`)
+    const renderedByResolution = new Map<number, RenderedCoatOfArms>()
     const multiscaleMetrics = resolutions.map((resolution) => {
       const target = targets.get(resolution)!
       const rendered = renderCoatOfArms(
@@ -247,17 +509,13 @@ export function finalizeImageFitWithFullAssets(
         resolution,
       )
       if (!rendered) throw new Error(`完整 DDS 候选无法在 ${resolution}px 渲染`)
+      renderedByResolution.set(resolution, rendered)
       return { resolution, ...measureImageFitLosses(target, rendered) }
     })
     const primary = multiscaleMetrics.find(
       (metric) => metric.resolution === searchResult.provenance.resolution,
     )!
-    const primaryRendered = renderCoatOfArms(
-      candidate.coatOfArms,
-      { pattern, coloredEmblems: assets.coloredEmblems, surfaceMask: assets.surfaceMask },
-      namedColors,
-      searchResult.provenance.resolution,
-    )
+    const primaryRendered = renderedByResolution.get(searchResult.provenance.resolution)
     if (!primaryRendered) throw new Error('完整 DDS 候选无法在主分辨率渲染')
     const baselineRendered = renderCoatOfArms(
       withoutEmblems(candidate.coatOfArms),
@@ -275,6 +533,19 @@ export function finalizeImageFitWithFullAssets(
         ? 0
         : Math.max(0, (baseline.totalLoss - primary.totalLoss) / baseline.totalLoss),
     }
+    const multiscalePerceptual = FIT_QUALITY_SCALES.map((resolution) => {
+      const rendered = renderedByResolution.get(resolution)
+      if (!rendered) throw new Error(`完整 DDS 候选缺少 ${resolution}px 固定质量渲染`)
+      const target = targets.get(resolution)!
+      return {
+        resolution,
+        v2: measurePerceptualFitMetricsV2(target, rendered),
+        v3: measurePerceptualFitMetricsV3(target, rendered),
+      }
+    })
+    const qualityObjective = createFitQualityObjective(Object.fromEntries(
+      multiscalePerceptual.map((item) => [item.resolution, item.v2.totalLoss]),
+    ) as Record<FitQualityScale, number>)
     return {
       originalIndex,
       candidate: {
@@ -286,29 +557,228 @@ export function finalizeImageFitWithFullAssets(
       searchMetrics: searchResult.paretoCandidates[originalIndex].metrics,
       drawnInstances: drawnInstances(candidate),
       recolorBlend,
+      variant,
+      qualityObjective,
+      multiscalePerceptual,
     }
-  })
+  }
+
+  const incumbent = rescore(candidateEntries[0])
+  let rescored: RescoredFinalizerCandidate[] = candidateEntries.map(rescore).map((item) => ({
+    ...item,
+    passesIncumbentScaleGate: fitQualityHasNoScaleRegression(
+      item.qualityObjective,
+      incumbent.qualityObjective,
+    ),
+  }))
+  const compareQuality = (left: RescoredFinalizerCandidate, right: RescoredFinalizerCandidate) => (
+    left.qualityObjective.weightedLoss - right.qualityObjective.weightedLoss
+    || left.drawnInstances - right.drawnInstances
+    || left.candidate.coatOfArms.coloredEmblems.length - right.candidate.coatOfArms.coloredEmblems.length
+    || left.variant.localeCompare(right.variant)
+    || left.originalIndex - right.originalIndex
+    || left.recolorBlend - right.recolorBlend
+  )
+  const initialEligible = rescored.filter((item) => item.passesIncumbentScaleGate).sort(compareQuality)
+  let refinementSeed = initialEligible[0] ?? rescored[0]
+
+  const primitiveAssets = contourPrimitiveAssets(assets)
+  const contourEvaluationBudget = Math.max(0, Math.floor(
+    options.contourReplacementEvaluations ?? 48,
+  ))
+  let contourAnalysis: ContourProposalResult<string>['analysis'] | null = null
+  let contourEmittedProposals = 0
+  let contourEvaluatedCandidates = 0
+  let fullBudgetReplacements = 0
+  let acceptedContourCandidateAdded = false
+  if (contourEvaluationBudget > 0 && primitiveAssets.some((item) => item.family === 'block')) {
+    const contourResolution: FitQualityScale = 230
+    const pattern = assets.patterns[refinementSeed.candidate.coatOfArms.pattern]
+    const baselineRendered = pattern ? renderCoatOfArms(
+      refinementSeed.candidate.coatOfArms,
+      { pattern, coloredEmblems: assets.coloredEmblems, surfaceMask: assets.surfaceMask },
+      namedColors,
+      contourResolution,
+    ) : null
+    if (baselineRendered) {
+      const proposals = proposeContourCandidates(
+        targets.get(contourResolution)!,
+        baselineRendered,
+        primitiveAssets,
+        { maximumRegions: 12, maximumCandidates: 24, maximumCandidatesPerRegion: 4 },
+      )
+      contourAnalysis = proposals.analysis
+      contourEmittedProposals = proposals.proposals.length
+      const instanceCount = drawnInstances(refinementSeed.candidate)
+      const availableSlots = Math.max(0, searchResult.provenance.layerBudget - instanceCount)
+      const victims = smallestAreaInstanceIndexes(
+        refinementSeed.candidate.coatOfArms,
+        Math.max(1, Math.min(8, contourEvaluationBudget)),
+      )
+      const candidates: Array<{ coatOfArms: CoatOfArms, loss: number, key: string }> = []
+      outer: for (const proposal of proposals.proposals) {
+        const victimIndexes = availableSlots > 0 ? [-1] : victims
+        for (const victimIndex of victimIndexes) {
+          if (contourEvaluatedCandidates >= contourEvaluationBudget) break outer
+          const coatOfArms = victimIndex < 0
+            ? appendContour(refinementSeed.candidate.coatOfArms, proposal)
+            : replaceInstanceWithContour(refinementSeed.candidate.coatOfArms, victimIndex, proposal)
+          const rendered = renderCoatOfArms(
+            coatOfArms,
+            { pattern, coloredEmblems: assets.coloredEmblems, surfaceMask: assets.surfaceMask },
+            namedColors,
+            contourResolution,
+          )
+          contourEvaluatedCandidates += 1
+          if (victimIndex >= 0) fullBudgetReplacements += 1
+          if (!rendered) continue
+          const loss = measurePerceptualFitMetricsV2(targets.get(contourResolution)!, rendered).totalLoss
+          candidates.push({ coatOfArms, loss, key: `${proposal.stableKey}|victim-${victimIndex}` })
+        }
+      }
+      const promising = candidates
+        .filter((item) => item.loss < refinementSeed.qualityObjective.lossByScale[230] - 1e-12)
+        .sort((left, right) => left.loss - right.loss || left.key.localeCompare(right.key))
+        .slice(0, 4)
+      for (const item of promising) {
+        const entry = rescore({
+          candidate: {
+            ...refinementSeed.candidate,
+            coatOfArms: item.coatOfArms,
+            textureNames: [...new Set(item.coatOfArms.coloredEmblems.map((emblem) => emblem.texture))],
+          },
+          originalIndex: refinementSeed.originalIndex,
+          recolorBlend: refinementSeed.recolorBlend,
+          variant: 'contour-replacement',
+        })
+        rescored.push({
+          ...entry,
+          passesIncumbentScaleGate: fitQualityHasNoScaleRegression(
+            entry.qualityObjective,
+            incumbent.qualityObjective,
+          ),
+        })
+        acceptedContourCandidateAdded = true
+      }
+      refinementSeed = rescored.filter((item) => item.passesIncumbentScaleGate).sort(compareQuality)[0]
+        ?? refinementSeed
+    }
+  }
+
+  const jointEvaluationBudget = Math.max(0, Math.floor(
+    options.jointRefinementEvaluations
+      ?? (refinementSeed.drawnInstances <= 128 ? 512 : 128),
+  ))
+  let jointRefinement = disabledJointReceipt(
+    refinementSeed.candidate.coatOfArms,
+    refinementSeed.qualityObjective.lossByScale[96],
+  )
+  if (jointEvaluationBudget > 0) {
+    const jointTarget = targets.get(96)!
+    const joint = refineCoatOfArmsJointly(refinementSeed.candidate.coatOfArms, {
+      assets: {
+        pattern: assets.patterns[refinementSeed.candidate.coatOfArms.pattern],
+        coloredEmblems: assets.coloredEmblems,
+        surfaceMask: assets.surfaceMask,
+      },
+      namedColors,
+      renderSize: 96,
+      maxEvaluations: jointEvaluationBudget,
+      eligibleTextures: primitiveAssets.map((item) => item.texture),
+      maxReplacementCandidates: primitiveAssets.length,
+      objective: ({ rendered }) => measurePerceptualFitMetricsV2(jointTarget, rendered).totalLoss,
+    })
+    jointRefinement = joint.receipt
+    if (!joint.receipt.keptIncumbent) {
+      const entry = rescore({
+        candidate: {
+          ...refinementSeed.candidate,
+          coatOfArms: joint.coatOfArms,
+          textureNames: [...new Set(joint.coatOfArms.coloredEmblems.map((emblem) => emblem.texture))],
+        },
+        originalIndex: refinementSeed.originalIndex,
+        recolorBlend: refinementSeed.recolorBlend,
+        variant: 'joint-refinement',
+      })
+      rescored.push({
+        ...entry,
+        passesIncumbentScaleGate: fitQualityHasNoScaleRegression(
+          entry.qualityObjective,
+          incumbent.qualityObjective,
+        ),
+      })
+    }
+  }
+
   const legacyParetoIndexes = selectParetoFitCandidateIndexes(rescored.map((item) => ({
     totalLoss: item.candidate.metrics.totalLoss,
     edgeLoss: item.candidate.metrics.edgeLoss,
     drawnInstances: item.drawnInstances,
-    stableKey: `${String(item.originalIndex).padStart(4, '0')}:${item.candidate.reconstructionMode}:recolor-${item.recolorBlend}`,
+    stableKey: `${String(item.originalIndex).padStart(4, '0')}:${item.candidate.reconstructionMode}:${item.variant}:recolor-${item.recolorBlend}`,
   })))
   if (!legacyParetoIndexes.length) throw new Error('完整 DDS 复评没有可交付候选')
-  const perceptualEligible = rescored
+  const qualityPool = rescored.filter((item) => item.passesIncumbentScaleGate)
+  const qualityFront = qualityPool.filter((item) => !qualityPool.some((other) => {
+    if (other === item) return false
+    const noWorse = FIT_QUALITY_SCALES.every((scale) => (
+      other.qualityObjective.lossByScale[scale] <= item.qualityObjective.lossByScale[scale] + 1e-12
+    )) && other.drawnInstances <= item.drawnInstances
+    const strictlyBetter = FIT_QUALITY_SCALES.some((scale) => (
+      other.qualityObjective.lossByScale[scale] < item.qualityObjective.lossByScale[scale] - 1e-12
+    )) || other.drawnInstances < item.drawnInstances
+    return noWorse && strictlyBetter
+  }))
+  const qualityIndexes = rescored
     .map((item, index) => ({ item, index }))
-    .sort((left, right) => (
-      left.item.candidate.perceptualMetricsV2.totalLoss - right.item.candidate.perceptualMetricsV2.totalLoss
-      || left.item.drawnInstances - right.item.drawnInstances
-      || left.item.recolorBlend - right.item.recolorBlend
-      || left.index - right.index
-    ))
-  const qualityWinnerIndex = perceptualEligible[0]?.index ?? legacyParetoIndexes[0]
-  const selectedIndexes = [qualityWinnerIndex, ...legacyParetoIndexes]
+    .filter(({ item }) => qualityFront.includes(item))
+    .sort((left, right) => compareQuality(left.item, right.item) || left.index - right.index)
+    .map(({ index }) => index)
+  const qualityWinnerIndex = qualityIndexes[0] ?? 0
+  const selectedIndexes = [qualityWinnerIndex, ...qualityIndexes, ...legacyParetoIndexes]
     .filter((index, position, indexes) => indexes.indexOf(index) === position)
     .slice(0, 3)
   const selected = selectedIndexes.map((index) => rescored[index])
-  const winner = selected[0]
+  let winner = selected[0]
+  const pruneDrawnInstanceLimit = Math.max(0, Math.floor(options.pruneDrawnInstanceLimit ?? 128))
+  let pruneReceipt: InstancePruneReceipt | null = null
+  let pruneSkippedReason: 'disabled' | 'draw-count-limit' | null = null
+  if (pruneDrawnInstanceLimit === 0) {
+    pruneSkippedReason = 'disabled'
+  } else if (winner.drawnInstances > pruneDrawnInstanceLimit) {
+    pruneSkippedReason = 'draw-count-limit'
+  } else {
+    const pattern = assets.patterns[winner.candidate.coatOfArms.pattern]
+    const pruned = pruneRedundantInstances(
+      winner.candidate.coatOfArms,
+      targets.get(512)!,
+      pattern,
+      assets.coloredEmblems,
+      assets.surfaceMask,
+      namedColors,
+      {
+        mode: 'pixel-exact',
+        searchResolution: 96,
+        validationResolutions: [230, 512],
+      },
+    )
+    pruneReceipt = pruned.receipt
+    if (pruned.receipt.removedInstances > 0) {
+      const entry = rescore({
+        candidate: { ...winner.candidate, coatOfArms: pruned.coatOfArms },
+        originalIndex: winner.originalIndex,
+        recolorBlend: winner.recolorBlend,
+        variant: winner.variant,
+      })
+      if (!fitQualityHasNoScaleRegression(entry.qualityObjective, winner.qualityObjective)) {
+        throw new Error('像素等价剪枝改变了 Epsilon-Q 多尺度质量')
+      }
+      winner = {
+        ...entry,
+        passesIncumbentScaleGate: true,
+      }
+      selected[0] = winner
+    }
+  }
   const structuralCompression = structurallyCompressCoatOfArms(winner.candidate.coatOfArms)
   const winnerCoat = structuralCompression.coatOfArms
   const selectedAssetSha256 = assets.patternAssetSha256 && assets.emblemAssetSha256
@@ -320,19 +790,23 @@ export function finalizeImageFitWithFullAssets(
       ].filter((value): value is string => Boolean(value))
     : searchResult.provenance.selectedAssetSha256
   const receipt: FullAssetFitFinalizationReceipt = {
-    contract: 'full-dds-rescore-repair-pareto-v3',
+    contract: 'full-dds-epsilon-multiscale-joint-contour-v4',
     searchAssetContract: 'fit-index-rgba32-v2',
     finalAssetContract: 'decoded-exact-dds-mip-v1',
     candidates: rescored.map((item) => ({
       originalIndex: item.originalIndex,
       recolorBlend: item.recolorBlend,
+      variant: item.variant,
       searchMetrics: { ...item.searchMetrics },
       finalMetrics: { ...item.candidate.metrics },
       perceptualLossV2: item.candidate.perceptualMetricsV2.totalLoss,
+      multiscalePerceptual: item.multiscalePerceptual,
+      qualityObjective: item.qualityObjective,
+      passesIncumbentScaleGate: item.passesIncumbentScaleGate,
       drawnInstances: item.drawnInstances,
     })),
     selectedOriginalIndexes: selected.map((item) => item.originalIndex),
-    sourceWinnerPreserved: winner.originalIndex === 0 && winner.recolorBlend === 0,
+    sourceWinnerPreserved: winner.variant === 'search-incumbent',
     maximumAbsoluteTotalLossDelta: Math.max(...rescored.map((item) => (
       Math.abs(item.candidate.metrics.totalLoss - item.searchMetrics.totalLoss)
     ))),
@@ -355,7 +829,7 @@ export function finalizeImageFitWithFullAssets(
       contract: 'linear-light-native-tile-recolor-v1',
       evaluatedVariants: candidateEntries.filter((item) => item.recolorBlend > 0).length,
       selectedBlend: winner.recolorBlend,
-      selectionPolicy: 'perceptual-v2-first-output-size-on-exact-tie',
+      selectionPolicy: 'multiscale-v2-no-regression-then-output-size-on-exact-tie',
       variants: rescored
         .filter((item) => repairOriginalIndexes.has(item.originalIndex))
         .map((item) => ({
@@ -365,6 +839,31 @@ export function finalizeImageFitWithFullAssets(
           edgeLoss: item.candidate.metrics.edgeLoss,
           perceptualLossV2: item.candidate.perceptualMetricsV2.totalLoss,
         })),
+    },
+    multiscaleSelection: {
+      contract: FIT_QUALITY_OBJECTIVE_CONTRACT,
+      scales: FIT_QUALITY_SCALES,
+      incumbentLoss: incumbent.qualityObjective.weightedLoss,
+      selectedLoss: winner.qualityObjective.weightedLoss,
+      eligibleCandidates: rescored.filter((item) => item.passesIncumbentScaleGate).length,
+      rejectedForScaleRegression: rescored.filter((item) => !item.passesIncumbentScaleGate).length,
+      selectedVariant: winner.variant,
+    },
+    jointRefinement,
+    contourRefinement: {
+      contract: 'epsilon-q-contour-fixed-budget-replacement-v1',
+      attempted: contourEvaluationBudget > 0,
+      emittedProposals: contourEmittedProposals,
+      evaluatedCandidates: contourEvaluatedCandidates,
+      fullBudgetReplacements,
+      acceptedCandidateAdded: acceptedContourCandidateAdded,
+      analysis: contourAnalysis,
+    },
+    qualityEquivalentPruning: {
+      contract: 'epsilon-q-quality-equivalent-prune-v1',
+      attempted: pruneReceipt !== null,
+      skippedReason: pruneSkippedReason,
+      receipt: pruneReceipt,
     },
     structuralCompression: structuralCompression.receipt,
   }
@@ -401,6 +900,10 @@ export function finalizeImageFitWithFullAssets(
           maximumAbsoluteEdgeLossDelta: receipt.maximumAbsoluteEdgeLossDelta,
           exactResidualRepair: receipt.exactResidualRepair,
           perceptualColorRefinement: receipt.perceptualColorRefinement,
+          multiscaleSelection: receipt.multiscaleSelection,
+          jointRefinement: receipt.jointRefinement,
+          contourRefinement: receipt.contourRefinement,
+          qualityEquivalentPruning: receipt.qualityEquivalentPruning,
           structuralCompression: receipt.structuralCompression,
         },
         nativeTileSeamValidation: receipt.sourceWinnerPreserved
