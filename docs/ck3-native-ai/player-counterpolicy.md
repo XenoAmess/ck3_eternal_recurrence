@@ -859,3 +859,22 @@ flowchart TD
 - [consumer] Preserve the exact score/duration variant through ordinary
   lifecycle verification, and map semantic `surrender` to the driver's typed
   `attacker_defeat` only inside the formal postcondition comparison.
+
+### WAR-B0-R0050：-100 主防守方仅恢复受证明的军事观测
+
+- [production RED] `formal-R0050` turn 32 的玩家主防守方 `vassalization_cb` score `-100`，唯一军 2 人在原生
+  Province `8750`，敌军 7759 人且两个观测路线向该省收敛。战争 age 153 日；typed surrender 虽原生可用且会被
+  接受，条款和 campaign outcome 未知。旧 `_primary_defender_capital_hold_input` 要求严格 `-100 < score`，
+  提前排除了本可查询的 campaign-root / 完整防御路线证据，turn 32 因此零动作 RED；这不是投降授权。
+- [counter-policy] 仅在已检测到驻扎省受威胁、且显式受控接触分支允许恰为 `-100` 的 score 进入后续
+  军事观测。R0050 的原生集结点换位必须复用 durable rally receipt、当前帧完整直属领根、全部敌军路线和原生 preview；
+  仅在 **同一帧** exact complete-scope 的 one-day contact horizon 证明 contact-free，或原有分支
+  精确证明当前省接触不可避免，才允许对应 proof-bound 单日推进；随后独立读取新状态并在下一 turn 消费。
+  普通首都 idle `life-advance` 门仍严格排除终局分数。
+- [unknown / not adopted] 原版 maximum-score 持续天数、实际 controller/termination scheduler、封臣化
+  CB 的动态条款、战役结果、眼前敌军最终接触结果均未观测。不同 `-100` 战争、多军、不完整敌军 scope、
+  过期/不可用 horizon、未知 pending 或行动副作用仍 fail closed；不以继续观测之名盲等、自动投降或选白和。
+  如果本次受控观测也没有可证明的 route/contact，则下一施工依赖是对应只读 native 查询与真实 paused snapshot，
+  不是将 `unknown` 转成 safe。
+- [verification gate] 在 R0050 shape 的 normal 和 `-O` 聚焦测试只证明静态分支；真实制品恢复必须保持
+  原 checkpoint/待确认动作语义，重新取同帧 root/route/horizon，验证独立后置与下一策略循环，失败保留 RED。

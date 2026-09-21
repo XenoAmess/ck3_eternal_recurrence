@@ -13739,6 +13739,102 @@ class GameplayBridgeTests(unittest.TestCase):
             advance["contact_horizon"]["one_day_contact_free"]
         )
 
+        # R0050: a score of -100 is not permission to surrender or to use an
+        # ordinary life advance. A threatened two-soldier primary defender
+        # may re-observe only through the exact four-hostile contact proof.
+        r0050_options = copy.deepcopy(current_options)
+        r0050_options.update(
+            {
+                "player_relative_war_score": -100,
+                "war_duration_days": 153,
+                "attacker_war_score": 100,
+                "defender_war_score": -100,
+                "active_casus_belli_identity": {
+                    "database_index": 17,
+                    "canonical_key": "vassalization_cb",
+                },
+            }
+        )
+        r0050_options["options"]["surrender"]["outcome"] = (
+            "attacker_victory"
+        )
+        r0050_enemies = copy.deepcopy(enemies)
+        r0050_enemies[-1]["soldiers"] = 7_756
+        r0050_strengths = copy.deepcopy(army_strengths)
+        r0050_strengths[-1]["current_soldiers"] = 7_756
+        r0050_strengths[-1]["maximum_soldiers"] = 7_756
+        r0050 = {
+            **base,
+            "score": -100,
+            "war_duration_days": 153,
+            "enemies": r0050_enemies,
+            "army_strengths": r0050_strengths,
+            "termination_options": [r0050_options],
+        }
+        r0050_missing_root = _native_war_plan(
+            **r0050,
+            history=[
+                *base_history,
+                old_root,
+                old_preview_45,
+                old_horizon_45,
+                old_preview_46,
+                old_horizon_46,
+                old_stationary_horizon,
+                restore,
+            ],
+        )
+        self.assertEqual(
+            r0050_missing_root["selected_step"],
+            "query-campaign-root-context-v1",
+        )
+        r0050_query = _native_war_plan(
+            **r0050,
+            history=history_without_fresh_stationary,
+        )
+        self.assertEqual(
+            r0050_query["phase"],
+            "native_war_defender_native_rally_contact_horizon",
+        )
+        self.assertEqual(r0050_query["selected_step"], stationary_query_step)
+        self.assertNotIn("contact_horizon", r0050_query)
+
+        r0050_advance = _native_war_plan(
+            **r0050,
+            history=[
+                *history_without_fresh_stationary,
+                fresh_stationary_horizon,
+            ],
+        )
+        self.assertEqual(
+            r0050_advance["phase"],
+            "native_war_defender_native_rally_contact_horizon_progress",
+        )
+        self.assertEqual(r0050_advance["selected_step"], stationary_advance_step)
+        self.assertEqual(
+            r0050_advance["contact_horizon"]["hostile_army_ids"],
+            list(hostile_ids),
+        )
+        wrong_scope = _route_contact_row(
+            1_399,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=rally_province_id,
+            date_raw=current_date_raw,
+            route=[],
+            hostile_ids=hostile_ids[:-1],
+            contact_free=True,
+        )
+        r0050_partial = _native_war_plan(
+            **r0050,
+            history=[*history_without_fresh_stationary, wrong_scope],
+        )
+        self.assertNotIn(
+            r0050_partial["selected_step"],
+            (stationary_advance_step, "life-advance", "surrender-war-88"),
+        )
+        self.assertEqual(r0050_partial["selected_step"], stationary_query_step)
+
     def test_primary_defender_native_rally_hold_fails_closed_outside_receipt(
         self,
     ) -> None:
