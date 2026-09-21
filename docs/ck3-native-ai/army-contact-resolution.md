@@ -505,9 +505,18 @@ contact proof。正式报告 SHA-256 为 `303D1700478B7F08AB5EAF3CC0471E4673F51C
 stationary horizon；仅 `one_day_contact_free` 或现有 `unavoidable_current_province_contact` 合同可触发 proof-bound one-day
 advance。任一证明缺失/冲突仍保持 paused RED，不能用普通 `life-advance` 绕过。
 
+[production-live correction] R0044 证明上述“全为 guard-rejected”是实现层误缩，而不是原生接触合同要求。
+ordinary continuation 在 `53282952 → 53283024` 已用当前 rally `8750` 的 stationary horizon 安全推进三日；随后 Province
+`45`、`46` 的 fresh preview 都保持 geometric `unsafe`，且各自一日 horizon 也观察到 timed conflict。旧集合过滤因两行没有
+`one_day_contact_horizon_rejected` 标记而跳过 rally query，产生报告 SHA-256
+`EDE952DC4D3BEFE51A7248E060A061A4CD3B1913CF42C9A80BCB694589452B08`。原输入账本应按完整候选的 fresh geometric
+`unsafe` 收口：候选 timed-safe 被 overmatch guard 拒绝和候选 timed-unsafe 都只能说明“不得提交该撤离路线”，二者都应继续进入
+同一个 current-rally stationary exact query。`contact_timeline_unavailable` 及其它非几何 `unsafe` 行仍 fail closed；stationary
+query 的 exact-build、完整 hostile scope、同帧与一日后置条件均不变。
+
 ```mermaid
 flowchart TD
-    G["[production-live] county fallback set exhausted<br/>all routes geometric unsafe + guard rejected"] --> B{"native-rally binding ready<br/>and hostile overmatch?"}
+    G["[production-live] county fallback set exhausted<br/>all fresh routes geometric unsafe"] --> B{"native-rally binding ready<br/>and hostile overmatch?"}
     B -->|no| X["blocked: no safe county route"]
     B -->|yes| Q["fresh stationary current-rally<br/>route-contact horizon"]
     Q -->|missing / unusable| X

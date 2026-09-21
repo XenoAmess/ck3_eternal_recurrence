@@ -13092,6 +13092,76 @@ class GameplayBridgeTests(unittest.TestCase):
             "contact_timeline_unavailable",
         )
 
+        timed_conflict_45 = _route_contact_row(
+            6,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=45,
+            date_raw=current_date_raw,
+            route=[45],
+            hostile_ids=hostile_ids,
+            contact_free=False,
+        )
+        timed_conflict_47 = _route_contact_row(
+            8,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=47,
+            date_raw=current_date_raw,
+            route=[45, 47],
+            hostile_ids=hostile_ids,
+            contact_free=False,
+        )
+        r0044_timed_conflicts_still_query_rally = _native_war_plan(
+            **overmatch_base,
+            history=[
+                *base_history,
+                complete_root,
+                _preview_row(
+                    5,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=45,
+                    date_raw=current_date_raw,
+                    route=[45],
+                ),
+                timed_conflict_45,
+                _preview_row(
+                    7,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=47,
+                    date_raw=current_date_raw,
+                    route=[45, 47],
+                ),
+                timed_conflict_47,
+            ],
+        )
+        self.assertEqual(
+            r0044_timed_conflicts_still_query_rally["phase"],
+            "native_war_defender_native_rally_contact_horizon",
+        )
+        self.assertEqual(
+            r0044_timed_conflicts_still_query_rally["selected_step"],
+            stationary_contact_query_step,
+        )
+        self.assertTrue(
+            all(
+                rejection["status"] == "unsafe"
+                for rejection in r0044_timed_conflicts_still_query_rally[
+                    "route_rejections"
+                ]
+            )
+        )
+        self.assertTrue(
+            all(
+                "one_day_contact_horizon_rejected" not in rejection
+                for rejection in r0044_timed_conflicts_still_query_rally[
+                    "route_rejections"
+                ]
+            )
+        )
+
         stationary_contact_free = _route_contact_row(
             9,
             army_id=army_id,

@@ -10359,18 +10359,11 @@ def _choose_one_life_turn_core(
                 break
             if preview_selected_target is None:
                 if route_candidate_source == "player_held_county_capital":
-                    rejected_target_ids = {
+                    geometrically_unsafe_target_ids = {
                         _native_int(rejection.get("target_province_id"))
                         for rejection in route_rejections
                         if isinstance(rejection, dict)
                         and rejection.get("status") == "unsafe"
-                        and rejection.get(
-                            "one_day_contact_horizon_rejected"
-                        )
-                        == (
-                            "hostile_operational_overmatch_"
-                            "player_held_county_fallback"
-                        )
                     }
                     capital_province_id = (
                         _native_int(campaign_root.get("capital_province_id"))
@@ -10389,7 +10382,8 @@ def _choose_one_life_turn_core(
                         and capital_province_id != current_province_id
                         and len(route_rejections)
                         == len(route_exact_candidates)
-                        and rejected_target_ids == set(route_exact_candidates)
+                        and geometrically_unsafe_target_ids
+                        == set(route_exact_candidates)
                     )
                     if native_rally_hold_ready:
                         defensive_hold = {

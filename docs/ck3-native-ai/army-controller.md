@@ -240,6 +240,24 @@ flowchart TD
   one-day advance 并立即重观测；任一 binding、兵力结论、完整候选、几何结论或 stationary horizon 缺失时仍保持
   blocked。这不新增阈值，也不授权任意移动。
 
+### 2026-09-22 R0044 production RED：timed-unsafe 撤离路线也必须回到同一驻军点合同
+
+- [production-live] R0044 从 ordinary R891 pair 冷恢复，在 `8750` 连续三次取得 fresh stationary
+  `one_day_contact_free=true` 并各推进一天；`date_raw=53282952 → 53283024`。第 4 帧对直接持有
+  county-capital Province `45`、`46` 的 fresh preview 均为几何 `unsafe`，对应 contact-horizon 也不再
+  contact-free。planner 却在候选穷尽后返回 `native_war_no_safe_player_held_county_route`，没有重新请求当前
+  rally Province `8750` 的 stationary horizon。正式报告 SHA-256 为
+  `EDE952DC4D3BEFE51A7248E060A061A4CD3B1913CF42C9A80BCB694589452B08`。
+- [implementation-confirmed] 根因是 R0018 回退条件只把带
+  `one_day_contact_horizon_rejected=hostile_operational_overmatch_player_held_county_fallback` 的 `unsafe`
+  行计入完整拒绝集合；当候选的一日 horizon 本身也不安全时，该标记不会生成，尽管 fresh preview 已经证明完整候选
+  都是几何 `unsafe`。这与上一节已经冻结的“完整候选均为 fresh 几何 unsafe”输入账本不一致。
+- [counter-policy] 最小修复仅把完整拒绝集合恢复为所有 fresh preview 的几何 `unsafe` 候选；
+  `contact_timeline_unavailable`、deferred、缺 preview 或不完整候选仍不得进入回退。后续授权完全不变：仍须有效
+  native-rally receipt、primary defender、hostile overmatch、当前 rally stationary exact horizon，并且只允许
+  contact-free 一日推进或既有 unavoidable-current-province 转换。无需新增 native ABI、MCP 字段或 broader objective
+  查询。
+
 ### 2026-08-28 production 反例：全局战分骤降不等于当前省战败
 
 - [production-live] 同一正式长跑在 history `5739` 的 `53263584 → 53263632` 切片中，战争
