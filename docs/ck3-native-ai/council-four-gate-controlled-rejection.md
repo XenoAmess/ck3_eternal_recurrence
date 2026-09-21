@@ -58,3 +58,9 @@ pending 需是玩家对该候选的未决互动（recipient full ID 相同），
 并核验源/目标 save 均未改写。这只关闭相应拒绝门的受控证据；正式 public query →
 策略选择 → typed 任命 → 独立后帧 incumbent → 下一 turn 消费与 cold restore 仍须另验，
 此前 Council query/action 不注册、不广告。
+
+## 2026-09-22 R0051 差异场景与下一个原生触发口
+
+R0051 从 ordinary h1809/date `53284392` 的新 paired save/driver，以 master `8b6202f` 修正后的规范零填充轮次场景工具、query ON/action OFF，在唯一 CK3 进程 PID117464 执行了 201.616 秒真实只读查询。报告 `Z:\ck3_mod_rewrite\.task-tmp\RUN-001\council-h1809-candidate\live-R0051\report.json` SHA-256 `D725CBE1AF1493631FB2B1D7D0137A1E947028953E9897C86D610D36EFDF9FBD`：四类隔离计数依次为 `1/0/0/0`，日期、paused revision 和源/目标存档未变、进程回收。它证明场景工具可用，**没有**关闭任何后三门；h1809 与 R863 h961 一样退役，不可不变重查。Council 保持 `1/4`，公共 query/action/ad OFF。
+
+下一次普通生产续跑仅在自然出现以下同帧原生判别量时采样，而非另开长跑或重复 h1809：标准封建 AI 成年封臣利用有效 hook 或 `can_demand_council_seat` 接受 `force_onto_council`（exact build `00_vassal_interactions.txt:1614,1715`），设置 `block_fire_councillor`（`00_councillor_triggers.txt:366`、effect `:686`）后，检查原生 occupied steward `CanConfirm=false` 并有另一名普通替换候选；guest 必须是 provider 行真实 `is_pool_guest_of`；pending 必须是玩家→该候选、recipient full ID 相同的真实未决互动。上述是 exact-build 源码场景线索，**尚无可用的正例 paired checkpoint**；观察到阳性后才冻结原生终端并运行既有受控拒绝合同，不因线索先开公共广告。
