@@ -2,7 +2,7 @@
 
 > 报告日期：2026-09-21
 >
-> 状态：`implementation-complete / release-gates-pending`
+> 状态：`passed`
 >
 > 计划：[Delta-Q / 拟合质量 2.0](ck3-coat-of-arms-editor-delta-q-plan.md)
 
@@ -79,9 +79,17 @@ A/B contact sheet 当前明确标记 `pending-human-review`；自动测试没有
 - Chromium / Firefox / WebKit 通过，离线 Service Worker 通过；
 - 取消、暂停、恢复、context-loss、持久 checkpoint 与 128/1,024/10,000 压力场景通过。
 
-CI workflow 已把 `perceptual-final-candidates.spec.ts` 加入正式 Pages 发布门禁。下一步只剩把本工作树线性 rebase/push 到 `master`、等待对应 Pages workflow GREEN，并从 canonical URL 回读部署身份；该结果会记录为本报告的 release closure。
+CI workflow 已把 `perceptual-final-candidates.spec.ts` 加入正式 Pages 发布门禁。实现与门禁修复已线性进入 `master`，正式 Pages build/deploy 与 canonical URL 回读均已完成。
 
 发布门禁的失败尝试追加保留：run `35613417757` 暴露 Windows CRLF 原始源码哈希在 Linux checkout 上的可移植性假 RED；run `35615542419` 随后暴露 report-only GitHub runner 的 1 层取消后重启仍误用了工作站 128 层 15 秒性能门限。两者都没有降低图像质量、结构、预算、取消或最终完成条件：前者改为验证 LF canonical 与可逆 CRLF 原始哈希，后者在 `COA_E2E_PERFORMANCE_GATE=report-only` 时沿用既有 420 秒诊断上限，而工作站严格门限保持不变。
+
+### 5.1 Release closure
+
+- 实现 release commit 为 `d5c6b4ef3c399acbdc8c358fdfb1458cfb652cf9`；质量实现、跨平台证据修复和 report-only runner 门限修复均已推送到 `master`。
+- 正式 [GitHub Pages workflow run 35616837513](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/35616837513) 的 build 与 deploy jobs 均为 GREEN，deploy 于 2026-09-21 15:41:02 UTC 完成。
+- canonical URL 回读为 HTTP 200，页面显示 `版本 2026-09-21T15:35:41.445Z · d5c6b4ef`，与该 release commit 一致；线上页面同时成功载入 `ck3-1.19.0.6-base-complete-42p-1578e-8aux` 素材包。
+- 无后端浏览器回读共观察到 10 个请求：全部为 `https://xenoamess.github.io` 同源 GET；非 GET、跨源、失败请求，以及 API、localhost、CK3、MCP、Quarkus/Java 可执行依赖均为 0。
+- 因此 Q0–Q5、正式部署与公开回读均已收口；匿名 A/B 仍保持 `pending-human-review`，不伪造人工签核，也不阻断已冻结的自动质量门禁。
 
 ## 6. 已知边界
 

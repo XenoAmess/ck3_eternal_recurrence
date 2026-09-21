@@ -1,6 +1,6 @@
 # CK3 家徽编辑器 Delta-Q / 拟合质量 2.0 计划
 
-> 状态：`implementation-complete / release-gates-pending`（2026-09-21）
+> 状态：`passed`（2026-09-21）
 >
 > 起始基线：`master` `4b90191c9e47680378c4d7a200aa2b389df0f1f6`
 >
@@ -139,7 +139,7 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同用户实例预�
 
 ### Q5：完整 DDS、CK3 与 Pages 收口（P0，2–3 工程日 + CK3 槽位，依赖 Q0–Q4）
 
-状态：`implementation-complete / release-gates-pending`（2026-09-21；[实施报告](ck3-coat-of-arms-editor-delta-q-report.md)，[v9 原生验收 r19](coat-of-arms-fit-artifacts/delta-q-native-r19/README.md)）。
+状态：`passed`（2026-09-21；[实施报告与 release closure](ck3-coat-of-arms-editor-delta-q-report.md)，[v9 原生验收 r19](coat-of-arms-fit-artifacts/delta-q-native-r19/README.md)，[Pages run 35616837513](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/35616837513)）。
 
 - 在干净 checkout 重跑 pack、Vitest、128/1,024 benchmark、生产浏览器、跨浏览器、WebGL fallback、离线 Service Worker 和 production-boundary。
 - 对七图质量优先候选执行完整 DDS 96/230/512 复评和 CK3 MCP-only Apply/Copy/framebuffer/re-Apply。
@@ -168,4 +168,4 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同用户实例预�
 4. 搜索仍可确定性暂停、恢复、取消和重启，生产站点仍为零后端纯前端。
 5. `master`、公开 Pages 版本、benchmark manifest、原生证据和能力说明指向同一 release commit。
 
-当前 Q0–Q4 与 Q5 的本地、浏览器、完整 DDS、CK3 原生门禁均已完成；只剩把实现线性推送到 `master`，等待对应 Pages workflow GREEN 并从 canonical URL 回读部署身份。完整数字、证据入口与已知边界见[实施报告](ck3-coat-of-arms-editor-delta-q-report.md)。
+Q0–Q5 已全部通过。实现 release commit `d5c6b4ef3c399acbdc8c358fdfb1458cfb652cf9` 已线性进入 `master`；正式 Pages run `35616837513` build/deploy GREEN，canonical URL 回读的 commit、构建时间、素材包身份与零后端请求均通过。完整数字、证据入口、release closure 与已知边界见[实施报告](ck3-coat-of-arms-editor-delta-q-report.md)。
