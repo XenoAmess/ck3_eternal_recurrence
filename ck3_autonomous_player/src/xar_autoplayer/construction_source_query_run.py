@@ -39,7 +39,9 @@ from .timeline_blocker_query_run import (
 )
 
 
-ROUND_PATTERN = re.compile(r"R[1-9][0-9]*")
+# The live allocator emits R0001..R0999, then R1000...; retain previously
+# accepted unpadded legacy IDs without admitting R0000 or arbitrary padding.
+ROUND_PATTERN = re.compile(r"R(?:0(?!000$)[0-9]{3}|[1-9][0-9]*)")
 
 
 def query_private_construction_source_once(
