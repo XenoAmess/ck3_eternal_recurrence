@@ -372,10 +372,12 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             checkpoint = state / "profile" / "save games" / "xar_checkpoint.ck3"
             driver_state = state / "native-session" / "driver-state.json"
             source_capture = artifact / "capture.json"
+            profile_settings = root / "profile-template" / "pdx_settings.txt"
             for path, payload in (
                 (checkpoint, b"checkpoint"),
                 (driver_state, b"driver-state"),
                 (source_capture, b"source-capture"),
+                (profile_settings, b"profile-settings"),
             ):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(payload)
@@ -417,6 +419,9 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                     runtime_manifest_path=runtime_path,
                     runtime_manifest_sha256=ADAPTER._sha256_file(runtime_path),
                     runtime_root=root,
+                    profile_settings_template=profile_settings,
+                    expected_profile_settings_sha256="B" * 64,
+                    expected_shadercache_tree_sha256="C" * 64,
                 )
 
             self.assertEqual(frozen["identity"]["war_id"], 88)
@@ -433,6 +438,23 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             self.assertIn(
                 "--expected-terminal-authorization-sha256",
                 frozen["runner_command"],
+            )
+            command = frozen["runner_command"]
+            self.assertEqual(
+                command[command.index("--profile-settings-template") + 1],
+                str(profile_settings.resolve()),
+            )
+            self.assertEqual(
+                command[
+                    command.index("--expected-profile-settings-sha256") + 1
+                ],
+                "B" * 64,
+            )
+            self.assertEqual(
+                command[
+                    command.index("--expected-shadercache-tree-sha256") + 1
+                ],
+                "C" * 64,
             )
 
     def test_resume_checkpoint_requires_an_exact_hash_bound_save(self) -> None:

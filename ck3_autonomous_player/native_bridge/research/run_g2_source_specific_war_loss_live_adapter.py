@@ -2383,6 +2383,9 @@ def _freeze_action_runner_input(
     runtime_manifest_path: Path,
     runtime_manifest_sha256: str,
     runtime_root: Path,
+    profile_settings_template: Path,
+    expected_profile_settings_sha256: str,
+    expected_shadercache_tree_sha256: str,
 ) -> dict[str, object]:
     interception = _object(
         candidate_report.get("candidate_interception"), "candidate interception"
@@ -2428,6 +2431,15 @@ def _freeze_action_runner_input(
     runtime_manifest = runtime_manifest_path.expanduser().resolve()
     runtime_manifest_expected = _sha256_text(
         runtime_manifest_sha256, "runtime manifest SHA-256"
+    )
+    profile_settings = profile_settings_template.expanduser().resolve()
+    profile_settings_expected = _sha256_text(
+        expected_profile_settings_sha256,
+        "expected profile settings SHA-256",
+    )
+    shadercache_tree_expected = _sha256_text(
+        expected_shadercache_tree_sha256,
+        "expected shadercache tree SHA-256",
     )
     try:
         runtime_receipt = verify_runtime_file_manifest(
@@ -2478,6 +2490,12 @@ def _freeze_action_runner_input(
         str(runtime_root.expanduser().resolve()),
         "--expected-runtime-manifest-sha256",
         runtime_manifest_expected,
+        "--profile-settings-template",
+        str(profile_settings),
+        "--expected-profile-settings-sha256",
+        profile_settings_expected,
+        "--expected-shadercache-tree-sha256",
+        shadercache_tree_expected,
         "--expected-terminal-step",
         str(terminal_authorization["payload"]["selected_step"]),
         "--expected-terminal-outcome",
@@ -2743,6 +2761,15 @@ def main(argv: list[str] | None = None) -> int:
                 runtime_manifest_path=runtime_manifest_path,
                 runtime_manifest_sha256=runtime_manifest_sha256,
                 runtime_root=REPOSITORY_ROOT,
+                profile_settings_template=(
+                    operations.profile_settings_template
+                ),
+                expected_profile_settings_sha256=(
+                    operations.expected_profile_settings_sha256
+                ),
+                expected_shadercache_tree_sha256=(
+                    operations.expected_shadercache_tree_sha256
+                ),
             )
         probe_result = (
             _object(result.get("lifecycle_result"), "read-only probe result")
