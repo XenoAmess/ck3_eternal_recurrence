@@ -1,0 +1,97 @@
+{
+  "schema": "ck3-coat-of-arms-runtime-registry-boundary-v1",
+  "schema_version": 1,
+  "status": "bounded_negative",
+  "ck3_build": "1.19.0.6",
+  "executable": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "binary_semantic_labels": [
+    {
+      "marker": "coat_of_arms_manager_database_values",
+      "offsets": [
+        69798496
+      ]
+    },
+    {
+      "marker": "coat_of_arms_manager_database_keys",
+      "offsets": [
+        69798536
+      ]
+    },
+    {
+      "marker": "coat_of_arms_manager_database",
+      "offsets": [
+        69798600
+      ]
+    },
+    {
+      "marker": "coat_of_arms_manager_name_map_values",
+      "offsets": [
+        69798752
+      ]
+    },
+    {
+      "marker": "coat_of_arms_manager_name_map_keys",
+      "offsets": [
+        69798792
+      ]
+    },
+    {
+      "marker": "coat_of_arms_manager_name_map",
+      "offsets": [
+        69798632
+      ]
+    },
+    {
+      "marker": "coat_of_arms_manager",
+      "offsets": [
+        69798832
+      ]
+    },
+    {
+      "marker": "coat_of_arms_dynamic_definitions",
+      "offsets": [
+        71442082
+      ]
+    },
+    {
+      "marker": "coat_of_arms_script_database",
+      "offsets": [
+        71925611
+      ]
+    }
+  ],
+  "repository_contract": {
+    "source_receipts": [
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+        "bytes": 93320,
+        "sha256": "260BF0A26673A1DEC16580FEBB622E39A9F1F9CB2749E1DCCBA743479D18BD08"
+      },
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_definitions.py",
+        "bytes": 14797,
+        "sha256": "40BD60756831108A3C4A75532F1DBB624A2F02BED44D3F0540DEB6B746620075"
+      },
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_vfs_resolution.py",
+        "bytes": 12957,
+        "sha256": "A453F3840DCBC51E9CC020A21089C36D843E803273926E2F64C365A7A7EDDBCB"
+      }
+    ],
+    "required_negative_provenance_present": true,
+    "unverified_runtime_registry_tools_public": false
+  },
+  "conclusion": {
+    "runtime_manager_labels_present": true,
+    "verified_registry_accessor_or_layout": false,
+    "verified_engine_definition_winner_query": false,
+    "verified_engine_resource_winner_query": false,
+    "safe_public_upgrade_available": false,
+    "retained_product_contract": "resolved_overlay_or_base_game_hash_bound_projection"
+  },
+  "claim_boundary": "ASCII labels establish only that the exact executable names internal CoA manager state. They do not identify a callable accessor, object lifetime, container layout, definition merge rule, resource resolver, or source provenance. Until those have an exact-build ABI contract and native read-only proof, the product must keep static definition catalogs and direct-DDS projection explicitly separate from engine truth."
+}

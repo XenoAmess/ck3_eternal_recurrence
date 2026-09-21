@@ -109,14 +109,26 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 
 ### G4：运行时 VFS / definition registry 边界（P1，2–4 工程日，可与 G3 独立）
 
+状态：`passed-limited`（2026-09-21，冻结 bounded-negative 结论）。
+
 交付：
 
-- 先研究并证明是否存在可版本化、只读、边界稳定的 runtime CoA definition/resource winner 查询点。
-- 若可行，typed MCP 返回 source identity、mount ordinal、逻辑名和内容 hash；重复、循环、缺失与 build 不匹配全部 fail closed。
-- 若不可行，冻结负面证据并保持现有 `resolved_overlay` 导入合同；不把 `replace_path`、静态源码顺序或 mount receipt
-  猜成 engine winner。
+- exact `1.19.0.6` 二进制确有 `coat_of_arms_manager_database/name_map/manager` 与 dynamic-definition/script-database 标签；
+  但标签不能证明 accessor、对象生命周期、容器布局、definition merge、resource resolver 或来源身份，当前不存在可安全版本化的
+  runtime winner 查询点。
+- 冻结 [R37 bounded-negative 证据](coat-of-arms-fit-artifacts/runtime-registry-boundary-r37/README.md)，并新增可重复审计与 CI source-contract
+  测试；若以后新增未经验证的 runtime registry MCP 名称，或静态工具丢失负面 provenance，测试会 fail closed。
+- 保持现有 `resolved_overlay` / `base_game_only` 导入合同；不把 `replace_path`、静态源码顺序、mount receipt 或 direct-DDS
+  projection 猜成 engine definition/resource winner。
 
 退出条件：能力矩阵与产品提示只升级实证覆盖的格子；未知 definition/texture 仍可无损导出。
+
+完成证据：
+
+- `py tools/test_audit_coa_runtime_registry_boundary.py`：2/2 GREEN，并接入 `.github/workflows/static-ci.yml`。
+- exact executable 审计 GREEN：95,206,008 bytes、SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；九个 manager/database/source 标签均冻结偏移。
+- 当前三个公开读取面均保持显式负面 provenance；没有新增 runtime registry 工具，也没有提升 Pages 产品声明。
 
 ### G5：1.0 发布门禁（P0，1–2 工程日，依赖 G0–G4 的目标范围冻结）
 
