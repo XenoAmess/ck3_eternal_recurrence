@@ -772,6 +772,7 @@ void AppendProvenance(std::string &output) {
   output += "\"council_value_progress_maximum_rva\":\"0x2D65390\",";
   output += "\"primary_title_rva\":\"0x25F3350\",";
   output += "\"held_title_ids_offset\":\"0x1E0\",";
+  output += "\"title_province_rva\":\"0x20B6B20\",";
   output += "\"capital_province_rva\":\"0x2606760\",";
   output += "\"immediate_liege_rva\":\"0x2613480\",";
   output += "\"top_liege_rva\":\"0x2613600\",";

@@ -227,6 +227,8 @@ def _write_self_contained_manifest(
             manifest["paths"][name] = str(root / "manifest-missing" / name)
             continue
         payload = f"dependency:{name}".encode("utf-8")
+        if name == "bridge_dll":
+            payload += b'\0"title_province_rva":"0x20B6B20"\0'
         path = dependencies / f"{name}.bin"
         path.write_bytes(payload)
         manifest["paths"][name] = str(path)
@@ -1095,6 +1097,39 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                     capture_executable=relocated["capture_executable"],
                     bridge_dll=relocated["bridge_dll"],
                     bridge_injector=relocated["bridge_injector"],
+                )
+
+    def test_bridge_without_campaign_root_producer_marker_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (
+                manifest_path,
+                game_root,
+                _game_executable,
+                _bookmark_events,
+                expected_game_sha256,
+            ) = _write_self_contained_manifest(root)
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            bridge = Path(manifest["paths"]["bridge_dll"])
+            bridge.write_bytes(b"legacy bridge without producer marker")
+            manifest["sha256"]["bridge_dll"] = ADAPTER._sha256_file(bridge)
+            manifest_path.write_text(
+                json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            with (
+                mock.patch.object(
+                    ADAPTER, "EXPECTED_EXE_SHA256", expected_game_sha256
+                ),
+                self.assertRaisesRegex(
+                    ADAPTER.LiveAdapterError,
+                    "lacks required campaign-root producer marker",
+                ),
+            ):
+                ADAPTER._load_manifest(
+                    manifest_path,
+                    repo_root=root,
+                    game_root=game_root,
                 )
 
     def test_manifest_runtime_binary_paths_remain_the_default(self) -> None:

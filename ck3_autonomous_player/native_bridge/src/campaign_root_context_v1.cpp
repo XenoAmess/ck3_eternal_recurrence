@@ -326,6 +326,8 @@ bool EnvironmentIsExact(
              base + kCampaignRootCouncilValueProgressMaximumRva &&
          reinterpret_cast<std::uintptr_t>(environment.primary_title) ==
              base + kCampaignRootPrimaryTitleRva &&
+         reinterpret_cast<std::uintptr_t>(environment.title_province) ==
+             base + kCampaignRootTitleProvinceRva &&
          reinterpret_cast<std::uintptr_t>(environment.capital_province) ==
              base + kCampaignRootCapitalProvinceRva &&
          reinterpret_cast<std::uintptr_t>(environment.immediate_liege) ==

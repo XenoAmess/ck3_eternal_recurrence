@@ -107,6 +107,7 @@ def _provenance() -> dict[str, str]:
         "council_value_progress_maximum_rva": "0x2D65390",
         "primary_title_rva": "0x25F3350",
         "held_title_ids_offset": "0x1E0",
+        "title_province_rva": "0x20B6B20",
         "capital_province_rva": "0x2606760",
         "immediate_liege_rva": "0x2613480",
         "top_liege_rva": "0x2613600",

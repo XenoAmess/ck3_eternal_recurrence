@@ -17,11 +17,19 @@ SOURCE_ROOTS = (
     "ck3_autonomous_player/src/xar_autoplayer",
     "ck3_autonomous_player/native_bridge/research",
 )
-EXACT_FILES = (
+NATIVE_CAMPAIGN_ROOT_PRODUCER_FILES = (
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/campaign_root_context_v1.hpp",
+    "ck3_autonomous_player/native_bridge/src/campaign_root_context_v1.cpp",
+    "ck3_autonomous_player/native_bridge/src/campaign_root_context_v1_serializer.cpp",
+    "ck3_autonomous_player/native_bridge/research/campaign_root_context_v1_abi.json",
+)
+EXACT_FILES = NATIVE_CAMPAIGN_ROOT_PRODUCER_FILES + (
     "tools/run_acceptance.py",
     "tools/run_zg361_phase2_seed_capture.py",
 )
 REQUIRED_PATHS = {
+    *NATIVE_CAMPAIGN_ROOT_PRODUCER_FILES,
     "ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py",
     "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
     "ck3_autonomous_player/native_bridge/research/gen034_candidate_authorization.py",

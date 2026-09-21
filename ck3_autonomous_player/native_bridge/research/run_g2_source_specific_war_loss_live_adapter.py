@@ -49,6 +49,7 @@ from gen034_candidate_authorization import (  # noqa: E402
     terminal_authorization_v1,
 )
 from gen034_runtime_manifest import (  # noqa: E402
+    NATIVE_CAMPAIGN_ROOT_PRODUCER_FILES,
     RuntimeManifestError,
     verify_runtime_file_manifest,
 )
@@ -85,6 +86,9 @@ REPORT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_run.v1"
 PREFLIGHT_STATUS = "READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE"
 STARTUP_PROFILE_ASSETS_SCHEMA = "xar.ck3.startup_profile_assets.v1"
 FORMAL_CANDIDATE_STATE_SCHEMA = "xar.ck3.gen034_d_formal_candidate_state.v1"
+BRIDGE_PRODUCER_PROVENANCE_SCHEMA = (
+    "xar.ck3.bridge_producer_provenance.v1"
+)
 TARGET_EVENT = "bookmark.1071.a"
 CHANCELLOR_TASK_1004_OPTION = "可怕的误会"
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_g2_source_"
@@ -146,6 +150,76 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest().upper()
+
+
+def _verify_bridge_producer_provenance(
+    manifest: dict[str, object],
+    *,
+    bridge_dll: Path,
+    runtime_verification: dict[str, object],
+) -> dict[str, object]:
+    provenance = _object(
+        manifest.get("bridge_producer_provenance"),
+        "bridge producer provenance",
+    )
+    if provenance.get("schema") != BRIDGE_PRODUCER_PROVENANCE_SCHEMA:
+        raise LiveAdapterError("bridge producer provenance schema drifted")
+    source_commit = str(provenance.get("source_commit", "")).strip().lower()
+    if (
+        len(source_commit) != 40
+        or any(character not in "0123456789abcdef" for character in source_commit)
+        or source_commit
+        != str(manifest.get("candidate_source_commit", "")).strip().lower()
+        or source_commit
+        != str(runtime_verification.get("source_commit", "")).strip().lower()
+    ):
+        raise LiveAdapterError(
+            "bridge producer source commit does not match the runtime closure"
+        )
+    source_paths = provenance.get("source_paths")
+    expected_source_paths = list(NATIVE_CAMPAIGN_ROOT_PRODUCER_FILES)
+    if source_paths != expected_source_paths:
+        raise LiveAdapterError("bridge producer source closure drifted")
+    campaign_root = _object(
+        provenance.get("campaign_root_context_v1"),
+        "campaign-root producer provenance",
+    )
+    if (
+        campaign_root.get("contract")
+        != "held-county-capital-projection-required-v1"
+        or campaign_root.get("title_province_rva") != "0x20B6B20"
+    ):
+        raise LiveAdapterError("campaign-root producer contract drifted")
+    markers = campaign_root.get("required_binary_ascii_markers")
+    if (
+        not isinstance(markers, list)
+        or not markers
+        or any(not isinstance(marker, str) or not marker for marker in markers)
+    ):
+        raise LiveAdapterError("bridge producer binary markers are invalid")
+    try:
+        binary = bridge_dll.read_bytes()
+    except OSError as error:
+        raise LiveAdapterError(
+            f"bridge producer binary is unreadable: {error}"
+        ) from error
+    missing = [marker for marker in markers if marker.encode("ascii") not in binary]
+    if missing:
+        raise LiveAdapterError(
+            "bridge DLL lacks required campaign-root producer marker: "
+            + ", ".join(missing)
+        )
+    return {
+        "status": "verified",
+        "schema": BRIDGE_PRODUCER_PROVENANCE_SCHEMA,
+        "source_commit": source_commit,
+        "source_paths": expected_source_paths,
+        "campaign_root_context_v1": {
+            "contract": campaign_root["contract"],
+            "title_province_rva": campaign_root["title_province_rva"],
+            "binary_ascii_markers": list(markers),
+        },
+    }
 
 
 def _recover_natural_event_blocker(
@@ -1111,6 +1185,13 @@ def _load_manifest(
             f"runtime source closure admission failed: {error}"
         ) from error
     checked["runtime_manifest"]["runtime_verification"] = runtime_verification
+    checked["bridge_dll"]["producer_provenance"] = (
+        _verify_bridge_producer_provenance(
+            manifest,
+            bridge_dll=Path(str(checked["bridge_dll"]["path"])),
+            runtime_verification=runtime_verification,
+        )
+    )
     if checked["game_executable"]["sha256"] != EXPECTED_EXE_SHA256:
         raise LiveAdapterError("game executable is not exact CK3 1.19.0.6")
 

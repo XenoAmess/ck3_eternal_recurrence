@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "55429bfbc1c6409f3747ce9a8e257eff19642a1a",
+  "source_commit": "b6a84108410c7f35ab26937d0c52dd21a84deeb0",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
@@ -8,11 +8,19 @@
       "ck3_autonomous_player/native_bridge/research"
     ],
     "exact_files": [
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/campaign_root_context_v1.hpp",
+      "ck3_autonomous_player/native_bridge/src/campaign_root_context_v1.cpp",
+      "ck3_autonomous_player/native_bridge/src/campaign_root_context_v1_serializer.cpp",
+      "ck3_autonomous_player/native_bridge/research/campaign_root_context_v1_abi.json",
       "tools/run_acceptance.py",
       "tools/run_zg361_phase2_seed_capture.py"
     ]
   },
   "required_paths": [
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/campaign_root_context_v1.hpp",
+    "ck3_autonomous_player/native_bridge/research/campaign_root_context_v1_abi.json",
     "ck3_autonomous_player/native_bridge/research/gen034_candidate_authorization.py",
     "ck3_autonomous_player/native_bridge/research/gen034_runtime_manifest.py",
     "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_lifecycle.py",
@@ -23,14 +31,26 @@
     "ck3_autonomous_player/native_bridge/research/run_raiktor_surrender_session_binding_live_acceptance.py",
     "ck3_autonomous_player/native_bridge/research/run_raiktor_war_bound_private_capture_v1.py",
     "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
+    "ck3_autonomous_player/native_bridge/src/campaign_root_context_v1.cpp",
+    "ck3_autonomous_player/native_bridge/src/campaign_root_context_v1_serializer.cpp",
     "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
     "ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py",
     "tools/run_acceptance.py",
     "tools/run_zg361_phase2_seed_capture.py"
   ],
-  "file_count": 481,
-  "tree_sha256": "8DDCFEA7D07CA61C03181791CC27AF6B3E3C98FB984A1436F81B425A38132154",
+  "file_count": 486,
+  "tree_sha256": "0C74B56BFA05659807D445A7C79AD50BE184737353F78E054F73F3033045EF8E",
   "files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 183328,
+      "sha256": "E77E059F2F851E7E2249680576A6DDB35EB55788F946DC87FE6FB4C3D2FF7A97"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/campaign_root_context_v1.hpp",
+      "bytes": 14553,
+      "sha256": "9911886CB3BAF4B83F3D54E621955125C5BED2F4D97DFB59ED2C5B1B41F61848"
+    },
     {
       "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
       "bytes": 22127,
@@ -75,6 +95,11 @@
       "path": "ck3_autonomous_player/native_bridge/research/build_particle2_factory_debug_capture.py",
       "bytes": 3894,
       "sha256": "C0B8DABA9221E977A7B0BE482EBBD1CD1EF381B7AEBBC50742A2819DAAB4E7D5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/campaign_root_context_v1_abi.json",
+      "bytes": 20781,
+      "sha256": "BD202DD08E96BEB2A036C2DCC52253F5116E573BC4BE4413B2E96C20BB7FE5D1"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/candidate_runtime_identity.py",
@@ -273,8 +298,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/gen034_runtime_manifest.py",
-      "bytes": 8716,
-      "sha256": "5EEB9700E1437DAFE843925D03823D6D12E15FC2BF8F22F3BA74D084F081DBB5"
+      "bytes": 9236,
+      "sha256": "2A29C6907F0B9C64E664AE6762EF5A4356A53538B17DA6406C61EFD3FF53717F"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/generate_bounded_private_probe_wrapper.py",
@@ -613,8 +638,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_live_adapter.py",
-      "bytes": 115390,
-      "sha256": "705B0B1252E40FFBCEDD0B5D742E46B44393DE4C0117766EFBDADFE21D06BE4C"
+      "bytes": 118517,
+      "sha256": "B8FA80CC3E6BE3583C1622186BBFAAD2BD7EDB62E1362E1DE7DC98BE1B55A1F9"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_outer_owner.py",
@@ -1377,6 +1402,16 @@
       "sha256": "84F9C01EA40CFD659D39C67AB283523D756262510538A8AE59FAEB70533C4893"
     },
     {
+      "path": "ck3_autonomous_player/native_bridge/src/campaign_root_context_v1.cpp",
+      "bytes": 84744,
+      "sha256": "6F97B89A1344454299A9292CFCEB30CC341330395D2FDF23F69041FC19447BBC"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/campaign_root_context_v1_serializer.cpp",
+      "bytes": 36395,
+      "sha256": "FABB04B1494B9F95018E04F98C34F1F8E87442454F5462EB0CBE74BCF00C9C8D"
+    },
+    {
       "path": "ck3_autonomous_player/src/xar_autoplayer/__init__.py",
       "bytes": 87,
       "sha256": "9211E760E9BBEA5E995C3C81FC9F221EF754598015F21018E37F923D94ECA8AB"
@@ -1418,8 +1453,8 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_context_contract.py",
-      "bytes": 37508,
-      "sha256": "6F7ADFC245CA340CCF8F6CF9A95BEA6546192ED0B87962C7E496A1EA48B93FED"
+      "bytes": 37573,
+      "sha256": "F2D1B566D91A4D34AFC3FDFF04358F49C961AE5035E788FB9C7246AA8E7F2A11"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_framebuffer.py",

@@ -71,6 +71,30 @@ class Gen034RuntimeManifestTests(unittest.TestCase):
                     expected_manifest_sha256=RUNTIME.sha256_file(output),
                 )
 
+    def test_tampered_campaign_root_native_producer_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            _minimal_runtime(root)
+            output = root / "runtime.json"
+            RUNTIME._write_json_atomic(
+                output,
+                RUNTIME.build_runtime_file_manifest(root, source_commit="fixture"),
+            )
+            target = root / (
+                "ck3_autonomous_player/native_bridge/src/"
+                "campaign_root_context_v1.cpp"
+            )
+            target.write_text("// stale native producer\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                RUNTIME.RuntimeManifestError, "runtime source closure drifted"
+            ):
+                RUNTIME.verify_runtime_file_manifest(
+                    output,
+                    runtime_root=root,
+                    expected_manifest_sha256=RUNTIME.sha256_file(output),
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

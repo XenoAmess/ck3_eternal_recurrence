@@ -796,3 +796,35 @@ contract remain unchanged. Focused Release and Debug fixtures cover both absent 
 one core vacancy, one spouse vacancy, serialization and malformed negative
 rejection. R705 remains RED until the repaired DLL yields a usable same-frame
 root and formal turn bundle in live standard-feudal play.
+
+## R0027 held-county capital artifact drift and R0028 provenance gate
+
+The R0027 GEN-034-D continuation did not run the campaign-root producer from
+its declared source baseline. Its active manifest selected the older
+`f3422324` bridge DLL with SHA-256
+`D90F17673D54B37C5B2EF6832624C31386C5905815E2A218AE7ADF7C1C4722AB`.
+That binary predates the `8adbf940` held-title capital projection and can emit
+legacy held-title rows without a per-row capital. The Python driver normalized
+the missing field to `null`; the strict service validator then correctly
+rejected a county row while `held_title_partition_ready=true`. Current native
+source already treats a missing county capital as an all-or-nothing
+`held_title_partition_unavailable`, so the live RED was frozen-binary drift,
+not a reason to weaken the Python contract.
+
+R0028 closes the no-launch artifact boundary in three places. The frozen
+runtime closure now hashes the campaign-root native CMake input, header,
+producer, serializer and ABI JSON. Exact native provenance now publishes and
+the Python contract requires `title_province_rva=0x20B6B20`. The active live
+manifest must bind the selected DLL to its producer source commit, those
+source paths, the `held-county-capital-projection-required-v1` contract and
+the serialized RVA marker found in that DLL. `EnvironmentIsExact` also checks
+that the resolved function address equals module base plus this exact RVA,
+rather than accepting an arbitrary non-null function pointer.
+
+This is an intentional compatibility boundary: a legacy DLL without the new
+required provenance marker is incompatible with the strict R0028 consumer and
+must not be selected by the active manifest. The public MCP capability ID and
+campaign-root business fields are unchanged; only producer identity is made
+mandatory. The repaired Release artifact still requires a fresh paused
+CK3 1.19.0.6 snapshot to prove non-null county capitals and a usable next
+formal strategy turn. No live conclusion follows from the offline gate alone.
