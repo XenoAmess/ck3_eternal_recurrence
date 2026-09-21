@@ -199,6 +199,49 @@ class RaiktorThreeWayExitPostwarEvidenceTests(unittest.TestCase):
         ):
             provide_raiktor_three_way_exit_postwar_evidence(**inputs)
 
+        inputs = _inputs()
+        inputs["active_war_bound_value"]["regiments"][0][
+            "composition_rows"
+        ][0]["current_army_regiment_id"] += 1_000
+        with self.assertRaisesRegex(
+            ThreeWayExitPostwarEvidenceError,
+            "regiment generations do not match",
+        ):
+            provide_raiktor_three_way_exit_postwar_evidence(**inputs)
+
+    def test_allows_army_container_merge_with_stable_regiment_identity(self) -> None:
+        inputs = _inputs("surrender")
+        active = inputs["active_war_bound_value"]
+        surviving_army_id = next(
+            row["raised_carmy_id"]
+            for regiment in active["regiments"]
+            for row in regiment["composition_rows"]
+            if row["current_army_regiment_id"] is not None
+        )
+        for regiment in active["regiments"]:
+            for row in regiment["composition_rows"]:
+                if row["current_army_regiment_id"] is not None:
+                    row["raised_carmy_id"] = surviving_army_id
+        inputs["cleanup_result_value"] = _cleanup_wire(
+            inputs["action_gate_value"],
+            active,
+            inputs["post_snapshot_value"],
+        )
+
+        result = provide_raiktor_three_way_exit_postwar_evidence(**inputs)
+
+        self.assertEqual(result["status"], "available")
+        self.assertTrue(result["checks"]["source_generations_bound"])
+
+        inputs["cleanup_result_value"]["raiktor_war_bound_loss_cleanup"][
+            "regiments"
+        ][0]["composition_rows"][0]["raised_carmy_id"] += 1_000
+        with self.assertRaisesRegex(
+            ThreeWayExitPostwarEvidenceError,
+            "cleanup generations differ",
+        ):
+            provide_raiktor_three_way_exit_postwar_evidence(**inputs)
+
     def test_rejects_nonconsecutive_or_unstable_truce_reads(self) -> None:
         inputs = _inputs()
         inputs["truce_result_values"][1]["query_sequence"] = 12

@@ -2490,12 +2490,15 @@ paused frames prove the candidate.
 
 [static-ready / live pending] `raiktor_three_way_exit_postwar_evidence.py`
 connects the loss and truce native domains to the three-way postcondition
-verifier. A retained source capture is reusable only when its complete
-persistent CRegiment, current CArmyRegiment and CArmy generation sets exactly
-match the current authorized action frame. The postwar cleanup reader must then
-report every one of those exact identities destroyed. This combines source
-attribution from the creation point with liveness from the action-bound
-exact-store query; old-WarID absence alone still proves no regiment cleanup.
+verifier. A retained source capture is reusable only when its WarID and complete
+persistent CRegiment/current CArmyRegiment generation sets exactly match the
+current authorized action frame. Creation-time CArmy containers are provenance,
+not a cross-war identity invariant: natural army merging may replace that set.
+The complete action-frame set, including its current CArmy containers, is
+instead frozen as the cleanup context, and the postwar reader must report those
+exact identities destroyed. This combines source attribution from the creation
+point with liveness from the action-bound exact-store query; old-WarID absence
+alone still proves no regiment cleanup.
 
 The directional truce uses two consecutive native reads on the successor
 native revision. Both normalized payloads must be identical, owner/toward must
@@ -2517,7 +2520,8 @@ reset, a new terms baseline and successful cleanup all clear that binding.
 The change is internal to the already private capability. It does not change
 `game.command.query-raiktor-war-bound-loss-cleanup-v1-N`, its result envelope,
 or public surrender policy. The action runner separately validates the source
-capture against the current full-generation regiment/army sets before mutation.
+capture against the stable WarID and full-generation regiment sets before
+mutation, then freezes the current full-generation army set for cleanup.
 Focused normal/optimized Python tests pass `29/29`, and the candidate-enabled
 MSVC Release DLL builds. No live status is promoted by this static result.
 
@@ -2627,3 +2631,32 @@ score, at least 730 days and score symmetry. The formal postcondition maps
 semantic `surrender` to the native typed result `attacker_defeat`; it does not
 accept a fabricated nested outcome named `surrender`. These are Python
 consumer corrections on the same critical chain, not new native behavior.
+
+## 2026-09-21 R0042 natural CArmy-container merge boundary
+
+[production RED / no action] R0042 reached the same-session terminal callback
+on exact build `1.19.0.6`. All four read-only queries and the refreshed dynamic
+capability were current; the formal policy again selected
+`surrender-war-16777285` by `11,661,500`. The action gate authorized that exact
+literal, but source binding stopped before submission. Driver history after
+the candidate checkpoint contains only the four read-only queries, so the
+source state and h1984 checkpoint remain unpolluted and recoverable.
+
+[live-confirmed identity boundary] Creation and action frames had the same
+WarID, the same 24 persistent CRegiment generations, and the same 24 current
+CArmyRegiment generations. The six creation-time CArmy containers
+`16777273/33554547/33554755/50331667/67108984/83886191` had naturally merged
+into current container `33554547`. Therefore CArmy container identity is not a
+valid creation-to-action invariant. The corrected contract strictly binds
+source to action by `{WarID, persistent CRegiment, current CArmyRegiment}` and
+continues to bind action to cleanup by the complete action-frame set including
+the current CArmy containers. Persistent/current drift still fails closed, as
+does cleanup drift from the frozen current container.
+
+[diagnostic boundary] The MCP client's task group wrapped this typed source
+error in an `ExceptionGroup`, and the prior serializer retained only the group
+headline. The bounded runner now recursively records nested leaves. This does
+not relax success or action gates and changes no native ABI, public MCP schema,
+or `open_kaishek` interface. Focused direct consumers pass normal and optimized
+Python `140/140`; a new frozen canonical round is still required before
+GEN-034-D can close.

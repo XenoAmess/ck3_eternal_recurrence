@@ -269,12 +269,12 @@ class Gen034ActionRunnerCheckpointRebindTests(unittest.TestCase):
 
 
 def _termination_fixture(
-    *, cleanup_status: str = "destroyed"
+    *, route: str = "white_peace", cleanup_status: str = "destroyed"
 ) -> tuple[dict[str, object], _FakeClient]:
-    gate = _authorized("white_peace")
+    gate = _authorized(route)
     read = _read_phase(gate)
     before = deepcopy(read["before_snapshot"]["structured_content"])
-    post = _post(gate, route="white_peace")
+    post = _post(gate, route=route)
     read_commands = read["allowed_gameplay_commands"]
     action_step = gate["authorization"]["action"]["literal"]
     cleanup_step = (
@@ -428,6 +428,57 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
         )
         self.assertTrue(result["checks"]["post_restore_production_turn_consumed"])
         self.assertTrue(result["checks"]["terminal_action_not_replayed"])
+
+    def test_army_container_merge_does_not_block_terminal_submission(self) -> None:
+        read, client = _termination_fixture(route="surrender")
+        active = read["terms_query"]["structured_content"][
+            "raiktor_surrender_aggregate_session"
+        ]["aggregate"]["domains"]["generic_war_bound_current"]["payload"]
+        surviving_army_id = next(
+            row["raised_carmy_id"]
+            for regiment in active["regiments"]
+            for row in regiment["composition_rows"]
+            if row["current_army_regiment_id"] is not None
+        )
+        for observation in (
+            active,
+            client.responses[3]["raiktor_war_bound_loss_cleanup"],
+        ):
+            for regiment in observation["regiments"]:
+                for row in regiment["composition_rows"]:
+                    if row["current_army_regiment_id"] is not None:
+                        row["raised_carmy_id"] = surviving_army_id
+
+        result = asyncio.run(
+            HARNESS._execute_action_tail(
+                client,
+                read_phase=read,
+                source_capture=_source_capture(),
+                source_capture_sha256=SOURCE_CAPTURE_SHA256,
+            )
+        )
+
+        self.assertTrue(result["gen034_closed"])
+        action_step = result["exit_action_commands"][0]
+        self.assertEqual(result["issued_commands"].count(action_step), 1)
+
+    def test_exception_summary_preserves_nested_async_leaf(self) -> None:
+        error = ExceptionGroup(
+            "task group",
+            [
+                ExceptionGroup(
+                    "client cleanup",
+                    [ValueError("stable regiment source mismatch")],
+                )
+            ],
+        )
+
+        summary = HARNESS._format_sequence_error(error)
+
+        self.assertIn("ExceptionGroup: task group", summary)
+        self.assertIn(
+            "ValueError: stable regiment source mismatch", summary
+        )
 
     def test_pending_white_peace_checkpoint_stops_at_event_without_reoffer(self) -> None:
         gate = _authorized("white_peace")

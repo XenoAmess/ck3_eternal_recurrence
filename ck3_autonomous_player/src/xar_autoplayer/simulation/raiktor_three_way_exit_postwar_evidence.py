@@ -100,9 +100,9 @@ def normalize_raiktor_three_way_exit_source_binding(
         raise ThreeWayExitPostwarEvidenceError(str(error)) from error
     source_sets = _source_sets(source)
     active_sets = _observation_sets(active)
-    if source_sets != active_sets:
+    if not _same_source_regiment_identity(source_sets, active_sets):
         raise ThreeWayExitPostwarEvidenceError(
-            "active war-bound generations do not match the source capture"
+            "active war-bound regiment generations do not match the source capture"
         )
     return {
         "authorization": deepcopy(authorization),
@@ -242,7 +242,9 @@ def provide_raiktor_three_way_exit_postwar_evidence(
         == post["date_raw"] + expected_truce_days * 24
     )
     checks = {
-        "source_generations_bound": source_sets == active_sets,
+        "source_generations_bound": _same_source_regiment_identity(
+            source_sets, active_sets
+        ),
         "old_war_absent": post_checks["old_war_absent"],
         "source_specific_cleanup_destroyed": cleanup_status == "destroyed",
         "directional_persisted_truce_stable": truce_ready,
@@ -293,7 +295,8 @@ def provide_raiktor_three_way_exit_postwar_evidence(
         "blockers": blockers,
         "boundaries": [
             "source_capture_is_read_only_origin_evidence",
-            "full_generation_sets_must_match_the_current_authorized_war",
+            "war_and_regiment_generations_must_match_the_source_capture",
+            "active_army_containers_are_cleanup_context_not_source_identity",
             "command_acknowledgement_is_not_consumed_as_postwar_state",
             "this_provider_performs_no_ck3_or_filesystem_operation",
         ],
@@ -308,6 +311,17 @@ def _source_sets(source: dict[str, object]) -> dict[str, object]:
         "current": tuple(source_set.get("current_generation_ids", [])),
         "armies": tuple(source_set.get("army_generation_ids", [])),
     }
+
+
+def _same_source_regiment_identity(
+    source_sets: dict[str, object], active_sets: dict[str, object]
+) -> bool:
+    """Compare stable war/regiment identity, excluding mutable army containers."""
+
+    return all(
+        source_sets.get(field) == active_sets.get(field)
+        for field in ("war_id", "persistent", "current")
+    )
 
 
 def _normalize_truce_read(

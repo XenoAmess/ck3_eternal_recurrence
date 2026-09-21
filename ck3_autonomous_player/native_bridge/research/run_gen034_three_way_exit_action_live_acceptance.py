@@ -905,10 +905,21 @@ async def _run_mcp_sequence(
             "status": "red",
             "read_phase": read_phase,
             "runtime_before_action": locals().get("runtime_before_action"),
-            "sequence_error": f"{type(error).__name__}: {error}",
+            "sequence_error": _format_sequence_error(error),
             "gen034_closed": False,
             "ok": False,
         }
+
+
+def _format_sequence_error(error: BaseException) -> str:
+    """Preserve the concrete MCP failure hidden by anyio TaskGroup wrapping."""
+
+    headline = f"{type(error).__name__}: {error}"
+    nested = getattr(error, "exceptions", None)
+    if not isinstance(nested, tuple) or not nested:
+        return headline
+    details = "; ".join(_format_sequence_error(item) for item in nested)
+    return f"{headline} [{details}]"
 
 
 def _load_source_capture(path: Path, expected_sha256: str) -> dict[str, object]:
