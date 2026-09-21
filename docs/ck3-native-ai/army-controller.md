@@ -216,12 +216,13 @@ flowchart TD
   的 fresh preview 路线经完整 current/target/route 几何审计为 `unsafe`，但旧 planner 又用只覆盖
   `[start,start+24]` 的 `one_day_contact_free=true` 把它晋级为 `safe_one_day_contact_horizon`，最终提交
   `move-army-184549472-to-45`；该路线 ETA 仍约十日，所以一天证明没有覆盖这次新承诺的完整风险窗口。
-- [counter-policy / static-ready] 只在候选来源为 `player_held_county_capital` 且同帧既有
+- [counter-policy / production-live via R0018] 只在候选来源为 `player_held_county_capital` 且同帧既有
   `hostile_operational_overmatch=true` 时，禁止把几何 `unsafe` 候选凭一天 contact-free 证明晋级为可提交路线。
   几何审计本来就是 `safe` 的其它直接持有 county 路线仍可作为撤离目标；非 overmatch 帧以及非此来源的既有
   one-day horizon 行为保持不变。该 guard 直接复用已有兵力判断，不新增阈值，也不声称一天证明本身错误。
-- [static-ready, live replay pending] 本 guard 由 R881 形状离线回归覆盖，但尚未从 R878 的安全
-  history `1347` 完成新的 production replay；在该 replay 给出独立后置状态前不得标记 production-live。
+- [production-live] R0018 已从 R878 的安全 history `1347` 完成 production replay；Province `45`、`46`
+  两个候选都保留 geometric `unsafe` 与 guard rejection，且没有再次提交危险 `move-army-*`。该 replay 同时暴露
+  下述 guard 后 stationary hold 控制流 RED，故 guard 本身 live-confirmed 不代表整轮 GREEN。
 
 ### 2026-09-21 R0018 production RED：guard 后必须回到已证明的原地防守合同
 
@@ -229,8 +230,8 @@ flowchart TD
   `date_raw=53282736` 对直接持有 county-capital Province `45`、`46` 分别取得 fresh route 与 one-day
   contact horizon。两条路线的完整几何审计都为 `unsafe`，R887 guard 也都正确保留
   `hostile_operational_overmatch_player_held_county_fallback` 拒绝；但 planner 随后在
-  `native_war_no_safe_player_held_county_route` 提前返回，未到达同一帧已经满足的
-  `native_war_defender_native_rally_hold_progress`。正式报告 SHA-256 为
+  `native_war_no_safe_player_held_county_route` 提前返回，没有请求当前 rally Province `8750` 的 fresh
+  stationary contact horizon，因此不能合法进入 proof-bound one-day advance。正式报告 SHA-256 为
   `303D1700478B7F08AB5EAF3CC0471E4673F51C13E333B3C6AC2B974E6F591DF7`。
 - [counter-policy / static-ready] 只有在 primary-defender native-rally receipt 绑定仍有效、同帧
   `hostile_operational_overmatch=true`，且完整直接持有 county-capital 候选均已有 fresh 几何

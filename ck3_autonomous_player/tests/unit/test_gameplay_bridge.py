@@ -13050,6 +13050,376 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(no_safe_route["selected_step"])
 
+    def test_r0018_restore_requires_fresh_four_hostile_rally_horizon(
+        self,
+    ) -> None:
+        queried_date_raw = 53_282_400
+        stale_date_raw = 53_282_712
+        current_date_raw = 53_282_736
+        army_id = 184_549_472
+        rally_province_id = 8_750
+        hostile_ids = (
+            184_549_393,
+            201_326_661,
+            234_881_097,
+            301_989_919,
+        )
+        gathering = _army(
+            army_id,
+            soldiers=2,
+            province_id=rally_province_id,
+            controllable=True,
+            army_state="gathering",
+            army_state_code=5,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        regular = {
+            **gathering,
+            "army_state": "regular",
+            "army_state_code": 1,
+        }
+        enemies = [
+            _army(
+                hostile_ids[0],
+                soldiers=1,
+                province_id=45,
+                controllable=False,
+                army_state="regular",
+                army_state_code=1,
+                route_province_ids=[],
+                in_combat=False,
+                retreating=False,
+            ),
+            _army(
+                hostile_ids[1],
+                soldiers=1,
+                province_id=46,
+                controllable=False,
+                army_state="moving",
+                army_state_code=7,
+                move_target_province_id=8_749,
+                route_province_ids=[8_749],
+                in_combat=False,
+                retreating=False,
+            ),
+            _army(
+                hostile_ids[2],
+                soldiers=1,
+                province_id=46,
+                controllable=False,
+                army_state="regular",
+                army_state_code=1,
+                route_province_ids=[],
+                in_combat=False,
+                retreating=False,
+            ),
+            _army(
+                hostile_ids[3],
+                soldiers=7_830,
+                province_id=46,
+                controllable=False,
+                army_state="moving",
+                army_state_code=7,
+                move_target_province_id=rally_province_id,
+                route_province_ids=[45, rally_province_id],
+                in_combat=False,
+                retreating=False,
+            ),
+        ]
+        queried_war = _war(
+            allied_armies=[gathering],
+            enemy_armies=copy.deepcopy(enemies),
+            score=-50,
+            player_side="defender",
+            player_is_primary_war_leader=True,
+            war_duration_days=69,
+        )
+        queried_snapshot = {
+            **_snapshot(90),
+            "paused": True,
+            "map_ready": True,
+            "native_revision": 90,
+            "date_raw": queried_date_raw,
+            "episode_run_id": None,
+            "diagnostics": {"connection_generation": 1},
+            "played_character": {"character_id": 707, "alive": True},
+            "active_wars": [queried_war],
+            "player_armies": [gathering],
+        }
+        options = _termination_options(score=-50, war_duration_days=69)
+        options.update(
+            {
+                "player_side": "defender",
+                "player_is_primary_war_leader": True,
+            }
+        )
+        current_options = {
+            **copy.deepcopy(options),
+            "queried_snapshot_id": "session:90",
+            "queried_revision": 90,
+            "queried_native_revision": 90,
+            "queried_connection_generation": 1,
+            "episode_run_id": None,
+        }
+        base_history = [
+            _termination_query_row(1_336, queried_snapshot, options=options),
+            _raise_troops_row(1_337, gathering),
+            _advance_row(
+                1_338,
+                _war_progress(
+                    queried_date_raw,
+                    player=gathering,
+                    enemies=copy.deepcopy(enemies),
+                    score=-50,
+                ),
+                _war_progress(
+                    stale_date_raw,
+                    player=regular,
+                    enemies=copy.deepcopy(enemies),
+                    score=-50,
+                ),
+            ),
+        ]
+        old_root = _campaign_root_row(
+            1_389,
+            date_raw=stale_date_raw,
+            capital_province_id=45,
+            held_county_capital_province_ids=(
+                rally_province_id,
+                45,
+                46,
+            ),
+        )
+        old_preview_45 = _preview_row(
+            1_390,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=45,
+            date_raw=stale_date_raw,
+            route=[45],
+        )
+        old_horizon_45 = _route_contact_row(
+            1_390,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=45,
+            date_raw=stale_date_raw,
+            route=[45],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        old_preview_46 = _preview_row(
+            1_392,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=46,
+            date_raw=stale_date_raw,
+            route=[45, 46],
+        )
+        old_horizon_46 = _route_contact_row(
+            1_392,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=46,
+            date_raw=stale_date_raw,
+            route=[45, 46],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        old_stationary_horizon = _route_contact_row(
+            1_392,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=rally_province_id,
+            date_raw=stale_date_raw,
+            route=[],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        restore = _restore_checkpoint_row(
+            1_393, checkpoint_history_index=1_392
+        )
+        current_root = _campaign_root_row(
+            1_394,
+            date_raw=current_date_raw,
+            capital_province_id=45,
+            held_county_capital_province_ids=(
+                rally_province_id,
+                45,
+                46,
+            ),
+        )
+        fresh_preview_45 = _preview_row(
+            1_395,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=45,
+            date_raw=current_date_raw,
+            route=[45],
+        )
+        fresh_horizon_45 = _route_contact_row(
+            1_396,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=45,
+            date_raw=current_date_raw,
+            route=[45],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        fresh_preview_46 = _preview_row(
+            1_397,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=46,
+            date_raw=current_date_raw,
+            route=[45, 46],
+        )
+        fresh_horizon_46 = _route_contact_row(
+            1_398,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=46,
+            date_raw=current_date_raw,
+            route=[45, 46],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        stationary_query_step = query_route_contact_horizon_step(
+            army_id, rally_province_id, hostile_ids
+        )
+        stationary_advance_step = advance_route_contact_horizon_step(
+            army_id, rally_province_id, hostile_ids
+        )
+        self.assertEqual(
+            stationary_query_step,
+            "query-route-contact-horizon-v1-184549472-to-8750-h-4-"
+            "184549393-201326661-234881097-301989919",
+        )
+        steps = (
+            "query-campaign-root-context-v1",
+            f"preview-move-army-{army_id}-to-45",
+            f"preview-move-army-{army_id}-to-46",
+            query_route_contact_horizon_step(army_id, 45, hostile_ids),
+            query_route_contact_horizon_step(army_id, 46, hostile_ids),
+            stationary_query_step,
+            stationary_advance_step,
+            "life-advance",
+        )
+        army_strengths = [
+            {
+                "status": "available",
+                "army_id": army_id,
+                "scope_role": "player",
+                "war_ids": [88],
+                "current_soldiers": 2,
+                "maximum_soldiers": 2,
+                "ai_base_power_raw": 1_200,
+            },
+            *[
+                {
+                    "status": "available",
+                    "army_id": hostile_id,
+                    "scope_role": "active_war_enemy",
+                    "war_ids": [88],
+                    "current_soldiers": enemy["soldiers"],
+                    "maximum_soldiers": enemy["soldiers"],
+                    "ai_base_power_raw": (
+                        259_204 if hostile_id == hostile_ids[-1] else 1
+                    ),
+                }
+                for hostile_id, enemy in zip(hostile_ids, enemies)
+            ],
+        ]
+        history_without_fresh_stationary = [
+            *base_history,
+            old_root,
+            old_preview_45,
+            old_horizon_45,
+            old_preview_46,
+            old_horizon_46,
+            old_stationary_horizon,
+            restore,
+            current_root,
+            fresh_preview_45,
+            fresh_horizon_45,
+            fresh_preview_46,
+            fresh_horizon_46,
+        ]
+        base = {
+            "player": regular,
+            "enemies": enemies,
+            "score": -50,
+            "date_raw": current_date_raw,
+            "fallback": 1_741,
+            "steps": steps,
+            "player_side": "defender",
+            "war_duration_days": 69,
+            "termination_options": [current_options],
+            "move_route_preview_supported": True,
+            "route_contact_horizon_supported": True,
+            "army_strengths": army_strengths,
+            "army_strengths_status": "available",
+        }
+
+        query = _native_war_plan(
+            **base,
+            history=history_without_fresh_stationary,
+        )
+
+        self.assertEqual(
+            query["phase"],
+            "native_war_defender_native_rally_contact_horizon",
+        )
+        self.assertEqual(query["selected_step"], stationary_query_step)
+        self.assertNotEqual(query["selected_step"], stationary_advance_step)
+        self.assertEqual(
+            query["native_rally_hold_binding"][
+                "crossed_restore_history_indices"
+            ],
+            [10],
+        )
+        self.assertEqual(
+            [
+                rejection["target_province_id"]
+                for rejection in query["route_rejections"]
+            ],
+            [45, 46],
+        )
+
+        fresh_stationary_horizon = _route_contact_row(
+            1_399,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=rally_province_id,
+            date_raw=current_date_raw,
+            route=[],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        advance = _native_war_plan(
+            **base,
+            history=[
+                *history_without_fresh_stationary,
+                fresh_stationary_horizon,
+            ],
+        )
+
+        self.assertEqual(
+            advance["phase"],
+            "native_war_defender_native_rally_contact_horizon_progress",
+        )
+        self.assertEqual(advance["selected_step"], stationary_advance_step)
+        self.assertEqual(
+            advance["contact_horizon"]["hostile_army_ids"],
+            list(hostile_ids),
+        )
+        self.assertTrue(
+            advance["contact_horizon"]["one_day_contact_free"]
+        )
+
     def test_primary_defender_native_rally_hold_fails_closed_outside_receipt(
         self,
     ) -> None:
