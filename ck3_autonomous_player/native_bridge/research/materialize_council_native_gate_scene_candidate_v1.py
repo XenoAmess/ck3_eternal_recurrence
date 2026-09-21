@@ -138,13 +138,27 @@ def frozen_rows(root: Path, manifest_path: Path) -> list[dict[str, object]]:
     return rows
 
 
+def resolve_source_state(
+    source_stage: Path | None, source_state: Path | None
+) -> Path:
+    """Resolve either the legacy stage/state layout or a direct state root."""
+
+    require((source_stage is None) != (source_state is None),
+            "provide exactly one source stage or source state root")
+    return (
+        source_state.resolve()
+        if source_state is not None
+        else (source_stage.resolve() / "state")
+    )
+
+
 def materialize(
-    candidate: Path, static: Path, source_stage: Path, source_pair: Path,
+    candidate: Path, static: Path, source_state: Path, source_pair: Path,
     game: Path, python: Path, repo: Path, source_round: str, source_commit: str,
 ) -> dict[str, object]:
     candidate = candidate.resolve()
     static = static.resolve()
-    source_stage = source_stage.resolve()
+    source_state = source_state.resolve()
     source_pair = source_pair.resolve()
     repo = repo.resolve()
     require(not candidate.exists(), "candidate root already exists; frozen versions are immutable")
@@ -154,7 +168,7 @@ def materialize(
             "source commit is not a full lowercase Git object id")
     source_save = source_pair / "xar_checkpoint.ck3"
     source_driver = source_pair / "driver-state.json"
-    source_profile = source_stage / "state" / "profile"
+    source_profile = source_state / "profile"
     require(source_save.is_file() and source_driver.is_file()
             and source_profile.is_dir(), "durable source pair/profile is absent")
     save_sha = sha256(source_save)
@@ -208,7 +222,7 @@ def materialize(
     require(old_mod_source and Path(old_mod_source).is_absolute(),
             "source environment has no relocatable absolute mod source")
     env = replace_strings(env, (
-        (str(source_stage / "state"), str(candidate / "state")),
+        (str(source_state), str(candidate / "state")),
         (str(source_profile), str(candidate / "state" / "profile")),
         (old_mod_source, str(candidate / "sealed-source" /
                              "XenoAmess_s_Eternal_Recurrence")),
@@ -282,7 +296,15 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--candidate-root", type=Path, required=True)
     parser.add_argument("--static-root", type=Path, required=True)
-    parser.add_argument("--source-stage", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument(
+        "--source-stage", type=Path,
+        help="legacy preview/staging root containing state/profile",
+    )
+    source.add_argument(
+        "--source-state", type=Path,
+        help="direct runtime state root containing profile and native-session",
+    )
     parser.add_argument("--source-pair", type=Path, required=True)
     parser.add_argument("--game-dir", type=Path, required=True)
     parser.add_argument("--operator-python", type=Path, required=True)
@@ -290,7 +312,8 @@ def main() -> int:
     parser.add_argument("--source-round", required=True)
     parser.add_argument("--source-commit", required=True)
     args = parser.parse_args()
-    result = materialize(args.candidate_root, args.static_root, args.source_stage,
+    source_state = resolve_source_state(args.source_stage, args.source_state)
+    result = materialize(args.candidate_root, args.static_root, source_state,
                          args.source_pair, args.game_dir, args.operator_python,
                          args.source_repo, args.source_round, args.source_commit)
     print(json.dumps(result, sort_keys=True))

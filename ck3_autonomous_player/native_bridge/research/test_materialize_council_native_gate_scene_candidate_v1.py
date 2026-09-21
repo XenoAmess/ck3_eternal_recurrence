@@ -8,6 +8,7 @@ from pathlib import Path
 from materialize_council_native_gate_scene_candidate_v1 import (
     derive_checkpoint_projection,
     replace_strings,
+    resolve_source_state,
 )
 
 
@@ -79,6 +80,17 @@ class MaterializeCouncilCandidateTests(unittest.TestCase):
         source = {"path": "C:/old/state", "nested": ["C:/old/profile", 3]}
         self.assertEqual(replace_strings(source, (("C:/old", "D:/new"),)), {
             "path": "D:/new/state", "nested": ["D:/new/profile", 3]})
+
+    def test_resolves_legacy_stage_or_direct_state_root(self) -> None:
+        stage = Path("C:/preview")
+        state = Path("D:/preview-runtime-state")
+        self.assertEqual(resolve_source_state(stage, None),
+                         (stage.resolve() / "state"))
+        self.assertEqual(resolve_source_state(None, state), state.resolve())
+        with self.assertRaisesRegex(ValueError, "exactly one"):
+            resolve_source_state(None, None)
+        with self.assertRaisesRegex(ValueError, "exactly one"):
+            resolve_source_state(stage, state)
 
 
 if __name__ == "__main__":
