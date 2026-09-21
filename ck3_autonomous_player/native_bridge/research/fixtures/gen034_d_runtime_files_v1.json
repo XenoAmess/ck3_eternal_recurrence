@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "b6a84108410c7f35ab26937d0c52dd21a84deeb0",
+  "source_commit": "434f832d79ca79605218c0e8faba1a00f0bc6b6c",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
