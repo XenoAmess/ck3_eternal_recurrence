@@ -23,6 +23,16 @@ const baseline = JSON.parse(await readFile(baselinePath, 'utf8')) as {
   }>
 }
 const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex').toUpperCase()
+const normalizeLf = (value: string) => value.replace(/\r\n?/g, '\n')
+const expectRecordedTextSha256 = (value: string, expected: string) => {
+  const normalized = normalizeLf(value)
+  const portableHashes = [
+    sha256(normalized),
+    sha256(normalized.replace(/\n/g, '\r\n')),
+  ]
+  expect(portableHashes).toContain(expected)
+  return normalized
+}
 
 test('re-scores all seven quality-first winners at 96, 230 and 512px', async ({ page }) => {
   test.setTimeout(10 * 60_000)
@@ -41,10 +51,12 @@ test('re-scores all seven quality-first winners at 96, 230 and 512px', async ({ 
       }))),
     ])
     const source = await readFile(resolve(sourceRoot, picture.id, 'coat_of_arms.txt'), 'utf8')
-    expect(sha256(source)).toBe(report.integrity.sourceSha256)
+    const normalizedSource = expectRecordedTextSha256(source, report.integrity.sourceSha256)
     expect(sha256(inputBytes)).toBe(picture.sha256)
-    expect(candidates[0].source).toBe(source)
-    for (const candidate of candidates) expect(sha256(candidate.source)).toBe(candidate.sourceSha256)
+    expect(normalizeLf(candidates[0].source)).toBe(normalizedSource)
+    for (const candidate of candidates) {
+      expectRecordedTextSha256(candidate.source, candidate.sourceSha256)
+    }
     return {
       ...picture,
       candidates,

@@ -13,3 +13,8 @@
 所有分辨率的最差结果均高于冻结的 -2% 单图下限；全部指标有限且重复计算逐值一致。96 px 是冻结的自动选优口径，因此 96 px 的中位数与最差值是正式质量门禁；230/512 用于证明高分辨率没有隐藏性崩坏。512 px 的一张图存在同一 Pareto 集中更优候选，但首选仍只退化 0.182%，没有以事后更改选优口径追结果。
 
 原生 Apply/Copy/framebuffer/re-Apply 证据独立保存在 [delta-q-native-r19](../delta-q-native-r19/README.md)，浏览器完整 DDS 证据不能替代 CK3 原生证据。
+
+## CI 可移植性记录
+
+- Pages run `35613417757` 的 R001 在 Linux checkout 上于源码 SHA 门禁 RED：Windows 生成证据记录的是 CRLF 原始字节哈希，Git checkout 按仓库规则规范化为 LF；其余 5 个源码级测试通过，评分尚未因算法或数值失败。
+- 门禁随后改为对同一 LF-normalized 文本同时计算 canonical LF 与可逆 CRLF 哈希，并仍要求候选正文归一化后逐字一致。该修复只消除跨平台行尾假差异，不修改候选、DDS、指标或通过门限。
