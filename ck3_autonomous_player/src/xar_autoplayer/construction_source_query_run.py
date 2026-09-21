@@ -12,7 +12,12 @@ import threading
 import time
 
 from .bridge.domain_construction_private_transport_v1 import query_construction_private
-from .bridge.native_driver import NativeHeadlessGameplayDriver
+from .bridge.native_driver import (
+    NativeHeadlessGameplayDriver,
+    _checkpoint_history_with_restore_lineage,
+    _compact_war_progress_history_in_place,
+    _proven_restore_lineage_row,
+)
 from .construction_formal_consumer import read_construction_ledger
 from .environment import EnvironmentSpec, ensure_state_path_safe, write_json_atomic
 from .errors import AgentError
@@ -31,7 +36,6 @@ from .runtime import (
     validate_native_bridge_launch_config,
 )
 from .timeline_blocker_query_run import (
-    _cold_restore_bookkeeping,
     _read_driver_state,
     _same_frame,
     _sha256,
@@ -42,6 +46,74 @@ from .timeline_blocker_query_run import (
 # The live allocator emits R0001..R0999, then R1000...; retain previously
 # accepted unpadded legacy IDs without admitting R0000 or arbitrary padding.
 ROUND_PATTERN = re.compile(r"R(?:0(?!000$)[0-9]{3}|[1-9][0-9]*)")
+
+
+def _restore_lineage_bookkeeping(
+    before_driver: dict[str, object], before_frame: object,
+    checkpoint: dict[str, object],
+) -> dict[str, object]:
+    """Match the production driver's preserved restore lineage, not only one row."""
+    history = before_driver.get("command_history")
+    anchor = before_driver.get("last_checkpoint")
+    observed = _snapshot_history(before_frame)
+    normalized_history = copy.deepcopy(history) if isinstance(history, list) else None
+    compacted_rows = (
+        _compact_war_progress_history_in_place(normalized_history)
+        if isinstance(normalized_history, list) else None
+    )
+    retained = (
+        _checkpoint_history_with_restore_lineage(anchor, normalized_history)
+        if isinstance(anchor, dict) and isinstance(normalized_history, list) else None
+    )
+    new_row = (
+        observed[-1]
+        if isinstance(retained, list) and isinstance(observed, list)
+        and len(observed) == len(retained) + 1
+        and observed[:-1] == retained else None
+    )
+    result = new_row.get("result") if isinstance(new_row, dict) else None
+    lifecycle = result.get("lifecycle") if isinstance(result, dict) else None
+    exact = bool(
+        isinstance(anchor, dict)
+        and isinstance(new_row, dict)
+        and _proven_restore_lineage_row(new_row, anchor)
+        and new_row.get("index") == len(retained) + 1
+        and isinstance(result, dict)
+        and result.get("source") == "native-session-cold-start"
+        and isinstance(lifecycle, dict)
+        and lifecycle.get("previous_pid") == before_driver.get("bridge_pid")
+        and anchor.get("sha256") == checkpoint.get("sha256")
+        and anchor.get("date_raw") == checkpoint.get("saved_date_raw")
+        and anchor.get("history_index") == checkpoint.get("history_index")
+    )
+    index = anchor.get("history_index") if isinstance(anchor, dict) else None
+    return {
+        "exact": exact,
+        "history_before_count": len(history) if isinstance(history, list) else None,
+        "history_at_query_count": len(observed) if isinstance(observed, list) else None,
+        "legacy_objective_rows_compacted": compacted_rows,
+        "retained_prior_restore_count": (
+            len(retained) - index if isinstance(retained, list)
+            and type(index) is int else None
+        ),
+        "rolled_back_tail_count": (
+            len(history) - len(retained) if isinstance(history, list)
+            and isinstance(retained, list) else None
+        ),
+        "restore_entry": copy.deepcopy(new_row),
+    }
+
+
+def _native_readiness(query: object) -> dict[str, object]:
+    world = query.get("world") if isinstance(query, dict) else None
+    return {
+        "checks_truncated": world.get("checks_truncated") if isinstance(world, dict) else None,
+        "cost_ready": world.get("cost_ready") if isinstance(world, dict) else None,
+        "construction_action_ready": (
+            world.get("construction_action_ready") if isinstance(world, dict) else None
+        ),
+        "material_action_postcondition": "unobserved",
+    }
 
 
 def query_private_construction_source_once(
@@ -170,7 +242,7 @@ def query_private_construction_source_once(
     except (OSError, AgentError) as failure:
         detail = f"{type(failure).__name__}: {failure}"
         error = detail if error is None else f"{error}; after files: {detail}"
-    bookkeeping = _cold_restore_bookkeeping(before_driver, before, checkpoint)
+    bookkeeping = _restore_lineage_bookkeeping(before_driver, before, checkpoint)
     before_history = _snapshot_history(before)
     after_history = _snapshot_history(after)
     persisted_history = (after_driver.get("command_history")
@@ -201,6 +273,7 @@ def query_private_construction_source_once(
         "readiness": copy.deepcopy(readiness),
         "before_frame": copy.deepcopy(before),
         "query": copy.deepcopy(query),
+        "native_readiness": _native_readiness(query),
         "after_frame": copy.deepcopy(after),
         "cold_restore_bookkeeping": bookkeeping,
         "checks": checks, "cleanup": cleanup, "error": error,

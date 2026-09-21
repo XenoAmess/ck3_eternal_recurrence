@@ -16,6 +16,64 @@ import xar_autoplayer.construction_source_query_run as subject
 
 
 class ConstructionSourceQueryRunTest(unittest.TestCase):
+    def test_r0076_retains_proven_old_restore_then_adds_new_restore(self) -> None:
+        checkpoint = {"sha256": "a" * 64, "size": 99,
+                      "date_raw": 53178312, "history_index": 1}
+        anchor = {"index": 1, "command": "save-checkpoint", "ok": True,
+                  "result": {"checkpoint": checkpoint,
+                             "war_progress_before": {"wars": [{
+                                 "objective_province_states": [
+                                     {"active_siege": None},
+                                     {"active_siege": {"province_id": 1}},
+                                 ],
+                             }]}}}
+        compacted_anchor = copy.deepcopy(anchor)
+        compacted_anchor["result"]["war_progress_before"]["wars"][0][
+            "objective_province_states"
+        ] = [{"active_siege": {"province_id": 1}}]
+
+        def restore(index: int, previous_pid: int, pid: int):
+            return {
+                "index": index, "command": "restore-checkpoint", "ok": True,
+                "result": {"step": "restore-checkpoint", "accepted": True,
+                           "status": "restored", "backend_id": "native-headless",
+                           "source": "native-session-cold-start",
+                           "checkpoint": checkpoint, "restored_date_raw": 53178312,
+                           "map_ready": True,
+                           "lifecycle": {"previous_pid": previous_pid, "pid": pid}},
+            }
+
+        old_restore = restore(2, 79672, 111808)
+        new_restore = restore(3, 111808, 168780)
+        uncommitted = [{"index": index, "command": "life-advance", "ok": True}
+                       for index in range(3, 7)]
+        driver = {"bridge_pid": 111808, "last_checkpoint": checkpoint,
+                  "command_history": [anchor, old_restore, *uncommitted]}
+        frame = {"native_command_history": [compacted_anchor, old_restore, new_restore]}
+        result = subject._restore_lineage_bookkeeping(
+            driver, frame,
+            {"sha256": checkpoint["sha256"], "saved_date_raw": 53178312,
+             "history_index": 1},
+        )
+        self.assertTrue(result["exact"])
+        self.assertEqual(result["history_before_count"], 6)
+        self.assertEqual(result["history_at_query_count"], 3)
+        self.assertEqual(result["retained_prior_restore_count"], 1)
+        self.assertEqual(result["rolled_back_tail_count"], 4)
+        self.assertEqual(result["legacy_objective_rows_compacted"], 1)
+        self.assertEqual(result["restore_entry"], new_restore)
+
+    def test_r0076_public_native_readiness_stays_false(self) -> None:
+        result = subject._native_readiness({"status": "selected", "world": {
+            "checks_truncated": True, "cost_ready": False,
+            "construction_action_ready": False,
+        }})
+        self.assertEqual(result, {
+            "checks_truncated": True, "cost_ready": False,
+            "construction_action_ready": False,
+            "material_action_postcondition": "unobserved",
+        })
+
     def test_cli_is_explicitly_private_and_cold(self) -> None:
         args = cli.parser().parse_args([
             "native-query-private-construction-source-v1",
@@ -71,15 +129,17 @@ class ConstructionSourceQueryRunTest(unittest.TestCase):
             driver_path.parent.mkdir(parents=True)
             save.write_bytes(b"R753 paired pre-action checkpoint")
             sha = subject._sha256(save)
-            anchor = {"index": 1, "command": "save-checkpoint", "ok": True}
+            checkpoint = {"sha256": sha, "size": save.stat().st_size,
+                          "date_raw": 53178312, "history_index": 1}
+            anchor = {"index": 1, "command": "save-checkpoint", "ok": True,
+                      "result": {"checkpoint": checkpoint}}
             restore = {
                 "index": 2, "command": "restore-checkpoint", "ok": True,
                 "result": {
                     "step": "restore-checkpoint", "accepted": True,
                     "status": "restored", "backend_id": "native-headless",
                     "source": "native-session-cold-start",
-                    "checkpoint": {"sha256": sha, "date_raw": 53178312,
-                                   "history_index": 1},
+                    "checkpoint": checkpoint,
                     "restored_date_raw": 53178312, "map_ready": True,
                     "lifecycle": {"previous_pid": 100, "pid": 200},
                 },
@@ -87,7 +147,7 @@ class ConstructionSourceQueryRunTest(unittest.TestCase):
             before_driver = {
                 "bridge_pid": 100, "episode_character_id": 29829,
                 "command_history": [anchor],
-                "last_checkpoint": {"sha256": sha, "date_raw": 53178312},
+                "last_checkpoint": checkpoint,
             }
             after_driver = {**before_driver, "bridge_pid": 200,
                             "command_history": [anchor, restore]}
