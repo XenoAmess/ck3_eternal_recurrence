@@ -12449,7 +12449,7 @@ class GameplayBridgeTests(unittest.TestCase):
             [5],
         )
 
-    def test_threatened_native_rally_uses_observed_county_route_or_stays_red(
+    def test_threatened_native_rally_uses_observed_county_route_or_exact_hold(
         self,
     ) -> None:
         queried_date_raw = 53_282_400
@@ -12663,6 +12663,17 @@ class GameplayBridgeTests(unittest.TestCase):
         contact_query_step = query_route_contact_horizon_step(
             army_id, 45, hostile_ids
         )
+        contact_query_47_step = query_route_contact_horizon_step(
+            army_id, 47, hostile_ids
+        )
+        stationary_contact_query_step = query_route_contact_horizon_step(
+            army_id, rally_province_id, hostile_ids
+        )
+        stationary_contact_advance_step = (
+            advance_route_contact_horizon_step(
+                army_id, rally_province_id, hostile_ids
+            )
+        )
         move_45_step = f"move-army-{army_id}-to-45"
         contact_free_45 = _route_contact_row(
             6,
@@ -12676,7 +12687,14 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         overmatch_base = {
             **base,
-            "steps": (*base["steps"], contact_query_step, move_45_step),
+            "steps": (
+                *base["steps"],
+                contact_query_step,
+                contact_query_47_step,
+                stationary_contact_query_step,
+                stationary_contact_advance_step,
+                move_45_step,
+            ),
             "route_contact_horizon_supported": True,
             "army_strengths": overmatch_strengths,
             "army_strengths_status": "available",
@@ -12708,15 +12726,214 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(
             r881_guard["phase"],
-            "native_war_no_safe_player_held_county_route",
+            "native_war_defender_native_rally_contact_horizon",
         )
-        self.assertIsNone(r881_guard["selected_step"])
+        self.assertEqual(
+            r881_guard["selected_step"], stationary_contact_query_step
+        )
         self.assertNotEqual(r881_guard.get("selected_step"), move_45_step)
         self.assertEqual(
             r881_guard["route_rejections"][0][
                 "one_day_contact_horizon_rejected"
             ],
             "hostile_operational_overmatch_player_held_county_fallback",
+        )
+
+        contact_free_47 = _route_contact_row(
+            8,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=47,
+            date_raw=current_date_raw,
+            route=[45, 47],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        r0018_guard_query = _native_war_plan(
+            **overmatch_base,
+            history=[
+                *base_history,
+                complete_root,
+                _preview_row(
+                    5,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=45,
+                    date_raw=current_date_raw,
+                    route=[45],
+                ),
+                contact_free_45,
+                _preview_row(
+                    7,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=47,
+                    date_raw=current_date_raw,
+                    route=[45, 47],
+                ),
+                contact_free_47,
+            ],
+        )
+        self.assertEqual(
+            r0018_guard_query["phase"],
+            "native_war_defender_native_rally_contact_horizon",
+        )
+        self.assertEqual(
+            r0018_guard_query["selected_step"],
+            stationary_contact_query_step,
+        )
+        self.assertEqual(
+            [
+                rejection["target_province_id"]
+                for rejection in r0018_guard_query["route_rejections"]
+            ],
+            [45, 47],
+        )
+        self.assertTrue(
+            all(
+                rejection["one_day_contact_horizon_rejected"]
+                == (
+                    "hostile_operational_overmatch_"
+                    "player_held_county_fallback"
+                )
+                for rejection in r0018_guard_query["route_rejections"]
+            )
+        )
+
+        unavailable_47 = copy.deepcopy(contact_free_47)
+        unavailable_47["result"]["status"] = "route_unavailable"
+        unavailable_47["result"]["route_contact_horizon"] = {
+            "status": "route_unavailable"
+        }
+        incomplete_guard_set = _native_war_plan(
+            **overmatch_base,
+            history=[
+                *base_history,
+                complete_root,
+                _preview_row(
+                    5,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=45,
+                    date_raw=current_date_raw,
+                    route=[45],
+                ),
+                contact_free_45,
+                _preview_row(
+                    7,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=47,
+                    date_raw=current_date_raw,
+                    route=[45, 47],
+                ),
+                unavailable_47,
+            ],
+        )
+        self.assertEqual(
+            incomplete_guard_set["phase"],
+            "native_war_no_safe_player_held_county_route",
+        )
+        self.assertIsNone(incomplete_guard_set["selected_step"])
+        self.assertEqual(
+            len(incomplete_guard_set["route_rejections"]), 2
+        )
+        self.assertEqual(
+            incomplete_guard_set["route_rejections"][1]["status"],
+            "contact_timeline_unavailable",
+        )
+
+        stationary_contact_free = _route_contact_row(
+            9,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=rally_province_id,
+            date_raw=current_date_raw,
+            route=[],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        r0018_guard_hold = _native_war_plan(
+            **overmatch_base,
+            history=[
+                *base_history,
+                complete_root,
+                _preview_row(
+                    5,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=45,
+                    date_raw=current_date_raw,
+                    route=[45],
+                ),
+                contact_free_45,
+                _preview_row(
+                    7,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=47,
+                    date_raw=current_date_raw,
+                    route=[45, 47],
+                ),
+                contact_free_47,
+                stationary_contact_free,
+            ],
+        )
+        self.assertEqual(
+            r0018_guard_hold["phase"],
+            "native_war_defender_native_rally_contact_horizon_progress",
+        )
+        self.assertEqual(
+            r0018_guard_hold["selected_step"],
+            stationary_contact_advance_step,
+        )
+        self.assertTrue(
+            r0018_guard_hold["contact_horizon"]["one_day_contact_free"]
+        )
+
+        stationary_contact_unavoidable = _route_contact_row(
+            9,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=rally_province_id,
+            date_raw=current_date_raw,
+            route=[],
+            hostile_ids=hostile_ids,
+            contact_free=False,
+        )
+        r0018_guard_transition = _native_war_plan(
+            **overmatch_base,
+            history=[
+                *base_history,
+                complete_root,
+                _preview_row(
+                    5,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=45,
+                    date_raw=current_date_raw,
+                    route=[45],
+                ),
+                contact_free_45,
+                _preview_row(
+                    7,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=47,
+                    date_raw=current_date_raw,
+                    route=[45, 47],
+                ),
+                contact_free_47,
+                stationary_contact_unavoidable,
+            ],
+        )
+        self.assertEqual(
+            r0018_guard_transition["phase"],
+            "native_war_defender_native_rally_contact_transition",
+        )
+        self.assertEqual(
+            r0018_guard_transition["selected_step"],
+            stationary_contact_advance_step,
         )
 
         safe_withdrawal = _native_war_plan(

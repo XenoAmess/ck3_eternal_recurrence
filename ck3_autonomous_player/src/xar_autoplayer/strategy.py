@@ -10331,6 +10331,204 @@ def _choose_one_life_turn_core(
                 break
             if preview_selected_target is None:
                 if route_candidate_source == "player_held_county_capital":
+                    rejected_target_ids = {
+                        _native_int(rejection.get("target_province_id"))
+                        for rejection in route_rejections
+                        if isinstance(rejection, dict)
+                        and rejection.get("status") == "unsafe"
+                        and rejection.get(
+                            "one_day_contact_horizon_rejected"
+                        )
+                        == (
+                            "hostile_operational_overmatch_"
+                            "player_held_county_fallback"
+                        )
+                    }
+                    capital_province_id = (
+                        _native_int(campaign_root.get("capital_province_id"))
+                        if isinstance(campaign_root, dict)
+                        else None
+                    )
+                    native_rally_hold_ready = bool(
+                        defender_safe_objective_input is not None
+                        and safe_objective_rally_binding is not None
+                        and isinstance(strength_balance, dict)
+                        and strength_balance.get(
+                            "hostile_operational_overmatch"
+                        )
+                        is True
+                        and capital_province_id is not None
+                        and capital_province_id != current_province_id
+                        and len(route_rejections)
+                        == len(route_exact_candidates)
+                        and rejected_target_ids == set(route_exact_candidates)
+                    )
+                    if native_rally_hold_ready:
+                        defensive_hold = {
+                            **defender_safe_objective_input,
+                            "capital_province_id": capital_province_id,
+                            "campaign_root_snapshot_revision": (
+                                campaign_root.get("snapshot_revision")
+                            ),
+                            "campaign_root_date_raw": campaign_root.get(
+                                "date_raw"
+                            ),
+                        }
+                        contact_query_step = (
+                            query_route_contact_horizon_step(
+                                int(defensive_hold["army_id"]),
+                                int(current_province_id),
+                                route_threat_enemy_ids,
+                            )
+                        )
+                        if not route_contact_scope_supported:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": (
+                                    "native_war_defender_native_rally_"
+                                    "contact_horizon_unsupported"
+                                ),
+                                "selected_step": None,
+                                "required_step": contact_query_step,
+                                "reason": "the threatened native-rally hold requires the existing complete-scope stationary contact-horizon capability",
+                                "defensive_hold": defensive_hold,
+                                "native_rally_hold_binding": (
+                                    safe_objective_rally_binding
+                                ),
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
+                        contact_horizon = _fresh_route_contact_horizon(
+                            rows,
+                            snapshot,
+                            army_id=int(defensive_hold["army_id"]),
+                            origin_province_id=int(current_province_id),
+                            target_province_id=int(current_province_id),
+                            hostile_army_ids=route_threat_enemy_ids,
+                            route_province_ids=[],
+                        )
+                        if contact_horizon is None:
+                            failed_query = (
+                                _current_frame_route_contact_query_failure(
+                                    rows,
+                                    snapshot,
+                                    contact_query_step,
+                                )
+                            )
+                            if failed_query is not None:
+                                return {
+                                    "policy": "one-life-turn-v1",
+                                    "phase": (
+                                        "native_war_defender_native_rally_"
+                                        "contact_horizon_unavailable"
+                                    ),
+                                    "selected_step": None,
+                                    "required_observation": (
+                                        "fresh-available-stationary-"
+                                        "contact-horizon"
+                                    ),
+                                    "reason": "the current-frame stationary native-rally contact query failed or returned no usable exact timeline; keep the map paused",
+                                    "defensive_hold": defensive_hold,
+                                    "native_rally_hold_binding": (
+                                        safe_objective_rally_binding
+                                    ),
+                                    "contact_query_attempt": failed_query,
+                                    "route_rejections": route_rejections,
+                                    "active_wars": war_summary,
+                                }
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": (
+                                    "native_war_defender_native_rally_"
+                                    "contact_horizon"
+                                ),
+                                "selected_step": (
+                                    contact_query_step
+                                    if contact_query_step in available_steps
+                                    else None
+                                ),
+                                "required_step": contact_query_step,
+                                "reason": "prove the exact native-rally Province contact-free or unavoidable for one day before holding under hostile overmatch",
+                                "defensive_hold": defensive_hold,
+                                "native_rally_hold_binding": (
+                                    safe_objective_rally_binding
+                                ),
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
+                        contact_advance_step = (
+                            advance_route_contact_horizon_step(
+                                int(defensive_hold["army_id"]),
+                                int(current_province_id),
+                                route_threat_enemy_ids,
+                            )
+                        )
+                        if contact_horizon.get("one_day_contact_free") is True:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": (
+                                    "native_war_defender_native_rally_"
+                                    "contact_horizon_progress"
+                                ),
+                                "selected_step": (
+                                    contact_advance_step
+                                    if contact_advance_step in available_steps
+                                    else None
+                                ),
+                                "required_step": contact_advance_step,
+                                "reason": "the fresh stationary timeline proves the exact native-rally Province contact-free for one day",
+                                "defensive_hold": defensive_hold,
+                                "native_rally_hold_binding": (
+                                    safe_objective_rally_binding
+                                ),
+                                "contact_horizon": contact_horizon,
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
+                        if unavoidable_current_province_contact_in_horizon(
+                            contact_horizon
+                        ):
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": (
+                                    "native_war_defender_native_rally_"
+                                    "contact_transition"
+                                ),
+                                "selected_step": (
+                                    contact_advance_step
+                                    if contact_advance_step in available_steps
+                                    else None
+                                ),
+                                "required_step": contact_advance_step,
+                                "reason": "the exact native-rally hold has an unavoidable current-province contact within the proof-bound day",
+                                "defensive_hold": defensive_hold,
+                                "native_rally_hold_binding": (
+                                    safe_objective_rally_binding
+                                ),
+                                "contact_horizon": contact_horizon,
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": (
+                                "native_war_defender_native_rally_"
+                                "contact_horizon_blocked"
+                            ),
+                            "selected_step": None,
+                            "required_observation": (
+                                "contact-free-or-unavoidable-current-"
+                                "province-stationary-horizon"
+                            ),
+                            "reason": "the fresh stationary native-rally horizon is neither contact-free nor an exact unavoidable current-province transition",
+                            "defensive_hold": defensive_hold,
+                            "native_rally_hold_binding": (
+                                safe_objective_rally_binding
+                            ),
+                            "contact_horizon": contact_horizon,
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
                     return {
                         "policy": "one-life-turn-v1",
                         "phase": "native_war_no_safe_player_held_county_route",

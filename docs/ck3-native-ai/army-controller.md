@@ -200,7 +200,11 @@ flowchart TD
     A -->|yes| K
     K -->|yes| C
     K -->|no| M["[counter-policy] first safe ranked objective<br/>stop enumeration + submit move"]
-    C -->|set exhausted| N["no safe exact route"]
+    C -->|set exhausted| D{"primary-defender native-rally hold<br/>+ hostile overmatch<br/>+ every county route geometrically unsafe?"}
+    D -->|yes| S["fresh stationary current-rally<br/>route-contact horizon"]
+    S -->|contact-free / unavoidable current contact| L["[counter-policy] proof-bound one-day advance<br/>re-observe immediately"]
+    S -->|missing / other conflict| N
+    D -->|no| N["no safe exact route"]
     O["[static-confirmed] native preliminary top 10<br/>then final pathfinding"] -->|"[inference] bounded-final-evaluation precedent;<br/>not claimed as identical ranking"| P
 ```
 
@@ -218,6 +222,22 @@ flowchart TD
   one-day horizon 行为保持不变。该 guard 直接复用已有兵力判断，不新增阈值，也不声称一天证明本身错误。
 - [static-ready, live replay pending] 本 guard 由 R881 形状离线回归覆盖，但尚未从 R878 的安全
   history `1347` 完成新的 production replay；在该 replay 给出独立后置状态前不得标记 production-live。
+
+### 2026-09-21 R0018 production RED：guard 后必须回到已证明的原地防守合同
+
+- [production-live] R0018 从安全 history `1347` 连续完成前 `29` 个 turn、`13` 次 gameplay 后，在
+  `date_raw=53282736` 对直接持有 county-capital Province `45`、`46` 分别取得 fresh route 与 one-day
+  contact horizon。两条路线的完整几何审计都为 `unsafe`，R887 guard 也都正确保留
+  `hostile_operational_overmatch_player_held_county_fallback` 拒绝；但 planner 随后在
+  `native_war_no_safe_player_held_county_route` 提前返回，未到达同一帧已经满足的
+  `native_war_defender_native_rally_hold_progress`。正式报告 SHA-256 为
+  `303D1700478B7F08AB5EAF3CC0471E4673F51C13E333B3C6AC2B974E6F591DF7`。
+- [counter-policy / static-ready] 只有在 primary-defender native-rally receipt 绑定仍有效、同帧
+  `hostile_operational_overmatch=true`，且完整直接持有 county-capital 候选均已有 fresh 几何
+  `unsafe` 结论时，候选穷尽才请求当前 rally Province 的 fresh stationary route-contact horizon。只有
+  `one_day_contact_free=true` 或既有合同认可的 unavoidable current-province transition 才复用 proof-bound
+  one-day advance 并立即重观测；任一 binding、兵力结论、完整候选、几何结论或 stationary horizon 缺失时仍保持
+  blocked。这不新增阈值，也不授权任意移动。
 
 ### 2026-08-28 production 反例：全局战分骤降不等于当前省战败
 

@@ -493,8 +493,29 @@ committed-route sentinel 是独立 multi-day 合同，不声称重用或放宽�
 直接持有 county-capital 候选 Province `45` 的完整几何路线为 `unsafe`、ETA 约十日，而 fresh horizon 只证明第一日
 contact-free；在同帧 `hostile_operational_overmatch=true` 下把该证明改写成整条路线安全，随后真实提交了危险进军。
 因此 planner 仅对 `player_held_county_capital` + hostile overmatch 这一实证形状拒绝 `unsafe ->
-safe_one_day_contact_horizon` 晋级；完整几何 safe 的撤离路线、非 overmatch 帧和其它来源仍沿用既有合同。实现状态为
-static-ready，等待从 R878 history `1347` 做 production replay；这不改变 native horizon 的 wire 或 exact-build reader。
+safe_one_day_contact_horizon` 晋级；完整几何 safe 的撤离路线、非 overmatch 帧和其它来源仍沿用既有合同。R0018 从
+R878 history `1347` 的 production replay 已 live-confirmed 该 guard：Province `45`、`46` 两个完整直接持有县城候选都保留
+`unsafe`，且都记录 guard rejection，未再提交 `move-army-*`。这不改变 native horizon 的 wire 或 exact-build reader。
+
+[production-live RED + counter-policy] 同一 R0018 在 `date_raw=53282736` 也暴露了 guard 后的控制流缺口：primary-defender
+Army `184549472` 仍为 `regular@8750`、无 move target/route，既有 native-rally receipt binding 为 `ready`，但候选穷尽后
+直接返回 `native_war_no_safe_player_held_county_route`，没有为“继续原地防守一天”取得当前 Province `8750` 的独立 stationary
+contact proof。正式报告 SHA-256 为 `303D1700478B7F08AB5EAF3CC0471E4673F51C13E333B3C6AC2B974E6F591DF7`。
+修复只在 rally binding、hostile overmatch 与完整候选全为 guard-rejected geometric `unsafe` 同时成立时请求 fresh
+stationary horizon；仅 `one_day_contact_free` 或现有 `unavoidable_current_province_contact` 合同可触发 proof-bound one-day
+advance。任一证明缺失/冲突仍保持 paused RED，不能用普通 `life-advance` 绕过。
+
+```mermaid
+flowchart TD
+    G["[production-live] county fallback set exhausted<br/>all routes geometric unsafe + guard rejected"] --> B{"native-rally binding ready<br/>and hostile overmatch?"}
+    B -->|no| X["blocked: no safe county route"]
+    B -->|yes| Q["fresh stationary current-rally<br/>route-contact horizon"]
+    Q -->|missing / unusable| X
+    Q -->|other timed conflict| X
+    Q -->|one-day contact-free| A["proof-bound one-day advance"]
+    Q -->|unavoidable current contact| A
+    A --> R["invalidate proof + immediately re-observe"]
+```
 
 ### 2026-08-28 G1 停点压缩：已承诺 route 由 native sentinel 托管
 
