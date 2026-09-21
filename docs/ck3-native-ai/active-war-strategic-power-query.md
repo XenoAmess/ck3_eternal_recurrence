@@ -3,6 +3,41 @@
 Status: `production-live primitive; campaign-policy integration pending`; exact build: CK3 `1.19.0.6`, executable SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
 
+## R0039/R0040 checkpoint-replay boundary (2026-09-21)
+
+R0039 and R0040 establish that the exact-build strategic-power tuple is stable
+for repeated reads on one paused frame, but is not byte-for-byte reproducible
+after a save and process-replacing cold restore. Both sessions observed actor
+`29829`, WarID `16777285`, date `53190816`, score `-3`, duration `822`, and
+actor power `10084484600`. The producing R0039 frame reported target base /
+network / adjustment / total as `16135200000 / 700000000 / 6053880000 /
+22889080000`, ratio `226973`; the restored R0040 frame reported
+`14423200000 / 700000000 / 1310400000 / 16433600000`, ratio `162959`.
+Each tuple was identical across two immediate reads in its own session.
+
+That change was sufficient to reverse the formal decision: R0039 selected
+surrender (`-101825000`) over continue (`-113486500`), while R0040 selected
+continue (`-81479500`) over surrender (`-101825000`). The visible army IDs and
+states were unchanged, but the terminal R0039 frame did not perform a fresh
+army-strength query, so this evidence does not claim identical material army
+strengths across the two sessions.
+
+The resulting policy contract is deliberately narrow:
+
+- a terminal authorization is valid only on the live paused frame that
+  produced its complete option/power/terms certificate;
+- recommendation, authorization comparison, and the one typed terminal
+  submission remain on that same driver and frame;
+- the post-action material result is checkpointed, then a real new-process
+  cold restore proves target continuity and next-turn non-replay;
+- a pre-action restore mismatch remains RED and never forces the stale action.
+
+R0040 followed that fail-closed rule: it submitted no terminal action and
+cleaned up the CK3 process. The same-session orchestration is an internal,
+default-off Python runner path; it changes no native ABI, public MCP schema, or
+`open_kaishek` compatibility surface. Focused normal and optimized suites each
+pass `130/130`; production-live closure remains pending a fresh round.
+
 ## Problem and reuse decision
 
 R459 proved the exact outcome of surrendering WarID `33554473`, including the

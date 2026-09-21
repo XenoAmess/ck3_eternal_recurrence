@@ -1,5 +1,19 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-09-21 R0036-R0040 GEN-034-D replay and same-session repair ledger
+
+| Delivery gate / capability | Status | Formal entry | Artifact / source | Actual game and next-turn evidence | Restore evidence | B0/B1 gap / owner | Branch cleanup |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Correct pre-terminal continuation | production candidate GREEN; action not submitted | formal `native_auto_run` terminal intercept | R0039 report `0DCE56AA...78A6`; action input `6612D273...583D`; source capture `FF76C8E1...EB04`; agent `c05e940c` | `41/41` turns; continue / white-peace / surrender compared on one frame; surrender won by `11,661,500`; one frozen `surrender-war-16777285`; no action submitted | candidate checkpoint `44AEE0C8...65B0`; driver `E102C20E...40BC`; cleanup and process-zero GREEN | Execute terminal choice on its producing paused frame, then prove material result, postwar checkpoint, new-process restore and next turn; `/root` | same-session repair branch active until linear master delivery and immediate cleanup |
+| Pre-action cold-restore authorization replay | capability RED retained; zero action | frozen R0039 action runner | R0040 report `A6A4B981...6858` | Same date/war/score/duration, but restored target total changed `22889080000 -> 16433600000`, ratio `226973 -> 162959`, and recommendation flipped `surrender -> continue`; authorization rejected before submit | Cleanup and external CK3/injector process-zero GREEN; no postwar checkpoint because no action occurred | Do not retry the stale authorization. The default-off repair keeps intercept and one action on the same driver/frame; focused normal/`-O` each `130/130` GREEN; run one new canonical live round | no native ABI/public MCP/open_kaishek change; live closure pending |
+
+R0036 was voided after obsolete CLI aliases failed before launch; R0037 was a
+prelaunch wrong-DLL-path RED; R0038 reused an already post-intercept pair and
+therefore completed `64/64` turns without a new terminal interception. Those
+attempts are retained but do not promote capability. Authority remains G2
+`1/8`, Council `1/4`, GEN-034 `3/4` until the new same-session live chain is
+GREEN.
+
 ## 2026-09-21 R0034-R0035 GEN-034-D action-runner lifecycle ledger
 
 | Delivery gate / capability | Status | Formal entry | Artifact / source | Actual game and next-turn evidence | Restore evidence | B0/B1 gap / owner | Branch cleanup |

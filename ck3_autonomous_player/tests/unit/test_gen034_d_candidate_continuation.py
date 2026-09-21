@@ -88,6 +88,7 @@ class Gen034DCandidateContinuationTests(unittest.TestCase):
             candidate_turn_limit=256,
             candidate_timeout=1800.0,
             readiness_timeout=720.0,
+            execute_terminal_action=False,
             authorize_private_live=True,
         )
         self.paths = RUNNER.adapter.AdapterPaths(
@@ -138,6 +139,38 @@ class Gen034DCandidateContinuationTests(unittest.TestCase):
             "candidate_interception": {},
         }
 
+    def _happy_same_session_candidate(self) -> dict[str, object]:
+        return {
+            "ok": True,
+            "status": "candidate_terminal_resolved",
+            "outcome": "candidate_resolved",
+            "candidate_interception": {},
+            "first_blocker": None,
+            "error": None,
+            "cleanup": {"ok": True},
+            "candidate_resolution": {
+                "ok": True,
+                "status": "verified",
+                "route": "surrender",
+                "exit_action_commands": [
+                    f"surrender-war-{self.expected_war_id}"
+                ],
+                "checks": {
+                    "exactly_one_exit_action": True,
+                    "checkpoint_cold_restore_verified": True,
+                },
+                "postcondition": {
+                    "status": "verified",
+                    "action_submitted": True,
+                    "postcondition_verified": True,
+                    "checkpoint_cold_restore_verified": True,
+                    "gen034_closed": True,
+                    "blockers": [],
+                },
+                "gen034_closed": True,
+            },
+        }
+
     def _patches(
         self,
         *,
@@ -175,6 +208,13 @@ class Gen034DCandidateContinuationTests(unittest.TestCase):
                 RUNNER,
                 "normalize_raiktor_source_specific_capture",
                 return_value=normalized or self._normalized(),
+            )
+        )
+        stack.enter_context(
+            mock.patch.object(
+                RUNNER.action_runner,
+                "_load_source_capture",
+                return_value={},
             )
         )
         stack.enter_context(
@@ -297,7 +337,77 @@ class Gen034DCandidateContinuationTests(unittest.TestCase):
                 native.call_args.kwargs["readiness_timeout_seconds"],
                 720.0,
             )
+            self.assertIsNone(native.call_args.kwargs["after_intercept"])
             stack.close()
+
+    def test_same_session_mode_closes_without_freezing_second_runner(self) -> None:
+        self.args.execute_terminal_action = True
+        resolved = self._happy_same_session_candidate()
+        with self._patches(candidate_report=resolved):
+            freeze = RUNNER.adapter._freeze_action_runner_input
+            native = RUNNER.adapter.native_auto_run
+            report, exit_code = RUNNER.run_continuation(self.args)
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(report["status"], "GEN034_CLOSED")
+        self.assertTrue(report["boundaries"]["terminal_action_submitted"])
+        self.assertFalse(report["boundaries"]["action_runner_input_ready"])
+        self.assertTrue(report["boundaries"]["gen034_closed"])
+        self.assertEqual(
+            report["candidate_resolution"]["route"], "surrender"
+        )
+        self.assertTrue(callable(native.call_args.kwargs["after_intercept"]))
+        freeze.assert_not_called()
+
+    def test_same_session_malformed_green_is_rejected(self) -> None:
+        self.args.execute_terminal_action = True
+        malformed = self._happy_same_session_candidate()
+        malformed["candidate_resolution"]["postcondition"][
+            "checkpoint_cold_restore_verified"
+        ] = False
+
+        with self._patches(candidate_report=malformed):
+            report, exit_code = RUNNER.run_continuation(self.args)
+
+        self.assertEqual(exit_code, 2)
+        self.assertEqual(report["status"], "RED")
+        self.assertIn("complete same-session", report["error"])
+        self.assertTrue(report["boundaries"]["terminal_action_submitted"])
+        self.assertFalse(report["boundaries"]["gen034_closed"])
+
+    def test_same_session_red_does_not_claim_unknown_submission_state(self) -> None:
+        self.args.execute_terminal_action = True
+        failed = {
+            "ok": False,
+            "status": "stopped_on_error",
+            "outcome": "failed",
+            "candidate_interception": {},
+            "candidate_resolution": {
+                "ok": False,
+                "status": "red",
+                "sequence_error": "fixture-red",
+                "gen034_closed": False,
+            },
+        }
+        with self._patches(candidate_report=failed):
+            report, exit_code = RUNNER.run_continuation(self.args)
+
+        self.assertEqual(exit_code, 2)
+        self.assertEqual(report["status"], "RED")
+        self.assertIsNone(report["boundaries"]["terminal_action_submitted"])
+        self.assertFalse(report["boundaries"]["gen034_closed"])
+
+    def test_same_session_native_exception_keeps_submission_unknown(self) -> None:
+        self.args.execute_terminal_action = True
+
+        with self._patches(native_side_effect=RuntimeError("fixture crash")):
+            report, exit_code = RUNNER.run_continuation(self.args)
+
+        self.assertEqual(exit_code, 2)
+        self.assertEqual(report["status"], "RED")
+        self.assertIsNone(report["candidate_native_auto_run"])
+        self.assertIsNone(report["boundaries"]["terminal_action_submitted"])
+        self.assertFalse(report["boundaries"]["gen034_closed"])
 
     def test_candidate_timeout_must_exceed_readiness_timeout(self) -> None:
         self.args.candidate_timeout = 600.0
@@ -364,6 +474,67 @@ class Gen034DCandidateContinuationTests(unittest.TestCase):
                 (self.attempt / "candidate-native-auto-run-report.json").is_file()
             )
             freeze.assert_not_called()
+
+    def test_same_session_resolver_revalidates_and_executes_live_frame(self) -> None:
+        authorization_sha256 = "D" * 64
+        interception = {
+            "selected_step": f"surrender-war-{self.expected_war_id}",
+            "plan": {
+                "war_exit_decision": {
+                    "war_id": self.expected_war_id,
+                    "opponent_character_id": 35_991,
+                    "recommended_outcome": "surrender",
+                }
+            },
+            "after_checkpoint": {
+                "played_character": {"character_id": 29_829},
+                "date_raw": 53_190_816,
+            },
+        }
+        source = {"schema": "fixture-source"}
+        with mock.patch.object(
+            RUNNER,
+            "terminal_authorization_v1",
+            return_value={
+                "payload": {
+                    "selected_step": interception["selected_step"],
+                    "recommended_outcome": "surrender",
+                },
+                "sha256": authorization_sha256,
+            },
+        ), mock.patch.object(
+            RUNNER.action_runner,
+            "_run_mcp_sequence",
+            new=mock.AsyncMock(
+                return_value={
+                    "ok": True,
+                    "status": "verified",
+                    "gen034_closed": True,
+                }
+            ),
+        ) as run_sequence:
+            resolver = RUNNER._same_session_terminal_resolver(
+                expected_war_id=self.expected_war_id,
+                source_capture=source,
+                source_capture_sha256="A" * 64,
+                runtime_manifest=self.runtime_manifest,
+                runtime_root=RUNNER.REPOSITORY_ROOT,
+                expected_runtime_manifest_sha256="B" * 64,
+            )
+            result = resolver(object(), interception)
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(
+            result["candidate_authorization"]["sha256"],
+            authorization_sha256,
+        )
+        self.assertEqual(
+            run_sequence.await_args.kwargs["expected_terminal_step"],
+            interception["selected_step"],
+        )
+        self.assertEqual(
+            run_sequence.await_args.kwargs["expected_character_id"], 29_829
+        )
 
 
 if __name__ == "__main__":

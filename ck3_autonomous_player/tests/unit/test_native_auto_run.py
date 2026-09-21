@@ -1428,6 +1428,7 @@ class NativeAutoRunTests(unittest.TestCase):
         ordinary_campaign_no_pact: bool = False,
         cold_start_checkpoint: bool | None = None,
         before_submit: object = None,
+        after_intercept: object = None,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         use_cold_start_checkpoint = (
             completion_contract in {"one_generation", "next_episode"}
@@ -1522,6 +1523,7 @@ class NativeAutoRunTests(unittest.TestCase):
                 ),
                 operator_stop_event=harness.operator_stop_event,
                 before_submit=before_submit,  # type: ignore[arg-type]
+                after_intercept=after_intercept,  # type: ignore[arg-type]
             )
         return report, harness
 
@@ -1920,12 +1922,124 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(candidate["selected_step"], "surrender-war-88")
         self.assertEqual(candidate["interception"]["expected_war_id"], 88)
         self.assertEqual(candidate["checkpoint"]["phase"], "candidate_terminal_intercept")
+        self.assertIsNone(report["candidate_resolution"])
         self.assertEqual(len(observed), 1)
         self.assertNotIn("surrender-war-88", harness.events)
         self.assertEqual(
             [row["command"] for row in harness.history],
             ["save-checkpoint"],
         )
+
+    def test_candidate_resolution_runs_in_same_session_after_checkpoint(
+        self,
+    ) -> None:
+        observed: list[tuple[object, dict[str, object]]] = []
+
+        def before_submit(frame: dict[str, object]) -> dict[str, object] | None:
+            return {"expected_war_id": 88}
+
+        def after_intercept(
+            driver: object,
+            candidate: dict[str, object],
+        ) -> dict[str, object]:
+            observed.append((driver, candidate))
+            driver.harness.events.append("after_intercept")  # type: ignore[attr-defined]
+            return {
+                "ok": True,
+                "status": "verified",
+                "war_id": candidate["interception"]["expected_war_id"],  # type: ignore[index]
+            }
+
+        report, harness = self._run(
+            ["candidate_intercept"],
+            before_submit=before_submit,
+            after_intercept=after_intercept,
+            cold_start_checkpoint=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "candidate_terminal_resolved")
+        self.assertEqual(report["outcome"], "candidate_resolved")
+        self.assertEqual(
+            report["candidate_resolution"],
+            {"ok": True, "status": "verified", "war_id": 88},
+        )
+        self.assertEqual(len(observed), 1)
+        self.assertIs(observed[0][1], report["candidate_interception"])
+        events = harness.events
+        self.assertLess(events.index("save_checkpoint"), events.index("after_intercept"))
+        self.assertLess(events.index("after_intercept"), events.index("session_stop"))
+        self.assertLess(events.index("after_intercept"), events.index("driver_close"))
+
+    def test_candidate_resolution_requires_candidate_interceptor(self) -> None:
+        with self.assertRaisesRegex(
+            AgentError,
+            "after_intercept requires a before_submit candidate interceptor",
+        ):
+            self._run(
+                ["advance"],
+                after_intercept=lambda _driver, _candidate: {"ok": True},
+            )
+
+    def test_candidate_resolution_exception_is_red(self) -> None:
+        def after_intercept(
+            _driver: object,
+            _candidate: dict[str, object],
+        ) -> dict[str, object]:
+            raise RuntimeError("fixture resolution failed")
+
+        report, harness = self._run(
+            ["candidate_intercept"],
+            before_submit=lambda _frame: {"expected_war_id": 88},
+            after_intercept=after_intercept,
+            cold_start_checkpoint=True,
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertEqual(report["outcome"], "failed")
+        self.assertEqual(
+            report["candidate_resolution"]["status"],
+            "callback_exception",
+        )
+        self.assertIn("fixture resolution failed", report["error"])
+        self.assertEqual(report["first_blocker"]["stage"], "candidate_resolution")
+        self.assertTrue(report["cleanup"]["ok"])
+        self.assertIn("driver_close", harness.events)
+
+    def test_candidate_resolution_rejects_non_mapping_and_not_ok(self) -> None:
+        cases = (
+            (lambda _driver, _candidate: None, "invalid_callback_result"),
+            (
+                lambda _driver, _candidate: {
+                    "ok": False,
+                    "status": "postcondition_failed",
+                },
+                "postcondition_failed",
+            ),
+        )
+        for callback, expected_status in cases:
+            with self.subTest(expected_status=expected_status):
+                report, _harness = self._run(
+                    ["candidate_intercept"],
+                    before_submit=lambda _frame: {"expected_war_id": 88},
+                    after_intercept=callback,
+                    cold_start_checkpoint=True,
+                )
+
+                self.assertFalse(report["ok"])
+                self.assertEqual(report["status"], "stopped_on_error")
+                self.assertEqual(report["outcome"], "failed")
+                self.assertEqual(
+                    report["candidate_resolution"]["status"],
+                    expected_status,
+                )
+                self.assertEqual(
+                    report["first_blocker"]["stage"],
+                    "candidate_resolution",
+                )
+                self.assertTrue(report["cleanup"]["ok"])
+
     def test_explicit_objective_hold_canary_flag_reaches_driver_and_report(
         self,
     ) -> None:

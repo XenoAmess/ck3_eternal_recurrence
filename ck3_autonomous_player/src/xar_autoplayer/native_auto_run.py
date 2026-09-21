@@ -8,7 +8,7 @@ module owns both lifetimes in one process and never imports a visual backend.
 from __future__ import annotations
 
 import copy
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 import hashlib
 import json
 import math
@@ -310,6 +310,11 @@ def native_auto_run(
     operator_stop_event: threading.Event | None = None,
     before_submit: Callable[[dict[str, object]], dict[str, object] | None]
     | None = None,
+    after_intercept: Callable[
+        [NativeHeadlessGameplayDriver, dict[str, object]],
+        dict[str, object],
+    ]
+    | None = None,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -381,6 +386,10 @@ def native_auto_run(
     ):
         raise AgentError(
             "private faction gift trial requires --private-faction-round-id R<number>"
+        )
+    if after_intercept is not None and before_submit is None:
+        raise AgentError(
+            "after_intercept requires a before_submit candidate interceptor"
         )
 
     ensure_state_path_safe(spec.state_dir)
@@ -477,6 +486,7 @@ def native_auto_run(
     first_failure: dict[str, object] | None = None
     readiness_timeout_diagnostics: dict[str, object] | None = None
     candidate_interception: dict[str, object] | None = None
+    candidate_resolution: dict[str, object] | None = None
 
     def capture_first_failure(
         *,
@@ -925,7 +935,58 @@ def native_auto_run(
                         ],
                     )
                 )
-                status = "candidate_terminal_intercepted"
+                if after_intercept is None:
+                    status = "candidate_terminal_intercepted"
+                    break
+                current_attempt["stage"] = "candidate_resolution"
+                try:
+                    resolution = after_intercept(
+                        driver,
+                        candidate_interception,
+                    )
+                except BaseException as error:
+                    candidate_resolution = {
+                        "ok": False,
+                        "status": "callback_exception",
+                        "error": f"{type(error).__name__}: {error}",
+                    }
+                    current_attempt["result"] = copy.deepcopy(
+                        candidate_resolution
+                    )
+                    raise AgentError(
+                        "after-intercept callback raised: "
+                        f"{type(error).__name__}: {error}"
+                    ) from error
+                if not isinstance(resolution, Mapping):
+                    candidate_resolution = {
+                        "ok": False,
+                        "status": "invalid_callback_result",
+                        "error": (
+                            "after-intercept callback returned a non-mapping "
+                            f"result: {type(resolution).__name__}"
+                        ),
+                    }
+                    current_attempt["result"] = copy.deepcopy(
+                        candidate_resolution
+                    )
+                    raise AgentError(str(candidate_resolution["error"]))
+                candidate_resolution = copy.deepcopy(dict(resolution))
+                current_attempt["result"] = copy.deepcopy(
+                    candidate_resolution
+                )
+                if candidate_resolution.get("ok") is not True:
+                    detail = candidate_resolution.get(
+                        "error",
+                        candidate_resolution.get(
+                            "reason",
+                            candidate_resolution.get("status", "unknown"),
+                        ),
+                    )
+                    raise AgentError(
+                        "after-intercept callback did not report success: "
+                        f"{detail}"
+                    )
+                status = "candidate_terminal_resolved"
                 break
 
             if outcome_status == "blocked":
@@ -2090,14 +2151,27 @@ def native_auto_run(
             )
             and cleanup.get("ok") is True
         )
-    candidate_qualified = bool(
+    candidate_intercept_qualified = bool(
         before_submit is not None
         and status == "candidate_terminal_intercepted"
         and candidate_interception is not None
+        and after_intercept is None
         and checkpoints
         and primary_error is None
         and cleanup.get("ok") is True
     )
+    candidate_resolved = bool(
+        before_submit is not None
+        and after_intercept is not None
+        and status == "candidate_terminal_resolved"
+        and candidate_interception is not None
+        and isinstance(candidate_resolution, dict)
+        and candidate_resolution.get("ok") is True
+        and checkpoints
+        and primary_error is None
+        and cleanup.get("ok") is True
+    )
+    candidate_qualified = candidate_intercept_qualified or candidate_resolved
     if candidate_qualified:
         qualified = True
         first_blocker = None
@@ -2158,7 +2232,11 @@ def native_auto_run(
         "elapsed_seconds": round(max(0.0, time.monotonic() - started), 3),
         "status": status,
         "outcome": (
-            "candidate_intercepted" if candidate_qualified else outcome
+            "candidate_resolved"
+            if candidate_resolved
+            else "candidate_intercepted"
+            if candidate_intercept_qualified
+            else outcome
         ),
         "ok": qualified,
         "completion_contract": completion_contract,
@@ -2206,6 +2284,7 @@ def native_auto_run(
         "checkpoints": checkpoints,
         "terminal": terminal_proof,
         "candidate_interception": candidate_interception,
+        "candidate_resolution": candidate_resolution,
         "natural_succession_transitions": natural_succession_transitions,
         "next_episode": (
             {

@@ -5,13 +5,16 @@ This runner never repeats the natural-event source capture.  It admits three
 immutable source files, prepares a fresh formal production state, rebinds the
 copied rogue checkpoint to that prepared environment, and cold-starts
 ``native_auto_run``.  The production loop is stopped at its first matching
-terminal submit seam; only that successful interception may freeze an input
-for the existing one-action live runner.
+terminal submit seam.  The default mode freezes an input for the one-action
+runner; the explicit same-session mode instead verifies and submits that one
+action before the producing CK3 frame is torn down, then proves postwar cold
+restore and next-turn consumption.
 """
 
 from __future__ import annotations
 
 import argparse
+import asyncio
 import copy
 import json
 import os
@@ -28,6 +31,11 @@ for candidate in (RESEARCH_ROOT, PACKAGE_ROOT):
         sys.path.insert(0, str(candidate))
 
 import run_g2_source_specific_war_loss_live_adapter as adapter  # noqa: E402
+import run_gen034_three_way_exit_action_live_acceptance as action_runner  # noqa: E402
+from gen034_candidate_authorization import (  # noqa: E402
+    CandidateAuthorizationError,
+    terminal_authorization_v1,
+)
 from xar_autoplayer.bridge.raiktor_source_specific_war_loss_contract import (  # noqa: E402
     normalize_raiktor_source_specific_capture,
 )
@@ -72,6 +80,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--candidate-turn-limit", type=int, default=256)
     parser.add_argument("--candidate-timeout", type=float, default=1800.0)
     parser.add_argument("--readiness-timeout", type=float, default=720.0)
+    parser.add_argument("--execute-terminal-action", action="store_true")
     parser.add_argument("--authorize-private-live", action="store_true")
     return parser
 
@@ -308,6 +317,146 @@ def _persist(report_path: Path, report: dict[str, object]) -> None:
     _write_json_atomic(report_path, report)
 
 
+def _same_session_terminal_resolver(
+    *,
+    expected_war_id: int,
+    source_capture: dict[str, object],
+    source_capture_sha256: str,
+    runtime_manifest: Path,
+    runtime_root: Path,
+    expected_runtime_manifest_sha256: str,
+):
+    """Resolve the frozen terminal plan before its native frame is destroyed."""
+
+    def resolve(
+        driver: object, interception: dict[str, object]
+    ) -> dict[str, object]:
+        plan = adapter._object(interception.get("plan"), "candidate plan")
+        decision = adapter._object(
+            plan.get("war_exit_decision"), "candidate war-exit decision"
+        )
+        after = adapter._object(
+            interception.get("after_checkpoint"),
+            "candidate checkpoint snapshot",
+        )
+        selected_step = interception.get("selected_step")
+        recommended_outcome = decision.get("recommended_outcome")
+        if decision.get("war_id") != expected_war_id:
+            raise ContinuationError(
+                "same-session candidate decision changed its WarID"
+            )
+        try:
+            authorization = terminal_authorization_v1(
+                selected_step=selected_step,
+                recommended_outcome=recommended_outcome,
+                war_id=expected_war_id,
+                opponent_character_id=decision.get("opponent_character_id"),
+                source_capture_sha256=source_capture_sha256,
+            )
+        except CandidateAuthorizationError as error:
+            raise ContinuationError(
+                f"same-session terminal authorization is invalid: {error}"
+            ) from error
+        character_id = _positive_integer(
+            adapter._played_character_id(after),
+            "candidate played character ID",
+        )
+        date_raw = after.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or date_raw < 0
+        ):
+            raise ContinuationError("candidate date raw must be nonnegative")
+        opponent_character_id = _positive_integer(
+            decision.get("opponent_character_id"),
+            "candidate opponent character ID",
+        )
+        result = asyncio.run(
+            action_runner._run_mcp_sequence(
+                driver,
+                war_id=expected_war_id,
+                expected_character_id=character_id,
+                expected_date_raw=date_raw,
+                opponent_character_id=opponent_character_id,
+                source_capture=source_capture,
+                source_capture_sha256=source_capture_sha256,
+                runtime_manifest=runtime_manifest,
+                runtime_root=runtime_root,
+                expected_runtime_manifest_sha256=(
+                    expected_runtime_manifest_sha256
+                ),
+                expected_terminal_step=str(
+                    authorization["payload"]["selected_step"]
+                ),
+                expected_terminal_outcome=str(
+                    authorization["payload"]["recommended_outcome"]
+                ),
+                expected_terminal_authorization_sha256=str(
+                    authorization["sha256"]
+                ),
+            )
+        )
+        result["candidate_authorization"] = authorization
+        return result
+
+    return resolve
+
+
+def _require_same_session_resolution(
+    candidate_report: object,
+    *,
+    expected_war_id: int,
+) -> dict[str, object]:
+    """Require the complete action, postcondition, and restore proof."""
+
+    report = adapter._object(candidate_report, "candidate native-auto-run report")
+    resolution = adapter._object(
+        report.get("candidate_resolution"), "same-session candidate resolution"
+    )
+    checks = adapter._object(resolution.get("checks"), "same-session checks")
+    postcondition = adapter._object(
+        resolution.get("postcondition"), "same-session postcondition"
+    )
+    exit_actions = resolution.get("exit_action_commands")
+    route = resolution.get("route")
+    expected_step = (
+        f"surrender-war-{expected_war_id}"
+        if route == "surrender"
+        else f"offer-white-peace-{expected_war_id}"
+        if route == "white_peace"
+        else None
+    )
+    blockers = postcondition.get("blockers")
+    if not (
+        report.get("ok") is True
+        and report.get("status") == "candidate_terminal_resolved"
+        and report.get("outcome") == "candidate_resolved"
+        and report.get("first_blocker") is None
+        and report.get("error") is None
+        and isinstance(report.get("cleanup"), dict)
+        and report["cleanup"].get("ok") is True
+        and resolution.get("ok") is True
+        and resolution.get("status") == "verified"
+        and resolution.get("gen034_closed") is True
+        and expected_step is not None
+        and exit_actions == [expected_step]
+        and bool(checks)
+        and all(value is True for value in checks.values())
+        and postcondition.get("status") == "verified"
+        and postcondition.get("action_submitted") is True
+        and postcondition.get("postcondition_verified") is True
+        and postcondition.get("checkpoint_cold_restore_verified") is True
+        and postcondition.get("gen034_closed") is True
+        and blockers == []
+    ):
+        raise ContinuationError(
+            "formal native_auto_run lacks the complete same-session "
+            "terminal action, postcondition, and cold-restore proof"
+        )
+    return resolution
+
+
 def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     attempt = args.attempt_dir.expanduser().resolve()
     formal_state = attempt.with_name(f"{attempt.name}-formal-state")
@@ -348,7 +497,11 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     report: dict[str, object] = {
         "schema": REPORT_SCHEMA,
         "status": "RUNNING",
-        "mode": MODE,
+        "mode": (
+            "frozen-source-continuation-to-same-session-terminal-action"
+            if args.execute_terminal_action
+            else MODE
+        ),
         "stage": "source-admission",
         "stage_order": [],
         "runtime_identity": runtime_identity,
@@ -485,6 +638,20 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         _persist(report_path, report)
 
         report["stage"] = "native-auto-run"
+        after_intercept = (
+            _same_session_terminal_resolver(
+                expected_war_id=expected_war_id,
+                source_capture=action_runner._load_source_capture(
+                    copied_capture, capture_sha256
+                ),
+                source_capture_sha256=capture_sha256,
+                runtime_manifest=runtime_manifest_path,
+                runtime_root=runtime_root,
+                expected_runtime_manifest_sha256=runtime_manifest_sha256,
+            )
+            if args.execute_terminal_action
+            else None
+        )
         candidate_report = adapter.native_auto_run(
             spec,
             turn_count=turn_limit,
@@ -502,12 +669,23 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 expected_war_id,
                 capture_sha256,
             ),
+            after_intercept=after_intercept,
         )
         report["candidate_native_auto_run"] = candidate_report
-        adapter._record_and_validate_candidate_auto_run_report(
-            attempt,
-            candidate_report,
-        )
+        if args.execute_terminal_action:
+            adapter._write_json_atomic(
+                attempt / "candidate-native-auto-run-report.json",
+                candidate_report,
+            )
+            candidate_resolution = _require_same_session_resolution(
+                candidate_report,
+                expected_war_id=expected_war_id,
+            )
+        else:
+            adapter._record_and_validate_candidate_auto_run_report(
+                attempt,
+                candidate_report,
+            )
         stage_order.append("native-auto-run")
 
         report["stage"] = "pre-freeze-source-recheck"
@@ -517,27 +695,34 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         )
         stage_order.append("pre-freeze-source-recheck")
 
-        report["stage"] = "freeze-action-runner-input"
-        action_input = adapter._freeze_action_runner_input(
-            artifact_dir=attempt,
-            state_dir=spec.state_dir,
-            paths=paths,
-            source_capture_path=copied_capture,
-            source_capture_sha256=capture_sha256,
-            candidate_report=candidate_report,
-            runtime_manifest_path=runtime_manifest_path,
-            runtime_manifest_sha256=runtime_manifest_sha256,
-            runtime_root=runtime_root,
-            profile_settings_template=args.profile_settings_template,
-            expected_profile_settings_sha256=(
-                args.expected_profile_settings_sha256
-            ),
-            expected_shadercache_tree_sha256=(
-                args.expected_shadercache_tree_sha256
-            ),
-        )
-        report["action_runner_input"] = action_input
-        stage_order.append("freeze-action-runner-input")
+        if args.execute_terminal_action:
+            report["stage"] = "verify-same-session-terminal-action"
+            report["candidate_resolution"] = copy.deepcopy(
+                candidate_report["candidate_resolution"]
+            )
+            stage_order.append("verify-same-session-terminal-action")
+        else:
+            report["stage"] = "freeze-action-runner-input"
+            action_input = adapter._freeze_action_runner_input(
+                artifact_dir=attempt,
+                state_dir=spec.state_dir,
+                paths=paths,
+                source_capture_path=copied_capture,
+                source_capture_sha256=capture_sha256,
+                candidate_report=candidate_report,
+                runtime_manifest_path=runtime_manifest_path,
+                runtime_manifest_sha256=runtime_manifest_sha256,
+                runtime_root=runtime_root,
+                profile_settings_template=args.profile_settings_template,
+                expected_profile_settings_sha256=(
+                    args.expected_profile_settings_sha256
+                ),
+                expected_shadercache_tree_sha256=(
+                    args.expected_shadercache_tree_sha256
+                ),
+            )
+            report["action_runner_input"] = action_input
+            stage_order.append("freeze-action-runner-input")
 
         report["stage"] = "final-source-recheck"
         report["source_immutability"] = _require_sources_unchanged(
@@ -547,13 +732,21 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         stage_order.append("final-source-recheck")
         report.update(
             {
-                "status": "CANDIDATE_FROZEN",
+                "status": (
+                    "GEN034_CLOSED"
+                    if args.execute_terminal_action
+                    else "CANDIDATE_FROZEN"
+                ),
                 "stage": "complete",
                 "boundaries": {
                     "natural_event_repeated": False,
-                    "terminal_action_submitted": False,
-                    "action_runner_input_ready": True,
-                    "gen034_closed": False,
+                    "terminal_action_submitted": bool(
+                        args.execute_terminal_action
+                    ),
+                    "action_runner_input_ready": not bool(
+                        args.execute_terminal_action
+                    ),
+                    "gen034_closed": bool(args.execute_terminal_action),
                 },
             }
         )
@@ -562,6 +755,20 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     except BaseException as error:
         if admitted is not None:
             report["source_immutability"] = _source_immutability(admitted)
+        resolution = (
+            candidate_report.get("candidate_resolution")
+            if isinstance(candidate_report, dict)
+            else None
+        )
+        submitted = (
+            True
+            if isinstance(resolution, dict)
+            and isinstance(resolution.get("exit_action_commands"), list)
+            and bool(resolution["exit_action_commands"])
+            else False
+            if not args.execute_terminal_action
+            else None
+        )
         report.update(
             {
                 "status": "RED",
@@ -569,7 +776,7 @@ def run_continuation(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 "candidate_native_auto_run": candidate_report,
                 "boundaries": {
                     "natural_event_repeated": False,
-                    "terminal_action_submitted": False,
+                    "terminal_action_submitted": submitted,
                     "action_runner_input_ready": False,
                     "gen034_closed": False,
                 },
