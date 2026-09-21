@@ -65,7 +65,7 @@ def now() -> str:
 
 def source_round(manifest: dict[str, object]) -> str:
     value = manifest.get("source_round")
-    require(isinstance(value, str) and re.fullmatch(r"R[1-9][0-9]*", value) is not None,
+    require(isinstance(value, str) and re.fullmatch(r"R0*[1-9][0-9]*", value) is not None,
             "Council scene candidate has no monotonic source round")
     return value
 

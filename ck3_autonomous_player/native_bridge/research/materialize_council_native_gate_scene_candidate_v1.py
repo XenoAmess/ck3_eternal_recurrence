@@ -162,7 +162,7 @@ def materialize(
     source_pair = source_pair.resolve()
     repo = repo.resolve()
     require(not candidate.exists(), "candidate root already exists; frozen versions are immutable")
-    require(re.fullmatch(r"R[1-9][0-9]*", source_round) is not None,
+    require(re.fullmatch(r"R0*[1-9][0-9]*", source_round) is not None,
             "source round is not monotonic")
     require(re.fullmatch(r"[0-9a-f]{40}", source_commit) is not None,
             "source commit is not a full lowercase Git object id")

@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from materialize_council_native_gate_scene_candidate_v1 import (
     derive_checkpoint_projection,
+    materialize,
     replace_strings,
     resolve_source_state,
 )
@@ -51,6 +53,17 @@ def driver() -> dict[str, object]:
 
 
 class MaterializeCouncilCandidateTests(unittest.TestCase):
+    def test_accepts_zero_padded_source_round_before_any_output(self) -> None:
+        with patch.object(Path, "exists", return_value=False):
+            with self.assertRaisesRegex(ValueError, "durable source pair/profile is absent"):
+                materialize(Path("candidate"), Path("static"), Path("source-state"),
+                            Path("source-pair"), Path("game"), Path("python"),
+                            Path("repo"), "R0050", "a" * 40)
+            with self.assertRaisesRegex(ValueError, "source round is not monotonic"):
+                materialize(Path("candidate"), Path("static"), Path("source-state"),
+                            Path("source-pair"), Path("game"), Path("python"),
+                            Path("repo"), "R0000", "a" * 40)
+
     def test_projects_exactly_through_durable_checkpoint(self) -> None:
         projected, frame = derive_checkpoint_projection(
             driver(), "A" * 64, Path("C:/candidate/xar_checkpoint.ck3"),
