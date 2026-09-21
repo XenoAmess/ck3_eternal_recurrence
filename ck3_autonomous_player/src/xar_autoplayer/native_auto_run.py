@@ -126,6 +126,15 @@ def _registered_event_material_postcondition_issue(
     status = observed.get("status")
     if status == "failed":
         return "failed"
+    if (
+        expectation.get("event_definition_key")
+        == "stress_threshold_special.1001"
+        and isinstance(expectation.get("starting_value"), int)
+        and not isinstance(expectation.get("starting_value"), bool)
+        and expectation["starting_value"] > 0
+        and status == "verified_no_change"
+    ):
+        return "no_material_change"
     if status not in {"verified_change", "verified_no_change"}:
         return "unavailable"
     return None

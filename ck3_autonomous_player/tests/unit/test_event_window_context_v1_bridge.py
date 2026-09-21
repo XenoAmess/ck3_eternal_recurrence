@@ -170,6 +170,47 @@ def _frame(status: str = "available") -> dict[str, object]:
     }
 
 
+def _r0065_grief_frame() -> dict[str, object]:
+    frame = _frame()
+    frame.update({
+        "event_definition_key": "stress_threshold_special.1001",
+        "calculated_event_id": 3_121_001,
+        "runtime_stats_ordinal": 4_333,
+        "root_scope": _scope(character_id=CHARACTER_ID),
+        "saved_scopes": [
+            {
+                "name": "stress_character",
+                "name_identifier": 20_928,
+                "scope": _scope(character_id=CHARACTER_ID),
+            },
+            {
+                "name": "deceased_character",
+                "name_identifier": 19_883,
+                "scope": _scope(character_id=36_403),
+            },
+        ],
+    })
+    first = frame["options"][0]
+    first.update({
+        "native_option_index": 0,
+        "shown": True,
+        "enabled": True,
+        "fallback": False,
+        "cancel": False,
+        "unavailable_reason": "",
+    })
+    first["effect_indicators"]["rows"] = []
+    frame["options"] = [
+        {
+            **copy.deepcopy(first),
+            "rendered_index": rendered,
+            "native_option_index": native,
+        }
+        for rendered, native in enumerate((0, 4, 7))
+    ]
+    return frame
+
+
 def _snapshot() -> dict[str, object]:
     return {
         "snapshot_id": "snapshot-9",
@@ -803,6 +844,64 @@ class EventWindowContractTests(unittest.TestCase):
         self.assertEqual(
             plan["event_material_postcondition"]["starting_value"], 42
         )
+
+    def test_r0065_grief_source_bound_choice_uses_typed_native_seven(
+        self,
+    ) -> None:
+        frame = _r0065_grief_frame()
+        snapshot = _snapshot()
+        snapshot["played_character"] = {
+            "character_id": CHARACTER_ID,
+            "alive": True,
+            "stress_points": 87,
+        }
+        snapshot["active_event"]["option_count"] = 9
+
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+                "select-event-option-5",
+                "select-event-option-8",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "active_event_registry_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-8")
+        self.assertEqual(plan["event_decision"]["selected_native_option_index"], 7)
+        self.assertEqual(plan["event_decision"]["matched_option_variant_index"], 3)
+        self.assertFalse(plan["event_decision"]["semantic_optimal"])
+        self.assertEqual(plan["event_material_postcondition"]["status"], "ready")
+        self.assertEqual(
+            plan["event_material_postcondition"]["starting_value"], 87
+        )
+
+    def test_r0065_grief_requires_positive_same_frame_stress(self) -> None:
+        frame = _r0065_grief_frame()
+        for stress_points in (0, None):
+            with self.subTest(stress_points=stress_points):
+                snapshot = _snapshot()
+                snapshot["played_character"] = {
+                    "character_id": CHARACTER_ID,
+                    "alive": True,
+                    "stress_points": stress_points,
+                }
+                snapshot["active_event"]["option_count"] = 9
+                plan = choose_one_life_turn(
+                    [_query_history(frame)],
+                    snapshot=snapshot,
+                    action_steps={
+                        QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                        "select-event-option-8",
+                    },
+                )
+                self.assertEqual(
+                    plan["phase"],
+                    "active_event_registry_material_observation_blocked",
+                )
+                self.assertIsNone(plan["selected_step"])
 
     def test_planner_uses_r840_prison_release_registry_acknowledgement(
         self,

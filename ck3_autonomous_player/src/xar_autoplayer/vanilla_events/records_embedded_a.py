@@ -1493,5 +1493,35 @@ EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
     )
 }
 
+# R0065 adds one source-reviewed no-confidant projection to the portable
+# production contract. Keep the historical migrated observation unchanged.
+# events/stress_events/stress_threshold_special_events.txt SHA-256
+# 768CBA7DB6270BB2FE25D9EEE37D2F24483EE309A2496DD9A539673EF094F709.
+_stress_grief = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[
+    "stress_threshold_special.1001"
+]
+_stress_grief["option_variants"] = (
+    *_stress_grief["option_variants"],
+    {
+        "option_count": 3,
+        "native_option_indices": (0, 4, 7),
+        "snapshot_option_counts": (9,),
+        "selected_option_number": 8,
+        "selected_native_option_index": 7,
+        "saved_scope_name_sets": (("stress_character", "deceased_character"),),
+        "unique_character_scope_excludes": {
+            "deceased_character": (PLAYER_SENTINEL,),
+        },
+        "character_scope_differs_from": {
+            "deceased_character": ("stress_character",),
+        },
+        "scope_types": {
+            "stress_character": "character",
+            "deceased_character": "character",
+        },
+        "saved_scope_count": 2,
+    },
+)
+
 
 __all__ = ["EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS"]

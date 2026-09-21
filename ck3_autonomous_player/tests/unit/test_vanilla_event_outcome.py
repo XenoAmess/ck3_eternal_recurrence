@@ -98,6 +98,40 @@ def _gold_selection(before: int, after: int) -> dict[str, object]:
 
 
 class VanillaEventMaterialOutcomeTests(unittest.TestCase):
+    def test_r0065_grief_binds_independent_stress_delta(self) -> None:
+        expected = plan_registered_event_material_postcondition_v1(
+            _decision(
+                event_key="stress_threshold_special.1001", native_index=7
+            ),
+            {"character_id": 27181, "alive": True, "stress_points": 87},
+            snapshot_id="native:19",
+            revision=33,
+        )
+        self.assertIsInstance(expected, dict)
+        self.assertEqual(expected["status"], "ready")
+        self.assertEqual(expected["selected_native_option_index"], 7)
+
+        observed = evaluate_registered_event_material_postcondition_v1(
+            expected, _selection(87, 57)
+        )
+        self.assertEqual(observed["status"], "verified_change")
+        self.assertEqual(observed["delta"], -30)
+        self.assertIsNone(_registered_event_material_postcondition_issue(
+            {"event_material_postcondition": expected},
+            {"event_material_postcondition": observed},
+        ))
+        unchanged = evaluate_registered_event_material_postcondition_v1(
+            expected, _selection(87, 87)
+        )
+        self.assertEqual(unchanged["status"], "verified_no_change")
+        self.assertEqual(
+            _registered_event_material_postcondition_issue(
+                {"event_material_postcondition": expected},
+                {"event_material_postcondition": unchanged},
+            ),
+            "no_material_change",
+        )
+
     def test_supported_choice_plans_same_frame_stress_expectation(self) -> None:
         expected = _expectation()
 
