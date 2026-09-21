@@ -1,5 +1,7 @@
 # CK3 原生 AI 决策树索引
 
+- [exact-build source tree + R0072 paused RED] [`health.7000` 衰弱开始](health-7000-infirm-onset.md)：原版 yearly-health 入口与唯一加 infirm 的选项，R0072 只因四个精确投影字段缺失在选择前阻塞；同帧 source-bound 选择与独立后置仍待实机。
+
 - [exact-build source tree + R0065 paused RED] [`stress_threshold_special.1001` 哀伤压力事件](stress-threshold-special-1001.md)：原版九项与自然触发链、R0065 仅 `[0,4,7]` 物化；native 7 可作已知永久 grief 代价的 bounded continuation，native 4 的饥饿分支须补 trait 观测，禁止 generic first-click。
 
 - [static-ready after production B1; live retry pending] [`fervor.1002` forced scandal notice](fervor-1002.md): exact CK3 1.19.0.6 five-scope/three-option projection and the authored option 3/native 2 bounded-stress route; this is forced-event continuity only and does not advertise a general religion policy.
