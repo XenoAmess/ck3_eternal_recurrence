@@ -46,6 +46,9 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   const resumeCompletionTimeoutMs = performanceGateEnforced
     ? contract.maximumResumeDurationMs
     : contract.reportOnlyMaximumDurationMs
+  const restartCompletionTimeoutMs = performanceGateEnforced
+    ? contract.maximumDurationMs[128]
+    : contract.reportOnlyMaximumDurationMs
   // Hosted Pages runners are intentionally report-only performance probes and
   // can spend ~250 seconds in the three real fits before pause/resume and
   // cancellation gates begin. Keep workstation thresholds strict while giving
@@ -299,7 +302,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   const restartProgressLatencyMs = Date.now() - restartStarted
   expect(restartProgressLatencyMs).toBeLessThan(contract.maximumRestartProgressLatencyMs)
   await expect(report).toHaveAttribute('data-fit-task-state', 'completed', {
-    timeout: contract.maximumDurationMs[128],
+    timeout: restartCompletionTimeoutMs,
   })
   const restartedRawEvidence = await report.getAttribute('data-fit-evidence')
   expect(restartedRawEvidence).toBeTruthy()

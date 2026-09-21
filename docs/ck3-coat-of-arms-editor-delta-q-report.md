@@ -81,6 +81,8 @@ A/B contact sheet 当前明确标记 `pending-human-review`；自动测试没有
 
 CI workflow 已把 `perceptual-final-candidates.spec.ts` 加入正式 Pages 发布门禁。下一步只剩把本工作树线性 rebase/push 到 `master`、等待对应 Pages workflow GREEN，并从 canonical URL 回读部署身份；该结果会记录为本报告的 release closure。
 
+发布门禁的失败尝试追加保留：run `35613417757` 暴露 Windows CRLF 原始源码哈希在 Linux checkout 上的可移植性假 RED；run `35615542419` 随后暴露 report-only GitHub runner 的 1 层取消后重启仍误用了工作站 128 层 15 秒性能门限。两者都没有降低图像质量、结构、预算、取消或最终完成条件：前者改为验证 LF canonical 与可逆 CRLF 原始哈希，后者在 `COA_E2E_PERFORMANCE_GATE=report-only` 时沿用既有 420 秒诊断上限，而工作站严格门限保持不变。
+
 ## 6. 已知边界
 
 - legacy total/edge 在 7 张图中各有 4 张不退化；它们作为公开诊断与安全候选保留，但不会否决感知 v2 明显更优的首选。这是已冻结的质量优先政策，不是隐藏回归。
