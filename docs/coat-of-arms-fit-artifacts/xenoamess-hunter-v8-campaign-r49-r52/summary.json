@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-coa-gamma-g3-campaign-summary-v1",
+  "status": "passed-limited",
+  "implementationCommits": ["9c77d7a9", "30e2127f"],
+  "exactBuild": {
+    "version": "1.19.0.6",
+    "executableSha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridgeDllSha256": "42FE982AC89876DF7F72448AB7E708D3337A878D99EF92DD07CA99F39C7B7E6E"
+  },
+  "attempts": [
+    {"id": "R49", "status": "RED", "reportBytes": 1610456, "reportSha256": "574F3B3927C54270F9166350529E9379E3BDE1CD1EA3D4AB7181C473FE58BDED", "reason": "campaign-root completion snapshot changed", "cleanupProven": true},
+    {"id": "R50", "status": "GREEN", "reportBytes": 2571369, "reportSha256": "68C2E14E189B0F4121ABFAF677817CE931C1F5E5A82FB4299DE29E35E13D0614", "elapsedSeconds": 220.272, "bridgePid": 30384, "characterId": 61075, "dateRaw": 53144328, "campaignRootAttemptCount": 1, "cleanupProven": true},
+    {"id": "R51", "status": "RED", "reportBytes": 1145, "reportSha256": "991A04C421D3C5B9CEFCB61A18F55CBE7FFA871BF3B8232B6EDEA62E31D4E467", "reason": "cold checkpoint start requires a v2 driver state for this pipe", "ck3Started": false},
+    {"id": "R52", "status": "GREEN", "reportBytes": 51192, "reportSha256": "005B8973565D88134F146731A9844263410FFCC91B9152ED1495E4C0E12DF615", "elapsedSeconds": 183.549, "priorPid": 30384, "replacementPid": 25132, "characterId": 61075, "dateRaw": 53144328, "checkpointHashUnchanged": true, "campaignRootIdentity": true, "cleanupProven": true}
+  ],
+  "checkpoint": {
+    "bytes": 50461746,
+    "sha256": "F368D77D38B559422961BE2BA9A2F543406E415812D3EACDF83FA59B4CAFA3EF",
+    "sourceSha256": "AEECE65224C8DBB86FCBB59D8535C1BE4CAD6458248CF54E3EFBF6E569E09E3D",
+    "semanticFragmentBytes": 204,
+    "semanticFragmentSha256": "8C0ABD44CCA61138E830FBDEA7007EDBCFEB5A59E5A45116C13DD7A0CCD786EA",
+    "semanticFragmentOffsets": [145, 457, 49121846]
+  },
+  "coverage": {
+    "frontendDynastyCoaCampaignPersistence": "passed",
+    "inCampaignDynastyEditorReopen": "limited",
+    "personalCharacterCoa": "not-supported",
+    "titleCoa": "not-supported"
+  }
+}

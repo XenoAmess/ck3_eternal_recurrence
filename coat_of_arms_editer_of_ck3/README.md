@@ -79,5 +79,8 @@ Quarkus backend 与浏览器 REST client 已在 Beta WP7 退役。原生研究�
 当前最终 1,024 实例 Pareto 候选的 CK3 Apply、校准 framebuffer 与 Copy/reapply 已在
 [`../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v8-native-r38/README.md`](../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v8-native-r38/README.md)
 通过预冻结门限；该证据不声称 GPU 逐字节一致。
-当前尚未覆盖的 shader/VFS 组合原生 framebuffer、通用 DLC/mod runtime definition winner 和战役保存/重载持久化仍按证据范围标为待验；
+角色设计器王朝家徽的 Finish、开局、保存、存档内语义记录和新进程冷重载闭环见
+[`../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v8-campaign-r49-r52/README.md`](../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v8-campaign-r49-r52/README.md)。
+当前尚未覆盖的 shader/VFS 组合原生 framebuffer 与通用 DLC/mod runtime definition winner 继续按证据范围标为受限；
+战役内重新打开王朝编辑器为 `limited`，角色个人家徽和头衔家徽为 `not-supported`，不得从王朝路径外推；
 Gamma/1.0 收口顺序见 [`../docs/ck3-coat-of-arms-editor-gamma-plan.md`](../docs/ck3-coat-of-arms-editor-gamma-plan.md)。

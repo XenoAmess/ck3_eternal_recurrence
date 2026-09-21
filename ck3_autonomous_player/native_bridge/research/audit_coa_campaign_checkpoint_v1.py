@@ -14,9 +14,6 @@ from pathlib import Path
 
 
 EXPECTED_CK3_VERSION = b"1.19.0.6"
-EXPECTED_SOURCE_SHA256 = (
-    "8A613E9E2944DDF497FBDF2496D4375B6CFB4AFC02E7A315F440EFCC934CB62B"
-)
 EXPECTED_SEMANTIC_FRAGMENT_SHA256 = (
     "8C0ABD44CCA61138E830FBDEA7007EDBCFEB5A59E5A45116C13DD7A0CCD786EA"
 )
@@ -44,6 +41,7 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--expected-checkpoint-sha256", required=True)
+    parser.add_argument("--expected-source-sha256", required=True)
     parser.add_argument("--output", type=Path)
     return parser
 
@@ -63,11 +61,20 @@ def _all_offsets(haystack: bytes, needle: bytes) -> list[int]:
         cursor = offset + len(needle)
 
 
-def audit(checkpoint: Path, expected_checkpoint_sha256: str) -> dict[str, object]:
+def audit(
+    checkpoint: Path,
+    expected_checkpoint_sha256: str,
+    expected_source_sha256: str,
+) -> dict[str, object]:
     path = checkpoint.resolve()
     raw = path.read_bytes()
     checkpoint_sha256 = _sha256_bytes(raw)
     expected_sha256 = expected_checkpoint_sha256.upper()
+    source_sha256 = expected_source_sha256.upper()
+    if len(source_sha256) != 64 or any(
+        character not in "0123456789ABCDEF" for character in source_sha256
+    ):
+        raise ValueError("expected source SHA-256 must be 64 hexadecimal digits")
     fragment_sha256 = _sha256_bytes(EXPECTED_SEMANTIC_FRAGMENT)
     offsets = _all_offsets(raw, EXPECTED_SEMANTIC_FRAGMENT)
     checks = {
@@ -94,7 +101,7 @@ def audit(checkpoint: Path, expected_checkpoint_sha256: str) -> dict[str, object
             "ck3_version": EXPECTED_CK3_VERSION.decode("ascii"),
         },
         "semantic_source": {
-            "source_sha256": EXPECTED_SOURCE_SHA256,
+            "source_sha256": source_sha256,
             "pattern": "pattern_solid.dds",
             "colors": ["rgb { 17 83 149 }", "white", "black"],
             "emblem": "ce_martlet.dds",
@@ -126,7 +133,11 @@ def audit(checkpoint: Path, expected_checkpoint_sha256: str) -> dict[str, object
 
 def main() -> int:
     args = _parser().parse_args()
-    report = audit(args.checkpoint, args.expected_checkpoint_sha256)
+    report = audit(
+        args.checkpoint,
+        args.expected_checkpoint_sha256,
+        args.expected_source_sha256,
+    )
     rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.output is not None:
         output = args.output.resolve()

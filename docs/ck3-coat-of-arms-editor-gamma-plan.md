@@ -1,8 +1,8 @@
 # CK3 家徽编辑器 Gamma / 1.0 收口计划
 
-> 状态：执行中（2026-09-21）
+> 状态：G0–G4 已收口，G5 本地门禁已通过，等待承载本状态的 `master` commit 完成 Pages 同 commit 部署与公开回读（2026-09-21）
 >
-> 基线：`master` `c7f4392b0ce36b6b288b3303c5e277dacd513b04`
+> 起始基线：`master` `c7f4392b0ce36b6b288b3303c5e277dacd513b04`；G3 实现：`9c77d7a9`、`30e2127f`
 >
 > 产品目录：`coat_of_arms_editer_of_ck3/`
 >
@@ -25,7 +25,7 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
   `_default.dds` `textured_emblem` 和 `parent` 边界均有冻结证据。
 - 128/1024/10,000 预算、暂停/继续、跨刷新 checkpoint、取消/重启、项目自动保存和三候选 Pareto 已通过。
 - 当前诚实边界仍包括：并非所有 shader/VFS 组合都有原生像素证据；`replace_path` 不建模；没有通用 runtime
-  definition-registry winner API；自定义家徽的战役保存/重载持久化尚未形成独立矩阵。
+  definition-registry winner API；王朝家徽的保存/冷重载已经成矩阵，但战役内编辑器重开、角色个人家徽与头衔家徽仍未支持。
 
 ## 3. 不变约束
 
@@ -109,6 +109,8 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 
 ### G3：战役持久化（P0/P1，1–3 工程日 + CK3 槽位，依赖 G2 的稳定捕获能力）
 
+状态：`passed-limited`（2026-09-21；[R49–R52 追加式证据](coat-of-arms-fit-artifacts/xenoamess-hunter-v8-campaign-r49-r52/README.md)）。
+
 交付：
 
 - 分开验证角色设计器 Finish、进入战役、手动保存、退出、重载、重新打开目标角色/王朝/头衔家徽。
@@ -116,6 +118,14 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 - 明确 ruler/dynasty/title 三种目标实际支持范围；无法稳定寻址的目标不纳入通过声明。
 
 退出条件：至少一条正式支持路径完成 fresh-userdir 保存/重载闭环；其余路径有明确 passed/limited/not-supported 状态。
+
+完成证据：
+
+- 新增四个 exact-build 原生语义动作：生成文化合法名字、Finalize、自定义角色确认和大厅 Start；原生 capability 基数由 96 增至 100，全部要求可见/启用目标和独立后置条件。
+- R49 的 campaign-root 同帧竞态与 R51 的 pipe 身份错误均以 RED 原样保留；修复只对已知 completion race 做三次有界重试，未知拒绝继续 fail closed。
+- R50 在 fresh userdir 中完成王朝家徽 Copy/reopen、角色完成、开局和 50,461,746-byte checkpoint；R52 用新 PID 冷启动同一 checkpoint，角色 `61075`、日期 `53144328`、paused map 和 campaign root 不变。
+- checkpoint SHA-256 `F368D77D38B559422961BE2BA9A2F543406E415812D3EACDF83FA59B4CAFA3EF` 在冷重载前后不变；exact-build 存档审计在 metadata 与 serialized game state 中找到三处同一 204-byte 家徽语义片段。
+- 支持范围冻结为：角色设计器王朝路径 `passed`；战役内王朝编辑器重开 `limited`；角色个人和头衔家徽 `not-supported`。没有用 Finish ACK 代替保存/重载证明，也没有把二进制片段审计写成通用存档解析。
 
 ### G4：运行时 VFS / definition registry 边界（P1，2–4 工程日，可与 G3 独立）
 
@@ -142,6 +152,8 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 
 ### G5：1.0 发布门禁（P0，1–2 工程日，依赖 G0–G4 的目标范围冻结）
 
+状态：`local-passed / deploy-pending`（2026-09-21；[clean R53](coat-of-arms-fit-artifacts/gamma-g5-clean-r53/README.md)）。
+
 交付：
 
 - 从干净 checkout 执行 pack 逐文件校验、Vitest、无 CK3/无后端 Playwright、跨浏览器核心流程、production build、
@@ -150,6 +162,13 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 - GitHub Pages workflow 部署后，从 canonical URL 回读 commit/time、核心静态资源、离线恢复和生产零后端请求。
 
 退出条件：所有必须门禁 GREEN，公开页面与仓库能力矩阵一致；任何原生 RED 不被文案掩盖。
+
+本地完成证据：
+
+- detached clean worktree `30e2127f`：source/dist 两轮 1,630/1,630 pack 校验、20 files / 93 Vitest、production build、五类零后端扫描全部 GREEN。
+- Playwright：real-fit budget 1/1、standalone 2/2、production group 15/15、WebGL context-loss 1/1、Chromium/Firefox/WebKit 3/3、service-worker offline 1/1 GREEN。
+- 最终 Pages base-path build 与 `dist` pack 复验 GREEN；生产浏览器只发出同源 GET，backend/user-content request 均为 0。
+- 承载本状态的 `master` commit 推送后，仍须等待 Pages workflow 对同一 commit GREEN，并从 canonical URL 回读 commit/time；完成前不得把外部门禁写成已部署。
 
 ## 5. 顺序与停止条件
 

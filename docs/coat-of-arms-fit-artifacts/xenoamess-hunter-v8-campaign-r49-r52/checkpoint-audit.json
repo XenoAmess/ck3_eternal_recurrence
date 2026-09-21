@@ -1,0 +1,63 @@
+{
+  "schema": "xar.ck3.coa-campaign-checkpoint-audit-v1",
+  "schema_version": 1,
+  "status": "GREEN",
+  "ok": true,
+  "checkpoint": {
+    "path": "D:\\ck3_coa_gamma_g3_r50\\profile\\last_save.ck3",
+    "bytes": 50461746,
+    "sha256": "F368D77D38B559422961BE2BA9A2F543406E415812D3EACDF83FA59B4CAFA3EF",
+    "format_prefix_ascii": "SAV010",
+    "ck3_version": "1.19.0.6"
+  },
+  "semantic_source": {
+    "source_sha256": "AEECE65224C8DBB86FCBB59D8535C1BE4CAD6458248CF54E3EFBF6E569E09E3D",
+    "pattern": "pattern_solid.dds",
+    "colors": [
+      "rgb { 17 83 149 }",
+      "white",
+      "black"
+    ],
+    "emblem": "ce_martlet.dds",
+    "emblem_color": "white",
+    "mask": [
+      1,
+      0,
+      0
+    ],
+    "position": [
+      0.37,
+      0.61
+    ],
+    "scale": [
+      -0.42,
+      0.58
+    ],
+    "depth": 1.01,
+    "rotation": -23
+  },
+  "binary_semantic_fragment": {
+    "bytes": 204,
+    "sha256": "8C0ABD44CCA61138E830FBDEA7007EDBCFEB5A59E5A45116C13DD7A0CCD786EA",
+    "occurrence_count": 3,
+    "offsets": [
+      145,
+      457,
+      49121846
+    ],
+    "interpretation": "exact-build tokenized record; first occurrence is save metadata and later occurrence is serialized game state"
+  },
+  "checks": {
+    "checkpoint_hash_exact": true,
+    "save_format_exact": true,
+    "ck3_version_exact": true,
+    "semantic_fragment_definition_exact": true,
+    "metadata_record_present": true,
+    "game_state_record_present": true
+  },
+  "limitations": [
+    "This audit recognizes one frozen CK3 1.19.0.6 token sequence.",
+    "It does not implement a general-purpose CK3 binary save parser.",
+    "It does not prove an in-campaign editor can reopen ruler or title CoA."
+  ]
+}
