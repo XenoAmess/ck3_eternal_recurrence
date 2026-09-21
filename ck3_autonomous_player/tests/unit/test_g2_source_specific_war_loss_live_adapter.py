@@ -236,6 +236,92 @@ def _relocate_runtime_binaries(
 
 
 class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
+    def test_candidate_interceptor_stops_only_the_bound_formal_terminal(self) -> None:
+        interceptor = ADAPTER._candidate_terminal_interceptor(88, "A" * 64)
+        self.assertIsNone(
+            interceptor(
+                {
+                    "selected_step": "advance-time",
+                    "plan": {"phase": "fixture"},
+                }
+            )
+        )
+        receipt = interceptor(
+            {
+                "selected_step": "surrender-war-88",
+                "plan": {
+                    "war_exit_decision": {
+                        "war_id": 88,
+                        "recommended_outcome": "surrender",
+                        "action_submitted": False,
+                    }
+                },
+            }
+        )
+        self.assertEqual(receipt["war_id"], 88)
+        self.assertFalse(receipt["action_submitted"])
+        with self.assertRaisesRegex(ADAPTER.LiveAdapterError, "another WarID"):
+            interceptor(
+                {
+                    "selected_step": "offer-white-peace-99",
+                    "plan": {},
+                }
+            )
+
+    def test_candidate_action_runner_input_binds_checkpoint_and_driver_state(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            artifact = root / "artifact"
+            state = root / "state"
+            checkpoint = state / "profile" / "save games" / "xar_checkpoint.ck3"
+            driver_state = state / "native-session" / "driver-state.json"
+            source_capture = artifact / "capture.json"
+            for path, payload in (
+                (checkpoint, b"checkpoint"),
+                (driver_state, b"driver-state"),
+                (source_capture, b"source-capture"),
+            ):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(payload)
+            candidate_report = {
+                "candidate_interception": {
+                    "selected_step": "surrender-war-88",
+                    "plan": {
+                        "war_exit_decision": {
+                            "war_id": 88,
+                            "opponent_character_id": 99,
+                        }
+                    },
+                    "checkpoint": {
+                        "path": str(checkpoint),
+                        "sha256": ADAPTER._sha256_file(checkpoint),
+                    },
+                    "after_checkpoint": {
+                        "date_raw": 1234,
+                        "played_character": {"character_id": 77},
+                    },
+                }
+            }
+
+            frozen = ADAPTER._freeze_action_runner_input(
+                artifact_dir=artifact,
+                state_dir=state,
+                paths=_paths(root),
+                source_capture_path=source_capture,
+                source_capture_sha256="A" * 64,
+                candidate_report=candidate_report,
+            )
+
+            self.assertEqual(frozen["identity"]["war_id"], 88)
+            self.assertFalse(frozen["action_submitted"])
+            self.assertEqual(
+                frozen["checkpoint"]["sha256"],
+                ADAPTER._sha256_file(checkpoint),
+            )
+            self.assertTrue((artifact / "action-runner-input.json").is_file())
+
     def test_resume_checkpoint_requires_an_exact_hash_bound_save(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

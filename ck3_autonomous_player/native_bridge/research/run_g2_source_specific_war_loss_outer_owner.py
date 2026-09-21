@@ -195,6 +195,29 @@ def _validate_pretermination_probe_result(
     return result
 
 
+def _validate_candidate_checkpoint_result(
+    value: object, *, expected_pid: int
+) -> dict[str, object]:
+    result = _object(value, "candidate checkpoint result")
+    normalized = _object(result.get("source_normalization"), "candidate source")
+    identity = _object(result.get("identity"), "candidate identity")
+    checkpoint = _object(result.get("checkpoint"), "candidate checkpoint")
+    if (
+        result.get("ok") is not True
+        or result.get("status") != "candidate-checkpoint-saved"
+        or result.get("mode") != "candidate-source-checkpoint"
+        or normalized.get("capture_pid") != expected_pid
+        or identity.get("ck3_pid") != expected_pid
+        or checkpoint.get("status") != "saved"
+        or result.get("terminal_action_commands") != []
+        or result.get("generic_exit_terms_reader_used") is not False
+    ):
+        raise OuterOwnerContractError(
+            "candidate checkpoint changed process or terminal-action boundary"
+        )
+    return result
+
+
 async def run_exclusive_outer_owner(
     operations: Any,
     *,
@@ -204,6 +227,7 @@ async def run_exclusive_outer_owner(
     expected_war_id: int | None = None,
     continuation: Callable[..., Awaitable[dict[str, object]]] | None = None,
     read_only_pretermination_probe: bool = False,
+    candidate_checkpoint_capture: bool = False,
 ) -> dict[str, object]:
     """Compose one caller-supplied process owner around the lifecycle seam.
 
@@ -215,6 +239,8 @@ async def run_exclusive_outer_owner(
         raise OuterOwnerContractError("outer owner arguments are invalid")
     if expected_war_id is not None:
         expected_war_id = _positive_integer(expected_war_id, "expected WarID")
+    if read_only_pretermination_probe and candidate_checkpoint_capture:
+        raise OuterOwnerContractError("outer owner modes are mutually exclusive")
     if continuation is None:
         lifecycle_continuation = (
             lifecycle.run_same_lifecycle_pretermination_probe
@@ -299,13 +325,18 @@ async def run_exclusive_outer_owner(
             expected_date_raw=expected_date_raw,
             postwar_timeout=postwar_timeout,
         )
-        lifecycle_result = (
-            _validate_pretermination_probe_result(
+        if candidate_checkpoint_capture:
+            lifecycle_result = _validate_candidate_checkpoint_result(
                 lifecycle_value, expected_pid=pid
             )
-            if read_only_pretermination_probe
-            else _validate_lifecycle_result(lifecycle_value, expected_pid=pid)
-        )
+        elif read_only_pretermination_probe:
+            lifecycle_result = _validate_pretermination_probe_result(
+                lifecycle_value, expected_pid=pid
+            )
+        else:
+            lifecycle_result = _validate_lifecycle_result(
+                lifecycle_value, expected_pid=pid
+            )
         trace.append("same-driver-lifecycle-continuation-complete")
     finally:
         try:
@@ -327,7 +358,11 @@ async def run_exclusive_outer_owner(
     ):
         raise OuterOwnerContractError("outer owner did not complete exactly one cleanup")
     continuation_pid = (
-        _object(lifecycle_result.get("identity"), "probe identity").get("ck3_pid")
+        _object(lifecycle_result.get("identity"), "candidate identity").get("ck3_pid")
+        if candidate_checkpoint_capture
+        else _object(lifecycle_result.get("identity"), "probe identity").get(
+            "ck3_pid"
+        )
         if read_only_pretermination_probe
         else _object(
             _object(lifecycle_result.get("source_specific_loss_join"), "lifecycle join").get(
@@ -339,12 +374,16 @@ async def run_exclusive_outer_owner(
     return {
         "schema": RUN_SCHEMA,
         "status": (
-            "green-read-only-probe-orchestration"
+            "green-candidate-checkpoint-orchestration"
+            if candidate_checkpoint_capture
+            else "green-read-only-probe-orchestration"
             if read_only_pretermination_probe
             else "green-orchestration"
         ),
         "mode": (
-            "read-only-pre-termination"
+            "candidate-source-checkpoint"
+            if candidate_checkpoint_capture
+            else "read-only-pre-termination"
             if read_only_pretermination_probe
             else "source-current-action-postwar"
         ),
@@ -378,7 +417,6 @@ def _validate_observer_source(source: str) -> dict[str, object]:
         "DebugSetProcessKillOnExit(FALSE)",
         "capture.original_breakpoint_byte_restored = WriteRemoteByte(",
         "if (!process_exited && capture.attach_mode)",
-        "DebugActiveProcessStop(process_info.dwProcessId)",
         "} else if (!process_exited) {",
         "capture.process_terminated = TerminateProcess(",
     )
@@ -392,7 +430,16 @@ def _validate_observer_source(source: str) -> dict[str, object]:
         non_attach_branch = source.index(
             "} else if (!process_exited) {", attach_branch
         )
-        detach_call = source.index("DebugActiveProcessStop(process_info.dwProcessId)")
+        direct_detach = "DebugActiveProcessStop(process_info.dwProcessId)"
+        helper_detach = "capture.debugger_detached = DetachDebuggerWithRetry("
+        if direct_detach in source[attach_branch:non_attach_branch]:
+            detach_call = source.index(direct_detach, attach_branch, non_attach_branch)
+        else:
+            detach_call = source.index(helper_detach, attach_branch, non_attach_branch)
+            helper_definition = source.index("bool DetachDebuggerWithRetry(DWORD pid")
+            helper_stop = source.index("DebugActiveProcessStop(pid)", helper_definition)
+            if not (helper_definition < helper_stop < attach_branch):
+                raise ValueError("detach helper does not call DebugActiveProcessStop")
         terminate_call = source.index(
             "capture.process_terminated = TerminateProcess(", non_attach_branch
         )

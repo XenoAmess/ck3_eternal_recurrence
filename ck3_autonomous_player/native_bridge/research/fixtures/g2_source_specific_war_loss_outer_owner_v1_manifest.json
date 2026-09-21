@@ -2,8 +2,8 @@
   "schema": "xar.ck3.g2_source_specific_war_loss_outer_owner_manifest.v1",
   "status": "static-ready-no-launch",
   "created_at": "2026-09-05T15:20:00+08:00",
-  "candidate_source_commit": "218f31f544e73be30e4660ebc67ec6795dcae771",
-  "candidate_source_change": "suspended prepared startup ownership working tree",
+  "candidate_source_commit": "fc8d18e49ba483ba2009724ea32bac4b5a0f7062",
+  "candidate_source_change": "GEN034-D candidate source checkpoint ownership working tree",
   "default_off": true,
   "live_authorized": false,
   "paths": {
@@ -16,23 +16,23 @@
     "postwar_runner": "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_live_acceptance.py",
     "terms_runner": "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
     "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-r450-20260911\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
-    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge.dll",
-    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge_injector.exe",
+    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\g2-gen034-d-private-f342-20260915\\build\\Release\\xar_ck3_bridge.dll",
+    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\g2-gen034-d-private-f342-20260915\\build\\Release\\xar_ck3_bridge_injector.exe",
     "game_executable": "Crusader Kings III/binaries/ck3.exe",
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt"
   },
   "sha256": {
-    "runner": "414D08B1E52835FBB6056018C99B16191C5B604C6DF3F6437078C22EC0733EAA",
+    "runner": "D162CDD681961989838B0F26D29DDCC6E9ED98420F8FA1BF5D4F636E110737FF",
     "lifecycle_runner": "E76E693BA2D60D8DA74B3038994085951AE4017B1EF97BBC69F1C4FE7D9E1415",
     "source_observer": "3CED2C016389C200B785C7B2BD3C0BE77EADBA56972527D2E3EDF647710156FE",
-    "standalone_capture_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
+    "standalone_capture_runner": "4E091C123DF0876ED81607B4AA6B7D3800F477FCA33E84BF146E8D71B66C76C6",
     "source_provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB",
     "source_contract": "346D3DE9105B44749D9BA1E11F820A7C538063980CE53C24A9572B486F9FB247",
     "postwar_runner": "6F1787BE4923F24F9C44FBB8DDD4FF531C1EC93B329309263771B2DB6EFE241C",
-    "terms_runner": "BA06A5A8B781912FB02D6F083C905B5D808782E5C7B7F46F654DB603AC018E61",
+    "terms_runner": "59DD75089B3C5F7579F394D7AF9C2E3BD1FBE5B9C060AD5CAA9080E481835689",
     "capture_executable": "EEE39F858E941E1500DA13FB11906814FA4D70EE42DED894CFDEB03ACEF709B8",
-    "bridge_dll": "4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B",
-    "bridge_injector": "43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D",
+    "bridge_dll": "D90F17673D54B37C5B2EF6832624C31386C5905815E2A218AE7ADF7C1C4722AB",
+    "bridge_injector": "B3BFE5A603E7772A2E294841E80547F7D795CF4049673ECF76C49A5075CEC52A",
     "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "bookmark_events": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF"
   },
@@ -56,7 +56,9 @@
     "one_final_cleanup_call": true,
     "final_cleanup_runs_on_green_and_red": true,
     "read_only_pretermination_probe_available": true,
-    "read_only_probe_forbids_checkpoint_and_mutation": true
+    "read_only_probe_forbids_checkpoint_and_mutation": true,
+    "candidate_checkpoint_capture_available": true,
+    "candidate_checkpoint_forbids_terminal_action": true
   },
   "composition": {
     "deterministic_orchestration_implemented": true,
@@ -67,7 +69,8 @@
     "lifecycle_continuation": "run_g2_source_specific_war_loss_lifecycle.run_same_lifecycle_sequence",
     "final_cleanup_owner": "outer-owner",
     "cold_second_process_forbidden": true,
-    "read_only_pretermination_probe": "run_g2_source_specific_war_loss_lifecycle.run_same_lifecycle_pretermination_probe"
+    "read_only_pretermination_probe": "run_g2_source_specific_war_loss_lifecycle.run_same_lifecycle_pretermination_probe",
+    "candidate_checkpoint_continuation": "caller-supplied source-bound save-checkpoint only"
   },
   "no_go": {
     "live_command_available": false,

@@ -43,6 +43,10 @@ from xar_autoplayer.bridge.raiktor_war_bound_loss_cleanup_contract import (  # n
     QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_CAPABILITY,
     QUERY_RAIKTOR_WAR_BOUND_LOSS_CLEANUP_V1_STEP_PREFIX,
 )
+from xar_autoplayer.bridge.war_contract import (  # noqa: E402
+    parse_offer_white_peace_step,
+    parse_surrender_war_step,
+)
 from xar_autoplayer.simulation.raiktor_three_way_exit_postcondition import (  # noqa: E402
     normalize_raiktor_three_way_exit_authorization,
     provide_raiktor_three_way_exit_postcondition,
@@ -660,7 +664,41 @@ async def _execute_action_tail(
     restored = base._structured(
         restored_value, tool_name="ck3_take_snapshot:restored"
     )
-    checkpoint_restore = {
+    post_restore_turn_value = await client.call_tool("ck3_auto_turn", {})
+    post_restore_turn = base._structured(
+        post_restore_turn_value, tool_name="ck3_auto_turn:post-restore"
+    )
+    selected_post_restore_step = post_restore_turn.get("selected_step")
+    if (
+        post_restore_turn.get("status") != "executed"
+        or not isinstance(selected_post_restore_step, str)
+    ):
+        raise Gen034ActionRunnerError(
+            "cold restore was not consumed by one independent production turn"
+        )
+    if (
+        selected_post_restore_step == action_step
+        or parse_offer_white_peace_step(selected_post_restore_step) == war_id
+        or parse_surrender_war_step(selected_post_restore_step) == war_id
+    ):
+        raise Gen034ActionRunnerError(
+            "post-restore production turn replayed the terminal action"
+        )
+    issued_commands.append(selected_post_restore_step)
+    post_restore_snapshot_value = await client.call_tool("ck3_take_snapshot", {})
+    post_restore_snapshot = base._structured(
+        post_restore_snapshot_value,
+        tool_name="ck3_take_snapshot:post-restore-production-turn",
+    )
+    active_wars = post_restore_snapshot.get("active_wars")
+    if not isinstance(active_wars, list) or any(
+        isinstance(row, dict) and row.get("war_id") == war_id
+        for row in active_wars
+    ):
+        raise Gen034ActionRunnerError(
+            "post-restore production turn did not consume the postwar state"
+        )
+    checkpoint_restore_core = {
         "save_result": save,
         "restore_result": restore,
         "restored_snapshot": restored,
@@ -670,8 +708,13 @@ async def _execute_action_tail(
         action_result,
         post,
         evidence["postwar_evidence"],
-        checkpoint_restore,
+        checkpoint_restore_core,
     )
+    checkpoint_restore = {
+        **checkpoint_restore_core,
+        "post_restore_production_turn": post_restore_turn,
+        "post_restore_snapshot": post_restore_snapshot,
+    }
     pre_restore_history = recommendation._history_checks(
         origin,
         after_save,
@@ -697,6 +740,8 @@ async def _execute_action_tail(
             "checkpoint_cold_restore_verified"
         )
         is True,
+        "post_restore_production_turn_consumed": True,
+        "terminal_action_not_replayed": issued_commands.count(action_step) == 1,
         "gen034_closed": postcondition.get("gen034_closed") is True,
     }
     return {
@@ -708,6 +753,8 @@ async def _execute_action_tail(
         "post_snapshot": post,
         "postwar_evidence": evidence,
         "checkpoint_restore": checkpoint_restore,
+        "post_restore_production_turn": post_restore_turn,
+        "post_restore_snapshot": post_restore_snapshot,
         "postcondition": postcondition,
         "reply_observation": reply_observation,
         "pending_checkpoint": pending_checkpoint,
@@ -837,6 +884,8 @@ def main(argv: list[str] | None = None) -> int:
                     "termination_route_postwar_checkpoint_saves": 1,
                     "pending_white_peace_checkpoint_saves": 1,
                     "termination_route_checkpoint_cold_restores": 1,
+                    "termination_route_post_restore_production_turns": 1,
+                    "terminal_action_replays_after_restore": 0,
                     "continue_route_checkpoint_saves": 0,
                     "continue_route_checkpoint_cold_restores": 0,
                     "broad_loaded_effect_preview_enabled": False,

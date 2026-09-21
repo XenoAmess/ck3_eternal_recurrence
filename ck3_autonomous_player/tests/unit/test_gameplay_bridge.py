@@ -14926,6 +14926,31 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(result["selected_step"], "save-checkpoint")
         self.assertEqual(calls, [("save-checkpoint", 11)])
 
+    def test_service_auto_turn_can_intercept_before_submission(self) -> None:
+        calls: list[tuple[str, int | None]] = []
+        intercepted: list[dict[str, object]] = []
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(11),
+            execute=lambda step, revision: calls.append((step, revision))
+            or {"step": step},
+            action_steps=("save-checkpoint",),
+        )
+
+        def before_submit(frame: dict[str, object]) -> dict[str, object]:
+            intercepted.append(frame)
+            return {"reason": "candidate-terminal-boundary"}
+
+        result = GameplayBridgeService(driver).auto_turn(
+            before_submit=before_submit
+        )
+
+        self.assertEqual(result["status"], "intercepted")
+        self.assertEqual(result["selected_step"], "save-checkpoint")
+        self.assertEqual(result["interception"]["reason"], "candidate-terminal-boundary")
+        self.assertEqual(intercepted[0]["revision"], 11)
+        self.assertEqual(calls, [])
+
     def test_service_auto_turn_binds_pre_submission_revision_context(
         self,
     ) -> None:

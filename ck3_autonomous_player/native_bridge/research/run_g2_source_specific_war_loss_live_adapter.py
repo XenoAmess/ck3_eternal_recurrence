@@ -47,13 +47,21 @@ import run_raiktor_war_bound_private_capture_v1 as source_ui  # noqa: E402
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
+from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
 from xar_autoplayer.bridge.raiktor_source_specific_war_loss_contract import (  # noqa: E402
     EXPECTED_EXE_SHA256,
     normalize_raiktor_source_specific_capture,
 )
+from xar_autoplayer.bridge.war_contract import (  # noqa: E402
+    parse_offer_white_peace_step,
+    parse_surrender_war_step,
+)
+from xar_autoplayer.environment import EnvironmentSpec  # noqa: E402
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.locking import exclusive_launch_lock  # noqa: E402
+from xar_autoplayer.native_auto_run import native_auto_run  # noqa: E402
 from xar_autoplayer import runtime as autoplay_runtime  # noqa: E402
+from xar_autoplayer.runtime import NativeBridgeLaunchConfig  # noqa: E402
 
 
 MANIFEST_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1"
@@ -294,7 +302,12 @@ def _resolve_runtime_dependency(
     return _resolve(manifest_value, repo_root=repo_root), "manifest"
 
 
-def _require_external_runtime_paths(artifact_dir: Path, userdir: Path) -> None:
+def _require_external_runtime_paths(
+    artifact_dir: Path,
+    userdir: Path,
+    *,
+    candidate_checkpoint_capture: bool = False,
+) -> None:
     repository = REPOSITORY_ROOT.resolve()
     artifact = artifact_dir.resolve()
     profile = userdir.resolve()
@@ -302,6 +315,11 @@ def _require_external_runtime_paths(artifact_dir: Path, userdir: Path) -> None:
         raise LiveAdapterError(
             "artifact-dir and userdir must be outside the repository"
         )
+    if candidate_checkpoint_capture:
+        if profile.name.casefold() != "profile":
+            raise LiveAdapterError(
+                "candidate userdir must be the profile child of its state directory"
+            )
     if artifact == profile or artifact.is_relative_to(profile) or profile.is_relative_to(artifact):
         raise LiveAdapterError("artifact-dir and userdir must not overlap")
     system_temp = Path(tempfile.gettempdir()).resolve()
@@ -732,6 +750,7 @@ def _load_manifest(
         or composition.get("startup_profile_asset_gate_integrated") is not True
         or composition.get("resume_checkpoint_copy_gate_integrated") is not True
         or composition.get("read_only_pretermination_probe_integrated") is not True
+        or composition.get("candidate_terminal_intercept_integrated") is not True
         or composition.get("launch_fail_closed") is not True
     ):
         raise LiveAdapterError("live-adapter composition drifted")
@@ -981,6 +1000,7 @@ class ConcreteLiveOperations:
         resume_save: Path | None = None,
         resume_save_sha256: str | None = None,
         read_only_pretermination_probe: bool = False,
+        candidate_checkpoint_capture: bool = False,
         process_inventory: Callable[[], list[dict[str, object]]] = _process_inventory,
         suspended_process_factory: Callable[..., Any] = (
             autoplay_runtime._create_suspended_process
@@ -1003,13 +1023,18 @@ class ConcreteLiveOperations:
         )
         self.resume_save_sha256 = resume_save_sha256
         self.read_only_pretermination_probe = read_only_pretermination_probe
+        self.candidate_checkpoint_capture = candidate_checkpoint_capture
         self.truce_diagnostic_path = (
             self.artifact_dir / "truce-default-leaf-diagnostic.jsonl"
             if read_only_pretermination_probe
             else None
         )
         self.ui_dir = self.artifact_dir / "ui"
-        self.state_dir = self.artifact_dir / "native-state"
+        self.state_dir = (
+            self.userdir.parent
+            if candidate_checkpoint_capture
+            else self.artifact_dir / "native-state"
+        )
         self.process_inventory = process_inventory
         self.suspended_process_factory = suspended_process_factory
         self.popen = popen
@@ -1637,6 +1662,107 @@ class ConcreteLiveOperations:
             postwar_timeout=postwar_timeout,
         )
 
+    async def continue_candidate_checkpoint_from_bridge(
+        self,
+        driver: object,
+        *,
+        source_capture: dict[str, object],
+        capture_sha256: str,
+        expected_character_id: int,
+        expected_war_id: int,
+        expected_date_raw: int,
+        postwar_timeout: float,
+    ) -> dict[str, object]:
+        """Freeze the natural source frame without reading or submitting terms."""
+
+        del postwar_timeout
+        if expected_date_raw != 0:
+            raise LiveAdapterError("outer-owner date sentinel drifted")
+        binding = await self.read_bridge_binding(driver)
+        service = GameplayBridgeService(driver)
+        before = service.snapshot()
+        normalized = normalize_raiktor_source_specific_capture(
+            source_capture,
+            capture_sha256=capture_sha256,
+        )
+        source_set = _object(normalized.get("source_set"), "candidate source set")
+        observed_date_raw = _nonnegative_integer(
+            binding.get("date_raw"), "bridge binding date raw"
+        )
+        before_character = _played_character_id(before)
+        if (
+            normalized.get("capture_pid") != binding.get("bridge_pid")
+            or source_set.get("war_id") != expected_war_id
+            or before_character != expected_character_id
+            or before.get("date_raw") != observed_date_raw
+            or before.get("paused") is not True
+            or before.get("map_ready") is not True
+        ):
+            raise LiveAdapterError(
+                "candidate checkpoint source, process, character, or paused frame drifted"
+            )
+        revision = _positive_integer(before.get("revision"), "candidate revision")
+        save = service.save_checkpoint(expected_revision=revision)
+        raw_checkpoint = _object(save.get("checkpoint"), "candidate checkpoint")
+        materialization = _object(
+            save.get("materialization"), "candidate checkpoint materialization"
+        )
+        after = service.snapshot()
+        checkpoint_path = Path(str(raw_checkpoint.get("path"))).resolve()
+        expected_path = (self.userdir / "save games" / "xar_checkpoint.ck3").resolve()
+        expected_size = raw_checkpoint.get("size")
+        expected_sha256 = str(raw_checkpoint.get("sha256", "")).upper()
+        if (
+            save.get("step") != "save-checkpoint"
+            or save.get("accepted") is not True
+            or materialization.get("available") is not True
+            or checkpoint_path != expected_path
+            or not checkpoint_path.is_file()
+            or isinstance(expected_size, bool)
+            or not isinstance(expected_size, int)
+            or expected_size <= 0
+            or checkpoint_path.stat().st_size != expected_size
+            or _sha256_file(checkpoint_path) != expected_sha256
+            or after.get("date_raw") != before.get("date_raw")
+            or _played_character_id(after) != before_character
+            or after.get("episode_run_id") != before.get("episode_run_id")
+        ):
+            raise LiveAdapterError("candidate checkpoint materialization drifted")
+        driver_state_path = self.state_dir / "native-session" / "driver-state.json"
+        if not driver_state_path.is_file():
+            raise LiveAdapterError("candidate driver state was not persisted")
+        return {
+            "status": "candidate-checkpoint-saved",
+            "mode": "candidate-source-checkpoint",
+            "ok": True,
+            "source_capture": copy.deepcopy(source_capture),
+            "source_capture_sha256": capture_sha256,
+            "source_normalization": normalized,
+            "identity": {
+                "ck3_pid": binding.get("bridge_pid"),
+                "pipe_name": binding.get("pipe_name"),
+                "episode_run_id": before.get("episode_run_id"),
+                "played_character_id": before_character,
+                "date_raw": observed_date_raw,
+            },
+            "checkpoint": {
+                **copy.deepcopy(raw_checkpoint),
+                "status": "saved",
+                "path": str(checkpoint_path),
+                "sha256": expected_sha256,
+            },
+            "driver_state": {
+                "path": str(driver_state_path.resolve()),
+                "size": driver_state_path.stat().st_size,
+                "sha256": _sha256_file(driver_state_path),
+            },
+            "snapshot_before": before,
+            "snapshot_after_checkpoint": after,
+            "terminal_action_commands": [],
+            "mutation_commands": ["save-checkpoint"],
+            "generic_exit_terms_reader_used": False,
+        }
+
     async def final_cleanup(
         self,
         _launch: dict[str, object],
@@ -1789,6 +1915,8 @@ def _parser() -> argparse.ArgumentParser:
         help="uppercase SHA-256 required with --resume-save",
     )
     parser.add_argument("--postwar-timeout", type=float, default=45.0)
+    parser.add_argument("--candidate-turn-limit", type=int, default=256)
+    parser.add_argument("--candidate-timeout", type=float, default=1800.0)
     parser.add_argument("--verify-only", action="store_true")
     parser.add_argument("--authorize-private-live", action="store_true")
     parser.add_argument(
@@ -1797,6 +1925,14 @@ def _parser() -> argparse.ArgumentParser:
         help=(
             "stop after the same-frame dual terms query; never create the "
             "mutation checkpoint or submit war termination"
+        ),
+    )
+    parser.add_argument(
+        "--candidate-terminal-intercept",
+        action="store_true",
+        help=(
+            "freeze the source-bound checkpoint, cold-start formal native_auto_run, "
+            "and stop before its first matching terminal action submission"
         ),
     )
     return parser
@@ -1823,16 +1959,180 @@ def _truce_diagnostic_receipt(
     }
 
 
+def _candidate_terminal_interceptor(
+    expected_war_id: int,
+    source_capture_sha256: str,
+) -> Callable[[dict[str, object]], dict[str, object] | None]:
+    """Stop the formal production loop at the matching terminal submit seam."""
+
+    def intercept(frame: dict[str, object]) -> dict[str, object] | None:
+        step = frame.get("selected_step")
+        if not isinstance(step, str):
+            return None
+        white_peace_war_id = parse_offer_white_peace_step(step)
+        surrender_war_id = parse_surrender_war_step(step)
+        terminal_war_id = (
+            white_peace_war_id
+            if white_peace_war_id is not None
+            else surrender_war_id
+        )
+        if terminal_war_id is None:
+            return None
+        if terminal_war_id != expected_war_id:
+            raise LiveAdapterError(
+                "formal candidate selected a terminal action for another WarID"
+            )
+        plan = _object(frame.get("plan"), "formal candidate plan")
+        decision = _object(
+            plan.get("war_exit_decision"), "formal candidate war-exit decision"
+        )
+        expected_outcome = (
+            "white_peace" if white_peace_war_id is not None else "surrender"
+        )
+        if (
+            decision.get("war_id") != expected_war_id
+            or decision.get("recommended_outcome") != expected_outcome
+            or decision.get("action_submitted") is not False
+        ):
+            raise LiveAdapterError(
+                "formal terminal selection is not bound to its three-way decision"
+            )
+        return {
+            "reason": "gen034-d-source-bound-terminal-candidate",
+            "war_id": expected_war_id,
+            "recommended_outcome": expected_outcome,
+            "source_capture_sha256": source_capture_sha256,
+            "action_submitted": False,
+        }
+
+    return intercept
+
+
+def _freeze_action_runner_input(
+    *,
+    artifact_dir: Path,
+    state_dir: Path,
+    paths: AdapterPaths,
+    source_capture_path: Path,
+    source_capture_sha256: str,
+    candidate_report: dict[str, object],
+) -> dict[str, object]:
+    interception = _object(
+        candidate_report.get("candidate_interception"), "candidate interception"
+    )
+    plan = _object(interception.get("plan"), "candidate plan")
+    decision = _object(plan.get("war_exit_decision"), "candidate war-exit decision")
+    checkpoint = _object(interception.get("checkpoint"), "candidate checkpoint")
+    after = _object(
+        interception.get("after_checkpoint"), "candidate checkpoint snapshot"
+    )
+    checkpoint_path = Path(str(checkpoint.get("path"))).resolve()
+    driver_state_path = (state_dir / "native-session" / "driver-state.json").resolve()
+    if not source_capture_path.is_file() or not checkpoint_path.is_file():
+        raise LiveAdapterError("candidate frozen inputs are missing")
+    if not driver_state_path.is_file():
+        raise LiveAdapterError("candidate frozen driver state is missing")
+    war_id = _positive_integer(decision.get("war_id"), "candidate WarID")
+    opponent_character_id = _positive_integer(
+        decision.get("opponent_character_id"), "candidate opponent character ID"
+    )
+    character_id = _positive_integer(
+        _played_character_id(after), "candidate played character ID"
+    )
+    date_raw = _nonnegative_integer(after.get("date_raw"), "candidate date raw")
+    checkpoint_sha256 = _sha256_file(checkpoint_path)
+    driver_state_sha256 = _sha256_file(driver_state_path)
+    if checkpoint_sha256 != str(checkpoint.get("sha256", "")).upper():
+        raise LiveAdapterError("candidate checkpoint changed before input freeze")
+    runner = RESEARCH_ROOT / "run_gen034_three_way_exit_action_live_acceptance.py"
+    command = [
+        sys.executable,
+        "-B",
+        str(runner),
+        "--attempt-dir",
+        str((artifact_dir / "action-runner-attempt").resolve()),
+        "--source-checkpoint",
+        str(checkpoint_path),
+        "--source-driver-state",
+        str(driver_state_path),
+        "--expected-checkpoint-sha256",
+        checkpoint_sha256,
+        "--expected-driver-state-sha256",
+        driver_state_sha256,
+        "--game-dir",
+        str(paths.game_executable.parent.parent),
+        "--bridge-dll",
+        str(paths.bridge_dll),
+        "--bridge-injector",
+        str(paths.bridge_injector),
+        "--war-id",
+        str(war_id),
+        "--expected-character-id",
+        str(character_id),
+        "--expected-date-raw",
+        str(date_raw),
+        "--opponent-character-id",
+        str(opponent_character_id),
+        "--source-capture",
+        str(source_capture_path.resolve()),
+        "--expected-source-capture-sha256",
+        source_capture_sha256,
+    ]
+    frozen = {
+        "schema": "xar.ck3.gen034_d_candidate_action_runner_input.v1",
+        "status": "frozen-before-terminal-submit",
+        "source_capture": {
+            "path": str(source_capture_path.resolve()),
+            "sha256": source_capture_sha256,
+        },
+        "checkpoint": {
+            "path": str(checkpoint_path),
+            "sha256": checkpoint_sha256,
+            "size": checkpoint_path.stat().st_size,
+        },
+        "driver_state": {
+            "path": str(driver_state_path),
+            "sha256": driver_state_sha256,
+            "size": driver_state_path.stat().st_size,
+        },
+        "identity": {
+            "war_id": war_id,
+            "expected_character_id": character_id,
+            "expected_date_raw": date_raw,
+            "opponent_character_id": opponent_character_id,
+        },
+        "selected_step": interception.get("selected_step"),
+        "action_submitted": False,
+        "runner_command": command,
+        "required_assertions": [
+            "same-frame continue/white-peace/surrender comparison",
+            "exactly one selected terminal action submission",
+            "independent postwar state and persisted truce",
+            "cold restore followed by one independent production turn",
+            "no replay of the terminal action after restore",
+        ],
+    }
+    _write_json_atomic(artifact_dir / "action-runner-input.json", frozen)
+    return frozen
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     report: dict[str, object] | None = None
     operations: ConcreteLiveOperations | None = None
     try:
+        if (
+            args.read_only_pretermination_probe
+            and args.candidate_terminal_intercept
+        ):
+            raise LiveAdapterError("live-adapter modes are mutually exclusive")
         preflight = run_no_launch_preflight(
             args.manifest,
             args.preflight_output,
             requested_live_mode=(
-                "read-only-pre-termination"
+                "candidate-source-to-formal-terminal-intercept"
+                if args.candidate_terminal_intercept
+                else "read-only-pre-termination"
                 if args.read_only_pretermination_probe
                 else "source-current-action-postwar"
             ),
@@ -1854,12 +2154,24 @@ def main(argv: list[str] | None = None) -> int:
             raise LiveAdapterError("private live command remains default-OFF")
         if args.artifact_dir is None or args.userdir is None:
             raise LiveAdapterError("live run requires artifact-dir and userdir")
-        _require_external_runtime_paths(args.artifact_dir, args.userdir)
+        _require_external_runtime_paths(
+            args.artifact_dir,
+            args.userdir,
+            candidate_checkpoint_capture=args.candidate_terminal_intercept,
+        )
         character_id = _positive_integer(
             args.expected_character_id, "expected character ID"
         )
         if args.postwar_timeout <= 0 or args.postwar_timeout > 120:
             raise LiveAdapterError("postwar timeout must be in (0, 120]")
+        if (
+            isinstance(args.candidate_turn_limit, bool)
+            or args.candidate_turn_limit <= 0
+            or args.candidate_turn_limit > 4096
+            or args.candidate_timeout <= 0
+            or args.candidate_timeout > 7200
+        ):
+            raise LiveAdapterError("candidate turn/time bounds are invalid")
         _manifest, paths, timeouts, _checked = _load_manifest(
             args.manifest,
             game_root=args.game_root,
@@ -1878,9 +2190,12 @@ def main(argv: list[str] | None = None) -> int:
             resume_save=args.resume_save,
             resume_save_sha256=args.resume_save_sha256,
             read_only_pretermination_probe=args.read_only_pretermination_probe,
+            candidate_checkpoint_capture=args.candidate_terminal_intercept,
         )
         continuation = (
-            operations.continue_read_only_pretermination_probe_from_bridge
+            operations.continue_candidate_checkpoint_from_bridge
+            if args.candidate_terminal_intercept
+            else operations.continue_read_only_pretermination_probe_from_bridge
             if args.read_only_pretermination_probe
             else operations.continue_same_lifecycle_from_bridge
         )
@@ -1893,8 +2208,71 @@ def main(argv: list[str] | None = None) -> int:
                 postwar_timeout=float(args.postwar_timeout),
                 continuation=continuation,
                 read_only_pretermination_probe=args.read_only_pretermination_probe,
+                candidate_checkpoint_capture=args.candidate_terminal_intercept,
             )
         )
+        candidate_auto_run: dict[str, object] | None = None
+        action_runner_input: dict[str, object] | None = None
+        if args.candidate_terminal_intercept:
+            candidate_lifecycle = _object(
+                result.get("lifecycle_result"), "candidate lifecycle result"
+            )
+            normalized = _object(
+                candidate_lifecycle.get("source_normalization"),
+                "candidate source normalization",
+            )
+            source_set = _object(normalized.get("source_set"), "candidate source set")
+            captured_war_id = _positive_integer(
+                source_set.get("war_id"), "captured source WarID"
+            )
+            identity = _object(candidate_lifecycle.get("identity"), "candidate identity")
+            pipe_name = identity.get("pipe_name")
+            source_capture_sha256 = _sha256_text(
+                candidate_lifecycle.get("source_capture_sha256"),
+                "candidate source capture SHA-256",
+            )
+            if not isinstance(pipe_name, str) or not pipe_name:
+                raise LiveAdapterError("candidate checkpoint lacks its native pipe")
+            spec = EnvironmentSpec(
+                state_dir=operations.state_dir,
+                game_dir=paths.game_executable.parent.parent,
+                expected_game_version=EXPECTED_GAME_VERSION,
+            )
+            candidate_auto_run = native_auto_run(
+                spec,
+                turn_count=args.candidate_turn_limit,
+                timeout_seconds=float(args.candidate_timeout),
+                readiness_timeout_seconds=timeouts.bridge_attach_seconds,
+                cold_start_checkpoint=True,
+                native_bridge=NativeBridgeLaunchConfig(
+                    mode="native-headless",
+                    pipe_name=pipe_name,
+                    dll_path=paths.bridge_dll,
+                    injector_path=paths.bridge_injector,
+                ),
+                completion_contract="bounded",
+                before_submit=_candidate_terminal_interceptor(
+                    captured_war_id,
+                    source_capture_sha256,
+                ),
+            )
+            if (
+                candidate_auto_run.get("ok") is not True
+                or candidate_auto_run.get("status")
+                != "candidate_terminal_intercepted"
+                or candidate_auto_run.get("outcome") != "candidate_intercepted"
+            ):
+                raise LiveAdapterError(
+                    "formal native_auto_run did not reach a matching terminal intercept"
+                )
+            action_runner_input = _freeze_action_runner_input(
+                artifact_dir=args.artifact_dir.resolve(),
+                state_dir=operations.state_dir,
+                paths=paths,
+                source_capture_path=(args.artifact_dir / "capture.json").resolve(),
+                source_capture_sha256=source_capture_sha256,
+                candidate_report=candidate_auto_run,
+            )
         probe_result = (
             _object(result.get("lifecycle_result"), "read-only probe result")
             if args.read_only_pretermination_probe
@@ -1903,12 +2281,18 @@ def main(argv: list[str] | None = None) -> int:
         report = {
             "schema": REPORT_SCHEMA,
             "status": (
-                "PROBE_COMPLETE"
+                "CANDIDATE_FROZEN"
+                if args.candidate_terminal_intercept
+                and candidate_auto_run is not None
+                and action_runner_input is not None
+                else "PROBE_COMPLETE"
                 if args.read_only_pretermination_probe and result.get("ok") is True
                 else "GREEN" if result.get("ok") is True else "RED"
             ),
             "mode": (
-                "read-only-pre-termination"
+                "candidate-source-to-formal-terminal-intercept"
+                if args.candidate_terminal_intercept
+                else "read-only-pre-termination"
                 if args.read_only_pretermination_probe
                 else "source-current-action-postwar"
             ),
@@ -1918,16 +2302,27 @@ def main(argv: list[str] | None = None) -> int:
             ),
             "resume_checkpoint": copy.deepcopy(operations._resume_checkpoint),
             "outer_owner": result,
+            "candidate_native_auto_run": candidate_auto_run,
+            "action_runner_input": action_runner_input,
             "cleanup": copy.deepcopy(operations._cleanup_receipt),
             "truce_diagnostic": _truce_diagnostic_receipt(operations),
             "boundaries": {
                 "terms_ready": (
                     probe_result.get("terms_ready")
                     if probe_result is not None
-                    else True
+                    else not args.candidate_terminal_intercept
                 ),
-                "source_specific_loss_ready": not args.read_only_pretermination_probe,
-                "comparison_input_ready": not args.read_only_pretermination_probe,
+                "source_specific_loss_ready": (
+                    not args.read_only_pretermination_probe
+                    and not args.candidate_terminal_intercept
+                ),
+                "comparison_input_ready": (
+                    not args.read_only_pretermination_probe
+                    and not args.candidate_terminal_intercept
+                ),
+                "candidate_action_runner_input_ready": (
+                    action_runner_input is not None
+                ),
                 "three_way_comparison_ready": False,
                 "decision_ready": False,
                 "automatic_surrender_ready": False,

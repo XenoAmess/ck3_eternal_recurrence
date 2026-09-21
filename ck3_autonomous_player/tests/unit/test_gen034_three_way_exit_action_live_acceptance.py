@@ -201,6 +201,15 @@ def _termination_fixture(
             "native_revision": post["native_revision"] + 1,
         }
     )
+    post_restore_turn = {
+        "status": "executed",
+        "selected_step": "advance-time",
+        "plan": {"phase": "fixture", "selected_step": "advance-time"},
+    }
+    post_restore_snapshot = deepcopy(checkpoint["restored_snapshot"])
+    post_restore_snapshot["active_wars"] = []
+    post_restore_snapshot["revision"] += 1
+    post_restore_snapshot["native_revision"] += 1
     client = _FakeClient(
         [
             before,
@@ -215,6 +224,8 @@ def _termination_fixture(
             after_save,
             checkpoint["restore_result"],
             checkpoint["restored_snapshot"],
+            post_restore_turn,
+            post_restore_snapshot,
         ]
     )
     return read, client
@@ -251,8 +262,12 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
                 "ck3_take_snapshot",
                 "ck3_restore_checkpoint",
                 "ck3_take_snapshot",
+                "ck3_auto_turn",
+                "ck3_take_snapshot",
             ],
         )
+        self.assertTrue(result["checks"]["post_restore_production_turn_consumed"])
+        self.assertTrue(result["checks"]["terminal_action_not_replayed"])
 
     def test_pending_white_peace_checkpoint_stops_at_event_without_reoffer(self) -> None:
         gate = _authorized("white_peace")

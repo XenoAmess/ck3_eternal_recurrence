@@ -304,6 +304,8 @@ def native_auto_run(
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
     operator_stop_event: threading.Event | None = None,
+    before_submit: Callable[[dict[str, object]], dict[str, object] | None]
+    | None = None,
 ) -> dict[str, object]:
     """Own one bounded observe-plan-act-verify native gameplay run."""
     _positive_integer(turn_count, "turn_count")
@@ -470,6 +472,7 @@ def native_auto_run(
     current_attempt: dict[str, object] | None = None
     first_failure: dict[str, object] | None = None
     readiness_timeout_diagnostics: dict[str, object] | None = None
+    candidate_interception: dict[str, object] | None = None
 
     def capture_first_failure(
         *,
@@ -776,7 +779,11 @@ def native_auto_run(
             pre_submission_revision_replans = 0
             while True:
                 try:
-                    outcome = service.auto_turn()
+                    outcome = (
+                        service.auto_turn(before_submit=before_submit)
+                        if before_submit is not None
+                        else service.auto_turn()
+                    )
                     break
                 except PreSubmissionRevisionMismatchError as error:
                     if isinstance(error.plan, dict):
@@ -864,6 +871,58 @@ def native_auto_run(
                     )
                 before = retried_before
                 current_attempt["before"] = _public_binding(before)
+
+            if outcome_status == "intercepted":
+                if before_submit is None or step is None:
+                    raise AgentError("unexpected pre-submission interception")
+                current_attempt["stage"] = "checkpoint"
+                remaining = run_deadline - time.monotonic()
+                if remaining <= 0:
+                    raise AgentError(
+                        "native-auto-run timeout expired before candidate checkpoint"
+                    )
+                checkpoint, after_snapshot = _materialize_checkpoint(
+                    service,
+                    driver,
+                    spec.profile_dir / "save games",
+                    session_done=session_done,
+                    session_state=session_state,
+                    timeout_seconds=min(readiness_timeout, remaining),
+                    poll_interval_seconds=poll_seconds,
+                )
+                checkpoint = {
+                    **checkpoint,
+                    "phase": "candidate_terminal_intercept",
+                    "turn_index": turn_index,
+                }
+                checkpoints.append(checkpoint)
+                counts["checkpoint"] += 1
+                counts["terminal"] += 1
+                candidate_interception = {
+                    "status": "intercepted-before-submit",
+                    "selected_step": step,
+                    "plan": copy.deepcopy(plan),
+                    "interception": copy.deepcopy(outcome.get("interception")),
+                    "checkpoint": copy.deepcopy(checkpoint),
+                    "before": _public_binding(before),
+                    "after_checkpoint": _public_binding(after_snapshot),
+                }
+                turns.append(
+                    _turn_record(
+                        turn_index,
+                        turn_started,
+                        turn_class="terminal",
+                        outcome=outcome,
+                        before=before,
+                        after=after_snapshot,
+                        evidence=[
+                            "formal_plan_intercepted_before_submission",
+                            "candidate_checkpoint_saved",
+                        ],
+                    )
+                )
+                status = "candidate_terminal_intercepted"
+                break
 
             if outcome_status == "blocked":
                 current_attempt["stage"] = "planning"
@@ -1986,7 +2045,18 @@ def native_auto_run(
             )
             and cleanup.get("ok") is True
         )
-    if qualified:
+    candidate_qualified = bool(
+        before_submit is not None
+        and status == "candidate_terminal_intercepted"
+        and candidate_interception is not None
+        and checkpoints
+        and primary_error is None
+        and cleanup.get("ok") is True
+    )
+    if candidate_qualified:
+        qualified = True
+        first_blocker = None
+    elif qualified:
         first_blocker = None
     elif (
         status == "operator_stop_checkpointed"
@@ -2042,7 +2112,9 @@ def native_auto_run(
         "finished_at": utc_now(),
         "elapsed_seconds": round(max(0.0, time.monotonic() - started), 3),
         "status": status,
-        "outcome": outcome,
+        "outcome": (
+            "candidate_intercepted" if candidate_qualified else outcome
+        ),
         "ok": qualified,
         "completion_contract": completion_contract,
         "succession_lifecycle": copy.deepcopy(
@@ -2088,6 +2160,7 @@ def native_auto_run(
         },
         "checkpoints": checkpoints,
         "terminal": terminal_proof,
+        "candidate_interception": candidate_interception,
         "natural_succession_transitions": natural_succession_transitions,
         "next_episode": (
             {
@@ -3882,7 +3955,7 @@ def _turn_record(
         "started_at": started_at,
         "finished_at": utc_now(),
         "class": turn_class,
-        "ok": outcome.get("status") in {"executed", "terminal"},
+        "ok": outcome.get("status") in {"executed", "terminal", "intercepted"},
         "status": outcome.get("status"),
         "pre_submission_revision_replans": outcome.get(
             "pre_submission_revision_replans", 0

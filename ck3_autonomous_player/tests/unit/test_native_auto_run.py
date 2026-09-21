@@ -1213,7 +1213,35 @@ class _FakeGameplayService:
         self.harness = harness
         self.driver = driver
 
-    def auto_turn(self) -> dict[str, object]:
+    def auto_turn(
+        self,
+        *,
+        before_submit: object = None,
+    ) -> dict[str, object]:
+        if before_submit is not None and self.harness.actions == ["candidate_intercept"]:
+            plan = {
+                "phase": "raiktor_formal_exit",
+                "selected_step": "surrender-war-88",
+                "war_exit_decision": {
+                    "war_id": 88,
+                    "recommended_outcome": "surrender",
+                },
+            }
+            frame = {
+                "plan": plan,
+                "selected_step": "surrender-war-88",
+                "snapshot_id": f"native:{self.harness.native_revision}",
+                "revision": self.harness.public_revision,
+            }
+            interception = before_submit(frame)  # type: ignore[operator]
+            if interception is not None:
+                self.harness.actions.pop()
+                self.harness.events.append("auto_turn:candidate_intercept")
+                return {
+                    "status": "intercepted",
+                    **frame,
+                    "interception": interception,
+                }
         return self.harness.execute_auto_turn()
 
     def snapshot(self) -> dict[str, object]:
@@ -1339,6 +1367,7 @@ class NativeAutoRunTests(unittest.TestCase):
         succession_lifecycle: str = ROGUE_ONE_LIFE,
         ordinary_campaign_no_pact: bool = False,
         cold_start_checkpoint: bool | None = None,
+        before_submit: object = None,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         use_cold_start_checkpoint = (
             completion_contract in {"one_generation", "next_episode"}
@@ -1432,6 +1461,7 @@ class NativeAutoRunTests(unittest.TestCase):
                     allow_stationary_objective_hold_sentinel_canary
                 ),
                 operator_stop_event=harness.operator_stop_event,
+                before_submit=before_submit,  # type: ignore[arg-type]
             )
         return report, harness
 
@@ -1806,6 +1836,36 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertNotIn("ignored_internal_character_id", decision["utility_comparison"]["options"]["continue"])
         self.assertNotIn("ignored_internal_payload", decision)
 
+    def test_candidate_interception_saves_checkpoint_without_submitting_action(
+        self,
+    ) -> None:
+        observed: list[dict[str, object]] = []
+
+        def before_submit(frame: dict[str, object]) -> dict[str, object] | None:
+            observed.append(frame)
+            if frame.get("selected_step") != "surrender-war-88":
+                return None
+            return {"expected_war_id": 88, "reason": "gen034-d-candidate"}
+
+        report, harness = self._run(
+            ["candidate_intercept"],
+            before_submit=before_submit,
+            cold_start_checkpoint=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "candidate_terminal_intercepted")
+        self.assertEqual(report["outcome"], "candidate_intercepted")
+        candidate = report["candidate_interception"]
+        self.assertEqual(candidate["selected_step"], "surrender-war-88")
+        self.assertEqual(candidate["interception"]["expected_war_id"], 88)
+        self.assertEqual(candidate["checkpoint"]["phase"], "candidate_terminal_intercept")
+        self.assertEqual(len(observed), 1)
+        self.assertNotIn("surrender-war-88", harness.events)
+        self.assertEqual(
+            [row["command"] for row in harness.history],
+            ["save-checkpoint"],
+        )
     def test_explicit_objective_hold_canary_flag_reaches_driver_and_report(
         self,
     ) -> None:

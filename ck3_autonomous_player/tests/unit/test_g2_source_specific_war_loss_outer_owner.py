@@ -143,6 +143,19 @@ def _probe_result() -> dict[str, object]:
     }
 
 
+def _candidate_result() -> dict[str, object]:
+    return {
+        "status": "candidate-checkpoint-saved",
+        "mode": "candidate-source-checkpoint",
+        "source_normalization": {"capture_pid": PID},
+        "identity": {"ck3_pid": PID, "war_id": WAR_ID},
+        "checkpoint": {"status": "saved", "sha256": "B" * 64},
+        "terminal_action_commands": [],
+        "generic_exit_terms_reader_used": False,
+        "ok": True,
+    }
+
+
 class FakeOperations:
     def __init__(self, capture: dict[str, object] | None = None) -> None:
         self.capture = capture or _source_capture()
@@ -320,6 +333,39 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
             for event in operations.events
         ]
         self.assertEqual(event_names.count("probe"), 1)
+        self.assertEqual(event_names.count("cleanup"), 1)
+
+    def test_candidate_checkpoint_uses_same_owner_without_terminal_action(self) -> None:
+        operations = FakeOperations()
+
+        async def candidate(driver: object, **_kwargs: object) -> dict[str, object]:
+            self.assertIs(driver, operations.driver)
+            operations.events.append(("candidate", driver))
+            return _candidate_result()
+
+        result = asyncio.run(
+            RUNNER.run_exclusive_outer_owner(
+                operations,
+                expected_character_id=CHARACTER_ID,
+                expected_war_id=WAR_ID,
+                expected_date_raw=DATE_RAW,
+                postwar_timeout=1.0,
+                continuation=candidate,
+                candidate_checkpoint_capture=True,
+            )
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["mode"], "candidate-source-checkpoint")
+        self.assertEqual(
+            result["status"], "green-candidate-checkpoint-orchestration"
+        )
+        self.assertEqual(set(result["process_identity"].values()), {PID})
+        event_names = [
+            event if isinstance(event, str) else event[0]
+            for event in operations.events
+        ]
+        self.assertEqual(event_names.count("candidate"), 1)
         self.assertEqual(event_names.count("cleanup"), 1)
 
     def test_unsafe_observer_handoff_is_no_go_before_bridge_and_cleans_once(self) -> None:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+from collections.abc import Callable
 import uuid
 
 from .driver import (
@@ -882,7 +883,12 @@ class GameplayBridgeService:
                 reason=f"{type(error).__name__}: {error}",
             )
 
-    def auto_turn(self) -> dict[str, object]:
+    def auto_turn(
+        self,
+        *,
+        before_submit: Callable[[dict[str, object]], dict[str, object] | None]
+        | None = None,
+    ) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
         planned = self.plan_turn()
         plan = planned.get("plan")
@@ -922,6 +928,26 @@ class GameplayBridgeService:
                 "snapshot_id": planned.get("snapshot_id"),
                 "revision": planned.get("revision"),
             }
+        if before_submit is not None:
+            interception = before_submit(
+                {
+                    "plan": copy.deepcopy(plan),
+                    "selected_step": selected_step,
+                    "snapshot_id": planned.get("snapshot_id"),
+                    "revision": planned.get("revision"),
+                }
+            )
+            if interception is not None:
+                if not isinstance(interception, dict):
+                    raise TypeError("before_submit must return a mapping or None")
+                return {
+                    "status": "intercepted",
+                    "plan": plan,
+                    "selected_step": selected_step,
+                    "snapshot_id": planned.get("snapshot_id"),
+                    "revision": planned.get("revision"),
+                    "interception": copy.deepcopy(interception),
+                }
         planned_event = (
             plan.get("active_event") if isinstance(plan, dict) else None
         )
