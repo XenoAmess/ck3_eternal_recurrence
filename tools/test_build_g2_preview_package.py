@@ -57,7 +57,11 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
         self.inputs.mkdir()
         self.checkpoint = self.write("checkpoint.ck3", b"checkpoint-r802")
         self.driver = self.write("driver-state.json", b'{"history":293}\n')
-        self.dll = self.write("xar_ck3_bridge.dll", b"native-dll")
+        self.dll = self.write(
+            "xar_ck3_bridge.dll",
+            b"native-dll\x00"
+            + b"\x00".join(builder.REQUIRED_ORDINARY_SUCCESSION_NATIVE_STEPS),
+        )
         self.injector = self.write("xar_ck3_bridge_injector.exe", b"injector")
         self.dlc = self.write("dlc_load.json", b'{"enabled_mods":[]}\n')
         self.production_manifest = self.write(
@@ -493,6 +497,19 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
         builder.write_json(self.spec_path, changed)
         with self.assertRaisesRegex(ValueError, "hash differs"):
             builder.stage(self.spec_path)
+
+    def test_stage_rejects_native_without_ordinary_succession_steps(self) -> None:
+        self.dll.write_bytes(b"native-dll-without-private-succession-route")
+        changed = copy.deepcopy(self.spec)
+        changed["native"]["dll"]["sha256"] = builder.sha256(self.dll)
+        builder.write_json(self.spec_path, changed)
+        with self.assertRaisesRegex(
+            ValueError,
+            "native.dll lacks ordinary succession private steps",
+        ) as failure:
+            builder.stage(self.spec_path)
+        self.assertIn("query-current-timeline-blocker-context-v1", str(failure.exception))
+        self.assertIn("continue-death-succession-modal-v1", str(failure.exception))
 
     def test_finalize_rejects_any_ck3_launch(self) -> None:
         builder.stage(self.spec_path)
