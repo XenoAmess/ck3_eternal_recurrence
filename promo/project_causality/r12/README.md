@@ -45,17 +45,17 @@ r12 是当前用于所有者审片的 1440p 长版候选。它把每个核心章
 
 先生成 r12 动态视觉与发布图：
 
-```powershell
+```cmd
 py tools/build_project_causality_r12_assets.py
 ```
 
 本机使用独立宣传工具 checkout 和共享工具 venv：
 
-```powershell
-$env:XAR_PROMO_SOURCE = 'Z:\workspace\xar_promo_toolchain'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' `
-  tools/build_project_causality_r12.py `
-  --robert-edit promo/project_causality/r12/robert-continuous-edit.r30-main-menu.json `
+```cmd
+set XAR_PROMO_SOURCE=Z:\workspace\xar_promo_toolchain
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe ^
+  tools\build_project_causality_r12.py ^
+  --robert-edit promo\project_causality\r12\robert-continuous-edit.r30-main-menu.json ^
   --render --preset fast --crf 18
 ```
 

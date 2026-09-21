@@ -15,8 +15,8 @@ r11 解决 r10 的时间轴缺陷：IndexTTS 自然语速旁白被塞回旧 Edge
 
 ## 先生成可审计计划
 
-```powershell
-& Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe tools/build_project_causality_r11.py
+```cmd
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\build_project_causality_r11.py
 ```
 
 这一步不启动 CK3、不运行 IndexTTS、不编码成片，只写：
@@ -38,9 +38,9 @@ r11 解决 r10 的时间轴缺陷：IndexTTS 自然语速旁白被塞回旧 Edge
 
 正式渲染命令：
 
-```powershell
-& Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe tools/build_project_causality_r11.py `
-  --robert-edit promo/project_causality/r11/robert-continuous-edit.r30.json `
+```cmd
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\build_project_causality_r11.py ^
+  --robert-edit promo\project_causality\r11\robert-continuous-edit.r30.json ^
   --render
 ```
 
