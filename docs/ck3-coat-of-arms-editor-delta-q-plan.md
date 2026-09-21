@@ -105,12 +105,16 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 ### Q3：结构感知联合搜索（P0，5–8 工程日，依赖 Q2）
 
+状态：`structure-passed / real-corpus-performance-red`（2026-09-21；[结构门禁与真实图 RED](coat-of-arms-fit-artifacts/delta-q-structure-search-v1/README.md)）。
+
 - 先估计 pattern、主色和大面积分区，再为各显著区域生成素材、颜色、mask、位置、缩放、旋转和层序假设。
 - 使用确定性多起点局部优化；同时保留视觉质量、边缘质量和低复杂度 Pareto 前沿。
 - 图层顺序进入搜索；每个阶段在 230px 完整 DDS 上复评 bounded frontier，提前淘汰低分辨率假优解。
 - checkpoint schema 升级并提供旧 checkpoint 的明确拒绝/迁移信息；取消、暂停、恢复和 revision 隔离继续有效。
 
 退出条件：合成 holdout 的结构恢复与七图 128/1,024 对照达到冻结门限；恢复前后候选逐字节相同。
+
+阶段实证：64 例复合 holdout 的主素材锚点覆盖率为 92.1875%，有界 512 候选前沿召回率为 51.5625%，均通过冻结门限；四次错误地要求被遮挡底层素材 Top-32 身份命中的 RED 已追加保留。checkpoint 已升级为 v2，旧 v1 fail closed。首张真实图在 128 预算下超过 180 秒且停在尾端高分辨率细化之后，因此 Q3 尚未冒充整体通过；该可复现性能 RED 直接进入 Q4 修复。
 
 ### Q4：稀疏残差修复（P1，3–5 工程日，依赖 Q3）
 

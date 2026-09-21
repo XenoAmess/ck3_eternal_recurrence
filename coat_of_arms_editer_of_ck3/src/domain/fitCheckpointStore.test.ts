@@ -17,8 +17,8 @@ const image = () => ({
 })
 
 const checkpoint = (): ImageFitCheckpoint => ({
-  contract: 'ck3-coa-fit-checkpoint-v1',
-  algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
+  contract: 'ck3-coa-fit-checkpoint-v2',
+  algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval',
   lane: 'baseline',
   inputSha256: 'A'.repeat(64),
   assetPackManifestSha256: 'B'.repeat(64),
@@ -86,6 +86,14 @@ describe('persisted fit checkpoint', () => {
     )
     expect(() => validatePersistedFitCheckpoint({ ...record, schema: 'future-v2' }))
       .toThrow('版本不兼容')
+    expect(() => validatePersistedFitCheckpoint({
+      ...record,
+      checkpoint: {
+        ...record.checkpoint,
+        contract: 'ck3-coa-fit-checkpoint-v1',
+        algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
+      },
+    })).toThrow('搜索状态版本不兼容')
     expect(() => validatePersistedFitCheckpoint({
       ...record,
       input: { ...record.input, sha256: 'C'.repeat(64) },

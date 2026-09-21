@@ -30,6 +30,7 @@ export interface AssetRetrievalMatch<T> {
 const SIZE = FIT_SHAPE_DESCRIPTOR_SIZE
 const CELL_COUNT = SIZE * SIZE
 const ROTATIONS = Array.from({ length: 24 }, (_, index) => index * 15)
+export const ASSET_RETRIEVAL_ROTATIONS = ROTATIONS as readonly number[]
 
 function sampleGrid(grid: Float32Array, x: number, y: number): number {
   if (x < 0 || y < 0 || x > 1 || y > 1) return 0
@@ -72,6 +73,48 @@ export function transformAssetRetrievalGrid(
     }
   }
   return result
+}
+
+export function coarseMaskedAssetRetrievalLossV2(
+  target: Float32Array,
+  candidate: Float32Array,
+  rotation: number,
+  flip: 1 | -1,
+  mask: Float32Array,
+): number {
+  if (target.length !== CELL_COUNT || candidate.length !== CELL_COUNT || mask.length !== CELL_COUNT) {
+    throw new Error('素材检索粗排网格尺寸不匹配')
+  }
+  const radians = -rotation * Math.PI / 180
+  const cosine = Math.cos(radians)
+  const sine = Math.sin(radians)
+  const rotatedSpan = Math.abs(cosine) + Math.abs(sine)
+  let overlap = 0
+  let targetEnergy = 0
+  let candidateEnergy = 0
+  let squaredError = 0
+  let samples = 0
+  for (let y = 1; y < SIZE; y += 3) {
+    for (let x = 1; x < SIZE; x += 3) {
+      const centeredX = ((x + 0.5) / SIZE - 0.5) * rotatedSpan
+      const centeredY = ((y + 0.5) / SIZE - 0.5) * rotatedSpan
+      let sourceX = cosine * centeredX + sine * centeredY + 0.5
+      const sourceY = -sine * centeredX + cosine * centeredY + 0.5
+      if (flip < 0) sourceX = 1 - sourceX
+      const index = y * SIZE + x
+      const targetValue = target[index]
+      const candidateValue = sampleGrid(candidate, sourceX, sourceY) * mask[index]
+      overlap += Math.min(targetValue, candidateValue)
+      targetEnergy += targetValue
+      candidateEnergy += candidateValue
+      squaredError += (targetValue - candidateValue) ** 2
+      samples += 1
+    }
+  }
+  const diceLoss = targetEnergy + candidateEnergy > 1e-8
+    ? 1 - 2 * overlap / (targetEnergy + candidateEnergy)
+    : 1
+  return diceLoss * 0.7 + squaredError / Math.max(1, samples) * 0.3
 }
 
 function binaryMask(grid: Float32Array): Uint8Array {
@@ -407,6 +450,13 @@ function transformedFineDistance(
     : 1
   const pixelLoss = diceLoss * 0.68 + squaredError / CELL_COUNT * 0.32
   return pixelLoss * 0.74 + distanceLoss / CELL_COUNT * 0.18 + invariantDistance(target, candidate) * 0.08
+}
+
+export function alignedAssetRetrievalLossV2(
+  target: AssetRetrievalDescriptorV2,
+  candidate: AssetRetrievalDescriptorV2,
+): number {
+  return transformedFineDistance(target, candidate, 0, 1)
 }
 
 export function bestAssetRetrievalTransformV2(

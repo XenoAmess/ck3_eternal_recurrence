@@ -108,7 +108,7 @@ jobs:
             e2e/visual-transform-editor.spec.ts
 
       - name: Run source-module WebGL acceptance
-        run: pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts e2e/perceptual-metric-calibration.spec.ts e2e/perceptual-real-baseline.spec.ts e2e/asset-retrieval-holdout.spec.ts
+        run: pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts e2e/perceptual-metric-calibration.spec.ts e2e/perceptual-real-baseline.spec.ts e2e/asset-retrieval-holdout.spec.ts e2e/structure-search-holdout.spec.ts
 
       - name: Run cross-browser core acceptance
         run: pnpm exec playwright test --config=playwright.cross-browser.config.ts

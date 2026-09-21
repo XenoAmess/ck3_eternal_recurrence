@@ -1,0 +1,2084 @@
+{
+  "schema": "ck3-coa-structure-search-holdout-v1",
+  "status": "red",
+  "corpus": {
+    "fileSha256": "97174D5AC1E3E2DFCD4ABA511F57BC80C8039A69B10DFAA48BCFD5311F03B472",
+    "samplesPayloadSha256": "A464BE93B9D30D75232AF6D8BB9F95BCE55792C35DD1B91B74990C554C3B39A0",
+    "split": "holdout",
+    "samples": 64
+  },
+  "assetPack": {
+    "id": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
+    "build": "1.19.0.6",
+    "manifestSha256": "27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96",
+    "manifestFileSha256": "27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96"
+  },
+  "contracts": {
+    "structure": "salient-components-depth-ordered-beam-v1",
+    "retrieval": "ck3-coa-asset-retrieval-sdf-hu-radial-orientation-topology-v2"
+  },
+  "implementation": {
+    "imageFitterSha256": "05AFFB18E4EBCD16C7C202293C18D457E482D98DB9CF1C6A9C34A912F3C55760",
+    "assetRetrievalSha256": "257AF9641D13F93198A3504B806E775562F596AE2DFCBDB7C6B79C43516E60E8"
+  },
+  "gates": {
+    "primaryAnchorRecallMinimum": 0.85,
+    "compositePrimaryTop32Minimum": 0.5,
+    "anchorHits": 60,
+    "compositeTop32Hits": 8,
+    "compositeTop512Hits": 32,
+    "anchorRecall": 0.9375,
+    "compositeTop32Recall": 0.125,
+    "status": "red"
+  },
+  "rows": [
+    {
+      "id": "synthetic-193",
+      "primaryTexture": "ce_seal_name_xi_5dc2.dds",
+      "primaryAnchor": [
+        0.57424,
+        0.75664
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 88,
+      "foci": [
+        {
+          "position": [
+            0.5024395284374391,
+            0.6490257128852802
+          ],
+          "scale": [
+            0.125,
+            0.6979166666666666
+          ]
+        },
+        {
+          "position": [
+            0.3169995346280538,
+            0.3504817113021627
+          ],
+          "scale": [
+            0.125,
+            0.4166666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-194",
+      "primaryTexture": "ce_kamon_apricot_leaf.dds",
+      "primaryAnchor": [
+        0.72272,
+        0.4904
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 473,
+      "foci": [
+        {
+          "position": [
+            0.6858365291069952,
+            0.4817530390048677
+          ],
+          "scale": [
+            0.10416666666666667,
+            0.21875
+          ]
+        },
+        {
+          "position": [
+            0.3049709422907698,
+            0.462519513080569
+          ],
+          "scale": [
+            0.10416666666666667,
+            0.4270833333333333
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-195",
+      "primaryTexture": "ce_seal_name_kong_5b54.dds",
+      "primaryAnchor": [
+        0.69648,
+        0.73424
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 123,
+      "foci": [
+        {
+          "position": [
+            0.7616501264062913,
+            0.7765391162091357
+          ],
+          "scale": [
+            0.4375,
+            0.4375
+          ]
+        },
+        {
+          "position": [
+            0.2832875970295421,
+            0.6909617944796942
+          ],
+          "scale": [
+            0.0625,
+            0.052083333333333336
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-196",
+      "primaryTexture": "ce_bull_passant.dds",
+      "primaryAnchor": [
+        0.67088,
+        0.4936
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 28,
+      "foci": [
+        {
+          "position": [
+            0.6153429439220053,
+            0.5140939544468252
+          ],
+          "scale": [
+            0.625,
+            0.4166666666666667
+          ]
+        },
+        {
+          "position": [
+            0.6153429439220053,
+            0.5140939544468252
+          ],
+          "scale": [
+            0.625,
+            0.4166666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-197",
+      "primaryTexture": "ce_kamon_horse.dds",
+      "primaryAnchor": [
+        0.31824,
+        0.68048
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 325,
+      "foci": [
+        {
+          "position": [
+            0.3571275975169308,
+            0.5631318148724261
+          ],
+          "scale": [
+            0.3125,
+            0.14583333333333334
+          ]
+        },
+        {
+          "position": [
+            0.31294704878380764,
+            0.8151447117960385
+          ],
+          "scale": [
+            0.53125,
+            0.14583333333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-198",
+      "primaryTexture": "ce_seal_name_ning_5be7.dds",
+      "primaryAnchor": [
+        0.32912,
+        0.6408
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 635,
+      "foci": [
+        {
+          "position": [
+            0.5350592285426311,
+            0.43815133559223973
+          ],
+          "scale": [
+            0.71875,
+            0.1875
+          ]
+        },
+        {
+          "position": [
+            0.32477713202220404,
+            0.7380745202606526
+          ],
+          "scale": [
+            0.3020833333333333,
+            0.1875
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-199",
+      "primaryTexture": "ce_suomenusko_moon.dds",
+      "primaryAnchor": [
+        0.196,
+        0.708
+      ],
+      "anchorCovered": false,
+      "retrievalRank": 335,
+      "foci": [
+        {
+          "position": [
+            0.31365501001519897,
+            0.32553431791167836
+          ],
+          "scale": [
+            0.25,
+            0.5416666666666666
+          ]
+        },
+        {
+          "position": [
+            0.6679704063363784,
+            0.4204146767826253
+          ],
+          "scale": [
+            0.19791666666666666,
+            0.19791666666666666
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-200",
+      "primaryTexture": "ce_ordinary_pile_01_inverted.dds",
+      "primaryAnchor": [
+        0.38224,
+        0.22416
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 713,
+      "foci": [
+        {
+          "position": [
+            0.41195901402468826,
+            0.3903516467425545
+          ],
+          "scale": [
+            0.53125,
+            0.6666666666666666
+          ]
+        },
+        {
+          "position": [
+            0.41195901402468826,
+            0.3903516467425545
+          ],
+          "scale": [
+            0.53125,
+            0.6666666666666666
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-201",
+      "primaryTexture": "ce_seal_name_ba_5df4.dds",
+      "primaryAnchor": [
+        0.2792,
+        0.66896
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 296,
+      "foci": [
+        {
+          "position": [
+            0.5,
+            0.5
+          ],
+          "scale": [
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "position": [
+            0.5,
+            0.5
+          ],
+          "scale": [
+            0.5,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-202",
+      "primaryTexture": "ce_kamon_center.dds",
+      "primaryAnchor": [
+        0.67856,
+        0.69904
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 3,
+      "foci": [
+        {
+          "position": [
+            0.6792589788021619,
+            0.6980312871431308
+          ],
+          "scale": [
+            0.3020833333333333,
+            0.20833333333333334
+          ]
+        },
+        {
+          "position": [
+            0.6792589788021619,
+            0.6980312871431308
+          ],
+          "scale": [
+            0.3020833333333333,
+            0.20833333333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-203",
+      "primaryTexture": "ce_pales_04.dds",
+      "primaryAnchor": [
+        0.62352,
+        0.66448
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 714,
+      "foci": [
+        {
+          "position": [
+            0.7754785913327084,
+            0.37911036031474904
+          ],
+          "scale": [
+            0.4375,
+            0.21875
+          ]
+        },
+        {
+          "position": [
+            0.6774850499778698,
+            0.7660551458385383
+          ],
+          "scale": [
+            0.21875,
+            0.4375
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-204",
+      "primaryTexture": "ce_letter_e.dds",
+      "primaryAnchor": [
+        0.3528,
+        0.5
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 793,
+      "foci": [
+        {
+          "position": [
+            0.24351758617028707,
+            0.7116900402860497
+          ],
+          "scale": [
+            0.5520833333333334,
+            0.3854166666666667
+          ]
+        },
+        {
+          "position": [
+            0.24351758617028707,
+            0.7116900402860497
+          ],
+          "scale": [
+            0.5520833333333334,
+            0.3854166666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-205",
+      "primaryTexture": "ce_tamgha_sarkel_01.dds",
+      "primaryAnchor": [
+        0.70224,
+        0.22992
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 342,
+      "foci": [
+        {
+          "position": [
+            0.704735223637521,
+            0.21285895785396017
+          ],
+          "scale": [
+            0.20833333333333334,
+            0.3645833333333333
+          ]
+        },
+        {
+          "position": [
+            0.6819678922048542,
+            0.6523024825850864
+          ],
+          "scale": [
+            0.21875,
+            0.041666666666666664
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-206",
+      "primaryTexture": "ce_frame_circle_urnes_pitney.dds",
+      "primaryAnchor": [
+        0.78032,
+        0.63952
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1081,
+      "foci": [
+        {
+          "position": [
+            0.7218026226496682,
+            0.33524189426379897
+          ],
+          "scale": [
+            0.6875,
+            0.9166666666666666
+          ]
+        },
+        {
+          "position": [
+            0.7218026226496682,
+            0.33524189426379897
+          ],
+          "scale": [
+            0.6875,
+            0.9166666666666666
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-207",
+      "primaryTexture": "ce_rosetta_08.dds",
+      "primaryAnchor": [
+        0.23248,
+        0.80272
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 158,
+      "foci": [
+        {
+          "position": [
+            0.26594704390511376,
+            0.7734003259930842
+          ],
+          "scale": [
+            0.5833333333333334,
+            0.5104166666666666
+          ]
+        },
+        {
+          "position": [
+            0.26594704390511376,
+            0.7734003259930842
+          ],
+          "scale": [
+            0.5833333333333334,
+            0.5104166666666666
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-208",
+      "primaryTexture": "ce_rune_ehwaz.dds",
+      "primaryAnchor": [
+        0.35728,
+        0.71312
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1081,
+      "foci": [
+        {
+          "position": [
+            0.6538666262298645,
+            0.566578065050496
+          ],
+          "scale": [
+            0.6875,
+            0.14583333333333334
+          ]
+        },
+        {
+          "position": [
+            0.32369966743082695,
+            0.7795219954278244
+          ],
+          "scale": [
+            0.19791666666666666,
+            0.07291666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-209",
+      "primaryTexture": "ce_seal_name_dong_8463.dds",
+      "primaryAnchor": [
+        0.64208,
+        0.7496
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 15,
+      "foci": [
+        {
+          "position": [
+            0.6328780043879,
+            0.7326688665489983
+          ],
+          "scale": [
+            0.5104166666666666,
+            0.4583333333333333
+          ]
+        },
+        {
+          "position": [
+            0.6328780043879,
+            0.7326688665489983
+          ],
+          "scale": [
+            0.5104166666666666,
+            0.4583333333333333
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-210",
+      "primaryTexture": "ce_thunder_dragon.dds",
+      "primaryAnchor": [
+        0.644,
+        0.3752
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1244,
+      "foci": [
+        {
+          "position": [
+            0.6237141510256684,
+            0.2728755680909612
+          ],
+          "scale": [
+            0.8020833333333334,
+            0.53125
+          ]
+        },
+        {
+          "position": [
+            0.6237141510256684,
+            0.2728755680909612
+          ],
+          "scale": [
+            0.8020833333333334,
+            0.53125
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-211",
+      "primaryTexture": "ce_seal_name_yan_71d5.dds",
+      "primaryAnchor": [
+        0.49744,
+        0.2056
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 443,
+      "foci": [
+        {
+          "position": [
+            0.5128751073414478,
+            0.2015947035550704
+          ],
+          "scale": [
+            0.1875,
+            0.46875
+          ]
+        },
+        {
+          "position": [
+            0.5128751073414478,
+            0.2015947035550704
+          ],
+          "scale": [
+            0.1875,
+            0.46875
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-212",
+      "primaryTexture": "ce_elephant_indian_02.dds",
+      "primaryAnchor": [
+        0.72016,
+        0.23632
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 4,
+      "foci": [
+        {
+          "position": [
+            0.6461955310294399,
+            0.3782605595625325
+          ],
+          "scale": [
+            0.59375,
+            0.8020833333333334
+          ]
+        },
+        {
+          "position": [
+            0.6461955310294399,
+            0.3782605595625325
+          ],
+          "scale": [
+            0.59375,
+            0.8020833333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-213",
+      "primaryTexture": "ce_seal_cloud.dds",
+      "primaryAnchor": [
+        0.40784,
+        0.43856
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 20,
+      "foci": [
+        {
+          "position": [
+            0.37101414636062396,
+            0.6142982477680307
+          ],
+          "scale": [
+            0.16666666666666666,
+            0.15625
+          ]
+        },
+        {
+          "position": [
+            0.49556601187963123,
+            0.43062702311544787
+          ],
+          "scale": [
+            0.25,
+            0.23958333333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-214",
+      "primaryTexture": "ce_bull_head.dds",
+      "primaryAnchor": [
+        0.73616,
+        0.36368
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1388,
+      "foci": [
+        {
+          "position": [
+            0.6553436547329462,
+            0.37455271543620156
+          ],
+          "scale": [
+            0.71875,
+            0.46875
+          ]
+        },
+        {
+          "position": [
+            0.6553436547329462,
+            0.37455271543620156
+          ],
+          "scale": [
+            0.71875,
+            0.46875
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-215",
+      "primaryTexture": "ce_antler_pale.dds",
+      "primaryAnchor": [
+        0.35024,
+        0.33232
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 441,
+      "foci": [
+        {
+          "position": [
+            0.3419393017145731,
+            0.34465548760356346
+          ],
+          "scale": [
+            0.3229166666666667,
+            0.11458333333333333
+          ]
+        },
+        {
+          "position": [
+            0.3419393017145731,
+            0.34465548760356346
+          ],
+          "scale": [
+            0.3229166666666667,
+            0.11458333333333333
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-216",
+      "primaryTexture": "ce_african_hidoox.dds",
+      "primaryAnchor": [
+        0.57936,
+        0.30864
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 109,
+      "foci": [
+        {
+          "position": [
+            0.6569562908904087,
+            0.2845065022554779
+          ],
+          "scale": [
+            0.4270833333333333,
+            0.25
+          ]
+        },
+        {
+          "position": [
+            0.6569562908904087,
+            0.2845065022554779
+          ],
+          "scale": [
+            0.4270833333333333,
+            0.25
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-217",
+      "primaryTexture": "ce_hongsa.dds",
+      "primaryAnchor": [
+        0.244,
+        0.25168
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 847,
+      "foci": [
+        {
+          "position": [
+            0.5,
+            0.5
+          ],
+          "scale": [
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "position": [
+            0.5,
+            0.5
+          ],
+          "scale": [
+            0.5,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-218",
+      "primaryTexture": "ce_lion_saint_mark.dds",
+      "primaryAnchor": [
+        0.5992,
+        0.36176
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 2,
+      "foci": [
+        {
+          "position": [
+            0.6285001795225921,
+            0.3528987421530964
+          ],
+          "scale": [
+            0.5833333333333334,
+            0.4791666666666667
+          ]
+        },
+        {
+          "position": [
+            0.6285001795225921,
+            0.3528987421530964
+          ],
+          "scale": [
+            0.5833333333333334,
+            0.4791666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-219",
+      "primaryTexture": "ce_lozenge_vair.dds",
+      "primaryAnchor": [
+        0.54992,
+        0.69392
+      ],
+      "anchorCovered": false,
+      "retrievalRank": 1154,
+      "foci": [
+        {
+          "position": [
+            0.47099783988393035,
+            0.28529880688388376
+          ],
+          "scale": [
+            0.4791666666666667,
+            0.3333333333333333
+          ]
+        },
+        {
+          "position": [
+            0.7149127189835834,
+            0.20388629388124938
+          ],
+          "scale": [
+            0.125,
+            0.11458333333333333
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-220",
+      "primaryTexture": "ce_seal_pictorial_frame_flower.dds",
+      "primaryAnchor": [
+        0.3272,
+        0.68112
+      ],
+      "anchorCovered": false,
+      "retrievalRank": 1391,
+      "foci": [
+        {
+          "position": [
+            0.30315074538278924,
+            0.8738264877508356
+          ],
+          "scale": [
+            0.4270833333333333,
+            0.08333333333333333
+          ]
+        },
+        {
+          "position": [
+            0.1366910125945994,
+            0.535856465065752
+          ],
+          "scale": [
+            0.21875,
+            0.10416666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-221",
+      "primaryTexture": "ce_tamgha_magyar_02.dds",
+      "primaryAnchor": [
+        0.56848,
+        0.51216
+      ],
+      "anchorCovered": false,
+      "retrievalRank": 1118,
+      "foci": [
+        {
+          "position": [
+            0.3540191222480296,
+            0.3846401042752167
+          ],
+          "scale": [
+            0.09375,
+            0.07291666666666667
+          ]
+        },
+        {
+          "position": [
+            0.1384384486300478,
+            0.6286447974687072
+          ],
+          "scale": [
+            0.052083333333333336,
+            0.04
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-222",
+      "primaryTexture": "ce_seal_name_zi_6893.dds",
+      "primaryAnchor": [
+        0.70544,
+        0.61776
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 513,
+      "foci": [
+        {
+          "position": [
+            0.8101502271795638,
+            0.5788077944519947
+          ],
+          "scale": [
+            0.09375,
+            0.16666666666666666
+          ]
+        },
+        {
+          "position": [
+            0.900373293938055,
+            0.698721744588084
+          ],
+          "scale": [
+            0.04,
+            0.04
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-223",
+      "primaryTexture": "ce_seal_name_han_6f22.dds",
+      "primaryAnchor": [
+        0.4104,
+        0.57616
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 810,
+      "foci": [
+        {
+          "position": [
+            0.34067044349355347,
+            0.3505663453202305
+          ],
+          "scale": [
+            0.625,
+            0.3645833333333333
+          ]
+        },
+        {
+          "position": [
+            0.34067044349355347,
+            0.3505663453202305
+          ],
+          "scale": [
+            0.625,
+            0.3645833333333333
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-224",
+      "primaryTexture": "ce_polish_szeliga.dds",
+      "primaryAnchor": [
+        0.43664,
+        0.66768
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 957,
+      "foci": [
+        {
+          "position": [
+            0.4971732632384052,
+            0.49003893058028386
+          ],
+          "scale": [
+            0.8854166666666666,
+            0.9166666666666666
+          ]
+        },
+        {
+          "position": [
+            0.2922498680935818,
+            0.8747297431382633
+          ],
+          "scale": [
+            0.04,
+            0.04
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-225",
+      "primaryTexture": "ce_religion_custom_faith_1.dds",
+      "primaryAnchor": [
+        0.46928,
+        0.39952
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1137,
+      "foci": [
+        {
+          "position": [
+            0.5059165473784728,
+            0.26153745456984845
+          ],
+          "scale": [
+            0.59375,
+            0.6666666666666666
+          ]
+        },
+        {
+          "position": [
+            0.5059165473784728,
+            0.26153745456984845
+          ],
+          "scale": [
+            0.59375,
+            0.6666666666666666
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-226",
+      "primaryTexture": "ce_kamon_paulownia_bloom.dds",
+      "primaryAnchor": [
+        0.6664,
+        0.44624
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 463,
+      "foci": [
+        {
+          "position": [
+            0.6090686159539666,
+            0.49813868124876
+          ],
+          "scale": [
+            0.7916666666666666,
+            0.8541666666666666
+          ]
+        },
+        {
+          "position": [
+            0.3306989098563766,
+            0.8267051753565403
+          ],
+          "scale": [
+            0.17708333333333334,
+            0.34375
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-227",
+      "primaryTexture": "ce_seal_pictorial_central_snake.dds",
+      "primaryAnchor": [
+        0.32848,
+        0.61392
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 133,
+      "foci": [
+        {
+          "position": [
+            0.4709025699744224,
+            0.6943324424658467
+          ],
+          "scale": [
+            0.8541666666666666,
+            0.4166666666666667
+          ]
+        },
+        {
+          "position": [
+            0.18620190969621556,
+            0.8388181554108732
+          ],
+          "scale": [
+            0.125,
+            0.052083333333333336
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-228",
+      "primaryTexture": "ce_bendy_10.dds",
+      "primaryAnchor": [
+        0.53776,
+        0.50384
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 543,
+      "foci": [
+        {
+          "position": [
+            0.5374356594895132,
+            0.5079613509713505
+          ],
+          "scale": [
+            0.6145833333333334,
+            0.71875
+          ]
+        },
+        {
+          "position": [
+            0.5374356594895132,
+            0.5079613509713505
+          ],
+          "scale": [
+            0.6145833333333334,
+            0.71875
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-229",
+      "primaryTexture": "ce_pattern_vertical_split_01.dds",
+      "primaryAnchor": [
+        0.35664,
+        0.6664
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 89,
+      "foci": [
+        {
+          "position": [
+            0.4883999492363338,
+            0.7223863499339237
+          ],
+          "scale": [
+            0.9895833333333334,
+            0.46875
+          ]
+        },
+        {
+          "position": [
+            0.37681524802058036,
+            0.45312500000000006
+          ],
+          "scale": [
+            0.052083333333333336,
+            0.04
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-230",
+      "primaryTexture": "ce_horizontal_stripes_01.dds",
+      "primaryAnchor": [
+        0.74,
+        0.73744
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 112,
+      "foci": [
+        {
+          "position": [
+            0.7423736392741848,
+            0.6405616630387313
+          ],
+          "scale": [
+            0.4895833333333333,
+            0.8333333333333334
+          ]
+        },
+        {
+          "position": [
+            0.7423736392741848,
+            0.6405616630387313
+          ],
+          "scale": [
+            0.4895833333333333,
+            0.8333333333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-231",
+      "primaryTexture": "ce_star_ibadi.dds",
+      "primaryAnchor": [
+        0.46352,
+        0.80912
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1374,
+      "foci": [
+        {
+          "position": [
+            0.5,
+            0.5
+          ],
+          "scale": [
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "position": [
+            0.5,
+            0.5
+          ],
+          "scale": [
+            0.5,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-232",
+      "primaryTexture": "ce_rurikid_vzevolod_02.dds",
+      "primaryAnchor": [
+        0.4584,
+        0.244
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1449,
+      "foci": [
+        {
+          "position": [
+            0.37015806175882854,
+            0.3570839254280073
+          ],
+          "scale": [
+            0.28125,
+            0.11458333333333333
+          ]
+        },
+        {
+          "position": [
+            0.6425892663680436,
+            0.34722682588869125
+          ],
+          "scale": [
+            0.1875,
+            0.08333333333333333
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-233",
+      "primaryTexture": "ce_kamon_butterfly_laurel.dds",
+      "primaryAnchor": [
+        0.38416,
+        0.46736
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 762,
+      "foci": [
+        {
+          "position": [
+            0.2978251514624097,
+            0.48196991265045885
+          ],
+          "scale": [
+            0.3229166666666667,
+            0.3125
+          ]
+        },
+        {
+          "position": [
+            0.627019277045784,
+            0.60503238072589
+          ],
+          "scale": [
+            0.16666666666666666,
+            0.4791666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-234",
+      "primaryTexture": "ce_kamon_feather.dds",
+      "primaryAnchor": [
+        0.55952,
+        0.50064
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 699,
+      "foci": [
+        {
+          "position": [
+            0.4631179617326682,
+            0.5699790022282272
+          ],
+          "scale": [
+            0.6770833333333334,
+            0.875
+          ]
+        },
+        {
+          "position": [
+            0.515625,
+            0.5677083333333334
+          ],
+          "scale": [
+            0.04,
+            0.04
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-235",
+      "primaryTexture": "ce_pagan_moon_cross.dds",
+      "primaryAnchor": [
+        0.60432,
+        0.64144
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 979,
+      "foci": [
+        {
+          "position": [
+            0.5606330880030624,
+            0.8565346836888873
+          ],
+          "scale": [
+            0.21875,
+            0.28125
+          ]
+        },
+        {
+          "position": [
+            0.6472431785342978,
+            0.384785574156538
+          ],
+          "scale": [
+            0.125,
+            0.17708333333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-236",
+      "primaryTexture": "ce_maunch.dds",
+      "primaryAnchor": [
+        0.51728,
+        0.37968
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 869,
+      "foci": [
+        {
+          "position": [
+            0.586402475788593,
+            0.4194715847165775
+          ],
+          "scale": [
+            0.2916666666666667,
+            0.4895833333333333
+          ]
+        },
+        {
+          "position": [
+            0.2617804574704499,
+            0.6731373500207479
+          ],
+          "scale": [
+            0.21875,
+            0.4479166666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-237",
+      "primaryTexture": "ce_axe.dds",
+      "primaryAnchor": [
+        0.20816,
+        0.61328
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 129,
+      "foci": [
+        {
+          "position": [
+            0.19365941089919705,
+            0.596736800436438
+          ],
+          "scale": [
+            0.5,
+            0.1875
+          ]
+        },
+        {
+          "position": [
+            0.5162010862311471,
+            0.26093183987041724
+          ],
+          "scale": [
+            0.20833333333333334,
+            0.21875
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-238",
+      "primaryTexture": "ce_tamgha_zoroastrian_03.dds",
+      "primaryAnchor": [
+        0.20816,
+        0.78864
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 568,
+      "foci": [
+        {
+          "position": [
+            0.5496915350403538,
+            0.6525789307751438
+          ],
+          "scale": [
+            0.9583333333333334,
+            0.6875
+          ]
+        },
+        {
+          "position": [
+            0.5496915350403538,
+            0.6525789307751438
+          ],
+          "scale": [
+            0.9583333333333334,
+            0.6875
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-239",
+      "primaryTexture": "ce_ordinary_pale_5.dds",
+      "primaryAnchor": [
+        0.77008,
+        0.20944
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 127,
+      "foci": [
+        {
+          "position": [
+            0.8022087794573411,
+            0.3100148136126857
+          ],
+          "scale": [
+            0.10416666666666667,
+            0.14583333333333334
+          ]
+        },
+        {
+          "position": [
+            0.7261236752547249,
+            0.0866089744489391
+          ],
+          "scale": [
+            0.08333333333333333,
+            0.10416666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-240",
+      "primaryTexture": "ce_african_frame_bg_12.dds",
+      "primaryAnchor": [
+        0.48336,
+        0.49808
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1118,
+      "foci": [
+        {
+          "position": [
+            0.6707331021446906,
+            0.4593383742480566
+          ],
+          "scale": [
+            0.6979166666666666,
+            0.75
+          ]
+        },
+        {
+          "position": [
+            0.6707331021446906,
+            0.4593383742480566
+          ],
+          "scale": [
+            0.6979166666666666,
+            0.75
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-241",
+      "primaryTexture": "ce_religion_islam_iibadi.dds",
+      "primaryAnchor": [
+        0.30992,
+        0.79248
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 346,
+      "foci": [
+        {
+          "position": [
+            0.3092883069677254,
+            0.8483480104888459
+          ],
+          "scale": [
+            0.46875,
+            0.11458333333333333
+          ]
+        },
+        {
+          "position": [
+            0.31099048382015304,
+            0.6505474541539098
+          ],
+          "scale": [
+            0.34375,
+            0.125
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-242",
+      "primaryTexture": "ce_tamgha_turkic_06.dds",
+      "primaryAnchor": [
+        0.34128,
+        0.61264
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 214,
+      "foci": [
+        {
+          "position": [
+            0.39118353592984145,
+            0.6023694723734505
+          ],
+          "scale": [
+            0.4791666666666667,
+            0.2708333333333333
+          ]
+        },
+        {
+          "position": [
+            0.27169335113032195,
+            0.7384276061982528
+          ],
+          "scale": [
+            0.09375,
+            0.052083333333333336
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-243",
+      "primaryTexture": "ce_ordinary_pily_vertical_04.dds",
+      "primaryAnchor": [
+        0.66384,
+        0.60048
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 107,
+      "foci": [
+        {
+          "position": [
+            0.6166611448949687,
+            0.5397281352043334
+          ],
+          "scale": [
+            0.8020833333333334,
+            0.9479166666666666
+          ]
+        },
+        {
+          "position": [
+            0.6166611448949687,
+            0.5397281352043334
+          ],
+          "scale": [
+            0.8020833333333334,
+            0.9479166666666666
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-244",
+      "primaryTexture": "ce_per_bend.dds",
+      "primaryAnchor": [
+        0.61776,
+        0.48912
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 48,
+      "foci": [
+        {
+          "position": [
+            0.6152168056675054,
+            0.48443207444162306
+          ],
+          "scale": [
+            0.2916666666666667,
+            0.3125
+          ]
+        },
+        {
+          "position": [
+            0.6152168056675054,
+            0.48443207444162306
+          ],
+          "scale": [
+            0.2916666666666667,
+            0.3125
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-245",
+      "primaryTexture": "ce_seal_name_zhou_5dde.dds",
+      "primaryAnchor": [
+        0.74,
+        0.18512
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 54,
+      "foci": [
+        {
+          "position": [
+            0.7372932909028137,
+            0.18955015486466043
+          ],
+          "scale": [
+            0.28125,
+            0.4270833333333333
+          ]
+        },
+        {
+          "position": [
+            0.40232460035331435,
+            0.3115848533357258
+          ],
+          "scale": [
+            0.04,
+            0.04
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-246",
+      "primaryTexture": "ce_bendy_04_dimidiated.dds",
+      "primaryAnchor": [
+        0.53712,
+        0.24528
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1575,
+      "foci": [
+        {
+          "position": [
+            0.4949657803678816,
+            0.3171296700823125
+          ],
+          "scale": [
+            0.2604166666666667,
+            0.6979166666666666
+          ]
+        },
+        {
+          "position": [
+            0.2489900734620868,
+            0.5769920278435555
+          ],
+          "scale": [
+            0.22916666666666666,
+            0.09375
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-247",
+      "primaryTexture": "ce_seal_name_hui_60e0.dds",
+      "primaryAnchor": [
+        0.27664,
+        0.4072
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 631,
+      "foci": [
+        {
+          "position": [
+            0.26529810796651276,
+            0.3993764349994106
+          ],
+          "scale": [
+            0.3541666666666667,
+            0.20833333333333334
+          ]
+        },
+        {
+          "position": [
+            0.512894734108128,
+            0.37405201185658377
+          ],
+          "scale": [
+            0.04,
+            0.04
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-248",
+      "primaryTexture": "ce_wolf_passant_lamb.dds",
+      "primaryAnchor": [
+        0.676,
+        0.276
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 615,
+      "foci": [
+        {
+          "position": [
+            0.5135589265402521,
+            0.24368105011746574
+          ],
+          "scale": [
+            0.71875,
+            0.5208333333333334
+          ]
+        },
+        {
+          "position": [
+            0.5135589265402521,
+            0.24368105011746574
+          ],
+          "scale": [
+            0.71875,
+            0.5208333333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-249",
+      "primaryTexture": "ce_tamgha_zoroastrian_05.dds",
+      "primaryAnchor": [
+        0.63056,
+        0.69776
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 123,
+      "foci": [
+        {
+          "position": [
+            0.6570227794838178,
+            0.742958715562272
+          ],
+          "scale": [
+            0.4479166666666667,
+            0.1875
+          ]
+        },
+        {
+          "position": [
+            0.5696395253697001,
+            0.3961517211166572
+          ],
+          "scale": [
+            0.3229166666666667,
+            0.1875
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-250",
+      "primaryTexture": "ce_crescent_random.dds",
+      "primaryAnchor": [
+        0.2856,
+        0.6952
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 1116,
+      "foci": [
+        {
+          "position": [
+            0.41818060219545,
+            0.7627259741857938
+          ],
+          "scale": [
+            0.14583333333333334,
+            0.09375
+          ]
+        },
+        {
+          "position": [
+            0.26257236997423006,
+            0.6071952961650864
+          ],
+          "scale": [
+            0.1875,
+            0.0625
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-251",
+      "primaryTexture": "ce_seal_name_qi_9f50.dds",
+      "primaryAnchor": [
+        0.43216,
+        0.6056
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 649,
+      "foci": [
+        {
+          "position": [
+            0.4435851007144885,
+            0.6276764970999762
+          ],
+          "scale": [
+            0.34375,
+            0.4791666666666667
+          ]
+        },
+        {
+          "position": [
+            0.4435851007144885,
+            0.6276764970999762
+          ],
+          "scale": [
+            0.34375,
+            0.4791666666666667
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-252",
+      "primaryTexture": "ce_seal_name_zhao_8d99.dds",
+      "primaryAnchor": [
+        0.22224,
+        0.596
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 349,
+      "foci": [
+        {
+          "position": [
+            0.25526706189276394,
+            0.4888569494755757
+          ],
+          "scale": [
+            0.6979166666666666,
+            0.6145833333333334
+          ]
+        },
+        {
+          "position": [
+            0.25526706189276394,
+            0.4888569494755757
+          ],
+          "scale": [
+            0.6979166666666666,
+            0.6145833333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-253",
+      "primaryTexture": "ce_kamon_stem.dds",
+      "primaryAnchor": [
+        0.3976,
+        0.26128
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 29,
+      "foci": [
+        {
+          "position": [
+            0.3046291738349429,
+            0.5102691213890317
+          ],
+          "scale": [
+            0.6979166666666666,
+            0.6041666666666666
+          ]
+        },
+        {
+          "position": [
+            0.4631741515931578,
+            0.24671788003822717
+          ],
+          "scale": [
+            0.19791666666666666,
+            0.0625
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-254",
+      "primaryTexture": "ce_tamgha_karasorkaliq.dds",
+      "primaryAnchor": [
+        0.56336,
+        0.55824
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 834,
+      "foci": [
+        {
+          "position": [
+            0.6257982975327485,
+            0.6564190423177836
+          ],
+          "scale": [
+            0.3125,
+            0.78125
+          ]
+        },
+        {
+          "position": [
+            0.6257982975327485,
+            0.6564190423177836
+          ],
+          "scale": [
+            0.3125,
+            0.78125
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-255",
+      "primaryTexture": "ce_seal_name_you_5e7d.dds",
+      "primaryAnchor": [
+        0.31568,
+        0.23568
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 962,
+      "foci": [
+        {
+          "position": [
+            0.36288385303252535,
+            0.2489938841173278
+          ],
+          "scale": [
+            0.6145833333333334,
+            0.6770833333333334
+          ]
+        },
+        {
+          "position": [
+            0.36288385303252535,
+            0.2489938841173278
+          ],
+          "scale": [
+            0.6145833333333334,
+            0.6770833333333334
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-256",
+      "primaryTexture": "ce_hand.dds",
+      "primaryAnchor": [
+        0.75984,
+        0.24272
+      ],
+      "anchorCovered": true,
+      "retrievalRank": 17,
+      "foci": [
+        {
+          "position": [
+            0.7604496171590761,
+            0.24886868078585275
+          ],
+          "scale": [
+            0.375,
+            0.4791666666666667
+          ]
+        },
+        {
+          "position": [
+            0.2582884673408889,
+            0.5946623843475195
+          ],
+          "scale": [
+            0.40625,
+            0.3541666666666667
+          ]
+        }
+      ]
+    }
+  ]
+}

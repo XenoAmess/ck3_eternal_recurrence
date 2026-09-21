@@ -25,8 +25,8 @@ function portableCheckpoint(tamper = false): string {
     assetPack: { packId: 'portable-e2e-pack', manifestSha256: 'B'.repeat(64) },
     layerBudget: 1,
     checkpoint: {
-      contract: 'ck3-coa-fit-checkpoint-v1',
-      algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
+      contract: 'ck3-coa-fit-checkpoint-v2',
+      algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval',
       lane: 'baseline',
       inputSha256: 'A'.repeat(64),
       assetPackManifestSha256: 'B'.repeat(64),

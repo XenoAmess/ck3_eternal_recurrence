@@ -1,0 +1,19 @@
+{
+  "schema": "ck3-coa-real-fit-attempt-v1",
+  "status": "red",
+  "case": "picture-01",
+  "budget": 128,
+  "timeoutMilliseconds": 180000,
+  "observedProgress": {
+    "layer": 108,
+    "layerBudget": 128,
+    "phase": "refine",
+    "completed": 60,
+    "total": 60,
+    "evaluatedCandidates": 22796
+  },
+  "failure": "completion marker was not visible before the frozen browser timeout",
+  "diagnosis": "The structure-mask descriptor reranker had already been removed from the runtime path. The stale completed refinement progress localizes the remaining delay after high-resolution residual repair, before browser result publication.",
+  "sourceAlgorithm": "ck3-coa-browser-fit-v7-structure-retrieval",
+  "preservation": "append-only; do not overwrite with a later GREEN attempt"
+}

@@ -425,7 +425,7 @@ describe('browser image fitter', () => {
       [candidate('square.dds', square)],
       { resolution: size, maxLayers: 3, minRelativeLayerImprovement: 0.0001 },
     )
-    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v6-budget-exhaustive-edge')
+    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v7-structure-retrieval')
     expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(2)
     expect(result.coatOfArms.coloredEmblems).toHaveLength(result.provenance.selectedLayers)
     expect(result.provenance.drawnInstances).toBe(result.provenance.selectedLayers)
@@ -570,8 +570,8 @@ describe('browser image fitter', () => {
     ))
     expect(checkpoint).toBeDefined()
     expect(checkpoint).toMatchObject({
-      contract: 'ck3-coa-fit-checkpoint-v1',
-      algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
+      contract: 'ck3-coa-fit-checkpoint-v2',
+      algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval',
       inputSha256: options.inputSha256,
       assetPackManifestSha256: options.assetPackManifestSha256,
       resolution: size,
@@ -631,8 +631,9 @@ describe('browser image fitter', () => {
     )
     const purePaint = result.provenance.candidateLosses.find((item) => item.mode === 'native-tile-paint')
     const hybrid = result.provenance.candidateLosses.find((item) => (
-      item.mode === 'hybrid-native-paint'
+      (item.mode === 'hybrid-native-paint' || item.mode === 'semantic-search')
       && item.textureNames.includes('semantic-square.dds')
+      && item.textureNames.includes('ce_block_02.dds')
     ))
     expect(purePaint).toBeDefined()
     expect(hybrid).toBeDefined()

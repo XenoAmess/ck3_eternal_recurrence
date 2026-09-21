@@ -71,17 +71,19 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
         mimeType: picture.mimeType,
         buffer: inputBytes,
       })
+      const fitStartedAt = Date.now()
       await page.getByRole('button', { name: '开始本地拟合' }).click()
       await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({
         timeout: budget >= 1_024 ? 6 * 60_000 : 3 * 60_000,
       })
+      const fitElapsedMilliseconds = Date.now() - fitStartedAt
 
       const reportElement = page.locator('.fit-report')
       const rawEvidence = await reportElement.getAttribute('data-fit-evidence')
       if (!rawEvidence) throw new Error('missing machine-readable fit evidence')
       const evidence = JSON.parse(rawEvidence)
       expect(evidence.provenance.layerBudget).toBe(budget)
-      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v6-budget-exhaustive-edge')
+      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v7-structure-retrieval')
       expect(evidence.provenance.surfaceMaskApplied).toBe(true)
       expect(evidence.provenance.fullAssetFinalization).toMatchObject({
         contract: 'full-dds-rescore-pareto-v1',
@@ -224,11 +226,14 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
           previewSha256: sha256(candidate.previewBytes),
           parseErrors: candidate.parseErrors,
           metrics: candidate.metrics,
+          perceptualMetricsV2: candidate.perceptualMetricsV2,
           reconstructionMode: candidate.reconstructionMode,
           textureNames: candidate.textureNames,
           multiscaleMetrics: candidate.multiscaleMetrics,
           stats: candidate.stats,
         })),
+        perceptualMetricsV2: evidence.provenance.perceptualScoringShadow?.selected ?? null,
+        fitElapsedMilliseconds,
         v5Budget1024Baseline: picture.v5Budget1024Baseline,
         provenance: evidence.provenance,
         counts: {
@@ -255,7 +260,14 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
         },
       }
       await writeFile(resolve(caseDirectory, 'report.json'), `${JSON.stringify(report, null, 2)}\n`, 'utf8')
-      console.info(JSON.stringify({ case: picture.id, budget, metrics: evidence.metrics, counts: report.counts }))
+      console.info(JSON.stringify({
+        case: picture.id,
+        budget,
+        fitElapsedMilliseconds,
+        metrics: evidence.metrics,
+        perceptualMetricsV2: report.perceptualMetricsV2,
+        counts: report.counts,
+      }))
     })
   }
 })

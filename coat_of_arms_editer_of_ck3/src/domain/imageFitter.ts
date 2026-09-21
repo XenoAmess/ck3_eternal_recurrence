@@ -2,6 +2,7 @@ import type { DecodedDds } from './dds'
 import {
   renderCoatOfArms,
   renderColoredEmblemLayer,
+  patternMaskAlpha,
   type NamedColorMap,
   type RenderedCoatOfArms,
 } from './renderer'
@@ -19,6 +20,8 @@ import {
 import {
   ASSET_RETRIEVAL_CONTRACT,
   ASSET_RETRIEVAL_FINE_SHORTLIST,
+  ASSET_RETRIEVAL_ROTATIONS,
+  coarseMaskedAssetRetrievalLossV2,
   computeAssetRetrievalDescriptorV2,
   rankAssetRetrievalV2,
   type AssetRetrievalDescriptorV2,
@@ -89,8 +92,8 @@ export interface ImageFitProgress {
 }
 
 export interface ImageFitCheckpoint {
-  contract: 'ck3-coa-fit-checkpoint-v1'
-  algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge'
+  contract: 'ck3-coa-fit-checkpoint-v2'
+  algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval'
   lane: 'baseline' | 'hybrid'
   inputSha256: string
   assetPackManifestSha256: string
@@ -163,7 +166,7 @@ export interface ImageFitResult {
   metrics: ImageFitMetrics
   paretoCandidates: ImageFitParetoCandidate[]
   provenance: {
-    algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge'
+    algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval'
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
@@ -194,6 +197,13 @@ export interface ImageFitResult {
       fineShortlist: number
       rotations: number
       mirrors: number
+    }
+    structureSearch: {
+      contract: 'salient-components-depth-ordered-beam-v1'
+      semanticLayerBudget: number
+      beamWidth: number
+      residualComponentsPerBeam: 2
+      layerOrder: 'foreground-append-then-native-depth-encode'
     }
     layerBudget: number
     logicalLayers: number
@@ -589,7 +599,7 @@ function residualWeights(target: FitImage, rendered: RenderedCoatOfArms): Float6
   return result
 }
 
-interface ResidualFocus {
+export interface ResidualFocus {
   position: [number, number]
   scale: [number, number]
   descriptor: Float32Array
@@ -630,9 +640,10 @@ export function selectMixedNativeShapeCandidateNames(
   return rankedUnique.filter((name) => selected.has(name))
 }
 
-function residualGeometry(
+export function residualGeometry(
   target: FitImage,
   rendered: RenderedCoatOfArms,
+  componentRank = 0,
 ): ResidualFocus {
   const weights = residualWeights(target, rendered)
   const maximumWeight = Math.max(...weights)
@@ -641,10 +652,12 @@ function residualGeometry(
     scale: [0.5, 0.5],
     descriptor: new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE),
   }
-  const threshold = Math.max(18, maximumWeight * 0.22)
+  // A high cutoff fragments multicolour and anti-aliased emblems into thin
+  // strokes. Keep low-energy silhouette pixels, then bridge only a bounded
+  // two-pixel gap so separated subjects remain distinct.
+  const threshold = Math.max(8, maximumWeight * 0.08)
   const visited = new Uint8Array(weights.length)
-  let selected: number[] = []
-  let selectedWeight = -1
+  const components: { pixels: number[], weight: number, seed: number }[] = []
   for (let seed = 0; seed < weights.length; seed += 1) {
     if (visited[seed] || weights[seed] < threshold) continue
     const component: number[] = []
@@ -657,12 +670,18 @@ function residualGeometry(
       componentWeight += weights[index]
       const x = index % target.width
       const y = Math.floor(index / target.width)
-      const neighbors = [
-        x > 0 ? index - 1 : -1,
-        x + 1 < target.width ? index + 1 : -1,
-        y > 0 ? index - target.width : -1,
-        y + 1 < target.height ? index + target.width : -1,
-      ]
+      const neighbors: number[] = []
+      for (let deltaY = -2; deltaY <= 2; deltaY += 1) {
+        for (let deltaX = -2; deltaX <= 2; deltaX += 1) {
+          if (deltaX === 0 && deltaY === 0) continue
+          const neighborX = x + deltaX
+          const neighborY = y + deltaY
+          if (
+            neighborX >= 0 && neighborX < target.width
+            && neighborY >= 0 && neighborY < target.height
+          ) neighbors.push(neighborY * target.width + neighborX)
+        }
+      }
       for (const neighbor of neighbors) {
         if (neighbor >= 0 && !visited[neighbor] && weights[neighbor] >= threshold) {
           visited[neighbor] = 1
@@ -670,12 +689,14 @@ function residualGeometry(
         }
       }
     }
-    if (componentWeight > selectedWeight) {
-      selected = component
-      selectedWeight = componentWeight
-    }
+    components.push({ pixels: component, weight: componentWeight, seed })
   }
+  components.sort((left, right) => right.weight - left.weight || left.seed - right.seed)
+  let selected = components[Math.max(0, Math.min(componentRank, components.length - 1))]?.pixels ?? []
   if (!selected.length) selected = [...weights.keys()]
+  const geometryThreshold = Math.max(18, maximumWeight * 0.22)
+  const geometrySelected = selected.filter((index) => weights[index] >= geometryThreshold)
+  if (geometrySelected.length) selected = geometrySelected
   let minimumX = target.width
   let minimumY = target.height
   let maximumX = -1
@@ -731,9 +752,10 @@ function residualGeometry(
 
 type TextureShape = FitTextureShapeFeatures
 
-interface ShapeMatch {
+export interface ShapeMatch {
   asset: FitTextureCandidate
   shape: TextureShape
+  mask: number[]
   rotation: number
   flip: number
   loss: number
@@ -767,10 +789,111 @@ function rankShapes(
   })
   return rankAssetRetrievalV2(target, candidates).map((match) => ({
     ...match.item,
+    mask: [],
     rotation: match.rotation,
     flip: match.flip,
     loss: match.loss,
   }))
+}
+
+const STRUCTURE_MASK_HYPOTHESES: readonly number[][] = [
+  [], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3],
+]
+
+function nearestPatternMask(pattern: DecodedDds, u: number, v: number, mask: number[]): number {
+  if (!mask.length) return 1
+  const x = clamp(Math.floor(u * pattern.width), 0, pattern.width - 1)
+  const y = clamp(Math.floor(v * pattern.height), 0, pattern.height - 1)
+  const offset = (y * pattern.width + x) * 4
+  return patternMaskAlpha([
+    pattern.pixels[offset] / 255,
+    pattern.pixels[offset + 1] / 255,
+    pattern.pixels[offset + 2] / 255,
+  ], mask)
+}
+
+function meaningfulStructureMasks(pattern: DecodedDds): number[][] {
+  const sampleSize = 12
+  return STRUCTURE_MASK_HYPOTHESES.slice(1, 4).filter((mask) => {
+    let minimum = 1
+    let maximum = 0
+    for (let y = 0; y < sampleSize; y += 1) {
+      for (let x = 0; x < sampleSize; x += 1) {
+        const alpha = nearestPatternMask(pattern, (x + 0.5) / sampleSize, (y + 0.5) / sampleSize, mask)
+        minimum = Math.min(minimum, alpha)
+        maximum = Math.max(maximum, alpha)
+      }
+    }
+    return minimum < 0.95 && maximum > 0.05
+  })
+}
+
+/**
+ * Cheap renderer-aware bridge between identity retrieval and full candidate
+ * rendering. It projects CK3 pattern masks onto the normalized residual box,
+ * so a masked fragment can recover its original texture without creating
+ * thousands of temporary 32px RGBA canvases.
+ */
+export function rerankStructureShapeMasks(
+  focus: ResidualFocus,
+  pattern: DecodedDds,
+  rankedShapes: readonly ShapeMatch[],
+  maximumAssets = 512,
+): ShapeMatch[] {
+  const maskGrids = STRUCTURE_MASK_HYPOTHESES.map((mask) => Float32Array.from(
+    { length: SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE },
+    (_, index) => {
+      const x = index % SHAPE_DESCRIPTOR_SIZE
+      const y = Math.floor(index / SHAPE_DESCRIPTOR_SIZE)
+      const u = focus.position[0]
+        + ((x + 0.5) / SHAPE_DESCRIPTOR_SIZE - 0.5) * focus.scale[0]
+      const v = focus.position[1]
+        + ((y + 0.5) / SHAPE_DESCRIPTOR_SIZE - 0.5) * focus.scale[1]
+      return nearestPatternMask(pattern, u, v, mask)
+    },
+  ))
+  return rankedShapes.slice(0, Math.max(1, Math.min(maximumAssets, rankedShapes.length)))
+    .map((match) => {
+      let bestMask: number[] = []
+      let bestRotation = 0
+      let bestFlip: 1 | -1 = 1
+      let bestLoss = Number.POSITIVE_INFINITY
+      for (const rotation of ASSET_RETRIEVAL_ROTATIONS) {
+        for (const flip of [1, -1] as const) {
+          for (let maskIndex = 0; maskIndex < STRUCTURE_MASK_HYPOTHESES.length; maskIndex += 1) {
+            const mask = STRUCTURE_MASK_HYPOTHESES[maskIndex]
+            const loss = coarseMaskedAssetRetrievalLossV2(
+              focus.descriptor,
+              match.shape.descriptor,
+              rotation,
+              flip,
+              maskGrids[maskIndex],
+            )
+            if (
+              loss < bestLoss - 1e-12
+              || (
+                Math.abs(loss - bestLoss) <= 1e-12
+                && `${String(rotation).padStart(3, '0')}:${flip}:${mask.join(',')}`
+                  < `${String(bestRotation).padStart(3, '0')}:${bestFlip}:${bestMask.join(',')}`
+              )
+            ) {
+              bestLoss = loss
+              bestMask = mask
+              bestRotation = rotation
+              bestFlip = flip
+            }
+          }
+        }
+      }
+      return {
+        ...match,
+        mask: [...bestMask],
+        rotation: bestRotation,
+        flip: bestFlip,
+        loss: bestLoss,
+      }
+    })
+    .sort((left, right) => left.loss - right.loss || left.asset.name.localeCompare(right.asset.name))
 }
 
 function initialLayerGeometry(
@@ -863,6 +986,7 @@ function residualColors(target: FitImage, rendered: RenderedCoatOfArms, count = 
 
 interface LayerParameters {
   colors: ByteRgb[]
+  mask: number[]
   position: [number, number]
   scale: [number, number]
   rotation: number
@@ -899,7 +1023,7 @@ function layerChoice(
   const emblem = {
     texture: asset.name,
     colors: parameters.colors.map(expression) as [string, string, string],
-    mask: [] as number[],
+    mask: [...parameters.mask],
     instances: [instance],
   }
   const coatOfArms: CoatOfArms = {
@@ -916,12 +1040,13 @@ function layerChoice(
     namedColors,
   )
   evaluated.value += 1
-  const key = `${base.key}\0${asset.name}\0${parameters.colors.flat().join(',')}\0${parameters.position.join(',')}\0${parameters.scale.join(',')}\0${instance.rotation}\0${parameters.flip}`
+  const key = `${base.key}\0${asset.name}\0${parameters.colors.flat().join(',')}\0mask:${parameters.mask.join(',')}\0${parameters.position.join(',')}\0${parameters.scale.join(',')}\0${instance.rotation}\0${parameters.flip}`
   return {
     asset,
     candidate: { coatOfArms, rendered, ...measureImageFitLosses(target, rendered), key },
     parameters: {
       colors: parameters.colors.map((color) => [...color] as ByteRgb),
+      mask: [...parameters.mask],
       position: [...parameters.position],
       scale: [...parameters.scale],
       rotation: instance.rotation,
@@ -960,7 +1085,7 @@ function paintLayerChoice(
   const emblem: ColoredEmblem = {
     texture: asset.name,
     colors: parameters.colors.map(expression) as [string, string, string],
-    mask: [],
+    mask: [...parameters.mask],
     instances: [instance],
   }
   const rendered = renderColoredEmblemLayer(
@@ -973,7 +1098,7 @@ function paintLayerChoice(
     namedColors,
   )
   evaluated.value += 1
-  const localKey = `${asset.name}\0${parameters.colors.flat().join(',')}\0${parameters.position.join(',')}\0${parameters.scale.join(',')}\0${instance.rotation}\0${parameters.flip}`
+  const localKey = `${asset.name}\0${parameters.colors.flat().join(',')}\0mask:${parameters.mask.join(',')}\0${parameters.position.join(',')}\0${parameters.scale.join(',')}\0${instance.rotation}\0${parameters.flip}`
   return {
     asset,
     emblem,
@@ -985,6 +1110,7 @@ function paintLayerChoice(
     },
     parameters: {
       colors: parameters.colors.map((color) => [...color] as ByteRgb),
+      mask: [...parameters.mask],
       position: [...parameters.position],
       scale: [...parameters.scale],
       rotation: instance.rotation,
@@ -1352,8 +1478,8 @@ function checkpointFromPaintState(
   evaluatedCandidates: number,
 ): ImageFitCheckpoint {
   return {
-    contract: 'ck3-coa-fit-checkpoint-v1',
-    algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
+    contract: 'ck3-coa-fit-checkpoint-v2',
+    algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval',
     lane: context.lane,
     inputSha256: context.inputSha256,
     assetPackManifestSha256: context.assetPackManifestSha256,
@@ -1514,6 +1640,7 @@ function paintWithNativeTiles(
         brush,
         {
           colors: [tile.color, tile.color, tile.color],
+          mask: [],
           position: geometry.position,
           scale: [geometry.scale[0] * scaleFactor, geometry.scale[1] * scaleFactor],
           rotation: 0,
@@ -1674,6 +1801,7 @@ function refinePaintedStateAtEdgeHotspots(
           brush,
           {
             colors: [tile.color, tile.color, tile.color],
+            mask: [],
             position: geometry.position,
             scale: [geometry.scale[0] * scaleFactor, geometry.scale[1] * scaleFactor],
             rotation: 0,
@@ -1789,6 +1917,7 @@ function refinePaintedStateAtHighResolution(
     for (const scaleFactor of coverageFactors) {
       const parameters: LayerParameters = {
         colors: [tile.color, tile.color, tile.color],
+        mask: [],
         position: geometry.position,
         scale: [geometry.scale[0] * scaleFactor, geometry.scale[1] * scaleFactor],
         rotation: 0,
@@ -1964,6 +2093,7 @@ function refinePaintedStateWithNativeShape(
             match.asset,
             {
               colors,
+              mask: [...match.mask],
               position: [...geometry.position],
               scale: [
                 clamp(geometry.scale[0] * scaleFactor, 0.012, 2.5),
@@ -2091,8 +2221,8 @@ export function fitImageToCoatOfArms(
   const resumeCheckpoint = options.resumeCheckpoint
   if (resumeCheckpoint) {
     if (
-      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v1'
-      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v6-budget-exhaustive-edge'
+      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v2'
+      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v7-structure-retrieval'
     ) throw new Error('拟合 checkpoint 版本不兼容')
     if (
       resumeCheckpoint.inputSha256 !== inputSha256
@@ -2246,6 +2376,10 @@ export function fitImageToCoatOfArms(
     ?? emblems.find((item) => item.name === 'ce_circle.dds')
   const emblemAssetMap = new Map(emblems.map((item) => [item.name, item]))
   const emblemTextureMap = Object.fromEntries(emblems.map((item) => [item.name, item.texture]))
+  const structureMasksByPattern = new Map(patterns.map((item) => [
+    item.name,
+    meaningfulStructureMasks(item.texture),
+  ]))
   let terminationReason: ImageFitResult['provenance']['terminationReason'] = 'layer_budget'
   // Large-budget runs used to force this value to zero, which made the
   // algorithm unconditionally collapse to a single rectangular texture.
@@ -2255,9 +2389,13 @@ export function fitImageToCoatOfArms(
     || emblems.some((item) => item.name !== paintBrush.name)
   const semanticLayerBudget = Math.min(
     maxLayers,
-    maxLayers >= 128 && paintBrush
-      ? (hasSemanticAlternative ? 1 : 0)
-      : 6,
+    !hasSemanticAlternative
+      ? 0
+      : maxLayers >= 1_024
+        ? 5
+        : maxLayers >= 128
+          ? 3
+          : 6,
   )
   for (let layer = 0; layer < semanticLayerBudget && emblems.length; layer += 1) {
     if (beam[0].candidate.totalLoss <= 1e-12) {
@@ -2267,8 +2405,12 @@ export function fitImageToCoatOfArms(
     const activeBeamWidth = layer < 6 ? beamWidth : 1
     const expansions: SearchState[] = []
     let foundStrictImprovement = false
-    for (const state of beam) {
-      const focus = residualGeometry(target, state.candidate.rendered)
+    for (const [stateIndex, state] of beam.entries()) {
+      // Preserve a quality-first branch on the strongest residual while using
+      // the second beam state to cover the next disconnected salient region.
+      // This prevents two-element coats from repeatedly fitting the same
+      // dominant component without multiplying the bounded frontier.
+      const focus = residualGeometry(target, state.candidate.rendered, Math.min(stateIndex, 1))
       reportProgress(options.onProgress, 'coarse', 0, emblems.length, layer + 1, maxLayers, evaluated.value)
       const rankedShapes = rankShapes(focus, emblems, shapeDescriptors, retrievalDescriptors, (completed) => {
         if (shouldReportProgress(completed, emblems.length)) {
@@ -2278,8 +2420,22 @@ export function fitImageToCoatOfArms(
           )
         }
       })
-      const shortlist = rankedShapes.slice(0, Math.min(shapeCandidateCount, rankedShapes.length))
       const palettes = permutations(residualColors(target, state.candidate.rendered))
+      const shortlist: ShapeMatch[] = []
+      for (const [assetRank, match] of rankedShapes.entries()) {
+        if (shortlist.length >= shapeCandidateCount) break
+        shortlist.push({ ...match, mask: [] })
+        // Pattern masks are cheap to validate with the real renderer but too
+        // ambiguous to use as a descriptor-level identity signal. Probe them
+        // only for the strongest retrieval candidates, then let rendered loss
+        // decide whether the occlusion is useful.
+        if (assetRank < 4) {
+          for (const mask of structureMasksByPattern.get(state.patternAsset.name) ?? []) {
+            if (shortlist.length >= shapeCandidateCount) break
+            shortlist.push({ ...match, mask })
+          }
+        }
+      }
       // Full-circle transform fitting is the expensive stage. The descriptor
       // shortlist is broad, then real-render coarse scoring promotes only the
       // best three assets to continuous local optimization.
@@ -2316,6 +2472,7 @@ export function fitImageToCoatOfArms(
                 match.asset,
                 {
                   colors,
+                  mask: [...match.mask],
                   position: [...geometry.position],
                   scale: [
                     clamp(geometry.scale[0] * scaleFactor, 0.035, 2.5),
@@ -2694,7 +2851,7 @@ export function fitImageToCoatOfArms(
     },
     paretoCandidates,
     provenance: {
-      algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
+      algorithm: 'ck3-coa-browser-fit-v7-structure-retrieval',
       searchBackend: batchSearch.status === 'active'
         ? 'webgl2-batch+cpu-reference'
         : 'cpu-reference',
@@ -2727,6 +2884,13 @@ export function fitImageToCoatOfArms(
         fineShortlist: ASSET_RETRIEVAL_FINE_SHORTLIST,
         rotations: 24,
         mirrors: 2,
+      },
+      structureSearch: {
+        contract: 'salient-components-depth-ordered-beam-v1',
+        semanticLayerBudget,
+        beamWidth,
+        residualComponentsPerBeam: 2,
+        layerOrder: 'foreground-append-then-native-depth-encode',
       },
       layerBudget: maxLayers,
       logicalLayers,
