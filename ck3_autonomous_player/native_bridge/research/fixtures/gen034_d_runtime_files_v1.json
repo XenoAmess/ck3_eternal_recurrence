@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "d749eca7fba5f4828ffa1373318b6a7410e37c73",
+  "source_commit": "0f020a7214666d71c501f7af5081b847b9d6cb9a",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
@@ -29,7 +29,7 @@
     "tools/run_zg361_phase2_seed_capture.py"
   ],
   "file_count": 479,
-  "tree_sha256": "FB2DCBF7F35BA0BA86333F5696882D81C66AF8BE35DCE04A387707B9B529DF3E",
+  "tree_sha256": "42779DC76BE4BC712B5252974E5BAE562306B7D3CB81B53104DB995256883FDA",
   "files": [
     {
       "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
@@ -613,8 +613,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_live_adapter.py",
-      "bytes": 104429,
-      "sha256": "CEDB6B4C41C2585866E0386332B967E3EBACCB37E640F18855E816CEAF1F3959"
+      "bytes": 104912,
+      "sha256": "269C021D55505FB372A02722FFB069479412A38DDBDBF2CEC09269C1890465DF"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_outer_owner.py",
