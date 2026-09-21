@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "7e2c3a70a1a65ecec73b80da1f093ec5ad878fd0",
+  "source_commit": "02e1851e0d341bc391d20b254aca8dd8353070f9",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
@@ -29,7 +29,7 @@
     "tools/run_zg361_phase2_seed_capture.py"
   ],
   "file_count": 477,
-  "tree_sha256": "AB1955C2444E1E384722E92F921819BC4F95E0405A4BCC88908EEB1DE3B4EAA3",
+  "tree_sha256": "DDAA88B30DBF33F88C8AB58F384921F1B55069029F3B488F71FA85C3985ECBCC",
   "files": [
     {
       "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
@@ -1528,8 +1528,8 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
-      "bytes": 1100364,
-      "sha256": "8F95C547EC1901DFB4D4C2197834028EF1C5F413F89B22101E490E04ADD0B729"
+      "bytes": 1095542,
+      "sha256": "00A5482629C1952583B7D47548320EF3EA19CB7F7F9DD48DD500723E5D8114AB"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/pending_character_interaction_context_contract.py",
@@ -2143,8 +2143,8 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
-      "bytes": 677964,
-      "sha256": "BB00B097269BB5F8D3AC3F1FB1F47A7F2BA9FCE1BD2D54DBB756E2795B54B010"
+      "bytes": 676490,
+      "sha256": "27E427AD6AB69E8E0A23591A93513649D02510F99437C9CA0D777F0C65226D75"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/throughput_report.py",
