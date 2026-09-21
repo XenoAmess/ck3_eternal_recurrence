@@ -16,6 +16,13 @@ import {
   PERCEPTUAL_FIT_SCORING_CONTRACT,
   type PerceptualFitMetricsV2,
 } from './perceptualFitMetrics'
+import {
+  ASSET_RETRIEVAL_CONTRACT,
+  ASSET_RETRIEVAL_FINE_SHORTLIST,
+  computeAssetRetrievalDescriptorV2,
+  rankAssetRetrievalV2,
+  type AssetRetrievalDescriptorV2,
+} from './assetRetrieval'
 
 export interface FitImage {
   width: number
@@ -180,6 +187,13 @@ export interface ImageFitResult {
       contract: 'ck3-coa-shape-features-v1'
       indexedAssets: number
       fallbackAssets: number
+    }
+    assetRetrievalIndex: {
+      contract: typeof ASSET_RETRIEVAL_CONTRACT
+      source: 'content-addressed-fit-features-derived'
+      fineShortlist: number
+      rotations: number
+      mirrors: number
     }
     layerBudget: number
     logicalLayers: number
@@ -715,63 +729,7 @@ function residualGeometry(
   }
 }
 
-function sampleDescriptor(descriptor: Float32Array, x: number, y: number): number {
-  if (x < 0 || y < 0 || x > 1 || y > 1) return 0
-  const sourceX = x * (SHAPE_DESCRIPTOR_SIZE - 1)
-  const sourceY = y * (SHAPE_DESCRIPTOR_SIZE - 1)
-  const x0 = Math.floor(sourceX)
-  const y0 = Math.floor(sourceY)
-  const x1 = Math.min(SHAPE_DESCRIPTOR_SIZE - 1, x0 + 1)
-  const y1 = Math.min(SHAPE_DESCRIPTOR_SIZE - 1, y0 + 1)
-  const tx = sourceX - x0
-  const ty = sourceY - y0
-  const at = (sampleX: number, sampleY: number) => descriptor[sampleY * SHAPE_DESCRIPTOR_SIZE + sampleX]
-  return (
-    at(x0, y0) * (1 - tx) * (1 - ty)
-    + at(x1, y0) * tx * (1 - ty)
-    + at(x0, y1) * (1 - tx) * ty
-    + at(x1, y1) * tx * ty
-  )
-}
-
 type TextureShape = FitTextureShapeFeatures
-
-function descriptorDistance(
-  target: Float32Array,
-  candidate: Float32Array,
-  rotation: number,
-  flip: number,
-): number {
-  // CK3 applies positive serialized rotation clockwise in screen space.
-  const radians = -rotation * Math.PI / 180
-  const cosine = Math.cos(radians)
-  const sine = Math.sin(radians)
-  const rotatedSpan = Math.abs(cosine) + Math.abs(sine)
-  let overlap = 0
-  let targetEnergy = 0
-  let candidateEnergy = 0
-  let squaredError = 0
-  for (let y = 0; y < SHAPE_DESCRIPTOR_SIZE; y += 1) {
-    for (let x = 0; x < SHAPE_DESCRIPTOR_SIZE; x += 1) {
-      const centeredX = ((x + 0.5) / SHAPE_DESCRIPTOR_SIZE - 0.5) * rotatedSpan
-      const centeredY = ((y + 0.5) / SHAPE_DESCRIPTOR_SIZE - 0.5) * rotatedSpan
-      let sourceX = cosine * centeredX + sine * centeredY + 0.5
-      const sourceY = -sine * centeredX + cosine * centeredY + 0.5
-      if (flip < 0) sourceX = 1 - sourceX
-      const candidateValue = sampleDescriptor(candidate, sourceX, sourceY)
-      const targetValue = target[y * SHAPE_DESCRIPTOR_SIZE + x]
-      overlap += Math.min(targetValue, candidateValue)
-      targetEnergy += targetValue
-      candidateEnergy += candidateValue
-      const delta = targetValue - candidateValue
-      squaredError += delta * delta
-    }
-  }
-  const diceLoss = targetEnergy + candidateEnergy > 1e-8
-    ? 1 - 2 * overlap / (targetEnergy + candidateEnergy)
-    : 1
-  return diceLoss * 0.7 + squaredError / target.length * 0.3
-}
 
 interface ShapeMatch {
   asset: FitTextureCandidate
@@ -785,25 +743,34 @@ function rankShapes(
   focus: ResidualFocus,
   emblems: FitTextureCandidate[],
   descriptors: Map<string, TextureShape>,
+  retrievalDescriptors: Map<string, AssetRetrievalDescriptorV2>,
   onItem?: (completed: number) => void,
 ): ShapeMatch[] {
-  const rotations = Array.from({ length: 12 }, (_, index) => index * 30)
-  return emblems.map((asset, index) => {
+  const target = computeAssetRetrievalDescriptorV2(focus.descriptor)
+  const candidates = emblems.map((asset, index) => {
     let descriptor = descriptors.get(asset.assetSha256)
     if (!descriptor) {
       descriptor = asset.shapeFeatures ?? computeFitTextureShapeFeatures(asset.texture)
       descriptors.set(asset.assetSha256, descriptor)
     }
-    let best: ShapeMatch | null = null
-    for (const rotation of rotations) {
-      for (const flip of [1, -1]) {
-        const loss = descriptorDistance(focus.descriptor, descriptor.descriptor, rotation, flip)
-        if (!best || loss < best.loss) best = { asset, shape: descriptor, rotation, flip, loss }
-      }
+    let retrieval = retrievalDescriptors.get(asset.assetSha256)
+    if (!retrieval) {
+      retrieval = computeAssetRetrievalDescriptorV2(descriptor)
+      retrievalDescriptors.set(asset.assetSha256, retrieval)
     }
     onItem?.(index + 1)
-    return best!
-  }).sort((left, right) => left.loss - right.loss || left.asset.name.localeCompare(right.asset.name))
+    return {
+      item: { asset, shape: descriptor },
+      name: asset.name,
+      descriptor: retrieval,
+    }
+  })
+  return rankAssetRetrievalV2(target, candidates).map((match) => ({
+    ...match.item,
+    rotation: match.rotation,
+    flip: match.flip,
+    loss: match.loss,
+  }))
 }
 
 function initialLayerGeometry(
@@ -1915,6 +1882,7 @@ function refinePaintedStateWithNativeShape(
   initial: SearchState,
   emblems: FitTextureCandidate[],
   shapeDescriptors: Map<string, TextureShape>,
+  retrievalDescriptors: Map<string, AssetRetrievalDescriptorV2>,
   target: FitImage,
   maxLayers: number,
   surfaceMask: DecodedDds | undefined,
@@ -1931,7 +1899,7 @@ function refinePaintedStateWithNativeShape(
   const refiners = emblems
   if (!refiners.length) return initial
   const focus = residualGeometry(target, initial.candidate.rendered)
-  const ranked = rankShapes(focus, refiners, shapeDescriptors)
+  const ranked = rankShapes(focus, refiners, shapeDescriptors, retrievalDescriptors)
   const shortlistNames = new Set(selectMixedNativeShapeCandidateNames(
     ranked.map((item) => item.asset.name),
     Math.min(12, shapeCandidateCount, refiners.length),
@@ -2272,6 +2240,7 @@ export function fitImageToCoatOfArms(
     paintPlacements: [],
   }))
   const shapeDescriptors = new Map<string, TextureShape>()
+  const retrievalDescriptors = new Map<string, AssetRetrievalDescriptorV2>()
   const paintBrush = emblems.find((item) => item.name === 'ce_block_02.dds')
     ?? emblems.find((item) => item.name === 'ce_billet.dds')
     ?? emblems.find((item) => item.name === 'ce_circle.dds')
@@ -2301,7 +2270,7 @@ export function fitImageToCoatOfArms(
     for (const state of beam) {
       const focus = residualGeometry(target, state.candidate.rendered)
       reportProgress(options.onProgress, 'coarse', 0, emblems.length, layer + 1, maxLayers, evaluated.value)
-      const rankedShapes = rankShapes(focus, emblems, shapeDescriptors, (completed) => {
+      const rankedShapes = rankShapes(focus, emblems, shapeDescriptors, retrievalDescriptors, (completed) => {
         if (shouldReportProgress(completed, emblems.length)) {
           reportProgress(
             options.onProgress, 'coarse', completed, emblems.length,
@@ -2561,6 +2530,7 @@ export function fitImageToCoatOfArms(
         highResolutionSeed,
         emblems,
         shapeDescriptors,
+        retrievalDescriptors,
         target,
         maxLayers,
         surfaceMask,
@@ -2750,6 +2720,13 @@ export function fitImageToCoatOfArms(
         contract: 'ck3-coa-shape-features-v1',
         indexedAssets: [...patterns, ...emblems].filter((item) => item.shapeFeatures).length,
         fallbackAssets: [...patterns, ...emblems].filter((item) => !item.shapeFeatures).length,
+      },
+      assetRetrievalIndex: {
+        contract: ASSET_RETRIEVAL_CONTRACT,
+        source: 'content-addressed-fit-features-derived',
+        fineShortlist: ASSET_RETRIEVAL_FINE_SHORTLIST,
+        rotations: 24,
+        mirrors: 2,
       },
       layerBudget: maxLayers,
       logicalLayers,

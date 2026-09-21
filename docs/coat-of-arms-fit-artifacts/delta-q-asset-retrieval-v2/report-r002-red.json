@@ -1,0 +1,1796 @@
+{
+  "schema": "ck3-coa-asset-retrieval-holdout-v1",
+  "status": "red",
+  "contract": "ck3-coa-asset-retrieval-sdf-hu-radial-orientation-topology-v2",
+  "corpus": {
+    "file": "src/data/fit-quality-synthetic-corpus-v1.json",
+    "fileSha256": "97174D5AC1E3E2DFCD4ABA511F57BC80C8039A69B10DFAA48BCFD5311F03B472",
+    "samplesPayloadSha256": "A464BE93B9D30D75232AF6D8BB9F95BCE55792C35DD1B91B74990C554C3B39A0",
+    "split": "holdout",
+    "samples": 64
+  },
+  "assetPack": {
+    "id": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
+    "build": "1.19.0.6",
+    "manifestSha256": "27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96",
+    "manifestFileSha256": "27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96",
+    "indexedEmblems": 1577
+  },
+  "implementationSha256": "224636A8AE387A64E9767A8F83DF5AE87BB8F0C324B1315C3430BC579B8D5E1F",
+  "queryContract": {
+    "identity": "primary-truth-colored-emblem",
+    "rotation": "truth-instance-rotation",
+    "mirror": "truth-instance-scale-x-sign",
+    "maskRecorded": true,
+    "transformCandidates": {
+      "rotations": 24,
+      "stepDegrees": 15,
+      "mirrors": 2
+    },
+    "fineShortlist": 512
+  },
+  "gates": {
+    "top8Minimum": 0.85,
+    "top32Minimum": 0.95,
+    "top8Hits": 44,
+    "top32Hits": 44,
+    "top8Recall": 0.6875,
+    "top32Recall": 0.6875,
+    "allTruthAssetsIndexed": true,
+    "status": "red"
+  },
+  "rows": [
+    {
+      "id": "synthetic-193",
+      "texture": "ce_seal_name_xi_5dc2.dds",
+      "textureSha256": "EDCE942626E4857A3D0BEC72B47877070E01EDDC67148B16AD5E45B9A3442717",
+      "rotation": 180,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_xi_5dc2.dds",
+        "ce_leopard_passant_guardant.dds",
+        "ce_sun_india.dds",
+        "ce_kamon_arrow.dds",
+        "ce_lion_passant_small.dds",
+        "ce_jesus_throne.dds",
+        "ce_asura_face.dds",
+        "ce_kamon_mirror_crane.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 180,
+        "flip": -1,
+        "loss": 0.018909808823050166
+      }
+    },
+    {
+      "id": "synthetic-194",
+      "texture": "ce_kamon_apricot_leaf.dds",
+      "textureSha256": "B9B6F1F76A439E2B960C8FCEE3C2324C3A2E59871B154128BF467576BE128C17",
+      "rotation": 270,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_kamon_apricot_leaf.dds",
+        "ce_boar_head.dds",
+        "ce_oak_leaf.dds",
+        "ce_sleipnir.dds",
+        "ce_wolf_head.dds",
+        "ce_jesus_throne.dds",
+        "ce_kamon_mirror_crane.dds",
+        "ce_african_bird.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 270,
+        "flip": -1,
+        "loss": 0.014338877411405042
+      }
+    },
+    {
+      "id": "synthetic-195",
+      "texture": "ce_seal_name_kong_5b54.dds",
+      "textureSha256": "96F0F261938624BB9A189FB2860756CF71D1C354330D80C4F6579CCCA455C876",
+      "rotation": 330,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_kong_5b54.dds",
+        "ce_seal_name_hao_90dd.dds",
+        "ce_seal_name_e_9102.dds",
+        "ce_seal_name_gu_9867.dds",
+        "ce_seal_name_duan_6bb5.dds",
+        "ce_seal_name_yin_5c39.dds",
+        "ce_mena_double_bow.dds",
+        "ce_seal_name_qiong_909b.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 330,
+        "flip": 1,
+        "loss": 0.023003285876045738
+      }
+    },
+    {
+      "id": "synthetic-196",
+      "texture": "ce_bull_passant.dds",
+      "textureSha256": "4C0885EED81F5DA6DCD12F5D3B57DC627D6036BBB971DD221B0A59D3F9503A03",
+      "rotation": 240,
+      "flip": -1,
+      "mask": [
+        1,
+        2,
+        3
+      ],
+      "rank": 1499,
+      "top8": [
+        "ce_bull_passant_humped.dds",
+        "ce_boar_passant.dds",
+        "ce_seal_pictorial_central_goat.dds",
+        "ce_elephant_indian.dds",
+        "ce_mena_key_pale.dds",
+        "ce_seal_pictorial_central_rooster.dds",
+        "ce_zoroastrian_fire_altar.dds",
+        "ce_leopard_passant_guardant.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.1745035917364774
+      }
+    },
+    {
+      "id": "synthetic-197",
+      "texture": "ce_kamon_horse.dds",
+      "textureSha256": "469AC752F874033E90CF3FD815FFC523DD1602CD22BFEC140EB89B40EE6747C5",
+      "rotation": 120,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1091,
+      "top8": [
+        "ce_tursansydan.dds",
+        "ce_lion_passant_random.dds",
+        "ce_lion_passant_small.dds",
+        "ce_kamon_goose.dds",
+        "ce_frog.dds",
+        "ce_seal_pictorial_central_pig.dds",
+        "ce_seal_pictorial_vertical_deer.dds",
+        "ce_oak_leaf.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.1322809512893421
+      }
+    },
+    {
+      "id": "synthetic-198",
+      "texture": "ce_seal_name_ning_5be7.dds",
+      "textureSha256": "1EF3B91A179F7BB0A2FDD42CD8A3CB23754D246C468DA9AC09E43F27B2832923",
+      "rotation": 15,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 607,
+      "top8": [
+        "ce_sleipnir.dds",
+        "ce_seal_name_xia_590f.dds",
+        "ce_kamon_pawlonia_strong.dds",
+        "ce_deva_dancing.dds",
+        "ce_kamon_gentian.dds",
+        "ce_kamon_paulownia_bloom.dds",
+        "ce_seal_name_yue_7cb5.dds",
+        "ce_tiger_calligraphy.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.0958150774126338
+      }
+    },
+    {
+      "id": "synthetic-199",
+      "texture": "ce_suomenusko_moon.dds",
+      "textureSha256": "F4739DD2EA6957A123153806C768F4B638F240ED78747F2776648A72CC4D0683",
+      "rotation": 210,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_suomenusko_moon.dds",
+        "ce_eagle_small.dds",
+        "ce_pagan_vehmic.dds",
+        "ce_kamon_mirror_crane.dds",
+        "ce_nestorian_cross_birds.dds",
+        "ce_tamgha_turkic_17.dds",
+        "ce_pagan_cross_07.dds",
+        "ce_tamgha_sarkel_01.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 210,
+        "flip": 1,
+        "loss": 0.021206005209315152
+      }
+    },
+    {
+      "id": "synthetic-200",
+      "texture": "ce_ordinary_pile_01_inverted.dds",
+      "textureSha256": "520142D75320A0536D0B0A0E618398C645095C412EA5D724018BE5581D67174D",
+      "rotation": 135,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_ordinary_pile_01_inverted.dds",
+        "ce_ordinary_pile_inverted.dds",
+        "ce_ordinary_pile_03_inverted.dds",
+        "ce_pile_mask.dds",
+        "ce_ordinary_pile_02_inverted.dds",
+        "ce_ordinary_pile.dds",
+        "ce_ordinary_pile_01.dds",
+        "ce_ordinary_pile_03.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 135,
+        "flip": 1,
+        "loss": 0.027397698233075744
+      }
+    },
+    {
+      "id": "synthetic-201",
+      "texture": "ce_seal_name_ba_5df4.dds",
+      "textureSha256": "B5DCCEEA81BF7483D24B2932A28232170561EF2FE7BCAF9A506B5B9211D2E38C",
+      "rotation": 15,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_ba_5df4.dds",
+        "ce_seal_name_duan_6bb5.dds",
+        "ce_seal_pictorial_central_ox.dds",
+        "ce_seal_name_qiong_909b.dds",
+        "ce_seal_name_huai_6dee.dds",
+        "ce_seal_name_hong_6d2a.dds",
+        "ce_seal_name_yin_5c39.dds",
+        "ce_kamon_laurel_wisteria_01.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 15,
+        "flip": 1,
+        "loss": 0.01572928489142298
+      }
+    },
+    {
+      "id": "synthetic-202",
+      "texture": "ce_kamon_center.dds",
+      "textureSha256": "6DC3E18350E937E372D871D50237F4A46E18EEC65D1792EB1CC12948BDA8EBF9",
+      "rotation": 90,
+      "flip": 1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_kamon_center.dds",
+        "ce_kamon_circle.dds",
+        "ce_circle.dds",
+        "ce_seal_pictorial_frame_circle_full.dds",
+        "ce_circle_mask.dds",
+        "ce_seal_pictorial_frame_oval_full.dds",
+        "ce_buddhist_moon.dds",
+        "ce_polylobe_circle_frame.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 90,
+        "flip": 1,
+        "loss": 0.0066414031441158605
+      }
+    },
+    {
+      "id": "synthetic-203",
+      "texture": "ce_pales_04.dds",
+      "textureSha256": "5F149D87C26CB199E6FE67E983CA1E3B5CDF411B450D45EE31B21AF53E079477",
+      "rotation": 165,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1222,
+      "top8": [
+        "ce_tamgha_mongol_07.dds",
+        "ce_pagan_looped_knot.dds",
+        "ce_african_otumfuo.dds",
+        "ce_castle_random.dds",
+        "ce_african_knot_hausa.dds",
+        "ce_seal_name_yan_95bb.dds",
+        "ce_bars_embattled_02.dds",
+        "ce_african_mrammuo.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.1649698015249248
+      }
+    },
+    {
+      "id": "synthetic-204",
+      "texture": "ce_letter_e.dds",
+      "textureSha256": "761269E634553C41FF0B50829048807FECDC40C024EF66508285B345C3906592",
+      "rotation": 270,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_letter_e.dds",
+        "ce_letter_c.dds",
+        "ce_letter_s.dds",
+        "ce_norse_longship.dds",
+        "ce_norse_longship_figureheads.dds",
+        "ce_african_koh.dds",
+        "ce_crescent_mask.dds",
+        "ce_crescent_mask_02.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 270,
+        "flip": 1,
+        "loss": 0.007052550501546841
+      }
+    },
+    {
+      "id": "synthetic-205",
+      "texture": "ce_tamgha_sarkel_01.dds",
+      "textureSha256": "1EB267A53D64656AF666EEDD1873DA447F6912130E294CDBB637D62F6786A65E",
+      "rotation": 60,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 598,
+      "top8": [
+        "ce_suomenusko_moon.dds",
+        "ce_frog.dds",
+        "ce_tamgha_turkic_17.dds",
+        "ce_lion_passant_small.dds",
+        "ce_nettle_leaf.dds",
+        "ce_lion_passant_random.dds",
+        "ce_kamon_gentian.dds",
+        "ce_leopard_passant_guardant.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.098798894700185
+      }
+    },
+    {
+      "id": "synthetic-206",
+      "texture": "ce_frame_circle_urnes_pitney.dds",
+      "textureSha256": "A9016FEB0276604C0FBBDB41C569FEF42FAD1B2BC986566EC92B50EA22080EE8",
+      "rotation": 210,
+      "flip": -1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_frame_circle_urnes_pitney.dds",
+        "ce_frame_circle_borre_single.dds",
+        "ce_frame_circle_borre_doted.dds",
+        "ce_frame_circle_borre_single_knots_02.dds",
+        "ce_runic_circle_frame.dds",
+        "ce_kamon_frame_thick_circle.dds",
+        "ce_india_doted_frame.dds",
+        "ce_tamgha_doted_circle_frame.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 210,
+        "flip": -1,
+        "loss": 0.022956527951045698
+      }
+    },
+    {
+      "id": "synthetic-207",
+      "texture": "ce_rosetta_08.dds",
+      "textureSha256": "1A5D006717D9B0A4AEE4A81C11CF607FF6D9C24691EEA93E7B47D77DDF6D13AE",
+      "rotation": 165,
+      "flip": -1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_rosetta_08.dds",
+        "ce_buddhist_moon.dds",
+        "ce_seal_pictorial_frame_oval_full.dds",
+        "ce_lotus.dds",
+        "ce_seal_pictorial_frame_circle_full.dds",
+        "ce_kamon_circle.dds",
+        "ce_circle.dds",
+        "ce_circle_mask.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 165,
+        "flip": -1,
+        "loss": 0.012885969490576781
+      }
+    },
+    {
+      "id": "synthetic-208",
+      "texture": "ce_rune_ehwaz.dds",
+      "textureSha256": "DDF030EB384574CAEC0A6C959A4D4E00E1AE606713DEE9D113F504292A90F434",
+      "rotation": 210,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_rune_ehwaz.dds",
+        "ce_rune_nauthiz.dds",
+        "ce_pillar_liege.dds",
+        "ce_tamgha_oghuz_afsar.dds",
+        "ce_irminsul.dds",
+        "ce_rune_algiz.dds",
+        "ce_rune_tiwaz.dds",
+        "ce_letter_t.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 210,
+        "flip": -1,
+        "loss": 0.02631222654476421
+      }
+    },
+    {
+      "id": "synthetic-209",
+      "texture": "ce_seal_name_dong_8463.dds",
+      "textureSha256": "95D3590CAD54577C4098DBC671614B8D14DCE5DF55CB71AC5EDAC6CFF9F9D33E",
+      "rotation": 0,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_dong_8463.dds",
+        "ce_lion_pillar_india.dds",
+        "ce_tower.dds",
+        "ce_lion_passant_random.dds",
+        "ce_squirrel.dds",
+        "ce_seal_name_xiao_856d.dds",
+        "ce_lion_passant_small.dds",
+        "ce_arabic_shahada.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 0.009483017921642882
+      }
+    },
+    {
+      "id": "synthetic-210",
+      "texture": "ce_thunder_dragon.dds",
+      "textureSha256": "42FF0374E5184B6E8554FA3F4A2FD0B8FF2F91C8F2818EC18A369ABE4D9EDB68",
+      "rotation": 255,
+      "flip": -1,
+      "mask": [
+        1,
+        2,
+        3
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_thunder_dragon.dds",
+        "ce_deva_dancing.dds",
+        "ce_seal_name_zheng_912d.dds",
+        "ce_seal_name_tan_6f6d.dds",
+        "ce_seal_pictorial_central_ox.dds",
+        "ce_triskel_iron.dds",
+        "ce_seal_name_shen_6c88.dds",
+        "ce_seal_name_shao_90b5.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 255,
+        "flip": -1,
+        "loss": 0.019228316908680577
+      }
+    },
+    {
+      "id": "synthetic-211",
+      "texture": "ce_seal_name_yan_71d5.dds",
+      "textureSha256": "A53C54C89EF630779DC9C5B13FBAC2980D27C56BE6E5ADD6B81ED8F7F31AB8C9",
+      "rotation": 30,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 577,
+      "top8": [
+        "ce_odins_mask.dds",
+        "ce_zoroastrian_fire_altar.dds",
+        "ce_kamon_lotus.dds",
+        "ce_seal_name_kui_5914.dds",
+        "ce_ali_knot.dds",
+        "ce_barong.dds",
+        "ce_kamon_butterfly.dds",
+        "ce_eagle_islamic_double.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.1048725830321764
+      }
+    },
+    {
+      "id": "synthetic-212",
+      "texture": "ce_elephant_indian_02.dds",
+      "textureSha256": "D9ED6F4798CC16846C243197AE51EF63539794A43570F62896F703BE89DD565E",
+      "rotation": 285,
+      "flip": -1,
+      "mask": [
+        1,
+        2,
+        3
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_elephant_indian_02.dds",
+        "ce_elephant_indian.dds",
+        "ce_religion_custom_faith_5.dds",
+        "ce_seal_pictorial_frame_incense_burner_full.dds",
+        "ce_seal_pictorial_frame_fish_full.dds",
+        "ce_seal_pictorial_frame_elephant_full.dds",
+        "ce_oak_leaf.dds",
+        "ce_griffin_head.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 285,
+        "flip": -1,
+        "loss": 0.014380141868377324
+      }
+    },
+    {
+      "id": "synthetic-213",
+      "texture": "ce_seal_cloud.dds",
+      "textureSha256": "CD98CA2048340EE615BDDCED25AAD0FC9120613D17B07500291581B8A4948FD1",
+      "rotation": 195,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_cloud.dds",
+        "ce_kamon_nandina_secondary.dds",
+        "ce_kamon_paulownia_bloom.dds",
+        "ce_norse_triquetra.dds",
+        "ce_seal_name_ye_8449.dds",
+        "ce_triskel.dds",
+        "ce_religion_pagan_westafrican.dds",
+        "ce_tamgha_mongol_khalil.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 195,
+        "flip": 1,
+        "loss": 0.01622895688154014
+      }
+    },
+    {
+      "id": "synthetic-214",
+      "texture": "ce_bull_head.dds",
+      "textureSha256": "E88D0DDF4C3925B1F1E43F20ADC834A9A1EBE26239E66E4705157CE9A70C2A3C",
+      "rotation": 330,
+      "flip": -1,
+      "mask": [
+        1,
+        2,
+        3
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_bull_head.dds",
+        "ce_norse_odroerir_snoldelev.dds",
+        "ce_norse_odroerir_lillbjars.dds",
+        "ce_grain.dds",
+        "ce_religion_waaqism.dds",
+        "ce_norse_triquetra_hardrada.dds",
+        "ce_bell.dds",
+        "ce_chalice_mena.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 330,
+        "flip": -1,
+        "loss": 0.022855942456090426
+      }
+    },
+    {
+      "id": "synthetic-215",
+      "texture": "ce_antler_pale.dds",
+      "textureSha256": "CF10CF725D1F21449F91B5186BAFEC349035A221731832CF4A2B99604B914638",
+      "rotation": 120,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_antler_pale.dds",
+        "ce_kamon_laurel_wisteria_01.dds",
+        "ce_rurikid.dds",
+        "ce_kamon_paulownia_secondary.dds",
+        "ce_african_gecko.dds",
+        "ce_kamon_moon.dds",
+        "ce_seal_name_yu_4e8e.dds",
+        "ce_india_small_nandipada.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 120,
+        "flip": 1,
+        "loss": 0.03151485424869623
+      }
+    },
+    {
+      "id": "synthetic-216",
+      "texture": "ce_african_hidoox.dds",
+      "textureSha256": "F046DDF3DE555562C696EBBAF1C25FEDD9F9BC600A6E4BC46A32C061CA00F197",
+      "rotation": 255,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_african_hidoox.dds",
+        "ce_tamgha_ahurhay.dds",
+        "ce_tamgha_mongol_guyuk.dds",
+        "ce_letter_omega.dds",
+        "ce_tamgha_mongol_berke.dds",
+        "ce_tamgha_kyrgyz.dds",
+        "ce_african_cross_gur.dds",
+        "ce_pagan_wotan_cross.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 255,
+        "flip": -1,
+        "loss": 0.013570113241866886
+      }
+    },
+    {
+      "id": "synthetic-217",
+      "texture": "ce_hongsa.dds",
+      "textureSha256": "3937D06B0A485014190C77FFE39C3521AAD936CE0DDFECE952B50AFDDCF58775",
+      "rotation": 75,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_hongsa.dds",
+        "ce_kamon_feather.dds",
+        "ce_demi_vol.dds",
+        "ce_eagle_head.dds",
+        "ce_kamon_chrysanthemum.dds",
+        "ce_religion_vodun.dds",
+        "ce_mena_crescent.dds",
+        "ce_fish.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 75,
+        "flip": -1,
+        "loss": 0.017453643380232593
+      }
+    },
+    {
+      "id": "synthetic-218",
+      "texture": "ce_lion_saint_mark.dds",
+      "textureSha256": "E857C350B52895D370529048B77DBC387D6DA35B61F99E0291749E947A95AF40",
+      "rotation": 90,
+      "flip": 1,
+      "mask": [
+        1,
+        2,
+        3
+      ],
+      "rank": 910,
+      "top8": [
+        "ce_kamon_gourd.dds",
+        "ce_african_cross_jenne.dds",
+        "ce_tower.dds",
+        "ce_moors_head.dds",
+        "ce_kamon_stroke.dds",
+        "ce_seal_pictorial_frame_incense_burner_full.dds",
+        "ce_mena_lamp.dds",
+        "ce_lion_pillar_india.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.1103609029823949
+      }
+    },
+    {
+      "id": "synthetic-219",
+      "texture": "ce_lozenge_vair.dds",
+      "textureSha256": "FD255AD9EC5562DBDBF37FD77165EAAA3723BBBF15968920B792B330E958D5EA",
+      "rotation": 15,
+      "flip": -1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_lozenge_vair.dds",
+        "ce_pagan_cross_losen.dds",
+        "ce_lotus_big.dds",
+        "ce_zulfiqar_and_shield.dds",
+        "ce_diamond_01.dds",
+        "ce_kamon_diamond.dds",
+        "ce_lozenge.dds",
+        "ce_octogon_plain_frame.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 15,
+        "flip": -1,
+        "loss": 0.015342062947037879
+      }
+    },
+    {
+      "id": "synthetic-220",
+      "texture": "ce_seal_pictorial_frame_flower.dds",
+      "textureSha256": "1323395819238C75145FA478F1D9437DF8528ED5DA5922ECE5E0FE624E3749CF",
+      "rotation": 255,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_pictorial_frame_flower.dds",
+        "ce_kamon_well_box.dds",
+        "ce_seal_pictorial_frame_oval.dds",
+        "ce_runic_circle_frame.dds",
+        "ce_tamgha_doted_circle_frame.dds",
+        "ce_india_doted_frame.dds",
+        "ce_tamgha_regular_circle_frame.dds",
+        "ce_kamon_frame_snowflake.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 255,
+        "flip": -1,
+        "loss": 0.02059476783653243
+      }
+    },
+    {
+      "id": "synthetic-221",
+      "texture": "ce_tamgha_magyar_02.dds",
+      "textureSha256": "58EC72AF185D8C27F77155F9531C1BF56C0C3C6603B505E1D15E0F1D779D3658",
+      "rotation": 165,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_tamgha_magyar_02.dds",
+        "ce_tamgha_nestorian_01.dds",
+        "ce_tamgha_mongol_02.dds",
+        "ce_tamgha_turkic_06.dds",
+        "ce_letter_k.dds",
+        "ce_tamgha_carasdi.dds",
+        "ce_tamgha_sarkel_03.dds",
+        "ce_tamgha_mongol_17.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 165,
+        "flip": -1,
+        "loss": 0.012620150097166166
+      }
+    },
+    {
+      "id": "synthetic-222",
+      "texture": "ce_seal_name_zi_6893.dds",
+      "textureSha256": "74CAA545F2CA2AD46EB4B9B5CD00E48B92D0CBBE7A90E8D10AA5919257176EA0",
+      "rotation": 150,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_zi_6893.dds",
+        "ce_seal_name_lin_6797.dds",
+        "ce_seal_name_quan_6b0a.dds",
+        "ce_tiger_calligraphy.dds",
+        "ce_seal_name_qian_9ed4.dds",
+        "ce_seal_name_zhang_6f33.dds",
+        "ce_seal_name_tan_6f6d.dds",
+        "ce_seal_name_tan_8b5a.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 150,
+        "flip": -1,
+        "loss": 0.027016418716836004
+      }
+    },
+    {
+      "id": "synthetic-223",
+      "texture": "ce_seal_name_han_6f22.dds",
+      "textureSha256": "D941CF44DE8172F1EB552E9EC7C2F42932D4FA6D0D0CBF3382EF8AEB8DD128AD",
+      "rotation": 180,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_han_6f22.dds",
+        "ce_arabic_shahada.dds",
+        "ce_seal_name_li_793c.dds",
+        "ce_gotland_spiral.dds",
+        "ce_lion_passant_small.dds",
+        "ce_barong.dds",
+        "ce_leopard_passant_guardant.dds",
+        "ce_dragon_urnes.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 180,
+        "flip": 1,
+        "loss": 0.013274880076800773
+      }
+    },
+    {
+      "id": "synthetic-224",
+      "texture": "ce_polish_szeliga.dds",
+      "textureSha256": "A0F3578B8BF7529934ED59AEDD15F8C2EB0CE771D306FE7C96C70D6A6A4916AF",
+      "rotation": 345,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_polish_szeliga.dds",
+        "ce_polish_leliwa.dds",
+        "ce_lis.dds",
+        "ce_norse_mjolnir_kobelev.dds",
+        "ce_ukkos_hammer.dds",
+        "ce_polish_syrykomla.dds",
+        "ce_tamgha_turkic_06.dds",
+        "ce_globus_cruciger.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 345,
+        "flip": 1,
+        "loss": 0.014475408352245365
+      }
+    },
+    {
+      "id": "synthetic-225",
+      "texture": "ce_religion_custom_faith_1.dds",
+      "textureSha256": "1AD0772D211F9751A3AC889D2B74CEE0DDA39B7ADC1B73A4E5476D4CDE83B348",
+      "rotation": 15,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 694,
+      "top8": [
+        "ce_crosslet_fitchy.dds",
+        "ce_religion_christianity_generic.dds",
+        "ce_religion_christianity_orthodox.dds",
+        "ce_tamgha_oghuz_becenek.dds",
+        "ce_religion_christianity_catholic.dds",
+        "ce_norse_bird_alstad.dds",
+        "ce_caltrop.dds",
+        "ce_seal_name_ding_4e01.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.1113753690270978
+      }
+    },
+    {
+      "id": "synthetic-226",
+      "texture": "ce_kamon_paulownia_bloom.dds",
+      "textureSha256": "358588F9C013271A19192AE97AAA24A84CE145A8C917828EB26B8A20CEAB80F1",
+      "rotation": 255,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 697,
+      "top8": [
+        "ce_kamon_hat.dds",
+        "ce_asura_face.dds",
+        "ce_religion_vodun.dds",
+        "ce_heart.dds",
+        "ce_kamon_oxalis.dds",
+        "ce_religion_yoruba.dds",
+        "ce_religion_waaqism.dds",
+        "ce_kamon_rabbit.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.0940715641407974
+      }
+    },
+    {
+      "id": "synthetic-227",
+      "texture": "ce_seal_pictorial_central_snake.dds",
+      "textureSha256": "9025D29F44CB5016D45F845FB299469BE5A484A1B9DFC6998105F83AA63AC0AA",
+      "rotation": 15,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 838,
+      "top8": [
+        "ce_annulet_cross_patty.dds",
+        "ce_gotland_spiral.dds",
+        "ce_annulet_cross.dds",
+        "ce_dragon_fylfot.dds",
+        "ce_india_small_chakra.dds",
+        "ce_jesus_throne.dds",
+        "ce_kamon_oak.dds",
+        "ce_kamon_crane.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.105803678691515
+      }
+    },
+    {
+      "id": "synthetic-228",
+      "texture": "ce_bendy_10.dds",
+      "textureSha256": "174FDB0CDE85927492D8F2202EBE46F5BE46827BB515E3FE2A57E7B8A50FFDA4",
+      "rotation": 225,
+      "flip": -1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 58,
+      "top8": [
+        "ce_lozenge_vair.dds",
+        "ce_diamond_01.dds",
+        "ce_zulfiqar_and_shield.dds",
+        "ce_kamon_diamond.dds",
+        "ce_octogon_plain_frame.dds",
+        "ce_pagan_cross_losen.dds",
+        "ce_lozenge.dds",
+        "ce_shield_02.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 225,
+        "flip": -1,
+        "loss": 0.19534721587344095
+      }
+    },
+    {
+      "id": "synthetic-229",
+      "texture": "ce_pattern_vertical_split_01.dds",
+      "textureSha256": "58385D7D36F2132A65B54CBF66DE2D3A4A6C95AD54CC76250BA3310530F00087",
+      "rotation": 105,
+      "flip": -1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 68,
+      "top8": [
+        "ce_shield_02.dds",
+        "ce_religion_jain_generic.dds",
+        "ce_fess_checky.dds",
+        "ce_shield_portugal.dds",
+        "ce_pagan_cross_losen.dds",
+        "ce_sugarloaf_helmet.dds",
+        "ce_kamon_square.dds",
+        "ce_crown_lombard.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 105,
+        "flip": -1,
+        "loss": 0.2321565818210504
+      }
+    },
+    {
+      "id": "synthetic-230",
+      "texture": "ce_horizontal_stripes_01.dds",
+      "textureSha256": "208B63FCE8491FD12D9893DC52AA5E1713AC8073712B0C8F17318CCF34E39E68",
+      "rotation": 165,
+      "flip": 1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 91,
+      "top8": [
+        "ce_shield_02.dds",
+        "ce_fess_checky.dds",
+        "ce_kamon_square.dds",
+        "ce_shield_portugal.dds",
+        "ce_billet.dds",
+        "ce_seal_pictorial_frame_flower_full.dds",
+        "ce_mount.dds",
+        "ce_doted_roundel_frame.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 165,
+        "flip": 1,
+        "loss": 0.23084788169140205
+      }
+    },
+    {
+      "id": "synthetic-231",
+      "texture": "ce_star_ibadi.dds",
+      "textureSha256": "43534CC50BD62F6AE7B61310B38B2CDC7BF234B98528F8B51D37EA89E7C6380B",
+      "rotation": 75,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_star_ibadi.dds",
+        "ce_religion_islam_iibadi.dds",
+        "ce_kamon_circle_perforated_01.dds",
+        "ce_kamon_circle_perforated_02.dds",
+        "ce_lotus.dds",
+        "ce_octogon_plain_frame.dds",
+        "ce_kamon_diamond_perforated_01.dds",
+        "ce_kamon_diamond_perforated_02.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 75,
+        "flip": 1,
+        "loss": 0.013784260656553006
+      }
+    },
+    {
+      "id": "synthetic-232",
+      "texture": "ce_rurikid_vzevolod_02.dds",
+      "textureSha256": "6491A1B778078DA8443D40C480113281E5AA7F9DB2E225C76AC83CE0BAF8B3A3",
+      "rotation": 300,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_rurikid_vzevolod_02.dds",
+        "ce_letter_y.dds",
+        "ce_letter_v.dds",
+        "ce_tamgha_catal.dds",
+        "ce_polish_brama.dds",
+        "ce_tamgha_oghuz_iwe.dds",
+        "ce_arabic_zayd.dds",
+        "ce_polish_brodzic.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 300,
+        "flip": 1,
+        "loss": 0.023919539273490064
+      }
+    },
+    {
+      "id": "synthetic-233",
+      "texture": "ce_kamon_butterfly_laurel.dds",
+      "textureSha256": "B8D6E497C5B2C04E37DCB1F4968701DF169BFBAA36B3CEC73D7A1BFBC5B35905",
+      "rotation": 120,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 817,
+      "top8": [
+        "ce_kamon_ginger.dds",
+        "ce_kamon_clover.dds",
+        "ce_kamon_laurel_wisteria_03.dds",
+        "ce_kamon_laurel_wisteria_02.dds",
+        "ce_norse_spirals.dds",
+        "ce_kamon_crane.dds",
+        "ce_hexagram_khazaria_02.dds",
+        "ce_suomenusko_sun_02.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.1200896415849937
+      }
+    },
+    {
+      "id": "synthetic-234",
+      "texture": "ce_kamon_feather.dds",
+      "textureSha256": "C39F6B6490A24E68B09D669F214DB70D6AD30569264E9CC28936C4ED8A7DBBCE",
+      "rotation": 60,
+      "flip": 1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_kamon_feather.dds",
+        "ce_kamon_arrow.dds",
+        "ce_kamon_chrysanthemum.dds",
+        "ce_kamon_rabbit.dds",
+        "ce_moon_india.dds",
+        "ce_religion_vodun.dds",
+        "ce_asura_face.dds",
+        "ce_kamon_sixth_gentian.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 60,
+        "flip": 1,
+        "loss": 0.023252746709498798
+      }
+    },
+    {
+      "id": "synthetic-235",
+      "texture": "ce_pagan_moon_cross.dds",
+      "textureSha256": "187BB381E1E2709BEA23CE72E96B0D1F370201947B9D5CDBA19DD962DF7CFB01",
+      "rotation": 330,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 817,
+      "top8": [
+        "ce_tamgha_mongol_07.dds",
+        "ce_african_cross_yoruba.dds",
+        "ce_pagan_looped_knot.dds",
+        "ce_african_knot_hausa.dds",
+        "ce_african_flower.dds",
+        "ce_african_otumfuo.dds",
+        "ce_african_fern.dds",
+        "ce_castle_random.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.107441663202384
+      }
+    },
+    {
+      "id": "synthetic-236",
+      "texture": "ce_maunch.dds",
+      "textureSha256": "6EA7CCD2E2C55805E7BCDA3E808C0C919255BA59F4F135800DFFAC2A1A41F8C0",
+      "rotation": 120,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_maunch.dds",
+        "ce_heart.dds",
+        "ce_norse_triquetra_hardrada.dds",
+        "ce_hedgehog.dds",
+        "ce_norse_walknut_stora_hammars.dds",
+        "ce_religion_vodun.dds",
+        "ce_norse_odroerir_snoldelev.dds",
+        "ce_bell.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 120,
+        "flip": -1,
+        "loss": 0.019702248153150484
+      }
+    },
+    {
+      "id": "synthetic-237",
+      "texture": "ce_axe.dds",
+      "textureSha256": "C7CAD6611AA4BC9BAB6906282FC2E378CA6311717D414144005D614824B190A4",
+      "rotation": 345,
+      "flip": 1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_axe.dds",
+        "ce_kamon_stroke.dds",
+        "ce_lion_pillar_india.dds",
+        "ce_kamon_sway.dds",
+        "ce_norse_mjolnir_skane.dds",
+        "ce_breeches.dds",
+        "ce_letter_i.dds",
+        "ce_column.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 345,
+        "flip": 1,
+        "loss": 0.01519455624620798
+      }
+    },
+    {
+      "id": "synthetic-238",
+      "texture": "ce_tamgha_zoroastrian_03.dds",
+      "textureSha256": "4D4DED30517B4CA3D9C03BECDD35FEB7FA017A922E040DFC4528A92942466DF5",
+      "rotation": 90,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_tamgha_zoroastrian_03.dds",
+        "ce_tamgha_mongol_talabuga.dds",
+        "ce_tamgha_mongol_20.dds",
+        "ce_rune_futhark_bjarkan.dds",
+        "ce_tamgha_mongol_berke.dds",
+        "ce_jesus_throne.dds",
+        "ce_seal_pictorial_central_persimmon.dds",
+        "ce_tower.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 90,
+        "flip": -1,
+        "loss": 0.006072257891238486
+      }
+    },
+    {
+      "id": "synthetic-239",
+      "texture": "ce_ordinary_pale_5.dds",
+      "textureSha256": "91C0BAAA3123F95BDB099FED38887CFBD9C4918E317D7014227BC2BAD2A5F78A",
+      "rotation": 150,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 184,
+      "top8": [
+        "ce_seal_pictorial_frame_flower_full.dds",
+        "ce_seal_pictorial_frame_oval_full.dds",
+        "ce_crown_lombard.dds",
+        "ce_peacock_02.dds",
+        "ce_circle_mask.dds",
+        "ce_buddhist_moon.dds",
+        "ce_seal_pictorial_frame_circle_full.dds",
+        "ce_mount.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 150,
+        "flip": 1,
+        "loss": 0.1940443982000771
+      }
+    },
+    {
+      "id": "synthetic-240",
+      "texture": "ce_african_frame_bg_12.dds",
+      "textureSha256": "B0D1F3B65089886027ABF9B3208FD050A84B53F55F44928D1E2792D4CC5CA364",
+      "rotation": 45,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_african_frame_bg_12.dds",
+        "ce_african_frame_bg_13.dds",
+        "ce_african_frame_bg_11.dds",
+        "ce_african_frame_bg_14.dds",
+        "ce_african_frame_bg_15.dds",
+        "ce_african_frame_bg_10.dds",
+        "ce_mascle.dds",
+        "ce_border_shield.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 45,
+        "flip": -1,
+        "loss": 0.023594493282026653
+      }
+    },
+    {
+      "id": "synthetic-241",
+      "texture": "ce_religion_islam_iibadi.dds",
+      "textureSha256": "9E250B79348E65194601F354AF7E0BD2EF3EA4AB5978BDE23075BAE96CDC7426",
+      "rotation": 180,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_religion_islam_iibadi.dds",
+        "ce_star_ibadi.dds",
+        "ce_kamon_circle_perforated_01.dds",
+        "ce_lotus.dds",
+        "ce_kamon_diamond_perforated_02.dds",
+        "ce_octogon_plain_frame.dds",
+        "ce_kamon_diamond_perforated_01.dds",
+        "ce_kamon_circle_perforated_02.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 180,
+        "flip": 1,
+        "loss": 0.005800983865888912
+      }
+    },
+    {
+      "id": "synthetic-242",
+      "texture": "ce_tamgha_turkic_06.dds",
+      "textureSha256": "3B26F0ADCD8AE09F10DDBD9936C03C7EEA7807B7133BF6FF1CF605FD1D3EF23E",
+      "rotation": 120,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_tamgha_turkic_06.dds",
+        "ce_tamgha_mongol_05.dds",
+        "ce_kamon_sprout.dds",
+        "ce_tamgha_adlari.dds",
+        "ce_tamgha_nestorian_01.dds",
+        "ce_tamgha_mongol_17.dds",
+        "ce_letter_t.dds",
+        "ce_tamgha_tuva.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 120,
+        "flip": -1,
+        "loss": 0.021704388693489264
+      }
+    },
+    {
+      "id": "synthetic-243",
+      "texture": "ce_ordinary_pily_vertical_04.dds",
+      "textureSha256": "26848D001E89FC2CFB3E506B6C1176024E24E129E70FAC3DC1DD323682144DCD",
+      "rotation": 345,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 935,
+      "top8": [
+        "ce_rune_futhark_bjarkan.dds",
+        "ce_tamgha_laktanid.dds",
+        "ce_bear_rampant.dds",
+        "ce_kamon_arrowhead.dds",
+        "ce_seal_frame_divided.dds",
+        "ce_beta.dds",
+        "ce_tamgha_mongol_07.dds",
+        "ce_seal_name_min_95a9.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.1142988252638668
+      }
+    },
+    {
+      "id": "synthetic-244",
+      "texture": "ce_per_bend.dds",
+      "textureSha256": "F49A3DBEB9264E8631AA487DCDCBCCB9C0229320494663E96941709AE1DEB000",
+      "rotation": 180,
+      "flip": 1,
+      "mask": [
+        1,
+        2
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_per_bend.dds",
+        "ce_per_bend_nebuly.dds",
+        "ce_per_fess_indented.dds",
+        "ce_per_fess.dds",
+        "ce_chief_indented.dds",
+        "ce_pattern_vertical_split_01.dds",
+        "ce_chief.dds",
+        "ce_waves_02.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 180,
+        "flip": 1,
+        "loss": 0.000997341086771188
+      }
+    },
+    {
+      "id": "synthetic-245",
+      "texture": "ce_seal_name_zhou_5dde.dds",
+      "textureSha256": "F48642C7672F624220F93BFC220567974303D7A0D13F99EE0D556FBA6B63A04A",
+      "rotation": 90,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 529,
+      "top8": [
+        "ce_mena_crescent_outline.dds",
+        "ce_seal_name_gui_5b00.dds",
+        "ce_seal_name_hong_6d2a.dds",
+        "ce_shrub.dds",
+        "ce_key.dds",
+        "ce_yggdrasil.dds",
+        "ce_mongol_bird.dds",
+        "ce_kamon_gentian.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.0904240895904362
+      }
+    },
+    {
+      "id": "synthetic-246",
+      "texture": "ce_bendy_04_dimidiated.dds",
+      "textureSha256": "BF1F929706D6132C0A647A64377DE6880A244036DC62401F846AD0E2E3BA2AE4",
+      "rotation": 0,
+      "flip": 1,
+      "mask": [
+        1,
+        2,
+        3
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_bendy_04_dimidiated.dds",
+        "ce_bendy_06_dimidiated.dds",
+        "ce_pile_inverted_dimidiated.dds",
+        "ce_waves_02.dds",
+        "ce_per_fess.dds",
+        "ce_chief_indented.dds",
+        "ce_per_fess_indented.dds",
+        "ce_pattern_vertical_split_01.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 0.0006113103028010055
+      }
+    },
+    {
+      "id": "synthetic-247",
+      "texture": "ce_seal_name_hui_60e0.dds",
+      "textureSha256": "1CF3588C763C609C3E32A4344689C4783E92BFD276D3C17E1EC444FBA1230FCB",
+      "rotation": 15,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 608,
+      "top8": [
+        "ce_seal_name_yuan_8881.dds",
+        "ce_sleipnir.dds",
+        "ce_gotland_spiral.dds",
+        "ce_kamon_lotus.dds",
+        "ce_barong.dds",
+        "ce_seal_name_wei_97cb.dds",
+        "ce_hausa_knot.dds",
+        "ce_zoroastrian_fire_altar.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.0954950537191195
+      }
+    },
+    {
+      "id": "synthetic-248",
+      "texture": "ce_wolf_passant_lamb.dds",
+      "textureSha256": "6A7891AB0E4DA009518D9192375CB2A877EFF0833A1A9FA130F423466AC284D9",
+      "rotation": 195,
+      "flip": -1,
+      "mask": [
+        1,
+        2,
+        3
+      ],
+      "rank": 574,
+      "top8": [
+        "ce_wolf_passant.dds",
+        "ce_bull_passant.dds",
+        "ce_sheep.dds",
+        "ce_vair_single.dds",
+        "ce_chalice_mena.dds",
+        "ce_ordinary_pile_01.dds",
+        "ce_ordinary_pile_02_inverted.dds",
+        "ce_pile_mask_thin.dds"
+      ],
+      "top32ContainsTruth": false,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 1.0971294359133161
+      }
+    },
+    {
+      "id": "synthetic-249",
+      "texture": "ce_tamgha_zoroastrian_05.dds",
+      "textureSha256": "18D6F77C4E9EF559FDCF9FC4C46C388E05A9B69851062CD028657ACC7A6D28EA",
+      "rotation": 75,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_tamgha_zoroastrian_05.dds",
+        "ce_tamgha_shapur.dds",
+        "ce_islamic_lis.dds",
+        "ce_star_07.dds",
+        "ce_religion_sedism.dds",
+        "ce_cinquefoil_02.dds",
+        "ce_zoroastrian_fire_altar.dds",
+        "ce_nettle_leaf.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 75,
+        "flip": -1,
+        "loss": 0.021719509362233706
+      }
+    },
+    {
+      "id": "synthetic-250",
+      "texture": "ce_crescent_random.dds",
+      "textureSha256": "D4EFDC40FD17F6710EDA1D128E427906E5A51BA9499815C6B78B94D6E7E7ABB9",
+      "rotation": 255,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_crescent_random.dds",
+        "ce_crescent_mask.dds",
+        "ce_crescent_mask_02.dds",
+        "ce_religion_islam_asharism.dds",
+        "ce_norse_longship.dds",
+        "ce_norse_longship_figureheads.dds",
+        "ce_moon.dds",
+        "ce_letter_c.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 255,
+        "flip": 1,
+        "loss": 0.01489185713002749
+      }
+    },
+    {
+      "id": "synthetic-251",
+      "texture": "ce_seal_name_qi_9f50.dds",
+      "textureSha256": "715ACA5426189E54213F22B7E08AA7ED4F40E36EE43F1930E95D7162AA192032",
+      "rotation": 165,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_qi_9f50.dds",
+        "ce_seal_name_xiao_856d.dds",
+        "ce_seal_name_xiang_8944.dds",
+        "ce_kamon_gentian.dds",
+        "ce_cloud_swirl_nestorian.dds",
+        "ce_seal_name_sun_5b6b.dds",
+        "ce_barong.dds",
+        "ce_seal_name_jiang_59dc.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 165,
+        "flip": 1,
+        "loss": 0.01727933443487709
+      }
+    },
+    {
+      "id": "synthetic-252",
+      "texture": "ce_seal_name_zhao_8d99.dds",
+      "textureSha256": "A1884F624B5C6545A57D160C28843D16AEF5B27251633769C1BCDC36D9E9EAE7",
+      "rotation": 255,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_zhao_8d99.dds",
+        "ce_seal_name_gong_9f94.dds",
+        "ce_sleipnir.dds",
+        "ce_kamon_mirror_crane.dds",
+        "ce_seal_pictorial_central_rooster.dds",
+        "ce_gotland_spiral.dds",
+        "ce_barong.dds",
+        "ce_seal_name_tan_8b5a.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 255,
+        "flip": 1,
+        "loss": 0.018749104664910525
+      }
+    },
+    {
+      "id": "synthetic-253",
+      "texture": "ce_kamon_stem.dds",
+      "textureSha256": "0F0F6DEB80A25FF98277DC8DADE8C7B119C4E17FF4780F45244883D68620122E",
+      "rotation": 60,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_kamon_stem.dds",
+        "ce_vair_single.dds",
+        "ce_column.dds",
+        "ce_bull_horn.dds",
+        "ce_bat.dds",
+        "ce_lotus_flower.dds",
+        "ce_sun.dds",
+        "ce_demi_vol.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 60,
+        "flip": 1,
+        "loss": 0.0260428739076533
+      }
+    },
+    {
+      "id": "synthetic-254",
+      "texture": "ce_tamgha_karasorkaliq.dds",
+      "textureSha256": "E5639E42E219B25CF9CAB6C2125B550DAFB4DB381DAD5EDE1B0C14600CC7A84A",
+      "rotation": 15,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_tamgha_karasorkaliq.dds",
+        "ce_seal_name_gong_5de5.dds",
+        "ce_tamgha_turkic_05.dds",
+        "ce_rune_hagalaz.dds",
+        "ce_tamgha_mongol_17.dds",
+        "ce_letter_t.dds",
+        "ce_tamgha_tuva.dds",
+        "ce_crown_coronet.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 15,
+        "flip": -1,
+        "loss": 0.013662936261449852
+      }
+    },
+    {
+      "id": "synthetic-255",
+      "texture": "ce_seal_name_you_5e7d.dds",
+      "textureSha256": "89713FD54B0D544C374FB9689059719A2FD20DD03C8D372A448440811D95583B",
+      "rotation": 120,
+      "flip": -1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_seal_name_you_5e7d.dds",
+        "ce_dragon_fylfot.dds",
+        "ce_kamon_wisteria_central.dds",
+        "ce_african_tamfo.dds",
+        "ce_african_duguwa.dds",
+        "ce_seal_pictorial_central_dragon.dds",
+        "ce_gotland_spiral.dds",
+        "ce_kamon_hollyhock.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 120,
+        "flip": -1,
+        "loss": 0.019178474087091252
+      }
+    },
+    {
+      "id": "synthetic-256",
+      "texture": "ce_hand.dds",
+      "textureSha256": "5029E93333F441F01AF336236D1878D4D8538CD21A7D05E5435C6FE846409C6F",
+      "rotation": 0,
+      "flip": 1,
+      "mask": [
+        1
+      ],
+      "rank": 1,
+      "top8": [
+        "ce_hand.dds",
+        "ce_hedgehog.dds",
+        "ce_religion_yoruba.dds",
+        "ce_heart.dds",
+        "ce_moors_head_02.dds",
+        "ce_religion_vodun.dds",
+        "ce_african_ceremonial_mask_02.dds",
+        "ce_escutcheon.dds"
+      ],
+      "top32ContainsTruth": true,
+      "selectedTransform": {
+        "rotation": 0,
+        "flip": 1,
+        "loss": 0.007959933102341473
+      }
+    }
+  ]
+}

@@ -89,11 +89,19 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 ### Q2：原生素材检索 v2（P0，3–5 工程日，依赖 Q1）
 
+状态：`passed`（2026-09-21；[64 例 holdout 检索证据](coat-of-arms-fit-artifacts/delta-q-asset-retrieval-v2/README.md)）。
+
 - 为 colored/textured emblem 建立离线确定性索引：alpha 距离场、Hu moments、径向/方向直方图、对称性、孔洞、连通域、长宽比和 mask 通道形状。
 - 将目标残差分割为显著区域，按区域查询 Top-K；旋转、镜像和 mask 选择作为显式变换，不污染素材身份。
 - 永久保留矩形、圆、菱形和楔形 primitive fallback，避免召回失败后失去安全路径。
 
 退出条件：64 个 holdout 达到 Top-8/Top-32 门限；索引逐字节可重建；未降低现有 primitive 覆盖。
+
+实证：
+
+- R001 的 96 项纯不变量 shortlist 为 43.75% / 43.75%，R002 扩到 512 项仍只有 68.75% / 68.75%；失败报告追加保留。
+- 最终以 6×6 旋转/镜像稀疏网格加不变量粗筛 128 项，再以 18×18 网格和有符号距离场精排，Top-8 为 93.75%，Top-32 为 96.875%。
+- 检索 v2 已接入语义层与 paint 后原生形状 refinement；矩形、圆、菱形和楔形 primitive 仍由独立保留合同覆盖。
 
 ### Q3：结构感知联合搜索（P0，5–8 工程日，依赖 Q2）
 
