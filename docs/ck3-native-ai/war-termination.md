@@ -2585,3 +2585,45 @@ flowchart TD
     T -->|no| H["[counter-policy] remain paused; do not invent a result"]
     O -. "[unknown] native scheduler's exact proposal date" .-> U["[unknown] no inferred native threshold"]
 ```
+
+## 2026-09-21 R0033 long-war surrender capability-projection RED
+
+[production RED] R0033 cold-restored the clean R0032 checkpoint/driver pair
+under agent commit `2a3201b5481108fc337e71164b9dac1999010531`. On turn 41,
+after successful same-frame options, two power reads and terms query, the
+production action gate stopped before mutation with
+`recommended_action_step_not_advertised`. The failed turn did not serialize a
+recommendation certificate, gate object or terminal literal, so surrender is
+the code-path diagnosis supported by the legal option and missing-step blocker,
+not a directly retained recommendation claim. No surrender or competing
+terminal literal was submitted, so the source campaign remains reusable. The native
+and outer report SHA-256 values are
+`5444026711E3DD864FE35A1F447FCE3D6D3BE90B73BEC7C0C80D243A40429C6C` and
+`9D1EBE90C9A3AAEB4565B196A9FF995934EB7627EEEC9ADB113180858D71A8E9`.
+
+[implementation boundary] This is a Python driver capability-projection gap,
+not a new native-AI rule and not a reason to weaken the formal action gate.
+The driver may project `surrender-war-N` for the existing long-war utility
+slice only when one current paused frame proves all of the following:
+
+- active `raiktor_claim_cb`, player primary attacker, negative player-relative
+  score and duration at least 730 days;
+- same snapshot/revision/native revision/connection/episode termination row;
+- attacker-defeat surrender context constructed, native-valid, available,
+  no-hostage, auto-accepted and `would_accept_now=true`.
+
+This projection proves only that a concrete literal can execute if selected.
+The formal three-way provider remains the sole component that consumes stable
+power, terms, budget and switch margin to choose continue, white peace or
+surrender. Score zero, day 729, another CB, stale evidence, native rejection or
+recipient rejection must remain unadvertised and unexecutable. The existing
+same-episode one-shot submission fence remains mandatory. Native ABI, public
+MCP and `open_kaishek` shapes do not change.
+
+[consumer boundary] The same variant must remain typed after submission. Its
+receipt carries observable absolute attacker/defender scores and the ordinary
+production lifecycle verifier accepts it only with exact Raiktor CB, negative
+score, at least 730 days and score symmetry. The formal postcondition maps
+semantic `surrender` to the native typed result `attacker_defeat`; it does not
+accept a fabricated nested outcome named `surrender`. These are Python
+consumer corrections on the same critical chain, not new native behavior.

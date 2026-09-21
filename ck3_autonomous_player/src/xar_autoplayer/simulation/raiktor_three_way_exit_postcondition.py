@@ -211,6 +211,12 @@ def _action_submission_matches(
             "war_termination_result must be an object"
         )
     termination_status = termination.get("status")
+    semantic_action = action.get("semantic_action")
+    expected_typed_outcome = (
+        "attacker_defeat"
+        if semantic_action == "surrender"
+        else semantic_action
+    )
     observed_id = termination.get("observed_snapshot_id")
     observation_bound = bool(
         observed_id == post.get("snapshot_id")
@@ -223,7 +229,7 @@ def _action_submission_matches(
     return bool(
         termination_status in {"applied", "submitted_pending"}
         and termination.get("war_id") == action.get("war_id")
-        and termination.get("outcome") == action.get("semantic_action")
+        and termination.get("outcome") == expected_typed_outcome
         and termination.get("episode_run_id") == frame.get("episode_id")
         and termination.get("starting_snapshot_id") == frame.get("snapshot_id")
         and observation_bound

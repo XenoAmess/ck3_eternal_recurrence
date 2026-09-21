@@ -776,3 +776,33 @@ optimized affected suites are GREEN through `259/259` per mode. Status is
 `static-ready-live-replay-pending`: runtime refreeze, one production intercept,
 the unique action, material postconditions, later consumption and cold restore
 are still required. GEN-034 remains `3/4`; G2 remains `1/8`.
+
+## 2026-09-21 R0033 execution-literal projection boundary
+
+[production RED] R0033 reached the formal gate after successful current-frame
+options, power and terms queries, then stopped on the sole recorded blocker
+`recommended_action_step_not_advertised`. The failed turn serialized no
+recommendation certificate, gate object or terminal literal. Surrender is the
+strong code-path diagnosis, not a directly retained recommendation fact: it
+was the only legal terminal option, while the driver had not advertised
+`surrender-war-16777285`. Its action-step projection recognized only the
+ordinary de-jure dead-end exception and absolute `-100` terminal-control
+variants. No action was submitted; this is an execution-surface mismatch, not
+a failed utility choice and not a material war result.
+
+[counter-policy / implementation] Add one narrow Raiktor long-war execution
+variant. It requires the same paused and frame-bound termination option,
+primary attacker, `raiktor_claim_cb`, score below zero, duration at least 730
+days, and a fully valid/available/accepted attacker-defeat surrender row. The
+variant does not inspect or duplicate strategic power, budgets, terms or
+margin: those remain inputs to the formal recommendation. Therefore capability
+projection alone cannot choose surrender, while the unchanged gate can now
+materialize a formally selected literal. Day 729, score zero, stale binding,
+wrong CB, failed validator or recipient refusal all fail closed.
+
+The typed receipt retains the same absolute score observation used to bind the
+long-war variant. Ordinary `native_auto_run` revalidates CB, negative score,
+duration and symmetric absolute scores before accepting either pending or
+applied lifecycle state. GEN-034 postconditions explicitly translate semantic
+`surrender` into native outcome `attacker_defeat`; a literal string comparison
+would reject the real driver result after mutation.

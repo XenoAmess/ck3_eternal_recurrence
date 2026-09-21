@@ -103,6 +103,8 @@ _DE_JURE_NO_SAFE_ROUTE_CB_DATABASE_INDEX = 17
 _DE_JURE_NO_SAFE_ROUTE_MIN_DAYS = 180
 _RAIKTOR_TERMINAL_CONTROL_CB = "raiktor_claim_cb"
 _RAIKTOR_TERMINAL_CONTROL_SCORE = -100
+_RAIKTOR_LONG_WAR_SURRENDER_MIN_DAYS = 730
+_RAIKTOR_LONG_WAR_SURRENDER_MAX_SCORE = -1
 
 
 def _registered_event_material_postcondition_issue(
@@ -3867,7 +3869,23 @@ def _emergency_surrender_lifecycle_verified(
         and action.get("attacker_war_score") == score
         and action.get("defender_war_score") == -score
     )
-    if not de_jure_variant and not raiktor_variant:
+    duration = action.get("war_duration_days")
+    raiktor_long_war_variant = bool(
+        variant == "raiktor_long_war_utility"
+        and cb.get("canonical_key") == _RAIKTOR_TERMINAL_CONTROL_CB
+        and isinstance(score, int)
+        and not isinstance(score, bool)
+        and score <= _RAIKTOR_LONG_WAR_SURRENDER_MAX_SCORE
+        and isinstance(duration, int)
+        and not isinstance(duration, bool)
+        and duration >= _RAIKTOR_LONG_WAR_SURRENDER_MIN_DAYS
+        and action.get("absolute_war_scores_observable") is True
+        and action.get("attacker_war_score") == score
+        and action.get("defender_war_score") == -score
+    )
+    if not (
+        de_jure_variant or raiktor_variant or raiktor_long_war_variant
+    ):
         return False
     if action.get("status") == "applied":
         return bool(

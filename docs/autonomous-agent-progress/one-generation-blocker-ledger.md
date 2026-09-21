@@ -1,5 +1,17 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-09-21 R0033 GEN-034-D action-step projection ledger
+
+| Delivery gate / capability | Status | Formal entry | Artifact / source | Actual game and next-turn evidence | Restore evidence | B0/B1 gap / owner | Branch cleanup |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Long-war Raiktor terminal literal projection | production RED retained; narrow static repair GREEN; live replay pending | formal `native_auto_run` -> three-way action gate | R0033 native `54440267...29C6C`; outer `9D1EBE90...A8E9`; source agent `2a3201b5` | Turn41 current-frame option/power/terms chain stopped on `recommended_action_step_not_advertised`; failed turn retained no recommendation certificate/literal; zero terminal submissions and no runner input | R0033 durable checkpoint at turn32/date53190768 exists, but replay will use the clean R0032 pair; R0033 cleanup GREEN and CK3=0 | Integrate/refreeze, cold replay to a matching intercept, then execute only emitted action and verify material result/later turn/checkpoint/new-process restore; `/root` | feature branch active; cleanup required immediately after linear master delivery |
+
+The repair changes only Python dynamic action-step projection, execution and
+lifecycle revalidation, plus semantic-surrender to typed-attacker-defeat
+postcondition comparison. Native ABI, public MCP and `open_kaishek` are
+`NO-CODE-CHANGE`.
+Authority remains G2 `1/8`, Council `1/4`, GEN-034 `3/4`.
+
 状态：**G1 与首个固定-seed G2 跨 episode gate 均于 2026-08-30 完成；能力债与扩展矩阵继续**
 
 所有者指令时间：2026-08-27 09:47（Asia/Shanghai）

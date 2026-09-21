@@ -843,3 +843,19 @@ flowchart TD
   ACK, a planned literal, or turn-limit exhaustion is not a material terminal
   result; the existing WarID/resource/truce/cleanup/checkpoint/cold-restore
   chain remains mandatory.
+
+### R0033 capability projection correction
+
+- [production RED] The formal terminal path reached the strict action gate,
+  which stopped on the missing concrete action-step advertisement. The failed
+  turn did not retain its recommendation certificate or literal, so surrender
+  is the code-path diagnosis rather than a serialized recommendation fact. No
+  retry or alternative terminal was attempted.
+- [implementation] Expose and execute that literal only when the current
+  paused termination evidence independently proves primary-attacker identity,
+  exact Raiktor CB, negative score, at least 730 days, same-frame binding and a
+  native-valid/available/accepted surrender. The formal policy still decides
+  whether this executable option wins; the driver does not duplicate utility.
+- [consumer] Preserve the exact score/duration variant through ordinary
+  lifecycle verification, and map semantic `surrender` to the driver's typed
+  `attacker_defeat` only inside the formal postcondition comparison.

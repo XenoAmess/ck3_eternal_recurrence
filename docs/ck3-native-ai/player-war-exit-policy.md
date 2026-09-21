@@ -717,3 +717,24 @@ The native ABI, public MCP surface, terminal legality, action gate, receipt
 deduplication and six material postconditions are unchanged. This is a
 versioned Raiktor counter-policy calibration from exact live evidence, not a
 claim of native-AI equivalence or semantic optimality.
+
+### 2026-09-21 R0033 selected-terminal execution gap
+
+- [production RED] After successful current-frame options, power and terms
+  queries, the strict action gate stopped on
+  `recommended_action_step_not_advertised`. The failed turn retained no
+  recommendation certificate, gate object or literal; surrender is a strong
+  code-path diagnosis, not a serialized recommendation fact. R0033 submitted
+  no mutation and therefore proves neither surrender ACK nor a postwar result.
+- [implementation] For the long-war Raiktor slice, project the concrete
+  surrender literal only from a current paused, same-frame, primary-attacker
+  termination row with score `< 0`, duration `>= 730`, exact CB identity and a
+  native-valid/available/accepted surrender context. Execution revalidates the
+  identical predicate and keeps the existing one-shot fence.
+- [boundary] Projection is not recommendation. Stable power, terms, budget and
+  opportunity-cost comparison remain exclusively in the formal policy; native
+  AI thresholds, ABI, MCP and `open_kaishek` contracts remain unchanged.
+- [consumer] The production lifecycle accepts the new variant only with its
+  exact CB/score/duration and symmetric absolute-score receipt. The formal
+  postcondition treats native `attacker_defeat` as the typed result of semantic
+  `surrender`; it does not rename the native result on the wire.

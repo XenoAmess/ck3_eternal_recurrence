@@ -104,10 +104,15 @@ def _action_result(
         "backend_id": "native-headless",
     }
     if nested and action["semantic_action"] != "continue":
+        typed_outcome = (
+            "attacker_defeat"
+            if action["semantic_action"] == "surrender"
+            else action["semantic_action"]
+        )
         result["war_termination_result"] = {
             "status": "applied",
             "war_id": action["war_id"],
-            "outcome": action["semantic_action"],
+            "outcome": typed_outcome,
             "episode_run_id": frame["episode_id"],
             "starting_snapshot_id": frame["snapshot_id"],
             "observed_snapshot_id": post["snapshot_id"],
@@ -240,6 +245,22 @@ class RaiktorThreeWayExitPostconditionTests(unittest.TestCase):
 
         self.assertEqual(result["route"], "surrender")
         self.assertTrue(result["gen034_closed"])
+
+    def test_surrender_maps_native_attacker_defeat_to_semantic_action(self) -> None:
+        inputs = _termination_inputs("surrender")
+        termination = inputs["action_result_value"]["war_termination_result"]
+        self.assertEqual(termination["outcome"], "attacker_defeat")
+
+        result = provide_raiktor_three_way_exit_postcondition(**inputs)
+
+        self.assertTrue(result["gen034_closed"])
+        termination["outcome"] = "surrender"
+        rejected = provide_raiktor_three_way_exit_postcondition(**inputs)
+        self.assertFalse(rejected["gen034_closed"])
+        self.assertIn(
+            "postcondition_failed:authorized_action_submitted",
+            rejected["blockers"],
+        )
 
     def test_async_white_peace_submission_binds_earlier_pending_observation(self) -> None:
         inputs = _termination_inputs()
