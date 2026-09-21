@@ -1,6 +1,6 @@
 # CK3 家徽编辑器 Gamma / 1.0 收口计划
 
-> 状态：G0–G4 已收口，G5 本地门禁已通过，等待承载本状态的 `master` commit 完成 Pages 同 commit 部署与公开回读（2026-09-21）
+> 状态：G0–G5 已全部收口；发布 commit `7e7f8eabf2f3e71bed3f9e0d9892e599f4bcee11` 的 Pages workflow 与 canonical URL 公开回读均已通过（2026-09-21）
 >
 > 起始基线：`master` `c7f4392b0ce36b6b288b3303c5e277dacd513b04`；G3 实现：`9c77d7a9`、`30e2127f`
 >
@@ -152,7 +152,7 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 
 ### G5：1.0 发布门禁（P0，1–2 工程日，依赖 G0–G4 的目标范围冻结）
 
-状态：`local-passed / deploy-pending`（2026-09-21；[clean R53](coat-of-arms-fit-artifacts/gamma-g5-clean-r53/README.md)）。
+状态：`passed`（2026-09-21；[clean R53](coat-of-arms-fit-artifacts/gamma-g5-clean-r53/README.md)）。
 
 交付：
 
@@ -168,7 +168,8 @@ Gamma 的目标不是继续堆叠近似能力，而是把现有纯浏览器 Beta
 - detached clean worktree `30e2127f`：source/dist 两轮 1,630/1,630 pack 校验、20 files / 93 Vitest、production build、五类零后端扫描全部 GREEN。
 - Playwright：real-fit budget 1/1、standalone 2/2、production group 15/15、WebGL context-loss 1/1、Chromium/Firefox/WebKit 3/3、service-worker offline 1/1 GREEN。
 - 最终 Pages base-path build 与 `dist` pack 复验 GREEN；生产浏览器只发出同源 GET，backend/user-content request 均为 0。
-- 承载本状态的 `master` commit 推送后，仍须等待 Pages workflow 对同一 commit GREEN，并从 canonical URL 回读 commit/time；完成前不得把外部门禁写成已部署。
+- 发布 commit `7e7f8eabf2f3e71bed3f9e0d9892e599f4bcee11` 的 [Pages workflow run 35562234763](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/35562234763) 已 GREEN：build 14m52s、deploy 10s。
+- canonical URL `https://xenoamess.github.io/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/` 返回 HTTP 200；仓库原生公开回读用例确认页面展示短 SHA `7e7f8eab`、ISO UTC 构建时间和 `ck3-1.19.0.6-base-complete` 素材包身份，1/1 GREEN。
 
 ## 5. 顺序与停止条件
 
