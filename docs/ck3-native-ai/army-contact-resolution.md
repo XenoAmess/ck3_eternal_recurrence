@@ -489,6 +489,13 @@ flowchart TD
 复用成两日或更多日。原 exact-day 路径继续作为无 sentinel 或无已承诺 route 时的回退；下节的 application-main
 committed-route sentinel 是独立 multi-day 合同，不声称重用或放宽该一日 proof。
 
+[production-live + counter-policy] R881 又证明了同一边界在“提交一条尚未承诺的新路线”时也必须保留：
+直接持有 county-capital 候选 Province `45` 的完整几何路线为 `unsafe`、ETA 约十日，而 fresh horizon 只证明第一日
+contact-free；在同帧 `hostile_operational_overmatch=true` 下把该证明改写成整条路线安全，随后真实提交了危险进军。
+因此 planner 仅对 `player_held_county_capital` + hostile overmatch 这一实证形状拒绝 `unsafe ->
+safe_one_day_contact_horizon` 晋级；完整几何 safe 的撤离路线、非 overmatch 帧和其它来源仍沿用既有合同。实现状态为
+static-ready，等待从 R878 history `1347` 做 production replay；这不改变 native horizon 的 wire 或 exact-build reader。
+
 ### 2026-08-28 G1 停点压缩：已承诺 route 由 native sentinel 托管
 
 [static-confirmed] normal daily 的全部 movement placement 和 contact queue 在 final daily stage 前已完成。新接触成功后

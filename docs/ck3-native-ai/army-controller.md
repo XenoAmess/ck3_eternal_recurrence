@@ -194,13 +194,30 @@ flowchart TD
     R --> A{"route audit safe?"}
     A -->|no; geometric intersection| H["exact one-day route-contact horizon"]
     H -->|unsafe| C
-    H -->|safe| K{"rollback-memory match?"}
+    H -->|safe| V{"directly-held county fallback<br/>and hostile operational overmatch?"}
+    V -->|yes| C
+    V -->|no| K{"rollback-memory match?"}
     A -->|yes| K
     K -->|yes| C
     K -->|no| M["[counter-policy] first safe ranked objective<br/>stop enumeration + submit move"]
     C -->|set exhausted| N["no safe exact route"]
     O["[static-confirmed] native preliminary top 10<br/>then final pathfinding"] -->|"[inference] bounded-final-evaluation precedent;<br/>not claimed as identical ranking"| P
 ```
+
+### 2026-09-21 R881 production 反例：一天无接触不能覆盖劣势军的完整进军路线
+
+- [production-live] R881 的 paused history `1394` 同帧已发布完整 army-strength balance：玩家军
+  `184549472` 只有 `2` soldiers、base power `1200`，四支敌军合计 `7833` soldiers、base power
+  `259207`，因此既有 `hostile_operational_overmatch=true`。直接持有 county-capital 候选 Province `45`
+  的 fresh preview 路线经完整 current/target/route 几何审计为 `unsafe`，但旧 planner 又用只覆盖
+  `[start,start+24]` 的 `one_day_contact_free=true` 把它晋级为 `safe_one_day_contact_horizon`，最终提交
+  `move-army-184549472-to-45`；该路线 ETA 仍约十日，所以一天证明没有覆盖这次新承诺的完整风险窗口。
+- [counter-policy / static-ready] 只在候选来源为 `player_held_county_capital` 且同帧既有
+  `hostile_operational_overmatch=true` 时，禁止把几何 `unsafe` 候选凭一天 contact-free 证明晋级为可提交路线。
+  几何审计本来就是 `safe` 的其它直接持有 county 路线仍可作为撤离目标；非 overmatch 帧以及非此来源的既有
+  one-day horizon 行为保持不变。该 guard 直接复用已有兵力判断，不新增阈值，也不声称一天证明本身错误。
+- [static-ready, live replay pending] 本 guard 由 R881 形状离线回归覆盖，但尚未从 R878 的安全
+  history `1347` 完成新的 production replay；在该 replay 给出独立后置状态前不得标记 production-live。
 
 ### 2026-08-28 production 反例：全局战分骤降不等于当前省战败
 

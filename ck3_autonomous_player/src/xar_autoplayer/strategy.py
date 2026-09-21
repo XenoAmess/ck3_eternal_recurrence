@@ -10252,11 +10252,29 @@ def _choose_one_life_turn_core(
                             "active_wars": war_summary,
                         }
                     if contact_horizon.get("one_day_contact_free") is True:
-                        audit = {
-                            **audit,
-                            "status": "safe_one_day_contact_horizon",
-                            "contact_horizon": contact_horizon,
-                        }
+                        if (
+                            route_candidate_source
+                            == "player_held_county_capital"
+                            and isinstance(strength_balance, dict)
+                            and strength_balance.get(
+                                "hostile_operational_overmatch"
+                            )
+                            is True
+                        ):
+                            audit = {
+                                **audit,
+                                "contact_horizon": contact_horizon,
+                                "one_day_contact_horizon_rejected": (
+                                    "hostile_operational_overmatch_"
+                                    "player_held_county_fallback"
+                                ),
+                            }
+                        else:
+                            audit = {
+                                **audit,
+                                "status": "safe_one_day_contact_horizon",
+                                "contact_horizon": contact_horizon,
+                            }
                 if audit["status"] not in {
                     "safe",
                     "safe_one_day_contact_horizon",

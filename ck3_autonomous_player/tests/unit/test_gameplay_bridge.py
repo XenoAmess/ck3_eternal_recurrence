@@ -12559,6 +12559,26 @@ class GameplayBridgeTests(unittest.TestCase):
             "termination_options": [current_options],
             "move_route_preview_supported": True,
         }
+        overmatch_strengths = [
+            {
+                "status": "available",
+                "army_id": army_id,
+                "scope_role": "player",
+                "war_ids": [88],
+                "current_soldiers": 2,
+                "maximum_soldiers": 2,
+                "ai_base_power_raw": 1_200,
+            },
+            {
+                "status": "available",
+                "army_id": 301_989_919,
+                "scope_role": "active_war_enemy",
+                "war_ids": [88],
+                "current_soldiers": 7_833,
+                "maximum_soldiers": 7_833,
+                "ai_base_power_raw": 259_207,
+            },
+        ]
 
         legacy_root = _campaign_root_row(
             4, date_raw=current_date_raw, capital_province_id=45
@@ -12638,6 +12658,138 @@ class GameplayBridgeTests(unittest.TestCase):
             "player_held_county_capital",
         )
         self.assertEqual(move["pursuit"]["objective_kind"], "regroup")
+
+        hostile_ids = (301_989_919,)
+        contact_query_step = query_route_contact_horizon_step(
+            army_id, 45, hostile_ids
+        )
+        move_45_step = f"move-army-{army_id}-to-45"
+        contact_free_45 = _route_contact_row(
+            6,
+            army_id=army_id,
+            origin=rally_province_id,
+            target=45,
+            date_raw=current_date_raw,
+            route=[45],
+            hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        overmatch_base = {
+            **base,
+            "steps": (*base["steps"], contact_query_step, move_45_step),
+            "route_contact_horizon_supported": True,
+            "army_strengths": overmatch_strengths,
+            "army_strengths_status": "available",
+        }
+
+        r881_guard = _native_war_plan(
+            **overmatch_base,
+            history=[
+                *base_history,
+                _campaign_root_row(
+                    4,
+                    date_raw=current_date_raw,
+                    capital_province_id=45,
+                    held_county_capital_province_ids=(
+                        rally_province_id,
+                        45,
+                    ),
+                ),
+                _preview_row(
+                    5,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=45,
+                    date_raw=current_date_raw,
+                    route=[45],
+                ),
+                contact_free_45,
+            ],
+        )
+        self.assertEqual(
+            r881_guard["phase"],
+            "native_war_no_safe_player_held_county_route",
+        )
+        self.assertIsNone(r881_guard["selected_step"])
+        self.assertNotEqual(r881_guard.get("selected_step"), move_45_step)
+        self.assertEqual(
+            r881_guard["route_rejections"][0][
+                "one_day_contact_horizon_rejected"
+            ],
+            "hostile_operational_overmatch_player_held_county_fallback",
+        )
+
+        safe_withdrawal = _native_war_plan(
+            **overmatch_base,
+            history=[
+                *base_history,
+                complete_root,
+                _preview_row(
+                    5,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=45,
+                    date_raw=current_date_raw,
+                    route=[45],
+                ),
+                contact_free_45,
+                _preview_row(
+                    7,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=47,
+                    date_raw=current_date_raw,
+                    route=[47],
+                ),
+            ],
+        )
+        self.assertEqual(safe_withdrawal["phase"], "native_war_pursuit")
+        self.assertEqual(safe_withdrawal["selected_step"], move_step)
+        self.assertEqual(
+            safe_withdrawal["pursuit"]["route_audit"]["status"], "safe"
+        )
+
+        balanced_strengths = copy.deepcopy(overmatch_strengths)
+        balanced_strengths[0].update(
+            {
+                "current_soldiers": 8_000,
+                "maximum_soldiers": 8_000,
+                "ai_base_power_raw": 300_000,
+            }
+        )
+        horizon_preserved = _native_war_plan(
+            **{
+                **overmatch_base,
+                "army_strengths": balanced_strengths,
+            },
+            history=[
+                *base_history,
+                _campaign_root_row(
+                    4,
+                    date_raw=current_date_raw,
+                    capital_province_id=45,
+                    held_county_capital_province_ids=(
+                        rally_province_id,
+                        45,
+                    ),
+                ),
+                _preview_row(
+                    5,
+                    army_id=army_id,
+                    origin=rally_province_id,
+                    target=45,
+                    date_raw=current_date_raw,
+                    route=[45],
+                ),
+                contact_free_45,
+            ],
+        )
+        self.assertEqual(horizon_preserved["phase"], "native_war_pursuit")
+        self.assertEqual(horizon_preserved["selected_step"], move_45_step)
+        self.assertEqual(
+            horizon_preserved["pursuit"]["route_audit"]["status"],
+            "safe_one_day_contact_horizon",
+        )
 
         current_only_root = _campaign_root_row(
             4,
