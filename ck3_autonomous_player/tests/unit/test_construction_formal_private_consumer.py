@@ -62,6 +62,7 @@ class Driver:
         self.timeout_action = False
         self.active_construction = False
         self.unknown_gold = False
+        self.r753_truncated_samples = False
 
     def take_snapshot(self):
         return {**self.snapshot, "native_command_history": [
@@ -88,6 +89,20 @@ class Driver:
                     "player_world_building_sources": {
                         **world(revision, active=revision >= 4 or self.active_construction),
                         **({"player_gold_raw": None} if self.unknown_gold else {}),
+                        **({
+                            "checks_truncated": True,
+                            "final_legality_checks": 512,
+                            "player_gold_raw": 50_035_659,
+                            "legal_samples": [
+                                {"barony_title_id": 2103, "province_id": 2635,
+                                 "building_type_id": building, "slot_index": slot,
+                                 "native_cost_observed": True,
+                                 "cost_raw_native": [cost] + [0] * 9}
+                                for building, cost in ((12, 40_000_000),
+                                                       (24, 15_000_000))
+                                for slot in (1, 2, 3)
+                            ],
+                        } if self.r753_truncated_samples else {}),
                     }}}
         else:
             result = {"step": transport.ACTION_NATIVE, "accepted": True,
@@ -108,6 +123,20 @@ class Driver:
 
 
 class ConstructionFormalConsumerTests(unittest.TestCase):
+    def test_r753_truncated_scan_keeps_six_native_legal_cost_samples(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.r753_truncated_samples = True
+            query = transport.query_construction_private(driver, expected_revision=3)
+            self.assertEqual(query["status"], "selected")
+            self.assertTrue(query["world"]["checks_truncated"])
+            self.assertEqual(query["world"]["final_legality_checks"], 512)
+            self.assertEqual(len(query["world"]["legal_samples"]), 6)
+            self.assertEqual(query["candidate"]["building_type_id"], 24)
+            self.assertEqual(query["candidate"]["slot_index"], 1)
+            self.assertEqual(query["candidate"]["stock_gold_cost_raw"], 15_000_000)
+            self.assertEqual(query["candidate"]["gold_before_raw"], 50_035_659)
+
     def test_unknown_gold_is_red_not_no_legal_building(self):
         with TemporaryDirectory() as location:
             driver = Driver(Path(location))
