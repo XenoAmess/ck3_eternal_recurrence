@@ -52,3 +52,5 @@ R729 当前 CK3 存活实例 0，下一实机就绪队列含 FEUDAL final8ea sel
 | G2 权威状态 | **2/8**，M0/M1 complete | `g2-requirements-v1.json` | 当前 master `8b6202f` 不更改八项定义/分母 | R0049/50 不新增完整 milestone | 无新增 milestone recovery claim | M2/M3/M4、百年、首整局、独立第二种子继续 | 不适用 |
 
 本轮任务临时根为 `Z:\ck3_mod_rewrite\.task-tmp`；四文件 run-ID 账本已逐哈希迁到 `Z:\ck3_mod_rewrite_process_assets\g2-live-run-ids-v1`，只以该根作为本轮活动写入根。旧 C 命名空间及三个含历史运行证据的 C 临时目录尚未删除；前者删除被工具政策拒绝，后者须先无凭据迁移并核验，不称清理完成。集成负责人承认本次 master 推送返回必需检查绕过提示；后续禁止直接推受保护 master，改走满足检查且 rebase-only 的 PR 路径。
+
+R0051 实机增量：上述 Council 四门仍 `1/4`，不是新的动作或消费证据。受控私有只读报告 `Z:\ck3_mod_rewrite\.task-tmp\RUN-001\council-h1809-candidate\live-R0051\report.json` SHA-256 `D725CBE1AF1493631FB2B1D7D0137A1E947028953E9897C86D610D36EFDF9FBD`，201.616 秒、0 动作/日期/存档变化、CK3 PID117464 回收；isolated counts `already=1/guest=0/candidate_pending=0/replacement_denial=0`。同一 h1809 场景退役，CNL-DISTINCT-01 只读寻找真实不同场景；唯一 CK3 owner RUN-001 待 PRV-002 no-launch 准备后消费新 ZIP 实机门。Z 账本 seq51 completed-green，下一轮 R0052；三处旧 C 临时目录非凭据证据 6,151 文件 / 1,153,921,845 B 已逐 SHA256 迁到 Z，源和账号文件保留。后续代码仅在 [PR #2](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/2) 受保护检查 GREEN 后 rebase 集成，CLA/signatures 已过，static pending。
