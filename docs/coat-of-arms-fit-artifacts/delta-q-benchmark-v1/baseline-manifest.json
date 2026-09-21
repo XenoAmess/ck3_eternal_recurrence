@@ -1,0 +1,285 @@
+{
+  "assetPack": {
+    "id": "ck3-1.19.0.6-base-complete",
+    "manifestSha256": "27C8E427FE8EFF58411EF3C209BED2154058EF808317551C0001DDD5E19CEC96"
+  },
+  "budget": 1024,
+  "caseCount": 7,
+  "cases": [
+    {
+      "counts": {
+        "coloredEmblemBlocks": 1024,
+        "drawnInstances": 1024,
+        "lines": 14343,
+        "logicalLayers": 1024,
+        "userBudget": 1024,
+        "utf8Bytes": 403676
+      },
+      "id": "picture-01",
+      "input": {
+        "bytes": 304708,
+        "file": "718c36bc01a173d0c42c0d1131f67e31055244c7.jpg",
+        "height": 512,
+        "sha256": "B52B0624A3C2B2114F66A6C7BA839880D1DC89ADAA91DE0F5CA6BFC302160CA6",
+        "width": 511
+      },
+      "legacyMetrics": {
+        "colorLoss": 0.005473642616087853,
+        "edgeLoss": 0.03607680964724156,
+        "relativeImprovement": 0.6188765626494898,
+        "totalLoss": 0.01710284608792626
+      },
+      "report": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-01/report.json",
+      "reportSha256": "4BAB162D434724EB92702C9CD5A5411FF551282A3A2AC5A98AF522D40DD6C5FD",
+      "selectedCandidate": {
+        "index": 1,
+        "preview": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-01/pareto-candidate-01.png",
+        "previewSha256": "C8C894D089008E91FB8C48897716C41273BED25AFEDFED9D0947C08BA3E52587",
+        "reconstructionMode": "native-edge-refined",
+        "source": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-01/pareto-candidate-01.txt",
+        "sourceSha256": "F0A15E9D2481860C223C100683C27280D88393DAB63338AC7F08510DE7A59380",
+        "textureNames": [
+          "ce_block_02.dds"
+        ]
+      }
+    },
+    {
+      "counts": {
+        "coloredEmblemBlocks": 586,
+        "drawnInstances": 586,
+        "lines": 8211,
+        "logicalLayers": 586,
+        "userBudget": 1024,
+        "utf8Bytes": 232313
+      },
+      "id": "picture-02",
+      "input": {
+        "bytes": 75756,
+        "file": "a124bc6bc3b435cc1fda251bff7f140d2ee23c42.jpg",
+        "height": 300,
+        "sha256": "57C8CCF223D6B8FC9F27A69D17B676AAB0FABBE3D656D633FAC013296F88BE36",
+        "width": 300
+      },
+      "legacyMetrics": {
+        "colorLoss": 0.015887486405691903,
+        "edgeLoss": 0.06131414675245063,
+        "relativeImprovement": 0.45234221534189745,
+        "totalLoss": 0.03314961733746022
+      },
+      "report": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-02/report.json",
+      "reportSha256": "309BBA1A7C41C880AA0EC934FEEEDA260FDCDF10D7D3C4D49C87878CE2578E99",
+      "selectedCandidate": {
+        "index": 1,
+        "preview": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-02/pareto-candidate-01.png",
+        "previewSha256": "C869B50E63E270DF05FCE80078D9CD8F2CB6A1E38C48F0DF0F35E4799CDBDF5C",
+        "reconstructionMode": "native-high-resolution-edge-refined",
+        "source": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-02/pareto-candidate-01.txt",
+        "sourceSha256": "E6FAF28CEE66E06156245771B7D43D1EE71197C714759310EB5FDAAD561E6416",
+        "textureNames": [
+          "ce_mena_polo_stick.dds",
+          "ce_block_02.dds"
+        ]
+      }
+    },
+    {
+      "counts": {
+        "coloredEmblemBlocks": 1024,
+        "drawnInstances": 1024,
+        "lines": 14343,
+        "logicalLayers": 1024,
+        "userBudget": 1024,
+        "utf8Bytes": 403410
+      },
+      "id": "picture-03",
+      "input": {
+        "bytes": 314444,
+        "file": "baiqi2.png",
+        "height": 527,
+        "sha256": "4317C811A530993BE863D2C19CEAA66D547712FE26D6011EF1BC4CDEF000533F",
+        "width": 527
+      },
+      "legacyMetrics": {
+        "colorLoss": 0.005599373282355978,
+        "edgeLoss": 0.04197369932759263,
+        "relativeImprovement": 0.6693308860401854,
+        "totalLoss": 0.019421617179545905
+      },
+      "report": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-03/report.json",
+      "reportSha256": "EA9C4A157F73B4E5916A2B0C3093396F42E5316878AA8018B64B83AFBCD940B0",
+      "selectedCandidate": {
+        "index": 1,
+        "preview": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-03/pareto-candidate-01.png",
+        "previewSha256": "9268F5C9CD557775A97C27E50DD6A93952C724C23F2D0C7A344D5A1A4578F465",
+        "reconstructionMode": "native-edge-refined",
+        "source": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-03/pareto-candidate-01.txt",
+        "sourceSha256": "24362424720C9A72C6CFFE7C19703BEDED4F0EDA1117CB137B241EE79DCB783E",
+        "textureNames": [
+          "ce_block_02.dds"
+        ]
+      }
+    },
+    {
+      "counts": {
+        "coloredEmblemBlocks": 1024,
+        "drawnInstances": 1024,
+        "lines": 14343,
+        "logicalLayers": 1024,
+        "userBudget": 1024,
+        "utf8Bytes": 401670
+      },
+      "id": "picture-04",
+      "input": {
+        "bytes": 991529,
+        "file": "BV1bt421G7qL.png",
+        "height": 1080,
+        "sha256": "9E7B345F3857DB1B2F9EC5AE2550DCD16499B67D678CB3E07931931B2FE44F8C",
+        "width": 1080
+      },
+      "legacyMetrics": {
+        "colorLoss": 0.022266947719538095,
+        "edgeLoss": 0.0871759035302717,
+        "relativeImprovement": 0.6409692840701483,
+        "totalLoss": 0.04693235092761686
+      },
+      "report": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-04/report.json",
+      "reportSha256": "87B5E29B1FB2BC1DFD2157F054E3CBC1355AB5409AEB353ED9D505C0869CFA55",
+      "selectedCandidate": {
+        "index": 1,
+        "preview": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-04/pareto-candidate-01.png",
+        "previewSha256": "D9D66C7338EDAE17D8A6C4C14CD51C88EBE595B19339A350232BA64B246D942C",
+        "reconstructionMode": "native-edge-refined",
+        "source": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-04/pareto-candidate-01.txt",
+        "sourceSha256": "A182A6561343D6DA48C48B716393C1C83FB1C70FBB07C82BECB00B29DEEC29CA",
+        "textureNames": [
+          "ce_block_02.dds"
+        ]
+      }
+    },
+    {
+      "counts": {
+        "coloredEmblemBlocks": 904,
+        "drawnInstances": 904,
+        "lines": 12663,
+        "logicalLayers": 904,
+        "userBudget": 1024,
+        "utf8Bytes": 355217
+      },
+      "id": "picture-05",
+      "input": {
+        "bytes": 269075,
+        "file": "BV1oe411i7oF.png",
+        "height": 522,
+        "sha256": "E9205ADE88047B7F920A90761C25302F133920503CC854E63446443401FCA7EB",
+        "width": 522
+      },
+      "legacyMetrics": {
+        "colorLoss": 0.020709794220883402,
+        "edgeLoss": 0.08332907284007275,
+        "relativeImprovement": 0.8028286351619937,
+        "totalLoss": 0.044505120096175355
+      },
+      "report": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-05/report.json",
+      "reportSha256": "1E57D7FC093056F15BDCA0CEE8D15D17EEFD509C7F56F12ABF12E61DB72E3468",
+      "selectedCandidate": {
+        "index": 1,
+        "preview": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-05/pareto-candidate-01.png",
+        "previewSha256": "49A0051878853D1E7CDC284A7EEE408A23B6F3CADA788EAAD6C41F6610479CF1",
+        "reconstructionMode": "native-high-resolution-edge-refined",
+        "source": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-05/pareto-candidate-01.txt",
+        "sourceSha256": "9D8113475E31B49615D194CA7B5216D091E65ED8B975A8DE28BADFB45B9AC757",
+        "textureNames": [
+          "ce_border_circle_metal.dds",
+          "ce_block_02.dds"
+        ]
+      }
+    },
+    {
+      "counts": {
+        "coloredEmblemBlocks": 1024,
+        "drawnInstances": 1024,
+        "lines": 14343,
+        "logicalLayers": 1024,
+        "userBudget": 1024,
+        "utf8Bytes": 399366
+      },
+      "id": "picture-06",
+      "input": {
+        "bytes": 199390,
+        "file": "Cache_5d2e1902d7c282d2.png",
+        "height": 905,
+        "sha256": "647BE9E8D39548480DA87E59A1487F94DF3D0A8316E48F4B746E36AED8A5B790",
+        "width": 960
+      },
+      "legacyMetrics": {
+        "colorLoss": 0.0021037296908596763,
+        "edgeLoss": 0.012749870884061962,
+        "relativeImprovement": 0.9408132307229519,
+        "totalLoss": 0.006149263344276545
+      },
+      "report": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-06/report.json",
+      "reportSha256": "03B2212E127DC2DAD4E837D609F23664DD5BAF16213B16EF168185BA1CCE84EE",
+      "selectedCandidate": {
+        "index": 1,
+        "preview": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-06/pareto-candidate-01.png",
+        "previewSha256": "52B7B87E5F9CC34A0206D0377CE1A3496B34084E8A55BCC30DB92F003FF20CB6",
+        "reconstructionMode": "native-edge-refined",
+        "source": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-06/pareto-candidate-01.txt",
+        "sourceSha256": "8E8BF4214566296F0FB6FCD7B0035E90B281672225A499CCA529FA4962AC2FB5",
+        "textureNames": [
+          "ce_block_02.dds"
+        ]
+      }
+    },
+    {
+      "counts": {
+        "coloredEmblemBlocks": 987,
+        "drawnInstances": 987,
+        "lines": 13825,
+        "logicalLayers": 987,
+        "userBudget": 1024,
+        "utf8Bytes": 388484
+      },
+      "id": "picture-07",
+      "input": {
+        "bytes": 4091081,
+        "file": "人类化头像.png",
+        "height": 2048,
+        "sha256": "31218C41C1756CC4641A70828B2C381E744C988B13FA1F376B73066E6564DF8A",
+        "width": 2048
+      },
+      "legacyMetrics": {
+        "colorLoss": 0.026905303515743367,
+        "edgeLoss": 0.08157038858923499,
+        "relativeImprovement": 0.684169215187566,
+        "totalLoss": 0.04767803584367018
+      },
+      "report": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-07/report.json",
+      "reportSha256": "5C191771E2215D803C3E6B48B4BDE3F6C6B22B4E406AC239F5040D93463DDEB9",
+      "selectedCandidate": {
+        "index": 1,
+        "preview": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-07/pareto-candidate-01.png",
+        "previewSha256": "D0D4E2AC19C57F960416A72947FDB777C63E9283A38ADAB0A8BEB05BA7E488A8",
+        "reconstructionMode": "native-high-resolution-edge-refined",
+        "source": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-pareto-budget-1024/picture-07/pareto-candidate-01.txt",
+        "sourceSha256": "F86F28E9DB6DB11A59F26BDEC0B2F479953D30007DF1AD12B0FE7156D4360074",
+        "textureNames": [
+          "ce_pot.dds",
+          "ce_block_02.dds",
+          "ce_desdichado.dds"
+        ]
+      }
+    }
+  ],
+  "casesPayloadSha256": "26B130860CA4717F2ECD83C89E4D11B9E7C2582C6A5F5957188623A67FC808E2",
+  "nativeEvidence": {
+    "status": "v14-quality-priority-passed-v15-prune-pending-mcp",
+    "summary": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v14-native-r18/summary.json",
+    "summarySha256": "58D3EB88FE4D02C959DC1CA8AAA839FC59CD7124E36C08EA5C4AB020BEFC8CCB"
+  },
+  "prunedEvidence": {
+    "status": "browser-passed-native-mcp-pending",
+    "summary": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v15-pruned-budget-1024/summary.json",
+    "summarySha256": "4C48F45ADCF3019CB8A53473AB878654ACDDE81879BB0D8BC8FC71C46B056C90"
+  },
+  "schema": "ck3-coa-fit-quality-real-baseline-v1"
+}

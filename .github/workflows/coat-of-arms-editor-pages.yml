@@ -57,6 +57,9 @@ jobs:
       - name: Verify authorized exact-build asset pack
         run: python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
 
+      - name: Verify frozen Delta-Q quality benchmark
+        run: python tools/gen_fit_quality_benchmark.py --check
+
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
