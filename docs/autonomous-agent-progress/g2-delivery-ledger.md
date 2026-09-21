@@ -86,3 +86,11 @@ R0057–R0059 精确 PRV-004 增量（覆盖上表 PRV-004 待验）：最终 ma
 | Council / G2 | Council 1/4 公共 OFF；权威 G2 **2/8** 未改 | 私有 gate；合同 JSON | 冻结 PRV-006 `cad5518`；后续 master 不倒填为其制品 | guest/pending/replacement fireability 真正正例未出现；自然继承与两种子整局未验 | 不适用 | `/root` 在普通 campaign 出现真实门时取同帧只读证据 | 不适用 |
 
 当前已验 R0071 回收后 CK3=0，唯一可写 run-ID root `Z:\ck3_mod_rewrite_process_assets\g2-live-run-ids-v1` last sequence 71；R0072 普通主链续跑独占负责人另行记账。旧 R888/PRV-005 NO-GO 与 R0066 RED 都保留为历史真实状态；旧 C 临时源删除仍受工具策略限制，未称清完。
+
+## 2026-09-22 R0072 新证据：历史 GO 不再可作为持续续跑广告
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| PRV-006 h1662 持续续跑 | **NO-GO 当前连续使用**；R0067–R0071 门仍历史有效，R0072 扩展窗口真实 RED | 同包 `g2_preview_operator.py run` | agent `cad5518`、ZIP `7503E5D9...952803` 未改；R0072 raw report `3D6D480350F3AE1D654821F953BDA0731E0A1C287122CE854EBD7D8777AD438B` | 从 R0070 main pair 正式续跑 4 attempted/3 successful turn，+23 游戏日/129.64 秒，自然 `health.7000` instance9、唯一 enabled native0、add infirm indicator；合同缺 scope_types/saved_scope_name_sets/native_option_indices/disabled_native_option_indices，四项检查 false，`registered_contract_projection_drift` RED，**没有提交选项**，不能称继续 GREEN | source save SHA `7C988B19...59A94` 仍原样，rebound driver `1FF57C1D...F7EE`，RED driver `87E54EFF...CE5E`，recoverable=true/invalidation=false；CK3 PID155176 全树回收，canonical ledger R0072 `completed-red` | EVT-B0-R0072 `/root/event_inheritance` exact 原版树与最小注册修复；重新冻结新候选、受影响同版复验后再决定 GO；旧 GO 收据仅记录当时范围 | 工作分支待提交；旧 ZIP 不改写 |
+
+受控场景的实际吞吐仅 23 游戏日/2.1607 分钟≈10.64 游戏日/分钟（计启动与停顿），不推断长期速度；G2 仍 2/8、议会 1/4。不能把 R0072 RED 改称超时或换存档消失。
