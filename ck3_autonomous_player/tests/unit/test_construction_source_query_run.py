@@ -10,6 +10,7 @@ import unittest
 from unittest import mock
 
 from xar_autoplayer import cli
+from xar_autoplayer.errors import AgentError
 from xar_autoplayer.runtime import NativeBridgeLaunchConfig
 import xar_autoplayer.construction_source_query_run as subject
 
@@ -18,12 +19,23 @@ class ConstructionSourceQueryRunTest(unittest.TestCase):
     def test_cli_is_explicitly_private_and_cold(self) -> None:
         args = cli.parser().parse_args([
             "native-query-private-construction-source-v1",
-            "--ownership-round-id", "R900",
+            "--ownership-round-id", "R0073",
             "--cold-start-checkpoint",
         ])
         self.assertEqual(args.command, "native-query-private-construction-source-v1")
-        self.assertEqual(args.ownership_round_id, "R900")
+        self.assertEqual(args.ownership_round_id, "R0073")
         self.assertTrue(args.cold_start_checkpoint)
+
+    def test_round_validation_matches_live_allocator_without_accepting_zero(self) -> None:
+        for round_id in ("R0001", "R0073", "R0999", "R1000", "R900"):
+            self.assertIsNotNone(subject.ROUND_PATTERN.fullmatch(round_id))
+        for round_id in ("R0000", "R0", "R00", "R007", "R00073", "r0073", "R0073x"):
+            with self.subTest(round_id=round_id):
+                with self.assertRaisesRegex(AgentError, "round ID"):
+                    subject.query_private_construction_source_once(
+                        object(), timeout_seconds=10, readiness_timeout_seconds=5,
+                        ownership_round_id=round_id, cold_start_checkpoint=True,
+                    )
 
     def test_cli_wires_only_the_private_source_runner(self) -> None:
         config = NativeBridgeLaunchConfig(
@@ -150,7 +162,7 @@ class ConstructionSourceQueryRunTest(unittest.TestCase):
             ):
                 report = subject.query_private_construction_source_once(
                     spec, timeout_seconds=10, readiness_timeout_seconds=5,
-                    ownership_round_id="R900", cold_start_checkpoint=True,
+                    ownership_round_id="R0073", cold_start_checkpoint=True,
                     native_bridge=config,
                 )
             self.assertFalse(report["ok"])
