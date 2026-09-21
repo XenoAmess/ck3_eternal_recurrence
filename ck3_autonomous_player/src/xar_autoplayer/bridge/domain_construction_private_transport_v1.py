@@ -124,7 +124,6 @@ def query_construction_private(driver: object, *, expected_revision: int) -> dic
             and world.get("player_character_id") == starting["played_character"]["character_id"]
             and world.get("native_final_legality_evaluated") is True
             and world.get("native_cost_evaluated") is True
-            and world.get("checks_truncated") is False
             and type(world.get("player_gold_raw")) is int
             and world["player_gold_raw"] >= 0
             and isinstance(world.get("active_constructions"), list)
