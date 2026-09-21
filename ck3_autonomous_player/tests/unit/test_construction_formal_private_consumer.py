@@ -14,6 +14,7 @@ from xar_autoplayer.bridge.driver import BridgeUnavailableError, StepPostconditi
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.construction_formal_consumer import (
     RECEIPT_STEP, SUBMIT_STEP, plan_construction_private, read_construction_ledger,
+    write_construction_ledger,
 )
 
 
@@ -173,6 +174,73 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
             driver.unknown_gold = True
             query = transport.query_construction_private(driver, expected_revision=3)
             self.assertEqual(query["status"], "source_red")
+            self.assertTrue(query["native_query_request_id"].startswith("construction-read-"))
+            self.assertEqual(query["source_frame"]["snapshot_id"], "native:3")
+            self.assertEqual(query["ending_frame"]["snapshot_id"], "native:3")
+
+    def test_r0066_failed_material_source_retains_native_result_and_pending(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.snapshot = frame(9, episode="native-29829-ee172aa720db",
+                                    public_revision=10)
+            driver.snapshot["date_raw"] = 53_178_528
+            pending = {
+                "status": "submitted_verification_pending",
+                "action_request_id": "construction-submit-a138bf862f7e4684a5ab2e1dcf57a0fa",
+                "episode_run_id": "native-29829-ee172aa720db",
+                "actor_character_id": 29829,
+                "pre_native_revision": 3,
+                "pre_date_raw": 53_178_312,
+                "source_bridge_pid": 69072,
+                "source_bridge_creation_date": "20260921215424.447443+000",
+            }
+            write_construction_ledger(driver.state_dir, {
+                "schema": "xar.ck3.construction_formal_pending_v1",
+                "pending": pending, "applied": None,
+            })
+            # Synthetic failure payload: R0066 lost the actual native result.
+            native_result = {"step": transport.QUERY_NATIVE,
+                             "private_probe": {"player_world_building_sources": {
+                                 "status": "unavailable", "failure": "fixture_only"}}}
+            source_frame = {"snapshot_id": "native:9", "revision": 10,
+                            "native_revision": 9, "date_raw": 53_178_528,
+                            "episode_run_id": pending["episode_run_id"],
+                            "actor_character_id": 29829}
+            ending_frame = {"snapshot_id": "native:9", "revision": 10,
+                            "episode_run_id": pending["episode_run_id"]}
+            with mock.patch.object(driver, "_record_command",
+                                   wraps=driver._record_command) as record, \
+                 mock.patch.object(transport, "_identity", return_value=(
+                    69072, "20260921215424.447443+000")), \
+                 mock.patch.object(transport, "query_construction_private",
+                                   return_value={"status": "source_red",
+                                                 "native_query_request_id":
+                                                     "construction-read-fixture-r0066",
+                                                 "native_result": native_result,
+                                                 "source_frame": source_frame,
+                                                 "ending_frame": ending_frame}):
+                with self.assertRaisesRegex(BridgeUnavailableError,
+                                            "construction material source unavailable"):
+                    transport.query_construction_receipt(
+                        driver, pending=pending, expected_revision=10,
+                    )
+            self.assertEqual(read_construction_ledger(driver.state_dir)["pending"],
+                             pending)
+            self.assertEqual(driver.requests, [])
+            step, failure = driver.recorded[-1]
+            self.assertEqual(step, RECEIPT_STEP)
+            self.assertEqual(failure["status"], "receipt_source_unavailable")
+            self.assertEqual(failure["action_request_id"],
+                             pending["action_request_id"])
+            self.assertIs(record.call_args.kwargs["ok"], False)
+            self.assertEqual(failure["stage"],
+                             "construction_receipt_native_source_query")
+            self.assertEqual(failure["native_query_status"], "source_red")
+            self.assertEqual(failure["native_query_request_id"],
+                             "construction-read-fixture-r0066")
+            self.assertEqual(failure["native_result"], native_result)
+            self.assertEqual(failure["source_frame"], source_frame)
+            self.assertEqual(failure["ending_frame"], ending_frame)
 
     def test_formal_service_selects_private_step_without_advertising(self):
         with TemporaryDirectory() as location:
