@@ -4,9 +4,10 @@
 
 This package is now **production-live capture / terminal continuation RED**.
 Canonical R0024 captured the six source executions from one new Raiktor
-creation and handed the same process to production `native_auto_run`, but that
-call failed during prelaunch profile validation, before the planner or turn
-limit could run. The deterministic return is `session_exit` / `failed` with
+creation and then invoked the production `native_auto_run` cold continuation,
+but that call failed during prelaunch profile validation, before a continuation
+process, planner, or turn limit could run. The deterministic return is
+`session_exit` / `failed` with
 `attempted_turns=0`, so no matching terminal intercept or terminal action was
 possible. GEN-034-D therefore remains `3/4`, the authoritative G2 count remains
 `1/8`, and R458 is not reused as final evidence.
