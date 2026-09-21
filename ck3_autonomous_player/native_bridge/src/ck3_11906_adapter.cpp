@@ -35,7 +35,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 96;
+constexpr std::size_t kBaseCapabilityCount = 100;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
@@ -163,6 +163,10 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kFrontendGuiOpenCoatOfArmsDesignerV1Capability,
     ck3_11906::kFrontendGuiCommitDynastyCoatOfArmsV1Capability,
     ck3_11906::kFrontendGuiEnterCoatOfArmsCustomModeV1Capability,
+    ck3_11906::kFrontendGuiRandomizeRulerFirstNameV1Capability,
+    ck3_11906::kFrontendGuiFinalizeCustomRulerV1Capability,
+    ck3_11906::kFrontendGuiConfirmCustomRulerV1Capability,
+    ck3_11906::kFrontendGuiStartLobbySelectedCharacterV1Capability,
     ck3_11906::kTitleMapNavigationV1Capability,
     ck3_11906::kSetPlayedCharacterV1Capability,
     "game.command.query-combat-simulation-inputs-v2-N",

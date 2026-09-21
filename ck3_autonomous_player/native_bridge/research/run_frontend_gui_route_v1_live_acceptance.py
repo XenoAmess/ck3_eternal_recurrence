@@ -444,6 +444,14 @@ def _parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--finalize-custom-ruler-inspection",
+        action="store_true",
+        help=(
+            "after --commit-roundtrip, close the CoA page, populate a valid "
+            "first name, finalize the custom ruler, and capture the lobby tree"
+        ),
+    )
+    parser.add_argument(
         "--large-source",
         type=Path,
         help=(
@@ -3556,6 +3564,7 @@ async def _mcp_sequence(
     syntax_matrix: dict[str, object] | None = None,
     custom_mode_census: bool = False,
     commit_roundtrip: bool = False,
+    finalize_custom_ruler_inspection: bool = False,
     large_source: tuple[str, dict[str, object]] | None = None,
     reference_preview: tuple[str, dict[str, object]] | None = None,
     picture_corpus: list[dict[str, object]] | None = None,
@@ -4284,6 +4293,82 @@ async def _mcp_sequence(
             checks["commit_roundtrip_evidence_complete"] = (
                 commit_result.get("ok") is True
             )
+        finalized_ruler_result: dict[str, object] | None = None
+        if finalize_custom_ruler_inspection:
+            if all(checks.values()):
+                try:
+                    close_coa = await asyncio.to_thread(
+                        driver.commit_frontend_dynasty_coat_of_arms_v1
+                    )
+                    randomize_name = await asyncio.to_thread(
+                        driver.activate_frontend_randomize_ruler_first_name_v1
+                    )
+                    finalize_ruler = await asyncio.to_thread(
+                        driver.activate_frontend_finalize_custom_ruler_v1
+                    )
+                    route_after_finalize = await asyncio.to_thread(
+                        driver.query_frontend_gui_route_v1
+                    )
+                    lobby_tree = await asyncio.to_thread(
+                        driver.inspect_frontend_gui_tree_v1
+                    )
+                    start_ruler = await asyncio.to_thread(
+                        driver.activate_frontend_start_lobby_selected_character_v1
+                    )
+                    campaign_checkpoint = await asyncio.to_thread(
+                        driver.execute_step,
+                        "save-checkpoint",
+                    )
+                    checkpoint_snapshot = await asyncio.to_thread(
+                        driver.take_snapshot
+                    )
+                    checkpoint_body = campaign_checkpoint.get("checkpoint")
+                    checkpoint_identity = start_ruler.get(
+                        "stable_target_identity"
+                    )
+                    checkpoint_played = checkpoint_snapshot.get(
+                        "played_character"
+                    )
+                    finalized_ruler_result = {
+                        "ok": bool(
+                            finalize_ruler.get("status") == "verified"
+                            and route_after_finalize.get("route") == "lobby"
+                            and lobby_tree.get("root_available") is True
+                            and start_ruler.get("status") == "verified"
+                            and start_ruler.get("postcondition_verified") is True
+                            and campaign_checkpoint.get("status") == "submitted"
+                            and isinstance(checkpoint_body, dict)
+                            and checkpoint_body.get("status") == "saved"
+                            and checkpoint_body.get("size", 0) > 0
+                            and isinstance(checkpoint_identity, dict)
+                            and isinstance(checkpoint_played, dict)
+                            and checkpoint_played.get("character_id")
+                            == checkpoint_identity.get("character_id")
+                            and checkpoint_snapshot.get("date_raw")
+                            == checkpoint_identity.get("date_raw")
+                        ),
+                        "close_coa": close_coa,
+                        "randomize_first_name": randomize_name,
+                        "finalize_custom_ruler": finalize_ruler,
+                        "route_after_finalize": route_after_finalize,
+                        "tree_after_finalize": lobby_tree,
+                        "start_custom_ruler": start_ruler,
+                        "campaign_checkpoint": campaign_checkpoint,
+                        "checkpoint_snapshot": checkpoint_snapshot,
+                    }
+                except BaseException as error:
+                    finalized_ruler_result = {
+                        "ok": False,
+                        "error": f"{type(error).__name__}: {error}",
+                    }
+            else:
+                finalized_ruler_result = {
+                    "ok": False,
+                    "error": "route checks failed before custom-ruler finalization",
+                }
+            checks["finalized_custom_ruler_campaign_checkpoint_complete"] = (
+                finalized_ruler_result.get("ok") is True
+            )
         large_source_result: dict[str, object] | None = None
         if large_source is not None:
             if all(checks.values()):
@@ -4440,6 +4525,7 @@ async def _mcp_sequence(
             "custom_mode_census": custom_mode_result,
             "syntax_matrix": matrix_result,
             "commit_roundtrip": commit_result,
+            "finalized_custom_ruler": finalized_ruler_result,
             "large_source_roundtrip": large_source_result,
             "reference_framebuffer": framebuffer_result,
             "picture_corpus": corpus_result,
@@ -4669,6 +4755,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         _load_syntax_matrix() if getattr(args, "syntax_matrix", False) else None
     )
     commit_roundtrip = bool(getattr(args, "commit_roundtrip", False))
+    finalize_custom_ruler_inspection = bool(
+        getattr(args, "finalize_custom_ruler_inspection", False)
+    )
     custom_mode_census = bool(getattr(args, "custom_mode_census", False))
     bookmarks_read_only = bool(getattr(args, "bookmarks_read_only", False))
     bookmarks_model_private = bool(
@@ -4843,6 +4932,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "--ordinary-campaign-xar-off-seed requires "
             "--bookmarks-select-start-private"
         )
+    if finalize_custom_ruler_inspection and not commit_roundtrip:
+        raise ValueError(
+            "--finalize-custom-ruler-inspection requires --commit-roundtrip"
+        )
     if bookmarks_read_only and (
         syntax_matrix is not None
         or custom_mode_census
@@ -4908,6 +5001,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             ordinary_campaign_xar_off_seed
         ),
         "commit_roundtrip_requested": commit_roundtrip,
+        "finalize_custom_ruler_inspection_requested": (
+            finalize_custom_ruler_inspection
+        ),
         "large_source_requested": large_source is not None,
         "large_source_plan": large_source[1] if large_source else None,
         "reference_preview_requested": reference_preview is not None,
@@ -5168,6 +5264,9 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 syntax_matrix=syntax_matrix,
                 custom_mode_census=custom_mode_census,
                 commit_roundtrip=commit_roundtrip,
+                finalize_custom_ruler_inspection=(
+                    finalize_custom_ruler_inspection
+                ),
                 large_source=large_source,
                 reference_preview=reference_preview,
                 picture_corpus=reference_cases,

@@ -15,6 +15,10 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP,
     ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
+    ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_STEP,
+    ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_STEP,
+    ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_STEP,
+    ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_STEP,
     COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_CAPABILITY,
     COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_STEP,
     ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
@@ -38,7 +42,9 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     frontend_coat_of_arms_background_patterns_ready_v1,
     frontend_coat_of_arms_custom_mode_target_ready_v1,
     frontend_lobby_random_playable_actionable_v1,
+    frontend_lobby_selected_character_start_ready_v1,
     frontend_ruler_designer_dynasty_coa_target_ready_v1,
+    frontend_ruler_designer_finalize_target_ready_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_coat_of_arms_tree_inspection_v1,
     normalize_frontend_coat_of_arms_pattern_grid_inspection_v1,
@@ -48,8 +54,11 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     normalize_frontend_new_game_v1,
     normalize_frontend_open_coat_of_arms_designer_v1,
     normalize_frontend_open_ruler_designer_v1,
+    normalize_frontend_finalize_custom_ruler_v1,
     normalize_frontend_pick_any_character_v1,
     normalize_frontend_prepare_custom_ruler_v1,
+    normalize_frontend_randomize_ruler_first_name_v1,
+    normalize_frontend_start_lobby_selected_character_v1,
 )
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
@@ -239,6 +248,39 @@ def _ruler_designer_inspection() -> dict[str, object]:
         "uses_keyboard": False,
         "uses_mouse": False,
     }
+
+
+def _ruler_designer_finalize_inspection() -> dict[str, object]:
+    inspection = _ruler_designer_inspection()
+    inspection["truncated"] = False
+    inspection["widgets"] = [
+        {
+            "runtime_name": "",
+            "child_path": "0/0/6/0/2/2",
+            "depth": 6,
+            "child_count": 2,
+            "vtable_rva": 72469912,
+            "effective_visible": True,
+            "enabled": True,
+        }
+    ]
+    return inspection
+
+
+def _lobby_start_inspection() -> dict[str, object]:
+    inspection = _ready_lobby_inspection()
+    inspection["widgets"] = [
+        {
+            "runtime_name": "",
+            "child_path": "3/0/2/6",
+            "depth": 4,
+            "child_count": 2,
+            "vtable_rva": 72376352,
+            "effective_visible": True,
+            "enabled": True,
+        }
+    ]
+    return inspection
 
 
 def _open_coat_of_arms_designer_action() -> dict[str, object]:
@@ -775,6 +817,95 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
         self.assertFalse(
             frontend_coat_of_arms_dynasty_finish_ready_v1(inspection)
         )
+
+    def test_custom_ruler_finalize_and_campaign_start_are_fail_closed(
+        self,
+    ) -> None:
+        finalize_tree = _ruler_designer_finalize_inspection()
+        self.assertTrue(
+            frontend_ruler_designer_finalize_target_ready_v1(finalize_tree)
+        )
+        randomize = normalize_frontend_randomize_ruler_first_name_v1(
+            {
+                "step": ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_STEP,
+                "accepted": True,
+                "status": "acknowledged_verification_pending",
+                "backend_id": "native-headless",
+            },
+            before=_route("ruler_designer"),
+            before_inspection=_ruler_designer_inspection(),
+            after=_route("ruler_designer"),
+            after_inspection=finalize_tree,
+        )
+        self.assertEqual(randomize["status"], "verified")
+
+        finalized = normalize_frontend_finalize_custom_ruler_v1(
+            {
+                "step": ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_STEP,
+                "accepted": True,
+                "status": "acknowledged_verification_pending",
+                "backend_id": "native-headless",
+            },
+            {
+                "step": ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_STEP,
+                "accepted": True,
+                "status": "acknowledged_verification_pending",
+                "backend_id": "native-headless",
+            },
+            before=_route("ruler_designer"),
+            before_inspection=finalize_tree,
+            after=_route("lobby"),
+        )
+        self.assertEqual(finalized["action"], "finalize_custom_ruler")
+
+        lobby_tree = _lobby_start_inspection()
+        self.assertTrue(
+            frontend_lobby_selected_character_start_ready_v1(lobby_tree)
+        )
+        snapshot = {
+            "paused": True,
+            "map_ready": True,
+            "native_revision": 7,
+            "date_raw": 53144328,
+            "played_character": {"character_id": 61012},
+        }
+        campaign_root = {
+            "campaign_root_context_ready": True,
+            "queried_native_revision": 7,
+            "player_character_id": 61012,
+            "date_raw": 53144328,
+        }
+        started = normalize_frontend_start_lobby_selected_character_v1(
+            {
+                "step": (
+                    ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_STEP
+                ),
+                "accepted": True,
+                "status": "acknowledged_verification_pending",
+                "backend_id": "native-headless",
+            },
+            before=_route("lobby"),
+            before_inspection=lobby_tree,
+            after_snapshot=snapshot,
+            campaign_root=campaign_root,
+        )
+        self.assertEqual(started["stable_target_identity"]["character_id"], 61012)
+
+        campaign_root["date_raw"] = 53144329
+        with self.assertRaisesRegex(ValueError, "campaign root"):
+            normalize_frontend_start_lobby_selected_character_v1(
+                {
+                    "step": (
+                        ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_STEP
+                    ),
+                    "accepted": True,
+                    "status": "acknowledged_verification_pending",
+                },
+                before=_route("lobby"),
+                before_inspection=lobby_tree,
+                after_snapshot=snapshot,
+                campaign_root=campaign_root,
+            )
 
     def test_native_driver_opens_coa_with_revision_zero_and_proves_route(
         self,

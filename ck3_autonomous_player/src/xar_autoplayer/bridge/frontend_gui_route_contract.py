@@ -93,6 +93,30 @@ ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_CAPABILITY: Final = (
 ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP: Final = (
     "activate-frontend-coat-of-arms-custom-mode-v1"
 )
+ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-randomize-ruler-first-name-v1"
+)
+ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_STEP: Final = (
+    "activate-frontend-randomize-ruler-first-name-v1"
+)
+ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-finalize-custom-ruler-v1"
+)
+ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_STEP: Final = (
+    "activate-frontend-finalize-custom-ruler-v1"
+)
+ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-confirm-custom-ruler-v1"
+)
+ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_STEP: Final = (
+    "activate-frontend-confirm-custom-ruler-v1"
+)
+ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-start-lobby-selected-character-v1"
+)
+ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_STEP: Final = (
+    "activate-frontend-start-lobby-selected-character-v1"
+)
 PREPARE_FRONTEND_CUSTOM_RULER_V1_STEP: Final = (
     "prepare-frontend-custom-ruler-v1"
 )
@@ -859,6 +883,245 @@ def normalize_frontend_commit_dynasty_coat_of_arms_v1(
         "before_inspection": before_inspection,
         "acknowledgement": dict(acknowledgement),
         "after": after,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def frontend_ruler_designer_first_name_target_ready_v1(
+    value: object,
+) -> bool:
+    """Recognize the source-named culture first-name randomizer."""
+
+    if not isinstance(value, dict):
+        return False
+    widgets = value.get("widgets")
+    return bool(
+        value.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and value.get("schema_version") == 1
+        and value.get("status") == "available"
+        and value.get("scope_root_name") == "ruler_designer"
+        and value.get("root_available") is True
+        and isinstance(widgets, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("runtime_name") == "random_culture_name"
+            and row.get("effective_visible") is True
+            and row.get("enabled") is True
+            for row in widgets
+        )
+    )
+
+
+def frontend_ruler_designer_finalize_target_ready_v1(
+    value: object,
+) -> bool:
+    """Recognize only the enabled 1.19.0.6 FinalizeOverwrite leaf."""
+
+    if not isinstance(value, dict):
+        return False
+    widgets = value.get("widgets")
+    return bool(
+        value.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and value.get("schema_version") == 1
+        and value.get("status") == "available"
+        and value.get("scope_root_name") == "ruler_designer"
+        and value.get("root_available") is True
+        and isinstance(widgets, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("child_path") == "0/0/6/0/2/2"
+            and row.get("runtime_name") == ""
+            and row.get("effective_visible") is True
+            and row.get("enabled") is True
+            for row in widgets
+        )
+    )
+
+
+def normalize_frontend_randomize_ruler_first_name_v1(
+    acknowledgement: object,
+    *,
+    before: dict[str, object],
+    before_inspection: dict[str, object],
+    after: dict[str, object],
+    after_inspection: dict[str, object],
+) -> dict[str, object]:
+    if not isinstance(acknowledgement, dict):
+        raise ValueError("frontend first-name acknowledgement must be an object")
+    if (
+        acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "ruler_designer"
+        or before_inspection.get("schema")
+        != "ck3-frontend-gui-tree-inspection-v1"
+        or before_inspection.get("scope_root_name") != "ruler_designer"
+        or before_inspection.get("root_available") is not True
+        or after.get("route") != "ruler_designer"
+        or not frontend_ruler_designer_finalize_target_ready_v1(
+            after_inspection
+        )
+    ):
+        raise ValueError("frontend first-name randomization is not proven")
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "randomize_ruler_first_name",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "before_inspection": before_inspection,
+        "acknowledgement": dict(acknowledgement),
+        "after": after,
+        "after_inspection": after_inspection,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def normalize_frontend_finalize_custom_ruler_v1(
+    acknowledgement: object,
+    confirmation_acknowledgement: object,
+    *,
+    before: dict[str, object],
+    before_inspection: dict[str, object],
+    after: dict[str, object],
+) -> dict[str, object]:
+    if not isinstance(acknowledgement, dict) or not isinstance(
+        confirmation_acknowledgement, dict
+    ):
+        raise ValueError("frontend finalize acknowledgements must be objects")
+    if (
+        acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or confirmation_acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_STEP
+        or confirmation_acknowledgement.get("accepted") is not True
+        or confirmation_acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "ruler_designer"
+        or not frontend_ruler_designer_finalize_target_ready_v1(
+            before_inspection
+        )
+        or after.get("route") != "lobby"
+    ):
+        raise ValueError("frontend custom-ruler finalization is not proven")
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "finalize_custom_ruler",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "before_inspection": before_inspection,
+        "acknowledgement": dict(acknowledgement),
+        "confirmation_acknowledgement": dict(confirmation_acknowledgement),
+        "after": after,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def frontend_lobby_selected_character_start_ready_v1(value: object) -> bool:
+    """Recognize the exact ordinary single-player lobby Start button."""
+
+    if not isinstance(value, dict):
+        return False
+    widgets = value.get("widgets")
+    return bool(
+        value.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and value.get("schema_version") == 1
+        and value.get("status") == "available"
+        and value.get("scope_root_name") == "lobbyview"
+        and value.get("root_available") is True
+        and isinstance(widgets, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("child_path") == "3/0/2/6"
+            and row.get("runtime_name") == ""
+            and row.get("effective_visible") is True
+            and row.get("enabled") is True
+            for row in widgets
+        )
+    )
+
+
+def normalize_frontend_start_lobby_selected_character_v1(
+    acknowledgement: object,
+    *,
+    before: dict[str, object],
+    before_inspection: dict[str, object],
+    after_snapshot: dict[str, object],
+    campaign_root: dict[str, object],
+) -> dict[str, object]:
+    """Require the custom ruler to materialize as one paused campaign root."""
+
+    if not isinstance(acknowledgement, dict):
+        raise ValueError("frontend lobby Start acknowledgement must be an object")
+    played = after_snapshot.get("played_character")
+    played_id = played.get("character_id") if isinstance(played, dict) else None
+    if (
+        acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "lobby"
+        or not frontend_lobby_selected_character_start_ready_v1(
+            before_inspection
+        )
+        or after_snapshot.get("paused") is not True
+        or after_snapshot.get("map_ready") is not True
+        or not isinstance(after_snapshot.get("native_revision"), int)
+        or isinstance(after_snapshot.get("native_revision"), bool)
+        or after_snapshot["native_revision"] < 1
+        or not isinstance(played_id, int)
+        or isinstance(played_id, bool)
+        or played_id < 1
+        or campaign_root.get("campaign_root_context_ready") is not True
+        or campaign_root.get("queried_native_revision")
+        != after_snapshot.get("native_revision")
+        or campaign_root.get("player_character_id") != played_id
+        or campaign_root.get("date_raw") != after_snapshot.get("date_raw")
+    ):
+        raise ValueError(
+            "frontend lobby Start lacks an independent paused campaign root"
+        )
+    return {
+        "schema": "ck3-frontend-custom-ruler-start-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "before_inspection": before_inspection,
+        "acknowledgement": dict(acknowledgement),
+        "after_snapshot": after_snapshot,
+        "campaign_root": campaign_root,
+        "stable_target_identity": {
+            "character_id": played_id,
+            "date_raw": after_snapshot.get("date_raw"),
+        },
         "postcondition_verified": True,
         "backend_id": acknowledgement.get("backend_id"),
     }

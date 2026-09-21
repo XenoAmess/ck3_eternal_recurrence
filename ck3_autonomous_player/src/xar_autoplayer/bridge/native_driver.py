@@ -357,6 +357,14 @@ from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP,
     ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
+    ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_STEP,
+    ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_STEP,
+    ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_STEP,
+    ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_STEP,
     COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_CAPABILITY,
     COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_STEP,
     ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
@@ -389,7 +397,9 @@ from .frontend_gui_route_contract import (
     frontend_coat_of_arms_custom_mode_target_ready_v1,
     frontend_lobby_default_ruler_designer_ready_v1,
     frontend_lobby_random_playable_actionable_v1,
+    frontend_lobby_selected_character_start_ready_v1,
     frontend_ruler_designer_dynasty_coa_target_ready_v1,
+    frontend_ruler_designer_finalize_target_ready_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_coat_of_arms_tree_inspection_v1,
     normalize_frontend_coat_of_arms_pattern_grid_inspection_v1,
@@ -399,8 +409,11 @@ from .frontend_gui_route_contract import (
     normalize_frontend_enter_coat_of_arms_custom_mode_v1,
     normalize_frontend_open_coat_of_arms_designer_v1,
     normalize_frontend_open_ruler_designer_v1,
+    normalize_frontend_finalize_custom_ruler_v1,
+    normalize_frontend_randomize_ruler_first_name_v1,
     normalize_frontend_pick_any_character_v1,
     normalize_frontend_start_selected_bookmark_v1,
+    normalize_frontend_start_lobby_selected_character_v1,
     normalize_frontend_selected_1066_feudal_candidate_v1,
     normalize_frontend_prepare_custom_ruler_v1,
 )
@@ -4522,8 +4535,15 @@ class NativeHeadlessGameplayDriver:
         self,
         predicate: Callable[[object], bool],
         expectation: str,
+        *,
+        timeout_seconds: float | None = None,
     ) -> dict[str, object]:
-        deadline = time.monotonic() + self.frontend_transition_timeout_seconds
+        timeout = (
+            self.frontend_transition_timeout_seconds
+            if timeout_seconds is None
+            else timeout_seconds
+        )
+        deadline = time.monotonic() + timeout
         last_inspection: dict[str, object] | None = None
         last_error: BridgeUnavailableError | None = None
         while time.monotonic() < deadline:
@@ -4869,27 +4889,50 @@ class NativeHeadlessGameplayDriver:
             frontend_lobby_random_playable_actionable_v1,
             "lobby random playable action target",
         )
-        selection_acknowledgement = self._execute_primitive_step(
-            ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_STEP,
-            expected_revision=0,
-            required_capability=(
-                ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY
-            ),
-            allow_frontend_revision_zero=True,
-        )
-        lobby_inspection = self._wait_for_frontend_gui_tree_v1(
-            frontend_lobby_default_ruler_designer_ready_v1,
-            "lobby default ruler designer ready",
-        )
+        selection_acknowledgements: list[dict[str, object]] = []
+        lobby_inspection: dict[str, object] | None = None
+        for _attempt in range(8):
+            selection_acknowledgement = self._execute_primitive_step(
+                ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_STEP,
+                expected_revision=0,
+                required_capability=(
+                    ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY
+                ),
+                allow_frontend_revision_zero=True,
+            )
+            selection_acknowledgements.append(selection_acknowledgement)
+            try:
+                lobby_inspection = self._wait_for_frontend_gui_tree_v1(
+                    frontend_lobby_default_ruler_designer_ready_v1,
+                    "lobby default ruler designer ready",
+                    timeout_seconds=2.0,
+                )
+            except BridgeUnavailableError:
+                if self.query_frontend_gui_route_v1()["route"] != "lobby":
+                    raise
+                continue
+            break
+        if lobby_inspection is None:
+            raise BridgeUnavailableError(
+                "bounded random playable selection found no target with the "
+                "default ruler designer after 8 attempts"
+            )
         try:
-            return normalize_frontend_prepare_custom_ruler_v1(
+            result = normalize_frontend_prepare_custom_ruler_v1(
                 pick_any_acknowledgement,
-                selection_acknowledgement,
+                selection_acknowledgements[-1],
                 before=before,
                 selection_target_inspection=selection_target_inspection,
                 after=after,
                 lobby_inspection=lobby_inspection,
             )
+            result["selection_attempt_count"] = len(
+                selection_acknowledgements
+            )
+            result["selection_acknowledgements"] = (
+                selection_acknowledgements
+            )
+            return result
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native custom-ruler lobby preparation is unverified: {error}"
@@ -5034,6 +5077,170 @@ class NativeHeadlessGameplayDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 "native coat-of-arms custom-mode action is unverified: "
+                f"{error}"
+            ) from error
+
+    def activate_frontend_randomize_ruler_first_name_v1(
+        self,
+    ) -> dict[str, object]:
+        """Populate a culture-valid first name and prove Finalize is enabled."""
+
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "ruler_designer":
+            raise BridgeUnavailableError(
+                "frontend first-name action requires the ruler_designer route"
+            )
+        # The bounded public tree is depth-first and truncates before the
+        # source-named left-panel control. The native dispatch itself resolves
+        # only random_culture_name and fails closed if it is absent; capture a
+        # live ruler-designer tree without claiming that the truncated census
+        # contains the leaf.
+        before_inspection = self.inspect_frontend_gui_tree_v1()
+        acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_RANDOMIZE_RULER_FIRST_NAME_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        after = self._wait_for_frontend_gui_route_v1("ruler_designer")
+        after_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_ruler_designer_finalize_target_ready_v1,
+            "ruler designer finalize target ready",
+        )
+        try:
+            return normalize_frontend_randomize_ruler_first_name_v1(
+                acknowledgement,
+                before=before,
+                before_inspection=before_inspection,
+                after=after,
+                after_inspection=after_inspection,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native ruler first-name action is unverified: {error}"
+            ) from error
+
+    def activate_frontend_finalize_custom_ruler_v1(
+        self,
+    ) -> dict[str, object]:
+        """Finalize and confirm the valid ruler, then prove the lobby."""
+
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "ruler_designer":
+            raise BridgeUnavailableError(
+                "frontend finalize action requires the ruler_designer route"
+            )
+        before_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_ruler_designer_finalize_target_ready_v1,
+            "ruler designer finalize target ready",
+        )
+        acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_FINALIZE_CUSTOM_RULER_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        confirmation_acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_CONFIRM_CUSTOM_RULER_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        after = self._wait_for_frontend_gui_route_v1("lobby")
+        try:
+            return normalize_frontend_finalize_custom_ruler_v1(
+                acknowledgement,
+                confirmation_acknowledgement,
+                before=before,
+                before_inspection=before_inspection,
+                after=after,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native custom-ruler finalize action is unverified: {error}"
+            ) from error
+
+    def activate_frontend_start_lobby_selected_character_v1(
+        self,
+    ) -> dict[str, object]:
+        """Start the selected custom ruler and prove one paused campaign."""
+
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "lobby":
+            raise BridgeUnavailableError(
+                "frontend custom-ruler Start requires the lobby route"
+            )
+        before_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_lobby_selected_character_start_ready_v1,
+            "lobby selected-character Start target ready",
+        )
+        acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_START_LOBBY_SELECTED_CHARACTER_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        deadline = time.monotonic() + self.frontend_transition_timeout_seconds
+        last_error: BridgeUnavailableError | None = None
+        after_snapshot: dict[str, object] | None = None
+        while time.monotonic() < deadline:
+            try:
+                observed = self.take_snapshot()
+            except BridgeUnavailableError as error:
+                last_error = error
+            else:
+                played = observed.get("played_character")
+                played_id = (
+                    played.get("character_id")
+                    if isinstance(played, dict)
+                    else None
+                )
+                if (
+                    observed.get("paused") is True
+                    and observed.get("map_ready") is True
+                    and isinstance(observed.get("native_revision"), int)
+                    and not isinstance(observed.get("native_revision"), bool)
+                    and observed["native_revision"] >= 1
+                    and isinstance(played_id, int)
+                    and not isinstance(played_id, bool)
+                    and played_id >= 1
+                ):
+                    after_snapshot = observed
+                    break
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(0.25, remaining))
+        if after_snapshot is None:
+            raise BridgeUnavailableError(
+                "frontend custom-ruler Start was submitted but no paused "
+                "player map was independently observed; last snapshot "
+                f"error: {last_error}"
+            )
+        after_snapshot = self._wait_for_frontend_start_post_ready_pump_v1(
+            after_snapshot
+        )
+        campaign_root = self._execute_campaign_root_context_v1_query(
+            expected_revision=None
+        )
+        try:
+            return normalize_frontend_start_lobby_selected_character_v1(
+                acknowledgement,
+                before=before,
+                before_inspection=before_inspection,
+                after_snapshot=after_snapshot,
+                campaign_root=campaign_root,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native custom-ruler Start postcondition failed: "
                 f"{error}"
             ) from error
 

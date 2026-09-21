@@ -8659,7 +8659,15 @@ void RunConnectedSession(
               step == xar::ck3_11906::
                           kFrontendGuiCommitDynastyCoatOfArmsV1Step ||
               step == xar::ck3_11906::
-                          kFrontendGuiEnterCoatOfArmsCustomModeV1Step) {
+                          kFrontendGuiEnterCoatOfArmsCustomModeV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendGuiRandomizeRulerFirstNameV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendGuiFinalizeCustomRulerV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendGuiConfirmCustomRulerV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendGuiStartLobbySelectedCharacterV1Step) {
             std::uint64_t expected_revision = 0;
             if (!xar::bridge::JsonUnsignedField(
                     incoming.payload, "expected_revision",
@@ -8723,6 +8731,22 @@ void RunConnectedSession(
                                      kFrontendGuiOpenCoatOfArmsDesignerV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::open_coat_of_arms_designer;
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiRandomizeRulerFirstNameV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::randomize_ruler_first_name;
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiFinalizeCustomRulerV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::finalize_custom_ruler;
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiConfirmCustomRulerV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::confirm_custom_ruler;
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiStartLobbySelectedCharacterV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::start_lobby_selected_character;
               } else if (step == xar::ck3_11906::
                                      kFrontendGuiCommitDynastyCoatOfArmsV1Step) {
                 query.operation = xar::ck3_11906::

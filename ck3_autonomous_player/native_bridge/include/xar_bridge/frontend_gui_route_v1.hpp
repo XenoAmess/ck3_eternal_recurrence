@@ -75,6 +75,28 @@ inline constexpr std::string_view
 inline constexpr std::string_view
     kFrontendGuiEnterCoatOfArmsCustomModeV1Step =
         "activate-frontend-coat-of-arms-custom-mode-v1";
+inline constexpr std::string_view
+    kFrontendGuiRandomizeRulerFirstNameV1Capability =
+        "game.command.activate-frontend-randomize-ruler-first-name-v1";
+inline constexpr std::string_view
+    kFrontendGuiRandomizeRulerFirstNameV1Step =
+        "activate-frontend-randomize-ruler-first-name-v1";
+inline constexpr std::string_view
+    kFrontendGuiFinalizeCustomRulerV1Capability =
+        "game.command.activate-frontend-finalize-custom-ruler-v1";
+inline constexpr std::string_view kFrontendGuiFinalizeCustomRulerV1Step =
+    "activate-frontend-finalize-custom-ruler-v1";
+inline constexpr std::string_view
+    kFrontendGuiConfirmCustomRulerV1Capability =
+        "game.command.activate-frontend-confirm-custom-ruler-v1";
+inline constexpr std::string_view kFrontendGuiConfirmCustomRulerV1Step =
+    "activate-frontend-confirm-custom-ruler-v1";
+inline constexpr std::string_view
+    kFrontendGuiStartLobbySelectedCharacterV1Capability =
+        "game.command.activate-frontend-start-lobby-selected-character-v1";
+inline constexpr std::string_view
+    kFrontendGuiStartLobbySelectedCharacterV1Step =
+        "activate-frontend-start-lobby-selected-character-v1";
 inline constexpr std::string_view kFrontendGuiRouteV1BackendId =
     "ck3-1.19.0.6-native-frontend-gui-route-v1";
 
@@ -93,6 +115,10 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   start_selected_bookmark = 11,
   probe_bookmark_model = 12,
   select_supported_1066_character = 13,
+  randomize_ruler_first_name = 14,
+  finalize_custom_ruler = 15,
+  confirm_custom_ruler = 16,
+  start_lobby_selected_character = 17,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {

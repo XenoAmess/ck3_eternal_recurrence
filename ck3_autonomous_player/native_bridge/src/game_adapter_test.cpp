@@ -620,6 +620,14 @@ int main() {
           "inspect-frontend-coat-of-arms-pattern-grid-v1") ||
       !exact_adapter->supports_step(
           "activate-frontend-coat-of-arms-custom-mode-v1") ||
+      !exact_adapter->supports_step(
+          "activate-frontend-randomize-ruler-first-name-v1") ||
+      !exact_adapter->supports_step(
+          "activate-frontend-finalize-custom-ruler-v1") ||
+      !exact_adapter->supports_step(
+          "activate-frontend-confirm-custom-ruler-v1") ||
+      !exact_adapter->supports_step(
+          "activate-frontend-start-lobby-selected-character-v1") ||
       !exact_adapter->supports_step("center-map-on-landed-title-v1") ||
       exact_adapter->supports_step(
           "center-map-on-landed-title-v1-c_bianzhou") ||

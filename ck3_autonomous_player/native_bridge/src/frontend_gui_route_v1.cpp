@@ -474,6 +474,99 @@ bool DispatchCommitDynastyCoatOfArms(
       "dynasty_finish_button");
 }
 
+bool DispatchRandomizeRulerFirstName(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  // window_ruler_designer.gui:495-504 binds this exact named control to
+  // RandomizeFirstNameCulture. It supplies a valid first name without text
+  // input, which is the only missing default required by CanFinalize.
+  return DispatchFixedNamedWidget(query, FrontendGuiRouteV1::ruler_designer,
+                                  "ruler_designer",
+                                  "random_culture_name");
+}
+
+bool DispatchFinalizeCustomRuler(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::ruler_designer) return false;
+  // window_ruler_designer.gui:1739-1750: footer vbox -> spacer -> unnamed
+  // button_primary_big bound to FinalizeOverwrite. The live 1.19.0.6 tree
+  // fixes this leaf at 0/0/6/0/2/2; enabled is required so an incomplete
+  // ruler can never be submitted.
+  constexpr std::array<std::uint32_t, 6> kFinalizeCustomRulerPath{{
+      0, 0, 6, 0, 2, 2,
+  }};
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *target = nullptr;
+  if (!ResolveFixedGuiChildPathV1(
+          query.environment, access, "ruler_designer",
+          kFinalizeCustomRulerPath.data(), kFinalizeCustomRulerPath.size(),
+          root, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                              enabled) ||
+      !runtime_name.empty() || !visible || !enabled) {
+    return false;
+  }
+  query.result.target_resolved = true;
+  query.result.dispatch_invoked = DispatchFixedGuiWidgetNativeV1(
+      &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
+      target, vtable, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
+bool DispatchConfirmCustomRuler(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  // shared/dialogs.gui:78-112 instantiates basic_confirmation_popup with the
+  // unique accept_button bound to GameDialog.Accept. FinalizeOverwrite opens
+  // this modal using RULER_DESIGNER_FINALIZE_OVERWRITE_ACCEPT; resolve the
+  // named popup root and button rather than any screen coordinate.
+  return DispatchFixedNamedWidget(query, FrontendGuiRouteV1::ruler_designer,
+                                  "basic_confirmation_popup",
+                                  "accept_button");
+}
+
+bool DispatchStartLobbySelectedCharacter(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::lobby) return false;
+  // multiplayer_types.gui:1898-2124 defines JominiLobbyViewPreparation.
+  // Its final two children are the preparation-host Start button and the
+  // ordinary single-player selected-character Start button. The live
+  // 1.19.0.6 lobby fixes the latter at 3/0/2/6. It calls LobbyView.Control,
+  // then LobbyView.Ready; visibility and enabled state are both mandatory.
+  // The template button itself is 3/0/2/6; do not descend into a generated
+  // visual child.
+  constexpr std::array<std::uint32_t, 4> kStartButtonPath{{3, 0, 2, 6}};
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *target = nullptr;
+  if (!ResolveFixedGuiChildPathV1(
+          query.environment, access, "lobbyview", kStartButtonPath.data(),
+          kStartButtonPath.size(), root, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                              enabled) ||
+      !runtime_name.empty() || !visible || !enabled) {
+    return false;
+  }
+  query.result.target_resolved = true;
+  query.result.dispatch_invoked = DispatchFixedGuiWidgetNativeV1(
+      &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
+      target, vtable, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
 bool DispatchEnterCoatOfArmsCustomMode(
     FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (query.result.route != FrontendGuiRouteV1::coat_of_arms_designer) {
@@ -584,6 +677,20 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation ==
       FrontendGuiRouteOperationV1::enter_coat_of_arms_custom_mode) {
     return DispatchEnterCoatOfArmsCustomMode(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::randomize_ruler_first_name) {
+    return DispatchRandomizeRulerFirstName(*query);
+  }
+  if (query->operation == FrontendGuiRouteOperationV1::finalize_custom_ruler) {
+    return DispatchFinalizeCustomRuler(*query);
+  }
+  if (query->operation == FrontendGuiRouteOperationV1::confirm_custom_ruler) {
+    return DispatchConfirmCustomRuler(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::start_lobby_selected_character) {
+    return DispatchStartLobbySelectedCharacter(*query);
   }
   return query->operation ==
              FrontendGuiRouteOperationV1::commit_dynasty_coat_of_arms &&
