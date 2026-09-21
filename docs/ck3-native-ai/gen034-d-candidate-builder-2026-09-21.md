@@ -2,25 +2,24 @@
 
 ## Current boundary
 
-This package is now **production-live capture / terminal continuation RED**.
+This package is now **production-live first-turn / native observation RED**.
 Canonical R0024 captured the six source executions from one new Raiktor
-creation and then invoked the production `native_auto_run` cold continuation,
-but that call failed during prelaunch profile validation, before a continuation
-process, planner, or turn limit could run. The deterministic return is
-`session_exit` / `failed` with
-`attempted_turns=0`, so no matching terminal intercept or terminal action was
-possible. GEN-034-D therefore remains `3/4`, the authoritative G2 count remains
-`1/8`, and R458 is not reused as final evidence.
+creation. R0025-R0027 then reused that immutable capture/checkpoint/driver pair
+through a supported successor continuation instead of creating another natural
+source. The profile-preparation and cold-start readiness blockers have been
+closed: R0027 reached an exact paused map-ready frame in 95.026 seconds and
+entered the first production `native_auto_run` turn.
 
-The package was integrated through
-`fd69f836455e0a81721d877de25b22a3bc52d1dc`; the live attempt ran from current
-`origin/master@08cfd3df8d22b5548f4cafa190f5fa6f41895af3`. R884 and all newer
-preview runs had been reclaimed before the GEN034-D run. R0024 cleanup closed
-the driver and left no CK3 process. Read-only `verify_profile` reproduces the
-root cause: the formal profile lacks `xar-autoplayer-environment.json`. The next
-fix is to run the supported formal profile prepare/verify flow on a successor
-continuation from the frozen safe pair; do not hand-author the manifest or
-launch another natural-source search.
+The first campaign-root query exposed the current blocker. The native producer
+returned county titles `2142` and `2173` with `capital_province_id=null` while
+advertising `held_title_partition_ready=true`. The strict Python contract
+correctly rejected that payload. R0027 therefore has one attempted turn, zero
+successful turns, zero gameplay actions, no date advance, no matching terminal
+intercept, and no action-runner input. GEN-034-D remains `3/4`, the authoritative
+G2 count remains `1/8`, and R458 is not reused as final evidence. The next fix is
+the exact-build native county-title capital resolver/readiness advertisement;
+do not relax the validator, submit a terminal action, or launch another natural
+source search.
 
 Final candidate tip: `b9e3357dfb14825092e66d9b92acc4e5347b070a`.
 The previously reviewed `fe64549f3e89488d905a280895cfefa5271e2a17`
@@ -114,6 +113,58 @@ tests. The subsequent live evidence and its RED boundary are recorded below.
   not a terminal result, postwar certificate, cold restore, or GEN-034-D
   completion.
 
+## R0025-R0027 continuation result
+
+The successor runner change is integrated through
+`55429bfbc1c6409f3747ce9a8e257eff19642a1a`; runtime refreeze is
+`d044e7523dc87ffa4613da2e9a72b2328abf31f8`. Its 481-file runtime manifest has
+SHA-256 `EF05222DA1C124F27A9EDEAFE3C4A3A5A1012331D3125D529CBBAF78F4E8A492`
+and tree SHA-256
+`8DDCFEA7D07CA61C03181791CC27AF6B3E3C98FB984A1436F81B425A38132154`.
+Focused continuation/runtime-manifest/live-adapter/native-auto-run tests passed
+`132/132` under normal Python and `132/132` under `-O`. The exact no-launch
+preflight is READY, SHA-256
+`C8767DACA714C355AB63A5E2198BF155E87AB26AAD5D9CED7473178CDA8A0E7E`.
+
+- R0025 (legacy R894) is `completed-red`. The old runner bound cold-start
+  readiness to `bridge_attach_seconds=60`; at 61.572 seconds the bridge, build,
+  and adapter were ready but the map/date were not. It attempted zero turns and
+  reclaimed the process. Outer report SHA-256 is
+  `AF60DDE3E7CB11062592DA3A83B1D7E101965664BA89541B7477E1146A87863F`;
+  native report SHA-256 is
+  `1D936E0ECD0D4C25C74D8AD1A48CE6DE0AB5EF50F4148B5C2AA18ECAEA8000ED`.
+  This live result justified the new explicit `--readiness-timeout`, default
+  `720s`.
+- R0026 (legacy R895) is `completed-red` before CK3 creation. The operator used
+  system `py -3.13`, so formal profile preparation correctly rejected the
+  missing frozen distribution `nvidia-cublas`. Report SHA-256 is
+  `88280B717F9A84FB28725CE2A2AE0B22F73F12390DFDC0A7E2CF254C70C27A50`.
+  This was interpreter drift, not a dependency-contract defect. The required
+  interpreter is `Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe`, SHA-256
+  `D70FCED7F461F38F9F224D8673FB74E96E4FACB4283FF4E8697543B457FEA8A0`;
+  do not weaken the distribution gate.
+- R0027 (legacy R896) used that interpreter. Formal state preparation, rebind,
+  cold-checkpoint validation, and runtime-closure checks passed. New CK3 PID
+  `27616` reached map-ready at date `53173176`, actor `29829`, WarID `16777285`,
+  with restored driver state and a ready mailbox. The first accepted
+  `query-campaign-root-context-v1` payload then failed normalization with
+  `held_title_partition[1].capital_province_id must be present only for a
+  county`. Outer report SHA-256 is
+  `FEFC9A11E2F750347F9A3CDBE159F1D6862FE4D13824B8788AC77E4554B98CCA`;
+  native report SHA-256 is
+  `74CA99461FB036921588F8552D237FAD1959ADF5AD7C190D1EAE72F5B3A36666`.
+  Cleanup is GREEN and no action was submitted.
+
+The raw R0027 payload is retained in
+`g2-gen034-d-continuation-d044e752-r0027-20260921/candidate-continuation-attempt-01-formal-state/native-session/driver-state.json`.
+Its held-title rows are duchy `2141 / tier_raw=3 / capital=null` (valid), county
+`2142 / tier_raw=2 / capital=null` (invalid), and county
+`2173 / tier_raw=2 / capital=null` (invalid), while
+`held_title_partition_ready=true`. The ABI requires a non-null resolver result
+for a county and requires the complete partition to become unavailable on
+resolution failure. Fix the native producer; do not treat unknown as a legal
+zero value.
+
 ## Consumed live command
 
 The command below was the exact argv used for R0024. It is retained only for
@@ -143,23 +194,25 @@ or retry a terminal action blindly.
 
 ## Next focused continuation
 
-1. Keep R0024 and `candidate-live-attempt-01` immutable. Prepare a successor
-   continuation profile from the frozen history-1 checkpoint and paired driver
-   state through the supported formal profile-preparation flow; do not create
-   `xar-autoplayer-environment.json` by hand.
-2. Run the formal read-only `verify_profile` gate and require it to pass before
-   starting CK3. Add only the focused normal/optimized regression for this
-   prepare/verify boundary; do not broaden the runner or acceptance matrix.
-3. After the prelaunch gate passes, re-run production `native_auto_run` in one
-   managed CK3 process. Reuse the immutable six-source capture and confirm it is
-   not generated a second time. The current `session_exit` / `failed` /
-   `attempted_turns=0` result is pre-planner and must not be attributed to the
-   planner or turn limit.
-4. If and only if formal `native_auto_run` returns a matching terminal plan,
-   freeze the pre-submit checkpoint and emit the action-runner input. Then use
-   the existing action-runner continuation below. On another RED, preserve the
-   new return artifact and reclaim the process without submitting a terminal
-   action.
+1. Keep R0024 and `candidate-live-attempt-01` immutable. Freeze the exact bridge
+   source/binary and inspect the county-title capital resolver using the R0027
+   raw payload as the failing paused-frame fixture.
+2. Make county rows publish the real capital province. If a resolver genuinely
+   fails on a frame, mark the complete held-title partition unavailable rather
+   than pairing a null county capital with `held_title_partition_ready=true`.
+   Keep the strict Python validator and close the observation with an exact
+   paused snapshot, not only a serialized fixture.
+3. Run only the affected native Release and normal/optimized Python tests,
+   rebase/push, refreeze the runtime closure, and create a new clean runtime
+   worktree and no-launch preflight.
+4. Confirm process-zero, allocate R0028 or a higher actually unused round, use
+   the frozen absolute venv interpreter, and create fresh attempt/formal-state
+   directories from the immutable R0024 pair. Do not overwrite or resume the
+   R0027 writable state.
+5. If and only if production `native_auto_run` returns a matching terminal plan,
+   freeze the pre-submit checkpoint and use the emitted action-runner command.
+   On another RED, preserve it and reclaim the process without submitting a
+   terminal action.
 
 ## Action-runner continuation
 
@@ -176,8 +229,9 @@ ACK alone is not sufficient.
 
 ## Compatibility impact
 
-There is no public MCP schema, capability advertisement, wire protocol, or
-open_kaishek interface change. The only shared Python seam is an optional
-`before_submit` callback used by this candidate to checkpoint and intercept a
-formal plan; default production behavior is unchanged. No open_kaishek adapter
-update is required for this package.
+The readiness-timeout change has no public MCP schema, capability advertisement,
+wire protocol, or open_kaishek interface impact. R0027 is an existing
+exact-build native campaign-root producer defect. If its resolver fix changes
+field availability, manifest identity, or the binary, update the versioned
+MCP/ABI asset and compatibility note together; do not hide the malformed value
+in an adapter. No open_kaishek adapter update is required yet.
