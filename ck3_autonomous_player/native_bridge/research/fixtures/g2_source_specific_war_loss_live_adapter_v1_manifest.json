@@ -2,8 +2,8 @@
   "schema": "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1",
   "status": "static-ready-live-command-default-off",
   "created_at": "2026-09-05T17:10:00+08:00",
-  "candidate_source_commit": "f1a7fd8a50d200015a4f83c4fbc05328d1252fca",
-  "candidate_source_change": "GEN034-D R0024 auto-run RED report observability",
+  "candidate_source_commit": "63c8c186071a767f629cadc53909df3242141dd8",
+  "candidate_source_change": "GEN034-D formal continuation state preparation",
   "default_off": true,
   "live_executed": false,
   "paths": {
@@ -25,7 +25,7 @@
     "runtime_manifest": "ck3_autonomous_player/native_bridge/research/fixtures/gen034_d_runtime_files_v1.json"
   },
   "sha256": {
-    "adapter": "269C021D55505FB372A02722FFB069479412A38DDBDBF2CEC09269C1890465DF",
+    "adapter": "A75F4AAE7D04A464F88BD476D3871E2F0EDD04571C69053A10C1758DA58B395A",
     "outer_owner_runner": "D162CDD681961989838B0F26D29DDCC6E9ED98420F8FA1BF5D4F636E110737FF",
     "outer_owner_manifest": "4A92C9225724FA4EF98522428C12B639659253E3B2BD9827E254BD76DE7B89EC",
     "lifecycle_runner": "E76E693BA2D60D8DA74B3038994085951AE4017B1EF97BBC69F1C4FE7D9E1415",
@@ -40,7 +40,7 @@
     "run_acceptance": "B5E99A7B835DA5D2FFB237296567984683B401D42E14FDD5EA272707ADF9F156",
     "profile_settings_guard": "2E4EC85C3B3496DDAB0ED18E0D8D7010B08DC7B337B7546E36FA5E38A11696A6",
     "native_runtime": "6224AFAF1AA675F28E1825F90862EF8E89747F91ECC34864ABA090A757EF057C",
-    "runtime_manifest": "44B3A20E2F2A0E6CED174BF56F0FFFBFE8698CC36368F4651A41A4CEF8D2701A"
+    "runtime_manifest": "08525C3C79ED403F53E36B08C78FA7DEE589CE5B3232D7594569C64D91A931B7"
   },
   "timeouts": {
     "process_discovery_seconds": 30,

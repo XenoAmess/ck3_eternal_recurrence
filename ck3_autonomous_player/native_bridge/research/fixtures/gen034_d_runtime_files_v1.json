@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "f1a7fd8a50d200015a4f83c4fbc05328d1252fca",
+  "source_commit": "63c8c186071a767f629cadc53909df3242141dd8",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
@@ -28,8 +28,8 @@
     "tools/run_acceptance.py",
     "tools/run_zg361_phase2_seed_capture.py"
   ],
-  "file_count": 479,
-  "tree_sha256": "42779DC76BE4BC712B5252974E5BAE562306B7D3CB81B53104DB995256883FDA",
+  "file_count": 480,
+  "tree_sha256": "8D9655C8E8D3FF4F56BE8E33638ECF87D87A1065860E78DAB447C0EF03910C0E",
   "files": [
     {
       "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
@@ -613,8 +613,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_live_adapter.py",
-      "bytes": 104912,
-      "sha256": "269C021D55505FB372A02722FFB069479412A38DDBDBF2CEC09269C1890465DF"
+      "bytes": 114297,
+      "sha256": "A75F4AAE7D04A464F88BD476D3871E2F0EDD04571C69053A10C1758DA58B395A"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_outer_owner.py",
@@ -1990,6 +1990,11 @@
       "path": "ck3_autonomous_player/src/xar_autoplayer/recovery.py",
       "bytes": 48788,
       "sha256": "B78DD97FD1F1C4012D46176C202B43544AA8FFB28C817C9CDBC2307C1A2D43D1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/rogue_checkpoint_rebinder.py",
+      "bytes": 12960,
+      "sha256": "1E514A5DFF11FAF6C1678F53C2EF4D964973A3535295C5BE9C1B3E3456258B11"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/rules.py",
