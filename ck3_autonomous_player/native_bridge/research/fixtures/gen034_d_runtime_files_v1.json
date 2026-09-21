@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "02e1851e0d341bc391d20b254aca8dd8353070f9",
+  "source_commit": "4ab01e24dce0b06710c2a233de8f1e3f81bf2720",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
@@ -28,8 +28,8 @@
     "tools/run_acceptance.py",
     "tools/run_zg361_phase2_seed_capture.py"
   ],
-  "file_count": 477,
-  "tree_sha256": "DDAA88B30DBF33F88C8AB58F384921F1B55069029F3B488F71FA85C3985ECBCC",
+  "file_count": 479,
+  "tree_sha256": "8A686799573E109FB727EFE82ACDE6C24AA1424BEEDCAB2D421A12783C4725D4",
   "files": [
     {
       "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
@@ -65,6 +65,11 @@
       "path": "ck3_autonomous_player/native_bridge/research/analyze_phase2_wrapper_entry_live.py",
       "bytes": 12569,
       "sha256": "F463C5DD99AF29B35CE2B38FF6B8F5618F71DBEACD9D91A7AA6DBD2EA67AD690"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/audit_coa_campaign_checkpoint_v1.py",
+      "bytes": 5193,
+      "sha256": "E82675D72C1F4AE8732BCD3B6BC9B406E937CFB2370F8D589FF0A56F5A38FDC0"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/build_particle2_factory_debug_capture.py",
@@ -482,6 +487,11 @@
       "sha256": "2722BF115BE1D4E0804CAD642E4CA1A866C02FDB29775F502FA7CA85C6EEC911"
     },
     {
+      "path": "ck3_autonomous_player/native_bridge/research/run_coa_campaign_cold_reload_v1.py",
+      "bytes": 9084,
+      "sha256": "655503A15A2AAB635FBBD689BB634989355121ACAC36A929000C443CADCD086F"
+    },
+    {
       "path": "ck3_autonomous_player/native_bridge/research/run_coat_of_arms_source_inventory_mcp.py",
       "bytes": 5102,
       "sha256": "09C0EFDCF979DC0CB4493EF464032D0D3490716C5186209B0F3A2649BA27E31E"
@@ -583,8 +593,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_frontend_gui_route_v1_live_acceptance.py",
-      "bytes": 206906,
-      "sha256": "4F188EC11B0B7F8FBB06170135A90BEDC60801579CB171E55BCEB2F8CD9D8A4B"
+      "bytes": 211855,
+      "sha256": "F3A5224E0455516E7A9728C074D5944E3534E39055B03418898D07F771D8A691"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_live_acceptance.py",
@@ -1493,8 +1503,8 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/frontend_gui_route_contract.py",
-      "bytes": 37493,
-      "sha256": "AC5082E027CB9EC4FF49B3C1AD3D7638B4BA9A01169B2D41886C19797D68AE3D"
+      "bytes": 47583,
+      "sha256": "1D2380B0D1E22E3CFA5703C284074BD02ECB7EF5A40B27454F883170166386AF"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/loaded_feature_manifest_contract.py",
@@ -1528,8 +1538,8 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
-      "bytes": 1095542,
-      "sha256": "00A5482629C1952583B7D47548320EF3EA19CB7F7F9DD48DD500723E5D8114AB"
+      "bytes": 1104442,
+      "sha256": "9BCA7F7E148AE2674004CE0B846DC574949F2EE2404871B2BE20C669747DE5E6"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/pending_character_interaction_context_contract.py",
