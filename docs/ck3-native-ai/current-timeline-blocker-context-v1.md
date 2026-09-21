@@ -141,3 +141,33 @@ private production wire 已完成。它进入 public capability/registry/adverti
 `tools/g2_preview_operator.py query-current-timeline-blocker-context-v1` 是该 private wire 的唯一正式实机入口。它复用 production preflight、`native_session` 单实例所有权、冷 checkpoint 加载和进程回收；内部 agent 子命令为 `native-query-current-timeline-blocker-context-v1`。只有显式提供 `--private-timeline-query-round-id R<number>` 才会构造带 `allow_private_current_timeline_blocker_query=True` 的 driver。普通 `native-auto-run`、公开 MCP registry、adapter capability 与能力广告均不受影响。
 
 一次运行只允许一条 `query-current-timeline-blocker-context-v1`。operator receipt 必须保留 source commit 与 agent/operator hash、实际 CK3 轮次、查询 envelope、查询前后 save/driver SHA-256、查询前后 `date_raw` 和 cleanup；只有这些值保持不变且进程树已回收时才返回 `GREEN_READ_ONLY`。该入口没有 Close、婚姻、`death-terminal`、Python successor continuation、日期推进、checkpoint 写入、UI 输入或 gameplay action 路径。R776A 是证据切片名；其实际单实例轮次仍按持久台账传 `R776`，不得把带字母的候选名冒充 CK3 轮次。
+
+## R0075 普通 campaign 自然继承后的真实构建不一致（2026-09-22）
+
+上述“普通 native-auto-run 不受影响”仅是此前私有查询测试的静态范围，
+**不再适用于自然继承后的正式消费者**。PRV-007 agent `b56c068` 在标准
+封建同一 campaign、同一 CK3 PID 的 R0075 turn12 自然死亡后核对玩家
+`31853→36403`、预期继承人和 `[524,525,530]` 三项头衔全匹配；
+turn13 `native_auto_run.py:1500` 正式 successor 分支必需调用 typed
+`query-current-timeline-blocker-context-v1`，而本次冻结 DLL SHA-256
+`DA06EFC38BD3F32D83FE4C057737794A2AEEB6472BD928E119464B8AC2335F99`
+返回 `ok=false, unsupported native gameplay step`，正式 run **RED**，
+未继续继承人游戏。原始报告 SHA-256
+`62930516A08C17A242472A6F2CDA91AC7A6678082ADF77AF75398BEBA84248F6`。
+
+根因不是缺 C++ ABI：`native_bridge/src/bridge.cpp` 中 private step 的解析、
+owning-thread executor 与 allowlist 已有实现，但三处被
+`XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1` 条件编译；
+`native_bridge/CMakeLists.txt` 该开关默认 OFF。本次 DLL 二进制未包含
+上述 typed step 名称，而 Python successor 正式路径已调用它，属于实际
+产物能力不一致。最小修复是为新 exact-build DLL 明确启用开关，重新冻结
+制品并做受影响实机查询/继承人下一 turn；不得禁用 Python 查询、把
+`unsupported` 当 false，或原位改写 PRV-007 DLL。公开 MCP 是否注册
+仍由本专题上述独立 live gate 控制，private 编译 ON 本身不等于能力广告。
+
+R0075 存档 `0CE2...BF5C` 是自然死亡前最后一次落盘，RED 后 driver
+`40C3...E569` 已是新的继承人 episode、`last_checkpoint=null`，两者
+**不是配对状态**；恢复仅从此前独立冻结的 R0074 pair
+save `B836D93E...92683`/driver `4C7278F0...364D3` 开始，除非找到并
+验证真正的 post-death paired save+driver。R0075 真实继承分配是 live
+部分证据，不能冒称继承人正式玩法或 cold restore 通过。

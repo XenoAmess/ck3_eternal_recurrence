@@ -94,3 +94,28 @@ R0057–R0059 精确 PRV-004 增量（覆盖上表 PRV-004 待验）：最终 ma
 | PRV-006 h1662 持续续跑 | **NO-GO 当前连续使用**；R0067–R0071 门仍历史有效，R0072 扩展窗口真实 RED | 同包 `g2_preview_operator.py run` | agent `cad5518`、ZIP `7503E5D9...952803` 未改；R0072 raw report `3D6D480350F3AE1D654821F953BDA0731E0A1C287122CE854EBD7D8777AD438B` | 从 R0070 main pair 正式续跑 4 attempted/3 successful turn，+23 游戏日/129.64 秒，自然 `health.7000` instance9、唯一 enabled native0、add infirm indicator；合同缺 scope_types/saved_scope_name_sets/native_option_indices/disabled_native_option_indices，四项检查 false，`registered_contract_projection_drift` RED，**没有提交选项**，不能称继续 GREEN | source save SHA `7C988B19...59A94` 仍原样，rebound driver `1FF57C1D...F7EE`，RED driver `87E54EFF...CE5E`，recoverable=true/invalidation=false；CK3 PID155176 全树回收，canonical ledger R0072 `completed-red` | EVT-B0-R0072 `/root/event_inheritance` exact 原版树与最小注册修复；重新冻结新候选、受影响同版复验后再决定 GO；旧 GO 收据仅记录当时范围 | 工作分支待提交；旧 ZIP 不改写 |
 
 受控场景的实际吞吐仅 23 游戏日/2.1607 分钟≈10.64 游戏日/分钟（计启动与停顿），不推断长期速度；G2 仍 2/8、议会 1/4。不能把 R0072 RED 改称超时或换存档消失。
+
+## 2026-09-22 R0073–R0074：PRV-007 候选未晋级
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| health.7000 真实事件闭环 / PRV-007 | 静态修复已集成、**live 自然事件未再触发，NO-GO** | 同包 `g2_preview_operator.py`→`native_auto_run` | [PRV-007 候选 ZIP](Z:/ck3_mod_rewrite/.task-tmp/PRV-007/candidate-h1662-b56c068-v2/g2-preview-ordinary-h1662-b56c068-prv007.zip) SHA `F4AEBC1B14810BDB1EF516DE568AD3C3561BEF0D4AA5412FDA0363C51B74A640`；agent master `b56c068`、native不变、CRC2375/fresh2374/no-launch | R0074 同包从 R0070 main safe pair 正式20/20，250游戏日/181.852s；未遇 health.7000 故不能证明 infirm 后置。自然 grant-vassal 两次 turn8/14 typed 拒绝、独立 pending 消失、turn9/15 消费，[证据清单](Z:/ck3_mod_rewrite_process_assets/g2-preview-prv007-r0074-main-green-20260922/evidence-manifest.json) SHA `A1EFE2F1...D9F1F9` | save `B836D93E...92683`/driver `4C7278F0...364D3` 成对，PID110208回收；同包 stop/cold R0075/R0076 另验 | `/root` 普通 campaign 机会性自然事件后置；R0072 原 RED 仍存，不对不可复现随机池重复试运气 | PR #9 `f5f9fca/b8faabe`→`8d780a0/b56c068`，原/集成 branch/worktree 即时 CAS 清 |
+| GOV 原 R753 建设源只读诊断 | R0073 **prelaunch RED** 后已修 parser；实机 source 未读，R0066 material RED 未关 | private source-only CLI，world-action 不调用 | [R0073 evidence](Z:/ck3_mod_rewrite_process_assets/g2-gov-r0073-prelaunch-red-20260922/evidence-manifest.json) SHA `9AB32C74...1F35`；PR #10 master `0e251b2` | R0073 canonical `R0073` 被旧正则拒绝，CK3 未启动/零动作；新 FINAL R753 Z state no-launch READY 等唯一实例排队 | 原 R753 pair 仍旧哈希且无 pending；不能用 R0066 post-driver 搭旧 save 冒充 pair | `/root/governance_family` 修 parser，唯一实机 owner 后续只读一次；建设真实 action/postcondition 待另场 | `f139f1c→2ed0e5c→0e251b2`，原/集成 temp refs/worktree CAS 清 |
+
+R0074 的 250 游戏日/3.0309 分钟≈82.5 游戏日/分钟仅为本次有界有效吞吐，不拿它承诺百年门；单实例当 R0075 启动时由唯一 owner 记当前轮次，R0073 ledger 已真实 `completed-red`。G2 JSON 分母与状态不变。
+
+## 2026-09-22 R0075 自然继承：分配匹配但下一循环 RED
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 自然继承与同一 campaign 继承人续玩 / G2-M3 | **部分 live；下一策略循环 B0 RED**，M3 未完成 | PRV-007 `native_auto_run` successor 分支 | agent `b56c068`、DLL `DA06EF...F99`；[R0075 冻结证据](Z:/ck3_mod_rewrite_process_assets/g2-preview-prv007-r0075-natural-succession-red-20260922/evidence-manifest.json) SHA `42E8BDCDD598E82DC63FFB3855425EF6AB29F2F5CA14107C058A9DBA0DB9803D`，raw `62930516...48F6` | turn12 同 PID123012 玩家31853自然死亡→36403，预测继承人/头衔 `[524,525,530]` 分配 matched；turn13 正式 `query-current-timeline-blocker-context-v1` `unsupported native gameplay step`，零继承人后续 gameplay；planned stop 太迟非 stop 证据 | predeath save `0CE2...BF5C` 与 RED 后新 episode driver `40C3...E569` 不成对；无 postdeath save；最后冻结有效 pair 仅 R0074 `B836D93E...92683`/`4C7278F0...364D3`，PID回收/ledger completed-red | INH-B0-R0075 `/root/event_inheritance`：C++已有 handler 却被默认 OFF 宏裁掉，新 exact DLL ON + minimal builder capability guard + 真 successor query/下一 turn 实机；不禁用查询 | 原 PRV-007 候选未晋 GO；新工作包 branch 在途 |
+
+R0076 编号用于后续独立 GOV 原 R753 pre-action source-only probe（R0075 后拟 cold 方案已因 RED 取消且从未分配 R0076）；只读结果出来再记，不能预填。权威 G2 2/8 不变。
+
+## 2026-09-22 R0076 治理只读查询实际结果
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| GOV 原 R753 动作前建设源诊断 | **RED**；private 恢复谱系核算错误 + 原生 checks 截断/成本与动作仍不就绪；R0066 material RED 保持 | `native-query-private-construction-source-v1` | final master `0e251b2`、private ON native `47196B...1760`；[R0076 frozen evidence](Z:/ck3_mod_rewrite_process_assets/g2-gov-r0076-source-query-red-20260922/evidence-manifest.json) SHA `67B243AF2212511C4F093F55EBFE7427ED324CCF1632A43C6F40F2A531743B72` | native selected barony2103/province2635/building24/slot1，stock cost15000000/gold50035659；`checks_truncated=true,cost_ready=false,construction_action_ready=false`，没有建设提交/日期推进，不能推断建成 | source save `D8BDC3...01474` 未变，PID168780回收；diagnostic `single_cold_restore=false` 因既有 restore 谱系合法保留行+本次新行而误判，ledger completed-red | GOV-B0-R0076 `/root/governance_family` 仅修 private diagnostic 与聚焦验证；真实原生未就绪/动作后 material 仍独立待解 | 工作分支待交付；不重试原查询 |
+
+CK3 R0076 后 0 个存活实例；新 exact native death/succession 宏 ON DLL 与后续 frozen candidate 尚在施工，不冒充可运行预览。G2 JSON 仍 2/8。

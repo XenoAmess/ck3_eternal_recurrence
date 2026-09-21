@@ -55,6 +55,23 @@ flowchart TD
 
 ## 当前合同漂移与最小修复
 
+### R0074 自然重放边界（2026-09-22）
+
+R0072 报告 `checkpoints=[]`、`checkpoint_deferred_for_player_decision=true`；
+该轮用户目录 `profile/save games/` 只有事件发生前的 `xar_checkpoint.ck3`
+（SHA `7C988B194657669E4BF20A2E8B1BAC0DA4CBE58173B5A2913544BA429F159A94`），
+RED 后 driver 只存观察历史，不能代替 paused 事件的游戏存档。相同 pre-event
+pair 在新制品 PRV-007 正式 R0074 20/20、250 游戏日中**没有**再次触发
+`health.7000`；该次报告及配对存档见
+`Z:\ck3_mod_rewrite_process_assets\g2-preview-prv007-r0074-main-green-20260922\evidence-manifest.json`
+（SHA `A1EFE2F19FBF49220551153EAE9FE1287DD0E0517212B79BB6E841E381D9F1F9`）。
+原版 `health_on_actions.txt:17–45` 在年度健康随机池中包含该事件，
+但也有 `chance_of_no_event` 与其它候选；事件定义还有年龄/健康条件与动态权重。
+所以原安全 pair 并非确定自然复现场景，不得反复从同一存档试运气：
+强制触发仅可给局部效果证据并明示 partial，自然 typed→独立后置→下一 turn
+仍须普通 campaign 主线以后真实遇到时验收。这一新增结论基于只读原版和
+R0072/R0074 实机对照，不声称采到那次原生 RNG 调用栈。
+
 R0072 的 registry 检查只失败四项：`saved_scope_names_exact`、
 `scope_types_cover_projection`、`native_option_indices_exact`、
 `disabled_option_contract`。原因是 `records_manager_a.py` 的该 key 历史
