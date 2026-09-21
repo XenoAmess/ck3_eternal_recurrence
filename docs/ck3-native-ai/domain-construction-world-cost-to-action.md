@@ -20,9 +20,13 @@ flowchart LR
     A --> N{"下一独立 paused proof epoch 的 Province 活动施工状态"}
     N -->|匹配| M["物质施工结果"]
     N -->|未匹配| P["pending/RED：先查状态，不盲重试"]
+    N -. "R0066：只读 source_red 的原生失败字段尚未留存" .-> X["unknown：保留 native result，再判断观测口或游戏状态"]
+    X --> P
     M -. "待实机：正式下一 turn 与恢复" .-> T["两游戏年治理闭环"]
 ```
 
 私有 action CMake 选项 `XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1` 默认 OFF，且仅能与已存在的 read probe 选项一同启用。实际运行前用 source save、EXE/DLL SHA、DLC/mod/profile、轮次与有界断言封候选；只有 CK3 唯一操作负责人可以运行。R746 只读结果不能被新代码的静态验证冒充为提交或后置结果。公共 query/action、MCP 广告与 G2-M4 完成状态仍关闭。新增 private receipt 字段为向后兼容的附加字段；当前没有公共 open_kaishek 适配器依赖，正式接口开放前须独立确认兼容矩阵。
 
 R0060（2026-09-22，agent `fadc2e5b`）的正式 `native-auto-run` 20 turn 技术完成，但无建设 query/submit/receipt；这是建设正式闭环的证据不足，不是成功。driver-state 第 444、448、450、455、461、465 条公共 root query 均确认同一封建玩家；原生帧 `native_revision` 与 public `revision` 分别为 3/4、8/9、14/15、21/22、28/29、35/36。Python 和平封建 scope 错将两种 revision 要求相等，因而在 private 建设查询前返回 `scope_unavailable`。R0060 形状回归已证明这一失败，并改用 `snapshot_id = native:<native_revision>` 与 root 的原生 `snapshot_revision`、日期、角色共同绑定同一帧，同时只要求 public revision 有效。此补丁仍待新版本实机正式动作、独立后帧、下一 turn 消费及冷恢复复验，公共能力继续关闭。
+
+R0066（2026-09-22，agent `be53794f`）正式 turn 1 选择 barony 2103/Province 2635/building 24/slot 1，并获得原生 receiver sequence 1 的 `pending_receipt` ACK；`applied=false`，不能算物质结果。turn 5 在独立 `native:9`、date 53178528 尝试只读 receipt，`query_construction_private` 返回 `source_red`，但旧 Python 路径将多种原生/帧失败压成泛化 `construction material source unavailable`，未把实际 `native_result` 留在 driver/report，故**具体失败字段与游戏中是否曾生效均未查明**。进程已回收，当前配对游戏 save 的 SHA 仍为动作前的 `D8BDC3C4…01474`，不能从旧 ACK 或原始 save 推断运行中后置状态。最小诊断补丁只在 private 失败 receipt 持久记录原 native result、只读 query request ID、读前/读后帧绑定与原 action request ID，保持 `ok=false`、pending 与 RED；normal/`-O` 聚焦测试通过，仍待实机读取。唯一实机负责人应先在冷恢复中核对实际状态，不得盲目重复提交。若原生状态确实不可观测，再按 exact build 补最小只读 bridge/MCP 查询；公共能力继续关闭。

@@ -137,7 +137,17 @@ def query_construction_private(driver: object, *, expected_revision: int) -> dic
             and ending.get("snapshot_id") == starting["snapshot_id"]
             and ending.get("revision") == starting["revision"]
             and ending.get("episode_run_id") == starting["episode_run_id"]):
-        return {"status": "source_red", "native_result": result}
+        return {"status": "source_red", "native_result": result,
+                "native_query_request_id": request_id,
+                "source_frame": {"snapshot_id": starting["snapshot_id"],
+                                 "revision": starting["revision"],
+                                 "native_revision": revision,
+                                 "date_raw": starting["date_raw"],
+                                 "episode_run_id": starting["episode_run_id"],
+                                 "actor_character_id": starting["played_character"]["character_id"]},
+                "ending_frame": {"snapshot_id": ending.get("snapshot_id"),
+                                 "revision": ending.get("revision"),
+                                 "episode_run_id": ending.get("episode_run_id")}}
     selected = _candidate(world)
     if selected is None:
         return {"status": "no_legal_budgeted_building", "world": dict(world),
@@ -242,6 +252,17 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         raise BridgeUnavailableError("construction receipt requires a later paused actor frame")
     query = query_construction_private(driver, expected_revision=expected_revision)
     if query.get("status") not in ("selected", "no_legal_budgeted_building"):
+        driver._record_command(RECEIPT_STEP, ok=False, result={
+            "status": "receipt_source_unavailable",
+            "stage": "construction_receipt_native_source_query",
+            "action_request_id": pending["action_request_id"],
+            "episode_run_id": pending["episode_run_id"],
+            "native_query_status": query.get("status"),
+            "native_query_request_id": query.get("native_query_request_id"),
+            "native_result": query.get("native_result"),
+            "source_frame": query.get("source_frame"),
+            "ending_frame": query.get("ending_frame"),
+        })
         raise BridgeUnavailableError("construction material source unavailable; keep pending")
     # A candidate need not remain legal once construction is active. Read the
     # material source directly below via the query's private world projection.
