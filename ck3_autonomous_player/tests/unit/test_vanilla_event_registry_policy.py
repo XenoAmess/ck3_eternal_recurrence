@@ -107,6 +107,44 @@ def _natural_disaster_context(native_indices: tuple[int, ...]) -> dict[str, obje
     }
 
 
+def _r0065_grief_context(
+    native_indices: tuple[int, ...] = (0, 4, 7),
+    *,
+    deceased_character_id: int = 36_403,
+) -> dict[str, object]:
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "stress_threshold_special.1001",
+        "calculated_event_id": 3_121_001,
+        "runtime_stats_ordinal": 4_333,
+        "current_event_instance_id": 9,
+        "snapshot_revision": 19,
+        "date_raw": 53_284_680,
+        "root_scope": _scope("character", character_id=PLAYER),
+        "saved_scopes": [
+            {
+                "name": "stress_character",
+                "name_identifier": 20_928,
+                "scope": _scope("character", character_id=PLAYER),
+            },
+            {
+                "name": "deceased_character",
+                "name_identifier": 19_883,
+                "scope": _scope(
+                    "character", character_id=deceased_character_id
+                ),
+            },
+        ],
+        "options": [
+            _option(rendered, native)
+            for rendered, native in enumerate(native_indices)
+        ],
+    }
+
+
 def _trait_gold_context() -> dict[str, object]:
     context = _context()
     context["event_definition_key"] = "trait_specific.8001"
@@ -711,6 +749,73 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             "registered_option_variant_projection_drift",
         )
         self.assertEqual(result["failed_checks"], ["option_variant_projection"])
+
+    def test_r0065_grief_exact_variant_selects_native_seven_only(self) -> None:
+        result = recommend_registered_vanilla_event_option_v1(
+            _r0065_grief_context(),
+            played_character_id=PLAYER,
+            snapshot_option_count=9,
+        )
+
+        self.assertEqual(result["status"], "recommended")
+        self.assertEqual(result["selected_native_option_index"], 7)
+        self.assertEqual(result["selected_option_number"], 8)
+        self.assertEqual(result["selected_rendered_index"], 2)
+        self.assertEqual(result["matched_option_variant_index"], 3)
+        self.assertEqual(result["failed_checks"], [])
+        self.assertFalse(result["semantic_optimal"])
+        profile = result["choice_effect_profile"]
+        self.assertEqual(profile["selected_native_option_index"], 7)
+        self.assertEqual(
+            profile["selected_option_effects"][0]["modifier"],
+            "stress_frozen_grief",
+        )
+
+    def test_r0065_grief_drift_and_older_variants_remain_blocked(self) -> None:
+        cases = (
+            ("older_shape", _r0065_grief_context((1, 4, 7))),
+            ("old_confider_shape", _r0065_grief_context((1, 6, 7))),
+            ("old_depression_shape", _r0065_grief_context((0, 1, 7))),
+            ("unknown_shape", _r0065_grief_context((0, 4, 8))),
+            ("same_deceased", _r0065_grief_context(deceased_character_id=PLAYER)),
+            ("missing_frame", {**_r0065_grief_context(), "date_raw": None}),
+            ("wrong_identity", {**_r0065_grief_context(), "runtime_stats_ordinal": 1}),
+        )
+        for label, context in cases:
+            with self.subTest(label=label):
+                result = recommend_registered_vanilla_event_option_v1(
+                    context,
+                    played_character_id=PLAYER,
+                    snapshot_option_count=9,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIsNone(result["selected_native_option_index"])
+
+        for mutation in ("hidden", "disabled", "extra_scope", "stress_role"):
+            with self.subTest(mutation=mutation):
+                context = _r0065_grief_context()
+                if mutation == "hidden":
+                    context["options"][2]["shown"] = False
+                elif mutation == "disabled":
+                    context["options"][2]["enabled"] = False
+                else:
+                    if mutation == "extra_scope":
+                        context["saved_scopes"].append({
+                            "name": "confidant",
+                            "name_identifier": 3,
+                            "scope": _scope("character", character_id=91_001),
+                        })
+                    else:
+                        context["saved_scopes"][0]["scope"] = _scope(
+                            "character", character_id=91_001
+                        )
+                result = recommend_registered_vanilla_event_option_v1(
+                    context,
+                    played_character_id=PLAYER,
+                    snapshot_option_count=9,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIsNone(result["selected_native_option_index"])
 
     def test_other_variant_contracts_still_require_explicit_consumer_review(
         self,

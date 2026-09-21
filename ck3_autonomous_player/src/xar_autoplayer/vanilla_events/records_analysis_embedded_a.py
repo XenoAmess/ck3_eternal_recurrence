@@ -170,11 +170,12 @@ _REVIEW_NOTES: Final[dict[str, tuple[str, str]]] = {
         "action beyond a possible trait-conditioned stress decrease.",
     ),
     "stress_threshold_special.1001": (
-        "Grief break with three recorded source-defined projections, including "
-        "one confidant and two no-confidant scope shapes.",
-        "Use native 6 when confider is present, native 4 for the recorded "
-        "inappetetic no-confidant shape, and native 1 for the recorded "
-        "depressed/drunkard/frozen-grief shape.",
+        "Grief break with three historical projections and one R0065 natural "
+        "no-confidant projection; earlier routes remain unadvertised.",
+        "For only the R0065 exact [0,4,7] no-confidant shape, native 7 "
+        "deterministically reduces stress and adds permanent frozen grief. "
+        "This known health cost is accepted as bounded continuation, not an "
+        "optimal or harmless choice; native 4 has an unobserved starvation branch.",
     ),
     "ep1_flavor.0021": (
         "Royal-court language quarrel with random-duel and durable-modifier "
@@ -885,6 +886,68 @@ def _build_analysis() -> dict[str, dict[str, object]]:
         "reviewed three-scope projection or the R608 four-scope projection with "
         "an opaque typed faith identity."
     )
+    grief = analysis["stress_threshold_special.1001"]
+    grief["migrated_from"]["review_kind"] = (
+        "exact-build-r0065-original-definition-and-natural-frame-review"
+    )
+    grief.update({
+        "source_sha256": {
+            "events/stress_events/stress_threshold_special_events.txt": (
+                "768CBA7DB6270BB2FE25D9EEE37D2F24483EE309A2496DD9A539673EF094F709"
+            ),
+            "common/modifiers/00_stress_effect_modifiers.txt": (
+                "B488F35D8925AEEA9909AA77208EB46EC4428F74D73D7346FD8055400370FD13"
+            ),
+            "common/script_values/00_stress_values.txt": (
+                "104A7EF94EE9DA1092F23AEB2FD9DC971B08C695415F3B7EBFB628F381D26395"
+            ),
+        },
+        "selected_choice_effect_profile": {
+            "schema": "xar.ck3.vanilla-event-choice-effect",
+            "schema_version": 1,
+            "selected_native_option_index": 7,
+            "completeness": "selected-option-and-common-after-source-reviewed",
+            "selected_option_effects": [
+                {
+                    "domain": "character_modifier",
+                    "subject": "root",
+                    "operation": "add",
+                    "modifier": "stress_frozen_grief",
+                    "duration": "indefinite",
+                    "runtime_presence_observed": False,
+                },
+                {
+                    "domain": "stress",
+                    "subject": "root",
+                    "operation": "stress_impact",
+                    "authored_value_key": "medium_stress_impact_loss",
+                    "authored_base_points": -30,
+                    "runtime_delta_exact": False,
+                    "runtime_delta_reason": (
+                        "character stress-impact modifiers are not observed"
+                    ),
+                },
+            ],
+            "common_after_effects": [
+                "stress_threshold_event_aftereffects:flags_and_cooldown"
+            ],
+            "observable_postcondition": {
+                "metric": "played_character.stress_points",
+                "expected_relation": "non_increasing",
+                "material_change_required_for_evidence": True,
+            },
+            "source_anchors": [
+                "events/stress_events/stress_threshold_special_events.txt:466-477",
+                "common/modifiers/00_stress_effect_modifiers.txt:3",
+                "common/script_values/00_stress_values.txt:33",
+            ],
+        },
+        "r0065_quality_debt": (
+            "native 7 applies permanent health -0.5 and diplomacy -2; "
+            "native 4 may be better only after same-frame has_trait(inappetetic) "
+            "is observed. This B0 does not claim optimality or modifier observation."
+        ),
+    })
     return analysis
 
 

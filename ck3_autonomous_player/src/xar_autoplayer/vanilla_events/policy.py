@@ -453,6 +453,15 @@ _SOURCE_BOUND_OPTION_VARIANT_FIELDS: Final = {
             "scope_types",
         }
     ),
+    "stress_threshold_special.1001": frozenset(
+        {
+            "character_scope_differs_from",
+            "saved_scope_count",
+            "saved_scope_name_sets",
+            "scope_types",
+            "unique_character_scope_excludes",
+        }
+    ),
 }
 _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
     {
@@ -462,6 +471,7 @@ _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
         "health.1010",
         "health.3104",
         "natural_disaster.7031",
+        "stress_threshold_special.1001",
     }
 )
 _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset(
@@ -481,6 +491,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "health.3104",
         "hostile_scheme_discovery.2001",
         "prison_notification.2002",
+        "stress_threshold_special.1001",
     }
 )
 _DIRECT_SCOPE_VARIANT_EVENT_KEYS: Final = frozenset(
@@ -773,6 +784,40 @@ def recommend_registered_vanilla_event_option_v1(
         event_context, contract, option_count
     )
     checks.update(option_checks)
+    if event_key == "stress_threshold_special.1001":
+        analysis = knowledge.get("analysis")
+        source_hashes = (
+            analysis.get("source_sha256")
+            if isinstance(analysis, Mapping)
+            else None
+        )
+        event_instance_id = _integer(
+            event_context.get("current_event_instance_id")
+        )
+        snapshot_revision = _integer(event_context.get("snapshot_revision"))
+        date_raw = _integer(event_context.get("date_raw"))
+        checks["r0065_exact_source_and_definition"] = bool(
+            isinstance(source_hashes, Mapping)
+            and source_hashes.get(
+                "events/stress_events/stress_threshold_special_events.txt"
+            )
+            == "768CBA7DB6270BB2FE25D9EEE37D2F24483EE309A2496DD9A539673EF094F709"
+            and event_context.get("calculated_event_id") == 3_121_001
+            and event_context.get("runtime_stats_ordinal") == 4_333
+        )
+        checks["r0065_single_paused_event_frame"] = bool(
+            event_instance_id is not None
+            and event_instance_id > 0
+            and snapshot_revision is not None
+            and snapshot_revision > 0
+            and date_raw is not None
+        )
+        checks["r0065_exact_grief_variant_only"] = bool(
+            option_variant_index == 3
+            and contract.get("selected_native_option_index") == 7
+            and tuple(_sequence(contract.get("native_option_indices")) or ())
+            == (0, 4, 7)
+        )
     if not all(checks.values()) or selected is None:
         return _response(
             status="blocked",

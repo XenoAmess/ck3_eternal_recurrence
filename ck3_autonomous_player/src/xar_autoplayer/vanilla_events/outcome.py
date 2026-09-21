@@ -28,6 +28,10 @@ _SUPPORTED_CHOICES: Final = {
         "played_character.stress_points",
         "non_decreasing",
     ),
+    ("stress_threshold_special.1001", 7): (
+        "played_character.stress_points",
+        "non_increasing",
+    ),
 }
 _CHOICE_EFFECT_PROFILE_SCHEMA: Final = "xar.ck3.vanilla-event-choice-effect"
 _OBSERVATION_FIELDS: Final = {

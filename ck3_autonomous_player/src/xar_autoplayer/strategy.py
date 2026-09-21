@@ -6769,6 +6769,42 @@ def _choose_one_life_turn_core(
                         ),
                     )
                 )
+                if event_context.get("event_definition_key") == (
+                    "stress_threshold_special.1001"
+                ):
+                    starting_stress = (
+                        material_postcondition.get("starting_value")
+                        if isinstance(material_postcondition, dict)
+                        else None
+                    )
+                    if not (
+                        isinstance(material_postcondition, dict)
+                        and material_postcondition.get("status") == "ready"
+                        and isinstance(starting_stress, int)
+                        and not isinstance(starting_stress, bool)
+                        and starting_stress > 0
+                    ):
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "active_event_registry_material_observation_blocked",
+                            "selected_step": None,
+                            "reason": (
+                                "the R0065 grief choice needs same-frame "
+                                "positive played-character stress to verify "
+                                "a material decrease after the typed option"
+                            ),
+                            "active_event": event_summary,
+                            "event_decision": {
+                                **registry_decision,
+                                "status": "blocked",
+                                "unavailable_reason": (
+                                    "r0065_positive_stress_observation_unavailable"
+                                ),
+                            },
+                            "required_capability": (
+                                "game.state.played-character-stress-points"
+                            ),
+                        }
                 native_index = registry_decision.get(
                     "selected_native_option_index"
                 )

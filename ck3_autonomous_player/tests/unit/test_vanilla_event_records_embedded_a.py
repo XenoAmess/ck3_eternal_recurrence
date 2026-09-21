@@ -120,10 +120,34 @@ class EmbeddedAVanillaTimelineContractsTests(unittest.TestCase):
                 legacy_semantics.setdefault(
                     "date_policy", "product-observation-window"
                 )
+                migrated_contract = contract
+                if event_key == "stress_threshold_special.1001":
+                    migrated_contract = {
+                        **contract,
+                        "option_variants": contract["option_variants"][:-1],
+                    }
                 self.assertEqual(
-                    _without_campaign_bindings(contract),
+                    _without_campaign_bindings(migrated_contract),
                     legacy_semantics,
                 )
+
+    def test_r0065_grief_variant_is_portable_and_not_legacy_observation(
+        self,
+    ) -> None:
+        key = "stress_threshold_special.1001"
+        historical = records._LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[key]
+        portable = records.EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[key]
+        self.assertEqual(len(historical["option_variants"]), 3)
+        self.assertEqual(len(portable["option_variants"]), 4)
+        new = portable["option_variants"][-1]
+        self.assertEqual(new["native_option_indices"], (0, 4, 7))
+        self.assertEqual(new["selected_native_option_index"], 7)
+        self.assertEqual(new["saved_scope_count"], 2)
+        self.assertEqual(
+            new["unique_character_scope_excludes"],
+            {"deceased_character": (PLAYER_SENTINEL,)},
+        )
+        _assert_portable_bindings(self, new)
 
     def test_removed_bindings_are_verbatim_migration_observations(self) -> None:
         legacy = records._LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS
