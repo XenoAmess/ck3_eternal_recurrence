@@ -957,3 +957,27 @@ flowchart LR
     P -->|no| W["keep waiting / RED on timeout"]
     P -->|yes| G["arrived semantics; next turn re-observes"]
 ```
+
+### R885 实机形状复盘：广告有效、passive consumer 漏接
+
+R885 使用 agent commit `fc8d18e49ba483ba2009724ea32bac4b5a0f7062` 的短复验报告位于
+`C:\b\g2-preview-ordinary-fc8d18e4-r885-extracted\runs\r885-route-cancel-short\formal-report.txt`
+（SHA-256 `828C880CA7A7065129C07D5E5982D3D839A3EB1ACDE417CC71D29F2C5922FF21`）；对应
+`driver-state.json` SHA-256 为
+`10E7497812760138C9A5C4BD5370F78E23A7FB75C42B83F109C7A1ECFFED4EA1`。
+它仍在 date `53282952` 停于 `native_war_no_safe_exact_route`，没有执行取消。
+
+- [live-confirmed] history index `1449` 是 same-frame exact query：snapshot `native:3`、public revision `4`、
+  native revision `3`、connection generation `1`；ArmyID `184549472` 的 current 为 `8750`，target/route 为
+  `45/[45]`，四个 hostile ID 与当前 war scope 完全一致。返回的 `one_day_contact_free=false` 来自 Province
+  `45` 的真实 same-province 冲突；它不削弱“清除这条危险路线”的授权。
+- [static-confirmed] 把上述完整实机形状和 index `1445` 之后的 query row 固化为 deterministic regression 后，
+  `_fresh_same_province_route_clear_steps` 会严格广告 `move-army-184549472-to-8750`。因此 R885 初始的
+  “helper 谓词过严”假设不成立；无需放宽 Army/state/query binding。
+- [static-ready counter-policy] 根因是策略存在两条 unsafe-active-route 收口分支：candidate/regroup 分支已经
+  消费 same-current literal，passive continuation 分支却在 white-peace/emergency 检查后直接返回 RED。后者现在也
+  只在该 exact literal 已出现在 `available_steps` 且当前 route 仍非空时选择它；literal 缺失时仍保持
+  `native_war_no_safe_exact_route`，不从策略层自行授权 mutation。
+- [pending live] R885 RED 仍需新制品短复验关闭：正式 turn 应选择 typed same-current move，随后只能由严格更新的
+  paused frame（同 ArmyID/current、target `null`、route `[]`、stationary、非 combat/retreat）判定成功，并由下一 turn
+  消费。静态回归不冒充这项 live closure。

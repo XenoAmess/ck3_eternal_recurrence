@@ -7490,6 +7490,174 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
 
+    def test_r885_live_shape_projects_same_province_route_clear(self) -> None:
+        date_raw = 53_282_952
+        subject = _army(
+            184_549_472,
+            province_id=8750,
+            move_target_province_id=45,
+            route_province_ids=[45],
+            army_state="moving",
+            army_state_code=7,
+        )
+        hostiles = [
+            _army(
+                184_549_393,
+                province_id=45,
+                controllable=False,
+                route_province_ids=[],
+                army_state="regular",
+                army_state_code=1,
+            ),
+            _army(
+                201_326_661,
+                province_id=46,
+                move_target_province_id=8749,
+                controllable=False,
+                route_province_ids=[8749],
+                army_state="moving",
+                army_state_code=7,
+            ),
+            _army(
+                234_881_097,
+                province_id=46,
+                controllable=False,
+                route_province_ids=[],
+                army_state="regular",
+                army_state_code=1,
+            ),
+            _army(
+                301_989_919,
+                province_id=46,
+                move_target_province_id=8750,
+                controllable=False,
+                route_province_ids=[45, 8750],
+                army_state="moving",
+                army_state_code=7,
+            ),
+        ]
+        snapshot = {
+            "snapshot_id": "native:3",
+            "revision": 4,
+            "native_revision": 3,
+            "date_raw": date_raw,
+            "paused": True,
+            "episode_run_id": "native-31853-af642d76cb41",
+            "diagnostics": {"connection_generation": 1},
+            "player_armies": [subject],
+            "active_wars": [
+                _war(allied_armies=[subject], enemy_armies=hostiles)
+            ],
+        }
+        step = query_route_contact_horizon_step(
+            184_549_472,
+            45,
+            (184_549_393, 201_326_661, 234_881_097, 301_989_919),
+        )
+        history = [
+            {
+                "index": 1445,
+                "command": "restore-checkpoint",
+                "ok": True,
+                "result": {"step": "restore-checkpoint"},
+            },
+            {
+                "index": 1449,
+                "command": step,
+                "ok": True,
+                "result": {
+                    "step": step,
+                    "accepted": True,
+                    "status": "available",
+                    "query_sequence": 1,
+                    "snapshot_revision": 3,
+                    "route_contact_horizon": {
+                        "status": "available",
+                        "date_raw": date_raw,
+                        "snapshot_revision": 3,
+                        "subject_army_id": 184_549_472,
+                        "target_province_id": 45,
+                        "hostile_army_ids": [
+                            184_549_393,
+                            201_326_661,
+                            234_881_097,
+                            301_989_919,
+                        ],
+                        "subject_route": {
+                            "timeline_observable": True,
+                            "army_id": 184_549_472,
+                            "current_province_id": 8750,
+                            "effective_origin_province_id": 45,
+                            "route_province_ids": [45],
+                            "arrival_date_raws": [date_raw + 24],
+                        },
+                        "hostile_routes": [
+                            {
+                                "timeline_observable": True,
+                                "army_id": 184_549_393,
+                                "current_province_id": 45,
+                                "effective_origin_province_id": 45,
+                                "route_province_ids": [],
+                                "arrival_date_raws": [],
+                            },
+                            {
+                                "timeline_observable": True,
+                                "army_id": 201_326_661,
+                                "current_province_id": 46,
+                                "effective_origin_province_id": 8749,
+                                "route_province_ids": [8749],
+                                "arrival_date_raws": [date_raw + 24],
+                            },
+                            {
+                                "timeline_observable": True,
+                                "army_id": 234_881_097,
+                                "current_province_id": 46,
+                                "effective_origin_province_id": 46,
+                                "route_province_ids": [],
+                                "arrival_date_raws": [],
+                            },
+                            {
+                                "timeline_observable": True,
+                                "army_id": 301_989_919,
+                                "current_province_id": 46,
+                                "effective_origin_province_id": 45,
+                                "route_province_ids": [45, 8750],
+                                "arrival_date_raws": [
+                                    date_raw + 96,
+                                    date_raw + 360,
+                                ],
+                            },
+                        ],
+                        "horizon_start_date_raw": date_raw,
+                        "horizon_end_date_raw": date_raw + 24,
+                        "one_day_contact_free": False,
+                        "conflicts": [
+                            {
+                                "kind": "same_province",
+                                "hostile_army_id": 184_549_393,
+                                "province_id": 45,
+                                "overlap_start_date_raw": date_raw + 24,
+                                "overlap_end_date_raw": date_raw + 24,
+                            }
+                        ],
+                    },
+                    "backend_id": "native-headless",
+                    "queried_snapshot_id": "native:3",
+                    "queried_revision": 4,
+                    "queried_native_revision": 3,
+                    "queried_connection_generation": 1,
+                    "queried_episode_run_id": (
+                        "native-31853-af642d76cb41"
+                    ),
+                },
+            },
+        ]
+
+        self.assertEqual(
+            _fresh_same_province_route_clear_steps(snapshot, history),
+            {"move-army-184549472-to-8750"},
+        )
+
     def test_actual_contact_scope_is_atomic_and_combat_v3_ready(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
