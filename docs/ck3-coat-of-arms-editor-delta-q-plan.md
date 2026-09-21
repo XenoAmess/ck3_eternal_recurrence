@@ -59,7 +59,7 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 ### Q0：冻结 benchmark-v1（P0，1–2 工程日）
 
-状态：`in-progress`。
+状态：`browser-passed / v15-native-pending`（2026-09-21；[benchmark-v1](coat-of-arms-fit-artifacts/delta-q-benchmark-v1/README.md)）。
 
 - 把七图 v14/v15 基线投影成机器可读 manifest，记录输入、候选源码、预览、指标、实例数和 SHA-256。
 - 新增确定性合成语料生成器，生成 192/64 dev/holdout manifest 与扰动阶梯，不提交重复的大体积像素副本。
@@ -70,12 +70,22 @@ Delta-Q 只优化图片到 CK3 家徽的拟合质量：在相同实例预算和�
 
 ### Q1：感知评分 v2 shadow calibration（P0，3–4 工程日，依赖 Q0）
 
+状态：`shadow-passed`（2026-09-21；[R001–R005 与七图追加式证据](coat-of-arms-fit-artifacts/delta-q-perceptual-shadow-v1/README.md)）。
+
 - 新增线性光颜色差异、多尺度颜色布局、双向边缘距离、主体面积/重心、连通域与孔洞结构等独立指标。
-- 保持 legacy 指标不变；WebGL scorer 与 CPU reference 对新维度执行相同的数值和排序 fail-closed 门禁。
+- 保持 legacy 指标不变；v2 shadow 只走确定性 CPU reference，未实现的 WebGL v2 不得伪装成一致。后续若新增 GPU v2，必须先执行 CPU 数值和排序 fail-closed 门禁。
 - 在扰动阶梯上验证严重扰动不得优于轻微扰动，在真实七图上生成 shadow 报告。
 - 门限和权重在允许它参与搜索前冻结；不得在真实结果出来后追调门限。
 
-退出条件：CPU 确定性、GPU/CPU 一致性、扰动单调性和七图 shadow 报告 GREEN；搜索结果仍与基线逐字节一致。
+退出条件：CPU 确定性、扰动单调性和七图 shadow 报告 GREEN；搜索结果仍与基线逐字节一致。v2 晋升搜索时先在 bounded frontier 上以 CPU 完整 DDS 评分；GPU v2 不是本阶段的虚假前置条件。
+
+实证：
+
+- R001–R004 保留三级严格单调、语义参数扰动、周期位移和硬阈值结构权重暴露的 RED，不覆盖失败 attempt。
+- R005 在 64 个 hash-frozen holdout 上 GREEN：颜色 100%、固定终点平移 96.875%、缩放 100%、旋转 100%，分别超过 98% / 90% / 85% / 75% 门限。
+- 七张真实 v14 首选候选均完成 96/230/512 px 精确 DDS shadow 重算，所有维度有限、非负且重复计算逐值一致。
+- 最终 v2 合同以连续的线性颜色、多尺度颜色和梯度差为主；双向轮廓、连通分量和封闭区域继续作为独立诊断。
+- v2 明确保持 `shadow-only + cpu-reference`，不参与 legacy 搜索排序，也不把未实现的 GPU v2 计算冒充一致；现有 WebGL legacy scorer 继续执行 CPU 数值与排序 fail-closed。
 
 ### Q2：原生素材检索 v2（P0，3–5 工程日，依赖 Q1）
 

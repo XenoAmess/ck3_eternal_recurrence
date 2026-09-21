@@ -8,6 +8,7 @@ import {
   type ImageFitParetoCandidate,
   type ImageFitResult,
 } from './imageFitter'
+import { measurePerceptualFitMetricsV2 } from './perceptualFitMetrics'
 import { renderCoatOfArms, type NamedColorMap } from './renderer'
 import type { CoatOfArms } from './types'
 
@@ -104,6 +105,13 @@ export function finalizeImageFitWithFullAssets(
       (metric) => metric.resolution === searchResult.provenance.resolution,
     )!
     const primaryTarget = targets.get(searchResult.provenance.resolution)!
+    const primaryRendered = renderCoatOfArms(
+      candidate.coatOfArms,
+      { pattern, coloredEmblems: assets.coloredEmblems, surfaceMask: assets.surfaceMask },
+      namedColors,
+      searchResult.provenance.resolution,
+    )
+    if (!primaryRendered) throw new Error('完整 DDS 候选无法在主分辨率渲染')
     const baselineRendered = renderCoatOfArms(
       withoutEmblems(candidate.coatOfArms),
       { pattern, coloredEmblems: {}, surfaceMask: assets.surfaceMask },
@@ -122,7 +130,12 @@ export function finalizeImageFitWithFullAssets(
     }
     return {
       originalIndex,
-      candidate: { ...candidate, metrics, multiscaleMetrics },
+      candidate: {
+        ...candidate,
+        metrics,
+        perceptualMetricsV2: measurePerceptualFitMetricsV2(primaryTarget, primaryRendered),
+        multiscaleMetrics,
+      },
       searchMetrics: candidate.metrics,
       drawnInstances: drawnInstances(candidate),
     }
@@ -177,6 +190,10 @@ export function finalizeImageFitWithFullAssets(
         drawnInstances: winner.drawnInstances,
         selectedLayers: winner.drawnInstances,
         reconstructionMode: winner.candidate.reconstructionMode,
+        perceptualScoringShadow: {
+          ...searchResult.provenance.perceptualScoringShadow,
+          selected: winner.candidate.perceptualMetricsV2,
+        },
         selectedMultiscaleMetrics: winner.candidate.multiscaleMetrics,
         selectedAssetSha256,
         fullAssetFinalization: {

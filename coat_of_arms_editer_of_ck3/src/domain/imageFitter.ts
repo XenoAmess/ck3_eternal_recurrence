@@ -11,6 +11,11 @@ import {
   FIT_SHAPE_DESCRIPTOR_SIZE,
   type FitTextureShapeFeatures,
 } from './shapeFeatures'
+import {
+  measurePerceptualFitMetricsV2,
+  PERCEPTUAL_FIT_SCORING_CONTRACT,
+  type PerceptualFitMetricsV2,
+} from './perceptualFitMetrics'
 
 export interface FitImage {
   width: number
@@ -140,6 +145,7 @@ export interface NativeTileSeamValidation {
 export interface ImageFitParetoCandidate {
   coatOfArms: CoatOfArms
   metrics: ImageFitMetrics
+  perceptualMetricsV2: PerceptualFitMetricsV2
   reconstructionMode: ImageFitReconstructionMode
   textureNames: string[]
   multiscaleMetrics: MultiscaleFitMetric[]
@@ -154,6 +160,12 @@ export interface ImageFitResult {
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
+    perceptualScoringShadow: {
+      contract: typeof PERCEPTUAL_FIT_SCORING_CONTRACT
+      status: 'shadow-only'
+      backend: 'cpu-reference'
+      selected: PerceptualFitMetricsV2
+    }
     rendererContract: 'cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4'
     randomSeed: null
     surfaceMaskApplied: boolean
@@ -2682,6 +2694,7 @@ export function fitImageToCoatOfArms(
           ? 0
           : Math.max(0, (initialLoss - state.candidate.totalLoss) / initialLoss),
       },
+      perceptualMetricsV2: measurePerceptualFitMetricsV2(target, nativeRendered),
       reconstructionMode: state.reconstructionMode,
       textureNames: [...new Set(state.selectedAssets.map((item) => item.name))],
       multiscaleMetrics: candidateMultiscaleMetrics.get(state) ?? [],
@@ -2717,6 +2730,12 @@ export function fitImageToCoatOfArms(
         : 'cpu-reference',
       batchSearch,
       scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1',
+      perceptualScoringShadow: {
+        contract: PERCEPTUAL_FIT_SCORING_CONTRACT,
+        status: 'shadow-only',
+        backend: 'cpu-reference',
+        selected: paretoCandidates[0].perceptualMetricsV2,
+      },
       rendererContract: 'cpu-rgba8-trilinear-dds-mip-pixel-center-native-clockwise-depth-descending-v4',
       randomSeed: null,
       surfaceMaskApplied: Boolean(surfaceMask),
