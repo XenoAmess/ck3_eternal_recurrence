@@ -95,3 +95,9 @@ projection；若只得到婚姻 native score 或战争 declaration ID，仍不�
 - 建设/lifestyle runner 聚焦集：normal 4/4、`-O` 4/4 GREEN。
 - 本次只读评估没有启动、停止或操作 CK3；检查时已有其他负责人持有唯一 CK3 实例，以上 live gate 均应继续排队。
 - 未更新 `g2-requirements-v1.json`；本合同不改变 G2 `1/8`。
+
+## 2026-09-22 证据覆写：候选来源门已过，联合选择仍未过
+
+上文的 R725「raw0 修复版 live 待验」和 G2 `1/8` 是 09-21 冻结时点，不得作为当前状态。R736 在同一真实 paused native revision `native:3` 读到 657 个不同的首继承人最终合法婚姻行和 30 个不同原生允许宣战行；`recipient_answer_status_raw=0` 已正确解释为允许。只读报告 `Z:\ck3_mod_rewrite_process_assets\g2-m5-r733-pump-20260916\candidate\live-R736\report.json`，SHA-256 `83AE4841…798C8E94`；零动作、零日期推进。它只关闭合法候选来源与 raw0 解释窄门，不证明联合评分或正式消费，也不能拿首继承人行充作只支持玩家本人婚姻的公开 typed 动作。
+
+下一 M5 场景应在同一新冻结标准封建决策帧取得公共 state snapshot 的资金/当前战争和已广告 war-entry assessment，并把婚姻实际双方/关系/联盟、战争参战者/盟友/路线/补给/有界成本接成只读原生输入；不得重跑 R736 只为重新计数。当前 `build_joint_candidate_ledger` 设计上返回 `joint_selection_ready=false` 和 `selected_step=None`，至少五个真实且 typed 可执行的合法候选、同一机会成本尺度、独立后置和下一 turn 消费仍待施工。权威 G2 当前 `2/8`（M0/M1），定义与分母未变。
