@@ -73,6 +73,57 @@ def _payload(
 
 
 class WarTerminationTermsLiveAcceptanceChecksTests(unittest.TestCase):
+    def test_optional_checkpoint_rebinder_receives_projected_pipe(self) -> None:
+        calls: list[tuple[object, str | None]] = []
+        spec = object()
+
+        def rebind(value: object, *, expected_pipe_name: str | None = None):
+            calls.append((value, expected_pipe_name))
+            return {"ok": True, "status": "rebound"}
+
+        receipt = HARNESS._apply_checkpoint_rebinder(
+            spec,
+            "xar-gen034-d-action",
+            rebind,
+        )
+
+        self.assertEqual(calls, [(spec, "xar-gen034-d-action")])
+        self.assertEqual(receipt, {"ok": True, "status": "rebound"})
+
+    def test_absent_checkpoint_rebinder_preserves_existing_callers(self) -> None:
+        self.assertIsNone(
+            HARNESS._apply_checkpoint_rebinder(
+                object(),
+                "xar-existing-caller",
+                None,
+            )
+        )
+
+    def test_checkpoint_rebinder_must_return_green_receipt(self) -> None:
+        with self.assertRaisesRegex(
+            HARNESS.AgentError,
+            "checkpoint rebinder did not return a GREEN receipt",
+        ):
+            HARNESS._apply_checkpoint_rebinder(
+                object(),
+                "xar-gen034-d-action",
+                lambda *_args, **_kwargs: {"ok": False},
+            )
+
+    def test_rebinder_runs_after_projection_and_before_cold_validation(self) -> None:
+        source = SCRIPT.read_text(encoding="utf-8")
+        projection = source.index(
+            "shutil.copy2(immutable_driver, state_driver)"
+        )
+        rebinding = source.index(
+            "checkpoint_rebinding = _apply_checkpoint_rebinder("
+        )
+        cold_validation = source.index(
+            "cold_validation = validate_cold_start_checkpoint_for_pipe("
+        )
+        self.assertLess(projection, rebinding)
+        self.assertLess(rebinding, cold_validation)
+
     def test_product_tree_sha256_comparison_is_case_insensitive(self) -> None:
         uppercase = "F4E63FFFA6CF9332BA41EB5985D1CB72F280F4BF375A15473F4638F43CF944BE"
         self.assertTrue(

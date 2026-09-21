@@ -25,7 +25,7 @@ import shutil
 import sys
 import threading
 import time
-from typing import Any
+from typing import Any, Callable
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
@@ -187,6 +187,22 @@ def _driver_anchor(path: Path) -> dict[str, object]:
         "command_history_count": len(value.get("command_history", [])),
         "last_checkpoint": copy.deepcopy(checkpoint),
     }
+
+
+def _apply_checkpoint_rebinder(
+    spec: Any,
+    pipe_name: str,
+    checkpoint_rebinder: Callable[..., dict[str, object]] | None,
+) -> dict[str, object] | None:
+    if checkpoint_rebinder is None:
+        return None
+    receipt = checkpoint_rebinder(
+        spec,
+        expected_pipe_name=pipe_name,
+    )
+    if not isinstance(receipt, dict) or receipt.get("ok") is not True:
+        raise AgentError("checkpoint rebinder did not return a GREEN receipt")
+    return receipt
 
 
 def _diagnostics(capabilities: object) -> dict[str, object]:
@@ -598,6 +614,7 @@ def _run(
     exact_build_runner: Any = _exact_build_proof,
     report_kind: str = "ck3_war_termination_terms_four_domain_live_acceptance",
     policy_override: dict[str, object] | None = None,
+    checkpoint_rebinder: Callable[..., dict[str, object]] | None = None,
 ) -> tuple[dict[str, object], int]:
     started_wall = utc_now()
     started = time.monotonic()
@@ -628,6 +645,7 @@ def _run(
     preparation: dict[str, object] | None = None
     inputs: dict[str, object] | None = None
     anchor: dict[str, object] | None = None
+    checkpoint_rebinding: dict[str, object] | None = None
     cold_validation: dict[str, object] | None = None
     readiness: dict[str, object] | None = None
     mcp_sequence: dict[str, object] | None = None
@@ -712,6 +730,11 @@ def _run(
                     "short-path product"
                 )
         pipe_name = str(anchor["pipe_name"])
+        checkpoint_rebinding = _apply_checkpoint_rebinder(
+            spec,
+            pipe_name,
+            checkpoint_rebinder,
+        )
         cold_validation = validate_cold_start_checkpoint_for_pipe(spec, pipe_name)
         config = NativeBridgeLaunchConfig(
             mode=PURE_NATIVE_MODE,
@@ -864,6 +887,7 @@ def _run(
         },
         "inputs": inputs,
         "driver_anchor": anchor,
+        "checkpoint_rebinding": checkpoint_rebinding,
         "cold_validation": cold_validation,
         "preparation": preparation,
         "identity": {

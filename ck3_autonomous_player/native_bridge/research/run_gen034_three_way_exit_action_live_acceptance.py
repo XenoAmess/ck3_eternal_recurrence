@@ -64,6 +64,9 @@ from xar_autoplayer.simulation.raiktor_three_way_exit_postwar_evidence import ( 
     normalize_raiktor_three_way_exit_source_binding,
     provide_raiktor_three_way_exit_postwar_evidence,
 )
+from xar_autoplayer.rogue_checkpoint_rebinder import (  # noqa: E402
+    rebind_rogue_checkpoint_v1,
+)
 
 
 REPORT_KIND = "ck3_gen034_three_way_exit_action_live_acceptance"
@@ -1000,6 +1003,7 @@ def main(argv: list[str] | None = None) -> int:
                     "continue_route_checkpoint_cold_restores": 0,
                     "broad_loaded_effect_preview_enabled": False,
                 },
+                checkpoint_rebinder=rebind_rogue_checkpoint_v1,
             )
             payload["no_launch_preflight"] = preflight_payload
             payload["source_capture"] = preflight_payload["source_capture"]

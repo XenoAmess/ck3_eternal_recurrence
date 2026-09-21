@@ -142,6 +142,19 @@ class _FakeClient:
         )
 
 
+class Gen034ActionRunnerCheckpointRebindTests(unittest.TestCase):
+    def test_action_runner_wires_typed_rogue_checkpoint_rebinder(self) -> None:
+        source = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn(
+            "from xar_autoplayer.rogue_checkpoint_rebinder import",
+            source,
+        )
+        self.assertIn(
+            "checkpoint_rebinder=rebind_rogue_checkpoint_v1",
+            source,
+        )
+
+
 def _termination_fixture(
     *, cleanup_status: str = "destroyed"
 ) -> tuple[dict[str, object], _FakeClient]:
