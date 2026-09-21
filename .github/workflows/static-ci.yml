@@ -11,12 +11,6 @@ permissions:
 jobs:
   static:
     runs-on: windows-latest
-    env:
-      TEMP: ${{ runner.temp }}
-      TMP: ${{ runner.temp }}
-      PIP_CACHE_DIR: ${{ runner.temp }}\pip-cache
-      PYTHONPYCACHEPREFIX: ${{ runner.temp }}\python-bytecode
-      XDG_CACHE_HOME: ${{ runner.temp }}\cache
     defaults:
       run:
         shell: cmd
@@ -25,10 +19,11 @@ jobs:
         run: |
           if /I "%GITHUB_WORKSPACE:~0,2%"=="C:" exit /b 1
           if /I "%RUNNER_TEMP:~0,2%"=="C:" exit /b 1
-          if /I "%TEMP:~0,2%"=="C:" exit /b 1
-          if /I "%TMP:~0,2%"=="C:" exit /b 1
-          if /I "%PIP_CACHE_DIR:~0,2%"=="C:" exit /b 1
-          if /I "%PYTHONPYCACHEPREFIX:~0,2%"=="C:" exit /b 1
+          echo TEMP=%RUNNER_TEMP%>>"%GITHUB_ENV%"
+          echo TMP=%RUNNER_TEMP%>>"%GITHUB_ENV%"
+          echo PIP_CACHE_DIR=%RUNNER_TEMP%\pip-cache>>"%GITHUB_ENV%"
+          echo PYTHONPYCACHEPREFIX=%RUNNER_TEMP%\python-bytecode>>"%GITHUB_ENV%"
+          echo XDG_CACHE_HOME=%RUNNER_TEMP%\cache>>"%GITHUB_ENV%"
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
