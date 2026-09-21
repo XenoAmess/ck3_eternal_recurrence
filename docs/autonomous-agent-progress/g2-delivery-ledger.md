@@ -76,3 +76,13 @@ R0057–R0059 精确 PRV-004 增量（覆盖上表 PRV-004 待验）：最终 ma
 | Council / G2 | Council `1/4`、公共 OFF；权威 G2 `2/8` | 议会私有 action-OFF；G2 JSON 未改 | 保护 master `be53794`，PRV-005 冻结 `3da54dc` 不随它重标 | guest/pending/replacement-positive 不存在；自然继承、长期整局/双种子无新增完整证据 | 不适用 | 围绕已出现实证 B0 优先；不扩大宗教/广矩阵 | 已集成临时 branch 无遗留 |
 
 当前单 CK3 实例 0，唯一活动轮次账本 `Z:\ck3_mod_rewrite_process_assets\g2-live-run-ids-v1` seq65。历史 raw RED、paired checkpoint 与 run metadata 独立保留；旧 C 临时源物理删除仍受工具政策拒绝，不称完成。
+
+## 2026-09-22 当前覆盖：PRV-006 R0067–R0071
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| h1662 普通封建可运行预览 | **GO，仅此冻结起点/版本组合**；非整局 | 包内 `g2_preview_operator.py` → `native_auto_run` / `ck3_auto_turn` | [稳定 ZIP](Z:/ck3_mod_rewrite_process_assets/g2-preview-ordinary-cad5518-20260922/release/g2-preview-ordinary-h1662-cad5518-prv006.zip) SHA `7503E5D92703F29EA9BF72009FB24A108EFEE914AE6DDE42BB1135D1A6952803`；agent `cad5518`、native `434f832`，2372 CRC/2371 解压 SHA GREEN | R0067 fresh eligibility；R0068 60/60 typed 征兵，army[]→[301989888]、下一 turn 消费；R0069 自然 grant-vassal 提案唯一 typed 拒绝、pending→null、下一 turn 消费；分支 R0071 自然 stress.1001 选择 native7、100→64、事件消失/下一 turn 消费，非同一主链 | R0069 包内 stop 19/60、成对 save `44793BF1...18838`/driver `0FE2FE95...98959`、PID163504 回收；R0070 新 PID44176 从此 pair cold 20/20，同 actor/episode，无重复 raise/reject，主链续存 `7C988B19...59A94`/`7983567B...76BD`；全树回收 | 任意存档/自然继承、战争终局、议会后三门、治理物质结果尚未验；`/root` 继续普通主链与 G2；未知强制状态留 RED | PR #5 原 `a67d3a1`→master `0171d3a`，三条临时 branch/worktree 清理；PR #6 原 `a703313`→master `826cad9`，两条清理 |
+| GOV 建设物质源 | **RED 未关闭**；diagnostic 不是动作后置 | 私有读取/正式 consumer 仍 OFF | PR #6 master `826cad9` 保留 source_red payload；PR #7 pre-action 只读 query 原 `3248c9b`→master `87c8e20` | R0066 ACK pending 但 material source_red；仅原 R753 原始 pre-action pair 可安全只读探查；不得重复提交 | R0066 save 为旧 pre-action 而 driver 已记 pending，不可作为 paired cold restore | `/root` 与唯一实机 owner 聚焦 source；不把 ACK 称物质建设 | #7 原/集成两条远端与本地 branch/worktree 经 CAS 即时清理 |
+| Council / G2 | Council 1/4 公共 OFF；权威 G2 **2/8** 未改 | 私有 gate；合同 JSON | 冻结 PRV-006 `cad5518`；后续 master 不倒填为其制品 | guest/pending/replacement fireability 真正正例未出现；自然继承与两种子整局未验 | 不适用 | `/root` 在普通 campaign 出现真实门时取同帧只读证据 | 不适用 |
+
+当前已验 R0071 回收后 CK3=0，唯一可写 run-ID root `Z:\ck3_mod_rewrite_process_assets\g2-live-run-ids-v1` last sequence 71；R0072 普通主链续跑独占负责人另行记账。旧 R888/PRV-005 NO-GO 与 R0066 RED 都保留为历史真实状态；旧 C 临时源删除仍受工具策略限制，未称清完。

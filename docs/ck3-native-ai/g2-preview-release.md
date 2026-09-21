@@ -1,4 +1,10 @@
-# G2 标准封建预览：R888 历史资格与当前交付门
+# G2 标准封建预览：PRV-006 已交付与 R888 历史资格
+
+**当前窄范围可运行预览：GO（2026-09-22，PRV-006）。** [冻结 ZIP](Z:/ck3_mod_rewrite_process_assets/g2-preview-ordinary-cad5518-20260922/release/g2-preview-ordinary-h1662-cad5518-prv006.zip) SHA-256 `7503E5D92703F29EA9BF72009FB24A108EFEE914AE6DDE42BB1135D1A6952803`；以下 R888/PRV-005 的 NO-GO 段落是历史快照，不是本包的启动指南。PRV-006 限 exact CK3 1.19.0.6（EXE SHA `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`）、agent `cad551895476f3612c33915955cf987c6c0fdc18`、包内原始 h1662 标准封建存档、`xar_off`、仅 `mod/xar_autoplayer.mod`、冻结 DLC 描述与配置；不支持任意存档/种子或完整整局。稳定目录的 release 清单、资格收据及操作指南绑定精确 ZIP，原始报告单独保留；CK3 本体不在包内。
+
+同包 R0067 fresh 只读资格 GREEN、R0068 正式 60/60（turn47 唯一 typed 征兵，独立 ArmyID 变化、turn48/49 消费）、R0069 正式 stop 成对 checkpoint/全树回收、R0070 从此 pair 新 PID cold restore 20/20 且不重复动作。R0069 还自然遇到 `grant_vassal_interaction`，正式 typed 拒绝使 pending 独立清空并在下一 turn 消费。分开的 R0065 最后安全 pair 聚焦复验 R0071：自然 `stress_threshold_special.1001` 一次 typed 选择、独立 stress 100→64、事件清空、下一 turn 消费；这不是 R0069→R0070 同一轨迹。原报告 SHA/成对存档与轮次详情见稳定目录外部资格清单。议会仅 1/4 且公共能力 OFF，治理 R0066 建设 ACK 后物质查询 RED，战争终局/自然继承/整局与第二独立种子未完成；G2 权威仍 2/8。未知范围内强制状态仍须停机留 RED，不承诺无人值守跨全部自然事件。
+
+## 历史记录：R888 与 PRV-005（不可作为当前包操作指南）
 
 **当前可独立启动的用户交付：NO-GO（2026-09-22）。** 下文 R888 是冻结的历史实机资格记录，不是当前默认用户包：原 ZIP 缺包内 canonical run-ID 分配器，无法独立执行文内完整启动/收口步骤。不能修改该冻结 ZIP 或沿用其外部 GO 收据为新包盖章。h1380 自包含候选 R0053 40/40 技术 GREEN 却无非空 typed 动作；h1662 旧 b7 ZIP R0056 有 typed 征兵却在 turn58 战争 RED；master `fadc2e5` 的 PRV-004 ZIP 在 R0058 60/60 有真实征兵却 R0059 冷续遇 `grant_vassal_interaction` 未分类 B0。精确 `master@3da54dc` 的 PRV-005 ZIP SHA `F5EB7657...B282CD` 在 R0062 60/60 有正式动作闭环、R0064 受控停止且成对 checkpoint，但 R0065 从该 pair 的不同 PID 冷恢复第17 turn 遇自然九选项事件 `stress_threshold_special.1001`，现有正式事件消费者不支持并 RED，未盲选。冷恢复进程和前16轮不替代整个使用范围可连续运行；新修复制品仍须事件合同及受影响实机复验。权威 G2 是 `2/8`（仅 M0/M1 complete），预览切片不新增正式里程碑。
 
