@@ -699,3 +699,31 @@ flowchart TD
 - [static-ready candidate; paused production live pending] [Current timeline blocker context v1](current-timeline-blocker-context-v1.md) combines the exact-build fixed GUI owner/tree ABI with the frozen `IsPausedBySuccession` and `HasOpenSuccession(Character*)` native predicates. Both booleans are fail-closed typed observations; the capability remains unregistered and unadvertised.
 - [typed action static-ready; R777 precondition live, R778 action pending] [Private typed death-succession modal Close](death-succession-modal-continue-v1.md) now has a sealed formal production-owned runner: exact cold restore, one Close, later independent predicate/root observation, formal date advancement, and GREEN-only checkpoint. ACK is never material success; the public registry and MCP tool list remain unchanged.
 - [static-ready; ordinary live pending] [R793 ordinary natural-event and succession long-run contract](r793-natural-event-succession-long-run-contract.md) binds the R792 `xar_off` continuation, keeps the celestial-only travel event in a separate natural scene, and makes `native-auto-run` clear or verify the exact succession timeline blocker before saving an ordinary successor checkpoint.
+
+## 2026-09-21: R0030–R0032 GEN-034-D long-war terminal-policy correction
+
+- R0030 and R0031 proved that the pending-merge fence is production-live: all
+  five requested merges were consumed, no merge receipt remained pending, and
+  the continued Raiktor war produced real siege, battle and retreat state.
+  R0032 then cold-restored the exact R0031 checkpoint/driver pair in a distinct
+  CK3 process and completed another bounded continuation without replaying an
+  already applied action.
+- The R0032 terminal frame is an exact counterexample to the old fixed tail
+  penalty: duration `804` days, player score `-3`, player power
+  `10,518,484,600`, opponent power `24,041,080,000`, ratio
+  `228560/100000`. Surrender was native-valid and would be accepted, but its
+  utility `-101,825,000` lost to continue `-50,000,000`; white peace was
+  unavailable. The formal loop therefore exhausted its bounded window without
+  a matching terminal plan.
+- Model `1.1.0` keeps every old branch except a losing opponent-stronger war at
+  or beyond `730` days. That branch scales the existing continue tail penalty
+  by the same-frame exact measured-power ratio. On the R0032 frame the penalty
+  becomes `114,280,000`, so surrender wins by `12,455,000`. The policy remains
+  a replaceable counter-policy input, not a claim about vanilla AI behavior or
+  a campaign forecast.
+- Normal and optimized focused/broader suites pass `31/31`, `129/129`, and the
+  complete affected gameplay-bridge suite passes `259/259` in each mode. The
+  change is static-ready; a newly frozen runtime and production replay from the
+  clean R0032 pair are still required before any terminal action or GEN-034-D
+  closure is claimed. No public MCP wire, native ABI, or `open_kaishek` shape
+  changed (`NO-CODE-CHANGE`). G2 remains `1/8`; GEN-034 remains `3/4`.

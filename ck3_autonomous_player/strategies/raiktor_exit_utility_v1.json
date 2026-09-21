@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "contract": "raiktor-strategy-exit-utility-model-source-v2",
-  "model_version": "1.0.0",
+  "model_version": "1.1.0",
   "activation": {
     "kind": "repository_default",
     "source": "G2 GEN-034 replaceable strategy baseline",
@@ -39,8 +39,9 @@
     }
   },
   "tail_risk_policy": {
-    "rule_id": "measured-power-relation-penalty-v1",
+    "rule_id": "measured-power-relation-long-war-penalty-v2",
     "parameters_raw": {
+      "long_war_scale_start_days": 730,
       "opponent_stronger_continue_penalty_raw": 50000000,
       "parity_continue_penalty_raw": 10000000,
       "player_stronger_continue_penalty_raw": 0

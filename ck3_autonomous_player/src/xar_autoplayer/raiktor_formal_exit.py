@@ -212,6 +212,24 @@ def _utility_comparison_trace(certificate: dict[str, object]) -> dict[str, objec
         if name == "continue":
             rows[name]["measured_power_relation"] = option["measured_power_relation"]
             rows[name]["tail_risk_penalty_raw"] = option["tail_risk_penalty_raw"]
+            rows[name]["tail_risk_base_penalty_raw"] = option[
+                "tail_risk_base_penalty_raw"
+            ]
+            rows[name]["tail_risk_power_scale_applied"] = option[
+                "tail_risk_power_scale_applied"
+            ]
+            rows[name]["observed_war_duration_days"] = option[
+                "observed_war_duration_days"
+            ]
+            rows[name]["observed_player_relative_war_score"] = option[
+                "observed_player_relative_war_score"
+            ]
+            rows[name]["measured_power_ratio_raw"] = option[
+                "measured_power_ratio_raw"
+            ]
+            rows[name]["measured_power_ratio_scale"] = option[
+                "measured_power_ratio_scale"
+            ]
         else:
             rows[name]["uncertainty_penalty_raw"] = option["uncertainty_penalty_raw"]
     return {
@@ -253,6 +271,16 @@ def _opponent_terminal_control_input(
         raise ValueError(
             "same-frame Raiktor terminal-control scores are incomplete or drifted"
         )
+    war_duration_days = normalized.get("war_duration_days")
+    if (
+        isinstance(war_duration_days, bool)
+        or not isinstance(war_duration_days, int)
+        or war_duration_days < 0
+    ):
+        raise ValueError("same-frame Raiktor war duration is unavailable")
+    active_duration = war.get("war_duration_days")
+    if active_duration is not None and active_duration != war_duration_days:
+        raise ValueError("same-frame Raiktor war duration drifted")
     observation = white_peace_projection.get("white_peace_observation")
     frame = observation.get("frame") if isinstance(observation, dict) else None
     if not isinstance(frame, dict) or (
@@ -261,7 +289,7 @@ def _opponent_terminal_control_input(
     ):
         raise ValueError("Raiktor terminal-control frame is unavailable")
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "contract": OPPONENT_TERMINAL_CONTROL_CONTRACT,
         "status": "complete",
         "frame": dict(frame),
@@ -271,6 +299,7 @@ def _opponent_terminal_control_input(
         "absolute_war_scores_observable": True,
         "attacker_war_score": active_score,
         "defender_war_score": -active_score,
+        "war_duration_days": war_duration_days,
         "opponent_terminal_control": active_score <= -100,
         "source_options_query_sha256": canonical_policy_input_sha256(
             normalized

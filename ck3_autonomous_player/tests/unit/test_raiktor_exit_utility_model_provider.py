@@ -36,7 +36,17 @@ class RaiktorExitUtilityModelProviderTests(unittest.TestCase):
         )
         model = result["exit_utility_model"]
         self.assertEqual(model["contract"], MODEL_CONTRACT)
-        self.assertEqual(model["model_version"], "1.0.0")
+        self.assertEqual(model["model_version"], "1.1.0")
+        self.assertEqual(
+            model["tail_risk_policy"]["rule_id"],
+            "measured-power-relation-long-war-penalty-v2",
+        )
+        self.assertEqual(
+            model["tail_risk_policy"]["parameters_raw"][
+                "long_war_scale_start_days"
+            ],
+            730,
+        )
         self.assertTrue(model["model_production_eligible"])
         self.assertTrue(
             all(
@@ -107,7 +117,7 @@ class RaiktorExitUtilityModelProviderTests(unittest.TestCase):
                 "kind": "operator_override",
                 "source": "drift test",
                 "base_model_id": "raiktor-exit-balanced-utility-v1",
-                "base_model_version": "1.0.0",
+                "base_model_version": "1.1.0",
             }
             path = Path(directory) / "drift.json"
             path.write_text(json.dumps(source), encoding="utf-8")

@@ -397,3 +397,27 @@ candidate. The strict frozen gold/prestige postcondition is unchanged. If
 ordinary finances change during an actual asynchronous reply, that real
 resource mismatch remains RED pending a narrow action-boundary observation;
 the executor does not relax the accepted G2 requirement.
+
+## 2026-09-21 R0031/R0032 magnitude-aware continue utility
+
+R0031 and its true process-replacement continuation R0032 supplied the missing
+production counterexample to the v1 categorical continue penalty. The formal
+provider, terms evaluator and action gate were all ready; the only eligible
+routes were continue and surrender. Nevertheless the fixed
+`opponent_stronger=50,000,000` penalty ignored stable ratios `2.17782` and
+`2.28560`, leaving continue ahead of the observed surrender cost for 27 R0032
+decisions. R0032 ended at its 256-turn bound without a terminal intercept.
+
+The v2 tail-risk rule keeps the same-frame certificate and action contracts,
+but after 730 days at a negative player-relative score it scales the configured
+opponent-stronger penalty by the certificate's exact
+`actual_power_ratio_raw/fixed_point_scale`. This uses an existing validated
+production input and introduces no native or MCP field. At the R0032 frame it
+changes continue from `-50,000,000` to `-114,280,000`; surrender remains
+`-101,825,000` and wins by `12,455,000`. Terms legality, option-specific
+execution availability, hard budgets, minimum switch margin, single-action
+authorization and all termination postconditions remain unchanged.
+
+This package is static until a focused replay from the clean R0032 checkpoint
+produces a terminal intercept. It does not retroactively turn R0031/R0032
+GREEN, close GEN-034-D, or change the whole-program G2 status.

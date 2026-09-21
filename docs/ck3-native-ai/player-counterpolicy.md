@@ -825,3 +825,21 @@ flowchart TD
   contact 分支才可从 fail-closed 升级；新增能力前不得为测试伪造 unknown native 语义。
 - [unknown] 原生 stance identity、power aggregation、combat/retreat controller 与 assignment kind 的未来研究
   不属于 counter-policy 实现的前置条件；策略可以在这些字段永久 unknown 的情况下按本文安全运行。
+
+### R0032 Raiktor long-war terminal priority
+
+- [production-blocker-live] R0032 kept a legal siege path, so the ordinary
+  no-safe-route emergency exit correctly did not fire. The separate formal
+  Raiktor comparison still ran first, but its fixed categorical continue
+  penalty discarded the observed `2.28560` opponent/player power ratio and
+  returned to tactics through all 256 bounded turns.
+- [counter-policy] A same-frame Raiktor terminal comparison remains ahead of
+  siege, route and battle planning. After 730 days with negative score, the
+  exact stable power ratio scales only the continue tail-risk term; it does not
+  itself authorize surrender. If white peace or surrender then wins the
+  existing legality, budget and margin comparison, the typed terminal plan
+  preempts another tactical turn. Otherwise ordinary tactics continue.
+- [counter-policy] Missing duration, score or stable power remains fail closed.
+  ACK, a planned literal, or turn-limit exhaustion is not a material terminal
+  result; the existing WarID/resource/truce/cleanup/checkpoint/cold-restore
+  chain remains mandatory.

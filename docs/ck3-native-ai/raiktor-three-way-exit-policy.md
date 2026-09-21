@@ -706,3 +706,73 @@ An independent later paused frame no longer contained the WarID or either frozen
 R846 restored the exact R839 pair in a distinct CK3 process under agent `a5db1e5d`. WarID `33554473` remained absent, no surrender or alternative terminal action replayed, normal interaction/event work continued, and history693 was saved as a new pair (`9893F8C1...C08C` / `8315217A...F83`). Thus terminal recovery and later strategy consumption are production-live for this artifact.
 
 GEN-034-D remains `blocked_live`. R831/R839 did not capture the matching creation-time source attribution required by the fixed six-item contract. The observed WarID/army disappearance cannot retroactively prove exact gold, prestige, directional truce plus persisted expiry, source-specific war-bound regiment destruction, and postwar identity/recovery as one source-bound certificate. The next D run must start from a newly captured qualifying creation scene; repeating the already confirmed R839 terminal action is forbidden.
+
+## 2026-09-21 R0032 long-war measured-power correction
+
+R0024 later supplied the required fresh six-source Raiktor creation capture for
+actor `29829` and WarID `16777285`. After the exact-build capital resolver and
+pending-merge fixes, R0030/R0031 completed bounded production continuations;
+R0032 cold-restored the R0031 pair in a new CK3 process. The war remained live,
+all five merge receipts were consumed, and no terminal action had been
+submitted or left ambiguous.
+
+The independent R0032 paused frame measured:
+
+- duration `804` days and player-relative score `-3`;
+- player exact strategic power `10,518,484,600`;
+- opponent exact strategic power `24,041,080,000`;
+- exact fixed-point ratio `228560/100000` (`2.28560:1`);
+- surrender constructed, native-valid, available and accepted if submitted;
+- outbound white peace and victory unavailable;
+- frozen surrender terms of `225` gold, `1000` prestige, weak claim
+  `Title1207`, `1825` days of truce and one favor hook.
+
+The old model used the same fixed opponent-stronger continue penalty
+`50,000,000` both early and late. It consequently valued continue at
+`-50,000,000` and surrender at `-101,825,000`, leaving a `51,825,000`
+continue margin despite the observed long-war power deficit. This is a
+production counterexample to the magnitude-insensitive policy; it is not a new
+finding about vanilla AI.
+
+Model `1.1.0` replaces only that tail rule:
+
+```text
+if relation == opponent_stronger
+   and player_relative_war_score < 0
+   and war_duration_days >= 730:
+    applied_tail_penalty = base_tail_penalty * power_ratio_raw // ratio_scale
+else:
+    applied_tail_penalty = base_tail_penalty
+```
+
+```mermaid
+flowchart TD
+    A[Same paused terminal frame] --> B{Opponent stronger?}
+    B -- no --> E[Keep model 1.0 base penalty]
+    B -- yes --> C{Duration >= 730 and score < 0?}
+    C -- no --> E
+    C -- yes --> D[Scale base penalty by exact power ratio]
+    D --> F[Compare continue / white peace / surrender once]
+    E --> F
+    F --> G{Eligible winner clears switch margin?}
+    G -- no --> H[Continue / fail closed]
+    G -- yes --> I[Emit one typed terminal literal]
+```
+
+For the exact R0032 frame the continue penalty becomes `114,280,000`, making
+the available surrender better by `12,455,000`. A score of zero, duration
+`729`, parity/player-stronger relation, or an early war retains the previous
+behavior. The certificate now exposes base/applied penalties, whether scaling
+was applied, duration, score, ratio and scale so the decision is auditable.
+
+This remains a replaceable player counter-policy rather than a native behavior
+claim: exact-build vanilla player surrender validation has no duration or
+power threshold, while native proactive AI surrender belongs to its separate
+documented terminal-score path. The internal Python recommendation contract
+advances to v7/provider v6 and requires terminal-control schema v2 so duration
+is frame-bound. No public MCP schema, native ABI, or `open_kaishek` consumer
+shape changes; compatibility disposition is `NO-CODE-CHANGE`. Normal and
+optimized affected suites are GREEN through `259/259` per mode. Status is
+`static-ready-live-replay-pending`: runtime refreeze, one production intercept,
+the unique action, material postconditions, later consumption and cold restore
+are still required. GEN-034 remains `3/4`; G2 remains `1/8`.

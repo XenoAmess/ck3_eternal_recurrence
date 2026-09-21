@@ -2540,3 +2540,48 @@ dead-end facts to avoid a permanent no-op while retaining the existing
 same-frame, CB, duration, identity and one-shot gates. War disappearance,
 postwar state, later-turn consumption and cold restore still require live
 evidence.
+
+## 2026-09-21 R0031–R0032 Raiktor long-war overmatch evidence
+
+[production-live observation] Exact build `1.19.0.6`, EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+kept the player as primary attacker in Raiktor WarID `16777285`. R0031 at
+`date_raw=53187696` observed duration `692` days, player-relative score `-3`
+(`battles=-10`, `occupation=+7`) and stable strategic power
+`10,516,484,600 : 22,903,080,000`, ratio `217782/100000`. R0032 later observed
+the same war at `date_raw=53190384`, duration `804` days, the same score
+breakdown, and power `10,518,484,600 : 24,041,080,000`, ratio
+`228560/100000`. On both frames surrender was constructed, valid, available,
+auto-accepted and `would_accept_now=true`; white peace and victory were
+unavailable.
+
+[production-live outcome] The formal three-way provider nevertheless selected
+`continue` on 27 R0032 frames. At turn 250 it valued continue at `-50,000,000`
+and surrender at `-101,825,000`, authorized `resume-map`, then returned to the
+ordinary siege planner. R0032 completed its bounded `256/256` turns without a
+terminal intercept. Native/outer report SHA-256 values are
+`5671E3F1BCB726DA223A432E9632C8F3DDE43BD39654CE17599F00FDEC78373B` and
+`4E20723D648C05E9A94297EBDD6E50323341DBE44FAF43C7873500822376D118`.
+
+[static-confirmed boundary] This does not change the native tree: the ordinary
+AI proactive-surrender branch still uses the already documented `100` war
+score plus `180` days at maximum score, while a player-originated surrender
+still uses the native context validator and has no such score/duration gate.
+R0031/R0032 do not reveal a new native-AI threshold. They do prove that our
+counter-policy's categorical `opponent_stronger` penalty discards a
+production-live magnitude that is necessary to prevent indefinite continuation.
+
+```mermaid
+flowchart TD
+    F["[live-confirmed] paused Raiktor frame"] --> O{"[live-confirmed] native terminal options"}
+    O -->|surrender valid and accepted| S["[static-confirmed] player may submit surrender"]
+    O -->|white peace unavailable| W["[live-confirmed] white peace is not executable"]
+    F --> P["[live-confirmed] stable two-read strategic-power ratio"]
+    P --> C["[counter-policy] versioned continue tail-risk utility"]
+    S --> C
+    W --> C
+    C --> T{"[counter-policy] one eligible outcome wins margin?"}
+    T -->|yes| A["[counter-policy] submit exactly one typed action"]
+    T -->|no| H["[counter-policy] remain paused; do not invent a result"]
+    O -. "[unknown] native scheduler's exact proposal date" .-> U["[unknown] no inferred native threshold"]
+```

@@ -3,9 +3,11 @@
 This provider joins the production-capable immediate-exit evaluator with the
 same-frame measured strategic-power and opponent-terminal-control certificates.
 Continuing the war is a strategy baseline minus the versioned power-relation
-tail penalty; it is not a campaign win forecast.  A production action literal
-is emitted only when all inputs are production-live, frame-bound, and one
-option wins by the configured minimum margin.
+tail penalty.  A losing war beyond the configured long-war horizon scales the
+opponent-stronger penalty by the already measured exact power ratio; this is
+still a strategy input, not a campaign win forecast.  A production action
+literal is emitted only when all inputs are production-live, frame-bound, and
+one option wins by the configured minimum margin.
 """
 
 from __future__ import annotations
@@ -25,10 +27,10 @@ from xar_autoplayer.simulation.raiktor_exit_utility_evaluator import (
 )
 
 
-CONTRACT = "raiktor-three-way-exit-recommendation-v6"
-PROVIDER_SCHEMA = "xar.ck3.raiktor_three_way_exit_recommendation.v5"
-PROVIDER_ID = "raiktor-three-way-exit-recommendation-provider-v5"
-OPPONENT_TERMINAL_CONTROL_CONTRACT = "raiktor-opponent-terminal-control-v1"
+CONTRACT = "raiktor-three-way-exit-recommendation-v7"
+PROVIDER_SCHEMA = "xar.ck3.raiktor_three_way_exit_recommendation.v6"
+PROVIDER_ID = "raiktor-three-way-exit-recommendation-provider-v6"
+OPPONENT_TERMINAL_CONTROL_CONTRACT = "raiktor-opponent-terminal-control-v2"
 UTILITY_UNIT = "strategy_utility_q100000"
 
 TERMINATION_POSTCONDITIONS = (
@@ -108,7 +110,12 @@ def provide_raiktor_three_way_exit_recommendation(
 
     model = _model_from_provider(model_provider_value)
     relation = dominance["power"]["relation"]
-    penalty = _continue_penalty(model, relation=relation)
+    tail_risk = _continue_penalty(
+        model,
+        power=dominance["power"],
+        terminal_control=terminal_control,
+    )
+    penalty = tail_risk["applied_penalty_raw"]
     continue_execution_blockers = (
         ["opponent_has_enforceable_terminal_war_score"]
         if terminal_control["opponent_terminal_control"] is True
@@ -118,6 +125,17 @@ def provide_raiktor_three_way_exit_recommendation(
         "measured_power_relation": relation,
         "base_utility_raw": 0,
         "tail_risk_penalty_raw": penalty,
+        "tail_risk_base_penalty_raw": tail_risk["base_penalty_raw"],
+        "tail_risk_power_scale_applied": tail_risk["power_scale_applied"],
+        "tail_risk_long_war_scale_start_days": tail_risk[
+            "long_war_scale_start_days"
+        ],
+        "observed_war_duration_days": terminal_control["war_duration_days"],
+        "observed_player_relative_war_score": terminal_control[
+            "player_relative_war_score"
+        ],
+        "measured_power_ratio_raw": tail_risk["actual_power_ratio_raw"],
+        "measured_power_ratio_scale": tail_risk["fixed_point_scale"],
         "utility_raw": -penalty,
         "hard_budget_breaches": [],
         "execution_blockers": continue_execution_blockers,
@@ -203,6 +221,7 @@ def provide_raiktor_three_way_exit_recommendation(
             ],
             "attacker_war_score": terminal_control["attacker_war_score"],
             "defender_war_score": terminal_control["defender_war_score"],
+            "war_duration_days": terminal_control["war_duration_days"],
         },
         "options": options,
         "comparison": comparison,
@@ -220,6 +239,7 @@ def provide_raiktor_three_way_exit_recommendation(
         "boundaries": {
             "measured_power_is_not_campaign_forecast": True,
             "continue_is_strategy_baseline_minus_tail_penalty": True,
+            "long_losing_war_may_scale_tail_penalty_by_power_ratio": True,
             "native_execution_availability_excludes_immediate_options": True,
             "opponent_terminal_control_excludes_continue": True,
             "checkpoint_replay_power_input": dominance["schema_version"] == 3,
@@ -304,14 +324,20 @@ def _model_from_provider(value: object) -> dict[str, object]:
     return model
 
 
-def _continue_penalty(model: dict[str, object], *, relation: object) -> int:
+def _continue_penalty(
+    model: dict[str, object],
+    *,
+    power: dict[str, object],
+    terminal_control: dict[str, object],
+) -> dict[str, object]:
     policy = model.get("tail_risk_policy")
     if not isinstance(policy, dict) or policy.get("rule_id") != (
-        "measured-power-relation-penalty-v1"
+        "measured-power-relation-long-war-penalty-v2"
     ):
         raise ThreeWayExitRecommendationError("tail-risk policy is unsupported")
     parameters = policy.get("parameters_raw")
     expected = {
+        "long_war_scale_start_days",
         "opponent_stronger_continue_penalty_raw",
         "parity_continue_penalty_raw",
         "player_stronger_continue_penalty_raw",
@@ -323,11 +349,48 @@ def _continue_penalty(model: dict[str, object], *, relation: object) -> int:
         "equal": "parity_continue_penalty_raw",
         "actor_stronger": "player_stronger_continue_penalty_raw",
     }
+    relation = power.get("relation")
     if relation not in key_by_relation:
         raise ThreeWayExitRecommendationError("power relation is unsupported")
     for key in expected:
         _nonnegative_int(parameters[key], f"tail_risk_policy.{key}")
-    return int(parameters[key_by_relation[relation]])
+    ratio = _nonnegative_int(
+        power.get("actual_power_ratio_raw"), "actual_power_ratio_raw"
+    )
+    scale = _nonnegative_int(
+        power.get("fixed_point_scale"), "fixed_point_scale"
+    )
+    if scale == 0:
+        raise ThreeWayExitRecommendationError("fixed_point_scale must be positive")
+    duration = _nonnegative_int(
+        terminal_control.get("war_duration_days"), "war_duration_days"
+    )
+    score = _signed_int(
+        terminal_control.get("player_relative_war_score"),
+        "player_relative_war_score",
+    )
+    start_days = int(parameters["long_war_scale_start_days"])
+    base = int(parameters[key_by_relation[relation]])
+    power_scale_applied = (
+        relation == "opponent_stronger"
+        and score < 0
+        and duration >= start_days
+    )
+    applied = base * ratio // scale if power_scale_applied else base
+    if applied > 2**63 - 1:
+        raise ThreeWayExitRecommendationError("tail-risk penalty overflows int64")
+    if power_scale_applied and applied < base:
+        raise ThreeWayExitRecommendationError(
+            "opponent-stronger power ratio reduced the tail-risk penalty"
+        )
+    return {
+        "base_penalty_raw": base,
+        "applied_penalty_raw": applied,
+        "power_scale_applied": power_scale_applied,
+        "long_war_scale_start_days": start_days,
+        "actual_power_ratio_raw": ratio,
+        "fixed_point_scale": scale,
+    }
 
 
 def _require_same_frame(
@@ -373,7 +436,7 @@ def _opponent_terminal_control(value: object) -> dict[str, object]:
             "opponent terminal-control input is malformed"
         )
     if (
-        value.get("schema_version") != 1
+        value.get("schema_version") != 2
         or value.get("contract") != OPPONENT_TERMINAL_CONTROL_CONTRACT
         or value.get("status") != "complete"
     ):
@@ -409,6 +472,10 @@ def _opponent_terminal_control(value: object) -> dict[str, object]:
         raise ThreeWayExitRecommendationError(
             "opponent terminal-control war scores disagree"
         )
+    war_duration_days = _nonnegative_int(
+        value.get("war_duration_days"),
+        "opponent_terminal_control.war_duration_days",
+    )
     active = value.get("opponent_terminal_control")
     if not isinstance(active, bool) or active is not (player_score <= -100):
         raise ThreeWayExitRecommendationError(
@@ -439,6 +506,7 @@ def _opponent_terminal_control(value: object) -> dict[str, object]:
         "player_relative_war_score": player_score,
         "attacker_war_score": attacker_score,
         "defender_war_score": defender_score,
+        "war_duration_days": war_duration_days,
         "opponent_terminal_control": active,
         "producer": dict(producer),
     }

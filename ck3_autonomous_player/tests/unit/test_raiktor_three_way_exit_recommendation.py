@@ -33,11 +33,22 @@ from test_raiktor_white_peace_narrow_projection_provider import (  # noqa: E402
 
 
 def _dominance(
-    projection: dict[str, object], *, relation: str = "opponent_stronger"
+    projection: dict[str, object], *, relation: str = "opponent_stronger",
+    actor_power: int | None = None, target_power: int | None = None,
 ) -> dict[str, object]:
     observation = projection["white_peace_observation"]
     frame = observation["frame"]
-    if relation == "opponent_stronger":
+    if actor_power is not None or target_power is not None:
+        if not isinstance(actor_power, int) or not isinstance(target_power, int):
+            raise ValueError("both exact power values are required")
+        actor, target = actor_power, target_power
+        expected_relation = (
+            "opponent_stronger" if target > actor else
+            "actor_stronger" if target < actor else "equal"
+        )
+        if relation != expected_relation:
+            raise ValueError("exact power values disagree with relation")
+    elif relation == "opponent_stronger":
         actor, target = 100_000, 128_262
     elif relation == "actor_stronger":
         actor, target = 128_262, 100_000
@@ -108,11 +119,12 @@ def _terminal_control(
     projection: dict[str, object],
     *,
     score: int = 41,
+    war_duration_days: int = 365,
     production_live: bool,
 ) -> dict[str, object]:
     frame = projection["white_peace_observation"]["frame"]
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "contract": OPPONENT_TERMINAL_CONTROL_CONTRACT,
         "status": "complete",
         "frame": deepcopy(frame),
@@ -122,6 +134,7 @@ def _terminal_control(
         "absolute_war_scores_observable": True,
         "attacker_war_score": score,
         "defender_war_score": -score,
+        "war_duration_days": war_duration_days,
         "opponent_terminal_control": score <= -100,
         "source_options_query_sha256": "C" * 64,
         "producer": {
@@ -139,6 +152,9 @@ def _provide(
     opponent_penalty: int | None = None,
     minimum_margin: int | None = None,
     score: int = 41,
+    war_duration_days: int = 365,
+    actor_power: int | None = None,
+    target_power: int | None = None,
 ) -> dict[str, object]:
     projection, session, budget, model = _complete(
         production_live=production_live
@@ -158,7 +174,12 @@ def _provide(
         model["exit_utility_model"]["tail_risk_policy"]["parameters_raw"][
             "opponent_stronger_continue_penalty_raw"
         ] = opponent_penalty
-    power = _dominance(projection, relation=relation)
+    power = _dominance(
+        projection,
+        relation=relation,
+        actor_power=actor_power,
+        target_power=target_power,
+    )
     return provide_raiktor_three_way_exit_recommendation(
         projection,
         session,
@@ -166,7 +187,10 @@ def _provide(
         budget,
         model,
         _terminal_control(
-            projection, score=score, production_live=production_live
+            projection,
+            score=score,
+            war_duration_days=war_duration_days,
+            production_live=production_live,
         ),
     )
 
@@ -184,6 +208,11 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
         certificate = result["recommendation_certificate"]
         self.assertEqual(
             certificate["options"]["continue"]["utility_raw"], -50_000_000
+        )
+        self.assertFalse(
+            certificate["options"]["continue"][
+                "tail_risk_power_scale_applied"
+            ]
         )
         self.assertFalse(
             certificate["options"]["continue"][
@@ -256,6 +285,69 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
             },
         )
 
+    def test_r0032_long_losing_overmatch_scales_continue_and_selects_surrender(
+        self,
+    ) -> None:
+        result = _provide(
+            production_live=True,
+            score=-3,
+            war_duration_days=804,
+            actor_power=10_518_484_600,
+            target_power=24_041_080_000,
+        )
+
+        self.assertEqual(result["recommended_outcome"], "surrender")
+        self.assertEqual(result["action_literal"], "surrender-war-50331699")
+        continuing = result["recommendation_certificate"]["options"][
+            "continue"
+        ]
+        self.assertTrue(continuing["tail_risk_power_scale_applied"])
+        self.assertEqual(continuing["tail_risk_base_penalty_raw"], 50_000_000)
+        self.assertEqual(continuing["measured_power_ratio_raw"], 228_560)
+        self.assertEqual(continuing["tail_risk_penalty_raw"], 114_280_000)
+        self.assertEqual(continuing["utility_raw"], -114_280_000)
+        self.assertEqual(continuing["observed_war_duration_days"], 804)
+        self.assertEqual(
+            continuing["observed_player_relative_war_score"], -3
+        )
+
+    def test_power_scale_waits_for_long_losing_war_boundary(self) -> None:
+        common = {
+            "production_live": True,
+            "actor_power": 10_000_000_000,
+            "target_power": 22_856_000_000,
+        }
+        before_horizon = _provide(
+            **common, score=-3, war_duration_days=729
+        )
+        non_losing = _provide(
+            **common, score=0, war_duration_days=804
+        )
+
+        for result in (before_horizon, non_losing):
+            self.assertEqual(result["recommended_outcome"], "continue")
+            continuing = result["recommendation_certificate"]["options"][
+                "continue"
+            ]
+            self.assertFalse(continuing["tail_risk_power_scale_applied"])
+            self.assertEqual(continuing["tail_risk_penalty_raw"], 50_000_000)
+
+    def test_slight_long_war_overmatch_does_not_force_terminal(self) -> None:
+        result = _provide(
+            production_live=True,
+            score=-3,
+            war_duration_days=804,
+            actor_power=10_000_000_000,
+            target_power=10_500_000_000,
+        )
+
+        self.assertEqual(result["recommended_outcome"], "continue")
+        continuing = result["recommendation_certificate"]["options"][
+            "continue"
+        ]
+        self.assertTrue(continuing["tail_risk_power_scale_applied"])
+        self.assertEqual(continuing["tail_risk_penalty_raw"], 52_500_000)
+
     def test_unavailable_white_peace_cannot_emit_its_action(self) -> None:
         terms = _terms_query()
         projection = provide_raiktor_white_peace_narrow_projection(
@@ -323,6 +415,7 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
                 "player_relative_war_score": -100,
                 "attacker_war_score": -100,
                 "defender_war_score": 100,
+                "war_duration_days": 365,
             },
         )
         continuing = certificate["options"]["continue"]

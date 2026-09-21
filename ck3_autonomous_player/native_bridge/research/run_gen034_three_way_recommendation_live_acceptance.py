@@ -54,6 +54,9 @@ from xar_autoplayer.simulation.raiktor_three_way_exit_action_gate import (  # no
 from xar_autoplayer.simulation.raiktor_three_way_exit_recommendation import (  # noqa: E402
     provide_raiktor_three_way_exit_recommendation,
 )
+from xar_autoplayer.raiktor_formal_exit import (  # noqa: E402
+    _opponent_terminal_control_input,
+)
 from xar_autoplayer.simulation.raiktor_white_peace_narrow_projection_provider import (  # noqa: E402
     provide_raiktor_white_peace_narrow_projection,
 )
@@ -137,12 +140,31 @@ def _compose_recommendation(
     projection = provide_raiktor_white_peace_narrow_projection(
         snapshot, options, terms, production_live=True
     )
+    war_id = projection["white_peace_observation"]["frame"]["war_id"]
+    opponent_character_id = projection["white_peace_observation"]["frame"][
+        "primary_defender_character_id"
+    ]
+    matching_wars = [
+        war
+        for war in snapshot.get("active_wars", [])
+        if isinstance(war, dict) and war.get("war_id") == war_id
+    ]
+    if len(matching_wars) != 1:
+        raise RuntimeError("current Raiktor war is unavailable")
+    terminal_control = _opponent_terminal_control_input(
+        war=matching_wars[0],
+        war_id=war_id,
+        opponent_character_id=opponent_character_id,
+        options_query=options,
+        white_peace_projection=projection,
+    )
     return provide_raiktor_three_way_exit_recommendation(
         projection,
         terms.get("raiktor_surrender_aggregate_session"),
         dominance_certificate,
         provide_raiktor_owner_budget_profile(None),
         provide_raiktor_exit_utility_model(),
+        terminal_control,
     )
 
 

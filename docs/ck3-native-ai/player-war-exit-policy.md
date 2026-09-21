@@ -671,3 +671,49 @@ an operational continuity exception, not a claim that the native AI uses the
 same threshold or that full campaign utility is ready. Live status remains
 pending until a new process submits the terminal once, observes material war
 disappearance, consumes it on a later turn, checkpoints, and cold-restores.
+
+### 2026-09-21 R0032 Raiktor long-war power-scaled tail risk
+
+[production-live blocker] R0031/R0032 prove that the Raiktor three-way loop can
+remain fully ready yet never reach a terminal action: duration advanced from
+`692` to `804` days, player-relative score remained `-3`, and the stable
+opponent/player strategic-power ratio worsened from `2.17782` to `2.28560`.
+Surrender remained native-valid and accepted, while white peace remained
+unavailable. The v1 utility model reduced every `opponent_stronger` frame to
+the same `50,000,000` continue penalty, so R0032 still preferred continue by
+`51,825,000` and exhausted its bounded run.
+
+[counter-policy] Model `1.1.0` retains the existing early-war and non-losing
+behavior. Only when all inputs are from the same paused Raiktor frame,
+`player_relative_war_score < 0`, `war_duration_days >= 730`, and the stable
+two-read relation is `opponent_stronger`, the continue tail penalty is scaled
+by the already validated power ratio:
+
+`scaled_penalty = base_opponent_penalty * actual_power_ratio_raw // fixed_point_scale`.
+
+Before 730 days, at score zero or better, or for equal/player-stronger frames,
+the existing fixed relation penalty remains unchanged. The rule does not make
+surrender eligible, bypass terms or budgets, or override a legal white peace;
+it only supplies a magnitude-aware continue utility to the existing three-way
+comparison. R0032 therefore yields continue `-114,280,000` versus surrender
+`-101,825,000`, so surrender wins by `12,455,000`. A long war with only a
+`1.05` opponent ratio yields `-52,500,000` and does not trigger the same exit.
+
+```mermaid
+flowchart TD
+    F["[counter-policy] same paused Raiktor frame"] --> L{"score < 0 and duration >= 730 days?"}
+    L -->|no| B["use existing fixed relation penalty"]
+    L -->|yes| R{"stable relation = opponent stronger?"}
+    R -->|no| B
+    R -->|yes| M["scale opponent penalty by exact power ratio"]
+    B --> E["existing eligible-option utility comparison"]
+    M --> E
+    E -->|continue| C["bounded tactical planner"]
+    E -->|white peace or surrender| T["one typed terminal action"]
+    T --> P["independent material result, checkpoint and cold restore"]
+```
+
+The native ABI, public MCP surface, terminal legality, action gate, receipt
+deduplication and six material postconditions are unchanged. This is a
+versioned Raiktor counter-policy calibration from exact live evidence, not a
+claim of native-AI equivalence or semantic optimality.

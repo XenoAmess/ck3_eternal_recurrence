@@ -63,7 +63,7 @@ def _query_row(step: str, snapshot: dict[str, object]) -> dict[str, object]:
 
 
 def _options_result(
-    snapshot: dict[str, object], *, score: int
+    snapshot: dict[str, object], *, score: int, war_duration_days: int = 203
 ) -> dict[str, object]:
     result = _query_row(OPTIONS, snapshot)["result"]
     result["war_termination_options"] = _termination_options(
@@ -71,6 +71,7 @@ def _options_result(
         score=score,
         casus_belli_database_index=411,
         casus_belli_key="raiktor_claim_cb",
+        war_duration_days=war_duration_days,
     )
     return result
 
@@ -115,6 +116,7 @@ class RaiktorFormalExitConsumerTests(unittest.TestCase):
         self.assertTrue(control["opponent_terminal_control"])
         self.assertEqual(control["attacker_war_score"], -100)
         self.assertEqual(control["defender_war_score"], 100)
+        self.assertEqual(control["war_duration_days"], 203)
         self.assertEqual(control["frame"]["war_id"], WAR_ID)
 
     def test_minus_99_is_complete_but_not_terminal_control(self) -> None:
@@ -171,6 +173,12 @@ class RaiktorFormalExitConsumerTests(unittest.TestCase):
                     "hard_budget_breaches": [], "execution_blockers": [],
                     "measured_power_relation": "opponent_stronger",
                     "tail_risk_penalty_raw": 20,
+                    "tail_risk_base_penalty_raw": 20,
+                    "tail_risk_power_scale_applied": True,
+                    "observed_war_duration_days": 804,
+                    "observed_player_relative_war_score": -3,
+                    "measured_power_ratio_raw": 228560,
+                    "measured_power_ratio_scale": 100000,
                     "ignored_internal_character_id": 97531,
                 },
                 "white_peace": {
@@ -199,6 +207,12 @@ class RaiktorFormalExitConsumerTests(unittest.TestCase):
         self.assertFalse(trace["options"]["surrender"]["eligible"])
         self.assertEqual(trace["comparison"]["winning_margin_raw"], 34)
         self.assertNotIn("ignored_internal_character_id", trace["options"]["continue"])
+        self.assertTrue(
+            trace["options"]["continue"]["tail_risk_power_scale_applied"]
+        )
+        self.assertEqual(
+            trace["options"]["continue"]["measured_power_ratio_raw"], 228560
+        )
 
     def test_requests_two_actual_power_reads_before_terms(self) -> None:
         snapshot = _snapshot()
