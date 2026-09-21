@@ -1,6 +1,6 @@
 {
   "schema": "xar.ck3.gen034_d_runtime_files.v1",
-  "source_commit": "63c8c186071a767f629cadc53909df3242141dd8",
+  "source_commit": "23c1b15ae1cebb969b9a43d11d46e2890eb79b47",
   "algorithm": "sha256(canonical-json[path,bytes,sha256])",
   "selection": {
     "recursive_python_roots": [
@@ -28,8 +28,8 @@
     "tools/run_acceptance.py",
     "tools/run_zg361_phase2_seed_capture.py"
   ],
-  "file_count": 480,
-  "tree_sha256": "8D9655C8E8D3FF4F56BE8E33638ECF87D87A1065860E78DAB447C0EF03910C0E",
+  "file_count": 481,
+  "tree_sha256": "C40670F2624043DCDF78B41E3F3930C6B6FF5D640733E5EF4DE0EB3241686818",
   "files": [
     {
       "path": "ck3_autonomous_player/native_bridge/research/active_scheme_paused_live_harness_v1_private.py",
@@ -613,8 +613,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_live_adapter.py",
-      "bytes": 114297,
-      "sha256": "A75F4AAE7D04A464F88BD476D3871E2F0EDD04571C69053A10C1758DA58B395A"
+      "bytes": 115390,
+      "sha256": "705B0B1252E40FFBCEDD0B5D742E46B44393DE4C0117766EFBDADFE21D06BE4C"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_g2_source_specific_war_loss_outer_owner.py",
@@ -662,9 +662,14 @@
       "sha256": "D21939C0E65A4E9D3D6B3988FF3AF304FEB208B6CB0F2BA16B41A505219F5757"
     },
     {
+      "path": "ck3_autonomous_player/native_bridge/research/run_gen034_d_candidate_continuation.py",
+      "bytes": 22301,
+      "sha256": "0C4CFF046BAF8F9ED537915C2BFCF3AA529CA1E1ACA23131A10998F2EBED147C"
+    },
+    {
       "path": "ck3_autonomous_player/native_bridge/research/run_gen034_three_way_exit_action_live_acceptance.py",
-      "bytes": 41206,
-      "sha256": "80BB84344AAF6E46BC1D8A7B340E19D7EF51BFD43473943630C77DEBCB8A373D"
+      "bytes": 42793,
+      "sha256": "6DF8EF1F47AF621F838BCB10150CE9A349C0A1C75712783189A106EF8E4512A7"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_gen034_three_way_recommendation_live_acceptance.py",
@@ -828,8 +833,8 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
-      "bytes": 35883,
-      "sha256": "59DD75089B3C5F7579F394D7AF9C2E3BD1FBE5B9C060AD5CAA9080E481835689"
+      "bytes": 37439,
+      "sha256": "A3D10354148E77915082F44FCFA5DD37A650BBE6A894734BFF27548F01A0F833"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/research/scan_anchors.py",

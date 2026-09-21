@@ -2,8 +2,8 @@
   "schema": "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1",
   "status": "static-ready-live-command-default-off",
   "created_at": "2026-09-05T17:10:00+08:00",
-  "candidate_source_commit": "63c8c186071a767f629cadc53909df3242141dd8",
-  "candidate_source_change": "GEN034-D formal continuation state preparation",
+  "candidate_source_commit": "23c1b15ae1cebb969b9a43d11d46e2890eb79b47",
+  "candidate_source_change": "GEN034-D frozen continuation and action recovery",
   "default_off": true,
   "live_executed": false,
   "paths": {
@@ -25,9 +25,9 @@
     "runtime_manifest": "ck3_autonomous_player/native_bridge/research/fixtures/gen034_d_runtime_files_v1.json"
   },
   "sha256": {
-    "adapter": "A75F4AAE7D04A464F88BD476D3871E2F0EDD04571C69053A10C1758DA58B395A",
+    "adapter": "705B0B1252E40FFBCEDD0B5D742E46B44393DE4C0117766EFBDADFE21D06BE4C",
     "outer_owner_runner": "D162CDD681961989838B0F26D29DDCC6E9ED98420F8FA1BF5D4F636E110737FF",
-    "outer_owner_manifest": "4A92C9225724FA4EF98522428C12B639659253E3B2BD9827E254BD76DE7B89EC",
+    "outer_owner_manifest": "9BDAED7374A2B2EED7CB186F2B902CF8A50F4CA734A2586F341837F0C3DE16C1",
     "lifecycle_runner": "E76E693BA2D60D8DA74B3038994085951AE4017B1EF97BBC69F1C4FE7D9E1415",
     "source_ui_runner": "4E091C123DF0876ED81607B4AA6B7D3800F477FCA33E84BF146E8D71B66C76C6",
     "source_provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB",
@@ -40,7 +40,7 @@
     "run_acceptance": "B5E99A7B835DA5D2FFB237296567984683B401D42E14FDD5EA272707ADF9F156",
     "profile_settings_guard": "2E4EC85C3B3496DDAB0ED18E0D8D7010B08DC7B337B7546E36FA5E38A11696A6",
     "native_runtime": "6224AFAF1AA675F28E1825F90862EF8E89747F91ECC34864ABA090A757EF057C",
-    "runtime_manifest": "08525C3C79ED403F53E36B08C78FA7DEE589CE5B3232D7594569C64D91A931B7"
+    "runtime_manifest": "41D97741CA804135A8730186B691552DBF8B11BA9623366204DEF3AE93CC5DE5"
   },
   "timeouts": {
     "process_discovery_seconds": 30,
