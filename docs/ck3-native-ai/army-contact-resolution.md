@@ -977,7 +977,8 @@ R885 使用 agent commit `fc8d18e49ba483ba2009724ea32bac4b5a0f7062` 的短复验
 - [static-ready counter-policy] 根因是策略存在两条 unsafe-active-route 收口分支：candidate/regroup 分支已经
   消费 same-current literal，passive continuation 分支却在 white-peace/emergency 检查后直接返回 RED。后者现在也
   只在该 exact literal 已出现在 `available_steps` 且当前 route 仍非空时选择它；literal 缺失时仍保持
-  `native_war_no_safe_exact_route`，不从策略层自行授权 mutation。
+  `native_war_no_safe_exact_route`，不从策略层自行授权 mutation。既有 submitted-pending white-peace response window
+  和 executable de-jure terminal comparison 继续优先于路线取消，避免用恢复机动覆盖已提交动作或终局选择。
 - [pending live] R885 RED 仍需新制品短复验关闭：正式 turn 应选择 typed same-current move，随后只能由严格更新的
   paused frame（同 ArmyID/current、target `null`、route `[]`、stationary、非 combat/retreat）判定成功，并由下一 turn
   消费。静态回归不冒充这项 live closure。

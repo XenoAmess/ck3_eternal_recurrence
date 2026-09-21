@@ -5663,6 +5663,74 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertIsNone(r885_without_literal["selected_step"])
 
+        submitted_date_raw = 53_282_928
+        pending_white_peace = _native_war_plan(
+            player=r885_player,
+            enemies=[r885_enemy],
+            score=-50,
+            date_raw=53_282_952,
+            history=[
+                {
+                    "index": 1449,
+                    "command": "offer-white-peace-88",
+                    "ok": True,
+                    "result": {
+                        "war_termination_result": {
+                            "status": "submitted_pending",
+                            "war_id": 88,
+                            "outcome": "white_peace",
+                            "episode_run_id": None,
+                            "submitted_date_raw": submitted_date_raw,
+                        }
+                    },
+                }
+            ],
+            objectives=[],
+            steps=("move-army-184549472-to-8750", "life-advance"),
+            player_side="defender",
+        )
+        self.assertEqual(
+            pending_white_peace["phase"],
+            "native_war_white_peace_response_window_advance",
+        )
+        self.assertEqual(pending_white_peace["selected_step"], "life-advance")
+
+        surrender_options = _termination_options(
+            score=-44, war_duration_days=216
+        )
+        surrender_options["active_casus_belli_identity"] = {
+            "database_index": 17,
+            "canonical_key": "individual_county_de_jure_cb",
+        }
+        surrender_options.update(
+            {
+                "queried_snapshot_id": "session:90",
+                "queried_revision": 90,
+                "queried_native_revision": 90,
+                "queried_connection_generation": 1,
+                "episode_run_id": None,
+            }
+        )
+        terminal_comparison = _native_war_plan(
+            player=r885_player,
+            enemies=[r885_enemy],
+            score=-44,
+            date_raw=53_282_952,
+            objectives=[],
+            steps=(
+                "move-army-184549472-to-8750",
+                "surrender-war-88",
+            ),
+            termination_options=[surrender_options],
+        )
+        self.assertEqual(
+            terminal_comparison["phase"],
+            "native_war_de_jure_no_safe_route_surrender",
+        )
+        self.assertEqual(
+            terminal_comparison["selected_step"], "surrender-war-88"
+        )
+
         idle = _army(
             11,
             soldiers=900,
