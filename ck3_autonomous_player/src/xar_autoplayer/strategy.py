@@ -273,6 +273,28 @@ _DEGRADED_MARRIAGE_REJECT_ONLY_ALLOWLIST = {
         ],
     },
 }
+_GRANT_VASSAL_REJECT_ONLY_POLICY = {
+    "rule_id": "grant-vassal-reject-only-v1",
+    "definition_key": "grant_vassal_interaction",
+    "deterministic_key_hash": 1_006_648_858,
+    "runtime_ordinal": 277,
+    "domain": "vassal_transfer",
+    "supported_scope": "frozen_standard_feudal_profile_not_frame_attested",
+    "source": "common/character_interactions/00_vassal_interactions.txt",
+    "source_sha256": (
+        "1249CAC40138D48210A07245746C4A6683C5F58F3141C04A20DB2C00B6375BF8"
+    ),
+    "decline_event_source": (
+        "events/interaction_events/character_interaction_events.txt"
+    ),
+    "decline_event_source_sha256": (
+        "D238E0A3442F41C35AF35157D47A754CB200B72AB2A0184BAEFC86E63347A150"
+    ),
+    "known_decline_effects": [
+        "actor:char_interaction.0211:letter_only",
+        "conditional_clan_unity_loss",
+    ],
+}
 _NEGOTIATE_ALLIANCE_INBOUND_POLICY = {
     "rule_id": "negotiate-alliance-inbound-accept-v1",
     "definition_key": "negotiate_alliance_interaction",
@@ -1216,6 +1238,118 @@ def _arrange_marriage_reject_contract_gaps(
     return gaps
 
 
+def _grant_vassal_reject_contract_gaps(
+    context: dict[str, object],
+    *,
+    snapshot: dict[str, object],
+    active_wars: list[dict[str, object]],
+) -> list[str]:
+    """Admit only the observed direct, zero-option feudal-preview decline."""
+
+    gaps: list[str] = []
+    definition = context.get("definition")
+    if not (
+        isinstance(definition, dict)
+        and definition.get("canonical_key")
+        == _GRANT_VASSAL_REJECT_ONLY_POLICY["definition_key"]
+        and definition.get("deterministic_key_hash")
+        == _GRANT_VASSAL_REJECT_ONLY_POLICY["deterministic_key_hash"]
+        and definition.get("runtime_ordinal")
+        == _GRANT_VASSAL_REJECT_ONLY_POLICY["runtime_ordinal"]
+    ):
+        gaps.append("grant_vassal_exact_definition_mismatch")
+
+    roles = context.get("roles")
+    played = snapshot.get("played_character")
+    actor = roles.get("actor_character_id") if isinstance(roles, dict) else None
+    recipient = (
+        roles.get("recipient_character_id") if isinstance(roles, dict) else None
+    )
+    transferred = (
+        roles.get("secondary_actor_character_id")
+        if isinstance(roles, dict)
+        else None
+    )
+    if not (
+        all(
+            isinstance(value, int) and not isinstance(value, bool) and value > 0
+            for value in (actor, recipient, transferred)
+        )
+        and len({actor, recipient, transferred}) == 3
+        and roles.get("secondary_recipient_character_id") == -1
+        and roles.get("intermediary_character_id") == -1
+        and isinstance(played, dict)
+        and played.get("character_id") == recipient
+    ):
+        gaps.append("grant_vassal_direct_three_role_binding_mismatch")
+
+    routing = context.get("routing")
+    if not (
+        isinstance(routing, dict)
+        and routing.get("kind") == 0
+        and routing.get("current_responder_role") == "recipient"
+        and routing.get("reply_execution_channel") == "recipient"
+        and routing.get("local_route") is True
+        and routing.get("played_character_id") == recipient
+        and routing.get("auto_accept_notification") is False
+    ):
+        gaps.append("grant_vassal_direct_local_reply_mismatch")
+
+    deadline = context.get("deadline")
+    age = deadline.get("age_days") if isinstance(deadline, dict) else None
+    remaining = (
+        deadline.get("remaining_days") if isinstance(deadline, dict) else None
+    )
+    if not (
+        isinstance(deadline, dict)
+        and isinstance(age, int)
+        and not isinstance(age, bool)
+        and isinstance(remaining, int)
+        and not isinstance(remaining, bool)
+        and deadline.get("expiration_days") == 60
+        and 0 <= age < 60
+        and remaining == 60 - age
+        and deadline.get("expiry_boundary_status") == "not_reached"
+    ):
+        gaps.append("grant_vassal_unexpired_deadline_mismatch")
+
+    options = context.get("send_options")
+    if not (
+        isinstance(options, dict)
+        and options.get("exclusive") is True
+        and options.get("definition_count") == 0
+        and options.get("context_count") == 0
+        and options.get("rows") == []
+    ):
+        gaps.append("grant_vassal_zero_send_options_mismatch")
+
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    if not (
+        isinstance(terms, dict)
+        and terms.get("special_data_present") is False
+        and isinstance(special, dict)
+        and special.get("status") == "unavailable"
+        and special.get("value") is None
+        and special.get("reason") == "special_war_binding_not_applicable"
+    ):
+        gaps.append("grant_vassal_nonwar_special_binding_mismatch")
+    legality = context.get("legality")
+    acknowledge = (
+        legality.get("acknowledge") if isinstance(legality, dict) else None
+    )
+    if not (
+        isinstance(acknowledge, dict)
+        and acknowledge.get("status") == "available"
+        and acknowledge.get("allowed") is False
+        and acknowledge.get("reason") == "normal_reply_channel"
+    ):
+        gaps.append("grant_vassal_normal_reply_channel_mismatch")
+    if snapshot.get("active_wars") != [] or active_wars:
+        gaps.append("grant_vassal_active_war_or_war_scope_unknown")
+    return gaps
+
+
 def _negotiate_alliance_inbound_assessment(
     context: dict[str, object],
     *,
@@ -1912,6 +2046,18 @@ def _degraded_pending_interaction_decision(
         if isinstance(marriage_allowlist_evidence, dict)
         else []
     )
+    grant_vassal_evidence = (
+        _GRANT_VASSAL_REJECT_ONLY_POLICY
+        if definition_key == _GRANT_VASSAL_REJECT_ONLY_POLICY["definition_key"]
+        else None
+    )
+    grant_vassal_contract_gaps = (
+        _grant_vassal_reject_contract_gaps(
+            context, snapshot=snapshot, active_wars=active_wars
+        )
+        if isinstance(grant_vassal_evidence, dict)
+        else []
+    )
     negotiate_alliance_evidence = (
         _NEGOTIATE_ALLIANCE_INBOUND_POLICY
         if definition_key
@@ -1929,6 +2075,8 @@ def _degraded_pending_interaction_decision(
         classification = "known_war_exit"
     elif isinstance(marriage_allowlist_evidence, dict):
         classification = "known_marriage_special"
+    elif isinstance(grant_vassal_evidence, dict):
+        classification = "known_grant_vassal_reject_only"
     elif (
         isinstance(negotiate_alliance_evidence, dict)
         and special_status == "unavailable"
@@ -2005,7 +2153,11 @@ def _degraded_pending_interaction_decision(
                 else (
                     marriage_allowlist_evidence
                     if classification == "known_marriage_special"
-                    else definition_allowlist_evidence
+                    else (
+                        grant_vassal_evidence
+                        if classification == "known_grant_vassal_reject_only"
+                        else definition_allowlist_evidence
+                    )
                 )
             )
         )
@@ -2014,7 +2166,11 @@ def _degraded_pending_interaction_decision(
         "rule_id": (
             "arrange-marriage-reject-only-v1"
             if classification == "known_marriage_special"
-            else "ordinary-reject-unique-accept-v1"
+            else (
+                _GRANT_VASSAL_REJECT_ONLY_POLICY["rule_id"]
+                if classification == "known_grant_vassal_reject_only"
+                else "ordinary-reject-unique-accept-v1"
+            )
         ),
         "mode": "degraded_blocker_removal",
         "native_ai_reference": (
@@ -2053,12 +2209,16 @@ def _degraded_pending_interaction_decision(
                         if classification
                         == "known_negotiate_alliance_inbound"
                         else (
-                            "ck3-1.19.0.6-explicit-marriage-special-reject-"
-                            "only-v1"
-                            if classification == "known_marriage_special"
+                            "ck3-1.19.0.6-exact-grant-vassal-reject-only-v1"
+                            if classification == "known_grant_vassal_reject_only"
                             else (
-                                "ck3-1.19.0.6-explicit-ordinary-"
-                                "nonreligious-v1"
+                                "ck3-1.19.0.6-explicit-marriage-special-reject-"
+                                "only-v1"
+                                if classification == "known_marriage_special"
+                                else (
+                                    "ck3-1.19.0.6-explicit-ordinary-"
+                                    "nonreligious-v1"
+                                )
                             )
                         )
                     )
@@ -2073,6 +2233,7 @@ def _degraded_pending_interaction_decision(
             ),
         },
         "marriage_contract_gaps": marriage_contract_gaps,
+        "grant_vassal_contract_gaps": grant_vassal_contract_gaps,
         "missing_semantics": summary.get("missing_semantics"),
         "evidence_gaps": evidence_gaps,
         "candidate_replies": candidates,
@@ -2082,28 +2243,37 @@ def _degraded_pending_interaction_decision(
         "blocked_reasons": [],
         "deterministic_rule": (
             (
-                "for an exact same-frame arrange_marriage_interaction with a "
-                "direct local recipient, complete marriage roles, an internally "
-                "consistent unexpired stock deadline, opaque marriage special "
-                "payload, and six unselected send options, reject only when "
-                "native reject is legal and executable; never fall through to "
-                "unique accept"
+                "for only the exact source-pinned, direct, zero-option "
+                "grant_vassal_interaction in the frozen standard-feudal "
+                "preview scope, reject when native reject is legal and "
+                "executable; never accept or block as fallback"
             )
-            if classification == "known_marriage_special"
+            if classification == "known_grant_vassal_reject_only"
             else (
-                "for the exact frozen call_ally_interaction shape, reject only "
-                "while the player already has a completely observed active-war "
-                "signature, the target is stably typed as war without decoding "
-                "its raw token, no enforce-demands action is pending, and native "
-                "reject is legal and executable"
-                if classification == "known_call_ally_busy_reject"
+                (
+                    "for an exact same-frame arrange_marriage_interaction with a "
+                    "direct local recipient, complete marriage roles, an internally "
+                    "consistent unexpired stock deadline, opaque marriage special "
+                    "payload, and six unselected send options, reject only when "
+                    "native reject is legal and executable; never fall through to "
+                    "unique accept"
+                )
+                if classification == "known_marriage_special"
                 else (
-                    "for an exact same-frame request whose definition is "
-                    "explicitly allowlisted as ordinary non-war and "
-                    "nonreligious, reject when native reject is legal and "
-                    "executable; accept only when reject, block, and "
-                    "acknowledge are each natively illegal and accept is the "
-                    "sole legal executable reply; otherwise submit nothing"
+                    "for the exact frozen call_ally_interaction shape, reject only "
+                    "while the player already has a completely observed active-war "
+                    "signature, the target is stably typed as war without decoding "
+                    "its raw token, no enforce-demands action is pending, and native "
+                    "reject is legal and executable"
+                    if classification == "known_call_ally_busy_reject"
+                    else (
+                        "for an exact same-frame request whose definition is "
+                        "explicitly allowlisted as ordinary non-war and "
+                        "nonreligious, reject when native reject is legal and "
+                        "executable; accept only when reject, block, and "
+                        "acknowledge are each natively illegal and accept is the "
+                        "sole legal executable reply; otherwise submit nothing"
+                    )
                 )
             )
         ),
@@ -2195,6 +2365,21 @@ def _degraded_pending_interaction_decision(
             decision["selected_step"] = reject["step"]
         else:
             blocked_reasons.append("legal_marriage_reject_command_unavailable")
+        return {"summary": summary, "decision": decision}
+    if classification == "known_grant_vassal_reject_only":
+        if grant_vassal_contract_gaps:
+            blocked_reasons.extend(grant_vassal_contract_gaps)
+            return {"summary": summary, "decision": decision}
+        reject = by_action["reject"]
+        if reject["native_legal"] is not True:
+            blocked_reasons.append("grant_vassal_reject_not_native_legal")
+            return {"summary": summary, "decision": decision}
+        decision["recommended_action"] = "reject"
+        if reject["action_reachable"] is True:
+            decision["selected_action"] = "reject"
+            decision["selected_step"] = reject["step"]
+        else:
+            blocked_reasons.append("grant_vassal_reject_command_unavailable")
         return {"summary": summary, "decision": decision}
     if classification == "known_negotiate_alliance_inbound":
         decision["rule_id"] = _NEGOTIATE_ALLIANCE_INBOUND_POLICY["rule_id"]
@@ -2325,6 +2510,13 @@ def _degraded_pending_interaction_plan(
                 "the target raw token remains opaque, and the next paused "
                 "frame must show no added active WarID"
             )
+        elif rule_id == _GRANT_VASSAL_REJECT_ONLY_POLICY["rule_id"]:
+            phase = "pending_grant_vassal_reject_only"
+            reason = (
+                "reject this exact inbound direct three-role vassal transfer: "
+                "native reject is same-frame legal and executable, while "
+                "accept would change the transferred vassal's liege"
+            )
         elif decision.get("classification") == "known_marriage_special":
             phase = "pending_arrange_marriage_reject_only"
             reason = (
@@ -2409,6 +2601,7 @@ def _degraded_pending_interaction_plan(
             "ordinary_non_war",
             "known_negotiate_alliance_inbound",
             "known_call_ally_busy_reject",
+            "known_grant_vassal_reject_only",
         }:
             plan["required_capabilities"] = [
                 "game.state.pending-character-interaction-structured-terms",

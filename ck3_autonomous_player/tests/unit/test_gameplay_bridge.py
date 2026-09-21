@@ -260,6 +260,53 @@ def _arrange_marriage_context_result(
     return result
 
 
+def _grant_vassal_context_result(
+    *, legality: dict[str, dict[str, object]] | None = None
+) -> dict[str, object]:
+    if legality is None:
+        legality = {
+            action: {"status": "available", "allowed": True, "reason": None}
+            for action in ("accept", "reject", "block")
+        }
+        legality["acknowledge"] = {
+            "status": "available",
+            "allowed": False,
+            "reason": "normal_reply_channel",
+        }
+    result = _pending_context_result(
+        pending_id=1_744_830_474,
+        revision=32,
+        native_revision=31,
+        date_raw=53_285_904,
+        definition_key="grant_vassal_interaction",
+        actor_character_id=32_718,
+        recipient_character_id=31_853,
+        legality=legality,
+    )
+    context = result["pending_character_interaction_context"]
+    assert isinstance(context, dict)
+    definition = context["definition"]
+    assert isinstance(definition, dict)
+    definition["deterministic_key_hash"] = 1_006_648_858
+    definition["runtime_ordinal"] = 277
+    roles = context["roles"]
+    assert isinstance(roles, dict)
+    roles["secondary_actor_character_id"] = 31_506
+    context["deadline"] = {
+        "age_days": 7,
+        "expiration_days": 60,
+        "remaining_days": 53,
+        "expiry_boundary_status": "not_reached",
+    }
+    context["send_options"] = {
+        "exclusive": True,
+        "definition_count": 0,
+        "context_count": 0,
+        "rows": [],
+    }
+    return result
+
+
 def _negotiate_alliance_context_result(
     *,
     legality: dict[str, dict[str, object]] | None = None,
@@ -7057,6 +7104,163 @@ class GameplayBridgeTests(unittest.TestCase):
                 },
             },
         )
+
+    def test_grant_vassal_r0059_exact_shape_reject_only(self) -> None:
+        plan = _plan_for_pending_context(
+            _grant_vassal_context_result(),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+            active_wars=[],
+        )
+
+        self.assertEqual(plan["phase"], "pending_grant_vassal_reject_only")
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(decision["rule_id"], "grant-vassal-reject-only-v1")
+        self.assertEqual(
+            decision["classification"], "known_grant_vassal_reject_only"
+        )
+        self.assertEqual(decision["grant_vassal_contract_gaps"], [])
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertFalse(decision["semantic_optimal"])
+        evidence = decision["definition_classification"]
+        self.assertTrue(evidence["allowlisted"])
+        self.assertEqual(
+            evidence["evidence"]["supported_scope"],
+            "frozen_standard_feudal_profile_not_frame_attested",
+        )
+        self.assertEqual(
+            evidence["evidence"]["source_sha256"],
+            "1249CAC40138D48210A07245746C4A6683C5F58F3141C04A20DB2C00B6375BF8",
+        )
+
+    def test_grant_vassal_reject_only_fails_closed_on_shape_or_war(self) -> None:
+        mutations = (
+            (
+                "definition_hash",
+                lambda c: c["definition"].__setitem__(
+                    "deterministic_key_hash", 1
+                ),
+                "grant_vassal_exact_definition_mismatch",
+            ),
+            (
+                "secondary_actor",
+                lambda c: c["roles"].__setitem__(
+                    "secondary_actor_character_id", -1
+                ),
+                "grant_vassal_direct_three_role_binding_mismatch",
+            ),
+            (
+                "routing",
+                lambda c: c["routing"].__setitem__(
+                    "reply_execution_channel", "intermediary"
+                ),
+                "grant_vassal_direct_local_reply_mismatch",
+            ),
+            (
+                "deadline",
+                lambda c: c["deadline"].__setitem__("remaining_days", 52),
+                "grant_vassal_unexpired_deadline_mismatch",
+            ),
+            (
+                "options",
+                lambda c: c["send_options"].__setitem__(
+                    "definition_count", 1
+                ),
+                "grant_vassal_zero_send_options_mismatch",
+            ),
+            (
+                "special_binding",
+                lambda c: c["terms"].__setitem__(
+                    "special_data_present", True
+                ),
+                "grant_vassal_nonwar_special_binding_mismatch",
+            ),
+            (
+                "notification_channel",
+                lambda c: c["legality"]["acknowledge"].__setitem__(
+                    "allowed", True
+                ),
+                "grant_vassal_normal_reply_channel_mismatch",
+            ),
+        )
+        for name, mutate, expected_gap in mutations:
+            with self.subTest(name=name):
+                result = _grant_vassal_context_result()
+                context = result["pending_character_interaction_context"]
+                mutate(context)
+                plan = _plan_for_pending_context(
+                    result,
+                    action_steps=(
+                        "accept-pending-character-interaction",
+                        "reject-pending-character-interaction",
+                    ),
+                    active_wars=[],
+                )
+                self.assertIsNone(plan["selected_step"])
+                self.assertIn(
+                    expected_gap, plan["decision"]["grant_vassal_contract_gaps"]
+                )
+
+        for active_wars in (None, [_war(allied_armies=[], enemy_armies=[])]):
+            with self.subTest(active_wars=active_wars):
+                plan = _plan_for_pending_context(
+                    _grant_vassal_context_result(),
+                    action_steps=(
+                        "accept-pending-character-interaction",
+                        "reject-pending-character-interaction",
+                    ),
+                    active_wars=active_wars,
+                )
+                self.assertIsNone(plan["selected_step"])
+                self.assertIn(
+                    "grant_vassal_active_war_or_war_scope_unknown",
+                    plan["decision"]["grant_vassal_contract_gaps"],
+                )
+
+    def test_grant_vassal_reject_only_never_falls_back_to_accept(self) -> None:
+        for allowed, steps, blocked in (
+            (
+                False,
+                (
+                    "accept-pending-character-interaction",
+                    "reject-pending-character-interaction",
+                ),
+                "grant_vassal_reject_not_native_legal",
+            ),
+            (
+                True,
+                ("accept-pending-character-interaction",),
+                "grant_vassal_reject_command_unavailable",
+            ),
+        ):
+            with self.subTest(allowed=allowed, steps=steps):
+                legality = {
+                    action: {
+                        "status": "available",
+                        "allowed": action == "accept" or (
+                            action == "reject" and allowed
+                        ),
+                        "reason": (
+                            "normal_reply_channel"
+                            if action == "acknowledge"
+                            else None
+                        ),
+                    }
+                    for action in ("accept", "reject", "block", "acknowledge")
+                }
+                plan = _plan_for_pending_context(
+                    _grant_vassal_context_result(legality=legality),
+                    action_steps=steps,
+                    active_wars=[],
+                )
+                self.assertIsNone(plan["selected_step"])
+                self.assertIsNone(plan["decision"]["selected_action"])
+                self.assertIn(blocked, plan["decision"]["blocked_reasons"])
 
     def test_planner_rejects_exact_direct_zero_option_marriage_pending(
         self,
