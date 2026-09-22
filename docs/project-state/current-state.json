@@ -163,7 +163,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "2D8C5B8ED2CE3B48B89F3DA783338022AB03624D8DCD3FAC8AD675EAF1061C1D"
+        "sha256": "D346E1763562D12C002AEE30A5C81D632D90958824160A18D451C290DFDBF514"
       },
       "raw_footage": {
         "passed": 0,
@@ -190,35 +190,74 @@
       "G2-M3"
     ],
     "latest_durable_continuation": {
-      "attempted_turns": 14,
+      "attempted_turns": 134,
       "blocker": {
         "event_action_submitted": false,
-        "event_definition_key": "health.7400",
-        "reason": "registered_contract_projection_drift"
+        "event_definition_key": "trait_specific.4001",
+        "reason": "registered_contract_requires_extended_consumer"
       },
-      "checkpoint_date_raw": 53439672,
-      "checkpoint_history_index": 2493,
-      "checkpoint_save_sha256": "8293562D3331320059ABFA5087AAC8417E592494C3A731DDD6D917F20005193E",
-      "driver_sha256_with_unpaired_tail": "7BD0313D7FCD6714EC2532BEA76B7F4B1CFFB0301BC58F4DE5CC8ABB7AE25F61",
-      "durable_game_days": 12306,
+      "checkpoint_date_raw": 53467008,
+      "checkpoint_history_index": 2675,
+      "checkpoint_save_sha256": "3B0E9B25DBF14FD8FA25F39B91AE6DB771791BDFE5BC7B286878EB4B2BD053DB",
+      "driver_sha256_with_unpaired_tail": "4FAC1B82547A4CC4E4F32206B4418E8EC7105DFF8B026403216E9B7763778732",
+      "durable_game_days": 13445,
       "evidence_manifest": {
         "base": "configured_task_temp_root",
-        "locator": "RUN-001/war-h2479-continuation-source34e9d00-nolaunch-20260922/R0132-formal/R0132-evidence-manifest.json",
-        "sha256": "212CD8D21CC537D1226C8FCD50AE2396E036B740B47A1F582E882236C3C69480"
+        "locator": "RUN-001/war-h2493-continuation-source9b76758-nolaunch-20260922/R0134-formal/R0134-evidence-manifest.json",
+        "sha256": "42801678CCAD722076CB0F40897FD906A4A81869E9F8DEB46C95D296945B170A"
+      },
+      "health_7400_patch": {
+        "integrated_commit": "ccda170a9bf8ca20b652b9f2579083a9f5bb2b1c",
+        "observed_in_r0134": false,
+        "r0132_red_closed": false
       },
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
       "natural_succession_transitions": 0,
       "result": "completed-red",
-      "round": "R0132",
-      "scope": "durable time span and new exact event RED; R0131 exact event closure, original R0118 war RED and PRV008 preview boundary unchanged",
-      "source_commit": "34e9d0077816a5bc8f7203f1c5a50b2a875f6d6f",
-      "successful_turns": 13,
+      "round": "R0134",
+      "scope": "durable time span and new exact event RED; R0132 health RED and original R0118 war RED remain; PRV008 preview boundary unchanged",
+      "source_commit": "9b76758441f087eb65d100f6385f337461f44422",
+      "successful_turns": 133,
       "successful_unpaired_life_advances": 1,
       "target_game_days": 36524,
-      "unpaired_tail_first_index": 2494,
-      "unpaired_tail_last_index": 2498,
+      "unpaired_tail_first_index": 2676,
+      "unpaired_tail_last_index": 2680,
       "whole_campaign_gate": "0/1"
+    },
+    "m4_private_read_only": {
+      "checkpoint_date_raw": 53437416,
+      "checkpoint_history_index": 2479,
+      "cleanup_proven": true,
+      "date_advance": false,
+      "evidence_locator": "g2-m4-h2479-readback-20260922/live-R0135/report.json under configured process assets root",
+      "formal_perk_query_error": "native_lifestyle_windowless_policy_perk_unavailable_state",
+      "gameplay_actions": 0,
+      "life2_legal_candidates_reason": "lifestyle_window_unavailable",
+      "milestone_status": "in_progress",
+      "public_advertised": false,
+      "report_sha256": "764FAD6D217DFE22634B708D9AEC12014661DD7AFBB8DD2AABBFF92E953CBF2C",
+      "result": "completed-red",
+      "round": "R0135",
+      "scope": "same-frame private readback only; LIFE2 legal candidate and formal perk query remain unavailable; no typed focus or perk closure",
+      "status": "evidence_insufficient",
+      "stock_focus_key": "stewardship_wealth_focus",
+      "stock_focus_native_legal": true,
+      "target_unspent_perk_points": 0,
+      "target_xp_total_raw": 0
+    },
+    "m5_private_read_only": {
+      "alliance_projection_row_count": 5,
+      "date_advance": false,
+      "evidence_locator": "g2-m5-alliance-readback-live-R0133/evidence under configured process assets root",
+      "final_legal_candidate_count": 657,
+      "gameplay_actions": 0,
+      "milestone_status": "not_started",
+      "projection_sha256": "C58A3279BCD544844298B9C53D1C635FC23384D6F76E112B092E2BB7A5DBCF3A",
+      "report_sha256": "CFE5635392393AABC4A1C5B1643151CA5C5A4CDAC9FF91740FD3661442F1B3B9",
+      "round": "R0133",
+      "scope": "private readback only; no typed action, material alliance result, joint budget choice or M5 gate promotion",
+      "status": "GREEN_READ_ONLY"
     },
     "open_gates": [
       "G2-M2",
@@ -238,5 +277,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-22T23:06:53+08:00"
+  "updated_at": "2026-09-22T23:40:09+08:00"
 }
