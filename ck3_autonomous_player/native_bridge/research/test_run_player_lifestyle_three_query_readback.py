@@ -20,10 +20,12 @@ from run_player_lifestyle_three_query_readback import (
     FOCUS_STEP,
     PERK_STEP,
     _frame,
+    _manifest_source_identities,
     _new_bound_driver,
     _ordinary_binding,
     _query,
     _verify_ordinary_profile,
+    parser,
     run_three_queries,
 )
 from test_run_player_lifestyle_current_state_read import typed_state
@@ -153,6 +155,63 @@ class FakeDriver:
 
 
 class LifeThreeQueryTest(unittest.TestCase):
+    def test_r0146_legacy_manifest_is_rejected_before_native_commit_keyerror(
+        self,
+    ) -> None:
+        legacy = {
+            "source_repo": "Z:/legacy-python-source",
+            "python_source_commit": "7" * 40,
+        }
+        with self.assertRaisesRegex(
+            RuntimeError, "native_source_commit must be a full Git SHA"
+        ):
+            _manifest_source_identities(legacy)
+
+    def test_source_identities_bind_python_and_native_commits(self) -> None:
+        repo = Path(__file__).resolve().parents[3]
+        native = repo / "ck3_autonomous_player"
+        manifest = {
+            "source_repo": str(repo),
+            "python_source_commit": "7" * 40,
+            "native_source_repo": str(native),
+            "native_source_commit": "8" * 40,
+        }
+        with patch(
+            "run_player_lifestyle_three_query_readback._source_commit",
+            side_effect=lambda path: "7" * 40 if path == repo else "8" * 40,
+        ), patch(
+            "run_player_lifestyle_three_query_readback._source_dirty",
+            return_value=False,
+        ):
+            identities = _manifest_source_identities(manifest)
+        self.assertEqual(identities["python_source_commit"], "7" * 40)
+        self.assertEqual(identities["native_source_commit"], "8" * 40)
+
+    def test_prepare_mode_requires_explicit_source_and_pair_inputs(self) -> None:
+        args = parser().parse_args(
+            [
+                "--candidate-root", "Z:/candidate", "--prepare-only",
+                "--python-source-repo", "Z:/python-source",
+                "--native-source-repo", "Z:/native-source",
+                "--expected-python-source-commit", "7" * 40,
+                "--expected-native-source-commit", "8" * 40,
+                "--source-save", "Z:/pair/xar_checkpoint.ck3",
+                "--source-driver", "Z:/pair/driver-state.json",
+                "--expected-source-save-sha256", "a" * 64,
+                "--expected-source-driver-sha256", "b" * 64,
+                "--game-dir", "Z:/game", "--bridge-dll", "Z:/native/a.dll",
+                "--bridge-injector", "Z:/native/i.exe",
+                "--cmake-cache", "Z:/native/CMakeCache.txt",
+                "--pipe", r"\\.\pipe\xar-g2-r782-ordinary-xar-off-seed",
+                "--expected-actor-id", "36403",
+                "--expected-date-raw", "53368176",
+                "--expected-history-index", "1094",
+            ]
+        )
+        self.assertTrue(args.prepare_only)
+        self.assertFalse(args.preflight_only)
+        self.assertEqual(args.expected_history_index, 1094)
+
     def test_ordinary_binding_matches_frozen_checkpoint(self) -> None:
         profile = {
             "rules": {"profile": [{"rule": "xar_enabled", "setting": "xar_off"}]},
