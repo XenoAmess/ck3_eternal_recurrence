@@ -106,7 +106,8 @@ def _candidate(world: Mapping[str, object]) -> dict[str, object] | None:
             "gold_before_raw": gold}
 
 
-def query_construction_private(driver: object, *, expected_revision: int) -> dict[str, object]:
+def query_construction_private(driver: object, *, expected_revision: int,
+                               material_receipt: bool = False) -> dict[str, object]:
     starting = _binding(driver, expected_revision=expected_revision)
     revision = starting["native_revision"]
     request_id = f"construction-read-{uuid.uuid4().hex}"
@@ -123,7 +124,8 @@ def query_construction_private(driver: object, *, expected_revision: int) -> dic
             and world.get("date_raw") == starting["date_raw"]
             and world.get("player_character_id") == starting["played_character"]["character_id"]
             and world.get("native_final_legality_evaluated") is True
-            and world.get("native_cost_evaluated") is True
+            and (world.get("native_cost_evaluated") is True
+                 or (material_receipt and world.get("native_cost_evaluated") is False))
             and type(world.get("player_gold_raw")) is int
             and world["player_gold_raw"] >= 0
             and isinstance(world.get("active_constructions"), list)
@@ -148,6 +150,18 @@ def query_construction_private(driver: object, *, expected_revision: int) -> dic
                 "ending_frame": {"snapshot_id": ending.get("snapshot_id"),
                                  "revision": ending.get("revision"),
                                  "episode_run_id": ending.get("episode_run_id")}}
+    if material_receipt:
+        # A submitted building can remove every legal new candidate.  Its
+        # independent active-construction row is material evidence even when
+        # this frame has no new cost sample; never use this mode to submit.
+        return {"status": "material_source", "world": dict(world),
+                "proof_epoch": probe["proof_epoch"],
+                "source_frame": {"snapshot_id": starting["snapshot_id"],
+                                 "revision": expected_revision,
+                                 "native_revision": revision,
+                                 "date_raw": starting["date_raw"],
+                                 "episode_run_id": starting["episode_run_id"],
+                                 "actor_character_id": starting["played_character"]["character_id"]}}
     selected = _candidate(world)
     if selected is None:
         return {"status": "no_legal_budgeted_building", "world": dict(world),
@@ -250,8 +264,9 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
             or starting["date_raw"] < pending.get("pre_date_raw", 0)
             or (same_process and starting["native_revision"] <= pending["pre_native_revision"])):
         raise BridgeUnavailableError("construction receipt requires a later paused actor frame")
-    query = query_construction_private(driver, expected_revision=expected_revision)
-    if query.get("status") not in ("selected", "no_legal_budgeted_building"):
+    query = query_construction_private(
+        driver, expected_revision=expected_revision, material_receipt=True)
+    if query.get("status") != "material_source":
         driver._record_command(RECEIPT_STEP, ok=False, result={
             "status": "receipt_source_unavailable",
             "stage": "construction_receipt_native_source_query",
