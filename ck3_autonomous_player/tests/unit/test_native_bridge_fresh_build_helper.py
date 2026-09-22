@@ -69,6 +69,25 @@ class NativeBridgeFreshBuildHelperTests(unittest.TestCase):
             self.assertEqual(plan["dependency_header"], "ck3_11906.hpp")
             self.assertFalse(build_dir.exists())
 
+    def test_robert_build_plan_is_explicit_and_requires_private_candidate(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-robert-plan-") as temporary:
+            build_dir = Path(temporary) / "new-build"
+            base = [
+                sys.executable, str(HELPER), "--build-dir", str(build_dir),
+                "--plan-only", "--feudal-1066-target-robert",
+            ]
+            rejected = subprocess.run(
+                base, capture_output=True, text=True, encoding="utf-8"
+            )
+            self.assertNotEqual(rejected.returncode, 0)
+            self.assertIn("requires the private candidate build", rejected.stderr)
+            accepted = subprocess.run(
+                base + ["--feudal-1066-selected-bookmark-private"],
+                check=True, capture_output=True, text=True, encoding="utf-8",
+            )
+            self.assertTrue(json.loads(accepted.stdout)["feudal_1066_target_robert"])
+            self.assertFalse(build_dir.exists())
+
     def test_2052_only_toolchain_repairs_cmake_mojibake_as_utf8(self) -> None:
         helper = _load_helper()
         with tempfile.TemporaryDirectory(prefix="xar-native-prefix-") as temporary:

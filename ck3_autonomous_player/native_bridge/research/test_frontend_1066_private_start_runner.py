@@ -13,7 +13,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import run_frontend_gui_route_v1_live_acceptance as route  # noqa: E402
 
 
-def model(*, selected: int = -1, government: str = "feudal_government"):
+def model(
+    *,
+    selected: int = -1,
+    government: str = "feudal_government",
+    target: str = "bookmark_rags_to_riches_petty_king_murchad",
+):
     return {
         "private_scope": "exact-build-bookmarks-model-v1",
         "status": "identity_ready",
@@ -34,7 +39,9 @@ def model(*, selected: int = -1, government: str = "feudal_government"):
             "bookmark_rags_to_riches_duke_robert",
         ],
         "bookmark_character_count": 5,
-        "supported_1066_candidate_index": 0,
+        "supported_1066_candidate_index": (
+            4 if target == "bookmark_rags_to_riches_duke_robert" else 0
+        ),
         "selected_character_index": selected,
     }
 
@@ -180,6 +187,52 @@ class PrivateFeudalStartOrderingTests(unittest.TestCase):
         self.assertFalse(result["selector_submitted"])
         self.assertFalse(result["start_submitted"])
         submit.assert_not_called()
+
+    def test_robert_mismatch_stops_before_typed_selection(self):
+        robert = "bookmark_rags_to_riches_duke_robert"
+        with mock.patch.object(route, "_call_private_frontend_action") as submit:
+            result = route._controlled_private_feudal_start(
+                object(), model(), 1.0,
+                expected_character_name_key=robert,
+            )
+        self.assertFalse(result["ok"])
+        self.assertFalse(result["selector_submitted"])
+        submit.assert_not_called()
+
+    def test_robert_can_replace_current_murchad_selection(self):
+        robert = "bookmark_rags_to_riches_duke_robert"
+        steps = [
+            "select-frontend-supported-1066-character-v1",
+            "activate-frontend-start-selected-bookmark-v1",
+        ]
+        with tempfile.TemporaryDirectory(
+            dir=Path(__file__).resolve().parents[4]
+        ) as directory:
+            driver = FakeDriver(Path(directory))
+            with (
+                mock.patch.object(
+                    route, "_call_private_frontend_action",
+                    side_effect=[action(step) for step in steps],
+                ) as submit,
+                mock.patch.object(
+                    route, "_call_private_bookmarks_model",
+                    return_value={
+                        "is_error": False,
+                        "structured_content": model(selected=4, target=robert),
+                    },
+                ),
+            ):
+                result = route._controlled_private_feudal_start(
+                    driver,
+                    model(selected=0, target=robert),
+                    1.0,
+                    expected_character_name_key=robert,
+                )
+            self.assertTrue(result["ok"], result.get("error"))
+            self.assertEqual(result["expected_character_name_key"], robert)
+            self.assertEqual(result["native_target_index_before"], 4)
+            self.assertEqual(submit.call_count, 2)
+            self.assertEqual(driver.executed, ["save-checkpoint"])
 
     def test_lost_selection_ack_stops_without_retry_or_start(self):
         step = "select-frontend-supported-1066-character-v1"
