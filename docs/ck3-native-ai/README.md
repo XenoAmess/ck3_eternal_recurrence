@@ -1,5 +1,7 @@
 # CK3 原生 AI 决策树索引
 
+- [文档覆盖盘点：2026-09-22](documentation-coverage-audit-2026-09-22.md)：按来源、触发/候选、条件、权重和后果逐项评估梳理深度；区分原生 AI、引擎状态机、我方策略与实机证据。当前基准实际 registry 为 193 条，旧摘要计数的差异见盘点。
+
 - [exact-build tree + R0089 natural production fallback RED; focused offline consumer ready] [`physician_epidemic_events.1000` 疫情医师争议](physician-epidemic-events-1000.md)：原版 native 1 给玩家五年疫病抗性，同时承担狂热者好感、对立关系与可能压力成本；R0089 generic 恰选此项但不构成语义或物质 GREEN，新版同帧离线走专用合同，实机复验仍待闭合。
 - [exact-build source tree + R0088 natural production fallback; focused offline consumer ready] [`char_interaction.0232` 叛臣战争邀请](char-interaction-0232-rebel-war-call.md)：原版 native 0 加入叛军战争、native 1 承担好感代价但不参战；R0088 曾因未注册而 generic 选择 native 0，新版同帧离线选 native 1，实机复验待闭合。
 - [exact-build source tree + R0087 natural paused RED] [`epidemic_events.1100` 疫情爆发通知](epidemic-events-1100-outbreak-notice.md)：原版通知后的保守选项及有/无医生互斥投影，R0087 只物化 native `[0,1]`；正式 typed 选择和独立后置待新版实机，不能借此声称疫情物质结果或 G2-M2 已闭合。
