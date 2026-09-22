@@ -1,5 +1,20 @@
 # CK3 1.19.0.6 campaign root context：玩家、政体、头衔与实际规则集
 
+## 2026-09-22 M2 `.0110` 物质读数补丁（静态候选）
+
+`player_legitimacy_v1` 是现有 paused campaign-root 查询的可选只读附加字段，不改变该查询的
+`schema_version: 1`、既有 readiness 或能力广告。冻结 `1.19.0.6` 的现有战争终局资源读取器已经使用
+`Character+0x1C0 → legitimacy data+0x28` 读取 Q100000 余额；本补丁复用这两个 exact-build offset，
+在原有角色世代和同一暂停帧双采样约束内返回 `{status, value, unavailable_reason}`。
+缺失数据指针、读取失败或负值均返回 `unavailable`，不能当成合法零。旧 B114 payload 不带该字段，
+Python 仍可读取，但它不能补证物质结果。
+
+`epidemic_events.0110.c` 在有合法性时使用 `miniscule_legitimacy_loss=-20`，否则主要效果是给
+`formerly_infected_counties` 中各县添加 5 年的恢复 modifier。R0101 h1035 已有真实 typed 选择，
+h1023 事前与 h1094 事后实体存档都在；尚未用新字段分别冷加载读数。只有同一角色的独立读数证实
+预期变化并排除期间其他合法性变化，才能把 R0101 升为物质后置证据；若该分支不可判定，仍需
+县级 modifier 只读查询或下一次自然 `.0110` 场景，不能把弹窗消失等同于效果。
+
 ## 结论与边界
 
 - **[static-confirmed]** 本文只绑定 CK3 `1.19.0.6 (Scribe)` 的

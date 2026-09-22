@@ -79,6 +79,19 @@
       "alert": "ruler_health_below_fine iff raw < 300000"
     }
   },
+  "player_legitimacy_v1": {
+    "purpose": "read-only material comparison for natural epidemic_events.0110.c; not a new advertised capability",
+    "source_reader": "src/ck3_11906.cpp:ReadCharacterExitResources",
+    "character_legitimacy_data_pointer_offset": "0x1C0",
+    "legitimacy_data_balance_offset": "0x28",
+    "scale": 100000,
+    "wire_field": "player_legitimacy_v1",
+    "wire_status": ["available", "unavailable"],
+    "missing_data_semantics": "unavailable, never a synthetic zero",
+    "same_frame": "included in the campaign root's two-sample equality and played Character generation check",
+    "readiness": "does not change the existing campaign-root readiness or advertise material outcome",
+    "live_status": "pending paused readback on R0099 h1023 pre-event save and R0101 h1094 post-event save"
+  },
   "player_domain_capacity": {
     "published_fields": [
       "player_domain_size",

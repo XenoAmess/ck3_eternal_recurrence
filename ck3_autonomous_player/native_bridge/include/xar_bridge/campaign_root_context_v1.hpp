@@ -120,6 +120,16 @@ struct CampaignRootCouncilV1 {
                          const CampaignRootCouncilV1 &) = default;
 };
 
+// Diagnostic material readout. This never upgrades campaign-root readiness:
+// absence of legitimacy data is unknown, not a legitimate zero balance.
+struct CampaignRootLegitimacyV1 {
+  std::optional<FixedPointValue> value;
+  std::string unavailable_reason;
+
+  friend bool operator==(const CampaignRootLegitimacyV1 &,
+                         const CampaignRootLegitimacyV1 &) = default;
+};
+
 struct CampaignRootReadinessV1 {
   bool player_identity_ready = false;
   bool player_monthly_gold_income_ready = false;
@@ -157,6 +167,7 @@ struct CampaignRootContextV1 {
   std::optional<bool> player_character_alive;
   std::optional<FixedPointValue> player_monthly_gold_income;
   std::optional<FixedPointValue> player_health;
+  std::optional<CampaignRootLegitimacyV1> player_legitimacy_v1;
   std::optional<std::int32_t> player_domain_size;
   std::optional<std::int32_t> player_domain_limit;
   std::optional<std::int32_t> player_targeting_faction_count;

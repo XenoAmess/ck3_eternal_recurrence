@@ -414,6 +414,52 @@ def _semantic_snapshot(
 
 
 class CampaignRootContextV1ContractTests(unittest.TestCase):
+    def test_optional_exact_legitimacy_preserves_legacy_and_unknown(self) -> None:
+        legacy = normalize_campaign_root_context_v1(
+            _frame(),
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertNotIn("player_legitimacy_v1", legacy)
+        frame = _frame()
+        frame["player_legitimacy_v1"] = {
+            "status": "available",
+            "value": {"raw": 8_000_000, "scale": 100_000},
+            "unavailable_reason": None,
+        }
+        read = normalize_campaign_root_context_v1(
+            frame,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertEqual(read["player_legitimacy_v1"], frame["player_legitimacy_v1"])
+        self.assertEqual(read["readiness"], legacy["readiness"])
+        frame["player_legitimacy_v1"] = {
+            "status": "unavailable",
+            "value": None,
+            "unavailable_reason": "data_absent",
+        }
+        unknown = normalize_campaign_root_context_v1(
+            frame,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+        self.assertIsNone(unknown["player_legitimacy_v1"]["value"])
+
+    def test_optional_exact_legitimacy_rejects_invented_zero(self) -> None:
+        frame = _frame()
+        frame["player_legitimacy_v1"] = {
+            "status": "unavailable",
+            "value": {"raw": 0, "scale": 100_000},
+            "unavailable_reason": "data_absent",
+        }
+        with self.assertRaises(ValueError):
+            normalize_campaign_root_context_v1(
+                frame,
+                expected_date_raw=DATE_RAW,
+                expected_snapshot_revision=NATIVE_REVISION,
+            )
+
     def test_available_preserves_lexical_multiplicity_and_hegemony(self) -> None:
         normalized = normalize_campaign_root_context_v1(
             _frame(),
@@ -1040,6 +1086,30 @@ class _ServiceDriver:
 
 
 class CampaignRootContextV1ServiceTests(unittest.TestCase):
+    def test_optional_material_readout_survives_public_root_query(self) -> None:
+        class _MaterialDriver(_ServiceDriver):
+            def execute_step(
+                self, step: str, *, expected_revision: int | None = None
+            ) -> dict[str, object]:
+                result = super().execute_step(
+                    step, expected_revision=expected_revision
+                )
+                result["campaign_root_context"]["player_legitimacy_v1"] = {
+                    "status": "available",
+                    "value": {"raw": 8_000_000, "scale": 100_000},
+                    "unavailable_reason": None,
+                }
+                return result
+
+        result = GameplayBridgeService(
+            _MaterialDriver()
+        ).query_campaign_root_context_v1(expected_revision=PUBLIC_REVISION)
+        self.assertEqual(
+            result["campaign_root_context"]["player_legitimacy_v1"]["value"],
+            {"raw": 8_000_000, "scale": 100_000},
+        )
+        self.assertTrue(result["campaign_root_context_ready"])
+
     def test_official_facade_forwards_the_required_revision(self) -> None:
         result = _ck3_query_campaign_root_context_v1(
             GameplayBridgeService(_ServiceDriver()),
@@ -1184,6 +1254,35 @@ class CampaignRootContextV1ServiceTests(unittest.TestCase):
     "optional MCP SDK not installed",
 )
 class CampaignRootContextV1McpTests(unittest.IsolatedAsyncioTestCase):
+    async def test_existing_mcp_query_carries_optional_material_readout(self) -> None:
+        from mcp import Client
+
+        class _MaterialDriver(_ServiceDriver):
+            def execute_step(
+                self, step: str, *, expected_revision: int | None = None
+            ) -> dict[str, object]:
+                result = super().execute_step(
+                    step, expected_revision=expected_revision
+                )
+                result["campaign_root_context"]["player_legitimacy_v1"] = {
+                    "status": "available",
+                    "value": {"raw": 8_000_000, "scale": 100_000},
+                    "unavailable_reason": None,
+                }
+                return result
+
+        async with Client(create_server(_MaterialDriver())) as client:
+            result = await client.call_tool(
+                "ck3_query_campaign_root_context_v1",
+                {"expected_revision": PUBLIC_REVISION},
+            )
+        self.assertFalse(result.is_error)
+        self.assertEqual(
+            result.structured_content["campaign_root_context"]
+            ["player_legitimacy_v1"]["value"]["raw"],
+            8_000_000,
+        )
+
     async def test_official_client_lists_and_calls_campaign_root_tool(self) -> None:
         from mcp import Client
 

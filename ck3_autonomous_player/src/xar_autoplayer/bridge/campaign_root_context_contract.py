@@ -50,6 +50,14 @@ _FIELDS: Final = {
     "unavailable_reason",
     "provenance",
 }
+_MATERIAL_FIELDS: Final = _FIELDS | {"player_legitimacy_v1"}
+_LEGITIMACY_FIELDS: Final = {"status", "value", "unavailable_reason"}
+_LEGITIMACY_UNAVAILABLE_REASONS: Final = {
+    "data_pointer_unreadable",
+    "data_absent",
+    "balance_unreadable",
+    "balance_invalid",
+}
 _PRIMARY_TITLE_FIELDS: Final = {"title_id", "tier_raw", "tier_key"}
 _HELD_TITLE_PARTITION_FIELDS: Final = {
     "title",
@@ -207,6 +215,7 @@ _UNAVAILABLE_NULL_FIELDS: Final = {
     "player_character_alive",
     "player_monthly_gold_income",
     "player_health",
+    "player_legitimacy_v1",
     "player_domain_size",
     "player_domain_limit",
     "player_targeting_faction_count",
@@ -263,6 +272,26 @@ def _fixed_point(value: object, name: str) -> dict[str, int]:
     if frame.get("scale") != 100_000:
         raise ValueError(f"{name}.scale must be 100000")
     return {"raw": raw, "scale": 100_000}
+
+
+def _optional_legitimacy_v1(value: object) -> dict[str, object]:
+    row = _exact_object(value, _LEGITIMACY_FIELDS, "player_legitimacy_v1")
+    status = row.get("status")
+    reason = row.get("unavailable_reason")
+    if status == "available":
+        balance = _fixed_point(row.get("value"), "player_legitimacy_v1.value")
+        if balance["raw"] < 0 or reason is not None:
+            raise ValueError("available legitimacy must have a nonnegative balance")
+        return {"status": status, "value": balance, "unavailable_reason": None}
+    if status == "unavailable":
+        if (
+            row.get("value") is not None
+            or not isinstance(reason, str)
+            or reason not in _LEGITIMACY_UNAVAILABLE_REASONS
+        ):
+            raise ValueError("unavailable legitimacy invented a balance")
+        return {"status": status, "value": None, "unavailable_reason": reason}
+    raise ValueError("player_legitimacy_v1.status is invalid")
 
 
 def _optional_positive_int32(value: object, name: str) -> int | None:
@@ -718,7 +747,12 @@ def normalize_campaign_root_context_v1(
         minimum=1,
         maximum=2**64 - 1,
     )
-    frame = _exact_object(value, _FIELDS, "campaign_root_context")
+    if not isinstance(value, dict) or set(value) not in (
+        _FIELDS, _MATERIAL_FIELDS
+    ):
+        raise ValueError("campaign_root_context has invalid v1 fields")
+    frame = value
+    material_present = "player_legitimacy_v1" in frame
     if frame.get("schema_version") != 1:
         raise ValueError("campaign_root_context.schema_version must be 1")
     status = frame.get("status")
@@ -835,6 +869,10 @@ def normalize_campaign_root_context_v1(
     player_health = _fixed_point(
         frame.get("player_health"),
         "player_health",
+    )
+    player_legitimacy_v1 = (
+        _optional_legitimacy_v1(frame.get("player_legitimacy_v1"))
+        if material_present else None
     )
     player_domain_size = _int(
         frame.get("player_domain_size"),
@@ -990,6 +1028,8 @@ def normalize_campaign_root_context_v1(
         "player_character_alive": player_character_alive,
         "player_monthly_gold_income": player_monthly_gold_income,
         "player_health": player_health,
+        **({"player_legitimacy_v1": player_legitimacy_v1}
+           if material_present else {}),
         "player_domain_size": player_domain_size,
         "player_domain_limit": player_domain_limit,
         "player_targeting_faction_count": player_targeting_faction_count,
