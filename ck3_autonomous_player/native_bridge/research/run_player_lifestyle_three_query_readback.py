@@ -1,4 +1,4 @@
-"""Bounded, private LIFE2/perk/focus readback from one paired CK3 checkpoint.
+"""Bounded, private LIFE2/focus/perk readback from one paired CK3 checkpoint.
 
 The operator prepares a versioned candidate-manifest.json in an isolated
 profile before invoking this entry. ``--preflight-only`` never starts CK3.
@@ -36,6 +36,7 @@ STATE_STEP = "private-query-player-lifestyle-current-state-v1"
 PERK_STEP = "private-query-player-lifestyle-formal-v1"
 FOCUS_STEP = "private-query-player-lifestyle-stock-focus-v1"
 FOCUS_TARGET = "stewardship_wealth_focus"
+PERK_ABSENT_PROGRESS_ERROR = "native_lifestyle_windowless_policy_perk_unavailable_state"
 
 
 def _sha(path: Path) -> str:
@@ -264,6 +265,7 @@ def _query(
     step: str,
     source_frame: dict[str, object],
     timeout_seconds: float,
+    verified_absent_progress: bool = False,
 ) -> dict[str, object]:
     """Send one allowlisted native read and sample a separate paused frame."""
     _need(step in {PERK_STEP, FOCUS_STEP}, "non-read-only LIFE step denied")
@@ -300,6 +302,18 @@ def _query(
     ):
         return {**record, "status": "red", "issue": "malformed_command_result"}
     if response.get("ok") is not True:
+        if (
+            step == PERK_STEP
+            and verified_absent_progress
+            and response.get("ok") is False
+            and response.get("error") == PERK_ABSENT_PROGRESS_ERROR
+        ):
+            return {
+                **record,
+                "status": "typed_legal_unavailable",
+                "native_status": PERK_ABSENT_PROGRESS_ERROR,
+                "basis": "same_frame_life2_current_lifestyle_progress_absent",
+            }
         return {
             **record,
             "status": "red",
@@ -385,7 +399,7 @@ def run_three_queries(
     *,
     deadline: float,
 ) -> dict[str, object]:
-    """Collect LIFE2, formal perk and fixed focus without advancing CK3."""
+    """Collect LIFE2, fixed focus and formal perk without advancing CK3."""
     starting = _frame(driver.take_internal_semantic_snapshot())
     if not _valid_start(starting, manifest):
         return {"status": "ineligible_scene", "starting_frame": starting}
@@ -397,7 +411,8 @@ def run_three_queries(
         "gameplay_actions": 0,
         "date_advanced": False,
     }
-    for step in (STATE_STEP, PERK_STEP, FOCUS_STEP):
+    verified_absent_progress = False
+    for step in (STATE_STEP, FOCUS_STEP, PERK_STEP):
         remaining = deadline - time.monotonic()
         if remaining <= 20:
             record["status"] = "timeout"
@@ -418,9 +433,21 @@ def run_three_queries(
                 result["status"] = "observed"
             elif result.get("status") == "typed_absent_progress_evidence_insufficient":
                 result["status"] = "native_unavailable"
+                observed = result.get("observed")
+                verified_absent_progress = (
+                    isinstance(observed, dict)
+                    and isinstance(observed.get("lifestyle_progress"), dict)
+                    and observed["lifestyle_progress"].get("presence") == "absent"
+                )
         else:
             result = _query(
-                driver, step=step, source_frame=starting, timeout_seconds=timeout
+                driver,
+                step=step,
+                source_frame=starting,
+                timeout_seconds=timeout,
+                verified_absent_progress=(
+                    verified_absent_progress if step == PERK_STEP else False
+                ),
             )
             _write(evidence / f"{step}.json", result)
         steps.append(result)
@@ -434,7 +461,9 @@ def run_three_queries(
         if result["status"] == "ineligible_scene":
             record["status"] = "ineligible_scene"
             break
-        if result["status"] not in {"observed", "native_unavailable"}:
+        if result["status"] not in {
+            "observed", "native_unavailable", "typed_legal_unavailable"
+        }:
             record.update(status="red", issue="unrecognized_readback_status")
             break
     else:

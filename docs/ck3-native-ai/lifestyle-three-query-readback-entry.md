@@ -1,8 +1,8 @@
 # M4-LIFE-READBACK-ENTRY: bounded private input readback
 
-Status: static-ready with R0110 live startup RED; no lifestyle query has yet
-passed live. This entry is not a public capability and cannot prove a
-lifestyle action or G2-M4 completion.
+Status: private readback with R0110 startup RED and R0111 live readback RED;
+neither proves a lifestyle action or G2-M4 completion. This entry is not a
+public capability.
 It follows the exact 1.19.0.6 native decision tree in
 `lifestyle-focus-perk-ai.md` and the versioned LIFE2, stock-perk, and
 stock-focus ABI files under `native_bridge/research/`. Frozen CK3 EXE SHA-256:
@@ -16,8 +16,15 @@ processes were recovered after an operator interrupt; no normal runner report
 was produced, and the abandoned owner marker was preserved then reconciled
 through the existing exclusive-state-lock contract. The runner now derives
 the ordinary binding from the verified prepared profile, requires it to match
-the checkpoint, and passes it into the driver constructor. Focused tests are
-not a replacement for a fresh-round live recheck of this correction.
+the checkpoint, and passes it into the driver constructor. R0111 proved that
+this lifecycle correction reached the paused readback: LIFE2 reported current
+focus and lifestyle progress both `absent`, with seven owned perks. The formal
+perk query returned `native_lifestyle_windowless_policy_perk_unavailable_state`
+and the runner stopped RED before its stock-focus query. The exact-build
+`ReadStockPerkPlayerState` fallback requires current lifestyle progress to be
+present; this particular absent-progress state makes perk legality unavailable,
+not false or successful. R0111 remains RED and supplies no focus-query or
+gameplay-action evidence.
 
 ## Candidate manifest and sole-owner use
 
@@ -69,23 +76,27 @@ The command entry is
 `--candidate-root <prepared-root> --preflight-only` checks the manifest,
 profile, hashes, checkpoint and zero-instance state without launching CK3.
 Only the sole owner may then supply `--candidate-root <prepared-root> --round
-R<n> --evidence <fresh-Z-dir>` to execute the bounded cold-start. No live
-private readback has passed: R0110 failed at bridge hello before querying.
-The corrected lifecycle binding must use a fresh candidate version and a new
-round, recorded by the sole owner before launch.
+R<n> --evidence <fresh-Z-dir>` to execute the bounded cold-start. No complete
+three-query live readback has passed. A corrected runner is a new candidate
+version and needs a new round only when the sole-owner queue authorizes it.
 
 ## Readback contract
 
 The runner calls exactly these allowlisted private steps on one paused,
-map-ready native frame: `private-query-player-lifestyle-current-state-v1`,
-`private-query-player-lifestyle-formal-v1`, and
-`private-query-player-lifestyle-stock-focus-v1`. The final focus query is
-scoped to `stewardship_wealth_focus`; the formal query supplies the policy
-perk candidate view. Each request carries native revision, snapshot ID, date,
-actor and episode bindings, then receives a separate paused-frame readback.
+map-ready native frame, in order: `private-query-player-lifestyle-current-state-v1`,
+`private-query-player-lifestyle-stock-focus-v1`, then
+`private-query-player-lifestyle-formal-v1`. The stock-focus query is scoped to
+`stewardship_wealth_focus`; the formal query supplies the policy perk candidate
+view. Each request carries native revision, snapshot ID, date, actor and
+episode bindings, then receives a separate paused-frame readback.
 The script sends no gameplay action or date-advance step. Native `unavailable`
-is evidence-insufficient, not legal false or an empty candidate set; command
-rejection, malformed binding or frame drift is RED. A full observation yields
+is evidence-insufficient, not legal false or an empty candidate set. Only the
+exact formal-perk error `native_lifestyle_windowless_policy_perk_unavailable_state`
+paired with a validated same-frame LIFE2 `current_lifestyle_progress.presence:
+absent` is recorded as `typed_legal_unavailable`; it is not a perk legality
+decision, earned point, submitted action, or completed gate. The raw native
+response stays in evidence. Any other native command rejection, malformed
+binding or frame drift stays RED. A full observation yields
 `three_queries_observed` only if all three typed reads and frame checks pass.
 
 The report and each raw query response are written under the fresh evidence
