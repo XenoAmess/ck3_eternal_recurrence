@@ -5,7 +5,9 @@ from __future__ import annotations
 import asyncio
 import importlib.util
 from pathlib import Path
+import stat
 import sys
+import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -108,6 +110,20 @@ class WarOpportunityReadbackTests(unittest.TestCase):
         self.assertFalse(result["scope_complete"])
         with self.assertRaisesRegex(RuntimeError, "unexpected native command"):
             self.run_frame([31050], unsafe=True)
+
+    def test_frozen_source_copy_is_writable_without_changing_source(self) -> None:
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / "frozen.json"
+            target = Path(root) / "candidate.json"
+            source.write_bytes(b'{"format_version": 2}\n')
+            source.chmod(stat.S_IREAD)
+            try:
+                module.copy_frozen_bytes_to_candidate(source, target)
+                self.assertEqual(target.read_bytes(), source.read_bytes())
+                self.assertFalse(source.stat().st_mode & stat.S_IWRITE)
+                self.assertTrue(target.stat().st_mode & stat.S_IWRITE)
+            finally:
+                source.chmod(source.stat().st_mode | stat.S_IWRITE)
 
 
 if __name__ == "__main__":
