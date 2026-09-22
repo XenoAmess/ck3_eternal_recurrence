@@ -1,0 +1,527 @@
+{
+  "schema": "xar.war-film-retreat-research-evidence.v1",
+  "package": "a04",
+  "proof_layer": "human-reviewed-exact-build-static-chain",
+  "version": "1.19.0.6",
+  "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "live_execution_performed": false,
+  "automatic_semantic_verification": false,
+  "production_mcp_capability_added": false,
+  "prior_packages_modified": false,
+  "claims": [
+    {
+      "id": "winner_transition",
+      "status": "static-confirmed",
+      "meaning": "230A010 writes winner before querying loser retreat legality; transition is pursuit/done, not an AI choice.",
+      "spine": [
+        "2309ECA/2309EE5 -> 230A010",
+        "230929F -> 230A010",
+        "230A080 winner",
+        "230A162 phase3",
+        "230A264 phase2"
+      ]
+    },
+    {
+      "id": "known_move_caller_excludes_active",
+      "status": "static-confirmed",
+      "meaning": "The verified direct 1872348 caller is gated out by 1872208/187220F active combat test.",
+      "limit": "Does not exclude unknown indirect callers or all queue timing changes."
+    },
+    {
+      "id": "succession_subset",
+      "status": "static-confirmed",
+      "meaning": "24E3D08 belongs to ExecuteSuccessionWithTheocracyLeaseFreeze; no opposing relation match triggers subset extraction at current province with fifth bool false.",
+      "spine": [
+        "24E56C5 -> 24E1A60",
+        "24E3CEA -> 230B570",
+        "230B65E -> 2900470",
+        "24E3CF1 true skips",
+        "24E3D08 -> 23CA360"
+      ]
+    },
+    {
+      "id": "optional_subset_pursuit",
+      "status": "static-confirmed",
+      "meaning": "23CAA37 skips 23CAA6D pursuit when fifth bool is false; succession passes false."
+    },
+    {
+      "id": "generic_active_policy",
+      "status": "unknown",
+      "meaning": "Three bounded chains classified. No global absence proof or attributable ordinary AI retreat case."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\consumer-parent-functions.json",
+      "sha256": "4d9ec7e333e0932c01ac6ce69a05c30ea53f141b0e431cec5032f28d1cdc21bb",
+      "size": 216511
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\consumer-parent-refs.json",
+      "sha256": "e6c845aea5355d48b9f53188a515c0cda053e29ae63ccb98b395ec9c7171cc32",
+      "size": 2412
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\full-side-complete.json",
+      "sha256": "ee2ae199e1eb0b1ef737f89d1bed646fca7bc624adb70174241d7b7bb5ed4348",
+      "size": 14372
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\initial-plan-check.json",
+      "sha256": "89bbe19df4e8c8ca3fa3d1db042559bac5f7592fe23f3447f46efd057045a673",
+      "size": 1064
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\selected-consumer-refs.json",
+      "sha256": "47e17ab58072bb43a3e1733edec2af97e9277dd79772c0d8c195af4532340d4a",
+      "size": 3153
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\selected-first-windows.json",
+      "sha256": "1f4659f643e73c95329fe4494fee610f4af98b4c75b818bbe02a3d0e1405302f",
+      "size": 51461
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\subset-consumer.json",
+      "sha256": "3ea7bb0f8bc19f5c246ad7316b109781b8f4ed1f8cdb8b87250b7e905c57c649",
+      "size": 53000
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\subset-context-strings.json",
+      "sha256": "0f204b5a7ba44f8b72a8bd19de9a91f718a05beb9320a1b2494e6d9c7ecf9eae",
+      "size": 3858
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\subset-relation-predicate.json",
+      "sha256": "e25b848ed0eebd0254ba160490035a4df06deb50903930379f0c8bf0f2cfe194",
+      "size": 8360
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\subset-top-refs.json",
+      "sha256": "883e87309f9a599fdd7fc8ce522d976ee862c99f289995c77fb47d7acbf7b162",
+      "size": 1867
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\subset-upstream.json",
+      "sha256": "472d0752e93c8afe62e4e4b21b37b647008da18ef5e5bdce5d244e808c7a402f",
+      "size": 31244
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\winner-transition-complete.json",
+      "sha256": "11c4ae282449c7eba56e18f0152b83f2a21bf767f3140df5a23e934fa1234b45",
+      "size": 17480
+    }
+  ],
+  "source_snapshots": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\source-snapshot-war_film_retreat_extract.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_extract.py",
+      "sha256": "29ee12ff63c23d122994c17fad9b6d477b587305a2c9d0fa990432cd6d150eba",
+      "size": 8636
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\source-snapshot-war_film_retreat_freeze_a04.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_freeze_a04.py",
+      "sha256": "12f822eb151e9fcde26919d3adebcdcbad6354a38c378c2fba0c6ca5c6190e27",
+      "size": 8022
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\source-snapshot-war_film_retreat_plan_a04.json",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_plan_a04.json",
+      "sha256": "df715ff568b44cd97118b5971b2a6b780324f404c815d8cceaf5bc29e20310c1",
+      "size": 3044
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a04\\source-snapshot-initial-functions.json",
+      "original_path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\initial-functions.json",
+      "sha256": "f109a6e6338892ddb5dde77efa8e2977a78a5c0bf53147465874c52d65b2f179",
+      "size": 79229
+    }
+  ],
+  "reviewed_instruction_excerpts": {
+    "winner-transition-complete.json": [
+      "00230A071  85 db                            test     ebx, ebx",
+      "00230A073  49 8b c6                         mov      rax, r14",
+      "00230A076  0f 94 c0                         sete     al",
+      "00230A079  48 69 f0 48 03 00 00             imul     rsi, rax, 0x348",
+      "00230A080  89 9f e0 06 00 00                mov      dword ptr [rdi + 0x6e0], ebx",
+      "00230A0D7  45 33 c0                         xor      r8d, r8d",
+      "00230A0DA  48 8b cf                         mov      rcx, rdi",
+      "00230A0DD  e8 6e e1 ff ff                   call     0x142308250",
+      "00230A0E2  84 c0                            test     al, al",
+      "00230A0E4  0f 85 18 01 00 00                jne      0x14230a202",
+      "00230A15B  44 8b 8f e0 06 00 00             mov      r9d, dword ptr [rdi + 0x6e0]",
+      "00230A162  48 c7 87 b0 06 00 00 03 00 00 00 mov      qword ptr [rdi + 0x6b0], 3",
+      "00230A25D  48 89 87 f0 06 00 00             mov      qword ptr [rdi + 0x6f0], rax",
+      "00230A264  48 c7 87 b0 06 00 00 02 00 00 00 mov      qword ptr [rdi + 0x6b0], 2",
+      "00230A26F  44 38 b6 e2 00 00 00             cmp      byte ptr [rsi + 0xe2], r14b",
+      "00230A276  74 08                            je       0x14230a280",
+      "00230A278  48 8b cf                         mov      rcx, rdi",
+      "00230A27B  e8 20 00 00 00                   call     0x14230a2a0"
+    ],
+    "consumer-parent-functions.json": [
+      "002309EA6  8b 97 00 07 00 00                mov      edx, dword ptr [rdi + 0x700]",
+      "002309EAC  83 fa ff                         cmp      edx, -1",
+      "002309EAF  75 2a                            jne      0x142309edb",
+      "002309EB1  48 83 bf b8 00 00 00 00          cmp      qword ptr [rdi + 0xb8], 0",
+      "002309EB9  7f 14                            jg       0x142309ecf",
+      "002309EBB  ba 01 00 00 00                   mov      edx, 1",
+      "002309EC0  48 8b cf                         mov      rcx, rdi",
+      "002309EC3  48 83 c4 30                      add      rsp, 0x30",
+      "002309EC7  5f                               pop      rdi",
+      "002309EC8  5e                               pop      rsi",
+      "002309EC9  5d                               pop      rbp",
+      "002309ECA  e9 41 01 00 00                   jmp      0x14230a010",
+      "002309ECF  48 83 bf 00 04 00 00 00          cmp      qword ptr [rdi + 0x400], 0",
+      "002309ED7  7f 11                            jg       0x142309eea",
+      "002309ED9  33 d2                            xor      edx, edx",
+      "002309EDB  48 8b cf                         mov      rcx, rdi",
+      "002309EDE  48 83 c4 30                      add      rsp, 0x30",
+      "002309EE2  5f                               pop      rdi",
+      "002309EE3  5e                               pop      rsi",
+      "002309EE4  5d                               pop      rbp",
+      "002309EE5  e9 26 01 00 00                   jmp      0x14230a010",
+      "0024E1B5C  48 8d 0d 5d ec e2 01             lea      rcx, [rip + 0x1e2ec5d]",
+      "0024E1B63  48 89 4d d0                      mov      qword ptr [rbp - 0x30], rcx",
+      "0024E1B67  c7 45 d8 29 00 00 00             mov      dword ptr [rbp - 0x28], 0x29",
+      "0024E1B6E  c6 45 dc 00                      mov      byte ptr [rbp - 0x24], 0",
+      "0024E1B72  0f 10 45 d0                      movups   xmm0, xmmword ptr [rbp - 0x30]",
+      "0024E3B6C  48 8d 0d 35 cb e2 01             lea      rcx, [rip + 0x1e2cb35]",
+      "0024E3B73  e8 38 57 b6 ff                   call     0x1420492b0",
+      "0024E3B78  49 8b 0c 24                      mov      rcx, qword ptr [r12]",
+      "0024E3B7C  48 89 8d a0 17 00 00             mov      qword ptr [rbp + 0x17a0], rcx",
+      "0024E3B83  49 63 44 24 0c                   movsxd   rax, dword ptr [r12 + 0xc]",
+      "0024E3B88  48 8d 04 c1                      lea      rax, [rcx + rax*8]",
+      "0024E3B8C  48 89 45 d0                      mov      qword ptr [rbp - 0x30], rax",
+      "0024E3B90  48 3b c8                         cmp      rcx, rax",
+      "0024E3B93  0f 84 ac 01 00 00                je       0x1424e3d45",
+      "0024E3CA8  41 8b 56 18                      mov      edx, dword ptr [r14 + 0x18]",
+      "0024E3CAC  4c 8d bf 68 03 00 00             lea      r15, [rdi + 0x368]",
+      "0024E3CB3  48 8d 4f 20                      lea      rcx, [rdi + 0x20]",
+      "0024E3CB7  e8 44 59 ee ff                   call     0x1423c9600",
+      "0024E3CBC  84 c0                            test     al, al",
+      "0024E3CBE  74 06                            je       0x1424e3cc6",
+      "0024E3CC0  4c 8d 67 20                      lea      r12, [rdi + 0x20]",
+      "0024E3CC4  eb 13                            jmp      0x1424e3cd9",
+      "0024E3CC6  49 8b cf                         mov      rcx, r15",
+      "0024E3CC9  e8 32 59 ee ff                   call     0x1423c9600",
+      "0024E3CCE  84 c0                            test     al, al",
+      "0024E3CD0  74 3b                            je       0x1424e3d0d",
+      "0024E3CD2  4d 8b e7                         mov      r12, r15",
+      "0024E3CD5  4c 8d 7f 20                      lea      r15, [rdi + 0x20]",
+      "0024E3CD9  4d 85 e4                         test     r12, r12",
+      "0024E3CDC  74 2f                            je       0x1424e3d0d",
+      "0024E3CDE  49 8d 4f 10                      lea      rcx, [r15 + 0x10]",
+      "0024E3CE2  4c 89 75 c8                      mov      qword ptr [rbp - 0x38], r14",
+      "0024E3CE6  48 8d 55 c8                      lea      rdx, [rbp - 0x38]",
+      "0024E3CEA  e8 81 78 e2 ff                   call     0x14230b570",
+      "0024E3CEF  84 c0                            test     al, al",
+      "0024E3CF1  75 1a                            jne      0x1424e3d0d",
+      "0024E3CF3  88 44 24 20                      mov      byte ptr [rsp + 0x20], al",
+      "0024E3CF7  4c 8b 8f b8 06 00 00             mov      r9, qword ptr [rdi + 0x6b8]",
+      "0024E3CFE  4d 8b c7                         mov      r8, r15",
+      "0024E3D01  41 8b 56 18                      mov      edx, dword ptr [r14 + 0x18]",
+      "0024E3D05  49 8b cc                         mov      rcx, r12",
+      "0024E3D08  e8 53 66 ee ff                   call     0x1423ca360",
+      "0024E3D45  48 8d 0d d4 c7 e2 01             lea      rcx, [rip + 0x1e2c7d4]",
+      "0024E3D4C  e8 5f 55 b6 ff                   call     0x1420492b0"
+    ],
+    "full-side-complete.json": [
+      "002309138  ba 01 00 00 00                   mov      edx, 1",
+      "00230913D  48 8b cb                         mov      rcx, rbx",
+      "002309140  e8 1b e9 f3 ff                   call     0x142247a60",
+      "002309145  45 8b ce                         mov      r9d, r14d",
+      "002309148  41 b8 02 00 00 00                mov      r8d, 2",
+      "00230914E  48 8b d5                         mov      rdx, rbp",
+      "002309151  48 8b cb                         mov      rcx, rbx",
+      "002309154  e8 17 f0 f3 ff                   call     0x142248170",
+      "002309278  45 85 e4                         test     r12d, r12d",
+      "00230927B  4d 89 b7 b8 00 00 00             mov      qword ptr [r15 + 0xb8], r14",
+      "002309282  4d 89 b7 c0 00 00 00             mov      qword ptr [r15 + 0xc0], r14",
+      "002309289  49 8b cd                         mov      rcx, r13",
+      "00230928C  41 0f 94 c6                      sete     r14b",
+      "002309290  41 8b d6                         mov      edx, r14d",
+      "002309293  48 83 c4 28                      add      rsp, 0x28",
+      "002309297  41 5f                            pop      r15",
+      "002309299  41 5e                            pop      r14",
+      "00230929B  41 5d                            pop      r13",
+      "00230929D  41 5c                            pop      r12",
+      "00230929F  e9 6c 0d 00 00                   jmp      0x14230a010"
+    ],
+    "source-snapshot-initial-functions.json": [
+      "0018721EB  e8 30 fb ff ff                   call     0x141871d20",
+      "0018721F0  48 8b f8                         mov      rdi, rax",
+      "0018721F3  48 8d 48 08                      lea      rcx, [rax + 8]",
+      "0018721F7  48 8b 01                         mov      rax, qword ptr [rcx]",
+      "0018721FA  ff 50 08                         call     qword ptr [rax + 8]",
+      "0018721FD  84 c0                            test     al, al",
+      "0018721FF  0f 84 9b 04 00 00                je       0x1418726a0",
+      "001872205  48 8b cf                         mov      rcx, rdi",
+      "001872208  e8 73 68 9d 00                   call     0x142248a80",
+      "00187220D  84 c0                            test     al, al",
+      "00187220F  0f 85 8b 04 00 00                jne      0x1418726a0",
+      "001872338  e8 43 8d 0a 00                   call     0x14191b080",
+      "00187233D  84 c0                            test     al, al",
+      "00187233F  0f 84 5b 03 00 00                je       0x1418726a0",
+      "001872345  48 8b cb                         mov      rcx, rbx",
+      "001872348  e8 b3 0d 00 00                   call     0x141873100",
+      "00187234D  e9 4e 03 00 00                   jmp      0x1418726a0"
+    ],
+    "selected-first-windows.json": [
+      "00187390B  41 b8 01 00 00 00                mov      r8d, 1",
+      "001873911  49 8b d4                         mov      rdx, r12",
+      "001873914  49 8b cd                         mov      rcx, r13",
+      "001873917  e8 94 18 e4 00                   call     0x1426b51b0",
+      "00187391C  8b d8                            mov      ebx, eax",
+      "00187391E  41 8b 7c 24 10                   mov      edi, dword ptr [r12 + 0x10]",
+      "001873923  44 8b c0                         mov      r8d, eax",
+      "001873926  49 8b d5                         mov      rdx, r13",
+      "001873929  b9 02 00 00 00                   mov      ecx, 2",
+      "00187392E  e8 dd 0c e4 00                   call     0x1426b4610",
+      "001873933  84 c0                            test     al, al",
+      "001873935  0f 84 41 01 00 00                je       0x141873a7c",
+      "001873A44  41 b8 07 00 00 00                mov      r8d, 7",
+      "001873A4A  48 8d 55 10                      lea      rdx, [rbp + 0x10]",
+      "001873A4E  48 8d 0d 9b e7 ee 03             lea      rcx, [rip + 0x3eee79b]",
+      "001873A55  e8 a6 03 10 ff                   call     0x140973e00"
+    ],
+    "subset-upstream.json": [
+      "0024E56AF  90                               nop      ",
+      "0024E56B0  48 89 7c 24 20                   mov      qword ptr [rsp + 0x20], rdi",
+      "0024E56B5  4c 8b ce                         mov      r9, rsi",
+      "0024E56B8  4c 8b c3                         mov      r8, rbx",
+      "0024E56BB  49 8b d5                         mov      rdx, r13",
+      "0024E56BE  48 8d 8d 00 01 00 00             lea      rcx, [rbp + 0x100]",
+      "0024E56C5  e8 96 c3 ff ff                   call     0x1424e1a60"
+    ],
+    "subset-relation-predicate.json": [
+      "00230B658  45 33 c0                         xor      r8d, r8d",
+      "00230B65B  48 8b d3                         mov      rdx, rbx",
+      "00230B65E  e8 0d 4e 5f 00                   call     0x142900470",
+      "00230B663  84 c0                            test     al, al",
+      "00230B665  75 0d                            jne      0x14230b674",
+      "00230B667  48 83 c7 04                      add      rdi, 4",
+      "00230B66B  48 3b fe                         cmp      rdi, rsi",
+      "00230B66E  0f 85 2c ff ff ff                jne      0x14230b5a0",
+      "00230B674  49 8b 06                         mov      rax, qword ptr [r14]",
+      "00230B677  49 63 4e 0c                      movsxd   rcx, dword ptr [r14 + 0xc]",
+      "00230B67B  48 8b 5c 24 30                   mov      rbx, qword ptr [rsp + 0x30]",
+      "00230B680  48 8b 74 24 38                   mov      rsi, qword ptr [rsp + 0x38]",
+      "00230B685  48 8d 14 88                      lea      rdx, [rax + rcx*4]",
+      "00230B689  33 c0                            xor      eax, eax",
+      "00230B68B  48 3b fa                         cmp      rdi, rdx",
+      "00230B68E  48 0f 44 f8                      cmove    rdi, rax",
+      "00230B692  48 85 ff                         test     rdi, rdi",
+      "00230B695  48 8b 7c 24 40                   mov      rdi, qword ptr [rsp + 0x40]",
+      "00230B69A  0f 95 c0                         setne    al"
+    ],
+    "subset-consumer.json": [
+      "0023CAA2C  44 0f b6 a5 50 18 00 00          movzx    r12d, byte ptr [rbp + 0x1850]",
+      "0023CAA34  45 84 e4                         test     r12b, r12b",
+      "0023CAA37  74 55                            je       0x1423caa8e",
+      "0023CAA39  c7 44 24 40 01 00 00 00          mov      dword ptr [rsp + 0x40], 1",
+      "0023CAA41  48 8b 85 40 18 00 00             mov      rax, qword ptr [rbp + 0x1840]",
+      "0023CAA48  48 89 44 24 38                   mov      qword ptr [rsp + 0x38], rax",
+      "0023CAA4D  48 89 7c 24 30                   mov      qword ptr [rsp + 0x30], rdi",
+      "0023CAA52  48 89 5c 24 28                   mov      qword ptr [rsp + 0x28], rbx",
+      "0023CAA57  48 89 7c 24 20                   mov      qword ptr [rsp + 0x20], rdi",
+      "0023CAA5C  4c 8b cb                         mov      r9, rbx",
+      "0023CAA5F  4c 8d 45 80                      lea      r8, [rbp - 0x80]",
+      "0023CAA63  48 8d 95 b0 0b 00 00             lea      rdx, [rbp + 0xbb0]",
+      "0023CAA6A  49 8b ce                         mov      rcx, r14",
+      "0023CAA6D  e8 6e 28 00 00                   call     0x1423cd2e0",
+      "0023CAB6F  45 84 e4                         test     r12b, r12b",
+      "0023CAB72  74 14                            je       0x1423cab88",
+      "0023CAB74  ba 02 00 00 00                   mov      edx, 2",
+      "0023CAB79  48 8b cf                         mov      rcx, rdi",
+      "0023CAB7C  e8 df ce e7 ff                   call     0x142247a60",
+      "0023CAB81  48 8b 15 f8 20 34 03             mov      rdx, qword ptr [rip + 0x33420f8]",
+      "0023CAB88  c7 83 28 01 00 00 ff ff ff ff    mov      dword ptr [rbx + 0x128], 0xffffffff",
+      "0023CAC1C  45 33 c9                         xor      r9d, r9d",
+      "0023CAC1F  45 8d 41 02                      lea      r8d, [r9 + 2]",
+      "0023CAC23  48 8b 95 48 18 00 00             mov      rdx, qword ptr [rbp + 0x1848]",
+      "0023CAC2A  48 8b cf                         mov      rcx, rdi",
+      "0023CAC2D  e8 3e d5 e7 ff                   call     0x142248170"
+    ]
+  },
+  "direct_census": {
+    "schema": "xar.war-film-retreat-extract.v1",
+    "proof_layer": "exact-build-locator-disassembly",
+    "semantic_correctness_verified": false,
+    "live_execution_performed": false,
+    "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+    "exe_size": 95206008,
+    "image_base": "0x140000000",
+    "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "dependencies": {
+      "capstone": "5.0.9",
+      "pefile": "2024.8.26"
+    },
+    "argv": [
+      "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+      "refs",
+      "0x230A010",
+      "0x1873100",
+      "0x2309070",
+      "0x23CA360",
+      "--exe",
+      "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+      "--output",
+      "D:/workspace/ck3_war_film_research_20260923/retreat-a04/selected-consumer-refs.json"
+    ],
+    "mode": "refs",
+    "targets": [
+      "0x230a010",
+      "0x1873100",
+      "0x2309070",
+      "0x23ca360"
+    ],
+    "direct_references": [
+      {
+        "source": "0x1872348",
+        "target": "0x1873100",
+        "kind": "call",
+        "runtime_function": [
+          "0x18721b0",
+          "0x18726bd",
+          "0x4ce7d90"
+        ],
+        "instruction_boundary_verified": true
+      },
+      {
+        "source": "0x2308a7c",
+        "target": "0x2309070",
+        "kind": "call",
+        "runtime_function": [
+          "0x2308986",
+          "0x2308a90",
+          "0x4d7533c"
+        ],
+        "instruction_boundary_verified": true
+      },
+      {
+        "source": "0x2308ac1",
+        "target": "0x23ca360",
+        "kind": "call",
+        "runtime_function": [
+          "0x2308a9b",
+          "0x2308ac8",
+          "0x4d75368"
+        ],
+        "instruction_boundary_verified": true
+      },
+      {
+        "source": "0x230929f",
+        "target": "0x230a010",
+        "kind": "jmp",
+        "runtime_function": [
+          "0x23091a0",
+          "0x23092a4",
+          "0x4d75410"
+        ],
+        "instruction_boundary_verified": true
+      },
+      {
+        "source": "0x2309eca",
+        "target": "0x230a010",
+        "kind": "jmp",
+        "runtime_function": [
+          "0x2309e80",
+          "0x230a007",
+          "0x4d7546c"
+        ],
+        "instruction_boundary_verified": true
+      },
+      {
+        "source": "0x2309ee5",
+        "target": "0x230a010",
+        "kind": "jmp",
+        "runtime_function": [
+          "0x2309e80",
+          "0x230a007",
+          "0x4d7546c"
+        ],
+        "instruction_boundary_verified": true
+      },
+      {
+        "source": "0x24e3d08",
+        "target": "0x23ca360",
+        "kind": "call",
+        "runtime_function": [
+          "0x24e1a60",
+          "0x24e42cc",
+          "0x4d8a2c0"
+        ],
+        "instruction_boundary_verified": true
+      }
+    ],
+    "absolute_pointers": [],
+    "limitations": [
+      "Does not enumerate indirect/vtable calls or RIP-relative LEA references.",
+      "A .pdata function range is a decoding anchor; it can be a split fragment rather than a complete semantic function.",
+      "An absent direct reference does not establish absence of a native policy."
+    ]
+  },
+  "business_name_data": {
+    "schema": "xar.war-film-retreat-extract.v1",
+    "proof_layer": "exact-build-locator-disassembly",
+    "semantic_correctness_verified": false,
+    "live_execution_performed": false,
+    "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+    "exe_size": 95206008,
+    "image_base": "0x140000000",
+    "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "dependencies": {
+      "capstone": "5.0.9",
+      "pefile": "2024.8.26"
+    },
+    "argv": [
+      "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+      "data",
+      "0x43106A8",
+      "0x4310520",
+      "0x43107C0",
+      "--extent",
+      "0x100",
+      "--exe",
+      "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+      "--output",
+      "D:/workspace/ck3_war_film_research_20260923/retreat-a04/subset-context-strings.json"
+    ],
+    "mode": "data",
+    "targets": [
+      "0x43106a8",
+      "0x4310520",
+      "0x43107c0"
+    ],
+    "data": [
+      {
+        "rva": "0x43106a8",
+        "hex": "43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 33 32 36 37 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 32 39 38 35 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 33 30 37 33 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 33 31 30 38 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69",
+        "ascii_prefix": "C:\\mnt\\gsg\\ck3\\titus\\source\\logic\\succession.cpp:3267"
+      },
+      {
+        "rva": "0x4310520",
+        "hex": "43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 33 32 37 39 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 33 32 38 36 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 33 32 39 33 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 33 33 30 32 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69",
+        "ascii_prefix": "C:\\mnt\\gsg\\ck3\\titus\\source\\logic\\succession.cpp:3279"
+      },
+      {
+        "rva": "0x43107c0",
+        "hex": "45 78 65 63 75 74 65 53 75 63 63 65 73 73 69 6f 6e 57 69 74 68 54 68 65 6f 63 72 61 63 79 4c 65 61 73 65 46 72 65 65 7a 65 00 00 00 00 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 32 37 38 30 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 32 37 38 36 00 00 00 43 3a 5c 6d 6e 74 5c 67 73 67 5c 63 6b 33 5c 74 69 74 75 73 5c 73 6f 75 72 63 65 5c 6c 6f 67 69 63 5c 73 75 63 63 65 73 73 69 6f 6e 2e 63 70 70 3a 32 38 31 39 00 00 00 43 72 65 61 74 65 50 61 72 74 69 74 69 6f 6e 54 69 74 6c 65 73 00 00 00 54 68 65 72 65 20 69 73 20 6e 6f 20 73 65 6e 73",
+        "ascii_prefix": "ExecuteSuccessionWithTheocracyLeaseFreeze"
+      }
+    ]
+  },
+  "limits": [
+    "at most three chains",
+    "unverified2306507 byte candidate excluded",
+    "pdata fragments are not semantic function boundaries",
+    "no full indirect/vtable census",
+    "2900470 formal relation enum remains unknown",
+    "no live choice or outcome"
+  ]
+}

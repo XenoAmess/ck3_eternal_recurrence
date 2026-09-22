@@ -1,0 +1,56 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-active-retreat-policy-a04",
+  "question": "Find or classify at most three actual consumer-to-caller chains that could explain ordinary AI active-combat retreat; preserve negative reachability edges.",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Ordinary war AI active-combat retreat; distinguish player command, legality, terminal cleanup and mission control.",
+    "identity_kind": "none",
+    "identity_lifetime": "Disk-only exact EXE; no live identity or process attached.",
+    "producer_trigger": "unknown",
+    "producer": "Candidate upstreams of 230A010, 1873100 and full-side/owner-subset retreat consumers.",
+    "caller": "Bounded direct reference census; inspect actual command vtable use when relevant.",
+    "consumer": "2308250 legality, 26B4710 movement apply, 2309070 full-side and 23CA360 subset retreat.",
+    "cache_lifetime": "Not sampled; the a01-a03 score/mode evidence is reused unchanged.",
+    "expected_signal": "A classified AI caller with active-combat input and issued retreat consequence, or precise negative/unknown edges.",
+    "zero_sample_meaning": "No policy in selected chains does not prove absence of indirect/vtable policy.",
+    "stop_condition": "Classify no more than three promising consumer-upstream chains; no launch, injection or old-package edits.",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {"id": "legality_wrapper", "label": "230A010 wrapper of CanOrderCombatRetreat"},
+    {"id": "move_candidate", "label": "1873100 caller of movement validator"},
+    {"id": "side_retreat", "label": "2309070 / 23CA360 retreat consumers"},
+    {"id": "policy", "label": "Ordinary AI voluntary retreat policy"}
+  ],
+  "edges": [
+    {
+      "id": "legality_policy", "from": "legality_wrapper", "to": "policy",
+      "label": "Classify wrapper upstream and active input", "status": "unknown", "evidence": [],
+      "open_question": "Is 230A010 used by AI choice or only presentation/legality?"
+    },
+    {
+      "id": "move_policy", "from": "move_candidate", "to": "policy",
+      "label": "Classify movement caller and active reachability", "status": "unknown", "evidence": [],
+      "open_question": "Can 1873100 issue an active-combat move and what selects its destination?"
+    },
+    {
+      "id": "side_policy", "from": "side_retreat", "to": "policy",
+      "label": "Classify full-side and subset consumers' direct callers", "status": "unknown", "evidence": [],
+      "open_question": "Is an independent AI policy present among direct callers, distinct from defeat/cleanup and move apply?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "ordinary_ai_active_retreat", "question": "Observe an attributable ordinary AI active-retreat decision and outcome.",
+      "status": "pending", "evidence": []
+    }
+  ]
+}

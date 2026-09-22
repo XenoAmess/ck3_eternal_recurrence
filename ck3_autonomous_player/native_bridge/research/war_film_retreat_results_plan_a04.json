@@ -1,0 +1,112 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-active-retreat-policy-results-a04",
+  "question": "Find or classify at most three actual consumer-to-caller chains that could explain ordinary AI active-combat retreat; preserve negative reachability edges.",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Ordinary war AI active-combat retreat; distinguish player command, legality, terminal cleanup and mission control.",
+    "identity_kind": "none",
+    "identity_lifetime": "Disk-only exact EXE; no live identity or process attached.",
+    "producer_trigger": "unknown",
+    "producer": "Classified winner transition, known active-gated movement caller and succession subset cleanup; generic AI choice remains unknown.",
+    "caller": "2309E80/2309070;18721B0;24E53A0/24E1A60",
+    "consumer": "2308250 legality, 26B4710 movement apply, 2309070 full-side and 23CA360 subset retreat.",
+    "cache_lifetime": "Not sampled; the a01-a03 score/mode evidence is reused unchanged.",
+    "expected_signal": "A classified AI caller with active-combat input and issued retreat consequence, or precise negative/unknown edges.",
+    "zero_sample_meaning": "No policy in selected chains does not prove absence of indirect/vtable policy.",
+    "stop_condition": "Classify no more than three promising consumer-upstream chains; no launch, injection or old-package edits.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "reviewed_a04",
+      "layer": "source-contract",
+      "path": "war_film_retreat_evidence_a04.json",
+      "sha256": "4de9f623d5e9bcb2f29f49b4377a5ad1b6302e6e9b50433797d326b3072f248a",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Bounded classified upstreams and negative reachability; no generic AI absence claim."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "legality_wrapper",
+      "label": "230A010 wrapper of CanOrderCombatRetreat"
+    },
+    {
+      "id": "move_candidate",
+      "label": "1873100 caller of movement validator"
+    },
+    {
+      "id": "side_retreat",
+      "label": "2309070 / 23CA360 retreat consumers"
+    },
+    {
+      "id": "policy",
+      "label": "Ordinary AI voluntary retreat policy"
+    },
+    {
+      "id": "classification",
+      "label": "Settlement / active gate / succession cleanup"
+    }
+  ],
+  "edges": [
+    {
+      "id": "winner_classified",
+      "from": "legality_wrapper",
+      "to": "classification",
+      "label": "Winner precedes legality and pursuit/done",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a04"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "active_excluded",
+      "from": "move_candidate",
+      "to": "classification",
+      "label": "Known direct caller returns on active combat before builder",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a04"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "subset_classified",
+      "from": "side_retreat",
+      "to": "classification",
+      "label": "Move apply or succession cleanup; latter skips pursuit",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a04"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "generic_unknown",
+      "from": "classification",
+      "to": "policy",
+      "label": "No ordinary odds-to-retreat policy established by these chains",
+      "status": "unknown",
+      "evidence": [
+        "reviewed_a04"
+      ],
+      "open_question": "Classify remaining indirect movement producers that read active combat and prediction."
+    }
+  ],
+  "cases": [
+    {
+      "id": "ordinary_ai_active_retreat",
+      "question": "Observe an attributable ordinary AI active-retreat decision and outcome.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}
