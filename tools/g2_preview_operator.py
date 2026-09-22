@@ -263,6 +263,7 @@ def native_auto_run_command(
     readiness_timeout: int,
     private_faction_round_id_value: str | None,
     private_lifestyle_formal_trial: bool = False,
+    require_initial_lifestyle_focus_before_date_advance: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
 ) -> list[str]:
@@ -283,6 +284,8 @@ def native_auto_run_command(
         command.append("--ordinary-campaign-no-pact")
     if private_lifestyle_formal_trial:
         command.append("--allow-private-lifestyle-formal-trial")
+    if require_initial_lifestyle_focus_before_date_advance:
+        command.append("--require-initial-lifestyle-focus-before-date-advance")
     if private_faction_round_id_value is not None:
         command.extend([
             "--allow-private-faction-gift-formal-trial",
@@ -473,6 +476,13 @@ def command_prepare_state(args: argparse.Namespace) -> int:
 
 
 def command_run(args: argparse.Namespace) -> int:
+    if (
+        args.require_initial_lifestyle_focus_before_date_advance
+        and not args.private_lifestyle_formal_trial
+    ):
+        raise ValueError(
+            "initial LIFE focus gate requires --private-lifestyle-formal-trial"
+        )
     manifest = load_manifest(args.manifest.resolve())
     lifecycle = lifecycle_contract(manifest)
     output = args.output.resolve()
@@ -510,6 +520,9 @@ def command_run(args: argparse.Namespace) -> int:
         "preflight_exit_code": preflight_exit,
         "lifecycle": lifecycle,
         "private_lifestyle_formal_trial": args.private_lifestyle_formal_trial,
+        "require_initial_lifestyle_focus_before_date_advance": (
+            args.require_initial_lifestyle_focus_before_date_advance
+        ),
     }
     if preflight_exit != 0:
         receipt.update({"ok": False, "status": "preflight_blocked", "game_launched": False})
@@ -536,6 +549,9 @@ def command_run(args: argparse.Namespace) -> int:
             readiness_timeout=readiness_timeout,
             private_faction_round_id_value=private_faction_round,
             private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
+            require_initial_lifestyle_focus_before_date_advance=(
+                args.require_initial_lifestyle_focus_before_date_advance
+            ),
             succession_lifecycle=str(lifecycle["succession_lifecycle"]),
             ordinary_campaign_no_pact=(
                 lifecycle["ordinary_campaign_no_pact"] is True
@@ -1072,6 +1088,11 @@ def parser() -> argparse.ArgumentParser:
         "--private-lifestyle-formal-trial",
         action="store_true",
         help="enable the bounded unadvertised lifestyle focus/perk formal route",
+    )
+    run.add_argument(
+        "--require-initial-lifestyle-focus-before-date-advance",
+        action="store_true",
+        help="stop the bounded run if focus is not verified and consumed before time moves",
     )
     run.add_argument(
         "--private-faction-round-id",

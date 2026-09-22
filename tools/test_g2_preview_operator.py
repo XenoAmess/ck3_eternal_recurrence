@@ -1162,11 +1162,22 @@ class G2PreviewOperatorTest(unittest.TestCase):
             "run", "--manifest", "manifest.json", "--output", "attempt",
         ])
         self.assertFalse(default_args.private_lifestyle_formal_trial)
+        self.assertFalse(
+            default_args.require_initial_lifestyle_focus_before_date_advance
+        )
         args = g2_preview_operator.parser().parse_args([
             "run", "--manifest", "manifest.json", "--output", "attempt",
             "--private-lifestyle-formal-trial",
+            "--require-initial-lifestyle-focus-before-date-advance",
         ])
         self.assertTrue(args.private_lifestyle_formal_trial)
+        self.assertTrue(args.require_initial_lifestyle_focus_before_date_advance)
+        gate_without_trial = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "attempt",
+            "--require-initial-lifestyle-focus-before-date-advance",
+        ])
+        with self.assertRaisesRegex(ValueError, "requires --private-lifestyle"):
+            g2_preview_operator.command_run(gate_without_trial)
         base = dict(
             turns=2,
             timeout=900,
@@ -1185,6 +1196,17 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 ["python", "agent.py"],
                 **base,
                 private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
+                require_initial_lifestyle_focus_before_date_advance=(
+                    args.require_initial_lifestyle_focus_before_date_advance
+                ),
+            ),
+        )
+        self.assertIn(
+            "--require-initial-lifestyle-focus-before-date-advance",
+            g2_preview_operator.native_auto_run_command(
+                ["python", "agent.py"], **base,
+                private_lifestyle_formal_trial=True,
+                require_initial_lifestyle_focus_before_date_advance=True,
             ),
         )
 

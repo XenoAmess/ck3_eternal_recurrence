@@ -984,3 +984,29 @@ the matched injector SHA-256 is
 These are static candidate artifacts, not a live result. The formal response
 still reports current-lifestyle progress as absent and labels the perk set
 `policy_target`; target XP is also exposed by the separate stock-focus query.
+
+## R0137 windowless perk result and opening focus gate (2026-09-23)
+
+R0137 loaded the matching post-merge slot43 DLL from source
+`0f0a06195d2bf7bfbea10e8c76722e2eca849bb0` into the same h2479
+paired paused scene. Its retained report is
+`Z:/ck3_mod_rewrite_process_assets/g2-m4-postmerge-h2479-readback-20260923/live-R0137/report.json`
+(SHA-256 `6D91FF56F34BD14C5660CC3E8528744731DD20BE4D11166776AB4BC6DE8BCA0C`).
+The native perk fallback now publishes a policy-scoped available collection
+with zero legal items. In that exact frame target points are zero, so this is
+an observed native rejection of `cutting_corners_perk`, not a missing perk
+candidate source. The formal typed-perk precondition separately reports
+`target_progress_unavailable` because LIFE2 legitimately has no current focus
+or current-lifestyle progress. The stock-focus query's target XP/points are
+not current progress and cannot satisfy that perk precondition. All three
+queries remain read-only; no date or action advanced.
+
+The existing private focus submit path can consume the separately observed
+native-legal `stewardship_wealth_focus` only on a fresh same-frame admitted
+scene. For a new 1066 opening, the first date advance needs an explicit
+bounded gate: a single typed focus submit, a later independent paused frame
+showing the exact focus and LIFE2 current-lifestyle XP/point row, a following
+formal turn that consumes that receipt, and a paired checkpoint. The runner
+previously checked every LIFE receipt as
+a perk `HasPerk` result, so a true focus result would fail its postcondition.
+That runner defect is separate from R0137's legitimate zero-point perk result.

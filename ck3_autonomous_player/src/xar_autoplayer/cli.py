@@ -375,6 +375,15 @@ def parser() -> argparse.ArgumentParser:
             "submit/receipt route for one bounded native-auto-run acceptance run"
         ),
     )
+    native_auto_run_parser.add_argument(
+        "--require-initial-lifestyle-focus-before-date-advance",
+        action="store_true",
+        help=(
+            "for a bounded new-campaign opening, require one private typed "
+            "focus, independent receipt, checkpoint and following-turn "
+            "consumption before any date-changing action"
+        ),
+    )
     construction_source_parser = commands.add_parser(
         "native-query-private-construction-source-v1",
         help="one unadvertised read-only construction source probe from a cold save",
@@ -827,11 +836,13 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_construction_formal_trial
                     else {}
                 )
-                private_lifestyle_options = (
-                    {"allow_private_lifestyle_formal_trial": True}
-                    if args.allow_private_lifestyle_formal_trial
-                    else {}
-                )
+                private_lifestyle_options = {}
+                if args.allow_private_lifestyle_formal_trial:
+                    private_lifestyle_options["allow_private_lifestyle_formal_trial"] = True
+                if args.require_initial_lifestyle_focus_before_date_advance:
+                    private_lifestyle_options[
+                        "require_initial_lifestyle_focus_before_date_advance"
+                    ] = True
                 succession_options = (
                     {
                         "succession_lifecycle": args.succession_lifecycle,

@@ -36,7 +36,14 @@ from .bridge.pending_character_interaction_context_contract import (
 from .bridge.council_assign_councillor_action_contract import (
     ASSIGN_COUNCILLOR_V1_STEP,
 )
-from .lifestyle_formal_consumer import RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP
+from .lifestyle_formal_consumer import (
+    FOCUS_SUBMIT_STEP as PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP,
+    RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP,
+)
+from .bridge.player_lifestyle_private_transport_v1 import (
+    STATE_QUERY_STEP as PRIVATE_LIFESTYLE_STATE_QUERY_STEP,
+    query_player_lifestyle_private_v1,
+)
 from .construction_formal_consumer import (
     RECEIPT_STEP as PRIVATE_CONSTRUCTION_RECEIPT_STEP,
     SUBMIT_STEP as PRIVATE_CONSTRUCTION_SUBMIT_STEP,
@@ -317,6 +324,7 @@ def native_auto_run(
     allow_route_contact_high_speed_ab: bool = False,
     allow_stationary_objective_hold_sentinel_canary: bool = False,
     allow_private_lifestyle_formal_trial: bool = False,
+    require_initial_lifestyle_focus_before_date_advance: bool = False,
     allow_private_construction_formal_trial: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
     private_faction_round_id: str | None = None,
@@ -386,6 +394,13 @@ def native_auto_run(
     ):
         raise AgentError(
             "private LIFE slot43 trial only admits a bounded contract"
+        )
+    if (
+        require_initial_lifestyle_focus_before_date_advance is True
+        and allow_private_lifestyle_formal_trial is not True
+    ):
+        raise AgentError(
+            "initial LIFE focus gate requires the private bounded LIFE trial"
         )
     if allow_private_construction_formal_trial is True and completion_contract != "bounded":
         raise AgentError("private construction trial only admits a bounded contract")
@@ -504,6 +519,11 @@ def native_auto_run(
     readiness_timeout_diagnostics: dict[str, object] | None = None
     candidate_interception: dict[str, object] | None = None
     candidate_resolution: dict[str, object] | None = None
+    opening_focus_gate: dict[str, object] | None = (
+        {"stage": "await_submit", "action_request_id": None,
+         "target_key": None, "checkpoint_saved": False}
+        if require_initial_lifestyle_focus_before_date_advance else None
+    )
 
     def capture_first_failure(
         *,
@@ -746,6 +766,54 @@ def native_auto_run(
                 raise
         status = "running"
 
+        opening_date_raw = readiness.get("date_raw")
+
+        def opening_guard_before_submit(
+            candidate: dict[str, object],
+        ) -> dict[str, object] | None:
+            if opening_focus_gate is not None:
+                selected = candidate.get("selected_step")
+                plan = candidate.get("plan")
+                if opening_focus_gate["stage"] == "await_consumption":
+                    consumed = (
+                        plan.get("lifestyle_receipt_consumed")
+                        if isinstance(plan, dict) else None
+                    )
+                    if (
+                        isinstance(consumed, dict)
+                        and consumed.get("kind") == "focus"
+                        and consumed.get("action_request_id")
+                        == opening_focus_gate["action_request_id"]
+                        and consumed.get("target_key")
+                        == opening_focus_gate["target_key"]
+                        and consumed.get("postcondition_verified") is True
+                        and opening_focus_gate["checkpoint_saved"] is True
+                    ):
+                        opening_focus_gate["stage"] = "complete"
+                if opening_focus_gate["stage"] != "complete":
+                    permitted = (
+                        isinstance(selected, str)
+                        and (
+                            selected.startswith("query-")
+                            or selected == "save-checkpoint"
+                            or (
+                                opening_focus_gate["stage"] == "await_submit"
+                                and selected == PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
+                            )
+                            or (
+                                opening_focus_gate["stage"] == "await_receipt"
+                                and selected == PRIVATE_LIFESTYLE_RECEIPT_STEP
+                            )
+                        )
+                    )
+                    if not permitted:
+                        raise AgentError(
+                            "initial LIFE focus gate has no verified focus "
+                            "receipt, following-turn consumption and checkpoint; "
+                            f"refusing {selected!r} before first date advance"
+                        )
+            return before_submit(candidate) if before_submit is not None else None
+
         for turn_index in range(1, turn_count + 1):
             # A first Ctrl+C is deferred by the CLI until the previous typed
             # action and its independent postcondition have both completed.
@@ -787,6 +855,15 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            if (
+                opening_focus_gate is not None
+                and opening_focus_gate["stage"] != "complete"
+                and before.get("date_raw") != opening_date_raw
+            ):
+                raise AgentError(
+                    "initial LIFE focus gate observed date advance before a "
+                    "verified and consumed focus receipt"
+                )
             if completion_contract in strict_completion_contracts:
                 try:
                     if next_episode_transition is None:
@@ -816,8 +893,8 @@ def native_auto_run(
             while True:
                 try:
                     outcome = (
-                        service.auto_turn(before_submit=before_submit)
-                        if before_submit is not None
+                        service.auto_turn(before_submit=opening_guard_before_submit)
+                        if opening_focus_gate is not None or before_submit is not None
                         else service.auto_turn()
                     )
                     break
@@ -1142,35 +1219,128 @@ def native_auto_run(
             current_attempt["after"] = _public_binding(after)
             evidence = _semantic_delta(before, after_snapshot, after)
             if (
+                opening_focus_gate is not None
+                and opening_focus_gate["stage"] != "complete"
+                and after_snapshot.get("date_raw") != opening_date_raw
+            ):
+                raise AgentError(
+                    "initial LIFE focus gate observed date advance before a "
+                    "verified and consumed focus receipt"
+                )
+            if (
                 isinstance(merge_observation, dict)
                 and merge_observation.get("status") == "applied"
             ):
                 evidence.append(
                     "army_merge_source_removed_independent_paused_frame"
                 )
+            if step == PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP and opening_focus_gate is not None:
+                focus_submit = outcome.get("result")
+                if not (
+                    opening_focus_gate["stage"] == "await_submit"
+                    and isinstance(focus_submit, dict)
+                    and focus_submit.get("status") == "submitted_verification_pending"
+                    and focus_submit.get("kind") == "focus"
+                    and focus_submit.get("target_key") == "stewardship_wealth_focus"
+                    and isinstance(focus_submit.get("action_request_id"), str)
+                ):
+                    raise AgentError("initial LIFE focus typed submit is not pending verification")
+                opening_focus_gate["stage"] = "await_receipt"
+                opening_focus_gate["action_request_id"] = focus_submit["action_request_id"]
+                opening_focus_gate["target_key"] = focus_submit["target_key"]
             if step == PRIVATE_LIFESTYLE_RECEIPT_STEP:
                 receipt = outcome.get("result")
+                receipt_kind = receipt.get("kind") if isinstance(receipt, dict) else None
+                material_verified = (
+                    receipt.get("post_has_current_focus") is True
+                    and receipt.get("post_current_focus_key") == receipt.get("target_key")
+                    if receipt_kind == "focus" and isinstance(receipt, dict)
+                    else receipt.get("post_target_perk_owned") is True
+                    if receipt_kind == "perk" and isinstance(receipt, dict)
+                    else False
+                )
                 if not (
                     isinstance(receipt, dict)
                     and receipt.get("status") == "applied"
                     and receipt.get("postcondition_verified") is True
-                    and receipt.get("post_target_perk_owned") is True
+                    and material_verified
                     and receipt.get("post_snapshot_id")
                     == after_snapshot.get("snapshot_id")
                     and receipt.get("post_public_revision")
-                    == after_snapshot.get("revision")
+                    == after_snapshot.get("native_revision")
                     and receipt.get("episode_run_id")
                     == after_snapshot.get("episode_run_id")
                 ):
                     capture_first_failure(
                         stage="lifestyle_receipt",
                         kind="lifestyle_material_postcondition_failed",
-                        message="the private HasPerk receipt lost its independent published frame",
+                        message="the private LIFE receipt lost its independent published frame",
                     )
                     raise AgentError(
                         "private LIFE receipt did not match the next paused game frame"
                     )
-                evidence.append("lifestyle_has_perk_independent_later_frame")
+                if receipt_kind == "focus":
+                    post_life2 = query_player_lifestyle_private_v1(
+                        driver,
+                        expected_revision=int(after_snapshot["revision"]),
+                        query_step=PRIVATE_LIFESTYLE_STATE_QUERY_STEP,
+                    )
+                    post_state = post_life2.get("snapshot")
+                    post_source = post_life2.get("source_frame")
+                    post_focus = (
+                        post_state.get("current_focus")
+                        if isinstance(post_state, dict) else None
+                    )
+                    post_progress = (
+                        post_state.get("current_lifestyle_progress")
+                        if isinstance(post_state, dict) else None
+                    )
+                    if not (
+                        post_life2.get("status") == "available"
+                        and isinstance(post_source, dict)
+                        and post_source.get("snapshot_id")
+                        == after_snapshot.get("snapshot_id")
+                        and post_source.get("native_revision")
+                        == after_snapshot.get("native_revision")
+                        and post_source.get("date_raw")
+                        == after_snapshot.get("date_raw")
+                        and isinstance(post_focus, dict)
+                        and post_focus.get("presence") == "present"
+                        and post_focus.get("key") == receipt.get("target_key")
+                        and isinstance(post_progress, dict)
+                        and post_progress.get("presence") == "present"
+                        and post_progress.get("lifestyle_key")
+                        == "stewardship_lifestyle"
+                        and isinstance(post_progress.get("xp_total_raw"), int)
+                        and not isinstance(post_progress.get("xp_total_raw"), bool)
+                        and post_progress.get("xp_total_raw") >= 0
+                        and isinstance(post_progress.get("unspent_perk_points"), int)
+                        and not isinstance(post_progress.get("unspent_perk_points"), bool)
+                        and post_progress.get("unspent_perk_points") >= 0
+                    ):
+                        raise AgentError(
+                            "private LIFE focus receipt lacks independent LIFE2 "
+                            "current focus and XP/point readback"
+                        )
+                    receipt["post_life2_current_state"] = {
+                        "snapshot_id": post_source["snapshot_id"],
+                        "current_focus": dict(post_focus),
+                        "current_lifestyle_progress": dict(post_progress),
+                    }
+                    current_attempt["result"] = copy.deepcopy(receipt)
+                    if opening_focus_gate is not None:
+                        if not (
+                            opening_focus_gate["stage"] == "await_receipt"
+                            and receipt.get("action_request_id")
+                            == opening_focus_gate["action_request_id"]
+                            and receipt.get("target_key")
+                            == opening_focus_gate["target_key"]
+                        ):
+                            raise AgentError("initial LIFE focus receipt does not match its one typed submit")
+                        opening_focus_gate["stage"] = "await_consumption"
+                    evidence.append("lifestyle_focus_independent_later_frame")
+                else:
+                    evidence.append("lifestyle_has_perk_independent_later_frame")
             if step == PRIVATE_CONSTRUCTION_RECEIPT_STEP:
                 receipt = outcome.get("result")
                 if (
@@ -1761,6 +1931,7 @@ def native_auto_run(
                 and evidence
                 and not war_termination_submission_pending
                 and step != PRIVATE_CONSTRUCTION_SUBMIT_STEP
+                and step != PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
             ):
                 visible_gameplay_turns += 1
                 if next_episode_transition is not None:
@@ -1778,6 +1949,53 @@ def native_auto_run(
                     evidence=evidence,
                 )
             )
+            if (
+                opening_focus_gate is not None
+                and step in {
+                    PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP,
+                    PRIVATE_LIFESTYLE_RECEIPT_STEP,
+                }
+            ):
+                if terminal_pending or modal_decision_pending:
+                    raise AgentError(
+                        "initial LIFE focus cannot checkpoint on a terminal "
+                        "or player-decision frame"
+                    )
+                current_attempt["stage"] = "initial_lifestyle_focus_checkpoint"
+                focus_checkpoint, focus_checkpoint_snapshot = _materialize_checkpoint(
+                    service,
+                    driver,
+                    spec.profile_dir / "save games",
+                    session_done=session_done,
+                    session_state=session_state,
+                    timeout_seconds=min(
+                        readiness_timeout,
+                        max(0.001, run_deadline - time.monotonic()),
+                    ),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                if focus_checkpoint.get("date_raw") != opening_date_raw:
+                    raise AgentError(
+                        "initial LIFE focus checkpoint changed the opening date"
+                    )
+                counts["checkpoint"] += 1
+                checkpoints.append({
+                    "turn_index": turn_index,
+                    "phase": (
+                        "initial_lifestyle_focus_submitted_pending"
+                        if step == PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
+                        else "initial_lifestyle_focus_applied"
+                    ),
+                    **focus_checkpoint,
+                })
+                opening_focus_gate["checkpoint_saved"] = True
+                eligible_since_checkpoint = 0
+                dirty_gameplay_since_checkpoint = False
+                after_snapshot = focus_checkpoint_snapshot
+                after = _compact_binding(driver.capabilities(), after_snapshot)
+                current_attempt["after"] = _public_binding(after)
+                current_attempt["stage"] = "initial_lifestyle_focus_checkpoint_complete"
             if step == "death-terminal":
                 if (
                     succession_lifecycle_binding["lifecycle"]
@@ -1961,6 +2179,20 @@ def native_auto_run(
                 else "turn_limit_player_decision_pending"
                 if modal_decision_pending
                 else "turn_limit"
+            )
+        if (
+            status == "turn_limit"
+            and opening_focus_gate is not None
+            and opening_focus_gate["stage"] != "complete"
+        ):
+            status = "initial_lifestyle_focus_incomplete"
+            capture_first_failure(
+                stage="initial_lifestyle_focus_gate",
+                kind="initial_lifestyle_focus_incomplete",
+                message=(
+                    "bounded run ended before one typed focus, independent "
+                    "paused receipt, checkpoint and following-turn consumption"
+                ),
             )
 
         # A bounded production run must not knowingly discard a visible tail.
@@ -2253,12 +2485,17 @@ def native_auto_run(
             and status in {"turn_limit", "episode_complete"}
             and visible_gameplay_turns > 0
             and (
+                opening_focus_gate is None
+                or opening_focus_gate["stage"] == "complete"
+            )
+            and (
                 status != "episode_complete" or terminal_proof is not None
             )
             and cleanup.get("ok") is True
         )
     candidate_intercept_qualified = bool(
         before_submit is not None
+        and opening_focus_gate is None
         and status == "candidate_terminal_intercepted"
         and candidate_interception is not None
         and after_intercept is None
@@ -2268,6 +2505,7 @@ def native_auto_run(
     )
     candidate_resolved = bool(
         before_submit is not None
+        and opening_focus_gate is None
         and after_intercept is not None
         and status == "candidate_terminal_resolved"
         and candidate_interception is not None
@@ -2350,6 +2588,7 @@ def native_auto_run(
             succession_lifecycle_binding
         ),
         "cold_start_checkpoint": cold_start_checkpoint,
+        "initial_lifestyle_focus_gate": copy.deepcopy(opening_focus_gate),
         "fixed_seed": fixed_seed,
         "bounds": {
             "requested_turns": turn_count,
