@@ -288,6 +288,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_quinquadragintary = nullptr;
   // Fixed-key, private read-only CE1 treatment presence query (slot 46).
   MainThreadQueryExecutorV1 permitted_executor_sexquadragintary = nullptr;
+  // Private exact-build CE1 county recovery list/modifier query (slot 47).
+  MainThreadQueryExecutorV1 permitted_executor_septenquadragintary = nullptr;
   // The frontend route executor is the only fixed callback admitted before a
   // gameplay/Jomini frame exists. It still runs at the exact SDL/CK3
   // application-main boundary and cannot be supplied by protocol data.
@@ -428,6 +430,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_quattuorquadragintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_quinquadragintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sexquadragintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_septenquadragintary = nullptr;
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
