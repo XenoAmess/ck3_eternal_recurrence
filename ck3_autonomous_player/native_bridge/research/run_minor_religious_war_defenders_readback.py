@@ -13,6 +13,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import sys
 import threading
 import time
@@ -61,6 +62,13 @@ SLOT49_OPTION = "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1=ON"
 def require(ok: bool, message: str) -> None:
     if not ok:
         raise RuntimeError(message)
+
+
+def copy_frozen_bytes_to_candidate(source: Path, target: Path) -> None:
+    """Copy immutable evidence bytes into one writable derived candidate."""
+
+    shutil.copyfile(source, target)
+    target.chmod(target.stat().st_mode | stat.S_IWRITE)
 
 
 def same_frame(before: dict[str, object], after: dict[str, object]) -> bool:
@@ -153,8 +161,8 @@ def prepare(args: argparse.Namespace) -> dict[str, object]:
     target_driver = spec.state_dir / "native-session" / "driver-state.json"
     target_save.parent.mkdir(parents=True, exist_ok=True)
     target_driver.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(source_save, target_save)
-    shutil.copy2(source_driver, target_driver)
+    copy_frozen_bytes_to_candidate(source_save, target_save)
+    copy_frozen_bytes_to_candidate(source_driver, target_driver)
     receipt = rebind_ordinary_seed_v1(
         spec, expected_pipe_name=anchor["pipe_name"]
     )
