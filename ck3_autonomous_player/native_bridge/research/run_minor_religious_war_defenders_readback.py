@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Prepare or run one bounded slot49 minor-religious-war defender readback.
+"""Prepare or run bounded slot49 minor-religious-war defender readbacks.
 
 The default-OFF native route is read-only.  Prepare and preflight never launch
 CK3.  Live mode requires an explicit persistent single-instance round ledger,
-performs one private query, advances no date and submits no gameplay action.
+queries one to eight frozen targets in one cold restore, advances no date and
+submits no gameplay action.
 """
 
 from __future__ import annotations
@@ -105,9 +106,50 @@ def parser() -> argparse.ArgumentParser:
         result.add_argument("--" + name)
     result.add_argument("--expected-actor-id", type=int)
     result.add_argument("--expected-date-raw", type=int)
-    result.add_argument("--target-character-id", type=int, default=31_549)
+    targets = result.add_mutually_exclusive_group()
+    targets.add_argument("--target-character-id", type=int, default=31_549)
+    targets.add_argument("--target-character-ids", type=int, nargs="+")
     result.add_argument("--round-ledger", type=Path)
     result.add_argument("--evidence", type=Path)
+    return result
+
+
+def normalize_target_character_ids(value: object) -> list[int]:
+    require(isinstance(value, list), "target character IDs must be a list")
+    require(1 <= len(value) <= 8,
+            "target character IDs must contain between one and eight rows")
+    result: list[int] = []
+    for target in value:
+        require(
+            not isinstance(target, bool)
+            and isinstance(target, int)
+            and target > 0,
+            "target character IDs must be positive integers",
+        )
+        require(target not in result, "target character IDs must be unique")
+        result.append(target)
+    return result
+
+
+def requested_target_character_ids(args: argparse.Namespace) -> list[int]:
+    plural = getattr(args, "target_character_ids", None)
+    if plural is not None:
+        return normalize_target_character_ids(plural)
+    return normalize_target_character_ids([args.target_character_id])
+
+
+def manifest_target_character_ids(manifest: dict[str, object]) -> list[int]:
+    plural = manifest.get("target_character_ids")
+    legacy = manifest.get("target_character_id")
+    if plural is None:
+        require(legacy is not None,
+                "candidate manifest has no target character IDs")
+        return normalize_target_character_ids([legacy])
+    result = normalize_target_character_ids(plural)
+    require(
+        legacy is None or (len(result) == 1 and legacy == result[0]),
+        "legacy target character ID disagrees with target character IDs",
+    )
     return result
 
 
@@ -124,8 +166,7 @@ def prepare(args: argparse.Namespace) -> dict[str, object]:
         all(getattr(args, name) is not None for name in required),
         "prepare requires frozen pair, hashes, actor/date and exact build paths",
     )
-    require(args.target_character_id == 31_549,
-            "this bounded candidate is frozen to target 31549")
+    target_character_ids = requested_target_character_ids(args)
     source_save = args.source_checkpoint.resolve()
     source_driver = args.source_driver_state.resolve()
     save_sha = common._expected_sha256(
@@ -198,12 +239,14 @@ def prepare(args: argparse.Namespace) -> dict[str, object]:
         "pipe_name": anchor["pipe_name"],
         "expected_actor_id": args.expected_actor_id,
         "expected_date_raw": args.expected_date_raw,
-        "target_character_id": args.target_character_id,
+        "target_character_ids": target_character_ids,
         "target_casus_belli_key": TARGET_KEY,
         "profile": "ordinary_campaign_succession/xar_off",
         "required_native_build_option": SLOT49_OPTION,
         "rebind_receipt": receipt,
     }
+    if len(target_character_ids) == 1:
+        manifest["target_character_id"] = target_character_ids[0]
     common._write_json_atomic(candidate / "candidate.json", manifest)
     return manifest
 
@@ -211,11 +254,11 @@ def prepare(args: argparse.Namespace) -> dict[str, object]:
 def preflight(candidate: Path) -> tuple[dict[str, object], Any, dict[str, object]]:
     manifest_path = candidate / "candidate.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest_target_character_ids(manifest)
     require(
         manifest.get("schema") == SCHEMA
         and manifest.get("source_round") == "R0142"
         and manifest.get("profile") == "ordinary_campaign_succession/xar_off"
-        and manifest.get("target_character_id") == 31_549
         and manifest.get("target_casus_belli_key") == TARGET_KEY
         and manifest.get("required_native_build_option") == SLOT49_OPTION
         and manifest.get("operator_sha256")
@@ -266,9 +309,26 @@ def preflight(candidate: Path) -> tuple[dict[str, object], Any, dict[str, object
     return manifest, spec, readiness
 
 
-def query_one(service: GameplayBridgeService, manifest: dict[str, object]) -> dict[str, object]:
+def query_one(
+    service: GameplayBridgeService,
+    manifest: dict[str, object],
+    *,
+    target_character_id: int | None = None,
+    expected_frame: dict[str, object] | None = None,
+    expected_history: list[object] | None = None,
+) -> dict[str, object]:
+    target_character_ids = manifest_target_character_ids(manifest)
+    if target_character_id is None:
+        require(len(target_character_ids) == 1,
+                "query_one requires one manifest target")
+        target_character_id = target_character_ids[0]
+    require(target_character_id in target_character_ids,
+            "query target is absent from the candidate manifest")
     before = service.snapshot()
     player = before.get("played_character")
+    if expected_frame is not None:
+        require(same_frame(expected_frame, before),
+                "slot49 batch left its initial paused frame")
     require(
         before.get("paused") is True
         and before.get("map_ready") is True
@@ -282,8 +342,11 @@ def query_one(service: GameplayBridgeService, manifest: dict[str, object]) -> di
             "restored frame has no public revision")
     history_before = before.get("native_command_history")
     require(isinstance(history_before, list), "native history is unavailable")
+    if expected_history is not None:
+        require(history_before == expected_history,
+                "slot49 batch changed native gameplay history")
     readback = _ck3_query_minor_religious_war_defenders_private_v1(
-        service, int(manifest["target_character_id"]), revision
+        service, target_character_id, revision
     )
     payload = readback.get("minor_religious_war_defenders")
     require(
@@ -294,12 +357,15 @@ def query_one(service: GameplayBridgeService, manifest: dict[str, object]) -> di
         and payload.get("actor_character_id") == manifest["expected_actor_id"]
         and isinstance(payload.get("declaration"), dict)
         and payload["declaration"].get("target_character_id")
-        == manifest["target_character_id"]
+        == target_character_id
         and payload["declaration"].get("casus_belli_key") == TARGET_KEY,
         "slot49 result does not bind the frozen declaration",
     )
     after = service.snapshot()
     require(same_frame(before, after), "slot49 query crossed its paused frame")
+    if expected_frame is not None:
+        require(same_frame(expected_frame, after),
+                "slot49 batch left its initial paused frame")
     require(
         after.get("native_command_history") == history_before,
         "slot49 query changed native gameplay history",
@@ -307,12 +373,41 @@ def query_one(service: GameplayBridgeService, manifest: dict[str, object]) -> di
     return {
         "ok": True,
         "status": "green_read_only",
+        "target_character_id": target_character_id,
         "before": before,
         "readback": readback,
         "after": after,
         "gameplay_actions": 0,
         "date_advanced": False,
     }
+
+
+def query_targets(
+    service: GameplayBridgeService, manifest: dict[str, object]
+) -> list[dict[str, object]]:
+    target_character_ids = manifest_target_character_ids(manifest)
+    expected_frame = service.snapshot()
+    player = expected_frame.get("played_character")
+    require(
+        expected_frame.get("paused") is True
+        and expected_frame.get("map_ready") is True
+        and isinstance(player, dict)
+        and player.get("character_id") == manifest["expected_actor_id"]
+        and expected_frame.get("date_raw") == manifest["expected_date_raw"],
+        "restored frame differs from frozen R0142 actor/date",
+    )
+    history = expected_frame.get("native_command_history")
+    require(isinstance(history, list), "native history is unavailable")
+    results: list[dict[str, object]] = []
+    for target_character_id in target_character_ids:
+        results.append(query_one(
+            service,
+            manifest,
+            target_character_id=target_character_id,
+            expected_frame=expected_frame,
+            expected_history=history,
+        ))
+    return results
 
 
 def live(
@@ -402,7 +497,12 @@ def live(
             cold_start_checkpoint=True,
             allow_terminal=False,
         )
-        report["query"] = query_one(service, manifest)
+        target_character_ids = manifest_target_character_ids(manifest)
+        queries = query_targets(service, manifest)
+        report["target_character_ids"] = target_character_ids
+        report["queries"] = queries
+        if len(target_character_ids) == 1:
+            report["query"] = queries[0]
         report["status"] = "green_read_only"
         report["ok"] = True
     except BaseException as error:
