@@ -119,3 +119,11 @@ R0076 编号用于后续独立 GOV 原 R753 pre-action source-only probe（R0075
 | GOV 原 R753 动作前建设源诊断 | **RED**；private 恢复谱系核算错误 + 原生 checks 截断/成本与动作仍不就绪；R0066 material RED 保持 | `native-query-private-construction-source-v1` | final master `0e251b2`、private ON native `47196B...1760`；[R0076 frozen evidence](Z:/ck3_mod_rewrite_process_assets/g2-gov-r0076-source-query-red-20260922/evidence-manifest.json) SHA `67B243AF2212511C4F093F55EBFE7427ED324CCF1632A43C6F40F2A531743B72` | native selected barony2103/province2635/building24/slot1，stock cost15000000/gold50035659；`checks_truncated=true,cost_ready=false,construction_action_ready=false`，没有建设提交/日期推进，不能推断建成 | source save `D8BDC3...01474` 未变，PID168780回收；diagnostic `single_cold_restore=false` 因既有 restore 谱系合法保留行+本次新行而误判，ledger completed-red | GOV-B0-R0076 `/root/governance_family` 仅修 private diagnostic 与聚焦验证；真实原生未就绪/动作后 material 仍独立待解 | 工作分支待交付；不重试原查询 |
 
 CK3 R0076 后 0 个存活实例；新 exact native death/succession 宏 ON DLL 与后续 frozen candidate 尚在施工，不冒充可运行预览。G2 JSON 仍 2/8。
+
+## 2026-09-22 R0077：G2-M3 可见结果完成，PRV-008 仍待 stop/cold
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 标准封建自然继承 / G2-M3 | **complete；G2 3/8**，不等于整局/两种子 | PRV-008 `g2_preview_operator.py`→`native_auto_run` | ZIP `B9952E54...ECC2BD9F3`、agent `ca852d1`、DLL `B114FD8E...29FA8`；[R0077 冻结证据](Z:/ck3_mod_rewrite_process_assets/g2-preview-prv008-r0077-natural-succession-green-20260922/evidence-manifest.json) SHA `28F94B1E1C0BFFFF4A43CA8085B18FD4E8966872CB6DADEBC0A307B22BDF6D67` | 60/60，turn20 同 PID65096 玩家31853自然死亡→预期36403，头衔 `[524,525,530]` matched；turn21 typed timeline query→一次 typed close `materially_verified`，继承人后续正式 turn21–60含互动、婚姻、事件、日期 | R0077 末尾成对 save `39828127...2BEF`/driver `5B1B9410...ADFB`；进程回收；**本包 cold 尚未完成** | preview 同包受控 stop R0078、新 PID cold R0079 由 `/root/runtime_preflight` 独占；R0072 health 修复后自然后置仍不足 | PR #12 原 `bbf64d3`→master `ca852d1`，先前清理已核验；PR #13 private diagnostic 原 `b89009f`→master `1c1e0a9`、两组 temp refs/worktrees 清 |
+
+Council 仍 1/4、公用 query/action OFF；GOV R0066 物质 RED 未关闭。R0077 329 游戏日/268.717 秒仅为有界实际吞吐；当前预览持续交付 **NO-GO**，不得将静态新 ZIP 直接交付为可持续自动游玩。
