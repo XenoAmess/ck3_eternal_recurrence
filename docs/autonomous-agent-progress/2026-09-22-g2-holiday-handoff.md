@@ -38,4 +38,5 @@ PR #79 报告/M5 增量 `3db08ff→be63861`、`12926a1→c570592`；PR #80 守�
 ## 收口记录
 
 - 交接指令后未开启 R0123 或任何新工作包；R0122 由原负责人等到受控超时并完成 cleanup，CK3/injector/operator/watchdog=0。
-- M4 runner 及本报告的最终 master 映射、临时 branch/worktree 清理状态在集成完成后补录；若受保护检查未完成，明确保留为“已推送、待集成”，不能称 DONE。
+- M4 progress readback runner 原提交 `1b706508e28ee3527346b26540d3f23802a376ba` 经 PR #82 官方 static/签名/CLA GREEN、rebase-only 入 master `f7ca661c26312660c2bbc9cf79bb351c30af9109`；3 个改动文件 blob 与原提交一致，原/集成两条临时远端和本地分支及 worktree 已核实清理。normal/`-O` 聚焦测试各 12/12；没有同版本实机 readback，不广告焦点或加点。
+- 本报告是在集成前写定的快照；其最终 master SHA 与临时 branch/worktree 清理结果须以对应 PR、远端 master 和本轮交接消息核对，不能由未发生的 merge 预填。若受保护检查未完成，保留为“已推送、待集成”，不能称 DONE。
