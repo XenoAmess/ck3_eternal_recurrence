@@ -37,8 +37,12 @@ struct StockPerkLegalityFrameV1 {
 };
 
 struct StockPerkLegalityPlayerStateV1 {
-  game::PlayerLifestyleWindowStableKeyV1 current_lifestyle_key{};
+  game::PlayerLifestyleWindowStableKeyV1 target_lifestyle_key{};
+  std::int64_t target_xp_total_raw = -1;
+  std::int64_t target_xp_within_level_raw = -1;
+  std::int32_t target_xp_per_level = -1;
   std::int32_t unspent_perk_points = -1;
+  std::int32_t used_perk_points = -1;
   bool owned_perk_state_known = false;
   bool target_perk_owned = false;
 
@@ -51,7 +55,7 @@ using StockPerkCaptureFrameV1 = bool (*)(void *,
 using StockPerkReadMemoryV1 = bool (*)(void *, std::uintptr_t, void *,
                                        std::size_t) noexcept;
 using StockPerkReadPlayerStateV1 = bool (*)(
-    void *, const StockPerkLegalityFrameV1 &,
+    void *, const StockPerkLegalityFrameV1 &, std::uintptr_t target_lifestyle,
     StockPerkLegalityPlayerStateV1 &) noexcept;
 using StockPerkProbeMainThreadV1 = bool (*)(void *) noexcept;
 using StockPerkGetDatabaseV1 = void *(*)();
@@ -95,6 +99,10 @@ struct StockPerkLegalityResultV1 {
   game::PlayerLifestyleWindowStableKeyV1 target_key{};
   game::PlayerLifestyleWindowStableKeyV1 lifestyle_key{};
   std::int32_t observed_unspent_points = -1;
+  std::int32_t observed_used_points = -1;
+  std::int64_t observed_target_xp_total_raw = -1;
+  std::int64_t observed_target_xp_within_level_raw = -1;
+  std::int32_t observed_target_xp_per_level = -1;
   bool observed_target_owned = false;
   std::int32_t scanned_database_rows = -1;
   bool validator_invoked_twice = false;

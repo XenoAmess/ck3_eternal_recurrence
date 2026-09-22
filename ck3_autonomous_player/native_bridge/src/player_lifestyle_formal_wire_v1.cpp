@@ -221,10 +221,12 @@ void ReadStockFocus(PlayerLifestyleFormalWireContextV1 &context) noexcept {
 
 bool ReadStockPerkPlayerState(
     void *opaque, const StockPerkLegalityFrameV1 &frame,
+    std::uintptr_t target_lifestyle,
     StockPerkLegalityPlayerStateV1 &output) noexcept {
   output = {};
   auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
-  if (context == nullptr || context->snapshot == nullptr ||
+  if (context == nullptr || target_lifestyle == 0 || !OnMain(*context) ||
+      context->snapshot == nullptr ||
       context->snapshot->status !=
           game::PlayerLifestyleSnapshotStatusV1::available ||
       context->snapshot->player_character_id < 0 ||
@@ -235,22 +237,40 @@ bool ReadStockPerkPlayerState(
       context->snapshot->proof_epoch != frame.proof_epoch ||
       context->snapshot->date_raw != frame.date_raw ||
       !context->snapshot->readiness.current_focus_ready ||
-      !context->snapshot->readiness.lifestyle_progress_ready ||
       !context->snapshot->readiness.owned_perks_ready ||
       !context->snapshot->readiness.same_frame_ready) {
     return false;
   }
-  const auto &state = context->snapshot->state;
-  if (!state.current_lifestyle_progress_present ||
-      state.current_lifestyle_progress.unspent_perk_points < 0 ||
-      !AssignPlayerLifestyleWindowStableKeyV1(
-          PlayerLifestyleStableKeyViewV1(
-              state.current_lifestyle_progress.lifestyle_key),
-          output.current_lifestyle_key)) {
+  std::uintptr_t character = 0;
+  game::Snapshot current{};
+  if (!CaptureCommon(*context, character, current) ||
+      character != frame.played_character ||
+      static_cast<std::uint32_t>(current.played_character_id) !=
+          frame.played_character_id ||
+      current.date_raw != frame.date_raw ||
+      context->expected_revision != frame.native_revision) {
     return false;
   }
-  output.unspent_perk_points =
-      state.current_lifestyle_progress.unspent_perk_points;
+  const auto &state = context->snapshot->state;
+  if (!AssignPlayerLifestyleWindowStableKeyV1(
+          kStockPerkLegalityLifestyleV1,
+          output.target_lifestyle_key)) {
+    return false;
+  }
+  const auto environment = BindPlayerLifestyleSnapshotEnvironmentV1(
+      context->module_base, true,
+      kPlayerLifestyleSnapshotExecutableSha256V1);
+  if (!InvokeTargetProgressGetters(
+          environment, reinterpret_cast<void *>(character),
+          reinterpret_cast<void *>(target_lifestyle),
+          output.target_xp_total_raw, output.target_xp_within_level_raw,
+          output.unspent_perk_points, output.used_perk_points) ||
+      !ReadMemory(context,
+                  target_lifestyle + kPlayerLifestyleXpPerLevelOffsetV1,
+                  &output.target_xp_per_level,
+                  sizeof(output.target_xp_per_level))) {
+    return false;
+  }
   output.owned_perk_state_known = true;
   output.target_perk_owned = false;
   for (std::uint32_t index = 0; index < state.owned_perk_count; ++index) {

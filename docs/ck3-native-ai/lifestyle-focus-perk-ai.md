@@ -917,3 +917,70 @@ and `native_bridge/research/player_lifestyle_selection_native_adapter_v1_abi.jso
 The candidate has no typed CK3 action evidence yet. R0128 remains the earlier
 read-only input result; it was wartime and cannot satisfy the peaceful feudal
 policy admission.
+
+## R0135 windowless stock-perk readback boundary (2026-09-22)
+
+The frozen CK3 `1.19.0.6-steam23530548` EXE is SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+R0135 used native source `d77152275f00a8690af2a3b18be71b34c82e1664`
+and DLL SHA-256 `0432DF8DBA9B9D6F3DEA49F2987554BB5C66D658C36B6A72D094ADC617C2BDB7`.
+Its retained read-only report is
+`Z:/ck3_mod_rewrite_process_assets/g2-m4-h2479-readback-20260922/live-R0135/report.json`
+(SHA-256 `764FAD6D217DFE22634B708D9AEC12014661DD7AFBB8DD2AABBFF92E953CBF2C`).
+At actor `36403`, date raw `53437416`, native frame `native:3`, LIFE2 again
+observed no current focus and no current-lifestyle progress, while reading
+seven owned perks. The fixed stock `stewardship_wealth_focus` validator was
+native-legal and its target `stewardship_lifestyle` getters returned XP `0`
+and unspent/used points `0/0`. The formal perk query returned
+`native_lifestyle_windowless_policy_perk_unavailable_state`, with zero actions
+and zero date advance. CK3 and its owner were reclaimed.
+
+This is a source-selection failure in the private bridge, before the native
+perk validator: `ReadStockPerkPlayerState` currently demands LIFE2
+`current_lifestyle_progress_present`. A no-focus state legitimately lacks
+that row. The exact perk definition database supplies the target perk's own
+Lifestyle pointer at `+0x468`; the already frozen target progress getters are
+`GetLifestyleXp` RVA `0x2668B80`, `GetPerkPoints` RVA `0x2668A00`, and
+`GetPerkPointsUsed` RVA `0x2668A80`. The window-independent stock perk
+validator at RVA `0x25DFAF0` consumes the target definition and player ID,
+not a bound lifestyle window. Read target-lifestyle progress from that exact
+pointer and LIFE2 owned perks in the same paused application-main frame,
+then evaluate the stock validator. A native false at zero points is an
+observed rejection; it is not an unavailable source. A native true with
+inconsistent target points or ownership remains unavailable.
+
+```mermaid
+flowchart TD
+  A[Exact build, same paused player frame] --> B[LIFE2 current focus and owned perks]
+  A --> C[Stock perk definition database]
+  C --> D[Exact perk target Lifestyle pointer]
+  D --> E[Target XP and point getters]
+  B --> F{Owned state and target getters agree?}
+  E --> F
+  F -- yes --> G[Stock perk final validator twice]
+  F -. unavailable .-> U[Private query RED]
+  G --> H{Native result}
+  H -- false --> I[Policy target unavailable to select]
+  H -- true --> J[One policy target native-legal]
+  J -. typed submit and independent receipt remain unproved .-> K[M4 action gate]
+```
+
+The fixed stock focus query is a separately proven policy target, not a
+complete focus enumeration. LIFE2's `legal_focus_candidates` remains
+`lifestyle_window_unavailable`; the new perk result must remain private and
+policy-scoped. R0135 does not prove a typed focus/perk action, a following
+turn, or M4 completion. The next bounded read-only candidate must cold-load
+a fresh official pair with a matching rebuilt DLL and query LIFE2, fixed
+stock focus, and formal perk in one paused frame before any typed action.
+
+The source repair was checked without CK3 in MSVC `/Od` and `/O2`: the
+windowless stock-perk fixture passed 7/7 in each mode, and the affected
+private bridge objects compiled in Debug and Release. The existing focus
+precondition fixture passed 11/11 and native adapter fixture 9/9 in each
+mode. A full Release private DLL linked, SHA-256
+`48E940A9237B62F4C4E623A700FE253EEE52C1F66241C3135CCAA5299541C4A3`;
+the matched injector SHA-256 is
+`B0E940B47AE2D28BCDDED0367A738BFD02C1B262D2CB4F2BBE2D1F7BEA382F42`.
+These are static candidate artifacts, not a live result. The formal response
+still reports current-lifestyle progress as absent and labels the perk set
+`policy_target`; target XP is also exposed by the separate stock-focus query.

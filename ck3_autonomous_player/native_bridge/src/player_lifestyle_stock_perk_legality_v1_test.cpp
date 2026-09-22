@@ -98,8 +98,12 @@ struct Fixture {
     frame.map_ready = true;
     frame.played_character_alive = true;
     frame.storage_round_trip = true;
-    player_state.current_lifestyle_key = MakeKey(lifestyle);
+    player_state.target_lifestyle_key = MakeKey(lifestyle);
+    player_state.target_xp_total_raw = 0;
+    player_state.target_xp_within_level_raw = 0;
+    player_state.target_xp_per_level = 1000;
     player_state.unspent_perk_points = 1;
+    player_state.used_perk_points = 0;
     player_state.owned_perk_state_known = true;
     player_state.target_perk_owned = false;
     active = this;
@@ -151,9 +155,14 @@ struct Fixture {
 
   static bool ReadPlayer(void *context,
                          const StockPerkLegalityFrameV1 &,
+                         std::uintptr_t target_lifestyle,
                          StockPerkLegalityPlayerStateV1 &output) noexcept {
     auto &f = *static_cast<Fixture *>(context);
-    if (!f.state_observation_available) return false;
+    if (!f.state_observation_available ||
+        target_lifestyle !=
+            reinterpret_cast<std::uintptr_t>(f.lifestyle_definition.data())) {
+      return false;
+    }
     output = f.player_state;
     return true;
   }
@@ -200,7 +209,7 @@ struct Fixture {
 };
 Fixture *Fixture::active = nullptr;
 
-void TestLegalWithoutWindow() {
+void TestLegalWithoutWindowOrCurrentFocus() {
   Fixture f{};
   f.Init();
   const auto result = f.Run();
@@ -212,8 +221,11 @@ void TestLegalWithoutWindow() {
           "both native validations must use the exact command in one frame");
   Require(result.scanned_database_rows == 1 &&
               result.observed_unspent_points == 1 &&
+              result.observed_used_points == 0 &&
+              result.observed_target_xp_total_raw == 0 &&
+              result.observed_target_xp_per_level == 1000 &&
               result.target_definition == f.database_rows[0],
-          "complete observed database/player state must be published");
+          "target lifestyle progress and owned state must be sampled");
 }
 
 void TestProductionBinder() {
@@ -251,6 +263,12 @@ void TestUnknownPointAndOwnershipRemainUnavailable() {
   Require(g.Run().status == Status::unavailable_state &&
               g.validator_calls == 0,
           "unknown owned state must not be false");
+  Fixture h{};
+  h.Init();
+  h.player_state.target_xp_per_level = -1;
+  Require(h.Run().status == Status::unavailable_state &&
+              h.validator_calls == 0,
+          "unreadable target XP level must remain unavailable");
 }
 
 void TestDuplicateDefinitionAndAbiMismatch() {
@@ -310,7 +328,7 @@ void TestFrameDriftAndManualReservationBoundary() {
 
 int main() {
   try {
-    TestLegalWithoutWindow();
+    TestLegalWithoutWindowOrCurrentFocus();
     TestObservedNativeRejection();
     TestUnknownPointAndOwnershipRemainUnavailable();
     TestDuplicateDefinitionAndAbiMismatch();
