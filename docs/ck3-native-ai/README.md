@@ -1,5 +1,7 @@
 # CK3 原生 AI 决策树索引
 
+- [exact-build source tree + R0085 natural paused RED] [`health.1101` 普通疾病恢复通知](health-1101-ill-recovery.md)：原版疾病恢复即时效果、两种精确 saved-scope 库存与唯一 tooltip-only 选项；R0085 正式消费者未准入三个既有扩展字段，typed 动作与独立后置待新版实机。
+
 - [exact-build source tree + R0072 paused RED] [`health.7000` 衰弱开始](health-7000-infirm-onset.md)：原版 yearly-health 入口与唯一加 infirm 的选项，R0072 只因四个精确投影字段缺失在选择前阻塞；同帧 source-bound 选择与独立后置仍待实机。
 
 - [exact-build source tree + R0065 paused RED] [`stress_threshold_special.1001` 哀伤压力事件](stress-threshold-special-1001.md)：原版九项与自然触发链、R0065 仅 `[0,4,7]` 物化；native 7 可作已知永久 grief 代价的 bounded continuation，native 4 的饥饿分支须补 trait 观测，禁止 generic first-click。
