@@ -8,7 +8,7 @@
 
 ## R0092 冻结帧和最小消费者
 
-普通封建正式运行 R0092 turn `40`、date_raw `53359920` 自然出现 instance `21`。玩家 `36403`，snapshot authored `option_count=3`；原生窗口只有两行，rendered/native 分别为 `0/1` 与 `1/2`，均 shown+enabled。native `2` 的 effect indicator 显示可能增压，但 preview 不完整；不能据此推算实际数值或后置结果。正式 planner 因 `character_scope_differs_from`、`option_variants`、`unique_character_scope_excludes` 未获 direct consumer 准入而 RED，**没有提交动作**。报告 SHA-256 `5BF2A0B7D72A1E0B04E50DB5A79E9462C23872C99355DFCFD2E9CF8A69FC96D3`；最近成对安全 checkpoint 是 turn `24`/history `459`、save SHA-256 `28BAC454C043BE3DA7F188D12959C39880C76A1AAFB703AB68418C030170F359`。turn40 尾帧不能冒充安全配对恢复点。
+普通封建正式运行 R0092 turn `40`、date_raw `53359920` 自然出现 instance `21`。玩家 `36403`，snapshot authored `option_count=3`；原生窗口只有两行，rendered/native 分别为 `0/1` 与 `1/2`，均 shown+enabled。native `2` 的 effect indicator 显示可能增压，但 preview 不完整；不能据此推算实际数值或后置结果。正式 planner 因 `character_scope_differs_from`、`option_variants`、`unique_character_scope_excludes` 未获 direct consumer 准入而 RED，**没有提交动作**。报告 SHA-256 `5BF2A0B7D72A1E0B04E50DB5A79E9462C23872C99355DFCFD2E9CF8A69FC96D3`；最近保存的游戏存档是 turn `24`/history `459`、save SHA-256 `28BAC454C043BE3DA7F188D12959C39880C76A1AAFB703AB68418C030170F359`，但故障后的 driver 已延伸到 history `477`，两者**未形成当前可直接使用的物理配对恢复输入**。正式恢复必须先核验并舍弃不相配的 driver 尾状态；不能把 turn40 尾帧冒充安全配对恢复点。
 
 既有可迁移 registry 合同已给出两种完整原生投影 `[1,2]` / `[0,1,2]`，都选 native `2`；其 ROOT 用运行时玩家绑定，不固定旧种子人物。最小修复仅为本 key 准入已有的 variant resolver 和角色关系检查，仍要求单一窗口、四个 exact saved-scope 名/类型、herbalist 与 accuser 均非玩家且互异、authored count `3`、selected native `2` 唯一且 shown+enabled。任何漂移继续 blocked，不选“第一个按钮”。聚焦 normal 与 `-O` 测试覆盖两种投影和关系/选项拒绝；这只是 static-ready，R0092 RED 需真实同版本冷恢复后复验。
 
