@@ -1,7 +1,7 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-22T23:40:09+08:00",
+  "updated_at": "2026-09-23T00:21:11+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
@@ -225,40 +225,50 @@
     ],
     "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
     "latest_durable_continuation": {
-      "round": "R0134",
+      "round": "R0136",
       "result": "completed-red",
-      "source_commit": "9b76758441f087eb65d100f6385f337461f44422",
-      "successful_turns": 133,
-      "attempted_turns": 134,
-      "checkpoint_history_index": 2675,
-      "checkpoint_date_raw": 53467008,
-      "checkpoint_save_sha256": "3B0E9B25DBF14FD8FA25F39B91AE6DB771791BDFE5BC7B286878EB4B2BD053DB",
-      "driver_sha256_with_unpaired_tail": "4FAC1B82547A4CC4E4F32206B4418E8EC7105DFF8B026403216E9B7763778732",
-      "unpaired_tail_first_index": 2676,
-      "unpaired_tail_last_index": 2680,
-      "successful_unpaired_life_advances": 1,
-      "durable_game_days": 13445,
+      "campaign_identity": "Murchad_1066_historical",
+      "source_commit": "a092d6e04d9135d6fa60aaecd49fa2222130ced8",
+      "successful_turns": 161,
+      "attempted_turns": 162,
+      "checkpoint_history_index": 2894,
+      "checkpoint_date_raw": 53501928,
+      "checkpoint_save_sha256": "165076EF878B747D6FC08BF325FCE562A9B83B3AB6105DEF2AE2A7BFD0E17A66",
+      "driver_sha256_with_unpaired_tail": "BF1584C1D1DC0E38BFDED7F8325788E4A7E7440C8E606C938D26361D65A7FAAE",
+      "unpaired_tail_first_index": 2895,
+      "unpaired_tail_last_index": 2903,
+      "successful_unpaired_life_advances": 2,
+      "durable_game_days": 14900,
       "target_game_days": 36524,
       "hundred_year_gate": "0/1",
       "whole_campaign_gate": "0/1",
       "independent_seeds": "0/2",
       "natural_succession_transitions": 0,
+      "typed_war_actions": 0,
+      "material_expansion_proven": false,
       "blocker": {
-        "event_definition_key": "trait_specific.4001",
+        "event_definition_key": "lifestyle_nicknames.1000",
         "reason": "registered_contract_requires_extended_consumer",
         "event_action_submitted": false
       },
-      "health_7400_patch": {
-        "integrated_commit": "ccda170a9bf8ca20b652b9f2579083a9f5bb2b1c",
-        "observed_in_r0134": false,
-        "r0132_red_closed": false
+      "prior_event_replay_gates": {
+        "trait_specific_4001": {
+          "static_patch_integrated": true,
+          "observed_in_r0136": false,
+          "r0134_red_closed": false
+        },
+        "health_7400": {
+          "static_patch_integrated": true,
+          "observed_in_r0136": false,
+          "r0132_red_closed": false
+        }
       },
       "evidence_manifest": {
-        "base": "configured_task_temp_root",
-        "locator": "RUN-001/war-h2493-continuation-source9b76758-nolaunch-20260922/R0134-formal/R0134-evidence-manifest.json",
-        "sha256": "42801678CCAD722076CB0F40897FD906A4A81869E9F8DEB46C95D296945B170A"
+        "base": "configured_process_assets_root",
+        "locator": "g2-war-h2675-continued-20260922/live-R0136/R0136-evidence-manifest.json",
+        "sha256": "D23D1902E0B8C64F00B98642201791247DDE7512C4B4008783EF95EE8292FEAF"
       },
-      "scope": "durable time span and new exact event RED; R0132 health RED and original R0118 war RED remain; PRV008 preview boundary unchanged"
+      "scope": "Historical Murchad paired time span only; Robert 1066 is the newly selected formal primary campaign and receives no transferred days or gate credit; old R0118 war RED and PRV008 boundary unchanged"
     },
     "m5_private_read_only": {
       "round": "R0133",
@@ -293,6 +303,17 @@
       "report_sha256": "764FAD6D217DFE22634B708D9AEC12014661DD7AFBB8DD2AABBFF92E953CBF2C",
       "evidence_locator": "g2-m4-h2479-readback-20260922/live-R0135/report.json under configured process assets root",
       "scope": "same-frame private readback only; LIFE2 legal candidate and formal perk query remain unavailable; no typed focus or perk closure"
+    },
+    "campaign_selection": {
+      "formal_primary": "Robert_1066",
+      "authority": "owner_instruction_2026-09-23",
+      "primary_formal_seed_pair": "pending_evidence",
+      "historical_continuation": "Murchad_1066",
+      "historical_durable_game_days": 14900,
+      "historical_target_game_days": 36524,
+      "cross_campaign_date_accumulation_allowed": false,
+      "m3_existing_complete_evidence_retained": true,
+      "prv008_frozen_qualification_unchanged": true
     }
   },
   "t2": {
