@@ -9047,6 +9047,14 @@ void RunConnectedSession(
                          step, title_id);
                    }()
 #endif
+#if defined(XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1)
+                   && ![&]() {
+                     std::int32_t target_character_id = -1;
+                     return xar::ck3_11906::
+                         ParseMinorReligiousWarDefendersPrivateStepV1(
+                             step, target_character_id);
+                   }()
+#endif
         ) {
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, step, false,
