@@ -2,6 +2,9 @@
 
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/raiktor_actual_truce_expiry_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+#include "xar_bridge/marriage_candidate_alliance_projection_v1.hpp"
+#endif
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
 #endif
@@ -1024,6 +1027,36 @@ ReadArrangeMarriageFamilyCandidatesV1(
     const Bindings &bindings, std::int32_t subject_character_id,
     std::vector<ArrangeMarriageFamilyCandidateV1> &output,
     ArrangeMarriageQueryDiagnostics &diagnostics) noexcept;
+
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+enum class MarriageCandidateAlliancePrivateFailureV1 : std::uint8_t {
+  none = 0,
+  binding_unavailable,
+  frame_changed,
+  identity_changed,
+  role_changed,
+  final_legality_changed,
+  projection_unavailable,
+};
+
+struct MarriageCandidateAlliancePrivateReadV1 {
+  MarriageCandidateAlliancePrivateFailureV1 failure =
+      MarriageCandidateAlliancePrivateFailureV1::binding_unavailable;
+  bridge::MarriageCandidateAllianceProjectionFailureV1 projection_failure =
+      bridge::MarriageCandidateAllianceProjectionFailureV1::none;
+  bridge::MarriageCandidateAllianceProjectionV1 projection{};
+};
+
+// Recreates and finalizes one exact five-role context on application-main.
+// The earlier legal row chooses an identity only; Can Send and recipient final
+// answer are repeated before the projection and before context teardown.
+MarriageCandidateAlliancePrivateReadV1
+ReadMarriageCandidateAlliancePrivateV1(
+    const Bindings &bindings,
+    const ArrangeMarriageFamilyCandidateV1 &observed_legal_row,
+    const bridge::MarriageCandidateAllianceProjectionEnvironmentV1
+        &projection_environment) noexcept;
+#endif
 
 using game::ArrangeMarriageResult;
 
