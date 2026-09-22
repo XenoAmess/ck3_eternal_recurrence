@@ -29,7 +29,7 @@ R0099 普通 production 运行在 `date_raw=53367864`、event instance `23` 自�
 
 ## 2026-09-22 R0101 自然消费与物质归因缺口
 
-完整事件 ID 是 `epidemic_events.0110`。R0101 的普通战役正式报告在 raw `53367864` 先查询 instance `23`，再由正式策略提交 authored option 3/native index 2；独立 paused 后帧中旧 instance `23 -> null`，随后继续正式 turn。该选项在本 build 的 `epidemic_events.txt:365-396` 中，按疫情强度给 `formerly_infected_counties` 县列表添加五年 `county_epidemic_recovered_minor_modifier` 或 `county_epidemic_recovered_tiny_modifier`，并在 `has_legitimacy = yes` 时施加 `miniscule_legitimacy_loss`。冻结 `00_legitimacy_values.txt` 将该值定义为 `-20`。这确认来源脚本的条件效果路径；R0101 当时尚未读取正统性或县修正的同日动作前后值。
+完整事件 ID 是 `epidemic_events.0110`。R0101 的普通战役正式报告在 raw `53367864` 先查询 instance `23`，再由正式策略提交 authored option 3/native index 2；独立 paused 后帧中旧 instance `23 -> null`，随后继续正式 turn。该选项在本 build 的 `epidemic_events.txt:368-401` 中，按疫情强度给 `formerly_infected_counties` 县列表添加五年 `county_epidemic_recovered_minor_modifier` 或 `county_epidemic_recovered_tiny_modifier`，并在 `has_legitimacy = yes` 时施加 `miniscule_legitimacy_loss`。冻结 `00_legitimacy_values.txt` 将该值定义为 `-20`。这确认来源脚本的条件效果路径；R0101 当时尚未读取正统性或县修正的同日动作前后值。
 
 后续 R0113–R0116 用新只读 `player_legitimacy_v1` 两阶段冷恢复读取同角色 `36403`：h1023/raw `53367816` 为 `283`，h1094/raw `53368176` 为 `263`。两锚点相隔十五游戏日，中间虽然只记录了这一次 typed 事件选择和十五次一日行军推进，仍未排除日期流逝或其他世界效果，也未读取县修正。因此 `-20` 只是与来源效果一致的差值，不能单独证明事件的独占物质因果。[不可变只读清单](<Z:/ck3_mod_rewrite_process_assets/m2-0110-bounded-live-20260922/EVIDENCE-MANIFEST.md>)列出源 save/driver、四次 CK3 轮次及读数哈希；R0101 正式报告 SHA-256 为 `7A82922E808A368006402C15E6AD624F76BFC2A601C081DAAF1D8BF97CF60972`。
 
