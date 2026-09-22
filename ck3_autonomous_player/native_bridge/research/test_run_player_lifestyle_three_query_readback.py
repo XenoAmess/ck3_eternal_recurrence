@@ -54,6 +54,8 @@ class FakeState:
         self.frame = paused_frame()
         self.focus_status = "observed_native_legal"
         self.perk_status = "available"
+        self.perk_error: str | None = None
+        self.progress_presence = "present"
 
     def semantic_snapshot(self) -> dict[str, object]:
         return copy.deepcopy(self.frame)
@@ -72,8 +74,19 @@ class FakeState:
             "episode_run_id": EPISODE,
         }
         if step == STATE_STEP:
-            result.update(status="available", snapshot=typed_state())
+            snapshot = typed_state()
+            if self.progress_presence == "absent":
+                snapshot["current_lifestyle_progress"] = {"presence": "absent"}
+            result.update(status="available", snapshot=snapshot)
         elif step == PERK_STEP:
+            if self.perk_error is not None:
+                return {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": request_id,
+                    "ok": False,
+                    "error": self.perk_error,
+                }
             snapshot = typed_state()
             snapshot["legal_perk_candidates"] = {
                 "status": self.perk_status,
@@ -192,7 +205,7 @@ class LifeThreeQueryTest(unittest.TestCase):
         self.assertFalse(result["date_advanced"])
         self.assertEqual(
             [item["step"] for item in driver.endpoint.sent],
-            [STATE_STEP, PERK_STEP, FOCUS_STEP],
+            [STATE_STEP, FOCUS_STEP, PERK_STEP],
         )
         self.assertEqual(result["starting_frame"], result["ending_frame"])
         self.assertEqual(
@@ -211,7 +224,62 @@ class LifeThreeQueryTest(unittest.TestCase):
                 deadline=time.monotonic() + 120,
             )
         self.assertEqual(result["status"], "evidence_insufficient")
-        self.assertEqual(result["steps"][1]["status"], "native_unavailable")
+        self.assertEqual(result["steps"][2]["status"], "native_unavailable")
+
+    def test_absent_progress_and_exact_perk_error_are_typed_unavailable(self) -> None:
+        driver = FakeDriver()
+        driver.state.progress_presence = "absent"
+        driver.state.perk_error = "native_lifestyle_windowless_policy_perk_unavailable_state"
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_three_queries(
+                driver,
+                self.manifest(),
+                Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+        self.assertEqual(result["status"], "evidence_insufficient")
+        self.assertEqual(
+            [item["step"] for item in driver.endpoint.sent],
+            [STATE_STEP, FOCUS_STEP, PERK_STEP],
+        )
+        self.assertEqual(
+            [item["status"] for item in result["steps"]],
+            ["native_unavailable", "observed", "typed_legal_unavailable"],
+        )
+        self.assertEqual(
+            result["steps"][2]["basis"],
+            "same_frame_life2_current_lifestyle_progress_absent",
+        )
+        self.assertNotIn("native_legal", result["steps"][2])
+        self.assertEqual(result["starting_frame"], result["ending_frame"])
+        self.assertEqual(result["gameplay_actions"], 0)
+
+    def test_same_perk_error_with_progress_present_stays_red(self) -> None:
+        driver = FakeDriver()
+        driver.state.perk_error = "native_lifestyle_windowless_policy_perk_unavailable_state"
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_three_queries(
+                driver,
+                self.manifest(),
+                Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+        self.assertEqual(result["status"], "red")
+        self.assertEqual(result["steps"][2]["status"], "red")
+
+    def test_other_perk_error_with_progress_absent_stays_red(self) -> None:
+        driver = FakeDriver()
+        driver.state.progress_presence = "absent"
+        driver.state.perk_error = "native_lifestyle_windowless_policy_perk_read_failed"
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_three_queries(
+                driver,
+                self.manifest(),
+                Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+        self.assertEqual(result["status"], "red")
+        self.assertEqual(result["steps"][2]["status"], "red")
 
     def test_independent_frame_drift_is_red(self) -> None:
         driver = FakeDriver()
