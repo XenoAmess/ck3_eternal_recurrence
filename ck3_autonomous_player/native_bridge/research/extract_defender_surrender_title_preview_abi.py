@@ -146,7 +146,7 @@ def main() -> int:
     if args.output is None:
         print(result, end="")
     else:
-        args.output.write_text(result, encoding="utf-8")
+        args.output.write_bytes(result.encode("utf-8"))
         print(args.output)
     return 0
 

@@ -1273,7 +1273,7 @@ domains 必须并列；raw 文本成功不会自动使任一 structured field �
 
 | 状态 / 域 | 下一项 exact 验收或施工口 |
 |---|---|
-| victory resolved title/vassal operations | 从 `0xF59323 → 0x27A2B20(CB+0x968)` 追 loaded-effect node callback，在 `setup_claim_cb` / `resolve_title_and_vassal_change` 的 preview traversal 捕获动态 target、holder、vassal、liege ID；只跑 tooltip/dry preview，不执行战争结算 |
+| victory resolved title/vassal operations | R0118 守方投降的 exact-build ABI 已确认 `CResolveTitleAndVassalChangeEffect` preview slot `0x7E9220` 是 `mov al,1; ret`，不能在该 traversal 捕获最终操作。继续追 `WarOverview` 的 `CB+0x968 → 0xF5BFD0` title visitor payload，以及独立的 `CTitleAndVassalChange` actual-move 生产者；先证明非变更读取与生命周期，再排有界只读实机。详见 [R0118 条款缺口](war-r0118-defender-surrender-terms-gap.md) |
 | [pending-live] `cb_prestige_factor` 与逐人 primary resources | production 已用 `0x3380170` 栈上 root proxy 在同一次 traversal 捕获 identifier `82` 与 typed callbacks；下一步加载已构建 DLL，做两次 same-frame query、before/after identity 与 expected-grid 复核；不得用 direct `5.0` 或 `prestige/-5` 代替 total |
 | [pending-live] defeat reparations | production 已接 `0x2EF1440 → 0x2EF4530 → 0x2EF1760..1797 collector` 的 payer/payee/final signed Q100000；下一步实机复核当前 actual amount。LAAMP matching contract 属后续 broad slice，不阻塞当前 primary claim_cb v2 |
 | [pending-live] piety / legitimacy | WP/defeat production traversal 已捕获实际 typed primary grid并补显式零格；下一步实机确认当前 gate 命中或零值。Victory `CB+0x968` 属后续 broad slice |
