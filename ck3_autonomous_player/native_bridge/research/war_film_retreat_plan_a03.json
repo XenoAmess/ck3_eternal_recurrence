@@ -1,0 +1,82 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-retreat-score-direction-a03",
+  "question": "Resolve the sign of222A8A0 and the coordinator1B38 cache using actual side identities and native UI/settlement consumers, without relying on define comments.",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Ordinary native war AI; mission return and player command paths must be identified separately.",
+    "identity_kind": "none",
+    "identity_lifetime": "No process identity is sampled. The a01 evidence remains immutable.",
+    "producer_trigger": "unknown",
+    "producer": "184D960 cache writer; role producer and222A8A0 source paths to be recovered.",
+    "caller": "Native score/UI/settlement consumers and coordinator role initialization.",
+    "consumer": "186B310 desperate predicate, plus independent native score consumer.",
+    "cache_lifetime": "Raw mode/score cache lifetime as a01; fresh runtime attribution remains unobserved.",
+    "expected_signal": "Exact signed branches and role-binding evidence; at most one bounded generic retreat upstream after sign is settled.",
+    "zero_sample_meaning": "No classified direct caller does not prove absence of indirect policy.",
+    "stop_condition": "Resolve or precisely bound score direction using independent native role/score paths; no launch/injection and no a01/a02 edits.",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {
+      "id": "score",
+      "label": "222A8A0 total score"
+    },
+    {
+      "id": "role",
+      "label": "Actual native war roles"
+    },
+    {
+      "id": "cache",
+      "label": "Coordinator1B38 signed cache"
+    },
+    {
+      "id": "predicate",
+      "label": "186B310 desperate predicate"
+    }
+  ],
+  "edges": [
+    {
+      "id": "score_role",
+      "from": "score",
+      "to": "role",
+      "label": "Bind total sign to actual war side",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which side benefits from positive raw total?"
+    },
+    {
+      "id": "cache_role",
+      "from": "role",
+      "to": "cache",
+      "label": "Bind coordinator role and signed multiplier",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does bit2 mean the acting attacker side or the opposite side?"
+    },
+    {
+      "id": "predicate_meaning",
+      "from": "cache",
+      "to": "predicate",
+      "label": "Interpret literal cached comparison",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does positive threshold signify own advantage or own deficit?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "native_retreat",
+      "question": "Does an ordinary AI select active-combat retreat in a recorded producer window?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

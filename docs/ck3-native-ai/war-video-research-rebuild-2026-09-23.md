@@ -98,3 +98,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W1 准备金与候选成本：新增静态证据
 
 [W1 准备金与候选成本](war-film-declaration-inputs-2026-09-23.md)：入口两槽正式绑定金币/国库战争储备，比较含等号；具体 CB 特殊成本与通用交互成本分别在候选评分前验证。行政增量与基础实力、关系网络分开保留。31 段指令、7 个字符串、5 组 vtable 绑定已冻结并检查；军力缓存 producer 在后续独立包继续追查，尚无同一实际 actor/target/config 全链案例。 本包不增加 live 或影片完成度。
+
+## W3 绝望模式分数方向：新增静态证据
+
+[W3 绝望模式分数方向](war-film-retreat-score-direction-2026-09-23.md)：原生 trigger、UI consumer、战争身份与 coordinator producer 共同证明 +1B38 是己方战争分数。普通守方末端实际 own_score >= 正门槛，不能再解释成对方领先达到阈值。27 份产物与 5 份来源快照经 scoped review hash 复验；开发意图和自然触发频率未证明，通用战中主动撤退仍未知。 本包不增加 live 或影片完成度。

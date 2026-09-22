@@ -1,0 +1,1030 @@
+{
+  "schema": "xar.war-film-retreat-research-evidence.v1",
+  "package": "a03",
+  "proof_layer": "human-reviewed-exact-build-static-chain",
+  "version": "1.19.0.6",
+  "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "live_execution_performed": false,
+  "automatic_semantic_verification": false,
+  "production_mcp_capability_added": false,
+  "claims": [
+    {
+      "id": "raw_attacker_score",
+      "status": "static-confirmed",
+      "spine": "attacker_war_score -> 284B8D0 -> 222A8A0; defender_war_score -> 284B950 -> neg eax",
+      "meaning": "Raw integer score is attacker-relative; defender trigger negates it."
+    },
+    {
+      "id": "coordinator_own_side",
+      "status": "static-confirmed",
+      "spine": "primary scope evaluators +288/+28C; UI roles pair +288/+20 and +28C/+80; 1885440 writes bit2 from +20 membership",
+      "meaning": "bit2 is true for the coordinator's own attacker side; same Character joins coordinator."
+    },
+    {
+      "id": "own_score_cache",
+      "status": "static-confirmed",
+      "spine": "184DE24 -> 222A8A0; 184DE29 multiply by 2*bit2-1; 184DE2D cache+FD8",
+      "meaning": "coordinator+1B38 is own-side score."
+    },
+    {
+      "id": "desperate_comparison",
+      "status": "static-confirmed",
+      "spine": "186B578 cmp own score, threshold; 186B57F jl false; 186B581 true",
+      "meaning": "After a01 preconditions, ordinary defender passes the terminal score gate at own_score >= threshold.",
+      "limits": "Mismatch with stock comment established; developer intent and live frequency not established."
+    },
+    {
+      "id": "bounded_active_cache",
+      "status": "static-confirmed",
+      "spine": "184DCD9 -> 1851440 -> 2248A80 at1851642; 18519E1..1851A36 partition aggregates",
+      "meaning": "This inspected active entry is a cache aggregation path, not an established generic retreat policy."
+    },
+    {
+      "id": "generic_active_retreat",
+      "status": "unknown",
+      "meaning": "No global absence claim; unclassified indirect/vtable policy remains possible."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\bounded-cache-active-entry-refs.json",
+      "sha256": "94a8789aaa6d52ff36c58bfe72931b315191220a4d2ac7b3e330c6a5b3ead96e",
+      "size": 1647
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\bounded-cache-active-entry.json",
+      "sha256": "6983ac9389bcfd307e266605174a24a57386bf67d23d11503365f922f4153664",
+      "size": 81146
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\coordinator-constructor.json",
+      "sha256": "8ed906baae15ebf19378c20ec56d06bee0b57df56acaeed3b7ce420f85c142fb",
+      "size": 17609
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\coordinator-creators-and-role-tail.json",
+      "sha256": "f6b0149c4db39ab922d25f3d2e104e4c7dcf527dff13f00dd47d85d217b904ae",
+      "size": 35676
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\coordinator-role-and-ui-side.json",
+      "sha256": "a99110605db029bf2d44a03daf2defbda527cabaab0662290c336a1d2be14d8e",
+      "size": 49335
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\define-array-parser.json",
+      "sha256": "9bbc782b9b9fd0b4d069356ceb5ca78dcefcfd9ae829d86400320ecacfe046ee",
+      "size": 6731
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\flag-field-occurrences.json",
+      "sha256": "6b7a55bdac7a92e07962a06ac359c34ccbb06d47293584f4663e4198589bc885",
+      "size": 76096
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\gui-role-complete.json",
+      "sha256": "fd47617cdca96f93ed8b48292b8b05072ee29a7f8ecca049de52f9e67562d658",
+      "size": 9293
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\initial-plan-check.json",
+      "sha256": "d4f615025f95c6c9cff41db6b2ba485de42293204d702e9193e98acdec370b58",
+      "size": 1064
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\primary-role-vtables.json",
+      "sha256": "1b0150ecd166dade83aa62a06e2aa02bc3ee8d762be66f3bb2e1e197689fcee4",
+      "size": 2028
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\role-and-gui-windows.json",
+      "sha256": "9b06fb7249a8cd1bdeaa0fdab27929b5ebb2426eebcfb5f1eddfb6787296f815",
+      "size": 77621
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\role-and-ui-name-refs.json",
+      "sha256": "c458517942fc0ac30d956228253467408d1f95f9542c9d291d7489a73587f5d2",
+      "size": 3298
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\role-and-ui-registrations.json",
+      "sha256": "8900b3d985dd105c7f07509082cf998c7f6a58a9cb935fda07f64c6899d1721b",
+      "size": 54672
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\role-getters-and-ui-wrappers.json",
+      "sha256": "767f725e089e22f4844ea7146fc068585259166237f9089670ccec11aaee2035",
+      "size": 20578
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\role-literals.json",
+      "sha256": "c9f2e0ec404fc256476222539f44465a037f150fa271ed7568d64f25b324764d",
+      "size": 1946
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\score-and-leader-refs.json",
+      "sha256": "77bdb052c927ef082b67b2e6d2a33654124123f1055d15a0fa5965c75253ba0a",
+      "size": 12984
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\score-comparison-consumer.json",
+      "sha256": "1772be752dc65b2b82c95a02432af2c689addff264cc0a857eccb3fb3b80aeab",
+      "size": 7072
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\score-consumers.json",
+      "sha256": "c593a7bfc29436edfb6f0cef08696ea366edbf7d1a540f3c6dd827725655b4a2",
+      "size": 36858
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\score-literals.json",
+      "sha256": "abe852013b097b4b5723377c96f1e3082113c8f1b3de2a7f19ae225cc85ab733",
+      "size": 4362
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\score-trigger-allocation.json",
+      "sha256": "cbdec0ca142ef4f3dad745c6aeb79462fd4b15000dbdc6c4d1c459ced70e76c9",
+      "size": 5945
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\score-trigger-factories.json",
+      "sha256": "3b5f701d1a1b47be8b1fb005dc3af5518ef306e3508e68135f143549b1402879",
+      "size": 4545
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\score-trigger-instance-vtables.json",
+      "sha256": "f04ed4177edf417c96f0d9682525e18bedb6d130941484cca3c05e323841fe1b",
+      "size": 2899
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\trigger-and-constructor-refs.json",
+      "sha256": "4da76d08e716e55a93af016bfbb036718011ac0ef899d2a9370bf9ae4599b237",
+      "size": 2440
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\trigger-entry-vtables.json",
+      "sha256": "3f127f2af81d796214114f344d3b6345bcffb3d9ed27098497c3ef07685478f4",
+      "size": 3297
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\trigger-name-refs-full-text.json",
+      "sha256": "1c9e5a3c870ce2fe87ec08a017c7a573716e3e6132133ce7e2aa6bb2ee52d15d",
+      "size": 1859
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\trigger-name-registration.json",
+      "sha256": "fc744b14653f5278184f07c251ee2201e15863985b301eb40cc95e1b5fe6d8fa",
+      "size": 7502
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\trigger-registration-refs.json",
+      "sha256": "201de195c15a3285bae8433477f509837aa1211a6432508b8db89b630bde441e",
+      "size": 1495
+    }
+  ],
+  "source_snapshots": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\source-snapshot-war_film_retreat_extract.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_extract.py",
+      "sha256": "29ee12ff63c23d122994c17fad9b6d477b587305a2c9d0fa990432cd6d150eba",
+      "size": 8636
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\source-snapshot-war_film_retreat_score_locator.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_score_locator.py",
+      "sha256": "51f9edc7a6ecb0bed1dcf5ada02ae88f42e6e3dc8dfafe7a3c8cb2aed3d36c66",
+      "size": 1920
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\source-snapshot-war_film_retreat_freeze_a03.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_freeze_a03.py",
+      "sha256": "198e188437aceb91f964d30bdd3dd50122b73a1f39192c8b26c7d0e3426c651a",
+      "size": 8974
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\source-snapshot-war_film_retreat_plan_a03.json",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_plan_a03.json",
+      "sha256": "f73492dd22d842f399dfe2711224452cff0b4a927db765fcc87a6aec5d1599d2",
+      "size": 2981
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a03\\source-snapshot-war_film_retreat_evidence_a01.json",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_evidence_a01.json",
+      "sha256": "4defcd2ffa3d2ec707a01771416f8d5ad38c1a624bdbd43cf97f2725bd7025dc",
+      "size": 51291
+    }
+  ],
+  "reviewed_instruction_excerpts": {
+    "trigger-name-registration.json": [
+      "00053A510  48 89 5c 24 10                   mov      qword ptr [rsp + 0x10], rbx",
+      "00053A515  57                               push     rdi",
+      "00053A516  48 83 ec 30                      sub      rsp, 0x30",
+      "00053A51A  48 8b 0d 97 85 23 05             mov      rcx, qword ptr [rip + 0x5238597]",
+      "00053A521  48 8d 05 30 b8 e3 03             lea      rax, [rip + 0x3e3b830]",
+      "00053A528  48 89 44 24 20                   mov      qword ptr [rsp + 0x20], rax",
+      "00053A52D  c7 44 24 28 12 00 00 00          mov      dword ptr [rsp + 0x28], 0x12",
+      "00053A535  c6 44 24 2c 00                   mov      byte ptr [rsp + 0x2c], 0",
+      "00053A53A  48 85 c9                         test     rcx, rcx",
+      "00053A53D  75 08                            jne      0x14053a547",
+      "00053A53F  e8 2c e3 61 03                   call     0x143b58870",
+      "00053A544  48 8b c8                         mov      rcx, rax",
+      "00053A547  0f 28 44 24 20                   movaps   xmm0, xmmword ptr [rsp + 0x20]",
+      "00053A54C  48 8d 54 24 20                   lea      rdx, [rsp + 0x20]",
+      "00053A551  66 0f 7f 44 24 20                movdqa   xmmword ptr [rsp + 0x20], xmm0",
+      "00053A557  e8 d4 dd 61 03                   call     0x143b58330",
+      "00053A55C  8b f8                            mov      edi, eax",
+      "00053A55E  e8 8d f9 e0 02                   call     0x143349ef0",
+      "00053A563  48 8b 1d ee 51 1d 05             mov      rbx, qword ptr [rip + 0x51d51ee]",
+      "00053A56A  b9 18 00 00 00                   mov      ecx, 0x18",
+      "00053A56F  e8 b0 b8 8e 03                   call     0x143e25e24",
+      "00053A574  48 8d 0d fd bb e3 03             lea      rcx, [rip + 0x3e3bbfd]",
+      "00053A57B  48 89 44 24 40                   mov      qword ptr [rsp + 0x40], rax",
+      "00053A580  4c 8b c0                         mov      r8, rax",
+      "00053A583  8b d7                            mov      edx, edi",
+      "00053A585  48 89 48 08                      mov      qword ptr [rax + 8], rcx",
+      "00053A589  48 8d 0d 98 c9 e3 03             lea      rcx, [rip + 0x3e3c998]",
+      "00053A590  48 89 08                         mov      qword ptr [rax], rcx",
+      "00053A593  48 8b cb                         mov      rcx, rbx",
+      "00053A596  89 78 10                         mov      dword ptr [rax + 0x10], edi",
+      "00053A599  48 8b 5c 24 48                   mov      rbx, qword ptr [rsp + 0x48]",
+      "00053A59E  48 83 c4 30                      add      rsp, 0x30",
+      "00053A5A2  5f                               pop      rdi",
+      "00053A5A3  e9 18 fe e0 02                   jmp      0x14334a3c0",
+      "00053A5B0  48 89 5c 24 10                   mov      qword ptr [rsp + 0x10], rbx",
+      "00053A5B5  57                               push     rdi",
+      "00053A5B6  48 83 ec 30                      sub      rsp, 0x30",
+      "00053A5BA  48 8b 0d f7 84 23 05             mov      rcx, qword ptr [rip + 0x52384f7]",
+      "00053A5C1  48 8d 05 c8 b7 e3 03             lea      rax, [rip + 0x3e3b7c8]",
+      "00053A5C8  48 89 44 24 20                   mov      qword ptr [rsp + 0x20], rax",
+      "00053A5CD  c7 44 24 28 12 00 00 00          mov      dword ptr [rsp + 0x28], 0x12",
+      "00053A5D5  c6 44 24 2c 00                   mov      byte ptr [rsp + 0x2c], 0",
+      "00053A5DA  48 85 c9                         test     rcx, rcx",
+      "00053A5DD  75 08                            jne      0x14053a5e7",
+      "00053A5DF  e8 8c e2 61 03                   call     0x143b58870",
+      "00053A5E4  48 8b c8                         mov      rcx, rax",
+      "00053A5E7  0f 28 44 24 20                   movaps   xmm0, xmmword ptr [rsp + 0x20]",
+      "00053A5EC  48 8d 54 24 20                   lea      rdx, [rsp + 0x20]",
+      "00053A5F1  66 0f 7f 44 24 20                movdqa   xmmword ptr [rsp + 0x20], xmm0",
+      "00053A5F7  e8 34 dd 61 03                   call     0x143b58330",
+      "00053A5FC  8b f8                            mov      edi, eax",
+      "00053A5FE  e8 ed f8 e0 02                   call     0x143349ef0",
+      "00053A603  48 8b 1d 4e 51 1d 05             mov      rbx, qword ptr [rip + 0x51d514e]",
+      "00053A60A  b9 18 00 00 00                   mov      ecx, 0x18",
+      "00053A60F  e8 10 b8 8e 03                   call     0x143e25e24",
+      "00053A614  48 8d 0d 55 b7 e3 03             lea      rcx, [rip + 0x3e3b755]",
+      "00053A61B  48 89 44 24 40                   mov      qword ptr [rsp + 0x40], rax",
+      "00053A620  4c 8b c0                         mov      r8, rax",
+      "00053A623  8b d7                            mov      edx, edi",
+      "00053A625  48 89 48 08                      mov      qword ptr [rax + 8], rcx",
+      "00053A629  48 8d 0d 18 c9 e3 03             lea      rcx, [rip + 0x3e3c918]",
+      "00053A630  48 89 08                         mov      qword ptr [rax], rcx",
+      "00053A633  48 8b cb                         mov      rcx, rbx",
+      "00053A636  89 78 10                         mov      dword ptr [rax + 0x10], edi",
+      "00053A639  48 8b 5c 24 48                   mov      rbx, qword ptr [rsp + 0x48]",
+      "00053A63E  48 83 c4 30                      add      rsp, 0x30",
+      "00053A642  5f                               pop      rdi",
+      "00053A643  e9 78 fd e0 02                   jmp      0x14334a3c0"
+    ],
+    "score-trigger-factories.json": [
+      "002849C00  e9 7b 0e 00 00                   jmp      0x14284aa80",
+      "002849C05  cc                               int3     ",
+      "002849C06  cc                               int3     ",
+      "002849C07  cc                               int3     ",
+      "002849C08  cc                               int3     ",
+      "002849C09  cc                               int3     ",
+      "002849C0A  cc                               int3     ",
+      "002849C0B  cc                               int3     ",
+      "002849C0C  cc                               int3     ",
+      "002849C0D  cc                               int3     ",
+      "002849C0E  cc                               int3     ",
+      "002849C0F  cc                               int3     ",
+      "002849C10  e9 db 0e 00 00                   jmp      0x14284aaf0",
+      "002849C15  cc                               int3     ",
+      "002849C16  cc                               int3     ",
+      "002849C17  cc                               int3     ",
+      "002849C18  cc                               int3     ",
+      "002849C19  cc                               int3     ",
+      "002849C1A  cc                               int3     ",
+      "002849C1B  cc                               int3     ",
+      "002849C1C  cc                               int3     ",
+      "002849C1D  cc                               int3     ",
+      "002849C1E  cc                               int3     ",
+      "002849C1F  cc                               int3     ",
+      "002849C10  e9 db 0e 00 00                   jmp      0x14284aaf0",
+      "002849C15  cc                               int3     ",
+      "002849C16  cc                               int3     ",
+      "002849C17  cc                               int3     ",
+      "002849C18  cc                               int3     ",
+      "002849C19  cc                               int3     ",
+      "002849C1A  cc                               int3     ",
+      "002849C1B  cc                               int3     ",
+      "002849C1C  cc                               int3     ",
+      "002849C1D  cc                               int3     ",
+      "002849C1E  cc                               int3     ",
+      "002849C1F  cc                               int3     ",
+      "002849C20  48 89 5c 24 10                   mov      qword ptr [rsp + 0x10], rbx"
+    ],
+    "score-trigger-allocation.json": [
+      "00284AAC1  48 8d 05 18 c8 b2 01             lea      rax, [rip + 0x1b2c818]",
+      "00284AAC8  48 89 03                         mov      qword ptr [rbx], rax",
+      "00284AACB  48 8b c3                         mov      rax, rbx",
+      "00284AACE  8b 4f 10                         mov      ecx, dword ptr [rdi + 0x10]",
+      "00284AB31  48 8d 05 98 c6 b2 01             lea      rax, [rip + 0x1b2c698]",
+      "00284AB38  48 89 03                         mov      qword ptr [rbx], rax",
+      "00284AB3B  48 8b c3                         mov      rax, rbx",
+      "00284AB3E  8b 4f 10                         mov      ecx, dword ptr [rdi + 0x10]"
+    ],
+    "score-consumers.json": [
+      "000D5D76C  e8 2f 91 ef ff                   call     0x140c568a0",
+      "000D5D771  8b c8                            mov      ecx, eax",
+      "000D5D773  8d 50 ff                         lea      edx, [rax - 1]",
+      "000D5D776  f7 c2 f9 ff ff ff                test     edx, 0xfffffff9",
+      "000D5D77C  75 2a                            jne      0x140d5d7a8",
+      "000D5D77E  83 f8 07                         cmp      eax, 7",
+      "000D5D781  74 25                            je       0x140d5d7a8",
+      "000D5D783  33 d2                            xor      edx, edx",
+      "000D5D785  48 8b cb                         mov      rcx, rbx",
+      "000D5D788  e8 13 d1 4c 01                   call     0x14222a8a0",
+      "000D5D78D  48 63 c8                         movsxd   rcx, eax",
+      "000D5D790  48 69 c1 e8 03 00 00             imul     rax, rcx, 0x3e8",
+      "000D5D797  48 89 07                         mov      qword ptr [rdi], rax",
+      "000D5D79A  48 8b c7                         mov      rax, rdi",
+      "000D5D79D  48 8b 5c 24 30                   mov      rbx, qword ptr [rsp + 0x30]",
+      "000D5D7A2  48 83 c4 20                      add      rsp, 0x20",
+      "000D5D7A6  5f                               pop      rdi",
+      "000D5D7A7  c3                               ret      ",
+      "000D5D7A8  83 c0 fe                         add      eax, -2",
+      "000D5D7AB  a9 f9 ff ff ff                   test     eax, 0xfffffff9",
+      "000D5D7B0  75 2a                            jne      0x140d5d7dc",
+      "000D5D7B2  83 f9 08                         cmp      ecx, 8",
+      "000D5D7B5  74 25                            je       0x140d5d7dc",
+      "000D5D7B7  33 d2                            xor      edx, edx",
+      "000D5D7B9  48 8b cb                         mov      rcx, rbx",
+      "000D5D7BC  e8 df d0 4c 01                   call     0x14222a8a0",
+      "000D5D7C1  48 63 c8                         movsxd   rcx, eax",
+      "000D5D7C4  48 69 c1 18 fc ff ff             imul     rax, rcx, -0x3e8",
+      "000D5D7CB  48 89 07                         mov      qword ptr [rdi], rax",
+      "000D5D7CE  48 8b c7                         mov      rax, rdi",
+      "0016AFD05  8b 56 04                         mov      edx, dword ptr [rsi + 4]",
+      "0016AFD08  48 8d 4f 20                      lea      rcx, [rdi + 0x20]",
+      "0016AFD0C  e8 5f 4b b7 00                   call     0x142224870",
+      "0016AFD11  33 d2                            xor      edx, edx",
+      "0016AFD13  48 8b cf                         mov      rcx, rdi",
+      "0016AFD16  84 c0                            test     al, al",
+      "0016AFD18  74 11                            je       0x1416afd2b",
+      "0016AFD1A  e8 81 ab b7 00                   call     0x14222a8a0",
+      "0016AFD1F  48 63 c8                         movsxd   rcx, eax",
+      "0016AFD22  48 69 c1 e8 03 00 00             imul     rax, rcx, 0x3e8",
+      "0016AFD29  eb 0f                            jmp      0x1416afd3a",
+      "0016AFD2B  e8 70 ab b7 00                   call     0x14222a8a0",
+      "0016AFD30  48 63 c8                         movsxd   rcx, eax",
+      "0016AFD33  48 69 c1 18 fc ff ff             imul     rax, rcx, -0x3e8",
+      "0016AFD3A  48 8b 74 24 38                   mov      rsi, qword ptr [rsp + 0x38]",
+      "00284B928  e8 73 ef 9d ff                   call     0x14222a8a0",
+      "00284B92D  48 63 c8                         movsxd   rcx, eax",
+      "00284B930  48 69 c1 a0 86 01 00             imul     rax, rcx, 0x186a0",
+      "00284B937  48 89 03                         mov      qword ptr [rbx], rax",
+      "00284B93A  48 8b c3                         mov      rax, rbx",
+      "00284B9A8  e8 f3 ee 9d ff                   call     0x14222a8a0",
+      "00284B9AD  f7 d8                            neg      eax",
+      "00284B9AF  48 98                            cdqe     ",
+      "00284B9B1  48 69 c8 a0 86 01 00             imul     rcx, rax, 0x186a0",
+      "00284B9B8  48 8b c3                         mov      rax, rbx",
+      "00284B9BB  48 89 0b                         mov      qword ptr [rbx], rcx",
+      "00284B9BE  48 83 c4 20                      add      rsp, 0x20"
+    ],
+    "role-and-ui-registrations.json": [
+      "000329430  48 89 5c 24 10                   mov      qword ptr [rsp + 0x10], rbx",
+      "000329435  57                               push     rdi",
+      "000329436  48 83 ec 40                      sub      rsp, 0x40",
+      "00032943A  48 8d 05 87 00 eb 03             lea      rax, [rip + 0x3eb0087]",
+      "000329441  48 89 44 24 20                   mov      qword ptr [rsp + 0x20], rax",
+      "000329446  c7 44 24 28 10 00 00 00          mov      dword ptr [rsp + 0x28], 0x10",
+      "00032944E  c6 44 24 2c 00                   mov      byte ptr [rsp + 0x2c], 0",
+      "000329453  48 8b 0d 5e 96 44 05             mov      rcx, qword ptr [rip + 0x544965e]",
+      "00032945A  48 85 c9                         test     rcx, rcx",
+      "00032945D  75 08                            jne      0x140329467",
+      "00032945F  e8 0c f4 82 03                   call     0x143b58870",
+      "000329464  48 8b c8                         mov      rcx, rax",
+      "000329467  0f 28 44 24 20                   movaps   xmm0, xmmword ptr [rsp + 0x20]",
+      "00032946C  66 0f 7f 44 24 20                movdqa   xmmword ptr [rsp + 0x20], xmm0",
+      "000329472  48 8d 54 24 20                   lea      rdx, [rsp + 0x20]",
+      "000329477  e8 b4 ee 82 03                   call     0x143b58330",
+      "00032947C  8b d8                            mov      ebx, eax",
+      "00032947E  48 8d 3d bb 42 3f 05             lea      rdi, [rip + 0x53f42bb]",
+      "000329485  48 8b cf                         mov      rcx, rdi",
+      "000329488  e8 c3 ff 5f 01                   call     0x141929450",
+      "00032948D  48 8d 05 64 05 eb 03             lea      rax, [rip + 0x3eb0564]",
+      "000329494  48 89 05 a5 42 3f 05             mov      qword ptr [rip + 0x53f42a5], rax",
+      "00032949B  89 1d a7 42 3f 05                mov      dword ptr [rip + 0x53f42a7], ebx",
+      "0003294A1  33 c0                            xor      eax, eax",
+      "0003294A3  48 89 44 24 20                   mov      qword ptr [rsp + 0x20], rax",
+      "0003294A8  48 89 44 24 30                   mov      qword ptr [rsp + 0x30], rax",
+      "0003294AD  48 c7 44 24 38 0f 00 00 00       mov      qword ptr [rsp + 0x38], 0xf",
+      "0003294B6  44 8d 40 31                      lea      r8d, [rax + 0x31]",
+      "0003294BA  48 8d 15 cf ff ea 03             lea      rdx, [rip + 0x3eaffcf]",
+      "0003294C1  48 8d 4c 24 20                   lea      rcx, [rsp + 0x20]",
+      "0003294C6  e8 65 00 4c 00                   call     0x1407e9530",
+      "0003294CB  48 8d 54 24 20                   lea      rdx, [rsp + 0x20]",
+      "0003294D0  48 8b cf                         mov      rcx, rdi",
+      "0003294D3  e8 58 00 60 01                   call     0x141929530",
+      "0003294D8  66 c7 05 6b 42 3f 05 00 00       mov      word ptr [rip + 0x53f426b], 0",
+      "0003294E1  48 8b cf                         mov      rcx, rdi",
+      "0003294E4  e8 b7 27 04 03                   call     0x14336bca0",
+      "0003294E9  90                               nop      ",
+      "0003294EA  48 8d 0d 3f 4c c1 03             lea      rcx, [rip + 0x3c14c3f]",
+      "0003294F1  48 8b 5c 24 58                   mov      rbx, qword ptr [rsp + 0x58]",
+      "0003294F6  48 83 c4 40                      add      rsp, 0x40",
+      "0003294FA  5f                               pop      rdi",
+      "0003294FB  e9 b4 cc af 03                   jmp      0x143e261b4",
+      "000329500  48 89 5c 24 10                   mov      qword ptr [rsp + 0x10], rbx",
+      "000329505  57                               push     rdi",
+      "000329506  48 83 ec 40                      sub      rsp, 0x40",
+      "00032950A  48 8d 05 07 00 eb 03             lea      rax, [rip + 0x3eb0007]",
+      "000329511  48 89 44 24 20                   mov      qword ptr [rsp + 0x20], rax",
+      "000329516  c7 44 24 28 10 00 00 00          mov      dword ptr [rsp + 0x28], 0x10",
+      "00032951E  c6 44 24 2c 00                   mov      byte ptr [rsp + 0x2c], 0",
+      "000329523  48 8b 0d 8e 95 44 05             mov      rcx, qword ptr [rip + 0x544958e]",
+      "00032952A  48 85 c9                         test     rcx, rcx",
+      "00032952D  75 08                            jne      0x140329537",
+      "00032952F  e8 3c f3 82 03                   call     0x143b58870",
+      "000329534  48 8b c8                         mov      rcx, rax",
+      "000329537  0f 28 44 24 20                   movaps   xmm0, xmmword ptr [rsp + 0x20]",
+      "00032953C  66 0f 7f 44 24 20                movdqa   xmmword ptr [rsp + 0x20], xmm0",
+      "000329542  48 8d 54 24 20                   lea      rdx, [rsp + 0x20]",
+      "000329547  e8 e4 ed 82 03                   call     0x143b58330",
+      "00032954C  8b d8                            mov      ebx, eax",
+      "00032954E  48 8d 3d 1b 42 3f 05             lea      rdi, [rip + 0x53f421b]",
+      "000329555  48 8b cf                         mov      rcx, rdi",
+      "000329558  e8 f3 fe 5f 01                   call     0x141929450",
+      "00032955D  48 8d 05 0c 05 eb 03             lea      rax, [rip + 0x3eb050c]",
+      "000329564  48 89 05 05 42 3f 05             mov      qword ptr [rip + 0x53f4205], rax",
+      "00032956B  89 1d 07 42 3f 05                mov      dword ptr [rip + 0x53f4207], ebx",
+      "0000B4474  45 33 c9                         xor      r9d, r9d",
+      "0000B4477  45 33 c0                         xor      r8d, r8d",
+      "0000B447A  48 8d 15 ef b5 ca 00             lea      rdx, [rip + 0xcab5ef]",
+      "0000B4481  48 8d 4d ef                      lea      rcx, [rbp - 0x11]",
+      "0000B4485  e8 86 f8 ca 00                   call     0x140d63d10",
+      "0000B448A  90                               nop      ",
+      "0000B448B  48 39 7d d7                      cmp      qword ptr [rbp - 0x29], rdi",
+      "0000B448F  74 22                            je       0x1400b44b3",
+      "0002AE6A4  45 33 c9                         xor      r9d, r9d",
+      "0002AE6A7  45 33 c0                         xor      r8d, r8d",
+      "0002AE6AA  48 8d 15 bf 29 40 01             lea      rdx, [rip + 0x14029bf]",
+      "0002AE6B1  48 8d 4d ef                      lea      rcx, [rbp - 0x11]",
+      "0002AE6B5  e8 76 63 40 01                   call     0x1416b4a30",
+      "0002AE6BA  90                               nop      ",
+      "0002AE6BB  48 39 7d d7                      cmp      qword ptr [rbp - 0x29], rdi",
+      "0002AE6BF  74 22                            je       0x1402ae6e3"
+    ],
+    "role-getters-and-ui-wrappers.json": [
+      "0019DADC2  8b 91 88 02 00 00                mov      edx, dword ptr [rcx + 0x288]",
+      "0019DADC8  8b ca                            mov      ecx, edx",
+      "0019DADCA  81 e1 ff ff ff 00                and      ecx, 0xffffff",
+      "0019DAC72  8b 91 8c 02 00 00                mov      edx, dword ptr [rcx + 0x28c]",
+      "0019DAC78  8b ca                            mov      ecx, edx",
+      "0019DAC7A  81 e1 ff ff ff 00                and      ecx, 0xffffff",
+      "000D5FA82  48 8d 54 24 40                   lea      rdx, [rsp + 0x40]",
+      "000D5FA87  e8 94 dc ff ff                   call     0x140d5d720",
+      "000D5FA8C  48 8b d0                         mov      rdx, rax",
+      "000D5FA8F  48 8b cb                         mov      rcx, rbx",
+      "000D5FA92  e8 39 db c0 ff                   call     0x14096d5d0",
+      "0016B1082  48 8d 54 24 40                   lea      rdx, [rsp + 0x40]",
+      "0016B1087  e8 34 ec ff ff                   call     0x1416afcc0",
+      "0016B108C  48 8b d0                         mov      rdx, rax",
+      "0016B108F  48 8b cb                         mov      rcx, rbx",
+      "0016B1092  e8 39 c5 2b ff                   call     0x14096d5d0"
+    ],
+    "gui-role-complete.json": [
+      "000C568E8  41 8b 89 88 02 00 00             mov      ecx, dword ptr [r9 + 0x288]",
+      "000C568EF  8b 47 18                         mov      eax, dword ptr [rdi + 0x18]",
+      "000C568F2  3b c8                            cmp      ecx, eax",
+      "000C568F4  0f 84 e3 00 00 00                je       0x140c569dd",
+      "000C568FA  41 39 81 8c 02 00 00             cmp      dword ptr [r9 + 0x28c], eax",
+      "000C56901  0f 84 d6 00 00 00                je       0x140c569dd",
+      "000C56907  48 89 5c 24 30                   mov      qword ptr [rsp + 0x30], rbx",
+      "000C5690C  8b d0                            mov      edx, eax",
+      "000C5690E  48 89 6c 24 38                   mov      qword ptr [rsp + 0x38], rbp",
+      "000C56913  49 8d 69 20                      lea      rbp, [r9 + 0x20]",
+      "000C56917  48 8b cd                         mov      rcx, rbp",
+      "000C5691A  4c 89 74 24 48                   mov      qword ptr [rsp + 0x48], r14",
+      "000C5691F  4d 8d b1 80 00 00 00             lea      r14, [r9 + 0x80]",
+      "000C56926  e8 45 df 5c 01                   call     0x142224870",
+      "000C5692B  8b 57 18                         mov      edx, dword ptr [rdi + 0x18]",
+      "000C5692E  49 8b ce                         mov      rcx, r14",
+      "000C56931  0f b6 d8                         movzx    ebx, al",
+      "000C56934  e8 37 df 5c 01                   call     0x142224870",
+      "000C56939  84 db                            test     bl, bl",
+      "000C5693B  0f 85 93 00 00 00                jne      0x140c569d4",
+      "000C56941  84 c0                            test     al, al",
+      "000C56943  0f 85 8b 00 00 00                jne      0x140c569d4",
+      "000C56949  48 8b cf                         mov      rcx, rdi",
+      "000C569D4  f6 db                            neg      bl",
+      "000C569D6  1b c0                            sbb      eax, eax",
+      "000C569D8  83 c0 04                         add      eax, 4",
+      "000C569DB  eb d8                            jmp      0x140c569b5",
+      "000C569DD  33 d2                            xor      edx, edx",
+      "000C569DF  3b c8                            cmp      ecx, eax",
+      "000C569E1  0f 95 c2                         setne    dl",
+      "000C569E4  8d 42 01                         lea      eax, [rdx + 1]",
+      "000C569E7  48 83 c4 20                      add      rsp, 0x20"
+    ],
+    "coordinator-creators-and-role-tail.json": [
+      "0018854BD  45 32 e4                         xor      r12b, r12b",
+      "0018854C0  49 8d 4f 20                      lea      rcx, [r15 + 0x20]",
+      "0018854C4  8b 55 18                         mov      edx, dword ptr [rbp + 0x18]",
+      "0018854C7  e8 a4 f3 99 00                   call     0x142224870",
+      "0018854CC  84 c0                            test     al, al",
+      "0018854CE  74 05                            je       0x1418854d5",
+      "0018854D0  41 b4 01                         mov      r12b, 1",
+      "0018854D3  eb 17                            jmp      0x1418854ec",
+      "0018854D5  8b 55 18                         mov      edx, dword ptr [rbp + 0x18]",
+      "0018854D8  49 8d 8f 80 00 00 00             lea      rcx, [r15 + 0x80]",
+      "0018854DF  e8 8c f3 99 00                   call     0x142224870",
+      "0018854E4  84 c0                            test     al, al",
+      "0018854E6  0f 84 97 03 00 00                je       0x141885883",
+      "0018854EC  45 0f b6 c4                      movzx    r8d, r12b",
+      "0018854F0  49 8b d7                         mov      rdx, r15",
+      "0018854F3  49 8b cd                         mov      rcx, r13",
+      "0018854F6  e8 b5 03 00 00                   call     0x1418858b0",
+      "00188561A  41 8b 47 08                      mov      eax, dword ptr [r15 + 8]",
+      "00188561E  89 43 1c                         mov      dword ptr [rbx + 0x1c], eax",
+      "001885621  41 0f b6 d4                      movzx    edx, r12b",
+      "001885625  66 c1 e2 02                      shl      dx, 2",
+      "001885629  0f b7 43 68                      movzx    eax, word ptr [rbx + 0x68]",
+      "00188562D  b9 fb ff 00 00                   mov      ecx, 0xfffb",
+      "001885632  66 23 c1                         and      ax, cx",
+      "001885635  66 0b d0                         or       dx, ax",
+      "001885638  66 89 53 68                      mov      word ptr [rbx + 0x68], dx",
+      "00188563C  49 8b 87 00 01 00 00             mov      rax, qword ptr [r15 + 0x100]",
+      "001885780  8b 45 18                         mov      eax, dword ptr [rbp + 0x18]",
+      "001885783  89 84 24 a8 00 00 00             mov      dword ptr [rsp + 0xa8], eax",
+      "00188578A  48 8b 4f 20                      mov      rcx, qword ptr [rdi + 0x20]",
+      "00188578E  48 63 47 2c                      movsxd   rax, dword ptr [rdi + 0x2c]",
+      "001885792  48 8d 14 81                      lea      rdx, [rcx + rax*4]",
+      "001885796  4c 8d 84 24 a8 00 00 00          lea      r8, [rsp + 0xa8]",
+      "00188579E  e8 1d fe f8 fe                   call     0x1408155c0",
+      "0018857A3  4c 63 47 2c                      movsxd   r8, dword ptr [rdi + 0x2c]",
+      "0018857A7  48 8b 57 20                      mov      rdx, qword ptr [rdi + 0x20]",
+      "0018857AB  4e 8d 0c 82                      lea      r9, [rdx + r8*4]",
+      "0018857AF  33 f6                            xor      esi, esi",
+      "0018857B1  49 3b c1                         cmp      rax, r9",
+      "0018857B4  48 0f 44 c6                      cmove    rax, rsi",
+      "0018857B8  48 85 c0                         test     rax, rax",
+      "0018857BB  75 11                            jne      0x1418857ce",
+      "0018857BD  48 8d 94 24 a8 00 00 00          lea      rdx, [rsp + 0xa8]",
+      "0018857C5  48 8d 4f 20                      lea      rcx, [rdi + 0x20]",
+      "0018857C9  e8 22 2f 20 ff                   call     0x140a886f0",
+      "0018857CE  4c 8d 0d 93 d9 90 02             lea      r9, [rip + 0x290d993]"
+    ],
+    "bounded-cache-active-entry.json": [
+      "00185163F  49 8b ce                         mov      rcx, r14",
+      "001851642  e8 39 74 9f 00                   call     0x142248a80",
+      "001851647  88 44 24 30                      mov      byte ptr [rsp + 0x30], al",
+      "00185164B  41 83 7e 44 00                   cmp      dword ptr [r14 + 0x44], 0",
+      "0018519E1  0f b6 54 24 30                   movzx    edx, byte ptr [rsp + 0x30]",
+      "0018519E6  84 d2                            test     dl, dl",
+      "0018519E8  74 1c                            je       0x141851a06",
+      "0018519EA  4c 89 64 24 78                   mov      qword ptr [rsp + 0x78], r12",
+      "0018519EF  4c 89 5c 24 50                   mov      qword ptr [rsp + 0x50], r11",
+      "0018519F4  45 8b e3                         mov      r12d, r11d",
+      "0018519F7  44 89 5c 24 40                   mov      dword ptr [rsp + 0x40], r11d",
+      "0018519FC  45 8b fb                         mov      r15d, r11d",
+      "0018519FF  44 89 5c 24 44                   mov      dword ptr [rsp + 0x44], r11d",
+      "001851A04  eb 1c                            jmp      0x141851a22",
+      "001851A06  45 8b e5                         mov      r12d, r13d",
+      "001851A09  44 8b f8                         mov      r15d, eax",
+      "001851A0C  45 84 db                         test     r11b, r11b",
+      "001851A0F  45 0f 45 fb                      cmovne   r15d, r11d",
+      "001851A13  4c 89 5c 24 78                   mov      qword ptr [rsp + 0x78], r11",
+      "001851A18  44 89 6c 24 40                   mov      dword ptr [rsp + 0x40], r13d",
+      "001851A1D  44 89 7c 24 44                   mov      dword ptr [rsp + 0x44], r15d",
+      "001851A22  41 8b cb                         mov      ecx, r11d",
+      "001851A25  84 d2                            test     dl, dl",
+      "001851A27  41 0f 45 cd                      cmovne   ecx, r13d",
+      "001851A2B  89 4c 24 58                      mov      dword ptr [rsp + 0x58], ecx",
+      "001851A2F  45 8b eb                         mov      r13d, r11d",
+      "001851A32  44 0f 45 e8                      cmovne   r13d, eax",
+      "001851A36  44 89 6c 24 4c                   mov      dword ptr [rsp + 0x4c], r13d"
+    ]
+  },
+  "literal_and_vtable_data": {
+    "score-literals.json": {
+      "schema": "xar.war-film-retreat-score-literals.v1",
+      "proof_layer": "exact-build-literal-locator",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_score_locator.py",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--needle",
+        "war_score",
+        "--needle",
+        "WarScore",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a03/score-literals.json"
+      ],
+      "live_execution_performed": false,
+      "semantic_correctness_verified": false,
+      "literals": [
+        {
+          "rva": "0x40add90",
+          "file_offset": 67814288,
+          "literal": "GetWarScoreTooltip"
+        },
+        {
+          "rva": "0x40adda8",
+          "file_offset": 67814312,
+          "literal": "GetWarScore"
+        },
+        {
+          "rva": "0x40ade30",
+          "file_offset": 67814448,
+          "literal": "GetImprisonmentWarScoreTooltip"
+        },
+        {
+          "rva": "0x40ade50",
+          "file_offset": 67814480,
+          "literal": "GetImprisonmentWarScore"
+        },
+        {
+          "rva": "0x40ade68",
+          "file_offset": 67814504,
+          "literal": "GetOccupationWarScoreTooltip"
+        },
+        {
+          "rva": "0x40ade88",
+          "file_offset": 67814536,
+          "literal": "GetOccupationWarScore"
+        },
+        {
+          "rva": "0x40adea0",
+          "file_offset": 67814560,
+          "literal": "GetBattlesWarScoreTooltip"
+        },
+        {
+          "rva": "0x40adec0",
+          "file_offset": 67814592,
+          "literal": "GetBattlesWarScore"
+        },
+        {
+          "rva": "0x40aded8",
+          "file_offset": 67814616,
+          "literal": "GetTickingWarScoreTooltip"
+        },
+        {
+          "rva": "0x40adef8",
+          "file_offset": 67814648,
+          "literal": "GetTickingWarScore"
+        },
+        {
+          "rva": "0x40e8c60",
+          "file_offset": 68055648,
+          "literal": "GetWarScoreFraction"
+        },
+        {
+          "rva": "0x41090e0",
+          "file_offset": 68187872,
+          "literal": "GetProgressbarWarScore"
+        },
+        {
+          "rva": "0x41091f0",
+          "file_offset": 68188144,
+          "literal": "IsBattlesWarScoreCapped"
+        },
+        {
+          "rva": "0x417fc90",
+          "file_offset": 68674192,
+          "literal": "HasWarScore"
+        },
+        {
+          "rva": "0x429a740",
+          "file_offset": 69832000,
+          "literal": "ticking_war_score"
+        },
+        {
+          "rva": "0x429a808",
+          "file_offset": 69832200,
+          "literal": "war_score"
+        },
+        {
+          "rva": "0x429ec68",
+          "file_offset": 69849704,
+          "literal": "ticking_war_score_targets_entire_realm"
+        },
+        {
+          "rva": "0x429ef30",
+          "file_offset": 69850416,
+          "literal": "attacker_capital_gives_war_score"
+        },
+        {
+          "rva": "0x429ef58",
+          "file_offset": 69850456,
+          "literal": "check_all_defenders_for_ticking_war_score"
+        },
+        {
+          "rva": "0x429efa8",
+          "file_offset": 69850536,
+          "literal": "defender_capital_gives_war_score"
+        },
+        {
+          "rva": "0x429efd0",
+          "file_offset": 69850576,
+          "literal": "imprisonment_by_defender_give_war_score"
+        },
+        {
+          "rva": "0x429eff8",
+          "file_offset": 69850616,
+          "literal": "imprisonment_by_attacker_give_war_score"
+        },
+        {
+          "rva": "0x4375d58",
+          "file_offset": 70730584,
+          "literal": "attacker_war_score"
+        },
+        {
+          "rva": "0x4375d90",
+          "file_offset": 70730640,
+          "literal": "defender_war_score"
+        },
+        {
+          "rva": "0x43768a8",
+          "file_offset": 70733480,
+          "literal": "days_since_max_war_score"
+        },
+        {
+          "rva": "0x55009f8",
+          "file_offset": 89123832,
+          "literal": ".?AV?$CWarScoreTrigger@$00@@"
+        },
+        {
+          "rva": "0x5500c58",
+          "file_offset": 89124440,
+          "literal": ".?AV?$CWarScoreTrigger@$0A@@@"
+        },
+        {
+          "rva": "0x5500ef0",
+          "file_offset": 89125104,
+          "literal": ".?AV?$CTriggerEntry@V?$CWarScoreTrigger@$0A@@@@@"
+        },
+        {
+          "rva": "0x5500f40",
+          "file_offset": 89125184,
+          "literal": ".?AV?$CTriggerEntry@V?$CWarScoreTrigger@$00@@@@"
+        },
+        {
+          "rva": "0x55014c0",
+          "file_offset": 89126592,
+          "literal": ".?AV?$CTriggerEntry@VCDaysSinceReachedMaxWarScoreTrigger@@@@"
+        },
+        {
+          "rva": "0x55015b0",
+          "file_offset": 89126832,
+          "literal": ".?AVCDaysSinceReachedMaxWarScoreTrigger@@"
+        }
+      ]
+    },
+    "role-literals.json": {
+      "schema": "xar.war-film-retreat-score-literals.v1",
+      "proof_layer": "exact-build-literal-locator",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_score_locator.py",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--needle",
+        "primary_attacker",
+        "--needle",
+        "primary_defender",
+        "--needle",
+        "GetPrimaryAttacker",
+        "--needle",
+        "GetPrimaryDefender",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a03/role-literals.json"
+      ],
+      "live_execution_performed": false,
+      "semantic_correctness_verified": false,
+      "literals": [
+        {
+          "rva": "0x41d94c8",
+          "file_offset": 69040840,
+          "literal": "primary_attacker"
+        },
+        {
+          "rva": "0x41d9518",
+          "file_offset": 69040920,
+          "literal": "primary_defender"
+        },
+        {
+          "rva": "0x429d060",
+          "file_offset": 69842528,
+          "literal": "on_primary_defender_death"
+        },
+        {
+          "rva": "0x429d080",
+          "file_offset": 69842560,
+          "literal": "on_primary_attacker_death"
+        },
+        {
+          "rva": "0x42a22b0",
+          "file_offset": 69863600,
+          "literal": "primary_defender_ally"
+        },
+        {
+          "rva": "0x42a22c8",
+          "file_offset": 69863624,
+          "literal": "primary_attacker_ally"
+        },
+        {
+          "rva": "0x42a61a8",
+          "file_offset": 69879720,
+          "literal": "independent_primary_defender_advantage_add"
+        },
+        {
+          "rva": "0x42accc8",
+          "file_offset": 69907144,
+          "literal": "independent_primary_attacker_advantage_add"
+        },
+        {
+          "rva": "0x44193f0",
+          "file_offset": 71399920,
+          "literal": "Error on [{}] casus belli: on_primary_defender_death can't be set as inherit_faction, setting it as invalidate"
+        }
+      ]
+    },
+    "trigger-entry-vtables.json": {
+      "schema": "xar.war-film-retreat-extract.v1",
+      "proof_layer": "exact-build-locator-disassembly",
+      "semantic_correctness_verified": false,
+      "live_execution_performed": false,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe_size": 95206008,
+      "image_base": "0x140000000",
+      "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "dependencies": {
+        "capstone": "5.0.9",
+        "pefile": "2024.8.26"
+      },
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+        "data",
+        "0x4376f28",
+        "0x4376f48",
+        "0x4376178",
+        "0x4375d70",
+        "0x43772a0",
+        "0x43773b0",
+        "--extent",
+        "0x50",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a03/trigger-entry-vtables.json"
+      ],
+      "mode": "data",
+      "targets": [
+        "0x4376f28",
+        "0x4376f48",
+        "0x4376178",
+        "0x4375d70",
+        "0x43772a0",
+        "0x43773b0"
+      ],
+      "data": [
+        {
+          "rva": "0x4376f28",
+          "hex": "10 5f 99 40 01 00 00 00 00 9c 84 42 01 00 00 00 00 9c 84 42 01 00 00 00 80 cb 9b 44 01 00 00 00 10 5f 99 40 01 00 00 00 10 9c 84 42 01 00 00 00 10 9c 84 42 01 00 00 00 a8 cb 9b 44 01 00 00 00 10 5f 99 40 01 00 00 00 20 9c 84 42 01 00 00 00",
+          "ascii_prefix": "\u0010_�@\u0001"
+        },
+        {
+          "rva": "0x4376f48",
+          "hex": "10 5f 99 40 01 00 00 00 10 9c 84 42 01 00 00 00 10 9c 84 42 01 00 00 00 a8 cb 9b 44 01 00 00 00 10 5f 99 40 01 00 00 00 20 9c 84 42 01 00 00 00 30 92 7e 40 01 00 00 00 d0 cb 9b 44 01 00 00 00 10 5f 99 40 01 00 00 00 a0 9c 84 42 01 00 00 00",
+          "ascii_prefix": "\u0010_�@\u0001"
+        },
+        {
+          "rva": "0x4376178",
+          "hex": "63 6f 6d 70 61 72 65 73 20 74 68 65 20 61 74 74 61 63 6b 65 72 20 77 61 72 20 73 63 6f 72 65 00 43 61 6e 27 74 20 66 69 6e 64 20 63 61 73 75 73 20 62 65 6c 6c 69 20 54 79 70 65 3a 20 7b 7d 0a 00 00 00 00 00 00 00 00 43 3a 5c 6d 6e 74 5c 67",
+          "ascii_prefix": "compares the attacker war score"
+        },
+        {
+          "rva": "0x4375d70",
+          "hex": "63 6f 6d 70 61 72 65 73 20 74 68 65 20 64 65 66 65 6e 64 65 72 20 77 61 72 20 73 63 6f 72 65 00 64 65 66 65 6e 64 65 72 5f 77 61 72 5f 73 63 6f 72 65 00 00 00 00 00 00 63 61 6e 5f 75 73 65 5f 64 65 6a 75 72 65 5f 63 62 20 28 74 61 72 67 65",
+          "ascii_prefix": "compares the defender war score"
+        },
+        {
+          "rva": "0x43772a0",
+          "hex": "60 f6 99 40 01 00 00 00 f0 35 9a 40 01 00 00 00 90 65 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 70 fb 99 40 01 00 00 00 50 b9 84 42 01 00 00 00 d0 d8 9b 44 01 00 00 00 d0 cf 34 43 01 00 00 00 90 64 7e 40 01 00 00 00",
+          "ascii_prefix": "`��@\u0001"
+        },
+        {
+          "rva": "0x43773b0",
+          "hex": "60 f6 99 40 01 00 00 00 f0 35 9a 40 01 00 00 00 90 65 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 70 fb 99 40 01 00 00 00 d0 b8 84 42 01 00 00 00 78 db 9b 44 01 00 00 00 d0 cf 34 43 01 00 00 00 90 64 7e 40 01 00 00 00",
+          "ascii_prefix": "`��@\u0001"
+        }
+      ]
+    },
+    "score-trigger-instance-vtables.json": {
+      "schema": "xar.war-film-retreat-extract.v1",
+      "proof_layer": "exact-build-locator-disassembly",
+      "semantic_correctness_verified": false,
+      "live_execution_performed": false,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe_size": 95206008,
+      "image_base": "0x140000000",
+      "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "dependencies": {
+        "capstone": "5.0.9",
+        "pefile": "2024.8.26"
+      },
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+        "data",
+        "0x43772e0",
+        "0x43771d0",
+        "--extent",
+        "0x108",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a03/score-trigger-instance-vtables.json"
+      ],
+      "mode": "data",
+      "targets": [
+        "0x43772e0",
+        "0x43771d0"
+      ],
+      "data": [
+        {
+          "rva": "0x43772e0",
+          "hex": "d0 cf 34 43 01 00 00 00 90 64 7e 40 01 00 00 00 20 2e 9a 40 01 00 00 00 90 65 7e 40 01 00 00 00 60 fb 99 40 01 00 00 00 90 b4 34 43 01 00 00 00 90 64 7e 40 01 00 00 00 60 d0 ce 40 01 00 00 00 10 f9 99 40 01 00 00 00 50 cc 34 43 01 00 00 00 20 ce 34 43 01 00 00 00 90 1c fe 40 01 00 00 00 00 27 96 40 01 00 00 00 30 92 7e 40 01 00 00 00 f0 d0 34 43 01 00 00 00 90 65 7e 40 01 00 00 00 90 65 7e 40 01 00 00 00 20 92 7e 40 01 00 00 00 90 65 7e 40 01 00 00 00 90 65 7e 40 01 00 00 00 20 92 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 20 92 7e 40 01 00 00 00 b0 3f 9a 40 01 00 00 00 90 64 7e 40 01 00 00 00 20 f9 99 40 01 00 00 00 60 f6 99 40 01 00 00 00 f0 35 9a 40 01 00 00 00 90 65 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 70 fb 99 40 01 00 00 00 d0 b8 84 42 01 00 00 00",
+          "ascii_prefix": "��4C\u0001"
+        },
+        {
+          "rva": "0x43771d0",
+          "hex": "d0 cf 34 43 01 00 00 00 90 64 7e 40 01 00 00 00 20 2e 9a 40 01 00 00 00 90 65 7e 40 01 00 00 00 60 fb 99 40 01 00 00 00 90 b4 34 43 01 00 00 00 90 64 7e 40 01 00 00 00 60 d0 ce 40 01 00 00 00 10 f9 99 40 01 00 00 00 50 cc 34 43 01 00 00 00 20 ce 34 43 01 00 00 00 90 1c fe 40 01 00 00 00 00 27 96 40 01 00 00 00 30 92 7e 40 01 00 00 00 f0 d0 34 43 01 00 00 00 90 65 7e 40 01 00 00 00 90 65 7e 40 01 00 00 00 20 92 7e 40 01 00 00 00 90 65 7e 40 01 00 00 00 90 65 7e 40 01 00 00 00 20 92 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 20 92 7e 40 01 00 00 00 b0 3f 9a 40 01 00 00 00 90 64 7e 40 01 00 00 00 20 f9 99 40 01 00 00 00 60 f6 99 40 01 00 00 00 f0 35 9a 40 01 00 00 00 90 65 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 70 fb 99 40 01 00 00 00 50 b9 84 42 01 00 00 00",
+          "ascii_prefix": "��4C\u0001"
+        }
+      ]
+    },
+    "primary-role-vtables.json": {
+      "schema": "xar.war-film-retreat-extract.v1",
+      "proof_layer": "exact-build-locator-disassembly",
+      "semantic_correctness_verified": false,
+      "live_execution_performed": false,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe_size": 95206008,
+      "image_base": "0x140000000",
+      "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "dependencies": {
+        "capstone": "5.0.9",
+        "pefile": "2024.8.26"
+      },
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+        "data",
+        "0x41d99f8",
+        "0x41d9a70",
+        "--extent",
+        "0x78",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a03/primary-role-vtables.json"
+      ],
+      "mode": "data",
+      "targets": [
+        "0x41d99f8",
+        "0x41d9a70"
+      ],
+      "data": [
+        {
+          "rva": "0x41d99f8",
+          "hex": "e0 94 92 41 01 00 00 00 90 65 7e 40 01 00 00 00 90 65 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 10 ad 9d 41 01 00 00 00 10 a5 9d 41 01 00 00 00 50 aa 9d 41 01 00 00 00 30 a4 9d 41 01 00 00 00 90 65 7e 40 01 00 00 00 10 da 36 43 01 00 00 00 90 64 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 c0 dc 36 43 01 00 00 00 00 6a 7c 44 01 00 00 00",
+          "ascii_prefix": "���A\u0001"
+        },
+        {
+          "rva": "0x41d9a70",
+          "hex": "e0 94 92 41 01 00 00 00 90 65 7e 40 01 00 00 00 90 65 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 c0 ab 9d 41 01 00 00 00 10 a5 9d 41 01 00 00 00 50 aa 9d 41 01 00 00 00 30 a4 9d 41 01 00 00 00 90 65 7e 40 01 00 00 00 10 da 36 43 01 00 00 00 90 64 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 90 64 7e 40 01 00 00 00 c0 dc 36 43 01 00 00 00 d8 69 7c 44 01 00 00 00",
+          "ascii_prefix": "���A\u0001"
+        }
+      ]
+    }
+  },
+  "a01_a02_modified": false,
+  "limits": [
+    "no producer execution observed",
+    "no attributable active-retreat case",
+    "no loaded-text image integrity claim",
+    "no developer-intent or defect claim",
+    "full-text references are locators, not an all-indirect-call census"
+  ]
+}

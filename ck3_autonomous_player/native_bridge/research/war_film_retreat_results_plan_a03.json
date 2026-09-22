@@ -1,0 +1,112 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-retreat-score-direction-results-a03",
+  "question": "Resolve the sign of222A8A0 and the coordinator1B38 cache using actual side identities and native UI/settlement consumers, without relying on define comments.",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Ordinary native war AI; mission return and player command paths must be identified separately.",
+    "identity_kind": "none",
+    "identity_lifetime": "No process identity is sampled. The a01 evidence remains immutable.",
+    "producer_trigger": "unknown",
+    "producer": "1885440 own-side role producer; 184D960 own-score cache producer. No runtime freshness observation.",
+    "caller": "Native attacker/defender trigger registrations and GetWarScoreFraction UI wrappers.",
+    "consumer": "186B310 desperate predicate, plus independent native score consumer.",
+    "cache_lifetime": "Raw mode/score cache lifetime as a01; fresh runtime attribution remains unobserved.",
+    "expected_signal": "Static score and side mappings closed; developer intent and active-retreat native case remain unobserved.",
+    "zero_sample_meaning": "No classified direct caller does not prove absence of indirect policy.",
+    "stop_condition": "Resolve or precisely bound score direction using independent native role/score paths; no launch/injection and no a01/a02 edits.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "reviewed_a03",
+      "layer": "source-contract",
+      "path": "war_film_retreat_evidence_a03.json",
+      "sha256": "83841aef6c93a35ab446c3b0df6c468606c7c58d936dcaff1e1bad6ac0471236",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Reviewed role and signed-score chains with exact raw artifacts and immutable a01 arithmetic."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "score",
+      "label": "222A8A0 total score"
+    },
+    {
+      "id": "role",
+      "label": "Actual native war roles"
+    },
+    {
+      "id": "cache",
+      "label": "Coordinator1B38 signed cache"
+    },
+    {
+      "id": "predicate",
+      "label": "186B310 desperate predicate"
+    },
+    {
+      "id": "native_policy",
+      "label": "Ordinary active-retreat policy / observed case"
+    }
+  ],
+  "edges": [
+    {
+      "id": "score_role",
+      "from": "score",
+      "to": "role",
+      "label": "Raw total is attacker_war_score; defender trigger negates it",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a03"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "cache_role",
+      "from": "role",
+      "to": "cache",
+      "label": "bit2 means own attacker side; cache is own score",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a03"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "predicate_meaning",
+      "from": "cache",
+      "to": "predicate",
+      "label": "Ordinary defender terminal gate is own_score >= positive threshold",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a03"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "active_policy",
+      "from": "predicate",
+      "to": "native_policy",
+      "label": "Desperate selection does not establish active retreat",
+      "status": "unknown",
+      "evidence": [
+        "reviewed_a03"
+      ],
+      "open_question": "Recover attributable active policy caller or observe a natural producer window."
+    }
+  ],
+  "cases": [
+    {
+      "id": "native_retreat",
+      "question": "Does an ordinary AI select active-combat retreat in a recorded producer window?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}
