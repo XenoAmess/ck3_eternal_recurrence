@@ -24,9 +24,15 @@ import time
 from typing import Callable, Mapping, Protocol, Sequence
 import uuid
 
+from .steam_workshop_status import (
+    SteamWorkshopProfile,
+    SteamWorkshopStatusInspector,
+    load_steam_workshop_profile,
+)
+
 
 PROFILE_SCHEMA_VERSION = 1
-SERVER_VERSION = "1.1.0"
+SERVER_VERSION = "1.2.0"
 _IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 _PROCESS_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
@@ -37,6 +43,35 @@ class OperatorProfileError(ValueError):
 
 class OperatorHandoffError(RuntimeError):
     """A controlled operator job cannot be handed off."""
+
+
+def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:
+    """Freeze one pinned MCP 2.0 tool to an exact top-level input object."""
+    manager = getattr(server, "_tool_manager", None)
+    tools = getattr(manager, "_tools", None)
+    tool = tools.get(tool_name) if isinstance(tools, dict) else None
+    metadata = getattr(tool, "fn_metadata", None)
+    argument_model = getattr(metadata, "arg_model", None)
+    model_config = getattr(argument_model, "model_config", None)
+    model_rebuild = getattr(argument_model, "model_rebuild", None)
+    model_json_schema = getattr(argument_model, "model_json_schema", None)
+    if not (
+        isinstance(model_config, dict)
+        and callable(model_rebuild)
+        and callable(model_json_schema)
+    ):
+        raise RuntimeError(
+            "pinned MCP tool metadata cannot enforce exact v1 arguments"
+        )
+    model_config["extra"] = "forbid"
+    model_rebuild(force=True)
+    parameters = model_json_schema()
+    if not (
+        isinstance(parameters, dict)
+        and parameters.get("additionalProperties") is False
+    ):
+        raise RuntimeError("MCP exact-argument schema did not become closed")
+    tool.parameters = parameters
 
 
 @dataclass(frozen=True)
@@ -73,6 +108,7 @@ class OperatorProfile:
     advertised_url: str | None
     state_directory: Path
     jobs: Mapping[str, OperatorJobProfile]
+    steam: SteamWorkshopProfile | None
 
 
 @dataclass(frozen=True)
@@ -273,6 +309,13 @@ def load_operator_profile(path: str | os.PathLike[str]) -> OperatorProfile:
             controls=_load_controls(job.get("controls"), f"jobs.{name}.controls"),
         )
 
+    steam = None
+    if root.get("steam") is not None:
+        try:
+            steam = load_steam_workshop_profile(root.get("steam"))
+        except ValueError as error:
+            raise OperatorProfileError(str(error)) from error
+
     return OperatorProfile(
         source_path=source_path,
         source_sha256=hashlib.sha256(source_bytes).hexdigest().upper(),
@@ -293,6 +336,7 @@ def load_operator_profile(path: str | os.PathLike[str]) -> OperatorProfile:
         advertised_url=advertised_url,
         state_directory=_absolute_path(root.get("state_directory"), "state_directory"),
         jobs=jobs,
+        steam=steam,
     )
 
 
@@ -531,7 +575,9 @@ class OperatorService:
                 "operator_preflight_job",
                 "operator_handoff_job",
                 "operator_control_job",
+                "operator_query_steam_workshop_status_v1",
             ],
+            "steam_workshop_status_configured": self.profile.steam is not None,
             "caller_supplied_commands": False,
             "operator_bootstrap_required": True,
         }
@@ -581,6 +627,20 @@ class OperatorService:
             "process_gate_errors": errors,
             "jobs": jobs,
         }
+
+    def query_steam_workshop_status_v1(
+        self, target_id: str
+    ) -> dict[str, object]:
+        """Read only the Steam/app/items frozen in the target profile."""
+        self._assert_target(target_id)
+        if self.profile.steam is None:
+            raise OperatorHandoffError(
+                "Steam/Workshop status is not configured for this target"
+            )
+        return SteamWorkshopStatusInspector(
+            self.profile.steam,
+            process_pids=self._process_inspector.pids,
+        ).query_v1()
 
     def _identity_matches(self, identity: HostIdentity) -> bool:
         return (
@@ -905,6 +965,13 @@ def create_operator_server(service: OperatorService):
         """Read identity, input, output, and exclusive-process readiness."""
         return service.preflight_job(target_id, job_name)
 
+    @server.tool(annotations=read_only)
+    def operator_query_steam_workshop_status_v1(
+        target_id: str,
+    ) -> dict[str, object]:
+        """Read profile-frozen Steam, CK3 build, and Workshop cache state."""
+        return service.query_steam_workshop_status_v1(target_id)
+
     @server.tool(annotations=handoff)
     def operator_handoff_job(
         target_id: str, job_name: str, request_id: str
@@ -928,6 +995,10 @@ def create_operator_server(service: OperatorService):
     @server.resource("operator://capabilities")
     def operator_capabilities_resource() -> dict[str, object]:
         return service.capabilities()
+
+    _forbid_unknown_tool_arguments_v1(
+        server, "operator_query_steam_workshop_status_v1"
+    )
 
     return server
 

@@ -83,6 +83,34 @@ class OperatorMcpTests(unittest.TestCase):
         wrapper.write_bytes(b"print('fixture')\n")
         state = root / "operator-state"
         absent = root / "live-output"
+        steam_root = root / "steam"
+        library_root = root / "library"
+        (steam_root / "config").mkdir(parents=True)
+        (steam_root / "steam.exe").write_bytes(b"steam")
+        (steam_root / "config" / "loginusers.vdf").write_text(
+            '"users" { "1" { "WantsOfflineMode" "1" } }',
+            encoding="utf-8",
+        )
+        steamapps = library_root / "steamapps"
+        executable = steamapps / "common" / "CK3" / "binaries" / "ck3.exe"
+        executable.parent.mkdir(parents=True)
+        executable.write_bytes(b"ck3-fixture")
+        (steamapps / "appmanifest_1158310.acf").write_text(
+            '"AppState" { "appid" "1158310" "buildid" "99" '
+            '"StateFlags" "4" "installdir" "CK3" }',
+            encoding="utf-8",
+        )
+        workshop = steamapps / "workshop"
+        cache = workshop / "content" / "1158310" / "12345"
+        cache.mkdir(parents=True)
+        (cache / "descriptor.mod").write_text("name=fixture\n", encoding="utf-8")
+        (workshop / "appworkshop_1158310.acf").write_text(
+            '"AppWorkshop" { "WorkshopItemsInstalled" { "12345" '
+            '{ "manifest" "777" } } "WorkshopItemDetails" { "12345" '
+            '{ "manifest" "777" } } }',
+            encoding="utf-8",
+        )
+        executable_sha256 = hashlib.sha256(executable.read_bytes()).hexdigest()
         payload = {
             "schema_version": 1,
             "target": {
@@ -101,6 +129,24 @@ class OperatorMcpTests(unittest.TestCase):
                 "advertised_url": "http://127.0.0.1:9876/mcp",
             },
             "state_directory": str(state),
+            "steam": {
+                "steam_root": str(steam_root),
+                "library_root": str(library_root),
+                "app": {
+                    "app_id": "1158310",
+                    "expected_build_id": "99",
+                    "executable_relative_path": "binaries/ck3.exe",
+                    "expected_executable_sha256": executable_sha256,
+                },
+                "process_names": ["steam.exe", "ck3.exe", "dowser.exe"],
+                "workshop_items": [
+                    {
+                        "item_id": "12345",
+                        "display_name": "Fixture Item",
+                        "expected_manifest_id": "777",
+                    }
+                ],
+            },
             "jobs": {
                 "replay": {
                     "command": [str(executable), str(wrapper), "--launch"],
@@ -384,6 +430,7 @@ class OperatorMcpSdkTests(unittest.IsolatedAsyncioTestCase):
                         "operator_preflight_job",
                         "operator_handoff_job",
                         "operator_control_job",
+                        "operator_query_steam_workshop_status_v1",
                     },
                 )
                 tools = {tool.name: tool for tool in listed.tools}
@@ -392,6 +439,16 @@ class OperatorMcpSdkTests(unittest.IsolatedAsyncioTestCase):
                 )
                 self.assertTrue(
                     tools["operator_preflight_job"].annotations.read_only_hint
+                )
+                self.assertTrue(
+                    tools[
+                        "operator_query_steam_workshop_status_v1"
+                    ].annotations.read_only_hint
+                )
+                self.assertFalse(
+                    tools[
+                        "operator_query_steam_workshop_status_v1"
+                    ].input_schema.get("additionalProperties", True)
                 )
                 self.assertFalse(
                     tools["operator_handoff_job"].annotations.read_only_hint
@@ -418,6 +475,29 @@ class OperatorMcpSdkTests(unittest.IsolatedAsyncioTestCase):
                 )
                 self.assertFalse(preflight.is_error)
                 self.assertEqual(preflight.structured_content["result"], "GREEN")
+                steam_status = await client.call_tool(
+                    "operator_query_steam_workshop_status_v1",
+                    {"target_id": "operator-a"},
+                )
+                self.assertFalse(steam_status.is_error)
+                self.assertTrue(
+                    steam_status.structured_content["steam"]["offline_attested"]
+                )
+                self.assertTrue(
+                    steam_status.structured_content["app"][
+                        "executable_matches_expected"
+                    ]
+                )
+                self.assertTrue(
+                    steam_status.structured_content["workshop"][
+                        "all_installed_match_latest"
+                    ]
+                )
+                rejected = await client.call_tool(
+                    "operator_query_steam_workshop_status_v1",
+                    {"target_id": "operator-a", "item_id": "999"},
+                )
+                self.assertTrue(rejected.is_error)
                 handoff = await client.call_tool(
                     "operator_handoff_job",
                     {

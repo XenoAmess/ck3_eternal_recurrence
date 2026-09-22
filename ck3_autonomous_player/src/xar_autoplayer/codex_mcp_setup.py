@@ -64,6 +64,10 @@ VANILLA_EVENT_OFFLINE_TOOLS: Final = (
     VANILLA_EVENT_EVIDENCE_READ_TOOL,
     VANILLA_EVENT_SOURCE_PROVENANCE_TOOL,
 )
+LOCAL_PROFILE_OBSERVATION_TOOLS: Final = (
+    "ck3_inspect_save_artifacts_v1",
+    "ck3_query_engine_diagnostics_v1",
+)
 ZHONGGUO_B1_CYCLE_SNAPSHOT_TOOL: Final = (
     "ck3_query_zhongguo_b1_cycle_snapshot_v1"
 )
@@ -393,6 +397,7 @@ def offline_vanilla_event_knowledge_smoke_command(
         "        names = {tool.name for tool in listed.tools}",
         f"        tool_name = {VANILLA_EVENT_KNOWLEDGE_TOOL!r}",
         f"        required_tools = {list(VANILLA_EVENT_OFFLINE_TOOLS)!r}",
+        f"        profile_tools = {list(LOCAL_PROFILE_OBSERVATION_TOOLS)!r}",
         f"        event_key = {VANILLA_EVENT_KNOWLEDGE_PROBE_KEY!r}",
         "        result = await client.call_tool(",
         "            tool_name,",
@@ -423,6 +428,7 @@ def offline_vanilla_event_knowledge_smoke_command(
         "        report = {",
         "            'tool_listed': tool_name in names,",
         "            'all_offline_tools_listed': set(required_tools) <= names,",
+        "            'all_profile_observation_tools_listed': set(profile_tools) <= names,",
         "            'contract_count': len(",
         "                DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS",
         "            ),",
@@ -521,6 +527,13 @@ def render_plan(layout: PortableMcpLayout) -> dict[str, object]:
         "offline_vanilla_event_knowledge": (
             current_vanilla_event_knowledge_manifest()
         ),
+        "local_profile_observation": {
+            "tools": list(LOCAL_PROFILE_OBSERVATION_TOOLS),
+            "configured_profile_root": str(layout.userdir),
+            "accepts_caller_paths": False,
+            "read_only": True,
+            "requires_ck3": False,
+        },
         "ownership": {
             "run_setup_as_account": layout.account,
             "per_account_codex_config": True,
@@ -843,6 +856,7 @@ def _check_offline_vanilla_event_knowledge(
     passed = all((
         payload.get("tool_listed") is True,
         payload.get("all_offline_tools_listed") is True,
+        payload.get("all_profile_observation_tools_listed") is True,
         payload.get("contract_count") == expected["current_contract_count"],
         payload.get("analysis_count") == expected["current_analysis_count"],
         payload.get("analysis_keyset_matches_contracts") is True,

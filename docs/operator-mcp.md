@@ -20,6 +20,9 @@ MCP 调用者不能提交任意命令。公开接口只有：
 - `operator_get_capabilities`：读取 server/profile 版本、target 与 job 名；
 - `operator_get_status`：读取实际 token、desktop、machine、独占进程 PID 和 job 状态；
 - `operator_preflight_job`：只读检查 target identity、命令、输入、输出和独占进程；
+- `operator_query_steam_workshop_status_v1`：只读回读 profile allowlist 冻结的 Steam、CK3 build/EXE hash
+  与 Workshop installed/latest/cache/descriptor 状态；调用方只能提供 `target_id`，不能提交 app ID、item ID
+  或路径；
 - `operator_handoff_job`：在同一次调用内重新 preflight，并只启动 profile 冻结的 command。
   `request_id` 对同一 server 实例幂等，返回 `server_instance_id / job_id / PID / log paths`。
 - `operator_control_job`：只向仍在运行、且 `target_id / job_name / job_id` 全部匹配的 job 发送 profile
@@ -50,12 +53,20 @@ Bootstrap 的唯一人工/外部边界是：首次让 server 本身运行在目�
 
 本仓通用部署约定是由本地 MCP client 连接 target-side Streamable HTTP server，endpoint 注册属于
 client 配置；已经运行的 session 不会因仓库内新增 server 代码而自动出现新工具。
-因此 bootstrap 与 client MCP 注册完成后，必须以实际 tool listing 验证五个 `operator_*` 工具可调用。
+因此 bootstrap 与 client MCP 注册完成后，必须以实际 tool listing 验证六个 `operator_*` 工具可调用。
+只有 profile 包含 `steam` allowlist 时，Steam/Workshop 查询才可用；capabilities 的
+`steam_workshop_status_configured` 是配置状态，不是版本或缓存通过证明。
+
+`steam` profile 是 checked-in example 或仓库外可审阅部署数据，只能包含 Steam/library root、固定 app、
+预期 build/EXE SHA-256、有限进程名和有限 Workshop item。不得写入登录凭据。第一版只读文件和进程状态，
+不切换在线/离线、不启动 Steam/CK3、不打开 URI、不使用 Steam Console、不下载或更新 Workshop，也不使用
+UIA/坐标。返回的 `build_matches_expected`、`installed_matches_latest` 与 hash 是实际文件 readback；
+进程存在、manifest 存在或一次 MCP 调用 ACK 均不能替代这些 readback。
 
 ## 版本与复用
 
 - profile schema：`1`
-- server/tool contract：`1.1.0`（profile schema 1 的向后兼容可选 controls）
+- server/tool contract：`1.2.0`（profile schema 1 的向后兼容可选 controls/Steam allowlist）
 - transport：MCP Python SDK `2.0.0` 的 stdio 或 Streamable HTTP
 - 可迁移对象：CK3 自动玩家、天朝二期、其他 mod 实机验收，以及其他机器的 MCP 查询调用方
 

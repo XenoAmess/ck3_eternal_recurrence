@@ -93,7 +93,9 @@ source provenance；只有以下条件同时成立，
 随后新开一个 Codex 会话并执行 `/mcp`，做操作者侧确认：
 
 - `xar-ck3-native-<account-slug>` 已连接；
-- 工具列表包含上述五个只读工具。
+- 工具列表包含上述五个只读工具，以及 `ck3_inspect_save_artifacts_v1`、
+  `ck3_query_engine_diagnostics_v1`。doctor 使用官方 MCP client 的 tool listing 同时检查这两个工具；
+  该 listing 检查不读取存档/日志，也不启动 CK3。
 
 随后让 Codex 调用：
 
@@ -109,6 +111,28 @@ ck3_query_vanilla_event_knowledge_v1(
 只是本仓库 revision 的数据事实，不是 MCP ABI、覆盖率目标或客户端应硬编码的常量；稳定接口仍是
 `xar.ck3.vanilla-event-knowledge` schema v1、逐 `event_definition_key` 查询及其
 available/unavailable 语义。
+
+## 隔离 profile 的存档与运行诊断 readback
+
+同一 stdio MCP 还提供两个路径封闭的只读工具：
+
+```text
+ck3_inspect_save_artifacts_v1()
+ck3_query_engine_diagnostics_v1(fingerprint_limit = 50, tail_limit = 25)
+```
+
+二者的根目录固定为 setup 登记的 `state\profile`，不接受调用方路径或 regex。存档检查返回相对路径、
+bytes 和 SHA-256；ZIP 存档还执行 CRC/testzip、`gamestate` 存在性和成员元数据检查。原生
+`SAV...\nmeta_data={` 只能标为 `header-only`，unknown 明示 `none`，不能冒充完整解析。
+
+运行诊断只读固定日志集合以及该 profile 内受限 crash package，限制文件大小、tail、milestone、指纹和
+返回数量。E/F/W 是日志前缀 occurrence/group 计数，不是 bug 数。tail 或异常摘要可能包含角色、mod、
+启动参数等本地信息；该 MCP 应只注册给本机受信任客户端，响应不应直接公开。
+
+这两个调用返回的是读回结果，不是“保存成功”“加载成功”或“问题已修复”的 ACK。普通 checkpoint seed
+复制仍由现有 rebinder 完成：它要求封闭/稳定来源、pristine 目标和唯一 SHA，ZIP 需要 CRC+gamestate，
+原生 SAV 则以完整文件 SHA/bytes 绑定，复制后再逐文件 hash readback；没有新增任意路径复制 MCP。完整
+合同见 [CK3 本地环境观测 MCP](ck3-local-environment-observation-mcp.md)。
 
 ## xenoa 与 CodexSandboxOffline
 

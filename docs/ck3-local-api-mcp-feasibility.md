@@ -427,6 +427,8 @@ OCR；后来定位 `CSendCharacterInteractionCommand` 后，婚姻步骤再切�
 - `ck3_select_event_option`
 - `ck3_resolve_active_event`
 - `ck3_wait_for_change`
+- `ck3_inspect_save_artifacts_v1`（只读已配置 isolated profile）
+- `ck3_query_engine_diagnostics_v1`（只读固定日志/crash 集合）
 - `ck3://capabilities`
 - `ck3://state/current`
 

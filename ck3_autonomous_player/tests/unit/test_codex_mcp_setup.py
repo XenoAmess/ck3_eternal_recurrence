@@ -56,6 +56,7 @@ def _offline_knowledge_payload(
     return json.dumps({
         "tool_listed": tool_listed,
         "all_offline_tools_listed": True,
+        "all_profile_observation_tools_listed": True,
         "contract_count": (
             manifest["current_contract_count"]
             if contract_count is None
@@ -185,8 +186,14 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             knowledge["schema"], "xar.ck3.vanilla-event-knowledge"
         )
         self.assertEqual(knowledge["schema_version"], 1)
-        self.assertEqual(knowledge["current_contract_count"], 169)
-        self.assertEqual(knowledge["current_analysis_count"], 169)
+        self.assertEqual(
+            knowledge["current_contract_count"],
+            len(setup.DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS),
+        )
+        self.assertEqual(
+            knowledge["current_analysis_count"],
+            len(setup.DEFAULT_VANILLA_EVENT_ANALYSIS),
+        )
         self.assertEqual(len(knowledge["knowledge_dataset_sha256"]), 64)
         self.assertGreater(knowledge["portable_evidence_count"], 0)
         self.assertEqual(
@@ -200,6 +207,14 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             "current-revision-data-fact-not-abi",
         )
         self.assertFalse(knowledge["requires_ck3"])
+        observation = plan["local_profile_observation"]
+        self.assertEqual(
+            set(observation["tools"]),
+            set(setup.LOCAL_PROFILE_OBSERVATION_TOOLS),
+        )
+        self.assertFalse(observation["accepts_caller_paths"])
+        self.assertTrue(observation["read_only"])
+        self.assertFalse(observation["requires_ck3"])
 
     def test_native_session_command_is_only_rendered_with_explicit_assets(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
@@ -326,11 +341,11 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
         self.assertTrue(report["native_session_assets_ready"])
         self.assertEqual(
             report["offline_vanilla_event_knowledge"]["contract_count"],
-            169,
+            len(setup.DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS),
         )
         self.assertEqual(
             report["offline_vanilla_event_knowledge"]["analysis_count"],
-            169,
+            len(setup.DEFAULT_VANILLA_EVENT_ANALYSIS),
         )
         self.assertFalse(report["launches_ck3"])
         self.assertEqual(len(runner.commands), 4)
@@ -384,7 +399,7 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             report["offline_vanilla_event_knowledge"][
                 "expected_current_analysis_count"
             ],
-            169,
+            len(setup.DEFAULT_VANILLA_EVENT_ANALYSIS),
         )
 
     @unittest.skipUnless(
@@ -413,8 +428,15 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
         self.assertTrue(passed, detail)
         self.assertTrue(payload["tool_listed"])
         self.assertTrue(payload["all_offline_tools_listed"])
-        self.assertEqual(payload["contract_count"], 169)
-        self.assertEqual(payload["analysis_count"], 169)
+        self.assertTrue(payload["all_profile_observation_tools_listed"])
+        self.assertEqual(
+            payload["contract_count"],
+            len(setup.DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS),
+        )
+        self.assertEqual(
+            payload["analysis_count"],
+            len(setup.DEFAULT_VANILLA_EVENT_ANALYSIS),
+        )
         self.assertEqual(payload["query_status"], "available")
         self.assertTrue(payload["query_analysis_non_null"])
         self.assertEqual(payload["knowledge_list_status"], "available")
