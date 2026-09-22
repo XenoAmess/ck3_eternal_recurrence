@@ -346,6 +346,79 @@ class VanillaEventMaterialOutcomeTests(unittest.TestCase):
             "same_frame_player_gold_unavailable",
         )
 
+    def test_r0092_accusation_indicator_requires_independent_stress_increase(
+        self,
+    ) -> None:
+        decision = _decision(event_key="epidemic_events.5007", native_index=2)
+        decision["choice_effect_profile"] = {
+            "schema": "xar.ck3.vanilla-event-choice-effect",
+            "schema_version": 1,
+            "selected_native_option_index": 2,
+            "selected_option_effects": [{"domain": "player_stress"}],
+            "common_after_effects": [],
+            "observable_postcondition": {
+                "metric": "played_character.stress_points",
+                "expected_relation": "strictly_increasing",
+                "material_change_required_for_evidence": True,
+            },
+        }
+        expected = plan_registered_event_material_postcondition_v1(
+            decision,
+            {"character_id": 27181, "alive": True, "stress_points": 42},
+            snapshot_id="native:19",
+            revision=33,
+        )
+        assert isinstance(expected, dict)
+        self.assertEqual(expected["status"], "ready")
+        self.assertEqual(expected["expected_relation"], "strictly_increasing")
+
+        changed = {
+            **_selection(42, 47),
+            "ending_snapshot_id": "native:20",
+            "ending_revision": 34,
+        }
+        verified = evaluate_registered_event_material_postcondition_v1(
+            expected, changed
+        )
+        unchanged = evaluate_registered_event_material_postcondition_v1(
+            expected, {**changed, "ending_played_character_stress": {
+                **changed["ending_played_character_stress"],
+                "stress_points": 42,
+            }}
+        )
+        stale = evaluate_registered_event_material_postcondition_v1(
+            expected, {**changed, "ending_snapshot_id": "native:19"}
+        )
+        wrong_character = evaluate_registered_event_material_postcondition_v1(
+            expected, {**changed, "ending_played_character_stress": {
+                **changed["ending_played_character_stress"],
+                "character_id": 30000,
+            }}
+        )
+
+        self.assertEqual(verified["status"], "verified_change")
+        self.assertEqual(verified["delta"], 5)
+        self.assertIsNone(_registered_event_material_postcondition_issue(
+            {"event_material_postcondition": expected},
+            {"event_material_postcondition": verified},
+        ))
+        self.assertEqual(unchanged["status"], "failed")
+        self.assertEqual(unchanged["unavailable_reason"], "stress_not_increased")
+        self.assertEqual(stale["status"], "failed")
+        self.assertEqual(wrong_character["status"], "failed")
+
+    def test_r0092_accusation_without_indicator_profile_is_not_material_ready(
+        self,
+    ) -> None:
+        decision = _decision(event_key="epidemic_events.5007", native_index=2)
+        self.assertIsNone(decision["choice_effect_profile"])
+        self.assertIsNone(plan_registered_event_material_postcondition_v1(
+            decision,
+            {"character_id": 27181, "stress_points": 42},
+            snapshot_id="native:19",
+            revision=33,
+        ))
+
     def test_ready_expectation_preserves_failed_or_missing_result_as_runner_issue(
         self,
     ) -> None:

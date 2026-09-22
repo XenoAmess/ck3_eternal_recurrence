@@ -12,6 +12,12 @@
 
 既有可迁移 registry 合同已给出两种完整原生投影 `[1,2]` / `[0,1,2]`，都选 native `2`；其 ROOT 用运行时玩家绑定，不固定旧种子人物。最小修复仅为本 key 准入已有的 variant resolver 和角色关系检查，仍要求单一窗口、四个 exact saved-scope 名/类型、herbalist 与 accuser 均非玩家且互异、authored count `3`、selected native `2` 唯一且 shown+enabled。任何漂移继续 blocked，不选“第一个按钮”。聚焦 normal 与 `-O` 测试覆盖两种投影和关系/选项拒绝；这只是 static-ready，R0092 RED 需真实同版本冷恢复后复验。
 
+### 同帧 stress 指示器限定的物质核验
+
+原版 native `2` 对控诉者的 `annoyed_opinion -20` 是必执行效果，但现有公共 paused event 结果**没有**任意控诉者对玩家的好感查询；不能把其脚本存在当作观测到的后置。玩家 stress 分支则依其性格可能上升、下降或不变，故不能对所有 `.5007` 帧静态宣称“stress 必上升”。R0092 所选 native `2` 的当前原生 effect indicator 是单行 `stress/increase/affected_by_trait=true`。按[原生 indicator ABI](event-effect-indicators.md)，该方向来自当帧玩家 stress effect 的 signed 聚合；它仍不提供数值，也不表示其它效果完整。
+
+新增的 exact-key comparator 只在当前所选 native `2` 的单行 indicator 精确为上述上升形状、且原版定义 SHA-256 匹配时生成 `played_character.stress_points / strictly_increasing` 预期。正式 planner 还要求同帧玩家 stress 数值可读，否则**提交前阻断**，保持该事件 RED。正式 typed 动作后，必须由**同一玩家、独立 paused snapshot 和更大的 revision** 读取到严格正增量才给 `verified_change`；零增量、下降、角色或帧绑定变化均为失败，不把 ACK 或事件消失算物质成功。没有该 indicator 的其它变体也在提交前阻断，不能凭没有物质预期的窗口消失来宣布 GREEN；后续若需处理这些变体或证明好感变化，须另补最小只读 native 观测，不能凭空套用当前 stress 比较器。normal 与 `-O` 测试只证明该比较器和正式 planner 的静态接线，不代替自然实机复验。
+
 ```mermaid
 flowchart TD
     A["[source] epidemic_ongoing_events 抽取 .5007"] -. "R0092 逐级引擎调用未观测" .-> U["[unknown] 具体调用栈"]
@@ -23,7 +29,7 @@ flowchart TD
     E --> F
     F -->|否| X["typed blocked；不提交"]
     F -->|是| G["[待实机] 正式 typed native 2"]
-    G -. "独立后置及下一 turn 尚未观测" .-> H["[unknown] 物质效果和连续消费"]
+    G -. "同玩家独立 paused stress 上升、下一 turn 尚未实机观测" .-> H["[unknown] 物质效果和连续消费"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U,H unknown;
 ```

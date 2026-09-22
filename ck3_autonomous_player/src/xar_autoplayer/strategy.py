@@ -6770,6 +6770,34 @@ def _choose_one_life_turn_core(
                     )
                 )
                 if event_context.get("event_definition_key") == (
+                    "epidemic_events.5007"
+                ) and not (
+                    isinstance(material_postcondition, dict)
+                    and material_postcondition.get("status") == "ready"
+                    and material_postcondition.get("expected_relation")
+                    == "strictly_increasing"
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_registry_material_observation_blocked",
+                        "selected_step": None,
+                        "reason": (
+                            "the source-reviewed epidemic accusation route "
+                            "needs the selected-option same-frame stress increase "
+                            "indicator and played-character stress before "
+                            "submitting a material-verifiable choice"
+                        ),
+                        "active_event": event_summary,
+                        "event_decision": {
+                            **registry_decision,
+                            "status": "blocked",
+                            "unavailable_reason": (
+                                "r0092_material_stress_observation_unavailable"
+                            ),
+                        },
+                        "event_material_postcondition": material_postcondition,
+                    }
+                if event_context.get("event_definition_key") == (
                     "stress_threshold_special.1001"
                 ):
                     starting_stress = (
