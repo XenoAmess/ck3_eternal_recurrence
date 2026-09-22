@@ -37,9 +37,10 @@ def _scope(type_key: str, *, character_id: int | None = None) -> dict[str, objec
             "kind": "character",
             "character_id": character_id,
         }
+    raw_type_index = 4 if character_id is not None else 2 if type_key == "boolean" else 1
     return {
         "status": "available",
-        "raw_type_index": 4 if character_id is not None else 1,
+        "raw_type_index": raw_type_index,
         "type_key": type_key,
         "subtype": 0,
         "typed_identity": typed_identity,
@@ -175,7 +176,7 @@ class DeathManagement1000PolicyTests(unittest.TestCase):
             with self.subTest(scope_name=scope_name):
                 context = _neutral_context()
                 context["saved_scopes"].append(
-                    _saved_scope(scope_name, "flag")
+                    _saved_scope(scope_name, "boolean")
                 )
                 context["options"][0]["native_option_index"] = native_index
 
@@ -190,6 +191,17 @@ class DeathManagement1000PolicyTests(unittest.TestCase):
                     result["matched_option_variant_index"], variant_index
                 )
                 self.assertEqual(result["failed_checks"], [])
+
+    def test_r0083_dislike_boolean_scope_rejects_wrong_native_type(self) -> None:
+        context = _neutral_context()
+        context["saved_scopes"].append(_saved_scope("dislike", "flag"))
+        context["options"][0]["native_option_index"] = 2
+
+        result = _recommend(context)
+
+        self.assertEqual(result["status"], "blocked")
+        self.assertIn("scope:dislike:type", result["failed_checks"])
+        self.assertIsNone(result["selected_option_number"])
 
     def test_projection_rejects_nonsole_hidden_or_disabled_rows(self) -> None:
         cases: tuple[tuple[str, list[dict[str, object]], str], ...] = (
@@ -310,6 +322,31 @@ class DeathManagement1000PolicyTests(unittest.TestCase):
         )
         self.assertFalse(plan["active_event"]["semantic_decision_ready"])
         self.assertNotIn("degraded_decision", plan["active_event"])
+
+        # R0083 naturally materialized the mutually exclusive dislike row.
+        context["saved_scopes"].append(_saved_scope("dislike", "boolean"))
+        context["options"][0]["native_option_index"] = 2
+        result["current_event_window_context"] = context
+        dislike_plan = choose_one_life_turn(
+            [
+                {
+                    "command": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                    "ok": True,
+                    "result": result,
+                }
+            ],
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-3",
+            },
+        )
+        self.assertEqual(dislike_plan["phase"], "active_event_registry_choice")
+        self.assertEqual(dislike_plan["selected_step"], "select-event-option-3")
+        self.assertEqual(dislike_plan["event_decision"]["status"], "recommended")
+        self.assertEqual(
+            dislike_plan["active_event"]["selected_native_option_index"], 2
+        )
 
 
 if __name__ == "__main__":

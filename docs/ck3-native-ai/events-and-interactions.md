@@ -1156,3 +1156,21 @@ flowchart TD
 
 本实现不改公共 schema、native ABI、MCP 注册或能力广告。R851 已关闭 R849 针对该 definition 的 typed action
 lifecycle RED；上述边界仍禁止把一次 bounded continuation 外推为通用事件语义、自然事件总门或 G2/GEN 完成。
+
+#### R0083 自然 `dislike` 模板的 exact 类型修正（typed RED，待实机续验）
+
+- [exact-build source + paused frame] CK3 `1.19.0.6` / EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；同一原版 `death_management_events.txt` SHA-256 `31591A2F2D3A61E65853CC43B9BEF4B001FEB75EA1502861D2FB9AC054AB1FB7`。定义 `:1285-1296` 用 `save_scope_value_as = { name = dislike value = yes }` 存入布尔值，`:1377-1387` 的 exclusive option C 仅在该 scope 存在时可用，带 `minor_stress_impact_loss`。此前文中所谓 template “flag” 是分支标志的概念称呼，并非 native `type_key=flag`。
+- [production RED / R0083] 普通首种子同一 campaign 自然物化 instance `15`，date_raw `53317392`，player/root `36403`，`dislike` 为 raw type `2`、`type_key=boolean`，唯一 shown+enabled 行是 rendered `0` / native `2`。冻结 raw report SHA-256 `60C2148220AA9ECAC3DF9679CE02E02CB3734546E74D6822C2A9D6E3EC234AF2`；UNPAIRED observation driver SHA-256 `8E5F13B3436F8121AC47C0A838DF7C6A30DEC9805C241948648BEB5D8731FF2B`。旧 variant-local policy 错将 `boolean_scopes` 要求为 `flag`，于是 `scope:dislike:type=false`，未提交动作；该 driver 不得与 R0079 安全存档拼接恢复。
+- [bounded correction / pending live] 仅把该 source-bound `.1000` variant-local scope 类型映射为 `boolean`，仍精确核对六个 scope、唯一 rendered 行与 native `2`，不改变通用 `flag` 类型、不开放任意事件。用冻结 R0083 paused payload 只读重算得到 `recommended`、authored `3` / native `2`、variant `1`、`failed_checks=[]`，但这只是离线决策重算。修后仍需从有效配对 checkpoint 在正式入口观察、typed 提交、独立后置和下一 turn 消费；本条不是已关闭的自然事件门。
+
+```mermaid
+flowchart TD
+    A["[source] immediate: dislike list contains dead_character"] --> B["[source] save_scope_value_as yes"]
+    B --> C["[R0083 paused] dislike raw2 / boolean; sole native 2"]
+    C --> D{"[contract] exact scopes + boolean + sole native 2?"}
+    D -->|否| R["[implementation] projection RED; no action"]
+    D -->|是| S["[pending live] one typed option C"]
+    S -. "独立后置和下一 turn 尚未实机核验" .-> U["[unknown] material outcome and continuation"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
