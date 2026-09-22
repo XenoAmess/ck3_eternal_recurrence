@@ -138,6 +138,14 @@ bool CaptureStockPerkFrame(void *opaque,
   return true;
 }
 
+void ReadStockFocus(PlayerLifestyleFormalWireContextV1 &context) noexcept {
+  const auto environment = BindStockFocusLegalityEnvironmentV1(
+      context.module_base, true, kStockFocusLegalityExeSha256V1);
+  const StockFocusLegalityAccessV1 access{
+      &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory};
+  context.stock_focus_result = ReadStockFocusLegalityV1(environment, access);
+}
+
 bool ReadStockPerkPlayerState(
     void *opaque, const StockPerkLegalityFrameV1 &frame,
     StockPerkLegalityPlayerStateV1 &output) noexcept {
@@ -431,6 +439,11 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
             "native_lifestyle_current_state_readiness_incomplete";
         return true;
       }
+      context->completed = true;
+      return true;
+    }
+    if (context->mode == PlayerLifestyleFormalWireModeV1::query_focus_only) {
+      ReadStockFocus(*context);
       context->completed = true;
       return true;
     }

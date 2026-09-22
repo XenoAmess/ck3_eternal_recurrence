@@ -815,3 +815,65 @@ adapter. The private bridge target also builds in Debug and Release. A new
 paused candidate must still prove the fallback result; a legal target then
 still needs typed submit, an independent later owned-perk/point receipt, and
 next-turn consumption. Window-independent focus enumeration remains unknown.
+
+## 2026-09-22：M4-FOCUS-OBS 固定重心的窗口独立只读来源
+
+本节是对上面 R764 时点 `unknown` 的增量收口，不改写当时的实机
+RED。冻结 EXE 仍为 CK3 `1.19.0.6`，95,206,008 bytes，SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+本次**没有启动 CK3**；只证明一个固定政策目标的静态原生来源，
+不声称完整焦点列表、正式动作或 M4 实机闭环。
+
+窗口候选刷新 `0x132CB70` 在 `0x132CE0A..0x132CF78` 直接读取
+`module+0x570BDE8` 的 FocusType 数据库指针，再从数据库
+`+0xF20` / `+0xF28` / `+0xF2C` 取得 `{data, capacity, count}`，
+以 8-byte `FocusType*` 遍历。该区域 SHA-256 为
+`600047B1A4C8CB9C8ED688190127C422D9043EA345956F24EF4BDA2884EE2708`。
+定义的稳定 key 位于 `+0x18`，所属 Lifestyle 指针在 `+0x880`；
+`stewardship_wealth_focus` 的原版定义在
+`common/focuses/00_lifestyle_focuses.txt:550`。窗口刷新只为当前选中的
+Lifestyle 构造视图，但数据库本身不依赖窗口 `+0xF8` 已绑定。
+只读 observer 不调用可能懒初始化的数据库构造路径：指针为空就返回
+`unavailable_database`，不会把它解释为零个合法重心。
+
+原版 focus 命令最终校验 `0x25DF570` 是窗口独立的：输入是
+0x38-byte 命令，`+0x20` 为完整玩家 CharacterID，`+0x28` 为
+`FocusType*`，`+0x30` 为当前玩家 ID；primary/secondary vtable
+分别是 `0x4323BE0`、`0x4323BB0`，校验槽在 `0x4323C10`。
+校验器通过角色存储回链，并调用 `0x26694A0` 与 FocusType gate
+`0x2D88E60`；后者调用 `0x334C510` 求值脚本 shown/valid。
+校验器 `0x25DF570..0x25DF90F` 区域 SHA-256 为
+`97D454A99D9C0162B2A563F5DC1A7E678587CC5C322AE729AB3366E580FE1805`。
+`CharacterLifestyleWindow.CanSelectFocus` 的窗口绑定前置因此不是
+唯一合法性来源。此结论仅针对 exact build、上述固定 key 及
+原版校验调用链，不外推其它版本或模组新重心。
+
+```mermaid
+flowchart TD
+  A[同一 paused application-main 帧] --> B[读取当前玩家完整 ID 与存储回链]
+  B --> C{已发布 FocusType 数据库可读?}
+  C -- no --> U[typed unavailable]
+  C -- yes --> D[完整扫描有界定义表，固定 key 恰好一项]
+  D --> E[校验目标 Lifestyle 与 stock validator slot]
+  E --> F[构造栈上原版 focus 命令，只做最终合法性查询]
+  F --> G[重新采集同帧来源和原版 bool]
+  G --> H{两次完整采样一致?}
+  H -- no --> U
+  H -- yes --> I[private observed legal / illegal]
+  I -. 不提交动作，目标进度和后置仍待实机 .-> J[正式 M4 闭环]
+```
+
+新私有 step `private-query-player-lifestyle-stock-focus-v1` 仅在既有默认
+OFF 的 `XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1`
+候选构建中接入 slot43；返回 fixed key、typed status、同帧身份和
+原生布尔，不序列化指针，不修改现有完整 LIFE4 候选集合，也不注册/
+广告公共能力。`observed_native_illegal` 是原版明确拒绝；读失败、
+ABI 不匹配、定义缺失/重复、身份漂移均为各自 `unavailable_*`，
+不当成 false。源码合同见
+`native_bridge/research/player_lifestyle_stock_focus_legality_v1_abi.json`。
+离线 `/Od` 与 `/O2` 独立夹具各 4/4 GREEN；完整 private bridge
+Debug/Release 构建 GREEN；现有 Python 正式消费者及最小策略单测
+normal/`-O` 分别 6/6 与 7/7 GREEN。下一次唯一 CK3 负责人应在普通
+paused 帧调用该只读 step，并与 LIFE2 当前状态同帧配对；之后仍需
+目标 Lifestyle 的 XP/点数、typed focus 提交、独立结果、下一 turn
+消费及 checkpoint/cold restore，不能由本静态来源推断已经完成。

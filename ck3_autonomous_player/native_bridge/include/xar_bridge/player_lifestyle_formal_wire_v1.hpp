@@ -5,6 +5,7 @@
 #include "xar_bridge/player_lifestyle_formal_precondition_v1.hpp"
 #include "xar_bridge/player_lifestyle_current_state_only_v1.hpp"
 #include "xar_bridge/player_lifestyle_selection_native_adapter_v1.hpp"
+#include "xar_bridge/player_lifestyle_stock_focus_legality_v1.hpp"
 #include "xar_bridge/player_lifestyle_stock_perk_legality_v1.hpp"
 
 #include <memory>
@@ -15,6 +16,7 @@ namespace xar::ck3_11906 {
 enum class PlayerLifestyleFormalWireModeV1 {
   query,
   query_state_only,
+  query_focus_only,
   submit_perk,
   verify_receipt,
 };
@@ -24,6 +26,9 @@ inline constexpr std::string_view kPlayerLifestyleFormalPrivateQueryStepV1 =
 inline constexpr std::string_view
     kPlayerLifestyleFormalPrivateCurrentStateStepV1 =
         "private-query-player-lifestyle-current-state-v1";
+inline constexpr std::string_view
+    kPlayerLifestyleFormalPrivateStockFocusStepV1 =
+        "private-query-player-lifestyle-stock-focus-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateSubmitStepV1 =
     "private-select-player-lifestyle-perk-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateReceiptStepV1 =
@@ -99,6 +104,7 @@ struct PlayerLifestyleFormalWireContextV1 {
   PlayerLifestyleWindowSourceAdapterAccessV1 source_access{};
   PlayerLifestyleSelectionNativeAdapterContextV1 native_submit{};
   StockPerkLegalityResultV1 stock_perk_result{};
+  StockFocusLegalityResultV1 stock_focus_result{};
   game::PlayerLifestyleSelectionActionRequestV1 action_request{};
   game::PlayerLifestyleSelectionActionAckV1 pending_ack{};
   game::PlayerLifestyleSelectionActionReceiptV1 receipt{};

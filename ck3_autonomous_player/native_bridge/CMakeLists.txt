@@ -940,6 +940,7 @@ if(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
     src/player_lifestyle_selection_action_v1.cpp
     src/player_lifestyle_selection_native_adapter_v1.cpp
     src/player_lifestyle_stock_perk_legality_v1.cpp
+    src/player_lifestyle_stock_focus_legality_v1.cpp
     src/player_lifestyle_formal_precondition_v1.cpp
     src/player_lifestyle_formal_wire_v1.cpp
   )
