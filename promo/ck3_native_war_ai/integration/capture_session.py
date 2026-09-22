@@ -2,8 +2,8 @@
 
 This produces raw media and timestamped observations, not AI-causality evidence,
 an adapter-certified clean span, or a human approval. Existing attempts are kept.
-Only the no-launch path has been exercised for this project. The current local
-DLL fails that preflight; the live branch remains unvalidated and unexecuted.
+The live branch requires a separate successful run; a no-launch preflight only
+checks environment and transport availability, never actual game behavior.
 """
 from __future__ import annotations
 
@@ -82,7 +82,6 @@ def preflight(args: argparse.Namespace) -> dict:
         front.ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
         front.PROBE_FRONTEND_BOOKMARK_MODEL_V1_CAPABILITY,
         front.ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_CAPABILITY,
-        front.QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_CAPABILITY,
         front.ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY,
     ]
     strings = {key: key.encode() in binary for key in required_capabilities}
@@ -118,6 +117,9 @@ def preflight(args: argparse.Namespace) -> dict:
         "game": executable, "bridge_dll": identity(args.bridge_dll),
         "bridge_injector": identity(args.bridge_injector),
         "static_capability_strings": strings, "runtime_capabilities_verified": False,
+        # The public selected-candidate query is a Python projection of the
+        # native bookmark model probe, not its own DLL command capability.
+        "selected_candidate_provider": front.PROBE_FRONTEND_BOOKMARK_MODEL_V1_CAPABILITY,
         "official_mcp_tools_listed_without_game": required_tools,
         "bookmark_candidate_from_binary": bookmarks[0],
         "bookmark_identity_requires_live_readback": True,

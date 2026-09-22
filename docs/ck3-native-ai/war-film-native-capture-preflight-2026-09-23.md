@@ -37,3 +37,21 @@ Ninja 按字节匹配，前缀不相同就不能识别头文件依赖。上一�
 将原回归测试改为检查**字节保持**，同一解释器 7 项测试通过（1.040 秒）。
 `bridge-build-r4` 在新目录重新构建；依赖完整性、源码指纹和 focused CTest 均继续强制执行。
 r3 日志及失败收据永久保留，未复用其构建目录，也没有放宽门禁。
+
+## r4 构建与实际 no-launch 预检通过
+
+`bridge-build-r4` 已完成 266 个构建步骤、两项 focused CTest（均通过，0.43 秒），
+`ck3_11906.hpp` 的依赖记录检查与前后源码指纹检查均通过。
+DLL SHA-256 为 `3C80CE33450C8D2668E4A8CD23168787FABD2B7A3BD8FC3F352175B2C16C517D`，
+injector SHA-256 为 `D522868A59039EB106DD123364D9D990A909B5ABD7472F16CF6FF78A3EC3A9F2`。
+
+实际预检又发现项目 capture wrapper 错把 Python 的 selected-candidate 投影常量当作 DLL command capability。
+`native_driver.py` 的 `query_frontend_selected_1066_feudal_candidate_v1` 实际调用已存在的
+`probe-frontend-bookmark-model-v1`，并核对选中模型、日期、政府与角色键；没有独立同名 native command。
+已修正 wrapper 的字节字符串门，仅检查真正调用的五项 native capability，并在收据写明投影 provider。
+没有删掉开局后的角色和暂停地图后置验证。
+
+本 worktree 环境显式补齐 MCP 2.0.0、pywin32 312、图像依赖；之前的缺依赖、无效 pipe 参数与多余 capability
+分别保留为 `capture-preflight-r1/r2/r3` 的 no-launch RED。`capture-preflight-r4/preflight.json` 现为
+`READY_FOR_BOUNDED_LIVE_ATTEMPT`：五个实际 DLL 字符串齐全、唯一 Robert bookmark、四项正式 MCP 工具可列出，
+tasklist 与 Toolhelp32 均为 0 个 CK3 进程。该状态仍不证明实际开局、可用镜头或任何 AI 因果。
