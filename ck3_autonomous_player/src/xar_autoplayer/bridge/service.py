@@ -1962,6 +1962,19 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_observed_first_heir_marriage_legality_v1(
+        self, *, expected_native_revision: int,
+    ) -> dict[str, object]:
+        """Candidate read-only API; not registered as MCP/capability yet."""
+        route = getattr(
+            self.driver, "query_observed_first_heir_marriage_legality_v1", None
+        )
+        if not callable(route):
+            raise UnsupportedStepError(
+                "selected backend lacks observed-first-heir legality query"
+            )
+        return route(expected_native_revision=expected_native_revision)
+
     def arrange_marriage(
         self,
         choice_id: str,
