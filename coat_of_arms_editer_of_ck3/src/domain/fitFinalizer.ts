@@ -80,7 +80,7 @@ export interface FullAssetCandidateReceipt {
 }
 
 export interface FullAssetFitFinalizationReceipt {
-  contract: 'full-dds-epsilon-multiscale-joint-contour-v5'
+  contract: 'full-dds-epsilon-multiscale-delta-gated-v6'
   searchAssetContract: 'fit-index-rgba32-v2'
   finalAssetContract: 'decoded-exact-dds-mip-v1'
   candidates: FullAssetCandidateReceipt[]
@@ -117,6 +117,9 @@ export interface FullAssetFitFinalizationReceipt {
     selectedLoss: number
     incumbentPerScale: MultiscalePerceptualReceipt[]
     selectedPerScale: MultiscalePerceptualReceipt[]
+    incumbentSource: 'search-winner' | 'delta-q-v9-compatibility'
+    incumbentOriginalIndex: number
+    compatibilityOriginalIndexes: number[]
     eligibleCandidates: number
     rejectedForScaleRegression: number
     selectedVariant: FullAssetCandidateReceipt['variant']
@@ -468,15 +471,33 @@ export function finalizeImageFitWithFullAssets(
   }))
   const primaryTarget = targets.get(searchResult.provenance.resolution)!
   const repairReceipts: Array<ReturnType<typeof repairImageFitCandidateWithExactAssets>['receipt']> = []
-  const repairOriginalIndexes = new Set(searchResult.paretoCandidates
+  const compatibilityLane = searchResult.provenance.qualityCompatibilityLane ?? {
+    enabled: false,
+    candidateStartIndex: null,
+    candidateCount: 0,
+  }
+  const compatibilityOriginalIndexes = new Set<number>()
+  if (compatibilityLane.enabled && compatibilityLane.candidateStartIndex !== null) {
+    for (
+      let index = compatibilityLane.candidateStartIndex;
+      index < compatibilityLane.candidateStartIndex + compatibilityLane.candidateCount;
+      index += 1
+    ) compatibilityOriginalIndexes.add(index)
+  }
+  const repairEligibleIndexes = searchResult.paretoCandidates
     .map((candidate, originalIndex) => ({ candidate, originalIndex }))
     .filter(({ candidate }) => (
       candidate.reconstructionMode === 'hybrid-native-paint'
       || candidate.reconstructionMode === 'native-high-resolution-edge-refined'
     ))
-    .slice(0, 3)
-    .map(({ originalIndex }) => originalIndex))
-  const recolorOriginalIndex = [...repairOriginalIndexes][0]
+    .map(({ originalIndex }) => originalIndex)
+  const repairOriginalIndexes = new Set([
+    ...repairEligibleIndexes.filter((index) => compatibilityOriginalIndexes.has(index)),
+    ...repairEligibleIndexes.filter((index) => !compatibilityOriginalIndexes.has(index)).slice(0, 3),
+  ])
+  const recolorOriginalIndex = repairEligibleIndexes.find(
+    (index) => !compatibilityOriginalIndexes.has(index),
+  )
   const repairedCandidates = searchResult.paretoCandidates.map((candidate, originalIndex) => {
     const pattern = assets.patterns[candidate.coatOfArms.pattern]
     if (!pattern) throw new Error(`完整 DDS 复评缺少 pattern：${candidate.coatOfArms.pattern}`)
@@ -512,7 +533,10 @@ export function finalizeImageFitWithFullAssets(
     if (!repairOriginalIndexes.has(originalIndex)) {
       return [{ candidate, originalIndex, recolorBlend: 0, variant: 'exact-repair' as const }]
     }
-    if (originalIndex !== recolorOriginalIndex) {
+    if (
+      originalIndex !== recolorOriginalIndex
+      && !compatibilityOriginalIndexes.has(originalIndex)
+    ) {
       return [{ candidate, originalIndex, recolorBlend: 0, variant: 'exact-repair' as const }]
     }
     const variants = [0.25, 0.5, 0.75, 1]
@@ -531,9 +555,10 @@ export function finalizeImageFitWithFullAssets(
       variant: 'exact-repair' as const,
     }, ...variants]
   })
-  // The exact search winner is the immutable non-regression incumbent. Repair,
-  // recolor, contour and joint candidates may replace it only if every frozen
-  // 96/230/512 perceptual-v2 member is no worse.
+  // Keep the current search winner available even when it is not repairable.
+  // For large budgets the immutable quality baseline is selected below by
+  // replaying Delta-Q v9's exact-repair + primary-perceptual selection over the
+  // dedicated compatibility frontier.
   candidateEntries.unshift({
     candidate: searchResult.paretoCandidates[0],
     originalIndex: 0,
@@ -626,8 +651,20 @@ export function finalizeImageFitWithFullAssets(
     }
   }
 
-  const incumbent = rescore(candidateEntries[0])
-  let rescored: RescoredFinalizerCandidate[] = candidateEntries.map(rescore).map((item) => ({
+  const rescoredWithoutGate = candidateEntries.map(rescore)
+  const compatibilityIncumbent = compatibilityOriginalIndexes.size > 0
+    ? rescoredWithoutGate
+        .filter((item) => compatibilityOriginalIndexes.has(item.originalIndex))
+        .sort((left, right) => (
+          left.candidate.perceptualMetricsV2.totalLoss - right.candidate.perceptualMetricsV2.totalLoss
+          || left.drawnInstances - right.drawnInstances
+          || left.recolorBlend - right.recolorBlend
+          || left.originalIndex - right.originalIndex
+        ))[0]
+    : undefined
+  const incumbent = compatibilityIncumbent ?? rescoredWithoutGate[0]
+  if (!incumbent) throw new Error('完整 DDS 复评没有可用于非回退门禁的基线')
+  let rescored: RescoredFinalizerCandidate[] = rescoredWithoutGate.map((item) => ({
     ...item,
     passesIncumbentScaleGate: fitQualityHasNoScaleRegression(
       item.qualityObjective,
@@ -1039,7 +1076,7 @@ export function finalizeImageFitWithFullAssets(
       ].filter((value): value is string => Boolean(value))
     : searchResult.provenance.selectedAssetSha256
   const receipt: FullAssetFitFinalizationReceipt = {
-    contract: 'full-dds-epsilon-multiscale-joint-contour-v5',
+    contract: 'full-dds-epsilon-multiscale-delta-gated-v6',
     searchAssetContract: 'fit-index-rgba32-v2',
     finalAssetContract: 'decoded-exact-dds-mip-v1',
     candidates: rescored.map((item) => ({
@@ -1096,6 +1133,11 @@ export function finalizeImageFitWithFullAssets(
       selectedLoss: winner.qualityObjective.weightedLoss,
       incumbentPerScale: incumbent.multiscalePerceptual,
       selectedPerScale: winner.multiscalePerceptual,
+      incumbentSource: compatibilityIncumbent
+        ? 'delta-q-v9-compatibility'
+        : 'search-winner',
+      incumbentOriginalIndex: incumbent.originalIndex,
+      compatibilityOriginalIndexes: [...compatibilityOriginalIndexes],
       eligibleCandidates: rescored.filter((item) => item.passesIncumbentScaleGate).length,
       rejectedForScaleRegression: rescored.filter((item) => !item.passesIncumbentScaleGate).length,
       selectedVariant: winner.variant,

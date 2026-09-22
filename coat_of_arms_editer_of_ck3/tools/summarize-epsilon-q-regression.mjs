@@ -107,8 +107,8 @@ const evidenceChecks = {
   ]),
   budgetMatches: rows.every((row) => row.layerBudget === budget),
   withinLayerBudget: rows.every((row) => row.drawnInstances <= budget),
-  algorithmMatches: rows.every((row) => row.algorithm === 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale'),
-  finalizationMatches: rows.every((row) => row.finalizationContract === 'full-dds-epsilon-multiscale-joint-contour-v5'),
+  algorithmMatches: rows.every((row) => row.algorithm === 'ck3-coa-browser-fit-v14-epsilon-delta-safety-lane'),
+  finalizationMatches: rows.every((row) => row.finalizationContract === 'full-dds-epsilon-multiscale-delta-gated-v6'),
   parseSerializePassed: rows.every((row) => row.parseErrors === 0 && row.serializeParseExact),
   previewProjectionPassed: rows.every((row) => row.fitAndEditorPreviewByteIdentical),
   finiteThreeScaleMetrics: rows.every((row) => scales.every((scale) => (

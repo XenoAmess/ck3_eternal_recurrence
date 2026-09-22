@@ -90,10 +90,10 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       if (!rawEvidence) throw new Error('missing machine-readable fit evidence')
       const evidence = JSON.parse(rawEvidence)
       expect(evidence.provenance.layerBudget).toBe(budget)
-      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v13-epsilon-direct-multiscale')
+      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v14-epsilon-delta-safety-lane')
       expect(evidence.provenance.surfaceMaskApplied).toBe(true)
       expect(evidence.provenance.fullAssetFinalization).toMatchObject({
-        contract: 'full-dds-epsilon-multiscale-joint-contour-v5',
+        contract: 'full-dds-epsilon-multiscale-delta-gated-v6',
         searchAssetContract: 'fit-index-rgba32-v2',
         finalAssetContract: 'decoded-exact-dds-mip-v1',
         multiscaleSelection: {
@@ -110,6 +110,17 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       expect(evidence.provenance.fullAssetFinalization.rescoredCandidates).toBeGreaterThanOrEqual(1)
       expect(evidence.provenance.drawnInstances).toBeLessThanOrEqual(budget)
       if (budget === 1_024) {
+        expect(evidence.provenance.qualityCompatibilityLane).toMatchObject({
+          contract: 'delta-q-v9-search-and-finalizer-nonregression-v1',
+          enabled: true,
+          candidateStartIndex: expect.any(Number),
+          candidateCount: expect.any(Number),
+        })
+        expect(evidence.provenance.qualityCompatibilityLane.candidateCount).toBeGreaterThan(0)
+        expect(evidence.provenance.fullAssetFinalization.multiscaleSelection).toMatchObject({
+          incumbentSource: 'delta-q-v9-compatibility',
+          incumbentOriginalIndex: expect.any(Number),
+        })
         expect(evidence.metrics.totalLoss).toBeLessThanOrEqual(picture.v5Budget1024Baseline.totalLoss + 1e-12)
         expect(evidence.metrics.edgeLoss).toBeLessThanOrEqual(picture.v5Budget1024Baseline.edgeLoss + 1e-12)
         expect(evidence.metrics.relativeImprovement).toBeGreaterThanOrEqual(

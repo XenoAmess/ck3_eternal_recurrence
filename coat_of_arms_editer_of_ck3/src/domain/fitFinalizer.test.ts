@@ -103,7 +103,7 @@ describe('full DDS image-fit finalization', () => {
     expect(finalized.receipt.candidates[0].finalMetrics.totalLoss)
       .toBeGreaterThan(finalized.result.metrics.totalLoss)
     expect(finalized.result.provenance.fullAssetFinalization).toMatchObject({
-      contract: 'full-dds-epsilon-multiscale-joint-contour-v5',
+      contract: 'full-dds-epsilon-multiscale-delta-gated-v6',
       finalAssetContract: 'decoded-exact-dds-mip-v1',
       selectedOriginalIndexes: [1, 0],
       exactResidualRepair: {

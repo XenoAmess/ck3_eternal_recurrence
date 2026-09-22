@@ -62,6 +62,8 @@ export interface ImageFitOptions {
   onCheckpoint?: (checkpoint: ImageFitCheckpoint) => void
   batchSearchRequested?: boolean
   batchScorer?: ImageFitBatchScorer
+  /** Internal deterministic replay of the Delta-Q v9 search envelope. */
+  compatibilityMode?: 'delta-v9'
 }
 
 export interface ImageFitBatchScorer {
@@ -94,8 +96,8 @@ export interface ImageFitProgress {
 }
 
 export interface ImageFitCheckpoint {
-  contract: 'ck3-coa-fit-checkpoint-v8'
-  algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale'
+  contract: 'ck3-coa-fit-checkpoint-v9'
+  algorithm: 'ck3-coa-browser-fit-v14-epsilon-delta-safety-lane'
   lane: 'baseline' | 'hybrid'
   inputSha256: string
   assetPackManifestSha256: string
@@ -177,7 +179,7 @@ export interface ImageFitResult {
   metrics: ImageFitMetrics
   paretoCandidates: ImageFitParetoCandidate[]
   provenance: {
-    algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale'
+    algorithm: 'ck3-coa-browser-fit-v14-epsilon-delta-safety-lane'
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
@@ -223,6 +225,13 @@ export interface ImageFitResult {
       legacyPrimaryFocusApplied: boolean
       layerOrder: 'foreground-append-then-native-depth-encode'
     }
+    qualityCompatibilityLane: {
+      contract: 'delta-q-v9-search-and-finalizer-nonregression-v1'
+      enabled: boolean
+      candidateStartIndex: number | null
+      candidateCount: number
+      evaluatedCandidates: number
+    }
     layerBudget: number
     logicalLayers: number
     coloredEmblemBlocks: number
@@ -265,7 +274,7 @@ export interface ImageFitResult {
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
     fullAssetFinalization?: {
-      contract: 'full-dds-epsilon-multiscale-joint-contour-v5'
+      contract: 'full-dds-epsilon-multiscale-delta-gated-v6'
       searchAssetContract: 'fit-index-rgba32-v2'
       finalAssetContract: 'decoded-exact-dds-mip-v1'
       rescoredCandidates: number
@@ -310,6 +319,9 @@ export interface ImageFitResult {
           v2: PerceptualFitMetricsV2
           v3: PerceptualFitMetricsV3
         }>
+        incumbentSource: 'search-winner' | 'delta-q-v9-compatibility'
+        incumbentOriginalIndex: number
+        compatibilityOriginalIndexes: number[]
         eligibleCandidates: number
         rejectedForScaleRegression: number
         selectedVariant: 'search-incumbent' | 'exact-repair' | 'recolor' | 'contour-replacement' | 'joint-refinement'
@@ -1744,8 +1756,8 @@ function checkpointFromPaintState(
   evaluatedCandidates: number,
 ): ImageFitCheckpoint {
   return {
-    contract: 'ck3-coa-fit-checkpoint-v8',
-    algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale',
+    contract: 'ck3-coa-fit-checkpoint-v9',
+    algorithm: 'ck3-coa-browser-fit-v14-epsilon-delta-safety-lane',
     lane: context.lane,
     inputSha256: context.inputSha256,
     assetPackManifestSha256: context.assetPackManifestSha256,
@@ -2897,6 +2909,7 @@ export function fitImageToCoatOfArms(
     .sort((left, right) => left.name.localeCompare(right.name))
     .slice(0, options.maxEmblemCandidates ?? emblemCandidates.length)
   const maxLayers = normalizeLayerBudget(options.maxLayers)
+  const deltaCompatibilityMode = options.compatibilityMode === 'delta-v9'
   const inputSha256 = options.inputSha256 ?? ''
   const assetPackManifestSha256 = options.assetPackManifestSha256 ?? ''
   const shapeCandidateCount = clamp(Math.floor(options.refinementCandidates ?? 48), 8, 128)
@@ -2904,8 +2917,8 @@ export function fitImageToCoatOfArms(
   const resumeCheckpoint = options.resumeCheckpoint
   if (resumeCheckpoint) {
     if (
-      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v8'
-      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale'
+      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v9'
+      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v14-epsilon-delta-safety-lane'
     ) throw new Error('拟合 checkpoint 版本不兼容')
     if (
       resumeCheckpoint.inputSha256 !== inputSha256
@@ -3074,7 +3087,9 @@ export function fitImageToCoatOfArms(
     maxLayers,
     !hasSemanticAlternative
       ? 0
-      : maxLayers >= 1_024
+      : deltaCompatibilityMode && maxLayers >= 512
+        ? 3
+        : maxLayers >= 1_024
         ? 8
         : maxLayers >= 512
           ? 6
@@ -3142,7 +3157,10 @@ export function fitImageToCoatOfArms(
       // Full-circle transform fitting is the expensive stage. The 128-layer
       // ablation keeps Delta's proven top three; only 512+ quality runs spend
       // the larger search budget on eight locally optimized assets.
-      const localCandidateCount = Math.min(maxLayers >= 512 ? 8 : 3, shortlist.length)
+      const localCandidateCount = Math.min(
+        !deltaCompatibilityMode && maxLayers >= 512 ? 8 : 3,
+        shortlist.length,
+      )
       const refinementTotal = shortlist.length * palettes.length * 3 * 3
         + localCandidateCount * (144 + 5 * (9 + 9 + 5 + 2 + palettes.length) + 13)
       let refinementCompleted = 0
@@ -3502,7 +3520,7 @@ export function fitImageToCoatOfArms(
     edgeLoss: state.candidate.edgeLoss,
     drawnInstances: stateDrawnInstanceCount(state),
     stableKey: state.candidate.key,
-  })), 8)
+  })), deltaCompatibilityMode ? 3 : 8)
   const paretoStates = paretoIndexes.map((index) => nonRegressingFinalists[index])
   // Search assets are compact fit-index projections. Their only authoritative
   // score is the primary search plane; the exact-DDS finalizer immediately
@@ -3581,7 +3599,7 @@ export function fitImageToCoatOfArms(
     terminationReason = 'no_improvement'
   }
   const improvement = initialLoss <= 1e-12 ? 0 : Math.max(0, (initialLoss - best.totalLoss) / initialLoss)
-  return {
+  const primaryResult: ImageFitResult = {
     coatOfArms: nativeCoatOfArms,
     metrics: {
       colorLoss: best.colorLoss,
@@ -3591,7 +3609,7 @@ export function fitImageToCoatOfArms(
     },
     paretoCandidates,
     provenance: {
-      algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale',
+      algorithm: 'ck3-coa-browser-fit-v14-epsilon-delta-safety-lane',
       searchBackend: batchSearch.status === 'active'
         ? 'webgl2-batch+cpu-reference'
         : 'cpu-reference',
@@ -3639,6 +3657,13 @@ export function fitImageToCoatOfArms(
         legacyPrimaryFocusApplied,
         layerOrder: 'foreground-append-then-native-depth-encode',
       },
+      qualityCompatibilityLane: {
+        contract: 'delta-q-v9-search-and-finalizer-nonregression-v1',
+        enabled: false,
+        candidateStartIndex: null,
+        candidateCount: 0,
+        evaluatedCandidates: 0,
+      },
       layerBudget: maxLayers,
       logicalLayers,
       coloredEmblemBlocks: best.coatOfArms.coloredEmblems.length,
@@ -3682,4 +3707,35 @@ export function fitImageToCoatOfArms(
       },
     },
   }
+  if (deltaCompatibilityMode || maxLayers < 512) return primaryResult
+
+  // Epsilon expands the large-budget semantic search, but a wider beam can
+  // displace a previously excellent Delta-Q v9 path. Replay that frozen search
+  // envelope and append its exact Pareto frontier. The full-DDS finalizer uses
+  // the replay's own legacy selection policy as a hard 96/230/512 baseline,
+  // then accepts Epsilon candidates only when no scale regresses.
+  const compatibilityResult = fitImageToCoatOfArms(
+    image,
+    patternCandidates,
+    emblemCandidates,
+    {
+      ...options,
+      compatibilityMode: 'delta-v9',
+      resumeCheckpoint: undefined,
+      onCheckpoint: undefined,
+      batchSearchRequested: false,
+      batchScorer: undefined,
+    },
+  )
+  const candidateStartIndex = primaryResult.paretoCandidates.length
+  primaryResult.paretoCandidates.push(...compatibilityResult.paretoCandidates)
+  primaryResult.provenance.evaluatedCandidates += compatibilityResult.provenance.evaluatedCandidates
+  primaryResult.provenance.qualityCompatibilityLane = {
+    contract: 'delta-q-v9-search-and-finalizer-nonregression-v1',
+    enabled: true,
+    candidateStartIndex,
+    candidateCount: compatibilityResult.paretoCandidates.length,
+    evaluatedCandidates: compatibilityResult.provenance.evaluatedCandidates,
+  }
+  return primaryResult
 }

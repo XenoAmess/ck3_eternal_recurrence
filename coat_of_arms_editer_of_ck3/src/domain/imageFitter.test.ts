@@ -425,7 +425,7 @@ describe('browser image fitter', () => {
       [candidate('square.dds', square)],
       { resolution: size, maxLayers: 3, minRelativeLayerImprovement: 0.0001 },
     )
-    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v13-epsilon-direct-multiscale')
+    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v14-epsilon-delta-safety-lane')
     expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(2)
     expect(result.coatOfArms.coloredEmblems).toHaveLength(result.provenance.selectedLayers)
     expect(result.provenance.drawnInstances).toBe(result.provenance.selectedLayers)
@@ -532,6 +532,17 @@ describe('browser image fitter', () => {
     const highResolution = result.provenance.candidateLosses.find(
       (item) => item.mode === 'native-high-resolution-edge-refined',
     )
+    expect(result.provenance.qualityCompatibilityLane).toMatchObject({
+      contract: 'delta-q-v9-search-and-finalizer-nonregression-v1',
+      enabled: true,
+      candidateStartIndex: expect.any(Number),
+      candidateCount: expect.any(Number),
+    })
+    expect(result.provenance.qualityCompatibilityLane.candidateCount).toBeGreaterThan(0)
+    expect(result.paretoCandidates.length).toBe(
+      result.provenance.qualityCompatibilityLane.candidateStartIndex!
+        + result.provenance.qualityCompatibilityLane.candidateCount,
+    )
     expect(result.provenance.highResolutionEdgeRepair).toMatchObject({
       resolution: 64,
       terminationReason: expect.stringMatching(/layer_budget|no_improvement/),
@@ -570,8 +581,8 @@ describe('browser image fitter', () => {
     ))
     expect(checkpoint).toBeDefined()
     expect(checkpoint).toMatchObject({
-      contract: 'ck3-coa-fit-checkpoint-v8',
-      algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale',
+      contract: 'ck3-coa-fit-checkpoint-v9',
+      algorithm: 'ck3-coa-browser-fit-v14-epsilon-delta-safety-lane',
       inputSha256: options.inputSha256,
       assetPackManifestSha256: options.assetPackManifestSha256,
       resolution: size,
