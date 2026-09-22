@@ -1072,6 +1072,48 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
                 self.assertIsNone(result["selected_native_option_index"])
                 self.assertIn(failed_check, result["failed_checks"])
 
+    def test_r0092_epidemic_5007_only_increasing_stress_indicator_binds_material(
+        self,
+    ) -> None:
+        context = _epidemic_5007_context((1, 2))
+        context["options"][1]["effect_indicators"] = {
+            "status": "available",
+            "coverage": (
+                "played-character-event-icon-indicators-1.19.0.6-v1"
+            ),
+            "complete_effect_set": False,
+            "rows": [{
+                "kind": "stress",
+                "direction": "increase",
+                "magnitude": {"status": "unavailable"},
+                "affected_by_trait": True,
+                "critical": False,
+            }],
+        }
+        observed = recommend_registered_vanilla_event_option_v1(
+            context,
+            played_character_id=36_403,
+            snapshot_option_count=3,
+        )
+        self.assertEqual(observed["status"], "recommended")
+        self.assertEqual(
+            observed["choice_effect_profile"]["observable_postcondition"],
+            {
+                "metric": "played_character.stress_points",
+                "expected_relation": "strictly_increasing",
+                "material_change_required_for_evidence": True,
+            },
+        )
+        context["options"][1]["effect_indicators"]["rows"][0][
+            "direction"
+        ] = "decrease"
+        other = recommend_registered_vanilla_event_option_v1(
+            context,
+            played_character_id=36_403,
+            snapshot_option_count=3,
+        )
+        self.assertIsNone(other["choice_effect_profile"])
+
     def test_r0092_epidemic_5007_formal_planner_selects_typed_option_three(
         self,
     ) -> None:
@@ -1118,6 +1160,13 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
                 "resource_deltas": {"status": "unavailable"},
                 "relationship_deltas": {"status": "unavailable"},
             })
+        context["options"][1]["effect_indicators"]["rows"] = [{
+            "kind": "stress",
+            "direction": "increase",
+            "magnitude": {"status": "unavailable"},
+            "affected_by_trait": True,
+            "critical": False,
+        }]
         history = [{
             "command": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
             "ok": True,
@@ -1141,7 +1190,11 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             "date_raw": 53_359_920,
             "paused": True,
             "backend_id": "native-headless",
-            "played_character": {"character_id": 36_403, "alive": True},
+            "played_character": {
+                "character_id": 36_403,
+                "alive": True,
+                "stress_points": 20,
+            },
             "active_event": {"instance_id": 21, "option_count": 3},
         }
         plan = choose_one_life_turn(
@@ -1157,6 +1210,46 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "select-event-option-3")
         self.assertEqual(plan["event_decision"]["selected_native_option_index"], 2)
         self.assertEqual(plan["event_decision"]["failed_checks"], [])
+        self.assertEqual(
+            plan["event_material_postcondition"]["status"], "ready"
+        )
+        self.assertEqual(
+            plan["event_material_postcondition"]["expected_relation"],
+            "strictly_increasing",
+        )
+        no_indicator = copy.deepcopy(history)
+        no_indicator[0]["result"]["current_event_window_context"][
+            "options"
+        ][1]["effect_indicators"]["rows"] = []
+        unproven = choose_one_life_turn(
+            no_indicator,
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-3",
+            },
+        )
+        self.assertEqual(
+            unproven["phase"],
+            "active_event_registry_material_observation_blocked",
+        )
+        self.assertIsNone(unproven["selected_step"])
+
+        no_stress = copy.deepcopy(snapshot)
+        del no_stress["played_character"]["stress_points"]
+        unavailable = choose_one_life_turn(
+            history,
+            snapshot=no_stress,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-3",
+            },
+        )
+        self.assertEqual(
+            unavailable["phase"],
+            "active_event_registry_material_observation_blocked",
+        )
+        self.assertIsNone(unavailable["selected_step"])
 
     def test_r0094_epidemic_1020_selects_authored_flower_response(self) -> None:
         result = recommend_registered_vanilla_event_option_v1(

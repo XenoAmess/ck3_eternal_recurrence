@@ -113,6 +113,70 @@ def _selected_choice_effect_profile(
     return dict(profile)
 
 
+def _epidemic_5007_stress_effect_profile(
+    knowledge: Mapping[str, object],
+    selected_option: Mapping[str, object],
+    native_index: int,
+) -> dict[str, object] | None:
+    """Bind only the source-backed R0092 positive stress indicator branch."""
+
+    analysis = knowledge.get("analysis")
+    source_hashes = (
+        analysis.get("source_sha256")
+        if isinstance(analysis, Mapping) else None
+    )
+    indicators = selected_option.get("effect_indicators")
+    rows = (
+        indicators.get("rows")
+        if isinstance(indicators, Mapping) else None
+    )
+    if not (
+        native_index == 2
+        and isinstance(source_hashes, Mapping)
+        and source_hashes.get("events/dlc/ce1/epidemic_events.txt")
+        == "FEF2972BD4F778818CD3A414C337D036F5132C1598FEBAB0E2623E0252DB7A1E"
+        and isinstance(indicators, Mapping)
+        and indicators.get("status") == "available"
+        and indicators.get("coverage")
+        == "played-character-event-icon-indicators-1.19.0.6-v1"
+        and indicators.get("complete_effect_set") is False
+        and isinstance(rows, list)
+        and len(rows) == 1
+    ):
+        return None
+    stress = rows[0]
+    if not (
+        isinstance(stress, Mapping)
+        and stress.get("kind") == "stress"
+        and stress.get("direction") == "increase"
+        and stress.get("magnitude") == {"status": "unavailable"}
+        and stress.get("affected_by_trait") is True
+        and isinstance(stress.get("critical"), bool)
+    ):
+        return None
+    return {
+        "schema": _CHOICE_EFFECT_PROFILE_SCHEMA,
+        "schema_version": _CHOICE_EFFECT_PROFILE_SCHEMA_VERSION,
+        "selected_native_option_index": 2,
+        "completeness": "selected-option-source-and-current-indicator-reviewed",
+        "selected_option_effects": [
+            {
+                "domain": "player_stress",
+                "source": "stress_impact",
+                "direction": "increase",
+                "binding": "selected_option_same_frame_native_indicator",
+            }
+        ],
+        "common_after_effects": [],
+        "observable_postcondition": {
+            "metric": "played_character.stress_points",
+            "expected_relation": "strictly_increasing",
+            "material_change_required_for_evidence": True,
+        },
+        "source_anchors": ["events/dlc/ce1/epidemic_events.txt:6928-6962"],
+    }
+
+
 def _selected_campaign_utility_profile(
     knowledge: Mapping[str, object], native_index: int
 ) -> dict[str, object] | None:
@@ -838,6 +902,13 @@ def recommend_registered_vanilla_event_option_v1(
     assert selected_native is not None
     assert selected_number is not None
     assert selected_rendered is not None
+    choice_effect_profile = _selected_choice_effect_profile(
+        knowledge, selected_native
+    )
+    if event_key == "epidemic_events.5007" and choice_effect_profile is None:
+        choice_effect_profile = _epidemic_5007_stress_effect_profile(
+            knowledge, selected, selected_native
+        )
     return _response(
         status="recommended",
         event_key=event_key,
@@ -847,9 +918,7 @@ def recommend_registered_vanilla_event_option_v1(
         native_index=selected_native,
         rendered_index=selected_rendered,
         option_variant_index=option_variant_index,
-        choice_effect_profile=_selected_choice_effect_profile(
-            knowledge, selected_native
-        ),
+        choice_effect_profile=choice_effect_profile,
         campaign_utility_profile=_selected_campaign_utility_profile(
             knowledge, selected_native
         ),
