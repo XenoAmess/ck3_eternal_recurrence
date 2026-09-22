@@ -24,11 +24,17 @@ inventory. The runner requires schema
 | `expected_actor_id`, `episode_run_id`, `expected_date_raw`, `expected_history_index` | Values from the paired checkpoint and driver state, not guessed from a save label. |
 | `bounds` | `overall_seconds: 600`, `readiness_seconds` at most 300, `native_query_seconds` at most 60. |
 
-The R0101 safe paired checkpoint has actor `36403`, date raw `53368176`,
+The R0101 h1094 safe checkpoint has actor `36403`, date raw `53368176`,
 episode `native-36403-2b4b233056bd`, save SHA-256
 `2F6F3DCA9E9CD92D87FDE1CD296A581F6A3A38F11E2781765E99815B7769C39A`,
-and driver-state SHA-256
-`95959FB66C457B12E38690B0B1D05E208DC08FB28A80AAC9A393C4C70712536E`.
+but R0101 post-RED driver-state SHA-256
+`95959FB66C457B12E38690B0B1D05E208DC08FB28A80AAC9A393C4C70712536E`
+has an unpaired read-only h1095–h1097 tail. Do not copy it directly as
+the prepared driver. The R0103 `source-pair` contains the same h1094 save
+with an official-loader-compatible rebound driver at SHA-256
+`A220A68946DDE4EDE22E831CFB628A47CCD77C83EC7912E421017F4F79C4EC12`;
+the target profile must still be rebound to its own environment fingerprint
+and validated before launch.
 The owner must read the paired checkpoint metadata to fill
 `expected_history_index`; the runner validates it and refuses a mismatched
 prepared profile. The existing private Release DLL SHA-256 is
@@ -38,6 +44,9 @@ loaded files. A new run must cold-start only after the previous instance is
 dead and a new monotonic R-number is allocated.
 `source_repo` must be a retained candidate checkout, not a temporary
 development worktree that integration cleanup will remove.
+The prepared ordinary campaign profile must be verified with
+`xar_enabled="xar_off"`; the default `xar_on` verifier is incompatible with
+this checkpoint and is not an indicator of corrupt save data.
 
 The command entry is
 `ck3_autonomous_player/native_bridge/research/run_player_lifestyle_three_query_readback.py`.

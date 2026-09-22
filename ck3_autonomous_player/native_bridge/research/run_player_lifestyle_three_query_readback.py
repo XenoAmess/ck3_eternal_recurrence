@@ -116,6 +116,12 @@ def _non_c_task_path(value: object, label: str) -> Path:
     return path
 
 
+def _verify_ordinary_profile(spec: object) -> dict[str, object]:
+    from xar_autoplayer.environment import verify_profile
+
+    return verify_profile(spec, xar_enabled="xar_off")
+
+
 def preflight(candidate_root: Path) -> tuple[object, dict[str, object], dict[str, object]]:
     root = _non_c_task_path(candidate_root, "candidate root")
     temporary = _non_c_task_path(os.environ.get("TEMP", ""), "TEMP")
@@ -158,7 +164,7 @@ def preflight(candidate_root: Path) -> tuple[object, dict[str, object], dict[str
     )
     sys.path[:0] = [str(source / "ck3_autonomous_player" / "src"), str(source / "tools")]
     from xar_autoplayer.bridge.native_driver import load_native_driver_state_for_resume
-    from xar_autoplayer.environment import ck3_process_inventory, make_spec, verify_profile
+    from xar_autoplayer.environment import ck3_process_inventory, make_spec
     from xar_autoplayer.native_session import validate_cold_start_checkpoint_for_pipe
 
     state_dir = _non_c_task_path(manifest["state_dir"], "prepared state directory")
@@ -188,7 +194,7 @@ def preflight(candidate_root: Path) -> tuple[object, dict[str, object], dict[str
         in cache,
         "private LIFE slot43 feature is not ON in candidate build",
     )
-    profile = verify_profile(spec)
+    profile = _verify_ordinary_profile(spec)
     _need(
         profile.get("environment_sha256") == manifest["profile_environment_sha256"],
         "prepared profile fingerprint differs",

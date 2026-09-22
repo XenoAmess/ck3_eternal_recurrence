@@ -7,6 +7,7 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from run_player_lifestyle_current_state_read import PRIVATE_STEP as STATE_STEP
 from run_player_lifestyle_current_state_read import _frame as life2_frame
@@ -15,6 +16,7 @@ from run_player_lifestyle_three_query_readback import (
     PERK_STEP,
     _frame,
     _query,
+    _verify_ordinary_profile,
     run_three_queries,
 )
 from test_run_player_lifestyle_current_state_read import typed_state
@@ -114,6 +116,15 @@ class FakeDriver:
 
 
 class LifeThreeQueryTest(unittest.TestCase):
+    def test_preflight_verifies_ordinary_xar_off_profile(self) -> None:
+        spec = object()
+        expected = {"environment_sha256": "profile-bound"}
+        with patch(
+            "xar_autoplayer.environment.verify_profile", return_value=expected
+        ) as verify:
+            self.assertIs(_verify_ordinary_profile(spec), expected)
+        verify.assert_called_once_with(spec, xar_enabled="xar_off")
+
     def manifest(self) -> dict[str, object]:
         return {
             "expected_actor_id": 29_829,
