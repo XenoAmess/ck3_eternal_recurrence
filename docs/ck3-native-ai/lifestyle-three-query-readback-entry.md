@@ -1,11 +1,23 @@
 # M4-LIFE-READBACK-ENTRY: bounded private input readback
 
-Status: static-ready, no CK3 execution in this package. This entry is not a
-public capability and cannot prove a lifestyle action or G2-M4 completion.
+Status: static-ready with R0110 live startup RED; no lifestyle query has yet
+passed live. This entry is not a public capability and cannot prove a
+lifestyle action or G2-M4 completion.
 It follows the exact 1.19.0.6 native decision tree in
 `lifestyle-focus-perk-ai.md` and the versioned LIFE2, stock-perk, and
 stock-focus ABI files under `native_bridge/research/`. Frozen CK3 EXE SHA-256:
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+
+R0110 attempted the first cold readback from the prepared ordinary checkpoint,
+but stopped RED during bridge hello before any private query or gameplay action:
+the runner constructed its driver with the default one-life lifecycle while
+the persisted checkpoint was ordinary `xar_off`. The CK3/operator/watchdog
+processes were recovered after an operator interrupt; no normal runner report
+was produced, and the abandoned owner marker was preserved then reconciled
+through the existing exclusive-state-lock contract. The runner now derives
+the ordinary binding from the verified prepared profile, requires it to match
+the checkpoint, and passes it into the driver constructor. Focused tests are
+not a replacement for a fresh-round live recheck of this correction.
 
 ## Candidate manifest and sole-owner use
 
@@ -58,9 +70,9 @@ The command entry is
 profile, hashes, checkpoint and zero-instance state without launching CK3.
 Only the sole owner may then supply `--candidate-root <prepared-root> --round
 R<n> --evidence <fresh-Z-dir>` to execute the bounded cold-start. No live
-invocation of this new entry has yet been performed; the parameter interface
-has only focused offline tests. The actual next-round values and command must
-be recorded by that owner before launch.
+private readback has passed: R0110 failed at bridge hello before querying.
+The corrected lifecycle binding must use a fresh candidate version and a new
+round, recorded by the sole owner before launch.
 
 ## Readback contract
 
