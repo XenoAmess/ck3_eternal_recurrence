@@ -902,12 +902,13 @@ def recommend_registered_vanilla_event_option_v1(
     assert selected_native is not None
     assert selected_number is not None
     assert selected_rendered is not None
-    choice_effect_profile = _selected_choice_effect_profile(
-        knowledge, selected_native
-    )
-    if event_key == "epidemic_events.5007" and choice_effect_profile is None:
+    if event_key == "epidemic_events.5007":
         choice_effect_profile = _epidemic_5007_stress_effect_profile(
             knowledge, selected, selected_native
+        )
+    else:
+        choice_effect_profile = _selected_choice_effect_profile(
+            knowledge, selected_native
         )
     return _response(
         status="recommended",
