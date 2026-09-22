@@ -64,3 +64,18 @@ pending 需是玩家对该候选的未决互动（recipient full ID 相同），
 R0051 从 ordinary h1809/date `53284392` 的新 paired save/driver，以 master `8b6202f` 修正后的规范零填充轮次场景工具、query ON/action OFF，在唯一 CK3 进程 PID117464 执行了 201.616 秒真实只读查询。报告 `Z:\ck3_mod_rewrite\.task-tmp\RUN-001\council-h1809-candidate\live-R0051\report.json` SHA-256 `D725CBE1AF1493631FB2B1D7D0137A1E947028953E9897C86D610D36EFDF9FBD`：四类隔离计数依次为 `1/0/0/0`，日期、paused revision 和源/目标存档未变、进程回收。它证明场景工具可用，**没有**关闭任何后三门；h1809 与 R863 h961 一样退役，不可不变重查。Council 保持 `1/4`，公共 query/action/ad OFF。
 
 下一次普通生产续跑仅在自然出现以下同帧原生判别量时采样，而非另开长跑或重复 h1809：标准封建 AI 成年封臣利用有效 hook 或 `can_demand_council_seat` 接受 `force_onto_council`（exact build `00_vassal_interactions.txt:1614,1715`），设置 `block_fire_councillor`（`00_councillor_triggers.txt:366`、effect `:686`）后，检查原生 occupied steward `CanConfirm=false` 并有另一名普通替换候选；guest 必须是 provider 行真实 `is_pool_guest_of`；pending 必须是玩家→该候选、recipient full ID 相同的真实未决互动。上述是 exact-build 源码场景线索，**尚无可用的正例 paired checkpoint**；观察到阳性后才冻结原生终端并运行既有受控拒绝合同，不因线索先开公共广告。
+
+## 2026-09-22 接班离线场景索引与只读入口
+
+现存三份 ordinary feudal 私有 gate 终端均按冻结 SHA 经
+`inspect_council_final_gate_scene.py` 重新分类。以下路径是交接机证据定位；迁移到别的机器时须重新定位原件并核 SHA，不能只替换盘符。
+
+| 旧轮次 / 配对场景 | 原生帧与席位 | 原始报告 SHA-256 | isolated already / guest / pending / replacement denial |
+| --- | --- | --- | --- |
+| R0047 / h1662，`Z:\ck3_mod_rewrite_process_assets\g2-council-r0046-h1662-query-20260922\live-R0047\` | raw `53283744`，owner `31853`，总管 `31507` 在职，6 候选 | `C4F487C81494E409B99685BE546F8A7000E10CC3746AF659C52865BCA02F05BE` | `2/0/0/0`；already IDs `30909/36567` |
+| R0051 / h1809，`Z:\ck3_mod_rewrite\.task-tmp\RUN-001\council-h1809-candidate\live-R0051\` | raw `53284392`，owner `31853`，总管 `31507` 在职，3 候选 | `D725CBE1AF1493631FB2B1D7D0137A1E947028953E9897C86D610D36EFDF9FBD` | `1/0/0/0`；already ID `36567` |
+| R0102 / h1094，`Z:\ck3_mod_rewrite\.task-tmp\COUNCIL-R0101-VACANT\candidate-h1094-query-only\live-R0102\` | raw `53368176`，owner `36403`，总管空席，4 候选 | `9E5B7FCA9F31DB07CB7664075BB3369F19BDA3510CA79A0C5023195BF4CBB623` | `1/0/0/0`；already ID `36567`；空席不能验 replacement |
+
+三份 `raw-terminal-result.json` 的 SHA-256 依次为 `6D39E87EAE67D68B1024746C39689AB8AA285E93A1C0ABF9931F870C96376F09`、`A91600ED953A7B8D6852F06C0008DC7D6282A7C03946CE4874CF1FA26794E933`、`88BE65AD17928D4C749135BE158975F2BB8BB50130FB3FD3AD8EB6CBF57EFCFD`。这些都是只读结果，不能把已闭合的 already 门重复记数，也不能把 ordinary 候选或空席当作后三门阳性。h1566/raw `53371896` 的现存 driver 历史没有 `council_final_gates` 终端；其战争阻塞也不允许为了 Council 场景盲目推进日期。
+
+最小下一个入口是普通战役自然到达**新的**合法 paused checkpoint 后，先离线确认同源 save/driver、`ordinary_campaign_succession/xar_off`、冻结 EXE/DLL/加载配置与总管席位。replacement 必须有在职总管和另一名真实 provider 候选；guest/pending 即使席位空缺，也只能由同一帧 native gate 行证明。若场景相对上表有实质差异且 CK3 唯一实例队列允许，使用既有 `materialize_council_native_gate_scene_candidate_v1.py` 制作独立只读候选，并由 `run_council_native_gate_scene_v1.py --preflight-only` 完成 no-launch 校验；之后至多一轮 action-OFF、≤480 秒 Stage Q。冻结新 `raw-terminal-result.json` 与对应配对后，只在 `isolated_guest_rejection_ids`、`isolated_candidate_pending_rejection_ids` 或 `isolated_replacement_fireability_denial_ids` 至少一个非空时，按既有四门受控 runner 准备独立 action-ON 拒绝候选。否则退役该帧，不重查同一场景。当前没有可启动 action-ON 的后三门候选；Council 保持 `1/4`，public query/action/ad OFF。
