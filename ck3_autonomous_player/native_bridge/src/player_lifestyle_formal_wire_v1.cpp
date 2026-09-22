@@ -138,11 +138,84 @@ bool CaptureStockPerkFrame(void *opaque,
   return true;
 }
 
+bool InvokeTargetProgressGetters(
+    const PlayerLifestyleSnapshotEnvironmentV1 &environment,
+    void *character, void *lifestyle, std::int64_t &total,
+    std::int64_t &within, std::int32_t &unspent,
+    std::int32_t &used) noexcept {
+  if (environment.lifestyle_xp == nullptr ||
+      environment.unspent_perk_points == nullptr ||
+      environment.used_perk_points == nullptr) {
+    return false;
+  }
+#if defined(_MSC_VER)
+  __try {
+#endif
+    if (environment.lifestyle_xp(character, &total, lifestyle, false) ==
+            nullptr ||
+        environment.lifestyle_xp(character, &within, lifestyle, true) ==
+            nullptr) {
+      return false;
+    }
+    unspent = environment.unspent_perk_points(character, lifestyle);
+    used = environment.used_perk_points(character, lifestyle);
+    return true;
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#endif
+}
+
+bool CaptureStockFocusTargetProgress(
+    void *opaque, const StockFocusLegalityFrameV1 &frame,
+    std::uintptr_t target_lifestyle,
+    StockFocusTargetProgressV1 &output) noexcept {
+  output = {};
+  auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
+  if (context == nullptr || target_lifestyle == 0 ||
+      frame.played_character_id == 0 || !OnMain(*context)) {
+    return false;
+  }
+  std::uintptr_t character = 0;
+  game::Snapshot current{};
+  if (!CaptureCommon(*context, character, current) ||
+      character != frame.played_character ||
+      static_cast<std::uint32_t>(current.played_character_id) !=
+          frame.played_character_id ||
+      current.date_raw != frame.date_raw ||
+      context->expected_revision != frame.native_revision) {
+    return false;
+  }
+  const auto environment = BindPlayerLifestyleSnapshotEnvironmentV1(
+      context->module_base, true,
+      kPlayerLifestyleSnapshotExecutableSha256V1);
+  std::int64_t total = -1;
+  std::int64_t within = -1;
+  std::int32_t unspent = -1;
+  std::int32_t used = -1;
+  if (!InvokeTargetProgressGetters(
+          environment, reinterpret_cast<void *>(character),
+          reinterpret_cast<void *>(target_lifestyle), total, within,
+          unspent, used)) {
+    return false;
+  }
+  std::int32_t xp_per_level = -1;
+  if (!ReadMemory(context,
+                  target_lifestyle + kPlayerLifestyleXpPerLevelOffsetV1,
+                  &xp_per_level, sizeof(xp_per_level))) {
+    return false;
+  }
+  output = {true, total, within, xp_per_level, unspent, used};
+  return true;
+}
+
 void ReadStockFocus(PlayerLifestyleFormalWireContextV1 &context) noexcept {
   const auto environment = BindStockFocusLegalityEnvironmentV1(
       context.module_base, true, kStockFocusLegalityExeSha256V1);
   const StockFocusLegalityAccessV1 access{
-      &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory};
+      &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
+      &CaptureStockFocusTargetProgress};
   context.stock_focus_result = ReadStockFocusLegalityV1(environment, access);
 }
 

@@ -38,7 +38,10 @@ struct Fixture {
   StockFocusLegalityFrameV1 frame{};
   int captures = 0;
   int validator_calls = 0;
+  int progress_calls = 0;
   bool validator_result = true;
+  bool progress_available = true;
+  bool progress_drift = false;
   bool on_main = true;
   bool drift = false;
   bool command_correct = true;
@@ -139,6 +142,21 @@ struct Fixture {
     return static_cast<Fixture *>(context)->on_main;
   }
 
+  static bool CaptureTargetProgress(
+      void *context, const StockFocusLegalityFrameV1 &frame,
+      std::uintptr_t lifestyle,
+      StockFocusTargetProgressV1 &out) noexcept {
+    auto &f = *static_cast<Fixture *>(context);
+    ++f.progress_calls;
+    if (!f.progress_available || frame != f.frame ||
+        lifestyle != reinterpret_cast<std::uintptr_t>(f.lifestyle.data())) {
+      return false;
+    }
+    out = {true, f.progress_drift && f.progress_calls == 2 ? 1 : 0,
+           0, 1000, 0, 0};
+    return true;
+  }
+
   static bool Validate(void *command, void *context) {
     if (active == nullptr) return false;
     auto &f = *active;
@@ -169,7 +187,8 @@ struct Fixture {
         exact, kStockFocusLegalityExeSha256V1, kModule, true,
         &Fixture::Validate};
     const StockFocusLegalityAccessV1 access{
-        this, &Fixture::OnMain, &Fixture::Capture, &Fixture::ReadMemory};
+        this, &Fixture::OnMain, &Fixture::Capture, &Fixture::ReadMemory,
+        &Fixture::CaptureTargetProgress};
     return ReadStockFocusLegalityV1(env, access);
   }
 };
@@ -181,6 +200,9 @@ void TestLegalAndExactBinder() {
   const auto result = f.Run();
   Require(result.status == Status::observed_native_legal &&
               result.validator_invoked_twice && f.validator_calls == 2 &&
+              f.progress_calls == 2 && result.target_progress.available &&
+              result.target_progress.xp_total_raw == 0 &&
+              result.target_progress.unspent_perk_points == 0 &&
               f.captures == 3 && f.command_correct &&
               result.scanned_database_rows == 1 &&
               result.target_definition == f.rows[0],
@@ -190,6 +212,23 @@ void TestLegalAndExactBinder() {
   Require(reinterpret_cast<std::uintptr_t>(bound.validate_focus_command) ==
               Fixture::kModule + 0x25DF570,
           "production binder must point at exact focus validator");
+}
+
+void TestTargetProgressUnavailableAndDriftStayTyped() {
+  Fixture unavailable{};
+  unavailable.Init();
+  unavailable.progress_available = false;
+  const auto legal = unavailable.Run();
+  Require(legal.status == Status::observed_native_legal &&
+              !legal.target_progress.available &&
+              legal.target_progress.xp_total_raw == -1 &&
+              legal.target_progress.unspent_perk_points == -1,
+          "unread target progress must not become zero");
+  Fixture drift{};
+  drift.Init();
+  drift.progress_drift = true;
+  Require(drift.Run().status == Status::unavailable_drift,
+          "target progress changing between same-frame reads is drift");
 }
 
 void TestNativeRejectionIsNotUnknown() {
@@ -248,9 +287,10 @@ int main() {
   try {
     TestLegalAndExactBinder();
     TestNativeRejectionIsNotUnknown();
+    TestTargetProgressUnavailableAndDriftStayTyped();
     TestUnresolvedSourceNeverCallsValidator();
     TestFrameAndBuildGates();
-    std::cout << "stock focus legality: 4/4 GREEN\n";
+    std::cout << "stock focus legality: 5/5 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "stock focus legality: RED: " << error.what() << '\n';

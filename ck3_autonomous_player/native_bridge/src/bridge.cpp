@@ -5089,6 +5089,28 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
                     ? "true" : "false";
       result += ",\"scanned_database_rows\":" +
           std::to_string(focus.scanned_database_rows);
+      result += ",\"target_lifestyle_key\":";
+      AppendJsonString(
+          result,
+          xar::ck3_11906::PlayerLifestyleWindowStableKeyViewV1(
+              focus.lifestyle_key));
+      result += ",\"target_lifestyle_progress\":{\"presence\":";
+      if (focus.target_progress.available) {
+        result += "\"present\",\"source\":\"exact_native_getters\"";
+        result += ",\"xp_total_raw\":" +
+            std::to_string(focus.target_progress.xp_total_raw);
+        result += ",\"xp_within_level_raw\":" +
+            std::to_string(focus.target_progress.xp_within_level_raw);
+        result += ",\"xp_per_level\":" +
+            std::to_string(focus.target_progress.xp_per_level);
+        result += ",\"unspent_perk_points\":" +
+            std::to_string(focus.target_progress.unspent_perk_points);
+        result += ",\"used_perk_points\":" +
+            std::to_string(focus.target_progress.used_perk_points);
+      } else {
+        result += "\"unavailable\",\"reason\":\"target_native_getters_unavailable\"";
+      }
+      result += '}';
     }
   } else if (context.mode == xar::ck3_11906::
                           PlayerLifestyleFormalWireModeV1::query) {

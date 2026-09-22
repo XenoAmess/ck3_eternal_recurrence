@@ -2,13 +2,13 @@
 
 ## 状态与适用范围
 
-- **证据状态**：`static-confirmed`。本文冻结原版脚本、GUI 反射注册、只读 getter 和角色内存树；没有启动 CK3，也没有 paused live artifact。
+- **证据状态**：原版选择树仍为 `static-confirmed`；R0112 对当前玩家的固定财富重心最终合法性有一条 `production-live primitive` 私有只读证据，不等于原版 NPC 排名、正式策略消费或动作。
 - **游戏构建**：CK3 `1.19.0.6`。
 - **EXE**：`Crusader Kings III/binaries/ck3.exe`，95,206,008 bytes，SHA-256
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - **目标场景**：当前玩家是有地、可游玩的封建成年统治者；优先解锁和平治理中的收入、直辖、健康、发展和最低限度派系应对。
 - **明确非目标**：不把固定 2560×1440 中文界面的“权威重心”点击当成通用能力；不扩展宗教域；不研究所有 DLC/政府的完整技能收益；不实现技能重置；不把引擎命令 ACK 当作状态改变。
-- **当前能力结论**：原版决策输入、候选、脚本权重以及只读角色结构已经足以施工第一个 native observer；动作最终提交链和真实 paused 后置验证仍未闭合，所以 LIFE1 目前是 `static-confirmed`，不是 `production-live primitive`。
+- **当前能力结论**：LIFE2 当前状态与固定财富重心最终合法性已有私有 paused 观测；无当前重心时目标管理生活方式 XP/点数仍缺同帧只读值，动作最终提交和后置消费也未闭合。不得把这条观测称为完整 LIFE1/M4。
 
 本文中的证据等级沿用本目录约定：`static-confirmed` 表示 exact-build 文件或 EXE 直接支持；`inference` 表示多项静态事实共同支持、但尚缺执行点或实机互证；`unknown` 只保留确实位于引擎内部且尚未闭合的分支。
 
@@ -67,6 +67,28 @@
 - 当前生活方式：当前重心对象 `+0x880`。
 
 这些地址只对本文 exact EXE 有效。它们证明第一个只读 observer 有确定入口，不证明任何写入 ABI。
+
+### R0112 玩家焦点合法性与目标生活方式进度缺口
+
+R0112 在冻结 EXE `2D00FF31...F83DB86`、私有 native DLL `C9466D35...F4D0FE`、普通 `xar_off` h1094 checkpoint 中，对玩家角色 `36403` 的同一 paused `native:3` 帧读到：当前重心与**当前**生活方式进度均为 typed `absent`，已拥有七项军事 perk；固定目标 `stewardship_wealth_focus` 经原生最终 validator 判为 legal（扫描 23 行定义），独立 after-frame 未变化。证据见 `Z:/ck3_mod_rewrite/.task-tmp/M4-LIFE-NEXT-CANDIDATE/R0112-live/R0112-evidence-manifest.json`，SHA-256 `EDC2D6150476079E0A5606C358A7D277820FFF1070FB927492196FC7C71F9900`。这只证明该玩家在此帧可选该重心，不证明已选择、目标 XP/点数、NPC AI 选择或下一循环消费。
+
+精确源码路径为固定 focus definition 数据库 → 同帧键与所属 lifestyle 核对 → exact `CanSelectFocus` validator。当前 stock 查询把 native definition 指针限制在一次事务中，不能跨帧交给动作；LIFE2 的 `current_lifestyle_progress` 在无重心时 absent，不能把它当作**目标** `stewardship_lifestyle` 的零 XP/零点数。目标值的确切原生入口已有 `GetLifestyleXp`、`GetPerkPoints`、`GetPerkPointsUsed` 和 lifestyle 的 `xp_per_level`，但须以当前玩家身份和目标 definition 指针在同一 paused 事务内读取、复读并记录 typed presence，实机值仍待核验。研究计划 `docs/ck3-native-ai/research/m4-focus-target-progress-plan.json` 的 `check --for-observation` 仅通过记录结构与文件哈希，不验证语义、也不授权启动游戏。
+
+The [generated research graph](research/m4-focus-target-progress-generated.md)
+is rendered from the checked plan above (plan SHA-256
+`65CD8E9164F43734B66FBEAEEC01F076BEBF330A51895EEE545FD7F3B408725D`).
+Its target-progress edge remains `unknown` until a new paused live readback;
+the diagram below is only an explanatory expansion of that same gap.
+
+```mermaid
+flowchart LR
+  A[paused 当前玩家和 exact build] --> B[固定 focus definition + 所属 lifestyle]
+  B --> C[原生 CanSelectFocus 最终判定]
+  C -->|R0112 legal=true| D[私有只读焦点合法性]
+  B -. 目标 lifestyle XP/点数同帧读取待实机 .-> E[目标进度 typed 值]
+  D --> F[正式焦点动作前置]
+  E -. unknown .-> F
+```
 
 ### 重心候选与原版权重
 

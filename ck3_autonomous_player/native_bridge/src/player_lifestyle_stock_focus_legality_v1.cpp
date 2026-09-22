@@ -1,4 +1,5 @@
 #include "xar_bridge/player_lifestyle_stock_focus_legality_v1.hpp"
+#include "xar_bridge/player_lifestyle_snapshot_v1.hpp"
 
 #include <array>
 #include <cstring>
@@ -70,6 +71,7 @@ struct Sample {
   std::uintptr_t target_definition = 0;
   StableKey target_key{};
   StableKey lifestyle_key{};
+  StockFocusTargetProgressV1 target_progress{};
   bool native_legal = false;
 
   friend bool operator==(const Sample &, const Sample &) = default;
@@ -175,6 +177,20 @@ bool Validate(const StockFocusLegalityEnvironmentV1 &env,
   return true;
 }
 
+bool ValidTargetProgress(const StockFocusTargetProgressV1 &progress) noexcept {
+  if (!progress.available || progress.xp_total_raw < 0 ||
+      progress.xp_within_level_raw < 0 || progress.xp_per_level <= 0 ||
+      progress.unspent_perk_points < 0 || progress.used_perk_points < 0 ||
+      progress.xp_per_level >
+          std::numeric_limits<std::int64_t>::max() /
+              kPlayerLifestyleFixedPointScaleV1) {
+    return false;
+  }
+  return progress.xp_within_level_raw <
+      static_cast<std::int64_t>(progress.xp_per_level) *
+          kPlayerLifestyleFixedPointScaleV1;
+}
+
 Status ReadOne(const StockFocusLegalityEnvironmentV1 &env,
                const StockFocusLegalityAccessV1 &access, Sample &sample) noexcept {
   sample = {};
@@ -229,6 +245,14 @@ Status ReadOne(const StockFocusLegalityEnvironmentV1 &env,
       !ReadStableKey(access, lifestyle, sample.lifestyle_key) ||
       View(sample.lifestyle_key) != kStockFocusLegalityLifestyleV1) {
     return Status::unavailable_candidate;
+  }
+  if (access.capture_target_progress != nullptr) {
+    StockFocusTargetProgressV1 progress{};
+    if (access.capture_target_progress(access.context, sample.frame,
+                                       lifestyle, progress) &&
+        ValidTargetProgress(progress)) {
+      sample.target_progress = progress;
+    }
   }
   std::uintptr_t slot_target = 0;
   if (!Read(access, env.module_base + kValidatorPointerSlotRva,
@@ -309,6 +333,7 @@ StockFocusLegalityResultV1 ReadStockFocusLegalityV1(
   out.lifestyle_key = first.lifestyle_key;
   out.scanned_database_rows = first.span.count;
   out.validator_invoked_twice = true;
+  out.target_progress = first.target_progress;
   out.target_definition = first.target_definition;
   return out;
 }

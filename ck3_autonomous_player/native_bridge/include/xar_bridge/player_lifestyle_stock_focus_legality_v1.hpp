@@ -29,11 +29,31 @@ struct StockFocusLegalityEnvironmentV1 {
   StockFocusValidateCommandV1 validate_focus_command = nullptr;
 };
 
+// Values returned by exact native getters for the target focus's lifestyle.
+// A missing XP map row is not synthesized as zero by this contract.
+struct StockFocusTargetProgressV1 {
+  bool available = false;
+  std::int64_t xp_total_raw = -1;
+  std::int64_t xp_within_level_raw = -1;
+  std::int32_t xp_per_level = -1;
+  std::int32_t unspent_perk_points = -1;
+  std::int32_t used_perk_points = -1;
+
+  friend bool operator==(const StockFocusTargetProgressV1 &,
+                         const StockFocusTargetProgressV1 &) = default;
+};
+
+using StockFocusCaptureTargetProgressV1 = bool (*)(
+    void *context, const StockFocusLegalityFrameV1 &frame,
+    std::uintptr_t target_lifestyle,
+    StockFocusTargetProgressV1 &output) noexcept;
+
 struct StockFocusLegalityAccessV1 {
   void *context = nullptr;
   StockPerkProbeMainThreadV1 is_application_main_thread = nullptr;
   StockPerkCaptureFrameV1 capture_frame = nullptr;
   StockPerkReadMemoryV1 read_memory = nullptr;
+  StockFocusCaptureTargetProgressV1 capture_target_progress = nullptr;
 };
 
 enum class StockFocusLegalityStatusV1 : std::uint32_t {
@@ -57,6 +77,7 @@ struct StockFocusLegalityResultV1 {
   game::PlayerLifestyleWindowStableKeyV1 lifestyle_key{};
   std::int32_t scanned_database_rows = -1;
   bool validator_invoked_twice = false;
+  StockFocusTargetProgressV1 target_progress{};
   // Transaction-local only: never publish a native pointer over JSON or keep
   // it across a later paused-frame capture.
   std::uintptr_t target_definition = 0;
