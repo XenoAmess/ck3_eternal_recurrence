@@ -41,6 +41,8 @@
 
 ## 文档
 
+- [static-confirmed; live pending] [W5 移动命令构造者](war-film-move-command-constructors-2026-09-23.md)：RTTI 正式绑定 CMoveUnitCommand；0x432BF48 是 +0x30 校验槽，真正主表为 0x432BF18。声明扫描范围内 29 处引用、13 个函数已分类，新入口属于玩家地图输入、克隆和空 factory，仍未发现普通战争主动撤退 policy；后续转向 payload 填充或入队生产者，不重复 census。16 份产物、11 份快照与结果计划 scoped review PASS，a01–a04 冻结文件未变；无实机新增。
+
 - [static-confirmed; live pending] [W5 撤退消费者的上游分类](war-film-retreat-consumer-callers-2026-09-23.md)：三条有界调用链分别归因为战斗胜方结算、战中不可达的普通 movement caller，以及继承 owner-subset 清理。继承调用传 apply_pursuit=false，不可把所有部分离场都说成先追击一次。12 份产物、4 份快照 hash 与计划检查通过，a01–a03 冻结文件未变。普通战争按败势主动撤退的策略仍待追踪间接命令构造者。
 
 - [static-confirmed; live pending] [W1 军力缓存与特殊部队](war-film-declaration-power-cache-2026-09-23.md)：闭合 mode=3 八桶 power 生产和 +308/+310 缓存发布，区分 +2F0/+2F4 数量。特殊部队两侧均用当前 composition power，不可称全按满编；当前原版骑士估计是 (50+10)×10=600，旧注释1100不能沿用。20 个代码窗口及 define 注册已冻结，外置目录复提字节一致。自然缓存刷新时序和真实宣战同次输入仍待实机。

@@ -1,0 +1,1098 @@
+{
+  "schema": "xar.war-film-retreat-research-evidence.v1",
+  "package": "a05",
+  "version": "1.19.0.6",
+  "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "proof_layer": "human-reviewed-exact-build-static-census-and-classification",
+  "live_execution_performed": false,
+  "automatic_semantic_verification": false,
+  "production_mcp_capability_added": false,
+  "prior_packages_modified": false,
+  "artifacts": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\constructor-classification.json",
+      "sha256": "3dcd665410b57db924aeafba118362cbbd5bb5bf0e171614100329ab3d0ab135",
+      "size": 12349
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\factory-command-region-riprefs.json",
+      "sha256": "ca95bbac264b823a558700c78be451d6dbf0307c019579e249301c5367879f91",
+      "size": 1398
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\factory-startup-riprefs.json",
+      "sha256": "9a32e6615f9c352d28abc134b83a377b5ec8ad157d8a6821e8971b144030b7f7",
+      "size": 1415
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\initial-plan-check.json",
+      "sha256": "e75612b557b931bf4d561ecf0a2f34b95198970f29ad6b885f392925c96a273a",
+      "size": 1064
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\move-apply-address-refs.json",
+      "sha256": "b749f0a0d55f27034d5dd684fd75da322c8ce63e2c0919b66f3a9e06d9d263af",
+      "size": 1530
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\move-type-literals.json",
+      "sha256": "9d96f5f284f79558f6acf3734e19f5d2b5486b60c2345121c80b3b006cb0dc9f",
+      "size": 1125
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\move-vtable-data.json",
+      "sha256": "cb3ff3c2e5eb855cbe21f2cb1449db1ce561696dbcbaf7605fe444114bf570dd",
+      "size": 2947
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\move-vtable-rip-census.json",
+      "sha256": "1f9da71736beaf604533334475534c14683f95d9815c49b10b25ffeaee0aafbb",
+      "size": 7828
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\new-constructor-functions.json",
+      "sha256": "b7a9391b4b824ed97bf79655732fa4663dcdac8e11a2c4207ea1434509093ca6",
+      "size": 88437
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\new-constructor-refs.json",
+      "sha256": "4dd55408c65c5e1c499939eac981b5249979f9c732d3e85cad68124caba50f4d",
+      "size": 2096
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\new-ui-upstream-refs.json",
+      "sha256": "66ebc13a8dfa7d2f6069423ad1c4cceef1626f7db271c4a0f42d86c4aa198449",
+      "size": 1524
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\new-ui-upstream.json",
+      "sha256": "108d8361aeb3bd3ebe41bf94bfd327414c330bd84926490c86f833f7110c46ce",
+      "size": 13140
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\ui-rtti-col.json",
+      "sha256": "c139fdec1b32ae949c670cb972781b6e41323fcc4dd39cc0f483ce2d7f6a940b",
+      "size": 1231
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\ui-rtti-type.json",
+      "sha256": "06a61290b35892f5ab70ef40abb3804e6e86a0a5d317e7bd3a29cdee1cbc606c",
+      "size": 1471
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\ui-vtable-neighborhood.json",
+      "sha256": "25a70ef9444e48c860cb72d2d8d3f6fc9e3f862165f47ddb9eda3f43c2eecc66",
+      "size": 1754
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\verified-vtables.json",
+      "sha256": "4017024a8139ce9fe56c50425326f0c0a70d50ba20890e6fd296d16baf7a2bbd",
+      "size": 4292
+    }
+  ],
+  "source_snapshots": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_extract.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_extract.py",
+      "sha256": "29ee12ff63c23d122994c17fad9b6d477b587305a2c9d0fa990432cd6d150eba",
+      "size": 8636
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_score_locator.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_score_locator.py",
+      "sha256": "51f9edc7a6ecb0bed1dcf5ada02ae88f42e6e3dc8dfafe7a3c8cb2aed3d36c66",
+      "size": 1920
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_vtable_a05.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_vtable_a05.py",
+      "sha256": "38f583f2b8fc846abe5c001b98c7a77546adc6760936c7996984cf041cc7f50f",
+      "size": 2379
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_classify_a05.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_classify_a05.py",
+      "sha256": "d17737a5af5b90a46bda07ecde3d829ae9c632fa43ab047d7d13a629bd61d011",
+      "size": 4710
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_freeze_a05.py",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_freeze_a05.py",
+      "sha256": "110e9e14ae8a9ad3d034a1e719dbe0d6ca2edaaa3e66322f5d597c7d826f2508",
+      "size": 6917
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_plan_a05.json",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_plan_a05.json",
+      "sha256": "3d7b980bfa943c8371950c0343fe821db77571135fa045285ccdbee347744c57",
+      "size": 3012
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_evidence_a01.json",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_evidence_a01.json",
+      "sha256": "4defcd2ffa3d2ec707a01771416f8d5ad38c1a624bdbd43cf97f2725bd7025dc",
+      "size": 51291
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_evidence_a02.json",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_evidence_a02.json",
+      "sha256": "eb36bf33705cc133088a4d3a6fa111d37ed8fac3cb96883714b8848217f1f6b9",
+      "size": 8706
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-war_film_retreat_evidence_a04.json",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_evidence_a04.json",
+      "sha256": "4de9f623d5e9bcb2f29f49b4377a5ad1b6302e6e9b50433797d326b3072f248a",
+      "size": 28565
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-active-combat-retreat.md",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\docs\\ck3-native-ai\\active-combat-retreat.md",
+      "sha256": "fce592bac0c53d677387ee61ca1dcbb51fb3561bfd88f6292250ec019f36b4c0",
+      "size": 51499
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\source-snapshot-battle-terminal-and-reentry.md",
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\docs\\ck3-native-ai\\battle-terminal-and-reentry.md",
+      "sha256": "d00079ca0be34db0dafc585126894aa292d8849a7bdd6f6ed4761547f2cd81f5",
+      "size": 53487
+    }
+  ],
+  "reviewed_instruction_excerpts": {
+    "new-constructor-functions.json": [
+      "000A84651  49 8b d6                         mov      rdx, r14",
+      "000A84654  48 8b cf                         mov      rcx, rdi",
+      "000A84657  e8 54 0b c3 01                   call     0x1426b51b0",
+      "000A8465C  44 8b f0                         mov      r14d, eax",
+      "000A8465F  83 f8 02                         cmp      eax, 2",
+      "000A84662  0f 84 45 01 00 00                je       0x140a847ad",
+      "000A84668  8b d0                            mov      edx, eax",
+      "000A8466A  48 8b cf                         mov      rcx, rdi",
+      "000A8466D  e8 ee 41 7c 01                   call     0x142248860",
+      "000A84672  84 c0                            test     al, al",
+      "000A84674  0f 84 33 01 00 00                je       0x140a847ad",
+      "000A8470F  8b 86 90 6a 01 00                mov      eax, dword ptr [rsi + 0x16a90]",
+      "000A84715  c6 45 90 00                      mov      byte ptr [rbp - 0x70], 0",
+      "000A84719  33 ff                            xor      edi, edi",
+      "000A8471B  48 89 7d 94                      mov      qword ptr [rbp - 0x6c], rdi",
+      "000A8471F  89 7d 9c                         mov      dword ptr [rbp - 0x64], edi",
+      "000A84722  48 8d 0d ef 77 8a 03             lea      rcx, [rip + 0x38a77ef]",
+      "000A84729  48 89 4d 88                      mov      qword ptr [rbp - 0x78], rcx",
+      "000A8472D  48 8d 0d 7c 78 8a 03             lea      rcx, [rip + 0x38a787c]",
+      "000A84734  48 89 4d a0                      mov      qword ptr [rbp - 0x60], rcx",
+      "000A84738  c7 45 a8 01 00 00 00             mov      dword ptr [rbp - 0x58], 1",
+      "000A8473F  89 5d ac                         mov      dword ptr [rbp - 0x54], ebx",
+      "000A84742  89 45 b0                         mov      dword ptr [rbp - 0x50], eax",
+      "000A84745  44 89 75 b4                      mov      dword ptr [rbp - 0x4c], r14d",
+      "000A84749  c7 45 b8 02 00 00 00             mov      dword ptr [rbp - 0x48], 2",
+      "000A84750  8b 85 48 01 00 00                mov      eax, dword ptr [rbp + 0x148]",
+      "000A84756  89 45 bc                         mov      dword ptr [rbp - 0x44], eax",
+      "000A84759  48 8d 4d c0                      lea      rcx, [rbp - 0x40]",
+      "000A8475D  e8 0e 73 1f 00                   call     0x140c7ba70",
+      "000A84762  48 89 bd e8 00 00 00             mov      qword ptr [rbp + 0xe8], rdi",
+      "000A84769  44 8d 47 0e                      lea      r8d, [rdi + 0xe]",
+      "000A8476D  48 8d 55 88                      lea      rdx, [rbp - 0x78]",
+      "000A84771  48 8d 0d 78 da cd 04             lea      rcx, [rip + 0x4cdda78]",
+      "000A84778  e8 83 f6 ee ff                   call     0x140973e00",
+      "0026C1E50  48 89 5c 24 08                   mov      qword ptr [rsp + 8], rbx",
+      "0026C1E55  48 89 74 24 18                   mov      qword ptr [rsp + 0x18], rsi",
+      "0026C1E5A  57                               push     rdi",
+      "0026C1E5B  48 83 ec 20                      sub      rsp, 0x20",
+      "0026C1E5F  48 8b f9                         mov      rdi, rcx",
+      "0026C1E62  48 8b f2                         mov      rsi, rdx",
+      "0026C1E65  b9 68 01 00 00                   mov      ecx, 0x168",
+      "0026C1E6A  e8 b5 3f 76 01                   call     0x143e25e24",
+      "0026C1E6F  48 89 44 24 38                   mov      qword ptr [rsp + 0x38], rax",
+      "0026C1E74  48 8b d8                         mov      rbx, rax",
+      "0026C1E77  48 8d 05 2a ff 9b 01             lea      rax, [rip + 0x19bff2a]",
+      "0026C1E7E  48 89 03                         mov      qword ptr [rbx], rax",
+      "0026C1E81  48 8d 4b 38                      lea      rcx, [rbx + 0x38]",
+      "0026C1E85  44 0f b6 47 08                   movzx    r8d, byte ptr [rdi + 8]",
+      "0026C1E8A  48 8d 05 87 a0 c6 01             lea      rax, [rip + 0x1c6a087]",
+      "0026C1E91  44 88 43 08                      mov      byte ptr [rbx + 8], r8b",
+      "0026C1E95  44 8b 47 0c                      mov      r8d, dword ptr [rdi + 0xc]",
+      "0026C1E99  44 89 43 0c                      mov      dword ptr [rbx + 0xc], r8d",
+      "0026C1E9D  44 8b 47 10                      mov      r8d, dword ptr [rdi + 0x10]",
+      "0026C1EA1  44 89 43 10                      mov      dword ptr [rbx + 0x10], r8d",
+      "0026C1EA5  8b 57 14                         mov      edx, dword ptr [rdi + 0x14]",
+      "0026C1EA8  48 89 03                         mov      qword ptr [rbx], rax",
+      "0026C1EAB  48 8d 05 fe a0 c6 01             lea      rax, [rip + 0x1c6a0fe]",
+      "0026C1EB2  89 53 14                         mov      dword ptr [rbx + 0x14], edx",
+      "0026C1EB5  48 8d 57 38                      lea      rdx, [rdi + 0x38]",
+      "0026C1EB9  48 89 43 18                      mov      qword ptr [rbx + 0x18], rax",
+      "0026C1EBD  8b 47 20                         mov      eax, dword ptr [rdi + 0x20]",
+      "0026C1EC0  89 43 20                         mov      dword ptr [rbx + 0x20], eax",
+      "0026C1EC3  8b 47 24                         mov      eax, dword ptr [rdi + 0x24]",
+      "0026C1EC6  89 43 24                         mov      dword ptr [rbx + 0x24], eax",
+      "0026C1EC9  8b 47 28                         mov      eax, dword ptr [rdi + 0x28]",
+      "0026C1ECC  89 43 28                         mov      dword ptr [rbx + 0x28], eax",
+      "0026C1ECF  8b 47 2c                         mov      eax, dword ptr [rdi + 0x2c]",
+      "0026C1ED2  89 43 2c                         mov      dword ptr [rbx + 0x2c], eax",
+      "0026C1ED5  8b 47 30                         mov      eax, dword ptr [rdi + 0x30]",
+      "0026C1ED8  89 43 30                         mov      dword ptr [rbx + 0x30], eax",
+      "0026C1EDB  8b 47 34                         mov      eax, dword ptr [rdi + 0x34]",
+      "0026C1EDE  89 43 34                         mov      dword ptr [rbx + 0x34], eax",
+      "0026C1EE1  e8 0a b1 9b ff                   call     0x14207cff0",
+      "0026C1EE6  48 89 1e                         mov      qword ptr [rsi], rbx",
+      "0026C1EE9  48 8b c6                         mov      rax, rsi",
+      "0026C1EEC  48 8b 74 24 40                   mov      rsi, qword ptr [rsp + 0x40]",
+      "0026C1EF1  48 8b 5c 24 30                   mov      rbx, qword ptr [rsp + 0x30]",
+      "0026C1EF6  48 83 c4 20                      add      rsp, 0x20",
+      "0026C1EFA  5f                               pop      rdi",
+      "0026C1EFB  c3                               ret      ",
+      "0026C6F80  48 89 5c 24 10                   mov      qword ptr [rsp + 0x10], rbx",
+      "0026C6F85  48 89 74 24 18                   mov      qword ptr [rsp + 0x18], rsi",
+      "0026C6F8A  57                               push     rdi",
+      "0026C6F8B  48 83 ec 20                      sub      rsp, 0x20",
+      "0026C6F8F  b9 68 01 00 00                   mov      ecx, 0x168",
+      "0026C6F94  e8 8b ee 75 01                   call     0x143e25e24",
+      "0026C6F99  48 8b f8                         mov      rdi, rax",
+      "0026C6F9C  48 89 44 24 30                   mov      qword ptr [rsp + 0x30], rax",
+      "0026C6FA1  33 f6                            xor      esi, esi",
+      "0026C6FA3  c6 40 08 00                      mov      byte ptr [rax + 8], 0",
+      "0026C6FA7  48 89 70 0c                      mov      qword ptr [rax + 0xc], rsi",
+      "0026C6FAB  48 8d 4f 38                      lea      rcx, [rdi + 0x38]",
+      "0026C6FAF  89 70 14                         mov      dword ptr [rax + 0x14], esi",
+      "0026C6FB2  48 8d 05 5f 4f c6 01             lea      rax, [rip + 0x1c64f5f]",
+      "0026C6FB9  48 89 07                         mov      qword ptr [rdi], rax",
+      "0026C6FBC  48 8d 05 ed 4f c6 01             lea      rax, [rip + 0x1c64fed]",
+      "0026C6FC3  48 89 47 18                      mov      qword ptr [rdi + 0x18], rax",
+      "0026C6FC7  89 77 20                         mov      dword ptr [rdi + 0x20], esi",
+      "0026C6FCA  c7 47 24 ff ff ff ff             mov      dword ptr [rdi + 0x24], 0xffffffff",
+      "0026C6FD1  48 89 77 28                      mov      qword ptr [rdi + 0x28], rsi",
+      "0026C6FD5  c7 47 30 02 00 00 00             mov      dword ptr [rdi + 0x30], 2",
+      "0026C6FDC  c7 47 34 01 00 00 00             mov      dword ptr [rdi + 0x34], 1",
+      "0026C6FE3  e8 88 4a 5b fe                   call     0x140c7ba70",
+      "0026C6FE8  48 8b 5c 24 38                   mov      rbx, qword ptr [rsp + 0x38]",
+      "0026C6FED  48 8b c7                         mov      rax, rdi",
+      "0026C6FF0  48 89 b7 60 01 00 00             mov      qword ptr [rdi + 0x160], rsi",
+      "0026C6FF7  48 8b 74 24 40                   mov      rsi, qword ptr [rsp + 0x40]",
+      "0026C6FFC  48 83 c4 20                      add      rsp, 0x20",
+      "0026C7000  5f                               pop      rdi",
+      "0026C7001  c3                               ret      "
+    ],
+    "new-ui-upstream.json": [
+      "000A84C45  e8 e6 3c 4f 02                   call     0x142f78930",
+      "000A84C4A  f2 0f 10 00                      movsd    xmm0, qword ptr [rax]",
+      "000A84C4E  8b 40 08                         mov      eax, dword ptr [rax + 8]",
+      "000A84C51  89 44 24 38                      mov      dword ptr [rsp + 0x38], eax",
+      "000A84C55  48 8b 05 cc aa c8 04             mov      rax, qword ptr [rip + 0x4c8aacc]",
+      "000A84C5C  f3 0f 2c 4c 24 38                cvttss2si ecx, dword ptr [rsp + 0x38]",
+      "000A84C62  48 8b 90 40 02 00 00             mov      rdx, qword ptr [rax + 0x240]",
+      "000A84C69  f2 0f 11 44 24 30                movsd    qword ptr [rsp + 0x30], xmm0",
+      "000A84C6F  f3 44 0f 2c 44 24 30             cvttss2si r8d, dword ptr [rsp + 0x30]",
+      "000A84C76  45 85 c0                         test     r8d, r8d",
+      "000A84C79  78 21                            js       0x140a84c9c",
+      "000A84C7B  8b 42 50                         mov      eax, dword ptr [rdx + 0x50]",
+      "000A84C7E  44 3b c0                         cmp      r8d, eax",
+      "000A84C81  7d 19                            jge      0x140a84c9c",
+      "000A84C83  85 c9                            test     ecx, ecx",
+      "000A84C85  78 15                            js       0x140a84c9c",
+      "000A84C87  3b 4a 54                         cmp      ecx, dword ptr [rdx + 0x54]",
+      "000A84C8A  7d 10                            jge      0x140a84c9c",
+      "000A84C8C  0f af c8                         imul     ecx, eax",
+      "000A84C8F  48 8b 42 20                      mov      rax, qword ptr [rdx + 0x20]",
+      "000A84C93  41 03 c8                         add      ecx, r8d",
+      "000A84C96  0f b7 14 48                      movzx    edx, word ptr [rax + rcx*2]",
+      "000A84C9A  eb 02                            jmp      0x140a84c9e",
+      "000A84C9C  33 d2                            xor      edx, edx",
+      "000A84C9E  48 8b 86 a0 06 00 00             mov      rax, qword ptr [rsi + 0x6a0]",
+      "000A84CA5  89 96 90 6a 01 00                mov      dword ptr [rsi + 0x16a90], edx",
+      "000A84CDC  83 f8 04                         cmp      eax, 4",
+      "000A84CDF  75 f1                            jne      0x140a84cd2",
+      "000A84CE1  48 83 c4 50                      add      rsp, 0x50",
+      "000A84CE5  5f                               pop      rdi",
+      "000A84CE6  5e                               pop      rsi",
+      "000A84CE7  5b                               pop      rbx",
+      "000A84CE8  e9 c3 f2 ff ff                   jmp      0x140a83fb0"
+    ]
+  },
+  "vtables": {
+    "schema": "xar.war-film-retreat-vtables.v1",
+    "proof_layer": "exact-build-RTTI-and-vtable-bytes",
+    "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+    "image_base": "0x140000000",
+    "argv": [
+      "ck3_autonomous_player/native_bridge/research/war_film_retreat_vtable_a05.py",
+      "--exe",
+      "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+      "--output",
+      "D:/workspace/ck3_war_film_research_20260923/retreat-a05/verified-vtables.json"
+    ],
+    "live_execution_performed": false,
+    "automatic_semantic_verification": false,
+    "vtables": [
+      {
+        "address_point_rva": "0x432bf18",
+        "col_rva": "0x496f590",
+        "col_bytes": "010000000000000000000000a8cd4c05a0ea960490f59604",
+        "col_signature": 1,
+        "subobject_offset": 0,
+        "constructor_displacement": 0,
+        "type_descriptor_rva": "0x54ccda8",
+        "type_name": ".?AVCMoveUnitCommand@@",
+        "hierarchy_rva": "0x496eaa0",
+        "col_self_rva": "0x496f590",
+        "slots": [
+          {
+            "offset": "0x0",
+            "slot_rva": "0x432bf18",
+            "target_rva": "0x26b46d0"
+          },
+          {
+            "offset": "0x8",
+            "slot_rva": "0x432bf20",
+            "target_rva": "0x3b8b090"
+          },
+          {
+            "offset": "0x10",
+            "slot_rva": "0x432bf28",
+            "target_rva": "0x34184c0"
+          },
+          {
+            "offset": "0x18",
+            "slot_rva": "0x432bf30",
+            "target_rva": "0x3b8b110"
+          },
+          {
+            "offset": "0x20",
+            "slot_rva": "0x432bf38",
+            "target_rva": "0x34186d0"
+          },
+          {
+            "offset": "0x28",
+            "slot_rva": "0x432bf40",
+            "target_rva": "0x7e6490"
+          },
+          {
+            "offset": "0x30",
+            "slot_rva": "0x432bf48",
+            "target_rva": "0x26b49e0"
+          },
+          {
+            "offset": "0x38",
+            "slot_rva": "0x432bf50",
+            "target_rva": "0x803620"
+          },
+          {
+            "offset": "0x40",
+            "slot_rva": "0x432bf58",
+            "target_rva": "0x26c1e50"
+          },
+          {
+            "offset": "0x48",
+            "slot_rva": "0x432bf60",
+            "target_rva": "0x23ceb70"
+          },
+          {
+            "offset": "0x50",
+            "slot_rva": "0x432bf68",
+            "target_rva": "0x7e6490"
+          },
+          {
+            "offset": "0x58",
+            "slot_rva": "0x432bf70",
+            "target_rva": "0x26c1f00"
+          },
+          {
+            "offset": "0x60",
+            "slot_rva": "0x432bf78",
+            "target_rva": "0x26c1f20"
+          },
+          {
+            "offset": "0x68",
+            "slot_rva": "0x432bf80",
+            "target_rva": "0x26c1f30"
+          },
+          {
+            "offset": "0x70",
+            "slot_rva": "0x432bf88",
+            "target_rva": "0x26c1f40"
+          },
+          {
+            "offset": "0x78",
+            "slot_rva": "0x432bf90",
+            "target_rva": "0x26c1f50"
+          },
+          {
+            "offset": "0x80",
+            "slot_rva": "0x432bf98",
+            "target_rva": "0x26b4ac0"
+          },
+          {
+            "offset": "0x88",
+            "slot_rva": "0x432bfa0",
+            "target_rva": "0x26b4e10"
+          }
+        ]
+      },
+      {
+        "address_point_rva": "0x432bfb0",
+        "col_rva": "0x496f568",
+        "col_bytes": "010000001800000000000000a8cd4c05a0ea960468f59604",
+        "col_signature": 1,
+        "subobject_offset": 24,
+        "constructor_displacement": 0,
+        "type_descriptor_rva": "0x54ccda8",
+        "type_name": ".?AVCMoveUnitCommand@@",
+        "hierarchy_rva": "0x496eaa0",
+        "col_self_rva": "0x496f568",
+        "slots": [
+          {
+            "offset": "0x0",
+            "slot_rva": "0x432bfb0",
+            "target_rva": "0x26b2850"
+          },
+          {
+            "offset": "0x8",
+            "slot_rva": "0x432bfb8",
+            "target_rva": "0x26b4710"
+          },
+          {
+            "offset": "0x10",
+            "slot_rva": "0x432bfc0",
+            "target_rva": "0x7e6490"
+          },
+          {
+            "offset": "0x18",
+            "slot_rva": "0x432bfc8",
+            "target_rva": "0x7e6490"
+          },
+          {
+            "offset": "0x20",
+            "slot_rva": "0x432bfd0",
+            "target_rva": "0x7e9220"
+          }
+        ]
+      }
+    ]
+  },
+  "constructors": {
+    "schema": "xar.war-film-retreat-constructor-classification.v1",
+    "proof_layer": "reviewed-labels-over-exact-build-census",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+    "census_path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a05\\move-vtable-rip-census.json",
+    "census_sha256": "1f9da71736beaf604533334475534c14683f95d9815c49b10b25ffeaee0aafbb",
+    "declared_range": [
+      "0x1000",
+      "0x3f00000"
+    ],
+    "targets": [
+      "0x432bf18",
+      "0x432bfb0",
+      "0x432bf48"
+    ],
+    "reference_count": 29,
+    "containing_function_count": 13,
+    "references_per_target": {
+      "0x432bf18": 14,
+      "0x432bfb0": 15
+    },
+    "every_input_hit_classified": true,
+    "all_possible_producers_proven": false,
+    "live_execution_performed": false,
+    "automatic_semantic_verification": false,
+    "functions": [
+      {
+        "runtime_function": "0xa83fb0",
+        "classification": "player_map_input",
+        "evidence_package": "new-a05",
+        "boundary": "CIngameInterfaceHandler input -> kind1, queue flags14; target from interface+16A90",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0xa84722",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x38a77ef]",
+            "runtime_function": [
+              "0xa83fb0",
+              "0xa84a86",
+              "0x4c580f8"
+            ]
+          },
+          {
+            "source": "0xa8472d",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x38a787c]",
+            "runtime_function": [
+              "0xa83fb0",
+              "0xa84a86",
+              "0x4c580f8"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x186b190",
+        "classification": "shared_ai_move_builder",
+        "evidence_package": "a01",
+        "boundary": "Callers include ordinary representative and mission families; builder capability is not a retreat policy",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x186b232",
+            "target": "0x432bf18",
+            "instruction": "lea rdx, [rip + 0x2ac0cdf]",
+            "runtime_function": [
+              "0x186b190",
+              "0x186b30e",
+              "0x4ce7704"
+            ]
+          },
+          {
+            "source": "0x186b26c",
+            "target": "0x432bfb0",
+            "instruction": "lea rdx, [rip + 0x2ac0d3d]",
+            "runtime_function": [
+              "0x186b190",
+              "0x186b30e",
+              "0x4ce7704"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x18721b0",
+        "classification": "ordinary_representative_move",
+        "evidence_package": "a01",
+        "boundary": "1872208/187220F active-combat gate returns before construction",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x1872561",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x2ab99b0]",
+            "runtime_function": [
+              "0x18721b0",
+              "0x18726bd",
+              "0x4ce7d90"
+            ]
+          },
+          {
+            "source": "0x18725a1",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x2ab9a08]",
+            "runtime_function": [
+              "0x18721b0",
+              "0x18726bd",
+              "0x4ce7d90"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x18726c0",
+        "classification": "ordinary_follower_move",
+        "evidence_package": "a01",
+        "boundary": "1872916/187291D active-combat gate skips the unit before construction",
+        "reference_count": 3,
+        "references": [
+          {
+            "source": "0x1872a47",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x2ab94ca]",
+            "runtime_function": [
+              "0x18726c0",
+              "0x1872be9",
+              "0x4ce7dd8"
+            ]
+          },
+          {
+            "source": "0x1872a67",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x2ab9542]",
+            "runtime_function": [
+              "0x18726c0",
+              "0x1872be9",
+              "0x4ce7dd8"
+            ]
+          },
+          {
+            "source": "0x1872b11",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x2ab9498]",
+            "runtime_function": [
+              "0x18726c0",
+              "0x1872be9",
+              "0x4ce7dd8"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x1873100",
+        "classification": "ordinary_route_replan",
+        "evidence_package": "a04",
+        "boundary": "Only verified direct parent1872348 inherits representative active gate",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x1873974",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x2ab859d]",
+            "runtime_function": [
+              "0x1873100",
+              "0x1873ac0",
+              "0x4ce7e68"
+            ]
+          },
+          {
+            "source": "0x18739af",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x2ab85fa]",
+            "runtime_function": [
+              "0x1873100",
+              "0x1873ac0",
+              "0x4ce7e68"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x1874a10",
+        "classification": "current_province_route_cancel",
+        "evidence_package": "a02",
+        "boundary": "Known stack merge/cancel sources; no attributed odds-to-active-retreat choice",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x1874aca",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x2ab7447]",
+            "runtime_function": [
+              "0x1874a10",
+              "0x1874b8a",
+              "0x4ce803c"
+            ]
+          },
+          {
+            "source": "0x1874b04",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x2ab74a5]",
+            "runtime_function": [
+              "0x1874a10",
+              "0x1874b8a",
+              "0x4ce803c"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x18793b0",
+        "classification": "mission_return",
+        "evidence_package": "a02",
+        "boundary": "Known callers belong to raid/barter return and cleanup",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x187967b",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x2ab2896]",
+            "runtime_function": [
+              "0x18793b0",
+              "0x18797c1",
+              "0x4ce84cc"
+            ]
+          },
+          {
+            "source": "0x18796b3",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x2ab28f6]",
+            "runtime_function": [
+              "0x18793b0",
+              "0x18797c1",
+              "0x4ce84cc"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x18cb790",
+        "classification": "counterraid_target_move",
+        "evidence_package": "inherited-active-topic",
+        "boundary": "Mission target pursuit; counterraid active reachability is not negated",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x18cbbd1",
+            "target": "0x432bf18",
+            "instruction": "lea rdx, [rip + 0x2a60340]",
+            "runtime_function": [
+              "0x18cb790",
+              "0x18cbd56",
+              "0x4ceb9cc"
+            ]
+          },
+          {
+            "source": "0x18cbbdc",
+            "target": "0x432bfb0",
+            "instruction": "lea rdx, [rip + 0x2a603cd]",
+            "runtime_function": [
+              "0x18cb790",
+              "0x18cbd56",
+              "0x4ceb9cc"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x18ce530",
+        "classification": "raid_mission_move",
+        "evidence_package": "a02",
+        "boundary": "Known main caller has active exclusion; no expansion in a05",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x18ce672",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x2a5d89f]",
+            "runtime_function": [
+              "0x18ce530",
+              "0x18ce7d9",
+              "0x4cebd10"
+            ]
+          },
+          {
+            "source": "0x18ce67d",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x2a5d92c]",
+            "runtime_function": [
+              "0x18ce530",
+              "0x18ce7d9",
+              "0x4cebd10"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x18d0da0",
+        "classification": "barter_mission_move",
+        "evidence_package": "a02",
+        "boundary": "Known main caller has active exclusion; no expansion in a05",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x18d0ffe",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x2a5af13]",
+            "runtime_function": [
+              "0x18d0da0",
+              "0x18d1165",
+              "0x4cec008"
+            ]
+          },
+          {
+            "source": "0x18d1009",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x2a5afa0]",
+            "runtime_function": [
+              "0x18d0da0",
+              "0x18d1165",
+              "0x4cec008"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x23c9f00",
+        "classification": "postcombat_loser_route",
+        "evidence_package": "inherited-terminal-topic",
+        "boundary": "230AEF6 terminal caller; route/state after battle, not voluntary policy",
+        "reference_count": 4,
+        "references": [
+          {
+            "source": "0x23ca052",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x1f61ebf]",
+            "runtime_function": [
+              "0x23c9f00",
+              "0x23ca2e7",
+              "0x4d7e4d8"
+            ]
+          },
+          {
+            "source": "0x23ca05e",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x1f61f4b]",
+            "runtime_function": [
+              "0x23c9f00",
+              "0x23ca2e7",
+              "0x4d7e4d8"
+            ]
+          },
+          {
+            "source": "0x23ca1db",
+            "target": "0x432bf18",
+            "instruction": "lea rcx, [rip + 0x1f61d36]",
+            "runtime_function": [
+              "0x23c9f00",
+              "0x23ca2e7",
+              "0x4d7e4d8"
+            ]
+          },
+          {
+            "source": "0x23ca1e7",
+            "target": "0x432bfb0",
+            "instruction": "lea rcx, [rip + 0x1f61dc2]",
+            "runtime_function": [
+              "0x23c9f00",
+              "0x23ca2e7",
+              "0x4d7e4d8"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x26c1e50",
+        "classification": "heap_clone",
+        "evidence_package": "new-a05",
+        "boundary": "Primary vtable+40 slot; copies existing command payload and route",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x26c1e8a",
+            "target": "0x432bf18",
+            "instruction": "lea rax, [rip + 0x1c6a087]",
+            "runtime_function": [
+              "0x26c1e50",
+              "0x26c1efc",
+              "0x4c4ebcc"
+            ]
+          },
+          {
+            "source": "0x26c1eab",
+            "target": "0x432bfb0",
+            "instruction": "lea rax, [rip + 0x1c6a0fe]",
+            "runtime_function": [
+              "0x26c1e50",
+              "0x26c1efc",
+              "0x4c4ebcc"
+            ]
+          }
+        ]
+      },
+      {
+        "runtime_function": "0x26c6f80",
+        "classification": "empty_heap_factory",
+        "evidence_package": "new-a05",
+        "boundary": "Allocates168 bytes, invalid Unit ID and empty route; consumer provenance unresolved",
+        "reference_count": 2,
+        "references": [
+          {
+            "source": "0x26c6fb2",
+            "target": "0x432bf18",
+            "instruction": "lea rax, [rip + 0x1c64f5f]",
+            "runtime_function": [
+              "0x26c6f80",
+              "0x26c7002",
+              "0x4c3aac4"
+            ]
+          },
+          {
+            "source": "0x26c6fbc",
+            "target": "0x432bfb0",
+            "instruction": "lea rax, [rip + 0x1c64fed]",
+            "runtime_function": [
+              "0x26c6f80",
+              "0x26c7002",
+              "0x4c3aac4"
+            ]
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "Only decoded pdata ranges in the declared interval",
+      "No RIP-relative memory alias recovery",
+      "Runtime factory/clone consumers are not fully recovered",
+      "Counterraid is not ordinary war policy"
+    ]
+  },
+  "ui_type_evidence": {
+    "new-ui-upstream-refs.json": {
+      "schema": "xar.war-film-retreat-extract.v1",
+      "proof_layer": "exact-build-locator-disassembly",
+      "semantic_correctness_verified": false,
+      "live_execution_performed": false,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe_size": 95206008,
+      "image_base": "0x140000000",
+      "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "dependencies": {
+        "capstone": "5.0.9",
+        "pefile": "2024.8.26"
+      },
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+        "refs",
+        "0xA84AF0",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a05/new-ui-upstream-refs.json"
+      ],
+      "mode": "refs",
+      "targets": [
+        "0xa84af0"
+      ],
+      "direct_references": [],
+      "absolute_pointers": [
+        {
+          "source": "0x40af688",
+          "target": "0xa84af0",
+          "classification": "unclassified-absolute-pointer"
+        }
+      ],
+      "limitations": [
+        "Does not enumerate indirect/vtable calls or RIP-relative LEA references.",
+        "A .pdata function range is a decoding anchor; it can be a split fragment rather than a complete semantic function.",
+        "An absent direct reference does not establish absence of a native policy."
+      ]
+    },
+    "ui-vtable-neighborhood.json": {
+      "schema": "xar.war-film-retreat-extract.v1",
+      "proof_layer": "exact-build-locator-disassembly",
+      "semantic_correctness_verified": false,
+      "live_execution_performed": false,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe_size": 95206008,
+      "image_base": "0x140000000",
+      "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "dependencies": {
+        "capstone": "5.0.9",
+        "pefile": "2024.8.26"
+      },
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+        "data",
+        "0x40AF600",
+        "--extent",
+        "0xC0",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a05/ui-vtable-neighborhood.json"
+      ],
+      "mode": "data",
+      "targets": [
+        "0x40af600"
+      ],
+      "data": [
+        {
+          "rva": "0x40af600",
+          "hex": "90 8f 7e 40 01 00 00 00 20 e3 91 40 01 00 00 00 20 e3 91 40 01 00 00 00 40 38 aa 40 01 00 00 00 40 38 aa 40 01 00 00 00 28 3f 5f 44 01 00 00 00 80 2a a7 40 01 00 00 00 b0 34 a7 40 01 00 00 00 b0 56 a7 40 01 00 00 00 60 59 a7 40 01 00 00 00 e0 59 a7 40 01 00 00 00 40 5a a7 40 01 00 00 00 20 92 7e 40 01 00 00 00 40 5c a7 40 01 00 00 00 90 64 7e 40 01 00 00 00 00 bf c6 40 01 00 00 00 00 66 a8 40 01 00 00 00 f0 4a a8 40 01 00 00 00 e0 7b a7 40 01 00 00 00 00 7c a7 40 01 00 00 00 00 3f 5f 44 01 00 00 00 1c 23 aa 40 01 00 00 00 30 b9 a7 40 01 00 00 00 10 23 aa 40 01 00 00 00",
+          "ascii_prefix": "��~@\u0001"
+        }
+      ]
+    },
+    "ui-rtti-col.json": {
+      "schema": "xar.war-film-retreat-extract.v1",
+      "proof_layer": "exact-build-locator-disassembly",
+      "semantic_correctness_verified": false,
+      "live_execution_performed": false,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe_size": 95206008,
+      "image_base": "0x140000000",
+      "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "dependencies": {
+        "capstone": "5.0.9",
+        "pefile": "2024.8.26"
+      },
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+        "data",
+        "0x45F3F28",
+        "--extent",
+        "0x18",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a05/ui-rtti-col.json"
+      ],
+      "mode": "data",
+      "targets": [
+        "0x45f3f28"
+      ],
+      "data": [
+        {
+          "rva": "0x45f3f28",
+          "hex": "01 00 00 00 00 00 00 00 00 00 00 00 68 10 19 05 48 2d 5f 04 28 3f 5f 04",
+          "ascii_prefix": "\u0001"
+        }
+      ]
+    },
+    "ui-rtti-type.json": {
+      "schema": "xar.war-film-retreat-extract.v1",
+      "proof_layer": "exact-build-locator-disassembly",
+      "semantic_correctness_verified": false,
+      "live_execution_performed": false,
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "exe_size": 95206008,
+      "image_base": "0x140000000",
+      "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "dependencies": {
+        "capstone": "5.0.9",
+        "pefile": "2024.8.26"
+      },
+      "argv": [
+        "ck3_autonomous_player/native_bridge/research/war_film_retreat_extract.py",
+        "data",
+        "0x5191078",
+        "--extent",
+        "0x60",
+        "--exe",
+        "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "--output",
+        "D:/workspace/ck3_war_film_research_20260923/retreat-a05/ui-rtti-type.json"
+      ],
+      "mode": "data",
+      "targets": [
+        "0x5191078"
+      ],
+      "data": [
+        {
+          "rva": "0x5191078",
+          "hex": "2e 3f 41 56 43 49 6e 67 61 6d 65 49 6e 74 65 72 66 61 63 65 48 61 6e 64 6c 65 72 40 40 00 00 00 00 00 00 00 00 00 00 00 80 5d 01 44 01 00 00 00 00 00 00 00 00 00 00 00 2e 3f 41 56 3f 24 43 50 64 78 48 79 62 72 69 64 49 6e 6c 69 6e 65 42 75 66 66 65 72 41 6c 6c 6f 63 61 74 6f 72 40 56 3f",
+          "ascii_prefix": ".?AVCIngameInterfaceHandler@@"
+        }
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "actual_type",
+      "status": "static-confirmed",
+      "meaning": "RTTI CMoveUnitCommand, primary432BF18, secondary432BFB0 at object+18;432BF48 is validation slot, not address point."
+    },
+    {
+      "id": "constructor_census",
+      "status": "static-confirmed",
+      "meaning": "All29 decoded RIP hits across13 containing functions classified within declared pdata scan range."
+    },
+    {
+      "id": "new_provenance",
+      "status": "static-confirmed",
+      "meaning": "New paths bind player map input, payload clone and empty factory; none establishes ordinary active-retreat choice."
+    },
+    {
+      "id": "generic_policy",
+      "status": "unknown",
+      "meaning": "Unknown indirect producers and factory consumers remain; no attributable native AI retreat case."
+    }
+  ],
+  "limits": [
+    "Scan classification completeness is not all-native-policy coverage",
+    "No alias/prototype-copy/indirect-producer recovery",
+    "No live command production, apply or postcondition observed",
+    "Factory consumer registration unresolved; not labeled network or deserialization"
+  ]
+}

@@ -118,3 +118,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W0 更新：逐句复核与导演案 v3
 
 [主张台账](../../promo/ck3_native_war_ai/research-first-claim-ledger-20260923.md) 已核对旧 90 cue、45 镜头、8 章，拆成 33 条原子主张与 27 份精确来源绑定；旧文本逐字段保留。新 [导演案 v3](../../promo/ck3_native_war_ai/longform/director-plan-v3.md) 将真实角色/地图与完整案例作为主线，修正目标块、十项预算、分母、白和等旧措辞，普通主动撤退不再作未闭合的影片承诺。所有新因果合同仍 planned/unbound，未批量重做旁白。
+
+## W5 移动命令构造者分类
+
+[新增专题](war-film-move-command-constructors-2026-09-23.md)：RTTI 正式绑定 CMoveUnitCommand；0x432BF48 是 +0x30 校验槽，真正主表为 0x432BF18。声明扫描范围内 29 处引用、13 个函数已分类，新入口属于玩家地图输入、克隆和空 factory，仍未发现普通战争主动撤退 policy；后续转向 payload 填充或入队生产者，不重复 census。16 份产物、11 份快照与结果计划 scoped review PASS，a01–a04 冻结文件未变；无实机新增。

@@ -1,0 +1,41 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-move-command-constructors-a05",
+  "question": "Classify RIP-relative constructors of actual CMoveArmyCommand vtables and inspect new ordinary AI paths for active-combat input plus prediction-driven retreat choice.",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Ordinary native war AI movement constructors; classified mission, terminal and succession paths are reused without re-expansion.",
+    "identity_kind": "none",
+    "identity_lifetime": "Read-only disk EXE; no process is queried or attached.",
+    "producer_trigger": "unknown",
+    "producer": "RIP-relative references to verified move command vtable address points, classified by containing function and caller.",
+    "caller": "New AI constructor paths, prioritizing simultaneous active CCombat and prediction inputs.",
+    "consumer": "CMoveArmyCommand apply 26B4710 -> active retreat 2308850.",
+    "cache_lifetime": "No live freshness observation; a01-a04 remain immutable dependencies.",
+    "expected_signal": "Portable exact-build constructor census and bounded classification, with an ordinary active policy only if evidence establishes it.",
+    "zero_sample_meaning": "A complete declared RIP-reference census is not a proof that all indirect command producers have been recovered.",
+    "stop_condition": "Bind actual vtables, classify their RIP references, inspect at most three new plausible AI paths; no live or previous-package edits.",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {"id": "apply", "label": "26B4710 active-combat command apply"},
+    {"id": "vtables", "label": "Verified move command vtable address points"},
+    {"id": "constructors", "label": "RIP-relative constructor use census"},
+    {"id": "policy", "label": "Ordinary war AI active retreat choice"}
+  ],
+  "edges": [
+    {"id": "apply_table", "from": "apply", "to": "vtables", "label": "Bind apply slot and actual address points", "status": "unknown", "evidence": [], "open_question": "Which vtable address points dispatch the actual move apply?"},
+    {"id": "table_constructors", "from": "vtables", "to": "constructors", "label": "Classify exact RIP-relative uses", "status": "unknown", "evidence": [], "open_question": "Which references construct/clone commands, which are player or AI producers?"},
+    {"id": "constructor_policy", "from": "constructors", "to": "policy", "label": "Recover active combat and score to command dataflow", "status": "unknown", "evidence": [], "open_question": "Does a new ordinary AI constructor read active combat and choose retreat using prediction?"}
+  ],
+  "cases": [
+    {"id": "ordinary_active_retreat", "question": "Observe an attributable ordinary AI choice and retreat outcome.", "status": "pending", "evidence": []}
+  ]
+}
