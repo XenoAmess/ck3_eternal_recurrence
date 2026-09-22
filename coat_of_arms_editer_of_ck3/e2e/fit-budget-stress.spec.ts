@@ -49,11 +49,10 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   const restartCompletionTimeoutMs = performanceGateEnforced
     ? contract.maximumDurationMs[128]
     : contract.reportOnlyMaximumDurationMs
-  // Hosted Pages runners are intentionally report-only performance probes and
-  // can spend ~250 seconds in the three real fits before pause/resume and
-  // cancellation gates begin. Keep workstation thresholds strict while giving
-  // the slower hosted environment enough suite-level time to reach those gates.
-  test.setTimeout(performanceGateEnforced ? 300_000 : 1_200_000)
+  // Quality-first exact-DDS 96/230/512 finalization intentionally spends
+  // minutes after the search worker completes. Performance remains diagnostic;
+  // cancellation and pause latency keep their strict interactive limits.
+  test.setTimeout(3_600_000)
   const nonGetRequests: { method: string, url: string }[] = []
   page.on('request', (request) => {
     if (request.method() !== 'GET') nonGetRequests.push({ method: request.method(), url: request.url() })

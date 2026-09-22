@@ -1,0 +1,4024 @@
+{
+  "schema": "ck3-coa-epsilon-q-sealed-holdout-progress-v1",
+  "runContract": "epsilon-q-v14-sealed-holdout-16x-joint256-contour32-v1",
+  "corpusContract": "epsilon-q-programmatic-corpus-32-split-v1",
+  "completedCases": 16,
+  "rows": [
+    {
+      "id": "epsilon-flat-contour-02",
+      "family": "flat-contour-family-02",
+      "category": "flat-contour",
+      "incumbentLoss": 0.013834548256439125,
+      "selectedLoss": 0.01135596502553279,
+      "relativeImprovement": 0.17915895661809617,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0034863579432555464,
+            "multiscaleColorLoss": 0.0008699876181740791,
+            "edgeGradientLoss": 0.009284167335036835,
+            "bidirectionalEdgeDistanceLoss": 0.00556863979238925,
+            "structureLoss": 0.3262545703879087,
+            "totalLoss": 0.01368981482686632,
+            "structure": {
+              "edgeMassLoss": 0.039324027859945515,
+              "edgeCentroidLoss": 0.01368689156408654,
+              "componentCountLoss": 0.8571428571428571,
+              "enclosedRegionCountLoss": 0.9130434782608695,
+              "targetComponents": 1,
+              "renderedComponents": 7,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 23
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0034863579432555464,
+            "multiscaleColorLoss": 0.0008699876181740791,
+            "edgeGradientLoss": 0.009284167335036835,
+            "bidirectionalEdgeDistanceLoss": 0.00556863979238925,
+            "structureLoss": 0.3262545703879087,
+            "totalLoss": 0.01368981482686632,
+            "structure": {
+              "edgeMassLoss": 0.039324027859945515,
+              "edgeCentroidLoss": 0.01368689156408654,
+              "componentCountLoss": 0.8571428571428571,
+              "enclosedRegionCountLoss": 0.9130434782608695,
+              "targetComponents": 1,
+              "renderedComponents": 7,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 23
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0034845607593992117,
+            "multiscaleColorLoss": 0.0008656503517899596,
+            "edgeGradientLoss": 0.0054363340974245685,
+            "bidirectionalEdgeDistanceLoss": 0.006362348630446289,
+            "structureLoss": 0.3820724407714793,
+            "totalLoss": 0.014648323856057206,
+            "structure": {
+              "edgeMassLoss": 0.10154098981268257,
+              "edgeCentroidLoss": 0.021776981123467924,
+              "componentCountLoss": 0.9777777777777777,
+              "enclosedRegionCountLoss": 0.9629629629629629,
+              "targetComponents": 1,
+              "renderedComponents": 45,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 54
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0034845607593992117,
+            "multiscaleColorLoss": 0.0008656503517899596,
+            "edgeGradientLoss": 0.0054363340974245685,
+            "bidirectionalEdgeDistanceLoss": 0.006362348630446289,
+            "structureLoss": 0.3820724407714793,
+            "totalLoss": 0.014648323856057206,
+            "structure": {
+              "edgeMassLoss": 0.10154098981268257,
+              "edgeCentroidLoss": 0.021776981123467924,
+              "componentCountLoss": 0.9777777777777777,
+              "enclosedRegionCountLoss": 0.9629629629629629,
+              "targetComponents": 1,
+              "renderedComponents": 45,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 54
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.003465165532508897,
+            "multiscaleColorLoss": 0.0008586172662575,
+            "edgeGradientLoss": 0.0029256402603555307,
+            "bidirectionalEdgeDistanceLoss": 0.00863189800721658,
+            "structureLoss": 0.334598595136204,
+            "totalLoss": 0.012870970159543195,
+            "structure": {
+              "edgeMassLoss": 0.15431131729929515,
+              "edgeCentroidLoss": 0.02463811961084161,
+              "componentCountLoss": 0.990990990990991,
+              "enclosedRegionCountLoss": 0.5,
+              "targetComponents": 1,
+              "renderedComponents": 111,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 1
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003465165532508897,
+            "multiscaleColorLoss": 0.0008586172662575,
+            "edgeGradientLoss": 0.0029256402603555307,
+            "bidirectionalEdgeDistanceLoss": 0.00863189800721658,
+            "structureLoss": 0.334598595136204,
+            "totalLoss": 0.012870970159543195,
+            "structure": {
+              "edgeMassLoss": 0.15431131729929515,
+              "edgeCentroidLoss": 0.02463811961084161,
+              "componentCountLoss": 0.990990990990991,
+              "enclosedRegionCountLoss": 0.5,
+              "targetComponents": 1,
+              "renderedComponents": 111,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 1
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0032062237527306285,
+            "multiscaleColorLoss": 0.0008203935682823369,
+            "edgeGradientLoss": 0.007720582548737607,
+            "bidirectionalEdgeDistanceLoss": 0.004399388878743829,
+            "structureLoss": 0.14057171364458937,
+            "totalLoss": 0.007597832712174223,
+            "structure": {
+              "edgeMassLoss": 0.03981393853456141,
+              "edgeCentroidLoss": 0.013031874767400505,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.8181818181818182,
+              "targetComponents": 1,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 11
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0032062237527306285,
+            "multiscaleColorLoss": 0.0008203935682823369,
+            "edgeGradientLoss": 0.007720582548737607,
+            "bidirectionalEdgeDistanceLoss": 0.004399388878743829,
+            "structureLoss": 0.14057171364458937,
+            "totalLoss": 0.007597832712174223,
+            "structure": {
+              "edgeMassLoss": 0.03981393853456141,
+              "edgeCentroidLoss": 0.013031874767400505,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.8181818181818182,
+              "targetComponents": 1,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 11
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.003171948283454338,
+            "multiscaleColorLoss": 0.0008215185495392918,
+            "edgeGradientLoss": 0.004680305653296594,
+            "bidirectionalEdgeDistanceLoss": 0.0048340966532219205,
+            "structureLoss": 0.37579280449419744,
+            "totalLoss": 0.0140634669094543,
+            "structure": {
+              "edgeMassLoss": 0.08386190968206697,
+              "edgeCentroidLoss": 0.020503335696518743,
+              "componentCountLoss": 0.9787234042553191,
+              "enclosedRegionCountLoss": 0.9636363636363636,
+              "targetComponents": 1,
+              "renderedComponents": 47,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 55
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003171948283454338,
+            "multiscaleColorLoss": 0.0008215185495392918,
+            "edgeGradientLoss": 0.004680305653296594,
+            "bidirectionalEdgeDistanceLoss": 0.0048340966532219205,
+            "structureLoss": 0.37579280449419744,
+            "totalLoss": 0.0140634669094543,
+            "structure": {
+              "edgeMassLoss": 0.08386190968206697,
+              "edgeCentroidLoss": 0.020503335696518743,
+              "componentCountLoss": 0.9787234042553191,
+              "enclosedRegionCountLoss": 0.9636363636363636,
+              "targetComponents": 1,
+              "renderedComponents": 47,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 55
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0031527623851430255,
+            "multiscaleColorLoss": 0.0008161873989772014,
+            "edgeGradientLoss": 0.0027120784275994833,
+            "bidirectionalEdgeDistanceLoss": 0.006700273867277321,
+            "structureLoss": 0.25016664412863066,
+            "totalLoss": 0.0100223953538386,
+            "structure": {
+              "edgeMassLoss": 0.129597195636189,
+              "edgeCentroidLoss": 0.02351605555733487,
+              "componentCountLoss": 0.9887640449438202,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 89,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0031527623851430255,
+            "multiscaleColorLoss": 0.0008161873989772014,
+            "edgeGradientLoss": 0.0027120784275994833,
+            "bidirectionalEdgeDistanceLoss": 0.006700273867277321,
+            "structureLoss": 0.25016664412863066,
+            "totalLoss": 0.0100223953538386,
+            "structure": {
+              "edgeMassLoss": 0.129597195636189,
+              "edgeCentroidLoss": 0.02351605555733487,
+              "componentCountLoss": 0.9887640449438202,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 89,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        }
+      ],
+      "drawnInstances": 6,
+      "jointAcceptedMoves": 4,
+      "contourAccepted": false,
+      "elapsedMs": 280494
+    },
+    {
+      "id": "epsilon-flat-contour-04",
+      "family": "flat-contour-family-04",
+      "category": "flat-contour",
+      "incumbentLoss": 0.016876991056774645,
+      "selectedLoss": 0.014594573873659467,
+      "relativeImprovement": 0.1352383950099319,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.005387729077096254,
+            "multiscaleColorLoss": 0.001410588315959425,
+            "edgeGradientLoss": 0.011258216368746896,
+            "bidirectionalEdgeDistanceLoss": 0.016133419893834437,
+            "structureLoss": 0.2933433901650741,
+            "totalLoss": 0.014759552496896342,
+            "structure": {
+              "edgeMassLoss": 0.01352558463747844,
+              "edgeCentroidLoss": 0.005621195396265683,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0.8461538461538461,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 13
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.005387729077096254,
+            "multiscaleColorLoss": 0.001410588315959425,
+            "edgeGradientLoss": 0.011258216368746896,
+            "bidirectionalEdgeDistanceLoss": 0.016133419893834437,
+            "structureLoss": 0.2933433901650741,
+            "totalLoss": 0.014759552496896342,
+            "structure": {
+              "edgeMassLoss": 0.01352558463747844,
+              "edgeCentroidLoss": 0.005621195396265683,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0.8461538461538461,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 13
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0053475116582633085,
+            "multiscaleColorLoss": 0.001373259077513394,
+            "edgeGradientLoss": 0.005893709094440868,
+            "bidirectionalEdgeDistanceLoss": 0.017360957075924416,
+            "structureLoss": 0.4208861053831485,
+            "totalLoss": 0.01757157436225668,
+            "structure": {
+              "edgeMassLoss": 0.21022672169713189,
+              "edgeCentroidLoss": 0.011017667854424651,
+              "componentCountLoss": 0.9876543209876543,
+              "enclosedRegionCountLoss": 0.9764705882352941,
+              "targetComponents": 1,
+              "renderedComponents": 81,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 85
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0053475116582633085,
+            "multiscaleColorLoss": 0.001373259077513394,
+            "edgeGradientLoss": 0.005893709094440868,
+            "bidirectionalEdgeDistanceLoss": 0.017360957075924416,
+            "structureLoss": 0.4208861053831485,
+            "totalLoss": 0.01757157436225668,
+            "structure": {
+              "edgeMassLoss": 0.21022672169713189,
+              "edgeCentroidLoss": 0.011017667854424651,
+              "componentCountLoss": 0.9876543209876543,
+              "enclosedRegionCountLoss": 0.9764705882352941,
+              "targetComponents": 1,
+              "renderedComponents": 81,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 85
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0053351725702467665,
+            "multiscaleColorLoss": 0.0013893082352853783,
+            "edgeGradientLoss": 0.002909225539506053,
+            "bidirectionalEdgeDistanceLoss": 0.018872138443458204,
+            "structureLoss": 0.42467213240097246,
+            "totalLoss": 0.017193920269656777,
+            "structure": {
+              "edgeMassLoss": 0.27436021455815435,
+              "edgeCentroidLoss": 0.011803874002411065,
+              "componentCountLoss": 0.990909090909091,
+              "enclosedRegionCountLoss": 0.8461538461538461,
+              "targetComponents": 1,
+              "renderedComponents": 110,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 13
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0053351725702467665,
+            "multiscaleColorLoss": 0.0013893082352853783,
+            "edgeGradientLoss": 0.002909225539506053,
+            "bidirectionalEdgeDistanceLoss": 0.018872138443458204,
+            "structureLoss": 0.42467213240097246,
+            "totalLoss": 0.017193920269656777,
+            "structure": {
+              "edgeMassLoss": 0.27436021455815435,
+              "edgeCentroidLoss": 0.011803874002411065,
+              "componentCountLoss": 0.990909090909091,
+              "enclosedRegionCountLoss": 0.8461538461538461,
+              "targetComponents": 1,
+              "renderedComponents": 110,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 13
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.005164327500839435,
+            "multiscaleColorLoss": 0.0014620917129489876,
+            "edgeGradientLoss": 0.010519010932880305,
+            "bidirectionalEdgeDistanceLoss": 0.013845395586952343,
+            "structureLoss": 0.2551008007672045,
+            "totalLoss": 0.01323036241489933,
+            "structure": {
+              "edgeMassLoss": 0.0022838839434909286,
+              "edgeCentroidLoss": 0.003227026845497726,
+              "componentCountLoss": 0.6666666666666666,
+              "enclosedRegionCountLoss": 0.8,
+              "targetComponents": 1,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 10
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.005164327500839435,
+            "multiscaleColorLoss": 0.0014620917129489876,
+            "edgeGradientLoss": 0.010519010932880305,
+            "bidirectionalEdgeDistanceLoss": 0.013845395586952343,
+            "structureLoss": 0.2551008007672045,
+            "totalLoss": 0.01323036241489933,
+            "structure": {
+              "edgeMassLoss": 0.0022838839434909286,
+              "edgeCentroidLoss": 0.003227026845497726,
+              "componentCountLoss": 0.6666666666666666,
+              "enclosedRegionCountLoss": 0.8,
+              "targetComponents": 1,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 10
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.005082369500144796,
+            "multiscaleColorLoss": 0.0014093387826654155,
+            "edgeGradientLoss": 0.005548685104695926,
+            "bidirectionalEdgeDistanceLoss": 0.01480488002422992,
+            "structureLoss": 0.4056322637122719,
+            "totalLoss": 0.016770795968860983,
+            "structure": {
+              "edgeMassLoss": 0.17913212551108113,
+              "edgeCentroidLoss": 0.0022470500716292715,
+              "componentCountLoss": 0.9791666666666666,
+              "enclosedRegionCountLoss": 0.9761904761904762,
+              "targetComponents": 1,
+              "renderedComponents": 48,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 84
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.005082369500144796,
+            "multiscaleColorLoss": 0.0014093387826654155,
+            "edgeGradientLoss": 0.005548685104695926,
+            "bidirectionalEdgeDistanceLoss": 0.01480488002422992,
+            "structureLoss": 0.4056322637122719,
+            "totalLoss": 0.016770795968860983,
+            "structure": {
+              "edgeMassLoss": 0.17913212551108113,
+              "edgeCentroidLoss": 0.0022470500716292715,
+              "componentCountLoss": 0.9791666666666666,
+              "enclosedRegionCountLoss": 0.9761904761904762,
+              "targetComponents": 1,
+              "renderedComponents": 48,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 84
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0050628728783177,
+            "multiscaleColorLoss": 0.001413417089559486,
+            "edgeGradientLoss": 0.0027604671504785983,
+            "bidirectionalEdgeDistanceLoss": 0.01592577143187194,
+            "structureLoss": 0.28200172444853056,
+            "totalLoss": 0.012576123441977598,
+            "structure": {
+              "edgeMassLoss": 0.23879352115554128,
+              "edgeCentroidLoss": 0.0007526461529764373,
+              "componentCountLoss": 0.990990990990991,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 111,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0050628728783177,
+            "multiscaleColorLoss": 0.001413417089559486,
+            "edgeGradientLoss": 0.0027604671504785983,
+            "bidirectionalEdgeDistanceLoss": 0.01592577143187194,
+            "structureLoss": 0.28200172444853056,
+            "totalLoss": 0.012576123441977598,
+            "structure": {
+              "edgeMassLoss": 0.23879352115554128,
+              "edgeCentroidLoss": 0.0007526461529764373,
+              "componentCountLoss": 0.990990990990991,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 111,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        }
+      ],
+      "drawnInstances": 12,
+      "jointAcceptedMoves": 5,
+      "contourAccepted": true,
+      "elapsedMs": 299209
+    },
+    {
+      "id": "epsilon-flat-contour-06",
+      "family": "flat-contour-family-06",
+      "category": "flat-contour",
+      "incumbentLoss": 0.015328294085622925,
+      "selectedLoss": 0.0058536562767030394,
+      "relativeImprovement": 0.6181143026089616,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.003905779665030661,
+            "multiscaleColorLoss": 0.0014394101770941997,
+            "edgeGradientLoss": 0.005287483158574433,
+            "bidirectionalEdgeDistanceLoss": 0.009340544762997708,
+            "structureLoss": 0.31057706241010863,
+            "totalLoss": 0.013022781556568509,
+            "structure": {
+              "edgeMassLoss": 0.09828735137011092,
+              "edgeCentroidLoss": 0.007393853657454948,
+              "componentCountLoss": 0.6666666666666666,
+              "enclosedRegionCountLoss": 0.9375,
+              "targetComponents": 1,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 16
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003905779665030661,
+            "multiscaleColorLoss": 0.0014394101770941997,
+            "edgeGradientLoss": 0.005287483158574433,
+            "bidirectionalEdgeDistanceLoss": 0.009340544762997708,
+            "structureLoss": 0.31057706241010863,
+            "totalLoss": 0.013022781556568509,
+            "structure": {
+              "edgeMassLoss": 0.09828735137011092,
+              "edgeCentroidLoss": 0.007393853657454948,
+              "componentCountLoss": 0.6666666666666666,
+              "enclosedRegionCountLoss": 0.9375,
+              "targetComponents": 1,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 16
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.003962762569154179,
+            "multiscaleColorLoss": 0.0014091673175732086,
+            "edgeGradientLoss": 0.0033182534246590026,
+            "bidirectionalEdgeDistanceLoss": 0.011088751701837008,
+            "structureLoss": 0.4081927503776329,
+            "totalLoss": 0.01569350103832301,
+            "structure": {
+              "edgeMassLoss": 0.2461332420198471,
+              "edgeCentroidLoss": 0.009093112841682236,
+              "componentCountLoss": 0.9090909090909091,
+              "enclosedRegionCountLoss": 0.9166666666666666,
+              "targetComponents": 1,
+              "renderedComponents": 11,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 12
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003962762569154179,
+            "multiscaleColorLoss": 0.0014091673175732086,
+            "edgeGradientLoss": 0.0033182534246590026,
+            "bidirectionalEdgeDistanceLoss": 0.011088751701837008,
+            "structureLoss": 0.4081927503776329,
+            "totalLoss": 0.01569350103832301,
+            "structure": {
+              "edgeMassLoss": 0.2461332420198471,
+              "edgeCentroidLoss": 0.009093112841682236,
+              "componentCountLoss": 0.9090909090909091,
+              "enclosedRegionCountLoss": 0.9166666666666666,
+              "targetComponents": 1,
+              "renderedComponents": 11,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 12
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.003984818491703111,
+            "multiscaleColorLoss": 0.0013987307744775992,
+            "edgeGradientLoss": 0.0018206383152676896,
+            "bidirectionalEdgeDistanceLoss": 0.013681125388294095,
+            "structureLoss": 0.4280274983641278,
+            "totalLoss": 0.016176178020182484,
+            "structure": {
+              "edgeMassLoss": 0.2854989570822172,
+              "edgeCentroidLoss": 0.00923176684006146,
+              "componentCountLoss": 0.96,
+              "enclosedRegionCountLoss": 0.8888888888888888,
+              "targetComponents": 1,
+              "renderedComponents": 25,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 9
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003984818491703111,
+            "multiscaleColorLoss": 0.0013987307744775992,
+            "edgeGradientLoss": 0.0018206383152676896,
+            "bidirectionalEdgeDistanceLoss": 0.013681125388294095,
+            "structureLoss": 0.4280274983641278,
+            "totalLoss": 0.016176178020182484,
+            "structure": {
+              "edgeMassLoss": 0.2854989570822172,
+              "edgeCentroidLoss": 0.00923176684006146,
+              "componentCountLoss": 0.96,
+              "enclosedRegionCountLoss": 0.8888888888888888,
+              "targetComponents": 1,
+              "renderedComponents": 25,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 9
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.006146164170841775,
+            "multiscaleColorLoss": 0.0026451563291733948,
+            "edgeGradientLoss": 0.0055560250014675076,
+            "bidirectionalEdgeDistanceLoss": 0.018119457883919457,
+            "structureLoss": 0.0567169531631873,
+            "totalLoss": 0.007333088214152211,
+            "structure": {
+              "edgeMassLoss": 0.14672891908060542,
+              "edgeCentroidLoss": 0.017872771616584685,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.006146164170841775,
+            "multiscaleColorLoss": 0.0026451563291733948,
+            "edgeGradientLoss": 0.0055560250014675076,
+            "bidirectionalEdgeDistanceLoss": 0.018119457883919457,
+            "structureLoss": 0.0567169531631873,
+            "totalLoss": 0.007333088214152211,
+            "structure": {
+              "edgeMassLoss": 0.14672891908060542,
+              "edgeCentroidLoss": 0.017872771616584685,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.006128750292953823,
+            "multiscaleColorLoss": 0.0025971872809203373,
+            "edgeGradientLoss": 0.00306318650399193,
+            "bidirectionalEdgeDistanceLoss": 0.0195517561569154,
+            "structureLoss": 0.006212549766531938,
+            "totalLoss": 0.0053982930262360534,
+            "structure": {
+              "edgeMassLoss": 0.0034881812525851814,
+              "edgeCentroidLoss": 0.016638954427090416,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.006128750292953823,
+            "multiscaleColorLoss": 0.0025971872809203373,
+            "edgeGradientLoss": 0.00306318650399193,
+            "bidirectionalEdgeDistanceLoss": 0.0195517561569154,
+            "structureLoss": 0.006212549766531938,
+            "totalLoss": 0.0053982930262360534,
+            "structure": {
+              "edgeMassLoss": 0.0034881812525851814,
+              "edgeCentroidLoss": 0.016638954427090416,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0060838643188065025,
+            "multiscaleColorLoss": 0.002584519576540919,
+            "edgeGradientLoss": 0.001555449061695354,
+            "bidirectionalEdgeDistanceLoss": 0.02022924195433378,
+            "structureLoss": 0.02192317616160131,
+            "totalLoss": 0.005593733634475352,
+            "structure": {
+              "edgeMassLoss": 0.048441506537370185,
+              "edgeCentroidLoss": 0.01656216291173915,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0060838643188065025,
+            "multiscaleColorLoss": 0.002584519576540919,
+            "edgeGradientLoss": 0.001555449061695354,
+            "bidirectionalEdgeDistanceLoss": 0.02022924195433378,
+            "structureLoss": 0.02192317616160131,
+            "totalLoss": 0.005593733634475352,
+            "structure": {
+              "edgeMassLoss": 0.048441506537370185,
+              "edgeCentroidLoss": 0.01656216291173915,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          }
+        }
+      ],
+      "drawnInstances": 1,
+      "jointAcceptedMoves": 12,
+      "contourAccepted": false,
+      "elapsedMs": 117047
+    },
+    {
+      "id": "epsilon-flat-contour-08",
+      "family": "flat-contour-family-08",
+      "category": "flat-contour",
+      "incumbentLoss": 0.021197688362047003,
+      "selectedLoss": 0.017960937855285034,
+      "relativeImprovement": 0.15269356032977385,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.011956314515893244,
+            "multiscaleColorLoss": 0.007064687295591329,
+            "edgeGradientLoss": 0.006223644536790903,
+            "bidirectionalEdgeDistanceLoss": 0.03649575972008595,
+            "structureLoss": 0.3721139090391035,
+            "totalLoss": 0.021864781353971997,
+            "structure": {
+              "edgeMassLoss": 0.42129184732598,
+              "edgeCentroidLoss": 0.04887254158336827,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0.3333333333333333,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 3
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.011956314515893244,
+            "multiscaleColorLoss": 0.007064687295591329,
+            "edgeGradientLoss": 0.006223644536790903,
+            "bidirectionalEdgeDistanceLoss": 0.03649575972008595,
+            "structureLoss": 0.3721139090391035,
+            "totalLoss": 0.021864781353971997,
+            "structure": {
+              "edgeMassLoss": 0.42129184732598,
+              "edgeCentroidLoss": 0.04887254158336827,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0.3333333333333333,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 3
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.011965390048390421,
+            "multiscaleColorLoss": 0.006969922658039048,
+            "edgeGradientLoss": 0.0029165285831777347,
+            "bidirectionalEdgeDistanceLoss": 0.03825408366853849,
+            "structureLoss": 0.3672276191227733,
+            "totalLoss": 0.021155052963884327,
+            "structure": {
+              "edgeMassLoss": 0.40577726019862115,
+              "edgeCentroidLoss": 0.050685260177519675,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0.3333333333333333,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 3
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.011965390048390421,
+            "multiscaleColorLoss": 0.006969922658039048,
+            "edgeGradientLoss": 0.0029165285831777347,
+            "bidirectionalEdgeDistanceLoss": 0.03825408366853849,
+            "structureLoss": 0.3672276191227733,
+            "totalLoss": 0.021155052963884327,
+            "structure": {
+              "edgeMassLoss": 0.40577726019862115,
+              "edgeCentroidLoss": 0.050685260177519675,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0.3333333333333333,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 3
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.011922949861297579,
+            "multiscaleColorLoss": 0.0070115506235437705,
+            "edgeGradientLoss": 0.0013634690862337658,
+            "bidirectionalEdgeDistanceLoss": 0.039009268127927,
+            "structureLoss": 0.36651071964574505,
+            "totalLoss": 0.02087130930715616,
+            "structure": {
+              "edgeMassLoss": 0.40429146334570154,
+              "edgeCentroidLoss": 0.05002902491583178,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0.3333333333333333,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 3
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.011922949861297579,
+            "multiscaleColorLoss": 0.0070115506235437705,
+            "edgeGradientLoss": 0.0013634690862337658,
+            "bidirectionalEdgeDistanceLoss": 0.039009268127927,
+            "structureLoss": 0.36651071964574505,
+            "totalLoss": 0.02087130930715616,
+            "structure": {
+              "edgeMassLoss": 0.40429146334570154,
+              "edgeCentroidLoss": 0.05002902491583178,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0.3333333333333333,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 3
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.011937031274037517,
+            "multiscaleColorLoss": 0.006924621345530506,
+            "edgeGradientLoss": 0.006955984444538272,
+            "bidirectionalEdgeDistanceLoss": 0.03480189890884897,
+            "structureLoss": 0.26630820488950147,
+            "totalLoss": 0.018668774872486284,
+            "structure": {
+              "edgeMassLoss": 0.26867743820604717,
+              "edgeCentroidLoss": 0.04090367172461639,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.011937031274037517,
+            "multiscaleColorLoss": 0.006924621345530506,
+            "edgeGradientLoss": 0.006955984444538272,
+            "bidirectionalEdgeDistanceLoss": 0.03480189890884897,
+            "structureLoss": 0.26630820488950147,
+            "totalLoss": 0.018668774872486284,
+            "structure": {
+              "edgeMassLoss": 0.26867743820604717,
+              "edgeCentroidLoss": 0.04090367172461639,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.011938448362847074,
+            "multiscaleColorLoss": 0.006843887304089871,
+            "edgeGradientLoss": 0.003236811605946565,
+            "bidirectionalEdgeDistanceLoss": 0.036806938846596644,
+            "structureLoss": 0.2617205778456007,
+            "totalLoss": 0.017904010912184895,
+            "structure": {
+              "edgeMassLoss": 0.2554722437316629,
+              "edgeCentroidLoss": 0.041017641798395586,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.011938448362847074,
+            "multiscaleColorLoss": 0.006843887304089871,
+            "edgeGradientLoss": 0.003236811605946565,
+            "bidirectionalEdgeDistanceLoss": 0.036806938846596644,
+            "structureLoss": 0.2617205778456007,
+            "totalLoss": 0.017904010912184895,
+            "structure": {
+              "edgeMassLoss": 0.2554722437316629,
+              "edgeCentroidLoss": 0.041017641798395586,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.011908007882259264,
+            "multiscaleColorLoss": 0.006883218727007051,
+            "edgeGradientLoss": 0.0014983805980149096,
+            "bidirectionalEdgeDistanceLoss": 0.03759990663256363,
+            "structureLoss": 0.26232709962797,
+            "totalLoss": 0.017629651343727355,
+            "structure": {
+              "edgeMassLoss": 0.257499293130421,
+              "edgeCentroidLoss": 0.04067449010774206,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.011908007882259264,
+            "multiscaleColorLoss": 0.006883218727007051,
+            "edgeGradientLoss": 0.0014983805980149096,
+            "bidirectionalEdgeDistanceLoss": 0.03759990663256363,
+            "structureLoss": 0.26232709962797,
+            "totalLoss": 0.017629651343727355,
+            "structure": {
+              "edgeMassLoss": 0.257499293130421,
+              "edgeCentroidLoss": 0.04067449010774206,
+              "componentCountLoss": 0.8,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 1,
+              "renderedComponents": 5,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        }
+      ],
+      "drawnInstances": 7,
+      "jointAcceptedMoves": 10,
+      "contourAccepted": true,
+      "elapsedMs": 198469
+    },
+    {
+      "id": "epsilon-fine-detail-02",
+      "family": "fine-detail-family-02",
+      "category": "fine-detail",
+      "incumbentLoss": 0.01752581671321162,
+      "selectedLoss": 0.0153599970002542,
+      "relativeImprovement": 0.1235788179460273,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.002265387406599967,
+            "multiscaleColorLoss": 0.0002086370180237969,
+            "edgeGradientLoss": 0.006621927627960978,
+            "bidirectionalEdgeDistanceLoss": 0.033947757808461244,
+            "structureLoss": 0.4569716499583939,
+            "totalLoss": 0.018378624138983425,
+            "structure": {
+              "edgeMassLoss": 0.6024731006008804,
+              "edgeCentroidLoss": 0.0518350306417674,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.8703703703703703,
+              "targetComponents": 6,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 54,
+              "renderedEnclosedRegions": 7
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.002265387406599967,
+            "multiscaleColorLoss": 0.0002086370180237969,
+            "edgeGradientLoss": 0.006621927627960978,
+            "bidirectionalEdgeDistanceLoss": 0.033947757808461244,
+            "structureLoss": 0.4569716499583939,
+            "totalLoss": 0.018378624138983425,
+            "structure": {
+              "edgeMassLoss": 0.6024731006008804,
+              "edgeCentroidLoss": 0.0518350306417674,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.8703703703703703,
+              "targetComponents": 6,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 54,
+              "renderedEnclosedRegions": 7
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.001346473784257904,
+            "multiscaleColorLoss": 0.00005929102844575237,
+            "edgeGradientLoss": 0.004165261234203722,
+            "bidirectionalEdgeDistanceLoss": 0.03913718632825118,
+            "structureLoss": 0.4287099748330847,
+            "totalLoss": 0.016990331357047757,
+            "structure": {
+              "edgeMassLoss": 0.5802377254102066,
+              "edgeCentroidLoss": 0.05658457149472753,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.9465648854961832,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 131,
+              "renderedEnclosedRegions": 7
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.001346473784257904,
+            "multiscaleColorLoss": 0.00005929102844575237,
+            "edgeGradientLoss": 0.004165261234203722,
+            "bidirectionalEdgeDistanceLoss": 0.03913718632825118,
+            "structureLoss": 0.4287099748330847,
+            "totalLoss": 0.016990331357047757,
+            "structure": {
+              "edgeMassLoss": 0.5802377254102066,
+              "edgeCentroidLoss": 0.05658457149472753,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.9465648854961832,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 131,
+              "renderedEnclosedRegions": 7
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0010128198855289248,
+            "multiscaleColorLoss": 0.00009639604747490372,
+            "edgeGradientLoss": 0.0021530076975963207,
+            "bidirectionalEdgeDistanceLoss": 0.04160303084471805,
+            "structureLoss": 0.4650039629768755,
+            "totalLoss": 0.017726979356409836,
+            "structure": {
+              "edgeMassLoss": 0.5740276994066368,
+              "edgeCentroidLoss": 0.058926286439976425,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.9761092150170648,
+              "targetComponents": 6,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 293,
+              "renderedEnclosedRegions": 7
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0010128198855289248,
+            "multiscaleColorLoss": 0.00009639604747490372,
+            "edgeGradientLoss": 0.0021530076975963207,
+            "bidirectionalEdgeDistanceLoss": 0.04160303084471805,
+            "structureLoss": 0.4650039629768755,
+            "totalLoss": 0.017726979356409836,
+            "structure": {
+              "edgeMassLoss": 0.5740276994066368,
+              "edgeCentroidLoss": 0.058926286439976425,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.9761092150170648,
+              "targetComponents": 6,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 293,
+              "renderedEnclosedRegions": 7
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0023614099007324874,
+            "multiscaleColorLoss": 0.00021295998695359175,
+            "edgeGradientLoss": 0.006880334406842554,
+            "bidirectionalEdgeDistanceLoss": 0.034150706635863975,
+            "structureLoss": 0.3587264627244261,
+            "totalLoss": 0.015536862183990845,
+            "structure": {
+              "edgeMassLoss": 0.6012236333571169,
+              "edgeCentroidLoss": 0.049882859053672894,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.8888888888888888,
+              "targetComponents": 6,
+              "renderedComponents": 6,
+              "targetEnclosedRegions": 54,
+              "renderedEnclosedRegions": 6
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0023614099007324874,
+            "multiscaleColorLoss": 0.00021295998695359175,
+            "edgeGradientLoss": 0.006880334406842554,
+            "bidirectionalEdgeDistanceLoss": 0.034150706635863975,
+            "structureLoss": 0.3587264627244261,
+            "totalLoss": 0.015536862183990845,
+            "structure": {
+              "edgeMassLoss": 0.6012236333571169,
+              "edgeCentroidLoss": 0.049882859053672894,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.8888888888888888,
+              "targetComponents": 6,
+              "renderedComponents": 6,
+              "targetEnclosedRegions": 54,
+              "renderedEnclosedRegions": 6
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0013783070885837185,
+            "multiscaleColorLoss": 0.0000426731231059131,
+            "edgeGradientLoss": 0.004085548740221522,
+            "bidirectionalEdgeDistanceLoss": 0.03881977524663617,
+            "structureLoss": 0.4054718519360442,
+            "totalLoss": 0.016262774345755425,
+            "structure": {
+              "edgeMassLoss": 0.5350454578438031,
+              "edgeCentroidLoss": 0.05856603125063842,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.8931297709923665,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 131,
+              "renderedEnclosedRegions": 14
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0013783070885837185,
+            "multiscaleColorLoss": 0.0000426731231059131,
+            "edgeGradientLoss": 0.004085548740221522,
+            "bidirectionalEdgeDistanceLoss": 0.03881977524663617,
+            "structureLoss": 0.4054718519360442,
+            "totalLoss": 0.016262774345755425,
+            "structure": {
+              "edgeMassLoss": 0.5350454578438031,
+              "edgeCentroidLoss": 0.05856603125063842,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.8931297709923665,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 131,
+              "renderedEnclosedRegions": 14
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0010300929074542995,
+            "multiscaleColorLoss": 0.00007385625081557834,
+            "edgeGradientLoss": 0.002173958244169998,
+            "bidirectionalEdgeDistanceLoss": 0.04125211101396228,
+            "structureLoss": 0.34471946643360707,
+            "totalLoss": 0.014098217451045964,
+            "structure": {
+              "edgeMassLoss": 0.5217372040720425,
+              "edgeCentroidLoss": 0.06084929906096612,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9590443686006825,
+              "targetComponents": 6,
+              "renderedComponents": 6,
+              "targetEnclosedRegions": 293,
+              "renderedEnclosedRegions": 12
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0010300929074542995,
+            "multiscaleColorLoss": 0.00007385625081557834,
+            "edgeGradientLoss": 0.002173958244169998,
+            "bidirectionalEdgeDistanceLoss": 0.04125211101396228,
+            "structureLoss": 0.34471946643360707,
+            "totalLoss": 0.014098217451045964,
+            "structure": {
+              "edgeMassLoss": 0.5217372040720425,
+              "edgeCentroidLoss": 0.06084929906096612,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9590443686006825,
+              "targetComponents": 6,
+              "renderedComponents": 6,
+              "targetEnclosedRegions": 293,
+              "renderedEnclosedRegions": 12
+            }
+          }
+        }
+      ],
+      "drawnInstances": 12,
+      "jointAcceptedMoves": 3,
+      "contourAccepted": true,
+      "elapsedMs": 186739
+    },
+    {
+      "id": "epsilon-fine-detail-04",
+      "family": "fine-detail-family-04",
+      "category": "fine-detail",
+      "incumbentLoss": 0.01639679683082965,
+      "selectedLoss": 0.009670944883753937,
+      "relativeImprovement": 0.4101930405351858,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0015325647346523395,
+            "multiscaleColorLoss": 0.00014493321802441444,
+            "edgeGradientLoss": 0.005168507446487421,
+            "bidirectionalEdgeDistanceLoss": 0.03451885950088288,
+            "structureLoss": 0.4041048522938521,
+            "totalLoss": 0.016229673082443108,
+            "structure": {
+              "edgeMassLoss": 0.5928110295185594,
+              "edgeCentroidLoss": 0.05439320553108683,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.7575757575757576,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 33,
+              "renderedEnclosedRegions": 8
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0015325647346523395,
+            "multiscaleColorLoss": 0.00014493321802441444,
+            "edgeGradientLoss": 0.005168507446487421,
+            "bidirectionalEdgeDistanceLoss": 0.03451885950088288,
+            "structureLoss": 0.4041048522938521,
+            "totalLoss": 0.016229673082443108,
+            "structure": {
+              "edgeMassLoss": 0.5928110295185594,
+              "edgeCentroidLoss": 0.05439320553108683,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.7575757575757576,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 33,
+              "renderedEnclosedRegions": 8
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0009861159993708641,
+            "multiscaleColorLoss": 0.00004993533544064662,
+            "edgeGradientLoss": 0.003276802726184507,
+            "bidirectionalEdgeDistanceLoss": 0.039289415603962916,
+            "structureLoss": 0.4219375412525309,
+            "totalLoss": 0.016473172875470773,
+            "structure": {
+              "edgeMassLoss": 0.5691568663891935,
+              "edgeCentroidLoss": 0.058194588043125814,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.9240506329113924,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 79,
+              "renderedEnclosedRegions": 6
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0009861159993708641,
+            "multiscaleColorLoss": 0.00004993533544064662,
+            "edgeGradientLoss": 0.003276802726184507,
+            "bidirectionalEdgeDistanceLoss": 0.039289415603962916,
+            "structureLoss": 0.4219375412525309,
+            "totalLoss": 0.016473172875470773,
+            "structure": {
+              "edgeMassLoss": 0.5691568663891935,
+              "edgeCentroidLoss": 0.058194588043125814,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.9240506329113924,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 79,
+              "renderedEnclosedRegions": 6
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0008031166368111527,
+            "multiscaleColorLoss": 0.00008758382950633121,
+            "edgeGradientLoss": 0.0016952104023222518,
+            "bidirectionalEdgeDistanceLoss": 0.04165161512330796,
+            "structureLoss": 0.42639738004227157,
+            "totalLoss": 0.016394098343940514,
+            "structure": {
+              "edgeMassLoss": 0.5623722391725822,
+              "edgeCentroidLoss": 0.06044329268245328,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.9651162790697675,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 172,
+              "renderedEnclosedRegions": 6
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0008031166368111527,
+            "multiscaleColorLoss": 0.00008758382950633121,
+            "edgeGradientLoss": 0.0016952104023222518,
+            "bidirectionalEdgeDistanceLoss": 0.04165161512330796,
+            "structureLoss": 0.42639738004227157,
+            "totalLoss": 0.016394098343940514,
+            "structure": {
+              "edgeMassLoss": 0.5623722391725822,
+              "edgeCentroidLoss": 0.06044329268245328,
+              "componentCountLoss": 0.3333333333333333,
+              "enclosedRegionCountLoss": 0.9651162790697675,
+              "targetComponents": 2,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 172,
+              "renderedEnclosedRegions": 6
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0021370202801713023,
+            "multiscaleColorLoss": 0.00011969150480373175,
+            "edgeGradientLoss": 0.006021759499341199,
+            "bidirectionalEdgeDistanceLoss": 0.008290752121973848,
+            "structureLoss": 0.2515793797163833,
+            "totalLoss": 0.010222801503407548,
+            "structure": {
+              "edgeMassLoss": 0.31884677277780454,
+              "edgeCentroidLoss": 0.057519121722929875,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.8181818181818182,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 33,
+              "renderedEnclosedRegions": 6
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0021370202801713023,
+            "multiscaleColorLoss": 0.00011969150480373175,
+            "edgeGradientLoss": 0.006021759499341199,
+            "bidirectionalEdgeDistanceLoss": 0.008290752121973848,
+            "structureLoss": 0.2561248342618378,
+            "totalLoss": 0.010359165139771184,
+            "structure": {
+              "edgeMassLoss": 0.31884677277780454,
+              "edgeCentroidLoss": 0.057519121722929875,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.8484848484848485,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 33,
+              "renderedEnclosedRegions": 5
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0014957294925009438,
+            "multiscaleColorLoss": 0.000055195600834019415,
+            "edgeGradientLoss": 0.00423031463870522,
+            "bidirectionalEdgeDistanceLoss": 0.007541089356381743,
+            "structureLoss": 0.2457220040354216,
+            "totalLoss": 0.009360449781000998,
+            "structure": {
+              "edgeMassLoss": 0.00048464604675354167,
+              "edgeCentroidLoss": 0.08011130192428566,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.810126582278481,
+              "targetComponents": 2,
+              "renderedComponents": 4,
+              "targetEnclosedRegions": 79,
+              "renderedEnclosedRegions": 15
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0014957294925009438,
+            "multiscaleColorLoss": 0.000055195600834019415,
+            "edgeGradientLoss": 0.00423031463870522,
+            "bidirectionalEdgeDistanceLoss": 0.007541089356381743,
+            "structureLoss": 0.25141820656706715,
+            "totalLoss": 0.009531335856950363,
+            "structure": {
+              "edgeMassLoss": 0.00048464604675354167,
+              "edgeCentroidLoss": 0.08011130192428566,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.8481012658227848,
+              "targetComponents": 2,
+              "renderedComponents": 4,
+              "targetEnclosedRegions": 79,
+              "renderedEnclosedRegions": 12
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.001535586305287484,
+            "multiscaleColorLoss": 0.00014582836810404028,
+            "edgeGradientLoss": 0.0022831060180448473,
+            "bidirectionalEdgeDistanceLoss": 0.008588357069847785,
+            "structureLoss": 0.26796723340537104,
+            "totalLoss": 0.009754806233205652,
+            "structure": {
+              "edgeMassLoss": 0.0163435845147611,
+              "edgeCentroidLoss": 0.07570698368091477,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.9302325581395349,
+              "targetComponents": 2,
+              "renderedComponents": 4,
+              "targetEnclosedRegions": 172,
+              "renderedEnclosedRegions": 12
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.001535586305287484,
+            "multiscaleColorLoss": 0.00014582836810404028,
+            "edgeGradientLoss": 0.0022831060180448473,
+            "bidirectionalEdgeDistanceLoss": 0.008588357069847785,
+            "structureLoss": 0.2697114194518827,
+            "totalLoss": 0.009807131814601001,
+            "structure": {
+              "edgeMassLoss": 0.0163435845147611,
+              "edgeCentroidLoss": 0.07570698368091477,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.9418604651162791,
+              "targetComponents": 2,
+              "renderedComponents": 4,
+              "targetEnclosedRegions": 172,
+              "renderedEnclosedRegions": 10
+            }
+          }
+        }
+      ],
+      "drawnInstances": 12,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": true,
+      "elapsedMs": 196849
+    },
+    {
+      "id": "epsilon-fine-detail-06",
+      "family": "fine-detail-family-06",
+      "category": "fine-detail",
+      "incumbentLoss": 0.01687940059561216,
+      "selectedLoss": 0.012579278280861288,
+      "relativeImprovement": 0.2547556289332157,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0009287310849308549,
+            "multiscaleColorLoss": 0.00011165881084351227,
+            "edgeGradientLoss": 0.0047667698955638615,
+            "bidirectionalEdgeDistanceLoss": 0.047283545776939995,
+            "structureLoss": 0.49501955506365736,
+            "totalLoss": 0.019518778912633688,
+            "structure": {
+              "edgeMassLoss": 0.6792648432195647,
+              "edgeCentroidLoss": 0.10758953312269913,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.8333333333333334,
+              "targetComponents": 2,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 42,
+              "renderedEnclosedRegions": 7
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0009287310849308549,
+            "multiscaleColorLoss": 0.00011165881084351227,
+            "edgeGradientLoss": 0.0047667698955638615,
+            "bidirectionalEdgeDistanceLoss": 0.047283545776939995,
+            "structureLoss": 0.49501955506365736,
+            "totalLoss": 0.019518778912633688,
+            "structure": {
+              "edgeMassLoss": 0.6792648432195647,
+              "edgeCentroidLoss": 0.10758953312269913,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.8333333333333334,
+              "targetComponents": 2,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 42,
+              "renderedEnclosedRegions": 7
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0006165286899681757,
+            "multiscaleColorLoss": 0.000012565412411901264,
+            "edgeGradientLoss": 0.003304006093180135,
+            "bidirectionalEdgeDistanceLoss": 0.055109189003800955,
+            "structureLoss": 0.3942584243959828,
+            "totalLoss": 0.016596578280492418,
+            "structure": {
+              "edgeMassLoss": 0.6095452219147954,
+              "edgeCentroidLoss": 0.1125824652764909,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9809523809523809,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 105,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0006165286899681757,
+            "multiscaleColorLoss": 0.000012565412411901264,
+            "edgeGradientLoss": 0.003304006093180135,
+            "bidirectionalEdgeDistanceLoss": 0.055109189003800955,
+            "structureLoss": 0.3942584243959828,
+            "totalLoss": 0.016596578280492418,
+            "structure": {
+              "edgeMassLoss": 0.6095452219147954,
+              "edgeCentroidLoss": 0.1125824652764909,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9809523809523809,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 105,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.00048655938974179175,
+            "multiscaleColorLoss": 0.00004144877609674432,
+            "edgeGradientLoss": 0.0016161914011852902,
+            "bidirectionalEdgeDistanceLoss": 0.058517038916925695,
+            "structureLoss": 0.3702774570725882,
+            "totalLoss": 0.015734813105325242,
+            "structure": {
+              "edgeMassLoss": 0.5340546876680167,
+              "edgeCentroidLoss": 0.11552339229161221,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9913419913419913,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 231,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.00048655938974179175,
+            "multiscaleColorLoss": 0.00004144877609674432,
+            "edgeGradientLoss": 0.0016161914011852902,
+            "bidirectionalEdgeDistanceLoss": 0.058517038916925695,
+            "structureLoss": 0.3702774570725882,
+            "totalLoss": 0.015734813105325242,
+            "structure": {
+              "edgeMassLoss": 0.5340546876680167,
+              "edgeCentroidLoss": 0.11552339229161221,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9913419913419913,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 231,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0009874378121089268,
+            "multiscaleColorLoss": 0.0001479494852152577,
+            "edgeGradientLoss": 0.004200602394849596,
+            "bidirectionalEdgeDistanceLoss": 0.046748823189119326,
+            "structureLoss": 0.2825537694199657,
+            "totalLoss": 0.01302851115521539,
+            "structure": {
+              "edgeMassLoss": 0.27631038175085887,
+              "edgeCentroidLoss": 0.10757902411912168,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.35714285714285715,
+              "targetComponents": 2,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 42,
+              "renderedEnclosedRegions": 27
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0009874378121089268,
+            "multiscaleColorLoss": 0.0001479494852152577,
+            "edgeGradientLoss": 0.004200602394849596,
+            "bidirectionalEdgeDistanceLoss": 0.046748823189119326,
+            "structureLoss": 0.2825537694199657,
+            "totalLoss": 0.01302851115521539,
+            "structure": {
+              "edgeMassLoss": 0.27631038175085887,
+              "edgeCentroidLoss": 0.10757902411912168,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.35714285714285715,
+              "targetComponents": 2,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 42,
+              "renderedEnclosedRegions": 27
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0009019651777469253,
+            "multiscaleColorLoss": 0.00010531385249407104,
+            "edgeGradientLoss": 0.0038490315844355,
+            "bidirectionalEdgeDistanceLoss": 0.053503670042928386,
+            "structureLoss": 0.263071974207535,
+            "totalLoss": 0.012799602672965128,
+            "structure": {
+              "edgeMassLoss": 0.23420458471371172,
+              "edgeCentroidLoss": 0.11319170804959583,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9809523809523809,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 105,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0009019651777469253,
+            "multiscaleColorLoss": 0.00010531385249407104,
+            "edgeGradientLoss": 0.0038490315844355,
+            "bidirectionalEdgeDistanceLoss": 0.053503670042928386,
+            "structureLoss": 0.263071974207535,
+            "totalLoss": 0.012799602672965128,
+            "structure": {
+              "edgeMassLoss": 0.23420458471371172,
+              "edgeCentroidLoss": 0.11319170804959583,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9809523809523809,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 105,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.000900280529608834,
+            "multiscaleColorLoss": 0.00015164480160101632,
+            "edgeGradientLoss": 0.0019999523926327663,
+            "bidirectionalEdgeDistanceLoss": 0.05663456202022006,
+            "structureLoss": 0.2423094696848452,
+            "totalLoss": 0.012039299562811152,
+            "structure": {
+              "edgeMassLoss": 0.16846851288173448,
+              "edgeCentroidLoss": 0.11548063824979815,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9913419913419913,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 231,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.000900280529608834,
+            "multiscaleColorLoss": 0.00015164480160101632,
+            "edgeGradientLoss": 0.0019999523926327663,
+            "bidirectionalEdgeDistanceLoss": 0.05663456202022006,
+            "structureLoss": 0.2423094696848452,
+            "totalLoss": 0.012039299562811152,
+            "structure": {
+              "edgeMassLoss": 0.16846851288173448,
+              "edgeCentroidLoss": 0.11548063824979815,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.9913419913419913,
+              "targetComponents": 2,
+              "renderedComponents": 2,
+              "targetEnclosedRegions": 231,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        }
+      ],
+      "drawnInstances": 2,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": false,
+      "elapsedMs": 194882
+    },
+    {
+      "id": "epsilon-fine-detail-08",
+      "family": "fine-detail-family-08",
+      "category": "fine-detail",
+      "incumbentLoss": 0.017853128303877506,
+      "selectedLoss": 0.01730427029266491,
+      "relativeImprovement": 0.030742960105954658,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.001293238793820513,
+            "multiscaleColorLoss": 0.00013917993615813955,
+            "edgeGradientLoss": 0.004608393873040875,
+            "bidirectionalEdgeDistanceLoss": 0.007756574147331965,
+            "structureLoss": 0.5457339830324136,
+            "totalLoss": 0.018395707954269466,
+            "structure": {
+              "edgeMassLoss": 0.672418492399103,
+              "edgeCentroidLoss": 0.024821114073797713,
+              "componentCountLoss": 0.7647058823529411,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 4,
+              "renderedComponents": 17,
+              "targetEnclosedRegions": 41,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.001293238793820513,
+            "multiscaleColorLoss": 0.00013917993615813955,
+            "edgeGradientLoss": 0.004608393873040875,
+            "bidirectionalEdgeDistanceLoss": 0.007756574147331965,
+            "structureLoss": 0.5457339830324136,
+            "totalLoss": 0.018395707954269466,
+            "structure": {
+              "edgeMassLoss": 0.672418492399103,
+              "edgeCentroidLoss": 0.024821114073797713,
+              "componentCountLoss": 0.7647058823529411,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 4,
+              "renderedComponents": 17,
+              "targetEnclosedRegions": 41,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0008157061995432304,
+            "multiscaleColorLoss": 0.000029315425038039757,
+            "edgeGradientLoss": 0.0026624078160563448,
+            "bidirectionalEdgeDistanceLoss": 0.009756821326391068,
+            "structureLoss": 0.5281501900687818,
+            "totalLoss": 0.0173950418654508,
+            "structure": {
+              "edgeMassLoss": 0.6643334513166045,
+              "edgeCentroidLoss": 0.030096464335827855,
+              "componentCountLoss": 0.7647058823529411,
+              "enclosedRegionCountLoss": 0.8910891089108911,
+              "targetComponents": 4,
+              "renderedComponents": 17,
+              "targetEnclosedRegions": 101,
+              "renderedEnclosedRegions": 11
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0008157061995432304,
+            "multiscaleColorLoss": 0.000029315425038039757,
+            "edgeGradientLoss": 0.0026624078160563448,
+            "bidirectionalEdgeDistanceLoss": 0.009756821326391068,
+            "structureLoss": 0.5281501900687818,
+            "totalLoss": 0.0173950418654508,
+            "structure": {
+              "edgeMassLoss": 0.6643334513166045,
+              "edgeCentroidLoss": 0.030096464335827855,
+              "componentCountLoss": 0.7647058823529411,
+              "enclosedRegionCountLoss": 0.8910891089108911,
+              "targetComponents": 4,
+              "renderedComponents": 17,
+              "targetEnclosedRegions": 101,
+              "renderedEnclosedRegions": 11
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0006542160650600599,
+            "multiscaleColorLoss": 0.00005186191738369123,
+            "edgeGradientLoss": 0.0013530978611810322,
+            "bidirectionalEdgeDistanceLoss": 0.011166347857308693,
+            "structureLoss": 0.5600847381286019,
+            "totalLoss": 0.018132051067345004,
+            "structure": {
+              "edgeMassLoss": 0.6622353913318313,
+              "edgeCentroidLoss": 0.030992754251943904,
+              "componentCountLoss": 0.8823529411764706,
+              "enclosedRegionCountLoss": 0.9502262443438914,
+              "targetComponents": 2,
+              "renderedComponents": 17,
+              "targetEnclosedRegions": 221,
+              "renderedEnclosedRegions": 11
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0006542160650600599,
+            "multiscaleColorLoss": 0.00005186191738369123,
+            "edgeGradientLoss": 0.0013530978611810322,
+            "bidirectionalEdgeDistanceLoss": 0.011166347857308693,
+            "structureLoss": 0.5600847381286019,
+            "totalLoss": 0.018132051067345004,
+            "structure": {
+              "edgeMassLoss": 0.6622353913318313,
+              "edgeCentroidLoss": 0.030992754251943904,
+              "componentCountLoss": 0.8823529411764706,
+              "enclosedRegionCountLoss": 0.9502262443438914,
+              "targetComponents": 2,
+              "renderedComponents": 17,
+              "targetEnclosedRegions": 221,
+              "renderedEnclosedRegions": 11
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0013296712632085263,
+            "multiscaleColorLoss": 0.00013539846055327833,
+            "edgeGradientLoss": 0.004634314287892348,
+            "bidirectionalEdgeDistanceLoss": 0.0075225425532833776,
+            "structureLoss": 0.5172904793287181,
+            "totalLoss": 0.01754464325961924,
+            "structure": {
+              "edgeMassLoss": 0.6598323896717246,
+              "edgeCentroidLoss": 0.02224782065215645,
+              "componentCountLoss": 0.6666666666666666,
+              "enclosedRegionCountLoss": 0.975609756097561,
+              "targetComponents": 4,
+              "renderedComponents": 12,
+              "targetEnclosedRegions": 41,
+              "renderedEnclosedRegions": 1
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0013296712632085263,
+            "multiscaleColorLoss": 0.00013539846055327833,
+            "edgeGradientLoss": 0.004634314287892348,
+            "bidirectionalEdgeDistanceLoss": 0.0075225425532833776,
+            "structureLoss": 0.5172904793287181,
+            "totalLoss": 0.01754464325961924,
+            "structure": {
+              "edgeMassLoss": 0.6598323896717246,
+              "edgeCentroidLoss": 0.02224782065215645,
+              "componentCountLoss": 0.6666666666666666,
+              "enclosedRegionCountLoss": 0.975609756097561,
+              "targetComponents": 4,
+              "renderedComponents": 12,
+              "targetEnclosedRegions": 41,
+              "renderedEnclosedRegions": 1
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.000847168627240538,
+            "multiscaleColorLoss": 0.00003335416283072483,
+            "edgeGradientLoss": 0.0026656659397347226,
+            "bidirectionalEdgeDistanceLoss": 0.009614597778061673,
+            "structureLoss": 0.5055690851710356,
+            "totalLoss": 0.016722101287287763,
+            "structure": {
+              "edgeMassLoss": 0.651317855571441,
+              "edgeCentroidLoss": 0.0281774265085404,
+              "componentCountLoss": 0.6923076923076923,
+              "enclosedRegionCountLoss": 0.8712871287128713,
+              "targetComponents": 4,
+              "renderedComponents": 13,
+              "targetEnclosedRegions": 101,
+              "renderedEnclosedRegions": 13
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.000847168627240538,
+            "multiscaleColorLoss": 0.00003335416283072483,
+            "edgeGradientLoss": 0.0026656659397347226,
+            "bidirectionalEdgeDistanceLoss": 0.009614597778061673,
+            "structureLoss": 0.5055690851710356,
+            "totalLoss": 0.016722101287287763,
+            "structure": {
+              "edgeMassLoss": 0.651317855571441,
+              "edgeCentroidLoss": 0.0281774265085404,
+              "componentCountLoss": 0.6923076923076923,
+              "enclosedRegionCountLoss": 0.8712871287128713,
+              "targetComponents": 4,
+              "renderedComponents": 13,
+              "targetEnclosedRegions": 101,
+              "renderedEnclosedRegions": 13
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0006800295585099077,
+            "multiscaleColorLoss": 0.00005868085307659556,
+            "edgeGradientLoss": 0.0013581983760039022,
+            "bidirectionalEdgeDistanceLoss": 0.011087495564305081,
+            "structureLoss": 0.5526012291477513,
+            "totalLoss": 0.017915417318461618,
+            "structure": {
+              "edgeMassLoss": 0.652890462808467,
+              "edgeCentroidLoss": 0.02967010070515002,
+              "componentCountLoss": 0.8666666666666667,
+              "enclosedRegionCountLoss": 0.9457013574660633,
+              "targetComponents": 2,
+              "renderedComponents": 15,
+              "targetEnclosedRegions": 221,
+              "renderedEnclosedRegions": 12
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0006800295585099077,
+            "multiscaleColorLoss": 0.00005868085307659556,
+            "edgeGradientLoss": 0.0013581983760039022,
+            "bidirectionalEdgeDistanceLoss": 0.011087495564305081,
+            "structureLoss": 0.5526012291477513,
+            "totalLoss": 0.017915417318461618,
+            "structure": {
+              "edgeMassLoss": 0.652890462808467,
+              "edgeCentroidLoss": 0.02967010070515002,
+              "componentCountLoss": 0.8666666666666667,
+              "enclosedRegionCountLoss": 0.9457013574660633,
+              "targetComponents": 2,
+              "renderedComponents": 15,
+              "targetEnclosedRegions": 221,
+              "renderedEnclosedRegions": 12
+            }
+          }
+        }
+      ],
+      "drawnInstances": 16,
+      "jointAcceptedMoves": 0,
+      "contourAccepted": false,
+      "elapsedMs": 183576
+    },
+    {
+      "id": "epsilon-color-overlap-02",
+      "family": "color-overlap-family-02",
+      "category": "color-overlap",
+      "incumbentLoss": 0.008454169397716472,
+      "selectedLoss": 0.007207070437545167,
+      "relativeImprovement": 0.1475128899721544,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.003164213729366178,
+            "multiscaleColorLoss": 0.0008939463361114513,
+            "edgeGradientLoss": 0.00884320491230679,
+            "bidirectionalEdgeDistanceLoss": 0.014945890033064905,
+            "structureLoss": 0.038903869226487434,
+            "totalLoss": 0.005515838754150431,
+            "structure": {
+              "edgeMassLoss": 0.08720667625814409,
+              "edgeCentroidLoss": 0.02793844178712335,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 6,
+              "renderedComponents": 6,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 4
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003164213729366178,
+            "multiscaleColorLoss": 0.0008939463361114513,
+            "edgeGradientLoss": 0.00884320491230679,
+            "bidirectionalEdgeDistanceLoss": 0.014945890033064905,
+            "structureLoss": 0.038903869226487434,
+            "totalLoss": 0.005515838754150431,
+            "structure": {
+              "edgeMassLoss": 0.08720667625814409,
+              "edgeCentroidLoss": 0.02793844178712335,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 6,
+              "renderedComponents": 6,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 4
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0031154076964679915,
+            "multiscaleColorLoss": 0.0008510127286920161,
+            "edgeGradientLoss": 0.004558217425338714,
+            "bidirectionalEdgeDistanceLoss": 0.01582683814505001,
+            "structureLoss": 0.2048145186467416,
+            "totalLoss": 0.009665424611818293,
+            "structure": {
+              "edgeMassLoss": 0.1586906517440471,
+              "edgeCentroidLoss": 0.03090930178775036,
+              "componentCountLoss": 0.25,
+              "enclosedRegionCountLoss": 0.6,
+              "targetComponents": 12,
+              "renderedComponents": 9,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 10
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0031154076964679915,
+            "multiscaleColorLoss": 0.0008510127286920161,
+            "edgeGradientLoss": 0.004558217425338714,
+            "bidirectionalEdgeDistanceLoss": 0.01582683814505001,
+            "structureLoss": 0.2048145186467416,
+            "totalLoss": 0.009665424611818293,
+            "structure": {
+              "edgeMassLoss": 0.1586906517440471,
+              "edgeCentroidLoss": 0.03090930178775036,
+              "componentCountLoss": 0.25,
+              "enclosedRegionCountLoss": 0.6,
+              "targetComponents": 12,
+              "renderedComponents": 9,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 10
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.003151051988717349,
+            "multiscaleColorLoss": 0.0008863582995980398,
+            "edgeGradientLoss": 0.0023505690952529846,
+            "bidirectionalEdgeDistanceLoss": 0.01679023800523022,
+            "structureLoss": 0.1801376194184839,
+            "totalLoss": 0.008575887347337581,
+            "structure": {
+              "edgeMassLoss": 0.19522154190080535,
+              "edgeCentroidLoss": 0.03264650240314659,
+              "componentCountLoss": 0.3225806451612903,
+              "enclosedRegionCountLoss": 0.25,
+              "targetComponents": 21,
+              "renderedComponents": 31,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 3
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003151051988717349,
+            "multiscaleColorLoss": 0.0008863582995980398,
+            "edgeGradientLoss": 0.0023505690952529846,
+            "bidirectionalEdgeDistanceLoss": 0.01679023800523022,
+            "structureLoss": 0.1801376194184839,
+            "totalLoss": 0.008575887347337581,
+            "structure": {
+              "edgeMassLoss": 0.19522154190080535,
+              "edgeCentroidLoss": 0.03264650240314659,
+              "componentCountLoss": 0.3225806451612903,
+              "enclosedRegionCountLoss": 0.25,
+              "targetComponents": 21,
+              "renderedComponents": 31,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 3
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.003124208935088391,
+            "multiscaleColorLoss": 0.0008703923937732277,
+            "edgeGradientLoss": 0.008674315444341737,
+            "bidirectionalEdgeDistanceLoss": 0.015047594174324271,
+            "structureLoss": 0.035191602572632354,
+            "totalLoss": 0.005354744050417342,
+            "structure": {
+              "edgeMassLoss": 0.07687983386821348,
+              "edgeCentroidLoss": 0.02761220239585878,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 6,
+              "renderedComponents": 6,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 4
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003124208935088391,
+            "multiscaleColorLoss": 0.0008703923937732277,
+            "edgeGradientLoss": 0.008674315444341737,
+            "bidirectionalEdgeDistanceLoss": 0.015047594174324271,
+            "structureLoss": 0.035191602572632354,
+            "totalLoss": 0.005354744050417342,
+            "structure": {
+              "edgeMassLoss": 0.07687983386821348,
+              "edgeCentroidLoss": 0.02761220239585878,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 6,
+              "renderedComponents": 6,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 4
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0030585237912668607,
+            "multiscaleColorLoss": 0.0008270429598544178,
+            "edgeGradientLoss": 0.004434415365578333,
+            "bidirectionalEdgeDistanceLoss": 0.015780160128503036,
+            "structureLoss": 0.1572193188975508,
+            "totalLoss": 0.008179596253500473,
+            "structure": {
+              "edgeMassLoss": 0.15038052159629617,
+              "edgeCentroidLoss": 0.030438636281005717,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.6363636363636364,
+              "targetComponents": 12,
+              "renderedComponents": 12,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 11
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0030585237912668607,
+            "multiscaleColorLoss": 0.0008270429598544178,
+            "edgeGradientLoss": 0.004434415365578333,
+            "bidirectionalEdgeDistanceLoss": 0.015780160128503036,
+            "structureLoss": 0.1572193188975508,
+            "totalLoss": 0.008179596253500473,
+            "structure": {
+              "edgeMassLoss": 0.15038052159629617,
+              "edgeCentroidLoss": 0.030438636281005717,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0.6363636363636364,
+              "targetComponents": 12,
+              "renderedComponents": 12,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 11
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0030891072122299587,
+            "multiscaleColorLoss": 0.0008623004173285367,
+            "edgeGradientLoss": 0.0023033872786213322,
+            "bidirectionalEdgeDistanceLoss": 0.016647176298307025,
+            "structureLoss": 0.1298279839088362,
+            "totalLoss": 0.007015152323961389,
+            "structure": {
+              "edgeMassLoss": 0.18582921973205876,
+              "edgeCentroidLoss": 0.03205114403170735,
+              "componentCountLoss": 0.27586206896551724,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 21,
+              "renderedComponents": 29,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 4
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0030891072122299587,
+            "multiscaleColorLoss": 0.0008623004173285367,
+            "edgeGradientLoss": 0.0023033872786213322,
+            "bidirectionalEdgeDistanceLoss": 0.016647176298307025,
+            "structureLoss": 0.1298279839088362,
+            "totalLoss": 0.007015152323961389,
+            "structure": {
+              "edgeMassLoss": 0.18582921973205876,
+              "edgeCentroidLoss": 0.03205114403170735,
+              "componentCountLoss": 0.27586206896551724,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 21,
+              "renderedComponents": 29,
+              "targetEnclosedRegions": 4,
+              "renderedEnclosedRegions": 4
+            }
+          }
+        }
+      ],
+      "drawnInstances": 16,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": false,
+      "elapsedMs": 286170
+    },
+    {
+      "id": "epsilon-color-overlap-04",
+      "family": "color-overlap-family-04",
+      "category": "color-overlap",
+      "incumbentLoss": 0.010252049319923903,
+      "selectedLoss": 0.005866491098666103,
+      "relativeImprovement": 0.4277738122791583,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0019095147724146261,
+            "multiscaleColorLoss": 0.0005012818776733182,
+            "edgeGradientLoss": 0.006354208643171596,
+            "bidirectionalEdgeDistanceLoss": 0.006230681412692894,
+            "structureLoss": 0.2516103991125097,
+            "totalLoss": 0.010169491873165959,
+            "structure": {
+              "edgeMassLoss": 0.10361783704813132,
+              "edgeCentroidLoss": 0.009480520485545726,
+              "componentCountLoss": 0.875,
+              "enclosedRegionCountLoss": 0.25,
+              "targetComponents": 8,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 4
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0019095147724146261,
+            "multiscaleColorLoss": 0.0005012818776733182,
+            "edgeGradientLoss": 0.006354208643171596,
+            "bidirectionalEdgeDistanceLoss": 0.006230681412692894,
+            "structureLoss": 0.2516103991125097,
+            "totalLoss": 0.010169491873165959,
+            "structure": {
+              "edgeMassLoss": 0.10361783704813132,
+              "edgeCentroidLoss": 0.009480520485545726,
+              "componentCountLoss": 0.875,
+              "enclosedRegionCountLoss": 0.25,
+              "targetComponents": 8,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 4
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0019434184514762315,
+            "multiscaleColorLoss": 0.0004894040037584091,
+            "edgeGradientLoss": 0.0038538112235009174,
+            "bidirectionalEdgeDistanceLoss": 0.007229166425120231,
+            "structureLoss": 0.3342874038289082,
+            "totalLoss": 0.01222961459104386,
+            "structure": {
+              "edgeMassLoss": 0.163861122241834,
+              "edgeCentroidLoss": 0.005826803731514329,
+              "componentCountLoss": 0.9473684210526315,
+              "enclosedRegionCountLoss": 0.5714285714285714,
+              "targetComponents": 19,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 7
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0019434184514762315,
+            "multiscaleColorLoss": 0.0004894040037584091,
+            "edgeGradientLoss": 0.0038538112235009174,
+            "bidirectionalEdgeDistanceLoss": 0.007229166425120231,
+            "structureLoss": 0.3342874038289082,
+            "totalLoss": 0.01222961459104386,
+            "structure": {
+              "edgeMassLoss": 0.163861122241834,
+              "edgeCentroidLoss": 0.005826803731514329,
+              "componentCountLoss": 0.9473684210526315,
+              "enclosedRegionCountLoss": 0.5714285714285714,
+              "targetComponents": 19,
+              "renderedComponents": 1,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 7
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0019886919263829377,
+            "multiscaleColorLoss": 0.0005083663938420972,
+            "edgeGradientLoss": 0.0021094718867663486,
+            "bidirectionalEdgeDistanceLoss": 0.008225672207005761,
+            "structureLoss": 0.1936987654408246,
+            "totalLoss": 0.007756641083774215,
+            "structure": {
+              "edgeMassLoss": 0.19237116285443634,
+              "edgeCentroidLoss": 0.0045628614725729995,
+              "componentCountLoss": 0.19642857142857142,
+              "enclosedRegionCountLoss": 0.5714285714285714,
+              "targetComponents": 45,
+              "renderedComponents": 56,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 7
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0019886919263829377,
+            "multiscaleColorLoss": 0.0005083663938420972,
+            "edgeGradientLoss": 0.0021094718867663486,
+            "bidirectionalEdgeDistanceLoss": 0.008225672207005761,
+            "structureLoss": 0.1936987654408246,
+            "totalLoss": 0.007756641083774215,
+            "structure": {
+              "edgeMassLoss": 0.19237116285443634,
+              "edgeCentroidLoss": 0.0045628614725729995,
+              "componentCountLoss": 0.19642857142857142,
+              "enclosedRegionCountLoss": 0.5714285714285714,
+              "targetComponents": 45,
+              "renderedComponents": 56,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 7
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0019000886325578651,
+            "multiscaleColorLoss": 0.00039461190389838697,
+            "edgeGradientLoss": 0.006488270935557373,
+            "bidirectionalEdgeDistanceLoss": 0.006210606701156231,
+            "structureLoss": 0.07147299009402927,
+            "totalLoss": 0.004755005383205951,
+            "structure": {
+              "edgeMassLoss": 0.08756128089518996,
+              "edgeCentroidLoss": 0.0027551392690425636,
+              "componentCountLoss": 0.2,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 8,
+              "renderedComponents": 10,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 3
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0019000886325578651,
+            "multiscaleColorLoss": 0.00039461190389838697,
+            "edgeGradientLoss": 0.006488270935557373,
+            "bidirectionalEdgeDistanceLoss": 0.006210606701156231,
+            "structureLoss": 0.07147299009402927,
+            "totalLoss": 0.004755005383205951,
+            "structure": {
+              "edgeMassLoss": 0.08756128089518996,
+              "edgeCentroidLoss": 0.0027551392690425636,
+              "componentCountLoss": 0.2,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 8,
+              "renderedComponents": 10,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 3
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0019483659873145028,
+            "multiscaleColorLoss": 0.00039491291651698896,
+            "edgeGradientLoss": 0.003901714585236122,
+            "bidirectionalEdgeDistanceLoss": 0.00742703968185694,
+            "structureLoss": 0.10098337344683309,
+            "totalLoss": 0.005227557168063101,
+            "structure": {
+              "edgeMassLoss": 0.14888753019688988,
+              "edgeCentroidLoss": 0.002909126259738741,
+              "componentCountLoss": 0.24,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 19,
+              "renderedComponents": 25,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 3
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0019483659873145028,
+            "multiscaleColorLoss": 0.00039491291651698896,
+            "edgeGradientLoss": 0.003901714585236122,
+            "bidirectionalEdgeDistanceLoss": 0.00742703968185694,
+            "structureLoss": 0.10098337344683309,
+            "totalLoss": 0.005227557168063101,
+            "structure": {
+              "edgeMassLoss": 0.14888753019688988,
+              "edgeCentroidLoss": 0.002909126259738741,
+              "componentCountLoss": 0.24,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 19,
+              "renderedComponents": 25,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 3
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0019979443631142394,
+            "multiscaleColorLoss": 0.0004140318755354925,
+            "edgeGradientLoss": 0.0021104419608912388,
+            "bidirectionalEdgeDistanceLoss": 0.008283327513412857,
+            "structureLoss": 0.17992678831317105,
+            "totalLoss": 0.0073231122754186225,
+            "structure": {
+              "edgeMassLoss": 0.1776266333541848,
+              "edgeCentroidLoss": 0.0036359999084656,
+              "componentCountLoss": 0.5833333333333334,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 45,
+              "renderedComponents": 108,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 3
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0019979443631142394,
+            "multiscaleColorLoss": 0.0004140318755354925,
+            "edgeGradientLoss": 0.0021104419608912388,
+            "bidirectionalEdgeDistanceLoss": 0.008283327513412857,
+            "structureLoss": 0.17992678831317105,
+            "totalLoss": 0.0073231122754186225,
+            "structure": {
+              "edgeMassLoss": 0.1776266333541848,
+              "edgeCentroidLoss": 0.0036359999084656,
+              "componentCountLoss": 0.5833333333333334,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 45,
+              "renderedComponents": 108,
+              "targetEnclosedRegions": 3,
+              "renderedEnclosedRegions": 3
+            }
+          }
+        }
+      ],
+      "drawnInstances": 5,
+      "jointAcceptedMoves": 9,
+      "contourAccepted": false,
+      "elapsedMs": 284845
+    },
+    {
+      "id": "epsilon-color-overlap-06",
+      "family": "color-overlap-family-06",
+      "category": "color-overlap",
+      "incumbentLoss": 0.015315888225272195,
+      "selectedLoss": 0.004756142740495014,
+      "relativeImprovement": 0.6894634727976746,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0037754525017376773,
+            "multiscaleColorLoss": 0.0019089261569025379,
+            "edgeGradientLoss": 0.006557886323634256,
+            "bidirectionalEdgeDistanceLoss": 0.022966953383043734,
+            "structureLoss": 0.3541570514524138,
+            "totalLoss": 0.01562683439287816,
+            "structure": {
+              "edgeMassLoss": 0.19873067832187494,
+              "edgeCentroidLoss": 0.0320043801325252,
+              "componentCountLoss": 0.625,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 8,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0037754525017376773,
+            "multiscaleColorLoss": 0.0019089261569025379,
+            "edgeGradientLoss": 0.006557886323634256,
+            "bidirectionalEdgeDistanceLoss": 0.022966953383043734,
+            "structureLoss": 0.3541570514524138,
+            "totalLoss": 0.01562683439287816,
+            "structure": {
+              "edgeMassLoss": 0.19873067832187494,
+              "edgeCentroidLoss": 0.0320043801325252,
+              "componentCountLoss": 0.625,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 8,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.003752472271327777,
+            "multiscaleColorLoss": 0.0018812826095067528,
+            "edgeGradientLoss": 0.0032440988388535504,
+            "bidirectionalEdgeDistanceLoss": 0.02363285560764586,
+            "structureLoss": 0.36565696288615746,
+            "totalLoss": 0.015338202238273781,
+            "structure": {
+              "edgeMassLoss": 0.0978589740955689,
+              "edgeCentroidLoss": 0.033259168413789786,
+              "componentCountLoss": 0.8571428571428571,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 21,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003752472271327777,
+            "multiscaleColorLoss": 0.0018812826095067528,
+            "edgeGradientLoss": 0.0032440988388535504,
+            "bidirectionalEdgeDistanceLoss": 0.02363285560764586,
+            "structureLoss": 0.36565696288615746,
+            "totalLoss": 0.015338202238273781,
+            "structure": {
+              "edgeMassLoss": 0.0978589740955689,
+              "edgeCentroidLoss": 0.033259168413789786,
+              "componentCountLoss": 0.8571428571428571,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 21,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.003773224367292441,
+            "multiscaleColorLoss": 0.0019157503527041143,
+            "edgeGradientLoss": 0.001642325704588438,
+            "bidirectionalEdgeDistanceLoss": 0.024616799610182816,
+            "structureLoss": 0.36579530964264945,
+            "totalLoss": 0.015109515255638178,
+            "structure": {
+              "edgeMassLoss": 0.0499706087566528,
+              "edgeCentroidLoss": 0.03435198859273659,
+              "componentCountLoss": 0.94,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 50,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.003773224367292441,
+            "multiscaleColorLoss": 0.0019157503527041143,
+            "edgeGradientLoss": 0.001642325704588438,
+            "bidirectionalEdgeDistanceLoss": 0.024616799610182816,
+            "structureLoss": 0.36579530964264945,
+            "totalLoss": 0.015109515255638178,
+            "structure": {
+              "edgeMassLoss": 0.0499706087566528,
+              "edgeCentroidLoss": 0.03435198859273659,
+              "componentCountLoss": 0.94,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 50,
+              "renderedComponents": 3,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.002761208241268553,
+            "multiscaleColorLoss": 0.0008818214391736375,
+            "edgeGradientLoss": 0.007274393725424365,
+            "bidirectionalEdgeDistanceLoss": 0.017823452191372637,
+            "structureLoss": 0.06079744252703731,
+            "totalLoss": 0.005895473402551589,
+            "structure": {
+              "edgeMassLoss": 0.054611756079791726,
+              "edgeCentroidLoss": 0.005611092997033989,
+              "componentCountLoss": 0.2,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 8,
+              "renderedComponents": 10,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.002761208241268553,
+            "multiscaleColorLoss": 0.0008818214391736375,
+            "edgeGradientLoss": 0.007274393725424365,
+            "bidirectionalEdgeDistanceLoss": 0.017823452191372637,
+            "structureLoss": 0.06079744252703731,
+            "totalLoss": 0.005895473402551589,
+            "structure": {
+              "edgeMassLoss": 0.054611756079791726,
+              "edgeCentroidLoss": 0.005611092997033989,
+              "componentCountLoss": 0.2,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 8,
+              "renderedComponents": 10,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.002742796539443586,
+            "multiscaleColorLoss": 0.0008526704849228694,
+            "edgeGradientLoss": 0.0035902200467517143,
+            "bidirectionalEdgeDistanceLoss": 0.018539273588935583,
+            "structureLoss": 0.030076836672989708,
+            "totalLoss": 0.0042710180220198206,
+            "structure": {
+              "edgeMassLoss": 0.04985048677477517,
+              "edgeCentroidLoss": 0.011794190703031036,
+              "componentCountLoss": 0.045454545454545456,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 21,
+              "renderedComponents": 22,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.002742796539443586,
+            "multiscaleColorLoss": 0.0008526704849228694,
+            "edgeGradientLoss": 0.0035902200467517143,
+            "bidirectionalEdgeDistanceLoss": 0.018539273588935583,
+            "structureLoss": 0.030076836672989708,
+            "totalLoss": 0.0042710180220198206,
+            "structure": {
+              "edgeMassLoss": 0.04985048677477517,
+              "edgeCentroidLoss": 0.011794190703031036,
+              "componentCountLoss": 0.045454545454545456,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 21,
+              "renderedComponents": 22,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.002764895862202242,
+            "multiscaleColorLoss": 0.000851087991358395,
+            "edgeGradientLoss": 0.0018211758160776024,
+            "bidirectionalEdgeDistanceLoss": 0.019197530579475444,
+            "structureLoss": 0.05531604609069053,
+            "totalLoss": 0.004728828428787933,
+            "structure": {
+              "edgeMassLoss": 0.108996852353693,
+              "edgeCentroidLoss": 0.017223825889659962,
+              "componentCountLoss": 0.06,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 50,
+              "renderedComponents": 47,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.002764895862202242,
+            "multiscaleColorLoss": 0.000851087991358395,
+            "edgeGradientLoss": 0.0018211758160776024,
+            "bidirectionalEdgeDistanceLoss": 0.019197530579475444,
+            "structureLoss": 0.05531604609069053,
+            "totalLoss": 0.004728828428787933,
+            "structure": {
+              "edgeMassLoss": 0.108996852353693,
+              "edgeCentroidLoss": 0.017223825889659962,
+              "componentCountLoss": 0.06,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 50,
+              "renderedComponents": 47,
+              "targetEnclosedRegions": 2,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        }
+      ],
+      "drawnInstances": 15,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": true,
+      "elapsedMs": 240580
+    },
+    {
+      "id": "epsilon-color-overlap-08",
+      "family": "color-overlap-family-08",
+      "category": "color-overlap",
+      "incumbentLoss": 0.010319799545854429,
+      "selectedLoss": 0.008522324649541618,
+      "relativeImprovement": 0.17417730725543745,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.002772523722618073,
+            "multiscaleColorLoss": 0.0008791438642686764,
+            "edgeGradientLoss": 0.006425544000184912,
+            "bidirectionalEdgeDistanceLoss": 0.018342903775748227,
+            "structureLoss": 0.2074525832832646,
+            "totalLoss": 0.010165442211165127,
+            "structure": {
+              "edgeMassLoss": 0.04540248732236295,
+              "edgeCentroidLoss": 0.01816867203108811,
+              "componentCountLoss": 0.5555555555555556,
+              "enclosedRegionCountLoss": 0.5,
+              "targetComponents": 18,
+              "renderedComponents": 8,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.002772523722618073,
+            "multiscaleColorLoss": 0.0008791438642686764,
+            "edgeGradientLoss": 0.006425544000184912,
+            "bidirectionalEdgeDistanceLoss": 0.018342903775748227,
+            "structureLoss": 0.2074525832832646,
+            "totalLoss": 0.010165442211165127,
+            "structure": {
+              "edgeMassLoss": 0.04540248732236295,
+              "edgeCentroidLoss": 0.01816867203108811,
+              "componentCountLoss": 0.5555555555555556,
+              "enclosedRegionCountLoss": 0.5,
+              "targetComponents": 18,
+              "renderedComponents": 8,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0028219328358089924,
+            "multiscaleColorLoss": 0.0008948918991437841,
+            "edgeGradientLoss": 0.0032553846258173446,
+            "bidirectionalEdgeDistanceLoss": 0.0197382041691146,
+            "structureLoss": 0.09702179227057095,
+            "totalLoss": 0.006340645689185352,
+            "structure": {
+              "edgeMassLoss": 0.1611194257475371,
+              "edgeCentroidLoss": 0.028290453720252767,
+              "componentCountLoss": 0.16071428571428573,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 47,
+              "renderedComponents": 56,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0028219328358089924,
+            "multiscaleColorLoss": 0.0008948918991437841,
+            "edgeGradientLoss": 0.0032553846258173446,
+            "bidirectionalEdgeDistanceLoss": 0.0197382041691146,
+            "structureLoss": 0.09702179227057095,
+            "totalLoss": 0.006340645689185352,
+            "structure": {
+              "edgeMassLoss": 0.1611194257475371,
+              "edgeCentroidLoss": 0.028290453720252767,
+              "componentCountLoss": 0.16071428571428573,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 47,
+              "renderedComponents": 56,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0028208718065831193,
+            "multiscaleColorLoss": 0.0009040746836284187,
+            "edgeGradientLoss": 0.0015985959909590205,
+            "bidirectionalEdgeDistanceLoss": 0.021411244832183745,
+            "structureLoss": 0.41019937438378495,
+            "totalLoss": 0.015524058695679988,
+            "structure": {
+              "edgeMassLoss": 0.19986592881624188,
+              "edgeCentroidLoss": 0.03221258342085218,
+              "componentCountLoss": 0.9029126213592233,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 103,
+              "renderedComponents": 10,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0028208718065831193,
+            "multiscaleColorLoss": 0.0009040746836284187,
+            "edgeGradientLoss": 0.0015985959909590205,
+            "bidirectionalEdgeDistanceLoss": 0.021411244832183745,
+            "structureLoss": 0.41019937438378495,
+            "totalLoss": 0.015524058695679988,
+            "structure": {
+              "edgeMassLoss": 0.19986592881624188,
+              "edgeCentroidLoss": 0.03221258342085218,
+              "componentCountLoss": 0.9029126213592233,
+              "enclosedRegionCountLoss": 1,
+              "targetComponents": 103,
+              "renderedComponents": 10,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0027949886814533633,
+            "multiscaleColorLoss": 0.0008906092831221718,
+            "edgeGradientLoss": 0.006372181169648789,
+            "bidirectionalEdgeDistanceLoss": 0.017474922015845835,
+            "structureLoss": 0.19455343231044506,
+            "totalLoss": 0.009719462001870315,
+            "structure": {
+              "edgeMassLoss": 0.04002219526722489,
+              "edgeCentroidLoss": 0.0184855465563878,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.5,
+              "targetComponents": 18,
+              "renderedComponents": 9,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 2
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0027949886814533633,
+            "multiscaleColorLoss": 0.0008906092831221718,
+            "edgeGradientLoss": 0.006372181169648789,
+            "bidirectionalEdgeDistanceLoss": 0.017474922015845835,
+            "structureLoss": 0.19455343231044506,
+            "totalLoss": 0.009719462001870315,
+            "structure": {
+              "edgeMassLoss": 0.04002219526722489,
+              "edgeCentroidLoss": 0.0184855465563878,
+              "componentCountLoss": 0.5,
+              "enclosedRegionCountLoss": 0.5,
+              "targetComponents": 18,
+              "renderedComponents": 9,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 2
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.002845778835742963,
+            "multiscaleColorLoss": 0.0008991977425411836,
+            "edgeGradientLoss": 0.0032455137506059322,
+            "bidirectionalEdgeDistanceLoss": 0.01869933206710468,
+            "structureLoss": 0.09722299450854763,
+            "totalLoss": 0.006282816687134483,
+            "structure": {
+              "edgeMassLoss": 0.16163889924898742,
+              "edgeCentroidLoss": 0.028355075428482937,
+              "componentCountLoss": 0.16071428571428573,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 47,
+              "renderedComponents": 56,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.002845778835742963,
+            "multiscaleColorLoss": 0.0008991977425411836,
+            "edgeGradientLoss": 0.0032455137506059322,
+            "bidirectionalEdgeDistanceLoss": 0.01869933206710468,
+            "structureLoss": 0.09722299450854763,
+            "totalLoss": 0.006282816687134483,
+            "structure": {
+              "edgeMassLoss": 0.16163889924898742,
+              "edgeCentroidLoss": 0.028355075428482937,
+              "componentCountLoss": 0.16071428571428573,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 47,
+              "renderedComponents": 56,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.002845284647435112,
+            "multiscaleColorLoss": 0.0009089367957366019,
+            "edgeGradientLoss": 0.0016117874399178334,
+            "bidirectionalEdgeDistanceLoss": 0.02017363803971743,
+            "structureLoss": 0.25241021647585266,
+            "totalLoss": 0.010717613542734393,
+            "structure": {
+              "edgeMassLoss": 0.20013287296842688,
+              "edgeCentroidLoss": 0.031827256521069096,
+              "componentCountLoss": 0.8640776699029126,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 103,
+              "renderedComponents": 14,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.002845284647435112,
+            "multiscaleColorLoss": 0.0009089367957366019,
+            "edgeGradientLoss": 0.0016117874399178334,
+            "bidirectionalEdgeDistanceLoss": 0.02017363803971743,
+            "structureLoss": 0.25241021647585266,
+            "totalLoss": 0.010717613542734393,
+            "structure": {
+              "edgeMassLoss": 0.20013287296842688,
+              "edgeCentroidLoss": 0.031827256521069096,
+              "componentCountLoss": 0.8640776699029126,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 103,
+              "renderedComponents": 14,
+              "targetEnclosedRegions": 1,
+              "renderedEnclosedRegions": 1
+            }
+          }
+        }
+      ],
+      "drawnInstances": 11,
+      "jointAcceptedMoves": 5,
+      "contourAccepted": true,
+      "elapsedMs": 259386
+    },
+    {
+      "id": "epsilon-texture-gradient-02",
+      "family": "texture-gradient-family-02",
+      "category": "texture-gradient",
+      "incumbentLoss": 0.007942659349995138,
+      "selectedLoss": 0.007267874046397421,
+      "relativeImprovement": 0.08495709986581888,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.001249276365913858,
+            "multiscaleColorLoss": 0.0005759150342039368,
+            "edgeGradientLoss": 0.004042800918241472,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2062745935194366,
+            "totalLoss": 0.007669283045858117,
+            "structure": {
+              "edgeMassLoss": 0.5678432618500822,
+              "edgeCentroidLoss": 0.025098172906359562,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.001249276365913858,
+            "multiscaleColorLoss": 0.0005759150342039368,
+            "edgeGradientLoss": 0.004042800918241472,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2062745935194366,
+            "totalLoss": 0.007669283045858117,
+            "structure": {
+              "edgeMassLoss": 0.5678432618500822,
+              "edgeCentroidLoss": 0.025098172906359562,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0012375226741092654,
+            "multiscaleColorLoss": 0.0005556000733646813,
+            "edgeGradientLoss": 0.0020924145563583,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.21900054833347848,
+            "totalLoss": 0.007650188452929125,
+            "structure": {
+              "edgeMassLoss": 0.609021259882127,
+              "edgeCentroidLoss": 0.019477024582446857,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0012375226741092654,
+            "multiscaleColorLoss": 0.0005556000733646813,
+            "edgeGradientLoss": 0.0020924145563583,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.21900054833347848,
+            "totalLoss": 0.007650188452929125,
+            "structure": {
+              "edgeMassLoss": 0.609021259882127,
+              "edgeCentroidLoss": 0.019477024582446857,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0012362824661158716,
+            "multiscaleColorLoss": 0.0005625402130591104,
+            "edgeGradientLoss": 0.0012010566619994729,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2523807336226682,
+            "totalLoss": 0.008474908391444023,
+            "structure": {
+              "edgeMassLoss": 0.6967429532962996,
+              "edgeCentroidLoss": 0.028402333229877917,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0012362824661158716,
+            "multiscaleColorLoss": 0.0005625402130591104,
+            "edgeGradientLoss": 0.0012010566619994729,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2523807336226682,
+            "totalLoss": 0.008474908391444023,
+            "structure": {
+              "edgeMassLoss": 0.6967429532962996,
+              "edgeCentroidLoss": 0.028402333229877917,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0014115115519292203,
+            "multiscaleColorLoss": 0.0006700098511807943,
+            "edgeGradientLoss": 0.0042253158369169284,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.18370188869243317,
+            "totalLoss": 0.007121727404282307,
+            "structure": {
+              "edgeMassLoss": 0.49734319507960906,
+              "edgeCentroidLoss": 0.0321059013819,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0014115115519292203,
+            "multiscaleColorLoss": 0.0006700098511807943,
+            "edgeGradientLoss": 0.0042253158369169284,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.18370188869243317,
+            "totalLoss": 0.007121727404282307,
+            "structure": {
+              "edgeMassLoss": 0.49734319507960906,
+              "edgeCentroidLoss": 0.0321059013819,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0013924725823055099,
+            "multiscaleColorLoss": 0.0006483235406065042,
+            "edgeGradientLoss": 0.002215735001069506,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.1905538256329772,
+            "totalLoss": 0.006911247864307373,
+            "structure": {
+              "edgeMassLoss": 0.5232849819104527,
+              "edgeCentroidLoss": 0.02468027321439593,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0013924725823055099,
+            "multiscaleColorLoss": 0.0006483235406065042,
+            "edgeGradientLoss": 0.002215735001069506,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.1905538256329772,
+            "totalLoss": 0.006911247864307373,
+            "structure": {
+              "edgeMassLoss": 0.5232849819104527,
+              "edgeCentroidLoss": 0.02468027321439593,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0013934296967461305,
+            "multiscaleColorLoss": 0.0006529837837483239,
+            "edgeGradientLoss": 0.001258014163306333,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2268345314603016,
+            "totalLoss": 0.007809905790293264,
+            "structure": {
+              "edgeMassLoss": 0.6323563689332282,
+              "edgeCentroidLoss": 0.018366007778905798,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0013934296967461305,
+            "multiscaleColorLoss": 0.0006529837837483239,
+            "edgeGradientLoss": 0.001258014163306333,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2268345314603016,
+            "totalLoss": 0.007809905790293264,
+            "structure": {
+              "edgeMassLoss": 0.6323563689332282,
+              "edgeCentroidLoss": 0.018366007778905798,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "drawnInstances": 16,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": true,
+      "elapsedMs": 335444
+    },
+    {
+      "id": "epsilon-texture-gradient-04",
+      "family": "texture-gradient-family-04",
+      "category": "texture-gradient",
+      "incumbentLoss": 0.00806419639390509,
+      "selectedLoss": 0.005579001110890723,
+      "relativeImprovement": 0.30817643341284134,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0005407640814684369,
+            "multiscaleColorLoss": 0.00020931872894003,
+            "edgeGradientLoss": 0.002034576710477456,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.19184438098143383,
+            "totalLoss": 0.00644134802280789,
+            "structure": {
+              "edgeMassLoss": 0.5102783702270454,
+              "edgeCentroidLoss": 0.04415650467322656,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0005407640814684369,
+            "multiscaleColorLoss": 0.00020931872894003,
+            "edgeGradientLoss": 0.002034576710477456,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.19184438098143383,
+            "totalLoss": 0.00644134802280789,
+            "structure": {
+              "edgeMassLoss": 0.5102783702270454,
+              "edgeCentroidLoss": 0.04415650467322656,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0005393786408949594,
+            "multiscaleColorLoss": 0.0002073234659948559,
+            "edgeGradientLoss": 0.001240433154760748,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.24790518211612927,
+            "totalLoss": 0.007963190590592467,
+            "structure": {
+              "edgeMassLoss": 0.6488087982924501,
+              "edgeCentroidLoss": 0.06940700904590591,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0005393786408949594,
+            "multiscaleColorLoss": 0.0002073234659948559,
+            "edgeGradientLoss": 0.001240433154760748,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.24790518211612927,
+            "totalLoss": 0.007963190590592467,
+            "structure": {
+              "edgeMassLoss": 0.6488087982924501,
+              "edgeCentroidLoss": 0.06940700904590591,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0005383600104572994,
+            "multiscaleColorLoss": 0.00020865345608913743,
+            "edgeGradientLoss": 0.0007735690923792284,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.28962496883399746,
+            "totalLoss": 0.009121402924505431,
+            "structure": {
+              "edgeMassLoss": 0.754179241615531,
+              "edgeCentroidLoss": 0.08554078089520532,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0005383600104572994,
+            "multiscaleColorLoss": 0.00020865345608913743,
+            "edgeGradientLoss": 0.0007735690923792284,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.28962496883399746,
+            "totalLoss": 0.009121402924505431,
+            "structure": {
+              "edgeMassLoss": 0.754179241615531,
+              "edgeCentroidLoss": 0.08554078089520532,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0007434447234471071,
+            "multiscaleColorLoss": 0.00032461564315110106,
+            "edgeGradientLoss": 0.002464228565861591,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.0845068219496367,
+            "totalLoss": 0.0034228129539855922,
+            "structure": {
+              "edgeMassLoss": 0.2311837111783372,
+              "edgeCentroidLoss": 0.011975076790728947,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0007434447234471071,
+            "multiscaleColorLoss": 0.00032461564315110106,
+            "edgeGradientLoss": 0.002464228565861591,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.0845068219496367,
+            "totalLoss": 0.0034228129539855922,
+            "structure": {
+              "edgeMassLoss": 0.2311837111783372,
+              "edgeCentroidLoss": 0.011975076790728947,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0007464865484669591,
+            "multiscaleColorLoss": 0.00031566481109860175,
+            "edgeGradientLoss": 0.0014541058738110088,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.1537027100960043,
+            "totalLoss": 0.005295196540358696,
+            "structure": {
+              "edgeMassLoss": 0.4224771961171041,
+              "edgeCentroidLoss": 0.019452304850059613,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0007464865484669591,
+            "multiscaleColorLoss": 0.00031566481109860175,
+            "edgeGradientLoss": 0.0014541058738110088,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.1537027100960043,
+            "totalLoss": 0.005295196540358696,
+            "structure": {
+              "edgeMassLoss": 0.4224771961171041,
+              "edgeCentroidLoss": 0.019452304850059613,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0007434972897220441,
+            "multiscaleColorLoss": 0.0003221411398687183,
+            "edgeGradientLoss": 0.0008692214230716115,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.22027048924475023,
+            "totalLoss": 0.007176000219806262,
+            "structure": {
+              "edgeMassLoss": 0.6009855525604809,
+              "edgeCentroidLoss": 0.033085152828606426,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0007434972897220441,
+            "multiscaleColorLoss": 0.0003221411398687183,
+            "edgeGradientLoss": 0.0008692214230716115,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.22027048924475023,
+            "totalLoss": 0.007176000219806262,
+            "structure": {
+              "edgeMassLoss": 0.6009855525604809,
+              "edgeCentroidLoss": 0.033085152828606426,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "drawnInstances": 16,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": true,
+      "elapsedMs": 346494
+    },
+    {
+      "id": "epsilon-texture-gradient-06",
+      "family": "texture-gradient-family-06",
+      "category": "texture-gradient",
+      "incumbentLoss": 0.011279666232975747,
+      "selectedLoss": 0.00582027570322652,
+      "relativeImprovement": 0.48400284343422073,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0015190021460204743,
+            "multiscaleColorLoss": 0.001085938188514271,
+            "edgeGradientLoss": 0.0004688493526924463,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.305084483561785,
+            "totalLoss": 0.01017968669235451,
+            "structure": {
+              "edgeMassLoss": 0.7985556485245318,
+              "edgeCentroidLoss": 0.08530002192732974,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0015190021460204743,
+            "multiscaleColorLoss": 0.001085938188514271,
+            "edgeGradientLoss": 0.0004688493526924463,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.305084483561785,
+            "totalLoss": 0.01017968669235451,
+            "structure": {
+              "edgeMassLoss": 0.7985556485245318,
+              "edgeCentroidLoss": 0.08530002192732974,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0014996767729219661,
+            "multiscaleColorLoss": 0.0010532448418855386,
+            "edgeGradientLoss": 0.0003228235828327677,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.34206124140261024,
+            "totalLoss": 0.011242246120379308,
+            "structure": {
+              "edgeMassLoss": 0.8747175233294269,
+              "edgeCentroidLoss": 0.11970036079103606,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0014996767729219661,
+            "multiscaleColorLoss": 0.0010532448418855386,
+            "edgeGradientLoss": 0.0003228235828327677,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.34206124140261024,
+            "totalLoss": 0.011242246120379308,
+            "structure": {
+              "edgeMassLoss": 0.8747175233294269,
+              "edgeCentroidLoss": 0.11970036079103606,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0015002512913774042,
+            "multiscaleColorLoss": 0.0010677709016811987,
+            "edgeGradientLoss": 0.00024786242728770983,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.3662111090433005,
+            "totalLoss": 0.011956337543811878,
+            "structure": {
+              "edgeMassLoss": 0.9275449299763303,
+              "edgeCentroidLoss": 0.1385679451719497,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0015002512913774042,
+            "multiscaleColorLoss": 0.0010677709016811987,
+            "edgeGradientLoss": 0.00024786242728770983,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.3662111090433005,
+            "totalLoss": 0.011956337543811878,
+            "structure": {
+              "edgeMassLoss": 0.9275449299763303,
+              "edgeCentroidLoss": 0.1385679451719497,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0018953513368679148,
+            "multiscaleColorLoss": 0.0014323037908096005,
+            "edgeGradientLoss": 0.000816356617653259,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.027520303062904823,
+            "totalLoss": 0.0021767120874078426,
+            "structure": {
+              "edgeMassLoss": 0.008234913929762807,
+              "edgeCentroidLoss": 0.0821269439582928,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0018953513368679148,
+            "multiscaleColorLoss": 0.0014323037908096005,
+            "edgeGradientLoss": 0.000816356617653259,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.027520303062904823,
+            "totalLoss": 0.0021767120874078426,
+            "structure": {
+              "edgeMassLoss": 0.008234913929762807,
+              "edgeCentroidLoss": 0.0821269439582928,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0018751816000118747,
+            "multiscaleColorLoss": 0.001380283694923637,
+            "edgeGradientLoss": 0.0005074604495939589,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.1293262398409282,
+            "totalLoss": 0.005145437033628479,
+            "structure": {
+              "edgeMassLoss": 0.24784855288499363,
+              "edgeCentroidLoss": 0.1419308211039348,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0018751816000118747,
+            "multiscaleColorLoss": 0.001380283694923637,
+            "edgeGradientLoss": 0.0005074604495939589,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.1293262398409282,
+            "totalLoss": 0.005145437033628479,
+            "structure": {
+              "edgeMassLoss": 0.24784855288499363,
+              "edgeCentroidLoss": 0.1419308211039348,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0018789045350971905,
+            "multiscaleColorLoss": 0.0014033399086741637,
+            "edgeGradientLoss": 0.00032618136544144483,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2510720571149373,
+            "totalLoss": 0.008769961773177534,
+            "structure": {
+              "edgeMassLoss": 0.5891315380961064,
+              "edgeCentroidLoss": 0.14958672927100028,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0018789045350971905,
+            "multiscaleColorLoss": 0.0014033399086741637,
+            "edgeGradientLoss": 0.00032618136544144483,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2510720571149373,
+            "totalLoss": 0.008769961773177534,
+            "structure": {
+              "edgeMassLoss": 0.5891315380961064,
+              "edgeCentroidLoss": 0.14958672927100028,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "drawnInstances": 16,
+      "jointAcceptedMoves": 16,
+      "contourAccepted": true,
+      "elapsedMs": 216852
+    },
+    {
+      "id": "epsilon-texture-gradient-08",
+      "family": "texture-gradient-family-08",
+      "category": "texture-gradient",
+      "incumbentLoss": 0.008983276685262592,
+      "selectedLoss": 0.006306035018775304,
+      "relativeImprovement": 0.29802507039323467,
+      "selectedVariant": "joint-refinement",
+      "incumbentPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0010879392702970764,
+            "multiscaleColorLoss": 0.0005586395457670303,
+            "edgeGradientLoss": 0.0030461202739841186,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2533114251762646,
+            "totalLoss": 0.0088113343819337,
+            "structure": {
+              "edgeMassLoss": 0.6949681385445347,
+              "edgeCentroidLoss": 0.03357525561892493,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0010879392702970764,
+            "multiscaleColorLoss": 0.0005586395457670303,
+            "edgeGradientLoss": 0.0030461202739841186,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2533114251762646,
+            "totalLoss": 0.0088113343819337,
+            "structure": {
+              "edgeMassLoss": 0.6949681385445347,
+              "edgeCentroidLoss": 0.03357525561892493,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0010754550908784288,
+            "multiscaleColorLoss": 0.0005477307822330004,
+            "edgeGradientLoss": 0.0015716409711283388,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2668431893499645,
+            "totalLoss": 0.008914125145745874,
+            "structure": {
+              "edgeMassLoss": 0.7321081352788811,
+              "edgeCentroidLoss": 0.03535114000785383,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0010754550908784288,
+            "multiscaleColorLoss": 0.0005477307822330004,
+            "edgeGradientLoss": 0.0015716409711283388,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.2668431893499645,
+            "totalLoss": 0.008914125145745874,
+            "structure": {
+              "edgeMassLoss": 0.7321081352788811,
+              "edgeCentroidLoss": 0.03535114000785383,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0010771058897100915,
+            "multiscaleColorLoss": 0.0005479871721204931,
+            "edgeGradientLoss": 0.0008372558729455935,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.28025829567161453,
+            "totalLoss": 0.009170438552257739,
+            "structure": {
+              "edgeMassLoss": 0.7673140402400186,
+              "edgeCentroidLoss": 0.0389946052920268,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0010771058897100915,
+            "multiscaleColorLoss": 0.0005479871721204931,
+            "edgeGradientLoss": 0.0008372558729455935,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.28025829567161453,
+            "totalLoss": 0.009170438552257739,
+            "structure": {
+              "edgeMassLoss": 0.7673140402400186,
+              "edgeCentroidLoss": 0.0389946052920268,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "selectedPerScale": [
+        {
+          "resolution": 96,
+          "v2": {
+            "linearColorLoss": 0.0011695078578215267,
+            "multiscaleColorLoss": 0.0006258329588076371,
+            "edgeGradientLoss": 0.003383148273888917,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.16163433025689883,
+            "totalLoss": 0.00618121259325565,
+            "structure": {
+              "edgeMassLoss": 0.44521563740942116,
+              "edgeCentroidLoss": 0.019362857212004793,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0011695078578215267,
+            "multiscaleColorLoss": 0.0006258329588076371,
+            "edgeGradientLoss": 0.003383148273888917,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.16163433025689883,
+            "totalLoss": 0.00618121259325565,
+            "structure": {
+              "edgeMassLoss": 0.44521563740942116,
+              "edgeCentroidLoss": 0.019362857212004793,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 230,
+          "v2": {
+            "linearColorLoss": 0.0011569168453716995,
+            "multiscaleColorLoss": 0.0006076441883161471,
+            "edgeGradientLoss": 0.0018260926707657568,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.16779034765595,
+            "totalLoss": 0.006043988958475175,
+            "structure": {
+              "edgeMassLoss": 0.4722110347461662,
+              "edgeCentroidLoss": 0.008388284982639445,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0011569168453716995,
+            "multiscaleColorLoss": 0.0006076441883161471,
+            "edgeGradientLoss": 0.0018260926707657568,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.16779034765595,
+            "totalLoss": 0.006043988958475175,
+            "structure": {
+              "edgeMassLoss": 0.4722110347461662,
+              "edgeCentroidLoss": 0.008388284982639445,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        },
+        {
+          "resolution": 512,
+          "v2": {
+            "linearColorLoss": 0.0011538242894532026,
+            "multiscaleColorLoss": 0.0006124179535226172,
+            "edgeGradientLoss": 0.0009703799867493306,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.195831579437578,
+            "totalLoss": 0.0067142784823152725,
+            "structure": {
+              "edgeMassLoss": 0.5471372518510043,
+              "edgeCentroidLoss": 0.01444513763242171,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          },
+          "v3": {
+            "linearColorLoss": 0.0011538242894532026,
+            "multiscaleColorLoss": 0.0006124179535226172,
+            "edgeGradientLoss": 0.0009703799867493306,
+            "bidirectionalEdgeDistanceLoss": 0,
+            "structureLoss": 0.195831579437578,
+            "totalLoss": 0.0067142784823152725,
+            "structure": {
+              "edgeMassLoss": 0.5471372518510043,
+              "edgeCentroidLoss": 0.01444513763242171,
+              "componentCountLoss": 0,
+              "enclosedRegionCountLoss": 0,
+              "targetComponents": 0,
+              "renderedComponents": 0,
+              "targetEnclosedRegions": 0,
+              "renderedEnclosedRegions": 0
+            }
+          }
+        }
+      ],
+      "drawnInstances": 16,
+      "jointAcceptedMoves": 14,
+      "contourAccepted": true,
+      "elapsedMs": 329545
+    }
+  ]
+}

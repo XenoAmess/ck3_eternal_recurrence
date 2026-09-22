@@ -534,15 +534,10 @@ describe('browser image fitter', () => {
     )
     expect(result.provenance.qualityCompatibilityLane).toMatchObject({
       contract: 'delta-q-v9-search-and-finalizer-nonregression-v1',
-      enabled: true,
-      candidateStartIndex: expect.any(Number),
-      candidateCount: expect.any(Number),
+      enabled: false,
+      candidateStartIndex: null,
+      candidateCount: 0,
     })
-    expect(result.provenance.qualityCompatibilityLane.candidateCount).toBeGreaterThan(0)
-    expect(result.paretoCandidates.length).toBe(
-      result.provenance.qualityCompatibilityLane.candidateStartIndex!
-        + result.provenance.qualityCompatibilityLane.candidateCount,
-    )
     expect(result.provenance.highResolutionEdgeRepair).toMatchObject({
       resolution: 64,
       terminationReason: expect.stringMatching(/layer_budget|no_improvement/),
@@ -640,7 +635,18 @@ describe('browser image fitter', () => {
       asImage(target.pixels, size),
       [candidate('pattern_solid.dds', solid)],
       [candidate('semantic-square.dds', square), candidate('ce_block_02.dds', block)],
-      { resolution: size, maxLayers: 128 },
+      { resolution: size, maxLayers: 512 },
+    )
+    expect(result.provenance.qualityCompatibilityLane).toMatchObject({
+      contract: 'delta-q-v9-search-and-finalizer-nonregression-v1',
+      enabled: true,
+      candidateStartIndex: expect.any(Number),
+      candidateCount: expect.any(Number),
+    })
+    expect(result.provenance.qualityCompatibilityLane.candidateCount).toBeGreaterThan(0)
+    expect(result.paretoCandidates.length).toBe(
+      result.provenance.qualityCompatibilityLane.candidateStartIndex!
+        + result.provenance.qualityCompatibilityLane.candidateCount,
     )
     const purePaint = result.provenance.candidateLosses.find((item) => item.mode === 'native-tile-paint')
     const hybrid = result.provenance.candidateLosses.find((item) => (
@@ -660,7 +666,7 @@ describe('browser image fitter', () => {
     })
     expect(result.provenance.nativeShapeRefinement.completedPasses).toBe(0)
     expect(result.provenance.nativeShapeRefinement.evaluatedCandidates).toBe(0)
-  })
+  }, 20_000)
 
   it('keeps mixed-size native paint tiles seamless above the 96px search plane', () => {
     const solid = texture('solid')

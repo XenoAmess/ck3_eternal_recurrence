@@ -3707,7 +3707,10 @@ export function fitImageToCoatOfArms(
       },
     },
   }
-  if (deltaCompatibilityMode || maxLayers < 512) return primaryResult
+  // With only the paint brush available, Epsilon and Delta have the same
+  // search envelope. Replaying an identical raster lane would add minutes of
+  // work without preserving any additional candidate.
+  if (deltaCompatibilityMode || maxLayers < 512 || !hasSemanticAlternative) return primaryResult
 
   // Epsilon expands the large-budget semantic search, but a wider beam can
   // displace a previously excellent Delta-Q v9 path. Replay that frozen search

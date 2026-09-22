@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import type { DecodedDds } from './dds'
@@ -12,6 +12,28 @@ import { fitImageToCoatOfArms, type FitTextureCandidate } from './imageFitter'
 import { computeFitTextureShapeFeatures } from './shapeFeatures'
 
 const benchmark = process.env.EPSILON_Q_RUN_HOLDOUT === '1' ? it : it.skip
+const HOLDOUT_RUN_CONTRACT = 'epsilon-q-v14-sealed-holdout-16x-joint256-contour32-v1'
+
+type HoldoutScaleScore = {
+  resolution: number
+  v2: { totalLoss: number }
+}
+
+type HoldoutRow = {
+  id: string
+  family: string
+  category: string
+  incumbentLoss: number
+  selectedLoss: number
+  relativeImprovement: number
+  selectedVariant: string
+  incumbentPerScale: HoldoutScaleScore[]
+  selectedPerScale: HoldoutScaleScore[]
+  drawnInstances: number
+  jointAcceptedMoves: number
+  contourAccepted: boolean
+  elapsedMs: number
+}
 
 function texture(kind: 'solid' | 'block' | 'circle' | 'diamond' | 'triangle'): DecodedDds {
   const size = 32
@@ -52,6 +74,10 @@ const median = (values: number[]): number => {
 
 describe('Epsilon-Q sealed holdout benchmark', () => {
   benchmark('measures the frozen 16-scene holdout once with the product objective', async () => {
+    const output = resolve(process.env.EPSILON_Q_HOLDOUT_OUTPUT
+      ?? '../docs/coat-of-arms-fit-artifacts/epsilon-q-v14-holdout/report.json')
+    const progressOutput = `${output}.progress.json`
+    await mkdir(dirname(output), { recursive: true })
     const pattern = texture('solid')
     const exactAssets = {
       'ce_block_02.dds': texture('block'),
@@ -62,8 +88,24 @@ describe('Epsilon-Q sealed holdout benchmark', () => {
     }
     const patterns = [fitAsset('pattern_solid.dds', pattern)]
     const emblems = Object.entries(exactAssets).map(([name, decoded]) => fitAsset(name, decoded))
-    const rows = []
+    let rows: HoldoutRow[] = []
+    try {
+      const progress = JSON.parse(await readFile(progressOutput, 'utf8')) as {
+        runContract?: string
+        corpusContract?: string
+        rows?: HoldoutRow[]
+      }
+      if (progress.runContract === HOLDOUT_RUN_CONTRACT
+        && progress.corpusContract === EPSILON_QUALITY_CORPUS_CONTRACT
+        && Array.isArray(progress.rows)) {
+        rows = progress.rows
+      }
+    } catch {
+      // A missing or incomplete checkpoint starts a fresh deterministic run.
+    }
     for (const scenario of EPSILON_QUALITY_SCENARIOS.filter((item) => item.split === 'sealed-holdout')) {
+      if (rows.some((row) => row.id === scenario.id)) continue
+      const startedAt = Date.now()
       const target = renderEpsilonQualityScenario(scenario, 96)
       const targetPyramid = [96, 230, 512].map((size) => renderEpsilonQualityScenario(scenario, size))
       const searchResult = fitImageToCoatOfArms(target, patterns, emblems, {
@@ -103,7 +145,20 @@ describe('Epsilon-Q sealed holdout benchmark', () => {
         drawnInstances: finalization.result.provenance.drawnInstances,
         jointAcceptedMoves: finalization.receipt.jointRefinement.acceptedMoves.length,
         contourAccepted: finalization.receipt.contourRefinement.acceptedCandidateAdded,
+        elapsedMs: Date.now() - startedAt,
       })
+      await writeFile(progressOutput, `${JSON.stringify({
+        schema: 'ck3-coa-epsilon-q-sealed-holdout-progress-v1',
+        runContract: HOLDOUT_RUN_CONTRACT,
+        corpusContract: EPSILON_QUALITY_CORPUS_CONTRACT,
+        completedCases: rows.length,
+        rows,
+      }, null, 2)}\n`, 'utf8')
+      console.info(JSON.stringify({
+        holdoutCase: scenario.id,
+        completedCases: rows.length,
+        elapsedMs: rows.at(-1)?.elapsedMs,
+      }))
     }
     const improvements = rows.map((row) => row.relativeImprovement)
     const categoryRows = [...new Set(rows.map((row) => row.category))].map((category) => {
@@ -115,6 +170,7 @@ describe('Epsilon-Q sealed holdout benchmark', () => {
     const measuredMedian = median(improvements)
     const report = {
       schema: 'ck3-coa-epsilon-q-sealed-holdout-v1',
+      runContract: HOLDOUT_RUN_CONTRACT,
       status: measuredMedian >= 0.05
         ? 'measured-quality-target-met'
         : 'measured-quality-target-missed',
@@ -149,10 +205,7 @@ describe('Epsilon-Q sealed holdout benchmark', () => {
     expect(new Set(rows.map((row) => row.family)).size).toBe(16)
     expect(report.aggregates.allScalesNonRegressing).toBe(true)
     expect(report.aggregates.withinBudget).toBe(true)
-    const output = resolve(process.env.EPSILON_Q_HOLDOUT_OUTPUT
-      ?? '../docs/coat-of-arms-fit-artifacts/epsilon-q-v13-holdout/report.json')
-    await mkdir(dirname(output), { recursive: true })
     await writeFile(output, `${JSON.stringify(report, null, 2)}\n`, 'utf8')
     console.info(JSON.stringify({ status: report.status, aggregates: report.aggregates }))
-  }, 30 * 60_000)
+  }, 2 * 60 * 60_000)
 })
