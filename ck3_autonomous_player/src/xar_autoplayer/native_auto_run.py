@@ -37,7 +37,11 @@ from .bridge.council_assign_councillor_action_contract import (
     ASSIGN_COUNCILLOR_V1_STEP,
 )
 from .lifestyle_formal_consumer import RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP
-from .construction_formal_consumer import RECEIPT_STEP as PRIVATE_CONSTRUCTION_RECEIPT_STEP
+from .construction_formal_consumer import (
+    RECEIPT_STEP as PRIVATE_CONSTRUCTION_RECEIPT_STEP,
+    SUBMIT_STEP as PRIVATE_CONSTRUCTION_SUBMIT_STEP,
+    read_construction_ledger,
+)
 from .bridge.service import GameplayBridgeService
 from .bridge.settlement_contract import (
     normalize_fixed_score,
@@ -1407,6 +1411,62 @@ def native_auto_run(
                 )
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
+            if step == PRIVATE_CONSTRUCTION_SUBMIT_STEP:
+                # An accepted native receiver ACK is still pending material
+                # verification.  Save its game state beside the durable
+                # request ID before another turn can query or advance it.
+                if terminal_pending or modal_decision_pending:
+                    capture_first_failure(
+                        stage="construction_pending_checkpoint_preflight",
+                        kind="construction_pending_checkpoint_unsafe",
+                        message="construction ACK reached an unsafe save frame",
+                    )
+                    raise AgentError(
+                        "pending construction cannot be checkpointed on a "
+                        "terminal or player-decision frame"
+                    )
+                current_attempt["stage"] = (
+                    "construction_pending_checkpoint_preflight"
+                )
+                checkpoint, checkpoint_snapshot = _materialize_checkpoint(
+                    service,
+                    driver,
+                    spec.profile_dir / "save games",
+                    session_done=session_done,
+                    session_state=session_state,
+                    timeout_seconds=min(
+                        readiness_timeout,
+                        max(0.001, run_deadline - time.monotonic()),
+                    ),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                pending_fence = _verify_pending_construction_checkpoint(
+                    checkpoint,
+                    snapshot=checkpoint_snapshot,
+                    submitted_result=outcome.get("result"),
+                    ledger=read_construction_ledger(driver.state_dir),
+                )
+                counts["checkpoint"] += 1
+                checkpoints.append(
+                    {
+                        "turn_index": turn_index,
+                        "phase": "construction_submitted_pending",
+                        "pending_action": pending_fence,
+                        **checkpoint,
+                    }
+                )
+                evidence.append("construction_pending_checkpoint_saved")
+                after_snapshot = checkpoint_snapshot
+                after = _compact_binding(
+                    driver.capabilities(), checkpoint_snapshot
+                )
+                current_attempt["after"] = _public_binding(after)
+                current_attempt["stage"] = (
+                    "construction_pending_checkpoint_complete"
+                )
+                eligible_since_checkpoint = 0
+                dirty_gameplay_since_checkpoint = False
             if completion_contract in strict_completion_contracts:
                 try:
                     if (
@@ -1700,6 +1760,7 @@ def native_auto_run(
                 turn_class == "gameplay"
                 and evidence
                 and not war_termination_submission_pending
+                and step != PRIVATE_CONSTRUCTION_SUBMIT_STEP
             ):
                 visible_gameplay_turns += 1
                 if next_episode_transition is not None:
@@ -4731,6 +4792,104 @@ def _verify_pending_war_termination_checkpoint(
         "war_id": war_id,
         "outcome": expected_outcome,
         "status": "submitted_pending",
+        "action_history_index": checkpoint_index - 1,
+        "checkpoint_history_index": checkpoint_index,
+        "date_raw": checkpoint.get("date_raw"),
+        "episode_run_id": checkpoint.get("episode_run_id"),
+    }
+
+
+def _verify_pending_construction_checkpoint(
+    checkpoint: object,
+    *,
+    snapshot: object,
+    submitted_result: object,
+    ledger: object,
+) -> dict[str, object]:
+    """Bind one pending native ACK and its durable request to the next save."""
+
+    history = (
+        snapshot.get("native_command_history")
+        if isinstance(snapshot, dict)
+        else None
+    )
+    checkpoint_index = (
+        checkpoint.get("history_index")
+        if isinstance(checkpoint, dict)
+        else None
+    )
+    action = (
+        history[checkpoint_index - 2]
+        if (
+            isinstance(history, list)
+            and type(checkpoint_index) is int
+            and 2 <= checkpoint_index <= len(history)
+        )
+        else None
+    )
+    action_result = action.get("result") if isinstance(action, dict) else None
+    pending = ledger.get("pending") if isinstance(ledger, dict) else None
+    played_character = (
+        snapshot.get("played_character") if isinstance(snapshot, dict) else None
+    )
+    ack = (
+        submitted_result.get("native_ack")
+        if isinstance(submitted_result, dict)
+        else None
+    )
+    request_id = (
+        submitted_result.get("action_request_id")
+        if isinstance(submitted_result, dict)
+        else None
+    )
+    if not (
+        isinstance(checkpoint, dict)
+        and isinstance(snapshot, dict)
+        and isinstance(action, dict)
+        and action.get("index") == checkpoint_index - 1
+        and action.get("command") == PRIVATE_CONSTRUCTION_SUBMIT_STEP
+        and action.get("ok") is True
+        and isinstance(action_result, dict)
+        and isinstance(submitted_result, dict)
+        and isinstance(pending, dict)
+        and isinstance(ledger, dict)
+        and ledger.get("applied") is None
+        and isinstance(request_id, str)
+        and request_id.startswith("construction-submit-")
+        and submitted_result.get("status") == "submitted_verification_pending"
+        and isinstance(ack, dict)
+        and ack.get("status") == "pending_receipt"
+        and ack.get("applied") is False
+        and ack.get("production_native_path") is True
+        and ack.get("receiver_calls") == 1
+        and type(ack.get("receiver_command_sequence")) is int
+        and ack["receiver_command_sequence"] > 0
+        and action_result == submitted_result == pending
+        and submitted_result.get("episode_run_id")
+        == checkpoint.get("episode_run_id")
+        == snapshot.get("episode_run_id")
+        and submitted_result.get("actor_character_id")
+        == (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        and type(submitted_result.get("pre_date_raw")) is int
+        and submitted_result["pre_date_raw"]
+        == checkpoint.get("date_raw")
+        == snapshot.get("date_raw")
+        and ack.get("proof_epoch")
+        == submitted_result.get("pre_proof_epoch")
+    ):
+        raise AgentError(
+            "pending construction ACK is not immediately fenced by its "
+            "paired checkpoint and durable request ID"
+        )
+    return {
+        "step": PRIVATE_CONSTRUCTION_SUBMIT_STEP,
+        "action_request_id": request_id,
+        "status": "submitted_verification_pending",
+        "material_postcondition": "unobserved",
         "action_history_index": checkpoint_index - 1,
         "checkpoint_history_index": checkpoint_index,
         "date_raw": checkpoint.get("date_raw"),
