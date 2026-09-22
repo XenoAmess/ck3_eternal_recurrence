@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 
 from xar_autoplayer.ck3_save_artifacts import Ck3ProfileArtifactInspector
+from xar_autoplayer.ck3_runtime_diagnostics import Ck3RuntimeDiagnosticsInspector
 
 from xar_autoplayer.coat_of_arms_configured_resources import (
     query_coat_of_arms_configured_resource_catalog_v1,
@@ -1244,6 +1245,11 @@ def create_server(
         if profile_dir is not None
         else None
     )
+    runtime_diagnostics = (
+        Ck3RuntimeDiagnosticsInspector(profile_dir)
+        if profile_dir is not None
+        else None
+    )
     read_only_tool = ToolAnnotations(
         readOnlyHint=True,
         destructiveHint=False,
@@ -1277,6 +1283,21 @@ def create_server(
                 "save artifact inspection requires a server-configured profile"
             )
         return artifact_inspector.inspect_save_artifacts_v1()
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_engine_diagnostics_v1(
+        fingerprint_limit: int = 50,
+        tail_limit: int = 25,
+    ) -> dict[str, object]:
+        """Read bounded fixed logs/crashes below the server-bound profile."""
+        if runtime_diagnostics is None:
+            raise RuntimeError(
+                "engine diagnostics require a server-configured profile"
+            )
+        return runtime_diagnostics.query_engine_diagnostics_v1(
+            fingerprint_limit=fingerprint_limit,
+            tail_limit=tail_limit,
+        )
 
     @server.tool()
     def ck3_take_snapshot() -> dict[str, object]:
@@ -2597,6 +2618,9 @@ def create_server(
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_save_artifacts_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_engine_diagnostics_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_steward_develop_county_candidates_v1"
