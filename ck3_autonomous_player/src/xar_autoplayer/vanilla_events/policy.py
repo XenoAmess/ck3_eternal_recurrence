@@ -628,7 +628,7 @@ def _resolve_option_variant_contract(
                 effective["scope_types"] = {
                     **scope_types,
                     **{
-                        name: "flag"
+                        name: "boolean"
                         for name in boolean_scopes
                         if isinstance(name, str)
                     },
