@@ -649,11 +649,11 @@ never initialize a blank ledger or write both old and new copies. The manifest
 pins and verifies the CK3 executable hash before any launch; paths for source,
 DLL, injector and save derive from the package root.
 
-Confirm all managed hosts have zero CK3 processes and allocate the next
-monotonic single-instance round with the allocator included in this package:
+`prepare-state` is no-launch preparation and does not need a run ID. Confirm
+the selected state directory is new and all managed hosts have zero CK3
+processes, then prepare the paired state:
 
 ```text
-"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR_PREVIEW_ROOT%\live-run-ids-v1"
 "%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_operator.py prepare-state --manifest .\operator-manifest.json --sample-dir .\sample-resume
 ```
 
@@ -662,13 +662,38 @@ an existing pair, performs the production-only no-launch preflight, verifies
 the rebound driver bytes, and atomically records both rebound hashes in the
 operator manifest.
 
-## Read-only eligibility and bounded production play
+## No-launch preflight, live eligibility, and bounded production play
 
-Choose fresh monotonic output IDs for every attempt; the examples below use
-`R1001` and `R1002` only as placeholders.
+`g2_preview_eligibility.py` with `--preflight-only` does not start CK3; its
+`READY_NO_LAUNCH` result is not live eligibility. Without that flag, the
+eligibility command **starts CK3** for a read-only game-state check. Read-only
+means no gameplay action, not no game process. Use distinct, never-existing
+output directories for each attempt; the IDs below are placeholders, not run
+IDs to reuse. An optional no-launch preflight is:
 
 ```text
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output "%XAR_PREVIEW_ROOT%\runs\preflight-R1000" --preflight-only
+```
+
+Before live eligibility, acquire the one CK3 owner, verify zero CK3 processes
+on **all managed hosts**, allocate the next monotonically increasing round
+with the allocator included in this package from the **same persistent
+ledger**, record its full `run_id` and launch
+identity, then run:
+
+```text
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR_PREVIEW_ROOT%\live-run-ids-v1"
 "%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_eligibility.py --manifest .\operator-manifest.json --output "%XAR_PREVIEW_ROOT%\runs\eligibility-R1001"
+```
+
+Save the eligibility report and actual outcome, update that allocated round
+as GREEN or RED accordingly, and confirm the CK3 process is fully reclaimed.
+Eligibility GREEN alone does not qualify the preview ZIP. The subsequent
+formal `run` is another CK3 launch: verify zero instances on all managed hosts
+again and allocate a **new** round from the same ledger before running:
+
+```text
+"%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\ck3_live_run_id.py allocate --mod eternal-recurrence --state-root "%XAR_PREVIEW_ROOT%\live-run-ids-v1"
 "%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_operator.py run --manifest .\operator-manifest.json --output "%XAR_PREVIEW_ROOT%\runs\formal-R1002" --turns {bounds['formal_turns']} --timeout {bounds['timeout_seconds']} --readiness-timeout {bounds['readiness_timeout_seconds']}
 ```
 
@@ -678,15 +703,18 @@ For a controlled checkpointed stop, from another terminal run:
 "%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\g2_preview_operator.py request-stop --manifest .\operator-manifest.json
 ```
 
-After complete process reclamation, allocate a new round and invoke the same
-`run` entry with a new output directory for a real cold restore. Checkpoint:
+After complete process reclamation, recheck all managed hosts, allocate a new
+round from the same ledger, and invoke the same `run` entry with a new output
+directory for a real cold restore. Checkpoint:
 `<state_dir>\profile\save games\xar_checkpoint.ck3`; agent state:
 `<state_dir>\native-session\driver-state.json`; logs:
 `<state_dir>\profile\logs`. Unknown forced states and RED remain failures. Do
 not retry an action whose material result is unconfirmed.
 
-After each attempt, record the returned full `run_id` with the same bundled
-allocator and persistent state root:
+After each live attempt, record the full `run_id` with the same bundled
+allocator and persistent state root. Use `completed-green` only for that
+attempt's actual GREEN result; otherwise use `completed-red` and preserve its
+failure evidence. The example below is for a genuinely GREEN bounded preview:
 
 ```text
 "%XAR_PREVIEW_ROOT%\venv\Scripts\python.exe" .\repo\tools\ck3_live_run_id.py status --run-id <FULL_RUN_ID> --mod eternal-recurrence --status completed-green --reason "bounded preview completed" --state-root "%XAR_PREVIEW_ROOT%\live-run-ids-v1"
