@@ -2544,10 +2544,32 @@ def native_auto_run(
             and all(qualification_gates.values())
         )
     else:
+        existing_opening_focus_readback = bool(
+            opening_focus_gate is not None
+            and opening_focus_gate.get("stage") == "complete"
+            and isinstance(opening_focus_gate.get("existing_focus"), str)
+            and opening_focus_gate.get("existing_focus")
+            and status == "turn_limit"
+            and len(turns) == 1
+            and turns[0].get("ok") is True
+            and turns[0].get("class") == "query"
+            and turns[0].get("selected_step")
+            == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+            and isinstance(turns[0].get("before"), dict)
+            and turns[0]["before"].get("paused") is True
+            and turns[0]["before"].get("date_raw") == opening_date_raw
+            and isinstance(turns[0].get("after"), dict)
+            and turns[0]["after"].get("paused") is True
+            and turns[0]["after"].get("date_raw") == opening_date_raw
+            and visible_gameplay_turns == 0
+        )
         qualified = bool(
             primary_error is None
             and status in {"turn_limit", "episode_complete"}
-            and visible_gameplay_turns > 0
+            and (
+                visible_gameplay_turns > 0
+                or existing_opening_focus_readback
+            )
             and (
                 opening_focus_gate is None
                 or opening_focus_gate["stage"] == "complete"
