@@ -21,4 +21,27 @@
 3. 同一条件下采集 primary 当前资源与结算 delta、F/fame、legitimacy、truce evaluated days/expiry、PoW release pairs。已有 Raiktor **attacker-defeat** 的 visible-root/pointer-only 观察器只可作 ABI 线索；CB 类型、绝对 outcome、root offset 与 actor side 不同，不能直接复用结论。无法安全读取的域保留 typed unavailable；不可把 partial 打包成完整投降效用。
 4. 新读口先做精确构建 source fixture 与 Debug/Release、Python normal/`-O` 聚焦验证；再由单实例负责人在获授权的 paused snapshot 中双读同帧并在 cold restore 后核对身份。只有 material terms、独立游戏后置与下一 turn 消费齐全，才允许将守方投降纳入正式选择。单 ACK 只说明命令提交。
 
-本次闭合了 `resolve_title_and_vassal_change` preview 的否定边界和 UI title visitor 入口，但尚未闭合实际 move 的只读生产者、visitor payload/teardown 或资源 delta；因此没有可用的完整投降条款 ABI。按已发生的崩溃证据停止在这里，不添加会调用旧 preview 的代码，也不运行 CK3。下一开发包先追 `0xF5BFD0`、visitor slot `0x2F0DE20` 与 `CTitleAndVassalChange` actual-move 生产者，证明非变更读取与生命周期后再做精确 fixture；之后才排队一条有界实机只读验收。守方投降仍不得作为自动动作。
+## 2026-09-22 补充：UI title visitor 与 resolve 队列的边界
+
+[离线提取器](../../ck3_autonomous_player/native_bridge/research/extract_defender_surrender_actual_move_boundary.py) 在同一 EXE SHA 上逐条核对 direct-call 目标与关键指令字节；[冻结 ABI 输出](../../ck3_autonomous_player/native_bridge/research/defender_surrender_actual_move_boundary_1_19_0_6_abi.json) SHA-256 为 `BAC9D8B6FEA7E3C5A87FB64C3F61F703DFC7A207FB3E2F4389867FB4E8350346`。提取器只读 EXE，没有启动 CK3 或调用 effect。其证据范围是地址和数据流，不包含本 WarID 的动态条款。
+
+- [static-confirmed] `0xF5C0FC` 把临时 title visitor 送入 `0x2F0E2D0`，输出参数明确是 `WarOverview+0x1C70`。consumer 把至少三组 visitor vectors 拷贝到 UI model 的 `+0x30/+0x48/+0x60`，然后 `0xF5C102–0xF5C1AA` 条件释放五个 visitor 自有缓冲区。callback `0x2F0DE20` 的一个 `0x3068` typed tag 分支把输入 `+0x8` 的 title ID 插入 visitor `+0x18`；其它 tag 到具体 title/liege 语义的映射未证。UI 分组是展示数据，不能当作最终执行后的 holder 或 liege。
+- [static-confirmed] `CResolveTitleAndVassalChangeEffect` execute `0x2EC43F0` 的 type `0x17` 分支在 `0x2EC44A7` 调 `0x27CD6A0`，另一分支在 `0x2EC4567` 经 `0x27CD510` 进入同一函数。传入的是全局 context `[global+0xA0]+0xD280`。函数 `0x27CD6A0` 至少在 `0x27CD701` 减少队列 count、`0x27CD75A` 写入 entry、`0x27CD7BE` 增加队列 count。因此这条 execute 路径会修改全局变更队列，不能作为私有只读查询调用。preview `0x7E9220` 仍是 `B0 01 C3`，没有实际 move。
+- [unknown] 全局队列的下游最终操作生成/序列化、每个 title 的旧新 holder、liege/vassal 和资源 delta 尚未定位。仅有 UI title IDs 或排队入口不足以定义非变更的 actual-move observer。现阶段不接 native bridge、pipe、MCP 或策略投降入口，也不启用旧 broad loaded-effect preview。
+
+```mermaid
+flowchart TD
+    S["[static] primary defender surrender = attacker victory"] --> CB["[static] claim_cb on_victory"]
+    CB --> UI["[static] CB+0x968 → 0xF5BFD0 title visitor"]
+    UI --> P["[static] 0x2F0E2D0 → WarOverview+0x1C70 presentation"]
+    P --> FREE["[static] five temporary visitor buffers released"]
+    CB --> R["[static] resolve effect execute 0x2EC43F0"]
+    R --> Q["[static] global queue mutation 0x27CD6A0"]
+    R --> NOOP["[static] preview 0x7E9220 returns true only"]
+    Q -. "[unknown] non-mutating final move producer" .-> MOVES["typed title/holder/liege operations"]
+    MOVES -. "[unknown] current WarID material terms" .-> POLICY["surrender comparison"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class MOVES,POLICY unknown;
+```
+
+下一定位入口缩为：沿全局队列 `+0xD280` 的**消费者**寻找只读、可在结算前稳定取得的 final operation list；同时继续解码 `0x2F0DE20` 其余 callback tag，只用它交叉核对展示标题，不从 UI 反推新领主。只有证明不调用 execute、不修改队列且能取得完整旧新 holder/liege 与资源条件时，才实现最小私有观察口和精确 fixture；之后再排有界同帧只读实机。否则继续记录具体未证边。守方投降仍不得作为自动动作，R0118 RED 保持。

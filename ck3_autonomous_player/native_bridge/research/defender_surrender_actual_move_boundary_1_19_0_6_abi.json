@@ -1,0 +1,68 @@
+{
+  "schema": "xar.ck3.defender-surrender-actual-move-boundary.v1",
+  "status": "NO_NONMUTATING_ACTUAL_MOVE_PRODUCER_PROVEN",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "absolute_outcome": "attacker_victory for played primary-defender surrender",
+  "ui_title_visitor": {
+    "source": "CB+0x968 -> WarOverview 0xF5BFD0",
+    "preview_dispatch": "0xF5C09F -> 0x3380170",
+    "visitor_callback": "0x2F0DE20",
+    "one_typed_tag_compare_rva": "0x2F0DE4F",
+    "one_typed_tag_compare_bytes": "81790868300000",
+    "one_title_id_insert_rva": "0x2F0DE69",
+    "one_title_id_insert_bytes": "8B4308488D4F18",
+    "ui_consumer_call_rva": "0xF5C0FC",
+    "ui_consumer_call_bytes": "E8CF21FB01",
+    "ui_output_rva": "0xF5C0E9",
+    "ui_output_bytes": "488D93701C0000",
+    "ui_output_offset": "WarOverview+0x1C70",
+    "vector_copy_call_bytes": {
+      "+0x18 -> UI+0x30": "E808D9CCFD",
+      "+0x30 -> UI+0x48": "E8FBD8CCFD",
+      "+0x48 -> UI+0x60": "E8EED8CCFD"
+    },
+    "cleanup_first_rva": "0xF5C102",
+    "cleanup_first_bytes": "488B552F4885D2",
+    "cleanup_last_rva": "0xF5C19A",
+    "cleanup_last_bytes": "488B4DDF488B01",
+    "scope": "temporary visitor vectors feed WarOverview presentation lists; five owned buffers are conditionally released before helper returns",
+    "unknown": "callback tag to material title/liege result and equivalence to final actual moves"
+  },
+  "resolve_execute_queue": {
+    "effect_execute_rva": "0x2EC43F0",
+    "resolved_context_type_0x17": "0x2EC44A7 -> 0x27CD6A0",
+    "resolved_context_other": "0x2EC4567 -> 0x27CD510 -> 0x27CD6A0",
+    "global_context_rva": "0x2EC4496",
+    "global_context_bytes": "488B88A0000000",
+    "queue_offset_rva": "0x2EC449D",
+    "queue_offset_bytes": "4881C180D20000",
+    "queue_append_direct_call_bytes": "E8F49190FF",
+    "queue_append_other_call_bytes": "E8A48F90FF",
+    "queue_mutations": {
+      "remove_count_0x27CD701": "FF4B3C",
+      "write_entry_0x27CD75A": "48893CC8",
+      "append_count_0x27CD7BE": "FF4354"
+    },
+    "boundary": "the effect execute path mutates a global change queue and is not a read-only terms query",
+    "unknown": "downstream final operation materialization/serialization and old/new title holder or liege values"
+  },
+  "resolve_preview": {
+    "rva": "0x7E9220",
+    "bytes": "B001C3",
+    "boundary": "returns true without visiting resolved title or vassal operations"
+  },
+  "readiness": {
+    "private_live_observer": false,
+    "final_title_holder_liege_moves": false,
+    "material_resource_deltas": false,
+    "automatic_defender_surrender": false
+  },
+  "execution": {
+    "ck3_launched": false,
+    "native_effect_called": false,
+    "gameplay_action_submitted": false
+  }
+}
