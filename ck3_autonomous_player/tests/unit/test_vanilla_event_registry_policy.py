@@ -179,6 +179,43 @@ def _epidemic_5007_context(
     }
 
 
+def _epidemic_1020_context(
+    *,
+    played_character_id: int = 36_403,
+    courtier_character_id: int = 50_001,
+) -> dict[str, object]:
+    scope_types = (
+        ("epidemic", "epidemic"),
+        ("epidemic_province", "province"),
+        ("epidemic_scope", "epidemic"),
+        ("epidemic_county", "landed_title"),
+        ("miasma_courtier", "character"),
+    )
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "epidemic_events.1020",
+        "root_scope": _scope("character", character_id=played_character_id),
+        "saved_scopes": [
+            {
+                "name": name,
+                "name_identifier": index + 10,
+                "scope": _scope(
+                    type_key,
+                    character_id=(
+                        courtier_character_id
+                        if name == "miasma_courtier" else None
+                    ),
+                ),
+            }
+            for index, (name, type_key) in enumerate(scope_types)
+        ],
+        "options": [_option(0, 0), _option(1, 1)],
+    }
+
+
 def _r0065_grief_context(
     native_indices: tuple[int, ...] = (0, 4, 7),
     *,
@@ -1119,6 +1156,130 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(plan["phase"], "active_event_registry_choice")
         self.assertEqual(plan["selected_step"], "select-event-option-3")
         self.assertEqual(plan["event_decision"]["selected_native_option_index"], 2)
+        self.assertEqual(plan["event_decision"]["failed_checks"], [])
+
+    def test_r0094_epidemic_1020_selects_authored_flower_response(self) -> None:
+        result = recommend_registered_vanilla_event_option_v1(
+            _epidemic_1020_context(),
+            played_character_id=36_403,
+            snapshot_option_count=2,
+        )
+
+        self.assertEqual(result["status"], "recommended")
+        self.assertEqual(result["selected_option_number"], 1)
+        self.assertEqual(result["selected_native_option_index"], 0)
+        self.assertEqual(result["selected_rendered_index"], 0)
+        self.assertEqual(result["failed_checks"], [])
+
+    def test_r0094_epidemic_1020_scope_or_option_drift_blocks(self) -> None:
+        same_player = _epidemic_1020_context(courtier_character_id=36_403)
+        missing_county = _epidemic_1020_context()
+        missing_county["saved_scopes"] = [
+            row for row in missing_county["saved_scopes"]
+            if row["name"] != "epidemic_county"
+        ]
+        wrong_option = _epidemic_1020_context()
+        wrong_option["options"][0]["enabled"] = False
+        cases = (
+            (same_player, "scope:miasma_courtier:unique_character_excludes"),
+            (missing_county, "saved_scope_names_exact"),
+            (wrong_option, "selected_native_option_enabled"),
+        )
+        for context, failed_check in cases:
+            with self.subTest(failed_check=failed_check):
+                result = recommend_registered_vanilla_event_option_v1(
+                    context,
+                    played_character_id=36_403,
+                    snapshot_option_count=2,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIsNone(result["selected_native_option_index"])
+                self.assertIn(failed_check, result["failed_checks"])
+
+    def test_r0094_epidemic_1020_formal_planner_selects_typed_option_one(
+        self,
+    ) -> None:
+        context = _epidemic_1020_context()
+        context.update({
+            "current_event_instance_id": 21,
+            "snapshot_revision": 11,
+            "date_raw": 53_361_360,
+            "unavailable_reason": None,
+            "calculated_event_id": 1,
+            "runtime_stats_ordinal": 1,
+            "readiness": {
+                "event_definition_identity_ready": True,
+                "root_scope_ready": True,
+                "saved_scopes_ready": True,
+                "option_presentation_ready": True,
+                "effect_indicators_ready": True,
+                "effect_preview_ready": False,
+                "semantic_decision_ready": False,
+            },
+            "provenance": {
+                "root": "module+0x570F7B8->+0x10",
+                "idler_vtable_rva": "0x40B1D30",
+                "manager_offset": "+0x28",
+                "backend_id": "ck3-1.19.0.6-native-event-window-v1",
+            },
+        })
+        for option in context["options"]:
+            option.update({
+                "resolved_name": "test option",
+                "unavailable_reason": "",
+                "effect_indicators": {
+                    "status": "available",
+                    "coverage": (
+                        "played-character-event-icon-indicators-1.19.0.6-v1"
+                    ),
+                    "complete_effect_set": False,
+                    "rows": [],
+                },
+                "effect_preview": {
+                    "status": "unavailable",
+                    "reason": "indicator_subset_has_no_completeness_signal",
+                },
+                "resource_deltas": {"status": "unavailable"},
+                "relationship_deltas": {"status": "unavailable"},
+            })
+        history = [{
+            "command": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+            "ok": True,
+            "result": {
+                "step": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "accepted": True,
+                "status": "available",
+                "snapshot_revision": 11,
+                "current_event_instance_id": 21,
+                "date_raw": 53_361_360,
+                "current_event_window_context": copy.deepcopy(context),
+                "queried_snapshot_id": "native:11",
+                "queried_revision": 12,
+                "queried_native_revision": 11,
+            },
+        }]
+        snapshot = {
+            "snapshot_id": "native:11",
+            "revision": 12,
+            "native_revision": 11,
+            "date_raw": 53_361_360,
+            "paused": True,
+            "backend_id": "native-headless",
+            "played_character": {"character_id": 36_403, "alive": True},
+            "active_event": {"instance_id": 21, "option_count": 2},
+        }
+        plan = choose_one_life_turn(
+            history,
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "active_event_registry_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-1")
+        self.assertEqual(plan["event_decision"]["selected_native_option_index"], 0)
         self.assertEqual(plan["event_decision"]["failed_checks"], [])
 
     def test_other_variant_contracts_still_require_explicit_consumer_review(
