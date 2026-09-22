@@ -66,6 +66,19 @@ class MinorReligiousWarDefendersSourceContractTest(unittest.TestCase):
         self.assertIn(
             "ExecuteMinorReligiousWarDefendersPrivateQueryV1", bridge
         )
+        admission_start = bridge.index("} else if (!game.supports_step(step)")
+        admission_end = bridge.index(
+            '"unsupported native gameplay step"', admission_start
+        )
+        private_admission = bridge[admission_start:admission_end]
+        self.assertIn(
+            "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1",
+            private_admission,
+        )
+        self.assertIn(
+            "ParseMinorReligiousWarDefendersPrivateStepV1",
+            private_admission,
+        )
         self.assertIn(
             CONTRACT["private_wire"]["step"].split("<", 1)[0], wire_header
         )
