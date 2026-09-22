@@ -6,6 +6,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import stat
 import sys
 import tempfile
 from types import SimpleNamespace
@@ -361,6 +362,112 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 hashlib.sha256(b"{}").hexdigest(),
             )
             self.assertEqual(preparation["manifest_updated"], str(manifest_path))
+
+    def test_prepare_state_preserves_read_only_sources_and_rebinds_writable_copy(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = root / "state"
+            sample = root / "sample"
+            sample.mkdir()
+            save_source = sample / "xar_checkpoint.ck3"
+            driver_source = sample / "driver-state.json"
+            save_source.write_bytes(b"frozen checkpoint")
+            driver_source.write_bytes(b'{"frozen":true}\n')
+            source_paths = (save_source, driver_source)
+            source_hashes = {
+                path: hashlib.sha256(path.read_bytes()).hexdigest()
+                for path in source_paths
+            }
+            for path in source_paths:
+                path.chmod(path.stat().st_mode & ~stat.S_IWRITE)
+
+            manifest_path = root / "manifest.json"
+            manifest_path.write_text(json.dumps({
+                "python": str(root / "python.exe"),
+                "source_repo": str(root / "repo"),
+                "state_dir": str(state),
+                "game_dir": str(root / "game"),
+                "pipe": r"\\.\pipe\ordinary-read-only-source",
+                "dll": str(root / "bridge.dll"),
+                "injector": str(root / "injector.exe"),
+                "xar_enabled": "xar_off",
+                "succession_lifecycle": "ordinary_campaign_succession",
+                "ordinary_campaign_no_pact": True,
+            }), encoding="utf-8")
+            driver_target = state / "native-session" / "driver-state.json"
+            rebound_driver = b'{"rebound":true}\n'
+            calls: list[list[str]] = []
+
+            def fake_run(command, check):
+                self.assertFalse(check)
+                calls.append(command)
+                if "rebind-ordinary-seed-v1" in command:
+                    self.assertTrue(driver_target.stat().st_mode & stat.S_IWRITE)
+                    temporary = driver_target.with_suffix(".json.tmp")
+                    temporary.write_bytes(rebound_driver)
+                    temporary.replace(driver_target)
+                    receipt_path = Path(command[command.index("--receipt") + 1])
+                    receipt_path.write_text(json.dumps({
+                        "schema": "xar.ck3.ordinary-seed-rebind/v1",
+                        "status": "rebound",
+                        "ok": True,
+                        "ck3_launch_attempted": False,
+                        "pipe_name": r"\\.\pipe\ordinary-read-only-source",
+                        "environment": {"target_sha256": "c" * 64},
+                        "driver_state": {
+                            "target_sha256": hashlib.sha256(
+                                rebound_driver
+                            ).hexdigest(),
+                        },
+                        "no_launch_preflight_expectations": {
+                            "pipe_name": r"\\.\pipe\ordinary-read-only-source",
+                            "expected_character_id": 31853,
+                            "expected_episode_run_id": "native-31853-test",
+                            "expected_checkpoint_sha256": "a" * 64,
+                            "expected_driver_state_sha256": hashlib.sha256(
+                                rebound_driver
+                            ).hexdigest(),
+                            "xar_enabled": "xar_off",
+                            "succession_lifecycle": (
+                                "ordinary_campaign_succession"
+                            ),
+                            "ordinary_campaign_no_pact": True,
+                        },
+                    }), encoding="utf-8")
+                return mock.Mock(returncode=0)
+
+            try:
+                with mock.patch.object(
+                    g2_preview_operator.subprocess,
+                    "run",
+                    side_effect=fake_run,
+                ):
+                    result = g2_preview_operator.command_prepare_state(
+                        argparse.Namespace(
+                            manifest=manifest_path,
+                            sample_dir=sample,
+                        )
+                    )
+
+                self.assertEqual(result, 0)
+                self.assertIn("rebind-ordinary-seed-v1", calls[2])
+                for path in source_paths:
+                    self.assertFalse(path.stat().st_mode & stat.S_IWRITE)
+                    self.assertEqual(
+                        hashlib.sha256(path.read_bytes()).hexdigest(),
+                        source_hashes[path],
+                    )
+                save_target = (
+                    state / "profile" / "save games" / "xar_checkpoint.ck3"
+                )
+                self.assertTrue(save_target.stat().st_mode & stat.S_IWRITE)
+                self.assertTrue(driver_target.stat().st_mode & stat.S_IWRITE)
+                self.assertEqual(driver_target.read_bytes(), rebound_driver)
+            finally:
+                for path in source_paths:
+                    path.chmod(path.stat().st_mode | stat.S_IWRITE)
 
     def test_prepare_state_legacy_manifest_keeps_original_two_commands(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

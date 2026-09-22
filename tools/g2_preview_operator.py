@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -86,6 +87,12 @@ def write_json_atomic(path: Path, value: dict[str, Any]) -> None:
         temporary.replace(path)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def make_derived_state_owner_writable(path: Path) -> None:
+    """Allow prepared state to diverge without changing its frozen source."""
+
+    path.chmod(path.stat().st_mode | stat.S_IWRITE)
 
 
 def receipt_target_sha256(receipt: dict[str, Any], section: str) -> str:
@@ -386,6 +393,8 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     driver_target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(save_source, save_target)
     shutil.copy2(driver_source, driver_target)
+    make_derived_state_owner_writable(save_target)
+    make_derived_state_owner_writable(driver_target)
     if subprocess.run(
         [*common, "verify-profile", *profile_rule], check=False
     ).returncode != 0:
