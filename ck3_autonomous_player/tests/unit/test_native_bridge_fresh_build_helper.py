@@ -134,6 +134,29 @@ class NativeBridgeFreshBuildHelperTests(unittest.TestCase):
             self.assertEqual(mode, "direct-2052-utf8")
             self.assertEqual(rules.read_text(encoding="utf-8"), original)
 
+    def test_2052_only_toolchain_repairs_cp936_prefix_in_utf8_rules(self) -> None:
+        helper = _load_helper()
+        with tempfile.TemporaryDirectory(prefix="xar-native-prefix-cp936-") as temporary:
+            root = Path(temporary)
+            build_dir = root / "configured-build"
+            rules = build_dir / "CMakeFiles" / "rules.ninja"
+            rules.parent.mkdir(parents=True)
+            before = "# 编译规则\nrule CXX\nmsvc_deps_prefix = ".encode("utf-8")
+            prefix = "注意: 包含文件:  "
+            after = b"\n  command = cl.exe $in\n"
+            rules.write_bytes(before + prefix.encode("cp936") + after)
+            compiler = root / "toolchain" / "cl.exe"
+            compiler.parent.mkdir(parents=True)
+            compiler.touch()
+            locale_resource = compiler.parent / "2052" / "clui.dll"
+            locale_resource.parent.mkdir()
+            locale_resource.touch()
+
+            mode = helper.repair_ninja_msvc_dependency_prefix(build_dir, compiler)
+
+            self.assertEqual(mode, "repaired-2052-utf8")
+            self.assertEqual(rules.read_bytes(), before + prefix.encode("utf-8") + after)
+
     def test_existing_build_directory_is_rejected_even_for_a_plan(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-native-existing-") as temporary:
             result = subprocess.run(

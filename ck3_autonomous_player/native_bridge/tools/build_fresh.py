@@ -125,29 +125,38 @@ def repair_ninja_msvc_dependency_prefix(
         raise FreshBuildError(
             f"Ninja rules file is missing after configure: {rules_path}"
         )
-    rules = rules_path.read_text(encoding="utf-8")
+    rules = rules_path.read_bytes()
     matches = list(
-        re.finditer(r"(?m)^msvc_deps_prefix = (?P<value>[^\r\n]*)\r?$", rules)
+        re.finditer(rb"(?m)^msvc_deps_prefix = (?P<value>[^\r\n]*)\r?$", rules)
     )
     if len(matches) != 1:
         raise FreshBuildError(
             f"expected exactly one msvc_deps_prefix in {rules_path}"
         )
     match = matches[0]
-    generated = match.group("value")
+    generated_bytes = match.group("value")
+    try:
+        generated = generated_bytes.decode("utf-8")
+    except UnicodeDecodeError:
+        # A 2052-only cl.exe can make CMake emit the prefix as CP936 while
+        # the rest of rules.ninja is UTF-8. Decode only this value.
+        generated = generated_bytes.decode("cp936")
     if (
         generated.startswith(EXPECTED_2052_PREFIX)
         and not generated[len(EXPECTED_2052_PREFIX) :].strip()
     ):
-        return "direct-2052-utf8"
-    repaired = _recover_2052_prefix(generated)
+        if generated_bytes == generated.encode("utf-8"):
+            return "direct-2052-utf8"
+        repaired = generated
+    else:
+        repaired = _recover_2052_prefix(generated)
     if repaired is None:
         raise FreshBuildError(
             f"could not recover the 2052 MSVC /showIncludes prefix in {rules_path}"
         )
-    if repaired != generated:
+    if repaired.encode("utf-8") != generated_bytes:
         start, end = match.span("value")
-        rules_path.write_text(rules[:start] + repaired + rules[end:], encoding="utf-8")
+        rules_path.write_bytes(rules[:start] + repaired.encode("utf-8") + rules[end:])
     return "repaired-2052-utf8"
 
 
