@@ -130,3 +130,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W1 宣战关系网络：新增静态证据
 
 [W1 宣战关系网络](war-film-declaration-relationship-network-2026-09-23.md)：六类来源闭合到配偶、订婚、有效联盟、参战义务属国/朝贡国、战争保证宗主与邦联。己方额外剔除在战中、人类玩家、同邦联以及特定宗主保证组合，目标方不照搬这些门；旧 same-realm 和 government 泛称已在新专题追加更正。共同谓词的脚本加载映射继续追查。8 条静态边、3 条未知边与异目录复提逐字节校验通过，无 live。 本包不增加 live 或影片完成度。
+
+## W1 共同参战关系门：精确脚本绑定
+
+[war-film-relationship-gate-2026-09-23.md](war-film-relationship-gate-2026-09-23.md)：脚本注册与消费者闭合 can_potentially_call_ally（token 0x3529，前次相邻槽 0x352A 更正）、ally 命名作用域及 WARRIOR/JOINER 绑定。实际共同规则没有注释所称的邦联防守侧门，不把注释当执行条件；5 条 static、2 条 unknown、0 条 live。

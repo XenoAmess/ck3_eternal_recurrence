@@ -1,0 +1,82 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-relationship-gate-20260923",
+  "question": "Does the native loader bind can_potentially_call_ally to scripted-rules singleton+0xF08->+0x1960 used by 0x1B35DF0, and what is the exact scope direction?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "One declaration assessment actor and effective target; not all diplomacy or wars",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Synchronous collector locals and full CharacterID only; no pointer reuse",
+    "producer_trigger": "not-applicable",
+    "producer": "Unknown native rule registration/loader into the +0x1960 trigger subobject",
+    "caller": "0x1879850 and 0x18758C0 -> 0x1B35DF0",
+    "consumer": "Boolean eligibility gate for one actor or target network contribution",
+    "cache_lifetime": "Military+0x308 freshness remains separate; no runtime age observed",
+    "expected_signal": "Exact symbol/string/registration or loader-index proof reaching the same consumed object and scope binding",
+    "zero_sample_meaning": "No live samples are taken; an excluded branch is not proof that the relationship cannot join a war",
+    "stop_condition": "No live access. One bounded pass over literal/registration and singleton-owner loading plus its trigger-array addressing. If no exact binding closes, freeze ruled-out matches and precise remaining edge; do not repeat broad scans.",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {
+      "id": "name",
+      "label": "Authored can_potentially_call_ally"
+    },
+    {
+      "id": "loader",
+      "label": "Native loader registration"
+    },
+    {
+      "id": "field",
+      "label": "Rules object +0x1960"
+    },
+    {
+      "id": "gate",
+      "label": "0x1B35DF0 with root/candidate scopes"
+    }
+  ],
+  "edges": [
+    {
+      "id": "name-to-loader",
+      "from": "name",
+      "to": "loader",
+      "label": "Locate actual loading registration; catalog string similarity is not a binding.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Locate actual loading registration; catalog string similarity is not a binding."
+    },
+    {
+      "id": "loader-to-field",
+      "from": "loader",
+      "to": "field",
+      "label": "Trace exact field offset or array index into singleton+0xF08 object.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Trace exact field offset or array index into singleton+0xF08 object."
+    },
+    {
+      "id": "scope-direction",
+      "from": "field",
+      "to": "gate",
+      "label": "Bind caller root and candidate to their actual authored scope names.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Bind caller root and candidate to their actual authored scope names."
+    }
+  ],
+  "cases": [
+    {
+      "id": "loaded-rule-runtime",
+      "question": "No live evaluation or current rule-object contents observed.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}
