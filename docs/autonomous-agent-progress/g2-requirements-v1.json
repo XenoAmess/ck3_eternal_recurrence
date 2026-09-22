@@ -128,11 +128,13 @@
       "latest_evidence": [
         "R639 standard-feudal independent/vassal production-live domain-capacity and active-council-task observations; artifact CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB",
         "LIFE1 exact-build native lifestyle focus/perk decision tree static-confirmed at a04ee02a04a3a86bb685395270d8cd23359b8ba2; public observation and semantic action remain pending",
-        "R693 exact-build private steward-candidate reader production-live primitive GREEN: available with a complete 11-candidate vector, one application-main execution, temporary vector released, paused read-only run and cleanup GREEN; manifest FC59D8D8F001B6B6F6A5ACD041EFBA78596F7D837A54819A8B3F3A2E3EAFABC4"
+        "R693 exact-build private steward-candidate reader production-live primitive GREEN: available with a complete 11-candidate vector, one application-main execution, temporary vector released, paused read-only run and cleanup GREEN; manifest FC59D8D8F001B6B6F6A5ACD041EFBA78596F7D837A54819A8B3F3A2E3EAFABC4",
+        "R0080 one formal typed private construction submit and immediate paired post-ACK checkpoint: next native paused frame showed matching active construction tuple/initiator and exact native gold cost, but Python receipt was RED; original manifest 551920217FE0EC4167CAA17E9FDAA4DCE6F966B539F77F0305D63660D0D42213",
+        "R0081 protected Python 8E0DF178 plus compatible frozen native 573F742: new-PID cold restore of R0080 postaction pair, first-turn verified applied receipt for same action ID, next formal turn consumed it without duplicate submit, 20/20 turns and paired checkpoint; private-only GREEN manifest ED175A02101C73AD8E0B5765EBF52397154EAA134CB54974D4AE84988B8BDAA2"
       ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one council reassignment and one real vassal or faction intervention",
-      "open_blocker": "R693 closes the private exact-build steward-candidate enumeration blocker. The public/formal strategy still needs candidate semantics, a legal council assignment action, independent postcondition verification and next-cycle consumption; holdings/buildings/construction, lifestyle focus/perk observation and action, and the vassal/faction intervention loop also remain incomplete"
+      "open_blocker": "R0081 closes the private bounded construction submit/material receipt/new-PID cold/next-turn consumption branch, not public construction registration or the two-year M4 window. A public/formal legal council reassignment with independent postcondition and next-turn consumption, a real vassal/faction intervention, lifestyle focus/perk observation and action, and full window verification remain open"
     },
     {
       "id": "G2-M5",
