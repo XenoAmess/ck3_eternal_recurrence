@@ -163,7 +163,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "672329455ED6D63969118C92BCA7AD239846D4B87382232A9FB48EDFA8F817E8"
+        "sha256": "DBBA4704FD65512EF516752968290A5793ECF4580894695DF3A9E23F76335D27"
       },
       "raw_footage": {
         "passed": 0,
@@ -186,17 +186,17 @@
     "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
     "closed_gates": [
       "G2-M0",
-      "G2-M1"
+      "G2-M1",
+      "G2-M3"
     ],
     "open_gates": [
       "G2-M2",
-      "G2-M3",
       "G2-M4"
     ],
     "percentage": null,
     "priority": "T1",
     "program": "G2",
-    "progress_basis": "visible OODA milestones; 2/8 complete",
+    "progress_basis": "visible OODA milestones; 3/8 complete",
     "result": "ACTIVE"
   },
   "t2": {
@@ -207,5 +207,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-22T00:00:00+08:00"
+  "updated_at": "2026-09-22T20:46:28+08:00"
 }
