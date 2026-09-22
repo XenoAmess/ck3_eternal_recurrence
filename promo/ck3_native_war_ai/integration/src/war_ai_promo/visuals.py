@@ -1,20 +1,58 @@
 """The film's illustrated map, candidate cards, thresholds and peace ledgers."""
 from pathlib import Path
 import math
+import random
 
 from PIL import Image, ImageDraw
 from xar_promo.process import CommandSpec, run_command
 
 from .common import font, lines
 
-BG = "#101C29"
-PANEL = "#1B2B3A"
-INK = "#EBE8DA"
-MUTED = "#A1B2BB"
-GOLD = "#D7B574"
-RED = "#D18176"
-BLUE = "#77ACD4"
-GREEN = "#8EC9AA"
+BG = "#211813"
+PANEL = "#35291F"
+INK = "#F0E5CF"
+MUTED = "#BBA98D"
+GOLD = "#CBA56A"
+RED = "#CA7962"
+BLUE = "#9AAEAB"  # Muted opposing-faction accent, not a blue dashboard field.
+GREEN = "#ABB582"
+PAPER = "#D9C39B"
+PAPER_INK = "#3E2C20"
+FAINT_RULE = "#61503C"
+
+# Older teaching/help layouts share these drawing helpers. Translate their
+# panel fills at the visual boundary without editing frozen mechanism copy.
+PANEL_FILLS = {
+    "#152635":"#2A241C", "#263540":"#453724", "#1B2E3D":"#342C22",
+    "#1C303C":"#30281F", "#1B303C":"#382B20", "#263B46":"#443522",
+    "#27323B":"#3C2C21", "#26313A":"#3D2E23", "#223341":"#3A2A1E",
+    "#32404B":"#423C31", "#244B42":"#394331", "#26343F":"#362D24",
+}
+
+
+def heraldic_mark(draw, xy, size=32, color=GOLD, fill=None):
+    """Original geometric shield, not a CK3 coat-of-arms asset."""
+    x, y = xy
+    points = [(x-size*.48,y-size*.5),(x+size*.48,y-size*.5),
+              (x+size*.43,y+size*.12),(x,y+size*.58),(x-size*.43,y+size*.12)]
+    draw.polygon(points, fill=fill or PANEL, outline=color, width=2)
+    draw.line((x,y-size*.31,x,y+size*.25),fill=color,width=2)
+    draw.line((x-size*.22,y-size*.07,x+size*.22,y-size*.07),fill=color,width=2)
+
+
+def make_canvas(size=(2560, 1440)):
+    """A quiet, deterministic paper/wood field; subtitle area stays untextured."""
+    image = Image.new("RGB", size, BG)
+    draw = ImageDraw.Draw(image)
+    rng = random.Random(119006)
+    for _ in range(6500):
+        x, y = rng.randrange(size[0]), rng.randrange(min(1118,size[1]))
+        draw.point((x,y),fill=(40+rng.randrange(6),30+rng.randrange(4),23+rng.randrange(3)))
+    draw.line((64,30,size[0]-64,30),fill=FAINT_RULE,width=1)
+    for x, sign in ((64,1),(size[0]-64,-1)):
+        draw.line((x,30,x+sign*110,30),fill=GOLD,width=2)
+        draw.line((x,30,x,110),fill=FAINT_RULE,width=1)
+    return image
 
 
 def text(draw, xy, value, size=44, fill=INK, bold=False, width=None):
@@ -24,7 +62,15 @@ def text(draw, xy, value, size=44, fill=INK, bold=False, width=None):
 
 
 def box(draw, bounds, color=PANEL, outline=None):
-    draw.rounded_rectangle(bounds, radius=22, fill=color, outline=outline, width=3)
+    color = PANEL_FILLS.get(color,color)
+    outline = FAINT_RULE if outline == "#3A4C59" else outline
+    x,y,right,bottom = bounds
+    # Narrow, square framing reads as a folio or map note, not a dashboard tile.
+    draw.rounded_rectangle(bounds, radius=4, fill=color, outline=outline, width=2)
+    if outline and right-x>150 and bottom-y>90:
+        draw.line((x+12,y+8,right-12,y+8),fill=outline,width=1)
+        for cx, direction in ((x+8,1),(right-8,-1)):
+            draw.line((cx,bottom-8,cx+direction*12,bottom-8),fill=outline,width=1)
 
 
 def arrow(draw, a, b, color=GOLD, width=7):
@@ -39,6 +85,9 @@ def castle(draw, x, y, color):
     for dx in (-38, 22):
         draw.rectangle((x + dx, y - 44, x + dx + 16, y + 36), fill=color)
     draw.rectangle((x - 10, y + 5, x + 10, y + 36), fill=BG)
+    draw.line((x-37,y+39,x+37,y+39),fill=GOLD,width=2)
+    draw.line((x,y-25,x,y-64),fill=GOLD,width=2)
+    draw.polygon([(x+2,y-63),(x+25,y-58),(x+2,y-47)],fill=color)
 
 
 def make_frame(row, destination, phase):
@@ -83,7 +132,8 @@ def render_visual(row, destination, ffmpeg, workdir):
             "transition_seconds": fade, "state_offsets_seconds": [0, offset1, offset2],
             "resolution": [2560, 1440], "fps": 30, "subtitle_safe_top": 1120,
             "evidence_scope": "Teaching diagrams; no live state or human approval inferred."}
-    (folder / "visual-plan.json").write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    plan["visual_style"] = "war-folio-v3; original procedural art; no CK3 asset or live provenance"
+    (folder / "visual-plan.json").write_bytes((json.dumps(plan, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
     destination.parent.mkdir(parents=True, exist_ok=True)
     argv = [str(ffmpeg), "-nostdin", "-n", "-hide_banner", "-loglevel", "warning"] + inputs + [
         "-filter_complex_threads", "1", "-filter_complex", ";".join(filters),

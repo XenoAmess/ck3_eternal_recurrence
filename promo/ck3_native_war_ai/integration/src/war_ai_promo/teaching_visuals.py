@@ -8,11 +8,11 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from .common import font, lines
-from .visuals import BG, PANEL, INK, MUTED, GOLD, RED, BLUE, GREEN, box, arrow, castle
+from .visuals import BG, PANEL, INK, MUTED, GOLD, RED, BLUE, GREEN, PAPER, PAPER_INK, box, arrow, castle, heraldic_mark, make_canvas
 
 SIZE = (2560, 1440)
 SAFE_BOTTOM = 1120
-FAINT = "#3A4C59"
+FAINT = "#61503C"
 CHAPTERS = {
     "hook": ("读懂战争的三个问题", "THREE QUESTIONS"),
     "declaration": ("案例一 · 选哪一场战争", "DECLARATION / CANDIDATE POOL"),
@@ -86,6 +86,9 @@ def fit(draw, bounds, value, size=42, color=INK, bold=False):
 def cell(draw, bounds, title, body="", *, active=False, color=GOLD, size=44):
     box(draw, bounds, PANEL, color if active else FAINT)
     x, y, right, bottom = bounds
+    if active:
+        draw.line((x+9,y+22,x+9,bottom-22),fill=color,width=3)
+        heraldic_mark(draw,(right-17,y+28),18,color,PANEL)
     title_bottom = min(y + 115, y + (bottom - y) * .53) if body else bottom - 18
     fit(draw, (x + 30, y + 25, right - 30, title_bottom), title, size, color if active else INK, True)
     if body:
@@ -130,10 +133,16 @@ def flow(draw, entries, beat, *, subtitle="", stop=False):
 def geography(draw, beat, thirdwar=False, objectives=False, army_peace=False):
     box(draw, (112, 332, 1690, 964), "#152635", FAINT)
     # Stable geography across all teaching maps: west Red River, east Blue Ridge.
-    draw.polygon([(145, 370), (915, 370), (850, 915), (145, 915)], fill="#302D32")
-    draw.polygon([(980, 370), (1652, 370), (1652, 915), (914, 915)], fill="#1C3446")
+    draw.polygon([(145, 370), (915, 370), (850, 915), (145, 915)], fill="#493329")
+    draw.polygon([(980, 370), (1652, 370), (1652, 915), (914, 915)], fill="#363A2E")
+    # Low-contrast cartographic texture; no implied routes or observed terrain.
+    for x,y in ((235,478),(371,534),(562,441),(746,823),(1064,474),(1467,736),(1570,863)):
+        for dx,dy in ((0,0),(29,18),(-22,26)):
+            draw.polygon([(x+dx-8,y+dy+12),(x+dx,y+dy-8),(x+dx+8,y+dy+12)],fill="#655540")
+            draw.line((x+dx,y+dy+10,x+dx,y+dy+17),fill="#807051",width=2)
     river = [(930, 364), (905, 450), (950, 550), (920, 650), (975, 760), (928, 918)]
-    draw.line(river, fill="#497E97", width=25, joint="curve")
+    draw.line(river, fill="#6C8581", width=20, joint="curve")
+    draw.line(river, fill="#9CAD9B", width=2, joint="curve")
     for x in (770, 835, 1020):
         draw.polygon([(x - 25, 470), (x, 420), (x + 25, 470)], fill=FAINT)
     fit(draw, (770, 350, 1070, 415), "北部山口", 27, MUTED)
@@ -169,12 +178,14 @@ def pool(draw, shot, beat):
     for i, value in enumerate(values):
         x = 112 + i * 398
         removed = shot >= 7 and value == 89 and beat >= 2
-        color = RED if removed else GOLD if value == 100 else GREEN if value == 90 and shot == 7 else BLUE
-        box(draw, (x, 385, x + 346, 765), PANEL, color)
-        fit(draw, (x + 26, 419, x + 320, 490), f"候选 {chr(65+i)}", 36, MUTED)
+        color = "#863E2E" if removed else "#765025" if value == 100 else "#435431" if value == 90 and shot == 7 else "#504737"
+        box(draw, (x, 385, x + 346, 765), PAPER, color)
+        heraldic_mark(draw,(x+285,446),39,color,PAPER)
+        draw.line((x+26,507,x+320,507),fill="#AA8B5A",width=2)
+        fit(draw, (x + 26, 419, x + 251, 490), f"候选 {chr(65+i)}", 36, PAPER_INK)
         fit(draw, (x + 34, 527, x + 320, 674), str(value) if i <= beat or shot >= 7 else "待揭示", 95, color, True)
         if removed:
-            draw.line((x + 24, 683, x + 317, 522), fill=RED, width=9)
+            draw.line((x + 24, 683, x + 317, 522), fill="#863E2E", width=7)
         fit(draw, (x + 25, 695, x + 322, 752), "淘汰" if removed else "边界保留" if value == 90 and shot == 7 and beat >= 2 else "假设正分", 28, color)
     if shot == 7:
         fit(draw, (180, 821, 1390, 913), "90% × 100 = 90", 62, GOLD, True)
@@ -185,7 +196,7 @@ def pool(draw, shot, beat):
 
 def weighted(draw, beat):
     vals = [100, 97, 94, 91, 90]
-    palette = [GOLD, BLUE, GREEN, RED, "#ADA0D4"]
+    palette = [GOLD, BLUE, GREEN, RED, "#AE8C6B"]
     x = 150
     for i, (value, color) in enumerate(zip(vals, palette)):
         w = value / 472 * 2260
@@ -271,18 +282,20 @@ def ledgers(draw, beat, kind):
     right_active = kind == "acceptance" or kind not in ("proposal",) and beat >= 3
     for i, (title, base, english, active) in enumerate((("主动提出白和", "0", "PROPOSE", left_active), ("收到后评估接受", "−30", "ACCEPT", right_active))):
         x = 135 + i * 1190
-        box(draw, (x, 340, x + 1100, 958), "#26313A", GOLD if active else FAINT)
-        fit(draw, (x + 44, 370, x + 1030, 451), title, 52, GOLD if active else MUTED, True)
+        box(draw, (x, 340, x + 1100, 958), PAPER if active else "#B5A384", GOLD if active else FAINT)
+        draw.rectangle((x+1,341,x+1099,350),fill="#713326" if active else "#66533D")
+        heraldic_mark(draw,(x+1035,399),43,"#774B2C",PAPER if active else "#B5A384")
+        fit(draw, (x + 44, 370, x + 973, 451), title, 52, PAPER_INK, True)
         identity = "蓝岭 · AI 防守方 / PROPOSE" if i == 0 else "赤河 · AI 进攻方 / RECEIVE"
-        fit(draw, (x + 44, 462, x + 1030, 510), identity, 27, BLUE if i == 0 else RED)
-        fit(draw, (x + 48, 543, x + 526, 670), "基础项", 44, INK)
-        fit(draw, (x + 620, 517, x + 1010, 676), base, 94, GOLD if active else MUTED, True)
+        fit(draw, (x + 44, 462, x + 1030, 510), identity, 27, "#3D5652" if i == 0 else "#78382D")
+        fit(draw, (x + 48, 543, x + 526, 670), "基础项", 44, PAPER_INK)
+        fit(draw, (x + 620, 517, x + 1010, 676), base, 94, "#713326" if active else "#5A4937", True)
         for n, label in enumerate(("身份与角色", "适用条件", "最终合计：不补造")):
             y = 707 + n * 73
-            draw.line((x + 43, y - 7, x + 1055, y - 7), fill=FAINT, width=2)
-            fit(draw, (x + 48, y, x + 1020, y + 67), label, 33, INK if active and n <= beat % 3 else MUTED)
+            draw.line((x + 43, y - 7, x + 1055, y - 7), fill="#9B815D", width=1)
+            fit(draw, (x + 48, y, x + 1020, y + 67), label, 33, PAPER_INK if active and n <= beat % 3 else "#65533F")
         if not active:
-            fit(draw, (x + 635, 465, x + 1050, 519), "先分清这一侧", 27, MUTED)
+            fit(draw, (x + 635, 465, x + 1050, 519), "先分清这一侧", 27, "#65533F")
 
 
 def peace_detail(draw, shot, beat):
@@ -363,17 +376,18 @@ def make_teaching_frame(row, destination, phase):
     shot = int(row["shot_id"].rsplit("-", 1)[-1])
     title, kind, beats = SHOTS[shot]
     beat = beat_index(row, phase)
-    image = Image.new("RGB", SIZE, BG)
+    image = make_canvas(SIZE)
     draw = ImageDraw.Draw(image)
-    draw.rectangle((0, 0, 2560, 10), fill=GOLD)
+    heraldic_mark(draw,(139,83),43,GOLD,BG)
     chapter, english = CHAPTERS[row["chapter_id"]]
-    fit(draw, (112, 54, 1580, 111), "CK3 / " + chapter, 30, GOLD, True)
+    fit(draw, (185, 54, 1580, 111), "CK3 / " + chapter, 30, GOLD, True)
     fit(draw, (1600, 59, 2448, 116), english, 26, MUTED)
     fit(draw, (112, 135, 2448, 238), title, 66, INK, True)
-    # Six steady progress marks make the two-cue teaching sequence legible.
+    # Small folio marks preserve beat state without dashboard-sized progress bars.
     for i in range(6):
-        draw.rounded_rectangle((112 + i * 390, 262, 465 + i * 390, 272), radius=5,
-                               fill=GOLD if i <= beat else FAINT)
+        x = 123 + i*34
+        draw.polygon([(x,258),(x+5,265),(x,272),(x-5,265)],fill=GOLD if i <= beat else FAINT)
+    draw.line((350,265,2448,265),fill=FAINT,width=1)
     if kind in ("geography", "thirdwar", "provinces", "army_peace"):
         geography(draw, beat, kind == "thirdwar", kind == "provinces", kind == "army_peace")
     elif kind == "pool":
@@ -412,7 +426,7 @@ def make_teaching_frame(row, destination, phase):
     fit(draw, (139, 1005, 2417, 1068), beats[beat], 38, GOLD, True)
     fit(draw, (115, 1085, 1690, 1118), "CK3 1.19.0.6 · 教学图解 · 假设示例不等于实机状态", 22, MUTED)
     fit(draw, (1750, 1085, 2448, 1118), "RULES / EXAMPLES / OPEN QUESTIONS", 21, MUTED)
-    draw.line((112, SAFE_BOTTOM, 2448, SAFE_BOTTOM), fill=FAINT, width=2)
+    draw.line((112, SAFE_BOTTOM - 3, 2448, SAFE_BOTTOM - 3), fill=FAINT, width=2)
     destination = Path(destination)
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("xb") as stream:
