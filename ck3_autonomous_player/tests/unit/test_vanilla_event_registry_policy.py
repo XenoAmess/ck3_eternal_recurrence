@@ -107,6 +107,36 @@ def _natural_disaster_context(native_indices: tuple[int, ...]) -> dict[str, obje
     }
 
 
+def _epidemic_1100_context(native_indices: tuple[int, ...]) -> dict[str, object]:
+    scope_types = {
+        "epidemic": ("epidemic", 50),
+        "province": ("province", 8),
+        "infected_county": ("landed_title", 5),
+    }
+    saved_scopes = []
+    for index, (name, (type_key, raw_type_index)) in enumerate(
+        scope_types.items()
+    ):
+        scope = _scope(type_key)
+        scope["raw_type_index"] = raw_type_index
+        saved_scopes.append(
+            {"name": name, "name_identifier": index + 10, "scope": scope}
+        )
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "epidemic_events.1100",
+        "root_scope": _scope("character", character_id=PLAYER),
+        "saved_scopes": saved_scopes,
+        "options": [
+            _option(rendered, native)
+            for rendered, native in enumerate(native_indices)
+        ],
+    }
+
+
 def _r0065_grief_context(
     native_indices: tuple[int, ...] = (0, 4, 7),
     *,
@@ -883,11 +913,51 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
                 self.assertEqual(result["status"], "blocked")
                 self.assertIsNone(result["selected_native_option_index"])
 
+    def test_epidemic_1100_exact_physician_variants_choose_bounded_option(
+        self,
+    ) -> None:
+        for native_indices, variant_index in (((0, 1), 0), ((0, 2), 1)):
+            with self.subTest(native_indices=native_indices):
+                result = recommend_registered_vanilla_event_option_v1(
+                    _epidemic_1100_context(native_indices),
+                    played_character_id=PLAYER,
+                    snapshot_option_count=3,
+                )
+                self.assertEqual(result["status"], "recommended")
+                self.assertEqual(result["selected_option_number"], 1)
+                self.assertEqual(result["selected_native_option_index"], 0)
+                self.assertEqual(result["matched_option_variant_index"], variant_index)
+                self.assertEqual(result["failed_checks"], [])
+
+    def test_epidemic_1100_other_or_malformed_variants_stay_blocked(self) -> None:
+        variants = (
+            (0, 1, 2),
+            (0,),
+            (1, 2),
+        )
+        for native_indices in variants:
+            with self.subTest(native_indices=native_indices):
+                result = recommend_registered_vanilla_event_option_v1(
+                    _epidemic_1100_context(native_indices),
+                    played_character_id=PLAYER,
+                    snapshot_option_count=3,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIsNone(result["selected_option_number"])
+
+        wrong_scope = _epidemic_1100_context((0, 1))
+        wrong_scope["saved_scopes"][2]["scope"]["type_key"] = "province"
+        result = recommend_registered_vanilla_event_option_v1(
+            wrong_scope, played_character_id=PLAYER, snapshot_option_count=3
+        )
+        self.assertEqual(result["status"], "blocked")
+        self.assertIn("scope:infected_county:type", result["failed_checks"])
+
     def test_other_variant_contracts_still_require_explicit_consumer_review(
         self,
     ) -> None:
         context = _context()
-        context["event_definition_key"] = "epidemic_events.1100"
+        context["event_definition_key"] = "adultery.0002"
 
         result = recommend_registered_vanilla_event_option_v1(
             context,
@@ -900,9 +970,8 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             result["unavailable_reason"],
             "registered_contract_requires_extended_consumer",
         )
-        self.assertEqual(
-            result["failed_checks"],
-            ["direct_projection_support:option_variants"],
+        self.assertIn(
+            "direct_projection_support:option_variants", result["failed_checks"]
         )
 
     def test_unknown_event_leaves_existing_planner_fallback_available(
