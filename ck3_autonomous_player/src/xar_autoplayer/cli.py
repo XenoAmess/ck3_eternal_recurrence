@@ -367,6 +367,14 @@ def parser() -> argparse.ArgumentParser:
             "route for one bounded native-auto-run acceptance run"
         ),
     )
+    native_auto_run_parser.add_argument(
+        "--allow-private-lifestyle-formal-trial",
+        action="store_true",
+        help=(
+            "enable the unadvertised exact-build lifestyle focus/perk "
+            "submit/receipt route for one bounded native-auto-run acceptance run"
+        ),
+    )
     construction_source_parser = commands.add_parser(
         "native-query-private-construction-source-v1",
         help="one unadvertised read-only construction source probe from a cold save",
@@ -819,6 +827,11 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_construction_formal_trial
                     else {}
                 )
+                private_lifestyle_options = (
+                    {"allow_private_lifestyle_formal_trial": True}
+                    if args.allow_private_lifestyle_formal_trial
+                    else {}
+                )
                 succession_options = (
                     {
                         "succession_lifecycle": args.succession_lifecycle,
@@ -848,6 +861,7 @@ def main(argv: list[str] | None = None) -> int:
                     ),
                     **private_faction_options,
                     **private_construction_options,
+                    **private_lifestyle_options,
                     **succession_options,
                     operator_stop_event=operator_stop_event,
                 )
