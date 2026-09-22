@@ -21,7 +21,7 @@ flowchart LR
 
 2026-09-12 起，G2 的现行需求、固定分母与施工顺序以
 [`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读
-[`g2-requirements-v1.json`](g2-requirements-v1.json) 为准。G2 全局当前为 `2/8` 个可见 OODA 里程碑完成；历史上出现的
+[`g2-requirements-v1.json`](g2-requirements-v1.json) 为准。G2 全局当前为 `3/8` 个可见 OODA 里程碑完成（M0/M1/M3）；历史上出现的
 `T1=90%` 仅是 GEN-034 窄包的临时估计，不得再解释或汇报为全游戏自治完成率。
 
 - 当前 exact build：CK3 `1.19.0.6`。
@@ -409,11 +409,11 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
    新轮次 R639 已在同一 paused production PID 内完成独立/vassal 双场景，两个 root 和 turn bundle 均 ready，非空 relationship
    vectors 与 occupied council task 均实机成立；M1 已 `complete`。派系身份、成员、力量、诉求、不满度和最后期限保留为后续治理深度；
 3. `G2-M2`：`event-context-v2` 接入共享 registry recommendation，并以三个自然事件闭合选择与状态后置；
-   当前普通 production continuation 同时承担自然 `.0030`/`.1007` encounter-driven 采集，不为单事件另开强制触发长跑；
-4. `G2-M3/M4`：把继承、health/stress/legitimacy、vassal/faction alert、建设和内阁组成 realm-survival 与和平治理 OODA；
+   普通封建 production continuation 顺路采集 `.1007`，而 `.0030` 的 exact-build 前置要求天朝政体和旅行状态，不能在此普通封建场景自然遇到，另保留合法自然场景门；
+4. `G2-M3/M4`：R0077 已闭合自然继承预期/实际分配及同 campaign 真实继承人续玩（M3）；下一步以 health/stress/legitimacy、vassal/faction alert、建设和内阁组成和平治理 OODA（M4）；
 5. `G2-M5–M7`：家庭/外交/完整战争，谋略/制度/活动，以及按 runtime identity 启用的政府/DLC adapter 和长期 qualification。
 
-G1、GEN-032、GEN-009 与同一 fixed seed 的第二寿命是已冻结前置证据，不再进入现行 G2 分母。当前全局进度只能写 `2/8`；
+G1、GEN-032、GEN-009 与同一 fixed seed 的第二寿命是已冻结前置证据，不再进入现行 G2 分母。当前全局进度只能写 `3/8`；
 GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 禁止恢复没有固定分母的百分比。
 
