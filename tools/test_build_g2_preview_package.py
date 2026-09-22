@@ -269,6 +269,29 @@ class G2PreviewPackageBuilderTest(unittest.TestCase):
             },
         )
 
+    def test_quickstart_allocates_separately_for_each_live_launch(self) -> None:
+        guide = builder.quickstart(self.spec)
+        allocate = "ck3_live_run_id.py allocate --mod eternal-recurrence"
+        self.assertEqual(guide.count(allocate), 2)
+        prepare = guide.index("g2_preview_operator.py prepare-state")
+        preflight = guide.index("g2_preview_eligibility.py --manifest")
+        first_allocation = guide.index(allocate)
+        live_eligibility = guide.index(
+            "g2_preview_eligibility.py --manifest", preflight + 1
+        )
+        second_allocation = guide.index(allocate, first_allocation + 1)
+        formal = guide.index("g2_preview_operator.py run --manifest")
+        self.assertLess(prepare, preflight)
+        self.assertLess(preflight, first_allocation)
+        self.assertIn("--preflight-only", guide[preflight:first_allocation])
+        self.assertLess(first_allocation, live_eligibility)
+        self.assertLess(live_eligibility, second_allocation)
+        self.assertLess(second_allocation, formal)
+        self.assertIn("eligibility command **starts CK3**", guide)
+        self.assertIn(
+            "same persistent ledger", " ".join(guide.split()).replace("**", "")
+        )
+
     def test_parameterized_stage_finalize_and_deterministic_assembly(self) -> None:
         staged = builder.stage(self.spec_path)
         self.assertEqual(

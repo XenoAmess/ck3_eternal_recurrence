@@ -3,7 +3,8 @@
 
 This operator check uses the existing controlled campaign-root acceptance path.
 It never chooses or submits a gameplay action, so GREEN here is only scope
-eligibility for a separate formal ``native-auto-run`` run.
+eligibility for a separate formal ``native-auto-run`` run. By default it
+launches CK3; only ``--preflight-only`` stays entirely no-launch.
 """
 
 from __future__ import annotations
@@ -315,7 +316,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument(
+        "--preflight-only", action="store_true",
+        help="verify the manifest and prepared state without launching CK3",
+    )
     args = parser.parse_args()
     output = args.output.resolve()
     if output.exists():
