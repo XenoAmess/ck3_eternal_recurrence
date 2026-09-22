@@ -11668,6 +11668,80 @@ bool ProjectPathTimeline(
   return true;
 }
 
+// 0x22475E0 reads an individual committed active-route edge, including the
+// progress correction for index zero.  For an embarked army whose full-prefix
+// 0x2247320 reader rejected the route, these exact edge values provide a
+// second native read path without estimating travel time from path length.
+bool ProjectEmbarkedActiveRouteByEdgeDuration(
+    const Bindings &bindings, void *game_state, void *unit,
+    const void *path_storage, void *origin_province, std::int32_t date_raw,
+    std::vector<std::int32_t> &province_ids,
+    std::vector<std::int32_t> &arrival_date_raws,
+    RouteTimelineFailureStage *failure_stage = nullptr) noexcept {
+  province_ids.clear();
+  arrival_date_raws.clear();
+  NativeMovePathPrefix active{};
+  if (bindings.read_route_edge_duration == nullptr || game_state == nullptr ||
+      unit == nullptr || origin_province == nullptr ||
+      !ReadPathHeader(path_storage, active) || active.count <= 0) {
+    return RecordRouteTimelineFailure(
+        failure_stage, RouteTimelineFailureStage::invalid_input);
+  }
+  if (!ValidateRouteEdgeTimingInputs(bindings, game_state, unit,
+                                     path_storage, origin_province,
+                                     failure_stage)) {
+    return false;
+  }
+
+  province_ids.reserve(static_cast<std::size_t>(active.count));
+  arrival_date_raws.reserve(static_cast<std::size_t>(active.count));
+  std::int64_t cumulative_duration_raw = 0;
+  std::int32_t prior_arrival = date_raw;
+  for (std::int32_t index = 0; index < active.count; ++index) {
+    void *const province_info = LoadAt<void *>(
+        active.province_infos,
+        static_cast<std::size_t>(index) * sizeof(void *));
+    if (province_info == nullptr) {
+      return RecordRouteTimelineFailure(
+          failure_stage, RouteTimelineFailureStage::route_entry);
+    }
+    const auto province_id =
+        LoadAt<std::int32_t>(province_info, kUnitPathProvinceIdOffset);
+    if (ResolveProvince(game_state, province_id) == nullptr) {
+      return RecordRouteTimelineFailure(
+          failure_stage, RouteTimelineFailureStage::route_entry);
+    }
+    std::int64_t edge_duration_raw = -1;
+    if (bindings.read_route_edge_duration(unit, &edge_duration_raw, index) !=
+            &edge_duration_raw ||
+        edge_duration_raw < 0 ||
+        edge_duration_raw == kRouteDurationFailureSentinel ||
+        edge_duration_raw > kMaximumProjectedRouteDurationRaw) {
+      return RecordRouteTimelineFailure(
+          failure_stage, RouteTimelineFailureStage::edge_duration_read);
+    }
+    std::int64_t next_cumulative = 0;
+    std::int32_t arrival_date_raw = 0;
+    if (!AddRouteDuration(cumulative_duration_raw, edge_duration_raw,
+                          next_cumulative) ||
+        next_cumulative > kMaximumProjectedRouteDurationRaw ||
+        !RouteDurationToDate(date_raw, next_cumulative, arrival_date_raw) ||
+        arrival_date_raw < prior_arrival) {
+      return RecordRouteTimelineFailure(
+          failure_stage, RouteTimelineFailureStage::arrival_date);
+    }
+    province_ids.push_back(province_id);
+    arrival_date_raws.push_back(arrival_date_raw);
+    cumulative_duration_raw = next_cumulative;
+    prior_arrival = arrival_date_raw;
+  }
+  if (province_ids.size() != arrival_date_raws.size()) {
+    return RecordRouteTimelineFailure(
+        failure_stage, RouteTimelineFailureStage::timeline_shape);
+  }
+  return true;
+}
+
 bool ReadFirstActiveEdgeDuration(const Bindings &bindings, void *game_state,
                                  void *unit, void *current_province,
                                  std::int32_t expected_front_province_id,
@@ -11888,6 +11962,7 @@ bool SameCanonicalIdSet(std::vector<std::int32_t> left,
 bool BuildActiveRouteTimeline(const Bindings &bindings, void *game_state,
                               std::int32_t date_raw,
                               const ArmySnapshot &snapshot,
+                              bool allow_embarked_edge_fallback,
                               game::RouteTimelineSnapshot &output,
                               RouteTimelineFailureStage &failure_stage) noexcept {
   output = {};
@@ -11921,7 +11996,7 @@ bool BuildActiveRouteTimeline(const Bindings &bindings, void *game_state,
   output.effective_origin_province_id = snapshot.route_province_ids.front();
   const auto *const path_storage =
       static_cast<const std::byte *>(unit) + kUnitPathProvinceInfosOffset;
-  const bool projected =
+  bool projected =
       IsZeroProgressCurrentEdgeSpeedBoundary(bindings, unit, path_storage)
           ? ProjectZeroProgressActiveRouteBoundary(
                 bindings, game_state, unit, path_storage, current_province,
@@ -11931,6 +12006,20 @@ bool BuildActiveRouteTimeline(const Bindings &bindings, void *game_state,
                                 current_province, date_raw, 0,
                                 output.route_province_ids,
                                 output.arrival_date_raws, &failure_stage);
+  if (!projected && allow_embarked_edge_fallback &&
+      snapshot.army_state_code == 4 &&
+      failure_stage == RouteTimelineFailureStage::route_duration_read) {
+    RouteTimelineFailureStage edge_failure =
+        RouteTimelineFailureStage::none;
+    projected = ProjectEmbarkedActiveRouteByEdgeDuration(
+        bindings, game_state, unit, path_storage, current_province, date_raw,
+        output.route_province_ids, output.arrival_date_raws, &edge_failure);
+    if (projected) {
+      failure_stage = RouteTimelineFailureStage::none;
+    } else if (edge_failure != RouteTimelineFailureStage::none) {
+      failure_stage = edge_failure;
+    }
+  }
   if (!projected) {
     output.route_province_ids.clear();
     output.arrival_date_raws.clear();
@@ -12003,7 +12092,7 @@ RouteContactHorizonStatus BuildSubjectRouteTimeline(
     failure_path_kind =
         game::RouteContactTimelinePathKind::stationary_active;
     return BuildActiveRouteTimeline(bindings, game_state, snapshot.date_raw,
-                                    *selected, output, failure_stage)
+                                    *selected, false, output, failure_stage)
                ? RouteContactHorizonStatus::available
                : RouteContactHorizonStatus::timeline_unavailable;
   }
@@ -12015,7 +12104,7 @@ RouteContactHorizonStatus BuildSubjectRouteTimeline(
       selected->route_province_ids.back() == request.target_province_id) {
     failure_path_kind = game::RouteContactTimelinePathKind::committed_active;
     return BuildActiveRouteTimeline(bindings, game_state, snapshot.date_raw,
-                                    *selected, output, failure_stage)
+                                    *selected, true, output, failure_stage)
                ? RouteContactHorizonStatus::available
                : RouteContactHorizonStatus::timeline_unavailable;
   }
@@ -12364,7 +12453,7 @@ RouteContactHorizonStatus ReadRouteContactHorizon(
     RouteTimelineFailureStage hostile_failure_stage =
         RouteTimelineFailureStage::none;
     if (!BuildActiveRouteTimeline(bindings, game_state, before.date_raw,
-                                  *hostile,
+                                  *hostile, false,
                                   output.hostile_routes.back(),
                                   hostile_failure_stage)) {
       output.timeline_failure.role =

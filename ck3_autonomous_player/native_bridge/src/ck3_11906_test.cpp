@@ -196,6 +196,8 @@ void *g_ai_coordinator_fallback_pointer = nullptr;
 std::int32_t g_route_edge_duration_calls = 0;
 bool g_route_edge_duration_drift = false;
 std::int64_t g_route_edge_duration_raw = 150'000;
+bool g_route_edge_all_indices = false;
+std::int32_t g_route_edge_invalid_index = -1;
 std::array<std::byte, 0x20> g_player_province{};
 std::array<std::byte, 0x20> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
@@ -350,6 +352,7 @@ std::int32_t g_preview_route_count = 3;
 std::int32_t g_route_duration_calls = 0;
 bool g_route_duration_prefix_zeroed = true;
 bool g_route_duration_failure = false;
+bool g_route_duration_negative = false;
 bool g_route_duration_late_zero_speed_accumulation = false;
 bool g_route_duration_zero_current_edge_correction = false;
 std::int64_t g_route_land_speed_raw = 100'000;
@@ -1654,7 +1657,9 @@ std::int64_t *FixtureReadRouteTravelDuration(
        province_infos != g_boundary_move_path.data() + 1)) {
     return nullptr;
   }
-  if (g_route_duration_failure) {
+  if (g_route_duration_negative && unit == g_player_army.data()) {
+    *output = -1;
+  } else if (g_route_duration_failure) {
     *output = 0xFFFF'FFFFLL;
   } else if (g_route_duration_late_zero_speed_accumulation && count >= 2) {
     *output = static_cast<std::int64_t>(count - 1) * 100'000 +
@@ -1686,8 +1691,18 @@ std::int64_t *FixtureReadRouteTravelDuration(
 std::int64_t *FixtureReadRouteEdgeDuration(
     void *unit, std::int64_t *output, std::int32_t route_index) {
   ++g_route_edge_duration_calls;
-  if (unit != g_player_army.data() || output == nullptr || route_index != 0) {
+  if (unit != g_player_army.data() || output == nullptr || route_index < 0 ||
+      (!g_route_edge_all_indices && route_index != 0) ||
+      (g_route_edge_all_indices && route_index >= 3)) {
     return nullptr;
+  }
+  if (route_index == g_route_edge_invalid_index) {
+    *output = 0xFFFF'FFFFLL;
+    return output;
+  }
+  if (g_route_edge_all_indices && route_index > 0) {
+    *output = 100'000;
+    return output;
   }
   *output = g_route_edge_duration_raw +
             (g_route_edge_duration_drift
@@ -8056,6 +8071,74 @@ int main() {
   g_route_edge_duration_raw = 150'000;
   g_route_duration_zero_current_edge_correction = false;
   route_contact_request.target_province_id = 3;
+
+  // R0109: the full-prefix duration ABI returned an unreadable value for an
+  // embarked, already-committed route.  Only this state may recover by using
+  // the exact per-edge native ABI, with every edge and arrival checked.
+  g_player_army_state_code = 4;
+  g_route_duration_negative = true;
+  g_route_edge_all_indices = true;
+  g_route_duration_calls = 0;
+  g_route_edge_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::available ||
+      !route_contact.subject_route.timeline_observable ||
+      route_contact.subject_route.route_province_ids !=
+          std::vector<std::int32_t>{4, 5, 3} ||
+      route_contact.subject_route.arrival_date_raws !=
+          std::vector<std::int32_t>{43'823'152, 43'823'176,
+                                    43'823'200} ||
+      !route_contact.one_day_contact_free ||
+      g_route_duration_calls != 1 || g_route_edge_duration_calls != 3 ||
+      g_preview_route_built) {
+    return Fail("embarked committed route did not use exact edge durations");
+  }
+
+  g_route_edge_invalid_index = 1;
+  g_route_edge_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_contact.subject_route.timeline_observable ||
+      route_contact.timeline_failure.role !=
+          xar::game::RouteContactTimelineFailureRole::subject ||
+      route_contact.timeline_failure.stage !=
+          xar::game::RouteContactTimelineFailureStage::edge_duration_read ||
+      g_route_edge_duration_calls != 2) {
+    return Fail("invalid embarked edge duration did not retain the RED");
+  }
+  g_route_edge_invalid_index = -1;
+
+  g_player_army_state_code = 7;
+  g_route_edge_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_contact.subject_route.timeline_observable ||
+      g_route_edge_duration_calls != 0) {
+    return Fail("non-embarked route used the embarked-only edge fallback");
+  }
+  g_route_duration_negative = false;
+  g_route_duration_failure = true;
+  g_player_army_state_code = 4;
+  g_route_edge_duration_calls = 0;
+  route_contact = {};
+  if (xar::ck3_11906::ReadRouteContactHorizon(
+          bindings, route_contact_request, route_contact) !=
+          xar::game::RouteContactHorizonStatus::timeline_unavailable ||
+      route_contact.subject_route.timeline_observable ||
+      route_contact.timeline_failure.stage !=
+          xar::game::RouteContactTimelineFailureStage::route_duration_value ||
+      g_route_edge_duration_calls != 0) {
+    return Fail("embarked route bypassed a distinct invalid-duration RED");
+  }
+  g_route_duration_failure = false;
+  g_route_edge_all_indices = false;
+  g_player_army_state_code = 7;
 
   // The native duration helper silently skips an unresolvable adjacency.
   // Reject the complete route before making any timing ABI call, including
