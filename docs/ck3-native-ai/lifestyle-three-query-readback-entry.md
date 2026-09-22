@@ -31,10 +31,14 @@ but R0101 post-RED driver-state SHA-256
 `95959FB66C457B12E38690B0B1D05E208DC08FB28A80AAC9A393C4C70712536E`
 has an unpaired read-only h1095–h1097 tail. Do not copy it directly as
 the prepared driver. The R0103 `source-pair` contains the same h1094 save
-with an official-loader-compatible rebound driver at SHA-256
-`A220A68946DDE4EDE22E831CFB628A47CCD77C83EC7912E421017F4F79C4EC12`;
-the target profile must still be rebound to its own environment fingerprint
-and validated before launch.
+and h1097 driver tail as input to the ordinary-seed rebinder. Its R0103
+*prepared* driver at SHA-256
+`A220A68946DDE4EDE22E831CFB628A47CCD77C83EC7912E421017F4F79C4EC12`
+was bound to a different profile and is not a portable ready pair. Copy the
+source pair, rebind its driver to the new profile's environment fingerprint,
+then validate the cold checkpoint. On successful cold start, the official
+driver reconciles to h1094, discards unpaired h1095–h1097, and records the
+new process's restore row; until then the tail is not paired with the save.
 The owner must read the paired checkpoint metadata to fill
 `expected_history_index`; the runner validates it and refuses a mismatched
 prepared profile. The existing private Release DLL SHA-256 is
