@@ -36,6 +36,7 @@ from xar_autoplayer.bridge.native_driver import (
     NativeHeadlessGameplayDriver,
     _active_siege_progress_states,
     _compact_war_progress_history_in_place,
+    _allied_capital_hold_contact_scope,
     _capital_regroup_capability_scope,
     _exact_route_contact_timeline_policy,
     _army_move_postcondition,
@@ -2893,6 +2894,140 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             driver.take_snapshot()
         with self.assertRaisesRegex(UnsupportedStepError, "does not implement"):
             driver.execute_step("life-advance")
+
+    def test_r0088_nonleading_attacker_stationary_capital_publishes_only_self_route_query(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.army-routes",
+                "game.state.war-objectives",
+                "game.command.query-route-contact-horizon-v1-N",
+            )
+        )
+        player = _army(
+            452985015,
+            province_id=45,
+            army_state="regular",
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        enemies = [
+            _army(
+                402653375,
+                province_id=1741,
+                controllable=False,
+                army_state="regular",
+                route_province_ids=[],
+            ),
+            _army(
+                436207652,
+                province_id=1741,
+                controllable=False,
+                army_state="gathering",
+                route_province_ids=[],
+            ),
+        ]
+        endpoint.publish(
+            _snapshot(
+                15,
+                date_raw=53_350_080,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[
+                    _war(
+                        201326601,
+                        allied_armies=[player],
+                        enemy_armies=enemies,
+                        player_is_primary_war_leader=False,
+                    )
+                ],
+                player_armies=[player],
+            )
+        )
+        snapshot = driver.take_snapshot()
+        diagnostics = snapshot["diagnostics"]
+        self.assertTrue(snapshot["route_contact_horizon_supported"])
+        driver._campaign_root_context_query = {
+            "campaign_root_context": {
+                "status": "available",
+                "snapshot_revision": snapshot["native_revision"],
+                "date_raw": snapshot["date_raw"],
+                "player_character_id": 707,
+                "capital_province_id": 45,
+                "readiness": {
+                    "ready": True,
+                    "held_title_partition_ready": True,
+                },
+                "held_title_partition": [
+                    {
+                        "title": {"title_id": 4501, "tier_raw": 2},
+                        "capital_province_id": 45,
+                    }
+                ],
+            },
+            "cache_binding": {
+                "snapshot_id": snapshot["snapshot_id"],
+                "revision": snapshot["revision"],
+                "native_revision": snapshot["native_revision"],
+                "date_raw": snapshot["date_raw"],
+                "actor_character_id": 707,
+                "bridge_pid": diagnostics["bridge_pid"],
+                "connection_generation": diagnostics["connection_generation"],
+            },
+        }
+        self.assertEqual(
+            _allied_capital_hold_contact_scope(
+                snapshot, driver._campaign_root_context_query
+            ),
+            {
+                "army_id": 452985015,
+                "capital_province_id": 45,
+                "hostile_army_ids": [402653375, 436207652],
+            },
+        )
+        step = query_route_contact_horizon_step(
+            452985015, 45, (402653375, 436207652)
+        )
+        steps = driver.capabilities()["action_steps"]
+        self.assertIn(step, steps)
+        self.assertFalse(
+            any(
+                action.startswith(("move-army-", "preview-move-army-"))
+                for action in steps
+            )
+        )
+        stale_root = copy.deepcopy(driver._campaign_root_context_query)
+        stale_root["cache_binding"]["native_revision"] -= 1
+        self.assertIsNone(
+            _allied_capital_hold_contact_scope(snapshot, stale_root)
+        )
+        off_capital = copy.deepcopy(snapshot)
+        off_capital["player_armies"][0]["current_province_id"] = 46
+        self.assertIsNone(
+            _allied_capital_hold_contact_scope(
+                off_capital, driver._campaign_root_context_query
+            )
+        )
+        incomplete_hostile = copy.deepcopy(snapshot)
+        incomplete_hostile["active_wars"][0]["enemy_armies"][0].pop(
+            "move_target_province_id"
+        )
+        self.assertIsNone(
+            _allied_capital_hold_contact_scope(
+                incomplete_hostile, driver._campaign_root_context_query
+            )
+        )
+        driver._campaign_root_context_query = stale_root
+        self.assertNotIn(step, driver.capabilities()["action_steps"])
+        with self.assertRaises(UnsupportedStepError):
+            driver.execute_step(step)
 
     def test_fresh_exact_insufficient_siege_dispatches_capital_regroup_queries(
         self,
