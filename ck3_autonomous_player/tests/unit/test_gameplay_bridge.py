@@ -7147,7 +7147,7 @@ class GameplayBridgeTests(unittest.TestCase):
             "1249CAC40138D48210A07245746C4A6683C5F58F3141C04A20DB2C00B6375BF8",
         )
 
-    def test_grant_vassal_reject_only_fails_closed_on_shape_or_war(self) -> None:
+    def test_grant_vassal_reject_only_fails_closed_on_shape_or_unknown_wars(self) -> None:
         mutations = (
             (
                 "definition_hash",
@@ -7215,7 +7215,7 @@ class GameplayBridgeTests(unittest.TestCase):
                     expected_gap, plan["decision"]["grant_vassal_contract_gaps"]
                 )
 
-        for active_wars in (None, [_war(allied_armies=[], enemy_armies=[])]):
+        for active_wars in (None, [None]):
             with self.subTest(active_wars=active_wars):
                 plan = _plan_for_pending_context(
                     _grant_vassal_context_result(),
@@ -7230,6 +7230,34 @@ class GameplayBridgeTests(unittest.TestCase):
                     "grant_vassal_active_war_or_war_scope_unknown",
                     plan["decision"]["grant_vassal_contract_gaps"],
                 )
+
+    def test_grant_vassal_reject_only_with_observed_active_war(self) -> None:
+        war = _war(
+            war_id=301_989_950,
+            allied_armies=[],
+            enemy_armies=[],
+            score=-28,
+            player_side="defender",
+        )
+        war["primary_opponent_character_id"] = 34_676
+        plan = _plan_for_pending_context(
+            _grant_vassal_context_result(),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+            active_wars=[war],
+        )
+
+        self.assertEqual(plan["phase"], "pending_grant_vassal_reject_only")
+        self.assertEqual(
+            plan["selected_step"], "reject-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(decision["rule_id"], "grant-vassal-reject-only-v1")
+        self.assertEqual(decision["grant_vassal_contract_gaps"], [])
+        self.assertEqual(decision["selected_action"], "reject")
+        self.assertFalse(decision["semantic_optimal"])
 
     def test_grant_vassal_reject_only_never_falls_back_to_accept(self) -> None:
         for allowed, steps, blocked in (
