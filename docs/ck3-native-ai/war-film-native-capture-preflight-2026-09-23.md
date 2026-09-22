@@ -55,3 +55,9 @@ injector SHA-256 为 `D522868A59039EB106DD123364D9D990A909B5ABD7472F16CF6FF78A3E
 分别保留为 `capture-preflight-r1/r2/r3` 的 no-launch RED。`capture-preflight-r4/preflight.json` 现为
 `READY_FOR_BOUNDED_LIVE_ATTEMPT`：五个实际 DLL 字符串齐全、唯一 Robert bookmark、四项正式 MCP 工具可列出，
 tasklist 与 Toolhelp32 均为 0 个 CK3 进程。该状态仍不证明实际开局、可用镜头或任何 AI 因果。
+
+## 首次 live 的管道占用修复
+
+`desktop-3fevhd2-1c74096080--vanilla--R0001` 实际启动后在观察 worker 创建 endpoint 时遇到 `CreateNamedPipeW: 231`，未到地图。原因是同进程预检的 driver 未释放单实例管道；MCP Client 退出不负责关闭外部 driver。现为预检与正式 observer 显式增加 driver 生命周期清理。
+
+`D:/workspace/ck3_war_film_research_20260923/pipe-release-regression-r1/receipt.json` 保存一次无游戏的真实 Windows 回归：同一 pipe 连续两次创建、MCP list_tools、关闭全部通过。原失败录像、preflight、session、cleanup 和 capture-report 保留在 `capture-live-live-r1/`；该次为 RED，CK3 实际清理后零进程，不计地图取材或 AI 观察成功。新 attempt 使用新 run。

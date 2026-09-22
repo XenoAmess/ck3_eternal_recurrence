@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+from contextlib import closing
 from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
@@ -98,10 +99,12 @@ def preflight(args: argparse.Namespace) -> dict:
     ensure_state_path_safe(args.state_dir)
 
     async def listing() -> list[str]:
-        driver = NativeHeadlessGameplayDriver(args.pipe_name, state_dir=args.state_dir)
-        async with Client(create_server(driver)) as client:
-            result = await client.list_tools()
-            return [tool.name for tool in result.tools]
+        # Listing creates the real pipe endpoint too. Release it before the
+        # live observer creates its single owning driver for this pipe name.
+        with closing(NativeHeadlessGameplayDriver(args.pipe_name, state_dir=args.state_dir)) as driver:
+            async with Client(create_server(driver)) as client:
+                result = await client.list_tools()
+                return [tool.name for tool in result.tools]
 
     tools = asyncio.run(listing())
     required_tools = [
@@ -201,50 +204,51 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
             frontend_transition_timeout_seconds=args.frontend_timeout,
             succession_lifecycle_binding=lifecycle,
         )
-        async with Client(create_server(driver)) as client:
-            async def call(name: str, arguments: dict | None = None, tolerate: bool = False) -> dict:
-                row = {"tool": name, "arguments": arguments or {}, "at": utc(), "seconds": time.monotonic() - origin}
-                try:
-                    result = await client.call_tool(name, arguments or {})
-                    row.update({"is_error": bool(result.is_error), "body": result.structured_content,
-                                "content": [item.model_dump(mode="json") for item in result.content]})
-                except Exception as error:
-                    row.update({"is_error": True, "error": repr(error)})
-                append(args.output_dir / "mcp-calls.jsonl", row)
-                if not tolerate:
-                    require(not row["is_error"], f"MCP call failed: {name}; inspect journal")
-                return row.get("body") or {}
+        with closing(driver):
+            async with Client(create_server(driver)) as client:
+                async def call(name: str, arguments: dict | None = None, tolerate: bool = False) -> dict:
+                    row = {"tool": name, "arguments": arguments or {}, "at": utc(), "seconds": time.monotonic() - origin}
+                    try:
+                        result = await client.call_tool(name, arguments or {})
+                        row.update({"is_error": bool(result.is_error), "body": result.structured_content,
+                                    "content": [item.model_dump(mode="json") for item in result.content]})
+                    except Exception as error:
+                        row.update({"is_error": True, "error": repr(error)})
+                    append(args.output_dir / "mcp-calls.jsonl", row)
+                    if not tolerate:
+                        require(not row["is_error"], f"MCP call failed: {name}; inspect journal")
+                    return row.get("body") or {}
 
-            deadline = time.monotonic() + args.frontend_timeout
-            route = {}
-            while time.monotonic() < deadline and not stopped.is_set():
-                route = await call("ck3_query_frontend_gui_route_v1", tolerate=True)
-                if route.get("route") == "main_menu":
-                    break
-                await asyncio.sleep(1)
-            require(route.get("route") == "main_menu", "Responsive main menu was not observed")
-            opened = await call("ck3_activate_frontend_new_game_v1")
-            require(opened.get("postcondition_verified") is True, "New Game route unverified")
-            started = await call("ck3_activate_frontend_start_1066_bookmark_character_v1",
-                                 {"character_name_key": checked["bookmark_candidate_from_binary"]})
-            require(started.get("postcondition_verified") is True, "Bookmark/map identity unverified")
-            write_new(args.output_dir / "native-start-readback.json", started)
-            snapshot = await call("ck3_take_snapshot")
-            require(snapshot.get("map_ready") is True and snapshot.get("paused") is True, "Map is not ready and paused")
-            write_new(args.output_dir / "initial-snapshot.json", snapshot)
-            load = json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8"))
-            require(load == {"enabled_mods": [], "disabled_dlcs": []}, "Vanilla load profile changed")
-            from PIL import ImageGrab
-            ImageGrab.grab().save(args.output_dir / "map-start.png")
-            worker["marks"].append({"kind": "paused-map-start", "at": utc(), "seconds": time.monotonic() - origin,
-                                      "snapshot_id": snapshot.get("snapshot_id"), "revision": snapshot.get("revision")})
-            await asyncio.sleep(args.hold_seconds)
-            final = await call("ck3_take_snapshot")
-            write_new(args.output_dir / "final-snapshot.json", final)
-            ImageGrab.grab().save(args.output_dir / "map-end.png")
-            worker["marks"].append({"kind": "paused-map-end", "at": utc(), "seconds": time.monotonic() - origin,
-                                      "snapshot_id": final.get("snapshot_id"), "revision": final.get("revision")})
-            worker["ok"] = True
+                deadline = time.monotonic() + args.frontend_timeout
+                route = {}
+                while time.monotonic() < deadline and not stopped.is_set():
+                    route = await call("ck3_query_frontend_gui_route_v1", tolerate=True)
+                    if route.get("route") == "main_menu":
+                        break
+                    await asyncio.sleep(1)
+                require(route.get("route") == "main_menu", "Responsive main menu was not observed")
+                opened = await call("ck3_activate_frontend_new_game_v1")
+                require(opened.get("postcondition_verified") is True, "New Game route unverified")
+                started = await call("ck3_activate_frontend_start_1066_bookmark_character_v1",
+                                     {"character_name_key": checked["bookmark_candidate_from_binary"]})
+                require(started.get("postcondition_verified") is True, "Bookmark/map identity unverified")
+                write_new(args.output_dir / "native-start-readback.json", started)
+                snapshot = await call("ck3_take_snapshot")
+                require(snapshot.get("map_ready") is True and snapshot.get("paused") is True, "Map is not ready and paused")
+                write_new(args.output_dir / "initial-snapshot.json", snapshot)
+                load = json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8"))
+                require(load == {"enabled_mods": [], "disabled_dlcs": []}, "Vanilla load profile changed")
+                from PIL import ImageGrab
+                ImageGrab.grab().save(args.output_dir / "map-start.png")
+                worker["marks"].append({"kind": "paused-map-start", "at": utc(), "seconds": time.monotonic() - origin,
+                                          "snapshot_id": snapshot.get("snapshot_id"), "revision": snapshot.get("revision")})
+                await asyncio.sleep(args.hold_seconds)
+                final = await call("ck3_take_snapshot")
+                write_new(args.output_dir / "final-snapshot.json", final)
+                ImageGrab.grab().save(args.output_dir / "map-end.png")
+                worker["marks"].append({"kind": "paused-map-end", "at": utc(), "seconds": time.monotonic() - origin,
+                                          "snapshot_id": final.get("snapshot_id"), "revision": final.get("revision")})
+                worker["ok"] = True
 
     def worker_main() -> None:
         try:
