@@ -45,3 +45,7 @@ Edge 批量最多并发三段，每段最多三次尝试；失败音频和错误
 - `capture_session.py` 独立使用主仓 MCP/native-session。仅 no-launch 预检路径实际运行；本机旧 DLL 缺正式前端能力，live 分支尚未验收。具体依赖、排除的旧素材及原始 RED 收据见[素材盘点](../longform/capture-inventory.md)。
 
 所有原始录音、修订录音、请求、图卡、分段、字幕、日志、失败 attempt、清单及审阅包永久保留；新版本另建目录。
+
+## 2026-09-23 重制状态更正
+
+以上“等待用户审片”和旧 DLL 缺能力是旧产物当时的状态。用户已退回纯图解全片；新版按 [导演案 v3](../longform/director-plan-v3.md) 与 [主张台账](../research-first-claim-ledger-20260923.md) 执行。新 DLL 已构建，前两次实机分别为 pipe 占用 RED、360 秒未到主菜单 RED，第三次独立 run 正在有界运行。现有 composer 的纯图解输入不能满足重制要求，实机导入接线正在施工；没有新成片或因果案例完成。

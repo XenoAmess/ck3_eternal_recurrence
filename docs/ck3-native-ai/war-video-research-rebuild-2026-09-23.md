@@ -114,3 +114,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W5 撤退消费者的上游分类：新增静态证据
 
 [W5 撤退消费者的上游分类](war-film-retreat-consumer-callers-2026-09-23.md)：三条有界调用链分别归因为战斗胜方结算、战中不可达的普通 movement caller，以及继承 owner-subset 清理。继承调用传 apply_pursuit=false，不可把所有部分离场都说成先追击一次。12 份产物、4 份快照 hash 与计划检查通过，a01–a03 冻结文件未变。普通战争按败势主动撤退的策略仍待追踪间接命令构造者。 本包不增加 live 或影片完成度。
+
+## W0 更新：逐句复核与导演案 v3
+
+[主张台账](../../promo/ck3_native_war_ai/research-first-claim-ledger-20260923.md) 已核对旧 90 cue、45 镜头、8 章，拆成 33 条原子主张与 27 份精确来源绑定；旧文本逐字段保留。新 [导演案 v3](../../promo/ck3_native_war_ai/longform/director-plan-v3.md) 将真实角色/地图与完整案例作为主线，修正目标块、十项预算、分母、白和等旧措辞，普通主动撤退不再作未闭合的影片承诺。所有新因果合同仍 planned/unbound，未批量重做旁白。

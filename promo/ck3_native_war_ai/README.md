@@ -26,3 +26,7 @@
 默认中文旁白、简中主字幕与英文副字幕，2560×1440 / 30 fps。20–40 分钟指影片长度，不是制作工期；不为凑整点拉长静帧或加快配音。当前全片审阅版采用教学图解，音乐尚未加入；它不冒充自然实机采样。每次新任务/run 使用最新正式 xar-promo；所有过程资产留在 `D:/workspace/ck3_native_war_ai_promo_work/` 的独立 attempt 中，大体积媒体不进 Git。
 
 13:30 初案保留为历史：[导演案 v1](director-plan.md)、[旧镜头表](shot-list.md)、[旧时间线](timeline.json)、[首个 run 索引](build-records/director-20260922-r1.json)。版本升级记录见 [toolchain-latest-policy-20260922.json](build-records/toolchain-latest-policy-20260922.json)。旧 run 的配置快照与素材不受当前 ProjectConfig 修改影响。
+
+## 2026-09-23 研究后重制
+
+当前拍摄和剪辑要求以 [导演案 v3](longform/director-plan-v3.md) 为准。旧片已被用户退回；旧稿和其技术检查仅保留历史身份。新版 [33 条主张台账](research-first-claim-ledger-20260923.md) 核对了实际 90 cue / 45 镜头，逐条绑定新证据和待拍前后态，尚未绑定新版因果镜头。

@@ -1,0 +1,4312 @@
+{
+  "schema": "ck3-native-war-ai.research-first-claim-ledger.v1",
+  "kind": "project-owned-editorial-research-ledger",
+  "status": "frozen-editorial-recommendations-not-production-approval",
+  "created_at": "2026-09-23T04:33:19+08:00",
+  "timezone": "Asia/Shanghai",
+  "snapshot_head": "ad812edaf9d1f08cb696f8bed0768f81df490e5a",
+  "source_binding": "Exact local source bytes listed below; HEAD does not claim uncommitted source packages were already committed.",
+  "game_build": "1.19.0.6",
+  "exe_sha256_from_reviewed_exact_build_research": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "exe_read_or_rehashed_by_this_package": false,
+  "ck3_started": false,
+  "native_calls_made": false,
+  "live_cases_created": 0,
+  "human_1x_review_performed": false,
+  "signoff_granted": false,
+  "editorial_range": {
+    "minimum_reference_minutes": 20,
+    "maximum_reference_minutes": 40,
+    "policy": "soft-editorial",
+    "new_actual_duration_seconds": null,
+    "note": "旧片28:56只证明旧脚本已合成；新版需真实案例、重新逐句稿与radio cut。不得靠扩写未知或静帧凑时。"
+  },
+  "reviewed_old_script": {
+    "path": "promo/ck3_native_war_ai/longform/narration.json",
+    "cue_count": 90,
+    "shot_count": 45,
+    "chapter_count": 8,
+    "text_counts": {
+      "cue_count": 90,
+      "shot_count": 45,
+      "chapter_count": 8,
+      "zh_han_character_count": 6347,
+      "zh_characters_including_punctuation_and_latin": 6957,
+      "en_word_count": 3880
+    },
+    "note": "old_wording 从实际JSON逐字段复制；所有 proposed_safe_narration 是本包新提案。"
+  },
+  "research_precedence": [
+    "target-selection supersedes old C03 first-nonempty/strict-top10/dedup-unknown wording only within its bounded path.",
+    "retreat-score-direction a03 supersedes a01/a02 unresolved score-sign interpretation; ordinary active-retreat policy remains unknown.",
+    "reinforcement-policy supersedes old cross-stack inequality and blanket PLAYER_SUPPORT-consumer-unknown claim; full player/cross-coordinator policy stays open.",
+    "declaration-power-cache supersedes declaration-inputs base-cache producer unknown; cache age/scheduler stay open.",
+    "battle-score-denominator names bounded buckets without claiming all regime qualification/lifecycle semantics.",
+    "peace-policy closes ordinary actual >0 comparator and month/opportunity consumer, not exact actor enqueue dates or live war termination.",
+    "research-rebuild replaces old permission to substitute pure diagrams for missing core causal cases."
+  ],
+  "sources": [
+    {
+      "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md",
+      "bytes": 50552,
+      "sha256": "fbda3c016bf874bbb5a9971e38e27fe4064d5f5ef751c1966dfa4626d9ebb6fa",
+      "present_in_head": true,
+      "head_blob_sha256": "fbda3c016bf874bbb5a9971e38e27fe4064d5f5ef751c1966dfa4626d9ebb6fa",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/battle-terminal-and-reentry.md",
+      "bytes": 53487,
+      "sha256": "d00079ca0be34db0dafc585126894aa292d8849a7bdd6f6ed4761547f2cd81f5",
+      "present_in_head": true,
+      "head_blob_sha256": "d00079ca0be34db0dafc585126894aa292d8849a7bdd6f6ed4761547f2cd81f5",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/combat-prediction.md",
+      "bytes": 54171,
+      "sha256": "ad6845803c5864c540f97e670abd1e1785955019c738433047a37eefab3cd8f1",
+      "present_in_head": true,
+      "head_blob_sha256": "ad6845803c5864c540f97e670abd1e1785955019c738433047a37eefab3cd8f1",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-declaration.md",
+      "bytes": 46124,
+      "sha256": "0c329b23227c6b87da4bd94ca0180b463be725fec91f0cf45b508db63e43d25d",
+      "present_in_head": true,
+      "head_blob_sha256": "0c329b23227c6b87da4bd94ca0180b463be725fec91f0cf45b508db63e43d25d",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md",
+      "bytes": 9444,
+      "sha256": "845a9297c3a4d5034afdb769e39dad1afead56317c8cbe8dc2b37b41c5e78b2e",
+      "present_in_head": true,
+      "head_blob_sha256": "845a9297c3a4d5034afdb769e39dad1afead56317c8cbe8dc2b37b41c5e78b2e",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-declaration-inputs-2026-09-23.md",
+      "bytes": 13054,
+      "sha256": "04cfe6ec8a1c173388dc8c33d9ac98c4b964c300ec3f0ded5d6aac4a229b73ae",
+      "present_in_head": true,
+      "head_blob_sha256": "04cfe6ec8a1c173388dc8c33d9ac98c4b964c300ec3f0ded5d6aac4a229b73ae",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-declaration-power-cache-2026-09-23.md",
+      "bytes": 11137,
+      "sha256": "84eb3f601ae17c10ca503989d3410261a72e109bf3a4a668c5f2175457463c27",
+      "present_in_head": true,
+      "head_blob_sha256": "84eb3f601ae17c10ca503989d3410261a72e109bf3a4a668c5f2175457463c27",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-native-capture-preflight-2026-09-23.md",
+      "bytes": 6832,
+      "sha256": "e02339be7caa72565c2e5448e53bdca28b54b95f42f7afc6d7f1718672f127de",
+      "present_in_head": true,
+      "head_blob_sha256": "e02339be7caa72565c2e5448e53bdca28b54b95f42f7afc6d7f1718672f127de",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+      "bytes": 16058,
+      "sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+      "present_in_head": true,
+      "head_blob_sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md",
+      "bytes": 12973,
+      "sha256": "eae2e665484d325b070eb4f3fab9e4f8c7b477eba278f0cc57bba6fc17544b3c",
+      "present_in_head": true,
+      "head_blob_sha256": "eae2e665484d325b070eb4f3fab9e4f8c7b477eba278f0cc57bba6fc17544b3c",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-retreat-callers-2026-09-23.md",
+      "bytes": 11328,
+      "sha256": "e4e5faca8df8063fe9a657cbb3c60fc36d77dc0f0fecf9bfc2cf9415788acac5",
+      "present_in_head": true,
+      "head_blob_sha256": "e4e5faca8df8063fe9a657cbb3c60fc36d77dc0f0fecf9bfc2cf9415788acac5",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-retreat-policy-2026-09-23.md",
+      "bytes": 13324,
+      "sha256": "d65d1c0d52d0f8624cac8935df01fe1ba1fac05e2a9392c21f46019ac5864658",
+      "present_in_head": true,
+      "head_blob_sha256": "d65d1c0d52d0f8624cac8935df01fe1ba1fac05e2a9392c21f46019ac5864658",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-retreat-score-direction-2026-09-23.md",
+      "bytes": 10491,
+      "sha256": "fb1752f32a84bf7fe2ce4e2ef88f57f095d91613800c4b8bfcb6681755764f1f",
+      "present_in_head": true,
+      "head_blob_sha256": "fb1752f32a84bf7fe2ce4e2ef88f57f095d91613800c4b8bfcb6681755764f1f",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-target-countdowns-2026-09-23.md",
+      "bytes": 6299,
+      "sha256": "fca56cf2bf7aaebcadc9b3edc7453ba07118de20360ab23f8828f643a3b8b7fa",
+      "present_in_head": true,
+      "head_blob_sha256": "fca56cf2bf7aaebcadc9b3edc7453ba07118de20360ab23f8828f643a3b8b7fa",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+      "bytes": 14261,
+      "sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+      "present_in_head": true,
+      "head_blob_sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-termination.md",
+      "bytes": 196799,
+      "sha256": "9afeb249324900275692ab6d18f1fcd1bc9678de2d1c1e029474029ea64a26c5",
+      "present_in_head": true,
+      "head_blob_sha256": "9afeb249324900275692ab6d18f1fcd1bc9678de2d1c1e029474029ea64a26c5",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md",
+      "bytes": 14447,
+      "sha256": "c36f7eda5113fa046ea608bc8c3cc13351785abc163255ddab9efb96c4a62db8",
+      "present_in_head": true,
+      "head_blob_sha256": "c36f7eda5113fa046ea608bc8c3cc13351785abc163255ddab9efb96c4a62db8",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/build-records/fullfilm-edge-20260923-r1.json",
+      "bytes": 7181,
+      "sha256": "581bd06f8a3d86f40a83ee4726ee366ca0a221aa0687ff5f39b9e7eeac69af8e",
+      "present_in_head": true,
+      "head_blob_sha256": "581bd06f8a3d86f40a83ee4726ee366ca0a221aa0687ff5f39b9e7eeac69af8e",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/claims.json",
+      "bytes": 9673,
+      "sha256": "ddf40193a672c366d9a4bdba90cd8a90b82d6e8c395b1b7c92dc228a8eec453d",
+      "present_in_head": true,
+      "head_blob_sha256": "ddf40193a672c366d9a4bdba90cd8a90b82d6e8c395b1b7c92dc228a8eec453d",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/director-plan.md",
+      "bytes": 19436,
+      "sha256": "4d443095e3d35674c6ed0bc8d80539f41bccd99ef71562a77fa77fd031dc6fa6",
+      "present_in_head": true,
+      "head_blob_sha256": "4d443095e3d35674c6ed0bc8d80539f41bccd99ef71562a77fa77fd031dc6fa6",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/longform/capture-inventory.json",
+      "bytes": 12079,
+      "sha256": "506cb1d17cdea13fa16ad91d91f65784a71c1b4ed0b5bc0cf0d279ef13f804e5",
+      "present_in_head": true,
+      "head_blob_sha256": "506cb1d17cdea13fa16ad91d91f65784a71c1b4ed0b5bc0cf0d279ef13f804e5",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/longform/director-plan.md",
+      "bytes": 16703,
+      "sha256": "c6a94bbd58a7ea357336d4e1c291b21c3526c17df3555f474e7711443d8985b6",
+      "present_in_head": true,
+      "head_blob_sha256": "c6a94bbd58a7ea357336d4e1c291b21c3526c17df3555f474e7711443d8985b6",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/longform/narration.json",
+      "bytes": 70969,
+      "sha256": "54ab43084f83b7c2fd67e1a19bb99b0c4c73286d5fe2cc04560639f6d622958b",
+      "present_in_head": true,
+      "head_blob_sha256": "54ab43084f83b7c2fd67e1a19bb99b0c4c73286d5fe2cc04560639f6d622958b",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/longform/narration.md",
+      "bytes": 60173,
+      "sha256": "da6d2bf70b1c7cb6cff660e53e203dc01528c75e6db1b5ee4982710bc37ff1de",
+      "present_in_head": true,
+      "head_blob_sha256": "da6d2bf70b1c7cb6cff660e53e203dc01528c75e6db1b5ee4982710bc37ff1de",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/longform/shot-list.md",
+      "bytes": 31628,
+      "sha256": "efc31c79b5c13334f81a6fc95f37c01a5b65251e5bf7b748a9470dfdff71e56a",
+      "present_in_head": true,
+      "head_blob_sha256": "efc31c79b5c13334f81a6fc95f37c01a5b65251e5bf7b748a9470dfdff71e56a",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/longform/timeline.json",
+      "bytes": 16187,
+      "sha256": "4d3df411e956892e2532c7be19f65155787293964f56a139f14c8df2b43ebef3",
+      "present_in_head": true,
+      "head_blob_sha256": "4d3df411e956892e2532c7be19f65155787293964f56a139f14c8df2b43ebef3",
+      "working_bytes_equal_head_blob": true
+    },
+    {
+      "path": "promo/ck3_native_war_ai/source-lock.json",
+      "bytes": 2368,
+      "sha256": "b1c90b56cab93532c17f0c8eadaf5ede0050f637ddd7c228340c6d9eb69a816d",
+      "present_in_head": true,
+      "head_blob_sha256": "b1c90b56cab93532c17f0c8eadaf5ede0050f637ddd7c228340c6d9eb69a816d",
+      "working_bytes_equal_head_blob": true
+    }
+  ],
+  "sources_not_identical_to_snapshot_head": [],
+  "confirmation_definitions": {
+    "static-confirmed-bounded": "Reviewed exact-build static producer/consumer evidence supports the stated limited branch; not observed live behavior.",
+    "static-confirmed-with-authored-example": "Static rule with explicitly hypothetical numbers; no sampled game values.",
+    "documented-open-question": "Missing ordinary policy; narrow or omit the explanatory promise.",
+    "scope-and-authored-illustration": "Fiction, version or editorial identity statement rather than native mechanism.",
+    "static-confirmed-precondition-no-live": "Static fixture prerequisites; no successful observed run claimed.",
+    "static-confirmed-path-no-live-outcome": "Static path known; actual instance and terminal postcondition remain unbound.",
+    "scope-and-editorial-recommendation": "Proposed narrative/method choice, not measured research coverage."
+  },
+  "capture_contracts": {
+    "LIVE-W1": {
+      "case": "CASE-A / 原生宣战及未入选对照",
+      "before": [
+        "actor/target 完整 Character ID、游戏日期、普通入口标志",
+        "金币/国库战争储备与原生要求值",
+        "已发布军力 cache、State16、行政与关系网络分项、来源身份",
+        "CB/type/config/title、特殊与通用 cost、候选原生分数"
+      ],
+      "trigger": "自然 AI 宣战 attempt 的真实生产入口；记录通过、拒绝或零候选的具体阶段",
+      "after": [
+        "筛选前后候选、抽样输入/选中项和后置检查",
+        "实际宣战命令及新 WarID、双方身份、战争开始后的 UI 与状态"
+      ],
+      "implementation_boundary": "多项是尚待完成的被动生产窗口，现有 UI 或暂停快照不能代替；不主动调用 producer 制造证据。",
+      "negative_case": "未产生战争须定位被哪个门拒绝；没有战争通知本身不能证明财政或军力门失败。",
+      "status": "planned/unbound",
+      "bound_live_evidence": [],
+      "run_performed_by_this_package": false
+    },
+    "LIVE-W2": {
+      "case": "CASE-B / 目标重算到移动",
+      "before": [
+        "War/coordinator/stack/CUnit 完整身份与旧目标",
+        "stance、当前 block、剩余军团数、去重前后省候选",
+        "三计数器、flags、A0 cached lopsided、B0/C0 原值"
+      ],
+      "trigger": "同次自然 coordinator target producer 进入及其触发原因",
+      "after": [
+        "pair 分数、生成序、每栈计数、路径 bool、占用与 selected",
+        "最终目标/类型/分数写回，另行记录移动命令、路线和真实移动"
+      ],
+      "implementation_boundary": "完整 pair/临时缓存观察能力尚未在本包证明可用；仅凭目标查询与录像不能复原全部评分。",
+      "negative_case": "路径失败、已分配、目标已占用和写回被阻止分别保留，不把未移动都归为同一阈值。",
+      "status": "planned/unbound",
+      "bound_live_evidence": [],
+      "run_performed_by_this_package": false
+    },
+    "LIVE-W3": {
+      "case": "CASE-B / 阈值与局部路径",
+      "before": [
+        "同 War/coordinator/stack/CUnit 身份、战争一侧",
+        "mode producer 的 A/B power、stack 数、realm size、own score、runtime defines",
+        "本次 predictor 的 evaluated/hostile 聚合与 ratio、当前路线成本"
+      ],
+      "trigger": "实际 mode producer 或目标路径检查；两份稳定暂停读数不算触发",
+      "after": [
+        "mode bit、选中阈值、严格比较结果",
+        "替代路径构造与成本检查、最终候选/目标、命令及移动或接战"
+      ],
+      "implementation_boundary": "暂停 sampler 仅有合成验证，生产窗口和 predictor 全部字段是否可捕获需另验。",
+      "negative_case": "阈值通过但被其他条件拒绝，和阈值未通过分开记录。",
+      "status": "planned/unbound",
+      "bound_live_evidence": [],
+      "run_performed_by_this_package": false
+    },
+    "LIVE-W4": {
+      "case": "CASE-B / asking → assignment → ETA → 同战斗加入",
+      "before": [
+        "同 coordinator 下 requester A/B 是同 parent 的不同 subunit，parent count > 1",
+        "同侧助手 H 属于另一 parent，AI owner、完整 CUnit/War/Combat 身份有效",
+        "旧 asking、ratio、demand、requester 当前省、助手 busy/reserve/assignment"
+      ],
+      "trigger": "原生请求生产与匹配在自然更新窗口实际执行；保持原 CombatID 活动",
+      "after": [
+        "asking 与 change bit、candidate stored order、量化需求/请求方 parent available 的比较",
+        "助手 assigned 位从无到有、目标等于请求方当时省",
+        "目标/路线有效的 native ETA",
+        "助手 active CombatID 与原 CombatID 相同，且同侧 roster 实际包含助手"
+      ],
+      "implementation_boundary": "旧 singleton 夹具未满足请求生产条件；新三军 parent 结构仍须真实查询先验证。本包没有新 live。",
+      "negative_case": "无指派须保留候选资格与比较；手动 move、另一场新战斗或画面叠在一起不算这条链成功。",
+      "status": "planned/unbound",
+      "bound_live_evidence": [],
+      "run_performed_by_this_package": false
+    },
+    "LIVE-W5": {
+      "case": "普通战争主动撤退 / 未具备核心因果合同",
+      "before": [
+        "普通 AI 的 active CombatID、全侧成员、真实策略 caller 与原生输入（caller 尚未闭合）"
+      ],
+      "trigger": "待发现：普通 war AI 自主决定战中撤退的生产 caller",
+      "after": [
+        "若未来查明，分别绑定决定、资格、整侧执行、目的地及后置状态"
+      ],
+      "implementation_boundary": "当前不安排“AI 败势自动撤退已解释”的核心取材。已知 validator/执行路径、玩家撤退和 raid/barter 路径不能补成普通 policy。",
+      "negative_case": "没有找到 caller 不证明 AI 永不主动撤退。",
+      "status": "planned/unbound",
+      "bound_live_evidence": [],
+      "run_performed_by_this_package": false
+    },
+    "LIVE-W6": {
+      "case": "CASE-B / 单场结果记入战争",
+      "before": [
+        "同 WarID/CombatID、双方角色与败方 participant 完整 Character IDs",
+        "败方角色八桶数量及相关源容器、kind/state；本场 hard loss、CB scale"
+      ],
+      "trigger": "正常战斗 terminal 进入 CWar battle-row writer",
+      "after": [
+        "单场 raw score、single cap、写入对应战争 row",
+        "累计 battle contribution 与 total war score 分开读回"
+      ],
+      "implementation_boundary": "逐桶原生生产值、更新次序与终局绑定尚未有新样本；至少普通和特殊部队边界案例，不能拿 UI 四舍五入数字补公式。",
+      "negative_case": "本场获胜不等于整个战争结束；异常/无所属活动战争分支另行标记。",
+      "status": "planned/unbound",
+      "bound_live_evidence": [],
+      "run_performed_by_this_package": false
+    },
+    "LIVE-W7": {
+      "case": "CASE-C / 原生白和提案、接受及终局",
+      "before": [
+        "同 WarID、actor/recipient 完整 ID、攻守角色、AI/玩家身份、CB/特殊 context",
+        "战争时长与双方战分、相关债务/其他战争/人质/特质",
+        "actor 工作项与月份门、主动 raw、普通接受 raw、相关原生随机记录"
+      ],
+      "trigger": "自然 actor 工作项进入普通白和 candidate/send 链；玩家按钮与强制发送分开标识",
+      "after": [
+        "月份/可用性/候选接受预判/主动 margin/CanSend 结果",
+        "真实发送命令 recipient raw 与普通接受 bool",
+        "同 WarID 的终止结果、停战及适用特殊效果实际后置；失败或拒绝同样保全"
+      ],
+      "implementation_boundary": "完整上游 actor 入队节奏仍未知，所列字段是取材合同，不声称现有 query 已全部暴露。",
+      "negative_case": "接受分正但未提案，需查机会/候选/随机/合法性，不能推断普通接受比较失效。",
+      "status": "planned/unbound",
+      "bound_live_evidence": [],
+      "run_performed_by_this_package": false
+    }
+  },
+  "entries": [
+    {
+      "id": "W0-00",
+      "work_package": "W0",
+      "title_zh": "教学战争、版本与旧片的实际状态",
+      "old_claim_ids": [
+        "C00",
+        "C10"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-001",
+          "shot_id": "S30-01",
+          "chapter_id": "hook",
+          "zh": "分数最高的战争，为什么没有被选中？军队已经走到城下，为什么又换了方向？场上明明还有兵，和平提议却已经出现了。",
+          "en": "Why was the highest-scoring war not chosen? Why did an army change direction after reaching a castle? And why did a peace proposal appear while troops were still in the field?"
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-002",
+          "shot_id": "S30-01",
+          "chapter_id": "hook",
+          "zh": "这些画面很容易让人觉得，电脑又犯糊涂了。但我们先不急着判断。今天用三个虚构案例，看看同样的表象，可能对应哪些不同的决定。",
+          "en": "These scenes can make it seem as though the computer has made another mistake. But let us hold that judgment. We will use three fictional examples to examine the different decisions that may sit behind similar appearances."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-003",
+          "shot_id": "S30-02",
+          "chapter_id": "hook",
+          "zh": "把地图摊开。西边是赤河公国，东边是蓝岭伯爵领，中间隔着一条河，北面有山口，两座城堡分居南北，右上角还有一个灰色的第三国。",
+          "en": "Unfold the map. The Duchy of Redriver lies to the west and the County of Blueridge to the east. A river divides them, a pass lies to the north, two castles stand north and south, and a third country occupies the upper-right corner."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-004",
+          "shot_id": "S30-02",
+          "chapter_id": "hook",
+          "zh": "赤河和蓝岭都是为这期节目设计的名字。我们先坐到领主的桌前，看他怎样选择战争，再跟着军队走，最后回到两份和平账单前，看战争怎样被重新衡量。",
+          "en": "Redriver and Blueridge are names created for this episode. We will begin at the ruler's desk to examine war selection, follow the army, and finally return to two peace ledgers to see how the war is assessed again."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-005",
+          "shot_id": "S30-03",
+          "chapter_id": "hook",
+          "zh": "本期讨论《十字军之王三》的一点一九点零点六版本。地图上的军队、路线和示例数字，用来说明规则；这是一张教学地图，不是同一场自然战争的实录。",
+          "en": "This episode discusses Crusader Kings III version 1.19.0.6. The armies, routes, and example numbers illustrate rules. This is a teaching map, not a record of one naturally occurring war."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-006",
+          "shot_id": "S30-03",
+          "chapter_id": "hook",
+          "zh": "画面会把已经确认的规则和仍然未知的部分分开。你不需要记住程序地址，只要跟住一个问题：眼前这个动作，究竟属于哪一步决定？",
+          "en": "The visuals will distinguish confirmed rules from what remains unknown. You do not need to remember program addresses. Just keep one question in mind: which decision stage does the action in front of us belong to?"
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-089",
+          "shot_id": "S30-45",
+          "chapter_id": "epilogue",
+          "zh": "本期依据的版本、文档和程序指纹，列在片尾资料中。这里讲的是这个版本里已经研究到的范围，文档梳理得多细，并不等于全部原生分支或者自然实机行为已经验证了多少。",
+          "en": "The version, documents, and executable fingerprint used for this episode are listed in the accompanying source material. We have discussed the researched scope of this build. The maturity of the documentation does not measure how many native branches or naturally occurring behaviors have been verified."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-090",
+          "shot_id": "S30-45",
+          "chapter_id": "epilogue",
+          "zh": "赤河与蓝岭是虚构的，示例数字也是教学输入。希望下次你看见最高分留在桌上、军队换了方向，或者和平信忽然出现时，能多想到一步：它现在，究竟在做哪一个决定。",
+          "en": "Redriver and Blueridge are fictional, and the example numbers are teaching inputs. The next time the highest score stays on the table, an army changes direction, or a peace letter appears, I hope one more question comes to mind: which decision is it making right now?"
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C00",
+          "statement_zh": "赤河、蓝岭、教学地图、候选分数及求援数列都是说明机制的假设示例。"
+        },
+        {
+          "id": "C10",
+          "statement_zh": "本期只讲 CK3 1.19.0.6 的有界研究；文档成熟度百分比不代表全部原生分支或自然实机覆盖率。"
+        }
+      ],
+      "disposition": "retain-boundary-rebuild-treatment",
+      "confirmation": "scope-and-authored-illustration",
+      "proposed_safe_narration_zh": "我们研究的是 CK3 一点一九点零点六。赤河与蓝岭是解释机制的教学角色；真实案例会另列领主、战争和取材记录。图里的假设数字，不是从那场游戏里采到的数值。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md",
+          "lines": [
+            8,
+            19
+          ],
+          "source_sha256": "c36f7eda5113fa046ea608bc8c3cc13351785abc163255ddab9efb96c4a62db8",
+          "range_text_sha256_utf8_lf": "07cb787b85118ef80b5f9ad0866d0a481c35ccdca11da8fc5ca0fd38f71525eb",
+          "first_line": "此前判断“现有认识足够支撑完整战争策略影片”过于乐观。已经交付的 28:56 版本未达到本片的内容与表现要求：",
+          "last_line": "本记录取代旧导演案中允许核心问题长期未知、以纯图解兜底完整影片的制作判断。旧研究和冻结 run 不覆写；新发现以带日期、版本和证据的追加记录更正或扩充。",
+          "supports": "旧片已交付但内容审片失败，纯图解兜底判断被取代"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md",
+          "lines": [
+            23,
+            33
+          ],
+          "source_sha256": "c36f7eda5113fa046ea608bc8c3cc13351785abc163255ddab9efb96c4a62db8",
+          "range_text_sha256_utf8_lf": "7c9910d28753dda8440bebb80aac4c6932e1b49b9711840a76a8b0c2a9003775",
+          "first_line": "固定研究 CK3 **1.19.0.6**；历史基准 EXE SHA-256 为",
+          "last_line": "测试通过或 schema 完整不等于语义闭合；单场实机出现某结果也不能证明全部分支。",
+          "supports": "exact build、原生 NPC 与玩家/自制 planner 的因果边界"
+        }
+      ],
+      "live_case": {
+        "status": "not-a-native-causal-case",
+        "contract_id": null,
+        "claim_specific_before": [],
+        "claim_specific_after": [],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "旧 source-lock 的 EXE 字段为历史抄录；本 ledger 复核文档，不冒称又实读 EXE。",
+        "本包不授予制作完成、人工签核或发布批准。"
+      ],
+      "visual_zh": "开场以未来实机案例的可观察冲突建立问题；教学插图持续标示。缺核心案例时留制作缺口，不再输出纯图解版作为重做完成。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W1-01",
+      "work_package": "W1",
+      "title_zh": "普通宣战先过两项战争储备",
+      "old_claim_ids": [
+        "C01"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-007",
+          "shot_id": "S30-04",
+          "chapter_id": "declaration",
+          "zh": "先别急着翻战争卡。一次宣战尝试，还要区分有没有机会考虑、目标有没有资格，以及估算军力是否符合相关条件。我们把这些环节放在评分桌外，避免一开始就混在一起。",
+          "en": "Do not turn over the war cards yet. A declaration attempt involves distinct questions: whether there is an opportunity to consider war, whether the target qualifies, and whether estimated military power meets the relevant conditions. We place these stages outside the scoring table so they stay separate."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-008",
+          "shot_id": "S30-04",
+          "chapter_id": "declaration",
+          "zh": "走过其中一道门，不代表宣战已经决定。知道存在检查，也不等于知道所有领主会在同一个固定日期检查；我们现在看到的是几个必要区分的环节，还不是一张保证开战的日程表。",
+          "en": "Passing one gate does not mean war has been decided. Knowing that a check exists also does not tell us that every ruler performs it on the same fixed date. These are stages we need to distinguish, not a schedule that guarantees a declaration."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C01",
+          "statement_zh": "宣战尝试、候选资格和估算军力门是不同环节；目标已在战争中会影响已分析分支的军力门。"
+        }
+      ],
+      "disposition": "expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "在这条普通宣战入口里，AI 先比较金币和国库的战争储备是否够到原生要求。任何一项不足，这次尝试会在挑选战争候选之前停下；刚好够到要求则能通过这两项比较。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-declaration-inputs-2026-09-23.md",
+          "lines": [
+            43,
+            66
+          ],
+          "source_sha256": "04cfe6ec8a1c173388dc8c33d9ac98c4b964c300ec3f0ded5d6aac4a229b73ae",
+          "range_text_sha256_utf8_lf": "202e87d1cc27c3acf9a7c7c92b7af08b910d9efd3b22c461ee28379f94be061f",
+          "first_line": "## 新闭合的入口：储备不够，本轮还未进入候选选择",
+          "last_line": "单独看 UI 金币余额不能证明准备金门通过。",
+          "supports": "普通 R8d=0 入口，两槽严格不足时退出，等号通过"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-declaration-inputs-2026-09-23.md",
+          "lines": [
+            68,
+            88
+          ],
+          "source_sha256": "04cfe6ec8a1c173388dc8c33d9ac98c4b964c300ec3f0ded5d6aac4a229b73ae",
+          "range_text_sha256_utf8_lf": "831cc0ea9088c83db08884e7c867b5723c339e968e5787d02614c2d675553b7f",
+          "first_line": "## 所需储备来自原生 helper，不是手工财政预测",
+          "last_line": "这里只陈述确切指令；不由该式推断所有军队维护组件，也不主动改原版逻辑。",
+          "supports": "最低储备与18倍项；不能解释为完整18个月费用模拟"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W1",
+        "claim_specific_before": [
+          "普通入口 R8d=0；两预算槽和两需求槽"
+        ],
+        "claim_specific_after": [
+          "分别保存两次比较，随后是否进入候选链"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "UI 当前金币余额不是这里的两项预算。",
+        "非普通入口有绕过分支；不能说全部宣战无例外。",
+        "18 倍项不是完整未来18个月盈亏预测。"
+      ],
+      "visual_zh": "实机财政/宣战上下文上叠两项原生读数；相等与不足可用有标签的边界算例。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W1-02",
+      "work_package": "W1",
+      "title_zh": "宣战力量是已发布的估值缓存",
+      "old_claim_ids": [
+        "C01"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-009",
+          "shot_id": "S30-05",
+          "chapter_id": "declaration",
+          "zh": "现在只改一个条件：右上角的第三国已经与蓝岭交战。在已经分析的分支里，目标是否身处战争，会影响宣战时使用的军力门，因此这条新战线确实可能改变判断的条件。",
+          "en": "Now change just one condition: the third country in the upper-right corner is already at war with Blueridge. In the branches studied so far, whether the target is already at war affects the military-power gate used for declaration. This new front can therefore change the conditions being assessed."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-010",
+          "shot_id": "S30-05",
+          "chapter_id": "declaration",
+          "zh": "但不要马上把赤河的宣战印章盖下去。条件改变，后面仍有别的检查和选择；而这里比较的是原生估算的军力，也不能直接拿两个界面上的士兵人数，相除之后就说门已经通过。",
+          "en": "But do not stamp Redriver's declaration yet. A changed condition still leaves other checks and choices ahead. And the comparison uses native estimates of military power; dividing two soldier counts shown in the interface does not establish that the gate has passed."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C01",
+          "statement_zh": "宣战尝试、候选资格和估算军力门是不同环节；目标已在战争中会影响已分析分支的军力门。"
+        }
+      ],
+      "disposition": "expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "宣战用的基础军力不是把地图上现有士兵一数就完事。它读取角色已经发布的军力估计，再加入适用的行政与关系网络项；其中特殊部队等来源有自己的口径，也不表示列入估计的盟友一定会来。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-declaration-power-cache-2026-09-23.md",
+          "lines": [
+            10,
+            16
+          ],
+          "source_sha256": "84eb3f601ae17c10ca503989d3410261a72e109bf3a4a668c5f2175457463c27",
+          "range_text_sha256_utf8_lf": "95f36ff24a112eb68a9f197dadd2bbfe167b636e87b1e81b48e300040f3a684a",
+          "first_line": "`CCharacter+0x1B8 -> +0x308` 是八类部队 **MAX 侧 power** 的已发布缓存，类型为 int64、单位为 Q100000。",
+          "last_line": "共享一个八桶生产函数不等于共享同一种数值。",
+          "supports": "MAX 侧 power 与人数、CURRENT power 分离"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-declaration-power-cache-2026-09-23.md",
+          "lines": [
+            20,
+            42
+          ],
+          "source_sha256": "84eb3f601ae17c10ca503989d3410261a72e109bf3a4a668c5f2175457463c27",
+          "range_text_sha256_utf8_lf": "f078c356e89c19fce4e78710934af37b28e8fa8c1224902e945b88d9d461846d",
+          "first_line": "`0x2617F80` 接收 Character，`0x2617F86` 取 `+0x1B8`，为空则返回；否则调用 producer 并发布各字段。",
+          "last_line": "初始计划中的 `daily-tick` 是待验证调度假设；结果计划明确收窄为 `unknown`，不把计划标签当证据。",
+          "supports": "producer、scratch 和发布缓存分别可追；年龄仍未知"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-declaration-power-cache-2026-09-23.md",
+          "lines": [
+            50,
+            74
+          ],
+          "source_sha256": "84eb3f601ae17c10ca503989d3410261a72e109bf3a4a668c5f2175457463c27",
+          "range_text_sha256_utf8_lf": "54c60877772292a0befc7aaf40cb430514ce6047b0462078ed7b6a8b24eaf412",
+          "first_line": "| 桶 | 实际来源 | 进入 `+308` 的 MAX 侧 power | 与 CURRENT 侧的区别 |",
+          "last_line": "不能说“把所有盟友当前兵数相加”“所有列入者都会响应召集”，也不能在缺少逐项 native 输出时自行消除行政/关系来源的潜在重叠。",
+          "supports": "八桶 power 的特殊口径与网络追加层"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W1",
+        "claim_specific_before": [
+          "同角色八桶源值、scratch 与 published cache；实际 declare attempt"
+        ],
+        "claim_specific_after": [
+          "同次 State16 与关系网络贡献逐项对应"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "MAX 侧不等于所有桶全部补满。",
+        "简化 power 不是地形、克制、统帅与骑士实际表现的战斗模拟。",
+        "不得将缓存年龄/刷新频率改说成已知每天固定更新。",
+        "当前600/骑士是未改原版参数的静态估值，非实际勇武或所有版本常量；本期可不展开。"
+      ],
+      "visual_zh": "在真实军队面板上区分人数与估值；只挑一个受损普通部队和一个特殊部队解释差别，不逐项念偏移。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W1-03",
+      "work_package": "W1",
+      "title_zh": "可支付候选先过成本检查",
+      "old_claim_ids": [
+        "C01",
+        "C02"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-007",
+          "shot_id": "S30-04",
+          "chapter_id": "declaration",
+          "zh": "先别急着翻战争卡。一次宣战尝试，还要区分有没有机会考虑、目标有没有资格，以及估算军力是否符合相关条件。我们把这些环节放在评分桌外，避免一开始就混在一起。",
+          "en": "Do not turn over the war cards yet. A declaration attempt involves distinct questions: whether there is an opportunity to consider war, whether the target qualifies, and whether estimated military power meets the relevant conditions. We place these stages outside the scoring table so they stay separate."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-011",
+          "shot_id": "S30-06",
+          "chapter_id": "declaration",
+          "zh": "接下来假设六个候选已经走到正分评分阶段。它们分别是一百、九十七、九十四、九十一、九十和八十九分。先在心里选一张：如果由你猜，程序最后会拿走哪张牌？",
+          "en": "Next, suppose six candidates have reached the positive-score stage. Their scores are one hundred, ninety-seven, ninety-four, ninety-one, ninety, and eighty-nine. Pick one in your mind: which card do you think the program will ultimately take?"
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-012",
+          "shot_id": "S30-06",
+          "chapter_id": "declaration",
+          "zh": "这六个分数是教学输入，不是从某个存档采出来的候选名单。我们暂时不追问每张牌为什么得这个分，而是把分数当作已知条件，专门看接下来的筛选和抽取。",
+          "en": "These six scores are teaching inputs, not a candidate list sampled from a save. For now, we are not asking why each card received its score. We take the scores as given and focus on the filtering and selection that follow."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C01",
+          "statement_zh": "宣战尝试、候选资格和估算军力门是不同环节；目标已在战争中会影响已分析分支的军力门。"
+        },
+        {
+          "id": "C02",
+          "statement_zh": "已分析的宣战候选流程剔除低于最高分 0.9 倍的候选，剩余超过五项时保留最高五项，再按分数权重随机选择。"
+        }
+      ],
+      "disposition": "expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "走到具体宣战理由后，还有支付检查。它先验证这份战争配置的特殊成本，再验证通用交互成本，然后才进入后面的候选评分。通过检查只表示这一步允许继续，还不表示已经扣钱或开战。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-declaration-inputs-2026-09-23.md",
+          "lines": [
+            90,
+            130
+          ],
+          "source_sha256": "04cfe6ec8a1c173388dc8c33d9ac98c4b964c300ec3f0ded5d6aac4a229b73ae",
+          "range_text_sha256_utf8_lf": "fde60506222d0ccbe9edd7b527bbe99d523b690c0c1fb8127f0c6e8eb74bb039",
+          "first_line": "## 具体 CB 成本和通用交互成本：两次独立检查",
+          "last_line": "以上都是候选校验，不是已经扣款、已经发信或已经宣战的证据。",
+          "supports": "特殊 CB 与通用交互成本在候选正分过滤前，CanSend不是付款"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W1",
+        "claim_specific_before": [
+          "同 actor/target/CB config/title、两类cost与原生支付输入"
+        ],
+        "claim_specific_after": [
+          "两个validator结果与之后是否生成正分候选"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不得复述旧 war-declaration 的成本顺序未知为当前结论。",
+        "不把可支付升级为战争期间财政可持续。"
+      ],
+      "visual_zh": "真实宣战上下文中揭开两张成本单；失败候选变灰而非播放开战音效。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W1-04",
+      "work_package": "W1",
+      "title_zh": "九成筛选、最多五项和条件加权抽选",
+      "old_claim_ids": [
+        "C02",
+        "C00"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-011",
+          "shot_id": "S30-06",
+          "chapter_id": "declaration",
+          "zh": "接下来假设六个候选已经走到正分评分阶段。它们分别是一百、九十七、九十四、九十一、九十和八十九分。先在心里选一张：如果由你猜，程序最后会拿走哪张牌？",
+          "en": "Next, suppose six candidates have reached the positive-score stage. Their scores are one hundred, ninety-seven, ninety-four, ninety-one, ninety, and eighty-nine. Pick one in your mind: which card do you think the program will ultimately take?"
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-012",
+          "shot_id": "S30-06",
+          "chapter_id": "declaration",
+          "zh": "这六个分数是教学输入，不是从某个存档采出来的候选名单。我们暂时不追问每张牌为什么得这个分，而是把分数当作已知条件，专门看接下来的筛选和抽取。",
+          "en": "These six scores are teaching inputs, not a candidate list sampled from a save. For now, we are not asking why each card received its score. We take the scores as given and focus on the filtering and selection that follow."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-013",
+          "shot_id": "S30-07",
+          "chapter_id": "declaration",
+          "zh": "第一步找最高分，这里是一百。然后取它的百分之九十，也就是九十分，画出一道门槛；严格低于这条线的候选被移除，所以八十九分的牌到这里就退出了。",
+          "en": "First, find the highest score: one hundred in this example. Take ninety percent of it, giving a threshold of ninety. Candidates strictly below that threshold are removed, so the eighty-nine-point card leaves here."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-014",
+          "shot_id": "S30-07",
+          "chapter_id": "declaration",
+          "zh": "看清边上的九十分：它刚好等于门槛，因此仍然保留。这里说的是分数达到最高分的九成，不是按数量留下九成候选；这两个说法听起来接近，实际筛出的名单可能完全不同。",
+          "en": "Look closely at the ninety-point card. It is exactly on the threshold, so it stays. The rule compares scores with ninety percent of the highest score; it does not retain ninety percent of the candidates by count. Those interpretations can produce very different lists."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-015",
+          "shot_id": "S30-08",
+          "chapter_id": "declaration",
+          "zh": "过线之后，还要看剩余数量。如果超过五项，才按分数从高到低保留最高的五项；这是一条单独的数量分支，不是每次筛选之后都会再进行的一轮淘汰。",
+          "en": "After the threshold filter, the remaining count matters. If more than five candidates remain, they are ordered by score and only the highest five are kept. This is a separate count-based branch, not an additional elimination round that always happens."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-016",
+          "shot_id": "S30-08",
+          "chapter_id": "declaration",
+          "zh": "我们的例子恰好剩五张，所以直接往下走，不再剪掉任何一张，也不假装又发生了一次排序截断。记住这一步，后面看到五张候选时，就不会误以为它们一定都经过了同一种筛法。",
+          "en": "Our example has exactly five cards left, so it continues without removing another card or pretending that another sorting-and-truncation step occurred. Remember this distinction: seeing five candidates does not mean they must all have passed through the same filtering path."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-017",
+          "shot_id": "S30-09",
+          "chapter_id": "declaration",
+          "zh": "现在把五张牌铺成一条抽取带，每张牌占据的宽度，按它的分数来分配。总权重是四百七十二；一百分的牌占得稍宽，但其它保留牌也各有自己的一段。",
+          "en": "Now arrange the five cards along a selection strip, assigning each a width proportional to its score. The total weight is four hundred and seventy-two. The hundred-point card gets a slightly wider segment, but every retained card has a segment of its own."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-018",
+          "shot_id": "S30-09",
+          "chapter_id": "declaration",
+          "zh": "我们让示意指针落在九十四分这段。它在这个保留池里的条件抽中概率，是九十四除以四百七十二，约为百分之十九点九；所以最高分有优势，却没有包下这次选择。",
+          "en": "Let our illustrative pointer land in the ninety-four-point segment. Its conditional selection probability within this retained pool is ninety-four divided by four hundred and seventy-two, about nineteen point nine percent. The highest score has an advantage, but it does not monopolize the choice."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-019",
+          "shot_id": "S30-10",
+          "chapter_id": "declaration",
+          "zh": "这里的百分之十九点九，不能改写成赤河宣战的概率。它只回答这五张牌保留下来以后，九十四分这张被抽中的机会；前面的尝试与门槛，以及后面的相关条件，并没有因此消失。",
+          "en": "That nineteen point nine percent is not Redriver's probability of declaring war. It only describes the chance of selecting the ninety-four-point card after these five cards have been retained. Earlier opportunities and gates, and relevant later conditions, still matter."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-020",
+          "shot_id": "S30-10",
+          "chapter_id": "declaration",
+          "zh": "第一个问题有答案了：最高分未被选中，可以是这套加权选择本来就允许的结果。接下来让我们的教学战争继续，选中的牌落到蓝岭；战争目标确定之后，军队的下一站还要再选一次。",
+          "en": "We have an answer to our first question: failing to select the highest score can be an outcome this weighted selection process permits. Let our teaching war now continue, with the selected card placed over Blueridge. Once the war is chosen, the army still needs to choose its next destination."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-081",
+          "shot_id": "S30-41",
+          "chapter_id": "epilogue",
+          "zh": "再看开场留下的最高分牌。经过门槛筛选，保留下来的候选按分数加权抽取，所以最高分没有被选中，并不自动意味着程序无视了分数；分数先影响哪些候选留下，再参与最后的抽取。",
+          "en": "Return to the highest-scoring card from the opening. After threshold filtering, retained candidates are selected with score-based weights. Not choosing the highest score does not automatically mean the program ignored scores: scores first affect which candidates remain, then participate in the final selection."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C02",
+          "statement_zh": "已分析的宣战候选流程剔除低于最高分 0.9 倍的候选，剩余超过五项时保留最高五项，再按分数权重随机选择。"
+        },
+        {
+          "id": "C00",
+          "statement_zh": "赤河、蓝岭、教学地图、候选分数及求援数列都是说明机制的假设示例。"
+        }
+      ],
+      "disposition": "retain",
+      "confirmation": "static-confirmed-with-authored-example",
+      "proposed_safe_narration_zh": "假设这一轮已经得到六个正分候选：一百、九十七、九十四、九十一、九十和八十九。低于最高分九成的八十九先出局，九十保留。超过五项才另取最高五项；这个例子恰好剩五项。随后按分数作权重抽取，九十四在这五项中的抽中概率约为百分之十九点九；它不是国家最终宣战的概率。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-declaration.md",
+          "lines": [
+            368,
+            389
+          ],
+          "source_sha256": "0c329b23227c6b87da4bd94ca0180b463be725fec91f0cf45b508db63e43d25d",
+          "range_text_sha256_utf8_lf": "4642e1217cc1b8784deeec78c1bb3fa608c54ef0d802cde7088ed18c0d460fbc",
+          "first_line": "- [static-confirmed] `0x18C09E0` 先算硬编码 title score；`0x18BED23..0x18BEE14` 再求值 CB 的",
+          "last_line": "  选择下一个候选。",
+          "supports": "正分阶段、90%边界、超过5才截断、加权抽选、hostage后置roll"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W1",
+        "claim_specific_before": [
+          "同一attempt的完整候选分数、CB/config身份"
+        ],
+        "claim_specific_after": [
+          "90%后、top5后、原生抽取及后置结果分别绑定"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "六项数列是教学假设，不能贴真实候选ID。",
+        "94/472仅该假设保留池的条件概率。",
+        "人质风险还可能使抽中后放弃，不回退下一候选。",
+        "完整所有CB评分子项并未闭合。"
+      ],
+      "visual_zh": "候选卡短动画穿插实际候选记录；另加一张“若仍超过五项”的条件牌，勿演出本例又截一次。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W2-01",
+      "work_package": "W2",
+      "title_zh": "目标块有顺序，但不只在空时补块",
+      "old_claim_ids": [
+        "C03"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-021",
+          "shot_id": "S30-11",
+          "chapter_id": "targets",
+          "zh": "赤河军队来到河边，城堡在前面，可见敌军在另一边。你会让它继续围城，还是转过去追人？先留下自己的判断，等我们打开它所处的目标流程，再回来比较。",
+          "en": "Redriver's army reaches the river. The castle lies ahead, while a visible enemy force is elsewhere. Would you continue toward the siege, or turn to pursue that force? Keep your prediction; we will revisit it after opening the army's target-selection process."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-022",
+          "shot_id": "S30-11",
+          "chapter_id": "targets",
+          "zh": "只看这幅地图，我们还不知道原生程序当前在比较哪些候选。它可能面对的选择，要先放回当前的行动姿态和目标块里；否则玩家觉得值得追的那面旗，未必正处在我们以为的比较名单中。",
+          "en": "The map alone does not tell us which candidates the native program is currently comparing. We first need the current stance and objective block. Otherwise, a flag that looks worth pursuing to the player may not belong to the candidate list we have assumed."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-023",
+          "shot_id": "S30-12",
+          "chapter_id": "targets",
+          "zh": "把行动姿态想成桌上的一本目标册。程序先选适用的姿态，再去读它对应的目标安排；换一本册子，后面要看的目标内容也会不同，所以我们先只打开当前这一册。",
+          "en": "Think of a stance as an objective book on the desk. The program first selects an applicable stance, then reads its associated objectives. A different book leads to different objective content, so we open only the current one."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-024",
+          "shot_id": "S30-12",
+          "chapter_id": "targets",
+          "zh": "书里的每一页，代表一个目标块。先选哪本书，再按页处理目标，是两个层次；不同姿态和不同目标块里的分数，不能不加区分地相加，当成这支军队的最终判断。",
+          "en": "Each page represents an objective block. Choosing a book and then processing its pages are two separate stages. Scores from different stances and objective blocks cannot simply be added together and presented as the army's final assessment."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-025",
+          "shot_id": "S30-13",
+          "chapter_id": "targets",
+          "zh": "先看当前页。这里如果已经有可用候选，就在这一层继续处理；下一页不会因为摆着另一个漂亮数字，就自动加入当前这轮比较。目标块之间有先后，不是同时抢一个最高分。",
+          "en": "Start with the current page. If it contains usable candidates, processing continues at this layer. A tempting number on the next page does not automatically enter the current comparison. Objective blocks have an order; they do not all compete for one highest score at once."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-026",
+          "shot_id": "S30-13",
+          "chapter_id": "targets",
+          "zh": "现在做一个条件对照：把当前页的可用候选清空。到了这里，流程才会向下一块回退；因此，同一张地图上看似都能想到的目标，进入比较的时机也可能不一样。",
+          "en": "Now change one condition: remove the usable candidates from the current page. Only then does the process fall back to the next block. Targets that all seem plausible on the same map may therefore enter consideration at different stages."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C03",
+          "statement_zh": "军队先选适用 stance，objectives 分块按顺序回退；当前块的候选落到省份，初步最高十项再进入含寻路的最终评价。"
+        }
+      ],
+      "disposition": "rewrite-required",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "它先按当前姿态取目标块，再按顺序补充省份候选。前一块并非只要找到一个省就永远停下：候选省还少于当前待分配军团时，可以继续取下一块；评分分配后若还有军团和目标块，也能继续处理。这里有顺序和供给条件，不能把所有块的数字一次全加起来。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+          "lines": [
+            62,
+            81
+          ],
+          "source_sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+          "range_text_sha256_utf8_lf": "f465862752a5561fd4fdad67ea58966b2b1aca8a363cb4e45b29492ad508a2d7",
+          "first_line": "## 生成与去重：同省取较高 priority；block 按顺序供给",
+          "last_line": "本包未把这整个 helper 的每条拒绝理由展开成新的研究结论。",
+          "supports": "block按数量供给和分配循环；旧“仅空才翻页”过强"
+        },
+        {
+          "path": "promo/ck3_native_war_ai/longform/director-plan.md",
+          "lines": [
+            60,
+            64
+          ],
+          "source_sha256": "c6a94bbd58a7ea357336d4e1c291b21c3526c17df3555f474e7711443d8985b6",
+          "range_text_sha256_utf8_lf": "2fe9689d6ebf83dd37a72acc93bbea45b1aa4b6c87f4cc252c1cf1bc50218370",
+          "first_line": "**第一问：去围城，还是追敌军？**",
+          "last_line": "若取得 R01 的同次评分和选中目标记录，在这一段接入一个完整自然个案：“当时它看到了这些候选，实际选中了这一项，随后动作是这样。”缺记录时，用教学图解释规则入口，旁白落在“要解释这一次转向，还得知道当时的最终候选和评分”，不虚构总分。",
+          "supports": "现有导演案需同步改写，未在本包修改"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W2",
+        "claim_specific_before": [
+          "stance、block索引、候选省数、未分配军团数"
+        ],
+        "claim_specific_after": [
+          "下一block是否加载及分配后循环状态"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "旧 N30-025/026 是需更正的实际文字，不是只有新信息补充。",
+        "不把不同stance或全部block无条件同池加分。"
+      ],
+      "visual_zh": "两支待分配军团旁先出现一个省，下一块按条件补第二候选；不再用空书页作为唯一翻页条件。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W2-02",
+      "work_package": "W2",
+      "title_zh": "同省基础候选取更高 priority",
+      "old_claim_ids": [
+        "C03"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-027",
+          "shot_id": "S30-14",
+          "chapter_id": "targets",
+          "zh": "把当前块里的目标放回地图，就会落到具体的省份。城堡、战争目标区、可见敌军所在的位置，各自帮助我们理解候选从哪里来；接下来比较的是这些有位置的候选，而不只是一串抽象口号。",
+          "en": "Place the current block's objectives back on the map, and they resolve to particular provinces. A castle, the war-goal area, and a visible enemy's location help show where candidates come from. The process now compares located candidates rather than abstract intentions alone."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-028",
+          "shot_id": "S30-14",
+          "chapter_id": "targets",
+          "zh": "这里把敌军画成可见，只是在说明这一类候选的相关条件。不能从这一张教学图继续推论，原生战争系统在所有地方都知道什么、又绝对不知道什么；那需要逐条研究另外的路径。",
+          "en": "Showing the enemy as visible illustrates the relevant condition for this kind of candidate. This one teaching diagram cannot establish what the entire native war system knows, or never knows, in every situation. Those conclusions require examining other paths individually."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-030",
+          "shot_id": "S30-15",
+          "chapter_id": "targets",
+          "zh": "但是，完整路径成本怎样组合、重复候选怎样处理、同分如何排列，其中仍有尚未弄清的部分。我们知道这层结构，不等于已经能写出每个候选的精确总分；地图上的直线长短也不能替代它。",
+          "en": "But parts of the full path-cost combination, duplicate handling, and tie ordering remain unresolved. Knowing the structure does not mean we can write down an exact final score for every candidate. Straight-line distances on the map cannot substitute for that evaluation either."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C03",
+          "statement_zh": "军队先选适用 stance，objectives 分块按顺序回退；当前块的候选落到省份，初步最高十项再进入含寻路的最终评价。"
+        }
+      ],
+      "disposition": "replace-partial-unknown",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "不同目标可能指向同一个省。在这层候选缓存里，同省记录会合并，较高的基础优先级替换较低的，同分保留先前记录；不是把“首都、战目标、敌军在这里”三张基础分全部相加。后续修正仍要另外计算。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+          "lines": [
+            67,
+            71
+          ],
+          "source_sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+          "range_text_sha256_utf8_lf": "2c313458c3630e7d53f1b1e4b8294a2a5bf81e13143cad4ed0c3a31319bdd38e",
+          "first_line": "[static-confirmed] 原生 `185C690` 在 `185C7E0` 比较新省指针与每条候选 `+A8`。",
+          "last_line": "这是基础候选去重，不意味着后面的 modifier 不能加减分。",
+          "supports": "按省指针去重；new<=old不替换"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W2",
+        "claim_specific_before": [
+          "去重前同省候选、来源objective与priority"
+        ],
+        "claim_specific_after": [
+          "缓存中留下哪条及后续modifier前后分开"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "只闭合基础省候选去重，不宣称所有最终modifier都取max。",
+        "可见敌军objective不证明AI全域信息访问规则。"
+      ],
+      "visual_zh": "同一真实省上重叠两枚目标签，合成一枚保留更高值；图注“基础候选层”。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W2-03",
+      "work_package": "W2",
+      "title_zh": "军团与省的评分共同分配",
+      "old_claim_ids": [
+        "C03"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-029",
+          "shot_id": "S30-15",
+          "chapter_id": "targets",
+          "zh": "候选进入初步评价之后，排名最高的最多十项，才继续进入包含寻路的最终评价。你可以把它理解成先筛出一批值得进一步看的位置，再为这些候选打开下一层检查，而不是一开始就把所有路径都画完。",
+          "en": "After preliminary evaluation, at most the ten highest-ranked candidates proceed to final evaluation that includes pathfinding. Think of it as selecting positions worth further examination, then opening the next layer of checks for them, rather than resolving every route at the outset."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-031",
+          "shot_id": "S30-16",
+          "chapter_id": "targets",
+          "zh": "回到刚才的预测：围城，还是追击？到这里，我们可以指出两类候选怎样进入流程，却还不能替一段掉头录像补写理由；要解释那一次选择，需要当时对应的候选、评分和选中目标。",
+          "en": "Return to your prediction: siege or pursuit? We can now identify how those kinds of candidates enter the process, but we still cannot invent an explanation for a clip of an army turning around. Explaining that particular choice requires the corresponding candidates, scores, and selected target from that moment."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-032",
+          "shot_id": "S30-16",
+          "chapter_id": "targets",
+          "zh": "再把这些记录与后续动作对上，才有条件说这支军队那一刻选了什么。我们眼前的赤河地图继续保留为教学示意，不为它捏造一份最终分数表；已知规则已经把下一步该查什么指清楚了。",
+          "en": "Those records must then be matched to the subsequent action before we can describe what that army selected at that moment. Our Redriver map remains a teaching illustration, without an invented final-score table. The known rules already tell us what evidence to examine next."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C03",
+          "statement_zh": "军队先选适用 stance，objectives 分块按顺序回退；当前块的候选落到省份，初步最高十项再进入含寻路的最终评价。"
+        }
+      ],
+      "disposition": "rewrite-required",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "进入这轮分配的，是一条条“某支军团去某个省”的评分记录。它们在同一轮缓存里按分数排序，再检查省是否已被占用、军团是否已分配、需要的路线能否通过。它并不是每支军团各自选一个最高分，然后不管其他军团一起出发。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+          "lines": [
+            32,
+            60
+          ],
+          "source_sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+          "range_text_sha256_utf8_lf": "0881dbb4f88d993cbedd0a583d52a87d223fc4e3d8c92c78c603a09a894f498d",
+          "first_line": "## 调用链和三种记录",
+          "last_line": "输出构造的映射为 `184BC74/BC77/BD45/BD4C`。这些字段名只按数据流命名，未虚构游戏源码类名。",
+          "supports": "省候选→军团×省pair→输出的数据链"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+          "lines": [
+            124,
+            154
+          ],
+          "source_sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+          "range_text_sha256_utf8_lf": "c2060690ab97173e3187db0156148a8476399f9ad5fbd571831839e10adf597e",
+          "first_line": "## 最终选择：共池降序遍历，先通过者预留省和军团",
+          "last_line": "`pair+2C` 再重新排一次序。路径 wrapper 内部仍可能选择或调整路线，不能由此说“路径成本从不影响 AI”。",
+          "supports": "共池降序和本轮预留；无该段路径后重排"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W2",
+        "claim_specific_before": [
+          "同次pair生成序、score、stack/province完整身份"
+        ],
+        "claim_specific_after": [
+          "逐条选择、占用/assigned和路径bool"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "此处共池是当前生产缓存，不是全地图全部行为的全球榜。",
+        "普通objective围城/交战进入此池；所有集结/assembly共池未证明。",
+        "没有这里的路径后重排，不等于路径成本从不影响AI。"
+      ],
+      "visual_zh": "俯视实机军队与候选省做连线，选中一条后将该军团和省在本轮工作表中淡出。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W2-04",
+      "work_package": "W2",
+      "title_zh": "正常排序同分保留输入先后",
+      "old_claim_ids": [
+        "C03"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-030",
+          "shot_id": "S30-15",
+          "chapter_id": "targets",
+          "zh": "但是，完整路径成本怎样组合、重复候选怎样处理、同分如何排列，其中仍有尚未弄清的部分。我们知道这层结构，不等于已经能写出每个候选的精确总分；地图上的直线长短也不能替代它。",
+          "en": "But parts of the full path-cost combination, duplicate handling, and tie ordering remain unresolved. Knowing the structure does not mean we can write down an exact final score for every candidate. Straight-line distances on the map cannot substitute for that evaluation either."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C03",
+          "statement_zh": "军队先选适用 stance，objectives 分块按顺序回退；当前块的候选落到省份，初步最高十项再进入含寻路的最终评价。"
+        }
+      ],
+      "disposition": "replace-partial-unknown",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "这里按有符号分数从高到低排。已追到的普通排序路径在同分时保留原先输入顺序，所以“同分”不等于再掷一次骰子；但原先谁排在前面，还取决于本轮目标块和容器的实际生成顺序。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+          "lines": [
+            83,
+            99
+          ],
+          "source_sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+          "range_text_sha256_utf8_lf": "9279b8a85ebbc6d3c77f8181a5321fdbbf5ad94c0c43d96030974754d9cec5f2",
+          "first_line": "## 排序方向与并列",
+          "last_line": "本次闭合路径没有用于同分选择的随机抽签，不外推成整个战争 AI 无随机数。",
+          "supports": "降序稳定插排与正常buffer merge；低内存递归边界未穷尽"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W2",
+        "claim_specific_before": [
+          "原pair输入顺序、同分值、实际排序路径"
+        ],
+        "claim_specific_after": [
+          "相等记录的输出顺序"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不能命名为固定省ID顺序。",
+        "不能保证未穷尽的低内存分配失败路径。",
+        "不推广成整个战争AI没有随机数。"
+      ],
+      "visual_zh": "只展示一对同分候选与生成顺序小标；不造随机轮盘。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W2-05",
+      "work_package": "W2",
+      "title_zh": "前十是参数，不是严格十次寻路",
+      "old_claim_ids": [
+        "C03"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-029",
+          "shot_id": "S30-15",
+          "chapter_id": "targets",
+          "zh": "候选进入初步评价之后，排名最高的最多十项，才继续进入包含寻路的最终评价。你可以把它理解成先筛出一批值得进一步看的位置，再为这些候选打开下一层检查，而不是一开始就把所有路径都画完。",
+          "en": "After preliminary evaluation, at most the ten highest-ranked candidates proceed to final evaluation that includes pathfinding. Think of it as selecting positions worth further examination, then opening the next layer of checks for them, rather than resolving every route at the outset."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C03",
+          "statement_zh": "军队先选适用 stance，objectives 分块按顺序回退；当前块的候选落到省份，初步最高十项再进入含寻路的最终评价。"
+        }
+      ],
+      "disposition": "rewrite-required",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "“先看十个”这个说法还得修正。参数确实写着十，但机器比较使用递增前的计数；旧计数等于十时仍能继续，超过十才跳过。这不表示每支军团固定寻路十一次，因为提前结束、已分配和省份占用等条件还会缩短流程。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+          "lines": [
+            101,
+            122
+          ],
+          "source_sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+          "range_text_sha256_utf8_lf": "9ee528de40e6893c43a09ceb150e300bb01e3249511e02e88a2fafbbc8a94108",
+          "first_line": "## `MIN_GOALS_PER_STACK=10` 的真实预算边界",
+          "last_line": "quota 与 selected 是代码中的两个累加器，不擅自把它们改述为互斥的军团集合。",
+          "supports": "old0..10允许、old>10跳过；aggregate提前结束及免寻路分支"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W2",
+        "claim_specific_before": [
+          "排序pair和每栈old计数、quota/selected及初始未分配数"
+        ],
+        "claim_specific_after": [
+          "old10/old11比较与实际是否进入路径检查"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "旧 N30-029 的“最多十项”不能继续朗读。",
+        "不得倒向固定11次、11个成功候选或11个独立省。",
+        "原生参数名不向观众解释成精确性能承诺。"
+      ],
+      "visual_zh": "用一枚计数拨片说明边界，随后立即返回实际分配结果；这是短纠偏，不用十几张卡拖长。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W2-06",
+      "work_package": "W2",
+      "title_zh": "选中记录还须通过目标写回门",
+      "old_claim_ids": [
+        "C03"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-031",
+          "shot_id": "S30-16",
+          "chapter_id": "targets",
+          "zh": "回到刚才的预测：围城，还是追击？到这里，我们可以指出两类候选怎样进入流程，却还不能替一段掉头录像补写理由；要解释那一次选择，需要当时对应的候选、评分和选中目标。",
+          "en": "Return to your prediction: siege or pursuit? We can now identify how those kinds of candidates enter the process, but we still cannot invent an explanation for a clip of an army turning around. Explaining that particular choice requires the corresponding candidates, scores, and selected target from that moment."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-032",
+          "shot_id": "S30-16",
+          "chapter_id": "targets",
+          "zh": "再把这些记录与后续动作对上，才有条件说这支军队那一刻选了什么。我们眼前的赤河地图继续保留为教学示意，不为它捏造一份最终分数表；已知规则已经把下一步该查什么指清楚了。",
+          "en": "Those records must then be matched to the subsequent action before we can describe what that army selected at that moment. Our Redriver map remains a teaching illustration, without an invented final-score table. The known rules already tell us what evidence to examine next."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-082",
+          "shot_id": "S30-41",
+          "chapter_id": "epilogue",
+          "zh": "再看军队的箭头和两封和平信。目标块、局部条件和此前求援状态，要放回各自阶段；主动提议和收到后接受，也要分开读，才能继续追问某次真实动作究竟受了哪些输入影响。",
+          "en": "Now revisit the army's arrow and the two peace letters. Objective blocks, local conditions, and prior request state belong to their respective stages. Initiating and accepting a proposal also need separate readings before we can investigate which inputs shaped a particular real action."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C03",
+          "statement_zh": "军队先选适用 stance，objectives 分块按顺序回退；当前块的候选落到省份，初步最高十项再进入含寻路的最终评价。"
+        }
+      ],
+      "disposition": "expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "记录被选中后，还不是军队已经上路。外层会继续检查目标是否有效、记录类型和军团标志，并要求分数严格为正，才写回军团目标。我们还得接着看移动命令和实际路线，才能说这次选择真的变成了行动。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+          "lines": [
+            157,
+            177
+          ],
+          "source_sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+          "range_text_sha256_utf8_lf": "30753d65c34da3c61d1d09e69c6c0946c64a68ca857c68485130c185ef581eb5",
+          "first_line": "## 从 selected 到真实 stack 目标写回",
+          "last_line": "[unknown] 本包不把 raw 7 草率命名成所有集结，也不将大圣战集结、盟军集合、未集齐征召兵一概并入此分支。",
+          "supports": "selected→output→合法/类型/正分/标志→写回；特殊回退另路"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W2",
+        "claim_specific_before": [
+          "selected输出、score、目标有效性、raw类型与stackflag"
+        ],
+        "claim_specific_after": [
+          "目标/类型/score写回，再独立记录命令和实际移动"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "raw7不命名为所有集结。",
+        "写回不是移动发令、到达、围城开始或交战。"
+      ],
+      "visual_zh": "从候选高亮到军队目标标记再到实际行军分三步揭示，时间来源清楚。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W2-07",
+      "work_package": "W2",
+      "title_zh": "目标重算计数并非固定游戏日",
+      "old_claim_ids": [
+        "C03",
+        "C05"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-008",
+          "shot_id": "S30-04",
+          "chapter_id": "declaration",
+          "zh": "走过其中一道门，不代表宣战已经决定。知道存在检查，也不等于知道所有领主会在同一个固定日期检查；我们现在看到的是几个必要区分的环节，还不是一张保证开战的日程表。",
+          "en": "Passing one gate does not mean war has been decided. Knowing that a check exists also does not tell us that every ruler performs it on the same fixed date. These are stages we need to distinguish, not a schedule that guarantees a declaration."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-031",
+          "shot_id": "S30-16",
+          "chapter_id": "targets",
+          "zh": "回到刚才的预测：围城，还是追击？到这里，我们可以指出两类候选怎样进入流程，却还不能替一段掉头录像补写理由；要解释那一次选择，需要当时对应的候选、评分和选中目标。",
+          "en": "Return to your prediction: siege or pursuit? We can now identify how those kinds of candidates enter the process, but we still cannot invent an explanation for a clip of an army turning around. Explaining that particular choice requires the corresponding candidates, scores, and selected target from that moment."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-032",
+          "shot_id": "S30-16",
+          "chapter_id": "targets",
+          "zh": "再把这些记录与后续动作对上，才有条件说这支军队那一刻选了什么。我们眼前的赤河地图继续保留为教学示意，不为它捏造一份最终分数表；已知规则已经把下一步该查什么指清楚了。",
+          "en": "Those records must then be matched to the subsequent action before we can describe what that army selected at that moment. Our Redriver map remains a teaching illustration, without an invented final-score table. The known rules already tell us what evidence to examine next."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-082",
+          "shot_id": "S30-41",
+          "chapter_id": "epilogue",
+          "zh": "再看军队的箭头和两封和平信。目标块、局部条件和此前求援状态，要放回各自阶段；主动提议和收到后接受，也要分开读，才能继续追问某次真实动作究竟受了哪些输入影响。",
+          "en": "Now revisit the army's arrow and the two peace letters. Objective blocks, local conditions, and prior request state belong to their respective stages. Initiating and accepting a proposal also need separate readings before we can investigate which inputs shaped a particular real action."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C03",
+          "statement_zh": "军队先选适用 stance，objectives 分块按顺序回退；当前块的候选落到省份，初步最高十项再进入含寻路的最终评价。"
+        },
+        {
+          "id": "C05",
+          "statement_zh": "已分析的一般与 desperate 接战门分别严格大于 0.5 和 0.4；局部 bad-adjacency ratio 低于 0.625 时可尝试成本受限的替代路径。"
+        }
+      ],
+      "disposition": "expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "姿态、分合军团和目标有不同的重算计数。目标的普通重置值是七或十四，还存在提前刷新和暂缓分支；初始化也不先等满一轮。这里数的是相关更新入口的调用，不能只看日期就说“它必定每七天换目标”。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-target-countdowns-2026-09-23.md",
+          "lines": [
+            8,
+            32
+          ],
+          "source_sha256": "fca56cf2bf7aaebcadc9b3edc7453ba07118de20360ab23f8828f643a3b8b7fa",
+          "range_text_sha256_utf8_lf": "345beded180729f84d46e7816f36fd21fa20167dac823384c47ed3a2a03f5b0b",
+          "first_line": "[army-controller](army-controller.md) 中“三个计数字段尚未逐一映射”的缺口已在下表范围闭合。",
+          "last_line": "它含参与者/角色状态探测；本轮尚未为全部判据恢复语义名，也未穷尽所有其它写者。不能据此声称每一种死亡、失去可见性或占领变化都立即改令。",
+          "supports": "94/98/9C映射、7/14、gates与提前刷新"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-target-countdowns-2026-09-23.md",
+          "lines": [
+            34,
+            54
+          ],
+          "source_sha256": "fca56cf2bf7aaebcadc9b3edc7453ba07118de20360ab23f8828f643a3b8b7fa",
+          "range_text_sha256_utf8_lf": "846bbf384a48927bc2fa2c725b80728b6032bfd147ed3ace088aef9244347260",
+          "first_line": "### Lopsided 是严格小于 0.33",
+          "last_line": "直接 caller `0x18878F1` 已定位；同一父函数还存在经 `0x1888540` 投递的调度分支。尚未遍历全部异步消费边，不能把单一 direct xref 当成唯一调用者。",
+          "supports": "lopsided严格<.33，缓存A0，初始化为0"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W2",
+        "claim_specific_before": [
+          "全部timer、flag、A0、B0/C0和当前target"
+        ],
+        "claim_specific_after": [
+          "producer入口次数、重置/递减/提前刷新与新目标"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "上游每次调用与自然日关系尚未完整闭合。",
+        "lopsided取min/max且严格小于.33，零值另处理，不等于接战ratio。",
+        "不把7/14套到普通求援producer。"
+      ],
+      "visual_zh": "以真实刷新记录标记轴，轴名“已观察更新”而非擅自标“每日”。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W3-01",
+      "work_package": "W3",
+      "title_zh": "接战 ratio 是强度占比",
+      "old_claim_ids": [
+        "C04"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-033",
+          "shot_id": "S30-17",
+          "chapter_id": "movement",
+          "zh": "现在赤河军队准备接近敌军。玩家最容易先看两边人数，但原生这里使用的是评估力量；画面把士兵图标翻成两条力量条，是提醒你，这两个概念不能直接画等号。",
+          "en": "Redriver's army is now preparing to approach the enemy. Players naturally look at the two troop counts first, but the native calculation here uses evaluated power. Turning soldier icons into power bars reminds us that these are not interchangeable concepts."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-034",
+          "shot_id": "S30-17",
+          "chapter_id": "movement",
+          "zh": "而且，力量条也不是已经完整复原的兵种计算器。我们保留尚未弄清的输入，不替它们随意命名；眼下先认识这个比较量的含义，别急着把它翻译成这一仗有几成胜算。",
+          "en": "Nor are these power bars a fully reconstructed calculator for troop types. We leave unresolved inputs unnamed rather than inventing labels. First understand what this comparison means, without immediately translating it into a battle's chance of victory."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-035",
+          "shot_id": "S30-18",
+          "chapter_id": "movement",
+          "zh": "在已经复原的正常返回路径上，强度比等于我方评估力量，除以我方与对方评估力量之和。对方这一项也是按该路径汇总出来的力量，不是随便从地图上挑一支敌军的人数。",
+          "en": "On the reconstructed normal return path, the ratio is our evaluated power divided by the sum of our evaluated power and the opponent's. The opponent term is also aggregated by that path; it is not simply the troop count of an arbitrarily chosen enemy army."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-036",
+          "shot_id": "S30-18",
+          "chapter_id": "movement",
+          "zh": "这表达的是确定性评估中的力量占比，不是在反复模拟战斗后统计出来的胜率。还有另一条路径，在没有形成这里所需的敌对力量汇总时直接返回一；所以连这个简式，也要带着它的适用范围读。",
+          "en": "This represents a share of deterministically evaluated power, not a win rate measured through repeated battle simulations. Another path returns one directly when the required hostile aggregate is absent. Even this simplified formula must therefore be read within its scope."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-037",
+          "shot_id": "S30-19",
+          "chapter_id": "movement",
+          "zh": "把前面的三张牌再拿出来。宣战时的军力门，回答这一层条件是否满足；候选带上的百分之十九点九，回答保留池里某张牌被抽中的机会；现在的强度比，又是在接战判断里比较评估力量。",
+          "en": "Bring back our three cards. The declaration power gate asks whether a condition at that stage is met. The nineteen point nine percent on the selection strip describes one retained card's chance of selection. The current ratio compares evaluated power for an engagement assessment."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-038",
+          "shot_id": "S30-19",
+          "chapter_id": "movement",
+          "zh": "这三种量各管一步：过不过门、抽中哪张牌、怎样比较力量。这里，只有候选抽取那张卡给出了条件概率；把三者混在一起，就会误以为程序先算好了整场战争的胜率，再把同一个答案交给所有后续决定。",
+          "en": "These three quantities address separate stages: passing a gate, selecting a card, and comparing power. Here, only the candidate-selection card gives a conditional probability. Conflating them can create the false impression that the program calculates a win probability for the whole war and passes that answer to every later decision."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C04",
+          "statement_zh": "已复原的接战 ratio 正常路径是 P_eval/(P_eval+P_opp)，对方聚合含主 hostile lane 与半权重其他 lane；它是确定性评估力量占比，不是战斗胜率。"
+        }
+      ],
+      "disposition": "retain",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "这条正常返回路径把我方评估力量，除以我方与聚合对手力量之和。对手还可能包含按规则折算的其他敌对组。这是一次确定性的强度占比，不是模拟一百场之后的胜率；宣战军力比和候选抽中概率也不是同一个数。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/combat-prediction.md",
+          "lines": [
+            173,
+            216
+          ],
+          "source_sha256": "ad6845803c5864c540f97e670abd1e1785955019c738433047a37eefab3cd8f1",
+          "range_text_sha256_utf8_lf": "0ff00f5e7b7fef5e6b4038f410e38ce8ede3ce8ea7472233ade931035ea72f0d",
+          "first_line": "### 对手聚合与闭式公式",
+          "last_line": "  soldiers 反算原生返回值。",
+          "supports": "主hostile lane与其他半权重，定点公式，nohostile返回1"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W3",
+        "claim_specific_before": [
+          "本次eval/hostile各lane、modifier输入和原生ratio"
+        ],
+        "claim_specific_after": [
+          "选中阈值与后续分支，不能用战斗获胜倒推ratio"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "无hostile aggregate可直接返回1，不能读成必胜。",
+        "不能由UI人数反算。",
+        "secondary metric正式名仍未知，不自行补“地形优势”。",
+        "W1新闭合的角色缓存不是自动闭合这个predictor所有power来源。"
+      ],
+      "visual_zh": "实机态势上叠两条经绑定的估值条；概率轮盘仅留在宣战候选章，视觉上明确区分。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W3-02",
+      "work_package": "W3",
+      "title_zh": "两条接战门及 mode 的真实上游",
+      "old_claim_ids": [
+        "C05"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-039",
+          "shot_id": "S30-20",
+          "chapter_id": "movement",
+          "zh": "接着只看已经分析的接战分支。一般分支要求强度比严格大于零点五，另一条分支则要求严格大于零点四；这里的严格大于很关键，正好等于门槛，仍然不算通过对应检查。",
+          "en": "Now look only at the engagement branches that have been studied. The ordinary branch requires a ratio strictly greater than zero point five, while another requires strictly greater than zero point four. Strictly greater matters: equality does not pass the corresponding check."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-040",
+          "shot_id": "S30-20",
+          "chapter_id": "movement",
+          "zh": "后一个门槛更低，但什么时候会选到它，还没有完整的答案。不能自行补一句，兵少、性格激进，或者围城快输了，就必然会走这条路径；我们只保留已经确认的条件比较。",
+          "en": "The latter threshold is lower, but we do not yet have the complete answer to when it is selected. We cannot assume that fewer troops, an aggressive personality, or a failing siege must trigger this path. We retain only the confirmed conditional comparison."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C05",
+          "statement_zh": "已分析的一般与 desperate 接战门分别严格大于 0.5 和 0.4；局部 bad-adjacency ratio 低于 0.625 时可尝试成本受限的替代路径。"
+        }
+      ],
+      "disposition": "rewrite-partial-unknown",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "已分析的接战门分别要求强度比严格大于零点五或零点四，刚好相等不通过。选择哪一道门有自己的上游：它先读战争类型、攻守身份、缓存力量、军团数量和领地规模等条件，再决定这一分支的模式；不能把兵少或性格激进直接当作低门槛的开关。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/combat-prediction.md",
+          "lines": [
+            286,
+            294
+          ],
+          "source_sha256": "ad6845803c5864c540f97e670abd1e1785955019c738433047a37eefab3cd8f1",
+          "range_text_sha256_utf8_lf": "2595645e7143394a741d8c3ff6b0650107b2ba7ec6a5238fbc339faed804a296",
+          "first_line": "### 接战阈值和等号语义",
+          "last_line": "  `ratio > selected threshold`。等于 `0.5` 或 `0.4` 时不通过该门。",
+          "supports": "严格>.5/.4"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-retreat-policy-2026-09-23.md",
+          "lines": [
+            49,
+            114
+          ],
+          "source_sha256": "d65d1c0d52d0f8624cac8935df01fe1ba1fac05e2a9392c21f46019ac5864658",
+          "range_text_sha256_utf8_lf": "7f49002fbb48d27681f91ecb4846eb1b246fc24e202bf97edb531cb62d55b691",
+          "first_line": "| 输入/输出 | 本轮精确链 | 范围边界 |",
+          "last_line": "这些是本轮静态分析结论，尚不是游戏中的新实测案例。",
+          "supports": "mode producer与有界完整raw树"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-retreat-score-direction-2026-09-23.md",
+          "lines": [
+            112,
+            129
+          ],
+          "source_sha256": "fb1752f32a84bf7fe2ce4e2ef88f57f095d91613800c4b8bfcb6681755764f1f",
+          "range_text_sha256_utf8_lf": "128e5f62b26d8c30bd80064acc869fe67ce63b0cceb9dc6a4cef20f76b4f5eec",
+          "first_line": "在 a01 已还原的普通战争路径中，只有守方继续到最后分数判断。",
+          "last_line": "仍属于会话证据；本包的原版数值与静态入口不能替代这些证据。",
+          "supports": "普通守方末端score方向已命名"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W3",
+        "claim_specific_before": [
+          "mode实际生产调用及所有适用前置输入"
+        ],
+        "claim_specific_after": [
+          "modebit/threshold再与本次ratio比较"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不再说完整上游毫无线索；raw树已闭合，部分power业务语义和runtime刷新仍有限。",
+        "这里选择接战门，不是主动撤退策略。"
+      ],
+      "visual_zh": "先显示模式条件卡，再显示同一个ratio面对两条严格阈值；不按观众猜测自动给“绝境”人格标签。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W3-03",
+      "work_package": "W3",
+      "title_zh": "普通守方末端比较读己方战分",
+      "old_claim_ids": [
+        "C05"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-040",
+          "shot_id": "S30-20",
+          "chapter_id": "movement",
+          "zh": "后一个门槛更低，但什么时候会选到它，还没有完整的答案。不能自行补一句，兵少、性格激进，或者围城快输了，就必然会走这条路径；我们只保留已经确认的条件比较。",
+          "en": "The latter threshold is lower, but we do not yet have the complete answer to when it is selected. We cannot assume that fewer troops, an aggressive personality, or a failing siege must trigger this path. We retain only the confirmed conditional comparison."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C05",
+          "statement_zh": "已分析的一般与 desperate 接战门分别严格大于 0.5 和 0.4；局部 bad-adjacency ratio 低于 0.625 时可尝试成本受限的替代路径。"
+        }
+      ],
+      "disposition": "expand-correction",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "其中有一条容易讲反的条件。普通守方走到这棵树的末端后，比较的是己方战分是否达到门槛；它不是“敌方领先这么多”就触发。举例只说明符号：其余前置条件全部通过、选中二十五分门槛时，守方正二十五通过，负二十五不通过。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-retreat-score-direction-2026-09-23.md",
+          "lines": [
+            10,
+            19
+          ],
+          "source_sha256": "fb1752f32a84bf7fe2ce4e2ef88f57f095d91613800c4b8bfcb6681755764f1f",
+          "range_text_sha256_utf8_lf": "f75ae47126ed3adb0fe9364cea1287999d13390d4e7ff79e947e61982c46d42b",
+          "first_line": "1. **[static-confirmed] `0x222A8A0` 返回 attacker 视角的整数战争分数。**",
+          "last_line": "   也不猜测开发意图、实际触发频率或所有局面的行为结果。",
+          "supports": "attacker getter、自己一侧bit、己方score和注释差异"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-retreat-score-direction-2026-09-23.md",
+          "lines": [
+            112,
+            126
+          ],
+          "source_sha256": "fb1752f32a84bf7fe2ce4e2ef88f57f095d91613800c4b8bfcb6681755764f1f",
+          "range_text_sha256_utf8_lf": "a4209e708cc37f53bc2a951902583436a934416ee062eae143e6755133083537",
+          "first_line": "在 a01 已还原的普通战争路径中，只有守方继续到最后分数判断。",
+          "last_line": "仍不能仅凭这点断言注释错误的成因、设计意图或实际游戏频率。",
+          "supports": "其他gates、>=25/50/75及纯静态符号算例"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W3",
+        "claim_specific_before": [
+          "普通守方、A<B及多stack/realm等所有前置条件，实际选中threshold"
+        ],
+        "claim_specific_after": [
+          "producer写mode、threshold及独立后续action"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不能删掉其他前置条件做普遍战分开关。",
+        "不能称为AI bug、设计意图、频繁实测规律。",
+        "这是指令推导，不能给教学±25卡贴自然采样标志。"
+      ],
+      "visual_zh": "战争面板明确攻守角色；只突出正负翻转和适用前提，其余树收进可读来源图。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W3-04",
+      "work_package": "W3",
+      "title_zh": "坏邻接的局部绕路与成本窗口",
+      "old_claim_ids": [
+        "C05",
+        "C08"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-041",
+          "shot_id": "S30-21",
+          "chapter_id": "movement",
+          "zh": "把镜头缩到脚下，只看一个相邻的危险点。相关局部检查发现强度比低于零点六二五时，可以尝试寻找成本受限的替代路径；这时问题是这一段有没有别的走法，而不是整场战争该怎样赢。",
+          "en": "Zoom in to a single adjacent danger point. When the relevant local check finds a ratio below zero point six two five, it can attempt a cost-bounded alternative path. The question concerns another way through this local segment, not how to win the entire war."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-042",
+          "shot_id": "S30-21",
+          "chapter_id": "movement",
+          "zh": "替代搜索也有成本窗口，不能让虚线在地图上无限绕行。这里的成本不能擅自说成行军天数；同样，通过这个局部检查，也没有证明远方每一步都安全，更没有替未来的敌军动作作保证。",
+          "en": "The alternative search has a cost window, so our dashed line cannot wander across the map without limit. That cost must not be casually described as marching days. Passing this local check also proves neither that every distant step is safe nor that future enemy movements are accounted for."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-043",
+          "shot_id": "S30-22",
+          "chapter_id": "movement",
+          "zh": "我们把同一个起点拆成两幅教学图。左边假设找到了符合窗口的替代路线，右边假设搜索失败；失败并不意味着整个判断凭空结束，后面还有一般或者 desperate 接战门的回退检查。",
+          "en": "Split the same starting point into two teaching diagrams. On the left, suppose an alternative route is found within the window; on the right, suppose the search fails. Failure does not simply end all assessment: a fallback check through the ordinary or desperate engagement gate remains."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-044",
+          "shot_id": "S30-22",
+          "chapter_id": "movement",
+          "zh": "因此，地图上画出一条可考虑的路线，还不能直接接上一段已经执行进攻的录像。搜索、条件通过和实际动作，需要分别确认；我们这里只把已知分支画到它能够支持的位置。",
+          "en": "Drawing a route that may be considered does not justify cutting directly to footage of an attack as though execution had been established. Search, passing a condition, and actual action need separate confirmation. Our diagram stops where the known branch's evidence stops."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-045",
+          "shot_id": "S30-23",
+          "chapter_id": "movement",
+          "zh": "再看这两格：左边尚未接战，军队可以面对重新布置的问题；右边已经处在战斗中，我们问的却是它何时决定主动撤退。两个画面都可能看起来像往后走，程序里问的却不是同一件事。",
+          "en": "Compare these two panels. On the left, contact has not begun and the army faces a repositioning question. On the right, it is already in battle and we are asking when it decides to retreat voluntarily. Both may look like moving backward, but they are different questions in the program."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-046",
+          "shot_id": "S30-23",
+          "chapter_id": "movement",
+          "zh": "接战前的低强度比判断，不能自动回答战斗中的撤退择时与目的地策略。这个空白先留在图上，我们继续看一条更适合做明确条件对照的链：军队什么时候开始请求帮助。",
+          "en": "A low-ratio assessment before contact does not automatically explain retreat timing or destination choices during a battle. Leave that gap visible. Next, we can examine a chain suited to a clear conditional comparison: when an army begins asking for help."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C05",
+          "statement_zh": "已分析的一般与 desperate 接战门分别严格大于 0.5 和 0.4；局部 bad-adjacency ratio 低于 0.625 时可尝试成本受限的替代路径。"
+        },
+        {
+          "id": "C08",
+          "statement_zh": "接战前重新布置和战斗中主动撤退是两个问题；撤退资格与执行路径不等于普通战争 AI 完整撤退策略。"
+        }
+      ],
+      "disposition": "retain",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "在这条目标前的坏邻接检查里，强度比低于零点六二五会尝试替代路线，搜索上限取原路线成本再加一百八十。这里的一百八十不是天数。替代路线失败或超出成本门时，还有一般或低门槛的回退检查；通过这一处，也不保证整条未来路线安全。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/combat-prediction.md",
+          "lines": [
+            295,
+            307
+          ],
+          "source_sha256": "ad6845803c5864c540f97e670abd1e1785955019c738433047a37eefab3cd8f1",
+          "range_text_sha256_utf8_lf": "4190ebf6296fc49a5007453c377446026e8efe169eee8f697a784f590670327b",
+          "first_line": "- [static-confirmed] `0x191A4C6` 读取 `AVOID_BAD_ADJACENCY_COMBAT_PREDICTION_RATIO=0.625`；",
+          "last_line": "  和其它候选筛选仍可否决。",
+          "supports": "局部.625严格比较、basecost+180、失败回退及最终可否决"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W3",
+        "claim_specific_before": [
+          "同目标的坏邻接ratio和原路线成本"
+        ],
+        "claim_specific_after": [
+          "替代route与成本、失败回退、最终target/command"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "未换路不等于未来全程无接触。",
+        "不把自制route-contact-horizon等planner算法混入原生。",
+        "接战前改位置不是战中主动撤退。"
+      ],
+      "visual_zh": "真实路线局部放大一个相邻危险点，其他路段保持未判定；不给整条路线刷安全绿。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W4-01",
+      "work_package": "W4",
+      "title_zh": "求援开关保留历史状态",
+      "old_claim_ids": [
+        "C06",
+        "C00"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-047",
+          "shot_id": "S30-24",
+          "chapter_id": "help",
+          "zh": "下面讲的是普通电脑军队之间的求援路径。先给赤河这支军队一个明确的起点：此前没有求援，本次计算得到的强度比假设为零点六五；我们的灯只用来显示请求状态。",
+          "en": "We are now discussing the ordinary help-request path between AI armies. Give this Redriver army a clear starting state: it was not previously asking for help, and its ratio at this evaluation is hypothetically zero point six five. Our light displays only the request state."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-048",
+          "shot_id": "S30-24",
+          "chapter_id": "help",
+          "zh": "未求援时，要严格低于零点六六，才会开始求援。零点六五满足这条条件，所以灯亮起来；先别让另一支军队立刻冲过来，请求已经提出和援军已经行动，是两件不同的事。",
+          "en": "When it is not already asking, the ratio must be strictly below zero point six six to begin. Zero point six five meets that condition, so the light turns on. Do not send another army charging over yet: making a request and a helper taking action are different events."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-049",
+          "shot_id": "S30-25",
+          "chapter_id": "help",
+          "zh": "接下来只换一个数字，强度比回升到零点七零。你觉得灯会不会熄灭？如果只记住刚才的零点六六，很容易说它已经不需要帮助了，但我们还少看了一项输入。",
+          "en": "Now change only the number: the ratio rises to zero point seven zero. Do you think the light will go out? Remembering only the earlier zero point six six makes it tempting to say help is no longer needed, but one input has been overlooked."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-050",
+          "shot_id": "S30-25",
+          "chapter_id": "help",
+          "zh": "这次计算之前，它已经在求援。对这个状态，继续求援的条件是严格低于零点七五，因此零点七零仍然让灯保持亮着；开始用一道门，继续用另一道门，正是这里的区别。",
+          "en": "Before this evaluation, it was already asking for help. For that state, continuing requires a ratio strictly below zero point seven five. Zero point seven zero therefore keeps the light on. Starting uses one threshold and continuing uses another."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-051",
+          "shot_id": "S30-26",
+          "chapter_id": "help",
+          "zh": "现在把零点七零复制成两张卡。一边此前没有求援，就去检查是否低于零点六六，条件不满足；另一边此前已经求援，就检查是否低于零点七五，条件满足，所以两边的灯不同。",
+          "en": "Now duplicate zero point seven zero onto two cards. One was not previously asking, so it checks whether the value is below zero point six six: the condition is not met. The other was already asking, so it checks against zero point seven five: the condition is met. The lights therefore differ."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-052",
+          "shot_id": "S30-26",
+          "chapter_id": "help",
+          "zh": "你并没有看错数值，程序也没有在这里自相矛盾。改变的是此前状态，所以只截下一帧比值，不能重建这一格的答案；要解释它为什么还在求援，必须把它原来是否已经求援一起带回来。",
+          "en": "You have not misread the value, and the program is not contradicting itself here. The prior state differs. Capturing a ratio alone cannot reconstruct the answer in this panel. To explain why a request continues, we must also recover whether it was already active."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-053",
+          "shot_id": "S30-27",
+          "chapter_id": "help",
+          "zh": "最后回到已求援的那条轨道，把本次比值换成零点七六。它不再低于零点七五，继续条件不成立，于是求援灯熄灭；开始、维持和退出，这个小例子就走完整了。",
+          "en": "Finally, return to the track that was already asking and change the current ratio to zero point seven six. It is no longer below zero point seven five, so the continuation condition fails and the light goes out. Our example now covers starting, maintaining, and stopping the request."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-054",
+          "shot_id": "S30-27",
+          "chapter_id": "help",
+          "zh": "零点六五、零点七零、零点七六，是三次假设求值的逻辑顺序，不是我们拍到的连续三天。完整日历调度还存在缺口，因此画面只连状态箭头，不给它偷偷加上每天刷新的时间表。",
+          "en": "Zero point six five, zero point seven zero, and zero point seven six form a logical sequence of hypothetical evaluations, not three consecutive days we recorded. The full calendar scheduling remains unresolved, so the diagram connects states without quietly assigning a daily refresh schedule."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C06",
+          "statement_zh": "普通 AI 未求援时 ratio <0.66 才开始，已求援时 ratio <0.75 继续；提出请求与匹配助手是不同步骤。"
+        },
+        {
+          "id": "C00",
+          "statement_zh": "赤河、蓝岭、教学地图、候选分数及求援数列都是说明机制的假设示例。"
+        }
+      ],
+      "disposition": "retain-r2-correction",
+      "confirmation": "static-confirmed-with-authored-example",
+      "proposed_safe_narration_zh": "普通 AI 求援有两条线：此前没有求援，强度比低于零点六六才开始；此前已经求援，低于零点七五就继续。同样是零点七零，一边此前没求援，灯不亮；另一边此前已求援，灯继续亮。零点七六会停止。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md",
+          "lines": [
+            216,
+            230
+          ],
+          "source_sha256": "fbda3c016bf874bbb5a9971e38e27fe4064d5f5ef751c1966dfa4626d9ebb6fa",
+          "range_text_sha256_utf8_lf": "183cb9724538fcf6eebb451741a83941d85163e71e52f1e23aef12d622dc4990",
+          "first_line": "### 精确滞回与 demand field",
+          "last_line": "`request_power_basis_raw=null`；不得发布一个看似当前、实则 stale 的正值。",
+          "supports": "prior bit选择严格阈值、状态更新和stale demand边界"
+        },
+        {
+          "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md",
+          "lines": [
+            232,
+            248
+          ],
+          "source_sha256": "fbda3c016bf874bbb5a9971e38e27fe4064d5f5ef751c1966dfa4626d9ebb6fa",
+          "range_text_sha256_utf8_lf": "9e61f6eb1c68d0e2194ce478bca97a6a778ebe7de401bd9e9043027051ad6534",
+          "first_line": "## 重算 cadence 与同一 manager pass 的先后",
+          "last_line": "  coordinator update invocation 提交 move command。",
+          "supports": "两遍stored-order与cadence边界"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W4",
+        "claim_specific_before": [
+          "同requester先前asking、有效ratio与parent资格"
+        ],
+        "claim_specific_after": [
+          "newasking/changebit；三状态必须逐次真实触发才称连续样本"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "保留 r2 N30-051“一边/另一边”与无歧义否定，不恢复“答案是否”。",
+        "0.65/0.70/0.76是教学逻辑点，不是已拍三天。",
+        "ratio不是求援概率。"
+      ],
+      "visual_zh": "真实求援状态跟随绑定数据点；机制示意对照上下两张.70卡，双方都是同侧部队。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W4-02",
+      "work_package": "W4",
+      "title_zh": "提出请求、匹配与实际到场分层",
+      "old_claim_ids": [
+        "C06"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-055",
+          "shot_id": "S30-28",
+          "chapter_id": "help",
+          "zh": "求援灯亮了，接下来还有匹配。已经分析的普通链会按已有存储顺序寻找符合条件的请求者；这一步没有把所有对象重新排成最短到达时间排行榜，所以不能只凭地图上谁近，就替它宣布谁会被选中。",
+          "en": "Once the request light is on, matching still remains. The ordinary chain studied here searches for qualifying requesters in stored order. This step does not rerank them all by shortest arrival time, so proximity on the map alone cannot tell us which one will be selected."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-056",
+          "shot_id": "S30-28",
+          "chapter_id": "help",
+          "zh": "帮助目标绑定的是请求者当时所在的省份，我们用便签贴住那个位置。不过，局部匹配没有按最短到达时间排序，不代表更早的所有步骤从来不看距离；更不等于已经承诺未来的到达和参战结果。",
+          "en": "The help target is bound to the province the requester occupied at that moment, which we mark with a note. But the absence of shortest-arrival-time sorting in this local matching step does not mean every earlier step ignores distance. Nor does it guarantee a future arrival or battle outcome."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C06",
+          "statement_zh": "普通 AI 未求援时 ratio <0.66 才开始，已求援时 ratio <0.75 继续；提出请求与匹配助手是不同步骤。"
+        }
+      ],
+      "disposition": "retain-expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "请求亮灯后，还要在候选顺序和资格条件中匹配助手。已经追到的这段不是按最短到达时间给所有友军排名；指派写的是请求方当时所在的省。被指派、开始走和真的加入原来那场战斗，是三个需要继续核对的结果。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md",
+          "lines": [
+            264,
+            280
+          ],
+          "source_sha256": "fbda3c016bf874bbb5a9971e38e27fe4064d5f5ef751c1966dfa4626d9ebb6fa",
+          "range_text_sha256_utf8_lf": "416f7428041f616a58a6e480f0ef7b95af47034ea0efe996e6920da5306b40f5",
+          "first_line": "### 同一个 `CAIUnitStack`：`0x1848310`",
+          "last_line": "assignment 没有保存 requester identity。",
+          "supports": "同parent请求者与助手stored order、当前省目标"
+        },
+        {
+          "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md",
+          "lines": [
+            297,
+            301
+          ],
+          "source_sha256": "fbda3c016bf874bbb5a9971e38e27fe4064d5f5ef751c1966dfa4626d9ebb6fa",
+          "range_text_sha256_utf8_lf": "3f5b8d4d4df91453fb5d53ef09552f2d0bd52689ae74d01e9219c2f73af102a9",
+          "first_line": "6. [static-confirmed] 第一个通过者立即返回。未见 ETA、route distance、CombatID、objective score、request age",
+          "last_line": "stored order 排除 requester、busy、asking 与 already-same-target；其余写 bit1 与 `+0x48`。",
+          "supports": "跨parent首个合格请求者及写目标"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md",
+          "lines": [
+            101,
+            121
+          ],
+          "source_sha256": "eae2e665484d325b070eb4f3fab9e4f8c7b477eba278f0cc57bba6fc17544b3c",
+          "range_text_sha256_utf8_lf": "e0c5326167e26eb433ae8f92bd2ce353224bcccfe4b1b5108c52c45ea08547d9",
+          "first_line": "## 下一次 assignment → ETA → 同 CombatID join 最少还要什么",
+          "last_line": "不把日级暂停帧自动升级为全引擎精确调度顺序。",
+          "supports": "asking→assignment→ETA→同CombatID连续合同"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W4",
+        "claim_specific_before": [
+          "requester当前省、候选顺序、助手资格和原CombatID"
+        ],
+        "claim_specific_after": [
+          "assignment→有效route/ETA→同侧roster与同CombatID"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "该helper未按ETA排名，不代表所有上游不看距离和时间。",
+        "目标没有保存请求者identity，不能保证未来一直跟随其移动。",
+        "箭头只从红方助手指向红方请求者，不向蓝色对手画求援。"
+      ],
+      "visual_zh": "实机先显示求援者，再明确同侧助手，最后用同CombatID和实际交战画面闭合。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W4-03",
+      "work_package": "W4",
+      "title_zh": "跨 stack 比较方向的研究勘误",
+      "old_claim_ids": [
+        "C06"
+      ],
+      "old_wording": [],
+      "old_claim_statements": [
+        {
+          "id": "C06",
+          "statement_zh": "普通 AI 未求援时 ratio <0.66 才开始，已求援时 ratio <0.75 继续；提出请求与匹配助手是不同步骤。"
+        }
+      ],
+      "disposition": "new-subclaim-corrects-old-research-not-old-spoken-line",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "跨军团匹配还有一项容易读反的比较：这条路径比较量化后的需求与请求方所属军团的可用力量，前者大于或等于后者才返回这名候选。它不是要求助手的兵力超过需求的一点五倍。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md",
+          "lines": [
+            10,
+            40
+          ],
+          "source_sha256": "eae2e665484d325b070eb4f3fab9e4f8c7b477eba278f0cc57bba6fc17544b3c",
+          "range_text_sha256_utf8_lf": "d9275ec2d6358206847757dd492712f9cd2ecf8b87cce82e15cb962543dcc386",
+          "first_line": "## 首先更正：跨 stack 需求比较的方向与等号",
+          "last_line": "完整原始控制流见冻结证据 `cross-stack-gate`，包含比较、两条分支和返回尾部。",
+          "supports": "18488A2 cmp及jge；required>=requesteravailable；1.5/1.7与asking分离"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W4",
+        "claim_specific_before": [
+          "requesterparent available、demand、selected multiplier、量化结果"
+        ],
+        "claim_specific_after": [
+          "准确比较和候选返回/跳过"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "旧旁白 N30-055/056 没有朗读错误不等式，不能说观众听过这句错话。",
+        "1.5/1.7不是助手到达概率，也不是.66/.75请求阈值。",
+        "可放配套来源，不必为补研究勘误增加整段技术口播。"
+      ],
+      "visual_zh": "若有真实比较样本，只列比较两侧的角色标签；否则用150对149/150/151静态例子并明确非实测。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W4-04",
+      "work_package": "W4",
+      "title_zh": "玩家支援消费者已有局部答案",
+      "old_claim_ids": [
+        "C07"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-057",
+          "shot_id": "S30-29",
+          "chapter_id": "help",
+          "zh": "这时你大概会想到自己的盟友：我在前面打，它为什么站着不动？这个问题很自然，但刚才讲的是普通电脑军队之间的求援，不能把这套阈值直接套到电脑支援玩家军队的所有情境。",
+          "en": "You may now think of your own ally: why does it stand still while you fight ahead? It is a natural question, but the path we just described concerns ordinary help between AI armies. Its thresholds cannot be applied to every situation in which the AI supports a player's army."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-058",
+          "shot_id": "S30-29",
+          "chapter_id": "help",
+          "zh": "玩家支援有专用路径，其中的设置怎样被原生程序使用，以及部分更早的筛选，还没有闭合。因此我们既不能说盟友故意不救人，也不能说这种支援规则根本不存在；图上的虚线，表示的是目前还缺证据的部分。",
+          "en": "Player support has a dedicated path, but how its settings are used by the native program, along with some earlier filtering, remains unresolved. We can therefore claim neither that an ally deliberately refuses to help nor that such support rules do not exist. The dashed line marks where evidence is still missing."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-088",
+          "shot_id": "S30-44",
+          "chapter_id": "epilogue",
+          "zh": "玩家支援和一般战争电脑的主动撤退，仍有开放问题。把这些空白留下来，已有结论才不会被讲成万能答案，也方便下一次研究清楚之后，准确接回这张图。",
+          "en": "Player support and ordinary war AI's voluntary retreat policy still contain open questions. Leaving those gaps visible keeps established findings from becoming universal answers and makes it easier to connect future research back to the diagram accurately."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C07",
+          "statement_zh": "玩家支援专用路径的 consumer 和部分上游候选过滤尚未闭合，普通求援链不能回答全部玩家盟友行为。"
+        }
+      ],
+      "disposition": "rewrite-partial-unknown",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "玩家支援确实另有路径。现在已经追到其中若干参数怎样被使用，包括距离、时间差和特定供给判断；所以不能再说这些设置完全找不到消费者。但候选从哪里来、跨协调组怎样产生完整信号，以及一次具体支援为何发生，仍不能由普通 AI 求援链包办。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md",
+          "lines": [
+            42,
+            64
+          ],
+          "source_sha256": "eae2e665484d325b070eb4f3fab9e4f8c7b477eba278f0cc57bba6fc17544b3c",
+          "range_text_sha256_utf8_lf": "304f2a6a14a08edf839a96352d9af3e2279a72f3a0ed37751c64d54f62d07316",
+          "first_line": "## 这次新增的 PLAYER_SUPPORT 消费边",
+          "last_line": "当前没有证据把上述玩家支援记录直接等同于这两个字段，也不能因此宣称普通 AI asking 可以由玩家控制军队触发。",
+          "supports": "六项PLAYER_SUPPORT消费边与原始量范围"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W4",
+        "claim_specific_before": [
+          "明确玩家支援路径、实际目标/距离量、时间base与相关标志"
+        ],
+        "claim_specific_after": [
+          "每个适用gate及后续候选/指派；不得借普通asking样本代验"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "5.0不是胜率；400不是公里/ETA；45不是从现在开始必在45天内到；4步不是任何时候免供给。",
+        "不据此承诺玩家盟友全策略已解释。",
+        "为当前主线只讲有答案的一小段，其余缺口不作为五分钟悬念。"
+      ],
+      "visual_zh": "先显示玩家与AI身份，再选一条有实际对照的玩家支援子条件；缺样本则只短述新增静态边，不编自然盟友故事。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W4-05",
+      "work_package": "W4",
+      "title_zh": "求援因果样本必须满足 parent 结构",
+      "old_claim_ids": [
+        "C06",
+        "C10"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-085",
+          "shot_id": "S30-43",
+          "chapter_id": "epilogue",
+          "zh": "但是，规则有依据，和某个自然个案已经解释完，仍然隔着一步。把零点七零的两张卡拿回来：不知道此前是否已经求援，即使当前比值相同，我们也不能只凭这一项替现场下结论。",
+          "en": "A supported rule is still one step short of a fully explained natural case. Bring back the two zero point seven zero cards. Without knowing whether a request was already active, the same current ratio alone cannot establish what happened in the observed situation."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-086",
+          "shot_id": "S30-43",
+          "chapter_id": "epilogue",
+          "zh": "要解释那一次，得有对应的当前读数、此前状态和主体身份，再把它们与实际经过对上。这也是为什么片中的教学灯可以完整走一遍，旁边仍然可以诚实保留一格，写着尚未取得连续实机证据。",
+          "en": "Explaining that instance requires the matching current reading, prior state, and subject identity, aligned with the observed sequence. That is why the teaching light can complete its full example while a neighboring box still honestly says that continuous live evidence has not been obtained."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C06",
+          "statement_zh": "普通 AI 未求援时 ratio <0.66 才开始，已求援时 ratio <0.75 继续；提出请求与匹配助手是不同步骤。"
+        },
+        {
+          "id": "C10",
+          "statement_zh": "本期只讲 CK3 1.19.0.6 的有界研究；文档成熟度百分比不代表全部原生分支或自然实机覆盖率。"
+        }
+      ],
+      "disposition": "expand-method",
+      "confirmation": "static-confirmed-precondition-no-live",
+      "proposed_safe_narration_zh": "验证这条规则，不能只摆两支看上去并肩的军队。请求者要处在原生要求的多子单位结构中，还要另外追踪助手、路线和同一场战斗。否则即使等了很多天没有求援，也不能反过来证明规则不会触发。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md",
+          "lines": [
+            66,
+            99
+          ],
+          "source_sha256": "eae2e665484d325b070eb4f3fab9e4f8c7b477eba278f0cc57bba6fc17544b3c",
+          "range_text_sha256_utf8_lf": "2ff79c2f89174cc20fc70820ae066144eadc25db8e322a932a39989a249976c0",
+          "first_line": "## 为什么旧两军实验无效，新实验如何先过结构门槛",
+          "last_line": "合成测试固定标为 `synthetic-offline-test`。没有新 source save 已被本包证明满足这些条件。",
+          "supports": "旧singleton无效、三CUnit仍须同parent不同subunit结构"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md",
+          "lines": [
+            101,
+            121
+          ],
+          "source_sha256": "eae2e665484d325b070eb4f3fab9e4f8c7b477eba278f0cc57bba6fc17544b3c",
+          "range_text_sha256_utf8_lf": "e0c5326167e26eb433ae8f92bd2ce353224bcccfe4b1b5108c52c45ea08547d9",
+          "first_line": "## 下一次 assignment → ETA → 同 CombatID join 最少还要什么",
+          "last_line": "不把日级暂停帧自动升级为全引擎精确调度顺序。",
+          "supports": "完整有界live合同"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W4",
+        "claim_specific_before": [
+          "A/B同parent不同subunit且count>1，H独立parent、身份有效"
+        ],
+        "claim_specific_after": [
+          "真实producer新tick以及后续链；无结果有具体gate原因"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "旧31暂停帧/30天失败记录保留，不升级为自然零概率。",
+        "三支CUnit数量本身不足以保证有效夹具。",
+        "本包未运行这个实验。"
+      ],
+      "visual_zh": "用于配套研究方法或取材说明；主体画面展示有效阵列关系，避免用工程测试日志填时。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W5-01",
+      "work_package": "W5",
+      "title_zh": "撤退择时的主问题仍须删减",
+      "old_claim_ids": [
+        "C08"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-063",
+          "shot_id": "S30-32",
+          "chapter_id": "battle-end",
+          "zh": "把画面倒回战斗还没结束的时候：电脑为什么不早点撤？这里必须把资格、执行和决策分开；知道满足哪些条件可以撤退，不等于知道普通战争电脑什么时候会决定这样做。",
+          "en": "Rewind to when the battle was still underway: why did the AI not retreat sooner? Here we must separate eligibility, execution, and decision-making. Knowing the conditions that permit a retreat does not tell us when ordinary war AI chooses to take it."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-064",
+          "shot_id": "S30-32",
+          "chapter_id": "battle-end",
+          "zh": "即使已经观察到玩家撤退命令成功，也只能证明那条操作在对应条件下成立。一般战争电脑的主动撤退择时和目的地策略，仍有缺口；前面讲过的接战前改线，不能拿来填这个空。",
+          "en": "Even observing a successful player retreat command establishes only that the operation worked under its corresponding conditions. Gaps remain in ordinary war AI's voluntary retreat timing and destination policy. The pre-contact rerouting discussed earlier cannot fill that gap."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-088",
+          "shot_id": "S30-44",
+          "chapter_id": "epilogue",
+          "zh": "玩家支援和一般战争电脑的主动撤退，仍有开放问题。把这些空白留下来，已有结论才不会被讲成万能答案，也方便下一次研究清楚之后，准确接回这张图。",
+          "en": "Player support and ordinary war AI's voluntary retreat policy still contain open questions. Leaving those gaps visible keeps established findings from becoming universal answers and makes it easier to connect future research back to the diagram accurately."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C08",
+          "statement_zh": "接战前重新布置和战斗中主动撤退是两个问题；撤退资格与执行路径不等于普通战争 AI 完整撤退策略。"
+        }
+      ],
+      "disposition": "omit-unclosed-policy-promise-retain-boundary",
+      "confirmation": "documented-open-question",
+      "proposed_safe_narration_zh": "接战前改目标，与已经打起来之后主动撤退，是不同的决定。撤退资格和执行方式已有一些答案；普通战争 AI 何时选择战中撤退、把目的地选在哪里，本期仍不能给出完整策略。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-retreat-score-direction-2026-09-23.md",
+          "lines": [
+            20,
+            22
+          ],
+          "source_sha256": "fb1752f32a84bf7fe2ce4e2ef88f57f095d91613800c4b8bfcb6681755764f1f",
+          "range_text_sha256_utf8_lf": "41117f147953bbe1cc1956ae63857459e2ee5adf20bef56249c65fe22191fbcb",
+          "first_line": "4. **[unknown] 普通战争的战中主动撤退 policy 仍未闭合。**",
+          "last_line": "   分流聚合输入，未形成 odds → 选择撤退 → 命令结果链。不能把它包装成新发现的撤退策略。",
+          "supports": "普通war主动撤退未闭合"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-retreat-score-direction-2026-09-23.md",
+          "lines": [
+            131,
+            151
+          ],
+          "source_sha256": "fb1752f32a84bf7fe2ce4e2ef88f57f095d91613800c4b8bfcb6681755764f1f",
+          "range_text_sha256_utf8_lf": "6d309a0b5276663706d973ae9d1e68950fce5101ffa81c323124a058206f3465",
+          "first_line": "## 4. 一次有界的 active-combat 上游补查",
+          "last_line": "恢复新的策略 caller；不能用本包的 cache 分类冒充该 caller，也不能据此宣称 AI 永不主动撤退。",
+          "supports": "cache聚合不是odds→retreat策略；mode也不是retreat"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md",
+          "lines": [
+            30,
+            33
+          ],
+          "source_sha256": "c36f7eda5113fa046ea608bc8c3cc13351785abc163255ddab9efb96c4a62db8",
+          "range_text_sha256_utf8_lf": "de9709c8161c52dd2b916acd14284f26aa525af70a1736ce0d6414889786b2dd",
+          "first_line": "每个准备进入新旁白的机制必须说明：谁决策、何时触发、读取什么输入、过滤/评分/比较如何发生、选中什么动作、产生什么结果。",
+          "last_line": "测试通过或 schema 完整不等于语义闭合；单场实机出现某结果也不能证明全部分支。",
+          "supports": "核心因果需真实树与案例，不能用按钮替代"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W5",
+        "claim_specific_before": [
+          "未找到生产policy时不假定可采完整决定"
+        ],
+        "claim_specific_after": [
+          "仅保留已观察的资格/动作结果标签，不归因普通AI决定"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不标题承诺“AI何时决定撤退已破解”。",
+        "不说第15天资格满足就是第15天会撤退。",
+        "不说没有caller所以AI从不撤退。",
+        "压缩到30–60秒边界过渡，不能用长段未知撑20–40分钟。"
+      ],
+      "visual_zh": "未接战/已接战两格短对照；实机撤退只能按实际发令主体标“玩家操作”或确有证据的NPC，不偷换。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W5-02",
+      "work_package": "W5",
+      "title_zh": "已知路线取消与特殊任务返程不是通用逃跑策略",
+      "old_claim_ids": [
+        "C08"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-045",
+          "shot_id": "S30-23",
+          "chapter_id": "movement",
+          "zh": "再看这两格：左边尚未接战，军队可以面对重新布置的问题；右边已经处在战斗中，我们问的却是它何时决定主动撤退。两个画面都可能看起来像往后走，程序里问的却不是同一件事。",
+          "en": "Compare these two panels. On the left, contact has not begun and the army faces a repositioning question. On the right, it is already in battle and we are asking when it decides to retreat voluntarily. Both may look like moving backward, but they are different questions in the program."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-046",
+          "shot_id": "S30-23",
+          "chapter_id": "movement",
+          "zh": "接战前的低强度比判断，不能自动回答战斗中的撤退择时与目的地策略。这个空白先留在图上，我们继续看一条更适合做明确条件对照的链：军队什么时候开始请求帮助。",
+          "en": "A low-ratio assessment before contact does not automatically explain retreat timing or destination choices during a battle. Leave that gap visible. Next, we can examine a chain suited to a clear conditional comparison: when an army begins asking for help."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-063",
+          "shot_id": "S30-32",
+          "chapter_id": "battle-end",
+          "zh": "把画面倒回战斗还没结束的时候：电脑为什么不早点撤？这里必须把资格、执行和决策分开；知道满足哪些条件可以撤退，不等于知道普通战争电脑什么时候会决定这样做。",
+          "en": "Rewind to when the battle was still underway: why did the AI not retreat sooner? Here we must separate eligibility, execution, and decision-making. Knowing the conditions that permit a retreat does not tell us when ordinary war AI chooses to take it."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-064",
+          "shot_id": "S30-32",
+          "chapter_id": "battle-end",
+          "zh": "即使已经观察到玩家撤退命令成功，也只能证明那条操作在对应条件下成立。一般战争电脑的主动撤退择时和目的地策略，仍有缺口；前面讲过的接战前改线，不能拿来填这个空。",
+          "en": "Even observing a successful player retreat command establishes only that the operation worked under its corresponding conditions. Gaps remain in ordinary war AI's voluntary retreat timing and destination policy. The pre-contact rerouting discussed earlier cannot fill that gap."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C08",
+          "statement_zh": "接战前重新布置和战斗中主动撤退是两个问题；撤退资格与执行路径不等于普通战争 AI 完整撤退策略。"
+        }
+      ],
+      "disposition": "narrow-special-subclaims",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "研究里找到的路线取消，并不都意味着打不过就逃。有一条属于同省军团合并；另一些属于劫掠或交易任务的返程。它们能解释各自的任务流程，却不能当作普通战争战中撤退的统一答案。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-retreat-callers-2026-09-23.md",
+          "lines": [
+            19,
+            50
+          ],
+          "source_sha256": "e4e5faca8df8063fe9a657cbb3c60fc36d77dc0f0fecf9bfc2cf9415788acac5",
+          "range_text_sha256_utf8_lf": "f8506a0be7d840b9dc42935c5615eb343f83aaed6fdd56ac29479bb6ad357e54",
+          "first_line": "## 0x184818D：同省栈合并之前的路线取消",
+          "last_line": "仅凭它能提交通用 movement，不能把这次 stack merge 解释成已闭合的主动撤退 policy。",
+          "supports": "同省stack merge取消旧route并迁成员"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-retreat-callers-2026-09-23.md",
+          "lines": [
+            52,
+            73
+          ],
+          "source_sha256": "e4e5faca8df8063fe9a657cbb3c60fc36d77dc0f0fecf9bfc2cf9415788acac5",
+          "range_text_sha256_utf8_lf": "feee2863ea42c25a29d0ad93e0f992820547b21c61d3c8729b2f4586cd121084",
+          "first_line": "## 0x18793B0：四条来源的完整业务边界",
+          "last_line": "清理分支没有这个 gate，只说明存在不同的静态可达路径；能否合法撤退、命令是否应用、具体战斗后果仍须逐层取证。",
+          "supports": "raid/barter主路径排除active，清理分支另有边界"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W5",
+        "claim_specific_before": [
+          "准确任务/stackmerge分支与同省/activecombat状态"
+        ],
+        "claim_specific_after": [
+          "仅本分支取消路线/成员迁移/返程结果"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "下层builder允许retreat不证明上层会在activecombat调用它。",
+        "counterraid没有被本包否定，directcaller扫描也不穷尽间接路径。",
+        "适合作为短纠偏或配套文，不建议撑成独立撤退章。"
+      ],
+      "visual_zh": "用一对任务标签解释混淆，撤退资格与普通policy的虚线停在证据边界。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W6-01",
+      "work_package": "W6",
+      "title_zh": "战斗条目只是战争战分的一部分",
+      "old_claim_ids": [
+        "C09"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-059",
+          "shot_id": "S30-30",
+          "chapter_id": "battle-end",
+          "zh": "让教学地图上的一场战斗正常结束。我们从结果中取出一张单场记录，但先不往任何战争里乱放；需要确认它对应的是哪场活动战争，才能把这张票据送到正确的账册。",
+          "en": "Let a battle on our teaching map end normally. We take out a single-battle record, but do not place it into just any war. First identify the corresponding active war, so the record can enter the correct ledger."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-060",
+          "shot_id": "S30-30",
+          "chapter_id": "battle-end",
+          "zh": "在已经分析的正常结算路径上，单场战斗记录可以写入所属活动战争的战斗分部分。这里保留正常结算和对应战争两个条件，是为了避免把任意一场战斗结束，都说成同一笔战分增加。",
+          "en": "On the normal finalization path studied here, a battle record can be written into the battle-score component of its corresponding active war. Keeping both conditions visible prevents us from treating every battle ending as the same addition to war score."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-061",
+          "shot_id": "S30-31",
+          "chapter_id": "battle-end",
+          "zh": "再把镜头拉远。这张票据只占战斗贡献的一部分，而战斗贡献又只是战争战分的一部分；单场结果、战斗分栏和战争总分，是三个需要分别读的层次。",
+          "en": "Now pull the camera back. This record is one part of the battle contribution, and the battle contribution is itself only part of war score. A single battle result, the battle-score component, and total war score are three distinct levels to read."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-065",
+          "shot_id": "S30-33",
+          "chapter_id": "battle-end",
+          "zh": "把军队这一路的牌收起来。我们一路看过几个不同层次的问题，现在让注意力从军旗移到领主面前；下一封和平信要不要发出，不能只看刚才那条行军箭头，就替它作答。",
+          "en": "Gather the army's cards. We have examined questions at several different levels; now shift attention from the army's flag to the ruler's desk. The previous movement arrow alone cannot tell us whether the next peace letter should be sent."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-066",
+          "shot_id": "S30-33",
+          "chapter_id": "battle-end",
+          "zh": "现在镜头回到领主的桌前。军队仍在地图上，城堡也没有消失，但和平信已经摆在面前；还有多少兵，并不能单独决定是否主动开口，或者收到白和提议以后愿不愿意接受。",
+          "en": "Now return to the ruler's desk. Armies remain on the map and the castles are still there, yet a peace letter lies before us. The number of troops alone does not determine whether to initiate a proposal or accept an offer of white peace."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C09",
+          "statement_zh": "正常战斗结算可把单场 battle-score row 写入所属活动战争，战斗战分只是战争战分的一部分。"
+        }
+      ],
+      "disposition": "retain",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "正常结算会把这场战斗的条目记入相关的活动战争。单场条目、累计战斗贡献和整场战争总分，是三层不同的账；赢下一仗，并不自动替整场战争作出结束决定。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/battle-terminal-and-reentry.md",
+          "lines": [
+            195,
+            285
+          ],
+          "source_sha256": "d00079ca0be34db0dafc585126894aa292d8849a7bdd6f6ed4761547f2cd81f5",
+          "range_text_sha256_utf8_lf": "b9624ec6fb941ec7f66fe7926f7d7e5f78fc82d70919d5a448d94b1c9b8e3e0a",
+          "first_line": "- barter：`0x2505FFE [rbx+0x50] -> 0x2506002 +0x1840 -> 0x250600F name -> 0x2506016 call 0x7E9530`；运行时 `0x2935216 module+0x57C0F10 -> singleton+0x38 -> 0x2935267 +0x610 -> 0x2935389 call 0x33F8350`。",
+          "last_line": "[static-confirmed] `0x184D960..0x184DFD6` 是 AI war snapshot/projection builder，由 coordinator 初始化的 `0x188568E` 与 lifecycle `0x185520E` 调用。其中：",
+          "supports": "CWar battle row writer、单场与累计cap"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md",
+          "lines": [
+            22,
+            33
+          ],
+          "source_sha256": "845a9297c3a4d5034afdb769e39dad1afead56317c8cbe8dc2b37b41c5e78b2e",
+          "range_text_sha256_utf8_lf": "30a7e8c371ddd402e4514a8b309cacf42d0b323d1f507e4ae414f2cb89c230d5",
+          "first_line": "## 从单场结果追到八桶",
+          "last_line": "累计战斗分数与总战争分数仍是后续独立步骤。",
+          "supports": "败方loss和数量分母到单场结果，累计另算"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W6",
+        "claim_specific_before": [
+          "活动War与Combat关联、终局前score"
+        ],
+        "claim_specific_after": [
+          "对应row、累计battle与total分别变化"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "必须核对对应战争与结果方向，不能把结果弹窗单数当全部total。",
+        "没有新实机结算录像已绑定。"
+      ],
+      "visual_zh": "真实战斗结果收起后，战争战分tooltip逐项高亮单场与累计，其他分项保留。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W6-02",
+      "work_package": "W6",
+      "title_zh": "单场分母来自败方战争参战者",
+      "old_claim_ids": [
+        "C09"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-062",
+          "shot_id": "S30-31",
+          "chapter_id": "battle-end",
+          "zh": "因此，不能看到结果窗口里的一个数字，就把它当成整个战争的答案，也不能随手用当前存活人数去补齐还没完整命名的公式。我们的图只说明这笔记录放在哪里，不捏造整张战争账已经算清。",
+          "en": "A number in the result window is therefore not the answer for the whole war. Nor can current surviving troop counts be inserted into formula terms that have not been fully identified. Our diagram shows where the record belongs; it does not pretend the entire war ledger has been reconstructed."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C09",
+          "statement_zh": "正常战斗结算可把单场 battle-score row 写入所属活动战争，战斗战分只是战争战分的一部分。"
+        }
+      ],
+      "disposition": "replace-partial-unknown",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "这笔战斗分也不是拿本场消灭的人数，直接除以眼前剩下的敌军。分母来自败方战争参战者的角色军事汇总，八类数量相加并至少取一；程序再把本场败方损失的比例封顶，乘实际战争类型系数，并经过单场上限。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md",
+          "lines": [
+            9,
+            20
+          ],
+          "source_sha256": "845a9297c3a4d5034afdb769e39dad1afead56317c8cbe8dc2b37b41c5e78b2e",
+          "range_text_sha256_utf8_lf": "f783634fd2b08f87a2d5892b68cad3b3f5b26251cdac87887d9057dfd80827cb",
+          "first_line": "## 可用的结论",
+          "last_line": "下文分别列出；本包不能作为影片实机案例已经拍好的证明。",
+          "supports": "八桶来自败方warparticipants，不是本战当前人数或power"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md",
+          "lines": [
+            24,
+            33
+          ],
+          "source_sha256": "845a9297c3a4d5034afdb769e39dad1afead56317c8cbe8dc2b37b41c5e78b2e",
+          "range_text_sha256_utf8_lf": "c07a2283468d914f9348c861c19c1c38c7d54b9102cfc9188e4372367c1f45b0",
+          "first_line": "`0x25BBE70` 先用 `0x23CDD90` 取得本场败方的 hard-loss raw，然后按照胜方属于战争哪一侧，",
+          "last_line": "累计战斗分数与总战争分数仍是后续独立步骤。",
+          "supports": "loss、max(sum,1)、比例cap、CBscale和singlecap"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W6",
+        "claim_specific_before": [
+          "同败方participant列表、hardloss、八桶、CBscale"
+        ],
+        "claim_specific_after": [
+          "原生定点算式与raw row逐项一致"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "本场败方hard-loss不随意换成全部阶段伤亡。",
+        "参与者不是仅此战场上列出的军队。",
+        "不得绕过cap和特殊CB条件给万能一行百分比公式。"
+      ],
+      "visual_zh": "先拉开真实战争参与者面板，再回到本场结果；分母范围用括线说明，少念数字。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W6-03",
+      "work_package": "W6",
+      "title_zh": "八桶既不全是当前人数，也不全是补满人数",
+      "old_claim_ids": [
+        "C09"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-062",
+          "shot_id": "S30-31",
+          "chapter_id": "battle-end",
+          "zh": "因此，不能看到结果窗口里的一个数字，就把它当成整个战争的答案，也不能随手用当前存活人数去补齐还没完整命名的公式。我们的图只说明这笔记录放在哪里，不捏造整张战争账已经算清。",
+          "en": "A number in the result window is therefore not the answer for the whole war. Nor can current surviving troop counts be inserted into formula terms that have not been fully identified. Our diagram shows where the record belongs; it does not pretend the entire war ledger has been reconstructed."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C09",
+          "statement_zh": "正常战斗结算可把单场 battle-score row 写入所属活动战争，战斗战分只是战争战分的一部分。"
+        }
+      ],
+      "disposition": "expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "这八类数量也不是同一种补员口径。征召兵和兵士使用原生最大数量侧；特殊部队、骑士和游牧换算兵力有自己的规则。因此“眼前还活着多少人”和“所有人补满后有多少人”，都不能直接替代这份分母。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md",
+          "lines": [
+            47,
+            73
+          ],
+          "source_sha256": "845a9297c3a4d5034afdb769e39dad1afead56317c8cbe8dc2b37b41c5e78b2e",
+          "range_text_sha256_utf8_lf": "e10b31f6181958d65526576f71343ec2b60bb6825fb5a569ce48d54eb0030d66",
+          "first_line": "## 八桶的来源和数量口径",
+          "last_line": "因此 `MAX` 也是原生过滤后的汇总，不是“全国所有人口都可征召”。",
+          "supports": "八类数量来源及MAX/CURRENT正式UI绑定"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md",
+          "lines": [
+            75,
+            102
+          ],
+          "source_sha256": "845a9297c3a4d5034afdb769e39dad1afead56317c8cbe8dc2b37b41c5e78b2e",
+          "range_text_sha256_utf8_lf": "61559ec439de5f91a167dd58c9240842370f4d0d1c2d3b7b917fa6cfdf101f03",
+          "first_line": "### 特殊部队与 kind==1 的 composition 修正",
+          "last_line": "没有声称已经解释畜群系统的全部增长、转换或征募规则。",
+          "supports": "composition、title资格与nomadic换算边界"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W6",
+        "claim_specific_before": [
+          "普通受损与特殊部队案例各桶源数量、kind/state与资格"
+        ],
+        "claim_specific_after": [
+          "同次terminal取值和战分row"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "Title regiment桶没有独立正式UI名称，不称为全部行政或全部盟友。",
+        "骑士数量不是power加权人数。",
+        "kind/state生命周期及各制度资格未全部闭合。"
+      ],
+      "visual_zh": "只比较一组受损常规部队与特殊部队；八桶全表留可暂停资料图，不逐格讲到耗尽节奏。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W7-01",
+      "work_package": "W7",
+      "title_zh": "白和两张账与角色卡",
+      "old_claim_ids": [
+        "C11"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-067",
+          "shot_id": "S30-34",
+          "chapter_id": "peace",
+          "zh": "先把身份卡摆好。在这个教学对照里，赤河是电脑控制的进攻方，蓝岭是电脑控制的防守方；本例让蓝岭考虑提出白和，赤河是接收方，后面沿用这组身份。",
+          "en": "First arrange the identity cards. In this teaching comparison, Redriver is the AI-controlled attacker and Blueridge the AI-controlled defender. Blueridge considers proposing white peace, Redriver receives the proposal, and we retain these roles in the following explanation."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-068",
+          "shot_id": "S30-34",
+          "chapter_id": "peace",
+          "zh": "我们讨论的，还必须是允许白和的相应情形。战争类型、双方身份，以及人质和相关能力等条件，都可能影响该读哪条规则；所以这两本账，不是一套随便换个名字就能套遍所有战争的模板。",
+          "en": "We must also be discussing a situation in which white peace is allowed. War type, the parties' roles, hostages, and relevant abilities can affect which rule applies. These ledgers are not a universal template for every war with the names simply replaced."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-069",
+          "shot_id": "S30-35",
+          "chapter_id": "peace",
+          "zh": "先看左边，主动提出白和的账。它的基础分是零，但零不代表百分之零的概率；这只是后续条件和修正计算的起点，提议还要先经过相关的合法性与候选检查。",
+          "en": "Begin with the left ledger, for proactively proposing white peace. Its base score is zero, but zero does not mean a zero-percent probability. It is a starting point for conditions and modifiers, and the proposal must also pass the relevant legality and candidate checks."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-070",
+          "shot_id": "S30-35",
+          "chapter_id": "peace",
+          "zh": "给蓝岭的主动账看一条具体规则。它是防守方，如果战争至少持续一百八十二天，而且防守方战分不高于十五，就会得到十分的主动倾向。这只是其中一项修正，其它条件还要继续检查，并不表示下一天必定发信。",
+          "en": "Examine one concrete rule in Blueridge's proposal ledger. As the defender, if the war has lasted at least one hundred and eighty-two days and the defender's war score is no higher than fifteen, it receives ten points of proposal willingness. This is only one modifier; other conditions still need checking, and it does not mean a letter must be sent the next day."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-071",
+          "shot_id": "S30-36",
+          "chapter_id": "peace",
+          "zh": "右边是收到白和以后，评估是否接受的另一套账。基础分从负三十开始；这既不是负百分之三十的概率，也不能只读这一项，就断言对方一定拒绝。",
+          "en": "The right ledger is a separate evaluation of whether to accept white peace after receiving it. Its base score starts at minus thirty. That is neither a negative thirty-percent probability nor enough on its own to establish certain rejection."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-072",
+          "shot_id": "S30-36",
+          "chapter_id": "peace",
+          "zh": "这次接收方赤河是进攻方，战分这一项就读对面的防守方战分。赤河越接近输，这一项越会把它往愿意白和的方向推；之后仍有时长等修正，最后怎样比较、何时给出接受结果，还有没弄清的部分。",
+          "en": "With Redriver receiving as the attacker, the war-score term uses the opposing defender's war score. The closer Redriver is to losing, the more this term favors white peace. Duration and other modifiers still follow, while parts of the final comparison and timing remain unresolved."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-075",
+          "shot_id": "S30-38",
+          "chapter_id": "peace",
+          "zh": "回到主案例，别把右上角灰国的压力同时记到两本账上。我们只设定了灰国与蓝岭交战，没有设定赤河也在另一场防御战争里；是否能计入某项其它战争修正，还得逐项对照角色和条件。",
+          "en": "Return to the main example without entering the third country's pressure into both ledgers. We established that the third country is at war with Blueridge; we did not establish that Redriver is also fighting another defensive war. Whether an other-war modifier applies still depends on the specific roles and conditions."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-076",
+          "shot_id": "S30-38",
+          "chapter_id": "peace",
+          "zh": "这时再判断：愿意接受一份提议，是否就等于愿意主动发出它？两条路径的起点、条件与修正本来就不同，所以我们要分别检查；单凭场上还有一支军队，无法替两本账同时作答。",
+          "en": "Now ask again: does being willing to accept a proposal mean being willing to initiate it? The two paths have different starting points, conditions, and modifiers, so they must be examined separately. One army still standing in the field cannot answer both ledgers at once."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-079",
+          "shot_id": "S30-40",
+          "chapter_id": "peace",
+          "zh": "第三个案例可以收起来了。左边问要不要先提出白和，右边问收到白和以后怎样评估；把它们分开，我们就不必因为军队还在场上，就认定谈和平一定与战争状态矛盾。",
+          "en": "We can now close the third case. The left asks whether to initiate white peace; the right evaluates it after receipt. Keeping them separate means we need not assume that discussing peace contradicts the war situation merely because armies remain in the field."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-080",
+          "shot_id": "S30-40",
+          "chapter_id": "peace",
+          "zh": "赤河和蓝岭的地图到这里完成了教学任务。它没有替某场真实战争决定结局，而是把几个容易混在一起的问题拆开：谁在考虑，满足哪些条件，以及正在计算的是哪一份账。",
+          "en": "Redriver and Blueridge's map has now served its teaching purpose. It has not determined the ending of a real war. Instead, it separates questions that are easily conflated: who is considering an action, which conditions apply, and which ledger is being evaluated."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C11",
+          "statement_zh": "主动提出白和与收到白和后的接受度分开计算；主动 ai_will_do base 为 0，ai_accept base 为 -30，二者各有条件与修正。"
+        }
+      ],
+      "disposition": "retain-expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "蓝岭作为 AI 防守方考虑主动白和，算的是自己的提议倾向，基础分为零；赤河作为 AI 进攻方收到提议，算的是另一份接受分，基础分为负三十。持续时间、战分和其他压力按各自条件进入两张账，不能将一张账的数字搬到另一张账上。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-termination.md",
+          "lines": [
+            585,
+            603
+          ],
+          "source_sha256": "9afeb249324900275692ab6d18f1fcd1bc9678de2d1c1e029474029ea64a26c5",
+          "range_text_sha256_utf8_lf": "1428c29bc074c7cd079c0a7a0781e50f1a025efb944934ec3fbb20eeffe34a6f",
+          "first_line": "### 主动提出白和",
+          "last_line": "veto，落后至少 70 时已被 `ai_potential` 排除。",
+          "supports": "ai_will_do base0、条件与玩家限制"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-termination.md",
+          "lines": [
+            641,
+            654
+          ],
+          "source_sha256": "9afeb249324900275692ab6d18f1fcd1bc9678de2d1c1e029474029ea64a26c5",
+          "range_text_sha256_utf8_lf": "6b6a93c675c3cc47169ec4778e094d812fa3e41d67ed801e46c2ea9d22457d40",
+          "first_line": "### 白和接受分",
+          "last_line": "| [static-confirmed] 人质 | 双方人质价值以 0.5 倍进入白和接受分 |",
+          "supports": "ai_accept base-30，recipient角色决定读取对手战分"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+          "lines": [
+            61,
+            61
+          ],
+          "source_sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+          "range_text_sha256_utf8_lf": "2b4b1e49bb800c7a648478b786d236ecee162272b013b39b10ea2b003d3bad27",
+          "first_line": "[static-confirmed] 收件人 raw evaluator `0x2C44320` 用 context `+0x2DC` 收件人，在 definition `+0x1BA8` 求 `ai_accept`；actor `+0x2D8` 与收件人相同则写 `10,000,000`。主动意愿 `0x2C44410` 则以 actor 求 definition `+0x1AE8` 的 `ai_will_do`。两者都调用 compiled value evaluator `0x337B210`，scope 与字段不同。",
+          "last_line": "[static-confirmed] 收件人 raw evaluator `0x2C44320` 用 context `+0x2DC` 收件人，在 definition `+0x1BA8` 求 `ai_accept`；actor `+0x2D8` 与收件人相同则写 `10,000,000`。主动意愿 `0x2C44410` 则以 actor 求 definition `+0x1AE8` 的 `ai_will_do`。两者都调用 compiled value evaluator `0x337B210`，scope 与字段不同。",
+          "supports": "两个evaluator和scope独立"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W7",
+        "claim_specific_before": [
+          "actor=AI防守蓝岭、recipient=AI进攻赤河，实际War上下文"
+        ],
+        "claim_specific_after": [
+          "两份raw和各自修正来源分开读回"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "保留 r2 N30-067/073 的身份修正，不交换提出与接收角色。",
+        "0和-30是分数基数，不是百分比。",
+        "182天+10只是条件项，不等于准点发送。"
+      ],
+      "visual_zh": "始终有提出者/接收者及攻守牌；两列加分项错峰展开，避免误读为同一总账。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W7-02",
+      "work_package": "W7",
+      "title_zh": "玩家身份改变白和主动预筛",
+      "old_claim_ids": [
+        "C11"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-073",
+          "shot_id": "S30-37",
+          "chapter_id": "peace",
+          "zh": "现在专门开一个对照画面，只把赤河改成玩家控制，蓝岭仍是电脑防守方。先让身份标签明确变化，再看蓝岭主动提议的路径；对玩家存在额外的候选预筛，以及主动倾向中的否决条件，不能把刚才电脑对电脑的箭头原样照搬。",
+          "en": "Now open a separate comparison in which only Redriver becomes player-controlled; Blueridge remains the AI defender. Make that identity change explicit before inspecting Blueridge's proactive proposal path. Player-facing interactions include additional candidate prefilters and veto conditions in proposal willingness, so the AI-versus-AI arrows cannot simply be copied over."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-074",
+          "shot_id": "S30-37",
+          "chapter_id": "peace",
+          "zh": "这也解释了为什么讨论和平规则时，谁攻谁守、谁是玩家，必须先说清楚。同样叫白和，换了角色就可能换了检查路径；如果身份卡被剪掉，观众看到的就会像同一条规则突然变了。",
+          "en": "This is why discussing peace rules requires stating who attacks, who defends, and who is a player. The interaction is still called white peace, but changing roles can change the checks. Remove the identity cards from the edit, and it may look as though one rule has arbitrarily changed."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C11",
+          "statement_zh": "主动提出白和与收到白和后的接受度分开计算；主动 ai_will_do base 为 0，ai_accept base 为 -30，二者各有条件与修正。"
+        }
+      ],
+      "disposition": "retain-role-correction",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "把赤河改成玩家，蓝岭仍是 AI 防守方，规则会变：主动白和路径对玩家有额外预筛与倾向否决。因此刚才 AI 对 AI 的案例，不能只换个头像就原样解释玩家遇到的提议。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-termination.md",
+          "lines": [
+            597,
+            603
+          ],
+          "source_sha256": "9afeb249324900275692ab6d18f1fcd1bc9678de2d1c1e029474029ea64a26c5",
+          "range_text_sha256_utf8_lf": "7165e359a06ed90da2ac042dc6d3d75a326421321f40426393c6cc05c122532e",
+          "first_line": "| [static-confirmed] `ai_potential` 预筛：AI 防守、玩家进攻且进攻方战分至少 10 | 候选直接被排除 |",
+          "last_line": "veto，落后至少 70 时已被 `ai_potential` 排除。",
+          "supports": "ai_potential角色预筛与willdo30分veto"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W7",
+        "claim_specific_before": [
+          "明确只改变recipient赤河为player，保留双方攻守角色"
+        ],
+        "claim_specific_after": [
+          "蓝岭actor候选预筛与willdo实际条件"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不能把玩家额外预筛说成普通AI recipient接受比较。",
+        "人工按钮可发送不是自然AI会选择发送。"
+      ],
+      "visual_zh": "身份牌先变化，再显式重走候选入口；不只翻右侧接受分。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W7-03",
+      "work_package": "W7",
+      "title_zh": "普通白和实际接受必须严格正分",
+      "old_claim_ids": [
+        "C11"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-072",
+          "shot_id": "S30-36",
+          "chapter_id": "peace",
+          "zh": "这次接收方赤河是进攻方，战分这一项就读对面的防守方战分。赤河越接近输，这一项越会把它往愿意白和的方向推；之后仍有时长等修正，最后怎样比较、何时给出接受结果，还有没弄清的部分。",
+          "en": "With Redriver receiving as the attacker, the war-score term uses the opposing defender's war score. The closer Redriver is to losing, the more this term favors white peace. Duration and other modifiers still follow, while parts of the final comparison and timing remain unresolved."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C11",
+          "statement_zh": "主动提出白和与收到白和后的接受度分开计算；主动 ai_will_do base 为 0，ai_accept base 为 -30，二者各有条件与修正。"
+        }
+      ],
+      "disposition": "rewrite-required",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "现在最终比较也有了答案：合法、普通 AI 收件人、无中介的原版白和，接受分必须严格大于零，等于零仍不通过。这是发送命令真正使用的接受比较，不只是提议准备阶段的预判。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+          "lines": [
+            55,
+            57
+          ],
+          "source_sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+          "range_text_sha256_utf8_lf": "4567fd6d8f05743a0b08316eb010abc887f21d83523de3ad2a59bf131068a9b5",
+          "first_line": "[static-confirmed] 构造器 `0x2C39196` 写 `qword [+0x2A50]=1`，`0x2C391A1` 写 `dword [+0x2A58]=0x100`，所以 `+0x2A55` 与 `+0x2A58` 默认均为零。白和块的顶层字段扫描确认没有 `ai_maybe`、`ai_accept_negotiation`、`auto_accept`、`send_option`、`ai_intermediary_accept`；这不是靠注释猜默认值。其 `ai_targets` 明示 `primary_war_enemies`，频率表见 1014–1021。",
+          "last_line": "此静态适用范围为冻结的原版定义。mod 覆盖、不同 build、不同 context（尤其人质交换、intermediary、玩家/作弊设置）须重新绑定，不得沿用为实机证明。",
+          "supports": "白和默认无ai_maybe/negotiation等特殊模式"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+          "lines": [
+            63,
+            88
+          ],
+          "source_sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+          "range_text_sha256_utf8_lf": "319be2791bb85788e8a8d1b46be79e8e77c5b79a22b9c5dbc0ee0a7593392558",
+          "first_line": "| 层 | 关键指令 | 精确含义 |",
+          "last_line": "这是指令边界的静态推导表，没有执行合成游戏案例。该接受 raw 也不是 `ai_will_do` 的整数抽选值。",
+          "supports": "precheck与发送raw→setg，0拒绝正raw通过"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W7",
+        "claim_specific_before": [
+          "普通定义/context、recipientraw与发送命令字段"
+        ],
+        "claim_specific_after": [
+          "实际recipientbool，并继续另验War终止"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不推广为所有外交交互只看正负。",
+        "status1不是已经接受；玩家override、intermediary、mod标志另论。",
+        "正分bool静态成立不等于本包见到战争结束。"
+      ],
+      "visual_zh": "零刻度清楚：0停在拒绝侧、微小正分进入通过侧；写“普通白和接受分”，不给概率刻度。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W7-04",
+      "work_package": "W7",
+      "title_zh": "白和有月份机会门而非准点发送日",
+      "old_claim_ids": [
+        "C11"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-078",
+          "shot_id": "S30-39",
+          "chapter_id": "peace",
+          "zh": "因此，这里继续保留两套规则的对照，不给教学角色安排一份冒充实测的接受总分。确切发送日期和协商调度还存在缺口，已经确认的条件告诉我们可以检查什么，却没有替自然事件写好发生时间。",
+          "en": "We therefore keep the comparison between the two rule sets rather than assign our teaching characters an acceptance total masquerading as a measurement. Exact sending dates and negotiation scheduling remain unresolved. Confirmed conditions tell us what to examine, not when a natural event must occur."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C11",
+          "statement_zh": "主动提出白和与收到白和后的接受度分开计算；主动 ai_will_do base 为 0，ai_accept base 为 -30，二者各有条件与修正。"
+        }
+      ],
+      "disposition": "rewrite-partial-unknown",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "主动提议还要等自己的机会入口。原版按角色等级读取月份频率，再用月份序号和角色身份错开检查月份；白和在伯爵到霸权这一组的参数是十二。但这只是调度访问时的一道门，不是保证每年某一天发送一次。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+          "lines": [
+            92,
+            119
+          ],
+          "source_sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+          "range_text_sha256_utf8_lf": "3b7ef881f74fe22e2814052a1c74c63fe79b67c48089a907d9aa9d752c52c847",
+          "first_line": "[static-confirmed] 可追溯生产路径：",
+          "last_line": "[static-confirmed] 月相位通过后，`0x188165E` 按定义的字段状态选择 `ai_potential` 或 `is_available` trigger 并在 `0x1881675` 求值，合格定义进入列表。`0x1881A32`–`0x1881A75` 做带随机下标的列表交换；`0x1881B1E` 逐定义调 `0x1880C20`。本轮没将列表打乱声称为按战争收益进行全局最优排序。",
+          "supports": "实际生产调用链、tier频率数组与(M+ID)%F门，actor入队未知"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W7",
+        "claim_specific_before": [
+          "actual actor workitem、M/fullID/tier/F、availability"
+        ],
+        "claim_specific_after": [
+          "月份门/定义候选，之后是否实际进入send"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "barony为0，不能把所有角色都当伯爵。",
+        "未追完actor入队/重建日程，不能承诺具体发送日。",
+        "月份门不是接受分或战争天数条件本身。"
+      ],
+      "visual_zh": "真实日期轴只标观察到的调度，机制插图说明月份错开；不画每年必发的信封。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W7-05",
+      "work_package": "W7",
+      "title_zh": "主动提案使用随机 margin 竞争",
+      "old_claim_ids": [
+        "C11"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-069",
+          "shot_id": "S30-35",
+          "chapter_id": "peace",
+          "zh": "先看左边，主动提出白和的账。它的基础分是零，但零不代表百分之零的概率；这只是后续条件和修正计算的起点，提议还要先经过相关的合法性与候选检查。",
+          "en": "Begin with the left ledger, for proactively proposing white peace. Its base score is zero, but zero does not mean a zero-percent probability. It is a starting point for conditions and modifiers, and the proposal must also pass the relevant legality and candidate checks."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-070",
+          "shot_id": "S30-35",
+          "chapter_id": "peace",
+          "zh": "给蓝岭的主动账看一条具体规则。它是防守方，如果战争至少持续一百八十二天，而且防守方战分不高于十五，就会得到十分的主动倾向。这只是其中一项修正，其它条件还要继续检查，并不表示下一天必定发信。",
+          "en": "Examine one concrete rule in Blueridge's proposal ledger. As the defender, if the war has lasted at least one hundred and eighty-two days and the defender's war score is no higher than fifteen, it receives ten points of proposal willingness. This is only one modifier; other conditions still need checking, and it does not mean a letter must be sent the next day."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-076",
+          "shot_id": "S30-38",
+          "chapter_id": "peace",
+          "zh": "这时再判断：愿意接受一份提议，是否就等于愿意主动发出它？两条路径的起点、条件与修正本来就不同，所以我们要分别检查；单凭场上还有一支军队，无法替两本账同时作答。",
+          "en": "Now ask again: does being willing to accept a proposal mean being willing to initiate it? The two paths have different starting points, conditions, and modifiers, so they must be examined separately. One army still standing in the field cannot answer both ledgers at once."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-078",
+          "shot_id": "S30-39",
+          "chapter_id": "peace",
+          "zh": "因此，这里继续保留两套规则的对照，不给教学角色安排一份冒充实测的接受总分。确切发送日期和协商调度还存在缺口，已经确认的条件告诉我们可以检查什么，却没有替自然事件写好发生时间。",
+          "en": "We therefore keep the comparison between the two rule sets rather than assign our teaching characters an acceptance total masquerading as a measurement. Exact sending dates and negotiation scheduling remain unresolved. Confirmed conditions tell us what to examine, not when a natural event must occur."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C11",
+          "statement_zh": "主动提出白和与收到白和后的接受度分开计算；主动 ai_will_do base 为 0，ai_accept base 为 -30，二者各有条件与修正。"
+        }
+      ],
+      "disposition": "expand",
+      "confirmation": "static-confirmed-bounded",
+      "proposed_safe_narration_zh": "机会通过后，主动意愿还不是直接发令。这里先把意愿值截成整数，再减去零到九十九的原生随机整数，只有差值严格超过当前最佳值的候选才留下，起点是零。它可能一项也不选；这也不是宣战候选那套按总权重抽取。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+          "lines": [
+            121,
+            125
+          ],
+          "source_sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+          "range_text_sha256_utf8_lf": "9aea506e6835f44bd890ba523178005a249aa479c4a0c6307d3752e2c3163119",
+          "first_line": "[static-confirmed] `0x1880C20` 用 thread-local context、definition、actor 初始化真实 context；按定义的 recipient 集合准备候选，有目标数量限制/过滤及候选机会门。进入 `0x1880F5F` 的候选调用链会填写 recipient、建立 special context、验证目标、处理 title/secondary/options 和接受预判。白和无 send options，故普通 `0x18BB040` 分支适用；特殊分支的完整一般算法不由本例外推。",
+          "last_line": "`0x18811AE` 与 `0x18811BA` 放入已由 RTTI 绑定的发送命令 vtable，复制 context，并把 intermediary/recipient raw 经 `0x28FA1A0` 写入命令；该 helper 保留普通 raw，但存在玩家/调试开关 override，不能省略为通用恒等函数。`0x1881232` 的 command 虚调用产生待分派对象，`0x1881257` 调 dispatcher `0x341D990`。这是实际命令链的静态身份，**不是本轮发出过命令的运行日志**。",
+          "supports": "willdo向零整数截断、margin严格竞争、同分保留、再CanSend和实际command链"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W7",
+        "claim_specific_before": [
+          "同轮候选顺序、integerwilldo、原生随机输出和bestmargin"
+        ],
+        "claim_specific_after": [
+          "选中/无选中、CanSend及实际发送命令"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不能把主动willdo和recipientaccept相加或比较。",
+        "没有原生随机记录时不能根据结果倒造抽数。",
+        "不把正willdo说成必发，也不称为宣战Top5权重池。"
+      ],
+      "visual_zh": "只选一个已绑定候选竞争或明确教学演算；画减法与best门，不复用宣战轮盘。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W7-06",
+      "work_package": "W7",
+      "title_zh": "提议、接受布尔、战争结束必须接续",
+      "old_claim_ids": [
+        "C11"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-077",
+          "shot_id": "S30-39",
+          "chapter_id": "peace",
+          "zh": "如果要把这里换成一段自然发生的和平个案，还需要把当时的战争、双方身份和提议经过对应起来。看到通知出现，只能先说明出现了这份提议；它为什么在这一刻发出，不能靠一项看起来合适的修正倒推。",
+          "en": "A naturally occurring peace case would require matching the war, both parties' roles, and the proposal's sequence at that moment. Seeing a notification first establishes that the proposal appeared. One apparently relevant modifier cannot tell us why it was sent at that exact moment."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-078",
+          "shot_id": "S30-39",
+          "chapter_id": "peace",
+          "zh": "因此，这里继续保留两套规则的对照，不给教学角色安排一份冒充实测的接受总分。确切发送日期和协商调度还存在缺口，已经确认的条件告诉我们可以检查什么，却没有替自然事件写好发生时间。",
+          "en": "We therefore keep the comparison between the two rule sets rather than assign our teaching characters an acceptance total masquerading as a measurement. Exact sending dates and negotiation scheduling remain unresolved. Confirmed conditions tell us what to examine, not when a natural event must occur."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-079",
+          "shot_id": "S30-40",
+          "chapter_id": "peace",
+          "zh": "第三个案例可以收起来了。左边问要不要先提出白和，右边问收到白和以后怎样评估；把它们分开，我们就不必因为军队还在场上，就认定谈和平一定与战争状态矛盾。",
+          "en": "We can now close the third case. The left asks whether to initiate white peace; the right evaluates it after receipt. Keeping them separate means we need not assume that discussing peace contradicts the war situation merely because armies remain in the field."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-080",
+          "shot_id": "S30-40",
+          "chapter_id": "peace",
+          "zh": "赤河和蓝岭的地图到这里完成了教学任务。它没有替某场真实战争决定结局，而是把几个容易混在一起的问题拆开：谁在考虑，满足哪些条件，以及正在计算的是哪一份账。",
+          "en": "Redriver and Blueridge's map has now served its teaching purpose. It has not determined the ending of a real war. Instead, it separates questions that are easily conflated: who is considering an action, which conditions apply, and which ledger is being evaluated."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-087",
+          "shot_id": "S30-44",
+          "chapter_id": "epilogue",
+          "zh": "以后再遇到让你皱眉的战争动作，可以先问它处在哪个阶段，再看哪些输入和历史状态可能相关。今天的规则提供了追问的起点，而不是让我们离开当时的证据，就能猜中每一支军队的决定。",
+          "en": "When a war action next makes you frown, first ask which stage it belongs to, then consider which inputs and prior states may matter. Today's rules provide a starting point for investigation, not a way to guess every army's decision without evidence from the moment."
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C11",
+          "statement_zh": "主动提出白和与收到白和后的接受度分开计算；主动 ai_will_do base 为 0，ai_accept base 为 -30，二者各有条件与修正。"
+        }
+      ],
+      "disposition": "retain-expand-result-boundary",
+      "confirmation": "static-confirmed-path-no-live-outcome",
+      "proposed_safe_narration_zh": "所以要解释一次真实白和，需要接上三步：谁在什么条件下提出、对手的接受比较怎样通过、同一场战争最后是否按这份提议结束。只有一条和平通知，或者一个正的接受分，都不足以替前面整条过程作证。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+          "lines": [
+            74,
+            78
+          ],
+          "source_sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+          "range_text_sha256_utf8_lf": "6686b519206eddf87d0d3320779f4b15b079d7889823cae82fc127646a4ed8a3",
+          "first_line": "[static-confirmed] 发送命令的类型身份来自 RTTI：vtable `0x40829C8` / `0x40829F8` 的 COL 分别为 `0x45A02B0` / `0x45A02D8`，TypeDescriptor `0x513C108` 是 `CSendCharacterInteractionCommand`。`0x26B32D0` 从命令 `+0x340` 取 **intermediary raw** 到 RDX、`+0x348` 取 **recipient raw** 到 R8，以 command `+8` 为 context，调用 `0x26B30A0`。不要交换两名角色。",
+          "last_line": "外层 `0x2C43B40` 的 auto-accept/同人 shortcut、intermediary 和 status 3 仍须保留。它先求可能存在的 intermediary，再始终求 recipient；不是“只有 intermediary 同意才求 recipient”。intermediary 为 1 时使用 `0x4403A98` 表 `01 01 02 00` 合成；无 intermediary 时内部标记 3，使用 recipient 结果。状态 3 缺失态也不能被 `3 != 2` 机械宣传为接受。",
+          "supports": "实际command→recipientbool→manager仍有CanSend"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+          "lines": [
+            127,
+            139
+          ],
+          "source_sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+          "range_text_sha256_utf8_lf": "af38e1c05102ce3df3f3572c0ac6e2b986ed056d4ed4c5fd18d823c213a35c6f",
+          "first_line": "## 仍未宣称闭合的部分与影片可用表达",
+          "last_line": "影片不能说：“所有原生交互只看分数正负”“status 1 就是对手已答应”“每年固定日期必定白和”“我们这次看到了 AI 自然求和”。本轮可配静态门槛图、真实指令证据卡与明确标注的教学算例，不能伪造自然实机因果。",
+          "supports": "自然发送日期、actualscore和终战后置需要live"
+        }
+      ],
+      "live_case": {
+        "status": "planned/unbound",
+        "contract_id": "LIVE-W7",
+        "claim_specific_before": [
+          "同War/actor/recipient/context的真实自然提议前记录"
+        ],
+        "claim_specific_after": [
+          "actualsend→recipientbool→同Waroutcome/truce适用结果"
+        ],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "不借玩家和平按钮或强制发令冒充原生NPC自主提议。",
+        "白和、投降和执行要求不能合并为同一种结束。",
+        "本包没有新R03素材。"
+      ],
+      "visual_zh": "三段连续真实画面分别有同WarID sidecar；未取到连续案例时不给教学角色配伪造接受总分。",
+      "diagram_substitutes_for_required_live_case": false
+    },
+    {
+      "id": "W0-01",
+      "work_package": "W0",
+      "title_zh": "研究方法和三案回扣",
+      "old_claim_ids": [
+        "C00",
+        "C06",
+        "C10"
+      ],
+      "old_wording": [
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-081",
+          "shot_id": "S30-41",
+          "chapter_id": "epilogue",
+          "zh": "再看开场留下的最高分牌。经过门槛筛选，保留下来的候选按分数加权抽取，所以最高分没有被选中，并不自动意味着程序无视了分数；分数先影响哪些候选留下，再参与最后的抽取。",
+          "en": "Return to the highest-scoring card from the opening. After threshold filtering, retained candidates are selected with score-based weights. Not choosing the highest score does not automatically mean the program ignored scores: scores first affect which candidates remain, then participate in the final selection."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-082",
+          "shot_id": "S30-41",
+          "chapter_id": "epilogue",
+          "zh": "再看军队的箭头和两封和平信。目标块、局部条件和此前求援状态，要放回各自阶段；主动提议和收到后接受，也要分开读，才能继续追问某次真实动作究竟受了哪些输入影响。",
+          "en": "Now revisit the army's arrow and the two peace letters. Objective blocks, local conditions, and prior request state belong to their respective stages. Initiating and accepting a proposal also need separate readings before we can investigate which inputs shaped a particular real action."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-083",
+          "shot_id": "S30-42",
+          "chapter_id": "epilogue",
+          "zh": "最后用刚才的求援开关，看看一条结论怎样有了依据。资料里能找到开始与继续求援的相关定义和阈值，但只看到文件里写着一个数字，还不够说明它实际控制哪个动作。",
+          "en": "Finally, use the help switch to examine how a conclusion gains support. The sources contain definitions and thresholds for starting and continuing a request. But finding a number in a file alone does not establish which action it actually controls."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-084",
+          "shot_id": "S30-42",
+          "chapter_id": "epilogue",
+          "zh": "还要接到原生程序读取这些设置的位置，看它在什么状态下选择哪一道门。我们刚才展示的普通求援分支，就是把定义和已有原生证据对应起来之后，能够明确说明的这一段规则。",
+          "en": "We must connect those settings to where the native program reads them and see which threshold it selects in each state. The ordinary request branch we showed is the section that can be described explicitly by linking the definitions with existing native evidence."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-085",
+          "shot_id": "S30-43",
+          "chapter_id": "epilogue",
+          "zh": "但是，规则有依据，和某个自然个案已经解释完，仍然隔着一步。把零点七零的两张卡拿回来：不知道此前是否已经求援，即使当前比值相同，我们也不能只凭这一项替现场下结论。",
+          "en": "A supported rule is still one step short of a fully explained natural case. Bring back the two zero point seven zero cards. Without knowing whether a request was already active, the same current ratio alone cannot establish what happened in the observed situation."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-086",
+          "shot_id": "S30-43",
+          "chapter_id": "epilogue",
+          "zh": "要解释那一次，得有对应的当前读数、此前状态和主体身份，再把它们与实际经过对上。这也是为什么片中的教学灯可以完整走一遍，旁边仍然可以诚实保留一格，写着尚未取得连续实机证据。",
+          "en": "Explaining that instance requires the matching current reading, prior state, and subject identity, aligned with the observed sequence. That is why the teaching light can complete its full example while a neighboring box still honestly says that continuous live evidence has not been obtained."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-087",
+          "shot_id": "S30-44",
+          "chapter_id": "epilogue",
+          "zh": "以后再遇到让你皱眉的战争动作，可以先问它处在哪个阶段，再看哪些输入和历史状态可能相关。今天的规则提供了追问的起点，而不是让我们离开当时的证据，就能猜中每一支军队的决定。",
+          "en": "When a war action next makes you frown, first ask which stage it belongs to, then consider which inputs and prior states may matter. Today's rules provide a starting point for investigation, not a way to guess every army's decision without evidence from the moment."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-088",
+          "shot_id": "S30-44",
+          "chapter_id": "epilogue",
+          "zh": "玩家支援和一般战争电脑的主动撤退，仍有开放问题。把这些空白留下来，已有结论才不会被讲成万能答案，也方便下一次研究清楚之后，准确接回这张图。",
+          "en": "Player support and ordinary war AI's voluntary retreat policy still contain open questions. Leaving those gaps visible keeps established findings from becoming universal answers and makes it easier to connect future research back to the diagram accurately."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-089",
+          "shot_id": "S30-45",
+          "chapter_id": "epilogue",
+          "zh": "本期依据的版本、文档和程序指纹，列在片尾资料中。这里讲的是这个版本里已经研究到的范围，文档梳理得多细，并不等于全部原生分支或者自然实机行为已经验证了多少。",
+          "en": "The version, documents, and executable fingerprint used for this episode are listed in the accompanying source material. We have discussed the researched scope of this build. The maturity of the documentation does not measure how many native branches or naturally occurring behaviors have been verified."
+        },
+        {
+          "source_path": "promo/ck3_native_war_ai/longform/narration.json",
+          "cue_id": "N30-090",
+          "shot_id": "S30-45",
+          "chapter_id": "epilogue",
+          "zh": "赤河与蓝岭是虚构的，示例数字也是教学输入。希望下次你看见最高分留在桌上、军队换了方向，或者和平信忽然出现时，能多想到一步：它现在，究竟在做哪一个决定。",
+          "en": "Redriver and Blueridge are fictional, and the example numbers are teaching inputs. The next time the highest score stays on the table, an army changes direction, or a peace letter appears, I hope one more question comes to mind: which decision is it making right now?"
+        }
+      ],
+      "old_claim_statements": [
+        {
+          "id": "C00",
+          "statement_zh": "赤河、蓝岭、教学地图、候选分数及求援数列都是说明机制的假设示例。"
+        },
+        {
+          "id": "C06",
+          "statement_zh": "普通 AI 未求援时 ratio <0.66 才开始，已求援时 ratio <0.75 继续；提出请求与匹配助手是不同步骤。"
+        },
+        {
+          "id": "C10",
+          "statement_zh": "本期只讲 CK3 1.19.0.6 的有界研究；文档成熟度百分比不代表全部原生分支或自然实机覆盖率。"
+        }
+      ],
+      "disposition": "rewrite-brief-method-recap",
+      "confirmation": "scope-and-editorial-recommendation",
+      "proposed_safe_narration_zh": "同一个数字，先要问它属于哪一道选择；同一个动作，再要找当时的输入和真正发令者。脚本参数、原生消费者与实机前后状态各回答一层问题，连起来才足以解释这一次行为。",
+      "proposed_wording_status": "new-editorial-proposal; not inserted into old narration; not human approval",
+      "evidence": [
+        {
+          "path": "docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md",
+          "lines": [
+            30,
+            33
+          ],
+          "source_sha256": "c36f7eda5113fa046ea608bc8c3cc13351785abc163255ddab9efb96c4a62db8",
+          "range_text_sha256_utf8_lf": "de9709c8161c52dd2b916acd14284f26aa525af70a1736ce0d6414889786b2dd",
+          "first_line": "每个准备进入新旁白的机制必须说明：谁决策、何时触发、读取什么输入、过滤/评分/比较如何发生、选中什么动作、产生什么结果。",
+          "last_line": "测试通过或 schema 完整不等于语义闭合；单场实机出现某结果也不能证明全部分支。",
+          "supports": "exact静态树与对应实机案例分层"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md",
+          "lines": [
+            54,
+            58
+          ],
+          "source_sha256": "c36f7eda5113fa046ea608bc8c3cc13351785abc163255ddab9efb96c4a62db8",
+          "range_text_sha256_utf8_lf": "6524e313c6096b6232ea0ee82f091f974bc2ffa2dfea17882beda0bd431fb3d8",
+          "first_line": "沿用[提取工作流](research-tooling-workflow.md)和 `tools/native_research_plan.py`：冻结问题、actor、producer/caller/consumer、触发、身份与缓存寿命、预期信号、零样本含义、停止条件；离线分析先行。观测前执行 `check --for-observation`，未知边用 `render` 生成虚线。",
+          "last_line": "研究证据与拍摄素材共同绑定 build、主体 identity、日期/帧与动作。受控夹具明确标为实验，不能冒称自然战局；真实案例必须能解释本次行为，未知大分支继续研究，不通过偷偷删掉核心问题来声称完成。",
+          "supports": "身份/producer/触发/前后状态与受控夹具标识"
+        },
+        {
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md",
+          "lines": [
+            101,
+            121
+          ],
+          "source_sha256": "eae2e665484d325b070eb4f3fab9e4f8c7b477eba278f0cc57bba6fc17544b3c",
+          "range_text_sha256_utf8_lf": "e0c5326167e26eb433ae8f92bd2ce353224bcccfe4b1b5108c52c45ea08547d9",
+          "first_line": "## 下一次 assignment → ETA → 同 CombatID join 最少还要什么",
+          "last_line": "不把日级暂停帧自动升级为全引擎精确调度顺序。",
+          "supports": "可用求援链方法示例"
+        }
+      ],
+      "live_case": {
+        "status": "not-a-native-causal-case",
+        "contract_id": null,
+        "claim_specific_before": [],
+        "claim_specific_after": [],
+        "bound_evidence": []
+      },
+      "limits_zh": [
+        "方法段约一分钟，不把不断重复unknown当内容深度。",
+        "旧90cue已逐条读过，不等于新版已完成逐句稿、录音或人工审核。",
+        "文档成熟度与静态边计数不是native覆盖率或影片完成率。"
+      ],
+      "visual_zh": "回扣真正拍到的CASE-A/B/C结果，随后用一个求援例子展示三层证据；完整偏移/哈希进来源旁车。",
+      "diagram_substitutes_for_required_live_case": false
+    }
+  ],
+  "old_cue_review_index": [
+    {
+      "cue_id": "N30-001",
+      "shot_id": "S30-01",
+      "chapter_id": "hook",
+      "entry_ids": [
+        "W0-00"
+      ]
+    },
+    {
+      "cue_id": "N30-002",
+      "shot_id": "S30-01",
+      "chapter_id": "hook",
+      "entry_ids": [
+        "W0-00"
+      ]
+    },
+    {
+      "cue_id": "N30-003",
+      "shot_id": "S30-02",
+      "chapter_id": "hook",
+      "entry_ids": [
+        "W0-00"
+      ]
+    },
+    {
+      "cue_id": "N30-004",
+      "shot_id": "S30-02",
+      "chapter_id": "hook",
+      "entry_ids": [
+        "W0-00"
+      ]
+    },
+    {
+      "cue_id": "N30-005",
+      "shot_id": "S30-03",
+      "chapter_id": "hook",
+      "entry_ids": [
+        "W0-00"
+      ]
+    },
+    {
+      "cue_id": "N30-006",
+      "shot_id": "S30-03",
+      "chapter_id": "hook",
+      "entry_ids": [
+        "W0-00"
+      ]
+    },
+    {
+      "cue_id": "N30-007",
+      "shot_id": "S30-04",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-01",
+        "W1-03"
+      ]
+    },
+    {
+      "cue_id": "N30-008",
+      "shot_id": "S30-04",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-01",
+        "W2-07"
+      ]
+    },
+    {
+      "cue_id": "N30-009",
+      "shot_id": "S30-05",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-02"
+      ]
+    },
+    {
+      "cue_id": "N30-010",
+      "shot_id": "S30-05",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-02"
+      ]
+    },
+    {
+      "cue_id": "N30-011",
+      "shot_id": "S30-06",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-03",
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-012",
+      "shot_id": "S30-06",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-03",
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-013",
+      "shot_id": "S30-07",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-014",
+      "shot_id": "S30-07",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-015",
+      "shot_id": "S30-08",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-016",
+      "shot_id": "S30-08",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-017",
+      "shot_id": "S30-09",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-018",
+      "shot_id": "S30-09",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-019",
+      "shot_id": "S30-10",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-020",
+      "shot_id": "S30-10",
+      "chapter_id": "declaration",
+      "entry_ids": [
+        "W1-04"
+      ]
+    },
+    {
+      "cue_id": "N30-021",
+      "shot_id": "S30-11",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-01"
+      ]
+    },
+    {
+      "cue_id": "N30-022",
+      "shot_id": "S30-11",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-01"
+      ]
+    },
+    {
+      "cue_id": "N30-023",
+      "shot_id": "S30-12",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-01"
+      ]
+    },
+    {
+      "cue_id": "N30-024",
+      "shot_id": "S30-12",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-01"
+      ]
+    },
+    {
+      "cue_id": "N30-025",
+      "shot_id": "S30-13",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-01"
+      ]
+    },
+    {
+      "cue_id": "N30-026",
+      "shot_id": "S30-13",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-01"
+      ]
+    },
+    {
+      "cue_id": "N30-027",
+      "shot_id": "S30-14",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-02"
+      ]
+    },
+    {
+      "cue_id": "N30-028",
+      "shot_id": "S30-14",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-02"
+      ]
+    },
+    {
+      "cue_id": "N30-029",
+      "shot_id": "S30-15",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-03",
+        "W2-05"
+      ]
+    },
+    {
+      "cue_id": "N30-030",
+      "shot_id": "S30-15",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-02",
+        "W2-04"
+      ]
+    },
+    {
+      "cue_id": "N30-031",
+      "shot_id": "S30-16",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-03",
+        "W2-06",
+        "W2-07"
+      ]
+    },
+    {
+      "cue_id": "N30-032",
+      "shot_id": "S30-16",
+      "chapter_id": "targets",
+      "entry_ids": [
+        "W2-03",
+        "W2-06",
+        "W2-07"
+      ]
+    },
+    {
+      "cue_id": "N30-033",
+      "shot_id": "S30-17",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-01"
+      ]
+    },
+    {
+      "cue_id": "N30-034",
+      "shot_id": "S30-17",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-01"
+      ]
+    },
+    {
+      "cue_id": "N30-035",
+      "shot_id": "S30-18",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-01"
+      ]
+    },
+    {
+      "cue_id": "N30-036",
+      "shot_id": "S30-18",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-01"
+      ]
+    },
+    {
+      "cue_id": "N30-037",
+      "shot_id": "S30-19",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-01"
+      ]
+    },
+    {
+      "cue_id": "N30-038",
+      "shot_id": "S30-19",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-01"
+      ]
+    },
+    {
+      "cue_id": "N30-039",
+      "shot_id": "S30-20",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-02"
+      ]
+    },
+    {
+      "cue_id": "N30-040",
+      "shot_id": "S30-20",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-02",
+        "W3-03"
+      ]
+    },
+    {
+      "cue_id": "N30-041",
+      "shot_id": "S30-21",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-04"
+      ]
+    },
+    {
+      "cue_id": "N30-042",
+      "shot_id": "S30-21",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-04"
+      ]
+    },
+    {
+      "cue_id": "N30-043",
+      "shot_id": "S30-22",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-04"
+      ]
+    },
+    {
+      "cue_id": "N30-044",
+      "shot_id": "S30-22",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-04"
+      ]
+    },
+    {
+      "cue_id": "N30-045",
+      "shot_id": "S30-23",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-04",
+        "W5-02"
+      ]
+    },
+    {
+      "cue_id": "N30-046",
+      "shot_id": "S30-23",
+      "chapter_id": "movement",
+      "entry_ids": [
+        "W3-04",
+        "W5-02"
+      ]
+    },
+    {
+      "cue_id": "N30-047",
+      "shot_id": "S30-24",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-01"
+      ]
+    },
+    {
+      "cue_id": "N30-048",
+      "shot_id": "S30-24",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-01"
+      ]
+    },
+    {
+      "cue_id": "N30-049",
+      "shot_id": "S30-25",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-01"
+      ]
+    },
+    {
+      "cue_id": "N30-050",
+      "shot_id": "S30-25",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-01"
+      ]
+    },
+    {
+      "cue_id": "N30-051",
+      "shot_id": "S30-26",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-01"
+      ]
+    },
+    {
+      "cue_id": "N30-052",
+      "shot_id": "S30-26",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-01"
+      ]
+    },
+    {
+      "cue_id": "N30-053",
+      "shot_id": "S30-27",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-01"
+      ]
+    },
+    {
+      "cue_id": "N30-054",
+      "shot_id": "S30-27",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-01"
+      ]
+    },
+    {
+      "cue_id": "N30-055",
+      "shot_id": "S30-28",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-02"
+      ]
+    },
+    {
+      "cue_id": "N30-056",
+      "shot_id": "S30-28",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-02"
+      ]
+    },
+    {
+      "cue_id": "N30-057",
+      "shot_id": "S30-29",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-04"
+      ]
+    },
+    {
+      "cue_id": "N30-058",
+      "shot_id": "S30-29",
+      "chapter_id": "help",
+      "entry_ids": [
+        "W4-04"
+      ]
+    },
+    {
+      "cue_id": "N30-059",
+      "shot_id": "S30-30",
+      "chapter_id": "battle-end",
+      "entry_ids": [
+        "W6-01"
+      ]
+    },
+    {
+      "cue_id": "N30-060",
+      "shot_id": "S30-30",
+      "chapter_id": "battle-end",
+      "entry_ids": [
+        "W6-01"
+      ]
+    },
+    {
+      "cue_id": "N30-061",
+      "shot_id": "S30-31",
+      "chapter_id": "battle-end",
+      "entry_ids": [
+        "W6-01"
+      ]
+    },
+    {
+      "cue_id": "N30-062",
+      "shot_id": "S30-31",
+      "chapter_id": "battle-end",
+      "entry_ids": [
+        "W6-02",
+        "W6-03"
+      ]
+    },
+    {
+      "cue_id": "N30-063",
+      "shot_id": "S30-32",
+      "chapter_id": "battle-end",
+      "entry_ids": [
+        "W5-01",
+        "W5-02"
+      ]
+    },
+    {
+      "cue_id": "N30-064",
+      "shot_id": "S30-32",
+      "chapter_id": "battle-end",
+      "entry_ids": [
+        "W5-01",
+        "W5-02"
+      ]
+    },
+    {
+      "cue_id": "N30-065",
+      "shot_id": "S30-33",
+      "chapter_id": "battle-end",
+      "entry_ids": [
+        "W6-01"
+      ]
+    },
+    {
+      "cue_id": "N30-066",
+      "shot_id": "S30-33",
+      "chapter_id": "battle-end",
+      "entry_ids": [
+        "W6-01"
+      ]
+    },
+    {
+      "cue_id": "N30-067",
+      "shot_id": "S30-34",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01"
+      ]
+    },
+    {
+      "cue_id": "N30-068",
+      "shot_id": "S30-34",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01"
+      ]
+    },
+    {
+      "cue_id": "N30-069",
+      "shot_id": "S30-35",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01",
+        "W7-05"
+      ]
+    },
+    {
+      "cue_id": "N30-070",
+      "shot_id": "S30-35",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01",
+        "W7-05"
+      ]
+    },
+    {
+      "cue_id": "N30-071",
+      "shot_id": "S30-36",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01"
+      ]
+    },
+    {
+      "cue_id": "N30-072",
+      "shot_id": "S30-36",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01",
+        "W7-03"
+      ]
+    },
+    {
+      "cue_id": "N30-073",
+      "shot_id": "S30-37",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-02"
+      ]
+    },
+    {
+      "cue_id": "N30-074",
+      "shot_id": "S30-37",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-02"
+      ]
+    },
+    {
+      "cue_id": "N30-075",
+      "shot_id": "S30-38",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01"
+      ]
+    },
+    {
+      "cue_id": "N30-076",
+      "shot_id": "S30-38",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01",
+        "W7-05"
+      ]
+    },
+    {
+      "cue_id": "N30-077",
+      "shot_id": "S30-39",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-06"
+      ]
+    },
+    {
+      "cue_id": "N30-078",
+      "shot_id": "S30-39",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-04",
+        "W7-05",
+        "W7-06"
+      ]
+    },
+    {
+      "cue_id": "N30-079",
+      "shot_id": "S30-40",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01",
+        "W7-06"
+      ]
+    },
+    {
+      "cue_id": "N30-080",
+      "shot_id": "S30-40",
+      "chapter_id": "peace",
+      "entry_ids": [
+        "W7-01",
+        "W7-06"
+      ]
+    },
+    {
+      "cue_id": "N30-081",
+      "shot_id": "S30-41",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W1-04",
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-082",
+      "shot_id": "S30-41",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W2-06",
+        "W2-07",
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-083",
+      "shot_id": "S30-42",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-084",
+      "shot_id": "S30-42",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-085",
+      "shot_id": "S30-43",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W4-05",
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-086",
+      "shot_id": "S30-43",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W4-05",
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-087",
+      "shot_id": "S30-44",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W7-06",
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-088",
+      "shot_id": "S30-44",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W4-04",
+        "W5-01",
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-089",
+      "shot_id": "S30-45",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W0-00",
+        "W0-01"
+      ]
+    },
+    {
+      "cue_id": "N30-090",
+      "shot_id": "S30-45",
+      "chapter_id": "epilogue",
+      "entry_ids": [
+        "W0-00",
+        "W0-01"
+      ]
+    }
+  ],
+  "narrative_spine": [
+    {
+      "chapter": "宣战：先够格，再抽选",
+      "packages": [
+        "W1"
+      ],
+      "case": "CASE-A",
+      "answer": "财政准备/成本与已发布军力分层，六张候选卡解释未选最高分。",
+      "working_minutes": [
+        4,
+        7
+      ]
+    },
+    {
+      "chapter": "军队目标：谁获得哪个省",
+      "packages": [
+        "W2"
+      ],
+      "case": "CASE-B",
+      "answer": "有序供给、去重、共同评分与有条件写回，不再讲严格top10。",
+      "working_minutes": [
+        4,
+        7
+      ]
+    },
+    {
+      "chapter": "敢不敢走与接战",
+      "packages": [
+        "W3"
+      ],
+      "case": "CASE-B",
+      "answer": "确定性强度比、mode来源、局部绕路及实际动作分层。",
+      "working_minutes": [
+        3,
+        6
+      ]
+    },
+    {
+      "chapter": "求援怎样变成增援",
+      "packages": [
+        "W4"
+      ],
+      "case": "CASE-B",
+      "answer": "历史状态→资格/匹配→目标/ETA→同一战斗实际加入。",
+      "working_minutes": [
+        3,
+        6
+      ]
+    },
+    {
+      "chapter": "这一仗进入战争账本",
+      "packages": [
+        "W6",
+        "W5"
+      ],
+      "case": "CASE-B",
+      "answer": "八桶分母和单场/累计/总分；W5仅短边界，不承诺未闭合策略。",
+      "working_minutes": [
+        2,
+        4
+      ]
+    },
+    {
+      "chapter": "谁提白和，谁答应",
+      "packages": [
+        "W7"
+      ],
+      "case": "CASE-C",
+      "answer": "角色与两套账→月机会/随机竞争→普通严格正分接受→真实终战。",
+      "working_minutes": [
+        4,
+        7
+      ]
+    }
+  ],
+  "spine_timing_note": "六章局部预算加开场/结尾后按实际案例删并；不是六个独立硬下限或新版时间线。方法约60秒，W5约30–60秒；不能为到40分钟全部拉满。",
+  "w5_editorial_disposition": {
+    "remove_promises": [
+      "普通战争AI何时主动战中撤退的完整决策树",
+      "用raid/barter builder或同省merge证明通用败势逃跑策略"
+    ],
+    "retain_proven_subclaims": [
+      "接战前改目标与战中撤退不同",
+      "资格/执行不等于策略caller",
+      "特殊任务与merge路线取消的有界含义"
+    ],
+    "continue_research_separately": true
+  },
+  "core_case_policy": "All capture contracts are planned/unbound. A labeled diagram can explain a static rule, but cannot satisfy the rebuilt film requirement for a corresponding core causal game case. Background game footage and old G2 planner footage do not repair that missing evidence.",
+  "focused_validation": {
+    "json_roundtrip": true,
+    "unique_entry_ids": true,
+    "all_90_cues_mapped": true,
+    "exact_old_zh_en_and_identity_match": true,
+    "evidence_line_ranges_and_source_hashes_checked": true,
+    "semantic_correctness_automatically_verified": false,
+    "media_or_native_execution_performed": false
+  }
+}
