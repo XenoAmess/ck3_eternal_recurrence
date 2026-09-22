@@ -4,6 +4,13 @@ import { FIT_BUDGET_STRESS_CONTRACT } from '../src/domain/fitBudgetContract'
 import { parseCoatOfArms } from '../src/domain/parser'
 import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
 
+// This suite replaces the production pack with an in-memory manifest and DDS
+// bodies. A newly activated production service worker can otherwise satisfy a
+// DDS request from the real precache after the synthetic manifest was accepted,
+// mixing two pack identities and making the byte contract race-dependent.
+// Offline/service-worker behavior has its own dedicated production suite.
+test.use({ serviceWorkers: 'block' })
+
 function redChannelDds(): Buffer {
   const width = 4
   const height = 4
