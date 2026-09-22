@@ -19,9 +19,14 @@ OBJECTS = (
     "CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj",
     "CMakeFiles/xar_ck3_bridge.dir/src/player_lifestyle_formal_precondition_v1.cpp.obj",
     "CMakeFiles/xar_ck3_bridge.dir/src/player_lifestyle_formal_wire_v1.cpp.obj",
+    "CMakeFiles/xar_ck3_bridge.dir/src/player_lifestyle_stock_perk_legality_v1.cpp.obj",
     "CMakeFiles/xar_ck3_bridge.dir/src/player_lifestyle_selection_native_adapter_v1.cpp.obj",
 )
 TESTS = {
+    "windowless-stock-perk": (
+        "player_lifestyle_stock_perk_legality_v1_test.cpp",
+        "player_lifestyle_stock_perk_legality_v1.cpp",
+    ),
     "precondition": (
         "player_lifestyle_formal_precondition_v1_test.cpp",
         "player_lifestyle_formal_precondition_v1.cpp",

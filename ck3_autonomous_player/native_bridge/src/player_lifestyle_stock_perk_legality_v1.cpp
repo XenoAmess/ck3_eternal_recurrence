@@ -1,4 +1,5 @@
 #include "xar_bridge/player_lifestyle_stock_perk_legality_v1.hpp"
+#include "xar_bridge/player_lifestyle_snapshot_v1.hpp"
 
 #include <algorithm>
 #include <array>
@@ -251,10 +252,22 @@ Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
       View(sample.target_lifestyle_key) != kStockPerkLegalityLifestyleV1) {
     return Status::unavailable_candidate;
   }
-  if (!access.read_player_state(access.context, sample.frame,
+  if (!access.read_player_state(access.context, sample.frame, lifestyle,
                                 sample.player_state) ||
-      !StableKeyValid(sample.player_state.current_lifestyle_key) ||
+      !StableKeyValid(sample.player_state.target_lifestyle_key) ||
+      View(sample.player_state.target_lifestyle_key) !=
+          kStockPerkLegalityLifestyleV1 ||
+      sample.player_state.target_xp_total_raw < 0 ||
+      sample.player_state.target_xp_within_level_raw < 0 ||
+      sample.player_state.target_xp_per_level <= 0 ||
+      sample.player_state.target_xp_per_level >
+          std::numeric_limits<std::int64_t>::max() /
+              kPlayerLifestyleFixedPointScaleV1 ||
+      sample.player_state.target_xp_within_level_raw >=
+          static_cast<std::int64_t>(sample.player_state.target_xp_per_level) *
+              kPlayerLifestyleFixedPointScaleV1 ||
       sample.player_state.unspent_perk_points < 0 ||
+      sample.player_state.used_perk_points < 0 ||
       !sample.player_state.owned_perk_state_known) {
     return Status::unavailable_state;
   }
@@ -335,7 +348,7 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
     return out;
   }
   const bool state_agrees =
-      View(first.player_state.current_lifestyle_key) ==
+      View(first.player_state.target_lifestyle_key) ==
           kStockPerkLegalityLifestyleV1 &&
       first.player_state.unspent_perk_points > 0 &&
       !first.player_state.target_perk_owned;
@@ -350,6 +363,13 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
   out.lifestyle_key = first.target_lifestyle_key;
   out.observed_unspent_points =
       first.player_state.unspent_perk_points;
+  out.observed_used_points = first.player_state.used_perk_points;
+  out.observed_target_xp_total_raw =
+      first.player_state.target_xp_total_raw;
+  out.observed_target_xp_within_level_raw =
+      first.player_state.target_xp_within_level_raw;
+  out.observed_target_xp_per_level =
+      first.player_state.target_xp_per_level;
   out.observed_target_owned = first.player_state.target_perk_owned;
   out.scanned_database_rows = first.span.count;
   out.validator_invoked_twice = true;

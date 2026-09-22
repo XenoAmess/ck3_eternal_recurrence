@@ -7,13 +7,13 @@
     "executable_size_bytes": 95206008,
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
   },
-  "trigger": "Ordinary standard-feudal production may not bind CharacterLifestyleWindow+0xF8 before the lifestyle UI is opened. An unbound window leaves LIFE4 candidate legality unavailable even when current player lifestyle state is readable.",
+  "trigger": "R0135 read-only production observed no current focus and no current-lifestyle progress in a paused peaceful frame; the windowless formal perk fallback stopped at unavailable_state before its exact validator because ReadStockPerkPlayerState required that absent current row. CharacterLifestyleWindow+0xF8 also remains unbound in ordinary map-paused frames.",
   "target": {
     "stable_key": "cutting_corners_perk",
     "lifestyle_key": "stewardship_lifestyle",
     "source": "exact CharacterPerk definition database getter RVA 0x88EC20, bounded pointer span at database+0x68; key at perk+0x18, lifestyle pointer at perk+0x468",
     "max_database_rows": 512,
-    "rule": "scan every pointer and stable key; require one exact target member, observed same-lifestyle current state, observed non-owned status and integer unspent points"
+    "rule": "scan every pointer and stable key; require one exact target member, read that definition's target Lifestyle pointer, its exact XP/point getters, and LIFE2 owned-perk state in one paused frame; a current focus is not required"
   },
   "stock_final_legality": {
     "window_wrapper_rva": "0x132D640",
@@ -34,13 +34,18 @@
     "independent_character_read": "validator reads command+0x20 and resolves exact CCharacter storage; it reads command+0x28/Perk+0x468, unspent getter 0x2668A00 and final check 0x25DFEA0; optional reason context is null",
     "window_boundary": "The window wrapper checks +0xF8 before constructing this command. The stock command validator takes no lifestyle-window owner argument. This source never opens/binds/refreshes the window or submits a command."
   },
-  "sampling": "application-main, one paused episode/player/snapshot/revision/date; verify played ID global and CCharacter+0x18, exact validator slot, complete bounded database; construct and evaluate the stock command twice from fresh source samples and reject drift before publishing an observed boolean",
-  "unknown_policy": "unadmitted build, missing/duplicate definition, unreadable DB/member/key, unknown player points or owned state, missing storage identity, validator ABI mismatch/exception and frame drift remain unavailable. An observed validator false is a native rejection, never a successful action.",
-  "runtime_contract": "Private LIFE4 fallback is wired only when the ordinary window route returns lifestyle_window_unbound_or_stale. It publishes a policy-scoped perk collection while focus stays explicitly unavailable, revalidates the same resolved exact perk definition before one typed submit, and still requires a fresh material postcondition and next production turn. No public query/action/capability is registered or advertised.",
-  "focused_static_tests": "MSVC /W4 /WX /permissive- standalone /Od and /O2 fixtures for stock legality, formal partial precondition, semantic action and native resolved-perk dispatch; private bridge target built Debug and Release",
+  "sampling": "application-main, one paused episode/player/snapshot/revision/date; verify played ID global and CCharacter+0x18, exact validator slot, complete bounded database; pass the resolved target Lifestyle pointer to the private player-state callback, read GetLifestyleXp 0x2668B80, GetPerkPoints 0x2668A00, GetPerkPointsUsed 0x2668A80 and XP-per-level at Lifestyle+0x138, plus LIFE2 owned perks; construct and evaluate the stock command twice from fresh source samples and reject drift before publishing an observed boolean",
+  "unknown_policy": "unadmitted build, missing/duplicate definition, unreadable DB/member/key or target Lifestyle, unknown target XP/points or owned state, missing storage identity, validator ABI mismatch/exception and frame drift remain unavailable. An observed validator false is a native rejection, never a successful action; native true with zero target points or an owned target is inconsistent and unavailable.",
+  "runtime_contract": "Private LIFE4 fallback is wired only when the ordinary window route returns lifestyle_window_unbound_or_stale. It publishes a policy-scoped perk collection while focus stays explicitly unavailable, and preserves LIFE2 current-focus absence rather than substituting target progress for current progress. The read-only query can report native false with target points zero; one typed perk submit still requires its separate present-focus precondition, a fresh material postcondition and next production turn. No public query/action/capability is registered or advertised.",
+  "focused_static_tests": "2026-09-22 R0135 repair: MSVC /W4 /WX /permissive- standalone stock-perk 7/7, focus precondition 11/11, focus native adapter 9/9 under both /Od and /O2; five affected private bridge objects compiled Debug and Release; full Release DLL and injector linked without CK3. Build root Z:/workspace/_m4_r0135_perk_build_20260922.",
+  "static_candidate_artifacts": {
+    "release_dll_sha256": "48E940A9237B62F4C4E623A700FE253EEE52C1F66241C3135CCAA5299541C4A3",
+    "release_injector_sha256": "B0E940B47AE2D28BCDDED0367A738BFD02C1B262D2CB4F2BBE2D1F7BEA382F42",
+    "cmake_cache_sha256": "75348F7719922E3B7A575B9D08D831D282D005EBF7917E67C7E8E91D958F6CC0"
+  },
   "unverified_live": [
-    "R764 proved the ordinary production window route is unbound on a normal map-paused frame; this new fallback has not yet been loaded or queried in CK3.",
+    "R0135 proved the current-row dependency fails before stock perk validation when focus is absent. The target-lifestyle callback repair has not yet been loaded or queried in CK3.",
     "No native true cutting_corners_perk result, typed submit, acquired perk material result or next production turn consumption is proved by this static patch.",
-    "Focus fallback still needs an exact window-independent FocusType source; focus remains explicitly unavailable and is never reported known-empty."
+    "The separate fixed stock-focus query has a production readback, but LIFE2 complete focus enumeration remains unavailable; its collection is never reported known-empty."
   ]
 }
