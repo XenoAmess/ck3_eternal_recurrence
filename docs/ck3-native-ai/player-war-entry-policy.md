@@ -18,6 +18,8 @@
   对应的 typed `declare-war-*`；未通过时仍推进一个原生有界 interval，只有推进动作也不可达时才 blocked。窄门不是胜率预测，
   也不把 unknown 当成零。原生确定性 ratio 与真实随机结算分别见
   [combat-prediction.md](combat-prediction.md) 和 [battle-simulation.md](battle-simulation.md)。
+- [production-live] [R0136 同帧拒战复核](r0136-war-entry-stall-2026-09-23.md)确认 50 帧仅有两条对同一强大领主的合法声明；
+  两条均不属上述窄门且目标实力为玩家的 `14.35..19.03` 倍。持久 checkpoint 只累计 1,455 天；末尾 50 天仍未配对。
 
 ## 修复前差异与当前硬门
 
