@@ -35,7 +35,6 @@ EXE_SHA256 = "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 STATE_STEP = "private-query-player-lifestyle-current-state-v1"
 PERK_STEP = "private-query-player-lifestyle-formal-v1"
 FOCUS_STEP = "private-query-player-lifestyle-stock-focus-v1"
-FOCUS_TARGET = "stewardship_wealth_focus"
 PERK_ABSENT_PROGRESS_ERROR = "native_lifestyle_windowless_policy_perk_unavailable_state"
 
 
@@ -329,25 +328,36 @@ def _query(
     ):
         return {**record, "status": "red", "issue": "private_result_binding_invalid"}
     if step == FOCUS_STEP:
-        status = result.get("status")
-        if not (
-            result.get("read_only") is True
-            and result.get("policy_scoped") is True
-            and result.get("target_key") == FOCUS_TARGET
-            and result.get("snapshot_id") == source_frame["snapshot_id"]
-            and isinstance(status, str)
-        ):
-            return {**record, "status": "red", "issue": "focus_result_binding_invalid"}
-        if status in {"observed_native_legal", "observed_native_illegal"}:
-            if (
-                result.get("native_legal") is not (status == "observed_native_legal")
-                or not _positive_int(result.get("scanned_database_rows"))
-            ):
-                return {**record, "status": "red", "issue": "focus_legality_malformed"}
-            return {**record, "status": "observed", "native_status": status}
-        if status.startswith("unavailable_") and "native_legal" not in result:
-            return {**record, "status": "native_unavailable", "native_status": status}
-        return {**record, "status": "red", "issue": "focus_status_malformed"}
+        from xar_autoplayer.bridge.player_lifestyle_private_transport_v1 import (
+            parse_player_lifestyle_focus_private_v1,
+        )
+
+        typed = parse_player_lifestyle_focus_private_v1(
+            response,
+            expected_request_id=request_id,
+            source_frame=source_frame,
+            independent_after_frame=after,
+        )
+        if typed["status"] == "observed":
+            return {
+                **record,
+                "status": "observed",
+                "native_status": result["status"],
+                "target_lifestyle_progress": typed["target_lifestyle_progress"],
+            }
+        if typed["status"] == "target_progress_unavailable":
+            return {
+                **record,
+                "status": "native_unavailable",
+                "native_status": "target_progress_unavailable",
+                "basis": "same_frame_exact_target_getters_unavailable",
+            }
+        return {
+            **record,
+            "status": "red",
+            "issue": typed.get("issue", "native_focus_read_untyped"),
+            "native_status": typed.get("native_status", result.get("status")),
+        }
     snapshot = result.get("snapshot")
     if (
         result.get("status") == "available"

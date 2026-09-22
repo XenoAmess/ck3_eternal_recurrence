@@ -9,6 +9,10 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
+import sys
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
 from run_player_lifestyle_current_state_read import PRIVATE_STEP as STATE_STEP
 from run_player_lifestyle_current_state_read import _frame as life2_frame
@@ -53,6 +57,7 @@ class FakeState:
         self.endpoint = endpoint
         self.frame = paused_frame()
         self.focus_status = "observed_native_legal"
+        self.focus_progress_presence = "present"
         self.perk_status = "available"
         self.perk_error: str | None = None
         self.progress_presence = "present"
@@ -108,9 +113,25 @@ class FakeState:
                 policy_scoped=True,
                 target_key="stewardship_wealth_focus",
                 snapshot_id="native:3",
-                native_legal=self.focus_status == "observed_native_legal",
-                scanned_database_rows=16,
             )
+            if self.focus_status in {
+                "observed_native_legal", "observed_native_illegal"
+            }:
+                result.update(
+                    native_legal=self.focus_status == "observed_native_legal",
+                    scanned_database_rows=16,
+                    target_lifestyle_key="stewardship_lifestyle",
+                    target_lifestyle_progress=(
+                        {
+                            "presence": "present", "source": "exact_native_getters",
+                            "xp_total_raw": 0, "xp_within_level_raw": 0,
+                            "xp_per_level": 1000, "unspent_perk_points": 0,
+                            "used_perk_points": 0,
+                        }
+                        if self.focus_progress_presence == "present" else
+                        {"presence": "unavailable", "reason": "target_native_getters_unavailable"}
+                    ),
+                )
         else:
             raise RuntimeError("test sent an unexpected step")
         return {
@@ -225,6 +246,35 @@ class LifeThreeQueryTest(unittest.TestCase):
             )
         self.assertEqual(result["status"], "evidence_insufficient")
         self.assertEqual(result["steps"][2]["status"], "native_unavailable")
+
+    def test_focus_target_progress_unavailable_is_evidence_insufficient(self) -> None:
+        driver = FakeDriver()
+        driver.state.focus_progress_presence = "unavailable"
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_three_queries(
+                driver, self.manifest(), Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+        self.assertEqual(result["status"], "evidence_insufficient")
+        self.assertEqual(result["steps"][1]["status"], "native_unavailable")
+        self.assertNotIn("target_lifestyle_progress", result["steps"][1])
+        self.assertEqual(result["gameplay_actions"], 0)
+        self.assertFalse(result["date_advanced"])
+
+    def test_focus_source_read_failure_stays_red(self) -> None:
+        driver = FakeDriver()
+        driver.state.focus_status = "unavailable_database"
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_three_queries(
+                driver, self.manifest(), Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+        self.assertEqual(result["status"], "red")
+        self.assertEqual(result["steps"][1]["native_status"], "unavailable_database")
+        self.assertEqual(
+            [item["step"] for item in driver.endpoint.sent],
+            [STATE_STEP, FOCUS_STEP],
+        )
 
     def test_absent_progress_and_exact_perk_error_are_typed_unavailable(self) -> None:
         driver = FakeDriver()

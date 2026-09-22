@@ -60,9 +60,12 @@ driver reconciles to h1094, discards unpaired h1095–h1097, and records the
 new process's restore row; until then the tail is not paired with the save.
 The owner must read the paired checkpoint metadata to fill
 `expected_history_index`; the runner validates it and refuses a mismatched
-prepared profile. The existing private Release DLL SHA-256 is
+prepared profile. The R0112 private Release DLL SHA-256 was
 `C9466D358F4F36BE68E7CF4ECA6BEC9E20490AEE7D99469736B368A9C7F4D0FE`.
-These hashes identify a candidate, not an instruction to hot-swap R0101's
+It predates target-lifestyle progress. The M4-FOCUS-OBS private Release DLL
+SHA-256 `3778DBE7BBE5C62BCD7A50F93E82FF1B337E34160F6E821F21215B2599C39460`
+is a new offline candidate and needs its own exact source/manifest pairing.
+These hashes identify candidates, not an instruction to hot-swap R0101's
 loaded files. A new run must cold-start only after the previous instance is
 dead and a new monotonic R-number is allocated.
 `source_repo` must be a retained candidate checkout, not a temporary
@@ -98,6 +101,18 @@ decision, earned point, submitted action, or completed gate. The raw native
 response stays in evidence. Any other native command rejection, malformed
 binding or frame drift stays RED. A full observation yields
 `three_queries_observed` only if all three typed reads and frame checks pass.
+
+For the post-R0112 target-progress extension, the focus read now additionally
+requires `target_lifestyle_key=stewardship_lifestyle` and a same-frame
+`target_lifestyle_progress` with `presence=present`, `source=exact_native_getters`,
+and typed total/within-level XP, XP-per-level and unspent/used perk points.
+Only then is the focus step `observed`; `presence=unavailable` is
+`evidence_insufficient`, with no invented zero, and a native source/read/ABI
+failure remains RED. The runner delegates these checks to the versioned
+private typed parser, retains the raw response and checks the independent
+after-frame. R0112 proved stock focus legality but used the older DLL and
+cannot prove these new target-progress fields. This runner change itself is
+no-launch and does not supply a focus action or public capability.
 
 The report and each raw query response are written under the fresh evidence
 directory. The final report includes candidate hashes, process identity,
