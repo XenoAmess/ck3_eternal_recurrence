@@ -1010,3 +1010,51 @@ formal turn that consumes that receipt, and a paired checkpoint. The runner
 previously checked every LIFE receipt as
 a perk `HasPerk` result, so a true focus result would fail its postcondition.
 That runner defect is separate from R0137's legitimate zero-point perk result.
+
+## R0140 Robert day-zero planner order (2026-09-23)
+
+The exact 1.19.0.6 EXE remains
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+R0140 cold-restored the genuine R0138 Robert day-zero pair (actor `29829`,
+`date_raw=53144328`) with the combined Robert/slot43 DLL. Its retained formal
+report is
+`Z:/ck3_mod_rewrite_process_assets/m4-robert-slot43-20260923/live-R0140/formal-report.txt`
+(SHA-256 `5394EB0EB97BB4542417FEB6D7A05CD2ADE06F3193DA50E7467D99CBFCF0ADBD`).
+Four same-frame turns queried nine declarable war rows, then native war-entry
+assessments for targets `31899`, `37169`, and `31549`. The focus gate remained
+`await_submit`: no focus query, typed action, date advance, or new checkpoint
+occurred. The process tree was reclaimed. This is a planner-order RED, not
+evidence that the Robert focus is illegal.
+
+The third assessment gives target `31549` a positive conservative actor-base
+power margin of `2,010,000,000` raw, so the present war planner stops asking
+for alternative targets. Its `minor_religious_war` CB is outside the current
+automatic single-county de-jure declaration slice. Source control flow then
+selects `native_war_entry_no_declare` / `life-advance`; the old private LIFE
+consumer only runs after that baseline choice. Merely increasing the turn bound
+would eventually reach LIFE, but it would still assess war before the opening
+focus, contrary to the Robert opening contract. No declaration was submitted.
+
+The opt-in opening route must read LIFE2 current focus and current-lifestyle
+XP/points plus the policy-scoped stock-focus native final legality on one
+unchanged paused frame before any war query. An existing effective focus is a
+distinct observed outcome and must not be submitted again. With no current
+focus, the existing independent campaign-root query must prove peaceful
+standard feudal scope before the single typed focus. The current exact-key
+receipt, checkpoint and following-turn consumption remain mandatory before a
+date advance. If the frame, scope or native legality cannot be proved, the
+route remains RED without a war query or date advance.
+
+```mermaid
+flowchart TD
+  A[Robert day-zero paused frame] --> B[LIFE2 current focus and XP/points]
+  B --> C[Policy-scoped stock focus final legality]
+  C --> D{Effective current focus?}
+  D -- yes --> E[Record existing focus; no typed submit]
+  D -- no --> F[Independent peaceful feudal root query]
+  F --> G{Stock focus native legal?}
+  G -- yes --> H[One typed focus]
+  H -. pending live proof .-> I[Independent receipt, checkpoint, next turn]
+  I -. pending live proof .-> J[War planning and date advance]
+  G -. unavailable or illegal .-> R[RED before war query or date]
+```

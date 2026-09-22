@@ -713,6 +713,9 @@ def native_auto_run(
         driver.allow_private_construction_formal_trial = (
             allow_private_construction_formal_trial is True
         )
+        if opening_focus_gate is not None:
+            driver.require_initial_lifestyle_focus_before_date_advance = True
+            driver.initial_lifestyle_focus_gate_stage = "await_submit"
         bind_succession_lifecycle = getattr(
             driver, "bind_succession_lifecycle_v1", None
         )
@@ -774,6 +777,57 @@ def native_auto_run(
             if opening_focus_gate is not None:
                 selected = candidate.get("selected_step")
                 plan = candidate.get("plan")
+                if opening_focus_gate["stage"] == "await_submit":
+                    existing = (
+                        plan.get("initial_lifestyle_focus_existing")
+                        if isinstance(plan, dict) else None
+                    )
+                    if existing is not None:
+                        source = (
+                            existing.get("source_frame")
+                            if isinstance(existing, dict) else None
+                        )
+                        focus = (
+                            existing.get("current_focus")
+                            if isinstance(existing, dict) else None
+                        )
+                        progress = (
+                            existing.get("current_lifestyle_progress")
+                            if isinstance(existing, dict) else None
+                        )
+                        if not (
+                            selected == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+                            and isinstance(source, dict)
+                            and source.get("snapshot_id") == candidate.get("snapshot_id")
+                            and source.get("revision") == candidate.get("revision")
+                            and isinstance(focus, dict)
+                            and focus.get("presence") == "present"
+                            and isinstance(focus.get("key"), str)
+                            and focus.get("key")
+                            and isinstance(progress, dict)
+                            and progress.get("presence") == "present"
+                            and progress.get("lifestyle_key") == focus.get("lifestyle_key")
+                            and all(
+                                isinstance(progress.get(key), int)
+                                and not isinstance(progress.get(key), bool)
+                                and progress[key] >= 0
+                                for key in (
+                                    "xp_total_raw", "xp_within_level_raw",
+                                    "xp_per_level", "unspent_perk_points",
+                                    "used_perk_points",
+                                )
+                            )
+                            and progress["xp_per_level"] > 0
+                            and existing.get("stock_focus_native_legal") in {True, False}
+                        ):
+                            raise AgentError(
+                                "existing opening LIFE focus proof is incomplete"
+                            )
+                        opening_focus_gate["stage"] = "complete"
+                        opening_focus_gate["existing_focus"] = focus["key"]
+                        driver.require_initial_lifestyle_focus_before_date_advance = (
+                            False
+                        )
                 if opening_focus_gate["stage"] == "await_consumption":
                     consumed = (
                         plan.get("lifestyle_receipt_consumed")
@@ -790,12 +844,20 @@ def native_auto_run(
                         and opening_focus_gate["checkpoint_saved"] is True
                     ):
                         opening_focus_gate["stage"] = "complete"
+                        driver.require_initial_lifestyle_focus_before_date_advance = (
+                            False
+                        )
                 if opening_focus_gate["stage"] != "complete":
                     permitted = (
                         isinstance(selected, str)
                         and (
-                            selected.startswith("query-")
-                            or selected == "save-checkpoint"
+                            (
+                                opening_focus_gate["stage"] == "await_submit"
+                                and selected == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+                                and isinstance(plan, dict)
+                                and plan.get("opening_lifestyle_readback")
+                                == "absent_native_legal"
+                            )
                             or (
                                 opening_focus_gate["stage"] == "await_submit"
                                 and selected == PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
@@ -1246,6 +1308,7 @@ def native_auto_run(
                 ):
                     raise AgentError("initial LIFE focus typed submit is not pending verification")
                 opening_focus_gate["stage"] = "await_receipt"
+                driver.initial_lifestyle_focus_gate_stage = "await_receipt"
                 opening_focus_gate["action_request_id"] = focus_submit["action_request_id"]
                 opening_focus_gate["target_key"] = focus_submit["target_key"]
             if step == PRIVATE_LIFESTYLE_RECEIPT_STEP:
@@ -1338,6 +1401,7 @@ def native_auto_run(
                         ):
                             raise AgentError("initial LIFE focus receipt does not match its one typed submit")
                         opening_focus_gate["stage"] = "await_consumption"
+                        driver.initial_lifestyle_focus_gate_stage = "await_consumption"
                     evidence.append("lifestyle_focus_independent_later_frame")
                 else:
                     evidence.append("lifestyle_has_perk_independent_later_frame")
