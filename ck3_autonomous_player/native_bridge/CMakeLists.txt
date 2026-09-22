@@ -276,6 +276,15 @@ option(
   "Enable unadvertised observed-first-heir marriage submit and material readback"
   OFF
 )
+option(
+  XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1
+  "Enable unadvertised five-candidate paused application-main alliance projection"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1 AND
+   NOT XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+  message(FATAL_ERROR "Alliance projection requires the private first-heir legality query")
+endif()
 if(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1 AND
    NOT XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
   message(FATAL_ERROR "First-heir marriage action requires its private legality query")
@@ -983,6 +992,12 @@ if(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
     XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1=1
   )
 endif()
+if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/marriage_candidate_alliance_projection_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1=1)
+endif()
 if(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
   if(MSVC)
     set_source_files_properties(
@@ -1138,6 +1153,23 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    add_executable(xar_ck3_marriage_candidate_alliance_projection_v1_test
+      src/marriage_candidate_alliance_projection_v1.cpp
+      src/marriage_candidate_alliance_projection_v1_test.cpp)
+    target_include_directories(
+      xar_ck3_marriage_candidate_alliance_projection_v1_test PRIVATE include)
+    target_compile_definitions(
+      xar_ck3_marriage_candidate_alliance_projection_v1_test PRIVATE
+      NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    if(MSVC)
+      target_compile_options(
+        xar_ck3_marriage_candidate_alliance_projection_v1_test PRIVATE
+        /W4 /WX /permissive- /EHsc /UNDEBUG)
+    endif()
+    add_test(NAME xar_ck3_native_bridge_marriage_candidate_alliance_projection_v1
+      COMMAND xar_ck3_marriage_candidate_alliance_projection_v1_test)
+  endif()
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
   add_executable(xar_ck3_frontend_bookmark_model_probe_v1_test

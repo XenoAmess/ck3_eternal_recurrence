@@ -16433,6 +16433,120 @@ ReadArrangeMarriageFamilyCandidatesV1(
   return ReadArrangeMarriageFamilyCandidatesResultV1::available;
 }
 
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+MarriageCandidateAlliancePrivateReadV1
+ReadMarriageCandidateAlliancePrivateV1(
+    const Bindings &bindings,
+    const ArrangeMarriageFamilyCandidateV1 &observed,
+    const bridge::MarriageCandidateAllianceProjectionEnvironmentV1
+        &projection_environment) noexcept {
+  MarriageCandidateAlliancePrivateReadV1 result{};
+  using Failure = MarriageCandidateAlliancePrivateFailureV1;
+  if (!HasArrangeMarriageReadBindings(bindings) ||
+      bindings.read_character_interaction_answer_score == nullptr ||
+      bindings.evaluate_character_interaction_answer == nullptr) {
+    return result;
+  }
+  Snapshot before{};
+  if (!ReadSnapshot(bindings, before) || !before.paused || !before.map_ready ||
+      !before.has_played_character || !before.played_character_alive) {
+    result.failure = Failure::frame_changed;
+    return result;
+  }
+  if (observed.played_character_id <= 0 ||
+      before.played_character_id != observed.played_character_id ||
+      observed.subject_character_id <= 0 ||
+      observed.candidate_character_id <= 0 ||
+      observed.recipient_matchmaker_character_id <= 0 ||
+      observed.intermediary_character_id != -1 ||
+      observed.subject_character_id == observed.candidate_character_id ||
+      !observed.complete_can_send ||
+      !observed.recipient_answer_allows_send ||
+      observed.recipient_answer_status_raw > 1) {
+    result.failure = Failure::identity_changed;
+    return result;
+  }
+  void *const heir = ResolveCharacter(bindings, observed.subject_character_id);
+  void *const candidate =
+      ResolveCharacter(bindings, observed.candidate_character_id);
+  void *const recipient = ResolveCharacter(
+      bindings, observed.recipient_matchmaker_character_id);
+  if (heir == nullptr || candidate == nullptr || recipient == nullptr ||
+      LoadAt<void *>(heir, kCharacterDeathDataOffset) != nullptr ||
+      LoadAt<void *>(candidate, kCharacterDeathDataOffset) != nullptr ||
+      LoadAt<void *>(recipient, kCharacterDeathDataOffset) != nullptr) {
+    result.failure = Failure::identity_changed;
+    return result;
+  }
+  CharacterInteractionContextStorage storage{};
+  ArrangeMarriageValidationSample roles{};
+  if (!PrepareArrangeMarriageContext(
+          bindings, observed.played_character_id,
+          observed.subject_character_id, observed.candidate_character_id,
+          storage, &roles)) {
+    result.failure = Failure::binding_unavailable;
+    return result;
+  }
+  void *const context = storage.bytes.data();
+  if (roles.actor_character_id != observed.played_character_id ||
+      roles.recipient_character_id !=
+          observed.recipient_matchmaker_character_id ||
+      roles.secondary_actor_character_id != observed.subject_character_id ||
+      roles.secondary_recipient_character_id !=
+          observed.candidate_character_id ||
+      roles.intermediary_character_id != observed.intermediary_character_id) {
+    bindings.destroy_character_interaction_context(context);
+    result.failure = Failure::role_changed;
+    return result;
+  }
+  std::int64_t acceptance = 0;
+  const bool can_send =
+      bindings.validate_character_interaction_context(context, nullptr);
+  const bool acceptance_ready =
+      bindings.read_character_interaction_answer_score(context, &acceptance) ==
+      &acceptance;
+  const auto answer = acceptance_ready
+      ? bindings.evaluate_character_interaction_answer(
+            context, 1, 1, nullptr, nullptr)
+      : std::uint8_t{3};
+  if (!can_send || !acceptance_ready ||
+      acceptance != observed.recipient_ai_accept_raw ||
+      answer != observed.recipient_answer_status_raw || answer > 1) {
+    bindings.destroy_character_interaction_context(context);
+    result.failure = Failure::final_legality_changed;
+    return result;
+  }
+  result.projection_failure =
+      bridge::ReadMarriageCandidateAllianceProjectionV1(
+          projection_environment, context,
+          static_cast<std::uint32_t>(observed.played_character_id),
+          static_cast<std::uint32_t>(
+              observed.recipient_matchmaker_character_id),
+          static_cast<std::uint32_t>(observed.subject_character_id),
+          static_cast<std::uint32_t>(observed.candidate_character_id),
+          result.projection);
+  bindings.destroy_character_interaction_context(context);
+  if (result.projection_failure !=
+      bridge::MarriageCandidateAllianceProjectionFailureV1::none) {
+    result.failure = Failure::projection_unavailable;
+    result.projection = {};
+    return result;
+  }
+  Snapshot after{};
+  if (!ReadSnapshot(bindings, after) || after != before ||
+      ResolveCharacter(bindings, observed.subject_character_id) != heir ||
+      ResolveCharacter(bindings, observed.candidate_character_id) != candidate ||
+      ResolveCharacter(bindings, observed.recipient_matchmaker_character_id) !=
+          recipient) {
+    result.failure = Failure::frame_changed;
+    result.projection = {};
+    return result;
+  }
+  result.failure = Failure::none;
+  return result;
+}
+#endif
+
 ArrangeMarriageResult SubmitArrangeMarriage(
     const Bindings &bindings,
     const ArrangeMarriageChoice &choice) noexcept {

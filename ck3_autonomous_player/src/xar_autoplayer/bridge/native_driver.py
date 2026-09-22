@@ -2378,6 +2378,21 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=timeout_seconds,
         )
 
+    def query_first_heir_candidate_alliance_projection_private_v1(
+        self, *, legality: dict[str, object],
+        candidate_character_ids: list[int], timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Private read of five current final-legal candidates, not an alliance."""
+        from .marriage_candidate_alliance_private_transport import (
+            query_first_heir_candidate_alliance_projection_private_v1,
+        )
+
+        return query_first_heir_candidate_alliance_projection_private_v1(
+            self, legality=legality,
+            candidate_character_ids=candidate_character_ids,
+            timeout_seconds=timeout_seconds,
+        )
+
     def submit_observed_first_heir_marriage_private_v1(
         self, *, legality: dict[str, object], candidate_character_id: int,
         timeout_seconds: float = 360.0,
