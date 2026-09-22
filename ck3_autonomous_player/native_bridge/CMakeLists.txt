@@ -219,6 +219,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1
+  "Admit one fixed-key private read-only CE1 treatment modifier query"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1
   "Admit unadvertised exact-build LIFE2/LIFE4 query and LIFE6/LIFE7 perk candidate on application-main"
   OFF
@@ -481,6 +487,8 @@ add_library(xar_ck3_bridge SHARED
   src/current_timeline_blocker_context_v1.cpp
   src/current_timeline_blocker_context_v1_mailbox.cpp
   src/current_timeline_blocker_context_v1_native.cpp
+  src/player_epidemic_treatment_presence_v1.cpp
+  src/player_epidemic_treatment_presence_v1_mailbox.cpp
   src/death_succession_modal_continue_v1.cpp
   src/death_succession_modal_continue_v1_mailbox.cpp
   src/event_window_context_v1.cpp
@@ -917,6 +925,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
@@ -3280,6 +3293,25 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_current_timeline_blocker_context_v1
     COMMAND xar_ck3_current_timeline_blocker_context_v1_test
+  )
+
+  add_executable(xar_ck3_player_epidemic_treatment_presence_v1_test
+    src/player_epidemic_treatment_presence_v1.cpp
+    src/player_epidemic_treatment_presence_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_player_epidemic_treatment_presence_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_player_epidemic_treatment_presence_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_player_epidemic_treatment_presence_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_player_epidemic_treatment_presence_v1
+    COMMAND xar_ck3_player_epidemic_treatment_presence_v1_test
   )
 
   add_executable(xar_ck3_death_succession_modal_continue_v1_test
