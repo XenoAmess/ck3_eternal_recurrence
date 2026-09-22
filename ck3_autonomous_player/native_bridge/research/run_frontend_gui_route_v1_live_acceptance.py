@@ -51,6 +51,7 @@ from xar_autoplayer.bridge.coat_of_arms_source_upload_v2 import (  # noqa: E402
     COAT_OF_ARMS_SOURCE_UPLOAD_V2_MAX_CHUNK_BYTES,
 )
 from xar_autoplayer.bridge.frontend_gui_route_contract import (  # noqa: E402
+    FEUDAL_1066_CHARACTER_NAME_KEYS,
     frontend_coat_of_arms_background_patterns_ready_v1,
     frontend_coat_of_arms_custom_mode_target_ready_v1,
     frontend_lobby_default_ruler_designer_ready_v1,
@@ -83,6 +84,7 @@ from xar_autoplayer.runtime import (  # noqa: E402
 EXPECTED_CK3_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
+FEUDAL_1066_CHARACTER_KEYS = FEUDAL_1066_CHARACTER_NAME_KEYS
 QUERY_CAPABILITY = "game.command.query-frontend-gui-route-v1"
 INSPECT_CAPABILITY = "game.command.inspect-frontend-gui-tree-v1"
 ACTIVATE_NEW_GAME_CAPABILITY = "game.command.activate-frontend-new-game-v1"
@@ -413,6 +415,12 @@ def _parser() -> argparse.ArgumentParser:
             "selection, independent model requery, private StartGame, paused "
             "public campaign-root and paired checkpoint; public MCP tools stay OFF"
         ),
+    )
+    parser.add_argument(
+        "--bookmark-character-key",
+        choices=FEUDAL_1066_CHARACTER_KEYS,
+        default=FEUDAL_1066_CHARACTER_KEYS[0],
+        help="exact stock 1066 feudal character key; must match the private DLL target",
     )
     parser.add_argument(
         "--ordinary-campaign-xar-off-seed",
@@ -771,8 +779,13 @@ def _call_private_bookmarks_model(
     }
 
 
-def _private_1066_candidate_index(model: object) -> int:
+def _private_1066_candidate_index(
+    model: object,
+    expected_character_name_key: str = FEUDAL_1066_CHARACTER_KEYS[0],
+) -> int:
     """Use only this exact frame's selected Bookmark and native element keys."""
+    if expected_character_name_key not in FEUDAL_1066_CHARACTER_KEYS:
+        raise ValueError("unsupported exact-build 1066 feudal character key")
     if not isinstance(model, dict):
         raise ValueError("private 1066 model is not an object")
     keys = model.get("candidate_keys")
@@ -802,7 +815,7 @@ def _private_1066_candidate_index(model: object) -> int:
         or isinstance(index, bool)
         or not 0 <= index < count
         or keys[index]
-        != "bookmark_rags_to_riches_petty_king_murchad"
+        != expected_character_name_key
     ):
         raise ValueError("current native 1066 feudal candidate identity is unproven")
     return index
@@ -880,6 +893,7 @@ def _controlled_private_feudal_start(
     before_model: dict[str, object],
     timeout_seconds: float,
     *,
+    expected_character_name_key: str = FEUDAL_1066_CHARACTER_KEYS[0],
     expected_succession_lifecycle: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """One private selection and StartGame, each followed by separate state."""
@@ -888,6 +902,7 @@ def _controlled_private_feudal_start(
     flow: dict[str, object] = {
         "scope": "controlled-private-exact-build-1066",
         "public_query_action_advertised": False,
+        "expected_character_name_key": expected_character_name_key,
         "selector_submitted": False,
         "start_submitted": False,
         "ok": False,
@@ -899,15 +914,22 @@ def _controlled_private_feudal_start(
         return flow
 
     try:
-        target_index = _private_1066_candidate_index(before_model)
+        target_index = _private_1066_candidate_index(
+            before_model, expected_character_name_key
+        )
     except ValueError as error:
         return stop(str(error))
     selected_index = before_model.get("selected_character_index")
-    if selected_index not in {-1, target_index}:
-        return stop("another native Bookmark character is selected")
+    keys = before_model["candidate_keys"]
+    if (
+        not isinstance(selected_index, int)
+        or isinstance(selected_index, bool)
+        or not -1 <= selected_index < len(keys)
+    ):
+        return stop("native Bookmark selected index is invalid")
     flow["native_target_index_before"] = target_index
     flow["selected_index_before"] = selected_index
-    if selected_index == -1:
+    if selected_index != target_index:
         selector = _call_private_frontend_action(
             driver, "select-frontend-supported-1066-character-v1",
             max(0.0, deadline - time.monotonic()),
@@ -931,7 +953,9 @@ def _controlled_private_feudal_start(
     if after_call.get("is_error") is not False:
         return stop("independent post-selection native model unavailable")
     try:
-        after_target_index = _private_1066_candidate_index(after_model)
+        after_target_index = _private_1066_candidate_index(
+            after_model, expected_character_name_key
+        )
     except ValueError as error:
         return stop(f"independent post-selection identity changed: {error}")
     if (
@@ -3579,6 +3603,7 @@ async def _mcp_sequence(
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
     bookmarks_select_start_private: bool = False,
+    expected_character_name_key: str = FEUDAL_1066_CHARACTER_KEYS[0],
     expected_succession_lifecycle: dict[str, object] | None = None,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
@@ -4088,11 +4113,17 @@ async def _mcp_sequence(
                         bool,
                     )
                     and private_model["supported_1066_candidate_index"] >= 0
+                    and isinstance(private_model.get("candidate_keys"), list)
+                    and private_model["supported_1066_candidate_index"]
+                    < len(private_model["candidate_keys"])
+                    and private_model["candidate_keys"][private_model["supported_1066_candidate_index"]]
+                    == expected_character_name_key
                 )
                 if bookmarks_select_start_private:
                     private_start_flow = _controlled_private_feudal_start(
                         driver, private_model,
                         max(0.0, deadline - time.monotonic()),
+                        expected_character_name_key=expected_character_name_key,
                         expected_succession_lifecycle=(
                             expected_succession_lifecycle
                         ),
@@ -4769,6 +4800,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     ordinary_campaign_xar_off_seed = bool(
         getattr(args, "ordinary_campaign_xar_off_seed", False)
     )
+    expected_character_name_key = getattr(
+        args, "bookmark_character_key", FEUDAL_1066_CHARACTER_KEYS[0]
+    )
+    if expected_character_name_key not in FEUDAL_1066_CHARACTER_KEYS:
+        raise ValueError("unsupported exact-build 1066 feudal character key")
     reference_preview = (
         _load_reference_preview(args.reference_preview)
         if getattr(args, "reference_preview", None) is not None
@@ -4997,6 +5033,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "bookmarks_model_private_requested": bookmarks_model_private,
         "bookmarks_select_start_private_requested":
             bookmarks_select_start_private,
+        "bookmark_character_key": expected_character_name_key,
         "ordinary_campaign_xar_off_seed_requested": (
             ordinary_campaign_xar_off_seed
         ),
@@ -5283,6 +5320,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
                 bookmarks_select_start_private=bookmarks_select_start_private,
+                expected_character_name_key=expected_character_name_key,
                 expected_succession_lifecycle=succession_lifecycle_binding,
             )
         )

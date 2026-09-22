@@ -50,6 +50,11 @@ def _parser() -> argparse.ArgumentParser:
         help="Build the private controlled selected-bookmark StartGame candidate",
     )
     parser.add_argument(
+        "--feudal-1066-target-robert",
+        action="store_true",
+        help="Bind that private 1066 candidate to Robert's exact stock bookmark key",
+    )
+    parser.add_argument(
         "--focused-feudal-start", action="store_true",
         help="Build only bridge, injector, and exact adapter registry test",
     )
@@ -189,6 +194,13 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         raise FreshBuildError(
             "--focused-feudal-start requires the private candidate build"
         )
+    if (
+        args.feudal_1066_target_robert
+        and not args.feudal_1066_selected_bookmark_private
+    ):
+        raise FreshBuildError(
+            "--feudal-1066-target-robert requires the private candidate build"
+        )
     source_dir = Path(__file__).resolve().parents[1]
     build_dir = _resolve_build_dir(source_dir, args.build_dir)
     ck3_executable = (
@@ -219,6 +231,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "tests_enabled": not args.skip_tests,
         "feudal_1066_selected_bookmark_private":
             args.feudal_1066_selected_bookmark_private,
+        "feudal_1066_target_robert": args.feudal_1066_target_robert,
         "build_jobs": args.build_jobs,
         "focused_feudal_start": args.focused_feudal_start,
         "ck3_executable_path": (
@@ -254,6 +267,11 @@ def run(args: argparse.Namespace) -> dict[str, object]:
             configure.append(
                 "-DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON"
             )
+            configure.append(
+                "-DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=ON"
+            )
+        if args.feudal_1066_target_robert:
+            configure.append("-DXAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1=ON")
         _run_checked(configure)
         prefix_mode = repair_ninja_msvc_dependency_prefix(build_dir, compiler)
         build = [cmake, "--build", str(build_dir), "--parallel"]
@@ -265,6 +283,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                 "xar_ck3_bridge",
                 "xar_ck3_bridge_injector",
                 "xar_ck3_adapter_registry_test",
+                "xar_ck3_frontend_bookmark_model_probe_v1_test",
             ])
         _run_checked(build)
         for dependency_object in DEPENDENCY_OBJECTS:
@@ -284,7 +303,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                     "--output-on-failure"]
             if args.focused_feudal_start:
                 test.extend([
-                    "-R", "^xar_ck3_native_bridge_adapter_registry$"
+                    "-R", "^xar_ck3_native_bridge_(adapter_registry|frontend_bookmark_model_probe_v1)$"
                 ])
             _run_checked(test)
     finally:
@@ -313,7 +332,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "injector_sha256": _sha256(injector),
         "tests_ran": not args.skip_tests,
         "test_scope": (
-            "feudal-start-adapter-registry"
+            "feudal-start-adapter-and-bookmark-model"
             if args.focused_feudal_start
             else "all-native-offline"
         ),

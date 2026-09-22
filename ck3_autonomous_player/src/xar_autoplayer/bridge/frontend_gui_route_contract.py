@@ -63,6 +63,10 @@ QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_CAPABILITY: Final = (
 QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP: Final = (
     "query-frontend-selected-1066-feudal-candidate-v1"
 )
+FEUDAL_1066_CHARACTER_NAME_KEYS: Final = (
+    "bookmark_rags_to_riches_petty_king_murchad",
+    "bookmark_rags_to_riches_duke_robert",
+)
 ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY: Final = (
     "game.command.activate-frontend-select-random-playable-v1"
 )
@@ -482,10 +486,7 @@ def normalize_frontend_selected_1066_feudal_candidate_v1(
     ),
 ) -> dict[str, object]:
     """Accept only native model identity, never a repeated GUI widget name."""
-    if not isinstance(expected_character_name_key, str) or not (
-        expected_character_name_key.startswith("bookmark_rags_to_riches_")
-        and len(expected_character_name_key) <= 128
-    ):
+    if expected_character_name_key not in FEUDAL_1066_CHARACTER_NAME_KEYS:
         raise ValueError("expected bookmark character key is invalid")
     if not isinstance(result, dict):
         raise ValueError("frontend selected-candidate query must be an object")
@@ -550,6 +551,8 @@ def normalize_frontend_start_selected_bookmark_v1(
     ),
 ) -> dict[str, object]:
     """Require a new paused map and independent feudal campaign-root result."""
+    if expected_character_name_key not in FEUDAL_1066_CHARACTER_NAME_KEYS:
+        raise ValueError("expected bookmark character key is invalid")
     if not isinstance(acknowledgement, dict):
         raise ValueError("frontend StartGame acknowledgement must be an object")
     government = campaign_root.get("government")

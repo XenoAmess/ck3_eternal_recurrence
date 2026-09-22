@@ -77,6 +77,27 @@ def _candidate() -> dict[str, object]:
 
 
 class FeudalSelectedBookmarkStartTests(unittest.TestCase):
+    def test_robert_candidate_requires_exact_requested_key(self) -> None:
+        robert = "bookmark_rags_to_riches_duke_robert"
+        raw = _candidate_raw()
+        raw["selected_character_name_key"] = robert
+        with self.assertRaises(ValueError):
+            normalize_frontend_selected_1066_feudal_candidate_v1(raw)
+        selected = normalize_frontend_selected_1066_feudal_candidate_v1(
+            raw, expected_character_name_key=robert
+        )
+        started = normalize_frontend_start_selected_bookmark_v1(
+            _ack(), before=_before(), selected_candidate=selected,
+            after_snapshot=_paused_map(), campaign_root=_root(),
+            expected_character_name_key=robert,
+        )
+        self.assertTrue(started["postcondition_verified"])
+        with self.assertRaises(ValueError):
+            normalize_frontend_start_selected_bookmark_v1(
+                _ack(), before=_before(), selected_candidate=selected,
+                after_snapshot=_paused_map(), campaign_root=_root(),
+            )
+
     def test_robert_exact_build_selection_and_start_are_zero_input(self) -> None:
         driver = object.__new__(NativeHeadlessGameplayDriver)
         driver.frontend_transition_timeout_seconds = 0.02
