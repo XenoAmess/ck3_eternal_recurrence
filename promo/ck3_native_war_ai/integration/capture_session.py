@@ -68,7 +68,7 @@ def preflight(args: argparse.Namespace) -> dict:
     from mcp import Client
 
     require(os.name == "nt", "Windows interactive desktop required")
-    versions = {key: importlib.metadata.version(key) for key in ("mcp", "pywin32", "Pillow")}
+    versions = {key: importlib.metadata.version(key) for key in ("mcp", "pywin32", "Pillow", "psutil")}
     require(versions["mcp"] == "2.0.0", "MCP SDK must be 2.0.0")
     spec = make_spec(state_dir=args.state_dir, game_dir=args.game_dir)
     executable = identity(spec.game_exe)
@@ -220,9 +220,26 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     return row.get("body") or {}
 
                 deadline = time.monotonic() + args.frontend_timeout
+                next_progress = 0.0
                 route = {}
                 while time.monotonic() < deadline and not stopped.is_set():
                     route = await call("ck3_query_frontend_gui_route_v1", tolerate=True)
+                    if time.monotonic() >= next_progress:
+                        import psutil
+                        diagnostic = driver.state.diagnostics()
+                        progress = {"at": utc(), "seconds": time.monotonic() - origin,
+                                    "route": route, "bridge": diagnostic, "process": None}
+                        pid = diagnostic.get("bridge_pid")
+                        if isinstance(pid, int):
+                            try:
+                                process = psutil.Process(pid)
+                                progress["process"] = {"pid": pid, "created_at": process.create_time(),
+                                                       "rss": process.memory_info().rss,
+                                                       "cpu_seconds": process.cpu_times()._asdict()}
+                            except psutil.Error as error:
+                                progress["process_error"] = repr(error)
+                        append(args.output_dir / "frontend-progress.jsonl", progress)
+                        next_progress = time.monotonic() + 30
                     if route.get("route") == "main_menu":
                         break
                     await asyncio.sleep(1)
@@ -266,7 +283,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
             require(recorder.poll() is None, "Recorder exited before game launch")
             thread.start()
             session_result = native_session(
-                spec, timeout_seconds=args.frontend_timeout + args.hold_seconds + 90,
+                # Startup and bookmark-to-map are separate bounded waits.
+                spec, timeout_seconds=2 * args.frontend_timeout + args.hold_seconds + 90,
                 native_bridge=NativeBridgeLaunchConfig(mode="native-headless", pipe_name=args.pipe_name,
                                                        dll_path=args.bridge_dll, injector_path=args.bridge_injector),
                 input_stream=None, output_stream=output, stop_event=stopped,

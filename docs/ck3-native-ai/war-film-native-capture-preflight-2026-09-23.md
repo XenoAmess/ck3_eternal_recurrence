@@ -61,3 +61,9 @@ tasklist 与 Toolhelp32 均为 0 个 CK3 进程。该状态仍不证明实际开
 `desktop-3fevhd2-1c74096080--vanilla--R0001` 实际启动后在观察 worker 创建 endpoint 时遇到 `CreateNamedPipeW: 231`，未到地图。原因是同进程预检的 driver 未释放单实例管道；MCP Client 退出不负责关闭外部 driver。现为预检与正式 observer 显式增加 driver 生命周期清理。
 
 `D:/workspace/ck3_war_film_research_20260923/pipe-release-regression-r1/receipt.json` 保存一次无游戏的真实 Windows 回归：同一 pipe 连续两次创建、MCP list_tools、关闭全部通过。原失败录像、preflight、session、cleanup 和 capture-report 保留在 `capture-live-live-r1/`；该次为 RED，CK3 实际清理后零进程，不计地图取材或 AI 观察成功。新 attempt 使用新 run。
+
+## 第二次 live：启动预算内尚未观察到主菜单
+
+`desktop-3fevhd2-1c74096080--vanilla--R0002`，PID 30104，360 秒内 MCP 连接成立、前端 route 持续 `unavailable`；实际截图是原版启动画面。末次读取 RSS 从约 2.57 GB 增至约 3.99 GB，但没有 CPU 累计采样，不能据此断言挂死或启动前注入造成阻塞。budget 到期后受管退出，独立库存为零 CK3，录像/控制件已通过 xar-promo `preserve` 纳入 `promo-runs/map-capture-live-r2/` 并 validate。仍为 RED，无地图或策略因果成功。
+
+依据这次实际缺失的诊断，取材 wrapper 增加每 30 秒的 bridge 阶段、PID/创建时间、CPU 累计及 RSS 记录。总会话预算改为分别容纳启动主菜单和书签进图两个等待窗口，避免后一个阶段被前一个阶段消耗；新 attempt 显式使用既有允许的 600 秒阶段上限。`capture-preflight-r5/preflight.json` 验证解释器、psutil、MCP 列表、实际 DLL 能力与零 CK3 进程。离线 parser 三文件检查复用 `capture-preparation-r1/open-kaishek.json`，配置内容未改，不重复跑 parser。源码与静态门通过仍不是新 live 成功。
