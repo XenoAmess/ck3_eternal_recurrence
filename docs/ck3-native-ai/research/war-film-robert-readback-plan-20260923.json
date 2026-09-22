@@ -1,0 +1,142 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-robert-paused-legality-and-power",
+  "question": "For the current human-controlled Robert vanilla campaign, what final-legal declarations and one-target native strategic-power evaluations are observed in one paused frame?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "paused-snapshot",
+    "actor_kind": "human",
+    "owner_scope": "Current Robert player returned by the owning R0004 official MCP session; no NPC autonomous declaration, no actor switch, no war manipulation.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Current full CharacterID plus episode, snapshot_id, public/native revision, date, bridge PID and connection generation; no historical ID reused.",
+    "producer_trigger": "paused-query",
+    "producer": "Current official query-declarable-wars and exact one-target State16 builder 0x18784D0 / evaluator 0x1878A00 / network collector 0x1879850.",
+    "caller": "Same owning MCP Client calls ck3_query_declarable_wars then ck3_query_war_entry_assessments with exactly one currently allowed target and expected_revision from public snapshot.revision.",
+    "consumer": "Versioned structured query response and current post-query snapshot; film values come from returned native fields, not snapshot soldier recomputation.",
+    "cache_lifetime": "Each query must retain the same paused snapshot_id, public/native revision, actor/episode and target scope. Checkpoint is saved before S0; a drift is a separate failed segment.",
+    "expected_signal": "Successful final-legal rows and up to four one-target evaluations including native effective defender, base/network/total powers and actual_power_ratio_raw with complete readiness/provenance.",
+    "zero_sample_meaning": "No query success means unavailable, not no legal war. A successful empty candidate query only describes this current player/frame. No AI choice inference follows from zero candidates or no contrast.",
+    "stop_condition": "Stop at two useful distinct available comparisons or after four assessment requests, or on lost owner/binding/capability. Preserve every response. No time advance or gameplay action inside the observation window.",
+    "runtime_window_ref": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\live-run-identity.json"
+  },
+  "pre_observation": {
+    "checkpoint": "After verified HUD/StartGame/campaign-root, call ck3_save_checkpoint using current public revision; verify materialization using its receipt and ck3_inspect_save_artifacts_v1. Re-read S0 afterwards.",
+    "recording": "Start a new raw HUD recording with a distinct path/timeline after HUD confirmation; preserve startup debug raw separately.",
+    "open_kaishek": "Reuse the hashed syntax-only receipt in evidence; native query semantics unsupported by that subset, no repeated parser run."
+  },
+  "bindings_to_fill_from_live": {
+    "actor_character_id": null,
+    "snapshot_id": null,
+    "public_revision": null,
+    "native_revision": null,
+    "date_raw": null,
+    "target_character_ids": [],
+    "checkpoint_artifact": null,
+    "hud_recording_artifact": null
+  },
+  "evidence": [
+    {
+      "id": "source_contract",
+      "path": "war-film-robert-readback-source-contract-20260923.json",
+      "layer": "source-contract",
+      "sha256": "4398c720697b0dd7ef49877b1dfe29145fe8c399f11e16b5222329a0f63e631e",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Frozen public tool signatures, same-frame service checks and exact-build native evaluator provenance."
+    },
+    {
+      "id": "runbook",
+      "path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\docs\\ck3-native-ai\\war-film-robert-mcp-shot-runbook-2026-09-23.md",
+      "layer": "source-contract",
+      "sha256": "7a35c3365ce75668f143d85efdbbaab56615323e9ae1e3054739374938cb8dc6",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Bounded current-player readback procedure, fresh public revision, checkpoint before observation, distinct post-HUD recording."
+    },
+    {
+      "id": "run_identity",
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\live-run-identity.json",
+      "layer": "exact-build",
+      "sha256": "d066785a2c1ab779e683ea346b3ca1831df39d0fd7c63a578b460f8ca416437c",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Allocated vanilla R0004 identity only; not a successful gameplay observation."
+    },
+    {
+      "id": "preflight",
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\preflight.json",
+      "layer": "exact-build",
+      "sha256": "dae60b511d41d493617bc1eafeadea8e99725dcef03376688fb05548fea83de2",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Recorded exact EXE, DLL, injector and static preflight; runtime capabilities still require current readback."
+    },
+    {
+      "id": "open_kaishek",
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-preparation-r1\\open-kaishek.json",
+      "layer": "offline-fixture",
+      "sha256": "9066aecc0fcbec570eed428cc3c8da703cefc1b385fea08891b27f5bfc09e8e3",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Already completed syntax-only settings/rules/tutorial subset; not native evaluator semantics; no rerun."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "binding",
+      "label": "Current paused player frame after checkpoint"
+    },
+    {
+      "id": "legal",
+      "label": "Final-legal current declaration rows"
+    },
+    {
+      "id": "power",
+      "label": "One-target native strategic-power output"
+    },
+    {
+      "id": "case",
+      "label": "Current same-frame recorded comparison"
+    }
+  ],
+  "edges": [
+    {
+      "id": "query_legal",
+      "from": "binding",
+      "to": "legal",
+      "label": "Official explicit player-legality query",
+      "status": "static-confirmed",
+      "evidence": [
+        "source_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "query_power",
+      "from": "legal",
+      "to": "power",
+      "label": "One legal target and exact public revision through native evaluator",
+      "status": "static-confirmed",
+      "evidence": [
+        "source_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "capture_current",
+      "from": "power",
+      "to": "case",
+      "label": "Readiness, binding and video evidence from current run",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does the current session complete these bounded queries in one paused frame and produce usable post-HUD footage?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "robert_same_frame",
+      "question": "Record current legal rows and native power comparison without gameplay/time advance or NPC-choice claims.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

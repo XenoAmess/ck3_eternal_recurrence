@@ -1,0 +1,325 @@
+{
+  "schema": "xar.war-film-robert-readback-source-contract.v1",
+  "scope": "Official MCP registration and existing player-legality/native strategic-power query contract; no live query performed.",
+  "exact_exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "mcp_server_source": {
+    "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "sha256": "982a40d66fe742608b269c9f1c73c1ecfa1a9dc2a0bbc76f27c0fb721823b302"
+  },
+  "runbook_tools_checked": 27,
+  "registered_tool_sources": [
+    {
+      "name": "ck3_declare_war",
+      "line": 1435,
+      "arguments": [
+        "declaration_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_declare_war(\n        declaration_id: str,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Declare one exact choice returned by ck3_query_declarable_wars.\"\"\"\n        return service.declare_war(\n            declaration_id,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_execute_step",
+      "line": 1349,
+      "arguments": [
+        "step",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_execute_step(\n        step: str, expected_revision: int | None = None\n    ) -> dict[str, object]:\n        \"\"\"Execute one semantic gameplay step through the selected backend.\"\"\"\n        return service.execute_step(step, expected_revision=expected_revision)"
+    },
+    {
+      "name": "ck3_get_bridge_diagnostics",
+      "line": 1293,
+      "arguments": [],
+      "required_argument_count": 0,
+      "source": "def ck3_get_bridge_diagnostics() -> dict[str, object]:\n        \"\"\"Return live transport diagnostics without claiming CK3 game state.\"\"\"\n        return service.bridge_diagnostics()"
+    },
+    {
+      "name": "ck3_get_capabilities",
+      "line": 1288,
+      "arguments": [],
+      "required_argument_count": 0,
+      "source": "def ck3_get_capabilities() -> dict[str, object]:\n        \"\"\"List the current bridge backend and gameplay steps it implements.\"\"\"\n        return service.capabilities()"
+    },
+    {
+      "name": "ck3_get_war_state",
+      "line": 1401,
+      "arguments": [],
+      "required_argument_count": 0,
+      "source": "def ck3_get_war_state() -> dict[str, object]:\n        \"\"\"Return active native wars and the player's currently raised armies.\"\"\"\n        return service.war_state()"
+    },
+    {
+      "name": "ck3_inspect_save_artifacts_v1",
+      "line": 1298,
+      "arguments": [],
+      "required_argument_count": 0,
+      "source": "def ck3_inspect_save_artifacts_v1() -> dict[str, object]:\n        \"\"\"Inspect saves below the server-bound isolated profile; no path input.\"\"\"\n        if artifact_inspector is None:\n            raise RuntimeError(\n                \"save artifact inspection requires a server-configured profile\"\n            )\n        return artifact_inspector.inspect_save_artifacts_v1()"
+    },
+    {
+      "name": "ck3_move_army",
+      "line": 1455,
+      "arguments": [
+        "army_id",
+        "target_province_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 2,
+      "source": "def ck3_move_army(\n        army_id: int,\n        target_province_id: int,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Move one native player army to an exact CK3 province.\"\"\"\n        return service.move_army(\n            army_id,\n            target_province_id,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_offer_white_peace",
+      "line": 2584,
+      "arguments": [
+        "war_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_offer_white_peace(\n        war_id: int,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Offer white peace only when native support and query prove legality.\"\"\"\n        return service.offer_white_peace(\n            war_id,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_preview_active_combat_retreat_v1",
+      "line": 2457,
+      "arguments": [
+        "selected_public_cunit_id",
+        "target_province_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 3,
+      "source": "def ck3_preview_active_combat_retreat_v1(\n        selected_public_cunit_id: int,\n        target_province_id: int,\n        expected_revision: int,\n    ) -> dict[str, object]:\n        \"\"\"Preview one legal active-combat withdrawal and return a short token.\"\"\"\n        return _ck3_preview_active_combat_retreat_v1(\n            service,\n            selected_public_cunit_id,\n            target_province_id,\n            expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_actual_contact_scope",
+      "line": 1523,
+      "arguments": [
+        "subject_army_id",
+        "target_province_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 2,
+      "source": "def ck3_query_actual_contact_scope(\n        subject_army_id: int,\n        target_province_id: int,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Predict contact or read actual CombatID/sides; pass order to v3.\"\"\"\n        return _ck3_query_actual_contact_scope(\n            service,\n            subject_army_id,\n            target_province_id,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_army_strengths",
+      "line": 1512,
+      "arguments": [
+        "army_ids",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_query_army_strengths(\n        army_ids: list[int],\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read soldiers and AI base power; never interpret them as win odds.\"\"\"\n        return service.query_army_strengths(\n            army_ids,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_battle_control_snapshot_v1",
+      "line": 1537,
+      "arguments": [
+        "subject_army_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 2,
+      "source": "def ck3_query_battle_control_snapshot_v1(\n        subject_army_id: int,\n        expected_revision: int,\n    ) -> dict[str, object]:\n        \"\"\"Read one full public CUnitID's battle and retreat gates while paused.\"\"\"\n        return _ck3_query_battle_control_snapshot_v1(\n            service,\n            subject_army_id,\n            expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_battle_reinforcement_assignment_v1",
+      "line": 1577,
+      "arguments": [
+        "selected_public_cunit_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 2,
+      "source": "def ck3_query_battle_reinforcement_assignment_v1(\n        selected_public_cunit_id: int,\n        expected_revision: int,\n    ) -> dict[str, object]:\n        \"\"\"Read native help flags, target, exact route/ETA and contact candidates.\"\"\"\n        return _ck3_query_battle_reinforcement_assignment_v1(\n            service,\n            selected_public_cunit_id,\n            expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_battle_terminal_transition_v1",
+      "line": 1561,
+      "arguments": [
+        "prior_combat_id",
+        "subject_public_cunit_id",
+        "expected_revision",
+        "after_terminal_sequence"
+      ],
+      "required_argument_count": 3,
+      "source": "def ck3_query_battle_terminal_transition_v1(\n        prior_combat_id: int,\n        subject_public_cunit_id: int,\n        expected_revision: int,\n        after_terminal_sequence: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read terminal history, removal, subject and successor while paused.\"\"\"\n        return _ck3_query_battle_terminal_transition_v1(\n            service,\n            prior_combat_id,\n            subject_public_cunit_id,\n            expected_revision,\n            after_terminal_sequence,\n        )"
+    },
+    {
+      "name": "ck3_query_battle_transition_v1",
+      "line": 1549,
+      "arguments": [
+        "combat_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 2,
+      "source": "def ck3_query_battle_transition_v1(\n        combat_id: int,\n        expected_revision: int,\n    ) -> dict[str, object]:\n        \"\"\"Read phase, winner and ordered sides for one full CombatID.\"\"\"\n        return _ck3_query_battle_transition_v1(\n            service,\n            combat_id,\n            expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_campaign_root_context_v1",
+      "line": 1589,
+      "arguments": [
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_query_campaign_root_context_v1(\n        expected_revision: int,\n    ) -> dict[str, object]:\n        \"\"\"Read player, title, capital, lieges, government and rule tokens.\"\"\"\n        return _ck3_query_campaign_root_context_v1(\n            service,\n            expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_combat_simulation_inputs",
+      "line": 2493,
+      "arguments": [
+        "target_province_id",
+        "attacker_entry_province_id",
+        "attacker_army_ids",
+        "defender_army_ids",
+        "expected_revision"
+      ],
+      "required_argument_count": 4,
+      "source": "def ck3_query_combat_simulation_inputs(\n        target_province_id: int,\n        attacker_entry_province_id: int,\n        attacker_army_ids: list[int],\n        defender_army_ids: list[int],\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read one explicit hypothetical contact; does not claim win odds.\"\"\"\n        return service.query_combat_simulation_inputs(\n            target_province_id,\n            attacker_entry_province_id,\n            attacker_army_ids,\n            defender_army_ids,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_combat_simulation_inputs_v3",
+      "line": 2510,
+      "arguments": [
+        "target_province_id",
+        "attacker_entry_province_id",
+        "attacker_army_ids",
+        "defender_army_ids",
+        "expected_revision"
+      ],
+      "required_argument_count": 4,
+      "source": "def ck3_query_combat_simulation_inputs_v3(\n        target_province_id: int,\n        attacker_entry_province_id: int,\n        attacker_army_ids: list[int],\n        defender_army_ids: list[int],\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read exact phase inputs; readiness does not imply simulated odds.\"\"\"\n        return _ck3_query_combat_simulation_inputs_v3(\n            service,\n            target_province_id,\n            attacker_entry_province_id,\n            attacker_army_ids,\n            defender_army_ids,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_declarable_wars",
+      "line": 1426,
+      "arguments": [
+        "expected_revision"
+      ],
+      "required_argument_count": 0,
+      "source": "def ck3_query_declarable_wars(\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Enumerate CK3's currently valid native war declarations.\"\"\"\n        return service.query_declarable_wars(\n            expected_revision=expected_revision\n        )"
+    },
+    {
+      "name": "ck3_query_outbound_war_white_peace_status",
+      "line": 2551,
+      "arguments": [
+        "war_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_query_outbound_war_white_peace_status(\n        war_id: int,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read the exact sender-side pending receipt for white peace.\"\"\"\n        return service.query_outbound_war_white_peace_status(\n            war_id,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_war_entry_assessments",
+      "line": 2528,
+      "arguments": [
+        "target_character_ids",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_query_war_entry_assessments(\n        target_character_ids: list[int],\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read native power for one declarable or active-war target.\"\"\"\n        return _ck3_query_war_entry_assessments(\n            service,\n            target_character_ids,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_war_termination_options",
+      "line": 2540,
+      "arguments": [
+        "war_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_query_war_termination_options(\n        war_id: int,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read native surrender/white-peace/victory legality for one WarID.\"\"\"\n        return service.query_war_termination_options(\n            war_id,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_query_war_termination_terms",
+      "line": 2562,
+      "arguments": [
+        "war_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_query_war_termination_terms(\n        war_id: int,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read exact claim-CB claimant, targets, claims and dispositions.\"\"\"\n        return service.query_war_termination_terms(\n            war_id,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_raise_troops_default",
+      "line": 1446,
+      "arguments": [
+        "expected_revision"
+      ],
+      "required_argument_count": 0,
+      "source": "def ck3_raise_troops_default(\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Raise troops at CK3's native default rally point.\"\"\"\n        return service.raise_troops_default(\n            expected_revision=expected_revision\n        )"
+    },
+    {
+      "name": "ck3_save_checkpoint",
+      "line": 1356,
+      "arguments": [
+        "expected_revision"
+      ],
+      "required_argument_count": 0,
+      "source": "def ck3_save_checkpoint(\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Create and materialize the fixed isolated CK3 checkpoint save.\"\"\"\n        return service.save_checkpoint(expected_revision=expected_revision)"
+    },
+    {
+      "name": "ck3_surrender_war",
+      "line": 2573,
+      "arguments": [
+        "war_id",
+        "expected_revision"
+      ],
+      "required_argument_count": 1,
+      "source": "def ck3_surrender_war(\n        war_id: int,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Submit surrender only from a same-revision native query result.\"\"\"\n        return service.surrender_war(\n            war_id,\n            expected_revision=expected_revision,\n        )"
+    },
+    {
+      "name": "ck3_take_snapshot",
+      "line": 1322,
+      "arguments": [],
+      "required_argument_count": 0,
+      "source": "def ck3_take_snapshot() -> dict[str, object]:\n        \"\"\"Return the latest backend-neutral CK3 session snapshot.\"\"\"\n        return service.snapshot()"
+    }
+  ],
+  "sources": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "sha256": "aa857070a4bcee83220434add78969f904704af6a6968f149e3c90b63f2a266e",
+      "excerpts": [
+        {
+          "first_line": 11230,
+          "last_line": 11347,
+          "text": "    def query_war_entry_assessments(\n        self,\n        target_character_ids: list[int],\n        *,\n        expected_revision: int | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read native strategic power for one current war-related target.\"\"\"\n        # Reject an over-broad public request before reading a snapshot or\n        # entering any driver/pipe path. The first production contract is\n        # one-target end to end.\n        targets = normalize_war_entry_target_ids(target_character_ids)\n        snapshot = self.snapshot()\n        if snapshot.get(\"paused\") is not True:\n            raise BridgeUnavailableError(\n                \"war-entry assessment queries require a paused CK3 snapshot\"\n            )\n        revision = snapshot.get(\"revision\")\n        if isinstance(revision, bool) or not isinstance(revision, int):\n            raise BridgeUnavailableError(\n                \"war-entry assessment query lacks a valid snapshot revision\"\n            )\n        if expected_revision is not None:\n            if (\n                isinstance(expected_revision, bool)\n                or not isinstance(expected_revision, int)\n                or expected_revision < 0\n            ):\n                raise ValueError(\n                    \"expected_revision must be a non-negative integer\"\n                )\n            if expected_revision != revision:\n                raise BridgeUnavailableError(\n                    \"war-entry assessment revision mismatch: expected \"\n                    f\"{expected_revision}, current {revision}\"\n                )\n        try:\n            targets = require_war_entry_assessment_targets(\n                snapshot, targets\n            )\n            target_scopes = war_entry_assessment_target_scopes(\n                snapshot, targets\n            )\n        except ValueError as error:\n            raise BridgeUnavailableError(\n                f\"war-entry assessment target scope is malformed: {error}\"\n            ) from error\n        capabilities = self.capabilities()\n        bridge_capabilities = capabilities.get(\"bridge_capabilities\")\n        if not (\n            isinstance(bridge_capabilities, list)\n            and QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY\n            in bridge_capabilities\n        ):\n            raise UnsupportedStepError(\n                \"selected backend cannot query native war-entry assessments\"\n            )\n        step = query_war_entry_assessments_step(targets)\n        result = self.execute_step(\n            step,\n            expected_revision=(\n                expected_revision\n                if expected_revision is not None\n                else revision\n            ),\n        )\n        played_character = snapshot.get(\"played_character\")\n        actor_id = (\n            played_character.get(\"character_id\")\n            if isinstance(played_character, dict)\n            else None\n        )\n        native_revision = snapshot.get(\"native_revision\")\n        try:\n            normalized = normalize_war_entry_assessments(\n                result.get(\"war_entry_assessments\"),\n                expected_target_character_ids=targets,\n                expected_actor_character_id=actor_id,\n                expected_snapshot_revision=native_revision,\n            )\n        except ValueError as error:\n            raise BridgeUnavailableError(\n                f\"native war-entry assessment result is malformed: {error}\"\n            ) from error\n        current = self.snapshot()\n        if not (\n            current.get(\"paused\") is True\n            and current.get(\"snapshot_id\") == snapshot.get(\"snapshot_id\")\n            and current.get(\"revision\") == revision\n            and current.get(\"native_revision\") == native_revision\n            and current.get(\"episode_run_id\")\n            == snapshot.get(\"episode_run_id\")\n        ):\n            raise BridgeUnavailableError(\n                \"war-entry assessment query crossed a snapshot revision\"\n            )\n        try:\n            current_scopes = war_entry_assessment_target_scopes(\n                current, targets\n            )\n        except ValueError as error:\n            raise BridgeUnavailableError(\n                f\"war-entry target scope changed during query: {error}\"\n            ) from error\n        if current_scopes != target_scopes:\n            raise BridgeUnavailableError(\n                \"war-entry target scope changed during query\"\n            )\n        return {\n            **result,\n            \"schema_version\": 1,\n            \"status\": \"available\",\n            \"target_character_ids\": targets,\n            \"target_scopes\": target_scopes,\n            \"war_entry_assessments\": normalized,\n            \"queried_snapshot_id\": snapshot.get(\"snapshot_id\"),\n            \"queried_revision\": revision,\n            \"queried_native_revision\": native_revision,\n        }"
+        }
+      ]
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_entry_contract.py",
+      "sha256": "c6b06f4fb1c98e6118a640b8be174a5d3b844763b0cdff49f8ebdc72544a724c",
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 110,
+          "text": "\"\"\"Strict request contract for exact-build native war-entry assessments.\n\nThe query accepts only explicit full-generation CharacterIDs.  Result fields\nare intentionally added only after their exact CK3 1.19.0.6 ABIs are frozen;\nthis module must never synthesize strategic power from snapshot soldier totals.\n\"\"\"\n\nfrom __future__ import annotations\n\nfrom .event_window_context_contract import (\n    normalize_current_event_window_context_v1,\n)\n\n\nQUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY = (\n    \"game.command.query-war-entry-assessments-v1-N\"\n)\n# Reserved for a future frontend hookup. The current production bridge does\n# not advertise this event-saved-scope authorization until its same-frame\n# query/action route has been implemented and paused-live verified.\nRAIKTOR_BOOKMARK_EVENT_SCOPE_CAPABILITY = (\n    \"game.command.query-war-entry-assessments-raiktor-bookmark-saved-scope-v1\"\n)\nQUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX = (\n    \"query-war-entry-assessments-v1-\"\n)\n# The first production reader, parser, bridge and MCP rollout all permit\n# exactly one target per request.\nMAX_WAR_ENTRY_TARGETS = 1\nFIXED_POINT_SCALE = 100_000\nGAME_VERSION = \"1.19.0.6\"\nEXECUTABLE_SHA256 = (\n    \"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\"\n)\n# ``ai_context_ready`` is the frozen schema-v1 key.  It now means the exact\n# 0x18784D0 native State16 builder, its dependency, and both byte-identical\n# samples are ready; it does not assert that a human manager AIContext exists.\n_READINESS = {\n    \"actor_identity_ready\": True,\n    \"targets_declarable_ready\": True,\n    \"effective_targets_ready\": True,\n    \"ai_context_ready\": True,\n    \"native_output_ready\": True,\n    \"network_decomposition_ready\": True,\n    \"same_frame_ready\": True,\n    \"ready\": True,\n}\n_PROVENANCE = {\n    \"game_version\": GAME_VERSION,\n    \"executable_sha256\": EXECUTABLE_SHA256,\n    \"assessment_rva\": \"0x1878A00\",\n    \"network_collector_rva\": \"0x1879850\",\n    # Legacy schema-v1 spelling for the target/network decomposition leaf.\n    # Actor base power is authoritative State16+0x00 from 0x18784D0.\n    \"power_leaf\": \"CCharacter+0x1B8->+0x308\",\n    \"fixed_point_scale\": FIXED_POINT_SCALE,\n}\n_ASSESSMENT_KEYS = {\n    \"target_character_id\",\n    \"effective_target_character_id\",\n    \"distance_raw\",\n    \"actor_power_base_raw\",\n    \"actor_network_contribution_raw\",\n    \"actor_power_total_raw\",\n    \"target_power_base_raw\",\n    \"target_network_contribution_raw\",\n    \"target_pre_adjustment_total_raw\",\n    \"target_adjustment_delta_raw\",\n    \"target_power_total_raw\",\n    \"actual_power_ratio_raw\",\n    \"target_ai_context_actor_entry_raw\",\n    \"actor_ai_context_target_entry_raw\",\n    \"native_flags_raw\",\n}\n\n\ndef normalize_war_entry_target_ids(value: object) -> list[int]:\n    \"\"\"Return the one production positive signed-int32 CharacterID.\"\"\"\n    if not isinstance(value, list) or not 1 <= len(value) <= MAX_WAR_ENTRY_TARGETS:\n        raise ValueError(\n            \"target_character_ids must contain exactly 1 CharacterID\"\n        )\n    result: list[int] = []\n    seen: set[int] = set()\n    for index, raw in enumerate(value):\n        if (\n            isinstance(raw, bool)\n            or not isinstance(raw, int)\n            or not 1 <= raw <= 2**31 - 1\n        ):\n            raise ValueError(\n                f\"target_character_ids[{index}] must be a positive \"\n                \"full-generation signed-int32 CharacterID\"\n            )\n        if raw in seen:\n            raise ValueError(\"target_character_ids must be distinct\")\n        seen.add(raw)\n        result.append(raw)\n    return result\n\n\ndef query_war_entry_assessments_step(target_character_ids: list[int]) -> str:\n    \"\"\"Encode the canonical one-target production native literal.\"\"\"\n    targets = normalize_war_entry_target_ids(target_character_ids)\n    return (\n        QUERY_WAR_ENTRY_ASSESSMENTS_STEP_PREFIX\n        + str(len(targets))\n        + \"-\"\n        + \"-\".join(str(target) for target in targets)\n    )"
+        }
+      ]
+    },
+    {
+      "path": "docs/ck3-native-ai/war-declaration.md",
+      "sha256": "0c329b23227c6b87da4bd94ca0180b463be725fec91f0cf45b508db63e43d25d",
+      "excerpts": [
+        {
+          "first_line": 238,
+          "last_line": 288,
+          "text": "  `query-war-entry-assessments-v1-1-<target_character_id>`。首轮 production 每条请求严格只允许一个正的\n  signed-int32 full-generation CharacterID。target 必须存在于同一 snapshot 的\n  `declarable_wars` 或 `active_wars[*].primary_opponent_character_id`；两个来源在 native frame\n  分开冻结并参与三次结构相等检查。同帧 exact `0x2909D30(actor,raw_target)` 解析 effective target。同一 target 的多个\n  CB/config 共享这份战略军力评估，不能伪装成 CB-specific 数值。\n- [bridge-design] 每个 assessment 原子返回固定 15 字段：`target_character_id`、\n  `effective_target_character_id`、`distance_raw`、`actor_power_base_raw`、\n  `actor_network_contribution_raw`、`actor_power_total_raw`、`target_power_base_raw`、\n  `target_network_contribution_raw`、`target_pre_adjustment_total_raw`、`target_adjustment_delta_raw`、\n  `target_power_total_raw`、`actual_power_ratio_raw`、`target_ai_context_actor_entry_raw`、\n  `actor_ai_context_target_entry_raw` 与 `native_flags_raw`。power、distance 与 ratio 都是\n  `int64 scale=100000`；AI entry 是 int32；flags 是 uint8。\n- [bridge-design] schema-v1 为兼容现有 Python/MCP 保留 readiness 键 `ai_context_ready`；其 production 语义已改为\n  “authoritative `0x18784D0` State16 builder/dependency 双采 ready”，不再断言 human manager AIContext 存在。\n  provenance 中旧 `power_leaf=CCharacter+0x1B8->+0x308` 只描述 target/network decomposition 叶；actor base\n  的权威来源是同 sample 的 builder `State16+0x00`，由 exact-build ABI/source-contract 另行锁定。\n- [bridge-design] 顶层绑定 `snapshot_revision`、`date_raw`、`actor_character_id`、请求 ID、readiness 与 exact-build\n  provenance（游戏版本、EXE SHA、两个 RVA、power leaf、scale）。worker 在提交前从同一个 paused expected snapshot\n  只调用现有 exact-build `ReadDeclarableWarsForTarget` 复核请求的唯一 target，并分别冻结该 target 当前仍合法的声明行与\n  snapshot 中的 active-war primary opponents；reader 只接受命中任一集合的 target。\n  application-main callback 的 before/middle/after 三次 frame capture 各自 fresh `ReadSnapshot`，且必须逐字段等于该\n  expected snapshot。该收窄不缓存旧合法性、不改变 same-frame 门，也不改变策略 cadence；成本从\n  `O(all character slots × enabled CB types)` 降为 `O(enabled CB types)`。\n- [live-verified] 2026-08-28 正式 G1 run 在和平帧暴露旧全局复核热点：显式 `query-declarable-wars` 在截至 history\n  `4749` 的整段历史中只有 6 次，但 `query-war-entry-assessments-v1-1-29097` 已累计 573 次。`debug.log` 在\n  `13:00:15–13:08:53` 形成 77 组与 assessment 一一对应的 `allowed_against_character` 错误 burst，每组 12 条、\n  平均间隔 `6.816s`（中位 `6s`）；同期每轮只推进一个游戏日。旧 `bridge.cpp` 在单目标请求前调用全局\n  `ReadDeclarableWars`，而 `ck3_11906.cpp` 又对每个 character slot 遍历全部 enabled CB，正好解释该成本与无\n  faith/culture 角色产生的日志。修复后的 target-only 路径目前为 `static-ready`，仍待同 checkpoint 冷启 live A/B，\n  不把代码/CTest 冒充实机加速倍数。\n- [live-verified] `main_thread_required` 是 reader 的强制回调门，不只是 provenance 标签。exact-build SDL\n  `PeekMessageW` 返回边界 `0x3CE4222` 已实证处于 application/startup-main 的 HandlePdxEvents TLS 链；production\n  mailbox 只允许 `ExecuteWarEntryAssessmentMailboxQueryV1`，每个 pump 最多一个请求。硬门是初始化 global、稳定 TLS\n  context 与 `+0x20 == 1` marker、当前线程、paused/Jomini/game/date 和连续两个 pump epoch；RNG owner 仅保留为\n  scoped-lock provenance 诊断，不参与 admission、streak 或 post-check。该边界不得泛化为 simulation-main 或 effect VM。\n- [production-wired] typed `MainThreadQueryExecutorV1` 由 worker 发布 non-copyable caller-owned context 与 exact ticket；\n  executor 只有在 mailbox slot 为 `executing`、callback/context/sequence 身份一致及上述 application-main stamp 完整时\n  才进入 reader。每次 frame capture 还必须与 mailbox stamp 的 paused/date 一致。query-specific unavailable 返回\n  executor success，并把具体 stage 留在\n  context；只有伪造/直调、错误 slot/thread/stamp 才是 infrastructure failure。若 wait 返回\n  `timeout_executor_already_running`，context 必须继续保活，直到后续 terminal + reclaim 成功；不能因 worker 超时释放。\n- [bridge-design] 同一次查询还必须完整执行两遍原生采样：每遍先要求 `module+0x570C638` dependency 非空，\n  清零完整 16-byte scratch，以 `0x18784D0` 构造 actor State16，再以固定五指针配置重跑 actor/target\n  `0x1879850` 并把同一 State16 原样交给 `0x1878A00`。assessment 不得修改 State16；dependency 在每遍执行\n  前后及两遍之间必须保持同一指针，两遍 State16 必须逐字节全等。decomposition、原生 0x28-byte out 的全部\n  已定义字段与最终 15 字段 row 也必须逐 target 全等；同时重验 effective target、target power leaf 与 frame\n  stamp。任一漂移整批 fail closed。`actual_power_ratio_raw` 始终取两遍一致的原生 `out+0x10`，\n  外部重构只作相等性门，不能替代该值。\n- [bridge-design] 任一 target 的 identity、State16 builder/dependency、容器 shape、算术溢出或同帧门失败，整条查询返回\n  `war_entry_assessment_unavailable:<stage>`。success 只允许完整 available payload；no partial、`null`、空数组、\n  snapshot soldier fallback 或 Python 公式重算。"
+        }
+      ]
+    },
+    {
+      "path": "docs/ck3-native-ai/robert-day0-war-opportunity-readback-2026-09-23.md",
+      "sha256": "4b41375cb12898958f0d060c096d4769d38e3e72cd644e7fb43afc7206a7ebee",
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 64,
+          "text": "# Robert day-zero war opportunity readback (2026-09-23)\n\nThe exact build is CK3 `1.19.0.6-steam23530548`, EXE SHA-256\n`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.\nThe native declaration and power decision tree is in [war-declaration.md](war-declaration.md);\nthe player's current narrow declaration gate is in\n[player-war-entry-policy.md](player-war-entry-policy.md). This note records an\nobservation gap and an independent read-only entry, not a new war policy.\n\n## Frozen evidence and actual gap\n\n- [production-live] R0138 created an ordinary `xar_off` Robert checkpoint at\n  `date_raw=53144328`, actor `29829`, episode\n  `native-29829-2bc2d599f7f9`. The immutable source save SHA-256 is\n  `77EAC299FA0619C88D6CCF55FC9C88980279376624C1A575C98FB22E09FCD6E3`;\n  driver SHA-256 is\n  `018077D3D53252D077CC29195562ECD79BED11AD760182E4EFFB606F5CB3B821`.\n  The R0138 root snapshot's empty `declarable_wars` preceded a declaration\n  query and therefore did **not** prove that no war was legal.\n- [production-live] R0140 restored that save and completed four read-only\n  turns at the same paused game date and native revision: one declaration\n  query and three target power queries. Its persisted declaration result has\n  nine final-legal rows across seven distinct target CharacterIDs. The\n  observed targets `31899` and `37169` both resolved to effective defender\n  `37169` with target/actor power ratio `1.52093`. Target `31549` has a\n  final-legal `minor_religious_war` row and ratio `0.39892`. These are legal\n  and strategic-power observations, not campaign-cost or victory proofs.\n  The source artifact is the R0140 `formal-report.txt` and its paired\n  `state/native-session/driver-state.json` under the authorized\n  `m4-robert-slot43-20260923` asset root; those files stay unchanged.\n- [static-confirmed] After a strong target assessment, the current production\n  strategy exits its alternative-target read loop and applies only the\n  `individual_county_de_jure_cb` conservative gate. `minor_religious_war`\n  therefore remains `NO_DECLARE`. Extending a normal turn limit after the\n  R0140 third assessment would reach a possible `life-advance`; it is not a\n  bounded query-only path for the four unassessed targets `32725`, `33422`,\n  `33621`, and `34320`.\n\n## Independent read-only entry\n\n`ck3_autonomous_player/native_bridge/research/run_war_opportunity_readback.py`\ncreates a separate prepared `ordinary_campaign_succession/xar_off` profile,\ncopies the frozen pair, applies the official `rebind_ordinary_seed_v1`, and\nvalidates the cold checkpoint without launching CK3. The candidate manifest\npins the source and prepared pair, environment, exact EXE, DLL, injector and\noperator. The owner must allocate a new round and pass the existing\n`xar.ck3.single-instance-round-allocation/v1` ledger before `--live`.\n\nLive mode calls only official MCP capability, snapshot, campaign-root,\ndeclarable-war, and one-target war-entry-assessment tools. It queries each\ndistinct legal target up to an explicit bound, then verifies the same paused\nsnapshot, native command history, zero gameplay action and zero date advance.\nIf the target count exceeds the bound, the report is `green_partial` and\ncannot claim a complete opportunity inventory. A failed read or unexpected\ncommand is RED. This script does not issue `ck3_declare_war` or select a\nreligious-war strategy.\n\nR0140's three power reads can guide priority, but a full seven-target\nsame-frame comparison requires a new bounded read of all seven in one paused\nframe. The live readback has not run as of this note. If it reveals only\nreligious or other claims outside the existing safe gate, the next action is\nto inspect the necessary war entry costs, participant commitments and exit\nterms under the project's narrow war exception before proposing a typed\ndeclaration. A power advantage alone does not authorize one."
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Documentation and source review do not establish current game state.",
+    "Prior Robert results motivate the case; no prior IDs, target counts or ratios are copied to the new observation.",
+    "The only planned semantic producer is an explicitly requested paused native evaluator, not autonomous NPC choice."
+  ]
+}
