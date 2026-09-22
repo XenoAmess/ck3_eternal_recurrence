@@ -8963,6 +8963,48 @@ def _choose_one_life_turn_core(
                 },
                 "active_wars": war_summary,
             }
+        siege_relief = _primary_defender_siege_relief_assessment(
+            snapshot if isinstance(snapshot, dict) else {},
+            active_wars=active_wars,
+            controlled_armies=controlled_armies,
+            pursuit_army=(
+                pursuit_army if isinstance(pursuit_army, dict) else None
+            ),
+        )
+        if siege_relief.get("status") == "observation_unavailable":
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_defender_siege_relief_observation_blocked",
+                "selected_step": None,
+                "required_observation": siege_relief.get(
+                    "required_observation"
+                ),
+                "reason": (
+                    "an enemy siege is visible in a primary defensive war, "
+                    "but the same-frame army assignment, hostile position, "
+                    "route, or strength scope is incomplete; do not consume "
+                    "another stationary hold slice"
+                ),
+                "siege_relief": siege_relief,
+                "active_wars": war_summary,
+            }
+        if siege_relief.get("status") == "ready":
+            relief_war_id = _native_int(siege_relief.get("war_id"))
+            relief_war = next(
+                (
+                    war
+                    for war in active_wars
+                    if _native_int(war.get("war_id")) == relief_war_id
+                ),
+                None,
+            )
+            if isinstance(relief_war, dict) and relief_war_id is not None:
+                tactical_war = relief_war
+                tactical_war_id = relief_war_id
+                strength_balance = _same_frame_army_strength_balance(
+                    snapshot if isinstance(snapshot, dict) else {},
+                    tactical_war_id,
+                )
         if isinstance(strength_balance, dict):
             for summary in war_summary:
                 if summary.get("war_id") == tactical_war_id:
@@ -10654,6 +10696,13 @@ def _choose_one_life_turn_core(
             if province_id in siege_objective_province_ids
         ]
         route_candidate_source = "war_objective_province"
+        if siege_relief.get("status") == "ready":
+            relief_target = _native_int(
+                siege_relief.get("target_province_id")
+            )
+            if relief_target is not None:
+                route_exact_candidates = [relief_target]
+                route_candidate_source = "enemy_siege_relief"
         defender_safe_objective_input = (
             _primary_defender_capital_hold_input(
                 snapshot if isinstance(snapshot, dict) else {},
@@ -11921,7 +11970,19 @@ def _choose_one_life_turn_core(
             }
         if preview_selected_target is not None:
             target_province_id = preview_selected_target
-            enemy = None
+            enemy = (
+                next(
+                    (
+                        row
+                        for row in visible_enemies
+                        if _native_int(row.get("army_id"))
+                        == _native_int(siege_relief.get("enemy_army_id"))
+                    ),
+                    None,
+                )
+                if route_candidate_source == "enemy_siege_relief"
+                else None
+            )
             target_source = (
                 "player_capital_regroup"
                 if preview_selected_target == capital_regroup_target
@@ -11931,6 +11992,8 @@ def _choose_one_life_turn_core(
                 "regroup"
                 if preview_selected_target == capital_regroup_target
                 or route_candidate_source == "player_held_county_capital"
+                else "relief"
+                if route_candidate_source == "enemy_siege_relief"
                 else "siege"
             )
         elif exact_objective_province_ids:
@@ -12543,6 +12606,8 @@ def _choose_one_life_turn_core(
                     "target_source": target_source,
                     "objective_kind": objective_kind,
                 }
+                if target_source == "enemy_siege_relief":
+                    pursuit["siege_relief"] = dict(siege_relief)
                 if selected_route_audit is not None:
                     pursuit["route_audit"] = selected_route_audit
                 active_move_intent = _active_native_move_intent(
@@ -12753,6 +12818,8 @@ def _choose_one_life_turn_core(
                         "reason": (
                             "move the strongest controllable army to the strongest visible enemy army"
                             if target_source == "enemy_army"
+                            else "move the overmatching primary-defender army along the previewed contact-safe route to relieve an observed enemy siege"
+                            if target_source == "enemy_siege_relief"
                             else "move the army along a previewed safe route to the next exact war objective"
                             if target_source == "war_objective_province"
                             else "move toward the primary opponent's default rally province fallback"
@@ -15307,6 +15374,167 @@ def _same_frame_army_strength_balance(
         "enemy_ai_base_power_raw": enemy_power_raw,
         "hostile_operational_overmatch": hostile_operational_overmatch,
         "interpretation": "operational_routing_risk_not_battle_win_odds",
+    }
+
+
+def _primary_defender_siege_relief_assessment(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+    pursuit_army: dict[str, object] | None,
+) -> dict[str, object]:
+    """Select one observed hostile siege for a proof-bound relief route.
+
+    R0160 showed that a seven-day objective hold can lose an occupied county
+    while a much stronger sole army remains stationary.  This admission is
+    deliberately narrow: it consumes only exact paused enemy army state and
+    the complete per-war strength query, then delegates route and contact
+    safety to the existing preview pipeline.
+    """
+
+    siege_rows: list[tuple[dict[str, object], dict[str, object]]] = []
+    for war in active_wars:
+        if not (
+            isinstance(war, dict)
+            and war.get("player_side") == "defender"
+            and war.get("player_is_primary_war_leader") is True
+            and _native_int(war.get("war_id")) is not None
+            and isinstance(war.get("player_relative_war_score"), int)
+            and not isinstance(war.get("player_relative_war_score"), bool)
+            and -100 < int(war["player_relative_war_score"]) < 100
+        ):
+            continue
+        enemies = war.get("enemy_armies")
+        if not isinstance(enemies, list):
+            continue
+        for enemy in enemies:
+            if (
+                isinstance(enemy, dict)
+                and _army_tactical_state(enemy) == "sieging"
+                and enemy.get("retreating") is not True
+            ):
+                siege_rows.append((war, enemy))
+    if not siege_rows:
+        return {"status": "not_applicable"}
+
+    if len(controlled_armies) != 1 or pursuit_army is not controlled_armies[0]:
+        return {"status": "not_applicable"}
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+    ):
+        return {
+            "status": "observation_unavailable",
+            "required_observation": "single-idle-controllable-army-binding",
+        }
+    army = controlled_armies[0]
+    army_id = _native_int(army.get("army_id"))
+    if not (
+        army_id is not None
+        and _native_int(army.get("current_province_id")) is not None
+        and _army_tactical_state(army) == "regular"
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+        and "move_target_province_id" in army
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+    ):
+        return {
+            "status": "observation_unavailable",
+            "required_observation": "single-idle-controllable-army-binding",
+        }
+
+    ready: list[
+        tuple[int, int, int, int, dict[str, object]]
+    ] = []
+    incomplete_war_ids: set[int] = set()
+    for war, enemy in siege_rows:
+        war_id = int(war["war_id"])
+        enemy_id = _native_int(enemy.get("army_id"))
+        target = _native_int(enemy.get("current_province_id"))
+        route = enemy.get("route_province_ids")
+        complete_stationary_siege = bool(
+            enemy_id is not None
+            and target is not None
+            and target > 0
+            and enemy.get("in_combat") is False
+            and enemy.get("retreating") is False
+            and "move_target_province_id" in enemy
+            and enemy.get("move_target_province_id") is None
+            and isinstance(route, list)
+            and not route
+        )
+        balance = _same_frame_army_strength_balance(snapshot, war_id)
+        if not complete_stationary_siege or not isinstance(balance, dict):
+            incomplete_war_ids.add(war_id)
+            continue
+        friendly_ids = balance.get("friendly_army_ids")
+        enemy_ids = balance.get("enemy_army_ids")
+        published_enemy_ids = {
+            enemy_id
+            for row in war.get("enemy_armies", [])
+            if isinstance(row, dict)
+            and _army_tactical_state(row) != "retreating"
+            and (enemy_id := _native_int(row.get("army_id"))) is not None
+        }
+        numeric = (
+            _native_int(balance.get("friendly_current_soldiers")),
+            _native_int(balance.get("enemy_current_soldiers")),
+            _native_int(balance.get("friendly_ai_base_power_raw")),
+            _native_int(balance.get("enemy_ai_base_power_raw")),
+        )
+        if not (
+            isinstance(friendly_ids, list)
+            and army_id in friendly_ids
+            and isinstance(enemy_ids, list)
+            and enemy_id in enemy_ids
+            and set(enemy_ids) == published_enemy_ids
+            and all(value is not None and value > 0 for value in numeric)
+        ):
+            incomplete_war_ids.add(war_id)
+            continue
+        friendly_current, enemy_current, friendly_power, enemy_power = (
+            int(value) for value in numeric
+        )
+        if not (
+            friendly_current >= enemy_current * 2
+            and friendly_power >= enemy_power * 2
+        ):
+            continue
+        ready.append(
+            (
+                int(war["player_relative_war_score"]),
+                war_id,
+                int(enemy_id),
+                int(target),
+                balance,
+            )
+        )
+    if incomplete_war_ids:
+        return {
+            "status": "observation_unavailable",
+            "required_observation": (
+                "complete-same-frame-siege-position-and-war-strength"
+            ),
+            "war_ids": sorted(incomplete_war_ids),
+        }
+    if not ready:
+        return {"status": "no_friendly_operational_overmatch"}
+
+    score, war_id, enemy_id, target, balance = min(ready)
+    return {
+        "status": "ready",
+        "selection_policy": "lowest-score-then-war-enemy-province",
+        "war_id": war_id,
+        "player_relative_war_score": score,
+        "army_id": army_id,
+        "enemy_army_id": enemy_id,
+        "target_province_id": target,
+        "army_strength_balance": dict(balance),
+        "candidate_count": len(ready),
     }
 
 

@@ -2566,10 +2566,12 @@ class GameplayBridgeTests(unittest.TestCase):
         player = _army(
             419_430_662, soldiers=354, province_id=1684,
             controllable=True, army_state="regular", route_province_ids=[],
+            in_combat=False, retreating=False,
         )
         enemy = _army(
             419_430_684, soldiers=759, province_id=45,
             controllable=False, army_state="sieging", route_province_ids=[],
+            in_combat=False, retreating=False,
         )
         route = [699, 700, 714, 975, 715, 45]
         strengths = [
@@ -4572,6 +4574,257 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(plan["phase"], "native_war_route_preview_unsupported")
         self.assertIn("2631", str(plan["required_step"]))
+
+    def test_r0160_primary_defender_routes_to_one_overmatched_enemy_siege(
+        self,
+    ) -> None:
+        date_raw = 53_184_000
+        player = _army(
+            83_886_367,
+            soldiers=None,
+            province_id=2_638,
+            controllable=True,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        enemy_95 = _army(
+            50_331_863,
+            soldiers=None,
+            province_id=2_635,
+            controllable=False,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        enemy_16777250 = _army(
+            83_886_252,
+            soldiers=None,
+            province_id=2_627,
+            controllable=False,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        war_95 = _war(
+            war_id=95,
+            allied_armies=[player],
+            enemy_armies=[enemy_95],
+            score=9,
+            player_side="defender",
+            player_is_primary_war_leader=True,
+            war_objective_province_ids=[2_638],
+        )
+        strengths = [
+            _army_strength(
+                83_886_367,
+                "player",
+                [16_777_250, 95],
+                current=2_329,
+                maximum=2_461,
+                base_power_raw=7_578_100_000,
+            ),
+            _army_strength(
+                83_886_252,
+                "active_war_enemy",
+                [16_777_250],
+                current=565,
+                maximum=585,
+                base_power_raw=1_283_600_000,
+            ),
+            _army_strength(
+                50_331_863,
+                "active_war_enemy",
+                [95],
+                current=267,
+                maximum=371,
+                base_power_raw=1_140_800_000,
+            ),
+        ]
+
+        def options(war_id: int, score: int) -> dict[str, object]:
+            result = _termination_options(war_id=war_id, score=score)
+            result.update(
+                {
+                    "player_side": "defender",
+                    "player_is_primary_war_leader": True,
+                    "queried_snapshot_id": "session:90",
+                    "queried_revision": 90,
+                    "queried_native_revision": 90,
+                    "queried_connection_generation": 1,
+                    "episode_run_id": None,
+                }
+            )
+            return result
+
+        base = {
+            "player": player,
+            "enemies": [enemy_16777250],
+            "score": 10,
+            "date_raw": date_raw,
+            "war_id": 16_777_250,
+            "objective": 2_638,
+            "player_side": "defender",
+            "player_is_primary_war_leader": True,
+            "additional_wars": [war_95],
+            "termination_options": [options(16_777_250, 10), options(95, 9)],
+            "army_strengths": strengths,
+            "army_strengths_status": "available",
+            "route_contact_horizon_supported": True,
+            "battle_speed_readiness": {
+                "stationary_objective_hold_sentinel_live_ready": True,
+            },
+        }
+        preview_step = "preview-move-army-83886367-to-2635"
+        contact_step = query_route_contact_horizon_step(
+            83_886_367, 2_635, (50_331_863, 83_886_252)
+        )
+        move_step = "move-army-83886367-to-2635"
+
+        preview = _native_war_plan(
+            **base,
+            steps=(
+                preview_step,
+                WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP,
+                "life-advance",
+            ),
+        )
+        self.assertEqual(preview["phase"], "native_war_route_preview")
+        self.assertEqual(preview["selected_step"], preview_step)
+        self.assertNotIn("hold-sentinel", preview["selected_step"])
+
+        preview_row = _preview_row(
+            1,
+            army_id=83_886_367,
+            origin=2_638,
+            target=2_635,
+            date_raw=date_raw,
+            route=[2_636, 2_635],
+        )
+        contact = _native_war_plan(
+            **base,
+            history=[preview_row],
+            steps=(contact_step, move_step, "life-advance"),
+        )
+        self.assertEqual(
+            contact["phase"], "native_war_candidate_contact_horizon"
+        )
+        self.assertEqual(contact["selected_step"], contact_step)
+
+        unsafe_contact_row = _route_contact_row(
+            2,
+            army_id=83_886_367,
+            origin=2_638,
+            target=2_635,
+            date_raw=date_raw,
+            route=[2_636, 2_635],
+            hostile_ids=(50_331_863, 83_886_252),
+            contact_free=False,
+        )
+        unsafe = _native_war_plan(
+            **base,
+            history=[preview_row, unsafe_contact_row],
+            steps=(move_step, "life-advance"),
+        )
+        self.assertEqual(unsafe["phase"], "native_war_no_safe_exact_route")
+        self.assertIsNone(unsafe["selected_step"])
+
+        contact_row = _route_contact_row(
+            2,
+            army_id=83_886_367,
+            origin=2_638,
+            target=2_635,
+            date_raw=date_raw,
+            route=[2_636, 2_635],
+            hostile_ids=(50_331_863, 83_886_252),
+            contact_free=True,
+        )
+        move = _native_war_plan(
+            **base,
+            history=[preview_row, contact_row],
+            steps=(move_step, "life-advance"),
+        )
+        self.assertEqual(move["phase"], "native_war_pursuit")
+        self.assertEqual(move["selected_step"], move_step)
+        self.assertEqual(move["pursuit"]["war_id"], 95)
+        self.assertEqual(move["pursuit"]["target_source"], "enemy_siege_relief")
+        self.assertEqual(move["pursuit"]["objective_kind"], "relief")
+        self.assertEqual(move["pursuit"]["target_army_id"], 50_331_863)
+        self.assertEqual(move["pursuit"]["siege_relief"]["candidate_count"], 2)
+        self.assertEqual(move["pursuit"]["siege_relief"]["war_id"], 95)
+
+        # After War 95's siege completes, the same army is assigned once to
+        # the remaining War 16777250 siege instead of resuming the hold.
+        war_95_regular = copy.deepcopy(war_95)
+        war_95_regular["enemy_armies"] = [
+            {**enemy_95, "army_state": "regular", "army_state_code": 1}
+        ]
+        second = _native_war_plan(
+            **{
+                **base,
+                "additional_wars": [war_95_regular],
+                "steps": ("preview-move-army-83886367-to-2627", "life-advance"),
+            }
+        )
+        self.assertEqual(second["phase"], "native_war_route_preview")
+        self.assertEqual(
+            second["selected_step"], "preview-move-army-83886367-to-2627"
+        )
+
+    def test_r0160_siege_relief_missing_strength_blocks_hold_advance(self) -> None:
+        player = _army(
+            11,
+            soldiers=None,
+            province_id=2_638,
+            controllable=True,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        enemy = _army(
+            21,
+            soldiers=None,
+            province_id=2_635,
+            controllable=False,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        plan = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=9,
+            date_raw=53_184_000,
+            objective=2_638,
+            player_side="defender",
+            player_is_primary_war_leader=True,
+            army_strengths_status="available",
+            army_strengths=[],
+            steps=(WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP, "life-advance"),
+            battle_speed_readiness={
+                "stationary_objective_hold_sentinel_live_ready": True,
+            },
+        )
+
+        self.assertEqual(
+            plan["phase"],
+            "native_war_defender_siege_relief_observation_blocked",
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["required_observation"],
+            "complete-same-frame-siege-position-and-war-strength",
+        )
 
     def test_stationary_hold_never_preempts_full_enforcement(self) -> None:
         date_raw = 53_256_000
@@ -13208,8 +13461,8 @@ class GameplayBridgeTests(unittest.TestCase):
                     province_id=45,
                     controllable=False,
                     move_target_province_id=46,
-                    army_state="sieging",
-                    army_state_code=3,
+                    army_state="moving",
+                    army_state_code=7,
                     route_province_ids=[46],
                     in_combat=False,
                     retreating=False,
@@ -13295,6 +13548,33 @@ class GameplayBridgeTests(unittest.TestCase):
             "player_side": "defender",
             "war_duration_days": 69,
             "termination_options": [current_options],
+            "army_strengths": [
+                _army_strength(
+                    184_549_472,
+                    "player",
+                    [88],
+                    current=2,
+                    maximum=2,
+                    base_power_raw=200_000,
+                ),
+                *[
+                    _army_strength(
+                        army_id,
+                        "active_war_enemy",
+                        [88],
+                        current=1_000,
+                        maximum=1_000,
+                        base_power_raw=100_000_000,
+                    )
+                    for army_id in (
+                        184_549_393,
+                        201_326_661,
+                        234_881_097,
+                        301_989_919,
+                    )
+                ],
+            ],
+            "army_strengths_status": "available",
         }
 
         plan = _native_war_plan(**base, history=history)
@@ -14522,8 +14802,8 @@ class GameplayBridgeTests(unittest.TestCase):
             province_id=45,
             controllable=False,
             move_target_province_id=46,
-            army_state="sieging",
-            army_state_code=3,
+            army_state="moving",
+            army_state_code=7,
             route_province_ids=[46],
             in_combat=False,
             retreating=False,

@@ -297,3 +297,70 @@ flowchart TD
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U,S unknown;
 ```
+
+## R0160: an observed hostile siege invalidates an indefinite objective hold
+
+- [production-blocker-live] `formal-R0160` had two simultaneous
+  `naval_expansion_cb` wars (`16777250` and `95`) with Robert as primary
+  defender.  The only controllable army, `83886367`, stayed idle on shared
+  war-goal Province `2638` while the exact paused snapshots published hostile
+  Army `50331863` sieging Province `2635` and hostile Army `83886252` sieging
+  Province `2627`.
+- [production-blocker-live] Before command-history entry `801`, War `95` had
+  score `+9`, occupation `0`, and ticking `-9`.  During that seven-day
+  stationary hold, Army `50331863` changed from `sieging` to `regular` at
+  Province `2635`; the next termination query reported score `-23`, occupation
+  `32`, and ticking `-9`.  The same failure repeated at entry `897`: War
+  `16777250` changed from `+17` to `-15` as Army `83886252` completed its siege
+  at Province `2627` and started moving toward `2619`.
+- [production-blocker-live] The same-frame strength rows were already
+  available.  At the first reversal, the player had `2329` current soldiers
+  and native base power `7578100000`; the sieging army in War `95` had `267`
+  and `1140800000`.  Before the second reversal, the player had `2339` and
+  `7598100000`; the sieging army in War `16777250` had `545` and
+  `1237200000`.  This is sufficient to identify a conservative operational
+  overmatch candidate.  It is not a battle-win forecast.
+- [static-confirmed] The frozen exact-build stance tree already ranks
+  `wargoal_province` first and enemy units in the war area next for every
+  ordinary defender stance.  R0160 does not identify the exact native C++
+  target selected in either frame, but it confirms that our execution-only
+  stationary hold omitted an observed enemy-unit input that the native stance
+  data considers.
+- [counter-policy input] A stationary primary-defender war-goal hold is not
+  eligible while any active primary-defensive war publishes a non-retreating
+  hostile army in `sieging` state and the complete same-frame strength query
+  proves at least a 2:1 friendly margin in both current soldiers and native
+  base power for that war.  Select one deterministic siege relief target,
+  bind the sole idle controllable army to it, and use the existing native route
+  preview plus complete hostile contact-horizon audit before a typed move.
+  One army receives one target even when several wars publish sieges.
+- [evidence-boundary] Enemy siege progress, days remaining, fort strength, and
+  occupation ownership for Provinces `2635` and `2627` were not published.
+  The counter-policy therefore consumes only the observed hostile
+  `army_state=sieging`, current Province, complete same-frame per-war strength,
+  and existing route/contact proof.  Missing strength, incomplete hostile
+  position/route state, an unsafe preview, or an unavailable contact horizon
+  remains zero-action fail closed.  Static tests can prove target selection and
+  typed-move readiness, not battle or war victory.
+- [artifact] Frozen driver state:
+  `g2-robert-mainline-r0160-defense-stationary-red-20260923/R0160-final-frozen-pair/driver-state.json`,
+  SHA-256 `DE2C7FC2FC674176A84493EDD3EB7A975E26C28AFA86C022B5C13AE9AF3B0177`.
+  Pair manifest SHA-256:
+  `6BB0D8D5A8AB106E6D9EFA7235608E59C465A69C8A16FEBCEEA54A586FDB3946`.
+
+```mermaid
+flowchart TD
+    H["paused primary-defender objective hold"] --> S{"any observed hostile sieging?"}
+    S -->|no| B["existing bounded hold policy"]
+    S -->|yes| F{"same-frame per-war strength complete<br/>and friendly >= 2x soldiers + power?"}
+    F -->|no / unknown| X["fail closed; no time advance"]
+    F -->|yes| O["choose one stable war + enemy Province<br/>bind one idle controllable army"]
+    O --> P{"fresh native route preview complete?"}
+    P -->|no| Q["query preview"]
+    P -->|unsafe / unavailable| X
+    P -->|route intersects hostile| C{"complete one-day contact horizon safe?"}
+    C -->|unknown / unsafe| X
+    C -->|yes| M["typed move to siege-relief Province"]
+    P -->|safe| M
+    M --> R["re-observe army, battle, siege and war score"]
+```
