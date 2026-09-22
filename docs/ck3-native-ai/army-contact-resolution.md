@@ -987,6 +987,14 @@ relation / holding predicates         : 0x2900470, 0x2900710, 0x290CD60
   R0118 战争产品 RED 仍开：要么先确证更早未承诺边的有效配对及新策略，要么完成
   [守方投降物质条款只读缺口](war-r0118-defender-surrender-terms-gap.md)；不能重复 h1566
   的同一目标 move、盲进 45 或盲投降。
+- [read-only lineage check] R0118 的 h1471 入口已经晚于 #1313 `move-army-419430662-to-45`，
+  不能称为未承诺边的回退点。R0108 的 h1120/raw53368272 物理样本仍在
+  `Z:/ck3_mod_rewrite/.task-tmp/RUN-001/century-h1120-continuation/sample-pair/`；
+  现场只读 SHA 核对 save `31B2D008899475D3801139698838A433195D2A9C6FE3BF38F2563EEE8180CCD2`、
+  driver `4DBE0664FBBD7D5F3A3DAC31165D4C47B7CC9FD626DD2F85FFEBF8BEED0E00F5`
+  与 R0108 清单一致，history 1120 早于 #1313。它是**候选**，尚无针对本阻点的
+  新版本 prepare/rebind、当帧路线选择或实机结果；不可把旧 R0118 的 151 游戏日进度
+  悄然转移到该回退支线。
 
 ## 2026-09-21 R883：危险 active route 的同省取消门
 

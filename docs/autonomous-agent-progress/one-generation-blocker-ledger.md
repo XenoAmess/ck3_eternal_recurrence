@@ -2098,3 +2098,4 @@ this policy candidate does not replace or invalidate it. Authority remains G2
 | 阻点 | 当前状态 | 实机/静态证据 | 不可做的推断 | 下一可施工入口 |
 | --- | --- | --- | --- | --- |
 | WarID251658364，ArmyID419430662 embarked @715→45；敌军419430684 @45 围城 | R0124 只读查询 GREEN；R0118 `native_war_no_safe_exact_route` 产品 RED 保持 | [R0124 清单](Z:/ck3_mod_rewrite/.task-tmp/RUN-001/century-h1566-reroute-r0124/R0124-evidence-manifest.json) SHA `BE24B14E…CB75`；六个历史目标 `715/975/714/700/699/45` 的完整 preview 全以 45 为首省，raw53371944 才达；contact 一日窗口只到 raw53371920。same-current `715` 预览 `[45,715]`；已有 exact Halt 研究拒绝单条 `[45]` route | `available` 不等于安全，`one_day_contact_free` 不能覆盖两日后接敌；无 move/接敌/战果物质后置。R0123 是已保存的 harness RED，不计产品动作 | 先查更早未承诺边的物理配对和路线/敌军当帧输入，或按[守方投降条款计划](../ck3-native-ai/war-r0118-defender-surrender-terms-gap.md)补具体物质 readback；不在 h1566 重发同省 move/盲推进/盲投降。 |
+- 已核历史次序：R0118 source h1471 > #1313 move；R0108 h1120/raw53368272 的原 save/driver 样本现场 SHA 与清单一致，位于该 move 之前。回退 151 游戏日只是候选恢复支线，不是当前百年日期进度或安全策略的自动替代。
