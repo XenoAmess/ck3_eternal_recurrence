@@ -609,14 +609,23 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 g2_preview_operator, "run_logged", side_effect=fake_run
             ):
                 result = g2_preview_operator.command_run(args)
+                private_args = g2_preview_operator.parser().parse_args([
+                    "run", "--manifest", str(manifest_path),
+                    "--output", str(root / "attempt-private"),
+                    "--private-lifestyle-formal-trial",
+                ])
+                private_result = g2_preview_operator.command_run(private_args)
 
             self.assertEqual(result, 0)
+            self.assertEqual(private_result, 0)
             self.assertIn("--xar-enabled", calls[0])
             self.assertIn("xar_off", calls[0])
             self.assertIn("--ordinary-campaign-no-pact", calls[0])
             self.assertIn("--succession-lifecycle", calls[1])
             self.assertIn("ordinary_campaign_succession", calls[1])
             self.assertIn("--ordinary-campaign-no-pact", calls[1])
+            self.assertNotIn("--allow-private-lifestyle-formal-trial", calls[1])
+            self.assertIn("--allow-private-lifestyle-formal-trial", calls[3])
             receipt = json.loads(
                 (output / "operator-receipt.json").read_text(encoding="utf-8")
             )
@@ -624,6 +633,13 @@ class G2PreviewOperatorTest(unittest.TestCase):
             self.assertTrue(
                 receipt["lifecycle"]["ordinary_campaign_no_pact"]
             )
+            self.assertFalse(receipt["private_lifestyle_formal_trial"])
+            private_receipt = json.loads(
+                (root / "attempt-private" / "operator-receipt.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertTrue(private_receipt["private_lifestyle_formal_trial"])
 
     def test_r778_checkpoint_binding_is_the_authoritative_sha256(self) -> None:
         self.assertEqual(
@@ -1140,6 +1156,37 @@ class G2PreviewOperatorTest(unittest.TestCase):
                 "run", "--manifest", "manifest.json", "--output", "attempt",
                 "--private-faction-round-id", "<ALLOCATED_ROUND>",
             ])
+
+    def test_private_lifestyle_trial_is_narrowly_forwarded(self) -> None:
+        default_args = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "attempt",
+        ])
+        self.assertFalse(default_args.private_lifestyle_formal_trial)
+        args = g2_preview_operator.parser().parse_args([
+            "run", "--manifest", "manifest.json", "--output", "attempt",
+            "--private-lifestyle-formal-trial",
+        ])
+        self.assertTrue(args.private_lifestyle_formal_trial)
+        base = dict(
+            turns=2,
+            timeout=900,
+            readiness_timeout=300,
+            private_faction_round_id_value=None,
+        )
+        self.assertNotIn(
+            "--allow-private-lifestyle-formal-trial",
+            g2_preview_operator.native_auto_run_command(
+                ["python", "agent.py"], **base
+            ),
+        )
+        self.assertIn(
+            "--allow-private-lifestyle-formal-trial",
+            g2_preview_operator.native_auto_run_command(
+                ["python", "agent.py"],
+                **base,
+                private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
+            ),
+        )
 
     def test_verify_zip_binds_exact_bytes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

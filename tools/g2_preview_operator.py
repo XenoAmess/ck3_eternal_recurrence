@@ -262,6 +262,7 @@ def native_auto_run_command(
     timeout: int,
     readiness_timeout: int,
     private_faction_round_id_value: str | None,
+    private_lifestyle_formal_trial: bool = False,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
 ) -> list[str]:
@@ -280,6 +281,8 @@ def native_auto_run_command(
     ]
     if ordinary_campaign_no_pact:
         command.append("--ordinary-campaign-no-pact")
+    if private_lifestyle_formal_trial:
+        command.append("--allow-private-lifestyle-formal-trial")
     if private_faction_round_id_value is not None:
         command.extend([
             "--allow-private-faction-gift-formal-trial",
@@ -506,6 +509,7 @@ def command_run(args: argparse.Namespace) -> int:
         "driver_state_sha256_before": sha256(driver_path),
         "preflight_exit_code": preflight_exit,
         "lifecycle": lifecycle,
+        "private_lifestyle_formal_trial": args.private_lifestyle_formal_trial,
     }
     if preflight_exit != 0:
         receipt.update({"ok": False, "status": "preflight_blocked", "game_launched": False})
@@ -531,6 +535,7 @@ def command_run(args: argparse.Namespace) -> int:
             timeout=timeout,
             readiness_timeout=readiness_timeout,
             private_faction_round_id_value=private_faction_round,
+            private_lifestyle_formal_trial=args.private_lifestyle_formal_trial,
             succession_lifecycle=str(lifecycle["succession_lifecycle"]),
             ordinary_campaign_no_pact=(
                 lifecycle["ordinary_campaign_no_pact"] is True
@@ -1063,6 +1068,11 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--turns", type=int)
     run.add_argument("--timeout", type=int)
     run.add_argument("--readiness-timeout", type=int)
+    run.add_argument(
+        "--private-lifestyle-formal-trial",
+        action="store_true",
+        help="enable the bounded unadvertised lifestyle focus/perk formal route",
+    )
     run.add_argument(
         "--private-faction-round-id",
         type=private_faction_round_id,
