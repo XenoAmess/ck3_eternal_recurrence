@@ -358,6 +358,53 @@ production-live loop；由于 wire 仍无 `is_allied_to`，不升级联盟关系
 下一步质量升级是在真实 gameplay 再次证明联盟关系观测会改变决策时，新增最小只读 `is_allied_to(actor, recipient)` MCP；
 在那以前只诚实声称“accept reply lifecycle GREEN”，不声称完整联盟语义已观测。
 
+## G2 R0127：入站 `perk_alliance_interaction` 连续运行阻塞
+
+本节只覆盖冻结 CK3 `1.19.0.6` 的此 exact definition。EXE SHA-256 为
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；
+`game/common/character_interactions/00_alliance.txt` SHA-256 为
+`919ED408EC735F64ED972E23A376CD618A2E207A0EA273F973C5B1F89440E39D`；
+`game/events/interaction_events/character_interaction_events.txt` SHA-256 为
+`D238E0A3442F41C35AF35157D47A754CB200B72AB2A0184BAEFC86E63347A150`。
+旧轮次 R0127 的正式报告位于交接机
+`Z:\ck3_mod_rewrite\.task-tmp\RUN-001\war-h1955-continuation-source82c6703-nolaunch-20260922\R0127-execution\formal-report.txt`，SHA-256
+`A209DEFB4527364C2F8588653290196657B39189D443F928EA216BC971E2A6A4`。
+路径仅用于定位原件，不是跨机配置。R0127 turn 106 在动作前以
+`interaction_definition_not_explicitly_classified_nonwar_nonreligious` 停止，零 reply；
+本节策略尚未实机复验，旧完整 driver 后尾不能物理拼到 h2083 checkpoint。
+
+### 原版发送、答复与结果树
+
+- [static-confirmed] `00_alliance.txt:2379–2480` 规定：发送方有 `defensive_negotiations_perk`，双方是可游玩的外部/同侪统治者、尚未结盟，双方未交战/被囚，并排除旧拒绝记录与重复 pending。正常 `can_send` 还检查同类请求未决。`ai_potential` 要发送方不在战争中且盟友少于两名；`ai_targets` 取邻近统治者或同侪封臣，`ai_will_do` 会压低弱势 AI 对玩家的无益请求。这些是**发送时**原生条件，不能代替当前帧观测。
+- [static-confirmed] `2484–2520` 的两个非互斥 send option 是 actor 的 hook 与行政影响力；`2524–2574` 的 normal accept 对 actor 执行 `create_alliance(target=recipient)`，只有对应 option 被选中时才消耗 actor 的 hook/影响力，shy 压力也在 actor 侧。recipient 得到指向 actor 的 `perk_negotiated_alliance_opinion`；此处没有直接加入战争命令。`2576–2594` 的 decline 给 actor 写入针对 recipient 的 `refused_alliance_opinion` 并触发 minor clan-unity loss，所以拒绝不是中性动作。
+- [static-confirmed] `2596–3191` 的原生 `ai_accept` 以 `-25` 起算，再考虑双方 tier、关系、意见、特质、军力、claim、house、现有盟友和战争等条件；faith 仅作为原生 evaluator 的 opaque 内部因素，本切片不研究宗教系统。原生 AI 的接受分数不是自动玩家的跨域机会成本。`3193–3231` 的 `ai_will_do` 则是发送方的候选权重，不是玩家当前利益证明。
+- [live-confirmed] R0127 `native:158` / public revision `159` / raw `53388120` 上，instance `-268435437` 是 actor `31506` → 玩家 recipient `36403`，canonical key `perk_alliance_interaction`、hash `328040944`、ordinal `4`。五角色无 secondary/intermediary，normal direct route；age/expiration/remaining 为 `3/60/57`，两个 option 的 definition/context count 均为 2、native index `0/1`、selected 均 false。accept/reject/block 当前原生合法、ACK 非法，special data=false、war-special not applicable；同帧 active wars 为空。numeric option flag ID 未映射，不跨进程假定其稳定。
+
+```mermaid
+flowchart TD
+    A["[static-confirmed] AI 构造 perk_alliance_interaction"] --> G{"[static-confirmed] 发送时 perk/双方身份/关系/合法性?"}
+    G -->|否| N["[static-confirmed] 不发送"]
+    G -->|是| P["[live-confirmed] R0127 direct player-recipient pending"]
+    P --> F{"[counter-policy] exact key+hash+ordinal、同帧 direct、未过期、双 option 未选、无 active war?"}
+    F -->|否| B["[counter-policy] 保留 blocker，不提交"]
+    F -->|是| L{"[counter-policy] native accept 合法且 typed command 可达?"}
+    L -->|否| B
+    L -->|是| X["[counter-policy] accept 一次"]
+    X --> R["[postcondition] 旧 signed pending ID 在独立 paused 帧消失、下一 turn 消费"]
+    R -. "双向联盟关系未在当前 wire 发布" .-> U["[unknown] alliance material delta / 长期机会成本"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+### 最小正式 counter-policy 与恢复边界
+
+只在完整同帧 identity/legality 合同成立、上述 exact key/hash/ordinal 匹配、玩家是 direct local recipient、stock 60 天期限仍有效、两个 option 完整且未选、无 special payload、当前没有 active war、accept 原生合法且 primitive 可达时选择 accept。此次选择的可见收益是无需当前玩家资源支付即可建立联盟、避免已知拒绝惩罚；长期盟友义务和与其他行动的机会成本未量化，故保留 `native_ai_equivalent=false`、`semantic_optimal=false`、`semantic_decision_ready=false`。任何输入变体均保持阻塞，不落到普通请求默认拒绝或唯一接受后门。
+
+R0127 最后耐久 h2083/raw `53386440`、save SHA
+`DF6B61DDE358726EC9B1C126C93302A6A31B800D890C1D88AB184407CFC26080`；后续 13 条 driver history 没有配对存档。复验须由官方恢复器生成新合法 pair，从同帧重新查询 key、角色、option、当前战争与 legality，不能依赖旧 instance ID 必定不变。typed 回复后必须独立证明 pending 消失、下一 turn 消费和 checkpoint；联盟双向关系仍需专用只读口才能声称物质完成。本节不提升 G2 里程碑或 M5 联合选择 readiness。
+
+本地离线回放直接取 R0127 driver 历史第 `2096` 条完整原生 pending context，和该正式报告同帧 `native:158`、revision `159`、无 active war 的快照组合；新策略选择 `pending_perk_alliance_accept` / `accept-pending-character-interaction`，`blocked_reasons=[]`，但不提交动作。聚焦 normal/`-O` 各 7 tests + 6 subtests GREEN，另一次完整受影响单文件 normal 为 269 tests + 111 subtests GREEN。选中 option、definition 身份漂移、过期、native accept 不合法、已有战争或战争观测缺失均在离线对照中保留无动作；实机选择、独立后置、下一 turn 与恢复仍待唯一 CK3 负责人复验。
+
 ## G2：入站战争召集的 exact blocker
 
 本节只处理同一第二角色长跑在 turn 79 首次真实出现的 stock `call_ally_interaction`。它是

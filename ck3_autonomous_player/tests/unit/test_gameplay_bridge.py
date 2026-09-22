@@ -370,6 +370,54 @@ def _negotiate_alliance_context_result(
     return result
 
 
+def _perk_alliance_context_result() -> dict[str, object]:
+    """R0127 pending context, retaining the native IDs and option vector."""
+
+    legality = {
+        action: {"status": "available", "allowed": True, "reason": None}
+        for action in ("accept", "reject", "block")
+    }
+    legality["acknowledge"] = {
+        "status": "available",
+        "allowed": False,
+        "reason": "normal_reply_channel",
+    }
+    result = _pending_context_result(
+        pending_id=-268_435_437,
+        revision=159,
+        native_revision=158,
+        date_raw=53_388_120,
+        definition_key="perk_alliance_interaction",
+        actor_character_id=31_506,
+        recipient_character_id=36_403,
+        legality=legality,
+    )
+    context = result["pending_character_interaction_context"]
+    assert isinstance(context, dict)
+    definition = context["definition"]
+    assert isinstance(definition, dict)
+    definition["deterministic_key_hash"] = 328_040_944
+    definition["runtime_ordinal"] = 4
+    context["deadline"] = {
+        "age_days": 3,
+        "expiration_days": 60,
+        "remaining_days": 57,
+        "expiry_boundary_status": "not_reached",
+    }
+    context["send_options"] = {
+        "exclusive": False,
+        "definition_count": 2,
+        "context_count": 2,
+        "rows": [
+            {"native_index": 0, "numeric_flag_identifier": 49,
+             "selected": False, "is_shown": False, "is_valid": True},
+            {"native_index": 1, "numeric_flag_identifier": 6_918,
+             "selected": False, "is_shown": False, "is_valid": False},
+        ],
+    }
+    return result
+
+
 def _call_ally_context_result(
     *,
     legality: dict[str, dict[str, object]] | None = None,
@@ -7946,6 +7994,88 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertIn(
             "negotiate_alliance_accept_not_native_legal",
             plan["decision"]["blocked_reasons"],
+        )
+
+    def test_planner_accepts_r0127_perk_alliance_only_as_bounded_reply(self) -> None:
+        plan = _plan_for_pending_context(
+            _perk_alliance_context_result(),
+            action_steps=(
+                "accept-pending-character-interaction",
+                "reject-pending-character-interaction",
+            ),
+            active_wars=[],
+        )
+
+        self.assertEqual(plan["phase"], "pending_perk_alliance_accept")
+        self.assertEqual(
+            plan["selected_step"], "accept-pending-character-interaction"
+        )
+        decision = plan["decision"]
+        self.assertEqual(
+            decision["classification"], "known_perk_alliance_inbound"
+        )
+        self.assertEqual(
+            decision["rule_id"], "perk-alliance-inbound-accept-v1"
+        )
+        self.assertFalse(decision["semantic_decision_ready"])
+        evidence = decision["perk_alliance_inbound"]["evidence"]
+        self.assertEqual(evidence["selected_option_count"], 0)
+        self.assertEqual(evidence["active_war_count"], 0)
+        self.assertFalse(evidence["alliance_semantic_postcondition_ready"])
+
+    def test_perk_alliance_rejects_changed_cost_identity_or_legality(
+        self,
+    ) -> None:
+        cases = (
+            ("selected_option", "perk_alliance_zero_option_vector_mismatch"),
+            ("definition_identity", "perk_alliance_definition_identity_mismatch"),
+            ("expired", "perk_alliance_unexpired_deadline_mismatch"),
+            ("accept_illegal", "perk_alliance_accept_not_native_legal"),
+        )
+        for changed, expected_reason in cases:
+            with self.subTest(changed=changed):
+                result = _perk_alliance_context_result()
+                context = result["pending_character_interaction_context"]
+                assert isinstance(context, dict)
+                if changed == "selected_option":
+                    context["send_options"]["rows"][0]["selected"] = True
+                elif changed == "definition_identity":
+                    context["definition"]["deterministic_key_hash"] = 0
+                elif changed == "expired":
+                    context["deadline"]["remaining_days"] = 0
+                else:
+                    context["legality"]["accept"]["allowed"] = False
+                plan = _plan_for_pending_context(
+                    result,
+                    action_steps=(
+                        "accept-pending-character-interaction",
+                        "reject-pending-character-interaction",
+                    ),
+                    active_wars=[],
+                )
+                self.assertIsNone(plan["selected_step"])
+                self.assertIn(
+                    expected_reason, plan["decision"]["blocked_reasons"]
+                )
+
+        war_plan = _plan_for_pending_context(
+            _perk_alliance_context_result(),
+            action_steps=("accept-pending-character-interaction",),
+            active_wars=[_war(allied_armies=[], enemy_armies=[])],
+        )
+        self.assertIsNone(war_plan["selected_step"])
+        self.assertIn(
+            "perk_alliance_no_active_war_required",
+            war_plan["decision"]["blocked_reasons"],
+        )
+        missing_war_observation = _plan_for_pending_context(
+            _perk_alliance_context_result(),
+            action_steps=("accept-pending-character-interaction",),
+        )
+        self.assertIsNone(missing_war_observation["selected_step"])
+        self.assertIn(
+            "perk_alliance_active_war_observation_unavailable",
+            missing_war_observation["decision"]["blocked_reasons"],
         )
 
     def test_planner_rejects_exact_busy_player_call_ally_shape(self) -> None:

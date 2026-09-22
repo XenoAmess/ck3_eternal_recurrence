@@ -310,6 +310,23 @@ _NEGOTIATE_ALLIANCE_INBOUND_POLICY = {
         "minor_clan_unity_loss",
     ],
 }
+_PERK_ALLIANCE_INBOUND_POLICY = {
+    "rule_id": "perk-alliance-inbound-accept-v1",
+    "definition_key": "perk_alliance_interaction",
+    "deterministic_key_hash": 328_040_944,
+    "runtime_ordinal": 4,
+    "domain": "alliance",
+    "source": "common/character_interactions/00_alliance.txt",
+    "source_sha256": (
+        "919ED408EC735F64ED972E23A376CD618A2E207A0EA273F973C5B1F89440E39D"
+    ),
+    "required_send_option_count": 2,
+    "known_selected_option_costs": ["actor_hook", "actor_influence"],
+    "known_decline_effects": [
+        "actor:refused_alliance_opinion:toward_recipient",
+        "minor_clan_unity_loss",
+    ],
+}
 _CALL_ALLY_BUSY_REJECT_POLICY = {
     "rule_id": "call-ally-busy-reject-v1",
     "definition_key": "call_ally_interaction",
@@ -1505,6 +1522,153 @@ def _negotiate_alliance_inbound_assessment(
     }
 
 
+def _perk_alliance_inbound_assessment(
+    context: dict[str, object],
+    *,
+    snapshot: dict[str, object],
+    active_wars: list[dict[str, object]],
+    available_steps: set[str],
+    candidate_replies: dict[str, dict[str, object]],
+) -> dict[str, object]:
+    """Accept only the source-pinned, cost-free R0127 alliance reply shape."""
+
+    policy = _PERK_ALLIANCE_INBOUND_POLICY
+    definition = context.get("definition")
+    if not (
+        isinstance(definition, dict)
+        and definition.get("canonical_key") == policy["definition_key"]
+    ):
+        return {"status": "not_applicable", "rule_id": policy["rule_id"]}
+
+    blocked: list[str] = []
+    if not (
+        definition.get("deterministic_key_hash")
+        == policy["deterministic_key_hash"]
+        and definition.get("runtime_ordinal") == policy["runtime_ordinal"]
+    ):
+        blocked.append("perk_alliance_definition_identity_mismatch")
+
+    roles = context.get("roles")
+    actor_id = roles.get("actor_character_id") if isinstance(roles, dict) else None
+    recipient_id = (
+        roles.get("recipient_character_id") if isinstance(roles, dict) else None
+    )
+    if not (
+        isinstance(actor_id, int)
+        and not isinstance(actor_id, bool)
+        and actor_id > 0
+        and isinstance(recipient_id, int)
+        and not isinstance(recipient_id, bool)
+        and recipient_id > 0
+        and actor_id != recipient_id
+        and isinstance(roles, dict)
+        and roles.get("secondary_actor_character_id") == -1
+        and roles.get("secondary_recipient_character_id") == -1
+        and roles.get("intermediary_character_id") == -1
+    ):
+        blocked.append("perk_alliance_direct_roles_mismatch")
+
+    routing = context.get("routing")
+    if not (
+        isinstance(routing, dict)
+        and routing.get("kind") == 0
+        and routing.get("played_character_id") == recipient_id
+        and routing.get("current_responder_role") == "recipient"
+        and routing.get("reply_execution_channel") == "recipient"
+        and routing.get("local_route") is True
+        and routing.get("auto_accept_notification") is False
+    ):
+        blocked.append("perk_alliance_direct_local_route_mismatch")
+
+    deadline = context.get("deadline")
+    age = deadline.get("age_days") if isinstance(deadline, dict) else None
+    remaining = (
+        deadline.get("remaining_days") if isinstance(deadline, dict) else None
+    )
+    if not (
+        isinstance(age, int)
+        and not isinstance(age, bool)
+        and 0 <= age < 60
+        and isinstance(remaining, int)
+        and not isinstance(remaining, bool)
+        and remaining == 60 - age
+        and deadline.get("expiration_days") == 60
+        and deadline.get("expiry_boundary_status") == "not_reached"
+    ):
+        blocked.append("perk_alliance_unexpired_deadline_mismatch")
+
+    terms = context.get("terms")
+    special = terms.get("special_war_binding") if isinstance(terms, dict) else None
+    if not (
+        isinstance(terms, dict)
+        and terms.get("special_data_present") is False
+        and isinstance(special, dict)
+        and special.get("status") == "unavailable"
+        and special.get("value") is None
+        and special.get("reason") == "special_war_binding_not_applicable"
+    ):
+        blocked.append("perk_alliance_non_special_shape_mismatch")
+
+    send_options = context.get("send_options")
+    rows = send_options.get("rows") if isinstance(send_options, dict) else None
+    option_count = policy["required_send_option_count"]
+    if not (
+        isinstance(send_options, dict)
+        and send_options.get("exclusive") is False
+        and send_options.get("definition_count") == option_count
+        and send_options.get("context_count") == option_count
+        and isinstance(rows, list)
+        and len(rows) == option_count
+        and all(
+            isinstance(row, dict)
+            and row.get("native_index") == index
+            and row.get("selected") is False
+            for index, row in enumerate(rows)
+        )
+    ):
+        blocked.append("perk_alliance_zero_option_vector_mismatch")
+
+    observed_wars = snapshot.get("active_wars")
+    if not isinstance(observed_wars, list) or not all(
+        isinstance(war, dict) for war in observed_wars
+    ):
+        blocked.append("perk_alliance_active_war_observation_unavailable")
+    elif active_wars:
+        blocked.append("perk_alliance_no_active_war_required")
+    accept = candidate_replies.get("accept")
+    if not isinstance(accept, dict) or accept.get("native_legal") is not True:
+        blocked.append("perk_alliance_accept_not_native_legal")
+    elif accept.get("action_reachable") is not True:
+        blocked.append("perk_alliance_accept_command_unavailable")
+
+    return {
+        "status": "ready" if not blocked else "blocked",
+        "rule_id": policy["rule_id"],
+        "evidence": {
+            "source": policy["source"],
+            "source_sha256": policy["source_sha256"],
+            "actor_character_id": actor_id,
+            "recipient_character_id": recipient_id,
+            "selected_option_count": (
+                sum(
+                    1 for row in rows
+                    if isinstance(row, dict) and row.get("selected") is True
+                )
+                if isinstance(rows, list)
+                else None
+            ),
+            "active_war_count": len(active_wars),
+            "known_selected_option_costs": list(
+                policy["known_selected_option_costs"]
+            ),
+            "known_decline_effects": list(policy["known_decline_effects"]),
+            "postcondition": "old_pending_full_id_absent_in_paused_frame",
+            "alliance_semantic_postcondition_ready": False,
+        },
+        "blocked_reasons": blocked,
+    }
+
+
 def _call_ally_busy_reject_assessment(
     context: dict[str, object],
     *,
@@ -2069,6 +2233,11 @@ def _degraded_pending_interaction_decision(
         == _NEGOTIATE_ALLIANCE_INBOUND_POLICY["definition_key"]
         else None
     )
+    perk_alliance_evidence = (
+        _PERK_ALLIANCE_INBOUND_POLICY
+        if definition_key == _PERK_ALLIANCE_INBOUND_POLICY["definition_key"]
+        else None
+    )
     call_ally_evidence = (
         _CALL_ALLY_BUSY_REJECT_POLICY
         if definition_key == _CALL_ALLY_BUSY_REJECT_POLICY["definition_key"]
@@ -2089,6 +2258,8 @@ def _degraded_pending_interaction_decision(
         and special_present is False
     ):
         classification = "known_negotiate_alliance_inbound"
+    elif isinstance(perk_alliance_evidence, dict):
+        classification = "known_perk_alliance_inbound"
     elif isinstance(call_ally_evidence, dict):
         classification = "known_call_ally_busy_reject"
     elif (
@@ -2135,6 +2306,17 @@ def _degraded_pending_interaction_decision(
         if classification == "known_negotiate_alliance_inbound"
         else None
     )
+    perk_alliance = (
+        _perk_alliance_inbound_assessment(
+            context,
+            snapshot=snapshot,
+            active_wars=active_wars,
+            available_steps=available_steps,
+            candidate_replies=by_action,
+        )
+        if classification == "known_perk_alliance_inbound"
+        else None
+    )
     call_ally_busy_reject = (
         _call_ally_busy_reject_assessment(
             context,
@@ -2156,12 +2338,16 @@ def _degraded_pending_interaction_decision(
                 negotiate_alliance_evidence
                 if classification == "known_negotiate_alliance_inbound"
                 else (
-                    marriage_allowlist_evidence
-                    if classification == "known_marriage_special"
+                    perk_alliance_evidence
+                    if classification == "known_perk_alliance_inbound"
                     else (
-                        grant_vassal_evidence
-                        if classification == "known_grant_vassal_reject_only"
-                        else definition_allowlist_evidence
+                        marriage_allowlist_evidence
+                        if classification == "known_marriage_special"
+                        else (
+                            grant_vassal_evidence
+                            if classification == "known_grant_vassal_reject_only"
+                            else definition_allowlist_evidence
+                        )
                     )
                 )
             )
@@ -2200,6 +2386,7 @@ def _degraded_pending_interaction_decision(
         "special_war_snapshot_binding": special_binding_audit,
         "raiktor_inbound_white_peace": raiktor_white_peace,
         "negotiate_alliance_inbound": negotiate_alliance,
+        "perk_alliance_inbound": perk_alliance,
         "call_ally_busy_reject": call_ally_busy_reject,
         "definition_classification": {
             "policy": (
@@ -2412,6 +2599,33 @@ def _degraded_pending_interaction_decision(
         decision["selected_action"] = "accept"
         decision["selected_step"] = _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP
         return {"summary": summary, "decision": decision}
+    if classification == "known_perk_alliance_inbound":
+        decision["rule_id"] = _PERK_ALLIANCE_INBOUND_POLICY["rule_id"]
+        classification_row = decision["definition_classification"]
+        assert isinstance(classification_row, dict)
+        classification_row["policy"] = (
+            "ck3-1.19.0.6-exact-perk-alliance-inbound-v1"
+        )
+        decision["deterministic_rule"] = (
+            "accept only the exact source-pinned perk_alliance_interaction "
+            "with direct local player recipient, unexpired stock deadline, "
+            "two unselected send options, no special payload or current "
+            "active war, and same-frame native accept legality; then require "
+            "the old signed pending ID to disappear in a paused frame"
+        )
+        if not (
+            isinstance(perk_alliance, dict)
+            and perk_alliance.get("status") == "ready"
+        ):
+            if isinstance(perk_alliance, dict):
+                blocked_reasons.extend(perk_alliance.get("blocked_reasons", []))
+            else:
+                blocked_reasons.append("perk_alliance_assessment_unavailable")
+            return {"summary": summary, "decision": decision}
+        decision["recommended_action"] = "accept"
+        decision["selected_action"] = "accept"
+        decision["selected_step"] = _ACCEPT_PENDING_CHARACTER_INTERACTION_STEP
+        return {"summary": summary, "decision": decision}
     if classification == "known_call_ally_busy_reject":
         decision["rule_id"] = _CALL_ALLY_BUSY_REJECT_POLICY["rule_id"]
         decision["deterministic_rule"] = (
@@ -2552,6 +2766,14 @@ def _degraded_pending_interaction_plan(
                 "or influence cost exists, and stock decline has a definite "
                 "opinion and clan-unity penalty"
             )
+        elif rule_id == _PERK_ALLIANCE_INBOUND_POLICY["rule_id"]:
+            phase = "pending_perk_alliance_accept"
+            reason = (
+                "accept this exact direct perk alliance proposal: the player "
+                "has no active war, neither sender option is selected, native "
+                "accept is legal, and stock decline has an opinion and "
+                "clan-unity penalty"
+            )
         else:
             phase = "pending_character_interaction_degraded_unique_accept"
             reason = (
@@ -2605,6 +2827,7 @@ def _degraded_pending_interaction_plan(
         elif decision.get("classification") not in {
             "ordinary_non_war",
             "known_negotiate_alliance_inbound",
+            "known_perk_alliance_inbound",
             "known_call_ally_busy_reject",
             "known_grant_vassal_reject_only",
         }:
