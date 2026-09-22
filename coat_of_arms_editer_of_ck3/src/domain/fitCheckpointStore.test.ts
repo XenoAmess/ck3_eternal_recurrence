@@ -17,8 +17,8 @@ const image = () => ({
 })
 
 const checkpoint = (): ImageFitCheckpoint => ({
-  contract: 'ck3-coa-fit-checkpoint-v5',
-  algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first',
+  contract: 'ck3-coa-fit-checkpoint-v8',
+  algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale',
   lane: 'baseline',
   inputSha256: 'A'.repeat(64),
   assetPackManifestSha256: 'B'.repeat(64),
@@ -26,6 +26,8 @@ const checkpoint = (): ImageFitCheckpoint => ({
   sourceWidth: 32,
   sourceHeight: 32,
   layerBudget: 16,
+  refinementCandidates: 48,
+  beamWidth: 2,
   randomSeed: null,
   nextTileIndex: 1,
   tileCount: 1,

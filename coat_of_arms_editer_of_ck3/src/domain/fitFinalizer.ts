@@ -50,6 +50,10 @@ export interface FullAssetFitFinalizationOptions {
   targetPyramid?: FitImage[]
   /** Bounded exact-DDS coordinate/replacement evaluations; zero disables E2. */
   jointRefinementEvaluations?: number
+  /** Second exact 230px refinement budget; zero disables the medium cascade. */
+  mediumJointRefinementEvaluations?: number
+  /** Final exact 512px small-step refinement budget; zero disables the high cascade. */
+  highJointRefinementEvaluations?: number
   /** Bounded full-budget contour replacements; zero disables E3/E4. */
   contourReplacementEvaluations?: number
   /** Exact 96/230/512 leave-one-out runs only at or below this draw count. */
@@ -76,7 +80,7 @@ export interface FullAssetCandidateReceipt {
 }
 
 export interface FullAssetFitFinalizationReceipt {
-  contract: 'full-dds-epsilon-multiscale-joint-contour-v4'
+  contract: 'full-dds-epsilon-multiscale-joint-contour-v5'
   searchAssetContract: 'fit-index-rgba32-v2'
   finalAssetContract: 'decoded-exact-dds-mip-v1'
   candidates: FullAssetCandidateReceipt[]
@@ -111,11 +115,15 @@ export interface FullAssetFitFinalizationReceipt {
     scales: readonly [96, 230, 512]
     incumbentLoss: number
     selectedLoss: number
+    incumbentPerScale: MultiscalePerceptualReceipt[]
+    selectedPerScale: MultiscalePerceptualReceipt[]
     eligibleCandidates: number
     rejectedForScaleRegression: number
     selectedVariant: FullAssetCandidateReceipt['variant']
   }
   jointRefinement: JointRefinementReceipt
+  jointRefinementMedium: JointRefinementReceipt
+  jointRefinementHigh: JointRefinementReceipt
   contourRefinement: {
     contract: 'epsilon-q-contour-fixed-budget-replacement-v1'
     attempted: boolean
@@ -294,26 +302,28 @@ function contourPrimitiveAssets(assets: FullAssetFitAssets): ContourPrimitiveAss
     })
 }
 
-function replaceInstanceWithContour(
+function replaceInstancesWithContour(
   source: CoatOfArms,
-  flatInstanceIndex: number,
+  flatInstanceIndexes: readonly number[],
   proposal: ContourProposalResult<string>['proposals'][number],
 ): CoatOfArms {
   const coatOfArms = cloneCoatOfArms(source)
+  const victims = new Set(flatInstanceIndexes)
   let cursor = 0
   let victimDepth = proposal.instance.depth
-  for (let blockIndex = 0; blockIndex < coatOfArms.coloredEmblems.length; blockIndex += 1) {
-    const block = coatOfArms.coloredEmblems[blockIndex]
-    if (flatInstanceIndex >= cursor + block.instances.length) {
-      cursor += block.instances.length
-      continue
-    }
-    const localIndex = flatInstanceIndex - cursor
-    victimDepth = block.instances[localIndex].depth
-    block.instances.splice(localIndex, 1)
-    if (!block.instances.length) coatOfArms.coloredEmblems.splice(blockIndex, 1)
-    break
-  }
+  const victimDepths: number[] = []
+  coatOfArms.coloredEmblems = coatOfArms.coloredEmblems
+    .map((block) => {
+      const instances = block.instances.filter((instance) => {
+        const remove = victims.has(cursor)
+        cursor += 1
+        if (remove) victimDepths.push(instance.depth)
+        return !remove
+      })
+      return { ...block, instances }
+    })
+    .filter((block) => block.instances.length > 0)
+  if (victimDepths.length) victimDepth = Math.min(...victimDepths)
   const expression = `rgb { ${proposal.targetColor.join(' ')} }`
   const replacement: ColoredEmblem = {
     texture: proposal.texture,
@@ -361,6 +371,54 @@ function smallestAreaInstanceIndexes(coatOfArms: CoatOfArms, maximum: number): n
     .map((item) => item.index)
 }
 
+function nearestInstanceIndexes(
+  coatOfArms: CoatOfArms,
+  position: readonly [number, number],
+  maximum: number,
+): number[] {
+  let flatIndex = 0
+  return coatOfArms.coloredEmblems.flatMap((emblem) => emblem.instances.map((instance) => ({
+    index: flatIndex++,
+    distance: Math.hypot(instance.position[0] - position[0], instance.position[1] - position[1]),
+    area: Math.abs(instance.scale[0] * instance.scale[1]),
+  })))
+    .sort((left, right) => left.distance - right.distance || left.area - right.area || left.index - right.index)
+    .slice(0, maximum)
+    .map((item) => item.index)
+}
+
+function detailInstanceIndexes(
+  coatOfArms: CoatOfArms,
+  analysis: ContourProposalResult<string>['analysis'] | null,
+  maximum: number,
+): number[] {
+  let flatIndex = 0
+  const instances = coatOfArms.coloredEmblems.flatMap((emblem) => emblem.instances.map((instance) => ({
+    index: flatIndex++,
+    position: instance.position,
+    area: Math.abs(instance.scale[0] * instance.scale[1]),
+  })))
+  if (!analysis?.regions.length) return smallestAreaInstanceIndexes(coatOfArms, maximum)
+  const selected: number[] = []
+  for (const region of analysis.regions) {
+    const nearest = instances
+      .filter((item) => !selected.includes(item.index))
+      .sort((left, right) => (
+        Math.hypot(left.position[0] - region.center[0], left.position[1] - region.center[1])
+          - Math.hypot(right.position[0] - region.center[0], right.position[1] - region.center[1])
+        || left.area - right.area
+        || left.index - right.index
+      ))[0]
+    if (nearest) selected.push(nearest.index)
+    if (selected.length >= maximum) break
+  }
+  for (const index of smallestAreaInstanceIndexes(coatOfArms, maximum)) {
+    if (!selected.includes(index)) selected.push(index)
+    if (selected.length >= maximum) break
+  }
+  return selected
+}
+
 function disabledJointReceipt(coatOfArms: CoatOfArms, loss: number): JointRefinementReceipt {
   const instances = coatOfArms.coloredEmblems.reduce((sum, emblem) => sum + emblem.instances.length, 0)
   return {
@@ -371,6 +429,7 @@ function disabledJointReceipt(coatOfArms: CoatOfArms, loss: number): JointRefine
     objectiveEvaluations: 0,
     evaluatedMoves: 0,
     acceptedMoves: [],
+    acceptedArchiveCount: 0,
     lossBefore: loss,
     lossAfter: loss,
     drawnInstancesBefore: instances,
@@ -397,7 +456,6 @@ export function finalizeImageFitWithFullAssets(
   if (!searchResult.paretoCandidates.length) throw new Error('完整 DDS 复评没有输入候选')
   const resolutions = [...new Set([
     searchResult.provenance.resolution,
-    ...searchResult.provenance.pyramidResolutions,
     ...FIT_QUALITY_SCALES,
   ])].sort((left, right) => left - right)
   const sourceTargets = [inputTarget, ...(options.targetPyramid ?? [])]
@@ -416,7 +474,9 @@ export function finalizeImageFitWithFullAssets(
       candidate.reconstructionMode === 'hybrid-native-paint'
       || candidate.reconstructionMode === 'native-high-resolution-edge-refined'
     ))
+    .slice(0, 3)
     .map(({ originalIndex }) => originalIndex))
+  const recolorOriginalIndex = [...repairOriginalIndexes][0]
   const repairedCandidates = searchResult.paretoCandidates.map((candidate, originalIndex) => {
     const pattern = assets.patterns[candidate.coatOfArms.pattern]
     if (!pattern) throw new Error(`完整 DDS 复评缺少 pattern：${candidate.coatOfArms.pattern}`)
@@ -450,6 +510,9 @@ export function finalizeImageFitWithFullAssets(
   })
   const candidateEntries: FinalizerCandidateEntry[] = repairedCandidates.flatMap((candidate, originalIndex) => {
     if (!repairOriginalIndexes.has(originalIndex)) {
+      return [{ candidate, originalIndex, recolorBlend: 0, variant: 'exact-repair' as const }]
+    }
+    if (originalIndex !== recolorOriginalIndex) {
       return [{ candidate, originalIndex, recolorBlend: 0, variant: 'exact-repair' as const }]
     }
     const variants = [0.25, 0.5, 0.75, 1]
@@ -584,7 +647,7 @@ export function finalizeImageFitWithFullAssets(
 
   const primitiveAssets = contourPrimitiveAssets(assets)
   const contourEvaluationBudget = Math.max(0, Math.floor(
-    options.contourReplacementEvaluations ?? 48,
+    options.contourReplacementEvaluations ?? 32,
   ))
   let contourAnalysis: ContourProposalResult<string>['analysis'] | null = null
   let contourEmittedProposals = 0
@@ -611,18 +674,23 @@ export function finalizeImageFitWithFullAssets(
       contourEmittedProposals = proposals.proposals.length
       const instanceCount = drawnInstances(refinementSeed.candidate)
       const availableSlots = Math.max(0, searchResult.provenance.layerBudget - instanceCount)
-      const victims = smallestAreaInstanceIndexes(
-        refinementSeed.candidate.coatOfArms,
-        Math.max(1, Math.min(8, contourEvaluationBudget)),
-      )
       const candidates: Array<{ coatOfArms: CoatOfArms, loss: number, key: string }> = []
-      outer: for (const proposal of proposals.proposals) {
-        const victimIndexes = availableSlots > 0 ? [-1] : victims
-        for (const victimIndex of victimIndexes) {
+      const detailProposals = proposals.proposals.filter((proposal) => {
+        const region = proposals.analysis.regions.find((item) => item.id === proposal.regionId)
+        if (!region) return false
+        const area = (region.bounds[2] - region.bounds[0]) * (region.bounds[3] - region.bounds[1])
+        return area <= 0.12 && (region.kind !== 'curved' || area <= 0.05)
+      })
+      outer: for (const proposal of detailProposals) {
+        const nearest = nearestInstanceIndexes(refinementSeed.candidate.coatOfArms, proposal.instance.position, 4)
+        const victimGroups = availableSlots > 0
+          ? [[]]
+          : [1, 2, 4].filter((size) => size <= nearest.length).map((size) => nearest.slice(0, size))
+        for (const victimIndexes of victimGroups) {
           if (contourEvaluatedCandidates >= contourEvaluationBudget) break outer
-          const coatOfArms = victimIndex < 0
+          const coatOfArms = victimIndexes.length === 0
             ? appendContour(refinementSeed.candidate.coatOfArms, proposal)
-            : replaceInstanceWithContour(refinementSeed.candidate.coatOfArms, victimIndex, proposal)
+            : replaceInstancesWithContour(refinementSeed.candidate.coatOfArms, victimIndexes, proposal)
           const rendered = renderCoatOfArms(
             coatOfArms,
             { pattern, coloredEmblems: assets.coloredEmblems, surfaceMask: assets.surfaceMask },
@@ -630,10 +698,10 @@ export function finalizeImageFitWithFullAssets(
             contourResolution,
           )
           contourEvaluatedCandidates += 1
-          if (victimIndex >= 0) fullBudgetReplacements += 1
+          if (victimIndexes.length > 0) fullBudgetReplacements += 1
           if (!rendered) continue
           const loss = measurePerceptualFitMetricsV2(targets.get(contourResolution)!, rendered).totalLoss
-          candidates.push({ coatOfArms, loss, key: `${proposal.stableKey}|victim-${victimIndex}` })
+          candidates.push({ coatOfArms, loss, key: `${proposal.stableKey}|victims-${victimIndexes.join(',')}` })
         }
       }
       const promising = candidates
@@ -667,7 +735,7 @@ export function finalizeImageFitWithFullAssets(
 
   const jointEvaluationBudget = Math.max(0, Math.floor(
     options.jointRefinementEvaluations
-      ?? (refinementSeed.drawnInstances <= 128 ? 512 : 128),
+      ?? (refinementSeed.drawnInstances <= 128 ? 2_048 : 512),
   ))
   let jointRefinement = disabledJointReceipt(
     refinementSeed.candidate.coatOfArms,
@@ -684,20 +752,173 @@ export function finalizeImageFitWithFullAssets(
       namedColors,
       renderSize: 96,
       maxEvaluations: jointEvaluationBudget,
+      eligibleFlatInstanceIndexes: detailInstanceIndexes(
+        refinementSeed.candidate.coatOfArms,
+        contourAnalysis,
+        refinementSeed.drawnInstances <= 128 ? 24 : 16,
+      ),
       eligibleTextures: primitiveAssets.map((item) => item.texture),
       maxReplacementCandidates: primitiveAssets.length,
+      stages: [{
+        id: 'epsilon-residual-focus',
+        passes: refinementSeed.drawnInstances <= 128 ? 16 : 4,
+        positionSteps: [0.03, 0.01],
+        scaleSteps: [0.04, 0.015],
+        rotationSteps: [8, 2],
+        colorSteps: [0.05, 0.015],
+        tryTextureReplacements: true,
+      }],
       objective: ({ rendered }) => measurePerceptualFitMetricsV2(jointTarget, rendered).totalLoss,
     })
     jointRefinement = joint.receipt
-    if (!joint.receipt.keptIncumbent) {
+    for (const archivedCoatOfArms of joint.acceptedArchive) {
       const entry = rescore({
         candidate: {
           ...refinementSeed.candidate,
-          coatOfArms: joint.coatOfArms,
-          textureNames: [...new Set(joint.coatOfArms.coloredEmblems.map((emblem) => emblem.texture))],
+          coatOfArms: archivedCoatOfArms,
+          textureNames: [...new Set(archivedCoatOfArms.coloredEmblems.map((emblem) => emblem.texture))],
         },
         originalIndex: refinementSeed.originalIndex,
         recolorBlend: refinementSeed.recolorBlend,
+        variant: 'joint-refinement',
+      })
+      rescored.push({
+        ...entry,
+        passesIncumbentScaleGate: fitQualityHasNoScaleRegression(
+          entry.qualityObjective,
+          incumbent.qualityObjective,
+        ),
+      })
+    }
+  }
+
+  const mediumRefinementSeed = rescored
+    .filter((item) => item.passesIncumbentScaleGate)
+    .sort(compareQuality)[0] ?? refinementSeed
+  const mediumJointEvaluationBudget = Math.max(0, Math.floor(
+    options.mediumJointRefinementEvaluations
+      ?? (mediumRefinementSeed.drawnInstances <= 128 ? 512 : 128),
+  ))
+  let jointRefinementMedium = disabledJointReceipt(
+    mediumRefinementSeed.candidate.coatOfArms,
+    mediumRefinementSeed.qualityObjective.lossByScale[230],
+  )
+  if (mediumJointEvaluationBudget > 0) {
+    const mediumTarget = targets.get(230)!
+    const mediumJoint = refineCoatOfArmsJointly(mediumRefinementSeed.candidate.coatOfArms, {
+      assets: {
+        pattern: assets.patterns[mediumRefinementSeed.candidate.coatOfArms.pattern],
+        coloredEmblems: assets.coloredEmblems,
+        surfaceMask: assets.surfaceMask,
+      },
+      namedColors,
+      renderSize: 230,
+      maxEvaluations: mediumJointEvaluationBudget,
+      eligibleFlatInstanceIndexes: detailInstanceIndexes(
+        mediumRefinementSeed.candidate.coatOfArms,
+        contourAnalysis,
+        mediumRefinementSeed.drawnInstances <= 128 ? 24 : 12,
+      ),
+      eligibleTextures: primitiveAssets.map((item) => item.texture),
+      maxReplacementCandidates: primitiveAssets.length,
+      stages: [{
+        id: 'epsilon-medium-residual-focus',
+        passes: mediumRefinementSeed.drawnInstances <= 128 ? 4 : 2,
+        positionSteps: [0.015, 0.005],
+        scaleSteps: [0.02, 0.0075],
+        rotationSteps: [4, 1],
+        colorSteps: [0.025, 0.0075],
+        tryTextureReplacements: true,
+      }],
+      objective: ({ rendered }) => measurePerceptualFitMetricsV2(mediumTarget, rendered).totalLoss,
+    })
+    jointRefinementMedium = mediumJoint.receipt
+    for (const archivedCoatOfArms of mediumJoint.acceptedArchive) {
+      const entry = rescore({
+        candidate: {
+          ...mediumRefinementSeed.candidate,
+          coatOfArms: archivedCoatOfArms,
+          textureNames: [...new Set(archivedCoatOfArms.coloredEmblems.map((emblem) => emblem.texture))],
+        },
+        originalIndex: mediumRefinementSeed.originalIndex,
+        recolorBlend: mediumRefinementSeed.recolorBlend,
+        variant: 'joint-refinement',
+      })
+      rescored.push({
+        ...entry,
+        passesIncumbentScaleGate: fitQualityHasNoScaleRegression(
+          entry.qualityObjective,
+          incumbent.qualityObjective,
+        ),
+      })
+    }
+  }
+
+  const highRefinementSeed = rescored
+    .filter((item) => item.passesIncumbentScaleGate)
+    .sort(compareQuality)[0] ?? mediumRefinementSeed
+  const highJointEvaluationBudget = Math.max(0, Math.floor(
+    options.highJointRefinementEvaluations
+      ?? (highRefinementSeed.drawnInstances <= 128 ? 512 : 64),
+  ))
+  let jointRefinementHigh = disabledJointReceipt(
+    highRefinementSeed.candidate.coatOfArms,
+    highRefinementSeed.qualityObjective.lossByScale[512],
+  )
+  if (highJointEvaluationBudget > 0) {
+    const highAssets = {
+      pattern: assets.patterns[highRefinementSeed.candidate.coatOfArms.pattern],
+      coloredEmblems: assets.coloredEmblems,
+      surfaceMask: assets.surfaceMask,
+    }
+    const highJoint = refineCoatOfArmsJointly(highRefinementSeed.candidate.coatOfArms, {
+      assets: highAssets,
+      namedColors,
+      renderSize: 512,
+      maxEvaluations: highJointEvaluationBudget,
+      eligibleFlatInstanceIndexes: detailInstanceIndexes(
+        highRefinementSeed.candidate.coatOfArms,
+        contourAnalysis,
+        highRefinementSeed.drawnInstances <= 128 ? 24 : 8,
+      ),
+      eligibleTextures: primitiveAssets.map((item) => item.texture),
+      maxReplacementCandidates: primitiveAssets.length,
+      stages: [{
+        id: 'epsilon-direct-multiscale-focus',
+        passes: highRefinementSeed.drawnInstances <= 128 ? 4 : 1,
+        positionSteps: [0.02, 0.0075],
+        scaleSteps: [0.025, 0.01],
+        rotationSteps: [5, 1.5],
+        colorSteps: [0.03, 0.01],
+        tryTextureReplacements: true,
+      }],
+      objective: ({ coatOfArms, rendered }) => {
+        const lossByScale = {
+          512: measurePerceptualFitMetricsV2(targets.get(512)!, rendered).totalLoss,
+          96: 0,
+          230: 0,
+        } as Record<FitQualityScale, number>
+        for (const scale of [96, 230] as const) {
+          const scaleRendered = renderCoatOfArms(coatOfArms, highAssets, namedColors, scale)
+          if (!scaleRendered) return Number.MAX_VALUE
+          lossByScale[scale] = measurePerceptualFitMetricsV2(targets.get(scale)!, scaleRendered).totalLoss
+        }
+        const objective = createFitQualityObjective(lossByScale)
+        return fitQualityHasNoScaleRegression(objective, incumbent.qualityObjective)
+          ? objective.weightedLoss
+          : Number.MAX_VALUE
+      },
+    })
+    jointRefinementHigh = highJoint.receipt
+    for (const archivedCoatOfArms of highJoint.acceptedArchive) {
+      const entry = rescore({
+        candidate: {
+          ...highRefinementSeed.candidate,
+          coatOfArms: archivedCoatOfArms,
+          textureNames: [...new Set(archivedCoatOfArms.coloredEmblems.map((emblem) => emblem.texture))],
+        },
+        originalIndex: highRefinementSeed.originalIndex,
+        recolorBlend: highRefinementSeed.recolorBlend,
         variant: 'joint-refinement',
       })
       rescored.push({
@@ -734,12 +955,40 @@ export function finalizeImageFitWithFullAssets(
     .sort((left, right) => compareQuality(left.item, right.item) || left.index - right.index)
     .map(({ index }) => index)
   const qualityWinnerIndex = qualityIndexes[0] ?? 0
-  const selectedIndexes = [qualityWinnerIndex, ...qualityIndexes, ...legacyParetoIndexes]
+  const dominatesDeliveredCandidate = (
+    left: RescoredFinalizerCandidate,
+    right: RescoredFinalizerCandidate,
+  ): boolean => {
+    const leftPerceptualLoss = left.candidate.perceptualMetricsV2?.totalLoss ?? Number.POSITIVE_INFINITY
+    const rightPerceptualLoss = right.candidate.perceptualMetricsV2?.totalLoss ?? Number.POSITIVE_INFINITY
+    const noWorse = leftPerceptualLoss <= rightPerceptualLoss
+      && left.candidate.metrics.totalLoss <= right.candidate.metrics.totalLoss
+      && left.candidate.metrics.edgeLoss <= right.candidate.metrics.edgeLoss
+      && left.drawnInstances <= right.drawnInstances
+    const strictlyBetter = leftPerceptualLoss < rightPerceptualLoss
+      || left.candidate.metrics.totalLoss < right.candidate.metrics.totalLoss
+      || left.candidate.metrics.edgeLoss < right.candidate.metrics.edgeLoss
+      || left.drawnInstances < right.drawnInstances
+    return noWorse && strictlyBetter
+  }
+  const selectedIndexes: number[] = []
+  const deliveryOrder = [qualityWinnerIndex, ...qualityIndexes, ...legacyParetoIndexes]
     .filter((index, position, indexes) => indexes.indexOf(index) === position)
-    .slice(0, 3)
+  for (const index of deliveryOrder) {
+    const candidate = rescored[index]
+    // Quality winner always stays first. Additional cards are useful only when
+    // they are genuinely incomparable with every already-delivered card under
+    // the exact metrics shown in the UI; never surface a dominated alternative.
+    if (selectedIndexes.some((selectedIndex) => (
+      dominatesDeliveredCandidate(rescored[selectedIndex], candidate)
+      || dominatesDeliveredCandidate(candidate, rescored[selectedIndex])
+    ))) continue
+    selectedIndexes.push(index)
+    if (selectedIndexes.length >= 3) break
+  }
   const selected = selectedIndexes.map((index) => rescored[index])
   let winner = selected[0]
-  const pruneDrawnInstanceLimit = Math.max(0, Math.floor(options.pruneDrawnInstanceLimit ?? 128))
+  const pruneDrawnInstanceLimit = Math.max(0, Math.floor(options.pruneDrawnInstanceLimit ?? 32))
   let pruneReceipt: InstancePruneReceipt | null = null
   let pruneSkippedReason: 'disabled' | 'draw-count-limit' | null = null
   if (pruneDrawnInstanceLimit === 0) {
@@ -790,7 +1039,7 @@ export function finalizeImageFitWithFullAssets(
       ].filter((value): value is string => Boolean(value))
     : searchResult.provenance.selectedAssetSha256
   const receipt: FullAssetFitFinalizationReceipt = {
-    contract: 'full-dds-epsilon-multiscale-joint-contour-v4',
+    contract: 'full-dds-epsilon-multiscale-joint-contour-v5',
     searchAssetContract: 'fit-index-rgba32-v2',
     finalAssetContract: 'decoded-exact-dds-mip-v1',
     candidates: rescored.map((item) => ({
@@ -845,11 +1094,15 @@ export function finalizeImageFitWithFullAssets(
       scales: FIT_QUALITY_SCALES,
       incumbentLoss: incumbent.qualityObjective.weightedLoss,
       selectedLoss: winner.qualityObjective.weightedLoss,
+      incumbentPerScale: incumbent.multiscalePerceptual,
+      selectedPerScale: winner.multiscalePerceptual,
       eligibleCandidates: rescored.filter((item) => item.passesIncumbentScaleGate).length,
       rejectedForScaleRegression: rescored.filter((item) => !item.passesIncumbentScaleGate).length,
       selectedVariant: winner.variant,
     },
     jointRefinement,
+    jointRefinementMedium,
+    jointRefinementHigh,
     contourRefinement: {
       contract: 'epsilon-q-contour-fixed-budget-replacement-v1',
       attempted: contourEvaluationBudget > 0,
@@ -902,6 +1155,8 @@ export function finalizeImageFitWithFullAssets(
           perceptualColorRefinement: receipt.perceptualColorRefinement,
           multiscaleSelection: receipt.multiscaleSelection,
           jointRefinement: receipt.jointRefinement,
+          jointRefinementMedium: receipt.jointRefinementMedium,
+          jointRefinementHigh: receipt.jointRefinementHigh,
           contourRefinement: receipt.contourRefinement,
           qualityEquivalentPruning: receipt.qualityEquivalentPruning,
           structuralCompression: receipt.structuralCompression,

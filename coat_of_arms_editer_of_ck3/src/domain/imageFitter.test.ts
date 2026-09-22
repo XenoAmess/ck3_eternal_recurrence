@@ -425,7 +425,7 @@ describe('browser image fitter', () => {
       [candidate('square.dds', square)],
       { resolution: size, maxLayers: 3, minRelativeLayerImprovement: 0.0001 },
     )
-    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v10-epsilon-quality-first')
+    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v13-epsilon-direct-multiscale')
     expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(2)
     expect(result.coatOfArms.coloredEmblems).toHaveLength(result.provenance.selectedLayers)
     expect(result.provenance.drawnInstances).toBe(result.provenance.selectedLayers)
@@ -570,12 +570,14 @@ describe('browser image fitter', () => {
     ))
     expect(checkpoint).toBeDefined()
     expect(checkpoint).toMatchObject({
-      contract: 'ck3-coa-fit-checkpoint-v5',
-      algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first',
+      contract: 'ck3-coa-fit-checkpoint-v8',
+      algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale',
       inputSha256: options.inputSha256,
       assetPackManifestSha256: options.assetPackManifestSha256,
       resolution: size,
       layerBudget: 128,
+      refinementCandidates: 48,
+      beamWidth: 2,
       randomSeed: null,
     })
     const resumed = fitImageToCoatOfArms(

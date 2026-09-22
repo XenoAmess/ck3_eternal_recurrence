@@ -27,6 +27,9 @@ function candidate(color: string): CoatOfArms {
 describe('full DDS image-fit finalization', () => {
   it('re-scores exported candidates and replaces a fit-index false winner', () => {
     const green = candidate('rgb { 0 255 0 }')
+    // Preserve a strictly smaller but lower-quality incumbent so delivery must
+    // compare two incomparable candidates instead of silently returning one.
+    green.coloredEmblems = []
     const red = candidate('rgb { 255 0 0 }')
     const searchResult = {
       coatOfArms: green,
@@ -81,20 +84,28 @@ describe('full DDS image-fit finalization', () => {
       coloredEmblems: { 'opaque.dds': opaque },
     }, {}, {
       jointRefinementEvaluations: 0,
+      mediumJointRefinementEvaluations: 0,
+      highJointRefinementEvaluations: 0,
       contourReplacementEvaluations: 0,
       pruneDrawnInstanceLimit: 0,
     })
 
-    expect(finalized.receipt.selectedOriginalIndexes).toEqual([1])
+    expect(finalized.receipt.selectedOriginalIndexes).toEqual([1, 0])
     expect(finalized.receipt.sourceWinnerPreserved).toBe(false)
     expect(finalized.result.coatOfArms).toEqual({ ...red, rootPresence: undefined })
     expect(finalized.result.metrics.totalLoss).toBeLessThan(0.00001)
+    expect(finalized.result.paretoCandidates).toHaveLength(2)
+    for (const delivered of finalized.result.paretoCandidates) {
+      expect(delivered.perceptualMetricsV2?.totalLoss).toEqual(expect.any(Number))
+      expect(delivered.metrics.totalLoss).toEqual(expect.any(Number))
+      expect(delivered.metrics.edgeLoss).toEqual(expect.any(Number))
+    }
     expect(finalized.receipt.candidates[0].finalMetrics.totalLoss)
       .toBeGreaterThan(finalized.result.metrics.totalLoss)
     expect(finalized.result.provenance.fullAssetFinalization).toMatchObject({
-      contract: 'full-dds-epsilon-multiscale-joint-contour-v4',
+      contract: 'full-dds-epsilon-multiscale-joint-contour-v5',
       finalAssetContract: 'decoded-exact-dds-mip-v1',
-      selectedOriginalIndexes: [1],
+      selectedOriginalIndexes: [1, 0],
       exactResidualRepair: {
         contract: 'exact-dds-residual-tile-perceptual-v2',
         attemptedCandidates: 0,

@@ -103,8 +103,8 @@ export function validatePersistedFitCheckpoint(value: unknown): PersistedFitChec
     || !Number.isSafeInteger(value.layerBudget) || (value.layerBudget as number) < 1
   ) throw new Error('持久拟合 checkpoint 的素材包或预算元数据无效')
   if (
-    checkpoint.contract !== 'ck3-coa-fit-checkpoint-v5'
-    || checkpoint.algorithm !== 'ck3-coa-browser-fit-v10-epsilon-quality-first'
+    checkpoint.contract !== 'ck3-coa-fit-checkpoint-v8'
+    || checkpoint.algorithm !== 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale'
   ) throw new Error('持久拟合 checkpoint 内的搜索状态版本不兼容')
   if (
     checkpoint.inputSha256 !== input.sha256
@@ -115,6 +115,12 @@ export function validatePersistedFitCheckpoint(value: unknown): PersistedFitChec
     || !Array.isArray(checkpoint.tiles)
     || typeof checkpoint.tileCount !== 'number'
     || typeof checkpoint.layerBudget !== 'number'
+    || !Number.isSafeInteger(checkpoint.refinementCandidates)
+    || (checkpoint.refinementCandidates as number) < 8
+    || (checkpoint.refinementCandidates as number) > 128
+    || !Number.isSafeInteger(checkpoint.beamWidth)
+    || (checkpoint.beamWidth as number) < 1
+    || (checkpoint.beamWidth as number) > 4
     || typeof checkpoint.nextTileIndex !== 'number'
     || checkpoint.tileCount !== checkpoint.tiles.length
     || checkpoint.tileCount > checkpoint.layerBudget

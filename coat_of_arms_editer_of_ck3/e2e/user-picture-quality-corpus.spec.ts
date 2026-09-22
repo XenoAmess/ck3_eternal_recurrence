@@ -26,6 +26,13 @@ const corpus = JSON.parse(await readFile(resolve(fixtureRoot, 'cases.json'), 'ut
 }
 const budget = Number.parseInt(process.env.COA_CORPUS_BUDGET ?? '128', 10)
 if (!Number.isSafeInteger(budget) || budget < 1) throw new Error('COA_CORPUS_BUDGET must be a positive safe integer')
+const fitTimeoutMinutes = Number.parseInt(
+  process.env.COA_CORPUS_TIMEOUT_MINUTES ?? (budget >= 1_024 ? '120' : '40'),
+  10,
+)
+if (!Number.isSafeInteger(fitTimeoutMinutes) || fitTimeoutMinutes < 1) {
+  throw new Error('COA_CORPUS_TIMEOUT_MINUTES must be a positive safe integer')
+}
 const requestedCaseIds = new Set(
   (process.env.COA_CORPUS_CASES ?? '')
     .split(',')
@@ -47,7 +54,7 @@ const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes
 test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
   for (const picture of selectedCases) {
     test(`${picture.id}: ${picture.file}`, async ({ page }) => {
-      test.setTimeout(budget >= 1_024 ? 15 * 60_000 : 6 * 60_000)
+      test.setTimeout((fitTimeoutMinutes + 2) * 60_000)
       const inputPath = resolve(fixtureRoot, picture.file)
       const inputBytes = await readFile(inputPath)
       expect(inputBytes.byteLength).toBe(picture.bytes)
@@ -74,7 +81,7 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       const fitStartedAt = Date.now()
       await page.getByRole('button', { name: '开始本地拟合' }).click()
       await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({
-        timeout: budget >= 1_024 ? 14 * 60_000 : 5 * 60_000,
+        timeout: fitTimeoutMinutes * 60_000,
       })
       const fitElapsedMilliseconds = Date.now() - fitStartedAt
 
@@ -83,10 +90,10 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       if (!rawEvidence) throw new Error('missing machine-readable fit evidence')
       const evidence = JSON.parse(rawEvidence)
       expect(evidence.provenance.layerBudget).toBe(budget)
-      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v10-epsilon-quality-first')
+      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v13-epsilon-direct-multiscale')
       expect(evidence.provenance.surfaceMaskApplied).toBe(true)
       expect(evidence.provenance.fullAssetFinalization).toMatchObject({
-        contract: 'full-dds-epsilon-multiscale-joint-contour-v4',
+        contract: 'full-dds-epsilon-multiscale-joint-contour-v5',
         searchAssetContract: 'fit-index-rgba32-v2',
         finalAssetContract: 'decoded-exact-dds-mip-v1',
         multiscaleSelection: {

@@ -29,7 +29,7 @@ import type {
   InstancePruneResult,
 } from './domain/coatOfArmsPruner'
 import { decodeFitImageFile, type DecodedFitImage } from './domain/imageInput'
-import { finalizeImageFitWithFullAssets } from './domain/fitFinalizer'
+import type { FullAssetFitAssets, FullAssetFitFinalizationOptions } from './domain/fitFinalizer'
 import {
   resizeFitImage,
   type FitImage,
@@ -46,6 +46,12 @@ import {
   type FitWorkerResponse,
   type FitWorkerStartRequest,
 } from './domain/fitWorkerProtocol'
+import {
+  FIT_FINALIZER_WORKER_PROTOCOL,
+  isCurrentFitFinalizerWorkerMessage,
+  type FitFinalizerWorkerResponse,
+  type FitFinalizerWorkerStartRequest,
+} from './domain/fitFinalizerWorkerProtocol'
 import {
   clearPersistedFitCheckpoint,
   createPersistedFitCheckpoint,
@@ -1635,6 +1641,46 @@ function fitTargetImage() {
   void runImageFit()
 }
 
+function finalizeFitInWorker(
+  runId: number,
+  revision: number,
+  searchResult: ImageFitResult,
+  target: FitImage,
+  assets: FullAssetFitAssets,
+  namedColors: NamedColorMap,
+  options: FullAssetFitFinalizationOptions,
+): Promise<ImageFitResult> {
+  const worker = new Worker(new URL('./domain/fitFinalizer.worker.ts', import.meta.url), { type: 'module' })
+  fitWorker = worker
+  return new Promise((resolve, reject) => {
+    worker.onmessage = (event: MessageEvent<FitFinalizerWorkerResponse>) => {
+      if (
+        runId !== fitRunId
+        || revision !== fitRevision
+        || !isCurrentFitFinalizerWorkerMessage(event.data, runId, revision)
+      ) return
+      worker.terminate()
+      fitWorker = null
+      if (event.data.ok) resolve(event.data.finalization.result)
+      else reject(new Error(event.data.error))
+    }
+    worker.onerror = (event) => {
+      if (runId !== fitRunId || revision !== fitRevision) return
+      worker.terminate()
+      fitWorker = null
+      reject(new Error(event.message))
+    }
+    const request: FitFinalizerWorkerStartRequest = {
+      protocol: FIT_FINALIZER_WORKER_PROTOCOL,
+      kind: 'start',
+      runId,
+      revision,
+      args: [searchResult, target, assets, namedColors, options],
+    }
+    worker.postMessage(request)
+  })
+}
+
 async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
   if (!targetImage.value) {
     ElMessage.warning('请先选择目标图片')
@@ -1795,6 +1841,58 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
         return
       }
       if (runId !== fitRunId || revision !== fitRevision) return
+      const selectedPatternTextures = Object.fromEntries(selectedFullPatterns)
+      const selectedEmblemTextures = Object.fromEntries(selectedFullEmblems)
+      emblemTextures.value = selectedEmblemTextures
+      emblemPreviewUrls.value = Object.fromEntries(
+        Object.entries(emblemTextures.value).map(([name, decoded]) => [name, decodedDdsToDataUrl(decoded)]),
+      )
+      fitProgressPercent.value = 96
+      fitProgressLabel.value = '完整 DDS 三尺度联合精修'
+      fitStatus.value = '搜索已完成；Worker 正在执行可取消的 96/230/512 复评、轮廓替换与固定预算联合优化…'
+      try {
+        result = await finalizeFitInWorker(
+          runId,
+          revision,
+          result,
+          {
+            width: target.width,
+            height: target.height,
+            pixels: new Uint8ClampedArray(target.pixels),
+          },
+          {
+            patterns: selectedPatternTextures,
+            coloredEmblems: selectedEmblemTextures,
+            surfaceMask: surfaceMask.value ? cloneDecodedDdsForWorker(surfaceMask.value) : undefined,
+            patternAssetSha256: Object.fromEntries(selectedPatternEntries.map((item) => (
+              [item.name, item.asset_sha256]
+            ))),
+            emblemAssetSha256: Object.fromEntries(selectedEmblemEntries.map((item) => (
+              [item.name, item.asset_sha256]
+            ))),
+          },
+          Object.fromEntries(Object.entries(shaderNamedColors.value).map(([name, color]) => (
+            [name, [...color]]
+          ))),
+          {
+            targetPyramid: targetPyramid.map((image) => ({
+              width: image.width,
+              height: image.height,
+              pixels: new Uint8ClampedArray(image.pixels),
+            })),
+          },
+        )
+      } catch (error) {
+        if (runId !== fitRunId || revision !== fitRevision) return
+        fitBusy.value = false
+        fitTaskState.value = 'failed'
+        fitProgressPercent.value = 0
+        fitProgressLabel.value = '完整 DDS 复评失败'
+        fitStatus.value = `拟合搜索已完成，但导出素材复评失败：${errorMessage(error)}`
+        ElMessage.error(fitStatus.value)
+        return
+      }
+      if (runId !== fitRunId || revision !== fitRevision) return
       fitBusy.value = false
       fitTaskState.value = 'completed'
       fitCheckpoint.value = undefined
@@ -1804,38 +1902,6 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       })
       fitProgressPercent.value = 100
       fitProgressLabel.value = `完成 · 选中 ${result.provenance.selectedLayers} 层`
-      const selectedPatternTextures = Object.fromEntries(selectedFullPatterns)
-      emblemTextures.value = Object.fromEntries(selectedFullEmblems)
-      emblemPreviewUrls.value = Object.fromEntries(
-        Object.entries(emblemTextures.value).map(([name, decoded]) => [name, decodedDdsToDataUrl(decoded)]),
-      )
-      try {
-        result = finalizeImageFitWithFullAssets(
-          result,
-          target,
-          {
-            patterns: selectedPatternTextures,
-            coloredEmblems: emblemTextures.value,
-            surfaceMask: surfaceMask.value,
-            patternAssetSha256: Object.fromEntries(selectedPatternEntries.map((item) => (
-              [item.name, item.asset_sha256]
-            ))),
-            emblemAssetSha256: Object.fromEntries(selectedEmblemEntries.map((item) => (
-              [item.name, item.asset_sha256]
-            ))),
-          },
-          shaderNamedColors.value,
-          { targetPyramid },
-        ).result
-      } catch (error) {
-        fitBusy.value = false
-        fitTaskState.value = 'failed'
-        fitProgressPercent.value = 0
-        fitProgressLabel.value = '完整 DDS 复评失败'
-        fitStatus.value = `拟合搜索已完成，但导出素材复评失败：${errorMessage(error)}`
-        ElMessage.error(fitStatus.value)
-        return
-      }
       fitResult.value = result
       coatOfArms.value = result.coatOfArms
       source.value = serializeCoatOfArms(result.coatOfArms)
@@ -1962,7 +2028,11 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
           pixels: new Uint8ClampedArray(image.pixels),
         })),
         refinementCandidates: 48,
-        beamWidth: 4,
+        // Epsilon-Q ablation: beam 4 reproduced the same 128-layer incumbent
+        // on picture-03 while making picture-05 exceed eleven minutes before
+        // full-DDS refinement. Keep the proven beam-2 frontier and spend the
+        // saved budget on the quality-producing exact-DDS joint stage.
+        beamWidth: 2,
         inputSha256: targetImage.value.sha256,
         assetPackManifestSha256: loadedAssetPack.value.manifestSha256,
         surfaceMask: surfaceMask.value ? cloneDecodedDdsForWorker(surfaceMask.value) : undefined,

@@ -16,6 +16,7 @@ import {
   measurePerceptualFitMetricsV2,
   PERCEPTUAL_FIT_SCORING_CONTRACT,
   type PerceptualFitMetricsV2,
+  type PerceptualFitMetricsV3,
 } from './perceptualFitMetrics'
 import {
   ASSET_RETRIEVAL_CONTRACT,
@@ -93,8 +94,8 @@ export interface ImageFitProgress {
 }
 
 export interface ImageFitCheckpoint {
-  contract: 'ck3-coa-fit-checkpoint-v5'
-  algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first'
+  contract: 'ck3-coa-fit-checkpoint-v8'
+  algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale'
   lane: 'baseline' | 'hybrid'
   inputSha256: string
   assetPackManifestSha256: string
@@ -102,6 +103,8 @@ export interface ImageFitCheckpoint {
   sourceWidth: number
   sourceHeight: number
   layerBudget: number
+  refinementCandidates: number
+  beamWidth: number
   randomSeed: null
   nextTileIndex: number
   tileCount: number
@@ -174,7 +177,7 @@ export interface ImageFitResult {
   metrics: ImageFitMetrics
   paretoCandidates: ImageFitParetoCandidate[]
   provenance: {
-    algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first'
+    algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale'
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
@@ -262,7 +265,7 @@ export interface ImageFitResult {
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
     fullAssetFinalization?: {
-      contract: 'full-dds-epsilon-multiscale-joint-contour-v4'
+      contract: 'full-dds-epsilon-multiscale-joint-contour-v5'
       searchAssetContract: 'fit-index-rgba32-v2'
       finalAssetContract: 'decoded-exact-dds-mip-v1'
       rescoredCandidates: number
@@ -297,6 +300,16 @@ export interface ImageFitResult {
         scales: readonly [96, 230, 512]
         incumbentLoss: number
         selectedLoss: number
+        incumbentPerScale: Array<{
+          resolution: 96 | 230 | 512
+          v2: PerceptualFitMetricsV2
+          v3: PerceptualFitMetricsV3
+        }>
+        selectedPerScale: Array<{
+          resolution: 96 | 230 | 512
+          v2: PerceptualFitMetricsV2
+          v3: PerceptualFitMetricsV3
+        }>
         eligibleCandidates: number
         rejectedForScaleRegression: number
         selectedVariant: 'search-incumbent' | 'exact-repair' | 'recolor' | 'contour-replacement' | 'joint-refinement'
@@ -309,6 +322,41 @@ export interface ImageFitResult {
         objectiveEvaluations: number
         evaluatedMoves: number
         acceptedMoves: unknown[]
+        acceptedArchiveCount: number
+        lossBefore: number
+        lossAfter: number
+        drawnInstancesBefore: number
+        drawnInstancesAfter: number
+        keptIncumbent: boolean
+        stages: unknown[]
+        terminationReason: 'complete' | 'no-improvement' | 'evaluation-budget'
+      }
+      jointRefinementMedium: {
+        contract: 'exact-dds-fixed-budget-coordinate-replacement-v1'
+        deterministic: true
+        renderer: 'complete-decoded-dds'
+        evaluationBudget: number
+        objectiveEvaluations: number
+        evaluatedMoves: number
+        acceptedMoves: unknown[]
+        acceptedArchiveCount: number
+        lossBefore: number
+        lossAfter: number
+        drawnInstancesBefore: number
+        drawnInstancesAfter: number
+        keptIncumbent: boolean
+        stages: unknown[]
+        terminationReason: 'complete' | 'no-improvement' | 'evaluation-budget'
+      }
+      jointRefinementHigh: {
+        contract: 'exact-dds-fixed-budget-coordinate-replacement-v1'
+        deterministic: true
+        renderer: 'complete-decoded-dds'
+        evaluationBudget: number
+        objectiveEvaluations: number
+        evaluatedMoves: number
+        acceptedMoves: unknown[]
+        acceptedArchiveCount: number
         lossBefore: number
         lossAfter: number
         drawnInstancesBefore: number
@@ -1636,6 +1684,8 @@ interface NativePaintCheckpointContext {
   sourceWidth: number
   sourceHeight: number
   layerBudget: number
+  refinementCandidates: number
+  beamWidth: number
   resumeCheckpoint?: ImageFitCheckpoint
   onCheckpoint?: (checkpoint: ImageFitCheckpoint) => void
   emblemAssets: Map<string, FitTextureCandidate>
@@ -1694,8 +1744,8 @@ function checkpointFromPaintState(
   evaluatedCandidates: number,
 ): ImageFitCheckpoint {
   return {
-    contract: 'ck3-coa-fit-checkpoint-v5',
-    algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first',
+    contract: 'ck3-coa-fit-checkpoint-v8',
+    algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale',
     lane: context.lane,
     inputSha256: context.inputSha256,
     assetPackManifestSha256: context.assetPackManifestSha256,
@@ -1703,6 +1753,8 @@ function checkpointFromPaintState(
     sourceWidth: context.sourceWidth,
     sourceHeight: context.sourceHeight,
     layerBudget: context.layerBudget,
+    refinementCandidates: context.refinementCandidates,
+    beamWidth: context.beamWidth,
     randomSeed: null,
     nextTileIndex,
     tileCount: tiles.length,
@@ -2847,11 +2899,13 @@ export function fitImageToCoatOfArms(
   const maxLayers = normalizeLayerBudget(options.maxLayers)
   const inputSha256 = options.inputSha256 ?? ''
   const assetPackManifestSha256 = options.assetPackManifestSha256 ?? ''
+  const shapeCandidateCount = clamp(Math.floor(options.refinementCandidates ?? 48), 8, 128)
+  const beamWidth = clamp(Math.floor(options.beamWidth ?? 2), 1, 4)
   const resumeCheckpoint = options.resumeCheckpoint
   if (resumeCheckpoint) {
     if (
-      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v5'
-      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v10-epsilon-quality-first'
+      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v8'
+      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale'
     ) throw new Error('拟合 checkpoint 版本不兼容')
     if (
       resumeCheckpoint.inputSha256 !== inputSha256
@@ -2862,10 +2916,10 @@ export function fitImageToCoatOfArms(
       || resumeCheckpoint.sourceWidth !== sourceWidth
       || resumeCheckpoint.sourceHeight !== sourceHeight
       || resumeCheckpoint.layerBudget !== maxLayers
+      || resumeCheckpoint.refinementCandidates !== shapeCandidateCount
+      || resumeCheckpoint.beamWidth !== beamWidth
     ) throw new Error('拟合 checkpoint 的搜索配置不匹配')
   }
-  const shapeCandidateCount = clamp(Math.floor(options.refinementCandidates ?? 48), 8, 128)
-  const beamWidth = clamp(Math.floor(options.beamWidth ?? 2), 1, 4)
   const minRelativeLayerImprovement = clamp(options.minRelativeLayerImprovement ?? 0, 0, 1)
   if (!patterns.length) throw new Error('素材包没有可用于拟合的 pattern')
   const palette = dominantColors(target)
@@ -3085,10 +3139,10 @@ export function fitImageToCoatOfArms(
           }
         }
       }
-      // Full-circle transform fitting is the expensive stage. The descriptor
-      // shortlist is broad, then real-render coarse scoring promotes only the
-      // best three assets to continuous local optimization.
-      const localCandidateCount = Math.min(8, shortlist.length)
+      // Full-circle transform fitting is the expensive stage. The 128-layer
+      // ablation keeps Delta's proven top three; only 512+ quality runs spend
+      // the larger search budget on eight locally optimized assets.
+      const localCandidateCount = Math.min(maxLayers >= 512 ? 8 : 3, shortlist.length)
       const refinementTotal = shortlist.length * palettes.length * 3 * 3
         + localCandidateCount * (144 + 5 * (9 + 9 + 5 + 2 + palettes.length) + 13)
       let refinementCompleted = 0
@@ -3252,6 +3306,7 @@ export function fitImageToCoatOfArms(
       {
         lane: 'baseline', inputSha256, assetPackManifestSha256,
         resolution, sourceWidth, sourceHeight, layerBudget: maxLayers,
+        refinementCandidates: shapeCandidateCount, beamWidth,
         resumeCheckpoint,
         onCheckpoint: resumeCheckpoint?.lane === 'hybrid' ? undefined : options.onCheckpoint,
         emblemAssets: emblemAssetMap,
@@ -3333,6 +3388,7 @@ export function fitImageToCoatOfArms(
           {
             lane: 'hybrid', inputSha256, assetPackManifestSha256,
             resolution, sourceWidth, sourceHeight, layerBudget: maxLayers,
+            refinementCandidates: shapeCandidateCount, beamWidth,
             resumeCheckpoint, onCheckpoint: options.onCheckpoint,
             emblemAssets: emblemAssetMap,
           },
@@ -3535,7 +3591,7 @@ export function fitImageToCoatOfArms(
     },
     paretoCandidates,
     provenance: {
-      algorithm: 'ck3-coa-browser-fit-v10-epsilon-quality-first',
+      algorithm: 'ck3-coa-browser-fit-v13-epsilon-direct-multiscale',
       searchBackend: batchSearch.status === 'active'
         ? 'webgl2-batch+cpu-reference'
         : 'cpu-reference',

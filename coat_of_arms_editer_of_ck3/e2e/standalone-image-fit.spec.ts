@@ -124,7 +124,7 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   await page.getByRole('button', { name: '开始本地拟合' }).click()
   await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图 · 选中 [2-6]\/6 层/)).toBeVisible({ timeout: completionTimeout })
   await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100')
-  await expect(page.locator('.fit-report')).toContainText('300×300 → 56 / 96 / 192 / 256px')
+  await expect(page.locator('.fit-report')).toContainText('300×300 → 56 / 96 / 192 / 230 / 256px')
   await expect(page.getByText(/完成 · 选中 [2-6] 层（进度表示当前搜索阶段）/)).toBeVisible()
   const comparison = page.getByTestId('candidate-comparison')
   const candidateCount = await comparison.locator('.candidate-card').count()

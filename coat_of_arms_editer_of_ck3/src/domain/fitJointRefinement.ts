@@ -53,6 +53,8 @@ export interface JointRefinementOptions {
   stages?: readonly JointRefinementStageOptions[]
   positionRange?: readonly [number, number]
   scaleMagnitudeRange?: readonly [number, number]
+  /** Optional residual-driven subset of flattened instances to mutate. */
+  eligibleFlatInstanceIndexes?: readonly number[]
 }
 
 export type JointRefinementMove =
@@ -127,6 +129,8 @@ export interface JointRefinementReceipt {
   objectiveEvaluations: number
   evaluatedMoves: number
   acceptedMoves: AcceptedJointRefinementMove[]
+  /** Number of immutable accepted-pass snapshots returned for multiscale selection. */
+  acceptedArchiveCount: number
   lossBefore: number
   lossAfter: number
   drawnInstancesBefore: number
@@ -138,6 +142,8 @@ export interface JointRefinementReceipt {
 
 export interface JointRefinementResult {
   coatOfArms: CoatOfArms
+  /** Every accepted pass, in deterministic order, for deferred exact multiscale selection. */
+  acceptedArchive: CoatOfArms[]
   receipt: JointRefinementReceipt
 }
 
@@ -313,9 +319,11 @@ function enumerateMoves(
   replacementTextures: readonly string[],
   positionRange: readonly [number, number],
   scaleMagnitudeRange: readonly [number, number],
+  eligibleFlatInstanceIndexes?: ReadonlySet<number>,
 ): MoveProposal[] {
   const proposals: MoveProposal[] = []
   for (const reference of instanceReferences(coatOfArms)) {
+    if (eligibleFlatInstanceIndexes && !eligibleFlatInstanceIndexes.has(reference.flatInstanceIndex)) continue
     const block = coatOfArms.coloredEmblems[reference.blockIndex]
     const instance = block.instances[reference.instanceIndex]
 
@@ -475,6 +483,16 @@ export function refineCoatOfArmsJointly(
   }
   const replacementTextures = eligibleTextures.slice(0, maxReplacementCandidates)
   const originalInstances = drawnInstances(source)
+  const eligibleFlatInstanceIndexes = options.eligibleFlatInstanceIndexes === undefined
+    ? undefined
+    : new Set(options.eligibleFlatInstanceIndexes)
+  if (eligibleFlatInstanceIndexes) {
+    for (const index of eligibleFlatInstanceIndexes) {
+      if (!Number.isSafeInteger(index) || index < 0 || index >= originalInstances) {
+        throw new Error(`联合细化实例索引越界：${index}`)
+      }
+    }
+  }
   const original = cloneCoatOfArmsForJointRefinement(source)
   let incumbent = original
   const lossBefore = exactLoss(incumbent, options, renderSize, 'baseline')
@@ -482,6 +500,7 @@ export function refineCoatOfArmsJointly(
   let objectiveEvaluations = 1
   let evaluatedMoves = 0
   const acceptedMoves: AcceptedJointRefinementMove[] = []
+  const acceptedArchive: CoatOfArms[] = []
   const stageReceipts: JointRefinementStageReceipt[] = []
   let remainingPasses = stages.reduce((total, stage) => total + stage.passes, 0)
 
@@ -505,6 +524,7 @@ export function refineCoatOfArmsJointly(
         replacementTextures,
         positionRange,
         scaleMagnitudeRange,
+        eligibleFlatInstanceIndexes,
       )
       const remainingBudget = maxEvaluations - objectiveEvaluations
       const passBudget = Math.max(1, Math.floor(remainingBudget / Math.max(1, remainingPasses)))
@@ -543,6 +563,7 @@ export function refineCoatOfArmsJointly(
         lossAfter: incumbentLoss,
         move: best.proposal.move,
       })
+      acceptedArchive.push(cloneCoatOfArmsForJointRefinement(incumbent))
     }
     remainingPasses -= Math.max(0, stage.passes - passesAttempted)
     stageReceipts.push({
@@ -567,6 +588,7 @@ export function refineCoatOfArmsJointly(
   const budgetExhausted = objectiveEvaluations >= maxEvaluations
   return {
     coatOfArms: result,
+    acceptedArchive,
     receipt: {
       contract: JOINT_REFINEMENT_CONTRACT,
       deterministic: true,
@@ -575,6 +597,7 @@ export function refineCoatOfArmsJointly(
       objectiveEvaluations,
       evaluatedMoves,
       acceptedMoves,
+      acceptedArchiveCount: acceptedArchive.length,
       lossBefore,
       lossAfter: incumbentLoss,
       drawnInstancesBefore: originalInstances,
