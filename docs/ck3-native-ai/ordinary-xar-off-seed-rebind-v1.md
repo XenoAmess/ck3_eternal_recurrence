@@ -25,6 +25,14 @@ Before writing, the rebinder verifies:
    identical and ordinary `xar_off`/no-pact;
 5. `xar_checkpoint.ck3` size and SHA-256 match the driver checkpoint.
 
+Exact build `1.19.0.6-steam23530548` also writes an uncompressed binary SAV
+variant.  Its observed header is `SAV` plus hexadecimal metadata, a newline,
+then the binary marker `U1 01 00 03 00`; it does not start with the textual
+`meta_data={` block.  The artifact inspector recognizes both native variants
+as `raw-ck3` and reports `raw_header_kind` as `text` or `binary`.  Both remain
+header-only format checks and still require the checkpoint's full byte count
+and SHA-256 binding.
+
 It replaces only those three lifecycle-binding objects with the binding derived
 from the target prepared manifest.  It then reruns
 `load_native_driver_state_for_resume` and

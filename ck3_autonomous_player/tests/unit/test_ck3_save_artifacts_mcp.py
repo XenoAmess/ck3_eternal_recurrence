@@ -29,11 +29,16 @@ class Ck3SaveArtifactTests(unittest.TestCase):
             (save_dir / "raw.ck3").write_bytes(
                 b"SAV0100\nmeta_data={\n\tversion=\"fixture\"\n}\n"
             )
+            (save_dir / "binary.ck3").write_bytes(
+                b"SAV0101e741a8ef0000864d\n"
+                b"U1\x01\x00\x03\x00\x8f\x05\x01\x00"
+                b"opaque-binary-body"
+            )
             (profile / "last_save.ck3").write_bytes(b"not a CK3 save")
 
             result = Ck3ProfileArtifactInspector(profile).inspect_save_artifacts_v1()
 
-            self.assertEqual(result["artifact_count"], 3)
+            self.assertEqual(result["artifact_count"], 4)
             rows = {row["name"]: row for row in result["artifacts"]}
             self.assertEqual(rows["zipped.ck3"]["format"], "zip-ck3")
             self.assertTrue(rows["zipped.ck3"]["zip_valid"])
@@ -41,7 +46,12 @@ class Ck3SaveArtifactTests(unittest.TestCase):
             self.assertEqual(rows["zipped.ck3"]["integrity_scope"], "zip-crc")
             self.assertEqual(rows["raw.ck3"]["format"], "raw-ck3")
             self.assertEqual(rows["raw.ck3"]["integrity_scope"], "header-only")
+            self.assertEqual(rows["raw.ck3"]["raw_header_kind"], "text")
             self.assertIsNone(rows["raw.ck3"]["integrity_ok"])
+            self.assertEqual(rows["binary.ck3"]["format"], "raw-ck3")
+            self.assertEqual(rows["binary.ck3"]["integrity_scope"], "header-only")
+            self.assertTrue(rows["binary.ck3"]["raw_header_valid"])
+            self.assertEqual(rows["binary.ck3"]["raw_header_kind"], "binary")
             self.assertEqual(rows["last_save.ck3"]["format"], "unknown")
             self.assertEqual(rows["last_save.ck3"]["integrity_scope"], "none")
             self.assertFalse(result["path_argument_accepted"])
@@ -52,6 +62,10 @@ class Ck3SaveArtifactTests(unittest.TestCase):
             save_dir = profile / "save games"
             save_dir.mkdir(parents=True)
             (save_dir / "raw.ck3").write_bytes(b"SAV0100\nmeta_data={\n}\n")
+            (save_dir / "binary.ck3").write_bytes(
+                b"SAV0101adfe46810000864d\n"
+                b"U1\x01\x00\x03\x00\x8f\x05\x01\x00"
+            )
             with zipfile.ZipFile(save_dir / "missing.ck3", "w") as archive:
                 archive.writestr("meta", b"only-meta")
             rows = {
@@ -60,6 +74,7 @@ class Ck3SaveArtifactTests(unittest.TestCase):
                 .inspect_save_artifacts_v1()["artifacts"]
             }
             require_seedable_ck3_save_v1(rows["raw.ck3"])
+            require_seedable_ck3_save_v1(rows["binary.ck3"])
             with self.assertRaisesRegex(SaveArtifactError, "contain gamestate"):
                 require_seedable_ck3_save_v1(rows["missing.ck3"])
 
