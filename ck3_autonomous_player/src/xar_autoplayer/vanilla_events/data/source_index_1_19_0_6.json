@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 84,
-    "caller_candidate_reference_count": 536,
+    "caller_candidate_reference_count": 538,
     "definition_file_count": 75,
-    "external_caller_event_count": 156,
+    "external_caller_event_count": 157,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 192,
+    "registered_event_count": 193,
     "same_file_only_caller_event_count": 36,
-    "unique_definition_count": 192
+    "unique_definition_count": 193
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "B30BBE6661F3897E53657F4BAFD919F5F223D382B582E221655D6A3E40C3A584",
+  "dataset_sha256": "2E6817350010A90D2D6C2AABDBC184A26E63786BB604E14F5FD33213BFBB29C2",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5302,6 +5302,31 @@
       "definition": {
         "file_sha256": "B9F5799465E9B83B16C97086BC74F43ECD3949680AE1A78C081ED44ECD9B5FD6",
         "line": 926,
+        "relative_path": "events/dlc/tgp/tgp_japan_yearly_events_ariana.txt"
+      },
+      "namespace": "tgp_japan_yearly_events"
+    },
+    "tgp_japan_yearly_events.1190": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 8,
+          "file_sha256": "40D68D6306D3E180E40EFBC80D5879DA825AB111F7EC0870682AB414F2AD5FE4",
+          "kind": "exact-token-lexical-candidate",
+          "line": 41,
+          "relative_path": "common/on_action/dlc/tgp/tgp_japan_yearly_on_actions.txt"
+        },
+        {
+          "column": 8,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 3797,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "B9F5799465E9B83B16C97086BC74F43ECD3949680AE1A78C081ED44ECD9B5FD6",
+        "line": 4701,
         "relative_path": "events/dlc/tgp/tgp_japan_yearly_events_ariana.txt"
       },
       "namespace": "tgp_japan_yearly_events"

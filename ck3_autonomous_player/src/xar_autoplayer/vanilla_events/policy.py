@@ -892,6 +892,38 @@ def recommend_registered_vanilla_event_option_v1(
         event_context, contract, option_count
     )
     checks.update(option_checks)
+    if event_key == "tgp_japan_yearly_events.1190":
+        analysis = knowledge.get("analysis")
+        source_hashes = (
+            analysis.get("source_sha256")
+            if isinstance(analysis, Mapping) else None
+        )
+        indicators = (
+            selected.get("effect_indicators")
+            if isinstance(selected, Mapping) else None
+        )
+        rows = indicators.get("rows") if isinstance(indicators, Mapping) else None
+        stress = rows[0] if isinstance(rows, list) and len(rows) == 1 else None
+        checks["r0100_exact_source"] = bool(
+            isinstance(source_hashes, Mapping)
+            and source_hashes.get(
+                "events/dlc/tgp/tgp_japan_yearly_events_ariana.txt"
+            )
+            == "B9F5799465E9B83B16C97086BC74F43ECD3949680AE1A78C081ED44ECD9B5FD6"
+        )
+        checks["r0100_selected_stress_decrease_indicator"] = bool(
+            isinstance(indicators, Mapping)
+            and indicators.get("status") == "available"
+            and indicators.get("coverage")
+            == "played-character-event-icon-indicators-1.19.0.6-v1"
+            and indicators.get("complete_effect_set") is False
+            and isinstance(stress, Mapping)
+            and stress.get("kind") == "stress"
+            and stress.get("direction") == "decrease"
+            and stress.get("magnitude") == {"status": "unavailable"}
+            and stress.get("affected_by_trait") is True
+            and stress.get("critical") is False
+        )
     if event_key == "stress_threshold_special.1001":
         analysis = knowledge.get("analysis")
         source_hashes = (

@@ -8041,6 +8041,12 @@ class NativeHeadlessGameplayDriver:
                 "ending_played_character_gold": (
                     _played_character_gold_observation(changed)
                 ),
+                "starting_played_character_prestige": (
+                    _played_character_prestige_observation(starting)
+                ),
+                "ending_played_character_prestige": (
+                    _played_character_prestige_observation(changed)
+                ),
             },
             "active_event": changed.get("active_event"),
             "paused": True,
@@ -22998,6 +23004,39 @@ def _played_character_gold_observation(
         "gold_raw": None,
         "scale": 100_000,
         "unavailable_reason": "played_character_gold_unavailable",
+    }
+
+
+def _played_character_prestige_observation(
+    snapshot: dict[str, object],
+) -> dict[str, object]:
+    played = snapshot.get("played_character")
+    character_id = played.get("character_id") if isinstance(played, dict) else None
+    prestige = snapshot.get("played_character_prestige")
+    raw = prestige.get("raw") if isinstance(prestige, dict) else None
+    scale = prestige.get("scale") if isinstance(prestige, dict) else None
+    if (
+        isinstance(character_id, int)
+        and not isinstance(character_id, bool)
+        and character_id > 0
+        and isinstance(raw, int)
+        and not isinstance(raw, bool)
+        and -(2**63) <= raw <= 2**63 - 1
+        and scale == 100_000
+    ):
+        return {
+            "status": "available",
+            "character_id": character_id,
+            "prestige_raw": raw,
+            "scale": 100_000,
+            "unavailable_reason": None,
+        }
+    return {
+        "status": "unavailable",
+        "character_id": None,
+        "prestige_raw": None,
+        "scale": 100_000,
+        "unavailable_reason": "played_character_prestige_unavailable",
     }
 
 
