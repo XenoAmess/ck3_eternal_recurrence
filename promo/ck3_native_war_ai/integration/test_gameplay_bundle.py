@@ -13,6 +13,7 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 from war_ai_promo import gameplay_bundle as gb
 from war_ai_promo.common import binding, load, write_new
+from war_ai_promo.capture_timing import TIMING_POLICY, analyze_timestamps, display_sampling
 
 OUTPUT = None
 
@@ -54,7 +55,9 @@ class GameplayBundleOfflineTests(unittest.TestCase):
         probe = self.root / "synthetic-frame-probe.json"
         write_new(probe, {"schema": gb.FRAME_PROBE_SCHEMA, "source_recording": binding(raw),
             "stream": {"time_base": "1/1000"}, "decoded_frame_count": 3,
-            "capture_media_compatible": False, "audit_files": [], "frames": [
+            "capture_media_compatible": True, "capture_media_timing_policy": TIMING_POLICY,
+            "sampling_quality": {"classification": "timestamped-non-CFR30"},
+            "supported_end_seconds": 1.0, "audit_files": [], "frames": [
                 {"decoded_index": 0, "pts": 0, "pts_seconds": 0},
                 {"decoded_index": 1, "pts": 33, "pts_seconds": 0.033},
                 {"decoded_index": 2, "pts": 967, "pts_seconds": 0.967}]})
@@ -75,7 +78,8 @@ class GameplayBundleOfflineTests(unittest.TestCase):
         self.assertEqual([row["decoded_index"] for row in receipt["frames"]], [1, 2])
         self.assertEqual([row["pts"] for row in receipt["frames"]], [33, 967])
         self.assertEqual(receipt["frames"][0]["command_argv"][receipt["frames"][0]["command_argv"].index("-vf")+1], "select=eq(pts\\,33)")
-        self.assertFalse(receipt["capture_media_compatible"])
+        self.assertTrue(receipt["capture_media_compatible"])
+        self.assertEqual(receipt["capture_media_timing_policy"], TIMING_POLICY)
         self.assertFalse(receipt["signoff_granted"])
         self.assertFalse((target / "report.json").exists())
         with patch.object(gb, "completed_recording", return_value=state), patch.object(gb, "run_command", return_value=SimpleNamespace(returncode=0)):
@@ -92,8 +96,47 @@ class GameplayBundleOfflineTests(unittest.TestCase):
         import json
         with patch.object(gb, "run_command", return_value=SimpleNamespace(stdout=json.dumps(payload))):
             result = gb.probe_frame_timestamps(raw, self.root / "synthetic-timing-report")
-        self.assertFalse(result["capture_media_compatible"])
+        self.assertTrue(result["capture_media_compatible"])
         self.assertEqual(result["decoded_frame_count"], 3)
+        report = load(result["report"]["path"])
+        self.assertFalse(report["contiguous_zero_based_30fps"])
+        self.assertAlmostEqual(report["maximum_gap_seconds"], 0.1)
+        self.assertEqual(report["supported_end_seconds"], 0.2)
+        self.assertFalse(report["sampling_quality"]["absence_of_behavior_between_samples_proven"])
+
+    def test_gfxcapture_requires_the_verified_window(self):
+        argv = ["ffmpeg", "-f", "lavfi", "-i", "gfxcapture=hwnd=462536:capture_cursor=0", "-vf", "hwdownload,format=bgra", "gameplay.mkv"]
+        self.assertTrue(gb._recording_input_matches(argv, {"hwnd": 462536}))
+        self.assertFalse(gb._recording_input_matches(argv, {"hwnd": 111}))
+        self.assertFalse(gb._recording_input_matches(["gfxcapture=monitor_idx=0"], {"hwnd": 462536}))
+
+    def test_bad_pts_and_unsupported_tail_are_not_filled(self):
+        payload = {"streams": [{"time_base": "1/1000"}], "format": {"duration": "1"},
+            "frames": [{"pts": 0, "pts_time": "0"}, {"pts": 100, "pts_time": "0.1"}]}
+        facts = {"schema": gb.FRAME_PROBE_SCHEMA, **analyze_timestamps(payload)}
+        window = {"output_grid_first_frame": 0, "output_grid_stop_frame_exclusive": 9, "expected_frame_count": 9}
+        with self.assertRaisesRegex(ValueError, "support"):
+            display_sampling(facts, window, 0)
+        payload["frames"][1] = {"pts": 0, "pts_time": "0"}
+        with self.assertRaisesRegex(ValueError, "increasing"):
+            analyze_timestamps(payload)
+
+    def test_sampling_uses_current_frame_and_retains_long_gap(self):
+        payload = {"streams": [{"time_base": "1/1000"}], "format": {"duration": "1"},
+            "frames": [{"pts": 0, "pts_time": "0"}, {"pts": 150, "pts_time": "0.15"},
+                       {"pts": 900, "pts_time": "0.9", "duration": 100}]}
+        facts = {"schema": gb.FRAME_PROBE_SCHEMA, **analyze_timestamps(payload)}
+        window = {"output_grid_first_frame": 0, "output_grid_stop_frame_exclusive": 30, "expected_frame_count": 30}
+        sample = display_sampling(facts, window, 0)
+        self.assertEqual(sample["mapping"][4]["source_pts"], 0)  # t=.133 < .150
+        self.assertEqual(sample["mapping"][5]["source_pts"], 150)
+        self.assertEqual(sample["distinct_source_frames_displayed"], 3)
+        self.assertAlmostEqual(sample["maximum_selected_gap_seconds"], .75)
+        self.assertFalse(sample["tail_padding"])
+        # A new first frame cannot be copied backwards to fill a missing start.
+        facts["frames"] = facts["frames"][1:]
+        with self.assertRaisesRegex(ValueError, "support"):
+            display_sampling(facts, window, 0)
 
 
 def main():

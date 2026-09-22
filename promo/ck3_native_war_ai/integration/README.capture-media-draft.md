@@ -43,8 +43,10 @@ result = prepare_capture_clip(
 - 返回 `media`、`receipt`、`source_recording` 的 `path/bytes/sha256`；原始 raw 可以由调用者在 run 中保全一次。
 - `controls` 的每条记录有 `source` 和 `preserved` 两组绑定。后者是新审计目录内 report、timeline、index、全部已验证 span 证据的精确字节副本；原文中的绝对路径不改写。这不是可搬迁的完整 capture bundle。
 - `control_index`、原始/输出 `bound_probe`、`request`、FFmpeg 与 ffprobe 命令审计均留存。调用者应保全整个 audit 树、receipt、源 raw 和剪辑产物，再让 composer 使用已保全的媒体，避免依赖随后可能变化的原 root。
-- 源视频必须零起点、30 fps。窗口向内取完整30帧网格，不能越出请求区间或 clean span；最多损失一帧，不足时拒绝并要求另选对齐窗口。实际 `duration_seconds` 与选择窗口单列，不能冒充请求时长或旁白长度。
-- 只做正常1倍速连续截取、保持画面比例缩放、加黑边到2560×1440；不裁切，不重复循环，不插帧，不补静帧，不变速。源音频不进入剪辑。首尾截取精度及实际逐帧时间戳有审计。
+- 源视频可为 CFR 或 VFR，须有真实递增 PTS 和可证明的时间覆盖。媒体时间仍须零起点；窗口向内取完整30fps**输出时间网格**，不能越出请求区间或 clean span，最多省去一帧时间。实际时长与省去的边界余量单列；不冒充完整请求时长或旁白长度。
+- 保持1倍速、画面比例和2560×1440黑边布局；依据真实 PTS 在每个输出时刻显示当时最新的源帧，允许标准重复/丢帧，但不插值、不循环、不变速、不在源有效尾端后补帧。源音频不进入剪辑。
+- v2 receipt 保留 source 实际帧数、PTS间隔/最大gap、尾帧支持范围、逐输出帧的源采样映射。30fps是交付帧率，不是源采样能力；旧约9fps录像只作可读context，不从长gap推断无行为。原生因果、源hash、clean span及审帧合同保持。
+- 使用 FFmpeg [`fps`](https://ffmpeg.org/ffmpeg-filters.html#fps-1) 的时间采样，`round=up` 使未来帧不提前显示；未使用运动插值滤镜。已有真实前帧才允许窗口开始时继续显示，EOF只使用已证明的最后帧duration，不按旁白补长。
 - 源在渲染后执行一次 adapter `verify_unchanged`。失败保留控制文件、stdio、命令和 partial，写独立 failure；不能覆写成成功。导入前后都不修改或删除 capture 素材。
 
 目前为精确时序采用完整解码到所选窗口，远端时间很靠后的长录像可能较慢。该代价不授权改成关键帧粗切或变速。媒体通过也只证明连续剪辑与证据绑定，尚需项目判断画面内容、可读性及当次原生决策链。

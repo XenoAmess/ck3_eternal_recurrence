@@ -7,7 +7,6 @@ infer visual observations, native-AI causality, or human approval.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from fractions import Fraction
 import json
 import math
 from pathlib import Path
@@ -20,13 +19,13 @@ from xar_promo.adapters.ck3 import load_capture_bundle
 from xar_promo.process import CommandSpec, run_command
 
 from .common import binding, load, write_new
+from .capture_timing import FRAME_PROBE_SCHEMA, TIMING_POLICY, analyze_timestamps
 
 
 EXTRACTION_SCHEMA = "ck3-war-ai.gameplay-frame-extraction.v1"
 REVIEW_SCHEMA = "ck3-war-ai.gameplay-frame-review.v1"
 PRODUCER = "war-ai-promo.paused-map-gameplay-bundle.v1"
 FPS = 30
-FRAME_PROBE_SCHEMA = "ck3-war-ai.gameplay-frame-timestamps.v1"
 SCOPE = "paused-map endpoints, sampled foreground, and associated native readback"
 BOUNDARIES = {
     "native_ai_causality_verified": False,
@@ -92,6 +91,22 @@ def _snapshot(path: Path, actor: int, date: int) -> dict:
     return state
 
 
+def _recording_input_matches(argv, desktop):
+    if not isinstance(argv, list):
+        return False
+    if "gdigrab" in argv and "desktop" in argv:
+        return True
+    inputs = [arg for arg in argv if isinstance(arg, str) and arg.startswith("gfxcapture=")]
+    if len(inputs) != 1:
+        return False
+    match = re.search(r"(?:gfxcapture=|:)hwnd=(0x[0-9a-fA-F]+|[0-9]+)(?=:|$)", inputs[0])
+    if match is None:
+        return False
+    value = match.group(1)
+    hwnd = int(value, 16 if value.lower().startswith("0x") else 10)
+    return hwnd > 0 and hwnd == desktop.get("hwnd")
+
+
 def completed_recording(recording_dir: str | Path) -> dict:
     """Validate existing recorder output; no desktop or media process is used."""
     root = Path(recording_dir).resolve()
@@ -119,7 +134,7 @@ def completed_recording(recording_dir: str | Path) -> dict:
     require(_utc(pre.get("at"), "recording precondition") <= before,
             "HUD precondition occurred after recording start")
     argv = command.get("argv", [])
-    require(isinstance(argv, list) and "gdigrab" in argv and "desktop" in argv
+    require(_recording_input_matches(argv, pre["desktop"])
             and Path(argv[-1]).resolve() == Path(raw["path"]), "Not the declared desktop recorder output")
     probe_wrapper = load(root / "ffprobe.json")
     require(probe_wrapper.get("returncode") == 0, "Recorded ffprobe failed")
@@ -161,44 +176,18 @@ def probe_frame_timestamps(raw_path: str | Path, output: str | Path, ffprobe: st
         audit = out / "ffprobe-frames"
         result = run_command(CommandSpec.create([ffprobe, "-v", "error", "-select_streams", "v:0",
             "-show_frames", "-show_streams", "-show_format", "-show_entries",
-            "frame=pts,pts_time,best_effort_timestamp,best_effort_timestamp_time,duration_time,pkt_duration_time:stream=time_base,r_frame_rate,avg_frame_rate,width,height,start_time:format=duration",
+            "frame=pts,pts_time,best_effort_timestamp,best_effort_timestamp_time,duration,duration_time,pkt_duration,pkt_duration_time:stream=time_base,r_frame_rate,avg_frame_rate,width,height,start_time:format=duration",
             "-of", "json", raw["path"]], label="probe actual gameplay frame timestamps"), audit_directory=audit)
         payload = json.loads(result.stdout)
-        streams = payload.get("streams", [])
-        require(len(streams) == 1, "Frame probe must expose exactly one selected video stream")
-        stream = streams[0]
-        tick = float(Fraction(stream["time_base"]))
-        frames = []
-        for index, row in enumerate(payload.get("frames", [])):
-            require("pts" in row and "pts_time" in row, f"Decoded frame {index} lacks actual PTS")
-            frames.append({"decoded_index": index, "pts": int(row["pts"]),
-                "pts_seconds": _number(float(row["pts_time"]), "frame PTS"),
-                "declared_duration_seconds": float(row.get("duration_time", row.get("pkt_duration_time", 0)))})
-        require(len(frames) >= 2, "Fewer than two actual decoded frames")
-        times = [row["pts_seconds"] for row in frames]
-        require(all(b > a for a, b in zip(times, times[1:])), "Decoded PTS are not strictly increasing")
-        gaps = [b-a for a, b in zip(times, times[1:])]
-        duration = float(payload["format"]["duration"])
-        tolerance = max(tick / 2 + 0.000002, 0.00001)
-        maximum_error = max(abs(value - index/FPS) for index, value in enumerate(times))
-        contiguous = maximum_error <= tolerance
-        count_matches = abs(len(frames)/FPS - duration) <= max(tick+0.000002, 0.002)
-        bad_gaps = [{"after_decoded_index": index, "begin_seconds": times[index],
-            "end_seconds": times[index+1], "gap_seconds": gap}
-            for index, gap in enumerate(gaps) if abs(gap-1/FPS) > tick+0.000002]
+        try:
+            facts = analyze_timestamps(payload)
+        except (ValueError, KeyError, TypeError, ZeroDivisionError) as exc:
+            raise GameplayBundleError(f"Invalid actual capture timing: {exc}") from exc
         _bound(raw, "raw after actual frame probe")
         report = {"schema": FRAME_PROBE_SCHEMA, "created_at_utc": datetime.now(timezone.utc).isoformat(),
-            "source_recording": raw, "stream": stream, "duration_seconds": duration,
-            "decoded_frame_count": len(frames), "nominal_30fps_frame_count": round(duration*FPS),
-            "first_pts_seconds": times[0], "last_pts_seconds": times[-1],
-            "minimum_gap_seconds": min(gaps), "maximum_gap_seconds": max(gaps),
-            "mean_gap_seconds": sum(gaps)/len(gaps), "gaps_outside_30fps_quantization": bad_gaps,
-            "maximum_zero_based_30fps_error_seconds": maximum_error,
-            "time_base_quantization_tolerance_seconds": tolerance,
-            "contiguous_zero_based_30fps": contiguous, "frame_count_matches_duration": count_matches,
-            "capture_media_compatible": contiguous and count_matches,
+            "source_recording": raw, **facts,
             "scope": "Decoded media timing only; no scene review, capture approval, or native-AI inference",
-            "frames": frames, "audit_files": [binding(path) for path in sorted(audit.rglob("*")) if path.is_file()],
+            "audit_files": [binding(path) for path in sorted(audit.rglob("*")) if path.is_file()],
             **BOUNDARIES}
         write_new(out / "frame-timestamps.json", report)
         return {"report": binding(out / "frame-timestamps.json"), **{key: report[key] for key in
@@ -230,6 +219,8 @@ def extract_frames(recording_dir: str | Path, output: str | Path,
                 "Frame probe does not bind this exact raw recording")
         for record in timing.get("audit_files", []):
             _bound(record, "actual frame probe audit")
+        require(stop <= timing["supported_end_seconds"],
+                "Extraction end exceeds actual PTS/final-frame-duration support; no tail extension")
         selected = [row for row in timing["frames"] if start <= row["pts_seconds"] < stop]
         require(len(selected) >= 2, "Requested interval contains fewer than two actual timestamped frames")
         frames = []
@@ -265,8 +256,9 @@ def extract_frames(recording_dir: str | Path, output: str | Path,
             "end_seconds": stop, "end_is_exclusive": True,
             "endpoint_selection": "first existing PTS at/after begin; last existing PTS strictly before end",
             "actual_frame_probe": probe_record, "capture_media_compatible": timing["capture_media_compatible"],
-            "import_limitation": None if timing["capture_media_compatible"] else
-                "Actual decoded timing is not contiguous 30 fps; images are reviewable but this source cannot directly enter capture_media.",
+            "capture_media_timing_policy": timing.get("capture_media_timing_policy"),
+            "sampling_quality": timing.get("sampling_quality"),
+            "import_limitation": "PTS-supported windows only; final 30fps delivery reuses/drops source samples without increasing observation resolution.",
             "frames": frames, **BOUNDARIES}
         write_new(out / "extraction.json", manifest)
         return {"extraction": binding(out / "extraction.json"), "status": manifest["status"],
@@ -299,10 +291,10 @@ def _review(review_path: Path, state: dict) -> tuple[dict, dict]:
     require(timing.get("schema") == FRAME_PROBE_SCHEMA and
             _bound(timing.get("source_recording"), "actual frame probe source") == state["raw"],
             "Actual frame probe source differs")
-    require(timing.get("capture_media_compatible") is True and extraction.get("capture_media_compatible") is True,
-            "Actual decoded frames do not meet current capture_media continuous 30 fps contract; "
-            "review images remain valid source observations, but no directly importable bundle can be produced. "
-            "Do not pad, repeat, or stretch frames to turn this into a pass.")
+    require(timing.get("capture_media_compatible") is True and extraction.get("capture_media_compatible") is True
+            and timing.get("capture_media_timing_policy") == TIMING_POLICY
+            and extraction.get("capture_media_timing_policy") == TIMING_POLICY,
+            "A fresh actual-PTS timing report and matching reviewed extraction are required; old CFR-only receipts remain unchanged.")
     require(reviewed_at >= _utc(extraction.get("created_at_utc"), "extraction"), "Review predates extracted images")
     raw = _bound(extraction.get("source_recording"), "extraction source")
     require(raw == state["raw"], "Reviewed frame source differs from completed recording")
@@ -424,6 +416,9 @@ def package_gameplay_bundle(recording_dir: str | Path, review_json: str | Path,
                 "snapshot_after": relocated(review["native_readback"]["snapshot_after"]["path"]),
                 "queries": queries, "association": review["native_readback"]["association"]},
             "actual_agent_image_review": relocated(review_path),
+            "actual_frame_probe": relocated(extraction["actual_frame_probe"]["path"]),
+            "capture_media_timing_policy": extraction["capture_media_timing_policy"],
+            "sampling_quality": extraction["sampling_quality"],
             "recorder_implementation": relocated(script), "bundle_implementation": relocated(__file__),
             "limitations": ["Endpoint images and sampled foreground do not establish every intervening frame.",
                 "Native queries retain their actual receipt times; no synchronized-frame or autonomous-AI cause is inferred.",

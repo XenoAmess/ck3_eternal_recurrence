@@ -35,8 +35,13 @@ tools\.venv\Scripts\python.exe -B promo/ck3_native_war_ai/integration/package_ga
 tools\.venv\Scripts\python.exe -B promo/ck3_native_war_ai/integration/package_gameplay_bundle.py extract-frames --recording-dir D:/workspace/ck3_war_film_research_20260923/robert-input-case-r1 --begin-seconds 5 --end-seconds 115 --frame-probe D:/workspace/ck3_war_film_research_20260923/robert-case-r-timing-NEW/frame-timestamps.json --output D:/workspace/ck3_war_film_research_20260923/robert-case-r-frames-NEW
 ```
 
-稀疏 PTS 的原片仍可提取真实审阅图，但 `capture_media_compatible=false`，当前封装步骤拒绝把它交给连续
-30 fps 的导入合同。不得补帧、复制重复帧、定格、重定时或拉伸以制造通过结果。
+时间戳报告 v2 以实际递增 PTS 判断可导入范围，支持正常 VFR；`capture_media_compatible=true`
+不表示原片为 30fps。真实帧数、最小/平均/中位/最大间隔、完整 PTS 和尾帧有效结束均保留。
+导入器按原时间轴以 1× 采样当前已有帧，30fps 交付可重复/丢弃采样，不插值、不补长尾、不循环。
+没有正的尾帧 duration 时，范围最多到最后一个 PTS；不靠格式总时长猜末帧可延长多久。
+旧 v1 的 CFR-only 结果不改写，需新 probe/extraction/review。端点视觉审阅、前台采样及原生读回门保持。
+gfxcapture 还要求命令 HWND 与预检 `desktop.hwnd` 一致；本 producer 仍只接受同日期暂停地图，
+不因为支持 VFR 而允许把推进日历的战时录像称为同一暂停状态。
 
 2026-09-23 首次真实取材发现：`robert-input-case-r1/gameplay.mkv` 虽标 120 秒、r/avg 均 30，
 实际只解码出 1,077 帧（不是 3,600），相邻 PTS 最大间隔 0.2 秒。
@@ -46,8 +51,9 @@ tools\.venv\Scripts\python.exe -B promo/ck3_native_war_ai/integration/package_ga
 5.067 秒与 114.967 秒；本次修复不重新解释或修复旧 attempt。
 
 后续录制先只保留一个桌面 recorder，并先做短录，检查实际解码计数、PTS 间隔与编码吞吐后再录正式片段。
-并发双录是负载线索，当前时间戳不能证明它是唯一原因。若仍达不到真实连续 30 fps，应改善捕获/编码路径，
-或明确另立保留 VFR 时序的导入合同；不能仅加 CFR 输出选项让 FFmpeg 重复帧后宣称已经解决。
+并发双录是负载线索，当前时间戳不能证明它是唯一原因。新的 PTS 导入合同不会提高采样分辨率；
+上述约9fps片段仅作可读 context/静态镜头，不跨采样间隙推论“没有行为”。运动因果仍绑定原始 MCP
+时序与存档。真实 VFR 的最终30fps输出不能被称为“源录像实际30fps”。
 
 实际调用图像查看工具看过这两张 PNG 后，由实际审看者写独立 review JSON。
 `reviewer.kind=agent` 诚实标明本次是代理图像审看，不冒充用户或人工签核。

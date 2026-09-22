@@ -16,6 +16,10 @@ tools\.venv\Scripts\python.exe -m war_ai_promo.produce --project promo/ck3_nativ
 
 正式工具链 0.2.1 的默认 renderer 含 `fps` 和 `tpad`。项目通过受支持的 `render_planner` 接缝，仅对实机来源移除这两段，保留官方字幕、音频、编码及审计流程，并明确使用 `fps_mode=passthrough`。上游图结构改变时拒绝猜测处理；旧图解仍使用默认 planner。
 
+原始 CFR/VFR 已由导入器按真实 PTS、1×时间轴准备成30fps交付片；composer不再次补尾或改速。
+v2 receipt 的 `source_sampling_quality` 随 visual metadata 保留，输出30fps不提升原片运动观测分辨率。
+该兼容不改变暂停地图producer的同日期范围，也不取消案例因果、端点视觉审阅或人工签核边界。
+
 20–40 分钟继续是编辑工作范围，不构成新硬时长门；`--full-film` 仍要求配置中的章节完整。真实实机覆盖、案例因果和人工审片由独立交付记录说明，`mixed-footage` 本身不是整片完成或内容批准。
 
 聚焦测试只渲染0.8秒合成片段及字幕/合成音频，另测混合/旧模式、时长冲突保全、cue/claim 映射拒绝。capture adapter 的成功投影与 preserve 回调是明确的合成夹具，不冒充 GREEN CK3 或正式 lifecycle 成片：

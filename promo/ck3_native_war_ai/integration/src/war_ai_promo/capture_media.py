@@ -19,10 +19,12 @@ from xar_promo.media import probe_and_write_bound_media
 from xar_promo.process import CommandSpec, run_command
 
 from .common import binding, load, write_new
+from .capture_timing import display_sampling
+from .gameplay_bundle import probe_frame_timestamps
 
 
 SPEC_SCHEMA = "ck3-war-ai.capture-clips.v1"
-RECEIPT_SCHEMA = "ck3-war-ai.prepared-capture-clip.v1"
+RECEIPT_SCHEMA = "ck3-war-ai.prepared-capture-clip.v2"
 EVIDENCE_ROLES = frozenset({
     "context", "mechanism-illustration", "candidate-causal-case", "controlled-experiment",
 })
@@ -130,7 +132,7 @@ def _require_30fps(stream: Mapping[str, Any]) -> None:
     except (KeyError, ValueError, ZeroDivisionError) as exc:
         raise CaptureClipError("missing or invalid frame rate") from exc
     if any(rate != FPS for rate in rates):
-        raise CaptureClipError("source must be 30 fps; this module never synthesizes missing frames")
+        raise CaptureClipError("prepared output must be 30 fps; this is not a source frame-rate requirement")
 
 
 def _frame_window(span: Any, spec: Mapping[str, Any], source_duration: float) -> dict[str, Any]:
@@ -153,10 +155,11 @@ def _frame_window(span: Any, spec: Mapping[str, Any], source_duration: float) ->
     return {
         "requested_source_begin_seconds": float(requested_begin),
         "requested_source_end_seconds": float(requested_end),
-        "source_first_frame": first, "source_stop_frame_exclusive": stop,
+        "output_grid_first_frame": first, "output_grid_stop_frame_exclusive": stop,
         "source_begin_seconds": first / FPS, "source_end_seconds": stop / FPS,
         "expected_frame_count": stop - first, "expected_duration_seconds": (stop - first) / FPS,
-        "quantization": "inward-30fps-full-frames; no-loop-no-padding-no-retiming",
+        "quantization": "inward-30fps-output-time-grid; actual source PTS sampled at 1x; no-loop-no-tail-padding",
+        "omitted_boundary_seconds": float(_seconds(spec["duration_seconds"], "duration_seconds") - Decimal(stop-first)/FPS),
     }
 
 
@@ -185,8 +188,10 @@ def prepare_capture_clip(
     """Prepare one new silent 2560x1440 clip and retained provenance receipt.
 
     ``spec`` is one row returned by :func:`load_capture_spec`. Offset is relative
-    to its clean span. Source must be zero-start, 30 fps; trimming rounds inward
-    to complete frames. The caller must use the returned measured duration.
+    to its clean span. Source may be CFR or VFR with actual increasing PTS.
+    The selected duration rounds inward to full output frames; 30fps delivery
+    samples the current source frame at 1x, never inventing intervening motion.
+    The caller must use the returned measured duration.
     Failures retain their audit, copied controls and any partial output.
     """
     row = _clip_spec(spec)
@@ -226,20 +231,31 @@ def prepare_capture_clip(
         if not _same_binding({"bytes": source.subject_bytes, "sha256": source.subject_sha256}, expected_source):
             raise CaptureClipError("source probe bytes differ from the verified capture bundle")
         stream = _video_stream(source.probe)
-        _require_30fps(stream)
         if abs(float(stream.get("start_time", source.probe.format.get("start_time", 0)))) > 0.0001:
             raise CaptureClipError("source video must start at zero for capture-timeline seconds")
         rotation = [side.get("rotation", 0) for side in stream.get("side_data_list", [])]
         if any(float(angle) % 360 for angle in rotation) or float(stream.get("tags", {}).get("rotate", 0)) % 360:
             raise CaptureClipError("rotated capture sources need an explicit separate preparation")
         window = _frame_window(span, row, source.probe.require_duration())
+        timing_result = probe_frame_timestamps(bundle.raw_capture.path, audit / "source-timing", str(ffprobe))
+        timing = load(timing_result["report"]["path"])
+        if not _same_binding(timing["source_recording"], expected_source):
+            raise CaptureClipError("actual PTS probe source differs from capture bundle")
+        try:
+            sampling = display_sampling(timing, window, span.begin_seconds)
+        except ValueError as exc:
+            raise CaptureClipError(str(exc)) from exc
+        sampling_path = audit / "display-sampling.json"
+        write_new(sampling_path, sampling)
         write_new(audit / "selection.json", {"span_id": span.span_id,
                   "clean_begin_seconds": span.begin_seconds, "clean_end_seconds": span.end_seconds, **window})
         destination.parent.mkdir(parents=True, exist_ok=True)
-        # Timestamp trimming preserves source pace. No fps conversion, -r,
-        # loop, tpad, motion interpolation or speed multiplier is introduced.
-        start, stop = window["source_begin_seconds"], window["source_end_seconds"]
-        filters = (f"trim=start={start:.12f}:end={stop:.12f},setpts=PTS-STARTPTS,"
+        # Keep one real successor PTS when available so the fps filter has a
+        # genuine timing boundary. round=up delays a new frame until its PTS;
+        # the explicit output limit cannot extend the verified source window.
+        filters = (f"trim=start_frame={sampling['first_source_decoded_index']}:end_frame={sampling['decode_stop_frame_exclusive']},"
+                   f"settb=expr=1/{sampling['filter_time_base_denominator']},setpts=PTS-{sampling['filter_start_offset_ticks']},"
+                   f"fps=30:start_time=0:round=up:eof_action=pass,trim=end_frame={window['expected_frame_count']},"
                    "scale=2560:1440:force_original_aspect_ratio=decrease:force_divisible_by=2:reset_sar=1,"
                    "pad=2560:1440:(ow-iw)/2:(oh-ih)/2:color=black")
         command = CommandSpec.create([
@@ -283,6 +299,13 @@ def prepare_capture_clip(
             "controls": controls, "control_index": binding(audit / "control-index.json"),
             "request": binding(audit / "request.json"),
             "source_bound_probe": binding(source_probe_path),
+            "source_actual_timing": timing_result["report"],
+            "source_sampling_quality": {key: timing[key] for key in (
+                "decoded_frame_count", "first_pts_seconds", "last_pts_seconds", "minimum_gap_seconds",
+                "maximum_gap_seconds", "mean_gap_seconds", "median_gap_seconds", "mean_observed_frame_rate",
+                "supported_end_seconds", "tail_support", "contiguous_zero_based_30fps", "sampling_quality")},
+            "display_sampling": binding(sampling_path),
+            "delivery_sampling": {key: value for key, value in sampling.items() if key != "mapping"},
             "output_bound_probe": binding(output_probe_path), "frame_check": frame_check,
             "source_integrity_rechecked": True,
             "commands": [binding(path) for path in sorted(audit.glob("*/command.json"))],

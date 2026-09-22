@@ -23,9 +23,11 @@ def artifact(run, run_path, identifier):
 
 
 def plan_capture_render(**kwargs):
-    """Use the official planner seam while forbidding video frame synthesis.
+    """Keep the importer's already sampled 30fps timeline without extra padding.
 
-    Keep its subtitle/audio/output/audit contracts. If the upstream graph no
+    VFR sources were sampled at original PTS/1x by the capture importer; the
+    delivery rate does not describe source sampling quality. Keep the official
+    subtitle/audio/output/audit contracts. If the upstream graph no
     longer has the inspected normalization seam, fail rather than guess.
     """
     plan = plan_render(**kwargs)
@@ -57,6 +59,12 @@ def capture_visual(row, run, run_path):
         raise ValueError(f"Capture mapping differs from its receipt: {row['id']}")
     if not set(capture["claim_ids"]).issubset(row["claim_ids"]):
         raise ValueError(f"Capture claims are not attached to this cue: {row['id']}")
+    if receipt.get("schema") == "ck3-war-ai.prepared-capture-clip.v2":
+        sampling = receipt.get("delivery_sampling", {})
+        if (receipt.get("fps") != 30 or sampling.get("output_fps") != 30
+                or sampling.get("playback_speed") != 1
+                or any(sampling.get(key) is not False for key in ("interpolation", "looping", "tail_padding"))):
+            raise ValueError("Prepared VFR delivery must retain its 1x/no-interpolation/no-padding contract")
     duration = receipt["selection"]["expected_frame_count"] / 30
     if abs(duration - row["duration_seconds"]) > 0.000001 or duration < row["speech_duration_seconds"]:
         raise ValueError(f"Capture does not cover this cue's exact measured duration: {row['id']}")
@@ -65,6 +73,7 @@ def capture_visual(row, run, run_path):
     return VisualSource(row["id"], VIDEO, path, "ck3-capture-continuous-clip",
         metadata={"evidence_role":capture["evidence_role"], "claim_ids":capture["claim_ids"],
                   "receipt_artifact_id":capture["receipt_artifact_id"],
+                  "source_sampling_quality":receipt.get("source_sampling_quality"),
                   "native_ai_causality_verified":False})
 
 

@@ -64,6 +64,14 @@ class CaptureMediaTests(unittest.TestCase):
             "successful_adapter_projection":"mocked CaptureBundle dataclass with synthetic labels",
             "raw":binding(cls.raw), "human_signoff":False,
         })
+        cls.vfr = cls.bundle_root / "synthetic-vfr36.mkv"
+        run_command(CommandSpec.create([
+            FFMPEG, "-nostdin", "-hide_banner", "-loglevel", "warning", "-n",
+            "-f", "lavfi", "-i", "nullsrc=size=64x64:rate=60:duration=2",
+            "-vf", "geq=lum='N*2+8':cb=128:cr=128,select='lt(mod(n,10),3)+eq(mod(n,10),4)+eq(mod(n,10),5)+eq(mod(n,10),7)'",
+            "-fps_mode", "passthrough", "-c:v", "ffv1", cls.vfr,
+        ], label="synthetic VFR timestamp and grayscale fixture, not CK3", partial_artifacts=[cls.vfr]),
+            audit_directory=ARTIFACT_ROOT / "synthetic-vfr-command")
 
     def test_spec_and_role_do_not_grant_causality(self):
         path = ARTIFACT_ROOT / "selection-spec.json"
@@ -154,6 +162,43 @@ class CaptureMediaTests(unittest.TestCase):
         self.assertEqual(failure["partial_media"],binding(destination))
         self.assertFalse((audit / "receipt.json").exists())
         self.assertTrue((audit / "encode/command.json").exists())
+
+    def test_actual_vfr_keeps_1x_and_samples_previous_not_future_frame(self):
+        source = replace(self.bundle, raw_capture=capture_file(self.vfr, self.bundle_root))
+        target, audit = ARTIFACT_ROOT / "vfr-prepared.mp4", ARTIFACT_ROOT / "vfr-audit"
+        with patch.object(cm, "load_capture_bundle", return_value=source):
+            receipt = cm.prepare_capture_clip(self.spec, target, FFMPEG, FFPROBE, audit)
+        self.assertAlmostEqual(receipt["duration_seconds"], .8, places=3)
+        self.assertEqual(receipt["frame_check"]["decoded_frame_count"], 24)
+        quality = receipt["source_sampling_quality"]
+        self.assertFalse(quality["contiguous_zero_based_30fps"])
+        self.assertGreater(quality["mean_observed_frame_rate"], 30)
+        self.assertGreater(quality["maximum_gap_seconds"], 1/30)
+        self.assertEqual(receipt["delivery_sampling"]["playback_speed"], 1)
+        self.assertFalse(receipt["delivery_sampling"]["interpolation"])
+        self.assertFalse(receipt["delivery_sampling"]["tail_padding"])
+        sample = load(receipt["display_sampling"]["path"])
+        self.assertTrue(all(row["source_pts_seconds"] <= row["source_time_seconds"] + 1e-10
+                            for row in sample["mapping"]))
+        decoded = []
+        for name, video in (("source", self.vfr), ("output", target)):
+            pixels = ARTIFACT_ROOT / f"vfr-{name}-gray.bin"
+            run_command(CommandSpec.create([
+                FFMPEG, "-nostdin", "-hide_banner", "-loglevel", "warning", "-n",
+                "-i", video, "-map", "0:v:0", "-vf", "crop=2:2:(iw-2)/2:(ih-2)/2,format=gray",
+                "-fps_mode", "passthrough", "-f", "rawvideo", pixels,
+            ], label=f"synthetic VFR {name} pixel-time verification", partial_artifacts=[pixels]),
+                audit_directory=ARTIFACT_ROOT / f"vfr-{name}-pixel-audit")
+            raw_pixels = pixels.read_bytes()
+            self.assertEqual(len(raw_pixels) % 4, 0)
+            decoded.append([sum(raw_pixels[index:index+4])/4 for index in range(0, len(raw_pixels), 4)])
+        original, delivered = decoded
+        self.assertEqual(len(delivered), len(sample["mapping"]))
+        for row, pixel in zip(sample["mapping"], delivered):
+            self.assertLessEqual(abs(pixel-original[row["source_decoded_index"]]), 2,
+                f"output frame {row['output_frame']} displayed a source frame outside the current-frame mapping")
+        self.assertFalse(receipt["native_ai_causality_verified"])
+        self.assertFalse(receipt["human_1x_review_performed"])
 
 
 if __name__ == "__main__":
