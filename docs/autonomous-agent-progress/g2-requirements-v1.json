@@ -93,11 +93,12 @@
         "three bounded campaign objective and ordinal utility profiles static-ready",
         "R664 trait_specific.8001 production recommendation/action/material loop GREEN; report AB718B94A809C485683D2508133B3AF1AE750E55457096EB12753129E72EBC63",
         "R842 natural prison_notification.2002 production loop GREEN: exact registry query, one typed option, independent old-instance disappearance and next formal-turn consumption; report 60554323...24C2, close receipt EEB62CA4...F996",
-        "R846 independently cold-restored the R839 pair, naturally observed prison_notification.2002 again, performed one exact-registry typed option, consumed its absence on the next formal turn and saved history693; report 63CFCDD4...34D1"
+        "R846 independently cold-restored the R839 pair, naturally observed prison_notification.2002 again, performed one exact-registry typed option, consumed its absence on the next formal turn and saved history693; report 63CFCDD4...34D1",
+        "R0083 ordinary first-1066-seed formal continuation RED on naturally observed death_management.1000 instance15: exact registry scope:dislike:type projection drift at turn7; no option submitted, source R0079 paired checkpoint unchanged and post-RED driver unpaired; immutable manifest F22D0A88044CBDE52253160941B6E2084FF83FF04F9672E2412509AD433DDCB4; exact event contract repair pending"
       ],
       "planner_consumer": "event option utility policy",
       "visible_outcome": "resolve three natural events, including two multi-option events, and verify material state deltas",
-      "open_blocker": "trait_specific.8001 is production-live with verified gold increase and successor checkpoint; tgp_travel_events.0030 and death_management.1007 still need production recommendation-action-material outcome loops. Generic effect extraction and cross-domain numeric calibration remain breadth debt."
+      "open_blocker": "R0083 natural death_management.1000 scope:dislike:type projection drift blocks the ordinary continuation; preserve RED and repair the exact registry projection before replay. trait_specific.8001 is production-live with verified gold increase and successor checkpoint; tgp_travel_events.0030 and death_management.1007 still need production recommendation-action-material outcome loops. Generic effect extraction and cross-domain numeric calibration remain breadth debt."
     },
     {
       "id": "G2-M3",
@@ -143,11 +144,12 @@
       "status": "not_started",
       "latest_evidence": [
         "ID-only marriage",
-        "mature tactical war executor"
+        "mature tactical war executor",
+        "R0082 exact-build private observed-first-heir final-legality read-only paused query GREEN: heir38822, 657 distinct can-send/final-legal rows (raw0=657), no native rank, zero actions/date change, source save unchanged, process recycled; report 040319A17FC5AA636A1A84E26BAD74C0D450DD7CD6609FC00FF8E4AFDA4BFD28"
       ],
       "planner_consumer": "joint marriage, diplomacy and war opportunity-cost policy",
       "visible_outcome": "choose among at least five legal diplomatic or war candidates and complete the selected path through verified postconditions",
-      "open_blocker": "joint candidate scoring, supply, allies, campaign budget and multi-war coordination are incomplete"
+      "open_blocker": "R0082 validates only an unadvertised read-only marriage legality branch; typed marriage action/material result/next turn and joint candidate scoring, supply, allies, campaign budget and multi-war coordination remain incomplete. Existing MCP contract additionally requires same-version paused unavailable/RED branch evidence before public query registration"
     },
     {
       "id": "G2-M6",
