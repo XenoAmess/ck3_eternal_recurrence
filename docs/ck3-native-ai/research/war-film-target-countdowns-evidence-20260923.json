@@ -1,0 +1,277 @@
+{
+  "schema": "xar.war-film-target-countdowns.v1",
+  "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "exe_bytes": 95206008,
+  "exe_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "interpreter": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\tools\\.venv\\Scripts\\python.exe",
+  "dependencies": {
+    "capstone": "5.0.9",
+    "pefile": "2024.8.26"
+  },
+  "defines_sha256": "c78f9cd8df9938cc9f38e817bcb6e32cd13720b5bd9de077b85e3e1c6f030293",
+  "spans": {
+    "constructor": {
+      "begin": "0x1852400",
+      "end_exclusive": "0x185276e",
+      "bytes_sha256": "6402a9f6a139bf3cdc1bcb33cde3766e030ea851131acee4c066d079296cf5c0",
+      "disassembly_sha256": "53b2ddad36da3893906d4240941a601acacb8fcaba5f5e1aa35eaa6b0d4a362f",
+      "instruction_count": 193,
+      "pdata_fragments": [
+        [
+          "0x1852400",
+          "0x185276e",
+          "0x4ce5d00"
+        ]
+      ]
+    },
+    "update": {
+      "begin": "0x18550d0",
+      "end_exclusive": "0x18554ef",
+      "bytes_sha256": "5a0db4885435b8cc02907281a85b4ab7ac22a11b407b9ddf51db10a22a11686b",
+      "disassembly_sha256": "8df99b71c6779f6dc2a1302778ce0eead4cdac4e1d0b1ae31fc875164f9fa6f7",
+      "instruction_count": 281,
+      "pdata_fragments": [
+        [
+          "0x18550d0",
+          "0x18550ed",
+          "0x4c6bd14"
+        ],
+        [
+          "0x18550ed",
+          "0x18550f9",
+          "0x4ce5f10"
+        ],
+        [
+          "0x18550f9",
+          "0x18552c0",
+          "0x4ce5f2c"
+        ],
+        [
+          "0x18552c0",
+          "0x1855340",
+          "0x4ce5f4c"
+        ],
+        [
+          "0x1855340",
+          "0x18554ea",
+          "0x4ce5f68"
+        ],
+        [
+          "0x18554ea",
+          "0x18554f0",
+          "0x4ce5f80"
+        ]
+      ]
+    },
+    "lopsided": {
+      "begin": "0x185a41b",
+      "end_exclusive": "0x185a53f",
+      "bytes_sha256": "53a7391d1e46380e161c24084344c7a77fecbf84bde67d73318f7fe5652e44f6",
+      "disassembly_sha256": "cb96ecb1c0dbac6867547ff5a9609b9a7efbab3e56b9552b9b12b2da01ded276",
+      "instruction_count": 75,
+      "pdata_fragments": [
+        [
+          "0x185a42c",
+          "0x185a53f",
+          "0x4ce643c"
+        ]
+      ]
+    },
+    "refresh_request": {
+      "begin": "0x1854d30",
+      "end_exclusive": "0x1854e6e",
+      "bytes_sha256": "be1b557290c7250f8a935cb62c89edc0dafe14a7338a921819f9d63f52740e92",
+      "disassembly_sha256": "c8b484c6736b728ab74d9289d4620620658c44a18c65c0d8e9e9fba1145c40e0",
+      "instruction_count": 90,
+      "pdata_fragments": [
+        [
+          "0x1854d30",
+          "0x1854e6e",
+          "0x4c39898"
+        ]
+      ]
+    },
+    "participant_probe": {
+      "begin": "0x1854e70",
+      "end_exclusive": "0x1854f57",
+      "bytes_sha256": "6dbdd061f595cfb704368d3b78e4ccd62146a7e2dfd30a20de33ee13a5dcd703",
+      "disassembly_sha256": "fe939531112d38f113e5b9eb3129310aafc12580f0192b401f2a15ce1380cca8",
+      "instruction_count": 59,
+      "pdata_fragments": [
+        [
+          "0x1854e70",
+          "0x1854f57",
+          "0x4cb4b54"
+        ]
+      ]
+    },
+    "target_commit": {
+      "begin": "0x185a780",
+      "end_exclusive": "0x185aa3e",
+      "bytes_sha256": "84ac1ddad33f944c4e2695cda378be6f5a4611f552e1d81178acc3503a292025",
+      "disassembly_sha256": "76860e0e5d258b8073f6db12c0ec9980f20283cf6ba77e8210e5967b3a558297",
+      "instruction_count": 191,
+      "pdata_fragments": [
+        [
+          "0x185a780",
+          "0x185aa3e",
+          "0x4ce6460"
+        ]
+      ]
+    },
+    "direct_dispatch": {
+      "begin": "0x18876d0",
+      "end_exclusive": "0x188817e",
+      "bytes_sha256": "3ecaae0a02249b0f7539e66594a384a6a21918f97fb7983d8aa732303c439e67",
+      "disassembly_sha256": "eb31c597414a6e6cd12c9921c235dedf66d1d22b76c6ddda44bd9fe873af3cd6",
+      "instruction_count": 614,
+      "pdata_fragments": [
+        [
+          "0x18876d0",
+          "0x188817e",
+          "0x4ce9550"
+        ]
+      ]
+    }
+  },
+  "registrations": {
+    "UPDATE_WAR_STANCE_TICK": {
+      "begin": "0x18a9620",
+      "end_exclusive": "0x18a9877",
+      "slot": "0x570df44",
+      "string_rva": "0x4194dd0",
+      "value": "30",
+      "bytes_sha256": "d1d317e313d3d63e8d9b939d7bbd3c0080d09eee02cb6dbf8a9ad59252f7727b",
+      "rip_references": {
+        "0x18a9638": "0x4194dd0",
+        "0x18a9758": "0x570df44",
+        "0x18a97a3": "0x570df44"
+      }
+    },
+    "UPDATE_SPLIT_MERGE_TICK": {
+      "begin": "0x18a9960",
+      "end_exclusive": "0x18a9bb7",
+      "slot": "0x570df60",
+      "string_rva": "0x4194db8",
+      "value": "14",
+      "bytes_sha256": "c8f4f0de2871c514b853f9e5fc5b64e03a8e7adacdf58b4cbbd90c5e112a0596",
+      "rip_references": {
+        "0x18a9978": "0x4194db8",
+        "0x18a9a98": "0x570df60",
+        "0x18a9ae3": "0x570df60"
+      }
+    },
+    "UPDATE_TARGETS_TICK": {
+      "begin": "0x18a9ca0",
+      "end_exclusive": "0x18a9ef7",
+      "slot": "0x570df40",
+      "string_rva": "0x4194da0",
+      "value": "7",
+      "bytes_sha256": "4a1b41ec3345ea02a760bce538c15630bca9f82776aba85f9d97ed3f5a3cf804",
+      "rip_references": {
+        "0x18a9cb8": "0x4194da0",
+        "0x18a9dd8": "0x570df40",
+        "0x18a9e23": "0x570df40"
+      }
+    },
+    "UPDATE_TARGETS_TICK_LOPSIDED": {
+      "begin": "0x18a9fe0",
+      "end_exclusive": "0x18aa237",
+      "slot": "0x570df64",
+      "string_rva": "0x4194d80",
+      "value": "14",
+      "bytes_sha256": "758a9e04d596234c4026a0fcf8f35962cf44bb271ed5636cb8d00465d5413648",
+      "rip_references": {
+        "0x18a9ff8": "0x4194d80",
+        "0x18aa118": "0x570df64",
+        "0x18aa163": "0x570df64"
+      }
+    },
+    "LOPSIDED_WAR_RATIO_THRESHOLD": {
+      "begin": "0x18af5f0",
+      "end_exclusive": "0x18af675",
+      "slot": "0x570df20",
+      "string_rva": "0x4196240",
+      "value": "0.33",
+      "bytes_sha256": "5432eb405b11d04d3ccc629f05f4a6368128f0073dff08d71ff60efcabd68295",
+      "rip_references": {
+        "0x18af5f7": "0x4196240",
+        "0x18af63c": "0x570df20"
+      }
+    }
+  },
+  "anchors": {
+    "0x1855108": {
+      "bytes": "41ffcd",
+      "mnemonic": "dec",
+      "operands": "r13d"
+    },
+    "0x1855115": {
+      "bytes": "ffc8",
+      "mnemonic": "dec",
+      "operands": "eax"
+    },
+    "0x185513a": {
+      "bytes": "ff899c000000",
+      "mnemonic": "dec",
+      "operands": "dword ptr [rcx + 0x9c]"
+    },
+    "0x1855147": {
+      "bytes": "7f05",
+      "mnemonic": "jg",
+      "operands": "0x185514e"
+    },
+    "0x18552c6": {
+      "bytes": "e8a54f0000",
+      "mnemonic": "call",
+      "operands": "0x185a270"
+    },
+    "0x18552d1": {
+      "bytes": "898394000000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rbx + 0x94], eax"
+    },
+    "0x18552e1": {
+      "bytes": "e81a2f0000",
+      "mnemonic": "call",
+      "operands": "0x1858200"
+    },
+    "0x18552ec": {
+      "bytes": "898398000000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rbx + 0x98], eax"
+    },
+    "0x1855305": {
+      "bytes": "e876540000",
+      "mnemonic": "call",
+      "operands": "0x185a780"
+    },
+    "0x185531e": {
+      "bytes": "89839c000000",
+      "mnemonic": "mov",
+      "operands": "dword ptr [rbx + 0x9c], eax"
+    },
+    "0x185a521": {
+      "bytes": "0f9cc0",
+      "mnemonic": "setl",
+      "operands": "al"
+    },
+    "0x185a524": {
+      "bytes": "8886a0000000",
+      "mnemonic": "mov",
+      "operands": "byte ptr [rsi + 0xa0], al"
+    },
+    "0x1854e54": {
+      "bytes": "66834b6802",
+      "mnemonic": "or",
+      "operands": "word ptr [rbx + 0x68], 2"
+    },
+    "0x18878f1": {
+      "bytes": "e8dad7fcff",
+      "mnemonic": "call",
+      "operands": "0x18550d0"
+    }
+  },
+  "proof": "Pinned executable bytes, disassembly and define registration; semantic interpretation remains in the companion document.",
+  "live_execution": false
+}

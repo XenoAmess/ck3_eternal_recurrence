@@ -2,6 +2,7 @@
 
 ## 范围与版本
 
+- 2026-09-23 追加勘误与补研：[coordinator 重算计数器](war-film-target-countdowns-2026-09-23.md)已闭合 `+0x94/+0x98/+0x9C` 的逐一映射、目标提前刷新分支与初始化；lopsided 实际比较为严格 `<0.33`。下文旧阶段的“映射未知”和“不超过”保留为历史记录，以该追加证据为准；尚无本轮 live 互证。
 - [static-confirmed] 本文只适用于 CK3 `1.19.0.6`、EXE SHA-256
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；所有 RVA 均相对
   `ck3.exe` 模块基址。

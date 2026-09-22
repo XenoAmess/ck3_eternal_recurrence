@@ -1,0 +1,206 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-targets-20260923",
+  "question": "Which coordinator deadlines trigger stance, split/merge and target recomputation, and how do lopsided power and invalidation change the schedule?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "CAIWarCoordinator for one participant in one war",
+    "identity_kind": "none",
+    "identity_lifetime": "Offline PDATA/RVA identity only; runtime generation IDs not yet sampled",
+    "producer_trigger": "unknown",
+    "producer": "RVA 0x18550D0 invocation decrements countdowns; target path additionally gated by +B0/+C0",
+    "caller": "Direct call at 0x18878F1; parallel task dispatch consumer not yet traced",
+    "consumer": "Stance selection, stack split/merge and target assignment update",
+    "cache_lifetime": "+94=stance30, +98=split14, +9C=target7/14; +A0 refreshed on stance path",
+    "expected_signal": "Exact define-slot loads, deadline comparisons, update calls and reset writes in one control-flow slice",
+    "zero_sample_meaning": "No offline reference is not proof that virtual or event-driven updates do not exist",
+    "stop_condition": "Stop slice expansion when deadline semantics are supported or unresolved indirect caller requires a distinct observation seam",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "instructions",
+      "layer": "exact-build",
+      "path": "war-film-target-countdowns-evidence-20260923.json",
+      "sha256": "16a280b82d8da3f9aa2193d5039312cf48e3da4230d1c3067825ef7fac287f9b",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Actual define registration slots and exact countdown/strict comparison instructions."
+    },
+    {
+      "id": "source-contract",
+      "layer": "source-contract",
+      "path": "../war-film-target-countdowns-2026-09-23.md",
+      "sha256": "fca56cf2bf7aaebcadc9b3edc7453ba07118de20360ab23f8828f643a3b8b7fa",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Manual reading of pinned branches: countdown mapping, eligibility, early refresh, reset and strict lopsided comparison; unresolved scheduling remains explicit."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "schedule",
+      "label": "Upstream scheduling"
+    },
+    {
+      "id": "tick",
+      "label": "Coordinator update"
+    },
+    {
+      "id": "counts",
+      "label": "Decrement +94/+98"
+    },
+    {
+      "id": "gate",
+      "label": "+B0 or +C0 positive?"
+    },
+    {
+      "id": "hold",
+      "label": "Skip target countdown/update"
+    },
+    {
+      "id": "target",
+      "label": "Decrement +9C; expiry/bit1/stack predicate"
+    },
+    {
+      "id": "refresh",
+      "label": "Conditional stance and split calls"
+    },
+    {
+      "id": "lopsided",
+      "label": "On stance path: min/max ratio < 0.33; zero input true"
+    },
+    {
+      "id": "assign",
+      "label": "Conditional target recomputation"
+    },
+    {
+      "id": "reset",
+      "label": "Reset +9C from cached +A0: 7 or 14"
+    }
+  ],
+  "edges": [
+    {
+      "id": "caller",
+      "from": "schedule",
+      "to": "tick",
+      "label": "Direct call and asynchronous route",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Complete scheduler cadence and task consumer remain untraced."
+    },
+    {
+      "id": "decrement",
+      "from": "tick",
+      "to": "counts",
+      "label": "Every invocation",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "gate",
+      "from": "counts",
+      "to": "gate",
+      "label": "Target preconditions",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "blocked",
+      "from": "gate",
+      "to": "hold",
+      "label": "Yes",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "eligible",
+      "from": "gate",
+      "to": "target",
+      "label": "No",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "other",
+      "from": "hold",
+      "to": "refresh",
+      "label": "Stance/split still checked",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "request",
+      "from": "target",
+      "to": "refresh",
+      "label": "Record target refresh request",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "ratio",
+      "from": "refresh",
+      "to": "lopsided",
+      "label": "Stance expiry updates cached lopsided flag",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "dispatch",
+      "from": "refresh",
+      "to": "assign",
+      "label": "When earlier target request is true",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "target-reset",
+      "from": "assign",
+      "to": "reset",
+      "label": "Read cached +A0 after call",
+      "status": "static-confirmed",
+      "evidence": [
+        "instructions",
+        "source-contract"
+      ],
+      "open_question": null
+    }
+  ],
+  "cases": []
+}
