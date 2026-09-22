@@ -1,8 +1,10 @@
 # M4-LIFE-READBACK-ENTRY: bounded private input readback
 
 Status: private readback with R0110 startup RED and R0111 live readback RED;
-neither proves a lifestyle action or G2-M4 completion. This entry is not a
-public capability.
+R0128 independently observed target stewardship XP/points but returned
+`evidence_insufficient` for the full three-query gate. None proves a lifestyle
+action or G2-M4 completion. This entry is not a public capability. See the
+[R0128 immutable evidence index](lifestyle-r0128-readback.md).
 It follows the exact 1.19.0.6 native decision tree in
 `lifestyle-focus-perk-ai.md` and the versioned LIFE2, stock-perk, and
 stock-focus ABI files under `native_bridge/research/`. Frozen CK3 EXE SHA-256:
@@ -113,6 +115,14 @@ private typed parser, retains the raw response and checks the independent
 after-frame. R0112 proved stock focus legality but used the older DLL and
 cannot prove these new target-progress fields. This runner change itself is
 no-launch and does not supply a focus action or public capability.
+
+R0128 exercised this path on the h1094 no-focus frame. The fixed focus and
+target-progress query passed; the formal perk query remained typed unavailable
+because its exact-build player-state callback requires current lifestyle
+progress. The target-progress readback subgate is production-live primitive
+for that actor and build, while the overall report remains
+`evidence_insufficient`. The runner's post-run prepared driver now has a live
+restore tail and cannot be used as the source for another fresh candidate.
 
 The report and each raw query response are written under the fresh evidence
 directory. The final report includes candidate hashes, process identity,

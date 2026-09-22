@@ -8,7 +8,7 @@
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - **目标场景**：当前玩家是有地、可游玩的封建成年统治者；优先解锁和平治理中的收入、直辖、健康、发展和最低限度派系应对。
 - **明确非目标**：不把固定 2560×1440 中文界面的“权威重心”点击当成通用能力；不扩展宗教域；不研究所有 DLC/政府的完整技能收益；不实现技能重置；不把引擎命令 ACK 当作状态改变。
-- **当前能力结论**：LIFE2 当前状态与固定财富重心最终合法性已有私有 paused 观测；无当前重心时目标管理生活方式 XP/点数仍缺同帧只读值，动作最终提交和后置消费也未闭合。不得把这条观测称为完整 LIFE1/M4。
+- **当前能力结论**：LIFE2 当前状态、固定财富重心最终合法性及目标管理生活方式 XP/点数已有私有 paused 观测；R0128 仅关闭该角色和 exact build 的目标进度只读子门。正式 focus/perk 动作、后置与下一轮消费仍未闭合，不得称为完整 LIFE1/M4。
 
 本文中的证据等级沿用本目录约定：`static-confirmed` 表示 exact-build 文件或 EXE 直接支持；`inference` 表示多项静态事实共同支持、但尚缺执行点或实机互证；`unknown` 只保留确实位于引擎内部且尚未闭合的分支。
 
@@ -72,22 +72,24 @@
 
 R0112 在冻结 EXE `2D00FF31...F83DB86`、私有 native DLL `C9466D35...F4D0FE`、普通 `xar_off` h1094 checkpoint 中，对玩家角色 `36403` 的同一 paused `native:3` 帧读到：当前重心与**当前**生活方式进度均为 typed `absent`，已拥有七项军事 perk；固定目标 `stewardship_wealth_focus` 经原生最终 validator 判为 legal（扫描 23 行定义），独立 after-frame 未变化。证据见 `Z:/ck3_mod_rewrite/.task-tmp/M4-LIFE-NEXT-CANDIDATE/R0112-live/R0112-evidence-manifest.json`，SHA-256 `EDC2D6150476079E0A5606C358A7D277820FFF1070FB927492196FC7C71F9900`。这只证明该玩家在此帧可选该重心，不证明已选择、目标 XP/点数、NPC AI 选择或下一循环消费。
 
-精确源码路径为固定 focus definition 数据库 → 同帧键与所属 lifestyle 核对 → exact `CanSelectFocus` validator。当前 stock 查询把 native definition 指针限制在一次事务中，不能跨帧交给动作；LIFE2 的 `current_lifestyle_progress` 在无重心时 absent，不能把它当作**目标** `stewardship_lifestyle` 的零 XP/零点数。目标值的确切原生入口已有 `GetLifestyleXp`、`GetPerkPoints`、`GetPerkPointsUsed` 和 lifestyle 的 `xp_per_level`，但须以当前玩家身份和目标 definition 指针在同一 paused 事务内读取、复读并记录 typed presence，实机值仍待核验。研究计划 `docs/ck3-native-ai/research/m4-focus-target-progress-plan.json` 的 `check --for-observation` 仅通过记录结构与文件哈希，不验证语义、也不授权启动游戏。
+精确源码路径为固定 focus definition 数据库 → 同帧键与所属 lifestyle 核对 → exact `CanSelectFocus` validator。当前 stock 查询把 native definition 指针限制在一次事务中，不能跨帧交给动作；LIFE2 的 `current_lifestyle_progress` 在无重心时 absent，不能把它当作**目标** `stewardship_lifestyle` 的零 XP/零点数。目标值的确切原生入口已有 `GetLifestyleXp`、`GetPerkPoints`、`GetPerkPointsUsed` 和 lifestyle 的 `xp_per_level`；R0128 已按当前玩家身份和目标 definition 指针在同一 paused 事务内读取并复读 typed 值。研究计划 `docs/ck3-native-ai/research/m4-focus-target-progress-plan.json` 的 `check --for-observation` 仅通过记录结构与文件哈希，不验证语义、也不授权启动游戏。
 
 The [generated research graph](research/m4-focus-target-progress-generated.md)
 is rendered from the checked plan above (plan SHA-256
 `65CD8E9164F43734B66FBEAEEC01F076BEBF330A51895EEE545FD7F3B408725D`).
-Its target-progress edge remains `unknown` until a new paused live readback;
-the diagram below is only an explanatory expansion of that same gap.
+R0128 closed the target-progress readback edge for actor 36403 at h1094 on the
+frozen build. The generated graph remains a historical pre-live plan; the
+current evidence and the still-open action edge are recorded in
+[the R0128 live readback note](lifestyle-r0128-readback.md).
 
 ```mermaid
 flowchart LR
   A[paused 当前玩家和 exact build] --> B[固定 focus definition + 所属 lifestyle]
   B --> C[原生 CanSelectFocus 最终判定]
   C -->|R0112 legal=true| D[私有只读焦点合法性]
-  B -. 目标 lifestyle XP/点数同帧读取待实机 .-> E[目标进度 typed 值]
+  B -->|R0128 同帧 exact getters| E[目标进度 typed 值]
   D --> F[正式焦点动作前置]
-  E -. unknown .-> F
+  E -. typed focus 提交与后置仍待实机 .-> F
 ```
 
 ### 重心候选与原版权重
@@ -641,15 +643,15 @@ receipt 必须来自不同的 `native:<n+1>` 帧且 public revision 增长；
 不是凭 ACK 推断效果。R695/R735 配对 driver-state 均有实际
 `episode_run_id`，但这些 artifact 没有生活方式动作后置结果。
 
-LIFE2 已验证的无重心源只读得到 focus 缺席与完整 owned-perk 集合，
-尚未发布目标 stewardship lifestyle 的 XP/未花点；LIFE6 的 typed
-前后状态需要目标 progress row。因此 `player_lifestyle_formal_precondition_v1`
-只从同一真实帧 LIFE2 当前生活方式进度与 LIFE4 最终合法候选构造
-perk 路径，缺席重心的 focus 路径明确返回
-`target_progress_unavailable`，不能把零或 `null` 填作合法点数。
-下一个只读源施工入口是从同一 exact focus definition 的
-`+0x880` target lifestyle 指针读取 getter 结果，并用真实 paused
-snapshot 互证；此门未关前 focus 不注册、不广告。
+LIFE2 单独读到无重心和完整 owned-perk 集合时，不提供目标
+stewardship lifestyle 的 XP/未花点；LIFE6 的 typed 前后状态需要目标
+progress row。R0128 的独立 stock-focus 查询已从同一 exact focus
+definition 的 `+0x880` target lifestyle 指针读取 getters，并在真实
+paused 帧核验目标 XP/点数为零。现有
+`player_lifestyle_formal_precondition_v1` 仍只从 LIFE2 当前生活方式
+进度与 LIFE4 最终合法候选构造 perk 路径；无当前重心时该 perk 路径不可用。
+下一施工入口是消费 stock-focus 的私有 typed focus 提交和独立后置，
+不能把只读零值当作已选择重心或可花的 perk 点。
 
 本包内部字段变化限于 LIFE6 私有 state/request/ACK/receipt 的
 `episode_run_id` 与 receipt `post_snapshot_id`，不改变 public
@@ -882,7 +884,7 @@ flowchart TD
   G --> H{两次完整采样一致?}
   H -- no --> U
   H -- yes --> I[private observed legal / illegal]
-  I -. 不提交动作，目标进度和后置仍待实机 .-> J[正式 M4 闭环]
+  I -. R0128 已读目标进度；typed 动作和后置未完成 .-> J[正式 M4 闭环]
 ```
 
 新私有 step `private-query-player-lifestyle-stock-focus-v1` 仅在既有默认
@@ -896,6 +898,6 @@ ABI 不匹配、定义缺失/重复、身份漂移均为各自 `unavailable_*`�
 离线 `/Od` 与 `/O2` 独立夹具各 4/4 GREEN；完整 private bridge
 Debug/Release 构建 GREEN；现有 Python 正式消费者及最小策略单测
 normal/`-O` 分别 6/6 与 7/7 GREEN。下一次唯一 CK3 负责人应在普通
-paused 帧调用该只读 step，并与 LIFE2 当前状态同帧配对；之后仍需
-目标 Lifestyle 的 XP/点数、typed focus 提交、独立结果、下一 turn
+paused 帧调用该只读 step，并与 LIFE2 当前状态同帧配对；R0128 已完成
+该场景的目标 Lifestyle XP/点数只读子门，之后仍需 typed focus 提交、独立结果、下一 turn
 消费及 checkpoint/cold restore，不能由本静态来源推断已经完成。
