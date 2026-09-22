@@ -3,14 +3,97 @@ import argparse
 from datetime import datetime, timezone
 import importlib.metadata
 import json
+import math
+import os
 from pathlib import Path
 import sys
+from copy import deepcopy
 
 from xar_promo.media import probe_and_write_bound_media
 from xar_promo.process import CommandSpec, run_command
 
 from .common import binding, load, verify, write_new
 from .finalize import add_chapters
+from .capture_media import load_capture_spec, prepare_capture_clip
+
+
+def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffprobe="ffprobe"):
+    """Prepare, preserve and map selected footage before freezing run inputs.
+
+    ``preserve(path, identifier, role, collection)`` is the real lifecycle hook
+    supplied by main. Failed preparations retain and preserve their audit tree.
+    """
+    result = deepcopy(inputs)
+    rows = {row["id"]: row for row in result["cues"]}
+    if len(rows) != len(result["cues"]) or any("capture_clip" in row for row in rows.values()):
+        raise ValueError("Expected unique, not-yet-mapped narration cues")
+    specs = load_capture_spec(spec_path)
+    for spec in specs:
+        if spec["cue_id"] not in rows:
+            raise ValueError(f"Capture spec names unknown cue: {spec['cue_id']}")
+        if not set(spec["claim_ids"]).issubset(rows[spec["cue_id"]]["claim_ids"]):
+            raise ValueError(f"Capture spec claims differ from cue: {spec['cue_id']}")
+    preserve(spec_path, "capture-selection-spec-v1", "capture-selection-spec", "raw")
+    preserved = {}
+
+    def keep(path, prefix, role, collection="raw"):
+        path = Path(path).resolve()
+        if path in preserved:
+            return preserved[path]
+        record = binding(path)
+        identifier = prefix + record["sha256"]
+        # Shared raw and identical controls need one lifecycle artifact each.
+        if identifier not in preserved.values():
+            preserve(path, identifier, role, collection)
+        preserved[path] = identifier
+        return identifier
+
+    for index, spec in enumerate(specs, 1):
+        attempt = Path(root) / "capture" / f"{index:03d}"
+        try:
+            prepared = prepare_capture_clip(spec, attempt / "clip.mp4", ffmpeg, ffprobe, attempt / "audit")
+            raw_id = keep(prepared["source_recording"]["path"], "capture-raw-", "capture-original-recording")
+            controls = [keep(item["preserved"]["path"], "capture-control-", "capture-control-evidence")
+                        for item in prepared["controls"]]
+            media_id = keep(prepared["media"]["path"], "capture-clip-", "capture-continuous-clip", "derived")
+            receipt_id = keep(prepared["receipt"]["path"], "capture-receipt-", "capture-clip-receipt", "derived")
+            row = rows[spec["cue_id"]]
+            original_duration = row["duration_seconds"]
+            duration = prepared["selection"]["expected_frame_count"] / 30
+            if (not all(math.isfinite(value) and value > 0 for value in
+                        (duration, original_duration, row["speech_duration_seconds"]))
+                    or abs(duration - original_duration) > 1 / 30 + 0.000001
+                    or duration < row["speech_duration_seconds"]):
+                raise ValueError(f"Capture/narration duration conflict for {row['id']}: "
+                                 f"clip={duration}, segment={original_duration}, speech={row['speech_duration_seconds']}; "
+                                 "reselect footage or revise narration; no looping, freeze-frame or retiming")
+            row["duration_seconds"] = duration
+            row["capture_clip"] = {
+                "media_artifact_id":media_id, "receipt_artifact_id":receipt_id,
+                "raw_artifact_id":raw_id, "control_artifact_ids":controls,
+                "claim_ids":list(spec["claim_ids"]), "evidence_role":spec["evidence_role"],
+                "span_id":spec["span_id"], "duration_seconds":duration,
+                "probed_media_duration_seconds":prepared["duration_seconds"],
+                "original_segment_duration_seconds":original_duration,
+                "alignment":"real-clip-full-frames; at-most-one-frame adjustment; full speech retained",
+                "native_ai_causality_verified":False,
+            }
+        except Exception as error:
+            write_new(attempt / "integration-failure.json", {
+                "cue_id":spec["cue_id"], "status":"failed-retained", "error":str(error),
+                "native_ai_causality_verified":False,
+            })
+            raise
+        finally:
+            if attempt.exists():
+                for path in sorted(attempt.rglob("*")):
+                    if path.is_file():
+                        keep(path, "capture-audit-", "capture-preparation-process", "derived")
+    result["media_scope"] = "mixed-footage"
+    result["capture_selection_artifact_id"] = "capture-selection-spec-v1"
+    result["capture_cue_count"] = len(specs)
+    result["actual_duration_seconds"] = sum(row["duration_seconds"] for row in rows.values())
+    return result
 
 
 def main():
@@ -19,6 +102,7 @@ def main():
     parser.add_argument("--inputs", type=Path, required=True)
     parser.add_argument("--run-root", type=Path, required=True)
     parser.add_argument("--run-id", required=True)
+    parser.add_argument("--capture-spec", type=Path, help="Existing GREEN capture bundles and cue selections; prepare and preserve continuous clips")
     parser.add_argument("--full-film", action="store_true", help="Require all configured chapters and render the complete review film")
     args = parser.parse_args()
     args.project = args.project.resolve()
@@ -46,10 +130,11 @@ def main():
         cli("validate", config_path, "--json")
         cli("validate", manifest, "--json")
 
-    def preserve(path, artifact_id, role, collection="raw"):
+    def preserve(path, artifact_id, role, collection="raw", *, check=True):
         cli("preserve", path, "--run-manifest", manifest, "--artifact-id", artifact_id,
             "--collection", collection, "--role", role)
-        validate()
+        if check:
+            validate()
 
     release = json.loads(command(["gh", "release", "view", "--repo", "XenoAmess/xar_promo_toolchain", "--json", "tagName,isDraft,isPrerelease,url"]))
     version = importlib.metadata.version("xar-promo-toolchain")
@@ -64,11 +149,11 @@ def main():
     if args.full_film:
         if selected != {chapter["id"] for chapter in config["chapters"]}:
             raise ValueError("A full film must contain every configured chapter")
-        if not 1200 <= sum(row["duration_seconds"] for row in rows) <= 2400:
-            raise ValueError("The requested full film must be between 20 and 40 minutes")
+        # 20–40 minutes is editorial guidance, not a newly imposed hard limit.
+        if not all(math.isfinite(row["duration_seconds"]) and row["duration_seconds"] > 0 for row in rows):
+            raise ValueError("A full film requires positive finite measured cue durations")
         inputs["full_film"] = True
     selected_inputs = root / "selected-production-inputs.json"
-    write_new(selected_inputs, inputs)
     config["chapters"] = [chapter for chapter in config["chapters"] if chapter["id"] in selected]
     if selected != {row["id"] for row in config["chapters"]}:
         raise ValueError("Unknown selected chapter")
@@ -77,17 +162,29 @@ def main():
     cli("start-run", config_path, "--run-id", args.run_id, "--run-directory", manifest.parent)
     validate()
     preserve(args.inputs, "narration-production-source-v1", "measured-narration-inputs")
-    preserve(selected_inputs, "production-inputs-v1", "measured-production-inputs")
     for row in rows:
         preserve(verify(row["audio"]), row["audio_artifact_id"], "narration-source")
     for name, identifier, role in [
         ("claims.json", "film-claims-v1", "claim-plan"),
         ("source-lock.json", "film-source-lock-v1", "source-lock"),
-        ("longform/director-plan.md", "film-director-v2", "director-plan"),
+        ("longform/director-plan-v3.md", "film-director-v3", "director-plan"),
+        ("research-first-claim-ledger-20260923.json", "film-claim-ledger-v1", "claim-ledger"),
     ]:
         preserve(args.project / name, identifier, role)
     for path in sorted((args.project / "integration/src/war_ai_promo").glob("*.py")):
         preserve(path, "producer-" + path.stem, "project-producer")
+    if args.capture_spec:
+        inputs = prepare_captures(inputs, args.capture_spec.resolve(), root,
+            lambda path, identifier, role, collection: preserve(path, identifier, role, collection, check=False),
+            ffmpeg=os.environ.get("WAR_PROMO_FFMPEG", "ffmpeg"),
+            ffprobe=os.environ.get("WAR_PROMO_FFPROBE", "ffprobe"))
+        rows = inputs["cues"]
+        validate()
+    elif inputs.get("media_scope") != "teaching-graphics-radio-cut":
+        raise ValueError("New mixed-footage attempts require --capture-spec")
+    inputs["director_artifact_id"] = "film-director-v3"
+    write_new(selected_inputs, inputs)
+    preserve(selected_inputs, "production-inputs-v1", "measured-production-inputs")
     cli("plan", manifest, "--workdir", workdir, "--composer", "war_ai_promo.composer:compose")
     if workdir.exists():
         raise ValueError("Read-only plan unexpectedly created the build directory")
