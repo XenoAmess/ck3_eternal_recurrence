@@ -163,7 +163,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "D346E1763562D12C002AEE30A5C81D632D90958824160A18D451C290DFDBF514"
+        "sha256": "DF971E5B688BCC4E3F3BC18B9741A008D0757B6159907EB3A463A61FC06F9B65"
       },
       "raw_footage": {
         "passed": 0,
@@ -184,45 +184,66 @@
   },
   "t1": {
     "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
+    "campaign_selection": {
+      "authority": "owner_instruction_2026-09-23",
+      "cross_campaign_date_accumulation_allowed": false,
+      "formal_primary": "Robert_1066",
+      "historical_continuation": "Murchad_1066",
+      "historical_durable_game_days": 14900,
+      "historical_target_game_days": 36524,
+      "m3_existing_complete_evidence_retained": true,
+      "primary_formal_seed_pair": "pending_evidence",
+      "prv008_frozen_qualification_unchanged": true
+    },
     "closed_gates": [
       "G2-M0",
       "G2-M1",
       "G2-M3"
     ],
     "latest_durable_continuation": {
-      "attempted_turns": 134,
+      "attempted_turns": 162,
       "blocker": {
         "event_action_submitted": false,
-        "event_definition_key": "trait_specific.4001",
+        "event_definition_key": "lifestyle_nicknames.1000",
         "reason": "registered_contract_requires_extended_consumer"
       },
-      "checkpoint_date_raw": 53467008,
-      "checkpoint_history_index": 2675,
-      "checkpoint_save_sha256": "3B0E9B25DBF14FD8FA25F39B91AE6DB771791BDFE5BC7B286878EB4B2BD053DB",
-      "driver_sha256_with_unpaired_tail": "4FAC1B82547A4CC4E4F32206B4418E8EC7105DFF8B026403216E9B7763778732",
-      "durable_game_days": 13445,
+      "campaign_identity": "Murchad_1066_historical",
+      "checkpoint_date_raw": 53501928,
+      "checkpoint_history_index": 2894,
+      "checkpoint_save_sha256": "165076EF878B747D6FC08BF325FCE562A9B83B3AB6105DEF2AE2A7BFD0E17A66",
+      "driver_sha256_with_unpaired_tail": "BF1584C1D1DC0E38BFDED7F8325788E4A7E7440C8E606C938D26361D65A7FAAE",
+      "durable_game_days": 14900,
       "evidence_manifest": {
-        "base": "configured_task_temp_root",
-        "locator": "RUN-001/war-h2493-continuation-source9b76758-nolaunch-20260922/R0134-formal/R0134-evidence-manifest.json",
-        "sha256": "42801678CCAD722076CB0F40897FD906A4A81869E9F8DEB46C95D296945B170A"
-      },
-      "health_7400_patch": {
-        "integrated_commit": "ccda170a9bf8ca20b652b9f2579083a9f5bb2b1c",
-        "observed_in_r0134": false,
-        "r0132_red_closed": false
+        "base": "configured_process_assets_root",
+        "locator": "g2-war-h2675-continued-20260922/live-R0136/R0136-evidence-manifest.json",
+        "sha256": "D23D1902E0B8C64F00B98642201791247DDE7512C4B4008783EF95EE8292FEAF"
       },
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
+      "material_expansion_proven": false,
       "natural_succession_transitions": 0,
+      "prior_event_replay_gates": {
+        "health_7400": {
+          "observed_in_r0136": false,
+          "r0132_red_closed": false,
+          "static_patch_integrated": true
+        },
+        "trait_specific_4001": {
+          "observed_in_r0136": false,
+          "r0134_red_closed": false,
+          "static_patch_integrated": true
+        }
+      },
       "result": "completed-red",
-      "round": "R0134",
-      "scope": "durable time span and new exact event RED; R0132 health RED and original R0118 war RED remain; PRV008 preview boundary unchanged",
-      "source_commit": "9b76758441f087eb65d100f6385f337461f44422",
-      "successful_turns": 133,
-      "successful_unpaired_life_advances": 1,
+      "round": "R0136",
+      "scope": "Historical Murchad paired time span only; Robert 1066 is the newly selected formal primary campaign and receives no transferred days or gate credit; old R0118 war RED and PRV008 boundary unchanged",
+      "source_commit": "a092d6e04d9135d6fa60aaecd49fa2222130ced8",
+      "successful_turns": 161,
+      "successful_unpaired_life_advances": 2,
       "target_game_days": 36524,
-      "unpaired_tail_first_index": 2676,
-      "unpaired_tail_last_index": 2680,
+      "typed_war_actions": 0,
+      "unpaired_tail_first_index": 2895,
+      "unpaired_tail_last_index": 2903,
       "whole_campaign_gate": "0/1"
     },
     "m4_private_read_only": {
@@ -277,5 +298,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-22T23:40:09+08:00"
+  "updated_at": "2026-09-23T00:21:11+08:00"
 }
