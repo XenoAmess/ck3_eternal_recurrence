@@ -2,7 +2,8 @@
   "schema": "xar.ck3.m5_war_primary_readback_source_contract_v1",
   "game_version": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "status": "static-ready-unwired",
+  "status": "private-candidate-static-ready-live-unverified",
+  "private_candidate_wired": true,
   "registered": false,
   "advertised": false,
   "live_verified": false,
@@ -20,7 +21,7 @@
     "same native revision available_primary_scope prewar primary CUnit/CArmy identities",
     "same native revision available M5PrimaryArmySupplyObservationV1 from CArmy+0x180"
   ],
-  "output": "one available_current_primary_slice with declaration identity, current treasury, active WarIDs, original one-target power ratio, and only current raised actor CArmy supply raw Q100000 independently matching public CUnitID/owner/province/route",
+  "output": "one available_current_primary_slice with declaration identity, current treasury, active WarIDs, original one-target power ratio, matching current public actor CUnit/province/route rows, and only current raised actor CArmy supply raw Q100000 independently matching full CUnitID/CArmyID",
   "legitimate_zero": [
     "current treasury raw 0",
     "raised actor army supply raw 0",
@@ -40,5 +41,14 @@
     "first-heir marriage alliance or long-term commitment value",
     "common M5 cross-domain utility calibration and selected typed action"
   ],
-  "next_wire_owner": "coordinator after bridge.cpp/CMake writer releases files; private paused query only before any public advertisement"
+  "private_query": {
+    "build_option": "XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1",
+    "default": "OFF",
+    "step": "query-m5-war-primary-current-v1-<target CharacterID>",
+    "thread": "one application-main paused mailbox callback",
+    "input_selection": "first native-order final-legal declaration for target; read-only, not a policy choice",
+    "source": "src/m5_war_primary_private_wire_v1.cpp",
+    "effect": "none"
+  },
+  "next_live_gate": "freeze a candidate DLL, run the private query on one real paused legal declaration, compare the full IDs/current raw supply and subsequent strategy-frame consumption before any public advertisement"
 }

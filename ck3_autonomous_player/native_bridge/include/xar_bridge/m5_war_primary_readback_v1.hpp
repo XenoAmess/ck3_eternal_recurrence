@@ -43,6 +43,7 @@ struct M5WarPrimaryReadbackV1 {
   std::int64_t native_power_ratio_raw = 0;
   game::FixedPointValue current_treasury;
   std::vector<std::int32_t> active_war_ids;
+  std::vector<game::ArmySnapshot> actor_current_raised_armies;
   std::vector<M5PrimaryArmySupplyRowV1> actor_current_raised_supply;
 };
 
