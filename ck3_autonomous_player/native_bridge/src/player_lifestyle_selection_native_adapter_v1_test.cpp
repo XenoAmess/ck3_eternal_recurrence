@@ -471,6 +471,23 @@ void TestResolvedPerkAvoidsWindowAndRevalidatesOnce() {
          fixture->perk.object.address());
 }
 
+void TestResolvedFocusAvoidsWindowAndRevalidatesOnce() {
+  auto fixture = Base();
+  g_fixture = fixture.get();
+  Put(fixture->window, ck3::kLifestyleWindowBoundCharacterIdOffsetV1,
+      kPlayer + 1);
+  const auto result =
+      ck3::DispatchResolvedPlayerLifestyleFocusNativeAdapterV1(
+          NativeEnvironment(*fixture), Access(*fixture), kPlayer,
+          fixture->focus.object.address());
+  assert(result == Dispatch::submitted_verification_pending);
+  assert(fixture->rtti_calls == 0 && fixture->focus_gate_calls == 0);
+  assert(fixture->focus_validator_calls == 1 && fixture->submit_calls == 1);
+  assert(LoadPointer(fixture->submitted_command, 0x28) ==
+         fixture->focus.object.address());
+  assert(LoadU32(fixture->submitted_command, 0x30) == kPlayer);
+}
+
 void TestEveryPreSubmitFailureAvoidsNativeSubmit() {
   {
     auto fixture = Base();
@@ -660,10 +677,11 @@ int main() {
   TestFocusUsesExactLayoutAndOneSubmit();
   TestPerkUsesExactLayoutAndOneSubmit();
   TestResolvedPerkAvoidsWindowAndRevalidatesOnce();
+  TestResolvedFocusAvoidsWindowAndRevalidatesOnce();
   TestEveryPreSubmitFailureAvoidsNativeSubmit();
   TestSubmitRejectionIsNeverRetriedOrReportedApplied();
   TestLife6IntegrationKeepsSubmitPending();
   TestBindingMismatchFailsClosed();
-  std::cout << "player lifestyle selection native adapter v1: 8/8 green\n";
+  std::cout << "player lifestyle selection native adapter v1: 9/9 green\n";
   return 0;
 }

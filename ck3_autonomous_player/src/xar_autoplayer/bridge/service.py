@@ -370,6 +370,7 @@ from ..strategy import (
 )
 from ..lifestyle_formal_consumer import (
     PERK_SUBMIT_STEP as PRIVATE_LIFESTYLE_PERK_STEP,
+    FOCUS_SUBMIT_STEP as PRIVATE_LIFESTYLE_FOCUS_STEP,
     RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP,
     ROOT_QUERY_STEP as PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
     latest_lifestyle_applied_receipt,
@@ -806,10 +807,10 @@ class GameplayBridgeService:
             ):
                 receipt_plan = {
                     **plan,
-                    "phase": "lifestyle_perk_receipt_query",
+                    "phase": "lifestyle_selection_receipt_query",
                     "selected_step": PRIVATE_LIFESTYLE_RECEIPT_STEP,
                     "lifestyle_pending_action": pending,
-                    "reason": "confirm material HasPerk on a later paused frame",
+                    "reason": "confirm the material focus or perk on a later paused frame",
                 }
                 return {
                     **planned,
@@ -840,6 +841,25 @@ class GameplayBridgeService:
                 if callable(reader)
                 else {"status": "private_query_route_missing"}
             )
+            formal_life = query.get("snapshot") if isinstance(query, dict) else None
+            formal_focus = (
+                formal_life.get("current_focus")
+                if isinstance(formal_life, dict) else None
+            )
+            if isinstance(query, dict) and (
+                query.get("status") != "available"
+                or (
+                    isinstance(formal_focus, dict)
+                    and formal_focus.get("presence") == "absent"
+                )
+            ):
+                focus_reader = getattr(
+                    self.driver,
+                    "query_player_lifestyle_stock_focus_combined_private_v1",
+                    None,
+                )
+                if callable(focus_reader):
+                    query = focus_reader(expected_revision=int(planned["revision"]))
             ending = self.snapshot()
             if not (
                 ending.get("paused") is True
@@ -867,6 +887,10 @@ class GameplayBridgeService:
             getattr(self.driver, "submit_player_lifestyle_perk_private_v1", None)
         ):
             routable.add(PRIVATE_LIFESTYLE_PERK_STEP)
+        if callable(
+            getattr(self.driver, "submit_player_lifestyle_stock_focus_private_v1", None)
+        ):
+            routable.add(PRIVATE_LIFESTYLE_FOCUS_STEP)
         return {
             **planned,
             "plan": _route_plan_to_available_step(consumed, routable),
@@ -1059,6 +1083,26 @@ class GameplayBridgeService:
                 ):
                     raise UnsupportedStepError(
                         "controlled LIFE perk lacks a typed private executor"
+                    )
+                result = executor(
+                    query=query,
+                    action=action,
+                    expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == PRIVATE_LIFESTYLE_FOCUS_STEP:
+                action = plan.get("lifestyle_action")
+                query = plan.get("lifestyle_query")
+                executor = getattr(
+                    self.driver,
+                    "submit_player_lifestyle_stock_focus_private_v1", None,
+                )
+                if not (
+                    isinstance(action, dict)
+                    and isinstance(query, dict)
+                    and callable(executor)
+                ):
+                    raise UnsupportedStepError(
+                        "controlled LIFE focus lacks a typed private executor"
                     )
                 result = executor(
                     query=query,

@@ -18,6 +18,7 @@ enum class PlayerLifestyleFormalWireModeV1 {
   query_state_only,
   query_focus_only,
   submit_perk,
+  submit_focus,
   verify_receipt,
 };
 
@@ -31,6 +32,8 @@ inline constexpr std::string_view
         "private-query-player-lifestyle-stock-focus-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateSubmitStepV1 =
     "private-select-player-lifestyle-perk-v1";
+inline constexpr std::string_view kPlayerLifestyleFormalPrivateSubmitFocusStepV1 =
+    "private-select-player-lifestyle-stock-focus-v1";
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateReceiptStepV1 =
     "private-query-player-lifestyle-receipt-v1";
 
@@ -125,8 +128,9 @@ bool InitializePlayerLifestyleFormalWireContextV1(
     std::string_view episode_run_id,
     PlayerLifestyleFormalWireModeV1 mode) noexcept;
 
-// Narrow fixed slot43 executor. It reads LIFE2/LIFE4 and, for a separately
-// admitted perk request, invokes LIFE6/LIFE7 exactly once. Its ACK remains
+// Narrow fixed slot43 executor. It reads LIFE2 with final perk/stock-focus
+// legality and, for a separately admitted request, invokes LIFE6/LIFE7 once.
+// Its ACK remains
 // pending until a later independently captured paused receipt.
 bool ExecutePlayerLifestyleFormalWireMailboxV1(
     void *opaque,

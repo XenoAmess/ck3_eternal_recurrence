@@ -116,9 +116,8 @@
   接入 campaign-root native 双采样。全部已物化辅助席位都会发布，五个标准 landed 非 nomadic 核心席位可补出空缺；辅助席位空缺
   仍明确标记不完整。R639 已在独立/vassal 两个标准封建场景各观察到 6 个 occupied task，并与 turn bundle 同帧投影一致；这不包含
   任命、调任、换任务、目标选择或后置验证。
-- [static-confirmed; observer/action live pending] [lifestyle-focus-perk-ai.md](lifestyle-focus-perk-ai.md) 冻结 CK3 1.19.0.6 的
-  focus 候选、原生 AI 权重、perk 父图、关键只读 getter 与 GUI/native gate/action seam。LIFE1 没有启动 CK3；public observer、
-  focus/perk semantic action 与 paused 后置验证仍未实现，不能由静态树或 GUI seam 推高 action readiness。
+- [target progress production-live primitive; typed action live pending] [lifestyle-focus-perk-ai.md](lifestyle-focus-perk-ai.md) 冻结 CK3 1.19.0.6 的
+  focus 候选、原生 AI 权重、perk 父图、关键只读 getter 与 GUI/native gate/action seam。R0128 在真实 paused 帧读到无当前重心、固定管理重心合法及目标 XP/点数；M4-STOCK-FOCUS 私有 typed 路径仍待独立和平封建场景的提交、后置、下一 turn 与恢复验证，public observer/广告保持 OFF。
 - [static-confirmed; observer/action pending] [major-decision-found-kingdom.md](major-decision-found-kingdom.md) 冻结
   `found_kingdom_decision` 的 duchy-only 60 月原生 AI 候选、完整 eligibility、四态动态费用矩阵、固定 100%
   AI 分数及 `create_custom_kingdom_effect` 法理/头衔/event 树；source JSON、normal/-O verifier 与 played-character-only

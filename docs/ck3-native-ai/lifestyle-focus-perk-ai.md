@@ -901,3 +901,19 @@ normal/`-O` 分别 6/6 与 7/7 GREEN。下一次唯一 CK3 负责人应在普通
 paused 帧调用该只读 step，并与 LIFE2 当前状态同帧配对；R0128 已完成
 该场景的目标 Lifestyle XP/点数只读子门，之后仍需 typed focus 提交、独立结果、下一 turn
 消费及 checkpoint/cold restore，不能由本静态来源推断已经完成。
+
+## M4-STOCK-FOCUS private typed path candidate
+
+The new private code candidate consumes LIFE2 current state and the exact
+stock-focus target progress from one paused application-main frame. LIFE6
+requires two equivalent preconditions. Its resolved-focus adapter repeats
+the final `CanSelectFocus` validator immediately before one command-manager
+submit; the definition pointer never leaves that transaction. A later paused
+LIFE2 frame must materially show `stewardship_wealth_focus`, and a following
+formal turn must consume the applied receipt. The exact ABI and remaining
+live boundary are in
+[`research/m4-stock-focus-typed-submit-v1.md`](research/m4-stock-focus-typed-submit-v1.md)
+and `native_bridge/research/player_lifestyle_selection_native_adapter_v1_abi.json`.
+The candidate has no typed CK3 action evidence yet. R0128 remains the earlier
+read-only input result; it was wartime and cannot satisfy the peaceful feudal
+policy admission.

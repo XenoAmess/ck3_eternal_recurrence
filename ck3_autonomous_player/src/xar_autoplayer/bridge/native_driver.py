@@ -2453,6 +2453,17 @@ class NativeHeadlessGameplayDriver:
             self, expected_revision=expected_revision
         )
 
+    def query_player_lifestyle_stock_focus_combined_private_v1(
+        self, *, expected_revision: int
+    ) -> dict[str, object]:
+        from .player_lifestyle_private_transport_v1 import (
+            query_player_lifestyle_stock_focus_combined_private_v1,
+        )
+
+        return query_player_lifestyle_stock_focus_combined_private_v1(
+            self, expected_revision=expected_revision,
+        )
+
     def submit_player_lifestyle_perk_private_v1(
         self,
         *,
@@ -2466,6 +2477,19 @@ class NativeHeadlessGameplayDriver:
         )
 
         return submit_player_lifestyle_perk_private_v1(
+            self, query=query, action=action,
+            expected_revision=expected_revision,
+        )
+
+    def submit_player_lifestyle_stock_focus_private_v1(
+        self, *, query: dict[str, object], action: dict[str, object],
+        expected_revision: int,
+    ) -> dict[str, object]:
+        from .player_lifestyle_private_transport_v1 import (
+            submit_player_lifestyle_stock_focus_private_v1,
+        )
+
+        return submit_player_lifestyle_stock_focus_private_v1(
             self, query=query, action=action,
             expected_revision=expected_revision,
         )

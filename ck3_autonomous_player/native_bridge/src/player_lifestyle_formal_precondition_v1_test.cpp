@@ -166,7 +166,43 @@ int main() {
                 *state, *candidates, "", *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::
                 episode_unavailable);
-    std::cout << "player_lifestyle_formal_precondition_v1_test: 8/8 GREEN\n";
+    ck3::StockFocusLegalityResultV1 stock{};
+    stock.status = ck3::StockFocusLegalityStatusV1::observed_native_legal;
+    stock.frame.snapshot_id = state->snapshot_id;
+    Fixed(stock.frame.episode_run_id, episode);
+    stock.frame.public_revision = 711;
+    stock.frame.native_revision = 711;
+    stock.frame.proof_epoch = 711;
+    stock.frame.date_raw = 53178312;
+    stock.frame.played_character_id = 29829;
+    stock.frame.paused = true;
+    stock.frame.map_ready = true;
+    stock.frame.played_character_alive = true;
+    Require(ck3::AssignPlayerLifestyleWindowStableKeyV1(
+        "stewardship_wealth_focus", stock.target_key));
+    Require(ck3::AssignPlayerLifestyleWindowStableKeyV1(
+        "stewardship_lifestyle", stock.lifestyle_key));
+    stock.validator_invoked_twice = true;
+    stock.target_definition = 0x1234;
+    stock.target_progress = {true, 0, 0, 1000, 0, 0};
+    Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
+                *state, stock, episode, *out) ==
+            ck3::PlayerLifestyleFormalPreconditionResultV1::ready);
+    Require(!out->state.has_current_focus &&
+            out->state.lifestyle_progress_count == 1 &&
+            out->state.lifestyle_progress[0].experience_raw == 0 &&
+            out->candidates.focus_count == 1 &&
+            out->candidates.focuses[0].can_select);
+    stock.target_progress.available = false;
+    Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
+                *state, stock, episode, *out) ==
+            ck3::PlayerLifestyleFormalPreconditionResultV1::source_unavailable);
+    stock.target_progress.available = true;
+    ++stock.frame.native_revision;
+    Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
+                *state, stock, episode, *out) ==
+            ck3::PlayerLifestyleFormalPreconditionResultV1::frame_mismatch);
+    std::cout << "player_lifestyle_formal_precondition_v1_test: 11/11 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

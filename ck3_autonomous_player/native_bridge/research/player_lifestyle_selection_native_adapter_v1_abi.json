@@ -10,6 +10,7 @@
   "scope": {
     "input_contracts": [
       "player_lifestyle_window_source_adapter_v1",
+      "player_lifestyle_stock_focus_legality_v1",
       "player_lifestyle_selection_action_v1"
     ],
     "private": true,
@@ -67,8 +68,9 @@
   },
   "dispatch_contract": [
     "Run only on application-main while the game transaction is paused.",
-    "Re-enter LIFE5 immediately before dispatch so root, RTTI idler, handler+0x1A8 window, owner round-trip, window+0xF8, Character storage round-trip, candidate provenance and final CanSelect are freshly resolved.",
-    "Resolve the requested stable key exactly once in the fresh source. A missing or duplicate key fails closed.",
+    "For a window-bound selection, re-enter LIFE5 immediately before dispatch so root, RTTI idler, handler+0x1A8 window, owner round-trip, window+0xF8, Character storage round-trip, candidate provenance and final CanSelect are freshly resolved.",
+    "For the fixed stewardship_wealth_focus windowless route, the stock focus source must re-resolve the exact focus database row, final CanSelect and target-lifestyle XP/points twice in the same paused application-main transaction. Its definition pointer may be used only in that transaction; the command adapter calls the exact final validator again immediately before submit.",
+    "Resolve the requested stable key in the fresh source. A missing or duplicate key fails closed; the stock route admits only its fixed policy target.",
     "Construct only the exact command layout, call its final exact validator, then invoke the common submit wrapper exactly once. There is no retry.",
     "Never call SelectFocus, SelectPerk, open, bind or refresh, and never reinterpret submit acceptance as applied state."
   ],
@@ -137,5 +139,5 @@
       "sha256": "662DD0B9B8F4A8EA7BDBE7197DD79734412FB8160D8898B902236533B4E8AC00"
     }
   ],
-  "remaining_live_boundary": "No CK3 process was started for LIFE7. The adapter remains static-ready until the single CK3 owner validates one paused exact-build focus/perk submission and LIFE6 proves the postcondition from a fresh receipt."
+  "remaining_live_boundary": "R0128 proved only the read-only stock focus input in a wartime frame. The new private windowless focus submit remains static-ready until a separately paired peaceful feudal exact-build candidate produces one typed submit, a later independent material focus receipt, and following formal turn consumption."
 }
