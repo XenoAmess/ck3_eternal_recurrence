@@ -53,7 +53,8 @@ class OrdinarySeedRebinderTests(unittest.TestCase):
         self.driver_path.parent.mkdir(parents=True)
         self.save_path.parent.mkdir(parents=True)
         self.save_bytes = (
-            b"SAV0100\nmeta_data={\n\tversion=\"fixture\"\n}\n"
+            b"SAV0101e741a8ef0000864d\n"
+            b"U1\x01\x00\x03\x00\x8f\x05\x01\x00"
             + b"opaque-body\x00\xff" * 8
         )
         self.save_path.write_bytes(self.save_bytes)

@@ -15,7 +15,10 @@ import zipfile
 SAVE_ARTIFACTS_SCHEMA_V1 = "xar.ck3.save-artifacts/v1"
 MAX_SAVE_ARTIFACTS = 512
 MAX_REPORTED_ZIP_MEMBERS = 128
-_RAW_SAVE_HEADER = re.compile(rb"^SAV[0-9A-Fa-f]+\r?\nmeta_data=\{")
+_RAW_TEXT_SAVE_HEADER = re.compile(rb"^SAV[0-9A-Fa-f]+\r?\nmeta_data=\{")
+_RAW_BINARY_SAVE_HEADER = re.compile(
+    rb"^SAV[0-9A-Fa-f]+\r?\nU1\x01\x00\x03\x00"
+)
 
 
 class SaveArtifactError(RuntimeError):
@@ -79,13 +82,19 @@ def inspect_ck3_save_artifact_v1(path: Path, *, profile_dir: Path) -> dict[str, 
     except (OSError, zipfile.BadZipFile, zipfile.LargeZipFile) as error:
         with path.open("rb") as source:
             header = source.read(96)
-        raw_header_valid = _RAW_SAVE_HEADER.match(header) is not None
+        raw_header_kind: str | None = None
+        if _RAW_TEXT_SAVE_HEADER.match(header) is not None:
+            raw_header_kind = "text"
+        elif _RAW_BINARY_SAVE_HEADER.match(header) is not None:
+            raw_header_kind = "binary"
+        raw_header_valid = raw_header_kind is not None
         row.update(
             {
                 "format": "raw-ck3" if raw_header_valid else "unknown",
                 "integrity_scope": "header-only" if raw_header_valid else "none",
                 "integrity_ok": None,
                 "raw_header_valid": raw_header_valid,
+                "raw_header_kind": raw_header_kind,
                 "zip_valid": False,
                 "bad_member": None,
                 "has_gamestate": None,
