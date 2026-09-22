@@ -9539,6 +9539,24 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_player_epidemic_recovery_private_v1(
+        self, *, expected_revision: int, requested_title_id: int = 0,
+        expected_event_instance_id: int | None = None,
+    ) -> dict[str, object]:
+        """Private paused CE1 county readback; absent from public capabilities."""
+        reader = getattr(
+            self.driver, "query_player_epidemic_recovery_private_v1", None
+        )
+        if not callable(reader):
+            raise UnsupportedStepError(
+                "selected backend has no private epidemic recovery query"
+            )
+        return reader(
+            expected_revision=expected_revision,
+            requested_title_id=requested_title_id,
+            expected_event_instance_id=expected_event_instance_id,
+        )
+
     def query_battle_control_snapshot_v1(
         self,
         subject_public_cunit_id: int,

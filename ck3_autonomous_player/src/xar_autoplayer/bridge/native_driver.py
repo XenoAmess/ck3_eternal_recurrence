@@ -1407,6 +1407,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_faction_gift_formal_trial: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
         allow_private_epidemic_treatment_presence_query: bool = False,
+        allow_private_epidemic_recovery_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
         private_faction_round_id: str | None = None,
         succession_lifecycle_binding: dict[str, object] | None = None,
@@ -1473,6 +1474,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_epidemic_treatment_presence_query = (
             allow_private_epidemic_treatment_presence_query is True
+        )
+        self.allow_private_epidemic_recovery_query = (
+            allow_private_epidemic_recovery_query is True
         )
         self.allow_private_death_succession_modal_continue = (
             allow_private_death_succession_modal_continue is True
@@ -2327,6 +2331,23 @@ class NativeHeadlessGameplayDriver:
         return query_player_epidemic_treatment_presence_private_v1(
             self,
             expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_epidemic_recovery_private_v1(
+        self, *, expected_revision: int, requested_title_id: int = 0,
+        expected_event_instance_id: int | None = None,
+    ) -> dict[str, object]:
+        """Read the exact CE1 pre-list or one frozen post-action county."""
+        from .epidemic_recovery_private_transport import (
+            query_player_epidemic_recovery_private_v1,
+        )
+
+        return query_player_epidemic_recovery_private_v1(
+            self,
+            expected_revision=expected_revision,
+            requested_title_id=requested_title_id,
+            expected_event_instance_id=expected_event_instance_id,
             timeout_seconds=self.command_timeout_seconds,
         )
 
