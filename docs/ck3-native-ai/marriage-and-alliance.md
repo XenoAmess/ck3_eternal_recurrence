@@ -808,3 +808,39 @@ spouse/betrothed 与 alliance before/after 后置验证。任何一步 RED 都�
 [production live RED / 2026-09-15] 同一标准封建 R695 paired save 在 R718 的受控只读候选中恢复，CK3 exact EXE SHA 与 R714 相同；agent/source 是已集成 master 8e07eac7，独立 Release DLL SHA-256 5FEE49234499AF6A9310419A5D0D7DFAC996CA0DB526FE8CE4308EBBC71FC9C，私有 ranked 开关 ON 且公开广告 OFF。公共宣战查询仍给出 30 个不同的原生 declaration row，公共婚姻 ID-only 查询仍给出 0 个 row。私有查询 submit=0、wait=0、reclaim=0，executor_invocations=1，pump_epochs 7001→7003、paused owner epochs 2→4，same_frame_after=true；completion=3 是 query_unavailable，route_failure=8 是 candidate_observer_unavailable。R714 的五秒排队取消已解除，但 observer 返回 false，不能将 30 个战争 row 写成 M5 联合评分通过，也不能推断婚姻候选为零。R718 runner CLI1，零游戏动作、UI 输入或日期推进；CK3 PID 56492 被证明回收，源/目标存档 SHA-256 均未变（9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63）。失败报告保留在独立 R718 artifact。
 
 observer 的细分 `MarriageMatchmakingObserverFailureV1` 已由 native callback 写在 `query.candidates.unavailable_reason`，source adapter 的最后失败枚举也在 route state；现有私有 RED 字符串只打印聚合 route_failure=8，因而无法据实判定 frame、ranked source、候选集合或 pair evaluation 哪一段失败。最小下一版只把 observer failure key 及 source adapter 提交前/完成后 failure key 加到未广告的私有失败诊断；不改变成功结果、游戏动作、公开协议或验收。由单实例负责人在新的冻结 DLL 上对同一 paused save 做一次短只读复验，得到确切失败阶段后修该阶段。若此路径未来接公共查询/MCP，事件与候选采集诊断须版本化为可迁移只读资产；当前此项仍未完成，open_kaishek 不受这次内部诊断字段影响。
+
+#### R720→R736：人类玩家没有原生排名源，首继承人最终合法性可读
+
+本节只补原版树与已发生的只读观测，不改变上文 R714/R718 的历史 RED，也不把 M5 联合选择写成通过。所有实机使用标准封建 ordinary production 配对存档 `dev3b_r639.ck3`（SHA-256 `9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`）和 CK3 `1.19.0.6` EXE（SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`）。原版 `00_marriage_interactions.txt`（SHA-256 `681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219`）第 94–160 行重定向 matchmaker 与实际婚配双方，第 162–268 行的 actor-list 来源含符合条件的子孙；这允许研究玩家替继承人安排婚姻，但**列表来源不等于最终可发送或接收者会答应**。
+
+- [live-confirmed RED] [R720 报告](m5-r720-observed-heir-marriage-2026-09-15.md) 将上文 ranked-source 失败缩小到 `source_adapter_failure_after=strategy_unavailable`：同帧私有查询确实进入 application-main observer，但玩家 `29829` 所需 AI Strategy 不可用。公共“玩家本人婚姻”查询为 0 行，只说明此帧直接玩家婚姻不可发送；不得把它解读为没有家庭婚配机会，也不得从全场 storage 顺序捏造 native rank。
+- [static-confirmed + R725 live RED] [R725 最终答复追踪](m5-r725-marriage-final-answer-2026-09-15.md) 将 `0x18F9C95 → 0x2C43B40(context,1,1)` 的 stock 婚姻调用与随后 `test al / je` 分支绑定：最终 raw `0/1` 允许、`2` 拒绝、`3` 或其它保留 unavailable。R725 旧私有映射把 657 个 raw `0` 错判为拒绝；这是实现 RED，而非原版婚姻候选不合法。必要 faith 判断只由原生 complete Can Send / final answer 不透明地消费。
+- [production-live read-only] 修复后的 R736 [报告](<Z:/ck3_mod_rewrite_process_assets/g2-m5-r733-pump-20260916/candidate/live-R736/report.json>) SHA-256 `83AE48416AD7B7F0CEC1E3DCE7F3C0322B6DAAA6139DF996B0238BFF798C8E94`；[私有家庭查询](<Z:/ck3_mod_rewrite_process_assets/g2-m5-r733-pump-20260916/candidate/live-R736/private-family-query.json>) SHA-256 `D58FE7C85CFB03655745188E2D820404E3747AA808F9F65620847C5A060F7B7A`。同一 paused native revision 的公共 campaign-root 先读到玩家 `29829` 的首继承人 `38822`；私有只读查询以玩家为 actor、该继承人为 secondary actor，观测到 **657 个不同候选**同时通过 complete Can Send 与接收者最终答复。它们的 `native_rank=null` 是已确认的 rank 不可得，不是第 0 名或无评分代价。R736 无游戏动作、UI 输入、日期推进或存档修改；本结果仍仅是私有候选观测，未注册公共查询/动作/MCP。
+- [same-frame opportunity count, not policy] R736 [公开宣战查询](<Z:/ck3_mod_rewrite_process_assets/g2-m5-r733-pump-20260916/candidate/live-R736/war-query.json>) SHA-256 `37CF8837EE00382C2A5C838081E1B42017DD9EED56CE09CFCE466A488EDC7850` 返回 30 条 native declaration，其中 9 条普通 `claim_cb` 涉及 8 个不同目标，另有宗教战争项。本帧确实存在至少五个不同、非宗教的合法战争候选，且 657 个家庭婚姻候选不能与其混称为已可执行的联合策略。`joint_candidate_ledger.py` 仍不作跨域选择；本查询未提供战争成本/补给或婚姻联盟长期价值。
+
+```mermaid
+flowchart TD
+    P["[static-confirmed] 玩家与家庭婚姻需求"] --> S{"[static-confirmed] 玩家 AI Strategy 可用?"}
+    S -->|是| R["[static-confirmed] 0x1890470 → 0x1890D90 原生 ranked rows"]
+    S -->|R720 否| U["[live-confirmed] ranked_source_unavailable；不可伪造分数"]
+    P --> H["[live-confirmed] 同帧公共 campaign-root 首继承人 ID"]
+    H --> C["[static-confirmed] actor-list 可含子孙；玩家 actor / 继承人 secondary actor"]
+    C --> D["[static-confirmed] 五角色 redirect + context refresh/finalize"]
+    D --> V{"[static-confirmed] complete Can Send?"}
+    V -->|否| N["[static-confirmed] 非合法候选"]
+    V -->|是| A{"[static-confirmed] 0x2C43B40 final answer raw?"}
+    A -->|0/1| L["[R736 live-confirmed] 可发送且答复允许；657 distinct"]
+    A -->|2| N
+    A -. "3/其它未确认" .-> X["[unknown] final answer unavailable"]
+    L -. "人类 Strategy 缺席" .-> K["[unknown] 原生 rank/score"]
+    L -. "尚无 typed 提交与后置" .-> O["[unknown] 婚姻/订婚和具体 alliance delta"]
+    P --> G["[static-confirmed] 00_alliance.txt negotiate_alliance 关系/交战/资源门"]
+    G --> J{"[static-confirmed] is_shown + validity + recipient ai_accept?"}
+    J -->|合法且接受| Q["[static-confirmed] on_accept 按关系 create_alliance"]
+    J -. "主动候选枚举未闭合" .-> Z["[unknown] 当前可执行联盟机会集合"]
+    Q -. "R736 未提交/回读" .-> O
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class X,K,O,Z unknown;
+```
+
+[evidence boundary] 原版 `marriage_ai_accept_modifier` 包含 alliance/hostility、家庭、tier、opinion、fertility、claim 等输入；其作用于**接收者接受度**，不是自动玩家可直接拿来排序的统一机会成本。`negotiate_alliance_interaction` 的 `00_alliance.txt:1120–1581` 还要单独检查关系、战争、hook/influence 与接受后 `create_alliance` 路径。R736 只证明现成的五候选真实场景及家庭原生最终合法性；任何跨婚姻、外交、战争的评分、参战承诺和独立结果仍是另一个门。
