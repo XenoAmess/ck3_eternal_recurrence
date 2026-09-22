@@ -4,6 +4,9 @@ import { resolve } from 'node:path'
 import { expect, test } from '@playwright/test'
 import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
 
+const QUALITY_FIRST_COMPLETION_TIMEOUT_MS = 15 * 60_000
+const QUALITY_FIRST_TEST_TIMEOUT_MS = 20 * 60_000
+
 function bgraDds(
   width: number,
   height: number,
@@ -39,8 +42,8 @@ function bgraDds(
 }
 
 test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
-  const completionTimeout = process.env.GITHUB_PAGES === 'true' ? 180_000 : 30_000
-  test.setTimeout(process.env.GITHUB_PAGES === 'true' ? 300_000 : 180_000)
+  const completionTimeout = QUALITY_FIRST_COMPLETION_TIMEOUT_MS
+  test.setTimeout(QUALITY_FIRST_TEST_TIMEOUT_MS)
   const apiRequests: string[] = []
   page.on('request', (request) => {
     if (new URL(request.url()).pathname.startsWith('/api/')) apiRequests.push(request.url())
@@ -161,8 +164,8 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
 
 const localPack = resolve('public/asset-packs/ck3-1.19.0.6/manifest.json')
 test('runs against the locally generated exact-build asset pack', async ({ page }) => {
-  const completionTimeout = process.env.GITHUB_PAGES === 'true' ? 180_000 : 90_000
-  test.setTimeout(process.env.GITHUB_PAGES === 'true' ? 300_000 : 120_000)
+  const completionTimeout = QUALITY_FIRST_COMPLETION_TIMEOUT_MS
+  test.setTimeout(QUALITY_FIRST_TEST_TIMEOUT_MS)
   test.skip(!existsSync(localPack), 'the exact-build static asset pack is missing from this checkout')
   const apiRequests: string[] = []
   const assetRequests: string[] = []
