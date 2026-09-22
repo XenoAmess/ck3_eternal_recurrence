@@ -420,6 +420,27 @@ readiness 为真。
   `progress>0` 但 current-edge speed 为零，继续 `timeline_unavailable`；不将这项 fallback 扩展到未发生的形状。
 - [counter-policy] 上一帧 ETA 不得代替新帧 exact proof。本次 hostile 同时发生 `4578 -> 8648`、
   `regular -> embarked` 和 route pop，已使旧 revision 的 speed/progress/occupancy 绑定失效；suffix 文本仍对得上也不能复用。
+
+### R0109：我方 embarked committed route 的完整 duration 读取失败
+
+- [live-confirmed] 冻结 CK3 `1.19.0.6` Steam `23530548` EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，native B114、Python `e0adeaa60ec548d44ad23799d02cea1589a0dc33`。正式百年续跑 R0109 turn199 在独立 paused `native:365/revision366/raw53371296` 上观察到我方 Army `419430662` 为 `embarked`，已提交的 target `45` 尚在 active route。`query-route-contact-horizon-v1-419430662-to-45-h-1-419430684` 严格返回 `timeline_unavailable (role=subject, path=committed_active, stage=route_duration_read)`，不是动作 ACK 或已知安全 ETA。原始 formal report SHA-256 `72F315291E7847EAA645E84BEBEAD850ED62B51B81E5E91541763E9D7A8CDD44`；最后物质存档 h1447/raw53371272 SHA-256 `85AF8C6A0C8F31ED9A8461DC81FD4C824294B1E091875F5C43327F46C750D849`。h1452 的一日推进未配对，恢复时需丢弃 h1448–h1455 尾。
+- [static-confirmed] 现行 reader 对 active committed route 调 `0x2247320(CUnit*, out, MovePath*, origin)` 的逐 prefix 完整时长。exact build 原版还有 `0x22475E0(CUnit*, out, route_index)`：按 active route index 读取单边 Q100000 天时长，并在 index0 扣当前边 progress；该原语已用于上述零速首边边界。两种 helper 均为只读；`0x2947A60` 把累计 Q100000 天按 nearest-day 转 `CDate` raw。R0109 的 `route_duration_read` 只证明完整 prefix 返回指针/非负值门失败，**尚未证明**具体是原版何种 embarked 内部原因，也不保证逐边 helper 一定可用。
+- [counter-policy] 只在该帧是我方 `embarked` 且 route 为 committed-active、原完整 prefix 在 `route_duration_read` 失败时，尝试按 active route index 调原生 `0x22475E0`，逐边非负/有限/单调累计，再对齐完整 route rows、邻接/介质速度与所有 hostile timeline。任一原生单边读数或验证失败仍保留 `timeline_unavailable` RED；不能复用前一帧 ETA、按 hop 猜时长、吞掉失败或放行日期推进。其他军队状态和其他失败 stage 沿原路径。
+
+```mermaid
+flowchart TD
+    P["[live] R0109 paused embarked subject, committed route"] --> F{"[static] 0x2247320 full-prefix exact duration?"}
+    F -->|available| V["[static] existing route/date/hostile validation"]
+    F -->|route_duration_read failed| E{"[counter-policy] embarked + committed-active only?"}
+    E -->|yes| I["[static] 0x22475E0 active index-by-index Q100000"]
+    I --> Q{"[counter-policy] each edge and cumulative/date/route validation?"}
+    Q -->|yes| V
+    Q -->|no| R["RED: timeline_unavailable"]
+    E -->|no| R
+    U["[unknown] exact internal cause of full-prefix failure; live per-edge availability"] -.-> I
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
 - [static-confirmed] normal daily arrival tie 已由 [army-contact-resolution.md](army-contact-resolution.md) 静态闭合：
   `0x27F9B50` 的 unit-manager stored order 传播到 tail-appended CArmy contact queue；所有 movement 完成后，
   `0x27C0E90` 才按 queue order 处理。target `CProvince+0x748/+0x754` 又由 `0x220BAA0` 按 unsigned
