@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 84,
-    "caller_candidate_reference_count": 535,
+    "caller_candidate_reference_count": 536,
     "definition_file_count": 75,
-    "external_caller_event_count": 155,
+    "external_caller_event_count": 156,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 191,
+    "registered_event_count": 192,
     "same_file_only_caller_event_count": 36,
-    "unique_definition_count": 191
+    "unique_definition_count": 192
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "F2315CA9E4590736CC61BC228A1F395CC299074EE9844E0F3E01D2504199B419",
+  "dataset_sha256": "B30BBE6661F3897E53657F4BAFD919F5F223D382B582E221655D6A3E40C3A584",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -4409,6 +4409,24 @@
         "relative_path": "events/decisions_events/pay_homage_events.txt"
       },
       "namespace": "pay_homage"
+    },
+    "physician_epidemic_events.1000": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "96B42FA1A542836171A2A608B7155A8A80D30B0D8F8D9742EBE8AFF231B85E16",
+          "kind": "exact-token-lexical-candidate",
+          "line": 35,
+          "relative_path": "common/on_action/ce1_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "51ADEEA52F9A93406156ABAFA6608B0425003F63098F0CB033A5CB515C90F493",
+        "line": 8,
+        "relative_path": "events/dlc/ce1/physician_epidemic_events.txt"
+      },
+      "namespace": "physician_epidemic_events"
     },
     "physician_epidemic_events.1040": {
       "caller_candidate_resolution": "external-definition-file",
