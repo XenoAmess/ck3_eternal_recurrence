@@ -1,0 +1,212 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-power-cache-20260923",
+  "question": "Which native producer writes military extension+0x308, and how does its quantity/power and ally/special composition differ from +0x2F0/+0x2F4?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "one actor military extension and declaration assessment; no claim for all wars",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "future same actor full ID and same producer revision; no raw pointer reuse",
+    "producer_trigger": "unknown",
+    "producer": "0x2971090 scratch producer; 0x2617F80/0x264D590/conditional 0x28AD550 publish caches",
+    "caller": "0x264D590 selected character batch, 0x2617F80 direct character wrapper; natural cadence not established",
+    "consumer": "State16 builder 0x18784D0 and network/target declaration assessment",
+    "cache_lifetime": "Scratch refresh and published cache update are distinct; natural phase and age at declaration remain unknown",
+    "expected_signal": "offline write chain and component source slots, then separately authorized future same-actor observations",
+    "zero_sample_meaning": "not observed or not updated; does not prove a component is excluded",
+    "stop_condition": "offline only; freeze one closed producer chain and preserve remaining unknowns; no CK3 execution",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "static-contract",
+      "layer": "source-contract",
+      "path": "war_film_power_cache_static_20260923.json",
+      "sha256": "55286e24d86b9afd9da9b049a9101b743f4e31ede421c8b64b0f9c8e56e3a5a7",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Exact native bytes and source define arithmetic; analyst-interpreted static edges only, no live success."
+    },
+    {
+      "id": "prior-declaration-contract",
+      "layer": "source-contract",
+      "path": "../war-film-declaration-inputs-20260923-r1/war_film_declaration_inputs_static_20260923.json",
+      "sha256": "bffd617f742e63f99e9a37a414a78275279f09f6ac22f202e5f840277fb14adb",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Previously frozen declaration builder/admin/network separation; not actual ally acceptance."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "producer",
+      "label": "2971090 mode3 producer"
+    },
+    {
+      "id": "buckets",
+      "label": "Eight quantity/power buckets"
+    },
+    {
+      "id": "cache",
+      "label": "Published military+308"
+    },
+    {
+      "id": "counts",
+      "label": "Published +2F0/+2F4 counts"
+    },
+    {
+      "id": "current",
+      "label": "Published +310 CURRENT power"
+    },
+    {
+      "id": "special",
+      "label": "Special/regiment composition"
+    },
+    {
+      "id": "sources",
+      "label": "Direct troop containers"
+    },
+    {
+      "id": "decision",
+      "label": "Declaration builder/network"
+    },
+    {
+      "id": "knight",
+      "label": "Knight define arithmetic"
+    },
+    {
+      "id": "future",
+      "label": "Future same-revision live observation"
+    }
+  ],
+  "edges": [
+    {
+      "id": "mode-three",
+      "from": "producer",
+      "to": "buckets",
+      "label": "0x2971090 calls 0x292FC40 with R8b=3: bit0 CURRENT and bit1 MAX are both enabled; this differs from the battle-score caller mode2.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "publish-power",
+      "from": "buckets",
+      "to": "cache",
+      "label": "Producer sums eight int64 bucket+0x08 values into military+0x78, then 0x2617F80 / 0x264D590 publish +0x78 to +0x308. The conditional 0x28AD550 tail uses the same copy sequence.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "publish-counts",
+      "from": "buckets",
+      "to": "counts",
+      "label": "Eight bucket+0x04 int32 values sum into +0x60 and publish to +0x2F0; eight bucket+0x00 int32 values sum into +0x64 and publish to +0x2F4. Counts and power are different fields and units.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "current-power",
+      "from": "buckets",
+      "to": "current",
+      "label": "Eight int64 bucket+0x10 values sum into military+0x80 and publish to +0x310. +0x308 is the MAX-side power channel, not the CURRENT-side channel.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "special-not-full-strength",
+      "from": "special",
+      "to": "buckets",
+      "label": "Event/special groups at military+0x290 use composition quantity and 0x2394EE0 power for both CURRENT and MAX slots. Ordinary regiment MAX uses +0x128 times type(+0x290+0x298), except kind+0x138==1 uses composition power too.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "direct-membership",
+      "from": "sources",
+      "to": "buckets",
+      "label": "The eight buckets come from levy selector, military regiment/company/order/event containers, knight helper, qualifying held-title regiments, and nomadic conversion. The builder does not traverse the later declaration relationship network.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "declaration-after-cache",
+      "from": "cache",
+      "to": "decision",
+      "label": "0x18784D0 reads military+0x308 before its separate administrative addition and government clearing rule. Target/network use of the same cache is established by the preceding declaration-input package, not a promise that allies will join.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract",
+        "prior-declaration-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "knight-comment-correction",
+      "from": "knight",
+      "to": "buckets",
+      "label": "0x29300A9..0x2930119 computes knight count times (damage+ toughness) times assumed prowess in Q100000. The current vanilla definitions 50,10,10 give 600 per knight, despite their stale comment saying 1100.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "natural-refresh",
+      "from": "producer",
+      "to": "future",
+      "label": "Natural update scheduling, coherence between scratch and published fields, and age at a particular declaration attempt remain unobserved. A call to 0x2971090 alone does not establish publication.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Natural update scheduling, coherence between scratch and published fields, and age at a particular declaration attempt remain unobserved. A call to 0x2971090 alone does not establish publication."
+    },
+    {
+      "id": "network-membership",
+      "from": "decision",
+      "to": "future",
+      "label": "The complete relationship-source names, overlap with administrative additions, and actual acceptance/join behavior of every contributor remain outside this bounded cache-producer package.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "The complete relationship-source names, overlap with administrative additions, and actual acceptance/join behavior of every contributor remain outside this bounded cache-producer package."
+    },
+    {
+      "id": "runtime-components",
+      "from": "special",
+      "to": "future",
+      "label": "No live per-character bucket values, modified define values, full special kind/state lifecycle, or real declaration outcome were observed.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "No live per-character bucket values, modified define values, full special kind/state lifecycle, or real declaration outcome were observed."
+    }
+  ],
+  "cases": [
+    {
+      "id": "same-actor-observation",
+      "question": "Future native same-revision current/max/power components and caches, with full actor identity and no external recomputation substituted.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

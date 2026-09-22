@@ -1,0 +1,95 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-power-cache-20260923",
+  "question": "Which native producer writes military extension+0x308, and how does its quantity/power and ally/special composition differ from +0x2F0/+0x2F4?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "one actor military extension and declaration assessment; no claim for all wars",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "future same actor full ID and same producer revision; no raw pointer reuse",
+    "producer_trigger": "daily-tick",
+    "producer": "unknown writer of military extension+0x308",
+    "caller": "unknown update owner/cadence",
+    "consumer": "State16 builder 0x18784D0 and network/target declaration assessment",
+    "cache_lifetime": "unknown until producer is traced; paused reader must not imply refresh",
+    "expected_signal": "offline write chain and component source slots, then separately authorized future same-actor observations",
+    "zero_sample_meaning": "not observed or not updated; does not prove a component is excluded",
+    "stop_condition": "offline only; freeze one closed producer chain and preserve remaining unknowns; no CK3 execution",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {
+      "id": "producer",
+      "label": "Native military producer"
+    },
+    {
+      "id": "cache",
+      "label": "military+0x308"
+    },
+    {
+      "id": "counts",
+      "label": "current/max +0x2F0/+0x2F4"
+    },
+    {
+      "id": "special",
+      "label": "Special troop and ally sources"
+    },
+    {
+      "id": "decision",
+      "label": "Actor declaration assessment"
+    }
+  ],
+  "edges": [
+    {
+      "id": "write-chain",
+      "from": "producer",
+      "to": "cache",
+      "label": "Locate exact write and prove Character military owner; do not accept arbitrary +0x308 stores.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Locate exact write and prove Character military owner; do not accept arbitrary +0x308 stores."
+    },
+    {
+      "id": "count-distinction",
+      "from": "producer",
+      "to": "counts",
+      "label": "Trace sibling count writes and units, including current/max modes.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Trace sibling count writes and units, including current/max modes."
+    },
+    {
+      "id": "composition",
+      "from": "special",
+      "to": "cache",
+      "label": "Trace the actually accumulated source slots; separate direct troops from later relationship-network additions.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Trace the actually accumulated source slots; separate direct troops from later relationship-network additions."
+    },
+    {
+      "id": "freshness",
+      "from": "cache",
+      "to": "decision",
+      "label": "Name producer caller/update order without inferring cadence from consumer.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Name producer caller/update order without inferring cadence from consumer."
+    }
+  ],
+  "cases": [
+    {
+      "id": "same-actor-observation",
+      "question": "Future native same-revision current/max/power components and caches, with full actor identity and no external recomputation substituted.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}
