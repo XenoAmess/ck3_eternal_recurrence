@@ -400,14 +400,31 @@ MANAGER_HOLY_WAR_ANALYSIS: Final[dict[str, dict[str, object]]] = {
         "after_effect": "custom tooltip only; no gameplay state mutation",
         "safe_option_rationale": (
             "the five mutually exclusive projections are acknowledgements; the "
-            "current reviewed live projection renders only native option 3"
+            "reviewed R342/R372 and R0129 frames render only native 3 and 4 "
+            "respectively, with option/after effects pinned to exact source"
         ),
         "scope_boundary": (
-            "faith identity stays opaque; the campaign-neutral contract binds "
-            "ROOT through $player and admits only the GHW notice relationships "
-            "required by the authorized holy-war exception; campaign dates and "
-            "numeric identities remain observation-only"
+            "faith identity stays opaque; the owner authorized only a generic "
+            "exact-build, no-gameplay-effect, sole-legal-option notice consumer. "
+            "ROOT binds through $player; campaign dates and numeric identities "
+            "remain observation-only, with no faith strategy"
         ),
+        "source_reviewed_effectless_notice": {
+            "schema": "xar.ck3.source-reviewed-effectless-notice/v1",
+            "definition_path": "events/religion_events/great_holy_war_events.txt",
+            "definition_sha256": (
+                "E431A0E2FDFF5E49FB572B7184DE9B498F982B95AED875334AD1432D0F88CBA7"
+            ),
+            "source_lines": "1343-1395",
+            "authored_native_option_indices": (0, 1, 2, 3, 4),
+            "option_effects_by_native_index": {
+                "0": (), "1": (), "2": (), "3": (), "4": (),
+            },
+            "after_effects": ({
+                "kind": "custom_tooltip",
+                "gameplay_effect": False,
+            },),
+        },
     },
 }
 
@@ -2375,8 +2392,8 @@ MANAGER_HOLY_WAR_TIMELINE_CONTRACTS: Final[
         # variable. All five authored options are effect-free and share only
         # an after-tooltip. R342 observed the hostile-faith projection where
         # authored option 4/native 3 is the sole visible acknowledgement.
-        # Keep faith opaque and bind only the war-notice data required by the
-        # project's explicitly allowed holy-war exception.
+        # The owner separately authorized only a generic exact-source,
+        # effectless, sole-legal-option notice consumer. Keep faith opaque.
         "date_policy": "product-observation-window",
         "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
@@ -2405,6 +2422,28 @@ MANAGER_HOLY_WAR_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (3,),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
+        "option_variants": ({
+            # R0129: the only rendered option is native 4, with an additional
+            # conditional localisation-only other_pope scope.
+            "option_count": 1,
+            "snapshot_option_count": 5,
+            "native_option_indices": (4,),
+            "selected_option_number": 5,
+            "selected_native_option_index": 4,
+            "saved_scope_count": 4,
+            "saved_scope_name_sets": ((
+                "awakening_faith",
+                "ghw_first_sponsor",
+                "background_temple_scope",
+                "other_pope",
+            ),),
+            "scope_types": {
+                "awakening_faith": "faith",
+                "ghw_first_sponsor": "character",
+                "background_temple_scope": "character",
+                "other_pope": "character",
+            },
+        },),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }
