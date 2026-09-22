@@ -1,0 +1,43 @@
+{
+  "schema": "xar.war-film-case-w.tool-contract.v1",
+  "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "files": [
+    {
+      "path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 96892,
+      "sha256": "8b019574909b78d5f0bce5cc8de1aa0c01eb767951586b355056559bdbd4f277"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\docs\\ck3-native-ai\\war-film-robert-mcp-shot-runbook-2026-09-23.md",
+      "bytes": 17968,
+      "sha256": "7a35c3365ce75668f143d85efdbbaab56615323e9ae1e3054739374938cb8dc6"
+    }
+  ],
+  "tools": {
+    "binding": [
+      "ck3_get_capabilities",
+      "ck3_get_bridge_diagnostics",
+      "ck3_take_snapshot",
+      "ck3_query_campaign_root_context_v1",
+      "ck3_save_checkpoint",
+      "ck3_inspect_save_artifacts_v1"
+    ],
+    "operator_intervention": [
+      "ck3_query_declarable_wars",
+      "ck3_declare_war",
+      "ck3_raise_troops_default",
+      "ck3_move_army",
+      "ck3_execute_step"
+    ],
+    "native_observation": [
+      "ck3_get_war_state",
+      "ck3_query_army_strengths",
+      "ck3_query_battle_reinforcement_assignment_v1",
+      "ck3_query_actual_contact_scope",
+      "ck3_query_battle_control_snapshot_v1",
+      "ck3_query_battle_transition_v1"
+    ]
+  },
+  "argument_rule": "expected_revision is always the latest public revision. Public CUnit IDs come from current player/war army rows; native CArmy ID is not interchangeable. CombatID comes from actual contact/control/transition. No blind write retry.",
+  "scope": "Public bindings and available narrow readbacks only; no full scoring, autonomous declaration or retreat policy observer."
+}

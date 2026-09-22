@@ -1,0 +1,586 @@
+{
+  "schema": "xar.war-film-case-w.baseline.v1",
+  "authority": "existing R0004 saved receipts and archived checkpoint, not a new live read",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0004",
+  "pid": 31108,
+  "connection_generation": 1,
+  "episode_run_id": "native-29829-21f647c6639a",
+  "snapshot": {
+    "snapshot_id": "native:5",
+    "revision": 6,
+    "native_revision": 5,
+    "date_raw": 53144328,
+    "paused": true,
+    "episode_character_id": 29829
+  },
+  "actor_character_id": 29829,
+  "target_character_id": 31549,
+  "declaration": {
+    "declaration_id": "31549-40--1",
+    "target_character_id": 31549,
+    "casus_belli_index": 40,
+    "casus_belli_key": "minor_religious_war",
+    "configuration_index": -1,
+    "claimant_character_id": -1,
+    "target_title_ids": [
+      2111
+    ],
+    "source": "native"
+  },
+  "strategic_power": {
+    "target_character_id": 31549,
+    "effective_target_character_id": 31549,
+    "distance_raw": 0,
+    "actor_power_base_raw": 3786000000,
+    "actor_network_contribution_raw": 0,
+    "actor_power_total_raw": 3786000000,
+    "target_power_base_raw": 1334000000,
+    "target_network_contribution_raw": 0,
+    "target_pre_adjustment_total_raw": 1334000000,
+    "target_adjustment_delta_raw": 0,
+    "target_power_total_raw": 1334000000,
+    "actual_power_ratio_raw": 35235,
+    "target_ai_context_actor_entry_raw": 0,
+    "actor_ai_context_target_entry_raw": 0,
+    "native_flags_raw": 157
+  },
+  "target_current_run_role": {
+    "character_id": 31549,
+    "relationship_role": "adjacent_external_province_holder",
+    "primary_title": {
+      "title_id": 2111,
+      "tier_raw": 2,
+      "tier_key": "county"
+    },
+    "capital_province_id": 2638,
+    "immediate_liege_character_id": null,
+    "top_liege_character_id": 31549,
+    "independent": true
+  },
+  "checkpoint": {
+    "status": "saved",
+    "path": "D:\\workspace\\ck3_war_film_research_20260923\\map-capture-state-live-r4c\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 50502569,
+    "sha256": "a450f37ff62ea0375b9ae2f6549aa5a14baa9940fc57fa6f97f912f1c76447f8",
+    "date_raw": 53144328,
+    "overwrite_confirmed": false,
+    "strategy": "native-autosave-command-v1",
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": "xar_off",
+      "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+      "source": "pure-vanilla-enabled-mods-empty",
+      "environment_sha256": "d0c84296a76fc2ecc9661c5c730ec386ed577ac417dc762935e1e204e9f7a408"
+    },
+    "history_index": 1,
+    "episode_character_id": 29829,
+    "episode_run_id": "native-29829-21f647c6639a"
+  },
+  "archived_save": {
+    "path": "D:\\workspace\\ck3_war_film_research_20260923\\robert-input-case-r1\\day-zero.ck3",
+    "bytes": 50502569,
+    "sha256": "a450f37ff62ea0375b9ae2f6549aa5a14baa9940fc57fa6f97f912f1c76447f8"
+  },
+  "read_receipts": {
+    "capabilities": {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\interactive-requests-responses\\002-capabilities.json",
+      "bytes": 34986,
+      "sha256": "abc1de8f58ed59f5236066b16aaa157615f0676a145f2ce0dfaca1871c4cb61e"
+    },
+    "checkpoint": {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\interactive-requests-responses\\003-checkpoint.json",
+      "bytes": 13153,
+      "sha256": "19c0bc49807d15ce3789af08e27482f61535a8b9463e5f1e0df2fdbc8d83cb68"
+    },
+    "campaign": {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\interactive-requests-responses\\005-campaign-root.json",
+      "bytes": 44400,
+      "sha256": "68e7af1195fc76552f4399151f87da831cd7163482e130c8b37d5a695d2245fa"
+    },
+    "assessment_one": {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\interactive-requests-responses\\009-assessment-one.json",
+      "bytes": 13353,
+      "sha256": "7ba46fc01e705f45a64e9479b0575ded6d3c8419cda4e065e08b2e78aa711a6e"
+    },
+    "assessment_two": {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\interactive-requests-responses\\010-assessment-two.json",
+      "bytes": 13343,
+      "sha256": "a89e114d3c7220b4e6aa6351e9c6826ca719da73b25891d2538c5b7b93de6e21"
+    },
+    "last_snapshot": {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\interactive-requests-responses\\011-case-end-snapshot.json",
+      "bytes": 80277,
+      "sha256": "08a798d1648125e5cc3e740e8e8897ee83fc5b1545a4868b11fe1042c6d97825"
+    }
+  },
+  "run_identity": {
+    "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\live-run-identity.json",
+    "bytes": 552,
+    "sha256": "d066785a2c1ab779e683ea346b3ca1831df39d0fd7c63a578b460f8ca416437c"
+  },
+  "current_advertised_time_steps": [
+    "pause-map",
+    "resume-map",
+    "set-speed-1",
+    "set-speed-2"
+  ],
+  "name_binding": {
+    "confirmed_capital_province": 2638,
+    "confirmed_official_capital_key": "b_syracusa",
+    "confirmed_capital_base_zh": "叙拉古",
+    "source_county_key": "c_siracusa",
+    "source_county_base_zh": "锡拉库萨",
+    "source_cultural_key": "cn_sarqusa",
+    "source_cultural_zh": "塞尔古塞",
+    "current_character_display_name": null,
+    "history_candidate": {
+      "history_character_key": "20829",
+      "name": "Ali",
+      "nickname_key": "nick_benavert",
+      "title": "c_siracusa",
+      "holder_period_start": "1062.1.1"
+    },
+    "boundary": "The current runtime character is bound to capital province 2638 and title ID 2111. The historical 20829 record is not equated with runtime CharacterID 31549 without this save or a fresh official name readback. No old-run ID/name mapping is used.",
+    "save_parser_boundary": "Archive is raw binary SAV0101. Existing local character-scope parser requires Rakaly-melted text; open_kaishek syntax parser does not establish a runtime character ID mapping from this binary."
+  },
+  "official_history_and_location_sources": [
+    {
+      "game_relative_path": "common/landed_titles/00_landed_titles.txt",
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\00_landed_titles.txt",
+      "bytes": 1296625,
+      "sha256": "6a508db6c113115aa5aca18b8da5374b30feb76198533aec3a59c5076958637e",
+      "lines": [
+        {
+          "line": 14197,
+          "text": "\t\t\tc_siracusa = {"
+        },
+        {
+          "line": 14198,
+          "text": "\t\t\t\tcolor = { 115 195 85 }"
+        },
+        {
+          "line": 14199,
+          "text": ""
+        },
+        {
+          "line": 14200,
+          "text": "\t\t\t\tcultural_names = {"
+        },
+        {
+          "line": 14201,
+          "text": "\t\t\t\t\tname_list_bedouin = cn_sarqusa"
+        },
+        {
+          "line": 14202,
+          "text": "\t\t\t\t\tname_list_levantine = cn_sarqusa"
+        },
+        {
+          "line": 14203,
+          "text": "\t\t\t\t\tname_list_egyptian = cn_sarqusa"
+        },
+        {
+          "line": 14204,
+          "text": "\t\t\t\t\tname_list_maghrebi = cn_sarqusa"
+        },
+        {
+          "line": 14205,
+          "text": "\t\t\t\t\tname_list_andalusian = cn_sarqusa"
+        },
+        {
+          "line": 14206,
+          "text": "\t\t\t\t\tname_list_yemeni = cn_sarqusa"
+        },
+        {
+          "line": 14207,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 14208,
+          "text": ""
+        },
+        {
+          "line": 14209,
+          "text": "\t\t\t\tb_syracusa = {"
+        },
+        {
+          "line": 14210,
+          "text": "\t\t\t\t\tprovince = 2638"
+        },
+        {
+          "line": 14211,
+          "text": ""
+        },
+        {
+          "line": 14212,
+          "text": "\t\t\t\t\tcolor = { 115 195 85 }"
+        },
+        {
+          "line": 14213,
+          "text": ""
+        },
+        {
+          "line": 14214,
+          "text": "\t\t\t\t\tcultural_names = {"
+        },
+        {
+          "line": 14215,
+          "text": "\t\t\t\t\t\tname_list_bedouin = cn_sarqusa"
+        },
+        {
+          "line": 14216,
+          "text": "\t\t\t\t\t\tname_list_levantine = cn_sarqusa"
+        },
+        {
+          "line": 14217,
+          "text": "\t\t\t\t\t\tname_list_egyptian = cn_sarqusa"
+        },
+        {
+          "line": 14218,
+          "text": "\t\t\t\t\t\tname_list_maghrebi = cn_sarqusa"
+        },
+        {
+          "line": 14219,
+          "text": "\t\t\t\t\t\tname_list_andalusian = cn_sarqusa"
+        },
+        {
+          "line": 14220,
+          "text": "\t\t\t\t\t\tname_list_yemeni = cn_sarqusa"
+        }
+      ]
+    },
+    {
+      "game_relative_path": "history/provinces/k_sicily.txt",
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\history\\provinces\\k_sicily.txt",
+      "bytes": 6755,
+      "sha256": "d7d07e9b44d7533cd4628c028937e5d94e955e614c5416a3975eea473f7c0f7b",
+      "lines": [
+        {
+          "line": 75,
+          "text": "###c_siracusa"
+        },
+        {
+          "line": 76,
+          "text": "2638 = {\t#SYRACUSE"
+        },
+        {
+          "line": 77,
+          "text": "\tculture = greek"
+        },
+        {
+          "line": 78,
+          "text": "\treligion = orthodox"
+        },
+        {
+          "line": 79,
+          "text": "\tholding = castle_holding"
+        },
+        {
+          "line": 80,
+          "text": "\t904.1.1 = {"
+        },
+        {
+          "line": 81,
+          "text": "\t\tculture = maghrebi"
+        },
+        {
+          "line": 82,
+          "text": "\t\treligion = ashari"
+        },
+        {
+          "line": 83,
+          "text": "\t}"
+        },
+        {
+          "line": 84,
+          "text": "\t1066.1.1 = {"
+        },
+        {
+          "line": 85,
+          "text": "\t\tbuildings = {"
+        },
+        {
+          "line": 86,
+          "text": "\t\t\tcommon_tradeport_01"
+        },
+        {
+          "line": 87,
+          "text": "\t\t\tcurtain_walls_01"
+        },
+        {
+          "line": 88,
+          "text": "\t\t\t#barracks_01"
+        },
+        {
+          "line": 89,
+          "text": "\t\t}"
+        },
+        {
+          "line": 90,
+          "text": "\t}"
+        },
+        {
+          "line": 91,
+          "text": "\t1116.1.1 = {"
+        },
+        {
+          "line": 92,
+          "text": "\t\tculture = sicilian"
+        },
+        {
+          "line": 93,
+          "text": "\t\treligion = catholic"
+        },
+        {
+          "line": 94,
+          "text": "\t}"
+        },
+        {
+          "line": 95,
+          "text": "}"
+        }
+      ]
+    },
+    {
+      "game_relative_path": "history/titles/k_sicily.txt",
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\history\\titles\\k_sicily.txt",
+      "bytes": 58253,
+      "sha256": "11245b9495e7dab40bf7fb5279a98bd0f6c2bafbdb93f0b506c52970324982d3",
+      "lines": [
+        {
+          "line": 500,
+          "text": "\t# at-Timnahids"
+        },
+        {
+          "line": 501,
+          "text": "\t1053.1.1 = {"
+        },
+        {
+          "line": 502,
+          "text": "\t\tholder = maghrebi0011 # ibn at-Timnah"
+        },
+        {
+          "line": 503,
+          "text": "\t}"
+        },
+        {
+          "line": 504,
+          "text": "\t# al-Hawasid"
+        },
+        {
+          "line": 505,
+          "text": "\t1060.1.1 = {"
+        },
+        {
+          "line": 506,
+          "text": "\t\tholder = 73312 # Ali ibn al-Hawas"
+        },
+        {
+          "line": 507,
+          "text": "\t}"
+        },
+        {
+          "line": 508,
+          "text": "\t# Abbadids"
+        },
+        {
+          "line": 509,
+          "text": "\t1062.1.1 = {"
+        },
+        {
+          "line": 510,
+          "text": "\t\tholder = 20829 # Ibn Abbad 'Benavert'"
+        },
+        {
+          "line": 511,
+          "text": "\t}"
+        },
+        {
+          "line": 512,
+          "text": "\t# Normans"
+        },
+        {
+          "line": 513,
+          "text": "\t1086.1.1 = {"
+        },
+        {
+          "line": 514,
+          "text": "\t\tliege = d_sicily"
+        },
+        {
+          "line": 515,
+          "text": "\t}"
+        }
+      ]
+    },
+    {
+      "game_relative_path": "history/characters/maghrebi.txt",
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\history\\characters\\maghrebi.txt",
+      "bytes": 9425,
+      "sha256": "c7147661cdb5f66592fba672184cce4712a47dd91f3f4463e25751f1b570c177",
+      "lines": [
+        {
+          "line": 627,
+          "text": "# Abbadids, Sheikhs of Syracuse 1066"
+        },
+        {
+          "line": 628,
+          "text": ""
+        },
+        {
+          "line": 629,
+          "text": "20829 = {"
+        },
+        {
+          "line": 630,
+          "text": "\tname = \"Ali\""
+        },
+        {
+          "line": 631,
+          "text": "\tdna = \"20829_ali_siracusa\""
+        },
+        {
+          "line": 632,
+          "text": "\tdynasty = 12237"
+        },
+        {
+          "line": 633,
+          "text": "\tmartial = 8"
+        },
+        {
+          "line": 634,
+          "text": "\tdiplomacy = 6"
+        },
+        {
+          "line": 635,
+          "text": "\tintrigue = 4"
+        },
+        {
+          "line": 636,
+          "text": "\tstewardship = 6"
+        },
+        {
+          "line": 637,
+          "text": "\treligion = \"ashari\""
+        },
+        {
+          "line": 638,
+          "text": "\tculture = maghrebi"
+        },
+        {
+          "line": 639,
+          "text": "\ttrait = education_intrigue_1"
+        },
+        {
+          "line": 640,
+          "text": "\ttrait = brave"
+        },
+        {
+          "line": 641,
+          "text": "\ttrait = zealous"
+        },
+        {
+          "line": 642,
+          "text": "\ttrait = impatient"
+        },
+        {
+          "line": 643,
+          "text": "\t1025.1.1 = {"
+        },
+        {
+          "line": 644,
+          "text": "\t\tbirth = \"1025.1.1\""
+        },
+        {
+          "line": 645,
+          "text": "\t}"
+        },
+        {
+          "line": 646,
+          "text": "\t1063.1.1 = {"
+        },
+        {
+          "line": 647,
+          "text": "\t\tgive_nickname = nick_benavert"
+        },
+        {
+          "line": 648,
+          "text": "\t}"
+        },
+        {
+          "line": 649,
+          "text": "\t1086.1.1 = {"
+        },
+        {
+          "line": 650,
+          "text": "\t\tdeath = \"1086.1.1\""
+        },
+        {
+          "line": 651,
+          "text": "\t}"
+        },
+        {
+          "line": 652,
+          "text": "}"
+        }
+      ]
+    }
+  ],
+  "official_localizations": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+      "bytes": 798717,
+      "sha256": "4d3471ba0e8ac3e2028fe68d0b9d06839a13f7af25ff00f0445f6cc0a7ef1801",
+      "lines": [
+        {
+          "line": 9704,
+          "text": " b_syracusa:0 \"Syracusa\""
+        },
+        {
+          "line": 14254,
+          "text": " c_siracusa:0 \"Siracusa\""
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_cultural_names_l_english.yml",
+      "bytes": 86012,
+      "sha256": "2cbc0d94721f8273d3c711f59c4c04728d48d27b9d7697da1c952cfdd323aa11",
+      "lines": [
+        {
+          "line": 2593,
+          "text": " cn_sarqusa:0 \"Sarqusa\""
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+      "bytes": 848828,
+      "sha256": "22e5a59ddcc416b8e45581520111ef511af86d92f4475a9fc7f814d850422009",
+      "lines": [
+        {
+          "line": 9703,
+          "text": " b_syracusa: \"叙拉古\""
+        },
+        {
+          "line": 14253,
+          "text": " c_siracusa: \"锡拉库萨\""
+        }
+      ]
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_cultural_names_l_simp_chinese.yml",
+      "bytes": 89567,
+      "sha256": "4b208423143bcbfe3a9c72cc733b5a8e84141b2acdc51efcb551e49156bbf0eb",
+      "lines": [
+        {
+          "line": 2544,
+          "text": " cn_sarqusa: \"塞尔古塞\""
+        }
+      ]
+    }
+  ],
+  "historical_session_state": "ended; parent reported normal service budget expiry at 2026-09-22T21:33:03Z",
+  "role_for_case_w": "archived independent-count baseline; new run must revalidate identity and legal declaration"
+}

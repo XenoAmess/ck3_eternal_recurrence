@@ -1,0 +1,38 @@
+{
+  "schema": "xar.war-film-case-w.window.v1",
+  "state": "prepared-not-executed",
+  "owner": "root only; a new officially allocated run is required, with no R0004 continuation endpoint",
+  "run_identity": {
+    "path": "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r4c\\live-run-identity.json",
+    "bytes": 552,
+    "sha256": "d066785a2c1ab779e683ea346b3ca1831df39d0fd7c63a578b460f8ca416437c"
+  },
+  "intervention_label": "operator-declared legal minor_religious_war; subsequent NPC behavior is native; not natural AI declaration",
+  "fresh_precondition": "New official run after validated day-zero restore (or separately labelled new start); bind fresh PID, connection generation, episode, actor/target, paused snapshot and current final-legal declaration row. Stop if intended actor/target/CB no longer match. Historical token and public/native revisions are not replay authority.",
+  "primary_stop": "Stop after one same-war enemy public CUnit has an observed post-declaration appearance/raising state and a committed route plus a later position/progress read, or after 30 observed game-calendar days / 12 paused sampling rounds / 12 wall minutes, whichever occurs first.",
+  "optional_contact_extension": "Only if needed for the film and existing bound armies/routes make one contact feasible within remaining budget: capture at most one actual CombatID. Total hard limits including primary window: 45 game-calendar days, 16 paused sampling rounds, 15 wall minutes. No repeated chases or second battle.",
+  "failure_stop": [
+    "war creation is not proved after one declaration submission and one reconciliation",
+    "identity/owner/episode changes",
+    "lost connection or typed unavailable prevents required binding",
+    "target war disappears or main opponent changes",
+    "unexpected action/event requiring an unrelated intervention",
+    "hard window limit"
+  ],
+  "sampling": "First pause after a newly observed game day, then at most three calendar days per slice. Use advertised set-speed-1/2, resume-map, pause-map; use fresh snapshots to observe dates. Prefer speed 1 near actual contact. No guessed raw-date arithmetic and no life-advance macro.",
+  "operator_actions": "At most one declaration. Player raise once and one player movement may be used only as explicit recorded interventions by the owner, with current native legality and scope; never submit orders to the NPC. Every ACK needs postcondition readback.",
+  "zero_result": "No enemy army or route inside the bounded window means not observed in this window; already present troops are not proof of a new raise decision. No combat means contact not observed, not that the AI refuses combat.",
+  "runtime_record_required": [
+    "fresh official run_ID, PID, connection generation and episode; actual ready/HUD postcondition",
+    "restored seed bytes/hash plus formal restore/readback receipt, or explicit new-start label",
+    "pre_declaration_checkpoint bytes/hash and materialization",
+    "UTC and monotonic mark for every action/query/snapshot",
+    "snapshot_id, public/native revision, date and paused state",
+    "full generation-bearing WarID and actor/defender sides",
+    "public CUnit IDs, owners, controllable flag, native membership if available",
+    "route snapshot plus later same-unit progress; label split/merge successors explicitly",
+    "actual CombatID and both sides, if contact exists",
+    "raw video hash and timeline mark correspondence"
+  ],
+  "run_identity_role": "historical baseline only; future run identity is unbound"
+}

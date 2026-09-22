@@ -1,0 +1,195 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-case-w-native-npc-response-20260923",
+  "question": "After a new official run restores the frozen day-zero save (or records a separate new start), which same-war NPC raising, committed movement and optional first-contact transitions can public native tools observe after one explicitly operator-declared legal war?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "passive-runtime",
+    "actor_kind": "ai",
+    "owner_scope": "NPC31549 and its published same-war army scope only; human29829 initiates war as an explicit intervention, never as evidence of autonomous AI declaration.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "One newly bound official run/PID/connection/episode and exact WarID; R0004 is historical only. Full CUnit/CombatID are read from fresh formal rows and retired on disappearance/split/merge unless a successor is explicit.",
+    "producer_trigger": "daily-tick",
+    "producer": "Normal NPC daily wartime military/coordinator processing after the separately recorded operator declaration; samples observe published raising/route/contact state, not unexposed score intermediates.",
+    "caller": "The unique owner of the new official run uses advertised resume-map/pause-map time slices; paused official query readbacks never force an NPC order.",
+    "consumer": "Current snapshot/war-army rows and narrow army/reinforcement/contact/battle queries, hash-bound to checkpoint, frame/time and raw footage.",
+    "cache_lifetime": "Refresh snapshot after every action/publication/time slice; every paused query uses that public revision and retains returned native revision/date. Historical public6/native5 is baseline only.",
+    "expected_signal": "New exact WarID, NPC-owned full public CUnit appearance/raising, committed route and later progress; optionally one actual CombatID shared with the same war and sides.",
+    "zero_sample_meaning": "No enemy army or route inside the bounded window means not observed in this window; already present troops are not proof of a new raise decision. No combat means contact not observed, not that the AI refuses combat.",
+    "stop_condition": "Stop after one same-war enemy public CUnit has an observed post-declaration appearance/raising state and a committed route plus a later position/progress read, or after 30 observed game-calendar days / 12 paused sampling rounds / 12 wall minutes, whichever occurs first. Only if needed for the film and existing bound armies/routes make one contact feasible within remaining budget: capture at most one actual CombatID. Total hard limits including primary window: 45 game-calendar days, 16 paused sampling rounds, 15 wall minutes. No repeated chases or second battle. Stop also on any failure_stop in the window.",
+    "runtime_window_ref": "sampling-window.json (prepared future official run; R0004 has ended and supplies historical baseline only)"
+  },
+  "pre_observation": {
+    "checkpoint": "Preserve a fresh pre-declaration checkpoint to a new external path and validate bytes/materialization; retained day-zero archive is immutable rollback evidence, not current state by assumption.",
+    "current_token": "Refresh legal declarations after checkpoint/snapshot. Continue only if target31549/effective31549 and exact intended CB row remain legal. Do not replay historical public revision6.",
+    "video": "New CASE-W raw recording and timeline; every operator action is explicitly marked.",
+    "new_run": "Root must allocate and complete formal save restore/readback in a new run, or label a new start; preparation neither launches nor restores a game. Bind actual ready/HUD state, identity and current capabilities before any CASE-W action."
+  },
+  "bindings_to_fill_from_live": {
+    "case_w_checkpoint": null,
+    "case_w_start_utc": null,
+    "snapshot_id": null,
+    "public_revision": null,
+    "native_revision": null,
+    "date_raw": null,
+    "declaration_response": null,
+    "war_id": null,
+    "npc_public_cunit_id": null,
+    "npc_army_owner": null,
+    "route_start_frame": null,
+    "route_progress_frame": null,
+    "combat_id": null,
+    "end_reason": null,
+    "official_run_id": null,
+    "pid": null,
+    "connection_generation": null,
+    "episode_run_id": null,
+    "restore_or_new_start_receipt": null,
+    "seed_save_binding": null,
+    "raw_video_binding": null
+  },
+  "evidence": [
+    {
+      "id": "baseline",
+      "path": "baseline.json",
+      "layer": "live-observation",
+      "sha256": "df2678d0e429aabbeed7350076e7ebc4192fb28f37acce26f5368f2183c64f05",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Existing R0004 baseline only; no CASE-W action or NPC behavior has been observed.",
+      "session": "desktop-3fevhd2-1c74096080--vanilla--R0004 / PID31108 / connection-generation1",
+      "frame": "native:5 / public6 / native5 / date53144328",
+      "identity": "actor CharacterID29829; target/effective CharacterID31549; existing CASE-R receipts only"
+    },
+    {
+      "id": "source",
+      "path": "source-contract.json",
+      "layer": "source-contract",
+      "sha256": "953436af616957116030880c67726f516a62aa751321e066904eb160ad7b62d1",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Existing official tool signatures and their observation limits."
+    },
+    {
+      "id": "window",
+      "path": "sampling-window.json",
+      "layer": "source-contract",
+      "sha256": "35c8f9007978fb7a7c315a4a9567a3554a6451ab8035f17c39b4328ba78f353f",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Explicit bounded proposed sampling procedure, not permission or successful execution."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "baseline",
+      "label": "Existing R0004 player/legal target baseline"
+    },
+    {
+      "id": "operator",
+      "label": "Explicit operator declaration intervention"
+    },
+    {
+      "id": "war",
+      "label": "New same-scope active WarID"
+    },
+    {
+      "id": "enemy",
+      "label": "NPC-owned enemy public CUnit appears/raises"
+    },
+    {
+      "id": "route",
+      "label": "Same-unit committed route and observed progress"
+    },
+    {
+      "id": "combat",
+      "label": "Optional first actual same-war CombatID"
+    },
+    {
+      "id": "stop",
+      "label": "Bounded stop; retain all outcomes"
+    }
+  ],
+  "edges": [
+    {
+      "id": "baseline-frame",
+      "from": "baseline",
+      "to": "operator",
+      "label": "Existing baseline is bound; current pre-action refresh remains required",
+      "status": "live-confirmed",
+      "evidence": [
+        "baseline"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "operator-declaration",
+      "from": "operator",
+      "to": "war",
+      "label": "Operator submits one current legal token; prove resulting WarID",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "No declaration has been submitted by this preparation package."
+    },
+    {
+      "id": "npc-raise",
+      "from": "war",
+      "to": "enemy",
+      "label": "Observe enemy unit appearance or explicit raising transition within that WarID",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Require before/after ownership and war membership; pre-existing troops do not prove raising."
+    },
+    {
+      "id": "npc-route",
+      "from": "enemy",
+      "to": "route",
+      "label": "Observe native enemy committed route and later progress",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Require same full CUnit or explicit split/merge successor binding, not flag animation."
+    },
+    {
+      "id": "first-contact",
+      "from": "route",
+      "to": "combat",
+      "label": "Optional actual same-war contact with exact CombatID",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "No projected encounter or simulator input is an actual battle."
+    },
+    {
+      "id": "bounded-record",
+      "from": "route",
+      "to": "stop",
+      "label": "Stop on primary evidence or the first applicable budget/failure condition",
+      "status": "counter-policy",
+      "evidence": [],
+      "open_question": null
+    }
+  ],
+  "cases": [
+    {
+      "id": "same-war-npc-response",
+      "question": "One bounded raise/route sequence in the new operator-triggered war.",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "optional-first-contact",
+      "question": "At most one same-war actual combat if it occurs within the unchanged hard budget.",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "explicit_nonclaims": [
+    "natural NPC declaration",
+    "complete target scoring or reason for target selection",
+    "complete combat-power scoring or win probability",
+    "ordinary/desperate mode decision",
+    "retreat strategy or caller",
+    "reinforcement requesting-to-assigned closure",
+    "complete war outcome or peace strategy"
+  ]
+}
