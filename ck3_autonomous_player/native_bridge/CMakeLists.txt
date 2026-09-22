@@ -265,6 +265,15 @@ option(
   "Enable one unadvertised exact-build paused ranked-marriage query for controlled acceptance"
   OFF
 )
+option(
+  XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1
+  "Enable unadvertised observed-first-heir marriage submit and material readback"
+  OFF
+)
+if(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1 AND
+   NOT XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+  message(FATAL_ERROR "First-heir marriage action requires its private legality query")
+endif()
 
 option(
   XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1
@@ -498,6 +507,7 @@ add_library(xar_ck3_bridge SHARED
   src/major_decision_found_kingdom_internal_route_v1.cpp
   src/marriage_application_main_receipt_v1.cpp
   src/marriage_candidate_internal_route_v1.cpp
+  src/observed_heir_marriage_private_v1.cpp
   src/marriage_alliance_projection_adapter_v1.cpp
   src/marriage_alliance_readback_adapter_v1.cpp
   src/marriage_matchmaking_observer_v1.cpp
@@ -954,6 +964,11 @@ if(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
     XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1=1
   )
 endif()
+if(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1=1
+  )
+endif()
 if(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
   if(MSVC)
     set_source_files_properties(
@@ -1212,6 +1227,58 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_marriage_shared_glue_v1
     COMMAND xar_ck3_marriage_shared_glue_v1_test
+  )
+  add_executable(xar_ck3_observed_heir_marriage_private_v1_test
+    src/observed_heir_marriage_private_v1.cpp
+    src/observed_heir_marriage_private_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_observed_heir_marriage_private_v1_test PRIVATE include)
+  target_compile_options(
+    xar_ck3_observed_heir_marriage_private_v1_test PRIVATE /W4 /WX)
+  add_test(
+    NAME xar_ck3_native_bridge_observed_heir_marriage_private_v1
+    COMMAND xar_ck3_observed_heir_marriage_private_v1_test
+  )
+  add_executable(xar_ck3_marriage_proposal_native_binder_v1_test
+    src/marriage_matchmaking_observer_v1.cpp
+    src/marriage_matchmaking_source_adapter_v1.cpp
+    src/marriage_proposal_action_core_v1.cpp
+    src/marriage_proposal_native_binder_v1.cpp
+    src/marriage_proposal_native_binder_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_marriage_proposal_native_binder_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_marriage_proposal_native_binder_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_marriage_proposal_native_binder_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_marriage_proposal_native_binder_v1
+    COMMAND xar_ck3_marriage_proposal_native_binder_v1_test
+  )
+  add_executable(xar_ck3_marriage_proposal_action_core_v1_test
+    src/marriage_matchmaking_observer_v1.cpp
+    src/marriage_proposal_action_core_v1.cpp
+    src/marriage_proposal_action_core_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_marriage_proposal_action_core_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_marriage_proposal_action_core_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_marriage_proposal_action_core_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_marriage_proposal_action_core_v1
+    COMMAND xar_ck3_marriage_proposal_action_core_v1_test
   )
 
   add_executable(xar_ck3_marriage_application_main_receipt_v1_test

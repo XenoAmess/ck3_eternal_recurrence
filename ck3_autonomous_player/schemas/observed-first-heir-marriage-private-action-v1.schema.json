@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.invalid/schemas/observed-first-heir-marriage-private-action-v1.schema.json",
+  "title": "Private observed-first-heir marriage submit and material readback v1",
+  "type": "object",
+  "required": ["schema", "schema_version", "exact_ck3_build", "advertised", "step", "accepted", "private_build", "status", "material_result", "pre_native_revision", "heir_character_id", "candidate_character_id"],
+  "properties": {
+    "schema": {"const": "xar.ck3.observed-first-heir-marriage-private-action.v1"},
+    "schema_version": {"const": 1},
+    "exact_ck3_build": {"const": "1.19.0.6"},
+    "advertised": {"const": false},
+    "private_build": {"const": true},
+    "accepted": {"const": true},
+    "step": {"enum": ["submit-observed-first-heir-marriage-v1-private", "query-observed-first-heir-marriage-result-v1-private"]},
+    "status": {"enum": ["receipt_pending", "pending", "marriage", "betrothal"]},
+    "material_result": {"type": "boolean"},
+    "pre_native_revision": {"type": "integer", "minimum": 1},
+    "post_native_revision": {"type": "integer", "minimum": 1},
+    "played_character_id": {"type": "integer", "minimum": 1},
+    "heir_character_id": {"type": "integer", "minimum": 1},
+    "candidate_character_id": {"type": "integer", "minimum": 1}
+  },
+  "oneOf": [
+    {"properties": {"status": {"const": "receipt_pending"}, "step": {"const": "submit-observed-first-heir-marriage-v1-private"}, "material_result": {"const": false}}, "required": ["played_character_id"]},
+    {"properties": {"status": {"const": "pending"}, "step": {"const": "query-observed-first-heir-marriage-result-v1-private"}, "material_result": {"const": false}}, "required": ["post_native_revision"]},
+    {"properties": {"status": {"enum": ["marriage", "betrothal"]}, "step": {"const": "query-observed-first-heir-marriage-result-v1-private"}, "material_result": {"const": true}}, "required": ["post_native_revision"]}
+  ]
+}

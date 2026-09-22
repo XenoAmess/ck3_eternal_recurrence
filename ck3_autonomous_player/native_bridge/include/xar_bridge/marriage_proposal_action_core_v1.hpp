@@ -99,10 +99,13 @@ struct MarriageProposalSubmissionV1 {
   std::uint32_t native_rank = 0;
   std::int32_t native_candidate_score = 0;
   MarriageMatchmakingPairRolesV1 roles{};
-  std::int32_t recipient_ai_accept_raw = 0;
+  std::int64_t recipient_ai_accept_raw = 0;
   std::int32_t recipient_answer_status_raw = 0;
   MarriagePredictedOutcomeV1 predicted_outcome =
       MarriagePredictedOutcomeV1::unavailable;
+  // Only the controlled observed-first-heir route may omit human-player AI
+  // rank and outcome. The direct ranked action retains its original gates.
+  bool rankless_observed_heir = false;
 
   friend bool operator==(const MarriageProposalSubmissionV1 &,
                          const MarriageProposalSubmissionV1 &) = default;

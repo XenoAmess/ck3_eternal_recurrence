@@ -177,9 +177,18 @@ MarriageProposalNativeBinderFailureV1 ValidateCommon(
 }
 
 bool ValidDirectSubmission(const MarriageProposalSubmissionV1 &submission) {
+  const bool ranked_direct = !submission.rankless_observed_heir &&
+      submission.native_rank != 0 &&
+      submission.predicted_outcome != MarriagePredictedOutcomeV1::unavailable;
+  const bool observed_heir = submission.rankless_observed_heir &&
+      submission.native_rank == 0 &&
+      submission.predicted_outcome == MarriagePredictedOutcomeV1::unavailable &&
+      submission.roles.actor_character_id != submission.subject_character_id &&
+      submission.recipient_answer_status_raw >= 0 &&
+      submission.recipient_answer_status_raw <= 1;
   return submission.subject_character_id != 0 &&
-      submission.candidate_character_id != 0 && submission.native_rank != 0 &&
-      submission.predicted_outcome != MarriagePredictedOutcomeV1::unavailable &&
+      submission.candidate_character_id != 0 &&
+      (ranked_direct || observed_heir) &&
       submission.roles.actor_character_id != 0 &&
       submission.roles.recipient_character_id != 0 &&
       submission.roles.secondary_actor_character_id ==
@@ -624,6 +633,28 @@ MarriageProposalNativeSubmitResultV1 SubmitMarriageProposalFromNativeBinderV1(
                MarriageProposalNativeBinderFailureV1::complete_can_send_rejected);
     return MarriageProposalNativeSubmitResultV1::rejected;
   }
+  if (submission.rankless_observed_heir) {
+    if (env.source_adapter.recipient_ai_accept == nullptr ||
+        env.source_adapter.outer_answer == nullptr) {
+      destroy_context();
+      return fail(MarriageProposalNativeBinderFailureV1::
+                      source_adapter_lifecycle_unavailable);
+    }
+    std::int64_t accept_raw = 0;
+    const bool same_answer =
+        env.source_adapter.recipient_ai_accept(native_context, &accept_raw) ==
+            &accept_raw &&
+        accept_raw == submission.recipient_ai_accept_raw &&
+        env.source_adapter.outer_answer(native_context, 1, 1, nullptr,
+                                        nullptr) ==
+            submission.recipient_answer_status_raw;
+    if (!same_answer) {
+      destroy_context();
+      SetFailure(binder,
+                 MarriageProposalNativeBinderFailureV1::recipient_answer_changed);
+      return MarriageProposalNativeSubmitResultV1::rejected;
+    }
+  }
 
   CommandStorageV1 command_storage{};
   void *const command = command_storage.bytes.data();
@@ -911,6 +942,7 @@ std::string_view MarriageProposalNativeBinderFailureKeyV1(
   case MarriageProposalNativeBinderFailureV1::context_construction_failed: return "context_construction_failed";
   case MarriageProposalNativeBinderFailureV1::context_roles_mismatch: return "context_roles_mismatch";
   case MarriageProposalNativeBinderFailureV1::complete_can_send_rejected: return "complete_can_send_rejected";
+  case MarriageProposalNativeBinderFailureV1::recipient_answer_changed: return "recipient_answer_changed";
   case MarriageProposalNativeBinderFailureV1::command_construction_failed: return "command_construction_failed";
   case MarriageProposalNativeBinderFailureV1::command_identity_mismatch: return "command_identity_mismatch";
   case MarriageProposalNativeBinderFailureV1::command_queue_rejected: return "command_queue_rejected";
