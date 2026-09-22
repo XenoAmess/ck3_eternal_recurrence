@@ -5062,6 +5062,32 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
     result += xar::ck3_11906::SerializePlayerLifestyleSnapshotV1(
         *context.snapshot);
   } else if (context.mode == xar::ck3_11906::
+                                 PlayerLifestyleFormalWireModeV1::
+                                     query_focus_only) {
+    const auto &focus = context.stock_focus_result;
+    result += "\"status\":";
+    AppendJsonString(
+        result, xar::ck3_11906::StockFocusLegalityStatusKeyV1(focus.status));
+    result += ",\"read_only\":true,\"policy_scoped\":true,";
+    result += "\"episode_run_id\":";
+    AppendJsonString(result, context.episode_run_id);
+    result += ",\"snapshot_id\":";
+    AppendJsonString(result, context.snapshot_id);
+    result += ",\"target_key\":";
+    AppendJsonString(result, xar::ck3_11906::kStockFocusLegalityTargetV1);
+    if (focus.status == xar::ck3_11906::
+                            StockFocusLegalityStatusV1::observed_native_legal ||
+        focus.status == xar::ck3_11906::
+                            StockFocusLegalityStatusV1::observed_native_illegal) {
+      result += ",\"native_legal\":";
+      result += focus.status == xar::ck3_11906::
+                                    StockFocusLegalityStatusV1::
+                                        observed_native_legal
+                    ? "true" : "false";
+      result += ",\"scanned_database_rows\":" +
+          std::to_string(focus.scanned_database_rows);
+    }
+  } else if (context.mode == xar::ck3_11906::
                           PlayerLifestyleFormalWireModeV1::query) {
     result += "\"status\":\"available\",\"episode_run_id\":";
     AppendJsonString(result, context.episode_run_id);
@@ -5150,7 +5176,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
       !xar::bridge::JsonStringField(
           payload,
           step == kPlayerLifestyleFormalPrivateQueryStepV1 ||
-                  step == kPlayerLifestyleFormalPrivateCurrentStateStepV1
+                  step == kPlayerLifestyleFormalPrivateCurrentStateStepV1 ||
+                  step == kPlayerLifestyleFormalPrivateStockFocusStepV1
               ? "episode_run_id"
               : "expected_episode_run_id",
           episode_run_id, 64) ||
@@ -5236,6 +5263,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
           ? PlayerLifestyleFormalWireModeV1::query
           : step == kPlayerLifestyleFormalPrivateCurrentStateStepV1
                 ? PlayerLifestyleFormalWireModeV1::query_state_only
+                : step == kPlayerLifestyleFormalPrivateStockFocusStepV1
+                      ? PlayerLifestyleFormalWireModeV1::query_focus_only
                 : step == kPlayerLifestyleFormalPrivateSubmitStepV1
                       ? PlayerLifestyleFormalWireModeV1::submit_perk
                       : PlayerLifestyleFormalWireModeV1::verify_receipt;
@@ -8653,6 +8682,8 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateCurrentStateStepV1
                    && step != xar::ck3_11906::
+                                  kPlayerLifestyleFormalPrivateStockFocusStepV1
+                   && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateSubmitStepV1
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateReceiptStepV1
@@ -8739,6 +8770,8 @@ void RunConnectedSession(
                           kPlayerLifestyleFormalPrivateQueryStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateCurrentStateStepV1 ||
+              step == xar::ck3_11906::
+                          kPlayerLifestyleFormalPrivateStockFocusStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateSubmitStepV1 ||
               step == xar::ck3_11906::

@@ -1,0 +1,66 @@
+{
+  "schema": "xar.player_lifestyle_stock_focus_legality_v1_abi",
+  "work_package": "M4-FOCUS-OBS",
+  "status": "static-ready-private-default-off-route",
+  "visibility": "private-default-off-not-advertised",
+  "exact_build": {
+    "ck3_version": "1.19.0.6",
+    "executable_size_bytes": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "need": "R764 ordinary paused map frame left CharacterLifestyleWindow+0xF8 unbound, so LIFE4 could not enumerate legal focuses; the perk-only stock fallback did not cover focus selection.",
+  "fixed_policy_target": {
+    "stable_key": "stewardship_wealth_focus",
+    "lifestyle_key": "stewardship_lifestyle",
+    "stock_definition_source": "game/common/focuses/00_lifestyle_focuses.txt:550",
+    "source_sha256": "DF55AA0F96A7085817D0884A401A208786FA0C57E8BBD2BA40115F8C37CBABD2"
+  },
+  "window_independent_source": {
+    "producer": "CCharacterLifestyleWindow candidate refresh RVA 0x132CB70, focus loop RVA 0x132CE0A..0x132CF78",
+    "database_global_pointer_rva": "0x570BDE8",
+    "database_pointer_span": {
+      "data_offset": "0xF20",
+      "capacity_i32_offset": "0xF28",
+      "count_i32_offset": "0xF2C",
+      "element_bytes": 8,
+      "maximum_rows": 64
+    },
+    "definition_stable_key_offset": "0x18",
+    "definition_lifestyle_pointer_offset": "0x880",
+    "lifestyle_stable_key_offset": "0x18",
+    "refresh_region_length": "0x16E",
+    "refresh_region_sha256": "600047B1A4C8CB9C8ED688190127C422D9043EA345956F24EF4BDA2884EE2708",
+    "read_rule": "Load the already-published database pointer without invoking lazy initialization; scan every bounded stable key and require exactly one fixed target. A null/unreadable database is unavailable, not a known-empty candidate list."
+  },
+  "stock_final_legality": {
+    "focus_command_bytes": "0x38",
+    "primary_vtable_rva": "0x4323BE0",
+    "secondary_vtable_rva": "0x4323BB0",
+    "played_character_id_offset": "0x20",
+    "definition_pointer_offset": "0x28",
+    "current_player_id_offset": "0x30",
+    "validator_pointer_slot_rva": "0x4323C10",
+    "validator_rva": "0x25DF570",
+    "validator_region_length": "0x39F",
+    "validator_region_sha256": "97D454A99D9C0162B2A563F5DC1A7E678587CC5C322AE729AB3366E580FE1805",
+    "source_chain": "The validator resolves command+0x20 via exact Character storage, compares command+0x28 with current focus, checks command+0x30 player identity, then invokes character focus gate RVA 0x26694A0 and FocusType final gate RVA 0x2D88E60. The final gate evaluates scripted is_shown/is_valid through 0x334C510. No lifestyle-window owner argument is passed.",
+    "result_rule": "Two identical observed native booleans in one paused application-main frame are legal or rejected observations; a failed source/read/ABI/exception is unavailable. No command is submitted."
+  },
+  "player_binding": {
+    "played_character_id_global_rva": "0x4FE7EE0",
+    "character_storage_id_offset": "0x18",
+    "requirement": "Global full CharacterID, CCharacter+0x18, and paused frame played ID match on both samples."
+  },
+  "implementation": {
+    "header": "include/xar_bridge/player_lifestyle_stock_focus_legality_v1.hpp",
+    "source": "src/player_lifestyle_stock_focus_legality_v1.cpp",
+    "fixture": "src/player_lifestyle_stock_focus_legality_v1_test.cpp",
+    "focused_tests": "MSVC /W4 /WX /permissive- /Od 4/4 and /O2 4/4 GREEN; private bridge Debug and Release builds GREEN; Python lifestyle formal consumer normal and -O 6/6 each, minimal policy normal and -O 7/7 each",
+    "private_runtime_step": "private-query-player-lifestyle-stock-focus-v1",
+    "private_runtime_route_default_off": true,
+    "public_registration": false,
+    "native_submission": false,
+    "ck3_launched": false
+  },
+  "next_gate": "On an ordinary paused frame, the sole CK3 owner must invoke the default-OFF private read-only step, pair an observed native result with LIFE2 state, and capture evidence. Focus target-lifestyle progress, typed submit, independent post-frame focus key, next production turn, and checkpoint/cold restore remain separate later gates. This static source alone does not close M4."
+}
