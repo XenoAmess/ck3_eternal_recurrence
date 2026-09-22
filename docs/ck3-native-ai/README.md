@@ -41,6 +41,12 @@
 
 ## 文档
 
+- [live-confirmed readback; autonomous AI choice not observed] [CASE-R：Robert 两目标战争估值](war-film-robert-case-r-result-2026-09-23.md)：R0004 在同一暂停帧读取 9 条玩家合法声明行和两次原生 assessment；31899 解析为 37169，31549 保持不变，target/actor ratio 分别为 2.83095 与 0.35235。军力不是兵数或胜率，录像先于查询且实际约 9 fps VFR，不能当同步决策画面或直接按 CFR30 导入；原 RED、恢复与受管清理均保留。
+
+- [offline-tested Python repair; new collection tool live pending] [宣战查询迟到结果收取](war-film-declaration-query-late-result-2026-09-23.md)：独立 120 秒查询预算与按原 request ID 收取接口，保留超时绑定及失败历史，严格同帧后恢复公开缓存而不重发 native 查询。11 项聚焦测试通过；R0004 的一次性临时缓存恢复与新增正式接口的验收分开记录。
+
+- [static-confirmed; live pending] [W1 关系网络共同门](war-film-relationship-gate-2026-09-23.md)：精确闭合 can_potentially_call_ally 的 token 0x3529、注册索引 29、loader 与消费槽，root/候选分别绑定 WARRIOR/JOINER；潜在可召战不等于接受召战或实际参战。5 条静态边、2 条未知边，原版规则对象的当前进程读回仍待观察。
+
 - [static-confirmed; live pending] [W1 宣战关系网络](war-film-declaration-relationship-network-2026-09-23.md)：六类来源闭合到配偶、订婚、有效联盟、参战义务属国/朝贡国、战争保证宗主与邦联。己方额外剔除在战中、人类玩家、同邦联以及特定宗主保证组合，目标方不照搬这些门；旧 same-realm 和 government 泛称已在新专题追加更正。共同谓词的脚本加载映射继续追查。8 条静态边、3 条未知边与异目录复提逐字节校验通过，无 live。
 
 - [static-confirmed; live pending] [W5 移动命令构造者](war-film-move-command-constructors-2026-09-23.md)：RTTI 正式绑定 CMoveUnitCommand；0x432BF48 是 +0x30 校验槽，真正主表为 0x432BF18。声明扫描范围内 29 处引用、13 个函数已分类，新入口属于玩家地图输入、克隆和空 factory，仍未发现普通战争主动撤退 policy；后续转向 payload 填充或入队生产者，不重复 census。16 份产物、11 份快照与结果计划 scoped review PASS，a01–a04 冻结文件未变；无实机新增。
