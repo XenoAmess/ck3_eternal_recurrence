@@ -47,6 +47,7 @@
 #include "xar_bridge/physfs_mounted_data_observer_v1.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/current_timeline_blocker_context_v1_mailbox.hpp"
+#include "xar_bridge/player_epidemic_treatment_presence_v1.hpp"
 #include "xar_bridge/death_succession_modal_continue_v1_mailbox.hpp"
 #include "xar_bridge/event_window_context_v1_mailbox.hpp"
 #include "xar_bridge/g2_truce_native_callsite_observer_v1.hpp"
@@ -6956,6 +6957,29 @@ std::string CurrentTimelineBlockerContextResultFrame(
   return result;
 }
 
+std::string PlayerEpidemicTreatmentPresenceResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    std::uint64_t observation_revision,
+    const xar::ck3_11906::PlayerEpidemicTreatmentPresenceV1 &value) {
+  const auto payload =
+      xar::ck3_11906::SerializePlayerEpidemicTreatmentPresenceV1(value);
+  if (payload.empty()) return {};
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":\"";
+  result += xar::ck3_11906::kPlayerEpidemicTreatmentPresenceStepV1;
+  result += "\",\"accepted\":true,\"status\":\"";
+  result += value.available ? "available" : "unavailable";
+  result += "\",\"query_sequence\":" + Number(query_sequence);
+  result += ",\"observation_revision\":" + Number(observation_revision);
+  result += ",\"snapshot_revision\":" + Number(value.snapshot_revision);
+  result += ",\"player_epidemic_treatment_presence\":" + payload;
+  result += ",\"private_build\":true,\"read_only\":true,";
+  result += "\"advertised\":false,\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string DeathSuccessionModalContinueResultFrame(
     std::string_view request_id, std::uint64_t observation_revision,
     const xar::game::DeathSuccessionModalContinueReceiptV1 &receipt) {
@@ -8025,6 +8049,10 @@ public:
     environment.permitted_executor_quinquadragintary =
         &xar::ck3_11906::ExecuteDeathSuccessionModalContinueMailboxV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1)
+    environment.permitted_executor_sexquadragintary =
+        &xar::ck3_11906::ExecutePlayerEpidemicTreatmentPresenceMailboxV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -8331,6 +8359,7 @@ struct WorkerState {
   std::uint64_t pending_character_interaction_context_query_sequence = 0;
   std::uint64_t event_window_context_query_sequence = 0;
   std::uint64_t current_timeline_blocker_context_query_sequence = 0;
+  std::uint64_t player_epidemic_treatment_presence_query_sequence = 0;
   std::uint64_t coat_of_arms_designer_probe_query_sequence = 0;
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
@@ -8465,6 +8494,8 @@ void RunConnectedSession(
       state.event_window_context_query_sequence;
   auto &current_timeline_blocker_context_query_sequence =
       state.current_timeline_blocker_context_query_sequence;
+  auto &player_epidemic_treatment_presence_query_sequence =
+      state.player_epidemic_treatment_presence_query_sequence;
   auto &coat_of_arms_designer_probe_query_sequence =
       state.coat_of_arms_designer_probe_query_sequence;
   auto &army_strength_query_sequence =
@@ -8649,6 +8680,10 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
                    && !xar::ck3_11906::
                           IsDeathSuccessionModalPrivateStepV1(step)
+#endif
+#if defined(XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kPlayerEpidemicTreatmentPresenceStepV1
 #endif
         ) {
           connected = xar::bridge::WriteFrame(
@@ -13213,6 +13248,97 @@ void RunConnectedSession(
               }
             }
           }
+#if defined(XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1)
+        } else if (step == xar::ck3_11906::
+                                kPlayerEpidemicTreatmentPresenceStepV1) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::ParseCurrentTimelineBlockerContextRequestV1(
+                  incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "epidemic treatment presence request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "epidemic treatment presence revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character ||
+                !current_snapshot.played_character_alive) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "epidemic treatment presence frame is not ready"));
+            } else {
+              xar::ck3_11906::PlayerEpidemicTreatmentMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment =
+                  xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                      true);
+              query.expected_revision = expected_revision;
+              query.expected_snapshot = current_snapshot;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::
+                      ExecutePlayerEpidemicTreatmentPresenceMailboxV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false,
+                                             "epidemic treatment presence executor unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kPlayerEpidemicTreatmentQueuedWaitMsV1);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kPlayerEpidemicTreatmentExecutingWaitMsV1);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completed && !query.frame_changed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (stable) {
+                  response = PlayerEpidemicTreatmentPresenceResultFrame(
+                      request_id,
+                      player_epidemic_treatment_presence_query_sequence + 1,
+                      query.execution_stamp.pump_epoch, query.result);
+                  if (!response.empty())
+                    ++player_epidemic_treatment_presence_query_sequence;
+                }
+                if (response.empty()) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "epidemic treatment presence query did not complete on stable paused frame");
+                }
+                const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "epidemic treatment presence result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+#endif
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
         } else if (xar::ck3_11906::
                        ParseCurrentTimelineBlockerContextV1Step(step)) {
