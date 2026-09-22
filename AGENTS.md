@@ -197,6 +197,9 @@ py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 s
   工具不得自行制造 approval。重新编码或替换任何字节后，旧人工签核自动不适用于新文件，必须重新审阅。
 - 工具链的 build、audit、review、export 都不等于外部发布。每个 mod 仍必须走自己的 release staging、实机验收、
   Steam Workshop 上传、订阅缓存复核与 changelog 流程；宣传视频上传到外部平台同样需要独立明确授权。
+- **后续视频交付使用 OneDrive 桌面客户端上传**（项目所有者于 2026-09-23 明确指定），单次只传输用户指定的视频文件。
+  用户此前“不许客户端下载其他任何文件到本机”的限制继续有效，除非用户明确变更；不得把渠道选择视为解除限制，
+  或把按需下载、下载限速写成禁止下载。已有明确传输授权无需重复询问；如实记录实际上传结果，未上传不得写作交付完成。
 - secondary/detached worktree 运行宣传工具链或其他依赖型 Python 验收时，先使用该 worktree 内约定的相对 `.venv`，并确认
   已安装本次查询确认的最新正式 `xar-promo-toolchain` wheel；不能为迎合历史指南降级。若相对 venv 不存在，只能**显式指定并先验证**主 worktree 的
   venv 解释器，同时设置 `XAR_PROMO_SOURCE`（若需源码调试）并在报告中记录解释器路径、版本和依赖 probe。禁止静默回落到
