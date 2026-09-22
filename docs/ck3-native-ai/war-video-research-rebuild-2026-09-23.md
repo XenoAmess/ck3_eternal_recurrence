@@ -90,3 +90,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W6 增量：八类战争分数分母
 
 [战斗分母专题](war-film-battle-score-denominator-2026-09-23.md)已将八个数量桶追到原生 producer，七项用 tooltip 与 loc 互证，另一个绑定 Title regiment 容器。mode=2 并非统一当前兵员：征召兵/兵士采用 MAX 槽，特殊部队有 composition 校正，游牧分支是 nomadic riders 换算。13 个字节段、15 个关键指令、9 个标签复验通过。完整制度资格及真实战前/终局逐桶案例仍待补；没有新增 live。
+
+## W7 白和发送与接受：新增静态证据
+
+[W7 白和发送与接受](war-film-peace-policy-2026-09-23.md)：白和的普通实际接受比较为 raw 严格大于零；主动提案另有 tier 月份相位门、ai_will_do 整数减随机数的竞争与 CanSend。生产发送命令链、parser 默认标志、收件人 raw 已闭合；上游 actor 入队日程及自然白和前后态仍未知。26 段与 753 条选定指令已由独立冻结器复验。 本包不增加 live 或影片完成度。

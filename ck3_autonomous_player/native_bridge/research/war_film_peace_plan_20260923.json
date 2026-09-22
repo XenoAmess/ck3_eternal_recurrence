@@ -1,0 +1,105 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-peace-policy",
+  "question": "For exact-build AI white peace, what operands and signed comparisons produce the final recipient answer, and which production caller/frequency paths schedule proactive proposals?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "AI proposer and AI recipient of end_war_attacker_white_peace_interaction; human GUI legality is a separate excluded authority.",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Canonical interaction key is source identity for this exact build; runtime ordinals/pointers are not portable.",
+    "producer_trigger": "unknown",
+    "producer": "Authored ai_accept and ai_will_do trees are distinct; compiled definition evaluators and actual scheduling writer are to be traced.",
+    "caller": "Known locator candidates: recipient 0x2C44320, inner 0x2C43C50, outer 0x2C43B40. GUI CanSend and diagnostic 0x19126D0 cannot establish production scheduling.",
+    "consumer": "Find the machine compare consuming recipient raw and its special/intermediary bypass, then trace a production proposal consumer.",
+    "cache_lifetime": "Offline bytes only; proposal scheduling cache creation/invalidation remains a research question.",
+    "expected_signal": "Instruction-boundary confirmed RVA, operand width/sign, threshold, branch targets, definition offsets and direct callers with pdata function bounds.",
+    "zero_sample_meaning": "No direct xref or string match cannot rule out virtual/indirect calls, inlining or other scheduling paths.",
+    "stop_condition": "Read-only exact EXE and script extraction, bounded direct-call/RTTI/string traversal from acceptance and AI interaction anchors; preserve residual unknowns if a production edge cannot be proven. Never run CK3 or invoke native routines.",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {
+      "id": "scheduler",
+      "label": "Production AI interaction scheduling"
+    },
+    {
+      "id": "will_do",
+      "label": "Proposer ai_will_do"
+    },
+    {
+      "id": "send",
+      "label": "Native proposal send"
+    },
+    {
+      "id": "accept_raw",
+      "label": "Recipient ai_accept raw"
+    },
+    {
+      "id": "comparator",
+      "label": "Special-aware final comparator"
+    },
+    {
+      "id": "answer",
+      "label": "Recipient final answer"
+    }
+  ],
+  "edges": [
+    {
+      "id": "schedule",
+      "from": "scheduler",
+      "to": "will_do",
+      "label": "Frequency and opportunity dispatch",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which real production entry reads frequency/tier and triggers evaluation?"
+    },
+    {
+      "id": "select",
+      "from": "will_do",
+      "to": "send",
+      "label": "Weight/draw to proposal",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which branch sends and which draw/scheduler inputs remain?"
+    },
+    {
+      "id": "raw_compare",
+      "from": "accept_raw",
+      "to": "comparator",
+      "label": "Raw score and threshold",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "What exact signed operands and comparison consume recipient raw?"
+    },
+    {
+      "id": "final_answer",
+      "from": "comparator",
+      "to": "answer",
+      "label": "Special/intermediary combination",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "How is status combined for ordinary white peace versus special or human contexts?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "ordinary_ai_white_peace",
+      "question": "Static ordinary AI-to-AI white-peace acceptance path; no natural live case claimed.",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "proactive_ai_white_peace",
+      "question": "Locate production scheduling/call chain independently of player CanSend.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

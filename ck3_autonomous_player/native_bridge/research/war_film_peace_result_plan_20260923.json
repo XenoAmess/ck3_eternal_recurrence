@@ -1,0 +1,206 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-peace-policy",
+  "question": "Exact-build production white-peace opportunity, proposer selection, precheck versus command-time recipient acceptance, and remaining runtime scheduling boundary.",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "AI proposer and AI recipient of end_war_attacker_white_peace_interaction; human GUI legality is a separate excluded authority.",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Canonical interaction key is source identity for this exact build; runtime ordinals/pointers are not portable.",
+    "producer_trigger": "unknown",
+    "producer": "Production actor work list -> 0x183DEC0 -> 0x18813E0 frequency/tier/month gate -> 0x1880C20; field loaders and command RTTI traced.",
+    "caller": "0x18876D0 actor list consumer and parallel wrapper 0x1889E80; natural work-list enqueue/calendar cadence remains unclosed.",
+    "consumer": "CSendCharacterInteractionCommand 0x26B32D0 -> 0x26B30A0 -> 0x2752620; ordinary recipient signed raw>0 is distinct from precheck status!=2.",
+    "cache_lifetime": "Definition frequency tables are loaded candidate lists; actor work-list enqueue and invalidation lifetime not yet closed.",
+    "expected_signal": "Instruction-boundary confirmed RVA, operand width/sign, threshold, branch targets, definition offsets and direct callers with pdata function bounds.",
+    "zero_sample_meaning": "No direct xref or string match cannot rule out virtual/indirect calls, inlining or other scheduling paths.",
+    "stop_condition": "Read-only exact EXE and script extraction, bounded direct-call/RTTI/string traversal from acceptance and AI interaction anchors; preserve residual unknowns if a production edge cannot be proven. Never run CK3 or invoke native routines.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "bytes",
+      "layer": "exact-build",
+      "path": "war_film_peace_bytes_20260923.json",
+      "sha256": "bac639bc850421dec6120abcc9560c93303311c5fee4218fbe40c1abf20cf3be",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Exact EXE, selected instruction operands, constructor/parser flags, RTTI and white-peace script field identity; no live execution."
+    },
+    {
+      "id": "frequency_bytes",
+      "layer": "exact-build",
+      "path": "war_film_peace_frequency_fields_20260923.json",
+      "sha256": "f3928d6850d9e16de983a4714e9a720ab3530a4fb68fcb0834a0ea48a5487f09",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Frequency loader and title-tier getter bytes; bounded leaf windows are not claimed pdata functions."
+    },
+    {
+      "id": "analysis",
+      "layer": "source-contract",
+      "path": "../../../docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md",
+      "sha256": "7e6e0bfd9eb4b3ed9c764c9f8441e465383fb9da2085659d66bfbd1de79da5e9",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Authored interpretation of caller/control flow, precheck versus actual command comparator, white-peace flags, scheduler limits; hashes do not prove semantics."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "calendar",
+      "label": "Actor work-list creation and calendar cadence"
+    },
+    {
+      "id": "scheduler",
+      "label": "Production tier/month opportunity consumer"
+    },
+    {
+      "id": "context",
+      "label": "Recipient and special context plus precheck"
+    },
+    {
+      "id": "will_do",
+      "label": "Proposer integer ai_will_do minus random margin"
+    },
+    {
+      "id": "send",
+      "label": "RTTI-bound native send command"
+    },
+    {
+      "id": "accept_raw",
+      "label": "Recipient ai_accept raw"
+    },
+    {
+      "id": "precheck",
+      "label": "Precheck statuses including maybe/negotiation"
+    },
+    {
+      "id": "actual_answer",
+      "label": "Command-time recipient boolean"
+    },
+    {
+      "id": "war_outcome",
+      "label": "Observed completed peace in an identified war"
+    }
+  ],
+  "edges": [
+    {
+      "id": "calendar_to_scheduler",
+      "from": "calendar",
+      "to": "scheduler",
+      "label": "Natural actor work-list enqueue/refresh",
+      "status": "unknown",
+      "evidence": [
+        "analysis"
+      ],
+      "open_question": "Exact daily/monthly actor scheduling before the located consumer remains unclosed."
+    },
+    {
+      "id": "schedule",
+      "from": "scheduler",
+      "to": "context",
+      "label": "Positive tier frequency, phased month remainder, availability and candidate setup",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "frequency_bytes",
+        "analysis"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "precheck_candidate",
+      "from": "context",
+      "to": "will_do",
+      "label": "Ordinary no-options AI candidate calls outer precheck before will_do",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "frequency_bytes",
+        "analysis"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "select",
+      "from": "will_do",
+      "to": "send",
+      "label": "Strict positive best integer-minus-random margin, final CanSend, native command dispatch",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "frequency_bytes",
+        "analysis"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "raw_compare",
+      "from": "accept_raw",
+      "to": "precheck",
+      "label": "Signed raw threshold plus ai_maybe/negotiation and outer combination",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "frequency_bytes",
+        "analysis"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "command_answer",
+      "from": "send",
+      "to": "actual_answer",
+      "label": "Command stores intermediary/recipient raw separately and computes recipient boolean",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "frequency_bytes",
+        "analysis"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "plain_white_peace",
+      "from": "accept_raw",
+      "to": "actual_answer",
+      "label": "Original white-peace flags are false; ordinary recipient uses signed raw > 0",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "frequency_bytes",
+        "analysis"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "live_outcome",
+      "from": "actual_answer",
+      "to": "war_outcome",
+      "label": "Identified natural proposal and war end postcondition",
+      "status": "unknown",
+      "evidence": [
+        "analysis"
+      ],
+      "open_question": "No CK3 launched or native routine invoked; no new live proposal or war outcome was observed."
+    }
+  ],
+  "cases": [
+    {
+      "id": "ordinary_ai_white_peace",
+      "question": "Natural ordinary original-script white-peace recipient comparison and actual outcome: remains pending without a live run.",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "proactive_ai_white_peace",
+      "question": "Natural AI proposal scheduler and exact actor-list visit/command time: remains pending without a live run.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}
