@@ -1,6 +1,6 @@
 # 原生战争 AI：长篇逐句旁白
 
-状态：完整文字首稿，待旁白试剪。中文配音与忠实英文字幕共 90 条 cue，覆盖 45 个镜头组、8 章；中文 6325 个汉字（含标点和拉丁字母共 6939 个字符），英文约 3851 词。
+状态：全片文字已复核，冻结供 EdgeTTS 制作；成片待实际生成与完整审阅。中文配音与忠实英文字幕共 90 条 cue，覆盖 45 个镜头组、8 章；中文 6347 个汉字（含标点和拉丁字母共 6957 个字符），英文约 3880 词。
 
 20–40 分钟是弹性工作范围，30 分钟只作编排参考；本稿没有已测实际时长，不以拉长静帧或整体倍速凑时。语音、实机插片和成片均未由本次文字创作生成，素材绑定仍为 `unbound`。
 
@@ -50,9 +50,9 @@ Redriver and Blueridge are names created for this episode. We will begin at the 
 
 **N30-005** · C00 / C10
 
-本期讨论《十字军之王三》的一点一九点零点六版本。地图上的军队、路线和示例数字，都用来说明规则；它们没有被拍成过一场真实战争。
+本期讨论《十字军之王三》的一点一九点零点六版本。地图上的军队、路线和示例数字，用来说明规则；这是一张教学地图，不是同一场自然战争的实录。
 
-This episode discusses Crusader Kings III version 1.19.0.6. The armies, routes, and example numbers on our map illustrate rules; they are not footage of a real war.
+This episode discusses Crusader Kings III version 1.19.0.6. The armies, routes, and example numbers illustrate rules. This is a teaching map, not a record of one naturally occurring war.
 
 镜头说明（不朗读）：版本卡；教学图例；不朗读 SHA。
 
@@ -132,7 +132,7 @@ First, find the highest score: one hundred in this example. Take ninety percent 
 
 **N30-014** · C00 / C02
 
-看清边上的九十分：它刚好等于门槛，因此仍然保留。这里说的是分数达到最高分的九成，不是保留数量最多的九成候选；这两个说法听起来接近，实际筛出的名单可能完全不同。
+看清边上的九十分：它刚好等于门槛，因此仍然保留。这里说的是分数达到最高分的九成，不是按数量留下九成候选；这两个说法听起来接近，实际筛出的名单可能完全不同。
 
 Look closely at the ninety-point card. It is exactly on the threshold, so it stays. The rule compares scores with ninety percent of the highest score; it does not retain ninety percent of the candidates by count. Those interpretations can produce very different lists.
 
@@ -224,9 +224,9 @@ Think of a stance as an objective book on the desk. The program first selects an
 
 **N30-024** · C00 / C03
 
-书里的每一页，代表一个目标块。这是帮助理解顺序的画法，并不是游戏真的拿着一本书；它提醒我们，不同姿态的分数不该被抄到同一张账上，凑成一个看起来很完整的总分。
+书里的每一页，代表一个目标块。先选哪本书，再按页处理目标，是两个层次；不同姿态和不同目标块里的分数，不能不加区分地相加，当成这支军队的最终判断。
 
-Each page represents an objective block. The book is a visual aid for understanding order, not a literal object used by the game. It reminds us not to copy scores from different stances into one ledger and present the sum as a complete evaluation.
+Each page represents an objective block. Choosing a book and then processing its pages are two separate stages. Scores from different stances and objective blocks cannot simply be added together and presented as the army's final assessment.
 
 镜头说明（不朗读）：解释书页隐喻；不同姿态分数卡保持分开。
 
@@ -270,15 +270,15 @@ Showing the enemy as visible illustrates the relevant condition for this kind of
 
 **N30-029** · C00 / C03
 
-候选进入初步评价之后，初步最高的十项才继续进入包含寻路的最终评价。你可以把它理解成先筛出一批值得进一步看的位置，再为这些候选打开下一层检查，而不是一开始就把所有路径都画完。
+候选进入初步评价之后，排名最高的最多十项，才继续进入包含寻路的最终评价。你可以把它理解成先筛出一批值得进一步看的位置，再为这些候选打开下一层检查，而不是一开始就把所有路径都画完。
 
-After preliminary evaluation, the ten highest-ranked candidates proceed to final evaluation that includes pathfinding. Think of it as selecting positions worth further examination, then opening the next layer of checks for them, rather than resolving every route at the outset.
+After preliminary evaluation, at most the ten highest-ranked candidates proceed to final evaluation that includes pathfinding. Think of it as selecting positions worth further examination, then opening the next layer of checks for them, rather than resolving every route at the outset.
 
 镜头说明（不朗读）：初筛架口标前十；只给进入下层的候选接路线。
 
 **N30-030** · C00 / C03
 
-但是，完整路径成本怎样组合、重复候选怎样处理、同分如何排列，还有没有完全闭合的部分。我们知道这层结构，不等于已经能随手写出每个候选的精确总分；地图上的直线长短也不能替代它。
+但是，完整路径成本怎样组合、重复候选怎样处理、同分如何排列，其中仍有尚未弄清的部分。我们知道这层结构，不等于已经能写出每个候选的精确总分；地图上的直线长短也不能替代它。
 
 But parts of the full path-cost combination, duplicate handling, and tie ordering remain unresolved. Knowing the structure does not mean we can write down an exact final score for every candidate. Straight-line distances on the map cannot substitute for that evaluation either.
 
@@ -352,9 +352,9 @@ Bring back our three cards. The declaration power gate asks whether a condition 
 
 **N30-038** · C00 / C01 / C02 / C04
 
-它们可能都被口头简称为比值或者概率，但输入、分母和用途不同。把这些数混到同一把尺上，就会误以为程序先算好了整场战争的胜率，再把同一个答案交给所有后续决定。
+这三种量各管一步：过不过门、抽中哪张牌、怎样比较力量。这里，只有候选抽取那张卡给出了条件概率；把三者混在一起，就会误以为程序先算好了整场战争的胜率，再把同一个答案交给所有后续决定。
 
-They may loosely be called ratios or probabilities in conversation, but their inputs, denominators, and purposes differ. Putting them on one scale can create the false impression that the program first calculates a win probability for the whole war and passes that answer to every later decision.
+These three quantities address separate stages: passing a gate, selecting a card, and comparing power. Here, only the candidate-selection card gives a conditional probability. Conflating them can create the false impression that the program calculates a win probability for the whole war and passes that answer to every later decision.
 
 镜头说明（不朗读）：三个概念卡保持独立，不汇入统一胜率轴。
 
@@ -370,9 +370,9 @@ Now look only at the engagement branches that have been studied. The ordinary br
 
 **N30-040** · C00 / C04 / C05
 
-后者在资料中称为 desperate 分支。它完整的上游触发条件还没有闭合，所以不能自行补一句，兵少、性格激进，或者围城快输了，就必然会走这条更低门槛的路径。
+后一个门槛更低，但什么时候会选到它，还没有完整的答案。不能自行补一句，兵少、性格激进，或者围城快输了，就必然会走这条路径；我们只保留已经确认的条件比较。
 
-The latter is called the desperate branch in the research. Its complete upstream activation conditions remain unresolved. We therefore cannot add our own rule that fewer troops, an aggressive personality, or a failing siege must trigger this lower threshold.
+The latter threshold is lower, but we do not yet have the complete answer to when it is selected. We cannot assume that fewer troops, an aggressive personality, or a failing siege must trigger this path. We retain only the confirmed conditional comparison.
 
 镜头说明（不朗读）：desperate 名称保留在画面；上游条件虚线，不映射自造触发。
 
@@ -582,9 +582,9 @@ A number in the result window is therefore not the answer for the whole war. Nor
 
 **N30-063** · C00 / C08
 
-战斗结束之前，还有一个玩家很关心的问题：电脑为什么不早点撤？这里必须把资格、执行和决策分开；知道满足哪些条件可以撤退，不等于知道普通战争电脑什么时候会决定这样做。
+把画面倒回战斗还没结束的时候：电脑为什么不早点撤？这里必须把资格、执行和决策分开；知道满足哪些条件可以撤退，不等于知道普通战争电脑什么时候会决定这样做。
 
-Before a battle ends, players often ask why the AI did not retreat sooner. Here we must separate eligibility, execution, and decision-making. Knowing the conditions that permit a retreat does not tell us when ordinary war AI chooses to take it.
+Rewind to when the battle was still underway: why did the AI not retreat sooner? Here we must separate eligibility, execution, and decision-making. Knowing the conditions that permit a retreat does not tell us when ordinary war AI chooses to take it.
 
 镜头说明（不朗读）：资格钥匙打开执行门；主动决定时机一栏留空。
 
@@ -646,11 +646,11 @@ Begin with the left ledger, for proactively proposing white peace. Its base scor
 
 **N30-070** · C00 / C11
 
-战争已经持续多久、当前战分怎样、有没有债务或者其它战争压力，会在各自符合条件的分支里进入判断。这里我们只把入口逐项摆出来，不省略半本账之后，再给蓝岭编造一个看似精确的主动提议总分。
+给蓝岭的主动账看一条具体规则。它是防守方，如果战争至少持续一百八十二天，而且防守方战分不高于十五，就会得到十分的主动倾向。这只是其中一项修正，其它条件还要继续检查，并不表示下一天必定发信。
 
-War duration, current war score, debt, and pressure from other wars enter the assessment through their qualifying branches. We show those entries individually rather than omit half the ledger and invent a seemingly precise total proposal score for Blueridge.
+Examine one concrete rule in Blueridge's proposal ledger. As the defender, if the war has lasted at least one hundred and eighty-two days and the defender's war score is no higher than fifteen, it receives ten points of proposal willingness. This is only one modifier; other conditions still need checking, and it does not mean a letter must be sent the next day.
 
-镜头说明（不朗读）：时长、战分、压力条件卡逐项入位；最终总分留未展开。
+镜头说明（不朗读）：蓝岭防守方身份不变；条件卡显示战争至少 182 日、守方战分不高于 15，单项 +10；总分与发信日保持未定。
 
 ### S30-36 · 收到后接受：基础 -30 不是结果
 
@@ -664,11 +664,11 @@ The right ledger is a separate evaluation of whether to accept white peace after
 
 **N30-072** · C00 / C11
 
-后面还要根据进攻防守身份和相应条件，加入战分、时长等修正。最终原生接受比较仍有未闭合的部分，所以基础值、修正入口和实际接受结果，要保持三种不同的标签，不能互相冒充。
+这次接收方赤河是进攻方，战分这一项就读对面的防守方战分。赤河越接近输，这一项越会把它往愿意白和的方向推；之后仍有时长等修正，最后怎样比较、何时给出接受结果，还有没弄清的部分。
 
-War score, duration, and other modifiers then depend on attacker or defender roles and their conditions. Parts of the final native acceptance comparison remain unresolved. The base value, modifier entries, and actual acceptance outcome therefore need distinct labels rather than standing in for one another.
+With Redriver receiving as the attacker, the war-score term uses the opposing defender's war score. The closer Redriver is to losing, the more this term favors white peace. Duration and other modifiers still follow, while parts of the final comparison and timing remain unresolved.
 
-镜头说明（不朗读）：角色对应修正；实际结果不预填，不给接受保证。
+镜头说明（不朗读）：右账标赤河接收；从蓝岭的防守方战分卡连到右账这一项，保留后续修正与最终比较的边界。
 
 ### S30-37 · 明确换身份，再看玩家例外
 
@@ -692,11 +692,11 @@ This is why discussing peace rules requires stating who attacks, who defends, an
 
 **N30-075** · C00 / C11
 
-回到主案例，把沙漏、战分和第三国战争的压力放在两本账之间。某项压力进入左账还是右账，要看该角色对应的条件，不能因为它对故事有用，就让它在两边都加同样的分。
+回到主案例，别把右上角灰国的压力同时记到两本账上。我们只设定了灰国与蓝岭交战，没有设定赤河也在另一场防御战争里；是否能计入某项其它战争修正，还得逐项对照角色和条件。
 
-Return to the main example and place the hourglass, war score, and third-country war pressure between the ledgers. Whether a pressure enters the left or right ledger depends on the relevant role conditions. Its usefulness to the story does not justify adding identical points to both.
+Return to the main example without entering the third country's pressure into both ledgers. We established that the third country is at war with Blueridge; we did not establish that Redriver is also fighting another defensive war. Whether an other-war modifier applies still depends on the specific roles and conditions.
 
-镜头说明（不朗读）：条件卡按角色分流；不新增具体修正总和。
+镜头说明（不朗读）：灰国仍只与蓝岭相连；赤河另一场防御战争卡标未设定，两账分别核对条件，不复制加分。
 
 **N30-076** · C00 / C11
 

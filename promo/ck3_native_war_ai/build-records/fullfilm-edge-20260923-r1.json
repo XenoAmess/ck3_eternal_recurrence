@@ -1,0 +1,170 @@
+{
+  "schema": "ck3-war-ai.full-film-review.v1",
+  "created_at_utc": "2026-09-22T18:41:36.890129+00:00",
+  "state": "rendered-pending-human-review",
+  "full_film_rendered": true,
+  "human_signoff": "not-provided",
+  "run_id": "fullfilm-edge-20260923-r1",
+  "video": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-edge-20260923-r1/war-ai-full-film-review.mp4",
+    "bytes": 78679158,
+    "sha256": "328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e"
+  },
+  "actual_duration_seconds": 1735.788021,
+  "chapters": [
+    {
+      "title": "三个疑问",
+      "start_seconds": 0.0,
+      "end_seconds": 93.133333,
+      "timestamp": "00:00"
+    },
+    {
+      "title": "为什么选这场战争",
+      "start_seconds": 93.133333,
+      "end_seconds": 354.633333,
+      "timestamp": "01:33"
+    },
+    {
+      "title": "开战后，先盯哪里",
+      "start_seconds": 354.633333,
+      "end_seconds": 587.4,
+      "timestamp": "05:54"
+    },
+    {
+      "title": "遭遇之前，它在比较什么",
+      "start_seconds": 587.4,
+      "end_seconds": 864.033333,
+      "timestamp": "09:47"
+    },
+    {
+      "title": "求援开关",
+      "start_seconds": 864.033333,
+      "end_seconds": 1102.0,
+      "timestamp": "14:24"
+    },
+    {
+      "title": "一仗结束，战争还在继续",
+      "start_seconds": 1102.0,
+      "end_seconds": 1255.266667,
+      "timestamp": "18:22"
+    },
+    {
+      "title": "和平桌上的两张账",
+      "start_seconds": 1255.266667,
+      "end_seconds": 1539.933333,
+      "timestamp": "20:55"
+    },
+    {
+      "title": "回到地图",
+      "start_seconds": 1539.933333,
+      "end_seconds": 1735.766667,
+      "timestamp": "25:39"
+    }
+  ],
+  "resolution": [
+    2560,
+    1440
+  ],
+  "fps": 30,
+  "cue_count": 90,
+  "shot_count": 45,
+  "provider": "edge",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-12%",
+  "toolchain": "0.2.1",
+  "latest_release": {
+    "isDraft": false,
+    "isPrerelease": false,
+    "tagName": "v0.2.1",
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1"
+  },
+  "recovery_receipt": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-edge-20260923-r1/fullfilm-review-recovery-r1/final-recovery-receipt.json",
+    "bytes": 3293,
+    "sha256": "736394f87fdbdf550c15b3253cc7a573ccc97d3c9a94b775904833537994828b"
+  },
+  "original_producer_exit": "exit-1-after-intentional-interruption-of-slow-review; native build and final video completed successfully",
+  "original_review_interruption": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-review-interruption-20260923-r1.json",
+    "bytes": 1239,
+    "sha256": "e24a884b03f651773f14a8d54da4d693464bad521005f58299ee9d5871dce142"
+  },
+  "current_run_manifest": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-edge-20260923-r1/run/run-manifest.json",
+    "bytes": 292518,
+    "sha256": "4501df355ecba4c8e22fca58ba29aa93f7dd6896a6d0f31bb9651bfca13f1805"
+  },
+  "technical_audit": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-edge-20260923-r1/early-final-media-audit-r1/result.json",
+    "bytes": 6934,
+    "sha256": "422be6503a8f1f85f45aa6b49325180559677660209cd721c8bc03253ecd2daf"
+  },
+  "native_audit": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-edge-20260923-r1/fullfilm-review-recovery-r1/native-audit.json",
+    "bytes": 4166,
+    "sha256": "da78801c56937e2ab1b24bc1723ac302a75ae8406cb2d4a4b350d9ac607f69a7"
+  },
+  "narration_inputs": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-speech-edge-20260923-r1/production-inputs.json",
+    "bytes": 159791,
+    "sha256": "0ef311f203fba4c7a0956e0b9b36311403deb682aa79e6d46077c66361bad20c"
+  },
+  "environment": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-environment-20260923-r1.json",
+    "bytes": 975,
+    "sha256": "b33998e7deb51c2c922f28d3c0a8e899530715718de95170cac8ffbc511b05c2"
+  },
+  "visual_checks": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-visual-development-20260923-r1/attempt-r5/verification.json",
+    "bytes": 27754,
+    "sha256": "f48aefec7031e8e7dffd8503e4b9c56eea05fb841aa5c770069cde4e04d59044"
+  },
+  "caption_checks": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/fullfilm-caption-check-20260923-r1/checks.json",
+    "bytes": 130336,
+    "sha256": "8ca29b21b46be06c841b568200e67b5ce7b0070c6f40ee28f3fc133a8507b6cd"
+  },
+  "caption_disposition": "43 English final ASS events round 2–4 ms beyond audio into existing cue padding; no same-language overlaps or segment overruns. Retain ISSUES_FOUND report; no rerender for centisecond formatting.",
+  "media_scope": "Complete narrated teaching-graphics review film; no natural gameplay capture or music.",
+  "technical_scope": "Actual final-file ffprobe, eight bookmarks, one strict full video/audio decode, SHA-bound selected-frame evidence audit. Not a semantic/content approval or 1x human watch.",
+  "delivery": {
+    "state": "uploaded-confirmed-by-native-client",
+    "method": "OneDrive desktop client",
+    "folder": "CK3-War-AI-20260923",
+    "filename": "CK3-War-AI-Full-Film-20260923.mp4",
+    "receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/onedrive-fullfilm-delivery-20260923-r1/delivery-receipt.json",
+      "bytes": 2415,
+      "sha256": "63875a5fec31f4faccb25eb0aef43a864631855712cf048361a286378f83d808"
+    },
+    "native_readback": {
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/onedrive-delivery-20260923-r2/1790102242175836900-dump.json",
+        "bytes": 20152,
+        "sha256": "fdfcb55c8944863073af258ab94e1e17a2fbc2212cea0e7711abf7e1b73e6449"
+      },
+      "native_activity_text": "CK3-War-AI-Full-Film-20260923.mp4. 已上传到 CK3-War-AI-20260923. 13 秒 前. 1 个最近的项，共 74 个。"
+    },
+    "selective_sync": {
+      "state": "delivery-folder-selection-persisted-after-client-restart",
+      "checked_at_utc": "2026-09-22T18:25:00.798491+00:00",
+      "folder": "CK3-War-AI-20260923",
+      "selected_size_readback": "已选择: 11.7 MB",
+      "observed": "Delivery folder selected; visible other ordinary folder checkboxes cleared; all-files checkbox indeterminate. Total selected size equals the existing sample folder.",
+      "screenshot": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/onedrive-delivery-20260923-r2/1790101269300367100-desktop.png",
+        "bytes": 7418458,
+        "sha256": "0c5397eab3547987c6bf91930009c7cff4df60e062b6fcf638a6641f603dd3e0"
+      },
+      "uia_readback": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/onedrive-delivery-20260923-r2/1790101268600412300-dump.json",
+        "bytes": 5331,
+        "sha256": "4181f92c2dcffb2404508d43c1e7d1c1686981db6d103e197cdaf8946fd9fa62"
+      },
+      "client_notice": "无法停止同步部分文件夹",
+      "scope": "Native selective-sync configuration readback, not a guarantee or historical audit of network bytes."
+    },
+    "client_exited_after_upload": false,
+    "delivery_order": "User explicitly requested upload before the remaining review/audit work; no human signoff was required to deliver."
+  }
+}

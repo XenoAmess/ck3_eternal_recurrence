@@ -25,13 +25,22 @@ tools\.venv\Scripts\python.exe -m war_ai_promo.produce --project promo/ck3_nativ
 
 `produce` 在线核对最新正式 xar-promo，拒绝版本不符；随后使用真实 CLI 完成 `start-run / preserve / plan / build / review`，每次 run 修改后验证配置和清单。`plan` 不生成工作目录。输入是实测音频，不按导演案参考秒数拉长静音。
 
+全片使用完整稿，并以 `--full-film` 检查八章齐备和 20–40 分钟实测时长。最终播放器书签无重编码封装到新的 `war-ai-full-film-review.mp4`，原始构建视频仍保留：
+
+```text
+tools\.venv\Scripts\python.exe -m war_ai_promo.prepare_narration --script promo/ck3_native_war_ai/longform/narration.json --timeline promo/ck3_native_war_ai/longform/timeline.json --provider edge --output D:/workspace/ck3_native_war_ai_promo_work/next-full-speech
+tools\.venv\Scripts\python.exe -m war_ai_promo.produce --project promo/ck3_native_war_ai --full-film --inputs D:/workspace/ck3_native_war_ai_promo_work/next-full-speech/production-inputs.json --run-root D:/workspace/ck3_native_war_ai_promo_work/next-full-build --run-id next-full-build
+```
+
+Edge 批量最多并发三段，每段最多三次尝试；失败音频和错误记录永久保留，成功 take 的绑定另存，不覆盖失败 attempt。
+
 `--provider index` 必须同时提供 `--index-python`、`--index-runner` 和 `--reference`；批量任务在一个模型实例中顺序生成。不会自动回退到另一供应者。
 
 ## 已验证的边界
 
-- 求援章节是实际渲染样片，其他章节的图解实现尚未经过成片检查。90 条完整逐句稿仍是文字草稿。
+- 八章、90 段完整稿与全部图解已进入实际全片，最终文件的全量解码与书签检查通过；等待用户审片。
 - 图解中的赤河、蓝岭、甲乙、阈值示例属于教学假设。图解不是自然 AI 战争采样。
-- 字幕按真实单段语音长度编排，段内按文字分组分配时间，尚无逐词强制对齐；音乐未加入。
+- 中文字幕使用实际 SentenceBoundary；英文在实测段长内分句分配，尚无逐词强制对齐。两种字幕最多两行并做字体宽度检查；音乐未加入。
 - 审阅包采样实际章节边缘及每个镜头组最后一条 cue 的两种画面状态。采样不代表完整播放检查，不能产生人工签核。
 - `capture_session.py` 独立使用主仓 MCP/native-session。仅 no-launch 预检路径实际运行；本机旧 DLL 缺正式前端能力，live 分支尚未验收。具体依赖、排除的旧素材及原始 RED 收据见[素材盘点](../longform/capture-inventory.md)。
 

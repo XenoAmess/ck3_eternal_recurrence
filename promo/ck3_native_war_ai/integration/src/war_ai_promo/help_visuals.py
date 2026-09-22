@@ -1,7 +1,8 @@
 """Illustrated help-request frames with explicit allegiance and state history.
 
 This renderer consumes authored teaching cues, never a live game observation.
-The two phases change explanatory focus. Unit positions stay fixed throughout.
+Three phases per cue reveal inputs, comparisons and scoped results. Unit positions
+stay fixed throughout; friendly assignment arrows preserve the r2 correction.
 """
 from pathlib import Path
 
@@ -30,6 +31,14 @@ TITLES = {
     27: "什么时候停止求援？",
     28: "发出请求，就会有人来吗？",
     29: "这能解释我的盟友为什么不来吗？",
+}
+BEATS = {
+    24: ("普通 AI 求援：先看此前状态", "此前没有请求；假设 ratio = 0.65", "这只是输入，还不是援军到达", "开始门：ratio < 0.66", "0.65 通过开始门，请求亮起", "发出请求，不保证助手立即到达"),
+    25: ("此前已经求援，先保留这段历史", "假设情况改善：ratio = 0.70", "现在还应该继续亮灯吗？", "已有请求，使用继续门 0.75", "0.70 < 0.75，所以继续", "开始门与继续门不同"),
+    26: ("同样的 0.70，同时摆出两种历史", "此前未求援：不开始", "此前已求援：继续", "暂时只看先前请求状态", "相同输入，因为历史不同而走不同门", "这是两组对照，不是同一军队移动两次"),
+    27: ("此前已求援；假设 ratio = 0.76", "0.76 不低于继续门 0.75", "停止继续求援", "0.65 开始 → 0.70 继续", "0.76 停止", "三状态是逻辑演示，不是按日采样"),
+    28: ("先有请求，再看能否匹配", "按已有顺序找符合条件的请求者", "这个 helper 不做最短 ETA 排榜", "乙若匹配到甲，先取得甲当前所在省", "箭头连接同属赤河的候选助手与请求者", "目标指派不等于已经行军或最终到达"),
+    29: ("这一段讲的是普通 AI 军队之间", "玩家专用支援要另看路径", "不能直接复制普通求援结论", "玩家支援的部分消费路径仍未闭合", "未知不能解释成故意不来", "到这里收束规则，保留玩家支援边界"),
 }
 
 
@@ -273,8 +282,11 @@ def make_help_frame(row, destination, phase):
     if row.get("chapter_id") != "help":
         raise ValueError("make_help_frame only accepts help chapter rows")
     shot = int(row["shot_id"].split("-")[-1])
-    if shot not in TITLES or phase not in (0, 1):
-        raise ValueError("Expected help shot S30-24..29 and phase 0 or 1")
+    if shot not in TITLES or phase not in (0, 1, 2):
+        raise ValueError("Expected help shot S30-24..29 and phase 0, 1, or 2")
+    from .teaching_visuals import beat_index, fit
+    beat = beat_index(row, phase)
+    focus = min(phase, 1)
     destination = Path(destination)
     if destination.exists():
         raise FileExistsError(destination)
@@ -283,25 +295,33 @@ def make_help_frame(row, destination, phase):
     draw = ImageDraw.Draw(image)
     draw.rectangle((0, 0, SIZE[0], 10), fill=GOLD)
     text(draw, (112, 65), "CK3 / 原生战争 AI", 30, GOLD, True)
-    text(draw, (1800, 65), "机制示意 · 假设输入", 30, MUTED)
+    text(draw, (1660, 65), "HELP REQUESTS / 假设教学输入", 29, MUTED)
     text(draw, (112, 144), TITLES[shot], 67, INK, True, width=2300)
-    text(draw, (115, 247), "求援者与候选助手同属赤河；对手不参与这条求援连线。",
-         31, MUTED)
+    fit(draw, (115, 244, 2420, 290), BEATS[shot][beat], 30, GOLD, True)
+    for i in range(6):
+        draw.rounded_rectangle((112 + i * 390, 298, 465 + i * 390, 306), radius=4,
+                               fill=GOLD if i <= beat else FAINT)
     cue = str(row.get("id", ""))
-    _map(draw, shot, phase, cue)
+    _map(draw, shot, focus, cue)
     if shot in (24, 25):
-        _input_result(draw, shot, phase, cue)
+        _input_result(draw, shot, focus, cue)
     elif shot == 26:
-        _comparison(draw, phase, cue)
+        _comparison(draw, focus, cue)
     elif shot == 27:
-        _stop(draw, phase, cue)
+        _stop(draw, focus, cue)
     elif shot == 28:
-        _matching(draw, phase, cue)
+        _matching(draw, focus, cue)
     else:
-        _player_boundary(draw, phase)
+        _player_boundary(draw, focus)
+    if phase == 2:
+        # Final emphasis is a local annotation, never a fictitious movement.
+        draw.ellipse((592, 617, 688, 713), outline=GOLD, width=4)
+        box(draw, (152, 980, 1360, 1042), "#263B46", GOLD)
+        fit(draw, (174, 990, 1340, 1037),
+            "甲、乙同属赤河；请求、匹配、到达分别判断。", 28, INK)
 
     text(draw, (112, 1081), "CK3 1.19.0.6 · 虚构教学图", 24, MUTED)
-    text(draw, (1850, 1081), "来源 " + " / ".join(row["claim_ids"]), 24, MUTED)
+    text(draw, (1710, 1081), "PRIOR STATE / CONDITION / RESULT", 22, MUTED)
     draw.line((112, SUBTITLE_TOP - 4, 2448, SUBTITLE_TOP - 4), fill=FAINT, width=2)
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("xb") as stream:

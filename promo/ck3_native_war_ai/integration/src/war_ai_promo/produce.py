@@ -10,6 +10,7 @@ from xar_promo.media import probe_and_write_bound_media
 from xar_promo.process import CommandSpec, run_command
 
 from .common import binding, load, verify, write_new
+from .finalize import add_chapters
 
 
 def main():
@@ -18,6 +19,7 @@ def main():
     parser.add_argument("--inputs", type=Path, required=True)
     parser.add_argument("--run-root", type=Path, required=True)
     parser.add_argument("--run-id", required=True)
+    parser.add_argument("--full-film", action="store_true", help="Require all configured chapters and render the complete review film")
     args = parser.parse_args()
     args.project = args.project.resolve()
     args.inputs = args.inputs.resolve()
@@ -59,6 +61,14 @@ def main():
     rows = inputs["cues"]
     selected = {row["chapter_id"] for row in rows}
     config = load(args.project / "promo-project.json")
+    if args.full_film:
+        if selected != {chapter["id"] for chapter in config["chapters"]}:
+            raise ValueError("A full film must contain every configured chapter")
+        if not 1200 <= sum(row["duration_seconds"] for row in rows) <= 2400:
+            raise ValueError("The requested full film must be between 20 and 40 minutes")
+        inputs["full_film"] = True
+    selected_inputs = root / "selected-production-inputs.json"
+    write_new(selected_inputs, inputs)
     config["chapters"] = [chapter for chapter in config["chapters"] if chapter["id"] in selected]
     if selected != {row["id"] for row in config["chapters"]}:
         raise ValueError("Unknown selected chapter")
@@ -66,7 +76,8 @@ def main():
     cli("validate", config_path, "--json")
     cli("start-run", config_path, "--run-id", args.run_id, "--run-directory", manifest.parent)
     validate()
-    preserve(args.inputs, "production-inputs-v1", "measured-production-inputs")
+    preserve(args.inputs, "narration-production-source-v1", "measured-narration-inputs")
+    preserve(selected_inputs, "production-inputs-v1", "measured-production-inputs")
     for row in rows:
         preserve(verify(row["audio"]), row["audio_artifact_id"], "narration-source")
     for name, identifier, role in [
@@ -81,10 +92,16 @@ def main():
     if workdir.exists():
         raise ValueError("Read-only plan unexpectedly created the build directory")
     validate()
-    print("Native plan GREEN; building actual sample", flush=True)
+    print("Native plan GREEN; building complete film" if args.full_film else "Native plan GREEN; building sample", flush=True)
     cli("build", manifest, "--workdir", workdir, "--composer", "war_ai_promo.composer:compose", "--offline-tts")
     validate()
-    video = workdir / "war-ai-radio-cut.mp4"
+    video = workdir / ("war-ai-full-film.mp4" if args.full_film else "war-ai-radio-cut.mp4")
+    if args.full_film:
+        chaptered = root / "war-ai-full-film-review.mp4"
+        chapter_metadata = add_chapters(video, chaptered, rows, config, audit_directory=root / "chapter-mux-audit")
+        preserve(chapter_metadata, "film-chapter-bookmarks-v1", "chapter-metadata", "derived")
+        preserve(chaptered, "war-ai-full-film-review-v1", "deliverable", "derived")
+        video = chaptered
     bound = root / "video.bound-probe.json"
     probe = probe_and_write_bound_media("ffprobe", video, output_path=bound, audit_directory=root / "probe")
     expected = sum(row["duration_seconds"] for row in rows)
@@ -128,7 +145,7 @@ def main():
               "bound_probe": binding(bound), "actual_duration_seconds": actual, "toolchain": version,
               "latest_release": release, "selected_chapters": sorted(selected), "cue_count": len(rows),
               "provider": inputs["provider"], "media_scope": inputs["media_scope"], "music": "not-yet-added",
-              "full_film_complete": False, "human_signoff": "not-provided", "commands": calls})
+              "full_film_rendered": args.full_film, "human_signoff": "not-provided", "commands": calls})
     print(json.dumps({"video": str(video), "seconds": actual, "state": "pending-human-review"}), flush=True)
 
 

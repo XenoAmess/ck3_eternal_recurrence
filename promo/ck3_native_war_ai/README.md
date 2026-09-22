@@ -1,6 +1,6 @@
 # 《CK3 的 AI 为什么开战、绕路，又突然愿意讲和？》
 
-**EdgeTTS 求援样片已生成 · 2026-09-23 · 3:58。** [制作与样片记录](production-stage.md)提供修正版媒体位置、构建收据与限制；[长篇导演案](longform/director-plan.md)保留完整 20–40 分钟的编排。约 30 分钟是参考，最终长度由逐句稿和旁白粗剪决定。
+**完整审片版已上传 · 2026-09-23 · 约 28:56。** OneDrive 固定目录 `CK3-War-AI-20260923` 内的 `CK3-War-AI-Full-Film-20260923.mp4` 是完整八章、90 段 EdgeTTS 旁白、45 个镜头组与双语字幕版本，含播放器章节书签。[全片构建记录](build-records/fullfilm-edge-20260923-r1.json)绑定精确媒体、真实客户端上传与检查；[制作记录](production-stage.md)说明审阅范围。等待用户观看与意见，未作人工签核。
 
 这是面向 CK3 玩家的原生战争 AI 机制解说片。三个完整教学案例围绕“选择战争、军队行动、和平”展开，使用同一张持续演变的地图；研究基线为 CK3 **1.19.0.6**。本次补充叙事、伸缩章节、风险与制作安排，现有研究结论保持原样。
 
@@ -19,8 +19,8 @@
 | [production-workflow.md](production-workflow.md) | 已用工具、版本与 run，以及后续 composer、取材、渲染和审片接入点 |
 | [build-records/longform-director-20260922-r1.json](build-records/longform-director-20260922-r1.json) | 长篇 authoring 验证与新封存 run 索引；不是媒体构建报告 |
 
-项目 adapter/preset 和 composer 已在 [integration](integration/README.md) 实现。求援样片已完成真实配音及 `xar-promo plan/build`；具体最高阶段与媒体收据见[制作记录](production-stage.md)。导演 authoring、单章样片、完整影片和自然实机取材分别记录，不混用状态。
+项目 adapter/preset 和 composer 已在 [integration](integration/README.md) 实现。八章全片已完成真实配音及 `xar-promo plan/build/review`，另对最终媒体执行技术 audit；具体最高阶段与媒体收据见[制作记录](production-stage.md)。导演 authoring、单章样片、完整影片和自然实机取材分别记录，不混用状态。
 
-默认中文旁白、简中主字幕与英文副字幕，2560×1440 / 30 fps。20–40 分钟指影片长度，不是制作工期；不为凑整点拉长静帧或加快配音。首个样片先解决讲解与字幕，音乐尚未加入。每次新任务/run 使用最新正式 xar-promo；所有过程资产留在 `D:/workspace/ck3_native_war_ai_promo_work/` 的独立 attempt 中，大体积媒体不进 Git。
+默认中文旁白、简中主字幕与英文副字幕，2560×1440 / 30 fps。20–40 分钟指影片长度，不是制作工期；不为凑整点拉长静帧或加快配音。当前全片审阅版采用教学图解，音乐尚未加入；它不冒充自然实机采样。每次新任务/run 使用最新正式 xar-promo；所有过程资产留在 `D:/workspace/ck3_native_war_ai_promo_work/` 的独立 attempt 中，大体积媒体不进 Git。
 
 13:30 初案保留为历史：[导演案 v1](director-plan.md)、[旧镜头表](shot-list.md)、[旧时间线](timeline.json)、[首个 run 索引](build-records/director-20260922-r1.json)。版本升级记录见 [toolchain-latest-policy-20260922.json](build-records/toolchain-latest-policy-20260922.json)。旧 run 的配置快照与素材不受当前 ProjectConfig 修改影响。

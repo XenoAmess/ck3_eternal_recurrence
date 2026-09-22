@@ -81,3 +81,21 @@ D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe promo\ck3_nat
 此命令的 a03 尚未执行；对同一旧 DLL 预计仍 RED，不应为消除结果反复运行。未来换合格资产后才继续 preflight／Steam 当前状态／process-zero／受管 mutex／实机取景。wrapper 中 `RAW_CAPTURE_COMPLETE_PENDING_VISUAL_REVIEW` 只描述有非空 raw、ffprobe 成功及受管清理的过程结果，仍不是 clean span 接纳或 1× 审片。
 
 编号器新增 canonical `vanilla`，专用于实际 `enabled_mods=[]` 的原版会话，视频片名另记项目字段；本包未消耗生产编号。`py tools/test_ck3_live_run_id.py` 已一次运行，7 tests PASS，包含独立命名空间与共享 execution ID 的既有测试；没有新增镜像测试。本片实际取景的后续工作保留为缺口，GPU 排期已归还根任务。
+
+## 2026-09-23 完整影片取材复查
+
+用户要求整片完成后再审，本次在 `b4292ac2f0ed0dc8e5ae8d96c9b194190e3b6b63` 工作树上进行有界增量盘点。沿用 `capture-preflight-a02`，没有对同一 DLL 重跑 doctor、capture preflight 或游戏。新记录在 `D:/workspace/ck3_native_war_ai_promo_work/capture-inventory-fullfilm-a01/`，含只读脚本、`existing-dlls.json`、`additional-dll.json` 与检索总结。
+
+按精确文件名在 `D:/workspace` 查到 7 份 `xar_ck3_bridge.dll`：两份已在旧盘点检查，其余五份本次分别读取字节和哈希。它们都没有此前所需三个完整 capability 字符串，且均未找到 `query-frontend-selected-1066-feudal-candidate-v1` step；未得到满足现有 capture wrapper 静态要求的新资产。此处仅是静态资格化结果，未把字符串缺失解释为所有可能运行路径均不可用，也未尝试扩大逆向或重编译。
+
+| 本次新增检查的 DLL 路径（均在 `D:/workspace/` 下） | Bytes | SHA-256 |
+|---|---:|---|
+| `bcoa15r1/xar_ck3_bridge.dll` | 2,818,560 | `88E74E475C488ACD0D3B70967304EDD3B57A5DE83B14EE43DB97EF714AD4E98E` |
+| `bcoa15r4/xar_ck3_bridge.dll` | 2,818,560 | `2CEA58975B3ABF3B75453F4A85705B0BFC2DB999AD219E96F65E77B7BE47BB06` |
+| `build-fresh-frontend-gui-route-v1/xar_ck3_bridge.dll` | 2,698,752 | `6D0917BE5451BC2109581D30C464213B82D7AEFCA709667E72C8BC9C63866A0E` |
+| `ck3_eternal_recurrence/ck3_autonomous_player/build-fresh-coa-rest-e2e1/xar_ck3_bridge.dll` | 2,702,848 | `973B9EB1A4BAA926811CD06237A8B8173CC4459C7F9140221AFD45242E537095` |
+| `ck3_xqol_publication/ck3_autonomous_player/build-fresh-xqol-1.0.1/xar_ck3_bridge.dll` | 2,447,872 | `A71F38DFC26C8AA8E9F442F549E38973CB71049329710D1BAE1E7ACA87C26E03` |
+
+素材检索仍限定项目工作区与已知来源路径。Robert 母带和 6m25s 节选的精确文件名均未命中；`*battle*.png` 与 `*war*.mkv` 未命中；`*war*.mp4` 仅命中本片两次 `war-ai-radio-cut.mp4` 图解样片，这些不是 CK3 raw。主工作区 artifacts 没有新增战争目录，旧 Z 路径仍不可访问。此结果不证明所有可能文件名或其他磁盘均没有素材；现有《重整河山》及朝贡指令验收画面继续不选。
+
+**可新增插入本片的已核实原版实机素材仍为 0，故不分配实际 shot 绑定。** S30-01/11/17、S30-30/31、S30-34/36/37 的原版现象插片保留为可选取材计划，完整影片采用既有教学图即可；S30-16 的 R01 与 S30-39 的 R03 继续未绑定。本次没有取得 CK3／GPU 排他槽，没有分配 live 编号、启动游戏、录制 raw 或执行 Steam UI 操作。导演叙事、visual 和 composer 未在本子任务修改。

@@ -7,9 +7,8 @@ from xar_promo.pipeline import PipelineDependencies, PipelineDraft, PipelineInvo
 from xar_promo.process import run_command
 from xar_promo.render import RenderOptions
 from xar_promo.sources import VIDEO, VisualProbeResult, VisualSource
-from xar_promo.subtitles import AssCue, AssDocumentConfig, AssStyleConfig, SubtitleTrackConfig, render_ass_document
-
-from .common import load, lines
+from .common import load
+from .captions import subtitle_document
 from .visuals import render_visual
 
 
@@ -20,34 +19,6 @@ def artifact(run, run_path, identifier):
     if len(matches) != 1:
         raise ValueError(f"Expected one preserved artifact: {identifier}")
     return (run_path.parent / matches[0].path).resolve()
-
-
-def subtitle_document(row):
-    duration = row["duration_seconds"]
-    tracks = [
-        SubtitleTrackConfig("zh", "zh-CN", 2, AssStyleConfig(
-            name="Chinese", font_name="Microsoft YaHei", font_size=49, bold=True,
-            margin_left=145, margin_right=145, margin_vertical=178, outline=2.5)),
-        SubtitleTrackConfig("en", "en", 1, AssStyleConfig(
-            name="English", font_name="Microsoft YaHei", font_size=31, bold=False,
-            primary_colour="&H00BBC4C9", margin_left=145, margin_right=145,
-            margin_vertical=65, outline=2)),
-    ]
-    cues = []
-    for language, size in [("zh", 49), ("en", 31)]:
-        wrapped = lines(row[language], size, 2200, language == "zh")
-        groups = [wrapped[i:i + 2] for i in range(0, len(wrapped), 2)]
-        weights = [sum(len(value) for value in group) for group in groups]
-        total = sum(weights)
-        cursor = 0.12
-        available = row["speech_duration_seconds"] - cursor
-        for index, (group, weight) in enumerate(zip(groups, weights)):
-            end = min(duration, cursor + available * weight / total)
-            cues.append(AssCue(f"{language}-{index}", language, cursor, end, "\n".join(group)))
-            cursor = end
-    return render_ass_document(
-        AssDocumentConfig(row["shot_title"], 2560, 1440, duration_seconds=duration),
-        tracks, cues, available_font_names={"Microsoft YaHei"})
 
 
 def compose(config, run, *, config_path, run_path, workdir, adapter_factory,
@@ -94,6 +65,8 @@ def compose(config, run, *, config_path, run_path, workdir, adapter_factory,
         return subtitle_document(by_id[segment.segment_id])
 
     return PipelineInvocation(
-        PipelineDraft(config, tuple(segments), Path("war-ai-radio-cut.mp4"), "war-ai-radio-cut-v1", "video/mp4"),
+        PipelineDraft(config, tuple(segments),
+                      Path("war-ai-full-film.mp4" if inputs.get("full_film") else "war-ai-radio-cut.mp4"),
+                      "war-ai-full-film-v1" if inputs.get("full_film") else "war-ai-radio-cut-v1", "video/mp4"),
         PipelineDependencies(ffmpeg, subtitle_renderer, run_command, visual_probe,
                              visual_resolver=resolve_visual), Path(workdir))

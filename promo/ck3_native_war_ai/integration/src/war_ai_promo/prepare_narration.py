@@ -31,6 +31,36 @@ async def edge_cue(row, output, voice, rate):
         write_new(output.with_suffix(".boundaries.json"), boundaries)
 
 
+async def edge_batch(rows, output, voice, rate):
+    """Retain failed takes and retry only their cue; keep the provider load small."""
+    semaphore = asyncio.Semaphore(3)
+    completed = 0
+
+    async def prepare(row):
+        nonlocal completed
+        async with semaphore:
+            attempts = output / "tts-attempts" / row["id"]
+            attempts.mkdir(parents=True, exist_ok=False)
+            for attempt in range(1, 4):
+                take = attempts / f"attempt-{attempt:02d}.mp3"
+                try:
+                    await edge_cue(row, take, voice, rate)
+                    break
+                except Exception:
+                    if attempt == 3:
+                        raise
+                    await asyncio.sleep(attempt * 2)
+            target = output / (row["id"] + ".mp3")
+            for suffix in [".mp3", ".request.json", ".boundaries.json"]:
+                with take.with_suffix(suffix).open("rb") as source, target.with_suffix(suffix).open("xb") as destination:
+                    shutil.copyfileobj(source, destination)
+            write_new(target.with_suffix(".take.json"), {"source": binding(take), "attempt": attempt})
+            completed += 1
+            print(f"Speech {completed}/{len(rows)}: {row['id']}", flush=True)
+
+    await asyncio.gather(*(prepare(row) for row in rows))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--script", type=Path, required=True)
@@ -65,9 +95,7 @@ def main():
     write_new(args.output / "request.json", request)
     suffix = ".mp3" if args.provider == "edge" else ".wav"
     if args.provider == "edge":
-        for index, row in enumerate(rows):
-            asyncio.run(edge_cue(row, args.output / (row["id"] + suffix), args.voice, args.rate))
-            print(f"Speech {index + 1}/{len(rows)}: {row['id']}", flush=True)
+        asyncio.run(edge_batch(rows, args.output, args.voice, args.rate))
     else:
         batch = [{"id": row["id"], "text": row["zh"],
                   "output": str((args.output / (row["id"] + suffix)).resolve())} for row in rows]
@@ -88,10 +116,12 @@ def main():
                     "speech_duration_seconds": duration,
                     "duration_seconds": math.ceil((duration + (1.6 if last_in_chapter else .55)) * 30) / 30,
                     "shot_title": shots[row["shot_id"]]["title"]})
+        if args.provider == "edge":
+            row["sentence_boundaries"] = load(audio.with_suffix(".boundaries.json"))
     write_new(args.output / "production-inputs.json", {"format_version": 1,
               "media_scope": "teaching-graphics-radio-cut", "provider": args.provider, "cues": rows,
               "actual_duration_seconds": sum(row["duration_seconds"] for row in rows),
-              "caption_timing": "per-cue actual audio; within-cue measured text allocation for rough cut",
+              "caption_timing": "Chinese provider sentence boundaries when available; English proportional sentence timing",
               "human_signoff": "not-provided", "music": "not-yet-added"})
     print(f"Prepared {len(rows)} cues, {sum(row['duration_seconds'] for row in rows):.2f} seconds", flush=True)
 
