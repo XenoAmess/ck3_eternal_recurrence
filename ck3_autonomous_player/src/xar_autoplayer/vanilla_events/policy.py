@@ -801,6 +801,44 @@ def recommend_registered_vanilla_event_option_v1(
     if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS:
         contract = _with_relational_character_scope_types(contract)
     allowed_extended_fields: set[str] = set()
+    if event_key == "epidemic_events.0110":
+        # The exact source saves new_preferred_capital only when its immediate
+        # block finds a qualifying old plague county. R375 and R0099 saw the
+        # epidemic-only form; keep every actual scope and option check strict.
+        analysis = knowledge.get("analysis")
+        source_hashes = (
+            analysis.get("source_sha256")
+            if isinstance(analysis, Mapping) else None
+        )
+        optional_types = contract.get("optional_scope_types")
+        base_types = contract.get("scope_types")
+        raw_scopes = event_context.get("saved_scopes")
+        if (
+            isinstance(source_hashes, Mapping)
+            and source_hashes.get("events/dlc/ce1/epidemic_events.txt")
+            == "FEF2972BD4F778818CD3A414C337D036F5132C1598FEBAB0E2623E0252DB7A1E"
+            and base_types == {"epidemic": "epidemic"}
+            and optional_types == {"new_preferred_capital": "landed_title"}
+            and isinstance(raw_scopes, list)
+        ):
+            names = {
+                row.get("name")
+                for row in raw_scopes
+                if isinstance(row, Mapping)
+                and isinstance(row.get("name"), str)
+            }
+            contract = {
+                **contract,
+                "scope_types": {
+                    **base_types,
+                    **{
+                        name: type_key
+                        for name, type_key in optional_types.items()
+                        if name in names
+                    },
+                },
+            }
+            allowed_extended_fields.add("optional_scope_types")
     if event_key in _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS:
         allowed_extended_fields.add("unique_character_scope_excludes")
     if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS:

@@ -145,6 +145,32 @@ def _epidemic_1100_context(native_indices: tuple[int, ...]) -> dict[str, object]
     }
 
 
+def _epidemic_0110_context(
+    *, preferred_capital: bool = False
+) -> dict[str, object]:
+    scopes = [{
+        "name": "epidemic",
+        "name_identifier": 264,
+        "scope": _scope("epidemic"),
+    }]
+    if preferred_capital:
+        scopes.append({
+            "name": "new_preferred_capital",
+            "name_identifier": 265,
+            "scope": _scope("landed_title"),
+        })
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "epidemic_events.0110",
+        "root_scope": _scope("character", character_id=PLAYER),
+        "saved_scopes": scopes,
+        "options": [_option(0, 1), _option(1, 2)],
+    }
+
+
 def _epidemic_5007_context(
     native_indices: tuple[int, ...],
     *,
@@ -515,6 +541,165 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(utility["selected_rank"], 1)
         self.assertEqual(utility["alternatives"][0]["native_option_index"], 0)
         self.assertIsNone(utility["cross_event_numeric_score"])
+
+    def test_r0099_epidemic_recovery_optional_scope_selects_safe_native_two(
+        self,
+    ) -> None:
+        for preferred_capital in (False, True):
+            with self.subTest(preferred_capital=preferred_capital):
+                result = recommend_registered_vanilla_event_option_v1(
+                    _epidemic_0110_context(
+                        preferred_capital=preferred_capital
+                    ),
+                    played_character_id=PLAYER,
+                    snapshot_option_count=3,
+                )
+                self.assertEqual(result["status"], "recommended")
+                self.assertEqual(result["selected_option_number"], 3)
+                self.assertEqual(result["selected_native_option_index"], 2)
+                self.assertEqual(result["selected_rendered_index"], 1)
+                self.assertEqual(result["failed_checks"], [])
+                self.assertIsNone(result["choice_effect_profile"])
+
+    def test_r0099_epidemic_recovery_rejects_scope_and_option_drift(
+        self,
+    ) -> None:
+        wrong_capital_type = _epidemic_0110_context(preferred_capital=True)
+        wrong_capital_type["saved_scopes"][1]["scope"] = _scope("province")
+        extra_scope = _epidemic_0110_context()
+        extra_scope["saved_scopes"].append({
+            "name": "unreviewed",
+            "name_identifier": 266,
+            "scope": _scope("landed_title"),
+        })
+        new_option = _epidemic_0110_context(preferred_capital=True)
+        new_option["options"] = [
+            _option(0, 0), _option(1, 1), _option(2, 2)
+        ]
+        disabled_safe_option = _epidemic_0110_context()
+        disabled_safe_option["options"][1]["enabled"] = False
+        for case, context, failed_check in (
+            ("wrong optional type", wrong_capital_type,
+             "scope:new_preferred_capital:type"),
+            ("unknown extra scope", extra_scope, "saved_scope_names_exact"),
+            ("unseen native zero", new_option, "rendered_option_count"),
+            ("disabled selected option", disabled_safe_option,
+             "option:1:projection"),
+        ):
+            with self.subTest(case=case):
+                result = recommend_registered_vanilla_event_option_v1(
+                    context,
+                    played_character_id=PLAYER,
+                    snapshot_option_count=3,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIn(failed_check, result["failed_checks"])
+                self.assertIsNone(result["selected_native_option_index"])
+
+    def test_r0099_epidemic_recovery_requires_exact_source_binding(self) -> None:
+        knowledge = query_vanilla_event_knowledge_v1("epidemic_events.0110")
+        knowledge["analysis"]["source_sha256"]["events/dlc/ce1/epidemic_events.txt"] = "0" * 64
+        with mock.patch(
+            "xar_autoplayer.vanilla_events.policy.query_vanilla_event_knowledge_v1",
+            return_value=knowledge,
+        ):
+            result = recommend_registered_vanilla_event_option_v1(
+                _epidemic_0110_context(),
+                played_character_id=PLAYER,
+                snapshot_option_count=3,
+            )
+        self.assertEqual(result["status"], "blocked")
+        self.assertIn(
+            "direct_projection_support:optional_scope_types",
+            result["failed_checks"],
+        )
+
+    def test_r0099_epidemic_recovery_formal_planner_selects_typed_native_two(
+        self,
+    ) -> None:
+        context = _epidemic_0110_context()
+        context.update({
+            "current_event_instance_id": 23,
+            "snapshot_revision": 182,
+            "date_raw": 53_367_864,
+            "unavailable_reason": None,
+            "calculated_event_id": 1,
+            "runtime_stats_ordinal": 1,
+            "readiness": {
+                "event_definition_identity_ready": True,
+                "root_scope_ready": True,
+                "saved_scopes_ready": True,
+                "option_presentation_ready": True,
+                "effect_indicators_ready": True,
+                "effect_preview_ready": False,
+                "semantic_decision_ready": False,
+            },
+            "provenance": {
+                "root": "module+0x570F7B8->+0x10",
+                "idler_vtable_rva": "0x40B1D30",
+                "manager_offset": "+0x28",
+                "backend_id": "ck3-1.19.0.6-native-event-window-v1",
+            },
+        })
+        for option in context["options"]:
+            option.update({
+                "resolved_name": "test option",
+                "unavailable_reason": "",
+                "effect_indicators": {
+                    "status": "available",
+                    "coverage": (
+                        "played-character-event-icon-indicators-1.19.0.6-v1"
+                    ),
+                    "complete_effect_set": False,
+                    "rows": [],
+                },
+                "effect_preview": {
+                    "status": "unavailable",
+                    "reason": "indicator_subset_has_no_completeness_signal",
+                },
+                "resource_deltas": {"status": "unavailable"},
+                "relationship_deltas": {"status": "unavailable"},
+            })
+        history = [{
+            "command": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+            "ok": True,
+            "result": {
+                "step": QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "accepted": True,
+                "status": "available",
+                "snapshot_revision": 182,
+                "current_event_instance_id": 23,
+                "date_raw": 53_367_864,
+                "current_event_window_context": context,
+                "queried_snapshot_id": "native:182",
+                "queried_revision": 183,
+                "queried_native_revision": 182,
+            },
+        }]
+        snapshot = {
+            "snapshot_id": "native:182",
+            "revision": 183,
+            "native_revision": 182,
+            "date_raw": 53_367_864,
+            "paused": True,
+            "backend_id": "native-headless",
+            "played_character": {"character_id": PLAYER, "alive": True},
+            "active_event": {"instance_id": 23, "option_count": 3},
+        }
+        plan = choose_one_life_turn(
+            history,
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-3",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "active_event_registry_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-3")
+        self.assertEqual(plan["event_decision"]["selected_native_option_index"], 2)
+        self.assertEqual(plan["event_decision"]["failed_checks"], [])
+        self.assertNotIn("event_material_postcondition", plan)
 
     def test_exact_natural_disaster_option_variants_select_native_two(
         self,
