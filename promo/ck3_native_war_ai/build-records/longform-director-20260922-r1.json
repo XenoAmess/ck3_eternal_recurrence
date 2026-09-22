@@ -1,0 +1,80 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_war_ai_longform_authoring_record",
+  "created_at_utc": "2026-09-22T15:12:38.831795+00:00",
+  "proposal_base_commit": "d77152275f00a8690af2a3b18be71b34c82e1664",
+  "status": "authoring-validated-and-preserved",
+  "working_duration_range_seconds": [
+    1200,
+    2400
+  ],
+  "prior_network_preflight_failure": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/longform-director-20260922-r1-command-audit/001.json",
+    "bytes": 481,
+    "sha256": "c67d513f8a9f8c62d4ddc981e6452a8d2bd498b0f2bc032d049b0543c93d00bc"
+  },
+  "reference_duration_seconds": 1800,
+  "actual_duration_seconds": null,
+  "run": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/longform-director-20260922-r1/run-manifest.json",
+    "bytes": 10605,
+    "sha256": "f00f84e635180df8ac1cebf563cc23ccd87c7006390d0e7143c26dad38465e35"
+  },
+  "config": {
+    "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/promo/ck3_native_war_ai/promo-project.json",
+    "bytes": 1623,
+    "sha256": "efb915407976922b7bdbe7dceb6a85d369771a494eff499b4bc32585fa38969c"
+  },
+  "config_snapshot": {
+    "path": "artifacts/project-config/sha256/EF/EFB915407976922B7BDBE7DCEB6A85D369771A494EFF499B4BC32585FA38969C.json",
+    "bytes": 1623,
+    "sha256": "EFB915407976922B7BDBE7DCEB6A85D369771A494EFF499B4BC32585FA38969C"
+  },
+  "toolchain": "xar-promo 0.2.1",
+  "content_check": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/longform-director-20260922-r1-command-audit-retry/authoring-check.json",
+    "bytes": 999,
+    "sha256": "0bfc3fd0946e302c43be8d29893f8260e2e45d01768b6a68538e0d89529e44bd"
+  },
+  "environment_probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/longform-director-20260922-r1-command-audit-retry/environment-probe.json",
+    "bytes": 754,
+    "sha256": "5f9f8f8f6793ecb595890dc072c4e3bd5a282deeea918ad91e6141f3bb471c96"
+  },
+  "command_index": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/longform-director-20260922-r1-command-audit-retry/command-index.json",
+    "bytes": 17877,
+    "sha256": "6ec5db43eaa8fdd3d1e61abefd455c2778b239b56f8e41d888bd717b10f86936"
+  },
+  "artifact_count": 22,
+  "historical_run_unchanged": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/director-20260922-r1/run-manifest.json",
+    "bytes": 10080,
+    "sha256": "ae58d9b9e989348a2a95d463a400603f2a216a44c9c2a8ea6093231a73414d1f"
+  },
+  "source_lock": {
+    "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/promo/ck3_native_war_ai/source-lock.json",
+    "bytes": 2368,
+    "sha256": "b1c90b56cab93532c17f0c8eadaf5ede0050f637ddd7c228340c6d9eb69a816d"
+  },
+  "research_claims_modified": false,
+  "integration": {
+    "adapter_factory": "not-implemented",
+    "preset_factory": "not-implemented",
+    "composer": "not-implemented"
+  },
+  "not_executed": [
+    "CK3",
+    "TTS",
+    "plan",
+    "build",
+    "audit",
+    "review",
+    "signoff",
+    "export",
+    "publish"
+  ],
+  "human_signoff": "not-provided",
+  "media_artifacts": [],
+  "note": "Editorial reference, not a final-duration/frame-count contract. Record created after completion, no circular self-binding."
+}

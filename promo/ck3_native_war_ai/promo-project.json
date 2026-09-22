@@ -7,10 +7,10 @@
   },
   "pipeline": {
     "adapter": "ck3-native-war-ai-v1",
-    "preset": "ck3-native-war-ai-810s-zh-v1"
+    "preset": "ck3-native-war-ai-longform-zh-v2"
   },
   "locales": {"narration": "zh-CN", "subtitles": ["zh-CN", "en"]},
-  "constraints": {"duration_limit_seconds": 810},
+  "constraints": {"duration_limit_seconds": null},
   "chapters": [
     {"id": "hook", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "三个疑问"}, "cues": [], "artifact_ids": []},
     {"id": "declaration", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "为什么选这场战争"}, "cues": [], "artifact_ids": []},

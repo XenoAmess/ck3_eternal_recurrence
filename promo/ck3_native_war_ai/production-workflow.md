@@ -1,5 +1,17 @@
 # 导演案如何进入现有 promo 工具链
 
+## 现行长篇方案
+
+用户选择 **20–40 分钟宽松片长**。当前消费入口是 [longform/director-plan.md](longform/director-plan.md)、
+[longform/shot-list.md](longform/shot-list.md)、[longform/timeline.json](longform/timeline.json) 与根目录 `promo-project.json`。
+三案例、8 章采用约 30 分钟的参考编排；45 个镜头组可随句稿拆并。参考 1800 秒不生成精确成片帧数门，也不作为剪辑必须填满的长度。
+ProjectConfig 的 `duration_limit_seconds=null`，不把 40:00 另立为逐秒硬门。1200–2400 秒的工作范围与 1800 秒参考值写在本片 timeline 中，
+`range_policy=soft-editorial`；最终由实际口播与画面决定，不为轻微边界偏差损害表达。
+
+本轮新建 `D:/workspace/ck3_native_war_ai_promo_work/longform-director-20260922-r1/`，按原生 `start-run → preserve → validate` 封存当前输入，
+运行索引见 [longform-director-20260922-r1.json](build-records/longform-director-20260922-r1.json)。知识源仍按原 source-lock 的 commit/字节冻结，
+不把其他任务后来更新的文档悄悄套进旧结论。新增研究另立方案和证据，按需更新之后的 claim/run。
+
 ## 当前版本政策（2026-09-22 更新）
 
 项目所有者已明确要求 **`xar-promo` 永远使用最新版本**。每次工具链任务或新 run 前查询独立仓库最新正式 Release，更新 requirements
@@ -33,9 +45,9 @@ run 使用届时最新版本，不把历史版本记录当作安装要求。
 ## 文件的消费关系
 
 ```text
-director-plan.md + shot-list.md                 导演/拍摄意图
+longform/director-plan.md + shot-list.md        导演/拍摄意图（同一 longform 目录）
                  |
-timeline.json + claims.json + source-lock.json 本片时间预算与来源
+longform/timeline.json + 根 claims/source-lock 本片时间预算与来源
                  |
 promo-project.json                            通用 ProjectConfig，8 章 planned
                  |
@@ -46,9 +58,9 @@ start-run -> config snapshot -> preserve       本次实际完成的 authoring �
 plan -> build -> audit -> review -> signoff -> export
 ```
 
-`timeline.json` 与 `claims.json` 是本片自己的编辑输入，不能直接冒充通用 review storyboard 或 0.2 的 claims-review schema。逐句稿尚未冻结，ProjectConfig 的 cues 为空；八章均为 `planned`，artifact_ids 也没有填写不存在的片段。后续 composer 把已完成的句稿、字幕、时间和素材投影成实际工具接口需要的对象。
+`longform/timeline.json` 与 `claims.json` 是本片自己的编辑输入，不能直接冒充通用 review storyboard 或 0.2 的 claims-review schema。逐句稿尚未冻结，ProjectConfig 的 cues 为空；八章均为 `planned`，artifact_ids 也没有填写不存在的片段。后续 composer 把已完成的句稿、字幕、时间和素材投影成实际工具接口需要的对象，并按真实音频重算最终时间线。
 
-## 当前可复用的真实命令
+## 13:30 初案命令记录（历史）
 
 以下从本仓 worktree 根目录运行，使用 cmd 或 Python subprocess。创建本次 authoring run 时实际调用了同一组命令，完整 argv/stdout/stderr 与结果见 [run 索引](build-records/director-20260922-r1.json)。
 
@@ -67,7 +79,7 @@ tools\.venv\Scripts\python.exe -m xar_promo validate D:\workspace\ck3_native_war
 
 | 层 / 入口 | 本片需要做什么 | 当前状态 |
 | --- | --- | --- |
-| 项目 preset | 根据本案锁定 810 秒预算、画幅、字幕安全区、标签、声线、逐句稿与音乐安排；预留 ID `ck3-native-war-ai-810s-zh-v1` | 意图已写；注册 factory 尚未实现 |
+| 项目 preset | 读取 20–40 分钟工作范围、画幅、字幕安全区、标签、声线、逐句稿与音乐安排；预留 ID `ck3-native-war-ai-longform-zh-v2`；最终时长跟随真实句稿/音频 | 意图已写；注册 factory 尚未实现 |
 | 项目 adapter | 预留 ID `ck3-native-war-ai-v1`；读本片素材索引，分清示意图、实机说明画面、自然 AI 个案与 fixture；校验 claim 与实际证据关系 | 尚未实现，无已绑定录像 |
 | 通用 CK3 adapter | 有合格既有 capture bundle 时调用 `xar_promo.adapters.ck3.load_capture_bundle` 验证 report/index/timeline/raw/marks/clean spans | 已读合同；本次没有提供或加载 bundle |
 | 项目 composer | 在本目录 `integration/` 提供真实可 import 的 `PipelineComposer`，消费已绑定输入，委托通用 TTS/媒体/保全功能；声明实际 module:attribute | 尚未实现，不填写假的 composer 路径 |
@@ -86,4 +98,4 @@ G2 自动玩家的战略决定、我方 planner 的路线修复和玩家输入�
 
 每次录制、配音、渲染或审计采用独立 attempt。`D:/workspace/ck3_native_war_ai_promo_work/` 保留所有原始素材、失败素材、配置快照、命令和中间结果，不清理旧 run。Git 保存本目录的可复现输入和体积小的索引；实际媒体及完整素材库留在工作目录。
 
-本次检查只回答：8 章与 21 镜头组是否连续覆盖 810 秒、引用和条件算例是否一致、冻结研究来源是否与基准一致、通用 ProjectConfig/run 是否可验证且保存了精确输入。它不回答配音时长、实际画面、成片审美或人工作品批准；这些需要后续实际产物。
+本次长篇检查只回答：8 章与 45 个镜头组的参考节拍是否一致、伸缩预算是否对应 20/30/40 分钟、claim/案例/来源是否可回链、通用 ProjectConfig/run 是否可验证且保存了精确输入。它不把参考 1800 秒当实际片长，不回答配音时长、实际画面、成片审美或人工作品批准；这些需要后续实际产物。
