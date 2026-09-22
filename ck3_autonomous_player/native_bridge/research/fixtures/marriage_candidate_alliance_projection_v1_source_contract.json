@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_candidate_alliance_projection_v1",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_spans": [
+    {"name":"ui_projection_producer","rva_start":"0x126D4E0","rva_end_exclusive":"0x126D742","sha256":"E072510D1FBF43C1717DA0662A85983D9D0FE70BA5BAB05AA93E85441384A83A"},
+    {"name":"actual_marriage_alliance_consumer","rva_start":"0x2283470","rva_end_exclusive":"0x22836C1","sha256":"1B2BDD42F0DC4539BE5CECB991297BB2C174678E10DCBC3DE277DA8640AD7C23"},
+    {"name":"candidate_context_pair_wrapper","rva_start":"0x22846B0","rva_end_exclusive":"0x22847D4","sha256":"7AC656F24E5B4D474980960CD1E7E15F7F395B7B44D75A154C40BC1FD88A27CD"},
+    {"name":"maximum_three_pair_generator","rva_start":"0x29615E0","rva_end_exclusive":"0x29616C4","sha256":"9EB76961B88A02891400265DB7BF81F1741B3756B22DD77E42A47F90A6CA3799"},
+    {"name":"native_three_row_inline_owner_vtable","rva_start":"0x413C270","rva_end_exclusive":"0x413C2B0","sha256":"715FC40A822B931E8E8F22270359D7E5D211C3A85248E87010A85D75BCE2D046"}
+  ],
+  "direct_calls": [
+    {"site":"0x126D5E4","target":"0x22846B0","meaning":"UI projection uses candidate context"},
+    {"site":"0x1273366","target":"0x22846B0","meaning":"AI preview uses candidate context"},
+    {"site":"0x2283508","target":"0x22846B0","meaning":"actual marriage effect uses the same candidate pair helper"},
+    {"site":"0x22847C9","target":"0x29615E0","meaning":"wrapper resolves four finalized context roles"},
+    {"site":"0x296162A","target":"0x1020260","meaning":"first possible alliance pair append"},
+    {"site":"0x296166A","target":"0x1020260","meaning":"second possible alliance pair append"},
+    {"site":"0x29616AA","target":"0x1020260","meaning":"third possible alliance pair append"},
+    {"site":"0x228358F","target":"0x2661E00","meaning":"effect independently tests existing alliance"}
+  ],
+  "matrilineal_option_load_site": "0x2282E99",
+  "matrilineal_option_id_slot": "0x57EB680",
+  "candidate_vector": {"header_size":24,"inline_owner_bytes":104,"inline_capacity":3,"row_stride":32,"first_character_pointer_offset":0,"second_character_pointer_offset":8,"secondary_actor_pointer_offset":16,"secondary_recipient_pointer_offset":24},
+  "boundary": "Potential alliance pairs from a native finalized marriage context, not a guaranteed accepted interaction or live alliance. Result requires paused same-frame final legality and later independent material readback."
+}
