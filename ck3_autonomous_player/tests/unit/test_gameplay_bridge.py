@@ -2511,6 +2511,93 @@ class GameplayBridgeTests(unittest.TestCase):
             still_blocked,
         )
 
+    def test_r0118_overmatched_enemy_at_exact_objective_rejects_one_day_free(
+        self,
+    ) -> None:
+        date_raw = 53_370_552
+        player = _army(
+            419_430_662, soldiers=354, province_id=1684,
+            controllable=True, army_state="regular", route_province_ids=[],
+        )
+        enemy = _army(
+            419_430_684, soldiers=759, province_id=45,
+            controllable=False, army_state="sieging", route_province_ids=[],
+        )
+        route = [699, 700, 714, 975, 715, 45]
+        strengths = [
+            {
+                "status": "available", "army_id": 419_430_662,
+                "scope_role": "player", "war_ids": [88],
+                "current_soldiers": 354, "maximum_soldiers": 842,
+                "ai_base_power_raw": 1_068_500_000,
+            },
+            {
+                "status": "available", "army_id": 419_430_684,
+                "scope_role": "active_war_enemy", "war_ids": [88],
+                "current_soldiers": 759, "maximum_soldiers": 765,
+                "ai_base_power_raw": 2_075_900_000,
+            },
+        ]
+        history = [
+            _campaign_root_row(
+                1, date_raw=date_raw, capital_province_id=45,
+                held_county_capital_province_ids=(45,),
+            ),
+            _preview_row(
+                2, army_id=419_430_662, origin=1684, target=45,
+                date_raw=date_raw, route=route,
+            ),
+            _route_contact_row(
+                3, army_id=419_430_662, origin=1684, target=45,
+                date_raw=date_raw, route=route,
+                hostile_ids=(419_430_684,), contact_free=True,
+            ),
+        ]
+        plan = _native_war_plan(
+            player=player, enemies=[enemy], player_side="defender",
+            score=0, date_raw=date_raw, objective=45,
+            objective_states=[
+                _objective_state(
+                    45, fort_level=3, garrison_size=400,
+                    besieging_strength=759,
+                    active_siege=_active_siege(
+                        army_id=419_430_684, player=False, days_left=296,
+                    ),
+                ),
+            ],
+            occupation_supported=True,
+            negative_reuse_expires_date_raw=date_raw + 24,
+            route_contact_horizon_supported=True,
+            army_strengths=strengths, army_strengths_status="available",
+            history=history,
+            steps=("move-army-419430662-to-45", "life-advance"),
+        )
+        self.assertNotEqual(plan.get("selected_step"), "move-army-419430662-to-45")
+        self.assertEqual(
+            plan["phase"], "native_war_no_safe_route_defensive_hold_progress", plan,
+        )
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(
+            plan["route_rejections"][0]["one_day_contact_horizon_rejected"],
+            "hostile_operational_overmatch_enemy_current_on_exact_route",
+        )
+        balanced = _native_war_plan(
+            player=player, enemies=[enemy], player_side="defender",
+            score=0, date_raw=date_raw, objective=45,
+            objective_states=[_objective_state(45)],
+            occupation_supported=True,
+            negative_reuse_expires_date_raw=date_raw + 24,
+            route_contact_horizon_supported=True,
+            army_strengths=[
+                {**strengths[0], "current_soldiers": 900,
+                 "ai_base_power_raw": 2_500_000_000},
+                strengths[1],
+            ],
+            army_strengths_status="available", history=history,
+            steps=("move-army-419430662-to-45", "life-advance"),
+        )
+        self.assertEqual(balanced["selected_step"], "move-army-419430662-to-45")
+
     def test_outnumbered_armies_consolidate_strongest_idle_stack_first(
         self,
     ) -> None:

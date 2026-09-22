@@ -10606,14 +10606,21 @@ def _choose_one_life_turn_core(
                             "active_wars": war_summary,
                         }
                     if contact_horizon.get("one_day_contact_free") is True:
+                        enemy_current_on_route = any(
+                            conflict.get("kind") == "enemy_current_on_route"
+                            for conflict in audit.get("conflicts", [])
+                        )
                         if (
-                            route_candidate_source
-                            == "player_held_county_capital"
-                            and isinstance(strength_balance, dict)
+                            isinstance(strength_balance, dict)
                             and strength_balance.get(
                                 "hostile_operational_overmatch"
                             )
                             is True
+                            and (
+                                route_candidate_source
+                                == "player_held_county_capital"
+                                or enemy_current_on_route
+                            )
                         ):
                             audit = {
                                 **audit,
@@ -10621,6 +10628,10 @@ def _choose_one_life_turn_core(
                                 "one_day_contact_horizon_rejected": (
                                     "hostile_operational_overmatch_"
                                     "player_held_county_fallback"
+                                    if route_candidate_source
+                                    == "player_held_county_capital"
+                                    else "hostile_operational_overmatch_"
+                                    "enemy_current_on_exact_route"
                                 ),
                             }
                         else:

@@ -761,3 +761,42 @@ flowchart LR
 - [unknown] 不同 owner 的 allied armies 是共享一个 higher-level coordinator，还是经多个 coordinator
   交换 war-plan/支援信息。
 - [unknown] 当前 `33554657` 的 exact objective kind；`2587` endpoint 本身不能证明它在拦截或驻防。
+
+## R0118 守方战争目标接敌输入：#1312 一日 free 不覆盖整条路（2026-09-22）
+
+- [live-confirmed] 冻结 CK3 `1.19.0.6-steam23530548`、EXE SHA
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+  [R0118 原始清单](Z:/ck3_mod_rewrite/.task-tmp/RUN-001/century-h1471-continuation/R0118-evidence-manifest.json)
+  SHA `06C35A5A43B4F7FB8B35F00415A05AD5DED21F97D754F145205CC0D4A78D998F`。
+  在 history #1310/raw53370552，玩家 Army419430662 为 354 人、原生 base power
+  `1068500000`；敌 Army419430684 为 759 人、base power `2075900000`，已在省 45。
+  这里的 power 是现成原生 operational routing 输入，不是战斗胜率。
+- [live-confirmed] #1309 同帧 campaign-root 证实省 45 是玩家直接持有的首都。
+  #1307 原生战争状态证实 45 也是该战争的目标省，敌军正在围城；#1311 从省 1684
+  预览到战争目标兼首都 45，原生路线
+  `[699,700,714,975,715,45]`；#1312 的完整敌军 contact 查询同帧给出
+  `one_day_contact_free=true`，但 horizon 只到 raw53370576，路线到达敌军当前省 45
+  预计 raw53371944。#1313 随后提交移动；R0124 新 PID 恢复的 embarked 单段 `[45]`
+  已不可由 same-current move 或原版 Halt 脱离。该历史展示真实策略缺口：
+  以一日安全覆盖 58 日后、压制敌军仍驻守的终点，最终失去改道窗口。
+- [static-confirmed] 原版 AI controller 的 stance/objective/pathfinding 主干仍依本文既有
+  exact-build 树；此次没有恢复其未来敌军位置预测器或全量战斗效用。当前我方需要的
+  最小输入已存在：同帧首都、敌军 current、完整原生路线、原生 power 与一日 horizon。
+  我方 `strategy.py` 在完整占领状态可观测时把目标 45 纳入 exact route
+  候选；这个分支把 unsafe preview 的 `one_day_contact_free` 改标为
+  `safe_one_day_contact_horizon`，且现有压制否决只覆盖直接持有郡首都 fallback，
+  因而允许 #1313 提交移动。
+  未来 58 日敌军是否离开 45 是 [unknown]；不能因此把 #1312 的一日 free 扩成整路安全。
+
+```mermaid
+flowchart TD
+    P["[live] #1311 原生 preview 全路线"] --> C{"[live] 敌军 current 在 route?"}
+    C -->|yes| O{"[live] 原生 operational overmatch?"}
+    O -->|yes| H["[counter-policy] 不用一日 free 覆盖该冲突"]
+    O -->|no| F["[counter-policy] 保留既有接触/战斗准入"]
+    C -->|no| F
+    H --> U["[unknown] 改选目标或停表，待正式策略验证"]
+    F -. "[unknown] 远期敌军移动/战斗结果" .-> U
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
