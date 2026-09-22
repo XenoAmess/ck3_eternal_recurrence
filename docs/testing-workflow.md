@@ -2765,3 +2765,14 @@ R541→R542 再次实证 connection_generation 只在各自 CK3/pipe client 进�
 若 restore 已经真实替换进程，但 choreography 在完整业务 lineage 落盘前 RED，cleanup 仍须独立核验 supervisor
 `restart_count`、每个 retired shutdown、final PID shutdown 和全局进程零库存。这个分支只能给出 cleanup GREEN，并必须写明
 `restart_semantics_proven=false`；原业务 RED 保持不变。冻结 session report 应优先离线重放，不为 cleanup consumer 修复重启 CK3。实证与 artifact 见 [R540-R542 source restore lifecycle RED](phase2-promo/r540-r542-source-restore-lifecycle-contract-red-2026-09-12.md)。
+
+## G2 私有只读冷恢复 runner 的双层角色字段（2026-09-22）
+
+R0122 证实，仅向 `native_session(... prepared_xar_enabled="xar_off")` 传规则不够：私有
+`NativeHeadlessGameplayDriver` 必须在 pipe ingest 前从 prepared environment 绑定相同的
+`ordinary_campaign_succession/xar_off` lifecycle，并与 checkpoint/driver 持久字段核对。
+R0123 进一步证实 `_wait_for_readiness` 返回顶层 `played_character_id`，而
+`take_internal_semantic_snapshot()` 的玩家身份在 `played_character.character_id`；
+将 readiness 字段直接套在 semantic snapshot 上会在无游戏故障时误判 RED。
+修正后的 [R0124 只读 runner](../ck3_autonomous_player/native_bridge/research/run_r0124_h1566_reroute_probe.py)
+先完成 no-launch 配对检查，再用后者的嵌套角色 ID 与存活值核对首帧。
