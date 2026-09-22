@@ -493,6 +493,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "health.3103",
         "health.3104",
         "hostile_scheme_discovery.2001",
+        "physician_epidemic_events.1000",
         "prison_notification.2002",
         "stress_threshold_special.1001",
     }
