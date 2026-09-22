@@ -1,0 +1,176 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-retreat-policy-results-a01",
+  "question": "Locate the ordinary war AI active-combat retreat policy caller, and the producer selecting normal/desperate engagement thresholds, in CK3 1.19.0.6.",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Ordinary native war AI; exclude player commands and raid/barter/counter-raid as substitutes.",
+    "identity_kind": "none",
+    "identity_lifetime": "No runtime identity is sampled in this offline package.",
+    "producer_trigger": "unknown",
+    "producer": "Normal/desperate producer186B310 called by185A270 after mode timer expiry; ordinary active-combat retreat policy still unresolved.",
+    "caller": "18550D0 ->185A270 ->186B310; cache inputs refreshed by184D960.",
+    "consumer": "CMoveArmyCommand active-combat apply and coordinator-like +0x88 ratio threshold.",
+    "cache_lifetime": "Cached +68 bit4/+88 retain previous value until producer invocation; no live window sampled.",
+    "expected_signal": "Exact RVA, decoded predecessor predicates, direct or vtable call chain, and bounded unresolved edges.",
+    "zero_sample_meaning": "No static match does not prove absence of an indirect policy caller.",
+    "stop_condition": "One bounded static package: threshold producer and immediate caller chain, plus active-combat dispatch or an exact next static entry. No CK3 launch or bridge changes.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "reviewed_contract",
+      "layer": "source-contract",
+      "path": "war_film_retreat_evidence_a01.json",
+      "sha256": "4defcd2ffa3d2ec707a01771416f8d5ad38c1a624bdbd43cf97f2725bd7025dc",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Reviewed predicates, producers, consumers and bounded active-combat dispatch exclusion; unresolved semantics remain declared unknown."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cache",
+      "label": "184D960 cached inputs"
+    },
+    {
+      "id": "caller",
+      "label": "185A270 mode update"
+    },
+    {
+      "id": "predicate",
+      "label": "186B310 raw predicate"
+    },
+    {
+      "id": "threshold",
+      "label": "bit4 and threshold+88"
+    },
+    {
+      "id": "engage",
+      "label": "Encounter candidate ratio consumer"
+    },
+    {
+      "id": "dispatch",
+      "label": "Ordinary representative/follower movement"
+    },
+    {
+      "id": "active",
+      "label": "2248A80 active combat"
+    },
+    {
+      "id": "skip",
+      "label": "Skip movement submission"
+    },
+    {
+      "id": "policy",
+      "label": "General active-combat retreat policy"
+    },
+    {
+      "id": "score",
+      "label": "Business interpretation of signed score"
+    }
+  ],
+  "edges": [
+    {
+      "id": "cache_read",
+      "from": "cache",
+      "to": "caller",
+      "label": "Power qwords and side-signed score from exact writer offsets",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "predicate_call",
+      "from": "caller",
+      "to": "predicate",
+      "label": "185A2D5 direct call",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "threshold_store",
+      "from": "predicate",
+      "to": "threshold",
+      "label": "AL -> bit4 -> normal/desperate slots -> +88",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "engagement_bridge",
+      "from": "threshold",
+      "to": "engage",
+      "label": "Exact downstream engagement observation remains outside this package",
+      "status": "unknown",
+      "evidence": [
+        "reviewed_contract"
+      ],
+      "open_question": "Bind the chosen threshold and all subsequent vetoes to a real candidate/action."
+    },
+    {
+      "id": "representative_gate",
+      "from": "dispatch",
+      "to": "active",
+      "label": "1872208 and follower1872916",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "active_skips",
+      "from": "active",
+      "to": "skip",
+      "label": "True returns/skips before these paths submit movement",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "generic_policy",
+      "from": "dispatch",
+      "to": "policy",
+      "label": "No general policy attributed in enumerated paths",
+      "status": "unknown",
+      "evidence": [
+        "reviewed_contract"
+      ],
+      "open_question": "Locate remaining indirect/vtable policy or prove bounded dispatch-specific absence; do not infer global absence."
+    },
+    {
+      "id": "score_interpretation",
+      "from": "cache",
+      "to": "score",
+      "label": "Known signed arithmetic; comment mismatch unresolved",
+      "status": "unknown",
+      "evidence": [
+        "reviewed_contract"
+      ],
+      "open_question": "Reconcile cached raw score and role with exact primary identities and displayed/query perspective."
+    }
+  ],
+  "cases": [
+    {
+      "id": "native_case",
+      "question": "Does an ordinary AI independently select an active-combat retreat in a recorded runtime case?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

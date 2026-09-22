@@ -716,3 +716,7 @@ rg -a -b -o 'CalcCombatPredictionAndEdgesChangingAdvantage' 'Crusader Kings III\
 - [unknown] 从 paused bridge worker 直接调用 predictor 的线程所有权、临时 allocator 生命周期、锁和重入边界。
 - [unknown] AI ratio 与真实战斗结果之间的经验校准函数；在校准前它必须始终命名为 `ratio`，绝不能输出为
   `probability`。
+
+## 2026-09-23 追加：normal/desperate 真实上游已定位
+
+[战争影片补研](war-film-retreat-policy-2026-09-23.md)已追到 `0x186B310` raw 谓词、power/score cache producer 与 `bit4 → +0x88` 阈值写入。完整 raw 分支已归档；分数方向与原版注释存在待裁决差异，不能直接改写成“败势进入绝境”。本轮零实机，不提升为 live-confirmed。

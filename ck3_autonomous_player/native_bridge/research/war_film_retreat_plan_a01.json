@@ -1,0 +1,32 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-retreat-policy-a01",
+  "question": "Locate the ordinary war AI active-combat retreat policy caller, and the producer selecting normal/desperate engagement thresholds, in CK3 1.19.0.6.",
+  "purpose": "npc-choice",
+  "build": {"version": "1.19.0.6", "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"},
+  "observation": {
+    "mode": "offline-only", "actor_kind": "ai", "owner_scope": "Ordinary native war AI; exclude player commands and raid/barter/counter-raid as substitutes.",
+    "identity_kind": "none", "identity_lifetime": "No runtime identity is sampled in this offline package.",
+    "producer_trigger": "unknown", "producer": "Ordinary war assignment/controller dispatch, exact policy entry under investigation.",
+    "caller": "Trace callers and function-pointer references around movement/retreat gates and threshold store RVA 0x185A309.",
+    "consumer": "CMoveArmyCommand active-combat apply and coordinator-like +0x88 ratio threshold.",
+    "cache_lifetime": "Runtime lifetime remains unobserved; disk PE function boundaries and bytes are immutable for this hash.",
+    "expected_signal": "Exact RVA, decoded predecessor predicates, direct or vtable call chain, and bounded unresolved edges.",
+    "zero_sample_meaning": "No static match does not prove absence of an indirect policy caller.",
+    "stop_condition": "One bounded static package: threshold producer and immediate caller chain, plus active-combat dispatch or an exact next static entry. No CK3 launch or bridge changes.",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {"id": "war", "label": "Ordinary war AI dispatcher"},
+    {"id": "retreat", "label": "Active-combat retreat choice"},
+    {"id": "mode", "label": "Normal/desperate threshold producer"},
+    {"id": "gate", "label": "Engagement ratio gate"}
+  ],
+  "edges": [
+    {"id": "policy", "from": "war", "to": "retreat", "label": "Find policy caller and predicate", "status": "unknown", "evidence": [], "open_question": "Which ordinary-war caller selects active-combat retreat, as distinct from engine legality or mission movement?"},
+    {"id": "mode_choice", "from": "war", "to": "mode", "label": "Find predecessor conditions", "status": "unknown", "evidence": [], "open_question": "Which state and producer select .5 versus .4 at RVA 0x185A2F4?"},
+    {"id": "mode_use", "from": "mode", "to": "gate", "label": "Recheck store and callers", "status": "unknown", "evidence": [], "open_question": "Bind the threshold store to exact bytes and containing function before assigning semantics."}
+  ],
+  "cases": [{"id": "native_case", "question": "Does an ordinary AI independently select an active-combat retreat in a recorded runtime case?", "status": "pending", "evidence": []}]
+}

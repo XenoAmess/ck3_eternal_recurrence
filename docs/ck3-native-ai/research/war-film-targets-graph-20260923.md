@@ -60,7 +60,7 @@ flowchart TD
 
 | Evidence ID | Declared layer | File | SHA-256 | Supports |
 |---|---|---|---|---|
-| instructions | exact-build | war-film-target-countdowns-evidence-20260923.json | 0e33174ae67609c76157fe6254b4318d584c9add07fe63877649d6618106c070 | Actual define registration slots and exact countdown/strict comparison instructions. |
+| instructions | exact-build | war-film-target-countdowns-evidence-20260923.json | 16a280b82d8da3f9aa2193d5039312cf48e3da4230d1c3067825ef7fac287f9b | Actual define registration slots and exact countdown/strict comparison instructions. |
 | source-contract | source-contract | ../war-film-target-countdowns-2026-09-23.md | fca56cf2bf7aaebcadc9b3edc7453ba07118de20360ab23f8828f643a3b8b7fa | Manual reading of pinned branches: countdown mapping, eligibility, early refresh, reset and strict lopsided comparison; unresolved scheduling remains explicit. |
 
 Check result (file integrity and declarations only):
@@ -95,6 +95,6 @@ Check result (file integrity and declarations only):
     "Counts cover this enumerated graph only, not all CK3 branches.",
     "A consistent observation plan is not authorization to run or manipulate CK3."
   ],
-  "plan_sha256": "3d02b4025b536afc72c3e3c8401da1160c2089960e8175d295c8c0f05aee4666"
+  "plan_sha256": "84dde87def6792e9a9d38f863361573c1da55c8651d689ddb7f0f392e6e32c9e"
 }
 ```

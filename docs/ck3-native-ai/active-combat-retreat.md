@@ -785,3 +785,7 @@ rg -n 'MIN_DAYS_BEFORE_MANUAL_RETREAT|PURSUIT_PHASE_DAYS|SHATTERED_RETREAT|MOVEM
 | `0x2309154` | full-side 对每个 CUnit 写 native target/route |
 | `0x23CAA6D` | partial subset 同步调用 pursuit transition |
 | `0x26B48C5` / `0x26B48DC` | generic movement command apply 在 active CCombat 下调用 `0x2308850` |
+
+## 2026-09-23 追加：普通移动路径的排除证据
+
+[战争影片撤退补研](war-film-retreat-policy-2026-09-23.md)确认 representative/follower 普通移动分派在 active combat 时提前返回/跳过，并保存 exact-build 指令。通用战争 AI 主动撤退策略仍未找到；`0x184818D` 与 `0x18793B0` 上游是下一包入口，不把 direct-call census 当“不存在”证明。

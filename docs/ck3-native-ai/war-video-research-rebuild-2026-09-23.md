@@ -74,3 +74,5 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 
 - **W0 已入库并推送**：`bc5f5fbe99c1cb1bc3cb593df4fa90c66dc73e70`；审片结论、范围和重做标准已有永久记录。
 - **W2 第一包：静态完成，实机未验**：[coordinator 重算计数器](war-film-target-countdowns-2026-09-23.md)闭合三组字段/define 映射、目标提前刷新和初始化，并更正 lopsided 的严格 `<0.33` 比较。实际 EXE 校验、14 指令锚点、5 注册项及七份反汇编已保全。完整目标评分、上游调度和实机因果案例继续施工。
+
+- **W3/W5 第一包：新增静态 raw 树，语义及 live 继续**：[normal/desperate 与主动撤退入口](war-film-retreat-policy-2026-09-23.md)定位 mode 的完整 raw 谓词/缓存链，并排除两条战中不提交移动的普通路径。发现 signed warscore 比较与注释的解释冲突；最小同帧对账字段已列出。通用主动撤退策略尚未闭合，已继续追另一组 caller。

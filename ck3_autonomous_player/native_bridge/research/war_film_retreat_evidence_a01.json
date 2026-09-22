@@ -1,0 +1,879 @@
+{
+  "schema": "xar.war-film-retreat-source-contract.v1",
+  "created_at": "2026-09-22T19:21:49.118707+00:00",
+  "build": "1.19.0.6",
+  "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "proof_layer": "human-reviewed-static-source-contract",
+  "automatic_semantic_verification": false,
+  "live_execution_performed": false,
+  "extractor": {
+    "path": "war_film_retreat_extract.py",
+    "sha256": "29ee12ff63c23d122994c17fad9b6d477b587305a2c9d0fa990432cd6d150eba"
+  },
+  "source": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\ai\\00_ai.txt",
+    "sha256": "c78f9cd8df9938cc9f38e817bcb6e32cd13720b5bd9de077b85e3e1c6f030293",
+    "lines": [
+      {
+        "line": 1190,
+        "text": "\t### Brief: COMBAT_RATIO_THRESHOLD ( Fixed Point )"
+      },
+      {
+        "line": 1191,
+        "text": "\t# The AI will consider it valid to enter provinces where the"
+      },
+      {
+        "line": 1192,
+        "text": "\t# predicted combat ratio compared to nearby enemies is above this"
+      },
+      {
+        "line": 1193,
+        "text": "\t# value."
+      },
+      {
+        "line": 1194,
+        "text": "\t#"
+      },
+      {
+        "line": 1195,
+        "text": "\tCOMBAT_RATIO_THRESHOLD = 0.5"
+      },
+      {
+        "line": 1196,
+        "text": ""
+      },
+      {
+        "line": 1197,
+        "text": "\t### Brief: COMBAT_RATIO_THRESHOLD ( Fixed Point )"
+      },
+      {
+        "line": 1198,
+        "text": "\t# When in desperate mode, the AI will consider it valid to enter"
+      },
+      {
+        "line": 1199,
+        "text": "\t# provinces where the predicted combat ratio compared to nearby"
+      },
+      {
+        "line": 1200,
+        "text": "\t# enemies is above this value"
+      },
+      {
+        "line": 1201,
+        "text": "\t#"
+      },
+      {
+        "line": 1202,
+        "text": "\tCOMBAT_RATIO_THRESHOLD_DESPERATE = 0.4"
+      },
+      {
+        "line": 1475,
+        "text": "\t### Brief: GHW_ATTACKER_DESPERATE_THRESHOLD ( Fixed point )"
+      },
+      {
+        "line": 1476,
+        "text": "\t# Below this strength ratio, the attacker enters desperate mode if"
+      },
+      {
+        "line": 1477,
+        "text": "\t# the normal requirements haven't yet been met"
+      },
+      {
+        "line": 1478,
+        "text": "\t#"
+      },
+      {
+        "line": 1479,
+        "text": "\tGHW_ATTACKER_DESPERATE_THRESHOLD = 0.75"
+      },
+      {
+        "line": 1480,
+        "text": ""
+      },
+      {
+        "line": 1481,
+        "text": "\t### Brief: GHW_DEFENDER_DESPERATE_THRESHOLD ( Fixed point )"
+      },
+      {
+        "line": 1482,
+        "text": "\t# Below this strength ratio, the defender enters desperate mode if"
+      },
+      {
+        "line": 1483,
+        "text": "\t# the normal requirements haven't yet been met"
+      },
+      {
+        "line": 1484,
+        "text": "\t#"
+      },
+      {
+        "line": 1485,
+        "text": "\tGHW_DEFENDER_DESPERATE_THRESHOLD = 0.5"
+      },
+      {
+        "line": 1486,
+        "text": ""
+      },
+      {
+        "line": 1487,
+        "text": "\t### Brief: IS_DESPERATE_WARSCORE_THRESHOLDS ( array of ints )"
+      },
+      {
+        "line": 1488,
+        "text": "\t# Primary defenders realm size. Indices for these values map into"
+      },
+      {
+        "line": 1489,
+        "text": "\t# IS_DESPERATE_WARSCORE_THRESHOLDS for when the AI starts getting"
+      },
+      {
+        "line": 1490,
+        "text": "\t# desperate."
+      },
+      {
+        "line": 1491,
+        "text": "\t#"
+      },
+      {
+        "line": 1492,
+        "text": "\tIS_DESPERATE_REALM_SIZE_THRESHOLDS = {"
+      },
+      {
+        "line": 1493,
+        "text": "\t\t5"
+      },
+      {
+        "line": 1494,
+        "text": "\t\t10"
+      },
+      {
+        "line": 1495,
+        "text": "\t\t15"
+      },
+      {
+        "line": 1496,
+        "text": "\t}"
+      },
+      {
+        "line": 1497,
+        "text": ""
+      },
+      {
+        "line": 1498,
+        "text": "\t### Brief: IS_DESPERATE_WARSCORE_THRESHOLDS ( array of ints )"
+      },
+      {
+        "line": 1499,
+        "text": "\t# The attacker's war score. When opposing war score is above this"
+      },
+      {
+        "line": 1500,
+        "text": "\t# value, the AI is classed as desperate."
+      },
+      {
+        "line": 1501,
+        "text": "\t#"
+      },
+      {
+        "line": 1502,
+        "text": "\tIS_DESPERATE_WARSCORE_THRESHOLDS = {"
+      },
+      {
+        "line": 1503,
+        "text": "\t\t25"
+      },
+      {
+        "line": 1504,
+        "text": "\t\t50"
+      },
+      {
+        "line": 1505,
+        "text": "\t\t75"
+      },
+      {
+        "line": 1506,
+        "text": "\t}"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\additional-move-caller-refs.json",
+      "sha256": "80ac94add98b50f33689608e2872c89e8c949663a2fcd2f74ac322ba60c5c848",
+      "bytes": 2385
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\additional-move-callers.json",
+      "sha256": "7f47a64c42cb2cbb98efb055a197d66fafe82220b6e0e1492e6751b224f882c0",
+      "bytes": 31093
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\cache-update-window.json",
+      "sha256": "c58b5c214833ba7e32ce73544ca76c267e175e53794ff3048681ff7afdfc36ad",
+      "bytes": 34946
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\cache-writer-occurrences.json",
+      "sha256": "d1815dc27228a49407f95b669722b8ee5b96e1d417f9b57adf5586dd37968371",
+      "bytes": 2849
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\coordinator-producers.json",
+      "sha256": "843a1d488102a258d9a159cf241ce2e51ef4d8a4ed897ee3ff580bc0aeecc8a2",
+      "bytes": 84298
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\coordinator-update-window.json",
+      "sha256": "5d075413247afd94d236648397dd936df4fe5ca302a9dd2eeff5fc7fdca2796e",
+      "bytes": 28564
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\define-labels.json",
+      "sha256": "5b62e3a20e165c54a477a54031d6d4f7ea067f7c6e52f8d83054d1717cce1dba",
+      "bytes": 4213
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\define-refs.json",
+      "sha256": "88a21148e20b5142573d41a62cb8f004373841b9c0bc6a3df60f173bb2946e01",
+      "bytes": 7344
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\dispatch-sequence.json",
+      "sha256": "6c3000956ae2dae7bb0fe719dcaed3882b854a8e9147f277a97bccd4d67bd26a",
+      "bytes": 13621
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\initial-functions.json",
+      "sha256": "f109a6e6338892ddb5dde77efa8e2977a78a5c0bf53147465874c52d65b2f179",
+      "bytes": 79229
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\initial-refs.json",
+      "sha256": "c3a7e1a87d8b842dbd795b008dc4b4071f79a7a227ecf2e9316a720ef418c498",
+      "bytes": 5666
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\input-cache-occurrences.json",
+      "sha256": "9cbb8a0c167caadd70c138964b33a83c24b3a534e3110f84bc0c995a8c2e6bf9",
+      "bytes": 1442
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\input-field-occurrences.json",
+      "sha256": "a553d45a6321093cda0a45128f5a5190107b108ee500bbf9ffb1d941bedf810b",
+      "bytes": 2858
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\mode-timer-define-refs.json",
+      "sha256": "9993b4e0e016890b1402ba0035c1046461a55549022c39d68c4f1fb7facbeda4",
+      "bytes": 2492
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\move-builder-refs.json",
+      "sha256": "3aa4fec7d9855209905c0c628a6a686661764c48c4c6e8779158674045176113",
+      "bytes": 3319
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\ordinary-move-helper-refs.json",
+      "sha256": "f72687ec7acb1033181a8d4ca3e91b009f785f5de725aeb3724fff9e16d78455",
+      "bytes": 4339
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\power-and-score-producers.json",
+      "sha256": "2d35be0a4a5b3e1770b27206fbb9749729283c54be6fa46e2ccf8aa9a89c58ec",
+      "bytes": 14599
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\power-producer-windows.json",
+      "sha256": "0e46edaddad004d4c0b7483b09652ae8d839182a3efeb806ee584336ac67891f",
+      "bytes": 27077
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\producer-functions.json",
+      "sha256": "0bf651dac0152880430625ddd41592e67969c5d0e42d5fe341a929bb521728f8",
+      "bytes": 33260
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\producer-refs.json",
+      "sha256": "ad7ba1f5c36db5eec09261ab589bd79e91ba381d725cb4bd1f48543612afc524",
+      "bytes": 12584
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\producer-windows.json",
+      "sha256": "f588eaa64d892a8fa7afdafa34db9908a95996dbeddeca5dbb26ea6f7c19bd9d",
+      "bytes": 32216
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\registration-functions.json",
+      "sha256": "29bb1376d5f464eb8463f16da34862ccc0d690a3eaa091193f3d38d7e7727417",
+      "bytes": 24001
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\side-leader-helper.json",
+      "sha256": "795fabf8e2e8e2e8112c1f51ab6446fbb8b667a38c562a8e5e2162d87fcd75c6",
+      "bytes": 6670
+    }
+  ],
+  "reviewed_function_excerpts": [
+    {
+      "artifact": "producer-functions.json",
+      "target": "0x186b310",
+      "instructions": [
+        "00186B310  48 89 5c 24 08                   mov      qword ptr [rsp + 8], rbx",
+        "00186B315  48 89 6c 24 10                   mov      qword ptr [rsp + 0x10], rbp",
+        "00186B31A  48 89 74 24 18                   mov      qword ptr [rsp + 0x18], rsi",
+        "00186B31F  57                               push     rdi",
+        "00186B320  41 56                            push     r14",
+        "00186B322  41 57                            push     r15",
+        "00186B324  48 83 ec 20                      sub      rsp, 0x20",
+        "00186B328  4c 8b d2                         mov      r10, rdx",
+        "00186B32B  48 8b f9                         mov      rdi, rcx",
+        "00186B32E  49 3b d0                         cmp      rdx, r8",
+        "00186B331  0f 8d 4e 02 00 00                jge      0x14186b585",
+        "00186B337  0f b6 59 68                      movzx    ebx, byte ptr [rcx + 0x68]",
+        "00186B33B  48 bd a3 8d 23 d6 e2 53 00 00    movabs   rbp, 0x53e2d6238da3",
+        "00186B345  c0 eb 02                         shr      bl, 2",
+        "00186B348  48 be 09 e1 d1 c6 11 6b f1 29    movabs   rsi, 0x29f16b11c6d1e109",
+        "00186B352  80 e3 01                         and      bl, 1",
+        "00186B355  49 be 46 1b 47 ac c5 a7 00 00    movabs   r14, 0xa7c5ac471b46",
+        "00186B35F  49 bf 00 e4 0b 54 02 00 00 00    movabs   r15, 0x2540be400",
+        "00186B369  45 84 c9                         test     r9b, r9b",
+        "00186B36C  0f 84 d2 00 00 00                je       0x14186b444",
+        "00186B372  4d 85 c0                         test     r8, r8",
+        "00186B375  75 0a                            jne      0x14186b381",
+        "00186B377  b9 ff ff ff ff                   mov      ecx, 0xffffffff",
+        "00186B37C  e9 a5 00 00 00                   jmp      0x14186b426",
+        "00186B381  48 8d 04 2a                      lea      rax, [rdx + rbp]",
+        "00186B385  49 3b c6                         cmp      rax, r14",
+        "00186B388  77 14                            ja       0x14186b39e",
+        "00186B38A  49 69 c2 a0 86 01 00             imul     rax, r10, 0x186a0",
+        "00186B391  48 99                            cqo      ",
+        "00186B393  49 f7 f8                         idiv     r8",
+        "00186B396  48 8b c8                         mov      rcx, rax",
+        "00186B399  e9 88 00 00 00                   jmp      0x14186b426",
+        "00186B39E  49 8b c0                         mov      rax, r8",
+        "00186B3A1  48 99                            cqo      ",
+        "00186B3A3  48 33 c2                         xor      rax, rdx",
+        "00186B3A6  48 2b c2                         sub      rax, rdx",
+        "00186B3A9  49 3b c7                         cmp      rax, r15",
+        "00186B3AC  48 8b c6                         mov      rax, rsi",
+        "00186B3AF  7c 21                            jl       0x14186b3d2",
+        "00186B3B1  49 f7 e8                         imul     r8",
+        "00186B3B4  48 8b ca                         mov      rcx, rdx",
+        "00186B3B7  48 c1 f9 0e                      sar      rcx, 0xe",
+        "00186B3BB  48 8b c1                         mov      rax, rcx",
+        "00186B3BE  48 c1 e8 3f                      shr      rax, 0x3f",
+        "00186B3C2  48 03 c8                         add      rcx, rax",
+        "00186B3C5  49 8b c2                         mov      rax, r10",
+        "00186B3C8  48 99                            cqo      ",
+        "00186B3CA  48 f7 f9                         idiv     rcx",
+        "00186B3CD  48 8b c8                         mov      rcx, rax",
+        "00186B3D0  eb 54                            jmp      0x14186b426",
+        "00186B3D2  49 f7 ea                         imul     r10",
+        "00186B3D5  48 c1 fa 0e                      sar      rdx, 0xe",
+        "00186B3D9  48 8b c2                         mov      rax, rdx",
+        "00186B3DC  48 c1 e8 3f                      shr      rax, 0x3f",
+        "00186B3E0  48 03 d0                         add      rdx, rax",
+        "00186B3E3  48 69 ca a0 86 01 00             imul     rcx, rdx, 0x186a0",
+        "00186B3EA  48 8b c1                         mov      rax, rcx",
+        "00186B3ED  48 99                            cqo      ",
+        "00186B3EF  49 f7 f8                         idiv     r8",
+        "00186B3F2  4c 8b d8                         mov      r11, rax",
+        "00186B3F5  4c 8b ca                         mov      r9, rdx",
+        "00186B3F8  49 8b c2                         mov      rax, r10",
+        "00186B3FB  48 2b c1                         sub      rax, rcx",
+        "00186B3FE  48 69 c0 a0 86 01 00             imul     rax, rax, 0x186a0",
+        "00186B405  48 99                            cqo      ",
+        "00186B407  49 f7 f8                         idiv     r8",
+        "00186B40A  48 8b c8                         mov      rcx, rax",
+        "00186B40D  49 69 c1 a0 86 01 00             imul     rax, r9, 0x186a0",
+        "00186B414  48 99                            cqo      ",
+        "00186B416  49 f7 f8                         idiv     r8",
+        "00186B419  48 03 c8                         add      rcx, rax",
+        "00186B41C  49 69 c3 a0 86 01 00             imul     rax, r11, 0x186a0",
+        "00186B423  48 03 c8                         add      rcx, rax",
+        "00186B426  84 db                            test     bl, bl",
+        "00186B428  74 0d                            je       0x14186b437",
+        "00186B42A  48 3b 0d 57 2b ea 03             cmp      rcx, qword ptr [rip + 0x3ea2b57]",
+        "00186B431  0f 8c 4a 01 00 00                jl       0x14186b581",
+        "00186B437  48 3b 0d 42 2b ea 03             cmp      rcx, qword ptr [rip + 0x3ea2b42]",
+        "00186B43E  0f 8c 3d 01 00 00                jl       0x14186b581",
+        "00186B444  84 db                            test     bl, bl",
+        "00186B446  0f 85 39 01 00 00                jne      0x14186b585",
+        "00186B44C  83 7f 5c 01                      cmp      dword ptr [rdi + 0x5c], 1",
+        "00186B450  0f 8e c1 00 00 00                jle      0x14186b517",
+        "00186B456  41 bb a0 86 01 00                mov      r11d, 0x186a0",
+        "00186B45C  4d 3b c3                         cmp      r8, r11",
+        "00186B45F  4d 0f 4f d8                      cmovg    r11, r8",
+        "00186B463  4d 85 db                         test     r11, r11",
+        "00186B466  0f 84 19 01 00 00                je       0x14186b585",
+        "00186B46C  49 8d 04 2a                      lea      rax, [r10 + rbp]",
+        "00186B470  49 3b c6                         cmp      rax, r14",
+        "00186B473  77 14                            ja       0x14186b489",
+        "00186B475  49 69 c2 a0 86 01 00             imul     rax, r10, 0x186a0",
+        "00186B47C  48 99                            cqo      ",
+        "00186B47E  49 f7 fb                         idiv     r11",
+        "00186B481  48 8b c8                         mov      rcx, rax",
+        "00186B484  e9 85 00 00 00                   jmp      0x14186b50e",
+        "00186B489  49 8b c3                         mov      rax, r11",
+        "00186B48C  48 99                            cqo      ",
+        "00186B48E  48 33 c2                         xor      rax, rdx",
+        "00186B491  48 2b c2                         sub      rax, rdx",
+        "00186B494  49 3b c7                         cmp      rax, r15",
+        "00186B497  48 8b c6                         mov      rax, rsi",
+        "00186B49A  7c 21                            jl       0x14186b4bd",
+        "00186B49C  49 f7 eb                         imul     r11",
+        "00186B49F  48 8b ca                         mov      rcx, rdx",
+        "00186B4A2  48 c1 f9 0e                      sar      rcx, 0xe",
+        "00186B4A6  48 8b c1                         mov      rax, rcx",
+        "00186B4A9  48 c1 e8 3f                      shr      rax, 0x3f",
+        "00186B4AD  48 03 c8                         add      rcx, rax",
+        "00186B4B0  49 8b c2                         mov      rax, r10",
+        "00186B4B3  48 99                            cqo      ",
+        "00186B4B5  48 f7 f9                         idiv     rcx",
+        "00186B4B8  48 8b c8                         mov      rcx, rax",
+        "00186B4BB  eb 51                            jmp      0x14186b50e",
+        "00186B4BD  49 f7 ea                         imul     r10",
+        "00186B4C0  48 c1 fa 0e                      sar      rdx, 0xe",
+        "00186B4C4  48 8b c2                         mov      rax, rdx",
+        "00186B4C7  48 c1 e8 3f                      shr      rax, 0x3f",
+        "00186B4CB  48 03 d0                         add      rdx, rax",
+        "00186B4CE  48 69 ca a0 86 01 00             imul     rcx, rdx, 0x186a0",
+        "00186B4D5  48 8b c1                         mov      rax, rcx",
+        "00186B4D8  4c 2b d1                         sub      r10, rcx",
+        "00186B4DB  48 99                            cqo      ",
+        "00186B4DD  49 f7 fb                         idiv     r11",
+        "00186B4E0  4c 8b c8                         mov      r9, rax",
+        "00186B4E3  4c 8b c2                         mov      r8, rdx",
+        "00186B4E6  49 69 c2 a0 86 01 00             imul     rax, r10, 0x186a0",
+        "00186B4ED  48 99                            cqo      ",
+        "00186B4EF  49 f7 fb                         idiv     r11",
+        "00186B4F2  48 8b c8                         mov      rcx, rax",
+        "00186B4F5  49 69 c0 a0 86 01 00             imul     rax, r8, 0x186a0",
+        "00186B4FC  48 99                            cqo      ",
+        "00186B4FE  49 f7 fb                         idiv     r11",
+        "00186B501  48 03 c8                         add      rcx, rax",
+        "00186B504  49 69 c1 a0 86 01 00             imul     rax, r9, 0x186a0",
+        "00186B50B  48 03 c8                         add      rcx, rax",
+        "00186B50E  48 81 f9 f8 24 01 00             cmp      rcx, 0x124f8",
+        "00186B515  7f 6e                            jg       0x14186b585",
+        "00186B517  48 8b cf                         mov      rcx, rdi",
+        "00186B51A  e8 b1 a2 fe ff                   call     0x1418557d0",
+        "00186B51F  48 8b 88 b8 01 00 00             mov      rcx, qword ptr [rax + 0x1b8]",
+        "00186B526  48 85 c9                         test     rcx, rcx",
+        "00186B529  74 56                            je       0x14186b581",
+        "00186B52B  8b 91 d0 01 00 00                mov      edx, dword ptr [rcx + 0x1d0]",
+        "00186B531  83 fa 01                         cmp      edx, 1",
+        "00186B534  7e 4b                            jle      0x14186b581",
+        "00186B536  8b 05 30 b2 6e 03                mov      eax, dword ptr [rip + 0x36eb230]",
+        "00186B53C  4c 8b 15 1d b2 6e 03             mov      r10, qword ptr [rip + 0x36eb21d]",
+        "00186B543  ff c8                            dec      eax",
+        "00186B545  44 8b 05 38 b2 6e 03             mov      r8d, dword ptr [rip + 0x36eb238]",
+        "00186B54C  48 63 c8                         movsxd   rcx, eax",
+        "00186B54F  33 c0                            xor      eax, eax",
+        "00186B551  45 8b 0c 8a                      mov      r9d, dword ptr [r10 + rcx*4]",
+        "00186B555  45 85 c0                         test     r8d, r8d",
+        "00186B558  7e 1e                            jle      0x14186b578",
+        "00186B55A  48 8b 0d 17 b2 6e 03             mov      rcx, qword ptr [rip + 0x36eb217]",
+        "00186B561  3b 11                            cmp      edx, dword ptr [rcx]",
+        "00186B563  7e 0d                            jle      0x14186b572",
+        "00186B565  ff c0                            inc      eax",
+        "00186B567  48 83 c1 04                      add      rcx, 4",
+        "00186B56B  41 3b c0                         cmp      eax, r8d",
+        "00186B56E  7c f1                            jl       0x14186b561",
+        "00186B570  eb 06                            jmp      0x14186b578",
+        "00186B572  48 98                            cdqe     ",
+        "00186B574  45 8b 0c 82                      mov      r9d, dword ptr [r10 + rax*4]",
+        "00186B578  44 39 8f 38 1b 00 00             cmp      dword ptr [rdi + 0x1b38], r9d",
+        "00186B57F  7c 04                            jl       0x14186b585",
+        "00186B581  b0 01                            mov      al, 1",
+        "00186B583  eb 02                            jmp      0x14186b587",
+        "00186B585  32 c0                            xor      al, al",
+        "00186B587  48 8b 5c 24 40                   mov      rbx, qword ptr [rsp + 0x40]",
+        "00186B58C  48 8b 6c 24 48                   mov      rbp, qword ptr [rsp + 0x48]",
+        "00186B591  48 8b 74 24 50                   mov      rsi, qword ptr [rsp + 0x50]",
+        "00186B596  48 83 c4 20                      add      rsp, 0x20",
+        "00186B59A  41 5f                            pop      r15",
+        "00186B59C  41 5e                            pop      r14",
+        "00186B59E  5f                               pop      rdi",
+        "00186B59F  c3                               ret      "
+      ]
+    },
+    {
+      "artifact": "producer-functions.json",
+      "target": "0x2248a80",
+      "instructions": [
+        "002248A80  48 83 ec 28                      sub      rsp, 0x28",
+        "002248A84  83 79 18 00                      cmp      dword ptr [rcx + 0x18], 0",
+        "002248A88  0f 85 8d 00 00 00                jne      0x142248b1b",
+        "002248A8E  48 8b 05 9b 3c 4c 03             mov      rax, qword ptr [rip + 0x34c3c9b]",
+        "002248A95  48 85 c0                         test     rax, rax",
+        "002248A98  74 29                            je       0x142248ac3",
+        "002248A9A  8b 91 78 01 00 00                mov      edx, dword ptr [rcx + 0x178]",
+        "002248AA0  8b ca                            mov      ecx, edx",
+        "002248AA2  81 e1 ff ff ff 00                and      ecx, 0xffffff",
+        "002248AA8  3b 48 2c                         cmp      ecx, dword ptr [rax + 0x2c]",
+        "002248AAB  73 16                            jae      0x142248ac3",
+        "002248AAD  48 8b 40 20                      mov      rax, qword ptr [rax + 0x20]",
+        "002248AB1  48 03 c9                         add      rcx, rcx",
+        "002248AB4  48 8b 44 c8 08                   mov      rax, qword ptr [rax + rcx*8 + 8]",
+        "002248AB9  48 85 c0                         test     rax, rax",
+        "002248ABC  74 05                            je       0x142248ac3",
+        "002248ABE  39 50 10                         cmp      dword ptr [rax + 0x10], edx",
+        "002248AC1  74 07                            je       0x142248aca",
+        "002248AC3  48 8b 05 56 3c 4c 03             mov      rax, qword ptr [rip + 0x34c3c56]",
+        "002248ACA  48 8b 15 87 3c 4c 03             mov      rdx, qword ptr [rip + 0x34c3c87]",
+        "002248AD1  48 85 d2                         test     rdx, rdx",
+        "002248AD4  74 2d                            je       0x142248b03",
+        "002248AD6  44 8b 80 28 01 00 00             mov      r8d, dword ptr [rax + 0x128]",
+        "002248ADD  41 8b c0                         mov      eax, r8d",
+        "002248AE0  25 ff ff ff 00                   and      eax, 0xffffff",
+        "002248AE5  3b 42 2c                         cmp      eax, dword ptr [rdx + 0x2c]",
+        "002248AE8  73 19                            jae      0x142248b03",
+        "002248AEA  8b c8                            mov      ecx, eax",
+        "002248AEC  48 8b 42 20                      mov      rax, qword ptr [rdx + 0x20]",
+        "002248AF0  48 03 c9                         add      rcx, rcx",
+        "002248AF3  48 8b 4c c8 08                   mov      rcx, qword ptr [rax + rcx*8 + 8]",
+        "002248AF8  48 85 c9                         test     rcx, rcx",
+        "002248AFB  74 06                            je       0x142248b03",
+        "002248AFD  44 39 41 08                      cmp      dword ptr [rcx + 8], r8d",
+        "002248B01  74 07                            je       0x142248b0a",
+        "002248B03  48 8b 0d e6 3b 4c 03             mov      rcx, qword ptr [rip + 0x34c3be6]",
+        "002248B0A  48 8b 01                         mov      rax, qword ptr [rcx]",
+        "002248B0D  ff 50 08                         call     qword ptr [rax + 8]",
+        "002248B10  84 c0                            test     al, al",
+        "002248B12  74 07                            je       0x142248b1b",
+        "002248B14  b0 01                            mov      al, 1",
+        "002248B16  48 83 c4 28                      add      rsp, 0x28",
+        "002248B1A  c3                               ret      ",
+        "002248B1B  32 c0                            xor      al, al",
+        "002248B1D  48 83 c4 28                      add      rsp, 0x28",
+        "002248B21  c3                               ret      "
+      ]
+    },
+    {
+      "artifact": "producer-windows.json",
+      "target": "0x185a270",
+      "instructions": [
+        "00185A270  40 53                            push     rbx",
+        "00185A272  56                               push     rsi",
+        "00185A273  48 83 ec 78                      sub      rsp, 0x78",
+        "00185A277  83 79 2c 00                      cmp      dword ptr [rcx + 0x2c], 0",
+        "00185A27B  48 8b da                         mov      rbx, rdx",
+        "00185A27E  48 8b f1                         mov      rsi, rcx",
+        "00185A281  0f 84 b1 02 00 00                je       0x14185a538",
+        "00185A287  48 89 7c 24 68                   mov      qword ptr [rsp + 0x68], rdi",
+        "00185A28C  4c 89 74 24 60                   mov      qword ptr [rsp + 0x60], r14",
+        "00185A291  e8 1a 88 ff ff                   call     0x141852ab0",
+        "00185A296  48 8b 83 00 01 00 00             mov      rax, qword ptr [rbx + 0x100]",
+        "00185A29D  48 8b ce                         mov      rcx, rsi",
+        "00185A2A0  48 8b 96 58 1b 00 00             mov      rdx, qword ptr [rsi + 0x1b58]",
+        "00185A2A7  4c 8b 86 60 1b 00 00             mov      r8, qword ptr [rsi + 0x1b60]",
+        "00185A2AE  48 89 94 24 a0 00 00 00          mov      qword ptr [rsp + 0xa0], rdx",
+        "00185A2B6  4c 89 84 24 a8 00 00 00          mov      qword ptr [rsp + 0xa8], r8",
+        "00185A2BE  44 8b 88 18 17 00 00             mov      r9d, dword ptr [rax + 0x1718]",
+        "00185A2C5  41 c1 e9 11                      shr      r9d, 0x11",
+        "00185A2C9  41 80 e1 01                      and      r9b, 1",
+        "00185A2CD  44 88 8c 24 90 00 00 00          mov      byte ptr [rsp + 0x90], r9b",
+        "00185A2D5  e8 36 10 01 00                   call     0x14186b310",
+        "00185A2DA  0f b6 c8                         movzx    ecx, al",
+        "00185A2DD  ba ef ff 00 00                   mov      edx, 0xffef",
+        "00185A2E2  0f b7 46 68                      movzx    eax, word ptr [rsi + 0x68]",
+        "00185A2E6  66 23 c2                         and      ax, dx",
+        "00185A2E9  66 c1 e1 04                      shl      cx, 4",
+        "00185A2ED  66 0b c8                         or       cx, ax",
+        "00185A2F0  66 89 4e 68                      mov      word ptr [rsi + 0x68], cx",
+        "00185A2F4  48 8b 05 6d 3c eb 03             mov      rax, qword ptr [rip + 0x3eb3c6d]",
+        "00185A2FB  c0 e9 04                         shr      cl, 4",
+        "00185A2FE  f6 c1 01                         test     cl, 1",
+        "00185A301  48 0f 45 05 0f 3c eb 03          cmovne   rax, qword ptr [rip + 0x3eb3c0f]",
+        "00185A309  48 89 86 88 00 00 00             mov      qword ptr [rsi + 0x88], rax"
+      ]
+    },
+    {
+      "artifact": "initial-functions.json",
+      "target": "0x18721b0",
+      "instructions": [
+        "0018721B0  48 89 5c 24 08                   mov      qword ptr [rsp + 8], rbx",
+        "0018721B5  48 89 74 24 10                   mov      qword ptr [rsp + 0x10], rsi",
+        "0018721BA  48 89 7c 24 18                   mov      qword ptr [rsp + 0x18], rdi",
+        "0018721BF  55                               push     rbp",
+        "0018721C0  41 56                            push     r14",
+        "0018721C2  41 57                            push     r15",
+        "0018721C4  48 8d ac 24 b0 fd ff ff          lea      rbp, [rsp - 0x250]",
+        "0018721CC  48 81 ec 50 03 00 00             sub      rsp, 0x350",
+        "0018721D3  48 8b d9                         mov      rbx, rcx",
+        "0018721D6  48 8b 01                         mov      rax, qword ptr [rcx]",
+        "0018721D9  ff 50 30                         call     qword ptr [rax + 0x30]",
+        "0018721DC  84 c0                            test     al, al",
+        "0018721DE  0f 84 bc 04 00 00                je       0x1418726a0",
+        "0018721E4  80 63 50 f7                      and      byte ptr [rbx + 0x50], 0xf7",
+        "0018721E8  48 8b cb                         mov      rcx, rbx",
+        "0018721EB  e8 30 fb ff ff                   call     0x141871d20",
+        "0018721F0  48 8b f8                         mov      rdi, rax",
+        "0018721F3  48 8d 48 08                      lea      rcx, [rax + 8]",
+        "0018721F7  48 8b 01                         mov      rax, qword ptr [rcx]",
+        "0018721FA  ff 50 08                         call     qword ptr [rax + 8]",
+        "0018721FD  84 c0                            test     al, al",
+        "0018721FF  0f 84 9b 04 00 00                je       0x1418726a0",
+        "001872205  48 8b cf                         mov      rcx, rdi",
+        "001872208  e8 73 68 9d 00                   call     0x142248a80",
+        "00187220D  84 c0                            test     al, al",
+        "00187220F  0f 85 8b 04 00 00                jne      0x1418726a0",
+        "001872215  48 8b cb                         mov      rcx, rbx",
+        "001872218  e8 a3 26 00 00                   call     0x1418748c0",
+        "00187221D  84 c0                            test     al, al",
+        "00187221F  74 0d                            je       0x14187222e",
+        "001872221  48 8b cb                         mov      rcx, rbx",
+        "001872224  e8 87 27 00 00                   call     0x1418749b0",
+        "001872229  e9 72 04 00 00                   jmp      0x1418726a0",
+        "00187222E  33 d2                            xor      edx, edx",
+        "001872230  48 8b cf                         mov      rcx, rdi",
+        "001872233  e8 28 66 9d 00                   call     0x142248860",
+        "001872238  84 c0                            test     al, al",
+        "00187223A  0f 84 60 04 00 00                je       0x1418726a0"
+      ]
+    },
+    {
+      "artifact": "initial-functions.json",
+      "target": "0x18726c0",
+      "instructions": [
+        "0018728F4  41 8b 45 10                      mov      eax, dword ptr [r13 + 0x10]",
+        "0018728F8  39 46 10                         cmp      dword ptr [rsi + 0x10], eax",
+        "0018728FB  0f 84 b0 02 00 00                je       0x141872bb1",
+        "001872901  48 8d 4e 08                      lea      rcx, [rsi + 8]",
+        "001872905  48 8b 01                         mov      rax, qword ptr [rcx]",
+        "001872908  ff 50 08                         call     qword ptr [rax + 8]",
+        "00187290B  84 c0                            test     al, al",
+        "00187290D  0f 84 9e 02 00 00                je       0x141872bb1",
+        "001872913  48 8b ce                         mov      rcx, rsi",
+        "001872916  e8 65 61 9d 00                   call     0x142248a80",
+        "00187291B  84 c0                            test     al, al",
+        "00187291D  0f 85 8e 02 00 00                jne      0x141872bb1",
+        "001872923  33 d2                            xor      edx, edx",
+        "001872925  48 8b ce                         mov      rcx, rsi",
+        "001872928  e8 33 5f 9d 00                   call     0x142248860",
+        "00187292D  84 c0                            test     al, al",
+        "00187292F  0f 84 7c 02 00 00                je       0x141872bb1"
+      ]
+    },
+    {
+      "artifact": "cache-update-window.json",
+      "target": "0x184d960",
+      "instructions": [
+        "00184DD2B  40 f6 c6 04                      test     sil, 4",
+        "00184DD2F  0f 84 bd 00 00 00                je       0x14184ddf2",
+        "00184DD35  49 8b 96 f0 0f 00 00             mov      rdx, qword ptr [r14 + 0xff0]",
+        "00184DD3C  4d 85 c0                         test     r8, r8",
+        "00184DD3F  74 2b                            je       0x14184dd6c",
+        "00184DD41  44 8b 4a 1c                      mov      r9d, dword ptr [rdx + 0x1c]",
+        "00184DD45  41 8b c1                         mov      eax, r9d",
+        "00184DD48  25 ff ff ff 00                   and      eax, 0xffffff",
+        "00184DD4D  41 3b 40 2c                      cmp      eax, dword ptr [r8 + 0x2c]",
+        "00184DD51  73 19                            jae      0x14184dd6c",
+        "00184DD53  8b c8                            mov      ecx, eax",
+        "00184DD55  48 03 c9                         add      rcx, rcx",
+        "00184DD58  49 8b 40 20                      mov      rax, qword ptr [r8 + 0x20]",
+        "00184DD5C  48 8b 7c c8 08                   mov      rdi, qword ptr [rax + rcx*8 + 8]",
+        "00184DD61  48 85 ff                         test     rdi, rdi",
+        "00184DD64  74 06                            je       0x14184dd6c",
+        "00184DD66  44 39 4f 08                      cmp      dword ptr [rdi + 8], r9d",
+        "00184DD6A  74 07                            je       0x14184dd73",
+        "00184DD6C  48 8b 3d a5 e9 eb 03             mov      rdi, qword ptr [rip + 0x3ebe9a5]",
+        "00184DD73  0f b6 5a 68                      movzx    ebx, byte ptr [rdx + 0x68]",
+        "00184DD77  c0 eb 02                         shr      bl, 2",
+        "00184DD7A  80 e3 01                         and      bl, 1",
+        "00184DD7D  4c 8d 42 20                      lea      r8, [rdx + 0x20]",
+        "00184DD81  8b 52 1c                         mov      edx, dword ptr [rdx + 0x1c]",
+        "00184DD84  48 8d 4c 24 50                   lea      rcx, [rsp + 0x50]",
+        "00184DD89  e8 22 e6 ff ff                   call     0x14184c3b0",
+        "00184DD8E  0f 10 00                         movups   xmm0, xmmword ptr [rax]",
+        "00184DD91  0f 11 44 24 20                   movups   xmmword ptr [rsp + 0x20], xmm0",
+        "00184DD96  48 8b 44 24 20                   mov      rax, qword ptr [rsp + 0x20]",
+        "00184DD9B  49 89 86 f8 0f 00 00             mov      qword ptr [r14 + 0xff8], rax",
+        "00184DDA2  66 0f 73 d8 08                   psrldq   xmm0, 8",
+        "00184DDA7  66 41 0f 7e 86 08 10 00 00       movd     dword ptr [r14 + 0x1008], xmm0",
+        "00184DDB0  49 8b 8e f0 0f 00 00             mov      rcx, qword ptr [r14 + 0xff0]",
+        "00184DDB7  e8 e4 7a 00 00                   call     0x1418558a0",
+        "00184DDBC  48 8b d0                         mov      rdx, rax",
+        "00184DDBF  44 0f b6 cb                      movzx    r9d, bl",
+        "00184DDC3  4c 8b c7                         mov      r8, rdi",
+        "00184DDC6  48 8d 4c 24 60                   lea      rcx, [rsp + 0x60]",
+        "00184DDCB  e8 00 e8 ff ff                   call     0x14184c5d0",
+        "00184DDD0  0f 10 00                         movups   xmm0, xmmword ptr [rax]",
+        "00184DDD3  0f 11 44 24 20                   movups   xmmword ptr [rsp + 0x20], xmm0",
+        "00184DDD8  48 8b 44 24 20                   mov      rax, qword ptr [rsp + 0x20]",
+        "00184DDDD  49 89 86 00 10 00 00             mov      qword ptr [r14 + 0x1000], rax",
+        "00184DDE4  66 0f 73 d8 08                   psrldq   xmm0, 8",
+        "00184DDE9  66 41 0f 7e 86 0c 10 00 00       movd     dword ptr [r14 + 0x100c], xmm0",
+        "00184DDF2  40 f6 c6 18                      test     sil, 0x18",
+        "00184DDF6  0f 84 4c 01 00 00                je       0x14184df48",
+        "00184DDFC  49 8b 86 f0 0f 00 00             mov      rax, qword ptr [r14 + 0xff0]",
+        "00184DE03  0f b6 48 68                      movzx    ecx, byte ptr [rax + 0x68]",
+        "00184DE07  c0 e9 02                         shr      cl, 2",
+        "00184DE0A  80 e1 01                         and      cl, 1",
+        "00184DE0D  0f b6 d9                         movzx    ebx, cl",
+        "00184DE10  44 8d 24 5d ff ff ff ff          lea      r12d, [rbx*2 - 1]",
+        "00184DE18  0f b6 fb                         movzx    edi, bl",
+        "00184DE1B  40 80 f7 01                      xor      dil, 1",
+        "00184DE1F  33 d2                            xor      edx, edx",
+        "00184DE21  49 8b cf                         mov      rcx, r15",
+        "00184DE24  e8 77 ca 9d 00                   call     0x14222a8a0",
+        "00184DE29  41 0f af c4                      imul     eax, r12d",
+        "00184DE2D  41 89 86 d8 0f 00 00             mov      dword ptr [r14 + 0xfd8], eax"
+      ]
+    },
+    {
+      "artifact": "side-leader-helper.json",
+      "target": "0x18557d0",
+      "instructions": [
+        "0018557D0  0f b6 41 68                      movzx    eax, byte ptr [rcx + 0x68]",
+        "0018557D4  c0 e8 02                         shr      al, 2",
+        "0018557D7  a8 01                            test     al, 1",
+        "0018557D9  48 8b 05 60 6f eb 03             mov      rax, qword ptr [rip + 0x3eb6f60]",
+        "0018557E0  74 3a                            je       0x14185581c",
+        "0018557E2  48 85 c0                         test     rax, rax",
+        "0018557E5  74 26                            je       0x14185580d",
+        "0018557E7  8b 51 1c                         mov      edx, dword ptr [rcx + 0x1c]",
+        "0018557EA  8b ca                            mov      ecx, edx",
+        "0018557EC  81 e1 ff ff ff 00                and      ecx, 0xffffff",
+        "0018557F2  3b 48 2c                         cmp      ecx, dword ptr [rax + 0x2c]",
+        "0018557F5  73 16                            jae      0x14185580d",
+        "0018557F7  48 8b 40 20                      mov      rax, qword ptr [rax + 0x20]",
+        "0018557FB  48 03 c9                         add      rcx, rcx",
+        "0018557FE  48 8b 44 c8 08                   mov      rax, qword ptr [rax + rcx*8 + 8]",
+        "001855803  48 85 c0                         test     rax, rax",
+        "001855806  74 05                            je       0x14185580d",
+        "001855808  39 50 08                         cmp      dword ptr [rax + 8], edx",
+        "00185580B  74 07                            je       0x141855814",
+        "00185580D  48 8b 05 04 6f eb 03             mov      rax, qword ptr [rip + 0x3eb6f04]",
+        "001855814  8b 80 88 02 00 00                mov      eax, dword ptr [rax + 0x288]",
+        "00185581A  eb 38                            jmp      0x141855854",
+        "00185581C  48 85 c0                         test     rax, rax",
+        "00185581F  74 26                            je       0x141855847",
+        "001855821  8b 51 1c                         mov      edx, dword ptr [rcx + 0x1c]",
+        "001855824  8b ca                            mov      ecx, edx",
+        "001855826  81 e1 ff ff ff 00                and      ecx, 0xffffff",
+        "00185582C  3b 48 2c                         cmp      ecx, dword ptr [rax + 0x2c]",
+        "00185582F  73 16                            jae      0x141855847",
+        "001855831  48 8b 40 20                      mov      rax, qword ptr [rax + 0x20]",
+        "001855835  48 03 c9                         add      rcx, rcx",
+        "001855838  48 8b 44 c8 08                   mov      rax, qword ptr [rax + rcx*8 + 8]",
+        "00185583D  48 85 c0                         test     rax, rax",
+        "001855840  74 05                            je       0x141855847",
+        "001855842  39 50 08                         cmp      dword ptr [rax + 8], edx",
+        "001855845  74 07                            je       0x14185584e",
+        "001855847  48 8b 05 ca 6e eb 03             mov      rax, qword ptr [rip + 0x3eb6eca]",
+        "00185584E  8b 80 8c 02 00 00                mov      eax, dword ptr [rax + 0x28c]",
+        "001855854  89 44 24 08                      mov      dword ptr [rsp + 8], eax",
+        "001855858  48 8d 4c 24 08                   lea      rcx, [rsp + 8]",
+        "00185585D  48 8b 05 cc 68 eb 03             mov      rax, qword ptr [rip + 0x3eb68cc]",
+        "001855864  48 85 c0                         test     rax, rax",
+        "001855867  74 25                            je       0x14185588e",
+        "001855869  8b 11                            mov      edx, dword ptr [rcx]",
+        "00185586B  8b ca                            mov      ecx, edx",
+        "00185586D  81 e1 ff ff ff 00                and      ecx, 0xffffff",
+        "001855873  3b 48 2c                         cmp      ecx, dword ptr [rax + 0x2c]",
+        "001855876  73 16                            jae      0x14185588e",
+        "001855878  48 8b 40 20                      mov      rax, qword ptr [rax + 0x20]",
+        "00185587C  48 03 c9                         add      rcx, rcx",
+        "00185587F  48 8b 44 c8 08                   mov      rax, qword ptr [rax + rcx*8 + 8]",
+        "001855884  48 85 c0                         test     rax, rax",
+        "001855887  74 05                            je       0x14185588e",
+        "001855889  39 50 18                         cmp      dword ptr [rax + 0x18], edx",
+        "00185588C  74 07                            je       0x141855895",
+        "00185588E  48 8b 05 a3 68 eb 03             mov      rax, qword ptr [rip + 0x3eb68a3]",
+        "001855895  c3                               ret      ",
+        "001855896  cc                               int3     ",
+        "001855897  cc                               int3     ",
+        "001855898  cc                               int3     ",
+        "001855899  cc                               int3     ",
+        "00185589A  cc                               int3     ",
+        "00185589B  cc                               int3     ",
+        "00185589C  cc                               int3     ",
+        "00185589D  cc                               int3     ",
+        "00185589E  cc                               int3     ",
+        "00185589F  cc                               int3     "
+      ]
+    }
+  ],
+  "conclusions": [
+    {
+      "id": "mode_producer",
+      "status": "static-confirmed",
+      "claim": "185A270 calls 186B310 at 185A2D5 with coordinator, qword +1B58, qword +1B60, and CWar CB +1718 bit17; its AL overwrites coordinator +68 bit4, choosing normal slot570DF68 or desperate slot570DF18 into +88 at185A309."
+    },
+    {
+      "id": "mode_raw_predicate",
+      "status": "static-confirmed",
+      "claim": "186B310: signed A>=B returns false; GHW strict ratio threshold early true; otherwise bit2 true returns false; bit2 false with stackcount>1 and fixed A/max(B,100000)>75000 returns false; missing primary leader realm object or size<=1 returns true; otherwise cached score >= selected realm-size table value returns true."
+    },
+    {
+      "id": "mode_input_writers",
+      "status": "static-confirmed",
+      "claim": "184D960 cache+FF8/1000 obtain the first qword returned by184C3B0/184C5D0; cache+FD8 receives222A8A0(war,nullptr)*(2*sidebit-1). Cache is at coordinator+B60."
+    },
+    {
+      "id": "ordinary_active_gate",
+      "status": "static-confirmed",
+      "claim": "18721B0 representative at1872208 and18726C0 follower at1872916 call2248A80; true branches return/skip before their movement submission."
+    },
+    {
+      "id": "score_polarity",
+      "status": "unknown",
+      "claim": "Raw sign-transform and >= comparator are confirmed. Do not translate the cached sign as losing/opposing score until side identity and GUI-facing sign are reconciled in one actual frame."
+    },
+    {
+      "id": "generic_active_retreat_policy",
+      "status": "unknown",
+      "claim": "No general battle-odds-to-active-retreat policy was found in the enumerated paths. This does not prove no indirect/vtable caller exists."
+    }
+  ],
+  "limitations": [
+    "00_ai descriptive comments are source context, not authority to invert executable comparisons.",
+    "Functions-mode .pdata fragments may be split; explicit windows can cross neighboring functions.",
+    "registration-functions.json target18AF4C0 is an unanchored exploratory offset and is excluded from semantic evidence; confirmed score-array initializer is18AF4D0.",
+    "Power cache aggregates are not the encounter predictor19186E0 output or a victory probability.",
+    "No normal/desperate field query, passive trace, active retreat policy or gameplay footage was validated live."
+  ],
+  "minimum_paused_fields": [
+    "One exact build/session/date/revision: full CoordinatorID, parent WarID, coordinator participant CharacterIDs and both CWar primary IDs +288/+28C.",
+    "coordinator flags+68 raw; bit2; bit4; threshold qword+88; mode timer+94; stack count+5C.",
+    "coordinator+1B58/+1B60 power qwords and+1B38 signed score; cache+B60 and backpointer cache+FF0 identity.",
+    "Side leader full CharacterID selected by18557D0 and its +1B8 object/+1D0 size; CB stable key and+1718 bit17.",
+    "Current exact vanilla define values and ordered realm/score arrays, not assumed defaults.",
+    "Same WarID attacker-relative total score from existing supported query and actual war-panel side labels/sign; preserve both raw and displayed perspective.",
+    "A subsequent separately authorized passive producer window is required to attribute a fresh bit4/+88 change; a paused snapshot alone does not prove the producer ran."
+  ],
+  "define_labels": [
+    {
+      "rva": "0x4196088",
+      "hex": "47 48 57 5f 41 54 54 41 43 4b 45 52 5f 44 45 53 50 45 52 41 54 45 5f 54 48 52 45 53 48 4f 4c 44 00 00 00 00 00 00 00 00 55 4e 49 54 5f 4c 4f 4f 4b 55 50 5f 53 49 5a 45 5f 48 49 4e 54 00 00 00 43 4f 55 4e 54 59 5f 4c 4f 4f 4b 55 50 5f 53 49 5a 45 5f 48 49 4e 54 00 50 52 4f 56 49 4e 43 45 5f 4c 4f 4f 4b 55 50 5f 53 49 5a 45 5f 48 49 4e 54 00 00 00 00 00 00 00 50 4f 54 45 4e 54 49 41",
+      "ascii_prefix": "GHW_ATTACKER_DESPERATE_THRESHOLD"
+    },
+    {
+      "rva": "0x4196060",
+      "hex": "47 48 57 5f 44 45 46 45 4e 44 45 52 5f 44 45 53 50 45 52 41 54 45 5f 54 48 52 45 53 48 4f 4c 44 00 00 00 00 00 00 00 00 47 48 57 5f 41 54 54 41 43 4b 45 52 5f 44 45 53 50 45 52 41 54 45 5f 54 48 52 45 53 48 4f 4c 44 00 00 00 00 00 00 00 00 55 4e 49 54 5f 4c 4f 4f 4b 55 50 5f 53 49 5a 45 5f 48 49 4e 54 00 00 00 43 4f 55 4e 54 59 5f 4c 4f 4f 4b 55 50 5f 53 49 5a 45 5f 48 49 4e 54 00",
+      "ascii_prefix": "GHW_DEFENDER_DESPERATE_THRESHOLD"
+    },
+    {
+      "rva": "0x4194f88",
+      "hex": "43 4f 4d 42 41 54 5f 52 41 54 49 4f 5f 54 48 52 45 53 48 4f 4c 44 00 00 57 41 4e 54 45 44 5f 50 4f 57 45 52 5f 52 41 54 49 4f 5f 41 47 41 49 4e 53 54 5f 45 4e 45 4d 59 5f 46 4f 52 5f 57 41 52 5f 50 4c 41 4e 00 00 00 4d 49 4e 5f 53 54 41 43 4b 5f 53 49 5a 45 5f 54 48 52 45 53 48 4f 4c 44 00 00 00 00 00 00 00 00 4d 49 4e 5f 53 55 50 50 4c 59 5f 43 4f 4d 50 41 52 45 44 5f 54 4f 5f 41",
+      "ascii_prefix": "COMBAT_RATIO_THRESHOLD"
+    },
+    {
+      "rva": "0x4194f60",
+      "hex": "43 4f 4d 42 41 54 5f 52 41 54 49 4f 5f 54 48 52 45 53 48 4f 4c 44 5f 44 45 53 50 45 52 41 54 45 00 00 00 00 00 00 00 00 43 4f 4d 42 41 54 5f 52 41 54 49 4f 5f 54 48 52 45 53 48 4f 4c 44 00 00 57 41 4e 54 45 44 5f 50 4f 57 45 52 5f 52 41 54 49 4f 5f 41 47 41 49 4e 53 54 5f 45 4e 45 4d 59 5f 46 4f 52 5f 57 41 52 5f 50 4c 41 4e 00 00 00 4d 49 4e 5f 53 54 41 43 4b 5f 53 49 5a 45 5f 54",
+      "ascii_prefix": "COMBAT_RATIO_THRESHOLD_DESPERATE"
+    },
+    {
+      "rva": "0x4196038",
+      "hex": "49 53 5f 44 45 53 50 45 52 41 54 45 5f 52 45 41 4c 4d 5f 53 49 5a 45 5f 54 48 52 45 53 48 4f 4c 44 53 00 00 00 00 00 00 47 48 57 5f 44 45 46 45 4e 44 45 52 5f 44 45 53 50 45 52 41 54 45 5f 54 48 52 45 53 48 4f 4c 44 00 00 00 00 00 00 00 00 47 48 57 5f 41 54 54 41 43 4b 45 52 5f 44 45 53 50 45 52 41 54 45 5f 54 48 52 45 53 48 4f 4c 44 00 00 00 00 00 00 00 00 55 4e 49 54 5f 4c 4f 4f",
+      "ascii_prefix": "IS_DESPERATE_REALM_SIZE_THRESHOLDS"
+    },
+    {
+      "rva": "0x4196260",
+      "hex": "49 53 5f 44 45 53 50 45 52 41 54 45 5f 57 41 52 53 43 4f 52 45 5f 54 48 52 45 53 48 4f 4c 44 53 00 00 00 00 00 00 00 00 54 41 52 47 45 54 5f 53 43 4f 52 45 5f 49 53 5f 53 49 45 47 49 4e 47 00 54 41 52 47 45 54 5f 53 43 4f 52 45 5f 53 55 50 50 4f 52 54 5f 50 4c 41 59 45 52 5f 54 48 52 45 45 5f 53 54 45 50 00 00 54 41 52 47 45 54 5f 53 43 4f 52 45 5f 53 55 50 50 4f 52 54 5f 50 4c 41",
+      "ascii_prefix": "IS_DESPERATE_WARSCORE_THRESHOLDS"
+    }
+  ]
+}
