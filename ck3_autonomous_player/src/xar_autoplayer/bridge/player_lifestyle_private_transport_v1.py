@@ -14,12 +14,207 @@ from .driver import StepPostconditionError
 
 
 QUERY_STEP = "private-query-player-lifestyle-formal-v1"
+FOCUS_QUERY_STEP = "private-query-player-lifestyle-stock-focus-v1"
 PERK_SUBMIT_STEP = "private-select-player-lifestyle-perk-v1"
 RECEIPT_STEP = "private-query-player-lifestyle-receipt-v1"
+FOCUS_TARGET = "stewardship_wealth_focus"
+FOCUS_LIFESTYLE = "stewardship_lifestyle"
 
 
 def _positive_int(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value > 0
+
+
+def _nonnegative_int(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+def parse_player_lifestyle_focus_private_v1(
+    response: Mapping[str, object] | None,
+    *,
+    expected_request_id: str,
+    source_frame: Mapping[str, object],
+    independent_after_frame: Mapping[str, object],
+) -> dict[str, object]:
+    """Validate the private fixed-focus read; never infer absent XP as zero.
+
+    This is a typed read-only consumer, not a production action registration.
+    A later submit must obtain fresh same-transaction native source and
+    legality; this result cannot carry a definition pointer across frames.
+    """
+
+    expected = (
+        "snapshot_id", "native_revision", "date_raw",
+        "played_character_id", "episode_run_id",
+    )
+    if any(
+        source_frame.get(key) != independent_after_frame.get(key)
+        for key in expected
+    ) or not (
+        source_frame.get("paused") is True
+        and independent_after_frame.get("paused") is True
+        and source_frame.get("snapshot_id")
+        == f"native:{source_frame.get('native_revision')}"
+        and _positive_int(source_frame.get("native_revision"))
+        and _nonnegative_int(source_frame.get("date_raw"))
+        and _positive_int(source_frame.get("played_character_id"))
+        and isinstance(source_frame.get("episode_run_id"), str)
+        and source_frame["episode_run_id"].startswith(
+            f"native-{source_frame['played_character_id']}-"
+        )
+    ):
+        return {"status": "red", "issue": "paused_focus_frame_drift_or_invalid"}
+    if not (
+        isinstance(expected_request_id, str)
+        and expected_request_id
+        and isinstance(response, Mapping)
+        and response.get("type") == "command_result"
+        and response.get("protocol_version") == 1
+        and response.get("request_id") == expected_request_id
+        and response.get("ok") is True
+    ):
+        return {"status": "red", "issue": "native_focus_query_failed"}
+    result = response.get("result")
+    if not (
+        isinstance(result, Mapping)
+        and result.get("step") == FOCUS_QUERY_STEP
+        and result.get("private_build") is True
+        and result.get("advertised") is False
+        and result.get("read_only") is True
+        and result.get("policy_scoped") is True
+        and result.get("snapshot_id") == source_frame.get("snapshot_id")
+        and result.get("episode_run_id") == source_frame.get("episode_run_id")
+        and result.get("target_key") == FOCUS_TARGET
+    ):
+        return {"status": "red", "issue": "native_focus_binding_invalid"}
+    native_status = result.get("status")
+    if isinstance(native_status, str) and native_status.startswith("unavailable_"):
+        if "native_legal" in result or "target_lifestyle_progress" in result:
+            return {"status": "red", "issue": "native_focus_unavailable_promoted"}
+        return {
+            "status": "red", "issue": "native_focus_source_unavailable",
+            "native_status": native_status,
+        }
+    if not (
+        native_status in {"observed_native_legal", "observed_native_illegal"}
+        and result.get("native_legal") is (native_status == "observed_native_legal")
+        and _positive_int(result.get("scanned_database_rows"))
+        and result.get("target_lifestyle_key") == FOCUS_LIFESTYLE
+    ):
+        return {"status": "red", "issue": "native_focus_legality_untyped"}
+    progress = result.get("target_lifestyle_progress")
+    if not isinstance(progress, Mapping):
+        return {"status": "red", "issue": "target_lifestyle_progress_untyped"}
+    if progress.get("presence") == "unavailable":
+        if (
+            progress.get("reason") != "target_native_getters_unavailable"
+            or any(
+                key in progress for key in (
+                    "xp_total_raw", "xp_within_level_raw", "xp_per_level",
+                    "unspent_perk_points", "used_perk_points",
+                )
+            )
+        ):
+            return {"status": "red", "issue": "target_progress_unknown_promoted"}
+        return {
+            "status": "target_progress_unavailable",
+            "native_legal": result["native_legal"],
+            "target_key": FOCUS_TARGET,
+            "target_lifestyle_key": FOCUS_LIFESTYLE,
+        }
+    if not (
+        progress.get("presence") == "present"
+        and progress.get("source") == "exact_native_getters"
+        and _nonnegative_int(progress.get("xp_total_raw"))
+        and _nonnegative_int(progress.get("xp_within_level_raw"))
+        and _positive_int(progress.get("xp_per_level"))
+        and _nonnegative_int(progress.get("unspent_perk_points"))
+        and _nonnegative_int(progress.get("used_perk_points"))
+        and progress["xp_within_level_raw"] < progress["xp_per_level"] * 100000
+    ):
+        return {"status": "red", "issue": "target_progress_values_invalid"}
+    return {
+        "status": "observed",
+        "native_legal": result["native_legal"],
+        "target_key": FOCUS_TARGET,
+        "target_lifestyle_key": FOCUS_LIFESTYLE,
+        "target_lifestyle_progress": dict(progress),
+        "source_frame": {key: source_frame.get(key) for key in expected},
+    }
+
+
+def query_player_lifestyle_focus_private_v1(
+    driver: object, *, expected_revision: int | None = None
+) -> dict[str, object]:
+    """Run the default-off stock focus read and consume its independent frame.
+
+    This exposes a private typed observation to policy code but neither
+    registers a public capability nor submits a focus action.
+    """
+
+    if getattr(driver, "allow_private_lifestyle_formal_trial", False) is not True:
+        return {"status": "trial_off", "step": FOCUS_QUERY_STEP}
+    starting = driver.take_snapshot()
+    played = starting.get("played_character")
+    player_id = played.get("character_id") if isinstance(played, Mapping) else None
+    public_revision = starting.get("revision")
+    native_revision = starting.get("native_revision")
+    episode_run_id = starting.get("episode_run_id")
+    date_raw = starting.get("date_raw")
+    if not (
+        starting.get("paused") is True
+        and starting.get("map_ready") is True
+        and _positive_int(public_revision)
+        and _positive_int(native_revision)
+        and _nonnegative_int(date_raw)
+        and _positive_int(player_id)
+        and isinstance(episode_run_id, str)
+        and episode_run_id.startswith(f"native-{player_id}-")
+        and starting.get("snapshot_id") == f"native:{native_revision}"
+        and (expected_revision is None or expected_revision == public_revision)
+    ):
+        return {"status": "paused_frame_unavailable", "step": FOCUS_QUERY_STEP}
+    request_id = f"life-focus-query-{uuid.uuid4().hex}"
+    driver.endpoint.send({
+        "type": "execute_step", "protocol_version": 1,
+        "request_id": request_id, "step": FOCUS_QUERY_STEP,
+        "expected_revision": native_revision,
+        "expected_snapshot_id": starting["snapshot_id"],
+        "episode_run_id": episode_run_id,
+        "expected_date_raw": date_raw,
+        "expected_player_character_id": player_id,
+    })
+    response = driver.state.wait_for_command_result(
+        request_id, driver.command_timeout_seconds
+    )
+    ending = driver.take_snapshot()
+    source_frame = {
+        "paused": starting["paused"],
+        "snapshot_id": starting["snapshot_id"],
+        "native_revision": native_revision,
+        "date_raw": date_raw,
+        "played_character_id": player_id,
+        "episode_run_id": episode_run_id,
+    }
+    after_played = ending.get("played_character")
+    after_frame = {
+        "paused": ending.get("paused"),
+        "snapshot_id": ending.get("snapshot_id"),
+        "native_revision": ending.get("native_revision"),
+        "date_raw": ending.get("date_raw"),
+        "played_character_id": (
+            after_played.get("character_id")
+            if isinstance(after_played, Mapping) else None
+        ),
+        "episode_run_id": ending.get("episode_run_id"),
+    }
+    parsed = parse_player_lifestyle_focus_private_v1(
+        response, expected_request_id=request_id,
+        source_frame=source_frame, independent_after_frame=after_frame,
+    )
+    if ending.get("revision") != public_revision or ending.get("map_ready") is not True:
+        return {"status": "red", "issue": "paused_focus_public_frame_drift"}
+    return {**parsed, "step": FOCUS_QUERY_STEP, "request_id": request_id}
 
 
 def query_player_lifestyle_private_v1(

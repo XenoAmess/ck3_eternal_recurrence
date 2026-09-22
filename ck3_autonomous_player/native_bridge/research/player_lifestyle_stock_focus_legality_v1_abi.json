@@ -46,6 +46,18 @@
     "source_chain": "The validator resolves command+0x20 via exact Character storage, compares command+0x28 with current focus, checks command+0x30 player identity, then invokes character focus gate RVA 0x26694A0 and FocusType final gate RVA 0x2D88E60. The final gate evaluates scripted is_shown/is_valid through 0x334C510. No lifestyle-window owner argument is passed.",
     "result_rule": "Two identical observed native booleans in one paused application-main frame are legal or rejected observations; a failed source/read/ABI/exception is unavailable. No command is submitted."
   },
+  "target_lifestyle_progress_observation": {
+    "scope": "same paused source-bound stock focus read only; no focus command is submitted",
+    "source": "The unique stock target definition's lifestyle pointer at +0x880; use the exact-build GetLifestyleXp RVA 0x2668B80, GetPerkPoints RVA 0x2668A00, GetPerkPointsUsed RVA 0x2668A80, and lifestyle XP-per-level at +0x138. Do not substitute current-lifestyle LIFE2 state.",
+    "output": "For observed_native_legal/illegal, target_lifestyle_key and target_lifestyle_progress are emitted. presence=present requires source=exact_native_getters plus integer xp_total_raw, xp_within_level_raw, xp_per_level, unspent_perk_points, used_perk_points. presence=unavailable has reason=target_native_getters_unavailable and no numeric fields.",
+    "binding": "Capture twice with the definition identity, player, native legality, target lifestyle key, and all target progress values unchanged in one paused application-main frame. A getter fault, invalid value, or drift never becomes zero.",
+    "consumer": "parse_player_lifestyle_focus_private_v1 binds request ID, private non-advertised read-only flags, source snapshot/episode and independent after frame. It returns observed, target_progress_unavailable, or red; every native unavailable_* source/read/ABI status remains red and is not legal false. No production action registration.",
+    "live_state": "pending sole-owner readback on the new source; R0112 preceded this extension and proves only stock focus legality, not target progress"
+  },
+  "downstream_compatibility": {
+    "wire_change": "additive fields on the private default-OFF stock-focus-v1 response only; no public capability list, production action, checkpoint schema, or open_kaishek consumer is changed",
+    "reuse": "The exact-build native reader and Python typed parser may back a future versioned read-only MCP query after paused readback. No MCP/public registration is claimed or advertised by this package."
+  },
   "player_binding": {
     "played_character_id_global_rva": "0x4FE7EE0",
     "character_storage_id_offset": "0x18",
@@ -55,12 +67,12 @@
     "header": "include/xar_bridge/player_lifestyle_stock_focus_legality_v1.hpp",
     "source": "src/player_lifestyle_stock_focus_legality_v1.cpp",
     "fixture": "src/player_lifestyle_stock_focus_legality_v1_test.cpp",
-    "focused_tests": "MSVC /W4 /WX /permissive- /Od 4/4 and /O2 4/4 GREEN; private bridge Debug and Release builds GREEN; Python lifestyle formal consumer normal and -O 6/6 each, minimal policy normal and -O 7/7 each",
+    "focused_tests": "M4-FOCUS-OBS stock focus MSVC /W4 /WX /permissive- /Od and /O2 5/5 each GREEN; private bridge Debug and Release DLL links GREEN; private Python focus query/parser plus existing formal consumer normal and -O 17/17 each GREEN",
     "private_runtime_step": "private-query-player-lifestyle-stock-focus-v1",
     "private_runtime_route_default_off": true,
     "public_registration": false,
     "native_submission": false,
     "ck3_launched": false
   },
-  "next_gate": "On an ordinary paused frame, the sole CK3 owner must invoke the default-OFF private read-only step, pair an observed native result with LIFE2 state, and capture evidence. Focus target-lifestyle progress, typed submit, independent post-frame focus key, next production turn, and checkpoint/cold restore remain separate later gates. This static source alone does not close M4."
+  "next_gate": "With the rebuilt private DLL on an ordinary paused frame, the sole CK3 owner must invoke the default-OFF private read-only step and independently verify target-lifestyle progress, not just stock focus legality. Typed focus submit, independent post-frame focus key, next production turn, and checkpoint/cold restore remain separate later gates. This static source alone does not close M4."
 }

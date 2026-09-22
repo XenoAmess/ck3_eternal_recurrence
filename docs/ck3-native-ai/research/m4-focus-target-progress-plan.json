@@ -1,0 +1,101 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "m4-focus-target-progress",
+  "question": "For the paused ordinary feudal player with no current focus, can exact-build native reads bind the finally legal stewardship_wealth_focus and the target stewardship lifestyle XP and perk-point state in one source-bound frame?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "paused-snapshot",
+    "actor_kind": "human",
+    "owner_scope": "current played adult landed feudal character 36403 in the ordinary xar_off campaign; not an NPC choice ranking",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "stewardship_wealth_focus and stewardship_lifestyle keys in frozen 1.19.0.6; native definition pointer only within one application-main paused transaction and never across a frame, process or reload",
+    "producer_trigger": "paused-query",
+    "producer": "exact-build CK3 focus definition database and Character living-data lifestyle XP/owned-perk state; current stock focus reader captures target definition and calls the engine final validator on the paused application-main thread",
+    "caller": "private-query-player-lifestyle-stock-focus-v1 through application-main formal wire; proposed extension reads target lifestyle progress before the same-frame typed result is serialized",
+    "consumer": "M4 private readback and later official lifestyle recommendation; no typed focus submission until source-bound candidate and target progress are independently live-proved",
+    "cache_lifetime": "query-local sample only; the existing stock focus result is valid for its bound native revision and cannot supply a pointer or legality verdict to a later submit transaction",
+    "expected_signal": "fixed focus key/lifestyle identity, final native legal status, explicit target lifestyle XP and available/used perk points with typed presence/readiness on the same paused frame",
+    "zero_sample_meaning": "No target XP map entry or zero observed candidate rows does not establish zero XP/points or legal false; distinguish a known zero getter value from an unavailable source and do not promote null to zero",
+    "stop_condition": "one private read-only query on one paused frame, native wait at most 60 seconds inside an authorized sole-owner bounded run at most 600 seconds; no date advance or gameplay action",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "stock-focus-source",
+      "layer": "source-contract",
+      "path": "../../../ck3_autonomous_player/native_bridge/src/player_lifestyle_stock_focus_legality_v1.cpp",
+      "sha256": "a5bfa4d6217a708d1ad700a94bfc2d3ab6d2b724bd2ea17f13e3923a868d66fc",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "The fixed target is resolved from the exact focus database and validator in one paused transaction; its target lifestyle progress callback reuses exact getters before a second whole-sample comparison. The target definition pointer is transaction-local."
+    },
+    {
+      "id": "r0112-focus",
+      "layer": "live-observation",
+      "path": "Z:/ck3_mod_rewrite/.task-tmp/M4-LIFE-NEXT-CANDIDATE/R0112-live/private-query-player-lifestyle-stock-focus-v1.json",
+      "sha256": "f64ac543d432d5e0bf65e700667427aec3c599766bcced5c68fd79bcd834e711",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "R0112 observed native_legal true for the fixed focus after scanning 23 rows, with an independent same paused native:3 frame; no action was submitted.",
+      "session": "R0112",
+      "frame": "native:3/raw53368176",
+      "identity": "played_character_id=36403; episode=native-36403-2b4b233056bd"
+    },
+    {
+      "id": "r0112-current-state",
+      "layer": "live-observation",
+      "path": "Z:/ck3_mod_rewrite/.task-tmp/M4-LIFE-NEXT-CANDIDATE/R0112-live/paused-life2-current-state.json",
+      "sha256": "29fcea1e5d1dc5af6583c89b0604492e7282295b339e56736e646a142841b9c7",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "The current focus and current lifestyle progress are both typed absent; this does not observe target stewardship progress or points.",
+      "session": "R0112",
+      "frame": "native:3/raw53368176",
+      "identity": "played_character_id=36403; episode=native-36403-2b4b233056bd"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "entry",
+      "label": "Exact-build fixed focus database and validator"
+    },
+    {
+      "id": "result",
+      "label": "Source-bound target focus and stewardship progress query"
+    }
+  ],
+  "edges": [
+    {
+      "id": "decision",
+      "from": "entry",
+      "to": "result",
+      "label": "Target focus final legality observed, target lifestyle progress/points read path remains to prove",
+      "status": "unknown",
+      "evidence": [
+        "stock-focus-source",
+        "r0112-focus",
+        "r0112-current-state"
+      ],
+      "open_question": "Which exact getter or living-data XP map read supplies the target stewardship experience and perk-point values when there is no current focus, and can it be bound to the same paused query without treating absent as zero?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "r0112-focus-legality",
+      "question": "Was the fixed focus finally legal for the R0112 player on the paused frame?",
+      "status": "observed",
+      "evidence": [
+        "r0112-focus"
+      ]
+    },
+    {
+      "id": "target-progress-without-current-focus",
+      "question": "Can target stewardship XP and perk points be read as actual values while current focus/progress are absent?",
+      "status": "pending",
+      "evidence": [
+        "r0112-current-state"
+      ]
+    }
+  ]
+}
