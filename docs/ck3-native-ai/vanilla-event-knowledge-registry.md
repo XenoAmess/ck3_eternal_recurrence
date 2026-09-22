@@ -293,3 +293,5 @@ exact-build 定义位于 `events/dlc/tgp/tgp_japan_yearly_events_ariana.txt:926`
 该记录把通用目录增加到 184 个事件，并把 source index 增加到 184 个唯一定义与 522 条词法 caller candidates；portable evidence 离线 bundle 为 280 个 evidence / 1,086 个 references。普通与 optimized Python 的单项 manager-recovery 合同测试各 `1/1` GREEN。补丁为 Python 数据合同，当前轮次 R463 后续只允许原位热恢复。
 
 R463 随后在热恢复前意外退出；R465 从其不可变 partial checkpoint 冷启动，使用相同 exact-build、产品树与 DLL。合同选择 authored1/native0 后，native postcondition 证明 instance `343` 已消失：snapshot `native:3 -> native:4`、revision `4 -> 5`，因此 `.1030` 合同从 static-ready 提升为 `production-live primitive`。同一 R465 在固定剩余 10 日 source 窗口内没有遇到 Stage 10 `.390`，未签发 source receipt；这只淘汰该 source，不提升 P1，也不删除 R463 的选择前 RED。R465 RED 已作为第 105 条 observation reference 收入 portable bundle。
+
+R0129 标准封建首种子又自然出现 `great_holy_war.0011` 的另一投影（唯一 native4、四个保存作用域），现有 direct consumer 返回 `registered_contract_requires_extended_consumer`，0 选项提交；既有 R372 的 native3 成功不能替代本次验收。冻结原版调用链、报告哈希、恢复边界及宗教暂缓权限见 [R0129 信仰解锁通知静态边界](great-holy-war-0011-r0129-notice.md)。
