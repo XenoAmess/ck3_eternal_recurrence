@@ -2283,6 +2283,17 @@ class GameplayBridgeService:
             )
         return result
 
+    def collect_declarable_wars_result_v1(
+        self, request_id: str, *, expected_revision: int
+    ) -> dict[str, object]:
+        """Collect the same driver's pending response without a native query."""
+        collect = getattr(self.driver, "collect_declarable_wars_result_v1", None)
+        if not callable(collect):
+            raise UnsupportedStepError(
+                "selected backend cannot collect pending declarable-war results"
+            )
+        return collect(request_id, expected_revision=expected_revision)
+
     def declare_war(
         self,
         declaration_id: str,

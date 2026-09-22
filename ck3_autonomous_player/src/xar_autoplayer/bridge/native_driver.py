@@ -732,6 +732,14 @@ class _NativeCommandRejectedError(BridgeUnavailableError):
         super().__init__(f"native gameplay step failed: {native_error}")
 
 
+class _NativeCommandResultTimeoutError(BridgeUnavailableError):
+    def __init__(self, step: str, request_id: str) -> None:
+        self.request_id = request_id
+        super().__init__(
+            f"native command_result timed out for gameplay step {step}"
+        )
+
+
 class NativeBridgeEndpoint(Protocol):
     """Transport boundary kept small enough for deterministic offline tests."""
 
@@ -1388,6 +1396,7 @@ class NativeHeadlessGameplayDriver:
         *,
         endpoint: NativeBridgeEndpoint | None = None,
         command_timeout_seconds: float = 10.0,
+        declarable_wars_timeout_seconds: float = 120.0,
         frontend_transition_timeout_seconds: float = 120.0,
         life_advance_timeout_seconds: float = 30.0,
         state_dir: str | os.PathLike[str] | None = None,
@@ -1416,6 +1425,9 @@ class NativeHeadlessGameplayDriver:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
             command_timeout_seconds, "command_timeout_seconds"
+        )
+        self.declarable_wars_timeout_seconds = _positive_seconds(
+            declarable_wars_timeout_seconds, "declarable_wars_timeout_seconds"
         )
         self.frontend_transition_timeout_seconds = _positive_seconds(
             frontend_transition_timeout_seconds,
@@ -1564,6 +1576,7 @@ class NativeHeadlessGameplayDriver:
         self._declarable_wars: list[dict[str, object]] = []
         self._declaration_query_sequence: int | None = None
         self._declaration_query_binding: dict[str, object] | None = None
+        self._pending_declaration_query: dict[str, object] | None = None
         self._army_strength_query: dict[str, object] | None = None
         self._combat_simulation_inputs_query: dict[str, object] | None = None
         self._combat_simulation_inputs_v3_query: dict[str, object] | None = None
@@ -2237,6 +2250,13 @@ class NativeHeadlessGameplayDriver:
     def diagnostics(self) -> dict[str, object]:
         result = self.state.diagnostics()
         result["transport_fatal_error"] = self._transport_error()
+        with self._driver_state_lock:
+            pending = getattr(self, "_pending_declaration_query", None)
+            result["pending_declaration_query"] = (
+                copy.deepcopy({key: value for key, value in pending.items()
+                               if key != "result_frame"})
+                if pending is not None else None
+            )
         return result
 
     def take_internal_semantic_snapshot(self) -> dict[str, object]:
@@ -7736,6 +7756,8 @@ class NativeHeadlessGameplayDriver:
             request_id, command_timeout_seconds
         )
         if frame is None:
+            if step == QUERY_DECLARABLE_WARS_STEP:
+                raise _NativeCommandResultTimeoutError(step, request_id)
             raise BridgeUnavailableError(
                 f"native command_result timed out for gameplay step {step}"
             )
@@ -8217,62 +8239,151 @@ class NativeHeadlessGameplayDriver:
             "revision": changed["revision"],
         }
 
+    @staticmethod
+    def _declaration_result_binding(snapshot: dict[str, object]) -> dict[str, object]:
+        diagnostics = snapshot.get("diagnostics")
+        played = snapshot.get("played_character")
+        return {
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+            "episode_run_id": snapshot.get("episode_run_id"),
+            "date_raw": snapshot.get("date_raw"),
+            "paused": snapshot.get("paused"),
+            "map_ready": snapshot.get("map_ready"),
+            "player_character_id": played.get("character_id") if isinstance(played, dict) else None,
+            "bridge_pid": diagnostics.get("bridge_pid") if isinstance(diagnostics, dict) else None,
+            "connection_generation": diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None,
+        }
+
+    def _publish_declarable_war_result(
+        self, result: dict[str, object], binding: dict[str, object]
+    ) -> dict[str, object]:
+        declarations = normalize_declarable_wars(result.get("declarable_wars"))
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or query_sequence < 1
+        ):
+            raise BridgeUnavailableError(
+                "native declarable-war result lacks query_sequence"
+            )
+        current = self.take_snapshot()
+        if (
+            current.get("paused") is not True
+            or self._declaration_result_binding(current) != binding
+        ):
+            raise BridgeUnavailableError(
+                "native declarable-war query crossed a snapshot revision or player binding"
+            )
+        with self._driver_state_lock:
+            self._declarable_wars = copy.deepcopy(declarations)
+            self._declaration_query_sequence = query_sequence
+            self._declaration_query_binding = {
+                key: binding[key] for key in (
+                    "native_revision", "snapshot_id", "revision",
+                    "connection_generation", "episode_run_id",
+                )
+            }
+        return {
+            **result, "declarable_wars": declarations,
+            "query_sequence": query_sequence,
+        }
+
+    def collect_declarable_wars_result_v1(
+        self, request_id: str, *, expected_revision: int
+    ) -> dict[str, object]:
+        """Collect one retained native response; never send another command."""
+        if not isinstance(request_id, str) or not request_id:
+            raise ValueError("request_id must be a non-empty string")
+        _validate_revision(expected_revision, "expected_revision")
+        current = self.take_snapshot()
+        if current.get("revision") != expected_revision:
+            raise BridgeUnavailableError("declarable result collection revision mismatch")
+        current_binding = self._declaration_result_binding(current)
+        with self._driver_state_lock:
+            pending = getattr(self, "_pending_declaration_query", None)
+            if pending is None or pending.get("request_id") != request_id:
+                raise BridgeUnavailableError("no pending declarable query for this request_id")
+            frame = pending.get("result_frame")
+            if frame is None:
+                frame = self.state.wait_for_command_result(request_id, 0.0)
+                if frame is not None:
+                    # Retain the exact response if validation raises. A later
+                    # inspection must not lose it to the transport's pop.
+                    pending["result_frame"] = copy.deepcopy(frame)
+            response = {
+                "schema": "ck3-declarable-war-result-collection-v1",
+                "request_id": request_id,
+                "status": "pending",
+                "original_binding": copy.deepcopy(pending["binding"]),
+                "current_binding": current_binding,
+                "native_resubmitted": False,
+                "cache_restored": False,
+            }
+            if current_binding != pending["binding"] or current.get("paused") is not True:
+                response["status"] = "stale"
+                if frame is not None:
+                    response["native_result_frame"] = copy.deepcopy(frame)
+                self._pending_declaration_query = None
+                return response
+            if frame is None:
+                return response
+            if not isinstance(frame, dict) or frame.get("request_id") != request_id:
+                raise BridgeUnavailableError("late declarable result request identity mismatch")
+            response["native_result_frame"] = copy.deepcopy(frame)
+            if frame.get("ok") is not True:
+                response["status"] = "native-rejected"
+            else:
+                result = frame.get("result")
+                if not (
+                    isinstance(result, dict)
+                    and result.get("step") == QUERY_DECLARABLE_WARS_STEP
+                    and result.get("accepted") is True
+                    and result.get("status") == "available"
+                ):
+                    raise BridgeUnavailableError("late declarable result payload is malformed")
+                published = self._publish_declarable_war_result(
+                    {**result, "backend_id": "native-headless"}, pending["binding"]
+                )
+                response.update(status="available", cache_restored=True,
+                                declaration_result=published)
+            self._pending_declaration_query = None
+            return response
+
     def _execute_declarable_war_step(
         self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]:
         if step == QUERY_DECLARABLE_WARS_STEP:
             starting = self.take_snapshot()
-            result = self._execute_primitive_step(
-                step, expected_revision=expected_revision
-            )
-            declarations = normalize_declarable_wars(
-                result.get("declarable_wars")
-            )
-            query_sequence = result.get("query_sequence")
-            if (
-                isinstance(query_sequence, bool)
-                or not isinstance(query_sequence, int)
-                or query_sequence < 1
-            ):
-                raise BridgeUnavailableError(
-                    "native declarable-war result lacks query_sequence"
-                )
-            current = self.take_snapshot()
-            starting_diagnostics = starting.get("diagnostics")
-            current_diagnostics = current.get("diagnostics")
-            if not (
-                current.get("paused") is True
-                and current.get("snapshot_id") == starting.get("snapshot_id")
-                and current.get("revision") == starting.get("revision")
-                and current.get("native_revision")
-                == starting.get("native_revision")
-                and current.get("episode_run_id")
-                == starting.get("episode_run_id")
-                and isinstance(starting_diagnostics, dict)
-                and isinstance(current_diagnostics, dict)
-                and current_diagnostics.get("connection_generation")
-                == starting_diagnostics.get("connection_generation")
-            ):
-                raise BridgeUnavailableError(
-                    "native declarable-war query crossed a snapshot revision"
-                )
             with self._driver_state_lock:
-                self._declarable_wars = copy.deepcopy(declarations)
-                self._declaration_query_sequence = query_sequence
-                self._declaration_query_binding = {
-                    "native_revision": current.get("native_revision"),
-                    "snapshot_id": current.get("snapshot_id"),
-                    "revision": current.get("revision"),
-                    "connection_generation": current_diagnostics.get(
-                        "connection_generation"
-                    ),
-                    "episode_run_id": current.get("episode_run_id"),
+                pending = getattr(self, "_pending_declaration_query", None)
+                if pending is not None:
+                    raise BridgeUnavailableError(
+                        "declarable query is pending; collect its original request without resubmission: "
+                        + str(pending["request_id"])
+                    )
+            binding = self._declaration_result_binding(starting)
+            timeout = getattr(self, "declarable_wars_timeout_seconds", 120.0)
+            try:
+                result = self._execute_primitive_step(
+                    step, expected_revision=expected_revision,
+                    timeout_seconds=timeout,
+                )
+            except _NativeCommandResultTimeoutError as error:
+                pending = {
+                    "request_id": error.request_id, "step": step,
+                    "status": "pending", "binding": binding,
+                    "timeout_seconds": timeout,
                 }
-            return {
-                **result,
-                "declarable_wars": declarations,
-                "query_sequence": query_sequence,
-            }
+                with self._driver_state_lock:
+                    self._pending_declaration_query = pending
+                raise BridgeUnavailableError(
+                    f"{error}; retained_declaration_query="
+                    + json.dumps(pending, sort_keys=True)
+                ) from error
+            return self._publish_declarable_war_result(result, binding)
 
         declaration_id = parse_declare_war_step(step)
         if declaration_id is None:

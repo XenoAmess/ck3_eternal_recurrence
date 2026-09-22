@@ -1432,6 +1432,16 @@ def create_server(
         )
 
     @server.tool()
+    def ck3_collect_declarable_wars_result_v1(
+        request_id: str,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Collect one retained request without resubmitting native enumeration."""
+        return service.collect_declarable_wars_result_v1(
+            request_id, expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_declare_war(
         declaration_id: str,
         expected_revision: int | None = None,
