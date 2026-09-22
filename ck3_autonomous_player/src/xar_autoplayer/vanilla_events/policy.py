@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+import re
 from typing import Final
 
 from .registry import (
@@ -611,6 +612,81 @@ def _source_bound_witch_scope_projection(
     return projected, boolean_names in allowed_boolean_names
 
 
+def _source_bound_nickname_notice_projection(
+    context: Mapping[str, object],
+    contract: Mapping[str, object],
+    analysis: object,
+    played_character_id: int,
+) -> dict[str, object] | None:
+    """Bind the source-generated nickname flag in the one-option notice."""
+
+    hashes = analysis.get("source_sha256") if isinstance(analysis, Mapping) else None
+    expected_aliases = {
+        "possible_conqueror": played_character_id,
+        "nickname_root_scope": played_character_id,
+        "nickname_getter": played_character_id,
+    }
+    fixed_names = frozenset({
+        *expected_aliases,
+        "toggle_null_result",
+        "informer",
+    })
+    scopes = context.get("saved_scopes")
+    if not (
+        isinstance(hashes, Mapping)
+        and hashes.get("events/nickname_events/nickname_events.txt")
+        == "C0DCEC2649DC0021C6B17E8BEECAA71BFFA4AE19ACB7C5158FD035212F848448"
+        and hashes.get("common/scripted_effects/00_nickname_effects.txt")
+        == "5E7259ED1C50C843E4C49F73842F2B11F10CDDD5C56D231FED35AF492E8D48C0"
+        and hashes.get("common/on_action/yearly_on_actions.txt")
+        == "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+        and contract.get("root_character_id") == played_character_id
+        and contract.get("character_scopes") == expected_aliases
+        and contract.get("unique_character_scope_excludes")
+        == {"informer": [played_character_id]}
+        and contract.get("scope_types") == {"informer": "character"}
+        and contract.get("boolean_scopes")
+        == ["toggle_null_result", "had_nick_the_mad"]
+        and contract.get("saved_scope_name_sets") == [[
+            "possible_conqueror", "toggle_null_result", "nickname_root_scope",
+            "had_nick_the_mad", "nickname_getter", "informer",
+        ]]
+        and contract.get("saved_scope_count") == 6
+        and contract.get("option_count") == 1
+        and contract.get("snapshot_option_count") == 6
+        and contract.get("native_option_indices") == [1]
+        and contract.get("selected_option_number") == 2
+        and contract.get("selected_native_option_index") == 1
+        and contract.get("max_occurrences") == 1
+        and isinstance(scopes, list)
+        and len(scopes) == 6
+    ):
+        return None
+    names = [row.get("name") if isinstance(row, Mapping) else None for row in scopes]
+    if not all(isinstance(name, str) for name in names) or len(set(names)) != 6:
+        return None
+    nickname_flags = set(names) - fixed_names
+    if len(nickname_flags) != 1:
+        return None
+    flag = next(iter(nickname_flags))
+    if not isinstance(flag, str) or re.fullmatch(r"had_nick_[a-z][a-z0-9_]*", flag) is None:
+        return None
+    return {
+        **contract,
+        "boolean_scopes": ["toggle_null_result", flag],
+        "saved_scope_name_sets": [[
+            "possible_conqueror", "toggle_null_result", "nickname_root_scope",
+            flag, "nickname_getter", "informer",
+        ]],
+        "scope_types": {
+            **{name: "character" for name in expected_aliases},
+            "toggle_null_result": "boolean",
+            flag: "boolean",
+            "informer": "character",
+        },
+    }
+
+
 def _option_projection_checks(
     context: Mapping[str, object],
     contract: Mapping[str, object],
@@ -1065,6 +1141,27 @@ def recommend_registered_vanilla_event_option_v1(
             "optional_character_scope_matches_any",
             "optional_scope_types",
             "optional_unique_character_scope_excludes",
+            "unique_character_scope_excludes",
+        })
+    if event_key == "lifestyle_nicknames.1000":
+        nickname_projection = _source_bound_nickname_notice_projection(
+            event_context, contract, analysis, character_id
+        )
+        if nickname_projection is None:
+            return _response(
+                status="blocked",
+                event_key=event_key,
+                reason="registered_nickname_exact_source_or_contract_drift",
+                checks={"nickname_exact_source_and_contract": False},
+            )
+        contract = nickname_projection
+        # The legacy single-occurrence value described the R193 fixture.
+        # Vanilla can issue a later random nickname; this frame is checked
+        # independently and the marker is not a once-per-campaign gate.
+        allowed_extended_fields.update({
+            "boolean_scopes",
+            "character_scopes",
+            "max_occurrences",
             "unique_character_scope_excludes",
         })
     if event_key == "epidemic_events.0110":

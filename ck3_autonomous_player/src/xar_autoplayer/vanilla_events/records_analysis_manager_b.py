@@ -106,22 +106,33 @@ MANAGER_VANILLA_ANALYSIS_B: Final[dict[str, dict[str, object]]] = {
             "exposes native 0/1/3."
         ),
     ),
-    "lifestyle_nicknames.1000": _analysis(
-        migrated_from=_NICKNAME_SOURCE,
-        review_summary=(
-            "The nickname has already been assigned before this notification; "
-            "the reviewed bad-nickname/free/capable projection renders one of "
-            "six authored options."
+    "lifestyle_nicknames.1000": {
+        **_analysis(
+            migrated_from=_NICKNAME_SOURCE,
+            review_summary=(
+                "The nickname has already been assigned before this notification; "
+                "the reviewed bad-nickname/free/capable projection renders one of "
+                "six authored options."
+            ),
+            safe_native_option_index=1,
+            safe_option_number=2,
+            safe_option_rationale="Native 1 is the sole rendered route out of the prompt.",
+            scope_boundary=(
+                "Bind the three player aliases, the third-party informer, and the two "
+                "reviewed boolean scopes as one inherited nickname frame."
+            ),
+            option_boundary="Only native 1 is visible in the reviewed six-option view.",
         ),
-        safe_native_option_index=1,
-        safe_option_number=2,
-        safe_option_rationale="Native 1 is the sole rendered route out of the prompt.",
-        scope_boundary=(
-            "Bind the three player aliases, the third-party informer, and the two "
-            "reviewed boolean scopes as one inherited nickname frame."
-        ),
-        option_boundary="Only native 1 is visible in the reviewed six-option view.",
-    ),
+        "review_basis": "r0136-exact-build-source-and-paused-frame",
+        "source_sha256": {
+            "events/nickname_events/nickname_events.txt":
+                "C0DCEC2649DC0021C6B17E8BEECAA71BFFA4AE19ACB7C5158FD035212F848448",
+            "common/scripted_effects/00_nickname_effects.txt":
+                "5E7259ED1C50C843E4C49F73842F2B11F10CDDD5C56D231FED35AF492E8D48C0",
+            "common/on_action/yearly_on_actions.txt":
+                "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+        },
+    },
     "parent.1005": _analysis(
         migrated_from=_PARENT_SOURCE,
         review_summary=(
