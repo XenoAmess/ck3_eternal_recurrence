@@ -35,7 +35,7 @@ def build_m5_same_frame_intake(
     before_identity = _frame_identity(before)
     if _frame_identity(after) != before_identity:
         raise ValueError("M5 observations crossed a paused native frame")
-    player_id, native_revision, date_raw = before_identity
+    player_id, native_revision, date_raw, snapshot_id, revision, episode_run_id = before_identity
     if (
         first_heir_legality.get("schema") != _FAMILY_SCHEMA
         or first_heir_legality.get("exact_ck3_build") != "1.19.0.6"
@@ -99,6 +99,9 @@ def build_m5_same_frame_intake(
         "first_heir_character_id": heir_id,
         "native_revision": native_revision,
         "date_raw": date_raw,
+        "snapshot_id": snapshot_id,
+        "revision": revision,
+        "episode_run_id": episode_run_id,
         "family_candidate_count": len(family),
         "war_candidate_count": len(war_candidates),
         "native_legal_candidate_count": len(candidates),
@@ -110,17 +113,23 @@ def build_m5_same_frame_intake(
     }
 
 
-def _frame_identity(snapshot: object) -> tuple[int, int, int]:
+def _frame_identity(snapshot: object) -> tuple[int, int, int, str, int, str]:
     if not isinstance(snapshot, dict) or snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
         raise ValueError("M5 intake requires a paused map frame")
     played = snapshot.get("played_character")
     player_id = played.get("character_id") if isinstance(played, dict) else None
     native_revision = snapshot.get("native_revision")
     date_raw = snapshot.get("date_raw")
+    snapshot_id = snapshot.get("snapshot_id")
+    revision = snapshot.get("revision")
+    episode_run_id = snapshot.get("episode_run_id")
     if (
         type(player_id) is not int or player_id <= 0
         or type(native_revision) is not int or native_revision <= 0
         or type(date_raw) is not int or date_raw < 0
+        or type(snapshot_id) is not str or not snapshot_id
+        or type(revision) is not int or revision <= 0
+        or type(episode_run_id) is not str or not episode_run_id
     ):
         raise ValueError("M5 intake frame identity incomplete")
-    return player_id, native_revision, date_raw
+    return player_id, native_revision, date_raw, snapshot_id, revision, episode_run_id

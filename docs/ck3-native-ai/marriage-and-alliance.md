@@ -864,6 +864,7 @@ observer 的细分 `MarriageMatchmakingObserverFailureV1` 已由 native callback
 - [static-confirmed + R725 live RED] [R725 最终答复追踪](m5-r725-marriage-final-answer-2026-09-15.md) 将 `0x18F9C95 → 0x2C43B40(context,1,1)` 的 stock 婚姻调用与随后 `test al / je` 分支绑定：最终 raw `0/1` 允许、`2` 拒绝、`3` 或其它保留 unavailable。R725 旧私有映射把 657 个 raw `0` 错判为拒绝；这是实现 RED，而非原版婚姻候选不合法。必要 faith 判断只由原生 complete Can Send / final answer 不透明地消费。
 - [production-live read-only] 修复后的 R736 [报告](<Z:/ck3_mod_rewrite_process_assets/g2-m5-r733-pump-20260916/candidate/live-R736/report.json>) SHA-256 `83AE48416AD7B7F0CEC1E3DCE7F3C0322B6DAAA6139DF996B0238BFF798C8E94`；[私有家庭查询](<Z:/ck3_mod_rewrite_process_assets/g2-m5-r733-pump-20260916/candidate/live-R736/private-family-query.json>) SHA-256 `D58FE7C85CFB03655745188E2D820404E3747AA808F9F65620847C5A060F7B7A`。同一 paused native revision 的公共 campaign-root 先读到玩家 `29829` 的首继承人 `38822`；私有只读查询以玩家为 actor、该继承人为 secondary actor，观测到 **657 个不同候选**同时通过 complete Can Send 与接收者最终答复。它们的 `native_rank=null` 是已确认的 rank 不可得，不是第 0 名或无评分代价。R736 无游戏动作、UI 输入、日期推进或存档修改；本结果仍仅是私有候选观测，未注册公共查询/动作/MCP。
 - [same-frame opportunity count, not policy] R736 [公开宣战查询](<Z:/ck3_mod_rewrite_process_assets/g2-m5-r733-pump-20260916/candidate/live-R736/war-query.json>) SHA-256 `37CF8837EE00382C2A5C838081E1B42017DD9EED56CE09CFCE466A488EDC7850` 返回 30 条 native declaration，其中 9 条普通 `claim_cb` 涉及 8 个不同目标，另有宗教战争项。本帧确实存在至少五个不同、非宗教的合法战争候选，且 657 个家庭婚姻候选不能与其混称为已可执行的联合策略。`joint_candidate_ledger.py` 仍不作跨域选择；本查询未提供战争成本/补给或婚姻联盟长期价值。
+- [production-live read-only] 后续独立 R0133 [报告](<Z:/ck3_mod_rewrite_process_assets/g2-m5-alliance-readback-live-R0133/evidence/report.json>) SHA-256 `CFE5635392393AABC4A1C5B1643151CA5C5A4CDAC9FF91740FD3661442F1B3B9` 和[五行投影](<Z:/ck3_mod_rewrite_process_assets/g2-m5-alliance-readback-live-R0133/evidence/five-candidate-alliance-projection.json>) SHA-256 `C58A3279BCD544844298B9C53D1C635FC23384D6F76E112B092E2BB7A5DBCF3A`，在另一个 fresh paused episode 同样读到 657 个 final-legal 行；动态抽样前五均 `available`，但八个 possible alliance pair 的 `both_have_realm_data=false`、`would_attempt_if_accepted=false`。因此私有投影查询本身已实机可用，前五行没有被证明会带来联盟收益；R0133 未读同帧战争/财政/补给，不能与 R736 拼成联合选择。婚姻结果、长期承诺和其余候选仍未观测，详见[单帧调度边界](m5-single-frame-dispatch-2026-09-22.md)。
 
 ```mermaid
 flowchart TD
@@ -877,6 +878,9 @@ flowchart TD
     V -->|否| N["[static-confirmed] 非合法候选"]
     V -->|是| A{"[static-confirmed] 0x2C43B40 final answer raw?"}
     A -->|0/1| L["[R736 live-confirmed] 可发送且答复允许；657 distinct"]
+    L --> Y1["[R0133 live-confirmed] 抽样五行投影 available"]
+    Y1 --> Y2["[R0133 live-confirmed] 八个 pair 均不会尝试联盟"]
+    Y2 -. "其余候选与物质结果未读" .-> O
     A -->|2| N
     A -. "3/其它未确认" .-> X["[unknown] final answer unavailable"]
     L -. "人类 Strategy 缺席" .-> K["[unknown] 原生 rank/score"]

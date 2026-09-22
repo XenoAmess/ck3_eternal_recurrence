@@ -17,10 +17,12 @@ _R0082_IDS = [16778038, 16778252, 16778632, 16778730, 16778737]
 _R0082_ACCEPT_RAW = [3600000, 1600000, 3400000, 4100000, 4300000]
 
 
-def _frame(*, date_raw: int = 53178264) -> dict[str, object]:
+def _frame(*, date_raw: int = 53178264, episode_run_id: str = "fixture-episode") -> dict[str, object]:
     return {
         "paused": True, "map_ready": True, "native_revision": 3,
         "date_raw": date_raw, "played_character": {"character_id": 29829},
+        "snapshot_id": "native:3", "revision": 4,
+        "episode_run_id": episode_run_id,
     }
 
 
@@ -75,11 +77,19 @@ class M5SameFrameIntakeTests(unittest.TestCase):
         self.assertTrue(all(row["native_rank"] is None for row in result["candidates"][:5]))
         self.assertFalse(result["joint_selection_ready"])
         self.assertIsNone(result["selected_step"])
+        self.assertEqual(result["episode_run_id"], "fixture-episode")
 
     def test_changed_date_cannot_reuse_five_current_candidates(self) -> None:
         with self.assertRaisesRegex(ValueError, "crossed a paused native frame"):
             build_m5_same_frame_intake(
                 before=_frame(), after=_frame(date_raw=53178288),
+                first_heir_legality=_family(), declarable_war_query=_war_query(),
+            )
+
+    def test_changed_episode_cannot_reuse_same_date_and_native_revision(self) -> None:
+        with self.assertRaisesRegex(ValueError, "crossed a paused native frame"):
+            build_m5_same_frame_intake(
+                before=_frame(), after=_frame(episode_run_id="new-episode"),
                 first_heir_legality=_family(), declarable_war_query=_war_query(),
             )
 
