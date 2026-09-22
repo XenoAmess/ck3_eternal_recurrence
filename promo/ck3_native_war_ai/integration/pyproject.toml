@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ck3-war-ai-promo-integration"
+version = "0.1.0"
+description = "War AI documentary content and composer for xar-promo"
+requires-python = ">=3.11"
+dependencies = ["Pillow==12.3.0", "xar-promo-toolchain>=0.2.1"]
+
+[project.optional-dependencies]
+edge = ["edge-tts>=7.2.8"]
+
+[project.entry-points."xar_promo.adapters"]
+ck3-native-war-ai-v1 = "war_ai_promo.components:adapter_factory"
+
+[project.entry-points."xar_promo.presets"]
+ck3-native-war-ai-longform-zh-v2 = "war_ai_promo.components:preset_factory"
+
+[tool.setuptools.packages.find]
+where = ["src"]

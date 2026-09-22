@@ -1,0 +1,160 @@
+{
+  "schema": "ck3-native-war-ai-capture-inventory/v1",
+  "observed_on": "2026-09-22",
+  "repository_head_at_inspection": "4456c3adb31f70c3b09526f24c6e70e02e622f8b",
+  "kind": "bounded-read-only-inventory",
+  "selected_existing_footage_count": 0,
+  "ck3_started": false,
+  "new_capture_performed": false,
+  "full_video_decode_performed": false,
+  "human_1x_review_performed": false,
+  "signoff_granted": false,
+  "venv_modified": false,
+  "capture_environment_dependencies_verified": false,
+  "ffprobe": {
+    "path": "C:/Users/1/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0.1-full_build/bin/ffprobe.exe",
+    "version": "9.0.1-full_build-www.gyan.dev"
+  },
+  "accessible_assets": [
+    {
+      "id": "OLD-01",
+      "path": "D:/workspace/ck3_reclaim_promo_work/capture/reclaim-promo-acceptance-20260910-a02/raw-ck3-desktop.mkv",
+      "bytes": 1563296736,
+      "sha256": "49C53A3D6FF1A9CA058BC886FAB51B0F9C16ECAAA240DBB7DB6212798862FE48",
+      "sha256_recomputed": true,
+      "probe": {
+        "returncode": 0,
+        "format_name": "matroska,webm",
+        "duration_seconds": 1319.733,
+        "streams": [{"index": 0, "codec_name": "h264", "codec_type": "video", "width": 2560, "height": 1440, "pix_fmt": "yuv420p", "r_frame_rate": "30/1", "avg_frame_rate": "30/1"}]
+      },
+      "source_kind": "controlled-mod-acceptance",
+      "source_product": "reclaim-the-motherland",
+      "capture_report": "D:/workspace/ck3_reclaim_promo_work/capture/reclaim-promo-acceptance-20260910-a02/capture-report.json",
+      "timeline": "D:/workspace/ck3_reclaim_promo_work/capture/reclaim-promo-acceptance-20260910-a02/capture-timeline.json",
+      "clean_spans_verified": false,
+      "adapter_bundle_validated": false,
+      "selected_for_this_film": false,
+      "shot_ids": [],
+      "reason": "受控 mod 验收不适合本片普通原生战争背景；不是原生 AI 决策证据。"
+    },
+    {
+      "id": "OLD-02",
+      "path": "D:/workspace/ck3_reclaim_promo_work/capture/reclaim-promo-acceptance-20260910-a02/acceptance/cell/08_later_dynasty_native.png",
+      "bytes": 5672802,
+      "sha256": "7EA9399D015556A234B182D037AD02CD1EAC8ED6B93D77EFEFE35955DC9C674F",
+      "sha256_recomputed": true,
+      "opened_for_visual_inspection": true,
+      "probe": {"returncode": 0, "format_name": "png_pipe", "codec_name": "png", "width": 2560, "height": 1440, "pix_fmt": "rgb24", "reported_r_frame_rate": "25/1", "duration_seconds": null},
+      "timeline_event_seconds": 1010.152,
+      "timeline_event_is_clean_span": false,
+      "source_kind": "controlled-mod-acceptance",
+      "selected_for_this_film": false,
+      "shot_ids": [],
+      "reason": "后宋角色、暂停地图、tooltip 与通知；本片不选。"
+    }
+  ],
+  "source_documents_rehashed": [
+    {"path": "D:/workspace/ck3_reclaim_promo_work/capture/reclaim-promo-acceptance-20260910-a02/capture-report.json", "bytes": 5282, "sha256": "26727989A9B308A577C5A49C83A0D04D8F548F05077702A04B296675911BA125"},
+    {"path": "D:/workspace/ck3_reclaim_promo_work/capture/reclaim-promo-acceptance-20260910-a02/capture-timeline.json", "bytes": 16434, "sha256": "78A6BD097405DCCBFC7C783A85E557B351043908A92A3C58FC1C9989225E4EB9"}
+  ],
+  "rejected_visual": {
+    "path": "D:/workspace/ck3_eternal_recurrence_process_assets/tributary_expansion_directives/runs/tea_workshop_3801490405_R0010/cell/07_directed_war_live.png",
+    "opened_for_visual_inspection": true,
+    "selected_for_this_film": false,
+    "sha256_recomputed": false,
+    "reason": "画面显示拓疆令遭拒及验收决议；不能由文件名推出已拍自然战争。"
+  },
+  "unavailable_locators": [
+    {"path": "D:/workspace/ck3_eternal_recurrence/artifacts/project-causality/2026-09-20-robert-mcp-streak-r30", "status": "directory-not-found", "source": "docs/project-causality-robert-mcp-streak-capture.md:69"},
+    {"path": "Z:/ck3_mod_rewrite", "status": "path-unavailable"}
+  ],
+  "historical_document_only_media": [
+    {"filename": "robert-1066-mcp-streak-continuous.mkv", "documented_duration": "00:27:18.666", "documented_sha256": "FECD2972DA7305EAF138BEFF6184ED94F804227278E035066973E68F58636D46", "current_bytes_verified": false, "ffprobe_performed": false, "selected_for_this_film": false},
+    {"filename": "robert-mcp-showcase-continuous-6m25s.mp4", "documented_duration": "00:06:24.967", "documented_sha256": "08C5A46300641CC0141AD1FDDD6BC22F93C61A8C92147E5036A8BDB65F469245", "current_bytes_verified": false, "ffprobe_performed": false, "selected_for_this_film": false}
+  ],
+  "installation": {
+    "steam_path_from_registry": "D:/Program Files (x86)/Steam",
+    "game_executable_probe_path": "C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+    "bytes": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "sha256_recomputed": true,
+    "matches_research_exact_build": true,
+    "appmanifest_path": "C:/SteamLibrary/steamapps/appmanifest_1158310.acf",
+    "manifest_appid": "1158310",
+    "manifest_buildid": "23530548",
+    "manifest_state_flags": "4",
+    "manifest_installdir": "Crusader Kings III",
+    "steam_offline_preference": "1",
+    "steam_skip_offline_warning": "0",
+    "steam_runtime_offline_ui_verified": false,
+    "steam_runtime_license_verified": false,
+    "ck3_pids_at_single_tasklist_probe": [],
+    "steam_pids_at_single_tasklist_probe": [27392],
+    "launch_locks_acquired": false,
+    "old_bridge_candidates_qualified_for_capture": false
+  },
+  "real_entrypoints_read_not_executed": [
+    {"path": "tools/run_project_causality_robert_mcp_streak.py", "parameter_lines": [103, 126], "recorder_lines": [564, 617], "launch_gate_lines": [1175, 1180], "role": "records-and-controls-an-autonomous-player-not-native-ai-observation"},
+    {"path": "ck3_autonomous_player/agent.py", "subcommand": "native-session", "documentation": "ck3_autonomous_player/README.md:253", "role": "managed-session-not-a-recorder"},
+    {"path": "ck3_autonomous_player/mcp_server.py", "arguments": ["--driver", "native-headless", "--transport", "stdio"], "documentation": "ck3_autonomous_player/README.md:251", "role": "same-state-and-pipe-gameplay-mcp"},
+    {"path": "ck3_autonomous_player/codex_mcp_setup.py", "subcommand": "doctor", "documentation": "docs/ck3-portable-codex-mcp-setup.md:153", "role": "no-launch-environment-check"}
+  ],
+  "planned_new_material": [
+    {"kind": "ordinary-vanilla-war-map-and-army", "shot_ids": ["S30-01", "S30-11", "S30-17"], "status": "planned/unbound"},
+    {"kind": "same-battle-and-corresponding-war-result-ui", "shot_ids": ["S30-30", "S30-31"], "status": "planned/unbound"},
+    {"kind": "peace-interface-with-explicit-roles", "shot_ids": ["S30-34", "S30-36", "S30-37"], "status": "planned/unbound"},
+    {"kind": "optional-natural-r01-r03", "shot_ids": ["S30-16", "S30-39"], "status": "planned/unbound"}
+  ],
+  "native_ai_decision_causality_proven_by_this_inventory": false,
+  "followup_no_launch_preflight": {
+    "observed_on": "2026-09-23",
+    "result": "RED_CURRENT_NATIVE_ASSETS_NOT_QUALIFIED",
+    "wrapper": "promo/ck3_native_war_ai/integration/capture_session.py",
+    "only_no_launch_path_exercised": true,
+    "live_branch_tested": false,
+    "ck3_launched": false,
+    "new_raw_video_count": 0,
+    "production_live_ids_allocated": 0,
+    "steam_runtime_offline_ui_verified": false,
+    "explicit_python": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "python_version": "3.14.7",
+    "packages_probed": {"mcp": "2.0.0", "pywin32": "312", "Pillow": "12.3.0"},
+    "media_venv_missing_native_dependencies": ["mcp", "pywin32"],
+    "venvs_modified": false,
+    "formal_doctor_result": "RED",
+    "formal_doctor_failed_checks": ["codex_registration", "layout_marker"],
+    "formal_doctor_python_runtime_passed": true,
+    "formal_doctor_offline_mcp_calls_passed": true,
+    "formal_doctor_native_asset_existence_passed": true,
+    "formal_doctor_native_asset_check_proves_runtime_capabilities": false,
+    "global_codex_registration_modified": false,
+    "attempt_directories": [
+      "D:/workspace/ck3_native_war_ai_promo_work/capture-preflight-a01",
+      "D:/workspace/ck3_native_war_ai_promo_work/capture-preflight-a02"
+    ],
+    "final_attempt_artifacts": ["command.json", "static-capability-strings.json", "entry-failure.json"],
+    "missing_full_static_capability_strings": [
+      "game.command.probe-frontend-bookmark-model-v1",
+      "game.command.activate-frontend-select-supported-1066-character-v1",
+      "game.command.query-frontend-selected-1066-feudal-candidate-v1"
+    ],
+    "static_string_presence_is_live_capability_proof": false,
+    "missing_selected_1066_query_step_string": true,
+    "bookmark_key_found_in_dll": "bookmark_rags_to_riches_petty_king_murchad",
+    "bridge_dll": {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-aub-cost-probe-20260920/xar_ck3_bridge.dll",
+      "bytes": 3212800,
+      "sha256": "2EB6E3265459CA3B2773D1A80E377A10F159592DAAEC77AC97C6E0CDB02807DC"
+    },
+    "bridge_injector": {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-aub-cost-probe-20260920/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "579168D4CD7AFD48C635CE50D6DC3DE9A736F6AADEC3E3F97765D9E34E4C9E70"
+    },
+    "native_rebuild_performed": false,
+    "canonical_run_namespace_added": "vanilla",
+    "allocator_validation": {"command": "py tools/test_ck3_live_run_id.py", "tests": 7, "result": "PASS", "production_counter_used": false},
+    "gpu_capture_slot_released_to_parent": true
+  }
+}

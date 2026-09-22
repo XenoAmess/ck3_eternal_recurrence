@@ -1,0 +1,835 @@
+# 原生战争 AI：长篇逐句旁白
+
+状态：完整文字首稿，待旁白试剪。中文配音与忠实英文字幕共 90 条 cue，覆盖 45 个镜头组、8 章；中文 6325 个汉字（含标点和拉丁字母共 6939 个字符），英文约 3851 词。
+
+20–40 分钟是弹性工作范围，30 分钟只作编排参考；本稿没有已测实际时长，不以拉长静帧或整体倍速凑时。语音、实机插片和成片均未由本次文字创作生成，素材绑定仍为 `unbound`。
+
+事实仅沿用 [claims.json](../claims.json) 的 C00–C11 与 [source-lock.json](../source-lock.json)；研究基线为 `68459f225270f138345785572d31ef9f722f3cae`，CK3 `1.19.0.6`。R01、R03 当前使用可独立成片的教学替代讲法；未来加入实机时须依据实际证据改写对应句，不直接套用假设角色。
+
+机器输入：[narration.json](narration.json)。先行求援样片：[narration-help-sample.json](narration-help-sample.json)，采用相同 cue ID 和文本。正文中的中文为朗读内容，英文为字幕；镜头说明、ID 和 claim 标注均不朗读。两份全片稿应同步修改。
+
+## 三个疑问
+
+### S30-01 · 三个动作与三个疑问
+
+**N30-001** · C00 / C10
+
+分数最高的战争，为什么没有被选中？军队已经走到城下，为什么又换了方向？场上明明还有兵，和平提议却已经出现了。
+
+Why was the highest-scoring war not chosen? Why did an army change direction after reaching a castle? And why did a peace proposal appear while troops were still in the field?
+
+镜头说明（不朗读）：三次教学动作快切；不标实机身份。
+
+**N30-002** · C00 / C10
+
+这些画面很容易让人觉得，电脑又犯糊涂了。但我们先不急着判断。今天用三个虚构案例，看看同样的表象，可能对应哪些不同的决定。
+
+These scenes can make it seem as though the computer has made another mistake. But let us hold that judgment. We will use three fictional examples to examine the different decisions that may sit behind similar appearances.
+
+镜头说明（不朗读）：三个问号落回地图；常驻机制示意。
+
+### S30-02 · 固定地图与三个案例
+
+**N30-003** · C00 / C10
+
+把地图摊开。西边是赤河公国，东边是蓝岭伯爵领，中间隔着一条河，北面有山口，两座城堡分居南北，右上角还有一个灰色的第三国。
+
+Unfold the map. The Duchy of Redriver lies to the west and the County of Blueridge to the east. A river divides them, a pass lies to the north, two castles stand north and south, and a third country occupies the upper-right corner.
+
+镜头说明（不朗读）：建立固定地理；镜头依次经过河、山口、两堡、灰国。
+
+**N30-004** · C00 / C10
+
+赤河和蓝岭都是为这期节目设计的名字。我们先坐到领主的桌前，看他怎样选择战争，再跟着军队走，最后回到两份和平账单前，看战争怎样被重新衡量。
+
+Redriver and Blueridge are names created for this episode. We will begin at the ruler's desk to examine war selection, follow the army, and finally return to two peace ledgers to see how the war is assessed again.
+
+镜头说明（不朗读）：CASE-A、CASE-B、CASE-C 页签依次落位。
+
+### S30-03 · 版本与观看约定
+
+**N30-005** · C00 / C10
+
+本期讨论《十字军之王三》的一点一九点零点六版本。地图上的军队、路线和示例数字，都用来说明规则；它们没有被拍成过一场真实战争。
+
+This episode discusses Crusader Kings III version 1.19.0.6. The armies, routes, and example numbers on our map illustrate rules; they are not footage of a real war.
+
+镜头说明（不朗读）：版本卡；教学图例；不朗读 SHA。
+
+**N30-006** · C00 / C10
+
+画面会把已经确认的规则和仍然未知的部分分开。你不需要记住程序地址，只要跟住一个问题：眼前这个动作，究竟属于哪一步决定？
+
+The visuals will distinguish confirmed rules from what remains unknown. You do not need to remember program addresses. Just keep one question in mind: which decision stage does the action in front of us belong to?
+
+镜头说明（不朗读）：实线与未知虚线图例；转入宣战门。
+
+## CASE-A：怎样选择这场战争
+
+### S30-04 · 尝试、资格与估算军力门
+
+**N30-007** · C00 / C01
+
+先别急着翻战争卡。一次宣战尝试，还要区分有没有机会考虑、目标有没有资格，以及估算军力是否符合相关条件。我们把这些环节放在评分桌外，避免一开始就混在一起。
+
+Do not turn over the war cards yet. A declaration attempt involves distinct questions: whether there is an opportunity to consider war, whether the target qualifies, and whether estimated military power meets the relevant conditions. We place these stages outside the scoring table so they stay separate.
+
+镜头说明（不朗读）：时机、资格、估算军力三门；卡片在评分桌外。
+
+**N30-008** · C00 / C01
+
+走过其中一道门，不代表宣战已经决定。知道存在检查，也不等于知道所有领主会在同一个固定日期检查；我们现在看到的是几个必要区分的环节，还不是一张保证开战的日程表。
+
+Passing one gate does not mean war has been decided. Knowing that a check exists also does not tell us that every ruler performs it on the same fixed date. These are stages we need to distinguish, not a schedule that guarantees a declaration.
+
+镜头说明（不朗读）：逐门近景；已通过卡仍等待下一层，不显示假定日期。
+
+### S30-05 · 目标已参战，哪些条件改变
+
+**N30-009** · C00 / C01
+
+现在只改一个条件：右上角的第三国已经与蓝岭交战。在已经分析的分支里，目标是否身处战争，会影响宣战时使用的军力门，因此这条新战线确实可能改变判断的条件。
+
+Now change just one condition: the third country in the upper-right corner is already at war with Blueridge. In the branches studied so far, whether the target is already at war affects the military-power gate used for declaration. This new front can therefore change the conditions being assessed.
+
+镜头说明（不朗读）：灰国战争线出现；蓝岭已参战条件卡翻面。
+
+**N30-010** · C00 / C01
+
+但不要马上把赤河的宣战印章盖下去。条件改变，后面仍有别的检查和选择；而这里比较的是原生估算的军力，也不能直接拿两个界面上的士兵人数，相除之后就说门已经通过。
+
+But do not stamp Redriver's declaration yet. A changed condition still leaves other checks and choices ahead. And the comparison uses native estimates of military power; dividing two soldier counts shown in the interface does not establish that the gate has passed.
+
+镜头说明（不朗读）：条件改变与必定宣战分开放；UI 人数不代入军力门。
+
+### S30-06 · 六张正分候选卡，先做预测
+
+**N30-011** · C00 / C02
+
+接下来假设六个候选已经走到正分评分阶段。它们分别是一百、九十七、九十四、九十一、九十和八十九分。先在心里选一张：如果由你猜，程序最后会拿走哪张牌？
+
+Next, suppose six candidates have reached the positive-score stage. Their scores are one hundred, ninety-seven, ninety-four, ninety-one, ninety, and eighty-nine. Pick one in your mind: which card do you think the program will ultimately take?
+
+镜头说明（不朗读）：六张假设正分卡逐张翻面；留一次观众预测。
+
+**N30-012** · C00 / C02
+
+这六个分数是教学输入，不是从某个存档采出来的候选名单。我们暂时不追问每张牌为什么得这个分，而是把分数当作已知条件，专门看接下来的筛选和抽取。
+
+These six scores are teaching inputs, not a candidate list sampled from a save. For now, we are not asking why each card received its score. We take the scores as given and focus on the filtering and selection that follow.
+
+镜头说明（不朗读）：锁定假设输入标记；不命名真实 CB，不画未闭合评分账。
+
+### S30-07 · 90% 门槛：90 留下，89 淘汰
+
+**N30-013** · C00 / C02
+
+第一步找最高分，这里是一百。然后取它的百分之九十，也就是九十分，画出一道门槛；严格低于这条线的候选被移除，所以八十九分的牌到这里就退出了。
+
+First, find the highest score: one hundred in this example. Take ninety percent of it, giving a threshold of ninety. Candidates strictly below that threshold are removed, so the eighty-nine-point card leaves here.
+
+镜头说明（不朗读）：从 100 拉出 90 分线；89 进入淘汰区。
+
+**N30-014** · C00 / C02
+
+看清边上的九十分：它刚好等于门槛，因此仍然保留。这里说的是分数达到最高分的九成，不是保留数量最多的九成候选；这两个说法听起来接近，实际筛出的名单可能完全不同。
+
+Look closely at the ninety-point card. It is exactly on the threshold, so it stays. The rule compares scores with ninety percent of the highest score; it does not retain ninety percent of the candidates by count. Those interpretations can produce very different lists.
+
+镜头说明（不朗读）：90 与 89 边界对照；分数标尺与数量图标分开。
+
+### S30-08 · Top-5 分支，本例不再截断
+
+**N30-015** · C00 / C02
+
+过线之后，还要看剩余数量。如果超过五项，才按分数从高到低保留最高的五项；这是一条单独的数量分支，不是每次筛选之后都会再进行的一轮淘汰。
+
+After the threshold filter, the remaining count matters. If more than five candidates remain, they are ordered by score and only the highest five are kept. This is a separate count-based branch, not an additional elimination round that always happens.
+
+镜头说明（不朗读）：数量门；大于五项旁支展示排序取五。
+
+**N30-016** · C00 / C02
+
+我们的例子恰好剩五张，所以直接往下走，不再剪掉任何一张，也不假装又发生了一次排序截断。记住这一步，后面看到五张候选时，就不会误以为它们一定都经过了同一种筛法。
+
+Our example has exactly five cards left, so it continues without removing another card or pretending that another sorting-and-truncation step occurred. Remember this distinction: seeing five candidates does not mean they must all have passed through the same filtering path.
+
+镜头说明（不朗读）：主线沿不超过五项分支；剪刀停在未走旁支。
+
+### S30-09 · 472 总权重与 94 的示意抽取
+
+**N30-017** · C00 / C02
+
+现在把五张牌铺成一条抽取带，每张牌占据的宽度，按它的分数来分配。总权重是四百七十二；一百分的牌占得稍宽，但其它保留牌也各有自己的一段。
+
+Now arrange the five cards along a selection strip, assigning each a width proportional to its score. The total weight is four hundred and seventy-two. The hundred-point card gets a slightly wider segment, but every retained card has a segment of its own.
+
+镜头说明（不朗读）：按真实比例绘制 100、97、94、91、90 五段；总权重 472。
+
+**N30-018** · C00 / C02
+
+我们让示意指针落在九十四分这段。它在这个保留池里的条件抽中概率，是九十四除以四百七十二，约为百分之十九点九；所以最高分有优势，却没有包下这次选择。
+
+Let our illustrative pointer land in the ninety-four-point segment. Its conditional selection probability within this retained pool is ninety-four divided by four hundred and seventy-two, about nineteen point nine percent. The highest score has an advantage, but it does not monopolize the choice.
+
+镜头说明（不朗读）：示意落在 94；字幕显示条件概率算式，常驻假设算例。
+
+### S30-10 · 条件抽取与宣战全流程分开
+
+**N30-019** · C00 / C01 / C02
+
+这里的百分之十九点九，不能改写成赤河宣战的概率。它只回答这五张牌保留下来以后，九十四分这张被抽中的机会；前面的尝试与门槛，以及后面的相关条件，并没有因此消失。
+
+That nineteen point nine percent is not Redriver's probability of declaring war. It only describes the chance of selecting the ninety-four-point card after these five cards have been retained. Earlier opportunities and gates, and relevant later conditions, still matter.
+
+镜头说明（不朗读）：池内抽取概率与总宣战概率两信封；后者不填值。
+
+**N30-020** · C00 / C01 / C02
+
+第一个问题有答案了：最高分未被选中，可以是这套加权选择本来就允许的结果。接下来让我们的教学战争继续，选中的牌落到蓝岭；战争目标确定之后，军队的下一站还要再选一次。
+
+We have an answer to our first question: failing to select the highest score can be an outcome this weighted selection process permits. Let our teaching war now continue, with the selected card placed over Blueridge. Once the war is chosen, the army still needs to choose its next destination.
+
+镜头说明（不朗读）：四阶段收束；假设战争转场到蓝岭目标区。
+
+## CASE-B：围城还是追击
+
+### S30-11 · 围城还是追击，观众先预测
+
+**N30-021** · C00 / C03
+
+赤河军队来到河边，城堡在前面，可见敌军在另一边。你会让它继续围城，还是转过去追人？先留下自己的判断，等我们打开它所处的目标流程，再回来比较。
+
+Redriver's army reaches the river. The castle lies ahead, while a visible enemy force is elsewhere. Would you continue toward the siege, or turn to pursue that force? Keep your prediction; we will revisit it after opening the army's target-selection process.
+
+镜头说明（不朗读）：围城与追击两张预测卡；地图不填假分数。
+
+**N30-022** · C00 / C03
+
+只看这幅地图，我们还不知道原生程序当前在比较哪些候选。它可能面对的选择，要先放回当前的行动姿态和目标块里；否则玩家觉得值得追的那面旗，未必正处在我们以为的比较名单中。
+
+The map alone does not tell us which candidates the native program is currently comparing. We first need the current stance and objective block. Otherwise, a flag that looks worth pursuing to the player may not belong to the candidate list we have assumed.
+
+镜头说明（不朗读）：三个空槽依次标行动姿态、目标块、候选。
+
+### S30-12 · 当前 stance 打开自己的目标书
+
+**N30-023** · C00 / C03
+
+把行动姿态想成桌上的一本目标册。程序先选适用的姿态，再去读它对应的目标安排；换一本册子，后面要看的目标内容也会不同，所以我们先只打开当前这一册。
+
+Think of a stance as an objective book on the desk. The program first selects an applicable stance, then reads its associated objectives. A different book leads to different objective content, so we open only the current one.
+
+镜头说明（不朗读）：当前 stance 对应书册展开；其它 stance 盖背。
+
+**N30-024** · C00 / C03
+
+书里的每一页，代表一个目标块。这是帮助理解顺序的画法，并不是游戏真的拿着一本书；它提醒我们，不同姿态的分数不该被抄到同一张账上，凑成一个看起来很完整的总分。
+
+Each page represents an objective block. The book is a visual aid for understanding order, not a literal object used by the game. It reminds us not to copy scores from different stances into one ledger and present the sum as a complete evaluation.
+
+镜头说明（不朗读）：解释书页隐喻；不同姿态分数卡保持分开。
+
+### S30-13 · 当前块有无候选的顺序回退
+
+**N30-025** · C00 / C03
+
+先看当前页。这里如果已经有可用候选，就在这一层继续处理；下一页不会因为摆着另一个漂亮数字，就自动加入当前这轮比较。目标块之间有先后，不是同时抢一个最高分。
+
+Start with the current page. If it contains usable candidates, processing continues at this layer. A tempting number on the next page does not automatically enter the current comparison. Objective blocks have an order; they do not all compete for one highest score at once.
+
+镜头说明（不朗读）：当前块有候选，书签挡住下一块。
+
+**N30-026** · C00 / C03
+
+现在做一个条件对照：把当前页的可用候选清空。到了这里，流程才会向下一块回退；因此，同一张地图上看似都能想到的目标，进入比较的时机也可能不一样。
+
+Now change one condition: remove the usable candidates from the current page. Only then does the process fall back to the next block. Targets that all seem plausible on the same map may therefore enter consideration at different stages.
+
+镜头说明（不朗读）：明确条件重放；当前块为空后翻到下一块。
+
+### S30-14 · 当前块的候选落到省份
+
+**N30-027** · C00 / C03
+
+把当前块里的目标放回地图，就会落到具体的省份。城堡、战争目标区、可见敌军所在的位置，各自帮助我们理解候选从哪里来；接下来比较的是这些有位置的候选，而不只是一串抽象口号。
+
+Place the current block's objectives back on the map, and they resolve to particular provinces. A castle, the war-goal area, and a visible enemy's location help show where candidates come from. The process now compares located candidates rather than abstract intentions alone.
+
+镜头说明（不朗读）：目标图标落到省份；候选卡回连地图位置。
+
+**N30-028** · C00 / C03
+
+这里把敌军画成可见，只是在说明这一类候选的相关条件。不能从这一张教学图继续推论，原生战争系统在所有地方都知道什么、又绝对不知道什么；那需要逐条研究另外的路径。
+
+Showing the enemy as visible illustrates the relevant condition for this kind of candidate. This one teaching diagram cannot establish what the entire native war system knows, or never knows, in every situation. Those conclusions require examining other paths individually.
+
+镜头说明（不朗读）：可见候选高亮；其它范围保持遮盖，不下全局信息结论。
+
+### S30-15 · 初步前十进入含寻路的评价
+
+**N30-029** · C00 / C03
+
+候选进入初步评价之后，初步最高的十项才继续进入包含寻路的最终评价。你可以把它理解成先筛出一批值得进一步看的位置，再为这些候选打开下一层检查，而不是一开始就把所有路径都画完。
+
+After preliminary evaluation, the ten highest-ranked candidates proceed to final evaluation that includes pathfinding. Think of it as selecting positions worth further examination, then opening the next layer of checks for them, rather than resolving every route at the outset.
+
+镜头说明（不朗读）：初筛架口标前十；只给进入下层的候选接路线。
+
+**N30-030** · C00 / C03
+
+但是，完整路径成本怎样组合、重复候选怎样处理、同分如何排列，还有没有完全闭合的部分。我们知道这层结构，不等于已经能随手写出每个候选的精确总分；地图上的直线长短也不能替代它。
+
+But parts of the full path-cost combination, duplicate handling, and tie ordering remain unresolved. Knowing the structure does not mean we can write down an exact final score for every candidate. Straight-line distances on the map cannot substitute for that evaluation either.
+
+镜头说明（不朗读）：完整算术缺口页签；不把直线距离标成原生成本。
+
+### S30-16 · 围城或追击：可选 R01 同帧证据
+
+**N30-031** · C00 / C03 / C10
+
+回到刚才的预测：围城，还是追击？到这里，我们可以指出两类候选怎样进入流程，却还不能替一段掉头录像补写理由；要解释那一次选择，需要当时对应的候选、评分和选中目标。
+
+Return to your prediction: siege or pursuit? We can now identify how those kinds of candidates enter the process, but we still cannot invent an explanation for a clip of an army turning around. Explaining that particular choice requires the corresponding candidates, scores, and selected target from that moment.
+
+镜头说明（不朗读）：采用 R01 教学替代版；并排候选入口，不展示自然个案结果。
+
+**N30-032** · C00 / C03 / C10
+
+再把这些记录与后续动作对上，才有条件说这支军队那一刻选了什么。我们眼前的赤河地图继续保留为教学示意，不为它捏造一份最终分数表；已知规则已经把下一步该查什么指清楚了。
+
+Those records must then be matched to the subsequent action before we can describe what that army selected at that moment. Our Redriver map remains a teaching illustration, without an invented final-score table. The known rules already tell us what evidence to examine next.
+
+镜头说明（不朗读）：同帧证据需求卡；未来自然插入需另写绑定句，当前无占位假结果。
+
+## CASE-B：评估力量与局部移动
+
+### S30-17 · 人数图标翻成评估力量条
+
+**N30-033** · C00 / C04
+
+现在赤河军队准备接近敌军。玩家最容易先看两边人数，但原生这里使用的是评估力量；画面把士兵图标翻成两条力量条，是提醒你，这两个概念不能直接画等号。
+
+Redriver's army is now preparing to approach the enemy. Players naturally look at the two troop counts first, but the native calculation here uses evaluated power. Turning soldier icons into power bars reminds us that these are not interchangeable concepts.
+
+镜头说明（不朗读）：士兵图标翻面为抽象评估力量；不填写真实计算输入。
+
+**N30-034** · C00 / C04
+
+而且，力量条也不是已经完整复原的兵种计算器。我们保留尚未弄清的输入，不替它们随意命名；眼下先认识这个比较量的含义，别急着把它翻译成这一仗有几成胜算。
+
+Nor are these power bars a fully reconstructed calculator for troop types. We leave unresolved inputs unnamed rather than inventing labels. First understand what this comparison means, without immediately translating it into a battle's chance of victory.
+
+镜头说明（不朗读）：未闭合输入保持封套；刻度只写强度比。
+
+### S30-18 · 强度比的分子、分母与返回范围
+
+**N30-035** · C00 / C04
+
+在已经复原的正常返回路径上，强度比等于我方评估力量，除以我方与对方评估力量之和。对方这一项也是按该路径汇总出来的力量，不是随便从地图上挑一支敌军的人数。
+
+On the reconstructed normal return path, the ratio is our evaluated power divided by the sum of our evaluated power and the opponent's. The opponent term is also aggregated by that path; it is not simply the troop count of an arbitrarily chosen enemy army.
+
+镜头说明（不朗读）：公式分子分母分色；对方框标该分支聚合值。
+
+**N30-036** · C00 / C04
+
+这表达的是确定性评估中的力量占比，不是在反复模拟战斗后统计出来的胜率。还有另一条路径，在没有形成这里所需的敌对力量汇总时直接返回一；所以连这个简式，也要带着它的适用范围读。
+
+This represents a share of deterministically evaluated power, not a win rate measured through repeated battle simulations. Another path returns one directly when the required hostile aggregate is absent. Even this simplified formula must therefore be read within its scope.
+
+镜头说明（不朗读）：正常路径图与无敌对聚合返回 1.0 的小注；不画胜率转盘。
+
+### S30-19 · 宣战军力门、抽取概率、接战强度比
+
+**N30-037** · C00 / C01 / C02 / C04
+
+把前面的三张牌再拿出来。宣战时的军力门，回答这一层条件是否满足；候选带上的百分之十九点九，回答保留池里某张牌被抽中的机会；现在的强度比，又是在接战判断里比较评估力量。
+
+Bring back our three cards. The declaration power gate asks whether a condition at that stage is met. The nineteen point nine percent on the selection strip describes one retained card's chance of selection. The current ratio compares evaluated power for an engagement assessment.
+
+镜头说明（不朗读）：CASE-A 与 CASE-B 分屏；三个量按用途归位。
+
+**N30-038** · C00 / C01 / C02 / C04
+
+它们可能都被口头简称为比值或者概率，但输入、分母和用途不同。把这些数混到同一把尺上，就会误以为程序先算好了整场战争的胜率，再把同一个答案交给所有后续决定。
+
+They may loosely be called ratios or probabilities in conversation, but their inputs, denominators, and purposes differ. Putting them on one scale can create the false impression that the program first calculates a win probability for the whole war and passes that answer to every later decision.
+
+镜头说明（不朗读）：三个概念卡保持独立，不汇入统一胜率轴。
+
+### S30-20 · 一般与 desperate 的严格接战门
+
+**N30-039** · C00 / C04 / C05
+
+接着只看已经分析的接战分支。一般分支要求强度比严格大于零点五，另一条分支则要求严格大于零点四；这里的严格大于很关键，正好等于门槛，仍然不算通过对应检查。
+
+Now look only at the engagement branches that have been studied. The ordinary branch requires a ratio strictly greater than zero point five, while another requires strictly greater than zero point four. Strictly greater matters: equality does not pass the corresponding check.
+
+镜头说明（不朗读）：一般 >0.5 与另一分支 >0.4 两片独立透明卡。
+
+**N30-040** · C00 / C04 / C05
+
+后者在资料中称为 desperate 分支。它完整的上游触发条件还没有闭合，所以不能自行补一句，兵少、性格激进，或者围城快输了，就必然会走这条更低门槛的路径。
+
+The latter is called the desperate branch in the research. Its complete upstream activation conditions remain unresolved. We therefore cannot add our own rule that fewer troops, an aggressive personality, or a failing siege must trigger this lower threshold.
+
+镜头说明（不朗读）：desperate 名称保留在画面；上游条件虚线，不映射自造触发。
+
+### S30-21 · 相邻危险点与受限替代尝试
+
+**N30-041** · C00 / C05
+
+把镜头缩到脚下，只看一个相邻的危险点。相关局部检查发现强度比低于零点六二五时，可以尝试寻找成本受限的替代路径；这时问题是这一段有没有别的走法，而不是整场战争该怎样赢。
+
+Zoom in to a single adjacent danger point. When the relevant local check finds a ratio below zero point six two five, it can attempt a cost-bounded alternative path. The question concerns another way through this local segment, not how to win the entire war.
+
+镜头说明（不朗读）：一步路径放大；低于 0.625 才进入相应替代尝试示意。
+
+**N30-042** · C00 / C05
+
+替代搜索也有成本窗口，不能让虚线在地图上无限绕行。这里的成本不能擅自说成行军天数；同样，通过这个局部检查，也没有证明远方每一步都安全，更没有替未来的敌军动作作保证。
+
+The alternative search has a cost window, so our dashed line cannot wander across the map without limit. That cost must not be casually described as marching days. Passing this local check also proves neither that every distant step is safe nor that future enemy movements are accounted for.
+
+镜头说明（不朗读）：成本窗口框；远处线路灰色未求解，不显示假 ETA。
+
+### S30-22 · 替代有路或失败，局部检查到哪里
+
+**N30-043** · C00 / C05
+
+我们把同一个起点拆成两幅教学图。左边假设找到了符合窗口的替代路线，右边假设搜索失败；失败并不意味着整个判断凭空结束，后面还有一般或者 desperate 接战门的回退检查。
+
+Split the same starting point into two teaching diagrams. On the left, suppose an alternative route is found within the window; on the right, suppose the search fails. Failure does not simply end all assessment: a fallback check through the ordinary or desperate engagement gate remains.
+
+镜头说明（不朗读）：替代成功／失败并排；失败回到既有分支门。
+
+**N30-044** · C00 / C05
+
+因此，地图上画出一条可考虑的路线，还不能直接接上一段已经执行进攻的录像。搜索、条件通过和实际动作，需要分别确认；我们这里只把已知分支画到它能够支持的位置。
+
+Drawing a route that may be considered does not justify cutting directly to footage of an attack as though execution had been established. Search, passing a condition, and actual action need separate confirmation. Our diagram stops where the known branch's evidence stops.
+
+镜头说明（不朗读）：军旗停在当前位置；候选线路与实际动作分开。
+
+### S30-23 · 未接战布置与已接战撤退分开
+
+**N30-045** · C00 / C08
+
+再看这两格：左边尚未接战，军队可以面对重新布置的问题；右边已经处在战斗中，我们问的却是它何时决定主动撤退。两个画面都可能看起来像往后走，程序里问的却不是同一件事。
+
+Compare these two panels. On the left, contact has not begun and the army faces a repositioning question. On the right, it is already in battle and we are asking when it decides to retreat voluntarily. Both may look like moving backward, but they are different questions in the program.
+
+镜头说明（不朗读）：未接战／已接战双格；后退动作不互换。
+
+**N30-046** · C00 / C08
+
+接战前的低强度比判断，不能自动回答战斗中的撤退择时与目的地策略。这个空白先留在图上，我们继续看一条更适合做明确条件对照的链：军队什么时候开始请求帮助。
+
+A low-ratio assessment before contact does not automatically explain retreat timing or destination choices during a battle. Leave that gap visible. Next, we can examine a chain suited to a clear conditional comparison: when an army begins asking for help.
+
+镜头说明（不朗读）：主动撤退虚线保留；求援页签进入前景。
+
+## CASE-B：求援开关与历史状态
+
+### S30-24 · 此前未求援，0.65 点亮请求
+
+**N30-047** · C00 / C06
+
+下面讲的是普通电脑军队之间的求援路径。先给赤河这支军队一个明确的起点：此前没有求援，本次计算得到的强度比假设为零点六五；我们的灯只用来显示请求状态。
+
+We are now discussing the ordinary help-request path between AI armies. Give this Redriver army a clear starting state: it was not previously asking for help, and its ratio at this evaluation is hypothetically zero point six five. Our light displays only the request state.
+
+镜头说明（不朗读）：普通 AI-to-AI 标签；此前未求援；假设 0.65。
+
+**N30-048** · C00 / C06
+
+未求援时，要严格低于零点六六，才会开始求援。零点六五满足这条条件，所以灯亮起来；先别让另一支军队立刻冲过来，请求已经提出和援军已经行动，是两件不同的事。
+
+When it is not already asking, the ratio must be strictly below zero point six six to begin. Zero point six five meets that condition, so the light turns on. Do not send another army charging over yet: making a request and a helper taking action are different events.
+
+镜头说明（不朗读）：沿 <0.66 点灯；助手军旗暂不移动。
+
+### S30-25 · 已在求援，0.70 还会亮吗
+
+**N30-049** · C00 / C06
+
+接下来只换一个数字，强度比回升到零点七零。你觉得灯会不会熄灭？如果只记住刚才的零点六六，很容易说它已经不需要帮助了，但我们还少看了一项输入。
+
+Now change only the number: the ratio rises to zero point seven zero. Do you think the light will go out? Remembering only the earlier zero point six six makes it tempting to say help is no longer needed, but one input has been overlooked.
+
+镜头说明（不朗读）：从亮灯状态推进到 0.70；提问后短停顿。
+
+**N30-050** · C00 / C06
+
+这次计算之前，它已经在求援。对这个状态，继续求援的条件是严格低于零点七五，因此零点七零仍然让灯保持亮着；开始用一道门，继续用另一道门，正是这里的区别。
+
+Before this evaluation, it was already asking for help. For that state, continuing requires a ratio strictly below zero point seven five. Zero point seven zero therefore keeps the light on. Starting uses one threshold and continuing uses another.
+
+镜头说明（不朗读）：突出此前已求援；沿 <0.75 维持亮灯。
+
+### S30-26 · 同为 0.70，false 与 true 两种历史
+
+**N30-051** · C00 / C06
+
+现在把零点七零复制成两张卡。一边此前没有求援，就去检查是否低于零点六六，条件不满足；另一边此前已经求援，就检查是否低于零点七五，条件满足，所以两边的灯不同。
+
+Now duplicate zero point seven zero onto two cards. One was not previously asking, so it checks whether the value is below zero point six six: the condition is not met. The other was already asking, so it checks against zero point seven five: the condition is met. The lights therefore differ.
+
+镜头说明（不朗读）：并列两组。
+
+**N30-052** · C00 / C06
+
+你并没有看错数值，程序也没有在这里自相矛盾。改变的是此前状态，所以只截下一帧比值，不能重建这一格的答案；要解释它为什么还在求援，必须把它原来是否已经求援一起带回来。
+
+You have not misread the value, and the program is not contradicting itself here. The prior state differs. Capturing a ratio alone cannot reconstruct the answer in this panel. To explain why a request continues, we must also recover whether it was already active.
+
+镜头说明（不朗读）：短暂遮比值突出历史状态；恢复全图。
+
+### S30-27 · 0.76 退出，收回三状态序列
+
+**N30-053** · C00 / C06
+
+最后回到已求援的那条轨道，把本次比值换成零点七六。它不再低于零点七五，继续条件不成立，于是求援灯熄灭；开始、维持和退出，这个小例子就走完整了。
+
+Finally, return to the track that was already asking and change the current ratio to zero point seven six. It is no longer below zero point seven five, so the continuation condition fails and the light goes out. Our example now covers starting, maintaining, and stopping the request.
+
+镜头说明（不朗读）：已求援路径输入 0.76；停止条件示意。
+
+**N30-054** · C00 / C06
+
+零点六五、零点七零、零点七六，是三次假设求值的逻辑顺序，不是我们拍到的连续三天。完整日历调度还存在缺口，因此画面只连状态箭头，不给它偷偷加上每天刷新的时间表。
+
+Zero point six five, zero point seven zero, and zero point seven six form a logical sequence of hypothetical evaluations, not three consecutive days we recorded. The full calendar scheduling remains unresolved, so the diagram connects states without quietly assigning a daily refresh schedule.
+
+镜头说明（不朗读）：三状态总条带；不加日期轴或采样回执。
+
+### S30-28 · 请求之后匹配助手，目标是当时省份
+
+**N30-055** · C00 / C06
+
+求援灯亮了，接下来还有匹配。已经分析的普通链会按已有存储顺序寻找符合条件的请求者；这一步没有把所有对象重新排成最短到达时间排行榜，所以不能只凭地图上谁近，就替它宣布谁会被选中。
+
+Once the request light is on, matching still remains. The ordinary chain studied here searches for qualifying requesters in stored order. This step does not rerank them all by shortest arrival time, so proximity on the map alone cannot tell us which one will be selected.
+
+镜头说明（不朗读）：请求与匹配两门；按存储顺序筛符合者，不做 ETA 排榜。
+
+**N30-056** · C00 / C06
+
+帮助目标绑定的是请求者当时所在的省份，我们用便签贴住那个位置。不过，局部匹配没有按最短到达时间排序，不代表更早的所有步骤从来不看距离；更不等于已经承诺未来的到达和参战结果。
+
+The help target is bound to the province the requester occupied at that moment, which we mark with a note. But the absence of shortest-arrival-time sorting in this local matching step does not mean every earlier step ignores distance. Nor does it guarantee a future arrival or battle outcome.
+
+镜头说明（不朗读）：当前省份便签；后续结果留虚线，上游范围提示。
+
+### S30-29 · 普通求援不能回答全部玩家支援
+
+**N30-057** · C07 / C10
+
+这时你大概会想到自己的盟友：我在前面打，它为什么站着不动？这个问题很自然，但刚才讲的是普通电脑军队之间的求援，不能把这套阈值直接套到电脑支援玩家军队的所有情境。
+
+You may now think of your own ally: why does it stand still while you fight ahead? It is a natural question, but the path we just described concerns ordinary help between AI armies. Its thresholds cannot be applied to every situation in which the AI supports a player's army.
+
+镜头说明（不朗读）：普通求援收框；玩家军队徽记另开路径。
+
+**N30-058** · C07 / C10
+
+玩家支援有专用路径，其中的设置怎样被原生程序使用，以及部分更早的筛选，还没有闭合。因此我们既不能说盟友故意不救人，也不能说这种支援规则根本不存在；图上的虚线，表示的是目前还缺证据的部分。
+
+Player support has a dedicated path, but how its settings are used by the native program, along with some earlier filtering, remains unresolved. We can therefore claim neither that an ally deliberately refuses to help nor that such support rules do not exist. The dashed line marks where evidence is still missing.
+
+镜头说明（不朗读）：玩家支援未知虚线；不插旧 G2 作为原生思考证据。
+
+## CASE-B：战斗进入战争
+
+### S30-30 · 正常战斗记录写入对应活动战争
+
+**N30-059** · C00 / C09
+
+让教学地图上的一场战斗正常结束。我们从结果中取出一张单场记录，但先不往任何战争里乱放；需要确认它对应的是哪场活动战争，才能把这张票据送到正确的账册。
+
+Let a battle on our teaching map end normally. We take out a single-battle record, but do not place it into just any war. First identify the corresponding active war, so the record can enter the correct ledger.
+
+镜头说明（不朗读）：正常结算条件卡；对应活动战争卡；无伪造数值记录。
+
+**N30-060** · C00 / C09
+
+在已经分析的正常结算路径上，单场战斗记录可以写入所属活动战争的战斗分部分。这里保留正常结算和对应战争两个条件，是为了避免把任意一场战斗结束，都说成同一笔战分增加。
+
+On the normal finalization path studied here, a battle record can be written into the battle-score component of its corresponding active war. Keeping both conditions visible prevents us from treating every battle ending as the same addition to war score.
+
+镜头说明（不朗读）：票据进入对应战争战斗分栏；保留条件框。
+
+### S30-31 · 单场记录、战斗分栏与战争总分
+
+**N30-061** · C00 / C09
+
+再把镜头拉远。这张票据只占战斗贡献的一部分，而战斗贡献又只是战争战分的一部分；单场结果、战斗分栏和战争总分，是三个需要分别读的层次。
+
+Now pull the camera back. This record is one part of the battle contribution, and the battle contribution is itself only part of war score. A single battle result, the battle-score component, and total war score are three distinct levels to read.
+
+镜头说明（不朗读）：单场记录、战斗贡献、战争总分三层纸框。
+
+**N30-062** · C00 / C09
+
+因此，不能看到结果窗口里的一个数字，就把它当成整个战争的答案，也不能随手用当前存活人数去补齐还没完整命名的公式。我们的图只说明这笔记录放在哪里，不捏造整张战争账已经算清。
+
+A number in the result window is therefore not the answer for the whole war. Nor can current surviving troop counts be inserted into formula terms that have not been fully identified. Our diagram shows where the record belongs; it does not pretend the entire war ledger has been reconstructed.
+
+镜头说明（不朗读）：不展示未完整命名分母；其它总分来源保留未展开页签。
+
+### S30-32 · 撤退资格与执行，不等于主动撤退策略
+
+**N30-063** · C00 / C08
+
+战斗结束之前，还有一个玩家很关心的问题：电脑为什么不早点撤？这里必须把资格、执行和决策分开；知道满足哪些条件可以撤退，不等于知道普通战争电脑什么时候会决定这样做。
+
+Before a battle ends, players often ask why the AI did not retreat sooner. Here we must separate eligibility, execution, and decision-making. Knowing the conditions that permit a retreat does not tell us when ordinary war AI chooses to take it.
+
+镜头说明（不朗读）：资格钥匙打开执行门；主动决定时机一栏留空。
+
+**N30-064** · C00 / C08
+
+即使已经观察到玩家撤退命令成功，也只能证明那条操作在对应条件下成立。一般战争电脑的主动撤退择时和目的地策略，仍有缺口；前面讲过的接战前改线，不能拿来填这个空。
+
+Even observing a successful player retreat command establishes only that the operation worked under its corresponding conditions. Gaps remain in ordinary war AI's voluntary retreat timing and destination policy. The pre-contact rerouting discussed earlier cannot fill that gap.
+
+镜头说明（不朗读）：玩家操作文件夹与原生策略文件夹分开；未知虚线保留。
+
+### S30-33 · 还有军队，为什么也可能谈和平
+
+**N30-065** · C00 / C11
+
+把军队这一路的牌收起来。我们一路看过几个不同层次的问题，现在让注意力从军旗移到领主面前；下一封和平信要不要发出，不能只看刚才那条行军箭头，就替它作答。
+
+Gather the army's cards. We have examined questions at several different levels; now shift attention from the army's flag to the ruler's desk. The previous movement arrow alone cannot tell us whether the next peace letter should be sent.
+
+镜头说明（不朗读）：CASE-B 道具折成一册；保留军旗和战争账册。
+
+**N30-066** · C00 / C11
+
+现在镜头回到领主的桌前。军队仍在地图上，城堡也没有消失，但和平信已经摆在面前；还有多少兵，并不能单独决定是否主动开口，或者收到白和提议以后愿不愿意接受。
+
+Now return to the ruler's desk. Armies remain on the map and the castles are still there, yet a peace letter lies before us. The number of troops alone does not determine whether to initiate a proposal or accept an offer of white peace.
+
+镜头说明（不朗读）：和平双账进入前景；进入 CASE-C，战争未假装结束。
+
+## CASE-C：和平的两本账
+
+### S30-34 · 先摆身份、进攻防守与提议方向
+
+**N30-067** · C00 / C11
+
+先把身份卡摆好。在这个教学对照里，赤河是电脑控制的进攻方，蓝岭是电脑控制的防守方；本例让蓝岭考虑提出白和，赤河是接收方，后面沿用这组身份。
+
+First arrange the identity cards. In this teaching comparison, Redriver is the AI-controlled attacker and Blueridge the AI-controlled defender. Blueridge considers proposing white peace, Redriver receives the proposal, and we retain these roles in the following explanation.
+
+镜头说明（不朗读）：主案例 AI 进攻／AI 防守身份；信件两端角色牌。
+
+**N30-068** · C00 / C11
+
+我们讨论的，还必须是允许白和的相应情形。战争类型、双方身份，以及人质和相关能力等条件，都可能影响该读哪条规则；所以这两本账，不是一套随便换个名字就能套遍所有战争的模板。
+
+We must also be discussing a situation in which white peace is allowed. War type, the parties' roles, hostages, and relevant abilities can affect which rule applies. These ledgers are not a universal template for every war with the names simply replaced.
+
+镜头说明（不朗读）：CB 合法性与例外折页；主身份不变。
+
+### S30-35 · 主动提出：基础 0 与前置门
+
+**N30-069** · C00 / C11
+
+先看左边，主动提出白和的账。它的基础分是零，但零不代表百分之零的概率；这只是后续条件和修正计算的起点，提议还要先经过相关的合法性与候选检查。
+
+Begin with the left ledger, for proactively proposing white peace. Its base score is zero, but zero does not mean a zero-percent probability. It is a starting point for conditions and modifiers, and the proposal must also pass the relevant legality and candidate checks.
+
+镜头说明（不朗读）：左账 base 0；合法性与候选门先于倾向栏。
+
+**N30-070** · C00 / C11
+
+战争已经持续多久、当前战分怎样、有没有债务或者其它战争压力，会在各自符合条件的分支里进入判断。这里我们只把入口逐项摆出来，不省略半本账之后，再给蓝岭编造一个看似精确的主动提议总分。
+
+War duration, current war score, debt, and pressure from other wars enter the assessment through their qualifying branches. We show those entries individually rather than omit half the ledger and invent a seemingly precise total proposal score for Blueridge.
+
+镜头说明（不朗读）：时长、战分、压力条件卡逐项入位；最终总分留未展开。
+
+### S30-36 · 收到后接受：基础 -30 不是结果
+
+**N30-071** · C00 / C11
+
+右边是收到白和以后，评估是否接受的另一套账。基础分从负三十开始；这既不是负百分之三十的概率，也不能只读这一项，就断言对方一定拒绝。
+
+The right ledger is a separate evaluation of whether to accept white peace after receiving it. Its base score starts at minus thirty. That is neither a negative thirty-percent probability nor enough on its own to establish certain rejection.
+
+镜头说明（不朗读）：右账 base -30；与接受结果框保持距离。
+
+**N30-072** · C00 / C11
+
+后面还要根据进攻防守身份和相应条件，加入战分、时长等修正。最终原生接受比较仍有未闭合的部分，所以基础值、修正入口和实际接受结果，要保持三种不同的标签，不能互相冒充。
+
+War score, duration, and other modifiers then depend on attacker or defender roles and their conditions. Parts of the final native acceptance comparison remain unresolved. The base value, modifier entries, and actual acceptance outcome therefore need distinct labels rather than standing in for one another.
+
+镜头说明（不朗读）：角色对应修正；实际结果不预填，不给接受保证。
+
+### S30-37 · 明确换身份，再看玩家例外
+
+**N30-073** · C00 / C11
+
+现在专门开一个对照画面，只把赤河改成玩家控制，蓝岭仍是电脑防守方。先让身份标签明确变化，再看蓝岭主动提议的路径；对玩家存在额外的候选预筛，以及主动倾向中的否决条件，不能把刚才电脑对电脑的箭头原样照搬。
+
+Now open a separate comparison in which only Redriver becomes player-controlled; Blueridge remains the AI defender. Make that identity change explicit before inspecting Blueridge's proactive proposal path. Player-facing interactions include additional candidate prefilters and veto conditions in proposal willingness, so the AI-versus-AI arrows cannot simply be copied over.
+
+镜头说明（不朗读）：玩家对照独立分屏；ai_potential 与 ai_will_do 门。
+
+**N30-074** · C00 / C11
+
+这也解释了为什么讨论和平规则时，谁攻谁守、谁是玩家，必须先说清楚。同样叫白和，换了角色就可能换了检查路径；如果身份卡被剪掉，观众看到的就会像同一条规则突然变了。
+
+This is why discussing peace rules requires stating who attacks, who defends, and who is a player. The interaction is still called white peace, but changing roles can change the checks. Remove the identity cards from the edit, and it may look as though one rule has arbitrarily changed.
+
+镜头说明（不朗读）：AI 对 AI 与玩家对照两组身份常驻；不合并账。
+
+### S30-38 · 同样压力，是否进入同一本账
+
+**N30-075** · C00 / C11
+
+回到主案例，把沙漏、战分和第三国战争的压力放在两本账之间。某项压力进入左账还是右账，要看该角色对应的条件，不能因为它对故事有用，就让它在两边都加同样的分。
+
+Return to the main example and place the hourglass, war score, and third-country war pressure between the ledgers. Whether a pressure enters the left or right ledger depends on the relevant role conditions. Its usefulness to the story does not justify adding identical points to both.
+
+镜头说明（不朗读）：条件卡按角色分流；不新增具体修正总和。
+
+**N30-076** · C00 / C11
+
+这时再判断：愿意接受一份提议，是否就等于愿意主动发出它？两条路径的起点、条件与修正本来就不同，所以我们要分别检查；单凭场上还有一支军队，无法替两本账同时作答。
+
+Now ask again: does being willing to accept a proposal mean being willing to initiate it? The two paths have different starting points, conditions, and modifiers, so they must be examined separately. One army still standing in the field cannot answer both ledgers at once.
+
+镜头说明（不朗读）：观众比较两账；军旗不作为唯一结论依据。
+
+### S30-39 · 可选 R03 自然白和与解释边界
+
+**N30-077** · C11 / C10
+
+如果要把这里换成一段自然发生的和平个案，还需要把当时的战争、双方身份和提议经过对应起来。看到通知出现，只能先说明出现了这份提议；它为什么在这一刻发出，不能靠一项看起来合适的修正倒推。
+
+A naturally occurring peace case would require matching the war, both parties' roles, and the proposal's sequence at that moment. Seeing a notification first establishes that the proposal appeared. One apparently relevant modifier cannot tell us why it was sent at that exact moment.
+
+镜头说明（不朗读）：采用 R03 静态替代；自然个案所需证据卡，不出假通知。
+
+**N30-078** · C11 / C10
+
+因此，这里继续保留两套规则的对照，不给教学角色安排一份冒充实测的接受总分。确切发送日期和协商调度还存在缺口，已经确认的条件告诉我们可以检查什么，却没有替自然事件写好发生时间。
+
+We therefore keep the comparison between the two rule sets rather than assign our teaching characters an acceptance total masquerading as a measurement. Exact sending dates and negotiation scheduling remain unresolved. Confirmed conditions tell us what to examine, not when a natural event must occur.
+
+镜头说明（不朗读）：双账静态收束；不预言发送日期，不伪造 WarID。
+
+### S30-40 · 先提与愿收分开，和平案例收束
+
+**N30-079** · C00 / C11
+
+第三个案例可以收起来了。左边问要不要先提出白和，右边问收到白和以后怎样评估；把它们分开，我们就不必因为军队还在场上，就认定谈和平一定与战争状态矛盾。
+
+We can now close the third case. The left asks whether to initiate white peace; the right evaluates it after receipt. Keeping them separate means we need not assume that discussing peace contradicts the war situation merely because armies remain in the field.
+
+镜头说明（不朗读）：两条白和路径终卡；主地图军旗仍在。
+
+**N30-080** · C00 / C11
+
+赤河和蓝岭的地图到这里完成了教学任务。它没有替某场真实战争决定结局，而是把几个容易混在一起的问题拆开：谁在考虑，满足哪些条件，以及正在计算的是哪一份账。
+
+Redriver and Blueridge's map has now served its teaching purpose. It has not determined the ending of a real war. Instead, it separates questions that are easily conflated: who is considering an action, which conditions apply, and which ledger is being evaluated.
+
+镜头说明（不朗读）：CASE-C 页签归位；明确教学案例结束，不称自然战争结束。
+
+## 回扣与研究方法
+
+### S30-41 · 三个案例回答开场三个疑问
+
+**N30-081** · C00 / C02 / C03 / C05 / C06 / C11
+
+再看开场留下的最高分牌。经过门槛筛选，保留下来的候选按分数加权抽取，所以最高分没有被选中，并不自动意味着程序无视了分数；分数先影响哪些候选留下，再参与最后的抽取。
+
+Return to the highest-scoring card from the opening. After threshold filtering, retained candidates are selected with score-based weights. Not choosing the highest score does not automatically mean the program ignored scores: scores first affect which candidates remain, then participate in the final selection.
+
+镜头说明（不朗读）：候选筛选与权重抽取回扣，不重播完整六卡。
+
+**N30-082** · C00 / C02 / C03 / C05 / C06 / C11
+
+再看军队的箭头和两封和平信。目标块、局部条件和此前求援状态，要放回各自阶段；主动提议和收到后接受，也要分开读，才能继续追问某次真实动作究竟受了哪些输入影响。
+
+Now revisit the army's arrow and the two peace letters. Objective blocks, local conditions, and prior request state belong to their respective stages. Initiating and accepting a proposal also need separate readings before we can investigate which inputs shaped a particular real action.
+
+镜头说明（不朗读）：CASE-B 阶段卡与 CASE-C 双账；三个疑问翻答案。
+
+### S30-42 · 已有求援研究：define 接到原生消费者
+
+**N30-083** · C06 / C10
+
+最后用刚才的求援开关，看看一条结论怎样有了依据。资料里能找到开始与继续求援的相关定义和阈值，但只看到文件里写着一个数字，还不够说明它实际控制哪个动作。
+
+Finally, use the help switch to examine how a conclusion gains support. The sources contain definitions and thresholds for starting and continuing a request. But finding a number in a file alone does not establish which action it actually controls.
+
+镜头说明（不朗读）：C06 冻结来源摘录；圈 define 和阈值，不假演工具执行。
+
+**N30-084** · C06 / C10
+
+还要接到原生程序读取这些设置的位置，看它在什么状态下选择哪一道门。我们刚才展示的普通求援分支，就是把定义和已有原生证据对应起来之后，能够明确说明的这一段规则。
+
+We must connect those settings to where the native program reads them and see which threshold it selects in each state. The ordinary request branch we showed is the section that can be described explicitly by linking the definitions with existing native evidence.
+
+镜头说明（不朗读）：既有消费者状态图；定义卡与分支卡扣合。
+
+### S30-43 · 已有规则与具体实机状态的证据区别
+
+**N30-085** · C00 / C06 / C10
+
+但是，规则有依据，和某个自然个案已经解释完，仍然隔着一步。把零点七零的两张卡拿回来：不知道此前是否已经求援，即使当前比值相同，我们也不能只凭这一项替现场下结论。
+
+A supported rule is still one step short of a fully explained natural case. Bring back the two zero point seven zero cards. Without knowing whether a request was already active, the same current ratio alone cannot establish what happened in the observed situation.
+
+镜头说明（不朗读）：同 0.70 双历史；空白观察卡保留缺项。
+
+**N30-086** · C00 / C06 / C10
+
+要解释那一次，得有对应的当前读数、此前状态和主体身份，再把它们与实际经过对上。这也是为什么片中的教学灯可以完整走一遍，旁边仍然可以诚实保留一格，写着尚未取得连续实机证据。
+
+Explaining that instance requires the matching current reading, prior state, and subject identity, aligned with the observed sequence. That is why the teaching light can complete its full example while a neighboring box still honestly says that continuous live evidence has not been obtained.
+
+镜头说明（不朗读）：规则已确认与个案待绑定分别标识；不生成回执。
+
+### S30-44 · 观众带走的判断顺序与开放问题
+
+**N30-087** · C07 / C08 / C10
+
+以后再遇到让你皱眉的战争动作，可以先问它处在哪个阶段，再看哪些输入和历史状态可能相关。今天的规则提供了追问的起点，而不是让我们离开当时的证据，就能猜中每一支军队的决定。
+
+When a war action next makes you frown, first ask which stage it belongs to, then consider which inputs and prior states may matter. Today's rules provide a starting point for investigation, not a way to guess every army's decision without evidence from the moment.
+
+镜头说明（不朗读）：三条判断顺序卡；不转成游戏必胜建议。
+
+**N30-088** · C07 / C08 / C10
+
+玩家支援和一般战争电脑的主动撤退，仍有开放问题。把这些空白留下来，已有结论才不会被讲成万能答案，也方便下一次研究清楚之后，准确接回这张图。
+
+Player support and ordinary war AI's voluntary retreat policy still contain open questions. Leaving those gaps visible keeps established findings from becoming universal answers and makes it easier to connect future research back to the diagram accurately.
+
+镜头说明（不朗读）：玩家支援与撤退未知虚线；调度缺口以来源范围卡呈现。
+
+### S30-45 · 版本、来源与教学边界尾卡
+
+**N30-089** · C00 / C10
+
+本期依据的版本、文档和程序指纹，列在片尾资料中。这里讲的是这个版本里已经研究到的范围，文档梳理得多细，并不等于全部原生分支或者自然实机行为已经验证了多少。
+
+The version, documents, and executable fingerprint used for this episode are listed in the accompanying source material. We have discussed the researched scope of this build. The maturity of the documentation does not measure how many native branches or naturally occurring behaviors have been verified.
+
+镜头说明（不朗读）：版本及 source-lock 缩写；资料入口卡，不口播长 SHA。
+
+**N30-090** · C00 / C10
+
+赤河与蓝岭是虚构的，示例数字也是教学输入。希望下次你看见最高分留在桌上、军队换了方向，或者和平信忽然出现时，能多想到一步：它现在，究竟在做哪一个决定。
+
+Redriver and Blueridge are fictional, and the example numbers are teaching inputs. The next time the highest score stays on the table, an army changes direction, or a peace letter appears, I hope one more question comes to mind: which decision is it making right now?
+
+镜头说明（不朗读）：三案道具与地图落尾；不增新机制，不造人工批准。

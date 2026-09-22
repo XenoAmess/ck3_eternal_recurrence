@@ -13,6 +13,7 @@
 - `machine-id` 标识执行机器。默认由主机名加本机稳定标识的 SHA-256 前 10 位生成，不公开原始 MachineGuid；需要人工管理机器名时可用
   `XAR_CK3_MACHINE_ID` 覆盖。
 - `mod-key` 必须来自 `tools/ck3_live_run_id.py` 的 canonical 清单，避免同一产品因拼写变化分裂成多个计数器。
+- `vanilla` 专用于实际 `enabled_mods=[]` 的原版会话，包括原版界面取景；它不表示加载了名为 vanilla 的 mod。项目片名另记在报告中，不为每条视频创建一个 mod 产品，也不得借用已发布 mod 的计数器。
 - `R<n>` 只在同一 `machine-id + mod-key` 命名空间内递增。不同机器、不同 mod 都从自己的 `R0001` 开始；不再存在跨项目的全局 R 号。
 
 因此，短写 `R0007` 只允许在已经明确机器和 mod 的局部上下文中使用；正式报告、artifact 根目录、任务总线状态和跨文档引用必须写完整 ID。

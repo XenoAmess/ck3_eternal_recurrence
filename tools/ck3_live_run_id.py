@@ -33,6 +33,7 @@ CANONICAL_MOD_KEYS = frozenset(
         "ox-here",
         "reclaim-the-motherland",
         "remove-mandala",
+        "vanilla",
         "vivhite-courtier",
         "xenoamess-quality-of-life",
         "zhongguo-style",

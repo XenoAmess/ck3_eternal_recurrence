@@ -1,0 +1,64 @@
+{
+  "kind": "ck3_native_war_ai_sample_build_record",
+  "status": "rendered-pending-human-review",
+  "video": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260923-r2/build/war-ai-radio-cut.mp4",
+    "bytes": 12280618,
+    "sha256": "4fbb165bc70bd712d7537c9bdc9245addd7c6df0cd1cfdd2bc2103c2b3f61712"
+  },
+  "run": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260923-r2/run/run-manifest.json",
+    "bytes": 53729,
+    "sha256": "d18cea1291cbc22adaaf61e8b5ff6959be3a440b53349255041e2a238ca95ac3"
+  },
+  "bound_probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260923-r2/video.bound-probe.json",
+    "bytes": 4067,
+    "sha256": "6c9726854ebae00b3de0ec284f432c40959752fd2905754fbb741da5b4e302a7"
+  },
+  "production_receipt": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260923-r2/production-receipt.json",
+    "bytes": 15305,
+    "sha256": "ca61a26a6694fdc3e10c79b2e120cfaf2d21a9dd3120137fa0a8eb0f4ab71cb7"
+  },
+  "speech_inputs": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-speech-edge-20260923-r2/production-inputs.json",
+    "bytes": 14702,
+    "sha256": "12db95d22b19589aeaae087ed19da32d65b07294a55eb54b977155e3662ab38b"
+  },
+  "speech_request": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-speech-edge-20260923-r2/request.json",
+    "bytes": 4213,
+    "sha256": "82186f463840d5fb108d11d0b03431694ad9f162461961ea170eef350caf0748"
+  },
+  "project_check": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260923-r2/project-check.json",
+    "bytes": 382,
+    "sha256": "c68a84f404b27164db9e0e6d97f2a6d443a13b0d007dc2969059ed0a065517e9"
+  },
+  "review_package": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260923-r2/review/review-package.json",
+    "bytes": 9931,
+    "sha256": "7122537a5241029cf5d1fdd0391894172434e5162a952d9803d1640dfa254f2e"
+  },
+  "actual_duration_seconds": 237.988021,
+  "resolution": [
+    2560,
+    1440
+  ],
+  "fps": 30,
+  "toolchain": "0.2.1",
+  "provider": "edge-tts",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "scope": "12-cue help chapter; teaching diagram rough cut; no live CK3 evidence; no music",
+  "changes_from_r1": [
+    "clear conditional wording in N30-051; eleven exact takes reused",
+    "same-side requester and helper; only helper-to-requester target arrow",
+    "public question titles; visible history-dependent request indicators"
+  ],
+  "review_sampling": "actual chapter edges and both states of final cue in each of six shots",
+  "human_signoff": "not-provided",
+  "full_film_complete": false,
+  "reviewed_by_executor": "selected still-frame content and subtitle layout; no full-playback claim",
+  "retention": "All original and revised takes, drawings, segments, commands, manifests and review artifacts retained"
+}

@@ -1,0 +1,58 @@
+{
+  "kind": "ck3_native_war_ai_sample_build_record",
+  "status": "rendered-pending-human-review",
+  "video": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260922-r1/build/war-ai-radio-cut.mp4",
+    "bytes": 11044920,
+    "sha256": "47d70323b7cc3af2a0585673f30b84d3f69c147d5ddcd0daf5e5f10ad62d81e6"
+  },
+  "run": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260922-r1/run/run-manifest.json",
+    "bytes": 68468,
+    "sha256": "66705f0c2b6d93df7750e39e678cde1b5cc20c6f993bf48e325ad64cfa520d61"
+  },
+  "bound_probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260922-r1/video.bound-probe.json",
+    "bytes": 4067,
+    "sha256": "f7dfe3f781acec9d2d841b2fb55a94042ac054516531bcc18890b1ebd152285b"
+  },
+  "production_receipt": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260922-r1/production-receipt.json",
+    "bytes": 24809,
+    "sha256": "844e3f0dfd8d668d5af581323c879fa8320bf87f7ee817159586adf15dafebca"
+  },
+  "speech_inputs": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-speech-edge-20260922-r1/production-inputs.json",
+    "bytes": 14657,
+    "sha256": "e88039f91947fc55fd7d74c3195b6cbdb3561024010e6b4ff0a818fe5cc6c46a"
+  },
+  "project_python_only_check": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260922-r1/project-python-only-check.json",
+    "bytes": 377,
+    "sha256": "9a1f85cc64e6cf6c3f133cbaad92aec2cc631c7798b4f4911a5225c57c2e7d04"
+  },
+  "review_package": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/help-sample-edge-20260922-r1/review/review-package.json",
+    "bytes": 32416,
+    "sha256": "a92591a7ec1215118986835c8c3b9577de2464dedb587197b995c8053a8f5b4a"
+  },
+  "actual_duration_seconds": 236.954687,
+  "resolution": [
+    2560,
+    1440
+  ],
+  "fps": 30,
+  "toolchain": "0.2.1",
+  "provider": "edge-tts",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "scope": "12-cue help chapter; teaching diagram rough cut; no live CK3 evidence; no music",
+  "known_revision_items": [
+    "N30-051 oral ambiguity corrected only in next script revision",
+    "map opponent-directed arrow to be replaced by same-side requester/helper graphic",
+    "public question titles to replace internal false/true shot title"
+  ],
+  "human_signoff": "not-provided",
+  "full_film_complete": false,
+  "reviewed_by_executor": "three still-frame layout/content samples only; no claim of full playback",
+  "retention": "All raw narration, requests, images, video segments, logs, snapshots and review artifacts retained"
+}

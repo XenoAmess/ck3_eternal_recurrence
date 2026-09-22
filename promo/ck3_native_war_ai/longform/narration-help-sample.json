@@ -1,0 +1,171 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_war_ai_longform_narration",
+  "status": "draft-for-radio-cut",
+  "source_commit": "68459f225270f138345785572d31ef9f722f3cae",
+  "game_build": "1.19.0.6",
+  "claim_plan": "../claims.json",
+  "source_lock": "../source-lock.json",
+  "timeline": "timeline.json",
+  "narration_locale": "zh-CN",
+  "subtitle_locales": [
+    "zh-CN",
+    "en"
+  ],
+  "voice_candidate": "zh-CN-XiaoxiaoNeural",
+  "timing_mode": "editorial-reference",
+  "range_policy": "soft-editorial",
+  "working_duration_range_seconds": null,
+  "reference_duration_seconds": null,
+  "actual_duration_seconds": null,
+  "media_binding_state": "unbound",
+  "text_basis": "existing-frozen-claims-only",
+  "note": "Help chapter excerpt S30-24 through S30-29. Stable cue IDs match the full draft. Render at a clear natural pace; actual sample length follows the generated audio, with no padded four-minute target. No audio or human approval is asserted.",
+  "scope": "help-sample",
+  "cues": [
+    {
+      "id": "N30-047",
+      "shot_id": "S30-24",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "下面讲的是普通电脑军队之间的求援路径。先给赤河这支军队一个明确的起点：此前没有求援，本次计算得到的强度比假设为零点六五；我们的灯只用来显示请求状态。",
+      "en": "We are now discussing the ordinary help-request path between AI armies. Give this Redriver army a clear starting state: it was not previously asking for help, and its ratio at this evaluation is hypothetically zero point six five. Our light displays only the request state.",
+      "visual_step": "普通 AI-to-AI 标签；此前未求援；假设 0.65。"
+    },
+    {
+      "id": "N30-048",
+      "shot_id": "S30-24",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "未求援时，要严格低于零点六六，才会开始求援。零点六五满足这条条件，所以灯亮起来；先别让另一支军队立刻冲过来，请求已经提出和援军已经行动，是两件不同的事。",
+      "en": "When it is not already asking, the ratio must be strictly below zero point six six to begin. Zero point six five meets that condition, so the light turns on. Do not send another army charging over yet: making a request and a helper taking action are different events.",
+      "visual_step": "沿 <0.66 点灯；助手军旗暂不移动。"
+    },
+    {
+      "id": "N30-049",
+      "shot_id": "S30-25",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "接下来只换一个数字，强度比回升到零点七零。你觉得灯会不会熄灭？如果只记住刚才的零点六六，很容易说它已经不需要帮助了，但我们还少看了一项输入。",
+      "en": "Now change only the number: the ratio rises to zero point seven zero. Do you think the light will go out? Remembering only the earlier zero point six six makes it tempting to say help is no longer needed, but one input has been overlooked.",
+      "visual_step": "从亮灯状态推进到 0.70；提问后短停顿。"
+    },
+    {
+      "id": "N30-050",
+      "shot_id": "S30-25",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "这次计算之前，它已经在求援。对这个状态，继续求援的条件是严格低于零点七五，因此零点七零仍然让灯保持亮着；开始用一道门，继续用另一道门，正是这里的区别。",
+      "en": "Before this evaluation, it was already asking for help. For that state, continuing requires a ratio strictly below zero point seven five. Zero point seven zero therefore keeps the light on. Starting uses one threshold and continuing uses another.",
+      "visual_step": "突出此前已求援；沿 <0.75 维持亮灯。"
+    },
+    {
+      "id": "N30-051",
+      "shot_id": "S30-26",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "现在把零点七零复制成两张卡。一边此前没有求援，就去检查是否低于零点六六，条件不满足；另一边此前已经求援，就检查是否低于零点七五，条件满足，所以两边的灯不同。",
+      "en": "Now duplicate zero point seven zero onto two cards. One was not previously asking, so it checks whether the value is below zero point six six: the condition is not met. The other was already asking, so it checks against zero point seven five: the condition is met. The lights therefore differ.",
+      "visual_step": "并列两组。"
+    },
+    {
+      "id": "N30-052",
+      "shot_id": "S30-26",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "你并没有看错数值，程序也没有在这里自相矛盾。改变的是此前状态，所以只截下一帧比值，不能重建这一格的答案；要解释它为什么还在求援，必须把它原来是否已经求援一起带回来。",
+      "en": "You have not misread the value, and the program is not contradicting itself here. The prior state differs. Capturing a ratio alone cannot reconstruct the answer in this panel. To explain why a request continues, we must also recover whether it was already active.",
+      "visual_step": "短暂遮比值突出历史状态；恢复全图。"
+    },
+    {
+      "id": "N30-053",
+      "shot_id": "S30-27",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "最后回到已求援的那条轨道，把本次比值换成零点七六。它不再低于零点七五，继续条件不成立，于是求援灯熄灭；开始、维持和退出，这个小例子就走完整了。",
+      "en": "Finally, return to the track that was already asking and change the current ratio to zero point seven six. It is no longer below zero point seven five, so the continuation condition fails and the light goes out. Our example now covers starting, maintaining, and stopping the request.",
+      "visual_step": "已求援路径输入 0.76；停止条件示意。"
+    },
+    {
+      "id": "N30-054",
+      "shot_id": "S30-27",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "零点六五、零点七零、零点七六，是三次假设求值的逻辑顺序，不是我们拍到的连续三天。完整日历调度还存在缺口，因此画面只连状态箭头，不给它偷偷加上每天刷新的时间表。",
+      "en": "Zero point six five, zero point seven zero, and zero point seven six form a logical sequence of hypothetical evaluations, not three consecutive days we recorded. The full calendar scheduling remains unresolved, so the diagram connects states without quietly assigning a daily refresh schedule.",
+      "visual_step": "三状态总条带；不加日期轴或采样回执。"
+    },
+    {
+      "id": "N30-055",
+      "shot_id": "S30-28",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "求援灯亮了，接下来还有匹配。已经分析的普通链会按已有存储顺序寻找符合条件的请求者；这一步没有把所有对象重新排成最短到达时间排行榜，所以不能只凭地图上谁近，就替它宣布谁会被选中。",
+      "en": "Once the request light is on, matching still remains. The ordinary chain studied here searches for qualifying requesters in stored order. This step does not rerank them all by shortest arrival time, so proximity on the map alone cannot tell us which one will be selected.",
+      "visual_step": "请求与匹配两门；按存储顺序筛符合者，不做 ETA 排榜。"
+    },
+    {
+      "id": "N30-056",
+      "shot_id": "S30-28",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C00",
+        "C06"
+      ],
+      "zh": "帮助目标绑定的是请求者当时所在的省份，我们用便签贴住那个位置。不过，局部匹配没有按最短到达时间排序，不代表更早的所有步骤从来不看距离；更不等于已经承诺未来的到达和参战结果。",
+      "en": "The help target is bound to the province the requester occupied at that moment, which we mark with a note. But the absence of shortest-arrival-time sorting in this local matching step does not mean every earlier step ignores distance. Nor does it guarantee a future arrival or battle outcome.",
+      "visual_step": "当前省份便签；后续结果留虚线，上游范围提示。"
+    },
+    {
+      "id": "N30-057",
+      "shot_id": "S30-29",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C07",
+        "C10"
+      ],
+      "zh": "这时你大概会想到自己的盟友：我在前面打，它为什么站着不动？这个问题很自然，但刚才讲的是普通电脑军队之间的求援，不能把这套阈值直接套到电脑支援玩家军队的所有情境。",
+      "en": "You may now think of your own ally: why does it stand still while you fight ahead? It is a natural question, but the path we just described concerns ordinary help between AI armies. Its thresholds cannot be applied to every situation in which the AI supports a player's army.",
+      "visual_step": "普通求援收框；玩家军队徽记另开路径。"
+    },
+    {
+      "id": "N30-058",
+      "shot_id": "S30-29",
+      "chapter_id": "help",
+      "claim_ids": [
+        "C07",
+        "C10"
+      ],
+      "zh": "玩家支援有专用路径，其中的设置怎样被原生程序使用，以及部分更早的筛选，还没有闭合。因此我们既不能说盟友故意不救人，也不能说这种支援规则根本不存在；图上的虚线，表示的是目前还缺证据的部分。",
+      "en": "Player support has a dedicated path, but how its settings are used by the native program, along with some earlier filtering, remains unresolved. We can therefore claim neither that an ally deliberately refuses to help nor that such support rules do not exist. The dashed line marks where evidence is still missing.",
+      "visual_step": "玩家支援未知虚线；不插旧 G2 作为原生思考证据。"
+    }
+  ]
+}

@@ -1,5 +1,9 @@
 # 导演案如何进入现有 promo 工具链
 
+## 2026-09-22 开始制作
+
+当前运行入口已实现于 [integration](integration/pyproject.toml)，实际配音、项目 composer 和样片进展见[制作记录](production-stage.md)。下文未实现接线的描述记录导演 authoring 阶段；不能用它否定后续样片，也不能把单章样片反写成当时已经完成的事实。完整影片仍待制作和审片。
+
 ## 现行长篇方案
 
 用户选择 **20–40 分钟宽松片长**。当前消费入口是 [longform/director-plan.md](longform/director-plan.md)、
