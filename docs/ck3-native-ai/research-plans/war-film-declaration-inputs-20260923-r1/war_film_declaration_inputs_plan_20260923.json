@@ -1,0 +1,231 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-declaration-inputs-20260923",
+  "question": "What exactly precedes C01-C02 military, CB cost, and score choices in the ordinary AI declaration path?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "ordinary periodic actor-specific declaration attempt, R8d=0; not all declaration callers",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Actor, target, title and selected CB bound to one future attempt; no pointer reuse across revisions",
+    "producer_trigger": "daily-tick",
+    "producer": "0x187AB90 with native caller scheduling",
+    "caller": "AI strategy periodic context; nonzero R8d is separately scoped",
+    "consumer": "0x18BDDA0 candidate validator then scoring; final chosen interaction",
+    "cache_lifetime": "military+0x308 and war-chest budget are prior native producer outputs; paused reads do not refresh them",
+    "expected_signal": "future same-attempt entry mode, reserve demand/actuals, State16, assessment, cost vectors and rejection/selection",
+    "zero_sample_meaning": "no attempt or earlier gate rejection; never proof that all CBs or war inputs were examined",
+    "stop_condition": "offline package only; no live execution is authorized here; future run must stop on identity drift or its frozen window",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "static-contract",
+      "layer": "source-contract",
+      "path": "war_film_declaration_inputs_static_20260923.json",
+      "sha256": "bffd617f742e63f99e9a37a414a78275279f09f6ac22f202e5f840277fb14adb",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Exact native bytes and registration chains with bounded analyst interpretations; not a live observation."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "entry",
+      "label": "Normal periodic AI entry"
+    },
+    {
+      "id": "reserve",
+      "label": "Gold and treasury war chest"
+    },
+    {
+      "id": "demand",
+      "label": "Tier and maintenance demand"
+    },
+    {
+      "id": "choice",
+      "label": "Chance and cooldown"
+    },
+    {
+      "id": "base",
+      "label": "Actor military cache"
+    },
+    {
+      "id": "admin",
+      "label": "State16 administrative addition"
+    },
+    {
+      "id": "network",
+      "label": "Asymmetric relationship network"
+    },
+    {
+      "id": "power",
+      "label": "Target power gate"
+    },
+    {
+      "id": "configs",
+      "label": "CB and configuration candidates"
+    },
+    {
+      "id": "cbcost",
+      "label": "Special CB cost"
+    },
+    {
+      "id": "generic",
+      "label": "Generic interaction cost"
+    },
+    {
+      "id": "score",
+      "label": "Candidate scoring"
+    },
+    {
+      "id": "special",
+      "label": "Special troop cache production"
+    },
+    {
+      "id": "live",
+      "label": "Future live callability / decision"
+    }
+  ],
+  "edges": [
+    {
+      "id": "reserve-identities",
+      "from": "entry",
+      "to": "reserve",
+      "label": "Literal registration -> factory -> value vtable+0x100 -> readers name AI strategy+0x20 budget offsets +0x168 gold war chest and +0x1A8 treasury war chest. They are not the ordinary character gold balance.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "reserve-demand",
+      "from": "demand",
+      "to": "reserve",
+      "label": "0x18408F0 consumes tier-indexed MIN_WAR_CHEST and MONTHS_OF_MAINTENANCE_IN_WAR_CHEST, constructs a 0x50 bundle, and writes demand slots0 and6. Two-resource minimum splitting follows the exact code, not an invented burn-rate simulation.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "reserve-before-choice",
+      "from": "reserve",
+      "to": "choice",
+      "label": "Normal periodic entry R8d=0 requires war_chest_gold >= computed slot0 and war_chest_treasury >= computed slot6 before chance, cooldown and candidate selection; R8d!=0 bypasses these two comparisons.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "actor-admin-addition",
+      "from": "base",
+      "to": "admin",
+      "label": "State16+0 begins at military+0x308; government bit9 enables title-derived administrative addition weighted by clamped boldness and registered liege/vassal defines. The final government bit1 branch can replace the result with zero.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "network-addition",
+      "from": "admin",
+      "to": "network",
+      "label": "0x1878A00 conditionally calls 0x1879850 for target with three zero filters and actor with three one filters; additions are distinct from actor State16 construction.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "power-before-cb",
+      "from": "power",
+      "to": "configs",
+      "label": "Normal target loop performs assessment 0x1878A00 and ratio bound 0x18C1F90 before per-CB config generation 0x2D95D00.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "candidate-validator-before-score",
+      "from": "configs",
+      "to": "score",
+      "label": "0x18BE860 calls 0x18BCC30 using AI interaction slot +0x1070; candidate branches call final CanSend 0x2C43F00 before later title/ai_score scoring.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "cb-cost-before-generic-cost",
+      "from": "cbcost",
+      "to": "generic",
+      "label": "Final CanSend invokes prevalidation, whose special vtable+0x60 resolves CWarDeclaration -> 0x24D76F0 -> 0x2D96600 -> 0x2D92F20. CB+0xB68 is evaluated by 0x2CDB7B0, passes additional 0x2D92AD0 then native affordability 0x2CDCFF0. Empty compiled costs return true. Later final CanSend separately checks generic interaction definition+0x38 costs via 0x2CD9C70.",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "base-cache-producer",
+      "from": "special",
+      "to": "base",
+      "label": "Producer and composition of military extension+0x308, including special/event troops, are not closed here; a separate soldier-count/MAX bucket result cannot substitute for it.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Producer and composition of military extension+0x308, including special/event troops, are not closed here; a separate soldier-count/MAX bucket result cannot substitute for it."
+    },
+    {
+      "id": "network-callability",
+      "from": "network",
+      "to": "live",
+      "label": "All source container identities and whether each contributor would actually accept a future call are not closed by the accumulator. No all-allies-join claim.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "All source container identities and whether each contributor would actually accept a future call are not closed by the accumulator. No all-allies-join claim."
+    },
+    {
+      "id": "extra-cost-and-live",
+      "from": "cbcost",
+      "to": "live",
+      "label": "0x2D92AD0 additional cost-dependent status gates, all generic resource exceptions, and runtime observations are not fully named/tested in this package.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "0x2D92AD0 additional cost-dependent status gates, all generic resource exceptions, and runtime observations are not fully named/tested in this package."
+    }
+  ],
+  "cases": [
+    {
+      "id": "reserve-boundary",
+      "question": "Future ordinary entry: below/equal/above both native computed requirements, preserving the other gates.",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "cb-payability",
+      "question": "Future same candidate/config: record actual CB and generic cost vectors and their own validator result.",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "network-admin",
+      "question": "Future same-frame native base/admin/network terms; never substitute UI soldier counts.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

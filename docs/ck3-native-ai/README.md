@@ -41,6 +41,8 @@
 
 ## 文档
 
+- [static-confirmed; live pending] [W1 准备金与候选成本](war-film-declaration-inputs-2026-09-23.md)：入口两槽正式绑定金币/国库战争储备，比较含等号；具体 CB 特殊成本与通用交互成本分别在候选评分前验证。行政增量与基础实力、关系网络分开保留。31 段指令、7 个字符串、5 组 vtable 绑定已冻结并检查；军力缓存 producer 在后续独立包继续追查，尚无同一实际 actor/target/config 全链案例。
+
 - [static-confirmed; live pending] [W7 白和发送与接受](war-film-peace-policy-2026-09-23.md)：白和的普通实际接受比较为 raw 严格大于零；主动提案另有 tier 月份相位门、ai_will_do 整数减随机数的竞争与 CanSend。生产发送命令链、parser 默认标志、收件人 raw 已闭合；上游 actor 入队日程及自然白和前后态仍未知。26 段与 753 条选定指令已由独立冻结器复验。
 
 - [production-live primitive; cold restore pending] [天朝二期 AF5 独立终态观测](zhongguo-compensation-af5-snapshot-v1.md)：R402 已独立读取同 case 的 state 5→6、revision 19→22 及 m299/m300 route 3 结清；终态存档、日志与受管清理 GREEN。游标清理后的帧仅有合成验证，真实 cold restore 待验。
