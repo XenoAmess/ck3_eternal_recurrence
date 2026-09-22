@@ -1,0 +1,55 @@
+{
+  "schema": "xar.ck3.minor_religious_war_defenders_private_v1",
+  "game_version": "1.19.0.6-steam23530548",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "status": "private-candidate-static-ready-live-unverified",
+  "religion_scope": "narrow war exception only; no faith strategy, conversion, reform, doctrine or tenet policy",
+  "native": {
+    "collector_rva": "0x2901960",
+    "collector_span_size": 1107,
+    "collector_span_sha256": "FCC807412D9F3B5D2DAEE9C77287BD1CC49A1A7E0EA98162485E232180CA4FC6",
+    "real_war_caller_rva": "0x27A29B4",
+    "real_war_caller_span_size": 118,
+    "real_war_caller_span_sha256": "FFC722D96383446601F4AB1333CBCED7E367FC0C724D2368C27C7972095ED719",
+    "append_helper_rva": "0x8154D0",
+    "append_helper_span_size": 227,
+    "append_helper_span_sha256": "361BBFD83F5EE8F77E7AD7B5062AC5C47AEAB0DE4480E895282BC136FFE0546E",
+    "allocator_rva": "0x4FEB018",
+    "collector_abi": "void(Character* actor, Character* primary_defender, Vector<Character*>* output)",
+    "vector_layout": "0x18 bytes: +0x00 data, +0x08 int32 capacity, +0x0C int32 count, +0x10 allocator",
+    "real_cleanup": "allocator vtable +0x10 with element_size=8",
+    "identity_projection": "each qword Character* must round-trip through module+0x570C130 storage, module+0x570C138 fallback, low-24-bit slot and Character+0x18 full-generation ID",
+    "power_projection": "same application-main transaction reads Character+0x1B8->+0x308 Q100000 for actor, effective primary defender and every prospective faith defender; actor and primary leaves must equal the exact war-entry assessment leaves"
+  },
+  "legal_binding": {
+    "casus_belli_key": "minor_religious_war",
+    "required_final_legal_rows": 1,
+    "source_flag": "CCasusBelliType+0x1718 bit 15 defender_faith_can_join",
+    "effective_defender": "exact WarEntryAssessmentsV1 effective_target_character_id",
+    "same_frame": "public snapshot, final-legal declarations, war-entry assessment, native collector output and power leaves are checked before and after in one paused application-main slot"
+  },
+  "private_wire": {
+    "cmake_option": "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1",
+    "default": "OFF",
+    "mailbox_slot": 49,
+    "step": "query-minor-religious-war-defenders-v1-<target CharacterID>",
+    "native_driver_opt_in": "allow_private_minor_religious_war_defenders_query",
+    "advertised": false,
+    "public_mcp_tool": false,
+    "read_only": true
+  },
+  "output": [
+    "full-generation actor/effective-primary-defender/prospective-joiner CharacterIDs",
+    "actor and primary defender exact assessment base/total power",
+    "each prospective joiner current base power and checked sums",
+    "primary target total plus observed joiner base power, explicitly not a final war-strength forecast"
+  ],
+  "excluded": [
+    "voluntary allies and acceptance",
+    "prospective joiner alliance/network contribution",
+    "mercenaries, holy orders or later entrants",
+    "religion policy beyond this minor religious war participation rule",
+    "war declaration action or safety verdict"
+  ],
+  "next_gate": "build a frozen default-OFF private DLL and run one bounded paused R0142 frozen-pair query before any typed war action; live failure remains RED"
+}

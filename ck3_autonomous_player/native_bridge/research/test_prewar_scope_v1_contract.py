@@ -208,7 +208,14 @@ class PrewarScopeStaticContractTests(unittest.TestCase):
             )
         faith_join = abi_reasons["1"]
         self.assertIn("RCX actor Character*", faith_join["collector_abi"])
-        self.assertTrue(faith_join["collector_unresolved_call_boundary"])
+        self.assertTrue(any(
+            "slot49" in row for row in faith_join["collector_call_boundary"]
+        ))
+        self.assertEqual(
+            faith_join["private_observer"]["status"],
+            "static-ready-live-unverified",
+        )
+        self.assertFalse(faith_join["private_observer"]["advertised"])
 
     def test_forced_tributary_contract_subset_preserves_native_order(self) -> None:
         abi = self.abi["forced_tributary_contract_participants"]

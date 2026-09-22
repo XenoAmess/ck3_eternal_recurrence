@@ -238,16 +238,79 @@ target。若两者相同，这是可验证的合法特例，不是 schema 默认
 `defender_faith_can_join` 契约闭合。raw reason 必须始终保留，语义字符串只是版本绑定解释。
 
 [static-confirmed] `0x2901960` 的入口 ABI 已闭合为
-`(RCX=actor Character*, RDX=primary defender Character*, R8=caller-owned CharacterID vector*)`。
+`(RCX=actor Character*, RDX=primary defender Character*, R8=caller-owned Character* vector*)`。
 它先比较双方 `Character+0xB4` 的 faith ID，相同则直接返回；否则建立 script scope/evaluator 临时对象，
 扫描 defender-faith 候选，排除 actor、primary defender 与原生排除集合，并由脚本 trigger/value 路径筛选后
 经 `0x8154D0` 追加输出。已见的 evaluator/cleanup 调用包括 `0xA9BF70`、`0x3358160`、
 `0x1B36670`、`0x334C510` 与 `0x3369820`。有界函数体内未见直接 RNG 调用，但这不构成无副作用或
-任意线程可调用的证明；其 script context、lazy initialization、allocator 与 application-main 约束仍待闭合。
+任意线程可调用的证明；因此实现仍限于默认 OFF 的 application-main candidate，script context 与 lazy
+initialization 的实机结果仍需在有界 readback 中确认。
+
+[static-confirmed] 冻结 EXE 中真实建战 caller `0x27A29B4..0x27A2A29` 把输出初始化为
+`{data=null, capacity=0, count=0, allocator=module+0x4FEB018}`，按 `8` 字节 `Character*` 遍历并调用
+`0x2225FB0`；非空时调用 allocator vtable `+0x10`，element size 为 `8`。对应三段字节 SHA-256 为
+collector `FCC80741...4FC6`、caller `FFC722D9...D719`、append helper
+`361BBFD8...546E`。因此发布层必须从每个指针读 `Character+0x18`，再经 `module+0x570C130` storage、
+`module+0x570C138` fallback 与 low-24-bit slot 回解同一 full-generation ID；不能把 native qword 低位截成 ID。
+
+[implementation-confirmed] 私有默认 OFF 的
+`XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1` 已把这条 helper 固定到 mailbox slot `49`。
+它只接受同帧 final-legal 且唯一的 `minor_religious_war` row，以现有 exact
+`WarEntryAssessmentsV1.effective_target_character_id` 作为 primary defender，在一个 paused application-main
+transaction 内读取 actor、primary defender、每个 prospective joiner 的 `Character+0x1B8->+0x308`
+Q100000 power leaf，并要求 actor/primary 两个 leaf 与同帧 war-entry assessment 相等。输出 full ID、逐行
+base power、primary total 加 joiner base 的显式和；该和值不包含 joiner 的 alliance/network contribution，不能写成
+最终战争总实力或胜率。C++ Debug/Release 私有 ON bridge 与聚焦夹具已通过；paused exact-build live 尚未执行，
+所以当前状态是 `private-candidate-static-ready-live-unverified`，public MCP/ad 保持 OFF。
+
+```mermaid
+flowchart TD
+    L["final-legal minor_religious_war row"] --> A["exact WarEntry assessment"]
+    A --> E["effective primary defender full CharacterID"]
+    E --> C["slot49: 0x2901960 on paused application-main"]
+    C --> G{"each Character* generation-roundtrips?"}
+    G -->|no| R["RED: identity/vector/cleanup unavailable"]
+    G -->|yes| P["same-frame actor/primary/joiner power leaves"]
+    P --> S{"actor + primary leaves match assessment and frame unchanged?"}
+    S -->|no| R
+    S -->|yes| O["private IDs + bounded power readback"]
+    U["unknown: voluntary allies, joiner network, later entrants"] -.-> O
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
+
+[implementation-confirmed] 有界实机入口是
+`ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py`；三个 mode
+互斥且无默认 live。先以 `-DXAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1=ON` 构建私有
+DLL，然后仅对 R0142 原始 pair 执行：
+
+```powershell
+py -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py `
+  --candidate-dir <fresh-non-C-candidate> --prepare-only `
+  --source-checkpoint <R0142-save> --source-driver-state <R0142-driver> `
+  --game-dir <exact-1.19.0.6-game-dir> --bridge-dll <slot49-private-dll> `
+  --bridge-injector <matching-injector> `
+  --expected-checkpoint-sha256 <R0142-save-sha256> `
+  --expected-driver-state-sha256 <R0142-driver-sha256> `
+  --expected-actor-id 29829 --expected-date-raw <R0142-date-raw> `
+  --target-character-id 31549
+
+py -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py `
+  --candidate-dir <same-candidate> --preflight-only
+
+py -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py `
+  --candidate-dir <same-candidate> --live --target-character-id 31549 `
+  --round-ledger <persistent-allocated-round-ledger> `
+  --evidence <fresh-non-C-evidence-dir>
+```
+
+prepare 只复制并经官方 ordinary seed rebinder 生成 `ordinary_campaign_succession/xar_off` pair；preflight
+只核 hash/profile/cold pair 与单实例 inventory；`--live` 才可启动，并只发一个 private query，要求前后 paused
+frame、date、active wars 与 native gameplay history 不变。runner 不提交 declare-war 或其他 gameplay action。
 
 [static-confirmed] 被动 query 只读已经由 UI 刷新的 rows；它不得调用会清空/重建 UI 状态的
-`0x1088AA0`。`0x2357AA0/0x2901960` 的 application-main callability、allocator lifetime 与 script-evaluator
-副作用边界尚未闭合前，也不得由 worker/paused reader 直接调用。
+`0x1088AA0`。`0x2357AA0` 仍没有等价调用边界；`0x2901960` 只允许走上述 slot49 application-main
+候选，不得由 bridge worker 直接调用。其 live 调用与 script-evaluator 运行结果在实机证据前仍未验。
 
 [unknown] forced rows 只回答当前 native preview 的确定性附加防守者，不回答：
 
