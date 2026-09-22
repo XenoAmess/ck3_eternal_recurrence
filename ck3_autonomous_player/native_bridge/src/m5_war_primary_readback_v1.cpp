@@ -142,6 +142,11 @@ M5WarPrimaryReadbackStatusV1 ReadM5WarPrimaryReadbackV1(
   for (const auto &war : snapshot.active_wars) {
     output.active_war_ids.push_back(war.war_id);
   }
+  for (const auto &army : snapshot.player_armies) {
+    if (army.owner_character_id == snapshot.played_character_id) {
+      output.actor_current_raised_armies.push_back(army);
+    }
+  }
   for (const auto &row : supply.rows) {
     if (row.side == PrewarSideV1::attacker) {
       output.actor_current_raised_supply.push_back(row);

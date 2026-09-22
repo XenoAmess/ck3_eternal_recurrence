@@ -231,6 +231,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1
+  "Admit one unadvertised same-paused-revision current primary war/supply readback"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1
   "Admit one controlled exact-build selected-bookmark StartGame candidate"
   OFF
@@ -957,6 +963,17 @@ if(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
     XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1=1
   )
 endif()
+if(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/prewar_scope_v1.cpp
+    src/m5_primary_army_supply_v1.cpp
+    src/m5_war_primary_readback_v1.cpp
+    src/m5_war_primary_private_wire_v1.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1=1
+  )
+endif()
 if(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1
@@ -1153,6 +1170,34 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  if(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
+    add_executable(xar_ck3_m5_prewar_scope_v1_test
+      src/prewar_scope_v1.cpp src/prewar_scope_v1_test.cpp)
+    add_executable(xar_ck3_m5_primary_supply_v1_test
+      src/m5_primary_army_supply_v1.cpp
+      src/m5_primary_army_supply_v1_test.cpp)
+    add_executable(xar_ck3_m5_war_primary_readback_v1_test
+      src/m5_war_primary_readback_v1.cpp
+      src/m5_war_primary_readback_v1_test.cpp)
+    foreach(target
+        xar_ck3_m5_prewar_scope_v1_test
+        xar_ck3_m5_primary_supply_v1_test
+        xar_ck3_m5_war_primary_readback_v1_test)
+      target_include_directories(${target} PRIVATE include)
+      target_compile_definitions(${target} PRIVATE
+        NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+      if(MSVC)
+        target_compile_options(${target} PRIVATE
+          /W4 /WX /permissive- /EHsc)
+      endif()
+    endforeach()
+    add_test(NAME xar_ck3_m5_prewar_scope_v1
+      COMMAND xar_ck3_m5_prewar_scope_v1_test)
+    add_test(NAME xar_ck3_m5_primary_supply_v1
+      COMMAND xar_ck3_m5_primary_supply_v1_test)
+    add_test(NAME xar_ck3_m5_war_primary_readback_v1
+      COMMAND xar_ck3_m5_war_primary_readback_v1_test)
+  endif()
   if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     add_executable(xar_ck3_marriage_candidate_alliance_projection_v1_test
       src/marriage_candidate_alliance_projection_v1.cpp

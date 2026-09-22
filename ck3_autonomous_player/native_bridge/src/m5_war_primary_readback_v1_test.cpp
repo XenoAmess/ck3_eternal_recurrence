@@ -114,6 +114,7 @@ int main() {
       output.current_treasury.raw != 0 ||
       output.current_treasury.scale != 100'000 ||
       output.active_war_ids != std::vector<std::int32_t>{0x02000009} ||
+      output.actor_current_raised_armies != snapshot.player_armies ||
       output.actor_current_raised_supply.size() != 1 ||
       output.actor_current_raised_supply[0].current_supply_raw != 0 ||
       output.native_power_ratio_raw != 72'000 ||
@@ -154,6 +155,7 @@ int main() {
   if (ck3_11906::ReadM5WarPrimaryReadbackV1(inputs, output) !=
           ck3_11906::M5WarPrimaryReadbackStatusV1::
               available_current_primary_slice ||
+      !output.actor_current_raised_armies.empty() ||
       !output.actor_current_raised_supply.empty()) {
     return Fail("no currently raised primary army was not available empty");
   }

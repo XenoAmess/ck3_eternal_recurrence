@@ -54,6 +54,9 @@
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
+#include "xar_bridge/m5_war_primary_private_wire_v1.hpp"
+#endif
 #include "xar_bridge/major_decision_found_kingdom_shared_glue_v1.hpp"
 #include "xar_bridge/marriage_candidate_internal_route_v1.hpp"
 #include "xar_bridge/marriage_shared_glue_v1.hpp"
@@ -7277,6 +7280,27 @@ std::string WarEntryAssessmentsResultFrame(
   return result;
 }
 
+#if defined(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
+std::string M5WarPrimaryPrivateResultFrame(
+    std::string_view request_id, std::string_view step,
+    const xar::ck3_11906::M5WarPrimaryReadbackV1 &readback) {
+  const auto payload =
+      xar::ck3_11906::SerializeM5WarPrimaryPrivateResultV1(readback);
+  if (payload.empty()) {
+    return {};
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"accepted\":true,\"status\":\"available\",\"m5_war_primary_current\":";
+  result += payload;
+  result += "}}";
+  return result;
+}
+#endif
+
 std::string WarTerminationOptionsResultFrame(
     std::string_view request_id, std::string_view step,
     std::uint64_t query_sequence,
@@ -13902,7 +13926,103 @@ void RunConnectedSession(
                           request_id, declaration_query_sequence,
                           declarable_wars));
           }
-        } else if (step.starts_with(
+        }
+#if defined(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
+        else if (step.starts_with(
+                     xar::ck3_11906::kM5WarPrimaryPrivateStepPrefixV1)) {
+          std::int32_t m5_target_character_id = -1;
+          if (!xar::ck3_11906::ParseM5WarPrimaryPrivateStepV1(
+                  step, m5_target_character_id)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(request_id, step, false,
+                                         "M5 current-primary target is malformed"));
+          } else {
+            xar::game::Snapshot before{};
+            std::vector<xar::game::DeclarableWarSnapshot> legal;
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, before) ||
+                before != *previous_snapshot || !before.paused ||
+                !before.map_ready || !before.has_played_character ||
+                !before.played_character_alive ||
+                xar::game::ReadDeclarableWarsForTarget(
+                    game, m5_target_character_id, legal) !=
+                    xar::game::ReadDeclarableWarsResult::available ||
+                legal.empty()) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "M5 current-primary paused legal frame is unavailable"));
+            } else {
+              xar::ck3_11906::M5WarPrimaryPrivateQueryV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.game = &game;
+              query.module_base = reinterpret_cast<std::uintptr_t>(
+                  GetModuleHandleW(nullptr));
+              query.war_environment =
+                  xar::ck3_11906::BindWarEntryNativeEnvironmentV1(
+                      query.module_base);
+              query.expected_revision = state_revision;
+              query.expected_snapshot = before;
+              query.expected_declarations = std::move(legal);
+              // Native order is used only to inspect one complete legal row;
+              // this diagnostic does not rank or submit a declaration.
+              query.chosen_declaration = query.expected_declarations.front();
+              query.target_character_id = m5_target_character_id;
+              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                  g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteM5WarPrimaryPrivateQueryV1,
+                  &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "M5 current-primary application-main boundary is unavailable"));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kWarEntryAssessmentsV1ExecutingWaitSliceMilliseconds);
+                }
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.available && query.executor_invocations == 1 &&
+                    query.execution_stamp.paused &&
+                    query.execution_stamp.date_raw == before.date_raw) {
+                  response = M5WarPrimaryPrivateResultFrame(
+                      request_id, step, query.result);
+                }
+                if (response.empty()) {
+                  const auto error = query.failure_stage.empty()
+                                         ? "M5 current-primary private query unavailable"
+                                         : "M5 current-primary private query unavailable:" +
+                                               query.failure_stage;
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                if (xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket) !=
+                    xar::ck3_11906::
+                        MainThreadQueryReclaimResultV1::reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "M5 current-primary result was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        }
+#endif
+        else if (step.starts_with(
                        xar::ck3_11906::kWarEntryAssessmentsV1StepPrefix)) {
           std::vector<std::int32_t> target_character_ids;
           if (!xar::ck3_11906::ParseWarEntryAssessmentsV1Step(
