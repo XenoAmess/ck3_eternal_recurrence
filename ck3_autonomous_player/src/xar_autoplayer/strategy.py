@@ -1345,7 +1345,12 @@ def _grant_vassal_reject_contract_gaps(
         and acknowledge.get("reason") == "normal_reply_channel"
     ):
         gaps.append("grant_vassal_normal_reply_channel_mismatch")
-    if snapshot.get("active_wars") != [] or active_wars:
+    # A concurrent war does not change the exact-build authored decline into
+    # an acceptance/transfer.  Still require an observed war list: the
+    # planner's filtered view must not silently turn missing or malformed
+    # native state into an empty-war claim.
+    snapshot_wars = snapshot.get("active_wars")
+    if not isinstance(snapshot_wars, list) or snapshot_wars != active_wars:
         gaps.append("grant_vassal_active_war_or_war_scope_unknown")
     return gaps
 

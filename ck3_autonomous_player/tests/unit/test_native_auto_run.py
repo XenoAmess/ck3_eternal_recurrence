@@ -2464,6 +2464,93 @@ class NativeAutoRunTests(unittest.TestCase):
             )
         )
 
+    def test_grant_vassal_reject_preserves_same_paused_war_signature(self) -> None:
+        existing_war = _white_peace_war()
+        existing_war["war_id"] = 301_989_950
+        existing_war["player_side"] = "defender"
+        existing_war["player_relative_war_score"] = -28
+        existing_war["primary_opponent_character_id"] = 34_676
+        before = {
+            "_semantic": {
+                "pending_character_interaction": {
+                    "instance_id": _SIGNED_PENDING_ID,
+                    "sender_character_id": 38_609,
+                    "auto_accept_notification": False,
+                },
+                "active_wars": [existing_war],
+            }
+        }
+        result = {
+            "interaction_result": {
+                "status": "rejected",
+                "instance_id": _SIGNED_PENDING_ID,
+                "sender_character_id": 38_609,
+            },
+            "remaining_pending_character_interaction": None,
+            "paused": True,
+        }
+        plan = {
+            "decision": {
+                "rule_id": "grant-vassal-reject-only-v1",
+                "selected_action": "reject",
+            }
+        }
+        after = {
+            "pending_character_interaction": None,
+            "active_wars": [copy.deepcopy(existing_war)],
+            "paused": True,
+        }
+        evidence = ["pending_interaction_changed"]
+
+        self.assertTrue(
+            native_auto_run_module._pending_interaction_lifecycle_verified(
+                "reject-pending-character-interaction",
+                result,
+                before=before,
+                after_snapshot=after,
+                evidence=evidence,
+                plan=plan,
+            )
+        )
+        self.assertIn(
+            "grant_vassal_active_war_signature_preserved", evidence
+        )
+
+        no_war_before = copy.deepcopy(before)
+        no_war_before["_semantic"]["active_wars"] = []
+        self.assertTrue(
+            native_auto_run_module._pending_interaction_lifecycle_verified(
+                "reject-pending-character-interaction",
+                result,
+                before=no_war_before,
+                after_snapshot={**after, "active_wars": []},
+                evidence=["pending_interaction_changed"],
+                plan=plan,
+            )
+        )
+
+        changed_score = copy.deepcopy(existing_war)
+        changed_score["player_relative_war_score"] += 1
+        added_war = copy.deepcopy(existing_war)
+        added_war["war_id"] += 1
+        for after_wars in (
+            [changed_score],
+            [],
+            [copy.deepcopy(existing_war), added_war],
+            None,
+        ):
+            with self.subTest(after_wars=after_wars):
+                self.assertFalse(
+                    native_auto_run_module._pending_interaction_lifecycle_verified(
+                        "reject-pending-character-interaction",
+                        result,
+                        before=before,
+                        after_snapshot={**after, "active_wars": after_wars},
+                        evidence=["pending_interaction_changed"],
+                        plan=plan,
+                    )
+                )
+
     def test_call_ally_busy_reject_binds_planned_active_war_signature(
         self,
     ) -> None:

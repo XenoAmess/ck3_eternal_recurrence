@@ -3703,6 +3703,28 @@ def _pending_interaction_lifecycle_verified(
         return False
 
     decision = plan.get("decision") if isinstance(plan, dict) else None
+    if (
+        isinstance(decision, dict)
+        and decision.get("rule_id") == "grant-vassal-reject-only-v1"
+    ):
+        if not (
+            step == "reject-pending-character-interaction"
+            and decision.get("selected_action") == "reject"
+        ):
+            return False
+        before_signature = war_termination_active_war_signature(before_wars)
+        after_signature = war_termination_active_war_signature(
+            after_snapshot.get("active_wars")
+        )
+        if (
+            not isinstance(before_signature, list)
+            or not isinstance(after_signature, list)
+            or before_signature != after_signature
+        ):
+            return False
+        evidence.append("grant_vassal_active_war_signature_preserved")
+        return True
+
     call_ally_assessment = (
         decision.get("call_ally_busy_reject")
         if isinstance(decision, dict)
