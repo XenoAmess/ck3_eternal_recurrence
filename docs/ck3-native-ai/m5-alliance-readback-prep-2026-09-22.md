@@ -45,17 +45,32 @@ manifest 的 `status` 记录创建时仍待 preflight；当前结果以以下报
 
 本机核验过的 no-launch 命令是：
 
-```powershell
-$candidate = 'Z:\ck3_mod_rewrite_process_assets\g2-m5-alliance-readback-71d428b-20260922'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' -B (Join-Path $candidate 'run_alliance_readback.py') --candidate-dir $candidate --preflight-only
+```python
+import os
+from pathlib import Path
+import subprocess
+
+candidate = Path('Z:/ck3_mod_rewrite_process_assets/g2-m5-alliance-readback-71d428b-20260922')
+interpreter = Path('Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe')
+environment = os.environ.copy()
+environment.update(TEMP=str(candidate / 'tmp'), TMP=str(candidate / 'tmp'))
+subprocess.run([
+    str(interpreter), '-B', str(candidate / 'run_alliance_readback.py'),
+    '--candidate-dir', str(candidate), '--preflight-only',
+], env=environment, check=True)
 ```
 
 之后唯一 CK3 owner 须重新核进程与版本、由持久分配器分配 **新轮次**，
-将分配器产出的绝对路径赋给 `$roundLedger`、将未存在的新证据目录绝对路径
-赋给 `$newEvidence`，才能使用**尚未执行过**的有界 live 入口：
+将分配器产出的绝对路径作为 `round_ledger`、将未存在的新证据目录绝对路径
+作为 `new_evidence`，才能使用**尚未执行过**的有界 live 入口：
 
-```powershell
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' -B (Join-Path $candidate 'run_alliance_readback.py') --candidate-dir $candidate --live --round-ledger $roundLedger --evidence $newEvidence
+```python
+def run_live(round_ledger: Path, new_evidence: Path) -> None:
+    subprocess.run([
+        str(interpreter), '-B', str(candidate / 'run_alliance_readback.py'),
+        '--candidate-dir', str(candidate), '--live',
+        '--round-ledger', str(round_ledger), '--evidence', str(new_evidence),
+    ], env=environment, check=True)
 ```
 
 CLI `--help` 已核对 `--candidate-dir`、互斥的 `--preflight-only`/`--live`、
