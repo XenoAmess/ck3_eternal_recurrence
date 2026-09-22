@@ -40,6 +40,10 @@ _SUPPORTED_CHOICES: Final = {
         "played_character.stress_points",
         "non_increasing",
     ),
+    ("tgp_japan_yearly_events.1190", 1): (
+        "played_character_prestige.raw",
+        "strictly_decreasing",
+    ),
 }
 _CHOICE_EFFECT_PROFILE_SCHEMA: Final = "xar.ck3.vanilla-event-choice-effect"
 _OBSERVATION_FIELDS: Final = {
@@ -54,6 +58,12 @@ _OBSERVATION_FIELDS: Final = {
         "ending_played_character_gold",
         "gold_raw",
         "native_event_gold_observation_unavailable",
+    ),
+    "played_character_prestige.raw": (
+        "starting_played_character_prestige",
+        "ending_played_character_prestige",
+        "prestige_raw",
+        "native_event_prestige_observation_unavailable",
     ),
 }
 
@@ -104,6 +114,7 @@ def plan_registered_event_material_postcondition_v1(
     played_character: object,
     *,
     played_character_gold: object = None,
+    played_character_prestige: object = None,
     snapshot_id: object,
     revision: object,
 ) -> dict[str, object] | None:
@@ -122,18 +133,23 @@ def plan_registered_event_material_postcondition_v1(
         value_valid = starting_value is not None and 0 <= starting_value <= 2**31 - 1
         unavailable_reason = "same_frame_player_stress_unavailable"
     else:
-        gold = (
+        resource = (
             played_character_gold
-            if isinstance(played_character_gold, Mapping)
-            else {}
+            if metric == "played_character_gold.raw"
+            else played_character_prestige
         )
-        starting_value = _integer(gold.get("raw"))
+        resource = resource if isinstance(resource, Mapping) else {}
+        starting_value = _integer(resource.get("raw"))
         value_valid = bool(
             starting_value is not None
             and -(2**63) <= starting_value <= 2**63 - 1
-            and gold.get("scale") == 100_000
+            and resource.get("scale") == 100_000
         )
-        unavailable_reason = "same_frame_player_gold_unavailable"
+        unavailable_reason = (
+            "same_frame_player_gold_unavailable"
+            if metric == "played_character_gold.raw"
+            else "same_frame_player_prestige_unavailable"
+        )
     typed_revision = _integer(revision)
     valid_binding = bool(
         character_id is not None
@@ -321,7 +337,14 @@ def evaluate_registered_event_material_postcondition_v1(
     else:
         relation_satisfied = delta < 0
         status = "verified_change" if delta < 0 else "failed"
-        failure_reason = "gold_not_decreased" if delta >= 0 else None
+        failure_reason = (
+            "prestige_not_decreased"
+            if delta >= 0
+            and expected.get("metric") == "played_character_prestige.raw"
+            else "gold_not_decreased"
+            if delta >= 0
+            else None
+        )
     response.update(
         {
             "status": status,

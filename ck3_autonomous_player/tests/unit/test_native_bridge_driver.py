@@ -5557,6 +5557,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "stress_points": 42,
                 },
                 played_character_gold={"raw": 35_000_000, "scale": 100_000},
+                played_character_prestige={
+                    "raw": 20_000_000, "scale": 100_000,
+                },
             )
         )
 
@@ -5595,6 +5598,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         },
                         played_character_gold={
                             "raw": 50_000_000,
+                            "scale": 100_000,
+                        },
+                        played_character_prestige={
+                            "raw": 12_500_000,
                             "scale": 100_000,
                         },
                     )
@@ -5650,6 +5657,18 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "gold_raw"
             ],
             50_000_000,
+        )
+        self.assertEqual(
+            result["event_selection"]["starting_played_character_prestige"][
+                "prestige_raw"
+            ],
+            20_000_000,
+        )
+        self.assertEqual(
+            result["event_selection"]["ending_played_character_prestige"][
+                "prestige_raw"
+            ],
+            12_500_000,
         )
         self.assertEqual(result["progress_status"], "postcondition")
 

@@ -6762,6 +6762,11 @@ def _choose_one_life_turn_core(
                             if isinstance(snapshot, dict)
                             else None
                         ),
+                        played_character_prestige=(
+                            snapshot.get("played_character_prestige")
+                            if isinstance(snapshot, dict)
+                            else None
+                        ),
                         snapshot_id=(
                             snapshot.get("snapshot_id")
                             if isinstance(snapshot, dict)
@@ -6774,6 +6779,40 @@ def _choose_one_life_turn_core(
                         ),
                     )
                 )
+                if event_context.get("event_definition_key") == (
+                    "tgp_japan_yearly_events.1190"
+                ) and not (
+                    isinstance(material_postcondition, dict)
+                    and material_postcondition.get("status") == "ready"
+                    and material_postcondition.get("metric")
+                    == "played_character_prestige.raw"
+                    and material_postcondition.get("expected_relation")
+                    == "strictly_decreasing"
+                    and isinstance(material_postcondition.get("starting_value"), int)
+                    and not isinstance(
+                        material_postcondition.get("starting_value"), bool
+                    )
+                    and material_postcondition["starting_value"] >= 7_500_000
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_registry_material_observation_blocked",
+                        "selected_step": None,
+                        "reason": (
+                            "the source-reviewed night decision needs at least "
+                            "75 same-frame prestige and an independently "
+                            "verifiable prestige loss before selecting native 1"
+                        ),
+                        "active_event": event_summary,
+                        "event_decision": {
+                            **registry_decision,
+                            "status": "blocked",
+                            "unavailable_reason": (
+                                "r0100_prestige_budget_or_observation_unavailable"
+                            ),
+                        },
+                        "event_material_postcondition": material_postcondition,
+                    }
                 if event_context.get("event_definition_key") == (
                     "epidemic_events.5007"
                 ) and not (
