@@ -3,6 +3,8 @@ import { expect, test, type Page } from '@playwright/test'
 import { FIT_BUDGET_STRESS_CONTRACT } from '../src/domain/fitBudgetContract'
 import { syntheticBaseVfsReceipt } from './syntheticAssetPack'
 
+const PHASE_OBSERVATION_TIMEOUT_MS = 15 * 60_000
+
 function opaqueBgraDds(red: number, green: number, blue: number): Buffer {
   const width = 8
   const height = 8
@@ -55,16 +57,30 @@ async function cancelWhenPhase(page: Page, phaseText: string): Promise<number> {
       reject(new Error(`fit phase was not observed within ${timeoutMs}ms: ${expected}`))
     }, timeoutMs)
     tryCancel()
-  }), { expected: phaseText, timeoutMs: 180_000 })
+  }), { expected: phaseText, timeoutMs: PHASE_OBSERVATION_TIMEOUT_MS })
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  const started = await armed
+  let started: number
+  try {
+    started = await armed
+  } catch (error) {
+    const cancel = page.getByRole('button', { name: '取消', exact: true })
+    if (await cancel.isEnabled().catch(() => false)) {
+      await cancel.click()
+      await expect(page.locator('.fit-report')).toHaveAttribute('data-fit-task-state', 'cancelled', {
+        timeout: 30_000,
+      }).catch(() => undefined)
+    }
+    throw error
+  }
   await expect(page.locator('.fit-report')).toHaveAttribute('data-fit-task-state', 'cancelled')
   await expect(page.locator('.fit-progress small').first()).toContainText('已取消')
   return page.evaluate((value) => performance.now() - value, started)
 }
 
 test('cancels and restarts cleanly from background, semantic refinement, and native paint', async ({ page }) => {
-  test.setTimeout(480_000)
+  // CI runners can take minutes to reach the native paint stage. This gate
+  // measures cancellation latency after a phase is observed, not phase speed.
+  test.setTimeout(20 * 60_000)
   const asset = opaqueBgraDds(255, 255, 255)
   const surface = opaqueBgraDds(0, 128, 128)
   const assets = new Map<string, Buffer>()
@@ -141,16 +157,17 @@ test('cancels and restarts cleanly from background, semantic refinement, and nat
     mimeType: 'image/png',
     buffer: Buffer.from(pngBase64, 'base64'),
   })
-  await page.locator('.fit-budget input').fill('10000')
-
-  const phases = [
-    '背景匹配',
-    '全库轮廓粗筛',
-    '全角度与 0.1° 级精筛',
-    '原生矩形块残差细化',
+  const phaseCases = [
+    { phase: '背景匹配', budget: 10_000 },
+    { phase: '全库轮廓粗筛', budget: 10_000 },
+    { phase: '全角度与 0.1° 级精筛', budget: 10_000 },
+    // A bounded native-paint budget reaches the same cancellable worker phase
+    // without spending the CI allowance filling thousands of prior layers.
+    { phase: '原生矩形块残差细化', budget: 128 },
   ]
   const latencies: Record<string, number> = {}
-  for (const phase of phases) {
+  for (const { phase, budget } of phaseCases) {
+    await page.locator('.fit-budget input').fill(String(budget))
     latencies[phase] = await cancelWhenPhase(page, phase)
     expect(latencies[phase]).toBeLessThan(FIT_BUDGET_STRESS_CONTRACT.maximumCancellationLatencyMs)
     await page.waitForTimeout(50)

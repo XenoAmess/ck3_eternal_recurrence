@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test'
 
 test('switches the production UI between Simplified Chinese and English and persists the choice', async ({ page }) => {
+  // This is a correctness gate. Loading the complete static DDS manifest after
+  // the quality-fit stress suite is intentionally not a 60-second performance gate.
+  test.setTimeout(180_000)
   await page.goto('/')
   await expect(page.getByRole('heading', { name: '家徽工坊' })).toBeVisible()
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN')
