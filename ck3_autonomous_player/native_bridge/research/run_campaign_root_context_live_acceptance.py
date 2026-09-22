@@ -42,9 +42,12 @@ from xar_autoplayer.bridge.native_driver import (  # noqa: E402
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService  # noqa: E402
 from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: E402
+    ORDINARY_CAMPAIGN_SUCCESSION,
+    bind_succession_lifecycle_from_environment_v1,
     legacy_rogue_one_life_binding_v1,
 )
 from xar_autoplayer.environment import (  # noqa: E402
+    PROFILE_MANIFEST_NAME,
     ensure_state_path_safe,
     is_relative_to,
     make_spec,
@@ -96,6 +99,15 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--expected-source-save-sha256", required=True
     )
+    parser.add_argument(
+        "--ordinary-campaign-no-pact",
+        action="store_true",
+        help="attest a fresh ordinary xar_off campaign with no signed pact",
+    )
+    parser.add_argument(
+        "--expected-source-environment-sha256",
+        help="required with --ordinary-campaign-no-pact; binds the source xar_off profile",
+    )
     parser.add_argument("--state-dir", type=Path)
     parser.add_argument("--game-dir", type=Path, required=True)
     parser.add_argument("--bridge-pipe", required=True)
@@ -121,6 +133,41 @@ def _expected_sha256(value: object) -> str:
     if not re.fullmatch(r"[0-9A-F]{64}", result):
         raise ValueError("expected source save SHA-256 must be 64 hex digits")
     return result
+
+
+def _source_lifecycle_binding(
+    source_profile: Path,
+    *,
+    ordinary_campaign_no_pact: bool,
+    expected_environment_sha256: object,
+) -> dict[str, object] | None:
+    """Reject an ordinary/profile mismatch before preparing or launching CK3."""
+    if not ordinary_campaign_no_pact:
+        if expected_environment_sha256 is not None:
+            raise AgentError(
+                "source environment SHA requires --ordinary-campaign-no-pact"
+            )
+        return None
+    if expected_environment_sha256 is None:
+        raise AgentError(
+            "ordinary campaign requires --expected-source-environment-sha256"
+        )
+    expected = _expected_sha256(expected_environment_sha256)
+    manifest_path = source_profile / PROFILE_MANIFEST_NAME
+    if not manifest_path.is_file():
+        raise AgentError(f"ordinary source environment is missing: {manifest_path}")
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        binding = bind_succession_lifecycle_from_environment_v1(
+            manifest,
+            lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+        )
+    except (OSError, ValueError, TypeError) as error:
+        raise AgentError(f"ordinary source environment is invalid: {error}") from error
+    if binding["environment_sha256"].upper() != expected:
+        raise AgentError("ordinary source environment SHA differs")
+    return binding
 
 
 def _positive_number(value: object, name: str) -> float:
@@ -231,6 +278,7 @@ def _prepare_stage_clone(
     game_dir: Path,
     source_save: Path,
     stage: str,
+    ordinary_campaign_no_pact: bool = False,
 ) -> tuple[Any, dict[str, object]]:
     target = target_state_dir.resolve()
     if target.exists():
@@ -239,14 +287,37 @@ def _prepare_stage_clone(
         raise AgentError(f"{stage} clone overlaps immutable source profile")
     _copy_source_profile(source_profile.resolve(), target / "profile")
     spec = make_spec(target, game_dir)
-    manifest = prepare_profile(spec)
+    manifest = (
+        prepare_profile(spec, xar_enabled="xar_off")
+        if ordinary_campaign_no_pact
+        else prepare_profile(spec)
+    )
     save_dir = spec.profile_dir / "save games"
     save_dir.mkdir(parents=True, exist_ok=True)
     continue_save = save_dir / CONTINUE_SAVE_NAME
     last_save = spec.profile_dir / "last_save.ck3"
     shutil.copy2(source_save, continue_save)
     shutil.copy2(source_save, last_save)
-    verified = verify_profile(spec)
+    verified = (
+        verify_profile(spec, xar_enabled="xar_off")
+        if ordinary_campaign_no_pact
+        else verify_profile(spec)
+    )
+    lifecycle_binding = (
+        bind_succession_lifecycle_from_environment_v1(
+            manifest,
+            lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+            ordinary_campaign_no_pact=True,
+        )
+        if ordinary_campaign_no_pact
+        else None
+    )
+    if (
+        lifecycle_binding is not None
+        and verified.get("environment_sha256")
+        != lifecycle_binding["environment_sha256"]
+    ):
+        raise AgentError(f"{stage} prepared lifecycle binding differs")
     expected = _sha256_file(source_save)
     checks = {
         "continue_save_matches_source": _sha256_file(continue_save) == expected,
@@ -255,6 +326,20 @@ def _prepare_stage_clone(
     if not all(checks.values()):
         raise AgentError(f"{stage} source checkpoint projection differs")
     mod = manifest.get("mod")
+    ordinary_profile_inputs = (
+        {
+            "game_exe_sha256": manifest["game"]["executable_sha256"],
+            "production_tree_sha256": mod["production_tree_sha256"],
+            "installed_dlc_descriptors_sha256": manifest["dlc"][
+                "installed_descriptors_sha256"
+            ],
+            "rules_profile": manifest["rules"]["profile"],
+            "enabled_mods": manifest["load_profile"]["enabled_mods"],
+            "disabled_dlcs": manifest["load_profile"]["disabled_dlcs"],
+        }
+        if ordinary_campaign_no_pact
+        else None
+    )
     return spec, {
         "stage": stage,
         "state_dir": str(target),
@@ -265,6 +350,16 @@ def _prepare_stage_clone(
         "source_save_sha256": expected,
         "excluded_profile_roots": sorted(_PROFILE_ROOT_EXCLUDES),
         "environment_sha256": verified.get("environment_sha256"),
+        **(
+            {"ordinary_profile_inputs": ordinary_profile_inputs}
+            if ordinary_profile_inputs is not None
+            else {}
+        ),
+        **(
+            {"succession_lifecycle_binding": lifecycle_binding}
+            if lifecycle_binding is not None
+            else {}
+        ),
         "production_tree_sha256": (
             mod.get("production_tree_sha256")
             if isinstance(mod, dict)
@@ -273,6 +368,37 @@ def _prepare_stage_clone(
         "checks": checks,
         "ok": all(checks.values()),
     }
+
+
+def _ordinary_cold_restore_binding(
+    stage_a_clone: dict[str, object], stage_b_clone: dict[str, object]
+) -> dict[str, object]:
+    """Carry Stage A's persisted binding across a semantically equal cold clone."""
+    first = stage_a_clone.get("succession_lifecycle_binding")
+    second = stage_b_clone.get("succession_lifecycle_binding")
+    if not isinstance(first, dict) or not isinstance(second, dict):
+        raise AgentError("ordinary cold restore lacks both prepared bindings")
+    stable_keys = ("schema", "lifecycle", "xar_enabled", "pact_contract", "source")
+    if (
+        first.get("lifecycle") != ORDINARY_CAMPAIGN_SUCCESSION
+        or first.get("xar_enabled") != "xar_off"
+        or any(first.get(key) != second.get(key) for key in stable_keys)
+    ):
+        raise AgentError("ordinary cold restore lifecycle semantics differ")
+    inputs = stage_a_clone.get("ordinary_profile_inputs")
+    if not isinstance(inputs, dict) or inputs != stage_b_clone.get(
+        "ordinary_profile_inputs"
+    ):
+        raise AgentError("ordinary cold restore profile inputs differ")
+    if (
+        not stage_a_clone.get("source_save_sha256")
+        or stage_a_clone.get("source_save_sha256")
+        != stage_b_clone.get("source_save_sha256")
+    ):
+        raise AgentError("ordinary cold restore source save differs")
+    # Stage B's environment digest is path-specific. The copied checkpoint
+    # retains Stage A's binding, and the driver still checks it for equality.
+    return first
 
 
 def _snapshot_revision(snapshot: dict[str, object]) -> int:
@@ -1115,6 +1241,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         args.expected_source_save_sha256
     )
     source_profile = args.source_profile.expanduser().resolve()
+    ordinary_campaign_no_pact = bool(args.ordinary_campaign_no_pact)
+    prepared_xar_enabled = "xar_off" if ordinary_campaign_no_pact else "xar_on"
     target_root = _target_state_dir(args.state_dir)
     output = args.output.expanduser().resolve()
     if output.exists():
@@ -1132,10 +1260,12 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     )
     source_save: Path | None = None
     source_identity: dict[str, object] | None = None
+    source_lifecycle_binding: dict[str, object] | None = None
     source_before: str | None = None
     disposable: dict[str, object] | None = None
     stage_a_clone: dict[str, object] | None = None
     stage_b_clone: dict[str, object] | None = None
+    cold_restore_lifecycle_binding: dict[str, object] | None = None
     stage_a: dict[str, object] | None = None
     stage_b: dict[str, object] | None = None
     checkpoint_transfer: dict[str, object] | None = None
@@ -1147,6 +1277,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             source_profile,
             args.source_save,
             expected_save_sha256,
+        )
+        source_lifecycle_binding = _source_lifecycle_binding(
+            source_profile,
+            ordinary_campaign_no_pact=ordinary_campaign_no_pact,
+            expected_environment_sha256=args.expected_source_environment_sha256,
         )
         source_before = _sha256_file(source_save)
         disposable = _prepare_disposable_root(
@@ -1160,6 +1295,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             game_dir=args.game_dir.expanduser().resolve(),
             source_save=source_save,
             stage="stage-a",
+            ordinary_campaign_no_pact=ordinary_campaign_no_pact,
         )
         stage_a = _run_live_stage(
             stage="stage-a",
@@ -1169,6 +1305,10 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             save_checkpoint=True,
             timeout=timeout,
             readiness_timeout=readiness_timeout,
+            prepared_xar_enabled=prepared_xar_enabled,
+            succession_lifecycle_binding=stage_a_clone.get(
+                "succession_lifecycle_binding"
+            ),
         )
         if stage_a.get("ok") is not True:
             raise RuntimeError(
@@ -1180,7 +1320,12 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             game_dir=args.game_dir.expanduser().resolve(),
             source_save=source_save,
             stage="stage-b",
+            ordinary_campaign_no_pact=ordinary_campaign_no_pact,
         )
+        if ordinary_campaign_no_pact:
+            cold_restore_lifecycle_binding = _ordinary_cold_restore_binding(
+                stage_a_clone, stage_b_clone
+            )
         checkpoint_transfer = _transfer_checkpoint_bundle(
             stage_a_spec,
             stage_b_spec,
@@ -1196,6 +1341,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             save_checkpoint=False,
             timeout=timeout,
             readiness_timeout=readiness_timeout,
+            prepared_xar_enabled=prepared_xar_enabled,
+            succession_lifecycle_binding=cold_restore_lifecycle_binding,
         )
         if stage_b.get("ok") is not True:
             raise RuntimeError(
@@ -1265,6 +1412,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         },
         "policy": {
             "production_non_debug": True,
+            "prepared_xar_enabled": prepared_xar_enabled,
+            "ordinary_campaign_no_pact": ordinary_campaign_no_pact,
             "stage_a_load_kind": "continue_immutable_source_save",
             "stage_b_load_kind": "cold_start_xar_checkpoint",
             "allowed_gameplay_commands": [
@@ -1284,6 +1433,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             ],
         },
         "source_save": source_identity,
+        "source_lifecycle_binding": source_lifecycle_binding,
+        "cold_restore_lifecycle_binding": cold_restore_lifecycle_binding,
         "source_save_invariant": {
             "before_sha256": source_before,
             "after_sha256": source_after,
