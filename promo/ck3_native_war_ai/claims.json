@@ -1,0 +1,122 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_war_ai_claim_plan",
+  "status": "editorial-plan",
+  "source_commit": "68459f225270f138345785572d31ef9f722f3cae",
+  "game_build": "1.19.0.6",
+  "source_lock": "source-lock.json",
+  "note": "Existing research is cited, not reclassified. Source line ranges refer to the frozen commit. No new live observation or footage is claimed. This project-owned plan is not the toolchain 0.2 claims-review schema and does not assert automated semantic verification.",
+  "claims": [
+    {
+      "id": "C00",
+      "statement_zh": "赤河、蓝岭、教学地图、候选分数及求援数列都是说明机制的假设示例。",
+      "basis": "authored-illustration",
+      "sources": [],
+      "allowed_use": "画面标机制示意；具体数列不是游戏采样。",
+      "limits": ["不能拼接成同一场自然战争的实录", "教学角色不使用实机身份或日志编号"],
+      "live_media": []
+    },
+    {
+      "id": "C01",
+      "statement_zh": "宣战尝试、候选资格和估算军力门是不同环节；目标已在战争中会影响已分析分支的军力门。",
+      "basis": "existing-static-research",
+      "sources": [{"path": "docs/ck3-native-ai/war-declaration.md", "lines": [32, 109], "section": "尝试时机与敌我军力门"}],
+      "allowed_use": "用门与时间轴讲层次；目标与自己的估算军力不能直接用 UI 兵数代入。",
+      "limits": ["不把一次检查等同必定宣战", "不声称每个领主按统一固定日期检查", "不把参战目标必被攻击作为结论"],
+      "live_media": []
+    },
+    {
+      "id": "C02",
+      "statement_zh": "已分析的宣战候选流程剔除低于最高分 0.9 倍的候选，剩余超过五项时保留最高五项，再按分数权重随机选择。",
+      "basis": "existing-static-research",
+      "sources": [{"path": "docs/ck3-native-ai/war-declaration.md", "lines": [349, 409], "section": "候选评分与最终选择"}],
+      "allowed_use": "示例 100/97/94/91/90/89 在这一正分候选阶段淘汰 89，其余五项总权重 472；94 的条件抽中概率约 19.9%。",
+      "limits": ["条件抽取概率不是总宣战概率", "本示例只有五项过 90% 门，不演示额外 Top-5 截断发生", "前置门禁和后置条件仍有效；人质标记还有额外 50% roll，失败可放弃本次尝试", "不声称所有 CB 的最终评分账本均已闭合"],
+      "live_media": []
+    },
+    {
+      "id": "C03",
+      "statement_zh": "军队先选适用 stance，objectives 分块按顺序回退；当前块的候选落到省份，初步最高十项再进入含寻路的最终评价。",
+      "basis": "existing-script-and-static-research",
+      "sources": [{"path": "docs/ck3-native-ai/army-controller.md", "lines": [73, 150], "section": "stance、objective block 与省级候选"}],
+      "allowed_use": "用逐页打开目标块和当前块内候选图表示；给围城/追击个案保留同帧评分与动作的补研入口。",
+      "limits": ["不能把不同 stance 或 fallback block 的数字混为总分", "完整路径成本、去重、同分顺序和最终 modifier 算术仍有缺口", "单独的掉头录像不证明本次重评原因", "本专题 R0118 的我方 planner 修复不是原版 AI 行为证据"],
+      "live_media": []
+    },
+    {
+      "id": "C04",
+      "statement_zh": "已复原的接战 ratio 正常路径是 P_eval/(P_eval+P_opp)，对方聚合含主 hostile lane 与半权重其他 lane；它是确定性评估力量占比，不是战斗胜率。",
+      "basis": "existing-static-research",
+      "sources": [{"path": "docs/ck3-native-ai/combat-prediction.md", "lines": [173, 216], "section": "对手聚合与闭式公式"}],
+      "allowed_use": "屏幕简写强度比；用评估力量条解释分子分母。",
+      "limits": ["不与宣战目标/自身军力比混用", "不能从 UI soldiers 反推原生返回值", "完整 power 输入和 secondary metric 名称尚未闭合", "正常返回路径的示意不掩盖无 hostile aggregate 直接返回 1.0 的分支"],
+      "live_media": []
+    },
+    {
+      "id": "C05",
+      "statement_zh": "已分析的一般与 desperate 接战门分别严格大于 0.5 和 0.4；局部 bad-adjacency ratio 低于 0.625 时可尝试成本受限的替代路径。",
+      "basis": "existing-static-research",
+      "sources": [{"path": "docs/ck3-native-ai/combat-prediction.md", "lines": [286, 307], "section": "CanEngageCombat 与 bad-adjacency"}],
+      "allowed_use": "展示该分支的严格阈值与一个相邻危险点，不模拟整场战役。",
+      "limits": ["一般/desperate 的完整上游触发条件未闭合", "路径搜索成本窗口为原成本加 180，不把该成本单位说成 180 天", "替代搜索失败还有一般/desperate 门回退", "通过局部检查不代表未来整路安全或最终必执行进攻"],
+      "live_media": []
+    },
+    {
+      "id": "C06",
+      "statement_zh": "普通 AI 未求援时 ratio <0.66 才开始，已求援时 ratio <0.75 继续；提出请求与匹配助手是不同步骤。",
+      "basis": "existing-static-research",
+      "sources": [{"path": "docs/ck3-native-ai/battle-reinforcement-and-join.md", "lines": [205, 307], "section": "求援状态、两次 pass 和 helpers 匹配"}],
+      "allowed_use": "示例 0.65→0.70→0.76 展示开始、维持、退出；按已有存储顺序匹配合格请求者，目标绑定请求者当时所在省。",
+      "limits": ["这是普通 AI-to-AI 路径", "helper 内未按最短 ETA 排序不证明上游从不看距离或到达时间", "管理器完整日历 cadence 未闭合", "本案未取得该三状态的实际连续采样"],
+      "live_media": []
+    },
+    {
+      "id": "C07",
+      "statement_zh": "玩家支援专用路径的 consumer 和部分上游候选过滤尚未闭合，普通求援链不能回答全部玩家盟友行为。",
+      "basis": "documented-open-question",
+      "sources": [{"path": "docs/ck3-native-ai/battle-reinforcement-and-join.md", "lines": [680, 691], "section": "仍未闭合：PLAYER_SUPPORT 与上游过滤"}],
+      "allowed_use": "保留 30 秒说明问题所在；资料入口列作可补研项。",
+      "limits": ["不能说盟友故意不救玩家", "不能用普通助手匹配解释所有玩家援军", "未知不能剪成已知不存在"],
+      "live_media": []
+    },
+    {
+      "id": "C08",
+      "statement_zh": "接战前重新布置和战斗中主动撤退是两个问题；撤退资格与执行路径不等于普通战争 AI 完整撤退策略。",
+      "basis": "existing-static-research-with-open-policy",
+      "sources": [
+        {"path": "docs/ck3-native-ai/combat-prediction.md", "lines": [326, 349], "section": "接战前低 ratio 与防御点重新布置"},
+        {"path": "docs/ck3-native-ai/active-combat-retreat.md", "lines": [33, 72], "section": "已确认边界与仍未知的普通 war AI 决策"}
+      ],
+      "allowed_use": "用未接战/已接战两格对照，明确普通 war AI 的撤退择时和目的地策略仍有缺口。",
+      "limits": ["不把第 15 天满足普通日数门说成 AI 第 15 天会撤退", "玩家全侧撤退 live 不证明原生 AI 何时决定撤退", "已发现的 raid/barter/counterraid direct callers 不穷尽全部间接路径"],
+      "live_media": []
+    },
+    {
+      "id": "C09",
+      "statement_zh": "正常战斗结算可把单场 battle-score row 写入所属活动战争，战斗战分只是战争战分的一部分。",
+      "basis": "existing-static-research",
+      "sources": [{"path": "docs/ck3-native-ai/battle-terminal-and-reentry.md", "lines": [195, 285], "section": "CWar battle row writer、公式与 cap"}],
+      "allowed_use": "用战斗结果到战争账本的拼图，不展示未完整命名的分母公式。",
+      "limits": ["必须保留活动战争与对应战斗的条件", "不能把 battle-score 当战争总分", "公式分母八桶不能擅自命名为当前存活人数", "本案没有新战斗结算录像"],
+      "live_media": []
+    },
+    {
+      "id": "C10",
+      "statement_zh": "本期只讲 CK3 1.19.0.6 的有界研究；文档成熟度百分比不代表全部原生分支或自然实机覆盖率。",
+      "basis": "research-scope",
+      "sources": [{"path": "docs/ck3-native-ai/documentation-coverage-audit-2026-09-22.md", "lines": [19, 32], "section": "评分口径与能力边界"}],
+      "allowed_use": "开场显示版本，片尾给来源与开放问题；完整 EXE 指纹在 source-lock.json。",
+      "limits": ["不能宣传战争 AI 已破解 80%", "不能把本案 authoring 验证叫作新实机验证", "不能把我方自动玩家策略归到原生 AI"],
+      "live_media": []
+    },
+    {
+      "id": "C11",
+      "statement_zh": "主动提出白和与收到白和后的接受度分开计算；主动 ai_will_do base 为 0，ai_accept base 为 -30，二者各有条件与修正。",
+      "basis": "existing-script-research",
+      "sources": [{"path": "docs/ck3-native-ai/war-termination.md", "lines": [565, 667], "section": "原版 AI 主动结束战争与接受战争终止"}],
+      "allowed_use": "两张账单分别显示评分基数，再示意时长、战分与其他压力如何进入各自分支。",
+      "limits": ["评分不是概率，单独的基础分不是接受结果", "对玩家存在 ai_potential 预筛与 ai_will_do veto，不能把 AI 对 AI 案例无条件推广", "保留 CB、人质、perk 等例外", "确切发送日期、最终 C++ 接受比较和协商调度仍有缺口", "有军队不直接决定是否提议或接受白和"],
+      "live_media": []
+    }
+  ]
+}

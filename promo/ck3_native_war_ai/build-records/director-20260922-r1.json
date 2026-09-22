@@ -1,0 +1,68 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_war_ai_director_authoring_record",
+  "created_at_utc": "2026-09-22T13:28:28.658773+00:00",
+  "source_commit": "68459f225270f138345785572d31ef9f722f3cae",
+  "status": "authoring-validated-and-preserved",
+  "run": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/director-20260922-r1/run-manifest.json",
+    "bytes": 10080,
+    "sha256": "ae58d9b9e989348a2a95d463a400603f2a216a44c9c2a8ea6093231a73414d1f"
+  },
+  "config": {
+    "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/promo/ck3_native_war_ai/promo-project.json",
+    "bytes": 1618,
+    "sha256": "7c3e4d1e6fd4536cb8b2a9a8161fdecf763c81bfad9dbf442d04b40d7005e857"
+  },
+  "source_lock": {
+    "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/promo/ck3_native_war_ai/source-lock.json",
+    "bytes": 2368,
+    "sha256": "b1c90b56cab93532c17f0c8eadaf5ede0050f637ddd7c228340c6d9eb69a816d"
+  },
+  "environment": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/director-20260922-r1-command-audit/environment-probe.json",
+    "bytes": 746,
+    "sha256": "7e644b65f856e678ee33328533b14330255c6773e67b7debd7e9b041008d43db"
+  },
+  "content_check": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/director-20260922-r1-command-audit/authoring-check.json",
+    "bytes": 870,
+    "sha256": "d9f303938e3e34e377c96efd02580796a97dbe9f4326540226aaae919377464b"
+  },
+  "command_index": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/director-20260922-r1-command-audit/command-index.json",
+    "bytes": 16070,
+    "sha256": "ee4d40f43212a82672355b277cacdd5702122b6590402f53aa821e2173fb37d4"
+  },
+  "command_count": 73,
+  "artifact_count": 21,
+  "config_snapshot": {
+    "path": "artifacts/project-config/sha256/7C/7C3E4D1E6FD4536CB8B2A9A8161FDECF763C81BFAD9DBF442D04B40D7005E857.json",
+    "bytes": 1618,
+    "sha256": "7C3E4D1E6FD4536CB8B2A9A8161FDECF763C81BFAD9DBF442D04B40D7005E857"
+  },
+  "integration": {
+    "adapter_factory": "not-implemented",
+    "preset_factory": "not-implemented",
+    "composer": "not-implemented"
+  },
+  "executed_phases": [
+    "start-run",
+    "preserve",
+    "validate-authoring-full-file-and-hash-checks"
+  ],
+  "not_executed": [
+    "CK3 capture",
+    "TTS",
+    "plan",
+    "build",
+    "audit",
+    "review",
+    "signoff",
+    "export",
+    "publish"
+  ],
+  "human_signoff": "not-provided",
+  "media_artifacts": [],
+  "note": "The record is written after run completion, and is not preserved into itself. This is a proposal receipt, not a film readiness claim."
+}

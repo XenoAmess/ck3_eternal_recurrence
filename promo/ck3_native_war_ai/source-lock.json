@@ -1,0 +1,66 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_war_ai_source_lock",
+  "source_commit": "68459f225270f138345785572d31ef9f722f3cae",
+  "game_build": "1.19.0.6",
+  "documented_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "exe_verification_this_run": "not-performed; fingerprint copied from existing research",
+  "path_base": "repository-root",
+  "files": [
+    {
+      "path": "docs/ck3-native-ai/README.md",
+      "bytes": 90274,
+      "sha256": "471b23693fd429cbb10e9317bec21bc5b5a8b367e4b90acc9c0202e2774ae172"
+    },
+    {
+      "path": "docs/ck3-native-ai/active-combat-retreat.md",
+      "bytes": 50343,
+      "sha256": "aefee10d663c57f993e8c36b533cca50d9ffbad5afda6b671887b611a40ddba1"
+    },
+    {
+      "path": "docs/ck3-native-ai/army-contact-resolution.md",
+      "bytes": 88707,
+      "sha256": "66f669108a09fd8a7741c5165ae96987bfc35350fae616fbeb84fbada159f807"
+    },
+    {
+      "path": "docs/ck3-native-ai/army-controller.md",
+      "bytes": 66651,
+      "sha256": "672feb8b124b86f7b0b255d84406c7d73c718105aaccad61f20955ff17306c95"
+    },
+    {
+      "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md",
+      "bytes": 49728,
+      "sha256": "7a21ba77112e37dc17f9f5b0a36906ee0ba2e0808e72e79fd2b1a3471532daac"
+    },
+    {
+      "path": "docs/ck3-native-ai/battle-terminal-and-reentry.md",
+      "bytes": 52872,
+      "sha256": "ecb4728c6d07a19b28ba9f3267e0ea88ba0d2bcb3e4ad23fb13fb95dec8409e2"
+    },
+    {
+      "path": "docs/ck3-native-ai/combat-prediction.md",
+      "bytes": 53773,
+      "sha256": "80ea1cf22be3385894441202640d92b8a76acff73a0bfcaf6ddf09decb20c8cf"
+    },
+    {
+      "path": "docs/ck3-native-ai/documentation-coverage-audit-2026-09-22.md",
+      "bytes": 22802,
+      "sha256": "d58107fa87e9384490ee6fcfced74e5a785bb703746a3eeb8a387474da5d31ed"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-tooling-workflow.md",
+      "bytes": 11880,
+      "sha256": "82df5e90a3e1644b37a973ad17ced6bc773c0e4328ca7c2e905d39accfb96a52"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-declaration.md",
+      "bytes": 45949,
+      "sha256": "241b8e0f2f1b0dd6583913602ecc978c43a5300c465875e54960c45f641c0ba6"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-termination.md",
+      "bytes": 196432,
+      "sha256": "dfd291e7f37569aa040ee43562652f0c8588e03358e6713886fe5d517e8c0459"
+    }
+  ]
+}

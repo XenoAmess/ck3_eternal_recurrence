@@ -1,0 +1,24 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-native-war-ai",
+    "title": "CK3 的 AI 为什么开战、绕路，又突然愿意讲和？"
+  },
+  "pipeline": {
+    "adapter": "ck3-native-war-ai-v1",
+    "preset": "ck3-native-war-ai-810s-zh-v1"
+  },
+  "locales": {"narration": "zh-CN", "subtitles": ["zh-CN", "en"]},
+  "constraints": {"duration_limit_seconds": 810},
+  "chapters": [
+    {"id": "hook", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "三个疑问"}, "cues": [], "artifact_ids": []},
+    {"id": "declaration", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "为什么选这场战争"}, "cues": [], "artifact_ids": []},
+    {"id": "targets", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "开战后，先盯哪里"}, "cues": [], "artifact_ids": []},
+    {"id": "movement", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "遭遇之前，它在比较什么"}, "cues": [], "artifact_ids": []},
+    {"id": "help", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "求援开关"}, "cues": [], "artifact_ids": []},
+    {"id": "battle-end", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "一仗结束，战争还在继续"}, "cues": [], "artifact_ids": []},
+    {"id": "peace", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "和平桌上的两张账"}, "cues": [], "artifact_ids": []},
+    {"id": "epilogue", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "回到地图"}, "cues": [], "artifact_ids": []}
+  ]
+}
