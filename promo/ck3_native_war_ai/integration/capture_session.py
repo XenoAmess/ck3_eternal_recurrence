@@ -1,6 +1,7 @@
-"""Bounded vanilla map capture through the existing managed session and MCP.
+"""Bounded vanilla map session through the existing managed session and MCP.
 
-This produces raw media and timestamped observations, not AI-causality evidence,
+Desktop debug recording is opt-in; the default produces timestamped observations,
+not footage. Optional raw media is not AI-causality evidence,
 an adapter-certified clean span, or a human approval. Existing attempts are kept.
 The live branch requires a separate successful run; a no-launch preflight only
 checks environment and transport availability, never actual game behavior.
@@ -9,7 +10,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-from contextlib import closing
+from contextlib import ExitStack, closing
 from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
@@ -30,6 +31,7 @@ BOOKMARK_KEYS = (
     "bookmark_rags_to_riches_duke_robert",
     "bookmark_rags_to_riches_petty_king_murchad",
 )
+CHECKPOINT_LOAD_NAME = "war_film_checkpoint"
 
 
 def utc() -> str:
@@ -57,6 +59,88 @@ def append(path: Path, value: object) -> None:
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise RuntimeError(message)
+
+
+def checkpoint_source(save: Path | None, receipt_path: Path | None) -> dict | None:
+    """Read the actual saved checkpoint receipt; never manufacture driver history."""
+    require((save is None) == (receipt_path is None), "Checkpoint save and receipt must be supplied together")
+    if save is None:
+        return None
+    require(save.is_file() and save.suffix.lower() == ".ck3", "Checkpoint must be an existing .ck3 file")
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8-sig"))
+    require(receipt.get("result") == "CALL_COMPLETED", "Checkpoint MCP call did not complete")
+    body = receipt.get("body") or {}
+    saved = body.get("checkpoint") or {}
+    require(body.get("step") == "save-checkpoint" and body.get("accepted") is True
+            and saved.get("status") == "saved", "Receipt does not attest a materialized native checkpoint")
+    actual = identity(save)
+    require(actual["bytes"] == saved.get("size") and actual["sha256"].lower() == str(saved.get("sha256")).lower(),
+            "Checkpoint bytes differ from native save receipt")
+    lifecycle = saved.get("succession_lifecycle") or {}
+    require(lifecycle.get("lifecycle") == "ordinary_campaign_succession"
+            and lifecycle.get("xar_enabled") == "xar_off"
+            and lifecycle.get("pact_contract") == "absent_by_fresh_campaign_xar_off_contract"
+            and lifecycle.get("source") == "pure-vanilla-enabled-mods-empty",
+            "Checkpoint is not from this producer's pure-vanilla ordinary campaign")
+    hello = (receipt.get("driver_state") or {}).get("hello") or {}
+    require(hello.get("ck3_build_match") is True and
+            str(hello.get("expected_ck3_sha256", "")).upper() == EXACT_SHA,
+            "Checkpoint receipt lacks matching exact-build native hello")
+    actor, date = saved.get("episode_character_id"), saved.get("date_raw")
+    require(type(actor) is int and actor > 0 and type(date) is int,
+            "Checkpoint receipt lacks actual saved actor/date")
+    return {"save": actual, "receipt": identity(receipt_path), "actor": actor, "date_raw": date,
+            "source_episode_run_id": saved.get("episode_run_id"), "source_lifecycle": lifecycle,
+            "exact_build_hello": hello, "load_save_name": CHECKPOINT_LOAD_NAME,
+            "driver_history_copied": False, "managed_load_path": "frontend_first_load_save_name"}
+
+
+def copy_checkpoint(source: dict, profile_dir: Path, output_dir: Path) -> dict:
+    """Preserve source receipt and copy only exact save bytes into the new profile."""
+    target = profile_dir / "save games" / f"{CHECKPOINT_LOAD_NAME}.ck3"
+    require(not target.exists(), "Checkpoint destination must be new")
+    with Path(source["save"]["path"]).open("rb") as src, target.open("xb") as dst:
+        shutil.copyfileobj(src, dst)
+    copied = identity(target)
+    require((copied["bytes"], copied["sha256"]) == (source["save"]["bytes"], source["save"]["sha256"]),
+            "Checkpoint copy differs from frozen native receipt")
+    receipt_copy = output_dir / "checkpoint-source-receipt.json"
+    with Path(source["receipt"]["path"]).open("rb") as src, receipt_copy.open("xb") as dst:
+        shutil.copyfileobj(src, dst)
+    copied_receipt = identity(receipt_copy)
+    require((copied_receipt["bytes"], copied_receipt["sha256"]) ==
+            (source["receipt"]["bytes"], source["receipt"]["sha256"]), "Checkpoint receipt changed")
+    record = {"source": source, "profile_copy": copied, "receipt_copy": copied_receipt,
+              "old_attempt_modified": False, "driver_history_created": False}
+    write_new(output_dir / "checkpoint-copy.json", record)
+    return record
+
+
+async def wait_checkpoint_map(*, call, source: dict, stopped: threading.Event,
+                              timeout_seconds: float) -> dict:
+    """Observe the existing loader's result; no New Game, native load, or restore command."""
+    deadline = time.monotonic() + timeout_seconds
+    while time.monotonic() < deadline and not stopped.is_set():
+        snapshot = await call("ck3_take_snapshot", tolerate=True)
+        if snapshot.get("map_ready") is True:
+            require(snapshot.get("paused") is True, "Loaded checkpoint is not paused")
+            require((snapshot.get("played_character") or {}).get("character_id") == source["actor"]
+                    and snapshot.get("date_raw") == source["date_raw"],
+                    "Loaded checkpoint actor/date differs from saved native receipt")
+            hello = (snapshot.get("diagnostics") or {}).get("hello") or {}
+            require(hello.get("ck3_build_match") is True and
+                    str(hello.get("expected_ck3_sha256", "")).upper() == EXACT_SHA,
+                    "Loaded checkpoint native build readback differs")
+            return snapshot
+        await asyncio.sleep(1)
+    raise RuntimeError("Loaded checkpoint did not produce a verified paused map within the bounded wait")
+
+
+def session_outcome(*, session_ok: bool, debug_recording_enabled: bool, recording_ok: bool) -> str:
+    if not session_ok or (debug_recording_enabled and not recording_ok):
+        return "RED"
+    return ("RAW_CAPTURE_COMPLETE_PENDING_VISUAL_REVIEW" if debug_recording_enabled
+            else "ENVIRONMENT_SESSION_COMPLETE_NO_VIDEO")
 
 
 async def service_requests(directory: Path, *, call, stopped: threading.Event,
@@ -124,6 +208,7 @@ def preflight(args: argparse.Namespace) -> dict:
     versions = {key: importlib.metadata.version(key) for key in ("mcp", "pywin32", "Pillow", "psutil")}
     require(versions["mcp"] == "2.0.0", "MCP SDK must be 2.0.0")
     spec = make_spec(state_dir=args.state_dir, game_dir=args.game_dir)
+    checkpoint = checkpoint_source(args.checkpoint_save, args.checkpoint_receipt)
     executable = identity(spec.game_exe)
     require(executable["sha256"] == EXACT_SHA, "Exact CK3 build mismatch")
     validate_native_bridge_launch_config(NativeBridgeLaunchConfig(
@@ -138,15 +223,19 @@ def preflight(args: argparse.Namespace) -> dict:
         front.ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_CAPABILITY,
         front.ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY,
     ]
+    if checkpoint is not None:
+        required_capabilities = ["game.state.snapshot", "game.state.map-ready", "game.state.played-character"]
     strings = {key: key.encode() in binary for key in required_capabilities}
     write_new(args.output_dir / "static-capability-strings.json", strings)
     require(all(strings.values()), "Existing DLL lacks static strings: " + ", ".join(key for key, found in strings.items() if not found))
     bookmarks = [key for key in BOOKMARK_KEYS if key.encode() in binary]
-    require(len(bookmarks) == 1, "Existing DLL bookmark binding is missing or ambiguous")
+    if checkpoint is None:
+        require(len(bookmarks) == 1, "Existing DLL bookmark binding is missing or ambiguous")
     processes = ck3_process_inventory()
     require(not processes["processes"], "An existing CK3 process blocks capture")
-    require(shutil.which(args.ffmpeg) is not None, "FFmpeg missing")
-    require(shutil.which(args.ffprobe) is not None, "ffprobe missing")
+    if args.record_debug_desktop:
+        require(shutil.which(args.ffmpeg) is not None, "FFmpeg missing for opt-in debug recording")
+        require(shutil.which(args.ffprobe) is not None, "ffprobe missing for opt-in debug recording")
     require(not args.state_dir.exists(), "State directory must be new")
     if args.shader_cache_source is not None:
         require(args.shader_cache_source.is_dir() and args.shader_cache_source.name == "shadercache",
@@ -168,6 +257,8 @@ def preflight(args: argparse.Namespace) -> dict:
         "ck3_activate_frontend_start_1066_bookmark_character_v1",
         "ck3_take_snapshot",
     ]
+    if checkpoint is not None:
+        required_tools = ["ck3_take_snapshot"]
     require(set(required_tools) <= set(tools), "MCP tool listing lacks capture methods")
     return {
         "schema": "ck3-native-war-ai-capture-preflight/v1", "observed_at": utc(),
@@ -180,8 +271,11 @@ def preflight(args: argparse.Namespace) -> dict:
         # native bookmark model probe, not its own DLL command capability.
         "selected_candidate_provider": front.PROBE_FRONTEND_BOOKMARK_MODEL_V1_CAPABILITY,
         "official_mcp_tools_listed_without_game": required_tools,
-        "bookmark_candidate_from_binary": bookmarks[0],
-        "bookmark_identity_requires_live_readback": True,
+        "bookmark_candidate_from_binary": bookmarks[0] if len(bookmarks) == 1 else None,
+        "bookmark_identity_requires_live_readback": checkpoint is None,
+        "checkpoint_source": checkpoint,
+        "launch_mode": "managed-frontend-first-checkpoint" if checkpoint else "fresh-1066-bookmark",
+        "record_debug_desktop": args.record_debug_desktop,
         "process_inventory": processes, "state_dir": str(args.state_dir),
         "pipe_name": args.pipe_name,
         "codex_global_registration_required": False,
@@ -190,7 +284,7 @@ def preflight(args: argparse.Namespace) -> dict:
     }
 
 
-def prepare_profile(args: argparse.Namespace) -> tuple[object, dict]:
+def prepare_profile(args: argparse.Namespace, checkpoint: dict | None = None) -> tuple[object, dict]:
     from xar_autoplayer.environment import make_spec, render_settings
     from xar_autoplayer.rules import declared_vanilla_rule_defaults, render_presets
     from xar_autoplayer.bridge.succession_transition_contract import (
@@ -233,6 +327,9 @@ def prepare_profile(args: argparse.Namespace) -> tuple[object, dict]:
         "files": [identity(spec.profile_dir / p) for p in (
             "dlc_load.json", "pdx_settings.txt", "player/game_rules/presets.txt", "tutorial.txt")],
     }
+    if checkpoint is not None:
+        profile["checkpoint_copy"] = copy_checkpoint(checkpoint, spec.profile_dir, args.output_dir)
+        profile["kind"] = "vanilla-observational-checkpoint-profile"
     write_new(args.output_dir / "profile-source.json", profile)
     digest = hashlib.sha256(json.dumps(profile, sort_keys=True).encode()).hexdigest()
     lifecycle = normalize_succession_lifecycle_binding_v1({
@@ -262,7 +359,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     require(0 <= (datetime.now(timezone.utc) - observed).total_seconds() <= 900, "Steam offline receipt stale")
     run = allocate_live_run_id("vanilla")
     write_identity_receipt(args.output_dir, (run,))
-    spec, lifecycle = prepare_profile(args)
+    checkpoint = checked.get("checkpoint_source")
+    spec, lifecycle = prepare_profile(args, checkpoint)
     record_live_run_status(run, "launch-started", reason="Bounded vanilla map capture; no strategic player actions")
     stopped = threading.Event()
     worker: dict = {"ok": False, "error": None, "marks": []}
@@ -270,8 +368,15 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
     raw = args.output_dir / "raw-desktop.mkv"
     command = [shutil.which(args.ffmpeg), "-n", "-hide_banner", "-loglevel", "warning",
                "-f", "gdigrab", "-framerate", "30", "-draw_mouse", "0", "-i", "desktop",
-               "-c:v", "libx264", "-preset", "ultrafast", "-crf", "18", "-pix_fmt", "yuv420p", "-an", str(raw)]
-    write_new(args.output_dir / "ffmpeg-command.json", command)
+               "-c:v", "libx264", "-preset", "ultrafast", "-crf", "18", "-pix_fmt", "yuv420p", "-an", str(raw)] if args.record_debug_desktop else None
+    write_new(args.output_dir / "recording-policy.json", {
+        "debug_desktop_enabled": args.record_debug_desktop,
+        "default": "no-background-desktop-recorder",
+        "scope": "optional startup/debug evidence; never a certified gameplay recording",
+        "gameplay_recorder_owned_by_this_script": False,
+    })
+    if command is not None:
+        write_new(args.output_dir / "ffmpeg-command.json", command)
     recorder = None
     session_result: dict = {}
 
@@ -296,7 +401,7 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                         require(not row["is_error"], f"MCP call failed: {name}; inspect journal")
                     return row.get("body") or {}
 
-                async def initial_capture() -> None:
+                async def start_fresh_campaign() -> dict:
                     deadline = time.monotonic() + args.frontend_timeout
                     next_progress = 0.0
                     route = {}
@@ -327,8 +432,21 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     started = await call("ck3_activate_frontend_start_1066_bookmark_character_v1",
                                          {"character_name_key": checked["bookmark_candidate_from_binary"]})
                     require(started.get("postcondition_verified") is True, "Bookmark/map identity unverified")
+                    return started
+
+                async def initial_capture() -> None:
+                    if checkpoint is None:
+                        started = await start_fresh_campaign()
+                        snapshot = await call("ck3_take_snapshot")
+                    else:
+                        snapshot = await wait_checkpoint_map(call=call, source=checkpoint, stopped=stopped,
+                                                             timeout_seconds=2 * args.frontend_timeout)
+                        started = {"schema": "war-film-managed-checkpoint-load/v1",
+                            "postcondition_verified": True, "source_checkpoint": checkpoint,
+                            "snapshot": snapshot, "loader": "native_session.frontend_first_load_save_name",
+                            "warmup_then_load_are_separate_serial_processes": True,
+                            "driver_history_copied": False, "new_game_called": False}
                     write_new(args.output_dir / "native-start-readback.json", started)
-                    snapshot = await call("ck3_take_snapshot")
                     require(snapshot.get("map_ready") is True and snapshot.get("paused") is True, "Map is not ready and paused")
                     write_new(args.output_dir / "initial-snapshot.json", snapshot)
                     load = json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8"))
@@ -376,10 +494,13 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
 
     thread = threading.Thread(target=worker_main, daemon=True)
     try:
-        with (args.output_dir / "ffmpeg.stderr.txt").open("xb") as err, (args.output_dir / "session.jsonl").open("x", encoding="utf-8") as output:
-            recorder = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
-            time.sleep(1)
-            require(recorder.poll() is None, "Recorder exited before game launch")
+        with ExitStack() as resources:
+            output = resources.enter_context((args.output_dir / "session.jsonl").open("x", encoding="utf-8"))
+            if command is not None:
+                err = resources.enter_context((args.output_dir / "ffmpeg.stderr.txt").open("xb"))
+                recorder = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
+                time.sleep(1)
+                require(recorder.poll() is None, "Debug recorder exited before game launch")
             thread.start()
             session_result = native_session(
                 # Startup, map publication and post-ready pump have separate waits.
@@ -388,6 +509,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                                                        dll_path=args.bridge_dll, injector_path=args.bridge_injector),
                 input_stream=None, output_stream=output, stop_event=stopped,
                 verify_prepared_profile=False, prepared_xar_enabled="xar_off",
+                frontend_first_load_save_name=CHECKPOINT_LOAD_NAME if checkpoint is not None else None,
+                frontend_first_timeout_seconds=args.frontend_timeout,
             )
     except BaseException as error:
         worker["error"] = worker["error"] or repr(error)
@@ -409,13 +532,18 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
         "finished_at": utc(), "ck3_launch_attempted": True,
         "worker": worker, "cleanup_process_inventory": processes,
         "recorder_returncode": recorder.returncode if recorder is not None else None,
-        "raw_video": identity(raw) if raw.is_file() else None,
+        "raw_video": identity(raw) if args.record_debug_desktop and raw.is_file() else None,
+        "record_debug_desktop": args.record_debug_desktop,
+        "recording_complete": False,
         "clean_spans": [], "adapter_bundle_validated": False,
         "native_ai_causality_proven": False, "human_1x_review_performed": False,
-        "classification": "paused-vanilla-map-environment-footage",
+        "classification": ("debug-desktop-including-startup-not-clean-gameplay" if args.record_debug_desktop
+                           else "paused-vanilla-map-environment-session-no-video"),
+        "launch_mode": checked["launch_mode"],
+        "checkpoint_source": checkpoint,
     }
     probe = None
-    if raw.is_file() and raw.stat().st_size > 0:
+    if args.record_debug_desktop and raw.is_file() and raw.stat().st_size > 0:
         probe = subprocess.run([args.ffprobe, "-v", "error", "-show_format", "-show_streams",
                                 "-of", "json", str(raw)], capture_output=True, text=True)
         write_new(args.output_dir / "ffprobe.json", {
@@ -423,13 +551,20 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
         })
     result["ffprobe_returncode"] = probe.returncode if probe is not None else None
     shutdown = session_result.get("shutdown") or {}
-    good = (worker["ok"] and worker["error"] is None and not thread.is_alive()
+    session_good = (worker["ok"] and worker["error"] is None and not thread.is_alive()
             and session_result.get("ok") is True and shutdown.get("cleanup_proven") is True
-            and not processes["processes"] and recorder is not None and recorder.returncode == 0
+            and not processes["processes"])
+    recording_good = (args.record_debug_desktop and recorder is not None and recorder.returncode == 0
             and raw.is_file() and raw.stat().st_size > 0 and probe is not None and probe.returncode == 0)
-    result["result"] = "RAW_CAPTURE_COMPLETE_PENDING_VISUAL_REVIEW" if good else "RED"
+    result["recording_complete"] = recording_good
+    result["environment_session_complete"] = session_good
+    result["result"] = session_outcome(session_ok=session_good,
+        debug_recording_enabled=args.record_debug_desktop, recording_ok=recording_good)
+    good = result["result"] != "RED"
     record_live_run_status(run, "completed-green" if good else "completed-red",
-                           reason="Raw capture and cleanup only; no AI-causality or human signoff claim" if good else str(worker["error"]))
+                           reason=("Environment session and cleanup only; no video recorded" if not args.record_debug_desktop else
+                                   "Debug raw capture and cleanup only; no clean gameplay, AI-causality or human signoff claim")
+                           if good else str(worker["error"]))
     return result
 
 
@@ -443,11 +578,16 @@ def main() -> int:
     parser.add_argument("--pipe-name", required=True)
     parser.add_argument("--ffmpeg", default="ffmpeg")
     parser.add_argument("--ffprobe", default="ffprobe")
+    parser.add_argument("--record-debug-desktop", action="store_true",
+                        help="Opt in to a separate startup/debug desktop recorder; default off to avoid parallel gameplay recording")
+    parser.add_argument("--checkpoint-save", type=Path, help="Exact .ck3 source copied into a new isolated vanilla profile")
+    parser.add_argument("--checkpoint-receipt", type=Path, help="Actual MCP save-checkpoint response with byte, actor/date and build evidence")
     parser.add_argument("--frontend-timeout", type=float, default=360)
     parser.add_argument("--hold-seconds", type=float, default=60)
     parser.add_argument("--shader-cache-source", type=Path, help="Reuse only a prior exact-build shadercache")
     parser.add_argument("--recovery-seconds", type=float, default=1800, help="Keep the same MCP owner available after Python failure")
-    parser.add_argument("--interactive-seconds", type=float, default=1800, help="Keep the loaded campaign available for explicit MCP requests")
+    parser.add_argument("--interactive-seconds", type=float, default=1800,
+                        help="Keep the loaded campaign available for explicit MCP requests; use 3600 for a bounded one-hour work session")
     parser.add_argument("--steam-offline-receipt", type=Path)
     parser.add_argument("--capture", action="store_true", help="Explicitly launch CK3 after preflight; default is no launch")
     args = parser.parse_args()
