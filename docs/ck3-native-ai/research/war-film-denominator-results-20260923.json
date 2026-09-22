@@ -1,0 +1,159 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-battle-denominator-results-20260923",
+  "question": "What populations and current/maximum quantities do the eight mode=2 strength buckets contribute to battle warscore denominator?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Losing war participant Character -> native military strength output",
+    "identity_kind": "none",
+    "identity_lifetime": "Offline exact-build RVA and output offsets; no live IDs sampled",
+    "producer_trigger": "unknown",
+    "producer": "0x292FC40 output struct producer, flags=2",
+    "caller": "Battle warscore constructor 0x25BBE70",
+    "consumer": "Sum eight dwords at +00,+20,+40,+60,+80,+A0,+C0,+E0",
+    "cache_lifetime": "Local output buffer constructed per evaluation; no long-lived cache assumed",
+    "expected_signal": "Per-bucket producer fields, mode bits, population filters and UI/source names",
+    "zero_sample_meaning": "An unpopulated bucket does not prove its category is absent from the algorithm",
+    "stop_condition": "Stop raw bucket expansion where population identity requires an independent paused observation; keep unknown labels",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "bytes",
+      "layer": "exact-build",
+      "path": "war-film-denominator-evidence-20260923.json",
+      "sha256": "e1d902bc06a86c400b2c0d6ba399d74050a60add1d703a3c376df1c723e1060d",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Exact instruction spans, 15 anchor checks, nine native labels and localization binding."
+    },
+    {
+      "id": "interpretation",
+      "layer": "source-contract",
+      "path": "../war-film-battle-score-denominator-2026-09-23.md",
+      "sha256": "845a9297c3a4d5034afdb769e39dad1afead56317c8cbe8dc2b37b41c5e78b2e",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Manual interpretation of participant selection, quantity versus power, CURRENT/MAX and component sources; live and residual boundaries remain unknown."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "participants",
+      "label": "Losing war participants"
+    },
+    {
+      "id": "call",
+      "label": "Mode=2 per Character"
+    },
+    {
+      "id": "components",
+      "label": "Eight quantity buckets"
+    },
+    {
+      "id": "labels",
+      "label": "Native tooltip and localization"
+    },
+    {
+      "id": "denominator",
+      "label": "Sum dwords; minimum 1"
+    },
+    {
+      "id": "score",
+      "label": "Ratio cap 1; CB scale and per-battle cap"
+    },
+    {
+      "id": "eligibility",
+      "label": "Full lower-level eligibility semantics"
+    },
+    {
+      "id": "live",
+      "label": "Actual same-war case"
+    }
+  ],
+  "edges": [
+    {
+      "id": "call",
+      "from": "participants",
+      "to": "call",
+      "label": "Full Character ID resolution",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "interpretation"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "mode",
+      "from": "call",
+      "to": "components",
+      "label": "Mode selects MAX-style quantity branch",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "interpretation"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "names",
+      "from": "labels",
+      "to": "components",
+      "label": "Seven bucket labels and CURRENT/MAX parameter mapping",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "interpretation"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "sum",
+      "from": "components",
+      "to": "denominator",
+      "label": "Eight int32 quantity slots; not power",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "interpretation"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "scale",
+      "from": "denominator",
+      "to": "score",
+      "label": "Exact fixed-point formula",
+      "status": "static-confirmed",
+      "evidence": [
+        "bytes",
+        "interpretation"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "eligibility",
+      "from": "eligibility",
+      "to": "components",
+      "label": "Additional qualification semantics",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Government config keys, levy construction qualification and regiment/state enum lifecycles remain partially unnamed."
+    },
+    {
+      "id": "live",
+      "from": "score",
+      "to": "live",
+      "label": "Observed terminal outcome",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "No new actual battle or per-bucket paused values in this package."
+    }
+  ],
+  "cases": []
+}

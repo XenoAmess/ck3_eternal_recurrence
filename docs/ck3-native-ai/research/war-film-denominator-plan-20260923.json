@@ -1,0 +1,62 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-battle-denominator-20260923",
+  "question": "What populations and current/maximum quantities do the eight mode=2 strength buckets contribute to battle warscore denominator?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Losing war participant Character -> native military strength output",
+    "identity_kind": "none",
+    "identity_lifetime": "Offline exact-build RVA and output offsets; no live IDs sampled",
+    "producer_trigger": "unknown",
+    "producer": "0x292FC40 output struct producer, flags=2",
+    "caller": "Battle warscore constructor 0x25BBE70",
+    "consumer": "Sum eight dwords at +00,+20,+40,+60,+80,+A0,+C0,+E0",
+    "cache_lifetime": "Local output buffer constructed per evaluation; no long-lived cache assumed",
+    "expected_signal": "Per-bucket producer fields, mode bits, population filters and UI/source names",
+    "zero_sample_meaning": "An unpopulated bucket does not prove its category is absent from the algorithm",
+    "stop_condition": "Stop raw bucket expansion where population identity requires an independent paused observation; keep unknown labels",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {
+      "id": "participant",
+      "label": "Losing war participants"
+    },
+    {
+      "id": "buckets",
+      "label": "Eight mode=2 bucket producers"
+    },
+    {
+      "id": "score",
+      "label": "Denominator -> battle score"
+    }
+  ],
+  "edges": [
+    {
+      "id": "population",
+      "from": "participant",
+      "to": "buckets",
+      "label": "Resolve membership and quantity",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Identify bucket business names and current/maximum semantics."
+    },
+    {
+      "id": "aggregate",
+      "from": "buckets",
+      "to": "score",
+      "label": "Sum integer components and clamp",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Bind exact bucket producers to existing warscore formula."
+    }
+  ],
+  "cases": []
+}

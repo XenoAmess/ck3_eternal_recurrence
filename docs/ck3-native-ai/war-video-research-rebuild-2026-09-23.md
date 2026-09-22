@@ -86,3 +86,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W5 a02：上层调度可达性与暂停采样器
 
 [撤退 caller 专题](war-film-retreat-callers-2026-09-23.md)进一步收窄旧结论：同省栈合并的取消路线不能当作败势撤退；raid/barter 主调度会排除 active combat，不能仅凭下层 builder 可处理撤退就宣布整条 AI 策略闭合。任务取消分支和 counter-raid 分开保留。研究用只读暂停采样器已实现，普通与 `-O` 各 9 项合成测试通过，但尚未实机读取，也不证明 producer 运行；普通战争主动撤退 policy 继续追查。
+
+## W6 增量：八类战争分数分母
+
+[战斗分母专题](war-film-battle-score-denominator-2026-09-23.md)已将八个数量桶追到原生 producer，七项用 tooltip 与 loc 互证，另一个绑定 Title regiment 容器。mode=2 并非统一当前兵员：征召兵/兵士采用 MAX 槽，特殊部队有 composition 校正，游牧分支是 nomadic riders 换算。13 个字节段、15 个关键指令、9 个标签复验通过。完整制度资格及真实战前/终局逐桶案例仍待补；没有新增 live。
