@@ -558,6 +558,13 @@ class _NativeAutoRunHarness:
                 "accepted": True,
                 "status": "queried",
             }
+        elif action == "existing_focus":
+            step = "query-campaign-root-context-v1"
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "queried",
+            }
         elif action == "construction_pending":
             step = "private-submit-player-construction-v1"
             request_id = "construction-submit-r0066-fixture"
@@ -1374,6 +1381,8 @@ class _FakeGameplayService:
             action = self.harness.actions[0]
             selected = {
                 "advance": "life-advance",
+                "war_query": "query-declarable-wars",
+                "existing_focus": "query-campaign-root-context-v1",
                 "lifestyle_focus_submit": (
                     "private-select-player-lifestyle-stock-focus-v1"
                 ),
@@ -1382,6 +1391,29 @@ class _FakeGameplayService:
                 ),
             }[action]
             plan: dict[str, object] = {"selected_step": selected}
+            if action == "existing_focus":
+                plan["initial_lifestyle_focus_existing"] = {
+                    "status": "verified_existing",
+                    "source_frame": {
+                        "snapshot_id": f"native:{self.harness.native_revision}",
+                        "revision": self.harness.public_revision,
+                    },
+                    "current_focus": {
+                        "presence": "present",
+                        "key": "stewardship_domain_focus",
+                        "lifestyle_key": "stewardship_lifestyle",
+                    },
+                    "current_lifestyle_progress": {
+                        "presence": "present",
+                        "lifestyle_key": "stewardship_lifestyle",
+                        "xp_total_raw": 0,
+                        "xp_within_level_raw": 0,
+                        "xp_per_level": 1000,
+                        "unspent_perk_points": 0,
+                        "used_perk_points": 0,
+                    },
+                    "stock_focus_native_legal": True,
+                }
             if self.harness.opening_focus_receipt_seen:
                 plan["lifestyle_receipt_consumed"] = {
                     "kind": "focus",
@@ -4160,9 +4192,40 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(report["ok"])
         self.assertEqual(harness.auto_turn_count, 0)
         self.assertEqual(harness.date_raw, 53_171_400)
+        self.assertNotIn("auto_turn:advance", harness.events)
         self.assertEqual(
             report["initial_lifestyle_focus_gate"]["stage"], "await_submit"
         )
+
+    def test_opening_focus_gate_refuses_r0140_war_query_before_life(self) -> None:
+        report, harness = self._run(
+            ["war_query"],
+            require_initial_lifestyle_focus_before_date_advance=True,
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(harness.auto_turn_count, 0)
+        self.assertEqual(harness.date_raw, 53_171_400)
+        self.assertNotIn("auto_turn:war_query", harness.events)
+
+    def test_opening_focus_gate_accepts_exact_existing_focus_without_submit(self) -> None:
+        report, harness = self._run(
+            ["existing_focus", "advance"],
+            require_initial_lifestyle_focus_before_date_advance=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["initial_lifestyle_focus_gate"]["stage"], "complete")
+        self.assertEqual(
+            report["initial_lifestyle_focus_gate"]["existing_focus"],
+            "stewardship_domain_focus",
+        )
+        self.assertEqual(harness.date_raw, 53_171_401)
+        self.assertLess(
+            harness.events.index("auto_turn:existing_focus"),
+            harness.events.index("auto_turn:advance"),
+        )
+        self.assertNotIn("auto_turn:lifestyle_focus_submit", harness.events)
 
     def test_opening_focus_gate_requires_submit_receipt_checkpoint_and_consumption(self) -> None:
         report, harness = self._run(

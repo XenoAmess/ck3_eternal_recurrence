@@ -609,13 +609,26 @@ class GameplayBridgeService:
             history.extend(
                 row for row in native_history if isinstance(row, dict)
             )
-            plan = choose_one_life_turn(
-                history,
-                snapshot=planning_snapshot,
-                action_steps=available_steps,
-                bridge_capabilities=bridge_capabilities,
-                next_run_plan=cross_run_plan,
-                battle_speed_readiness=battle_speed_readiness,
+            opening_focus_first = getattr(
+                self.driver, "require_initial_lifestyle_focus_before_date_advance",
+                False,
+            ) is True
+            plan = (
+                {
+                    "policy": "initial-lifestyle-focus-first-v1",
+                    "phase": "initial_lifestyle_focus_first",
+                    "selected_step": "life-advance",
+                    "reason": "observe and settle the opening focus before war planning",
+                }
+                if opening_focus_first
+                else choose_one_life_turn(
+                    history,
+                    snapshot=planning_snapshot,
+                    action_steps=available_steps,
+                    bridge_capabilities=bridge_capabilities,
+                    next_run_plan=cross_run_plan,
+                    battle_speed_readiness=battle_speed_readiness,
+                )
             )
             if getattr(
                 self.driver, "allow_private_lifestyle_formal_trial", False
@@ -741,8 +754,18 @@ class GameplayBridgeService:
         if getattr(
             self.driver, "allow_private_lifestyle_formal_trial", False
         ) is True:
-            planned = self._plan_private_lifestyle_trial_v1(
-                planned, available_steps
+            planned = (
+                self._plan_initial_lifestyle_focus_first_v1(
+                    planned, available_steps
+                )
+                if getattr(
+                    self.driver,
+                    "require_initial_lifestyle_focus_before_date_advance",
+                    False,
+                ) is True
+                else self._plan_private_lifestyle_trial_v1(
+                    planned, available_steps
+                )
             )
             lifestyle_plan = planned.get("plan")
             if (
@@ -783,6 +806,202 @@ class GameplayBridgeService:
                 construction_history, available_steps,
             )
         return planned
+
+    def _plan_initial_lifestyle_focus_first_v1(
+        self, planned: dict[str, object], available_steps: set[str]
+    ) -> dict[str, object]:
+        """Opt-in opening LIFE observation before any war query or date step."""
+        plan = planned.get("plan")
+        if not isinstance(plan, dict):
+            return planned
+
+        def blocked(reason: str) -> dict[str, object]:
+            return {
+                **planned,
+                "plan": {
+                    **plan, "phase": "initial_lifestyle_focus_observation_red",
+                    "selected_step": None, "reason": reason,
+                },
+            }
+
+        stage = getattr(
+            self.driver, "initial_lifestyle_focus_gate_stage", "await_submit"
+        )
+        if stage == "await_receipt":
+            if not isinstance(planned.get("_private_lifestyle_pending_v1"), dict):
+                return blocked("opening focus receipt has no one-time pending action")
+            receipt = self._plan_private_lifestyle_trial_v1(planned, available_steps)
+            receipt_plan = receipt.get("plan")
+            if not (
+                isinstance(receipt_plan, dict)
+                and receipt_plan.get("selected_step") == PRIVATE_LIFESTYLE_RECEIPT_STEP
+            ):
+                return blocked("opening focus receipt lacks an independent later frame")
+            return receipt
+        if stage == "await_consumption":
+            consumed = plan.get("lifestyle_receipt_consumed")
+            if not isinstance(consumed, dict):
+                return blocked("opening focus receipt has not reached the following turn")
+            if PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps:
+                return blocked("opening focus consumption query is unavailable")
+            return {
+                **planned,
+                "plan": {
+                    **plan, "phase": "initial_lifestyle_focus_consumption",
+                    "selected_step": PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
+                    "lifestyle_receipt_consumed": consumed,
+                },
+            }
+        if stage != "await_submit":
+            return blocked("opening focus gate stage is unknown")
+
+        revision = planned.get("revision")
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            return blocked("opening focus has no paused public revision")
+        before = self.snapshot()
+        if not (
+            before.get("paused") is True
+            and before.get("snapshot_id") == planned.get("snapshot_id")
+            and before.get("revision") == revision
+        ):
+            return blocked("opening focus planning frame changed")
+        formal_reader = getattr(
+            self.driver, "query_player_lifestyle_formal_private_v1", None
+        )
+        stock_reader = getattr(
+            self.driver,
+            "query_player_lifestyle_stock_focus_combined_private_v1", None,
+        )
+        if not callable(formal_reader) or not callable(stock_reader):
+            return blocked("opening LIFE2 or stock final-legal query is missing")
+        formal = formal_reader(expected_revision=revision)
+        stock = stock_reader(expected_revision=revision)
+        after = self.snapshot()
+        binding = (
+            "snapshot_id", "revision", "native_revision", "date_raw",
+            "episode_run_id",
+        )
+        if not (
+            after.get("paused") is True
+            and all(before.get(key) == after.get(key) for key in binding)
+            and isinstance(formal, dict)
+            and formal.get("status") == "available"
+            and isinstance(formal.get("source_frame"), dict)
+            and formal["source_frame"].get("snapshot_id") == before.get("snapshot_id")
+            and formal["source_frame"].get("revision") == revision
+            and formal["source_frame"].get("native_revision")
+            == before.get("native_revision")
+            and formal["source_frame"].get("date_raw") == before.get("date_raw")
+            and isinstance(stock, dict)
+            and stock.get("status") in {
+                "stock_focus_available", "stock_focus_readback_red",
+            }
+        ):
+            return blocked("opening LIFE2/stock readback is not one paused frame")
+        stock_focus = (
+            stock.get("focus_query")
+            if stock.get("status") == "stock_focus_available"
+            else stock.get("focus")
+        )
+        if not (
+            isinstance(stock_focus, dict)
+            and stock_focus.get("status") == "observed"
+            and isinstance(stock_focus.get("native_legal"), bool)
+            and isinstance(stock_focus.get("source_frame"), dict)
+            and stock_focus["source_frame"].get("snapshot_id")
+            == before.get("snapshot_id")
+            and stock_focus["source_frame"].get("native_revision")
+            == before.get("native_revision")
+            and stock_focus["source_frame"].get("date_raw")
+            == before.get("date_raw")
+        ):
+            return blocked("opening stock focus final legality was not observed")
+        life = formal.get("snapshot")
+        readiness = life.get("readiness") if isinstance(life, dict) else None
+        focus = life.get("current_focus") if isinstance(life, dict) else None
+        progress = (
+            life.get("current_lifestyle_progress")
+            if isinstance(life, dict) else None
+        )
+        if not (
+            isinstance(readiness, dict)
+            and readiness.get("current_focus_ready") is True
+            and readiness.get("lifestyle_progress_ready") is True
+            and isinstance(focus, dict)
+            and isinstance(progress, dict)
+        ):
+            return blocked("opening LIFE2 current focus or XP/points are unavailable")
+        if focus.get("presence") == "present":
+            numeric = (
+                "xp_total_raw", "xp_within_level_raw", "xp_per_level",
+                "unspent_perk_points", "used_perk_points",
+            )
+            if not (
+                isinstance(focus.get("key"), str) and focus.get("key")
+                and isinstance(focus.get("lifestyle_key"), str)
+                and progress.get("presence") == "present"
+                and progress.get("lifestyle_key") == focus.get("lifestyle_key")
+                and all(
+                    isinstance(progress.get(key), int)
+                    and not isinstance(progress.get(key), bool)
+                    and progress[key] >= 0
+                    for key in numeric
+                )
+                and progress["xp_per_level"] > 0
+            ):
+                return blocked("existing opening focus lacks exact current XP/points")
+            if PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps:
+                return blocked("opening existing-focus read-only turn is unavailable")
+            return {
+                **planned,
+                "plan": {
+                    **plan, "phase": "initial_lifestyle_focus_already_present",
+                    "selected_step": PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
+                    "initial_lifestyle_focus_existing": {
+                        "status": "verified_existing",
+                        "source_frame": formal["source_frame"],
+                        "current_focus": focus,
+                        "current_lifestyle_progress": progress,
+                        "stock_focus_native_legal": stock_focus["native_legal"],
+                    },
+                },
+            }
+        if not (
+            focus.get("presence") == "absent"
+            and progress.get("presence") == "absent"
+            and stock.get("status") == "stock_focus_available"
+            and stock_focus.get("native_legal") is True
+        ):
+            return blocked("opening focus is absent but stock final legality is not true")
+        scope = planned.get("_private_lifestyle_scope_v1")
+        if isinstance(scope, dict) and scope.get("status") == "root_query_needed":
+            if PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP not in available_steps:
+                return blocked("opening peaceful feudal root query is unavailable")
+            return {
+                **planned,
+                "plan": {
+                    **plan, "phase": "initial_lifestyle_feudal_scope_query",
+                    "selected_step": PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
+                    "opening_lifestyle_readback": "absent_native_legal",
+                },
+            }
+        if not isinstance(scope, dict) or scope.get("status") != "admitted":
+            return blocked("opening peaceful standard-feudal scope is unproved")
+        consumed = consume_one_life_lifestyle_private_trial(
+            plan, same_frame_feudal_scope=scope, private_query=stock
+        )
+        if consumed.get("selected_step") != PRIVATE_LIFESTYLE_FOCUS_STEP:
+            return blocked("opening stock focus was not selected by policy")
+        if not callable(getattr(
+            self.driver, "submit_player_lifestyle_stock_focus_private_v1", None
+        )):
+            return blocked("opening typed focus route is unavailable")
+        return {
+            **planned,
+            "plan": _route_plan_to_available_step(
+                consumed, {PRIVATE_LIFESTYLE_FOCUS_STEP}
+            ),
+        }
 
     def _plan_private_lifestyle_trial_v1(
         self, planned: dict[str, object], available_steps: set[str]

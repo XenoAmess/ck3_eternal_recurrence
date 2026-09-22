@@ -38,7 +38,9 @@ def _life_snapshot() -> dict[str, object]:
         "current_focus": {"presence": "present", "key": "stewardship_domain_focus",
                           "lifestyle_key": "stewardship_lifestyle"},
         "current_lifestyle_progress": {"presence": "present",
-            "lifestyle_key": "stewardship_lifestyle", "unspent_perk_points": 1},
+            "lifestyle_key": "stewardship_lifestyle", "unspent_perk_points": 1,
+            "used_perk_points": 0, "xp_total_raw": 100,
+            "xp_within_level_raw": 100, "xp_per_level": 1000},
         "owned_perk_keys": [],
         "legal_focus_candidates": {"status": "available", "items": []},
         "legal_perk_candidates": {"status": "available", "items": [
@@ -76,6 +78,8 @@ class _State:
         self.last: dict[str, object] | None = None
         self.fail_query = False
         self.focus_legal = True
+        self.formal_focus_absent = False
+        self.stock_focus_present = False
 
     def wait_for_command_result(self, request_id: str, _: float) -> dict[str, object]:
         assert self.last is not None and self.last["request_id"] == request_id
@@ -98,13 +102,18 @@ class _State:
             return {"request_id": request_id, "ok": False,
                     "error": "native_lifestyle_state_or_final_candidates_unavailable"}
         if step == QUERY_STEP:
+            life = _life_snapshot()
+            if self.formal_focus_absent:
+                life["current_focus"] = {"presence": "absent"}
+                life["current_lifestyle_progress"] = {"presence": "absent"}
             result = {"step": step, "private_build": True, "advertised": False,
                 "status": "available", "episode_run_id": req["episode_run_id"],
-                "formal_precondition_status": "ready", "snapshot": _life_snapshot()}
+                "formal_precondition_status": "ready", "snapshot": life}
         elif step == STATE_QUERY_STEP:
             life = _life_snapshot()
-            life["current_focus"] = {"presence": "absent"}
-            life["current_lifestyle_progress"] = {"presence": "absent"}
+            if not self.stock_focus_present:
+                life["current_focus"] = {"presence": "absent"}
+                life["current_lifestyle_progress"] = {"presence": "absent"}
             life["readiness"]["legal_focus_candidates_ready"] = False
             life["readiness"]["legal_perk_candidates_ready"] = False
             result = {"step": step, "private_build": True, "advertised": False,
@@ -195,6 +204,55 @@ class _Driver:
 
 
 class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
+    def test_opening_focus_bypasses_r0140_war_query_through_receipt_and_consumption(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.initial_lifestyle_focus_gate_stage = "await_submit"
+        driver.state.formal_focus_absent = True
+        service = GameplayBridgeService(driver)
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            side_effect=AssertionError("R0140 war planner ran before opening focus"),
+        ):
+            root = service.plan_turn()
+            self.assertEqual(root["plan"]["selected_step"], "query-campaign-root-context-v1")
+            driver.history.extend(_scope_root())
+            typed = service.plan_turn()
+            self.assertEqual(typed["plan"]["selected_step"], FOCUS_SUBMIT_STEP)
+            pending = driver.submit_player_lifestyle_stock_focus_private_v1(
+                query=typed["plan"]["lifestyle_query"],
+                action=typed["plan"]["lifestyle_action"],
+                expected_revision=3,
+            )
+            driver.frame = _game_frame(4)
+            driver.initial_lifestyle_focus_gate_stage = "await_receipt"
+            receipt = service.plan_turn()
+            self.assertEqual(receipt["plan"]["selected_step"], RECEIPT_STEP)
+            applied = query_player_lifestyle_receipt_private_v1(
+                driver, pending=pending, expected_revision=4,
+            )
+            self.assertTrue(applied["postcondition_verified"])
+            driver.initial_lifestyle_focus_gate_stage = "await_consumption"
+            consumed = service.plan_turn()
+            self.assertEqual(consumed["plan"]["selected_step"], "query-campaign-root-context-v1")
+            self.assertEqual(
+                consumed["plan"]["lifestyle_receipt_consumed"]["action_request_id"],
+                pending["action_request_id"],
+            )
+
+    def test_opening_focus_recognizes_exact_existing_focus_without_submit(self) -> None:
+        driver = _Driver()
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.state.stock_focus_present = True
+        driver.state.focus_legal = False
+        planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(planned["plan"]["selected_step"], "query-campaign-root-context-v1")
+        self.assertEqual(
+            planned["plan"]["initial_lifestyle_focus_existing"]["current_focus"]["key"],
+            "stewardship_domain_focus",
+        )
+        self.assertFalse(planned["plan"]["initial_lifestyle_focus_existing"]["stock_focus_native_legal"])
+
     def test_windowless_stock_focus_one_submit_and_material_receipt(self) -> None:
         driver = _Driver()
         scope = same_frame_feudal_peace_scope(driver.frame, _scope_root())
