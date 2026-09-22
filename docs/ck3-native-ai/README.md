@@ -548,6 +548,9 @@
 
 ## 原生 AI 研究工作流
 
+新专题与新采样方案的可执行入口见 [研究工具与操作流程](research-tooling-workflow.md)：方案检查、同源证据表/制图、
+生产事件消费者离线回放、registry 即时摘要和 verifier 证据范围。该流程从后续工作采用；已有专题结论与评级不作追溯修改。
+
 1. [static-confirmed] 先冻结游戏版本、EXE SHA 和原版数据文件版本；不同 SHA 的地址或行为不得沿用。
 2. [static-confirmed] 先从原版 `.info`/`defines`/`txt` 和 EXE RTTI、调用链建立决策树，并把每条边标成
    `static-confirmed`、`live-confirmed`、`inference` 或 `unknown`。

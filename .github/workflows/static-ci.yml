@@ -53,6 +53,12 @@ jobs:
           python -m compileall -q mod_zhongguo_style/tools
       - name: Test CoA runtime-registry claim boundary
         run: python tools/test_audit_coa_runtime_registry_boundary.py
+      - name: Test native research planning and evidence rendering
+        run: python tools/test_native_research_plan.py
+      - name: Test offline vanilla event research tools
+        run: python -m unittest discover -s tools -p "test_*vanilla_event_research.py"
+      - name: Test native verifier evidence scope without CK3
+        run: python ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_scope.py
       - name: Test CLA checker
         run: python tools/test_cla_check.py
       - name: Test succession GUI projection contract

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Verify the private marriage matchmaking observer source contract."""
+"""Verify repository source/ABI declarations for the private marriage observer.
+
+This does not read the game executable or validate live behavior. Readiness
+checks below constrain repository declarations, not evidence earned by this run.
+"""
 
 from __future__ import annotations
 
@@ -124,6 +128,12 @@ def main() -> int:
     _verify_source(native_root, contract)
     _verify_abi(abi)
     print("GREEN: marriage-matchmaking-observer-v1 source contract")
+    print("EVIDENCE_SCOPE " + json.dumps({
+        "evidence_scope": "repository-contract",
+        "verified": ["required-source-tokens", "ABI-and-readiness-declarations"],
+        "not_verified": ["executable-bytes", "live-behavior", "complete-decision-semantics"],
+        "game_process_started": False,
+    }, sort_keys=True))
     return 0
 
 

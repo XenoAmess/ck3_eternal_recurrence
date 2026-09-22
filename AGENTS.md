@@ -399,6 +399,13 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
   `docs/ck3-native-ai/README.md` 研究并更新对应的原生决策树：冻结游戏版本与 EXE SHA，优先读取原版
   AI 数据和 exact-build 调用链，必要时只读实机互证；同步维护 Mermaid 逻辑图并把未闭合分支画成虚线
   `unknown`。原生树及证据边界落盘后，才允许设计或修改我方 counter-policy；禁止先猜行为、后补文档。
+- 新增原生研究专题或采样方案时，按 `docs/ck3-native-ai/research-tooling-workflow.md` 使用
+  `tools/native_research_plan.py` 保存问题、actor、生产/调用/消费链、触发时机、身份生命周期和零样本解释；
+  开始新采样前运行 `check --for-observation`。它只检查方案与文件一致性，不授予游戏操作权限、不证明语义正确。
+  同一记录用 `render` 生成图和证据表，未知边保持虚线；新事件修复优先用 `tools/replay_vanilla_event_research.py`
+  回放冻结输入的生产 policy/outcome，当前事件元数据摘要用 `tools/report_vanilla_event_research.py` 即时生成。
+  新增或修改 verifier 时必须说明实际证据层次，禁止用可被 `-O` 移除的 `assert` 承担输入/验收失败判断。
+  此流程用于后续研究；不要求追溯迁移、重新评级或改写已有原生结论，也不把新工具的检查当作全仓历史门禁。
 - 上述“原生 AI 研究优先”是施工前置和输入账本，**不是要求照抄原生实现**。原生树落盘后，为尽快解除整局游玩 blocker，
   可以先交付最小、确定、可验证的策略；必须把未采用的原生输入/分支、质量差距和替换入口记入对应专题或
   `docs/autonomous-agent-progress/one-generation-blocker-ledger.md`，再依据 production outcome 持续校准。
