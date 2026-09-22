@@ -1,0 +1,86 @@
+{
+  "schema": "xar.ck3.r0132-health-7400-paused-frame/v1",
+  "source_formal_report_sha256": "AE156BF039A0DB4A96EA50BBD5362229BB7E7BA9AD56EECA73FDD8E69346FB68",
+  "source_driver_sha256": "7BD0313D7FCD6714EC2532BEA76B7F4B1CFFB0301BC58F4DE5CC8ABB7AE25F61",
+  "source_command_history_index": 2498,
+  "played_character_id": 36403,
+  "snapshot_option_count": 1,
+  "context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 35,
+    "date_raw": 53439984,
+    "current_event_instance_id": 29,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "health.7400",
+    "calculated_event_id": 3777400,
+    "runtime_stats_ordinal": 5698,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 36403
+      }
+    },
+    "saved_scopes": [],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "我应该放松点。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.19.0.6-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "trait",
+              "operation": "add",
+              "trait": {
+                "status": "available",
+                "native_id": 125,
+                "key": "faltering_heart"
+              }
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x570F7B8->+0x10",
+      "idler_vtable_rva": "0x40B1D30",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.19.0.6-native-event-window-v1"
+    }
+  }
+}
