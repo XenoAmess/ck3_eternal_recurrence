@@ -258,6 +258,38 @@ flowchart TD
   contact-free 一日推进或既有 unavoidable-current-province 转换。无需新增 native ABI、MCP 字段或 broader objective
   查询。
 
+### 2026-09-22 R0088：非主将进攻盟友没有领土目标时的驻守观测
+
+- [production-live RED] ordinary 1066 seed 冷恢复后的 R0088，在 `date_raw=53350080`、WarID
+  `201326601`（`refused_liege_demand_war`）是进攻方盟友而非战争主将。玩家军 `452985015`
+  为 `regular@45`、无路线；两个可见敌军均在 `1741`，原生 `war_objective_province_ids=[]`、
+  `objective_province_states=[]`，同帧终局查询对非主将的三个 outcome 均 `available=false`。
+  正式策略在读取双方完整兵力后进入 `native_war_counterpolicy_hold`；友军/敌军合计兵力和
+  `ai_base_power_raw` 不是精确战斗胜率，敌方 rally `1741` 也不是可直接追击的合法目标。
+  报告 SHA-256 `DB55793FAC67D0CCD522ADF0C9B4076B3FD48DE4BF4C6C8479F753DD3045754F`；
+  最近安全 checkpoint 仍是 history `387` / `53349432`，RED 后 history 不配对存档。
+- [static-confirmed] 本树 `00_ai_war_stances.txt` 的默认 stance 含 own-capital/own-province
+  候选（上表），但这不证明原生 AI 会在此 R0088 帧选择原地驻守。exact-build native
+  `ck3_11906.cpp:11989-12008` 已支持 regular、无路线的己方军队以当前省为 target 建立
+  `stationary_active` route-contact 时间线；冻结 DLL 实含该只读 capability。当前快照报告未序列化
+  `route_contact_horizon_supported`，须由下一次 paused 查询验证；不把静态 ABI 当 live GREEN。
+- [counter-policy / focused-test-ready] 只在单个非主将进攻盟友战争、唯一己方军队静止于同帧确认的
+  直属 county 首都、完整敌军 ID/route scope、无精确领土目标、终局原生负例仍有效时，请求现有
+  stationary route-contact horizon。唯有同帧 `one_day_contact_free=true` 才提交现有 proof-bound
+  一日推进并立即重观测；查询缺失、不可用、接触不安全、首都/持有地不符均保留 RED。
+  这不授权敌方 rally 移军、不把兵力比当战斗预测，也不完成盟友战争整局策略。
+
+```mermaid
+flowchart LR
+    R["R0088 非主将盟友 / 无 objective"] --> C{"己方直属首都、完整敌军 scope 与终局负例？"}
+    C -->|否| H["保持 RED"]
+    C -->|是| Q["同帧 stationary contact 查询"]
+    Q --> F{"contact-free 一日？"}
+    F -->|是| D["证明约束的一日推进，再观测"]
+    F -->|否或 unknown| H
+    R -. "[unknown] 原生 AI 此帧的最终 own-capital objective" .-> U["未闭合，不冒充原版选择"]
+```
+
 ### 2026-08-28 production 反例：全局战分骤降不等于当前省战败
 
 - [production-live] 同一正式长跑在 history `5739` 的 `53263584 → 53263632` 切片中，战争

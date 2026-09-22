@@ -1468,9 +1468,11 @@ def _native_war_plan(
     *,
     player: dict[str, object],
     players: list[dict[str, object]] | None = None,
+    allied_armies: list[dict[str, object]] | None = None,
     enemies: list[dict[str, object]],
     score: int,
     date_raw: int,
+    war_id: int = 88,
     history: list[dict[str, object]] | None = None,
     objective: int | None = None,
     objectives: list[int] | None = None,
@@ -1542,7 +1544,12 @@ def _native_war_plan(
             "active_wars": [
                 {
                     **_war(
-                        allied_armies=controlled,
+                        war_id=war_id,
+                        allied_armies=(
+                            allied_armies
+                            if allied_armies is not None
+                            else controlled
+                        ),
                         enemy_armies=enemies,
                         score=score,
                         player_side=player_side,
@@ -1564,6 +1571,8 @@ def _native_war_plan(
                     **(
                         {
                             "war_termination_negative_reuse": {
+                                "status": "negative_assessment_reused",
+                                "war_id": war_id,
                                 "expires_date_raw": (
                                     negative_reuse_expires_date_raw
                                 )
@@ -15163,6 +15172,153 @@ class GameplayBridgeTests(unittest.TestCase):
 
         self.assertEqual(plan["phase"], "native_war_counterpolicy_hold")
         self.assertIsNone(plan["selected_step"])
+
+    def test_r0088_nonprimary_ally_requires_stationary_one_day_contact_proof(
+        self,
+    ) -> None:
+        date_raw = 53_350_080
+        war_id = 201_326_601
+        army_id = 452_985_015
+        hostile_ids = (402_653_375, 436_207_652)
+        player = _army(
+            army_id, soldiers=932, province_id=45, controllable=True,
+            army_state="regular", in_combat=False, retreating=False,
+            route_province_ids=[],
+        )
+        ally = _army(
+            369_099_182, soldiers=1_310, province_id=46,
+            controllable=False, army_state="regular",
+            route_province_ids=[],
+        )
+        enemies = [
+            _army(
+                hostile_ids[0], soldiers=837, province_id=1_741,
+                controllable=False, army_state="regular",
+                route_province_ids=[],
+            ),
+            _army(
+                hostile_ids[1], soldiers=0, province_id=1_741,
+                controllable=False, army_state="gathering",
+                route_province_ids=[],
+            ),
+        ]
+        query_step = query_route_contact_horizon_step(
+            army_id, 45, hostile_ids
+        )
+        advance_step = advance_route_contact_horizon_step(
+            army_id, 45, hostile_ids
+        )
+        root = _campaign_root_row(
+            1, date_raw=date_raw, capital_province_id=45,
+            held_county_capital_province_ids=(45, 46),
+        )
+        strengths = [
+            _army_strength(
+                army_id, "player", [war_id], current=932, maximum=932,
+                base_power_raw=2_360_000_000,
+            ),
+            _army_strength(
+                369_099_182, "active_war_ally", [war_id],
+                current=1_310, maximum=1_346,
+                base_power_raw=4_071_600_000,
+            ),
+            _army_strength(
+                hostile_ids[0], "active_war_enemy", [war_id],
+                current=837, maximum=837,
+                base_power_raw=2_720_800_000,
+            ),
+            _army_strength(
+                hostile_ids[1], "active_war_enemy", [war_id],
+                current=0, maximum=0, base_power_raw=0,
+            ),
+        ]
+        base = {
+            "player": player,
+            "allied_armies": [player, ally],
+            "enemies": enemies,
+            "war_id": war_id,
+            "score": 0,
+            "date_raw": date_raw,
+            "fallback": 1_741,
+            "player_is_primary_war_leader": False,
+            "negative_reuse_expires_date_raw": date_raw + 48,
+            "army_strengths": strengths,
+            "army_strengths_status": "available",
+            "route_contact_horizon_supported": True,
+            "steps": (
+                "query-campaign-root-context-v1",
+                query_step, advance_step, "life-advance",
+            ),
+        }
+
+        query = _native_war_plan(**base, history=[root])
+        self.assertEqual(
+            query["phase"], "native_war_attacker_ally_capital_contact_query"
+        )
+        self.assertEqual(query["selected_step"], query_step)
+
+        safe_proof = _route_contact_row(
+            2, army_id=army_id, origin=45, target=45,
+            date_raw=date_raw, route=[], hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        progress = _native_war_plan(**base, history=[root, safe_proof])
+        self.assertEqual(
+            progress["phase"], "native_war_attacker_ally_capital_contact_progress"
+        )
+        self.assertEqual(progress["selected_step"], advance_step)
+        self.assertNotEqual(progress["selected_step"], "life-advance")
+
+        conflict = _route_contact_row(
+            2, army_id=army_id, origin=45, target=45,
+            date_raw=date_raw, route=[], hostile_ids=hostile_ids,
+            contact_free=False,
+        )
+        blocked = _native_war_plan(**base, history=[root, conflict])
+        self.assertEqual(
+            blocked["phase"], "native_war_attacker_ally_capital_contact_blocked"
+        )
+        self.assertIsNone(blocked["selected_step"])
+
+        stale_proof = _route_contact_row(
+            2, army_id=army_id, origin=45, target=45,
+            date_raw=date_raw - 24, route=[], hostile_ids=hostile_ids,
+            contact_free=True,
+        )
+        stale = _native_war_plan(**base, history=[root, stale_proof])
+        self.assertIsNone(stale["selected_step"])
+
+        incomplete_enemies = copy.deepcopy(enemies)
+        del incomplete_enemies[1]["route_province_ids"]
+        incomplete = _native_war_plan(
+            **{**base, "enemies": incomplete_enemies},
+            history=[root, safe_proof],
+        )
+        self.assertNotEqual(incomplete["selected_step"], advance_step)
+
+        no_termination_negative = _native_war_plan(
+            **{**base, "negative_reuse_expires_date_raw": None},
+            history=[root, safe_proof],
+        )
+        self.assertNotEqual(no_termination_negative["selected_step"], advance_step)
+
+        unsupported = _native_war_plan(
+            **{**base, "route_contact_horizon_supported": False},
+            history=[root],
+        )
+        self.assertEqual(
+            unsupported["phase"],
+            "native_war_attacker_ally_capital_contact_unsupported",
+        )
+        self.assertIsNone(unsupported["selected_step"])
+
+        other_capital = _campaign_root_row(
+            1, date_raw=date_raw, capital_province_id=46,
+            held_county_capital_province_ids=(45, 46),
+        )
+        off_capital = _native_war_plan(**base, history=[other_capital])
+        self.assertEqual(off_capital["phase"], "native_war_counterpolicy_hold")
+        self.assertIsNone(off_capital["selected_step"])
 
     def test_native_war_planner_does_not_advance_unobservable_enemy_move_ack(self) -> None:
         player = _army(11, soldiers=900, province_id=20, controllable=True)

@@ -1680,6 +1680,18 @@ class NativeHeadlessGameplayDriver:
                         hostile_army_ids,
                     )
                 )
+        if QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY in bridge_capabilities:
+            allied_capital_hold = _allied_capital_hold_contact_scope(
+                current_snapshot, campaign_root_context_query
+            )
+            if allied_capital_hold is not None:
+                action_steps.add(
+                    query_route_contact_horizon_step(
+                        allied_capital_hold["army_id"],
+                        allied_capital_hold["capital_province_id"],
+                        allied_capital_hold["hostile_army_ids"],
+                    )
+                )
         composite_action_steps: list[str] = []
         if (
             result.get("snapshot") is True
@@ -23776,6 +23788,143 @@ def _capital_regroup_capability_scope(
         "army_id": int(army_id),
         "capital_province_id": int(capital_province_id),
         "hostile_army_ids": sorted(hostile_army_ids),
+    }
+
+
+def _allied_capital_hold_contact_scope(
+    snapshot: object,
+    campaign_root_query: object,
+) -> dict[str, object] | None:
+    """Publish the read-only self-route query for R0088's allied-war hold."""
+
+    if not isinstance(snapshot, dict) or not isinstance(
+        campaign_root_query, dict
+    ):
+        return None
+    diagnostics = snapshot.get("diagnostics")
+    binding = campaign_root_query.get("cache_binding")
+    root = campaign_root_query.get("campaign_root_context")
+    played_character = snapshot.get("played_character")
+    actor_id = (
+        played_character.get("character_id")
+        if isinstance(played_character, dict)
+        else None
+    )
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and snapshot.get("route_contact_horizon_supported") is True
+        and isinstance(diagnostics, dict)
+        and isinstance(binding, dict)
+        and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+        and binding.get("revision") == snapshot.get("revision")
+        and binding.get("native_revision") == snapshot.get("native_revision")
+        and binding.get("date_raw") == snapshot.get("date_raw")
+        and binding.get("actor_character_id") == actor_id
+        and binding.get("bridge_pid") == diagnostics.get("bridge_pid")
+        and binding.get("connection_generation")
+        == diagnostics.get("connection_generation")
+        and isinstance(root, dict)
+        and root.get("status") == "available"
+        and root.get("snapshot_revision") == snapshot.get("native_revision")
+        and root.get("date_raw") == snapshot.get("date_raw")
+        and root.get("player_character_id") == actor_id
+    ):
+        return None
+    readiness = root.get("readiness")
+    partition = root.get("held_title_partition")
+    capital = root.get("capital_province_id")
+    if not (
+        isinstance(readiness, dict)
+        and readiness.get("ready") is True
+        and readiness.get("held_title_partition_ready") is True
+        and isinstance(partition, list)
+        and _positive_native_id(capital)
+    ):
+        return None
+    county_capitals: list[int] = []
+    for row in partition:
+        if not isinstance(row, dict) or not isinstance(row.get("title"), dict):
+            return None
+        title = row["title"]
+        if not _positive_native_id(title.get("title_id")) or not isinstance(
+            title.get("tier_raw"), int
+        ):
+            return None
+        if title["tier_raw"] == 2:
+            if not _positive_native_id(row.get("capital_province_id")):
+                return None
+            county_capitals.append(int(row["capital_province_id"]))
+    if capital not in county_capitals or len(county_capitals) != len(
+        set(county_capitals)
+    ):
+        return None
+    wars = snapshot.get("active_wars")
+    armies = snapshot.get("player_armies")
+    if not (
+        isinstance(wars, list)
+        and len(wars) == 1
+        and isinstance(wars[0], dict)
+        and isinstance(armies, list)
+    ):
+        return None
+    war = wars[0]
+    controlled = controllable_armies(
+        [army for army in armies if isinstance(army, dict)]
+    )
+    if not (
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is False
+        and war.get("war_objective_province_ids") == []
+        and war.get("objective_province_states") == []
+        and len(controlled) == 1
+    ):
+        return None
+    army = controlled[0]
+    army_id = army.get("army_id")
+    if not (
+        _positive_native_id(army_id)
+        and army.get("current_province_id") == capital
+        and army.get("army_state") == "regular"
+        and _army_is_known_stationary(army)
+        and not _army_in_combat_or_retreat(army)
+        and "move_target_province_id" in army
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+    ):
+        return None
+    enemies = enemy_armies_from_wars([war])
+    if not enemies or len(enemies) > 64:
+        return None
+    hostile_ids: list[int] = []
+    for enemy in enemies:
+        enemy_id = enemy.get("army_id")
+        current = enemy.get("current_province_id")
+        target = enemy.get("move_target_province_id")
+        route = enemy.get("route_province_ids")
+        if not (
+            _positive_native_id(enemy_id)
+            and _positive_native_id(current)
+            and current != capital
+            and not _army_retreating(enemy)
+            and "move_target_province_id" in enemy
+            and isinstance(route, list)
+            and all(_positive_native_id(province) for province in route)
+            and (
+                not route and target is None
+                or route and route[-1] == target
+            )
+        ):
+            return None
+        hostile_ids.append(int(enemy_id))
+    if len(hostile_ids) != len(set(hostile_ids)):
+        return None
+    return {
+        "army_id": int(army_id),
+        "capital_province_id": int(capital),
+        "hostile_army_ids": sorted(hostile_ids),
     }
 
 

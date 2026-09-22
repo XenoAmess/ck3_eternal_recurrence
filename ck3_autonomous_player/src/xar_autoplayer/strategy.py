@@ -11671,6 +11671,172 @@ def _choose_one_life_turn_core(
                         "native_rally_hold_binding": native_rally_hold_binding,
                         "active_wars": war_summary,
                     }
+            # A non-leading attacker cannot submit this war's termination and
+            # has no exact siege objective in the R0088 ally-war shape.  Its
+            # own stationary capital is a defensive observation point, not an
+            # inferred enemy target.  Reuse the exact one-day contact proof;
+            # an unavailable or unsafe proof still leaves the map paused.
+            ally_hold = bool(
+                len(active_wars) == 1
+                and tactical_war is active_wars[0]
+                and isinstance(tactical_war, dict)
+                and tactical_war.get("player_side") == "attacker"
+                and tactical_war.get("player_is_primary_war_leader") is False
+                and not exact_objective_province_ids
+                and len(controlled_armies) == 1
+                and pursuit_army is controlled_armies[0]
+                and isinstance(army_id, int)
+                and isinstance(current_province_id, int)
+                and _army_tactical_state(pursuit_army) == "regular"
+                and pursuit_army.get("in_combat") is False
+                and pursuit_army.get("retreating") is False
+                and pursuit_army.get("move_target_province_id") is None
+                and pursuit_army.get("route_province_ids") == []
+                and not stationary_threats
+                and not unsafe_armies
+                and not active_assaults
+                and len(route_threat_enemies) == len(
+                    enemy_armies_from_wars(active_wars)
+                )
+                and len(route_threat_enemy_ids) == len(route_threat_enemies)
+                and route_threat_enemies
+                and all(
+                    _native_int(hostile.get("army_id")) is not None
+                    and _native_int(hostile.get("current_province_id"))
+                    is not None
+                    and hostile.get("current_province_id")
+                    != current_province_id
+                    and "move_target_province_id" in hostile
+                    and isinstance(hostile.get("route_province_ids"), list)
+                    and (
+                        not hostile["route_province_ids"]
+                        and hostile.get("move_target_province_id") is None
+                        or bool(hostile["route_province_ids"])
+                        and hostile["route_province_ids"][-1]
+                        == hostile.get("move_target_province_id")
+                    )
+                    for hostile in route_threat_enemies
+                )
+                and isinstance(strength_balance, dict)
+                and strength_balance.get("status") == "available"
+                and isinstance(strength_balance.get("friendly_army_ids"), list)
+                and len(strength_balance.get("friendly_army_ids", [])) >= 2
+            )
+            termination = (
+                termination_by_war_id.get(tactical_war_id)
+                if isinstance(tactical_war_id, int)
+                else None
+            )
+            negative_termination = (
+                war_summary[0].get("war_termination_negative_reuse")
+                if ally_hold
+                else None
+            )
+            termination_unavailable = bool(
+                isinstance(negative_termination, dict)
+                and negative_termination.get("status")
+                == "negative_assessment_reused"
+                or isinstance(termination, dict)
+                and termination.get("player_is_primary_war_leader") is False
+                and isinstance(termination.get("options"), dict)
+                and all(
+                    isinstance(termination["options"].get(outcome), dict)
+                    and termination["options"][outcome].get("available")
+                    is False
+                    for outcome in ("surrender", "white_peace", "victory")
+                )
+            )
+            if ally_hold and termination_unavailable:
+                campaign_root = _same_frame_campaign_root_context(
+                    rows, snapshot if isinstance(snapshot, dict) else None
+                )
+                if campaign_root is None:
+                    root_step = "query-campaign-root-context-v1"
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_attacker_ally_capital_hold_context",
+                        "selected_step": (
+                            root_step if root_step in available_steps else None
+                        ),
+                        "required_step": root_step,
+                        "reason": "bind the non-leading attacker's stationary hold to its same-frame directly held capital",
+                        "active_wars": war_summary,
+                    }
+                own_counties = _complete_player_held_county_capital_province_ids(
+                    campaign_root
+                )
+                if (
+                    campaign_root.get("capital_province_id")
+                    == current_province_id
+                    and isinstance(own_counties, list)
+                    and current_province_id in own_counties
+                ):
+                    contact_step = query_route_contact_horizon_step(
+                        army_id, current_province_id, route_threat_enemy_ids
+                    )
+                    if not route_contact_scope_supported:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_attacker_ally_capital_contact_unsupported",
+                            "selected_step": None,
+                            "required_step": contact_step,
+                            "reason": "the non-leading attacker requires a complete-scope one-day stationary contact proof",
+                            "active_wars": war_summary,
+                        }
+                    contact = _fresh_route_contact_horizon(
+                        rows,
+                        snapshot,
+                        army_id=army_id,
+                        origin_province_id=current_province_id,
+                        target_province_id=current_province_id,
+                        hostile_army_ids=route_threat_enemy_ids,
+                        route_province_ids=[],
+                    )
+                    if contact is None:
+                        failed = _current_frame_route_contact_query_failure(
+                            rows, snapshot, contact_step
+                        )
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": (
+                                "native_war_attacker_ally_capital_contact_unavailable"
+                                if failed is not None
+                                else "native_war_attacker_ally_capital_contact_query"
+                            ),
+                            "selected_step": (
+                                contact_step
+                                if failed is None and contact_step in available_steps
+                                else None
+                            ),
+                            "required_step": contact_step,
+                            "reason": "query the exact stationary one-day contact horizon before any allied-war time advance",
+                            "contact_query_attempt": failed,
+                            "active_wars": war_summary,
+                        }
+                    advance_step = advance_route_contact_horizon_step(
+                        army_id, current_province_id, route_threat_enemy_ids
+                    )
+                    if contact.get("one_day_contact_free") is True:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_attacker_ally_capital_contact_progress",
+                            "selected_step": (
+                                advance_step if advance_step in available_steps else None
+                            ),
+                            "required_step": advance_step,
+                            "reason": "the non-leading attacker's directly held capital is contact-free for exactly one day; re-observe the allied war immediately",
+                            "contact_horizon": contact,
+                            "active_wars": war_summary,
+                        }
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_attacker_ally_capital_contact_blocked",
+                        "selected_step": None,
+                        "required_observation": "contact-free-stationary-horizon",
+                        "reason": "the same-frame stationary capital horizon does not prove one contact-free day",
+                        "contact_horizon": contact,
+                        "active_wars": war_summary,
+                    }
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_counterpolicy_hold",
