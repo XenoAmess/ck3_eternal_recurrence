@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -13,9 +14,12 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.marriage_matchmaking_private_transport import (
+    OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_SCHEMA_V1,
+    OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_STEP_V1,
     PRIVATE_OBSERVED_HEIR_MARRIAGE_STEP_V1,
     PRIVATE_RANKED_MARRIAGE_STEP_V1,
     query_observed_heir_marriage_private_v1,
+    query_observed_first_heir_marriage_legality_v1,
     query_ranked_marriage_private_v1,
 )
 
@@ -229,6 +233,53 @@ class PrivateObservedHeirMarriageTransportTests(unittest.TestCase):
         with self.assertRaisesRegex(BridgeUnavailableError,
                                    "final answer mapping disagrees"):
             query_observed_heir_marriage_private_v1(
+                driver, expected_native_revision=693)
+
+    def test_versioned_candidate_query_preserves_exact_final_legality(self) -> None:
+        reply = self._family_reply(answer=True)
+        reply["result"]["step"] = OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_STEP_V1
+        driver = _Driver(reply, [_paused_frame()] * 3)
+        result = query_observed_first_heir_marriage_legality_v1(
+            driver, expected_native_revision=693)
+        self.assertEqual(result["schema"],
+                         OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_SCHEMA_V1)
+        self.assertEqual(result["exact_ck3_build"], "1.19.0.6")
+        self.assertEqual(result["native_revision"], 693)
+        self.assertEqual(result["observed_first_heir_character_id"], 38822)
+        self.assertEqual(len(result["native_legal_candidates"]), 1)
+        self.assertIsNone(result["candidates"][0]["native_rank"])
+        self.assertIs(result["advertised"], False)
+        self.assertEqual(driver.endpoint.request["step"],
+                         OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_STEP_V1)
+        self.assertNotIn("subject_character_id", driver.endpoint.request)
+        schema_path = ROOT / "schemas" / "observed-first-heir-marriage-legality-v1.schema.json"
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        self.assertEqual(schema["properties"]["schema"]["const"], result["schema"])
+        self.assertEqual(schema["$defs"]["candidate"]["properties"]["native_rank"],
+                         {"type": "null"})
+
+    def test_candidate_denial_unavailable_and_frame_drift_are_not_legal(self) -> None:
+        reply = self._family_reply(answer=False)
+        reply["result"]["step"] = OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_STEP_V1
+        driver = _Driver(reply, [_paused_frame()] * 3)
+        result = query_observed_first_heir_marriage_legality_v1(
+            driver, expected_native_revision=693)
+        self.assertEqual(result["native_legal_candidates"], [])
+
+        reply["result"].update(status="unavailable", unavailable_reason="native_family_query_unavailable")
+        driver = _Driver(reply, [_paused_frame()] * 3)
+        result = query_observed_first_heir_marriage_legality_v1(
+            driver, expected_native_revision=693)
+        self.assertEqual(result["status"], "unavailable")
+        self.assertNotIn("candidates", result)
+
+        reply = self._family_reply(answer=True)
+        reply["result"]["step"] = OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_STEP_V1
+        changed = deepcopy(_paused_frame())
+        changed["date_raw"] += 1
+        driver = _Driver(reply, [_paused_frame(), _paused_frame(), changed])
+        with self.assertRaisesRegex(BridgeUnavailableError, "frame changed"):
+            query_observed_first_heir_marriage_legality_v1(
                 driver, expected_native_revision=693)
 
 

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.invalid/schemas/observed-first-heir-marriage-legality-v1.schema.json",
+  "title": "Observed first-heir marriage final legality v1",
+  "type": "object",
+  "required": ["schema", "schema_version", "exact_ck3_build", "read_only", "advertised", "status", "native_revision", "root_query_sequence", "observed_first_heir_character_id"],
+  "properties": {
+    "schema": {"const": "xar.ck3.observed-first-heir-marriage-legality.v1"},
+    "schema_version": {"const": 1},
+    "exact_ck3_build": {"const": "1.19.0.6"},
+    "read_only": {"const": true},
+    "advertised": {"const": false},
+    "status": {"enum": ["available", "unavailable"]},
+    "native_revision": {"type": "integer", "minimum": 1},
+    "root_query_sequence": {"type": "integer", "minimum": 1},
+    "observed_first_heir_character_id": {"type": ["integer", "null"], "minimum": 1},
+    "unavailable_reason": {"type": "string", "minLength": 1},
+    "query_sequence": {"type": "integer", "minimum": 1},
+    "candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+    "native_legal_candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+    "diagnostics": {"type": "object"},
+    "family_subject_role_mismatches": {"type": "integer", "minimum": 0}
+  },
+  "oneOf": [
+    {"properties": {"status": {"const": "unavailable"}}, "required": ["unavailable_reason"]},
+    {"properties": {"status": {"const": "available"}}, "required": ["query_sequence", "candidates", "native_legal_candidates", "diagnostics", "family_subject_role_mismatches"]}
+  ],
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "required": ["played_character_id", "subject_character_id", "candidate_character_id", "recipient_matchmaker_character_id", "intermediary_character_id", "native_rank", "complete_can_send", "recipient_ai_accept_raw", "recipient_answer_status_raw", "recipient_answer_allows_send"],
+      "properties": {
+        "played_character_id": {"type": "integer", "minimum": 1},
+        "subject_character_id": {"type": "integer", "minimum": 1},
+        "candidate_character_id": {"type": "integer", "minimum": 1},
+        "recipient_matchmaker_character_id": {"type": "integer", "minimum": 1},
+        "intermediary_character_id": {"type": "integer", "minimum": -1},
+        "native_rank": {"type": "null"},
+        "complete_can_send": {"const": true},
+        "recipient_ai_accept_raw": {"type": "integer"},
+        "recipient_answer_status_raw": {"enum": [0, 1, 2]},
+        "recipient_answer_allows_send": {"type": "boolean"}
+      }
+    }
+  }
+}

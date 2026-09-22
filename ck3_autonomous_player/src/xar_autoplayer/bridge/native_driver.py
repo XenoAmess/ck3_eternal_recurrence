@@ -2334,6 +2334,20 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=timeout_seconds,
         )
 
+    def query_observed_first_heir_marriage_legality_v1(
+        self, *, expected_native_revision: int,
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Unadvertised candidate read-only route for same-build paused live."""
+        from .marriage_matchmaking_private_transport import (
+            query_observed_first_heir_marriage_legality_v1,
+        )
+
+        return query_observed_first_heir_marriage_legality_v1(
+            self, expected_native_revision=expected_native_revision,
+            timeout_seconds=timeout_seconds,
+        )
+
     def query_player_lifestyle_formal_private_v1(
         self, *, expected_revision: int | None = None
     ) -> dict[str, object]:

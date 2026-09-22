@@ -7397,9 +7397,14 @@ std::string ArrangeMarriageChoicesResultFrame(
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
 constexpr std::string_view kObservedHeirMarriagePrivateStepV1 =
     "query-observed-heir-marriage-choices-v1-private";
+// Candidate public read-only protocol. Keep unadvertised until an exact-build
+// paused snapshot validates it; it shares the proven private admission path.
+constexpr std::string_view kObservedFirstHeirMarriageLegalityStepV1 =
+    "query-observed-first-heir-marriage-legality-v1";
 
 std::string ObservedHeirMarriagePrivateResultFrameV1(
-    std::string_view request_id, std::uint64_t query_sequence,
+    std::string_view request_id, std::string_view step,
+    std::uint64_t query_sequence,
     std::int32_t subject_character_id,
     xar::game::ReadArrangeMarriageFamilyCandidatesResultV1 read_result,
     const std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> &candidates,
@@ -7413,7 +7418,7 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
       "\"request_id\":";
   AppendJsonString(result, request_id);
   result += ",\"ok\":true,\"result\":{\"step\":";
-  AppendJsonString(result, kObservedHeirMarriagePrivateStepV1);
+  AppendJsonString(result, step);
   result += ",\"accepted\":true,\"private_build\":true,"
             "\"read_only\":true,\"advertised\":false,\"status\":";
   AppendJsonString(result, available ? "available" : "unavailable");
@@ -8547,6 +8552,7 @@ void RunConnectedSession(
                    && step !=
                           xar::bridge::kMarriageRankedPrivateQueryStepV1
                    && step != kObservedHeirMarriagePrivateStepV1
+                   && step != kObservedFirstHeirMarriageLegalityStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
                    && step != xar::ck3_11906::
@@ -9499,7 +9505,8 @@ void RunConnectedSession(
                                         published_checkpoint_sequence);
           }
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
-        } else if (step == kObservedHeirMarriagePrivateStepV1) {
+        } else if (step == kObservedHeirMarriagePrivateStepV1 ||
+                   step == kObservedFirstHeirMarriageLegalityStepV1) {
           std::uint64_t expected_revision = 0;
           if (!xar::bridge::JsonUnsignedField(
                   incoming.payload, "expected_revision", expected_revision) ||
@@ -9550,7 +9557,7 @@ void RunConnectedSession(
                 ++state.marriage_family_private_query_sequence;
                 connected = xar::bridge::WriteFrame(
                     pipe, ObservedHeirMarriagePrivateResultFrameV1(
-                              request_id,
+                              request_id, step,
                               state.marriage_family_private_query_sequence,
                               subject_id, read_result, rows, diagnostics,
                               unavailable_reason));

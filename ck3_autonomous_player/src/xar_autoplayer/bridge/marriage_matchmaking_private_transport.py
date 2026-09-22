@@ -18,6 +18,12 @@ PRIVATE_RANKED_MARRIAGE_STEP_V1 = "query-ranked-marriage-candidates-v1-private"
 PRIVATE_OBSERVED_HEIR_MARRIAGE_STEP_V1 = (
     "query-observed-heir-marriage-choices-v1-private"
 )
+OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_STEP_V1 = (
+    "query-observed-first-heir-marriage-legality-v1"
+)
+OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_SCHEMA_V1 = (
+    "xar.ck3.observed-first-heir-marriage-legality.v1"
+)
 
 
 def query_observed_heir_marriage_private_v1(
@@ -31,6 +37,50 @@ def query_observed_heir_marriage_private_v1(
     This route does not invoke the human player's unavailable AI Strategy, does
     not produce an AI rank, and cannot submit a marriage action.
     """
+    return _query_observed_heir_marriage_transport_v1(
+        driver, expected_native_revision=expected_native_revision,
+        timeout_seconds=timeout_seconds,
+        step=PRIVATE_OBSERVED_HEIR_MARRIAGE_STEP_V1,
+    )
+
+
+def query_observed_first_heir_marriage_legality_v1(
+    driver: object, *, expected_native_revision: int,
+    timeout_seconds: float = 360.0,
+) -> dict[str, object]:
+    """Candidate read-only schema; not registered or advertised before live."""
+    result = _query_observed_heir_marriage_transport_v1(
+        driver, expected_native_revision=expected_native_revision,
+        timeout_seconds=timeout_seconds,
+        step=OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_STEP_V1,
+    )
+    return {
+        "schema": OBSERVED_FIRST_HEIR_MARRIAGE_LEGALITY_SCHEMA_V1,
+        "schema_version": 1,
+        "exact_ck3_build": "1.19.0.6",
+        "read_only": True,
+        "advertised": False,
+        "status": result["status"],
+        "native_revision": result["native_revision"],
+        "root_query_sequence": result["root_query_sequence"],
+        "observed_first_heir_character_id": result[
+            "observed_first_heir_character_id"],
+        **({"unavailable_reason": result["unavailable_reason"]}
+           if result["status"] == "unavailable" else {
+               "query_sequence": result["query_sequence"],
+               "candidates": result["candidates"],
+               "native_legal_candidates": result["native_legal_candidates"],
+               "diagnostics": result["diagnostics"],
+               "family_subject_role_mismatches": result[
+                   "family_subject_role_mismatches"],
+           }),
+    }
+
+
+def _query_observed_heir_marriage_transport_v1(
+    driver: object, *, expected_native_revision: int,
+    timeout_seconds: float, step: str,
+) -> dict[str, object]:
     before = driver.take_snapshot()
     played = before.get("played_character")
     played_id = played.get("character_id") if isinstance(played, dict) else None
@@ -57,6 +107,8 @@ def query_observed_heir_marriage_private_v1(
     )
     if root.get("status") != "available":
         raise BridgeUnavailableError("public campaign-root first-heir read unavailable")
+    if type(root.get("query_sequence")) is not int or root["query_sequence"] <= 0:
+        raise BridgeUnavailableError("public campaign-root query sequence absent")
     partition = root.get("held_title_partition")
     if not isinstance(partition, list):
         raise BridgeUnavailableError("public campaign-root partition malformed")
@@ -74,7 +126,7 @@ def query_observed_heir_marriage_private_v1(
         "type": "execute_step",
         "protocol_version": 1,
         "request_id": request_id,
-        "step": PRIVATE_OBSERVED_HEIR_MARRIAGE_STEP_V1,
+        "step": step,
         "expected_revision": expected_native_revision,
     })
     frame = driver.state.wait_for_command_result(
@@ -92,7 +144,7 @@ def query_observed_heir_marriage_private_v1(
     result = frame.get("result")
     if (
         not isinstance(result, dict)
-        or result.get("step") != PRIVATE_OBSERVED_HEIR_MARRIAGE_STEP_V1
+        or result.get("step") != step
         or result.get("accepted") is not True
         or result.get("private_build") is not True
         or result.get("read_only") is not True
@@ -167,6 +219,16 @@ def query_observed_heir_marriage_private_v1(
     diagnostics = result.get("arrange_marriage_diagnostics")
     if not isinstance(diagnostics, dict):
         raise BridgeUnavailableError("observed-heir marriage diagnostics absent")
+    if (
+        type(diagnostics.get("slots_scanned")) is not int
+        or type(diagnostics.get("storage_capacity")) is not int
+        or diagnostics["slots_scanned"] < 0
+        or type(result.get("family_subject_role_mismatches")) is not int
+        or result["family_subject_role_mismatches"] < 0
+    ):
+        raise BridgeUnavailableError(
+            "observed-heir marriage native enumeration diagnostics malformed"
+        )
     if diagnostics.get("slots_scanned") != diagnostics.get("storage_capacity"):
         raise BridgeUnavailableError(
             "observed-heir marriage native storage enumeration incomplete"
