@@ -390,6 +390,12 @@ bool ExecuteTrioquadragintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteOctoquadragintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 bool ExecuteFrontend(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
@@ -1340,6 +1346,8 @@ bool TestMailboxStateMachine() {
       &ExecuteDuoquadragintary;
   typed_environment.permitted_executor_trioquadragintary =
       &ExecuteTrioquadragintary;
+  typed_environment.permitted_executor_octoquadragintary =
+      &ExecuteOctoquadragintary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1357,7 +1365,7 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 33> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 34> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
       &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
@@ -1369,7 +1377,8 @@ bool TestMailboxStateMachine() {
       &ExecuteSexvigintary, &ExecuteSeptemvigintary,
       &ExecuteOctovigintary, &ExecuteNovemvigintary,
       &ExecuteQuadragintary, &ExecuteUnquadragintary,
-      &ExecuteDuoquadragintary, &ExecuteTrioquadragintary};
+      &ExecuteDuoquadragintary, &ExecuteTrioquadragintary,
+      &ExecuteOctoquadragintary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1731,7 +1740,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 122> bridge_tokens{
+  constexpr std::array<std::string_view, 124> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1847,6 +1856,8 @@ bool TestSourceContract(int argc, char **argv) {
       "ExecutePlayerLifestyleFormalWireMailboxV1",
       "ExecutePlayerConstructionViewProbeMailboxV1",
       "ExecuteMarriageCandidateInternalRouteV1",
+      "ExecuteMarriageCandidateAllianceMailboxQueryV1",
+      "permitted_executor_octoquadragintary",
       "permitted_frontend_executor",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",

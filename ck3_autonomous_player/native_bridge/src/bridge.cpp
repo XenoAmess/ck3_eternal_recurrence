@@ -7684,6 +7684,25 @@ bool ExecuteMarriageCandidateAllianceMailboxQueryV1(
   return true;
 }
 
+std::string_view MarriageCandidateAllianceSubmitFailureKeyV1(
+    xar::ck3_11906::MainThreadQuerySubmitResultV1 result) {
+  using Result = xar::ck3_11906::MainThreadQuerySubmitResultV1;
+  switch (result) {
+  case Result::submitted: return "submitted";
+  case Result::invalid_request: return "invalid_request";
+  case Result::mailbox_not_installed: return "mailbox_not_installed";
+  case Result::paused_main_thread_not_observed:
+    return "paused_main_thread_not_observed";
+  case Result::mailbox_busy: return "mailbox_busy";
+  case Result::infrastructure_failed: return "infrastructure_failed";
+  case Result::executor_submission_disabled:
+    return "executor_submission_disabled";
+  case Result::application_main_not_observed:
+    return "application_main_not_observed";
+  }
+  return "unknown";
+}
+
 std::string_view MarriageCandidateAlliancePrivateFailureKeyV1(
     xar::ck3_11906::MarriageCandidateAlliancePrivateFailureV1 failure) {
   using Failure = xar::ck3_11906::MarriageCandidateAlliancePrivateFailureV1;
@@ -8339,6 +8358,10 @@ public:
 #if defined(XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1)
     environment.permitted_executor_septenquadragintary =
         &xar::ck3_11906::ExecutePlayerEpidemicRecoveryMailboxV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    environment.permitted_executor_octoquadragintary =
+        &ExecuteMarriageCandidateAllianceMailboxQueryV1;
 #endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
@@ -10105,7 +10128,8 @@ void RunConnectedSession(
               connected = xar::bridge::WriteFrame(
                   pipe, CommandResultFrame(
                             request_id, step, false,
-                            "paused application-main marriage query unavailable"));
+                            std::string("paused application-main marriage query unavailable: ") +
+                                std::string(MarriageCandidateAllianceSubmitFailureKeyV1(submit))));
             } else {
               auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1, query.ticket, 8'000);
