@@ -102,7 +102,7 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "ddfd482d0345c597b6cde16b0c39df7f5c759e33",
+      "commit": "71535578d672169960289ff4b18397e5cbec1d89",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
@@ -163,7 +163,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "4AEA44AB7D48629C837C1711CBB729AF9651B3D6FCF733E856A74F7A95E38F70"
+        "sha256": "E9D8EB06926C1DB7D3151062704BC19B30EFB6E190508D9FDE5F64E12EE4EF0F"
       },
       "raw_footage": {
         "passed": 0,
@@ -196,6 +196,7 @@
         "ck3_build": "1.19.0.6-steam23530548",
         "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
         "cleanup_proven": true,
+        "current_focus_key": "stewardship_wealth_focus",
         "date_raw": 53144328,
         "durable_game_days": 0,
         "episode_run_id": "native-29829-2bc2d599f7f9",
@@ -210,16 +211,31 @@
           "run_manifest_locator": "g2-robert-1066-candidate-20260923/robert-1066-R0138-run-manifest.json",
           "run_manifest_sha256": "1BD2FBC5A51B29936B7F3EF7BFF07715EDACF0300C99F2DF558EB7973A11F8C5"
         },
+        "focus_first_pair": {
+          "base": "configured_process_assets_root",
+          "formal_report_locator": "m4-robert-focus-first-20260923/live-R0142/formal-report.txt",
+          "formal_report_sha256": "C3CD9952F7649F9C318E0E9F46FA94469F564B29E16FE522F95C6BE7915DB3DE",
+          "freeze_sidecar_locator": "m4-robert-focus-first-20260923/R0142-focus-first-frozen-pair/R0142-pair-freeze.json",
+          "freeze_sidecar_sha256": "A570458BF6154756B3BF9308621496C9C6D3E74E8150CBCB741D47980CCFE0F0",
+          "frozen_driver_sha256": "46614345FF33FCBD6EDCC0521A21EE967A956C6080E7DBA38755FEB5B2227B8F",
+          "frozen_save_sha256": "02FC5C7B90CBD292C6B6B056D0FCDE64E8B6588145A06224DA8D2D4741263363",
+          "no_launch_locator": "m4-robert-focus-first-20260923/NO-LAUNCH-READY.json",
+          "no_launch_sha256": "05A7C3D6EF580AA9876FA726A37DE69905B070CF94FE3BAFFEBDFC6B28B0F01D",
+          "validation_locator": "m4-robert-focus-first-20260923/R0142-validation.json",
+          "validation_sha256": "E2D9FF7E00017DE361CE88DC7A8A56AFBE2056FBFD6387A5254C1BD5F5F7CB15"
+        },
         "freeze_created_at_utc": "2026-09-22T16:44:05.3097260Z",
         "government": "feudal_government",
         "hundred_year_gate": "0/1",
         "independent_public_campaign_root_verified": true,
         "independent_seeds": "0/2",
-        "lifestyle_focus_action_proven": false,
+        "latest_paired_checkpoint": "R0142_focus_first_day0",
+        "lifestyle_focus_action_proven": true,
+        "lifestyle_focus_next_turn_consumption_proven": true,
         "paired_checkpoint_verified": true,
         "profile": "ordinary_campaign_succession/xar_off",
         "round": "R0138",
-        "scope": "Robert day0 paired seed only; no game-date advance or hundred-year, whole-campaign, lifestyle, or war gate credit",
+        "scope": "Robert day0 paired seed with private focus action/receipt/checkpoint/following-turn primitive; no game-date advance, elapsed XP, perk, war, conquest, continuous-run, hundred-year, whole-campaign or independent-seed gate credit",
         "source_commit": "66f926d339ac57c6305e3789a239b5cb9779acdd",
         "status": "paired_day0_green",
         "typed_bookmark_selection_and_start_verified": true,
@@ -284,6 +300,44 @@
       "unpaired_tail_last_index": 2903,
       "whole_campaign_gate": "0/1"
     },
+    "m4_focus_first_primitive": {
+      "actor_id": 29829,
+      "checkpoint_history_indices": [
+        6,
+        9
+      ],
+      "cleanup_proven": true,
+      "conquest_count": 0,
+      "date_advance_days": 0,
+      "date_raw": 53144328,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "formal_report_locator": "m4-robert-focus-first-20260923/live-R0142/formal-report.txt",
+        "formal_report_sha256": "C3CD9952F7649F9C318E0E9F46FA94469F564B29E16FE522F95C6BE7915DB3DE",
+        "freeze_sidecar_locator": "m4-robert-focus-first-20260923/R0142-focus-first-frozen-pair/R0142-pair-freeze.json",
+        "freeze_sidecar_sha256": "A570458BF6154756B3BF9308621496C9C6D3E74E8150CBCB741D47980CCFE0F0",
+        "frozen_driver_sha256": "46614345FF33FCBD6EDCC0521A21EE967A956C6080E7DBA38755FEB5B2227B8F",
+        "frozen_save_sha256": "02FC5C7B90CBD292C6B6B056D0FCDE64E8B6588145A06224DA8D2D4741263363",
+        "no_launch_locator": "m4-robert-focus-first-20260923/NO-LAUNCH-READY.json",
+        "no_launch_sha256": "05A7C3D6EF580AA9876FA726A37DE69905B070CF94FE3BAFFEBDFC6B28B0F01D",
+        "validation_locator": "m4-robert-focus-first-20260923/R0142-validation.json",
+        "validation_sha256": "E2D9FF7E00017DE361CE88DC7A8A56AFBE2056FBFD6387A5254C1BD5F5F7CB15"
+      },
+      "focus_key": "stewardship_wealth_focus",
+      "following_turn_consumed": true,
+      "independent_receipt_verified": true,
+      "milestone_status": "in_progress",
+      "profile": "ordinary_campaign_succession/xar_off",
+      "public_advertised": false,
+      "round": "R0142",
+      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0142",
+      "scope": "Private Robert day-zero focus action, independent receipt, paired checkpoint and following-turn consumption only; no elapsed XP, perk, war, conquest, date or continuous-run qualification",
+      "source_commit": "71535578d672169960289ff4b18397e5cbec1d89",
+      "status": "GREEN_PRIVATE_DAY0_PRIMITIVE",
+      "typed_focus_actions": 1,
+      "war_action_count": 0
+    },
     "m4_private_read_only": {
       "checkpoint_date_raw": 53437416,
       "checkpoint_history_index": 2479,
@@ -336,5 +390,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T00:47:52+08:00"
+  "updated_at": "2026-09-23T01:55:33+08:00"
 }

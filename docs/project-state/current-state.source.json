@@ -1,12 +1,12 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-23T00:47:52+08:00",
+  "updated_at": "2026-09-23T01:55:33+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "ddfd482d0345c597b6cde16b0c39df7f5c759e33",
+      "commit": "71535578d672169960289ff4b18397e5cbec1d89",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
@@ -331,9 +331,9 @@
         "independent_public_campaign_root_verified": true,
         "paired_checkpoint_verified": true,
         "cleanup_proven": true,
-        "lifestyle_focus_action_proven": false,
+        "lifestyle_focus_action_proven": true,
         "war_action_proven": false,
-        "scope": "Robert day0 paired seed only; no game-date advance or hundred-year, whole-campaign, lifestyle, or war gate credit",
+        "scope": "Robert day0 paired seed with private focus action/receipt/checkpoint/following-turn primitive; no game-date advance, elapsed XP, perk, war, conquest, continuous-run, hundred-year, whole-campaign or independent-seed gate credit",
         "evidence": {
           "base": "configured_process_assets_root",
           "report_locator": "g2-robert-1066-candidate-20260923/robert-1066-R0138-frontend.json",
@@ -344,6 +344,22 @@
           "freeze_sidecar_sha256": "AA0F0983E7444C6CFA4810354D14FCD98FFB6F080FE4B014016B9912E166D792",
           "frozen_save_sha256": "77EAC299FA0619C88D6CCF55FC9C88980279376624C1A575C98FB22E09FCD6E3",
           "frozen_driver_sha256": "018077D3D53252D077CC29195562ECD79BED11AD760182E4EFFB606F5CB3B821"
+        },
+        "lifestyle_focus_next_turn_consumption_proven": true,
+        "current_focus_key": "stewardship_wealth_focus",
+        "latest_paired_checkpoint": "R0142_focus_first_day0",
+        "focus_first_pair": {
+          "base": "configured_process_assets_root",
+          "no_launch_locator": "m4-robert-focus-first-20260923/NO-LAUNCH-READY.json",
+          "no_launch_sha256": "05A7C3D6EF580AA9876FA726A37DE69905B070CF94FE3BAFFEBDFC6B28B0F01D",
+          "validation_locator": "m4-robert-focus-first-20260923/R0142-validation.json",
+          "validation_sha256": "E2D9FF7E00017DE361CE88DC7A8A56AFBE2056FBFD6387A5254C1BD5F5F7CB15",
+          "formal_report_locator": "m4-robert-focus-first-20260923/live-R0142/formal-report.txt",
+          "formal_report_sha256": "C3CD9952F7649F9C318E0E9F46FA94469F564B29E16FE522F95C6BE7915DB3DE",
+          "freeze_sidecar_locator": "m4-robert-focus-first-20260923/R0142-focus-first-frozen-pair/R0142-pair-freeze.json",
+          "freeze_sidecar_sha256": "A570458BF6154756B3BF9308621496C9C6D3E74E8150CBCB741D47980CCFE0F0",
+          "frozen_save_sha256": "02FC5C7B90CBD292C6B6B056D0FCDE64E8B6588145A06224DA8D2D4741263363",
+          "frozen_driver_sha256": "46614345FF33FCBD6EDCC0521A21EE967A956C6080E7DBA38755FEB5B2227B8F"
         }
       },
       "historical_continuation": "Murchad_1066",
@@ -352,6 +368,44 @@
       "cross_campaign_date_accumulation_allowed": false,
       "m3_existing_complete_evidence_retained": true,
       "prv008_frozen_qualification_unchanged": true
+    },
+    "m4_focus_first_primitive": {
+      "round": "R0142",
+      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0142",
+      "status": "GREEN_PRIVATE_DAY0_PRIMITIVE",
+      "source_commit": "71535578d672169960289ff4b18397e5cbec1d89",
+      "actor_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "date_raw": 53144328,
+      "profile": "ordinary_campaign_succession/xar_off",
+      "focus_key": "stewardship_wealth_focus",
+      "typed_focus_actions": 1,
+      "independent_receipt_verified": true,
+      "following_turn_consumed": true,
+      "checkpoint_history_indices": [
+        6,
+        9
+      ],
+      "date_advance_days": 0,
+      "war_action_count": 0,
+      "conquest_count": 0,
+      "cleanup_proven": true,
+      "milestone_status": "in_progress",
+      "public_advertised": false,
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "no_launch_locator": "m4-robert-focus-first-20260923/NO-LAUNCH-READY.json",
+        "no_launch_sha256": "05A7C3D6EF580AA9876FA726A37DE69905B070CF94FE3BAFFEBDFC6B28B0F01D",
+        "validation_locator": "m4-robert-focus-first-20260923/R0142-validation.json",
+        "validation_sha256": "E2D9FF7E00017DE361CE88DC7A8A56AFBE2056FBFD6387A5254C1BD5F5F7CB15",
+        "formal_report_locator": "m4-robert-focus-first-20260923/live-R0142/formal-report.txt",
+        "formal_report_sha256": "C3CD9952F7649F9C318E0E9F46FA94469F564B29E16FE522F95C6BE7915DB3DE",
+        "freeze_sidecar_locator": "m4-robert-focus-first-20260923/R0142-focus-first-frozen-pair/R0142-pair-freeze.json",
+        "freeze_sidecar_sha256": "A570458BF6154756B3BF9308621496C9C6D3E74E8150CBCB741D47980CCFE0F0",
+        "frozen_save_sha256": "02FC5C7B90CBD292C6B6B056D0FCDE64E8B6588145A06224DA8D2D4741263363",
+        "frozen_driver_sha256": "46614345FF33FCBD6EDCC0521A21EE967A956C6080E7DBA38755FEB5B2227B8F"
+      },
+      "scope": "Private Robert day-zero focus action, independent receipt, paired checkpoint and following-turn consumption only; no elapsed XP, perk, war, conquest, date or continuous-run qualification"
     }
   },
   "t2": {
