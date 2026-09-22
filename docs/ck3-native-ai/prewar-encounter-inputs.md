@@ -284,24 +284,12 @@ flowchart TD
 互斥且无默认 live。先以 `-DXAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1=ON` 构建私有
 DLL，然后仅对 R0142 原始 pair 执行：
 
-```powershell
-py -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py `
-  --candidate-dir <fresh-non-C-candidate> --prepare-only `
-  --source-checkpoint <R0142-save> --source-driver-state <R0142-driver> `
-  --game-dir <exact-1.19.0.6-game-dir> --bridge-dll <slot49-private-dll> `
-  --bridge-injector <matching-injector> `
-  --expected-checkpoint-sha256 <R0142-save-sha256> `
-  --expected-driver-state-sha256 <R0142-driver-sha256> `
-  --expected-actor-id 29829 --expected-date-raw <R0142-date-raw> `
-  --target-character-id 31549
+```text
+python -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py --candidate-dir FRESH_NON_C_CANDIDATE --prepare-only --source-checkpoint R0142_SAVE --source-driver-state R0142_DRIVER --game-dir EXACT_1_19_0_6_GAME_DIR --bridge-dll SLOT49_PRIVATE_DLL --bridge-injector MATCHING_INJECTOR --expected-checkpoint-sha256 R0142_SAVE_SHA256 --expected-driver-state-sha256 R0142_DRIVER_SHA256 --expected-actor-id 29829 --expected-date-raw R0142_DATE_RAW --target-character-id 31549
 
-py -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py `
-  --candidate-dir <same-candidate> --preflight-only
+python -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py --candidate-dir SAME_CANDIDATE --preflight-only
 
-py -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py `
-  --candidate-dir <same-candidate> --live --target-character-id 31549 `
-  --round-ledger <persistent-allocated-round-ledger> `
-  --evidence <fresh-non-C-evidence-dir>
+python -B ck3_autonomous_player/native_bridge/research/run_minor_religious_war_defenders_readback.py --candidate-dir SAME_CANDIDATE --live --target-character-id 31549 --round-ledger PERSISTENT_ALLOCATED_ROUND_LEDGER --evidence FRESH_NON_C_EVIDENCE_DIR
 ```
 
 prepare 只复制并经官方 ordinary seed rebinder 生成 `ordinary_campaign_succession/xar_off` pair；preflight
