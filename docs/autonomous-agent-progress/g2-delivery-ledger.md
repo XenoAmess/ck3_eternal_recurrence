@@ -136,3 +136,11 @@ Council 仍 1/4、公用 query/action OFF；GOV R0066 物质 RED 未关闭。R00
 | GOV R0066 ACK 后配对恢复 | 静态 B0 修复已合入，建设物质 **RED** 未闭合 | private formal `native-auto-run` | PR #16 原 `d798758`→集成 `9709f92`→master `573f742`，normal/`-O` 各95/95 | ACK 后 fence 仅声明 `material_postcondition=unobserved`；R753 有效原 pair 正排 GOV-LIVE-05，不重复旧不明动作 | checkpoint 与 pending request ID 同步的 fixture GREEN，实机 fence/主动 construction 仍待验证 | `/root/governance_family` 独占下一 CK3 有界20/900/300；保留任何 RED | #16 原/集成临时 refs/worktree CAS 已清 |
 
 M5 五候选源树 PR #17 原 `d9f231c`→master `b0d91b9` 已核对并清临时引用；M5 read-only bridge/MCP 尚在隔离开发，公共/动作广告 OFF。G2 权威仍 3/8、Council 1/4；R0079 后唯一 CK3 owner 已移交 GOV-LIVE-05。
+
+## 2026-09-22 R0080：建设物质可见但正式收据 RED
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 私有建设完成/治理 G2-M4 的建设分支 | **R0080 RED 保留**；实际 active 建设与精确扣费仅为部分物质证据，未由正式下一循环消费 | `native-auto-run --allow-private-construction-formal-trial` | protected agent `573f742`/GOV private DLL `47196B...1760`；[冻结 R0080](Z:/ck3_mod_rewrite_process_assets/g2-gov-r0080-red-20260922/evidence-manifest.json) SHA `551920217FE0EC4167CAA17E9FDAA4DCE6F966B539F77F0305D63660D0D42213` | 唯一 typed submit/ACK pending；独立 native active tuple 2103/2635/24/1、initiator29829，gold50035659→35035659，原生费用15000000；Python 收据错误要求动作后新候选 cost sample，`source_red` 停止；没有后续正式消费 | ACK 后相邻 history446→447 paired save `1928BD74...0CBAE`/driver与 pending ledger 保留，`recoverable_from_checkpoint=true`，PID33820回收；**禁止从 R753 再提交** | GOV-B0-R0080 `/root/governance_family` receipt-only 解析 `e65563f`→集成候选 `ef4fe14`/PR #20，normal/`-O` 各13；保护合入后从 R0080 pair 新 PID cold +下一 turn验证，公共 OFF | PR #20 在保护检查中，原/集成临时 refs/worktree 待完整集成才清 |
+
+M5 不广告：PR #18 read-only literal 已合入 master `b7a76e9` 并清临时 refs/worktrees；R736 新 literal 无 paused live，旧 driver 缺配对 checkpoint，不能计 G2-M5。PRV-008 稳定预览仍仅自身 exact 支持范围 GO，G2 权威 3/8。
