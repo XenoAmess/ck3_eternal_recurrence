@@ -66,6 +66,7 @@ class Driver:
         self.active_construction = False
         self.unknown_gold = False
         self.r753_truncated_samples = False
+        self.r0080_material_without_cost = False
 
     def take_snapshot(self):
         return {**self.snapshot, "native_command_history": [
@@ -87,6 +88,8 @@ class Driver:
         query_epoch = (
             4662 if self.r753_truncated_samples and revision == 3
             else 4682 if self.r753_truncated_samples and revision == 4
+            else 7474 if self.r0080_material_without_cost and revision == 3
+            else 7616 if self.r0080_material_without_cost and revision == 4
             else revision * 10
         )
         if request["step"] == transport.QUERY_NATIVE:
@@ -96,7 +99,6 @@ class Driver:
                     "date_raw": 53_178_312,
                     "player_world_building_sources": {
                         **world(revision, active=revision >= 4 or self.active_construction),
-                        **({"player_gold_raw": None} if self.unknown_gold else {}),
                         **({
                             "checks_truncated": True,
                             "final_legality_checks": 512,
@@ -110,7 +112,19 @@ class Driver:
                                                        (24, 15_000_000))
                                 for slot in (1, 2, 3)
                             ],
-                        } if self.r753_truncated_samples else {}),
+                        } if (self.r753_truncated_samples or
+                              (self.r0080_material_without_cost and revision == 3))
+                           else {}),
+                        **({
+                            "checks_truncated": True,
+                            "final_legality_checks": 512,
+                            "native_cost_evaluated": False,
+                            "native_cost_checks": 0,
+                            "player_gold_raw": 35_035_659,
+                            "legal_samples": [],
+                        } if self.r0080_material_without_cost and revision == 4
+                           else {}),
+                        **({"player_gold_raw": None} if self.unknown_gold else {}),
                     }}}
         else:
             result = {"step": transport.ACTION_NATIVE, "accepted": True,
@@ -119,12 +133,16 @@ class Driver:
                     "advertised": False, "production_native_path": True,
                     "validator_calls": 1, "materialize_calls": 1, "receiver_calls": 1,
                     "receiver_command_sequence": 1,
-                    "proof_epoch": 4664 if self.r753_truncated_samples else query_epoch + 2,
+                    "proof_epoch": (4664 if self.r753_truncated_samples
+                                    else 7476 if self.r0080_material_without_cost
+                                    else query_epoch + 2),
                     "actor_character_id": 29829, "barony_title_id": 2103,
                     "province_id": 2635, "building_type_id": 24,
                     "slot_index": 1, "stock_gold_cost_raw": 15_000_000,
                     "gold_before_raw": (
-                        50_035_659 if self.r753_truncated_samples else 50_000_000
+                        50_035_659 if (self.r753_truncated_samples or
+                                       self.r0080_material_without_cost)
+                        else 50_000_000
                     )}}}
         return {"type": "command_result", "protocol_version": 1,
                 "request_id": request_id, "ok": True, "result": result}
@@ -167,6 +185,58 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 )
                 self.assertEqual(receipt["post_proof_epoch"], 4682)
                 self.assertTrue(receipt["postcondition_verified"])
+
+    def test_r0080_active_build_receipt_needs_no_new_cost_sample(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.r0080_material_without_cost = True
+            with mock.patch.object(transport, "_identity", return_value=(33820, "r0080")):
+                selected = transport.query_construction_private(
+                    driver, expected_revision=3)
+                self.assertEqual(selected["status"], "selected")
+                self.assertEqual(selected["candidate"]["gold_before_raw"], 50_035_659)
+                pending = transport.submit_construction_private(
+                    driver, query=selected, expected_revision=3)
+                self.assertEqual(pending["pre_proof_epoch"], 7476)
+                driver.snapshot = frame(4)
+                old_candidate_query = transport.query_construction_private(
+                    driver, expected_revision=4)
+                self.assertEqual(old_candidate_query["status"], "source_red")
+                native_world = old_candidate_query["native_result"]["private_probe"][
+                    "player_world_building_sources"]
+                self.assertEqual(native_world["status"], "source_available")
+                self.assertFalse(native_world["native_cost_evaluated"])
+                self.assertEqual(native_world["legal_samples"], [])
+                self.assertTrue(native_world["active_constructions"][0]["active"])
+                material = transport.query_construction_private(
+                    driver, expected_revision=4, material_receipt=True)
+                self.assertEqual(material["status"], "material_source")
+                self.assertEqual(material["proof_epoch"], 7616)
+                receipt = transport.query_construction_receipt(
+                    driver, pending=pending, expected_revision=4)
+                self.assertEqual(receipt["status"], "applied")
+                self.assertTrue(receipt["postcondition_verified"])
+                self.assertEqual(receipt["action_request_id"],
+                                 pending["action_request_id"])
+                self.assertEqual(receipt["post_player_gold_raw"], 35_035_659)
+                self.assertEqual(read_construction_ledger(driver.state_dir)["applied"],
+                                 receipt)
+                self.assertIsNone(read_construction_ledger(driver.state_dir)["pending"])
+                self.assertEqual(
+                    sum(request["step"] == transport.ACTION_NATIVE
+                        for request in driver.requests), 1)
+
+    def test_r0080_material_mode_still_rejects_unknown_gold(self):
+        with TemporaryDirectory() as location:
+            driver = Driver(Path(location))
+            driver.r0080_material_without_cost = True
+            driver.snapshot = frame(4)
+            driver.unknown_gold = True
+            query = transport.query_construction_private(
+                driver, expected_revision=4, material_receipt=True)
+            self.assertEqual(query["status"], "source_red")
+            self.assertIsNone(query["native_result"]["private_probe"][
+                "player_world_building_sources"]["player_gold_raw"])
 
     def test_unknown_gold_is_red_not_no_legal_building(self):
         with TemporaryDirectory() as location:

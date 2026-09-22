@@ -18,11 +18,11 @@ flowchart LR
     V -->|允许| Q["typed materialize → receiver flags7，最多一次"]
     Q --> A["pending ACK，待确认动作"]
     A --> N{"下一独立 paused proof epoch 的 Province 活动施工状态"}
-    N -->|匹配| M["物质施工结果"]
+    N -->|R0080 原生 active tuple/发起人/金币差额匹配| M["物质施工结果"]
     N -->|未匹配| P["pending/RED：先查状态，不盲重试"]
     N -. "R0066：只读 source_red 的原生失败字段尚未留存" .-> X["unknown：保留 native result，再判断观测口或游戏状态"]
     X --> P
-    M -. "待实机：正式下一 turn 与恢复" .-> T["两游戏年治理闭环"]
+    M -. "R0080 Python receipt 费用样本误拒；正式下一 turn 与冷恢复待验" .-> T["两游戏年治理闭环"]
 ```
 
 私有 action CMake 选项 `XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1` 默认 OFF，且仅能与已存在的 read probe 选项一同启用。实际运行前用 source save、EXE/DLL SHA、DLC/mod/profile、轮次与有界断言封候选；只有 CK3 唯一操作负责人可以运行。R746 只读结果不能被新代码的静态验证冒充为提交或后置结果。公共 query/action、MCP 广告与 G2-M4 完成状态仍关闭。新增 private receipt 字段为向后兼容的附加字段；当前没有公共 open_kaishek 适配器依赖，正式接口开放前须独立确认兼容矩阵。
@@ -38,3 +38,6 @@ R0066 还暴露正式 runner 的动作后配对缺口：建设 typed submit 留�
 R0073（2026-09-22）只读诊断在 CK3 启动前因私有 CLI 轮次正则拒绝项目分配器的规范零填充 `R0073` 而 RED；CK3 未启动、存档及 driver 未变。分配器使用四位最小宽度 `R{sequence:04d}`，因此此入口改为接受 `R0001…R0999` 与 `R1000…`，兼容既有非填充轮次，同时拒绝零号、错误长度/字符。该修复仅解除启动前格式阻断，原生建设源与 R0066 后置结果仍待独立实机证据。
 
 R0076（2026-09-22，protected `0e251b2`、private ON DLL）从原始 R753 成对存档作一次只读源查询，原生返回 `source_available`，同一 paused `native:3` 帧选出 (barony 2103, Province 2635, building 24, slot 1)：完整十槽原生费用 `[15000000,0,…,0]`、金币 50035659、`native_cost_observed=true`、原生最终合法性已执行。`checks_truncated=true` 表示全候选枚举达到既定上限；原生 serializer 对公共能力明确固定 `cost_ready=false`、`construction_action_ready=false`，不因这个私有单候选已验证而开放公共广告。私有动作实现会在提交时重新绑定同帧、相同 tuple、成本和空闲槽；本轮**没有提交动作**。R0076 总报告仍是 RED：只读 runner 复用了旧的“一次恢复后仅 checkpoint prefix + 一条 restore”账本断言，而正式 driver 会保留此前同一 checkpoint 的已证明 restore 谱系。原始 driver 在 checkpoint index 441 后有旧 restore 442 和四条未落盘 gameplay/query；冷恢复正确地舍弃四条尾、保留旧 restore 442、添加当前进程 restore 443。暂停帧、无 gameplay、原存档未变和进程回收均已证明，但旧断言误报 `single_cold_restore=false`。需只修此私有诊断的谱系计算并重新受控复验；R0076 原 RED 不追改，R0066 动作后物质结果仍未知。
+R0080（2026-09-22，CK3 exact 1.19.0.6、agent `573f742`、private ON native tree `1499f7a0`）从原始 R753 配对存档正式 `native-auto-run`：turn 1 对同一原生合法 tuple (barony 2103 / Province 2635 / building 24 / slot 1) 只提交一次，receiver ACK `pending_receipt`、`applied=false`；新 runner 在下一 turn 前立即保存动作后的配对游戏 checkpoint（history 446→447，SHA `1928BD74…0CBAE`）。turn 2 的独立 paused `native:4` 原生只读结果实际上为 `source_available/failure=none`，同一角色 29829、日期 53178312，`active_constructions` 明确显示上述 tuple `active=true`、initiator 29829，玩家金币从 50035659 变为 35035659，差额正好是原生费用 15000000。这个原生结果直接证明建筑开始；但正式 Python receipt 仍给 `source_red` 并 RED 停止，未形成正式策略下一循环消费或冷恢复结论。原生结果和失败 receipt 保存在 `Z:\ck3_mod_rewrite_process_assets\g2-gov-r0080-red-20260922`，CK3 进程树已回收、同一动作 ID 未重提。
+
+R0080 `source_red` 的确定根因不是原生物质源缺失：开始建造后，该 first-held barony 的 512 次最终合法性扫描不再产生合法新候选，`legal_samples=[]`、`native_cost_evaluated=false`；旧 Python 共用的新候选筛选入口把“必须至少评估一项新的原生费用”也施加给已有动作的物质回执，故在读取 `active_constructions` 前拒绝了有效后置帧。最小修复只分出 receipt 的只读 material-source 模式：仍严格要求 exact 原生 `source_available`、帧/角色/日期/epoch 绑定及目标 active tuple+initiator；不要求产生新的合法费用样本，也不改变首次提交时的合法、费用、预算门。公共 query/action 继续不注册、不广告；修复后必须从 R0080 **动作后配对 checkpoint** 冷恢复，先核对既有动作并消费，不得从原 R753 再提交一次来“复验”。
