@@ -41,6 +41,8 @@
 
 ## 文档
 
+- [static-confirmed; live pending] [W2 目标池、排序与目标提交](war-film-target-selection-2026-09-23.md)：同省候选保留最高 priority、相等保留已有记录；军团×省候选按 signed 分数降序，随后经过预算、占用和路径门，最终提交要求严格正分。MIN_GOALS_PER_STACK=10 比较的是递增前计数，不能说固定十次或十一次寻路。32 个锚点、14 个窗口与结果计划已验证；全部集结共池、异常内存排序和自然实例仍未知。
+
 - [static-confirmed; live pending] [W3 绝望模式分数方向](war-film-retreat-score-direction-2026-09-23.md)：原生 trigger、UI consumer、战争身份与 coordinator producer 共同证明 +1B38 是己方战争分数。普通守方末端实际 own_score >= 正门槛，不能再解释成对方领先达到阈值。27 份产物与 5 份来源快照经 scoped review hash 复验；开发意图和自然触发频率未证明，通用战中主动撤退仍未知。
 
 - [static-confirmed; live pending] [W1 准备金与候选成本](war-film-declaration-inputs-2026-09-23.md)：入口两槽正式绑定金币/国库战争储备，比较含等号；具体 CB 特殊成本与通用交互成本分别在候选评分前验证。行政增量与基础实力、关系网络分开保留。31 段指令、7 个字符串、5 组 vtable 绑定已冻结并检查；军力缓存 producer 在后续独立包继续追查，尚无同一实际 actor/target/config 全链案例。

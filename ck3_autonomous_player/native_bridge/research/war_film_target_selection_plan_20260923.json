@@ -1,0 +1,82 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-target-selection",
+  "question": "How does the exact-build native target coordinator turn province candidates into a preliminary shortlist, evaluate it and commit a selected target?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Native CAIWarCoordinator and CAIUnitStack target selection; no own planner or player command substitution.",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Exact-build objective definitions and instruction RVAs; no portable runtime pointer identities.",
+    "producer_trigger": "unknown",
+    "producer": "Candidate generation downstream of native coordinator 0x185A780.",
+    "caller": "0x18550D0 calls 0x185A780; countdown semantics are already frozen in the separate timer package.",
+    "consumer": "Preliminary shortlist, final score comparison, target and assignment writers.",
+    "cache_lifetime": "Trace stack target lifecycle only where directly visible; no daily cadence claim.",
+    "expected_signal": "Exact instruction operands, sorting direction and tie handling, pool membership and final target write call chain.",
+    "zero_sample_meaning": "Missing direct xrefs do not rule out indirect or virtual execution.",
+    "stop_condition": "Bounded read-only EXE and script tracing from 0x185A780; preserve residual unknowns and never start CK3 or call native routines.",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {
+      "id": "generate",
+      "label": "Province candidate generation"
+    },
+    {
+      "id": "shortlist",
+      "label": "Preliminary shortlist"
+    },
+    {
+      "id": "evaluate",
+      "label": "Final path and score evaluation"
+    },
+    {
+      "id": "commit",
+      "label": "Stack target commit"
+    }
+  ],
+  "edges": [
+    {
+      "id": "generate_shortlist",
+      "from": "generate",
+      "to": "shortlist",
+      "label": "Which candidates share a pool; sorting direction and ties?",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which candidates share a pool; sorting direction and ties?"
+    },
+    {
+      "id": "shortlist_evaluate",
+      "from": "shortlist",
+      "to": "evaluate",
+      "label": "What does MIN_GOALS_PER_STACK bound and when is pathfinding done?",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "What does MIN_GOALS_PER_STACK bound and when is pathfinding done?"
+    },
+    {
+      "id": "evaluate_commit",
+      "from": "evaluate",
+      "to": "commit",
+      "label": "Which final comparison and validity conditions select and write a target?",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which final comparison and validity conditions select and write a target?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "native_target_selection_static",
+      "question": "How does the exact-build native target coordinator turn province candidates into a preliminary shortlist, evaluate it and commit a selected target?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

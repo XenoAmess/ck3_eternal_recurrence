@@ -1,0 +1,151 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-target-selection-result",
+  "question": "How does the exact-build native target coordinator turn province candidates into a preliminary shortlist, evaluate it and commit a selected target?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Native CAIWarCoordinator and CAIUnitStack target selection; no own planner or player command substitution.",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Exact-build objective definitions and instruction RVAs; no portable runtime pointer identities.",
+    "producer_trigger": "unknown",
+    "producer": "185AA40 block traversal and 185B840/185C690 province dedup; 185C8E0 pair scoring.",
+    "caller": "185A780 -> 185AA40 -> 185C8E0 -> descending sort -> 185EC30 -> 185B620; outer coordinator writes target.",
+    "consumer": "185EE01 consumes same define storage 570DEA8; 185EF7F/EF83/EF89 select; 185A923/925 signed score>0 precedes +60/+78/+74 writes.",
+    "cache_lifetime": "Function-local province/stack/pair work and per-pass reservation; live identities not sampled.",
+    "expected_signal": "Exact instruction operands, sorting direction and tie handling, pool membership and final target write call chain.",
+    "zero_sample_meaning": "Missing direct xrefs do not rule out indirect or virtual execution.",
+    "stop_condition": "Bounded read-only EXE and script tracing from 0x185A780; preserve residual unknowns and never start CK3 or call native routines.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "exact_bytes",
+      "layer": "exact-build",
+      "path": "war_film_target_selection_evidence_20260923.json",
+      "sha256": "0e4918d99b92fc5d7034dee7807b45d68a655d92620abeef39483964d930c7e6",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Province dedup strict replacement; signed descending sort; old-counter budget condition; route bool, reservations and target writes."
+    },
+    {
+      "id": "source_contract",
+      "layer": "source-contract",
+      "path": "../../../docs/ck3-native-ai/war-film-target-selection-2026-09-23.md",
+      "sha256": "8f2af2d522f37fe5e453fd748bb052036f42f584deec73b65bdb5d79095cfdb8",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Bounded interpretation of exact EXE consumer chain, authored define and residual unknowns."
+    },
+    {
+      "id": "extractor",
+      "layer": "source-contract",
+      "path": "war_film_target_selection_extract.py",
+      "sha256": "b5494ce0ef14598a16f6c2ca166954537c6e0187500a1e726c6bf2e88d89dee7",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Read-only reproducible extraction, exact SHA and 32 instruction anchors; no live execution."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "generate",
+      "label": "Shared province candidates; dedup with higher priority replacement"
+    },
+    {
+      "id": "shortlist",
+      "label": "Shared stack-province pair pool, descending signed int32 score"
+    },
+    {
+      "id": "evaluate",
+      "label": "Old counter > 10 budget, reservation and route filters"
+    },
+    {
+      "id": "commit",
+      "label": "Selected records and strict positive-score stack target writes"
+    },
+    {
+      "id": "gathering",
+      "label": "All assembly/gathering type mappings"
+    },
+    {
+      "id": "live",
+      "label": "Natural same-tick stack and province instance"
+    }
+  ],
+  "edges": [
+    {
+      "id": "generate_shortlist",
+      "from": "generate",
+      "to": "shortlist",
+      "label": "185B840/185C690 -> 185C8E0 -> sort; stable ordinary comparator paths",
+      "status": "static-confirmed",
+      "evidence": [
+        "exact_bytes",
+        "source_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "shortlist_evaluate",
+      "from": "shortlist",
+      "to": "evaluate",
+      "label": "185EC30: define storage 570DEA8, signed old-counter comparison, first feasible reservation",
+      "status": "static-confirmed",
+      "evidence": [
+        "exact_bytes",
+        "source_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "evaluate_commit",
+      "from": "evaluate",
+      "to": "commit",
+      "label": "185B620 -> 185A780; valid province, raw type !=8, score>0 and flag gate",
+      "status": "static-confirmed",
+      "evidence": [
+        "exact_bytes",
+        "source_contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "gathering_pool",
+      "from": "gathering",
+      "to": "shortlist",
+      "label": "All gathering behaviors share this ordinary pool?",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Special raw 7 fallback bypasses ordinary pool; all assembly/gathering mapping is not recovered."
+    },
+    {
+      "id": "static_live",
+      "from": "commit",
+      "to": "live",
+      "label": "Static chain to natural observed selection",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Need exact same production refresh input/pair/reservation/path/write snapshots; no game was started."
+    }
+  ],
+  "cases": [
+    {
+      "id": "native_target_selection_static",
+      "question": "Exact byte extraction and human static interpretation; no live case claimed.",
+      "status": "pending",
+      "evidence": [
+        "exact_bytes",
+        "source_contract"
+      ]
+    },
+    {
+      "id": "top10_boundary_live",
+      "question": "Natural occurrence of old counter ==10 and complete surrounding global stop state.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}
