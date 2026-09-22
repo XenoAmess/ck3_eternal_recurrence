@@ -467,6 +467,7 @@ _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset(
     {
         "befriend_outcome.0002",
         "death_management.1000",
+        "epidemic_events.1100",
         "health.1001",
         "health.1010",
         "health.3104",
