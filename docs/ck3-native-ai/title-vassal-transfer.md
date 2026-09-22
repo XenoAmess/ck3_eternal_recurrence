@@ -2,8 +2,8 @@
 
 ## 证据边界
 
-- 状态：原版效果为 `static-confirmed`；R0059 已有同一 ordinary campaign 的只读
-  paused pending frame，但**未回复**，转封/拒绝的独立后置和下一 turn 消费仍未验收。
+- 状态：原版效果为 `static-confirmed`；R0059、R0096 有 ordinary campaign 的只读
+  paused pending frame，但**均未回复**，转封/拒绝的独立后置和下一 turn 消费仍未验收。
 - 游戏版本：CK3 `1.19.0.6`。
 - EXE SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - 原版数据：实际运行安装目录 `Z:\SteamLibrary\steamapps\common\Crusader Kings III` 中的
@@ -84,6 +84,42 @@ war-special payload，不自动证明任意 definition 普通安全。现有 que
 `structured_effect_preview` 均为 unavailable，不能把其 `null` 当零代价或无副作用。
 任何拒绝复验还需旧 full ID 消失、下一 turn 不重复提交、paired checkpoint 与
 cold restore；在这些实机证据出现前本门保持 RED。
+
+## R0096：有玩家战争时的拒绝边界
+
+- [production paused frame；reply RED] `Z:\ck3_mod_rewrite\.task-tmp\RUN-001\century-r0096-preflight\R0096-formal\formal-report.txt`
+  SHA-256 `429C8E1E03720FCD7516CDC2A98A5A09861B24EC9BDC974A972673525123AC56`，
+  `native:339` / public revision `340`、`date_raw=53367120`、turn 164。pending
+  `-50331641` 是发起者 `38609` → 玩家接收者 `36403`、拟转封臣 `31506` 的直接、
+  零发送选项 `grant_vassal_interaction`；同帧原生 `reject` 合法且命令可达，
+  剩余 60/60 天，`special_war_binding_not_applicable`。玩家同时是战争
+  `301989950` 的主防守方，主要对手为 `34676`、相对战争分数 `-28`。
+- [exact-build static] 上述 SHA 固定的 `00_vassal_interactions.txt:49-61` 在**发送/有效性**
+  路径检查发起者及拟转封臣是否与接收者交战；这不等于“接收者不得有任何战争”。
+  `on_accept` 才有转封和条件性停战；`on_decline`（第 321–334 行）只写给发起者的
+  `char_interaction.0211` 信件与条件性 clan unity 损失，没有 authored 战争转移。
+  `.0211`（上述事件文件第 1530–1546 行）也无选项效果。
+- [边界] R0096 报告没有发起者/拟转封臣的完整参战关系；仅因二者 ID 不等于
+  **主要**对手，不能认定战争互不相关。`special_war_binding_not_applicable` 只排除
+  该 pending 的已知 war-special payload，不能证明 C++ 通用/特殊回复的全部副作用。
+  但精确、同帧原生合法的 **reject-only** 策略不根据参战关系改变选择；当前 Python
+  `grant_vassal_active_war_or_war_scope_unknown` 是额外策略门，不是原版判拒绝违法。
+  不得据此开放 accept/block。R0096 已回收进程，最新配对存档早于该 pending 帧，
+  无法在原帧追加新查询。拒绝后需在新 paused frame 核验旧 pending ID 消失、
+  战争及封臣关系的独立后置、下一 turn 消费和 cold restore；此前 B0 保持 RED。
+
+```mermaid
+flowchart TD
+    S["[static] 发送 grant_vassal"] --> W{"[static] actor/secondary 与 recipient 交战？"}
+    W -->|是| N["[static] 发送/有效性不通过"]
+    W -->|否| P["[live] R0096 玩家收到 pending；另有玩家战争"]
+    P --> L{"[live] 同帧原生 reject 合法？"}
+    L -->|是| R["[static] 拒绝：.0211 信件；条件性 clan unity；无 authored 战争转移"]
+    L -->|否| B["[counter-policy] RED，不提交"]
+    R -. "C++ 副作用未全闭合；R0096 未提交" .-> V["[unknown] 独立后置、下一 turn、恢复"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class V unknown;
+```
 
 ## 原版树
 
