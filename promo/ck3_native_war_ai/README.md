@@ -12,6 +12,7 @@
 | [longform/narration.md](longform/narration.md) / [JSON](longform/narration.json) | 90 条中英逐句稿，覆盖 45 镜头；既有研究结论保持不变 |
 | [longform/narration-help-sample.json](longform/narration-help-sample.json) | 12 条求援章节样片稿；新声音 attempt 消费当前修订 |
 | [production-stage.md](production-stage.md) | 声音、图解、实际构建、实机取材和 IndexTTS 的阶段记录 |
+| [indextts-installation.md](indextts-installation.md) | 独立 IndexTTS 安装、真实中文输出、WebUI 启动命令与性能；样片仍使用 EdgeTTS |
 | [claims.json](claims.json) | 可讲结论、原文位置、证据性质与禁止外推 |
 | [source-lock.json](source-lock.json) | 本案实际引用的研究文件、基准 commit、逐文件 SHA-256 |
 | [promo-project.json](promo-project.json) | 当前原生 `xar-promo ProjectConfig`，8 章均为 `planned`；时长硬限制留空，宽松预算在长篇时间线中 |

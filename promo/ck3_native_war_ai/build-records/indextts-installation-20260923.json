@@ -1,0 +1,420 @@
+{
+  "kind": "independent_local_indextts_installation",
+  "status": "cuda_synthesis_and_webui_http_verified",
+  "completed_utc": "2026-09-22T16:20:41.592610+00:00",
+  "source_receipt": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/indextts-install-20260922-r1/installation-receipt.json",
+    "bytes": 48992,
+    "sha256": "5afa7c8b2394fe88e7306c2a599acbf50112e6fdb216a15bf836f18d92045eb1"
+  },
+  "local_usage_guide": {
+    "path": "D:/workspace/index-tts/LOCAL_INSTALL.md",
+    "bytes": 7865,
+    "sha256": "57c5a5a0d67682bba7896381e9dc1461dd294903d66adb475482b1fff00a65d1"
+  },
+  "installation_root": "D:\\workspace\\index-tts",
+  "python_executable": "D:\\workspace\\index-tts\\.venv\\Scripts\\python.exe",
+  "python_base_prefix": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\uv-python\\cpython-3.11-windows-x86_64-none",
+  "upstream": {
+    "repo": "https://github.com/index-tts/index-tts",
+    "commit": "ee40fa7d6c6b8a2c7f06105f9f1e65775b74868c",
+    "git_tracked_diff": "",
+    "model_family": "IndexTTS-2.5",
+    "python_distribution_version": "2.0.0",
+    "note": "Upstream Python package metadata remains 2.0.0; inference module and loaded model are version 2.5."
+  },
+  "environment": {
+    "python": "3.11.16 (main, Sep  1 2026, 14:15:24) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "torch": "2.8.0+cu128",
+    "torch_cuda": "12.8",
+    "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "vram_bytes": 6441795584
+  },
+  "dependency_freeze": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\1790092768913382600-frozen-packages\\stdout.log",
+    "sha256": "b49a18de198b2e071baa2a4c9b5519868a6dfec009f90d97f64ce4550d10bc77",
+    "bytes": 2791
+  },
+  "compatibility_overlay": {
+    "package": "opencv-python",
+    "upstream_locked": "4.9.0.80",
+    "installed": "4.10.0.84",
+    "reason": "Actual cv2 import with official NumPy 2.2.6 failed with NumPy 1.x ABI; OpenCV 4.10 official wheels add NumPy 2 support. Repaired import and real TTS passed.",
+    "source": "https://github.com/opencv/opencv-python/releases/tag/84",
+    "failure_evidence": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\1790092128195519900-small-imports",
+    "repair_evidence": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\1790092353123091100-small-imports-repaired",
+    "upstream_source_and_lock_modified": false
+  },
+  "model_count": 21,
+  "model_bytes": 7082514638,
+  "models": [
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": ".gitattributes",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\.gitattributes",
+      "size": 1589,
+      "sha256": "b82c299ad0e975be79be308df962ef3b8d72f8a435066287360daa8211c30ddb"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "LICENSE",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\LICENSE",
+      "size": 10553,
+      "sha256": "cc7da9ea0f8a97ef15ab3bf0389e636ce79ffca1aef5489520796ac87d87a87b"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "README.md",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\README.md",
+      "size": 4272,
+      "sha256": "d21e2ed55013ce0c456b9aa6d4fab7222365bfad10dd839155da0ce36fa93001"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "codec.pth",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\codec.pth",
+      "size": 607290935,
+      "sha256": "d15cbed16a40f478438c961fb043f68dfa6353bf56c966761315db3433e9722c"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "config.yaml",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\config.yaml",
+      "size": 2860,
+      "sha256": "18adf417be3e8f5e2e48e30f7420c719170a6870619436250f360d626877870e"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "feat1.pt",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\feat1.pt",
+      "size": 57170,
+      "sha256": "f219cb447d80216ba615666da2ff8d63ac544eee26657f3a7b278692bf7a67c4"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "feat2.pt",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\feat2.pt",
+      "size": 374866,
+      "sha256": "9c4292e96dee535aea9a6206e9a0c856dd578dde9212acdb16dd3ada4d12bf80"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "gpt.pth",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\gpt.pth",
+      "size": 3259599833,
+      "sha256": "43a8f4c30eccdf201958d3b9713511482c19d56dc20b0b1c4ee1e6b080b19d85"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "multilingual_zh_ja_yue_char_del.tiktoken",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\multilingual_zh_ja_yue_char_del.tiktoken",
+      "size": 907395,
+      "sha256": "747979631e813193436aabcff7c1c235d37de8097b71c563ec8b63b7a515c718"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "s2mel.pth",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\s2mel.pth",
+      "size": 414908601,
+      "sha256": "9b1b0003fc189c94cc349758d7ebc25f903b7eb2de4602879959cc64ce816456"
+    },
+    {
+      "repo": "IndexTeam/IndexTTS-2.5",
+      "revision": "c39ce5ba981572cb187443877ff559dfb246ce63",
+      "name": "wav2vec2bert_stats.pt",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\wav2vec2bert_stats.pt",
+      "size": 9343,
+      "sha256": "c9c176c2b8850ab2e3ba828bbfa969deaf4566ce55db5f2687b8430b87526ad2"
+    },
+    {
+      "repo": "facebook/w2v-bert-2.0",
+      "revision": "da985ba0987f70aaeb84a80f2851cfac8c697a7b",
+      "name": ".gitattributes",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\w2v-bert-2.0\\.gitattributes",
+      "size": 1519,
+      "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"
+    },
+    {
+      "repo": "facebook/w2v-bert-2.0",
+      "revision": "da985ba0987f70aaeb84a80f2851cfac8c697a7b",
+      "name": "README.md",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\w2v-bert-2.0\\README.md",
+      "size": 4792,
+      "sha256": "478afeacb3b4ce0d86b361f099416d28a7e7673ade31775c0f85f396979b7fc2"
+    },
+    {
+      "repo": "facebook/w2v-bert-2.0",
+      "revision": "da985ba0987f70aaeb84a80f2851cfac8c697a7b",
+      "name": "config.json",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\w2v-bert-2.0\\config.json",
+      "size": 1874,
+      "sha256": "f5572bd5998b68182e9c328a43127ed21fed687f6910497136b91a4e3b0e3675"
+    },
+    {
+      "repo": "facebook/w2v-bert-2.0",
+      "revision": "da985ba0987f70aaeb84a80f2851cfac8c697a7b",
+      "name": "model.safetensors",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\w2v-bert-2.0\\model.safetensors",
+      "size": 2322063736,
+      "sha256": "eb890c9660ed6e3414b6812e27257b8ce5454365d5490d3ad581ea60b93be043"
+    },
+    {
+      "repo": "facebook/w2v-bert-2.0",
+      "revision": "da985ba0987f70aaeb84a80f2851cfac8c697a7b",
+      "name": "preprocessor_config.json",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\w2v-bert-2.0\\preprocessor_config.json",
+      "size": 275,
+      "sha256": "8e6281aad64f97e40534135a59dcc5d33571efae376f2a25adf5551951897ab4"
+    },
+    {
+      "repo": "nvidia/bigvgan_v2_22khz_80band_256x",
+      "revision": "633ff708ed5b74903e86ff1298cf4a98e921c513",
+      "name": "LICENSE",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\bigvgan\\LICENSE",
+      "size": 1076,
+      "sha256": "90459cd52fc41bd723df7c0c76fac1e4dd60e6bfd644a7e2a93f325bed4f6d95"
+    },
+    {
+      "repo": "nvidia/bigvgan_v2_22khz_80band_256x",
+      "revision": "633ff708ed5b74903e86ff1298cf4a98e921c513",
+      "name": "README.md",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\bigvgan\\README.md",
+      "size": 8038,
+      "sha256": "e70574f9ca1a0fac3a1faea840898c4c814552e46f5c160639db1397f9c7ddf4"
+    },
+    {
+      "repo": "nvidia/bigvgan_v2_22khz_80band_256x",
+      "revision": "633ff708ed5b74903e86ff1298cf4a98e921c513",
+      "name": "bigvgan_generator.pt",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\bigvgan\\bigvgan_generator.pt",
+      "size": 449228171,
+      "sha256": "e95ba25972d3de0628d99cd156e9315a9c018899bf739988959ebe3544080ced"
+    },
+    {
+      "repo": "nvidia/bigvgan_v2_22khz_80band_256x",
+      "revision": "633ff708ed5b74903e86ff1298cf4a98e921c513",
+      "name": "config.json",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\bigvgan\\config.json",
+      "size": 1405,
+      "sha256": "88a1f47acf747db0b21e97a389d838566147f7a5464583ff5c8d819d870f03ee"
+    },
+    {
+      "repo": "funasr/campplus",
+      "revision": "e4b6ede7ce16997aff4ae69fbca1f0175e2afede",
+      "name": "campplus_cn_common.bin",
+      "destination": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\campplus_cn_common.bin",
+      "size": 28036335,
+      "sha256": "3388cf5fd3493c9ac9c69851d8e7a8badcfb4f3dc631020c4961371646d5ada8"
+    }
+  ],
+  "wrapper": {
+    "path": "D:/workspace/index-tts/local_infer.py",
+    "bytes": 9188,
+    "sha256": "14d40a7fe9933cc6c74c887fc90ac82c4061fac3191914f5e0521e5e4622bca5"
+  },
+  "samples": [
+    {
+      "wav": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\official-validation-cuda-r1.wav",
+        "sha256": "f4dbe526a07acc68db1a2d9bc825c9349f2d34b2f72f9f0fbc5be8f3d5d07237",
+        "bytes": 299052
+      },
+      "request": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\official-validation-cuda-r1.wav.request.json",
+        "sha256": "38ff3e5627bd2e3fc72c6a3152ac415fec3bf423bf1ff22497e6116ea26424e7",
+        "bytes": 1225
+      },
+      "probe_receipt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\official-validation-cuda-r1.wav.receipt.json",
+        "sha256": "b05f612043a637a349ce0b18137ef228ff845ae1cedc55bb535a74e8af48ffe2",
+        "bytes": 1057
+      },
+      "metrics": {
+        "sample_rate": 22050,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "frames": 149504,
+        "duration_seconds": 6.780226757369615,
+        "id": "single",
+        "output": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\official-validation-cuda-r1.wav",
+        "wav_sha256": "f4dbe526a07acc68db1a2d9bc825c9349f2d34b2f72f9f0fbc5be8f3d5d07237",
+        "wav_bytes": 299052,
+        "request_sha256": "38ff3e5627bd2e3fc72c6a3152ac415fec3bf423bf1ff22497e6116ea26424e7",
+        "peak_abs": 0.6802978515625,
+        "rms": 0.1073656976956906,
+        "clip_fraction": 0.0,
+        "torch_version": "2.8.0+cu128",
+        "cuda_runtime": "12.8",
+        "device": "cuda:0",
+        "model_load_seconds": 108.00111580011435,
+        "inference_seconds": 69.3384879999794,
+        "process_elapsed_seconds": 192.030951899942,
+        "inference_rtf": 10.226573606054325,
+        "peak_cuda_allocated_bytes": 5667154944,
+        "peak_cuda_reserved_bytes": 5970591744,
+        "ended_utc": "2026-09-22T16:05:28.495533+00:00",
+        "verification": "real synthesis plus waveform probe; listening/transcription is separate"
+      },
+      "text": "你好，这是本机语音合成验证。战争的胜负，不只取决于兵力，还取决于时机与补给。",
+      "reference": {
+        "path": "D:\\workspace\\index-tts\\examples\\voice_01.wav",
+        "sha256": "e33e6ee0107a1dd58e1d66dd90c13df3d55a8683047cc3d7ea206dad84ed3fc8"
+      }
+    },
+    {
+      "wav": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\xiaoxiao-sample-01.wav",
+        "sha256": "7bd100ca05d89db520db975760523a6ce2c1cbe41c12809933a41eda5e3b5117",
+        "bytes": 165420
+      },
+      "request": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\xiaoxiao-sample-01.wav.request.json",
+        "sha256": "e2862a03d68fa6df7a5671edfe365590d3ebbd1e614c670d43d855088270fab9",
+        "bytes": 1212
+      },
+      "probe_receipt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\xiaoxiao-sample-01.wav.receipt.json",
+        "sha256": "333077682a577ef7043db001b2cb0219748c750e3cce0f7016f583863b32708a",
+        "bytes": 1057
+      },
+      "metrics": {
+        "sample_rate": 22050,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "frames": 82688,
+        "duration_seconds": 3.7500226757369615,
+        "id": "xiaoxiao-01",
+        "output": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\xiaoxiao-sample-01.wav",
+        "wav_sha256": "7bd100ca05d89db520db975760523a6ce2c1cbe41c12809933a41eda5e3b5117",
+        "wav_bytes": 165420,
+        "request_sha256": "e2862a03d68fa6df7a5671edfe365590d3ebbd1e614c670d43d855088270fab9",
+        "peak_abs": 0.618743896484375,
+        "rms": 0.12643186775917983,
+        "clip_fraction": 0.0,
+        "torch_version": "2.8.0+cu128",
+        "cuda_runtime": "12.8",
+        "device": "cuda:0",
+        "model_load_seconds": 67.61028050002642,
+        "inference_seconds": 141.30526620009914,
+        "process_elapsed_seconds": 230.2631379000377,
+        "inference_rtf": 37.68117646710751,
+        "peak_cuda_allocated_bytes": 6212287488,
+        "peak_cuda_reserved_bytes": 6826229760,
+        "ended_utc": "2026-09-22T16:13:23.735710+00:00",
+        "verification": "real synthesis plus waveform probe; listening/transcription is separate"
+      },
+      "text": "千军万马，成败往往只在一瞬之间。",
+      "reference": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\voice-reference-20260922-r1\\xiaoxiao-reference.wav",
+        "sha256": "f78c0ce26d8dc7b08fe280ac76e13da394abed346d9c4fdcb74bbadff93c755d"
+      }
+    },
+    {
+      "wav": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\xiaoxiao-sample-02.wav",
+        "sha256": "767b56430244309bcbd39acb90d4b02f4b40da19f784bd73a4b75e33ca760017",
+        "bytes": 195116
+      },
+      "request": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\xiaoxiao-sample-02.wav.request.json",
+        "sha256": "32ea4f72cb68ede831903f544645dc3f67b2b116c2e63bae01bb08587ed9c2f2",
+        "bytes": 1221
+      },
+      "probe_receipt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\xiaoxiao-sample-02.wav.receipt.json",
+        "sha256": "2bd49f06b5e8ef9db47eb35ec61662b74d4d9d148f40ae83cde621a81f3ae978",
+        "bytes": 1057
+      },
+      "metrics": {
+        "sample_rate": 22050,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "frames": 97536,
+        "duration_seconds": 4.423401360544218,
+        "id": "xiaoxiao-02",
+        "output": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\xiaoxiao-sample-02.wav",
+        "wav_sha256": "767b56430244309bcbd39acb90d4b02f4b40da19f784bd73a4b75e33ca760017",
+        "wav_bytes": 195116,
+        "request_sha256": "32ea4f72cb68ede831903f544645dc3f67b2b116c2e63bae01bb08587ed9c2f2",
+        "peak_abs": 0.68023681640625,
+        "rms": 0.09793605532347464,
+        "clip_fraction": 0.0,
+        "torch_version": "2.8.0+cu128",
+        "cuda_runtime": "12.8",
+        "device": "cuda:0",
+        "model_load_seconds": 67.61028050002642,
+        "inference_seconds": 106.59078889992088,
+        "process_elapsed_seconds": 336.90638719988056,
+        "inference_rtf": 24.097019513238756,
+        "peak_cuda_allocated_bytes": 6301748736,
+        "peak_cuda_reserved_bytes": 6830424064,
+        "ended_utc": "2026-09-22T16:15:10.358811+00:00",
+        "verification": "real synthesis plus waveform probe; listening/transcription is separate"
+      },
+      "text": "看清地形，守住补给，再选择出兵的时机。",
+      "reference": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\voice-reference-20260922-r1\\xiaoxiao-reference.wav",
+        "sha256": "f78c0ce26d8dc7b08fe280ac76e13da394abed346d9c4fdcb74bbadff93c755d"
+      }
+    }
+  ],
+  "webui": {
+    "receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\webui-smoke-1790093837798869100\\receipt.json",
+      "sha256": "ed8f19dea9689eac411299245fae04add2061e08979ca8cd22023ea25d25f3e4",
+      "bytes": 931
+    },
+    "argv": [
+      "D:\\workspace\\index-tts\\.venv\\Scripts\\python.exe",
+      "D:\\workspace\\index-tts\\webui.py",
+      "--version",
+      "2.5",
+      "--model_dir",
+      "checkpoints",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "7860",
+      "--fp16",
+      "--gui_seg_tokens",
+      "80"
+    ],
+    "cwd": "D:\\workspace\\index-tts",
+    "status": "http-ready",
+    "server_persisted": false,
+    "pid": 25300,
+    "startup_seconds": 141.5605663000606,
+    "config_sha256": "a4d1e218659aa2be74f1942a90861c6862adde3d22220cc3f0ac2f3eda97d3ac",
+    "html_sha256": "479168d30cdac662c8bcc10f3d931a6f7bab9ebd60278690b71de28a5f48b820",
+    "gradio_version": "5.45.0",
+    "component_count": 119,
+    "note": "Real upstream WebUI model load and local HTTP response verified; no extra synthesis performed through the UI.",
+    "process_exit_after_cleanup": 15,
+    "total_seconds": 142.41042730002664,
+    "port_closed_after_cleanup": true
+  },
+  "runtime_notes": [
+    "Use the direct .venv Python commands. A fresh uv sync/run would restore the incompatible upstream OpenCV pin unless the recorded overlay is reapplied.",
+    "Keep both installation and evidence directories: the independent uv-managed Python runtime and local verified torch wheel are retained under the evidence root.",
+    "QwenEmotion/DeepSpeed/custom CUDA kernels/flash attention/torch.compile are disabled.",
+    "CUDA inference succeeded on driver 546.33 without system driver updates. CPU full-model inference was not needed or tested.",
+    "Official inference caps reference audio at 15 seconds; the supplied 16.7-second Xiaoxiao reference was automatically truncated in memory.",
+    "The two-item batch uses one model instance; performance depends on reference/text lengths and this 6 GB GPU is suitable for offline work, not real-time generation."
+  ],
+  "quality_boundary": "Real synthesis, file/probe checks, independent Whisper-base transcripts and HTTP readiness are recorded. No human listening signoff or production voice approval is claimed; automatic transcripts contain homophone errors and are not a quality pass.",
+  "scope_boundary": "Xiaoxiao reference is fully synthetic Edge voice. These two Index clips are installation-only samples and are not used in the CK3 film. No 12-cue or full-film Index batch was generated.",
+  "film_voice_provider": "edge-tts",
+  "index_audio_used_in_film": false,
+  "repository_handoff_check": "Source receipt SHA, three WAV/request/probe bindings, dependency freeze and WebUI receipt checked; models not redundantly rehashed."
+}

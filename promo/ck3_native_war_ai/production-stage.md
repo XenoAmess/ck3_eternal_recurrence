@@ -48,3 +48,9 @@
 本次实际无启动预检因现有 DLL 缺正式前端启动链的三项能力字符串而 RED，原始记录在 `D:/workspace/ck3_native_war_ai_promo_work/capture-preflight-a02/`。本包零 CK3 启动、零新 raw，live 取景分支尚未验收。独立 `vanilla` 编号空间的既有 7 项测试通过；最终取景相关五文件的 AST/JSON/Python-only 检查通过，收据为 `capture-preflight-final-static-check.json`。这些结果没有提升原生 AI 研究成熟度。
 
 所有过程资产位于 `D:/workspace/ck3_native_war_ai_promo_work/` 的不同 attempt；模型与独立 IndexTTS 环境位于 `D:/workspace/index-tts/`，不进入 Git。自动检查和帧抽样只证明其具体检查范围，尚无人工 1× 全片签核。
+
+[IndexTTS 安装已完成](indextts-installation.md)：实际 CUDA 中文单句、同一模型实例双句批量与官方 WebUI 本地 HTTP 启动通过；检查后服务关闭、端口释放。安装机器收据 SHA 为 `5afa7c8b2394fe88e7306c2a599acbf50112e6fdb216a15bf836f18d92045eb1`。这三条测试 WAV 仅用于独立安装验证，影片依然绑定 EdgeTTS；声音听感未作人工签核。
+
+样片代码、90 条双语稿、两次构建索引及无启动取材阻点已经 rebase 到最新远端并以 `12440d575bf697cc457f975a071b477b2e94ecdc` 推送 `master`。原生研究文档、既有评分、其他任务进度和全部旧运行素材保留。
+
+该样片提交的 [Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/35753571023) 已完成且为 success；这是提交级静态/离线检查，不能替代尚未完成的实机取材与人工全片观看。
