@@ -16,7 +16,7 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 进入第三个 episode。该结果完成了同一冻结 seed 的 G2 全寿命重复门；它仍不代表不同 ruler/政府/DLC、普通 campaign
 跨继承或全游戏自治已经完成。
 
-现行 G2 使用固定八项可见 OODA 分母，当前为 `2/8`；G2-M0 的三路战争退出与 G2-M1 的实体发现/core turn bundle 已完成。需求、状态和施工顺序以
+现行 G2 使用固定八项可见 OODA 分母，当前为 `3/8`；G2-M0 的三路战争退出、G2-M1 的实体发现/core turn bundle，以及 R0077 自然继承与真实继承人续玩（G2-M3）已完成。需求、状态和施工顺序以
 [`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读 JSON 为准。
 
 ## 导航
