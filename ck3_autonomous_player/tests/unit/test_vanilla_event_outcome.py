@@ -82,6 +82,8 @@ def _gold_selection(before: int, after: int) -> dict[str, object]:
         "postcondition_verified": True,
         "starting_snapshot_id": "native:19",
         "starting_revision": 33,
+        "ending_snapshot_id": "native:20",
+        "ending_revision": 34,
         "starting_played_character_gold": {
             "status": "available",
             "character_id": 27181,
@@ -280,6 +282,64 @@ class VanillaEventMaterialOutcomeTests(unittest.TestCase):
             revision=33,
         )
 
+        self.assertEqual(expected["status"], "unavailable")
+        self.assertEqual(
+            expected["unavailable_reason"],
+            "same_frame_player_gold_unavailable",
+        )
+
+    def test_epidemic_flower_requires_independent_player_gold_decrease(self) -> None:
+        expected = plan_registered_event_material_postcondition_v1(
+            _decision(event_key="epidemic_events.1020", native_index=0),
+            {"character_id": 27181, "alive": True},
+            played_character_gold={"raw": 66_365_619, "scale": 100_000},
+            snapshot_id="native:19",
+            revision=33,
+        )
+        assert isinstance(expected, dict)
+        self.assertEqual(expected["status"], "ready")
+        self.assertEqual(expected["expected_relation"], "strictly_decreasing")
+
+        spent = evaluate_registered_event_material_postcondition_v1(
+            expected, _gold_selection(66_365_619, 64_865_619)
+        )
+        unchanged = evaluate_registered_event_material_postcondition_v1(
+            expected, _gold_selection(66_365_619, 66_365_619)
+        )
+        wrong_frame = _gold_selection(66_365_619, 64_865_619)
+        wrong_frame["ending_snapshot_id"] = "native:19"
+        stale = evaluate_registered_event_material_postcondition_v1(
+            expected, wrong_frame
+        )
+        wrong_scale = _gold_selection(66_365_619, 64_865_619)
+        wrong_scale["ending_played_character_gold"]["scale"] = 1
+        malformed = evaluate_registered_event_material_postcondition_v1(
+            expected, wrong_scale
+        )
+
+        self.assertEqual(spent["status"], "verified_change")
+        self.assertEqual(spent["delta"], -1_500_000)
+        self.assertIsNone(_registered_event_material_postcondition_issue(
+            {"event_material_postcondition": expected},
+            {"event_material_postcondition": spent},
+        ))
+        self.assertEqual(unchanged["status"], "failed")
+        self.assertEqual(unchanged["unavailable_reason"], "gold_not_decreased")
+        self.assertEqual(stale["status"], "failed")
+        self.assertEqual(malformed["status"], "failed")
+        self.assertEqual(
+            stale["unavailable_reason"],
+            "same_character_snapshot_binding_mismatch",
+        )
+
+    def test_epidemic_flower_missing_gold_does_not_claim_material_readiness(self) -> None:
+        expected = plan_registered_event_material_postcondition_v1(
+            _decision(event_key="epidemic_events.1020", native_index=0),
+            {"character_id": 27181, "alive": True},
+            snapshot_id="native:19",
+            revision=33,
+        )
+        assert isinstance(expected, dict)
         self.assertEqual(expected["status"], "unavailable")
         self.assertEqual(
             expected["unavailable_reason"],

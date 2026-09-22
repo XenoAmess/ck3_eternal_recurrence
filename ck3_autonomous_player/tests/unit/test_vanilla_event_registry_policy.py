@@ -1170,6 +1170,12 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(result["selected_native_option_index"], 0)
         self.assertEqual(result["selected_rendered_index"], 0)
         self.assertEqual(result["failed_checks"], [])
+        self.assertEqual(
+            result["choice_effect_profile"]["observable_postcondition"][
+                "expected_relation"
+            ],
+            "strictly_decreasing",
+        )
 
     def test_r0094_epidemic_1020_scope_or_option_drift_blocks(self) -> None:
         same_player = _epidemic_1020_context(courtier_character_id=36_403)
@@ -1266,6 +1272,7 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             "paused": True,
             "backend_id": "native-headless",
             "played_character": {"character_id": 36_403, "alive": True},
+            "played_character_gold": {"raw": 66_365_619, "scale": 100_000},
             "active_event": {"instance_id": 21, "option_count": 2},
         }
         plan = choose_one_life_turn(
@@ -1281,6 +1288,24 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(plan["selected_step"], "select-event-option-1")
         self.assertEqual(plan["event_decision"]["selected_native_option_index"], 0)
         self.assertEqual(plan["event_decision"]["failed_checks"], [])
+        self.assertEqual(plan["event_material_postcondition"]["status"], "ready")
+        self.assertEqual(
+            plan["event_material_postcondition"]["starting_value"], 66_365_619
+        )
+
+        missing_gold = {**snapshot, "played_character_gold": None}
+        blocked = choose_one_life_turn(
+            history,
+            snapshot=missing_gold,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+            },
+        )
+        self.assertEqual(
+            blocked["phase"], "active_event_registry_material_observation_blocked"
+        )
+        self.assertIsNone(blocked["selected_step"])
 
     def test_other_variant_contracts_still_require_explicit_consumer_review(
         self,

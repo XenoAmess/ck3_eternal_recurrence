@@ -29,3 +29,9 @@ flowchart TD
 ```
 
 下一次同版本单实例验收需证明单次 typed 提交、独立 paused frame 事件消失及县修正/财政或正统性物质结果、下一 turn 不重复、checkpoint 与 cold restore 语义。ACK 和窗口消失均不单独构成物质结果。无 native ABI、公共 MCP、open_kaishek 协议或广告变化；跨仓适配不需要。
+
+## R0095 最小物质读回（未实机）
+
+现有 B114 DLL 的 `played_character_gold` 是原生 `CCharacter` 扩展里的 Q100000 整数；`NativeHeadlessGameplayDriver._execute_event_option_step` 在 typed 选项提交前、独立事件消失后的暂停帧分别输出 `event_selection.starting_played_character_gold` 和 `ending_played_character_gold`。R0094 留存的 `driver-state.json` 已有角色 `36403` 的有效金币 `66365619` raw，且公共 campaign-root 证明 `feudal_government`、flags 不含 `government_has_treasury`。原版 `common/governments/00_government_types.txt:5-48` 的标准封建政府无 treasury 标志；`common/script_values/01_dynamic_values.txt:413-424` 的 `minor_treasury_or_gold_value` 因而走 `minor_gold_value`，该值下限见 `common/script_values/00_basic_values.txt:49`（15 金币）。此推论限当前标准封建支持范围，不能推广到有 treasury 的政府。
+
+因此本包复用正式结果，不新增 DLL、MCP 查询或 CK3 重启：对精确 `epidemic_events.1020`/native `0`，同帧起点金币不可读则不提交；提交后要求同一角色、两端 `status=available`、Q100000、后帧 snapshot/revision 前进且金币 raw 严格下降。现有 driver 另核对 episode、连接代次、PID、暂停与旧 event instance 消失。只有比较器报告 `verified_change` 才给正式 turn 记 `event_material_change`；零变化、正变化、身份/帧漂移均保留 RED，不能用 ACK 或弹窗消失替代。后一正式 turn 必须消费已发生的选择，checkpoint/cold restore 仍按既有合同核验。若实机出现有 treasury 的政体或金币无下降，先保留现场，再补县 `flowers_planted` 只读读回；不把未知当成成功。
