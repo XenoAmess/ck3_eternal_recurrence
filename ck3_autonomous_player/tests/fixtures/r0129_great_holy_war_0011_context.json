@@ -1,0 +1,132 @@
+{
+  "source_formal_report_sha256": "2707E485278965761879C60F6858988B0458CED27BB333391BF5E1F566B9AE2F",
+  "source_command_history_index": 2152,
+  "context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 80,
+    "date_raw": 53392944,
+    "current_event_instance_id": 25,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "great_holy_war.0011",
+    "calculated_event_id": 3170011,
+    "runtime_stats_ordinal": 4533,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 36403
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "awakening_faith",
+        "name_identifier": 22683,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 13,
+          "type_key": "faith",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "ghw_first_sponsor",
+        "name_identifier": 22685,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 57718
+          }
+        }
+      },
+      {
+        "name": "background_temple_scope",
+        "name_identifier": 9300,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 57718
+          }
+        }
+      },
+      {
+        "name": "other_pope",
+        "name_identifier": 22698,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 57718
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 4,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "既然他们这么说……",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.19.0.6-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x570F7B8->+0x10",
+      "idler_vtable_rva": "0x40B1D30",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.19.0.6-native-event-window-v1"
+    }
+  }
+}

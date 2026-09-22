@@ -11,6 +11,7 @@ from .registry import (
     materialize_vanilla_timeline_contract,
     query_vanilla_event_knowledge_v1,
 )
+from .source_index import query_vanilla_event_source_v1
 
 
 VANILLA_EVENT_REGISTRY_CHOICE_SCHEMA: Final = (
@@ -89,6 +90,145 @@ def _typed_character_id(value: object) -> int | None:
 
 def _active(value: object) -> bool:
     return value not in (None, False, (), [], {})
+
+
+def _source_reviewed_effectless_notice(
+    knowledge: Mapping[str, object],
+    event_key: str,
+    authored_option_count: int,
+) -> dict[str, object] | None:
+    """Admit only a complete option/after review pinned to the source index."""
+
+    analysis = knowledge.get("analysis")
+    review = (
+        analysis.get("source_reviewed_effectless_notice")
+        if isinstance(analysis, Mapping)
+        else None
+    )
+    if not isinstance(review, Mapping) or set(review) != {
+        "schema",
+        "definition_path",
+        "definition_sha256",
+        "source_lines",
+        "authored_native_option_indices",
+        "option_effects_by_native_index",
+        "after_effects",
+    }:
+        return None
+    path = review.get("definition_path")
+    digest = review.get("definition_sha256")
+    source_hashes = analysis.get("source_sha256")
+    authored = _sequence(review.get("authored_native_option_indices"))
+    effects = review.get("option_effects_by_native_index")
+    after = _sequence(review.get("after_effects"))
+    if not (
+        review.get("schema") == "xar.ck3.source-reviewed-effectless-notice/v1"
+        and knowledge.get("ck3_build") == EXACT_CK3_BUILD
+        and knowledge.get("ck3_exe_sha256") == EXACT_CK3_EXE_SHA256
+        and isinstance(path, str)
+        and path.startswith("events/")
+        and isinstance(digest, str)
+        and len(digest) == 64
+        and isinstance(review.get("source_lines"), str)
+        and isinstance(source_hashes, Mapping)
+        and source_hashes.get(path) == digest
+        and 1 <= authored_option_count <= 32
+        and authored == tuple(range(authored_option_count))
+        and isinstance(effects, Mapping)
+        and set(effects) == {str(index) for index in authored}
+        and all(_sequence(value) == () for value in effects.values())
+        and after == ({"kind": "custom_tooltip", "gameplay_effect": False},)
+    ):
+        return None
+    source = query_vanilla_event_source_v1(event_key)
+    indexed = source.get("source")
+    definition = (
+        indexed.get("definition")
+        if isinstance(indexed, Mapping)
+        else None
+    )
+    if not (
+        source.get("status") == "available"
+        and source.get("ck3_exe_sha256") == EXACT_CK3_EXE_SHA256
+        and isinstance(definition, Mapping)
+        and definition.get("relative_path") == path
+        and definition.get("file_sha256") == digest
+    ):
+        return None
+    return dict(review)
+
+
+def _effectless_notice_frame_checks(
+    context: Mapping[str, object],
+    contract: Mapping[str, object],
+    selected: Mapping[str, object] | None,
+) -> dict[str, bool]:
+    """Require one current, typed, rendered option and every saved role."""
+
+    options = context.get("options")
+    raw_scopes = context.get("saved_scopes")
+    scope_types = contract.get("scope_types")
+    scopes = (
+        {
+            row.get("name"): row.get("scope")
+            for row in raw_scopes
+            if isinstance(row, Mapping) and isinstance(row.get("name"), str)
+        }
+        if isinstance(raw_scopes, list)
+        else {}
+    )
+    character_names = (
+        tuple(
+            name
+            for name, type_key in scope_types.items()
+            if type_key == "character"
+        )
+        if isinstance(scope_types, Mapping)
+        else ()
+    )
+    return {
+        "effectless_notice_same_event_frame": bool(
+            _integer(context.get("current_event_instance_id")) is not None
+            and _integer(context.get("current_event_instance_id")) > 0
+            and _integer(context.get("snapshot_revision")) is not None
+            and _integer(context.get("snapshot_revision")) > 0
+            and _integer(context.get("date_raw")) is not None
+        ),
+        "effectless_notice_sole_legal_option": bool(
+            isinstance(options, list)
+            and len(options) == 1
+            and selected is not None
+            and selected.get("shown") is True
+            and selected.get("enabled") is True
+            and selected.get("native_option_index")
+            == contract.get("selected_native_option_index")
+        ),
+        "effectless_notice_character_scopes_typed": bool(
+            character_names
+            and all(
+                _typed_character_id(scopes.get(name)) is not None
+                for name in character_names
+            )
+        ),
+    }
+
+
+def _effectless_notice_choice_effect_profile(
+    review: Mapping[str, object], native_index: int
+) -> dict[str, object]:
+    return {
+        "schema": _CHOICE_EFFECT_PROFILE_SCHEMA,
+        "schema_version": _CHOICE_EFFECT_PROFILE_SCHEMA_VERSION,
+        "selected_native_option_index": native_index,
+        "completeness": "all-authored-options-and-common-after-source-reviewed",
+        "selected_option_effects": [],
+        "common_after_effects": [],
+        "non_gameplay_after_presentation": ["custom_tooltip"],
+        "source_anchors": [
+            f"{review['definition_path']}:{review['source_lines']}"
+        ],
+        "source_sha256": review["definition_sha256"],
+    }
 
 
 def _selected_choice_effect_profile(
@@ -671,6 +811,7 @@ def _resolve_option_variant_contract(
     snapshot_option_count: int,
     *,
     event_definition_key: str,
+    source_reviewed_fields: frozenset[str] = frozenset(),
 ) -> tuple[dict[str, object] | None, int | None, str | None]:
     raw_variants = _sequence(contract.get("option_variants"))
     if raw_variants is None:
@@ -681,7 +822,7 @@ def _resolve_option_variant_contract(
         _SOURCE_BOUND_OPTION_VARIANT_FIELDS.get(
             event_definition_key, frozenset()
         )
-    )
+    ).union(source_reviewed_fields)
     for index, value in enumerate(raw_variants):
         if not isinstance(value, Mapping) or not set(value).issubset(
             allowed_variant_fields
@@ -764,9 +905,26 @@ def recommend_registered_vanilla_event_option_v1(
     contract = materialize_vanilla_timeline_contract(
         raw_contract, character_id
     )
+    analysis = knowledge.get("analysis")
+    notice_review_present = bool(
+        isinstance(analysis, Mapping)
+        and "source_reviewed_effectless_notice" in analysis
+    )
+    notice_review = (
+        _source_reviewed_effectless_notice(knowledge, event_key, option_count)
+        if notice_review_present and isinstance(event_key, str)
+        else None
+    )
+    if notice_review_present and notice_review is None:
+        return _response(
+            status="blocked",
+            event_key=event_key,
+            reason="registered_effectless_notice_source_review_invalid",
+            checks={"effectless_notice_source_review": False},
+        )
     option_variant_index = None
     if (
-        event_key in _DIRECT_OPTION_VARIANT_EVENT_KEYS
+        (event_key in _DIRECT_OPTION_VARIANT_EVENT_KEYS or notice_review is not None)
         and _active(contract.get("option_variants"))
     ):
         resolved, option_variant_index, variant_error = (
@@ -775,6 +933,15 @@ def recommend_registered_vanilla_event_option_v1(
                 contract,
                 option_count,
                 event_definition_key=event_key,
+                source_reviewed_fields=(
+                    frozenset({
+                        "saved_scope_count",
+                        "saved_scope_name_sets",
+                        "scope_types",
+                    })
+                    if notice_review is not None
+                    else frozenset()
+                ),
             )
         )
         if resolved is None:
@@ -800,7 +967,7 @@ def recommend_registered_vanilla_event_option_v1(
                 checks={"scope_variant_projection": False},
             )
         contract = resolved_scope
-    if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS:
+    if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS or notice_review is not None:
         contract = _with_relational_character_scope_types(contract)
     allowed_extended_fields: set[str] = set()
     if event_key == "epidemic_events.0110":
@@ -852,6 +1019,11 @@ def recommend_registered_vanilla_event_option_v1(
                 "character_scope_differs_from",
             }
         )
+    if notice_review is not None:
+        allowed_extended_fields.update({
+            "character_scope_matches_any",
+            "unique_character_scope_excludes",
+        })
     if event_key == "death_management.1000":
         # The exact source saves one mutually exclusive flag for the liked or
         # disliked spouse templates; the neutral template saves neither.
@@ -937,6 +1109,10 @@ def recommend_registered_vanilla_event_option_v1(
         event_context, contract, option_count
     )
     checks.update(option_checks)
+    if notice_review is not None:
+        checks.update(
+            _effectless_notice_frame_checks(event_context, contract, selected)
+        )
     if event_key == "tgp_japan_yearly_events.1190":
         analysis = knowledge.get("analysis")
         source_hashes = (
@@ -1017,7 +1193,11 @@ def recommend_registered_vanilla_event_option_v1(
     assert selected_native is not None
     assert selected_number is not None
     assert selected_rendered is not None
-    if event_key == "epidemic_events.5007":
+    if notice_review is not None:
+        choice_effect_profile = _effectless_notice_choice_effect_profile(
+            notice_review, selected_native
+        )
+    elif event_key == "epidemic_events.5007":
         choice_effect_profile = _epidemic_5007_stress_effect_profile(
             knowledge, selected, selected_native
         )
