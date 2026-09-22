@@ -101,9 +101,10 @@ RED 已保留为环境问题证据，不能覆盖这次干净目录结果。
 `docs/architecture-and-migration.md`。本仓库不再包含工具链源码；公开命令必须以当前
 `<verified-python> -m xar_promo --help` 及各子命令 `--help` 的实际输出为准；library 中存在函数或 handler 不代表 CLI 已暴露该能力。
 
-### 当前冻结 CLI（`xar-promo 0.2.1`）
+### 命令接口（随最新正式版更新）
 
-下表按 2026-09-02 实际 `--help` 记录；尖括号表示由项目提供的路径、ID 或 import target，不是可照抄的字面值。
+下表按 `xar-promo 0.2.1` 的实际 `--help` 记录；新任务与新 run 始终使用最新正式版，并按该版实际帮助更新接口，不能因本表停留旧版。
+尖括号表示由项目提供的路径、ID 或 import target，不是可照抄的字面值。
 
 | 命令 | 实际调用形态 | 验收含义 / 副作用 |
 | --- | --- | --- |
@@ -122,8 +123,9 @@ RED 已保留为环境问题证据，不能覆盖这次干净目录结果。
 是不同接口。adapter/preset 只从本地 registry 注入或 `xar_promo.adapters`、`xar_promo.presets` entry points 解析，
 不得把 composer 塞进 registry，也不得虚构一个通用默认 composer。
 
-先安装独立仓库的冻结 wheel，再用选定且已验证的解释器做无副作用 CLI smoke。仓库提供
-`tools/requirements-promo-toolchain.txt`，默认指向 GitHub Release `v0.2.1`；离线或本地源码验收时，
+先查询独立仓库最新正式 GitHub Release，将 `tools/requirements-promo-toolchain.txt` 更新为该发布的精确 wheel URL 与 SHA-256，
+再用选定且已验证的解释器安装/升级并做无副作用 CLI smoke。可用 `gh release view --repo XenoAmess/xar_promo_toolchain`
+查询发布入口；每次记录实际版本，不能只凭本机缓存或旧文件认定最新。历史 run 保留当时版本，后续新 run 使用届时最新版本。本地源码验收时，
 可设置 `XAR_PROMO_SOURCE`（兼容别名 `XAR_PROMO_TOOLCHAIN_SOURCE`）指向独立 checkout 或其 `src` 目录，
 以覆盖已安装 wheel：
 
@@ -136,7 +138,7 @@ python = Path("tools/.venv/Scripts/python.exe").resolve()
 environment = os.environ.copy()
 # Optional source-checkout override (omit this for a wheel-only run):
 # environment["XAR_PROMO_SOURCE"] = r"Z:\workspace\xar_promo_toolchain"
-subprocess.run([str(python), "-m", "pip", "install", "-r", "tools/requirements-promo-toolchain.txt"], check=True)
+subprocess.run([str(python), "-m", "pip", "install", "--upgrade", "-r", "tools/requirements-promo-toolchain.txt"], check=True)
 subprocess.run([str(python), "-m", "xar_promo", "--version"], check=True, env=environment)
 subprocess.run([str(python), "-m", "xar_promo", "--help"], check=True, env=environment)
 for command in ("init", "start-run", "validate", "preserve", "signoff", "plan", "build", "audit", "review", "export"):
@@ -189,8 +191,8 @@ for command in ("init", "start-run", "validate", "preserve", "signoff", "plan", 
 依赖型命令开始前先解析解释器，不能等 import 失败后静默换解释器：
 
 主仓 `tools/requirements.txt` 与 `tools/requirements-static.txt` 不再间接安装宣传工具链。准备全自动或静态验收环境后，
-必须用同一解释器显式执行 `-m pip install -r tools/requirements-promo-toolchain.txt`；该文件固定独立仓库的 GitHub
-Release wheel。需要源码调试时，再设置 `XAR_PROMO_SOURCE`（或兼容别名）覆盖 wheel。
+必须先核对最新正式发布并更新 requirements，再用同一解释器显式执行 `-m pip install --upgrade -r tools/requirements-promo-toolchain.txt`；
+该文件精确记录此次最新 GitHub Release wheel。需要源码调试时，再设置 `XAR_PROMO_SOURCE`（或兼容别名）覆盖 wheel。
 
 1. 优先检查当前 worktree 约定的相对 venv（本仓库 runner 通常是 `tools\.venv\Scripts\python.exe`）。
 2. secondary/detached worktree 没有该 venv 时，显式填写已经在主 worktree 验证过的 venv **绝对路径**；禁止直接落回 `py`。

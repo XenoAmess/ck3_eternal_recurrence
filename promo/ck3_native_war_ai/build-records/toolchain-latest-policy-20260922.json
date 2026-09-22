@@ -1,0 +1,81 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_war_ai_toolchain_policy_update",
+  "checked_at_utc": "2026-09-22T13:34:07.095308+00:00",
+  "latest_release": {
+    "tagName": "v0.2.1",
+    "isDraft": false,
+    "isPrerelease": false,
+    "publishedAt": "2026-09-02T06:57:15Z",
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1"
+  },
+  "wheel": {
+    "name": "xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "digest": "sha256:f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "size": 190405
+  },
+  "interpreter": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\tools\\.venv\\Scripts\\python.exe",
+  "installed_version": "xar-promo 0.2.1",
+  "policy": "Resolve and use the latest stable GitHub Release before each new promo task/run; record exact version/hash per run.",
+  "validation": "GREEN: existing ProjectConfig and native run, full file/hash checks",
+  "archived_run_unchanged": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/director-20260922-r1/run-manifest.json",
+    "bytes": 10080,
+    "sha256": "ae58d9b9e989348a2a95d463a400603f2a216a44c9c2a8ea6093231a73414d1f"
+  },
+  "commands": [
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/01.json",
+      "bytes": 2213,
+      "sha256": "8195010ff5f47eff0758fcb31cd5189b76193ed029249b8d1f126bc0325aac6b"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/02.json",
+      "bytes": 859,
+      "sha256": "6d621e8d25ff9555cb706cc63d5011fadd78e01a3d4f2e33d315efbba307924a"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/03.json",
+      "bytes": 288,
+      "sha256": "414a3ed5c948f9409b56f6c4cf68a20ed931998e1b2f28953abf87afd3f965db"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/04.json",
+      "bytes": 1988,
+      "sha256": "8dd0f532d2914530efc677d624127b2a0578477cc6892c962a084c9a2970d8f2"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/05.json",
+      "bytes": 724,
+      "sha256": "90adb21a1cb21572a5e241ced3e64fab569b435b3cf64661c28133b2a276bc1f"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/06.json",
+      "bytes": 744,
+      "sha256": "30a4c774edb206060fc91b5a9ae74d59da4e2cd1859391c44c77aea407be2cbe"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/07.json",
+      "bytes": 953,
+      "sha256": "25324a45fd07e3184ab16a6f29bf6fdfb6e7324dee7198001a0adabf140043ff"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/08.json",
+      "bytes": 851,
+      "sha256": "2db6f3fcd17ed31a73d1145d6eead8fa1f37d330adfb5c7bc02ab3e975b6865f"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/09.json",
+      "bytes": 669,
+      "sha256": "9e5143eb39002785db3b57390efb50ac5a6a0042392264401b5cf1b7ab4a84aa"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/toolchain-latest-policy-20260922/10.json",
+      "bytes": 642,
+      "sha256": "5f7dcca2c3b91f3a5efbcf23844b3ccb6109640d439dd7b5da30b97f51016dd5"
+    }
+  ],
+  "media_created": false,
+  "human_signoff": "not-provided"
+}

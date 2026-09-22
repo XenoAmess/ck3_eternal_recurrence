@@ -154,7 +154,11 @@ py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 s
 - 可复用实现已拆到独立仓库
   [`XenoAmess/xar_promo_toolchain`](https://github.com/XenoAmess/xar_promo_toolchain)；用户入口、真实命令与能力边界以该仓库的
   `README.md`、`docs/architecture-and-migration.md` 和当前 `<verified-python> -m xar_promo --help` 为准。主仓不再
-  vendoring 其源码，也不在这里运行其独立单测。默认使用独立仓库的 GitHub Release wheel `v0.1.0`；本地开发或验收可设置
+  vendoring 其源码，也不在这里运行其独立单测。**`xar-promo` 永远使用独立仓库最新正式 GitHub Release 的 wheel**：每次开始
+  工具链任务或新 run 前先查询最新正式发布，不能把本机已安装版本、旧文档或旧 requirements 当作“最新”。发现新版时，先同步
+  `tools/requirements-promo-toolchain.txt` 的精确 wheel URL 与发布 SHA-256，再用本次选定的解释器安装/升级并验证 `--version`、
+  顶层及相关子命令 `--help`。requirements 的精确版本用于重现当次输入，不能成为长期停留旧版的理由。每个 run 记录实际版本与
+  wheel SHA；已有 run 的版本记录、配置快照和素材保持历史原样，后续新 run 使用届时最新版本。本地开发或验收可设置
   `XAR_PROMO_SOURCE`（兼容别名 `XAR_PROMO_TOOLCHAIN_SOURCE`）指向独立 checkout 或其 `src` 目录。禁止为尚未接入的
   library API 虚构 CLI 命令，也不得把 plan、命令 ACK、schema 通过或单项自动检查写成“成片已验”。
 - 严格保持四层边界：
@@ -166,7 +170,7 @@ py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 s
      marks 与 clean spans；不得启动 CK3、用 OCR 猜缺失状态、修复/覆盖 RED attempt，或承载某个项目的故事与发布政策。
   4. **项目 preset**（独立仓库的 `src/xar_promo/presets/`）加各项目 checked-in config 负责章节、文案、语言、声线、时长、
      真实角色/测试 UI 等项目政策；各项目 legacy wrapper 在迁移期继续保持原 CLI、sidecar 与输出兼容。
-- 当前冻结的 `xar-promo 0.1.0` CLI 只有下列十个命令；命令角色和副作用必须按表解释：
+- 下表记录已核验的十个 CLI 命令及职责；实际可用接口随最新正式版更新，以该版 `--help` 为准，不把此表当作永久版本或命令上限：
 
   | 命令 | 角色与副作用边界 |
   | --- | --- |
@@ -194,7 +198,7 @@ py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 s
 - 工具链的 build、audit、review、export 都不等于外部发布。每个 mod 仍必须走自己的 release staging、实机验收、
   Steam Workshop 上传、订阅缓存复核与 changelog 流程；宣传视频上传到外部平台同样需要独立明确授权。
 - secondary/detached worktree 运行宣传工具链或其他依赖型 Python 验收时，先使用该 worktree 内约定的相对 `.venv`，并确认
-  已安装独立仓库发布的 `xar-promo-toolchain==0.1.0` wheel。若相对 venv 不存在，只能**显式指定并先验证**主 worktree 的
+  已安装本次查询确认的最新正式 `xar-promo-toolchain` wheel；不能为迎合历史指南降级。若相对 venv 不存在，只能**显式指定并先验证**主 worktree 的
   venv 解释器，同时设置 `XAR_PROMO_SOURCE`（若需源码调试）并在报告中记录解释器路径、版本和依赖 probe。禁止静默回落到
   缺依赖的裸 `py`/系统 Python，再把 `ModuleNotFoundError`、缺 Pillow/edge-tts 或找不到媒体工具误判为代码 RED；这类问题在
   完成解释器与依赖复核前只能标为 environment RED。

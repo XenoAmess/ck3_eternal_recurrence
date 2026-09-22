@@ -1,6 +1,16 @@
 # 导演案如何进入现有 promo 工具链
 
-## 本次已经采用的边界
+## 当前版本政策（2026-09-22 更新）
+
+项目所有者已明确要求 **`xar-promo` 永远使用最新版本**。每次工具链任务或新 run 前查询独立仓库最新正式 Release，更新 requirements
+的精确 URL/SHA 并安装验证；不再按旧指南停留 0.1.0。本次在线确认最新正式发布为
+[v0.2.1](https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1)，隔离 venv 已升级并通过本片 ProjectConfig 与既有 run 的完整只读验证，
+记录见 [版本更新收据](build-records/toolchain-latest-policy-20260922.json)。此处的版本号只记录本次查询结果，后续仍重新查最新发布。
+
+下面的 `director-20260922-r1` 表格记录升级前的真实历史；旧 run、快照和封存素材保持原样。当前目录的工作流说明按本节执行，后续新
+run 使用届时最新版本，不把历史版本记录当作安装要求。
+
+## director-20260922-r1 已采用的边界（历史记录）
 
 本目录沿用 `promo/reclaim_the_motherland/` 的原生 ProjectConfig/run 结构与 `promo/project_causality/` 的导演、分镜、时间线、声明来源分工。通用实现仍在独立 [xar_promo_toolchain](https://github.com/XenoAmess/xar_promo_toolchain)；本目录只保存本片意图、内容与运行索引。
 
@@ -18,7 +28,7 @@
 | 本次 run | `D:/workspace/ck3_native_war_ai_promo_work/director-20260922-r1/run-manifest.json` |
 | 达到的阶段 | authoring config/run 的完整文件与哈希验证、导演输入与研究来源保全 |
 
-0.2 的新 capture receipt、claims-review 与多音轨 API 没有被本案冒充为 0.1 的能力。制作阶段若选择当前 0.2.1，先在新 run 记录实际依赖和项目集成验证，再采用其 API；不需要重写本案的导演内容。
+首个 run 没有使用 0.2 的新 capture receipt、claims-review 与多音轨 API。后续制作按上方最新版本政策执行，在新 run 记录实际依赖和项目集成验证，再采用对应 API；导演内容与旧 run 的历史事实保持原样。
 
 ## 文件的消费关系
 

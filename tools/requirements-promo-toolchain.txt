@@ -1,5 +1,7 @@
 # The reusable promo toolchain is maintained and released independently.
-# Keep this URL version-pinned; use XAR_PROMO_SOURCE for an explicit local
-# checkout override when developing or replaying acceptance fixtures.
+# Before each promo task/new run, check the latest stable GitHub Release and
+# update this exact URL/hash when a newer release exists. This pin records the
+# selected release for reproducibility; it is not permission to stay on an old release.
+# Use XAR_PROMO_SOURCE for an explicit local checkout override when debugging.
 https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl \
     --hash=sha256:f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621
