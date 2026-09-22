@@ -1,0 +1,44 @@
+{
+  "schema": "xar.ck3.defender-surrender-title-preview-abi.v1",
+  "status": "STATIC_RESOLVE_EFFECT_PREVIEW_NOOP",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "absolute_outcome": "attacker_victory for played primary-defender surrender",
+  "war_overview": {
+    "victory_root_offset": "CB+0x968",
+    "root_call_rva": "0xF59738",
+    "root_call_bytes": "E893280000",
+    "title_visitor_ctor_rva": "0xF5C038",
+    "preview_dispatch_call_rva": "0xF5C09F",
+    "preview_dispatch_call_bytes": "E8CC404202",
+    "preview_dispatch_target_rva": "0x3380170"
+  },
+  "resolve_title_and_vassal_change": {
+    "rtti_type_descriptor_rva": "0x55D73A0",
+    "rtti_col_rva": "0x4ABDAE0",
+    "runtime_vtable_rva": "0x445CAD0",
+    "execute_slot_22_rva": "0x2EC43F0",
+    "preview_slot_23_rva": "0x7E9220",
+    "preview_bytes": "B0 01 C3",
+    "preview_semantics": "returns true without visiting title/vassal operations"
+  },
+  "setup_claim_cb": {
+    "runtime_vtable_rva": "0x444B548",
+    "execute_slot_22_rva": "0x2EA8200",
+    "preview_slot_23_rva": "0x2EA7E90"
+  },
+  "title_transfer_visitor": {
+    "rtti_type_descriptor_rva": "0x5210BE8",
+    "rtti_col_rva": "0x467B030",
+    "runtime_vtable_rva": "0x4108EE8",
+    "method_slot_2_rva": "0x2F0DE20"
+  },
+  "boundary": {
+    "effect_called": false,
+    "ck3_launched": false,
+    "material_title_liege_resource_terms_ready": false,
+    "next_locator": "Trace the native WarOverview title visitor payload and independent CTitleAndVassalChange actual-move producer; the resolve effect's preview cannot supply resolved operations."
+  }
+}
