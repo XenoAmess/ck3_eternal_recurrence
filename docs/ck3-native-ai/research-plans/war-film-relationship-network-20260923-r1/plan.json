@@ -1,0 +1,95 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-relationship-network-20260923",
+  "question": "Which relationship sources and filters enter declaration network power at 0x1879850?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "One declaration assessment actor and effective target; not all diplomacy or wars",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Synchronous collector locals and full CharacterID only; no pointer reuse",
+    "producer_trigger": "not-applicable",
+    "producer": "Native collector 0x1879850",
+    "caller": "Declaration assessment 0x1878A00",
+    "consumer": "Actor/target strategic power before final ratio",
+    "cache_lifetime": "Military+0x308 freshness remains separate; no runtime age observed",
+    "expected_signal": "Instruction-backed source container naming and exact filtering differences",
+    "zero_sample_meaning": "No live samples are taken; an excluded branch is not proof that the relationship cannot join a war",
+    "stop_condition": "Freeze bounded native membership and filtering contract, preserve unsupported names unknown; no live execution",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [
+    {
+      "id": "root",
+      "label": "Actor/effective target"
+    },
+    {
+      "id": "candidates",
+      "label": "Relationship source members"
+    },
+    {
+      "id": "eligible",
+      "label": "Eligible unique contributors"
+    },
+    {
+      "id": "sum",
+      "label": "Network power sum"
+    },
+    {
+      "id": "decision",
+      "label": "Declaration assessment"
+    }
+  ],
+  "edges": [
+    {
+      "id": "containers",
+      "from": "root",
+      "to": "candidates",
+      "label": "Name each source CharacterID container with independent native string/getter/producer anchors.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Name each source CharacterID container with independent native string/getter/producer anchors."
+    },
+    {
+      "id": "common-filter",
+      "from": "candidates",
+      "to": "eligible",
+      "label": "Resolve common predicate 0x1B35DF0 and actor versus target exclusion branches.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Resolve common predicate 0x1B35DF0 and actor versus target exclusion branches."
+    },
+    {
+      "id": "contribution",
+      "from": "eligible",
+      "to": "sum",
+      "label": "Prove contribution and deduplication order without claiming future call-to-war acceptance.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Prove contribution and deduplication order without claiming future call-to-war acceptance."
+    },
+    {
+      "id": "runtime",
+      "from": "sum",
+      "to": "decision",
+      "label": "No live sample: preserve runtime cache freshness, actual call acceptance and join as unknown.",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "No live sample: preserve runtime cache freshness, actual call acceptance and join as unknown."
+    }
+  ],
+  "cases": [
+    {
+      "id": "future-network-sample",
+      "question": "Separately authorized same-revision actor/target contributors and actual joining remain pending.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

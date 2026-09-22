@@ -126,3 +126,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W8 增量：post-ready 检查与保留现场
 
 [post-ready pump 修复](war-film-startgame-post-ready-pump-2026-09-23.md)固定首次 map-ready 基准，保留真正推进与身份不变量，12 项聚焦测试通过；[同局诊断服务](war-film-capture-hot-service-2026-09-23.md)让 Python 失败后保留原 MCP owner，2 项离线测试与最新无启动预检通过。R0003 仍是载入 100% 的 RED，不算 HUD 取材。R0004 使用新 Python 逻辑与原 DLL，复用已记录的 shadercache，正在独立实机验证。
+
+## W1 宣战关系网络：新增静态证据
+
+[W1 宣战关系网络](war-film-declaration-relationship-network-2026-09-23.md)：六类来源闭合到配偶、订婚、有效联盟、参战义务属国/朝贡国、战争保证宗主与邦联。己方额外剔除在战中、人类玩家、同邦联以及特定宗主保证组合，目标方不照搬这些门；旧 same-realm 和 government 泛称已在新专题追加更正。共同谓词的脚本加载映射继续追查。8 条静态边、3 条未知边与异目录复提逐字节校验通过，无 live。 本包不增加 live 或影片完成度。

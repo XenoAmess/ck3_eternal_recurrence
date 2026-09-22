@@ -41,6 +41,8 @@
 
 ## 文档
 
+- [static-confirmed; live pending] [W1 宣战关系网络](war-film-declaration-relationship-network-2026-09-23.md)：六类来源闭合到配偶、订婚、有效联盟、参战义务属国/朝贡国、战争保证宗主与邦联。己方额外剔除在战中、人类玩家、同邦联以及特定宗主保证组合，目标方不照搬这些门；旧 same-realm 和 government 泛称已在新专题追加更正。共同谓词的脚本加载映射继续追查。8 条静态边、3 条未知边与异目录复提逐字节校验通过，无 live。
+
 - [static-confirmed; live pending] [W5 移动命令构造者](war-film-move-command-constructors-2026-09-23.md)：RTTI 正式绑定 CMoveUnitCommand；0x432BF48 是 +0x30 校验槽，真正主表为 0x432BF18。声明扫描范围内 29 处引用、13 个函数已分类，新入口属于玩家地图输入、克隆和空 factory，仍未发现普通战争主动撤退 policy；后续转向 payload 填充或入队生产者，不重复 census。16 份产物、11 份快照与结果计划 scoped review PASS，a01–a04 冻结文件未变；无实机新增。
 
 - [static-confirmed; live pending] [W5 撤退消费者的上游分类](war-film-retreat-consumer-callers-2026-09-23.md)：三条有界调用链分别归因为战斗胜方结算、战中不可达的普通 movement caller，以及继承 owner-subset 清理。继承调用传 apply_pursuit=false，不可把所有部分离场都说成先追击一次。12 份产物、4 份快照 hash 与计划检查通过，a01–a03 冻结文件未变。普通战争按败势主动撤退的策略仍待追踪间接命令构造者。
