@@ -20,7 +20,10 @@ R0082 运行后的 `driver-state.json` 含死 PID 与一次只读查询，原 ma
 百年主跑 cold restore。原场景使用 `xar_on`；它不会冒充 WAR 的
 `ordinary_campaign_succession/xar_off` 配对。
 
-检查过的入口 `run_m5_alliance_readback.py` 是此冻结候选的受控 runner：
+仓库源文件是 `ck3_autonomous_player/native_bridge/research/run_m5_alliance_readback.py`；
+冻结候选中的**实际可执行副本**是候选根目录的 `run_alliance_readback.py`。
+两者内容 SHA-256 相同，`no-launch-manifest.json` 的 `operator` 与
+`operator_sha256` 指向并绑定候选副本。该副本是此冻结候选的受控 runner：
 `--preflight-only` 核源码、profile、双开关 CMake cache、EXE/save/DLL/injector
 哈希以及单实例库存；正式 `--live` 另需唯一 owner 和持久分配器分配的轮次，
 然后对同一暂停帧依次查询当前首继承人合法性和五个**动态发现**候选的
@@ -40,9 +43,24 @@ manifest 的 `status` 记录创建时仍待 preflight；当前结果以以下报
 这只关闭启动前的静态/环境准备，不是查询或动作证据；WAR 下一候选优先占用
 唯一 CK3 实例。
 
+本机核验过的 no-launch 命令是：
+
+```powershell
+$candidate = 'Z:\ck3_mod_rewrite_process_assets\g2-m5-alliance-readback-71d428b-20260922'
+& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' -B (Join-Path $candidate 'run_alliance_readback.py') --candidate-dir $candidate --preflight-only
+```
+
 之后唯一 CK3 owner 须重新核进程与版本、由持久分配器分配 **新轮次**，
-再用此候选根的 `run_alliance_readback.py --candidate-dir <上述目录>
---live --round-ledger <新轮次分配文件> --evidence <全新证据目录>` 进入有界
-只读查询。不得把本候选 `no-launch READY` 直接当成启动授权。投影结果仅说明接受后原生代码会
+将分配器产出的绝对路径赋给 `$roundLedger`、将未存在的新证据目录绝对路径
+赋给 `$newEvidence`，才能使用**尚未执行过**的有界 live 入口：
+
+```powershell
+& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' -B (Join-Path $candidate 'run_alliance_readback.py') --candidate-dir $candidate --live --round-ledger $roundLedger --evidence $newEvidence
+```
+
+CLI `--help` 已核对 `--candidate-dir`、互斥的 `--preflight-only`/`--live`、
+`--round-ledger` 和 `--evidence` 参数。以上 Z 盘路径仅是本机冻结候选定位，
+其他机器必须重新映射并验各 SHA。不得把本候选 `no-launch READY` 直接当成
+启动授权。投影结果仅说明接受后原生代码会
 考虑哪些联盟 pair 及其当前资格；婚姻/订婚结果、真正的联盟、长期承诺
 价格、同帧战争预算和共同效用仍未知，不能因五行 readback 将 M5 记为完成。
