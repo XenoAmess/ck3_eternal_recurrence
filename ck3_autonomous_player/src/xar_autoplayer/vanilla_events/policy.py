@@ -485,6 +485,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "death_management.1000",
         "health.1001",
         "health.1010",
+        "health.1101",
         "health.3001",
         "health.3101",
         "health.3103",
@@ -495,7 +496,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
     }
 )
 _DIRECT_SCOPE_VARIANT_EVENT_KEYS: Final = frozenset(
-    {"health.3001", "health.3101", "health.3103"}
+    {"health.1101", "health.3001", "health.3101", "health.3103"}
 )
 _SCOPE_VARIANT_FIELDS: Final = frozenset(
     {
