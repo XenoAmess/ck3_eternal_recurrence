@@ -32,6 +32,9 @@ from xar_autoplayer.bridge.succession_transition_contract import (  # noqa: E402
     legacy_rogue_one_life_binding_v1,
 )
 from xar_autoplayer.environment import EnvironmentSpec  # noqa: E402
+from xar_autoplayer.construction_formal_consumer import (  # noqa: E402
+    write_construction_ledger,
+)
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.runtime import NativeBridgeLaunchConfig  # noqa: E402
 import xar_autoplayer.native_auto_run as native_auto_run_module  # noqa: E402
@@ -376,6 +379,16 @@ class _NativeAutoRunHarness:
         if action == "opaque_checkpoint_failure":
             self.save_checkpoint(expected_revision=self.public_revision)
             raise OSError("fixture opaque checkpoint execution failed")
+        if action == "construction_source_red":
+            failure = BridgeUnavailableError(
+                "construction material source unavailable; keep pending"
+            )
+            failure.plan = {
+                "phase": "construction_pending_receipt",
+                "selected_step": "private-query-player-construction-receipt-v1",
+            }
+            failure.selected_step = "private-query-player-construction-receipt-v1"
+            raise failure
         if action == "opaque_known_noncheckpoint_bridge_failure":
             failure = BridgeUnavailableError("fixture native query rejected")
             failure.plan = {
@@ -539,6 +552,53 @@ class _NativeAutoRunHarness:
                 "accepted": True,
                 "status": "queried",
             }
+        elif action == "construction_pending":
+            step = "private-submit-player-construction-v1"
+            request_id = "construction-submit-r0066-fixture"
+            candidate = {
+                "barony_title_id": 2103,
+                "province_id": 2635,
+                "building_type_id": 24,
+                "slot_index": 1,
+                "stock_gold_cost_raw": 15_000_000,
+                "gold_before_raw": 50_035_659,
+            }
+            pending = {
+                "status": "action_state_unknown",
+                "action_request_id": request_id,
+                "episode_run_id": self.episode_run_id,
+                "actor_character_id": self.played_character_id,
+                "pre_native_revision": self.native_revision,
+                "pre_public_revision": self.public_revision,
+                "pre_date_raw": self.date_raw,
+                "pre_proof_epoch": 4231,
+                "source_bridge_pid": self.bridge_pid,
+                "source_bridge_creation_date": "2026-09-22T00:00:00Z",
+                "candidate": candidate,
+            }
+            self._append_history(step, pending)
+            result = {
+                **pending,
+                "status": "submitted_verification_pending",
+                "pre_proof_epoch": 4232,
+                "native_ack": {
+                    "status": "pending_receipt",
+                    "applied": False,
+                    "production_native_path": True,
+                    "receiver_calls": 1,
+                    "receiver_command_sequence": 1,
+                    "proof_epoch": 4232,
+                },
+            }
+            assert self.driver is not None
+            write_construction_ledger(
+                self.driver.state_dir,
+                {
+                    "schema": "xar.ck3.construction_formal_pending_v1",
+                    "pending": result,
+                    "applied": None,
+                },
+            )
         elif action == "merge_pending":
             step = "merge-armies-101-with-303"
             result = {
@@ -2532,6 +2592,102 @@ class NativeAutoRunTests(unittest.TestCase):
             harness.events.index("auto_turn:white_peace_pending"),
             harness.events.index("save_checkpoint"),
         )
+
+    def test_r0066_construction_ack_is_checkpointed_before_receipt_source_red(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            ["construction_pending", "construction_source_red"]
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertEqual(report["status"], "stopped_on_error")
+        self.assertEqual(report["auto_run"]["successful_turns"], 1)
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 0)
+        self.assertEqual(len(report["checkpoints"]), 1)
+        checkpoint = report["checkpoints"][0]
+        self.assertEqual(checkpoint["phase"], "construction_submitted_pending")
+        self.assertEqual(checkpoint["history_index"], 3)
+        fence = checkpoint["pending_action"]
+        self.assertEqual(
+            fence["action_request_id"], "construction-submit-r0066-fixture"
+        )
+        self.assertEqual(fence["action_history_index"], 2)
+        self.assertEqual(fence["checkpoint_history_index"], 3)
+        self.assertEqual(fence["material_postcondition"], "unobserved")
+        self.assertEqual(
+            report["auto_run"]["turns"][0]["evidence"],
+            ["construction_pending_checkpoint_saved"],
+        )
+        self.assertLess(
+            harness.events.index("save_checkpoint"),
+            harness.events.index("auto_turn:construction_source_red"),
+        )
+        self.assertEqual(
+            harness.history[2]["command"], "save-checkpoint"
+        )
+        self.assertIsNotNone(
+            native_auto_run_module.read_construction_ledger(
+                harness.driver.state_dir
+            )["pending"]
+        )
+
+    def test_construction_pending_fence_rejects_wrong_request_or_gap(
+        self,
+    ) -> None:
+        pending = {
+            "status": "submitted_verification_pending",
+            "action_request_id": "construction-submit-r0066-fixture",
+            "episode_run_id": "native-707-test-run",
+            "actor_character_id": 707,
+            "pre_date_raw": 53_171_400,
+            "pre_proof_epoch": 4232,
+            "native_ack": {
+                "status": "pending_receipt",
+                "applied": False,
+                "production_native_path": True,
+                "receiver_calls": 1,
+                "receiver_command_sequence": 1,
+                "proof_epoch": 4232,
+            },
+        }
+        action = {
+            "index": 1,
+            "command": "private-submit-player-construction-v1",
+            "ok": True,
+            "result": pending,
+        }
+        save = {"index": 2, "command": "save-checkpoint", "ok": True}
+        checkpoint = {
+            "history_index": 2,
+            "date_raw": 53_171_400,
+            "episode_run_id": "native-707-test-run",
+        }
+        snapshot = {
+            "native_command_history": [action, save],
+            "date_raw": 53_171_400,
+            "episode_run_id": "native-707-test-run",
+            "played_character": {"character_id": 707, "alive": True},
+        }
+        ledger = {"pending": pending, "applied": None}
+        verify = native_auto_run_module._verify_pending_construction_checkpoint
+        self.assertEqual(
+            verify(checkpoint, snapshot=snapshot, submitted_result=pending,
+                   ledger=ledger)["action_request_id"],
+            pending["action_request_id"],
+        )
+        with self.assertRaisesRegex(AgentError, "durable request ID"):
+            verify(checkpoint, snapshot=snapshot, submitted_result=pending,
+                   ledger={"pending": {**pending, "action_request_id": "other"},
+                           "applied": None})
+        snapshot["native_command_history"] = [
+            action, {"index": 2, "command": "query", "ok": True},
+            {"index": 3, "command": "save-checkpoint", "ok": True},
+        ]
+        checkpoint["history_index"] = 3
+        with self.assertRaisesRegex(AgentError, "immediately fenced"):
+            verify(checkpoint, snapshot=snapshot, submitted_result=pending,
+                   ledger=ledger)
 
     def test_white_peace_ack_without_typed_end_state_stops_the_run(self) -> None:
         report, _harness = self._run(["white_peace_ack_only"])
