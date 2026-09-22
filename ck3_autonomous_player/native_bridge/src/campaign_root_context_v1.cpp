@@ -24,6 +24,9 @@ constexpr std::size_t kPlayerManagerCountOffset = 0x64;
 constexpr std::size_t kPlayerEntryCharacterIdOffset = 0xB0;
 constexpr std::size_t kPlayerEntryPlayerIdOffset = 0xD8;
 constexpr std::size_t kCharacterIdentityOffset = 0x18;
+// Reused from the exact-build war-exit resource reader in ck3_11906.cpp.
+constexpr std::size_t kCharacterLegitimacyDataOffset = 0x1C0;
+constexpr std::size_t kCharacterLegitimacyOffset = 0x28;
 constexpr std::size_t kCharacterDeathMarkerOffset = 0x1C8;
 constexpr std::size_t kCharacterLandStateOffset = 0x1B8;
 constexpr std::size_t kLandStateTargetingFactionsCountOffset = 0x12C;
@@ -112,6 +115,7 @@ struct ObservationV1 {
   bool player_character_alive = false;
   game::FixedPointValue player_monthly_gold_income;
   game::FixedPointValue player_health;
+  game::CampaignRootLegitimacyV1 player_legitimacy_v1;
   std::int32_t player_domain_size = 0;
   std::int32_t player_domain_limit = 0;
   std::int32_t player_targeting_faction_count = 0;
@@ -1828,6 +1832,26 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     return false;
   }
   output.player_health = {health_raw, kFixedPointScale};
+  // This optional material read never changes the root's established
+  // readiness. A missing pointer or failed read must not become zero.
+  void *legitimacy_data = nullptr;
+  if (!ReadValue(access, output.player_character,
+                 kCharacterLegitimacyDataOffset, legitimacy_data)) {
+    output.player_legitimacy_v1.unavailable_reason = "data_pointer_unreadable";
+  } else if (legitimacy_data == nullptr) {
+    output.player_legitimacy_v1.unavailable_reason = "data_absent";
+  } else {
+    std::int64_t legitimacy_raw = -1;
+    if (!ReadValue(access, legitimacy_data, kCharacterLegitimacyOffset,
+                   legitimacy_raw)) {
+      output.player_legitimacy_v1.unavailable_reason = "balance_unreadable";
+    } else if (legitimacy_raw < 0) {
+      output.player_legitimacy_v1.unavailable_reason = "balance_invalid";
+    } else {
+      output.player_legitimacy_v1.value =
+          {legitimacy_raw, kFixedPointScale};
+    }
+  }
   if (!InvokeCharacterInt32(environment.domain_size,
                             output.player_character,
                             output.player_domain_size) ||
@@ -2081,6 +2105,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.player_character_alive = first.player_character_alive;
     output.player_monthly_gold_income = first.player_monthly_gold_income;
     output.player_health = first.player_health;
+    output.player_legitimacy_v1 = first.player_legitimacy_v1;
     output.player_domain_size = first.player_domain_size;
     output.player_domain_limit = first.player_domain_limit;
     output.player_targeting_faction_count =

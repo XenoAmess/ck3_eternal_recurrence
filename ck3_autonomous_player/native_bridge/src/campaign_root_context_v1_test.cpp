@@ -72,6 +72,7 @@ struct Fixture {
   alignas(void *) Blob<0x30> character_storage{};
   alignas(void *) Blob<0xA0> character_slots{};
   alignas(void *) Blob<0x1D0> player_character{};
+  alignas(void *) Blob<0x30> player_legitimacy_data{};
   alignas(void *) Blob<0x1D0> immediate_liege{};
   alignas(void *) Blob<0x1D0> top_liege{};
   alignas(void *) Blob<0x1D0> direct_vassal{};
@@ -239,6 +240,9 @@ struct Fixture {
     Put(character_slots, 8 * 0x10 + 0x08, first_successor_pointer);
     Put(character_slots, 9 * 0x10 + 0x08, second_successor_pointer);
     Put(player_character, 0x18, kPlayerCharacterId);
+    void *legitimacy_data_pointer = Address(player_legitimacy_data);
+    Put(player_character, 0x1C0, legitimacy_data_pointer);
+    Put(player_legitimacy_data, 0x28, std::int64_t{8'000'000});
     Put(immediate_liege, 0x18, kImmediateLiegeId);
     Put(top_liege, 0x18, kTopLiegeId);
     Put(direct_vassal, 0x18, kDirectVassalId);
@@ -857,6 +861,10 @@ bool TestAvailableAndSerializer() {
           xar::game::FixedPointValue{570'772, 100'000} ||
       fixture.monthly_income_calls != 2 ||
       result.player_health != xar::game::FixedPointValue{275'000, 100'000} ||
+      !result.player_legitimacy_v1 ||
+      result.player_legitimacy_v1->value !=
+          xar::game::FixedPointValue{8'000'000, 100'000} ||
+      !result.player_legitimacy_v1->unavailable_reason.empty() ||
       fixture.health_calls != 2 || result.player_domain_size != 6 ||
       result.player_domain_limit != 7 || fixture.domain_size_calls != 2 ||
       fixture.domain_limit_calls != 2 ||
@@ -951,7 +959,10 @@ bool TestAvailableAndSerializer() {
       "\"player_character_alive\":true,"
       "\"player_monthly_gold_income\":{\"raw\":570772,"
       "\"scale\":100000},\"player_health\":{\"raw\":275000,"
-      "\"scale\":100000},\"player_domain_size\":6,"
+      "\"scale\":100000},\"player_legitimacy_v1\":{"
+      "\"status\":\"available\",\"value\":{\"raw\":8000000,"
+      "\"scale\":100000},\"unavailable_reason\":null},"
+      "\"player_domain_size\":6,"
       "\"player_domain_limit\":7,"
       "\"player_targeting_faction_count\":2,\"council\":{"
       "\"status\":\"available\",\"coverage_key\":"
@@ -1113,6 +1124,29 @@ bool TestLegitimateAbsenceAndGovernmentPointerSlot() {
          !result.readiness.council_ready &&
          AllReadiness(result.readiness, true) &&
          !xar::ck3_11906::SerializeCampaignRootContextV1(result).empty();
+}
+
+bool TestMissingLegitimacyNeverBecomesZero() {
+  Fixture fixture;
+  void *no_legitimacy_data = nullptr;
+  Put(fixture.player_character, 0x1C0, no_legitimacy_data);
+  const auto environment = Environment(fixture);
+  const auto access = Access(fixture);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  if (xar::ck3_11906::ReadCampaignRootContextV1(
+          environment, access, request, result) !=
+          xar::game::ReadCampaignRootContextResultV1::available ||
+      !result.player_legitimacy_v1 ||
+      result.player_legitimacy_v1->value.has_value() ||
+      result.player_legitimacy_v1->unavailable_reason != "data_absent" ||
+      !result.readiness.ready) {
+    return false;
+  }
+  return xar::ck3_11906::SerializeCampaignRootContextV1(result).find(
+             "\"player_legitimacy_v1\":{\"status\":\"unavailable\","
+             "\"value\":null,\"unavailable_reason\":\"data_absent\"}") !=
+         std::string::npos;
 }
 
 bool TestTypedUnavailableClearsPartialObservation() {
@@ -1479,6 +1513,10 @@ bool TestStateChangedAndUnsupportedBuild() {
 int main() {
   if (!TestAvailableAndSerializer()) {
     std::cerr << "available reader/serializer fixture failed\n";
+    return 1;
+  }
+  if (!TestMissingLegitimacyNeverBecomesZero()) {
+    std::cerr << "missing legitimacy material fixture failed\n";
     return 1;
   }
   if (!TestLegitimateAbsenceAndGovernmentPointerSlot()) {
