@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "E36C5027B19DA3F8C9282BA469ACE37CAE7F5360AF1D18E047296562AE10E234"
+        "sha256": "09726CBF1E6F77E50D625261F69367791B0BE5A6FDF94D3BC4FA10D430028553"
       },
       "raw_footage": {
         "passed": 0,
@@ -201,6 +201,7 @@
     "campaign_selection": {
       "authority": "owner_instruction_2026-09-23",
       "cross_campaign_date_accumulation_allowed": false,
+      "domain_limit": 6,
       "first_acquired_province_id": 2640,
       "first_acquired_title_id": 2115,
       "formal_primary": "Robert_1066",
@@ -261,19 +262,25 @@
       "historical_continuation": "Murchad_1066",
       "historical_durable_game_days": 14900,
       "historical_target_game_days": 36524,
-      "latest_formal_pair": "R0157_final",
-      "latest_formal_war_id": 50331662,
-      "latest_formal_war_status": "active_combat",
+      "latest_formal_active_war_ids": [
+        16777250,
+        95
+      ],
+      "latest_formal_pair": "R0158_final",
+      "latest_formal_war_status": "defensive_wars_active",
+      "latest_freeze_manifest_status": "frozen-read-only",
       "m3_existing_complete_evidence_retained": true,
       "material_expansion_proven": true,
       "primary_formal_seed_pair": "R0138_frozen_day0",
-      "proven_land_victory_count": 2,
+      "proven_land_victory_count": 3,
       "prv008_frozen_qualification_unchanged": true,
-      "robert_durable_game_days": 1450,
+      "robert_durable_game_days": 1554,
       "robert_target_game_days": 36524,
       "second_acquired_province_id": 2635,
       "second_acquired_title_id": 2102,
-      "stable_domain_size": 4
+      "stable_domain_size": 5,
+      "third_acquired_province_id": 2638,
+      "third_acquired_title_id": 2111
     },
     "closed_gates": [
       "G2-M0",
@@ -281,49 +288,55 @@
       "G2-M3"
     ],
     "latest_durable_continuation": {
-      "active_war": {
-        "actor_character_id": 29829,
-        "battle_control_query": "available",
-        "casus_belli_key": "claim_cb",
-        "claimant_character_id": 29829,
-        "current_province_id": 2638,
-        "declaration_id": "31549-11-0",
-        "declaration_step": "declare-war-31549-11-0",
-        "enemy_army_count": 2,
-        "independent_postcondition_verified": true,
-        "land_acquired_in_this_war": false,
-        "paused_before_tactical_query": true,
-        "player_army_id": 83886367,
-        "player_army_state": "combat",
-        "status": "active",
-        "target_and_actor_power_complete": true,
-        "target_character_id": 31549,
-        "target_network_support_included": true,
-        "target_power_as_percent_of_actor": 33.131,
-        "target_title_id": 2111,
-        "war_id": 50331662,
-        "war_ids_after": [
-          50331662
+      "active_war_armies": {
+        "enemy_soldier_counts": [
+          580,
+          270
         ],
-        "war_ids_before": []
+        "player_army_id": 83886367,
+        "player_army_province_id": 2638,
+        "player_soldiers": 2314
       },
+      "active_wars": [
+        {
+          "casus_belli_key": "naval_expansion_cb",
+          "player_is_primary_war_leader": true,
+          "player_relative_war_score": 5,
+          "player_side": "defender",
+          "target_title_id": 2111,
+          "war_id": 16777250
+        },
+        {
+          "casus_belli_key": "naval_expansion_cb",
+          "player_is_primary_war_leader": true,
+          "player_relative_war_score": 4,
+          "player_side": "defender",
+          "target_title_id": 2111,
+          "war_id": 95
+        }
+      ],
+      "all_active_wars_resolved": false,
       "attempted_turns": 60,
       "campaign_identity": "Robert_1066",
-      "checkpoint_date_raw": 53179128,
-      "checkpoint_history_index": 626,
-      "checkpoint_save_sha256": "0BCCCC0504A1CE116FFDC58CCAA730A85857B2AED8FECD76BA491F1150DDA247",
+      "checkpoint_date_raw": 53181624,
+      "checkpoint_history_index": 708,
+      "checkpoint_save_sha256": "C8A664D67C9B27B414FD991C676E2C2E349843FB30923146519BE467AC1F4800",
       "cleanup_proven": true,
-      "driver_sha256": "E3FA64C4F757EEF707028A29C5D0A71CFF7C5DB68441FFA187A88FB819076BD2",
-      "durable_game_days": 1450,
-      "durable_game_days_increment": 140,
+      "driver_sha256": "1A487C59457F192E65A80B07FA2581BAE47D49D57530C57E2623741F502B1D9F",
+      "durable_game_days": 1554,
+      "durable_game_days_increment": 104,
       "evidence": {
         "base": "configured_process_assets_root",
-        "freeze_locator": "g2-robert-mainline-r0157-second-land-third-war-20260923/R0157-final-frozen-pair/R0157-pair-freeze.json",
-        "freeze_sha256": "2281D900574C913351225B949CC7B65CF82728939EB268B107F4D367A807C317",
-        "frozen_pair_directory": "g2-robert-mainline-r0157-second-land-third-war-20260923/R0157-final-frozen-pair"
+        "canonical_allocator_status": "completed-green",
+        "formal_report_locator": "g2-robert-r0157-third-war-battle-master1c96841-20260923/live-R0158/formal-report.txt",
+        "formal_report_sha256": "707C46B01369EB9FB165E54ABFB1F9FE7CAD3D4D80EF02EE7B4BD1A932E672FB",
+        "freeze_locator": "g2-robert-mainline-r0158-third-land-two-defense-wars-20260923/R0158-final-frozen-pair/R0158-pair-freeze.json",
+        "freeze_manifest_status": "frozen-read-only",
+        "freeze_sha256": "9ADB8DF84367F199653D1CB696808144D85E7AB20B41630A26CFF3F8D8F91BDF",
+        "frozen_pair_directory": "g2-robert-mainline-r0158-third-land-two-defense-wars-20260923/R0158-final-frozen-pair"
       },
-      "execution_id": "62a2addb-1224-45f7-9d90-94c8de753550",
-      "formal_report_sha256": "869980258C70577DDCAD2BC49E2B03FBF49506773C7AC7EBA5C405119028A3DE",
+      "execution_id": "81ceaba9-7bbe-4133-99f0-f944b99993d2",
+      "formal_report_sha256": "707C46B01369EB9FB165E54ABFB1F9FE7CAD3D4D80EF02EE7B4BD1A932E672FB",
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
       "material_expansion_proven": true,
@@ -337,47 +350,41 @@
           "capital_province_id": 2635,
           "title_id": 2102,
           "war_id": 33554446
+        },
+        {
+          "capital_province_id": 2638,
+          "title_id": 2111,
+          "war_id": 50331662
         }
       ],
       "result": "qualified",
-      "round": "R0157",
-      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0157",
-      "scope": "Robert focus-first mainline with two independently proven county acquisitions and a third safe claim war paused at an available battle-control query; domain size 5 was transient and stable size is 4, with no third victory, century, whole-campaign or second-seed qualification",
-      "second_land_victory": {
-        "acquired_province_id": 2635,
-        "acquired_title_id": 2102,
-        "army_disbanded": true,
-        "domain_size_before": 3,
-        "domain_size_stable": 4,
-        "domain_size_transient_after_victory": 5,
-        "held_title_ids_after": [
-          2102,
-          2115,
-          2141,
-          2142,
-          2173
-        ],
-        "held_title_ids_before": [
-          2115,
-          2141,
-          2142,
-          2173
-        ],
-        "independent_postcondition_verified": true,
-        "postwar_checkpoint_saved": true,
-        "termination_status": "victory_enforced",
-        "termination_step": "enforce-demands-33554446",
-        "transient_domain_size_is_not_stable": true,
-        "war_id": 33554446,
-        "war_ids_after": [],
-        "war_ids_before": [
-          33554446
-        ]
-      },
+      "round": "R0158",
+      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0158",
+      "scope": "Robert focus-first mainline with three independently proven county acquisitions; the third offensive claim war is won, but two same-frame or continuing defensive naval-expansion wars remain active, so this is not an all-wars-resolved, century, whole-campaign or second-seed qualification",
       "source_commit": "1c968415b6a17d00961c374f92155b5c0f89837e",
       "status": "turn_limit",
       "successful_turns": 60,
       "target_game_days": 36524,
+      "third_land_victory": {
+        "acquired_province_id": 2638,
+        "acquired_title_id": 2111,
+        "domain_limit": 6,
+        "domain_size_stable": 5,
+        "held_title_ids": [
+          2102,
+          2111,
+          2115,
+          2141,
+          2142,
+          2173
+        ],
+        "held_titles_persistently_verified": true,
+        "independent_postcondition_verified": true,
+        "terminated_war_absent_after_enforcement": true,
+        "termination_status": "victory_enforced",
+        "termination_step": "enforce-demands-50331662",
+        "war_id": 50331662
+      },
       "whole_campaign_gate": "0/1"
     },
     "m4_focus_first_primitive": {
@@ -571,6 +578,33 @@
         "stable_domain_size": 4,
         "status": "turn_limit",
         "successful_turns": 60
+      },
+      {
+        "active_war_ids": [
+          16777250,
+          95
+        ],
+        "attempted_turns": 60,
+        "canonical_allocator_status": "completed-green",
+        "checkpoint_date_raw": 53181624,
+        "checkpoint_history_index": 708,
+        "checkpoint_save_sha256": "C8A664D67C9B27B414FD991C676E2C2E349843FB30923146519BE467AC1F4800",
+        "driver_sha256": "1A487C59457F192E65A80B07FA2581BAE47D49D57530C57E2623741F502B1D9F",
+        "durable_game_days": 1554,
+        "durable_game_days_increment": 104,
+        "execution_id": "81ceaba9-7bbe-4133-99f0-f944b99993d2",
+        "formal_report_locator": "g2-robert-r0157-third-war-battle-master1c96841-20260923/live-R0158/formal-report.txt",
+        "formal_report_sha256": "707C46B01369EB9FB165E54ABFB1F9FE7CAD3D4D80EF02EE7B4BD1A932E672FB",
+        "freeze_locator": "g2-robert-mainline-r0158-third-land-two-defense-wars-20260923/R0158-final-frozen-pair/R0158-pair-freeze.json",
+        "freeze_manifest_status": "frozen-read-only",
+        "freeze_sha256": "9ADB8DF84367F199653D1CB696808144D85E7AB20B41630A26CFF3F8D8F91BDF",
+        "result": "qualified",
+        "round": "R0158",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0158",
+        "stable_domain_size": 5,
+        "status": "turn_limit",
+        "successful_turns": 60,
+        "third_land_victory_proven": true
       }
     ],
     "result": "ACTIVE"
@@ -583,5 +617,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T07:00:00+08:00"
+  "updated_at": "2026-09-23T07:05:00+08:00"
 }
