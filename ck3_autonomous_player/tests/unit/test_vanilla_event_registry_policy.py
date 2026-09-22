@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import unittest
+from unittest import mock
 
 from xar_autoplayer.bridge.event_window_context_contract import (
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
@@ -9,6 +10,9 @@ from xar_autoplayer.bridge.event_window_context_contract import (
 from xar_autoplayer.strategy import choose_one_life_turn
 from xar_autoplayer.vanilla_events.policy import (
     recommend_registered_vanilla_event_option_v1,
+)
+from xar_autoplayer.vanilla_events.registry import (
+    query_vanilla_event_knowledge_v1,
 )
 
 
@@ -1113,6 +1117,34 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             snapshot_option_count=3,
         )
         self.assertIsNone(other["choice_effect_profile"])
+
+    def test_r0092_stale_analysis_profile_cannot_bypass_current_indicator(
+        self,
+    ) -> None:
+        knowledge = query_vanilla_event_knowledge_v1("epidemic_events.5007")
+        knowledge["analysis"]["selected_choice_effect_profile"] = {
+            "schema": "xar.ck3.vanilla-event-choice-effect",
+            "schema_version": 1,
+            "selected_native_option_index": 2,
+            "selected_option_effects": [],
+            "common_after_effects": [],
+            "observable_postcondition": {
+                "metric": "played_character.stress_points",
+                "expected_relation": "strictly_increasing",
+                "material_change_required_for_evidence": True,
+            },
+        }
+        with mock.patch(
+            "xar_autoplayer.vanilla_events.policy.query_vanilla_event_knowledge_v1",
+            return_value=knowledge,
+        ):
+            decision = recommend_registered_vanilla_event_option_v1(
+                _epidemic_5007_context((1, 2)),
+                played_character_id=36_403,
+                snapshot_option_count=3,
+            )
+        self.assertEqual(decision["status"], "recommended")
+        self.assertIsNone(decision["choice_effect_profile"])
 
     def test_r0092_epidemic_5007_formal_planner_selects_typed_option_three(
         self,
