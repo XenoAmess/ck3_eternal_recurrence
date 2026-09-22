@@ -31,10 +31,24 @@ tools\.venv\Scripts\python.exe -B promo/ck3_native_war_ai/integration/capture_se
 
 存档精确复制进新 profile 的 `save games/war_film_checkpoint.ck3`；保存来源、复制后 bytes/SHA 与原回执副本。
 新 profile 保持 `enabled_mods=[]` 和固定 CK3 EXE SHA，不拷贝旧 driver history、不修改旧 run。
-observer 只等待既有加载器产生 paused/map-ready snapshot，再核对保存的 actor、date 和 native build；
+observer 等待既有加载器发布完整 actor/date，核对保存身份和 native build，并要求同一暂停身份稳定且后续 application-main pump 已推进。
+`map_ready=true` 而 `played_character=null` 是加载中的不完整发布，继续有界等待；有效不同角色或日期仍拒绝。
+稳定 snapshot 后才保存 `map-start.png`，其 HUD 状态仍须实际看图，不能把 native map_ready 本身当作 HUD 视觉证明；
 checkpoint 分支不调用 New Game 或 StartGame，也不把发出加载参数当成已成功恢复。
 不带 checkpoint 参数时，原有 1066 bookmark 分支继续保留。
 
 `--interactive-seconds 3600` 是显式一小时服务预算，上限没有放宽；不指定时仍为 1800 秒。
 `--recovery-seconds`、同一 owner 的请求目录、失败后热诊断、显式 finish 与所有旧 attempt 保全保持原逻辑。
 本改动的离线检查不等于 R0004 存档已在新 run 中成功加载，实际结果由下一次 live readback 决定。
+
+## R0005 的实际时序故障及保存档检查
+
+2026-09-23 的 R0005 首次 `native:2` 已 `map_ready=true`、日期正确，但 `played_character=null`，
+当时失败截图仍是加载 100%。旧代码过早判身份不符而进入 recovery；后续同一 owner 的独立 `native:3`
+读回才完整发布 actor `29829`、date `53144328`，随后另行确认真实 HUD。原 RED 和 recovery 证据保持原样，
+这次代码修正只影响新 run，不重启或重标 R0005。
+
+R0005 还实测 `ck3_inspect_save_artifacts_v1` 因 server 未绑定 profile 而不可用。
+当前新会话已使用既有 `create_server(driver, profile_dir=spec.profile_dir)` 参数启用原有只读 inspector，
+没有修改 MCP 通用服务；已运行的旧 owner 不会因源码变更自动获得这个配置。
+此可选工具不可用不推翻真实 `save-checkpoint` saved 回执或独立文件 bytes/SHA 复核，也不要求为了检查器重启游戏。

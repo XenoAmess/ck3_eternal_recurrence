@@ -117,23 +117,46 @@ def copy_checkpoint(source: dict, profile_dir: Path, output_dir: Path) -> dict:
 
 
 async def wait_checkpoint_map(*, call, source: dict, stopped: threading.Event,
-                              timeout_seconds: float) -> dict:
+                              timeout_seconds: float, stable_seconds: float = 1.0,
+                              poll_interval_seconds: float = 1.0) -> dict:
     """Observe the existing loader's result; no New Game, native load, or restore command."""
     deadline = time.monotonic() + timeout_seconds
+    stable_key = None
+    stable_since = None
+    baseline_pump = None
+    last_reason = "native map has not been published"
     while time.monotonic() < deadline and not stopped.is_set():
         snapshot = await call("ck3_take_snapshot", tolerate=True)
-        if snapshot.get("map_ready") is True:
-            require(snapshot.get("paused") is True, "Loaded checkpoint is not paused")
-            require((snapshot.get("played_character") or {}).get("character_id") == source["actor"]
-                    and snapshot.get("date_raw") == source["date_raw"],
+        played = snapshot.get("played_character") or {}
+        actor, date = played.get("character_id"), snapshot.get("date_raw")
+        complete_identity = (snapshot.get("map_ready") is True and type(actor) is int
+                             and actor > 0 and type(date) is int and date > 0)
+        if complete_identity:
+            require(actor == source["actor"] and date == source["date_raw"],
                     "Loaded checkpoint actor/date differs from saved native receipt")
-            hello = (snapshot.get("diagnostics") or {}).get("hello") or {}
+        if complete_identity and snapshot.get("paused") is True:
+            diagnostics = snapshot.get("diagnostics") or {}
+            hello = diagnostics.get("hello") or {}
             require(hello.get("ck3_build_match") is True and
                     str(hello.get("expected_ck3_sha256", "")).upper() == EXACT_SHA,
                     "Loaded checkpoint native build readback differs")
-            return snapshot
-        await asyncio.sleep(1)
-    raise RuntimeError("Loaded checkpoint did not produce a verified paused map within the bounded wait")
+            mailbox = (diagnostics.get("last_heartbeat") or {}).get("main_thread_query_mailbox_v1") or {}
+            pump = mailbox.get("pump_epochs")
+            key = (diagnostics.get("bridge_pid"), diagnostics.get("connection_generation"), actor, date,
+                   snapshot.get("snapshot_id"), snapshot.get("revision"), snapshot.get("native_revision"))
+            now = time.monotonic()
+            if key != stable_key or baseline_pump is None:
+                stable_key, stable_since = key, now
+                baseline_pump = pump if type(pump) is int and pump >= 0 else None
+            elif (type(pump) is int and pump > baseline_pump and mailbox.get("ready") is True
+                  and stable_since is not None and now - stable_since >= stable_seconds):
+                return snapshot
+            last_reason = "valid paused identity awaits stability and a later application-main pump"
+        else:
+            stable_key = stable_since = baseline_pump = None
+            last_reason = "map/paused state or played-character/date publication is still incomplete"
+        await asyncio.sleep(poll_interval_seconds)
+    raise RuntimeError("Loaded checkpoint did not produce a verified stable paused map within the bounded wait: " + last_reason)
 
 
 def session_outcome(*, session_ok: bool, debug_recording_enabled: bool, recording_ok: bool) -> str:
@@ -247,7 +270,7 @@ def preflight(args: argparse.Namespace) -> dict:
         # Listing creates the real pipe endpoint too. Release it before the
         # live observer creates its single owning driver for this pipe name.
         with closing(NativeHeadlessGameplayDriver(args.pipe_name, state_dir=args.state_dir)) as driver:
-            async with Client(create_server(driver)) as client:
+            async with Client(create_server(driver, profile_dir=spec.profile_dir)) as client:
                 result = await client.list_tools()
                 return [tool.name for tool in result.tools]
 
@@ -387,7 +410,7 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
             succession_lifecycle_binding=lifecycle,
         )
         with closing(driver):
-            async with Client(create_server(driver)) as client:
+            async with Client(create_server(driver, profile_dir=spec.profile_dir)) as client:
                 async def call(name: str, arguments: dict | None = None, tolerate: bool = False) -> dict:
                     row = {"tool": name, "arguments": arguments or {}, "at": utc(), "seconds": time.monotonic() - origin}
                     try:
@@ -445,7 +468,9 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                             "postcondition_verified": True, "source_checkpoint": checkpoint,
                             "snapshot": snapshot, "loader": "native_session.frontend_first_load_save_name",
                             "warmup_then_load_are_separate_serial_processes": True,
-                            "driver_history_copied": False, "new_game_called": False}
+                            "driver_history_copied": False, "new_game_called": False,
+                            "readiness": "complete stable paused identity and later application-main pump",
+                            "hud_visual_review": "pending actual image review; map_ready alone is not HUD proof"}
                     write_new(args.output_dir / "native-start-readback.json", started)
                     require(snapshot.get("map_ready") is True and snapshot.get("paused") is True, "Map is not ready and paused")
                     write_new(args.output_dir / "initial-snapshot.json", snapshot)

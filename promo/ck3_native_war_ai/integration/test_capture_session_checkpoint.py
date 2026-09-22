@@ -1,6 +1,7 @@
 """Focused offline checkpoint and no-video result checks; never start CK3/media."""
 import argparse
 import asyncio
+import copy
 import io
 import json
 from pathlib import Path
@@ -58,17 +59,62 @@ class CheckpointSessionTests(unittest.TestCase):
     def test_checkpoint_readback_uses_only_snapshot_and_requires_saved_identity(self):
         calls = []
         state = {"map_ready": True, "paused": True, "played_character": {"character_id": 29829},
-            "date_raw": 53144328, "diagnostics": {"hello": {"ck3_build_match": True, "expected_ck3_sha256": EXACT_SHA}}}
+            "date_raw": 53144328, "diagnostics": {"hello": {"ck3_build_match": True, "expected_ck3_sha256": EXACT_SHA},
+                "last_heartbeat": {"main_thread_query_mailbox_v1": {"ready": True, "pump_epochs": 1}}}}
         async def call(tool, **kwargs):
             calls.append(tool)
+            state["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["pump_epochs"] += 1
             return state
         kwargs = {"call": call, "source": {"actor": 29829, "date_raw": 53144328},
-                  "stopped": threading.Event(), "timeout_seconds": 1}
+                  "stopped": threading.Event(), "timeout_seconds": 1,
+                  "stable_seconds": 0, "poll_interval_seconds": 0}
         self.assertEqual(asyncio.run(wait_checkpoint_map(**kwargs)), state)
         state["date_raw"] += 1
         with self.assertRaisesRegex(RuntimeError, "actor/date differs"):
             asyncio.run(wait_checkpoint_map(**kwargs))
-        self.assertEqual(calls, ["ck3_take_snapshot", "ck3_take_snapshot"])
+        state["date_raw"] = 53144328
+        state["played_character"]["character_id"] = 999
+        with self.assertRaisesRegex(RuntimeError, "actor/date differs"):
+            asyncio.run(wait_checkpoint_map(**kwargs))
+        self.assertEqual(calls, ["ck3_take_snapshot"] * 4)
+
+    def test_map_ready_before_actor_waits_for_identity_and_later_pump(self):
+        incomplete = {"map_ready": True, "paused": True, "date_raw": 53144328,
+                      "played_character": None, "snapshot_id": "native:2"}
+        ready = {"map_ready": True, "paused": True, "date_raw": 53144328,
+            "played_character": {"character_id": 29829}, "snapshot_id": "native:3", "revision": 4,
+            "native_revision": 3, "diagnostics": {"bridge_pid": 123, "connection_generation": 1,
+                "hello": {"ck3_build_match": True, "expected_ck3_sha256": EXACT_SHA},
+                "last_heartbeat": {"main_thread_query_mailbox_v1": {"ready": True, "pump_epochs": 10}}}}
+        advanced = copy.deepcopy(ready)
+        advanced["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["pump_epochs"] = 11
+        sequence = [incomplete, ready, ready, advanced]
+        calls = []
+        async def call(tool, **kwargs):
+            calls.append(tool)
+            return sequence[len(calls)-1]
+        result = asyncio.run(wait_checkpoint_map(call=call, source={"actor": 29829, "date_raw": 53144328},
+            stopped=threading.Event(), timeout_seconds=1, stable_seconds=0, poll_interval_seconds=0))
+        self.assertEqual(result, advanced)
+        self.assertEqual(calls, ["ck3_take_snapshot"] * 4)
+
+    def test_profile_injection_enables_actual_offline_mcp_save_inspection(self):
+        from mcp import Client
+        from xar_autoplayer.bridge.driver import DevelopmentReportDriver
+        from xar_autoplayer.bridge.mcp_server import create_server
+        profile = self.root / "synthetic-profile"
+        (profile / "save games").mkdir(parents=True)
+        (profile / "save games" / "fixture.ck3").write_bytes(b"SAV0100\nmeta_data={\n}\n")
+        async def inspect():
+            async with Client(create_server(DevelopmentReportDriver(self.root), profile_dir=profile)) as client:
+                result = await client.call_tool("ck3_inspect_save_artifacts_v1", {})
+                self.assertFalse(result.is_error)
+                return result.structured_content
+        result = asyncio.run(inspect())
+        self.assertEqual(result["artifact_count"], 1)
+        self.assertTrue(result["read_only"])
+        self.assertEqual(Path(result["profile_dir"]), profile)
+        write_new(self.root / "actual-offline-mcp-inspection.json", result)
 
     def test_no_recorder_never_reports_video_completion(self):
         self.assertEqual(session_outcome(session_ok=True, debug_recording_enabled=False, recording_ok=False),
