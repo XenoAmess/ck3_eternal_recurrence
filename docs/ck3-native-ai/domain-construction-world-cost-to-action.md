@@ -6,7 +6,7 @@ R746 在相同玩家、日期和 paused 帧取得 981 个原版 `CBuildingType` 
 
 原版 building command validator `0x26CD410` 在 `0x26CD475..0x26CD4AB` 使用 `+0x2C` 的 BuildingTypeID 查 `0x864750/0x26D0F50` 原版定义管理器，并将 `+0x20` 玩家、`+0x24` Province、`+0x28` 施工槽及定义指针交给同一个 `0x295CD60` 玩家最终合法性/可负担性判定。R746 的槽位与 command selector 因此是同一个字段，仍须在**提交当帧**重新通过 validator。原版可负担性 `0x2CDD09D..0x2CDD0EF` 在一条条件分支将 `raw[7]` 加进黄金；R746 `raw[7]=0` 使该条件不改变六个元组的黄金费用，不需要猜触发标志。其他资源槽位在本候选都是零，不能借此宣称所有建设成本已解码。
 
-原版 command materializer 是 building 主 vtable `+0x40 → 0x26D0C60`。receiver `0x341D990` 以 flags 7 把 command 入队并给 sequence；受理只表示 `pending_receipt`。第二 vtable 的原版执行器 `0x26CD290` 经 `0x21F6860` 写入 Province `+0x620` 的活动施工：`+0x70` 为 `CBuildingType*`、`+0x78` 为施工槽、`+0xE0` 为发起 CharacterID。私有只读查询在下一独立 paused application-main proof epoch 中，将活动 pointer 与同帧已经验证的原版管理器指针配对后只序列化 scalar BuildingTypeID。只有活动施工的 Province、槽、定义与发起人都匹配前一提交，才可证明物质结果；同帧缓存值、队列 ACK 或单纯进程存活都不满足。后续正式 turn 消费与 checkpoint/cold restore 还须实机取得。
+原版 command materializer 是 building 主 vtable `+0x40 → 0x26D0C60`。receiver `0x341D990` 以 flags 7 把 command 入队并给 sequence；受理只表示 `pending_receipt`。第二 vtable 的原版执行器 `0x26CD290` 经 `0x21F6860` 写入 Province `+0x620` 的活动施工：`+0x70` 为 `CBuildingType*`、`+0x78` 为施工槽、`+0xE0` 为发起 CharacterID。私有只读查询在下一独立 paused application-main proof epoch 中，将活动 pointer 与同帧已经验证的原版管理器指针配对后只序列化 scalar BuildingTypeID。只有活动施工的 Province、槽、定义与发起人都匹配前一提交，才可证明物质结果；同帧缓存值、队列 ACK 或单纯进程存活都不满足。R746 当时尚缺的正式下一 turn 消费与 checkpoint/cold restore，由下述 R0080→R0081 私有有界证据补齐。
 
 ```mermaid
 flowchart LR
