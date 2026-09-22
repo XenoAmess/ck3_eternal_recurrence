@@ -59,6 +59,59 @@ def require(condition: bool, message: str) -> None:
         raise RuntimeError(message)
 
 
+async def service_requests(directory: Path, *, call, stopped: threading.Event,
+                           seconds: float, state_reader) -> None:
+    """Keep the one owning MCP connection available for bounded hot diagnosis.
+
+    Requests are explicit local JSON files, never inferred retries of StartGame.
+    Each request and response is preserved. A failed initial attempt remains RED.
+    """
+    directory.mkdir(exist_ok=False)
+    responses = directory.parent / (directory.name + "-responses")
+    responses.mkdir(exist_ok=False)
+    deadline = time.monotonic() + seconds
+    write_new(responses / "service.json", {
+        "started_at": utc(), "timeout_seconds": seconds,
+        "request_schema": {"action": "mcp", "tool": "ck3_take_snapshot", "arguments": {}},
+        "finish_schema": {"action": "finish"},
+        "same_driver_connection": True, "automatic_mutating_retry": False,
+    })
+    processed: set[str] = set()
+    while time.monotonic() < deadline and not stopped.is_set():
+        for source in sorted(directory.glob("*.json")):
+            if source.name in processed:
+                continue
+            # Writers must atomically rename a completed request into this folder.
+            processed.add(source.name)
+            row = {"request": identity(source), "at": utc(), "result": "RED"}
+            finish = False
+            try:
+                request = json.loads(source.read_text(encoding="utf-8"))
+                require(isinstance(request, dict), "Request must be an object")
+                if request.get("action") == "finish":
+                    row["result"] = "SERVICE_FINISHED"
+                    finish = True
+                else:
+                    require(request.get("action") == "mcp", "Unknown request action")
+                    name = request.get("tool")
+                    require(isinstance(name, str) and name.startswith("ck3_"), "Explicit MCP tool required")
+                    row["body"] = await call(name, request.get("arguments") or {})
+                    row["result"] = "CALL_COMPLETED"
+            except Exception as error:
+                row["error"] = repr(error)
+            try:
+                row["driver_state"] = state_reader()
+            except Exception as error:
+                row["state_error"] = repr(error)
+            write_new(responses / source.name, row)
+            if finish:
+                return
+        await asyncio.sleep(0.25)
+    write_new(responses / "service-ended.json", {
+        "at": utc(), "reason": "owner_stopped" if stopped.is_set() else "bounded_timeout",
+    })
+
+
 def preflight(args: argparse.Namespace) -> dict:
     from xar_autoplayer.environment import ck3_process_inventory, make_spec
     from xar_autoplayer.runtime import NativeBridgeLaunchConfig, validate_native_bridge_launch_config
@@ -95,6 +148,9 @@ def preflight(args: argparse.Namespace) -> dict:
     require(shutil.which(args.ffmpeg) is not None, "FFmpeg missing")
     require(shutil.which(args.ffprobe) is not None, "ffprobe missing")
     require(not args.state_dir.exists(), "State directory must be new")
+    if args.shader_cache_source is not None:
+        require(args.shader_cache_source.is_dir() and args.shader_cache_source.name == "shadercache",
+                "Cache reuse requires an explicitly named existing shadercache directory")
     from xar_autoplayer.environment import ensure_state_path_safe
     ensure_state_path_safe(args.state_dir)
 
@@ -150,6 +206,27 @@ def prepare_profile(args: argparse.Namespace) -> tuple[object, dict]:
     (spec.profile_dir / "player/game_rules/presets.txt").write_text(presets, encoding="utf-8")
     (spec.profile_dir / "pdx_settings.txt").write_text(render_settings(), encoding="utf-8")
     (spec.profile_dir / "tutorial.txt").write_text('last_lesson_chain="reactive_advice"\ncompleted_lessons={\n}\n', encoding="utf-8")
+    if args.shader_cache_source is not None:
+        source_cache = args.shader_cache_source.resolve()
+        target_cache = spec.profile_dir / "shadercache"
+        target_cache.mkdir(exist_ok=False)
+        copied = []
+        for source in sorted(source_cache.rglob("*")):
+            require(not source.is_symlink(), "Shader cache must not contain symbolic links")
+            if not source.is_file():
+                continue
+            target = target_cache / source.relative_to(source_cache)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            before = identity(source)
+            shutil.copyfile(source, target)
+            after = identity(target)
+            require(before["bytes"] == after["bytes"] and before["sha256"] == after["sha256"],
+                    "Shader cache copy mismatch")
+            copied.append({"source": before, "copy": after})
+        write_new(args.output_dir / "shader-cache-reuse.json", {
+            "source": str(source_cache), "destination": str(target_cache),
+            "files": copied, "semantic_profile_files_copied": False,
+        })
     profile = {
         "kind": "vanilla-observational-map-capture-profile", "enabled_mods": [],
         "profile_dir": str(spec.profile_dir), "game": identity(spec.game_exe),
@@ -219,53 +296,75 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                         require(not row["is_error"], f"MCP call failed: {name}; inspect journal")
                     return row.get("body") or {}
 
-                deadline = time.monotonic() + args.frontend_timeout
-                next_progress = 0.0
-                route = {}
-                while time.monotonic() < deadline and not stopped.is_set():
-                    route = await call("ck3_query_frontend_gui_route_v1", tolerate=True)
-                    if time.monotonic() >= next_progress:
-                        import psutil
-                        diagnostic = driver.state.diagnostics()
-                        progress = {"at": utc(), "seconds": time.monotonic() - origin,
-                                    "route": route, "bridge": diagnostic, "process": None}
-                        pid = diagnostic.get("bridge_pid")
-                        if isinstance(pid, int):
-                            try:
-                                process = psutil.Process(pid)
-                                progress["process"] = {"pid": pid, "created_at": process.create_time(),
-                                                       "rss": process.memory_info().rss,
-                                                       "cpu_seconds": process.cpu_times()._asdict()}
-                            except psutil.Error as error:
-                                progress["process_error"] = repr(error)
-                        append(args.output_dir / "frontend-progress.jsonl", progress)
-                        next_progress = time.monotonic() + 30
-                    if route.get("route") == "main_menu":
-                        break
-                    await asyncio.sleep(1)
-                require(route.get("route") == "main_menu", "Responsive main menu was not observed")
-                opened = await call("ck3_activate_frontend_new_game_v1")
-                require(opened.get("postcondition_verified") is True, "New Game route unverified")
-                started = await call("ck3_activate_frontend_start_1066_bookmark_character_v1",
-                                     {"character_name_key": checked["bookmark_candidate_from_binary"]})
-                require(started.get("postcondition_verified") is True, "Bookmark/map identity unverified")
-                write_new(args.output_dir / "native-start-readback.json", started)
-                snapshot = await call("ck3_take_snapshot")
-                require(snapshot.get("map_ready") is True and snapshot.get("paused") is True, "Map is not ready and paused")
-                write_new(args.output_dir / "initial-snapshot.json", snapshot)
-                load = json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8"))
-                require(load == {"enabled_mods": [], "disabled_dlcs": []}, "Vanilla load profile changed")
-                from PIL import ImageGrab
-                ImageGrab.grab().save(args.output_dir / "map-start.png")
-                worker["marks"].append({"kind": "paused-map-start", "at": utc(), "seconds": time.monotonic() - origin,
-                                          "snapshot_id": snapshot.get("snapshot_id"), "revision": snapshot.get("revision")})
-                await asyncio.sleep(args.hold_seconds)
-                final = await call("ck3_take_snapshot")
-                write_new(args.output_dir / "final-snapshot.json", final)
-                ImageGrab.grab().save(args.output_dir / "map-end.png")
-                worker["marks"].append({"kind": "paused-map-end", "at": utc(), "seconds": time.monotonic() - origin,
-                                          "snapshot_id": final.get("snapshot_id"), "revision": final.get("revision")})
-                worker["ok"] = True
+                async def initial_capture() -> None:
+                    deadline = time.monotonic() + args.frontend_timeout
+                    next_progress = 0.0
+                    route = {}
+                    while time.monotonic() < deadline and not stopped.is_set():
+                        route = await call("ck3_query_frontend_gui_route_v1", tolerate=True)
+                        if time.monotonic() >= next_progress:
+                            import psutil
+                            diagnostic = driver.state.diagnostics()
+                            progress = {"at": utc(), "seconds": time.monotonic() - origin,
+                                        "route": route, "bridge": diagnostic, "process": None}
+                            pid = diagnostic.get("bridge_pid")
+                            if isinstance(pid, int):
+                                try:
+                                    process = psutil.Process(pid)
+                                    progress["process"] = {"pid": pid, "created_at": process.create_time(),
+                                                           "rss": process.memory_info().rss,
+                                                           "cpu_seconds": process.cpu_times()._asdict()}
+                                except psutil.Error as error:
+                                    progress["process_error"] = repr(error)
+                            append(args.output_dir / "frontend-progress.jsonl", progress)
+                            next_progress = time.monotonic() + 30
+                        if route.get("route") == "main_menu":
+                            break
+                        await asyncio.sleep(1)
+                    require(route.get("route") == "main_menu", "Responsive main menu was not observed")
+                    opened = await call("ck3_activate_frontend_new_game_v1")
+                    require(opened.get("postcondition_verified") is True, "New Game route unverified")
+                    started = await call("ck3_activate_frontend_start_1066_bookmark_character_v1",
+                                         {"character_name_key": checked["bookmark_candidate_from_binary"]})
+                    require(started.get("postcondition_verified") is True, "Bookmark/map identity unverified")
+                    write_new(args.output_dir / "native-start-readback.json", started)
+                    snapshot = await call("ck3_take_snapshot")
+                    require(snapshot.get("map_ready") is True and snapshot.get("paused") is True, "Map is not ready and paused")
+                    write_new(args.output_dir / "initial-snapshot.json", snapshot)
+                    load = json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8"))
+                    require(load == {"enabled_mods": [], "disabled_dlcs": []}, "Vanilla load profile changed")
+                    from PIL import ImageGrab
+                    ImageGrab.grab().save(args.output_dir / "map-start.png")
+                    worker["marks"].append({"kind": "paused-map-start", "at": utc(), "seconds": time.monotonic() - origin,
+                                              "snapshot_id": snapshot.get("snapshot_id"), "revision": snapshot.get("revision")})
+                    await asyncio.sleep(args.hold_seconds)
+                    final = await call("ck3_take_snapshot")
+                    write_new(args.output_dir / "final-snapshot.json", final)
+                    ImageGrab.grab().save(args.output_dir / "map-end.png")
+                    worker["marks"].append({"kind": "paused-map-end", "at": utc(), "seconds": time.monotonic() - origin,
+                                              "snapshot_id": final.get("snapshot_id"), "revision": final.get("revision")})
+                    worker["ok"] = True
+
+                failed = False
+                try:
+                    await initial_capture()
+                except Exception as error:
+                    failed = True
+                    worker["error"] = repr(error)
+                    failure = {"at": utc(), "error": repr(error), "bridge": driver.diagnostics()}
+                    try:
+                        failure["snapshot"] = driver.take_snapshot()
+                    except Exception as snapshot_error:
+                        failure["snapshot_error"] = repr(snapshot_error)
+                    write_new(args.output_dir / "hot-failure-state.json", failure)
+                    from PIL import ImageGrab
+                    ImageGrab.grab().save(args.output_dir / "hot-failure-desktop.png")
+                duration = args.recovery_seconds if failed else args.interactive_seconds
+                if duration > 0 and not stopped.is_set():
+                    await service_requests(
+                        args.output_dir / ("recovery-requests" if failed else "interactive-requests"),
+                        call=call, stopped=stopped, seconds=duration, state_reader=driver.diagnostics,
+                    )
 
     def worker_main() -> None:
         try:
@@ -283,8 +382,8 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
             require(recorder.poll() is None, "Recorder exited before game launch")
             thread.start()
             session_result = native_session(
-                # Startup and bookmark-to-map are separate bounded waits.
-                spec, timeout_seconds=2 * args.frontend_timeout + args.hold_seconds + 90,
+                # Startup, map publication and post-ready pump have separate waits.
+                spec, timeout_seconds=3 * args.frontend_timeout + args.hold_seconds + max(args.recovery_seconds, args.interactive_seconds) + 90,
                 native_bridge=NativeBridgeLaunchConfig(mode="native-headless", pipe_name=args.pipe_name,
                                                        dll_path=args.bridge_dll, injector_path=args.bridge_injector),
                 input_stream=None, output_stream=output, stop_event=stopped,
@@ -346,11 +445,15 @@ def main() -> int:
     parser.add_argument("--ffprobe", default="ffprobe")
     parser.add_argument("--frontend-timeout", type=float, default=360)
     parser.add_argument("--hold-seconds", type=float, default=60)
+    parser.add_argument("--shader-cache-source", type=Path, help="Reuse only a prior exact-build shadercache")
+    parser.add_argument("--recovery-seconds", type=float, default=1800, help="Keep the same MCP owner available after Python failure")
+    parser.add_argument("--interactive-seconds", type=float, default=1800, help="Keep the loaded campaign available for explicit MCP requests")
     parser.add_argument("--steam-offline-receipt", type=Path)
     parser.add_argument("--capture", action="store_true", help="Explicitly launch CK3 after preflight; default is no launch")
     args = parser.parse_args()
     require(30 <= args.hold_seconds <= 90, "Hold must be 30..90 seconds")
     require(30 <= args.frontend_timeout <= 600, "Frontend timeout must be 30..600 seconds")
+    require(0 <= args.recovery_seconds <= 3600 and 0 <= args.interactive_seconds <= 3600, "Hot service must be 0..3600 seconds")
     args.output_dir.mkdir(parents=True, exist_ok=False)
     write_new(args.output_dir / "command.json", {"python": sys.executable, "argv": sys.argv, "started_at": utc()})
     try:

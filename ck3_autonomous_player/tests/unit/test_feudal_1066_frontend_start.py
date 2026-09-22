@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import Mock, patch
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -281,6 +282,111 @@ class FeudalSelectedBookmarkStartTests(unittest.TestCase):
             calls,
             [PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP],
         )
+
+
+class FrontendPostReadyPumpTests(unittest.TestCase):
+    @staticmethod
+    def snapshot(epoch: object = 100, revision: int = 1) -> dict[str, object]:
+        return {
+            "snapshot_id": f"native:{revision}",
+            "native_revision": revision,
+            "paused": True,
+            "map_ready": True,
+            "date_raw": 53178312,
+            "played_character": {"character_id": 29829},
+            "diagnostics": {
+                "bridge_pid": 16168,
+                "connection_generation": 1,
+                "last_heartbeat": {
+                    "main_thread_query_mailbox_v1": {"pump_epochs": epoch},
+                },
+            },
+        }
+
+    def driver(self, observed: dict[str, object]) -> NativeHeadlessGameplayDriver:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        driver.frontend_transition_timeout_seconds = 0.5
+        driver.take_snapshot = Mock(return_value=observed)
+        clock = [0.0]
+
+        def sleep(seconds: float) -> None:
+            clock[0] += seconds
+
+        self.enterContext(patch(
+            "xar_autoplayer.bridge.native_driver.time.monotonic",
+            side_effect=lambda: clock[0],
+        ))
+        self.enterContext(patch(
+            "xar_autoplayer.bridge.native_driver.time.sleep", side_effect=sleep,
+        ))
+        return driver
+
+    def test_advanced_pump_accepts_a_new_publication_on_same_binding(self) -> None:
+        observed = self.snapshot(epoch=101, revision=2)
+        driver = self.driver(observed)
+        result = driver._wait_for_frontend_start_post_ready_pump_v1(self.snapshot())
+        self.assertIs(result, observed)
+        driver.take_snapshot.assert_called_once_with()
+
+    def test_advanced_heartbeat_accepts_unchanged_semantic_publication(self) -> None:
+        observed = self.snapshot(epoch=101)
+        driver = self.driver(observed)
+        result = driver._wait_for_frontend_start_post_ready_pump_v1(self.snapshot())
+        self.assertIs(result, observed)
+
+    def test_new_publications_without_pump_progress_still_timeout(self) -> None:
+        driver = self.driver(self.snapshot())
+        driver.take_snapshot.side_effect = [
+            self.snapshot(revision=2), self.snapshot(revision=3),
+        ]
+        with self.assertRaisesRegex(
+            BridgeUnavailableError,
+            "baseline=100, last=100, observations=2, snapshot_changes=2",
+        ) as raised:
+            driver._wait_for_frontend_start_post_ready_pump_v1(self.snapshot())
+        self.assertIn("starting_key=('native:1', 1)", str(raised.exception))
+        self.assertIn("last_key=('native:3', 3)", str(raised.exception))
+
+    def test_post_ready_wait_uses_configured_transition_budget(self) -> None:
+        driver = self.driver(self.snapshot())
+        driver.frontend_transition_timeout_seconds = 45.0
+        driver.take_snapshot.side_effect = lambda: self.snapshot(
+            epoch=101 if driver.take_snapshot.call_count > 124 else 100,
+        )
+        result = driver._wait_for_frontend_start_post_ready_pump_v1(self.snapshot())
+        self.assertEqual(driver.take_snapshot.call_count, 125)
+        self.assertEqual(
+            result["diagnostics"]["last_heartbeat"]
+            ["main_thread_query_mailbox_v1"]["pump_epochs"], 101,
+        )
+
+    def test_binding_changes_reject_even_when_pump_advances(self) -> None:
+        cases = [
+            ("paused", False), ("map_ready", False), ("date_raw", 53178313),
+            ("played_character", {"character_id": 29830}),
+            ("bridge_pid", 16169), ("connection_generation", 2),
+        ]
+        for key, value in cases:
+            with self.subTest(field=key):
+                observed = self.snapshot(epoch=101, revision=2)
+                if key in ("bridge_pid", "connection_generation"):
+                    observed["diagnostics"][key] = value
+                else:
+                    observed[key] = value
+                driver = self.driver(observed)
+                with self.assertRaisesRegex(
+                    BridgeUnavailableError, "player binding changed",
+                ):
+                    driver._wait_for_frontend_start_post_ready_pump_v1(self.snapshot())
+
+    def test_invalid_or_missing_pump_is_not_progress(self) -> None:
+        for epoch in (None, True, -1, "101"):
+            with self.subTest(epoch=epoch):
+                driver = self.driver(self.snapshot(epoch=epoch, revision=2))
+                with self.assertRaisesRegex(
+                    BridgeUnavailableError, "pump epoch disappeared",
+                ):
+                    driver._wait_for_frontend_start_post_ready_pump_v1(self.snapshot())
 
 
 if __name__ == "__main__":

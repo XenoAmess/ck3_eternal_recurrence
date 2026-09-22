@@ -122,3 +122,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W5 移动命令构造者分类
 
 [新增专题](war-film-move-command-constructors-2026-09-23.md)：RTTI 正式绑定 CMoveUnitCommand；0x432BF48 是 +0x30 校验槽，真正主表为 0x432BF18。声明扫描范围内 29 处引用、13 个函数已分类，新入口属于玩家地图输入、克隆和空 factory，仍未发现普通战争主动撤退 policy；后续转向 payload 填充或入队生产者，不重复 census。16 份产物、11 份快照与结果计划 scoped review PASS，a01–a04 冻结文件未变；无实机新增。
+
+## W8 增量：post-ready 检查与保留现场
+
+[post-ready pump 修复](war-film-startgame-post-ready-pump-2026-09-23.md)固定首次 map-ready 基准，保留真正推进与身份不变量，12 项聚焦测试通过；[同局诊断服务](war-film-capture-hot-service-2026-09-23.md)让 Python 失败后保留原 MCP owner，2 项离线测试与最新无启动预检通过。R0003 仍是载入 100% 的 RED，不算 HUD 取材。R0004 使用新 Python 逻辑与原 DLL，复用已记录的 shadercache，正在独立实机验证。

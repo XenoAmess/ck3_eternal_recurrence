@@ -4967,17 +4967,21 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "paused StartGame binding lacks an ApplicationMain pump epoch"
             )
-        current_key = (
+        starting_key = (
             starting.get("snapshot_id"),
             starting.get("native_revision"),
         )
         deadline = (
             time.monotonic()
-            + min(30.0, self.frontend_transition_timeout_seconds)
+            + self.frontend_transition_timeout_seconds
         )
         last_epoch = baseline_epoch
+        last_key = starting_key
+        observation_count = 0
+        snapshot_changes = 0
         while time.monotonic() < deadline:
             observed = self.take_snapshot()
+            observation_count += 1
             observed_played = observed.get("played_character")
             observed_id = (
                 observed_played.get("character_id")
@@ -5008,17 +5012,24 @@ class NativeHeadlessGameplayDriver:
                 observed.get("snapshot_id"),
                 observed.get("native_revision"),
             )
-            if next_key != current_key:
-                current_key = next_key
-                baseline_epoch = last_epoch
-            elif last_epoch > baseline_epoch:
+            if next_key != last_key:
+                snapshot_changes += 1
+                last_key = next_key
+            # The publication revision covers the entire semantic snapshot.
+            # Other fields can change while this paused date/player binding
+            # stays valid. Keep the first ready pump as the fixed baseline;
+            # resetting it on each publication can discard every later pump.
+            if last_epoch > baseline_epoch:
                 return observed
             remaining = deadline - time.monotonic()
             if remaining > 0:
                 time.sleep(min(0.25, remaining))
         raise BridgeUnavailableError(
             "ApplicationMain pump did not advance on the stable paused "
-            f"StartGame binding; baseline={baseline_epoch}, last={last_epoch}"
+            f"StartGame binding; baseline={baseline_epoch}, last={last_epoch}, "
+            f"observations={observation_count}, "
+            f"snapshot_changes={snapshot_changes}, "
+            f"starting_key={starting_key!r}, last_key={last_key!r}"
         )
 
     def activate_frontend_prepare_custom_ruler_v1(self) -> dict[str, object]:
