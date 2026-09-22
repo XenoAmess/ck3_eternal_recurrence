@@ -483,6 +483,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "befriend_outcome.0002",
         "chancellor_task.1004",
         "chancellor_task.1104",
+        "char_interaction.0232",
         "death_management.1000",
         "health.1001",
         "health.1010",

@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 83,
-    "caller_candidate_reference_count": 532,
+    "caller_candidate_file_count": 84,
+    "caller_candidate_reference_count": 535,
     "definition_file_count": 75,
-    "external_caller_event_count": 154,
+    "external_caller_event_count": 155,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 190,
+    "registered_event_count": 191,
     "same_file_only_caller_event_count": 36,
-    "unique_definition_count": 190
+    "unique_definition_count": 191
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "EA9F5CA222DEFFFCBB4DF04322AFA051E5BDA599183C9F159DC6ECCE60BCD06C",
+  "dataset_sha256": "F2315CA9E4590736CC61BC228A1F395CC299074EE9844E0F3E01D2504199B419",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -362,6 +362,38 @@
         "relative_path": "events/councillor_task_events/chancellor_task_events.txt"
       },
       "namespace": "chancellor_task"
+    },
+    "char_interaction.0232": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 19,
+          "file_sha256": "7B426465FCED71A6D6AA96B34C8924B91990D0BE144FE4BFAA57681BB7FA6EA5",
+          "kind": "exact-token-lexical-candidate",
+          "line": 895,
+          "relative_path": "common/scripted_effects/00_interaction_effects.txt"
+        },
+        {
+          "column": 19,
+          "file_sha256": "7B426465FCED71A6D6AA96B34C8924B91990D0BE144FE4BFAA57681BB7FA6EA5",
+          "kind": "exact-token-lexical-candidate",
+          "line": 1362,
+          "relative_path": "common/scripted_effects/00_interaction_effects.txt"
+        },
+        {
+          "column": 20,
+          "file_sha256": "7B426465FCED71A6D6AA96B34C8924B91990D0BE144FE4BFAA57681BB7FA6EA5",
+          "kind": "exact-token-lexical-candidate",
+          "line": 1528,
+          "relative_path": "common/scripted_effects/00_interaction_effects.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "D238E0A3442F41C35AF35157D47A754CB200B72AB2A0184BAEFC86E63347A150",
+        "line": 1678,
+        "relative_path": "events/interaction_events/character_interaction_events.txt"
+      },
+      "namespace": "char_interaction"
     },
     "char_interaction.0240": {
       "caller_candidate_resolution": "external-definition-file",
