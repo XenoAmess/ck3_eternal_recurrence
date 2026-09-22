@@ -90,7 +90,7 @@
     "missing_data_semantics": "unavailable, never a synthetic zero",
     "same_frame": "included in the campaign root's two-sample equality and played Character generation check",
     "readiness": "does not change the existing campaign-root readiness or advertise material outcome",
-    "live_status": "pending paused readback on R0099 h1023 pre-event save and R0101 h1094 post-event save"
+    "live_status": "R0113-R0116 paused two-stage cold readbacks: same played Character 36403, R0099 h1023/raw53367816 legitimacy 283, R0101 h1094/raw53368176 legitimacy 263; 15-day gap prevents exclusive event attribution. Evidence: Z:/ck3_mod_rewrite_process_assets/m2-0110-bounded-live-20260922/EVIDENCE-MANIFEST.md"
   },
   "player_domain_capacity": {
     "published_fields": [

@@ -25,7 +25,7 @@ flowchart TD
 
 R0099 普通 production 运行在 `date_raw=53367864`、event instance `23` 自然出现本事件，正式 planner 选择前因 `direct_projection_support:optional_scope_types=false` 停止，没有事件动作。当前 paused scope 只有 `epidemic`（raw type 50/type `epidemic`），两个 shown+enabled 选项为 rendered/native `0/1` 与 `1/2`；这是已有 R375 真实物化过的 exact 形状。R0099 formal report SHA-256 `D8EBAC3FA6DDB959516F91293866B08B088690E71CAFF93A9C256ECDB6DD03C3`；最后物理配对安全存档为 h1023/raw53367816，后续 h1032 driver tail 尚未配对，恢复必须先核对/丢弃 tail。R375 的 authored3/native2、旧 instance 消失只证明历史 production-live primitive，不能代替 R0099 的动作、县修正/正统性物质后置或下一正式 turn。
 
-最小消费者仅对 `.0110` 把当前实际存在、且在 source-reviewed optional 类型表中的 `new_preferred_capital` 加入本帧有效 `scope_types`。仍严格校验两种已见 scope 集、数量、类型、玩家 ROOT、唯一窗口、authored 三项与可见 native `(1,2)`；若出现 native 0 或其它 scope/选项形状继续 RED。此修复不注册通用 optional scope 消费，不改变公共 MCP/native ABI、`open_kaishek` 协议或能力广告。正式复验需要新 Python 制品版本，不能热改旧 ZIP；若恢复链不兼容须按 checkpoint 合同处理。独立 paused 县修正或正统性读取尚未确认可用，不得以 ACK 或弹窗消失冒充物质结果。
+最小消费者仅对 `.0110` 把当前实际存在、且在 source-reviewed optional 类型表中的 `new_preferred_capital` 加入本帧有效 `scope_types`。仍严格校验两种已见 scope 集、数量、类型、玩家 ROOT、唯一窗口、authored 三项与可见 native `(1,2)`；若出现 native 0 或其它 scope/选项形状继续 RED。此修复不注册通用 optional scope 消费，不改变公共 MCP/native ABI、`open_kaishek` 协议或能力广告。正式复验需要新 Python 制品版本，不能热改旧 ZIP；若恢复链不兼容须按 checkpoint 合同处理。R0099 当时独立 paused 县修正或正统性读取尚未确认可用，不得以 ACK 或弹窗消失冒充物质结果。
 
 ## 2026-09-22 R0101 自然消费与物质归因缺口
 
@@ -40,3 +40,5 @@ R0101 报告还记录了首个事件后 checkpoint：raw `53367888`、save SHA-2
 1. 同一 paused 日期、同一玩家 CharacterID、同一 event instance 下，先冻结 `player_legitimacy_v1`、event key/native option、`scope:epidemic` 强度，以及 `formerly_infected_counties` 的县 ID 列表和各县现有目标修正；若县列表或修正不可读，明确记该县物质项为 `unknown`，只施工所需的只读 native/MCP 字段。
 2. 正式策略仅提交一次本事件合法的 typed option，随后在日期未推进的独立 paused 帧再次读取同角色正统性及同一县 ID 列表对应的修正。核对旧 instance 消失、选项 receipt、正统性变化与 exact `has_legitimacy` 分支、疫情强度对应的五年 minor/tiny 修正。没有同日两帧或必要县 ID 时，不从十五日差值反推县效果。
 3. 让下一正式 turn 消费新状态，并保留完整 save/driver 配对与动作身份。若期间另有正统性效果或条件分支不能独立排除，材料归因继续 pending；不通过重播旧随机时间线凑事件。
+
+县列表和修正的 exact-build ABI 现状与下一逆向入口见 [`.0110` 县修正只读观测口](m2-0110-county-modifier-observer-abi-2026-09-22.md)。
