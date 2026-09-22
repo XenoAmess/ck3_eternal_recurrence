@@ -6805,6 +6805,30 @@ def _choose_one_life_turn_core(
                                 "game.state.played-character-stress-points"
                             ),
                         }
+                if event_context.get("event_definition_key") == (
+                    "epidemic_events.1020"
+                ) and not (
+                    isinstance(material_postcondition, dict)
+                    and material_postcondition.get("status") == "ready"
+                ):
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_registry_material_observation_blocked",
+                        "selected_step": None,
+                        "reason": (
+                            "the source-reviewed flower choice requires same-frame "
+                            "player gold before a typed option can be submitted"
+                        ),
+                        "active_event": event_summary,
+                        "event_decision": {
+                            **registry_decision,
+                            "status": "blocked",
+                            "unavailable_reason": (
+                                "epidemic_flower_player_gold_unavailable"
+                            ),
+                        },
+                        "required_capability": "game.state.played-character-gold",
+                    }
                 native_index = registry_decision.get(
                     "selected_native_option_index"
                 )

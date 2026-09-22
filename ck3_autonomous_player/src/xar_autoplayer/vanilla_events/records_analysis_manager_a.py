@@ -230,8 +230,8 @@ _REVIEW_SUMMARY_BY_EVENT: Final[dict[str, str]] = {
         "legitimacy and a positive county modifier."
     ),
     "epidemic_events.1020": (
-        "Native 0 is the deterministic positive route: minor treasury cost, legitimacy "
-        "gain and the positive county modifier."
+        "Native 0 spends minor treasury or gold, gains legitimacy and installs "
+        "the positive county modifier; the standard-feudal gold branch is observed."
     ),
     "epidemic_events.1050": (
         "Native 0 deterministically suppresses the cult and reduces travel danger; "
@@ -309,6 +309,50 @@ def _build_analysis() -> dict[str, dict[str, object]]:
                 "definition review or source hash asserted"
             ),
         }
+        if event_key == "epidemic_events.1020":
+            result[event_key]["evidence_boundary"] = (
+                "R0094 exact-build stock option and feudal gold branch reviewed; "
+                "same-run paused material delta awaits R0095 live acceptance"
+            )
+            result[event_key]["selected_choice_effect_profile"] = {
+                "schema": "xar.ck3.vanilla-event-choice-effect",
+                "schema_version": 1,
+                "selected_native_option_index": 0,
+                "completeness": "selected-option-source-reviewed",
+                "selected_option_effects": [
+                    {
+                        "domain": "currency",
+                        "subject": "root",
+                        "operation": "remove_treasury_or_gold",
+                        "authored_value_key": "minor_treasury_or_gold_value",
+                        "gold_branch_when": "has_treasury=no",
+                        "scope": "standard_feudal_government",
+                    },
+                    {
+                        "domain": "county_modifier",
+                        "subject": "scope:epidemic_county",
+                        "operation": "add_county_modifier",
+                        "modifier": "flowers_planted",
+                        "duration_years": 15,
+                        "runtime_presence_observed": False,
+                    },
+                ],
+                "common_after_effects": [],
+                "observable_postcondition": {
+                    "metric": "played_character_gold.raw",
+                    "expected_relation": "strictly_decreasing",
+                    "scale": 100000,
+                    "material_change_required_for_evidence": True,
+                    "scope": "standard_feudal_without_treasury",
+                },
+                "source_anchors": [
+                    "events/dlc/ce1/epidemic_events.txt:1094-1105",
+                    "common/script_values/01_dynamic_values.txt:413-424",
+                    "common/script_values/01_dynamic_values.txt:53-70",
+                    "common/script_values/00_basic_values.txt:49",
+                    "common/governments/00_government_types.txt:5-48",
+                ],
+            }
     return result
 
 

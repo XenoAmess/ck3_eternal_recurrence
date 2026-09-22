@@ -20,6 +20,10 @@ _SUPPORTED_CHOICES: Final = {
         "played_character_gold.raw",
         "strictly_increasing",
     ),
+    ("epidemic_events.1020", 0): (
+        "played_character_gold.raw",
+        "strictly_decreasing",
+    ),
     ("death_management.1007", 0): (
         "played_character.stress_points",
         "non_decreasing",
@@ -238,6 +242,20 @@ def evaluate_registered_event_material_postcondition_v1(
         and before_value == expected_start
         and values_in_range
     )
+    if expected.get("expected_relation") == "strictly_decreasing":
+        starting_revision = _integer(expected.get("starting_revision"))
+        ending_revision = _integer(selection.get("ending_revision"))
+        binding_matches = bool(
+            binding_matches
+            and before.get("scale") == 100_000
+            and after.get("scale") == 100_000
+            and isinstance(selection.get("ending_snapshot_id"), str)
+            and selection["ending_snapshot_id"]
+            != selection.get("starting_snapshot_id")
+            and starting_revision is not None
+            and ending_revision is not None
+            and ending_revision > starting_revision
+        )
     if not binding_matches:
         response.update(
             {
@@ -273,10 +291,14 @@ def evaluate_registered_event_material_postcondition_v1(
             else "failed"
         )
         failure_reason = "stress_decreased" if delta < 0 else None
-    else:
+    elif relation == "strictly_increasing":
         relation_satisfied = delta > 0
         status = "verified_change" if delta > 0 else "failed"
         failure_reason = "gold_not_increased" if delta <= 0 else None
+    else:
+        relation_satisfied = delta < 0
+        status = "verified_change" if delta < 0 else "failed"
+        failure_reason = "gold_not_decreased" if delta >= 0 else None
     response.update(
         {
             "status": status,
