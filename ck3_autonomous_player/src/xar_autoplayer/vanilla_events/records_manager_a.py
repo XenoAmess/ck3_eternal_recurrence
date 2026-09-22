@@ -1079,13 +1079,18 @@ _LEGACY_MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS: Final[
     "health.7400": {
         # Vanilla yearly-health onset of faltering heart. The event has no
         # saved scopes and one unavoidable acknowledgement whose sole effect
-        # adds the indicated trait. Bind the complete R103 one-option frame.
+        # adds the indicated trait. R0132 naturally observed the same empty
+        # scope and native-zero shape in a different player episode.
         "date_raw": 53190360,
         "root_character_id": 29037,
         "character_scopes": {},
         "boolean_scopes": (),
         "saved_scope_count": 0,
+        "scope_types": {},
+        "saved_scope_name_sets": ((),),
         "option_count": 1,
+        "native_option_indices": (0,),
+        "disabled_native_option_indices": (),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
     },
