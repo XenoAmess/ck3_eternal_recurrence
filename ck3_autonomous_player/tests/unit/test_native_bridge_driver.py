@@ -3287,6 +3287,170 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             [preview_step, horizon_step],
         )
 
+    def test_r0103_primary_defender_capital_preview_is_fireable(
+        self,
+    ) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name, endpoint=endpoint,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot", "game.state.army-routes",
+                "game.state.war-objectives",
+                "game.command.move-army-N-to-N",
+                "game.command.preview-move-army-N-to-N",
+                "game.command.query-route-contact-horizon-v1-N",
+            )
+        )
+        player = _army(
+            419430662, soldiers=534, province_id=8747,
+            move_target_province_id=46, army_state="moving",
+            route_province_ids=[23, 46],
+        )
+        enemy = _army(
+            318767160, soldiers=1209, province_id=46,
+            move_target_province_id=8747, controllable=False,
+            army_state="moving", route_province_ids=[23, 8747],
+        )
+        war = _war(
+            301989950, allied_armies=[player], enemy_armies=[enemy],
+            score=-28, war_objective_province_ids=[46],
+        )
+        war["player_side"] = "defender"
+        endpoint.publish(
+            _snapshot(
+                3, date_raw=53_368_176,
+                played_character={"character_id": 707, "alive": True},
+                active_wars=[war], player_armies=[player],
+            )
+        )
+        snapshot = driver.take_snapshot()
+        diagnostics = snapshot["diagnostics"]
+        driver._campaign_root_context_query = {
+            "campaign_root_context": {
+                "status": "available",
+                "snapshot_revision": snapshot["native_revision"],
+                "date_raw": snapshot["date_raw"],
+                "player_character_id": 707,
+                "capital_province_id": 45,
+                "held_title_partition": [
+                    {
+                        "title": {"title_id": 525, "tier_raw": 2},
+                        "capital_province_id": 45,
+                    },
+                    {
+                        "title": {"title_id": 530, "tier_raw": 2},
+                        "capital_province_id": 46,
+                    },
+                ],
+                "readiness": {
+                    "ready": True, "held_title_partition_ready": True,
+                },
+            },
+            "cache_binding": {
+                "snapshot_id": snapshot["snapshot_id"],
+                "revision": snapshot["revision"],
+                "native_revision": snapshot["native_revision"],
+                "date_raw": snapshot["date_raw"],
+                "actor_character_id": 707,
+                "bridge_pid": diagnostics["bridge_pid"],
+                "connection_generation": diagnostics["connection_generation"],
+            },
+        }
+        scope = _capital_regroup_capability_scope(
+            snapshot, driver._campaign_root_context_query,
+        )
+        self.assertEqual(
+            scope,
+            {
+                "army_id": 419430662,
+                "capital_province_id": 45,
+                "hostile_army_ids": [318767160],
+            },
+        )
+        preview_step = "preview-move-army-419430662-to-45"
+        horizon_step = query_route_contact_horizon_step(
+            419430662, 45, (318767160,),
+        )
+        steps = driver.capabilities()["action_steps"]
+        self.assertIn(preview_step, steps)
+        self.assertIn(horizon_step, steps)
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            self.assertEqual(frame["step"], preview_step)
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": preview_step,
+                        "accepted": True,
+                        "status": "available",
+                        "route_preview": {
+                            "status": "available",
+                            "army_id": 419430662,
+                            "origin_province_id": 8747,
+                            "target_province_id": 45,
+                            "route_province_ids": [23, 45],
+                        },
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        result = driver.execute_step(preview_step)
+        self.assertEqual(result["route_preview"]["target_province_id"], 45)
+        self.assertEqual(
+            [frame["step"] for frame in endpoint.frames
+             if frame.get("type") == "execute_step"],
+            [preview_step],
+        )
+
+        stale = copy.deepcopy(driver._campaign_root_context_query)
+        stale["cache_binding"]["native_revision"] -= 1
+        self.assertIsNone(_capital_regroup_capability_scope(snapshot, stale))
+        unowned = copy.deepcopy(driver._campaign_root_context_query)
+        unowned["campaign_root_context"]["held_title_partition"] = [
+            {
+                "title": {"title_id": 530, "tier_raw": 2},
+                "capital_province_id": 46,
+            }
+        ]
+        self.assertIsNone(_capital_regroup_capability_scope(snapshot, unowned))
+        no_route_threat = copy.deepcopy(snapshot)
+        no_route_threat["active_wars"][0]["enemy_armies"][0][
+            "current_province_id"
+        ] = 98
+        no_route_threat["active_wars"][0]["enemy_armies"][0][
+            "route_province_ids"
+        ] = [99, 100]
+        self.assertIsNone(
+            _capital_regroup_capability_scope(
+                no_route_threat, driver._campaign_root_context_query,
+            )
+        )
+        nonnegative_war = copy.deepcopy(snapshot)
+        nonnegative_war["active_wars"][0][
+            "player_relative_war_score"
+        ] = 0
+        self.assertIsNone(
+            _capital_regroup_capability_scope(
+                nonnegative_war, driver._campaign_root_context_query,
+            )
+        )
+        other_war = copy.deepcopy(snapshot)
+        other_war["active_wars"].append(copy.deepcopy(war))
+        self.assertIsNone(
+            _capital_regroup_capability_scope(
+                other_war, driver._campaign_root_context_query,
+            )
+        )
+
     def test_protocol_extension_routes_snapshot_and_command_result(self) -> None:
         endpoint = FakeEndpoint()
         driver = NativeHeadlessGameplayDriver(
