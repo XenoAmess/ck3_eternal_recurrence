@@ -1,7 +1,7 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-22T20:46:28+08:00",
+  "updated_at": "2026-09-22T22:58:47+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
@@ -223,7 +223,28 @@
       "G2-M1",
       "G2-M3"
     ],
-    "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md"
+    "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
+    "latest_durable_continuation": {
+      "round": "R0131",
+      "result": "qualified",
+      "source_commit": "34e9d0077816a5bc8f7203f1c5a50b2a875f6d6f",
+      "checkpoint_history_index": 2479,
+      "checkpoint_date_raw": 53437416,
+      "checkpoint_save_sha256": "203E291DFE9E1E939E6E4E1E2D37952635A8EEB8185982B053B7F3593EA26B51",
+      "driver_sha256_with_unpaired_read_only_tail": "12EDB33CCC027B765CB8069211DEFC61AB1A82C2A18B038F3C9680A759F6698E",
+      "durable_game_days": 12212,
+      "target_game_days": 36524,
+      "hundred_year_gate": "0/1",
+      "whole_campaign_gate": "0/1",
+      "independent_seeds": "0/2",
+      "natural_succession_transitions": 0,
+      "evidence_manifest": {
+        "base": "configured_task_temp_root",
+        "locator": "RUN-001/war-h2145-continuation-source34e9d00-nolaunch-20260922/R0131-formal/R0131-evidence-manifest.json",
+        "sha256": "F0726A161C520BB77F01146599C08703A3445A607731B073AC48DFDE3EDF562E"
+      },
+      "scope": "durable time span and one exact event continuation; original R0118 war RED and PRV008 preview boundary unchanged"
+    }
   },
   "t2": {
     "priority": "T2",
