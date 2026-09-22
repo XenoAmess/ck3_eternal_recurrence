@@ -843,3 +843,31 @@ campaign-root business fields are unchanged; only producer identity is made
 mandatory. The repaired Release artifact still requires a fresh paused
 CK3 1.19.0.6 snapshot to prove non-null county capitals and a usable next
 formal strategy turn. No live conclusion follows from the offline gate alone.
+
+## 2026-09-22 ordinary `xar_off` paused-readback entrance
+
+The existing two-stage read-only campaign-root acceptance runner now accepts
+`--ordinary-campaign-no-pact` together with the source profile's exact
+`--expected-source-environment-sha256`. This is an explicit attestation of a
+fresh ordinary campaign without a signed pact, not an inference from a missing
+settlement. Before either CK3 stage, the runner requires the source environment
+manifest to bind `ordinary_campaign_succession` and `xar_off`, and its digest to
+match the supplied value. It prepares and verifies **both** fresh stage
+profiles with `xar_off`, and requires their exact game, mod, DLC, load-rule
+and source-save inputs to match. Stage B retains Stage A's checkpoint-origin
+lifecycle binding: the profile paths make their environment digests different,
+while the persisted driver state requires exact binding equality. A
+missing/wrong source digest, `xar_on` source, divergent prepared profile or
+driver lacking lifecycle binding fails closed. With neither new flag,
+the prior `xar_on`/legacy one-life behavior remains the default.
+
+The two-stage runner still issues only two same-paused-revision public
+campaign-root queries per process and one Stage A checkpoint; it does not
+advance time or submit an event choice. An operator must supply an immutable
+source profile and save, exact game/bridge hashes, unique Z: state/output
+paths and the sole CK3 slot. For the R0099 h1023 and R0101 h1094 ordinary
+anchors, use their respective source profile environment digests; do not
+substitute the other's digest. A valid optional `player_legitimacy_v1` readback
+is still only an observation: any material `.0110` claim requires independent
+attribution across the intervening game time. No new live result follows from
+this entrance patch or its offline tests.
