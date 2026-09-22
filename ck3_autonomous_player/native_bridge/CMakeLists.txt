@@ -243,6 +243,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1
+  "Admit exact-build paused faith co-defender preview for one final-legal minor religious war"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1
   "Admit one controlled exact-build selected-bookmark StartGame candidate"
   OFF
@@ -987,6 +993,13 @@ if(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
     XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1=1
   )
 endif()
+if(XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/minor_religious_war_defenders_v1.cpp
+    src/minor_religious_war_defenders_private_wire_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1=1)
+endif()
 if(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1
@@ -1183,6 +1196,21 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  add_executable(xar_ck3_minor_religious_war_defenders_v1_test
+    src/minor_religious_war_defenders_v1.cpp
+    src/minor_religious_war_defenders_v1_test.cpp)
+  target_include_directories(
+    xar_ck3_minor_religious_war_defenders_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_minor_religious_war_defenders_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_minor_religious_war_defenders_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_minor_religious_war_defenders_v1
+    COMMAND xar_ck3_minor_religious_war_defenders_v1_test)
   if(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
     add_executable(xar_ck3_m5_prewar_scope_v1_test
       src/prewar_scope_v1.cpp src/prewar_scope_v1_test.cpp)

@@ -227,24 +227,32 @@
         "semantic": "defender_faith_can_join",
         "flag": "CCasusBelliType+0x1718 bit 15 defender_faith_can_join",
         "collector_rva": "0x2901960",
-        "collector_abi": "RCX actor Character*, RDX primary defender Character*, R8 caller-owned CharacterID vector*",
+        "collector_abi": "RCX actor Character*, RDX primary defender Character*, R8 caller-owned Character* vector*",
         "collector_body_static_findings": [
           "returns immediately when actor and primary defender faith IDs at Character+0xB4 are equal",
           "otherwise builds script scope/evaluator temporaries and scans defender-faith candidates",
           "excludes actor, primary defender and the native exclusion set",
-          "appends accepted CharacterIDs through 0x8154D0",
+          "appends accepted Character pointers through 0x8154D0",
           "bounded body has no observed direct RNG call"
         ],
-        "collector_unresolved_call_boundary": [
-          "application-main/thread affinity",
+        "collector_call_boundary": [
+          "private default-OFF mailbox slot49 only on paused application-main",
           "script-context and lazy-initialization side effects",
-          "allocator and caller-owned output lifetime",
-          "proof of no world write or indirect RNG"
+          "real-war caller allocator module+0x4FEB018 and vtable+0x10 cleanup with element size 8 reproduced",
+          "live evidence of no world write or indirect RNG remains pending"
         ],
-        "actual_war_add_evidence": "0x27A29A6 loop calls 0x2225FB0"
+        "actual_war_add_evidence": "0x27A29A6 loop calls 0x2225FB0",
+        "private_observer": {
+          "status": "static-ready-live-unverified",
+          "build_option": "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1",
+          "mailbox_slot": 49,
+          "output_identity": "each Character pointer round-trips through exact storage to Character+0x18 full-generation ID",
+          "same_frame_power": "Character+0x1B8->+0x308 Q100000; actor/primary leaves equal WarEntryAssessmentsV1",
+          "advertised": false
+        }
       }
     },
-    "read_boundary": "consume only already-materialized rows; never invoke 0x1088AA0 from a paused query",
+    "read_boundary": "consume already-materialized UI rows, or invoke only the default-OFF 0x2901960 slot49 candidate for one final-legal minor_religious_war; never invoke 0x1088AA0 from a paused query",
     "excluded_domains": [
       "voluntary attacker allies",
       "voluntary defender allies",
@@ -471,6 +479,8 @@
     "active_preview_root_static_ready": true,
     "candidate_binding_static_ready": true,
     "forced_defender_preview_static_ready": true,
+    "minor_religious_war_faith_defenders_private_static_ready": true,
+    "minor_religious_war_faith_defenders_private_live_ready": false,
     "forced_tributary_contract_participants_static_ready": true,
     "forced_tributary_contract_participants_live_ready": false,
     "forced_tributary_contract_participants_ready": false,
@@ -506,7 +516,7 @@
     },
     {
       "priority": 2,
-      "entry": "no-UI exact defender_faith_can_join collector callability (entry ABI closed; execution boundary unresolved)",
+      "entry": "paused exact-build live validation of the default-OFF slot49 defender_faith_can_join observer",
       "rvas": [
         "0x2901960",
         "0x27A29A6",

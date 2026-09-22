@@ -1406,6 +1406,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_lifestyle_formal_trial: bool = False,
         allow_private_faction_gift_formal_trial: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
+        allow_private_minor_religious_war_defenders_query: bool = False,
         allow_private_epidemic_treatment_presence_query: bool = False,
         allow_private_epidemic_recovery_query: bool = False,
         allow_private_death_succession_modal_continue: bool = False,
@@ -1471,6 +1472,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_current_timeline_blocker_query = (
             allow_private_current_timeline_blocker_query is True
+        )
+        self.allow_private_minor_religious_war_defenders_query = (
+            allow_private_minor_religious_war_defenders_query is True
         )
         self.allow_private_epidemic_treatment_presence_query = (
             allow_private_epidemic_treatment_presence_query is True
@@ -2316,6 +2320,21 @@ class NativeHeadlessGameplayDriver:
 
         return query_current_timeline_blocker_context_private_v1(
             self,
+            expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_minor_religious_war_defenders_private_v1(
+        self, *, target_character_id: int, expected_revision: int
+    ) -> dict[str, object]:
+        """Read faith co-defenders for one legal minor religious war."""
+        from .minor_religious_war_defenders_private_transport import (
+            query_minor_religious_war_defenders_private_v1,
+        )
+
+        return query_minor_religious_war_defenders_private_v1(
+            self,
+            target_character_id=target_character_id,
             expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
         )
