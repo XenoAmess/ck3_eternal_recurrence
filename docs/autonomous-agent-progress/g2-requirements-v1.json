@@ -10,8 +10,8 @@
   "completion_denominator": {
     "kind": "visible_ooda_milestones",
     "total": 8,
-    "complete": 2,
-    "progress_label": "2/8",
+    "complete": 3,
+    "progress_label": "3/8",
     "percent_reporting_allowed": false
   },
   "historical_prerequisites": [
@@ -103,7 +103,7 @@
       "id": "G2-M3",
       "name": "succession and realm survival",
       "priority": "P1-C",
-      "status": "in_progress",
+      "status": "complete",
       "latest_evidence": [
         "immutable-seed cross-episode loop",
         "per-held-title first-heir partition production-live primitive",
@@ -113,11 +113,12 @@
         "bounded native-auto-run natural-successor continuation proof static-ready (normal/optimized 4/4 focused boundary tests)",
         "R680 FIX2 production RED: one bounded campaign-root request timed out before execution with pump epoch, executor starts and executed requests all unchanged; cleanup GREEN",
         "FIX3 commit 080bc507ee9c2e1c2fa1decd787a3927c15a12e4 requires a pump epoch newer than the cold binding baseline; focused normal/optimized tests 2/2 each",
-        "R681 production-live primitive GREEN: 3/3 bounded turns, available campaign root, typed-unavailable celestial council, unready optional rule tokens, partial bundle, succession expectation 32904 -> 88187, 30-day advance, checkpoint CDCC3771...FBC61 and cleanup GREEN"
+        "R681 production-live primitive GREEN: 3/3 bounded turns, available campaign root, typed-unavailable celestial council, unready optional rule tokens, partial bundle, succession expectation 32904 -> 88187, 30-day advance, checkpoint CDCC3771...FBC61 and cleanup GREEN",
+        "R0077 exact-build ordinary feudal production 60/60 turns: natural same-PID succession 31853 -> predicted 36403, inherited titles [524,525,530] matched without missing or extra titles; typed succession-modal query and one materially verified close, successor gameplay turns 21-60 with later pending interaction, marriage, event and date advancement; final paired save 39828127...2BEF / driver 5B1B9410...ADFB, immutable evidence manifest 28F94B1E1C0BFFFF4A43CA8085B18FD4E8966872CB6DADEBC0A307B22BDF6D67"
       ],
       "planner_consumer": "survival, inheritance and post-succession goal selection",
       "visible_outcome": "predict title distribution before a natural death, reconcile actual inheritance and continue as the real successor",
-      "open_blocker": "The mailbox/cold-readiness operational blocker is closed by R681. One bounded, naturally encountered exact-build death remains: reconcile the actual successor/title distribution against the captured expectation and continue in the same campaign as the real successor. No dedicated death long run is authorized."
+      "open_blocker": "none for the M3 visible outcome; wider multi-seed long-intent recovery and government coverage remain M7, and the PRV-008 preview's same-package stop/cold delivery gate remains separate"
     },
     {
       "id": "G2-M4",
