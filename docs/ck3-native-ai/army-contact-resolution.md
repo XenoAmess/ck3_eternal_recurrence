@@ -959,6 +959,35 @@ post-combat Province rescan           : 0x220D2A0, caller 0x230AE86
 relation / holding predicates         : 0x2900470, 0x2900710, 0x290CD60
 ```
 
+### 2026-09-22 R0123–R0124：h1566 边内改道只读复核
+
+- [live-confirmed] exact CK3 `1.19.0.6-steam23530548` / EXE SHA
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+  R0123 从 h1566/raw53371896 真冷恢复、绑定 `ordinary_campaign_succession/xar_off` 并读到
+  actor36403/WarID251658364/ArmyID419430662，但一次性 runner 误取不存在的顶层
+  `played_character_id`，在路线查询前 RED；零动作/日期，游戏存档 SHA 未变，完整回收。
+  [R0123 清单](Z:/ck3_mod_rewrite/.task-tmp/RUN-001/century-h1566-reroute-r0123/R0123-evidence-manifest.json)
+  SHA `32BCD5568BD07508C56A603A2F5069FC736B1E932BEE339510042334137A4CA2`。
+- [live-confirmed] R0124 由原 h1566 样本经官方 `prepare-state` 重新配对；原生 driver/cold validator
+  和显式 lifecycle no-launch 均 GREEN。新 PID 从原游戏存档字节恢复，在同一 paused native revision 3
+  对 `715/975/714/700/699/45` 六个历史目标各读一次 `PreviewMoveArmy` 与完整敌军集合
+  `419430684` 的 route-contact horizon。所有预览均 `available`，但每条路线首省均为 `45`；
+  当前我军 embarked @715，旧 route `[45]`，敌军 @45 正在围攻。目标为当前省 `715` 的预览也返回
+  `[45,715]`，因此不能把 same-current move 当成取消行军。
+- [live-confirmed + inference] 六行的首省预计 raw53371944 到达；只读 `one_day_contact_free=true`
+  仅覆盖 raw53371896→53371920，结束于到达前。它不能证明这六条改道安全；同帧敌军在 45，
+  全部候选按现有完整路线审计拒绝。敌军将来是否移动、两日后是否实际接战仍未实测，
+  不能把本次只读结果写成已发生的战斗。R0124 无 move/终止/日期推进，save SHA
+  `F3BD2AB7D648044C5B3B9A1BD732D1480503183D97F6D02C7C406B9699933E3B`
+  前后相同，进程全回收；[R0124 清单](Z:/ck3_mod_rewrite/.task-tmp/RUN-001/century-h1566-reroute-r0124/R0124-evidence-manifest.json)
+  SHA `BE24B14EE9B7D4C9034E94E597ABD5566ED407D17A05899792B0FEFBE2E7CB75`。
+- [static-confirmed, 已有 exact-build 研究] `CHaltUnitsCommand` 对只剩一个已承诺前沿省的
+  route `[45]` 不可用；其 eligibility 会拒绝没有可裁后缀的路线。该结论来自本专题上文
+  R886 与 `native_bridge/research/README.md`，不是 R0124 的新动作验证。
+  R0118 战争产品 RED 仍开：要么先确证更早未承诺边的有效配对及新策略，要么完成
+  [守方投降物质条款只读缺口](war-r0118-defender-surrender-terms-gap.md)；不能重复 h1566
+  的同一目标 move、盲进 45 或盲投降。
+
 ## 2026-09-21 R883：危险 active route 的同省取消门
 
 冻结范围仍为 CK3 `1.19.0.6`、EXE SHA-256
