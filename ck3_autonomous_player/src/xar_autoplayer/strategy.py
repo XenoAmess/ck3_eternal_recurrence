@@ -10977,10 +10977,32 @@ def _choose_one_life_turn_core(
                         ),
                     )
                 )
+                defender_regroup_ready = (
+                    _outnumbered_primary_defender_regroup_input_ready(
+                        snapshot if isinstance(snapshot, dict) else {},
+                        active_wars=active_wars,
+                        controlled_armies=controlled_armies,
+                        tactical_war=(
+                            tactical_war
+                            if isinstance(tactical_war, dict)
+                            else None
+                        ),
+                        current_province_id=current_province_id,
+                        exact_objective_province_ids=route_exact_candidates,
+                        route_rejections=route_rejections,
+                        strength_balance=(
+                            strength_balance
+                            if isinstance(strength_balance, dict)
+                            else None
+                        ),
+                        active_route_unsafe=active_route_unsafe,
+                    )
+                )
                 if (
                     capital_regroup_ready
                     or capital_hold_ready
                     or coalition_regroup_ready
+                    or defender_regroup_ready
                 ):
                     campaign_root = _same_frame_campaign_root_context(
                         rows,
@@ -11004,6 +11026,22 @@ def _choose_one_life_turn_core(
                     capital_province_id = _native_int(
                         campaign_root.get("capital_province_id")
                     )
+                    if defender_regroup_ready and capital_province_id not in (
+                        _complete_player_held_county_capital_province_ids(
+                            campaign_root
+                        )
+                        or []
+                    ):
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": "native_war_defender_capital_regroup_ownership_blocked",
+                            "selected_step": None,
+                            "required_observation": "directly-held-capital-county",
+                            "reason": "the primary defender's same-frame capital is not confirmed as a directly held county capital",
+                            "capital_province_id": capital_province_id,
+                            "route_rejections": route_rejections,
+                            "active_wars": war_summary,
+                        }
                     if (
                         capital_province_id == current_province_id
                         and (
@@ -11047,7 +11085,11 @@ def _choose_one_life_turn_core(
                             "active_wars": war_summary,
                         }
                     if (
-                        (capital_regroup_ready or coalition_regroup_ready)
+                        (
+                            capital_regroup_ready
+                            or coalition_regroup_ready
+                            or defender_regroup_ready
+                        )
                         and
                         capital_province_id is not None
                         and capital_province_id != current_province_id
@@ -11097,8 +11139,23 @@ def _choose_one_life_turn_core(
                             target_province_id=capital_province_id,
                             enemies=route_threat_enemies,
                         )
+                        if defender_regroup_ready and not route_contact_scope_supported:
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": "native_war_capital_regroup_contact_horizon_unsupported",
+                                "selected_step": None,
+                                "required_step": "complete-scope-route-contact-horizon",
+                                "reason": "the primary defender cannot leave an unsafe route without a complete hostile-scope contact horizon for the capital route",
+                                "route_preview": preview,
+                                "route_audit": regroup_audit,
+                                "route_rejections": route_rejections,
+                                "active_wars": war_summary,
+                            }
                         if (
-                            regroup_audit.get("status") == "unsafe"
+                            (
+                                regroup_audit.get("status") == "unsafe"
+                                or defender_regroup_ready
+                            )
                             and route_contact_scope_supported
                         ):
                             regroup_horizon = _fresh_route_contact_horizon(
@@ -11162,6 +11219,14 @@ def _choose_one_life_turn_core(
                                     ),
                                     "contact_horizon": regroup_horizon,
                                 }
+                            elif defender_regroup_ready and isinstance(
+                                regroup_horizon, dict
+                            ):
+                                regroup_audit = {
+                                    **regroup_audit,
+                                    "status": "contact_timeline_unsafe",
+                                    "contact_horizon": regroup_horizon,
+                                }
                         rollback_failure = _matching_rollback_war_failure(
                             snapshot,
                             war_id=tactical_war_id,
@@ -11183,9 +11248,13 @@ def _choose_one_life_turn_core(
                                 **regroup_audit,
                                 "selection": {
                                     "policy": (
-                                        "outnumbered_coalition_capital_regroup"
-                                        if coalition_regroup_ready
-                                        else "insufficient_siege_capital_regroup"
+                                        "outnumbered_primary_defender_capital_regroup"
+                                        if defender_regroup_ready
+                                        else (
+                                            "outnumbered_coalition_capital_regroup"
+                                            if coalition_regroup_ready
+                                            else "insufficient_siege_capital_regroup"
+                                        )
                                     ),
                                     "evaluated_enemy_count": len(
                                         route_threat_enemy_ids
@@ -13635,6 +13704,84 @@ def _outnumbered_attacker_regroup_input_ready(
             and army.get("in_combat") is not True
             and army.get("retreating") is not True
             for army in controlled_armies
+        )
+    )
+
+
+def _outnumbered_primary_defender_regroup_input_ready(
+    snapshot: dict[str, object],
+    *,
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+    tactical_war: dict[str, object] | None,
+    current_province_id: int | None,
+    exact_objective_province_ids: list[int],
+    route_rejections: list[dict[str, object]],
+    strength_balance: dict[str, object] | None,
+    active_route_unsafe: bool,
+) -> bool:
+    """Try an exact capital reroute only for the observed R0101 defender shape.
+
+    This opens the existing preview/contact-horizon sequence, not the move:
+    a deferred or unsafe capital route remains blocked.
+    """
+
+    if not (
+        snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and len(active_wars) == 1
+        and tactical_war is active_wars[0]
+        and isinstance(tactical_war, dict)
+        and tactical_war.get("player_side") == "defender"
+        and tactical_war.get("player_is_primary_war_leader") is True
+        and isinstance(tactical_war.get("player_relative_war_score"), int)
+        and -100 < int(tactical_war["player_relative_war_score"]) < 100
+        and len(controlled_armies) == 1
+        and isinstance(current_province_id, int)
+        and isinstance(strength_balance, dict)
+        and strength_balance.get("hostile_operational_overmatch") is True
+        and active_route_unsafe
+        and exact_objective_province_ids
+    ):
+        return False
+    rejected_targets = {
+        _native_int(rejection.get("target_province_id"))
+        for rejection in route_rejections
+        if isinstance(rejection, dict)
+        and rejection.get("status") in {"blocked", "unsafe"}
+    }
+    army = controlled_armies[0]
+    move_target = _native_int(army.get("move_target_province_id"))
+    route = army.get("route_province_ids")
+    if not (
+        set(exact_objective_province_ids).issubset(rejected_targets)
+        and move_target in rejected_targets
+        and _native_int(army.get("army_id")) is not None
+        and _native_int(army.get("current_province_id"))
+        == current_province_id
+        and _army_tactical_state(army) == "moving"
+        and army.get("in_combat") is not True
+        and army.get("retreating") is not True
+        and isinstance(route, list)
+        and bool(route)
+        and route[-1] == move_target
+    ):
+        return False
+    enemies = enemy_armies_from_wars(active_wars)
+    return bool(
+        enemies
+        and len(enemies) <= 64
+        and all(
+            _native_int(enemy.get("army_id")) is not None
+            and _native_int(enemy.get("current_province_id")) is not None
+            and isinstance(enemy.get("route_province_ids"), list)
+            and all(
+                _native_int(province_id) is not None
+                for province_id in enemy["route_province_ids"]
+            )
+            for enemy in enemies
         )
     )
 
