@@ -90,8 +90,9 @@ def derive_checkpoint_projection(
     require(len(positions) == 1, "checkpoint has no unique steward position")
     steward = positions[0]
     incumbent = steward.get("incumbent_character_id")
-    require(type(incumbent) is int and incumbent > 0,
-            "checkpoint steward is vacant; replacement-fireability query needs occupancy")
+    vacant = incumbent is None
+    require(vacant or (type(incumbent) is int and incumbent > 0),
+            "checkpoint steward incumbent identity is malformed")
 
     projected = copy.deepcopy(driver)
     projected["pipe_name"] = pipe
@@ -112,7 +113,7 @@ def derive_checkpoint_projection(
         "source_command_history_index": source_row.get("index"),
         "source_checkpoint_history_index": history_index,
         "government_key": "feudal_government",
-        "steward_vacant": False,
+        "steward_vacant": vacant,
         "steward_incumbent_character_id": incumbent,
         "steward_task_key": steward.get("task_key"),
     }

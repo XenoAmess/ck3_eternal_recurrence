@@ -76,12 +76,27 @@ class MaterializeCouncilCandidateTests(unittest.TestCase):
         self.assertEqual(frame["steward_incumbent_character_id"], 31507)
         self.assertFalse(frame["steward_vacant"])
 
-    def test_rejects_vacant_replacement_scene(self) -> None:
+    def test_projects_vacant_steward_only_as_query_scene(self) -> None:
         value = driver()
         value["command_history"][0]["result"]["campaign_root_context"]["council"][
             "positions"][0]["incumbent_character_id"] = None
-        with self.assertRaisesRegex(ValueError, "vacant"):
-            derive_checkpoint_projection(value, "A" * 64, Path("save.ck3"), "pipe")
+        projected, frame = derive_checkpoint_projection(
+            value, "A" * 64, Path("save.ck3"), "pipe")
+        self.assertTrue(frame["steward_vacant"])
+        self.assertIsNone(frame["steward_incumbent_character_id"])
+        self.assertEqual(frame["source_checkpoint_history_index"], 2)
+        self.assertEqual(len(projected["command_history"]), 2)
+        self.assertNotIn("replacement_fireability", frame)
+
+    def test_rejects_malformed_steward_incumbent_identity(self) -> None:
+        for incumbent in (False, 0, "31507"):
+            with self.subTest(incumbent=incumbent):
+                value = driver()
+                value["command_history"][0]["result"]["campaign_root_context"]["council"][
+                    "positions"][0]["incumbent_character_id"] = incumbent
+                with self.assertRaisesRegex(ValueError, "incumbent identity is malformed"):
+                    derive_checkpoint_projection(
+                        value, "A" * 64, Path("save.ck3"), "pipe")
 
     def test_rejects_noncontiguous_source_history(self) -> None:
         value = driver()
