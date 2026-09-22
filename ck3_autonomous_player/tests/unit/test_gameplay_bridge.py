@@ -58,6 +58,7 @@ from xar_autoplayer.strategy import (
     _negative_war_termination_reuse,
     _preoffensive_army_consolidation,
     _outnumbered_attacker_regroup_input_ready,
+    _outnumbered_primary_defender_regroup_input_ready,
     _recent_war_tactics,
     choose_one_life_turn,
     record_one_life_episode,
@@ -2308,6 +2309,207 @@ class GameplayBridgeTests(unittest.TestCase):
         )
 
         self.assertTrue(ready)
+
+    def test_r0101_defender_regroup_requires_rejected_active_route(
+        self,
+    ) -> None:
+        subject = _army(
+            11, soldiers=534, province_id=8747, controllable=True,
+            move_target_province_id=46, army_state="moving",
+            route_province_ids=[23, 46], in_combat=False,
+            retreating=False,
+        )
+        enemy = _army(
+            21, soldiers=1209, province_id=46, controllable=False,
+            move_target_province_id=8747, army_state="moving",
+            route_province_ids=[23, 8747],
+        )
+        war = _war(
+            allied_armies=[subject], enemy_armies=[enemy], score=-28,
+            player_side="defender", war_objective_province_ids=[46],
+        )
+        kwargs = {
+            "active_wars": [war],
+            "controlled_armies": [subject],
+            "tactical_war": war,
+            "current_province_id": 8747,
+            "exact_objective_province_ids": [46],
+            "route_rejections": [
+                {"target_province_id": 46, "status": "blocked"}
+            ],
+            "strength_balance": {"hostile_operational_overmatch": True},
+            "active_route_unsafe": True,
+        }
+        snapshot = {
+            "paused": True, "map_ready": True, "active_event": None,
+            "pending_character_interaction": None,
+        }
+        self.assertTrue(
+            _outnumbered_primary_defender_regroup_input_ready(
+                snapshot, **kwargs
+            )
+        )
+        self.assertFalse(
+            _outnumbered_primary_defender_regroup_input_ready(
+                snapshot, **{**kwargs, "active_route_unsafe": False}
+            )
+        )
+        self.assertFalse(
+            _outnumbered_primary_defender_regroup_input_ready(
+                snapshot, **{**kwargs, "route_rejections": []}
+            )
+        )
+        self.assertFalse(
+            _outnumbered_primary_defender_regroup_input_ready(
+                snapshot, **{**kwargs, "strength_balance": None}
+            )
+        )
+
+    def test_r0101_defender_only_queries_capital_before_safe_reroute(
+        self,
+    ) -> None:
+        date_raw = 53_368_176
+        player = _army(
+            11, soldiers=534, province_id=8747, controllable=True,
+            move_target_province_id=46, army_state="moving",
+            route_province_ids=[23, 46], in_combat=False,
+            retreating=False,
+        )
+        enemy = _army(
+            21, soldiers=1209, province_id=46, controllable=False,
+            move_target_province_id=8747, army_state="moving",
+            route_province_ids=[23, 8747],
+        )
+        strength_rows = [
+            {
+                "status": "available", "army_id": 11,
+                "scope_role": "player", "war_ids": [88],
+                "current_soldiers": 534, "maximum_soldiers": 842,
+                "ai_base_power_raw": 1_497_200_000,
+            },
+            {
+                "status": "available", "army_id": 21,
+                "scope_role": "active_war_enemy", "war_ids": [88],
+                "current_soldiers": 1209, "maximum_soldiers": 1320,
+                "ai_base_power_raw": 3_512_500_000,
+            },
+        ]
+        unsafe_original = _route_contact_row(
+            1, army_id=11, origin=8747, target=46,
+            date_raw=date_raw, route=[23, 46],
+            hostile_ids=(21,), contact_free=False,
+        )
+        base = {
+            "player": player, "enemies": [enemy], "score": -28,
+            "date_raw": date_raw, "objective": 46,
+            "player_side": "defender", "army_strengths": strength_rows,
+            "army_strengths_status": "available",
+            "route_contact_horizon_supported": True,
+            "negative_reuse_expires_date_raw": date_raw + 24,
+            "objective_states": [_objective_state(46)],
+            "occupation_supported": True,
+        }
+        query = _native_war_plan(
+            **base, history=[unsafe_original],
+            steps=("query-campaign-root-context-v1", "life-advance"),
+        )
+        self.assertEqual(query["phase"], "native_war_capital_regroup_context", query)
+        self.assertEqual(query["selected_step"], "query-campaign-root-context-v1")
+
+        root = _campaign_root_row(
+            2, date_raw=date_raw, capital_province_id=45,
+            held_county_capital_province_ids=(45, 46),
+        )
+        preview = _native_war_plan(
+            **base, history=[unsafe_original, root],
+            steps=("preview-move-army-11-to-45", "life-advance"),
+        )
+        self.assertEqual(preview["phase"], "native_war_capital_regroup_preview", preview)
+        self.assertEqual(preview["selected_step"], "preview-move-army-11-to-45")
+
+        unowned_root = _campaign_root_row(
+            2, date_raw=date_raw, capital_province_id=45,
+            held_county_capital_province_ids=(46,),
+        )
+        no_ownership = _native_war_plan(
+            **base, history=[unsafe_original, unowned_root],
+            steps=("preview-move-army-11-to-45", "life-advance"),
+        )
+        self.assertEqual(
+            no_ownership["phase"],
+            "native_war_defender_capital_regroup_ownership_blocked",
+        )
+        self.assertIsNone(no_ownership["selected_step"])
+
+        capital_route = _preview_row(
+            3, army_id=11, origin=8747, target=45,
+            date_raw=date_raw, route=[23, 45],
+        )
+        contact_step = query_route_contact_horizon_step(11, 45, (21,))
+        contact = _native_war_plan(
+            **base, history=[unsafe_original, root, capital_route],
+            steps=(contact_step, "life-advance"),
+        )
+        self.assertEqual(
+            contact["phase"], "native_war_capital_regroup_contact_horizon",
+            contact,
+        )
+        self.assertEqual(contact["selected_step"], contact_step)
+
+        safe_capital = _route_contact_row(
+            4, army_id=11, origin=8747, target=45,
+            date_raw=date_raw, route=[23, 45],
+            hostile_ids=(21,), contact_free=True,
+        )
+        reroute = _native_war_plan(
+            **base,
+            history=[unsafe_original, root, capital_route, safe_capital],
+            steps=("move-army-11-to-45", "life-advance"),
+        )
+        self.assertEqual(reroute["selected_step"], "move-army-11-to-45", reroute)
+        self.assertEqual(reroute["pursuit"]["objective_kind"], "regroup")
+
+        unsafe_capital = _route_contact_row(
+            4, army_id=11, origin=8747, target=45,
+            date_raw=date_raw, route=[23, 45],
+            hostile_ids=(21,), contact_free=False,
+        )
+        blocked = _native_war_plan(
+            **base,
+            history=[unsafe_original, root, capital_route, unsafe_capital],
+            steps=("move-army-11-to-45", "life-advance"),
+        )
+        self.assertEqual(blocked["phase"], "native_war_no_safe_exact_route", blocked)
+        self.assertIsNone(blocked["selected_step"])
+
+        geometrically_clear = _preview_row(
+            3, army_id=11, origin=8747, target=45,
+            date_raw=date_raw, route=[47, 45],
+        )
+        still_queries = _native_war_plan(
+            **base, history=[unsafe_original, root, geometrically_clear],
+            steps=(contact_step, "move-army-11-to-45"),
+        )
+        self.assertEqual(
+            still_queries["phase"],
+            "native_war_capital_regroup_contact_horizon",
+            still_queries,
+        )
+        unsafe_clear_route = _route_contact_row(
+            4, army_id=11, origin=8747, target=45,
+            date_raw=date_raw, route=[47, 45],
+            hostile_ids=(21,), contact_free=False,
+        )
+        still_blocked = _native_war_plan(
+            **base,
+            history=[unsafe_original, root, geometrically_clear,
+                     unsafe_clear_route],
+            steps=("move-army-11-to-45", "life-advance"),
+        )
+        self.assertEqual(
+            still_blocked["phase"], "native_war_no_safe_exact_route",
+            still_blocked,
+        )
 
     def test_outnumbered_armies_consolidate_strongest_idle_stack_first(
         self,

@@ -690,6 +690,46 @@ flowchart TD
   已 live-confirmed；请求域外或任一请求 army unavailable 时继续 hold/避战，并把 terrain/commander/MAA 等缺字段
   送入下一只读 MCP 施工队列，不得把 `unknown` 解释成可安全攻击。
 
+## R0101 防御战争移动路线 RED（2026-09-22）
+
+- [production-live] CK3 `1.19.0.6` / 上述 EXE SHA、B114 native、Python
+  `e9e497516897b790f92f8ed653e5e4046320d50b` 的正式 `native_auto_run`，
+  R0101 paused `native:54` / raw `53368176`：玩家是战争 `301989950` 的主防御方，
+  战分 `-28`；唯一己军 `419430662` 的当前兵数 `534`，敌军 `318767160` 为 `1209`。
+  原始正式报告见 `.task-tmp/RUN-001/century-r0101-preflight/R0101-formal/formal-report.txt`
+  （SHA-256 `7A82922E808A368006402C15E6AD624F76BFC2A601C081DAAF1D8BF97CF60972`）。
+- [production-live] 同帧原生 `query-route-contact-horizon-v1` 返回己军当前省 `8747`、
+  effective origin `23`、路线 `[23,46]`，敌军当前省 `46`、路线 `[23,8747]`；
+  下一日 raw `53368200` 的 `23→46` / `46→23` opposing-edge 冲突使
+  `one_day_contact_free=false`。继续原路线不具备安全证据，停机是正确的；
+  不能把端点相同日接触擅自改成安全。正式回合没有提交战争动作，h1094/raw53368176
+  的游戏存档与 driver 状态是最后配对 checkpoint。
+- [production-live] 同一战争最近一次原生终局查询为 h1069/raw53368032，至 RED
+  raw53368176 的 6 游戏日内负评估复用仍有效（到 raw53368200）：`claim_cb`、
+  战分 `-28`、target title `530`；white peace 和 victory 的 native validator 均为
+  `false`，surrender 可提交且敌方会接受，但其 `claim_cb` 物质条款仍为
+  `cb_specific_terms_not_observable`。因此不能把「可投降」误写成已评估的安全终局，
+  也不能无界等待：己军现有移动路线下一日有已观测接触风险。
+- [static-confirmed] 原版同 build 的 `CAIPathfinder` 与 `0x186B190` move builder 会对目标省
+  走 complete can-move 验证；当前 native bridge 的只读 move preview 和 route-contact
+  timeline 是我方路线证明接口，不等同于原版 AI 的这帧目标评分选择。已有策略只允许进攻方
+  在兵力劣势时用同帧首都 regroup；防御方这帧目标 `46` 被拒后，没有请求首都 `45`
+  的 fresh preview，因此属于候选策略缺口，而非已证明首都路线安全。
+- [counter-policy / 待实机] 仅在单一主防御战争、唯一可控非交战军队、敌方兵力优势、
+  原移动目标已经被 exact contact 拒绝时，才查询同帧玩家首都并尝试新的 native
+  preview；路线必须再经完整敌军 scope 的接触时域核验。preview deferred/unavailable、
+  冲突或动作后状态不明均保持 RED，不把「去首都」硬编码为安全。
+
+```mermaid
+flowchart LR
+    R["[live] R0101 原路线 8747→23→46"] --> C["[live] 下一日 opposing-edge 接触"]
+    C --> S["[confirmed] 拒绝继续原路线"]
+    S -. "[unknown] 首都 45 的可行路线" .-> P["同帧 native move preview"]
+    P --> H{"完整敌军接触时域安全？"}
+    H -->|是| M["提交 typed 改道；独立帧核验"]
+    H -->|否或 unknown| X["保留 RED"]
+```
+
 ## 未闭合清单
 
 - [unknown] stance 同分时 tie-break、随机性和 hard-coded 特例的完整优先顺序。
