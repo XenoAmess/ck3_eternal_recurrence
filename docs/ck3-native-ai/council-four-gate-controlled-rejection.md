@@ -79,3 +79,19 @@ R0051 从 ordinary h1809/date `53284392` 的新 paired save/driver，以 master 
 三份 `raw-terminal-result.json` 的 SHA-256 依次为 `6D39E87EAE67D68B1024746C39689AB8AA285E93A1C0ABF9931F870C96376F09`、`A91600ED953A7B8D6852F06C0008DC7D6282A7C03946CE4874CF1FA26794E933`、`88BE65AD17928D4C749135BE158975F2BB8BB50130FB3FD3AD8EB6CBF57EFCFD`。这些都是只读结果，不能把已闭合的 already 门重复记数，也不能把 ordinary 候选或空席当作后三门阳性。h1566/raw `53371896` 的现存 driver 历史没有 `council_final_gates` 终端；其战争阻塞也不允许为了 Council 场景盲目推进日期。
 
 最小下一个入口是普通战役自然到达**新的**合法 paused checkpoint 后，先离线确认同源 save/driver、`ordinary_campaign_succession/xar_off`、冻结 EXE/DLL/加载配置与总管席位。replacement 必须有在职总管和另一名真实 provider 候选；guest/pending 即使席位空缺，也只能由同一帧 native gate 行证明。若场景相对上表有实质差异且 CK3 唯一实例队列允许，使用既有 `materialize_council_native_gate_scene_candidate_v1.py` 制作独立只读候选，并由 `run_council_native_gate_scene_v1.py --preflight-only` 完成 no-launch 校验；之后至多一轮 action-OFF、≤480 秒 Stage Q。冻结新 `raw-terminal-result.json` 与对应配对后，只在 `isolated_guest_rejection_ids`、`isolated_candidate_pending_rejection_ids` 或 `isolated_replacement_fireability_denial_ids` 至少一个非空时，按既有四门受控 runner 准备独立 action-ON 拒绝候选。否则退役该帧，不重查同一场景。当前没有可启动 action-ON 的后三门候选；Council 保持 `1/4`，public query/action/ad OFF。
+
+## 2026-09-22 h2083 轻量筛查：尚无 Council 实机候选
+
+旧轮次 R0127 的 h2083/raw `53386440` save SHA-256 为
+`DF6B61DDE358726EC9B1C126C93302A6A31B800D890C1D88AB184407CFC26080`；
+交接机 `Z:\ck3_mod_rewrite\.task-tmp\RUN-001\war-h1955-continuation-source82c6703-nolaunch-20260922\state-final\native-session\driver-state.json`
+SHA-256 为 `291DEAD9EE9FE1542D4F100A88C1D2A5B8933CB25D010EEE02C9919ECBE8D887`。
+该 driver 有 2,096 条历史，durable checkpoint 只绑定至 `history_index=2083`；所以尾部 13 条不是可直接冷恢复的 paired state。边界内最近的 campaign-root Council 观测在 index `2077` / raw `53385672`，actor/owner 均为 `36403`，`councillor_steward` 空席。index `2084` 的同日 raw `53386440` 只读观测也显示空席，但位于 durable 边界外，只能作排除线索，不能当作已配对的 checkpoint 结果。R0127 当前 pending `perk_alliance_interaction` 是 `31506→玩家36403`；Council 的 candidate-pending 门要求**玩家→该候选 full CharacterID**，故此入站请求不符合。历史 index `9` 的玩家 `arrange-marriage-36403-29940` 已在 raw `53301576` 独立回读为 `accepted_marriage`，也不能冒充当前未决提议。driver 内没有 Council final-gates 终端。h2083 不提供 replacement 阳性，也没有 guest/pending 阳性证据；本包不制作候选、不占 CK3。
+
+正常战争/百年续跑的轻量筛查只消费已有正式观测，不另开议会长跑：
+
+1. 每个**新耐久配对**先检查同帧 ordinary feudal、玩家身份、日期、`councillor_steward` 占位及其来源索引。若边界内没有与 save 日期/玩家一致的原生 Council 帧，标记 unknown，不用早一帧代替。空席立即排除 replacement；在职仍只是一条线索，需原生 `incumbent_can_be_fired=false` 与另一普通候选同帧成立。
+2. guest 仅在自然 pool guest/廷臣场景有明确线索后安排一次 provider 查询；`yearly.1090` 是原版候选生成线索，事件选项本身不证明 `candidate_is_guest=true`。pending 仅在有玩家发出的未决 proposal，且 recipient full ID 可能进入 steward provider 时安排一次查询；AI→玩家请求不计入。
+3. WAR B0 已让出唯一实例窗口、该帧与上述退役帧有实质差异时，先用**官方恢复器**产出无未配尾、`ordinary_campaign_succession/xar_off` 的 save/driver 合法 pair；再复用已有 Council materializer、冻结 query-only DLL/EXE 与 `run_council_native_gate_scene_v1.py --preflight-only` 核版本、mod/DLC、环境、配对和 action OFF。Stage Q 只读上限 480 秒、动作数和日期增量均为零；查询无 isolated 阳性就退役该帧。
+
+上述条件是调度线索，不将根上下文空席、自然事件或任何命令 ACK 升级为 guest/pending/fireability gate。四门仍 `1/4`，公共 Council query/action/ad 继续 OFF。
