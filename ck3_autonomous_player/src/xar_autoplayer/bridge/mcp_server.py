@@ -7,6 +7,8 @@ import importlib
 import os
 from pathlib import Path
 
+from xar_autoplayer.ck3_save_artifacts import Ck3ProfileArtifactInspector
+
 from xar_autoplayer.coat_of_arms_configured_resources import (
     query_coat_of_arms_configured_resource_catalog_v1,
     read_coat_of_arms_configured_resource_asset_v1,
@@ -1222,16 +1224,32 @@ def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:
     tool.parameters = parameters
 
 
-def create_server(driver: GameplayBridgeDriver):
+def create_server(
+    driver: GameplayBridgeDriver,
+    *,
+    profile_dir: str | os.PathLike[str] | None = None,
+):
     """Build the MCP server lazily so baseline vision installs need no SDK."""
     try:
         from mcp.server import MCPServer
+        from mcp.types import ToolAnnotations
     except ImportError as error:
         raise RuntimeError(
             "MCP mode requires the optional dependency: pip install 'mcp==2.0.0'"
         ) from error
 
     service = GameplayBridgeService(driver)
+    artifact_inspector = (
+        Ck3ProfileArtifactInspector(profile_dir)
+        if profile_dir is not None
+        else None
+    )
+    read_only_tool = ToolAnnotations(
+        readOnlyHint=True,
+        destructiveHint=False,
+        idempotentHint=True,
+        openWorldHint=False,
+    )
     server = MCPServer(
         name="Xar CK3 Gameplay Bridge",
         version="0.1.0",
@@ -1250,6 +1268,15 @@ def create_server(driver: GameplayBridgeDriver):
     def ck3_get_bridge_diagnostics() -> dict[str, object]:
         """Return live transport diagnostics without claiming CK3 game state."""
         return service.bridge_diagnostics()
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_inspect_save_artifacts_v1() -> dict[str, object]:
+        """Inspect saves below the server-bound isolated profile; no path input."""
+        if artifact_inspector is None:
+            raise RuntimeError(
+                "save artifact inspection requires a server-configured profile"
+            )
+        return artifact_inspector.inspect_save_artifacts_v1()
 
     @server.tool()
     def ck3_take_snapshot() -> dict[str, object]:
@@ -2569,6 +2596,9 @@ def create_server(driver: GameplayBridgeDriver):
         server, "ck3_query_zhongguo_ai_owned_case_snapshot_v1"
     )
     _forbid_unknown_tool_arguments_v1(
+        server, "ck3_inspect_save_artifacts_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_steward_develop_county_candidates_v1"
     )
     _forbid_unknown_tool_arguments_v1(
@@ -2794,13 +2824,17 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    selected_state_dir = Path(args.state_dir) if args.state_dir else _default_state_dir()
     driver = load_driver(
         args.driver,
         userdir=args.userdir,
-        state_dir=args.state_dir,
+        state_dir=selected_state_dir,
         pipe_name=args.pipe_name,
     )
-    server = create_server(driver)
+    server = create_server(
+        driver,
+        profile_dir=selected_state_dir / "profile",
+    )
     try:
         if args.transport == "stdio":
             server.run(transport="stdio")

@@ -31,6 +31,11 @@ from .environment import (
     write_bytes_atomic,
     write_json_atomic,
 )
+from .ck3_save_artifacts import (
+    SaveArtifactError,
+    inspect_ck3_save_artifact_v1,
+    require_seedable_ck3_save_v1,
+)
 from .errors import AgentError
 from .locking import exclusive_state_lock
 from .native_session import (
@@ -164,7 +169,25 @@ def _assert_save_anchor(
         or digest != expected_sha256
     ):
         raise AgentError("ordinary seed save bytes differ from driver state")
-    return {"path": str(save_path.resolve()), "size": size, "sha256": digest}
+    try:
+        artifact = inspect_ck3_save_artifact_v1(
+            save_path,
+            profile_dir=save_path.parent.parent,
+        )
+        require_seedable_ck3_save_v1(artifact)
+    except (OSError, SaveArtifactError) as error:
+        raise AgentError(f"ordinary seed save integrity is invalid: {error}") from error
+    return {
+        "path": str(save_path.resolve()),
+        "size": size,
+        "sha256": digest,
+        "format": artifact["format"],
+        "integrity_scope": artifact["integrity_scope"],
+        "zip_valid": artifact["zip_valid"],
+        "has_gamestate": artifact["has_gamestate"],
+        "raw_header_valid": artifact.get("raw_header_valid"),
+        "full_file_sha256_bound": True,
+    }
 
 
 def _replace_lifecycle_anchors(
@@ -316,6 +339,16 @@ def rebind_ordinary_seed_v1(
                 "source": save_before,
                 "target": save_after,
                 "bytes_unchanged": True,
+            },
+            "safety_contract": {
+                "zero_running_ck3_processes": True,
+                "target_profile_verified": True,
+                "canonical_paths_only": True,
+                "checkpoint_sha256_unique_anchor": save_before["sha256"],
+                "copy_postcondition_sha256_equal": save_after["sha256"]
+                == save_before["sha256"],
+                "raw_save_integrity_is_header_only": save_before["format"]
+                == "raw-ck3",
             },
             "post_rebind_validation": {
                 "native_driver_consumer": "passed",

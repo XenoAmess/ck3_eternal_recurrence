@@ -52,7 +52,10 @@ class OrdinarySeedRebinderTests(unittest.TestCase):
         )
         self.driver_path.parent.mkdir(parents=True)
         self.save_path.parent.mkdir(parents=True)
-        self.save_bytes = b"opaque ck3 checkpoint bytes\x00\xff" * 8
+        self.save_bytes = (
+            b"SAV0100\nmeta_data={\n\tversion=\"fixture\"\n}\n"
+            + b"opaque-body\x00\xff" * 8
+        )
         self.save_path.write_bytes(self.save_bytes)
         self.save_sha256 = hashlib.sha256(self.save_bytes).hexdigest()
         self.pipe_name = r"\\.\pipe\ordinary-seed-rebind-test"
@@ -201,6 +204,13 @@ class OrdinarySeedRebinderTests(unittest.TestCase):
         self.assertEqual(
             receipt["save"]["source"]["sha256"], self.save_sha256
         )
+        self.assertEqual(receipt["save"]["source"]["format"], "raw-ck3")
+        self.assertEqual(
+            receipt["save"]["source"]["integrity_scope"], "header-only"
+        )
+        self.assertTrue(
+            receipt["save"]["source"]["full_file_sha256_bound"]
+        )
         self.assertEqual(receipt["save"]["source"], receipt["save"]["target"])
         self.assertEqual(
             receipt["post_rebind_validation"]["cold_checkpoint_validator"],
@@ -264,6 +274,23 @@ class OrdinarySeedRebinderTests(unittest.TestCase):
             self._run()
 
         self.assertEqual(self.driver_path.read_bytes(), before)
+
+    def test_unknown_save_format_fails_without_writing(self) -> None:
+        before = self.driver_path.read_bytes()
+        unknown = b"opaque but not a CK3 save"
+        self.save_path.write_bytes(unknown)
+        payload = copy.deepcopy(self.source_payload)
+        digest = hashlib.sha256(unknown).hexdigest()
+        payload["last_checkpoint"]["size"] = len(unknown)
+        payload["last_checkpoint"]["sha256"] = digest
+        payload["command_history"][0]["result"]["checkpoint"]["size"] = len(unknown)
+        payload["command_history"][0]["result"]["checkpoint"]["sha256"] = digest
+        self._write_source(payload)
+
+        with self.assertRaisesRegex(AgentError, "integrity is invalid"):
+            self._run()
+
+        self.assertEqual(self.save_path.read_bytes(), unknown)
 
     def test_post_write_validation_failure_restores_source_driver(self) -> None:
         before = self.driver_path.read_bytes()
