@@ -3,6 +3,7 @@
 - [exact-build tree + R0089 natural production fallback RED; focused offline consumer ready] [`physician_epidemic_events.1000` 疫情医师争议](physician-epidemic-events-1000.md)：原版 native 1 给玩家五年疫病抗性，同时承担狂热者好感、对立关系与可能压力成本；R0089 generic 恰选此项但不构成语义或物质 GREEN，新版同帧离线走专用合同，实机复验仍待闭合。
 - [exact-build source tree + R0088 natural production fallback; focused offline consumer ready] [`char_interaction.0232` 叛臣战争邀请](char-interaction-0232-rebel-war-call.md)：原版 native 0 加入叛军战争、native 1 承担好感代价但不参战；R0088 曾因未注册而 generic 选择 native 0，新版同帧离线选 native 1，实机复验待闭合。
 - [exact-build source tree + R0087 natural paused RED] [`epidemic_events.1100` 疫情爆发通知](epidemic-events-1100-outbreak-notice.md)：原版通知后的保守选项及有/无医生互斥投影，R0087 只物化 native `[0,1]`；正式 typed 选择和独立后置待新版实机，不能借此声称疫情物质结果或 G2-M2 已闭合。
+- [exact-build source tree + R0092 natural paused RED] [`epidemic_events.5007` 草药师巫术控诉](epidemic-events-5007-herbalist-accusation.md)：两行原生投影 `[1,2]`，旧消费者未准入角色关系/选项变体；现仅有专用静态修复，实机后置和下一 turn 尚待复验。
 - [exact-build source tree + R0085 natural paused RED] [`health.1101` 普通疾病恢复通知](health-1101-ill-recovery.md)：原版疾病恢复即时效果、两种精确 saved-scope 库存与唯一 tooltip-only 选项；R0085 正式消费者未准入三个既有扩展字段，typed 动作与独立后置待新版实机。
 
 - [exact-build source tree + R0072 paused RED] [`health.7000` 衰弱开始](health-7000-infirm-onset.md)：原版 yearly-health 入口与唯一加 infirm 的选项，R0072 只因四个精确投影字段缺失在选择前阻塞；同帧 source-bound 选择与独立后置仍待实机。
