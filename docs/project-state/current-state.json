@@ -101,8 +101,22 @@
     "worker_output": "independent package receipt/resource declaration"
   },
   "repository_provenance": {
+    "recent_integrated_pull_requests": [
+      {
+        "commit": "469efa97cb5e8d76bc449ec4433073cf333f99f2",
+        "integration_result": "GREEN",
+        "number": 140,
+        "source_cleanup": "complete"
+      },
+      {
+        "commit": "1c968415b6a17d00961c374f92155b5c0f89837e",
+        "integration_result": "GREEN",
+        "number": 141,
+        "source_cleanup": "complete"
+      }
+    ],
     "root_last_completed_transaction": {
-      "commit": "71535578d672169960289ff4b18397e5cbec1d89",
+      "commit": "1c968415b6a17d00961c374f92155b5c0f89837e",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
@@ -163,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "E9D8EB06926C1DB7D3151062704BC19B30EFB6E190508D9FDE5F64E12EE4EF0F"
+        "sha256": "C9CD41AD3F5B7E76B38CE731A8031DB78E557105A1DF8873E67243E6E048974E"
       },
       "raw_footage": {
         "passed": 0,
@@ -245,9 +259,15 @@
       "historical_continuation": "Murchad_1066",
       "historical_durable_game_days": 14900,
       "historical_target_game_days": 36524,
+      "latest_formal_pair": "R0152_final",
+      "latest_formal_war_id": 16777230,
+      "latest_formal_war_status": "active",
       "m3_existing_complete_evidence_retained": true,
+      "material_expansion_proven": false,
       "primary_formal_seed_pair": "R0138_frozen_day0",
-      "prv008_frozen_qualification_unchanged": true
+      "prv008_frozen_qualification_unchanged": true,
+      "robert_durable_game_days": 591,
+      "robert_target_game_days": 36524
     },
     "closed_gates": [
       "G2-M0",
@@ -255,49 +275,69 @@
       "G2-M3"
     ],
     "latest_durable_continuation": {
-      "attempted_turns": 162,
-      "blocker": {
-        "event_action_submitted": false,
-        "event_definition_key": "lifestyle_nicknames.1000",
-        "reason": "registered_contract_requires_extended_consumer"
+      "active_war": {
+        "enemy_state": "retreating",
+        "land_acquired": false,
+        "objective_province_id": 2640,
+        "player_army_id": 50331935,
+        "player_army_state": "sieging",
+        "status": "active",
+        "war_id": 16777230
       },
-      "campaign_identity": "Murchad_1066_historical",
-      "checkpoint_date_raw": 53501928,
-      "checkpoint_history_index": 2894,
-      "checkpoint_save_sha256": "165076EF878B747D6FC08BF325FCE562A9B83B3AB6105DEF2AE2A7BFD0E17A66",
-      "driver_sha256_with_unpaired_tail": "BF1584C1D1DC0E38BFDED7F8325788E4A7E7440C8E606C938D26361D65A7FAAE",
-      "durable_game_days": 14900,
-      "evidence_manifest": {
+      "attempted_turns": 60,
+      "campaign_identity": "Robert_1066",
+      "checkpoint_date_raw": 53158512,
+      "checkpoint_history_index": 180,
+      "checkpoint_save_sha256": "5A4CAB7C2B62A5B49293DBA822D6ABD5F300C4E6F9E43A33C5CD866F8A5F60EF",
+      "cleanup_proven": true,
+      "current_focus_key": "stewardship_wealth_focus",
+      "driver_sha256": "217E4D2B669F0433C3CEB377E7D6ED4BD904C24913629C607C324C285C712DC4",
+      "durable_game_days": 591,
+      "durable_game_days_increment": 198,
+      "evidence": {
         "base": "configured_process_assets_root",
-        "locator": "g2-war-h2675-continued-20260922/live-R0136/R0136-evidence-manifest.json",
-        "sha256": "D23D1902E0B8C64F00B98642201791247DDE7512C4B4008783EF95EE8292FEAF"
+        "freeze_locator": "g2-robert-mainline-r0152-final-20260923/R0152-final-frozen-pair/R0152-pair-freeze.json",
+        "freeze_sha256": "FED9C03D7FCA2F9FB1B3E0A06EE303F19C4B106186CDFB00D909ADA9D175D36F",
+        "frozen_pair_directory": "g2-robert-mainline-r0152-final-20260923/R0152-final-frozen-pair"
       },
+      "execution_id": "76ce3a50-807b-4f3d-ab8d-683581eaae0a",
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
+      "initial_lifestyle_focus_gate": "complete",
+      "managed_process_count_after_cleanup": 0,
       "material_expansion_proven": false,
-      "natural_succession_transitions": 0,
-      "prior_event_replay_gates": {
-        "health_7400": {
-          "observed_in_r0136": false,
-          "r0132_red_closed": false,
-          "static_patch_integrated": true
-        },
-        "trait_specific_4001": {
-          "observed_in_r0136": false,
-          "r0134_red_closed": false,
-          "static_patch_integrated": true
-        }
-      },
-      "result": "completed-red",
-      "round": "R0136",
-      "scope": "Historical Murchad paired time span only; Robert 1066 is the newly selected formal primary campaign and receives no transferred days or gate credit; old R0118 war RED and PRV008 boundary unchanged",
-      "source_commit": "a092d6e04d9135d6fa60aaecd49fa2222130ced8",
-      "successful_turns": 161,
-      "successful_unpaired_life_advances": 2,
+      "result": "qualified",
+      "round": "R0152",
+      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0152",
+      "scope": "Robert focus-first bounded mainline with one typed claim war and ongoing safe war continuation; the army is sieging the objective while the enemy retreats, but no land victory, century, whole-campaign or second-seed qualification is proven",
+      "source_commit": "1c968415b6a17d00961c374f92155b5c0f89837e",
+      "status": "turn_limit",
+      "successful_turns": 60,
       "target_game_days": 36524,
-      "typed_war_actions": 0,
-      "unpaired_tail_first_index": 2895,
-      "unpaired_tail_last_index": 2903,
+      "typed_war_actions": 1,
+      "war_declaration": {
+        "actor_character_id": 29829,
+        "casus_belli_key": "claim_cb",
+        "claimant_character_id": 29829,
+        "declaration_id": "33621-11-0",
+        "independent_postcondition_verified": true,
+        "step": "declare-war-33621-11-0",
+        "target_and_actor_power_complete": true,
+        "target_character_id": 33621,
+        "target_power_as_percent_of_actor": 26.547,
+        "target_title_id": 2115,
+        "war_ids_after": [
+          16777230
+        ],
+        "war_ids_before": []
+      },
+      "war_follow_through": {
+        "army_raised": true,
+        "following_turns_consumed": true,
+        "move_submitted_to_province_id": 2640,
+        "route_contact_queried": true,
+        "route_previewed": true
+      },
       "whole_campaign_gate": "0/1"
     },
     "m4_focus_first_primitive": {
@@ -390,5 +430,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T01:55:33+08:00"
+  "updated_at": "2026-09-23T06:20:00+08:00"
 }
