@@ -433,13 +433,13 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 189)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 189)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 195)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 195)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 335)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 341)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY],
@@ -514,6 +514,76 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
+
+    def test_registry_consumes_only_four_exact_witch_scope_shapes(self) -> None:
+        root = 101
+        witch = 202
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": EVENT_KEY,
+            "current_event_instance_id": 7,
+            "date_raw": 53200000,
+            "root_scope": _character_scope("root", root)["scope"],
+            "saved_scopes": [],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        witch_scope = _character_scope("witch", witch)
+        created_scope = _character_scope("created_witch", witch)
+        shapes = (
+            [witch_scope],
+            [_boolean_scope("old_courtier"), witch_scope],
+            [created_scope, witch_scope],
+            [created_scope, _secret_scope("witch_secret"), witch_scope],
+        )
+        for scopes in shapes:
+            with self.subTest(scopes=[row["name"] for row in scopes]):
+                frame = {**context, "saved_scopes": scopes}
+                result = recommend_registered_vanilla_event_option_v1(
+                    frame, played_character_id=root, snapshot_option_count=2
+                )
+                self.assertEqual(result["status"], "recommended", result)
+                self.assertEqual(result["selected_option_number"], 2)
+                self.assertEqual(result["selected_native_option_index"], 1)
+                self.assertEqual(result["failed_checks"], [])
+
+        drifted_shapes = (
+            [_character_scope("witch", root)],
+            [_character_scope("created_witch", root), witch_scope],
+            [_character_scope("created_witch", witch + 1), witch_scope],
+            [_secret_scope("created_witch"), witch_scope],
+            [_boolean_scope("old_courtier"), created_scope, witch_scope],
+            [created_scope, _boolean_scope("witch_secret"), witch_scope],
+            [witch_scope, _character_scope("witch", witch)],
+            [witch_scope, _secret_scope("unexpected_scope")],
+        )
+        for scopes in drifted_shapes:
+            with self.subTest(drift=[row["name"] for row in scopes]):
+                frame = {**context, "saved_scopes": scopes}
+                result = recommend_registered_vanilla_event_option_v1(
+                    frame, played_character_id=root, snapshot_option_count=2
+                )
+                self.assertEqual(result["status"], "blocked", result)
+
+        disabled = json.loads(json.dumps(context))
+        disabled["saved_scopes"] = [witch_scope]
+        disabled["options"][1]["enabled"] = False
+        result = recommend_registered_vanilla_event_option_v1(
+            disabled, played_character_id=root, snapshot_option_count=2
+        )
+        self.assertEqual(result["status"], "blocked", result)
 
     def test_existing_courtier_live_shape_passes_production_checks(self) -> None:
         contract = production._manager_recovery_contract(

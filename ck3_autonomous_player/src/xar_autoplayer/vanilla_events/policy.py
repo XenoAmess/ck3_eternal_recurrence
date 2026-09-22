@@ -535,6 +535,82 @@ def _scope_projection_checks(
     return checks
 
 
+def _source_bound_witch_scope_projection(
+    context: Mapping[str, object],
+    contract: Mapping[str, object],
+    analysis: object,
+    played_character_id: int,
+) -> tuple[dict[str, object], bool] | None:
+    """Materialize only the four source-authored .4001 saved-scope shapes."""
+
+    hashes = analysis.get("source_sha256") if isinstance(analysis, Mapping) else None
+    scopes = context.get("saved_scopes")
+    if not (
+        isinstance(hashes, Mapping)
+        and hashes.get("events/trait_specific_events/trait_specific_events.txt")
+        == "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7"
+        and hashes.get("common/on_action/yearly_on_actions.txt")
+        == "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+        and contract.get("scope_types") == {"witch": "character"}
+        and contract.get("optional_scope_types") == {
+            "created_witch": "character",
+            "witch_secret": "secret",
+            "old_courtier": "boolean",
+        }
+        and contract.get("unique_character_scope_excludes")
+        == {"witch": [played_character_id]}
+        and contract.get("optional_unique_character_scope_excludes")
+        == {"created_witch": [played_character_id]}
+        and contract.get("optional_character_scope_matches_any")
+        == {"created_witch": ["witch"]}
+        and contract.get("boolean_scope_name_sets")
+        == [[], ["old_courtier"]]
+        and contract.get("saved_scope_name_sets") == [
+            ["witch"],
+            ["old_courtier", "witch"],
+            ["created_witch", "witch"],
+            ["created_witch", "witch_secret", "witch"],
+        ]
+        and contract.get("saved_scope_counts") == [1, 2, 3]
+        and contract.get("native_option_indices") == [0, 1]
+        and contract.get("selected_option_number") == 2
+        and contract.get("selected_native_option_index") == 1
+        and isinstance(scopes, list)
+    ):
+        return None
+    names = {
+        row.get("name")
+        for row in scopes
+        if isinstance(row, Mapping) and isinstance(row.get("name"), str)
+    }
+    optional_types = contract["optional_scope_types"]
+    optional_excludes = contract["optional_unique_character_scope_excludes"]
+    optional_matches = contract["optional_character_scope_matches_any"]
+    projected = {
+        **contract,
+        "scope_types": {
+            **contract["scope_types"],
+            **{name: value for name, value in optional_types.items() if name in names},
+        },
+        "unique_character_scope_excludes": {
+            **contract["unique_character_scope_excludes"],
+            **{name: value for name, value in optional_excludes.items() if name in names},
+        },
+        "character_scope_matches_any": {
+            name: value for name, value in optional_matches.items() if name in names
+        },
+    }
+    boolean_names = {
+        row.get("name")
+        for row in scopes
+        if isinstance(row, Mapping)
+        and isinstance(row.get("scope"), Mapping)
+        and row["scope"].get("type_key") == "boolean"
+    }
+    allowed_boolean_names = [set(value) for value in contract["boolean_scope_name_sets"]]
+    return projected, boolean_names in allowed_boolean_names
+
+
 def _option_projection_checks(
     context: Mapping[str, object],
     contract: Mapping[str, object],
@@ -970,6 +1046,27 @@ def recommend_registered_vanilla_event_option_v1(
     if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS or notice_review is not None:
         contract = _with_relational_character_scope_types(contract)
     allowed_extended_fields: set[str] = set()
+    witch_boolean_scope_names_match: bool | None = None
+    if event_key == "trait_specific.4001":
+        witch_projection = _source_bound_witch_scope_projection(
+            event_context, contract, analysis, character_id
+        )
+        if witch_projection is None:
+            return _response(
+                status="blocked",
+                event_key=event_key,
+                reason="registered_witch_exact_source_or_contract_drift",
+                checks={"witch_exact_source_and_contract": False},
+            )
+        contract, witch_boolean_scope_names_match = witch_projection
+        allowed_extended_fields.update({
+            "boolean_scope_name_sets",
+            "character_scope_matches_any",
+            "optional_character_scope_matches_any",
+            "optional_scope_types",
+            "optional_unique_character_scope_excludes",
+            "unique_character_scope_excludes",
+        })
     if event_key == "epidemic_events.0110":
         # The exact source saves new_preferred_capital only when its immediate
         # block finds a qualifying old plague county. R375 and R0099 saw the
@@ -1105,6 +1202,10 @@ def recommend_registered_vanilla_event_option_v1(
             checks["r0109_all_scope_rows_named_unique"] = False
             checks["r0109_authored_roles_present"] = False
     checks.update(_scope_projection_checks(scope_context, contract, character_id))
+    if witch_boolean_scope_names_match is not None:
+        checks["trait_specific_4001_boolean_scope_names_exact"] = (
+            witch_boolean_scope_names_match
+        )
     option_checks, selected = _option_projection_checks(
         event_context, contract, option_count
     )
