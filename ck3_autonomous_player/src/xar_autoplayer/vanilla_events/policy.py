@@ -560,6 +560,8 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "health.3104",
         "hostile_scheme_discovery.2001",
         "physician_epidemic_events.1000",
+        "prison_notification.0001",
+        "prison_notification.2001",
         "prison_notification.2002",
         "stress_threshold_special.1001",
     }
@@ -885,9 +887,52 @@ def recommend_registered_vanilla_event_option_v1(
         "event_definition_key": event_key
         == knowledge.get("event_definition_key"),
     }
-    checks.update(
-        _scope_projection_checks(event_context, contract, character_id)
-    )
+    scope_context = event_context
+    if event_key in {"prison_notification.0001", "prison_notification.2001"}:
+        # The exact authored option is empty. On-action scopes may carry
+        # unrelated names into the popup; only the four source-authored roles
+        # decide the acknowledgement, while all raw rows remain well formed.
+        analysis = knowledge.get("analysis")
+        source_hashes = (
+            analysis.get("source_sha256")
+            if isinstance(analysis, Mapping) else None
+        )
+        checks["r0109_exact_prison_notification_source"] = bool(
+            isinstance(source_hashes, Mapping)
+            and source_hashes.get(
+                "events/prison_events/prison_notification_events.txt"
+            ) == "56023FBADC5F56C98293B1FB4AB7D846AD957F115B2E329422A0DCAD283B6C7F"
+            and source_hashes.get("common/on_action/prison_on_actions.txt")
+            == "D9CEBF10ED0E2E5ECC33E18BC71768F634E5F5504B690C5EDE6B095ACC1A2ECD"
+        )
+        raw_scopes = event_context.get("saved_scopes")
+        required_names = {
+            "prisoner", "imprisoner", "bg_override_char", "this_player"
+        }
+        if isinstance(raw_scopes, list):
+            raw_names = [
+                row.get("name") if isinstance(row, Mapping) else None
+                for row in raw_scopes
+            ]
+            checks["r0109_all_scope_rows_named_unique"] = bool(
+                all(isinstance(name, str) for name in raw_names)
+                and len(raw_names) == len(set(raw_names))
+            )
+            checks["r0109_authored_roles_present"] = required_names.issubset(
+                raw_names
+            )
+            scope_context = {
+                **event_context,
+                "saved_scopes": [
+                    row for row in raw_scopes
+                    if isinstance(row, Mapping)
+                    and row.get("name") in required_names
+                ],
+            }
+        else:
+            checks["r0109_all_scope_rows_named_unique"] = False
+            checks["r0109_authored_roles_present"] = False
+    checks.update(_scope_projection_checks(scope_context, contract, character_id))
     option_checks, selected = _option_projection_checks(
         event_context, contract, option_count
     )

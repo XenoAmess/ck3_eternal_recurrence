@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 84,
-    "caller_candidate_reference_count": 538,
+    "caller_candidate_file_count": 85,
+    "caller_candidate_reference_count": 540,
     "definition_file_count": 75,
-    "external_caller_event_count": 157,
+    "external_caller_event_count": 159,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 193,
+    "registered_event_count": 195,
     "same_file_only_caller_event_count": 36,
-    "unique_definition_count": 193
+    "unique_definition_count": 195
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "2E6817350010A90D2D6C2AABDBC184A26E63786BB604E14F5FD33213BFBB29C2",
+  "dataset_sha256": "740BF6D4873642CDA5F29762C145D4D862E7CAFD8C9B02B71C948241D386A251",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -4445,6 +4445,42 @@
         "relative_path": "events/dlc/ce1/physician_epidemic_events.txt"
       },
       "namespace": "physician_epidemic_events"
+    },
+    "prison_notification.0001": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 3,
+          "file_sha256": "D9CEBF10ED0E2E5ECC33E18BC71768F634E5F5504B690C5EDE6B095ACC1A2ECD",
+          "kind": "exact-token-lexical-candidate",
+          "line": 239,
+          "relative_path": "common/on_action/prison_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "56023FBADC5F56C98293B1FB4AB7D846AD957F115B2E329422A0DCAD283B6C7F",
+        "line": 6,
+        "relative_path": "events/prison_events/prison_notification_events.txt"
+      },
+      "namespace": "prison_notification"
+    },
+    "prison_notification.2001": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 3,
+          "file_sha256": "D9CEBF10ED0E2E5ECC33E18BC71768F634E5F5504B690C5EDE6B095ACC1A2ECD",
+          "kind": "exact-token-lexical-candidate",
+          "line": 343,
+          "relative_path": "common/on_action/prison_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "56023FBADC5F56C98293B1FB4AB7D846AD957F115B2E329422A0DCAD283B6C7F",
+        "line": 269,
+        "relative_path": "events/prison_events/prison_notification_events.txt"
+      },
+      "namespace": "prison_notification"
     },
     "prison_notification.2002": {
       "caller_candidate_resolution": "same-definition-file-only",
