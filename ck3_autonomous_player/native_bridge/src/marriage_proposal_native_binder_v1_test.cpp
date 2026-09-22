@@ -14,6 +14,7 @@ namespace {
 constexpr std::uint32_t kSubjectId = 0x01000001U;
 constexpr std::uint32_t kCandidateId = 0x02000002U;
 constexpr std::uint32_t kRecipientId = 0x03000003U;
+constexpr std::uint32_t kPlayedId = 0x04000004U;
 constexpr std::uintptr_t kPrimaryVtable = 0x1111222233334444ULL;
 constexpr std::uintptr_t kSecondaryVtable = 0x5555666677778888ULL;
 
@@ -35,6 +36,7 @@ struct Harness {
   std::array<std::byte, 0x200> subject{};
   std::array<std::byte, 0x200> candidate{};
   std::array<std::byte, 0x200> recipient{};
+  std::array<std::byte, 0x200> played{};
   std::array<std::byte, 0x50> subject_family{};
   std::array<std::byte, 0x50> candidate_family{};
   std::array<std::byte, 0x1000> database{};
@@ -57,6 +59,8 @@ struct Harness {
   int submit_calls = 0;
   int destroy_calls = 0;
   std::uint32_t submit_flags = 0;
+  std::int64_t ai_accept_raw = 100000;
+  std::uint8_t answer_raw = 1;
 
   Harness() {
     storage_pointer = reinterpret_cast<std::uintptr_t>(storage.data());
@@ -67,6 +71,7 @@ struct Harness {
     InstallCharacter(kSubjectId, subject, subject_family);
     InstallCharacter(kCandidateId, candidate, candidate_family);
     InstallCharacter(kRecipientId, recipient, NoFamily());
+    InstallCharacter(kPlayedId, played, NoFamily());
     Write(database, bridge::kArrangeMarriageInteractionOffsetV1,
           reinterpret_cast<std::uintptr_t>(interaction.data()));
     subject_spouses[0] = static_cast<std::int32_t>(kCandidateId);
@@ -185,11 +190,11 @@ bool Validate(void *, void *) {
   return g_harness->validate;
 }
 std::int64_t *AiAccept(void *, std::int64_t *output) {
-  *output = 100000;
+  *output = g_harness->ai_accept_raw;
   return output;
 }
 std::uint8_t OuterAnswer(void *, std::uint8_t, std::uint8_t, void *, void *) {
-  return 1;
+  return g_harness->answer_raw;
 }
 void Destroy(void *) { ++g_harness->destroy_calls; }
 
@@ -380,6 +385,38 @@ void TestSingleSubmitAndNativeFinalValidation() {
          queue_rejected.destroy_calls == 2);
 }
 
+void TestRanklessObservedHeirNativeAnswer() {
+  Harness harness{};
+  harness.ai_accept_raw = 3'600'000'000LL;
+  harness.answer_raw = 0; // R0082 final native answer, not refusal.
+  bridge::MarriageProposalNativeBinderStateV1 state{};
+  InitializeState(harness, state);
+  auto submission = Submission();
+  submission.rankless_observed_heir = true;
+  submission.native_rank = 0;
+  submission.predicted_outcome =
+      bridge::MarriagePredictedOutcomeV1::unavailable;
+  submission.roles.actor_character_id = kPlayedId;
+  submission.recipient_ai_accept_raw = harness.ai_accept_raw;
+  submission.recipient_answer_status_raw = harness.answer_raw;
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(
+             &state, submission) ==
+         bridge::MarriageProposalNativeSubmitResultV1::submitted);
+  assert(harness.submit_calls == 1);
+
+  Harness changed{};
+  changed.ai_accept_raw = harness.ai_accept_raw;
+  changed.answer_raw = 1;
+  bridge::MarriageProposalNativeBinderStateV1 changed_state{};
+  InitializeState(changed, changed_state);
+  assert(bridge::SubmitMarriageProposalFromNativeBinderV1(
+             &changed_state, submission) ==
+         bridge::MarriageProposalNativeSubmitResultV1::rejected);
+  assert(changed.submit_calls == 0);
+  assert(bridge::ReadMarriageProposalNativeBinderFailureV1(changed_state) ==
+         bridge::MarriageProposalNativeBinderFailureV1::recipient_answer_changed);
+}
+
 void TestBilateralReadbackAndExplicitBlockers() {
   Harness harness{};
   bridge::MarriageProposalNativeBinderStateV1 state{};
@@ -458,6 +495,7 @@ void TestProductionSignatureDriftFailClosed() {
 int main() {
   TestBindAndCertifiedConfiguration();
   TestSingleSubmitAndNativeFinalValidation();
+  TestRanklessObservedHeirNativeAnswer();
   TestBilateralReadbackAndExplicitBlockers();
   TestVersionAndCommandIdentityFailClosed();
   TestProductionSignatureDriftFailClosed();

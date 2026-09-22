@@ -2360,6 +2360,33 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=timeout_seconds,
         )
 
+    def submit_observed_first_heir_marriage_private_v1(
+        self, *, legality: dict[str, object], candidate_character_id: int,
+        timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Private typed submit only; the receipt does not establish marriage."""
+        from .observed_heir_marriage_private_action_v1 import (
+            submit_observed_first_heir_marriage_private_v1,
+        )
+
+        return submit_observed_first_heir_marriage_private_v1(
+            self, legality=legality,
+            candidate_character_id=candidate_character_id,
+            timeout_seconds=timeout_seconds,
+        )
+
+    def query_observed_first_heir_marriage_result_private_v1(
+        self, *, pending: dict[str, object], timeout_seconds: float = 360.0,
+    ) -> dict[str, object]:
+        """Private bilateral later-frame readback; no public action registration."""
+        from .observed_heir_marriage_private_action_v1 import (
+            query_observed_first_heir_marriage_result_private_v1,
+        )
+
+        return query_observed_first_heir_marriage_result_private_v1(
+            self, pending=pending, timeout_seconds=timeout_seconds,
+        )
+
     def query_player_lifestyle_formal_private_v1(
         self, *, expected_revision: int | None = None
     ) -> dict[str, object]:

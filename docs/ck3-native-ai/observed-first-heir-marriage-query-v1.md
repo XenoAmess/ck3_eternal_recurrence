@@ -29,3 +29,47 @@ Future generic MCP name (not registered yet): `ck3_query_observed_first_heir_mar
 R0082 supplies the available rows and schema, but not a paused native `unavailable` or RED branch for this new literal. Python normal/`-O` fixtures cover simulated unavailable and frame drift only. `create_server()` registers each `@server.tool()` unconditionally, so adding the decorator now would advertise an unclosed query to every backend. The minimal remaining observation is a separate suitable standard-feudal paused scene with no primary first heir or a real native family-query unavailable result, plus a source-bound RED/failure result that remains an error rather than a successful empty list. No new CK3 run or generic registration framework is implied by this documentation update.
 
 Compatibility: this adds an optional unadvertised read-only protocol step and Python method; existing snapshots, hello capabilities, private step, actions, and MCP tool list do not change. `open_kaishek` needs no immediate migration. Before public registration, downstreams can adopt the schema by feature-detecting the future capability; they must not infer support from the presence of this source file or a native DLL with the private CMake switch alone. A versioned candidate DLL is required for the new literal; the frozen R736 DLL does not contain it.
+
+## M5-HEIR-ACTION private static transport (not live)
+
+The exact source/build and four-role decision tree above are unchanged. This
+increment adds a separate, default-OFF
+`XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1` switch, which requires
+the private query switch. It does not register a strategy action, hello
+capability, public MCP tool or generic religion model. The caller must select
+one of the same-frame observed-heir final-legal rows; the bridge re-enumerates
+the full native family set, reconstructs the five-role context, and compares
+complete Can Send, the full raw recipient acceptance value and final native
+answer before queuing the exact send-interaction command. Rank remains absent,
+and final answer raw `0` or `1` is accepted only as the existing exact-build
+source adapter mapped it; raw `2` is a refusal and unknown is not legal.
+
+```mermaid
+flowchart TD
+  A["public campaign-root observes first heir"] --> B["same paused frame: exact native final-legal family row"]
+  B --> C{"fresh row, redirect roles, Can Send and answer still equal?"}
+  C -->|no| X["reject before submit"]
+  C -->|yes| D["private typed command: actor=player, secondary actor=heir, secondary recipient=candidate"]
+  D --> E["receipt_pending: ACK is not marriage"]
+  E --> F{"later paused frame: mutual full-ID relationship?"}
+  F -->|married or betrothed| G["material pair result"]
+  F -->|neither| P["pending; do not repeat submission"]
+  F -.->|unknown native refusal, alliance or cold-restore state| U["unknown; live gate remains open"]
+```
+
+Private transport literals are
+`submit-observed-first-heir-marriage-v1-private` and
+`query-observed-first-heir-marriage-result-v1-private`. The Python driver
+method consumes a caller-selected row from the versioned read-only legality
+result; the [private action schema](../../ck3_autonomous_player/schemas/observed-first-heir-marriage-private-action-v1.schema.json)
+keeps `receipt_pending` distinct from `marriage`/`betrothal`. The latter
+require both participants independently to name each other in the later
+native spouse/betrothed readback. This does not establish alliance, expense,
+acceptance probability, or joint opportunity-cost quality. The native
+resolution/refusal path and across-process pending-action recovery remain
+unbound; consequently this candidate must not be enabled in ordinary
+production or advertised. A paused same-build action/result/cold-recovery
+gate is still needed before promotion. No existing `open_kaishek` field or
+published ABI changed; a future consumer must explicitly negotiate the
+new private schema and exact DLL feature flag, not infer it from M5 query
+availability.

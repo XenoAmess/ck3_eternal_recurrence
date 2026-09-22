@@ -59,6 +59,7 @@ enum class MarriageProposalNativeBinderFailureV1 : std::uint32_t {
   context_construction_failed,
   context_roles_mismatch,
   complete_can_send_rejected,
+  recipient_answer_changed,
   command_construction_failed,
   command_identity_mismatch,
   command_queue_rejected,

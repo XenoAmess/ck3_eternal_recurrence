@@ -56,6 +56,7 @@
 #include "xar_bridge/major_decision_found_kingdom_shared_glue_v1.hpp"
 #include "xar_bridge/marriage_candidate_internal_route_v1.hpp"
 #include "xar_bridge/marriage_shared_glue_v1.hpp"
+#include "xar_bridge/observed_heir_marriage_private_v1.hpp"
 #include "xar_bridge/realm_law_application_main_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
 #include "xar_bridge/military_preparation_summary_v1_binding.hpp"
@@ -7401,6 +7402,12 @@ constexpr std::string_view kObservedHeirMarriagePrivateStepV1 =
 // paused snapshot validates it; it shares the proven private admission path.
 constexpr std::string_view kObservedFirstHeirMarriageLegalityStepV1 =
     "query-observed-first-heir-marriage-legality-v1";
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+constexpr std::string_view kObservedFirstHeirMarriageSubmitStepV1 =
+    "submit-observed-first-heir-marriage-v1-private";
+constexpr std::string_view kObservedFirstHeirMarriageResultStepV1 =
+    "query-observed-first-heir-marriage-result-v1-private";
+#endif
 
 std::string ObservedHeirMarriagePrivateResultFrameV1(
     std::string_view request_id, std::string_view step,
@@ -7476,6 +7483,67 @@ std::string ObservedHeirMarriagePrivateResultFrameV1(
   result += "}}";
   return result;
 }
+
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+std::string ObservedHeirMarriageSubmitFrameV1(
+    std::string_view request_id,
+    const xar::bridge::ObservedHeirMarriagePendingV1 &pending) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, kObservedFirstHeirMarriageSubmitStepV1);
+  result += ",\"accepted\":true,\"private_build\":true,\"advertised\":false,"
+            "\"status\":\"receipt_pending\",\"material_result\":false,"
+            "\"pre_native_revision\":";
+  result += Number(pending.pre_native_revision);
+  result += ",\"played_character_id\":";
+  result += SignedNumber(pending.played_character_id);
+  result += ",\"heir_character_id\":";
+  result += SignedNumber(pending.heir_character_id);
+  result += ",\"candidate_character_id\":";
+  result += SignedNumber(pending.candidate_character_id);
+  result += "}}";
+  return result;
+}
+
+std::string ObservedHeirMarriageMaterialFrameV1(
+    std::string_view request_id,
+    const xar::bridge::ObservedHeirMarriagePendingV1 &pending,
+    std::uint64_t post_revision,
+    xar::bridge::ObservedHeirMarriageMaterialStatusV1 material) {
+  const char *status = "pending";
+  if (material ==
+      xar::bridge::ObservedHeirMarriageMaterialStatusV1::marriage)
+    status = "marriage";
+  if (material ==
+      xar::bridge::ObservedHeirMarriageMaterialStatusV1::betrothal)
+    status = "betrothal";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, kObservedFirstHeirMarriageResultStepV1);
+  result += ",\"accepted\":true,\"private_build\":true,\"advertised\":false,"
+            "\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"material_result\":";
+  result += material ==
+                    xar::bridge::ObservedHeirMarriageMaterialStatusV1::pending
+                ? "false"
+                : "true";
+  result += ",\"pre_native_revision\":";
+  result += Number(pending.pre_native_revision);
+  result += ",\"post_native_revision\":";
+  result += Number(post_revision);
+  result += ",\"heir_character_id\":";
+  result += SignedNumber(pending.heir_character_id);
+  result += ",\"candidate_character_id\":";
+  result += SignedNumber(pending.candidate_character_id);
+  result += "}}";
+  return result;
+}
+#endif
 
 std::string RankedMarriagePrivateResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
@@ -8224,6 +8292,16 @@ struct WorkerState {
   std::uint64_t observed_primary_heir_revision = 0;
   std::uint64_t observed_primary_heir_connection_generation = 0;
   std::optional<std::int32_t> observed_primary_heir_character_id;
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+  std::uint64_t marriage_family_action_query_revision = 0;
+  std::uint64_t marriage_family_action_query_sequence = 0;
+  std::int32_t marriage_family_action_heir_id = -1;
+  std::vector<xar::game::ArrangeMarriageFamilyCandidateV1>
+      marriage_family_action_candidates;
+  std::optional<xar::bridge::ObservedHeirMarriagePendingV1>
+      marriage_family_pending_submission;
+  bool marriage_family_action_may_have_submitted = false;
+#endif
 #endif
   std::uint64_t player_faction_alerts_query_sequence = 0;
   std::uint64_t steward_develop_county_candidates_query_sequence = 0;
@@ -8553,6 +8631,10 @@ void RunConnectedSession(
                           xar::bridge::kMarriageRankedPrivateQueryStepV1
                    && step != kObservedHeirMarriagePrivateStepV1
                    && step != kObservedFirstHeirMarriageLegalityStepV1
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+                   && step != kObservedFirstHeirMarriageSubmitStepV1
+                   && step != kObservedFirstHeirMarriageResultStepV1
+#endif
 #endif
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
                    && step != xar::ck3_11906::
@@ -9555,6 +9637,23 @@ void RunConnectedSession(
                              "observed-heir marriage frame changed during read"));
               } else {
                 ++state.marriage_family_private_query_sequence;
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+                state.marriage_family_action_candidates.clear();
+                state.marriage_family_action_query_revision = 0;
+                state.marriage_family_action_query_sequence = 0;
+                state.marriage_family_action_heir_id = -1;
+                if (read_result == xar::game::
+                                       ReadArrangeMarriageFamilyCandidatesResultV1::
+                                           available &&
+                    subject_id > 0 &&
+                    step == kObservedFirstHeirMarriageLegalityStepV1) {
+                  state.marriage_family_action_candidates = rows;
+                  state.marriage_family_action_query_revision = state_revision;
+                  state.marriage_family_action_query_sequence =
+                      state.marriage_family_private_query_sequence;
+                  state.marriage_family_action_heir_id = subject_id;
+                }
+#endif
                 connected = xar::bridge::WriteFrame(
                     pipe, ObservedHeirMarriagePrivateResultFrameV1(
                               request_id, step,
@@ -9564,6 +9663,172 @@ void RunConnectedSession(
               }
             }
           }
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+        } else if (step == kObservedFirstHeirMarriageSubmitStepV1) {
+          std::uint64_t expected_revision = 0;
+          std::uint64_t expected_query_sequence = 0;
+          std::uint64_t candidate_id = 0;
+          const bool request_ready =
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "query_sequence", expected_query_sequence) &&
+              xar::bridge::JsonUnsignedField(
+                  incoming.payload, "candidate_character_id", candidate_id) &&
+              candidate_id > 0 &&
+              candidate_id <= static_cast<std::uint64_t>(
+                                  (std::numeric_limits<std::int32_t>::max)()) &&
+              expected_revision == state_revision &&
+              expected_query_sequence != 0 &&
+              expected_query_sequence ==
+                  state.marriage_family_action_query_sequence &&
+              expected_revision == state.marriage_family_action_query_revision &&
+              state.observed_primary_heir_revision == state_revision &&
+              state.observed_primary_heir_connection_generation ==
+                  connection_generation &&
+              state.observed_primary_heir_character_id.has_value() &&
+              *state.observed_primary_heir_character_id ==
+                  state.marriage_family_action_heir_id &&
+              !state.marriage_family_pending_submission.has_value() &&
+              !state.marriage_family_action_may_have_submitted;
+          xar::game::Snapshot before{};
+          const bool frame_ready =
+              request_ready && previous_snapshot.has_value() &&
+              xar::game::ReadSnapshot(game, before) &&
+              before == *previous_snapshot && before.paused && before.map_ready &&
+              before.has_played_character && before.played_character_alive;
+          const auto selected = frame_ready
+              ? std::find_if(
+                    state.marriage_family_action_candidates.begin(),
+                    state.marriage_family_action_candidates.end(),
+                    [&](const auto &row) {
+                      return row.candidate_character_id ==
+                             static_cast<std::int32_t>(candidate_id);
+                    })
+              : state.marriage_family_action_candidates.end();
+          if (!frame_ready ||
+              selected == state.marriage_family_action_candidates.end() ||
+              std::count_if(state.marriage_family_action_candidates.begin(),
+                            state.marriage_family_action_candidates.end(),
+                            [&](const auto &row) {
+                              return row.candidate_character_id ==
+                                     static_cast<std::int32_t>(candidate_id);
+                            }) != 1) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "observed-heir marriage candidate is missing, stale or unresolved"));
+          } else {
+            std::vector<xar::game::ArrangeMarriageFamilyCandidateV1> fresh;
+            xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};
+            const auto read = xar::game::ReadArrangeMarriageFamilyCandidatesV1(
+                game, state.marriage_family_action_heir_id, fresh,
+                diagnostics);
+            xar::game::Snapshot checked{};
+            const bool same_frame = xar::game::ReadSnapshot(game, checked) &&
+                                    checked == before;
+            xar::bridge::MarriageProposalBilateralRelationshipV1 baseline{};
+            const bool baseline_ready =
+                same_frame && read == xar::game::
+                                          ReadArrangeMarriageFamilyCandidatesResultV1::
+                                              available &&
+                fresh == state.marriage_family_action_candidates &&
+                xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
+                    g_marriage_shared_glue_v1.binder,
+                    static_cast<std::uint32_t>(
+                        state.marriage_family_action_heir_id),
+                    static_cast<std::uint32_t>(candidate_id), baseline) ==
+                    xar::bridge::MarriageProposalNativeReadbackResultV1::
+                        available;
+            xar::bridge::MarriageProposalSubmissionV1 submission{};
+            xar::bridge::ObservedHeirMarriagePendingV1 pending{};
+            const bool prepared = baseline_ready &&
+                xar::bridge::PrepareObservedHeirMarriageSubmissionV1(
+                    before.played_character_id,
+                    state.marriage_family_action_heir_id, *selected,
+                    fresh[static_cast<std::size_t>(
+                        selected - state.marriage_family_action_candidates.begin())],
+                    baseline, state_revision, submission, pending) &&
+                xar::game::ReadSnapshot(game, checked) && checked == before;
+            if (!prepared) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "observed-heir marriage source or pre-relationship changed"));
+            } else {
+              // A failed or timed-out queue call cannot license a second send.
+              state.marriage_family_action_may_have_submitted = true;
+              const auto submitted =
+                  xar::bridge::SubmitMarriageProposalFromNativeBinderV1(
+                      &g_marriage_shared_glue_v1.binder, submission);
+              if (submitted != xar::bridge::
+                                   MarriageProposalNativeSubmitResultV1::submitted) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              "observed-heir marriage native submit did not complete"));
+              } else {
+                state.marriage_family_pending_submission = pending;
+                connected = xar::bridge::WriteFrame(
+                    pipe, ObservedHeirMarriageSubmitFrameV1(request_id,
+                                                              pending));
+                if (connected) {
+                  connected = PublishSnapshot(
+                      pipe, game, previous_snapshot, state_revision,
+                      checkpoint_submission, published_checkpoint_sequence);
+                }
+              }
+            }
+          }
+        } else if (step == kObservedFirstHeirMarriageResultStepV1) {
+          std::uint64_t expected_revision = 0;
+          xar::game::Snapshot before{};
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision != state_revision ||
+              !state.marriage_family_pending_submission.has_value() ||
+              expected_revision <=
+                  state.marriage_family_pending_submission->pre_native_revision ||
+              !previous_snapshot.has_value() ||
+              !xar::game::ReadSnapshot(game, before) ||
+              before != *previous_snapshot || !before.paused ||
+              !before.map_ready) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "observed-heir marriage result needs a later paused frame"));
+          } else {
+            const auto &pending = *state.marriage_family_pending_submission;
+            xar::bridge::MarriageProposalBilateralRelationshipV1 relation{};
+            xar::game::Snapshot after{};
+            const bool read =
+                xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
+                    g_marriage_shared_glue_v1.binder,
+                    static_cast<std::uint32_t>(pending.heir_character_id),
+                    static_cast<std::uint32_t>(pending.candidate_character_id),
+                    relation) == xar::bridge::
+                                     MarriageProposalNativeReadbackResultV1::
+                                         available &&
+                xar::game::ReadSnapshot(game, after) && after == before;
+            const auto material = read
+                ? xar::bridge::ReadObservedHeirMarriageMaterialStatusV1(
+                      pending, relation, state_revision)
+                : xar::bridge::ObservedHeirMarriageMaterialStatusV1::
+                      inconsistent;
+            if (material == xar::bridge::
+                                ObservedHeirMarriageMaterialStatusV1::
+                                    inconsistent) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "observed-heir marriage bilateral result RED"));
+            } else {
+              connected = xar::bridge::WriteFrame(
+                  pipe, ObservedHeirMarriageMaterialFrameV1(
+                            request_id, pending, state_revision, material));
+            }
+          }
+#endif
         } else if (step == xar::bridge::kMarriageRankedPrivateQueryStepV1) {
           std::uint64_t expected_revision = 0;
           if (!xar::bridge::JsonUnsignedField(
