@@ -6,7 +6,9 @@ import importlib.util
 import json
 from pathlib import Path
 import tempfile
+from types import SimpleNamespace
 import unittest
+from unittest import mock
 
 
 SCRIPT = (
@@ -401,6 +403,94 @@ def _stage(
 
 
 class CampaignRootContextLiveAcceptanceTests(unittest.TestCase):
+    def test_stage_run_identity_is_persisted_before_launch_and_pid_bound(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            ledger = root / "ledger"
+            from ck3_live_run_id import allocate_live_run_id
+
+            identity = allocate_live_run_id(
+                "eternal-recurrence", state_root=ledger
+            )
+            exe = root / "ck3.exe"
+            dll = root / "bridge.dll"
+            injector = root / "injector.exe"
+            for path in (exe, dll, injector):
+                path.write_bytes(path.name.encode("ascii"))
+            spec = SimpleNamespace(game_exe=exe, state_dir=root / "state")
+            config = SimpleNamespace(
+                dll_path=dll, injector_path=injector, pipe_name="test-pipe"
+            )
+            status = HARNESS._StageRunStatus(identity, ledger, "stage-a")
+            owner = {
+                "pid": HARNESS.os.getpid(),
+                "creation_date": "owner-created",
+            }
+            ck3 = {"pid": 222, "creation_date": "ck3-created"}
+            with mock.patch.object(
+                HARNESS, "_process_identity", side_effect=[owner, ck3]
+            ), mock.patch.object(
+                HARNESS.subprocess,
+                "run",
+                return_value=SimpleNamespace(stdout="a" * 40),
+            ):
+                status.start(spec=spec, config=config)
+                path = ledger / identity.machine_id / identity.mod_key / "statuses.jsonl"
+                rows = [json.loads(line) for line in path.read_text().splitlines()]
+                self.assertEqual(len(rows), 1)
+                self.assertEqual(rows[0]["status"], "launch-started")
+                self.assertEqual(
+                    json.loads(rows[0]["reason"])["phase"],
+                    "before_ck3_launch",
+                )
+                self.assertIsNone(status.pid)
+                message = json.dumps(
+                    {"type": "native_session_ready", "pid": 222}
+                ) + "\n"
+                status.write(message[:8])
+                status.write(message[8:])
+                status.finish(ok=True, cleanup={"ok": True})
+            rows = [json.loads(line) for line in path.read_text().splitlines()]
+            self.assertEqual(
+                [row["status"] for row in rows],
+                ["launch-started", "launch-started", "completed-green"],
+            )
+            self.assertEqual(json.loads(rows[1]["reason"])["ck3_pid"], 222)
+            self.assertEqual(
+                json.loads(rows[1]["reason"])["ck3_process_identity"], ck3
+            )
+            with self.assertRaisesRegex(HARNESS.AgentError, "already used"):
+                HARNESS._unused_run_identity(identity.run_id, ledger)
+
+    def test_unstarted_stage_reservation_is_voided(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            from ck3_live_run_id import allocate_live_run_id
+
+            ledger = Path(raw)
+            identity = allocate_live_run_id(
+                "eternal-recurrence", state_root=ledger
+            )
+            status = HARNESS._StageRunStatus(identity, ledger, "stage-b")
+            status.finish(ok=False)
+            status_path = (
+                ledger / identity.machine_id / identity.mod_key / "statuses.jsonl"
+            )
+            row = json.loads(status_path.read_text().splitlines()[0])
+            self.assertEqual(row["status"], "voided")
+            self.assertEqual(json.loads(row["reason"])["ck3_pid"], None)
+
+    def test_stage_cannot_complete_green_without_pid(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            from ck3_live_run_id import allocate_live_run_id
+
+            ledger = Path(raw)
+            identity = allocate_live_run_id(
+                "eternal-recurrence", state_root=ledger
+            )
+            status = HARNESS._StageRunStatus(identity, ledger, "stage-a")
+            with self.assertRaisesRegex(HARNESS.AgentError, "bound PID"):
+                status.finish(ok=True, cleanup={"ok": True})
+
     def test_stage_a_double_query_and_save_are_exactly_bounded(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             service = _FakeService(Path(raw))

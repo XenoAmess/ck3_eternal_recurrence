@@ -17,9 +17,11 @@ import argparse
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import threading
@@ -30,6 +32,14 @@ import uuid
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2] / "src"
 sys.path.insert(0, str(PACKAGE_ROOT))
+REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO_ROOT / "tools"))
+
+from ck3_live_run_id import (  # noqa: E402
+    LiveRunIdentity,
+    load_live_run_identity,
+    record_live_run_status,
+)
 
 from xar_autoplayer.bridge.campaign_root_context_contract import (  # noqa: E402
     CAMPAIGN_ROOT_CONTEXT_V1_EXECUTABLE_SHA256,
@@ -68,7 +78,11 @@ from xar_autoplayer.native_session import (  # noqa: E402
     native_session,
     validate_cold_start_checkpoint_for_pipe,
 )
-from xar_autoplayer.runtime import NativeBridgeLaunchConfig, utc_now  # noqa: E402
+from xar_autoplayer.runtime import (  # noqa: E402
+    NativeBridgeLaunchConfig,
+    _process_identity,
+    utc_now,
+)
 
 
 PURE_NATIVE_MODE = "native-headless"
@@ -117,7 +131,138 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--readiness-timeout", type=float, default=240.0)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--retain-state", action="store_true")
+    parser.add_argument("--run-state-root", type=Path, required=True)
+    parser.add_argument("--stage-a-run-id", required=True)
+    parser.add_argument("--stage-b-run-id", required=True)
     return parser
+
+
+def _unused_run_identity(run_id: str, state_root: Path) -> LiveRunIdentity:
+    identity = load_live_run_identity(
+        run_id, "eternal-recurrence", state_root=state_root
+    )
+    status_path = (
+        state_root / identity.machine_id / identity.mod_key / "statuses.jsonl"
+    )
+    if status_path.is_file():
+        for line in status_path.read_text(encoding="utf-8").splitlines():
+            if json.loads(line).get("run_id") == run_id:
+                raise AgentError(f"run ID already used: {run_id}")
+    return identity
+
+
+class _StageRunStatus:
+    """Persist one R identity before launch and bind its actual CK3 PID."""
+
+    def __init__(
+        self, identity: LiveRunIdentity, state_root: Path, stage: str
+    ) -> None:
+        self.identity = identity
+        self.state_root = state_root
+        self.stage = stage
+        self.started = False
+        self.finished = False
+        self.pid: int | None = None
+        self._buffer = ""
+
+    def _record(self, status: str, detail: dict[str, object]) -> None:
+        record_live_run_status(
+            self.identity,
+            status,
+            state_root=self.state_root,
+            reason=json.dumps(detail, ensure_ascii=False, sort_keys=True),
+        )
+
+    def start(self, *, spec: Any, config: NativeBridgeLaunchConfig) -> None:
+        if self.started or self.finished:
+            raise AgentError(f"{self.stage} R identity already started")
+        owner = _process_identity(os.getpid())
+        if owner is None or not owner.get("creation_date"):
+            raise AgentError("run owner process identity unavailable")
+        source = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        detail = {
+            "phase": "before_ck3_launch",
+            "stage": self.stage,
+            "owner": owner,
+            "agent_commit": source,
+            "game_exe": str(spec.game_exe.resolve()),
+            "game_exe_sha256": _sha256_file(spec.game_exe),
+            "bridge_dll": str(config.dll_path),
+            "bridge_dll_sha256": _sha256_file(config.dll_path),
+            "bridge_injector": str(config.injector_path),
+            "bridge_injector_sha256": _sha256_file(config.injector_path),
+            "state_dir": str(spec.state_dir.resolve()),
+            "pipe": config.pipe_name,
+            "ck3_pid": None,
+        }
+        self._record("launch-started", detail)
+        self.started = True
+
+    def write(self, value: str) -> int:
+        self._buffer += value
+        while "\n" in self._buffer:
+            line, self._buffer = self._buffer.split("\n", 1)
+            if not line:
+                continue
+            payload = json.loads(line)
+            if payload.get("type") != "native_session_ready":
+                continue
+            pid = payload.get("pid")
+            if self.pid is not None or type(pid) is not int or pid <= 0:
+                raise AgentError("run PID binding is missing or repeated")
+            process = _process_identity(pid)
+            self.pid = pid
+            self._record(
+                "launch-started",
+                {
+                    "phase": "ck3_pid_bound",
+                    "stage": self.stage,
+                    "owner_pid": os.getpid(),
+                    "ck3_pid": pid,
+                    "ck3_process_identity": process,
+                },
+            )
+            if process is None or not process.get("creation_date"):
+                raise AgentError("launched CK3 process identity unavailable")
+        return len(value)
+
+    def flush(self) -> None:
+        pass
+
+    def finish(self, *, ok: bool, cleanup: object = None) -> None:
+        if self.finished:
+            return
+        if ok and (
+            self.pid is None
+            or not isinstance(cleanup, dict)
+            or cleanup.get("ok") is not True
+        ):
+            raise AgentError(
+                f"{self.stage} cannot complete GREEN without bound PID and cleanup"
+            )
+        status = (
+            "voided"
+            if not self.started
+            else "completed-green"
+            if ok
+            else "completed-red"
+        )
+        self._record(
+            status,
+            {
+                "stage": self.stage,
+                "ck3_pid": self.pid,
+                "owner_pid": os.getpid(),
+                "cleanup": cleanup,
+                "reason": "stage completed" if self.started else "stage never launched",
+            },
+        )
+        self.finished = True
 
 
 def _sha256_file(path: Path) -> str:
@@ -827,6 +972,7 @@ def _run_live_stage(
     save_checkpoint: bool,
     timeout: float,
     readiness_timeout: float,
+    run_status: _StageRunStatus,
     prepared_xar_enabled: str = "xar_on",
     succession_lifecycle_binding: dict[str, object] | None = None,
 ) -> dict[str, object]:
@@ -854,7 +1000,7 @@ def _run_live_stage(
                 timeout_seconds=timeout + 90.0,
                 native_bridge=config,
                 input_stream=None,
-                output_stream=None,
+                output_stream=run_status,
                 poll_interval_seconds=0.05,
                 cold_start_checkpoint=cold_start_checkpoint,
                 stop_event=stop_event,
@@ -892,6 +1038,7 @@ def _run_live_stage(
             name=f"xar-campaign-root-context-{stage}",
             daemon=False,
         )
+        run_status.start(spec=spec, config=config)
         session_thread.start()
         session_started = True
         readiness = _wait_for_readiness(
@@ -960,6 +1107,8 @@ def _run_live_stage(
         )
     return {
         "stage": stage,
+        "run_id": run_status.identity.run_id,
+        "bound_ck3_pid": run_status.pid,
         "ok": bool(
             primary_error is None
             and exact_build
@@ -1258,6 +1407,13 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         dll_path=args.bridge_dll.expanduser().resolve(),
         injector_path=args.bridge_injector.expanduser().resolve(),
     )
+    run_state_root = args.run_state_root.expanduser().resolve()
+    stage_a_identity = _unused_run_identity(args.stage_a_run_id, run_state_root)
+    stage_b_identity = _unused_run_identity(args.stage_b_run_id, run_state_root)
+    if stage_b_identity.sequence <= stage_a_identity.sequence:
+        raise AgentError("Stage B run ID must be newer than Stage A")
+    run_a = _StageRunStatus(stage_a_identity, run_state_root, "stage-a")
+    run_b = _StageRunStatus(stage_b_identity, run_state_root, "stage-b")
     source_save: Path | None = None
     source_identity: dict[str, object] | None = None
     source_lifecycle_binding: dict[str, object] | None = None
@@ -1305,11 +1461,13 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             save_checkpoint=True,
             timeout=timeout,
             readiness_timeout=readiness_timeout,
+            run_status=run_a,
             prepared_xar_enabled=prepared_xar_enabled,
             succession_lifecycle_binding=stage_a_clone.get(
                 "succession_lifecycle_binding"
             ),
         )
+        run_a.finish(ok=stage_a.get("ok") is True, cleanup=stage_a.get("cleanup"))
         if stage_a.get("ok") is not True:
             raise RuntimeError(
                 str(stage_a.get("error") or "Stage A live session failed")
@@ -1341,9 +1499,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             save_checkpoint=False,
             timeout=timeout,
             readiness_timeout=readiness_timeout,
+            run_status=run_b,
             prepared_xar_enabled=prepared_xar_enabled,
             succession_lifecycle_binding=cold_restore_lifecycle_binding,
         )
+        run_b.finish(ok=stage_b.get("ok") is True, cleanup=stage_b.get("cleanup"))
         if stage_b.get("ok") is not True:
             raise RuntimeError(
                 str(stage_b.get("error") or "Stage B live session failed")
@@ -1355,6 +1515,22 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             raise RuntimeError("campaign root changed across cold restore")
     except BaseException as error:
         primary_error = f"{type(error).__name__}: {error}"
+
+    for run_status, stage_result in ((run_a, stage_a), (run_b, stage_b)):
+        if run_status.finished:
+            continue
+        try:
+            run_status.finish(
+                ok=False,
+                cleanup=(
+                    stage_result.get("cleanup")
+                    if isinstance(stage_result, dict)
+                    else None
+                ),
+            )
+        except BaseException as error:
+            detail = f"{run_status.stage} status persistence failed: {error}"
+            primary_error = detail if primary_error is None else f"{primary_error}; {detail}"
 
     source_after = (
         _sha256_file(source_save)
@@ -1443,9 +1619,11 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "disposable": disposable,
         "stage_a_clone": stage_a_clone,
         "stage_a": stage_a,
+        "stage_a_run_id": stage_a_identity.run_id,
         "stage_b_clone": stage_b_clone,
         "checkpoint_transfer": checkpoint_transfer,
         "stage_b": stage_b,
+        "stage_b_run_id": stage_b_identity.run_id,
         "cross_stage_proof": cross_stage,
         "disposable_cleanup": cleanup,
         "readiness_gates": {
