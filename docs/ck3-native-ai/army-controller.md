@@ -730,6 +730,22 @@ flowchart LR
     H -->|否或 unknown| X["保留 RED"]
 ```
 
+### R0103 正式入口 preview step 缺口
+
+- [production-live] R0103 在同一 h1094/raw53368176 checkpoint 冷恢复后，正式策略读到首都
+  `45`，规划 `preview-move-army-419430662-to-45`，但第 4 回合的
+  `selected_step=null`，没有提交预览或移动；正式报告为
+  `.task-tmp/RUN-001/century-r0103-preflight/R0103-formal/formal-report.txt`
+  （SHA-256 `098289F99E1B1CF7D4DB54C2033EA7422CD16C5241E69C33DAB051DE7ABACD99`）。
+- [static-confirmed] Python native driver 的具体 step 投影先经过
+  `_capital_regroup_capability_scope`，原分支仅接受 `player_side=attacker`；因此 R0103
+  的主防御方即使有同帧首都观测，也不可能由此分支获得 preview literal。这是我方
+  action-step 注册缺口，不改变上文 exact-build 原版 AI/pathfinder 结论。
+- [counter-policy / 待实机] 仅给单战争、主防御方、负战分、唯一正在向已观测战争目标移动的
+  军队、路线与完整敌军路线相交、同帧首都为自己直接持有县首府的形态，投影已有的
+  preview/contact/move typed literals。是否真正改道仍由策略在 fresh exact preview 与
+  完整敌军一日 contact-horizon 为安全后决定；本条不是 R0103 行动生效证据。
+
 ## 未闭合清单
 
 - [unknown] stance 同分时 tie-break、随机性和 hard-coded 特例的完整优先顺序。

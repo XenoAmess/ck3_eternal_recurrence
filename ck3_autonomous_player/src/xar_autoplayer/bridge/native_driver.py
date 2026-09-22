@@ -23676,7 +23676,7 @@ def _capital_regroup_capability_scope(
     snapshot: object,
     campaign_root_query: object,
 ) -> dict[str, object] | None:
-    """Materialize only the R838 capital fallback's concrete literals."""
+    """Materialize exact R838 attacker or R0103 defender capital literals."""
 
     if not isinstance(snapshot, dict) or not isinstance(
         campaign_root_query, dict
@@ -23715,10 +23715,6 @@ def _capital_regroup_capability_scope(
         and context.get("player_character_id") == actor_id
         and isinstance(readiness, dict)
         and readiness.get("ready") is True
-        and snapshot.get("war_objective_occupation_supported") is True
-        and snapshot.get("war_objective_garrison_supported") is True
-        and snapshot.get("war_objective_siege_progress_supported") is True
-        and snapshot.get("war_objective_assault_supported") is True
     ):
         return None
     capital_province_id = context.get("capital_province_id")
@@ -23737,11 +23733,61 @@ def _capital_regroup_capability_scope(
     controlled = controllable_armies(
         [army for army in armies if isinstance(army, dict)]
     )
-    if not (
-        war.get("player_side") == "attacker"
-        and war.get("player_is_primary_war_leader") is True
-        and controlled
+    if not (war.get("player_is_primary_war_leader") is True and controlled):
+        return None
+    attacker_scope = war.get("player_side") == "attacker"
+    if attacker_scope and not (
+        snapshot.get("war_objective_occupation_supported") is True
+        and snapshot.get("war_objective_garrison_supported") is True
+        and snapshot.get("war_objective_siege_progress_supported") is True
+        and snapshot.get("war_objective_assault_supported") is True
     ):
+        return None
+    defender_scope = war.get("player_side") == "defender"
+    if defender_scope:
+        partition = context.get("held_title_partition")
+        objectives = war.get("war_objective_province_ids")
+        score = war.get("player_relative_war_score")
+        if not (
+            snapshot.get("route_contact_horizon_supported") is True
+            and readiness.get("held_title_partition_ready") is True
+            and isinstance(partition, list)
+            and len(controlled) == 1
+            and isinstance(objectives, list)
+            and objectives
+            and all(_positive_native_id(value) for value in objectives)
+            and isinstance(score, int)
+            and not isinstance(score, bool)
+            and -100 < score < 0
+        ):
+            return None
+        county_capitals: set[int] = set()
+        for row in partition:
+            if not isinstance(row, dict) or not isinstance(row.get("title"), dict):
+                return None
+            title = row["title"]
+            if title.get("tier_raw") == 2:
+                province_id = row.get("capital_province_id")
+                if not _positive_native_id(province_id):
+                    return None
+                county_capitals.add(int(province_id))
+        if capital_province_id not in county_capitals:
+            return None
+        defender_army = controlled[0]
+        move_target = defender_army.get("move_target_province_id")
+        route = defender_army.get("route_province_ids")
+        if not (
+            _positive_native_id(move_target)
+            and move_target in objectives
+            and move_target != capital_province_id
+            and isinstance(route, list)
+            and bool(route)
+            and all(_positive_native_id(value) for value in route)
+            and route[-1] == move_target
+            and not _army_in_combat_or_retreat(defender_army)
+        ):
+            return None
+    if not (attacker_scope or defender_scope):
         return None
     sole_state = (
         controlled[0].get("army_state").casefold()
@@ -23750,7 +23796,8 @@ def _capital_regroup_capability_scope(
         else None
     )
     coalition_regroup_scope = bool(
-        len(controlled) > 1
+        defender_scope
+        or len(controlled) > 1
         or sole_state in {"regular", "moving"}
     )
     if coalition_regroup_scope:
@@ -23824,6 +23871,13 @@ def _capital_regroup_capability_scope(
         )
     ):
         return None
+    if defender_scope and not (
+        isinstance(named_state, str)
+        and named_state.casefold() == "moving"
+        or not isinstance(named_state, str)
+        and state_code == 7
+    ):
+        return None
     if not coalition_regroup_scope:
         objectives = war.get("war_objective_province_ids")
         states = war.get("objective_province_states")
@@ -23883,6 +23937,18 @@ def _capital_regroup_capability_scope(
         hostile_army_ids.append(int(enemy_id))
     if len(hostile_army_ids) != len(set(hostile_army_ids)):
         return None
+    if defender_scope:
+        current_route_provinces = set(army["route_province_ids"])
+        if not any(
+            enemy.get("current_province_id") in current_route_provinces
+            or bool(
+                current_route_provinces.intersection(
+                    enemy["route_province_ids"]
+                )
+            )
+            for enemy in enemies
+        ):
+            return None
     return {
         "army_id": int(army_id),
         "capital_province_id": int(capital_province_id),
