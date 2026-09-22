@@ -208,7 +208,7 @@ stateDiagram-v2
 - [implementation-confirmed] 当前生产策略默认以 `war-entry-minimal-defer-v1` 收口：有 `life-advance` 时明确记录
   `automatic_declaration_enabled=false`、`native_ai_equivalent=false`、`semantic_optimal=false`、缺失 components 与
   `advance_contract=native_life_advance`，然后选择 `NO_DECLARE → life-advance`；没有推进 primitive 时才 blocked。
-  `feudal-single-county-de-jure-overmatch-v1` 是唯一实现的自动声明窄门；其它 CB 与任何缺字段场景仍要求真实 production v3
+  `feudal-single-county-de-jure-overmatch-v1` 与下述玩家本人 `claim_cb` 窄门是已实现的自动声明范围；其它 CB 与任何缺字段场景仍要求真实 production v3
   capability `game.command.query-combat-simulation-inputs-v3-N`、`game.forecast.combat-monte-carlo-v1` 与 war-entry assessment。
 - [static-confirmed] `query-war-entry-assessments-v1` 的 exact ABI/contract、独立 native reader/serializer、双原生采样
   fixture、golden payload 与 source-contract 已离线闭合；paused live 验收结论以
@@ -253,11 +253,52 @@ production-live loop；`eu_lower_raw` 仍为 `null`，不能升级为智能 war-
   `r759-offline-replay.json` SHA-256 为 `1BCDCDE9FAE027E9470D8DF166AF2132EE77DB5562695DF4512E609014330202`。
   这是策略选择证据，不是宣战已在 CK3 生效；实机仍须由唯一 CK3 负责人完成 typed declaration、独立 WarID 后置状态和下一 turn 消费。
 
+### R0151 玩家本人 claim_cb 候选与最小窄门（2026-09-23）
+
+- [production-live observation] R0151 报告 SHA-256
+  `5C8C5A5FAEA82466F0A4D562C95628C40F141DDE2D7975801A9AFB14AA120FA5` 在同一 paused frame（actor
+  `29829`、date raw `53153760`）返回 19 条 final-legal declaration、14 个 distinct targets，且逐 target
+  `query-war-entry-assessments-v1` 均与同一 native revision/date/actor 绑定；该轮只读，动作与日期推进均为零。
+- [production-live observation] campaign-root 同帧确认玩家是独立标准封建领主，并发布完整的 adjacent external holder 与
+  related-character primary-title 目录。玩家本人 `claim_cb` 中，相邻且独立的 county primary-title targets 为 `31549`、
+  `33422`、`33621`，其完整 native target total / actor total ratio raw 分别为 `45422`、`34172`、`27791`；
+  `31549` 的 target total 明确包含 `1,670,000,000` network contribution。最低比值是 declaration
+  `33621-11-0`。`31050` 虽为 `18719`，其 primary title 是 duchy，故不进入 county 窄门。
+- [counter-policy] `feudal-adjacent-independent-county-player-claim-overmatch-v1` 只考虑当前
+  `query-declarable-wars` 发布的 native `claim_cb`，claimant 必须等于 played actor，单一 target title 必须等于同帧
+  adjacent/independent target 的 county primary title。策略必须先收齐所有这类候选的同帧 assessment，再按 native
+  `actual_power_ratio_raw` 升序选择；effective target 必须保持该 target，target total 必须为正并等于
+  `base + network + adjustment`，ratio 必须不高于 `50000`。玩家必须无 active war，且继续沿用标准封建、独立、正收入、
+  无 targeting faction 与 domain limit 门。
+- [implementation-confirmed] assessment、campaign-root 或 typed declaration 任一缺失时固定 `NO_DECLARE`；宗教 CB、
+  非玩家 claimant、duchy scope、非相邻/非独立 target、异常 `target_total <= 0` 与 ratio 超门候选均不能触发该窄门。
+  本静态选择只授权提交一条 typed declaration，不声称 WarID 已生成、战争可获胜或领土已经取得；仍需唯一 CK3 实机完成
+  独立后置、下一 turn 消费与持续战争执行验收。
+
+```mermaid
+flowchart TD
+    D["[P] final-legal declarable_wars"] --> C{"[P] 玩家本人 claim_cb?"}
+    C -- 否 --> O["[P] 既有 CB 策略"]
+    C -- 是 --> R{"[P] 同帧独立标准封建<br/>相邻独立 county scope 齐全?"}
+    R -- 否 --> N["[P] NO_DECLARE / refresh"]
+    R -- 是 --> Q["[P] 逐 target 查询 exact-build assessment"]
+    Q --> A{"[P] 全部候选同帧且 ready?"}
+    A -- 否 --> N
+    A -- 是 --> G{"[P] effective target 一致<br/>complete target total > 0<br/>target/actor ≤ 0.5?"}
+    G -- 否 --> N
+    G -- 是 --> S["[P] 最低 ratio 的 county claim"]
+    S --> T{"[P] 无 active war<br/>typed declaration 可用?"}
+    T -- 否 --> N
+    T -- 是 --> X["[P] 提交一条 declare-war"]
+```
+
 ## 验收矩阵
 
 | 场景 | 预期结果 |
 |---|---|
 | [implementation-confirmed] 同帧标准封建 campaign-root + native legal 单郡法理 CB + 双方 network/adjustment/distance=0 + actor base ≥ 1.5× target total + ratio ≤ 0.66667 + typed step | `native_war_declaration`；`DECLARE`；提交一条 typed declaration |
+| [implementation-confirmed] 同帧独立标准封建 campaign-root + final-legal 玩家本人 `claim_cb` + 相邻独立 county primary title + 全候选 assessment 齐全 + positive complete target total + ratio ≤ 0.5 + typed step | 选择最低 ratio 候选并进入 `native_war_declaration`；R0151 回放选择 `33621-11-0` |
+| [implementation-confirmed] 玩家 claim 候选的 campaign-root / 任一候选 assessment / typed step 不齐，或已有 active war | `NO_DECLARE`；不提前提交其它已评估 claim |
 | [implementation-confirmed / production-live] 其它 native declaration，有/无 power component但完整模型不齐，且 `life-advance` 可达 | 保留完整缺口与诊断 payload；`NO_DECLARE`；`selected_step=life-advance` |
 | [implementation-confirmed] 同上但 `life-advance` 也不可达 | `native_war_entry_evidence_required`；`selected_step=None` |
 | [static-confirmed] 首选 target 有 power 且 `actor_base < target_total`，另有未评估合法 target | 同帧查询下一 target；不宣战 |
