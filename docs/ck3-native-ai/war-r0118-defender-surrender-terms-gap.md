@@ -45,3 +45,17 @@ flowchart TD
 ```
 
 下一定位入口缩为：沿全局队列 `+0xD280` 的**消费者**寻找只读、可在结算前稳定取得的 final operation list；同时继续解码 `0x2F0DE20` 其余 callback tag，只用它交叉核对展示标题，不从 UI 反推新领主。只有证明不调用 execute、不修改队列且能取得完整旧新 holder/liege 与资源条件时，才实现最小私有观察口和精确 fixture；之后再排有界同帧只读实机。否则继续记录具体未证边。守方投降仍不得作为自动动作，R0118 RED 保持。
+
+## 2026-09-22 后续只读定位：队列读者与原版 CB 的边界
+
+本段仅对上述冻结 EXE 的小片段反汇编，并读取已有 R0124 driver 的战争选项查询；没有运行 CK3、调用任何原生函数或改动存档。地址均为 RVA。R0124 原 WarID251658364 的历史 #1536 `query-war-termination-options-251658364` 报告玩家为 primary defender、CB `claim_cb`、守方 surrender 的绝对结果 `attacker_victory` 且当帧可提交；同一结果明确给出 `terms_observable=false`、`terms.status=unavailable`、`reason=cb_specific_terms_not_observable`。这条观察仅是合法性，不含损失内容。
+
+| 来源 | 精确链与可读条件 | 已证明的范围 |
+| --- | --- | --- |
+| UI visitor `0x2F0DE20` | typed tag 分支依次比较 `0x3068` @ `0x2F0DE4F`、`0x2B4A` @ `0x2F0DE97`、`0x2B4D` @ `0x2F0DEB4`、`0x2D20` @ `0x2F0DED1`、`0x30DB` @ `0x2F0DF02`；`0x3068` 的 type-4 payload `+0x8` 插入 visitor `+0x18` | 五类展示回调已定位。`0x2B4A/0x2B4D` 共用 `0x2F0E0C0`，`0x2D20` 跳到 `0x2F0DFF0`，`0x30DB` 跳到 `0x2F0E150`；这些输出仍是临时 UI vectors，未证为旧新 holder/liege。 |
+| global queue 的序列化入口 `0x25A11F0` | `0x25A11FA` 取 context `+0xA0`，`0x25A1226` 读 `+0xD280` 对象 vtable，`0x25A1241` 调 slot `+0x8`。冻结 vtable `0x433DD90` 的 slot `+0x8 = 0x3B8B090`，其 slot `+0x10 = 0x27CD210`；后者只取对象 `+0x28` 标识写进输出流 | 有已存在 queue 对象时可序列化其标识；这一包装器未提供 title operation list。写入的是输出流，不是可在投降前构建结果的纯查询。slot 更深层是否有副作用未闭合，不能调用作 live 观察口。 |
+| 误判风险 `0x27CD320` | `+0x54` 为可回收对象数；空时分配，非空时减少该数；`0x27CD37B–381` 增加 queue `+0x28` 计数并写新对象 ID，随后清零多个对象字段。`0x27CD510` 可以进入 `0x24CC9A0`，其 `0x24CC9F1` 已写对象 `+0x260` | 是队列/对象构造和处理路径，会修改状态；不允许以“只读预览”名义调用。原 `resolve` execute 的 `0x27CD6A0` 仍是写队列路径。 |
+
+原版 `claim_cb.on_victory`（冻结 `00_claim.txt` SHA-256 `D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1`）先整理 `target_titles`，再执行 `create_title_and_vassal_change(type=conquest_claim, add_claim_on_loss=yes)`、`setup_claim_cb` 和 `resolve_title_and_vassal_change`；后面仍可能按 claimant/attacker 的身份与等级执行额外 `change_liege`，并有 legitimacy、influence、fame、truce、hook 及条件性战争后效。既有 `ReadWarTerminationTerms` 只稳定读取 WarID、CB、claimant、target title IDs 与当前 claim，再写静态方向；没有同帧当前 holder/liege 与结算后的完整对应关系或资源 delta。即使另补当前 holder/liege getter，也不能从 `conquest_claim` 名称或 UI title ID 直接推导执行后的变更。
+
+**本次判定：尚无证据足以施工 actual-move 私有只读口。** 在同一 WarID 的受保护 paused frame 上，下一最小输入是逐个 target title 的当前 holder/liege、claimant/attacker/defender 身份及完整 `target_titles` 条件；离线还须从原版 `CSetupClaimCBEffect<0>` 非 stub preview RVA `0x2EA7E90` 与 `conquest_claim` 计算链证明是否能在不执行 `resolve`、不写 `+0xD280` 队列的情况下得到**完整**旧新 title/liege operations 与物质资源 delta。该纯路径目前未证，旧 broad loaded-effect preview 崩溃路径仍禁用。没有完整路径就维持 typed unavailable、R0118 RED 和禁用自动守方投降，不把可提交性当可接受性。
