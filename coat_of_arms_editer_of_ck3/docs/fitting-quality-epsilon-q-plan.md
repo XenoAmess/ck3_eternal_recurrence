@@ -2,11 +2,30 @@
 
 > 日期：2026-09-22（Asia/Shanghai）
 >
-> 状态：`planned`。本次交付技术规划；下述算法、实验和验收目标尚未实施。
+> 状态：`implemented-and-measured`。主算法、浏览器集成、恢复/取消、正式浏览器门禁和封存留出实验均已实施；真实七图的预注册提升目标未全部达到，CK3 新候选复验因前端执行器未就绪而保留为基础设施 RED，不改写为通过。
 >
 > 代码审阅基线：`b1707193f4230a308f78a941ae73e973a732218f`；质量基线：已发布的 Delta-Q v9，release commit `d5c6b4ef3c399acbdc8c358fdfb1458cfb652cf9`。
 >
 > 前期证据：[Delta-Q 报告](../../docs/ck3-coat-of-arms-editor-delta-q-report.md)、[完整 DDS 多分辨率报告](../../docs/coat-of-arms-fit-artifacts/delta-q-final-multires-v1/README.md)、[原生验收 r19](../../docs/coat-of-arms-fit-artifacts/delta-q-native-r19/README.md)。
+
+> 实施报告：[Epsilon-Q 实施与验收报告](../../docs/ck3-coat-of-arms-editor-epsilon-q-report.md)。正式结果：[1,024 档七图](../../docs/coat-of-arms-fit-artifacts/epsilon-q-v14-budget1024/README.md)、[128 档七图](../../docs/coat-of-arms-fit-artifacts/epsilon-q-v13-budget128/README.md)、[16 例封存留出](../../docs/coat-of-arms-fit-artifacts/epsilon-q-v14-holdout/README.md)。
+
+## 0. 执行结论（2026-09-22）
+
+本规划已按“质量第一、同质量再减输出、生成耗时最后”的优先级落地。实现包括三尺度共同目标、完整 DDS 复评、固定实例构图的颜色/几何联合精调、轮廓 proposal、历史 Delta 安全基线、后台 finalizer、可恢复 checkpoint，以及长耗时压力门禁。
+
+预注册目标按原值判定，不因结果调整：
+
+| 验收面 | 实测 | 结论 |
+| --- | --- | --- |
+| 1,024 档七张真实图 | 7/7 改善且 96/230/512px 全部不退化；`J` 中位改善 0.291% | 安全性通过；10% 中位目标未达 |
+| 128 档七张真实图 | 7/7 改善且三尺度全部不退化；`J` 中位改善 4.710% | 安全性通过；5% 中位目标未达 0.290 个百分点 |
+| 已知难例 picture-03/06 | 两者保留质量，但均未达到 5% | 未达 |
+| 16 例封存程序化留出 | 16/16 改善、全尺度不退化；中位改善 21.696% | 通过；不外推为真实图片泛化结论 |
+| 输出预算 | 所有结果均不越界；1,024 档七图合计 6,429 instances，Delta 为 6,433 | 质量优先前提下合计减少 4；不宣称显著 CK3 压力下降 |
+| CK3 新候选复验 | bridge 精确版本匹配且连接正常，但 ApplicationMain 执行器 1,800 秒内未 ready，0 个候选被 Apply；清理证明通过 | 基础设施 RED；不能声称新候选原生 GREEN，也不能归因为候选质量失败 |
+
+因此，本期完成的是一条可安全增益、可长时间运行、可中断恢复的质量优化链，而不是达到所有进取型数值目标。未达目标和原生证据边界均永久保留，后续迭代继续以真实图片表现为主，不用合成留出成绩替代真实图结论。
 
 ## 1. 目标与优先级
 

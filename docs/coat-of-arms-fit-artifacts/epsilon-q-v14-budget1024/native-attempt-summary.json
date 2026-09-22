@@ -1,0 +1,31 @@
+{
+  "schema": "ck3-coa-epsilon-q-native-attempt-summary-v1",
+  "status": "infrastructure-red-no-candidate-observed",
+  "createdAt": "2026-09-22T12:16:34.596387+00:00",
+  "repositoryHead": "0f57dd31bd5ffb25c856dba3d5564d527e293aba",
+  "gameVersion": "1.19.0.6",
+  "gameExecutableSha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "pictureCorpusRequested": true,
+  "plannedCases": 7,
+  "observedCases": 0,
+  "bridgeConnected": true,
+  "applicationMainObserved": true,
+  "applicationMainReady": false,
+  "executedRequests": 0,
+  "elapsedSeconds": 1812.854,
+  "usesOcr": false,
+  "usesKeyboard": false,
+  "usesMouse": false,
+  "cleanup": {
+    "cleanupProven": true,
+    "treeGone": true,
+    "jobActiveProcessesFinal": 0,
+    "watchdogStateAfter": "absent"
+  },
+  "conclusion": "No Epsilon candidate reached native Apply; this attempt cannot pass or fail candidate compatibility or visual quality.",
+  "rawReport": {
+    "path": "native-ck3-report.json",
+    "bytes": 1542128,
+    "sha256": "979EF97721EC86FC9E222EF9CA07811601F6E15D8AF8AC30DD320A8B8C5F7775"
+  }
+}
