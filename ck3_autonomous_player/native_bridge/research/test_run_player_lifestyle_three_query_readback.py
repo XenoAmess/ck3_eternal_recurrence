@@ -7,6 +7,7 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from run_player_lifestyle_current_state_read import PRIVATE_STEP as STATE_STEP
@@ -15,6 +16,8 @@ from run_player_lifestyle_three_query_readback import (
     FOCUS_STEP,
     PERK_STEP,
     _frame,
+    _new_bound_driver,
+    _ordinary_binding,
     _query,
     _verify_ordinary_profile,
     run_three_queries,
@@ -116,6 +119,45 @@ class FakeDriver:
 
 
 class LifeThreeQueryTest(unittest.TestCase):
+    def test_ordinary_binding_matches_frozen_checkpoint(self) -> None:
+        profile = {
+            "rules": {"profile": [{"rule": "xar_enabled", "setting": "xar_off"}]},
+            "environment_sha256": "a" * 64,
+        }
+        binding = _ordinary_binding(
+            profile,
+            {
+                "succession_lifecycle": {
+                    "schema": "xar.ck3.succession-lifecycle-binding/v1",
+                    "lifecycle": "ordinary_campaign_succession",
+                    "xar_enabled": "xar_off",
+                    "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+                    "source": "prepared-environment-manifest",
+                    "environment_sha256": "a" * 64,
+                }
+            },
+        )
+        self.assertEqual(binding["lifecycle"], "ordinary_campaign_succession")
+        with self.assertRaisesRegex(RuntimeError, "checkpoint lifecycle differs"):
+            _ordinary_binding(profile, {"succession_lifecycle": None})
+
+    def test_driver_receives_frozen_ordinary_lifecycle(self) -> None:
+        spec = SimpleNamespace(
+            state_dir=Path("state"), profile_dir=Path("state/profile")
+        )
+        binding = {"lifecycle": "ordinary_campaign_succession"}
+        with patch(
+            "xar_autoplayer.bridge.native_driver.NativeHeadlessGameplayDriver"
+        ) as driver_type:
+            driver = _new_bound_driver(spec, {"pipe": "private-test-pipe"}, binding)
+        self.assertIs(driver, driver_type.return_value)
+        driver_type.assert_called_once_with(
+            "private-test-pipe",
+            state_dir=spec.state_dir,
+            save_dir=spec.profile_dir / "save games",
+            succession_lifecycle_binding=binding,
+        )
+
     def test_preflight_verifies_ordinary_xar_off_profile(self) -> None:
         spec = object()
         expected = {"environment_sha256": "profile-bound"}

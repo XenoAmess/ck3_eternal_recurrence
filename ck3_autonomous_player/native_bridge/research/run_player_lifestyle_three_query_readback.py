@@ -122,6 +122,37 @@ def _verify_ordinary_profile(spec: object) -> dict[str, object]:
     return verify_profile(spec, xar_enabled="xar_off")
 
 
+def _ordinary_binding(
+    profile: dict[str, object], checkpoint: dict[str, object]
+) -> dict[str, object]:
+    from xar_autoplayer.bridge.succession_transition_contract import (
+        ORDINARY_CAMPAIGN_SUCCESSION,
+        bind_succession_lifecycle_from_environment_v1,
+    )
+
+    binding = bind_succession_lifecycle_from_environment_v1(
+        profile,
+        lifecycle=ORDINARY_CAMPAIGN_SUCCESSION,
+        ordinary_campaign_no_pact=True,
+    )
+    _need(
+        checkpoint.get("succession_lifecycle") == binding,
+        "LIFE checkpoint lifecycle differs from the frozen ordinary profile",
+    )
+    return binding
+
+
+def _new_bound_driver(spec: Any, manifest: dict[str, object], binding: dict[str, object]) -> Any:
+    from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+
+    return NativeHeadlessGameplayDriver(
+        str(manifest["pipe"]),
+        state_dir=spec.state_dir,
+        save_dir=spec.profile_dir / "save games",
+        succession_lifecycle_binding=binding,
+    )
+
+
 def preflight(candidate_root: Path) -> tuple[object, dict[str, object], dict[str, object]]:
     root = _non_c_task_path(candidate_root, "candidate root")
     temporary = _non_c_task_path(os.environ.get("TEMP", ""), "TEMP")
@@ -201,6 +232,7 @@ def preflight(candidate_root: Path) -> tuple[object, dict[str, object], dict[str
     )
     pipe = str(manifest["pipe"])
     checkpoint = validate_cold_start_checkpoint_for_pipe(spec, pipe)
+    binding = _ordinary_binding(profile, checkpoint)
     driver_state = load_native_driver_state_for_resume(
         Path(str(manifest["prepared_driver"])), pipe
     )
@@ -221,6 +253,7 @@ def preflight(candidate_root: Path) -> tuple[object, dict[str, object], dict[str
         "ck3_inventory": inventory,
         "profile_environment_sha256": profile.get("environment_sha256"),
         "checkpoint": checkpoint,
+        "succession_lifecycle_binding": binding,
         "episode_run_id": driver_state.get("episode_run_id"),
     }
 
@@ -453,7 +486,6 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
     driver = None
     handle = None
     try:
-        from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
         from xar_autoplayer.environment import ck3_process_inventory
         from xar_autoplayer.locking import exclusive_launch_lock, exclusive_state_lock
         from xar_autoplayer.native_auto_run import _wait_for_readiness
@@ -462,10 +494,10 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
         _need(not ck3_process_inventory().get("processes"), "old CK3 still alive")
         locks.enter_context(exclusive_launch_lock(spec.game_exe))
         locks.enter_context(exclusive_state_lock(spec.state_dir, "g2m4-three-query-readback"))
-        driver = NativeHeadlessGameplayDriver(
-            str(manifest["pipe"]),
-            state_dir=spec.state_dir,
-            save_dir=spec.profile_dir / "save games",
+        driver = _new_bound_driver(
+            spec,
+            manifest,
+            ready["succession_lifecycle_binding"],
         )
         handle = launch(
             spec,
