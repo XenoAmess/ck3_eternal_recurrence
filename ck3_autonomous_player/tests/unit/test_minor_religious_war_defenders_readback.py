@@ -6,6 +6,7 @@ import importlib.util
 import io
 from pathlib import Path
 from types import SimpleNamespace
+import tempfile
 import unittest
 from unittest import mock
 
@@ -47,6 +48,24 @@ class _Service:
 
 
 class MinorReligiousWarDefendersReadbackRunnerTest(unittest.TestCase):
+    def test_frozen_source_copy_is_writable_without_mutating_source(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "frozen-driver.json"
+            target = root / "candidate" / "driver-state.json"
+            target.parent.mkdir()
+            original = b'{"format_version": 2}\n'
+            source.write_bytes(original)
+            source.chmod(0o444)
+            try:
+                SUBJECT.copy_frozen_bytes_to_candidate(source, target)
+                with target.open("ab") as output:
+                    output.write(b"derived")
+                self.assertEqual(source.read_bytes(), original)
+                self.assertEqual(target.read_bytes(), original + b"derived")
+            finally:
+                source.chmod(0o666)
+
     def test_modes_are_explicit_and_live_is_never_default(self) -> None:
         args = SUBJECT.parser().parse_args([
             "--candidate-dir", "Z:/candidate", "--preflight-only"
