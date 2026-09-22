@@ -1,8 +1,8 @@
-"""Exact, read-only LIFE2/LIFE4 query on the controlled slot43 route.
+"""Exact private LIFE2/stock-focus/perk query and typed slot43 selection.
 
 This transport is deliberately absent from public capabilities.  The bridge
-still decides whether its private native executor is installed and whether a
-current-player lifestyle window can provide final legal candidates.
+still decides whether its private native executor is installed and whether
+the exact source can provide final legal candidates.
 """
 
 from __future__ import annotations
@@ -14,8 +14,10 @@ from .driver import StepPostconditionError
 
 
 QUERY_STEP = "private-query-player-lifestyle-formal-v1"
+STATE_QUERY_STEP = "private-query-player-lifestyle-current-state-v1"
 FOCUS_QUERY_STEP = "private-query-player-lifestyle-stock-focus-v1"
 PERK_SUBMIT_STEP = "private-select-player-lifestyle-perk-v1"
+FOCUS_SUBMIT_STEP = "private-select-player-lifestyle-stock-focus-v1"
 RECEIPT_STEP = "private-query-player-lifestyle-receipt-v1"
 FOCUS_TARGET = "stewardship_wealth_focus"
 FOCUS_LIFESTYLE = "stewardship_lifestyle"
@@ -218,7 +220,8 @@ def query_player_lifestyle_focus_private_v1(
 
 
 def query_player_lifestyle_private_v1(
-    driver: object, *, expected_revision: int | None = None
+    driver: object, *, expected_revision: int | None = None,
+    query_step: str = QUERY_STEP,
 ) -> dict[str, object]:
     """Query one paused frame; preserve an unavailable native result as RED evidence.
 
@@ -227,8 +230,10 @@ def query_player_lifestyle_private_v1(
     ``native_revision`` and ``native:<native_revision>``.
     """
 
+    if query_step not in {QUERY_STEP, STATE_QUERY_STEP}:
+        raise ValueError("unsupported private lifestyle query step")
     if getattr(driver, "allow_private_lifestyle_formal_trial", False) is not True:
-        return {"status": "trial_off", "step": QUERY_STEP}
+        return {"status": "trial_off", "step": query_step}
     starting = driver.take_snapshot()
     played = starting.get("played_character")
     player_id = played.get("character_id") if isinstance(played, Mapping) else None
@@ -250,14 +255,14 @@ def query_player_lifestyle_private_v1(
         and starting.get("snapshot_id") == f"native:{native_revision}"
         and (expected_revision is None or expected_revision == revision)
     ):
-        return {"status": "paused_frame_unavailable", "step": QUERY_STEP}
+        return {"status": "paused_frame_unavailable", "step": query_step}
 
     request_id = f"life-query-{uuid.uuid4().hex}"
     request = {
         "type": "execute_step",
         "protocol_version": 1,
         "request_id": request_id,
-        "step": QUERY_STEP,
+        "step": query_step,
         "expected_revision": native_revision,
         "expected_snapshot_id": starting["snapshot_id"],
         "episode_run_id": episode_run_id,
@@ -271,13 +276,13 @@ def query_player_lifestyle_private_v1(
     if not isinstance(frame, dict) or frame.get("request_id") != request_id:
         return {
             "status": "native_query_timeout_or_malformed",
-            "step": QUERY_STEP,
+            "step": query_step,
             "request_id": request_id,
         }
     if frame.get("ok") is not True:
         return {
             "status": "native_query_unavailable",
-            "step": QUERY_STEP,
+            "step": query_step,
             "request_id": request_id,
             "native_error": frame.get("error"),
         }
@@ -286,7 +291,7 @@ def query_player_lifestyle_private_v1(
     ending = driver.take_snapshot()
     if not (
         isinstance(result, dict)
-        and result.get("step") == QUERY_STEP
+        and result.get("step") == query_step
         and result.get("private_build") is True
         and result.get("advertised") is False
         and result.get("status") == "available"
@@ -312,13 +317,13 @@ def query_player_lifestyle_private_v1(
     ):
         return {
             "status": "native_query_binding_red",
-            "step": QUERY_STEP,
+            "step": query_step,
             "request_id": request_id,
             "native_result": result,
         }
     return {
         "status": "available",
-        "step": QUERY_STEP,
+        "step": query_step,
         "request_id": request_id,
         "episode_run_id": episode_run_id,
         "formal_precondition_status": result.get("formal_precondition_status"),
@@ -333,12 +338,70 @@ def query_player_lifestyle_private_v1(
     }
 
 
-def submit_player_lifestyle_perk_private_v1(
+def query_player_lifestyle_stock_focus_combined_private_v1(
+    driver: object, *, expected_revision: int
+) -> dict[str, object]:
+    """Combine two private reads from one unchanged paused native frame."""
+
+    state = query_player_lifestyle_private_v1(
+        driver, expected_revision=expected_revision,
+        query_step=STATE_QUERY_STEP,
+    )
+    if state.get("status") != "available":
+        return {"status": "current_state_unavailable", "state": state}
+    focus = query_player_lifestyle_focus_private_v1(
+        driver, expected_revision=expected_revision
+    )
+    source = state.get("source_frame")
+    focus_frame = focus.get("source_frame")
+    life = state.get("snapshot")
+    if not (
+        focus.get("status") == "observed"
+        and focus.get("native_legal") is True
+        and isinstance(source, Mapping)
+        and isinstance(focus_frame, Mapping)
+        and isinstance(life, Mapping)
+        and source.get("snapshot_id") == focus_frame.get("snapshot_id")
+        and source.get("native_revision") == focus_frame.get("native_revision")
+        and source.get("date_raw") == focus_frame.get("date_raw")
+        and source.get("player_character_id") == focus_frame.get("played_character_id")
+        and state.get("episode_run_id") == focus_frame.get("episode_run_id")
+        and source.get("revision") == expected_revision
+    ):
+        return {"status": "stock_focus_readback_red", "state": state, "focus": focus}
+    readiness = life.get("readiness")
+    if not isinstance(readiness, Mapping):
+        return {"status": "current_state_readiness_unavailable"}
+    enriched = {
+        **life,
+        "readiness": {**readiness, "legal_focus_candidates_ready": True},
+        "legal_focus_candidates": {
+            "status": "available", "policy_scoped": True,
+            "items": [{"key": FOCUS_TARGET, "lifestyle_key": FOCUS_LIFESTYLE}],
+        },
+        "target_lifestyle_progress": {
+            **focus["target_lifestyle_progress"],
+            "lifestyle_key": FOCUS_LIFESTYLE,
+        },
+    }
+    return {
+        "status": "stock_focus_available",
+        "step": FOCUS_QUERY_STEP,
+        "formal_precondition_status": "stock_focus_ready",
+        "episode_run_id": state["episode_run_id"],
+        "snapshot": enriched,
+        "source_frame": dict(source),
+        "focus_query": focus,
+    }
+
+
+def _submit_player_lifestyle_selection_private_v1(
     driver: object,
     *,
     query: Mapping[str, object],
     action: Mapping[str, object],
     expected_revision: int,
+    kind: str,
 ) -> dict[str, object]:
     """Submit once after a same-frame final-legal query; persist uncertainty."""
 
@@ -346,15 +409,21 @@ def submit_player_lifestyle_perk_private_v1(
     source = query.get("source_frame")
     expected = action.get("expected")
     target = action.get("target_key")
+    focus_action = kind == "focus"
+    submit_step = FOCUS_SUBMIT_STEP if focus_action else PERK_SUBMIT_STEP
     if not (
         getattr(driver, "allow_private_lifestyle_formal_trial", False) is True
-        and query.get("status") == "available"
-        and query.get("formal_precondition_status") == "ready"
+        and query.get("status") == (
+            "stock_focus_available" if focus_action else "available"
+        )
+        and query.get("formal_precondition_status") == (
+            "stock_focus_ready" if focus_action else "ready"
+        )
         and isinstance(source, Mapping)
         and isinstance(expected, Mapping)
-        and action.get("kind") == "perk"
+        and action.get("kind") == kind
         and isinstance(target, str)
-        and target == "cutting_corners_perk"
+        and target == (FOCUS_TARGET if focus_action else "cutting_corners_perk")
         and starting.get("paused") is True
         and starting.get("snapshot_id") == source.get("snapshot_id")
         and starting.get("revision") == source.get("revision") == expected_revision
@@ -363,23 +432,24 @@ def submit_player_lifestyle_perk_private_v1(
         and starting.get("episode_run_id") == query.get("episode_run_id")
         and expected.get("expected_snapshot_id") == source.get("snapshot_id")
         and expected.get("expected_episode_run_id") == query.get("episode_run_id")
-        and expected.get("expected_public_revision") == expected_revision
-        and expected.get("expected_native_revision") == expected_revision
-        and expected.get("expected_proof_epoch") == expected_revision
+        and expected.get("expected_public_revision") == source.get("native_revision")
+        and expected.get("expected_native_revision") == source.get("native_revision")
+        and expected.get("expected_proof_epoch") == source.get("native_revision")
         and expected.get("expected_date_raw") == source.get("date_raw")
         and expected.get("expected_player_character_id")
         == source.get("player_character_id")
     ):
         raise StepPostconditionError(
-            "private LIFE perk lacks a complete final-legal same-frame binding",
-            selected_step=PERK_SUBMIT_STEP,
+            "private LIFE selection lacks a complete final-legal same-frame binding",
+            selected_step=submit_step,
             step_result={"status": "rejected_before_submit"},
         )
-    action_id = f"life-perk-{uuid.uuid4().hex}"
+    action_id = f"life-{kind}-{uuid.uuid4().hex}"
     intent = {
         "status": "action_state_unknown",
         "action_request_id": action_id,
         "target_key": target,
+        "kind": kind,
         "pre_public_revision": expected_revision,
         "episode_run_id": query["episode_run_id"],
         "source_frame": dict(source),
@@ -387,26 +457,26 @@ def submit_player_lifestyle_perk_private_v1(
     }
     # This durable marker precedes the native send.  A timeout or process
     # failure therefore blocks another submit until actual state is checked.
-    driver._record_command(PERK_SUBMIT_STEP, ok=True, result=intent)
+    driver._record_command(submit_step, ok=True, result=intent)
     if getattr(driver, "_driver_state_error", None) is not None:
         raise StepPostconditionError(
             "private LIFE intent was not durably recorded; no native send",
-            selected_step=PERK_SUBMIT_STEP,
+            selected_step=submit_step,
             step_result=intent,
         )
     request = {
         "type": "execute_step",
         "protocol_version": 1,
         "request_id": action_id,
-        "step": PERK_SUBMIT_STEP,
-        "expected_revision": expected_revision,
+        "step": submit_step,
+        "expected_revision": source["native_revision"],
         "expected_snapshot_id": source["snapshot_id"],
         "expected_episode_run_id": query["episode_run_id"],
         "expected_date_raw": source["date_raw"],
         "expected_player_character_id": source["player_character_id"],
-        "expected_native_revision": expected_revision,
-        "expected_proof_epoch": expected_revision,
-        "kind": "perk",
+        "expected_native_revision": source["native_revision"],
+        "expected_proof_epoch": source["native_revision"],
+        "kind": kind,
         "target_key": target,
     }
     try:
@@ -417,7 +487,7 @@ def submit_player_lifestyle_perk_private_v1(
     except Exception as error:
         raise StepPostconditionError(
             f"private LIFE native submit state unknown: {type(error).__name__}",
-            selected_step=PERK_SUBMIT_STEP,
+            selected_step=submit_step,
             step_result=intent,
         ) from error
     result = frame.get("result") if isinstance(frame, Mapping) else None
@@ -426,26 +496,26 @@ def submit_player_lifestyle_perk_private_v1(
         and frame.get("request_id") == action_id
         and frame.get("ok") is True
         and isinstance(result, Mapping)
-        and result.get("step") == PERK_SUBMIT_STEP
+        and result.get("step") == submit_step
         and result.get("private_build") is True
         and result.get("advertised") is False
         and result.get("action_request_id") == action_id
         and result.get("target_key") == target
         and result.get("pre_snapshot_id") == source["snapshot_id"]
         and result.get("episode_run_id") == query["episode_run_id"]
-        and result.get("pre_public_revision") == expected_revision
+        and result.get("pre_public_revision") == source["native_revision"]
     ):
         raise StepPostconditionError(
             "private LIFE submit ACK unavailable; action state unknown",
-            selected_step=PERK_SUBMIT_STEP,
+            selected_step=submit_step,
             step_result={**intent, "native_frame": frame},
         )
     if result.get("status") != "submitted_verification_pending" or result.get(
         "verification_pending"
     ) is not True:
         raise StepPostconditionError(
-            "private LIFE final-legal perk was rejected before submission",
-            selected_step=PERK_SUBMIT_STEP,
+            "private LIFE final-legal selection was rejected before submission",
+            selected_step=submit_step,
             step_result={**intent, "native_frame": frame},
         )
     pending = {
@@ -454,31 +524,57 @@ def submit_player_lifestyle_perk_private_v1(
         "native_command_submitted": True,
         "native_ack": dict(result),
     }
-    driver._record_command(PERK_SUBMIT_STEP, ok=True, result=pending)
+    driver._record_command(submit_step, ok=True, result=pending)
     return pending
+
+
+def submit_player_lifestyle_perk_private_v1(
+    driver: object, *, query: Mapping[str, object],
+    action: Mapping[str, object], expected_revision: int,
+) -> dict[str, object]:
+    return _submit_player_lifestyle_selection_private_v1(
+        driver, query=query, action=action,
+        expected_revision=expected_revision, kind="perk",
+    )
+
+
+def submit_player_lifestyle_stock_focus_private_v1(
+    driver: object, *, query: Mapping[str, object],
+    action: Mapping[str, object], expected_revision: int,
+) -> dict[str, object]:
+    return _submit_player_lifestyle_selection_private_v1(
+        driver, query=query, action=action,
+        expected_revision=expected_revision, kind="focus",
+    )
 
 
 def query_player_lifestyle_receipt_private_v1(
     driver: object, *, pending: Mapping[str, object], expected_revision: int
 ) -> dict[str, object]:
-    """Accept only a later independent paused HasPerk result."""
+    """Accept only a later independent paused material focus/perk result."""
 
     starting = driver.take_snapshot()
     played = starting.get("played_character")
     player_id = played.get("character_id") if isinstance(played, Mapping) else None
     action_id = pending.get("action_request_id")
     pre_revision = pending.get("pre_public_revision")
+    pre_native_revision = pending.get("source_frame", {}).get("native_revision")
+    native_revision = starting.get("native_revision")
+    kind = pending.get("kind", "perk")
     if not (
         getattr(driver, "allow_private_lifestyle_formal_trial", False) is True
         and isinstance(action_id, str)
-        and action_id.startswith("life-perk-")
+        and kind in {"focus", "perk"}
+        and action_id.startswith(f"life-{kind}-")
         and _positive_int(pre_revision)
+        and _positive_int(pre_native_revision)
         and _positive_int(expected_revision)
         and expected_revision > pre_revision
+        and _positive_int(native_revision)
+        and native_revision > pre_native_revision
         and starting.get("paused") is True
         and starting.get("revision") == expected_revision
-        and starting.get("native_revision") == expected_revision
-        and starting.get("snapshot_id") == f"native:{expected_revision}"
+        and starting.get("snapshot_id") == f"native:{native_revision}"
         and starting.get("episode_run_id") == pending.get("episode_run_id")
         and _positive_int(player_id)
         and player_id == pending.get("source_frame", {}).get("player_character_id")
@@ -495,7 +591,7 @@ def query_player_lifestyle_receipt_private_v1(
         "protocol_version": 1,
         "request_id": request_id,
         "step": RECEIPT_STEP,
-        "expected_revision": expected_revision,
+        "expected_revision": native_revision,
         "expected_snapshot_id": starting["snapshot_id"],
         "expected_episode_run_id": starting["episode_run_id"],
         "expected_date_raw": starting["date_raw"],
@@ -517,10 +613,15 @@ def query_player_lifestyle_receipt_private_v1(
         and result.get("advertised") is False
         and result.get("action_request_id") == action_id
         and result.get("post_snapshot_id") == starting["snapshot_id"]
-        and result.get("post_public_revision") == expected_revision
+        and result.get("post_public_revision") == native_revision
         and result.get("episode_run_id") == starting["episode_run_id"]
         and result.get("status") == "applied"
-        and result.get("post_target_perk_owned") is True
+        and (
+            result.get("post_has_current_focus") is True
+            and result.get("post_current_focus_key") == pending.get("target_key")
+            if kind == "focus"
+            else result.get("post_target_perk_owned") is True
+        )
         and result.get("postcondition_verified") is True
     ):
         raise StepPostconditionError(
@@ -544,11 +645,14 @@ def query_player_lifestyle_receipt_private_v1(
         "status": "applied",
         "action_request_id": action_id,
         "target_key": pending.get("target_key"),
+        "kind": kind,
         "post_snapshot_id": starting["snapshot_id"],
-        "post_public_revision": expected_revision,
+        "post_public_revision": native_revision,
         "post_date_raw": starting["date_raw"],
         "episode_run_id": starting["episode_run_id"],
-        "post_target_perk_owned": True,
+        "post_target_perk_owned": result.get("post_target_perk_owned"),
+        "post_has_current_focus": result.get("post_has_current_focus"),
+        "post_current_focus_key": result.get("post_current_focus_key"),
         "postcondition_verified": True,
     }
     driver._record_command(RECEIPT_STEP, ok=True, result=applied)

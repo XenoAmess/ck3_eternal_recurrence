@@ -377,8 +377,17 @@ bool CapturePrecondition(
     void *opaque,
     game::PlayerLifestyleSelectionPreconditionV1 &output) noexcept {
   auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
-  if (context == nullptr || !ReadState(*context) ||
-      !ReadCandidates(*context)) return false;
+  if (context == nullptr || !ReadState(*context)) return false;
+  if (context->mode == PlayerLifestyleFormalWireModeV1::submit_focus) {
+    ReadStockFocus(*context);
+    context->precondition_result =
+        BuildPlayerLifestyleStockFocusPreconditionV1(
+            *context->snapshot, context->stock_focus_result,
+            context->episode_run_id, output);
+    return context->precondition_result ==
+           PlayerLifestyleFormalPreconditionResultV1::ready;
+  }
+  if (!ReadCandidates(*context)) return false;
   context->precondition_result = BuildPlayerLifestyleFormalPreconditionV1(
       *context->snapshot, *context->candidates, context->episode_run_id,
       output);
@@ -401,11 +410,31 @@ bool IsPaused(void *opaque) noexcept {
   return context != nullptr && OnMain(*context);
 }
 
-bool SubmitPerk(void *opaque, game::PlayerLifestyleSelectionKindV1 kind,
+bool SubmitSelection(void *opaque, game::PlayerLifestyleSelectionKindV1 kind,
                 const game::PlayerLifestyleWindowStableKeyV1 &key) noexcept {
   auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
-  if (context == nullptr ||
-      kind != game::PlayerLifestyleSelectionKindV1::perk) {
+  if (context == nullptr) {
+    return false;
+  }
+  if (kind == game::PlayerLifestyleSelectionKindV1::focus &&
+      context->mode == PlayerLifestyleFormalWireModeV1::submit_focus &&
+      context->stock_focus_result.status ==
+          StockFocusLegalityStatusV1::observed_native_legal &&
+      PlayerLifestyleWindowStableKeyViewV1(key) ==
+          kStockFocusLegalityTargetV1 &&
+      context->stock_focus_result.target_definition != 0) {
+    context->native_submit.last_result =
+        DispatchResolvedPlayerLifestyleFocusNativeAdapterV1(
+            context->native_submit.environment,
+            context->native_submit.access,
+            context->native_submit.played_character_id,
+            context->stock_focus_result.target_definition);
+    return context->native_submit.last_result ==
+        PlayerLifestyleSelectionNativeDispatchResultV1::
+            submitted_verification_pending;
+  }
+  if (kind != game::PlayerLifestyleSelectionKindV1::perk ||
+      context->mode != PlayerLifestyleFormalWireModeV1::submit_perk) {
     return false;
   }
   if (context->stock_perk_result.status ==
@@ -500,7 +529,7 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
     access.capture_precondition = &CapturePrecondition;
     access.capture_receipt_state = &CaptureReceiptState;
     access.is_main_thread = &IsMain;
-    access.submit_native = &SubmitPerk;
+    access.submit_native = &SubmitSelection;
     if (context->mode == PlayerLifestyleFormalWireModeV1::query_state_only) {
       if (!ReadState(*context)) {
         context->failure = PlayerLifestyleFormalStateFailureV1(
@@ -545,10 +574,13 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
       context->completed = true;
       return true;
     }
-    if (context->mode == PlayerLifestyleFormalWireModeV1::submit_perk) {
+    if (context->mode == PlayerLifestyleFormalWireModeV1::submit_perk ||
+        context->mode == PlayerLifestyleFormalWireModeV1::submit_focus) {
       if (context->action_request.kind !=
-          game::PlayerLifestyleSelectionKindV1::perk) {
-        context->failure = "only_final_legal_perk_admitted";
+          (context->mode == PlayerLifestyleFormalWireModeV1::submit_focus
+               ? game::PlayerLifestyleSelectionKindV1::focus
+               : game::PlayerLifestyleSelectionKindV1::perk)) {
+        context->failure = "lifestyle_selection_kind_mismatch";
         return true;
       }
       const auto environment =

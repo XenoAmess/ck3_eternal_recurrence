@@ -122,6 +122,111 @@ Result BuildPlayerLifestyleFormalPreconditionV1(
   return Result::ready;
 }
 
+Result BuildPlayerLifestyleStockFocusPreconditionV1(
+    const game::PlayerLifestyleSnapshotV1 &state,
+    const StockFocusLegalityResultV1 &focus,
+    std::string_view episode_run_id,
+    game::PlayerLifestyleSelectionPreconditionV1 &output) noexcept {
+  output = {};
+  if (state.status != game::PlayerLifestyleSnapshotStatusV1::available ||
+      !state.readiness.current_focus_ready ||
+      !state.readiness.owned_perks_ready ||
+      !state.readiness.same_frame_ready ||
+      focus.status != StockFocusLegalityStatusV1::observed_native_legal ||
+      !focus.target_progress.available ||
+      !focus.validator_invoked_twice || focus.target_definition == 0) {
+    return Result::source_unavailable;
+  }
+  if (Fixed(state.snapshot_id) != Fixed(focus.frame.snapshot_id) ||
+      Fixed(state.snapshot_id).empty() ||
+      state.public_revision != focus.frame.public_revision ||
+      state.native_revision != focus.frame.native_revision ||
+      state.proof_epoch != focus.frame.proof_epoch ||
+      state.date_raw != focus.frame.date_raw ||
+      state.player_character_id < 0 ||
+      static_cast<std::uint32_t>(state.player_character_id) !=
+          focus.frame.played_character_id ||
+      state.public_revision == 0 || state.native_revision == 0 ||
+      state.proof_epoch == 0 || !focus.frame.paused ||
+      !focus.frame.map_ready || !focus.frame.played_character_alive) {
+    return Result::frame_mismatch;
+  }
+  if (episode_run_id.empty() ||
+      episode_run_id.size() >=
+          game::kPlayerLifestyleSelectionEpisodeRunIdCapacityV1 ||
+      Fixed(focus.frame.episode_run_id) != episode_run_id) {
+    return Result::episode_unavailable;
+  }
+  for (char ch : episode_run_id) {
+    if (!((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
+          (ch >= '0' && ch <= '9') || ch == '-')) {
+      return Result::episode_unavailable;
+    }
+  }
+  const auto &source = state.state;
+  const auto &progress = focus.target_progress;
+  if (source.current_focus_presence !=
+          game::PlayerLifestyleFocusPresenceV1::absent ||
+      source.current_lifestyle_progress_present ||
+      progress.xp_total_raw < 0 || progress.xp_within_level_raw < 0 ||
+      progress.xp_per_level <= 0 || progress.unspent_perk_points < 0 ||
+      progress.used_perk_points < 0 ||
+      source.owned_perk_count >
+          game::kPlayerLifestyleWindowMaximumPerksV1 ||
+      PlayerLifestyleWindowStableKeyViewV1(focus.target_key) !=
+          kStockFocusLegalityTargetV1 ||
+      PlayerLifestyleWindowStableKeyViewV1(focus.lifestyle_key) !=
+          kStockFocusLegalityLifestyleV1) {
+    return Result::target_progress_unavailable;
+  }
+  auto &candidates = output.candidates;
+  candidates.status = game::PlayerLifestyleWindowCandidatesStatusV1::available;
+  candidates.unavailable_reason =
+      game::PlayerLifestyleWindowCandidatesFailureV1::none;
+  candidates.snapshot_id = focus.frame.snapshot_id;
+  candidates.public_revision = focus.frame.public_revision;
+  candidates.native_revision = focus.frame.native_revision;
+  candidates.proof_epoch = focus.frame.proof_epoch;
+  candidates.date_raw = focus.frame.date_raw;
+  candidates.player_character_id = focus.frame.played_character_id;
+  candidates.focus_status =
+      game::PlayerLifestyleWindowCollectionStatusV1::available;
+  candidates.focus_count = 1;
+  candidates.focuses[0] = {focus.target_key, focus.lifestyle_key, true};
+  candidates.readiness.bound_player_ready = true;
+  candidates.readiness.containers_ready = true;
+  candidates.readiness.focus_candidates_ready = true;
+  candidates.readiness.final_legality_ready = true;
+  candidates.readiness.same_frame_ready = true;
+  auto &target = output.state;
+  target.available = true;
+  target.paused = true;
+  target.snapshot_id = focus.frame.snapshot_id;
+  std::copy(episode_run_id.begin(), episode_run_id.end(),
+            target.episode_run_id.begin());
+  target.public_revision = focus.frame.public_revision;
+  target.native_revision = focus.frame.native_revision;
+  target.proof_epoch = focus.frame.proof_epoch;
+  target.date_raw = focus.frame.date_raw;
+  target.player_character_id = focus.frame.played_character_id;
+  target.current_focus_known = true;
+  target.has_current_focus = false;
+  target.owned_perks_fully_materialized = true;
+  target.owned_perk_count = source.owned_perk_count;
+  for (std::uint32_t i = 0; i < source.owned_perk_count; ++i) {
+    if (!ConvertKey(source.owned_perk_keys[i], target.owned_perk_keys[i])) {
+      output = {};
+      return Result::invalid_source;
+    }
+  }
+  target.lifestyle_progress_fully_materialized = true;
+  target.lifestyle_progress_count = 1;
+  target.lifestyle_progress[0] = {focus.lifestyle_key,
+                                  progress.xp_total_raw,
+                                  progress.unspent_perk_points};
+  return Result::ready;
+}
+
 Result BuildPlayerLifestyleFormalReceiptObservationV1(
     const game::PlayerLifestyleSnapshotV1 &state,
     std::string_view episode_run_id,

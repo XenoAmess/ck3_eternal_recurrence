@@ -142,6 +142,16 @@ DispatchResolvedPlayerLifestylePerkNativeAdapterV1(
     std::uint32_t played_character_id, std::uintptr_t resolved_definition)
     noexcept;
 
+// Window-independent fixed focus dispatch. The definition must have been
+// resolved and finally validated by the stock-focus source in this same
+// application-main transaction. Returns only queue acceptance.
+PlayerLifestyleSelectionNativeDispatchResultV1
+DispatchResolvedPlayerLifestyleFocusNativeAdapterV1(
+    const PlayerLifestyleSelectionNativeAdapterEnvironmentV1 &environment,
+    const PlayerLifestyleSelectionNativeAdapterAccessV1 &access,
+    std::uint32_t played_character_id, std::uintptr_t resolved_definition)
+    noexcept;
+
 // LIFE6-compatible thunk. true means the exact submit wrapper accepted one
 // heap clone for verification. It never means the focus/perk was applied.
 bool SubmitPlayerLifestyleSelectionNativeAdapterV1(

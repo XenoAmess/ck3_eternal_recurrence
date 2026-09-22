@@ -13,6 +13,7 @@ from .lifestyle_min_policy import choose_min_feudal_lifestyle_action
 
 ROOT_QUERY_STEP = "query-campaign-root-context-v1"
 PERK_SUBMIT_STEP = "private-select-player-lifestyle-perk-v1"
+FOCUS_SUBMIT_STEP = "private-select-player-lifestyle-stock-focus-v1"
 RECEIPT_STEP = "private-query-player-lifestyle-receipt-v1"
 
 
@@ -31,7 +32,7 @@ def unresolved_lifestyle_perk_action(
     for row in reversed(history):
         command = row.get("command")
         result = row.get("result")
-        if command not in {PERK_SUBMIT_STEP, RECEIPT_STEP} or not isinstance(
+        if command not in {PERK_SUBMIT_STEP, FOCUS_SUBMIT_STEP, RECEIPT_STEP} or not isinstance(
             result, Mapping
         ):
             continue
@@ -39,7 +40,7 @@ def unresolved_lifestyle_perk_action(
             continue
         if command == RECEIPT_STEP and result.get("status") == "applied":
             return None
-        if command == PERK_SUBMIT_STEP:
+        if command in {PERK_SUBMIT_STEP, FOCUS_SUBMIT_STEP}:
             if result.get("status") in {
                 "action_state_unknown",
                 "submitted_verification_pending",
@@ -62,7 +63,12 @@ def latest_lifestyle_applied_receipt(
         if (
             isinstance(result, Mapping)
             and result.get("status") == "applied"
-            and result.get("post_target_perk_owned") is True
+            and (
+                result.get("post_has_current_focus") is True
+                and result.get("post_current_focus_key") == result.get("target_key")
+                if result.get("kind") == "focus"
+                else result.get("post_target_perk_owned") is True
+            )
             and result.get("postcondition_verified") is True
             and result.get("episode_run_id") == episode
         ):
@@ -71,6 +77,7 @@ def latest_lifestyle_applied_receipt(
                     "action_request_id", "target_key", "post_snapshot_id",
                     "post_public_revision", "post_date_raw", "episode_run_id",
                     "post_target_perk_owned", "postcondition_verified",
+                    "kind", "post_has_current_focus", "post_current_focus_key",
                 )
             }
     return None
@@ -143,7 +150,7 @@ def consume_lifestyle_private_query(
     scope: Mapping[str, object],
     query: Mapping[str, object] | None,
 ) -> dict[str, object]:
-    """Choose one typed perk only after native final legality and LIFE2 state."""
+    """Choose one private focus/perk only after same-frame native final legality."""
 
     plan = dict(baseline_plan)
     if plan.get("selected_step") != "life-advance":
@@ -165,7 +172,9 @@ def consume_lifestyle_private_query(
             "selected_step": None,
             "reason": "peace or feudal scope has no independent true observation",
         }
-    if not isinstance(query, Mapping) or query.get("status") != "available":
+    if not isinstance(query, Mapping) or query.get("status") not in {
+        "available", "stock_focus_available",
+    }:
         return {
             **plan,
             "phase": "lifestyle_native_query_unavailable",
@@ -199,6 +208,21 @@ def consume_lifestyle_private_query(
                 "lifestyle_query": dict(query),
                 "lifestyle_decision": recommendation,
                 "reason": "one native-final-legal stewardship build-cost perk",
+            }
+        if (
+            isinstance(action, Mapping)
+            and action.get("kind") == "focus"
+            and query.get("status") == "stock_focus_available"
+            and query.get("formal_precondition_status") == "stock_focus_ready"
+        ):
+            return {
+                **plan,
+                "phase": "lifestyle_min_focus_action",
+                "selected_step": FOCUS_SUBMIT_STEP,
+                "lifestyle_action": dict(action),
+                "lifestyle_query": dict(query),
+                "lifestyle_decision": recommendation,
+                "reason": "one native-final-legal stewardship wealth focus",
             }
         return {
             **plan,

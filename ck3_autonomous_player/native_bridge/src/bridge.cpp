@@ -344,6 +344,7 @@ static std::optional<xar::game::PlayerLifestyleSelectionActionAckV1>
 static std::string g_player_lifestyle_last_query_episode_v1{};
 static std::uint64_t g_player_lifestyle_last_query_revision_v1 = 0;
 static std::int32_t g_player_lifestyle_last_query_player_v1 = -1;
+static bool g_player_lifestyle_last_query_stock_focus_v1 = false;
 static bool g_player_lifestyle_action_may_have_submitted_v1 = false;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
@@ -5125,7 +5126,9 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
     result += xar::ck3_11906::SerializePlayerLifestyleSnapshotV1(
         *context.snapshot);
   } else if (context.mode == xar::ck3_11906::
-                                 PlayerLifestyleFormalWireModeV1::submit_perk) {
+                                 PlayerLifestyleFormalWireModeV1::submit_perk ||
+             context.mode == xar::ck3_11906::
+                                 PlayerLifestyleFormalWireModeV1::submit_focus) {
     const auto &ack = context.pending_ack;
     result += "\"status\":";
     AppendJsonString(
@@ -5178,6 +5181,12 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
         std::to_string(receipt.post_public_revision);
     result += ",\"post_target_perk_owned\":";
     result += receipt.post_target_perk_owned ? "true" : "false";
+    result += ",\"post_has_current_focus\":";
+    result += receipt.post_has_current_focus ? "true" : "false";
+    result += ",\"post_current_focus_key\":";
+    AppendJsonString(result,
+                     xar::ck3_11906::PlayerLifestyleWindowStableKeyViewV1(
+                         receipt.post_current_focus_key));
     result += ",\"postcondition_verified\":";
     result += receipt.postcondition_verified ? "true" : "false";
     result += ",\"reason\":";
@@ -5237,7 +5246,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
     return CommandResultFrame(request_id, step, false,
                               "private_lifestyle_published_frame_stale");
   }
-  if (step == kPlayerLifestyleFormalPrivateSubmitStepV1) {
+  if (step == kPlayerLifestyleFormalPrivateSubmitStepV1 ||
+      step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1) {
     std::string kind;
     std::string target;
     std::uint64_t expected_native = 0;
@@ -5248,11 +5258,17 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
             payload, "expected_native_revision", expected_native) ||
         !xar::bridge::JsonUnsignedField(
             payload, "expected_proof_epoch", expected_proof) ||
-        kind != "perk" || expected_native != revision ||
+        kind != (step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1
+                     ? "focus" : "perk") ||
+        (step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1 &&
+         target != kStockFocusLegalityTargetV1) ||
+        expected_native != revision ||
         expected_proof != revision ||
         g_player_lifestyle_action_may_have_submitted_v1 ||
         g_player_lifestyle_pending_ack_v1.has_value() ||
         g_player_lifestyle_last_query_revision_v1 != revision ||
+        g_player_lifestyle_last_query_stock_focus_v1 !=
+            (step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1) ||
         g_player_lifestyle_last_query_episode_v1 != episode_run_id ||
         g_player_lifestyle_last_query_player_v1 !=
             published.played_character_id) {
@@ -5293,6 +5309,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
                       ? PlayerLifestyleFormalWireModeV1::query_focus_only
                 : step == kPlayerLifestyleFormalPrivateSubmitStepV1
                       ? PlayerLifestyleFormalWireModeV1::submit_perk
+                      : step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1
+                            ? PlayerLifestyleFormalWireModeV1::submit_focus
                       : PlayerLifestyleFormalWireModeV1::verify_receipt;
   if (!InitializePlayerLifestyleFormalWireContextV1(
           *context, BindCurrentProcess(true), current, revision,
@@ -5300,14 +5318,17 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
     return CommandResultFrame(request_id, step, false,
                               "private_lifestyle_source_bind_unavailable");
   }
-  if (mode == PlayerLifestyleFormalWireModeV1::submit_perk) {
+  if (mode == PlayerLifestyleFormalWireModeV1::submit_perk ||
+      mode == PlayerLifestyleFormalWireModeV1::submit_focus) {
     context->action_request_id.assign(request_id);
     xar::bridge::JsonStringField(payload, "target_key",
                                  context->action_target_key, 128);
     context->action_request.request_id =
         context->action_request_id;
     context->action_request.kind =
-        xar::game::PlayerLifestyleSelectionKindV1::perk;
+        mode == PlayerLifestyleFormalWireModeV1::submit_focus
+            ? xar::game::PlayerLifestyleSelectionKindV1::focus
+            : xar::game::PlayerLifestyleSelectionKindV1::perk;
     context->action_request.target_key =
         context->action_target_key;
     context->action_request.expected_snapshot_id = context->snapshot_id;
@@ -5330,7 +5351,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
     return CommandResultFrame(request_id, step, false,
                               "private_lifestyle_application_main_unavailable");
   }
-  if (mode == PlayerLifestyleFormalWireModeV1::submit_perk)
+  if (mode == PlayerLifestyleFormalWireModeV1::submit_perk ||
+      mode == PlayerLifestyleFormalWireModeV1::submit_focus)
     g_player_lifestyle_action_may_have_submitted_v1 = true;
   auto wait = WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                                       ticket, 8'000);
@@ -5343,12 +5365,14 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
   const bool stable =
       wait == MainThreadQueryWaitResultV1::completed &&
       xar::game::ReadSnapshot(game, completion) && completion == current;
-  if (mode == PlayerLifestyleFormalWireModeV1::submit_perk &&
+  if ((mode == PlayerLifestyleFormalWireModeV1::submit_perk ||
+       mode == PlayerLifestyleFormalWireModeV1::submit_focus) &&
       context->pending_ack.status ==
           xar::game::PlayerLifestyleSelectionActionAckStatusV1::
               submitted_verification_pending) {
     g_player_lifestyle_pending_ack_v1 = context->pending_ack;
     g_player_lifestyle_last_query_revision_v1 = 0;
+    g_player_lifestyle_last_query_stock_focus_v1 = false;
   }
   std::string response =
       stable ? PlayerLifestyleFormalPrivateResultFrame(
@@ -5357,16 +5381,24 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
                    request_id, step, false,
                    "private_lifestyle_executor_or_completion_state_red");
   if (stable && context->completed) {
-    if (mode == PlayerLifestyleFormalWireModeV1::query) {
+    if (mode == PlayerLifestyleFormalWireModeV1::query ||
+        (mode == PlayerLifestyleFormalWireModeV1::query_focus_only &&
+         context->stock_focus_result.status ==
+             StockFocusLegalityStatusV1::observed_native_legal &&
+         context->stock_focus_result.target_progress.available)) {
       g_player_lifestyle_last_query_episode_v1 = episode_run_id;
       g_player_lifestyle_last_query_revision_v1 = revision;
       g_player_lifestyle_last_query_player_v1 =
           published.played_character_id;
-    } else if (mode == PlayerLifestyleFormalWireModeV1::submit_perk &&
+      g_player_lifestyle_last_query_stock_focus_v1 =
+          mode == PlayerLifestyleFormalWireModeV1::query_focus_only;
+    } else if ((mode == PlayerLifestyleFormalWireModeV1::submit_perk ||
+                mode == PlayerLifestyleFormalWireModeV1::submit_focus) &&
                PlayerLifestyleAckProvesNoNativeSubmitV1(
                    context->pending_ack)) {
       g_player_lifestyle_action_may_have_submitted_v1 = false;
       g_player_lifestyle_last_query_revision_v1 = 0;
+      g_player_lifestyle_last_query_stock_focus_v1 = false;
     } else if (mode == PlayerLifestyleFormalWireModeV1::verify_receipt &&
                context->receipt.status ==
                    xar::game::PlayerLifestyleSelectionActionReceiptStatusV1::
@@ -8918,6 +8950,8 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateSubmitStepV1
                    && step != xar::ck3_11906::
+                                  kPlayerLifestyleFormalPrivateSubmitFocusStepV1
+                   && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateReceiptStepV1
 #endif
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
@@ -9016,6 +9050,8 @@ void RunConnectedSession(
                           kPlayerLifestyleFormalPrivateStockFocusStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateSubmitStepV1 ||
+              step == xar::ck3_11906::
+                          kPlayerLifestyleFormalPrivateSubmitFocusStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateReceiptStepV1) {
             if (!previous_snapshot.has_value()) {
