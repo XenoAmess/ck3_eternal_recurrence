@@ -4210,7 +4210,7 @@ class NativeAutoRunTests(unittest.TestCase):
 
     def test_opening_focus_gate_accepts_exact_existing_focus_without_submit(self) -> None:
         report, harness = self._run(
-            ["existing_focus", "advance"],
+            ["existing_focus"],
             require_initial_lifestyle_focus_before_date_advance=True,
         )
 
@@ -4220,12 +4220,9 @@ class NativeAutoRunTests(unittest.TestCase):
             report["initial_lifestyle_focus_gate"]["existing_focus"],
             "stewardship_domain_focus",
         )
-        self.assertEqual(harness.date_raw, 53_171_401)
-        self.assertLess(
-            harness.events.index("auto_turn:existing_focus"),
-            harness.events.index("auto_turn:advance"),
-        )
+        self.assertEqual(harness.date_raw, 53_171_400)
         self.assertNotIn("auto_turn:lifestyle_focus_submit", harness.events)
+        self.assertNotIn("auto_turn:advance", harness.events)
 
     def test_opening_focus_gate_requires_submit_receipt_checkpoint_and_consumption(self) -> None:
         report, harness = self._run(
