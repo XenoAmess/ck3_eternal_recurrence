@@ -22,7 +22,8 @@ flowchart LR
     N -->|未匹配| P["pending/RED：先查状态，不盲重试"]
     N -. "R0066：只读 source_red 的原生失败字段尚未留存" .-> X["unknown：保留 native result，再判断观测口或游戏状态"]
     X --> P
-    M -. "R0080 Python receipt 费用样本误拒；正式下一 turn 与冷恢复待验" .-> T["两游戏年治理闭环"]
+    M -->|R0081 新 PID 从动作后成对存档核对同一 receipt；下一正式 turn 消费且无重提| C["私有建设冷恢复闭环"]
+    C -. "议会改任、封臣/派系干预及完整治理窗口仍待验" .-> T["两游戏年治理闭环"]
 ```
 
 私有 action CMake 选项 `XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1` 默认 OFF，且仅能与已存在的 read probe 选项一同启用。实际运行前用 source save、EXE/DLL SHA、DLC/mod/profile、轮次与有界断言封候选；只有 CK3 唯一操作负责人可以运行。R746 只读结果不能被新代码的静态验证冒充为提交或后置结果。公共 query/action、MCP 广告与 G2-M4 完成状态仍关闭。新增 private receipt 字段为向后兼容的附加字段；当前没有公共 open_kaishek 适配器依赖，正式接口开放前须独立确认兼容矩阵。
@@ -41,3 +42,5 @@ R0076（2026-09-22，protected `0e251b2`、private ON DLL）从原始 R753 成�
 R0080（2026-09-22，CK3 exact 1.19.0.6、agent `573f742`、private ON native tree `1499f7a0`）从原始 R753 配对存档正式 `native-auto-run`：turn 1 对同一原生合法 tuple (barony 2103 / Province 2635 / building 24 / slot 1) 只提交一次，receiver ACK `pending_receipt`、`applied=false`；新 runner 在下一 turn 前立即保存动作后的配对游戏 checkpoint（history 446→447，SHA `1928BD74…0CBAE`）。turn 2 的独立 paused `native:4` 原生只读结果实际上为 `source_available/failure=none`，同一角色 29829、日期 53178312，`active_constructions` 明确显示上述 tuple `active=true`、initiator 29829，玩家金币从 50035659 变为 35035659，差额正好是原生费用 15000000。这个原生结果直接证明建筑开始；但正式 Python receipt 仍给 `source_red` 并 RED 停止，未形成正式策略下一循环消费或冷恢复结论。原生结果和失败 receipt 保存在 `Z:\ck3_mod_rewrite_process_assets\g2-gov-r0080-red-20260922`，CK3 进程树已回收、同一动作 ID 未重提。
 
 R0080 `source_red` 的确定根因不是原生物质源缺失：开始建造后，该 first-held barony 的 512 次最终合法性扫描不再产生合法新候选，`legal_samples=[]`、`native_cost_evaluated=false`；旧 Python 共用的新候选筛选入口把“必须至少评估一项新的原生费用”也施加给已有动作的物质回执，故在读取 `active_constructions` 前拒绝了有效后置帧。最小修复只分出 receipt 的只读 material-source 模式：仍严格要求 exact 原生 `source_available`、帧/角色/日期/epoch 绑定及目标 active tuple+initiator；不要求产生新的合法费用样本，也不改变首次提交时的合法、费用、预算门。公共 query/action 继续不注册、不广告；修复后必须从 R0080 **动作后配对 checkpoint** 冷恢复，先核对既有动作并消费，不得从原 R753 再提交一次来“复验”。
+
+R0081（2026-09-22）从 R0080 **动作后**游戏 save `1928BD74…0CBAE` 与同一 pending ID 的 driver 成对点，使用新 PID120024 冷启动。Python receipt 修复版 protected `8e0df178` 与原 construction VIEW/ACTION 均 ON 的冻结 native `573f742`/DLL `47196B7E…E171760` 明确绑定；后续 M5 原生变更仍在独立默认 OFF flag 下。正式 `native-auto-run` 20/20 turn、143.404 秒、9 个可见 gameplay turn。首 turn 私有 typed receipt 对同一 request `construction-submit-987aec8771e1451ba389f0d1b10cb2c3` 返回 `applied/postcondition_verified`，原始 R0080 活动 tuple 2103/2635/24/1、发起人 29829 与金币 50035659→35035659 的后置证据已归档；R0081 **没有另存一份新的 raw native 行**。下一正式 turn 选择 `life-advance` 并消费同一收据，pending 清空、无第二次施工提交；结尾成对 checkpoint `E47C21E4…CA395`、日期 53178312→53181984。唯一进程树回收，canonical R0081 `completed-green`；[冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-gov-r0081-green-20260922/evidence-manifest.json) SHA-256 `ED175A02101C73AD8E0B5765EBF52397154EAA134CB54974D4AE84988B8BDAA2`。这是私有有界建设/冷恢复闭环，不是公共建设广告、两游戏年治理、议会/派系干预或 G2-M4 完成；R0080 的原始 RED 不改写。
