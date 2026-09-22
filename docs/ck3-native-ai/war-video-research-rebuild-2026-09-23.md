@@ -78,3 +78,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 - **W3/W5 第一包：新增静态 raw 树，语义及 live 继续**：[normal/desperate 与主动撤退入口](war-film-retreat-policy-2026-09-23.md)定位 mode 的完整 raw 谓词/缓存链，并排除两条战中不提交移动的普通路径。发现 signed warscore 比较与注释的解释冲突；最小同帧对账字段已列出。通用主动撤退策略尚未闭合，已继续追另一组 caller。
 
 - **W8 实机入口整改进行中**：[原生桥重建与预检](war-film-native-capture-preflight-2026-09-23.md)记录旧 DLL 缺能力、构建时的真实环境/编码 RED 和 helper 修复；7 项回归通过，新构建尚未交付实机结果。
+
+## W4 增量：求援比较勘误与玩家支援消费边
+
+[援军专题](war-film-reinforcement-policy-2026-09-23.md)已冻结 17 段 EXE 字节、7 条静态边和 3 条未知边。跨 stack 实际比较为 `quantized_required >= requester_parent_available`，修正旧方向及等号；六项玩家支援定义已逐一追到消费指令。旧两军观察的 requester parent 为 singleton，不能触发求援生产；新的三军离线预验工具检查真实查询束的 parent 结构与身份，7 项测试通过。没有新 live 指派、ETA 或同战斗回归成功，下一步需先准备满足结构门槛的种子。

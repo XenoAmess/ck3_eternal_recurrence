@@ -1,0 +1,210 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-reinforcement-20260923",
+  "question": "Which gates convert asking into native assignment, and which PLAYER_SUPPORT consumers are separate from that signal?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "same-war same-side production AI CUnits; player seed control excluded from observation",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "full CUnit/CArmy/Combat/coordinator IDs bound to one episode; stack ordinals only within the same paused snapshot",
+    "producer_trigger": "daily-tick",
+    "producer": "0x1848310 -> 0x1872BF0; matching 0x1848570",
+    "caller": "0x18550D0 coordinator update / 0x1846730 stack update",
+    "consumer": "assignment target and bit consumed by 0x18721B0 / 0x1873AC0",
+    "cache_lifetime": "asking/assignment are prior producer output until next update; paused queries do not run the AI producer",
+    "expected_signal": "structurally qualified requester with asking, then helper bit1+Province, aligned ETA, later same CombatID roster",
+    "zero_sample_meaning": "structural-precondition failure or unobserved candidate/eligibility/timing; never evidence of no reinforcement policy",
+    "stop_condition": "no live execution in this package; future window stops on combat termination, identity drift, membership loss, or its separately authorized bound",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "static-contract",
+      "layer": "source-contract",
+      "path": "war_film_reinforcement_static_contract_20260923.json",
+      "sha256": "b46f4570f360f7ad142e7563d7ebf12fd8677b61186a36a40ce56996e839a6bd",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Bounded machine-code bytes plus explicit analyst interpretation of parent gates and PLAYER_SUPPORT consumers; not a live confirmation."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "parent",
+      "label": "Requester parent native membership"
+    },
+    {
+      "id": "asking",
+      "label": "Asking bit and demand"
+    },
+    {
+      "id": "assigned",
+      "label": "Helper assigned Province"
+    },
+    {
+      "id": "eta",
+      "label": "Aligned route ETA"
+    },
+    {
+      "id": "join",
+      "label": "Later same CombatID join"
+    },
+    {
+      "id": "defines",
+      "label": "PLAYER_SUPPORT define slots"
+    },
+    {
+      "id": "demand",
+      "label": "Player-support demand records"
+    },
+    {
+      "id": "candidate",
+      "label": "Distance / delay candidate gates"
+    },
+    {
+      "id": "dispatch",
+      "label": "Movement dispatcher / route count"
+    },
+    {
+      "id": "cross",
+      "label": "Cross-coordinator +0x34/+0x38"
+    }
+  ],
+  "edges": [
+    {
+      "id": "parent-gate",
+      "from": "parent",
+      "to": "asking",
+      "label": "count>1 before 0x1872BF0; singleton clears",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "help-match",
+      "from": "asking",
+      "to": "assigned",
+      "label": "stored order; required >= requester available accepts including equality; Province assignment",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "wanted-read",
+      "from": "defines",
+      "to": "demand",
+      "label": "wanted ratio scales record demand at 0x184FE37",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "power-siege-read",
+      "from": "defines",
+      "to": "demand",
+      "label": "enemy multiplier / min siege strength consumers 0x1850375 / 0x185041C",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "distance-read",
+      "from": "defines",
+      "to": "candidate",
+      "label": "squared coordinate distance <= define squared",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "delay-read",
+      "from": "defines",
+      "to": "candidate",
+      "label": "candidate time <= reference bound + define days",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "supply-read",
+      "from": "defines",
+      "to": "dispatch",
+      "label": "same-target dispatcher route-count early return",
+      "status": "static-confirmed",
+      "evidence": [
+        "static-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "record-link",
+      "from": "demand",
+      "to": "cross",
+      "label": "record to cross-coordinator request producer",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Locate actual writer of CAISubunitStack+0x34/+0x38; do not equate similarly named player records."
+    },
+    {
+      "id": "assignment-eta",
+      "from": "assigned",
+      "to": "eta",
+      "label": "next valid three-unit native assignment and aligned ETA",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Observe bit1 transition and matching route/ETA under production AI after a qualified >=3-unit fixture."
+    },
+    {
+      "id": "eta-join",
+      "from": "eta",
+      "to": "join",
+      "label": "arrival into the same surviving combat",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Observe helper CArmy +0x128 and same old CombatID side roster after arrival; predicted contact is not future binding."
+    }
+  ],
+  "cases": [
+    {
+      "id": "singleton-negative",
+      "question": "Reject two-unit fixture leaving one requester subunit.",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "three-units-merged-negative",
+      "question": "Reject three CUnits if remaining two occupy one subunit.",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "native-positive",
+      "question": "Observe assignment+ETA+same CombatID join with independently qualified requester parent.",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "player-support-boundaries",
+      "question": "Observe equality and one-step-past distance/delay/route limits only in a separately authorized experiment.",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}
