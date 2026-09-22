@@ -234,29 +234,29 @@ flowchart TD
 可见文本、直接/延迟效果、资源变化、关系、战争、继承和风险，再按当前 campaign objective 评分；原生 `ai_chance` 只能作为
 缺少更强语义时的先验，不能直接照抄成玩家决策。
 
-### 我方首轮 blocker-removal policy（不等价于原生 selector）
+### 未登记多选事件的 fail-closed policy
 
-[implementation-confirmed / static-ready / live=false] 所有者在 2026-08-27 再次确认：上述原生树仍是施工前置，但完成梳理后
-可以先交付最小实现并记账，不要求立即照搬全部原生分支。当前 `semantic_decision_ready=false` 且有多个候选时，
-`strategy.py` 的 typed-event 分支采用 `shown-enabled-death-cancel-native-order-v1`：
+[implementation-confirmed / static-ready / live=false] 2026-09-23 起，typed-event 分支只在同一 paused frame 恰好存在一个
+`shown=true && enabled=true` 选项时使用 forced-presentation continuation。存在两个或更多合法选项时，必须命中 exact-build
+registry 的 source-reviewed 有界选择，或取得完整语义策略；否则返回 `active_event_semantic_evidence_required`，不提交动作。
 
-1. 输入只能来自同一 paused snapshot、完整 event instance 已匹配、`current-event-window-context-v1` 严格校验通过的
-   `shown=true && enabled=true` materialized rows；不得从 snapshot `option_count` 合成 `enabled=true` 候选，也不得走 OCR。
-2. 若候选中同时存在“明确带 `death/played_character` indicator”与“不带该明确 indicator”的行，排除前者。indicator 是有损
-   子集，缺少 death row 只表示“没有明确观察到”，不构成安全或完整 effects 证明；若全部候选都明确死亡，仍保留全部候选，
-   不让强制事件永久阻塞一代人流程。
-3. 在余下候选中，若同时存在 non-cancel 与 cancel，优先 non-cancel；`is_cancel_option` 不是“无效果”证明，因此这里只是首轮
-   continuation heuristic，不是收益结论。
-4. 对最终候选按 authored `native_option_index` 升序选择第一项。该规则与原生默认 `ai_chance=1` 的 authored-order 先验有关，
-   但没有读取实际 `ai_will_select/ai_chance`、RNG draw 或 campaign utility，因此明确标记
-   `native_ai_equivalent=false`、`semantic_optimal=false`。
-5. 每次计划记录原始 eligible indices、明确 death/cancel indices、两项过滤是否生效、最终候选、选中 native/rendered index、
-   缺失语义输入与 deterministic rule；目标是先解除整局 blocker，而不是声称完成高质量事件效用决策。
+这项收紧来自 R0149 的 production 证据：旧 `shown-enabled-death-cancel-native-order-v1` 在两个原版三选一事件上按 authored
+顺序选择 native 0，虽然事后结果没有造成损失，但选择当时没有效果或长期效用依据。该 fallback 已不再用于多选窗口；death
+indicator、cancel 标志和 native 顺序都不能单独证明某一选项适合当前 campaign。
 
-当前记账中的未采用原生输入/分支包括：mode/required-trigger/exclusive/fallback 的 authored evaluator 状态（候选合法性由已
-materialize GUI rows替代）、实际 `ai_will_select/ai_chance`、positive-weight interval、全非正 uniform 分支与 RNG draw。质量债还包括
-完整 effect preview、资源/关系/角色/战争/头衔 delta，以及 campaign objective utility。对应替换入口是继续扩充同一只读 context，
-待 `semantic_decision_ready=true` 后由真正的语义 policy 覆盖本 fallback，而不是修改 fallback 冒充完整。
+旧实现仍保留在历史 artifact 中，不能把那些记录重新解释成 source-reviewed semantic choice。未来每个未知多选事件按
+“冻结 exact build → 查原版定义/调用链 → 写最小 registry/策略 → 聚焦测试 → typed action → 独立后置”处理。
+
+R0149 两次历史选择的事后 source review 绑定 CK3 `1.19.0.6-steam23530548`：
+
+- `stewardship_duty.5021` 定义位于 `events/lifestyles/governance_lifestyle/stewardship_duty_events.txt:4448-4669`，
+  文件 SHA-256 为 `E96F1F0CEBE3517A507B1AED55D7D73E79715C893A94E1BA7536FFD3617046F0`。已选 native 0
+  明确给予 `medium_lifestyle_xp=100` 管理生活方式经验，并通过 stewardship duel 索取五年或两年半税差；R0149 的独立
+  后置观测为金币 `+20`。这解释了 R0150 读回中的经验来源之一，但不把该选项推广为所有人物/封臣状态下的通用最优解。
+- `bookmark.1070` 定义位于 `events/bookmark_events.txt:1204-1420`，文件 SHA-256 为
+  `75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF`。事件打开时已共同给予六个西西里范围宣称；
+  已选 native 0 再给予 `d_benevento`、`d_spoleto` 宣称与合计 750 名事件兵，同时令教宗和皇帝各产生 `-30` opinion。
+  该结果支持 Robert 扩张目标，但选择时尚未完成上述语义闭合，所以只能记作有利的历史结果，不能冒充当时已通过的策略门。
 
 ### Exact-build registry 的有界选择层
 

@@ -1143,7 +1143,7 @@ class EventWindowContractTests(unittest.TestCase):
             plan["active_event"]["enabled_materialized_option_count"], 0
         )
 
-    def test_planner_degraded_choice_avoids_explicit_death_then_cancel(
+    def test_planner_blocks_multiple_options_without_semantic_policy(
         self,
     ) -> None:
         frame = _frame()
@@ -1185,108 +1185,15 @@ class EventWindowContractTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(plan["phase"], "active_event_degraded_minimal_choice")
-        self.assertEqual(plan["selected_step"], "select-event-option-8")
-        decision = plan["event_decision"]
         self.assertEqual(
-            decision["eligible_native_option_indices"], [1, 4, 7]
-        )
-        self.assertEqual(
-            decision["explicit_player_death_native_option_indices"], [1]
-        )
-        self.assertTrue(decision["death_avoidance_applied"])
-        self.assertTrue(decision["cancel_deprioritization_applied"])
-        self.assertEqual(
-            decision["final_candidate_native_option_indices"], [7]
-        )
-        self.assertFalse(decision["native_ai_equivalent"])
-        self.assertFalse(decision["semantic_optimal"])
-
-    def test_planner_degraded_choice_uses_lowest_native_not_rendered_index(
-        self,
-    ) -> None:
-        frame = _frame()
-        first = frame["options"][0]
-        first.update(
-            {
-                "native_option_index": 7,
-                "enabled": True,
-                "cancel": False,
-            }
-        )
-        first["effect_indicators"]["rows"] = []
-        second = copy.deepcopy(first)
-        second.update({"rendered_index": 1, "native_option_index": 2})
-        frame["options"].append(second)
-
-        plan = choose_one_life_turn(
-            [_query_history(frame)],
-            snapshot=_snapshot(),
-            action_steps={
-                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
-                "select-event-option-3",
-                "select-event-option-8",
-            },
-        )
-
-        self.assertEqual(plan["selected_step"], "select-event-option-3")
-        self.assertEqual(
-            plan["event_decision"]["selected_rendered_index"], 1
-        )
-
-    def test_planner_degraded_choice_is_bounded_when_all_options_mean_death(
-        self,
-    ) -> None:
-        frame = _frame()
-        first = frame["options"][0]
-        first.update(
-            {
-                "native_option_index": 3,
-                "enabled": True,
-                "cancel": False,
-            }
-        )
-        second = copy.deepcopy(first)
-        second.update({"rendered_index": 1, "native_option_index": 1})
-        frame["options"].append(second)
-
-        plan = choose_one_life_turn(
-            [_query_history(frame)],
-            snapshot=_snapshot(),
-            action_steps={
-                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
-                "select-event-option-2",
-                "select-event-option-4",
-            },
-        )
-
-        self.assertEqual(plan["selected_step"], "select-event-option-2")
-        decision = plan["event_decision"]
-        self.assertFalse(decision["death_avoidance_applied"])
-        self.assertEqual(
-            decision["final_candidate_native_option_indices"], [1, 3]
-        )
-
-    def test_planner_degraded_choice_never_substitutes_an_unadvertised_step(
-        self,
-    ) -> None:
-        frame = _frame()
-        frame["options"][0]["enabled"] = True
-        second = copy.deepcopy(frame["options"][0])
-        second.update({"rendered_index": 1, "native_option_index": 7})
-        frame["options"].append(second)
-
-        plan = choose_one_life_turn(
-            [_query_history(frame)],
-            snapshot=_snapshot(),
-            action_steps={QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP},
-        )
-
-        self.assertEqual(
-            plan["phase"], "active_event_degraded_choice_unsupported"
+            plan["phase"], "active_event_semantic_evidence_required"
         )
         self.assertIsNone(plan["selected_step"])
-        self.assertEqual(plan["required_step"], "select-event-option-4")
+        self.assertNotIn("event_decision", plan)
+        self.assertIn("multiple materialized event options", plan["reason"])
+        self.assertEqual(
+            plan["active_event"]["enabled_materialized_option_count"], 3
+        )
 
     def test_same_frame_unavailable_does_not_repeat_query(self) -> None:
         plan = choose_one_life_turn(

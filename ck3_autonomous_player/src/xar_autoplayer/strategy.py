@@ -7200,7 +7200,7 @@ def _choose_one_life_turn_core(
                     "event_decision": registry_decision,
                 }
 
-            if not semantic_ready and eligible_options:
+            if not semantic_ready and len(eligible_options) == 1:
                 option, event_decision = _degraded_event_option_decision(
                     eligible_options
                 )
@@ -7221,37 +7221,21 @@ def _choose_one_life_turn_core(
                     }
                 )
                 if exact_step in available_steps:
-                    if len(eligible_options) == 1:
-                        phase = "active_event_forced_presentation_choice"
-                        reason = (
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_forced_presentation_choice",
+                        "selected_step": exact_step,
+                        "reason": (
                             "forced presentation choice: exactly one "
                             "materialized option is shown and enabled; this "
                             "is not a semantic optimum"
-                        )
-                    else:
-                        phase = "active_event_degraded_minimal_choice"
-                        reason = (
-                            "semantic inputs are incomplete; choose a "
-                            "same-frame shown+enabled option with the "
-                            "audited death/cancel/native-order fallback so "
-                            "the campaign can continue; this is not the "
-                            "native selector or a semantic optimum"
-                        )
-                    return {
-                        "policy": "one-life-turn-v1",
-                        "phase": phase,
-                        "selected_step": exact_step,
-                        "reason": reason,
+                        ),
                         "active_event": event_summary,
                         "event_decision": event_decision,
                     }
                 return {
                     "policy": "one-life-turn-v1",
-                    "phase": (
-                        "active_event_forced_choice_unsupported"
-                        if len(eligible_options) == 1
-                        else "active_event_degraded_choice_unsupported"
-                    ),
+                    "phase": "active_event_forced_choice_unsupported",
                     "selected_step": None,
                     "required_step": exact_step,
                     "reason": (
@@ -7272,6 +7256,12 @@ def _choose_one_life_turn_core(
                 reason = (
                     "no materialized event option is both shown and enabled; "
                     "effect preview or a semantic policy is required"
+                )
+            elif len(eligible_options) > 1:
+                reason = (
+                    "multiple materialized event options are shown and "
+                    "enabled; an exact-build registry choice or semantic "
+                    "policy is required"
                 )
             else:
                 reason = "event semantic choice could not produce a candidate"
