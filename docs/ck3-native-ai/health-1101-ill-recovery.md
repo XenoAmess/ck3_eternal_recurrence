@@ -24,11 +24,15 @@ flowchart TD
     E --> G{"[contract] sole shown+enabled native 0?"}
     F --> G
     G -->|否| R
-    G -->|是| H["[pending live] one typed option 1, tooltip-only"]
-    H -. "independent trait/post-event state + next turn not yet tested" .-> U["[unknown] material continuation"]
+    G -->|是| H["[R0086] one typed option 1/native 0, tooltip-only"]
+    H --> I["[R0086] next paused frame instance 17 → null"]
+    I --> J["[R0086] next formal turn consumes absence, no replay"]
+    H -. "ill trait not independently read; removal belongs to immediate, before option" .-> U["[unknown] independent ill trait readback"]
     A -. "R0085 actual caller not distinguished" .-> V["[unknown] schedule path"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class U,V unknown;
 ```
 
 修补后的专用消费者用冻结 R0085 window **只读重算**得到 `recommended`、authored `1` / native `0`、`failed_checks=[]`，但这不是实机提交。本树只解除该真实 B0 的 typed continuity。R0085 RED 必须保留；离线推荐或 ACK 不等于正式动作/独立后置。当前没有 native ABI、公共 MCP schema 或 open_kaishek 协议变更；是否完成恢复通知的生产闭环，只能由新版正式入口从有效配对 checkpoint 的下一次自然帧核验。
+
+R0086（2026-09-22）已补正式窄门：[冻结证据](Z:/ck3_mod_rewrite_process_assets/g2-first-1066-r0086-health1101-green-20260922/evidence-manifest.json) SHA-256 `B4044ABAB75ACB8540B441C6BDB503BB8A65E1BD8A36DDF578DEA2EC2D2BB677`。protected Python `08319e5`/原 native DLL `B114FD8E…29FA8` 从 R0085 的安全 save `85B38878…E588F9` 与未手裁的 RED driver h275 进入新 PID87176：paused 角色36403/date53332848/save hash 绑定后，正式 cold consumer 保留前259行、以新 h260 `restore-checkpoint` 替换尾部。正式 20/20 turn 的第13 turn 自然重现同 instance17，第14 turn 推荐通过并唯一 typed 提交 authored1/native0；独立下一 paused `native:27` 帧显示旧 instance17→null，第15 turn 消费空窗、没有重提。结尾同一 episode 新成对 save `E76AE2D6…CB902`/driver `12C700EF…736425`，date_raw53335488/history287，进程树回收。物质结论限于原生 event modal 清除与下一循环；原版 `ill` 移除属于 option 之前的 immediate，本轮没有独立 trait 读回，不能称为本次点击所致或另有已验健康增益。R0085 原 RED 留档、100年门仍未完成；公共 MCP/open_kaishek 接口仍无改动。
