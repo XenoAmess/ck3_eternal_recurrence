@@ -62,7 +62,7 @@ class NativeBridgeFreshBuildHelperTests(unittest.TestCase):
             self.assertEqual(plan["msvc_output_language"], "1033")
             self.assertEqual(
                 plan["msvc_dependency_prefix_strategy"],
-                "vslang-1033-with-2052-utf8-repair",
+                "vslang-1033-with-2052-byte-preserving-repair",
             )
             self.assertTrue(plan["fresh_directory_required"])
             self.assertTrue(plan["source_fingerprint_required"])
@@ -134,7 +134,7 @@ class NativeBridgeFreshBuildHelperTests(unittest.TestCase):
             self.assertEqual(mode, "direct-2052-utf8")
             self.assertEqual(rules.read_text(encoding="utf-8"), original)
 
-    def test_2052_only_toolchain_repairs_cp936_prefix_in_utf8_rules(self) -> None:
+    def test_2052_only_toolchain_preserves_cp936_prefix_bytes(self) -> None:
         helper = _load_helper()
         with tempfile.TemporaryDirectory(prefix="xar-native-prefix-cp936-") as temporary:
             root = Path(temporary)
@@ -154,8 +154,8 @@ class NativeBridgeFreshBuildHelperTests(unittest.TestCase):
 
             mode = helper.repair_ninja_msvc_dependency_prefix(build_dir, compiler)
 
-            self.assertEqual(mode, "repaired-2052-utf8")
-            self.assertEqual(rules.read_bytes(), before + prefix.encode("utf-8") + after)
+            self.assertEqual(mode, "direct-2052-cp936")
+            self.assertEqual(rules.read_bytes(), before + prefix.encode("cp936") + after)
 
     def test_existing_build_directory_is_rejected_even_for_a_plan(self) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-native-existing-") as temporary:

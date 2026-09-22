@@ -141,6 +141,14 @@ def repair_ninja_msvc_dependency_prefix(
         # A 2052-only cl.exe can make CMake emit the prefix as CP936 while
         # the rest of rules.ninja is UTF-8. Decode only this value.
         generated = generated_bytes.decode("cp936")
+        if (
+            generated.startswith(EXPECTED_2052_PREFIX)
+            and not generated[len(EXPECTED_2052_PREFIX) :].strip()
+        ):
+            # Ninja matches /showIncludes as bytes. CMake's valid CP936
+            # detection must remain CP936 when cl emits that code page.
+            # Transcoding only the prefix silently drops all header deps.
+            return "direct-2052-cp936"
     if (
         generated.startswith(EXPECTED_2052_PREFIX)
         and not generated[len(EXPECTED_2052_PREFIX) :].strip()
@@ -232,7 +240,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "generator": "Ninja",
         "configuration": args.configuration,
         "msvc_output_language": "1033",
-        "msvc_dependency_prefix_strategy": "vslang-1033-with-2052-utf8-repair",
+        "msvc_dependency_prefix_strategy": "vslang-1033-with-2052-byte-preserving-repair",
         "fresh_directory_required": True,
         "source_fingerprint_required": True,
         "dependency_header": "ck3_11906.hpp",

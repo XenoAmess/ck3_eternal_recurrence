@@ -25,3 +25,15 @@ tools\.venv\Scripts\python.exe ck3_autonomous_player/tests/unit/test_native_brid
 
 native 构建参数为 `--focused-feudal-start --feudal-1066-selected-bookmark-private --feudal-1066-target-robert --build-jobs 2`。
 `open_kaishek` 对此包为 not-applicable：正在编译 C++ 入口，未执行游戏脚本夹具或有限运行时。实际开局/观测前还须另行评估适用子集、确认 Steam 离线并取得唯一 CK3 槽。
+
+## r3 真实构建后的二次修正
+
+`bridge-build-r3` 的 266 个构建步骤完成，但 helper 在原有依赖检查中拒绝产物：
+Ninja 没有记录 `ck3_11906.cpp.obj` 对 `ck3_11906.hpp` 的依赖。这不是新 DLL 的运行通过。
+原因是本机 cl 的 `/showIncludes` 仍输出 CP936，而上一修复把 CMake 已正确检测的 prefix 转成 UTF-8；
+Ninja 按字节匹配，前缀不相同就不能识别头文件依赖。上一段“写回正确 UTF-8”仅记录 r3 的尝试，现已被实际构建证据否定。
+
+本次保留合法 CP936 prefix 的原始字节，新增 `direct-2052-cp936` 结果，仍允许原有 UTF-8 和已证实的乱码恢复分支。
+将原回归测试改为检查**字节保持**，同一解释器 7 项测试通过（1.040 秒）。
+`bridge-build-r4` 在新目录重新构建；依赖完整性、源码指纹和 focused CTest 均继续强制执行。
+r3 日志及失败收据永久保留，未复用其构建目录，也没有放宽门禁。
