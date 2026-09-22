@@ -1,0 +1,26 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-retreat-callers-a02",
+  "question": "Classify the full parent/caller of 0x184818D and the four callers of 0x18793B0, prioritizing a real ordinary-war active-retreat policy; statically reconcile score direction where evidence permits.",
+  "purpose": "npc-choice",
+  "build": {"version": "1.19.0.6", "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"},
+  "observation": {
+    "mode": "offline-only", "actor_kind": "ai", "owner_scope": "Ordinary native war AI; mission return and player command paths must be identified separately.",
+    "identity_kind": "none", "identity_lifetime": "No process identity is sampled. The a01 evidence remains immutable.",
+    "producer_trigger": "unknown", "producer": "Parent/caller of 184818D and 18793B0 source functions.",
+    "caller": "18CEF69,18CF127,18D14B9,18D15D9 plus the parent chain containing184818D.",
+    "consumer": "1874A10/18793B0 movement builders and generic movement apply; no command will be run.",
+    "cache_lifetime": "Raw mode/score cache lifetime as a01; fresh runtime attribution remains unobserved.",
+    "expected_signal": "Exact callsite predicates, class/vtable or producer attribution, and bounded policy reachability; if unresolved, a minimal read-only observation preparation.",
+    "zero_sample_meaning": "No classified direct caller does not prove absence of indirect policy.",
+    "stop_condition": "Classify the named caller families and identify a concrete next observation/static entry. Do not launch CK3 or rewrite a01.",
+    "runtime_window_ref": null
+  },
+  "evidence": [],
+  "nodes": [{"id":"caller","label":"Named caller families"},{"id":"move","label":"Movement submission"},{"id":"policy","label":"Ordinary active-combat policy"}],
+  "edges": [
+    {"id":"caller_role","from":"caller","to":"move","label":"Recover trigger and actor role","status":"unknown","evidence":[],"open_question":"Are these ordinary war odds decisions or task/assignment cleanup?"},
+    {"id":"policy_reachability","from":"move","to":"policy","label":"Establish actual policy reachability","status":"unknown","evidence":[],"open_question":"Can the identified path run on an active combat subject, and what decision selected it?"}
+  ],
+  "cases": [{"id":"native_retreat","question":"Does an ordinary AI select active-combat retreat in a recorded producer window?","status":"pending","evidence":[]}]
+}

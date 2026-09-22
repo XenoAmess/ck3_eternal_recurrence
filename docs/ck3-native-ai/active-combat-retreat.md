@@ -1,5 +1,15 @@
 # CK3 1.19.0.6 原生主动撤退决策树
 
+## 2026-09-23 上层可达性勘误
+
+下文的 raid/barter movement builder 确实支持 active-combat 分支，但本次继续上溯后确认：
+raid 主任务 `0x18CEEEB/0x18CEEF2` 与 barter 主任务 `0x18D147B/0x18D1482` 会先跳过正在战斗的单位。
+因此不能把下层能力当作这两条主调度实际会主动撤退的证据。任务取消清理没有同样 gate；
+本勘误不否定 counter-raid，也不证明普通战争 AI 永远不会撤退。
+另一个旧 caller `0x184818D` 属于同省栈合并前取消路线，未发现败势评分。
+完整指令与范围见 [a02 caller 专题](war-film-retreat-callers-2026-09-23.md)；
+普通战争的通用败势撤退 policy 仍待闭合。旧指令和历史实机记录保留。
+
 本文只研究一支军队已经参加真实 `CCombat` 后，原生 AI 如何产生可移动候选、引擎如何判断该候选能否变成主动撤退、
 以及命令执行后 full-side、mixed-owner 与 pursuit 分别怎样变化。接敌前的 `ratio <= 0.45` 战略退让树不是本文的
 主动撤退 policy；战斗伤亡公式与接敌顺序仍分别以 [battle-simulation.md](battle-simulation.md) 和

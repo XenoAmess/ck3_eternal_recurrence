@@ -1,0 +1,150 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-retreat-callers-results-a02",
+  "question": "Classify the full parent/caller of 0x184818D and the four callers of 0x18793B0, prioritizing a real ordinary-war active-retreat policy; statically reconcile score direction where evidence permits.",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "ai",
+    "owner_scope": "Ordinary native war AI; mission return and player command paths must be identified separately.",
+    "identity_kind": "none",
+    "identity_lifetime": "No process identity is sampled. The a01 evidence remains immutable.",
+    "producer_trigger": "unknown",
+    "producer": "1859FF0 stack transfer and18CEC60/18D1170 mission control; cleanup branches classified. Ordinary active-retreat policy remains unresolved.",
+    "caller": "18552F5,185A171,185A179,18CF047,18D14FE,18CF127,18D15D9",
+    "consumer": "1874A10/18793B0 movement builders and generic movement apply; no command will be run.",
+    "cache_lifetime": "Raw mode/score cache lifetime as a01; fresh runtime attribution remains unobserved.",
+    "expected_signal": "Reviewed exact predicates plus synthetic-tested research-only paused RPM preparation; no process attached.",
+    "zero_sample_meaning": "No classified direct caller does not prove absence of indirect policy.",
+    "stop_condition": "Classify the named caller families and identify a concrete next observation/static entry. Do not launch CK3 or rewrite a01.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "reviewed_a02",
+      "layer": "source-contract",
+      "path": "war_film_retreat_evidence_a02.json",
+      "sha256": "eb36bf33705cc133088a4d3a6fa111d37ed8fac3cb96883714b8848217f1f6b9",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Reviewed exact callsite roles, upstream active gates and bounded unresolved policy; raw artifacts hash-indexed."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "merge",
+      "label": "1859FF0 stack merge"
+    },
+    {
+      "id": "cancel",
+      "label": "1848130 current-province movement"
+    },
+    {
+      "id": "mission",
+      "label": "Raid/barter main paths"
+    },
+    {
+      "id": "active",
+      "label": "2248A80 active combat"
+    },
+    {
+      "id": "skip",
+      "label": "Skip mission builder and fallback"
+    },
+    {
+      "id": "cleanup",
+      "label": "Main false plus raid/barter flag"
+    },
+    {
+      "id": "return",
+      "label": "18793B0 task return"
+    },
+    {
+      "id": "policy",
+      "label": "Ordinary active-retreat policy"
+    },
+    {
+      "id": "score",
+      "label": "Score role/perspective"
+    }
+  ],
+  "edges": [
+    {
+      "id": "merge_routes",
+      "from": "merge",
+      "to": "cancel",
+      "label": "Both same-province stacks reset route before membership transfer",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a02"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "mission_active",
+      "from": "mission",
+      "to": "active",
+      "label": "18CEEEB /18D147B call active predicate",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a02"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "main_skips",
+      "from": "active",
+      "to": "skip",
+      "label": "True bypasses mission builder and18793B0 fallback",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a02"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "cleanup_return",
+      "from": "cleanup",
+      "to": "return",
+      "label": "18CF127 /18D15D9 only flagged raid/barter armies",
+      "status": "static-confirmed",
+      "evidence": [
+        "reviewed_a02"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "generic_policy",
+      "from": "return",
+      "to": "policy",
+      "label": "No ordinary war odds policy established",
+      "status": "unknown",
+      "evidence": [
+        "reviewed_a02"
+      ],
+      "open_question": "Recover remaining indirect/vtable policy or attributable native case; do not infer absence."
+    },
+    {
+      "id": "score_role",
+      "from": "policy",
+      "to": "score",
+      "label": "a01 raw signed arithmetic preserved",
+      "status": "unknown",
+      "evidence": [
+        "reviewed_a02"
+      ],
+      "open_question": "Compare exact primary IDs, coordinator role and score query/UI perspective in a paused case; producer freshness remains separate."
+    }
+  ],
+  "cases": [
+    {
+      "id": "native_retreat",
+      "question": "Does an ordinary AI select active-combat retreat in a recorded producer window?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

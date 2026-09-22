@@ -82,3 +82,7 @@ SHA-256 `328b3a469acad2210c17e531a004612af7b15f2cb09e674113bd79cbdd448a0e`。
 ## W4 增量：求援比较勘误与玩家支援消费边
 
 [援军专题](war-film-reinforcement-policy-2026-09-23.md)已冻结 17 段 EXE 字节、7 条静态边和 3 条未知边。跨 stack 实际比较为 `quantized_required >= requester_parent_available`，修正旧方向及等号；六项玩家支援定义已逐一追到消费指令。旧两军观察的 requester parent 为 singleton，不能触发求援生产；新的三军离线预验工具检查真实查询束的 parent 结构与身份，7 项测试通过。没有新 live 指派、ETA 或同战斗回归成功，下一步需先准备满足结构门槛的种子。
+
+## W5 a02：上层调度可达性与暂停采样器
+
+[撤退 caller 专题](war-film-retreat-callers-2026-09-23.md)进一步收窄旧结论：同省栈合并的取消路线不能当作败势撤退；raid/barter 主调度会排除 active combat，不能仅凭下层 builder 可处理撤退就宣布整条 AI 策略闭合。任务取消分支和 counter-raid 分开保留。研究用只读暂停采样器已实现，普通与 `-O` 各 9 项合成测试通过，但尚未实机读取，也不证明 producer 运行；普通战争主动撤退 policy 继续追查。

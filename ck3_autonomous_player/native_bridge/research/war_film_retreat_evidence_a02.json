@@ -1,0 +1,214 @@
+{
+  "schema": "xar.war-film-retreat-research-evidence.v1",
+  "package": "a02",
+  "proof_layer": "reviewed-exact-build-static-chain-plus-synthetic-reader",
+  "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+  "version": "1.19.0.6",
+  "live_execution_performed": false,
+  "windows_transport_live_validated": false,
+  "production_mcp_capability_added": false,
+  "a01_files_modified": false,
+  "claims": [
+    {
+      "id": "stack_merge",
+      "status": "static-confirmed",
+      "spine": [
+        "18552F5 -> 1859FF0",
+        "185A171/185A179 -> 1848130",
+        "184818D -> 1874A10"
+      ],
+      "predicates": [
+        "185A033: stack+90 bit0",
+        "185A041: +84 target stack identity",
+        "185A102: same province",
+        "185A129/185A161: per-unit province predicate"
+      ],
+      "consequence": "Current-province movement / assignment before source membership removal and target membership append. Not an odds-based retreat policy.",
+      "artifacts": [
+        "parent-refs.json",
+        "coordinator-parent.json",
+        "complete-parent-windows.json",
+        "role-helpers.json",
+        "stack-transfer-helpers.json",
+        "stack-add-complete.json",
+        "family-scheduler-refs.json"
+      ]
+    },
+    {
+      "id": "raid_main_active_exclusion",
+      "status": "static-confirmed",
+      "call": "18CEEEB -> 2248A80",
+      "true_branch": "18CEEF2 -> 18CEE2F",
+      "excluded_later_calls": [
+        "18CEF59 -> 18CE530",
+        "18CEF69 -> 18793B0"
+      ],
+      "artifacts": [
+        "caller-functions.json"
+      ]
+    },
+    {
+      "id": "barter_main_active_exclusion",
+      "status": "static-confirmed",
+      "call": "18D147B -> 2248A80",
+      "true_branch": "18D1482 -> 18D14BE",
+      "excluded_later_calls": [
+        "18D14AD -> 18D0DA0",
+        "18D14B9 -> 18793B0"
+      ],
+      "artifacts": [
+        "caller-functions.json"
+      ]
+    },
+    {
+      "id": "mission_cleanup",
+      "status": "static-confirmed",
+      "sources": [
+        {
+          "parent": "18CEF90",
+          "main_false": "18CF05D falls through",
+          "gate": "18CF11B CArmy+1D4 != 0",
+          "call": "18CF127 -> 18793B0"
+        },
+        {
+          "parent": "18D14D0",
+          "main_false": "18D1514 falls through",
+          "gate": "18D15CD CArmy+1EC != 0",
+          "call": "18D15D9 -> 18793B0"
+        }
+      ],
+      "boundary": "No corresponding explicit active gate in these cleanup branches; downstream legality and live outcome remain unobserved.",
+      "artifacts": [
+        "caller-functions.json",
+        "complete-parent-windows.json",
+        "role-helpers.json",
+        "family-scheduler-refs.json"
+      ]
+    },
+    {
+      "id": "ordinary_active_policy",
+      "status": "unknown",
+      "boundary": "Named direct sources classified. No global absence claim and no indirect/vtable coverage claim."
+    },
+    {
+      "id": "score_direction",
+      "status": "unknown",
+      "boundary": "a01 signed arithmetic retained. This package did not settle displayed role/perspective or producer freshness."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\caller-functions.json",
+      "sha256": "00828c1fac334387a4716b73567fc8ba4eec082437b8aa33b81e4db9d2d9a2ca",
+      "size": 56636
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\complete-parent-windows.json",
+      "sha256": "7921e3d9e58076bfccb65a7ae5aa151a7335d5e05ff62ddd38ceb2f127ce18ef",
+      "size": 28657
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\coordinator-parent.json",
+      "sha256": "0af18575fe8e5bb7650837ca383cb274e57752f886f2d3407658fbc7bac4a037",
+      "size": 33381
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\family-scheduler-refs.json",
+      "sha256": "ed28faee7c534c375e1b92acc0ad09efd3e92da2ef2c4c6667548c8d4ce64264",
+      "size": 2649
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\initial-plan-check.json",
+      "sha256": "e507dddb483e0be6dab45d2ed537faed33d2afeaac985ccc941049ca8c4a9395",
+      "size": 1064
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\parent-refs.json",
+      "sha256": "328b09f63d4a9880f72d0fb4c25e347c131a1c6cd164ba481a7fa32585b2e6ba",
+      "size": 2403
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\role-helpers.json",
+      "sha256": "7f41fecf994b58d321302591b2621c135e268260d35313fbcacb3399c6c8ef41",
+      "size": 21109
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\stack-add-complete.json",
+      "sha256": "2e4c550e08f9cc2ac92b4d0c89179b3ace65ce1e0c2a1415cc4f252d145ccaa6",
+      "size": 8459
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\stack-transfer-helpers.json",
+      "sha256": "4b6982ed77308d5191ee4d3c65a098146fea965edaac9f59a3c0439b5ef64838",
+      "size": 19124
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\synthetic-tests.json",
+      "sha256": "004dc4c179604ce0dd531733f933953fec77e7115efed377311825bb1751371e",
+      "size": 1796
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\war_film_retreat_plan_a02.json",
+      "sha256": "f17495a18c581d6e4b940459168e6a95dd037114fc8a04fa572c3da70870bb36",
+      "size": 2449
+    }
+  ],
+  "source_snapshots": [
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\war_film_retreat_paused_sample.py",
+      "sha256": "03d479dfe462b284a14f4dc59d1f3f1a4e04c97b37e3ef6d11f1bdb311160d79",
+      "size": 13414,
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_paused_sample.py"
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\war_film_retreat_paused_sample_test.py",
+      "sha256": "5b6650ce1e3920cf0c06dc2cd1f0c05a9dc7923ef6ff99302ab84f0809d07bea",
+      "size": 6914,
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_paused_sample_test.py"
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\war_film_retreat_plan_a02.json",
+      "sha256": "f17495a18c581d6e4b940459168e6a95dd037114fc8a04fa572c3da70870bb36",
+      "size": 2449,
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\research\\war_film_retreat_plan_a02.json"
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\ck3_11906-source-snapshot.cpp",
+      "sha256": "be50aa158a2523015aa30169061451379099d9deaf55cb0fd0d315f8837c6e72",
+      "size": 772316,
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\native_bridge\\src\\ck3_11906.cpp"
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\battle-reinforcement-contract-snapshot.py",
+      "sha256": "87b95c0a5f2c8dccb185b1dec34e5946283b1b6abf3168902f46ed90bca00de5",
+      "size": 21554,
+      "original_path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\battle_reinforcement_assignment_contract.py"
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\synthetic-test-runner.py",
+      "sha256": "b6836d33c9f3716262ca9a41683e308ed95aedbad7eaae0324824869d08c3015",
+      "size": 1359,
+      "original_path": "D:\\workspace\\war_film_retreat_validate_a02.py"
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a02\\initial-plan-check.json",
+      "sha256": "e507dddb483e0be6dab45d2ed537faed33d2afeaac985ccc941049ca8c4a9395",
+      "size": 1064,
+      "original_path": "D:\\workspace\\ck3_war_film_research_20260923\\retreat-a01\\a02-initial-plan-check.json"
+    }
+  ],
+  "existing_production_capability": "query-battle-reinforcement-assignment-v1-N exposes coordinator ID but not the researched mode/power/score fields",
+  "validation": {
+    "normal_tests": 9,
+    "optimized_tests": 9,
+    "status": "PASS",
+    "meaning": "synthetic memory reader only"
+  },
+  "limits": [
+    "no native producer observed",
+    "no AI active-retreat case observed",
+    "no live ownership or Steam state check executed",
+    "PE direct-call census excludes unknown indirect/vtable callers",
+    "disk EXE identity does not alone prove an unmodified loaded text image"
+  ]
+}
