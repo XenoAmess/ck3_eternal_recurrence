@@ -181,3 +181,19 @@ PRV008 窄范围 GO；G2 **3/8**，百年/首整局/独立种子 **0/1、0/1、0
 | 三战正式续行 | **78/79 后产品 RED**；Robert 持久 **2,088/36,524**（+89） | R0168 h1251 official cold → `native_auto_run` formal120 | source/master `13b356a`；[R0169 原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-r0169-siege-arrival-red-20260923/R0169-final-frozen-pair/R0169-raw-freeze.json) SHA `A7E9E701454998B52E755AEB767DE4CD94C9F3B152AC473772BB5F35F8105F97` | query61/gameplay17；末帧三防御战 `16777231/16777250/95` 比分 `0/-7/+52` 仅为观察；`accepted-native-move-arrival-for-current-siege` 新 RED，无终局 | h1333/raw53194440 save `2B8933FC...7F98A`；raw driver `81B7AB33...F1A4A`，末端 raw53194848 的 17 日未保存，不计持久；五 copy 只读、清单只读属性待补，进程/owner 回收 | 官方恢复 h1333、核对同帧到达与安全路线，最小修复后正式消费；`/root` | 原始证据保留；PR #154 已合入，源码清理由协调者核验 |
 
 PRV008 有界预览 GO 与 G2 **3/8** 保持；百年/首整局/独立种子 **0/1、0/1、0/2**。历史 Murchad 14,900 日独立记账。R0169 的 +106 日只是末端观察，本轮正式可接续的持久增量为 +89 日。
+
+## 2026-09-23 R0170 h1333 冷恢复增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 围城到达绑定续行 | **15/16 后产品 RED**；Robert 持久仍 **2,088/36,524**，新增持久日 0 | R0169 h1333 official cold → `native_auto_run` formal120 | source/master `fe81e43`；[R0170 原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-r0170-siege-arrival-red-20260923/R0170-final-frozen-pair/R0170-raw-freeze.json) SHA `3DE132AFB6404933CBBF452AE0F653EC0F1B55B8D44FA6B357FA1DF2F5350499` | 13 query/2 gameplay/0 checkpoint；末帧 raw53194872 只属观察；`accepted-native-move-arrival-for-current-siege` 仍 RED，无战争终局 | h1333/raw53194440 save SHA `2B8933FC...7F98A` 未变；新 raw driver `C456145D...71D72` 在保存点后有记录，待官方恢复；新 PID 已回收、owner 释放 | 核到达意图与同帧围城目标，再最小修复与正式后置；`/root` | 冻结清单与五 copy 只读保留；源码分支清理由协调者核验 |
+
+R0170 末帧相对 h1333 的 18 日和累计观察 2,106 日不重复累计到 R0169 已保存的 2,088 日。PRV008 有界 GO、G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** 不变，M4 仍仅私有只读。
+
+## 2026-09-23 R0171 同 checkpoint 路线观测增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 当前路线意图绑定 | **5/6 后产品 RED**；Robert 持久 **2,088/36,524**，新增持久日 0 | R0169 h1333 official cold → `native_auto_run` formal120 | source/master `2100ee2`；[R0171 原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-r0171-route-intent-red-20260923/R0171-final-frozen-pair/R0171-raw-freeze.json) SHA `310B27C52E7FD03978A02536B241A0DE37371EDC227281F90EEDC40188096972` | 5 query/0 gameplay/0 checkpoint/date；同帧三战比分 `0/-58/+51`；`complete-matching-active-native-move-intent-route` 新 RED，路线因果待查，无战争终局 | h1333/raw53194440 save SHA `2B8933FC...7F98A` 未变；raw driver `FBE3A287...DD177` 待官方恢复检查；进程/owner 回收 | 核重复同 checkpoint restore 与同帧 active move intent route，明确观测或最小修复；`/root` | 冻结清单及五 copy 只读保留；源码分支清理由协调者核验 |
+
+R0170 的 raw53194872 未保存观察不累计至 R0171。PRV008 有界 GO、G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** 不变；M4 仍仅私有只读。
