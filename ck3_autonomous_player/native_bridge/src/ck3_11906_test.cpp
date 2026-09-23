@@ -380,6 +380,7 @@ bool g_siege_alive = true;
 std::int64_t g_siege_progress_raw = 25'000;
 std::int64_t g_siege_total_work_raw = 10'000'000;
 std::int32_t g_siege_days_left = 12;
+bool g_enemy_holder_is_player_vassal = false;
 std::int64_t g_assault_daily_progress_raw = 340'000;
 std::int32_t g_assault_daily_casualties = 16;
 bool g_assault_progress_available = true;
@@ -1088,6 +1089,13 @@ std::int32_t *FixtureReadProvinceHolderCharacterId(
   std::memcpy(output, static_cast<std::byte *>(province) + 0x744,
               sizeof(*output));
   return output;
+}
+
+void *FixtureCharacterImmediateLiege(void *character) {
+  return character == g_target_character.data() &&
+                 g_enemy_holder_is_player_vassal
+             ? g_played_character.data()
+             : nullptr;
 }
 
 bool FixtureClassifyContactDefenderByHolder(void *owner, void *holder) {
@@ -4647,6 +4655,7 @@ int main() {
   bindings.is_army_in_combat = FixtureArmyIsInCombat;
   bindings.read_province_holder_character_id =
       FixtureReadProvinceHolderCharacterId;
+  bindings.character_immediate_liege = FixtureCharacterImmediateLiege;
   bindings.classify_contact_defender_by_holder =
       FixtureClassifyContactDefenderByHolder;
   bindings.classify_contact_defender_fallback =
@@ -6799,6 +6808,7 @@ int main() {
   Store(g_enemy_province, 0x790, active_siege_id);
   Store(g_siege, 0x200, static_cast<void *>(g_enemy_province.data()));
   Store(g_siege, 0x208, enemy_internal_army_id);
+  Store(g_enemy_province, 0x744, played_character_id);
   Store(g_enemy_army, 0x170, std::int32_t{0});
   g_enemy_army_state_code = 3;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
@@ -6807,13 +6817,51 @@ int main() {
           xar::game::PlayerWarSide::defender ||
       snapshot.active_wars[0].enemy_armies.size() != 1 ||
       snapshot.active_wars[0].enemy_armies[0].siege_days_left != 12 ||
+      snapshot.active_wars[0]
+              .enemy_armies[0]
+              .siege_province_holder_character_id != played_character_id ||
+      snapshot.active_wars[0]
+              .enemy_armies[0]
+              .siege_province_in_player_subrealm != true ||
       snapshot.player_armies[0].siege_days_left.has_value()) {
     return Fail(
         "nonobjective hostile siege days were not bound to the enemy Army");
   }
+  Store(g_enemy_province, 0x744, enemy_character_id);
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0]
+              .enemy_armies[0]
+              .siege_province_holder_character_id != enemy_character_id ||
+      snapshot.active_wars[0]
+              .enemy_armies[0]
+              .siege_province_in_player_subrealm != false) {
+    return Fail("external hostile siege holder was classified as player land");
+  }
+  g_enemy_holder_is_player_vassal = true;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0]
+              .enemy_armies[0]
+              .siege_province_in_player_subrealm != true) {
+    return Fail("vassal hostile siege holder was excluded from player land");
+  }
+  g_enemy_holder_is_player_vassal = false;
+  Store(g_enemy_province, 0x744, std::int32_t{-1});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0]
+          .enemy_armies[0]
+          .siege_province_holder_character_id.has_value() ||
+      snapshot.active_wars[0]
+          .enemy_armies[0]
+          .siege_province_in_player_subrealm.has_value()) {
+    return Fail("unknown hostile siege holder was presented as known");
+  }
+  Store(g_enemy_province, 0x744, played_character_id);
   Store(g_siege, 0x208, player_internal_army_id);
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
-      snapshot.active_wars[0].enemy_armies[0].siege_days_left.has_value()) {
+      snapshot.active_wars[0].enemy_armies[0].siege_days_left.has_value() ||
+      snapshot.active_wars[0]
+          .enemy_armies[0]
+          .siege_province_holder_character_id.has_value()) {
     return Fail("hostile siege timer ignored the besieging CArmy identity");
   }
   Store(g_siege, 0x208, enemy_internal_army_id);
@@ -6825,7 +6873,10 @@ int main() {
   g_siege_days_left = 12;
   Store(jomini_state, 0x20, std::uint8_t{0});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
-      snapshot.active_wars[0].enemy_armies[0].siege_days_left.has_value()) {
+      snapshot.active_wars[0].enemy_armies[0].siege_days_left.has_value() ||
+      snapshot.active_wars[0]
+          .enemy_armies[0]
+          .siege_province_holder_character_id.has_value()) {
     return Fail("running frame traversed the hostile siege subgraph");
   }
   Store(jomini_state, 0x20, std::uint8_t{1});

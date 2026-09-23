@@ -108,6 +108,8 @@ struct ArmySnapshot {
   // Paused exact-build read for a primary defender's hostile siege at this
   // Army's current Province. Absent when the siege or besieger join is unknown.
   std::optional<std::int32_t> siege_days_left;
+  std::optional<std::int32_t> siege_province_holder_character_id;
+  std::optional<bool> siege_province_in_player_subrealm;
 
   friend bool operator==(const ArmySnapshot &, const ArmySnapshot &) = default;
 };

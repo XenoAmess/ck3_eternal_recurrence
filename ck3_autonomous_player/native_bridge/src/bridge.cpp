@@ -2744,6 +2744,18 @@ void AppendArmySnapshot(std::string &result,
   } else {
     result += "null";
   }
+  result += ",\"siege_province_holder_character_id\":";
+  if (army.siege_province_holder_character_id.has_value()) {
+    result += SignedNumber(*army.siege_province_holder_character_id);
+  } else {
+    result += "null";
+  }
+  result += ",\"siege_province_in_player_subrealm\":";
+  if (army.siege_province_in_player_subrealm.has_value()) {
+    result += *army.siege_province_in_player_subrealm ? "true" : "false";
+  } else {
+    result += "null";
+  }
   result += '}';
 }
 

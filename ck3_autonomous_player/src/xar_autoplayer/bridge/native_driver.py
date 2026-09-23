@@ -22949,8 +22949,13 @@ def _war_progress_armies(
                 army.get(optional_state), bool
             ):
                 row[optional_state] = army[optional_state]
-        if "siege_days_left" in army:
-            row["siege_days_left"] = army["siege_days_left"]
+        for siege_field in (
+            "siege_days_left",
+            "siege_province_holder_character_id",
+            "siege_province_in_player_subrealm",
+        ):
+            if siege_field in army:
+                row[siege_field] = army[siege_field]
         if isinstance(army.get("route_province_ids"), list):
             row["route_province_ids"] = list(army["route_province_ids"])
         rows.append(row)

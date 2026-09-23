@@ -792,6 +792,22 @@ def normalize_armies(
                 if days_left is not None
                 else None
             )
+        if "siege_province_holder_character_id" in raw_army:
+            holder_id = raw_army["siege_province_holder_character_id"]
+            normalized["siege_province_holder_character_id"] = (
+                _positive_int32_id(holder_id, "siege_province_holder_character_id")
+                if holder_id is not None
+                else None
+            )
+        if "siege_province_in_player_subrealm" in raw_army:
+            in_subrealm = raw_army["siege_province_in_player_subrealm"]
+            if in_subrealm is not None and not isinstance(in_subrealm, bool):
+                raise ValueError("native siege province subrealm relation is malformed")
+            if in_subrealm is not None and normalized.get(
+                "siege_province_holder_character_id"
+            ) is None:
+                raise ValueError("native siege province relation has no holder")
+            normalized["siege_province_in_player_subrealm"] = in_subrealm
         result.append(normalized)
     return result
 

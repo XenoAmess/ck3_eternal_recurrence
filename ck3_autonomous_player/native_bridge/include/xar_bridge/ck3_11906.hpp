@@ -225,6 +225,7 @@ using IsCharacterHostile = bool (*)(void *left_character,
 using ArmyContactPredicate = bool (*)(void *army);
 using ReadProvinceHolderCharacterId = std::int32_t *(*)(
     void *province, std::int32_t *output);
+using CharacterImmediateLiege = void *(*)(void *character);
 using CharacterRelationPredicate = bool (*)(void *left_character,
                                              void *right_character);
 using CharacterProvincePredicate = bool (*)(void *character,
@@ -472,6 +473,7 @@ struct Bindings {
   ArmyContactPredicate is_army_empty_for_contact = nullptr;
   ArmyContactPredicate is_army_in_combat = nullptr;
   ReadProvinceHolderCharacterId read_province_holder_character_id = nullptr;
+  CharacterImmediateLiege character_immediate_liege = nullptr;
   CharacterRelationPredicate classify_contact_defender_by_holder = nullptr;
   CharacterProvincePredicate classify_contact_defender_fallback = nullptr;
 };

@@ -886,7 +886,7 @@ flowchart TD
   chain and can classify a holder relative to the current player. Existing
   `ReadWarObjectiveProvinceState` publishes occupation only for the war's
   objective Province `2610`, so it cannot answer `2628`'s owner or occupation.
-  The minimal read-only extension should expose a nullable holder ID and a
+  The minimal read-only extension exposes a nullable holder ID and a
   nullable player-subrealm boolean on the active hostile-sieging Army's
   current Province, bound to that Army and paused snapshot revision. An
   unresolved Province, invalid holder or failed liege chain remains unknown.
@@ -899,6 +899,15 @@ flowchart TD
   Re-read ownership, route arrival, strength, and current termination options
   before choosing a typed relief or another hold slice. The current snapshot
   alone licenses neither a move nor a claim that holding `2610` is safe.
+- [static-ready, live pending] The enemy Army snapshot and war-progress
+  projection now carry `siege_province_holder_character_id` and
+  `siege_province_in_player_subrealm`. Exact Siege/Province/besieger matching
+  precedes the holder read; the liege chain follows the proven campaign-root
+  resolver. Debug and Release native fixtures, a Release bridge DLL build,
+  normal and optimized Python projection tests, and normal/optimized replay
+  of the immutable old R0182 snapshot pass. The old snapshot has no holder
+  fields. Only a new paused exact-build readback can classify Province
+  `2628`; no relief action or war outcome has been verified by this patch.
 
 ```mermaid
 flowchart TD

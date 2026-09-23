@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/campaign_root_context_v1.hpp"
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
 #include "xar_bridge/raiktor_war_bound_regiment_v1.hpp"
 #include "xar_bridge/raiktor_surrender_truce_v1.hpp"
@@ -7164,42 +7165,83 @@ void ReadWarObjectiveProvinceStates(
   remaining_state_budget -= war.objective_province_states.size();
 }
 
-std::optional<std::int32_t> ReadHostileSiegeDaysLeft(
+void ReadHostileSiegeProvinceState(
     const Bindings &bindings, void *game_state,
-    const ResolvedArmySnapshot &enemy) noexcept {
+    std::int32_t played_character_id, const ResolvedArmySnapshot &enemy,
+    ArmySnapshot &output) noexcept {
   if (bindings.siege_storage_slot == nullptr ||
       bindings.is_native_component_alive == nullptr ||
       bindings.get_siege_days_left == nullptr || enemy.army == nullptr ||
       !enemy.snapshot.has_current_province) {
-    return std::nullopt;
+    return;
   }
   void *const province =
       ResolveProvince(game_state, enemy.snapshot.current_province_id);
   if (province == nullptr) {
-    return std::nullopt;
+    return;
   }
   const auto siege_id =
       LoadAt<std::int32_t>(province, kProvinceActiveSiegeIdOffset);
   if (siege_id == -1) {
-    return std::nullopt;
+    return;
   }
   void *const siege = ResolveSiege(bindings, siege_id);
   if (siege == nullptr ||
       LoadAt<void *>(siege, kSiegeProvinceOffset) != province) {
-    return std::nullopt;
+    return;
   }
   const auto besieging_carmy_id =
       LoadAt<std::int32_t>(siege, kSiegeBesiegingArmyIdOffset);
   if (besieging_carmy_id == -1 ||
       besieging_carmy_id !=
           LoadAt<std::int32_t>(enemy.army, kUnitArmyIdOffset)) {
-    return std::nullopt;
+    return;
   }
   const auto days_left = bindings.get_siege_days_left(siege);
-  if (days_left < 0 || days_left == std::numeric_limits<std::int32_t>::max()) {
-    return std::nullopt;
+  if (days_left >= 0 && days_left != std::numeric_limits<std::int32_t>::max()) {
+    output.siege_days_left = days_left;
   }
-  return days_left;
+  if (bindings.read_province_holder_character_id == nullptr) {
+    return;
+  }
+  std::int32_t holder_id = -1;
+  if (bindings.read_province_holder_character_id(province, &holder_id) !=
+          &holder_id ||
+      holder_id <= 0) {
+    return;
+  }
+  void *const holder = ResolveCharacter(bindings, holder_id);
+  if (holder == nullptr) {
+    return;
+  }
+  output.siege_province_holder_character_id = holder_id;
+  if (bindings.character_immediate_liege == nullptr) {
+    return;
+  }
+  void *const player = ResolveCharacter(bindings, played_character_id);
+  if (player == nullptr) {
+    return;
+  }
+  void *current = holder;
+  for (std::int32_t depth = 0; depth < 1'024; ++depth) {
+    if (current == player) {
+      output.siege_province_in_player_subrealm = true;
+      return;
+    }
+    void *const liege = bindings.character_immediate_liege(current);
+    if (liege == nullptr) {
+      output.siege_province_in_player_subrealm = false;
+      return;
+    }
+    if (liege == current) {
+      return;
+    }
+    const auto liege_id = LoadAt<std::int32_t>(liege, kCharacterIdOffset);
+    if (liege_id <= 0 || ResolveCharacter(bindings, liege_id) != liege) {
+      return;
+    }
+    current = liege;
+  }
 }
 
 void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
@@ -7349,8 +7391,8 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
             enemy.army_state_code == 3 && !enemy.in_combat &&
             !enemy.retreating && remaining_objective_state_budget > 0) {
           --remaining_objective_state_budget;
-          enemy.siege_days_left =
-              ReadHostileSiegeDaysLeft(bindings, game_state, army);
+          ReadHostileSiegeProvinceState(bindings, game_state,
+                                       played_character_id, army, enemy);
         }
         snapshot.enemy_armies.push_back(std::move(enemy));
       }
@@ -10158,6 +10200,9 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.read_province_holder_character_id =
       reinterpret_cast<ReadProvinceHolderCharacterId>(
           module + kReadProvinceHolderCharacterIdRva);
+  result.character_immediate_liege =
+      reinterpret_cast<CharacterImmediateLiege>(
+          module + kCampaignRootImmediateLiegeRva);
   result.classify_contact_defender_by_holder =
       reinterpret_cast<CharacterRelationPredicate>(
           module + kClassifyContactDefenderByHolderRva);
