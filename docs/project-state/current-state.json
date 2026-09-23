@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "53CCC667ED33A285EF0AEC55F3C8A2F9AEE9F78E37BB3FFBD028F9327DBEAACA"
+        "sha256": "FE404A1028404B392576937126B96CDB6C6C449E2DA369872D5D8860279B9C84"
       },
       "raw_footage": {
         "passed": 0,
@@ -264,7 +264,7 @@
       "historical_target_game_days": 36524,
       "latest_final_observed_days_are_durable": true,
       "latest_final_observed_game_days": 2983,
-      "latest_final_observed_source": "R0181_saved_h2120_raw53215920",
+      "latest_final_observed_source": "R0186_saved_h2127_raw53215920_same_day_private_perk",
       "latest_formal_active_war_ids": [
         16777231
       ],
@@ -276,21 +276,21 @@
       "latest_formal_pair": "R0181_clean_h2120_green",
       "latest_formal_war_scores_scope": "R0181_last_query_raw53215752_before_final_checkpoint",
       "latest_formal_war_status": "two_prior_defensive_victories_one_defensive_war_active_after_R0181",
-      "latest_freeze_manifest_status": "R0181_frozen_read_only_exact_pair_no_tail",
+      "latest_freeze_manifest_status": "R0186_frozen_read_only_raw_tail_official_semantic_projection_green",
       "latest_private_checkpoint": {
-        "date_raw": 53202168,
-        "history_index": 1774,
+        "date_raw": 53215920,
+        "history_index": 2127,
         "official_recovery_required_before_reuse": true,
-        "raw_driver_sha256": "D097CA8DE592CAB6C72E4DF03B144E07C7761C5B44467A2F9F27E89094DAF4B1",
-        "round": "R0179",
-        "save_sha256": "8014519B1DF2595CE3F30A1F04B61C54182B7CDD7F6087CB07135CA4FD04B592",
-        "scope": "same-date private M4 perk checkpoint after R0178 formal h1767; no additional game days or war conclusion"
+        "raw_driver_sha256": "74D527622D7A448A6B89467FB4B6DDBF8BDAE7322A44A25090418A22E8ABE97F",
+        "round": "R0186",
+        "save_sha256": "15E7C086E7A579BCBE860CC8C1324C741FD273E999F68E5794D12023CCFBF80B",
+        "scope": "Same-date R0186 private professional_workforce_perk checkpoint after R0181 formal h2120; raw driver has one read-only post-checkpoint row, so the next candidate must use official semantic recovery. No additional game days or war conclusion."
       },
       "latest_product_status": "GREEN_BOUNDED_CONTINUATION_WAR_ACTIVE",
       "latest_restore_attempt_round": "R0181",
       "latest_restore_harness_status": "GREEN_official_cold_restore_formal_120_of_120_h2120_checkpoint",
       "m3_existing_complete_evidence_retained": true,
-      "mainline_status": "continuable_from_R0181_h2120_one_war_active",
+      "mainline_status": "continuable_from_R0186_h2127_one_war_active_after_official_rebind",
       "material_expansion_proven": true,
       "new_title_acquisitions_in_R0177_R0178": 0,
       "primary_formal_seed_pair": "R0138_frozen_day0",
@@ -418,6 +418,38 @@
       "status": "consumed_by_R0181_formal_120_of_120"
     },
     "latest_noncheckpoint_formal_attempt_round": "R0171",
+    "latest_paired_checkpoint": {
+      "active_war_ids_after": [
+        16777231
+      ],
+      "all_active_wars_resolved": false,
+      "date_raw": 53215920,
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "freeze_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-final-frozen-pair/R0186-raw-freeze.json",
+        "freeze_sha256": "554ACBF14C36D068C1A1E5583CCFA0445C37630FE9777C6B5E12F56860ACAFAE",
+        "report_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-final-frozen-pair/report.json",
+        "report_sha256": "656BABEE8CCB58FD69D30EF84782C95F331D5109482F9A2E5320E40FA2F98D58",
+        "semantic_audit_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-semantic-audit.json",
+        "semantic_audit_sha256": "28BA1445408763DF816CFD2C22F5C1F75FA2D70C60C5857DE7EF509891EAC7BD"
+      },
+      "execution_id": "b31bcbcf-338f-4fde-b2d3-59353bf96025",
+      "game_days_increment": 0,
+      "history_index": 2127,
+      "new_pid_cold_restore_after_checkpoint_proven": false,
+      "official_semantic_retained_history_count": 2127,
+      "raw_driver_sha256": "74D527622D7A448A6B89467FB4B6DDBF8BDAE7322A44A25090418A22E8ABE97F",
+      "raw_history_count": 2128,
+      "raw_post_checkpoint_read_only_records": 1,
+      "robert_durable_game_days": 2983,
+      "round": "R0186",
+      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0186",
+      "save_sha256": "15E7C086E7A579BCBE860CC8C1324C741FD273E999F68E5794D12023CCFBF80B",
+      "scope": "R0186 privately selected one same-frame final-legal professional_workforce_perk, independently verified HasPerk and points 2/5 to 1/6, consumed the receipt on the following formal turn, and saved h2127 at unchanged date. Official no-launch cold-checkpoint validation and semantic recovery passed; a replacement-PID cold restore from h2127 has not yet occurred. The active war and all G2 stage gates remain open.",
+      "source_commit": "785d12f45a0b86513e3b61cfc498ba5d680ac2ab",
+      "source_pair": "R0181_h2120",
+      "status": "GREEN_PRIVATE_PERK_CHECKPOINTED"
+    },
     "latest_read_only_route_observation": {
       "army_controllable": true,
       "army_current_province_id": 2624,
@@ -565,49 +597,58 @@
       "typed_perk_action_proven": true
     },
     "m4_wartime_perk_latest_live": {
-      "action_request_id": "life-perk-690fe0d5de9b4ee5b9753411518cc05c",
+      "action_request_id": "life-perk-0501641d818b4a6cab1adec62f527005",
       "active_war_ids_after": [
         16777231
       ],
       "actor_id": 29829,
-      "checkpoint_date_raw": 53202168,
-      "checkpoint_history_index": 1774,
-      "checkpoint_save_sha256": "8014519B1DF2595CE3F30A1F04B61C54182B7CDD7F6087CB07135CA4FD04B592",
+      "checkpoint_date_raw": 53215920,
+      "checkpoint_history_index": 2127,
+      "checkpoint_save_sha256": "15E7C086E7A579BCBE860CC8C1324C741FD273E999F68E5794D12023CCFBF80B",
       "cleanup_proven": true,
       "date_advanced": false,
       "episode_run_id": "native-29829-2bc2d599f7f9",
       "evidence": {
         "base": "configured_process_assets_root",
-        "freeze_locator": "g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/R0179-raw-freeze.json",
-        "freeze_sha256": "D8C6308298D69D0083837857752D00F8179C607146065F6A5929157E96E21CC0",
-        "report_locator": "g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/report.json",
-        "report_sha256": "A586D30588FF6546731A790DC6DB1ACE1A76F37530E960BE5D780DD99545493B"
+        "freeze_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-final-frozen-pair/R0186-raw-freeze.json",
+        "freeze_sha256": "554ACBF14C36D068C1A1E5583CCFA0445C37630FE9777C6B5E12F56860ACAFAE",
+        "report_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-final-frozen-pair/report.json",
+        "report_sha256": "656BABEE8CCB58FD69D30EF84782C95F331D5109482F9A2E5320E40FA2F98D58",
+        "semantic_audit_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-semantic-audit.json",
+        "semantic_audit_sha256": "28BA1445408763DF816CFD2C22F5C1F75FA2D70C60C5857DE7EF509891EAC7BD"
       },
+      "execution_id": "b31bcbcf-338f-4fde-b2d3-59353bf96025",
       "following_formal_strategy_consumption_proven": true,
+      "formal_policy_id": "g2-lifestyle-wartime-stewardship-perk-v1",
       "independent_has_perk_proven": true,
       "managed_process_count_after_cleanup": 0,
       "milestone_status": "in_progress",
-      "native_dll_sha256": "3F527D84B73FCB60B91A4085D7DC1C521EE0FA6E4845C226758E10AD789E2D0A",
+      "native_dll_sha256": "2D52388AEC0F3DC5B89228FD4811C9C7C3C02A51F9B2127B35150B4E5DB92C10",
+      "new_pid_cold_restore_after_checkpoint_proven": false,
       "official_recovery_required_before_reuse": true,
-      "perk_key": "cutting_corners_perk",
+      "official_semantic_projection_green": true,
+      "owner_released": true,
+      "perk_key": "professional_workforce_perk",
       "post_action_checkpoint_proven": true,
       "post_unspent_points": 1,
-      "post_used_points": 5,
+      "post_used_points": 6,
       "pre_unspent_points": 2,
-      "pre_used_points": 4,
+      "pre_used_points": 5,
       "public_advertised": false,
       "raw_driver_post_checkpoint_read_only_records": 1,
-      "raw_driver_sha256": "D097CA8DE592CAB6C72E4DF03B144E07C7761C5B44467A2F9F27E89094DAF4B1",
+      "raw_driver_sha256": "74D527622D7A448A6B89467FB4B6DDBF8BDAE7322A44A25090418A22E8ABE97F",
       "result": "completed-green",
-      "robert_durable_game_days": 2410,
-      "round": "R0179",
-      "scope": "R0179 private exact-build trial on the R0178 h1767 same-date source returned a verified applied perk receipt and independent HasPerk true; unspent points fell 2 to 1 and used points rose 4 to 5. The following formal one-life strategy plan consumed the receipt and continued with the remaining active war. Official h1774 checkpoint saved the perk at unchanged raw53202168. Raw history has one read-only post-checkpoint query requiring official recovery before the next candidate. No new durable game day, public capability or M4 milestone completion credit.",
-      "source_checkpoint_date_raw": 53202168,
-      "source_checkpoint_save_sha256": "627867038CCB173611252DD4987865EBADB28EFEFF0A179CE925AAF04894EB05",
-      "source_commit": "e0b7713859d026426655b6ff769036a39c47db02",
-      "source_pair": "R0178_h1767",
+      "robert_durable_game_days": 2983,
+      "round": "R0186",
+      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0186",
+      "same_frame_native_final_legal_and_formal_target_proven": true,
+      "scope": "R0186 from immutable R0181 h2120 used a fresh native:3 paused frame and the private formal policy to select one professional_workforce_perk action. A later native:4 frame independently proved HasPerk and point delta 2/5 to 1/6; the following formal plan consumed the same receipt. Official h2127 checkpoint stayed at raw53215920 and retained active WarID 16777231. Frozen raw driver history2128 has one read-only tail row; official semantic projection retains2127. No h2127 replacement-PID cold restore, date gain, war resolution, public LIFE capability or M4 milestone completion is claimed.",
+      "source_checkpoint_date_raw": 53215920,
+      "source_checkpoint_save_sha256": "266D6F0238EA4AA552D8D6E8C6F3FC6378546310E95CF70BECDD32D485756F0A",
+      "source_commit": "785d12f45a0b86513e3b61cfc498ba5d680ac2ab",
+      "source_pair": "R0181_h2120",
       "status": "GREEN_PRIVATE_PERK_CHECKPOINTED",
-      "typed_perk_action_proven": true
+      "typed_perk_action_count": 1
     },
     "m4_wartime_perk_live_attempt": {
       "action_request_id": "life-perk-a893ddff5d2b40c0be6ee3a74da8ef8d",
@@ -651,6 +692,51 @@
       "status": "ACTION_OUTCOME_UNKNOWN",
       "wall_seconds": 603.8320217,
       "wall_timeout_seconds": 600
+    },
+    "m4_wartime_perk_prior_live": {
+      "action_request_id": "life-perk-690fe0d5de9b4ee5b9753411518cc05c",
+      "active_war_ids_after": [
+        16777231
+      ],
+      "actor_id": 29829,
+      "checkpoint_date_raw": 53202168,
+      "checkpoint_history_index": 1774,
+      "checkpoint_save_sha256": "8014519B1DF2595CE3F30A1F04B61C54182B7CDD7F6087CB07135CA4FD04B592",
+      "cleanup_proven": true,
+      "date_advanced": false,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "freeze_locator": "g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/R0179-raw-freeze.json",
+        "freeze_sha256": "D8C6308298D69D0083837857752D00F8179C607146065F6A5929157E96E21CC0",
+        "report_locator": "g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/report.json",
+        "report_sha256": "A586D30588FF6546731A790DC6DB1ACE1A76F37530E960BE5D780DD99545493B"
+      },
+      "following_formal_strategy_consumption_proven": true,
+      "independent_has_perk_proven": true,
+      "managed_process_count_after_cleanup": 0,
+      "milestone_status": "in_progress",
+      "native_dll_sha256": "3F527D84B73FCB60B91A4085D7DC1C521EE0FA6E4845C226758E10AD789E2D0A",
+      "official_recovery_required_before_reuse": true,
+      "perk_key": "cutting_corners_perk",
+      "post_action_checkpoint_proven": true,
+      "post_unspent_points": 1,
+      "post_used_points": 5,
+      "pre_unspent_points": 2,
+      "pre_used_points": 4,
+      "public_advertised": false,
+      "raw_driver_post_checkpoint_read_only_records": 1,
+      "raw_driver_sha256": "D097CA8DE592CAB6C72E4DF03B144E07C7761C5B44467A2F9F27E89094DAF4B1",
+      "result": "completed-green",
+      "robert_durable_game_days": 2410,
+      "round": "R0179",
+      "scope": "R0179 private exact-build trial on the R0178 h1767 same-date source returned a verified applied perk receipt and independent HasPerk true; unspent points fell 2 to 1 and used points rose 4 to 5. The following formal one-life strategy plan consumed the receipt and continued with the remaining active war. Official h1774 checkpoint saved the perk at unchanged raw53202168. Raw history has one read-only post-checkpoint query requiring official recovery before the next candidate. No new durable game day, public capability or M4 milestone completion credit.",
+      "source_checkpoint_date_raw": 53202168,
+      "source_checkpoint_save_sha256": "627867038CCB173611252DD4987865EBADB28EFEFF0A179CE925AAF04894EB05",
+      "source_commit": "e0b7713859d026426655b6ff769036a39c47db02",
+      "source_pair": "R0178_h1767",
+      "status": "GREEN_PRIVATE_PERK_CHECKPOINTED",
+      "typed_perk_action_proven": true
     },
     "m5_private_read_only": {
       "alliance_projection_row_count": 5,
@@ -1214,6 +1300,30 @@
         "source_commit": "e0b7713859d026426655b6ff769036a39c47db02",
         "successful_turns": 120,
         "technical_formal_status": "turn_limit_qualified"
+      },
+      {
+        "active_war_ids": [
+          16777231
+        ],
+        "checkpoint_pair_status": "raw_driver_one_read_only_tail_official_projection_green",
+        "checkpoint_save_sha256": "15E7C086E7A579BCBE860CC8C1324C741FD273E999F68E5794D12023CCFBF80B",
+        "durable_checkpoint_date_raw": 53215920,
+        "durable_game_days": 2983,
+        "durable_game_days_increment": 0,
+        "freeze_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-final-frozen-pair/R0186-raw-freeze.json",
+        "freeze_sha256": "554ACBF14C36D068C1A1E5583CCFA0445C37630FE9777C6B5E12F56860ACAFAE",
+        "gameplay_actions": 1,
+        "last_durable_checkpoint_history_index": 2127,
+        "new_title_acquisitions_proven": 0,
+        "raw_driver_sha256": "74D527622D7A448A6B89467FB4B6DDBF8BDAE7322A44A25090418A22E8ABE97F",
+        "report_sha256": "656BABEE8CCB58FD69D30EF84782C95F331D5109482F9A2E5320E40FA2F98D58",
+        "result": "completed-green",
+        "round": "R0186",
+        "semantic_audit_sha256": "28BA1445408763DF816CFD2C22F5C1F75FA2D70C60C5857DE7EF509891EAC7BD",
+        "source_checkpoint_history_index": 2120,
+        "source_checkpoint_round": "R0181",
+        "source_commit": "785d12f45a0b86513e3b61cfc498ba5d680ac2ab",
+        "technical_formal_status": "private_perk_checkpointed"
       }
     ],
     "recent_nonadvancing_attempts": [
@@ -1488,5 +1598,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T13:43:06+08:00"
+  "updated_at": "2026-09-23T15:30:00+08:00"
 }
