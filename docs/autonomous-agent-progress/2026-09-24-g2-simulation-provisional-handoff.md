@@ -22,7 +22,7 @@
 
 ## 模拟试用和当前工作包
 
-现有直接固定 `2×` 宣战/援围放行已从正式策略删除；在试用分支集成前，正式开战和主动接敌仍 `forecast_required` / OFF。用户授权的是**有界试用**，不是把 R0188 `4096/4096` 改名成真实 `p_win=1.0`。Robert War31 的 R0207 同帧路线从省2610到敌围省2628，经 `[2614,2618,2617,2632,2613,8752,2628]`，到达目标约需46游戏日；首日原生 contact horizon 空，但今天的研究模拟不能证明46日后敌军仍在原位。试用路径必须在真实新帧重算接战输入，允许模型随战果修正，不用兵力倍率取代模拟。
+现有直接固定 `2×` 宣战/援围放行已从正式策略删除；PR #242 已把现役守方有界模拟试用入口合入 master，自动宣战仍 `forecast_required` / OFF。用户授权的是**有界试用**，不是把 R0188 `4096/4096` 改名成真实 `p_win=1.0`。Robert War31 的 R0207 同帧路线从省2610到敌围省2628，经 `[2614,2618,2617,2632,2613,8752,2628]`，到达目标约需46游戏日；首日原生 contact horizon 空，但今天的研究模拟不能证明46日后敌军仍在原位。试用路径必须在真实新帧重算接战输入，允许模型随战果修正，不用兵力倍率取代模拟。
 
 `COMBAT-PROVISIONAL-DEFENSE-CANARY-B0` 由 `/root/combat_damage_boundary` 在独立 Z worktree `Z:\ck3_mod_rewrite\.task-tmp\COMBAT-PROVISIONAL-DEFENSE-CANARY-B0\work`、branch `feature/combat-provisional-defense-canary-b0` 实施；原 tip `08f7b2d` rebase 到 master `63800f4` 后，PR #242 final tip `d8cb86f4c66de00cca7ada3c4d9ac6e89451a0e5`。代码已把**现有**研究模拟接到正式守方解围入口：从同一 paused v3 计算 512 次有条件战斗，按模型内胜局下界、p90 永久损失、溃灭与人物死亡预算判断，**不读取固定2倍兵力阈值**。长路线只准在独立首站路线预览和次日无接触证明后提交首站 typed move；真正接敌必须在新的同帧路线、敌我编成和模型读回下重新判断，并先比较可读条款的安全停战出口。R0207 真实只读帧 2327:1488（约1.56倍）的离线重算是 512/512 个**模型内**胜局、Wilson 下界 `0.992553`、p90 永久损失约143人、预算约465人；这支持考虑首段，**不证明真实胜率、46天后敌军位置或实机动作成功**。normal/`-O` 聚焦测试各4/4，含低于2倍时选首段 typed move、即时同帧接敌与超预算拒绝；本轮依用户收口指令不新开 CK3 轮次，所以 typed/后置/下一 turn 仍待接班人有界验证。PR #242 的 CLA、签名和双 static 全 PASS，普通 FF 入远端 master `d8cb86f4c66de00cca7ada3c4d9ac6e89451a0e5`，GitHub 状态 MERGED，远端/本地 feature branch 与源码 worktree 已按 exact tip 核验清理。
 
