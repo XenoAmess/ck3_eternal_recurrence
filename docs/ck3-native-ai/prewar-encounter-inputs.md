@@ -660,3 +660,37 @@ timeline 给出 `one_day_contact_free=true`，只授权 `53176176 -> 53176200` �
 第一阶段一次即可同时证实根链、active candidate binding、command-bound title identity、objective projection、
 forced-defender rows 与 CUnit/CArmy identity；它不发送 interaction、不推进时间，也不把 GUI 预览冒充最终
 战争结果。
+
+## 2026-09-24 private player-claim observation slice (static-ready; live pending)
+
+The exact-build-only `query-prewar-player-claim-current-v1-<target>` path is
+compiled under the existing `XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1`
+flag, which remains OFF by default. Its Python driver method is private and
+requires the existing private M5 opt-in. No public capability, MCP tool, or
+war declaration admission is advertised.
+
+The caller supplies one full same-frame final-legal declaration and a
+same-frame ready `feudal_government` campaign-root context. The transport
+requires the player to be at peace. It accepts exactly one native `claim_cb`
+row for that target with the current player as claimant and one TitleID; all
+target, CB index/key, configuration, claimant and TitleIDs must equal the
+selected public row and the native mailbox row. It never substitutes the
+first row. A missing or ambiguous row is unavailable before any command.
+
+On application-main the existing M5 path reads the war-entry assessment and
+double-sampled primary CUnit slice in the same paused revision. The selected
+county TitleID is resolved with the existing generation-safe active-war
+title/objective walker; the county tier and duplicate read must agree on one
+capital Province. The response includes that Province and currently raised
+primary attacker/defender full CUnitID (`army_id`), full CArmyID, owner,
+current Province, move target and remaining route. The actor rows are checked
+against the public snapshot. These are currently raised *primary* armies,
+not the complete initial participant roster or all armies that may join.
+
+This is a static-only observation slice. The county reader, new mailbox
+branch and full Python DTO require a paused exact-build live readback on a
+fresh Robert prewar frame. A complete initial roster, first contact
+edge/timeline, declaration-bound combat-v3 forecast and `p_win` remain
+unavailable. Existing combat-v3 requires an active WarID and cannot be
+called for this declaration. Strategy `NO_DECLARE` stays in force until the
+subsequent producer and admission contracts are actually verified.

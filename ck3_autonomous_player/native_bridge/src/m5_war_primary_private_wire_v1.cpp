@@ -65,6 +65,19 @@ bool SameFrame(const FrameAccess &access, game::Snapshot *snapshot_out = nullptr
       std::count(wars.begin(), wars.end(), query.chosen_declaration) != 1) {
     return false;
   }
+  if (query.require_unique_player_claim) {
+    const auto player = snapshot.played_character_id;
+    const auto is_player_claim = [&](const game::DeclarableWarSnapshot &row) {
+      return row.target_character_id == query.target_character_id &&
+             row.casus_belli_key == "claim_cb" &&
+             row.claimant_character_id == player &&
+             row.target_title_ids.size() == 1;
+    };
+    if (!is_player_claim(query.chosen_declaration) ||
+        std::count_if(wars.begin(), wars.end(), is_player_claim) != 1) {
+      return false;
+    }
+  }
   if (snapshot_out != nullptr) {
     *snapshot_out = std::move(snapshot);
   }
@@ -187,6 +200,28 @@ bool ParseM5WarPrimaryPrivateStepV1(std::string_view step,
   return true;
 }
 
+bool ParsePrewarPlayerClaimPrivateStepV1(
+    std::string_view step, std::int32_t &target_character_id) noexcept {
+  target_character_id = -1;
+  if (!step.starts_with(kPrewarPlayerClaimPrivateStepPrefixV1)) {
+    return false;
+  }
+  const auto suffix =
+      step.substr(kPrewarPlayerClaimPrivateStepPrefixV1.size());
+  if (suffix.empty() || suffix.front() == '0' || suffix.size() > 10) {
+    return false;
+  }
+  std::int32_t parsed = -1;
+  const auto [end, error] = std::from_chars(
+      suffix.data(), suffix.data() + suffix.size(), parsed);
+  if (error != std::errc{} || end != suffix.data() + suffix.size() ||
+      parsed <= 0) {
+    return false;
+  }
+  target_character_id = parsed;
+  return true;
+}
+
 bool ExecuteM5WarPrimaryPrivateQueryV1(
     void *opaque_context, const MainThreadExecutionStampV1 &stamp) noexcept {
   auto *const query = static_cast<M5WarPrimaryPrivateQueryV1 *>(opaque_context);
@@ -272,6 +307,18 @@ bool ExecuteM5WarPrimaryPrivateQueryV1(
                                  ? "primary_join_unavailable"
                                  : query->result.unavailable_stage;
       return true;
+    }
+    if (query->require_unique_player_claim) {
+      if (!game::ReadClaimCountyObjectiveProvince(
+              *query->game,
+              query->chosen_declaration.target_title_ids.front(),
+              query->claim_county_objective_province_id)) {
+        query->result = {};
+        query->failure_stage = "claim_county_objective_unavailable";
+        return true;
+      }
+      query->claim_primary_current_raised_armies =
+          scope.primary_raised_armies;
     }
     if (!SameFrame(access)) {
       query->result = {};
@@ -367,6 +414,51 @@ std::string SerializeM5WarPrimaryPrivateResultV1(
               std::to_string(row.current_supply_scale) + "}";
   }
   output += "]}";
+  return output;
+}
+
+std::string SerializePrewarPlayerClaimPrivateResultV1(
+    const M5WarPrimaryPrivateQueryV1 &query) {
+  if (!query.require_unique_player_claim || !query.available ||
+      query.claim_county_objective_province_id <= 0) {
+    return {};
+  }
+  std::string output = SerializeM5WarPrimaryPrivateResultV1(query.result);
+  if (output.empty() || output.back() != '}') {
+    return {};
+  }
+  output.pop_back();
+  output += ",\"prewar_player_claim\":{\"county_objective_province_id\":";
+  output += std::to_string(query.claim_county_objective_province_id);
+  output += ",\"primary_current_raised_armies\":[";
+  for (std::size_t i = 0;
+       i < query.claim_primary_current_raised_armies.size(); ++i) {
+    const auto &army = query.claim_primary_current_raised_armies[i];
+    if (i != 0) output.push_back(',');
+    output += "{\"army_id\":" + std::to_string(army.army_id);
+    output += ",\"native_carmy_id\":" +
+              std::to_string(army.native_carmy_id);
+    output += ",\"owner_character_id\":" +
+              std::to_string(army.owner_character_id);
+    output += ",\"side\":\"";
+    output += army.side == PrewarSideV1::attacker ? "attacker" : "defender";
+    output += "\",\"current_province_id\":";
+    output += army.has_current_province
+                  ? std::to_string(army.current_province_id)
+                  : "null";
+    output += ",\"move_target_province_id\":";
+    output += army.has_move_target_province
+                  ? std::to_string(army.move_target_province_id)
+                  : "null";
+    output += ",\"route_province_ids\":[";
+    for (std::size_t j = 0; j < army.route_province_ids.size(); ++j) {
+      if (j != 0) output.push_back(',');
+      output += std::to_string(army.route_province_ids[j]);
+    }
+    output += "]}";
+  }
+  output += "],\"complete_initial_participants_ready\":false,";
+  output += "\"combat_forecast_ready\":false}}";
   return output;
 }
 

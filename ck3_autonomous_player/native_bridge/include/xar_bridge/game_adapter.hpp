@@ -91,6 +91,13 @@ public:
   virtual ReadDeclarableWarsResult read_declarable_wars_for_target(
       std::int32_t target_character_id,
       std::vector<DeclarableWarSnapshot> &output) const noexcept = 0;
+  // Private exact-build observation; no advertised capability or generic
+  // adapter obligation. A county TitleID yields its objective Province only.
+  virtual bool read_claim_county_objective_province(
+      std::int32_t, std::int32_t &province_id) const noexcept {
+    province_id = -1;
+    return false;
+  }
   virtual DeclareWarResult
   submit_declare_war(const DeclarableWarSnapshot &declaration) const
       noexcept = 0;
@@ -272,6 +279,12 @@ inline ReadDeclarableWarsResult ReadDeclarableWarsForTarget(
     const GameAdapter &game, std::int32_t target_character_id,
     std::vector<DeclarableWarSnapshot> &output) noexcept {
   return game.read_declarable_wars_for_target(target_character_id, output);
+}
+inline bool ReadClaimCountyObjectiveProvince(
+    const GameAdapter &game, std::int32_t county_title_id,
+    std::int32_t &province_id) noexcept {
+  return game.read_claim_county_objective_province(county_title_id,
+                                                   province_id);
 }
 inline DeclareWarResult
 SubmitDeclareWar(const GameAdapter &game,

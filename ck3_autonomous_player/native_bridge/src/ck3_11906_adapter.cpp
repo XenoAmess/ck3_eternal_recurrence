@@ -292,6 +292,12 @@ public:
     return ck3_11906::ReadDeclarableWarsForTarget(
         bindings_, target_character_id, output);
   }
+  bool read_claim_county_objective_province(
+      std::int32_t county_title_id,
+      std::int32_t &province_id) const noexcept override {
+    return ck3_11906::ReadClaimCountyObjectiveProvince(
+        bindings_, county_title_id, province_id);
+  }
   DeclareWarResult submit_declare_war(
       const DeclarableWarSnapshot &declaration) const noexcept override {
     return ck3_11906::SubmitDeclareWar(bindings_, declaration);

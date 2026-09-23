@@ -7443,9 +7443,13 @@ std::string WarEntryAssessmentsResultFrame(
 #if defined(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
 std::string M5WarPrimaryPrivateResultFrame(
     std::string_view request_id, std::string_view step,
-    const xar::ck3_11906::M5WarPrimaryReadbackV1 &readback) {
-  const auto payload =
-      xar::ck3_11906::SerializeM5WarPrimaryPrivateResultV1(readback);
+    const xar::ck3_11906::M5WarPrimaryPrivateQueryV1 &query) {
+  const auto payload = query.require_unique_player_claim
+                           ? xar::ck3_11906::
+                                 SerializePrewarPlayerClaimPrivateResultV1(query)
+                           : xar::ck3_11906::
+                                 SerializeM5WarPrimaryPrivateResultV1(
+                                     query.result);
   if (payload.empty()) {
     return {};
   }
@@ -14602,10 +14606,17 @@ void RunConnectedSession(
         }
 #if defined(XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1)
         else if (step.starts_with(
-                     xar::ck3_11906::kM5WarPrimaryPrivateStepPrefixV1)) {
+                     xar::ck3_11906::kM5WarPrimaryPrivateStepPrefixV1) ||
+                 step.starts_with(xar::ck3_11906::
+                                      kPrewarPlayerClaimPrivateStepPrefixV1)) {
+          const bool claim_query = step.starts_with(
+              xar::ck3_11906::kPrewarPlayerClaimPrivateStepPrefixV1);
           std::int32_t m5_target_character_id = -1;
-          if (!xar::ck3_11906::ParseM5WarPrimaryPrivateStepV1(
-                  step, m5_target_character_id)) {
+          if (!(claim_query
+                    ? xar::ck3_11906::ParsePrewarPlayerClaimPrivateStepV1(
+                          step, m5_target_character_id)
+                    : xar::ck3_11906::ParseM5WarPrimaryPrivateStepV1(
+                          step, m5_target_character_id))) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(request_id, step, false,
                                          "M5 current-primary target is malformed"));
@@ -14637,9 +14648,28 @@ void RunConnectedSession(
               query.expected_revision = state_revision;
               query.expected_snapshot = before;
               query.expected_declarations = std::move(legal);
-              // Native order is used only to inspect one complete legal row;
-              // this diagnostic does not rank or submit a declaration.
-              query.chosen_declaration = query.expected_declarations.front();
+              query.require_unique_player_claim = claim_query;
+              if (claim_query) {
+                const auto is_player_claim = [&](const auto &row) {
+                  return row.target_character_id == m5_target_character_id &&
+                         row.casus_belli_key == "claim_cb" &&
+                         row.claimant_character_id ==
+                             before.played_character_id &&
+                         row.target_title_ids.size() == 1;
+                };
+                const auto found = std::find_if(
+                    query.expected_declarations.begin(),
+                    query.expected_declarations.end(), is_player_claim);
+                if (found != query.expected_declarations.end() &&
+                    std::count_if(query.expected_declarations.begin(),
+                                  query.expected_declarations.end(),
+                                  is_player_claim) == 1) {
+                  query.chosen_declaration = *found;
+                }
+              } else {
+                // Existing M5 diagnostic retains first native-order row.
+                query.chosen_declaration = query.expected_declarations.front();
+              }
               query.target_character_id = m5_target_character_id;
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
                   g_main_thread_query_mailbox_v1,
@@ -14671,7 +14701,7 @@ void RunConnectedSession(
                     query.execution_stamp.paused &&
                     query.execution_stamp.date_raw == before.date_raw) {
                   response = M5WarPrimaryPrivateResultFrame(
-                      request_id, step, query.result);
+                      request_id, step, query);
                 }
                 if (response.empty()) {
                   const auto error = query.failure_stage.empty()

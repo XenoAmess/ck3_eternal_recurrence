@@ -767,6 +767,14 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept;
 
 bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept;
 
+// Reuses the active-war targeted-title hierarchy walker for one selected
+// county claim before CWar exists. Returns its capital Province only when the
+// full-generation TitleID resolves as a county; it neither builds nor sends a
+// war declaration.
+bool ReadClaimCountyObjectiveProvince(const Bindings &bindings,
+                                      std::int32_t county_title_id,
+                                      std::int32_t &province_id) noexcept;
+
 // Reuses the exact-build generation-bearing active-CWar resolver for the
 // pending-interaction read-only mailbox. The caller supplies the already
 // captured application-main game_state; no command or effect is executed.

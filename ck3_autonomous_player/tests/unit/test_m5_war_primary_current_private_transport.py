@@ -10,8 +10,10 @@ from xar_autoplayer.bridge.driver import (
     UnsupportedStepError,
 )
 from xar_autoplayer.bridge.m5_war_primary_current_private_transport import (
+    PREWAR_PLAYER_CLAIM_STEP_PREFIX,
     STEP_PREFIX,
     query_m5_war_primary_current_private_v1,
+    query_prewar_player_claim_current_private_v1,
 )
 from xar_autoplayer.bridge.mcp_server import (
     _ck3_query_m5_war_primary_current_private_v1,
@@ -179,6 +181,7 @@ class M5WarPrimaryCurrentPrivateTransportTest(unittest.TestCase):
         self.assertFalse(result["readiness"]["war_proposal_ready"])
         self.assertFalse(result["advertised"])
 
+
     def test_nonempty_army_and_supply_bind_to_same_public_frame(self) -> None:
         result = query_m5_war_primary_current_private_v1(
             _Driver(_payload(with_army=True), with_army=True),
@@ -260,6 +263,122 @@ class M5WarPrimaryCurrentPrivateTransportTest(unittest.TestCase):
         )
         self.assertEqual(calls, [{"target": TARGET, "revision": 14}])
         self.assertFalse(result["advertised"])
+
+def _claim_declaration() -> dict[str, object]:
+    return {
+        "declaration_id": "31549-8-0",
+        "source": "native",
+        "target_character_id": TARGET,
+        "casus_belli_index": 8,
+        "casus_belli_key": "claim_cb",
+        "configuration_index": 0,
+        "claimant_character_id": ACTOR,
+        "target_title_ids": [1234],
+    }
+
+
+def _claim_driver() -> tuple[_Driver, dict[str, object], dict[str, object]]:
+    selected = _claim_declaration()
+    snapshot = _snapshot(with_army=True)
+    snapshot["declarable_wars"] = [_declaration(), copy.deepcopy(selected)]
+    snapshot["active_wars"] = []
+    payload = _payload(with_army=True)
+    payload["declaration"] = {
+        key: value for key, value in selected.items()
+        if key not in {"declaration_id", "source"}
+    }
+    payload["active_war_ids"] = []
+    payload["prewar_player_claim"] = {
+        "county_objective_province_id": 2610,
+        "primary_current_raised_armies": [
+            {
+                "army_id": 83_886_341, "native_carmy_id": 117_440_789,
+                "owner_character_id": ACTOR, "side": "attacker",
+                "current_province_id": 2610, "move_target_province_id": 2628,
+                "route_province_ids": [2611, 2628],
+            },
+            {
+                "army_id": 83_886_355, "native_carmy_id": 117_440_795,
+                "owner_character_id": TARGET, "side": "defender",
+                "current_province_id": 2614, "move_target_province_id": None,
+                "route_province_ids": [],
+            },
+        ],
+        "complete_initial_participants_ready": False,
+        "combat_forecast_ready": False,
+    }
+    root = {
+        "status": "available", "snapshot_revision": 49,
+        "date_raw": 53_144_328, "player_character_id": ACTOR,
+        "readiness": {"ready": True},
+        "government": {
+            "key": "feudal_government", "flags": ["government_is_feudal"],
+        },
+    }
+    driver = _Driver(payload, with_army=True)
+    driver.snapshot = snapshot
+    return driver, selected, root
+
+
+class PrewarPlayerClaimPrivateTransportTest(unittest.TestCase):
+    def _read(
+        self, driver: _Driver, selected: dict[str, object], root: dict[str, object]
+    ) -> dict[str, object]:
+        return query_prewar_player_claim_current_private_v1(
+            driver, selected_declaration=selected,
+            campaign_root_context=root, expected_revision=14,
+            timeout_seconds=1,
+        )
+
+    def test_binds_second_final_legal_claim_and_both_current_primary_armies(self) -> None:
+        driver, selected, root = _claim_driver()
+        result = self._read(driver, selected, root)
+        self.assertEqual(
+            driver.endpoint.sent[0]["step"],
+            PREWAR_PLAYER_CLAIM_STEP_PREFIX + str(TARGET),
+        )
+        self.assertEqual(result["m5_war_primary_current"]["declaration"]["casus_belli_key"], "claim_cb")
+        self.assertEqual(result["prewar_player_claim_current"]["county_objective_province_id"], 2610)
+        self.assertEqual(
+            [row["side"] for row in result["prewar_player_claim_current"]["primary_current_raised_armies"]],
+            ["attacker", "defender"],
+        )
+        self.assertFalse(result["advertised"])
+        self.assertFalse(result["readiness"]["combat_forecast_ready"])
+        self.assertFalse(result["readiness"]["declaration_admission_ready"])
+
+    def test_selected_identity_and_unique_target_are_required_before_command(self) -> None:
+        driver, selected, root = _claim_driver()
+        wrong = copy.deepcopy(selected)
+        wrong["configuration_index"] = 1
+        with self.assertRaisesRegex(BridgeUnavailableError, "unique same-target"):
+            self._read(driver, wrong, root)
+        driver.snapshot["declarable_wars"].append(copy.deepcopy(selected))
+        with self.assertRaisesRegex(BridgeUnavailableError, "unique same-target"):
+            self._read(driver, selected, root)
+        self.assertEqual(driver.endpoint.sent, [])
+
+    def test_feudal_frame_and_payload_fields_fail_closed(self) -> None:
+        driver, selected, root = _claim_driver()
+        root["snapshot_revision"] = 48
+        with self.assertRaisesRegex(BridgeUnavailableError, "same-frame"):
+            self._read(driver, selected, root)
+        self.assertEqual(driver.endpoint.sent, [])
+        root["snapshot_revision"] = 49
+        driver.state.payload["prewar_player_claim"]["primary_current_raised_armies"][0]["army_id"] = 1
+        with self.assertRaisesRegex(BridgeUnavailableError, "public snapshot"):
+            self._read(driver, selected, root)
+
+    def test_private_build_flag_defaults_off(self) -> None:
+        parameter = inspect.signature(NativeHeadlessGameplayDriver.__init__).parameters[
+            "allow_private_m5_war_primary_current_query"
+        ]
+        self.assertIs(parameter.default, False)
+        self.assertTrue(hasattr(NativeHeadlessGameplayDriver, "query_prewar_player_claim_current_private_v1"))
+        driver, selected, root = _claim_driver()
+        driver.allow_private_m5_war_primary_current_query = False
+        with self.assertRaises(UnsupportedStepError):
+            self._read(driver, selected, root)
 
 
 if __name__ == "__main__":

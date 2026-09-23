@@ -10,6 +10,7 @@ from .driver import BridgeUnavailableError, UnsupportedStepError
 
 
 STEP_PREFIX = "query-m5-war-primary-current-v1-"
+PREWAR_PLAYER_CLAIM_STEP_PREFIX = "query-prewar-player-claim-current-v1-"
 
 
 def _integer(value: object, label: str, *, positive: bool = False) -> int:
@@ -215,6 +216,7 @@ def _normalize(
     expected_date_raw: int,
     expected_target_id: int,
     expected_actor_id: int,
+    selected_declaration: dict[str, object] | None = None,
 ) -> dict[str, object]:
     if not isinstance(value, Mapping):
         raise ValueError("M5 war current slice must be an object")
@@ -249,9 +251,13 @@ def _normalize(
         raise ValueError("M5 war current slice frame identity changed")
 
     declaration = _normalize_declaration(value.get("declaration"))
-    expected_declaration = _expected_declaration(snapshot, expected_target_id)
+    expected_declaration = (
+        selected_declaration
+        if selected_declaration is not None
+        else _expected_declaration(snapshot, expected_target_id)
+    )
     if declaration != expected_declaration:
-        raise ValueError("M5 war declaration differs from the first legal target row")
+        raise ValueError("M5 war declaration differs from the selected legal row")
     _integer(
         value.get("effective_target_character_id"),
         "effective_target_character_id",
@@ -534,5 +540,222 @@ def query_m5_war_primary_current_private_v1(
             "campaign_cost_ready": False,
             "minimum_gold_reserve_ready": False,
             "war_proposal_ready": False,
+        },
+    }
+
+
+def _selected_player_claim(
+    snapshot: Mapping[str, object], selected: object
+) -> dict[str, object]:
+    player = snapshot.get("played_character")
+    rows = snapshot.get("declarable_wars")
+    if not isinstance(player, Mapping) or not isinstance(rows, list):
+        raise ValueError("player or final-legal declaration rows are unavailable")
+    actor_id = _integer(player.get("character_id"), "player.character_id", positive=True)
+    if not isinstance(selected, Mapping) or not isinstance(selected.get("declaration_id"), str) or not selected["declaration_id"]:
+        raise ValueError("selected declaration identity is incomplete")
+    target_id = _integer(selected.get("target_character_id"), "selected.target_character_id", positive=True)
+    claims = [
+        row for row in rows
+        if isinstance(row, Mapping)
+        and row.get("source") == "native"
+        and row.get("target_character_id") == target_id
+        and row.get("casus_belli_key") == "claim_cb"
+        and row.get("claimant_character_id") == actor_id
+        and isinstance(row.get("target_title_ids"), list)
+        and len(row["target_title_ids"]) == 1
+    ]
+    if len(claims) != 1 or dict(claims[0]) != dict(selected):
+        raise ValueError("selected claim is not the unique same-target final-legal player row")
+    declaration = _expected_declaration({"declarable_wars": claims}, target_id)
+    _integer(declaration["target_title_ids"][0], "selected.target_title_id", positive=True)
+    return declaration
+
+
+def _same_frame_feudal_root(
+    root: object, snapshot: Mapping[str, object]
+) -> bool:
+    if not isinstance(root, Mapping):
+        return False
+    player = snapshot.get("played_character")
+    government = root.get("government")
+    readiness = root.get("readiness")
+    return (
+        root.get("status") == "available"
+        and root.get("snapshot_revision") == snapshot.get("native_revision")
+        and root.get("date_raw") == snapshot.get("date_raw")
+        and isinstance(player, Mapping)
+        and root.get("player_character_id") == player.get("character_id")
+        and isinstance(readiness, Mapping)
+        and readiness.get("ready") is True
+        and isinstance(government, Mapping)
+        and government.get("key") == "feudal_government"
+        and isinstance(government.get("flags"), list)
+        and "government_is_feudal" in government["flags"]
+    )
+
+
+def _prewar_claim_observation(
+    value: object, *, snapshot: Mapping[str, object],
+    actor_id: int, effective_target_id: int,
+) -> dict[str, object]:
+    if not isinstance(value, Mapping) or set(value) != {
+        "county_objective_province_id", "primary_current_raised_armies",
+        "complete_initial_participants_ready", "combat_forecast_ready",
+    }:
+        raise ValueError("prewar claim observation shape changed")
+    province = _integer(value.get("county_objective_province_id"), "county objective Province", positive=True)
+    if value.get("complete_initial_participants_ready") is not False or value.get("combat_forecast_ready") is not False:
+        raise ValueError("prewar claim readiness changed")
+    raw_armies = value.get("primary_current_raised_armies")
+    if not isinstance(raw_armies, list):
+        raise ValueError("primary raised armies must be an array")
+    armies: list[dict[str, object]] = []
+    seen: set[int] = set()
+    for index, row in enumerate(raw_armies):
+        if not isinstance(row, Mapping) or set(row) != {
+            "army_id", "native_carmy_id", "owner_character_id", "side",
+            "current_province_id", "move_target_province_id", "route_province_ids",
+        }:
+            raise ValueError(f"primary raised army {index} shape changed")
+        side = row.get("side")
+        owner = _integer(row.get("owner_character_id"), f"primary army {index} owner", positive=True)
+        if side not in ("attacker", "defender") or owner != (actor_id if side == "attacker" else effective_target_id):
+            raise ValueError("primary raised army side/owner differs from the assessment")
+        army_id = _integer(row.get("army_id"), f"primary army {index} full CUnitID", positive=True)
+        if army_id in seen:
+            raise ValueError("primary raised ArmyID repeats")
+        seen.add(army_id)
+        carmy_id = _integer(row.get("native_carmy_id"), f"primary army {index} full CArmyID", positive=True)
+        current = row.get("current_province_id")
+        target = row.get("move_target_province_id")
+        if current is not None:
+            current = _integer(current, f"primary army {index} current Province", positive=True)
+        if target is not None:
+            target = _integer(target, f"primary army {index} move target Province", positive=True)
+        raw_route = row.get("route_province_ids")
+        if not isinstance(raw_route, list):
+            raise ValueError(f"primary army {index} route must be an array")
+        route = [
+            _integer(value, f"primary army {index} route Province", positive=True)
+            for value in raw_route
+        ]
+        armies.append({
+            "army_id": army_id, "native_carmy_id": carmy_id,
+            "owner_character_id": owner, "side": side,
+            "current_province_id": current, "move_target_province_id": target,
+            "route_province_ids": route,
+        })
+    expected_actor = _expected_actor_armies(snapshot, actor_id)
+    actual_actor = [row for row in armies if row["side"] == "attacker"]
+    if len(actual_actor) != len(expected_actor) or {
+        row["army_id"] for row in actual_actor
+    } != {row["army_id"] for row in expected_actor}:
+        raise ValueError("primary actor armies differ from the public snapshot")
+    by_id = {row["army_id"]: row for row in expected_actor}
+    for army in actual_actor:
+        public = by_id[army["army_id"]]
+        if (
+            army["current_province_id"] != (public["current_province_id"] if public["has_current_province"] else None)
+            or army["move_target_province_id"] != (public["move_target_province_id"] if public["move_target_observable"] and public["move_target_province_id"] > 0 else None)
+            or army["route_province_ids"] != public["route_province_ids"]
+        ):
+            raise ValueError("primary actor route differs from the public snapshot")
+    return {
+        "county_objective_province_id": province,
+        "primary_current_raised_armies": armies,
+        "complete_initial_participants_ready": False,
+        "combat_forecast_ready": False,
+    }
+
+
+def query_prewar_player_claim_current_private_v1(
+    driver: object, *, selected_declaration: Mapping[str, object],
+    campaign_root_context: Mapping[str, object], expected_revision: int,
+    timeout_seconds: float = 30.0,
+) -> dict[str, object]:
+    """Read one exact-build, single-county player claim; no win forecast."""
+    if getattr(driver, "allow_private_m5_war_primary_current_query", False) is not True:
+        raise UnsupportedStepError("private prewar player claim query is disabled")
+    if isinstance(expected_revision, bool) or not isinstance(expected_revision, int) or expected_revision < 0:
+        raise ValueError("expected_revision must be a non-negative integer")
+    if isinstance(timeout_seconds, bool) or not isinstance(timeout_seconds, (int, float)) or timeout_seconds <= 0:
+        raise ValueError("timeout_seconds must be positive")
+    before = driver.take_snapshot()
+    player = before.get("played_character")
+    native_revision = before.get("native_revision")
+    date_raw = before.get("date_raw")
+    if (
+        before.get("revision") != expected_revision or before.get("paused") is not True
+        or before.get("map_ready") is not True or not isinstance(player, Mapping)
+        or player.get("alive") is not True
+        or isinstance(native_revision, bool) or not isinstance(native_revision, int) or native_revision <= 0
+        or isinstance(date_raw, bool) or not isinstance(date_raw, int)
+        or not _same_frame_feudal_root(campaign_root_context, before)
+    ):
+        raise BridgeUnavailableError("prewar player claim requires a same-frame paused standard-feudal context")
+    try:
+        declaration = _selected_player_claim(before, selected_declaration)
+        if _expected_active_war_ids(before):
+            raise ValueError("player is already in an active war")
+        actor_id = _integer(player.get("character_id"), "player.character_id", positive=True)
+        _expected_actor_armies(before, actor_id)
+    except ValueError as error:
+        raise BridgeUnavailableError(f"prewar player claim public frame is unavailable: {error}") from error
+    target_id = int(declaration["target_character_id"])
+    step = PREWAR_PLAYER_CLAIM_STEP_PREFIX + str(target_id)
+    request_id = "prewar-player-claim-" + uuid.uuid4().hex
+    driver.endpoint.send({
+        "type": "execute_step", "protocol_version": 1, "request_id": request_id,
+        "step": step, "expected_revision": native_revision,
+    })
+    frame = driver.state.wait_for_command_result(request_id, float(timeout_seconds))
+    if frame is None:
+        raise BridgeUnavailableError("prewar player claim command_result timed out")
+    if (
+        frame.get("type") != "command_result" or frame.get("protocol_version") != 1
+        or frame.get("request_id") != request_id or frame.get("ok") is not True
+    ):
+        raise BridgeUnavailableError("prewar player claim query returned RED: " + str(frame.get("error") or "unknown"))
+    result = frame.get("result")
+    if (
+        not isinstance(result, Mapping) or set(result) != {"step", "accepted", "status", "m5_war_primary_current"}
+        or result.get("step") != step or result.get("accepted") is not True
+        or result.get("status") != "available"
+    ):
+        raise BridgeUnavailableError("prewar player claim private envelope changed")
+    payload = result.get("m5_war_primary_current")
+    if not isinstance(payload, Mapping) or "prewar_player_claim" not in payload:
+        raise BridgeUnavailableError("prewar player claim payload is absent")
+    try:
+        current = _normalize(
+            {key: value for key, value in payload.items() if key != "prewar_player_claim"},
+            snapshot=before, expected_native_revision=native_revision,
+            expected_date_raw=date_raw, expected_target_id=target_id,
+            expected_actor_id=actor_id, selected_declaration=declaration,
+        )
+        claim = _prewar_claim_observation(
+            payload["prewar_player_claim"], snapshot=before, actor_id=actor_id,
+            effective_target_id=int(current["effective_target_character_id"]),
+        )
+    except ValueError as error:
+        raise BridgeUnavailableError(f"prewar player claim result is malformed: {error}") from error
+    after = driver.take_snapshot()
+    if _binding(after) != _binding(before) or not _same_frame_feudal_root(campaign_root_context, after):
+        raise BridgeUnavailableError("prewar player claim query crossed its paused frame")
+    return {
+        "status": "available", "private_build": True, "read_only": True,
+        "advertised": False, "backend_id": "native-headless",
+        "queried_snapshot_id": before.get("snapshot_id"),
+        "queried_revision": expected_revision, "queried_native_revision": native_revision,
+        "date_raw": date_raw, "m5_war_primary_current": current,
+        "prewar_player_claim_current": claim,
+        "readiness": {
+            "county_objective_province_ready": True,
+            "primary_current_raised_armies_ready": True,
+            "complete_initial_participants_ready": False,
+            "first_contact_timeline_ready": False,
+            "combat_forecast_ready": False,
+            "declaration_admission_ready": False,
         },
     }

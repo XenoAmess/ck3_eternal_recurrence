@@ -10232,6 +10232,48 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   return result;
 }
 
+bool ReadClaimCountyObjectiveProvince(const Bindings &bindings,
+                                      std::int32_t county_title_id,
+                                      std::int32_t &province_id) noexcept {
+  province_id = -1;
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      county_title_id <= 0) {
+    return false;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  void *const title =
+      ResolveLandedTitle(bindings, game_state, county_title_id);
+  if (title == nullptr) {
+    return false;
+  }
+  void *const title_template =
+      LoadAt<void *>(title, kLandedTitleTemplateOffset);
+  if (title_template == nullptr ||
+      LoadAt<std::int32_t>(title_template,
+                           kLandedTitleTemplateTierOffset) !=
+          kCountyTitleTier) {
+    return false;
+  }
+  std::size_t first_budget = kMaximumWarObjectiveTitleIds;
+  std::vector<std::int32_t> first_titles;
+  std::vector<std::int32_t> first_provinces;
+  std::size_t second_budget = kMaximumWarObjectiveTitleIds;
+  std::vector<std::int32_t> second_titles;
+  std::vector<std::int32_t> second_provinces;
+  if (!CollectWarObjectiveProvinceIds(bindings, game_state, county_title_id,
+                                      true, 0, first_budget, first_titles,
+                                      first_provinces) ||
+      !CollectWarObjectiveProvinceIds(bindings, game_state, county_title_id,
+                                      true, 0, second_budget, second_titles,
+                                      second_provinces) ||
+      first_provinces.size() != 1 || first_provinces != second_provinces ||
+      first_titles != second_titles) {
+    return false;
+  }
+  province_id = first_provinces.front();
+  return true;
+}
+
 bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   if (!bindings.enabled || bindings.game_state_slot == nullptr ||
       bindings.jomini_state_slot == nullptr) {

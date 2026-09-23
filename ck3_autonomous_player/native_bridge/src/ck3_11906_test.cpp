@@ -7114,6 +7114,16 @@ int main() {
           std::vector<std::int32_t>{second_war_objective_province_id}) {
     return Fail("county target did not project its capital barony province");
   }
+  std::int32_t claim_objective_province_id = -1;
+  if (!xar::ck3_11906::ReadClaimCountyObjectiveProvince(
+          bindings, second_county_title_id, claim_objective_province_id) ||
+      claim_objective_province_id != second_war_objective_province_id ||
+      xar::ck3_11906::ReadClaimCountyObjectiveProvince(
+          bindings, targeted_duchy_a_title_id,
+          claim_objective_province_id) ||
+      claim_objective_province_id != -1) {
+    return Fail("prewar county objective did not match the active-war walker");
+  }
   single_targeted_title_id[0] = third_capital_barony_title_id;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars.size() != 1 ||

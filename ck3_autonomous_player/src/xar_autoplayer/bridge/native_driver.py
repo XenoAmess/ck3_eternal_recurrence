@@ -2397,6 +2397,23 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_prewar_player_claim_current_private_v1(
+        self, *, selected_declaration: dict[str, object],
+        campaign_root_context: dict[str, object], expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one selected, final-legal standard-feudal county claim."""
+        from .m5_war_primary_current_private_transport import (
+            query_prewar_player_claim_current_private_v1,
+        )
+
+        return query_prewar_player_claim_current_private_v1(
+            self,
+            selected_declaration=selected_declaration,
+            campaign_root_context=campaign_root_context,
+            expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_player_epidemic_treatment_presence_private_v1(
         self, *, expected_revision: int
     ) -> dict[str, object]:
