@@ -51,6 +51,44 @@ gold, war-slot and identity claims.
 | Lifestyle | existing private LIFE query plus wartime minimum-policy decision | current focus, one unspent perk point, permanent perk target; zero gold/Army/ally/new-war/date claim | Static adapter ready for query-only/no-step war plans; formal M5 consumer absent |
 | First-heir marriage | R0133 final-legal rows and five private alliance projections | none admitted yet | R0133's eight pairs all had `both_have_realm_data=false` and `would_attempt_if_accepted=false`; marriage/betrothal result and long-term alliance commitment remain unobserved |
 
+## B1 production call-path audit
+
+The adapters above are not yet one production proposal stream.  A source-tree
+audit on base `29c0a5b9ffbed89600d99c564a191c27a99fb527` found no caller of
+`M5FrameDispatcher.choose_observed`; its only source occurrence is the method
+definition in `m5_joint_dispatch.py`.  The live planner currently commits to
+the first applicable domain before later domains can be compared:
+
+1. `GameplayService.plan_turn` calls `choose_one_life_turn` first.  Council19
+   returns its query or assignment step directly from that strategy path.
+2. The opt-in private lifestyle consumer runs next.  A step other than
+   `life-advance` returns immediately and removes the faction and construction
+   planning contexts.
+3. The private faction-gift route runs next and can replace `life-advance`
+   with its typed step.  The construction consumer runs last and only admits
+   work while the selected step is still `life-advance`.
+
+Consequently, individually complete council, diplomacy or building readbacks
+do not coexist as domain-approved proposals at the dispatcher boundary.  The
+first missing production interface is a default-OFF, query-only M5 collector.
+It must bind one paused `snapshot_id`/revision/native revision/date/episode,
+read the durable commitment ledger, adapt every already complete domain result
+without selecting or submitting a typed step, and pass that proposal list to
+the existing dispatcher exactly once.  A later formal consumer may use the
+reservation only after live paused-frame validation.  This is an integration
+gap in the formal planner/service route; it is not grounds for another
+selector or another marriage rejection gate.
+
+R0133's 657 final-legal rows cannot currently enter either dispatcher route.
+The observed route accepts only explicit domain-approved proposals, while the
+older assessed route requires complete caller-supplied assessments that no
+production caller creates.  No R0133 row can therefore displace a ready war or
+diplomacy result today.  Marriage remains excluded until one same-frame native
+read supplies the material marriage-or-betrothal outcome and lineality, the
+resulting alliance pairs with usable realm/ally state, and the alliance's
+duration and cancellation cost.  The existing five-row projection and the
+657-row count do not supply those fields.
+
 R0133 remains read-only evidence: 657 distinct final-legal first-heir rows and
 five successful projection reads, with zero observed alliance payoff in the
 sample. This selector does not turn that count into a marriage proposal. It
