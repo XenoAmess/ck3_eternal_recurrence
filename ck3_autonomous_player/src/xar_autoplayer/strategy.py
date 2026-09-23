@@ -132,6 +132,12 @@ from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
 )
 from .simulation import combat_decision_contract as combat_entry_eu
+from .simulation.combat_core import CombatExperiment
+from .simulation.combat_input import CombatInputError, freeze_combat_simulation_input
+from .simulation.research_envelope import (
+    ResearchEnvelopeAssumptions,
+    run_research_envelope_experiment,
+)
 from .vanilla_events.policy import (
     recommend_registered_vanilla_event_option_v1,
 )
@@ -169,6 +175,12 @@ _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -1
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _TERMINAL_SCORE_SURRENDER_SCORE = -100
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
+_PROVISIONAL_DEFENSE_TRIALS = 512
+_PROVISIONAL_DEFENSE_HORIZON_DAYS = 120
+_PROVISIONAL_DEFENSE_MIN_MODEL_WILSON_LOW = 0.70
+_PROVISIONAL_DEFENSE_MAX_P90_HARD_LOSS_PERCENT = 20
+_PROVISIONAL_DEFENSE_MAX_STACK_WIPE_FRACTION = 0.02
+_PROVISIONAL_DEFENSE_MAX_CHARACTER_DEATH_FRACTION = 0.02
 _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP = (
     "war-objective-hold-sentinel-advance"
 )
@@ -15114,7 +15126,7 @@ def _primary_defender_siege_forecast_ingress(
     action_steps: set[str],
     bridge_capabilities: set[str],
 ) -> dict[str, object]:
-    """Read a siege encounter at any strength; admit only a qualified EU result."""
+    """Read a siege encounter and admit a bounded provisional defense trial."""
     if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
         return baseline
     phase = baseline.get("phase")
@@ -15403,6 +15415,182 @@ def _primary_defender_siege_forecast_ingress(
                 "qualified_forecast": qualified,
                 **{**evidence, "forecast_status": "qualified", "active_attack_allowed": True},
             }
+        provisional = _provisional_defense_research_assessment(
+            snapshot,
+            target_province_id=target,
+            entry_province_id=entry,
+            attacker_army_id=army_id,
+            defender_army_ids=defenders,
+            friendly_current_soldiers=int(balance["friendly_current_soldiers"]),
+        )
+        if provisional.get("status") == "provisional_admissible":
+            # The native route is a real proposal, but the v3 battle is a
+            # conditional encounter at its final entry.  A long route must
+            # stop at its first waypoint; it cannot spend today's model result
+            # on an encounter many days in the future.
+            termination_rows = snapshot.get("war_termination_options")
+            same_frame_termination = [
+                row for row in termination_rows
+                if isinstance(row, dict)
+                and _same_frame_termination_row(snapshot, row, war_id)
+            ] if isinstance(termination_rows, list) else []
+            if len(same_frame_termination) != 1:
+                terminal_step = query_war_termination_options_step(war_id)
+                if terminal_step in action_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "native_war_provisional_defense_terminal_query",
+                        "selected_step": terminal_step,
+                        "reason": "compare same-frame war exits before a provisional relief march",
+                        "provisional_forecast": provisional,
+                        **evidence,
+                    }
+                return blocked(
+                    "same-frame war exit options are unavailable",
+                    terminal_step,
+                    detail={"provisional_forecast": provisional},
+                )
+            terminal = same_frame_termination[0]
+            option_rows = terminal.get("options")
+            if not isinstance(option_rows, dict):
+                return blocked(
+                    "same-frame war exit options are incomplete",
+                    "complete-same-frame-war-termination-options",
+                    detail={"provisional_forecast": provisional},
+                )
+            safe_exit = any(
+                isinstance(option_rows.get(name), dict)
+                and option_rows[name].get("available") is True
+                and option_rows[name].get("terms_observable") is True
+                and (
+                    name == "victory"
+                    or (
+                        isinstance(option_rows[name].get("recipient_response"), dict)
+                        and option_rows[name]["recipient_response"].get("would_accept_now") is True
+                    )
+                )
+                for name in ("victory", "white_peace")
+            )
+            if safe_exit:
+                return blocked(
+                    "a legal, observable and accepted noncombat war exit is available",
+                    "compare-or-select-safe-war-termination",
+                    detail={"provisional_forecast": provisional},
+                )
+            trial = {
+                "provisional_forecast": provisional,
+                "terminal_comparison": {
+                    "war_id": war_id,
+                    "safe_noncombat_exit_available": False,
+                    "surrender_terms_observable": (
+                        option_rows.get("surrender", {}).get("terms_observable")
+                        if isinstance(option_rows.get("surrender"), dict) else None
+                    ),
+                },
+                "model_error_policy": "reobserve_route_roster_and_simulation_before_contact",
+                "qualified_forecast": qualified,
+            }
+            arrival_raws = (
+                contact.get("subject_route", {}).get("arrival_date_raws")
+                if isinstance(contact.get("subject_route"), dict) else None
+            )
+            final_arrival = (
+                _native_int(arrival_raws[-1])
+                if isinstance(arrival_raws, list) and arrival_raws else None
+            )
+            date_raw = _native_int(snapshot.get("date_raw"))
+            if (
+                len(route) == 1
+                and target_only_contact
+                and final_arrival is not None
+                and date_raw is not None
+                and date_raw < final_arrival <= date_raw + 24
+            ):
+                move_step = move_army_step(army_id, target)
+                if move_step not in action_steps:
+                    return blocked("typed contact move is unavailable", move_step, detail=trial)
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_provisional_defense_contact_move",
+                    "selected_step": move_step,
+                    "reason": "fresh same-frame research trial admits one immediate siege contact within its provisional loss budget",
+                    "route_preview": preview,
+                    "route_contact_horizon": contact,
+                    **trial,
+                    **{**evidence, "forecast_status": "provisional_trial", "active_attack_allowed": True},
+                }
+            if not (
+                len(route) > 1
+                and contact.get("one_day_contact_free") is True
+                and contact_conflicts == []
+            ):
+                return blocked(
+                    "the route is neither a contact-free first segment nor an immediate proved contact",
+                    "fresh-short-segment-or-immediate-contact",
+                    detail=trial,
+                )
+            first_hop = route[0]
+            short_preview_step = preview_move_army_step(army_id, first_hop)
+            short_preview = _fresh_move_route_preview(
+                commands, army_id=army_id, origin_province_id=origin,
+                target_province_id=first_hop, date_raw=date_raw,
+            )
+            if short_preview is None:
+                if short_preview_step not in action_steps:
+                    return blocked("first-hop route preview is unavailable", short_preview_step, detail=trial)
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_provisional_defense_short_preview",
+                    "selected_step": short_preview_step,
+                    "reason": "read a first-hop route that cannot commit the distant siege contact",
+                    **trial, **evidence,
+                }
+            if not (
+                short_preview.get("status") == "available"
+                and short_preview.get("route_province_ids") == [first_hop]
+            ):
+                return blocked("first-hop preview has another route", "exact-one-hop-preview", detail=trial)
+            short_contact_step = query_route_contact_horizon_step(army_id, first_hop, hostile_ids)
+            short_contact = _fresh_route_contact_horizon(
+                commands, snapshot, army_id=army_id, origin_province_id=origin,
+                target_province_id=first_hop, hostile_army_ids=hostile_ids,
+                route_province_ids=[first_hop],
+            )
+            if short_contact is None:
+                if short_contact_step not in action_steps:
+                    return blocked("first-hop contact query is unavailable", short_contact_step, detail=trial)
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_provisional_defense_short_contact_query",
+                    "selected_step": short_contact_step,
+                    "reason": "read next-day contact safety for the short relief segment",
+                    "short_route_preview": short_preview,
+                    **trial, **evidence,
+                }
+            if not (
+                short_contact.get("one_day_contact_free") is True
+                and short_contact.get("conflicts") == []
+            ):
+                return blocked(
+                    "the first segment has a possible next-day contact",
+                    "contact-free-first-segment",
+                    detail={**trial, "short_route_contact_horizon": short_contact},
+                )
+            move_step = move_army_step(army_id, first_hop)
+            if move_step not in action_steps:
+                return blocked("typed first-hop move is unavailable", move_step, detail=trial)
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_provisional_defense_short_move",
+                "selected_step": move_step,
+                "reason": "the provisional model favors relief; commit only one contact-free waypoint, then observe again",
+                "route_preview": preview,
+                "route_contact_horizon": contact,
+                "short_route_preview": short_preview,
+                "short_route_contact_horizon": short_contact,
+                **trial,
+                **{**evidence, "forecast_status": "provisional_trial", "active_attack_allowed": False},
+            }
         return blocked(
             "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact",
             "qualified-same-frame-combat-forecast-and-expected-utility",
@@ -15411,6 +15599,7 @@ def _primary_defender_siege_forecast_ingress(
                 "route_preview": preview,
                 "route_contact_horizon": contact,
                 "qualified_forecast": qualified,
+                "provisional_forecast": provisional,
                 "combat_inputs_v3_query": {
                     "step": query_step,
                     "accepted": result.get("accepted"),
@@ -15447,6 +15636,126 @@ def _primary_defender_siege_forecast_ingress(
         "route_preview": preview,
         "route_contact_horizon": contact,
         **evidence,
+    }
+
+
+def _provisional_defense_research_assessment(
+    snapshot: dict[str, object],
+    *,
+    target_province_id: int,
+    entry_province_id: int,
+    attacker_army_id: int,
+    defender_army_ids: tuple[int, ...],
+    friendly_current_soldiers: int,
+) -> dict[str, object]:
+    """Use the current v3 frame as a bounded, explicitly imperfect trial."""
+
+    diagnostics = snapshot.get("diagnostics")
+    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    lifecycle = snapshot.get("succession_lifecycle")
+    if not (
+        isinstance(hello, dict)
+        and hello.get("ck3_build_match") is True
+        and hello.get("expected_ck3_sha256")
+        == "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        and isinstance(lifecycle, dict)
+        and lifecycle.get("lifecycle") == ORDINARY_CAMPAIGN_SUCCESSION
+        and lifecycle.get("xar_enabled") == "xar_off"
+    ):
+        return {"status": "exact_build_or_profile_unavailable"}
+    payload = snapshot.get("combat_simulation_inputs_v3")
+    if not isinstance(payload, dict):
+        return {"status": "same_frame_v3_unavailable"}
+    completeness = payload.get("completeness")
+    base = payload.get("base_inputs")
+    scenario = base.get("scenario") if isinstance(base, dict) else None
+    if not (
+        isinstance(completeness, dict)
+        and completeness.get("input_observation_ready") is True
+        and isinstance(base, dict)
+        and isinstance(scenario, dict)
+        and base.get("target_province_id") == target_province_id
+        and scenario.get("attacker_entry_province_id") == entry_province_id
+        and scenario.get("attacker_army_ids") == [attacker_army_id]
+        and scenario.get("defender_army_ids") == list(defender_army_ids)
+        and scenario.get("attacker_side") == "player_or_allied"
+        and scenario.get("defender_side") == "enemy"
+        and scenario.get("actual_route_dependency") is False
+        and len(defender_army_ids) == 1
+        and friendly_current_soldiers > 0
+    ):
+        return {"status": "same_frame_encounter_scope_mismatch"}
+    try:
+        frozen = freeze_combat_simulation_input(
+            base,
+            capture={
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": snapshot.get("revision"),
+                "native_revision": snapshot.get("native_revision"),
+                "date_raw": snapshot.get("date_raw"),
+            },
+        )
+        summary = run_research_envelope_experiment(
+            frozen,
+            CombatExperiment(
+                input_sha256=frozen.input_sha256,
+                seed_u64=int(frozen.input_sha256[:16], 16),
+                sample_count=_PROVISIONAL_DEFENSE_TRIALS,
+                horizon_days=_PROVISIONAL_DEFENSE_HORIZON_DAYS,
+            ),
+            ResearchEnvelopeAssumptions(
+                attacker_commander_army_id=attacker_army_id,
+                defender_commander_army_id=defender_army_ids[0],
+            ),
+            max_workers=1,
+        )
+    except (CombatInputError, ValueError, RuntimeError) as error:
+        return {
+            "status": "research_trial_unavailable",
+            "error_type": type(error).__name__,
+        }
+    wilson = summary.player_win_wilson95
+    p90_hard_loss = summary.player_hard_losses_raw.p90
+    hard_loss_budget_raw = (
+        friendly_current_soldiers
+        * 100_000
+        * _PROVISIONAL_DEFENSE_MAX_P90_HARD_LOSS_PERCENT
+        // 100
+    )
+    admitted = bool(
+        summary.sample_count == _PROVISIONAL_DEFENSE_TRIALS
+        and summary.no_resolution <= summary.sample_count // 10
+        and wilson is not None
+        and wilson.lower >= _PROVISIONAL_DEFENSE_MIN_MODEL_WILSON_LOW
+        and p90_hard_loss is not None
+        and p90_hard_loss <= hard_loss_budget_raw
+        and summary.player_stack_wipe_probability
+        <= _PROVISIONAL_DEFENSE_MAX_STACK_WIPE_FRACTION
+        and summary.commander_or_knight_death_probability
+        <= _PROVISIONAL_DEFENSE_MAX_CHARACTER_DEATH_FRACTION
+    )
+    return {
+        "status": "provisional_admissible" if admitted else "model_risk_budget_exceeded",
+        "model_fidelity": "research_only_phase_events_disabled",
+        "calibrated_win_probability_available": False,
+        "input_sha256": frozen.input_sha256.upper(),
+        "simulator_build": summary.simulator_build,
+        "sample_count": summary.sample_count,
+        "player_wins": summary.player_wins,
+        "player_losses": summary.player_losses,
+        "no_resolution": summary.no_resolution,
+        "model_resolved_win_wilson_low": wilson.lower if wilson else None,
+        "model_p90_hard_loss_raw": p90_hard_loss,
+        "hard_loss_budget_raw": hard_loss_budget_raw,
+        "model_stack_wipe_fraction": summary.player_stack_wipe_probability,
+        "model_character_death_fraction": (
+            summary.commander_or_knight_death_probability
+        ),
+        "unmodeled_domains": list(summary.missing_required_domains),
+        "observation_identity": {
+            key: snapshot.get(key)
+            for key in ("episode_run_id", "snapshot_id", "revision", "native_revision", "date_raw")
+        },
     }
 
 
@@ -15577,8 +15886,9 @@ def _primary_defender_siege_relief_assessment(
     R0160 showed that a seven-day objective hold can lose an occupied county
     while a much stronger sole army remains stationary.  Strength is only a
     participant-scope observation here, never permission to make contact.
-    Every complete relief candidate needs the same route/contact/v3 and
-    qualified combat-forecast decision before a typed move.
+    Every complete relief candidate needs the same route/contact/v3 before
+    either a qualified forecast or a bounded provisional model/loss-budget
+    decision can select a typed move.
     """
 
     siege_rows: list[tuple[dict[str, object], dict[str, object]]] = []

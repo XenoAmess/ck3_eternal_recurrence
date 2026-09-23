@@ -995,3 +995,67 @@ flowchart TD
     P -->|future qualified result| M["formal expected-utility decision and typed move gate"]
     M -.-> U["unknown: later arrivals, battle and war result"]
 ```
+
+## 2026-09-24 provisional defense canary (implementation, not live action)
+
+- [exact-build source] CK3 `1.19.0.6-steam23530548`, EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+  The stock decision tree above remains the native reference. The following
+  policy is our bounded response to the observed R0207 ratio failure; it does
+  not assert that stock AI uses the research sampler.
+- [live read-only] R0207 pinned War `31`, player Army `83886367` with `2327`
+  soldiers and hostile Army `50331920` with `1488`. Native route
+  `2610 → 2614 → 2618 → 2617 → 2632 → 2613 → 8752 → 2628` has a
+  46-day target ETA. The paused frame's v3 input is a *fixed hypothetical*
+  contact at `2628` entered from `8752`; `actual_route_dependency=false`.
+  This cannot authorize a move all the way to `2628` today. The original
+  snapshot, preview, H1 contact and v3 response are under the frozen
+  `g2-robert-under2-readonly-R0207-green-frozen-20260923/R0207-final-frozen-pair/probe`
+  index. No typed move was made in R0207.
+- [implementation-confirmed] The production siege ingress now calls the
+  existing phase-events-disabled research envelope from a current paused v3
+  readback. It checks the exact EXE/profile, ordered participants, target and
+  actual native route final entry; it accepts a *provisional* model signal
+  only when 512 trials finish, model Wilson lower bound is at least `0.70`,
+  p90 hard loss is at most 20% of the current army, modeled stack wipe and
+  commander/knight death are each at most 2%, and unresolved trials at most
+  10%. The fixed 2× soldier/power rule is not consulted by this branch.
+  The model lacks loaded phase-event effects and original-trace parity, so
+  this is neither calibrated `p_win` nor an exact CK3 outcome forecast.
+- [implementation-confirmed] A distant target may yield only a typed move
+  to the *first* native route waypoint, after a separate exact first-hop
+  preview and one-day contact-free horizon. The full-target move is selected
+  only when the current native route has one hop, its arrival lies within 24
+  raw date units, all contact conflicts identify the target besiegers, and
+  that same paused frame supplies the v3 model and war-exit comparison.
+  White peace/victory with observable accepted terms take priority; a
+  surrender with unreadable material terms is never selected here. A new
+  paused frame must refresh route, armies and model before later contact;
+  actual battle and war results remain a live acceptance gap. The existing
+  typed action/postcondition/next-turn machinery remains responsible for
+  verifying any future move.
+- [offline evidence] The frozen R0207 v3 input ran through this code for
+  512 trials: 512 modeled wins, Wilson lower `0.992553`, p90 hard loss
+  `14,295,689` Q100000 (about 143 soldiers), budget `46,540,000`
+  Q100000 (about 465); this only supports considering one short segment.
+  The static canary tests also cover a below-2× first-hop typed selection,
+  an immediate same-frame contact selection, and a model-risk rejection.
+- [remaining gap] This branch is for an existing defensive war. Automatic
+  *war declaration* still lacks a same-frame hypothetical post-raise roster,
+  first-contact location and arrival timing. The declaration's currently
+  selected rally province does not supply those inputs; this canary does not
+  claim simulation-based approval to declare a new war.
+
+```mermaid
+flowchart TD
+    S["Exact paused defender siege frame"] --> R["Native full route + all-hostile H1 contact"]
+    R --> V["Same-frame v3 ordered armies, target and final entry"]
+    V --> M["Existing research sampler: provisional loss budget"]
+    M -->|risk exceeded or input mismatch| B["Block movement and retain RED"]
+    M -->|admitted| T["Compare same-frame war exits"]
+    T -->|safe accepted exit| E["Prefer termination planner"]
+    T -->|no safe exit, distant contact| H["Exact first-hop preview + H1 free → one typed short move"]
+    T -->|no safe exit, immediate one-hop contact| C["One typed contact move"]
+    H -.-> N["unknown: new frame route, roster, future contact and model error"]
+    C -.-> O["unknown: live action postcondition, next turn, battle and war result"]
+```

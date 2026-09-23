@@ -927,3 +927,14 @@ flowchart TD
   不是将 `unknown` 转成 safe。
 - [verification gate] 在 R0050 shape 的 normal 和 `-O` 聚焦测试只证明静态分支；真实制品恢复必须保持
   原 checkpoint/待确认动作语义，重新取同帧 root/route/horizon，验证独立后置与下一策略循环，失败保留 RED。
+### 2026-09-24 bounded simulation trial update
+
+The earlier siege-forecast paragraphs above record the historical research-only
+gate before the provisional defense canary. The current strategy can use a
+fresh exact-build v3 input with the existing research sampler to select **one**
+typed first-waypoint relief march below the former 2× strength threshold; an
+immediate target contact requires a fresh one-hop route, same-frame participant
+scope and a new passing model/loss budget. It remains explicitly provisional,
+and no live typed action has yet validated this branch. See the exact route,
+model thresholds, stock-tree distinction and remaining declaration gap in
+[primary-defensive-war-response.md](primary-defensive-war-response.md).
