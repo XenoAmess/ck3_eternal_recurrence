@@ -1,0 +1,86 @@
+{
+  "schema": "ck3-war-film.case-w-result-validation.v1",
+  "scope": "Offline extractor tests and receipt projection; no new game access or footage review.",
+  "commands": {
+    "at": "2026-09-22T22:08:27.931033+00:00",
+    "scope": "offline tests and existing closed CASE-W JSON receipts only",
+    "python": "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "commands": [
+      {
+        "name": "tests",
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+          "tools/test_war_film_case_w_readback.py",
+          "-v"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "extract",
+        "argv": [
+          "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+          "tools/war_film_case_w_readback.py",
+          "--case-dir",
+          "D:\\workspace\\ck3_war_film_research_20260923\\case-w-r1",
+          "--responses-dir",
+          "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r5\\recovery-requests-responses",
+          "--run-identity",
+          "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r5\\live-run-identity.json",
+          "--war-id",
+          "4",
+          "--last-response-sequence",
+          "131",
+          "--end-receipt",
+          "D:\\workspace\\ck3_war_film_research_20260923\\case-w-r1\\observation-ended.json",
+          "--output-dir",
+          "D:\\workspace\\ck3_war_film_research_20260923\\case-w-readback-extract-r1\\extraction",
+          "--extra-evidence",
+          "D:\\workspace\\ck3_war_film_research_20260923\\case-w-r1-recording\\recording-result.json",
+          "--extra-evidence",
+          "D:\\workspace\\ck3_war_film_research_20260923\\case-w-r1-recording\\ffprobe.json",
+          "--extra-evidence",
+          "D:\\workspace\\ck3_war_film_research_20260923\\case-w-r1-recording\\recording-precondition.json",
+          "--extra-evidence",
+          "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r5\\hot-failure-state.json",
+          "--extra-evidence",
+          "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r5\\checkpoint-copy.json",
+          "--extra-evidence",
+          "D:\\workspace\\ck3_war_film_research_20260923\\capture-live-live-r5\\profile-source.json"
+        ],
+        "exit_code": 0
+      }
+    ]
+  },
+  "test_stdout": "",
+  "test_stderr": "test_first_visible_moving_row_does_not_prove_prior_progress (__main__.PublicArmyProgressTests.test_first_visible_moving_row_does_not_prove_prior_progress) ... ok\ntest_identity_mismatch_is_rejected (__main__.PublicArmyProgressTests.test_identity_mismatch_is_rejected) ... ok\ntest_location_outside_previous_route_does_not_claim_route_following (__main__.PublicArmyProgressTests.test_location_outside_previous_route_does_not_claim_route_following) ... ok\ntest_route_submission_is_not_location_progress (__main__.PublicArmyProgressTests.test_route_submission_is_not_location_progress) ... ok\ntest_same_unit_progress_along_previous_route_is_explicit (__main__.PublicArmyProgressTests.test_same_unit_progress_along_previous_route_is_explicit) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.002s\n\nOK\n",
+  "extract_stdout": "{\"output\": \"D:\\\\workspace\\\\ck3_war_film_research_20260923\\\\case-w-readback-extract-r1\\\\extraction\\\\result.json\", \"status\": \"existing-files-extracted\", \"samples\": 13, \"events\": 20}\n",
+  "sources": [
+    {
+      "path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\tools\\war_film_case_w_readback.py",
+      "bytes": 16196,
+      "sha256": "ab716090fa962d4b5be59265f482e8bbbff9f76af5659c2691a47aab7c2392d3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_tree_docs_audit_20260922\\tools\\test_war_film_case_w_readback.py",
+      "bytes": 2690,
+      "sha256": "ce30eecbb13be2b535c95387b93baad70241eaeb9f7260c557027f9d13ff7b13"
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\case-w-readback-extract-r1\\validation.json",
+      "bytes": 2106,
+      "sha256": "0d49005323267d3fa699f591cc313ee5e867557f1dca76d42199aba8f6e11723"
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\case-w-readback-extract-r1\\extraction\\result.json",
+      "bytes": 276551,
+      "sha256": "ee48673ff78ec2bb8f43b7f1b357740e04b93fd928fc65fae20c6e3b6c3f8927"
+    }
+  ],
+  "test_count": 5,
+  "tests_exit_code": 0,
+  "extract_exit_code": 0,
+  "limitations": [
+    "Tests exercise synthetic route/location comparisons, not CK3 execution or semantic correctness.",
+    "Existing raw JSON is hash-indexed; this script does not rerun native queries or rehash the 1.44GB movie."
+  ]
+}

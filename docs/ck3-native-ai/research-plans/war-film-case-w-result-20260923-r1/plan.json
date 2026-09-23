@@ -1,0 +1,221 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-case-w-native-npc-response-20260923-result",
+  "question": "Which NPC public-unit gathering, committed-route and later location transitions were actually observed in the closed R0005 War4 window after explicit operator intervention?",
+  "purpose": "npc-choice",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "passive-runtime",
+    "actor_kind": "ai",
+    "identity_kind": "generation-id",
+    "producer_trigger": "daily-tick",
+    "owner_scope": "NPC-owned uncontrollable public CUnit rows of War4 in R0005; player CharacterID29829 declaration, raising and movement are separate interventions.",
+    "identity_lifetime": "PID32356 / connection-generation1 / episode native-29829-fcaa3906d404; same full public CUnit plus owner within the observed roster; no inferred successor after disappearance.",
+    "producer": "Ordinary wartime time progression produced new published state; exact per-unit candidate scoring and caller execution are not observed by these readbacks.",
+    "caller": "Root owner advanced seven bounded time slices then paused. This result extraction performs no game calls and authorizes no new sampling.",
+    "consumer": "Official paused snapshots and same-revision army-strength/reinforcement assignment queries; copied JSON receipts only.",
+    "cache_lifetime": "Each sample retains public/native revisions and date; equal published frames have equal military projections. This is not frame synchronization with raw video.",
+    "expected_signal": "Observed U22/owner32231 gathering, committed route, then current province4598 to4599 at day19, with previous route first province removed.",
+    "zero_sample_meaning": "No battle in this bounded window is no observation of contact, not evidence of combat refusal. First public row appearance is not an identified raise command.",
+    "stop_condition": "Closed at 2026-09-22T22:03:23.643654+00:00, date53144784/day19 after seven time advances; optional contact was not entered. w131 verifies the same final frame after recording. Later responses belong to a separate case.",
+    "runtime_window_ref": "../war-film-case-w-20260923-r1/sampling-window.json; closed outcome in readback.json:end_receipt"
+  },
+  "evidence": [
+    {
+      "id": "readback",
+      "path": "readback.json",
+      "layer": "live-observation",
+      "sha256": "ee48673ff78ec2bb8f43b7f1b357740e04b93fd928fc65fae20c6e3b6c3f8927",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Exact-byte copy of the offline extraction of existing R0005 live receipts, with every original JSON path/size/SHA. Confirms published observations only; unexplained projection difference remains explicit.",
+      "session": "desktop-3fevhd2-1c74096080--vanilla--R0005 / PID32356 / connection-generation1 / native-29829-fcaa3906d404",
+      "frame": "13 paused publications through native:44 / public45 / native44 / date53144784; responses bounded to w001..w131",
+      "identity": "actor29829; War4; target31549; public CUnit22 owner32231; other enemy owners separately recorded"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "operator",
+      "label": "Operator legal declaration, raise and later player move"
+    },
+    {
+      "id": "war",
+      "label": "War4 published with player attacker and opponent31549"
+    },
+    {
+      "id": "gathering",
+      "label": "Same-war NPC public rows including U22 gathering"
+    },
+    {
+      "id": "route",
+      "label": "U22 moving with a committed remaining route"
+    },
+    {
+      "id": "position",
+      "label": "Same U22 current province4598 to4599 at day19"
+    },
+    {
+      "id": "choice",
+      "label": "Unexposed candidate scores and reason for target selection"
+    },
+    {
+      "id": "narrow",
+      "label": "Available assignment readback with false request and assignment flags"
+    },
+    {
+      "id": "support",
+      "label": "Unclosed ordinary request-to-assignment mechanism"
+    },
+    {
+      "id": "combat",
+      "label": "No actual combat observed in this window"
+    },
+    {
+      "id": "stop",
+      "label": "Primary window and recording ended; later gameplay separate"
+    }
+  ],
+  "edges": [
+    {
+      "id": "operator-war",
+      "from": "operator",
+      "to": "war",
+      "label": "Explicit player action response and resulting War4; not autonomous declaration",
+      "status": "live-confirmed",
+      "evidence": [
+        "readback"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "public-gathering",
+      "from": "war",
+      "to": "gathering",
+      "label": "Post-declaration uncontrollable enemy rows appear gathering; no direct raise command trace",
+      "status": "live-confirmed",
+      "evidence": [
+        "readback"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "u22-route",
+      "from": "gathering",
+      "to": "route",
+      "label": "Same U22/owner32231 gathering at day4/7 and moving with route at day10",
+      "status": "live-confirmed",
+      "evidence": [
+        "readback"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "u22-progress",
+      "from": "route",
+      "to": "position",
+      "label": "Day16 to19 current4598 to4599;4599 was first remaining province and is then removed",
+      "status": "live-confirmed",
+      "evidence": [
+        "readback"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "route-reason",
+      "from": "choice",
+      "to": "route",
+      "label": "Native score/caller path selecting these targets",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Published committed orders do not expose target candidate scores, scheduling cause or objective fallback branch."
+    },
+    {
+      "id": "narrow-readback",
+      "from": "position",
+      "to": "narrow",
+      "label": "Same final frame yields coordinator3, request=false, assigned=false; target field conflicts with snapshot",
+      "status": "live-confirmed",
+      "evidence": [
+        "readback"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "support-policy",
+      "from": "narrow",
+      "to": "support",
+      "label": "No request-to-assignment sequence established",
+      "status": "unknown",
+      "evidence": [
+        "readback"
+      ],
+      "open_question": "Two typed unavailable results and later false flags do not prove thresholds or assignment cause; target2633 versus4598 remains unresolved."
+    },
+    {
+      "id": "contact",
+      "from": "position",
+      "to": "combat",
+      "label": "Optional contact extension was not entered",
+      "status": "unknown",
+      "evidence": [
+        "readback"
+      ],
+      "open_question": "No actual CombatID was observed; no battle, reinforcement join, retreat or termination mechanism is tested."
+    },
+    {
+      "id": "bounded-stop",
+      "from": "position",
+      "to": "stop",
+      "label": "Research owner stops at achieved primary observation; no native stop policy claim",
+      "status": "counter-policy",
+      "evidence": [
+        "readback"
+      ],
+      "open_question": null
+    }
+  ],
+  "cases": [
+    {
+      "id": "same-unit-route-progress",
+      "question": "Does one same-war NPC unit have gathering, committed route and later location progress?",
+      "status": "observed",
+      "evidence": [
+        "readback"
+      ]
+    },
+    {
+      "id": "narrow-target-disagreement",
+      "question": "Are both final target projections consistent on the same paused frame?",
+      "status": "observed",
+      "evidence": [
+        "readback"
+      ]
+    },
+    {
+      "id": "optional-first-contact",
+      "question": "At most one actual combat in the optional extension.",
+      "status": "not-applicable",
+      "reason": "Primary window achieved its stop condition; optional contact extension not entered and no battle observed.",
+      "evidence": [
+        "readback"
+      ]
+    }
+  ],
+  "explicit_nonclaims": [
+    "natural NPC declaration",
+    "reason for ally/participant entry",
+    "target scoring or objective-selection cause",
+    "movement progress from route fields alone",
+    "ordinary reinforcement request-to-assignment chain",
+    "battle or peace result without its own observation",
+    "frame-synchronous video",
+    "human review or film readiness",
+    "complete native AI causal chain",
+    "new CK3 run or injection by the extractor",
+    "process termination at the CASE-W stop marker"
+  ],
+  "result_record_scope": "Retrospective frozen result, not a replacement for the original prepared observation plan or authorization for a new run."
+}
