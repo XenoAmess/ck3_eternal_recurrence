@@ -341,7 +341,8 @@
       "raw_history_count": 2128,
       "official_semantic_retained_history_count": 2127,
       "raw_post_checkpoint_read_only_records": 1,
-      "new_pid_cold_restore_after_checkpoint_proven": false,
+      "new_pid_cold_restore_after_checkpoint_proven": true,
+      "cold_restore_proof_round": "R0187",
       "active_war_ids_after": [16777231],
       "all_active_wars_resolved": false,
       "evidence": {
@@ -353,7 +354,7 @@
         "semantic_audit_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-semantic-audit.json",
         "semantic_audit_sha256": "28BA1445408763DF816CFD2C22F5C1F75FA2D70C60C5857DE7EF509891EAC7BD"
       },
-      "scope": "R0186 privately selected one same-frame final-legal professional_workforce_perk, independently verified HasPerk and points 2/5 to 1/6, consumed the receipt on the following formal turn, and saved h2127 at unchanged date. Official no-launch cold-checkpoint validation and semantic recovery passed; a replacement-PID cold restore from h2127 has not yet occurred. The active war and all G2 stage gates remain open."
+      "scope": "R0186 privately selected one same-frame final-legal professional_workforce_perk, independently verified HasPerk and points 2/5 to 1/6, consumed the receipt on the following formal turn, and saved h2127 at unchanged date. Official semantic recovery retained history2127 from raw2128. R0187 then cold-restored this unchanged h2127 save in a new CK3 PID and privately read back the owned perk and points 1/6. Its separate combat-v3 input query ended RED before any war action or date advance. The active war and all G2 stage gates remain open."
     },
     "m5_private_read_only": {
       "round": "R0133",
@@ -507,8 +508,10 @@
       "latest_formal_war_scores_scope": "R0181_last_query_raw53215752_before_final_checkpoint",
       "latest_formal_attempt_round": "R0181",
       "latest_formal_attempt_status": "turn_limit_qualified_120_of_120_no_blocker",
-      "latest_restore_attempt_round": "R0181",
-      "latest_restore_harness_status": "GREEN_official_cold_restore_formal_120_of_120_h2120_checkpoint",
+      "latest_restore_attempt_round": "R0187",
+      "latest_restore_harness_status": "GREEN_official_h2127_new_pid_cold_restore_private_lifestyle_readback_only",
+      "latest_combat_v3_read_only_status": "RED_production_phase_character_identity_or_role_mismatch_no_war_result",
+      "current_war_decision_status": "RED_combat_outcome_and_safe_relief_action_unproven",
       "prior_formal_war_red_still_open": false,
       "proven_defensive_war_victory_ids": [
         95,
@@ -522,7 +525,7 @@
         "save_sha256": "15E7C086E7A579BCBE860CC8C1324C741FD273E999F68E5794D12023CCFBF80B",
         "raw_driver_sha256": "74D527622D7A448A6B89467FB4B6DDBF8BDAE7322A44A25090418A22E8ABE97F",
         "official_recovery_required_before_reuse": true,
-        "scope": "Same-date R0186 private professional_workforce_perk checkpoint after R0181 formal h2120; raw driver has one read-only post-checkpoint row, so the next candidate must use official semantic recovery. No additional game days or war conclusion."
+        "scope": "Same-date R0186 private professional_workforce_perk checkpoint after R0181 formal h2120; raw driver has one read-only post-checkpoint row and R0187 used official semantic recovery. R0187 privately read back the owned perk in a new PID, but its combat-v3 input query was RED. No additional game days or war conclusion."
       }
     },
     "m4_focus_first_primitive": {
@@ -1130,6 +1133,46 @@
     ],
     "recent_nonadvancing_attempts": [
       {
+        "round": "R0187",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0187",
+        "execution_id": "bd40f612-5c80-465b-a644-afb02ab392f1",
+        "recorded_utc": "2026-09-23T07:32:09.3996971Z",
+        "allocator_status": "completed-red",
+        "source_checkpoint_round": "R0186",
+        "source_checkpoint_history_index": 2127,
+        "source_checkpoint_date_raw": 53215920,
+        "source_save_sha256": "15E7C086E7A579BCBE860CC8C1324C741FD273E999F68E5794D12023CCFBF80B",
+        "source_save_unchanged": true,
+        "new_pid_cold_restore_proven": true,
+        "ck3_pid": 143348,
+        "private_professional_workforce_perk_owned_after_restore": true,
+        "private_unspent_perk_points_after_restore": 1,
+        "private_used_perk_points_after_restore": 6,
+        "combat_v3_input_status": "RED_production_phase_character_identity_or_role_mismatch",
+        "combat_win_probability_available": false,
+        "business_result": "NOT_EVALUATED",
+        "harness_result": "RED",
+        "lifecycle_result": "GREEN",
+        "gameplay_actions": 0,
+        "date_advanced_days": 0,
+        "robert_durable_game_days": 2983,
+        "active_war_ids": [16777231],
+        "post_read_only_driver_sha256": "6BB7AB0BE8DB1B9FCFCA27B4B7F1FAB16766CD5C7C2A36ED8A7C9A038AAC244B",
+        "cleanup_proven": true,
+        "managed_process_count_after_cleanup": 0,
+        "owner_released": true,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "red_index_locator": "g2-robert-r0187-combat-v3-input-red-audit-20260923/R0187-RED-EVIDENCE-INDEX.json",
+          "red_index_sha256": "1FF46A49B0BE7629CFACA7245CC7E345532B103731A96B42A72405D361E99E9B",
+          "lifestyle_readback_locator": "g2-robert-r0186-combat-v3-readonly-R0187-20260923/lifestyle-current-state.json",
+          "lifestyle_readback_sha256": "23EEC778AEF620E825FE07E979BECAC72A74CD4561C2E64B5F08CADB1500B388",
+          "combat_v3_error_locator": "g2-robert-r0186-combat-v3-readonly-R0187-20260923/combat-v3-inputs-mcp-result.json",
+          "combat_v3_error_sha256": "5771D8FEDD3F212BA35A1624450FF68A07D3EB3FE02E7556EE5F44DF9240FE9E"
+        },
+        "scope": "R0187 officially cold-restored R0186 h2127 in new PID 143348 and privately read back the owned professional_workforce_perk with points 1 unspent and 6 used in the same paused native:3 frame. Move preview and one-day route-contact readbacks do not prove complete route safety. Combat-v3 input returned a production phase character identity or role mismatch before any win probability or war action; no date advanced, the source save stayed unchanged, and managed processes and owner were released."
+      },
+      {
         "round": "R0163",
         "execution_id": "4f4f1f38-536e-4370-9d66-9a5b565da37d",
         "allocator_status": "voided",
@@ -1391,8 +1434,8 @@
       }
     ],
     "latest_noncheckpoint_formal_attempt_round": "R0171",
-    "latest_restore_attempt_round": "R0181",
-    "latest_restore_attempt_status": "official_cold_restore_formal_120_of_120_h2120_green",
+    "latest_restore_attempt_round": "R0187",
+    "latest_restore_attempt_status": "official_h2127_new_pid_cold_restore_private_lifestyle_green_combat_v3_input_red",
     "latest_no_launch_candidate": {
       "status": "consumed_by_R0181_formal_120_of_120",
       "source_commit": "e0b7713859d026426655b6ff769036a39c47db02",
@@ -1591,7 +1634,7 @@
       "raw_driver_post_checkpoint_read_only_records": 1,
       "official_semantic_projection_green": true,
       "official_recovery_required_before_reuse": true,
-      "new_pid_cold_restore_after_checkpoint_proven": false,
+      "new_pid_cold_restore_after_checkpoint_proven": true,
       "date_advanced": false,
       "robert_durable_game_days": 2983,
       "active_war_ids_after": [16777231],
@@ -1607,7 +1650,7 @@
         "semantic_audit_locator": "g2-m4-r0186-perk-green-frozen-20260923/R0186-semantic-audit.json",
         "semantic_audit_sha256": "28BA1445408763DF816CFD2C22F5C1F75FA2D70C60C5857DE7EF509891EAC7BD"
       },
-      "scope": "R0186 from immutable R0181 h2120 used a fresh native:3 paused frame and the private formal policy to select one professional_workforce_perk action. A later native:4 frame independently proved HasPerk and point delta 2/5 to 1/6; the following formal plan consumed the same receipt. Official h2127 checkpoint stayed at raw53215920 and retained active WarID 16777231. Frozen raw driver history2128 has one read-only tail row; official semantic projection retains2127. No h2127 replacement-PID cold restore, date gain, war resolution, public LIFE capability or M4 milestone completion is claimed."
+      "scope": "R0186 from immutable R0181 h2120 used a fresh native:3 paused frame and the private formal policy to select one professional_workforce_perk action. A later native:4 frame independently proved HasPerk and point delta 2/5 to 1/6; the following formal plan consumed the same receipt. Official h2127 checkpoint stayed at raw53215920 and retained active WarID 16777231. Frozen raw driver history2128 has one read-only tail row; official semantic projection retains2127. R0187 then cold-restored h2127 with new PID 143348 and privately confirmed the owned perk and points 1/6, but its separate combat-v3 input query ended RED. No date gain, war resolution, public LIFE capability or M4 milestone completion is claimed."
     }
   },
   "t2": {
