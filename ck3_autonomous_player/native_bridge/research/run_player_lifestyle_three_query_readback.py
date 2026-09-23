@@ -229,7 +229,9 @@ def _copy_bound(
     return digest
 
 
-def prepare_candidate(args: argparse.Namespace) -> dict[str, object]:
+def prepare_candidate(
+    args: argparse.Namespace, *, schema: str = SCHEMA, read_only: bool = True
+) -> dict[str, object]:
     """Generate one fresh candidate through the production prepare/rebind path."""
 
     root = Path(args.candidate_root).resolve()
@@ -361,9 +363,9 @@ def prepare_candidate(args: argparse.Namespace) -> dict[str, object]:
     prepared_save = state / "profile" / "save games" / "xar_checkpoint.ck3"
     prepared_driver = state / "native-session" / "driver-state.json"
     manifest: dict[str, object] = {
-        "schema": SCHEMA,
+        "schema": schema,
         "status": "ready-no-launch",
-        "read_only": True,
+        "read_only": read_only,
         "public_registered_or_advertised": False,
         "candidate_root": str(root),
         "source_repo": str(python_source),
@@ -406,9 +408,14 @@ def prepare_candidate(args: argparse.Namespace) -> dict[str, object]:
     }
     manifest_path = root / "candidate-manifest.json"
     _write(manifest_path, manifest)
-    _spec, _verified_manifest, ready = preflight(root)
+    _spec, _verified_manifest, ready = preflight(
+        root, expected_schema=schema, expected_read_only=read_only
+    )
     evidence = {
-        "schema": "xar.ck3.g2_m4_lifestyle_three_query_no_launch_v1",
+        "schema": (
+            "xar.ck3.g2_m4_lifestyle_three_query_no_launch_v1"
+            if read_only else "xar.ck3.g2_m4_lifestyle_action_no_launch_v1"
+        ),
         "status": "READY_NO_LAUNCH",
         "ck3_launched": False,
         "gameplay_actions": 0,
@@ -439,7 +446,10 @@ def _new_bound_driver(spec: Any, manifest: dict[str, object], binding: dict[str,
     )
 
 
-def preflight(candidate_root: Path) -> tuple[object, dict[str, object], dict[str, object]]:
+def preflight(
+    candidate_root: Path, *, expected_schema: str = SCHEMA,
+    expected_read_only: bool = True,
+) -> tuple[object, dict[str, object], dict[str, object]]:
     root = _non_c_task_path(candidate_root, "candidate root")
     temporary = _non_c_task_path(os.environ.get("TEMP", ""), "TEMP")
     _need(
@@ -454,9 +464,9 @@ def preflight(candidate_root: Path) -> tuple[object, dict[str, object], dict[str
     )
     _need(
         isinstance(manifest, dict)
-        and manifest.get("schema") == SCHEMA
+        and manifest.get("schema") == expected_schema
         and manifest.get("status") == "ready-no-launch"
-        and manifest.get("read_only") is True
+        and manifest.get("read_only") is expected_read_only
         and manifest.get("public_registered_or_advertised") is False,
         "LIFE readback candidate is missing, unversioned, or advertised",
     )
@@ -946,8 +956,8 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
     return 1
 
 
-def parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=__doc__)
+def parser(*, description: str | None = None) -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=description or __doc__)
     parser.add_argument("--candidate-root", required=True, type=Path)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--prepare-only", action="store_true")
