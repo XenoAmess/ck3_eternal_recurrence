@@ -67,7 +67,7 @@ class FakeDriver:
                     "status": "saved", "path": str(self.checkpoint),
                     "size": self.checkpoint.stat().st_size,
                     "sha256": "0" * 64 if self.bad_checkpoint else hashlib.sha256(
-                        self.checkpoint.read_bytes()).hexdigest().upper(),
+                        self.checkpoint.read_bytes()).hexdigest(),
                     "date_raw": 53192304,
                 },
                 "submission": {"sequence": 1, "date_raw": 53192304},

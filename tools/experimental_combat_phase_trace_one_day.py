@@ -156,10 +156,14 @@ def run_bounded_original_phase_event_day(
     if not isinstance(checkpoint, dict) or checkpoint.get("status") != "saved" or not isinstance(submission, dict):
         raise ValueError("native checkpoint did not materialize")
     checkpoint_path = Path(checkpoint.get("path", ""))
+    receipt_sha256 = checkpoint.get("sha256")
     if (
         not checkpoint_path.is_file()
         or checkpoint_path.stat().st_size != checkpoint.get("size")
-        or _sha256(checkpoint_path) != checkpoint.get("sha256")
+        or not isinstance(receipt_sha256, str)
+        or len(receipt_sha256) != 64
+        or any(character not in "0123456789abcdef" for character in receipt_sha256)
+        or _sha256(checkpoint_path).lower() != receipt_sha256
         or checkpoint.get("date_raw") != date_raw
     ):
         raise ValueError("materialized checkpoint SHA/date/size differs")
