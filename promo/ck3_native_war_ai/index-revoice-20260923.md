@@ -25,4 +25,6 @@
 
 按用户要求，先将试配段编码为 48 kHz 双声道 AAC 音频 `CK3-War-AI-IndexTTS-Voice-Sample-V3-01.m4a`，时长 52.334 秒、1,220,175 字节、SHA-256 `c0817a97fb446a67ae21d0da5de0f68c73d68529cb042ceb5008c333f74e1475`。编码仅做采样率、声道与格式转换，未再次修改语速或音高。只将该文件放入本机 OneDrive 固定交付目录 `CK3-War-AI-20260923`；源与目标文件哈希一致。OneDrive 客户端的活动中心明确显示该文件“已上传到 CK3-War-AI-20260923”。音频、复制回执和客户端回读已作为三个独立 artifact 存入试配 run。此状态证明客户端报告上传成功，不代替用户试听、声线认可或整片签核。
 
+用户试听后确认继续。第一批三段用独立 Whisper-base CPU 无提示转写做漏句筛查，字符相似度分别为 `0.6908 / 0.7410 / 0.8071`；各段结尾均转写到对应讲述的末句。相似度受专有词、数字、同音字和繁简差异影响，不能当作准确率或人工听审。后续使用 [独立语音筛查工具](integration/src/war_ai_promo/audit_index_speech.py)按原始音频与文案哈希绑定完整批次的回执，发现明显异常时再单段重做。
+
 实现入口为 [IndexTTS 批量合成器](integration/src/war_ai_promo/index_revoice.py)和[新时长与连续取材绑定器](integration/src/war_ai_promo/prepare_index_film.py)。后续仍需核对全部 WAV、给实机镜头重选窗口、以最新 xar-promo 新建完整 render run、导出 48 kHz 视频、完整媒体检查和客户端上传。本页在取得结果时追加构建记录，不回写旧 run 的状态。
