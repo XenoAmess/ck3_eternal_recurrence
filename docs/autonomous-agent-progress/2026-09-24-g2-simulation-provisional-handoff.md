@@ -37,7 +37,7 @@ PR #242 原 tip 完整值为 `08f7b2d946dcc2115d985e0c53831594f5309fe6`；rebase
 | `WAR-PREWAR-HYPOTHETICAL-ROSTER-B1`／宣战前观测 | 独立 worker 已完成，未占 CK3 | 私有/OFF 默认集结省份读口；假设征召后 roster、合法性与首接触仍缺，不能宣布模拟宣战已可用 | PR #241 protected PASS，FF master `63800f4`，远端／本地 feature 与源码 worktree 已清 |
 | `COMBAT-PROVISIONAL-DEFENSE-CANARY-B0`／现役战争有界试用 | 独立 worker 已提交，未占 CK3 | 静态聚焦 normal/`-O` 各4/4；R0207 同帧输入离线 512 次。尚无 typed、独立后置或下一 turn | PR #242 final tip `d8cb86f`，protected PASS、FF master、MERGED、源码 refs/worktree 已清 |
 | `COMBAT-WINNER-ONLY-B0`／旧研究草稿 | worker 已结束；无 CK3 | 仅重投影旧模拟，obsolete/unqualified；归档原件 | 未 push；隔离源码 worktree／本地 branch 已清，远端无 branch |
-| 本交接／状态口径 | 协调者正在写本文件及当日日报 | PRV008 SHA 与三个配套路径存在；本机受管游戏进程清单为空。原 R0118 与 Robert War31 的 RED 均未关闭 | 本文 commit、push、master、清理待最终填写 |
+| 本交接／状态口径 | 协调者编制本交接、日报和周报；未占 CK3 | PRV008 SHA 与三个配套路径存在；本机受管游戏进程清单为空。原 R0118 与 Robert War31 的 RED 均未关闭 | 本文最终提交、集成和源码清理身份以远端 master 日志和本轮最终交付记录核验，不预填自身 SHA |
 
 平台给出最多 7 个 agent 槽位；在途代码 worker 已交付并退出，现仅协调者收尾，其他 agent 已完成或未启动，不把它们算作活动 worker。用户要求只收尾、不新开工作和 CK3 轮次，因此当前实机队列为空；R0221 受控停止、进程及 owner 回收已证，下一轮编号必须由持久分配器重新分配。
 
