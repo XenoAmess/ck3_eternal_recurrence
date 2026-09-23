@@ -12,7 +12,9 @@ from copy import deepcopy
 from typing import Mapping
 
 
-_DOMAINS = {"war", "council", "marriage", "diplomacy", "building"}
+_DOMAINS = {
+    "war", "council", "marriage", "diplomacy", "building", "lifestyle",
+}
 _CLAIM_FIELDS = (
     "army_ids", "ally_character_ids", "character_ids", "commitment_keys",
 )
@@ -208,6 +210,219 @@ def faction_gift_proposal(
     )
 
 
+def active_defensive_war_continuation_proposal(
+    *, frame: Mapping[str, object], snapshot: Mapping[str, object],
+    plan: Mapping[str, object], observation: Mapping[str, object],
+) -> dict[str, object]:
+    """Adapt one observed primary-defender continuation resource slice.
+
+    The war policy still owns route, exit and action legality.  This adapter
+    only admits its current resource identities after a separate same-frame
+    observation publishes the incremental budget and projected supply margin.
+    """
+    if (
+        plan.get("policy") != "one-life-turn-v1"
+        or type(plan.get("war_id")) is not int
+        or plan["war_id"] <= 0
+        or type(plan.get("selected_step")) is not str
+        or not plan["selected_step"]
+        or observation.get("status") != "available"
+        or observation.get("read_only") is not True
+    ):
+        raise ValueError("observed defensive-war continuation is required")
+    _same_frame(observation.get("source_frame"), frame,
+                actor_key="played_character_id")
+    if observed_frame(snapshot) != dict(frame):
+        raise ValueError("defensive-war continuation crossed the observed frame")
+    war_id = plan["war_id"]
+    if observation.get("war_id") != war_id:
+        raise ValueError("defensive-war continuation WarID changed")
+    snapshot_wars = snapshot.get("active_wars")
+    plan_wars = plan.get("active_wars")
+    if not isinstance(snapshot_wars, list) or not isinstance(plan_wars, list):
+        raise ValueError("defensive-war continuation lacks active wars")
+    current = [row for row in snapshot_wars if isinstance(row, Mapping)
+               and row.get("war_id") == war_id]
+    planned = [row for row in plan_wars if isinstance(row, Mapping)
+               and row.get("war_id") == war_id]
+    if (
+        len(current) != 1 or len(planned) != 1
+        or current[0].get("player_side") != "defender"
+        or current[0].get("player_is_primary_war_leader") is not True
+        or planned[0].get("player_side") != "defender"
+        or planned[0].get("player_is_primary_war_leader") is not True
+    ):
+        raise ValueError("primary-defender active-war identity is not observed")
+    armies = _positive_ids(observation.get("army_ids"), "continuation.army_ids")
+    allies = _positive_ids(
+        observation.get("ally_character_ids"),
+        "continuation.ally_character_ids",
+    )
+    characters = _positive_ids(
+        observation.get("character_ids"), "continuation.character_ids",
+    )
+    if not armies:
+        raise ValueError("defensive-war continuation lacks an observed army")
+    public_armies = snapshot.get("player_armies")
+    bindings = observation.get("army_war_bindings")
+    if not isinstance(public_armies, list) or not isinstance(bindings, list):
+        raise ValueError("defensive-war continuation army scope is unavailable")
+    controllable = {
+        row.get("army_id") for row in public_armies
+        if isinstance(row, Mapping) and row.get("controllable") is True
+    }
+    bound_to_war = {
+        row.get("army_id") for row in bindings
+        if isinstance(row, Mapping) and row.get("war_id") == war_id
+    }
+    if len(bindings) != len(armies) or any(
+        not isinstance(row, Mapping)
+        or row.get("war_id") != war_id
+        or row.get("army_id") not in armies for row in bindings
+    ):
+        raise ValueError("defensive-war continuation army binding is incomplete")
+    if not set(armies) <= controllable or not set(armies) <= bound_to_war:
+        raise ValueError("defensive-war continuation army is not controllable and bound")
+    supply = observation.get("projected_supply_margin_raw")
+    if type(supply) is not int:
+        raise ValueError("defensive-war continuation lacks measured supply")
+    gold = _nonnegative(
+        observation.get("incremental_gold_cost_raw"),
+        "continuation.incremental_gold_cost_raw",
+    )
+    reserve = _nonnegative(
+        observation.get("minimum_gold_reserve_raw"),
+        "continuation.minimum_gold_reserve_raw",
+    )
+    return _proposal(
+        frame=frame, candidate_id=f"war:continue:defender:{war_id}",
+        domain="war", source_policy=str(plan["policy"]),
+        gold_cost_raw=gold, minimum_gold_reserve_raw=reserve,
+        projected_supply_margin_raw=supply, war_slot_claim=0,
+        army_ids=armies, ally_character_ids=allies,
+        character_ids=characters,
+        commitment_keys=[
+            f"active-war:{war_id}",
+            *(f"active-war-army:{war_id}:{army_id}" for army_id in armies),
+        ],
+        evidence={
+            "war_id": war_id, "player_side": "defender",
+            "player_is_primary_war_leader": True,
+            "phase": plan.get("phase"), "selected_step": plan["selected_step"],
+            "active_war_slot_already_occupied": True,
+        },
+        war_operation="active_defensive_continuation",
+    )
+
+
+def wartime_lifestyle_perk_proposal(
+    *, frame: Mapping[str, object], query: Mapping[str, object],
+    decision: Mapping[str, object], current_war_plan: Mapping[str, object],
+) -> dict[str, object]:
+    """Adapt one native-final-legal perk while war has no gameplay step."""
+    selected_war_step = current_war_plan.get("selected_step")
+    if not (
+        current_war_plan.get("policy") == "one-life-turn-v1"
+        and (
+            selected_war_step is None
+            or (isinstance(selected_war_step, str)
+                and selected_war_step.startswith("query-"))
+        )
+    ):
+        raise ValueError("formal war gameplay step has priority over lifestyle")
+    source = query.get("source_frame")
+    if not isinstance(source, Mapping):
+        raise ValueError("wartime perk source frame is absent")
+    _same_frame(
+        {**source, "episode_run_id": query.get("episode_run_id")},
+        frame, actor_key="player_character_id",
+    )
+    life = query.get("snapshot")
+    action = decision.get("selected_action")
+    if (
+        query.get("status") != "available"
+        or query.get("formal_precondition_status") != "ready"
+        or not isinstance(life, Mapping)
+        or decision.get("policy_id")
+        != "g2-lifestyle-wartime-stewardship-perk-v1"
+        or decision.get("status") != "recommend_action"
+        or not isinstance(action, Mapping)
+        or action.get("kind") != "perk"
+    ):
+        raise ValueError("native-final-legal wartime perk is required")
+    expected = action.get("expected")
+    if not isinstance(expected, Mapping) or any((
+        expected.get("expected_snapshot_id") != frame.get("snapshot_id"),
+        expected.get("expected_episode_run_id") != frame.get("episode_run_id"),
+        expected.get("expected_native_revision") != frame.get("native_revision"),
+        expected.get("expected_public_revision") != frame.get("native_revision"),
+        expected.get("expected_date_raw") != frame.get("date_raw"),
+        expected.get("expected_player_character_id")
+        != frame.get("played_character_id"),
+    )):
+        raise ValueError("wartime perk decision crossed the observed frame")
+    readiness = life.get("readiness")
+    focus = life.get("current_focus")
+    progress = life.get("current_lifestyle_progress")
+    legal = life.get("legal_perk_candidates")
+    owned = life.get("owned_perk_keys")
+    target = action.get("target_key")
+    lifestyle = action.get("target_lifestyle_key")
+    legal_items = legal.get("items") if isinstance(legal, Mapping) else None
+    if (
+        life.get("snapshot_id") != frame.get("snapshot_id")
+        or life.get("episode_run_id") != frame.get("episode_run_id")
+        or life.get("public_revision") != frame.get("native_revision")
+        or life.get("native_revision") != frame.get("native_revision")
+        or life.get("date_raw") != frame.get("date_raw")
+        or life.get("player_character_id") != frame.get("played_character_id")
+        or target != "cutting_corners_perk"
+        or lifestyle != "stewardship_lifestyle"
+        or not isinstance(readiness, Mapping)
+        or any(readiness.get(key) is not True for key in (
+            "current_focus_ready", "lifestyle_progress_ready",
+            "owned_perks_ready", "legal_perk_candidates_ready",
+            "same_frame_ready",
+        ))
+        or not isinstance(focus, Mapping)
+        or focus.get("presence") != "present"
+        or focus.get("lifestyle_key") != lifestyle
+        or type(focus.get("key")) is not str or not focus["key"]
+        or not isinstance(progress, Mapping)
+        or progress.get("presence") != "present"
+        or progress.get("lifestyle_key") != lifestyle
+        or type(progress.get("unspent_perk_points")) is not int
+        or progress["unspent_perk_points"] <= 0
+        or type(progress.get("used_perk_points")) is not int
+        or progress["used_perk_points"] < 0
+        or not isinstance(owned, list)
+        or any(type(key) is not str or not key for key in owned)
+        or target in owned
+        or not isinstance(legal_items, list)
+        or sum(
+            isinstance(row, Mapping) and row.get("key") == target
+            and row.get("lifestyle_key") == lifestyle for row in legal_items
+        ) != 1
+    ):
+        raise ValueError("wartime perk point or final legality is unobserved")
+    return _proposal(
+        frame=frame, candidate_id=f"lifestyle:perk:{target}",
+        domain="lifestyle", source_policy=str(decision["policy_id"]),
+        gold_cost_raw=0, minimum_gold_reserve_raw=0,
+        projected_supply_margin_raw=None, war_slot_claim=0,
+        army_ids=[], ally_character_ids=[], character_ids=[],
+        commitment_keys=[f"lifestyle-perk-point:{lifestyle}"],
+        evidence={
+            "current_focus_key": focus.get("key"),
+            "target_lifestyle_key": lifestyle, "target_perk_key": target,
+            "unspent_perk_points": progress["unspent_perk_points"],
+            "used_perk_points": progress["used_perk_points"],
+            "date_advance_expected": False,
+            "war_plan_selected_step": selected_war_step,
+        },
+    )
+
+
 def select_observed_m5_opportunity(
     *, snapshot: Mapping[str, object], proposals: list[dict[str, object]],
     commitments: Mapping[str, object], gold_reserve_raw: int,
@@ -306,6 +521,7 @@ def _proposal(
     army_ids: list[int], ally_character_ids: list[int],
     character_ids: list[int], commitment_keys: list[str],
     evidence: Mapping[str, object],
+    war_operation: str | None = None,
 ) -> dict[str, object]:
     return {
         "schema": "xar.ck3.m5-observed-opportunity.v1",
@@ -315,6 +531,7 @@ def _proposal(
         "minimum_gold_reserve_raw": minimum_gold_reserve_raw,
         "projected_supply_margin_raw": projected_supply_margin_raw,
         "war_slot_claim": war_slot_claim,
+        "war_operation": war_operation,
         "army_ids": army_ids, "ally_character_ids": ally_character_ids,
         "character_ids": character_ids, "commitment_keys": commitment_keys,
         "evidence": deepcopy(dict(evidence)),
@@ -357,10 +574,25 @@ def _normalize_proposal(
         raise ValueError("war_slot_claim must be zero or one")
     supply = value.get("projected_supply_margin_raw")
     if value["domain"] == "war":
-        if type(supply) is not int or result["war_slot_claim"] != 1:
-            raise ValueError("war proposal lacks measured supply and one slot")
+        operation = value.get("war_operation")
+        if operation is None and result["war_slot_claim"] == 1:
+            operation = "entry"
+        if type(supply) is not int:
+            raise ValueError("war proposal lacks measured supply")
+        if operation == "entry" and result["war_slot_claim"] != 1:
+            raise ValueError("war entry proposal must claim one slot")
+        if (
+            operation == "active_defensive_continuation"
+            and result["war_slot_claim"] != 0
+        ):
+            raise ValueError("active war continuation cannot claim a new slot")
+        if operation not in {"entry", "active_defensive_continuation"}:
+            raise ValueError("war proposal operation is unsupported")
+        result["war_operation"] = operation
     elif supply is not None or result["war_slot_claim"] != 0:
         raise ValueError("non-war proposal cannot claim war supply or a slot")
+    elif value.get("war_operation") is not None:
+        raise ValueError("non-war proposal cannot set a war operation")
     for key in _CLAIM_FIELDS:
         result[key] = sorted(_claims(value.get(key), key))
     if value["domain"] == "war" and not result["army_ids"]:
@@ -369,6 +601,13 @@ def _normalize_proposal(
         len(result["character_ids"]) < 2 or not result["commitment_keys"]
     ):
         raise ValueError("marriage proposal lacks observed roles or commitment")
+    if value["domain"] == "lifestyle" and (
+        result["army_ids"] or result["ally_character_ids"]
+        or result["character_ids"]
+        or len(result["commitment_keys"]) != 1
+        or not result["commitment_keys"][0].startswith("lifestyle-perk-point:")
+    ):
+        raise ValueError("lifestyle proposal lacks one observed perk point")
     return result
 
 
@@ -399,3 +638,10 @@ def _claims(value: object, name: str) -> set[int] | set[str]:
     if len(result) != len(value):
         raise ValueError(f"{name} contains duplicate resource identities")
     return result
+
+
+def _positive_ids(value: object, name: str) -> list[int]:
+    result = _claims(value, name)
+    if any(type(item) is not int for item in result):
+        raise ValueError(f"{name} must contain positive integer identities")
+    return sorted(result)

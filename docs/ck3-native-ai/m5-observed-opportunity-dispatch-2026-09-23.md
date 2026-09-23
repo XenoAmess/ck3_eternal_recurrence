@@ -47,7 +47,8 @@ gold, war-slot and identity claims.
 | Council | normalized Council19 steward observation plus `council-composition-steward-v1` action-ready decision | chosen CharacterID, incumbent/candidate stewardship, exclusive steward seat | Static adapter ready; no same-frame multi-domain live artifact |
 | Building | `domain_construction_private_transport_v1` `status=selected` query | exact barony/province/building/slot, stock gold cost, formal 20M reserve, permanent slot key | Static adapter ready; typed building path remains independently gated |
 | Diplomacy | `faction_gift_formal_candidate_v1` `status=selected` choice | faction/recipient identity, exact gift gold, 10M reserve, opinion delta and unique gift key | Static adapter ready; gift result still needs its own durable receipt |
-| War | existing final-legal declaration and war-entry assessment | none admitted yet | A proposal still needs exact army claims, projected route supply, possible participant/ally commitments, campaign cost and exit commitment on this same frame |
+| War | existing final-legal declaration/entry assessment or active primary-defender plan | entry remains unadmitted; continuation adapter retains an already occupied slot, exact ArmyIDs, projected supply, gold/reserve and stable war commitments | R0178/R0179 lack the same-frame continuation cost projection, so no real proposal is admitted yet |
+| Lifestyle | existing private LIFE query plus wartime minimum-policy decision | current focus, one unspent perk point, permanent perk target; zero gold/Army/ally/new-war/date claim | Static adapter ready for query-only/no-step war plans; formal M5 consumer absent |
 | First-heir marriage | R0133 final-legal rows and five private alliance projections | none admitted yet | R0133's eight pairs all had `both_have_realm_data=false` and `would_attempt_if_accepted=false`; marriage/betrothal result and long-term alliance commitment remain unobserved |
 
 R0133 remains read-only evidence: 657 distinct final-legal first-heir rows and
@@ -70,8 +71,91 @@ The next read-only run should bracket current council, construction,
 faction-gift, declaration/war-entry and first-heir queries with one snapshot
 identity and persist the existing commitment ledger in that frame. War joins
 only after the private prewar readers publish army/supply/participant/exit
-claims. Marriage joins only after a candidate with an observed material
+claims; an active defense uses the narrower continuation projection described
+below. Marriage joins only after a candidate with an observed material
 marriage or betrothal result and alliance commitment is available. Then a
 formal consumer must submit exactly one selected typed action, prove an
 independent material postcondition, consume the next turn and exercise the
 required recovery path. Until those gates pass, G2-M5 remains `not_started`.
+
+## Existing defensive war and wartime perk opportunity
+
+The R0178 durable defensive-war pair and the R0179 same-date perk result add
+two real source shapes, but they do not form one selector frame. R0178's
+frozen driver has SHA-256
+`E01A77CE72C4746875CD255FC82158A692069F7E52FE1A102DB62479492E2549`.
+At history 1763 it publishes player capital Province `2619`; history 1766
+publishes active defender War `16777231`, player Army `83886367` moving toward
+Province `2610`, and enemy Army `50331920` sieging Province `2619`. History
+1765 independently reads `2328` player soldiers and `1855` enemy soldiers.
+The durable frame is date `53202168`, history 1767.
+
+R0179's frozen report has SHA-256
+`A586D30588FF6546731A790DC6DB1ACE1A76F37530E960BE5D780DD99545493B`.
+Its private wartime policy consumed one native-final-legal
+`cutting_corners_perk`: unspent stewardship points changed `2 -> 1`, used
+points changed `4 -> 5`, and the date remained `53202168`. The action receipt
+is native frame `native:4`; the following war plan is a termination query and
+the ending read is `native:5`. R0178 and those later revisions cannot be
+spliced into a synthetic same-frame comparison.
+
+The source-reviewed and live-bounded ordering is:
+
+```mermaid
+flowchart TD
+  A["paused primary-defender war + exact lifestyle read"] --> W{"formal war plan has a gameplay step?"}
+  W -->|yes| P["war step keeps priority; no lifestyle proposal"]
+  W -->|no / query only| L{"native-final-legal existing-focus perk<br/>and unspent point observed?"}
+  L -->|yes| M["M5 analytic perk proposal<br/>one lifestyle-point commitment"]
+  L -->|no| Q["keep only observed war/query inputs"]
+  M --> R["future consumer: one zero-date typed perk<br/>then re-read and replan war"]
+  Q --> C{"continuation cost projection complete?"}
+  C -->|yes| D["M5 analytic defender-continuation proposal"]
+  C -->|no| X["fail closed; obtain missing read-only fields"]
+```
+
+The selector now has two strict adapters. Neither creates a legal candidate:
+
+- `active_defensive_war_continuation_proposal` requires the existing
+  `one-life-turn-v1` plan, the same active primary-defender WarID in plan and
+  snapshot, exact controllable player ArmyIDs plus explicit ArmyID-to-WarID
+  bindings, explicit
+  ally/character claims, measured incremental gold/reserve and a measured
+  projected supply margin. It records `war_slot_claim=0`, because the active
+  war already occupies its slot, while retaining ArmyIDs and stable
+  `active-war:*` commitment keys. A declaration still claims one new slot.
+- `wartime_lifestyle_perk_proposal` accepts only the existing private wartime
+  policy result. The LIFE snapshot, query source frame and action binding must
+  agree on actor, episode, date, snapshot and native/public revision. The
+  current focus, unspent/used points, owned perks and the unique final-legal
+  target must all be present. It claims one
+  `lifestyle-perk-point:<lifestyle>` resource and no gold, Army, ally, war slot
+  or game date. If the war planner has a gameplay step, the adapter rejects
+  the perk; it admits the R0179-style opportunity only while the plan is
+  query-only or has no step.
+
+The focused static fixture proves that an already active defensive war remains
+eligible at a one-war limit without claiming a second slot, and that an
+observed zero-date perk can be selected before a query-only continuation while
+preserving the war's Army and commitment cost in the evaluated rows. It also
+proves missing supply is rejected and a move/action-ready war plan suppresses
+the lifestyle proposal. Fixture identities and the `250000` supply margin
+are synthetic contract inputs; they are not R0178 measurements or live M5
+outcomes.
+
+R0178/R0179 still lack the exact same-frame continuation projection required
+by the adapter: current treasury/reserve, route-projected supply margin,
+complete ally/participant claims and a source-bound incremental gold cost.
+The minimum read-only addition is one private projection over the already
+published active WarID, player ArmyID/route, exact current supply source and
+formal war plan. It must return those fields with the full M5 frame identity;
+an unavailable component keeps the proposal absent. Capital siege progress,
+route ETA/contact and exit terms remain war-policy inputs rather than M5
+utility scores.
+
+Both adapters remain analytic. `M5FrameDispatcher` still returns
+`selected_step=None` and `formal_action_ready=false`. A later formal consumer
+must persist the selected reservation, submit at most one owning typed action,
+verify its independent postcondition, then re-read a new paused revision and
+resume the defense before any date advance. Static selection, R0179's private
+perk, and candidate counts do not advance G2-M5; it remains `not_started`.
