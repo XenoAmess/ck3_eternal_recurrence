@@ -8,8 +8,39 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import re
 
 from .index_revoice import PROFILE, binding, write_new
+
+
+def estimated_sentence_boundaries(text: str, duration: float) -> list[dict]:
+    """Keep captions readable when IndexTTS supplies no sentence marks.
+
+    These are duration-weighted script estimates, not phoneme or ASR alignment.
+    The original EdgeTTS boundaries must never be carried into a new voice.
+    """
+    sentences = [part.strip() for part in
+                 re.findall(r"[^。！？!?；;]+(?:[。！？!?；;]|$)", text) if part.strip()]
+    weights = [sum(char.isalnum() for char in part) for part in sentences]
+    if not sentences or not all(weights) or duration <= .12:
+        raise ValueError("Cannot estimate positive IndexTTS sentence intervals")
+    start_ticks = round(.12 * 10_000_000)
+    end_ticks = round(duration * 10_000_000)
+    total = sum(weights)
+    cursor = start_ticks
+    consumed = 0
+    result = []
+    for index, (sentence, weight) in enumerate(zip(sentences, weights)):
+        consumed += weight
+        stop = (end_ticks if index == len(sentences) - 1 else
+                start_ticks + round((end_ticks - start_ticks) * consumed / total))
+        if stop <= cursor:
+            raise ValueError("IndexTTS sentence interval rounded to zero")
+        result.append({"type": "SentenceBoundary", "offset": cursor,
+                       "duration": stop - cursor, "text": sentence,
+                       "timing_basis": "measured-audio-duration-and-script-character-weight"})
+        cursor = stop
+    return result
 
 
 def prepare_inputs(base: dict, synth: dict, *, base_spec: dict) -> tuple[dict, dict]:
@@ -38,12 +69,13 @@ def prepare_inputs(base: dict, synth: dict, *, base_spec: dict) -> tuple[dict, d
         row["audio"] = receipt["audio"]
         row["speech_duration_seconds"] = duration
         row["duration_seconds"] = math.ceil((duration + (1.6 if last_in_chapter else .55)) * 30) / 30
-        row.pop("sentence_boundaries", None)
+        row["sentence_boundaries"] = estimated_sentence_boundaries(row["zh"], duration)
     result = deepcopy(base)
     result["cues"] = rows
     result["provider"] = "index"
     result["actual_duration_seconds"] = sum(row["duration_seconds"] for row in rows)
-    result["caption_timing"] = "IndexTTS duration-bound proportional Chinese and English caption groups; no Edge sentence marks reused"
+    result["caption_timing"] = ("IndexTTS measured audio with duration-weighted Chinese script-sentence estimates; "
+                                "English remains proportional; no Edge sentence marks reused or exact alignment claimed")
     result["index_voice"] = {"reference": identity["reference"], "model_revision": identity["model_revision"],
                              "profile": PROFILE, "synthesis_receipt": binding(Path(synth["receipt_path"]))}
 
