@@ -2652,6 +2652,70 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
             [357, 33_554_657],
         )
 
+    def test_private_actual_hard_sides_bind_to_same_combat_and_order(self) -> None:
+        frame = _battle_frame()
+        rows = []
+        for index, role in enumerate(("attacker", "defender")):
+            side = frame[role]
+            rows.append(
+                {
+                    "side_index": index,
+                    "encounter_role": role,
+                    "ordered_army_ids": [
+                        army["public_cunit_id"] for army in side["ordered_armies"]
+                    ],
+                    "commander_character_id": (
+                        side["selected_commander_character_id"] or -1
+                    ),
+                    "own_modifier_raw": (12_345 if index == 0 else -1_234),
+                    "enemy_modifier_raw": (-6_789 if index == 0 else 5_678),
+                }
+            )
+        frame["actual_hard_casualty_sides"] = {
+            "status": "available",
+            "source_combat_id": frame["combat_id"],
+            "source_target_province_id": frame["province_id"],
+            "scale": 100_000,
+            "sides": rows,
+            "unavailable_reason": None,
+        }
+        self.assertEqual(
+            self.normalize(frame)["actual_hard_casualty_sides"],
+            frame["actual_hard_casualty_sides"],
+        )
+        changed = copy.deepcopy(frame)
+        changed["actual_hard_casualty_sides"]["sides"][1][
+            "ordered_army_ids"
+        ].reverse()
+        with self.assertRaisesRegex(ValueError, "actual CCombat identity"):
+            self.normalize(changed)
+        changed = copy.deepcopy(frame)
+        changed["actual_hard_casualty_sides"]["source_combat_id"] = 1
+        with self.assertRaisesRegex(ValueError, "identity or scale"):
+            self.normalize(changed)
+        changed = copy.deepcopy(frame)
+        changed["actual_hard_casualty_sides"]["sides"][1][
+            "own_modifier_raw"
+        ] = 2**63
+        with self.assertRaises(ValueError):
+            self.normalize(changed)
+
+        unavailable = copy.deepcopy(frame)
+        unavailable["actual_hard_casualty_sides"].update(
+            {
+                "status": "unavailable",
+                "sides": None,
+                "unavailable_reason": "native_actual_hard_side_modifier_unreadable",
+            }
+        )
+        self.assertEqual(
+            self.normalize(unavailable)["actual_hard_casualty_sides"]["status"],
+            "unavailable",
+        )
+        unavailable["actual_hard_casualty_sides"]["sides"] = rows
+        with self.assertRaisesRegex(ValueError, "unavailable result has raw"):
+            self.normalize(unavailable)
+
     def test_signed_generation_combat_id_is_not_missing(self) -> None:
         combat_id = -2_130_706_429
         frame = _with_combat_id(_battle_frame(), combat_id)

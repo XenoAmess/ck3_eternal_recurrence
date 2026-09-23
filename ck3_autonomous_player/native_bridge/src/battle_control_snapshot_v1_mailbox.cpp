@@ -419,6 +419,46 @@ bool ValidateActiveCombatRetreat(
          snapshot.legality.native_boolean == expected_legal;
 }
 
+bool ValidateActualHardSides(
+    const game::BattleControlSnapshot &snapshot) noexcept {
+  const auto &hard = snapshot.actual_hard_casualty_sides;
+  if (!hard.attempted) {
+    return !hard.available && hard.sides.empty() &&
+           hard.unavailable_reason.empty();
+  }
+  if (hard.source_combat_id != snapshot.combat_id ||
+      hard.source_target_province_id != snapshot.province_id) {
+    return false;
+  }
+  if (!hard.available) {
+    return hard.sides.empty() && !hard.unavailable_reason.empty();
+  }
+  if (!hard.unavailable_reason.empty() || hard.sides.size() != 2) {
+    return false;
+  }
+  const std::array<const game::BattleControlSideSnapshot *, 2> sides{
+      &snapshot.attacker, &snapshot.defender};
+  for (std::size_t index = 0; index < 2; ++index) {
+    const auto &row = hard.sides[index];
+    const auto &side = *sides[index];
+    if (row.side_index != static_cast<std::int32_t>(index) ||
+        row.encounter_role != (index == 0 ? "attacker" : "defender") ||
+        row.commander_character_id !=
+            side.selected_commander_character_id ||
+        row.ordered_army_ids.size() != side.ordered_armies.size()) {
+      return false;
+    }
+    for (std::size_t army_index = 0;
+         army_index < row.ordered_army_ids.size(); ++army_index) {
+      if (row.ordered_army_ids[army_index] !=
+          side.ordered_armies[army_index].public_cunit_id) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 bool ValidateSnapshot(const game::BattleControlSnapshot &snapshot) noexcept {
   const bool phase_valid =
       (snapshot.phase_raw == 0 && snapshot.phase == "maneuver") ||
@@ -444,7 +484,8 @@ bool ValidateSnapshot(const game::BattleControlSnapshot &snapshot) noexcept {
       !forced_winner_valid || snapshot.phase_day < 0 ||
       !ValidateActiveCombatRetreat(snapshot) ||
       !ValidateSide(snapshot.attacker, 0, "attacker", snapshot.combat_id) ||
-      !ValidateSide(snapshot.defender, 1, "defender", snapshot.combat_id)) {
+      !ValidateSide(snapshot.defender, 1, "defender", snapshot.combat_id) ||
+      !ValidateActualHardSides(snapshot)) {
     return false;
   }
 
@@ -753,6 +794,65 @@ bool AppendSide(std::string &output,
   output += ",\"side_strength_scale\":";
   if (!AppendNumber(output, side.side_strength_scale)) {
     return false;
+  }
+  output.push_back('}');
+  return true;
+}
+
+bool AppendActualHardSides(
+    std::string &output,
+    const game::BattleControlActualHardSides &hard) {
+  output += "{\"status\":";
+  AppendJsonString(output, hard.available ? "available" : "unavailable");
+  output += ",\"source_combat_id\":";
+  if (!AppendNumber(output, hard.source_combat_id)) {
+    return false;
+  }
+  output += ",\"source_target_province_id\":";
+  if (!AppendNumber(output, hard.source_target_province_id)) {
+    return false;
+  }
+  output += ",\"scale\":100000,\"sides\":";
+  if (!hard.available) {
+    output += "null";
+  } else {
+    output.push_back('[');
+    for (std::size_t index = 0; index < hard.sides.size(); ++index) {
+      if (index != 0) {
+        output.push_back(',');
+      }
+      const auto &row = hard.sides[index];
+      output += "{\"side_index\":";
+      if (!AppendNumber(output, row.side_index)) {
+        return false;
+      }
+      output += ",\"encounter_role\":";
+      AppendJsonString(output, row.encounter_role);
+      output += ",\"ordered_army_ids\":";
+      if (!AppendInt32Array(output, row.ordered_army_ids)) {
+        return false;
+      }
+      output += ",\"commander_character_id\":";
+      if (!AppendNumber(output, row.commander_character_id)) {
+        return false;
+      }
+      output += ",\"own_modifier_raw\":";
+      if (!AppendNumber(output, row.own_modifier_raw)) {
+        return false;
+      }
+      output += ",\"enemy_modifier_raw\":";
+      if (!AppendNumber(output, row.enemy_modifier_raw)) {
+        return false;
+      }
+      output.push_back('}');
+    }
+    output.push_back(']');
+  }
+  output += ",\"unavailable_reason\":";
+  if (hard.available) {
+    output += "null";
+  } else {
+    AppendJsonString(output, hard.unavailable_reason);
   }
   output.push_back('}');
   return true;
@@ -1078,6 +1178,13 @@ std::string SerializeBattleControlSnapshotV1(
   output += ",\"defender\":";
   if (!AppendSide(output, snapshot.defender)) {
     return {};
+  }
+  if (snapshot.actual_hard_casualty_sides.attempted) {
+    output += ",\"actual_hard_casualty_sides\":";
+    if (!AppendActualHardSides(output,
+                               snapshot.actual_hard_casualty_sides)) {
+      return {};
+    }
   }
   output += ",\"battle_control_ready\":true}";
   return output.size() <= kBattleControlSnapshotV1WireMaximumBytes

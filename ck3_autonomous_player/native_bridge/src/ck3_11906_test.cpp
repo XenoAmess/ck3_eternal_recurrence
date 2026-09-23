@@ -158,6 +158,8 @@ std::array<std::uintptr_t, 7> g_contact_province_vtable{};
 bool g_contact_prior_province_valid = true;
 bool g_battle_mutate_on_side_strength = false;
 std::int32_t g_battle_side_strength_calls = 0;
+std::int32_t g_battle_hard_side_modifier_calls = 0;
+bool g_battle_hard_side_modifier_fail = false;
 std::int32_t g_battle_regiment_strength_calls = 0;
 bool g_can_order_combat_retreat_result = true;
 bool g_can_order_combat_retreat_arguments_valid = true;
@@ -1287,6 +1289,24 @@ std::int32_t FixtureGetCombatSideStrength(void *combat_side) {
     return 654'321;
   }
   return -1;
+}
+
+std::int64_t *FixtureReadCombatHardSideModifier(
+    std::int64_t *output, void *combat_side, std::uint16_t modifier_enum) {
+  ++g_battle_hard_side_modifier_calls;
+  if (g_battle_hard_side_modifier_fail || output == nullptr) {
+    return nullptr;
+  }
+  if (combat_side == g_contact_combat_1.data() + 0x20) {
+    *output = modifier_enum == 0x18C ? 12'345 : -6'789;
+  } else if (combat_side == g_contact_combat_1.data() + 0x368) {
+    *output = modifier_enum == 0x18C ? -1'234 : 5'678;
+  } else {
+    return nullptr;
+  }
+  return modifier_enum == 0x18C || modifier_enum == 0x18D
+             ? output
+             : nullptr;
 }
 
 bool FixtureCanOrderCombatRetreat(void *combat, void *selected_army,
@@ -5329,6 +5349,9 @@ int main() {
   Store(g_enemy_internal_army, 0x128, contact_combat_1_id);
   Store(g_played_character, 0x1B8, static_cast<void *>(nullptr));
   g_battle_side_strength_calls = 0;
+  g_battle_hard_side_modifier_calls = 0;
+  bindings.read_combat_hard_side_modifier =
+      FixtureReadCombatHardSideModifier;
   g_battle_regiment_strength_calls = 0;
   g_can_order_combat_retreat_calls = 0;
   g_can_order_combat_retreat_arguments_valid = true;
@@ -5381,11 +5404,56 @@ int main() {
       battle.resolved_advantage_raw != -6'000'000'000 ||
       !battle.battle_control_ready ||
       g_battle_side_strength_calls != 4 ||
+      g_battle_hard_side_modifier_calls != 8 ||
       g_battle_regiment_strength_calls != 8 ||
       g_can_order_combat_retreat_calls != 2 ||
       !g_can_order_combat_retreat_arguments_valid) {
     return Fail("battle-control paused frame lost exact CCombat fields");
   }
+  const auto &hard_sides = battle.actual_hard_casualty_sides;
+  if (!hard_sides.attempted || !hard_sides.available ||
+      hard_sides.source_combat_id != contact_combat_1_id ||
+      hard_sides.source_target_province_id != war_objective_province_id ||
+      hard_sides.sides.size() != 2 ||
+      hard_sides.sides[0].side_index != 0 ||
+      hard_sides.sides[0].encounter_role != "attacker" ||
+      hard_sides.sides[0].commander_character_id != played_character_id ||
+      hard_sides.sides[0].ordered_army_ids !=
+          std::vector<std::int32_t>{player_army_id} ||
+      hard_sides.sides[0].own_modifier_raw != 12'345 ||
+      hard_sides.sides[0].enemy_modifier_raw != -6'789 ||
+      hard_sides.sides[1].side_index != 1 ||
+      hard_sides.sides[1].encounter_role != "defender" ||
+      hard_sides.sides[1].commander_character_id != -1 ||
+      hard_sides.sides[1].ordered_army_ids !=
+          std::vector<std::int32_t>{enemy_army_id} ||
+      hard_sides.sides[1].own_modifier_raw != -1'234 ||
+      hard_sides.sides[1].enemy_modifier_raw != 5'678) {
+    return Fail("battle-control actual hard side modifiers lost identity/raw");
+  }
+  g_battle_hard_side_modifier_fail = true;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      !battle.battle_control_ready ||
+      !battle.actual_hard_casualty_sides.attempted ||
+      battle.actual_hard_casualty_sides.available ||
+      !battle.actual_hard_casualty_sides.sides.empty() ||
+      battle.actual_hard_casualty_sides.unavailable_reason !=
+          "native_actual_hard_side_modifier_unreadable") {
+    return Fail("battle-control private hard modifier failure altered frame");
+  }
+  g_battle_hard_side_modifier_fail = false;
+  bindings.read_combat_hard_side_modifier = nullptr;
+  if (xar::ck3_11906::ReadBattleControlSnapshot(
+          bindings, battle_request, battle) !=
+          xar::game::BattleControlSnapshotStatus::available ||
+      !battle.battle_control_ready ||
+      battle.actual_hard_casualty_sides.attempted) {
+    return Fail("battle-control legacy fixture required the private helper");
+  }
+  bindings.read_combat_hard_side_modifier =
+      FixtureReadCombatHardSideModifier;
   if (battle.attacker.side_index != 0 ||
       battle.attacker.role != "attacker" ||
       battle.attacker.primary_participant_character_id !=

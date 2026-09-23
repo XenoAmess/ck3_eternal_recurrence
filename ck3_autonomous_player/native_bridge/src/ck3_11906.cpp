@@ -716,6 +716,8 @@ constexpr std::uintptr_t kGetCharacterModifierAggregatorRva = 0x26172C0;
 constexpr std::uintptr_t kReadCharacterModifierRva = 0x20AB950;
 constexpr std::uintptr_t kGetCombatRulesRva = 0x82DC40;
 constexpr std::uintptr_t kGetCombatSideStrengthRva = 0x23CC340;
+// Exact 1.19.0.6 CCombatSide modifier read used by 0x23CE080.
+constexpr std::uintptr_t kReadCombatHardSideModifierRva = 0x23C8FF0;
 constexpr std::uintptr_t kGetCombatRegimentStrengthRva = 0x23D2D70;
 constexpr std::uintptr_t kReadCounterCurrentChunkRva = 0x23D2B90;
 constexpr std::uintptr_t kResolveCounterClassesRva = 0x23CF1B0;
@@ -9975,6 +9977,9 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   result.get_combat_regiment_strength =
       reinterpret_cast<GetCombatRegimentStrength>(
           module + kGetCombatRegimentStrengthRva);
+  result.read_combat_hard_side_modifier =
+      reinterpret_cast<ReadCombatHardSideModifier>(
+          module + kReadCombatHardSideModifierRva);
   result.read_counter_current_chunk =
       reinterpret_cast<ReadCounterCurrentChunk>(
           module + kReadCounterCurrentChunkRva);
@@ -14675,6 +14680,60 @@ bool ReadBattleControlSnapshotSample(
           output.defender)) {
     output.diagnostic_reason = "defender_side_projection_failed";
     return false;
+  }
+  if (bindings.read_combat_hard_side_modifier != nullptr) {
+    auto &hard_sides = output.actual_hard_casualty_sides;
+    hard_sides.attempted = true;
+    hard_sides.source_combat_id = output.combat_id;
+    hard_sides.source_target_province_id = output.province_id;
+    try {
+      const std::array<const game::BattleControlSideSnapshot *, 2> snapshots{
+          &output.attacker, &output.defender};
+      const std::array<std::size_t, 2> offsets{
+          kCombatAttackerSideOffset, kCombatDefenderSideOffset};
+      std::vector<game::BattleControlActualHardSideRow> rows;
+      rows.reserve(2);
+      bool readable = true;
+      for (std::size_t index = 0; index < 2; ++index) {
+        auto *const side = static_cast<std::byte *>(combat) + offsets[index];
+        std::int64_t own_raw = 0;
+        std::int64_t enemy_raw = 0;
+        if (bindings.read_combat_hard_side_modifier(&own_raw, side,
+                                                     0x18C) != &own_raw ||
+            bindings.read_combat_hard_side_modifier(&enemy_raw, side,
+                                                     0x18D) != &enemy_raw ||
+            LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) !=
+                combat ||
+            LoadAt<std::int32_t>(
+                side, kCombatSideSelectedCommanderCharacterIdOffset) !=
+                snapshots[index]->selected_commander_character_id) {
+          readable = false;
+          break;
+        }
+        game::BattleControlActualHardSideRow row{};
+        row.side_index = static_cast<std::int32_t>(index);
+        row.encounter_role = index == 0 ? "attacker" : "defender";
+        row.commander_character_id =
+            snapshots[index]->selected_commander_character_id;
+        for (const auto &army : snapshots[index]->ordered_armies) {
+          row.ordered_army_ids.push_back(army.public_cunit_id);
+        }
+        row.own_modifier_raw = own_raw;
+        row.enemy_modifier_raw = enemy_raw;
+        rows.push_back(std::move(row));
+      }
+      if (readable) {
+        hard_sides.sides = std::move(rows);
+        hard_sides.available = true;
+      } else {
+        hard_sides.unavailable_reason =
+            "native_actual_hard_side_modifier_unreadable";
+      }
+    } catch (...) {
+      hard_sides.sides.clear();
+      hard_sides.unavailable_reason =
+          "native_actual_hard_side_modifier_exception";
+    }
   }
   if (!ReadActiveCombatRetreatProjection(
           bindings, game_state, combat, subject_unit, subject_native_army,

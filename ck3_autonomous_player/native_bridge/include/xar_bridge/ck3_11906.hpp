@@ -72,6 +72,8 @@ using ReadCharacterModifier = std::int64_t *(*)(
 using GetCombatRules = void *(*)();
 using GetCombatSideStrength = std::int32_t (*)(void *combat_side);
 using GetCombatRegimentStrength = std::int32_t (*)(void *combat_regiment);
+using ReadCombatHardSideModifier = std::int64_t *(*)(
+    std::int64_t *output, void *combat_side, std::uint16_t modifier_enum);
 using ReadCounterCurrentChunk = std::int64_t *(*)(
     const void *side_maa_entry, std::int64_t *output);
 using ResolveCounterClasses = void (*)(
@@ -368,6 +370,7 @@ struct Bindings {
   GetCombatRules get_combat_rules = nullptr;
   GetCombatSideStrength get_combat_side_strength = nullptr;
   GetCombatRegimentStrength get_combat_regiment_strength = nullptr;
+  ReadCombatHardSideModifier read_combat_hard_side_modifier = nullptr;
   ReadCounterCurrentChunk read_counter_current_chunk = nullptr;
   ResolveCounterClasses resolve_counter_classes = nullptr;
   GetCounterContextScale get_counter_context_scale = nullptr;

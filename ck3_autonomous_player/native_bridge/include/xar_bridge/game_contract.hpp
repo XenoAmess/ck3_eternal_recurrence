@@ -1329,6 +1329,30 @@ struct ActiveCombatRetreatLegalitySnapshot {
       default;
 };
 
+struct BattleControlActualHardSideRow {
+  std::int32_t side_index = -1;
+  std::string encounter_role;
+  std::vector<std::int32_t> ordered_army_ids;
+  std::int32_t commander_character_id = -1;
+  std::int64_t own_modifier_raw = 0;
+  std::int64_t enemy_modifier_raw = 0;
+
+  friend bool operator==(const BattleControlActualHardSideRow &,
+                         const BattleControlActualHardSideRow &) = default;
+};
+
+struct BattleControlActualHardSides {
+  bool attempted = false;
+  bool available = false;
+  std::int32_t source_combat_id = -1;
+  std::int32_t source_target_province_id = -1;
+  std::vector<BattleControlActualHardSideRow> sides;
+  std::string unavailable_reason;
+
+  friend bool operator==(const BattleControlActualHardSides &,
+                         const BattleControlActualHardSides &) = default;
+};
+
 struct BattleControlSnapshot {
   BattleControlSnapshotStatus status =
       BattleControlSnapshotStatus::unavailable;
@@ -1369,6 +1393,8 @@ struct BattleControlSnapshot {
   std::int64_t resolved_advantage_raw = 0;
   BattleControlSideSnapshot attacker;
   BattleControlSideSnapshot defender;
+  // Private exact-build diagnostic. It does not change battle_control_ready.
+  BattleControlActualHardSides actual_hard_casualty_sides;
   bool battle_control_ready = false;
 
   friend bool operator==(const BattleControlSnapshot &,

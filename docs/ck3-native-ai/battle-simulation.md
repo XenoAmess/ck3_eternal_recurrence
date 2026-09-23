@@ -344,6 +344,19 @@ outgoing_damage = effective_attack_after_counter_and_modifiers
   `CCombat`/tick 对照才能把 local-shell raw 当作已验证的实战 hard conversion 输入。
   `0x2309FE8` 与 `0x230A002` 交换双方后两次进入 `0x23CE080`，所以每侧都需分别读
   `0x18C` 与 `0x18D`，不能只保存一次 defending-own/attacking-enemy 的二元组。
+  [static-ready; live pending] `COMBAT-ACTUAL-SIDE-DIAGNOSTIC` 在既有
+  `query-battle-control-snapshot-v1-N` 的 paused application-main 双采样内，复用
+  generation-valid CombatID、`CCombat+0x20/+0x368` 双 side、`side+0xB8`
+  backlink、有序 CUnit 与 commander 身份验证，再用同一 exact-build
+  `0x23C8FF0(out, actual_side, enum)` 分别读取两侧的 `0x18C/0x18D`。
+  `actual_hard_casualty_sides` 是可选私有诊断：读取失败返回 `unavailable`
+  且不发布四 raw，旧 battle-control 帧仍合法；它不改变 `battle_control_ready`。
+  尚无同帧原版 actual-side 与 v3 local-shell 数值对照，二者相等、伤亡逐日
+  parity、Monte Carlo 胜率和进攻授权均未成立。候选 R0194 h1251
+  原件 SHA `C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA`
+  是 Robert 战中 paused 配对，但旧轮次 battle-control 查询在执行前超时；须先解除
+  此阻塞，再以新 DLL 做 0 动作、0 日期的同帧读回。历史 final edge `2643→2638`
+  仅由原 driver route preview/contact 证明，新帧仍须核对实际双方身份。
   作用点和截断顺序是：
 
   ```text
@@ -438,6 +451,8 @@ flowchart TD
     DA --> EG
     EG -->|levies +0x28| LF["div damage / side / toughness<br/>then mul current"]
     EG -->|men_at_arms +0x40| MF["mul current * damage<br/>then div side / toughness"]
+    AS["actual CCombat side0/1<br/>0x18C and 0x18D readout"] --> CM
+    LS["v3 local-shell side0/1<br/>private 0x18C and 0x18D"] -.->|same-frame parity unknown| AS
     CM["base 0.3 × (1 + own 0x18C<br/>+ enemy 0x18D + winter 0x19F)"] --> HCV["hard conversion Q100000"]
     LF --> TC["clamp total casualties to current"]
     MF --> TC

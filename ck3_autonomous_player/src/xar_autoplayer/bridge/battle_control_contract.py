@@ -52,6 +52,23 @@ _SNAPSHOT_KEYS = {
     "attacker",
     "defender",
 }
+_OPTIONAL_SNAPSHOT_KEYS = {"actual_hard_casualty_sides"}
+_ACTUAL_HARD_KEYS = {
+    "status",
+    "source_combat_id",
+    "source_target_province_id",
+    "scale",
+    "sides",
+    "unavailable_reason",
+}
+_ACTUAL_HARD_SIDE_KEYS = {
+    "side_index",
+    "encounter_role",
+    "ordered_army_ids",
+    "commander_character_id",
+    "own_modifier_raw",
+    "enemy_modifier_raw",
+}
 
 _SIDE_KEYS = {
     "side_index",
@@ -197,7 +214,11 @@ def normalize_battle_control_snapshot_v1(
     expected_revision = _positive_uint64(
         expected_snapshot_revision, "expected_snapshot_revision"
     )
-    if not isinstance(value, dict) or set(value) != _SNAPSHOT_KEYS:
+    if (
+        not isinstance(value, dict)
+        or not _SNAPSHOT_KEYS <= set(value)
+        or set(value) - _SNAPSHOT_KEYS - _OPTIONAL_SNAPSHOT_KEYS
+    ):
         raise ValueError("native battle_control_snapshot has a malformed schema")
     if (
         value.get("schema_version") != 1
@@ -413,7 +434,17 @@ def normalize_battle_control_snapshot_v1(
             "battle_control_snapshot active-retreat stored-order scope disagrees"
         )
 
-    return {
+    actual_hard = None
+    if "actual_hard_casualty_sides" in value:
+        actual_hard = _normalize_actual_hard_sides(
+            value["actual_hard_casualty_sides"],
+            combat_id=combat_id,
+            province_id=province_id,
+            attacker=attacker,
+            defender=defender,
+        )
+
+    result = {
         "schema_version": 1,
         "contract_stage": "production_exact_ongoing_combat",
         "status": "available",
@@ -454,6 +485,98 @@ def normalize_battle_control_snapshot_v1(
         "resolved_advantage_raw": resolved_advantage_raw,
         "attacker": attacker,
         "defender": defender,
+    }
+    if actual_hard is not None:
+        result["actual_hard_casualty_sides"] = actual_hard
+    return result
+
+
+def _normalize_actual_hard_sides(
+    value: object,
+    *,
+    combat_id: int,
+    province_id: int,
+    attacker: dict[str, object],
+    defender: dict[str, object],
+) -> dict[str, object]:
+    name = "battle_control_snapshot.actual_hard_casualty_sides"
+    if not isinstance(value, dict) or set(value) != _ACTUAL_HARD_KEYS:
+        raise ValueError(f"{name} has a malformed schema")
+    source_combat_id = _full_component_id(
+        value["source_combat_id"], f"{name}.source_combat_id"
+    )
+    source_province_id = _positive_int32(
+        value["source_target_province_id"],
+        f"{name}.source_target_province_id",
+    )
+    if (
+        source_combat_id != combat_id
+        or source_province_id != province_id
+        or value["scale"] != 100_000
+        or isinstance(value["scale"], bool)
+    ):
+        raise ValueError(f"{name} identity or scale disagrees")
+    status = value["status"]
+    if status == "unavailable":
+        reason = value["unavailable_reason"]
+        if value["sides"] is not None or not isinstance(reason, str) or not reason:
+            raise ValueError(f"{name} unavailable result has raw sides")
+        return dict(value)
+    if status != "available" or value["unavailable_reason"] is not None:
+        raise ValueError(f"{name} status disagrees")
+    sides = value["sides"]
+    if not isinstance(sides, list) or len(sides) != 2:
+        raise ValueError(f"{name} requires both actual sides")
+    normalized_sides = []
+    for index, (row, battle_side) in enumerate(
+        zip(sides, (attacker, defender), strict=True)
+    ):
+        row_name = f"{name}.sides[{index}]"
+        if not isinstance(row, dict) or set(row) != _ACTUAL_HARD_SIDE_KEYS:
+            raise ValueError(f"{row_name} has a malformed schema")
+        side_index = _signed_int32(row["side_index"], f"{row_name}.side_index")
+        role = "attacker" if index == 0 else "defender"
+        commander = _signed_int32(
+            row["commander_character_id"],
+            f"{row_name}.commander_character_id",
+        )
+        army_ids = _positive_int32_list(
+            row["ordered_army_ids"], f"{row_name}.ordered_army_ids"
+        )
+        expected_army_ids = [
+            army["public_cunit_id"] for army in battle_side["ordered_armies"]
+        ]
+        expected_commander = (
+            battle_side["selected_commander_character_id"] or -1
+        )
+        if (
+            side_index != index
+            or row["encounter_role"] != role
+            or commander != expected_commander
+            or army_ids != expected_army_ids
+        ):
+            raise ValueError(f"{row_name} actual CCombat identity disagrees")
+        normalized_sides.append(
+            {
+                "side_index": side_index,
+                "encounter_role": role,
+                "ordered_army_ids": army_ids,
+                "commander_character_id": commander,
+                "own_modifier_raw": _signed_int64(
+                    row["own_modifier_raw"], f"{row_name}.own_modifier_raw"
+                ),
+                "enemy_modifier_raw": _signed_int64(
+                    row["enemy_modifier_raw"], f"{row_name}.enemy_modifier_raw"
+                ),
+            }
+        )
+    return {
+        "status": "available",
+        "source_combat_id": source_combat_id,
+        "source_target_province_id": source_province_id,
+        "scale": 100_000,
+        "sides": normalized_sides,
+        "unavailable_reason": None,
     }
 
 

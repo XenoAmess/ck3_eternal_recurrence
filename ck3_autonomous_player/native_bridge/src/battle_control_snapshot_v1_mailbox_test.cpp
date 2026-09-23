@@ -265,6 +265,60 @@ int main() {
       !json.ends_with("\"battle_control_ready\":true}")) {
     return Fail("battle-control serializer omitted a frozen ABI field");
   }
+  if (Contains(json, "\"actual_hard_casualty_sides\"")) {
+    return Fail("battle-control changed the legacy frame without a readout");
+  }
+  auto actual_hard = complete;
+  actual_hard.actual_hard_casualty_sides.attempted = true;
+  actual_hard.actual_hard_casualty_sides.available = true;
+  actual_hard.actual_hard_casualty_sides.source_combat_id =
+      complete.combat_id;
+  actual_hard.actual_hard_casualty_sides.source_target_province_id =
+      complete.province_id;
+  actual_hard.actual_hard_casualty_sides.sides = {
+      {0, "attacker", {complete.subject_public_cunit_id}, -1,
+       12'345, -6'789},
+      {1, "defender", {357}, 201, -1'234, 5'678},
+  };
+  const auto actual_encoded =
+      SerializeBattleControlSnapshotV1(actual_hard);
+  if (actual_encoded.empty() ||
+      !Contains(actual_encoded,
+                "\"actual_hard_casualty_sides\":{\"status\":\"available\","
+                "\"source_combat_id\":335544325,"
+                "\"source_target_province_id\":2586,\"scale\":100000,"
+                "\"sides\":[{\"side_index\":0,"
+                "\"encounter_role\":\"attacker\","
+                "\"ordered_army_ids\":[83886341],"
+                "\"commander_character_id\":-1,"
+                "\"own_modifier_raw\":12345,"
+                "\"enemy_modifier_raw\":-6789}") ||
+      !Contains(actual_encoded,
+                "\"side_index\":1,\"encounter_role\":\"defender\","
+                "\"ordered_army_ids\":[357],"
+                "\"commander_character_id\":201,"
+                "\"own_modifier_raw\":-1234,"
+                "\"enemy_modifier_raw\":5678}]")) {
+    return Fail("battle-control actual hard side readout lost raw or identity");
+  }
+  actual_hard.actual_hard_casualty_sides.available = false;
+  actual_hard.actual_hard_casualty_sides.sides.clear();
+  actual_hard.actual_hard_casualty_sides.unavailable_reason =
+      "native_actual_hard_side_modifier_unreadable";
+  const auto actual_failure =
+      SerializeBattleControlSnapshotV1(actual_hard);
+  if (actual_failure.empty() ||
+      !Contains(actual_failure,
+                "\"actual_hard_casualty_sides\":{\"status\":\"unavailable\"") ||
+      !Contains(actual_failure,
+                "\"sides\":null,\"unavailable_reason\":"
+                "\"native_actual_hard_side_modifier_unreadable\"}")) {
+    return Fail("battle-control fabricated hard raw after a failed read");
+  }
+  actual_hard.actual_hard_casualty_sides.source_combat_id = 99;
+  if (!SerializeBattleControlSnapshotV1(actual_hard).empty()) {
+    return Fail("battle-control admitted a mismatched hard readout combat");
+  }
 
   // Full component IDs are signed dword bit patterns.  A generation byte
   // with its high bit set is negative in JSON but remains a valid identity;
