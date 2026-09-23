@@ -15,6 +15,7 @@ from xar_promo.process import CommandSpec, run_command
 from .common import binding, load, verify, write_new
 from .finalize import add_chapters
 from .capture_media import load_capture_spec, prepare_capture_clip
+from .capture_overlay import label_capture_clip
 
 
 def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffprobe="ffprobe"):
@@ -28,6 +29,7 @@ def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffpr
     if len(rows) != len(result["cues"]) or any("capture_clip" in row for row in rows.values()):
         raise ValueError("Expected unique, not-yet-mapped narration cues")
     specs = load_capture_spec(spec_path)
+    v3 = "v3_visuals" in result
     for spec in specs:
         if spec["cue_id"] not in rows:
             raise ValueError(f"Capture spec names unknown cue: {spec['cue_id']}")
@@ -52,9 +54,21 @@ def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffpr
         attempt = Path(root) / "capture" / f"{index:03d}"
         try:
             prepared = prepare_capture_clip(spec, attempt / "clip.mp4", ffmpeg, ffprobe, attempt / "audit")
+            original_controls = []
+            if v3:
+                case_id = {"case-w-bundle-r1": "CASE-W", "case-c-bundle-r2": "CASE-C"}.get(
+                    Path(spec["bundle_root"]).name)
+                if case_id is None or spec["evidence_role"] != "context":
+                    raise ValueError("V3 accepts only reviewed CASE-W/C context clips")
+                original_controls = [prepared["media"]["path"], prepared["receipt"]["path"]]
+                prepared = label_capture_clip(prepared, case_id=case_id, cue_id=spec["cue_id"],
+                                              output_root=attempt / "context-label", ffmpeg=ffmpeg,
+                                              ffprobe=ffprobe)
             raw_id = keep(prepared["source_recording"]["path"], "capture-raw-", "capture-original-recording")
             controls = [keep(item["preserved"]["path"], "capture-control-", "capture-control-evidence")
                         for item in prepared["controls"]]
+            controls.extend(keep(path, "capture-control-", "capture-original-prepared-clip")
+                            for path in original_controls)
             media_id = keep(prepared["media"]["path"], "capture-clip-", "capture-continuous-clip", "derived")
             receipt_id = keep(prepared["receipt"]["path"], "capture-receipt-", "capture-clip-receipt", "derived")
             row = rows[spec["cue_id"]]
@@ -103,6 +117,7 @@ def main():
     parser.add_argument("--run-root", type=Path, required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--capture-spec", type=Path, help="Existing GREEN capture bundles and cue selections; prepare and preserve continuous clips")
+    parser.add_argument("--v3-assets", type=Path, help="Hash-bound CASE-R/W original frame context manifest for V3")
     parser.add_argument("--full-film", action="store_true", help="Require all configured chapters and render the complete review film")
     args = parser.parse_args()
     args.project = args.project.resolve()
@@ -144,6 +159,12 @@ def main():
         cli(*(([sub] if sub else []) + ["--help"]))
     inputs = load(args.inputs)
     rows = inputs["cues"]
+    v3 = len(rows) == 45 and all(row["id"] == f"V3-{index:02d}" and row["shot_id"] == f"S3-{index:02d}"
+                                   for index, row in enumerate(rows, 1))
+    if any(str(row["id"]).startswith("V3-") for row in rows) and not v3:
+        raise ValueError("V3 production requires all 45 bound cues in order")
+    if v3 != bool(args.v3_assets):
+        raise ValueError("V3 production requires --v3-assets; older cuts do not accept it")
     selected = {row["chapter_id"] for row in rows}
     config = load(args.project / "promo-project.json")
     if args.full_film:
@@ -164,15 +185,43 @@ def main():
     preserve(args.inputs, "narration-production-source-v1", "measured-narration-inputs")
     for row in rows:
         preserve(verify(row["audio"]), row["audio_artifact_id"], "narration-source")
-    for name, identifier, role in [
-        ("claims.json", "film-claims-v1", "claim-plan"),
+    project_sources = [
         ("source-lock.json", "film-source-lock-v1", "source-lock"),
         ("longform/director-plan-v3.md", "film-director-v3", "director-plan"),
-        ("research-first-claim-ledger-20260923.json", "film-claim-ledger-v1", "claim-ledger"),
-    ]:
+    ]
+    if not v3:
+        project_sources.extend([
+            ("claims.json", "film-claims-v1", "claim-plan"),
+            ("research-first-claim-ledger-20260923.json", "film-claim-ledger-v1", "claim-ledger"),
+        ])
+    for name, identifier, role in project_sources:
         preserve(args.project / name, identifier, role)
     for path in sorted((args.project / "integration/src/war_ai_promo").glob("*.py")):
         preserve(path, "producer-" + path.stem, "project-producer")
+    if v3:
+        ledger = args.project / "longform/v3/evidence-visual-ledger.json"
+        if binding(ledger)["sha256"] != inputs["v3_evidence_ledger"]["sha256"]:
+            raise ValueError("V3 bound narration and current evidence ledger differ")
+        preserve(ledger, "v3-evidence-ledger-v1", "evidence-claim-and-visual-ledger")
+        preserve(args.project / "longform/v3/visual-bindings-plan.json", "v3-visual-plan-v1", "editorial-visual-plan")
+        frame_manifest = args.v3_assets.resolve()
+        frames = load(frame_manifest)
+        if frames.get("schema") != "ck3-war-ai.v3-context-frames.v1" or set(frames["assets"]) != {"CASE-R", "CASE-W"}:
+            raise ValueError("V3 context manifest must bind exact CASE-R and CASE-W original frames")
+        preserve(frame_manifest, "v3-frame-manifest-v1", "original-frame-manifest")
+        frame_ids = {}
+        for case_id, frame in frames["assets"].items():
+            source = Path(frame["path"])
+            actual = binding(source)
+            if (frame.get("case_id") != case_id or frame.get("evidence_role") != "context-only-original-frame"
+                    or any(frame.get(key) != actual[key] for key in ("bytes", "sha256"))):
+                raise ValueError(f"V3 original frame binding changed: {case_id}")
+            identifier = "v3-original-frame-" + case_id
+            preserve(source, identifier, "original-ck3-context-frame")
+            frame_ids[case_id] = identifier
+        inputs["v3_visuals"] = {"ledger_artifact_id": "v3-evidence-ledger-v1",
+                                "asset_manifest_artifact_id": "v3-frame-manifest-v1",
+                                "frame_artifact_ids": frame_ids}
     if args.capture_spec:
         inputs = prepare_captures(inputs, args.capture_spec.resolve(), root,
             lambda path, identifier, role, collection: preserve(path, identifier, role, collection, check=False),

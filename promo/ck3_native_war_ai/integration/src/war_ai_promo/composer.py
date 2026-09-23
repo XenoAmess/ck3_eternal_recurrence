@@ -59,7 +59,14 @@ def capture_visual(row, run, run_path):
         raise ValueError(f"Capture mapping differs from its receipt: {row['id']}")
     if not set(capture["claim_ids"]).issubset(row["claim_ids"]):
         raise ValueError(f"Capture claims are not attached to this cue: {row['id']}")
-    if receipt.get("schema") == "ck3-war-ai.prepared-capture-clip.v2":
+    if receipt.get("schema") not in {"ck3-war-ai.prepared-capture-clip.v2", "ck3-war-ai.labeled-capture-clip.v1"}:
+        raise ValueError("Unknown capture clip receipt schema")
+    if receipt.get("schema") == "ck3-war-ai.labeled-capture-clip.v1":
+        if (receipt.get("case_id") not in {"CASE-W", "CASE-C"}
+                or not receipt.get("label_text") or receipt.get("native_ai_causality_verified") is not False
+                or receipt.get("human_1x_review_performed") is not False):
+            raise ValueError("V3 context label or evidence limit is missing")
+    if receipt.get("schema") in {"ck3-war-ai.prepared-capture-clip.v2", "ck3-war-ai.labeled-capture-clip.v1"}:
         sampling = receipt.get("delivery_sampling", {})
         if (receipt.get("fps") != 30 or sampling.get("output_fps") != 30
                 or sampling.get("playback_speed") != 1
@@ -94,6 +101,31 @@ def compose(config, run, *, config_path, run_path, workdir, adapter_factory,
         raise ValueError("media_scope must match the presence of preserved capture clips")
     if any(row["speech_duration_seconds"] <= 0 or row["duration_seconds"] < row["speech_duration_seconds"] for row in rows):
         raise ValueError("Invalid measured speech/segment duration")
+    v3 = all(row["id"] == f"V3-{index:02d}" and row["shot_id"] == f"S3-{index:02d}"
+             for index, row in enumerate(rows, 1)) and len(rows) == 45
+    if any(str(row["id"]).startswith("V3-") for row in rows) and not v3:
+        raise ValueError("V3 composition requires all 45 cues in exact order")
+    v3_ledger = None
+    v3_assets = None
+    if v3:
+        config = inputs.get("v3_visuals", {})
+        if set(config) != {"ledger_artifact_id", "asset_manifest_artifact_id", "frame_artifact_ids"}:
+            raise ValueError("V3 preserved visual inputs are incomplete")
+        v3_ledger = artifact(run, run_path, config["ledger_artifact_id"])
+        if binding(v3_ledger)["sha256"] != inputs["v3_evidence_ledger"]["sha256"]:
+            raise ValueError("Preserved V3 evidence ledger differs from narration binding")
+        manifest = load(artifact(run, run_path, config["asset_manifest_artifact_id"]))
+        if manifest.get("schema") != "ck3-war-ai.v3-context-frames.v1" or set(manifest["assets"]) != {"CASE-R", "CASE-W"}:
+            raise ValueError("V3 original frame manifest is incomplete")
+        v3_assets = {}
+        for case_id, asset in manifest["assets"].items():
+            preserved = artifact(run, run_path, config["frame_artifact_ids"][case_id])
+            if asset.get("case_id") != case_id or asset.get("evidence_role") != "context-only-original-frame":
+                raise ValueError("V3 source frame has wrong case or role")
+            actual = binding(preserved)
+            if any(actual[key] != asset[key] for key in ("bytes", "sha256")):
+                raise ValueError("Preserved V3 frame differs from source manifest")
+            v3_assets[case_id] = {**asset, "path": preserved.as_posix()}
     ffmpeg = os.environ.get("WAR_PROMO_FFMPEG", "ffmpeg")
     ffprobe = os.environ.get("WAR_PROMO_FFPROBE", "ffprobe")
     segments = []
@@ -118,7 +150,8 @@ def compose(config, run, *, config_path, run_path, workdir, adapter_factory,
 
     def resolve_visual(source, *, workdir):
         target = workdir / source.path
-        return render_visual(by_id[source.source_id], target, ffmpeg, workdir)
+        return render_visual(by_id[source.source_id], target, ffmpeg, workdir,
+                             v3_ledger=v3_ledger, v3_assets=v3_assets)
 
     def visual_probe(path):
         result = probe_media(ffprobe, path, audit_directory=Path(workdir) / "audit" / "probe" / path.stem)

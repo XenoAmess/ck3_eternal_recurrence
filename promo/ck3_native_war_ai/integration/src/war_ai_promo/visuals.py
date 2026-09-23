@@ -95,7 +95,7 @@ def make_frame(row, destination, phase):
     return make_teaching_frame(row, destination, phase)
 
 
-def render_visual(row, destination, ffmpeg, workdir):
+def render_visual(row, destination, ffmpeg, workdir, *, v3_ledger=None, v3_assets=None):
     """Three teaching states, short dissolves, exact cue duration; preserve PNGs."""
     import json
     destination = Path(destination)
@@ -108,11 +108,21 @@ def render_visual(row, destination, ffmpeg, workdir):
     folder.mkdir(parents=True, exist_ok=False)
     images = [folder / f"state-{n}.png" for n in range(3)]
     frame_maker = make_frame
-    if row["chapter_id"] == "help":
+    v3 = str(row["id"]).startswith("V3-")
+    if v3:
+        if v3_ledger is None or v3_assets is None or row.get("shot_id") != "S3-" + row["id"][-2:]:
+            raise ValueError("V3 requires its exact evidence ledger and preserved frame bindings")
+        from .v3_visuals import make_v3_frame
+        def frame_maker(cue, path, phase):
+            return make_v3_frame(cue, path, phase, ledger_path=v3_ledger, assets=v3_assets)
+    elif row["chapter_id"] == "help":
         from .help_visuals import make_help_frame
         frame_maker = make_help_frame
+    receipts = []
     for n, path in enumerate(images):
-        frame_maker(row, path, n)
+        receipt = frame_maker(row, path, n)
+        if v3 and receipt is not None:
+            receipts.append(receipt)
     fade = min(.45, duration / 12)
     length = (duration + 2 * fade) / 3
     offset1 = length - fade
@@ -126,13 +136,15 @@ def render_visual(row, destination, ffmpeg, workdir):
         f"[s0][s1]xfade=transition=fade:duration={fade:.6f}:offset={offset1:.6f}[ab]",
         f"[ab][s2]xfade=transition=fade:duration={fade:.6f}:offset={offset2:.6f},format=yuv420p[v]",
     ])
-    plan = {"kind": "authored-teaching-visual", "cue_id": row["id"],
+    plan = {"kind": "evidence-scoped-v3-visual" if v3 else "authored-teaching-visual", "cue_id": row["id"],
             "shot_id": row["shot_id"], "duration_seconds": duration,
             "states": [str(path) for path in images], "transition": "fade",
             "transition_seconds": fade, "state_offsets_seconds": [0, offset1, offset2],
             "resolution": [2560, 1440], "fps": 30, "subtitle_safe_top": 1120,
-            "evidence_scope": "Teaching diagrams; no live state or human approval inferred."}
-    plan["visual_style"] = "war-folio-v3; original procedural art; no CK3 asset or live provenance"
+            "evidence_scope": "V3 ledger-scoped rule or case-context visual; no causal or human approval inferred." if v3 else "Teaching diagrams; no live state or human approval inferred."}
+    plan["visual_style"] = "war-folio-v3; hash-bound original CK3 frame context or sourced paper diagram" if v3 else "war-folio-v3; original procedural art; no CK3 asset or live provenance"
+    if v3:
+        plan["frame_receipts"] = receipts
     (folder / "visual-plan.json").write_bytes((json.dumps(plan, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
     destination.parent.mkdir(parents=True, exist_ok=True)
     argv = [str(ffmpeg), "-nostdin", "-n", "-hide_banner", "-loglevel", "warning"] + inputs + [

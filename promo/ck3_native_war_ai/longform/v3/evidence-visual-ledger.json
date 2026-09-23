@@ -1,0 +1,1020 @@
+{
+  "schema": "ck3-war-ai.v3-evidence-visual-ledger.v1",
+  "status": "editorial-planning-no-film-signoff",
+  "repository_source_paths_relative": true,
+  "external_media_path_local": true,
+  "spoken_script_path": "promo/ck3_native_war_ai/longform/v3/narration-spoken.json",
+  "spoken_script_sha256": "eb00ababda3d284b69a2e0c4aca721cc88d9a76ca44cf62ce7fae7a1f7f8875d",
+  "director_narration_path": "promo/ck3_native_war_ai/longform/narration-v3-review.md",
+  "director_narration_sha256": "625c8c7f2b3c0c2ee3a772f9e895df0fcb4e9e75d101a6d0e1ba1785832d10f1",
+  "case_documents": {
+    "CASE-R": {
+      "path": "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md",
+      "sha256": "761aa7b17bad42e4542c9231b2affd54d5d33c5d7c6e0248c132c3c2eb49bf08"
+    },
+    "CASE-W": {
+      "path": "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md",
+      "sha256": "1cf54c335229f02f02d421c1fbcd5fb68422fee0000ecef561093a04fc69fb92"
+    },
+    "CASE-C": {
+      "path": "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md",
+      "sha256": "251669974cbd6532b18073ecad8dda31d25b35eda21dc64ec946d0e0b8bb6731"
+    }
+  },
+  "case_w_media_bundle": {
+    "path": "D:/workspace/ck3_war_film_research_20260923/case-w-bundle-r1/report.json",
+    "sha256": "fe1b2f35e34660606644d8ad44d92ece18778a71f11860b2b915aea270af01c7",
+    "result": "GREEN",
+    "native_ai_causality_verified": false,
+    "frame_synchronous_query_proven": false,
+    "human_1x_review_performed": false
+  },
+  "case_c_result": "30 game days observed; no sampled in_combat, no CombatID; pending interaction stopped window",
+  "state_counts": {
+    "exact-live-case": 5,
+    "illustrative-rule-scenario": 14,
+    "unbound": 0,
+    "verified-static": 26
+  },
+  "state_meaning": {
+    "verified-static": "The cited native source supports the stated rule; no live decision outcome is implied.",
+    "exact-live-case": "Only claim_scope is bound to the named game readback; limits remain open.",
+    "illustrative-rule-scenario": "Author-provided numbers or roles demonstrate a verified rule and must be labelled as an example.",
+    "unbound": "The cue needs a real causal shot or rewritten scope before final film use."
+  },
+  "cues": [
+    {
+      "id": "V3-01",
+      "state": "exact-live-case",
+      "asset_family": "robert-hud-data-card",
+      "asset_direction": "CASE-R paused Robert HUD with separate 009/010 native power cards.",
+      "case_refs": [
+        "CASE-R"
+      ],
+      "claim_scope": "Two exact same-pause target assessments and effective-defender redirection.",
+      "limits": "The source video preceded the queries; no frame-synchronous calculation or natural AI declaration.",
+      "shot_id": "S3-01",
+      "spoken_source_links": [
+        {
+          "label": "结果页",
+          "path": "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-02",
+      "state": "verified-static",
+      "asset_family": "robert-hud-data-card",
+      "asset_direction": "CASE-R map as introduction context; chapter list explicitly distinguishes real readbacks from static rules and scenarios.",
+      "case_refs": [
+        "CASE-R",
+        "CASE-W",
+        "CASE-C"
+      ],
+      "claim_scope": "Editorial route through declaration, action, battle accounting and peace.",
+      "limits": "CASE-C has no sampled contact; an opening montage must not suggest all stages were filmed in one war.",
+      "shot_id": "S3-02",
+      "spoken_source_links": [
+        {
+          "label": "导演案 v3",
+          "path": "promo/ck3_native_war_ai/longform/director-plan-v3.md"
+        },
+        {
+          "label": "CASE-R 结果页",
+          "path": "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md",
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md",
+        "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-03",
+      "state": "exact-live-case",
+      "asset_family": "robert-hud-data-card",
+      "asset_direction": "Show CASE-R nine legal declaration rows, then a clearly static AI-choice tree.",
+      "case_refs": [
+        "CASE-R"
+      ],
+      "claim_scope": "Nine currently legal declarations from one paused Robert state.",
+      "limits": "Legal rows are not AI-ranked candidates or a naturally chosen war.",
+      "shot_id": "S3-03",
+      "spoken_source_links": [
+        {
+          "label": "宣战树",
+          "path": "docs/ck3-native-ai/war-declaration.md"
+        },
+        {
+          "label": "CASE-R",
+          "path": "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-04",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Use game treasury and declaration UI as context beside sourced reserve and cost gates.",
+      "case_refs": [],
+      "claim_scope": "War reserves and specific CB/interaction costs are distinct gates.",
+      "limits": "No live Robert AI budget value was collected; do not fill reserves from visible cash.",
+      "shot_id": "S3-04",
+      "spoken_source_links": [
+        {
+          "label": "准备金与候选成本",
+          "path": "docs/ck3-native-ai/war-film-declaration-inputs-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-05",
+      "state": "exact-live-case",
+      "asset_family": "case-w-query-data-card",
+      "asset_direction": "Place CASE-W U22 2570 soldiers beside its queried 73640 power on a labelled game frame.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "One same-frame observed soldier-count versus AI power pair, supporting their numerical distinction.",
+      "limits": "The example does not reconstruct every troop-category weight or turn power into a win chance.",
+      "shot_id": "S3-05",
+      "spoken_source_links": [
+        {
+          "label": "军力缓存",
+          "path": "docs/ck3-native-ai/war-film-declaration-power-cache-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-06",
+      "state": "exact-live-case",
+      "asset_family": "robert-hud-data-card",
+      "asset_direction": "Two CASE-R target-to-effective-defender arrows with 107180/13340 and 2.83095/0.35235.",
+      "case_refs": [
+        "CASE-R"
+      ],
+      "claim_scope": "Exact original/effective defender identities and native power ratios in R0004.",
+      "limits": "Do not import R0005's later actor power or infer why the redirection occurred.",
+      "shot_id": "S3-06",
+      "spoken_source_links": [
+        {
+          "label": "结果页",
+          "path": "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+        },
+        {
+          "label": "宣战合同",
+          "path": "docs/ck3-native-ai/war-declaration.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-07",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Show native potential-call gate; use CASE-R network increment zero only as a separate observed label.",
+      "case_refs": [
+        "CASE-R"
+      ],
+      "claim_scope": "Relationship-source and potential-call filtering rule; CASE-R network addition was zero.",
+      "limits": "Zero addition does not prove absent alliances, accepted calls or troop arrival.",
+      "shot_id": "S3-07",
+      "spoken_source_links": [
+        {
+          "label": "关系网络",
+          "path": "docs/ck3-native-ai/war-film-declaration-relationship-network-2026-09-23.md"
+        },
+        {
+          "label": "共同门",
+          "path": "docs/ck3-native-ai/war-film-relationship-gate-2026-09-23.md"
+        },
+        {
+          "label": "CASE-R",
+          "path": "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-08",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Label the hypothetical ratio 1.2 against peaceful 1.0 and at-war 1.5 gates.",
+      "case_refs": [],
+      "claim_scope": "A rule example of target-at-war power-gate sensitivity with other modifiers zero.",
+      "limits": "Not an observed CASE-R pass/fail, victory estimate or final declaration.",
+      "shot_id": "S3-08",
+      "spoken_source_links": [
+        {
+          "label": "宣战树“两层军力门”",
+          "path": "docs/ck3-native-ai/war-declaration.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-09",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Six authored score cards; 90-percent line removes only 89; retained count is five.",
+      "case_refs": [],
+      "claim_scope": "Static filtering and conditional top-five branch on authored scores.",
+      "limits": "The cards are not CASE-R's nine legal declarations or sampled AI scores.",
+      "shot_id": "S3-09",
+      "spoken_source_links": [
+        {
+          "label": "宣战树",
+          "path": "docs/ck3-native-ai/war-declaration.md"
+        },
+        {
+          "label": "台账",
+          "path": "promo/ck3_native_war_ai/research-first-claim-ledger-20260923.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-10",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Weighted strip of the five authored scores totaling 472, with 94/472 labelled conditional.",
+      "case_refs": [],
+      "claim_scope": "Selection weighting after the previous hypothetical filter.",
+      "limits": "Not an actual random draw, war win rate or natural AI declaration.",
+      "shot_id": "S3-10",
+      "spoken_source_links": [
+        {
+          "label": "宣战树的最终筛选与抽选",
+          "path": "docs/ck3-native-ai/war-declaration.md"
+        },
+        {
+          "label": "台账",
+          "path": "promo/ck3_native_war_ai/research-first-claim-ledger-20260923.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-11",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Pair the source army-by-province records with a CASE-W map only as war context.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Native ordinary target logic scores eligible army-province combinations.",
+      "limits": "CASE-W did not expose candidate-pair scores or prove why U22 chose its route.",
+      "shot_id": "S3-11",
+      "spoken_source_links": [
+        {
+          "label": "目标选择",
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-12",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Clearly authored same-province priority 80/60 card resolves to 80, not 140.",
+      "case_refs": [],
+      "claim_scope": "Static duplicate-candidate base-priority replacement rule.",
+      "limits": "Do not assign these numbers to any observed province or suppress later modifiers.",
+      "shot_id": "S3-12",
+      "spoken_source_links": [
+        {
+          "label": "目标选择",
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-13",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Three unassigned army cards and one early province, followed by a later objective block.",
+      "case_refs": [],
+      "claim_scope": "Ordered objective blocks can continue when earlier candidates do not cover unassigned armies.",
+      "limits": "The example is not a complete global priority order or a live CASE-W branch readback.",
+      "shot_id": "S3-13",
+      "spoken_source_links": [
+        {
+          "label": "目标选择",
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-14",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Authored A/castle90, B/castle85, B/other80 allocation with round-use marks.",
+      "case_refs": [],
+      "claim_scope": "Sorted pairwise allocation subject to used-province and assigned-army checks.",
+      "limits": "Not permanent map ownership and not a sampled pair-score table.",
+      "shot_id": "S3-14",
+      "spoken_source_links": [
+        {
+          "label": "目标选择",
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-15",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Source-backed ordered/limited candidate check with path gate; no exact rejected route claimed.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "A higher-scored pair can fail later conditions in a bounded ordered search.",
+      "limits": "CASE-W's route changes do not identify the rejected candidate or prove global optimality.",
+      "shot_id": "S3-15",
+      "spoken_source_links": [
+        {
+          "label": "目标选择",
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-16",
+      "state": "verified-static",
+      "asset_family": "case-w-wartime-map-context",
+      "asset_direction": "CASE-W U22 route change as observation context; explain recomputation counter, early request and deferral only as verified static rules.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Static counter/early/deferred recomputation structure; live U22 route target changed.",
+      "limits": "No live recomputation entry, scoring, or trigger was read; causal target-change shot remains missing.",
+      "shot_id": "S3-16",
+      "spoken_source_links": [
+        {
+          "label": "目标计数器",
+          "path": "docs/ck3-native-ai/war-film-target-countdowns-2026-09-23.md"
+        },
+        {
+          "label": "目标写回",
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-17",
+      "state": "verified-static",
+      "asset_family": "case-w-wartime-map-context",
+      "asset_direction": "CASE-W U22 route-to-position progression as action context; target allocation and writeback remain a separate static rule diagram.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Static assignment rule and exact U22 route-to-position progression.",
+      "limits": "The allocation candidate and target writeback were not captured; do not present W as a closed assignment chain.",
+      "shot_id": "S3-17",
+      "spoken_source_links": [
+        {
+          "label": "目标选择",
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-18",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Source formula with authored 100/(100+100) and 200/(200+100) examples.",
+      "case_refs": [],
+      "claim_scope": "Normal local-power-ratio formula and arithmetic examples.",
+      "limits": "Not strategic CASE-R power ratio, battle prediction percentage, or observed local input.",
+      "shot_id": "S3-18",
+      "spoken_source_links": [
+        {
+          "label": "局部预测闭式公式",
+          "path": "docs/ck3-native-ai/combat-prediction.md"
+        },
+        {
+          "label": "CASE-R",
+          "path": "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-19",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Show main hostile group and applicable half-weighted groups beside a CK3 map backdrop.",
+      "case_refs": [],
+      "claim_scope": "Native relationship/context grouping and adjusted enemy-power input.",
+      "limits": "Do not convert visible banner soldiers into the metric or invent the unnamed context adjustment.",
+      "shot_id": "S3-19",
+      "spoken_source_links": [
+        {
+          "label": "combat-prediction",
+          "path": "docs/ck3-native-ai/combat-prediction.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-20",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Strict 0.5 and 0.4 threshold rulers with authored 0.45 and 0.50 cursors.",
+      "case_refs": [],
+      "claim_scope": "Two strict local approach thresholds in the scoped native branch.",
+      "limits": "No live selected mode or guaranteed movement follows from the hypothetical comparison.",
+      "shot_id": "S3-20",
+      "spoken_source_links": [
+        {
+          "label": "接战门",
+          "path": "docs/ck3-native-ai/combat-prediction.md"
+        },
+        {
+          "label": "mode producer",
+          "path": "docs/ck3-native-ai/war-film-retreat-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-21",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Trace the ordinary defender's upstream mode branch through type, side and own-score gate.",
+      "case_refs": [],
+      "claim_scope": "Static producer conditions behind the lower mode labelled desperate.",
+      "limits": "No sampled active desperate mode; do not infer it from a losing battlefield or enemy lead.",
+      "shot_id": "S3-21",
+      "spoken_source_links": [
+        {
+          "label": "raw mode 树",
+          "path": "docs/ck3-native-ai/war-film-retreat-policy-2026-09-23.md"
+        },
+        {
+          "label": "分数方向",
+          "path": "docs/ck3-native-ai/war-film-retreat-score-direction-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-22",
+      "state": "verified-static",
+      "asset_family": "case-w-wartime-map-context",
+      "asset_direction": "CASE-W map as setting only; draw the 0.625 unfavorable-adjacency detour as a labelled native-rule diagram, never as U22 cause.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Static unfavorable-adjacency alternate-route rule; CASE-W has an observed route change.",
+      "limits": "CASE-W has no local 0.625 input or original/alternate path choice binding; no live detour-cause claim.",
+      "shot_id": "S3-22",
+      "spoken_source_links": [
+        {
+          "label": "combat-prediction",
+          "path": "docs/ck3-native-ai/combat-prediction.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-23",
+      "state": "verified-static",
+      "asset_family": "case-w-wartime-map-context",
+      "asset_direction": "CASE-W map context plus sourced target/local-ratio/mode/path gates; explicitly no observed gate passage or active retreat.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Static summary of precontact metric, mode and route gates.",
+      "limits": "A moving route alone cannot establish which gate the NPC passed; active retreat is separate.",
+      "shot_id": "S3-23",
+      "spoken_source_links": [
+        {
+          "label": "combat-prediction",
+          "path": "docs/ck3-native-ai/combat-prediction.md"
+        },
+        {
+          "label": "导演案",
+          "path": "promo/ck3_native_war_ai/longform/director-plan-v3.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-24",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Prior asking false/true card with strict 0.66 start and 0.75 stop lines.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Ordinary AI-to-AI support-state hysteresis as a rule example.",
+      "limits": "CASE-W U22 read asking=false once; it does not show a threshold crossing or player-support rule.",
+      "shot_id": "S3-24",
+      "spoken_source_links": [
+        {
+          "label": "求援状态表",
+          "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-25",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Label authored 0.65→0.70→0.76 sequence and separate never-asked 0.70 history.",
+      "case_refs": [],
+      "claim_scope": "Hysteresis example with explicit prior states.",
+      "limits": "No live date sequence or observed helper request is implied.",
+      "shot_id": "S3-25",
+      "spoken_source_links": [
+        {
+          "label": "求援状态表",
+          "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-26",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Native parent stack/subunit structure versus singleton, kept separate from map banner count.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Ordinary producer's parent stack must contain more than one subunit.",
+      "limits": "CASE-W ready U22 has subunit0/parent stack3 but no asking change; no live gate passage asserted.",
+      "shot_id": "S3-26",
+      "spoken_source_links": [
+        {
+          "label": "求援政策",
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-27",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Author-provided need150 versus requester available149/150/151, explicitly power units.",
+      "case_refs": [],
+      "claim_scope": "Cross-stack need comparison including equality boundary.",
+      "limits": "Not a required helper soldier count or live CASE-W assignment.",
+      "shot_id": "S3-27",
+      "spoken_source_links": [
+        {
+          "label": "跨栈比较勘误",
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-28",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Draw sourced request, assignment, movement and same-Combat arrival as four separate stages; CASE-W/C do not supply a completed live chain.",
+      "case_refs": [
+        "CASE-W",
+        "CASE-C"
+      ],
+      "claim_scope": "Static sequential support architecture.",
+      "limits": "W has no request/assignment/contact chain; C observed no in_combat and no CombatID.",
+      "shot_id": "S3-28",
+      "spoken_source_links": [
+        {
+          "label": "同一次更新的顺序",
+          "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md"
+        },
+        {
+          "label": "最小实机链",
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md",
+        "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-29",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Recap ordinary AI help gates and add separate player-support branch label.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Distinct start/stop and player-support paths in source rules.",
+      "limits": "No live help arrival or proof that any CASE-W unit failed to help because of these gates.",
+      "shot_id": "S3-29",
+      "spoken_source_links": [
+        {
+          "label": "PLAYER_SUPPORT 消费边与边界",
+          "path": "docs/ck3-native-ai/war-film-reinforcement-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-30",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Draw source-backed hard-loss numerator and losing war participants denominator; no fabricated CASE-C battle, combat ID or loss value.",
+      "case_refs": [
+        "CASE-C"
+      ],
+      "claim_scope": "Static hard-loss-over-loser-war-participants calculation.",
+      "limits": "CASE-C sampled no contact, no CombatID or terminal; cannot present battle footage or an actual numerator.",
+      "shot_id": "S3-30",
+      "spoken_source_links": [
+        {
+          "label": "八桶分母",
+          "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md"
+        },
+        {
+          "label": "单场公式",
+          "path": "docs/ck3-native-ai/battle-terminal-and-reentry.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-31",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Eight denominator buckets from native documentation, with quantity/power labels separated.",
+      "case_refs": [],
+      "claim_scope": "Bucket definitions and non-equivalence to declaration strategic power.",
+      "limits": "Do not populate a real war's buckets or call the total fully replenished without a readback.",
+      "shot_id": "S3-31",
+      "spoken_source_links": [
+        {
+          "label": "八桶及口径",
+          "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md"
+        },
+        {
+          "label": "power 缓存",
+          "path": "docs/ck3-native-ai/war-film-declaration-power-cache-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-32",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Clearly hypothetical 1000/10000×50=5 and 1000/20000×50=2.5 cards.",
+      "case_refs": [],
+      "claim_scope": "How changing a rule-example denominator changes the single-battle contribution.",
+      "limits": "Multiplier 50 is assumed here, not a measured CASE-C CB multiplier or UI total.",
+      "shot_id": "S3-32",
+      "spoken_source_links": [
+        {
+          "label": "单场公式及倍率",
+          "path": "docs/ck3-native-ai/battle-terminal-and-reentry.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-33",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Draw sourced single-battle, cumulative-battle and total-war-score hierarchy; no invented same-War score delta.",
+      "case_refs": [
+        "CASE-C"
+      ],
+      "claim_scope": "Static relationship between single, cumulative battle and overall war score.",
+      "limits": "CASE-C produced no battle terminal; no displayed total-score delta can be attributed to a battle.",
+      "shot_id": "S3-33",
+      "spoken_source_links": [
+        {
+          "label": "累计与总分",
+          "path": "docs/ck3-native-ai/battle-terminal-and-reentry.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-34",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Source-backed checklist over real CK3 war-panel context, without a claimed measured victory.",
+      "case_refs": [
+        "CASE-C"
+      ],
+      "claim_scope": "Static checks needed to interpret battle-score contribution.",
+      "limits": "CASE-C cannot supply the victory, casualty denominator, or peace transition.",
+      "shot_id": "S3-34",
+      "spoken_source_links": [
+        {
+          "label": "战争终止",
+          "path": "docs/ck3-native-ai/war-termination.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-35",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Two separate source ledgers for proactive inclination base0 and ordinary acceptance base−30.",
+      "case_refs": [],
+      "claim_scope": "Sender motivation and recipient acceptance are separate native calculations.",
+      "limits": "No actual natural white-peace proposal or live score is supplied.",
+      "shot_id": "S3-35",
+      "spoken_source_links": [
+        {
+          "label": "主动与接受脚本",
+          "path": "docs/ck3-native-ai/war-termination.md"
+        },
+        {
+          "label": "新发送政策",
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-36",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Fixed defending recipient with authored attacker scores20/30/31 and other modifiers zero.",
+      "case_refs": [],
+      "claim_scope": "Ordinary acceptance arithmetic and score direction in a scoped example.",
+      "limits": "Not a universal acceptance threshold; UI rounding and other modifiers remain separate.",
+      "shot_id": "S3-36",
+      "spoken_source_links": [
+        {
+          "label": "接受分",
+          "path": "docs/ck3-native-ai/war-termination.md"
+        },
+        {
+          "label": "严格正分",
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-37",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Source comparison >0 and grouped modifier list on a CK3 peace-panel context shot.",
+      "case_refs": [],
+      "claim_scope": "Strict positive ordinary AI recipient gate and possible input categories.",
+      "limits": "No particular ruler's later changed input, displayed-zero equivalence or actual acceptance proven.",
+      "shot_id": "S3-37",
+      "spoken_source_links": [
+        {
+          "label": "真实接受比较",
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md"
+        },
+        {
+          "label": "接受项",
+          "path": "docs/ck3-native-ai/war-termination.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-38",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Sender-side proactive branches grouped by role and motive, visually separate from acceptance.",
+      "case_refs": [],
+      "claim_scope": "Native proactive white-peace inclination is a separate scored producer.",
+      "limits": "No actor-specific motive or natural offer was observed.",
+      "shot_id": "S3-38",
+      "spoken_source_links": [
+        {
+          "label": "主动白和",
+          "path": "docs/ck3-native-ai/war-termination.md"
+        },
+        {
+          "label": "producer/consumer 区分",
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-39",
+      "state": "illustrative-rule-scenario",
+      "asset_family": "labeled-rule-scenario",
+      "asset_direction": "Show authored inclination40 minus random60/10 as separate examples, then send gate.",
+      "case_refs": [],
+      "claim_scope": "Opportunity, integer-minus-random competition and strict best-value replacement.",
+      "limits": "Not a sampled random result, guaranteed offer, or declaration weighting wheel.",
+      "shot_id": "S3-39",
+      "spoken_source_links": [
+        {
+          "label": "生产机会与发送",
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-40",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Player-attacker / AI-defender role labels with the scoped score≥10 prefilter.",
+      "case_refs": [],
+      "claim_scope": "Extra AI-to-player proactive white-peace restriction in the specified role case.",
+      "limits": "Cannot generalize this one prefilter to all attack/defense combinations or AI-to-AI offers.",
+      "shot_id": "S3-40",
+      "spoken_source_links": [
+        {
+          "label": "对玩家的两层限制",
+          "path": "docs/ck3-native-ai/war-termination.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-41",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Draw sourced send, receive, respond and verify-terminal sequence as a rule/method card; no natural CASE-W/C peace event claimed.",
+      "case_refs": [
+        "CASE-W",
+        "CASE-C"
+      ],
+      "claim_scope": "Static verification sequence for a real peace case.",
+      "limits": "W and C have no natural peace proposal or accepted/rejected exchange; War4 stayed active through C.",
+      "shot_id": "S3-41",
+      "spoken_source_links": [
+        {
+          "label": "发送实际消费者",
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md"
+        },
+        {
+          "label": "导演案",
+          "path": "promo/ck3_native_war_ai/longform/director-plan-v3.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md",
+        "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-42",
+      "state": "verified-static",
+      "asset_family": "native-rule-excerpt",
+      "asset_direction": "Two separately sourced sender/recipient paths joining only at a hypothetical result box.",
+      "case_refs": [],
+      "claim_scope": "Static separation of proactive inclination, offer selection and response calculation.",
+      "limits": "No sampled actor motive or actual negotiation completion.",
+      "shot_id": "S3-42",
+      "spoken_source_links": [
+        {
+          "label": "白和政策",
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": []
+    },
+    {
+      "id": "V3-43",
+      "state": "verified-static",
+      "asset_family": "ck3-source-index-endcard",
+      "asset_direction": "Three sourced chapter strips with CASE-R and CASE-W visibly distinct; battle and peace are marked source-confirmed rules, not live outcomes.",
+      "case_refs": [
+        "CASE-R",
+        "CASE-W",
+        "CASE-C"
+      ],
+      "claim_scope": "Editorial synthesis of the verified static stages and limited observed case fragments.",
+      "limits": "Cases are not a single naturally declared-and-settled war; C offers no battle footage.",
+      "shot_id": "S3-43",
+      "spoken_source_links": [
+        {
+          "label": "宣战",
+          "path": "docs/ck3-native-ai/war-declaration.md"
+        },
+        {
+          "label": "目标",
+          "path": "docs/ck3-native-ai/war-film-target-selection-2026-09-23.md"
+        },
+        {
+          "label": "局部预测",
+          "path": "docs/ck3-native-ai/combat-prediction.md"
+        },
+        {
+          "label": "求援",
+          "path": "docs/ck3-native-ai/battle-reinforcement-and-join.md"
+        },
+        {
+          "label": "战分",
+          "path": "docs/ck3-native-ai/war-film-battle-score-denominator-2026-09-23.md"
+        },
+        {
+          "label": "白和",
+          "path": "docs/ck3-native-ai/war-film-peace-policy-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md",
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md",
+        "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-44",
+      "state": "exact-live-case",
+      "asset_family": "robert-hud-data-card",
+      "asset_direction": "Return to exact CASE-R target redirection and ratio cards on the same paused Robert context.",
+      "case_refs": [
+        "CASE-R"
+      ],
+      "claim_scope": "Two native target assessment readbacks and limits of their meaning.",
+      "limits": "Neither assessment supplies final AI war choice or natural declaration.",
+      "shot_id": "S3-44",
+      "spoken_source_links": [
+        {
+          "label": "结果范围",
+          "path": "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md"
+      ]
+    },
+    {
+      "id": "V3-45",
+      "state": "verified-static",
+      "asset_family": "ck3-source-index-endcard",
+      "asset_direction": "Versioned docs/source link card over a reviewed CK3 map frame from CASE-W.",
+      "case_refs": [
+        "CASE-W"
+      ],
+      "claim_scope": "Method for distinguishing actors, decision stage and measured quantity.",
+      "limits": "End card cannot assert whole-tree completion, human signoff or full film review.",
+      "shot_id": "S3-45",
+      "spoken_source_links": [
+        {
+          "label": "文档索引",
+          "path": "docs/ck3-native-ai/README.md"
+        },
+        {
+          "label": "逐条台账",
+          "path": "promo/ck3_native_war_ai/research-first-claim-ledger-20260923.md"
+        }
+      ],
+      "case_source_paths": [
+        "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md"
+      ]
+    }
+  ]
+}

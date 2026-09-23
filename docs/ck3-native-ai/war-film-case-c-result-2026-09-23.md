@@ -29,3 +29,9 @@ CASE-C 开始前，同一服务 owner 于22:10:27Z延长恢复服务预算1800�
 本窗口实际未进入可选的单战自然结算子窗口。要展示一次完整的接战、战斗控制或终局，需要另立有界案例，取得实际 CombatID、双方正式 unit/side 与同一 C 的终局读回；仅有路线、接近时间或这份零接战窗口都不够。待互动内容及其与战争的关系也未在本次结果中求证。
 
 结果合同的离线结构/文件完整性检查为 `plan-consistent`：5条已枚举边中3条标为本次正式读回支持、2条保持未知；1项有界结果案例 observed、2项接战/终局案例 not-applicable。该检查不复核游戏语义，不是人工1×观片或影片签核；记录在[check.json](research-plans/war-film-case-c-result-20260923-r1/check.json)。
+
+## 媒体封装复核
+
+独立媒体封装在 `D:/workspace/ck3_war_film_research_20260923/case-c-bundle-r2/` 完成，`report.json` 为 `260660` bytes、SHA-256 `f8bbe7eadab0548833c30442c5d46299f1657b03ffd27a379b6cc81363468263`。报告状态为 `adapter-validated-passive-wartime-evidence`；它对原始录像、时间线、证据索引、73次正式调用、68个快照、checkpoint 和停止条件做了文件及来源核验。录像前有2次只读准备调用，录像内有71次调用；两阶段的 UTC 与 monotonic 时钟均按各自边界校验。原始录像的哈希仍为 `5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76`。
+
+封装报告明确保留 `actual_combat_id_bound=false`、`native_battle_result_proven=false`、`frame_synchronous_query_proven=false`、`native_ai_causality_verified=false`、`human_1x_review_performed=false` 和 `signoff_granted=false`。按 PTS 抽取并目视查看的若干画面确实是 CK3 地图/HUD，但不能把快照时间强行配到特定帧，也不能把完整录像时长说成不间断行军。第一次封装尝试 `case-c-bundle-r1/` 因把录像前准备调用误判为录像内调用而失败，失败 attempt 原样保留；修复工具后在新的 `r2` 目录重新封装，没有改写原始调用、录像或失败收据。
