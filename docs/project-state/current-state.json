@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "53CCC667ED33A285EF0AEC55F3C8A2F9AEE9F78E37BB3FFBD028F9327DBEAACA"
+        "sha256": "621BA72BF275693D64FFC4BAB86F7EAE0EF9045B5D7FF474A76E698EA90BC66B"
       },
       "raw_footage": {
         "passed": 0,
@@ -263,7 +263,7 @@
       "historical_continuation": "Murchad_1066",
       "historical_durable_game_days": 14900,
       "historical_target_game_days": 36524,
-      "latest_combat_v3_read_only_status": "RED_production_phase_character_identity_or_role_mismatch_no_war_result",
+      "latest_combat_v3_read_only_status": "GREEN_inputs_only_transition_fidelity_false_no_qualified_win_probability",
       "latest_final_observed_days_are_durable": true,
       "latest_final_observed_game_days": 2983,
       "latest_final_observed_source": "R0186_saved_h2127_raw53215920_same_day_private_perk",
@@ -289,8 +289,37 @@
         "scope": "Same-date R0186 private professional_workforce_perk checkpoint after R0181 formal h2120; raw driver has one read-only post-checkpoint row and R0187 used official semantic recovery. R0187 privately read back the owned perk in a new PID, but its combat-v3 input query was RED. No additional game days or war conclusion."
       },
       "latest_product_status": "GREEN_BOUNDED_CONTINUATION_WAR_ACTIVE",
-      "latest_restore_attempt_round": "R0187",
-      "latest_restore_harness_status": "GREEN_official_h2127_new_pid_cold_restore_private_lifestyle_readback_only",
+      "latest_read_only_combat_v3_observation": {
+        "actor_id": 29829,
+        "attacker_army_id": 83886367,
+        "combat_v3_status": "available",
+        "date_advanced_days": 0,
+        "defender_army_id": 50331920,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "combat_v3_input_locator": "g2-robert-combat-v3-fix-readonly-R0188-20260923/probe/combat-v3-inputs.json",
+          "combat_v3_input_sha256": "6651F73450FECAA418626FA299449E65EA10FB445B1E2BF26A70B258BD534DDA",
+          "observation_index_locator": "g2-robert-combat-v3-fix-readonly-R0188-20260923/probe/observation-index.json",
+          "observation_index_sha256": "5BC95D6E07845161B85B283A5788F0F347204F7C66037251C794A8CF9F3438C1",
+          "summary_locator": "g2-robert-combat-v3-fix-readonly-R0188-20260923/R0188-READBACK-SUMMARY.json",
+          "summary_sha256": "CCC9F3B2FCE26138B8D1AC04CCC38938442B9C79F94BC7392686D1B471E9CDCF"
+        },
+        "gameplay_actions": 0,
+        "monte_carlo_ready": false,
+        "observation_scope": "explicit_hypothetical_active_war_contact_same_paused_native_3",
+        "phase_event_inputs_ready": true,
+        "planner_usable": false,
+        "qualified_win_probability_available": false,
+        "round": "R0188",
+        "source_checkpoint_date_raw": 53215920,
+        "source_checkpoint_history_index": 2127,
+        "source_checkpoint_round": "R0186",
+        "target_province_id": 2628,
+        "transition_fidelity_gate": false,
+        "war_id": 16777231
+      },
+      "latest_restore_attempt_round": "R0188",
+      "latest_restore_harness_status": "GREEN_official_h2127_new_pid_cold_restore_combat_v3_inputs_read_only",
       "m3_existing_complete_evidence_retained": true,
       "mainline_status": "continuable_from_R0186_h2127_one_war_active_after_official_rebind",
       "material_expansion_proven": true,
@@ -502,8 +531,8 @@
       "source_commit": "0342cd889297c96b8d2c0e8dbd73bdfc6d99a091",
       "status": "GREEN_PRIVATE_READ_ONLY"
     },
-    "latest_restore_attempt_round": "R0187",
-    "latest_restore_attempt_status": "official_h2127_new_pid_cold_restore_private_lifestyle_green_combat_v3_input_red",
+    "latest_restore_attempt_round": "R0188",
+    "latest_restore_attempt_status": "official_h2127_new_pid_cold_restore_combat_v3_inputs_read_only_green",
     "m4_focus_first_primitive": {
       "actor_id": 29829,
       "checkpoint_history_indices": [
@@ -1334,6 +1363,50 @@
         "active_war_ids": [
           16777231
         ],
+        "allocator_status": "completed-green",
+        "base_input_observation_ready": true,
+        "business_result": "NOT_EVALUATED",
+        "ck3_pid": 154692,
+        "cleanup_proven": true,
+        "combat_v3_input_status": "GREEN_read_only_phase_inputs_ready",
+        "date_advanced_days": 0,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "combat_v3_input_locator": "g2-robert-combat-v3-fix-readonly-R0188-20260923/probe/combat-v3-inputs.json",
+          "combat_v3_input_sha256": "6651F73450FECAA418626FA299449E65EA10FB445B1E2BF26A70B258BD534DDA",
+          "observation_index_locator": "g2-robert-combat-v3-fix-readonly-R0188-20260923/probe/observation-index.json",
+          "observation_index_sha256": "5BC95D6E07845161B85B283A5788F0F347204F7C66037251C794A8CF9F3438C1",
+          "summary_locator": "g2-robert-combat-v3-fix-readonly-R0188-20260923/R0188-READBACK-SUMMARY.json",
+          "summary_sha256": "CCC9F3B2FCE26138B8D1AC04CCC38938442B9C79F94BC7392686D1B471E9CDCF"
+        },
+        "execution_id": "3672ed03-57bc-4d95-93cb-b9f05b4ea22f",
+        "gameplay_actions": 0,
+        "harness_result": "GREEN_READ_ONLY",
+        "lifecycle_result": "GREEN",
+        "managed_process_count_after_cleanup": 0,
+        "monte_carlo_ready": false,
+        "new_pid_cold_restore_proven": true,
+        "offline_exact_state_refs_ready": true,
+        "owner_released": true,
+        "phase_event_inputs_ready": true,
+        "phase_raw_observation_ready": true,
+        "planner_usable": false,
+        "qualified_win_probability_available": false,
+        "robert_durable_game_days": 2983,
+        "round": "R0188",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0188",
+        "scope": "R0188 cold-restored immutable R0186 h2127 in new PID 154692. The same paused native:3 frame returned available hypothetical combat-v3 inputs with base, phase, exact state refs and phase event inputs ready, closing R0187's input identity error only. Transition fidelity, Monte Carlo, planner use and qualified win probability remain unavailable; no war action or game date advance occurred. The unchanged h2127 source pair remains the durable source; the R0188 read-only driver is not a new source pair.",
+        "source_checkpoint_date_raw": 53215920,
+        "source_checkpoint_history_index": 2127,
+        "source_checkpoint_round": "R0186",
+        "source_save_sha256": "15E7C086E7A579BCBE860CC8C1324C741FD273E999F68E5794D12023CCFBF80B",
+        "source_save_unchanged": true,
+        "transition_fidelity_gate": false
+      },
+      {
+        "active_war_ids": [
+          16777231
+        ],
         "allocator_status": "completed-red",
         "business_result": "NOT_EVALUATED",
         "ck3_pid": 143348,
@@ -1643,5 +1716,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T13:43:06+08:00"
+  "updated_at": "2026-09-23T16:32:17+08:00"
 }
