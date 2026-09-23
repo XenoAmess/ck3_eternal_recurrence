@@ -341,6 +341,19 @@ loaded-playset proof 必须同时验证这两个路径的原版 hash、productio
 production trace 仍须证明一次 effect 后的 parameter rows、knight
 contribution 与 advantage 何时刷新。
 
+[static-confirmed, COMBAT-GLORY-FEEDBACK] managed-session proof v2 已把上述两份原版文件列为
+额外 accolade feedback closure：逐文件核对 exact-build SHA，并与原有 11 个 phase AST 来源一起
+核对 singleton playset、production 同路径覆盖与 `replace_path`。phase AST 的不可变 11-file
+manifest 未改；proof 的 `stock_sources.count=13` 分别标记 11 个 manifest 来源和 2 个 closure 来源。
+独立的 `accolade_glory_feedback.py` 已按原生 `0x251C2F0` 顺序投影明确给定的
+`{accolade_id, glory_before_raw, delta_raw, owner_gain_modifier_raw}`：正增量乘 `1+modifier`、
+负增量不乘、荣耀零下限、rank threshold 和预计 on_action。`minimal_glory_gain=10`、
+`minor_glory_gain=25` 是当前原版 `00_basic_values.txt` 的值。异常数值或缺少真实输入时拒绝投影。
+这仍是**隔离数值投影**：当前 frozen AST 把 glory 记成 `observational_only`，未保留每一分支的
+可选 accolade receiver、实际 delta；也未有同一次原生战斗的 glory 前后、参数行、骑士贡献与
+advantage 的时间对拍。因此 `glory.feedback_closed=false`、`ast_evaluator_ready=false`、
+`planner_usable=false`、`active_attack_allowed=false`；不能把 13-file proof 或纯函数测试称为胜率。
+
 ```mermaid
 flowchart LR
     E["CAddGloryEffect<br/>0x2E5B6F0"] --> V["0x9698B0<br/>signed Q100000 delta"]

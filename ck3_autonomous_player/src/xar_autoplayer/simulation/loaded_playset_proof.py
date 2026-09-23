@@ -31,11 +31,12 @@ from ..environment import (
 from .phase_event_manifest import (
     STOCK_PHASE_EVENT_MANIFEST_SHA256,
     FrozenPhaseEventManifest,
+    FrozenPhaseEventSource,
     load_stock_phase_event_manifest,
 )
 
 
-LOADED_PLAYSET_PROOF_SCHEMA_VERSION = 1
+LOADED_PLAYSET_PROOF_SCHEMA_VERSION = 2
 LOADED_PLAYSET_PROOF_SCOPE = (
     "managed-session-single-mod-stock-phase-event-sources"
 )
@@ -44,6 +45,18 @@ _ACTIVE_UNSAFE_MARKER_REASON = (
 )
 _SHA256 = re.compile(r"[0-9A-Fa-f]{64}")
 _NONCE = re.compile(r"[0-9a-f]{32}")
+_ACCOLADE_FEEDBACK_SOURCES = (
+    FrozenPhaseEventSource(
+        relative_path="common/on_action/accolade_on_actions.txt",
+        sha256="E41BB5D345F319C2B889E42CB578599E1763C57B89782566859679100340AAE5",
+        load_order=11,
+    ),
+    FrozenPhaseEventSource(
+        relative_path="events/accolade_events.txt",
+        sha256="0E5ED632DF2ADE40EBFAE687BA61518447397E10D59BC1FFF8F5D9B44A5AFDCF",
+        load_order=12,
+    ),
+)
 
 
 class LoadedPlaysetProofError(ValueError):
@@ -57,6 +70,7 @@ def build_loaded_playset_proof(
     snapshot_binding: object,
     native_hello: object,
     _manifest: FrozenPhaseEventManifest | None = None,
+    _accolade_sources: tuple[FrozenPhaseEventSource, ...] | None = None,
 ) -> dict[str, object]:
     """Build a canonical proof for one episode and one observed native frame.
 
@@ -76,6 +90,15 @@ def build_loaded_playset_proof(
         )
     if manifest.canonical_manifest_sha256 != STOCK_PHASE_EVENT_MANIFEST_SHA256:
         raise LoadedPlaysetProofError("phase-event manifest identity drifted")
+    # These on_action/event files are a dependency of the glory effect, not
+    # phase-event AST inputs. Keep the immutable 11-file AST manifest intact.
+    accolade_sources = (
+        _ACCOLADE_FEEDBACK_SOURCES if _accolade_sources is None else _accolade_sources
+    )
+    if len(accolade_sources) != 2 or [
+        source.relative_path for source in accolade_sources
+    ] != [source.relative_path for source in _ACCOLADE_FEEDBACK_SOURCES]:
+        raise LoadedPlaysetProofError("accolade feedback source closure is malformed")
 
     profile = (root / "profile").resolve()
     environment_path = profile / PROFILE_MANIFEST_NAME
@@ -204,9 +227,9 @@ def build_loaded_playset_proof(
     stock_rows: list[dict[str, object]] = []
     overlay_paths: list[str] = []
     replace_conflicts: list[str] = []
-    for source in manifest.files:
+    for source in (*manifest.files, *accolade_sources):
         relative = _canonical_relative_path(
-            source.relative_path, "phase-event source path"
+            source.relative_path, "combat feedback source path"
         )
         overlay_present = relative.casefold() in production_paths
         conflicts = [
@@ -226,6 +249,11 @@ def build_loaded_playset_proof(
         stock_rows.append(
             {
                 "load_order": source.load_order,
+                "source_kind": (
+                    "phase_event_manifest"
+                    if source.load_order < len(manifest.files)
+                    else "accolade_feedback_closure"
+                ),
                 "relative_path": relative,
                 "manifest_sha256": source.sha256,
                 "stock_sha256": stock_sha256,
@@ -235,12 +263,12 @@ def build_loaded_playset_proof(
         )
     if overlay_paths:
         raise LoadedPlaysetProofError(
-            "production tree overlays phase-event manifest sources: "
+            "production tree overlays combat feedback sources: "
             + ", ".join(overlay_paths)
         )
     if replace_conflicts:
         raise LoadedPlaysetProofError(
-            "production descriptor replace_path covers phase-event sources: "
+            "production descriptor replace_path covers combat feedback sources: "
             + ", ".join(sorted(set(replace_conflicts)))
         )
 
@@ -291,10 +319,14 @@ def build_loaded_playset_proof(
             "replace_paths": replace_paths,
             "phase_source_overlay_count": 0,
             "phase_source_replace_path_conflict_count": 0,
+            "accolade_feedback_source_overlay_count": 0,
+            "accolade_feedback_replace_path_conflict_count": 0,
         },
         "stock_sources": {
             "game_root": str(game_dir),
             "count": len(stock_rows),
+            "phase_manifest_count": len(manifest.files),
+            "accolade_feedback_closure_count": len(accolade_sources),
             "files": stock_rows,
         },
         "claims": {
@@ -304,6 +336,7 @@ def build_loaded_playset_proof(
             "production_phase_source_overlays_absent": True,
             "production_replace_path_conflicts_absent": True,
             "stock_source_sha256_exact": True,
+            "accolade_feedback_source_closure_verified": True,
             "loaded_playset_verified": True,
         },
         "unavailable_reason": None,
@@ -320,6 +353,7 @@ def validate_loaded_playset_proof(
     snapshot_binding: object,
     native_hello: object,
     _manifest: FrozenPhaseEventManifest | None = None,
+    _accolade_sources: tuple[FrozenPhaseEventSource, ...] | None = None,
 ) -> dict[str, object]:
     """Rebuild and compare a proof, rejecting file, episode, or frame drift."""
 
@@ -335,6 +369,7 @@ def validate_loaded_playset_proof(
         snapshot_binding=snapshot_binding,
         native_hello=native_hello,
         _manifest=_manifest,
+        _accolade_sources=_accolade_sources,
     )
     if row != expected:
         raise LoadedPlaysetProofError(

@@ -48,6 +48,10 @@ _SOURCE_PATHS = (
     "common/script_values/00_court_position_values.txt",
     "common/script_values/04_ep2_accolade_values.txt",
 )
+_ACCOLADE_SOURCE_PATHS = (
+    "common/on_action/accolade_on_actions.txt",
+    "events/accolade_events.txt",
+)
 _ACTIVE_REASON = (
     "suspended launch active; removed only after authenticated tree shutdown"
 )
@@ -105,6 +109,19 @@ class _ManagedPlaysetFixture:
                     load_order=index,
                 )
             )
+        accolade_sources: list[FrozenPhaseEventSource] = []
+        for index, relative in enumerate(_ACCOLADE_SOURCE_PATHS, start=len(_SOURCE_PATHS)):
+            path = self.game_dir / "game" / Path(relative)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(f"stock-source-{index}\n".encode("ascii"))
+            accolade_sources.append(
+                FrozenPhaseEventSource(
+                    relative_path=relative,
+                    sha256=sha256_file(path).upper(),
+                    load_order=index,
+                )
+            )
+        self.accolade_sources = tuple(accolade_sources)
         self.manifest = replace(
             load_stock_phase_event_manifest(),
             executable_sha256=executable_sha,
@@ -190,6 +207,7 @@ class _ManagedPlaysetFixture:
             snapshot_binding=self.snapshot_binding,
             native_hello=self.hello,
             _manifest=self.manifest,
+            _accolade_sources=self.accolade_sources,
         )
 
     def validate(
@@ -207,6 +225,7 @@ class _ManagedPlaysetFixture:
             snapshot_binding=snapshot_binding or self.snapshot_binding,
             native_hello=hello or self.hello,
             _manifest=self.manifest,
+            _accolade_sources=self.accolade_sources,
         )
 
     @staticmethod
@@ -247,7 +266,7 @@ class LoadedPlaysetProofTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
-    def test_verified_proof_is_deterministic_and_covers_all_eleven_sources(self) -> None:
+    def test_verified_proof_covers_phase_sources_and_accolade_feedback_closure(self) -> None:
         first = self.fixture.build()
         second = self.fixture.build()
 
@@ -255,11 +274,14 @@ class LoadedPlaysetProofTests(unittest.TestCase):
         self.assertEqual(first["status"], "verified")
         self.assertEqual(first["episode_run_id"], self.fixture.episode_run_id)
         self.assertEqual(first["snapshot_binding"], self.fixture.snapshot_binding)
-        self.assertEqual(first["stock_sources"]["count"], 11)
+        self.assertEqual(first["stock_sources"]["count"], 13)
+        self.assertEqual(first["stock_sources"]["phase_manifest_count"], 11)
+        self.assertEqual(first["stock_sources"]["accolade_feedback_closure_count"], 2)
         self.assertEqual(
             [row["relative_path"] for row in first["stock_sources"]["files"]],
-            list(_SOURCE_PATHS),
+            list((*_SOURCE_PATHS, *_ACCOLADE_SOURCE_PATHS)),
         )
+        self.assertTrue(first["claims"]["accolade_feedback_source_closure_verified"])
         self.assertTrue(first["claims"]["loaded_playset_verified"])
         self.assertEqual(self.fixture.validate(first), first)
 
@@ -269,9 +291,10 @@ class LoadedPlaysetProofTests(unittest.TestCase):
             recipe["schema_version"], LOADED_PLAYSET_PROOF_SCHEMA_VERSION
         )
         self.assertEqual(recipe["proof_scope"], LOADED_PLAYSET_PROOF_SCOPE)
-        self.assertEqual(recipe["source_count"], 11)
+        self.assertEqual(recipe["source_count"], 13)
         self.assertEqual(
-            recipe["source_paths_in_load_order"], list(_SOURCE_PATHS)
+            recipe["source_paths_in_load_order"],
+            list((*_SOURCE_PATHS, *_ACCOLADE_SOURCE_PATHS)),
         )
         self.assertEqual(
             recipe["enabled_mods_exact"], [OUTER_DESCRIPTOR_REF]
@@ -296,7 +319,10 @@ class LoadedPlaysetProofTests(unittest.TestCase):
 
         def build_with_fixture_manifest(*args, **kwargs):
             return build_loaded_playset_proof(
-                *args, **kwargs, _manifest=self.fixture.manifest
+                *args,
+                _manifest=self.fixture.manifest,
+                _accolade_sources=self.fixture.accolade_sources,
+                **kwargs,
             )
 
         with mock.patch(
@@ -328,7 +354,10 @@ class LoadedPlaysetProofTests(unittest.TestCase):
 
         def build_with_fixture_manifest(*args, **kwargs):
             return build_loaded_playset_proof(
-                *args, **kwargs, _manifest=self.fixture.manifest
+                *args,
+                _manifest=self.fixture.manifest,
+                _accolade_sources=self.fixture.accolade_sources,
+                **kwargs,
             )
 
         with mock.patch(
@@ -366,6 +395,28 @@ class LoadedPlaysetProofTests(unittest.TestCase):
         self.fixture.refresh_environment_binding()
 
         with self.assertRaisesRegex(LoadedPlaysetProofError, "overlays"):
+            self.fixture.build()
+
+    def test_accolade_feedback_overlay_and_replace_path_are_rejected(self) -> None:
+        overlay = self.fixture.production / Path(_ACCOLADE_SOURCE_PATHS[0])
+        overlay.parent.mkdir(parents=True)
+        overlay.write_text("override\n", encoding="utf-8")
+        self.fixture.refresh_environment_binding()
+        with self.assertRaisesRegex(LoadedPlaysetProofError, "overlays"):
+            self.fixture.build()
+
+        overlay.unlink()
+        self.fixture.inner_path.write_text(
+            'name="fixture"\nreplace_path="events"\n', encoding="utf-8"
+        )
+        self.fixture.refresh_environment_binding()
+        with self.assertRaisesRegex(LoadedPlaysetProofError, "replace_path covers"):
+            self.fixture.build()
+
+    def test_accolade_feedback_stock_file_drift_is_rejected(self) -> None:
+        stock = self.fixture.game_dir / "game" / Path(_ACCOLADE_SOURCE_PATHS[1])
+        stock.write_text("drifted\n", encoding="utf-8")
+        with self.assertRaisesRegex(LoadedPlaysetProofError, "source hash differs"):
             self.fixture.build()
 
     def test_production_replace_path_covering_a_source_is_rejected(self) -> None:
