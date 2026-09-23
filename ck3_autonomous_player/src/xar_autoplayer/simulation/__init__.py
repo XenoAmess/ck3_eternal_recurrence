@@ -32,6 +32,12 @@ from .phase_event_evaluator import (
     execute_phase_event_effect,
     execute_phase_event_trial_sequence,
 )
+from .phase_event_feedback import (
+    PHASE_EVENT_FEEDBACK_RESEARCH_MANIFEST,
+    PhaseEventFeedbackInput,
+    PhaseEventFeedbackProjection,
+    PhaseEventFeedbackResearchKernel,
+)
 from .candidate_source_proof import (
     CANDIDATE_SOURCE_PROOF_POLICY,
     CandidateSourceProofError,
@@ -82,6 +88,10 @@ __all__ = [
     "evaluate_phase_event_reachable_feedback",
     "execute_phase_event_effect",
     "execute_phase_event_trial_sequence",
+    "PHASE_EVENT_FEEDBACK_RESEARCH_MANIFEST",
+    "PhaseEventFeedbackInput",
+    "PhaseEventFeedbackProjection",
+    "PhaseEventFeedbackResearchKernel",
     "CANDIDATE_SOURCE_PROOF_POLICY",
     "CandidateSourceProofError",
     "candidate_source_sequence_preimage",
