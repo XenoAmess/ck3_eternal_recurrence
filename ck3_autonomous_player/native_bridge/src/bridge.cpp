@@ -8569,6 +8569,8 @@ public:
         &xar::ck3_11906::
             ExecuteMinorReligiousWarDefendersPrivateQueryV1;
 #endif
+    environment.permitted_executor_quinquagintary =
+        &xar::ck3_11906::ExecuteCombatPhaseEventTraceV1MailboxQuery;
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(

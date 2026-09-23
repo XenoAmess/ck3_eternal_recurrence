@@ -1,5 +1,19 @@
 # ongoing combat phase-event trace v1
 
+## R0190 production mailbox RED（exact build 1.19.0.6）
+
+- [production-live RED] R0190 从旧 R0168 `h1251/raw53192304` 的官方配对冷恢复，在新的暂停帧确认 CombatID `738197508`、`native_revision=3` 后，`query-combat-phase-event-trace-v1-738197508` 返回 `application-main combat phase-event executor is unavailable`。只读请求之前的 battle-control 成功；本轮 0 typed 动作、0 日期推进，受控停止且进程及 owner 均已回收。冻结索引：`Z:\ck3_mod_rewrite_process_assets\g2-r0168-phase-trace-R0190-native-executor-red-frozen-20260923\R0190-raw-freeze.json`，SHA-256 `B100DC51DB8C9EA62FDCBC833DD36B80520BF7DAE0DE3C0610A2AB55CC13E739`；原始 MCP 错误 SHA-256 `FBEDFAC34E5CAACE42042738FBF2D022CF44E4002A7173D40FA79F333478F262`。
+- [source-confirmed] `bridge.cpp` 的 phase query 通过 `TrySubmitMainThreadQueryV1` 送 `ExecuteCombatPhaseEventTraceV1MailboxQuery`；同一文件的 `MainThreadQueryMailboxInstaller` 未将该 callback 加入固定许可槽。`main_thread_query_mailbox_v1.cpp` 在有许可槽且 callback 不匹配时返回 `invalid_request`，bridge 将所有非 `submitted` 结果折叠成上述通用错误。R0190 的 mailbox diagnostics 已显示安装、paused owner 与 submission readiness，故此缺失与真实故障吻合；底层 submit enum 未在 R0190 响应中单独暴露。
+- [repair boundary] 只为此已存在的只读 executor 增加独立固定许可槽并做 mailbox 提交回归；不更改 CombatID 身份、paused 条件、reader、原生 effect 或胜率门。新 DLL 经同版本实机重新读回前，此 RED 保持未关闭。
+
+```mermaid
+flowchart TD
+    Q["paused full-generation CombatID query"] --> S["phase executor mailbox submit"]
+    S -->|"R0190: callback not permitted"| R["invalid_request; generic executor unavailable RED"]
+    S -. "registered callback, live retest pending" .-> E["same-frame phase evaluator readback unknown"]
+    E -.-> P["original transition parity and win probability still OFF"]
+```
+
 ## 结论与边界
 
 本页冻结只读观测口 `query-combat-phase-event-trace-v1-{CombatID}` 的 exact-build

@@ -396,6 +396,12 @@ bool ExecuteOctoquadragintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecutePhaseEvent(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 bool ExecuteFrontend(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
@@ -1399,6 +1405,52 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  // R0190's paused owner and mailbox were ready. This fixture resolves the
+  // omitted callback to invalid_request, which the live bridge did not expose.
+  auto phase_environment =
+      runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
+  phase_environment.permitted_executor = &Execute;
+  g_failure_stage = "phase_event_executor_not_registered";
+  if (!InstallMainThreadQueryMailboxV1(mailbox, phase_environment) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread)) {
+    return false;
+  }
+  ExecutorContext phase_context{};
+  MainThreadQueryTicketV1 phase_ticket{};
+  if (TrySubmitMainThreadQueryV1(mailbox, &ExecutePhaseEvent, &phase_context,
+                                phase_ticket) !=
+          MainThreadQuerySubmitResultV1::invalid_request ||
+      UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+          MainThreadQueryUninstallResultV1::uninstalled) {
+    return false;
+  }
+
+  phase_environment.permitted_executor = nullptr;
+  phase_environment.permitted_executor_quinquagintary = &ExecutePhaseEvent;
+  g_failure_stage = "phase_event_executor_registered";
+  if (!InstallMainThreadQueryMailboxV1(mailbox, phase_environment) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      TrySubmitMainThreadQueryV1(mailbox, &ExecutePhaseEvent, &phase_context,
+                                 phase_ticket) !=
+          MainThreadQuerySubmitResultV1::submitted ||
+      !ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      WaitForMainThreadQueryV1(mailbox, phase_ticket, 0) !=
+          MainThreadQueryWaitResultV1::completed ||
+      ReclaimMainThreadQueryV1(mailbox, phase_ticket) !=
+          MainThreadQueryReclaimResultV1::reclaimed ||
+      phase_context.calls != 1 ||
+      UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+          MainThreadQueryUninstallResultV1::uninstalled) {
+    return false;
+  }
+
   runtime.protection.fail_next_readonly_restore = true;
   g_failure_stage = "iat_protection_rollback";
   if (InstallMainThreadQueryMailboxV1(
@@ -1572,6 +1624,16 @@ bool TestSourceContract(int argc, char **argv) {
                  "docs=%zu exe=%zu bridge=%zu\n",
                  source.size(), abi.size(), fixture.size(), documentation.size(),
                  executable.size(), bridge.size());
+    return false;
+  }
+  const auto phase_slot =
+      bridge.find("environment.permitted_executor_quinquagintary =");
+  const auto phase_binding = bridge.find(
+      "ExecuteCombatPhaseEventTraceV1MailboxQuery;", phase_slot);
+  if (phase_slot == std::string::npos ||
+      phase_binding == std::string::npos ||
+      phase_binding - phase_slot > 160) {
+    std::fprintf(stderr, "R0190 phase query mailbox binding is missing\n");
     return false;
   }
   using namespace xar::ck3_11906;
