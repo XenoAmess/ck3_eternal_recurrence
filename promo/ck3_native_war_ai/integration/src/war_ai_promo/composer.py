@@ -108,18 +108,18 @@ def compose(config, run, *, config_path, run_path, workdir, adapter_factory,
     v3_ledger = None
     v3_assets = None
     if v3:
-        config = inputs.get("v3_visuals", {})
-        if set(config) != {"ledger_artifact_id", "asset_manifest_artifact_id", "frame_artifact_ids"}:
+        visual_config = inputs.get("v3_visuals", {})
+        if set(visual_config) != {"ledger_artifact_id", "asset_manifest_artifact_id", "frame_artifact_ids"}:
             raise ValueError("V3 preserved visual inputs are incomplete")
-        v3_ledger = artifact(run, run_path, config["ledger_artifact_id"])
+        v3_ledger = artifact(run, run_path, visual_config["ledger_artifact_id"])
         if binding(v3_ledger)["sha256"] != inputs["v3_evidence_ledger"]["sha256"]:
             raise ValueError("Preserved V3 evidence ledger differs from narration binding")
-        manifest = load(artifact(run, run_path, config["asset_manifest_artifact_id"]))
+        manifest = load(artifact(run, run_path, visual_config["asset_manifest_artifact_id"]))
         if manifest.get("schema") != "ck3-war-ai.v3-context-frames.v1" or set(manifest["assets"]) != {"CASE-R", "CASE-W"}:
             raise ValueError("V3 original frame manifest is incomplete")
         v3_assets = {}
         for case_id, asset in manifest["assets"].items():
-            preserved = artifact(run, run_path, config["frame_artifact_ids"][case_id])
+            preserved = artifact(run, run_path, visual_config["frame_artifact_ids"][case_id])
             if asset.get("case_id") != case_id or asset.get("evidence_role") != "context-only-original-frame":
                 raise ValueError("V3 source frame has wrong case or role")
             actual = binding(preserved)

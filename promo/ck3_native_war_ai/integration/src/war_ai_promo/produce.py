@@ -12,6 +12,7 @@ import zipfile
 from copy import deepcopy
 
 from xar_promo.media import probe_and_write_bound_media
+from xar_promo.model import RunManifest
 from xar_promo.process import CommandSpec, run_command
 
 from .common import binding, load, verify, write_new
@@ -142,6 +143,72 @@ def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffpr
     return result
 
 
+def reuse_prepared_captures(inputs, spec_path, source_run_root, root, preserve, validate_source):
+    """Copy byte-verified capture artifacts into a fresh run after a later phase fails.
+
+    The earlier run is only an immutable input; its failed status is untouched.
+    No media preparation or approval is inferred by this import.
+    """
+    source_root = Path(source_run_root).resolve()
+    source_manifest = source_root / "run" / "run-manifest.json"
+    validate_source(source_manifest)
+    previous = RunManifest.from_mapping(load(source_manifest))
+    artifacts = {record.artifact_id: record for record in previous.artifacts}
+    if len(artifacts) != len(previous.artifacts):
+        raise ValueError("Source run repeats an artifact identifier")
+
+    def old_artifact(identifier):
+        record = artifacts.get(identifier)
+        if record is None:
+            raise ValueError(f"Source run lacks capture artifact: {identifier}")
+        return source_manifest.parent / record.path, record
+
+    selected_path, _ = old_artifact("production-inputs-v1")
+    selected = load(selected_path)
+    old_spec_path, _ = old_artifact("capture-selection-spec-v1")
+    if any(binding(old_spec_path)[key] != binding(spec_path)[key] for key in ("bytes", "sha256")):
+        raise ValueError("Capture selection changed since the source run")
+    original = deepcopy(selected)
+    if (original.get("capture_cue_count") != len(load_capture_spec(spec_path))
+            or original.get("media_scope") != "mixed-footage"):
+        raise ValueError("Source run does not have the complete requested capture selection")
+    capture_ids = []
+    for row in original["cues"]:
+        capture = row.pop("capture_clip", None)
+        if capture is not None:
+            if (capture.get("claim_ids") != row["claim_ids"]
+                    or capture.get("native_ai_causality_verified") is not False
+                    or not capture.get("control_artifact_ids")):
+                raise ValueError(f"Source capture binding is incomplete: {row['id']}")
+            row["duration_seconds"] = capture["original_segment_duration_seconds"]
+            capture_ids.extend([capture["raw_artifact_id"],
+                                *capture["control_artifact_ids"],
+                                capture["media_artifact_id"], capture["receipt_artifact_id"]])
+    if len([row for row in selected["cues"] if "capture_clip" in row]) != original["capture_cue_count"]:
+        raise ValueError("Source run capture count differs from selected rows")
+    original["media_scope"] = inputs["media_scope"]
+    original["actual_duration_seconds"] = inputs["actual_duration_seconds"]
+    for key in ("capture_selection_artifact_id", "capture_cue_count", "director_artifact_id"):
+        original.pop(key, None)
+    if original != inputs:
+        raise ValueError("Source captures were selected for different narration or visual inputs")
+
+    preserve(spec_path, "capture-selection-spec-v1", "capture-selection-spec", "raw")
+    for identifier in dict.fromkeys(capture_ids):
+        path, record = old_artifact(identifier)
+        preserve(path, identifier, record.role, record.collection)
+    receipt = Path(root) / "capture-reuse-source.json"
+    write_new(receipt, {"schema":"ck3-war-ai.capture-reuse-source.v1",
+                        "source_run_id":previous.run_id,
+                        "source_run_manifest":binding(source_manifest),
+                        "source_selected_inputs":binding(selected_path),
+                        "capture_selection":binding(spec_path),
+                        "copied_artifact_ids":list(dict.fromkeys(capture_ids)),
+                        "scope":"byte-verified-prepared-captures-only; failed source run unchanged; no human signoff"})
+    preserve(receipt, "capture-reuse-source-v1", "capture-reuse-provenance", "raw")
+    return selected
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project", type=Path, required=True)
@@ -149,6 +216,8 @@ def main():
     parser.add_argument("--run-root", type=Path, required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--capture-spec", type=Path, help="Existing GREEN capture bundles and cue selections; prepare and preserve continuous clips")
+    parser.add_argument("--reuse-captures-from", type=Path,
+                        help="Import already verified capture artifacts from a retained failed run into this new run")
     parser.add_argument("--v3-assets", type=Path, help="Hash-bound CASE-R/W original frame context manifest for V3")
     parser.add_argument("--full-film", action="store_true", help="Require all configured chapters and render the complete review film")
     args = parser.parse_args()
@@ -197,6 +266,8 @@ def main():
         raise ValueError("V3 production requires all 45 bound cues in order")
     if v3 != bool(args.v3_assets):
         raise ValueError("V3 production requires --v3-assets; older cuts do not accept it")
+    if args.reuse_captures_from and (not v3 or not args.capture_spec):
+        raise ValueError("Capture reuse requires a V3 attempt and its exact capture spec")
     selected = {row["chapter_id"] for row in rows}
     config = load(args.project / "promo-project.json")
     if args.full_film:
@@ -255,10 +326,16 @@ def main():
                                 "asset_manifest_artifact_id": "v3-frame-manifest-v1",
                                 "frame_artifact_ids": frame_ids}
     if args.capture_spec:
-        inputs = prepare_captures(inputs, args.capture_spec.resolve(), root,
-            lambda path, identifier, role, collection: preserve(path, identifier, role, collection, check=False),
-            ffmpeg=os.environ.get("WAR_PROMO_FFMPEG", "ffmpeg"),
-            ffprobe=os.environ.get("WAR_PROMO_FFPROBE", "ffprobe"))
+        if args.reuse_captures_from:
+            inputs = reuse_prepared_captures(inputs, args.capture_spec.resolve(),
+                args.reuse_captures_from.resolve(), root,
+                lambda path, identifier, role, collection: preserve(path, identifier, role, collection, check=False),
+                lambda path: cli("validate", path, "--json"))
+        else:
+            inputs = prepare_captures(inputs, args.capture_spec.resolve(), root,
+                lambda path, identifier, role, collection: preserve(path, identifier, role, collection, check=False),
+                ffmpeg=os.environ.get("WAR_PROMO_FFMPEG", "ffmpeg"),
+                ffprobe=os.environ.get("WAR_PROMO_FFPROBE", "ffprobe"))
         rows = inputs["cues"]
         validate()
     elif inputs.get("media_scope") != "teaching-graphics-radio-cut":

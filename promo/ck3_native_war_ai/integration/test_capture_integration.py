@@ -150,6 +150,45 @@ class CaptureIntegrationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"media_scope"):
             self.invocation({**self.inputs,"media_scope":"mixed-footage"},badroot,badartifacts,badpreserve)
 
+    def test_v3_visual_bindings_keep_the_project_config(self):
+        root,artifacts,preserve = self.preserve_context("v3-project-config")
+        ledger = ROOT / "promo/ck3_native_war_ai/longform/v3/evidence-visual-ledger.json"
+        preserve(ledger,"v3-evidence-ledger-v1","evidence-ledger")
+        assets = {}
+        for case in ("CASE-R","CASE-W"):
+            path = root / (case + ".png")
+            path.write_bytes((case + " synthetic binding").encode("ascii"))
+            assets[case] = {"case_id":case,"evidence_role":"context-only-original-frame",**binding(path)}
+            preserve(path,"v3-original-frame-" + case,"original-context-frame")
+        manifest = root / "v3-frame-manifest.json"
+        write_new(manifest,{"schema":"ck3-war-ai.v3-context-frames.v1","assets":assets})
+        preserve(manifest,"v3-frame-manifest-v1","original-frame-manifest")
+        rows = []
+        for index in range(1,46):
+            cue = f"V3-{index:02d}"
+            identifier = "audio." + cue
+            preserve(self.audio,identifier,"narration-source")
+            rows.append({"id":cue,"shot_id":f"S3-{index:02d}",
+                         "chapter_id":self.config.chapters[0].chapter_id,
+                         "claim_ids":[cue],"zh":"合成测试。","en":"Synthetic test.",
+                         "shot_title":"Synthetic only","speech_duration_seconds":0.5,
+                         "duration_seconds":0.8,"audio_artifact_id":identifier})
+        inputs = {"media_scope":"teaching-graphics-radio-cut","provider":"synthetic-test",
+                  "cues":rows,"v3_evidence_ledger":binding(ledger),
+                  "v3_visuals":{"ledger_artifact_id":"v3-evidence-ledger-v1",
+                                "asset_manifest_artifact_id":"v3-frame-manifest-v1",
+                                "frame_artifact_ids":{case:"v3-original-frame-" + case for case in assets}}}
+        selected = root / "selected-inputs.json"
+        write_new(selected,inputs)
+        preserve(selected,"production-inputs-v1","measured-production-inputs")
+        invocation = composer.compose(self.config,SimpleNamespace(artifacts=artifacts),
+            config_path=root / "config.json",run_path=root / "run-manifest.json",
+            workdir=root / "build",adapter_factory=lambda:{"id":self.config.adapter},
+            preset_factory=lambda:{"id":self.config.preset},validate_only=True)
+        self.assertIsInstance(invocation.draft.config,ProjectConfig)
+        self.assertEqual(len(invocation.draft.segments),45)
+        self.assertFalse((root / "build").exists())
+
     def test_unknown_cue_and_claim_fail_before_media_work(self):
         for key,value in [("cue_id","UNKNOWN"),("claim_ids",["UNBOUND"] )]:
             root,artifacts,preserve = self.preserve_context("bad-"+key)

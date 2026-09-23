@@ -8,7 +8,9 @@ tools\.venv\Scripts\python.exe -m war_ai_promo.produce --project promo/ck3_nativ
 
 这些路径必须换成实际输入和全新输出。本入口不启动 CK3，不录制，不上传；它只复用已经通过 adapter 验证的 capture bundle。`evidence_role` 与 `claim_ids` 为编辑归属，不能自动证明原生 AI 因果。
 
-`produce` 先保全原音频和文档，在新 run 内准备片段；通过真实 `xar-promo preserve` 保全原始 raw 一次、控制证据、导出片段、receipt 与全部过程审计。随后将每条选择写到对应 cue 的 `capture_clip`，冻结新的 `selected-production-inputs.json`，`media_scope` 标为 `mixed-footage`。失败的准备过程和时长冲突同样保留并封存，不能改成成功。
+`produce` 先保全原音频和文档，在新 run 内准备片段；通过真实 `xar-promo preserve` 保全原始 raw 一次、导出片段、receipt 和每段完整过程 ZIP。ZIP 内保留逐项控制证据及其索引、探测、命令、原片段和失败记录，整个 attempt 目录也原样留存；避免数百次单文件清单重写。随后将每条选择写到对应 cue 的 `capture_clip`，冻结新的 `selected-production-inputs.json`，`media_scope` 标为 `mixed-footage`。失败的准备过程和时长冲突同样保留并封存，不能改成成功。
+
+若五段素材已完整导入，但后续 `plan/build` 失败，可在**全新** run 使用 `--reuse-captures-from D:/film/FAILED-RUN`，同时传原来的 `--capture-spec`。入口先验证旧 run 的所有工件字节和选择文件，再比较当前旁白、时长、主张、画面台账与旧版完全一致，才将旧 run 的原始录像、过程 ZIP、片段和 receipt 按原 artifact ID 复制进新 run。新 run 另存复用来源收据；旧失败 run 不改写，也不产生实机因果或人工签核。只读方案检查仍必须重新通过。
 
 `composer` 对映射 cue 只读取 run 中已保全的媒体与 receipt，不再次依赖原 bundle 路径。其他 cue 继续图解。没有 `--capture-spec` 的新 run 保持旧 `teaching-graphics-radio-cut` 模式；已有历史 run、旧输入和旧导演稿不改写。新 attempt 文档来源固定为 `longform/director-plan-v3.md`，同时保全新主张台账。
 
@@ -22,7 +24,7 @@ v2 receipt 的 `source_sampling_quality` 随 visual metadata 保留，输出30fp
 
 20–40 分钟继续是编辑工作范围，不构成新硬时长门；`--full-film` 仍要求配置中的章节完整。真实实机覆盖、案例因果和人工审片由独立交付记录说明，`mixed-footage` 本身不是整片完成或内容批准。
 
-聚焦测试只渲染0.8秒合成片段及字幕/合成音频，另测混合/旧模式、时长冲突保全、cue/claim 映射拒绝。capture adapter 的成功投影与 preserve 回调是明确的合成夹具，不冒充 GREEN CK3 或正式 lifecycle 成片：
+聚焦测试只渲染0.8秒合成片段及字幕/合成音频，另测混合/旧模式、时长冲突保全、过程 ZIP 读回、V3 配置类型和 cue/claim 映射拒绝。capture adapter 的成功投影与 preserve 回调是明确的合成夹具，不冒充 GREEN CK3 或正式 lifecycle 成片：
 
 ```text
 tools\.venv\Scripts\python.exe -B promo/ck3_native_war_ai/integration/test_capture_integration.py --artifact-root D:/workspace/ck3_native_war_ai_promo_work/capture-integration-SYNTHETIC-NEW
