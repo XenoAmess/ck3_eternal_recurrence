@@ -319,6 +319,73 @@ def _production_payload() -> tuple[dict[str, object], dict[str, object]]:
     )
 
 
+def _swap_first_two_native_knights(
+    payload: dict[str, object], *, side_index: int = 0
+) -> tuple[int, int]:
+    raw = payload["phase_event_inputs"]["raw"]
+    side = raw["sides"][side_index]
+    proof = side["candidate_source_proof"]
+    knight_indices = [
+        index
+        for index, source in enumerate(proof["ordered_sources"])
+        if source["role"] == "knight"
+    ]
+    first = next(
+        (left, right)
+        for left, right in zip(knight_indices, knight_indices[1:], strict=False)
+        if proof["ordered_sources"][left]["source_army_id"]
+        == proof["ordered_sources"][right]["source_army_id"]
+    )
+    left_source = proof["ordered_sources"][first[0]]
+    right_source = proof["ordered_sources"][first[1]]
+    left_id = int(left_source["character_id"])
+    right_id = int(right_source["character_id"])
+    source_army_id = int(left_source["source_army_id"])
+
+    proof["ordered_sources"][first[0]], proof["ordered_sources"][first[1]] = (
+        right_source,
+        left_source,
+    )
+    proof["sequence_sha256"] = candidate_source_sequence_sha256(
+        side_index, proof["ordered_sources"]
+    )
+    side["ordered_knight_ids"] = [
+        source["character_id"]
+        for source in proof["ordered_sources"]
+        if source["role"] == "knight"
+    ]
+
+    character_indices = [
+        index
+        for index, character in enumerate(raw["characters"])
+        if character["source_army_id"] == source_army_id
+        and character["character_id"] in {left_id, right_id}
+        and "knight" in character["phase_roles"]
+    ]
+    if len(character_indices) != 2:
+        raise AssertionError("fixture must expose two distinct native knights")
+    left_character, right_character = character_indices
+    raw["characters"][left_character], raw["characters"][right_character] = (
+        raw["characters"][right_character],
+        raw["characters"][left_character],
+    )
+    side["ordered_character_ids"] = [
+        character["character_id"]
+        for character in raw["characters"]
+        if character["encounter_role"] == side["encounter_role"]
+    ]
+
+    hostility_by_root: dict[int, list[dict[str, object]]] = {}
+    for row in raw["faith_hostility"]:
+        hostility_by_root.setdefault(int(row["root_character_id"]), []).append(row)
+    raw["faith_hostility"] = [
+        row
+        for character in raw["characters"]
+        for row in hostility_by_root[int(character["character_id"])]
+    ]
+    return left_id, right_id
+
+
 def _normalize(payload: dict[str, object], scope: dict[str, object]):
     base = payload["base_inputs"]
     return normalize_combat_simulation_inputs_v3(
@@ -596,8 +663,69 @@ class CombatPhaseInputsV3ProductionContractTests(unittest.TestCase):
         reordered_proof["sequence_sha256"] = candidate_source_sequence_sha256(
             0, reordered_proof["ordered_sources"]
         )
-        with self.assertRaisesRegex(ValueError, "subsequences differ"):
+        with self.assertRaisesRegex(ValueError, "side source order mismatch"):
             _normalize(reordered, scope)
+
+    def test_native_knight_source_order_can_differ_from_v2_sorted_order(self) -> None:
+        payload, scope = _production_payload()
+        base_first_two = [
+            member["character_id"]
+            for member in payload["base_inputs"]["armies"][0]["knights"][
+                "members"
+            ][:2]
+        ]
+        left_id, right_id = _swap_first_two_native_knights(payload)
+        self.assertEqual(base_first_two, [left_id, right_id])
+
+        normalized = _normalize(payload, scope)
+        attacker = normalized["phase_event_inputs"]["raw"]["sides"][0]
+        self.assertEqual(attacker["ordered_knight_ids"][:2], [right_id, left_id])
+        self.assertEqual(
+            [
+                row["character_id"]
+                for row in normalized["phase_event_inputs"]["raw"]["characters"]
+                if row["source_army_id"]
+                == payload["base_inputs"]["armies"][0]["army_id"]
+                and "knight" in row["phase_roles"]
+            ][:2],
+            [right_id, left_id],
+        )
+
+    def test_native_knight_source_order_still_rejects_character_drift(self) -> None:
+        payload, scope = _production_payload()
+        left_id, right_id = _swap_first_two_native_knights(payload)
+        characters = payload["phase_event_inputs"]["raw"]["characters"]
+        left = next(
+            index
+            for index, row in enumerate(characters)
+            if row["character_id"] == left_id and "knight" in row["phase_roles"]
+        )
+        right = next(
+            index
+            for index, row in enumerate(characters)
+            if row["character_id"] == right_id and "knight" in row["phase_roles"]
+        )
+        characters[left], characters[right] = characters[right], characters[left]
+        with self.assertRaisesRegex(ValueError, "identity or role mismatch"):
+            _normalize(payload, scope)
+
+        for field, replacement in (
+            ("character_id", 2_000_000_000),
+            ("encounter_role", "defender"),
+            ("phase_roles", ["commander"]),
+        ):
+            with self.subTest(field=field):
+                changed, changed_scope = _production_payload()
+                _swap_first_two_native_knights(changed)
+                knight = next(
+                    row
+                    for row in changed["phase_event_inputs"]["raw"]["characters"]
+                    if row["encounter_role"] == "attacker"
+                    and "knight" in row["phase_roles"]
+                )
+                knight[field] = replacement
+                with self.assertRaisesRegex(ValueError, "identity or role mismatch"):
+                    _normalize(changed, changed_scope)
 
     def test_offline_formulas_preserve_thresholds_tiers_and_source_order(self) -> None:
         payload, scope = _production_payload()

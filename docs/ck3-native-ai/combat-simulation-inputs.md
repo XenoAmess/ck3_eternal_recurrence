@@ -32,6 +32,19 @@
   application-main/corrected-schema build 在真实 `can_be_acclaimed` 下也取得 combined-defensive paused available，
   artifact SHA `EBEA36EC...535DA5`。这个 observation milestone 仍不是胜率；
   `phase_event_inputs_ready=true` 与 transition fidelity / `monte_carlo_ready` 是互不替代的门。
+- [live RED + high-confidence static cause, awaiting live recheck] R0187 在 Robert h2127 的同一 paused frame 上，
+  M4 perk、route preview 与 h1 contact 均为 GREEN，但
+  `query-combat-simulation-inputs-v3-2628-8752-a-1-83886367-d-1-50331920` 被 Python 严格合同拒绝为
+  `production phase character identity or role mismatch`；0 typed action、0 游戏日。冻结错误结果 SHA-256 为
+  `5771D8FEDD3F212BA35A1624450FF68A07D3EB3FE02E7556EE5F44DF9240FE9E`，完整 raw 索引 SHA-256 为
+  `1FF46A49B0BE7629CFACA7245CC7E345532B103731A96B42A72405D361E99E9B`。exact-build 源码顺序表明：v2
+  `ReadCombatKnights` 最后按 ArmyID/RegimentID/CharacterID 排序，而 v3 `BuildCharacterRoster` 按 `base.armies`
+  与每支军队的原生 regiment 顺序写 character rows，并把同一原生顺序封入 digest-bound
+  `candidate_source_proof.ordered_sources`。旧 Python 却用 v2 排序后的 `knights.members` 逐位置构造 expected roster。
+  这是本次 mismatch 的高可信静态推因；R0187 MCP 未保留被拒的原生 payload，因而不能宣称已定位第一对错位 ID。
+  修复保持 C++ 原生顺序不变：先验证 proof 的 policy、SHA、v2 identity/regiment 回链与 commander 段，再由已验证
+  proof 的 knight 原序构造 expected roster，最后继续逐位置校验 CharacterID、ArmyID、RegimentID、role 与
+  `phase_roles`。R0187 仍为 input RED，也没有产生胜率；必须用相同查询边界做 R0188 paused live 复验后才能关闭。
 - [static-confirmed] 原版 AI 使用的 `combat prediction ratio`、画面兵数比例和 Monte Carlo
   `win_probability` 是三个不同量。[combat-prediction.md](combat-prediction.md) 已把 exact-build 主计算闭合为确定性的
   `P_eval / (P_eval + P_opp)` power-share ratio；它不是抽样或战斗沙盒，也不允许被线性解释为胜率。

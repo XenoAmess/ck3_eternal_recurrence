@@ -334,6 +334,21 @@ _CHARACTER_KEYS = {
     "garuda_court_position",
     "government_is_nomadic",
 }
+_SIDE_KEYS = {
+    "side_index",
+    "encounter_role",
+    "ordered_army_ids",
+    "ordered_character_ids",
+    "ordered_commander_ids",
+    "ordered_knight_ids",
+    "primary_participant_character_id",
+    "primary_source_army_id",
+    "commander_character_id",
+    "side_strength_raw",
+    "side_army_size_raw",
+    "participants",
+    "candidate_source_proof",
+}
 
 
 def query_combat_simulation_inputs_v3_step(
@@ -731,7 +746,12 @@ def _normalize_raw(
         {"characters", "armies", "sides", "faith_hostility", "game_rules"},
         name,
     )
-    expected_characters = _expected_phase_characters(base)
+    candidate_source_proofs = _prevalidate_candidate_source_proofs(
+        row.get("sides"), base=base, name=f"{name}.sides"
+    )
+    expected_characters = _expected_phase_characters(
+        base, candidate_source_proofs=candidate_source_proofs
+    )
     character_rows = _array(row.get("characters"), f"{name}.characters")
     if len(character_rows) != len(expected_characters):
         raise ValueError("production phase character roster differs from v2")
@@ -750,7 +770,9 @@ def _normalize_raw(
         for index, (raw, expected) in enumerate(zip(army_rows, base_armies, strict=True))
     ]
     sides = _normalize_sides(
-        row.get("sides"), base=base, characters=characters, name=f"{name}.sides"
+        row.get("sides"), base=base, characters=characters,
+        candidate_source_proofs=candidate_source_proofs,
+        name=f"{name}.sides",
     )
     hostility = _normalize_faith_hostility(
         row.get("faith_hostility"), characters=characters, sides=sides,
@@ -773,6 +795,116 @@ def _normalize_raw(
         "faith_hostility": hostility,
         "game_rules": {"easy_difficulty": easy, "very_easy_difficulty": very_easy},
     }
+
+
+def _prevalidate_candidate_source_proofs(
+    value: object,
+    *,
+    base: dict[str, object],
+    name: str,
+) -> list[dict[str, object]]:
+    """Bind digest-checked native source order to the v2 identity roster."""
+
+    rows = _array(value, name)
+    if len(rows) != 2:
+        raise ValueError("production phase requires exactly two sides")
+    scenario = base.get("scenario")
+    base_armies = base.get("armies")
+    if not isinstance(scenario, dict) or not isinstance(base_armies, list):
+        raise ValueError("v2 combat side roster is malformed")
+
+    result: list[dict[str, object]] = []
+    for side_index, role in enumerate(("attacker", "defender")):
+        row_name = f"{name}[{side_index}]"
+        row = _exact_object(rows[side_index], _SIDE_KEYS, row_name)
+        expected_armies = list(
+            scenario[
+                "attacker_army_ids"
+                if side_index == 0
+                else "defender_army_ids"
+            ]
+        )
+        if (
+            row.get("side_index") != side_index
+            or row.get("encounter_role") != role
+            or row.get("ordered_army_ids") != expected_armies
+        ):
+            raise ValueError("production phase side identity/army order mismatch")
+
+        proof = normalize_candidate_source_proof(
+            row.get("candidate_source_proof"), side_index=side_index
+        )
+        sources = proof["ordered_sources"]
+        assert isinstance(sources, list)
+        side_armies = [
+            army
+            for army in base_armies
+            if isinstance(army, dict) and army.get("encounter_role") == role
+        ]
+        expected_commander_sources = [
+            {
+                "role": "commander",
+                "source_army_id": int(army["army_id"]),
+                "source_regiment_id": None,
+                "character_id": int(army["commander"]["character_id"]),
+            }
+            for army in side_armies
+            if isinstance(army.get("commander"), dict)
+            and army["commander"].get("status") == "available"
+        ]
+        commander_sources = [
+            source for source in sources if source["role"] == "commander"
+        ]
+        knight_sources = [
+            source for source in sources if source["role"] == "knight"
+        ]
+        if commander_sources != expected_commander_sources:
+            raise ValueError(
+                "candidate source commander identities differ from v2"
+            )
+
+        expected_knight_identities = sorted(
+            (
+                int(army["army_id"]),
+                int(member["source_regiment_id"]),
+                int(member["character_id"]),
+            )
+            for army in side_armies
+            for member in army["knights"]["members"]
+        )
+        proof_knight_identities = sorted(
+            (
+                int(source["source_army_id"]),
+                int(source["source_regiment_id"]),
+                int(source["character_id"]),
+            )
+            for source in knight_sources
+        )
+        if proof_knight_identities != expected_knight_identities:
+            raise ValueError("candidate source knight identities differ from v2")
+
+        expected_knight_army_order = [
+            source
+            for army in side_armies
+            for source in knight_sources
+            if source["source_army_id"] == army["army_id"]
+        ]
+        if knight_sources != expected_knight_army_order:
+            raise ValueError("candidate source knight army order differs from v2")
+
+        expected_commander_ids = [
+            int(source["character_id"]) for source in commander_sources
+        ]
+        expected_knight_ids = [
+            int(source["character_id"]) for source in knight_sources
+        ]
+        if (
+            row.get("ordered_commander_ids") != expected_commander_ids
+            or row.get("ordered_knight_ids") != expected_knight_ids
+        ):
+            raise ValueError("production phase side source order mismatch")
+        result.append(proof)
+    return result
 
 
 def _normalize_character(
@@ -962,6 +1094,7 @@ def _normalize_sides(
     *,
     base: dict[str, object],
     characters: list[dict[str, object]],
+    candidate_source_proofs: list[dict[str, object]],
     name: str,
 ) -> list[dict[str, object]]:
     rows = _array(value, name)
@@ -974,18 +1107,7 @@ def _normalize_sides(
     result: list[dict[str, object]] = []
     for index, role in enumerate(("attacker", "defender")):
         row_name = f"{name}[{index}]"
-        row = _exact_object(
-            rows[index],
-            {
-                "side_index", "encounter_role", "ordered_army_ids",
-                "ordered_character_ids", "ordered_commander_ids",
-                "ordered_knight_ids", "primary_participant_character_id",
-                "primary_source_army_id", "commander_character_id",
-                "side_strength_raw", "side_army_size_raw", "participants",
-                "candidate_source_proof",
-            },
-            row_name,
-        )
+        row = _exact_object(rows[index], _SIDE_KEYS, row_name)
         expected_armies = list(
             scenario["attacker_army_ids" if index == 0 else "defender_army_ids"]
         )
@@ -996,11 +1118,11 @@ def _normalize_sides(
             for army in base_armies
             if army["encounter_role"] == role and army["commander"]["status"] == "available"
         ]
+        candidate_source_proof = candidate_source_proofs[index]
         expected_knights = [
-            int(member["character_id"])
-            for army in base_armies
-            if army["encounter_role"] == role
-            for member in army["knights"]["members"]
+            int(source["character_id"])
+            for source in candidate_source_proof["ordered_sources"]
+            if source["role"] == "knight"
         ]
         if (
             row.get("side_index") != index
@@ -1046,9 +1168,6 @@ def _normalize_sides(
                 "production phase side army size must be a non-negative "
                 "signed-int32 whole Q100000 count"
             )
-        candidate_source_proof = normalize_candidate_source_proof(
-            row.get("candidate_source_proof"), side_index=index
-        )
         _validate_candidate_source_roster(
             candidate_source_proof,
             expected_army_ids=expected_armies,
@@ -1766,10 +1885,29 @@ def _first_seen(values: list[int]) -> list[int]:
     return result
 
 
-def _expected_phase_characters(base: dict[str, object]) -> list[dict[str, object]]:
+def _expected_phase_characters(
+    base: dict[str, object],
+    *,
+    candidate_source_proofs: list[dict[str, object]] | None = None,
+) -> list[dict[str, object]]:
     armies = base.get("armies")
     if not isinstance(armies, list):
         raise ValueError("v2 combat armies are malformed")
+    proof_knights_by_army: dict[int, list[dict[str, object]]] | None = None
+    if candidate_source_proofs is not None:
+        if len(candidate_source_proofs) != 2:
+            raise ValueError("production phase candidate source proofs are malformed")
+        proof_knights_by_army = {}
+        for proof in candidate_source_proofs:
+            sources = proof.get("ordered_sources")
+            if not isinstance(sources, list):
+                raise ValueError("production phase candidate source proof is malformed")
+            for source in sources:
+                if not isinstance(source, dict) or source.get("role") != "knight":
+                    continue
+                proof_knights_by_army.setdefault(
+                    int(source["source_army_id"]), []
+                ).append(source)
     expected: list[dict[str, object]] = []
     seen: dict[tuple[int, int], int] = {}
     for army in armies:
@@ -1794,6 +1932,8 @@ def _expected_phase_characters(base: dict[str, object]) -> list[dict[str, object
         members = knights.get("members") if isinstance(knights, dict) else None
         if not isinstance(members, list):
             raise ValueError("v2 combat knight roster is malformed")
+        if proof_knights_by_army is not None:
+            members = proof_knights_by_army.get(army_id, [])
         for member in members:
             character_id = int(member["character_id"])
             key = (character_id, army_id)
