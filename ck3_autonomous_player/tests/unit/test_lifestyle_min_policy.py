@@ -62,6 +62,40 @@ def _choose(snapshot: dict[str, object], **kwargs: object) -> dict[str, object]:
 
 
 class LifestyleMinPolicyTests(unittest.TestCase):
+    def test_wartime_opt_in_spends_existing_tree_point_but_never_starts_focus(self) -> None:
+        snapshot = _complete_snapshot()
+        result = choose_min_feudal_lifestyle_action(
+            snapshot, feudal_scope_admitted=True, at_peace=False,
+            allow_wartime_perk=True,
+        )
+        self.assertEqual(result["status"], "recommend_action")
+        self.assertEqual(
+            result["policy_id"], "g2-lifestyle-wartime-stewardship-perk-v1"
+        )
+        self.assertEqual(result["selected_action"]["kind"], "perk")
+        self.assertEqual(result["selected_action"]["target_key"], "cutting_corners_perk")
+        self.assertEqual(
+            choose_min_feudal_lifestyle_action(
+                snapshot, feudal_scope_admitted=True, at_peace=False,
+            )["status"], "outside_admitted_scene",
+        )
+        snapshot["current_focus"] = {"presence": "absent"}
+        snapshot["current_lifestyle_progress"] = {"presence": "absent"}
+        snapshot["legal_focus_candidates"] = {"status": "available", "items": [{
+            "key": "stewardship_wealth_focus",
+            "lifestyle_key": "stewardship_lifestyle",
+        }]}
+        snapshot["target_lifestyle_progress"] = {
+            "presence": "present", "lifestyle_key": "stewardship_lifestyle",
+            "unspent_perk_points": 0,
+        }
+        absent = choose_min_feudal_lifestyle_action(
+            snapshot, feudal_scope_admitted=True, at_peace=False,
+            allow_wartime_perk=True,
+        )
+        self.assertEqual(absent["status"], "outside_admitted_scene")
+        self.assertIsNone(absent["selected_action"])
+
     def test_feudal_building_perk_generates_one_bound_target(self) -> None:
         result = _choose(_complete_snapshot())
         self.assertEqual(result["status"], "recommend_action")

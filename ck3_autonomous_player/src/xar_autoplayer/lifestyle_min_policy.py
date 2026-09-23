@@ -1,4 +1,4 @@
-"""One-action feudal peace-governance lifestyle recommendation.
+"""One-action feudal lifestyle recommendation for a controlled private trial.
 
 This consumes the exact private LIFE2 snapshot shape. It does not submit a
 command or register a production capability; the single CK3 owner must first
@@ -11,6 +11,7 @@ from typing import Mapping
 
 
 POLICY_ID = "g2-m4-lifestyle-min-v1"
+WAR_PERK_POLICY_ID = "g2-lifestyle-wartime-stewardship-perk-v1"
 _STEWARDSHIP = "stewardship_lifestyle"
 _BUILD_COST_PERK = "cutting_corners_perk"
 _WEALTH_FOCUS = "stewardship_wealth_focus"
@@ -80,18 +81,28 @@ def choose_min_feudal_lifestyle_action(
     *,
     feudal_scope_admitted: bool | None,
     at_peace: bool | None,
+    allow_wartime_perk: bool = False,
     pending_action: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Choose one native focus/perk target from a complete paused observation.
 
-    The caller derives feudal scope and peace from independent campaign-root
-    state. A pending submit must be verified against a fresh receipt before
+    The caller derives feudal scope and war state from independent campaign-root
+    state. The wartime opt-in admits only an already focused perk. A pending
+    submit must be verified against a fresh receipt before
     any further recommendation. No request ID or CK3 action is generated here.
     """
-    result: dict[str, object] = {"policy_id": POLICY_ID, "selected_action": None}
+    result: dict[str, object] = {
+        "policy_id": (
+            WAR_PERK_POLICY_ID if at_peace is False and allow_wartime_perk
+            else POLICY_ID
+        ),
+        "selected_action": None,
+    }
     if feudal_scope_admitted is None or at_peace is None:
         return {**result, "status": "scope_observation_unavailable"}
-    if feudal_scope_admitted is not True or at_peace is not True:
+    if feudal_scope_admitted is not True or (
+        at_peace is not True and allow_wartime_perk is not True
+    ):
         return {**result, "status": "outside_admitted_scene"}
     if isinstance(pending_action, Mapping):
         status = pending_action.get("status")
@@ -154,6 +165,8 @@ def choose_min_feudal_lifestyle_action(
                     },
                 }
         return {**result, "status": "no_legal_minimum"}
+    if at_peace is not True:
+        return {**result, "status": "outside_admitted_scene"}
     if focus.get("presence") != "absent" or progress.get("presence") != "absent":
         return {**result, "status": "observation_unavailable"}
     if readiness.get("legal_focus_candidates_ready") is not True:

@@ -374,6 +374,7 @@ from ..lifestyle_formal_consumer import (
     RECEIPT_STEP as PRIVATE_LIFESTYLE_RECEIPT_STEP,
     ROOT_QUERY_STEP as PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
     latest_lifestyle_applied_receipt,
+    same_frame_feudal_lifestyle_scope,
     same_frame_feudal_peace_scope,
     unresolved_lifestyle_perk_action,
 )
@@ -694,7 +695,17 @@ class GameplayBridgeService:
                     plan, routable_steps
                 ),
                 "_private_lifestyle_scope_v1": (
-                    same_frame_feudal_peace_scope(planning_snapshot, history)
+                    (
+                        same_frame_feudal_peace_scope(planning_snapshot, history)
+                        if getattr(
+                            self.driver,
+                            "require_initial_lifestyle_focus_before_date_advance",
+                            False,
+                        ) is True
+                        else same_frame_feudal_lifestyle_scope(
+                            planning_snapshot, history
+                        )
+                    )
                     if getattr(
                         self.driver, "allow_private_lifestyle_formal_trial", False
                     ) is True
@@ -1006,7 +1017,7 @@ class GameplayBridgeService:
     def _plan_private_lifestyle_trial_v1(
         self, planned: dict[str, object], available_steps: set[str]
     ) -> dict[str, object]:
-        """Read slot43 only after the normal planner selects peaceful time."""
+        """Read slot43 after the normal planner selects a bounded time step."""
 
         scope = planned.pop("_private_lifestyle_scope_v1", None)
         pending = planned.pop("_private_lifestyle_pending_v1", None)

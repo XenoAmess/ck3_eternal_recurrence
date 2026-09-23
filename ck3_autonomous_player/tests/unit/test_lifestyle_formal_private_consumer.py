@@ -24,6 +24,7 @@ from xar_autoplayer.bridge.player_lifestyle_private_transport_v1 import (
 )
 from xar_autoplayer.lifestyle_formal_consumer import (
     consume_lifestyle_private_query,
+    same_frame_feudal_lifestyle_scope,
     same_frame_feudal_peace_scope,
     unresolved_lifestyle_perk_action,
 )
@@ -204,6 +205,97 @@ class _Driver:
 
 
 class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
+    def test_wartime_perk_waits_when_war_planner_has_a_step(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        plan = {"selected_step": "war-move-16777250", "phase": "war_response"}
+        selected = GameplayBridgeService(driver)._plan_private_lifestyle_trial_v1(
+            {"snapshot_id": "native:3", "revision": 3, "plan": plan,
+             "_private_lifestyle_scope_v1": same_frame_feudal_lifestyle_scope(
+                 driver.frame, driver.history)},
+            {"life-advance"},
+        )
+        self.assertEqual(selected["plan"], plan)
+        self.assertIsNone(driver.state.last)
+
+    def test_wartime_feudal_perk_uses_existing_typed_receipt_and_next_turn(self) -> None:
+        driver = _Driver()
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        scope = same_frame_feudal_lifestyle_scope(driver.frame, driver.history)
+        self.assertEqual(scope["status"], "admitted")
+        self.assertIs(scope["at_peace"], False)
+        self.assertEqual(
+            same_frame_feudal_peace_scope(driver.frame, driver.history)["status"],
+            "outside_scene",
+        )
+        service = GameplayBridgeService(driver)
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "life-advance", "phase": "wartime"},
+        ):
+            planned = service.plan_turn()
+        plan = planned["plan"]
+        self.assertEqual(plan["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(plan["lifestyle_action"]["target_key"], "cutting_corners_perk")
+        self.assertEqual(
+            plan["lifestyle_action"]["expected"]["expected_player_character_id"],
+            29829,
+        )
+        self.assertEqual(
+            plan["lifestyle_query"]["snapshot"]["current_lifestyle_progress"][
+                "unspent_perk_points"
+            ], 1,
+        )
+        self.assertEqual(
+            plan["lifestyle_query"]["snapshot"]["legal_perk_candidates"][
+                "items"
+            ][0]["key"], "cutting_corners_perk",
+        )
+        pending = driver.submit_player_lifestyle_perk_private_v1(
+            query=plan["lifestyle_query"], action=plan["lifestyle_action"],
+            expected_revision=3,
+        )
+        self.assertEqual(pending["status"], "submitted_verification_pending")
+        self.assertEqual(
+            sum(
+                row["command"] == PERK_SUBMIT_STEP
+                and row["result"]["status"] == "submitted_verification_pending"
+                for row in driver.history
+            ), 1
+        )
+        driver.frame = _game_frame(4)
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        receipt_plan = service._plan_private_lifestyle_trial_v1(
+            {"snapshot_id": "native:4", "revision": 4,
+             "plan": {"selected_step": "life-advance", "phase": "wartime"},
+             "_private_lifestyle_pending_v1": pending},
+            {"life-advance"},
+        )
+        self.assertEqual(receipt_plan["plan"]["selected_step"], RECEIPT_STEP)
+        applied = query_player_lifestyle_receipt_private_v1(
+            driver, pending=pending, expected_revision=4
+        )
+        self.assertTrue(applied["postcondition_verified"])
+        self.assertTrue(applied["post_target_perk_owned"])
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "life-advance", "phase": "wartime"},
+        ):
+            following = service.plan_turn()
+        self.assertEqual(
+            following["plan"]["lifestyle_receipt_consumed"]["action_request_id"],
+            pending["action_request_id"],
+        )
+        self.assertEqual(
+            sum(
+                row["command"] == PERK_SUBMIT_STEP
+                and row["result"]["status"] == "submitted_verification_pending"
+                for row in driver.history
+            ), 1
+        )
+
     def test_opening_focus_bypasses_r0140_war_query_through_receipt_and_consumption(self) -> None:
         driver = _Driver()
         driver.require_initial_lifestyle_focus_before_date_advance = True

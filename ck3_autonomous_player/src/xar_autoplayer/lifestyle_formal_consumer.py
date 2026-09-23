@@ -83,8 +83,11 @@ def latest_lifestyle_applied_receipt(
     return None
 
 
-def same_frame_feudal_peace_scope(
-    snapshot: Mapping[str, object], history: list[dict[str, object]]
+def _same_frame_feudal_scope(
+    snapshot: Mapping[str, object],
+    history: list[dict[str, object]],
+    *,
+    require_peace: bool,
 ) -> dict[str, object]:
     """Use an independent public campaign-root query, never a guessed flag."""
 
@@ -93,7 +96,8 @@ def same_frame_feudal_peace_scope(
     wars = snapshot.get("active_wars")
     if not isinstance(wars, list):
         return {"status": "scope_unavailable"}
-    if wars:
+    at_peace = not wars
+    if require_peace and not at_peace:
         return {"status": "outside_scene", "at_peace": False}
     played = snapshot.get("played_character")
     player_id = played.get("character_id") if isinstance(played, Mapping) else None
@@ -135,13 +139,29 @@ def same_frame_feudal_peace_scope(
         ):
             return {
                 "status": "admitted",
-                "at_peace": True,
+                "at_peace": at_peace,
                 "government_key": "feudal_government",
                 "snapshot_revision": revision,
                 "player_character_id": player_id,
             }
-        return {"status": "outside_scene", "at_peace": True}
-    return {"status": "root_query_needed", "at_peace": True}
+        return {"status": "outside_scene", "at_peace": at_peace}
+    return {"status": "root_query_needed", "at_peace": at_peace}
+
+
+def same_frame_feudal_peace_scope(
+    snapshot: Mapping[str, object], history: list[dict[str, object]]
+) -> dict[str, object]:
+    """Keep the construction and opening-focus scene restricted to peace."""
+
+    return _same_frame_feudal_scope(snapshot, history, require_peace=True)
+
+
+def same_frame_feudal_lifestyle_scope(
+    snapshot: Mapping[str, object], history: list[dict[str, object]]
+) -> dict[str, object]:
+    """Admit an observed war only for the existing private perk candidate."""
+
+    return _same_frame_feudal_scope(snapshot, history, require_peace=False)
 
 
 def consume_lifestyle_private_query(
@@ -191,7 +211,8 @@ def consume_lifestyle_private_query(
     recommendation = choose_min_feudal_lifestyle_action(
         life_snapshot if isinstance(life_snapshot, Mapping) else None,
         feudal_scope_admitted=True,
-        at_peace=True,
+        at_peace=scope.get("at_peace", True),
+        allow_wartime_perk=scope.get("at_peace") is False,
     )
     if recommendation.get("status") == "recommend_action":
         action = recommendation.get("selected_action")
