@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "4A93FE8A6CA592CFA1CC753BE14AA9393E5606E6FC099F7A65ADA7A981961B95"
+        "sha256": "D3003FE3F7A6EA4A69E78FED6097CDC35600DEBC2F6B3987C3D6B26002F864BB"
       },
       "raw_footage": {
         "passed": 0,
@@ -263,8 +263,8 @@
       "historical_durable_game_days": 14900,
       "historical_target_game_days": 36524,
       "latest_final_observed_days_are_durable": true,
-      "latest_final_observed_game_days": 1999,
-      "latest_final_observed_source": "R0168_h1251_saved_game_raw_driver_requires_official_recovery",
+      "latest_final_observed_game_days": 2088,
+      "latest_final_observed_source": "R0171_raw53194440_same_as_h1333_checkpoint",
       "latest_formal_active_war_ids": [
         16777231,
         16777250,
@@ -272,20 +272,23 @@
       ],
       "latest_formal_active_war_scores": [
         0,
-        29,
-        -4
+        -58,
+        51
       ],
-      "latest_formal_pair": "R0168_raw_h1251_red",
-      "latest_formal_war_status": "three_active_defensive_wars_siege_relief_army_binding_red",
-      "latest_freeze_manifest_status": "frozen-read-only-raw-pair",
+      "latest_formal_attempt_round": "R0171",
+      "latest_formal_attempt_status": "completed_red_no_gameplay_no_new_checkpoint",
+      "latest_formal_pair": "R0169_raw_h1333_red",
+      "latest_formal_war_scores_scope": "R0171_same_checkpoint_paused_frame",
+      "latest_formal_war_status": "three_active_defensive_wars_route_intent_observation_red_after_R0171",
+      "latest_freeze_manifest_status": "R0171_frozen_read_only_raw_attempt_no_new_checkpoint",
       "latest_product_status": "RED",
       "m3_existing_complete_evidence_retained": true,
-      "mainline_status": "stopped_pending_official_h1251_recovery_and_single_army_binding_fix",
+      "mainline_status": "stopped_pending_same_checkpoint_route_intent_diagnosis_after_R0171",
       "material_expansion_proven": true,
       "primary_formal_seed_pair": "R0138_frozen_day0",
       "proven_land_victory_count": 3,
       "prv008_frozen_qualification_unchanged": true,
-      "robert_durable_game_days": 1999,
+      "robert_durable_game_days": 2088,
       "robert_target_game_days": 36524,
       "second_acquired_province_id": 2635,
       "second_acquired_title_id": 2102,
@@ -299,6 +302,7 @@
       "G2-M3"
     ],
     "latest_durable_continuation": {
+      "active_war_scores_scope": "latest_observed_post_checkpoint_not_durable",
       "active_wars": [
         {
           "player_is_primary_war_leader": true,
@@ -309,53 +313,51 @@
         },
         {
           "player_is_primary_war_leader": true,
-          "player_relative_war_score": 29,
+          "player_relative_war_score": -7,
           "player_side": "defender",
           "status": "active",
           "war_id": 16777250
         },
         {
           "player_is_primary_war_leader": true,
-          "player_relative_war_score": -4,
+          "player_relative_war_score": 52,
           "player_side": "defender",
           "status": "active",
           "war_id": 95
         }
       ],
       "all_active_wars_resolved": false,
-      "attempted_turns": 117,
+      "attempted_turns": 79,
       "campaign_identity": "Robert_1066",
       "checkpoint_pair_status": "raw_driver_post_checkpoint_tail_official_recovery_required",
-      "checkpoint_save_sha256": "C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA",
+      "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
       "cleanup_proven": true,
-      "durable_checkpoint_date_raw": 53192304,
-      "durable_game_days": 1999,
-      "durable_game_days_increment": 74,
+      "durable_checkpoint_date_raw": 53194440,
+      "durable_game_days": 2088,
+      "durable_game_days_increment": 89,
       "evidence": {
         "base": "configured_process_assets_root",
-        "formal_report_locator": "g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair/formal-report.txt",
-        "formal_report_sha256": "CF4A979641B1C3D119460346B7BEEA4D0B5FD38C8C8B965FC864E12A7EEBD450",
-        "freeze_locator": "g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair/R0168-raw-freeze.json",
-        "freeze_manifest_status": "frozen-read-only",
-        "freeze_sha256": "C9AA22723EA96127312F78A647660DA49AC1411BABE8C389B15F5E0C4EEA7FAD",
-        "frozen_raw_directory": "g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair",
-        "operator_receipt_sha256": "89565E6D435E1B5C5F884F5F332D1C7D639C5FF18A67BF4509BE81067DC18A3C"
+        "formal_report_locator": "g2-robert-mainline-r0169-siege-arrival-red-20260923/R0169-final-frozen-pair/formal-report.txt",
+        "formal_report_sha256": "FCEDA6EB30910191147A603516B774BCDFDAF0DCF63E6D0F018C84089252A86A",
+        "freeze_locator": "g2-robert-mainline-r0169-siege-arrival-red-20260923/R0169-final-frozen-pair/R0169-raw-freeze.json",
+        "freeze_manifest_status": "hash_verified_copy_files_read_only_manifest_not_read_only",
+        "freeze_sha256": "A7E9E701454998B52E755AEB767DE4CD94C9F3B152AC473772BB5F35F8105F97",
+        "frozen_raw_directory": "g2-robert-mainline-r0169-siege-arrival-red-20260923/R0169-final-frozen-pair",
+        "operator_receipt_sha256": "9F2BF1373DA34A36DB34B311DB796C940253D6D4A4F63A68B9EC002B73F509A3"
       },
-      "execution_id": "fac11146-ed48-4f07-9f59-5c7566b51d8f",
-      "gameplay_turns": 41,
+      "execution_id": "f8f8af6a-102c-47df-bb36-ab5630ecae1d",
+      "gameplay_turns": 17,
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
-      "last_durable_checkpoint_history_index": 1251,
-      "latest_verified_paired_checkpoint": "R0164_h1082",
+      "last_durable_checkpoint_history_index": 1333,
+      "latest_observed_date_raw": 53194848,
+      "latest_observed_game_days": 2105,
+      "latest_verified_paired_checkpoint": "R0168_h1251_officially_cold_restored",
       "managed_process_count_after_cleanup": 0,
       "manual_tail_edit_forbidden": true,
       "material_expansion_proven": true,
+      "observed_but_not_durable_game_days_after_checkpoint": 17,
       "official_recovery_required_before_reuse": true,
-      "player_army_observed": {
-        "army_id": 83886367,
-        "army_state": "combat",
-        "province_id": 2638
-      },
       "product_status": "RED",
       "proven_land_victories": [
         {
@@ -374,29 +376,31 @@
           "war_id": 50331662
         }
       ],
-      "query_turns": 75,
-      "raw_driver_post_checkpoint_read_only_tail_records": 2,
-      "raw_driver_sha256": "14207EC4C2A694D764E41FAD5282124C29B8FDE6645152482095E47915C2AE03",
+      "query_turns": 61,
+      "raw_driver_post_checkpoint_tail_contains_advance": true,
+      "raw_driver_post_checkpoint_tail_records": 17,
+      "raw_driver_sha256": "81B7AB33344CF9FB992151294D1F41D6FBB6C9A0565D9A75900C6E76C24F1A4A",
       "requested_turns": 120,
       "result": "completed-red",
-      "round": "R0168",
-      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0168",
-      "scope": "R0168 officially cold-restored R0164 and completed 116/117 formal turns, including 41 gameplay turns, to a saved h1251/date53192304 (+74 durable Robert days). The raw driver has two read-only records after the checkpoint and requires official semantic recovery before reuse. Three defensive wars remain active; the final army was in combat at 2638 and the next planner frame blocked on single idle controllable army binding. No war resolution, century, full campaign or second-seed gate credit.",
-      "source_commit": "b153c47ee897688eb4386192cc2d535cafaf784e",
-      "starting_checkpoint_history_index": 1082,
-      "starting_checkpoint_round": "R0164",
-      "starting_date_raw": 53190528,
+      "round": "R0169",
+      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0169",
+      "scope": "R0169 officially cold-restored the R0168 h1251 checkpoint with source 13b356a and completed 78/79 formal turns, including 17 gameplay turns, to a saved h1333/date53194440 (+89 durable Robert days). The raw driver contains 17 post-checkpoint records including advances and requires official semantic recovery. Its later date53194848 is only an observation (+106 days from h1251, 17 days beyond the saved checkpoint). Three defensive wars remain active at the latest observed frame; the previous idle-army binding RED was passed, but the planner now blocks on accepted native move arrival for the current siege. No war resolution, century, full campaign or second-seed gate credit.",
+      "source_commit": "13b356a766d81240366bbb887ae8adbf4926d0ef",
+      "starting_checkpoint_history_index": 1251,
+      "starting_checkpoint_round": "R0168",
+      "starting_date_raw": 53192304,
       "strategy_red": {
         "phase": "native_war_defender_siege_relief_observation_blocked",
         "reason": "an enemy siege is visible in a primary defensive war, but the same-frame army assignment, hostile position, route, or strength scope is incomplete; do not consume another stationary hold slice",
-        "required_next_step": "officially recover the h1251 save and raw driver tail, then repair the exact single-army binding against the latest same-frame combat state before any gameplay advance",
-        "required_observation": "single-idle-controllable-army-binding"
+        "required_next_step": "officially recover the h1333 save and raw driver tail, then bind accepted native move arrival to the current siege in the same valid decision frame before any further gameplay advance",
+        "required_observation": "accepted-native-move-arrival-for-current-siege"
       },
-      "successful_turns": 116,
+      "successful_turns": 78,
       "target_game_days": 36524,
       "technical_formal_status": "blocked",
       "whole_campaign_gate": "0/1"
     },
+    "latest_noncheckpoint_formal_attempt_round": "R0171",
     "m4_focus_first_primitive": {
       "actor_id": 29829,
       "checkpoint_history_indices": [
@@ -833,6 +837,44 @@
         "strategy_red": "single-idle-controllable-army-binding",
         "successful_turns": 116,
         "technical_formal_status": "blocked"
+      },
+      {
+        "active_war_ids": [
+          16777231,
+          16777250,
+          95
+        ],
+        "attempted_turns": 79,
+        "checkpoint_pair_status": "raw_driver_post_checkpoint_tail_official_recovery_required",
+        "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
+        "durable_checkpoint_date_raw": 53194440,
+        "durable_game_days": 2088,
+        "durable_game_days_increment": 89,
+        "execution_id": "f8f8af6a-102c-47df-bb36-ab5630ecae1d",
+        "formal_report_sha256": "FCEDA6EB30910191147A603516B774BCDFDAF0DCF63E6D0F018C84089252A86A",
+        "freeze_locator": "g2-robert-mainline-r0169-siege-arrival-red-20260923/R0169-final-frozen-pair/R0169-raw-freeze.json",
+        "freeze_manifest_status": "hash_verified_copy_files_read_only_manifest_not_read_only",
+        "freeze_sha256": "A7E9E701454998B52E755AEB767DE4CD94C9F3B152AC473772BB5F35F8105F97",
+        "gameplay_turns": 17,
+        "last_durable_checkpoint_history_index": 1333,
+        "latest_observed_active_war_scores": [
+          0,
+          -7,
+          52
+        ],
+        "latest_observed_date_raw": 53194848,
+        "latest_observed_days_are_durable": false,
+        "latest_observed_game_days": 2105,
+        "prior_r0168_idle_army_binding_passed": true,
+        "query_turns": 61,
+        "raw_driver_sha256": "81B7AB33344CF9FB992151294D1F41D6FBB6C9A0565D9A75900C6E76C24F1A4A",
+        "requested_turns": 120,
+        "result": "completed-red",
+        "round": "R0169",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0169",
+        "strategy_red": "accepted-native-move-arrival-for-current-siege",
+        "successful_turns": 78,
+        "technical_formal_status": "blocked"
       }
     ],
     "recent_nonadvancing_attempts": [
@@ -898,6 +940,125 @@
         "successful_query_turns": 4
       }
     ],
+    "recent_noncheckpoint_formal_attempts": [
+      {
+        "active_war_ids": [
+          16777231,
+          16777250,
+          95
+        ],
+        "attempted_turns": 16,
+        "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
+        "cleanup_proven": true,
+        "durable_game_days_increment": 0,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "formal_report_locator": "g2-robert-mainline-r0170-siege-arrival-red-20260923/R0170-final-frozen-pair/formal-report.txt",
+          "formal_report_sha256": "3CB8C07EDA0C59A39165428044833916EE34319A95A9668451C70AB62EFD7D43",
+          "freeze_locator": "g2-robert-mainline-r0170-siege-arrival-red-20260923/R0170-final-frozen-pair/R0170-raw-freeze.json",
+          "freeze_manifest_status": "frozen-read-only",
+          "freeze_sha256": "3DE132AFB6404933CBBF452AE0F653EC0F1B55B8D44FA6B357FA1DF2F5350499",
+          "operator_receipt_sha256": "D09D7914E1ACDF206552C935E3AF1B4AE7836B08EE3751D6B07B3FACA6E6027C"
+        },
+        "gameplay_turns": 2,
+        "last_durable_checkpoint_date_raw": 53194440,
+        "last_durable_checkpoint_history_index": 1333,
+        "last_observed_date_raw": 53194872,
+        "last_observed_days_are_durable": false,
+        "last_observed_game_days": 2106,
+        "latest_observed_active_war_scores": [
+          0,
+          -7,
+          52
+        ],
+        "managed_process_count_after_cleanup": 0,
+        "new_checkpoints": 0,
+        "new_process_used": true,
+        "observed_days_since_checkpoint": 18,
+        "official_cold_restore_reported": true,
+        "owner_released": true,
+        "product_status": "RED",
+        "query_turns": 13,
+        "raw_driver_requires_official_recovery_before_reuse": true,
+        "raw_driver_sha256": "C456145D589C2DCA27EDB7583D8A89ACC56038C4E40FB07AF4D4C22DEF471D72",
+        "requested_turns": 120,
+        "robert_durable_game_days": 2088,
+        "round": "R0170",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0170",
+        "scope": "R0170 cold-restored R0169 h1333 on source fe81e43 and completed 15/16 formal turns including two gameplay turns. No checkpoint was saved. The latest date53194872 is observation only, 18 days past h1333; Robert durable days remain 2088/36524. The same accepted-native-move-arrival-for-current-siege planner RED remains. No war resolution or new G2 gate credit.",
+        "source_commit": "fe81e43d772ba6de4c8a1f4744dba6e39d7af8f6",
+        "starting_checkpoint_date_raw": 53194440,
+        "starting_checkpoint_history_index": 1333,
+        "starting_checkpoint_round": "R0169",
+        "status": "completed-red",
+        "strategy_red": {
+          "phase": "native_war_defender_siege_relief_observation_blocked",
+          "required_next_step": "retain h1333 as the only durable checkpoint; inspect accepted native move arrival for the current siege in one valid decision frame and repair the minimal binding before further gameplay",
+          "required_observation": "accepted-native-move-arrival-for-current-siege"
+        },
+        "successful_turns": 15,
+        "technical_formal_status": "blocked"
+      },
+      {
+        "active_war_ids": [
+          16777231,
+          16777250,
+          95
+        ],
+        "attempted_turns": 6,
+        "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
+        "cleanup_proven": true,
+        "durable_game_days_increment": 0,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "formal_report_locator": "g2-robert-mainline-r0171-route-intent-red-20260923/R0171-final-frozen-pair/formal-report.txt",
+          "formal_report_sha256": "B94747212588F0910C6E683DBB6EF08596760C4274A13FD410F74FE2FDCAF8FC",
+          "freeze_locator": "g2-robert-mainline-r0171-route-intent-red-20260923/R0171-final-frozen-pair/R0171-raw-freeze.json",
+          "freeze_manifest_status": "frozen-read-only",
+          "freeze_sha256": "310B27C52E7FD03978A02536B241A0DE37371EDC227281F90EEDC40188096972",
+          "operator_receipt_sha256": "9F884BAE0326C058D032485C33843F5BCC4A5DE2BBCF6296DB85127CB1BB855E"
+        },
+        "gameplay_turns": 0,
+        "last_durable_checkpoint_date_raw": 53194440,
+        "last_durable_checkpoint_history_index": 1333,
+        "last_observed_date_raw": 53194440,
+        "last_observed_days_are_durable": true,
+        "last_observed_game_days": 2088,
+        "latest_observed_active_war_scores": [
+          0,
+          -58,
+          51
+        ],
+        "latest_observed_war_scores_scope": "R0171_same_checkpoint_paused_frame",
+        "managed_process_count_after_cleanup": 0,
+        "new_checkpoints": 0,
+        "new_process_used": true,
+        "observed_days_since_checkpoint": 0,
+        "official_cold_restore_reported": true,
+        "owner_released": true,
+        "product_status": "RED",
+        "query_turns": 5,
+        "raw_driver_requires_official_recovery_before_reuse": true,
+        "raw_driver_sha256": "FBE3A287745BC4D2D4E712633688A9FDDC45CF01C0793FF70A60CD2B598DD177",
+        "requested_turns": 120,
+        "robert_durable_game_days": 2088,
+        "round": "R0171",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0171",
+        "scope": "R0171 cold-restored the same R0169 h1333 checkpoint on source 2100ee2 and completed 5/6 formal turns, all queries, with no gameplay, checkpoint or date advance. The latest observation is date53194440, equal to the saved checkpoint; Robert durable days remain 2088/36524. The planner now requests a complete matching active native move intent route. Its relation to repeated same-checkpoint restore and the prior arrival observation remains under investigation, with no war resolution or new G2 gate credit.",
+        "source_commit": "2100ee2f434708b06f5534ba02f488194b91c52f",
+        "starting_checkpoint_date_raw": 53194440,
+        "starting_checkpoint_history_index": 1333,
+        "starting_checkpoint_round": "R0169",
+        "status": "completed-red",
+        "strategy_red": {
+          "phase": "native_war_defender_siege_relief_observation_blocked",
+          "required_next_step": "investigate repeated cold restore of the same h1333 checkpoint and same-frame active native move intent route before changing strategy or resuming gameplay",
+          "required_observation": "complete-matching-active-native-move-intent-route"
+        },
+        "successful_turns": 5,
+        "technical_formal_status": "blocked"
+      }
+    ],
     "result": "ACTIVE"
   },
   "t2": {
@@ -908,5 +1069,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T10:23:53+08:00"
+  "updated_at": "2026-09-23T11:15:43+08:00"
 }
