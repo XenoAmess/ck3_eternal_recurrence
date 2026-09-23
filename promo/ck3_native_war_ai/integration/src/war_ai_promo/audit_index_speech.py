@@ -45,6 +45,7 @@ def main() -> None:
     model = whisper.load_model(str(args.model), device="cpu")
     args.output_dir.mkdir(parents=True, exist_ok=False)
     rows = []
+    failed = []
     for cue in cues:
         cue_id = cue["id"]
         expected_text = cue["zh"]
@@ -62,6 +63,16 @@ def main() -> None:
         transcript = result["text"].strip()
         score = SequenceMatcher(None, normalized(expected_text), normalized(transcript),
                                 autojunk=False).ratio()
+        target_chars = len(normalized(expected_text))
+        transcript_chars = len(normalized(transcript))
+        length_ratio = transcript_chars / target_chars if target_chars else 0.0
+        segments = result["segments"]
+        duration = receipt["wave"]["duration_seconds"]
+        # Deliberately loose: this catches gross truncation, silence and runaway
+        # repetition without pretending that ASR homophones prove exact wording.
+        screen = bool(segments and .70 <= length_ratio <= 1.35
+                      and segments[0]["start"] <= 3.0
+                      and segments[-1]["end"] >= duration - 3.0)
         row = {
             "cue_id": cue_id,
             "audio": audio_binding,
@@ -80,18 +91,30 @@ def main() -> None:
                 for segment in result["segments"]
             ],
             "normalized_character_similarity_advisory": round(score, 4),
+            "gross_completeness_screen": {
+                "passed": screen, "transcript_to_script_character_ratio": round(length_ratio, 4),
+                "audio_duration_seconds": duration,
+                "first_asr_start_seconds": segments[0]["start"] if segments else None,
+                "last_asr_end_seconds": segments[-1]["end"] if segments else None,
+                "scope": "Gross truncation/silence/repetition triage, not exact word verification",
+            },
             "finished_at_utc": datetime.now(timezone.utc).isoformat(),
             "interpretation": "Machine screening only; not a transcript proof or human listening signoff",
         }
         write_new(args.output_dir / f"{cue_id}.whisper.json", row)
         rows.append({"id": cue_id, "score": row["normalized_character_similarity_advisory"],
-                     "segments": len(row["segments"])})
+                     "segments": len(row["segments"]), "gross_screen_passed": screen})
+        if not screen:
+            failed.append(cue_id)
         print(f"ASR {cue_id} similarity={score:.4f}", flush=True)
     write_new(args.output_dir / "audit-summary.json", {
-        "state": "advisory-complete", "model": model_binding,
+        "state": "advisory-screen-red" if failed else "advisory-screen-green",
+        "gross_screen_failures": failed, "model": model_binding,
         "inputs": binding(args.inputs), "cues": rows,
         "human_signoff": "not-provided",
     })
+    if failed:
+        raise RuntimeError(f"IndexTTS speech requires investigation: {failed}")
 
 
 if __name__ == "__main__":
