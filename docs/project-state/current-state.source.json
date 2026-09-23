@@ -1,7 +1,7 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-23T09:34:55+08:00",
+  "updated_at": "2026-09-23T10:23:53+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
@@ -240,66 +240,61 @@
     "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
     "latest_durable_continuation": {
       "campaign_identity": "Robert_1066",
-      "round": "R0164",
-      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0164",
-      "execution_id": "4ece8463-d05b-4092-a18f-0aecd8cfca24",
-      "source_commit": "cb43a50fb06d7f1a1a03be40d0e36f73221aa759",
-      "result": "completed-green",
-      "product_status": "GREEN_BOUNDED_CONTINUATION",
-      "mainline_status": "bounded_siege_progress_green_wars_active",
-      "starting_checkpoint_history_index": 989,
-      "starting_date_raw": 53189712,
-      "official_cold_restore": {
-        "checkpoint_history_index": 990,
-        "status": "complete"
-      },
-      "requested_turns": 60,
-      "successful_turns": 60,
-      "gameplay_turns": 23,
-      "query_turns": 37,
-      "siege_progress_turns": 22,
-      "duplicate_move_submitted": false,
-      "checkpoint_count": 8,
-      "last_durable_checkpoint_history_index": 1082,
-      "durable_checkpoint_date_raw": 53190528,
-      "durable_game_days": 1925,
-      "durable_game_days_increment": 34,
+      "round": "R0168",
+      "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0168",
+      "execution_id": "fac11146-ed48-4f07-9f59-5c7566b51d8f",
+      "source_commit": "b153c47ee897688eb4386192cc2d535cafaf784e",
+      "result": "completed-red",
+      "product_status": "RED",
+      "technical_formal_status": "blocked",
+      "starting_checkpoint_round": "R0164",
+      "starting_checkpoint_history_index": 1082,
+      "starting_date_raw": 53190528,
+      "requested_turns": 120,
+      "attempted_turns": 117,
+      "successful_turns": 116,
+      "query_turns": 75,
+      "gameplay_turns": 41,
+      "last_durable_checkpoint_history_index": 1251,
+      "durable_checkpoint_date_raw": 53192304,
+      "durable_game_days": 1999,
+      "durable_game_days_increment": 74,
       "target_game_days": 36524,
-      "checkpoint_save_sha256": "C2E8778D5914BD14DE1636DA8C77A87DA8FDD821A9D5373FB83806C382B2F7E2",
-      "driver_sha256": "3024D5CE24CE481EC7CDC0444BC84161CA200D4838CDBD77B24AF028BED2C799",
+      "checkpoint_save_sha256": "C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA",
+      "raw_driver_sha256": "14207EC4C2A694D764E41FAD5282124C29B8FDE6645152482095E47915C2AE03",
+      "checkpoint_pair_status": "raw_driver_post_checkpoint_tail_official_recovery_required",
+      "raw_driver_post_checkpoint_read_only_tail_records": 2,
+      "manual_tail_edit_forbidden": true,
+      "latest_verified_paired_checkpoint": "R0164_h1082",
+      "official_recovery_required_before_reuse": true,
       "active_wars": [
         {
-          "war_id": 16777250,
-          "casus_belli_key": "naval_expansion_cb",
-          "target_title_id": 2111,
+          "war_id": 16777231,
           "player_side": "defender",
           "player_is_primary_war_leader": true,
-          "player_relative_war_score": -7,
+          "player_relative_war_score": 0,
+          "status": "active"
+        },
+        {
+          "war_id": 16777250,
+          "player_side": "defender",
+          "player_is_primary_war_leader": true,
+          "player_relative_war_score": 29,
           "status": "active"
         },
         {
           "war_id": 95,
-          "casus_belli_key": "naval_expansion_cb",
-          "target_title_id": 2111,
           "player_side": "defender",
           "player_is_primary_war_leader": true,
-          "player_relative_war_score": -8,
+          "player_relative_war_score": -4,
           "status": "active"
         }
       ],
       "all_active_wars_resolved": false,
-      "stable_state": {
-        "domain_size": 5,
-        "domain_limit": 6,
-        "held_title_ids": [
-          2102,
-          2111,
-          2115,
-          2141,
-          2142,
-          2173
-        ],
-        "land_loss_observed": false
+      "player_army_observed": {
+        "army_id": 83886367,
+        "province_id": 2638,
+        "army_state": "combat"
       },
       "proven_land_victories": [
         {
@@ -324,18 +319,23 @@
       "hundred_year_gate": "0/1",
       "whole_campaign_gate": "0/1",
       "independent_seeds": "0/2",
+      "strategy_red": {
+        "phase": "native_war_defender_siege_relief_observation_blocked",
+        "required_observation": "single-idle-controllable-army-binding",
+        "reason": "an enemy siege is visible in a primary defensive war, but the same-frame army assignment, hostile position, route, or strength scope is incomplete; do not consume another stationary hold slice",
+        "required_next_step": "officially recover the h1251 save and raw driver tail, then repair the exact single-army binding against the latest same-frame combat state before any gameplay advance"
+      },
       "evidence": {
         "base": "configured_process_assets_root",
-        "frozen_pair_directory": "g2-robert-mainline-r0164-siege-progress-green-20260923/R0164-final-frozen-pair",
-        "freeze_locator": "g2-robert-mainline-r0164-siege-progress-green-20260923/R0164-final-frozen-pair/R0164-pair-freeze.json",
-        "freeze_sha256": "624D76BEA1823A8AEB67DE6959B97029B6B4416B3531C4B26083A2A7099C2D0E",
+        "frozen_raw_directory": "g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair",
+        "freeze_locator": "g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair/R0168-raw-freeze.json",
+        "freeze_sha256": "C9AA22723EA96127312F78A647660DA49AC1411BABE8C389B15F5E0C4EEA7FAD",
         "freeze_manifest_status": "frozen-read-only",
-        "formal_report_locator": "g2-robert-r0162-siege-progress-mastercb43a50-20260923/live-R0164/formal-report.txt",
-        "formal_report_sha256": "F803E60EBDD1786449A1DAA959824E45F378CFE1B2F4EC2E995A355F35CC0863",
-        "operator_receipt_sha256": "05B31C584D490BA5FAB85D1FFF5175AD64667684B2D476817B1A087B8E98FEC9",
-        "operator_manifest_sha256": "573E0C226846A3E7BA202D8EE48D2BF657BBCE920DA5F5E63312990B411593E8"
+        "formal_report_locator": "g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair/formal-report.txt",
+        "formal_report_sha256": "CF4A979641B1C3D119460346B7BEEA4D0B5FD38C8C8B965FC864E12A7EEBD450",
+        "operator_receipt_sha256": "89565E6D435E1B5C5F884F5F332D1C7D639C5FF18A67BF4509BE81067DC18A3C"
       },
-      "scope": "R0164 officially cold-restored the R0162 durable pair, completed 60/60 bounded turns, consumed one committed route slice and 22 independent siege-progress turns without duplicate move, and froze paired h1082/date53190528; both defensive wars remain active. No war resolution, century, full campaign, or second-seed gate credit."
+      "scope": "R0168 officially cold-restored R0164 and completed 116/117 formal turns, including 41 gameplay turns, to a saved h1251/date53192304 (+74 durable Robert days). The raw driver has two read-only records after the checkpoint and requires official semantic recovery before reuse. Three defensive wars remain active; the final army was in combat at 2638 and the next planner frame blocked on single idle controllable army binding. No war resolution, century, full campaign or second-seed gate credit."
     },
     "m5_private_read_only": {
       "round": "R0133",
@@ -351,25 +351,50 @@
       "scope": "private readback only; no typed action, material alliance result, joint budget choice or M5 gate promotion"
     },
     "m4_private_read_only": {
-      "round": "R0135",
-      "status": "evidence_insufficient",
-      "result": "completed-red",
-      "checkpoint_history_index": 2479,
-      "checkpoint_date_raw": 53437416,
-      "stock_focus_key": "stewardship_wealth_focus",
-      "stock_focus_native_legal": true,
-      "target_xp_total_raw": 0,
-      "target_unspent_perk_points": 0,
-      "life2_legal_candidates_reason": "lifestyle_window_unavailable",
-      "formal_perk_query_error": "native_lifestyle_windowless_policy_perk_unavailable_state",
-      "gameplay_actions": 0,
-      "date_advance": false,
-      "cleanup_proven": true,
+      "round": "R0167",
+      "result": "completed-green",
+      "status": "GREEN_PRIVATE_READ_ONLY",
       "milestone_status": "in_progress",
       "public_advertised": false,
-      "report_sha256": "764FAD6D217DFE22634B708D9AEC12014661DD7AFBB8DD2AABBFF92E953CBF2C",
-      "evidence_locator": "g2-m4-h2479-readback-20260922/live-R0135/report.json under configured process assets root",
-      "scope": "same-frame private readback only; LIFE2 legal candidate and formal perk query remain unavailable; no typed focus or perk closure"
+      "actor_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "checkpoint_history_index": 1082,
+      "checkpoint_date_raw": 53190528,
+      "source_pair": "R0164_h1082",
+      "focus_key": "stewardship_wealth_focus",
+      "lifestyle_key": "stewardship_lifestyle",
+      "xp_total_raw": 213125000,
+      "xp_total": 2131.25,
+      "unspent_perk_points": 2,
+      "used_perk_points": 4,
+      "policy_target_perk_key": "cutting_corners_perk",
+      "policy_target_perk_native_final_legal": true,
+      "same_paused_frame_verified": true,
+      "gameplay_actions": 0,
+      "date_advanced": false,
+      "typed_perk_action_proven": false,
+      "independent_perk_postcondition_proven": false,
+      "next_turn_perk_consumption_proven": false,
+      "consumer_gate": "at_peace_required; active_defensive_wars_prevent_submit",
+      "cleanup_proven": true,
+      "source_commit": "37ff65f8dd965292ee1bbebfc81be91f3ca7db16",
+      "native_source_commit": "752c5ebec32ec1d87fc932f5ce4f21576bdadf8f",
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "freeze_locator": "g2-m4-robert-r0167-three-query-green-20260923/R0167-evidence-freeze/R0167-readback-freeze.json",
+        "freeze_sha256": "AEAB84B6BDD6548685FC89757675CEBB7BD05532EE6AA984CE373B559B9259D3",
+        "formal_query_locator": "g2-m4-robert-r0167-three-query-green-20260923/R0167-evidence-freeze/private-query-player-lifestyle-formal-v1.json",
+        "formal_query_sha256": "D5FD7875CFCC7AB0164F397762A7546181253B0CAFD584CB149BA9F08267F339",
+        "report_locator": "g2-m4-robert-r0167-three-query-green-20260923/R0167-evidence-freeze/report.json",
+        "report_sha256": "890D0D09046D62D4B7F45605B3AA73E7749F20628D31E18A0DDB940B3621BA78"
+      },
+      "prior_r0135_readback_red": {
+        "round": "R0135",
+        "status": "evidence_insufficient",
+        "report_sha256": "764FAD6D217DFE22634B708D9AEC12014661DD7AFBB8DD2AABBFF92E953CBF2C",
+        "formal_perk_query_error": "native_lifestyle_windowless_policy_perk_unavailable_state"
+      },
+      "scope": "R0167 proves only private exact-build paused readback of current focus, accrued XP, two unspent points and one final-legal policy perk. The formal consumer requires peace and did not submit during active defensive wars; no typed perk, independent postcondition, next-turn consumption or public capability credit."
     },
     "campaign_selection": {
       "formal_primary": "Robert_1066",
@@ -435,10 +460,10 @@
       "cross_campaign_date_accumulation_allowed": false,
       "m3_existing_complete_evidence_retained": true,
       "prv008_frozen_qualification_unchanged": true,
-      "latest_formal_pair": "R0166_final_red",
-      "robert_durable_game_days": 1925,
+      "latest_formal_pair": "R0168_raw_h1251_red",
+      "robert_durable_game_days": 1999,
       "robert_target_game_days": 36524,
-      "latest_formal_war_status": "restored_siege_arrival_proof_product_red",
+      "latest_formal_war_status": "three_active_defensive_wars_siege_relief_army_binding_red",
       "material_expansion_proven": true,
       "first_acquired_title_id": 2115,
       "first_acquired_province_id": 2640,
@@ -447,22 +472,24 @@
       "second_acquired_province_id": 2635,
       "stable_domain_size": 5,
       "latest_formal_active_war_ids": [
+        16777231,
         16777250,
         95
       ],
       "third_acquired_title_id": 2111,
       "third_acquired_province_id": 2638,
       "domain_limit": 6,
-      "latest_freeze_manifest_status": "frozen-read-only",
-      "mainline_status": "stopped_pending_multi_restore_arrival_proof_from_R0164_h1082",
+      "latest_freeze_manifest_status": "frozen-read-only-raw-pair",
+      "mainline_status": "stopped_pending_official_h1251_recovery_and_single_army_binding_fix",
       "latest_product_status": "RED",
       "latest_formal_active_war_scores": [
-        -7,
-        -8
+        0,
+        29,
+        -4
       ],
-      "latest_final_observed_game_days": 1925,
+      "latest_final_observed_game_days": 1999,
       "latest_final_observed_days_are_durable": true,
-      "latest_final_observed_source": "R0164_h1082_checkpoint_reused_without_date_advance_in_R0166"
+      "latest_final_observed_source": "R0168_h1251_saved_game_raw_driver_requires_official_recovery"
     },
     "m4_focus_first_primitive": {
       "round": "R0142",
@@ -797,6 +824,42 @@
         "freeze_sha256": "624D76BEA1823A8AEB67DE6959B97029B6B4416B3531C4B26083A2A7099C2D0E",
         "freeze_manifest_status": "frozen-read-only",
         "wars_resolved": false
+      },
+      {
+        "round": "R0168",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0168",
+        "execution_id": "fac11146-ed48-4f07-9f59-5c7566b51d8f",
+        "result": "completed-red",
+        "technical_formal_status": "blocked",
+        "successful_turns": 116,
+        "attempted_turns": 117,
+        "requested_turns": 120,
+        "query_turns": 75,
+        "gameplay_turns": 41,
+        "durable_game_days_increment": 74,
+        "durable_game_days": 1999,
+        "durable_checkpoint_date_raw": 53192304,
+        "last_durable_checkpoint_history_index": 1251,
+        "active_war_ids": [
+          16777231,
+          16777250,
+          95
+        ],
+        "active_war_scores": [
+          0,
+          29,
+          -4
+        ],
+        "player_army_state": "combat",
+        "player_army_province_id": 2638,
+        "strategy_red": "single-idle-controllable-army-binding",
+        "checkpoint_save_sha256": "C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA",
+        "raw_driver_sha256": "14207EC4C2A694D764E41FAD5282124C29B8FDE6645152482095E47915C2AE03",
+        "checkpoint_pair_status": "raw_driver_post_checkpoint_tail_official_recovery_required",
+        "formal_report_sha256": "CF4A979641B1C3D119460346B7BEEA4D0B5FD38C8C8B965FC864E12A7EEBD450",
+        "freeze_locator": "g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair/R0168-raw-freeze.json",
+        "freeze_sha256": "C9AA22723EA96127312F78A647660DA49AC1411BABE8C389B15F5E0C4EEA7FAD",
+        "freeze_manifest_status": "frozen-read-only"
       }
     ],
     "recent_nonadvancing_attempts": [
