@@ -577,6 +577,75 @@ the run without another day. Only a fresh paused main-phase frame may receive
 a materialized official checkpoint and later **separate** cold-restored
 seven-boundary attempt. The R0201 derived state is not that source pair.
 
+## R0203 main-phase checkpoint and R0204 native date split (2026-09-23)
+
+[production-live] R0203 restored the immutable R0168 h1251 pair and advanced
+three individually observed +24 raw-day windows, with the same actor, episode,
+and CombatID `738197508`. The paused battle-control phases were maneuver
+day 2, maneuver day 3, then main day 0. The official checkpoint at raw
+`53192376` has save SHA-256
+`05117EBB6694978D7F29E2F9E1DE6150902BC33482137FF88CF33C149554CA75`
+and driver SHA-256
+`5882893DF2BC14AB15584BA229D3812573789526178A28F1D61BCAE36898E661`;
+its 1267-command history ends at that save, with no pending action. The
+immutable pair index is
+`Z:\ck3_mod_rewrite_process_assets\g2-r0168-mainphase-R0203-green-frozen-20260923\R0203-final-frozen-pair\R0203-raw-freeze.json`
+(SHA-256 `0C37965DB22665552419B4B42719B34549BA7CC763920C702CB2E2E6588C10CD`).
+This is a research checkpoint, not a Robert mainline war result.
+
+[production-live] R0204 officially cold-restored a new candidate from that
+pair. A fresh paused battle-control query admitted the same undecided
+main-phase combat, and the managed one-day trace reached raw `53192400`.
+BEGIN/FINISH and controlled stop succeeded; the original seven capture
+records all have CombatID `738197508`, exact boundary order, and
+`capture_failure_flags=0`. Their **unmodified** native date and phase labels
+are:
+
+| Boundaries | Native date | Phase/day |
+| --- | ---: | --- |
+| before side 0 schedule, after side 1 schedule | `53192376` | main/0 |
+| four side 0/1 fire boundaries, paused final query | `53192400` | main/1 |
+
+The frozen RED index is
+`Z:\ck3_mod_rewrite_process_assets\g2-r0204-phase1-trace-date-red-frozen-20260923\R0204-final-frozen-pair\R0204-raw-freeze.json`
+(SHA-256 `1DC8549065B0739B4CDAA26634B02CCE2B4D9449F7BB573A9DDF17781B1BF29A`).
+The old ring demanded one equal date across all seven records, so
+`same_native_date=false` made `bounded_capture_complete=false` despite the
+seven original boundaries. `full_mutable_transition_bundle_complete=false`
+also remains a separate production parity gap.
+
+[static-confirmed] On the frozen 1.19.0.6 EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+`0x27FB4D0` calls the two schedule helpers at `0x27FB58F/0x27FB5A7`.
+The distinct `0x27FB5D0` daily dispatcher increments `CCombat+0x6B4`
+at `0x27FB6C6` and, in main phase, calls `0x2309E80` at `0x27FB6FD`;
+the main tick reaches side fire `0x23C9900`. The ring reads
+`module+0x570E068 -> date object+0x08` independently at every boundary,
+verifies the same date object against its capture plan, and reported zero
+capture failures in R0204. The exact global date writer between these
+independent manager calls has not been statically located; the captured
+old-date schedule and next-date fire order is direct live evidence, not a
+synthetic DTO label.
+
+```mermaid
+flowchart TD
+    A["paused main phase day 0; original date D"] --> S["schedule side 0 and side 1<br/>native date D"]
+    S --> N["native daily transition<br/>date changes to D+24; phase day increments"]
+    N --> F["side 0 and side 1 phase-fire<br/>native date D+24"]
+    F --> Q["paused final query<br/>native date D+24"]
+    Q --> G{"same date object, exact 2+5 split,<br/>FINISH before=D and after=D+24?"}
+    G -->|yes| B["bounded capture candidate;<br/>mutable parity still separate"]
+    G -->|no| R["trace unavailable; probability OFF"]
+```
+
+The minimum corrected readiness compares the first two raw dates with
+FINISH's before date and the remaining five with its after date, requiring
+exactly +24 and the same date-object identity. Preserve
+`same_native_date=false` as a diagnostic of the old all-equal predicate;
+do not rewrite the seven records. This gate only admits a bounded **research**
+capture. The full mutable transition bundle, effect parity, and production
+win probability remain unavailable.
+
 ## 离线复现入口
 
 本页结论可用仓库内只读工具复核：

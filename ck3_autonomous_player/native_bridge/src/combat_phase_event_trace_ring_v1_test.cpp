@@ -241,7 +241,7 @@ struct Fixture {
   }
 };
 
-bool CaptureSevenRecordFixture() {
+bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
   Fixture fixture;
   auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
   auto drain = std::make_unique<CombatPhaseEventTraceRingDrainV1>();
@@ -275,6 +275,8 @@ bool CaptureSevenRecordFixture() {
     return Fail("after schedule capture failed");
   }
 
+  Store(fixture.date_object, 0x08,
+        std::int32_t{53'175'816 + date_delta});
   Store(fixture.combat, 0x6B4, std::int32_t{5});
   if (!CaptureCombatPhaseEventTraceBoundaryV1(
           CombatPhaseEventTraceBoundaryV1::before_side0_phase_fire,
@@ -317,13 +319,21 @@ bool CaptureSevenRecordFixture() {
           fire1_return)) {
     return Fail("after side1 fire capture failed");
   }
-  if (!CompleteAndDrainCombatPhaseEventTraceRingV1(*ring, *drain)) {
-    return Fail("complete/drain failed");
+  const bool captured = CompleteAndDrainCombatPhaseEventTraceRingV1(*ring, *drain);
+  if (captured != (date_delta == 24)) {
+    return Fail("one-day date split admission mismatch");
+  }
+  if (date_delta != 24) {
+    return drain->record_count == 7 &&
+           !drain->expected_one_day_date_split &&
+           !drain->bounded_capture_complete &&
+           drain->failure_flags == trace_capture_failure_none;
   }
 
   const auto &records = drain->records;
   if (drain->record_count != 7 || !drain->exact_boundary_sequence ||
-      !drain->same_full_generation_combat || !drain->same_native_date ||
+      !drain->same_full_generation_combat || drain->same_native_date ||
+      !drain->expected_one_day_date_split ||
       !drain->same_loaded_event_table ||
       !drain->side_and_return_site_identity ||
       !drain->schedule_phase_day_then_single_increment ||
@@ -561,7 +571,11 @@ int main(int argc, char **argv) {
                 CombatPhaseEventTraceCapturePlanV1>);
   if (argc != 3 || !SourceContract(argv[1]) ||
       !SourceCodeContract(argv[2]) ||
-      !CaptureSevenRecordFixture() || !FailureCases() ||
+      !CaptureSevenRecordFixture() ||
+      !CaptureSevenRecordFixture(0) ||
+      !CaptureSevenRecordFixture(23) ||
+      !CaptureSevenRecordFixture(48) ||
+      !FailureCases() ||
       BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr)) {
     return 1;
   }

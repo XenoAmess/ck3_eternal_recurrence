@@ -673,6 +673,15 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
 
     (void)CompleteAndDrainCombatPhaseEventTraceRingV1(session.ring,
                                                        session.drain);
+    session.boundary_dates_match_checkpoint =
+        session.drain.expected_one_day_date_split &&
+        session.drain.records[0].native_date_raw == session.before.date_raw &&
+        session.drain.records[1].native_date_raw == session.before.date_raw &&
+        session.drain.records[2].native_date_raw == session.after.date_raw &&
+        session.drain.records[3].native_date_raw == session.after.date_raw &&
+        session.drain.records[4].native_date_raw == session.after.date_raw &&
+        session.drain.records[5].native_date_raw == session.after.date_raw &&
+        session.drain.records[6].native_date_raw == session.after.date_raw;
     session.detours_uninstalled =
         UninstallCombatPhaseEventTraceDetoursV1(session.detours);
     if (!session.detours_uninstalled) {
@@ -683,6 +692,7 @@ bool ExecuteCombatPhaseEventTraceFinishV1(
         SerializeCombatPhaseEventTraceRingDrainV1(session.drain);
     session.stage = CombatPhaseEventTraceManagedStageV1::drained;
     if (session.exact_one_day_observed &&
+        session.boundary_dates_match_checkpoint &&
         session.drain.bounded_capture_complete &&
         !session.serialized_drain.empty()) {
       query->completion = CombatPhaseEventTraceManagedCompletionV1::
@@ -711,6 +721,8 @@ std::string SerializeCombatPhaseEventTraceManagedResultV1(
   output += session.recoverable_checkpoint_created ? "true" : "false";
   output += ",\"exact_one_day_observed\":";
   output += session.exact_one_day_observed ? "true" : "false";
+  output += ",\"boundary_dates_match_checkpoint\":";
+  output += session.boundary_dates_match_checkpoint ? "true" : "false";
   output += ",\"detours_uninstalled\":";
   output += session.detours_uninstalled ? "true" : "false";
   output += ",\"before\":";

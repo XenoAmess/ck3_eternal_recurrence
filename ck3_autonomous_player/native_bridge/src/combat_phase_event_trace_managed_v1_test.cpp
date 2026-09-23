@@ -412,7 +412,6 @@ bool ManagedBeginFinishProducesBoundedDto() {
     return Fail("typed begin did not arm trace");
   }
 
-  fixture.SetNextDay();
   void *const combat = fixture.combat.data();
   const auto side0 = reinterpret_cast<void *>(session->plan.sides[0]);
   const auto side1 = reinterpret_cast<void *>(session->plan.sides[1]);
@@ -428,6 +427,7 @@ bool ManagedBeginFinishProducesBoundedDto() {
               kCombatPhaseEventScheduleSide1ReturnRva)) {
     return Fail("schedule boundaries failed");
   }
+  fixture.SetNextDay();
   fixture.SetPhaseDay(5);
   Store(fixture.rng_wrapper, 0x00,
         reinterpret_cast<std::uintptr_t>(fixture.rng_state.data()));
@@ -459,7 +459,9 @@ bool ManagedBeginFinishProducesBoundedDto() {
       finish.completion != CombatPhaseEventTraceManagedCompletionV1::
                                bounded_trace_available ||
       session->stage != CombatPhaseEventTraceManagedStageV1::drained ||
-      !session->exact_one_day_observed || !session->detours_uninstalled ||
+      !session->exact_one_day_observed ||
+      !session->boundary_dates_match_checkpoint ||
+      !session->detours_uninstalled ||
       !session->drain.bounded_capture_complete ||
       session->drain.production_trace_ready ||
       fixture.detour_memory.live_allocations != 0 ||
@@ -471,6 +473,8 @@ bool ManagedBeginFinishProducesBoundedDto() {
       wire.find("\"recoverable_checkpoint_created\":true") ==
           std::string::npos ||
       wire.find("\"exact_one_day_observed\":true") == std::string::npos ||
+      wire.find("\"boundary_dates_match_checkpoint\":true") ==
+          std::string::npos ||
       wire.find("\"record_count\":7") == std::string::npos ||
       wire.find("\"original_trace_ready\":false") == std::string::npos) {
     return Fail("managed DTO serialization mismatch");

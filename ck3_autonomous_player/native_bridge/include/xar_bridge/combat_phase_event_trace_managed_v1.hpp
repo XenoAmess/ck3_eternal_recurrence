@@ -110,6 +110,7 @@ struct CombatPhaseEventTraceManagedSessionV1 {
   std::string serialized_drain;
   bool recoverable_checkpoint_created = false;
   bool exact_one_day_observed = false;
+  bool boundary_dates_match_checkpoint = false;
   bool detours_uninstalled = false;
 
   CombatPhaseEventTraceManagedSessionV1() = default;

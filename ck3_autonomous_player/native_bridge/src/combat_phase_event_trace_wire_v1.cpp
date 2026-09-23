@@ -326,6 +326,8 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
   if (!AppendBool(output, drain.same_full_generation_combat)) return {};
   output += ",\"same_native_date\":";
   if (!AppendBool(output, drain.same_native_date)) return {};
+  output += ",\"expected_one_day_date_split\":";
+  if (!AppendBool(output, drain.expected_one_day_date_split)) return {};
   output += ",\"same_loaded_event_table\":";
   if (!AppendBool(output, drain.same_loaded_event_table)) return {};
   output += ",\"side_and_return_site_identity\":";

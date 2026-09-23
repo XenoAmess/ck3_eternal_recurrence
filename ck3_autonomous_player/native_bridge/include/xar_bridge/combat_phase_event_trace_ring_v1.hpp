@@ -331,6 +331,7 @@ struct CombatPhaseEventTraceRingDrainV1 {
   bool exact_boundary_sequence = false;
   bool same_full_generation_combat = false;
   bool same_native_date = false;
+  bool expected_one_day_date_split = false;
   bool same_loaded_event_table = false;
   bool side_and_return_site_identity = false;
   bool schedule_phase_day_then_single_increment = false;

@@ -813,6 +813,29 @@ bool SameDate(const CombatPhaseEventTraceRingRecordV1 &left,
          left.native_date_raw == right.native_date_raw;
 }
 
+bool ExpectedOneDayDateSplit(
+    const CombatPhaseEventTraceRingDrainV1 &output) noexcept {
+  if (output.record_count != kCombatPhaseEventTraceRingV1RecordCount) {
+    return false;
+  }
+  const auto &schedule = output.records[0];
+  if (schedule.current_date_object == 0 ||
+      schedule.native_date_raw >
+          std::numeric_limits<std::int32_t>::max() - 24) {
+    return false;
+  }
+  const auto next_day = schedule.native_date_raw + 24;
+  for (std::size_t index = 0; index < output.record_count; ++index) {
+    const auto &record = output.records[index];
+    if (record.current_date_object != schedule.current_date_object ||
+        record.native_date_raw != (index < 2 ? schedule.native_date_raw
+                                             : next_day)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 bool SameTable(const CombatPhaseEventTraceRingRecordV1 &left,
                const CombatPhaseEventTraceRingRecordV1 &right) noexcept {
   return left.phase_event_database == right.phase_event_database;
@@ -961,6 +984,7 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
   output.same_full_generation_combat =
       AllRecordsMatch(output, &SameCombat);
   output.same_native_date = AllRecordsMatch(output, &SameDate);
+  output.expected_one_day_date_split = ExpectedOneDayDateSplit(output);
   output.same_loaded_event_table = AllRecordsMatch(output, &SameTable);
   output.side_and_return_site_identity =
       ValidateSideAndReturnIdentity(ring.plan, output);
@@ -986,7 +1010,8 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
   output.bounded_capture_complete =
       output.failure_flags == trace_capture_failure_none &&
       output.exact_boundary_sequence && output.same_full_generation_combat &&
-      output.same_native_date && output.same_loaded_event_table &&
+      output.expected_one_day_date_split &&
+      output.same_loaded_event_table &&
       output.side_and_return_site_identity &&
       output.schedule_phase_day_then_single_increment;
   // Deliberately independent gates: bounded native capture is useful ABI

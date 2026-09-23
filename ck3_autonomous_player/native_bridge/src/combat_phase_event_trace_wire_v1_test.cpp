@@ -24,7 +24,8 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
   drain->record_count = 7;
   drain->exact_boundary_sequence = true;
   drain->same_full_generation_combat = true;
-  drain->same_native_date = true;
+  drain->same_native_date = false;
+  drain->expected_one_day_date_split = true;
   drain->same_loaded_event_table = true;
   drain->side_and_return_site_identity = true;
   drain->schedule_phase_day_then_single_increment = true;
@@ -108,10 +109,12 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
 bool HappyPath() {
   const auto drain = SmallDrain();
   const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
-  constexpr std::array<std::string_view, 12> required{
+  constexpr std::array<std::string_view, 14> required{
       "\"schema_version\":1",
       "\"status\":\"captured\"",
       "\"record_count\":7",
+      "\"same_native_date\":false",
+      "\"expected_one_day_date_split\":true",
       "\"bounded_capture_complete\":true",
       "\"full_mutable_transition_bundle_complete\":false",
       "\"original_trace_ready\":false",
