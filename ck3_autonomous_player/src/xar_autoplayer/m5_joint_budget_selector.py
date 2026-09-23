@@ -14,6 +14,7 @@ _VALUE_FIELDS = (
     "diplomacy_cost_units", "supply_cost_units", "long_term_cost_units",
 )
 _CLAIM_FIELDS = ("army_ids", "ally_character_ids", "character_ids", "commitment_keys")
+_OBSERVED_DOMAINS = {"council", "building", "diplomacy", "lifestyle"}
 
 
 def select_m5_assessed_candidate(
@@ -63,6 +64,9 @@ def select_m5_assessed_candidate(
     _nonnegative(gold_reserve_raw, "gold_reserve_raw")
     _nonnegative(max_active_wars, "max_active_wars")
     reserved_gold = _nonnegative(commitments.get("gold_raw"), "commitments.gold_raw")
+    pending_wars = _nonnegative(
+        commitments.get("pending_war_slots", 0), "commitments.pending_war_slots"
+    )
     occupied = {key: _claim_set(commitments.get(key), key) for key in _CLAIM_FIELDS}
     usable_armies = {row["army_id"] for row in armies if row["controllable"] is True}
     seen: set[str] = set()
@@ -82,20 +86,56 @@ def select_m5_assessed_candidate(
         if type(supply_margin) is not int:
             raise ValueError("projected_supply_margin_units must be measured")
         claims = {key: _claim_set(assessment.get(key), key) for key in _CLAIM_FIELDS}
-        if legal[candidate_id].get("domain") == "first_heir_marriage":
+        domain = legal[candidate_id].get("domain")
+        proposal = legal[candidate_id].get("observed_proposal")
+        if domain == "first_heir_marriage":
             heir = legal[candidate_id].get("subject_character_id")
             spouse = legal[candidate_id].get("candidate_character_id")
             if not {heir, spouse} <= claims["character_ids"]:
                 raise ValueError("family assessment must claim both marriage roles")
-        elif legal[candidate_id].get("domain") != "war":
+        elif domain in _OBSERVED_DOMAINS or proposal is not None:
+            if not isinstance(proposal, dict) or (
+                proposal.get("candidate_id") != candidate_id
+                or proposal.get("domain") != domain
+                or proposal.get("domain_policy_ready") is not True
+                or proposal.get("frame") != {
+                    key: intake.get(key) for key in (
+                        "played_character_id", "native_revision", "date_raw",
+                        "snapshot_id", "revision", "episode_run_id",
+                    )
+                }
+            ):
+                raise ValueError("observed domain proposal is not bound to intake")
+            if (
+                gold_claim != proposal.get("gold_cost_raw")
+                or any(claims[key] != _claim_set(proposal.get(key), key)
+                       for key in _CLAIM_FIELDS)
+            ):
+                raise ValueError("assessed shared resource claims differ from observation")
+            observed_supply = proposal.get("projected_supply_margin_raw")
+            if domain == "war":
+                if supply_margin != observed_supply:
+                    raise ValueError("assessed war supply differs from observation")
+            elif supply_margin != 0:
+                raise ValueError("non-war assessment cannot claim route supply")
+        elif domain != "war":
             raise ValueError("unknown M5 candidate domain")
+        war_slot_claim = (
+            _nonnegative(proposal.get("war_slot_claim"), "war_slot_claim")
+            if isinstance(proposal, dict) else int(domain == "war")
+        )
+        minimum_reserve = (
+            _nonnegative(proposal.get("minimum_gold_reserve_raw"),
+                         "minimum_gold_reserve_raw")
+            if isinstance(proposal, dict) else 0
+        )
         net = values["benefit_units"] - sum(
             values[key] for key in _VALUE_FIELDS if key != "benefit_units"
         )
         reason = "eligible"
         if net <= 0:
             reason = "nonpositive_net_value"
-        elif gold_claim + reserved_gold + gold_reserve_raw > gold["raw"]:
+        elif gold_claim + reserved_gold + max(gold_reserve_raw, minimum_reserve) > gold["raw"]:
             reason = "shared_gold_budget"
         elif supply_margin < 0:
             reason = "projected_supply_deficit"
@@ -103,12 +143,14 @@ def select_m5_assessed_candidate(
             reason = "army_not_controllable"
         elif any(claims[key] & occupied[key] for key in _CLAIM_FIELDS):
             reason = "existing_commitment_conflict"
-        elif legal[candidate_id]["domain"] == "war" and len(wars) >= max_active_wars:
+        elif war_slot_claim and len(wars) + pending_wars + war_slot_claim > max_active_wars:
             reason = "war_slot_budget"
         evaluated.append({
-            "candidate_id": candidate_id, "domain": legal[candidate_id]["domain"],
+            "candidate_id": candidate_id, "domain": domain,
             "net_units": net, "reason": reason,
             "value_components": values, "gold_raw": gold_claim,
+            "war_slot_claim": war_slot_claim,
+            "minimum_gold_reserve_raw": minimum_reserve,
             "projected_supply_margin_units": supply_margin,
             "claims": {key: sorted(claims[key]) for key in _CLAIM_FIELDS},
         })

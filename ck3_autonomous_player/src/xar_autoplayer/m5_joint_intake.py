@@ -90,6 +90,11 @@ def build_m5_same_frame_intake(
         "domain": "war",
         "declaration_id": row["declaration_id"],
         "target_character_id": row["target_character_id"],
+        "casus_belli_index": row["casus_belli_index"],
+        "casus_belli_key": row["casus_belli_key"],
+        "configuration_index": row["configuration_index"],
+        "claimant_character_id": row["claimant_character_id"],
+        "target_title_ids": row["target_title_ids"],
         "native_legal": True,
     } for row in wars]
     candidates = family + war_candidates
@@ -97,6 +102,7 @@ def build_m5_same_frame_intake(
         "policy": "g2-m5-same-frame-intake-v1",
         "played_character_id": player_id,
         "first_heir_character_id": heir_id,
+        "family_legality_query_sequence": first_heir_legality.get("query_sequence"),
         "native_revision": native_revision,
         "date_raw": date_raw,
         "snapshot_id": snapshot_id,

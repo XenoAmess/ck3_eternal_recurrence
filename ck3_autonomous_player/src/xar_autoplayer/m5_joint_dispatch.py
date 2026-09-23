@@ -194,7 +194,7 @@ class M5FrameDispatcher:
                 intake=intake, snapshot=snapshot, assessments=deepcopy(assessments),
                 commitments=deepcopy(self._commitments),
                 gold_reserve_raw=gold_reserve_raw,
-                max_active_wars=max_active_wars - pending,
+                max_active_wars=max_active_wars,
             )
             candidate_id = analysis["selected_candidate_id"]
             if candidate_id is None:
@@ -205,8 +205,7 @@ class M5FrameDispatcher:
             commitments["gold_raw"] += selected["gold_raw"]
             for key in _CLAIM_FIELDS:
                 commitments[key] = sorted(set(commitments[key]) | set(selected["claims"][key]))
-            if selected["domain"] == "war":
-                commitments["pending_war_slots"] += 1
+            commitments["pending_war_slots"] += selected["war_slot_claim"]
             self._reservation = {
                 "schema": "xar.ck3.m5-frame-reservation.v1",
                 "frame": _frame_dict(self._frame),
