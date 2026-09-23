@@ -162,3 +162,22 @@ PRV008 冻结预览 GO 与资格边界不变；G2 **3/8**（M0/M1/M3 complete，
 | M4 生活方式 current/focus/perk readback | **private read-only GREEN**；typed 闭环与公共广告 OFF | `private-query-player-lifestyle-current-state-v1`、`private-query-player-lifestyle-stock-focus-v1`、`private-query-player-lifestyle-formal-v1` | [R0167 冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-m4-robert-r0167-three-query-green-20260923/R0167-evidence-freeze/R0167-readback-freeze.json) SHA `AEAB84B6BDD6548685FC89757675CEBB7BD05532EE6AA984CE373B559B9259D3`；8 个原件哈希/只读核对 GREEN；report SHA `890D0D09...21BA78`；Python `37ff65f`、native `752c5eb` | Robert actor29829、`h1082/raw53190528`、paused `native:3` 三查询；当前财富 focus、stewardship XP 2131.25、未用/已用 perk 点 2/4；唯一 policy-target final-legal `cutting_corners_perk`；0 typed/gameplay/date | 原 R0164 save SHA `C2E8778D...F7E2` 未变；PID177600、watchdog/owner 回收，进程0；Robert 持久 1,925/36,524 | 源配对两场 active defensive wars；现有 consumer 仅在独立同帧 `at_peace` 封建证明后可提交。后续合法场景需 typed perk、独立后置、下一 turn 和恢复证据；M4 in progress，`/root/m4_prep` | 本报告分支待 PR 集成；冻结原件保留 |
 
 PRV008 窄范围 GO；G2 **3/8**，百年/首整局/独立种子 **0/1、0/1、0/2** 均不变。R0167 只证实本次私有读取，不关闭 R0166 战争恢复 RED。
+
+## 2026-09-23 R0168 Robert h1251 战争连续运行增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| R0168 三战续行 | **116/117 后产品 RED**；Robert 持久 1,999/36,524（+74），战争终局仍 open | R0164 h1082 official cold → `native_auto_run` formal120 | source `b153c47`；[R0168 原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair/R0168-raw-freeze.json) SHA `C9AA22723EA96127312F78A647660DA49AC1411BABE8C389B15F5E0C4EEA7FAD` | query75/gameplay41，h1251/raw53192304 已保存；三防御战 `16777231/16777250/95` active `0/+29/-4`，army83886367 在2638 combat；第117帧 `single-idle-controllable-army-binding` RED，无战争终局 | save `C21E5940...ED9CA`，raw driver `14207EC4...AE03` 有 h1252/h1253 两条只读尾，尚需官方语义恢复；五原件只读，受管进程/owner 回收 | 战斗态军队绑定与同帧观测；`/root`，后续从官方恢复的 h1251 候选验证 | 原始冻结与运行证据保留；本报告分支待集成 |
+| h1251 恢复与战争修复候选 | 旧 `3c75e06` **no-launch GREEN**；新 `13b356a` **待实机** | official prepare/rebind/preflight；正式新轮次尚未发生 | [旧基线清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0168-h1251-recovery-master3c75-20260923/CANDIDATE-BASELINE-NO-LAUNCH.json) SHA `81C0DB79...4477C5E92`；[PR #154](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/154) `13b356a` 官方 static/CLA GREEN、截至10:30仍 OPEN | 旧基线 0 CK3/gameplay/date；新版候选已有 preflight ready，尚无 typed/下一 turn/战争物质结果 | 官方匹配冷恢复语义保留 h1251、仅裁 h1252/h1253 查询尾；旧 prepared driver 未物理裁切、cold 未实机提交；新代码须独立固定并复验 | 新版候选完成必要 no-launch 后排唯一 CK3；`/root/r0168_recovery_pair` 与唯一 owner | PR #154 待保护 rebase/集成后清理；候选资产按身份保留 |
+
+[PR #157](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/157) `1651713` 将 R0167 私有只读与 R0168 raw RED 写入权威状态投影，官方检查已过、截至10:30尚待集成；与本台账文字包独立。PRV008 原 ZIP 及资格不变。G2 **3/8**，百年/首整局/独立种子 **0/1、0/1、0/2**；历史 Murchad 14,900 日不并入 Robert。
+
+10:34 状态增量：PR #154 已快进合入 `master@13b356a`，其源码清理待核；PR #157 仍 OPEN。R0169 唯一实例已启动，正式战争结果未知。候选代码集成不改变 R0168 产品 RED。
+
+## 2026-09-23 R0169 h1333 正式续行增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 三战正式续行 | **78/79 后产品 RED**；Robert 持久 **2,088/36,524**（+89） | R0168 h1251 official cold → `native_auto_run` formal120 | source/master `13b356a`；[R0169 原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-r0169-siege-arrival-red-20260923/R0169-final-frozen-pair/R0169-raw-freeze.json) SHA `A7E9E701454998B52E755AEB767DE4CD94C9F3B152AC473772BB5F35F8105F97` | query61/gameplay17；末帧三防御战 `16777231/16777250/95` 比分 `0/-7/+52` 仅为观察；`accepted-native-move-arrival-for-current-siege` 新 RED，无终局 | h1333/raw53194440 save `2B8933FC...7F98A`；raw driver `81B7AB33...F1A4A`，末端 raw53194848 的 17 日未保存，不计持久；五 copy 只读、清单只读属性待补，进程/owner 回收 | 官方恢复 h1333、核对同帧到达与安全路线，最小修复后正式消费；`/root` | 原始证据保留；PR #154 已合入，源码清理由协调者核验 |
+
+PRV008 有界预览 GO 与 G2 **3/8** 保持；百年/首整局/独立种子 **0/1、0/1、0/2**。历史 Murchad 14,900 日独立记账。R0169 的 +106 日只是末端观察，本轮正式可接续的持久增量为 +89 日。
