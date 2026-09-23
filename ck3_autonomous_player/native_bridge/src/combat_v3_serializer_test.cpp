@@ -401,6 +401,46 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  auto side_fixture = Fixture();
+  side_fixture.hard_casualty_sides.attempted = true;
+  side_fixture.hard_casualty_sides.available = true;
+  side_fixture.hard_casualty_sides.source_target_province_id = 45;
+  side_fixture.hard_casualty_sides.sides = {
+      {0, "attacker", {101}, 31, 0, 20000},
+      {1, "defender", {202}, 41, -5000, 0},
+  };
+  const auto side_readout =
+      xar::ck3_11906::SerializeCombatPhaseInputsV3(side_fixture);
+  if (side_readout.find(
+          "\"hard_casualty_sides\":{\"status\":\"available\","
+          "\"source_target_province_id\":45,\"scale\":100000,"
+          "\"sides\":[{\"side_index\":0,\"encounter_role\":"
+          "\"attacker\",\"ordered_army_ids\":[101],"
+          "\"commander_character_id\":31,"
+          "\"own_modifier_raw\":0,\"enemy_modifier_raw\":20000}") ==
+          std::string::npos ||
+      side_readout.find(
+          "\"side_index\":1,\"encounter_role\":\"defender\","
+          "\"ordered_army_ids\":[202],"
+          "\"commander_character_id\":41,"
+          "\"own_modifier_raw\":-5000,\"enemy_modifier_raw\":0}") ==
+          std::string::npos) {
+    return 1;
+  }
+  side_fixture.hard_casualty_sides.available = false;
+  side_fixture.hard_casualty_sides.unavailable_reason =
+      "native_hard_side_modifier_unreadable";
+  const auto side_failure =
+      xar::ck3_11906::SerializeCombatPhaseInputsV3(side_fixture);
+  if (side_failure.find(
+          "\"hard_casualty_sides\":{\"status\":\"unavailable\","
+          "\"source_target_province_id\":45,\"scale\":100000,"
+          "\"sides\":null,\"unavailable_reason\":"
+          "\"native_hard_side_modifier_unreadable\"") ==
+      std::string::npos) {
+    return 1;
+  }
+
   xar::ck3_11906::CombatPhaseInputsV3 unavailable{};
   unavailable.unavailable_reason = "fixture_failure";
   const auto failed =

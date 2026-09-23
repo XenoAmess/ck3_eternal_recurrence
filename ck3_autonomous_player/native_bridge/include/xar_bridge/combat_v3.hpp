@@ -174,6 +174,26 @@ struct CombatHardCasualtyWinterV3 {
   std::string unavailable_reason;
 };
 
+struct CombatHardCasualtySideRowV3 {
+  std::int32_t side_index = -1;
+  std::string encounter_role;
+  std::vector<std::int32_t> ordered_army_ids;
+  std::int32_t commander_character_id = -1;
+  std::int64_t own_modifier_raw = 0;
+  std::int64_t enemy_modifier_raw = 0;
+};
+
+// Private exact-build local-side diagnostics for enums 0x18C and 0x18D.
+// Four raw reads cover both original casualty directions. They have no
+// forecast/admission effect until compared with an original combat fixture.
+struct CombatHardCasualtySidesV3 {
+  bool attempted = false;
+  bool available = false;
+  std::int32_t source_target_province_id = -1;
+  std::vector<CombatHardCasualtySideRowV3> sides;
+  std::string unavailable_reason;
+};
+
 struct CombatPhaseInputsV3 {
   bool available = false;
   std::vector<CombatPhaseCharacterV3> characters;
@@ -184,6 +204,7 @@ struct CombatPhaseInputsV3 {
   bool very_easy_difficulty = false;
   CombatAdvantageModelV3TestOnly advantage_model;
   CombatHardCasualtyWinterV3 hard_casualty_winter;
+  CombatHardCasualtySidesV3 hard_casualty_sides;
   std::string unavailable_reason;
 };
 

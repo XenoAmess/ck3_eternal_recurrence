@@ -471,6 +471,7 @@ def normalize_combat_simulation_inputs_v3(
         "unavailable_reason",
     }
     private_winter_key = "hard_casualty_winter"
+    private_sides_key = "hard_casualty_sides"
     # Driver caches and service boundaries deliberately validate the same
     # value again.  Accept the sole canonical enriched form, strip only the
     # deterministic offline projection, then recompute and byte-for-value
@@ -490,6 +491,7 @@ def normalize_combat_simulation_inputs_v3(
             wire_phase_keys
             | enriched_phase_keys
             | ({private_winter_key} if private_winter_key in candidate_phase else set())
+            | ({private_sides_key} if private_sides_key in candidate_phase else set())
         ):
             raise ValueError("normalized production combat v3 phase schema is malformed")
         for key in enriched_phase_keys:
@@ -608,7 +610,9 @@ def _normalize_phase_event_inputs(
 ) -> dict[str, object]:
     name = "combat_simulation_inputs_v3.phase_event_inputs"
     private_winter_key = "hard_casualty_winter"
+    private_sides_key = "hard_casualty_sides"
     has_private_winter = isinstance(value, dict) and private_winter_key in value
+    has_private_sides = isinstance(value, dict) and private_sides_key in value
     row = _exact_object(
         value,
         {
@@ -621,7 +625,9 @@ def _normalize_phase_event_inputs(
             "raw",
             "advantage_model",
             "unavailable_reason",
-        } | ({private_winter_key} if has_private_winter else set()),
+        }
+        | ({private_winter_key} if has_private_winter else set())
+        | ({private_sides_key} if has_private_sides else set()),
         name,
     )
     if row.get("rules_source") != "stock-installation-static-manifest":
@@ -640,8 +646,8 @@ def _normalize_phase_event_inputs(
         raise ValueError("production phase required-state binding is malformed")
     coverage = _normalize_coverage(row.get("state_ref_coverage"), f"{name}.state_ref_coverage")
     if row.get("status") == "unavailable":
-        if has_private_winter:
-            raise ValueError("unavailable production phase must not publish private winter data")
+        if has_private_winter or has_private_sides:
+            raise ValueError("unavailable production phase must not publish private combat data")
         if row.get("raw") is not None or row.get("advantage_model") is not None:
             raise ValueError("unavailable production phase must not publish partial data")
         reason = _nonempty_string(row.get("unavailable_reason"), f"{name}.unavailable_reason")
@@ -681,6 +687,18 @@ def _normalize_phase_event_inputs(
         else {}
     )
     raw = _normalize_raw(row.get("raw"), base=base, name=f"{name}.raw")
+    private_sides = (
+        {
+            private_sides_key: _normalize_hard_casualty_sides(
+                row[private_sides_key],
+                target_province_id=base["target_province_id"],
+                phase_sides=raw["sides"],
+                name=f"{name}.{private_sides_key}",
+            )
+        }
+        if has_private_sides
+        else {}
+    )
     advantage_input = copy.deepcopy(row.get("advantage_model"))
     if (
         not isinstance(advantage_input, dict)
@@ -716,6 +734,7 @@ def _normalize_phase_event_inputs(
         "raw": raw,
         "advantage_model": advantage,
         **private_winter,
+        **private_sides,
         "state_ref_partition": partition,
         "evaluation_contexts": contexts,
         "row_evaluations": row_evaluations,
@@ -778,6 +797,59 @@ def _normalize_hard_casualty_winter(
             raise ValueError(f"{name} guarded raw modifier is malformed")
     else:
         raise ValueError(f"{name} status is malformed")
+    return copy.deepcopy(row)
+
+
+def _normalize_hard_casualty_sides(
+    value: object,
+    *,
+    target_province_id: int,
+    phase_sides: list[dict[str, object]],
+    name: str,
+) -> dict[str, object]:
+    row = _exact_object(
+        value,
+        {"status", "source_target_province_id", "scale", "sides", "unavailable_reason"},
+        name,
+    )
+    if (
+        isinstance(row["source_target_province_id"], bool)
+        or row["source_target_province_id"] != target_province_id
+        or row["scale"] != 100_000
+    ):
+        raise ValueError(f"{name} target or fixed-point scale is malformed")
+    if row["status"] == "unavailable":
+        if row["sides"] is not None:
+            raise ValueError(f"{name} unavailable readout has partial side values")
+        _nonempty_string(row["unavailable_reason"], f"{name}.unavailable_reason")
+        return copy.deepcopy(row)
+    if row["status"] != "available" or row["unavailable_reason"] is not None:
+        raise ValueError(f"{name} status is malformed")
+    sides = _array(row["sides"], f"{name}.sides")
+    if len(sides) != 2 or len(phase_sides) != 2:
+        raise ValueError(f"{name} requires both ordered combat sides")
+    for index, (side, expected) in enumerate(zip(sides, phase_sides, strict=True)):
+        side_name = f"{name}.sides[{index}]"
+        side_row = _exact_object(
+            side,
+            {
+                "side_index", "encounter_role", "ordered_army_ids",
+                "commander_character_id", "own_modifier_raw", "enemy_modifier_raw",
+            },
+            side_name,
+        )
+        expected_commander = expected["commander_character_id"]
+        if expected_commander is None:
+            expected_commander = -1
+        if (
+            side_row["side_index"] != index
+            or side_row["encounter_role"] != expected["encounter_role"]
+            or side_row["ordered_army_ids"] != expected["ordered_army_ids"]
+            or side_row["commander_character_id"] != expected_commander
+        ):
+            raise ValueError(f"{side_name} identity differs from the same-frame phase side")
+        _signed_int64(side_row["own_modifier_raw"], f"{side_name}.own_modifier_raw")
+        _signed_int64(side_row["enemy_modifier_raw"], f"{side_name}.enemy_modifier_raw")
     return copy.deepcopy(row)
 
 

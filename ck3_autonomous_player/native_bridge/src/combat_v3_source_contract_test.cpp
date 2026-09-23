@@ -90,6 +90,7 @@ int main(int argc, char **argv) {
               "kReadCombatRelationKindRva = 0x2307080",
               "kHardWinterSecondGuardRva = 0xBC24E0",
               "kReadModifierValueRva = 0x2940D50",
+              "kReadHardSideModifierRva = 0x23C8FF0",
               "kDestroyCombatSideRva = 0x2303B00",
               "kCombatSideKnightEntriesOffset = 0x40",
               "kCombatSideKnightEntriesCountOffset = 0x4C",
@@ -139,6 +140,28 @@ int main(int argc, char **argv) {
               "0x19F, nullptr, kFixedScale, 0",
           })) {
     return Fail("hard casualty winter native guard order drifted") ? 0 : 1;
+  }
+  const auto hard_side_read = view.find("hard_sides.attempted = true;");
+  const auto army_revalidation = view.find(
+      "!RevalidateAdvantageArmyContextsV3(module, army_contexts)", reader);
+  const auto target_revalidation = view.find(
+      "ResolveProvinceV3(bindings, base.target_province_id) != target", reader);
+  if (hard_side_read == std::string_view::npos ||
+      army_revalidation == std::string_view::npos ||
+      target_revalidation == std::string_view::npos ||
+      army_revalidation >= hard_side_read ||
+      target_revalidation >= hard_side_read ||
+      !AppearsInOrder(
+          view.substr(hard_side_read),
+          {
+              "kReadHardSideModifierRva",
+              "std::array<std::array<std::int64_t, 2>, 2> hard_raw{}",
+              "enum_index == 0 ? 0x18C : 0x18D",
+              "read_hard_side(&raw, local.side(side_index), modifier_enum)",
+              "hard_sides.available = true",
+              "if (!local.CleanupChecked())",
+          })) {
+    return Fail("hard casualty local-side readout order drifted") ? 0 : 1;
   }
   if (!AppearsInOrder(
           reader_view,

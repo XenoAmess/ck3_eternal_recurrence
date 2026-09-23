@@ -270,12 +270,12 @@ SHA、transition-manifest SHA、四份 fixture file/canonical input SHA，并冻
   可用观测，读取失败单列 `unavailable`；guard 为假时不填 raw，也不把未知值伪装成零。
   旧冻结 fixture 无此字段仍按原样解析。该诊断不计入 132 条 phase-event refs，不改变
   `monte_carlo_ready=false`、`planner_usable=false` 或 `active_attack_allowed=false`。
-- [RED] 仍缺 defending `0x18C` 与 attacking `0x18D` 的同帧原版数值对照；现有 research envelope
+- [RED] 该切片时仍缺 defending `0x18C` 与 attacking `0x18D` 的同帧原版数值对照；现有 research envelope
   明确用“省略未观测修正”的假设，stock wetlands 的 `hard_casualty_modifier=+0.2` 说明默认零
   不能外推成原版结果。下一最小 private query 在同一 paused frame 绑定两侧 ordered army/commander、
   target/entry 与完整 snapshot identity，读取两个 side helper raw，再以原版 current CCombat 或
   独立 original trace 比对一个至少有非零修正的合法场景；同时保存前后 entry hard/soft 和
-  component ledger。未通过此 fixture 前，不调用未验证的 local-side `0x23C8FF0`，不向策略给胜率。
+  component ledger。下面的独立包仅新增 local-side 私有静态候选；未通过实机 fixture 前不向策略给胜率。
 
 ```mermaid
 flowchart LR
@@ -289,6 +289,42 @@ flowchart LR
     Z -. "winter term alone is insufficient" .-> H
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class S,H unknown;
+```
+
+## COMBAT-HARD-SIDE-MODIFIERS：两侧原版修正只读候选
+
+- 包边界：CK3 `1.19.0.6-steam23530548`，EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；
+  独立 Z 工作树以远端 master `437571a91065d825c1758734e3f4b78a705cfd42` 为基线。
+  本包只改 v3 私有 readout、聚焦合同测试及本原生树，不改正式策略与 CK3 运行资产。
+- [static-confirmed] 原版 `0x23C8FF0` 的 ABI 为
+  `int64_t* (out, CCombatSide*, uint16 modifier_enum)`。函数从 battle commander、
+  side `+0x110` modifier container 和 side 所属 Combat 的目标 Province context 读取，
+  以原版固定点 helper 合成到 out。既有 v3 local-shell 构造 side `+0x110`、
+  `+0xB8` Combat 关联和 `+0x74` commander；调用前已有 ordered-army、commander、
+  target Province 身份与 paused snapshot 复核。`0x2309FE8/0x230A002` 在主阶段交换两侧
+  进入 `0x23CE080`，因此每侧分别保存 `0x18C` own 与 `0x18D` enemy raw。
+- [implementation-confirmed, live pending] 可选私有 `hard_casualty_sides` 诊断在
+  local-shell 销毁前读取四个 signed Q100000 raw，绑定 target ProvinceID、两侧有序 army ID
+  与 commander ID；任一 helper 失败只把该私有字段标为 `unavailable`，不改变既有
+  phase/advantage 可用性。旧冻结 v3 fixture 无此字段仍按原样解析。该字段不计入 132 条
+  phase refs，也不改变 `monte_carlo_ready=false`、`planner_usable=false` 或
+  `active_attack_allowed=false`。聚焦 Python normal/-O 各 14/14、Debug/Release
+  bridge DLL 编译和各自 serializer/source-contract CTest 2/2 通过；这些只支持
+  `static-ready`，本包未启动 CK3。
+- [RED] 四个 local-shell 数值还没有与同帧真实 `CCombat` 原版值、非零 modifier 场景及
+  下一 tick 的 soft/hard component ledger 对照。随后用唯一实例 paused frame 收集该
+  绑定 fixture，再判断它是否可进入 hard conversion；此处的静态读回不构成模拟胜率或
+  typed 进攻资格。
+
+```mermaid
+flowchart LR
+    F["paused same-frame v3 identities"] --> A["constructed local CCombatSide 0/1"]
+    A --> R["native 0x23C8FF0<br/>each side × 0x18C/0x18D"]
+    R --> D["private four-raw diagnostic"]
+    D -. "original CCombat/tick fixture missing" .-> Q["qualified hard conversion RED"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class Q unknown;
 ```
 
 ## 下一项接入

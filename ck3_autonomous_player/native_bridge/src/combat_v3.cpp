@@ -102,6 +102,7 @@ constexpr std::uintptr_t kHardWinterSecondGuardRva = 0xBC24E0;
 constexpr std::uintptr_t kModifierSetHasFlagRva = 0x20ABA00;
 constexpr std::uintptr_t kConstructCombatSideRva = 0x23C7D30;
 constexpr std::uintptr_t kPopulateCombatSideRva = 0x23C9100;
+constexpr std::uintptr_t kReadHardSideModifierRva = 0x23C8FF0;
 constexpr std::uintptr_t kSelectBattleCommanderRva = 0x23C8A60;
 constexpr std::uintptr_t kRefreshCombatSideStrengthRva = 0x23CB840;
 constexpr std::uintptr_t kReadCombatSideStrengthRva = 0x23CC340;
@@ -2395,6 +2396,8 @@ using ProvincePredicateV3 = bool (*)(void *);
 using ModifierFlagPredicateV3 = bool (*)(void *, std::int32_t);
 using ConstructCombatSideV3 = void *(*)(void *, void *);
 using PopulateCombatSideV3 = void (*)(void *, void *);
+using ReadHardSideModifierV3 = std::int64_t *(*)(
+    std::int64_t *, void *, std::uint16_t);
 using SelectBattleCommanderV3 = void *(*)(void *);
 using RefreshCombatSideStrengthV3 = void (*)(void *);
 using ReadCombatSideStrengthV3 = std::int32_t (*)(void *);
@@ -3420,8 +3423,10 @@ bool ReadAdvantageModel(
     const Bindings &bindings,
     const game::CombatSimulationInputsSnapshot &base,
     std::vector<CombatPhaseSideV3> &sides,
-    game::CombatAdvantageModelV3TestOnly &output) noexcept {
+    game::CombatAdvantageModelV3TestOnly &output,
+    game::CombatHardCasualtySidesV3 &hard_sides) noexcept {
   output = {};
+  hard_sides = {};
   output.observation_origin = "native_exact_build_production";
   output.unavailable_reason = "native_advantage_model_preconditions_unavailable";
   try {
@@ -4086,6 +4091,54 @@ bool ReadAdvantageModel(
         return false;
       }
     }
+    // The original 0x23CE080 reads own 0x18C and opponent 0x18D for each
+    // casualty direction. Read both enums from each fully populated local
+    // CCombatSide while the native shell is still alive. This is private
+    // diagnostic data, independent of the advantage/phase readiness result.
+    hard_sides.attempted = true;
+    hard_sides.source_target_province_id = base.target_province_id;
+    try {
+      const auto read_hard_side = reinterpret_cast<ReadHardSideModifierV3>(
+          module + kReadHardSideModifierRva);
+      std::array<std::array<std::int64_t, 2>, 2> hard_raw{};
+      bool hard_readable = true;
+      for (std::size_t side_index = 0; side_index < 2; ++side_index) {
+        for (std::size_t enum_index = 0; enum_index < 2; ++enum_index) {
+          auto &raw = hard_raw[side_index][enum_index];
+          const auto modifier_enum = static_cast<std::uint16_t>(
+              enum_index == 0 ? 0x18C : 0x18D);
+          if (read_hard_side(&raw, local.side(side_index), modifier_enum) !=
+              &raw) {
+            hard_readable = false;
+            break;
+          }
+        }
+        if (!hard_readable) {
+          break;
+        }
+      }
+      if (hard_readable) {
+        for (std::size_t side_index = 0; side_index < 2; ++side_index) {
+          game::CombatHardCasualtySideRowV3 row{};
+          row.side_index = static_cast<std::int32_t>(side_index);
+          row.encounter_role = side_index == 0 ? "attacker" : "defender";
+          row.commander_character_id = selected_commander_ids[side_index];
+          for (const auto &army : army_contexts[side_index]) {
+            row.ordered_army_ids.push_back(army.snapshot->army_id);
+          }
+          row.own_modifier_raw = hard_raw[side_index][0];
+          row.enemy_modifier_raw = hard_raw[side_index][1];
+          hard_sides.sides.push_back(std::move(row));
+        }
+        hard_sides.available = true;
+      } else {
+        hard_sides.unavailable_reason = "native_hard_side_modifier_unreadable";
+      }
+    } catch (...) {
+      hard_sides.available = false;
+      hard_sides.sides.clear();
+      hard_sides.unavailable_reason = "native_hard_side_modifier_exception";
+    }
     if (!local.CleanupChecked()) {
       return false;
     }
@@ -4239,7 +4292,8 @@ ReadCombatSimulationInputsV3Result ReadCombatSimulationInputsV3(
           "native_phase_relation_or_rule_reader_unavailable");
     }
     if (!ReadAdvantageModel(bindings, base, phase.sides,
-                            phase.advantage_model)) {
+                            phase.advantage_model,
+                            phase.hard_casualty_sides)) {
       return phase_unavailable(
           phase.advantage_model.unavailable_reason.empty()
               ? "native_advantage_model_unavailable"

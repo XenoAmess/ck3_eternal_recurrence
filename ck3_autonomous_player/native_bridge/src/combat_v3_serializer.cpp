@@ -623,6 +623,48 @@ void AppendHardCasualtyWinter(
   output += '}';
 }
 
+void AppendHardCasualtySides(
+    std::string &output,
+    const game::CombatHardCasualtySidesV3 &readout) {
+  output += "{\"status\":";
+  AppendString(output, readout.available ? "available" : "unavailable");
+  output += ",\"source_target_province_id\":";
+  AppendSigned(output, readout.source_target_province_id);
+  output += ",\"scale\":100000,\"sides\":";
+  if (!readout.available) {
+    output += "null";
+  } else {
+    output += '[';
+    for (std::size_t index = 0; index < readout.sides.size(); ++index) {
+      if (index != 0) {
+        output += ',';
+      }
+      const auto &side = readout.sides[index];
+      output += "{\"side_index\":";
+      AppendSigned(output, side.side_index);
+      output += ",\"encounter_role\":";
+      AppendString(output, side.encounter_role);
+      output += ",\"ordered_army_ids\":";
+      AppendIdArray(output, side.ordered_army_ids);
+      output += ",\"commander_character_id\":";
+      AppendSigned(output, side.commander_character_id);
+      output += ",\"own_modifier_raw\":";
+      AppendSigned(output, side.own_modifier_raw);
+      output += ",\"enemy_modifier_raw\":";
+      AppendSigned(output, side.enemy_modifier_raw);
+      output += '}';
+    }
+    output += ']';
+  }
+  output += ",\"unavailable_reason\":";
+  if (readout.available) {
+    output += "null";
+  } else {
+    AppendString(output, readout.unavailable_reason);
+  }
+  output += '}';
+}
+
 } // namespace
 
 std::string SerializeCombatPhaseInputsV3(const CombatPhaseInputsV3 &inputs) {
@@ -678,6 +720,10 @@ std::string SerializeCombatPhaseInputsV3(const CombatPhaseInputsV3 &inputs) {
   if (inputs.available && inputs.hard_casualty_winter.attempted) {
     output += ",\"hard_casualty_winter\":";
     AppendHardCasualtyWinter(output, inputs.hard_casualty_winter);
+  }
+  if (inputs.available && inputs.hard_casualty_sides.attempted) {
+    output += ",\"hard_casualty_sides\":";
+    AppendHardCasualtySides(output, inputs.hard_casualty_sides);
   }
   output += ",\"unavailable_reason\":";
   if (inputs.available) {

@@ -508,6 +508,58 @@ def _normalize_native_golden_envelope(
 
 
 class CombatPhaseInputsV3ProductionContractTests(unittest.TestCase):
+    def test_private_hard_side_modifiers_bind_both_sides_without_readiness(self) -> None:
+        payload, scope = _production_payload()
+        legacy = _normalize(payload, scope)
+        self.assertNotIn("hard_casualty_sides", legacy["phase_event_inputs"])
+        phase_sides = payload["phase_event_inputs"]["raw"]["sides"]
+        readout = {
+            "status": "available",
+            "source_target_province_id": payload["base_inputs"]["target_province_id"],
+            "scale": 100_000,
+            "sides": [
+                {
+                    "side_index": index,
+                    "encounter_role": side["encounter_role"],
+                    "ordered_army_ids": side["ordered_army_ids"],
+                    "commander_character_id": (
+                        side["commander_character_id"]
+                        if side["commander_character_id"] is not None else -1
+                    ),
+                    "own_modifier_raw": 0 if index == 0 else -5_000,
+                    "enemy_modifier_raw": 20_000 if index == 0 else 0,
+                }
+                for index, side in enumerate(phase_sides)
+            ],
+            "unavailable_reason": None,
+        }
+        payload["phase_event_inputs"]["hard_casualty_sides"] = readout
+        normalized = _normalize(payload, scope)
+        self.assertEqual(normalized["phase_event_inputs"]["hard_casualty_sides"], readout)
+        self.assertEqual(_normalize(normalized, scope), normalized)
+        self.assertFalse(normalized["completeness"]["monte_carlo_ready"])
+        self.assertFalse(normalized["completeness"]["planner_usable"])
+        self.assertFalse(normalized["completeness"]["active_attack_allowed"])
+
+        readout["sides"][1]["ordered_army_ids"] = [999]
+        with self.assertRaisesRegex(ValueError, "identity differs"):
+            _normalize(payload, scope)
+        readout["sides"][1]["ordered_army_ids"] = phase_sides[1]["ordered_army_ids"]
+        readout["sides"][0]["own_modifier_raw"] = True
+        with self.assertRaisesRegex(ValueError, "signed int64"):
+            _normalize(payload, scope)
+
+        readout.update(
+            status="unavailable", sides=None,
+            unavailable_reason="native_hard_side_modifier_unreadable",
+        )
+        unavailable = _normalize(payload, scope)
+        self.assertEqual(
+            unavailable["phase_event_inputs"]["hard_casualty_sides"]["status"],
+            "unavailable",
+        )
+        self.assertFalse(unavailable["completeness"]["monte_carlo_ready"])
+
     def test_private_hard_winter_guard_false_zero_and_read_failure(self) -> None:
         payload, scope = _production_payload()
         target = payload["base_inputs"]["target_province_id"]

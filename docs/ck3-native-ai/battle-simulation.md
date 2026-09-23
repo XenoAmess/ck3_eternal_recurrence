@@ -331,6 +331,19 @@ outgoing_damage = effective_attack_after_counter_and_modifiers
   读取 raw；任一 guard 为假则该项为零。此前写作 `CCombat+0x30` 的容器归属是误标，
   exact-build 反汇编在 `0x23CE11B` 先从 Combat `+0x6B8` 取 Province 指针，随后在
   `0x23CE149` 对这个 Province 指针加 `0x30`。guard 为假与调用失败必须分别记录。
+  对两侧枚举项，`0x23C8FF0(out, CCombatSide*, uint16 modifier_enum)` 的 exact-build
+  `0x23C8FF0..0x23C90FC` 调用链依次是：从 `side+0x74` generation-safe 解析 battle commander，
+  `0x26172C0` 取得其 modifier container，以 `0x2940D50` 读取枚举 raw；再从已构造的
+  `side+0x110` modifier container 读取同一枚举并加到 out；最后通过
+  `side+0xB8 → CCombat+0x6B8 → CProvince*` 的目标上下文，以 `0x2941070`
+  将该枚举的 Province context 修正合成到 out。`0x23C90AC` 与 `0x23C90F4`
+  对 out 执行累加，因此调用前必须置零。调用返回原 out 指针；直接写入只落在该 out。
+  `0x23C7D30..0x23C7E93` 构造 side 时初始化 `+0x110` 并绑定 `+0xB8`；v3 的既有
+  local-shell 在选择 commander 后填写 `+0x74`，且在销毁前复核双方有序 army、commander
+  和 target Province 身份。这给私有同帧只读切片提供了原生 ABI；仍需实机原版
+  `CCombat`/tick 对照才能把 local-shell raw 当作已验证的实战 hard conversion 输入。
+  `0x2309FE8` 与 `0x230A002` 交换双方后两次进入 `0x23CE080`，所以每侧都需分别读
+  `0x18C` 与 `0x18D`，不能只保存一次 defending-own/attacking-enemy 的二元组。
   作用点和截断顺序是：
 
   ```text
