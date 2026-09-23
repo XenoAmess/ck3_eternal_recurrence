@@ -3249,15 +3249,30 @@ class GameplayBridgeTests(unittest.TestCase):
             date_raw=24_000,
             steps=("life-advance",),
         )
-        self.assertEqual(safe["phase"], "native_war_route_progress")
-        self.assertEqual(safe["selected_step"], "life-advance")
+        self.assertEqual(
+            safe["phase"],
+            "native_war_active_route_contact_horizon_unsupported",
+        )
+        self.assertIsNone(safe["selected_step"])
 
         destination_blocked = _native_war_plan(
             player=player,
             enemies=[target_enemy],
             score=0,
             date_raw=24_000,
+            history=[
+                _route_contact_row(
+                    1,
+                    origin=20,
+                    target=31,
+                    date_raw=24_000,
+                    route=[20, 52, 31],
+                    hostile_ids=(21,),
+                    contact_free=False,
+                )
+            ],
             steps=("life-advance",),
+            route_contact_horizon_supported=True,
         )
         self.assertEqual(
             destination_blocked["phase"], "native_war_no_safe_exact_route"
@@ -3272,7 +3287,19 @@ class GameplayBridgeTests(unittest.TestCase):
             enemies=[target_enemy, intermediate_enemy],
             score=0,
             date_raw=24_000,
+            history=[
+                _route_contact_row(
+                    1,
+                    origin=20,
+                    target=31,
+                    date_raw=24_000,
+                    route=[20, 52, 31],
+                    hostile_ids=(21, 22),
+                    contact_free=False,
+                )
+            ],
             steps=("life-advance",),
+            route_contact_horizon_supported=True,
         )
         self.assertEqual(blocked["phase"], "native_war_no_safe_exact_route")
         self.assertIsNone(blocked["selected_step"])
@@ -4068,120 +4095,303 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertNotEqual(unavailable.get("selected_step"), query_step)
         self.assertEqual(
-            unavailable.get("phase"), "native_war_counterpolicy_hold"
+            unavailable.get("phase"),
+            "native_war_active_route_contact_horizon_unavailable",
         )
+        self.assertIsNone(unavailable.get("selected_step"))
 
-    def test_intersecting_committed_route_uses_speed_three_native_sentinel(
+    def test_committed_route_requires_fresh_daily_horizon_even_when_sentinel_live(
         self,
     ) -> None:
         date_raw = 53_256_000
         player = _army(
             201_326_874,
             soldiers=4_100,
-            province_id=8753,
+            province_id=8_753,
             controllable=True,
-            move_target_province_id=2635,
+            move_target_province_id=2_635,
             army_state="moving",
             army_state_code=7,
-            route_province_ids=[2626, 2627, 2633, 2634, 2635],
+            route_province_ids=[2_626, 2_627, 2_633, 2_634, 2_635],
         )
         enemy = _army(
             167_772_577,
             soldiers=3_300,
-            province_id=8648,
+            province_id=8_648,
             controllable=False,
-            move_target_province_id=2635,
+            move_target_province_id=2_635,
             army_state="moving",
             army_state_code=7,
-            route_province_ids=[1034, 2644, 2645, 2635],
+            route_province_ids=[1_034, 2_644, 2_645, 2_635],
         )
         query_step = query_route_contact_horizon_step(
-            201_326_874, 2635, (167_772_577,)
+            201_326_874, 2_635, (167_772_577,)
         )
-        target_date_raw = date_raw + 45 * 24
+        advance_step = advance_route_contact_horizon_step(
+            201_326_874, 2_635, (167_772_577,)
+        )
+        steps = (
+            COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+            query_step,
+            advance_step,
+            "life-advance",
+        )
+        readiness = {
+            "decision_sentinel_live_ready": True,
+            "committed_route_sentinel_live_ready": True,
+            "committed_route_sentinel_speed_5_live_ready": True,
+            "noncombat_sentinel_timeline_speed": 5,
+            "terminal_sentinel_live_ready": False,
+            "overwhelming_matrix_live_ready": False,
+        }
+
+        required = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=date_raw,
+            steps=steps,
+            route_contact_horizon_supported=True,
+            battle_speed_readiness=readiness,
+        )
+        self.assertEqual(
+            required["phase"], "native_war_route_contact_horizon"
+        )
+        self.assertEqual(required["selected_step"], query_step)
+        self.assertFalse(
+            str(required["selected_step"]).startswith(
+                "committed-route-sentinel-advance"
+            )
+        )
+
+        proof = _route_contact_row(
+            1,
+            army_id=201_326_874,
+            origin=8_753,
+            target=2_635,
+            date_raw=date_raw,
+            route=[2_626, 2_627, 2_633, 2_634, 2_635],
+            hostile_ids=(167_772_577,),
+            contact_free=True,
+        )
+        proven = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=date_raw,
+            history=[proof],
+            steps=steps,
+            route_contact_horizon_supported=True,
+            battle_speed_readiness=readiness,
+        )
+        self.assertEqual(
+            proven["phase"], "native_war_route_contact_horizon_progress"
+        )
+        self.assertEqual(proven["selected_step"], advance_step)
+
+        next_frame = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=date_raw + 24,
+            history=[
+                proof,
+                {
+                    "index": 2,
+                    "command": advance_step,
+                    "ok": True,
+                    "result": {"step": advance_step, "elapsed_days": 1},
+                },
+            ],
+            steps=steps,
+            route_contact_horizon_supported=True,
+            battle_speed_readiness=readiness,
+        )
+        self.assertEqual(
+            next_frame["phase"], "native_war_route_contact_horizon"
+        )
+        self.assertEqual(next_frame["selected_step"], query_step)
+
+    def test_geometrically_safe_committed_route_still_requires_fresh_horizon(
+        self,
+    ) -> None:
+        date_raw = 53_256_000
+        player = _army(
+            201_326_874,
+            soldiers=4_100,
+            province_id=8_753,
+            controllable=True,
+            move_target_province_id=2_635,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[2_626, 2_627, 2_635],
+        )
+        enemy = _army(
+            167_772_577,
+            soldiers=3_300,
+            province_id=99,
+            controllable=False,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+        )
+        query_step = query_route_contact_horizon_step(
+            201_326_874, 2_635, (167_772_577,)
+        )
+        advance_step = advance_route_contact_horizon_step(
+            201_326_874, 2_635, (167_772_577,)
+        )
+        steps = (
+            COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
+            query_step,
+            advance_step,
+            "life-advance",
+        )
+        required = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=date_raw,
+            steps=steps,
+            route_contact_horizon_supported=True,
+            battle_speed_readiness={
+                "committed_route_sentinel_live_ready": True,
+            },
+        )
+        self.assertEqual(required["route_audit"]["status"], "safe")
+        self.assertEqual(required["selected_step"], query_step)
+
+        proven = _native_war_plan(
+            player=player,
+            enemies=[enemy],
+            score=0,
+            date_raw=date_raw,
+            history=[
+                _route_contact_row(
+                    1,
+                    army_id=201_326_874,
+                    origin=8_753,
+                    target=2_635,
+                    date_raw=date_raw,
+                    route=[2_626, 2_627, 2_635],
+                    hostile_ids=(167_772_577,),
+                    contact_free=True,
+                )
+            ],
+            steps=steps,
+            route_contact_horizon_supported=True,
+            battle_speed_readiness={
+                "committed_route_sentinel_live_ready": True,
+            },
+        )
+        self.assertEqual(proven["selected_step"], advance_step)
+        self.assertEqual(
+            proven["phase"], "native_war_route_contact_horizon_progress"
+        )
+
+    def test_committed_route_contact_blocks_even_above_two_to_one_base_power(
+        self,
+    ) -> None:
+        date_raw = 53_215_920
+        player = _army(
+            83_886_367,
+            soldiers=2_327,
+            province_id=2_610,
+            controllable=True,
+            move_target_province_id=2_628,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[2_628],
+        )
+        enemy = _army(
+            50_331_920,
+            soldiers=1_000,
+            province_id=2_628,
+            controllable=False,
+            army_state="regular",
+            army_state_code=1,
+            route_province_ids=[],
+        )
+        query_step = query_route_contact_horizon_step(
+            83_886_367, 2_628, (50_331_920,)
+        )
+        advance_step = advance_route_contact_horizon_step(
+            83_886_367, 2_628, (50_331_920,)
+        )
         plan = _native_war_plan(
             player=player,
             enemies=[enemy],
             score=0,
             date_raw=date_raw,
+            history=[
+                _route_contact_row(
+                    1,
+                    army_id=83_886_367,
+                    origin=2_610,
+                    target=2_628,
+                    date_raw=date_raw,
+                    route=[2_628],
+                    hostile_ids=(50_331_920,),
+                    contact_free=False,
+                )
+            ],
             steps=(
                 COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
                 query_step,
+                advance_step,
                 "life-advance",
             ),
             route_contact_horizon_supported=True,
             battle_speed_readiness={
-                "decision_sentinel_live_ready": True,
                 "committed_route_sentinel_live_ready": True,
-                "terminal_sentinel_live_ready": False,
-                "overwhelming_matrix_live_ready": False,
             },
+            army_strengths=[
+                {
+                    "status": "available",
+                    "army_id": 83_886_367,
+                    "scope_role": "player",
+                    "war_ids": [88],
+                    "current_soldiers": 2_327,
+                    "maximum_soldiers": 2_461,
+                    "ai_base_power_raw": 10_000_000_000,
+                },
+                {
+                    "status": "available",
+                    "army_id": 50_331_920,
+                    "scope_role": "active_war_enemy",
+                    "war_ids": [88],
+                    "current_soldiers": 1_000,
+                    "maximum_soldiers": 1_100,
+                    "ai_base_power_raw": 4_000_000_000,
+                },
+            ],
+            army_strengths_status="available",
         )
 
         self.assertEqual(
-            plan["phase"],
-            "native_war_committed_route_sentinel_progress",
+            plan["phase"], "native_war_no_safe_exact_route"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(
+            plan["required_step"],
+            "safe-exact-war-route",
         )
         self.assertEqual(
-            plan["selected_step"],
-            committed_route_sentinel_advance_step(
-                201_326_874, 2635, target_date_raw
-            ),
+            plan["route_rejections"][0]["contact_policy"],
+            "blocked_without_qualified_combat_permission",
         )
-        self.assertNotEqual(plan["selected_step"], query_step)
-        self.assertEqual(plan["timeline_speed"], 3)
-        self.assertEqual(plan["sentinel_scope"], "committed_route")
-        self.assertEqual(plan["watch_army_ids"], [201_326_874])
+        balance = plan["active_wars"][0]["army_strength_balance"]
+        self.assertFalse(balance["hostile_operational_overmatch"])
         self.assertEqual(
-            plan["hostile_route_change_detection"],
-            "not_watched_until_combat_id_transition",
+            balance["interpretation"],
+            "operational_routing_risk_not_battle_win_odds",
         )
 
-        default_closed = _native_war_plan(
-            player=player,
-            enemies=[enemy],
-            score=0,
-            date_raw=date_raw,
-            steps=(
-                COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
-                query_step,
-                "life-advance",
-            ),
-            route_contact_horizon_supported=True,
-            battle_speed_readiness={
-                "decision_sentinel_live_ready": True,
-                "committed_route_sentinel_live_ready": False,
-                "terminal_sentinel_live_ready": True,
-                "overwhelming_matrix_live_ready": False,
-            },
-        )
-        self.assertEqual(
-            default_closed["phase"], "native_war_route_contact_horizon"
-        )
-        self.assertEqual(default_closed["selected_step"], query_step)
-
-    def test_embarked_committed_route_uses_sentinel_and_keeps_route_gates(
+    def test_embarked_committed_route_uses_same_daily_proof_gate(
         self,
     ) -> None:
         date_raw = 53_218_080
-        route = [
-            1_038,
-            1_037,
-            8_658,
-            1_017,
-            942,
-            1_111,
-            8_665,
-            947,
-            8_668,
-            950,
-            951,
-            8_672,
-            5_696,
-            5_709,
-            704,
-            5_715,
-        ]
+        route = [1_038, 1_037, 8_658, 1_017, 942, 1_111, 5_715]
         player = _army(
             150_995_107,
             soldiers=4_100,
@@ -4202,223 +4412,60 @@ class GameplayBridgeTests(unittest.TestCase):
             move_target_province_id=2_619,
             army_state="moving",
             army_state_code=7,
-            route_province_ids=[5_910, 945, 946, 8_661, 1_017, 2_619],
+            route_province_ids=[5_910, 945, 946, 2_619],
         )
         query_step = query_route_contact_horizon_step(
+            150_995_107, 5_715, (83_886_281,)
+        )
+        advance_step = advance_route_contact_horizon_step(
             150_995_107, 5_715, (83_886_281,)
         )
         steps = (
             COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
             query_step,
+            advance_step,
             "life-advance",
         )
-        readiness = {
-            "decision_sentinel_live_ready": True,
-            "committed_route_sentinel_live_ready": True,
-            "terminal_sentinel_live_ready": False,
-            "overwhelming_matrix_live_ready": False,
-        }
-
-        plan = _native_war_plan(
+        required = _native_war_plan(
             player=player,
             enemies=[enemy],
             score=-37,
             date_raw=date_raw,
             steps=steps,
             route_contact_horizon_supported=True,
-            battle_speed_readiness=readiness,
+            battle_speed_readiness={
+                "committed_route_sentinel_live_ready": True,
+            },
         )
-        self.assertEqual(
-            plan["phase"], "native_war_committed_route_sentinel_progress"
-        )
-        self.assertEqual(
-            plan["selected_step"],
-            committed_route_sentinel_advance_step(
-                150_995_107,
-                5_715,
-                date_raw + 45 * 24,
-            ),
-        )
+        self.assertEqual(required["selected_step"], query_step)
 
-        for label, overrides in {
-            "wrong_target": {"move_target_province_id": 5_716},
-            "empty_route": {"route_province_ids": []},
-        }.items():
-            with self.subTest(label=label):
-                invalid_plan = _native_war_plan(
-                    player={**player, **overrides},
-                    enemies=[enemy],
-                    score=-37,
-                    date_raw=date_raw,
-                    steps=steps,
-                    route_contact_horizon_supported=True,
-                    battle_speed_readiness=readiness,
-                )
-                self.assertNotEqual(
-                    invalid_plan["phase"],
-                    "native_war_committed_route_sentinel_progress",
-                )
-                self.assertFalse(
-                    str(invalid_plan["selected_step"]).startswith(
-                        "committed-route-sentinel-advance"
-                    )
-                )
-
-    def test_embarked_retreat_bit_preempts_committed_route_sentinel(
-        self,
-    ) -> None:
-        player = _army(
-            54,
-            soldiers=2_400,
-            province_id=1_034,
-            controllable=True,
-            move_target_province_id=2_619,
-            army_state="embarked",
-            army_state_code=4,
-            in_combat=False,
-            retreating=True,
-            route_province_ids=[8_653, 1_036, 2_624, 2_619],
-        )
-        enemy = _army(
-            67,
-            soldiers=1_600,
-            province_id=2_646,
-            controllable=False,
-        )
-        plan = _native_war_plan(
+        proven = _native_war_plan(
             player=player,
             enemies=[enemy],
-            score=-46,
-            date_raw=53_148_096,
-            steps=(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP, "life-advance"),
+            score=-37,
+            date_raw=date_raw,
+            history=[
+                _route_contact_row(
+                    1,
+                    army_id=150_995_107,
+                    origin=8_652,
+                    target=5_715,
+                    date_raw=date_raw,
+                    route=route,
+                    hostile_ids=(83_886_281,),
+                    contact_free=True,
+                )
+            ],
+            steps=steps,
             route_contact_horizon_supported=True,
             battle_speed_readiness={
-                "decision_sentinel_live_ready": True,
                 "committed_route_sentinel_live_ready": True,
-                "terminal_sentinel_live_ready": False,
-                "overwhelming_matrix_live_ready": False,
             },
         )
+        self.assertEqual(proven["selected_step"], advance_step)
         self.assertEqual(
-            "native_war_global_combat_retreat_progress", plan["phase"]
+            proven["phase"], "native_war_route_contact_horizon_progress"
         )
-        self.assertEqual("life-advance", plan["selected_step"])
-
-    def test_committed_route_speed_five_is_policy_neutral_and_gated(
-        self,
-    ) -> None:
-        date_raw = 53_256_000
-        player = _army(
-            201_326_874,
-            soldiers=4_100,
-            province_id=8753,
-            controllable=True,
-            move_target_province_id=2635,
-            army_state="moving",
-            army_state_code=7,
-            route_province_ids=[2626, 2627, 2633, 2634, 2635],
-        )
-        enemy = _army(
-            167_772_577,
-            soldiers=3_300,
-            province_id=8648,
-            controllable=False,
-            move_target_province_id=2635,
-            army_state="moving",
-            army_state_code=7,
-            route_province_ids=[1034, 2644, 2645, 2635],
-        )
-        target_date_raw = date_raw + 45 * 24
-        base_readiness = {
-            "committed_route_sentinel_live_ready": True,
-            "noncombat_sentinel_timeline_speed": 5,
-            "noncombat_sentinel_high_speed_ab": False,
-            "committed_route_sentinel_speed_5_live_ready": False,
-        }
-
-        guarded = _native_war_plan(
-            player=player,
-            enemies=[enemy],
-            score=0,
-            date_raw=date_raw,
-            steps=(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP, "life-advance"),
-            battle_speed_readiness=base_readiness,
-        )
-        self.assertEqual(guarded["timeline_speed"], 3)
-        guarded_step = guarded["selected_step"]
-        self.assertEqual(
-            guarded_step,
-            committed_route_sentinel_advance_step(
-                201_326_874, 2635, target_date_raw
-            ),
-        )
-        self.assertFalse(guarded["research_high_speed_ab"])
-
-        other_scope_only = _native_war_plan(
-            player=player,
-            enemies=[enemy],
-            score=0,
-            date_raw=date_raw,
-            steps=(COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP, "life-advance"),
-            battle_speed_readiness={
-                **base_readiness,
-                "stationary_objective_hold_sentinel_speed_5_live_ready": True,
-            },
-        )
-        self.assertEqual(other_scope_only["timeline_speed"], 3)
-        self.assertEqual(other_scope_only["selected_step"], guarded_step)
-
-        for label, readiness in (
-            (
-                "explicit-ab",
-                {**base_readiness, "noncombat_sentinel_high_speed_ab": True},
-            ),
-            (
-                "scope-live",
-                {
-                    **base_readiness,
-                    "committed_route_sentinel_speed_5_live_ready": True,
-                },
-            ),
-        ):
-            with self.subTest(label=label):
-                plan = _native_war_plan(
-                    player=player,
-                    enemies=[enemy],
-                    score=0,
-                    date_raw=date_raw,
-                    steps=(
-                        COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP,
-                        "life-advance",
-                    ),
-                    battle_speed_readiness=readiness,
-                )
-                self.assertEqual(plan["timeline_speed"], 5)
-                self.assertEqual(
-                    plan["selected_step"],
-                    committed_route_sentinel_advance_step(
-                        201_326_874,
-                        2635,
-                        target_date_raw,
-                        timeline_speed=5,
-                    ),
-                )
-                self.assertEqual(
-                    plan["research_high_speed_ab"], label == "explicit-ab"
-                )
-                self.assertEqual(
-                    parse_committed_route_sentinel_advance_step(
-                        plan["selected_step"]
-                    ),
-                    parse_committed_route_sentinel_advance_step(guarded_step),
-                )
-                self.assertEqual(
-                    plan["sentinel_scope"], guarded["sentinel_scope"]
-                )
-                self.assertEqual(
-                    plan["absolute_target_date_raw"],
-                    guarded["absolute_target_date_raw"],
-                )
 
     def test_stationary_objective_hold_production_replaces_same_baseline_step(
         self,
@@ -6050,7 +6097,7 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertNotEqual(plan.get("selected_step"), advance_step)
         self.assertNotEqual(plan.get("selected_step"), "life-advance")
 
-    def test_unavoidable_current_province_contact_skips_candidate_sweep(
+    def test_unqualified_current_province_contact_prefers_safe_reroute(
         self,
     ) -> None:
         player = _army(
@@ -6108,14 +6155,12 @@ class GameplayBridgeTests(unittest.TestCase):
             route_contact_horizon_supported=True,
         )
 
+        self.assertEqual(plan["phase"], "native_war_route_preview")
         self.assertEqual(
-            plan["phase"], "native_war_unavoidable_contact_transition"
+            plan["selected_step"], "preview-move-army-11-to-2510"
         )
-        self.assertEqual(plan["selected_step"], advance_step)
-        self.assertEqual(
-            plan["route_audit"]["status"],
-            "unavoidable_current_province_contact",
-        )
+        self.assertNotEqual(plan["selected_step"], advance_step)
+        self.assertNotEqual(plan["selected_step"], "life-advance")
 
     def test_moving_sibling_requires_own_fresh_contact_horizon(
         self,
@@ -6286,9 +6331,10 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(
             transition["phase"],
-            "native_war_unavoidable_contact_transition",
+            "native_war_active_route_contact_blocked",
         )
-        self.assertEqual(transition["selected_step"], sibling_advance)
+        self.assertIsNone(transition["selected_step"])
+        self.assertNotEqual(transition["selected_step"], sibling_advance)
         self.assertNotEqual(transition["selected_step"], advance_step)
 
     def test_combat_sibling_with_stale_route_is_not_a_moving_conflict(
@@ -6773,8 +6819,11 @@ class GameplayBridgeTests(unittest.TestCase):
             objectives=[2585, 2510],
             steps=("life-advance",),
         )
-        self.assertEqual(safe["phase"], "native_war_route_progress")
-        self.assertEqual(safe["selected_step"], "life-advance")
+        self.assertEqual(
+            safe["phase"],
+            "native_war_active_route_contact_horizon_unsupported",
+        )
+        self.assertIsNone(safe["selected_step"])
 
         enemy = _army(21, soldiers=800, province_id=31, controllable=False)
         reroute = _native_war_plan(
@@ -6782,13 +6831,26 @@ class GameplayBridgeTests(unittest.TestCase):
             enemies=[enemy],
             score=0,
             date_raw=24_000,
+            history=[
+                _route_contact_row(
+                    1,
+                    origin=20,
+                    target=2585,
+                    date_raw=24_000,
+                    route=[20, 31, 2585],
+                    hostile_ids=(21,),
+                    contact_free=False,
+                )
+            ],
             objectives=[2585, 2510],
             steps=(
                 "preview-move-army-11-to-2510",
                 "move-army-11-to-2510",
                 "life-advance",
             ),
+            route_contact_horizon_supported=True,
         )
+        self.assertEqual(reroute["phase"], "native_war_route_preview")
         self.assertEqual(
             reroute["selected_step"], "preview-move-army-11-to-2510"
         )
@@ -6811,8 +6873,20 @@ class GameplayBridgeTests(unittest.TestCase):
             enemies=[enemy],
             score=24,
             date_raw=24_000,
+            history=[
+                _route_contact_row(
+                    1,
+                    origin=20,
+                    target=2585,
+                    date_raw=24_000,
+                    route=[20, 31, 2585],
+                    hostile_ids=(21,),
+                    contact_free=False,
+                )
+            ],
             objectives=[2585, 2510],
             steps=("preview-move-army-11-to-2510", "life-advance"),
+            route_contact_horizon_supported=True,
         )
 
         self.assertEqual(plan["phase"], "native_war_route_preview")
@@ -7493,9 +7567,19 @@ class GameplayBridgeTests(unittest.TestCase):
                     route=[52, 2510],
                 ),
                 deferred,
+                _route_contact_row(
+                    3,
+                    origin=20,
+                    target=2585,
+                    date_raw=24_000,
+                    route=[20, 31, 2585],
+                    hostile_ids=(21,),
+                    contact_free=False,
+                ),
             ],
             objectives=[2585, 2510],
             steps=("move-army-11-to-2510", "life-advance"),
+            route_contact_horizon_supported=True,
         )
         self.assertEqual(blocked["phase"], "native_war_unsafe_route_blocked")
         self.assertIsNone(blocked["selected_step"])
@@ -7505,8 +7589,20 @@ class GameplayBridgeTests(unittest.TestCase):
             enemies=[enemy],
             score=24,
             date_raw=24_000,
+            history=[
+                _route_contact_row(
+                    1,
+                    origin=20,
+                    target=2585,
+                    date_raw=24_000,
+                    route=[20, 31, 2585],
+                    hostile_ids=(21,),
+                    contact_free=False,
+                )
+            ],
             objectives=[2585, 20],
             steps=("move-army-11-to-20", "life-advance"),
+            route_contact_horizon_supported=True,
         )
         self.assertEqual(
             current_only["phase"], "native_war_no_safe_exact_route"
@@ -7537,9 +7633,22 @@ class GameplayBridgeTests(unittest.TestCase):
             enemies=[r885_enemy],
             score=-50,
             date_raw=53_282_952,
+            history=[
+                _route_contact_row(
+                    1,
+                    army_id=184_549_472,
+                    origin=8750,
+                    target=45,
+                    date_raw=53_282_952,
+                    route=[45],
+                    hostile_ids=(184_549_393,),
+                    contact_free=False,
+                )
+            ],
             objectives=[],
             steps=("move-army-184549472-to-8750",),
             player_side="defender",
+            route_contact_horizon_supported=True,
         )
         self.assertEqual(
             r886_no_pseudo_cancel["phase"],
@@ -7552,9 +7661,22 @@ class GameplayBridgeTests(unittest.TestCase):
             enemies=[r885_enemy],
             score=-50,
             date_raw=53_282_952,
+            history=[
+                _route_contact_row(
+                    1,
+                    army_id=184_549_472,
+                    origin=8750,
+                    target=45,
+                    date_raw=53_282_952,
+                    route=[45],
+                    hostile_ids=(184_549_393,),
+                    contact_free=False,
+                )
+            ],
             objectives=[],
             steps=(),
             player_side="defender",
+            route_contact_horizon_supported=True,
         )
         self.assertEqual(
             r885_without_literal["phase"], "native_war_no_safe_exact_route"
@@ -7589,9 +7711,9 @@ class GameplayBridgeTests(unittest.TestCase):
         )
         self.assertEqual(
             pending_white_peace["phase"],
-            "native_war_white_peace_response_window_advance",
+            "native_war_active_route_contact_horizon_unsupported",
         )
-        self.assertEqual(pending_white_peace["selected_step"], "life-advance")
+        self.assertIsNone(pending_white_peace["selected_step"])
 
         surrender_options = _termination_options(
             score=-44, war_duration_days=216
@@ -7614,12 +7736,25 @@ class GameplayBridgeTests(unittest.TestCase):
             enemies=[r885_enemy],
             score=-44,
             date_raw=53_282_952,
+            history=[
+                _route_contact_row(
+                    1,
+                    army_id=184_549_472,
+                    origin=8750,
+                    target=45,
+                    date_raw=53_282_952,
+                    route=[45],
+                    hostile_ids=(184_549_393,),
+                    contact_free=False,
+                )
+            ],
             objectives=[],
             steps=(
                 "move-army-184549472-to-8750",
                 "surrender-war-88",
             ),
             termination_options=[surrender_options],
+            route_contact_horizon_supported=True,
         )
         self.assertEqual(
             terminal_comparison["phase"],
@@ -7752,10 +7887,11 @@ class GameplayBridgeTests(unittest.TestCase):
 
         plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
-        self.assertEqual(plan["phase"], "native_war_route_preview")
         self.assertEqual(
-            plan["selected_step"], "preview-move-army-12-to-2510"
+            plan["phase"],
+            "native_war_active_route_contact_horizon_unsupported",
         )
+        self.assertIsNone(plan["selected_step"])
         self.assertNotEqual(plan["selected_step"], "life-advance")
 
     def test_safe_active_route_does_not_hide_stationary_army_threat(
@@ -7837,9 +7973,10 @@ class GameplayBridgeTests(unittest.TestCase):
                 plan = GameplayBridgeService(driver).plan_turn()["plan"]
 
                 self.assertEqual(
-                    safe_plan["phase"], "native_war_route_progress"
+                    safe_plan["phase"],
+                    "native_war_active_route_contact_horizon_unsupported",
                 )
-                self.assertEqual(safe_plan["selected_step"], "life-advance")
+                self.assertIsNone(safe_plan["selected_step"])
                 self.assertEqual(plan["phase"], "native_war_route_preview")
                 self.assertEqual(
                     plan["selected_step"],
@@ -10448,7 +10585,11 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertNotEqual(plan["selected_step"], "life-advance")
         self.assertIn(
             plan["phase"],
-            {"native_war_route_preview", "native_war_no_safe_exact_route"},
+            {
+                "native_war_active_route_contact_horizon_unsupported",
+                "native_war_route_preview",
+                "native_war_no_safe_exact_route",
+            },
         )
 
     def test_live_split_receipt_recovers_original_main_with_unique_delta(
@@ -13191,8 +13332,11 @@ class GameplayBridgeTests(unittest.TestCase):
             steps=("move-army-11-to-2585", "life-advance"),
         )
 
-        self.assertEqual(plan["phase"], "native_war_route_progress")
-        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(
+            plan["phase"],
+            "native_war_active_route_contact_horizon_unsupported",
+        )
+        self.assertIsNone(plan["selected_step"])
         self.assertEqual(plan["move_intent"]["target_province_id"], 2543)
 
     def test_observable_cleared_route_releases_old_move_intent(self) -> None:
