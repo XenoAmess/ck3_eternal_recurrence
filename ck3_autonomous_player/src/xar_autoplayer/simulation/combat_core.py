@@ -314,7 +314,7 @@ def outgoing_damage_raw(
     side_current_fighting_men_raw: int,
     damage_scaling_raw: int = 3_000,
 ) -> int:
-    """Closed main outgoing-damage envelope, preserving operation order."""
+    """Main outgoing damage in native advantage, scale, width, attack order."""
 
     if side_current_fighting_men_raw <= 0:
         return 0
@@ -322,9 +322,9 @@ def outgoing_damage_raw(
         FIXED_SCALE,
         fixed_div(final_combat_width * FIXED_SCALE, side_current_fighting_men_raw),
     )
-    result = fixed_mul(effective_attack_after_counter_raw, damage_scaling_raw)
-    result = fixed_mul(result, advantage_multiplier_raw)
-    return fixed_mul(result, width_fraction_raw)
+    result = fixed_mul(advantage_multiplier_raw, damage_scaling_raw)
+    result = fixed_mul(result, width_fraction_raw)
+    return fixed_mul(result, effective_attack_after_counter_raw)
 
 
 @dataclass(frozen=True, slots=True)

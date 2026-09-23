@@ -286,10 +286,11 @@ flowchart TD
 日调度可依次处理其他 Combat，所以采样钩子忽略非目标双方的 side 指针，目标场内的次序或身份不符则显式失败；
 冻结字节 SHA、反汇编和有限 hook 方案保存在
 `Z:\ck3_mod_rewrite_process_assets\g2-combat-damage-boundary-static-20260923`。
-该路径目前仅有静态原版依据；双侧输出的实机 one-day 对账与模拟器 parity 仍未完成，
+该只读边界随后经 R0215/R0217 单个真实 tick 验证；双侧 R14 后的出伤外壳在该 tick
+零差值。战前 R14 重建与完整转移尚未验证，
 `full_mutable_transition_bundle_complete`、`original_trace_ready`、胜率和攻击能力继续关闭。
 
-`0x23CB1D0..0x23CB7BD` 先计算战宽参与比例，再将有效攻击聚合依次乘 damage scaling、advantage 和战宽：
+`0x23CB1D0..0x23CB7BD` 先计算战宽参与比例；缩放时按原版指令顺序逐次截断，先乘 advantage 与 damage scaling，再乘战宽，最后乘 counter 后有效攻击：
 
 #### R0215 原版同 tick 差分与 R14 施工边界（2026-09-24）
 
@@ -337,16 +338,33 @@ caller 绑定，不是战斗结论；原 R0203 配对、R0216 RED 与 #230 DLL �
 R0216 冻结索引为
 `Z:\ck3_mod_rewrite_process_assets\g2-combat-postcounter-r14-r0203-ebb7-no-launch-20260924\checks\R0216-LIVE-FREEZE.json`
 （SHA-256 `1108D382B130601C8C7853A18D65F99C41F5B5B33A5A21052C9260AFC9A72F18`）。
-同线程外层 caller 绑定的修复尚待新 DLL 和实机读回，随后才可与
-`outgoing_damage_raw` 聚焦对账；
-`original_trace_ready`、概率与攻击门仍关闭。
+同线程外层 caller 绑定修复已进入 f67 DLL，并在下述 R0217 同 tick
+得到实机读回；概率与攻击门仍关闭。
+
+[live-confirmed] R0217 使用原始 R0203 phase1/day0 配对、修正 caller 绑定后的
+f67 DLL，严格 +24 小时和七条边界取得双侧 R14
+`413,810,144 / 4,911,382,134` 与原版 outgoing
+`12,414,304 / 116,645,325`（均为 Q100000）；44 条兵团伤亡和 owner ledger
+与 R0215 完全一致，零 typed 战术动作，受控停止后 CK3 与 owner 均已释放。
+exact-build `0x23CB541..0x23CB6DE` 的真实逐次截断顺序是
+`mul(advantage_multiplier, 3000)` → `mul(result, width_fraction)` →
+`mul(result, R14)`。同 tick 战宽 1269、双方 fighting total
+`21,500,000 / 232,400,000` 给出战宽比例 `100,000 / 54,604`；
+side1 的 `145,000 × 3,000 → 4,350`，再乘 `54,604 → 2,375`，
+最后乘 R14 `4,911,382,134 → 116,645,325`，与原版零差值；side0 同样零差值。
+旧 `combat_core.outgoing_damage_raw` 把 R14 放在乘法开头，side1 在该真实 tick
+多算 `13,457` raw。离线逐级差分见
+`Z:\ck3_mod_rewrite_process_assets\g2-combat-r14-outer-caller-r0203-f67-no-launch-20260924\checks\R0217-R14-OUTGOING-ORDER-DIFF.json`
+（SHA-256 `9DE9656042F6DC050096D3BFE071A3C6A0C96FEFEB098C31A6193AD740F82204`）。
+这只闭合一个真实 tick 的出伤外壳，不证明战前 R14 重建、完整转移或胜率；
+`production_trace_ready`、胜率与攻击门继续关闭。
 
 ```mermaid
 flowchart LR
   E["actual CombatID 738197508"] --> T["seven original tick boundaries"]
   H["outer outgoing hook: original caller + side"] --> R
   T --> R["0x23CB435 R14: post-counter attack"]
-  R --> S["0.03 × advantage × width"]
+  R --> S["先 advantage × 0.03 × width，再乘 R14；每步截断"]
   S --> O["native outgoing pair"]
   O --> C["44 regiment casualty rows: R0215 delta 0"]
   U["unknown: enemy side0 actual final-edge origin"] -.-> V["v3 hypothetical entry parity"]
@@ -355,10 +373,11 @@ flowchart LR
 
 ```text
 width_fraction = min(1, W_final / side_current_fighting_men)
-outgoing_damage = effective_attack_after_counter_and_modifiers
-                  * DAMAGE_SCALING_FACTOR
-                  * advantage_damage_multiplier_for_this_side
-                  * width_fraction
+outgoing_scalar = trunc_mul(advantage_damage_multiplier_for_this_side,
+                            DAMAGE_SCALING_FACTOR)
+outgoing_scalar = trunc_mul(outgoing_scalar, width_fraction)
+outgoing_damage = trunc_mul(outgoing_scalar,
+                            effective_attack_after_counter_and_modifiers)
 ```
 
 - [static-confirmed] 该版本 `DAMAGE_SCALING_FACTOR=0.03`；乘除均走 CFixedPoint scale `100000` 的

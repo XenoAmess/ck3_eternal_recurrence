@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
 import unittest
 
 from xar_autoplayer.simulation.combat_core import (
@@ -31,6 +33,7 @@ from xar_autoplayer.simulation.combat_core import (
     fire_phase_event_seeds,
     fixed_div,
     fixed_mul,
+    outgoing_damage_raw,
     phase_schedule_state,
     run_combat_experiment,
     schedule_main_day_randomness,
@@ -53,6 +56,28 @@ class CombatFixedPointTests(unittest.TestCase):
         self.assertEqual(fixed_mul(-150_001, 50_000), -75_000)
         self.assertEqual(fixed_div(-100_001, 300_000), -33_333)
         self.assertEqual(fixed_div(1, 0), -1)
+
+    def test_r0217_original_tick_outgoing_damage_both_sides(self) -> None:
+        fixture_path = (
+            Path(__file__).parents[1]
+            / "fixtures"
+            / "combat"
+            / "r0217_outgoing_order_native_tick.json"
+        )
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        self.assertEqual(fixture["combat_id"], 738197508)
+        for side in fixture["sides"]:
+            with self.subTest(side=side["side_index"]):
+                self.assertEqual(
+                    outgoing_damage_raw(
+                        side["post_counter_attack_raw"],
+                        advantage_multiplier_raw=side["advantage_multiplier_raw"],
+                        final_combat_width=fixture["final_combat_width"],
+                        side_current_fighting_men_raw=side["current_fighting_men_raw"],
+                        damage_scaling_raw=fixture["damage_scaling_raw"],
+                    ),
+                    side["native_outgoing_damage_raw"],
+                )
 
     def test_component_golden_vector_preserves_fractional_remainder(self) -> None:
         levy = allocate_hard_casualties_to_components(

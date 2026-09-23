@@ -1,0 +1,27 @@
+{
+  "schema_version": "xar.ck3.combat-r0217-outgoing-order-native-tick/v1",
+  "game_version": "1.19.0.6-steam23530548",
+  "game_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "combat_id": 738197508,
+  "frozen_result_sha256": "949CCD0E01C1E2FACA409E48FAEF8CC715EA30EC8FB9A4C232ACD3A58B9B70DF",
+  "offline_diff_sha256": "9DE9656042F6DC050096D3BFE071A3C6A0C96FEFEB098C31A6193AD740F82204",
+  "scope": "one_original_main_tick_read_only_no_win_probability",
+  "damage_scaling_raw": 3000,
+  "final_combat_width": 1269,
+  "sides": [
+    {
+      "side_index": 0,
+      "post_counter_attack_raw": 413810144,
+      "advantage_multiplier_raw": 100000,
+      "current_fighting_men_raw": 21500000,
+      "native_outgoing_damage_raw": 12414304
+    },
+    {
+      "side_index": 1,
+      "post_counter_attack_raw": 4911382134,
+      "advantage_multiplier_raw": 145000,
+      "current_fighting_men_raw": 232400000,
+      "native_outgoing_damage_raw": 116645325
+    }
+  ]
+}
