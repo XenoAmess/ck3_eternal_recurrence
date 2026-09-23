@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "BAFFEA8051605995F00FB53504392B4ADDA6EC12CBD7965D505162040F89D99E"
+        "sha256": "6D541CA3A9F969DAEDF51657B4E23F216456BC7712FA7F65F49B9E799F599B78"
       },
       "raw_footage": {
         "passed": 0,
@@ -547,7 +547,7 @@
       "result": "completed-green",
       "round": "R0167",
       "same_paused_frame_verified": true,
-      "scope": "R0167 proves only private exact-build paused readback of current focus, accrued XP, two unspent points and one final-legal policy perk. The formal consumer requires peace and did not submit during active defensive wars; no typed perk, independent postcondition, next-turn consumption or public capability credit.",
+      "scope": "R0167 proves private exact-build paused readback of current focus, accrued XP, two unspent points and one final-legal policy perk. Its formal consumer required peace and did not submit during active defensive wars. R0175 later attempted a private wartime typed perk, but its game outcome remains unknown without a later paused frame or independent HasPerk receipt; no next-turn consumption or public capability credit.",
       "source_commit": "37ff65f8dd965292ee1bbebfc81be91f3ca7db16",
       "source_pair": "R0164_h1082",
       "status": "GREEN_PRIVATE_READ_ONLY",
@@ -562,11 +562,54 @@
       "pr_head": "f8dc408344fe40e66d4387e67b2f02abd97eb59e",
       "pr_number": 163,
       "public_advertised": false,
-      "scope": "Wartime perk checkpoint code candidate; private R0167 readback remains the latest live lifestyle evidence, with no M4 typed/perk loop promotion.",
+      "scope": "Wartime perk checkpoint code reached R0175 private live trial; the same-request native ACK remains verification pending after a 603.8-second timeout. R0167 remains the last proven lifestyle readback and M4 typed/perk loop promotion remains blocked.",
       "source_cleanup": "complete",
       "static_ci_status": "passed",
-      "status": "master_integrated_live_pending",
+      "status": "master_integrated_live_red_outcome_unknown",
       "typed_perk_action_proven": false
+    },
+    "m4_wartime_perk_live_attempt": {
+      "action_request_id": "life-perk-a893ddff5d2b40c0be6ee3a74da8ef8d",
+      "actor_id": 29829,
+      "checkpoint_date_raw": 53194440,
+      "checkpoint_history_index": 1333,
+      "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
+      "cleanup_proven": true,
+      "date_advanced": false,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "freeze_locator": "g2-m4-r0175-wartime-perk-red-frozen-20260923/R0175-final-frozen-pair/R0175-raw-freeze.json",
+        "freeze_sha256": "E8BC9D5C81CB36AAE36865F3B05D7DAB003EF52F04EBBB8A182B2809455A441E",
+        "report_locator": "g2-m4-r0175-wartime-perk-red-frozen-20260923/R0175-final-frozen-pair/report.json",
+        "report_sha256": "42A80DF44D07E4C3CD8CD7C2FFA819B80AD519B0E85ACD7B0B9D4F1AE670D88B",
+        "semantic_audit_locator": "g2-m4-r0175-wartime-perk-red-frozen-20260923/R0175-semantic-audit.json",
+        "semantic_audit_sha256": "54CFA9552D97717542BACE455DEBC0994505A405DA4AC6B4147B262047279618"
+      },
+      "first_history_index": 1340,
+      "first_status": "action_state_unknown",
+      "independent_has_perk_proven": false,
+      "later_paused_frame_proven": false,
+      "managed_process_count_after_cleanup": 0,
+      "milestone_status": "in_progress",
+      "native_ack_is_postcondition": false,
+      "next_turn_perk_consumption_proven": false,
+      "official_recovery_required_before_reuse": true,
+      "perk_key": "cutting_corners_perk",
+      "post_action_checkpoint_proven": false,
+      "public_advertised": false,
+      "raw_driver_sha256": "D34E3D26ADE0F013F03AC66134EF7F95C60236BCB0CCAD340FE7672A74F2F073",
+      "result": "completed-red",
+      "round": "R0175",
+      "same_request_ack_history_index": 1341,
+      "same_request_ack_status": "submitted_verification_pending",
+      "save_unchanged": true,
+      "scope": "R0175 private wartime perk attempt returned action_state_unknown then a same-request submitted_verification_pending native ACK. A later paused native frame never arrived before the 600-second wall budget; there is no independent HasPerk/point readback, post-action checkpoint, next-turn consumption, or date advance. The raw driver has four post-boundary records and requires official semantic recovery; use the unchanged original R0174 h1333 pair and read actual perk state before any retry. The war strategy RED remains independent.",
+      "source_commit": "f8dc408344fe40e66d4387e67b2f02abd97eb59e",
+      "source_pair": "R0174_h1333",
+      "status": "ACTION_OUTCOME_UNKNOWN",
+      "wall_seconds": 603.8320217,
+      "wall_timeout_seconds": 600
     },
     "m5_private_read_only": {
       "alliance_projection_row_count": 5,
@@ -1232,5 +1275,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T11:52:32+08:00"
+  "updated_at": "2026-09-23T12:19:06+08:00"
 }

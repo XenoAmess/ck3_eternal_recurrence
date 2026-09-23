@@ -219,3 +219,11 @@ R0174 只解除该候选的私有 MCP/route 读回缺口；战争产品 RED、M4
 封存后续证据：[R0173 15/15 只读复核](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0173-mcp-lifecycle-red-frozen-20260923/R0173-seal-verified.json) SHA `4C521BDBDC4CC9470090F47A92977336F57ED32A86D888CAC3466BD79A8E0226`，原 freeze SHA 不变；[R0174 24/24 冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0174-snapshot-green-frozen-20260923/R0174-final-frozen-pair/R0174-raw-freeze.json) SHA `9D727162162AF9FE65430D8ED2BB77AB8422C704FF15390A8585909F90226FF0`，seal SHA `CA10F99FA6FDA55C0A64FA15C2D1CFC931D2858D540019A8136A23F10E498BFF`；driver `D594512C...F823DE`，官方下一 pair 边界 `1336→1336/drop0`。这些是运行资产，随源码分支清理保留。
 
 PR #163 已快进合入 `master@f8dc408`、源码分支/worktree 清理完成；M4 战时 perk runner 仍待同版本实机 typed/后置/下一 turn 验收，公共能力 OFF。
+
+## 2026-09-23 R0175 M4 战时 perk 私有实机增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| M4 wartime perk typed trial | **RED / 游戏动作结果未知**；公共 query/action/ad OFF | 已合入 `f8dc408` 私有 runner；R0174 h1333 官方配对，`ordinary_campaign_succession/xar_off` | [R0175 原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-m4-r0175-wartime-perk-red-frozen-20260923/R0175-final-frozen-pair/R0175-raw-freeze.json) SHA `E8BC9D5C81CB36AAE36865F3B05D7DAB003EF52F04EBBB8A182B2809455A441E`；[report](Z:/ck3_mod_rewrite_process_assets/g2-m4-r0175-wartime-perk-red-frozen-20260923/R0175-final-frozen-pair/report.json) SHA `42A80DF4...670D88B` | driver #1340 `action_state_unknown`、#1341 同一请求 native ACK `submitted_verification_pending`；等后续 paused frame 603.8 秒超时，无独立 `HasPerk`/点数、下一 turn 或动作后 checkpoint | save h1333/raw53194440 SHA `2B8933FC...7F98A` 未变；raw driver `D34E3D26...F073` 有 #1338–#1341 四条后续记录；[no-launch 语义复核](Z:/ck3_mod_rewrite_process_assets/g2-m4-r0175-wartime-perk-red-frozen-20260923/R0175-semantic-audit.json) SHA `54CFA955...279618` 指向原 R0174 干净配对，官方恢复后新暂停帧须先核 perk/点数，不能盲重试；进程/owner 0 | M4 动作后置及下一 turn；`/root/r0168_recovery_pair` 与 M4 owner；战争策略 RED 独立 | `f8dc408` 源码分支已清；R0175 九份只读冻结资产长期保留；本状态/报告包独立待集成 |
+
+Robert 持久 **2,088/36,524**，G2 **3/8**，百年/首整局/独立种子 **0/1、0/1、0/2**；PRV008 原有界 GO 与战争产品 RED 均不变。本包没有启动 CK3。
