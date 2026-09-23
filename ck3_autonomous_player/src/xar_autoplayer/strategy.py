@@ -9078,6 +9078,11 @@ def _choose_one_life_turn_core(
         siege_objective_province_ids = _attacker_siege_objective_province_ids(
             [tactical_war] if isinstance(tactical_war, dict) else []
         )
+        arrived_relief_target = (
+            _native_int(siege_relief.get("target_province_id"))
+            if siege_relief.get("status") == "arrived_sieging"
+            else None
+        )
         exact_objective_province_ids = war_objective_province_ids(
             [tactical_war] if isinstance(tactical_war, dict) else []
         )
@@ -9724,6 +9729,19 @@ def _choose_one_life_turn_core(
             siege_objective_province_ids = list(
                 exact_objective_province_ids
             )
+        if arrived_relief_target is not None:
+            # The accepted relief move owns this army through arrival.  Keep
+            # its observed siege in the ordinary siege/assault tree even
+            # when a concurrent defensive war publishes another siege.
+            completed_objectives.discard(arrived_relief_target)
+            siege_objective_province_ids = [
+                arrived_relief_target,
+                *(
+                    province_id
+                    for province_id in siege_objective_province_ids
+                    if province_id != arrived_relief_target
+                ),
+            ]
         all_siege_objectives_completed = bool(siege_objective_province_ids)
         siege_objective_province_ids = [
             province_id
@@ -9916,7 +9934,10 @@ def _choose_one_life_turn_core(
             and exact_siege_status.get("status") == "progressing"
             and observed_route_target is None
             and not stationary_threats
-            and current_province_id in siege_objective_province_ids
+            and (
+                current_province_id in siege_objective_province_ids
+                or siege_relief.get("status") == "arrived_sieging"
+            )
             and "life-advance" in available_steps
         ):
             return {
@@ -9925,6 +9946,11 @@ def _choose_one_life_turn_core(
                 "selected_step": "life-advance",
                 "reason": "the exact paused state confirms a player siege; advance one seven-day progress slice",
                 "siege_state": exact_siege_status,
+                **(
+                    {"siege_relief": siege_relief}
+                    if arrived_relief_target is not None
+                    else {}
+                ),
                 "active_wars": war_summary,
             }
         if (
@@ -9934,6 +9960,7 @@ def _choose_one_life_turn_core(
             and exact_siege_status is None
             and (
                 current_province_id in siege_objective_province_ids
+                or siege_relief.get("status") == "arrived_sieging"
                 or (
                     not siege_objective_province_ids
                     and not exact_occupation_fully_observable
@@ -9946,6 +9973,11 @@ def _choose_one_life_turn_core(
                 "phase": "native_war_siege_progress",
                 "selected_step": "life-advance",
                 "reason": "the native army is sieging; advance the occupation",
+                **(
+                    {"siege_relief": siege_relief}
+                    if arrived_relief_target is not None
+                    else {}
+                ),
                 "active_wars": war_summary,
             }
         if army_state == "retreating":
@@ -15475,9 +15507,39 @@ def _primary_defender_siege_relief_assessment(
                 "complete-matching-active-native-move-intent-route"
             ),
         }
+    current_province_id = _native_int(army.get("current_province_id"))
+    if (
+        _army_tactical_state(army) == "sieging"
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+        and "move_target_province_id" in army
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+        and army_id is not None
+        and current_province_id is not None
+    ):
+        arrival = _accepted_native_move_arrival(
+            commands,
+            snapshot,
+            army_id=army_id,
+            target_province_id=current_province_id,
+        )
+        if isinstance(arrival, dict):
+            return {
+                "status": "arrived_sieging",
+                "army_id": army_id,
+                "target_province_id": current_province_id,
+                "move_arrival": arrival,
+            }
+        return {
+            "status": "observation_unavailable",
+            "required_observation": (
+                "accepted-native-move-arrival-for-current-siege"
+            ),
+        }
     if not (
         army_id is not None
-        and _native_int(army.get("current_province_id")) is not None
+        and current_province_id is not None
         and _army_tactical_state(army) == "regular"
         and army.get("in_combat") is False
         and army.get("retreating") is False
@@ -17450,23 +17512,10 @@ def _active_native_move_intent(
     army_id: int,
     target_province_id: int,
 ) -> dict[str, object] | None:
-    latest_position = -1
-    latest_row: dict[str, object] | None = None
-    for position in range(len(commands) - 1, -1, -1):
-        row = commands[position]
-        if _successful_merge_barrier(row, army_id):
-            return None
-        command = _effective_command(row)
-        if command == "restore-checkpoint" and row.get("ok") is True:
-            return None
-        parsed = parse_move_army_step(command)
-        if parsed is None or parsed[0] != army_id:
-            continue
-        latest_position = position
-        latest_row = row
-        break
-    if latest_row is None or latest_row.get("ok") is not True:
+    latest = _latest_accepted_native_move_row(commands, army_id=army_id)
+    if latest is None:
         return None
+    latest_position, latest_row = latest
     parsed = parse_move_army_step(_effective_command(latest_row))
     if parsed != (army_id, target_province_id):
         return None
@@ -17537,6 +17586,178 @@ def _active_native_move_intent(
         "elapsed_days": elapsed_days,
         "timeout_days": _NATIVE_MOVE_INTENT_MAX_GAME_DAYS,
     }
+
+
+def _accepted_native_move_arrival(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    army_id: int,
+    target_province_id: int,
+) -> dict[str, object] | None:
+    """Bind a completed route to its accepted typed move.
+
+    R0162 reached the relief target and entered CK3's native sieging state.
+    At that point the active intent is correctly closed, but a concurrent
+    hostile siege must not erase the proof that this army is already carrying
+    out the selected relief operation.
+    """
+
+    latest = _latest_accepted_native_move_row(commands, army_id=army_id)
+    if latest is None:
+        return None
+    latest_position, latest_row = latest
+    if parse_move_army_step(_effective_command(latest_row)) != (
+        army_id,
+        target_province_id,
+    ):
+        return None
+    result = latest_row.get("result")
+    action = result.get("war_action") if isinstance(result, dict) else None
+    if (
+        not isinstance(action, dict)
+        or action.get("status") not in {"move_submitted", "moving"}
+        or result.get("accepted") is False
+        or action.get("army_id") not in {None, army_id}
+        or action.get("target_province_id")
+        not in {None, target_province_id}
+    ):
+        return None
+    player_armies = snapshot.get("player_armies")
+    army = (
+        next(
+            (
+                row
+                for row in player_armies
+                if isinstance(row, dict) and row.get("army_id") == army_id
+            ),
+            None,
+        )
+        if isinstance(player_armies, list)
+        else None
+    )
+    if not (
+        isinstance(army, dict)
+        and _native_int(army.get("current_province_id"))
+        == target_province_id
+        and _army_tactical_state(army) == "sieging"
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+        and "move_target_province_id" in army
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+    ):
+        return None
+    elapsed_days = _move_intent_elapsed_days(
+        commands,
+        latest_position=latest_position,
+        action=action,
+        snapshot=snapshot,
+    )
+    if elapsed_days >= _NATIVE_MOVE_INTENT_MAX_GAME_DAYS:
+        return None
+    return {
+        "status": "arrived",
+        "army_id": army_id,
+        "target_province_id": target_province_id,
+        "elapsed_days": elapsed_days,
+        "timeout_days": _NATIVE_MOVE_INTENT_MAX_GAME_DAYS,
+    }
+
+
+def _latest_accepted_native_move_row(
+    commands: list[dict[str, object]],
+    *,
+    army_id: int,
+) -> tuple[int, dict[str, object]] | None:
+    """Return the latest move, including one persisted cold restore.
+
+    A move before the latest restore is eligible only when an official saved
+    checkpoint between the move and restore has the exact identity consumed
+    by that restore.  The current native snapshot still has to prove the
+    active route or completed arrival in the caller.
+    """
+
+    restore_position: int | None = None
+    restore_row: dict[str, object] | None = None
+    for position in range(len(commands) - 1, -1, -1):
+        row = commands[position]
+        if _successful_merge_barrier(row, army_id):
+            return None
+        command = _effective_command(row)
+        if command == "restore-checkpoint" and row.get("ok") is True:
+            if restore_row is not None:
+                return None
+            restore_position = position
+            restore_row = row
+            continue
+        parsed = parse_move_army_step(command)
+        if parsed is None or parsed[0] != army_id:
+            continue
+        if row.get("ok") is not True:
+            return None
+        if (
+            restore_row is not None
+            and restore_position is not None
+            and not _native_move_persisted_through_restore(
+                commands,
+                move_position=position,
+                restore_position=restore_position,
+                restore_row=restore_row,
+            )
+        ):
+            return None
+        return position, row
+    return None
+
+
+def _native_move_persisted_through_restore(
+    commands: list[dict[str, object]],
+    *,
+    move_position: int,
+    restore_position: int,
+    restore_row: dict[str, object],
+) -> bool:
+    restore_result = restore_row.get("result")
+    restore_checkpoint = (
+        restore_result.get("checkpoint")
+        if isinstance(restore_result, dict)
+        else None
+    )
+    if not (
+        isinstance(restore_result, dict)
+        and restore_result.get("status") == "restored"
+        and restore_result.get("source") == "native-session-cold-start"
+        and isinstance(restore_checkpoint, dict)
+    ):
+        return False
+    restore_history_index = _native_int(
+        restore_checkpoint.get("history_index")
+    )
+    restore_date_raw = _native_int(restore_checkpoint.get("date_raw"))
+    restore_sha256 = restore_checkpoint.get("sha256")
+    if not (
+        restore_history_index is not None
+        and restore_date_raw is not None
+        and isinstance(restore_sha256, str)
+        and bool(restore_sha256)
+    ):
+        return False
+    for position in range(restore_position - 1, move_position, -1):
+        row = commands[position]
+        if _effective_command(row) != "save-checkpoint" or row.get("ok") is not True:
+            continue
+        result = row.get("result")
+        checkpoint = result.get("checkpoint") if isinstance(result, dict) else None
+        if (
+            isinstance(checkpoint, dict)
+            and _native_int(checkpoint.get("history_index"))
+            == restore_history_index
+            and _native_int(checkpoint.get("date_raw")) == restore_date_raw
+            and checkpoint.get("sha256") == restore_sha256
+        ):
+            return True
+    return False
 
 
 def _capital_regroup_intent(

@@ -4826,7 +4826,7 @@ class GameplayBridgeTests(unittest.TestCase):
             "complete-same-frame-siege-position-and-war-strength",
         )
 
-    def test_r0161_active_relief_move_enters_existing_route_consumption(
+    def test_r0161_active_and_r0162_arrived_relief_use_existing_progress(
         self,
     ) -> None:
         date_raw = 53_189_208
@@ -4956,6 +4956,33 @@ class GameplayBridgeTests(unittest.TestCase):
                 "player_armies": [copy.deepcopy(moving)],
             },
         }
+        persisted_checkpoint = {
+            "index": 4,
+            "command": "save-checkpoint",
+            "ok": True,
+            "result": {
+                "status": "submitted",
+                "checkpoint": {
+                    "history_index": 5,
+                    "date_raw": date_raw,
+                    "sha256": "a" * 64,
+                },
+            },
+        }
+        cold_restore = {
+            "index": 5,
+            "command": "restore-checkpoint",
+            "ok": True,
+            "result": {
+                "status": "restored",
+                "source": "native-session-cold-start",
+                "checkpoint": {
+                    "history_index": 5,
+                    "date_raw": date_raw,
+                    "sha256": "a" * 64,
+                },
+            },
+        }
         query_step = query_route_contact_horizon_step(
             army_id, target, (50_331_863, 83_886_252)
         )
@@ -5011,6 +5038,23 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(progress["move_intent"]["status"], "active")
         self.assertNotEqual(progress["selected_step"], move_step)
 
+        restored_progress = _native_war_plan(
+            **base,
+            history=[
+                preview,
+                stale_contact,
+                move,
+                persisted_checkpoint,
+                cold_restore,
+            ],
+            steps=(query_step, advance_step, move_step, "life-advance"),
+        )
+        self.assertNotEqual(restored_progress["selected_step"], move_step)
+        self.assertNotEqual(
+            restored_progress["phase"],
+            "native_war_defender_siege_relief_observation_blocked",
+        )
+
         unknown = _native_war_plan(
             **base,
             history=[preview, stale_contact],
@@ -5038,6 +5082,103 @@ class GameplayBridgeTests(unittest.TestCase):
             missing_route["phase"], "native_war_route_evidence_blocked"
         )
         self.assertIsNone(missing_route["selected_step"])
+
+        arrived = _army(
+            army_id,
+            soldiers=None,
+            province_id=target,
+            controllable=True,
+            move_target_province_id=None,
+            move_target_observable=True,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        departed_enemy = _army(
+            50_331_863,
+            soldiers=None,
+            province_id=2_626,
+            controllable=False,
+            move_target_province_id=8_753,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[8_753],
+            in_combat=False,
+            retreating=False,
+        )
+        concurrent_siege = _army(
+            83_886_252,
+            soldiers=None,
+            province_id=2_619,
+            controllable=False,
+            move_target_province_id=None,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        arrival_other_war = _war(
+            war_id=16_777_250,
+            allied_armies=[arrived],
+            enemy_armies=[concurrent_siege],
+            score=-8,
+            player_side="defender",
+            player_is_primary_war_leader=True,
+            war_objective_province_ids=[2_638],
+        )
+        arrival_base = {
+            **base,
+            "player": arrived,
+            "enemies": [departed_enemy],
+            "score": -9,
+            "additional_wars": [arrival_other_war],
+        }
+        arrived_progress = _native_war_plan(
+            **arrival_base,
+            history=[preview, stale_contact, move],
+            steps=(move_step, "life-advance"),
+        )
+        self.assertEqual(
+            arrived_progress["phase"], "native_war_siege_progress"
+        )
+        self.assertEqual(arrived_progress["selected_step"], "life-advance")
+
+        restored_arrival_progress = _native_war_plan(
+            **arrival_base,
+            history=[
+                preview,
+                stale_contact,
+                move,
+                persisted_checkpoint,
+                cold_restore,
+            ],
+            steps=(move_step, "life-advance"),
+        )
+        self.assertEqual(
+            restored_arrival_progress["phase"],
+            "native_war_siege_progress",
+        )
+        self.assertEqual(
+            restored_arrival_progress["selected_step"], "life-advance"
+        )
+
+        arrived_without_move_proof = _native_war_plan(
+            **arrival_base,
+            history=[preview, stale_contact],
+            steps=(move_step, "life-advance"),
+        )
+        self.assertEqual(
+            arrived_without_move_proof["phase"],
+            "native_war_defender_siege_relief_observation_blocked",
+        )
+        self.assertIsNone(arrived_without_move_proof["selected_step"])
+        self.assertEqual(
+            arrived_without_move_proof["required_observation"],
+            "accepted-native-move-arrival-for-current-siege",
+        )
 
     def test_stationary_hold_never_preempts_full_enforcement(self) -> None:
         date_raw = 53_256_000

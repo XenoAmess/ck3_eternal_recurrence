@@ -416,3 +416,53 @@ flowchart TD
     P --> O["re-observe route, contact, battle and siege"]
     N --> R
 ```
+
+## R0162: a relief arrival may become a proof-bound recovery siege
+
+- [production-live primitive] The official cold restore resumed the R0161
+  checkpoint and did not issue a second move while Army `83886367` retained
+  its accepted target.  Four committed-route sentinel slices advanced it from
+  Province `2638` through `2643`, `2639`, and `2633` to Province `2627`.
+- [production-live primitive] The independent arrival frame published the
+  player Army at Province `2627` with `army_state=sieging`, a null move target,
+  and an empty route.  Hostile Army `50331863` had left that Province toward
+  `2626/8753`.  The defensive war scores improved from `-10/-11` to `-8/-9`.
+  This proves route consumption and arrival; it does not yet prove occupation
+  recovery or either war's resolution.
+- [production blocker] A concurrent hostile siege by Army `83886252` at
+  Province `2619` caused the siege-relief admission to demand a new idle Army
+  binding.  That check ran before the existing player siege progress tree and
+  stopped the already executing recovery siege.
+- [counter-policy input] When the latest accepted typed move for the sole
+  controlled Army targets its current Province, and the paused frame reports
+  that Army as noncombat `sieging` with no move target and no remaining route,
+  the arrival remains bound to that move.  A concurrent hostile siege cannot
+  retarget it or require a new idle binding.  The existing exact or bounded
+  siege progress path retains its threat checks and owns the next slice.
+- [recovery binding] A move before the latest cold restore remains eligible
+  only when an official `save-checkpoint` after that move has the same history
+  index, date, and SHA-256 consumed by the `native-session-cold-start` restore,
+  and the fresh native snapshot still publishes the same target and route or
+  the completed siege arrival.  An unmatched restore remains a hard barrier.
+- [evidence-boundary] A siege without the matching accepted move, a different
+  latest target, a nonempty route, a new move target, combat, retreat, an
+  expired intent window, or a stationary threat remains zero action.  The
+  durable R0162 checkpoint is `date_raw=53189712`; the arrival at `53190000`
+  is a recoverable driver tail and must not be counted twice after restore.
+- [artifact] Frozen save SHA-256:
+  `9B7ACD64CBA42EA7AB828C1A5DE3701176167B87211D6F7F4BE83ACED47A949E`.
+  Driver SHA-256:
+  `20A1E3CFE160EF60784F03B2780C2AD8C50B2256D048959CE0D2ED3E0525854E`.
+  Formal report SHA-256:
+  `5B18CC33388ECED5F95CD1F8D24E7B4061DF9BFB3D2AED3E861DFC4C93FEDDAC`.
+
+```mermaid
+flowchart TD
+    A["accepted relief move"] --> M["proof-bound route consumption"]
+    M --> R{"Army reached the accepted target?"}
+    R -->|no| M
+    R -->|yes| S{"native state sieging<br/>target null, route empty?"}
+    S -->|no / unknown| X["fail closed"]
+    S -->|yes| P["existing siege progress and threat checks"]
+    P --> O["re-observe occupation, Army and both wars"]
+```
