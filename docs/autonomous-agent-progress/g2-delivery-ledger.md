@@ -154,3 +154,11 @@ M5 不广告：PR #18 read-only literal 已合入 master `b7a76e9` 并清临时 
 | R0166 二次冷恢复围城证据绑定 | **RED**，5 次尝试/4 次成功只读查询，0 gameplay/date | official restore → formal `native_auto_run` | [R0166 冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-r0166-restored-siege-observation-red-20260923/R0166-final-frozen-pair/R0166-pair-freeze.json) SHA `1782D61B62BD3E32B533344808B002FE056ED23D097C3E5BF5200A77E2E56A70`；source master `54a39e1` | planner `native_war_defender_siege_relief_observation_blocked`，要求 `accepted-native-move-arrival-for-current-siege`；两战 active `-7/-8` | official cold restore R0164 h1082/raw53190528 成功，但 planner 未绑定跨第二次恢复的到达围城证明；save 不变 `C2E8778D...F7E2`、RED driver `4D6BB936...7F53`；cleanup proven | 修 exact 多次恢复证据绑定并从合法配对有界复验；`/root` | R0166 RED 现场和原 R0164 冻结配对均保留 |
 
 PRV008 冻结预览 GO 与资格边界不变；G2 **3/8**（M0/M1/M3 complete，M2/M4 in progress，M5–M7 not started）。百年、首整局、独立种子仍为 **0/1、0/1、0/2**；Robert **1,925/36,524** 只表示本主线持久日期跨度。
+
+## 2026-09-23 R0167 M4 Robert 生活方式同帧只读
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| M4 生活方式 current/focus/perk readback | **private read-only GREEN**；typed 闭环与公共广告 OFF | `private-query-player-lifestyle-current-state-v1`、`private-query-player-lifestyle-stock-focus-v1`、`private-query-player-lifestyle-formal-v1` | [R0167 冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-m4-robert-r0167-three-query-green-20260923/R0167-evidence-freeze/R0167-readback-freeze.json) SHA `AEAB84B6BDD6548685FC89757675CEBB7BD05532EE6AA984CE373B559B9259D3`；8 个原件哈希/只读核对 GREEN；report SHA `890D0D09...21BA78`；Python `37ff65f`、native `752c5eb` | Robert actor29829、`h1082/raw53190528`、paused `native:3` 三查询；当前财富 focus、stewardship XP 2131.25、未用/已用 perk 点 2/4；唯一 policy-target final-legal `cutting_corners_perk`；0 typed/gameplay/date | 原 R0164 save SHA `C2E8778D...F7E2` 未变；PID177600、watchdog/owner 回收，进程0；Robert 持久 1,925/36,524 | 源配对两场 active defensive wars；现有 consumer 仅在独立同帧 `at_peace` 封建证明后可提交。后续合法场景需 typed perk、独立后置、下一 turn 和恢复证据；M4 in progress，`/root/m4_prep` | 本报告分支待 PR 集成；冻结原件保留 |
+
+PRV008 窄范围 GO；G2 **3/8**，百年/首整局/独立种子 **0/1、0/1、0/2** 均不变。R0167 只证实本次私有读取，不关闭 R0166 战争恢复 RED。
