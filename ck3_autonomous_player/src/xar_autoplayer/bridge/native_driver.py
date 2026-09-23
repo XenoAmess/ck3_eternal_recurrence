@@ -33,6 +33,11 @@ from .driver import (
     StepPostconditionError,
     UnsupportedStepError,
 )
+from .application_main_pump_readiness import (
+    PumpReadinessError,
+    exact_build_pump_gate_required,
+    wait_for_verified_pump,
+)
 from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
 from .event_contract import (
     choose_event_option_number,
@@ -10687,6 +10692,44 @@ class NativeHeadlessGameplayDriver:
             if expected_revision is not None
             else starting_revision
         )
+        capabilities = self.capabilities()
+        if exact_build_pump_gate_required(capabilities):
+            try:
+                wait_for_verified_pump(
+                    self.capabilities, capabilities, date_raw,
+                    timeout_seconds=40.0,
+                )
+            except PumpReadinessError as error:
+                raise BridgeUnavailableError(
+                    f"battle-control application-main pump readiness: {error}"
+                ) from error
+            refreshed = self.take_snapshot()
+            refreshed_subject = _army_by_id(
+                refreshed, subject_public_cunit_id
+            )
+            starting_player = starting.get("played_character")
+            refreshed_player = refreshed.get("played_character")
+            if not (
+                _same_paused_native_frame(starting, refreshed)
+                and starting.get("revision") == refreshed.get("revision")
+                and starting.get("revision") == selected_revision
+                and starting.get("date_raw") == refreshed.get("date_raw")
+                and starting.get("episode_character_id")
+                == refreshed.get("episode_character_id")
+                and isinstance(starting_player, dict)
+                and isinstance(refreshed_player, dict)
+                and starting_player.get("character_id")
+                == refreshed_player.get("character_id")
+                and isinstance(refreshed_subject, dict)
+                and refreshed_subject.get("controllable") is True
+                and _army_in_active_combat(refreshed_subject)
+                and refreshed_subject.get("current_province_id")
+                == subject.get("current_province_id")
+            ):
+                raise BridgeUnavailableError(
+                    "battle-control paused identity changed after fresh "
+                    "application-main pump; native query not submitted"
+                )
         for attempt in range(_BATTLE_CONTROL_QUERY_MAX_ATTEMPTS):
             try:
                 result = self._execute_primitive_step(

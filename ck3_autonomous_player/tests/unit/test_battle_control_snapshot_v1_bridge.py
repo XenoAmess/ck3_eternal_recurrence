@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import json
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -28,6 +30,9 @@ from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import (
     NativeHeadlessGameplayDriver,
     _action_steps,
+)
+from xar_autoplayer.bridge.application_main_pump_readiness import (
+    wait_for_verified_pump,
 )
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.war_contract import (
@@ -3025,6 +3030,28 @@ def _native_driver() -> tuple[NativeHeadlessGameplayDriver, _FakeEndpoint]:
     return driver, endpoint
 
 
+def _r0211_exact_capabilities(driver: NativeHeadlessGameplayDriver,
+                              *, advance_after: int | None = None):
+    fixture = json.loads((PROJECT_ROOT / "tests" / "fixtures" /
+                          "combat_r0211_capabilities.json").read_text(encoding="utf-8"))
+    original = driver.capabilities
+    calls = [0]
+
+    def read():
+        calls[0] += 1
+        current = original()
+        real = copy.deepcopy(fixture["diagnostics"])
+        real["last_heartbeat"]["main_thread_query_mailbox_v1"]["date_raw"] = DATE_RAW
+        if advance_after is not None and calls[0] >= advance_after:
+            mailbox = real["last_heartbeat"]["main_thread_query_mailbox_v1"]
+            mailbox["pump_epochs"] += 1
+            mailbox["owner_verified_pump_epochs"] += 1
+        current["diagnostics"].update(real)
+        return current
+
+    return read
+
+
 def _answer_with(endpoint: _FakeEndpoint, result_factory) -> None:
     def answer(frame: dict[str, object]) -> None:
         if frame.get("type") != "execute_step":
@@ -3043,6 +3070,87 @@ def _answer_with(endpoint: _FakeEndpoint, result_factory) -> None:
 
 
 class BattleControlSnapshotV1NativeDriverTests(unittest.TestCase):
+    def test_exact_live_no_new_pump_does_not_submit_battle_control(self) -> None:
+        driver, endpoint = _native_driver()
+        read = _r0211_exact_capabilities(driver)
+        revision = int(driver.take_snapshot()["revision"])
+        elapsed = [0.0]
+
+        def synthetic_wait(provider, baseline, date, *, timeout_seconds):
+            def sleep(_seconds):
+                elapsed[0] += 10.0
+            return wait_for_verified_pump(
+                provider, baseline, date, timeout_seconds=timeout_seconds,
+                clock=lambda: elapsed[0], sleep=sleep,
+            )
+
+        with patch.object(driver, "capabilities", side_effect=read), patch(
+            "xar_autoplayer.bridge.native_driver.wait_for_verified_pump",
+            side_effect=synthetic_wait,
+        ):
+            with self.assertRaisesRegex(BridgeUnavailableError, "code=no_fresh_pump"):
+                driver._execute_battle_control_snapshot_v1_query(
+                    STEP, expected_revision=revision,
+                )
+        self.assertFalse(any(frame.get("type") == "execute_step" for frame in endpoint.frames))
+
+    def test_exact_live_new_pump_rechecks_frame_then_submits_once(self) -> None:
+        driver, endpoint = _native_driver()
+        _answer_with(endpoint, _native_result)
+        read = _r0211_exact_capabilities(driver, advance_after=3)
+        revision = int(driver.take_snapshot()["revision"])
+        elapsed = [0.0]
+        snapshots = [0]
+        original_snapshot = driver.take_snapshot
+
+        def counted_snapshot():
+            snapshots[0] += 1
+            return original_snapshot()
+
+        def synthetic_wait(provider, baseline, date, *, timeout_seconds):
+            def sleep(_seconds):
+                elapsed[0] += 1.0
+            return wait_for_verified_pump(
+                provider, baseline, date, timeout_seconds=timeout_seconds,
+                clock=lambda: elapsed[0], sleep=sleep,
+            )
+
+        with patch.object(driver, "capabilities", side_effect=read), patch.object(
+            driver, "take_snapshot", side_effect=counted_snapshot,
+        ), patch(
+            "xar_autoplayer.bridge.native_driver.wait_for_verified_pump",
+            side_effect=synthetic_wait,
+        ):
+            result = driver._execute_battle_control_snapshot_v1_query(
+                STEP, expected_revision=revision,
+            )
+        self.assertEqual(result["status"], "available")
+        self.assertGreaterEqual(snapshots[0], 2)
+        self.assertEqual(sum(frame.get("type") == "execute_step" for frame in endpoint.frames), 1)
+
+    def test_exact_live_changed_paused_revision_blocks_submit(self) -> None:
+        driver, endpoint = _native_driver()
+        read = _r0211_exact_capabilities(driver, advance_after=2)
+        revision = int(driver.take_snapshot()["revision"])
+        snapshots = [0]
+        original_snapshot = driver.take_snapshot
+
+        def drifted_snapshot():
+            snapshots[0] += 1
+            current = original_snapshot()
+            if snapshots[0] == 2:
+                current["revision"] += 1
+            return current
+
+        with patch.object(driver, "capabilities", side_effect=read), patch.object(
+            driver, "take_snapshot", side_effect=drifted_snapshot,
+        ):
+            with self.assertRaisesRegex(BridgeUnavailableError, "identity changed"):
+                driver._execute_battle_control_snapshot_v1_query(
+                    STEP, expected_revision=revision,
+                )
+        self.assertFalse(any(frame.get("type") == "execute_step" for frame in endpoint.frames))
+
     def test_atomic_query_is_normalized_and_cached_on_only_the_same_frame(
         self,
     ) -> None:
