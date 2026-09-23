@@ -1,8 +1,9 @@
 # R0171 Robert wartime perk: independent mainline candidate
 
-Status: **static-ready only**. The action runner has not been used in CK3. It
-does not close the R0171 war RED, the peaceful M4 two-year gate, or public
-LIFE registration.
+Status: **R0175 production-live typed submit pending, postcondition RED**.
+The candidate has not proved a material perk, a paired post-action checkpoint,
+the peaceful M4 two-year gate, or public LIFE registration. The R0171 war RED
+remains separate.
 
 ## Source and entry
 
@@ -63,3 +64,41 @@ seams are in [lifestyle-focus-perk-ai.md](lifestyle-focus-perk-ai.md).
 R0167 readback and wartime policy scope remain in
 [lifestyle-r0167-robert-readback.md](lifestyle-r0167-robert-readback.md) and
 [lifestyle-r0167-war-perk-scope.md](lifestyle-r0167-war-perk-scope.md).
+
+## R0175 post-submit frame RED and focused repair
+
+R0175 used the exact 1.19.0.6 EXE and a private slot43 DLL from native source
+`66f926d339ac57c6305e3789a239b5cb9779acdd`. Its retained
+`g2-m4-robert-r0175-wartime-perk-live-20260923/report.json` under the Z:
+process-asset root has SHA-256
+`42A80DF44D07E4C3CD8CD7C2FFA819B80AD519B0E85ACD7B0B9D4F1AE670D88B`.
+The driver command history records a durable `action_state_unknown` intent at
+index 1340 and `submitted_verification_pending` native ACK for the **same**
+action ID at 1341. It does not contain a later paused native frame or receipt.
+The save remained h1333 with SHA-256
+`2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A`;
+there is no post-action checkpoint. The process tree was actually reclaimed,
+but the runner also folded its 603.8-second wall overrun into
+`ck3_reclaimed=false`, mislabeling this as `red_cleanup`.
+
+The bridge's coarse `GameAdapter::Snapshot` excludes lifestyle points and
+perks. After the main-thread typed submit ACK, paused/date/map/war fields did
+not change. `PublishSnapshot` therefore deduplicated every heartbeat and
+kept native revision 3; both the runner and native receipt require a later
+revision. This is a concrete postcondition transport defect, not evidence
+that `cutting_corners_perk` was acquired or rejected. The private bridge now
+forces **one real `ReadSnapshot` publication after the matching pending
+submit**, even when the coarse map fields are unchanged. The native receipt
+still checks the same action ID and material `HasPerk` on that later frame;
+the ACK never counts as applied. The runner separately reports process
+reclamation and wall-budget outcome and reserves 15 seconds for controlled
+stop. The affected C++ fixture and bridge objects compile/pass in MSVC
+normal `/Od` and optimized `/O2`; this is static repair evidence only.
+
+R0175's in-process material effect remains unknown after termination. Do not
+restart the mutable R0175 driver tail or resubmit from an assumed state. Any
+new bounded candidate must use an official clean pair, recheck fresh native
+focus/points/owned perks/final legality, and only then make its own single
+typed decision. A matching rebuilt DLL and new no-launch manifest are needed
+before live validation. The unchanged h1333 source, R0175 failure evidence,
+and PRV008 remain distinct assets.

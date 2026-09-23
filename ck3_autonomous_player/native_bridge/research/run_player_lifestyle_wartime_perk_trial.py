@@ -26,6 +26,47 @@ SCHEMA = "xar.ck3.g2_m4_wartime_perk_action_candidate_v1"
 REPORT_SCHEMA = "xar.ck3.g2_m4_wartime_perk_action_live_v1"
 ROOT_STEP = "query-campaign-root-context-v1"
 TARGET = "cutting_corners_perk"
+STOP_RESERVE_SECONDS = 15.0
+
+
+def finalize_postflight(
+    report: dict[str, object], manifest: dict[str, object]
+) -> None:
+    """Keep process reclamation, wall budget, and action proof separate."""
+
+    post = report.get("postflight")
+    reclaimed = bool(
+        isinstance(report.get("cleanup"), dict)
+        and report["cleanup"].get("ok") is True
+        and isinstance(post, dict)
+        and isinstance(post.get("ck3_inventory"), dict)
+        and not post["ck3_inventory"].get("processes")
+        and post.get("source_save_sha256") == manifest["source_save_sha256"]
+        and not report.get("driver_close_red")
+        and not report.get("lock_close_red")
+    )
+    report["ck3_reclaimed"] = reclaimed
+    report["wall_bound_ok"] = bool(
+        isinstance(post, dict)
+        and isinstance(post.get("wall_seconds"), (int, float))
+        and post["wall_seconds"] <= manifest["bounds"]["overall_seconds"]
+    )
+    paired = post.get("paired_checkpoint") if isinstance(post, dict) else None
+    trial_checkpoint = (
+        report["trial"].get("checkpoint")
+        if isinstance(report.get("trial"), dict) else None
+    )
+    if report["status"] == "perk_checkpointed" and not (
+        isinstance(paired, dict)
+        and isinstance(trial_checkpoint, dict)
+        and paired.get("sha256") == trial_checkpoint.get("sha256")
+        and post["prepared_save_sha256"] == trial_checkpoint.get("sha256")
+    ):
+        report["status"] = "red_pair"
+    if not report["wall_bound_ok"]:
+        report["status"] = "red_wall_bound"
+    if not reclaimed:
+        report["status"] = "red_cleanup"
 
 
 def choose_one_wartime_perk(
@@ -314,7 +355,10 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
         _write(evidence / "round-ownership.json", report["process"])
         session_done = threading.Event()
         session_state: dict[str, object] = {}
-        deadline = started + float(manifest["bounds"]["overall_seconds"])
+        deadline = (
+            started + float(manifest["bounds"]["overall_seconds"])
+            - STOP_RESERVE_SECONDS
+        )
 
         def ready_frame() -> dict[str, object]:
             _need(time.monotonic() < deadline, "wartime perk wall bound exhausted")
@@ -413,32 +457,7 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
                 )
         except BaseException as error:
             report["postflight_red"] = f"{type(error).__name__}: {error}"
-        post = report.get("postflight")
-        reclaimed = bool(
-            isinstance(report.get("cleanup"), dict)
-            and report["cleanup"].get("ok") is True
-            and isinstance(post, dict)
-            and not post["ck3_inventory"].get("processes")
-            and post["source_save_sha256"] == manifest["source_save_sha256"]
-            and post["wall_seconds"] <= manifest["bounds"]["overall_seconds"]
-            and not report.get("driver_close_red")
-            and not report.get("lock_close_red")
-        )
-        report["ck3_reclaimed"] = reclaimed
-        paired = post.get("paired_checkpoint") if isinstance(post, dict) else None
-        trial_checkpoint = (
-            report["trial"].get("checkpoint")
-            if isinstance(report.get("trial"), dict) else None
-        )
-        if report["status"] == "perk_checkpointed" and not (
-            isinstance(paired, dict)
-            and isinstance(trial_checkpoint, dict)
-            and paired.get("sha256") == trial_checkpoint.get("sha256")
-            and post["prepared_save_sha256"] == trial_checkpoint.get("sha256")
-        ):
-            report["status"] = "red_pair"
-        if not reclaimed:
-            report["status"] = "red_cleanup"
+        finalize_postflight(report, manifest)
         report["finished_at"] = _now()
         _write(evidence / "report.json", report)
     print(json.dumps({"status": report["status"],

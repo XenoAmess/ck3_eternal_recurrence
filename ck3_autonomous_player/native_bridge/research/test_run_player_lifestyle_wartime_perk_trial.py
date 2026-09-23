@@ -16,7 +16,7 @@ sys.path.insert(0, str(HERE.parents[1] / "src"))
 
 from run_player_lifestyle_three_query_readback import preflight
 from run_player_lifestyle_wartime_perk_trial import (
-    SCHEMA, choose_one_wartime_perk,
+    SCHEMA, choose_one_wartime_perk, finalize_postflight,
 )
 
 
@@ -122,6 +122,43 @@ def manifest() -> dict[str, object]:
 
 
 class WartimePerkTrialTests(unittest.TestCase):
+    def test_r0175_timeout_does_not_misclassify_reclaimed_process(self) -> None:
+        result = {
+            "status": "red", "red": {"reason": "TimeoutError: no later frame"},
+            "cleanup": {"ok": True, "tree_gone": True},
+            "postflight": {
+                "ck3_inventory": {"processes": []},
+                "source_save_sha256": "a" * 64,
+                "wall_seconds": 603.8,
+            },
+        }
+        source = {"source_save_sha256": "a" * 64,
+                  "bounds": {"overall_seconds": 600}}
+        finalize_postflight(result, source)
+        self.assertTrue(result["ck3_reclaimed"])
+        self.assertFalse(result["wall_bound_ok"])
+        self.assertEqual(result["status"], "red_wall_bound")
+        self.assertIn("TimeoutError", result["red"]["reason"])
+
+    def test_checkpointed_perk_still_fails_overall_wall_bound(self) -> None:
+        digest = "c" * 64
+        result = {
+            "status": "perk_checkpointed",
+            "trial": {"checkpoint": {"sha256": digest}},
+            "cleanup": {"ok": True},
+            "postflight": {
+                "ck3_inventory": {"processes": []},
+                "source_save_sha256": "a" * 64,
+                "prepared_save_sha256": digest,
+                "paired_checkpoint": {"sha256": digest},
+                "wall_seconds": 601,
+            },
+        }
+        finalize_postflight(result, {"source_save_sha256": "a" * 64,
+                                     "bounds": {"overall_seconds": 600}})
+        self.assertTrue(result["ck3_reclaimed"])
+        self.assertEqual(result["status"], "red_wall_bound")
+
     def test_one_typed_perk_keeps_war_red_and_creates_resume_pair(self) -> None:
         driver = Driver()
         post = life_snapshot()

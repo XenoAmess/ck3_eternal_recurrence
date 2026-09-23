@@ -9123,10 +9123,28 @@ void RunConnectedSession(
                             request_id, step, false,
                             "private lifestyle published snapshot unavailable"));
             } else {
-              connected = xar::bridge::WriteFrame(
-                  pipe, ExecutePlayerLifestyleFormalPrivateStepV1(
-                            request_id, step, incoming.payload, game,
-                            *previous_snapshot, state_revision));
+              const auto response = ExecutePlayerLifestyleFormalPrivateStepV1(
+                  request_id, step, incoming.payload, game,
+                  *previous_snapshot, state_revision);
+              connected = xar::bridge::WriteFrame(pipe, response);
+              if (connected &&
+                  (step == xar::ck3_11906::
+                               kPlayerLifestyleFormalPrivateSubmitStepV1 ||
+                   step == xar::ck3_11906::
+                               kPlayerLifestyleFormalPrivateSubmitFocusStepV1) &&
+                  g_player_lifestyle_pending_ack_v1.has_value() &&
+                  xar::ck3_11906::
+                      PlayerLifestyleAckNeedsPostSubmitSnapshotV1(
+                          *g_player_lifestyle_pending_ack_v1, request_id)) {
+                // The coarse map snapshot omits lifestyle state and would
+                // otherwise deduplicate every paused heartbeat after submit.
+                // Read and publish a real post-command frame. Only the later
+                // native receipt can establish HasPerk/current focus.
+                previous_snapshot.reset();
+                connected = PublishSnapshot(
+                    pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+              }
             }
           } else
 #endif

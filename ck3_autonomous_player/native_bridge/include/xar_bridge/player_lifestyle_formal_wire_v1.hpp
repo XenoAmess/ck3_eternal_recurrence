@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 namespace xar::ck3_11906 {
 
@@ -71,6 +72,18 @@ inline bool PlayerLifestyleAckProvesNoNativeSubmitV1(
     return false;
   }
   return false;
+}
+
+// A typed submit can change a perk/focus without changing the coarse map
+// snapshot. Publish a new real paused snapshot for the independent receipt;
+// the ACK alone still does not prove that the selection was applied.
+inline bool PlayerLifestyleAckNeedsPostSubmitSnapshotV1(
+    const game::PlayerLifestyleSelectionActionAckV1 &ack,
+    std::string_view request_id) noexcept {
+  return !request_id.empty() && ack.request_id == request_id &&
+         ack.status == game::PlayerLifestyleSelectionActionAckStatusV1::
+                           submitted_verification_pending &&
+         ack.verification_pending;
 }
 
 inline std::string PlayerLifestyleFormalStateFailureV1(

@@ -116,6 +116,18 @@ int main() {
         PlayerLifestyleSelectionActionAckStatusV1::
             submitted_verification_pending;
     Require(!ck3::PlayerLifestyleAckProvesNoNativeSubmitV1(safe_reject));
+    safe_reject.request_id = "life-perk-fixture";
+    Require(!ck3::PlayerLifestyleAckNeedsPostSubmitSnapshotV1(
+        safe_reject, "life-perk-fixture"));
+    safe_reject.verification_pending = true;
+    Require(ck3::PlayerLifestyleAckNeedsPostSubmitSnapshotV1(
+        safe_reject, "life-perk-fixture"));
+    Require(!ck3::PlayerLifestyleAckNeedsPostSubmitSnapshotV1(
+        safe_reject, "life-perk-other"));
+    safe_reject.status = game::
+        PlayerLifestyleSelectionActionAckStatusV1::rejected_before_submit;
+    Require(!ck3::PlayerLifestyleAckNeedsPostSubmitSnapshotV1(
+        safe_reject, "life-perk-fixture"));
     Require(ck3::BuildPlayerLifestyleFormalPreconditionV1(
                 *state, *candidates, episode, *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::ready);
@@ -202,7 +214,7 @@ int main() {
     Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
                 *state, stock, episode, *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::frame_mismatch);
-    std::cout << "player_lifestyle_formal_precondition_v1_test: 11/11 GREEN\n";
+    std::cout << "player_lifestyle_formal_precondition_v1_test: 12/12 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';
