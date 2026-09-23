@@ -609,3 +609,54 @@ flowchart TD
     S -->|yes| P["existing threat and siege progress checks"]
     P -.-> U["unknown: battle winner and war termination"]
 ```
+
+## R0170: battle transition consumption must preserve restored move proof
+
+- [production-live blocker] R0170 officially cold restored the R0169
+  checkpoint at history index `1333`, date `53194440`, with matching save
+  SHA-256. Its sole Army continued the accepted move from history index
+  `1267` toward Province `2619`. The new route result at `1341` observed
+  moving-to-combat at that Province; a fresh battle-control query at `1343`
+  preceded the bounded battle result at `1347`, whose independent after-state
+  showed the Army noncombat `sieging` there at `53194872`. The run completed
+  15 of 16 attempted turns, including two gameplay turns, but had not saved
+  a newer checkpoint.
+- [failure location] The battle controller correctly recognized that the
+  Army left combat. For its next decision it removed the consumed preadvance
+  battle query, but built the recursive history from only the 18 rows after
+  the latest cold restore. That slice contained no typed move, so relief
+  arrival proof reported `accepted-native-move-arrival-for-current-siege`.
+  The R0169 offline replay had no cold restore after its move and therefore
+  did not exercise this history boundary.
+- [counter-policy input] Battle-frame matching remains scoped to the current
+  process. When consuming one preadvance query, remove that query from the
+  full command history and preserve older rows for the separate movement
+  proof. A move before a cold restore remains eligible only if each restore
+  matches an intervening official save by history index, date and SHA-256.
+  Neither an ACK nor battle exit alone proves arrival or victory.
+- [offline replay] The frozen 1352-row driver yields one recognized battle
+  transition. After consuming its one preadvance query, 1351 rows remain,
+  including exactly one accepted move to `2619`. The existing official
+  restore check accepts that move; the unchanged siege-arrival reader returns
+  elapsed day `97`; the existing planner selects
+  `native_war_siege_progress`. This remains a static plan result pending a
+  new official cold restore and paused live observation.
+- [artifact] Frozen pair:
+  `g2-robert-mainline-r0170-siege-arrival-red-20260923/R0170-final-frozen-pair`.
+  Save SHA-256 `2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A`;
+  driver SHA-256 `C456145D589C2DCA27EDB7583D8A89ACC56038C4E40FB07AF4D4C22DEF471D72`;
+  formal report SHA-256
+  `3CB8C07EDA0C59A39165428044833916EE34319A95A9668451C70AB62EFD7D43`.
+
+```mermaid
+flowchart TD
+    A["official save after accepted move"] --> R{"cold restore matches<br/>history index, date, SHA-256?"}
+    R -->|no / unknown| X["arrival proof unavailable"]
+    R -->|yes| B["new exact battle-control query and bounded battle result"]
+    B --> C["consume only the preadvance battle query"]
+    C --> H["retain complete persisted move history"]
+    H --> S{"current Army sieging accepted target<br/>with continuous progress?"}
+    S -->|no / unknown| X
+    S -->|yes| P["existing threat and siege progress checks"]
+    P -.-> U["unknown: future occupation and war termination"]
+```

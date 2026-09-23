@@ -5215,6 +5215,8 @@ def _battle_control_turn_state(
 ) -> dict[str, object]:
     """Gate combat time advancement on exact pre/post battle frames."""
     scoped = _history_after_latest_restore(rows)
+    # Battle queries are scoped to this process; persisted move proof is not.
+    scope_offset = len(rows) - len(scoped)
     advance_positions = [
         position
         for position, row in enumerate(scoped, start=1)
@@ -5344,7 +5346,7 @@ def _battle_control_turn_state(
         recognized_subjects.add(subject)
     if recognized:
         remove_positions = {
-            position
+            scope_offset + position
             for position, row in enumerate(scoped, start=1)
             if previous_advance < position < latest_advance
             and parse_query_battle_control_snapshot_v1_step(
@@ -5357,7 +5359,7 @@ def _battle_control_turn_state(
             "transitions": recognized,
             "remaining_rows": [
                 row
-                for position, row in enumerate(scoped, start=1)
+                for position, row in enumerate(rows, start=1)
                 if position not in remove_positions
             ],
         }
@@ -5512,7 +5514,7 @@ def _battle_control_turn_state(
 
     if recognized:
         remove_positions = {
-            position
+            scope_offset + position
             for position, row in enumerate(scoped, start=1)
             if previous_advance < position < latest_advance
             and parse_query_battle_control_snapshot_v1_step(
@@ -5525,7 +5527,7 @@ def _battle_control_turn_state(
             "transitions": recognized,
             "remaining_rows": [
                 row
-                for position, row in enumerate(scoped, start=1)
+                for position, row in enumerate(rows, start=1)
                 if position not in remove_positions
             ],
         }

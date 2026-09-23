@@ -54,7 +54,9 @@ from xar_autoplayer.bridge.war_contract import (
 from xar_autoplayer.strategy import (
     _accepted_native_move_arrival,
     _audit_war_route,
+    _battle_control_turn_state,
     _enemy_endpoint_epochs,
+    _latest_accepted_native_move_row,
     _moving_route_contact_horizon_conjunction,
     _negative_war_termination_reuse,
     _primary_defender_siege_relief_assessment,
@@ -5551,6 +5553,111 @@ class GameplayBridgeTests(unittest.TestCase):
                 snapshot,
                 army_id=army_id,
                 target_province_id=target,
+            )
+        )
+
+    def test_r0170_battle_transition_preserves_persisted_move_history(
+        self,
+    ) -> None:
+        army_id = 83_886_367
+        target = 2_619
+        checkpoint = {
+            "history_index": 3,
+            "date_raw": 53_194_440,
+            "sha256": "a" * 64,
+        }
+        rows = [
+            {
+                "command": f"move-army-{army_id}-to-{target}",
+                "ok": True,
+                "result": {"accepted": True},
+            },
+            {
+                "command": "save-checkpoint",
+                "ok": True,
+                "result": {"checkpoint": copy.deepcopy(checkpoint)},
+            },
+            {
+                "command": "restore-checkpoint",
+                "ok": True,
+                "result": {
+                    "status": "restored",
+                    "source": "native-session-cold-start",
+                    "checkpoint": copy.deepcopy(checkpoint),
+                },
+            },
+            {
+                "command": f"query-battle-control-snapshot-v1-{army_id}",
+                "ok": True,
+                "result": {"status": "available"},
+            },
+            {
+                "command": "battle-decision-epoch-advance-to-53195016",
+                "ok": True,
+                "result": {},
+            },
+        ]
+        siege = _army(
+            army_id,
+            soldiers=None,
+            province_id=target,
+            controllable=True,
+            move_target_province_id=None,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        frame_record = {
+            "position": 1,
+            "subject_army_id": army_id,
+            "frame": {
+                "combat_id": 872_415_232,
+                "snapshot_revision": 13,
+                "phase": "maneuver",
+                "phase_day": 1,
+            },
+        }
+        with (
+            mock.patch(
+                "xar_autoplayer.strategy._current_battle_control_frames",
+                return_value=({}, [frame_record]),
+            ),
+            mock.patch(
+                "xar_autoplayer.strategy._battle_sentinel_advance_validation",
+                return_value=None,
+            ),
+        ):
+            state = _battle_control_turn_state(
+                rows, {"paused": True, "player_armies": [siege]}, [siege]
+            )
+
+        self.assertEqual(state["status"], "transition_recognized")
+        remaining = state["remaining_rows"]
+        self.assertEqual(
+            [row["command"] for row in remaining],
+            [row["command"] for row in rows if row is not rows[3]],
+        )
+        self.assertEqual(
+            len(
+                [
+                    row
+                    for row in remaining
+                    if row["command"] == f"move-army-{army_id}-to-{target}"
+                ]
+            ),
+            1,
+        )
+        self.assertIsNotNone(
+            _latest_accepted_native_move_row(remaining, army_id=army_id)
+        )
+
+        invalid_restore = copy.deepcopy(remaining)
+        invalid_restore[2]["result"]["checkpoint"]["sha256"] = "b" * 64
+        self.assertIsNone(
+            _latest_accepted_native_move_row(
+                invalid_restore, army_id=army_id
             )
         )
 
