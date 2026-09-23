@@ -109,6 +109,12 @@ construction, faction-gift and wartime-lifestyle adapters, constructs one
 returns `selected_step=null` and `m5_joint_formal_action_ready=false`, even
 when the analytic reservation is non-null.
 
+The currently bound producer is peacetime-only. If the ordinary formal plan
+has already selected any step other than `life-advance`, the collector returns
+that plan unchanged and does not call the private producer. This keeps an
+existing war, marriage, or other formal strategy ahead of M5 analytics and
+prevents a peacetime-source RED from erasing its typed step.
+
 Marriage is not a source-bundle domain.  Adding a `marriage` key is a RED;
 the R0133 legality inventory therefore cannot enter through this private
 route.  The source reader remains unadvertised.  The private bounded CLI flag
@@ -162,6 +168,14 @@ existing reserve (20M raw construction, 10M raw faction gift); the joint
 additional reserve is zero rather than a new invented budget.  The observed
 war vector and admitted war-slot budget are both zero.  Neither `war` nor
 `marriage` is emitted.
+
+The existing observed selector is the arbitration implementation; this
+producer does not add a second selector. A building proposal carries its
+permanent `building-slot:<barony>:<slot>` commitment, while a gift carries its
+`faction-gift:<faction>:<recipient>` commitment. The dispatcher compares the
+two observed gold costs under their domain reserves and the zero-war budget,
+then persists only the selected proposal's claims in its one-frame analytic
+reservation. Its single-writer guard prevents a second choice in that frame.
 
 `native-auto-run --allow-private-m5-joint-collector` is a bounded private
 query-only entry.  With the flag absent, runner and planner behavior are

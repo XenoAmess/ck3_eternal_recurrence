@@ -122,6 +122,12 @@ def plan_m5_formal_query_only(
     }
     baseline = deepcopy(dict(plan))
 
+    # The only bound source producer is the peaceful building + faction-gift
+    # reader.  An existing formal war, marriage, or other domain step keeps
+    # priority and must not be replaced by a private query-only RED.
+    if baseline.get("selected_step") != "life-advance":
+        return cleaned
+
     def blocked(reason: str) -> dict[str, object]:
         return {
             **cleaned,

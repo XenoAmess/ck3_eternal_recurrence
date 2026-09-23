@@ -277,7 +277,7 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         self.assertEqual(planned["plan"], baseline)
         self.assertEqual(driver.source_reads, 0)
 
-    def test_opt_in_is_query_only_and_never_returns_typed_step(self) -> None:
+    def test_opt_in_preserves_non_life_advance_formal_step(self) -> None:
         driver = _ServiceDriver(
             enabled=True,
             sources=_sources(domains={"diplomacy": _diplomacy_source()}),
@@ -293,18 +293,8 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
             return_value=deepcopy(baseline),
         ):
             planned = GameplayBridgeService(driver).plan_turn()
-        plan = planned["plan"]
-        self.assertEqual(driver.source_reads, 1)
-        self.assertEqual(
-            driver.last_read["expected_revision"], _FRAME["revision"]
-        )
-        self.assertEqual(plan["phase"], "m5_joint_query_only_observed")
-        self.assertIsNone(plan["selected_step"])
-        self.assertFalse(plan["m5_joint_formal_action_ready"])
-        self.assertEqual(
-            plan["m5_joint_query_only"]["dispatch"]["selected_candidate_id"],
-            "diplomacy:faction-gift:801:41003",
-        )
+        self.assertEqual(planned["plan"], baseline)
+        self.assertEqual(driver.source_reads, 0)
 
 
 if __name__ == "__main__":

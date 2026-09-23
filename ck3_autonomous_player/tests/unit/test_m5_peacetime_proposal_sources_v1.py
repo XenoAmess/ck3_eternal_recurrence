@@ -250,6 +250,42 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             collection["dispatch"]["selected_candidate_id"],
             "diplomacy:faction-gift:801:41003",
         )
+        evaluated = {
+            row["domain"]: row
+            for row in collection["dispatch"]["analysis"]["evaluated"]
+        }
+        self.assertEqual(evaluated["building"]["gold_cost_raw"], 3_000_000)
+        self.assertEqual(
+            evaluated["building"]["minimum_gold_reserve_raw"], 20_000_000
+        )
+        self.assertEqual(
+            evaluated["building"]["commitment_keys"],
+            ["building-slot:501:1"],
+        )
+        self.assertEqual(evaluated["diplomacy"]["gold_cost_raw"], 2_000_000)
+        self.assertEqual(
+            evaluated["diplomacy"]["minimum_gold_reserve_raw"], 10_000_000
+        )
+        self.assertEqual(
+            evaluated["diplomacy"]["commitment_keys"],
+            ["faction-gift:801:41003"],
+        )
+        reservation = collection["dispatch"]["reservation"]
+        self.assertEqual(reservation["domain"], "diplomacy")
+        self.assertEqual(
+            reservation["commitments_after"]["gold_raw"], 2_000_000
+        )
+        self.assertEqual(
+            reservation["commitments_after"]["pending_war_slots"], 0
+        )
+        self.assertEqual(
+            reservation["commitments_after"]["commitment_keys"],
+            ["faction-gift:801:41003"],
+        )
+        self.assertNotIn(
+            "building-slot:501:1",
+            reservation["commitments_after"]["commitment_keys"],
+        )
         self.assertIsNone(planned["plan"]["selected_step"])
         self.assertFalse(planned["plan"]["m5_joint_formal_action_ready"])
 
