@@ -5428,6 +5428,132 @@ class GameplayBridgeTests(unittest.TestCase):
             )
         )
 
+    def test_r0169_arrival_after_target_combat_requires_contiguous_progress(
+        self,
+    ) -> None:
+        army_id = 83_886_367
+        target = 2_619
+        date_raw = 53_192_544
+        moving = _army(
+            army_id,
+            soldiers=None,
+            province_id=2_638,
+            controllable=True,
+            move_target_province_id=target,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[2_643, target],
+            in_combat=False,
+            retreating=False,
+        )
+        approach = {**moving, "current_province_id": 2_624}
+        combat = _army(
+            army_id,
+            soldiers=None,
+            province_id=target,
+            controllable=True,
+            move_target_province_id=None,
+            army_state="combat",
+            army_state_code=2,
+            route_province_ids=[],
+            in_combat=True,
+            retreating=False,
+        )
+        siege = {
+            **combat,
+            "army_state": "sieging",
+            "army_state_code": 3,
+            "in_combat": False,
+        }
+
+        def summary(day: int, army: dict[str, object]) -> dict[str, object]:
+            return {
+                "date_raw": date_raw + day * 24,
+                "wars": [
+                    {"war_id": 16_777_250, "player_armies": [copy.deepcopy(army)]}
+                ],
+            }
+
+        def progress(
+            command: str,
+            start_day: int,
+            end_day: int,
+            before: dict[str, object],
+            after: dict[str, object],
+        ) -> dict[str, object]:
+            return {
+                "command": command,
+                "ok": True,
+                "result": {
+                    "war_progress_before": summary(start_day, before),
+                    "war_progress_after": summary(end_day, after),
+                },
+            }
+
+        history = [
+            {
+                "command": f"move-army-{army_id}-to-{target}",
+                "ok": True,
+                "result": {
+                    "accepted": True,
+                    "war_action": {
+                        "status": "moving",
+                        "army_id": army_id,
+                        "target_province_id": target,
+                        "submitted_date_raw": date_raw,
+                    },
+                },
+            },
+            progress("committed-route-sentinel-advance", 0, 88, moving, approach),
+            progress("committed-route-sentinel-advance", 88, 89, approach, combat),
+            progress("battle-decision-epoch-advance", 89, 96, combat, siege),
+        ]
+        snapshot = {
+            "date_raw": date_raw + 96 * 24,
+            "player_armies": [siege],
+        }
+        arrival = _accepted_native_move_arrival(
+            history, snapshot, army_id=army_id, target_province_id=target
+        )
+        self.assertIsNotNone(arrival)
+        self.assertEqual(arrival["elapsed_days"], 96)
+
+        for row_index, key, value in (
+            (2, "current_province_id", 2_618),
+            (2, "in_combat", False),
+            (3, "current_province_id", 2_618),
+            (3, "army_state", "regular"),
+        ):
+            with self.subTest(row_index=row_index, key=key):
+                broken = copy.deepcopy(history)
+                broken[row_index]["result"]["war_progress_after"]["wars"][0][
+                    "player_armies"
+                ][0][key] = value
+                self.assertIsNone(
+                    _accepted_native_move_arrival(
+                        broken,
+                        snapshot,
+                        army_id=army_id,
+                        target_province_id=target,
+                    )
+                )
+
+        gap = copy.deepcopy(history)
+        gap[3]["result"]["war_progress_before"]["date_raw"] += 24
+        self.assertIsNone(
+            _accepted_native_move_arrival(
+                gap, snapshot, army_id=army_id, target_province_id=target
+            )
+        )
+        self.assertIsNone(
+            _accepted_native_move_arrival(
+                history[:-1],
+                snapshot,
+                army_id=army_id,
+                target_province_id=target,
+            )
+        )
+
     def test_stationary_hold_never_preempts_full_enforcement(self) -> None:
         date_raw = 53_256_000
         player = _army(

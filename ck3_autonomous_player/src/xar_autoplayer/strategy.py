@@ -17726,7 +17726,7 @@ def _accepted_native_move_siege_continuity(
     if submitted_date_raw is None or current_date_raw is None:
         return False
     expected_date_raw = submitted_date_raw
-    arrived = False
+    progress_state = "moving"
     for row in commands[move_position + 1 :]:
         if row.get("ok") is not True:
             continue
@@ -17749,23 +17749,30 @@ def _accepted_native_move_siege_continuity(
         after_army = _progress_summary_player_army(after, army_id)
         if before_army is None or after_army is None:
             return False
-        if arrived:
+        if progress_state == "sieging":
             if not (
                 _army_is_sieging_target(before_army, target_province_id)
                 and _army_is_sieging_target(after_army, target_province_id)
             ):
                 return False
-        elif _army_is_sieging_target(after_army, target_province_id):
+        elif progress_state == "combat":
+            if not _army_is_combat_at_target(before_army, target_province_id):
+                return False
+            if _army_is_sieging_target(after_army, target_province_id):
+                progress_state = "sieging"
+            elif not _army_is_combat_at_target(after_army, target_province_id):
+                return False
+        else:
             if not _army_is_moving_to_target(before_army, target_province_id):
                 return False
-            arrived = True
-        elif not (
-            _army_is_moving_to_target(before_army, target_province_id)
-            and _army_is_moving_to_target(after_army, target_province_id)
-        ):
-            return False
+            if _army_is_sieging_target(after_army, target_province_id):
+                progress_state = "sieging"
+            elif _army_is_combat_at_target(after_army, target_province_id):
+                progress_state = "combat"
+            elif not _army_is_moving_to_target(after_army, target_province_id):
+                return False
         expected_date_raw = after_date_raw
-    return arrived and expected_date_raw == current_date_raw
+    return progress_state == "sieging" and expected_date_raw == current_date_raw
 
 
 def _progress_summary_player_army(
@@ -17808,6 +17815,19 @@ def _army_is_sieging_target(
         and army.get("move_target_province_id") is None
         and army.get("route_province_ids") == []
         and army.get("in_combat") is False
+        and army.get("retreating") is False
+    )
+
+
+def _army_is_combat_at_target(
+    army: dict[str, object], target_province_id: int
+) -> bool:
+    return (
+        _army_tactical_state(army) == "combat"
+        and _native_int(army.get("current_province_id")) == target_province_id
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+        and army.get("in_combat") is True
         and army.get("retreating") is False
     )
 

@@ -552,3 +552,60 @@ flowchart TD
     D --> E["bounded battle decision or observation slice"]
     E -.-> U["unknown: battle result and war termination"]
 ```
+
+## R0169: a relief route can reach a siege through target-Province combat
+
+- [production-live loop] The R0168 handoff fix passed a real cold restore from
+  checkpoint index `1251` at `date_raw=53192304`. R0169 obtained a fresh
+  battle-control query, consumed a bounded battle decision, then formally
+  submitted one new typed move for Army `83886367` to Province `2619` at
+  `53192544`. The independent after-state accepted that move. Twelve adjacent
+  route-sentinel results carried the same target from moving through the
+  Province `2619` combat transition at `53194656`.
+- [exact-build observation] A fresh battle-control query bound the player Army
+  to the target-Province combat. The next bounded battle decision ended at
+  `53194848`; its independent after-state showed the same Army at `2619` as
+  noncombat `sieging`, with no move target or remaining route. War `16777250`
+  changed from score `-58` to `-7`, but the battle transition only proves that
+  the Army left combat. It does not identify a winner or close any war.
+- [production blocker] The move was 96 game days old at that paused frame.
+  `_accepted_native_move_arrival` therefore needed its continuous post-move
+  proof beyond the 90-day travel intent window. The old continuity reader
+  accepted moving-to-moving and moving-to-siege transitions but rejected the
+  exact moving-to-combat result at the target Province, causing
+  `accepted-native-move-arrival-for-current-siege` despite the later
+  combat-to-siege result.
+- [counter-policy input] Keep the latest official accepted move, matching
+  target, current noncombat siege, checkpoint restore and complete adjacent
+  progress requirements. A target-Province combat may lie between that move
+  and siege only while each progress result keeps the same Army in exact
+  combat at the target, without retreat or a new route. A mismatch, date gap,
+  unfinished combat or intervening non-siege state still closes the proof.
+  This binds an observed arrival; it does not infer battle victory or waive
+  the existing stationary threat and siege checks.
+- [offline replay] The frozen 1350-row driver and official last after-state
+  yield `arrived` at elapsed day `96`, relief `arrived_sieging`, and the
+  existing `native_war_siege_progress` plan. This is a static plan result.
+  The latest observed date is `53194848`; the latest durable checkpoint is
+  index `1333`, date `53194440`. Official recovery must handle the later RED
+  tail before a new live run, and the resumed paused frame must be read again.
+- [artifact] Frozen pair:
+  `g2-robert-mainline-r0169-siege-arrival-red-20260923/R0169-final-frozen-pair`.
+  Save SHA-256 `2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A`;
+  driver SHA-256 `81B7AB33344CF9FB992151294D1F41D6FBB6C9A0565D9A75900C6E76C24F1A4A`;
+  formal report SHA-256
+  `FCEDA6EB30910191147A603516B774BCDFDAF0DCF63E6D0F018C84089252A86A`.
+
+```mermaid
+flowchart TD
+    A["accepted move to relief Province"] --> M{"adjacent bounded route progress?"}
+    M -->|no / unknown| X["stop for observation"]
+    M -->|yes| C{"Army enters combat at accepted target?"}
+    C -->|no| S{"direct observed siege at target?"}
+    C -->|yes| B{"continuous combat at same target,<br/>then observed noncombat siege?"}
+    B -->|no / unknown| X
+    B -->|yes| S
+    S -->|no / unknown| X
+    S -->|yes| P["existing threat and siege progress checks"]
+    P -.-> U["unknown: battle winner and war termination"]
+```
