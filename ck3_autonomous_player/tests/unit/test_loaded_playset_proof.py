@@ -76,8 +76,10 @@ class _ManagedPlaysetFixture:
         self.hello = {
             "pid": 4343,
             "session_generation": 0,
-            "game_version": "1.19.0.6",
-            "executable_sha256": "",
+            "expected_ck3_version": "1.19.0.6",
+            "expected_ck3_sha256": "",
+            "ck3_build_match": True,
+            "game_adapter_status": "ready",
         }
         self.environment_path = self.profile / PROFILE_MANIFEST_NAME
         self.dlc_load_path = self.profile / "dlc_load.json"
@@ -89,7 +91,7 @@ class _ManagedPlaysetFixture:
         self.executable.parent.mkdir(parents=True)
         self.executable.write_bytes(b"pinned ck3 executable fixture\n")
         executable_sha = sha256_file(self.executable).upper()
-        self.hello["executable_sha256"] = executable_sha
+        self.hello["expected_ck3_sha256"] = executable_sha
 
         sources: list[FrozenPhaseEventSource] = []
         for index, relative in enumerate(_SOURCE_PATHS):
@@ -412,6 +414,20 @@ class LoadedPlaysetProofTests(unittest.TestCase):
         changed["pid"] = 4344
         with self.assertRaisesRegex(LoadedPlaysetProofError, "PID differs"):
             self.fixture.validate(self.fixture.build(), hello=changed)
+
+    def test_native_adapter_must_have_matched_the_running_executable(self) -> None:
+        proof = self.fixture.build()
+        for key, value in (
+            ("ck3_build_match", False),
+            ("game_adapter_status", "unsupported_build"),
+        ):
+            with self.subTest(key=key):
+                changed = dict(self.fixture.hello)
+                changed[key] = value
+                with self.assertRaisesRegex(
+                    LoadedPlaysetProofError, "exact-build adapter is not ready"
+                ):
+                    self.fixture.validate(proof, hello=changed)
 
     def test_proof_hash_tampering_is_rejected_before_rebuild(self) -> None:
         proof = self.fixture.build()

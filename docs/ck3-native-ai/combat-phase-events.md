@@ -177,6 +177,15 @@ service 在完成文件哈希后还会再次读取 snapshot；只有 `paused/epi
 相等才返回 verified proof，期间跨帧则降级为 `snapshot_changed_during_loaded_playset_proof`。集成测试使用真实 proof builder 的
 11-file fixture 同时冻结 same-frame GREEN 与 hash 期间 revision 漂移的 unavailable 结果。
 
+[production-live observed, fix static-only] R0188 的真实 v3 查询在 proof 入口报
+`native hello.game_version must be a nonempty string`：native hello 实际发送
+`expected_ck3_version/expected_ck3_sha256`、`ck3_build_match=true` 和
+`game_adapter_status=ready`，不发送 `game_version/executable_sha256`。适配器的 ready 位来自
+当前 CK3 进程 EXE 哈希的 exact-build 选择；proof 仍独立核受管 EXE 字节、启动记录 PID 和
+11 个 stock source。证明器现按真实 hello 协议读取声明值，并要求 ready/match 后才对照
+manifest。此修复只关闭 R0188 已观察到的字段绑定故障；新实机同帧 proof 读回之前，
+`loaded_playset_verified` 仍为 false，不能据静态测试声称战斗概率可用。
+
 [environment-confirmed] 2026-08-25 当前受管 state 的 episode `native-29829-ee172aa720db`、live PID `54908` 已通过
 environment/singleton-mod/production-no-overlay/11-stock-SHA 的只读 substrate 审计；正式
 `loaded_playset_verified=true` 仍只允许在 official v3 MCP 用真实同帧 snapshot binding 生成后声明，不能把离线填入的

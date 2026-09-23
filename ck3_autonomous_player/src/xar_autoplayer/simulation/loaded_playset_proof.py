@@ -112,8 +112,9 @@ def build_loaded_playset_proof(
         str(game.get("executable_sha256", "")).upper()
         != manifest.executable_sha256
         or executable_sha256 != manifest.executable_sha256
-        or hello["game_version"] != manifest.game_version
-        or hello["executable_sha256"] != manifest.executable_sha256
+        or hello["adapter_expected_version"] != manifest.game_version
+        or hello["adapter_expected_executable_sha256"]
+        != manifest.executable_sha256
     ):
         raise LoadedPlaysetProofError(
             "managed/native CK3 exact-build identity differs from phase manifest"
@@ -396,17 +397,29 @@ def _native_hello(value: object) -> dict[str, object]:
     generation = _nonnegative_int(
         row.get("session_generation"), "native hello.session_generation"
     )
-    version = _nonempty_string(row.get("game_version"), "native hello.game_version")
+    # The production native protocol reports the adapter's expected build,
+    # not game_version/executable_sha256 aliases.  A ready adapter exists only
+    # after SelectCurrentProcessAdapter hashes the current process EXE file and binds
+    # the matching exact-build adapter.  The managed image is hashed again
+    # below and tied to the same launch PID.
+    if (
+        row.get("ck3_build_match") is not True
+        or row.get("game_adapter_status") != "ready"
+    ):
+        raise LoadedPlaysetProofError("native hello exact-build adapter is not ready")
+    version = _nonempty_string(
+        row.get("expected_ck3_version"), "native hello.expected_ck3_version"
+    )
     executable_sha256 = _nonempty_string(
-        row.get("executable_sha256"), "native hello.executable_sha256"
+        row.get("expected_ck3_sha256"), "native hello.expected_ck3_sha256"
     ).upper()
     if _SHA256.fullmatch(executable_sha256) is None:
         raise LoadedPlaysetProofError("native hello executable SHA-256 is malformed")
     return {
         "pid": pid,
         "session_generation": generation,
-        "game_version": version,
-        "executable_sha256": executable_sha256,
+        "adapter_expected_version": version,
+        "adapter_expected_executable_sha256": executable_sha256,
     }
 
 
