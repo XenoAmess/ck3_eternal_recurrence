@@ -1,0 +1,171 @@
+{
+  "schema": "ck3-war-ai.v3-full-film-review.v1",
+  "created_at_utc": "2026-09-23T09:16:05.896690+00:00",
+  "state": "rendered-uploaded-pending-human-review",
+  "human_signoff": "not-provided",
+  "game_baseline": "CK3 1.19.0.6",
+  "film": {
+    "editorial_title": "CK3 的 AI，怎样决定一场战争？",
+    "container_title": "CK3 的 AI 为什么开战、绕路，又突然愿意讲和？",
+    "video": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/war-ai-full-film-review.mp4",
+      "bytes": 211373375,
+      "sha256": "f2068c66a47af7fd5fcdd2abab484607870e65f588068514fa8d4182239b8192"
+    },
+    "duration_seconds": 2033.821354,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "fps": 30,
+    "chapters": [
+      {
+        "title": "三个疑问",
+        "start_seconds": 0.0,
+        "end_seconds": 92.8
+      },
+      {
+        "title": "为什么选这场战争",
+        "start_seconds": 92.8,
+        "end_seconds": 456.466667
+      },
+      {
+        "title": "开战后，先盯哪里",
+        "start_seconds": 456.466667,
+        "end_seconds": 765.233333
+      },
+      {
+        "title": "遭遇之前，它在比较什么",
+        "start_seconds": 765.233333,
+        "end_seconds": 1037.466667
+      },
+      {
+        "title": "求援开关",
+        "start_seconds": 1037.466667,
+        "end_seconds": 1300.666667
+      },
+      {
+        "title": "一仗结束，战争还在继续",
+        "start_seconds": 1300.666667,
+        "end_seconds": 1530.2
+      },
+      {
+        "title": "和平桌上的两张账",
+        "start_seconds": 1530.2,
+        "end_seconds": 1897.066667
+      },
+      {
+        "title": "回到地图",
+        "start_seconds": 1897.066667,
+        "end_seconds": 2033.8
+      }
+    ],
+    "narration_cues": 45,
+    "voice": "EdgeTTS zh-CN-XiaoxiaoNeural -12%",
+    "subtitles": [
+      "zh-Hans primary",
+      "English secondary"
+    ],
+    "subtitle_delivery": "burned into the video image; no separate selectable subtitle stream",
+    "gameplay_spans": 5,
+    "music": false
+  },
+  "evidence_scope": {
+    "live_spans": "Five unlooped 1x CASE-W/CASE-C context clips from one player-declared war; screen labels restrict inference.",
+    "case_r": "Nine legal native war options and source-bound power query; not an observed natural AI declaration.",
+    "missing_natural_causal_footage": [
+      "AI declaration",
+      "battle score from a sampled battle",
+      "AI-originated peace proposal and response"
+    ],
+    "research_docs": [
+      "docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md",
+      "docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md",
+      "docs/ck3-native-ai/war-film-case-w-result-2026-09-23.md",
+      "docs/ck3-native-ai/war-film-case-c-result-2026-09-23.md"
+    ]
+  },
+  "toolchain": {
+    "name": "xar-promo-toolchain",
+    "version": "0.2.1",
+    "latest_formal_release_checked_before_run": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1",
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "native_run_id": "v3-film-attempt-003",
+    "plan": "succeeded",
+    "build": "succeeded",
+    "review": "pending-human-review-package-generated",
+    "source_failed_attempts_retained": [
+      "v3-film-attempt-001",
+      "v3-film-attempt-002"
+    ],
+    "capture_reuse_source": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/capture-reuse-source.json",
+      "bytes": 2452,
+      "sha256": "55c4b75ee43789c5aa8169296ebc258a1f95e3294a223b12e2845c81e291ff61"
+    },
+    "run_manifest": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/run/run-manifest.json",
+      "bytes": 213621,
+      "sha256": "30682342e72ea5a2e151b8dcbd4d94fac76c513e02ddfff524e115429998517e"
+    },
+    "producer_receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/production-receipt.json",
+      "bytes": 53038,
+      "sha256": "d8a0625f3627e0beba8816009078c84bd0bacfc07f5c96f7351f077ce9894a84"
+    },
+    "review_documents": [
+      {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/review/review-package.json",
+        "bytes": 67059,
+        "sha256": "cd45abdc8f9ff576c32c04dc754f21834edee1d01027c1927cec3c255094da4b"
+      },
+      {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/review/review-template.json",
+        "bytes": 37921,
+        "sha256": "96907fe0cafcb33c2e05727c43a0e1e950cba83b708fdbdc8c49a159f6003798"
+      }
+    ]
+  },
+  "technical_checks": {
+    "bound_probe": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/video.bound-probe.json",
+      "bytes": 5334,
+      "sha256": "dc4d06152921babf6f3f49894206eb9826c0275f092b5c7d9faa821dcaa82721"
+    },
+    "chapter_mux": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/chapter-mux-audit/result.json",
+      "bytes": 322,
+      "sha256": "715f68b025329d4dab898e46a5b1b569a84f5a9d6154eacb714bc6b6f309648c"
+    },
+    "all_video_and_audio_decode": "passed; ffmpeg strict full-stream null decode, no reported errors",
+    "sampled_visuals": "Opening CK3 map, first live clip, threshold, battle-score and peace cards visually checked; native review has 106 frame files.",
+    "scope": "Machine checks and sampled frames; no 1x full-length human viewing or content approval."
+  },
+  "delivery": {
+    "method": "OneDrive desktop client, preselected single delivery folder",
+    "destination": {
+      "path": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-War-AI-V3-Review-20260923.mp4",
+      "bytes": 211373375,
+      "sha256": "f2068c66a47af7fd5fcdd2abab484607870e65f588068514fa8d4182239b8192"
+    },
+    "single_file_copy_receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-onedrive-upload-r1-receipt.json",
+      "bytes": 625,
+      "sha256": "63f515833b8720f545fb5fe50e26bfd24ea3eaecac1b237caf89cf43ebc729d2"
+    },
+    "client_activity_readback": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/onedrive-client-readback-r1.json",
+      "bytes": 2603,
+      "sha256": "4d5462829bd13714a5405c762b15e1ba54d5a2b6320c3debf0e31b4594615535"
+    },
+    "selective_sync_baseline": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/onedrive-fullfilm-delivery-20260923-r1/selective-sync-readback.json",
+      "bytes": 1071,
+      "sha256": "f39658b6f66f2d6ee74c1b3c7fa0c539557b112a90ca0434ab40af3a5c0d9fba"
+    },
+    "client_message": "CK3-War-AI-V3-Review-20260923.mp4. 已上传到 CK3-War-AI-20260923.",
+    "cloud_bytes_readback": "not-performed; client activity confirms upload, local SHA confirms copied bytes",
+    "other_cloud_file_content_read_or_downloaded_by_this_task": false,
+    "selective_sync_scope": "Previously verified folder selection, not a packet-level audit of all OneDrive background traffic."
+  }
+}
