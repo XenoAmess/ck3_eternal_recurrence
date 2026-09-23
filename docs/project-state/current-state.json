@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "8F91370943B039A1CC1816AEAB5FB3336417A5B8EFC087E8E954516B56F338B1"
+        "sha256": "781E73CEA36899C75511FC4DE4001028B6502A015E1A301DC84C4122CBB6012D"
       },
       "raw_footage": {
         "passed": 0,
@@ -483,24 +483,28 @@
       "status": "GREEN_PRIVATE_PERK_CHECKPOINTED"
     },
     "latest_phase_trace_research": {
+      "actor_id": 29829,
       "combat_id": 738197508,
       "current_mainline_checkpoint_history_index": 2127,
       "current_mainline_checkpoint_round": "R0186",
       "date_advanced_days": 0,
+      "evaluator_probe_ready": false,
       "evidence": {
         "base": "configured_process_assets_root",
-        "freeze_index_locator": "g2-r0168-phase-trace-R0190-native-executor-red-frozen-20260923/R0190-raw-freeze.json",
-        "freeze_index_sha256": "B100DC51DB8C9EA62FDCBC833DD36B80520BF7DAE0DE3C0610A2AB55CC13E739",
-        "mcp_error_locator": "g2-r0168-phase-trace-R0190-native-executor-red-frozen-20260923/probe/combat-phase-event-trace-mcp-result.json",
-        "mcp_error_sha256": "FBEDFAC34E5CAACE42042738FBF2D022CF44E4002A7173D40FA79F333478F262"
+        "freeze_index_locator": "g2-r0168-phase-trace-R0192-global-rng-red-frozen-20260923/R0192-raw-freeze.json",
+        "freeze_index_sha256": "87E0167EFB33A73C3BE12F7EB618531E37B26CF5B39FAE1B7C9F397041E9ED27",
+        "phase_trace_locator": "g2-r0168-phase-trace-R0192-global-rng-red-frozen-20260923/probe/combat-phase-event-trace.json",
+        "phase_trace_sha256": "C03C1A35F7799E16C218F0FB867C5BDE17695BBAB09C8490A4E80F3E69137D61"
       },
-      "phase_event_trace_status": "RED_application_main_executor_unavailable",
-      "prior_runner_guard_round": "R0189",
-      "prior_runner_guard_status": "RED_revision_comparison_before_query",
+      "phase_event_trace_status": "RED_global_rng_state_unavailable",
+      "prior_harness_round": "R0191",
+      "prior_harness_status": "RED_early_frame_before_episode_bind_no_phase_query",
+      "production_trace_ready": false,
+      "qualified_win_probability_available": false,
       "r0188_combat_v3_input_readback_still_green": true,
       "research_source": "R0168_h1251_separate_bounded_battle_scene",
       "robert_mainline_durable_game_days_unchanged": 2983,
-      "round": "R0190",
+      "round": "R0192",
       "typed_actions": 0,
       "war_decision_status": "RED"
     },
@@ -1382,6 +1386,79 @@
     ],
     "recent_nonadvancing_attempts": [
       {
+        "actor_id": 29829,
+        "ck3_pid": 167112,
+        "cleanup_proven": true,
+        "combat_id": 738197508,
+        "date_advanced_days": 0,
+        "evaluator_probe_ready": false,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "freeze_index_locator": "g2-r0168-phase-trace-R0192-global-rng-red-frozen-20260923/R0192-raw-freeze.json",
+          "freeze_index_sha256": "87E0167EFB33A73C3BE12F7EB618531E37B26CF5B39FAE1B7C9F397041E9ED27",
+          "phase_trace_locator": "g2-r0168-phase-trace-R0192-global-rng-red-frozen-20260923/probe/combat-phase-event-trace.json",
+          "phase_trace_sha256": "C03C1A35F7799E16C218F0FB867C5BDE17695BBAB09C8490A4E80F3E69137D61"
+        },
+        "execution_id": "c8e651d9-eeb8-4866-999b-e080bf55507b",
+        "frozen_at_utc": "2026-09-23T09:49:46.2237772Z",
+        "managed_process_count_after_cleanup": 0,
+        "owner_released": true,
+        "paused_native_revision": 3,
+        "paused_snapshot_id": "native:3",
+        "phase_event_query_called": true,
+        "phase_status": "unavailable",
+        "phase_unavailable_reason": "global_rng_state_unavailable",
+        "post_native_revision": 3,
+        "post_snapshot_id": "native:3",
+        "production_trace_ready": false,
+        "qualified_win_probability_available": false,
+        "raw_driver_is_next_source_pair": false,
+        "raw_driver_sha256": "111D8CCD7730FECC3821A9B6CF29D659A423217B7881AF85B46280952119ECFF",
+        "round": "R0192",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0192",
+        "scope": "R0192 retried the old R0168 h1251 scene after the early-frame readiness correction. On one stable native:3 frame actor 29829 and CombatID 738197508 were bound, and the phase-event query returned status unavailable because global_rng_state_unavailable. The evaluator probe, production trace and qualified win probability were not available. No typed action or date advance occurred; managed processes and owner were released. This read-port RED does not undo R0188's separate current h2127 combat-v3 input GREEN or resolve the war strategy.",
+        "source_checkpoint_date_raw": 53192304,
+        "source_checkpoint_history_index": 1251,
+        "source_checkpoint_round": "R0168",
+        "source_code_commit": "6240e7b1679c99fb264ee0dcab337d318fa5ac2a",
+        "source_save_sha256": "C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA",
+        "status": "completed-red",
+        "typed_actions": 0
+      },
+      {
+        "ck3_pid": 173672,
+        "cleanup_proven": true,
+        "date_advanced_days": 0,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "freeze_index_locator": "g2-r0168-phase-trace-R0191-early-frame-red-frozen-20260923/R0191-raw-freeze.json",
+          "freeze_index_sha256": "082F93A25A86107CCA3F289296DDD6E57098A1F1306AED0700CF522E84480751"
+        },
+        "execution_id": "c8a170e0-b5f9-4139-9147-8cfe8093ef7c",
+        "frozen_at_utc": "2026-09-23T09:40:40.3892728Z",
+        "managed_process_count_after_cleanup": 0,
+        "map_ready": true,
+        "owner_released": true,
+        "paused_snapshot_id": "native:2",
+        "phase_event_query_called": false,
+        "playable_actor": null,
+        "playable_episode": null,
+        "raw_driver_history_count": 1253,
+        "raw_driver_is_next_source_pair": false,
+        "raw_driver_sha256": "7552323232D133E06E2847B280B66F2DB8B80BA01D75F45298C84F11D7EC9164",
+        "red_kind": "early_paused_frame_before_playable_episode_bind",
+        "round": "R0191",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0191",
+        "scope": "R0191 retried the separate R0168 h1251 old battle scene on code 6240e7b. The first paused map snapshot native:2 was map-ready but episode_character_id and episode_run_id were null before playable episode binding. The runner stopped RED before any phase-event query, action or date advance; this is an early-frame harness/readiness failure, not a native phase trace result. The unchanged old h1251 save is distinct from the current h2127 mainline.",
+        "source_checkpoint_date_raw": 53192304,
+        "source_checkpoint_history_index": 1251,
+        "source_checkpoint_round": "R0168",
+        "source_code_commit": "6240e7b1679c99fb264ee0dcab337d318fa5ac2a",
+        "source_save_sha256": "C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA",
+        "status": "completed-red",
+        "typed_actions": 0
+      },
+      {
         "battle_control_status": "available",
         "ck3_pid": 12072,
         "cleanup_proven": true,
@@ -1805,5 +1882,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T17:09:01+08:00"
+  "updated_at": "2026-09-23T17:55:37+08:00"
 }
