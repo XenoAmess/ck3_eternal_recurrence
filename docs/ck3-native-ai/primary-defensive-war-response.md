@@ -729,3 +729,72 @@ flowchart TD
     O -->|yes| P["existing route/contact planning"]
     P -.-> U["unknown: next contact, siege and war terminal"]
 ```
+
+## R0176: native siege stance can coexist with an accepted active route
+
+- [exact build] The production run used CK3 `1.19.0.6-steam23530548`, EXE
+  SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+  and the ordinary-campaign `xar_off` profile. R0176 cold restored the
+  R0174 history-1333 checkpoint and later saved history `1439` at
+  `date_raw=53195568` (save SHA-256
+  `71DA84C77053CA94D30E244C481B995662E087F68152B8889A38ACA837A41A4A`).
+  This is 47 newly durable game days; the final paused `53195592` frame was
+  still a post-checkpoint driver tail.
+- [production observation] The formal typed move `#1376` for sole controlled
+  Army `83886367` to Province `2638` was accepted at `53195256`. Its
+  independent result already published `army_state=sieging`, state code `3`,
+  alongside `move_target_province_id=2638` and a complete route
+  `[8651,1038,1036,8653,2638]`. After a bounded route-contact slice,
+  result `#1443` published the same Army at Province `2619` on paused
+  `native:82`, `date_raw=53195592`, with that exact target and route,
+  `in_combat=false`, and `retreating=false`. Queries `#1444` through `#1448`
+  consumed
+  the same frame. The strength query was available: player `2304` soldiers;
+  enemy Army `50331920` had `1010` and was independently observed sieging
+  Province `2604` in War `16777231`.
+- [failure location] The relief selector classified movement only by the
+  native `moving`/`embarked` stance or state code `4`/`7`. Because this Army
+  retained native siege stance `3` while carrying a real route, the selector
+  skipped the existing accepted-move proof and demanded
+  `single-idle-controllable-army-binding`. The move target, route, army
+  assignment and same-frame strength were already observable; this is a
+  policy classification gap, not evidence for a new native readback field.
+- [counter-policy input] A noncombat, nonretreating Army with an observed
+  positive move target and a nonempty, positive Province route ending at that
+  target may enter the existing `_active_native_move_intent` proof even when
+  the native stance still says `sieging`. The accepted typed move, matching
+  current route, elapsed window and official restore checks remain required.
+  A genuinely stationary siege with null target/empty route, an incomplete
+  route or a mismatched endpoint never becomes a moving Army by this rule.
+  The relief selector delegates a proven in-flight move to existing route
+  and contact checks; it does not infer contact safety or a war outcome.
+- [offline replay] The immutable 1448-row driver, independent `#1443`
+  after-state and five `native:82` queries yield `active_move_intent` for
+  typed move `#1376`, elapsed `14` of `90` days. Missing route or target,
+  endpoint mismatch, combat, retreat, and removed typed move all reject this
+  relief binding in normal and optimized replay. The replay output SHA-256 is
+  `14606D15C8E358093E44756BB30644F00A5362F26D5E7D9AA12B7787C61FD107`.
+  This is a classification result only. The next formal action is unknown
+  until the official cold restore and a fresh paused frame are consumed.
+- [artifact boundary] The immutable R0176 pair is
+  `g2-robert-r0176-war-red-frozen-20260923/R0176-final-frozen-pair`.
+  Its official semantic audit SHA-256 is
+  `1347EAA68352C5BC749F09BEA81013E7D6BD6AE93C92EC814FF285D85C9420C6`.
+  Formal report SHA-256:
+  `3411FA758C0DC2C8A3141B98D4C5D28BB4EC15EAF286B302F96F72D5A3DCF9AE`.
+  Frozen driver SHA-256:
+  `7AAB1609A9CD2B5931ABD47B96FD14B779B55FF9AE523BAD9BAC5CF00CA251A0`;
+  official recovery must remove the nine post-checkpoint rows before a new
+  launch. Neither the read-only replay nor this report closes the new RED.
+
+```mermaid
+flowchart TD
+    A["sole Army and hostile siege in primary defensive war"] --> S{"native stance moving or embarked?"}
+    S -->|yes| P["existing accepted-move and route proof"]
+    S -->|no, native siege stance| R{"positive target and complete nonempty route\nending at target, noncombat and not retreating?"}
+    R -->|no / unknown| I["stationary siege or observation block"]
+    R -->|yes| P
+    P -->|unproven| X["stop for observation"]
+    P -->|proven| C["existing route/contact checks"]
+    C -.-> U["unknown: future contact, occupation and war terminal"]
+```

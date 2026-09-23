@@ -15507,9 +15507,31 @@ def _primary_defender_siege_relief_assessment(
         }
     observed_target = _native_int(army.get("move_target_province_id"))
     observed_route = army.get("route_province_ids")
+    complete_observed_route = bool(
+        observed_target is not None
+        and observed_target > 0
+        and isinstance(observed_route, list)
+        and observed_route
+        and all(
+            _native_int(province_id) is not None
+            and int(province_id) > 0
+            for province_id in observed_route
+        )
+        and observed_route[-1] == observed_target
+    )
+    # R0176: CK3 can retain siege stance while an accepted march still has
+    # an exact target and route.  Keep that case behind the existing typed
+    # move proof rather than treating the Army as idle relief capacity.
+    routed_siege_stance = bool(
+        _army_tactical_state(army) == "sieging"
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+        and complete_observed_route
+    )
     moving = bool(
         _army_tactical_state(army) in {"moving", "embarked"}
         or _native_int(army.get("army_state_code")) in {4, 7}
+        or routed_siege_stance
     )
     if moving:
         intent = (
@@ -15520,16 +15542,7 @@ def _primary_defender_siege_relief_assessment(
                 target_province_id=observed_target,
             )
             if army_id is not None
-            and observed_target is not None
-            and observed_target > 0
-            and isinstance(observed_route, list)
-            and bool(observed_route)
-            and all(
-                _native_int(province_id) is not None
-                and int(province_id) > 0
-                for province_id in observed_route
-            )
-            and observed_route[-1] == observed_target
+            and complete_observed_route
             else None
         )
         if isinstance(intent, dict):

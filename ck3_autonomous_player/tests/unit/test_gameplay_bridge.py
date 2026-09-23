@@ -5229,6 +5229,99 @@ class GameplayBridgeTests(unittest.TestCase):
             "accepted-native-move-arrival-for-current-siege",
         )
 
+    def test_r0176_siege_stance_with_active_route_keeps_typed_move(self) -> None:
+        army_id = 83_886_367
+        target = 2_638
+        route = [8_651, 1_038, 1_036, 8_653, target]
+        army = _army(
+            army_id,
+            soldiers=None,
+            province_id=2_619,
+            controllable=True,
+            move_target_province_id=target,
+            move_target_observable=True,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=route,
+            in_combat=False,
+            retreating=False,
+        )
+        enemy = _army(
+            50_331_920,
+            soldiers=None,
+            province_id=2_604,
+            controllable=False,
+            move_target_province_id=None,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        war = _war(
+            war_id=16_777_231,
+            allied_armies=[army],
+            enemy_armies=[enemy],
+            score=-13,
+            player_side="defender",
+            player_is_primary_war_leader=True,
+        )
+        snapshot = {
+            "paused": True,
+            "map_ready": True,
+            "active_event": None,
+            "pending_character_interaction": None,
+            "date_raw": 53_195_592,
+            "player_armies": [army],
+        }
+        accepted_move = {
+            "index": 1_376,
+            "command": f"move-army-{army_id}-to-{target}",
+            "ok": True,
+            "result": {
+                "accepted": True,
+                "war_action": {
+                    "status": "moving",
+                    "army_id": army_id,
+                    "target_province_id": target,
+                    "submitted_date_raw": 53_195_256,
+                },
+            },
+        }
+
+        def relief(
+            subject: dict[str, object],
+            rows: list[dict[str, object]],
+        ) -> dict[str, object]:
+            return _primary_defender_siege_relief_assessment(
+                {**snapshot, "player_armies": [subject]},
+                commands=rows,
+                active_wars=[war],
+                controlled_armies=[subject],
+                pursuit_army=subject,
+            )
+
+        active = relief(army, [accepted_move])
+        self.assertEqual(active["status"], "active_move_intent")
+        self.assertEqual(active["target_province_id"], target)
+        self.assertEqual(active["move_intent"]["elapsed_days"], 14)
+        self.assertEqual(active["route_province_ids"], route)
+
+        for subject in (
+            {**army, "move_target_province_id": None, "route_province_ids": []},
+            {**army, "route_province_ids": [8_651, 2_637]},
+            {**army, "route_province_ids": []},
+        ):
+            with self.subTest(subject=subject):
+                self.assertEqual(
+                    relief(subject, [accepted_move])["status"],
+                    "observation_unavailable",
+                )
+        self.assertEqual(
+            relief(army, [])["required_observation"],
+            "complete-matching-active-native-move-intent-route",
+        )
+
     def test_r0168_combat_hands_off_only_with_current_exact_battle_frame(
         self,
     ) -> None:
