@@ -12,7 +12,7 @@ import hashlib
 import json
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 
 BEGIN = "experimental-combat-phase-event-trace-begin-v1"
@@ -106,6 +106,7 @@ def run_bounded_original_phase_event_day(
     subject_army_id: int,
     daily_token: int,
     deadline_seconds: float = 30.0,
+    terminal_observation_sink: Callable[[dict[str, Any]], None] | None = None,
 ) -> dict[str, Any]:
     """Capture one day in a disposable, officially restored research session.
 
@@ -221,6 +222,18 @@ def run_bounded_original_phase_event_day(
             raise ValueError("original trace changed episode")
         finish = _private(driver, FINISH, ending_revision, fields)
         armed = False
+        if terminal_observation_sink is not None:
+            terminal_observation_sink({
+                "schema": "xar.ck3.experimental-combat-phase-terminal-observation/v1",
+                "ending": {
+                    "revision": ending_revision,
+                    "native_revision": ending["native_revision"],
+                    "date_raw": ending_date,
+                    "episode_run_id": ending_episode,
+                    "paused": ending["paused"],
+                },
+                "private_finish": finish,
+            })
         if ending_date != date_raw + 24 or finish.get("status") != "bounded_trace_available":
             raise ValueError("original trace did not produce one exact bounded day")
         managed = finish.get("managed_trace")

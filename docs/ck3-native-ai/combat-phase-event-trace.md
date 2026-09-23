@@ -497,9 +497,29 @@ immediately after the pause acknowledgement. Its focused fix waits for an
 actual same-episode running frame, the first date change, and an actual paused
 postcondition. Missing or overshooting the one-day boundary remains RED and
 requires controlled stop. The native driver already has asynchronous map-control
-postcondition waiting for its formal life-advance path. This runner fix remains
-a static candidate pending fresh official-pair live replay; production trace,
-win probability, and formal war actions remain OFF.
+postcondition waiting for its formal life-advance path. R0200 replayed this
+runner fix from a new official R0168 h1251 pair; production trace, win
+probability, and formal war actions remain OFF.
+
+## R0200 bounded trace result is RED (2026-09-23)
+
+R0200 used Python commit 68e11c3 and the separately pinned native DLL from
+3e5e92f on exact CK3 build 1.19.0.6-steam23530548. It reached the playable
+paused frame, proved the post-ready application-main pump, read the same
+CombatID 738197508, and saved a same-day research checkpoint at history 1255.
+The derived driver records one set-speed request, one resume-map request, and
+one pause-map request at histories 1256–1258. The bounded runner then raised
+`original trace did not produce one exact bounded day`; controlled stop
+reclaimed CK3 and its owner. The immutable R0200 freeze index SHA-256 is
+81DC6B4BDD6B435B3AD66328C86C6339FBDC027D42B1DD69AE6A293C8FCAB34A.
+
+The runner discarded its ending raw date and full private finish response at
+the failure branch. Thus R0200 does not prove whether the observed day was
+short, overshot, or whether native finish rejected an exact day. The next
+bounded research run records those two observations before the same RED
+decision. This diagnostic does not change the one-day limit or submit another
+map-control command. Original transition fidelity and production probability
+remain unproven.
 
 ## 离线复现入口
 

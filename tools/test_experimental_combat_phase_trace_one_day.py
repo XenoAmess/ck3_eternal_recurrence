@@ -22,7 +22,8 @@ from experimental_combat_phase_trace_one_day import (  # noqa: E402
 class FakeDriver:
     def __init__(self, checkpoint: Path, *, bad_combat: bool = False,
                  bad_checkpoint: bool = False, ending_delta: int = 24,
-                 resume_delay_frames: int = 0, pause_delay_frames: int = 0):
+                 resume_delay_frames: int = 0, pause_delay_frames: int = 0,
+                 finish_status: str | None = None, finish_reason: str | None = None):
         self.checkpoint = checkpoint
         self.bad_combat = bad_combat
         self.bad_checkpoint = bad_checkpoint
@@ -34,6 +35,8 @@ class FakeDriver:
         self.pause_delay_frames = pause_delay_frames
         self.resume_pending = False
         self.pause_pending = False
+        self.finish_status = finish_status
+        self.finish_reason = finish_reason
 
     def capabilities(self) -> dict[str, object]:
         return {
@@ -108,9 +111,11 @@ class FakeDriver:
             return {"step": step, "accepted": True, "status": "armed",
                     "managed_daily_sequence_token": token}
         assert step == FINISH
-        return {
+        result = {
             "step": step, "accepted": True,
-            "status": "bounded_trace_available" if self.ending_delta == 24 else "trace_unavailable",
+            "status": self.finish_status or (
+                "bounded_trace_available" if self.ending_delta == 24 else "trace_unavailable"
+            ),
             "managed_trace": {"managed_checkpoint": {
                 "recoverable_checkpoint_created": True,
                 "exact_one_day_observed": self.ending_delta == 24,
@@ -119,6 +124,9 @@ class FakeDriver:
                 "after": {"combat_id": 738197508},
             }},
         }
+        if self.finish_reason is not None:
+            result["reason"] = self.finish_reason
+        return result
 
 
 class BoundedTraceContractTest(unittest.TestCase):
@@ -195,23 +203,55 @@ class BoundedTraceContractTest(unittest.TestCase):
 
     def test_short_day_finishes_detours_and_stays_red(self) -> None:
         driver = FakeDriver(self.checkpoint, ending_delta=0)
+        receipts: list[dict[str, object]] = []
         with self.assertRaisesRegex(ValueError, "one exact bounded day"):
             run_bounded_original_phase_event_day(
                 driver, official_index=self.index, combat_id=738197508,
                 subject_army_id=83886367,
                 daily_token=7, deadline_seconds=0.01,
+                terminal_observation_sink=receipts.append,
             )
         self.assertIn(FINISH, driver.calls)
+        self.assertEqual(len(receipts), 1)
+        self.assertEqual(receipts[0]["ending"]["date_raw"], 53192304)
+        self.assertEqual(receipts[0]["private_finish"]["status"], "trace_unavailable")
+        self.assertEqual(driver.calls.count("resume-map"), 1)
+        self.assertEqual(driver.calls.count("pause-map"), 1)
 
     def test_overshoot_finishes_detours_and_stays_red(self) -> None:
         driver = FakeDriver(self.checkpoint, ending_delta=48)
+        receipts: list[dict[str, object]] = []
         with self.assertRaisesRegex(ValueError, "one exact bounded day"):
             run_bounded_original_phase_event_day(
                 driver, official_index=self.index, combat_id=738197508,
                 subject_army_id=83886367,
                 daily_token=7,
+                terminal_observation_sink=receipts.append,
             )
         self.assertIn(FINISH, driver.calls)
+        self.assertEqual(len(receipts), 1)
+        self.assertEqual(receipts[0]["ending"]["date_raw"], 53192352)
+        self.assertEqual(driver.calls.count("resume-map"), 1)
+        self.assertEqual(driver.calls.count("pause-map"), 1)
+
+    def test_r0200_exact_date_unavailable_finish_retains_full_reason(self) -> None:
+        driver = FakeDriver(
+            self.checkpoint, finish_status="trace_unavailable",
+            finish_reason="original_phase_boundary_missing",
+        )
+        receipts: list[dict[str, object]] = []
+        with self.assertRaisesRegex(ValueError, "one exact bounded day"):
+            run_bounded_original_phase_event_day(
+                driver, official_index=self.index, combat_id=738197508,
+                subject_army_id=83886367, daily_token=7,
+                terminal_observation_sink=receipts.append,
+            )
+        self.assertEqual(len(receipts), 1)
+        self.assertEqual(receipts[0]["ending"]["date_raw"], 53192328)
+        self.assertEqual(receipts[0]["private_finish"]["status"], "trace_unavailable")
+        self.assertEqual(receipts[0]["private_finish"]["reason"], "original_phase_boundary_missing")
+        self.assertEqual(driver.calls.count("resume-map"), 1)
+        self.assertEqual(driver.calls.count("pause-map"), 1)
 
     def test_official_pair_requires_exact_files_and_lifecycle(self) -> None:
         files = {}
