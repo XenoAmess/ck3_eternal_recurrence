@@ -521,6 +521,62 @@ decision. This diagnostic does not change the one-day limit or submit another
 map-control command. Original transition fidelity and production probability
 remain unproven.
 
+## R0201 maneuver-stage admission RED (2026-09-23)
+
+R0201 used a fresh official copy of the original R0168 h1251 pair, Python
+commit 4e6a7fb, and the separately pinned native DLL from 3e5e92f on exact
+CK3 build 1.19.0.6-steam23530548 (EXE SHA-256
+2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86).
+The terminal receipt proves exactly one date increment,
+53192304 → 53192328, and an accepted native FINISH. It also proves only two
+successful schedule records, no phase-fire record, `failure_flags=1032`
+(`sequence` 8 + `final_query` 1024), `record_count=2`, and
+`production_trace_ready=false`. Controlled stop reclaimed CK3 and its owner.
+The immutable freeze index is
+`Z:\ck3_mod_rewrite_process_assets\g2-r0168-managed-day-R0201-two-boundary-red-frozen-20260923\R0201-final-frozen-pair\R0201-raw-freeze.json`,
+SHA-256 `50A30CC84B614F4DD7BF984618F6E4B893F07CF53831506E360589FA192F60E8`;
+the terminal receipt SHA-256 is
+`B67C1E3C9766F63A33F1E94BE44C478B7CC988ED4D07E5C4B3C57691A5DAB843`.
+This is research RED, not a Robert-mainline date or qualified battle forecast.
+
+The fresh battle-control and both schedule records bind CombatID 738197508
+to `phase_raw=0` (maneuver), `phase_day=1`, with no winner or forced winner.
+The exact-build dispatcher `0x27FB5D0` increments `CCombat+0x6B4`; while
+phase is 0 and `CCombat+0x700=-1`, it compares the new day with
+`MANEUVER_PHASE_DAYS=3` at `0x27FB704`. An increment from day 1 to day 2
+does not call main tick `0x2309E80`; only that tick calls `0x23CA2F0`, which
+tail-jumps to phase fire `0x23C9900`. Thus an otherwise complete first day
+cannot produce the four fire boundaries. The two observed schedule callbacks
+and successful transactional uninstall rule out a failed initial detour
+installation as the explanation. The terminal DTO does not independently
+prove whether the pause occurred before or after that day's dispatcher, but
+either order leaves this maneuver-stage frame ineligible for a seven-boundary
+one-day capture. The final query then encounters boundary index 2 rather than
+6 and correctly fails its sequence gate; it must not relabel schedule records
+as phase-fire records.
+
+```mermaid
+flowchart TD
+    Q["fresh paused CombatID and phase readback"] --> P{"phase 1 main, both sides fighting,<br/>winner and forced winner unset?"}
+    P -->|"R0201: phase 0 day 1"| M["maneuver daily dispatcher:<br/>day 2 <= MANEUVER_PHASE_DAYS 3"]
+    M --> S["schedule callbacks only;<br/>no 0x2309E80 or 0x23C9900"]
+    S --> R["seven-boundary trace RED;<br/>probability OFF"]
+    P -. "future official main-phase checkpoint" .-> T["one bounded original main tick"]
+    T -. "seven native records and effect parity unproven" .-> R
+```
+
+For the original h1251 `phase 0/day 1` battle, three **completed and
+independently observed** daily dispatches would nominally give maneuver day 2,
+day 3, then main phase day 0. A date change alone is insufficient evidence of
+completed dispatch. A separate research preparation run may use existing
+managed map-control primitives for at most three individual +24 raw-day
+windows; after each it must read the same CombatID, actor, episode, phase/day,
+winner/forced winner, both sides' fighting totals, and active-event signal.
+An unexpected phase, missing identity, event, date overshoot, or winner stops
+the run without another day. Only a fresh paused main-phase frame may receive
+a materialized official checkpoint and later **separate** cold-restored
+seven-boundary attempt. The R0201 derived state is not that source pair.
+
 ## 离线复现入口
 
 本页结论可用仓库内只读工具复核：

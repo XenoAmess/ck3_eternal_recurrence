@@ -150,6 +150,24 @@ def run_bounded_original_phase_event_day(
         or battle.get("queried_native_revision") != native_revision
     ):
         raise ValueError("fresh same-CombatID battle-control proof is absent")
+    if (
+        scope.get("phase_raw") != 1
+        or isinstance(scope.get("phase_day"), bool)
+        or not isinstance(scope.get("phase_day"), int)
+        or scope["phase_day"] < 0
+        or scope.get("winner_raw") != -1
+        or scope.get("forced_winner_raw") != -1
+        or scope.get("finalized") is not False
+        or any(
+            not isinstance(scope.get(side), dict)
+            or scope[side].get("stored_current_matches_derived") is not True
+            or isinstance(scope[side].get("stored_current_fighting_raw"), bool)
+            or not isinstance(scope[side].get("stored_current_fighting_raw"), int)
+            or scope[side]["stored_current_fighting_raw"] <= 0
+            for side in ("attacker", "defender")
+        )
+    ):
+        raise ValueError("seven-boundary trace requires an undecided main phase with both sides fighting")
 
     saved = driver.execute_step("save-checkpoint", expected_revision=revision)  # type: ignore[attr-defined]
     checkpoint = saved.get("checkpoint") if isinstance(saved, dict) else None

@@ -37,6 +37,9 @@ class FakeDriver:
         self.pause_pending = False
         self.finish_status = finish_status
         self.finish_reason = finish_reason
+        self.phase_raw = 1
+        self.winner_raw = -1
+        self.fighting_raw = 1000000
 
     def capabilities(self) -> dict[str, object]:
         return {
@@ -80,6 +83,15 @@ class FakeDriver:
                 "observed_date_raw": 53192304,
                 "subject_public_cunit_id": 83886367,
                 "battle_control_ready": True,
+                "phase_raw": self.phase_raw,
+                "phase_day": 0,
+                "winner_raw": self.winner_raw,
+                "forced_winner_raw": -1,
+                "finalized": False,
+                "attacker": {"stored_current_fighting_raw": self.fighting_raw,
+                             "stored_current_matches_derived": True},
+                "defender": {"stored_current_fighting_raw": 1000000,
+                             "stored_current_matches_derived": True},
             }}
         if step == "save-checkpoint":
             return {
@@ -154,6 +166,31 @@ class BoundedTraceContractTest(unittest.TestCase):
         self.assertTrue(result["requires_controlled_stop_and_new_official_restore"])
         self.assertLess(driver.calls.index(BEGIN), driver.calls.index("resume-map"))
         self.assertLess(driver.calls.index("pause-map"), driver.calls.index(FINISH))
+
+    def test_r0201_maneuver_does_not_checkpoint_arm_or_advance(self) -> None:
+        driver = FakeDriver(self.checkpoint)
+        driver.phase_raw = 0
+        with self.assertRaisesRegex(ValueError, "undecided main phase"):
+            run_bounded_original_phase_event_day(
+                driver, official_index=self.index, combat_id=738197508,
+                subject_army_id=83886367, daily_token=7,
+            )
+        self.assertNotIn("save-checkpoint", driver.calls)
+        self.assertNotIn(BEGIN, driver.calls)
+        self.assertNotIn("resume-map", driver.calls)
+
+    def test_main_phase_requires_undecided_fighting_sides(self) -> None:
+        for field, value in (("winner_raw", 0), ("fighting_raw", 0)):
+            with self.subTest(field=field):
+                driver = FakeDriver(self.checkpoint)
+                setattr(driver, field, value)
+                with self.assertRaisesRegex(ValueError, "undecided main phase"):
+                    run_bounded_original_phase_event_day(
+                        driver, official_index=self.index, combat_id=738197508,
+                        subject_army_id=83886367, daily_token=7,
+                    )
+                self.assertNotIn("save-checkpoint", driver.calls)
+                self.assertNotIn(BEGIN, driver.calls)
 
     def test_r0198_async_resume_and_pause_acks_wait_for_native_frames(self) -> None:
         driver = FakeDriver(
