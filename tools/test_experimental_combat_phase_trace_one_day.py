@@ -21,7 +21,8 @@ from experimental_combat_phase_trace_one_day import (  # noqa: E402
 
 class FakeDriver:
     def __init__(self, checkpoint: Path, *, bad_combat: bool = False,
-                 bad_checkpoint: bool = False, ending_delta: int = 24):
+                 bad_checkpoint: bool = False, ending_delta: int = 24,
+                 resume_delay_frames: int = 0, pause_delay_frames: int = 0):
         self.checkpoint = checkpoint
         self.bad_combat = bad_combat
         self.bad_checkpoint = bad_checkpoint
@@ -29,6 +30,10 @@ class FakeDriver:
         self.calls: list[str] = []
         self.running = False
         self.paused_after = False
+        self.resume_delay_frames = resume_delay_frames
+        self.pause_delay_frames = pause_delay_frames
+        self.resume_pending = False
+        self.pause_pending = False
 
     def capabilities(self) -> dict[str, object]:
         return {
@@ -41,6 +46,18 @@ class FakeDriver:
         }
 
     def take_snapshot(self) -> dict[str, object]:
+        if self.resume_pending:
+            if self.resume_delay_frames:
+                self.resume_delay_frames -= 1
+            else:
+                self.resume_pending = False
+                self.running = True
+        if self.pause_pending:
+            if self.pause_delay_frames:
+                self.pause_delay_frames -= 1
+            else:
+                self.pause_pending = False
+                self.paused_after = True
         date = 53192304 + (self.ending_delta if self.running else 0)
         return {
             "paused": not self.running or self.paused_after,
@@ -73,9 +90,15 @@ class FakeDriver:
                 "submission": {"sequence": 1, "date_raw": 53192304},
             }
         if step == "resume-map":
-            self.running = True
+            if self.resume_delay_frames:
+                self.resume_pending = True
+            else:
+                self.running = True
         if step == "pause-map":
-            self.paused_after = True
+            if self.pause_delay_frames:
+                self.pause_pending = True
+            else:
+                self.paused_after = True
         return {"step": step, "accepted": True}
 
     def _execute_primitive_step(self, step: str, **fields: object) -> dict[str, object]:
@@ -123,6 +146,30 @@ class BoundedTraceContractTest(unittest.TestCase):
         self.assertTrue(result["requires_controlled_stop_and_new_official_restore"])
         self.assertLess(driver.calls.index(BEGIN), driver.calls.index("resume-map"))
         self.assertLess(driver.calls.index("pause-map"), driver.calls.index(FINISH))
+
+    def test_r0198_async_resume_and_pause_acks_wait_for_native_frames(self) -> None:
+        driver = FakeDriver(
+            self.checkpoint, resume_delay_frames=1, pause_delay_frames=1,
+        )
+        result = run_bounded_original_phase_event_day(
+            driver, official_index=self.index, combat_id=738197508,
+            subject_army_id=83886367, daily_token=7,
+        )
+        self.assertEqual(result["ending_date_raw"], 53192328)
+        self.assertEqual(driver.calls.count("resume-map"), 1)
+        self.assertEqual(driver.calls.count("pause-map"), 1)
+        self.assertIn(FINISH, driver.calls)
+
+    def test_resume_ack_without_running_frame_finishes_and_stays_red(self) -> None:
+        driver = FakeDriver(self.checkpoint, resume_delay_frames=100)
+        with self.assertRaisesRegex(ValueError, "running native frame"):
+            run_bounded_original_phase_event_day(
+                driver, official_index=self.index, combat_id=738197508,
+                subject_army_id=83886367, daily_token=7,
+                deadline_seconds=0.01,
+            )
+        self.assertEqual(driver.calls.count("resume-map"), 1)
+        self.assertIn(FINISH, driver.calls)
 
     def test_invalid_checkpoint_never_arms_or_resumes(self) -> None:
         driver = FakeDriver(self.checkpoint, bad_checkpoint=True)

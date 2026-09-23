@@ -196,6 +196,14 @@ def run_bounded_original_phase_event_day(
         timeline.append(driver.execute_step("set-speed-1"))  # type: ignore[attr-defined]
         timeline.append(driver.execute_step("resume-map"))  # type: ignore[attr-defined]
         deadline = time.monotonic() + deadline_seconds
+        observed = driver.take_snapshot()  # type: ignore[attr-defined]
+        while observed.get("paused") is not False and time.monotonic() < deadline:
+            if (observed.get("date_raw"), observed.get("episode_run_id")) != (date_raw, episode):
+                break
+            time.sleep(0.1)
+            observed = driver.take_snapshot()  # type: ignore[attr-defined]
+        if observed.get("paused") is not False:
+            raise ValueError("resume-map did not yield a running native frame")
         while time.monotonic() < deadline:
             observed = driver.take_snapshot()  # type: ignore[attr-defined]
             observed_date = observed.get("date_raw") if isinstance(observed, dict) else None
@@ -204,6 +212,10 @@ def run_bounded_original_phase_event_day(
             time.sleep(0.1)
         timeline.append(driver.execute_step("pause-map"))  # type: ignore[attr-defined]
         ending = driver.take_snapshot()  # type: ignore[attr-defined]
+        pause_deadline = time.monotonic() + min(deadline_seconds, 10.0)
+        while ending.get("paused") is not True and time.monotonic() < pause_deadline:
+            time.sleep(0.1)
+            ending = driver.take_snapshot()  # type: ignore[attr-defined]
         ending_revision, _, ending_date, ending_episode = _frame(ending)
         if ending_episode != episode:
             raise ValueError("original trace changed episode")

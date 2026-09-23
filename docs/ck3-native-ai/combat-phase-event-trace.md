@@ -480,6 +480,27 @@ flowchart LR
 6. capability、concrete request parser、serializer、driver cache、service 与 MCP fail-closed 接线完成；capability template 本身
    永远不得成为 concrete action step，generic fallback 也不得把查询前缀转成 life-advance。
 
+## R0198 bounded trace timeline RED (2026-09-23)
+
+The exact CK3 build 1.19.0.6-steam23530548, original R0168 h1251 pair,
+Python commit 949c8b7, and separately pinned native DLL A0A32609...AA3AD4
+reached a playable paused frame. Same-CombatID 738197508 battle-control readback
+and same-day checkpoint h1255 succeeded. Map commands h1257 resume-map and
+h1258 pause-map returned submitted acknowledgements. Only h1259 yielded an
+independent paused=true postcondition, with date still raw 53192304. No exact
+one-day original trace was proven. The immutable R0198 raw-freeze index has
+SHA-256 93F8B84E3DCB3779754A629AF83BBB5A0DEFDD0B4F03AA385227E1A1EBDA0CF9.
+
+The bounded research runner treated an old paused frame immediately after the
+resume acknowledgement as a stop condition, then required a paused frame
+immediately after the pause acknowledgement. Its focused fix waits for an
+actual same-episode running frame, the first date change, and an actual paused
+postcondition. Missing or overshooting the one-day boundary remains RED and
+requires controlled stop. The native driver already has asynchronous map-control
+postcondition waiting for its formal life-advance path. This runner fix remains
+a static candidate pending fresh official-pair live replay; production trace,
+win probability, and formal war actions remain OFF.
+
 ## 离线复现入口
 
 本页结论可用仓库内只读工具复核：
