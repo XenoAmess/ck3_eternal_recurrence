@@ -1,10 +1,12 @@
 # M4-LIFE-READBACK-ENTRY: bounded private input readback
 
-Status: private readback with R0110 startup RED and R0111 live readback RED;
-R0128 independently observed target stewardship XP/points but returned
-`evidence_insufficient` for the full three-query gate. None proves a lifestyle
-action or G2-M4 completion. This entry is not a public capability. See the
-[R0128 immutable evidence index](lifestyle-r0128-readback.md).
+Status: R0110 startup RED, R0111 live readback RED, and R0128 h1094
+`evidence_insufficient` remain preserved. R0167 completed the three-query
+private read-only gate on a distinct Robert h1082 frame with an already
+selected focus and two unspent stewardship points. Neither run proves a typed
+perk action or G2-M4 completion. This entry is not a public capability. See
+the [R0128 immutable evidence index](lifestyle-r0128-readback.md) and the
+[R0167 Robert evidence index](lifestyle-r0167-robert-readback.md).
 It follows the exact 1.19.0.6 native decision tree in
 `lifestyle-focus-perk-ai.md` and the versioned LIFE2, stock-perk, and
 stock-focus ABI files under `native_bridge/research/`. Frozen CK3 EXE SHA-256:
@@ -123,6 +125,18 @@ progress. The target-progress readback subgate is production-live primitive
 for that actor and build, while the overall report remains
 `evidence_insufficient`. The runner's post-run prepared driver now has a live
 restore tail and cannot be used as the source for another fresh candidate.
+
+R0167 used the immutable R0164 Robert h1082 ordinary `xar_off` pair and a
+fresh official prepare/rebind. The exact-build cold readback observed LIFE2
+current `stewardship_wealth_focus`, `2131.25` total stewardship XP, two
+unspent points, a native rejection of selecting that same focus again, and
+the single final-legal policy perk `cutting_corners_perk`. The three queries
+remained on one paused native frame with zero gameplay actions and zero date
+movement. The R0164 source's active defensive wars keep the existing formal
+consumer outside its peaceful action scene; R0167 is read-only evidence,
+not permission to submit the perk in war. The frozen report, full hashes and
+the two subsequent legal action routes are in the
+[R0167 evidence index](lifestyle-r0167-robert-readback.md).
 
 The report and each raw query response are written under the fresh evidence
 directory. The final report includes candidate hashes, process identity,
