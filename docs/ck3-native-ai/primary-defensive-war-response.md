@@ -507,3 +507,48 @@ flowchart TD
     C -->|yes| S["existing stationary threat and siege progress checks"]
     S -.-> U["unknown: capture or war termination"]
 ```
+
+## R0168: a relief route entering combat transfers to the battle controller
+
+- [production-live blocker] At `date_raw=53192304`, the official committed-route
+  sentinel for Army `83886367` stopped with both `route_target_changed` and
+  `combat_transition`. The independent after-state placed that Army in combat
+  at Province `2638`, with no move target and no remaining route. A separate
+  hostile Army was still sieging Province `2619` in primary defensive War
+  `16777250`. The relief admission demanded `single-idle-controllable-army-binding`
+  before the existing battle controller could consume the observed combat.
+- [exact-build readback] The paused `native:163` battle-control query for the
+  sole controllable Army was available on the same date and Province, bound to
+  CombatID `738197508`. Its phase was `maneuver`; native retreat legality was
+  false with reason `too_early` and earliest gate `53192664`. This is an
+  observed battle, not proof of victory or a safe retreat.
+- [counter-policy input] An Army with exact current combat state and a
+  same-frame, same-Province, same-subject battle-control frame passes to the
+  existing global battle audit. The relief selector does not retarget an Army
+  already fighting. Missing or stale battle identity remains an observation
+  block. A noncombat siege still requires its accepted-arrival proof, and an
+  idle Army still requires the relief strength and route gates.
+- [offline replay] Replaying the frozen R0168 driver history and the official
+  last after-state with the same-frame battle query yields battle-control
+  `ready`, relief `active_combat`, then the existing
+  `native_war_global_battle_control_progress` plan for one bounded day. This
+  is a static plan result; a resumed live outcome remains unknown.
+- [artifact] The read-only R0168 frozen pair is
+  `g2-robert-mainline-r0168-new-siege-binding-red-20260923/R0168-final-frozen-pair`.
+  Its save SHA-256 is
+  `C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA`;
+  driver SHA-256 is
+  `14207EC4C2A694D764E41FAD5282124C29B8FDE6645152482095E47915C2AE03`.
+  The raw driver has a post-checkpoint query tail and must pass official
+  recovery before another launch.
+
+```mermaid
+flowchart TD
+    A["relief route sentinel stops"] --> B{"sole controlled Army in exact combat?"}
+    B -->|no| R["existing siege relief and route checks"]
+    B -->|yes| C{"current battle-control frame matches<br/>subject, Province, date and CombatID?"}
+    C -->|no / unknown| X["stop for battle observation"]
+    C -->|yes| D["existing global battle audit"]
+    D --> E["bounded battle decision or observation slice"]
+    E -.-> U["unknown: battle result and war termination"]
+```

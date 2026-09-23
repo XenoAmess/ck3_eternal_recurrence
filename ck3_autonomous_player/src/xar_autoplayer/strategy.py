@@ -8971,6 +8971,7 @@ def _choose_one_life_turn_core(
             pursuit_army=(
                 pursuit_army if isinstance(pursuit_army, dict) else None
             ),
+            battle_control_state=battle_control_state,
         )
         if siege_relief.get("status") == "observation_unavailable":
             return {
@@ -15417,6 +15418,7 @@ def _primary_defender_siege_relief_assessment(
     active_wars: list[dict[str, object]],
     controlled_armies: list[dict[str, object]],
     pursuit_army: dict[str, object] | None,
+    battle_control_state: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Select one observed hostile siege for a proof-bound relief route.
 
@@ -15466,6 +15468,41 @@ def _primary_defender_siege_relief_assessment(
         }
     army = controlled_armies[0]
     army_id = _native_int(army.get("army_id"))
+    if _army_tactical_state(army) == "combat":
+        frames = (
+            battle_control_state.get("full_frames")
+            if isinstance(battle_control_state, dict)
+            and battle_control_state.get("status") == "ready"
+            else None
+        )
+        current_province_id = _native_int(army.get("current_province_id"))
+        if (
+            army.get("in_combat") is True
+            and army.get("retreating") is False
+            and army_id is not None
+            and current_province_id is not None
+            and isinstance(frames, list)
+            and len(frames) == 1
+            and isinstance(frames[0], dict)
+            and frames[0].get("status") == "available"
+            and frames[0].get("battle_control_ready") is True
+            and _native_int(frames[0].get("subject_public_cunit_id"))
+            == army_id
+            and _native_int(frames[0].get("province_id"))
+            == current_province_id
+            and _native_int(frames[0].get("observed_date_raw"))
+            == _native_int(snapshot.get("date_raw"))
+            and (_native_int(frames[0].get("combat_id")) or 0) > 0
+        ):
+            return {
+                "status": "active_combat",
+                "army_id": army_id,
+                "combat_id": frames[0]["combat_id"],
+            }
+        return {
+            "status": "observation_unavailable",
+            "required_observation": "same-frame-active-combat-binding",
+        }
     observed_target = _native_int(army.get("move_target_province_id"))
     observed_route = army.get("route_province_ids")
     moving = bool(

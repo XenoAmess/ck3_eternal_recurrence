@@ -57,6 +57,7 @@ from xar_autoplayer.strategy import (
     _enemy_endpoint_epochs,
     _moving_route_contact_horizon_conjunction,
     _negative_war_termination_reuse,
+    _primary_defender_siege_relief_assessment,
     _preoffensive_army_consolidation,
     _outnumbered_attacker_regroup_input_ready,
     _outnumbered_primary_defender_regroup_input_ready,
@@ -5223,6 +5224,100 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertIsNone(arrived_without_move_proof["selected_step"])
         self.assertEqual(
             arrived_without_move_proof["required_observation"],
+            "accepted-native-move-arrival-for-current-siege",
+        )
+
+    def test_r0168_combat_hands_off_only_with_current_exact_battle_frame(
+        self,
+    ) -> None:
+        army = _army(
+            83_886_367,
+            soldiers=None,
+            province_id=2_638,
+            controllable=True,
+            move_target_province_id=None,
+            move_target_observable=True,
+            army_state="combat",
+            army_state_code=2,
+            route_province_ids=[],
+            in_combat=True,
+            retreating=False,
+        )
+        siege_enemy = _army(
+            83_886_252,
+            soldiers=None,
+            province_id=2_619,
+            controllable=False,
+            move_target_province_id=None,
+            move_target_observable=True,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+        war = _war(
+            war_id=16_777_250,
+            allied_armies=[army],
+            enemy_armies=[siege_enemy],
+            score=29,
+            player_side="defender",
+            player_is_primary_war_leader=True,
+        )
+        snapshot = {
+            "paused": True,
+            "map_ready": True,
+            "active_event": None,
+            "pending_character_interaction": None,
+            "date_raw": 53_192_304,
+        }
+        frame = {
+            "status": "available",
+            "battle_control_ready": True,
+            "subject_public_cunit_id": 83_886_367,
+            "province_id": 2_638,
+            "observed_date_raw": 53_192_304,
+            "combat_id": 738_197_508,
+        }
+
+        def relief(
+            subject: dict[str, object],
+            current_frame: dict[str, object] | None,
+        ) -> dict[str, object]:
+            return _primary_defender_siege_relief_assessment(
+                snapshot,
+                commands=[],
+                active_wars=[war],
+                controlled_armies=[subject],
+                pursuit_army=subject,
+                battle_control_state=(
+                    {"status": "ready", "full_frames": [current_frame]}
+                    if current_frame is not None
+                    else {"status": "query_required"}
+                ),
+            )
+
+        exact = relief(army, frame)
+        self.assertEqual(exact["status"], "active_combat")
+        self.assertEqual(exact["combat_id"], 738_197_508)
+        for changed in (
+            {**frame, "observed_date_raw": 53_192_280},
+            {**frame, "subject_public_cunit_id": 83_886_368},
+            {**frame, "province_id": 2_637},
+            {**frame, "combat_id": None},
+        ):
+            with self.subTest(changed=changed):
+                self.assertEqual(
+                    relief(army, changed)["required_observation"],
+                    "same-frame-active-combat-binding",
+                )
+        self.assertEqual(
+            relief(army, None)["required_observation"],
+            "same-frame-active-combat-binding",
+        )
+        noncombat = {**army, "in_combat": False, "army_state": "sieging"}
+        self.assertEqual(
+            relief(noncombat, frame)["required_observation"],
             "accepted-native-move-arrival-for-current-siege",
         )
 
