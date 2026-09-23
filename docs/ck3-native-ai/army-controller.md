@@ -100,6 +100,49 @@ flowchart TD
     class U unknown;
 ```
 
+## R0185 已承诺路线的逐日接触边界（2026-09-23）
+
+- [live-confirmed / read-only] 冻结 CK3 `1.19.0.6-steam23530548`、EXE SHA
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+  R0185 在 raw53215920 只读预览玩家 Army83886367 从省 2610 前往防守目标省 2628；
+  原生路线为 `[2614,2618,2617,2632,2613,8752,2628]`，预计 raw53217024
+  抵达，即约 46 日。完整敌军 scope 只有 Army50331920；同帧 h1 证明仅覆盖
+  raw53215920..53215944，并返回 `one_day_contact_free=true`。该轮 0 动作、0 日期，
+  没有证明 move 已提交或整条路线安全。只读汇总位于
+  `Z:/ck3_mod_rewrite_process_assets/g2-robert-r0184-route-strength-readonly-R0185-20260923/R0185-READBACK-SUMMARY.json`。
+- [live-confirmed / read-only] 玩家与敌军的原生 base power 分别为 `7574100000` 与
+  `4952700000`；该字段是 operational routing 输入，不是模拟胜率或接战许可。敌军当时
+  在目标省 2628 围城，但未来 46 日的位置与改令仍为 [unknown]。
+- [static-confirmed] committed-route sentinel 最多可在单次 arm 中运行 45 日；它观察己方
+  CUnit identity、move target、CombatID、retreat、native pause 与 deadline，不观察敌军
+  route/target 的中途变化。`combat_transition` 只能在 CombatID 已形成后触发，不能证明在
+  接战前停止。R0185 的 46 日 ETA 与 45 日 deadline 相邻只是当帧估计，不能代替动态敌军
+  接触证明。
+- [counter-policy / static-ready] 已承诺路线没有同帧合格模拟胜率或明确接战许可时，禁用
+  committed-route sentinel。每个新的 paused frame 都必须重新读取完整非撤退敌军 scope，
+  取得绑定同一 snapshot/public revision/native revision/connection/episode、当前己军 route
+  与下一日到达时间的 fresh h1；只有 `one_day_contact_free=true` 才允许 proof-bound 的
+  至多一日 advance。下一 paused frame 必须重新判定，旧 h1 不得跨 move 或日期复用。
+- [counter-policy] h1 缺失、stale、查询失败、scope 不完整或报告任一接触时保持 paused RED；
+  不把 base power、静态几何 safe、sentinel 的 CombatID stop 或一天前的 free 结果写成接战
+  许可。当前 same-current move cancel 未广告，原版 Halt 也尚未形成 production capability；
+  因此此收紧只保证没有证明时不恢复时间，不声称已经解除路线承诺、完成改道或关闭 R0118。
+
+```mermaid
+flowchart TD
+    M["[live read-only] R0185 route preview<br/>2610 -> 2628, ETA about 46 days"] --> P["[counter-policy] typed move postcondition<br/>new paused committed-route frame"]
+    P --> Q{"fresh same-frame h1<br/>full hostile scope?"}
+    Q -->|missing / stale / failed| R["paused RED"]
+    Q -->|contact predicted| R
+    Q -->|contact-free for next day| A["proof-bound advance<br/>at most one day"]
+    A --> N["new paused frame<br/>discard prior h1 and replan"]
+    N --> Q
+    S["committed-route sentinel<br/>hostile route changes not watched"] -. "[unknown] no qualified combat permission" .-> X["disabled for this branch"]
+    B["base power"] -. "not a simulated win probability" .-> X
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class X unknown;
+```
+
 ### 默认 stance 的 objective 基础优先级
 
 - [static-confirmed] 下表按 `00_ai_war_stances.txt` 的 objective block 原顺序抄录；括号内是限定 area，

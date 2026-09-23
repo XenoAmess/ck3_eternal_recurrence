@@ -84,7 +84,6 @@ from .bridge.war_contract import (
     RAISE_TROOPS_STEP,
     advance_route_contact_horizon_step,
     battle_decision_epoch_advance_step,
-    committed_route_sentinel_advance_step,
     war_objective_hold_sentinel_advance_step,
     controllable_armies,
     disband_army_step,
@@ -167,9 +166,6 @@ _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MAX_SCORE = -1
 _DE_JURE_NO_SAFE_ROUTE_SURRENDER_MIN_DAYS = 180
 _TERMINAL_SCORE_SURRENDER_SCORE = -100
 _BATTLE_DECISION_EPOCH_ADVANCE_STEP = "battle-decision-epoch-advance"
-_COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP = (
-    "committed-route-sentinel-advance"
-)
 _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP = (
     "war-objective-hold-sentinel-advance"
 )
@@ -6771,21 +6767,14 @@ def _choose_one_life_turn_core(
         )
         for name in (
             "decision_sentinel_live_ready",
-            "committed_route_sentinel_live_ready",
             "stationary_objective_hold_sentinel_live_ready",
             "stationary_objective_hold_sentinel_canary_ready",
-            "committed_route_sentinel_speed_4_live_ready",
-            "committed_route_sentinel_speed_5_live_ready",
             "stationary_objective_hold_sentinel_speed_4_live_ready",
             "stationary_objective_hold_sentinel_speed_5_live_ready",
             "terminal_sentinel_live_ready",
             "overwhelming_matrix_live_ready",
         )
     }
-    committed_route_sentinel_speed = _noncombat_sentinel_timeline_speed(
-        battle_speed_readiness,
-        sentinel_scope="committed_route",
-    )
     stationary_objective_hold_sentinel_speed = (
         _noncombat_sentinel_timeline_speed(
             battle_speed_readiness,
@@ -10078,127 +10067,26 @@ def _choose_one_life_turn_core(
                         "route_audit": passive_route_audit,
                         "active_wars": war_summary,
                     }
-                committed_route = pursuit_army.get("route_province_ids")
-                route_watch_ids = [
-                    candidate_id
-                    for candidate in controlled_armies
-                    if (
-                        candidate_id := _native_int(
-                            candidate.get("army_id")
-                        )
-                    )
-                    is not None
-                    and candidate_id > 0
-                ]
-                complete_route_watch_set = bool(
-                    route_watch_ids
-                    and len(route_watch_ids) == len(controlled_armies)
-                    and len(route_watch_ids) == len(set(route_watch_ids))
-                    and len(route_watch_ids)
-                    <= _BATTLE_SENTINEL_MAX_WATCH_ARMIES
-                )
-                route_sentinel_start_date_raw = (
-                    _native_int(snapshot.get("date_raw"))
-                    if isinstance(snapshot, dict)
-                    else None
-                )
-                if (
-                    battle_speed_gates[
-                        "committed_route_sentinel_live_ready"
-                    ]
-                    and not (
-                        isinstance(strength_balance, dict)
-                        and strength_balance.get(
-                            "hostile_operational_overmatch"
-                        )
-                        is True
-                    )
-                    and _COMMITTED_ROUTE_SENTINEL_ADVANCE_STEP
-                    in available_steps
-                    and complete_route_watch_set
-                    and isinstance(snapshot, dict)
-                    and snapshot.get("paused") is True
-                    and snapshot.get("map_ready") is True
-                    and raw_active_event is None
-                    and pending_interaction is None
-                    and not combat_retreat_armies
-                    and not active_assaults
-                    and isinstance(observed_route_target, int)
-                    and observed_route_target > 0
-                    and isinstance(committed_route, list)
-                    and bool(committed_route)
-                    and all(
-                        isinstance(province_id, int)
-                        and not isinstance(province_id, bool)
-                        and province_id > 0
-                        for province_id in committed_route
-                    )
-                    and committed_route[-1] == observed_route_target
-                    and (
-                        _army_tactical_state(pursuit_army)
-                        in {"moving", "embarked"}
-                        or _native_int(
-                            pursuit_army.get("army_state_code")
-                        )
-                        in {4, 7}
-                    )
-                    and route_sentinel_start_date_raw is not None
-                ):
-                    route_target_date_raw = (
-                        route_sentinel_start_date_raw
-                        + _BATTLE_SENTINEL_ABSOLUTE_FALLBACK_DAYS * 24
-                    )
-                    return {
-                        "policy": "one-life-turn-v1",
-                        "phase": (
-                            "native_war_committed_route_sentinel_progress"
-                        ),
-                        "selected_step": (
-                            committed_route_sentinel_advance_step(
-                                int(army_id),
-                                observed_route_target,
-                                route_target_date_raw,
-                                timeline_speed=(
-                                    committed_route_sentinel_speed
-                                ),
-                            )
-                        ),
-                        "reason": (
-                            "the complete controllable watch set has an "
-                            "already committed nonempty route; run at speed "
-                            f"{committed_route_sentinel_speed} without Python "
-                            "daily polling until the native "
-                            "sentinel observes route-target change, CombatID "
-                            "contact, retreat, army loss, native pause, or "
-                            "the absolute date bound"
-                        ),
-                        "timeline_policy": (
-                            "war_committed_route_sentinel_speed_"
-                            f"{committed_route_sentinel_speed}"
-                        ),
-                        "timeline_speed": committed_route_sentinel_speed,
-                        "research_high_speed_ab": bool(
-                            committed_route_sentinel_speed > 3
-                            and isinstance(battle_speed_readiness, dict)
-                            and battle_speed_readiness.get(
-                                "noncombat_sentinel_high_speed_ab"
-                            )
-                            is True
-                        ),
-                        "sentinel_mode": "decision_epoch",
-                        "sentinel_scope": "committed_route",
-                        "absolute_target_date_raw": route_target_date_raw,
-                        "watch_army_ids": sorted(route_watch_ids),
-                        "route_subject_army_id": army_id,
-                        "route_target_province_id": observed_route_target,
-                        "route_audit": passive_route_audit,
-                        "move_intent": observed_intent,
-                        "hostile_route_change_detection": (
-                            "not_watched_until_combat_id_transition"
-                        ),
-                        "active_wars": war_summary,
-                    }
-                if passive_route_audit["status"] == "unsafe":
+                if passive_route_audit["status"] in {"safe", "unsafe"}:
+                    if not route_contact_scope_supported:
+                        return {
+                            "policy": "one-life-turn-v1",
+                            "phase": (
+                                "native_war_active_route_contact_horizon_unsupported"
+                            ),
+                            "selected_step": None,
+                            "required_observation": (
+                                "fresh-full-hostile-route-contact-horizon"
+                            ),
+                            "reason": (
+                                "an already committed route may advance only "
+                                "from a fresh same-frame one-day proof over "
+                                "the complete hostile scope; keep time paused"
+                            ),
+                            "route_audit": passive_route_audit,
+                            "move_intent": observed_intent,
+                            "active_wars": war_summary,
+                        }
                     contact_horizon = (
                         _fresh_route_contact_horizon(
                             rows,
@@ -10231,21 +10119,31 @@ def _choose_one_life_turn_core(
                             )
                         )
                         if failed_query is not None:
-                            passive_route_audit = {
-                                **passive_route_audit,
-                                "status": "blocked",
-                                "reason": (
-                                    "route_contact_timeline_unavailable"
+                            return {
+                                "policy": "one-life-turn-v1",
+                                "phase": (
+                                    "native_war_active_route_contact_horizon_unavailable"
                                 ),
+                                "selected_step": None,
+                                "required_step": horizon_step,
+                                "reason": (
+                                    "the fresh full-hostile contact query "
+                                    "failed in this unchanged frame; keep "
+                                    "time paused without resubmitting"
+                                ),
+                                "route_audit": passive_route_audit,
                                 "contact_query_attempt": failed_query,
+                                "move_intent": observed_intent,
+                                "active_wars": war_summary,
                             }
                         elif horizon_step in available_steps:
                             return {
                                 "policy": "one-life-turn-v1",
                                 "phase": "native_war_route_contact_horizon",
                                 "selected_step": horizon_step,
-                                "reason": "read the exact one-day native arrival/contact horizon before advancing an intersecting active route",
+                                "reason": "read the exact one-day native arrival/contact horizon over the full hostile scope before advancing the committed route",
                                 "route_audit": passive_route_audit,
+                                "move_intent": observed_intent,
                                 "active_wars": war_summary,
                             }
                         elif horizon_step not in available_steps:
@@ -10254,8 +10152,9 @@ def _choose_one_life_turn_core(
                                 "phase": "native_war_route_contact_horizon_unsupported",
                                 "selected_step": None,
                                 "required_step": horizon_step,
-                                "reason": "the intersecting active route requires a fresh exact one-day contact horizon",
+                                "reason": "the committed route requires a fresh same-frame full-hostile one-day contact horizon",
                                 "route_audit": passive_route_audit,
+                                "move_intent": observed_intent,
                                 "active_wars": war_summary,
                             }
                     if (
@@ -10422,52 +10321,25 @@ def _choose_one_life_turn_core(
                             "unavoidable"
                         ]
                         if unavoidable_siblings:
-                            if len(unavoidable_siblings) != 1:
-                                return {
-                                    "policy": "one-life-turn-v1",
-                                    "phase": "native_war_sibling_unavoidable_contact_global_blocked",
-                                    "selected_step": None,
-                                    "required_step": "single-proof-bound-unavoidable-contact-transition",
-                                    "reason": "more than one moving sibling has an unavoidable current-Province contact in the same day; one subject proof cannot verify all resulting transitions",
-                                    "route_audit": passive_route_audit,
-                                    "moving_contact_horizons": moving_conjunction,
-                                    "active_wars": war_summary,
-                                }
-                            unavoidable_sibling = unavoidable_siblings[0]
-                            sibling_advance_step = unavoidable_sibling.get(
-                                "advance_step"
-                            )
-                            sibling_audit = {
-                                "army_id": unavoidable_sibling.get("army_id"),
-                                "status": "unavoidable_current_province_contact",
-                                "target_province_id": unavoidable_sibling.get(
-                                    "target_province_id"
-                                ),
-                                "contact_horizon": unavoidable_sibling.get(
-                                    "contact_horizon"
-                                ),
-                            }
-                            if (
-                                isinstance(sibling_advance_step, str)
-                                and sibling_advance_step in available_steps
-                            ):
-                                return {
-                                    "policy": "one-life-turn-v1",
-                                    "phase": "native_war_unavoidable_contact_transition",
-                                    "selected_step": sibling_advance_step,
-                                    "reason": "the sibling's own fresh timeline proves an unavoidable closed-end current-Province contact while every other moving route is contact-free; use that subject's strict one-day contact transition",
-                                    "route_audit": sibling_audit,
-                                    "stationary_contact_horizons": stationary_contact_horizons,
-                                    "moving_contact_horizons": moving_conjunction,
-                                    "active_wars": war_summary,
-                                }
                             return {
                                 "policy": "one-life-turn-v1",
-                                "phase": "native_war_unavoidable_contact_transition_unsupported",
+                                "phase": (
+                                    "native_war_active_route_contact_blocked"
+                                ),
                                 "selected_step": None,
-                                "required_step": sibling_advance_step,
-                                "reason": "the sibling has its own unavoidable current-Province proof, but the multi-proof capability conjunction does not advertise that strict transition",
-                                "route_audit": sibling_audit,
+                                "required_observation": (
+                                    "qualified-combat-permission-or-safe-route"
+                                ),
+                                "reason": (
+                                    "a sibling's fresh horizon predicts contact; "
+                                    "one contact-free subject proof cannot "
+                                    "authorize global time without a qualified "
+                                    "combat result"
+                                ),
+                                "route_audit": passive_route_audit,
+                                "stationary_contact_horizons": (
+                                    stationary_contact_horizons
+                                ),
                                 "moving_contact_horizons": moving_conjunction,
                                 "active_wars": war_summary,
                             }
@@ -10481,7 +10353,7 @@ def _choose_one_life_turn_core(
                                 "policy": "one-life-turn-v1",
                                 "phase": "native_war_route_contact_horizon_progress",
                                 "selected_step": advance_step,
-                                "reason": "the exact native timeline proves the intersecting active route contact-free for the next day",
+                                "reason": "the fresh same-frame native timeline proves the committed route and every other controllable army contact-free for at most the next day",
                                 "route_audit": passive_route_audit,
                                 "stationary_contact_horizons": stationary_contact_horizons,
                                 "moving_contact_horizons": moving_conjunction,
@@ -10496,147 +10368,14 @@ def _choose_one_life_turn_core(
                             "reason": "the exact route is contact-free for one day but this backend cannot advance it",
                             "route_audit": passive_route_audit,
                         }
-                    if (
-                        isinstance(contact_horizon, dict)
-                        and unavoidable_current_province_contact_in_horizon(
-                            contact_horizon
-                        )
-                    ):
-                        unavoidable_audit = {
-                            **passive_route_audit,
-                            "status": "unavoidable_current_province_contact",
-                            "contact_horizon": contact_horizon,
-                        }
-                        other_unsafe_armies = [
-                            candidate
-                            for candidate in unsafe_armies
-                            if candidate.get("army_id") != army_id
-                        ]
-                        stationary_contact_horizons: list[
-                            dict[str, object]
-                        ] = []
-                        uncovered_stationary_armies: list[
-                            dict[str, object]
-                        ] = []
-                        for candidate in sorted(
-                            threatened_stationary_armies,
-                            key=lambda row: _native_int(row.get("army_id"))
-                            or 2**31,
-                        ):
-                            candidate_id = _native_int(
-                                candidate.get("army_id")
-                            )
-                            candidate_province_id = _native_int(
-                                candidate.get("current_province_id")
-                            )
-                            if (
-                                candidate_id is None
-                                or candidate_province_id is None
-                            ):
-                                uncovered_stationary_armies.append(candidate)
-                                continue
-                            try:
-                                stationary_contact_free = (
-                                    stationary_province_contact_free_in_horizon(
-                                        contact_horizon,
-                                        candidate_province_id,
-                                    )
-                                )
-                            except ValueError:
-                                stationary_contact_free = False
-                            if stationary_contact_free:
-                                stationary_contact_horizons.append(
-                                    {
-                                        "army_id": candidate_id,
-                                        "current_province_id": (
-                                            candidate_province_id
-                                        ),
-                                        "proof_subject_army_id": army_id,
-                                        "horizon_start_date_raw": (
-                                            contact_horizon.get(
-                                                "horizon_start_date_raw"
-                                            )
-                                        ),
-                                        "horizon_end_date_raw": (
-                                            contact_horizon.get(
-                                                "horizon_end_date_raw"
-                                            )
-                                        ),
-                                        "one_day_contact_free": True,
-                                    }
-                                )
-                            else:
-                                uncovered_stationary_armies.append(candidate)
-                        other_combat_retreat_armies = [
-                            candidate
-                            for candidate in combat_retreat_armies
-                            if candidate.get("army_id") != army_id
-                        ]
-                        if (
-                            other_unsafe_armies
-                            or uncovered_stationary_armies
-                            or other_combat_retreat_armies
-                        ):
-                            return {
-                                "policy": "one-life-turn-v1",
-                                "phase": "native_war_route_contact_horizon_global_blocked",
-                                "selected_step": None,
-                                "required_step": "complete-global-route-contact-horizon",
-                                "reason": "the unavoidable subject contact cannot authorize time while another controllable army remains unsafe or threatened",
-                                "route_audit": unavoidable_audit,
-                                "other_unsafe_armies": other_unsafe_armies,
-                                "threatened_stationary_armies": uncovered_stationary_armies,
-                                "stationary_contact_horizons": stationary_contact_horizons,
-                                "combat_retreat_armies": other_combat_retreat_armies,
-                                "active_wars": war_summary,
-                            }
-                        advance_step = advance_route_contact_horizon_step(
-                            army_id,
-                            observed_route_target,
-                            route_threat_enemy_ids,
-                        )
-                        if advance_step in available_steps:
-                            return {
-                                "policy": "one-life-turn-v1",
-                                "phase": "native_war_unavoidable_contact_transition",
-                                "selected_step": advance_step,
-                                "reason": "the fresh exact timeline proves every next-day conflict is at the subject's current Province and its committed edge cannot complete before contact; advance exactly one day, then re-observe combat or changed hostile intent",
-                                "route_audit": unavoidable_audit,
-                                "stationary_contact_horizons": stationary_contact_horizons,
-                                "move_intent": observed_intent,
-                                "active_wars": war_summary,
-                            }
-                        return {
-                            "policy": "one-life-turn-v1",
-                            "phase": "native_war_unavoidable_contact_transition_unsupported",
-                            "selected_step": None,
-                            "required_step": advance_step,
-                            "reason": "the exact next-day current-Province contact is unavoidable, but no proof-bound one-day transition is available",
-                            "route_audit": unavoidable_audit,
-                            "active_wars": war_summary,
-                        }
+                    passive_route_audit = {
+                        **passive_route_audit,
+                        "contact_horizon": contact_horizon,
+                        "contact_policy": (
+                            "blocked_without_qualified_combat_permission"
+                        ),
+                    }
                     blocked_province_ids.add(observed_route_target)
-                elif "life-advance" in available_steps:
-                    return {
-                        "policy": "one-life-turn-v1",
-                        "phase": "native_war_route_progress",
-                        "selected_step": "life-advance",
-                        "reason": "the remaining native route is still clear of observable enemy convergence",
-                        "route_audit": passive_route_audit,
-                        "move_intent": observed_intent,
-                        "active_wars": war_summary,
-                    }
-                else:
-                    return {
-                        "policy": "one-life-turn-v1",
-                        "phase": "native_war_route_progress_unsupported",
-                        "selected_step": None,
-                        "required_step": "life-advance",
-                        "reason": "the remaining native route is safe but this backend cannot advance it",
-                        "route_audit": passive_route_audit,
-                        "move_intent": observed_intent,
-                        "active_wars": war_summary,
-                    }
             elif (
                 observed_intent is not None
                 and observed_route_target not in enemy_threat_province_ids
