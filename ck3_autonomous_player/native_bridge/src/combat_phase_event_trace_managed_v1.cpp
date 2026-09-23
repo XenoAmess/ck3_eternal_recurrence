@@ -59,7 +59,6 @@ constexpr std::size_t kBattleEventStride = 0x38;
 constexpr std::size_t kBattleEventLeftCharacterOffset = 0x08;
 constexpr std::size_t kBattleEventRightCharacterOffset = 0x0C;
 constexpr std::size_t kCurrentDateRawOffset = 0x08;
-constexpr std::size_t kGlobalRngStateOffset = 0x00;
 constexpr std::int32_t kDateUnitsPerDay = 24;
 
 template <typename T>
@@ -225,17 +224,8 @@ BuildCombatPhaseEventTraceCapturePlanV1Result BuildPlanUnsafe(
       LoadAt<std::uintptr_t>(output.phase_event_database_slot);
   output.expected_current_date_object =
       LoadAt<std::uintptr_t>(output.current_date_slot);
-  output.expected_global_rng_wrapper =
-      LoadAt<std::uintptr_t>(output.global_rng_wrapper_slot);
-  output.expected_global_rng_state =
-      output.expected_global_rng_wrapper == 0
-          ? 0
-          : LoadAt<std::uintptr_t>(output.expected_global_rng_wrapper,
-                                   kGlobalRngStateOffset);
   if (output.expected_phase_event_database == 0 ||
-      output.expected_current_date_object == 0 ||
-      output.expected_global_rng_wrapper == 0 ||
-      output.expected_global_rng_state == 0) {
+      output.expected_current_date_object == 0) {
     return BuildCombatPhaseEventTraceCapturePlanV1Result::
         native_slot_unavailable;
   }

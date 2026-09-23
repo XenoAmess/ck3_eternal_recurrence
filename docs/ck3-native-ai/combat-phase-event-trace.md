@@ -1,5 +1,37 @@
 # ongoing combat phase-event trace v1
 
+## R0192 paused RNG scope and original tick boundary
+
+- [production-live RED] R0192 used master `6240e7b` and an officially recovered copy of the old R0168 `h1251/raw53192304` battle. The fresh paused frame retained CombatID `738197508` and native revision `3`; the phase query was accepted but returned `evaluator_probe_ready=false`, `unavailable_reason=global_rng_state_unavailable`. It made no typed action or date advance and stopped under control. Immutable index: `Z:\ck3_mod_rewrite_process_assets\g2-r0168-phase-trace-R0192-global-rng-red-frozen-20260923\R0192-raw-freeze.json`, SHA-256 `87E0167EFB33A73C3BE12F7EB618531E37B26CF5B39FAE1B7C9F397041E9ED27`. The response does not distinguish a null slot, wrapper or state.
+- [production-live + exact-build source] The pre-query mailbox observed application-main `owner_tid=153828` but global RNG `rng_owner_tid=156012`. This is a different scoped owner, not a valid combat RNG state for that paused application-main query. `ReadGlobalRng` currently requires `module+0x4FEB1C8 -> wrapper+0` to be non-null before evaluating rows. Existing mailbox admission deliberately excludes this diagnostic RNG owner. On frozen EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`, `0x356A0A0` loads that wrapper and checks the current thread ID before drawing; `0x23C9900` invokes it at the original phase fire. No paused, non-consuming, correctly owned RNG route is established by R0192.
+- [implementation gap] The previous managed capture-plan builder required a non-null paused wrapper/state and the seven-boundary ring pinned those addresses before arming. This would reproduce the R0192 scope failure before original tick capture. This research patch arms without borrowing another thread's RNG. On an original hook, it latches the first state whose owner matches that hook thread; each non-null later state must match, while nullable schedule/final records remain explicit. Both phase-fire entry and exit require a valid state. If either is null, the trace remains incomplete; the next evidence point would be an original RNG-draw callback inside `0x23C9900`, not an assertion that the battle has no RNG. `production_trace_ready=false` and qualified win probability remain unavailable. One-day live capture still needs a fresh official checkpoint pair and its bounded no-launch gate.
+- [exact-build source] `0x23C9900+0x57` calls RNG draw `0x356A0A0` before the function establishes any local RNG wrapper. Its caller invokes phase fire for both sides at `0x2309EF2/FA`. The draw checks the wrapper state's owner against the current thread. This supports a surrounding native tick scope, but does not prove the state is still visible after either phase-fire return; the DTO must report actual entry/exit reads.
+- [research-only comparison] R0188 Robert h2127 v3 base input (friendly 2327, enemy 1488) fed the existing phase-events-disabled kernel with seed `0xC0319A06`, 4096 runs and horizon 120: 4096 wins, 0 losses, 0 unresolved. Artifact `Z:\ck3_mod_rewrite_process_assets\g2-robert-r0188-phase-disabled-research-20260923\R0188-research-only.json`, SHA-256 `1ED8B91F62808D54A5987CD88E9C6ED18DB296AAF577B3010239C2639BBA1555`. This kernel has `planner_usable=false`; the output is neither a qualified probability nor move authorization.
+- [policy boundary] `strategy.py::_primary_defender_siege_relief_assessment` currently uses friendly headcount and base power each at least twice the hostile value as a conservative fallback for relief admission. This ratio is not a win probability. Once a same-frame, qualified simulation probability and risk contract are available, the relief decision must consume that result instead of letting this fallback override it. R0192 does not qualify such a result and this package does not change the active war strategy.
+
+The default DLL remains read-only. A separate CMake option admits only the
+research `experimental-combat-phase-event-trace-begin-v1` and `-finish-v1`
+command pair through dedicated application-main mailbox permit slots 51/52.
+The external bounded runner checks the official no-launch index and a fresh
+battle-control CombatID before making a materialized checkpoint. Begin arms the
+ring; exact-day map controls are the only steps admitted until finish drains
+and removes detours. A short day, overshoot, missing hook, foreign-thread RNG,
+or incomplete DTO stays RED and requires controlled stop. This is a single
+research transition from a disposable official restore; it is not a gameplay
+strategy, probability source, or authority to reuse the advanced research save.
+
+```mermaid
+flowchart TD
+    P["paused application-main CombatID frame"] --> R{"RNG wrapper owned by this thread?"}
+    R -->|"R0192: not established"| U["paused RNG-dependent evaluator unavailable"]
+    P -. "official checkpoint and private one-day arm pending" .-> T["original combat tick"]
+    T --> F["native phase-fire boundary: 0x23C9900"]
+    F --> L{"latch same-thread RNG wrapper/state?"}
+    L -->|no| I["incomplete original trace; probability OFF"]
+    L -->|yes, future live proof| B["bounded native before/after records"]
+    B -. "effect and full transition parity still pending" .-> I
+```
+
 ## R0190 production mailbox RED（exact build 1.19.0.6）
 
 - [production-live RED] R0190 从旧 R0168 `h1251/raw53192304` 的官方配对冷恢复，在新的暂停帧确认 CombatID `738197508`、`native_revision=3` 后，`query-combat-phase-event-trace-v1-738197508` 返回 `application-main combat phase-event executor is unavailable`。只读请求之前的 battle-control 成功；本轮 0 typed 动作、0 日期推进，受控停止且进程及 owner 均已回收。冻结索引：`Z:\ck3_mod_rewrite_process_assets\g2-r0168-phase-trace-R0190-native-executor-red-frozen-20260923\R0190-raw-freeze.json`，SHA-256 `B100DC51DB8C9EA62FDCBC833DD36B80520BF7DAE0DE3C0610A2AB55CC13E739`；原始 MCP 错误 SHA-256 `FBEDFAC34E5CAACE42042738FBF2D022CF44E4002A7173D40FA79F333478F262`。

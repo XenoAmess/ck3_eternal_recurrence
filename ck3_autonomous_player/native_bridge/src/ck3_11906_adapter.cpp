@@ -2,6 +2,9 @@
 
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+#include "xar_bridge/combat_phase_event_trace_managed_v1.hpp"
+#endif
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/player_faction_alerts_v1.hpp"
@@ -39,6 +42,9 @@ namespace {
 constexpr std::size_t kBaseCapabilityCount = 101;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+    + 1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
     + 1
 #endif
@@ -173,6 +179,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-combat-simulation-inputs-v2-N",
     "game.command.query-combat-simulation-inputs-v3-N",
     ck3_11906::kCombatPhaseEventTraceV1Capability,
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+    ck3_11906::kCombatPhaseEventTraceManagedCapabilityV1,
+#endif
     "game.command.query-war-termination-options-N",
     "game.command.query-outbound-war-white-peace-status-v1-N",
     "game.command.query-war-termination-terms-v1-N",

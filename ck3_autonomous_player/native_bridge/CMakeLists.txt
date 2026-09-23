@@ -42,6 +42,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1
+  "Enable the private research-only managed one-day phase trace command pair"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1
   "Install the existing exact-build startup containment chain"
   OFF
@@ -675,6 +681,11 @@ target_link_libraries(xar_ck3_bridge PRIVATE xar_bridge_protocol bcrypt)
 target_compile_definitions(xar_ck3_bridge PRIVATE
   XAR_BRIDGE_VERSION="${PROJECT_VERSION}"
 )
+if(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1=1
+  )
+endif()
 if(XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1=1

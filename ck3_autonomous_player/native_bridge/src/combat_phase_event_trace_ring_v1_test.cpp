@@ -1,5 +1,7 @@
 #include "xar_bridge/combat_phase_event_trace_ring_v1.hpp"
 
+#include <windows.h>
+
 #include <algorithm>
 #include <array>
 #include <cstddef>
@@ -154,7 +156,7 @@ struct Fixture {
           reinterpret_cast<std::uintptr_t>(rng_state.data()));
     Store(rng_state, 0x08, std::uint32_t{100});
     Store(rng_state, 0x0C, std::uint32_t{0x12345678});
-    Store(rng_state, 0x10, std::uint32_t{77});
+    Store(rng_state, 0x10, std::uint32_t{GetCurrentThreadId()});
     date_slot = reinterpret_cast<std::uintptr_t>(date_object.data());
     rng_wrapper_slot = reinterpret_cast<std::uintptr_t>(rng_wrapper.data());
     event_database_slot =
@@ -172,9 +174,6 @@ struct Fixture {
     plan.expected_current_date_object = date_slot;
     plan.global_rng_wrapper_slot =
         reinterpret_cast<std::uintptr_t>(&rng_wrapper_slot);
-    plan.expected_global_rng_wrapper = rng_wrapper_slot;
-    plan.expected_global_rng_state =
-        reinterpret_cast<std::uintptr_t>(rng_state.data());
     plan.battle_result_id = kBattleResultId;
     plan.battle_result =
         reinterpret_cast<std::uintptr_t>(battle_result.data());
@@ -431,6 +430,39 @@ bool FailureCases() {
           fixture.schedule_rng.data(), schedule0_return) ||
       (ring->failure_flags.load() & trace_capture_failure_capacity) == 0) {
     return Fail("capacity overflow did not fail closed");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+
+  Store(fixture.battle_result, 0x190, std::int32_t{2});
+  Store(fixture.battle_result, 0x194, std::int32_t{0});
+  Store(fixture.rng_wrapper, 0x00, std::uintptr_t{0});
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan) ||
+      !CaptureCombatPhaseEventTraceBoundaryV1(
+          CombatPhaseEventTraceBoundaryV1::before_side0_schedule,
+          fixture.combat.data(),
+          reinterpret_cast<void *>(fixture.plan.sides[0]),
+          fixture.schedule_rng.data(), schedule0_return) ||
+      !CaptureCombatPhaseEventTraceBoundaryV1(
+          CombatPhaseEventTraceBoundaryV1::after_side1_schedule,
+          fixture.combat.data(),
+          reinterpret_cast<void *>(fixture.plan.sides[1]),
+          fixture.schedule_rng.data(),
+          fixture.plan.module_base +
+              kCombatPhaseEventScheduleSide1ReturnRva)) {
+    return Fail("scoped RNG fixture could not record nullable schedule");
+  }
+  Store(fixture.rng_wrapper, 0x00,
+        reinterpret_cast<std::uintptr_t>(fixture.rng_state.data()));
+  Store(fixture.rng_state, 0x10,
+        std::uint32_t{GetCurrentThreadId() + 1});
+  if (CaptureCombatPhaseEventTraceBoundaryV1(
+          CombatPhaseEventTraceBoundaryV1::before_side0_phase_fire,
+          fixture.combat.data(),
+          reinterpret_cast<void *>(fixture.plan.sides[0]), nullptr,
+          fixture.plan.module_base +
+              kCombatPhaseEventFireSide0ReturnRva) ||
+      (ring->failure_flags.load() & trace_capture_failure_rng_scope) == 0) {
+    return Fail("foreign-thread RNG was admitted at original fire");
   }
   CancelCombatPhaseEventTraceRingV1(*ring);
   return true;

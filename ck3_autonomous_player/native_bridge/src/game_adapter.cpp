@@ -1,5 +1,8 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1.hpp"
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+#include "xar_bridge/combat_phase_event_trace_managed_v1.hpp"
+#endif
 
 #include "xar_bridge/war_entry_assessments_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
@@ -513,6 +516,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
       capability = ck3_11906::kCombatPhaseEventTraceV1Capability;
     }
   }
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+  if (step == ck3_11906::kCombatPhaseEventTraceManagedBeginStepV1 ||
+      step == ck3_11906::kCombatPhaseEventTraceManagedFinishStepV1) {
+    capability = ck3_11906::kCombatPhaseEventTraceManagedCapabilityV1;
+  }
+#endif
   if (capability.empty()) {
     CombatSimulationInputsRequest request{};
     if (ParseCombatSimulationInputsV3Step(step, request)) {

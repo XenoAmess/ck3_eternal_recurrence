@@ -11,6 +11,7 @@
 #include <cstring>
 #include <cstdio>
 #include <fstream>
+#include <initializer_list>
 #include <iterator>
 #include <limits>
 #include <optional>
@@ -397,6 +398,18 @@ bool ExecuteOctoquadragintary(
 }
 
 bool ExecutePhaseEvent(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
+bool ExecutePhaseBegin(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
+bool ExecutePhaseFinish(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   return Execute(opaque, stamp);
@@ -1428,6 +1441,38 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  phase_environment.permitted_executor_quinquagintary = nullptr;
+  phase_environment.permitted_executor_unquinquagintary = &ExecutePhaseBegin;
+  phase_environment.permitted_executor_duoquinquagintary = &ExecutePhaseFinish;
+  g_failure_stage = "managed_phase_begin_finish_dedicated_slots";
+  if (!InstallMainThreadQueryMailboxV1(mailbox, phase_environment) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread)) {
+    return false;
+  }
+  for (const auto executor : {&ExecutePhaseBegin, &ExecutePhaseFinish}) {
+    ExecutorContext managed_context{};
+    MainThreadQueryTicketV1 managed_ticket{};
+    if (TrySubmitMainThreadQueryV1(mailbox, executor, &managed_context,
+                                   managed_ticket) !=
+            MainThreadQuerySubmitResultV1::submitted ||
+        !ObserveMainThreadPumpAndDrainV1(
+            mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+        WaitForMainThreadQueryV1(mailbox, managed_ticket, 0) !=
+            MainThreadQueryWaitResultV1::completed ||
+        ReclaimMainThreadQueryV1(mailbox, managed_ticket) !=
+            MainThreadQueryReclaimResultV1::reclaimed ||
+        managed_context.calls != 1) {
+      return false;
+    }
+  }
+  if (UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+      MainThreadQueryUninstallResultV1::uninstalled) {
+    return false;
+  }
+
   phase_environment.permitted_executor = nullptr;
   phase_environment.permitted_executor_quinquagintary = &ExecutePhaseEvent;
   g_failure_stage = "phase_event_executor_registered";
@@ -1634,6 +1679,23 @@ bool TestSourceContract(int argc, char **argv) {
       phase_binding == std::string::npos ||
       phase_binding - phase_slot > 160) {
     std::fprintf(stderr, "R0190 phase query mailbox binding is missing\n");
+    return false;
+  }
+  const auto begin_slot = bridge.find(
+      "environment.permitted_executor_unquinquagintary =");
+  const auto finish_slot = bridge.find(
+      "environment.permitted_executor_duoquinquagintary =");
+  const auto begin_binding = bridge.find(
+      "ExecuteCombatPhaseEventTraceBeginV1;", begin_slot);
+  const auto finish_binding = bridge.find(
+      "ExecuteCombatPhaseEventTraceFinishV1;", finish_slot);
+  if (begin_slot == std::string::npos ||
+      finish_slot == std::string::npos ||
+      begin_binding == std::string::npos ||
+      finish_binding == std::string::npos ||
+      begin_binding - begin_slot > 160 ||
+      finish_binding - finish_slot > 160) {
+    std::fprintf(stderr, "managed phase trace mailbox bindings are missing\n");
     return false;
   }
   using namespace xar::ck3_11906;

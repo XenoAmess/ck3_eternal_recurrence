@@ -80,6 +80,7 @@ enum CombatPhaseEventTraceCaptureFailureV1 : std::uint32_t {
   trace_capture_failure_memory_fault = 1U << 8,
   trace_capture_failure_original_trampoline = 1U << 9,
   trace_capture_failure_final_query = 1U << 10,
+  trace_capture_failure_rng_scope = 1U << 11,
 };
 
 struct CombatPhaseEventTraceObjectRefV1 {
@@ -111,8 +112,9 @@ struct CombatPhaseEventTraceCapturePlanV1 {
   std::array<std::uintptr_t, 2> sides{};
 
   // These are addresses of native pointer slots, not snapshots of their
-  // contents.  Each capture re-reads the slots so a mid-sequence loaded-table,
-  // date-object, RNG-wrapper or RNG-state replacement fails correlation.
+  // contents. The paused frame need not own an RNG state. The original tick
+  // hook latches the first state owned by its current thread; later non-null
+  // states must match it. Null schedule/final records remain explicit.
   std::uintptr_t phase_event_database_slot = 0;
   std::uintptr_t expected_phase_event_database = 0;
   std::uintptr_t current_date_slot = 0;

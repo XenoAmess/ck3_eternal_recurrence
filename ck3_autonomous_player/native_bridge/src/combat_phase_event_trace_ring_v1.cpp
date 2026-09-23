@@ -211,8 +211,8 @@ bool ValidateCapturePlanUnsafe(
       plan.current_date_slot == 0 ||
       plan.expected_current_date_object == 0 ||
       plan.global_rng_wrapper_slot == 0 ||
-      plan.expected_global_rng_wrapper == 0 ||
-      plan.expected_global_rng_state == 0 ||
+      plan.expected_global_rng_wrapper != 0 ||
+      plan.expected_global_rng_state != 0 ||
       plan.battle_result_id <= 0 || plan.battle_result == 0 ||
       plan.expected_battle_event_vtable == 0 ||
       plan.army_count > plan.armies.size() ||
@@ -239,12 +239,7 @@ bool ValidateCapturePlanUnsafe(
       LoadAt<std::uintptr_t>(plan.phase_event_database_slot, 0) !=
           plan.expected_phase_event_database ||
       LoadAt<std::uintptr_t>(plan.current_date_slot, 0) !=
-          plan.expected_current_date_object ||
-      LoadAt<std::uintptr_t>(plan.global_rng_wrapper_slot, 0) !=
-          plan.expected_global_rng_wrapper ||
-      LoadAt<std::uintptr_t>(plan.expected_global_rng_wrapper,
-                             kGlobalRngStateOffset) !=
-          plan.expected_global_rng_state) {
+          plan.expected_current_date_object) {
     return false;
   }
   for (std::uint32_t index = 0; index < plan.army_count; ++index) {
@@ -663,7 +658,7 @@ bool CaptureUnsafe(CombatPhaseEventTraceRingV1 &ring,
                    void *trigger_side,
                    const std::uint32_t *schedule_local_rng,
                    std::uintptr_t caller_return_address) noexcept {
-  const auto &plan = ring.plan;
+  auto &plan = ring.plan;
   std::uint32_t failure_flags = trace_capture_failure_none;
   output.abi_version = kCombatPhaseEventTraceRingV1AbiVersion;
   output.boundary = boundary;
@@ -697,8 +692,7 @@ bool CaptureUnsafe(CombatPhaseEventTraceRingV1 &ring,
   output.global_rng_wrapper =
       LoadAt<std::uintptr_t>(plan.global_rng_wrapper_slot, 0);
   if (output.phase_event_database != plan.expected_phase_event_database ||
-      output.current_date_object != plan.expected_current_date_object ||
-      output.global_rng_wrapper != plan.expected_global_rng_wrapper) {
+      output.current_date_object != plan.expected_current_date_object) {
     failure_flags |= trace_capture_failure_identity;
   }
   if (output.current_date_object != 0) {
@@ -710,16 +704,31 @@ bool CaptureUnsafe(CombatPhaseEventTraceRingV1 &ring,
     output.global_rng_state = LoadAt<std::uintptr_t>(
         output.global_rng_wrapper, kGlobalRngStateOffset);
   }
-  if (output.global_rng_state != plan.expected_global_rng_state) {
-    failure_flags |= trace_capture_failure_identity;
-  } else {
-    output.global_rng_counter = LoadAt<std::uint32_t>(
-        output.global_rng_state, kGlobalRngCounterOffset);
-    output.global_rng_salt =
-        LoadAt<std::uint32_t>(output.global_rng_state,
-                              kGlobalRngSaltOffset);
+  if (output.global_rng_state != 0) {
     output.global_rng_owner_thread_token = LoadAt<std::uint32_t>(
         output.global_rng_state, kGlobalRngOwnerThreadOffset);
+    if (output.global_rng_owner_thread_token == GetCurrentThreadId()) {
+      if (plan.expected_global_rng_state == 0) {
+        plan.expected_global_rng_wrapper = output.global_rng_wrapper;
+        plan.expected_global_rng_state = output.global_rng_state;
+      } else if (output.global_rng_wrapper !=
+                     plan.expected_global_rng_wrapper ||
+                 output.global_rng_state != plan.expected_global_rng_state) {
+        failure_flags |= trace_capture_failure_rng_scope;
+      }
+      output.global_rng_counter = LoadAt<std::uint32_t>(
+          output.global_rng_state, kGlobalRngCounterOffset);
+      output.global_rng_salt = LoadAt<std::uint32_t>(
+          output.global_rng_state, kGlobalRngSaltOffset);
+    } else if (!IsScheduleBoundary(boundary) &&
+               boundary != CombatPhaseEventTraceBoundaryV1::
+                               paused_next_day_stable_query) {
+      failure_flags |= trace_capture_failure_rng_scope;
+    }
+  } else if (!IsScheduleBoundary(boundary) &&
+             boundary != CombatPhaseEventTraceBoundaryV1::
+                             paused_next_day_stable_query) {
+    failure_flags |= trace_capture_failure_rng_scope;
   }
 
   output.combat_id = LoadAt<std::int32_t>(plan.combat, kCombatIdOffset);

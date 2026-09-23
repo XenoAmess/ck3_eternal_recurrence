@@ -15,7 +15,17 @@ namespace xar::ck3_11906 {
 // adapter remains unadvertised until bridge.cpp admits this typed pair and a
 // paused same-combat live fixture records the managed checkpoint transition.
 inline constexpr bool kCombatPhaseEventTraceCapturePlanBuilderV1Ready = true;
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+inline constexpr bool kCombatPhaseEventTraceManagedExecutorV1Wired = true;
+#else
 inline constexpr bool kCombatPhaseEventTraceManagedExecutorV1Wired = false;
+#endif
+inline constexpr std::string_view kCombatPhaseEventTraceManagedBeginStepV1 =
+    "experimental-combat-phase-event-trace-begin-v1";
+inline constexpr std::string_view kCombatPhaseEventTraceManagedFinishStepV1 =
+    "experimental-combat-phase-event-trace-finish-v1";
+inline constexpr std::string_view kCombatPhaseEventTraceManagedCapabilityV1 =
+    "game.command.experimental-combat-phase-event-trace-managed-v1";
 
 enum class BuildCombatPhaseEventTraceCapturePlanV1Result : std::uint32_t {
   built = 0,

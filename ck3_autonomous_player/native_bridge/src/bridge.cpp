@@ -47,6 +47,9 @@
 #include "xar_bridge/physfs_mounted_data_observer_v1.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/combat_phase_event_trace_v1_mailbox.hpp"
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+#include "xar_bridge/combat_phase_event_trace_managed_v1.hpp"
+#endif
 #include "xar_bridge/current_timeline_blocker_context_v1_mailbox.hpp"
 #include "xar_bridge/player_epidemic_treatment_presence_v1.hpp"
 #include "xar_bridge/player_epidemic_recovery_v1.hpp"
@@ -8571,6 +8574,12 @@ public:
 #endif
     environment.permitted_executor_quinquagintary =
         &xar::ck3_11906::ExecuteCombatPhaseEventTraceV1MailboxQuery;
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+    environment.permitted_executor_unquinquagintary =
+        &xar::ck3_11906::ExecuteCombatPhaseEventTraceBeginV1;
+    environment.permitted_executor_duoquinquagintary =
+        &xar::ck3_11906::ExecuteCombatPhaseEventTraceFinishV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -8886,6 +8895,10 @@ struct WorkerState {
   std::uint64_t army_strength_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
   std::uint64_t combat_phase_event_trace_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+  std::unique_ptr<xar::ck3_11906::CombatPhaseEventTraceManagedSessionV1>
+      experimental_combat_phase_trace;
+#endif
   std::uint64_t war_termination_query_sequence = 0;
   std::uint64_t outbound_war_white_peace_status_query_sequence = 0;
   std::uint64_t war_termination_terms_query_sequence = 0;
@@ -8902,6 +8915,183 @@ struct WorkerState {
 #endif
   std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
 };
+
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+std::string ExperimentalCombatPhaseTraceResultFrameV1(
+    std::string_view request_id, std::string_view step,
+    std::string_view status, std::uint64_t token, std::int32_t combat_id,
+    std::string_view trace = {}) {
+  std::string frame =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(frame, request_id);
+  frame += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(frame, step);
+  frame += ",\"accepted\":true,\"private_build\":true,"
+           "\"production_trace_ready\":false,\"status\":";
+  AppendJsonString(frame, status);
+  frame += ",\"managed_daily_sequence_token\":" + Number(token);
+  frame += ",\"combat_id\":" + SignedNumber(combat_id);
+  if (!trace.empty()) {
+    frame += ",\"managed_trace\":";
+    frame.append(trace);
+  }
+  frame += "}}";
+  return frame;
+}
+
+std::string ExecuteExperimentalCombatPhaseTraceV1(
+    std::string_view request_id, std::string_view step,
+    std::string_view payload, const xar::game::GameAdapter &game,
+    WorkerState &state) {
+  const bool begin = step == xar::ck3_11906::
+                                 kCombatPhaseEventTraceManagedBeginStepV1;
+  std::uint64_t expected_revision = 0;
+  std::uint64_t token = 0;
+  std::uint64_t requested_combat_id = 0;
+  if (!xar::bridge::JsonUnsignedField(payload, "expected_revision",
+                                      expected_revision) ||
+      !xar::bridge::JsonUnsignedField(payload, "managed_daily_sequence_token",
+                                      token) ||
+      !xar::bridge::JsonUnsignedField(payload, "combat_id",
+                                      requested_combat_id) ||
+      expected_revision == 0 || token == 0 || requested_combat_id == 0 ||
+      requested_combat_id >
+          static_cast<std::uint64_t>(std::numeric_limits<std::int32_t>::max()) ||
+      expected_revision != state.state_revision ||
+      !state.previous_snapshot.has_value()) {
+    return CommandResultFrame(request_id, step, false,
+                              "experimental trace request binding is stale or malformed");
+  }
+  xar::game::Snapshot observed{};
+  if (!xar::game::ReadSnapshot(game, observed) || !observed.paused ||
+      observed != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false,
+                              "experimental trace requires the same paused frame");
+  }
+  const auto combat_id = static_cast<std::int32_t>(requested_combat_id);
+  auto &session = state.experimental_combat_phase_trace;
+  if (begin) {
+    std::uint64_t checkpoint_sequence = 0;
+    if (!xar::bridge::JsonUnsignedField(payload, "checkpoint_sequence",
+                                        checkpoint_sequence) ||
+        checkpoint_sequence == 0 ||
+        checkpoint_sequence != state.checkpoint_submission.sequence ||
+        state.checkpoint_submission.date_raw != observed.date_raw || session) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "experimental trace needs a current materialized checkpoint and idle session");
+    }
+    session = std::make_unique<
+        xar::ck3_11906::CombatPhaseEventTraceManagedSessionV1>();
+    const auto bindings = xar::ck3_11906::BindCurrentProcess(true);
+    const auto module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    xar::ck3_11906::CombatPhaseEventTraceBeginContextV1 query{};
+    query.mailbox = &g_main_thread_query_mailbox_v1;
+    query.session = session.get();
+    query.bindings = &bindings;
+    query.plan_environment.exact_build_admitted = game.enabled();
+    query.plan_environment.module_base = module_base;
+    query.detour_environment.exact_build_admitted = game.enabled();
+    query.detour_environment.module_base = module_base;
+    query.combat_id = combat_id;
+    query.managed_daily_sequence_token = token;
+    // The external driver must additionally verify the save file hash and
+    // official semantic pair before this private request is sent.
+    query.recoverable_checkpoint_created = true;
+    const auto submitted = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1,
+        &xar::ck3_11906::ExecuteCombatPhaseEventTraceBeginV1, &query,
+        query.ticket);
+    if (submitted != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+      session.reset();
+      return CommandResultFrame(request_id, step, false,
+                                "experimental trace begin mailbox unavailable");
+    }
+    auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.ticket,
+        xar::ck3_11906::kCombatSimulationInputsV3QueuedWaitBudgetMilliseconds);
+    while (wait == xar::ck3_11906::
+                       MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+      wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+          g_main_thread_query_mailbox_v1, query.ticket,
+          xar::ck3_11906::kCombatSimulationInputsV3ExecutingWaitSliceMilliseconds);
+    }
+    const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.ticket);
+    if (wait != xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+        reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+        query.completion != xar::ck3_11906::
+                                CombatPhaseEventTraceManagedCompletionV1::armed) {
+      if (session->detours.installed.load(std::memory_order_acquire) != 0) {
+        SetEvent(g_stop_event);
+      } else {
+        session.reset();
+      }
+      return CommandResultFrame(request_id, step, false,
+                                "experimental trace begin did not arm safely");
+    }
+    return ExperimentalCombatPhaseTraceResultFrameV1(
+        request_id, step, "armed", token, combat_id);
+  }
+
+  if (!session || session->stage != xar::ck3_11906::
+                                     CombatPhaseEventTraceManagedStageV1::
+                                         armed_waiting_for_one_day ||
+      session->before.combat_id != combat_id ||
+      session->before.managed_daily_sequence_token != token) {
+    return CommandResultFrame(request_id, step, false,
+                              "experimental trace finish has no matching arm");
+  }
+  xar::ck3_11906::CombatPhaseEventTraceFinishContextV1 query{};
+  query.mailbox = &g_main_thread_query_mailbox_v1;
+  query.session = session.get();
+  query.managed_daily_sequence_token = token;
+  const auto submitted = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &xar::ck3_11906::ExecuteCombatPhaseEventTraceFinishV1, &query,
+      query.ticket);
+  if (submitted != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    SetEvent(g_stop_event);
+    return CommandResultFrame(request_id, step, false,
+                              "experimental trace finish mailbox unavailable");
+  }
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.ticket,
+      xar::ck3_11906::kCombatSimulationInputsV3QueuedWaitBudgetMilliseconds);
+  while (wait == xar::ck3_11906::
+                     MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.ticket,
+        xar::ck3_11906::kCombatSimulationInputsV3ExecutingWaitSliceMilliseconds);
+  }
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.ticket);
+  if (wait != xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+      !session->detours_uninstalled) {
+    SetEvent(g_stop_event);
+    return CommandResultFrame(request_id, step, false,
+                              "experimental trace finish requires controlled stop");
+  }
+  const auto wire =
+      xar::ck3_11906::SerializeCombatPhaseEventTraceManagedResultV1(*session);
+  const auto completion = query.completion;
+  session.reset();
+  if (wire.empty()) {
+    return CommandResultFrame(request_id, step, false,
+                              "experimental trace managed DTO unavailable");
+  }
+  return ExperimentalCombatPhaseTraceResultFrameV1(
+      request_id, step,
+      completion == xar::ck3_11906::
+                        CombatPhaseEventTraceManagedCompletionV1::
+                            bounded_trace_available
+          ? "bounded_trace_available"
+          : "trace_unavailable",
+      token, combat_id, wire);
+}
+#endif
 
 std::string NewProviderSessionId() noexcept {
   try {
@@ -9152,7 +9342,26 @@ void RunConnectedSession(
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+        } else if (state.experimental_combat_phase_trace &&
+                   state.experimental_combat_phase_trace->stage ==
+                       xar::ck3_11906::CombatPhaseEventTraceManagedStageV1::
+                           armed_waiting_for_one_day &&
+                   step != xar::ck3_11906::
+                               kCombatPhaseEventTraceManagedFinishStepV1 &&
+                   step != "resume-map" && step != "pause-map" &&
+                   step != "set-speed-1") {
+          connected = xar::bridge::WriteFrame(
+              pipe, CommandResultFrame(request_id, step, false,
+                                       "experimental trace permits only exact-day timeline controls and finish"));
+#endif
         } else if (!game.supports_step(step)
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+                   && step != xar::ck3_11906::
+                                  kCombatPhaseEventTraceManagedBeginStepV1
+                   && step != xar::ck3_11906::
+                                  kCombatPhaseEventTraceManagedFinishStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
                    && step != xar::ck3_11906::
                                   kFactionGiftPrivateQueryStepV1
@@ -9244,6 +9453,16 @@ void RunConnectedSession(
           xar::ck3_11906::TacticalDailySentinelArmRequestV1
               tactical_sentinel_request{};
           std::uint64_t tactical_sentinel_cancel_generation = 0;
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+          if (step == xar::ck3_11906::
+                          kCombatPhaseEventTraceManagedBeginStepV1 ||
+              step == xar::ck3_11906::
+                          kCombatPhaseEventTraceManagedFinishStepV1) {
+            connected = xar::bridge::WriteFrame(
+                pipe, ExecuteExperimentalCombatPhaseTraceV1(
+                          request_id, step, incoming.payload, game, state));
+          } else
+#endif
 #if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
           if (step == xar::ck3_11906::kFactionGiftPrivateQueryStepV1 ||
               step == xar::ck3_11906::kFactionGiftPrivateSubmitStepV1 ||
@@ -16985,6 +17204,16 @@ void RunConnectedSession(
     }
     WaitForSingleObject(g_stop_event, 10);
   }
+#if defined(XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1)
+  // A disconnected experimental driver cannot authorize another day while
+  // the bounded ring owns the two detours. The managed wrapper must stop the
+  // CK3 process; never free the still-referenced session in this process.
+  if (state.experimental_combat_phase_trace &&
+      state.experimental_combat_phase_trace->detours.installed.load(
+          std::memory_order_acquire) != 0) {
+    SetEvent(g_stop_event);
+  }
+#endif
 }
 
 DWORD WINAPI WorkerMain(void *) noexcept {

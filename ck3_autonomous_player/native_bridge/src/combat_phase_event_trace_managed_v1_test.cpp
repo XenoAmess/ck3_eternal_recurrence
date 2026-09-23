@@ -353,6 +353,7 @@ void PrepareMailbox(MainThreadQueryMailboxV1 &mailbox, Context &context,
 
 bool PlanBuilderClosesPointers() {
   NativeFixture fixture;
+  fixture.rng_wrapper_slot = 0;
   CombatPhaseEventTraceCapturePlanV1 plan{};
   if (BuildCombatPhaseEventTraceCapturePlanV1(
           fixture.bindings, fixture.plan_environment,
@@ -369,7 +370,8 @@ bool PlanBuilderClosesPointers() {
       plan.accolades[0].accolade_id != NativeFixture::kAccoladeId ||
       plan.accolades[0].acclaimed_knight_character_id !=
           NativeFixture::kCharacterIds[0] ||
-      plan.accolade_rank_threshold_count != 3) {
+      plan.accolade_rank_threshold_count != 3 ||
+      plan.expected_global_rng_state != 0) {
     return Fail("capture plan contents mismatch");
   }
   fixture.threshold_count_slot = 65;
@@ -385,6 +387,7 @@ bool PlanBuilderClosesPointers() {
 bool ManagedBeginFinishProducesBoundedDto() {
   constexpr std::uint64_t token = 9001;
   NativeFixture fixture;
+  Store(fixture.rng_wrapper, 0x00, std::uintptr_t{0});
   if (fixture.detour_memory.schedule_page == nullptr ||
       fixture.detour_memory.fire_page == nullptr) {
     return Fail("detour pages unavailable");
@@ -426,6 +429,8 @@ bool ManagedBeginFinishProducesBoundedDto() {
     return Fail("schedule boundaries failed");
   }
   fixture.SetPhaseDay(5);
+  Store(fixture.rng_wrapper, 0x00,
+        reinterpret_cast<std::uintptr_t>(fixture.rng_state.data()));
   const std::array<CombatPhaseEventTraceBoundaryV1, 4> fire_boundaries{
       CombatPhaseEventTraceBoundaryV1::before_side0_phase_fire,
       CombatPhaseEventTraceBoundaryV1::after_side0_phase_fire,
@@ -443,6 +448,7 @@ bool ManagedBeginFinishProducesBoundedDto() {
       return Fail("fire boundary failed");
     }
   }
+  Store(fixture.rng_wrapper, 0x00, std::uintptr_t{0});
 
   CombatPhaseEventTraceFinishContextV1 finish{};
   finish.session = session.get();
