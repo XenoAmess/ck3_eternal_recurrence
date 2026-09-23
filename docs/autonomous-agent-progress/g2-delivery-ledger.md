@@ -235,3 +235,20 @@ Robert 持久 **2,088/36,524**，G2 **3/8**，百年/首整局/独立种子 **0/
 | Robert 三防御战续行 | **84/85 后产品 RED**；Robert 持久 **2,135/36,524**（+47） | R0174 h1333 official cold → `native_auto_run` formal120，source `1f10991` | [R0176 原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0176-war-red-frozen-20260923/R0176-final-frozen-pair/R0176-raw-freeze.json) SHA `43DD72993C218E07AC15EFAC191312CB40DB15795E71208812465E4BB18F8421`；formal report SHA `3411FA75...DCF9AE` | 63 query/21 gameplay/6 checkpoint；旧 active-route RED 有界越过；第 85 turn 新 `single-idle-controllable-army-binding` RED，`sieging`+完整 route 分类待修；三战仍 active，未保存末帧比分 `-13/-5/+54` 不冒充持久状态 | h1439/raw53195568 save `71DA84C7...7A41A4A`；raw driver `7AAB1609...CA251A0`；第 48 天 raw53195592 未保存；[语义审计](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0176-war-red-frozen-20260923/R0176-semantic-audit.json) SHA `1347EAA6...85C9420C6` 说明 #1440–#1448 须官方恢复；清单及 10 copy 只读，进程/owner 0 | 最小修复同帧围城军队/路线分类，再从 h1439 合法配对复验；`/root` 与战争代理 | 原始运行资产保留；本状态/报告分支待集成 |
 
 PRV008 原有界 GO、G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** 与 R0175 M4 public OFF 均不变；本包未启动 CK3，战争代码候选不预填 live 通过。
+
+## 2026-09-23 R0177/R0178 双段有界续行增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| R0177 Robert 三战续行 | **有界 120/120 GREEN**；Robert 持久 **2,227/36,524**（+92） | R0176 h1439 official cold → formal120；source `8c0494e` | [冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0177-war-green-frozen-20260923/R0177-final-frozen-pair/R0177-raw-freeze.json) SHA `E77311A6...7C8182`；[语义审计](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0177-war-green-frozen-20260923/R0177-semantic-audit.json) SHA `F0AB6EF3...58266F4` | query90/gameplay30/checkpoint10；无 blocker；三防御战仍 active，无新增领土证据 | h1599/raw53197776 save `956B38E7...7763C7`、driver `AC8154F0...AA4BD8`，官方 raw/retained1599/drop0；进程/owner0 | 继续正式主线，从 clean h1599；`/root` | 运行资产保留；本状态/报告分支待集成 |
+| R0178 两战胜利及剩余战续行 | **有界 120/120 GREEN**；Robert 持久 **2,410/36,524**（再+183） | R0177 h1599 official cold → formal120；source `8c0494e` | [冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0178-war-green-frozen-20260923/R0178-final-frozen-pair/R0178-raw-freeze.json) SHA `6AC64055...DD63A1C`；[语义审计](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0178-war-green-frozen-20260923/R0178-semantic-audit.json) SHA `BE5B9960...6517180` | query81/gameplay39/checkpoint11；WarID95 与 16777250 typed `enforce-demands` 返回 `victory_enforced`，独立 after-frame 各移除、后续 turn 消费；终帧仅 WarID16777231 active；titles/domain 未变、无本轮新增领土证明 | h1767/raw53202168 save `62786703...4EB05`、driver `E01A77CE...E2549`，raw/retained1767/drop0；进程/owner0。最后比分 -41 是 h1767 前 raw53201952 读回 | 剩余一战及继续整局，后续从 clean h1767 新候选；`/root` | 原始证据、checkpoint 保留；本状态/报告分支待集成 |
+
+两段日期按 `h1439→h1599` **92 天**、`h1599→h1767` **183 天**各计一次；累计 Robert **2,410/36,524**。PRV008 有界 GO、G2 **3/8**，百年/首整局/种子 **0/1、0/1、0/2** 不变；M4 公共能力仍 OFF。本包未启动 CK3。
+
+## 2026-09-23 R0179 M4 同日 perk 私有闭环增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `cutting_corners_perk` 战时加点 | **私有 primitive GREEN**；M4 in progress、公口 OFF | R0178 h1767 official cold → `e0b7713` 私有 runner；ordinary/xar_off | [R0179 冻结](Z:/ck3_mod_rewrite_process_assets/g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/R0179-raw-freeze.json) SHA `D8C63082...E21CC0`；[report](Z:/ck3_mod_rewrite_process_assets/g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/report.json) SHA `A586D305...545493B`；DLL SHA `3F527D84...9E2D0A` | typed perk receipt `applied`、独立 HasPerk=true；unspent2→1/used4→5；后续正式 one-life 策略消费 receipt 并继续剩余 WarID16777231 的查询；0 日期推进 | 同日 h1774/raw53202168 save `8014519B...4B592`，raw driver `D097CA8D...DAF4B1` 在 checkpoint 后有 #1775 只读尾、需官方恢复；11 copy 只读，进程/owner0 | M4 后续 focus/perk 和治理闭环仍需独立门；战争仅剩一战 active；`/root` 与 M4 owner | 运行资产保留；本状态/报告分支待集成 |
+
+R0175 旧同请求待确认 ACK 的 RED 不倒写成已通过；R0179 是后续新源码/实机的私有阳性。Robert 持久 **2,410/36,524**、PRV008 GO、G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** 均不变。
