@@ -2694,3 +2694,76 @@ This closes GEN-034-D and, together with A/B/C, closes GEN-034 and G2-M0.
 Broader CB/ruler/campaign matrices remain later-milestone work; they do not
 reopen this fixed visible outcome. Native ABI, public MCP and `open_kaishek`
 interfaces did not change.
+
+## 2026-09-24 Robert War 16777231: de-jure defender surrender terms boundary
+
+Status: **exact-build static research; material terms unsupported**. This is
+Robert's ordinary `h2134` checkpoint, not the separate R0168 combat research
+save. CK3 is `1.19.0.6-steam23530548`, executable SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The immutable R0207 freeze is
+`Z:\ck3_mod_rewrite_process_assets\g2-robert-under2-readonly-R0207-green-frozen-20260923\R0207-final-frozen-pair\R0207-raw-freeze.json`
+(SHA-256 `1A8499E91F645C68CBA2BE4052AB6E5523DBDC6711045EF6C89AC9D23BA77B24`);
+its paused snapshot SHA-256 is
+`2EAA2A041AF2E3AF70DA8EBDE517A4B3D18D9EA911DAC4ED6AB0DFA4805B64C1`.
+At `date_raw=53215920`, native revision `3`, Robert is primary defender of
+War `16777231` at score `-15`. Declared target Title `2128` and objective
+Province `2610` are evidence values, never implementation constants. The
+visible enemy siege is at Province `2628`, a separate player-subrealm holding.
+R0207 performed no action or date advance. Its snapshot has no same-frame
+termination options or terms. The last options query in the source driver's
+history is older, #2117 at score `-16`: it identified
+`individual_county_de_jure_cb` index `17`, native-legal/auto-accepted
+`attacker_victory` surrender, but `terms_observable=false` with
+`cb_specific_terms_not_observable`. That historical row cannot authorize an
+action at `h2134`.
+
+The exact stock `game/common/casus_belli_types/00_dejure_war.txt:435-472`
+(SHA-256 `D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE`)
+`on_victory` branch constructs a `conquest` title-and-vassal change with
+`add_claim_on_loss=yes`, invokes `setup_de_jure_cb`, then resolves the change.
+Later effects modify fame/prestige and truce, with conditional additions.
+The script establishes effect classes, not this War's final old/new holder,
+liege/vassal operations or signed resource deltas. Production
+`ReadWarTerminationTerms` returns `unsupported_casus_belli` for every CB
+except `claim_cb` and `raiktor_claim_cb` (`ck3_11906.cpp:17367-17375`). Title
+holder `+0x258` and existing primary current-resource readers supply only a
+pre-resolution baseline; publishing them alone cannot decide surrender.
+
+The [reproducible, EXE-only extractor](../../ck3_autonomous_player/native_bridge/research/extract_dejure_surrender_preview_boundary.py)
+freezes [this ABI result](../../ck3_autonomous_player/native_bridge/research/dejure_defender_surrender_preview_1_19_0_6_abi.json)
+(SHA-256 `61DBA4F26EB06707F41D59CE9F8E5AB9275707EBDB87248B666D4719F0BCA117`).
+RTTI binds `CSetupDeJureCBChangeEffect` to vtable `0x444AFA0`, execute
+`0x2E9F420` and preview `0x2E9FA10`. Preview calls helper `0x2E9FF30`
+and output helper `0x2E9F190`; it resolves effect input `+0x260`. That change
+object's ownership, helper side effects, and final-operation schema are
+**unproven**. Preview is not approved for live invocation. The common
+`CResolveTitleAndVassalChangeEffect` preview slot `0x7E9220` is `B0 01 C3`
+(`return true`) and produces no resolved operations. The previously crashing
+broad loaded-effect preview remains outside this path.
+
+```mermaid
+flowchart TD
+    S["[static] Robert primary defender surrender"] --> A["[static] end_war = attacker / attacker_victory"]
+    A --> B["[static] individual_county_de_jure_cb on_victory"]
+    B --> C["[static] create conquest change; setup_de_jure_cb; resolve"]
+    C --> P["[static] setup preview 0x2E9FA10 calls helper"]
+    P -. "[unknown] +0x260 ownership and helper effects" .-> O["safe, non-mutating final operation producer"]
+    C --> N["[static] resolve preview 0x7E9220 returns true only"]
+    O -. "[unknown] no complete old/new title or liege rows" .-> T["structured material terms"]
+    B -. "[unknown] signed resources and conditional effects" .-> T
+    T -. "[unknown] unavailable" .-> X["no automatic defender surrender"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class O,T,X unknown;
+```
+
+**Next smallest reverse-engineering step:** trace `0x2E9FA10 -> 0x2E9FF30`
+and the effect `+0x260` change object to prove allocation, lifetime and every
+write destination; then locate a non-mutating producer of the *resolved*
+old/new Title/holder/liege/vassal operations. Independently identify primary
+and conditional signed resource outputs for this exact CB. Only after those
+paths are proven can a CB-specific read-only terms DTO and same-frame fixture
+and live query be built. The current `unsupported_casus_belli`, absence of
+`surrender-war-16777231` in R0207 literal action steps, and no-surrender
+policy remain unchanged. This research did not launch CK3 or touch save,
+driver, R14 source, or simulator files.

@@ -1,0 +1,37 @@
+{
+  "schema": "xar.ck3.dejure-defender-surrender-preview-boundary.v1",
+  "status": "STATIC_PREVIEW_DISPATCH_ONLY",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "setup_de_jure_cb_change_effect": {
+    "rtti_type_descriptor_rva": "0x55D29B0",
+    "rtti_col_rva": "0x4AB2FB8",
+    "runtime_vtable_rva": "0x444AFA0",
+    "execute_slot_22_rva": "0x2E9F420",
+    "preview_slot_23_rva": "0x2E9FA10",
+    "preview_helper_call_rva": "0x2E9FBC8",
+    "preview_helper_rva": "0x2E9FF30",
+    "preview_helper_call_bytes": "E863030000",
+    "preview_output_helper_call_rva": "0x2E9FBE8",
+    "preview_output_helper_rva": "0x2E9F190",
+    "preview_output_helper_call_bytes": "E8A3F5FFFF",
+    "execute_only_observed_call_rva": "0x2E9F60C",
+    "execute_only_observed_target_rva": "0x8122E0",
+    "execute_only_observed_call_bytes": "E8CF2C97FD"
+  },
+  "resolve_title_and_vassal_change_effect": {
+    "preview_slot_23_rva": "0x7E9220",
+    "preview_bytes": "B0 01 C3",
+    "preview_semantics": "returns true without producing resolved title/vassal operations"
+  },
+  "boundary": {
+    "ck3_launched": false,
+    "effect_called": false,
+    "preview_safe_to_call": false,
+    "final_title_holder_liege_vassal_operations_observed": false,
+    "signed_resource_deltas_observed": false,
+    "next_locator": "Prove ownership and effects of setup preview's +0x260 change object and shared helper 0x2E9FF30; then locate a non-mutating producer of complete resolved operations and signed resource deltas."
+  }
+}
