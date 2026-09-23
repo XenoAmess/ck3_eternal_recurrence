@@ -107,7 +107,7 @@ def _recording_input_matches(argv, desktop):
     return hwnd > 0 and hwnd == desktop.get("hwnd")
 
 
-def completed_recording(recording_dir: str | Path) -> dict:
+def completed_recording(recording_dir: str | Path, *, snapshot_reader=None) -> dict:
     """Validate existing recorder output; no desktop or media process is used."""
     root = Path(recording_dir).resolve()
     required = ("recording-result.json", "recording-precondition.json", "recording-command.json",
@@ -128,7 +128,7 @@ def completed_recording(recording_dir: str | Path) -> dict:
         _bound(pre.get(field), f"precondition.{field}")
     require(load(root / "start-readback.json").get("postcondition_verified") is True,
             "StartGame postcondition was not verified")
-    state = _snapshot(root / "snapshot-before.json", pre["actor"], pre["date_raw"])
+    state = (snapshot_reader or _snapshot)(root / "snapshot-before.json", pre["actor"], pre["date_raw"])
     before, after = _utc(command.get("at"), "recording start"), _utc(result.get("at"), "recording end")
     require(after > before, "Completion timestamp does not follow recorder start")
     require(_utc(pre.get("at"), "recording precondition") <= before,
@@ -200,9 +200,10 @@ def probe_frame_timestamps(raw_path: str | Path, output: str | Path, ffprobe: st
 
 def extract_frames(recording_dir: str | Path, output: str | Path,
                    begin_seconds: float, end_seconds: float, ffmpeg: str = "ffmpeg", *,
-                   frame_probe: str | Path | None = None, ffprobe: str = "ffprobe") -> dict:
+                   frame_probe: str | Path | None = None, ffprobe: str = "ffprobe",
+                   recording_validator=None) -> dict:
     """Extract two real endpoint images for later inspection; always pending."""
-    state = completed_recording(recording_dir)
+    state = (recording_validator or completed_recording)(recording_dir)
     start, stop = _number(begin_seconds, "begin"), _number(end_seconds, "end")
     require(0 <= start < stop <= state["duration_seconds"], "Span outside actual recording")
     out = Path(output).resolve()
