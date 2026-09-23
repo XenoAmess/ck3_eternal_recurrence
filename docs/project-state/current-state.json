@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "FE404A1028404B392576937126B96CDB6C6C449E2DA369872D5D8860279B9C84"
+        "sha256": "53CCC667ED33A285EF0AEC55F3C8A2F9AEE9F78E37BB3FFBD028F9327DBEAACA"
       },
       "raw_footage": {
         "passed": 0,
@@ -1598,5 +1598,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T15:30:00+08:00"
+  "updated_at": "2026-09-23T13:43:06+08:00"
 }
