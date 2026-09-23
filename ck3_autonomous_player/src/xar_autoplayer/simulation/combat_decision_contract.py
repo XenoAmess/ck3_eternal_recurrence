@@ -1,11 +1,10 @@
-"""Fail-closed contract for a future combat-entry expected-utility policy.
+"""Version-bound combat-entry expected utility, with production activation off.
 
-This module deliberately does not choose, move, or attack.  It freezes the
-same-frame identity, fidelity, Monte Carlo distribution, character-tail,
-campaign-feedback, and utility-policy fields that a future planner must prove
-before an expected-utility comparison can be admitted.  Even a complete and
-favorable synthetic payload remains blocked while the explicit production
-activation constant is false.
+The base v1 contract retains its frozen inventory.  A separate, explicitly
+bound action-component record supplies attack, avoid, and wait trial tapes.
+Without that record, the evaluator never invents costs.
+Even a favorable calculated candidate cannot select a production action while
+the explicit activation constant is false.
 """
 
 from __future__ import annotations
@@ -15,10 +14,13 @@ import json
 import re
 from typing import Any, Mapping
 
+from .combat_core import wilson_interval_95
+
 
 COMBAT_ENTRY_EU_SCHEMA_VERSION = 1
 COMBAT_ENTRY_EU_CONTRACT_VERSION = "combat-entry-eu-v1"
 COMBAT_ENTRY_EU_ACTIVATION_ENABLED = False
+COMBAT_ENTRY_ACTION_COMPONENTS_VERSION = "combat-entry-action-components-v1"
 _SCALE = 100_000
 _SHA256 = re.compile(r"[0-9A-F]{64}")
 
@@ -188,6 +190,21 @@ def _canonical_digest(value: object) -> str:
 
 COMBAT_ENTRY_EU_CONTRACT_SHA256 = _canonical_digest(_CONTRACT)
 
+_ACTION_COMPONENTS_CONTRACT = {
+    "version": COMBAT_ENTRY_ACTION_COMPONENTS_VERSION,
+    "base_contract_sha256": COMBAT_ENTRY_EU_CONTRACT_SHA256,
+    "actions": ["attack", "avoid", "wait_reinforce"],
+    "required_trial_count": "experiment.trial_count_for_each_action",
+    "trial_component_keys": list(_UTILITY_COEFFICIENT_KEYS),
+    "attack_trial_sha256": "experiment.per_trial_component_vector_sha256",
+    "rounding": "signed_q100000_truncate_toward_zero_per_trial_component_then_mean",
+    "alternative_costs": "explicit_uncertainty_and_opportunity_per_action",
+    "activation": "explicit_separate_production_gate_false",
+}
+COMBAT_ENTRY_ACTION_COMPONENTS_CONTRACT_SHA256 = _canonical_digest(
+    _ACTION_COMPONENTS_CONTRACT
+)
+
 
 class CombatEntryEuContractError(ValueError):
     """The supplied future-policy record violates a typed field contract."""
@@ -199,8 +216,16 @@ def combat_entry_eu_contract() -> dict[str, object]:
     return json.loads(json.dumps(_CONTRACT, ensure_ascii=False))
 
 
-def assess_combat_entry_eu_contract(value: object) -> dict[str, object]:
-    """Validate readiness inputs while guaranteeing that no attack is selected."""
+def combat_entry_action_components_contract() -> dict[str, object]:
+    """Return the separate trial-tape calculator interface by value."""
+
+    return json.loads(json.dumps(_ACTION_COMPONENTS_CONTRACT, ensure_ascii=False))
+
+
+def assess_combat_entry_eu_contract(
+    value: object, *, action_components: object | None = None
+) -> dict[str, object]:
+    """Validate the base record, then calculate only from explicit action data."""
 
     if not isinstance(value, Mapping) or any(
         not isinstance(key, str) for key in value
@@ -315,13 +340,21 @@ def assess_combat_entry_eu_contract(value: object) -> dict[str, object]:
         blockers.append("trial_accounting_not_ready")
     if not utility_policy_ready:
         blockers.append("utility_policy_not_ready")
-    blockers.append("combat_entry_eu_activation_not_enabled")
+    blockers.append(
+        "combat_entry_eu_activation_not_enabled"
+        if not COMBAT_ENTRY_EU_ACTIVATION_ENABLED
+        else "action_components_missing"
+    )
     result: dict[str, object] = {
         "schema_version": COMBAT_ENTRY_EU_SCHEMA_VERSION,
         "contract_version": COMBAT_ENTRY_EU_CONTRACT_VERSION,
         "contract_sha256": COMBAT_ENTRY_EU_CONTRACT_SHA256,
         "status": (
-            "blocked_not_activated"
+            (
+                "blocked_not_activated"
+                if not COMBAT_ENTRY_EU_ACTIVATION_ENABLED
+                else "blocked_action_components_missing"
+            )
             if external_inputs_ready
             else "blocked_incomplete_or_invalid"
         ),
@@ -344,6 +377,299 @@ def assess_combat_entry_eu_contract(value: object) -> dict[str, object]:
         "blockers": blockers,
     }
     result["assessment_sha256"] = _canonical_digest(result)
+    if action_components is not None:
+        return _assess_explicit_action_components(value, action_components, result)
+    return result
+
+
+_ALTERNATIVE_ACTIONS = ("avoid", "wait_reinforce")
+_MAX_SIGNED_RAW = (1 << 63) - 1
+
+
+def _signed_q100000_product(left: int, right: int) -> int:
+    product = left * right
+    return (1 if product >= 0 else -1) * (abs(product) // _SCALE)
+
+
+def _is_signed_raw(value: object) -> bool:
+    return (
+        isinstance(value, int)
+        and not isinstance(value, bool)
+        and -_MAX_SIGNED_RAW - 1 <= value <= _MAX_SIGNED_RAW
+    )
+
+
+def _component_utility(
+    components: Mapping[str, int], coefficients: Mapping[str, int]
+) -> int:
+    return sum(
+        _signed_q100000_product(components[key], coefficients[key])
+        for key in _UTILITY_COEFFICIENT_KEYS
+    )
+
+
+def _signed_truncate_divide(value: int, divisor: int) -> int:
+    return (1 if value >= 0 else -1) * (abs(value) // divisor)
+
+
+def _valid_trial_components(rows: object, count: int) -> bool:
+    return bool(
+        isinstance(rows, list)
+        and len(rows) == count
+        and all(
+            isinstance(row, Mapping)
+            and set(row) == set(_UTILITY_COEFFICIENT_KEYS)
+            and all(_is_signed_raw(component) for component in row.values())
+            for row in rows
+        )
+    )
+
+
+def _attack_trial_summary_errors(
+    value: Mapping[str, Any], rows: list[Mapping[str, int]]
+) -> list[str]:
+    """Bind every decision-bearing attack summary to its hashed trial tape."""
+    errors: list[str] = []
+    count = len(rows)
+    distribution = value["distribution"]
+    for field, group in (
+        ("battle_day", "battle_days"),
+        ("player_hard_loss", "player_hard_losses_raw"),
+        ("enemy_hard_loss", "enemy_hard_losses_raw"),
+    ):
+        values = sorted(row[field] for row in rows)
+        if any(item < 0 for item in values):
+            errors.append(f"attack_trial_{field}_negative")
+            continue
+        if field == "battle_day":
+            if any(
+                item % _SCALE != 0
+                or item > value["experiment"]["horizon_days"] * _SCALE
+                for item in values
+            ):
+                errors.append("attack_trial_battle_day_invalid")
+                continue
+            values = [item // _SCALE for item in values]
+        for quantile, numerator in (("p10", 1), ("p50", 5), ("p90", 9)):
+            rank = max(1, (numerator * count + 9) // 10)
+            if distribution[group][quantile] != values[rank - 1]:
+                errors.append(f"attack_trial_{group}_{quantile}_mismatch")
+    player = value["character_tails"]["player"]
+    tail_keys = {
+        "player_commander_wound": player["commander_wound_probability_raw"],
+        "player_commander_maim": player["commander_maim_probability_raw"],
+        "player_commander_death": player["commander_death_probability_raw"],
+        "player_knight_death": player["knight_death_probability_raw"],
+        "player_detach_capture": player["detach_or_capture_probability_raw"],
+        "player_one_life_catastrophic": value["character_tails"][
+            "player_one_life_catastrophic_probability_raw"
+        ],
+    }
+    for field, published in tail_keys.items():
+        if any(row[field] not in {0, _SCALE} for row in rows):
+            errors.append(f"attack_trial_{field}_not_indicator")
+        elif abs(sum(row[field] for row in rows) - published * count) > count:
+            errors.append(f"attack_trial_{field}_probability_mismatch")
+    for key in _CAMPAIGN_FEEDBACK_KEYS:
+        field = key.removesuffix("_raw")
+        published = value["campaign_feedback"][key]
+        if abs(sum(row[field] for row in rows) - published * count) > count:
+            errors.append(f"attack_trial_{field}_campaign_mismatch")
+    return errors
+
+
+def _assess_explicit_action_components(
+    value: Mapping[str, Any],
+    action_components: object,
+    base: dict[str, object],
+) -> dict[str, object]:
+    """Compare three explicit alternatives; retain the production OFF gate."""
+    result = dict(base)
+    result["action_components_version"] = COMBAT_ENTRY_ACTION_COMPONENTS_VERSION
+    result["action_components_contract_sha256"] = (
+        COMBAT_ENTRY_ACTION_COMPONENTS_CONTRACT_SHA256
+    )
+    result["action_components_ready"] = False
+    result["candidate_action"] = None
+    errors: list[str] = []
+    if not base["external_inputs_ready"]:
+        errors.append("base_contract_not_ready")
+    if not isinstance(action_components, Mapping) or set(action_components) != {
+        "version", "identity", "experiment_input_sha256",
+        "per_trial_component_vector_sha256", "policy_sha256",
+        "attack_trial_components_raw", "alternatives",
+    }:
+        errors.append("action_components_schema_invalid")
+    elif base["external_inputs_ready"]:
+        if action_components["version"] != COMBAT_ENTRY_ACTION_COMPONENTS_VERSION:
+            errors.append("action_components_version_mismatch")
+        if action_components["identity"] != value["identity"]:
+            errors.append("action_components_identity_mismatch")
+        if (
+            action_components["experiment_input_sha256"]
+            != value["experiment"]["input_sha256"]
+            or action_components["per_trial_component_vector_sha256"]
+            != value["experiment"]["per_trial_component_vector_sha256"]
+            or action_components["policy_sha256"]
+            != value["utility_policy"]["policy_sha256"]
+        ):
+            errors.append("action_components_versioned_source_mismatch")
+        count = value["experiment"]["trial_count"]
+        attack_trials = action_components["attack_trial_components_raw"]
+        if not _valid_trial_components(attack_trials, count):
+            errors.append("attack_trial_components_invalid")
+        else:
+            if (
+                _canonical_digest(attack_trials)
+                != value["experiment"]["per_trial_component_vector_sha256"]
+            ):
+                errors.append("attack_trial_components_sha256_mismatch")
+            outcomes = ("player_win", "player_loss", "no_resolution")
+            for row in attack_trials:
+                if sorted(row[key] for key in outcomes) != [0, 0, _SCALE]:
+                    errors.append("attack_trial_outcome_not_one_hot")
+                    break
+            else:
+                observed = (
+                    sum(row[key] == _SCALE for row in attack_trials)
+                    for key in outcomes
+                )
+                if tuple(observed) != tuple(
+                    value["experiment"][key]
+                    for key in ("wins", "losses", "no_resolution")
+                ):
+                    errors.append("attack_trial_outcome_count_mismatch")
+            errors.extend(_attack_trial_summary_errors(value, attack_trials))
+        alternatives = action_components["alternatives"]
+        if not (
+            isinstance(alternatives, Mapping)
+            and set(alternatives) == set(_ALTERNATIVE_ACTIONS)
+        ):
+            errors.append("alternative_actions_invalid")
+        else:
+            for action in _ALTERNATIVE_ACTIONS:
+                row = alternatives[action]
+                if not isinstance(row, Mapping) or set(row) != {
+                    "trial_components_raw", "uncertainty_penalty_raw",
+                    "opportunity_cost_raw",
+                }:
+                    errors.append(f"{action}_projection_schema_invalid")
+                    continue
+                if not _valid_trial_components(row["trial_components_raw"], count):
+                    errors.append(f"{action}_trial_components_invalid")
+                for penalty in ("uncertainty_penalty_raw", "opportunity_cost_raw"):
+                    if not _is_signed_raw(row[penalty]) or row[penalty] < 0:
+                        errors.append(f"{action}_{penalty}_invalid")
+        policy = value["utility_policy"]
+        for penalty in (
+            "uncertainty_penalty_raw", "opportunity_cost_raw",
+            "minimum_attack_margin_raw",
+        ):
+            if policy[penalty] < 0:
+                errors.append(f"attack_{penalty}_negative")
+        experiment = value["experiment"]
+        distribution = value["distribution"]
+        count_keys = ("wins", "losses", "no_resolution")
+        for count_key, probability_key in zip(count_keys, _DISTRIBUTION_KEYS):
+            if abs(
+                distribution[probability_key] * experiment["trial_count"]
+                - experiment[count_key] * _SCALE
+            ) > experiment["trial_count"]:
+                errors.append(f"{probability_key}_trial_count_mismatch")
+        resolved = experiment["wins"] + experiment["losses"]
+        wilson = wilson_interval_95(experiment["wins"], resolved)
+        interval = distribution["resolved_win_wilson95"]
+        if wilson is None or any(
+            abs(observed - expected * _SCALE) > 1.5
+            for observed, expected in (
+                (interval["low_raw"], wilson.lower),
+                (interval["high_raw"], wilson.upper),
+            )
+        ):
+            errors.append("resolved_win_wilson95_trial_count_mismatch")
+    result["action_components_errors"] = errors
+    if errors:
+        result["status"] = "blocked_incomplete_or_invalid"
+        result["blockers"] = [*base["blockers"], "action_components_not_ready"]
+        result["assessment_sha256"] = _canonical_digest(
+            {key: item for key, item in result.items() if key != "assessment_sha256"}
+        )
+        return result
+
+    assert isinstance(action_components, Mapping)
+    policy = value["utility_policy"]
+    distribution = value["distribution"]
+    coefficients = policy["coefficients_raw"]
+    trial_count = value["experiment"]["trial_count"]
+    attack = (
+        _signed_truncate_divide(
+            sum(
+                _component_utility(row, coefficients)
+                for row in action_components["attack_trial_components_raw"]
+            ),
+            trial_count,
+        )
+        - policy["uncertainty_penalty_raw"]
+        - policy["opportunity_cost_raw"]
+    )
+    alternatives = action_components["alternatives"]
+    eu = {"attack": attack}
+    for action in _ALTERNATIVE_ACTIONS:
+        projection = alternatives[action]
+        eu[action] = (
+            _signed_truncate_divide(
+                sum(
+                    _component_utility(row, coefficients)
+                    for row in projection["trial_components_raw"]
+                ),
+                trial_count,
+            )
+            - projection["uncertainty_penalty_raw"]
+            - projection["opportunity_cost_raw"]
+        )
+    risk = policy["risk_constraints"]
+    risk_failures: list[str] = []
+    if (
+        distribution["resolved_win_wilson95"]["low_raw"]
+        < risk["min_resolved_win_wilson_low_raw"]
+    ):
+        risk_failures.append("resolved_win_wilson_low")
+    if (
+        distribution["player_stack_wipe_probability_raw"]
+        > risk["max_player_stack_wipe_probability_raw"]
+    ):
+        risk_failures.append("player_stack_wipe")
+    if (
+        value["character_tails"]["player_one_life_catastrophic_probability_raw"]
+        > risk["max_player_one_life_catastrophic_probability_raw"]
+    ):
+        risk_failures.append("player_one_life_catastrophic")
+    nonattack = max(_ALTERNATIVE_ACTIONS, key=lambda action: eu[action])
+    margin = attack - eu[nonattack]
+    candidate = (
+        "attack"
+        if not risk_failures and margin > policy["minimum_attack_margin_raw"]
+        else nonattack
+    )
+    activated = COMBAT_ENTRY_EU_ACTIVATION_ENABLED
+    result.update(
+        status="selected" if activated else "calculated_not_activated",
+        action_components_ready=True,
+        action_components_sha256=_canonical_digest(action_components),
+        eu_attack_raw=attack,
+        eu_avoid_raw=eu["avoid"],
+        eu_wait_reinforce_raw=eu["wait_reinforce"],
+        attack_margin_raw=margin,
+        dominant_risk=risk_failures[0] if risk_failures else None,
+        candidate_action=candidate,
+        decision_status="selected" if activated else "candidate_only",
+        selected_action=candidate if activated else None,
+        automatic_attack_enabled=activated and candidate == "attack",
+        blockers=[] if activated else ["combat_entry_eu_activation_not_enabled"],
+    )
+    result["assessment_sha256"] = _canonical_digest(
+        {key: item for key, item in result.items() if key != "assessment_sha256"}
+    )
     return result
 
 
@@ -555,7 +881,10 @@ __all__ = [
     "COMBAT_ENTRY_EU_CONTRACT_VERSION",
     "COMBAT_ENTRY_EU_CONTRACT_SHA256",
     "COMBAT_ENTRY_EU_ACTIVATION_ENABLED",
+    "COMBAT_ENTRY_ACTION_COMPONENTS_VERSION",
+    "COMBAT_ENTRY_ACTION_COMPONENTS_CONTRACT_SHA256",
     "CombatEntryEuContractError",
     "combat_entry_eu_contract",
+    "combat_entry_action_components_contract",
     "assess_combat_entry_eu_contract",
 ]

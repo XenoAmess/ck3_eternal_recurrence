@@ -85,7 +85,7 @@ seed、`N` 与 kernel 必须得到逐字段相同摘要。
 [`combat_decision_contract.py`](../../ck3_autonomous_player/src/xar_autoplayer/simulation/combat_decision_contract.py)
 已冻结 `combat-entry-eu-v1` 的 94 个 required path，canonical SHA-256 为
 `A737A10FCC2B1393B8F2A50F3D6170C6881FCC1745E970356F1C3975D65EA43C`。它要求下列字段绑定在同一
-episode/frame；当前只做 typed validation 与 fail-closed assessment，不计算 EU、不启用任何 move/attack：
+episode/frame；无额外 action components 时仍只做 typed validation 与 fail-closed assessment：
 
 | 组 | 必需字段 |
 |---|---|
@@ -98,26 +98,39 @@ episode/frame；当前只做 typed validation 与 fail-closed assessment，不�
 | utility policy | 每个 component 的 versioned signed Q100000 coefficient、risk constraint、uncertainty penalty、opportunity-cost baseline |
 | output | `eu_attack_raw/eu_avoid_raw/eu_wait_reinforce_raw`、margin、dominant risk、missing fields、decision status、selected action |
 
-每个 trial 先用版本化 component vector 求 `utility_outcome_raw`，再逐 outcome 做 signed Q100000 乘法并向零截断：
-`EU(action)=Σ p(outcome|action)×utility(outcome)−uncertainty_penalty−opportunity_cost`。禁止把 resolved-win conditional
+每个 trial 先用版本化 component vector 求 `utility_outcome_raw`，对每个 component 做 signed Q100000 乘法并向零截断；
+随后对相同行动的全部 trial utility 求和、向零截断除以 `trial_count`，最后减该行动明确给出的 uncertainty 与 opportunity cost：
+`EU(action)=trunc0(Σ trial_utility / N)−uncertainty_penalty−opportunity_cost`。禁止把 resolved-win conditional
 probability 当 unconditional win probability，也禁止丢掉 `no_resolution`、character tail 或 confidence interval。只有全部 identity
 相等、七个 readiness 位均为 true、概率分割精确为 Q100000、trial accounting 完整、utility coefficients/hash 已冻结，且
-`EU(attack)` 在风险约束内严格高于所有非攻击 alternative 与最小 margin，输出才可能是 attack；否则固定
-`decision_status=blocked`、`selected_action=null`。合同还要求 per-trial component-vector SHA，防止只拿汇总胜率反推效用。
-当前 AST/original trace gate 为 false，且独立 production activation 常量固定 false；测试同时覆盖字段全齐且 90% unconditional
-win 的合成输入，结果仍为 `blocked_not_activated`、三个 EU 值为 null、零自动攻击。
+`EU(attack)` 在风险约束内严格高于所有非攻击 alternative 与最小 margin，才成为 attack 候选。
+
+[implementation-confirmed] `WAR-COMBAT-EU-CALCULATOR` 保留上述冻结 v1 required paths/hash，并增加**独立的显式计算输入**
+`combat-entry-action-components-v1`，接口 SHA-256 为
+`076D53EF48A8C0A41C5DB885F511647CC8CFDA4634E232FF23374DCD318828DF`。它绑定完整 encounter identity、
+模拟输入 SHA、逐 trial component-vector SHA 与 policy SHA；
+三种行动各提供恰好 `N` 个完整 signed Q100000 component vectors。attack 的 tape SHA 必须等于原实验 SHA，
+win/loss/no-resolution one-hot 逐 trial 计数必须等于实验计数；发布概率须与计数相差不超过 1 个 Q 单位，
+resolved-win Wilson 95% 区间须与计数一致。战斗日、双方 hard loss 的 quantile、进入效用的角色风险与 campaign feedback
+也逐项核对 attack trial tape。`avoid` 与 `wait_reinforce` 各自提供明确的 trial projections、uncertainty penalty 和
+opportunity cost；缺任何一项都不能默认为零。此补充输入不改变冻结 v1 的无补充调用结果。
+
+[fixture-confirmed] 合成 N1000 高胜率、低灾难风险、较优目标效用输入计算出 attack 候选；低胜率输入选择 wait，
+另一组替代价值选择 avoid。合成测试中的显式开关替换只验证未来路径，**当前 production activation 仍为 false**：
+计算器可以返回三个 EU 和 `candidate_action`，但 `selected_action=null`、`automatic_attack_enabled=false`。
+当前 AST/original trace gate 和真实行动备选 trial producer 仍缺，R0188 research 样本不能冒充这些输入。
 
 ```mermaid
 flowchart LR
     O["same-frame v3 observation"] --> F{"all fidelity gates true?"}
-    M["Monte Carlo distribution<br/>including no-resolution/tails"] --> E["versioned Q100000 EU"]
-    C["campaign costs + exit options"] --> E
+    M["hashed attack trial tape<br/>including no-resolution/tails"] --> E["per-trial signed Q100000 EU"]
+    C["explicit avoid/wait trial tapes<br/>campaign costs + exit options"] --> E
     F -->|yes| E
     F -. "current: no" .-> B["blocked<br/>selected_action = null"]
     E --> R{"risk constraints + margin pass?"}
     R -->|yes| X{"separate production<br/>activation enabled?"}
     X -. "current: no" .-> B
-    X -->|future yes| A["future attack candidate"]
+    X -->|future yes| A["selected attack only if risk and margin pass"]
     R -->|no| B
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class B,A unknown;

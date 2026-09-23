@@ -845,10 +845,12 @@ flowchart TD
   效用输入须包含保卫目标/战争分、预期伤亡、补员、补给及替代路线机会成本；没有额外的固定兵数倍数门。
   接触 horizon 必须证明首日无接触，或所有预测冲突均限于目标围城省；这只会选择已有广告的 typed
   move，仍需独立路线后置、逐日接触重审与下一 turn 消费。
-- [current RED] 当前正式 `combat-entry-eu-v1` 只有字段校验，激活常量为 false，三个 EU 值均为 null；
-  snapshot 也没有合格的 `combat_entry_eu_v1` 生产者。R0188 的 N4096 research 分布不满足模型保真门，
-  所以此条件在当前真实运行中不可达，仍返回零攻击。下一依赖是 exact-build 主阶段 trace/模型校准、
-  同帧效用计算与正式激活；本静态接线不等于这些门已通过。
+- [implementation-confirmed / current RED] 冻结 `combat-entry-eu-v1` 无补充输入时仍只校验字段并返回 null EU。
+  新的 `combat-entry-action-components-v1` 显式 trial tape 可在静态合成场景计算 attack/avoid/wait 的
+  signed Q100000 效用与候选，但正式激活常量仍为 false，任何候选都不转为自动动作。snapshot 尚无合格的
+  `combat_entry_eu_v1` 及三行动 trial producer；R0188 的 N4096 research 分布也不满足模型保真门。
+  因此当前真实运行仍零攻击。下一依赖是 exact-build 主阶段 trace/模型校准、同帧三行动输入生产与
+  策略消费接线、正式激活和受控实机后置；本静态计算器不等于这些门已通过。
 
 ```mermaid
 flowchart TD
