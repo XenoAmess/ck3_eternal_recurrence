@@ -1,0 +1,305 @@
+{
+  "schema": "xar.war-film-case-c-baseline.v1",
+  "authority": "saved CASE-W receipts; not a fresh game query",
+  "case_w_state": "parent reports completed and stopped at day19; CASE-C does not change W limits",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0005",
+  "pid": 32356,
+  "connection_generation": 1,
+  "episode_run_id": "native-29829-fcaa3906d404",
+  "frame": {
+    "snapshot_id": "native:44",
+    "revision": 45,
+    "native_revision": 44,
+    "date_raw": 53144784,
+    "paused": true
+  },
+  "actor_character_id": 29829,
+  "war": {
+    "war_id": 4,
+    "player_side": "attacker",
+    "primary_opponent_character_id": 31549,
+    "player_is_primary_war_leader": true,
+    "enemy_primary_default_raise_province_id": 2638,
+    "targeted_title_ids": [
+      2111
+    ],
+    "war_objective_province_ids": [
+      2638
+    ],
+    "objective_province_states": [
+      {
+        "province_id": 2638,
+        "occupation_observable": true,
+        "is_occupied": false,
+        "occupying_character_id": null,
+        "fort_level": 3,
+        "garrison_size": 444,
+        "besieging_strength": 0,
+        "siege_observable": true,
+        "active_siege": null
+      }
+    ],
+    "player_relative_war_score": 0,
+    "allied_armies": [
+      {
+        "army_id": 18,
+        "owner_character_id": 29829,
+        "soldiers": null,
+        "current_province_id": 2624,
+        "move_target_province_id": 2638,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          2631,
+          2630,
+          2629,
+          8753,
+          2626,
+          2627,
+          2633,
+          2639,
+          2643,
+          2638
+        ],
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving",
+        "army_state_code": 7
+      }
+    ],
+    "enemy_armies": [
+      {
+        "army_id": 16777221,
+        "owner_character_id": 31549,
+        "soldiers": null,
+        "current_province_id": 2638,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": false,
+        "source": "native",
+        "route_province_ids": [],
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1
+      },
+      {
+        "army_id": 16777231,
+        "owner_character_id": 32725,
+        "soldiers": null,
+        "current_province_id": 4578,
+        "move_target_province_id": 2638,
+        "move_target_observable": true,
+        "controllable": false,
+        "source": "native",
+        "route_province_ids": [
+          8648,
+          1034,
+          2638
+        ],
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving",
+        "army_state_code": 7
+      },
+      {
+        "army_id": 22,
+        "owner_character_id": 32231,
+        "soldiers": null,
+        "current_province_id": 4599,
+        "move_target_province_id": 2633,
+        "move_target_observable": true,
+        "controllable": false,
+        "source": "native",
+        "route_province_ids": [
+          4574,
+          8648,
+          1033,
+          1032,
+          2633
+        ],
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving",
+        "army_state_code": 7
+      },
+      {
+        "army_id": 27,
+        "owner_character_id": 34320,
+        "soldiers": null,
+        "current_province_id": 2646,
+        "move_target_province_id": 2638,
+        "move_target_observable": true,
+        "controllable": false,
+        "source": "native",
+        "route_province_ids": [
+          1034,
+          2638
+        ],
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving",
+        "army_state_code": 7
+      },
+      {
+        "army_id": 28,
+        "owner_character_id": 34474,
+        "soldiers": null,
+        "current_province_id": 4552,
+        "move_target_province_id": 2638,
+        "move_target_observable": true,
+        "controllable": false,
+        "source": "native",
+        "route_province_ids": [
+          8655,
+          8654,
+          1034,
+          2638
+        ],
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving",
+        "army_state_code": 7
+      }
+    ],
+    "source": "native"
+  },
+  "route_u22": {
+    "schema_version": 1,
+    "contract_stage": "production_exact_ai_reinforcement_assignment",
+    "status": "available",
+    "unavailable_reason": null,
+    "battle_reinforcement_assignment_ready": true,
+    "snapshot_revision": 44,
+    "observed_date_raw": 53144784,
+    "selected_public_cunit_id": 22,
+    "selected_native_carmy_id": 22,
+    "coordinator_id": 3,
+    "unit_stack_stored_index": 3,
+    "subunit_stored_index": 0,
+    "signal": {
+      "asking_for_help": false,
+      "assigned_to_help": false,
+      "asking_changed_last_evaluation": false,
+      "request_power_basis_raw": null,
+      "cross_coordinator_request_valid_raw": 0,
+      "cross_coordinator_request_power_raw": null,
+      "first_route_edge_remaining_duration_q100000": 850617
+    },
+    "assignment": {
+      "assignment_target_province_id": null,
+      "target_provenance": "none",
+      "combat_binding_status": "unbound_until_contact",
+      "active_combat_id": null
+    },
+    "route": {
+      "current_province_id": 4599,
+      "move_target_province_id": 4598,
+      "route_province_ids": [
+        4574,
+        8648,
+        1033,
+        1032,
+        2633
+      ],
+      "route_alignment": "no_assignment",
+      "arrival_date_raws": [
+        53145000,
+        53145720,
+        53145984,
+        53146176,
+        53146416
+      ],
+      "assignment_eta_date_raw": null
+    },
+    "native_order": {
+      "support_search_province_ids_in_stored_order": [
+        4574,
+        4576,
+        4593,
+        4595,
+        4598,
+        4600,
+        4606,
+        4573,
+        4575,
+        4577,
+        4597,
+        4592,
+        4594,
+        4624,
+        4596,
+        4607,
+        4623,
+        4601,
+        4602
+      ],
+      "parent_subunits_in_stored_order": [
+        {
+          "public_cunit_ids_in_stored_order": [
+            22
+          ],
+          "asking_for_help": false,
+          "assigned_to_help": false,
+          "assignment_target_province_id": null
+        }
+      ]
+    },
+    "contact_projection": {
+      "status": "not_applicable",
+      "temporal_semantics": "present_time_only_not_future_binding",
+      "current_target_compatible_combat_ids_in_stored_order": [],
+      "contact_if_now_selected_combat_id": null
+    }
+  },
+  "route_estimate": {
+    "endpoint_arrival_date_raw": 53146416,
+    "raw_hours_per_day": 24,
+    "estimated_days_from_baseline": 68.0,
+    "meaning": "stored arrival timeline for U22; not combat ETA, probability or guaranteed continued route"
+  },
+  "sources": {
+    "snapshot": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/w131-take_snapshot.json",
+      "bytes": 112571,
+      "sha256": "f8c4d52e5205e4b32002dfbd6019dba409e4bc822376f855466190fa501f6c43"
+    },
+    "route": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/w130-query_battle_reinforcement_assignment_v1.json",
+      "bytes": 16657,
+      "sha256": "33a14c486a016670eeb101c7d569cba56b9ec4325aea38bb88a49b8bc46af891"
+    },
+    "capabilities": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/w001-get_capabilities.json",
+      "bytes": 34989,
+      "sha256": "ba0810689bb08dc654d299465eff90bb05d9b864b5824c445956d95d7444dad8"
+    },
+    "run_identity": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/live-run-identity.json",
+      "bytes": 552,
+      "sha256": "2c68c85d4a73477a37adf983ad14a9624c6e164da6ee944ac8d2e33cfc7b58a6"
+    }
+  },
+  "day19_checkpoint": {
+    "receipt": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-w-r1/end-checkpoint.json",
+      "bytes": 204487,
+      "sha256": "74e0781d0604c748fe761c274329784b41bfa84a12e7be958ce3cd808ec5a189"
+    },
+    "archive": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-w-r1/end-state.ck3",
+      "bytes": 49683960,
+      "sha256": "74d43b27bb9e13ed6431e3cbb7f38982b3af6622dd6a445e17fa1dc668a9d789"
+    },
+    "after": {
+      "snapshot_id": "native:45",
+      "revision": 46,
+      "native_revision": 45,
+      "date_raw": 53144784,
+      "paused": true,
+      "episode_run_id": "native-29829-fcaa3906d404"
+    }
+  },
+  "checkpoint_state": "saved/materialized/archive hash verified offline; fresh live identity still required"
+}

@@ -1,0 +1,176 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-case-c-first-actual-contact-20260923",
+  "question": "Within a new bounded observation window continuing existing W4 routes from day19, can formal queries bind one first observed actual CombatID to both sides of this same war?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "passive-runtime",
+    "actor_kind": "engine",
+    "owner_scope": "Current W4 allied/enemy CUnits; existing player order continues, NPC orders remain native.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "One R0005/PID32356/generation1/episode and exact W4. Refresh full public unit IDs; no inferred split/merge identity. Stop on session/war identity change.",
+    "producer_trigger": "daily-tick",
+    "producer": "Normal unpaused movement/contact engine following existing routes; this observation does not add movement orders or force combat.",
+    "caller": "Sole root owner uses advertised speed1/2 and resume/pause; latest published in_combat is only a pause trigger.",
+    "consumer": "Paused public actual-contact, battle-control and battle-transition readbacks, retaining exact C, unit owners and side ordering.",
+    "cache_lifetime": "Fresh snapshots each sample and after every action. Use current public revision, never baseline45 or native44 as replay guards. Paused query identity/date/revision must be compatible.",
+    "expected_signal": "Current W4 unit in_combat followed by one agreed actual full C and opposite combat sides containing W4 allied/enemy units.",
+    "zero_sample_meaning": "No exact combat observed in this window; not proof that AI refuses combat or no combat happened between snapshots.",
+    "stop_condition": "First exact contact binding or any failure stop; hard ceilings120 game days/600 wall seconds, proactive pause reserves in sampling-window.json; no change to completed CASE-W.",
+    "runtime_window_ref": "sampling-window.json; root-authorized independent case-c-r1 after actual day19 checkpoint binding"
+  },
+  "pre_observation": {
+    "checkpoint": "Pending root save at plan freeze; must bind actual bytes/hash/materialization before first resume.",
+    "same_process": "Continue existing paused session only after fresh identity checks. If it ends, stop this attempt; no automatic restore or relaunch.",
+    "no_initial_combat": "If C already exists before first resume, record pre-existing contact; do not claim this window captured its onset."
+  },
+  "bindings_to_fill_from_live": {
+    "checkpoint": null,
+    "start_snapshot": null,
+    "start_monotonic": null,
+    "start_utc": null,
+    "trigger_snapshot": null,
+    "subject_public_cunit_id": null,
+    "actual_contact": null,
+    "battle_control": null,
+    "combat_id": null,
+    "battle_transition": null,
+    "same_war_opposite_sides": null,
+    "end_snapshot": null,
+    "end_reason": null,
+    "elapsed_game_days": null,
+    "elapsed_wall_seconds": null,
+    "recording": null
+  },
+  "evidence": [
+    {
+      "id": "baseline",
+      "path": "baseline.json",
+      "layer": "live-observation",
+      "sha256": "02a9eb1e3ef9fc4758e469444e10cea2499085c1ec31572c3a8798a0f8cc2059",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Archived W day19 starting state only; CASE-C not executed.",
+      "session": "desktop-3fevhd2-1c74096080--vanilla--R0005; PID32356; generation1",
+      "frame": "native:44/public45/native44/date53144784",
+      "identity": "actor29829; W4; player U18; enemy U16777221/U16777231/U22/U27/U28"
+    },
+    {
+      "id": "source",
+      "path": "source-contract.json",
+      "layer": "source-contract",
+      "sha256": "8028ede7111115cafc152148106d579f50426d4c3d657fec1422074f2fd27a2d",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Existing public tool signatures and exact combat/day conventions; no repeated static research."
+    },
+    {
+      "id": "window",
+      "path": "sampling-window.json",
+      "layer": "source-contract",
+      "sha256": "70e0e94eb8a986f42a521a90f28af9a07a3cd5cee39d14253be70e100c486184",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "New independent bounded intent; neither W extension nor runtime proof."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "baseline",
+      "label": "Completed W day19 routes"
+    },
+    {
+      "id": "ready",
+      "label": "Fresh CASE-C checkpoint and identity"
+    },
+    {
+      "id": "running",
+      "label": "Existing routes progress without new orders"
+    },
+    {
+      "id": "trigger",
+      "label": "Published in_combat pause trigger"
+    },
+    {
+      "id": "bound",
+      "label": "Actual same-war full CombatID and sides"
+    },
+    {
+      "id": "stop",
+      "label": "Paused bounded result"
+    }
+  ],
+  "edges": [
+    {
+      "id": "archived-start",
+      "from": "baseline",
+      "to": "ready",
+      "label": "Archived W state is evidence; CASE-C checkpoint remains to bind",
+      "status": "live-confirmed",
+      "evidence": [
+        "baseline"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "resume",
+      "from": "ready",
+      "to": "running",
+      "label": "Explicit bounded time advance only",
+      "status": "counter-policy",
+      "evidence": [
+        "window"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "contact-trigger",
+      "from": "running",
+      "to": "trigger",
+      "label": "First observed current-W4 in_combat publication",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Requires new CASE-C snapshot; polling can miss short contacts."
+    },
+    {
+      "id": "actual-binding",
+      "from": "trigger",
+      "to": "bound",
+      "label": "Paused contact/control/transition agree on actual C and opposite W4 sides",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "No CASE-C actual CombatID observed yet; ETA/hypothetical contact is insufficient."
+    },
+    {
+      "id": "stop-rule",
+      "from": "bound",
+      "to": "stop",
+      "label": "Stop at first binding; zero-result and exception paths also stop",
+      "status": "counter-policy",
+      "evidence": [
+        "window"
+      ],
+      "open_question": null
+    }
+  ],
+  "cases": [
+    {
+      "id": "one-same-war-contact",
+      "question": "One first observed actual C on existing W4 routes within independent CASE-C budgets.",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "explicit_nonclaims": [
+    "natural AI declaration",
+    "new NPC orders submitted by observer",
+    "complete target/combat scoring",
+    "contact guaranteed by route ETA",
+    "frame-synchronous video/MCP mapping",
+    "no unobserved contact between polls",
+    "retreat policy",
+    "battle winner or war result",
+    "extended CASE-W success window"
+  ]
+}

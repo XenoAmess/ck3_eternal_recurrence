@@ -1,0 +1,109 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "war-film-case-c-bounded-first-contact-result-20260923",
+  "question": "Did the independent R0005 CASE-C window observe and formally bind a first actual CombatID on existing War4 routes before its stop rule fired?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "observation": {
+    "mode": "passive-runtime",
+    "actor_kind": "engine",
+    "owner_scope": "Existing War4 player and NPC public units after the separate CASE-W player declaration, raise and move interventions.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "One R0005 / PID32356 / connection-generation1 / episode native-29829-fcaa3906d404; War4 and primary opponent31549 remain stable in checked snapshots.",
+    "producer_trigger": "daily-tick",
+    "producer": "Normal unpaused movement/contact engine after existing orders; no new army order was submitted in CASE-C.",
+    "caller": "Root owner set speed2, resumed, sampled, and paused upon a pending character interaction. Offline result extraction sent no request.",
+    "consumer": "68 saved official snapshot responses with verified bytes and hashes; final paused snapshot and War4 state; no actual-contact or battle query was triggered.",
+    "cache_lifetime": "Each response is interpreted at its own date/public revision. 31 distinct date observations cover 30 game days; no interpolation between polls or exact media-frame binding.",
+    "expected_signal": "First observed current War4 in_combat publication followed by paused actual-contact/control/transition binding of one full CombatID and opposite sides.",
+    "zero_sample_meaning": "No actual contact was observed in this finite window; transient contact between polls is not ruled out, and AI combat policy is not inferred.",
+    "stop_condition": "At date_raw53145504/day30, pending_character_interaction instance16777352 from sender32522; pause confirmed at native:79/public80. This stop preceded any observed in_combat trigger.",
+    "runtime_window_ref": "../war-film-case-c-20260923-r2/sampling-window.json; retrospective result in readback.json"
+  },
+  "evidence": [
+    {
+      "id": "readback",
+      "path": "readback.json",
+      "layer": "live-observation",
+      "sha256": "b416f14801ac394bcc5a15e916587d3c2730c2896fdee6b6f20cbfca4e427e6f",
+      "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86",
+      "supports": "Offline digest of exact original CASE-C and capture receipts. Includes all 68 snapshot response byte hashes, three allowed step calls, 30-day stop state, raw recording hash, service extension and original source RED; no formal CombatID query.",
+      "session": "desktop-3fevhd2-1c74096080--vanilla--R0005 / PID32356 / connection-generation1 / native-29829-fcaa3906d404",
+      "frame": "start date53144784; stop native:79 / public80 / date53145504 / paused=true",
+      "identity": "actor29829; War4; primary opponent31549; no observed in_combat unit or CombatID"
+    }
+  ],
+  "nodes": [
+    {"id":"start","label":"Frozen CASE-W day19 checkpoint and fresh CASE-C identity"},
+    {"id":"running","label":"Existing War4 routes observed during date progression"},
+    {"id":"contact","label":"First observed actual CombatID and opposite sides"},
+    {"id":"interaction","label":"Pending character interaction instance16777352"},
+    {"id":"stop","label":"Paused CASE-C result at day30"},
+    {"id":"terminal","label":"Optional same-combat natural terminal"}
+  ],
+  "edges": [
+    {
+      "id":"resume-existing-routes","from":"start","to":"running",
+      "label":"Only speed2 and resume were submitted after fresh paused identity; the player route predated CASE-C.",
+      "status":"live-confirmed","evidence":["readback"],"open_question":null
+    },
+    {
+      "id":"first-contact","from":"running","to":"contact",
+      "label":"No current War4 unit showed in_combat in 68 checked snapshots, so no actual CombatID was queried or bound.",
+      "status":"unknown","evidence":["readback"],
+      "open_question":"A later, separately planned observation is needed; the sampled window cannot rule out transient contact between polls."
+    },
+    {
+      "id":"interaction-publication","from":"running","to":"interaction",
+      "label":"Pending character interaction appeared at date53145504 while War4 remained active, score0.",
+      "status":"live-confirmed","evidence":["readback"],"open_question":null
+    },
+    {
+      "id":"pause-stop","from":"interaction","to":"stop",
+      "label":"Root submitted pause-map; next official snapshot confirms paused=true with the same pending interaction.",
+      "status":"live-confirmed","evidence":["readback"],"open_question":null
+    },
+    {
+      "id":"optional-terminal","from":"contact","to":"terminal",
+      "label":"Optional one-battle terminal was not entered because no actual CombatID was bound.",
+      "status":"unknown","evidence":[],
+      "open_question":"Requires a later separate case with real contact and exact terminal evidence."
+    }
+  ],
+  "cases": [
+    {
+      "id":"bounded-no-contact-observed",
+      "question":"What did the actual independent CASE-C window observe before a mandatory stop?",
+      "status":"observed","evidence":["readback"]
+    },
+    {
+      "id":"same-war-first-combat-binding",
+      "question":"Was one actual full CombatID bound to opposite War4 sides?",
+      "status":"not-applicable",
+      "reason":"No in_combat trigger occurred in the checked snapshots; pending interaction stopped the window before formal contact queries.",
+      "evidence":["readback"]
+    },
+    {
+      "id":"optional-one-battle-outcome",
+      "question":"Did that same battle reach a formally read-back natural terminal?",
+      "status":"not-applicable",
+      "reason":"No actual first CombatID was bound; the optional subwindow was never entered.",
+      "evidence":["readback"]
+    }
+  ],
+  "explicit_nonclaims": [
+    "a complete AI combat strategy or scoring chain",
+    "natural AI war declaration",
+    "no contact at any unobserved instant between snapshots",
+    "actual battle, combat side, retreat or terminal transition",
+    "cause or meaning of the pending character interaction beyond published fields",
+    "video frames synchronized to each native query",
+    "clean footage or human signoff from raw recording alone",
+    "repair of the original R0005 source capture RED",
+    "expiry of the CK3 service at the earlier pre-extension time"
+  ],
+  "result_record_scope": "Retrospective frozen result. It leaves both prepared r1 and checked r2 plans unchanged and authorizes no resumed game operation."
+}

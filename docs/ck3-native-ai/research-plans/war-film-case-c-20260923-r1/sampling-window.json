@@ -1,0 +1,61 @@
+{
+  "schema": "xar.war-film-case-c-window.v1",
+  "status": "prepared-not-executed",
+  "owner": "root is sole R0005 live owner; this preparer never connects",
+  "output_root": "D:/workspace/ck3_war_film_research_20260923/case-c-r1",
+  "recording_root": "D:/workspace/ck3_war_film_research_20260923/case-c-r1-recording",
+  "baseline_date_raw": 53144784,
+  "maximum_game_days": 120,
+  "raw_hours_per_day": 24,
+  "deadline_date_raw": 53147664,
+  "maximum_wall_seconds": 600,
+  "wall_clock_start": "monotonic mark immediately before the first CASE-C resume submission; all pause/query latency thereafter counts",
+  "preconditions": [
+    "actual root-saved day19 checkpoint bytes/hash/materialization and response bound",
+    "fresh paused snapshot: same run/PID/generation/episode, actor29829, date53144784 and W4/opponent31549",
+    "no active event or pending interaction; initial in_combat=false for the watched W4 rows",
+    "fresh capability advertisement includes speed1/2, pause/resume and all three contact/control/transition queries"
+  ],
+  "allowed_actions": [
+    "pre-window save-checkpoint if root has not already completed it",
+    "set-speed-1 or set-speed-2",
+    "resume-map",
+    "pause-map"
+  ],
+  "forbidden_actions": [
+    "declare-war",
+    "raise-troops",
+    "move-army",
+    "split/merge",
+    "event or interaction choices",
+    "AI/planner turns",
+    "force combat",
+    "switch player",
+    "change war",
+    "retreat",
+    "peace"
+  ],
+  "sampling": "Serial fresh snapshot every <=2 wall seconds while running; <=0.5 seconds at speed1 near same/adjacent current locations or imminent stored arrivals. Inspect all currently published W4 allied/enemy CUnits, not only the original six. No narrow paused query while running.",
+  "near_boundary": "Switch to speed1 before the final five calendar days or final30 wall seconds; request pause by day119 or wall570s as a latency reserve. Max120/600 are ceilings, not targets.",
+  "combat_trigger": "First current W4 allied/enemy row with in_combat=true: immediately request pause using the latest public revision, then verify paused/map_ready and bind actual C through formal queries.",
+  "success_stop": "One actual C confirmed by contact/control/transition, with at least one current W4 allied and one enemy public CUnit on opposite actual combat sides; leave paused immediately.",
+  "failure_stop": [
+    "active_event or pending_character_interaction appears; pause and leave undecided",
+    "PID/generation/episode/actor changes or connection/required binding unavailable",
+    "W4 disappears, ends, or changes primary opponent",
+    "first in_combat trigger cannot be bound to a current actual C/W4 after at most two paused fresh-read rounds",
+    "any budget ceiling/reserve stop; no extra sailing/chasing extension"
+  ],
+  "sampling_limit": "Polling may miss a combat between snapshots. Preserve actual observed intervals and any budget overshoot; never claim no combat occurred or a guaranteed engine-synchronous stop.",
+  "zero_result": "No exact combat observed in this window; not proof that AI refuses combat or no combat happened between snapshots.",
+  "runtime_bindings_required": [
+    "day19 checkpoint binding",
+    "pre/post frame and run identity",
+    "first resume monotonic/UTC",
+    "every request/response UTC/monotonic/date/public and native revision",
+    "trigger public CUnit and W4 membership",
+    "paused contact/control/transition actual C and opposite sides",
+    "end reason and elapsed game/wall time",
+    "raw recording bytes/SHA and actual PTS marks if root records; no exact frame-sync claim by timing proximity"
+  ]
+}

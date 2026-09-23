@@ -1,0 +1,28 @@
+{
+  "schema": "xar.native-research-plan-check.v1",
+  "result": "plan-consistent",
+  "proof_layer": "record-structure-and-file-integrity",
+  "semantic_correctness_verified": false,
+  "live_execution_performed": false,
+  "observation_plan_issues": [],
+  "declared_edges_by_status": {
+    "counter-policy": 0,
+    "inference": 0,
+    "live-confirmed": 3,
+    "static-confirmed": 0,
+    "unknown": 2
+  },
+  "enumerated_native_edges": 5,
+  "declared_cases_by_status": {
+    "pending": 0,
+    "observed": 1,
+    "not-applicable": 2
+  },
+  "checked_evidence_files": 1,
+  "limitations": [
+    "Evidence layers and conclusions are author declarations; hashes bind bytes, not their truth.",
+    "Counts cover this enumerated graph only, not all CK3 branches.",
+    "A consistent observation plan is not authorization to run or manipulate CK3."
+  ],
+  "plan_sha256": "0515f05f9183434bd7753105561c11939e41db9179f4c3d3c28ac0936c25e70f"
+}

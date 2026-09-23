@@ -1,0 +1,85 @@
+{
+  "schema": "xar.war-film-case-c-source-contract.v1",
+  "tools": {
+    "ck3_get_capabilities": {
+      "line": 1288,
+      "parameters": []
+    },
+    "ck3_get_bridge_diagnostics": {
+      "line": 1293,
+      "parameters": []
+    },
+    "ck3_take_snapshot": {
+      "line": 1322,
+      "parameters": []
+    },
+    "ck3_get_war_state": {
+      "line": 1401,
+      "parameters": []
+    },
+    "ck3_save_checkpoint": {
+      "line": 1356,
+      "parameters": [
+        "expected_revision"
+      ]
+    },
+    "ck3_inspect_save_artifacts_v1": {
+      "line": 1298,
+      "parameters": []
+    },
+    "ck3_execute_step": {
+      "line": 1349,
+      "parameters": [
+        "step",
+        "expected_revision"
+      ]
+    },
+    "ck3_query_actual_contact_scope": {
+      "line": 1533,
+      "parameters": [
+        "subject_army_id",
+        "target_province_id",
+        "expected_revision"
+      ]
+    },
+    "ck3_query_battle_control_snapshot_v1": {
+      "line": 1547,
+      "parameters": [
+        "subject_army_id",
+        "expected_revision"
+      ]
+    },
+    "ck3_query_battle_transition_v1": {
+      "line": 1559,
+      "parameters": [
+        "combat_id",
+        "expected_revision"
+      ]
+    }
+  },
+  "files": [
+    {
+      "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 96892,
+      "sha256": "8b019574909b78d5f0bce5cc8de1aa0c01eb767951586b355056559bdbd4f277"
+    },
+    {
+      "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "bytes": 144301,
+      "sha256": "753e7fc01a6e2f24475f76dc18f8e0fbdc2cf70046a05313754a2706ed2ef9a8"
+    },
+    {
+      "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/ck3_autonomous_player/src/xar_autoplayer/bridge/battle_control_contract.py",
+      "bytes": 37854,
+      "sha256": "65fbeef2d2e1e06461a4305f928701391b856ce4960fd29d98c1e0e593a9c2ac"
+    },
+    {
+      "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/docs/ck3-native-ai/war-film-case-w-observation-2026-09-23.md",
+      "bytes": 13066,
+      "sha256": "5be135a772da07bd72799fdaef8981b15d92e6aff9dacde212b4f1f64788ea34"
+    }
+  ],
+  "raw_date_rule": "Existing war_contract.py horizon_end=date_raw+24 establishes one-day raw-hour convention; no new EXE/static extraction.",
+  "actual_combat_binding": "battle control attacker/defender ordered_armies have public_cunit_id, owner_character_id and combat_backlink_id; prove a current W4 opposite-side pair shares C.",
+  "projection_boundary": "in_combat triggers pause only; actual contact/control/transition must agree on full C. Present-time hypothetical contact or stored ETA is not actual contact."
+}

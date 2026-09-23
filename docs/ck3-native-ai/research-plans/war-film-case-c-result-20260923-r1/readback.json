@@ -1,0 +1,1658 @@
+{
+  "schema": "ck3-war-ai.case-c-observation-readback.v1",
+  "scope": "Retrospective offline digest of R0005 CASE-C. No game commands made by this digest.",
+  "build": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
+  },
+  "session": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0005",
+    "pid": 32356,
+    "connection_generation": 1,
+    "episode_id": "native-29829-fcaa3906d404",
+    "actor_character_id": 29829,
+    "war_id": 4,
+    "primary_opponent_character_id": 31549
+  },
+  "outcome": {
+    "status": "stopped_on_pending_interaction_without_observed_combat",
+    "reason": "event_or_interaction",
+    "candidate_combat_id": null,
+    "start_date_raw": 53144784,
+    "end_date_raw": 53145504,
+    "observed_game_days": 30.0,
+    "observed_wall_seconds": 37.105310400016606,
+    "source_date_observation_count": 31,
+    "checked_snapshot_count": 68,
+    "unique_snapshot_dates": 31,
+    "observed_in_combat_unit_count": 0,
+    "end_snapshot_id": "native:79",
+    "end_public_revision": 80,
+    "end_paused": true,
+    "end_pending_interaction": {
+      "instance_id": 16777352,
+      "sender_character_id": 32522,
+      "auto_accept_notification": false,
+      "source": "native"
+    },
+    "end_active_event": null,
+    "end_war_score": 0,
+    "no_actual_contact_queries_reason": "No in_combat trigger; pending interaction stopped the window.",
+    "optional_battle_terminal_entered": false
+  },
+  "source_files": {
+    "prepared_plan": {
+      "path": "D:/workspace/ck3_native_tree_docs_audit_20260922/docs/ck3-native-ai/research-plans/war-film-case-c-20260923-r2/plan.json",
+      "bytes": 8284,
+      "sha256": "3b6bb785cd0069be9849ecdf395410effdbc5e79a897c9cbd571c866a5675e35"
+    },
+    "checkpoint": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/pre-contact.ck3",
+      "bytes": 49683960,
+      "sha256": "74d43b27bb9e13ed6431e3cbb7f38982b3af6622dd6a445e17fa1dc668a9d789"
+    },
+    "observation_start": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/observation-started.json",
+      "bytes": 101206,
+      "sha256": "7a9c5361b52b165d4f6d6ad786a69e0220bca68eb1b505a47fc9fe626cfa9589"
+    },
+    "observation_result": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/contact-observation-result.json",
+      "bytes": 111678,
+      "sha256": "2725d09d74f419e12e05b5eb67b5c83ec20bc545338df36eb14c5a1c853f612b"
+    },
+    "recording_precondition": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1-recording/recording-precondition.json",
+      "bytes": 1528,
+      "sha256": "36ff64d53e126aef74f9143e434154638a2cea9a010cbfe06bac65e81a1abe18"
+    },
+    "recording_result": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1-recording/recording-result.json",
+      "bytes": 442,
+      "sha256": "321a7774541afb80dd24e3a97ce4bddd1d8caf8980427d997231e9e5119ff0ca"
+    },
+    "recording_probe": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1-recording/ffprobe.json",
+      "bytes": 2870,
+      "sha256": "6da269f829bd2f72e5a9607b70f6424ca077662a4eca0803603c5fe362e2ea25"
+    },
+    "recording_raw": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1-recording/gameplay.mkv",
+      "bytes": 1928022579,
+      "sha256": "5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76"
+    },
+    "service_extension": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/service-extension-r1.json",
+      "bytes": 501,
+      "sha256": "820192cf6a0f9a79a8a89b86e22ddd99db1798bb8629ce52574fc9890fb6af18"
+    },
+    "service_extension_dispatch": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/service-extension-dispatch-r1.json",
+      "bytes": 1863,
+      "sha256": "98304928258f224344bbddaf1d05a849b5a808317243ee0780f17fda1d845ff8"
+    },
+    "original_capture_red": {
+      "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/hot-failure-state.json",
+      "bytes": 28441,
+      "sha256": "7809dc3d5fb412ac50d112535113b06423bb50c7614e62101e91cc9c5321ac80"
+    }
+  },
+  "submitted_steps": [
+    {
+      "request_receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c004-execute_step.json.submitted.json",
+        "bytes": 312,
+        "sha256": "785fc312d0b27620b4e5d0171b6a86823d6475bd3b3ddc474274211c01fcefdb"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c004-execute_step.json",
+        "bytes": 11585,
+        "sha256": "20c692191feaa0e8daf9973bfb13c6413df3283612b222b758ec35841ff8b12c"
+      },
+      "step": "set-speed-2",
+      "expected_revision": 46
+    },
+    {
+      "request_receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c006-execute_step.json.submitted.json",
+        "bytes": 311,
+        "sha256": "fbed85c58c32cf4a397cc278da4f07a4f97000101934cc7d80101bd53f4830ec"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c006-execute_step.json",
+        "bytes": 11584,
+        "sha256": "063d113ee95c75c3cd550e15851636634d61e394761820f4215fba7d7291f77e"
+      },
+      "step": "resume-map",
+      "expected_revision": 47
+    },
+    {
+      "request_receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c071-execute_step.json.submitted.json",
+        "bytes": 310,
+        "sha256": "e390025a5967ffb9bff7665c14669253422cfb66b354a7d9cb0e439c50c687c1"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c071-execute_step.json",
+        "bytes": 11582,
+        "sha256": "bdf65ed48b6537326b50c4da99b64b1a18146ca24815261f5e4d547f2b950c76"
+      },
+      "step": "pause-map",
+      "expected_revision": 79
+    }
+  ],
+  "snapshot_observations": [
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c001-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "b4ea2e438d24aeffff64da2efc5ed8ef7dc7c434fe46ac7df7eda76f7854df94"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c001-take_snapshot.json",
+        "bytes": 112492,
+        "sha256": "a6fd4bdb6ea3821d7c3779cb5378bd226fbee4c95f49164dfb959cf2971bfadb"
+      },
+      "date_raw": 53144784,
+      "snapshot_id": "native:45",
+      "revision": 46,
+      "paused": true,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c003-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "badf109f475fddc35f043e7e6f22396cda4a398722c55eebe81e13b293968a7a"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c003-take_snapshot.json",
+        "bytes": 112492,
+        "sha256": "f0099866883ec9fc63179004acd407d81b2451562455e8bd5086698b744bec9e"
+      },
+      "date_raw": 53144784,
+      "snapshot_id": "native:45",
+      "revision": 46,
+      "paused": true,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c005-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "0c965f0bf2baca7a2883c8dd3715367d55f348584312e388826838621f304bbc"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c005-take_snapshot.json",
+        "bytes": 112750,
+        "sha256": "ab71cc3b739e7faf55bff90438e661e5f99f53ee441fdfa0e80b31df0092d192"
+      },
+      "date_raw": 53144784,
+      "snapshot_id": "native:46",
+      "revision": 47,
+      "paused": true,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c007-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "3dd1ff085d34afec97a18d9e44b8d103bb56e90a256579ea7f6e2d59900bc508"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c007-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "383d8382b2ca880f76d87cfc9912cb8d3fe8de47a7b0b1cef5dc14539fa465bf"
+      },
+      "date_raw": 53144784,
+      "snapshot_id": "native:47",
+      "revision": 48,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c008-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "da2cad037b9ea6c3244d6ac3b6bf7fd567156ced6e3bf2b48c85741b989c753e"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c008-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "5cff133bc1d4093ecd456f5e586afc9e1facfa4e29f5bf4399a2f870df0a1f4d"
+      },
+      "date_raw": 53144784,
+      "snapshot_id": "native:47",
+      "revision": 48,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c009-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "0fcba3c05ff76ea33a6a5180a7a970f36fca78317267397ed9679091e8de6e83"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c009-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "9f1ca13a72fa8cb9815533a03861db819fd4cf56eea6240e96d947bd1c769063"
+      },
+      "date_raw": 53144808,
+      "snapshot_id": "native:48",
+      "revision": 49,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c010-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "d9fae72ca0c29f98688d5499bc7486dc3f01190e431181727fe7d3a47d79144b"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c010-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "67596a0d773e1b9ef31ad1cfe8ee935b395a4a4e0404ebd7932ab7ddc2f93707"
+      },
+      "date_raw": 53144808,
+      "snapshot_id": "native:48",
+      "revision": 49,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c011-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "005c9a467fe9c60273070585448adb8101a12acdae6f6f7d19a40285b42e22c8"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c011-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "a3106840a1dd4a4f60a4e72bf1c4d4fcce79d72dcb50f9589a1fbba35e65262c"
+      },
+      "date_raw": 53144832,
+      "snapshot_id": "native:49",
+      "revision": 50,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c012-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "857eb5e42463985a47ff1c5cbaf0b0901bce927a0166fff324b5a4bacd08944f"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c012-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "a4020fb8fc769acd9129165fbef9508882605a505a90bee4610d56d51020c7e7"
+      },
+      "date_raw": 53144832,
+      "snapshot_id": "native:49",
+      "revision": 50,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c013-take_snapshot.json.received.json",
+        "bytes": 337,
+        "sha256": "dff2e4c7d6b297ce11ed27e6f2b1686a39ac266574e07e524375e60a3082d6a2"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c013-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "c2f9178dc7b444aef791de2420c5f70abae9a3615918a36857c19edd98d444ee"
+      },
+      "date_raw": 53144856,
+      "snapshot_id": "native:50",
+      "revision": 51,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c014-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "f65cf14c9bf840e8a78822be6d4fb8c640ae0601d5ecda78dcca31830eb5781f"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c014-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "6cce0713dc47221a0c7d640d4dd2c07b0c98dfc1e65bee1d89321ae1338beba5"
+      },
+      "date_raw": 53144856,
+      "snapshot_id": "native:50",
+      "revision": 51,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c015-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "cfb5d32f4dc9228b6fde2db11739ac4f757f2294112834f7d670559297626d5e"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c015-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "5bb08ee62543f3154f5f737764b5ce73b40539199310d91b4f29ec62a6cf5187"
+      },
+      "date_raw": 53144880,
+      "snapshot_id": "native:51",
+      "revision": 52,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c016-take_snapshot.json.received.json",
+        "bytes": 337,
+        "sha256": "2f1f40f24b8cbfef45551a2a52048238e3760409d5011955346a1bbce1ff6534"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c016-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "2dfd637bf4c675dafc5ecb34dc9b4fc9ab685a0b0d4d4357f22b4e5641f68011"
+      },
+      "date_raw": 53144904,
+      "snapshot_id": "native:52",
+      "revision": 53,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c017-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "adcfa468c973ef5d22472a911b9dad2c636d726f3225c153ac1a93fcba950d52"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c017-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "1aa2608c280ebbc47b3cbba8e98ff7569836f4f2b025941da60ce31e51bc9df4"
+      },
+      "date_raw": 53144904,
+      "snapshot_id": "native:52",
+      "revision": 53,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c018-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "576154c9516a7ee7d856a3a3ffcce337f4d522d5bdcbc233e2f4980ee4818b6b"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c018-take_snapshot.json",
+        "bytes": 112310,
+        "sha256": "dce8fde340a19733f3e6c087547539421a143256f7f45244f8b3dae07de3474d"
+      },
+      "date_raw": 53144928,
+      "snapshot_id": "native:53",
+      "revision": 54,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c019-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "4a1133b653343d5e56ca04b53b76c601944886aa1f45866a05fef89fcfa2d27c"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c019-take_snapshot.json",
+        "bytes": 112310,
+        "sha256": "89a449f2cf7a71e2f622d15448cb9424342ec466fef7aad7232e6997d2b313da"
+      },
+      "date_raw": 53144928,
+      "snapshot_id": "native:53",
+      "revision": 54,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c020-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "bfa4db718f34b747249ab4cb210124086c65388d4b29a1b6de2802e055cc4a08"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c020-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "3fa3b7854d2f415a6c9850ca217d17af3091516d28945bbef304b6e87b2ba58d"
+      },
+      "date_raw": 53144928,
+      "snapshot_id": "native:53",
+      "revision": 54,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c021-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "471bc49d02c3824c2a4f9018eea07ce37408944e76d5fcf0504bdb38034b7ea1"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c021-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "2fd6cd532b86616574c99e2d8d9bb7ba1fb8fd16a030c80e63aa4a5a202f0da7"
+      },
+      "date_raw": 53144928,
+      "snapshot_id": "native:53",
+      "revision": 54,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c022-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "550fcf5b0dee3d5b56f98870ec6cdd66e66ce75923c5d1e4fcc6018c5d96a336"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c022-take_snapshot.json",
+        "bytes": 112310,
+        "sha256": "e4336865c21b9a18391068a7cca22dbbc9a7abcd55858fb9ccaf53bae50cf757"
+      },
+      "date_raw": 53144952,
+      "snapshot_id": "native:54",
+      "revision": 55,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c023-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "cade545c588e821307f4f9470ce8543b1297e1fa4c6cd75563fa05211c62dca3"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c023-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "9c5a79e59ab654684802e826f974f1052778bfa50934de30591818550fe54fb5"
+      },
+      "date_raw": 53144952,
+      "snapshot_id": "native:54",
+      "revision": 55,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c024-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "7193a57af1da2c6d9f0563cec190b917b5d8f33782ff4f74a2b7bc049d4c0040"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c024-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "2a3e55c2175cb77ff486148ecbb31a1ac26994b72261327167ed4644cacab42e"
+      },
+      "date_raw": 53144952,
+      "snapshot_id": "native:54",
+      "revision": 55,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c025-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "700b53f4436f71b0a57b3fa6b94f6a3f5f4f7f0cdc6a6773b3e0073d87e57cb9"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c025-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "23a6d8f90a323eea35cbcbc36423cf392ea226c731097ce0f902533c12084002"
+      },
+      "date_raw": 53144976,
+      "snapshot_id": "native:55",
+      "revision": 56,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c026-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "bcf6bfae746a2d61d49ed474c2783fdfc3bca6616c5a9f3454c5d33eac9779a3"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c026-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "6afb56dcf71dff3027bce3a7012ae540c278a408f67428362399848976b01a7e"
+      },
+      "date_raw": 53145000,
+      "snapshot_id": "native:56",
+      "revision": 57,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c027-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "274893f3ba889e87e6c75c33938218f6ffbdeabfb252212ead1f276288a12547"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c027-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "34debe9df919a5b0292c70a38f8672b87edb399597538fe50e7a413cceb655a2"
+      },
+      "date_raw": 53145000,
+      "snapshot_id": "native:56",
+      "revision": 57,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c028-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "527cfb1dd2a3839f8a7a5b61b8c874f66f4d4dc6c93f6048ae640c789f40698c"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c028-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "2cd8070e3232daf4255c63f44acc81ee44f9804277f68d76e57bf63949879c49"
+      },
+      "date_raw": 53145000,
+      "snapshot_id": "native:56",
+      "revision": 57,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c029-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "b165e991e0e5222df069b460f6e51ebb69258ff61f7cbb9e440862069c3be1b6"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c029-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "1b49116314f03fb4f80ccbe16167bb06296c7b39d0a788d9e2fe1b4131115f4f"
+      },
+      "date_raw": 53145024,
+      "snapshot_id": "native:57",
+      "revision": 58,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c030-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "c3b96f1ed892db3ddc224bb637625d32da9bd44f839f7347aa193fb2ee74e96e"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c030-take_snapshot.json",
+        "bytes": 112310,
+        "sha256": "de3f1d66a2587518a5ce1376aa77e2dbdb5d1761f4082ccc84bdf165518177ba"
+      },
+      "date_raw": 53145048,
+      "snapshot_id": "native:58",
+      "revision": 59,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c031-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "54835a4e95c7f2f94e3187bc79780895885f5d1ff6801c14e694c83cce44c05d"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c031-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "cc9ab7ad524ef0c9b4f0c356c94a9cb4f5128042743dc9dcf58d5e625fc20c99"
+      },
+      "date_raw": 53145048,
+      "snapshot_id": "native:58",
+      "revision": 59,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c032-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "56050fbb3f5630f45eb27cc25d54d282a3ea343cf4e3f7849f55930cedcf4e72"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c032-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "fff68a90eecac5ac8dab4b27422f7f29a7aedbfa8024b9c0e1e861be48aac067"
+      },
+      "date_raw": 53145048,
+      "snapshot_id": "native:58",
+      "revision": 59,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c033-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "98b5476f1b43ee102b369e85b065fb83c2f6a679f71b17588826ea83d0804860"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c033-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "3339769ccd1b0b3a693f372058c43ec09dd5dbbdf4ecd770290b5b5ea4643d69"
+      },
+      "date_raw": 53145072,
+      "snapshot_id": "native:59",
+      "revision": 60,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c034-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "1f2ee365cf43062c60dc46230a5ae7677ba072f3b92845a9fa5e50f674ff617d"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c034-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "61da98cde26ce30484a426f54e38508e898e61fcd26eac4386ac9d140455666e"
+      },
+      "date_raw": 53145096,
+      "snapshot_id": "native:60",
+      "revision": 61,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c035-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "453c975fad125795c9bb4414ec6bbdd2c9f21de172c6397fbbf243870b5f2a54"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c035-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "6920ebb2d51c54734e144cfc255f41717aa7738379bb2d0de09b4af4a3a74f4d"
+      },
+      "date_raw": 53145096,
+      "snapshot_id": "native:60",
+      "revision": 61,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c036-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "0eeee424d4b7b40a6b0052356147e12451d6e36c8c2f95ccfbc90603ad8f7ef6"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c036-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "1544f90774ccb3950544626b2e10269bafecf5ffd165dba981fd4b357dc6ecc8"
+      },
+      "date_raw": 53145120,
+      "snapshot_id": "native:61",
+      "revision": 62,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c037-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "793be9491b2249aac114ad5f41a2e3af4fbe744e4a39581d6965a466baa5ffa0"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c037-take_snapshot.json",
+        "bytes": 112310,
+        "sha256": "08165259aa18c9062dfa778d2470c9d561776a9992ae80c72372c3e09cb3900c"
+      },
+      "date_raw": 53145120,
+      "snapshot_id": "native:61",
+      "revision": 62,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c038-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "0defe369673c7de7730bdf9e43445098410e3ae3102ff2c6071a1cf7b0893af1"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c038-take_snapshot.json",
+        "bytes": 112302,
+        "sha256": "0e100fd787aa15d52f05df40f9782298ea46982c5ee49911725a4fb5132cce4a"
+      },
+      "date_raw": 53145120,
+      "snapshot_id": "native:61",
+      "revision": 62,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c039-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "df67d26b02dee5133b3c4f9e3fcee0a06372ca1bfab46df413f51092a61db5e2"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c039-take_snapshot.json",
+        "bytes": 112310,
+        "sha256": "b636edac495f07a93796793098c4f2d152a4736e66e60cc67b302e5ea5a07ea6"
+      },
+      "date_raw": 53145144,
+      "snapshot_id": "native:62",
+      "revision": 63,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c040-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "6977d827284e00f0aed29ca9589b50b96335c2b8fb86de7691f5f6883de1ce72"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c040-take_snapshot.json",
+        "bytes": 112304,
+        "sha256": "f840d962de2c2e8485ea67f0c2d4d4210f19b0ecab7fab4e51ec683f6f0c95ed"
+      },
+      "date_raw": 53145144,
+      "snapshot_id": "native:63",
+      "revision": 64,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c041-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "2aa14de9cef5679e3819615a8b34c6e9a5938e24bb8a01c93b331af58444762d"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c041-take_snapshot.json",
+        "bytes": 112304,
+        "sha256": "32c42224c64739da20b5920dbb9a2e94fe9102ac1b708db96339cdc210ce66be"
+      },
+      "date_raw": 53145144,
+      "snapshot_id": "native:63",
+      "revision": 64,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c042-take_snapshot.json.received.json",
+        "bytes": 337,
+        "sha256": "4278c875cb6f413c40583931b2b17c45f2b9929daf2ae4abe2ac3dcea787a9d2"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c042-take_snapshot.json",
+        "bytes": 112304,
+        "sha256": "efad3f2eb32ead1995a3a8e7056342ec877f4706f826a52d8c5d9a85a14d3f83"
+      },
+      "date_raw": 53145168,
+      "snapshot_id": "native:64",
+      "revision": 65,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c043-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "5714f3999dae6f0c409e169964058cae382f4d14792ecf50af82909a2ba18deb"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c043-take_snapshot.json",
+        "bytes": 112304,
+        "sha256": "459bde50c3f22c25012c9d86cd59fe7a2ea1bfa027982c7ff4e1b22a19965d09"
+      },
+      "date_raw": 53145168,
+      "snapshot_id": "native:64",
+      "revision": 65,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c044-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "d192d1d2b5b533e1b974e4a91623a3efbb71cdc4e0d634c70c568dd6cbb03d10"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c044-take_snapshot.json",
+        "bytes": 112304,
+        "sha256": "1fa1a0b98aef83e855c6abd1f7ff5feda29a3086665405c13cbf85c09b02a7bd"
+      },
+      "date_raw": 53145192,
+      "snapshot_id": "native:65",
+      "revision": 66,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c045-take_snapshot.json.received.json",
+        "bytes": 337,
+        "sha256": "2412eeccf4b66961790f8d813df8fa6ef367a1db765f111e699b9ff4065f5f26"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c045-take_snapshot.json",
+        "bytes": 112312,
+        "sha256": "299f927aa9a26b9fc0b722e958fa8ec4d1796aaa88d5f5ddbd38e7ae8e2062a5"
+      },
+      "date_raw": 53145216,
+      "snapshot_id": "native:66",
+      "revision": 67,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c046-take_snapshot.json.received.json",
+        "bytes": 337,
+        "sha256": "43d9841d7b2948e6d9a5abb3f856668fb07ef132fb3c9d1028f2cc79800576a1"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c046-take_snapshot.json",
+        "bytes": 112304,
+        "sha256": "8d6eaa8efff489f7ef3eac62727787b6ee2a781b74c32ffa7792285ebc3e7191"
+      },
+      "date_raw": 53145216,
+      "snapshot_id": "native:66",
+      "revision": 67,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c047-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "4e232d48880fed105c33b670e9f97923bd8b9f29092e1a0474acf259eb74d2dd"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c047-take_snapshot.json",
+        "bytes": 112304,
+        "sha256": "45b9a2b9a7d2f56b4cdf586866244d4b0f021464fe8b967c58c9e96796086c1e"
+      },
+      "date_raw": 53145216,
+      "snapshot_id": "native:66",
+      "revision": 67,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c048-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "138e822acf5c69c123abfad9118900afde3d021dfaeeb33cd9adc4a256d14193"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c048-take_snapshot.json",
+        "bytes": 112304,
+        "sha256": "0781b02adaa64179d940a753cd2b201dab40ed847a20a728db788743872aa9fb"
+      },
+      "date_raw": 53145240,
+      "snapshot_id": "native:67",
+      "revision": 68,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c049-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "ee9e37b12ddf856a89cdbb82dc39871f9f4ac706d7c93eeffc0e8c10cf20d541"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c049-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "1f12b66b11b396d17e30fce5e9a40f95d54884fef0412025ff20a590391c44ea"
+      },
+      "date_raw": 53145264,
+      "snapshot_id": "native:68",
+      "revision": 69,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c050-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "1dbbc8013b4c5d0fef72c0fc23bc787962474061d11126b639e509742783f1b1"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c050-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "75bef91bcdefe90f8aa5298593f5fac5779ef136f625d4e16e12c965e95edabc"
+      },
+      "date_raw": 53145264,
+      "snapshot_id": "native:68",
+      "revision": 69,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c051-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "83ff26591ac4fb2d0abdfbef94bfc2a82d2afef06f4259ba9c9660642006d4f8"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c051-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "d913c8884279e4b4ed245adbf7653c6e884fd37e36999e7d9c688985d54f3440"
+      },
+      "date_raw": 53145288,
+      "snapshot_id": "native:69",
+      "revision": 70,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c052-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "cfc655f873a824314080a6b80ca078b11134effd3982a62f0820f846e404bebd"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c052-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "a8bf5fef61dad45d0509a4d482b60ef687ecdc4c49fbfb79fe9ee3d5bec0aa34"
+      },
+      "date_raw": 53145288,
+      "snapshot_id": "native:69",
+      "revision": 70,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c053-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "29cecc2bb227fa341f774aae0fd7c8f1be34a91cbfe8d876e8e2b1e8307921cc"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c053-take_snapshot.json",
+        "bytes": 112314,
+        "sha256": "be8fc16c6d8a7dc3a315845dcc690f579b9598af8dc1cebf182141abfbc89c72"
+      },
+      "date_raw": 53145312,
+      "snapshot_id": "native:70",
+      "revision": 71,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c054-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "5ea916db791a699e97a722a646e130f0fa20f271bfa8ea67d264122a0ca49c6d"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c054-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "8b0dcf2a0a7d6644fb7206bf471be71fa2c4c942b27b9f9c3f106c3b6560003e"
+      },
+      "date_raw": 53145312,
+      "snapshot_id": "native:70",
+      "revision": 71,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c055-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "f9eb0e9d98cf329be775970dac0d64958b0c0148c91cdd528e4b331db9ab13fe"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c055-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "f0c3d2fa1c08862046301f30a73aee88f98d1464052046548227d642467870af"
+      },
+      "date_raw": 53145312,
+      "snapshot_id": "native:70",
+      "revision": 71,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c056-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "2e097a7089795af9077a2cd959f120a71bd3fdaf41eed476eae9eff63a8fe5fb"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c056-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "e94f119ace172eb0f3fec0c924b91c293a58581ec75791a744f5689867737dc0"
+      },
+      "date_raw": 53145336,
+      "snapshot_id": "native:71",
+      "revision": 72,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c057-take_snapshot.json.received.json",
+        "bytes": 337,
+        "sha256": "dcc547a4c8316494a20df703401fba4d5e9fcf26f238904b509e269b6ddd43c0"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c057-take_snapshot.json",
+        "bytes": 112306,
+        "sha256": "dcee173a4f16b863e8632fb1e68f5be2618feec61875472b97bcea3f935d5067"
+      },
+      "date_raw": 53145336,
+      "snapshot_id": "native:71",
+      "revision": 72,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c058-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "7efe6523810d56a3fd96387db28cfe66169df414641ddc04239b6e71645bb237"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c058-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "e63a566cf3b1c887422c5e2a24146842c7f253906e9a392fb84b698d36d5a483"
+      },
+      "date_raw": 53145360,
+      "snapshot_id": "native:72",
+      "revision": 73,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c059-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "60e414a73574ed860b5aa9295e8159c4c7922863fe7540aad73f97a2d271cb9d"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c059-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "49d511a6cc8f2d204c8656d67931ff319888101fcaa22b715356662a11764fff"
+      },
+      "date_raw": 53145360,
+      "snapshot_id": "native:72",
+      "revision": 73,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c060-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "1a1ac8e590275a2da5e53fee151d521652938ed4e4b85ed86334801f1fb6cf62"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c060-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "2d6dc21c79e65795062c4d4fe5b510fc3ab7d1ce031a5803ffdab04c2fbfe946"
+      },
+      "date_raw": 53145384,
+      "snapshot_id": "native:73",
+      "revision": 74,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c061-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "d30c337d2d0e8b9c23a60cfcbbfad2984b8a062ae9c66e2d31b764541b2c18cc"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c061-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "d7917679b6a4d2cea545d870f323b0ecbeff2fc2d1e7d54c21f1dac96cc9f97a"
+      },
+      "date_raw": 53145384,
+      "snapshot_id": "native:73",
+      "revision": 74,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c062-take_snapshot.json.received.json",
+        "bytes": 337,
+        "sha256": "5d666b6b533ba8f85e609e7b15609ed753948e7a7b062b36c7b7bb89e140032e"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c062-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "eddce67d399c564afb92135a77e0b49ada937d1b4227913e6d0544a6d5a4ce27"
+      },
+      "date_raw": 53145408,
+      "snapshot_id": "native:74",
+      "revision": 75,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c063-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "14166a82f7bca86ef0d814d8015b03658ed8f60e9139fd07971e3975466fe14f"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c063-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "eeff8faf07aaea270f16361e7891b3fb33239a4611862858865888cbf508e854"
+      },
+      "date_raw": 53145408,
+      "snapshot_id": "native:74",
+      "revision": 75,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c064-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "d044687cc55fddf22606dd68018cc98fd1656d9ea413a64a104238188cc4a92b"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c064-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "2e0d708f33338181c1fe71b6ee92ea722a1b80f0dc3c24b6fd7022122ce4ea88"
+      },
+      "date_raw": 53145432,
+      "snapshot_id": "native:75",
+      "revision": 76,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c065-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "a0d96c409100eea5ce0780fc5279ca3998ba9371afd343ad98b685a8454b7499"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c065-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "e0991516e0229e2c512210e8c35a25b26f8e6b622e864425abefd68fb0030625"
+      },
+      "date_raw": 53145432,
+      "snapshot_id": "native:75",
+      "revision": 76,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c066-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "b7eb7fb69b3433a1bc8a3bd4e7ea6dea42f6bb2e378c1c7bf83194600466bd7d"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c066-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "dd01ce6dca3a4b4feb4fd819e13fe57e465210a8d3225a66d3bc3eff5324aa6c"
+      },
+      "date_raw": 53145456,
+      "snapshot_id": "native:76",
+      "revision": 77,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c067-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "78d463954e68a12f694be01d2c19120d272c15fc53f17de0ffc97cd918f03fae"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c067-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "d39ee0ab752df1a98e68d77eefea4c3e2b050d6c23651a92e77a2c85dbdf6eb0"
+      },
+      "date_raw": 53145480,
+      "snapshot_id": "native:77",
+      "revision": 78,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c068-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "8906ce043600963477f80512055e9dfc26195bbad4fe7e39bf8c5fdd58a94e1c"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c068-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "2d5e275f0c3e3a097e38b5ef329d069494ac26b889731e30201907ee68ccaa16"
+      },
+      "date_raw": 53145480,
+      "snapshot_id": "native:77",
+      "revision": 78,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c069-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "72e9d3939a5a49dc1723496de02be6c19520ad25a39758e4e444b09d55ac798e"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c069-take_snapshot.json",
+        "bytes": 112308,
+        "sha256": "cf6caf9f1a8c1b697c0d0029abc5518f49c192e54509e7bdb3305df4e965ef06"
+      },
+      "date_raw": 53145480,
+      "snapshot_id": "native:77",
+      "revision": 78,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": null,
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c070-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "d68168e6960ff7c56ea0aeb2f2208b95c34ac667da06a42a53dbb24007ddca64"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c070-take_snapshot.json",
+        "bytes": 112442,
+        "sha256": "bb46b7ea3eefcfbf06e47cf32af99d68132414acff6d92b0dfb3d91b9bb15660"
+      },
+      "date_raw": 53145504,
+      "snapshot_id": "native:78",
+      "revision": 79,
+      "paused": false,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": {
+        "instance_id": 16777352,
+        "sender_character_id": 32522,
+        "auto_accept_notification": false,
+        "source": "native"
+      },
+      "active_event": null
+    },
+    {
+      "receipt": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/case-c-r1/c072-take_snapshot.json.received.json",
+        "bytes": 338,
+        "sha256": "9d479bbcad51905624f4f7a9ac9a38b5389dfc28f550cdd802807885f90fa111"
+      },
+      "response": {
+        "path": "D:/workspace/ck3_war_film_research_20260923/capture-live-live-r5/recovery-requests-responses/c072-take_snapshot.json",
+        "bytes": 113230,
+        "sha256": "8a067d5e0231045fbad055a1e813dfc275ede671cd8b35b55df5c610018c842e"
+      },
+      "date_raw": 53145504,
+      "snapshot_id": "native:79",
+      "revision": 80,
+      "paused": true,
+      "war_id": 4,
+      "player_relative_war_score": 0,
+      "public_unit_count": 6,
+      "in_combat_units": [],
+      "pending_character_interaction": {
+        "instance_id": 16777352,
+        "sender_character_id": 32522,
+        "auto_accept_notification": false,
+        "source": "native"
+      },
+      "active_event": null
+    }
+  ],
+  "limits": [
+    "Polling does not prove no transient contact occurred between snapshots.",
+    "No actual CombatID, combat sides, battle transition or terminal transition was queried.",
+    "The long recording includes a paused period after the 37-second active observation; clean spans and frame association remain unreviewed.",
+    "The original capture RED is not repaired by this retrospective readback."
+  ]
+}
