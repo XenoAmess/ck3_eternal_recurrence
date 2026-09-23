@@ -130,3 +130,9 @@ py tools/native_research_plan.py check docs/ck3-native-ai/research-plans/war-fil
 上文“镜头待审”描述的是本结果读回冻结时的状态。随后对同一原始录像做了逐帧 PTS 探测：14,873 个实际帧，最后 PTS 397.63 秒，最大相邻间隔 0.063 秒，属于可按原始时间采样的 VFR 素材，不称为 CFR30。探测原件为 `case-w-r1-frame-probe/frame-timestamps.json`，SHA-256 `651ed93cb3d2d409a2aededf3c61637115a76f4ddac832c4677a02273fc46ae8`。
 
 从真实 PTS 5.013 秒与 389.988 秒抽取的两张画面已由 root 查看：首帧是暂停中的意大利南部 CK3 地图、Robert 头像及原生 HUD；末帧是暂停中的西西里地形图、敌军旗帜、玩家军队面板和路线。审图原件为 `case-w-frames-r1/root-review.json`。只读动态封装结果 `case-w-bundle-r1/report.json` 为 **GREEN**，表示原始视频、首尾画面、同会话正式读回和有界推进记录达到该 producer 的导入合同；原始视频 SHA-256 仍为 `b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885`。它没有做逐帧人工观看，也没有把 query 时间绑定到精确视频帧；`native_ai_causality_verified`、`human_1x_review_performed`、`signoff_granted` 均为 false。任何成片仍须单独审阅。
+
+## 两个同名目标字段的后续核对（2026-09-23）
+
+上文第19日的 `2633 / 4598` 差异真实存在，但此前称它为“目标语义冲突、尚未裁决”过于宽泛。已有的[原生支援 ABI 合同](../../ck3_autonomous_player/native_bridge/research/battle_reinforcement_and_join_v1_abi.json)明确规定：窄域 `route.move_target_province_id` 直接读取 **CUnit+0x30** 槽，普通 `ArmySnapshot.move_target_province_id` 则是 **CUnit+0x38/+0x44 剩余路线的末省**。两个字段虽同名，来源与含义不同，合同明确不要求相等；该合同另保存过一次实机不相等的反例。序列化代码分别见 `battle_reinforcement_assignment_v1_mailbox.cpp` 的 `AppendRoute` 与 `bridge.cpp` 的 `AppendArmySnapshot`。
+
+因此本轮的 4598 和 2633 **不能再作为同一字段自相矛盾的证据**。`ready=true` 只表示当时的窄域读回可用，尚未给 CUnit+0x30 在这次无分配、无战斗状态下的完整业务生命周期命名；它也没有补齐从求援请求到分配的因果链。冻结的原始读回、结果计划与媒体包保留当时的措辞和 false 标记，本段是后续更正。
