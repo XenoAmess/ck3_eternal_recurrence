@@ -618,6 +618,24 @@ flowchart TD
 - [static-confirmed] modifier enum `0x105` 从 pursuer 读取 pursuit efficiency，`0x18B` 从 retreater 读取
   retreat losses；caller 的唯一 clamp 是：
 
+  [static-confirmed, 2026-09-24] 两次读取分别发生于 `0x23CD32B..0x23CD34B` 与
+  `0x23CD34B..0x23CD361`，都调用 `0x23C8FF0(out, CCombatSide*, uint16 modifier_index)`。
+  调用者分别传胜方 side 与败方 side；不能拿侧的 primary character 原始 modifier 代替。
+  `0x23C8FF0` 先经 side `+0x74` 的 selected commander CharacterID 获取角色聚合器（无效则走原生 fallback），再合并 side
+  `+0x110` 的脚本修正与 combat/province 上下文。其本次三个 `0x2940D50/0x2941070`
+  调用都传 `R9=0`，因此进入这些 helper 的只读 `0x20AB950` 分支；输出仅写入调用者缓冲。
+  现有 bridge 已将该 RVA 绑定为 `read_combat_hard_side_modifier` 并用于两个硬伤亡 enum。
+  新的 pursuit 读回仅在 paused 主线程、严格解析中的真实 CombatID/双侧 side 指针上调用；
+  调用前后核对 side→combat backlink、primary/commander ID、原 CombatID generation 与
+  paused revision，不主动调用 pursuit tick 或改写游戏状态。静态调用链只证明该限定路径
+  没有 gameplay mutator；实机 readback 仍须单独核验，当前不能提高 Monte Carlo fidelity gate。
+  旧轮次 R0202 与 R0212 已用同一 helper 的 `0x18C/0x18D` 取得 0 typed、0 日期的
+  私有实机读回；它们证明调用路径可用，但没有验过新的 `0x105/0x18B` 数值。
+  指令、EXE 身份与私有字段边界冻结在
+  [`combat_pursuit_modifier_readback_1_19_0_6_abi.json`](../../ck3_autonomous_player/native_bridge/research/combat_pursuit_modifier_readback_1_19_0_6_abi.json)。
+  该读回只覆盖已存在的真实 combat；pre-contact hypothetical side 尚无同等 native 对象，
+  不能从此读回直接产生开战前胜率。
+
   ```text
   pursuit_modifier_raw = max(0, 100000 + pursuer_mod_0x105 + retreater_mod_0x18B)
   base_raw    = mul(BASE_TOUGHNESS_TO_PURSUIT_raw, toughness_soft_raw)

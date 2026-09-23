@@ -1298,13 +1298,18 @@ std::int64_t *FixtureReadCombatHardSideModifier(
     return nullptr;
   }
   if (combat_side == g_contact_combat_1.data() + 0x20) {
-    *output = modifier_enum == 0x18C ? 12'345 : -6'789;
+    *output = modifier_enum == 0x18C ? 12'345
+              : modifier_enum == 0x18D ? -6'789
+              : modifier_enum == 0x105 ? 23'456 : -7'890;
   } else if (combat_side == g_contact_combat_1.data() + 0x368) {
-    *output = modifier_enum == 0x18C ? -1'234 : 5'678;
+    *output = modifier_enum == 0x18C ? -1'234
+              : modifier_enum == 0x18D ? 5'678
+              : modifier_enum == 0x105 ? -2'345 : 8'901;
   } else {
     return nullptr;
   }
-  return modifier_enum == 0x18C || modifier_enum == 0x18D
+  return modifier_enum == 0x18C || modifier_enum == 0x18D ||
+                 modifier_enum == 0x105 || modifier_enum == 0x18B
              ? output
              : nullptr;
 }
@@ -5404,7 +5409,7 @@ int main() {
       battle.resolved_advantage_raw != -6'000'000'000 ||
       !battle.battle_control_ready ||
       g_battle_side_strength_calls != 4 ||
-      g_battle_hard_side_modifier_calls != 8 ||
+      g_battle_hard_side_modifier_calls != 16 ||
       g_battle_regiment_strength_calls != 8 ||
       g_can_order_combat_retreat_calls != 2 ||
       !g_can_order_combat_retreat_arguments_valid) {
@@ -5431,6 +5436,21 @@ int main() {
       hard_sides.sides[1].enemy_modifier_raw != 5'678) {
     return Fail("battle-control actual hard side modifiers lost identity/raw");
   }
+  const auto &pursuit_sides = battle.pursuit_modifier_sides;
+  if (!pursuit_sides.attempted || !pursuit_sides.available ||
+      pursuit_sides.source_combat_id != contact_combat_1_id ||
+      pursuit_sides.source_target_province_id != war_objective_province_id ||
+      pursuit_sides.sides.size() != 2 ||
+      pursuit_sides.sides[0].side_index != 0 ||
+      pursuit_sides.sides[0].encounter_role != "attacker" ||
+      pursuit_sides.sides[0].pursuit_efficiency_raw != 23'456 ||
+      pursuit_sides.sides[0].retreat_losses_raw != -7'890 ||
+      pursuit_sides.sides[1].side_index != 1 ||
+      pursuit_sides.sides[1].encounter_role != "defender" ||
+      pursuit_sides.sides[1].pursuit_efficiency_raw != -2'345 ||
+      pursuit_sides.sides[1].retreat_losses_raw != 8'901) {
+    return Fail("battle-control pursuit modifiers lost side identity/raw");
+  }
   g_battle_hard_side_modifier_fail = true;
   if (xar::ck3_11906::ReadBattleControlSnapshot(
           bindings, battle_request, battle) !=
@@ -5440,7 +5460,12 @@ int main() {
       battle.actual_hard_casualty_sides.available ||
       !battle.actual_hard_casualty_sides.sides.empty() ||
       battle.actual_hard_casualty_sides.unavailable_reason !=
-          "native_actual_hard_side_modifier_unreadable") {
+           "native_actual_hard_side_modifier_unreadable" ||
+      !battle.pursuit_modifier_sides.attempted ||
+      battle.pursuit_modifier_sides.available ||
+      !battle.pursuit_modifier_sides.sides.empty() ||
+      battle.pursuit_modifier_sides.unavailable_reason !=
+           "native_actual_pursuit_side_modifier_unreadable") {
     return Fail("battle-control private hard modifier failure altered frame");
   }
   g_battle_hard_side_modifier_fail = false;
@@ -5449,7 +5474,8 @@ int main() {
           bindings, battle_request, battle) !=
           xar::game::BattleControlSnapshotStatus::available ||
       !battle.battle_control_ready ||
-      battle.actual_hard_casualty_sides.attempted) {
+      battle.actual_hard_casualty_sides.attempted ||
+      battle.pursuit_modifier_sides.attempted) {
     return Fail("battle-control legacy fixture required the private helper");
   }
   bindings.read_combat_hard_side_modifier =

@@ -265,6 +265,27 @@ int main() {
       !json.ends_with("\"battle_control_ready\":true}")) {
     return Fail("battle-control serializer omitted a frozen ABI field");
   }
+
+  auto pursuit = complete;
+  pursuit.pursuit_modifier_sides.attempted = true;
+  pursuit.pursuit_modifier_sides.available = true;
+  pursuit.pursuit_modifier_sides.source_combat_id = pursuit.combat_id;
+  pursuit.pursuit_modifier_sides.source_target_province_id =
+      pursuit.province_id;
+  pursuit.pursuit_modifier_sides.sides = {
+      {0, "attacker", 12'345, -6'789},
+      {1, "defender", -1'234, 5'678}};
+  const auto pursuit_encoded = SerializeBattleControlSnapshotV1(pursuit);
+  if (!Contains(pursuit_encoded,
+                "\"pursuit_modifier_sides\":{\"status\":\"available\"") ||
+      !Contains(pursuit_encoded, "\"pursuit_efficiency_raw\":12345") ||
+      !Contains(pursuit_encoded, "\"retreat_losses_raw\":5678")) {
+    return Fail("battle-control pursuit modifier projection was not serialized");
+  }
+  pursuit.pursuit_modifier_sides.sides[1].side_index = 0;
+  if (!SerializeBattleControlSnapshotV1(pursuit).empty()) {
+    return Fail("battle-control pursuit modifier side order was accepted");
+  }
   if (Contains(json, "\"actual_hard_casualty_sides\"")) {
     return Fail("battle-control changed the legacy frame without a readout");
   }

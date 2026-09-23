@@ -52,7 +52,10 @@ _SNAPSHOT_KEYS = {
     "attacker",
     "defender",
 }
-_OPTIONAL_SNAPSHOT_KEYS = {"actual_hard_casualty_sides"}
+_OPTIONAL_SNAPSHOT_KEYS = {
+    "actual_hard_casualty_sides",
+    "pursuit_modifier_sides",
+}
 _ACTUAL_HARD_KEYS = {
     "status",
     "source_combat_id",
@@ -68,6 +71,13 @@ _ACTUAL_HARD_SIDE_KEYS = {
     "commander_character_id",
     "own_modifier_raw",
     "enemy_modifier_raw",
+}
+_PURSUIT_MODIFIER_KEYS = _ACTUAL_HARD_KEYS
+_PURSUIT_MODIFIER_SIDE_KEYS = {
+    "side_index",
+    "encounter_role",
+    "pursuit_efficiency_raw",
+    "retreat_losses_raw",
 }
 
 _SIDE_KEYS = {
@@ -443,6 +453,13 @@ def normalize_battle_control_snapshot_v1(
             attacker=attacker,
             defender=defender,
         )
+    pursuit_modifiers = None
+    if "pursuit_modifier_sides" in value:
+        pursuit_modifiers = _normalize_pursuit_modifier_sides(
+            value["pursuit_modifier_sides"],
+            combat_id=combat_id,
+            province_id=province_id,
+        )
 
     result = {
         "schema_version": 1,
@@ -488,6 +505,8 @@ def normalize_battle_control_snapshot_v1(
     }
     if actual_hard is not None:
         result["actual_hard_casualty_sides"] = actual_hard
+    if pursuit_modifiers is not None:
+        result["pursuit_modifier_sides"] = pursuit_modifiers
     return result
 
 
@@ -567,6 +586,69 @@ def _normalize_actual_hard_sides(
                 ),
                 "enemy_modifier_raw": _signed_int64(
                     row["enemy_modifier_raw"], f"{row_name}.enemy_modifier_raw"
+                ),
+            }
+        )
+    return {
+        "status": "available",
+        "source_combat_id": source_combat_id,
+        "source_target_province_id": source_province_id,
+        "scale": 100_000,
+        "sides": normalized_sides,
+        "unavailable_reason": None,
+    }
+
+
+def _normalize_pursuit_modifier_sides(
+    value: object, *, combat_id: int, province_id: int
+) -> dict[str, object]:
+    name = "battle_control_snapshot.pursuit_modifier_sides"
+    if not isinstance(value, dict) or set(value) != _PURSUIT_MODIFIER_KEYS:
+        raise ValueError(f"{name} has a malformed schema")
+    source_combat_id = _full_component_id(
+        value["source_combat_id"], f"{name}.source_combat_id"
+    )
+    source_province_id = _positive_int32(
+        value["source_target_province_id"], f"{name}.source_target_province_id"
+    )
+    if (
+        source_combat_id != combat_id
+        or source_province_id != province_id
+        or value["scale"] != 100_000
+        or isinstance(value["scale"], bool)
+    ):
+        raise ValueError(f"{name} identity or scale disagrees")
+    status = value["status"]
+    if status == "unavailable":
+        reason = value["unavailable_reason"]
+        if value["sides"] is not None or not isinstance(reason, str) or not reason:
+            raise ValueError(f"{name} unavailable result has raw sides")
+        return dict(value)
+    if status != "available" or value["unavailable_reason"] is not None:
+        raise ValueError(f"{name} status disagrees")
+    sides = value["sides"]
+    if not isinstance(sides, list) or len(sides) != 2:
+        raise ValueError(f"{name} requires both actual sides")
+    normalized_sides = []
+    for index, row in enumerate(sides):
+        row_name = f"{name}.sides[{index}]"
+        if not isinstance(row, dict) or set(row) != _PURSUIT_MODIFIER_SIDE_KEYS:
+            raise ValueError(f"{row_name} has a malformed schema")
+        side_index = _signed_int32(row["side_index"], f"{row_name}.side_index")
+        role = "attacker" if index == 0 else "defender"
+        if side_index != index or row["encounter_role"] != role:
+            raise ValueError(f"{row_name} actual CCombat side disagrees")
+        normalized_sides.append(
+            {
+                "side_index": side_index,
+                "encounter_role": role,
+                "pursuit_efficiency_raw": _signed_int64(
+                    row["pursuit_efficiency_raw"],
+                    f"{row_name}.pursuit_efficiency_raw",
+                ),
+                "retreat_losses_raw": _signed_int64(
+                    row["retreat_losses_raw"],
+                    f"{row_name}.retreat_losses_raw",
                 ),
             }
         )

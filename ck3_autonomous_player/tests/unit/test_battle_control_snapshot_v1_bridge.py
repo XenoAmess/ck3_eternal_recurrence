@@ -2721,6 +2721,48 @@ class BattleControlSnapshotV1ContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unavailable result has raw"):
             self.normalize(unavailable)
 
+    def test_private_pursuit_modifiers_bind_to_actual_combat_sides(self) -> None:
+        frame = _battle_frame()
+        frame["pursuit_modifier_sides"] = {
+            "status": "available",
+            "source_combat_id": frame["combat_id"],
+            "source_target_province_id": frame["province_id"],
+            "scale": 100_000,
+            "sides": [
+                {
+                    "side_index": 0,
+                    "encounter_role": "attacker",
+                    "pursuit_efficiency_raw": 12_345,
+                    "retreat_losses_raw": -6_789,
+                },
+                {
+                    "side_index": 1,
+                    "encounter_role": "defender",
+                    "pursuit_efficiency_raw": -1_234,
+                    "retreat_losses_raw": 5_678,
+                },
+            ],
+            "unavailable_reason": None,
+        }
+        self.assertEqual(
+            self.normalize(frame)["pursuit_modifier_sides"],
+            frame["pursuit_modifier_sides"],
+        )
+        changed = copy.deepcopy(frame)
+        changed["pursuit_modifier_sides"]["source_combat_id"] = 1
+        with self.assertRaisesRegex(ValueError, "identity or scale"):
+            self.normalize(changed)
+        changed = copy.deepcopy(frame)
+        changed["pursuit_modifier_sides"]["sides"].reverse()
+        with self.assertRaisesRegex(ValueError, "actual CCombat side"):
+            self.normalize(changed)
+        changed = copy.deepcopy(frame)
+        changed["pursuit_modifier_sides"]["sides"][0][
+            "pursuit_efficiency_raw"
+        ] = 2**63
+        with self.assertRaises(ValueError):
+            self.normalize(changed)
+
     def test_signed_generation_combat_id_is_not_missing(self) -> None:
         combat_id = -2_130_706_429
         frame = _with_combat_id(_battle_frame(), combat_id)

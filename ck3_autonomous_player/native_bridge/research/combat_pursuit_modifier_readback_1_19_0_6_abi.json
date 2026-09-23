@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "purpose": "private paused full-CCombatSide pursuit modifier readback; forecast activation remains off",
+  "exact_build": {
+    "version": "1.19.0.6-steam23530548",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_reader": {
+    "rva": "0x23C8FF0",
+    "abi": "int64_t* (int64_t* out, CCombatSide* side, uint16 modifier_index)",
+    "side_selected_commander_character_id_offset": "0x74",
+    "side_scripted_modifiers_offset": "0x110",
+    "side_combat_backlink_offset": "0xB8",
+    "context": "selected commander modifier aggregator (native fallback if invalid) plus side scripted modifiers plus combat/province context; not character-only",
+    "existing_bridge_binding": "Bindings.read_combat_hard_side_modifier; generic reader despite retained historical member name",
+    "read_only_boundary": "0x23C8FF0 passes R9=0 to all 0x2940D50/0x2941070 calls; those branches read native modifiers and write only caller output. Use only paused main-thread actual CCombatSide pointers with strict CombatID and side identity revalidation. Live readback is not yet confirmed."
+  },
+  "pursuit_callsite": {
+    "tick_rva": "0x23CD2E0",
+    "pursuer_enum": "0x105",
+    "retreater_enum": "0x18B",
+    "combination": "max(0, 100000 + pursuer_0x105 + retreater_0x18B)"
+  },
+  "exact_instruction_bytes": {
+    "0x23CD32B": "41 b8 05 01 00 00",
+    "0x23CD346": "e8 a5 bc ff ff",
+    "0x23CD34B": "41 b8 8b 01 00 00",
+    "0x23CD35C": "e8 8f bc ff ff",
+    "0x23C9044": "e8 77 e2 24 00",
+    "0x23C9049": "45 33 c9",
+    "0x23C9067": "e8 e4 7c 57 00",
+    "0x23C907B": "45 33 c9",
+    "0x23C9090": "e8 bb 7c 57 00",
+    "0x23C90C8": "45 33 c9",
+    "0x23C90DF": "e8 8c 7f 57 00"
+  },
+  "readback_scope": "both actual sides, both modifier indexes, same paused BattleControlSnapshot; no typed action or date advance",
+  "unresolved": [
+    "live values and repeat-read parity",
+    "future precontact hypothetical side aggregation",
+    "loaded result effects and AI retreat policy",
+    "qualified battle win probability"
+  ]
+}

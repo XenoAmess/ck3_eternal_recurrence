@@ -14777,6 +14777,59 @@ bool ReadBattleControlSnapshotSample(
           "native_actual_hard_side_modifier_exception";
     }
   }
+  if (bindings.read_combat_hard_side_modifier != nullptr) {
+    // 0x23C8FF0 is the generic full-CCombatSide modifier reader used by
+    // pursuit_tick for enum 0x105 (pursuer) and 0x18B (retreater).
+    auto &pursuit = output.pursuit_modifier_sides;
+    pursuit.attempted = true;
+    pursuit.source_combat_id = output.combat_id;
+    pursuit.source_target_province_id = output.province_id;
+    try {
+      const std::array<const game::BattleControlSideSnapshot *, 2> snapshots{
+          &output.attacker, &output.defender};
+      const std::array<std::size_t, 2> offsets{kCombatAttackerSideOffset,
+                                               kCombatDefenderSideOffset};
+      std::vector<game::BattleControlPursuitModifierSideRow> rows;
+      rows.reserve(2);
+      bool readable = true;
+      for (std::size_t index = 0; index < 2; ++index) {
+        auto *const side = static_cast<std::byte *>(combat) + offsets[index];
+        std::int64_t efficiency_raw = 0;
+        std::int64_t losses_raw = 0;
+        if (bindings.read_combat_hard_side_modifier(&efficiency_raw, side,
+                                                    0x105) != &efficiency_raw ||
+            bindings.read_combat_hard_side_modifier(&losses_raw, side, 0x18B) !=
+                &losses_raw ||
+            LoadAt<const void *>(side, kCombatSideCombatBackPointerOffset) !=
+                combat ||
+            LoadAt<std::int32_t>(side, kCombatSidePrimaryCharacterIdOffset) !=
+                snapshots[index]->primary_participant_character_id ||
+            LoadAt<std::int32_t>(
+                side, kCombatSideSelectedCommanderCharacterIdOffset) !=
+                snapshots[index]->selected_commander_character_id) {
+          readable = false;
+          break;
+        }
+        game::BattleControlPursuitModifierSideRow row{};
+        row.side_index = static_cast<std::int32_t>(index);
+        row.encounter_role = index == 0 ? "attacker" : "defender";
+        row.pursuit_efficiency_raw = efficiency_raw;
+        row.retreat_losses_raw = losses_raw;
+        rows.push_back(std::move(row));
+      }
+      if (readable) {
+        pursuit.sides = std::move(rows);
+        pursuit.available = true;
+      } else {
+        pursuit.unavailable_reason =
+            "native_actual_pursuit_side_modifier_unreadable";
+      }
+    } catch (...) {
+      pursuit.sides.clear();
+      pursuit.unavailable_reason =
+          "native_actual_pursuit_side_modifier_exception";
+    }
+  }
   if (!ReadActiveCombatRetreatProjection(
           bindings, game_state, combat, subject_unit, subject_native_army,
           output, output)) {

@@ -459,6 +459,33 @@ bool ValidateActualHardSides(
   return true;
 }
 
+bool ValidatePursuitModifierSides(
+    const game::BattleControlSnapshot &snapshot) noexcept {
+  const auto &pursuit = snapshot.pursuit_modifier_sides;
+  if (!pursuit.attempted) {
+    return !pursuit.available && pursuit.sides.empty() &&
+           pursuit.unavailable_reason.empty();
+  }
+  if (pursuit.source_combat_id != snapshot.combat_id ||
+      pursuit.source_target_province_id != snapshot.province_id) {
+    return false;
+  }
+  if (!pursuit.available) {
+    return pursuit.sides.empty() && !pursuit.unavailable_reason.empty();
+  }
+  if (!pursuit.unavailable_reason.empty() || pursuit.sides.size() != 2) {
+    return false;
+  }
+  for (std::size_t index = 0; index < 2; ++index) {
+    const auto &row = pursuit.sides[index];
+    if (row.side_index != static_cast<std::int32_t>(index) ||
+        row.encounter_role != (index == 0 ? "attacker" : "defender")) {
+      return false;
+    }
+  }
+  return true;
+}
+
 bool ValidateSnapshot(const game::BattleControlSnapshot &snapshot) noexcept {
   const bool phase_valid =
       (snapshot.phase_raw == 0 && snapshot.phase == "maneuver") ||
@@ -485,7 +512,8 @@ bool ValidateSnapshot(const game::BattleControlSnapshot &snapshot) noexcept {
       !ValidateActiveCombatRetreat(snapshot) ||
       !ValidateSide(snapshot.attacker, 0, "attacker", snapshot.combat_id) ||
       !ValidateSide(snapshot.defender, 1, "defender", snapshot.combat_id) ||
-      !ValidateActualHardSides(snapshot)) {
+      !ValidateActualHardSides(snapshot) ||
+      !ValidatePursuitModifierSides(snapshot)) {
     return false;
   }
 
@@ -858,6 +886,57 @@ bool AppendActualHardSides(
   return true;
 }
 
+bool AppendPursuitModifierSides(
+    std::string &output,
+    const game::BattleControlPursuitModifierSides &pursuit) {
+  output += "{\"status\":";
+  AppendJsonString(output, pursuit.available ? "available" : "unavailable");
+  output += ",\"source_combat_id\":";
+  if (!AppendNumber(output, pursuit.source_combat_id)) {
+    return false;
+  }
+  output += ",\"source_target_province_id\":";
+  if (!AppendNumber(output, pursuit.source_target_province_id)) {
+    return false;
+  }
+  output += ",\"scale\":100000,\"sides\":";
+  if (!pursuit.available) {
+    output += "null";
+  } else {
+    output.push_back('[');
+    for (std::size_t index = 0; index < pursuit.sides.size(); ++index) {
+      if (index != 0) {
+        output.push_back(',');
+      }
+      const auto &row = pursuit.sides[index];
+      output += "{\"side_index\":";
+      if (!AppendNumber(output, row.side_index)) {
+        return false;
+      }
+      output += ",\"encounter_role\":";
+      AppendJsonString(output, row.encounter_role);
+      output += ",\"pursuit_efficiency_raw\":";
+      if (!AppendNumber(output, row.pursuit_efficiency_raw)) {
+        return false;
+      }
+      output += ",\"retreat_losses_raw\":";
+      if (!AppendNumber(output, row.retreat_losses_raw)) {
+        return false;
+      }
+      output.push_back('}');
+    }
+    output.push_back(']');
+  }
+  output += ",\"unavailable_reason\":";
+  if (pursuit.available) {
+    output += "null";
+  } else {
+    AppendJsonString(output, pursuit.unavailable_reason);
+  }
+  output.push_back('}');
+  return true;
+}
+
 } // namespace
 
 bool ParseBattleControlSnapshotV1Step(
@@ -1183,6 +1262,13 @@ std::string SerializeBattleControlSnapshotV1(
     output += ",\"actual_hard_casualty_sides\":";
     if (!AppendActualHardSides(output,
                                snapshot.actual_hard_casualty_sides)) {
+      return {};
+    }
+  }
+  if (snapshot.pursuit_modifier_sides.attempted) {
+    output += ",\"pursuit_modifier_sides\":";
+    if (!AppendPursuitModifierSides(output,
+                                    snapshot.pursuit_modifier_sides)) {
       return {};
     }
   }
