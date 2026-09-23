@@ -43,6 +43,7 @@ from .combat_phase_contract import (
     QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
     combat_simulation_inputs_v3_status,
     normalize_combat_simulation_inputs_v3,
+    parse_query_combat_simulation_inputs_v3_step,
     query_combat_simulation_inputs_v3_step,
 )
 from .combat_phase_event_trace_contract import (
@@ -672,6 +673,13 @@ class GameplayBridgeService:
                 )
                 is not None
                 and QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+                in bridge_capabilities
+            ):
+                routable_steps.add(str(selected_step))
+            if (
+                parse_query_combat_simulation_inputs_v3_step(selected_step)
+                is not None
+                and QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
                 in bridge_capabilities
             ):
                 routable_steps.add(str(selected_step))

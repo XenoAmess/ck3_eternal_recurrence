@@ -823,6 +823,24 @@ flowchart TD
   SiegeID / Assault 生命周期和 restore-history 隔离应作为复用基础，而不是另建平行协议。
 - [inference][counter-policy] 只有公开且语义冻结的 exact combat forecast capability 出现后，P08/P09/P12 的
   contact 分支才可从 fail-closed 升级；新增能力前不得为测试伪造 unknown native 语义。
+- [static-confirmed][counter-policy] 原生 [army-controller.md](army-controller.md) 已证明接战候选使用
+  combat prediction ratio，而我方 primary-defender siege relief 当前的兵数及 native base power 双 `2×`
+  是缺少合格预报时的临时准入，不是原版胜率公式。R0188 的 Robert 防御战争同帧 v3 输入已能读取，
+  `monte_carlo_ready=false`、`planner_usable=false`、`active_attack_allowed=false`；因此不能从这份输入、
+  N4096 research 模拟或 base-power ratio 推出可用胜率。
+- [inference][counter-policy] 对已观测但未过 `2×` 的单军解围候选，正式策略先保留其 WarID、ArmyID、
+  Siege Province 和完整 strength scope。仅当原规划将推进此围城或尝试其路线时，复用同帧 native move
+  preview、全敌军 contact horizon 和现有 v3 typed 只读查询；入口省份只取已预览路线最后一跳的前驱。
+  contact horizon 若只指向该目标省、该围城敌军，可继续做假设性只读查询；若提示在其他省先接触，
+  目标省的预报不覆盖真实首战，保持阻塞。
+  任一输入缺失则停在明确观测缺口，v3 回读也只构成 research-only 证据。合法终战和已证明安全的
+  其他改道继续由原规划选择。未来的合格同帧 combat forecast 与 expected utility 要统一比较所有
+  接战候选，不能继续让 `2×` 否决已证明高胜率的战斗。
+- [fixture-confirmed] 旧轮次 R0118 的 balanced 反例为玩家 `900` 对敌 `759`，native preview 六跳
+  `[699,700,714,975,715,45]`，敌围城军当前在路线终点 `45`。contact horizon 只证明首日无接触，
+  无法证明抵达 `45` 后的战斗；route audit 明确报 `enemy_current_on_route`。因此停止该具体进攻并
+  先读 v3 输入有实证原因，而不能只拿 `900/759 < 2` 当作理由。若另一路线的终点没有敌军且
+  整条 contact 语义已证明安全，本接线不截走那项原规划。
 - [unknown] 原生 stance identity、power aggregation、combat/retreat controller 与 assignment kind 的未来研究
   不属于 counter-policy 实现的前置条件；策略可以在这些字段永久 unknown 的情况下按本文安全运行。
 

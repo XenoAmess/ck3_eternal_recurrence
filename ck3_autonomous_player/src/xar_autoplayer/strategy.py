@@ -19,6 +19,8 @@ from .bridge.declaration_contract import (
 )
 from .bridge.combat_phase_contract import (
     QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+    parse_query_combat_simulation_inputs_v3_step,
+    query_combat_simulation_inputs_v3_step,
 )
 from .bridge.battle_control_contract import (
     BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
@@ -6683,6 +6685,13 @@ def choose_one_life_turn(
         bridge_capabilities=capabilities,
         next_run_plan=next_run_plan,
         battle_speed_readiness=battle_speed_readiness,
+    )
+    plan = _primary_defender_siege_forecast_ingress(
+        plan,
+        commands=_expanded_command_rows(commands),
+        snapshot=snapshot,
+        action_steps=set(steps),
+        bridge_capabilities=set(capabilities),
     )
     if not isinstance(formal, dict):
         return plan
@@ -15152,6 +15161,312 @@ def _same_frame_army_strength_balance(
     }
 
 
+def _primary_defender_siege_forecast_ingress(
+    baseline: dict[str, object],
+    *,
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+    action_steps: set[str],
+    bridge_capabilities: set[str],
+) -> dict[str, object]:
+    """Read an under-two-times siege encounter without authorizing combat."""
+    if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+        return baseline
+    phase = baseline.get("phase")
+    if phase not in {
+        "native_war_no_safe_exact_route",
+        "native_war_stationary_objective_hold_sentinel",
+        "native_war_reconnaissance",
+        "native_war_route_preview",
+        "native_war_route_preview_unsupported",
+        "native_war_pursuit",
+        "native_war_pursuit_progress",
+    }:
+        # In particular, retain a legal terminal action or an independently
+        # proved capital/defensive escape chosen by the ordinary planner.
+        return baseline
+    active_wars = snapshot.get("active_wars")
+    player_armies = snapshot.get("player_armies")
+    if not isinstance(active_wars, list) or not isinstance(player_armies, list):
+        return baseline
+    controlled = controllable_armies(
+        [army for army in player_armies if isinstance(army, dict)]
+    )
+    if len(controlled) != 1:
+        return baseline
+    candidate = _primary_defender_siege_relief_assessment(
+        snapshot,
+        commands=commands,
+        active_wars=[war for war in active_wars if isinstance(war, dict)],
+        controlled_armies=controlled,
+        pursuit_army=controlled[0],
+    )
+    if candidate.get("status") != "forecast_required":
+        return baseline
+    army_id = _native_int(candidate.get("army_id"))
+    war_id = _native_int(candidate.get("war_id"))
+    target = _native_int(candidate.get("target_province_id"))
+    origin = _native_int(controlled[0].get("current_province_id"))
+    if None in {army_id, war_id, target, origin}:
+        return baseline
+    assert army_id is not None and war_id is not None
+    assert target is not None and origin is not None
+    if phase in {"native_war_route_preview", "native_war_route_preview_unsupported"}:
+        preview_target = (
+            baseline.get("route_preview", {}).get("target_province_id")
+            if isinstance(baseline.get("route_preview"), dict)
+            else None
+        )
+        if preview_target != target:
+            return baseline
+    if phase in {"native_war_pursuit", "native_war_pursuit_progress"}:
+        pursuit = baseline.get("pursuit")
+        if not (
+            isinstance(pursuit, dict)
+            and pursuit.get("war_id") == war_id
+            and pursuit.get("target_province_id") == target
+        ):
+            return baseline
+
+    evidence = {
+        "siege_relief": candidate,
+        "baseline_phase": phase,
+        "baseline_selected_step": baseline.get("selected_step"),
+        "forecast_status": "research_only",
+        "active_attack_allowed": False,
+    }
+
+    def blocked(
+        reason: str, required: str, *, detail: dict[str, object] | None = None
+    ) -> dict[str, object]:
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_siege_forecast_observation_blocked",
+            "selected_step": None,
+            "required_observation": required,
+            "reason": reason,
+            **evidence,
+            **(detail or {}),
+        }
+
+    if origin == target:
+        return blocked(
+            "the subject is already at the hostile siege; a route-entry encounter cannot be inferred",
+            "fresh-route-entry-and-contact-scope",
+        )
+    preview_step = preview_move_army_step(army_id, target)
+    preview = _fresh_move_route_preview(
+        commands,
+        army_id=army_id,
+        origin_province_id=origin,
+        target_province_id=target,
+        date_raw=_native_int(snapshot.get("date_raw")),
+    )
+    if preview is None:
+        if preview_step not in action_steps:
+            return blocked("the exact route preview is unavailable", preview_step)
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_siege_forecast_route_preview",
+            "selected_step": preview_step,
+            "reason": "read the route to the observed enemy siege before deriving its battle entry Province",
+            **evidence,
+        }
+    route = preview.get("route_province_ids")
+    if not (
+        preview.get("status") == "available"
+        and isinstance(route, list)
+        and route
+        and route[-1] == target
+        and all(_native_int(hop) is not None and hop > 0 for hop in route)
+    ):
+        return blocked(
+            "the native preview does not prove a complete route into the siege Province",
+            "fresh-complete-siege-route-preview",
+            detail={"route_preview": preview},
+        )
+    entry = route[-2] if len(route) > 1 else origin
+    if entry == target:
+        return blocked(
+            "the route does not identify a distinct final entry Province",
+            "exact-adjacent-attacker-entry",
+            detail={"route_preview": preview},
+        )
+    hostile_ids = tuple(
+        sorted(
+            {
+                enemy_id
+                for enemy in enemy_armies_from_wars(active_wars)
+                if isinstance(enemy, dict)
+                and _army_tactical_state(enemy) != "retreating"
+                and (enemy_id := _native_int(enemy.get("army_id"))) is not None
+                and enemy_id > 0
+            }
+        )
+    )
+    if not 0 < len(hostile_ids) <= MAX_ROUTE_CONTACT_HOSTILE_IDS:
+        return blocked("the full hostile contact roster is unavailable", "complete-hostile-contact-roster")
+    contact_step = query_route_contact_horizon_step(army_id, target, hostile_ids)
+    contact = _fresh_route_contact_horizon(
+        commands,
+        snapshot,
+        army_id=army_id,
+        origin_province_id=origin,
+        target_province_id=target,
+        hostile_army_ids=hostile_ids,
+        route_province_ids=route,
+    )
+    if contact is None:
+        if contact_step not in action_steps:
+            return blocked("the exact route contact query is unavailable", contact_step)
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_siege_forecast_contact_query",
+            "selected_step": contact_step,
+            "reason": "read the full hostile contact timeline before forming a hypothetical siege battle input",
+            "route_preview": preview,
+            **evidence,
+        }
+    contact_conflicts = contact.get("conflicts")
+    target_enemy_ids = {
+        _native_int(row.get("army_id"))
+        for war in active_wars
+        if isinstance(war, dict) and war.get("war_id") == war_id
+        for row in war.get("enemy_armies", [])
+        if isinstance(row, dict)
+        and row.get("current_province_id") == target
+        and _native_int(row.get("army_id")) is not None
+    }
+    target_only_contact = bool(
+        isinstance(contact_conflicts, list)
+        and contact_conflicts
+        and all(
+            isinstance(conflict, dict)
+            and conflict.get("province_id") == target
+            and _native_int(conflict.get("hostile_army_id")) in target_enemy_ids
+            for conflict in contact_conflicts
+        )
+    )
+    if contact.get("one_day_contact_free") is not True and not target_only_contact:
+        return blocked(
+            "contact can occur outside the proposed siege encounter; this target forecast would not cover it",
+            "contact-safe-entry-to-siege-target",
+            detail={"route_preview": preview, "route_contact_horizon": contact},
+        )
+    balance = candidate.get("army_strength_balance")
+    war = next(
+        (row for row in active_wars if isinstance(row, dict) and row.get("war_id") == war_id),
+        None,
+    )
+    enemy_rows = war.get("enemy_armies") if isinstance(war, dict) else None
+    defenders = (
+        tuple(sorted(_native_int(row.get("army_id")) for row in enemy_rows))
+        if isinstance(enemy_rows, list)
+        and enemy_rows
+        and all(
+            isinstance(row, dict)
+            and _native_int(row.get("army_id")) is not None
+            and row.get("current_province_id") == target
+            and _army_tactical_state(row) == "sieging"
+            for row in enemy_rows
+        )
+        else ()
+    )
+    if not (
+        isinstance(balance, dict)
+        and balance.get("friendly_army_ids") == [army_id]
+        and sorted(balance.get("enemy_army_ids", [])) == list(defenders)
+        and defenders
+    ):
+        return blocked(
+            "the observed siege does not prove a complete one-encounter participant partition",
+            "exact-attacker-defender-participant-scope",
+            detail={"route_preview": preview, "route_contact_horizon": contact},
+        )
+    query_step = query_combat_simulation_inputs_v3_step(
+        target, entry, [army_id], list(defenders)
+    )
+    attempted_on_current_date = False
+    for row in reversed(_history_after_latest_restore(commands)):
+        if parse_query_combat_simulation_inputs_v3_step(_effective_command(row)) != (
+            target, entry, [army_id], list(defenders)
+        ):
+            continue
+        result = _effective_command_result(row)
+        attempted_on_current_date = bool(
+            _native_int(row.get("index")) is not None
+            and int(row["index"]) > _latest_life_advance_index(commands)
+        )
+        if not (
+            isinstance(result, dict)
+            and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_native_revision") == snapshot.get("native_revision")
+        ):
+            break
+        payload = snapshot.get("combat_simulation_inputs_v3")
+        completeness = payload.get("completeness") if isinstance(payload, dict) else None
+        if not (
+            snapshot.get("combat_simulation_inputs_v3_target_province_id") == target
+            and snapshot.get("combat_simulation_inputs_v3_attacker_entry_province_id") == entry
+            and snapshot.get("combat_simulation_inputs_v3_attacker_army_ids") == [army_id]
+            and snapshot.get("combat_simulation_inputs_v3_defender_army_ids") == list(defenders)
+            and snapshot.get("combat_simulation_inputs_v3_queried_snapshot_id") == snapshot.get("snapshot_id")
+            and snapshot.get("combat_simulation_inputs_v3_queried_revision") == snapshot.get("revision")
+            and snapshot.get("combat_simulation_inputs_v3_status") == result.get("status")
+            and isinstance(completeness, dict)
+        ):
+            return blocked(
+                "the v3 query returned but its generation-bound cached readback is absent or mismatched",
+                "fresh-v3-cache-readback",
+                detail={"route_preview": preview, "route_contact_horizon": contact},
+            )
+        return blocked(
+            "the exact v3 input readback is research-only; no qualified battle probability or expected utility authorizes contact",
+            "qualified-same-frame-combat-forecast-and-expected-utility",
+            detail={
+                "phase": "native_war_siege_forecast_inputs_observed",
+                "route_preview": preview,
+                "route_contact_horizon": contact,
+                "combat_inputs_v3_query": {
+                    "step": query_step,
+                    "accepted": result.get("accepted"),
+                    "status": result.get("status"),
+                    "queried_snapshot_id": result.get("queried_snapshot_id"),
+                    "queried_revision": result.get("queried_revision"),
+                    "queried_native_revision": result.get("queried_native_revision"),
+                    "monte_carlo_ready": (
+                        completeness.get("monte_carlo_ready")
+                        if isinstance(completeness, dict)
+                        else None
+                    ),
+                    "planner_usable": (
+                        completeness.get("planner_usable")
+                        if isinstance(completeness, dict)
+                        else None
+                    ),
+                },
+            },
+        )
+    if attempted_on_current_date:
+        return blocked(
+            "the same siege input query was already attempted in this date epoch without a reusable current-frame result",
+            "fresh-v3-query-after-state-change",
+            detail={"route_preview": preview, "route_contact_horizon": contact},
+        )
+    if QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY not in bridge_capabilities:
+        return blocked("the exact v3 read-only query is unavailable", query_step)
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_siege_forecast_inputs_query",
+        "selected_step": query_step,
+        "reason": "read exact same-frame combat v3 inputs for the observed siege encounter; no attack is authorized",
+        "route_preview": preview,
+        "route_contact_horizon": contact,
+        **evidence,
+    }
+
+
 def _primary_defender_siege_relief_assessment(
     snapshot: dict[str, object],
     *,
@@ -15346,6 +15661,9 @@ def _primary_defender_siege_relief_assessment(
     ready: list[
         tuple[int, int, int, int, dict[str, object]]
     ] = []
+    forecast_candidates: list[
+        tuple[int, int, int, int, dict[str, object]]
+    ] = []
     incomplete_war_ids: set[int] = set()
     for war, enemy in siege_rows:
         war_id = int(war["war_id"])
@@ -15399,6 +15717,15 @@ def _primary_defender_siege_relief_assessment(
             friendly_current >= enemy_current * 2
             and friendly_power >= enemy_power * 2
         ):
+            forecast_candidates.append(
+                (
+                    int(war["player_relative_war_score"]),
+                    war_id,
+                    int(enemy_id),
+                    int(target),
+                    balance,
+                )
+            )
             continue
         ready.append(
             (
@@ -15418,6 +15745,20 @@ def _primary_defender_siege_relief_assessment(
             "war_ids": sorted(incomplete_war_ids),
         }
     if not ready:
+        if forecast_candidates:
+            score, war_id, enemy_id, target, balance = min(forecast_candidates)
+            return {
+                "status": "forecast_required",
+                "selection_policy": "lowest-score-then-war-enemy-province",
+                "war_id": war_id,
+                "player_relative_war_score": score,
+                "army_id": army_id,
+                "enemy_army_id": enemy_id,
+                "target_province_id": target,
+                "army_strength_balance": dict(balance),
+                "candidate_count": len(forecast_candidates),
+                "reason": "operational_two_times_gate_not_met; exact combat forecast required",
+            }
         return {"status": "no_friendly_operational_overmatch"}
 
     score, war_id, enemy_id, target, balance = min(ready)

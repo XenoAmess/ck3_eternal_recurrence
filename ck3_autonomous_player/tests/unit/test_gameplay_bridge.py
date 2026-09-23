@@ -31,6 +31,10 @@ from xar_autoplayer.bridge.battle_terminal_transition_contract import (
     QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
     query_battle_terminal_transition_v1_step,
 )
+from xar_autoplayer.bridge.combat_phase_contract import (
+    QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+    query_combat_simulation_inputs_v3_step,
+)
 from xar_autoplayer.bridge.settlement_contract import (
     ONE_LIFE_SETTLEMENT_CAPABILITY,
 )
@@ -60,6 +64,7 @@ from xar_autoplayer.strategy import (
     _moving_route_contact_horizon_conjunction,
     _negative_war_termination_reuse,
     _primary_defender_siege_relief_assessment,
+    _primary_defender_siege_forecast_ingress,
     _preoffensive_army_consolidation,
     _outnumbered_attacker_regroup_input_ready,
     _outnumbered_primary_defender_regroup_input_ready,
@@ -1655,6 +1660,46 @@ def _native_war_plan(
 
 
 class GameplayBridgeTests(unittest.TestCase):
+    def test_plan_turn_routes_only_advertised_production_v3_readonly_query(
+        self,
+    ) -> None:
+        selected = query_combat_simulation_inputs_v3_step(
+            32, 31, [11], [21]
+        )
+        driver = CallbackGameplayDriver(
+            backend_id="native-headless",
+            snapshot=lambda: _snapshot(7),
+            execute=lambda _step, _revision: {},
+            action_steps=("life-advance",),
+        )
+        original_capabilities = driver.capabilities
+        driver.capabilities = lambda: {
+            **original_capabilities(),
+            "bridge_capabilities": [
+                QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
+            ],
+        }
+        planned = {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_siege_forecast_inputs_query",
+            "selected_step": selected,
+        }
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=planned,
+        ):
+            routed = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertEqual(routed["selected_step"], selected)
+
+        driver.capabilities = original_capabilities
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=planned,
+        ):
+            missing = GameplayBridgeService(driver).plan_turn()["plan"]
+        self.assertIsNone(missing["selected_step"])
+        self.assertEqual(missing["required_step"], selected)
+
     def test_plan_turn_passes_battle_readiness_and_routes_dynamic_journal_query(
         self,
     ) -> None:
@@ -2650,7 +2695,28 @@ class GameplayBridgeTests(unittest.TestCase):
             army_strengths_status="available", history=history,
             steps=("move-army-419430662-to-45", "life-advance"),
         )
-        self.assertEqual(balanced["selected_step"], "move-army-419430662-to-45")
+        self.assertIn(
+            {
+                "kind": "enemy_current_on_route",
+                "enemy_army_id": 419_430_684,
+                "province_id": 45,
+            },
+            _audit_war_route(
+                route, origin_province_id=1684,
+                target_province_id=45, enemies=[enemy],
+            )["conflicts"],
+        )
+        # 900/759 is below the old relief ratio. A one-day-free contact
+        # horizon covers only the first of six hops. Province 45 remains
+        # the observed hostile siege at this route's endpoint.
+        self.assertIsNone(balanced["selected_step"])
+        self.assertEqual(
+            balanced["phase"], "native_war_siege_forecast_observation_blocked"
+        )
+        self.assertIn(
+            "query-combat-simulation-inputs-v3-45-715-a-1-419430662",
+            balanced["required_observation"],
+        )
 
     def test_outnumbered_armies_consolidate_strongest_idle_stack_first(
         self,
@@ -18604,6 +18670,175 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(event_action.is_error)
             self.assertEqual(event_action.structured_content["option_number"], 2)
             self.assertEqual(event_action.structured_content["option_index"], 1)
+
+
+class SiegeForecastIngressTests(unittest.TestCase):
+    def test_under_two_times_reads_exact_route_contact_and_v3_once(self) -> None:
+        date_raw = 53_215_920
+        player = _army(
+            11, soldiers=2_327, province_id=30, controllable=True,
+            army_state="regular", army_state_code=1,
+            route_province_ids=[], in_combat=False, retreating=False,
+        )
+        enemy = _army(
+            21, soldiers=1_488, province_id=32, controllable=False,
+            army_state="sieging", army_state_code=3,
+            route_province_ids=[], in_combat=False, retreating=False,
+        )
+        war = _war(
+            war_id=95, allied_armies=[player], enemy_armies=[enemy],
+            score=-12, player_side="defender",
+            player_is_primary_war_leader=True,
+            war_objective_province_ids=[30],
+        )
+        snapshot = {
+            **_snapshot(90), "paused": True, "map_ready": True,
+            "active_event": None, "pending_character_interaction": None,
+            "native_revision": 90, "date_raw": date_raw,
+            "diagnostics": {"connection_generation": 1},
+            "episode_run_id": None, "active_wars": [war],
+            "player_armies": [player], "army_strengths_status": "available",
+            "army_strengths": [
+                _army_strength(11, "player", [95], current=2_327,
+                               base_power_raw=2_327_000_000),
+                _army_strength(21, "active_war_enemy", [95], current=1_488,
+                               base_power_raw=1_488_000_000),
+            ],
+        }
+        candidate = _primary_defender_siege_relief_assessment(
+            snapshot, commands=[], active_wars=[war],
+            controlled_armies=[player], pursuit_army=player,
+        )
+        self.assertEqual(candidate["status"], "forecast_required")
+        baseline = {
+            "phase": "native_war_no_safe_exact_route", "selected_step": None
+        }
+        preview_step = "preview-move-army-11-to-32"
+        contact_step = query_route_contact_horizon_step(11, 32, (21,))
+        query_step = query_combat_simulation_inputs_v3_step(32, 31, [11], [21])
+        steps = {preview_step, contact_step, "life-advance", "move-army-11-to-32"}
+        capabilities = {QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY}
+
+        def ingest(
+            history: list[dict[str, object]],
+            *, frame: dict[str, object] | None = None,
+            plan: dict[str, object] | None = None,
+        ) -> dict[str, object]:
+            return _primary_defender_siege_forecast_ingress(
+                plan or baseline, commands=history,
+                snapshot=frame or snapshot, action_steps=steps,
+                bridge_capabilities=capabilities,
+            )
+
+        preview = ingest([])
+        self.assertEqual(preview["selected_step"], preview_step)
+        self.assertFalse(preview["active_attack_allowed"])
+        preview_row = _preview_row(
+            1, army_id=11, origin=30, target=32,
+            date_raw=date_raw, route=[31, 32],
+        )
+        contact = ingest([preview_row])
+        self.assertEqual(contact["selected_step"], contact_step)
+        contact_row = _route_contact_row(
+            2, army_id=11, origin=30, target=32,
+            date_raw=date_raw, route=[31, 32],
+            hostile_ids=(21,), contact_free=True,
+        )
+        inputs = ingest([preview_row, contact_row])
+        self.assertEqual(inputs["selected_step"], query_step)
+        self.assertEqual(inputs["phase"], "native_war_siege_forecast_inputs_query")
+        adjacent_preview = _preview_row(
+            1, army_id=11, origin=30, target=32,
+            date_raw=date_raw, route=[32],
+        )
+        adjacent_contact = _route_contact_row(
+            2, army_id=11, origin=30, target=32,
+            date_raw=date_raw, route=[32],
+            hostile_ids=(21,), contact_free=False,
+        )
+        self.assertEqual(
+            ingest([adjacent_preview, adjacent_contact])["selected_step"],
+            query_combat_simulation_inputs_v3_step(32, 30, [11], [21]),
+        )
+        intermediate_contact = copy.deepcopy(contact_row)
+        intermediate_contact["result"]["route_contact_horizon"]["one_day_contact_free"] = False
+        intermediate_contact["result"]["route_contact_horizon"]["conflicts"] = [
+            {"kind": "same_province", "hostile_army_id": 21,
+             "province_id": 31}
+        ]
+        self.assertIsNone(
+            ingest([preview_row, intermediate_contact])["selected_step"]
+        )
+        queried_frame = {
+            **snapshot,
+            "combat_simulation_inputs_v3": {
+                "completeness": {
+                    "phase_event_inputs_ready": True,
+                    "monte_carlo_ready": False,
+                    "planner_usable": False,
+                    "active_attack_allowed": False,
+                }
+            },
+            "combat_simulation_inputs_v3_status": "available",
+            "combat_simulation_inputs_v3_target_province_id": 32,
+            "combat_simulation_inputs_v3_attacker_entry_province_id": 31,
+            "combat_simulation_inputs_v3_attacker_army_ids": [11],
+            "combat_simulation_inputs_v3_defender_army_ids": [21],
+            "combat_simulation_inputs_v3_queried_snapshot_id": "session:90",
+            "combat_simulation_inputs_v3_queried_revision": 90,
+        }
+        query_row = {
+            "index": 3, "command": query_step, "ok": True,
+            "result": {
+                "step": query_step, "accepted": True, "status": "available",
+                "queried_snapshot_id": "session:90",
+                "queried_revision": 90, "queried_native_revision": 90,
+            },
+        }
+        observed = ingest(
+            [preview_row, contact_row, query_row], frame=queried_frame
+        )
+        self.assertEqual(observed["phase"], "native_war_siege_forecast_inputs_observed")
+        self.assertIsNone(observed["selected_step"])
+        self.assertFalse(observed["combat_inputs_v3_query"]["planner_usable"])
+        self.assertNotEqual(observed["selected_step"], "life-advance")
+        stale = ingest([preview_row, contact_row, query_row])
+        self.assertIsNone(stale["selected_step"])
+        self.assertEqual(stale["required_observation"], "fresh-v3-cache-readback")
+        self.assertEqual(
+            ingest([], plan={"phase": "native_war_defender_capital_hold_progress",
+                             "selected_step": "life-advance"})["selected_step"],
+            "life-advance",
+        )
+
+        no_entry = _preview_row(
+            1, army_id=11, origin=30, target=32,
+            date_raw=date_raw, route=[],
+        )
+        blocked = ingest([no_entry])
+        self.assertIsNone(blocked["selected_step"])
+        self.assertEqual(
+            blocked["required_observation"],
+            "fresh-complete-siege-route-preview",
+        )
+        overmatch = {**snapshot, "army_strengths": [
+            _army_strength(11, "player", [95], current=3_000,
+                           base_power_raw=3_000_000_000),
+            _army_strength(21, "active_war_enemy", [95], current=1_000,
+                           base_power_raw=1_000_000_000),
+        ]}
+        self.assertEqual(
+            _primary_defender_siege_relief_assessment(
+                overmatch, commands=[], active_wars=[war],
+                controlled_armies=[player], pursuit_army=player,
+            )["status"], "ready",
+        )
+        self.assertIs(
+            _primary_defender_siege_forecast_ingress(
+                baseline, commands=[], snapshot=overmatch,
+                action_steps=steps, bridge_capabilities=capabilities,
+            ), baseline,
+        )
 
 
 if __name__ == "__main__":
