@@ -1,4 +1,4 @@
-"""Readable bilingual captions anchored to the actual spoken sentence timing."""
+"""Readable bilingual captions using the timing basis bound to each cue."""
 import html
 import re
 
