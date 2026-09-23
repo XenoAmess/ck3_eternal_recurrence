@@ -354,6 +354,53 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  auto winter_fixture = Fixture();
+  winter_fixture.hard_casualty_winter.attempted = true;
+  winter_fixture.hard_casualty_winter.available = true;
+  winter_fixture.hard_casualty_winter.source_target_province_id = 45;
+  const auto first_guard_false =
+      xar::ck3_11906::SerializeCombatPhaseInputsV3(winter_fixture);
+  if (first_guard_false.find(
+          "\"hard_casualty_winter\":{\"status\":\"available\","
+          "\"source_target_province_id\":45,\"scale\":100000,"
+          "\"first_original_guard\":false,"
+          "\"second_original_guard\":null,\"raw\":null") ==
+      std::string::npos) {
+    return 1;
+  }
+  winter_fixture.hard_casualty_winter.first_original_guard = true;
+  winter_fixture.hard_casualty_winter.second_guard_evaluated = true;
+  const auto second_guard_false =
+      xar::ck3_11906::SerializeCombatPhaseInputsV3(winter_fixture);
+  if (second_guard_false.find(
+          "\"second_original_guard\":false,\"raw\":null") ==
+      std::string::npos) {
+    return 1;
+  }
+  winter_fixture.hard_casualty_winter.second_original_guard = true;
+  winter_fixture.hard_casualty_winter.raw_available = true;
+  winter_fixture.hard_casualty_winter.raw = 0;
+  const auto guarded_zero =
+      xar::ck3_11906::SerializeCombatPhaseInputsV3(winter_fixture);
+  if (guarded_zero.find(
+          "\"second_original_guard\":true,\"raw\":0") ==
+      std::string::npos) {
+    return 1;
+  }
+  winter_fixture.hard_casualty_winter.available = false;
+  winter_fixture.hard_casualty_winter.unavailable_reason = "fixture_read_failed";
+  const auto read_failure =
+      xar::ck3_11906::SerializeCombatPhaseInputsV3(winter_fixture);
+  if (read_failure.find(
+          "\"hard_casualty_winter\":{\"status\":\"unavailable\","
+          "\"source_target_province_id\":45,\"scale\":100000,"
+          "\"first_original_guard\":null,"
+          "\"second_original_guard\":null,\"raw\":null,"
+          "\"unavailable_reason\":\"fixture_read_failed\"") ==
+      std::string::npos) {
+    return 1;
+  }
+
   xar::ck3_11906::CombatPhaseInputsV3 unavailable{};
   unavailable.unavailable_reason = "fixture_failure";
   const auto failed =

@@ -96,6 +96,9 @@ constexpr std::uintptr_t kFaithDoctrineParameterRva = 0x24EE100;
 constexpr std::uintptr_t kReadProvinceModifierRva = 0x2917C40;
 constexpr std::uintptr_t kReadModifierValueRva = 0x2940D50;
 constexpr std::uintptr_t kProvinceHasHoldingRva = 0xBC24E0;
+// The 0x23CE080 hard-casualty path uses this predicate as its second
+// CProvince guard. Keep this alias separate from older v3 callers' naming.
+constexpr std::uintptr_t kHardWinterSecondGuardRva = 0xBC24E0;
 constexpr std::uintptr_t kModifierSetHasFlagRva = 0x20ABA00;
 constexpr std::uintptr_t kConstructCombatSideRva = 0x23C7D30;
 constexpr std::uintptr_t kPopulateCombatSideRva = 0x23C9100;
@@ -3114,6 +3117,54 @@ bool ReadHoldingScaleV3(std::uintptr_t module, void *target,
   return true;
 }
 
+void ReadHardCasualtyWinterV3(
+    std::uintptr_t module, void *target, std::int32_t target_province_id,
+    game::CombatHardCasualtyWinterV3 &output) noexcept {
+  output = {};
+  output.attempted = true;
+  output.source_target_province_id = target_province_id;
+  if (module == 0 || target == nullptr || target_province_id <= 0) {
+    output.unavailable_reason = "native_hard_winter_target_unavailable";
+    return;
+  }
+
+  // 0x23CE122..0x23CE170: CCombat+0x6B8 is a CProvince*. The original
+  // casualty path first calls its vtable+0x30 and only then 0xBC24E0.
+  bool context_guard = false;
+  if (!VcallBool(target, 0x30, context_guard)) {
+    output.unavailable_reason = "native_hard_winter_context_guard_unreadable";
+    return;
+  }
+  output.first_original_guard = context_guard;
+  if (!context_guard) {
+    output.available = true;
+    return;
+  }
+
+  const auto second_guard = reinterpret_cast<ProvincePredicateV3>(
+      module + kHardWinterSecondGuardRva);
+  output.second_original_guard = second_guard(target);
+  output.second_guard_evaluated = true;
+  if (!output.second_original_guard) {
+    output.available = true;
+    return;
+  }
+
+  // 0x23CE13B..0x23CE166: only the guarded branch reads enum 0x19F from
+  // CProvince+0x30. A real zero value remains distinct from a false guard.
+  const auto read_modifier = reinterpret_cast<ReadModifierValueV3>(
+      module + kReadModifierValueRva);
+  std::int64_t raw = 0;
+  if (read_modifier(&raw, static_cast<std::byte *>(target) + 0x30,
+                    0x19F, nullptr, kFixedScale, 0) != &raw) {
+    output.unavailable_reason = "native_hard_winter_modifier_unreadable";
+    return;
+  }
+  output.raw = raw;
+  output.raw_available = true;
+  output.available = true;
+}
+
 bool ReadUnreformedTargetFaithV3(std::uintptr_t module, void *target,
                                  void *&faith, std::int32_t &faith_id,
                                  bool &enabled) noexcept {
@@ -4193,6 +4244,19 @@ ReadCombatSimulationInputsV3Result ReadCombatSimulationInputsV3(
           phase.advantage_model.unavailable_reason.empty()
               ? "native_advantage_model_unavailable"
               : phase.advantage_model.unavailable_reason);
+    }
+    void *const winter_target =
+        ResolveProvinceV3(bindings, base.target_province_id);
+    ReadHardCasualtyWinterV3(module, winter_target, base.target_province_id,
+                             phase.hard_casualty_winter);
+    if (winter_target != nullptr &&
+        ResolveProvinceV3(bindings, base.target_province_id) != winter_target) {
+      phase.hard_casualty_winter = {};
+      phase.hard_casualty_winter.attempted = true;
+      phase.hard_casualty_winter.source_target_province_id =
+          base.target_province_id;
+      phase.hard_casualty_winter.unavailable_reason =
+          "native_hard_winter_target_identity_changed";
     }
     for (const auto &side : phase.sides) {
       if (!ValidateCandidateSourceProofV3(side, phase.characters)) {

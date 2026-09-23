@@ -324,8 +324,14 @@ outgoing_damage = effective_attack_after_counter_and_modifiers
 
 - [static-confirmed] hard conversion 的 modifier enum 已由同一 binary metadata 顺序闭合：`0x18C` 是
   `hard_casualty_modifier`，`0x18D` 是 `enemy_hard_casualty_modifier`，`0x19F` 是
-  `hard_casualty_winter`。`0x23C8FF0` 分别求 defending 的 `0x18C` 和 attacking 的 `0x18D`；本场 combat
-  context 有效时再从 `CCombat+0x30` modifier container 求 `0x19F`。作用点和截断顺序是：
+  `hard_casualty_winter`。`0x23CE0DE..0x23CE107` 分别以 defending/attacking `CCombatSide*` 调
+  `0x23C8FF0` 求 `0x18C/0x18D`。冬季项的准确来源是 `CCombatSide+0xB8 → CCombat+0x6B8 →
+  CProvince*`：`0x23CE125..0x23CE170` 依次调用该 Province 的 vtable `+0x30` 与 `0xBC24E0`
+  两个布尔 guard，均为真时才以 `0x2940D50(out, CProvince+0x30, 0x19F, null, 100000, 0)`
+  读取 raw；任一 guard 为假则该项为零。此前写作 `CCombat+0x30` 的容器归属是误标，
+  exact-build 反汇编在 `0x23CE11B` 先从 Combat `+0x6B8` 取 Province 指针，随后在
+  `0x23CE149` 对这个 Province 指针加 `0x30`。guard 为假与调用失败必须分别记录。
+  作用点和截断顺序是：
 
   ```text
   conversion_raw = mul(BASE_RATIO_CASUALTIES_CONVERSION_raw,

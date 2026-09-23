@@ -88,6 +88,8 @@ int main(int argc, char **argv) {
               "kReadCommanderDynamicAdvantageRva = 0x2307680",
               "kReadSideModifierAdvantageRva = 0x2307230",
               "kReadCombatRelationKindRva = 0x2307080",
+              "kHardWinterSecondGuardRva = 0xBC24E0",
+              "kReadModifierValueRva = 0x2940D50",
               "kDestroyCombatSideRva = 0x2303B00",
               "kCombatSideKnightEntriesOffset = 0x40",
               "kCombatSideKnightEntriesCountOffset = 0x4C",
@@ -124,6 +126,20 @@ int main(int argc, char **argv) {
     return Fail("ReadAdvantageModel is missing") ? 0 : 1;
   }
   const auto reader_view = view.substr(reader);
+  const auto winter_reader = view.find("void ReadHardCasualtyWinterV3(");
+  if (winter_reader == std::string_view::npos ||
+      !AppearsInOrder(
+          view.substr(winter_reader),
+          {
+              "VcallBool(target, 0x30, context_guard)",
+              "if (!context_guard)",
+              "second_guard(target)",
+              "if (!output.second_original_guard)",
+              "static_cast<std::byte *>(target) + 0x30",
+              "0x19F, nullptr, kFixedScale, 0",
+          })) {
+    return Fail("hard casualty winter native guard order drifted") ? 0 : 1;
+  }
   if (!AppearsInOrder(
           reader_view,
           {
@@ -191,7 +207,7 @@ int main(int argc, char **argv) {
   if (!ContainsAll(
           ck3_adapter_source,
           {
-              "constexpr std::size_t kBaseCapabilityCount = 100",
+              "constexpr std::size_t kBaseCapabilityCount = 101",
               "std::array<std::string_view, kCapabilityCount> kCapabilities",
               "game.command.query-battle-reinforcement-assignment-v1-N",
               "game.command.query-combat-simulation-inputs-v3-N",

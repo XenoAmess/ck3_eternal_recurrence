@@ -587,6 +587,42 @@ void AppendAdvantage(std::string &output,
   output += '}';
 }
 
+void AppendHardCasualtyWinter(
+    std::string &output,
+    const game::CombatHardCasualtyWinterV3 &readout) {
+  output += "{\"status\":";
+  AppendString(output, readout.available ? "available" : "unavailable");
+  output += ",\"source_target_province_id\":";
+  AppendSigned(output, readout.source_target_province_id);
+  output += ",\"scale\":100000,\"first_original_guard\":";
+  if (readout.available) {
+    output += readout.first_original_guard ? "true" : "false";
+  } else {
+    output += "null";
+  }
+  output += ",\"second_original_guard\":";
+  if (readout.available && readout.second_guard_evaluated) {
+    output += readout.second_original_guard ? "true" : "false";
+  } else {
+    output += "null";
+  }
+  output += ",\"raw\":";
+  if (readout.available && readout.first_original_guard &&
+      readout.second_guard_evaluated && readout.second_original_guard &&
+      readout.raw_available) {
+    AppendSigned(output, readout.raw);
+  } else {
+    output += "null";
+  }
+  output += ",\"unavailable_reason\":";
+  if (readout.available) {
+    output += "null";
+  } else {
+    AppendString(output, readout.unavailable_reason);
+  }
+  output += '}';
+}
+
 } // namespace
 
 std::string SerializeCombatPhaseInputsV3(const CombatPhaseInputsV3 &inputs) {
@@ -638,6 +674,10 @@ std::string SerializeCombatPhaseInputsV3(const CombatPhaseInputsV3 &inputs) {
     AppendAdvantage(output, inputs.advantage_model);
   } else {
     output += "null";
+  }
+  if (inputs.available && inputs.hard_casualty_winter.attempted) {
+    output += ",\"hard_casualty_winter\":";
+    AppendHardCasualtyWinter(output, inputs.hard_casualty_winter);
   }
   output += ",\"unavailable_reason\":";
   if (inputs.available) {

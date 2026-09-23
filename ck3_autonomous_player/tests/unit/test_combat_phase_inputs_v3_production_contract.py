@@ -508,6 +508,72 @@ def _normalize_native_golden_envelope(
 
 
 class CombatPhaseInputsV3ProductionContractTests(unittest.TestCase):
+    def test_private_hard_winter_guard_false_zero_and_read_failure(self) -> None:
+        payload, scope = _production_payload()
+        target = payload["base_inputs"]["target_province_id"]
+        legacy = _normalize(payload, scope)
+        self.assertNotIn("hard_casualty_winter", legacy["phase_event_inputs"])
+
+        readout = {
+            "status": "available",
+            "source_target_province_id": target,
+            "scale": 100_000,
+            "first_original_guard": False,
+            "second_original_guard": None,
+            "raw": None,
+            "unavailable_reason": None,
+        }
+        payload["phase_event_inputs"]["hard_casualty_winter"] = readout
+        first_false = _normalize(payload, scope)
+        self.assertEqual(
+            first_false["phase_event_inputs"]["hard_casualty_winter"], readout
+        )
+        self.assertEqual(_normalize(first_false, scope), first_false)
+        self.assertFalse(first_false["completeness"]["monte_carlo_ready"])
+
+        readout["first_original_guard"] = True
+        readout["second_original_guard"] = False
+        second_false = _normalize(payload, scope)
+        self.assertIsNone(
+            second_false["phase_event_inputs"]["hard_casualty_winter"]["raw"]
+        )
+        readout["second_original_guard"] = True
+        readout["raw"] = 0
+        guarded_zero = _normalize(payload, scope)
+        self.assertEqual(
+            guarded_zero["phase_event_inputs"]["hard_casualty_winter"]["raw"],
+            0,
+        )
+        self.assertFalse(guarded_zero["completeness"]["planner_usable"])
+        self.assertFalse(guarded_zero["completeness"]["active_attack_allowed"])
+
+        readout.update(
+            status="unavailable",
+            first_original_guard=None,
+            second_original_guard=None,
+            raw=None,
+            unavailable_reason="native_hard_winter_modifier_unreadable",
+        )
+        unavailable = _normalize(payload, scope)
+        self.assertEqual(
+            unavailable["phase_event_inputs"]["hard_casualty_winter"]["status"],
+            "unavailable",
+        )
+        self.assertFalse(unavailable["completeness"]["monte_carlo_ready"])
+        readout["raw"] = 0
+        with self.assertRaisesRegex(ValueError, "partial values"):
+            _normalize(payload, scope)
+        readout.update(
+            status="available", first_original_guard=False,
+            unavailable_reason=None,
+        )
+        with self.assertRaisesRegex(ValueError, "false first guard"):
+            _normalize(payload, scope)
+        readout["raw"] = None
+        readout["source_target_province_id"] = target + 1
+        with self.assertRaisesRegex(ValueError, "target or fixed-point"):
+            _normalize(payload, scope)
+
     def test_capability_literal_and_132_partition_are_frozen(self) -> None:
         self.assertEqual(
             QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,

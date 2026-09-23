@@ -470,6 +470,7 @@ def normalize_combat_simulation_inputs_v3(
         "advantage_model",
         "unavailable_reason",
     }
+    private_winter_key = "hard_casualty_winter"
     # Driver caches and service boundaries deliberately validate the same
     # value again.  Accept the sole canonical enriched form, strip only the
     # deterministic offline projection, then recompute and byte-for-value
@@ -486,7 +487,9 @@ def normalize_combat_simulation_inputs_v3(
             "offline_admission",
         }
         if not isinstance(candidate_phase, dict) or set(candidate_phase) != (
-            wire_phase_keys | enriched_phase_keys
+            wire_phase_keys
+            | enriched_phase_keys
+            | ({private_winter_key} if private_winter_key in candidate_phase else set())
         ):
             raise ValueError("normalized production combat v3 phase schema is malformed")
         for key in enriched_phase_keys:
@@ -604,6 +607,8 @@ def _normalize_phase_event_inputs(
     value: object, *, base: dict[str, object]
 ) -> dict[str, object]:
     name = "combat_simulation_inputs_v3.phase_event_inputs"
+    private_winter_key = "hard_casualty_winter"
+    has_private_winter = isinstance(value, dict) and private_winter_key in value
     row = _exact_object(
         value,
         {
@@ -616,7 +621,7 @@ def _normalize_phase_event_inputs(
             "raw",
             "advantage_model",
             "unavailable_reason",
-        },
+        } | ({private_winter_key} if has_private_winter else set()),
         name,
     )
     if row.get("rules_source") != "stock-installation-static-manifest":
@@ -635,6 +640,8 @@ def _normalize_phase_event_inputs(
         raise ValueError("production phase required-state binding is malformed")
     coverage = _normalize_coverage(row.get("state_ref_coverage"), f"{name}.state_ref_coverage")
     if row.get("status") == "unavailable":
+        if has_private_winter:
+            raise ValueError("unavailable production phase must not publish private winter data")
         if row.get("raw") is not None or row.get("advantage_model") is not None:
             raise ValueError("unavailable production phase must not publish partial data")
         reason = _nonempty_string(row.get("unavailable_reason"), f"{name}.unavailable_reason")
@@ -662,6 +669,17 @@ def _normalize_phase_event_inputs(
         }
     if row.get("status") != "available" or row.get("unavailable_reason") is not None:
         raise ValueError("production phase status is malformed")
+    private_winter = (
+        {
+            private_winter_key: _normalize_hard_casualty_winter(
+                row[private_winter_key],
+                target_province_id=base["target_province_id"],
+                name=f"{name}.{private_winter_key}",
+            )
+        }
+        if has_private_winter
+        else {}
+    )
     raw = _normalize_raw(row.get("raw"), base=base, name=f"{name}.raw")
     advantage_input = copy.deepcopy(row.get("advantage_model"))
     if (
@@ -697,6 +715,7 @@ def _normalize_phase_event_inputs(
         "scope_mode": "hypothetical_precontact_offline_ast",
         "raw": raw,
         "advantage_model": advantage,
+        **private_winter,
         "state_ref_partition": partition,
         "evaluation_contexts": contexts,
         "row_evaluations": row_evaluations,
@@ -710,6 +729,56 @@ def _normalize_phase_event_inputs(
         },
         "unavailable_reason": None,
     }
+
+
+def _normalize_hard_casualty_winter(
+    value: object, *, target_province_id: int, name: str
+) -> dict[str, object]:
+    row = _exact_object(
+        value,
+        {
+            "status",
+            "source_target_province_id",
+            "scale",
+            "first_original_guard",
+            "second_original_guard",
+            "raw",
+            "unavailable_reason",
+        },
+        name,
+    )
+    if (
+        isinstance(row["source_target_province_id"], bool)
+        or row["source_target_province_id"] != target_province_id
+        or row["scale"] != 100_000
+    ):
+        raise ValueError(f"{name} target or fixed-point scale is malformed")
+    if row["status"] == "unavailable":
+        if (
+            row["first_original_guard"] is not None
+            or row["second_original_guard"] is not None
+            or row["raw"] is not None
+        ):
+            raise ValueError(f"{name} unavailable readout has partial values")
+        _nonempty_string(row["unavailable_reason"], f"{name}.unavailable_reason")
+    elif row["status"] == "available":
+        if row["unavailable_reason"] is not None or not isinstance(
+            row["first_original_guard"], bool
+        ):
+            raise ValueError(f"{name} available guard or reason is malformed")
+        if row["first_original_guard"] is False:
+            if row["second_original_guard"] is not None or row["raw"] is not None:
+                raise ValueError(f"{name} false first guard must have no raw")
+        elif not isinstance(row["second_original_guard"], bool):
+            raise ValueError(f"{name} second original guard is malformed")
+        elif row["second_original_guard"] is False:
+            if row["raw"] is not None:
+                raise ValueError(f"{name} false second guard must have no raw")
+        elif isinstance(row["raw"], bool) or not isinstance(row["raw"], int):
+            raise ValueError(f"{name} guarded raw modifier is malformed")
+    else:
+        raise ValueError(f"{name} status is malformed")
+    return copy.deepcopy(row)
 
 
 def _normalize_coverage(value: object, name: str) -> dict[str, object]:

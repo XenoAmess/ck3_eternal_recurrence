@@ -253,6 +253,44 @@ flowchart TD
 SHA、transition-manifest SHA、四份 fixture file/canonical input SHA，并冻结四场 counts 与 days/hard-loss quantiles；
 任何后续源码、输入或报告漂移都会直接失败。`fidelity_gate/planner_usable/active_attack_allowed` 也固定为 false。
 
+## 2026-09-23：hard casualty 冬季项的私有观测切片
+
+- [static-confirmed] 本切片仍只绑定 CK3 `1.19.0.6-steam23530548`，本机复核 `ck3.exe` SHA-256 为
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+  `combat_core.py` 已实现主阶段伤害到 soft/hard casualty、底层 component 分配；`research_envelope.py`
+  已先冻结双方 outgoing 再施加双方伤亡。重复实现这两段不会关闭目前缺口。
+- [static-confirmed] 原版 `0x23CE080` 以 defending side 的 `0x18C`、attacking side 的 `0x18D`
+  和目标 Province 的 `0x19F` 计算 hard conversion；后者严格经过 Province vtable `+0x30`
+  与 `0xBC24E0` 两个原版 guard。`0x23CE11B` 取 `CCombat+0x6B8 → CProvince*`，
+  `0x23CE149` 将 `CProvince+0x30` 交 `0x2940D50`。同一 native read ABI 已由 v3 的
+  `ReadHoldingScaleV3` 使用；当前 v3 local-shell 的同帧 target Province、read-before/after snapshot
+  和 generation-valid 军队身份可复用。`0xBC24E0` 的名字不能替代原版 guard 调用顺序。
+- [implementation-confirmed, live pending] v3 新增可选、私有 `hard_casualty_winter` 诊断：返回目标
+  ProvinceID、两个 guard 和在两个 guard 均为真时读取的 signed Q100000 raw。原版 guard 为假是
+  可用观测，读取失败单列 `unavailable`；guard 为假时不填 raw，也不把未知值伪装成零。
+  旧冻结 fixture 无此字段仍按原样解析。该诊断不计入 132 条 phase-event refs，不改变
+  `monte_carlo_ready=false`、`planner_usable=false` 或 `active_attack_allowed=false`。
+- [RED] 仍缺 defending `0x18C` 与 attacking `0x18D` 的同帧原版数值对照；现有 research envelope
+  明确用“省略未观测修正”的假设，stock wetlands 的 `hard_casualty_modifier=+0.2` 说明默认零
+  不能外推成原版结果。下一最小 private query 在同一 paused frame 绑定两侧 ordered army/commander、
+  target/entry 与完整 snapshot identity，读取两个 side helper raw，再以原版 current CCombat 或
+  独立 original trace 比对一个至少有非零修正的合法场景；同时保存前后 entry hard/soft 和
+  component ledger。未通过此 fixture 前，不调用未验证的 local-side `0x23C8FF0`，不向策略给胜率。
+
+```mermaid
+flowchart LR
+    F["same-frame v3 target Province"] --> G1{"native vtable +0x30"}
+    G1 -->|false| Z["guarded winter term absent"]
+    G1 -->|true| G2{"native 0xBC24E0"}
+    G2 -->|false| Z
+    G2 -->|true| W["0x2940D50 on CProvince+0x30<br/>enum 0x19F private raw"]
+    S["defending 0x18C / attacking 0x18D"] -. "same-frame original-value fixture missing" .-> H["full hard conversion RED"]
+    W -. "winter term alone is insufficient" .-> H
+    Z -. "winter term alone is insufficient" .-> H
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class S,H unknown;
+```
+
 ## 下一项接入
 
 RE 后续闭合 transition 时，把现有 `phase_event_evaluator` 接入一个实现 `BattleTransitionKernel` 的 exact kernel，并提交独立

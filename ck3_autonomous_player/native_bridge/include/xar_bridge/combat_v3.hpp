@@ -158,6 +158,22 @@ struct CombatPhaseFaithHostilityV3 {
   std::int32_t hostility_level_raw = 0;
 };
 
+// Private diagnostic for the target Province 0x19F term in 0x23CE080.
+// It is independent of the 132 phase-event refs and does not authorize a
+// combat forecast. A false native guard is a valid observation, whereas an
+// unreadable guard or modifier is unavailable.
+struct CombatHardCasualtyWinterV3 {
+  bool attempted = false;
+  bool available = false;
+  std::int32_t source_target_province_id = -1;
+  bool first_original_guard = false;
+  bool second_guard_evaluated = false;
+  bool second_original_guard = false;
+  bool raw_available = false;
+  std::int64_t raw = 0;
+  std::string unavailable_reason;
+};
+
 struct CombatPhaseInputsV3 {
   bool available = false;
   std::vector<CombatPhaseCharacterV3> characters;
@@ -167,6 +183,7 @@ struct CombatPhaseInputsV3 {
   bool easy_difficulty = false;
   bool very_easy_difficulty = false;
   CombatAdvantageModelV3TestOnly advantage_model;
+  CombatHardCasualtyWinterV3 hard_casualty_winter;
   std::string unavailable_reason;
 };
 
