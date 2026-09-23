@@ -19,4 +19,3 @@ R0167 从 Robert 正式主线 h1082/raw53190528 配对冷恢复。冻结 EXE SHA
 可单列 `G2-LIFE-WAR-PERK` 战时能力候选，不增加或改写 G2 的八个里程碑，也不把战时读回记作 M4 和平切片完成。复用当前 exact-build 私有读回、`cutting_corners_perk` allowlist、最终原生合法性、typed transport 和 receipt。新入口只考虑**已有**管理 focus 的合法 perk；不在此包切换 focus、猜其他技能、不改建设消费者的和平门，也不挤占尚待处理的战争 RED/互斥动作。
 
 候选启动前在同一 paused 帧重新确认玩家/episode/版本/日期、当前 focus、未花点数、未拥有目标 perk、原生最终合法候选和当前战争决策。只有正式战争规划本轮没有应立即执行的动作且没有待确认互斥动作时，才能提交**一个** typed perk。独立下一 paused revision 核对 `HasPerk=true`、管理点数变化与相同 action ID 的 receipt，再由下一正式 turn 消费；动作状态不明先核对，不重复提交。若这些条件不能同时成立，保留战时能力候选缺口，等待和平后使用现有 LIFE 正式入口或补最小所缺观测。该动作即使 GREEN，也只证明本场景战时加点，M4 两年治理及公共能力广告仍依各自合同验收。
-
