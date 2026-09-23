@@ -129,14 +129,13 @@ bool FillPostCounterTrampoline(void *storage,
   // Eight pushes keep the native 16-byte stack alignment; reserve the Win64
   // 32-byte shadow area for the leaf read-only callback. XMM0..5 were already
   // volatile across the immediately preceding original 0x23CAE70 call.
-  // The original return address is [RSP+0x78] at the capture site. Eight
-  // pushes plus the 0x20 shadow area move it to [RSP+0xD8] here; bind the
-  // scalar to one of the two original main-tick calculator call sites.
-  constexpr std::array<std::uint8_t, 32> pre_call{
+  // The outer outgoing hook records CK3's original caller before invoking
+  // this trampoline. The inner calculator's stack return points back into
+  // that hook, so the callback reads its same-thread outer call context.
+  constexpr std::array<std::uint8_t, 24> pre_call{
       0x9C, 0x50, 0x51, 0x52, 0x41, 0x50, 0x41, 0x51,
       0x41, 0x52, 0x41, 0x53, 0x48, 0x83, 0xEC, 0x20,
-      0x48, 0x8B, 0xCD, 0x49, 0x8B, 0xD6, 0x4C, 0x8B,
-      0x84, 0x24, 0xD8, 0x00, 0x00, 0x00, 0x48, 0xB8};
+      0x48, 0x8B, 0xCD, 0x49, 0x8B, 0xD6, 0x48, 0xB8};
   append(pre_call);
   const auto callback = reinterpret_cast<std::uintptr_t>(
       &XarCaptureCombatPostCounterAttackV1);

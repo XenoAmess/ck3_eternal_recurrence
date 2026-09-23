@@ -371,9 +371,9 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
   const std::int64_t side1_damage_raw = 280'000;
   constexpr std::int64_t side0_attack_raw = 10'333'333;
   constexpr std::int64_t side1_attack_raw = 6'222'222;
-  XarCaptureCombatPostCounterAttackV1(
+  CaptureCombatPostCounterAttackV1(
       reinterpret_cast<void *>(fixture.plan.sides[0]),
-      side0_attack_raw,
+      side0_attack_raw, fixture.plan.sides[0],
       fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
   if (!CaptureCombatOutgoingDamageV1(
           reinterpret_cast<void *>(fixture.plan.sides[0]),
@@ -383,8 +383,9 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
               kCombatOutgoingDamageSide0ReturnRva)) {
     return Fail("side0 outgoing damage capture failed");
   }
-  XarCaptureCombatPostCounterAttackV1(
+  CaptureCombatPostCounterAttackV1(
       reinterpret_cast<void *>(fixture.plan.sides[1]), side1_attack_raw,
+      fixture.plan.sides[1],
       fixture.plan.module_base + kCombatOutgoingDamageSide1ReturnRva);
   if (!CaptureCombatOutgoingDamageV1(
           reinterpret_cast<void *>(fixture.plan.sides[1]),
@@ -666,30 +667,37 @@ bool PostCounterAttackCaptureCases() {
     return Fail("post-counter fixture arm failed");
   }
   ring->committed_count.store(6);
-  XarCaptureCombatPostCounterAttackV1(
-      reinterpret_cast<void *>(3), 91'000,
+  CaptureCombatPostCounterAttackV1(
+      reinterpret_cast<void *>(3), 91'000, 3,
       fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
   if (ring->post_counter_attack_count.load() != 0 ||
       ring->failure_flags.load() != trace_capture_failure_none) {
     return Fail("foreign combat post-counter attack was captured");
   }
-  XarCaptureCombatPostCounterAttackV1(
-      side0, 310'000,
+  CaptureCombatPostCounterAttackV1(
+      side0, 310'000, fixture.plan.sides[0],
       fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva - 1);
   if (ring->post_counter_attack_count.load() != 0 ||
       ring->failure_flags.load() != trace_capture_failure_none) {
     return Fail("foreign calculator return was captured");
   }
-  XarCaptureCombatPostCounterAttackV1(
-      side0, 310'000,
+  CaptureCombatPostCounterAttackV1(
+      side0, 310'000, fixture.plan.sides[1],
+      fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
+  if (ring->post_counter_attack_count.load() != 0 ||
+      ring->failure_flags.load() != trace_capture_failure_none) {
+    return Fail("mismatched outer side was captured");
+  }
+  CaptureCombatPostCounterAttackV1(
+      side0, 310'000, fixture.plan.sides[0],
       fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
   if (ring->post_counter_attack_count.load() != 1 ||
       ring->post_counter_attack_raw[0] != 310'000 ||
       ring->failure_flags.load() != trace_capture_failure_none) {
     return Fail("first post-counter attack was not captured");
   }
-  XarCaptureCombatPostCounterAttackV1(
-      side0, 310'000,
+  CaptureCombatPostCounterAttackV1(
+      side0, 310'000, fixture.plan.sides[0],
       fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
   if ((ring->failure_flags.load() &
        trace_capture_failure_post_counter_attack) == 0) {
@@ -702,8 +710,8 @@ bool PostCounterAttackCaptureCases() {
   }
   ring->committed_count.store(6);
   Store(fixture.combat, 0x08, Fixture::kCombatId + 1);
-  XarCaptureCombatPostCounterAttackV1(
-      side0, 310'000,
+  CaptureCombatPostCounterAttackV1(
+      side0, 310'000, fixture.plan.sides[0],
       fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
   if (ring->post_counter_attack_count.load() != 0 ||
       (ring->failure_flags.load() &
@@ -717,12 +725,12 @@ bool PostCounterAttackCaptureCases() {
     return Fail("post-counter pair fixture arm failed");
   }
   ring->committed_count.store(6);
-  XarCaptureCombatPostCounterAttackV1(
-      side0, 310'000,
+  CaptureCombatPostCounterAttackV1(
+      side0, 310'000, fixture.plan.sides[0],
       fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
   ring->outgoing_damage_count.store(1);
-  XarCaptureCombatPostCounterAttackV1(
-      side1, 280'000,
+  CaptureCombatPostCounterAttackV1(
+      side1, 280'000, fixture.plan.sides[1],
       fixture.plan.module_base + kCombatOutgoingDamageSide1ReturnRva);
   if (ring->post_counter_attack_count.load() != 2 ||
       ring->post_counter_attack_raw[0] != 310'000 ||
@@ -764,6 +772,76 @@ bool OutgoingDamageHookAbi() {
              : Fail("outgoing damage hook changed original ABI/result");
 }
 
+std::uintptr_t DummyOutgoingWithPostCounter(void *side,
+                                            std::int64_t *output,
+                                            std::int32_t,
+                                            std::int64_t,
+                                            void *) {
+  XarCaptureCombatPostCounterAttackV1(side, 123'456);
+  *output = 654'321;
+  return reinterpret_cast<std::uintptr_t>(output);
+}
+
+bool OuterCallerContextTransport() {
+  // The executable stub gives the outer hook a known, real Win64 return
+  // address. The fake original invokes the inner callback before returning.
+  constexpr std::array<std::uint8_t, 31> stub_bytes{
+      0x48, 0x83, 0xEC, 0x28,             // sub rsp, 0x28
+      0x48, 0x8B, 0x44, 0x24, 0x50,       // fifth argument
+      0x48, 0x89, 0x44, 0x24, 0x20,       // pass fifth argument
+      0x48, 0xB8, 0, 0, 0, 0, 0, 0, 0, 0, // mov rax, hook
+      0xFF, 0xD0,                         // call rax
+      0x48, 0x83, 0xC4, 0x28, 0xC3};     // add rsp, 0x28; ret
+  auto *const page = static_cast<std::uint8_t *>(
+      VirtualAlloc(nullptr, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
+  if (page == nullptr) {
+    return Fail("outer caller stub allocation failed");
+  }
+  std::memcpy(page, stub_bytes.data(), stub_bytes.size());
+  const auto hook = reinterpret_cast<std::uintptr_t>(
+      &XarCombatOutgoingDamageHookV1);
+  std::memcpy(page + 16, &hook, sizeof(hook));
+  DWORD old_protection = 0;
+  if (!VirtualProtect(page, 4096, PAGE_EXECUTE_READ, &old_protection) ||
+      !FlushInstructionCache(GetCurrentProcess(), page, stub_bytes.size())) {
+    VirtualFree(page, 0, MEM_RELEASE);
+    return Fail("outer caller stub preparation failed");
+  }
+
+  Fixture fixture;
+  fixture.plan.module_base = reinterpret_cast<std::uintptr_t>(page + 26) -
+                             kCombatOutgoingDamageSide0ReturnRva;
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  bool valid = ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan) &&
+               BindCombatPhaseEventTraceOriginalTrampolinesV1(
+                   &DummySchedule, &DummyFire,
+                   &DummyOutgoingWithPostCounter);
+  if (valid) {
+    ring->committed_count.store(6);
+    using Stub = std::uintptr_t(__fastcall *)(
+        void *, std::int64_t *, std::int32_t, std::int64_t, void *);
+    auto *const call = reinterpret_cast<Stub>(page);
+    std::int64_t output = 0;
+    const auto result = call(
+        reinterpret_cast<void *>(fixture.plan.sides[0]), &output, 73,
+        150'000, reinterpret_cast<void *>(fixture.plan.sides[1]));
+    valid = result == reinterpret_cast<std::uintptr_t>(&output) &&
+            output == 654'321 &&
+            ring->post_counter_attack_count.load() == 1 &&
+            ring->post_counter_attack_raw[0] == 123'456 &&
+            ring->outgoing_damage_count.load() == 1 &&
+            ring->outgoing_damage_raw[0] == 654'321 &&
+            ring->failure_flags.load() == trace_capture_failure_none;
+    XarCaptureCombatPostCounterAttackV1(
+        reinterpret_cast<void *>(fixture.plan.sides[0]), 999'999);
+    valid = valid && ring->post_counter_attack_count.load() == 1 &&
+            ring->failure_flags.load() == trace_capture_failure_none;
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  VirtualFree(page, 0, MEM_RELEASE);
+  return valid ? true : Fail("outer caller context was not transported/restored");
+}
+
 bool SourceContract(std::string_view path) {
   std::ifstream stream{std::string(path), std::ios::binary};
   const std::string contents{std::istreambuf_iterator<char>(stream),
@@ -778,7 +856,7 @@ bool SourceContract(std::string_view path) {
       "0x2309EFF",
       "0x23CB1D0",
       "mov_RBP_RCX_where_entry_RCX_is_CCombatSide",
-      "RSP_plus_0x78",
+      "original_main_tick_caller_held_in_thread_local_outer_hook_context",
       "0x23CB435",
       "2441EEAB92DBB31B35C9A770D83FFE5E553834E503DAEFAB91C230D4E6A9966B",
       "0x2309F98",
@@ -874,7 +952,7 @@ int main(int argc, char **argv) {
       !CaptureSevenRecordFixture(48) ||
       !FailureCases() ||
       !OutgoingDamageCaptureCases() || !PostCounterAttackCaptureCases() ||
-      !OutgoingDamageHookAbi() ||
+      !OutgoingDamageHookAbi() || !OuterCallerContextTransport() ||
       BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr,
                                                       nullptr)) {
     return 1;

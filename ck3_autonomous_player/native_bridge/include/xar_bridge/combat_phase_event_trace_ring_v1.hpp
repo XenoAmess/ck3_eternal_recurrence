@@ -427,12 +427,17 @@ bool CaptureCombatPhaseEventTraceBoundaryV1(
 bool CaptureCombatOutgoingDamageV1(
     void *side, void *opposite_side, const std::int64_t *output,
     std::uintptr_t caller_return_address) noexcept;
+// Validates the prearmed Combat/side against the original main-tick caller
+// captured by the outer outgoing-damage hook on the same thread. The inner
+// trampoline's own return address points into that hook, not CK3.
+bool CaptureCombatPostCounterAttackV1(
+    void *side, std::int64_t attack_raw, std::uintptr_t outer_side,
+    std::uintptr_t original_caller_return_address) noexcept;
 // Called only by the exact 0x23CB435 internal trampoline, after it replays
 // the original 16 position-independent bytes. R14 is then the side's
 // post-counter attack accumulator before 0.03/advantage/width scaling.
 extern "C" void __fastcall XarCaptureCombatPostCounterAttackV1(
-    void *side, std::int64_t attack_raw,
-    std::uintptr_t caller_return_address) noexcept;
+    void *side, std::int64_t attack_raw) noexcept;
 
 // Called only after the managed driver has regained a stable pause.  It adds
 // record seven with the same bounded reader and then validates/drains the

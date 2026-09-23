@@ -322,17 +322,29 @@ attacker 的实际 final-edge origin 未证。敌军后续路线含 `2642` 只�
 结束后，R14 是该侧的 post-counter 有效攻击聚合值；`0x23CB541` 起才进入
 `0.03 × advantage × width` 缩放。该切片没有相对寻址/分支，因而只读
 跳板可先执行原 16 字节、复制 R14、恢复全部被碰的 flags/volatile GPR，
-再回 `0x23CB445`。`0x23CB1EC` 将入口 RCX side 固定到 RBP；原调用者返回地址
-在该点 `[RSP+0x78]`，必须分别匹配 main tick 的 `0x2309F98/0x2309FB4`。
+再回 `0x23CB445`。`0x23CB1EC` 将入口 RCX side 固定到 RBP。外层
+outgoing hook 从 CK3 原调用处捕获返回地址；内部 calculator 是由该 hook
+调用的，所以其栈内返回地址指向 hook wrapper，不能直接用来匹配 main tick。
+同线程的外层调用上下文必须提供原始返回地址，并分别匹配
+`0x2309F98/0x2309FB4`；RBP side 也必须与外层 side 一致。
 采样仅接受预先绑定的 Combat/side、对应原调用点和双侧顺序；
 不会重调原版 helper 或消耗 RNG。冻结 EXE SHA 仍是
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-R14 的实机读回和 `outgoing_damage_raw` 聚焦对账尚待新候选；
+R0216 用旧栈返回地址筛选的严格 +24 小时实机给出七条边界与原 outgoing
+`12,414,304 / 116,645,325`，但 `post_counter_attack.count=0`，
+`bounded_capture_complete=false`，因此判 RED 并受控停机。故障发生于上述
+caller 绑定，不是战斗结论；原 R0203 配对、R0216 RED 与 #230 DLL 均冻结。
+R0216 冻结索引为
+`Z:\ck3_mod_rewrite_process_assets\g2-combat-postcounter-r14-r0203-ebb7-no-launch-20260924\checks\R0216-LIVE-FREEZE.json`
+（SHA-256 `1108D382B130601C8C7853A18D65F99C41F5B5B33A5A21052C9260AFC9A72F18`）。
+同线程外层 caller 绑定的修复尚待新 DLL 和实机读回，随后才可与
+`outgoing_damage_raw` 聚焦对账；
 `original_trace_ready`、概率与攻击门仍关闭。
 
 ```mermaid
 flowchart LR
   E["actual CombatID 738197508"] --> T["seven original tick boundaries"]
+  H["outer outgoing hook: original caller + side"] --> R
   T --> R["0x23CB435 R14: post-counter attack"]
   R --> S["0.03 × advantage × width"]
   S --> O["native outgoing pair"]

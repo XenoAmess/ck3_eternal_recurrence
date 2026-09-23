@@ -101,6 +101,11 @@ std::atomic<CombatPhaseEventTraceRingV1 *> g_active_ring{nullptr};
 std::atomic<CombatPhaseEventScheduleOriginalV1> g_original_schedule{nullptr};
 std::atomic<CombatPhaseEventFireOriginalV1> g_original_fire{nullptr};
 std::atomic<CombatOutgoingDamageOriginalV1> g_original_outgoing_damage{nullptr};
+struct OriginalOutgoingCallContextV1 {
+  std::uintptr_t side = 0;
+  std::uintptr_t caller_return_address = 0;
+};
+thread_local OriginalOutgoingCallContextV1 g_original_outgoing_call{};
 
 template <typename T>
 T LoadAt(std::uintptr_t base, std::size_t offset) noexcept {
@@ -1144,27 +1149,28 @@ bool CaptureCombatOutgoingDamageV1(
   return valid;
 }
 
-extern "C" void __fastcall XarCaptureCombatPostCounterAttackV1(
-    void *side, std::int64_t attack_raw,
-    std::uintptr_t caller_return_address) noexcept {
+bool CaptureCombatPostCounterAttackV1(
+    void *side, std::int64_t attack_raw, std::uintptr_t outer_side,
+    std::uintptr_t original_caller_return_address) noexcept {
   auto *const ring = g_active_ring.load(std::memory_order_acquire);
   if (ring == nullptr || ring->armed.load(std::memory_order_acquire) == 0) {
-    return;
+    return false;
   }
   const auto address = reinterpret_cast<std::uintptr_t>(side);
   if (address != ring->plan.sides[0] && address != ring->plan.sides[1]) {
-    return; // Other combats can tick in the same managed day.
+    return false; // Other combats can tick in the same managed day.
   }
   const auto index = address == ring->plan.sides[0] ? 0U : 1U;
   const auto expected_return = ring->plan.module_base +
       (index == 0 ? kCombatOutgoingDamageSide0ReturnRva
                   : kCombatOutgoingDamageSide1ReturnRva);
-  if (caller_return_address != expected_return) {
-    return; // Only the main-tick calculator call owns this scalar.
+  if (outer_side != address ||
+      original_caller_return_address != expected_return) {
+    return false; // Only this side's original main-tick call owns the scalar.
   }
   if (ring->capture_in_progress.exchange(1, std::memory_order_acq_rel) != 0) {
     MarkFailure(*ring, trace_capture_failure_reentry);
-    return;
+    return false;
   }
   bool valid = ring->committed_count.load(std::memory_order_acquire) == 6 &&
                ring->outgoing_damage_count.load(std::memory_order_acquire) == index &&
@@ -1190,6 +1196,14 @@ extern "C" void __fastcall XarCaptureCombatPostCounterAttackV1(
     MarkFailure(*ring, trace_capture_failure_post_counter_attack);
   }
   ring->capture_in_progress.store(0, std::memory_order_release);
+  return valid;
+}
+
+extern "C" void __fastcall XarCaptureCombatPostCounterAttackV1(
+    void *side, std::int64_t attack_raw) noexcept {
+  (void)CaptureCombatPostCounterAttackV1(
+      side, attack_raw, g_original_outgoing_call.side,
+      g_original_outgoing_call.caller_return_address);
 }
 
 bool CompleteAndDrainCombatPhaseEventTraceRingV1(
@@ -1401,8 +1415,12 @@ extern "C" std::uintptr_t __fastcall XarCombatOutgoingDamageHookV1(
     }
     return 0;
   }
+  const auto previous_call = g_original_outgoing_call;
+  g_original_outgoing_call = {
+      reinterpret_cast<std::uintptr_t>(side), return_address};
   const auto result = original(side, output, final_width,
                                advantage_multiplier_raw, opposite_side);
+  g_original_outgoing_call = previous_call;
   (void)CaptureCombatOutgoingDamageV1(side, opposite_side, output,
                                        return_address);
   return result;

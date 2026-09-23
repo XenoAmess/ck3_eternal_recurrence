@@ -23,8 +23,6 @@ constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
 constexpr std::array<std::uint8_t, 16> kPostCounterOriginal{
     0x4C, 0x8B, 0xBD, 0x98, 0x00, 0x00, 0x00, 0x41,
     0xBB, 0xA0, 0x86, 0x01, 0x00, 0x4C, 0x03, 0x30};
-constexpr std::array<std::uint8_t, 8> kPostCounterCallerReturnLoad{
-    0x4C, 0x8B, 0x84, 0x24, 0xD8, 0x00, 0x00, 0x00};
 constexpr std::array<std::uint8_t, 5> kScheduleSide0Call{
     0xE8, 0xBC, 0xD1, 0xBC, 0xFF};
 constexpr std::array<std::uint8_t, 5> kScheduleSide1Call{
@@ -277,11 +275,7 @@ bool InstallAndUninstall() {
                   kOutgoingDamagePrologue.size()) != 0 ||
       std::memcmp(state.post_counter_trampoline,
                   kPostCounterOriginal.data(),
-                  kPostCounterOriginal.size()) != 0 ||
-      std::memcmp(static_cast<const std::uint8_t *>(state.post_counter_trampoline) +
-                      kPostCounterOriginal.size() + 22,
-                  kPostCounterCallerReturnLoad.data(),
-                  kPostCounterCallerReturnLoad.size()) != 0) {
+                  kPostCounterOriginal.size()) != 0) {
     return Fail("installed patch/trampoline mismatch");
   }
   if (!UninstallCombatPhaseEventTraceDetoursV1(state) ||
