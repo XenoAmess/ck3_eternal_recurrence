@@ -376,6 +376,14 @@ initiating CArmy+0x124
   不能作为现有 combat-v3 显式 attacker-entry 模型的同帧数值对照。R0202 冻结索引为
   `Z:\ck3_mod_rewrite_process_assets\g2-combat-actual-side-R0202-frozen-20260923\FREEZE-MANIFEST.json`，
   SHA-256 `E40EC31202246BDF9C3CDD81DF00CA871BB354050C2AD86815AC3F8E8F356057`。
+- [live-confirmed] R0215 对同 CombatID 的 phase1/day0 冻结源执行严格一天七边界，只读取得
+  两侧原版 outgoing 与后续逐兵团伤亡。敌军 `50331863` 在暂停快照的后续路线为
+  `[2642,2637]`；这不是其先前入场边。因 constructor 未保存 side0 origin，
+  `2642→2638` 不能用作 v3 同战场 attacker entry。一次以它为参数的 preliminary
+  候选仅复制了原 R0203 原件/DLL、尚未 prepare/arm/启动，已停止该方向。
+  为补战斗数值证据，下一只读入口直接采原版同 tick `0x23CB435` 后 R14
+  post-counter attack，避免从条件性 v3 edge 推断 actual CombatID；
+  该字段的实机值仍待验证。
 
 ```mermaid
 flowchart TD
@@ -386,6 +394,8 @@ flowchart TD
     K --> U["unknown: separate persisted initiator/origin field?<br/>none in inspected constructor writes"]
     A --> C["post-contact CombatID / target / ordered sides<br/>must independently match"]
     D --> C
+    F["R0215 enemy side0 future route 2642→2637"] -.-> E["unknown: actual enemy attacker final-edge origin"]
+    E -.-> A
 ```
 
 已有自然阳性线索是 2026-08-26 first-contact artifact：

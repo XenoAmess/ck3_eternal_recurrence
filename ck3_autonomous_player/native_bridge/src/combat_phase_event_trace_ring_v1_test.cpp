@@ -369,13 +369,24 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
   }
   const std::int64_t side0_damage_raw = 310'000;
   const std::int64_t side1_damage_raw = 280'000;
+  constexpr std::int64_t side0_attack_raw = 10'333'333;
+  constexpr std::int64_t side1_attack_raw = 6'222'222;
+  XarCaptureCombatPostCounterAttackV1(
+      reinterpret_cast<void *>(fixture.plan.sides[0]),
+      side0_attack_raw,
+      fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
   if (!CaptureCombatOutgoingDamageV1(
           reinterpret_cast<void *>(fixture.plan.sides[0]),
           reinterpret_cast<void *>(fixture.plan.sides[1]),
           &side0_damage_raw,
           fixture.plan.module_base +
-              kCombatOutgoingDamageSide0ReturnRva) ||
-      !CaptureCombatOutgoingDamageV1(
+              kCombatOutgoingDamageSide0ReturnRva)) {
+    return Fail("side0 outgoing damage capture failed");
+  }
+  XarCaptureCombatPostCounterAttackV1(
+      reinterpret_cast<void *>(fixture.plan.sides[1]), side1_attack_raw,
+      fixture.plan.module_base + kCombatOutgoingDamageSide1ReturnRva);
+  if (!CaptureCombatOutgoingDamageV1(
           reinterpret_cast<void *>(fixture.plan.sides[1]),
           reinterpret_cast<void *>(fixture.plan.sides[0]),
           &side1_damage_raw,
@@ -403,9 +414,13 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
       !drain->schedule_phase_day_then_single_increment ||
       !drain->bounded_capture_complete ||
       !drain->outgoing_damage_pair_complete ||
+      !drain->post_counter_attack_pair_complete ||
       drain->outgoing_damage_count != 2 ||
+      drain->post_counter_attack_count != 2 ||
       drain->outgoing_damage_raw[0] != side0_damage_raw ||
       drain->outgoing_damage_raw[1] != side1_damage_raw ||
+      drain->post_counter_attack_raw[0] != side0_attack_raw ||
+      drain->post_counter_attack_raw[1] != side1_attack_raw ||
       drain->full_mutable_transition_bundle_complete ||
       drain->production_trace_ready) {
     return Fail("drain gates mismatch");
@@ -641,6 +656,84 @@ bool OutgoingDamageCaptureCases() {
   return true;
 }
 
+bool PostCounterAttackCaptureCases() {
+  Fixture fixture;
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  auto *const side0 = reinterpret_cast<void *>(fixture.plan.sides[0]);
+  auto *const side1 = reinterpret_cast<void *>(fixture.plan.sides[1]);
+
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    return Fail("post-counter fixture arm failed");
+  }
+  ring->committed_count.store(6);
+  XarCaptureCombatPostCounterAttackV1(
+      reinterpret_cast<void *>(3), 91'000,
+      fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
+  if (ring->post_counter_attack_count.load() != 0 ||
+      ring->failure_flags.load() != trace_capture_failure_none) {
+    return Fail("foreign combat post-counter attack was captured");
+  }
+  XarCaptureCombatPostCounterAttackV1(
+      side0, 310'000,
+      fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva - 1);
+  if (ring->post_counter_attack_count.load() != 0 ||
+      ring->failure_flags.load() != trace_capture_failure_none) {
+    return Fail("foreign calculator return was captured");
+  }
+  XarCaptureCombatPostCounterAttackV1(
+      side0, 310'000,
+      fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
+  if (ring->post_counter_attack_count.load() != 1 ||
+      ring->post_counter_attack_raw[0] != 310'000 ||
+      ring->failure_flags.load() != trace_capture_failure_none) {
+    return Fail("first post-counter attack was not captured");
+  }
+  XarCaptureCombatPostCounterAttackV1(
+      side0, 310'000,
+      fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
+  if ((ring->failure_flags.load() &
+       trace_capture_failure_post_counter_attack) == 0) {
+    return Fail("duplicate post-counter attack was accepted");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    return Fail("post-counter changed CombatID fixture arm failed");
+  }
+  ring->committed_count.store(6);
+  Store(fixture.combat, 0x08, Fixture::kCombatId + 1);
+  XarCaptureCombatPostCounterAttackV1(
+      side0, 310'000,
+      fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
+  if (ring->post_counter_attack_count.load() != 0 ||
+      (ring->failure_flags.load() &
+       trace_capture_failure_post_counter_attack) == 0) {
+    return Fail("changed CombatID post-counter attack was accepted");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+
+  Store(fixture.combat, 0x08, Fixture::kCombatId);
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    return Fail("post-counter pair fixture arm failed");
+  }
+  ring->committed_count.store(6);
+  XarCaptureCombatPostCounterAttackV1(
+      side0, 310'000,
+      fixture.plan.module_base + kCombatOutgoingDamageSide0ReturnRva);
+  ring->outgoing_damage_count.store(1);
+  XarCaptureCombatPostCounterAttackV1(
+      side1, 280'000,
+      fixture.plan.module_base + kCombatOutgoingDamageSide1ReturnRva);
+  if (ring->post_counter_attack_count.load() != 2 ||
+      ring->post_counter_attack_raw[0] != 310'000 ||
+      ring->post_counter_attack_raw[1] != 280'000 ||
+      ring->failure_flags.load() != trace_capture_failure_none) {
+    return Fail("post-counter attack pair was not captured in order");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  return true;
+}
+
 std::uintptr_t DummySchedule(void *, std::uint32_t *, void *) { return 0; }
 std::uintptr_t DummyFire(void *) { return 0; }
 std::uintptr_t DummyOutgoingDamage(void *side, std::int64_t *output,
@@ -675,7 +768,7 @@ bool SourceContract(std::string_view path) {
   std::ifstream stream{std::string(path), std::ios::binary};
   const std::string contents{std::istreambuf_iterator<char>(stream),
                              std::istreambuf_iterator<char>()};
-  constexpr std::array<std::string_view, 18> required{
+  constexpr std::array<std::string_view, 22> required{
       "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
       "0x23C8750",
       "0x23C9900",
@@ -684,6 +777,10 @@ bool SourceContract(std::string_view path) {
       "0x2309EF7",
       "0x2309EFF",
       "0x23CB1D0",
+      "mov_RBP_RCX_where_entry_RCX_is_CCombatSide",
+      "RSP_plus_0x78",
+      "0x23CB435",
+      "2441EEAB92DBB31B35C9A770D83FFE5E553834E503DAEFAB91C230D4E6A9966B",
       "0x2309F98",
       "0x2309FB4",
       "0x2309FE8",
@@ -776,7 +873,8 @@ int main(int argc, char **argv) {
       !CaptureSevenRecordFixture(23) ||
       !CaptureSevenRecordFixture(48) ||
       !FailureCases() ||
-      !OutgoingDamageCaptureCases() || !OutgoingDamageHookAbi() ||
+      !OutgoingDamageCaptureCases() || !PostCounterAttackCaptureCases() ||
+      !OutgoingDamageHookAbi() ||
       BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr,
                                                       nullptr)) {
     return 1;

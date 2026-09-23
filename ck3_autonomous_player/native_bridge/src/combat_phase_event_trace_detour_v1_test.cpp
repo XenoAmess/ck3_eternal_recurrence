@@ -20,6 +20,11 @@ constexpr std::array<std::uint8_t, 15> kFirePrologue{
 constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
     0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
     0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
+constexpr std::array<std::uint8_t, 16> kPostCounterOriginal{
+    0x4C, 0x8B, 0xBD, 0x98, 0x00, 0x00, 0x00, 0x41,
+    0xBB, 0xA0, 0x86, 0x01, 0x00, 0x4C, 0x03, 0x30};
+constexpr std::array<std::uint8_t, 8> kPostCounterCallerReturnLoad{
+    0x4C, 0x8B, 0x84, 0x24, 0xD8, 0x00, 0x00, 0x00};
 constexpr std::array<std::uint8_t, 5> kScheduleSide0Call{
     0xE8, 0xBC, 0xD1, 0xBC, 0xFF};
 constexpr std::array<std::uint8_t, 5> kScheduleSide1Call{
@@ -44,11 +49,13 @@ struct FixtureMemory {
   void *schedule_page = nullptr;
   void *fire_page = nullptr;
   void *outgoing_damage_page = nullptr;
+  void *post_counter_page = nullptr;
   bool fail_fire_patch_protection = false;
   bool fail_outgoing_damage_patch_protection = false;
   bool fail_allocation = false;
   std::uintptr_t fire_target = 0;
   std::uintptr_t outgoing_damage_target = 0;
+  std::uintptr_t post_counter_target = 0;
   std::uint32_t live_allocations = 0;
 
   ~FixtureMemory() {
@@ -60,6 +67,9 @@ struct FixtureMemory {
     }
     if (outgoing_damage_page != nullptr) {
       VirtualFree(outgoing_damage_page, 0, MEM_RELEASE);
+    }
+    if (post_counter_page != nullptr) {
+      VirtualFree(post_counter_page, 0, MEM_RELEASE);
     }
   }
 };
@@ -138,8 +148,12 @@ struct Fixture {
     memory.outgoing_damage_page = VirtualAlloc(
         nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
         PAGE_EXECUTE_READWRITE);
+    memory.post_counter_page = VirtualAlloc(
+        nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE);
     if (memory.schedule_page == nullptr || memory.fire_page == nullptr ||
-        memory.outgoing_damage_page == nullptr) {
+        memory.outgoing_damage_page == nullptr ||
+        memory.post_counter_page == nullptr) {
       return;
     }
     std::memcpy(memory.schedule_page, kSchedulePrologue.data(),
@@ -149,6 +163,8 @@ struct Fixture {
     std::memcpy(memory.outgoing_damage_page,
                 kOutgoingDamagePrologue.data(),
                 kOutgoingDamagePrologue.size());
+    std::memcpy(memory.post_counter_page,
+                kPostCounterOriginal.data(), kPostCounterOriginal.size());
     DWORD ignored = 0;
     (void)VirtualProtect(memory.schedule_page, page_size,
                          PAGE_EXECUTE_READ, &ignored);
@@ -156,10 +172,14 @@ struct Fixture {
                          PAGE_EXECUTE_READ, &ignored);
     (void)VirtualProtect(memory.outgoing_damage_page, page_size,
                          PAGE_EXECUTE_READ, &ignored);
+    (void)VirtualProtect(memory.post_counter_page, page_size,
+                         PAGE_EXECUTE_READ, &ignored);
     memory.fire_target =
         reinterpret_cast<std::uintptr_t>(memory.fire_page);
     memory.outgoing_damage_target =
         reinterpret_cast<std::uintptr_t>(memory.outgoing_damage_page);
+    memory.post_counter_target =
+        reinterpret_cast<std::uintptr_t>(memory.post_counter_page);
 
     environment.exact_build_admitted = true;
     environment.managed_paused_quiescence_proven = true;
@@ -170,6 +190,8 @@ struct Fixture {
     environment.fire_target_override = memory.fire_target;
     environment.outgoing_damage_target_override =
         memory.outgoing_damage_target;
+    environment.post_counter_target_override =
+        memory.post_counter_target;
     environment.schedule_side0_call_override =
         reinterpret_cast<std::uintptr_t>(schedule_side0_call.data());
     environment.schedule_side1_call_override =
@@ -206,7 +228,8 @@ bool InstallAndUninstall() {
   Fixture fixture;
   if (fixture.memory.schedule_page == nullptr ||
       fixture.memory.fire_page == nullptr ||
-      fixture.memory.outgoing_damage_page == nullptr) {
+      fixture.memory.outgoing_damage_page == nullptr ||
+      fixture.memory.post_counter_page == nullptr) {
     return Fail("fixture executable pages unavailable");
   }
   CombatPhaseEventTraceDetourStateV1 state{};
@@ -215,7 +238,7 @@ bool InstallAndUninstall() {
     return Fail("detour install failed");
   }
   if (state.installed.load() != 1 || state.failure_flags.load() != 0 ||
-      fixture.memory.live_allocations != 3 ||
+      fixture.memory.live_allocations != 4 ||
       !IsAbsoluteJumpTo(
           fixture.memory.schedule_page,
           reinterpret_cast<std::uintptr_t>(
@@ -226,6 +249,9 @@ bool InstallAndUninstall() {
       !IsAbsoluteJumpTo(
           fixture.memory.outgoing_damage_page,
           reinterpret_cast<std::uintptr_t>(&XarCombatOutgoingDamageHookV1)) ||
+      !IsAbsoluteJumpTo(
+          fixture.memory.post_counter_page,
+          reinterpret_cast<std::uintptr_t>(state.post_counter_trampoline)) ||
       !IsAbsoluteJumpTo(
           static_cast<const std::uint8_t *>(state.schedule_trampoline) +
               kCombatPhaseEventTraceDetourPatchBytesV1,
@@ -248,7 +274,14 @@ bool InstallAndUninstall() {
                   kFirePrologue.size()) != 0 ||
       std::memcmp(state.outgoing_damage_trampoline,
                   kOutgoingDamagePrologue.data(),
-                  kOutgoingDamagePrologue.size()) != 0) {
+                  kOutgoingDamagePrologue.size()) != 0 ||
+      std::memcmp(state.post_counter_trampoline,
+                  kPostCounterOriginal.data(),
+                  kPostCounterOriginal.size()) != 0 ||
+      std::memcmp(static_cast<const std::uint8_t *>(state.post_counter_trampoline) +
+                      kPostCounterOriginal.size() + 22,
+                  kPostCounterCallerReturnLoad.data(),
+                  kPostCounterCallerReturnLoad.size()) != 0) {
     return Fail("installed patch/trampoline mismatch");
   }
   if (!UninstallCombatPhaseEventTraceDetoursV1(state) ||
@@ -259,7 +292,10 @@ bool InstallAndUninstall() {
                   kFirePrologue.size()) != 0 ||
       std::memcmp(fixture.memory.outgoing_damage_page,
                   kOutgoingDamagePrologue.data(),
-                  kOutgoingDamagePrologue.size()) != 0) {
+                  kOutgoingDamagePrologue.size()) != 0 ||
+      std::memcmp(fixture.memory.post_counter_page,
+                  kPostCounterOriginal.data(),
+                  kPostCounterOriginal.size()) != 0) {
     return Fail("detour uninstall did not restore originals");
   }
   return true;

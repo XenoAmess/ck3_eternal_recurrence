@@ -8,6 +8,7 @@
     "schedule_function_rva": "0x23C8750",
     "phase_fire_function_rva": "0x23C9900",
     "outgoing_damage_function_rva": "0x23CB1D0",
+    "post_counter_attack_capture_rva": "0x23CB435",
     "installation_ready": true,
     "original_trampoline_required": true
   },
@@ -51,6 +52,21 @@
     "prologue_15_bytes_sha256": "180B53838F1B7CA3FD5ECD62C76C322312BF64147622F178619D52F160BAFBA0",
     "caller_compute_apply_span_sha256": "284C68CAF0618BC04AEB11DE4925A2470678D772FE8E29C8C4F32443EEF6F559",
     "capture_policy": "after_each_original_calculator_return_copy_output_before_both_native_casualty_calls"
+  },
+  "post_counter_attack_call_chain": {
+    "side_register_provenance_rva": "0x23CB1EC",
+    "side_register_provenance": "mov_RBP_RCX_where_entry_RCX_is_CCombatSide",
+    "per_regiment_aggregator_call_rva": "0x23CB430",
+    "per_regiment_aggregator_target_rva": "0x23CAE70",
+    "capture_rva": "0x23CB435",
+    "capture_resume_rva": "0x23CB445",
+    "first_damage_scaling_rva": "0x23CB541",
+    "original_caller_return_stack_offset_at_capture": "RSP_plus_0x78",
+    "capture_callback_identity": "RBP_side_and_original_main_tick_caller_return_0x2309F98_or_0x2309FB4",
+    "register": "R14_signed_Q100000_post_counter_effective_attack",
+    "original_16_bytes_hex": "4C8BBD9800000041BBA08601004C0330",
+    "original_16_bytes_sha256": "2441EEAB92DBB31B35C9A770D83FFE5E553834E503DAEFAB91C230D4E6A9966B",
+    "capture_policy": "replay_original_16_bytes_then_copy_R14_for_prearmed_actual_Combat_side_before_0.03_advantage_width_scaling"
   },
   "required_snapshot_sequence": [
     "native_capture_before_side0_schedule_call_0x27FB58F",
@@ -116,6 +132,7 @@
     "participant_accolade_identity_owner_acclaimed_knight_glory_and_mirrored_rank",
     "side_current_fighting_totals",
     "both_native_outgoing_damage_raw_before_casualty",
+    "both_native_post_counter_effective_attack_raw_before_scaling",
     "combat_base_resolved_advantage_and_rolls"
   ],
   "readiness": {

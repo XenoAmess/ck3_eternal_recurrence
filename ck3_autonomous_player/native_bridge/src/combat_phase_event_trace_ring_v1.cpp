@@ -1005,10 +1005,12 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.capture_in_progress.store(0, std::memory_order_relaxed);
   ring.committed_count.store(0, std::memory_order_relaxed);
   ring.outgoing_damage_count.store(0, std::memory_order_relaxed);
+  ring.post_counter_attack_count.store(0, std::memory_order_relaxed);
   ring.failure_flags.store(trace_capture_failure_none,
                            std::memory_order_relaxed);
   ring.plan = plan;
   ring.outgoing_damage_raw = {};
+  ring.post_counter_attack_raw = {};
   std::memset(ring.records.data(), 0,
               sizeof(CombatPhaseEventTraceRingRecordV1) *
                   ring.records.size());
@@ -1142,6 +1144,54 @@ bool CaptureCombatOutgoingDamageV1(
   return valid;
 }
 
+extern "C" void __fastcall XarCaptureCombatPostCounterAttackV1(
+    void *side, std::int64_t attack_raw,
+    std::uintptr_t caller_return_address) noexcept {
+  auto *const ring = g_active_ring.load(std::memory_order_acquire);
+  if (ring == nullptr || ring->armed.load(std::memory_order_acquire) == 0) {
+    return;
+  }
+  const auto address = reinterpret_cast<std::uintptr_t>(side);
+  if (address != ring->plan.sides[0] && address != ring->plan.sides[1]) {
+    return; // Other combats can tick in the same managed day.
+  }
+  const auto index = address == ring->plan.sides[0] ? 0U : 1U;
+  const auto expected_return = ring->plan.module_base +
+      (index == 0 ? kCombatOutgoingDamageSide0ReturnRva
+                  : kCombatOutgoingDamageSide1ReturnRva);
+  if (caller_return_address != expected_return) {
+    return; // Only the main-tick calculator call owns this scalar.
+  }
+  if (ring->capture_in_progress.exchange(1, std::memory_order_acq_rel) != 0) {
+    MarkFailure(*ring, trace_capture_failure_reentry);
+    return;
+  }
+  bool valid = ring->committed_count.load(std::memory_order_acquire) == 6 &&
+               ring->outgoing_damage_count.load(std::memory_order_acquire) == index &&
+               ring->post_counter_attack_count.load(std::memory_order_acquire) == index;
+  if (valid) {
+#if defined(_MSC_VER)
+    __try {
+#endif
+      valid = LoadAt<std::int32_t>(ring->plan.combat, kCombatIdOffset) ==
+              ring->plan.combat_id;
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      valid = false;
+      MarkFailure(*ring, trace_capture_failure_memory_fault);
+    }
+#endif
+  }
+  if (valid) {
+    ring->post_counter_attack_raw[index] = attack_raw;
+    ring->post_counter_attack_count.store(index + 1,
+                                          std::memory_order_release);
+  } else {
+    MarkFailure(*ring, trace_capture_failure_post_counter_attack);
+  }
+  ring->capture_in_progress.store(0, std::memory_order_release);
+}
+
 bool CompleteAndDrainCombatPhaseEventTraceRingV1(
     CombatPhaseEventTraceRingV1 &ring,
     CombatPhaseEventTraceRingDrainV1 &output) noexcept {
@@ -1162,6 +1212,12 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
   output.outgoing_damage_pair_complete =
       output.outgoing_damage_count == 2 &&
       (output.failure_flags & trace_capture_failure_outgoing_damage) == 0;
+  output.post_counter_attack_count =
+      ring.post_counter_attack_count.load(std::memory_order_acquire);
+  output.post_counter_attack_raw = ring.post_counter_attack_raw;
+  output.post_counter_attack_pair_complete =
+      output.post_counter_attack_count == 2 &&
+      (output.failure_flags & trace_capture_failure_post_counter_attack) == 0;
   output.record_count = std::min<std::uint32_t>(
       ring.committed_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.records.size()));
@@ -1214,7 +1270,9 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
       output.expected_one_day_date_split &&
       output.same_loaded_event_table &&
       output.side_and_return_site_identity &&
-      output.schedule_phase_day_then_single_increment;
+      output.schedule_phase_day_then_single_increment &&
+      output.outgoing_damage_pair_complete &&
+      output.post_counter_attack_pair_complete;
   // Deliberately independent gates: bounded native capture is useful ABI
   // progress, but it cannot claim transition parity while the mutable bundle
   // is incomplete and no paused live seven-record fixture exists.

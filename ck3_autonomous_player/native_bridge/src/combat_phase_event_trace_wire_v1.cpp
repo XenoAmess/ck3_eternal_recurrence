@@ -369,7 +369,9 @@ bool AppendRecord(std::string &output,
 std::string SerializeCombatPhaseEventTraceRingDrainV1(
     const CombatPhaseEventTraceRingDrainV1 &drain) {
   if (drain.record_count > drain.records.size() ||
-      drain.outgoing_damage_count > drain.outgoing_damage_raw.size()) {
+      drain.outgoing_damage_count > drain.outgoing_damage_raw.size() ||
+      drain.post_counter_attack_count >
+          drain.post_counter_attack_raw.size()) {
     return {};
   }
   std::string output;
@@ -395,6 +397,21 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
     output += "null";
   }
   output += "}";
+  output += ",\"post_counter_attack\":{\"source\":\"native_r14_after_0x23cae70_before_damage_scaling\",\"scale\":100000,\"count\":";
+  if (!AppendNumber(output, drain.post_counter_attack_count)) return {};
+  output += ",\"side0_raw\":";
+  if (drain.post_counter_attack_count > 0) {
+    if (!AppendNumber(output, drain.post_counter_attack_raw[0])) return {};
+  } else {
+    output += "null";
+  }
+  output += ",\"side1_raw\":";
+  if (drain.post_counter_attack_count > 1) {
+    if (!AppendNumber(output, drain.post_counter_attack_raw[1])) return {};
+  } else {
+    output += "null";
+  }
+  output += "}";
   output += ",\"readiness\":{";
   output += "\"exact_boundary_sequence\":";
   if (!AppendBool(output, drain.exact_boundary_sequence)) return {};
@@ -415,6 +432,8 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
   if (!AppendBool(output, drain.bounded_capture_complete)) return {};
   output += ",\"outgoing_damage_pair_complete\":";
   if (!AppendBool(output, drain.outgoing_damage_pair_complete)) return {};
+  output += ",\"post_counter_attack_pair_complete\":";
+  if (!AppendBool(output, drain.post_counter_attack_pair_complete)) return {};
   output += ",\"full_mutable_transition_bundle_complete\":";
   if (!AppendBool(output,
                   drain.full_mutable_transition_bundle_complete)) return {};

@@ -40,6 +40,7 @@ inline constexpr std::uintptr_t kCombatPhaseEventScheduleFunctionRva =
     0x23C8750;
 inline constexpr std::uintptr_t kCombatPhaseEventFireFunctionRva = 0x23C9900;
 inline constexpr std::uintptr_t kCombatOutgoingDamageFunctionRva = 0x23CB1D0;
+inline constexpr std::uintptr_t kCombatPostCounterAttackCaptureRva = 0x23CB435;
 inline constexpr std::uintptr_t kCombatOutgoingDamageSide0ReturnRva =
     0x2309F98;
 inline constexpr std::uintptr_t kCombatOutgoingDamageSide1ReturnRva =
@@ -89,6 +90,7 @@ enum CombatPhaseEventTraceCaptureFailureV1 : std::uint32_t {
   trace_capture_failure_final_query = 1U << 10,
   trace_capture_failure_rng_scope = 1U << 11,
   trace_capture_failure_outgoing_damage = 1U << 12,
+  trace_capture_failure_post_counter_attack = 1U << 13,
 };
 
 struct CombatPhaseEventTraceObjectRefV1 {
@@ -362,9 +364,11 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> capture_in_progress{0};
   std::atomic<std::uint32_t> committed_count{0};
   std::atomic<std::uint32_t> outgoing_damage_count{0};
+  std::atomic<std::uint32_t> post_counter_attack_count{0};
   std::atomic<std::uint32_t> failure_flags{trace_capture_failure_none};
   CombatPhaseEventTraceCapturePlanV1 plan{};
   std::array<std::int64_t, 2> outgoing_damage_raw{};
+  std::array<std::int64_t, 2> post_counter_attack_raw{};
   std::array<CombatPhaseEventTraceRingRecordV1,
              kCombatPhaseEventTraceRingV1RecordCount>
       records{};
@@ -376,6 +380,9 @@ struct CombatPhaseEventTraceRingDrainV1 {
   std::uint32_t outgoing_damage_count = 0;
   std::array<std::int64_t, 2> outgoing_damage_raw{};
   bool outgoing_damage_pair_complete = false;
+  std::uint32_t post_counter_attack_count = 0;
+  std::array<std::int64_t, 2> post_counter_attack_raw{};
+  bool post_counter_attack_pair_complete = false;
   bool exact_boundary_sequence = false;
   bool same_full_generation_combat = false;
   bool same_native_date = false;
@@ -419,6 +426,12 @@ bool CaptureCombatPhaseEventTraceBoundaryV1(
 // claim a simulated win probability or change the original result.
 bool CaptureCombatOutgoingDamageV1(
     void *side, void *opposite_side, const std::int64_t *output,
+    std::uintptr_t caller_return_address) noexcept;
+// Called only by the exact 0x23CB435 internal trampoline, after it replays
+// the original 16 position-independent bytes. R14 is then the side's
+// post-counter attack accumulator before 0.03/advantage/width scaling.
+extern "C" void __fastcall XarCaptureCombatPostCounterAttackV1(
+    void *side, std::int64_t attack_raw,
     std::uintptr_t caller_return_address) noexcept;
 
 // Called only after the managed driver has regained a stable pause.  It adds

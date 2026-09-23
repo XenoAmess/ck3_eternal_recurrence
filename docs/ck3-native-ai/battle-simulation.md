@@ -291,6 +291,56 @@ flowchart TD
 
 `0x23CB1D0..0x23CB7BD` 先计算战宽参与比例，再将有效攻击聚合依次乘 damage scaling、advantage 和战宽：
 
+#### R0215 原版同 tick 差分与 R14 施工边界（2026-09-24）
+
+[live-confirmed] 从 R0203 `phase1/day0` 原始配对独立冷恢复，R0215 在同一
+CombatID `738197508` 的七条边界中取得伤亡前双侧原版 outgoing
+`12,414,304 / 116,645,325`（Q100000），严格只推进一天、没有 typed 战术动作。
+以边界 5 的 4+40 个兵团现兵力及 effective toughness、暂停帧实际双方硬伤修正
+和这两个原版 outgoing 输入当前 `combat_core.apply_main_phase_casualties`，
+边界 6 的每个兵团 total/hard/soft/current 四项差值均为零。side0 的
+total/hard/soft 为 `6,493,700/2,435,136/4,058,564`，side1 为
+`981,428/353,292/628,136`；各侧只有一个 owner，硬伤归属账本等于其兵团
+hard 合计。此结论仅覆盖这一个 tick 的原版出伤输入后的伤亡层，不证明
+模拟出伤、多个 owner 的归属或胜率。不可变原件及逐兵团差分在
+`Z:\ck3_mod_rewrite_process_assets\g2-combat-outgoing-r0203-f022-research-on-no-launch-20260923\checks\R0215-KERNEL-DIFF.json`
+（SHA-256 `22CAF5E8DD5F20DD73A707D38096DD2ACA7A89B5480834A30A33C980F4BC0D`）。
+
+[static-confirmed] 当前差分的第一个缺口是双方**当 tick counter 后有效攻击**。
+忽略 counter 的参考计算给出 `18,351,663 / 134,567,585`，分别比原版
+outgoing 高 `5,937,359 / 17,922,260`，不能把这两个参考值当作内核缺陷。
+现有 v3 在同帧可发布 class/chunk/targets/context，内核也已有动态 counter
+计算；但 R0215/R0203 冻结快照的 v3 字段都是 `null`。更关键的是这个
+CombatID 的原版 `2643→2638` 边属于我军 **side1 defender**，敌方 side0
+attacker 的实际 final-edge origin 未证。敌军后续路线含 `2642` 只能证明后续
+移动，不能填给 v3 的 `attacker_entry_province_id` 来冒充原战场对拍。
+
+[static-confirmed] exact-build `0x23CB430` 调 `0x23CAE70` 形成最后一段兵团
+攻击贡献，`0x23CB435..0x23CB444` 的 16 原字节
+`4C8BBD9800000041BBA08601004C0330`（SHA-256
+`2441EEAB92DBB31B35C9A770D83FFE5E553834E503DAEFAB91C230D4E6A9966B`）
+结束后，R14 是该侧的 post-counter 有效攻击聚合值；`0x23CB541` 起才进入
+`0.03 × advantage × width` 缩放。该切片没有相对寻址/分支，因而只读
+跳板可先执行原 16 字节、复制 R14、恢复全部被碰的 flags/volatile GPR，
+再回 `0x23CB445`。`0x23CB1EC` 将入口 RCX side 固定到 RBP；原调用者返回地址
+在该点 `[RSP+0x78]`，必须分别匹配 main tick 的 `0x2309F98/0x2309FB4`。
+采样仅接受预先绑定的 Combat/side、对应原调用点和双侧顺序；
+不会重调原版 helper 或消耗 RNG。冻结 EXE SHA 仍是
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+R14 的实机读回和 `outgoing_damage_raw` 聚焦对账尚待新候选；
+`original_trace_ready`、概率与攻击门仍关闭。
+
+```mermaid
+flowchart LR
+  E["actual CombatID 738197508"] --> T["seven original tick boundaries"]
+  T --> R["0x23CB435 R14: post-counter attack"]
+  R --> S["0.03 × advantage × width"]
+  S --> O["native outgoing pair"]
+  O --> C["44 regiment casualty rows: R0215 delta 0"]
+  U["unknown: enemy side0 actual final-edge origin"] -.-> V["v3 hypothetical entry parity"]
+  V -.-> R
+```
+
 ```text
 width_fraction = min(1, W_final / side_current_fighting_men)
 outgoing_damage = effective_attack_after_counter_and_modifiers

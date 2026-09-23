@@ -19,6 +19,11 @@ constexpr std::array<std::uint8_t, 15> kFirePrologue{
 constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
     0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
     0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
+// 0x23CB435 replays all three original instructions before recording R14.
+// mov r15,[rbp+0x98]; mov r11d,0x186a0; add r14,[rax]
+constexpr std::array<std::uint8_t, 16> kPostCounterOriginal{
+    0x4C, 0x8B, 0xBD, 0x98, 0x00, 0x00, 0x00, 0x41,
+    0xBB, 0xA0, 0x86, 0x01, 0x00, 0x4C, 0x03, 0x30};
 constexpr std::array<std::uint8_t, 5> kScheduleSide0Call{
     0xE8, 0xBC, 0xD1, 0xBC, 0xFF};
 constexpr std::array<std::uint8_t, 5> kScheduleSide1Call{
@@ -107,6 +112,50 @@ bool FillTrampoline(void *storage,
   return true;
 }
 
+bool FillPostCounterTrampoline(void *storage,
+                               std::uintptr_t resume) noexcept {
+  if (storage == nullptr || resume == 0) {
+    return false;
+  }
+  auto *const bytes = static_cast<std::uint8_t *>(storage);
+  std::memset(bytes, 0x90, kCombatPostCounterTrampolineBytesV1);
+  std::size_t cursor = 0;
+  const auto append = [&](const auto &source) {
+    std::memcpy(bytes + cursor, source.data(), source.size());
+    cursor += source.size();
+  };
+  append(kPostCounterOriginal);
+  // Preserve the flags produced by the original ADD and all volatile GPRs.
+  // Eight pushes keep the native 16-byte stack alignment; reserve the Win64
+  // 32-byte shadow area for the leaf read-only callback. XMM0..5 were already
+  // volatile across the immediately preceding original 0x23CAE70 call.
+  // The original return address is [RSP+0x78] at the capture site. Eight
+  // pushes plus the 0x20 shadow area move it to [RSP+0xD8] here; bind the
+  // scalar to one of the two original main-tick calculator call sites.
+  constexpr std::array<std::uint8_t, 32> pre_call{
+      0x9C, 0x50, 0x51, 0x52, 0x41, 0x50, 0x41, 0x51,
+      0x41, 0x52, 0x41, 0x53, 0x48, 0x83, 0xEC, 0x20,
+      0x48, 0x8B, 0xCD, 0x49, 0x8B, 0xD6, 0x4C, 0x8B,
+      0x84, 0x24, 0xD8, 0x00, 0x00, 0x00, 0x48, 0xB8};
+  append(pre_call);
+  const auto callback = reinterpret_cast<std::uintptr_t>(
+      &XarCaptureCombatPostCounterAttackV1);
+  std::memcpy(bytes + cursor, &callback, sizeof(callback));
+  cursor += sizeof(callback);
+  constexpr std::array<std::uint8_t, 16> post_call{
+      0xFF, 0xD0, 0x48, 0x83, 0xC4, 0x20, 0x41, 0x5B,
+      0x41, 0x5A, 0x41, 0x59, 0x41, 0x58, 0x5A, 0x59};
+  append(post_call);
+  constexpr std::array<std::uint8_t, 2> final_restore{0x58, 0x9D};
+  append(final_restore);
+  if (cursor + kCombatPhaseEventTraceAbsoluteJumpBytesV1 >
+      kCombatPostCounterTrampolineBytesV1) {
+    return false;
+  }
+  WriteAbsoluteJump(bytes + cursor, resume);
+  return true;
+}
+
 bool Flush(CombatPhaseEventTraceDetourStateV1 &state,
            const void *address, std::size_t size) noexcept {
   if (state.flush_instruction_cache == nullptr ||
@@ -118,15 +167,15 @@ bool Flush(CombatPhaseEventTraceDetourStateV1 &state,
 }
 
 bool MakeTrampolineExecutable(
-    CombatPhaseEventTraceDetourStateV1 &state, void *trampoline) noexcept {
+    CombatPhaseEventTraceDetourStateV1 &state, void *trampoline,
+    std::size_t size = kCombatPhaseEventTraceTrampolineBytesV1) noexcept {
   DWORD previous = 0;
   if (state.virtual_protect == nullptr ||
       !state.virtual_protect(state.memory_context, trampoline,
-                             kCombatPhaseEventTraceTrampolineBytesV1,
+                             size,
                              PAGE_EXECUTE_READ, previous) ||
       previous != PAGE_READWRITE ||
-      !Flush(state, trampoline,
-             kCombatPhaseEventTraceTrampolineBytesV1)) {
+      !Flush(state, trampoline, size)) {
     AddFailure(state, trace_detour_failure_trampoline_protection);
     return false;
   }
@@ -136,10 +185,11 @@ bool MakeTrampolineExecutable(
 bool WriteTargetBytes(CombatPhaseEventTraceDetourStateV1 &state,
                       std::uintptr_t target,
                       const std::uint8_t *expected,
-                      const std::uint8_t *desired) noexcept {
+                      const std::uint8_t *desired,
+                      std::size_t size = kCombatPhaseEventTraceDetourPatchBytesV1) noexcept {
   if (target == 0 || expected == nullptr || desired == nullptr ||
       std::memcmp(reinterpret_cast<const void *>(target), expected,
-                  kCombatPhaseEventTraceDetourPatchBytesV1) != 0) {
+                  size) != 0) {
     AddFailure(state, trace_detour_failure_target_identity);
     return false;
   }
@@ -147,7 +197,7 @@ bool WriteTargetBytes(CombatPhaseEventTraceDetourStateV1 &state,
   if (state.virtual_protect == nullptr ||
       !state.virtual_protect(
           state.memory_context, reinterpret_cast<void *>(target),
-          kCombatPhaseEventTraceDetourPatchBytesV1,
+          size,
           PAGE_EXECUTE_READWRITE, previous) ||
       (previous != PAGE_EXECUTE_READ &&
        previous != PAGE_EXECUTE_READWRITE &&
@@ -156,17 +206,17 @@ bool WriteTargetBytes(CombatPhaseEventTraceDetourStateV1 &state,
     return false;
   }
   std::memcpy(reinterpret_cast<void *>(target), desired,
-              kCombatPhaseEventTraceDetourPatchBytesV1);
+              size);
   const bool identity_after =
       std::memcmp(reinterpret_cast<const void *>(target), desired,
-                  kCombatPhaseEventTraceDetourPatchBytesV1) == 0;
+                  size) == 0;
   const bool flushed = Flush(
       state, reinterpret_cast<const void *>(target),
-      kCombatPhaseEventTraceDetourPatchBytesV1);
+      size);
   DWORD writable = 0;
   const bool restored = state.virtual_protect(
       state.memory_context, reinterpret_cast<void *>(target),
-      kCombatPhaseEventTraceDetourPatchBytesV1, previous, writable);
+      size, previous, writable);
   if (!restored) {
     AddFailure(state, trace_detour_failure_target_protection);
   }
@@ -183,19 +233,19 @@ bool WriteTargetBytes(CombatPhaseEventTraceDetourStateV1 &state,
   // bytes before returning.  If even this recovery cannot be proven, surface
   // rollback failure and keep all trampoline storage alive at the caller.
   std::memcpy(reinterpret_cast<void *>(target), expected,
-              kCombatPhaseEventTraceDetourPatchBytesV1);
+              size);
   const bool rollback_identity =
       std::memcmp(reinterpret_cast<const void *>(target), expected,
-                  kCombatPhaseEventTraceDetourPatchBytesV1) == 0;
+                  size) == 0;
   const bool rollback_flushed = state.flush_instruction_cache != nullptr &&
       state.flush_instruction_cache(
           state.memory_context, reinterpret_cast<const void *>(target),
-          kCombatPhaseEventTraceDetourPatchBytesV1);
+          size);
   DWORD rollback_previous = 0;
   const bool rollback_protection = state.virtual_protect != nullptr &&
       state.virtual_protect(
           state.memory_context, reinterpret_cast<void *>(target),
-          kCombatPhaseEventTraceDetourPatchBytesV1, previous,
+          size, previous,
           rollback_previous);
   if (!rollback_identity || !rollback_flushed || !rollback_protection) {
     AddFailure(state, trace_detour_failure_rollback);
@@ -205,8 +255,9 @@ bool WriteTargetBytes(CombatPhaseEventTraceDetourStateV1 &state,
 
 bool RestoreTarget(CombatPhaseEventTraceDetourStateV1 &state,
                    std::uintptr_t target, const std::uint8_t *patch,
-                   const std::uint8_t *original) noexcept {
-  if (WriteTargetBytes(state, target, patch, original)) {
+                   const std::uint8_t *original,
+                   std::size_t size = kCombatPhaseEventTraceDetourPatchBytesV1) noexcept {
+  if (WriteTargetBytes(state, target, patch, original, size)) {
     return true;
   }
   AddFailure(state, trace_detour_failure_rollback);
@@ -228,20 +279,28 @@ void FreeTrampolines(CombatPhaseEventTraceDetourStateV1 &state) noexcept {
                                state.outgoing_damage_trampoline, 0,
                                MEM_RELEASE);
     }
+    if (state.post_counter_trampoline != nullptr) {
+      (void)state.virtual_free(state.memory_context,
+                               state.post_counter_trampoline, 0,
+                               MEM_RELEASE);
+    }
   }
   state.schedule_trampoline = nullptr;
   state.fire_trampoline = nullptr;
   state.outgoing_damage_trampoline = nullptr;
+  state.post_counter_trampoline = nullptr;
 }
 
 bool ExactAnchorsMatch(
     const CombatPhaseEventTraceDetourEnvironmentV1 &environment,
     std::uintptr_t schedule_target, std::uintptr_t fire_target,
-    std::uintptr_t outgoing_damage_target) noexcept {
+    std::uintptr_t outgoing_damage_target,
+    std::uintptr_t post_counter_target) noexcept {
   const auto module = environment.module_base;
   return BytesMatch(schedule_target, kSchedulePrologue) &&
          BytesMatch(fire_target, kFirePrologue) &&
          BytesMatch(outgoing_damage_target, kOutgoingDamagePrologue) &&
+         BytesMatch(post_counter_target, kPostCounterOriginal) &&
          BytesMatch(Resolve(environment.schedule_side0_call_override, module,
                             0x27FB58F),
                     kScheduleSide0Call) &&
@@ -307,6 +366,9 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   state.outgoing_damage_target = Resolve(
       environment.outgoing_damage_target_override,
       environment.module_base, kCombatOutgoingDamageFunctionRva);
+  state.post_counter_target = Resolve(
+      environment.post_counter_target_override,
+      environment.module_base, kCombatPostCounterAttackCaptureRva);
   state.memory_context = environment.memory_context;
   state.virtual_free = environment.virtual_free_override != nullptr
                            ? environment.virtual_free_override
@@ -324,7 +386,8 @@ bool InstallCombatPhaseEventTraceDetoursV1(
 
   if (!ExactAnchorsMatch(environment, state.schedule_target,
                          state.fire_target,
-                         state.outgoing_damage_target)) {
+                         state.outgoing_damage_target,
+                         state.post_counter_target)) {
     AddFailure(state, trace_detour_failure_anchor);
     g_active_detours.store(nullptr, std::memory_order_release);
     return false;
@@ -338,6 +401,9 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   std::memcpy(state.outgoing_damage_original.data(),
               reinterpret_cast<const void *>(state.outgoing_damage_target),
               state.outgoing_damage_original.size());
+  std::memcpy(state.post_counter_original.data(),
+              reinterpret_cast<const void *>(state.post_counter_target),
+              state.post_counter_original.size());
 
   state.schedule_trampoline = virtual_alloc(
       state.memory_context, kCombatPhaseEventTraceTrampolineBytesV1,
@@ -348,9 +414,13 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   state.outgoing_damage_trampoline = virtual_alloc(
       state.memory_context, kCombatPhaseEventTraceTrampolineBytesV1,
       MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  state.post_counter_trampoline = virtual_alloc(
+      state.memory_context, kCombatPostCounterTrampolineBytesV1,
+      MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
   if (state.schedule_trampoline == nullptr ||
       state.fire_trampoline == nullptr ||
-      state.outgoing_damage_trampoline == nullptr) {
+      state.outgoing_damage_trampoline == nullptr ||
+      state.post_counter_trampoline == nullptr) {
     AddFailure(state, trace_detour_failure_allocation);
     FreeTrampolines(state);
     g_active_detours.store(nullptr, std::memory_order_release);
@@ -367,9 +437,14 @@ bool InstallCombatPhaseEventTraceDetoursV1(
           state.outgoing_damage_original,
           state.outgoing_damage_target +
               kCombatPhaseEventTraceDetourPatchBytesV1) ||
+      !FillPostCounterTrampoline(
+          state.post_counter_trampoline,
+          state.post_counter_target + kCombatPostCounterPatchBytesV1) ||
       !MakeTrampolineExecutable(state, state.schedule_trampoline) ||
       !MakeTrampolineExecutable(state, state.fire_trampoline) ||
-      !MakeTrampolineExecutable(state, state.outgoing_damage_trampoline)) {
+      !MakeTrampolineExecutable(state, state.outgoing_damage_trampoline) ||
+      !MakeTrampolineExecutable(state, state.post_counter_trampoline,
+                                kCombatPostCounterTrampolineBytesV1)) {
     FreeTrampolines(state);
     g_active_detours.store(nullptr, std::memory_order_release);
     return false;
@@ -394,6 +469,8 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       fire_patch{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       outgoing_damage_patch{};
+  std::array<std::uint8_t, kCombatPostCounterPatchBytesV1>
+      post_counter_patch{};
   WriteAbsoluteJump(schedule_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatPhaseEventScheduleHookV1));
@@ -403,9 +480,14 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   WriteAbsoluteJump(outgoing_damage_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatOutgoingDamageHookV1));
+  WriteAbsoluteJump(post_counter_patch.data(),
+                    reinterpret_cast<std::uintptr_t>(
+                        state.post_counter_trampoline));
   schedule_patch.back() = 0x90;
   fire_patch.back() = 0x90;
   outgoing_damage_patch.back() = 0x90;
+  post_counter_patch[14] = 0x90;
+  post_counter_patch[15] = 0x90;
 
   const bool schedule_installed = WriteTargetBytes(
       state, state.schedule_target, state.schedule_original.data(),
@@ -419,8 +501,19 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       WriteTargetBytes(state, state.outgoing_damage_target,
                        state.outgoing_damage_original.data(),
                        outgoing_damage_patch.data());
+  const bool post_counter_installed =
+      outgoing_damage_installed &&
+      WriteTargetBytes(state, state.post_counter_target,
+                       state.post_counter_original.data(),
+                       post_counter_patch.data(),
+                       kCombatPostCounterPatchBytesV1);
   if (!schedule_installed || !fire_installed ||
-      !outgoing_damage_installed) {
+      !outgoing_damage_installed || !post_counter_installed) {
+    if (outgoing_damage_installed) {
+      (void)RestoreTarget(state, state.outgoing_damage_target,
+                          outgoing_damage_patch.data(),
+                          state.outgoing_damage_original.data());
+    }
     if (fire_installed) {
       (void)RestoreTarget(state, state.fire_target, fire_patch.data(),
                           state.fire_original.data());
@@ -458,9 +551,11 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
   }
   if (state.schedule_target == 0 || state.fire_target == 0 ||
       state.outgoing_damage_target == 0 ||
+      state.post_counter_target == 0 ||
       state.schedule_trampoline == nullptr ||
       state.fire_trampoline == nullptr ||
-      state.outgoing_damage_trampoline == nullptr) {
+      state.outgoing_damage_trampoline == nullptr ||
+      state.post_counter_trampoline == nullptr) {
     AddFailure(state, trace_detour_failure_target_identity);
     return false;
   }
@@ -471,6 +566,8 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
       fire_patch{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       outgoing_damage_patch{};
+  std::array<std::uint8_t, kCombatPostCounterPatchBytesV1>
+      post_counter_patch{};
   WriteAbsoluteJump(schedule_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatPhaseEventScheduleHookV1));
@@ -480,16 +577,37 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
   WriteAbsoluteJump(outgoing_damage_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatOutgoingDamageHookV1));
+  WriteAbsoluteJump(post_counter_patch.data(),
+                    reinterpret_cast<std::uintptr_t>(
+                        state.post_counter_trampoline));
   schedule_patch.back() = 0x90;
   fire_patch.back() = 0x90;
   outgoing_damage_patch.back() = 0x90;
+  post_counter_patch[14] = 0x90;
+  post_counter_patch[15] = 0x90;
+
+  const auto restore_post_counter_patch = [&]() noexcept {
+    if (!WriteTargetBytes(state, state.post_counter_target,
+                          state.post_counter_original.data(),
+                          post_counter_patch.data(),
+                          kCombatPostCounterPatchBytesV1)) {
+      AddFailure(state, trace_detour_failure_rollback);
+    }
+  };
 
   // Restore all entrypoints before invalidating any trampoline.  A failed
   // restore deliberately leaves the installation owned and the trampolines
   // alive; the caller may retry from another verified paused pump.
+  if (!RestoreTarget(state, state.post_counter_target,
+                     post_counter_patch.data(),
+                     state.post_counter_original.data(),
+                     kCombatPostCounterPatchBytesV1)) {
+    return false;
+  }
   if (!RestoreTarget(state, state.outgoing_damage_target,
                      outgoing_damage_patch.data(),
                      state.outgoing_damage_original.data())) {
+    restore_post_counter_patch();
     return false;
   }
   if (!RestoreTarget(state, state.fire_target, fire_patch.data(),
@@ -499,6 +617,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
                           outgoing_damage_patch.data())) {
       AddFailure(state, trace_detour_failure_rollback);
     }
+    restore_post_counter_patch();
     return false;
   }
   if (!RestoreTarget(state, state.schedule_target,
@@ -516,6 +635,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
                           outgoing_damage_patch.data())) {
       AddFailure(state, trace_detour_failure_rollback);
     }
+    restore_post_counter_patch();
     return false;
   }
   if (!BindCombatPhaseEventTraceOriginalTrampolinesV1(

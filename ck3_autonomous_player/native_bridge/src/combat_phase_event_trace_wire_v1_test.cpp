@@ -25,6 +25,9 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
   drain->outgoing_damage_count = 2;
   drain->outgoing_damage_raw = {310'000, 280'000};
   drain->outgoing_damage_pair_complete = true;
+  drain->post_counter_attack_count = 2;
+  drain->post_counter_attack_raw = {10'333'333, 6'222'222};
+  drain->post_counter_attack_pair_complete = true;
   drain->exact_boundary_sequence = true;
   drain->same_full_generation_combat = true;
   drain->same_native_date = false;
@@ -126,7 +129,7 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
 bool HappyPath() {
   const auto drain = SmallDrain();
   const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
-  constexpr std::array<std::string_view, 24> required{
+  constexpr std::array<std::string_view, 29> required{
       "\"schema_version\":1",
       "\"status\":\"captured\"",
       "\"record_count\":7",
@@ -135,6 +138,11 @@ bool HappyPath() {
       "\"side0_raw\":310000",
       "\"side1_raw\":280000",
       "\"outgoing_damage_pair_complete\":true",
+      "\"post_counter_attack\":{",
+      "\"source\":\"native_r14_after_0x23cae70_before_damage_scaling\"",
+      "\"side0_raw\":10333333",
+      "\"side1_raw\":6222222",
+      "\"post_counter_attack_pair_complete\":true",
       "\"same_native_date\":false",
       "\"expected_one_day_date_split\":true",
       "\"bounded_capture_complete\":true",
