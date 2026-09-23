@@ -5661,6 +5661,82 @@ class GameplayBridgeTests(unittest.TestCase):
             )
         )
 
+    def test_r0174_same_checkpoint_adjacent_restores_keep_saved_move_only(self) -> None:
+        army_id = 83_886_367
+        checkpoint = {
+            "history_index": 1333,
+            "date_raw": 53_194_440,
+            "sha256": "2b8933" + "a" * 57,
+            "size": 71_839_122,
+            "name": "xar_checkpoint.ck3",
+            "episode_character_id": 29_829,
+            "episode_run_id": "native-29829-fixture",
+        }
+        rows = [
+            {
+                "index": 1267,
+                "command": f"move-army-{army_id}-to-2619",
+                "ok": True,
+                "result": {"accepted": True},
+            },
+            {
+                "index": 1333,
+                "command": "save-checkpoint",
+                "ok": True,
+                "result": {"checkpoint": copy.deepcopy(checkpoint)},
+            },
+        ]
+        rows.extend(
+            {
+                "index": index,
+                "command": "restore-checkpoint",
+                "ok": True,
+                "result": {
+                    "status": "restored",
+                    "source": "native-session-cold-start",
+                    "checkpoint": copy.deepcopy(checkpoint),
+                },
+            }
+            for index in (1334, 1335, 1336)
+        )
+        self.assertEqual(
+            _latest_accepted_native_move_row(rows, army_id=army_id),
+            (0, rows[0]),
+        )
+
+        for field, replacement in (
+            ("history_index", 1334),
+            ("date_raw", checkpoint["date_raw"] + 24),
+            ("sha256", "b" * 64),
+            ("size", checkpoint["size"] + 1),
+            ("name", "other.ck3"),
+            ("episode_character_id", 29_830),
+            ("episode_run_id", "native-other-fixture"),
+        ):
+            with self.subTest(changed_field=field):
+                changed = copy.deepcopy(rows)
+                changed[3]["result"]["checkpoint"][field] = replacement
+                self.assertIsNone(
+                    _latest_accepted_native_move_row(changed, army_id=army_id)
+                )
+        for intervening in ("life-advance", "save-checkpoint", "query-army-strengths-v1"):
+            with self.subTest(intervening=intervening):
+                changed = copy.deepcopy(rows)
+                changed.insert(3, {"index": 1334, "command": intervening, "ok": True})
+                self.assertIsNone(
+                    _latest_accepted_native_move_row(changed, army_id=army_id)
+                )
+        missing_save = copy.deepcopy(rows)
+        missing_save[1]["result"]["checkpoint"]["sha256"] = "c" * 64
+        self.assertIsNone(
+            _latest_accepted_native_move_row(missing_save, army_id=army_id)
+        )
+        nonofficial = copy.deepcopy(rows)
+        nonofficial[3]["result"]["source"] = "same-process-reload"
+        self.assertIsNone(
+            _latest_accepted_native_move_row(nonofficial, army_id=army_id)
+        )
+
     def test_stationary_hold_never_preempts_full_enforcement(self) -> None:
         date_raw = 53_256_000
         player = _army(

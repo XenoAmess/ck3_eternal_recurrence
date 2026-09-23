@@ -17907,6 +17907,43 @@ def _native_move_persisted_through_restore(
         and bool(restore_sha256)
     ):
         return False
+    # An official cold restore can consume the same saved checkpoint again
+    # without writing a new save. The preceding restore was already checked
+    # against the save (or an earlier adjacent restore) by the caller.
+    if (
+        restore_position == move_position + 1
+        and _effective_command(commands[move_position]) == "restore-checkpoint"
+    ):
+        previous = commands[move_position]
+        previous_result = previous.get("result")
+        previous_checkpoint = (
+            previous_result.get("checkpoint")
+            if isinstance(previous_result, dict)
+            else None
+        )
+        if not (
+            previous.get("ok") is True
+            and isinstance(previous_result, dict)
+            and previous_result.get("status") == "restored"
+            and previous_result.get("source") == "native-session-cold-start"
+            and isinstance(previous_checkpoint, dict)
+        ):
+            return False
+        identity_fields = (
+            "history_index",
+            "date_raw",
+            "sha256",
+            "size",
+            "name",
+            "episode_character_id",
+            "episode_run_id",
+        )
+        return all(
+            previous_checkpoint.get(field) is not None
+            and restore_checkpoint.get(field) is not None
+            and previous_checkpoint[field] == restore_checkpoint[field]
+            for field in identity_fields
+        )
     for position in range(restore_position - 1, move_position, -1):
         row = commands[position]
         if _effective_command(row) != "save-checkpoint" or row.get("ok") is not True:

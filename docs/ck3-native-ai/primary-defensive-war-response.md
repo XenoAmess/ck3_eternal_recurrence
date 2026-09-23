@@ -660,3 +660,71 @@ flowchart TD
     S -->|yes| P["existing threat and siege progress checks"]
     P -.-> U["unknown: future occupation and war termination"]
 ```
+
+## R0171–R0174: repeated cold restore of one saved move
+
+- [production-live blocker] R0171 cold restored the durable history-1333
+  checkpoint (date `53194440`, save SHA-256
+  `2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A`).
+  Its history retained accepted typed move `#1267` for Army `83886367`
+  toward Province `2619`, then save `#1333`, then successful cold restores
+  `#1334` and `#1335` of that same checkpoint with no command between them.
+  The planner stopped at
+  `complete-matching-active-native-move-intent-route`: the prior proof
+  function demanded a new save between *each* restore, so `#1335` obscured
+  the already saved move. R0171 made no gameplay action or date progress.
+- [same-frame readback] R0174 used an independently prepared official cold
+  checkpoint and an MCP snapshot-only run. The paused native frame at the
+  unchanged date has actor `29829`, the same episode, snapshot `native:3`,
+  native revision `3`, and exactly one controllable Army `83886367` at
+  Province `2624`, `moving`, `in_combat=false`, `retreating=false`, with
+  observable target `2619` and route `[2619]`. It added a third adjacent
+  verified restore `#1336`; it issued no gameplay action or date advance.
+  `observation-index.json` SHA-256 is
+  `4BC100E01ED068DE094EEEA94FB99B3228635BB6E14BEE432ECA3D77E10B9269`;
+  full `ck3_take_snapshot.json` SHA-256 is
+  `6FC901A5FDF317EE510F6674E7B87F5D0F85AC17929CA6A4B84CFB5CE6A2DBAD`;
+  controlled `shutdown.json` SHA-256 is
+  `BA7AA8E833D58D21E105B66C732A0268E64F1A883D504F8BAE42AE28613059ED`.
+- [counter-policy input] Preserve the accepted move only across consecutive
+  successful official cold restores of the *same* verified checkpoint. The
+  first restore still needs the intervening official save; each subsequent
+  adjacent restore must match the previous restore's checkpoint history
+  index, date, save SHA-256, size, name and episode identity. Any intervening
+  command, changed checkpoint identity or missing field closes this
+  same-checkpoint shortcut; a genuinely new official save between restores
+  still follows the existing save/restore validation. The current paused
+  route remains an independent requirement; a
+  restore ACK cannot establish movement, contact, siege arrival or victory.
+  R0172 and R0173 failed in startup/ingest, before any strategy observation;
+  they contribute no war-action qualification.
+- [offline replay] With the frozen R0171 1341-row driver and R0174's full
+  paused snapshot, the accepted move `#1267` is again identifiable. R0174's
+  own 1336-row history gives the same result and an active same-frame move
+  intent (elapsed `79` of `90` allowed days). Changed restore/save SHA-256
+  and an interposed gameplay row reject the proof. The full planner's next
+  step on the R0174 snapshot is still the read-only
+  `query-war-termination-options-16777231`, because that process has not
+  rebuilt its termination-query cache. This is a static replay, not live
+  strategy consumption. Replay JSON SHA-256:
+  `061DF165B6C4EF5538284303841F21C1BF91C53C24230E24379531A0A5F7D51D`.
+- [remaining boundary] This evidence can re-open the existing route/contact
+  queries for the exact current frame. It does not establish that advancing
+  into Province `2619` is safe, that the siege is won, or that any war is
+  terminal. The original defensive-war RED stays open until formal planning,
+  typed action when justified, independent after-state and subsequent turn
+  consumption are observed.
+
+```mermaid
+flowchart TD
+    M["accepted typed move #1267"] --> S{"official save #1333\ncontains this move?"}
+    S -->|no / unknown| X["route intent proof unavailable"]
+    S -->|yes| R{"first official cold restore\nmatches save identity?"}
+    R -->|no / unknown| X
+    R -->|yes| C{"later restore is adjacent, official,\nand same checkpoint identity?"}
+    C -->|no / unknown| X
+    C -->|yes| O{"current paused Army has\nsame observable target and route?"}
+    O -->|no / unknown| X
+    O -->|yes| P["existing route/contact planning"]
+    P -.-> U["unknown: next contact, siege and war terminal"]
+```
