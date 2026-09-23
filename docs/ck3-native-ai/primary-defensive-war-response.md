@@ -631,8 +631,9 @@ flowchart TD
 - [counter-policy input] Battle-frame matching remains scoped to the current
   process. When consuming one preadvance query, remove that query from the
   full command history and preserve older rows for the separate movement
-  proof. A move before a cold restore remains eligible only if each restore
-  matches an intervening official save by history index, date and SHA-256.
+  proof. For this first restore, the preceding official save must match its
+  history index, date and SHA-256. Adjacent repeats of the same verified
+  checkpoint are covered in R0171–R0174 below.
   Neither an ACK nor battle exit alone proves arrival or victory.
 - [offline replay] The frozen 1352-row driver yields one recognized battle
   transition. After consuming its one preadvance query, 1351 rows remain,
