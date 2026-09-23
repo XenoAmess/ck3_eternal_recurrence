@@ -197,3 +197,25 @@ R0170 末帧相对 h1333 的 18 日和累计观察 2,106 日不重复累计到 R
 | 当前路线意图绑定 | **5/6 后产品 RED**；Robert 持久 **2,088/36,524**，新增持久日 0 | R0169 h1333 official cold → `native_auto_run` formal120 | source/master `2100ee2`；[R0171 原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-robert-mainline-r0171-route-intent-red-20260923/R0171-final-frozen-pair/R0171-raw-freeze.json) SHA `310B27C52E7FD03978A02536B241A0DE37371EDC227281F90EEDC40188096972` | 5 query/0 gameplay/0 checkpoint/date；同帧三战比分 `0/-58/+51`；`complete-matching-active-native-move-intent-route` 新 RED，路线因果待查，无战争终局 | h1333/raw53194440 save SHA `2B8933FC...7F98A` 未变；raw driver `FBE3A287...DD177` 待官方恢复检查；进程/owner 回收 | 核重复同 checkpoint restore 与同帧 active move intent route，明确观测或最小修复；`/root` | 冻结清单及五 copy 只读保留；源码分支清理由协调者核验 |
 
 R0170 的 raw53194872 未保存观察不累计至 R0171。PRV008 有界 GO、G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** 不变；M4 仍仅私有只读。
+
+## 2026-09-23 R0172/R0173 恢复生命周期增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| R0172 snapshot-only 入口 | **prelaunch fingerprint RED**；CK3 contact/snapshot/action/date 均 0 | prepared ordinary/xar_off → CLI native-session | [no-launch 诊断索引](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0172-h1333-master0342-snapshot-lifecycle-fix-20260923/checks/R0172-LIFECYCLE-FIX-NO-LAUNCH-INDEX.json) SHA `09B12B88F48D0CE0711C9A66FEB49FF683A4738A72F1B99EEEFBF97751F27525`；source `0342cd8` | CLI 漏传 `prepared_xar_enabled=xar_off`，native-session 默认 xar_on；未接触 CK3 | h1333 save 不变；修正入口离线清单 SHA `3F64AACE...CEA07`，不等于 MCP ingest GREEN | 显式绑定 profile/lifecycle 并验受影响字段；`/root/r0168_recovery_pair` | 候选和失败证据按身份保留 |
+| R0173 MCP ingest | **harness RED**；无 paused snapshot/动作/日期；战争产品 RED 未重测 | `0342cd8` 冷 CK3 PID74152 → MCP | [原始冻结](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0173-mcp-lifecycle-red-frozen-20260923/R0173-final-frozen-pair/R0173-raw-freeze.json) SHA `F19A62FF60C1873067E5FF6BE487F97832F5AAE049E9CD0DC3794602D069B71A` | native-session ready 后 pipe ingest 因 persisted lifecycle 与 frozen profile 不同失败；stop/shutdown/进程/owner 回收 | save h1333/raw53194440 SHA `2B8933FC...7F98A`，raw driver `E5A3C101...23B18` 未手改；Robert 持久 2,088/36,524 | 补 MCP lifecycle 同帧绑定与 paused snapshot；`/root/r0168_recovery_pair` | 15 文件暂未设只读，冻结负责人待封存；源码分支状态由协调者核验 |
+| R0173 后续 no-launch 候选 | prepared/preflight **ready**；MCP live pending | official prepare/rebind/preflight，0 CK3 | [preflight](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0173-h1333-master0342-mcp-lifecycle-fix-20260923/state/preflights/20260923T034253Z-one-generation-preflight-35c35d02/report.json) SHA `EC49C6DB049A823A61E0FE8DC2F1907D1943E230A9D23DF5A21CA0406526C566` | 无新 paused readback | 同一 save h1333、prepared driver `715ACC4A...638F473`；旧 raw 和新 prepared 各自保留 | 验 MCP ingest，再排唯一 CK3；`/root/r0168_recovery_pair` | 独立候选资产保留 |
+
+[PR #163](https://github.com/XenoAmess/ck3_eternal_recurrence/pull/163) 为 M4 战时 perk checkpoint 候选，官方 static 已通过、实机 typed/perk 闭环未取得；它不替代 R0174 的 MCP 只读证据或战争后置。PRV008 有界 GO、G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** 不变。
+
+## 2026-09-23 R0174 路线只读观测增量
+
+| 交付门/能力 | 状态 | 正式入口 | 制品/commit | 实机与下一循环证据 | 恢复证据 | B0/B1 缺口/负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| MCP 生命周期与 native route 读回 | **私有只读 GREEN**；战争 OODA 仍 RED | R0173 新 prepared h1333 → R0174 paused snapshot `native:3` | [观测索引](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0173-h1333-master0342-mcp-lifecycle-fix-20260923/read-only-mcp-probe-R0174/observation-index.json) SHA `4BC100E01ED068DE094EEEA94FB99B3228635BB6E14BEE432ECA3D77E10B9269` | actor29829、date53194440、army83886367 当前2624→目标2619、native route `[2619]`，0 typed/date；进程/owner 回收 | save仍 h1333/raw53194440、Robert 持久 2,088/36,524；R0172/R0173 RED 原件保留 | 正式策略在有效帧消费 route，并验证动作/后置；`/root/r0168_recovery_pair` | 只读证据保留，代码集成/源码清理由协调者核验 |
+
+R0174 只解除该候选的私有 MCP/route 读回缺口；战争产品 RED、M4 公共 OFF、PRV008 有界 GO 与 G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** 不变。
+
+封存后续证据：[R0173 15/15 只读复核](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0173-mcp-lifecycle-red-frozen-20260923/R0173-seal-verified.json) SHA `4C521BDBDC4CC9470090F47A92977336F57ED32A86D888CAC3466BD79A8E0226`，原 freeze SHA 不变；[R0174 24/24 冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0174-snapshot-green-frozen-20260923/R0174-final-frozen-pair/R0174-raw-freeze.json) SHA `9D727162162AF9FE65430D8ED2BB77AB8422C704FF15390A8585909F90226FF0`，seal SHA `CA10F99FA6FDA55C0A64FA15C2D1CFC931D2858D540019A8136A23F10E498BFF`；driver `D594512C...F823DE`，官方下一 pair 边界 `1336→1336/drop0`。这些是运行资产，随源码分支清理保留。
+
+PR #163 已快进合入 `master@f8dc408`、源码分支/worktree 清理完成；M4 战时 perk runner 仍待同版本实机 typed/后置/下一 turn 验收，公共能力 OFF。
