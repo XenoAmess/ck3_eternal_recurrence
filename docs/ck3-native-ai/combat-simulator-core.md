@@ -329,6 +329,14 @@ flowchart LR
 
 ## 下一项接入
 
+### 2026-09-23：Robert h2134 的事件反馈可达性与逐步试算边界
+
+[implementation-confirmed] `phase_event_evaluator.execute_phase_event_trial_sequence` 现在可对**同一 root**按调用方已经选定的事件顺序执行多个 stock AST effect，并保留前一步写入的伤情、特质、死亡、成员关系和重算标记；每步要求精确的 draw tape 长度。它尚未负责从原版 RNG 中选择事件、跨 root/side 同步、重算真实战斗贡献，也没有模型化 observational/delayed effect 的回授。输出固定 `planner_usable=false`。`evaluate_phase_event_reachable_feedback` 只列首帧正整数权重事件行对应的潜在未闭合 effect 类；条件分支是否真的执行、下一天的合法性变化仍未知。
+
+[live-input + offline analysis] R0207 的原始 `probe/combat-v3-inputs.json` SHA-256 为 `8621F26CFC14841444C81A7377723D0B87945C10289C0741E6BAACD0DA55A196`，来自冻结索引 SHA-256 `1A8499E91F645C68CBA2BE4052AB6E5523DBDC6711045EF6C89AC9D23BA77B24`。该帧有 24 个候选 root（2 commander、22 knight）；9 类行在至少一个 root 上 trigger valid 且整数权重为正：`commander_none/wounded/maimed`、`knight_none/becomes_incapable/wounded/maimed/killed/qualify_for_accolade`。按 13 行 stock AST 的 effect 依赖表映射，已有账本的 **15/15 类未闭合回授**都落在至少一个这样的行上。故不能用“Robert 当前场景没有这些事件”来缩掉胜率门；这只是事件**可能**发生的上界，不表示 15 类会全部实际发生。
+
+[live trace limit] R0204 原始 `probe/trace-terminal-observation.json` SHA-256 `3410DE53771EB47C162FAEE586B14E4E00AD6390A8398A81A870B4EAE90D0FAB` 记录同一 CombatID 的 7 个边界，schedule 在 date `53192376`、fire/finish 在 `53192400`，两侧 fire 后全局 RNG counter 各加 1，`battle_events=[]`。但该次仍为 RED，`full_mutable_transition_bundle_complete=false`，且是旧独立战斗场景；它既没有效果发生时的原版 state delta，也不能校准 Robert 的 effect transition。下一步必须取得真正发生 effect 的 exact-build 原版逐日前后对拍，并将同日 participant/commander/contribution 回写接入 trial kernel；在此之前研究 trial 不能作为接战概率。
+
 RE 后续闭合 transition 时，把现有 `phase_event_evaluator` 接入一个实现 `BattleTransitionKernel` 的 exact kernel，并提交独立
 original-trace fixture；不修改数值 primitive 的 golden expected。当前最短顺序是：同日 participant/contribution/commander
 replacement 与 effect draw trace → mixed-owner AI retreat policy → exact fixture SHA → 才允许 planner/strategy 消费。

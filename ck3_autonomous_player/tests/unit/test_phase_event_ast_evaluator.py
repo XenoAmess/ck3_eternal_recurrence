@@ -22,7 +22,9 @@ from xar_autoplayer.simulation.phase_event_evaluator import (
     _native_candidate_int_weight,
     audit_stock_phase_event_evaluator,
     evaluate_phase_event_contexts,
+    evaluate_phase_event_reachable_feedback,
     execute_phase_event_effect,
+    execute_phase_event_trial_sequence,
 )
 from xar_autoplayer.simulation.candidate_source_proof import (
     CANDIDATE_SOURCE_PROOF_POLICY,
@@ -223,6 +225,59 @@ class PhaseEventAstEvaluatorTests(unittest.TestCase):
                 self.assertFalse(result["planner_usable"])
                 self.assertFalse(result["active_attack_allowed"])
                 self._assert_family_effect(family, result)
+
+    def test_ordered_trial_effects_preserve_state_between_rows(self) -> None:
+        context = self._valid_context("commander_wounded", "commander")
+        first = execute_phase_event_effect(
+            context,
+            event_key="commander_wounded",
+            draws=[0, 0],
+            advantage_model=self.advantage,
+        )
+        sequence = execute_phase_event_trial_sequence(
+            context,
+            steps=(
+                ("commander_wounded", (0, 0)),
+                ("commander_killed", (0, 0)),
+            ),
+            advantage_model=self.advantage,
+        )
+        self.assertEqual(
+            sequence["steps"][0]["after_state_sha256"],
+            first["after_state"]["state_sha256"],
+        )
+        self.assertEqual(
+            sequence["steps"][1]["before_state_sha256"],
+            sequence["steps"][0]["after_state_sha256"],
+        )
+        self.assertFalse(sequence["final_state"]["root"]["alive"])
+        self.assertIsNone(
+            sequence["final_state"]["sides"]["combat_commander_character_id"]
+        )
+        self.assertEqual([step["draw_count"] for step in sequence["steps"]], [2, 2])
+        with self.assertRaisesRegex(PhaseEventEvaluationError, "not valid"):
+            execute_phase_event_effect(
+                context, event_key="commander_killed", draws=[0, 0]
+            )
+        self.assertFalse(sequence["battle_horizon_feedback_ready"])
+        self.assertFalse(sequence["planner_usable"])
+        self.assertFalse(sequence["active_attack_allowed"])
+        with self.assertRaisesRegex(PhaseEventEvaluationError, "unused draws"):
+            execute_phase_event_trial_sequence(
+                context, steps=(("commander_none", (0,)),)
+            )
+
+    def test_initial_frame_feedback_reachability_remains_nonplanner(self) -> None:
+        result = evaluate_phase_event_reachable_feedback(self.contexts)
+        self.assertEqual(
+            result["status"], "initial_frame_positive_weight_possibility_only"
+        )
+        self.assertEqual(result["context_count"], len(self.contexts))
+        self.assertIn("commander_none", result["positive_weight_event_keys"])
+        self.assertEqual(len(result["potential_unresolved_effects"]), 15)
+        self.assertTrue(result["future_eligibility_may_change"])
+        self.assertFalse(result["planner_usable"])
+        self.assertFalse(result["active_attack_allowed"])
 
     def test_candidate_order_and_each_feedback_effect_are_hard_blockers(self) -> None:
         audit = audit_stock_phase_event_evaluator()

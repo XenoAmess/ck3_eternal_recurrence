@@ -1225,6 +1225,143 @@ def execute_phase_event_effect(
     return result
 
 
+def execute_phase_event_trial_sequence(
+    context_value: object,
+    *,
+    steps: Sequence[tuple[str, Sequence[int]]],
+    advantage_model: object | None = None,
+    manifest: FrozenPhaseEventManifest | None = None,
+) -> dict[str, object]:
+    """Carry one root's modeled phase effects across ordered trial steps.
+
+    The caller supplies already selected event rows and their exact draw tapes.
+    This does not schedule native events, synchronize other roots, recompute
+    native combat stats, or resolve observational/delayed effect feedback.
+    Those independent gates remain false even when every step succeeds.
+    """
+
+    selected = manifest or load_stock_phase_event_manifest()
+    audit = audit_stock_phase_event_evaluator(selected)
+    if isinstance(steps, (str, bytes)) or not isinstance(steps, Sequence):
+        raise PhaseEventEvaluationError("trial steps must be a sequence")
+    rows_by_key = {row.key: row for row in selected.event_rows}
+    state = PhaseEventTrialState.from_context(
+        context_value, advantage_model=advantage_model
+    )
+    initial_sha256 = state.snapshot()["state_sha256"]
+    results: list[dict[str, object]] = []
+    for ordinal, step in enumerate(steps):
+        if not isinstance(step, tuple) or len(step) != 2:
+            raise PhaseEventEvaluationError(
+                f"trial step {ordinal} must be an (event_key, draws) tuple"
+            )
+        key = _string(step[0], f"trial step {ordinal} event_key")
+        row = rows_by_key.get(key)
+        if row is None:
+            raise PhaseEventEvaluationError(f"unknown phase-event row {key!r}")
+        evaluation = _evaluate_row(row, state, include_effect_preflight=True)
+        if evaluation["trigger_valid"] is not True:
+            raise PhaseEventEvaluationError(
+                f"phase-event row {key!r} is invalid at trial step {ordinal}"
+            )
+        before_sha256 = state.snapshot()["state_sha256"]
+        previous_log_length = len(state.transition_log)
+        tape = _DrawTape.from_value(step[1])
+        _execute_effect_node(
+            row.effect_ast,
+            state=state,
+            tape=tape,
+            name=f"{row.key}.effect_ast",
+        )
+        if tape.position != len(tape.draws):
+            raise PhaseEventEvaluationError(
+                f"trial step {ordinal} has unused draws; event RNG boundary is ambiguous"
+            )
+        after_sha256 = state.snapshot()["state_sha256"]
+        results.append(
+            {
+                "ordinal": ordinal,
+                "event_key": key,
+                "before_state_sha256": before_sha256,
+                "after_state_sha256": after_sha256,
+                "draw_count": tape.position,
+                "transition_log": copy.deepcopy(
+                    state.transition_log[previous_log_length:]
+                ),
+            }
+        )
+    result: dict[str, object] = {
+        "schema_version": PHASE_EVENT_AST_EVALUATOR_SCHEMA_VERSION,
+        "status": "ordered_offline_trial_projection_fidelity_blocked",
+        "evaluator_version": PHASE_EVENT_AST_EVALUATOR_VERSION,
+        "evaluator_sha256": PHASE_EVENT_AST_EVALUATOR_SHA256,
+        "evaluator_proof_sha256": audit["proof_sha256"],
+        "manifest_sha256": selected.canonical_manifest_sha256,
+        "root_character_id": state.root_character_id,
+        "initial_state_sha256": initial_sha256,
+        "steps": results,
+        "final_state": state.snapshot(),
+        "battle_horizon_feedback_ready": False,
+        "original_trace_ready": False,
+        "planner_usable": False,
+        "active_attack_allowed": False,
+    }
+    result["result_sha256"] = _canonical_digest(result)
+    return result
+
+
+def evaluate_phase_event_reachable_feedback(
+    contexts_value: object,
+    *,
+    manifest: FrozenPhaseEventManifest | None = None,
+) -> dict[str, object]:
+    """List unresolved effect classes in positive-weight initial-frame rows.
+
+    This is a conservative row-level possibility, not proof that a conditional
+    effect branch actually runs. A zero-weight row can also become selectable
+    after another event or day, so an absent effect is never excluded from the
+    rest of the battle by this diagnostic.
+    """
+
+    projection = evaluate_phase_event_contexts(
+        contexts_value, manifest=manifest
+    )
+    reachable_keys = {
+        row["key"]
+        for context in projection["contexts"]
+        for row in context["rows"]
+        if row["trigger_valid"] is True and row["selectable_int_weight"] > 0
+    }
+    effects = [
+        {
+            "effect": effect["effect"],
+            "positive_weight_event_keys": [
+                key
+                for key in effect["event_keys_source_order"]
+                if key in reachable_keys
+            ],
+        }
+        for effect in projection["battle_horizon_feedback"]["effects"]
+    ]
+    result: dict[str, object] = {
+        "schema_version": PHASE_EVENT_AST_EVALUATOR_SCHEMA_VERSION,
+        "status": "initial_frame_positive_weight_possibility_only",
+        "manifest_sha256": projection["manifest_sha256"],
+        "projection_sha256": projection["projection_sha256"],
+        "context_count": projection["context_count"],
+        "positive_weight_event_keys": sorted(reachable_keys),
+        "potential_unresolved_effects": effects,
+        "potential_unresolved_effect_count": sum(
+            bool(effect["positive_weight_event_keys"]) for effect in effects
+        ),
+        "future_eligibility_may_change": True,
+        "planner_usable": False,
+        "active_attack_allowed": False,
+    }
+    result["result_sha256"] = _canonical_digest(result)
+    return result
+
+
 def _evaluate_row(
     row: FrozenPhaseEventRow,
     state: PhaseEventTrialState,

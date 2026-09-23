@@ -28,7 +28,9 @@ from .phase_event_evaluator import (
     PhaseEventTrialState,
     audit_stock_phase_event_evaluator,
     evaluate_phase_event_contexts,
+    evaluate_phase_event_reachable_feedback,
     execute_phase_event_effect,
+    execute_phase_event_trial_sequence,
 )
 from .candidate_source_proof import (
     CANDIDATE_SOURCE_PROOF_POLICY,
@@ -77,7 +79,9 @@ __all__ = [
     "PhaseEventTrialState",
     "audit_stock_phase_event_evaluator",
     "evaluate_phase_event_contexts",
+    "evaluate_phase_event_reachable_feedback",
     "execute_phase_event_effect",
+    "execute_phase_event_trial_sequence",
     "CANDIDATE_SOURCE_PROOF_POLICY",
     "CandidateSourceProofError",
     "candidate_source_sequence_preimage",
