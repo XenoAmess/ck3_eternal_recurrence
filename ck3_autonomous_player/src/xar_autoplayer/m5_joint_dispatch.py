@@ -11,6 +11,7 @@ from copy import deepcopy
 from threading import Lock
 
 from .m5_joint_budget_selector import select_m5_assessed_candidate
+from .m5_observed_opportunity_selector import select_observed_m5_opportunity
 
 
 _CLAIM_FIELDS = ("army_ids", "ally_character_ids", "character_ids", "commitment_keys")
@@ -215,6 +216,65 @@ class M5FrameDispatcher:
                 "status": "analytic_only_pending_formal_action",
             }
             return self._result("reserved_analytic", candidate_id, analysis)
+
+    def choose_observed(
+        self, *, snapshot: dict[str, object],
+        proposals: list[dict[str, object]], gold_reserve_raw: int,
+        max_active_wars: int,
+    ) -> dict[str, object]:
+        """Reserve one domain-approved proposal using observed shared costs.
+
+        This is the reusable M5 dispatch entry for council, construction and
+        diplomacy proposals already produced by their formal policies. War
+        and marriage enter only after their supply/commitment observations
+        are complete. No typed action is returned here.
+        """
+        with self._lock:
+            if _frame(snapshot) != self._frame:
+                raise ValueError("M5 observed dispatch crossed an episode or paused frame")
+            if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
+                raise ValueError("M5 observed dispatch requires a paused map frame")
+            if self._reservation is not None:
+                return self._result("already_reserved_this_frame", None, None)
+            analysis = select_observed_m5_opportunity(
+                snapshot=snapshot, proposals=deepcopy(proposals),
+                commitments=deepcopy(self._commitments),
+                gold_reserve_raw=gold_reserve_raw,
+                max_active_wars=max_active_wars,
+            )
+            candidate_id = analysis["selected_candidate_id"]
+            if candidate_id is None:
+                return self._result("wait", None, analysis)
+            selected = next(
+                row for row in analysis["evaluated"]
+                if row["candidate_id"] == candidate_id
+            )
+            commitments = deepcopy(self._commitments)
+            commitments["gold_raw"] += selected["gold_cost_raw"]
+            for key in _CLAIM_FIELDS:
+                commitments[key] = sorted(
+                    set(commitments[key]) | set(selected[key])
+                )
+            commitments["pending_war_slots"] += selected["war_slot_claim"]
+            self._reservation = {
+                "schema": "xar.ck3.m5-frame-reservation.v1",
+                "frame": _frame_dict(self._frame),
+                "candidate_id": candidate_id,
+                "domain": selected["domain"],
+                "source_policy": selected["source_policy"],
+                "commitments_after": commitments,
+                "status": "analytic_only_pending_formal_action",
+                "observed_opportunity_cost": {
+                    "gold_cost_raw": selected["gold_cost_raw"],
+                    "war_slot_claim": selected["war_slot_claim"],
+                    "projected_supply_margin_raw": selected[
+                        "projected_supply_margin_raw"
+                    ],
+                },
+            }
+            return self._result(
+                "reserved_observed_analytic", candidate_id, analysis
+            )
 
     def _result(
         self, status: str, candidate_id: str | None,
