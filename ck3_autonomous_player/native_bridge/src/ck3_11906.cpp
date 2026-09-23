@@ -10232,6 +10232,36 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
   return result;
 }
 
+bool ReadDefaultRaiseProvince(const Bindings &bindings,
+                              std::int32_t character_id,
+                              std::int32_t &province_id) noexcept {
+  province_id = -1;
+  if (!bindings.enabled || bindings.game_state_slot == nullptr ||
+      bindings.resolve_default_raise_province == nullptr ||
+      character_id <= 0) {
+    return false;
+  }
+  void *const game_state = *bindings.game_state_slot;
+  if (game_state == nullptr) {
+    return false;
+  }
+  void *const character = ResolveCharacter(bindings, character_id);
+  if (character == nullptr) {
+    return false;
+  }
+  void *const province =
+      bindings.resolve_default_raise_province(character);
+  if (province == nullptr) {
+    return false;
+  }
+  const auto id = LoadAt<std::int32_t>(province, kProvinceIdOffset);
+  if (id <= 0 || ResolveProvince(game_state, id) != province) {
+    return false;
+  }
+  province_id = id;
+  return true;
+}
+
 bool ReadClaimCountyObjectiveProvince(const Bindings &bindings,
                                       std::int32_t county_title_id,
                                       std::int32_t &province_id) noexcept {

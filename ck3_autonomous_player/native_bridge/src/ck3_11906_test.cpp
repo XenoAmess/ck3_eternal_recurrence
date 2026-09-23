@@ -7150,6 +7150,21 @@ int main() {
       claim_objective_province_id != -1) {
     return Fail("prewar county objective did not match the active-war walker");
   }
+  std::int32_t default_raise_province_id = -1;
+  g_raise_construct_called = false;
+  g_raise_validate_called = false;
+  if (!xar::ck3_11906::ReadDefaultRaiseProvince(
+          bindings, played_character_id, default_raise_province_id) ||
+      default_raise_province_id != 2 ||
+      !xar::ck3_11906::ReadDefaultRaiseProvince(
+          bindings, enemy_character_id, default_raise_province_id) ||
+      default_raise_province_id != 4 ||
+      xar::ck3_11906::ReadDefaultRaiseProvince(
+          bindings, enemy_character_id + 1, default_raise_province_id) ||
+      default_raise_province_id != -1 || g_raise_construct_called ||
+      g_raise_validate_called) {
+    return Fail("prewar default muster reader changed command or identity state");
+  }
   single_targeted_title_id[0] = third_capital_barony_title_id;
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       snapshot.active_wars.size() != 1 ||

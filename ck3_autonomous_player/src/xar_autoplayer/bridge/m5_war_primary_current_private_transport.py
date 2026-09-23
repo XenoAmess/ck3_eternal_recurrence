@@ -601,11 +601,25 @@ def _prewar_claim_observation(
 ) -> dict[str, object]:
     if not isinstance(value, Mapping) or set(value) != {
         "county_objective_province_id", "primary_current_raised_armies",
+        "actor_default_raise_province_id",
+        "effective_defender_default_raise_province_id",
+        "hypothetical_raised_roster_ready", "raise_legality_ready",
+        "muster_time_ready",
         "complete_initial_participants_ready", "combat_forecast_ready",
     }:
         raise ValueError("prewar claim observation shape changed")
     province = _integer(value.get("county_objective_province_id"), "county objective Province", positive=True)
-    if value.get("complete_initial_participants_ready") is not False or value.get("combat_forecast_ready") is not False:
+    actor_default = value.get("actor_default_raise_province_id")
+    defender_default = value.get("effective_defender_default_raise_province_id")
+    if actor_default is not None:
+        actor_default = _integer(actor_default, "actor default muster Province", positive=True)
+    if defender_default is not None:
+        defender_default = _integer(defender_default, "defender default muster Province", positive=True)
+    if any(value.get(key) is not False for key in (
+        "hypothetical_raised_roster_ready", "raise_legality_ready",
+        "muster_time_ready", "complete_initial_participants_ready",
+        "combat_forecast_ready",
+    )):
         raise ValueError("prewar claim readiness changed")
     raw_armies = value.get("primary_current_raised_armies")
     if not isinstance(raw_armies, list):
@@ -663,7 +677,12 @@ def _prewar_claim_observation(
             raise ValueError("primary actor route differs from the public snapshot")
     return {
         "county_objective_province_id": province,
+        "actor_default_raise_province_id": actor_default,
+        "effective_defender_default_raise_province_id": defender_default,
         "primary_current_raised_armies": armies,
+        "hypothetical_raised_roster_ready": False,
+        "raise_legality_ready": False,
+        "muster_time_ready": False,
         "complete_initial_participants_ready": False,
         "combat_forecast_ready": False,
     }
@@ -752,7 +771,12 @@ def query_prewar_player_claim_current_private_v1(
         "prewar_player_claim_current": claim,
         "readiness": {
             "county_objective_province_ready": True,
+            "actor_default_raise_province_ready": claim["actor_default_raise_province_id"] is not None,
+            "effective_defender_default_raise_province_ready": claim["effective_defender_default_raise_province_id"] is not None,
             "primary_current_raised_armies_ready": True,
+            "hypothetical_raised_roster_ready": False,
+            "raise_legality_ready": False,
+            "muster_time_ready": False,
             "complete_initial_participants_ready": False,
             "first_contact_timeline_ready": False,
             "combat_forecast_ready": False,

@@ -317,6 +317,15 @@ bool ExecuteM5WarPrimaryPrivateQueryV1(
         query->failure_stage = "claim_county_objective_unavailable";
         return true;
       }
+      // Existing exact-build read-only callback: the same resolver is used
+      // by active-war enemy-default-rally observation. No raise command is
+      // constructed or validated here. A missing default remains null.
+      game::ReadDefaultRaiseProvince(
+          *query->game, query->expected_snapshot.played_character_id,
+          query->claim_actor_default_raise_province_id);
+      game::ReadDefaultRaiseProvince(
+          *query->game, entry.assessments[0].effective_target_character_id,
+          query->claim_defender_default_raise_province_id);
       query->claim_primary_current_raised_armies =
           scope.primary_raised_armies;
     }
@@ -430,6 +439,14 @@ std::string SerializePrewarPlayerClaimPrivateResultV1(
   output.pop_back();
   output += ",\"prewar_player_claim\":{\"county_objective_province_id\":";
   output += std::to_string(query.claim_county_objective_province_id);
+  output += ",\"actor_default_raise_province_id\":";
+  output += query.claim_actor_default_raise_province_id > 0
+                ? std::to_string(query.claim_actor_default_raise_province_id)
+                : "null";
+  output += ",\"effective_defender_default_raise_province_id\":";
+  output += query.claim_defender_default_raise_province_id > 0
+                ? std::to_string(query.claim_defender_default_raise_province_id)
+                : "null";
   output += ",\"primary_current_raised_armies\":[";
   for (std::size_t i = 0;
        i < query.claim_primary_current_raised_armies.size(); ++i) {
@@ -457,7 +474,10 @@ std::string SerializePrewarPlayerClaimPrivateResultV1(
     }
     output += "]}";
   }
-  output += "],\"complete_initial_participants_ready\":false,";
+  output += "],\"hypothetical_raised_roster_ready\":false,";
+  output += "\"raise_legality_ready\":false,";
+  output += "\"muster_time_ready\":false,";
+  output += "\"complete_initial_participants_ready\":false,";
   output += "\"combat_forecast_ready\":false}}";
   return output;
 }

@@ -39,6 +39,8 @@ struct M5WarPrimaryPrivateQueryV1 {
 
   M5WarPrimaryReadbackV1 result{};
   std::int32_t claim_county_objective_province_id = -1;
+  std::int32_t claim_actor_default_raise_province_id = -1;
+  std::int32_t claim_defender_default_raise_province_id = -1;
   std::vector<PrewarRaisedArmyV1> claim_primary_current_raised_armies;
   std::string failure_stage;
   MainThreadExecutionStampV1 execution_stamp{};

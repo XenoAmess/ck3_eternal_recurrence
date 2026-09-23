@@ -290,6 +290,8 @@ def _claim_driver() -> tuple[_Driver, dict[str, object], dict[str, object]]:
     payload["active_war_ids"] = []
     payload["prewar_player_claim"] = {
         "county_objective_province_id": 2610,
+        "actor_default_raise_province_id": 2612,
+        "effective_defender_default_raise_province_id": 2620,
         "primary_current_raised_armies": [
             {
                 "army_id": 83_886_341, "native_carmy_id": 117_440_789,
@@ -304,6 +306,9 @@ def _claim_driver() -> tuple[_Driver, dict[str, object], dict[str, object]]:
                 "route_province_ids": [],
             },
         ],
+        "hypothetical_raised_roster_ready": False,
+        "raise_legality_ready": False,
+        "muster_time_ready": False,
         "complete_initial_participants_ready": False,
         "combat_forecast_ready": False,
     }
@@ -339,13 +344,27 @@ class PrewarPlayerClaimPrivateTransportTest(unittest.TestCase):
         )
         self.assertEqual(result["m5_war_primary_current"]["declaration"]["casus_belli_key"], "claim_cb")
         self.assertEqual(result["prewar_player_claim_current"]["county_objective_province_id"], 2610)
+        self.assertEqual(result["prewar_player_claim_current"]["actor_default_raise_province_id"], 2612)
+        self.assertEqual(result["prewar_player_claim_current"]["effective_defender_default_raise_province_id"], 2620)
         self.assertEqual(
             [row["side"] for row in result["prewar_player_claim_current"]["primary_current_raised_armies"]],
             ["attacker", "defender"],
         )
         self.assertFalse(result["advertised"])
         self.assertFalse(result["readiness"]["combat_forecast_ready"])
+        self.assertFalse(result["readiness"]["hypothetical_raised_roster_ready"])
+        self.assertFalse(result["readiness"]["raise_legality_ready"])
+        self.assertFalse(result["readiness"]["muster_time_ready"])
         self.assertFalse(result["readiness"]["declaration_admission_ready"])
+
+    def test_missing_default_muster_is_not_a_fabricated_army(self) -> None:
+        driver, selected, root = _claim_driver()
+        driver.state.payload["prewar_player_claim"]["actor_default_raise_province_id"] = None
+        result = self._read(driver, selected, root)
+        self.assertIsNone(result["prewar_player_claim_current"]["actor_default_raise_province_id"])
+        self.assertFalse(result["readiness"]["actor_default_raise_province_ready"])
+        self.assertEqual(len(result["prewar_player_claim_current"]["primary_current_raised_armies"]), 2)
+        self.assertFalse(result["readiness"]["combat_forecast_ready"])
 
     def test_selected_identity_and_unique_target_are_required_before_command(self) -> None:
         driver, selected, root = _claim_driver()

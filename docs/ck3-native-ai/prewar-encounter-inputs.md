@@ -694,3 +694,58 @@ edge/timeline, declaration-bound combat-v3 forecast and `p_win` remain
 unavailable. Existing combat-v3 requires an active WarID and cannot be
 called for this declaration. Strategy `NO_DECLARE` stays in force until the
 subsequent producer and admission contracts are actually verified.
+
+## 2026-09-24 default muster location slice (static-ready; live pending)
+
+Exact build remains CK3 `1.19.0.6-steam23530548`, EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+The existing callback at RVA `0x224CC80` resolves one character's *current
+default* raise Province. The production bridge already calls it for the
+active-war primary enemy (`ck3_11906.cpp`, active-war `ReadSnapshot`) and the
+player's typed default-raise command. The new private observer resolves each
+full-generation CharacterID before that callback and checks the returned
+Province pointer against the live Province store. It calls no command
+constructor, raise validator, submitter, route planner, or clock advance.
+
+The single-county player `claim_cb` query now returns the actor and unique
+effective defender default raise Province IDs, independently nullable. These
+are possible *default muster locations*, not a legal raise preview, a
+war-aware chosen rally, a safe entry, or a prediction that an army exists.
+The R0151 at-peace Robert frame has `player_armies=[]`; therefore the #236
+current-raised-army slice cannot supply player combat participants there.
+Neither a null default location nor a positive one may be converted into an
+ArmyID or a combat roster. The private query and native build flag remain
+OFF by default; no public/MCP capability or declaration action is enabled.
+
+```mermaid
+flowchart TD
+    A[Unique same-frame final-legal player claim] --> B[War-entry effective defender]
+    B --> C[Selected county capital Province]
+    B --> D[Actor and defender current default raise Province]
+    D -. unknown: final legal raise / muster producer .-> E[Projected raised regiment roster and full ArmyIDs]
+    E -. unknown: muster duration and placement .-> F[First-contact route and ETA]
+    F -. unknown: prewar participants and v3 admission .-> G[Simulated p_win and utility]
+    G -. unknown: verified policy gate .-> H[DECLARE]
+```
+
+The next native producer must evaluate each side's final *hypothetical* raise
+from the same paused declaration frame: eligible levy/MAA/knight and special
+troop groups, resulting regiments and soldier counts, raise legality and
+selected rally Province, muster/placement timing, and a stable identity usable
+by a prewar path/contact predictor. The current `military-preparation-summary-v1`
+only gives aggregate current/max strength, knight count/cap and MAA cost bands;
+those are not roster, soldiers or `p_win`. The persistent-regiment reader is
+war-bound and requires a live WarID; `combat-v3` likewise requires a shared
+active WarID. The existing move preview/arrival path requires an actual
+ArmyID. Source/callability and allocation semantics for the final at-peace
+raise producer remain **unknown** and are the next reverse-engineering task.
+The adjacent known typed path is `CRaiseTroopsCommand` constructor RVA
+`0x26D6FC0`, validator RVA `0x26D7150`, then queue flags `7`
+(`primary-defensive-war-response.md`). Those entry points are *not* a
+read-only hypothetical roster producer: this observer does not call them,
+and a separate exact-build callsite/side-effect proof is required before
+reusing any internal validation or muster calculation for an at-peace query.
+Until then `hypothetical_raised_roster_ready`, `raise_legality_ready`,
+`muster_time_ready`, `complete_initial_participants_ready`,
+`combat_forecast_ready`, and declaration admission remain false. The R0151
+pair is an evidence index only; this static slice has no paused live readback.

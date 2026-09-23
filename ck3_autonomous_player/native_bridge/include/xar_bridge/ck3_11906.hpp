@@ -775,6 +775,12 @@ bool ReadClaimCountyObjectiveProvince(const Bindings &bindings,
                                       std::int32_t county_title_id,
                                       std::int32_t &province_id) noexcept;
 
+// Reads the native default muster Province for a full-generation CharacterID.
+// This does not construct or validate a raise command.
+bool ReadDefaultRaiseProvince(const Bindings &bindings,
+                              std::int32_t character_id,
+                              std::int32_t &province_id) noexcept;
+
 // Reuses the exact-build generation-bearing active-CWar resolver for the
 // pending-interaction read-only mailbox. The caller supplies the already
 // captured application-main game_state; no command or effect is executed.

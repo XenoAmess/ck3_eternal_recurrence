@@ -98,6 +98,13 @@ public:
     province_id = -1;
     return false;
   }
+  // Private exact-build observation of the current default muster location.
+  // This does not validate a raise command or predict raised regiments/time.
+  virtual bool read_default_raise_province(
+      std::int32_t, std::int32_t &province_id) const noexcept {
+    province_id = -1;
+    return false;
+  }
   virtual DeclareWarResult
   submit_declare_war(const DeclarableWarSnapshot &declaration) const
       noexcept = 0;
@@ -285,6 +292,11 @@ inline bool ReadClaimCountyObjectiveProvince(
     std::int32_t &province_id) noexcept {
   return game.read_claim_county_objective_province(county_title_id,
                                                    province_id);
+}
+inline bool ReadDefaultRaiseProvince(
+    const GameAdapter &game, std::int32_t character_id,
+    std::int32_t &province_id) noexcept {
+  return game.read_default_raise_province(character_id, province_id);
 }
 inline DeclareWarResult
 SubmitDeclareWar(const GameAdapter &game,
