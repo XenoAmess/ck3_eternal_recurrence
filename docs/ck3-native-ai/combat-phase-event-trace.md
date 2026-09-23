@@ -646,6 +646,39 @@ do not rewrite the seven records. This gate only admits a bounded **research**
 capture. The full mutable transition bundle, effect parity, and production
 win probability remain unavailable.
 
+## R0215 empty-effect original main tick (2026-09-24)
+
+[production-live, read-only] R0215 independently cold-restored the original
+R0203 pair and captured the same CombatID `738197508` through seven native
+boundaries, raw date `53192376 -> 53192400`. The immutable
+[live freeze](Z:/ck3_mod_rewrite_process_assets/g2-combat-outgoing-r0203-f022-research-on-no-launch-20260923/checks/R0215-LIVE-FREEZE.json)
+has SHA-256 `577A65146231BB10C1CEA261CBAB2A9AD1E998FFD06735039A7A6542E8DB6075`;
+the bounded original tick JSON has SHA-256
+`FED232DE6304FB447DE9FC502CFAFF40E1C9C6FA5D1948C834055F45E21B488E`.
+The [focused evidence index](Z:/ck3_mod_rewrite_process_assets/g2-combat-phase-empty-r0215-20260924/R0215-EMPTY-EFFECT-INDEX.json)
+has SHA-256 `269E65AC6F205E8A6556D57CFC6CE797C2E7E6FCFA64AEF1CD9E8518A447C0CD`.
+
+At the schedule boundary, exact-build
+`day_index = (53192376 - 0x029C55A8) / 24 = 391350`; the four due knights, in stored side order,
+were CharacterIDs `43550`, `33435`, `32440`, `43700`. Neither commander was
+due. The schedule-local RNG word advanced `656603130 -> 656603134`, while
+both sides retained zero executable scheduled knight rows. Side 0 fire then
+advanced the global RNG counter `1901999 -> 1902000`; side 1 advanced it
+`1902000 -> 1902001`. Across each fire boundary, the captured side records,
+17 character cores, zero BattleEvent rows, and zero accolade rows were
+field-for-field equal. This establishes an **empty-effect tick in the captured
+domains** and confirms that each side fire still consumes one global draw.
+
+No nonempty phase-event AST effect occurred in this tick, so it cannot
+validate the research feedback kernel's wounded/maimed/death transitions or
+subsequent five-day weights against original execution. The trace itself has
+`full_mutable_transition_bundle_complete=false`; unrecorded state is not
+asserted unchanged. The next useful parity sample needs a naturally selected
+nonempty row, its loaded event identity and effect draw path, plus the
+affected mutable before/after fields at the same original boundaries.
+`original_trace_ready`, qualified win probability, and attack permission
+remain false.
+
 ## 离线复现入口
 
 本页结论可用仓库内只读工具复核：
