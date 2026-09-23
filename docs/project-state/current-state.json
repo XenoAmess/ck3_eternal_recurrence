@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "2333B578276CF73AD033431C4FC2C0F34B134009D8795118C67FF6C955AA0935"
+        "sha256": "53CCC667ED33A285EF0AEC55F3C8A2F9AEE9F78E37BB3FFBD028F9327DBEAACA"
       },
       "raw_footage": {
         "passed": 0,
@@ -263,20 +263,20 @@
       "historical_durable_game_days": 14900,
       "historical_target_game_days": 36524,
       "latest_final_observed_days_are_durable": true,
-      "latest_final_observed_game_days": 2410,
-      "latest_final_observed_source": "R0178_saved_h1767_raw53202168",
+      "latest_final_observed_game_days": 2983,
+      "latest_final_observed_source": "R0181_saved_h2120_raw53215920",
       "latest_formal_active_war_ids": [
         16777231
       ],
       "latest_formal_active_war_scores": [
-        -41
+        -16
       ],
-      "latest_formal_attempt_round": "R0178",
+      "latest_formal_attempt_round": "R0181",
       "latest_formal_attempt_status": "turn_limit_qualified_120_of_120_no_blocker",
-      "latest_formal_pair": "R0178_clean_h1767_green",
-      "latest_formal_war_scores_scope": "R0178_last_query_raw53201952_before_final_checkpoint",
-      "latest_formal_war_status": "two_defensive_victories_enforced_one_defensive_war_active_after_R0178",
-      "latest_freeze_manifest_status": "R0178_frozen_read_only_exact_pair_no_tail",
+      "latest_formal_pair": "R0181_clean_h2120_green",
+      "latest_formal_war_scores_scope": "R0181_last_query_raw53215752_before_final_checkpoint",
+      "latest_formal_war_status": "two_prior_defensive_victories_one_defensive_war_active_after_R0181",
+      "latest_freeze_manifest_status": "R0181_frozen_read_only_exact_pair_no_tail",
       "latest_private_checkpoint": {
         "date_raw": 53202168,
         "history_index": 1774,
@@ -287,10 +287,10 @@
         "scope": "same-date private M4 perk checkpoint after R0178 formal h1767; no additional game days or war conclusion"
       },
       "latest_product_status": "GREEN_BOUNDED_CONTINUATION_WAR_ACTIVE",
-      "latest_restore_attempt_round": "R0179",
-      "latest_restore_harness_status": "GREEN_private_perk_checkpointed_same_date",
+      "latest_restore_attempt_round": "R0181",
+      "latest_restore_harness_status": "GREEN_official_cold_restore_formal_120_of_120_h2120_checkpoint",
       "m3_existing_complete_evidence_retained": true,
-      "mainline_status": "continuable_from_R0178_h1767_one_war_active",
+      "mainline_status": "continuable_from_R0181_h2120_one_war_active",
       "material_expansion_proven": true,
       "new_title_acquisitions_in_R0177_R0178": 0,
       "primary_formal_seed_pair": "R0138_frozen_day0",
@@ -301,7 +301,7 @@
       ],
       "proven_land_victory_count": 3,
       "prv008_frozen_qualification_unchanged": true,
-      "robert_durable_game_days": 2410,
+      "robert_durable_game_days": 2983,
       "robert_target_game_days": 36524,
       "second_acquired_province_id": 2635,
       "second_acquired_title_id": 2102,
@@ -315,11 +315,11 @@
       "G2-M3"
     ],
     "latest_durable_continuation": {
-      "active_war_scores_scope": "R0178_last_war_query_raw53201952_before_final_checkpoint",
+      "active_war_scores_scope": "R0181_last_war_query_raw53215752_before_final_checkpoint",
       "active_wars": [
         {
           "player_is_primary_war_leader": true,
-          "player_relative_war_score": -41,
+          "player_relative_war_score": -16,
           "player_side": "defender",
           "status": "active",
           "war_id": 16777231
@@ -328,34 +328,34 @@
       "all_active_wars_resolved": false,
       "attempted_turns": 120,
       "campaign_identity": "Robert_1066",
-      "checkpoint_pair_status": "raw_driver_exact_checkpoint_no_tail",
-      "checkpoint_save_sha256": "627867038CCB173611252DD4987865EBADB28EFEFF0A179CE925AAF04894EB05",
-      "checkpoint_turns": 11,
+      "checkpoint_pair_status": "raw_driver_exact_checkpoint_no_tail_official_projection_green",
+      "checkpoint_save_sha256": "266D6F0238EA4AA552D8D6E8C6F3FC6378546310E95CF70BECDD32D485756F0A",
+      "checkpoint_turns": 14,
       "cleanup_proven": true,
-      "durable_checkpoint_date_raw": 53202168,
-      "durable_game_days": 2410,
-      "durable_game_days_increment": 183,
+      "durable_checkpoint_date_raw": 53215920,
+      "durable_game_days": 2983,
+      "durable_game_days_increment": 280,
       "evidence": {
         "base": "configured_process_assets_root",
-        "formal_report_decode_boundary": "read_only_utf8_sig_replacement_7_characters_raw_unchanged",
-        "formal_report_locator": "g2-robert-r0178-war-green-frozen-20260923/R0178-final-frozen-pair/formal-report.txt",
-        "formal_report_sha256": "EC550DD705EFA1714086FCB9C3F9FE57D90A32CD0CE14D30D553AD82DC9A77BF",
-        "freeze_locator": "g2-robert-r0178-war-green-frozen-20260923/R0178-final-frozen-pair/R0178-raw-freeze.json",
-        "freeze_manifest_status": "hash_verified_manifest_and_10_copy_files_read_only",
-        "freeze_sha256": "6AC64055EEF51D7D34B5E8173D0F6112658EBF3C0F81B89602F172611DD63A1C",
-        "frozen_raw_directory": "g2-robert-r0178-war-green-frozen-20260923/R0178-final-frozen-pair",
-        "operator_receipt_sha256": "5769428731FD1B0D88E0567B8AEA12BDA0F1B97AFD8A82D31D5AF08AAAFD5C8D",
-        "semantic_audit_locator": "g2-robert-r0178-war-green-frozen-20260923/R0178-semantic-audit.json",
-        "semantic_audit_sha256": "BE5B99609C375952615AC3E498EC51F84CB7BCCE7D7EB0F0CB22846AA6517180"
+        "formal_report_decode_boundary": "valid_utf8_sig_raw_unchanged",
+        "formal_report_locator": "g2-robert-r0181-war-green-frozen-20260923/R0181-final-frozen-pair/formal-report.txt",
+        "formal_report_sha256": "C67B3F2680817433D60FA032CF03EE7B3A133A9AD58A4C9531D841BD5239974A",
+        "freeze_locator": "g2-robert-r0181-war-green-frozen-20260923/R0181-final-frozen-pair/R0181-raw-freeze.json",
+        "freeze_manifest_status": "hash_verified_manifest_and_12_copy_files_read_only",
+        "freeze_sha256": "11B4F9724E5E179F68B91CD84A1CD720D400F436424033E199F1467740CB712E",
+        "frozen_raw_directory": "g2-robert-r0181-war-green-frozen-20260923/R0181-final-frozen-pair",
+        "operator_receipt_sha256": "727B3EA1AD0445DB7456542E55DF91385BFE0C2EF36C7087713388EEF0E7CAD6",
+        "semantic_audit_locator": "g2-robert-r0181-war-green-frozen-20260923/R0181-semantic-audit.json",
+        "semantic_audit_sha256": "F6AA961A811D54FD9C94AC4C1D78E8A2E21DD8FB66919BD553541ECBEFAB1BF0"
       },
       "execution_id": null,
-      "gameplay_turns": 39,
+      "gameplay_turns": 40,
       "hundred_year_gate": "0/1",
       "independent_seeds": "0/2",
-      "last_durable_checkpoint_history_index": 1767,
-      "latest_observed_date_raw": 53202168,
-      "latest_observed_game_days": 2410,
-      "latest_verified_paired_checkpoint": "R0177_h1599_officially_cold_restored",
+      "last_durable_checkpoint_history_index": 2120,
+      "latest_observed_date_raw": 53215920,
+      "latest_observed_game_days": 2983,
+      "latest_verified_paired_checkpoint": "R0180_h1945_officially_cold_restored",
       "managed_process_count_after_cleanup": 0,
       "manual_tail_edit_forbidden": true,
       "material_expansion_proven": true,
@@ -363,10 +363,7 @@
       "observed_but_not_durable_game_days_after_checkpoint": 0,
       "official_recovery_required_before_reuse": true,
       "product_status": "GREEN_BOUNDED_CONTINUATION_WAR_ACTIVE",
-      "proven_defensive_war_victories": [
-        95,
-        16777250
-      ],
+      "proven_defensive_war_victories": [],
       "proven_land_victories": [
         {
           "capital_province_id": 2640,
@@ -384,41 +381,41 @@
           "war_id": 50331662
         }
       ],
-      "query_turns": 81,
+      "query_turns": 80,
       "raw_driver_post_checkpoint_tail_contains_advance": false,
       "raw_driver_post_checkpoint_tail_records": 0,
-      "raw_driver_sha256": "E01A77CE72C4746875CD255FC82158A692069F7E52FE1A102DB62479492E2549",
+      "raw_driver_sha256": "9AA47032719789412ACEAA88452C19CBF2CBEBA4AB7828DCE3B004308007922A",
       "requested_turns": 120,
       "result": "completed-green",
-      "round": "R0178",
+      "round": "R0181",
       "run_id": null,
-      "scope": "R0178 officially cold-restored R0177 h1599 on source 8c0494e and completed 120/120 formal turns, with 81 queries, 39 gameplay turns and 11 checkpoints. Saved h1767/date53202168 adds 183 durable days, for Robert 2410/36524. The raw driver ends exactly at the saved checkpoint with no tail. War IDs 95 and 16777250 were separately enforced as defensive victories, removed from subsequent paused frames and consumed by later turns; WarID 16777231 remains active at the final saved frame. Held titles and domain were unchanged at the last readback, so no new conquest is proven. The last score -41 was observed before the final checkpoint and is not an h1767 score receipt. This bounded continuation is GREEN without a planner blocker but not a war-end, hundred-year, whole-campaign or second-seed gate.",
-      "source_commit": "8c0494e4bbb9cd1578c1dbc87a9ff1781489ca3b",
-      "starting_checkpoint_history_index": 1599,
-      "starting_checkpoint_round": "R0177",
-      "starting_date_raw": 53197776,
+      "scope": "R0181 officially cold-restored R0180 h1945 on source e0b7713 and completed 120/120 formal turns, with 80 queries, 40 gameplay turns and 14 checkpoints. All 40 gameplay turns were seven-day native stationary war-objective hold sentinels, with no typed war terminal action. Saved h2120/date53215920 adds 280 durable days for Robert 2983/36524. Official semantic projection confirms raw and retained history both 2120 with no tail. WarID 16777231 remains active in the final paused after-frame; the latest war score -16 and held titles [2102,2111,2115,2141,2142,2173], domain 5/6 were read at raw53215752 before the final checkpoint. Thus no new conquest or war end is proven; -16 is not an h2120 score receipt. This bounded run is GREEN but not a war-end, hundred-year, whole-campaign or second-seed gate.",
+      "source_commit": "e0b7713859d026426655b6ff769036a39c47db02",
+      "starting_checkpoint_history_index": 1945,
+      "starting_checkpoint_round": "R0180",
+      "starting_date_raw": 53209200,
       "strategy_red": null,
-      "strategy_status": "no_planner_blocker_within_R0178_120_turn_bound",
+      "strategy_status": "no_planner_blocker_within_R0181_120_turn_bound",
       "successful_turns": 120,
       "target_game_days": 36524,
       "technical_formal_status": "turn_limit_qualified",
       "whole_campaign_gate": "0/1"
     },
     "latest_no_launch_candidate": {
-      "checkpoint_date_raw": 53202168,
-      "checkpoint_history_index": 1767,
-      "checkpoint_save_sha256": "627867038CCB173611252DD4987865EBADB28EFEFF0A179CE925AAF04894EB05",
+      "checkpoint_date_raw": 53209200,
+      "checkpoint_history_index": 1945,
+      "checkpoint_save_sha256": "E80D43FE641FFF459C214F2B40EA9CEE9D200328922FA53C3842A53D7A98131A",
       "evidence": {
         "base": "configured_process_assets_root",
-        "no_launch_locator": "g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/NO-LAUNCH-EVIDENCE.json",
-        "no_launch_sha256": "48A7C24FA3B2BBDE4C9F1ED7517E2B3CFEB7885D5AF29054B4CA9A718437667D"
+        "no_launch_locator": "g2-robert-r0180-h1945-e0b771-warrun-no-launch-20260923/checks/R0180-E0B771-READY-NO-LAUNCH.json",
+        "no_launch_sha256": "FF82DD3A6A60976038793486F25334D9F095E929A5D5F8600AEA1C8D97057CCB"
       },
       "game_days_advanced": 0,
       "gameplay_actions": 0,
       "profile": "ordinary_campaign_succession/xar_off",
-      "scope": "R0179 official prepare/rebind/no-launch from R0178 h1767 was consumed by a private live perk trial, then h1774 saved on the same date; next candidate must use official semantic recovery of the one post-checkpoint query.",
+      "scope": "R0180 h1945 was officially recovered after three read-only raw driver records; no-launch prepare/rebind/preflight passed and R0181 consumed the candidate in a 120/120 formal cold restore. R0181 h2120 is a clean saved pair with no raw driver tail.",
       "source_commit": "e0b7713859d026426655b6ff769036a39c47db02",
-      "status": "consumed_by_R0179_private_live_perk_trial"
+      "status": "consumed_by_R0181_formal_120_of_120"
     },
     "latest_noncheckpoint_formal_attempt_round": "R0171",
     "latest_read_only_route_observation": {
@@ -470,8 +467,8 @@
       "source_commit": "0342cd889297c96b8d2c0e8dbd73bdfc6d99a091",
       "status": "GREEN_PRIVATE_READ_ONLY"
     },
-    "latest_restore_attempt_round": "R0179",
-    "latest_restore_attempt_status": "private_perk_applied_postcondition_following_strategy_and_h1774_checkpoint_green",
+    "latest_restore_attempt_round": "R0181",
+    "latest_restore_attempt_status": "official_cold_restore_formal_120_of_120_h2120_green",
     "m4_focus_first_primitive": {
       "actor_id": 29829,
       "checkpoint_history_indices": [
@@ -1152,6 +1149,71 @@
         "source_commit": "8c0494e4bbb9cd1578c1dbc87a9ff1781489ca3b",
         "successful_turns": 120,
         "technical_formal_status": "turn_limit_qualified"
+      },
+      {
+        "active_war_ids": [
+          16777231
+        ],
+        "attempted_turns": 120,
+        "checkpoint_pair_status": "raw_driver_three_read_only_tail_official_recovery_required",
+        "checkpoint_save_sha256": "E80D43FE641FFF459C214F2B40EA9CEE9D200328922FA53C3842A53D7A98131A",
+        "checkpoint_turns": 13,
+        "durable_checkpoint_date_raw": 53209200,
+        "durable_game_days": 2703,
+        "durable_game_days_increment": 293,
+        "first_blocker": null,
+        "formal_report_sha256": "F96D3BC5DF024A351F58EA6F667E2B25F4C33EE6A2F99CB222E6869DDDFA0649",
+        "freeze_locator": "g2-robert-r0180-war-green-frozen-20260923/R0180-final-frozen-pair/R0180-raw-freeze.json",
+        "freeze_sha256": "878F7F6EFB4F0D6A7BE3D8032236531A62E3AD17AA9FE13520958FAA505D8851",
+        "gameplay_turns": 40,
+        "last_durable_checkpoint_history_index": 1945,
+        "latest_observed_date_raw": 53209200,
+        "latest_observed_days_are_durable": true,
+        "latest_observed_game_days": 2703,
+        "new_title_acquisitions_proven": 0,
+        "query_turns": 80,
+        "raw_driver_sha256": "67150A63D801BD2FF6CEF31505AE61A7E837F450F55922C897716710AD7370C2",
+        "requested_turns": 120,
+        "result": "completed-green",
+        "round": "R0180",
+        "semantic_audit_sha256": "CA4AE8C9B06C1E391E0E36F63382299FBE81AB4400091F2625D8FBBDCEA864DA",
+        "single_option_no_effect_notice": "religious_interaction.1020_exact_build_option_has_no_scripted_effect",
+        "source_commit": "e0b7713859d026426655b6ff769036a39c47db02",
+        "successful_turns": 120,
+        "technical_formal_status": "turn_limit_qualified"
+      },
+      {
+        "active_war_ids": [
+          16777231
+        ],
+        "attempted_turns": 120,
+        "checkpoint_pair_status": "raw_driver_exact_checkpoint_no_tail",
+        "checkpoint_save_sha256": "266D6F0238EA4AA552D8D6E8C6F3FC6378546310E95CF70BECDD32D485756F0A",
+        "checkpoint_turns": 14,
+        "durable_checkpoint_date_raw": 53215920,
+        "durable_game_days": 2983,
+        "durable_game_days_increment": 280,
+        "first_blocker": null,
+        "formal_report_sha256": "C67B3F2680817433D60FA032CF03EE7B3A133A9AD58A4C9531D841BD5239974A",
+        "freeze_locator": "g2-robert-r0181-war-green-frozen-20260923/R0181-final-frozen-pair/R0181-raw-freeze.json",
+        "freeze_sha256": "11B4F9724E5E179F68B91CD84A1CD720D400F436424033E199F1467740CB712E",
+        "gameplay_turns": 40,
+        "last_durable_checkpoint_history_index": 2120,
+        "last_precheckpoint_war_score": -16,
+        "last_war_score_observed_date_raw": 53215752,
+        "latest_observed_date_raw": 53215920,
+        "latest_observed_days_are_durable": true,
+        "latest_observed_game_days": 2983,
+        "new_title_acquisitions_proven": 0,
+        "query_turns": 80,
+        "raw_driver_sha256": "9AA47032719789412ACEAA88452C19CBF2CBEBA4AB7828DCE3B004308007922A",
+        "requested_turns": 120,
+        "result": "completed-green",
+        "round": "R0181",
+        "semantic_audit_sha256": "F6AA961A811D54FD9C94AC4C1D78E8A2E21DD8FB66919BD553541ECBEFAB1BF0",
+        "source_commit": "e0b7713859d026426655b6ff769036a39c47db02",
+        "successful_turns": 120,
+        "technical_formal_status": "turn_limit_qualified"
       }
     ],
     "recent_nonadvancing_attempts": [
@@ -1426,5 +1488,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T13:17:22+08:00"
+  "updated_at": "2026-09-23T13:43:06+08:00"
 }

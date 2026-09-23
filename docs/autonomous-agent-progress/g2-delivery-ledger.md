@@ -252,3 +252,19 @@ PRV008 原有界 GO、G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** �
 | `cutting_corners_perk` 战时加点 | **私有 primitive GREEN**；M4 in progress、公口 OFF | R0178 h1767 official cold → `e0b7713` 私有 runner；ordinary/xar_off | [R0179 冻结](Z:/ck3_mod_rewrite_process_assets/g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/R0179-raw-freeze.json) SHA `D8C63082...E21CC0`；[report](Z:/ck3_mod_rewrite_process_assets/g2-m4-r0179-perk-green-frozen-20260923/R0179-final-frozen-pair/report.json) SHA `A586D305...545493B`；DLL SHA `3F527D84...9E2D0A` | typed perk receipt `applied`、独立 HasPerk=true；unspent2→1/used4→5；后续正式 one-life 策略消费 receipt 并继续剩余 WarID16777231 的查询；0 日期推进 | 同日 h1774/raw53202168 save `8014519B...4B592`，raw driver `D097CA8D...DAF4B1` 在 checkpoint 后有 #1775 只读尾、需官方恢复；11 copy 只读，进程/owner0 | M4 后续 focus/perk 和治理闭环仍需独立门；战争仅剩一战 active；`/root` 与 M4 owner | 运行资产保留；本状态/报告分支待集成 |
 
 R0175 旧同请求待确认 ACK 的 RED 不倒写成已通过；R0179 是后续新源码/实机的私有阳性。Robert 持久 **2,410/36,524**、PRV008 GO、G2 **3/8**、百年/首整局/种子 **0/1、0/1、0/2** 均不变。
+
+## 2026-09-23 R0180 罗贝尔有界正式续行增量
+
+| 交付缺口 / 能力 | 状态 | 正式入口 | 制品 / commit | 实机与后续消费证据 | 恢复证据 | B0/B1 缺口 / 负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| R0180 Robert 剩余防御战续行 | **有界 120/120 GREEN**；Robert 持久 **2,703/36,524**（+293），战争仍 active | R0179 h1774 官方配对冷恢复 → formal120；source `e0b7713`；ordinary/xar_off | [冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0180-war-green-frozen-20260923/R0180-final-frozen-pair/R0180-raw-freeze.json) SHA `878F7F6E...505D8851`；[语义审计](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0180-war-green-frozen-20260923/R0180-semantic-audit.json) SHA `CA4AE8C9...A864DA` | query80/gameplay40/checkpoint13；唯一 `religious_interaction.1020` 通知选项经 exact-build 脚本证实无选项效果，独立后置及下一 turn 消费；WarID16777231 仍 active，titles/domain 未变，无本轮新征服 | h1945/raw53209200 save `E80D43FE...A98131A`、driver `67150A63...370C2`；raw1948 的3条只读尾由官方投影 retained1945，原件未裁切；进程/owner0 | 继续最后一场防御战及主线；无通用宗教策略资格；`/root` | 冻结运行资产保留；本状态/报告分支待集成 |
+
+R0180 增量不重复累计 R0179 同日存档；PRV008 有界 GO、G2 **3/8**，百年/首整局/种子门 **0/1、0/1、0/2** 不变。
+
+## 2026-09-23 R0181 罗贝尔再续行增量
+
+| 交付缺口 / 能力 | 状态 | 正式入口 | 制品 / commit | 实机与后续消费证据 | 恢复证据 | B0/B1 缺口 / 负责人 | 分支清理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| R0181 Robert 剩余防御战续行 | **有界 120/120 GREEN**；Robert 持久 **2,983/36,524**（再+280） | R0180 h1945 official cold → formal120；source `e0b7713`；ordinary/xar_off | [冻结清单](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0181-war-green-frozen-20260923/R0181-final-frozen-pair/R0181-raw-freeze.json) SHA `11B4F972...40CB712E`；[语义审计](Z:/ck3_mod_rewrite_process_assets/g2-robert-r0181-war-green-frozen-20260923/R0181-semantic-audit.json) SHA `F6AA961A...BEFAB1BF0` | query80/gameplay40/checkpoint14；40 gameplay均为 WarID16777231 七日目标守候；终帧战争仍 active，titles/domain 未变、未证明新征服；-16 是 h2120 前查询 | h2120/raw53215920 save `266D6F02...85756F0A`、driver `9AA47032...07922A`；官方 raw/retained2120/drop0；进程/owner0 | 剩余战争仍待合法终局，继续标准封建主线；`/root` | 冻结运行资产保留；本状态/报告分支待集成 |
+
+R0180 +293 与 R0181 +280 各计一次，Robert 累计 **2,983/36,524**；PRV008 有界 GO、G2 **3/8**、百年/首整局/种子门 **0/1、0/1、0/2** 不变。
