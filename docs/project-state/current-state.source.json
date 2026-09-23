@@ -1,7 +1,7 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-23T11:15:43+08:00",
+  "updated_at": "2026-09-23T11:52:32+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
@@ -480,7 +480,7 @@
       "third_acquired_province_id": 2638,
       "domain_limit": 6,
       "latest_freeze_manifest_status": "R0171_frozen_read_only_raw_attempt_no_new_checkpoint",
-      "mainline_status": "stopped_pending_same_checkpoint_route_intent_diagnosis_after_R0171",
+      "mainline_status": "stopped_after_R0174_private_route_readback_pending_formal_war_consumption",
       "latest_product_status": "RED",
       "latest_formal_active_war_scores": [
         0,
@@ -492,7 +492,10 @@
       "latest_final_observed_source": "R0171_raw53194440_same_as_h1333_checkpoint",
       "latest_formal_war_scores_scope": "R0171_same_checkpoint_paused_frame",
       "latest_formal_attempt_round": "R0171",
-      "latest_formal_attempt_status": "completed_red_no_gameplay_no_new_checkpoint"
+      "latest_formal_attempt_status": "completed_red_no_gameplay_no_new_checkpoint",
+      "latest_restore_attempt_round": "R0174",
+      "latest_restore_harness_status": "GREEN_private_paused_route_readback",
+      "prior_formal_war_red_still_open": true
     },
     "m4_focus_first_primitive": {
       "round": "R0142",
@@ -964,6 +967,86 @@
           "operator_manifest_sha256": "D4BE5E96E696F1F503870687297B07FE4FC060DE08F8008B2A613A25129FB2EB"
         },
         "scope": "Official cold restore and four successful query turns only; no gameplay, date, new durable checkpoint, war resolution, or stage-gate credit."
+      },
+      {
+        "round": "R0172",
+        "status": "prelaunch-red",
+        "failure_domain": "snapshot_entry_profile_fingerprint",
+        "business_result": "NOT_EVALUATED",
+        "harness_result": "RED",
+        "lifecycle_result": "GREEN",
+        "source_commit": "0342cd889297c96b8d2c0e8dbd73bdfc6d99a091",
+        "contacted_ck3": false,
+        "paused_snapshots": 0,
+        "gameplay_actions": 0,
+        "date_advanced_days": 0,
+        "checkpoint_history_index": 1333,
+        "checkpoint_date_raw": 53194440,
+        "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
+        "error": "game-rule source/profile fingerprint differs",
+        "root_cause": "snapshot CLI did not pass prepared_xar_enabled=xar_off; native_session default xar_on conflicted with ordinary_campaign_succession/xar_off",
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "no_launch_index_locator": "g2-robert-r0172-h1333-master0342-snapshot-lifecycle-fix-20260923/checks/R0172-LIFECYCLE-FIX-NO-LAUNCH-INDEX.json",
+          "no_launch_index_sha256": "09B12B88F48D0CE0711C9A66FEB49FF683A4738A72F1B99EEEFBF97751F27525",
+          "repaired_entry_locator": "g2-robert-r0172-h1333-master0342-snapshot-lifecycle-fix-20260923/checks/R0172-SNAPSHOT-LIVE-ENTRY.json",
+          "repaired_entry_sha256": "3F64AACEF257B02F5951701FF412EA52AA766D2508DC93EEC08EEEBA031CEA07"
+        },
+        "scope": "R0172 failed before CK3 launch due to a prepared xar_off versus implicit xar_on profile fingerprint mismatch. The repaired snapshot entry passed offline checks only; it did not prove MCP lifecycle ingest or a paused game snapshot."
+      },
+      {
+        "round": "R0173",
+        "status": "mcp-ingest-red",
+        "failure_domain": "persisted_succession_lifecycle_frozen_profile_mismatch",
+        "business_result": "NOT_EVALUATED",
+        "harness_result": "RED",
+        "lifecycle_result": "GREEN",
+        "source_commit": "0342cd889297c96b8d2c0e8dbd73bdfc6d99a091",
+        "contacted_ck3": true,
+        "ck3_pid": 74152,
+        "native_session_cold_start_reported": true,
+        "native_session_ready": true,
+        "paused_snapshots": 0,
+        "gameplay_actions": 0,
+        "date_advanced_days": 0,
+        "checkpoint_history_index": 1333,
+        "checkpoint_date_raw": 53194440,
+        "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
+        "raw_driver_sha256": "E5A3C1015C9F656BFF43E71F169E05CE04C9AF433B1F87E05C5536030AE23B18",
+        "raw_driver_requires_official_recovery_before_reuse": true,
+        "error": "persisted succession lifecycle differs from the frozen run profile",
+        "official_stop_response_ok": true,
+        "session_shutdown_exit_code": 0,
+        "cleanup_proven": true,
+        "managed_process_count_after_cleanup": 0,
+        "owner_released": true,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "freeze_locator": "g2-robert-r0173-mcp-lifecycle-red-frozen-20260923/R0173-final-frozen-pair/R0173-raw-freeze.json",
+          "freeze_sha256": "F19A62FF60C1873067E5FF6BE487F97832F5AAE049E9CD0DC3794602D069B71A",
+          "freeze_manifest_status": "hash_verified_os_read_only_15_of_15",
+          "mcp_stderr_locator": "g2-robert-r0173-mcp-lifecycle-red-frozen-20260923/R0173-final-frozen-pair/probe/mcp-stderr.log",
+          "mcp_stderr_sha256": "CDF51CB62F9DA927E2F36918DB98F64A35615EC1B9BDBCAE5C9E01F00A98D002",
+          "copied_file_count": 15,
+          "copied_files_read_only": true,
+          "seal_locator": "g2-robert-r0173-mcp-lifecycle-red-frozen-20260923/R0173-seal-verified.json",
+          "seal_sha256": "4C521BDBDC4CC9470090F47A92977336F57ED32A86D888CAC3466BD79A8E0226"
+        },
+        "scope": "R0173 launched a new CK3 process and reached native-session ready, but MCP pipe ingest rejected persisted succession lifecycle before any paused snapshot, typed action or date advance. The official stop and shutdown returned successfully and all managed processes and owner were released. This is a harness RED with no new war strategy observation; h1333 remains the durable checkpoint."
+      },
+      {
+        "round": "R0174",
+        "status": "green-private-read-only",
+        "business_result": "NOT_EVALUATED",
+        "harness_result": "GREEN",
+        "lifecycle_result": "GREEN",
+        "contacted_ck3": true,
+        "paused_snapshots": 1,
+        "gameplay_actions": 0,
+        "date_advanced_days": 0,
+        "checkpoint_history_index": 1333,
+        "observation_index_sha256": "4BC100E01ED068DE094EEEA94FB99B3228635BB6E14BEE432ECA3D77E10B9269",
+        "scope": "Private MCP native route readback only; h1333 durable checkpoint unchanged and formal war action still pending."
       }
     ],
     "recent_noncheckpoint_formal_attempts": [
@@ -1085,7 +1168,87 @@
         "scope": "R0171 cold-restored the same R0169 h1333 checkpoint on source 2100ee2 and completed 5/6 formal turns, all queries, with no gameplay, checkpoint or date advance. The latest observation is date53194440, equal to the saved checkpoint; Robert durable days remain 2088/36524. The planner now requests a complete matching active native move intent route. Its relation to repeated same-checkpoint restore and the prior arrival observation remains under investigation, with no war resolution or new G2 gate credit."
       }
     ],
-    "latest_noncheckpoint_formal_attempt_round": "R0171"
+    "latest_noncheckpoint_formal_attempt_round": "R0171",
+    "latest_restore_attempt_round": "R0174",
+    "latest_restore_attempt_status": "private_mcp_paused_route_readback_green_formal_war_pending",
+    "latest_no_launch_candidate": {
+      "status": "private_snapshot_readback_green_formal_war_pending",
+      "source_commit": "0342cd889297c96b8d2c0e8dbd73bdfc6d99a091",
+      "profile": "ordinary_campaign_succession/xar_off",
+      "checkpoint_history_index": 1333,
+      "checkpoint_date_raw": 53194440,
+      "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
+      "prepared_driver_sha256": "715ACC4AC3014A0C0F4936C31BCA422A6091768792557EA659D31D941638F473",
+      "gameplay_actions": 0,
+      "game_days_advanced": 0,
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "preflight_locator": "g2-robert-r0173-h1333-master0342-mcp-lifecycle-fix-20260923/state/preflights/20260923T034253Z-one-generation-preflight-35c35d02/report.json",
+        "preflight_sha256": "EC49C6DB049A823A61E0FE8DC2F1907D1943E230A9D23DF5A21CA0406526C566",
+        "semantic_boundary_locator": "g2-robert-r0173-h1333-master0342-mcp-lifecycle-fix-20260923/checks/prepared-semantic-boundary.json"
+      },
+      "scope": "Official prepare/rebind/preflight is ready without CK3 launch. MCP lifecycle ingest and paused snapshot readback remain unproven; this candidate does not clear R0173 harness RED or R0171 war strategy RED."
+    },
+    "m4_wartime_perk_candidate": {
+      "pr_number": 163,
+      "pr_head": "f8dc408344fe40e66d4387e67b2f02abd97eb59e",
+      "status": "master_integrated_live_pending",
+      "public_advertised": false,
+      "typed_perk_action_proven": false,
+      "scope": "Wartime perk checkpoint code candidate; private R0167 readback remains the latest live lifestyle evidence, with no M4 typed/perk loop promotion.",
+      "static_ci_status": "passed",
+      "integrated_master_commit": "f8dc408344fe40e66d4387e67b2f02abd97eb59e",
+      "source_cleanup": "complete"
+    },
+    "latest_read_only_route_observation": {
+      "round": "R0174",
+      "status": "GREEN_PRIVATE_READ_ONLY",
+      "business_result": "NOT_EVALUATED",
+      "harness_result": "GREEN",
+      "lifecycle_result": "GREEN",
+      "source_commit": "0342cd889297c96b8d2c0e8dbd73bdfc6d99a091",
+      "source_checkpoint_round": "R0169",
+      "checkpoint_history_index": 1333,
+      "checkpoint_date_raw": 53194440,
+      "checkpoint_save_sha256": "2B8933FCD6AC1DBE29EA2796AB07AE722F0585658EA1BE01380C87FF8097F98A",
+      "episode_character_id": 29829,
+      "episode_run_id": "native-29829-2bc2d599f7f9",
+      "snapshot_id": "native:3",
+      "snapshot_revision": 4,
+      "native_revision": 3,
+      "army_id": 83886367,
+      "army_current_province_id": 2624,
+      "army_move_target_province_id": 2619,
+      "army_route_province_ids": [
+        2619
+      ],
+      "army_controllable": true,
+      "army_state": "moving",
+      "gameplay_actions": 0,
+      "date_advanced_days": 0,
+      "robert_durable_game_days": 2088,
+      "cleanup_proven": true,
+      "managed_process_count_after_cleanup": 0,
+      "owner_released": true,
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "observation_index_locator": "g2-robert-r0173-h1333-master0342-mcp-lifecycle-fix-20260923/read-only-mcp-probe-R0174/observation-index.json",
+        "observation_index_sha256": "4BC100E01ED068DE094EEEA94FB99B3228635BB6E14BEE432ECA3D77E10B9269",
+        "freeze_locator": "g2-robert-r0174-snapshot-green-frozen-20260923/R0174-final-frozen-pair/R0174-raw-freeze.json",
+        "freeze_sha256": "9D727162162AF9FE65430D8ED2BB77AB8422C704FF15390A8585909F90226FF0",
+        "freeze_manifest_status": "hash_verified_os_read_only_24_of_24",
+        "seal_locator": "g2-robert-r0174-snapshot-green-frozen-20260923/R0174-seal-check.json",
+        "seal_sha256": "CA10F99FA6FDA55C0A64FA15C2D1CFC931D2858D540019A8136A23F10E498BFF",
+        "official_semantic_boundary_sha256": "7399AF666D769581097CAF6FA8F4F04E36CD273D5A246601C3F4D20F62DCC769",
+        "official_semantic_boundary_locator": "g2-robert-r0174-snapshot-green-frozen-20260923/R0174-official-next-pair-boundary.json"
+      },
+      "scope": "R0174 proves a private exact-build paused MCP snapshot readback of the matching episode/date and the native player-army route 2624 to 2619. It has no typed gameplay action, date advance, formal war planner consumption or independent war postcondition. R0173 harness RED remains historical and R0171 formal war RED remains open.",
+      "raw_driver_sha256": "D594512C6FDCB1ECD8823F9F3FC600C2905BB7EFDAB7CB1AE33DF30EFCF823DE",
+      "raw_driver_history_count": 1336,
+      "official_next_pair_history_before": 1336,
+      "official_next_pair_history_after": 1336,
+      "official_next_pair_tail_drop_count": 0
+    }
   },
   "t2": {
     "priority": "T2",
