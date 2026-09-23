@@ -42,6 +42,34 @@ inline constexpr std::string_view kPlayerLifestyleFormalPrivateSubmitFocusStepV1
 inline constexpr std::string_view kPlayerLifestyleFormalPrivateReceiptStepV1 =
     "private-query-player-lifestyle-receipt-v1";
 
+inline bool PlayerLifestylePolicyStockPerkTargetAdmittedV1(
+    std::string_view target) noexcept {
+  return target == kStockPerkLegalityTargetV1 ||
+         target == kStockPerkLegalityFollowupTargetV1;
+}
+
+// The first domain perk is the parent of professional_workforce_perk. A
+// windowless formal query reads one exact native target for the observed
+// ownership state; submit recomputes that target on the same paused frame.
+inline std::string_view PlayerLifestylePolicyStockPerkTargetV1(
+    const game::PlayerLifestyleSnapshotV1 &snapshot) noexcept {
+  if (snapshot.status != game::PlayerLifestyleSnapshotStatusV1::available ||
+      !snapshot.readiness.owned_perks_ready ||
+      snapshot.state.owned_perk_count >
+          game::kPlayerLifestyleWindowMaximumPerksV1) {
+    return {};
+  }
+  for (std::uint32_t index = 0;
+       index < snapshot.state.owned_perk_count; ++index) {
+    if (PlayerLifestyleStableKeyViewV1(
+            snapshot.state.owned_perk_keys[index]) ==
+        kStockPerkLegalityTargetV1) {
+      return kStockPerkLegalityFollowupTargetV1;
+    }
+  }
+  return kStockPerkLegalityTargetV1;
+}
+
 // Proof belongs to the published native frame, not the pump that happens to
 // execute a read/query/action. This is the bridge's observed state revision.
 inline std::uint64_t PlayerLifestyleFormalFrameProofEpochV1(

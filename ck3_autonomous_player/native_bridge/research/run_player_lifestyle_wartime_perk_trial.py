@@ -25,7 +25,8 @@ from run_player_lifestyle_three_query_readback import (
 SCHEMA = "xar.ck3.g2_m4_wartime_perk_action_candidate_v1"
 REPORT_SCHEMA = "xar.ck3.g2_m4_wartime_perk_action_live_v1"
 ROOT_STEP = "query-campaign-root-context-v1"
-TARGET = "cutting_corners_perk"
+TARGETS = frozenset({"cutting_corners_perk", "professional_workforce_perk"})
+DEFAULT_TARGET = "cutting_corners_perk"
 STOP_RESERVE_SECONDS = 15.0
 
 
@@ -77,6 +78,7 @@ def choose_one_wartime_perk(
     save_paired_checkpoint: Callable[[], dict[str, object]],
     plan_current_turn: Callable[[], dict[str, object]],
     plan_following_turn: Callable[[], dict[str, object]],
+    expected_target: str = DEFAULT_TARGET,
 ) -> dict[str, object]:
     """Reuse the private formal action/receipt, then consume and checkpoint it."""
 
@@ -89,12 +91,14 @@ def choose_one_wartime_perk(
     from xar_autoplayer.lifestyle_min_policy import (
         WAR_PERK_POLICY_ID, choose_min_feudal_lifestyle_action,
     )
+    _need(expected_target in TARGETS, "wartime perk target is not admitted")
 
     starting_snapshot = driver.take_snapshot()
     starting = _frame(starting_snapshot)
     record: dict[str, object] = {
         "status": "ineligible_scene", "starting_frame": starting,
         "gameplay_actions": 0, "date_advanced": False,
+        "expected_target_key": expected_target,
     }
     if not _valid_start(starting, manifest):
         return record
@@ -151,11 +155,13 @@ def choose_one_wartime_perk(
         or decision.get("status") != "recommend_action"
         or not isinstance(action, dict)
         or action.get("kind") != "perk"
-        or action.get("target_key") != TARGET
+        or action.get("target_key") != expected_target
         or not isinstance(observed, dict)
     ):
         record.update(status="no_legal_wartime_perk", reason=decision.get("status"))
         return record
+    target = action["target_key"]
+    record["target_key"] = target
     before_progress = observed.get("current_lifestyle_progress")
     _need(isinstance(before_progress, dict), "pre-action point row is absent")
     pre_unspent = before_progress.get("unspent_perk_points")
@@ -240,7 +246,7 @@ def choose_one_wartime_perk(
         and post_state.get("player_character_id") == starting["played_character_id"]
         and post_state.get("episode_run_id") == starting["episode_run_id"]
         and post_state.get("current_focus") == observed.get("current_focus")
-        and TARGET in post_state.get("owned_perk_keys", [])
+        and target in post_state.get("owned_perk_keys", [])
         and isinstance(progress, dict)
         and progress.get("lifestyle_key") == "stewardship_lifestyle"
         and progress.get("unspent_perk_points") == pre_unspent - 1
@@ -290,12 +296,14 @@ def choose_one_wartime_perk(
     return record
 
 
-def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
+def run(candidate_root: Path, round_id: str, evidence: Path,
+        *, expected_target: str = DEFAULT_TARGET) -> int:
     spec, manifest, ready = preflight(
         candidate_root, expected_schema=SCHEMA, expected_read_only=False
     )
     _need(round_id.startswith("R") and round_id[1:].isdigit(),
           "sole operator must allocate a new R{n}")
+    _need(expected_target in TARGETS, "wartime perk target is not admitted")
     evidence = _non_c_task_path(evidence, "round evidence directory")
     _need(not evidence.exists(), "round evidence directory already exists")
     evidence.mkdir(parents=True)
@@ -311,6 +319,7 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
         "source_driver_sha256": manifest["source_driver_sha256"],
         "preflight": ready, "status": "unexecuted", "started_at": _now(),
         "public_registered_or_advertised": False,
+        "expected_target_key": expected_target,
     }
     locks = ExitStack()
     driver = None
@@ -412,6 +421,7 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
             save_paired_checkpoint=checkpoint,
             plan_current_turn=service.plan_turn,
             plan_following_turn=service.plan_turn,
+            expected_target=expected_target,
         )
         report["status"] = report["trial"]["status"]
     except BaseException as error:
@@ -467,7 +477,11 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
 
 
 def main() -> int:
-    args = parser(description=__doc__).parse_args()
+    command_parser = parser(description=__doc__)
+    command_parser.add_argument(
+        "--expected-perk", choices=sorted(TARGETS), default=DEFAULT_TARGET,
+    )
+    args = command_parser.parse_args()
     if args.prepare_only:
         required = (
             "python_source_repo", "native_source_repo",
@@ -492,7 +506,10 @@ def main() -> int:
         return 0
     _need(args.round is not None and args.evidence is not None,
           "live mode requires allocated --round and fresh --evidence")
-    return run(args.candidate_root, args.round, args.evidence)
+    return run(
+        args.candidate_root, args.round, args.evidence,
+        expected_target=args.expected_perk,
+    )
 
 
 if __name__ == "__main__":

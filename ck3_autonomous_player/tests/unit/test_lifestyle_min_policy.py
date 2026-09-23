@@ -123,6 +123,43 @@ class LifestyleMinPolicyTests(unittest.TestCase):
             result["selected_action"]["target_key"], "cutting_corners_perk"
         )
 
+    def test_owned_parent_selects_final_legal_professional_workforce_once(self) -> None:
+        snapshot = _complete_snapshot()
+        snapshot["owned_perk_keys"].append("cutting_corners_perk")
+        snapshot["legal_perk_candidates"]["items"] = [{
+            "key": "professional_workforce_perk",
+            "lifestyle_key": "stewardship_lifestyle",
+        }]
+        selected = choose_min_feudal_lifestyle_action(
+            snapshot, feudal_scope_admitted=True, at_peace=False,
+            allow_wartime_perk=True,
+        )
+        self.assertEqual(selected["status"], "recommend_action")
+        self.assertEqual(
+            selected["selected_action"]["target_key"],
+            "professional_workforce_perk",
+        )
+        self.assertEqual(
+            selected["selected_action"]["reason"],
+            "feudal_build_speed_modifier_minus_30_percent",
+        )
+        snapshot["owned_perk_keys"].append("professional_workforce_perk")
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+
+    def test_second_perk_requires_owned_parent_point_and_final_legality(self) -> None:
+        snapshot = _complete_snapshot()
+        snapshot["legal_perk_candidates"]["items"] = [{
+            "key": "professional_workforce_perk",
+            "lifestyle_key": "stewardship_lifestyle",
+        }]
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        snapshot["owned_perk_keys"].append("cutting_corners_perk")
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 0
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 1
+        snapshot["legal_perk_candidates"]["items"] = []
+        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+
     def test_absent_focus_requires_exact_target_progress_source(self) -> None:
         snapshot = _complete_snapshot()
         snapshot["current_focus"] = {"presence": "absent"}

@@ -85,6 +85,12 @@ int main() {
         std::make_unique<game::PlayerLifestyleSelectionPreconditionV1>();
     FillState(*state);
     FillCandidates(*candidates);
+    Require(ck3::PlayerLifestylePolicyStockPerkTargetV1(*state) ==
+            ck3::kStockPerkLegalityTargetV1);
+    Require(ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
+                ck3::kStockPerkLegalityFollowupTargetV1) &&
+            !ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
+                "unreviewed_perk"));
     const auto episode = "native-29829-ee172aa720db";
     const std::uint64_t query_pump = 31;
     const std::uint64_t action_pump = 32;
@@ -145,6 +151,21 @@ int main() {
             state->state.legal_focus_candidate_status ==
                 game::PlayerLifestyleCandidateCollectionStatusV1::
                     unavailable);
+    state->state.owned_perk_count = 1;
+    Require(ck3::AssignPlayerLifestyleStableKeyV1(
+        ck3::kStockPerkLegalityTargetV1,
+        state->state.owned_perk_keys[0]));
+    Require(ck3::PlayerLifestylePolicyStockPerkTargetV1(*state) ==
+            ck3::kStockPerkLegalityFollowupTargetV1);
+    Require(ck3::AssignPlayerLifestyleWindowStableKeyV1(
+        ck3::kStockPerkLegalityFollowupTargetV1,
+        candidates->perks[0].key));
+    Require(ck3::BuildPlayerLifestyleFormalPreconditionV1(
+                *state, *candidates, episode, *out) ==
+                ck3::PlayerLifestyleFormalPreconditionResultV1::ready &&
+            ck3::PlayerLifestyleWindowStableKeyViewV1(
+                out->candidates.perks[0].key) ==
+                ck3::kStockPerkLegalityFollowupTargetV1);
     ++candidates->public_revision;
     Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(
                 candidates->public_revision, action_pump) !=
@@ -214,7 +235,7 @@ int main() {
     Require(ck3::BuildPlayerLifestyleStockFocusPreconditionV1(
                 *state, stock, episode, *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::frame_mismatch);
-    std::cout << "player_lifestyle_formal_precondition_v1_test: 12/12 GREEN\n";
+    std::cout << "player_lifestyle_formal_precondition_v1_test: 16/16 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

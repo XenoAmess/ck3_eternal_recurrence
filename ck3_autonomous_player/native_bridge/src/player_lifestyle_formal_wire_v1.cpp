@@ -402,11 +402,17 @@ bool ReadCandidates(PlayerLifestyleFormalWireContextV1 &context) noexcept {
   }
   const auto stock_environment = BindStockPerkLegalityEnvironmentV1(
       context.module_base, true, kStockPerkLegalityExeSha256V1);
-  const StockPerkLegalityAccessV1 stock_access{
+  StockPerkLegalityAccessV1 stock_access{
       &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
       &ReadStockPerkPlayerState};
+  const auto target = PlayerLifestylePolicyStockPerkTargetV1(*context.snapshot);
+  if (target.empty()) {
+    context.failure = "native_lifestyle_windowless_policy_perk_ownership_unavailable";
+    return false;
+  }
+  stock_access.read_target_player_state = &ReadStockPerkTargetPlayerState;
   context.stock_perk_result =
-      ReadStockPerkLegalityV1(stock_environment, stock_access);
+      ReadStockPerkLegalityV1(stock_environment, stock_access, target);
   if (!PublishStockPerkCandidates(context.stock_perk_result,
                                   *context.candidates)) {
     context.failure = "native_lifestyle_windowless_policy_perk_";
@@ -484,7 +490,10 @@ bool SubmitSelection(void *opaque, game::PlayerLifestyleSelectionKindV1 kind,
   if (context->stock_perk_result.status ==
           StockPerkLegalityStatusV1::observed_native_legal &&
       PlayerLifestyleWindowStableKeyViewV1(key) ==
-          kStockPerkLegalityTargetV1 &&
+          PlayerLifestyleWindowStableKeyViewV1(
+              context->stock_perk_result.target_key) &&
+      PlayerLifestylePolicyStockPerkTargetAdmittedV1(
+          PlayerLifestyleWindowStableKeyViewV1(key)) &&
       context->stock_perk_result.target_definition != 0) {
     context->native_submit.last_result =
         DispatchResolvedPlayerLifestylePerkNativeAdapterV1(

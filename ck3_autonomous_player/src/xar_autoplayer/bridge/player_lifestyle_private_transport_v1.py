@@ -21,6 +21,31 @@ FOCUS_SUBMIT_STEP = "private-select-player-lifestyle-stock-focus-v1"
 RECEIPT_STEP = "private-query-player-lifestyle-receipt-v1"
 FOCUS_TARGET = "stewardship_wealth_focus"
 FOCUS_LIFESTYLE = "stewardship_lifestyle"
+PERK_TARGETS = frozenset({"cutting_corners_perk", "professional_workforce_perk"})
+
+
+def _target_in_final_legal_perks(
+    query: Mapping[str, object], target: str, lifestyle: object
+) -> bool:
+    snapshot = query.get("snapshot")
+    if not isinstance(snapshot, Mapping):
+        return False
+    readiness = snapshot.get("readiness")
+    candidates = snapshot.get("legal_perk_candidates")
+    if not (
+        isinstance(readiness, Mapping)
+        and readiness.get("legal_perk_candidates_ready") is True
+        and isinstance(candidates, Mapping)
+        and candidates.get("status") == "available"
+        and isinstance(candidates.get("items"), list)
+    ):
+        return False
+    return any(
+        isinstance(row, Mapping)
+        and row.get("key") == target
+        and row.get("lifestyle_key") == lifestyle
+        for row in candidates["items"]
+    )
 
 
 def _positive_int(value: object) -> bool:
@@ -423,7 +448,12 @@ def _submit_player_lifestyle_selection_private_v1(
         and isinstance(expected, Mapping)
         and action.get("kind") == kind
         and isinstance(target, str)
-        and target == (FOCUS_TARGET if focus_action else "cutting_corners_perk")
+        and (target == FOCUS_TARGET if focus_action else target in PERK_TARGETS)
+        and (
+            focus_action or _target_in_final_legal_perks(
+                query, target, action.get("target_lifestyle_key")
+            )
+        )
         and starting.get("paused") is True
         and starting.get("snapshot_id") == source.get("snapshot_id")
         and starting.get("revision") == source.get("revision") == expected_revision

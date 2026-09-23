@@ -81,6 +81,7 @@ class _State:
         self.focus_legal = True
         self.formal_focus_absent = False
         self.stock_focus_present = False
+        self.professional_workforce_ready = False
 
     def wait_for_command_result(self, request_id: str, _: float) -> dict[str, object]:
         assert self.last is not None and self.last["request_id"] == request_id
@@ -104,6 +105,14 @@ class _State:
                     "error": "native_lifestyle_state_or_final_candidates_unavailable"}
         if step == QUERY_STEP:
             life = _life_snapshot()
+            if self.professional_workforce_ready:
+                life["owned_perk_keys"] = ["cutting_corners_perk"]
+                life["current_lifestyle_progress"]["unspent_perk_points"] = 2
+                life["current_lifestyle_progress"]["used_perk_points"] = 5
+                life["legal_perk_candidates"]["items"] = [{
+                    "key": "professional_workforce_perk",
+                    "lifestyle_key": "stewardship_lifestyle",
+                }]
             if self.formal_focus_absent:
                 life["current_focus"] = {"presence": "absent"}
                 life["current_lifestyle_progress"] = {"presence": "absent"}
@@ -205,6 +214,69 @@ class _Driver:
 
 
 class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
+    def test_professional_workforce_formal_choice_typed_receipt_and_next_turn(self) -> None:
+        driver = _Driver()
+        driver.state.professional_workforce_ready = True
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        service = GameplayBridgeService(driver)
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "life-advance", "phase": "wartime"},
+        ):
+            plan = service.plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(
+            plan["lifestyle_action"]["target_key"],
+            "professional_workforce_perk",
+        )
+        pending = submit_player_lifestyle_perk_private_v1(
+            driver, query=plan["lifestyle_query"],
+            action=plan["lifestyle_action"], expected_revision=3,
+        )
+        self.assertEqual(pending["status"], "submitted_verification_pending")
+        self.assertEqual(driver.state.last["target_key"], "professional_workforce_perk")
+        driver.frame = _game_frame(4)
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        applied = query_player_lifestyle_receipt_private_v1(
+            driver, pending=pending, expected_revision=4,
+        )
+        self.assertTrue(applied["post_target_perk_owned"])
+        self.assertTrue(applied["postcondition_verified"])
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "life-advance", "phase": "wartime"},
+        ):
+            following = service.plan_turn()["plan"]
+        self.assertEqual(
+            following["lifestyle_receipt_consumed"]["action_request_id"],
+            pending["action_request_id"],
+        )
+        self.assertEqual(sum(
+            row["command"] == PERK_SUBMIT_STEP
+            and row["result"]["status"] == "submitted_verification_pending"
+            for row in driver.history
+        ), 1)
+
+    def test_professional_workforce_cannot_submit_without_matching_final_row(self) -> None:
+        driver = _Driver()
+        driver.state.professional_workforce_ready = True
+        query = driver.query_player_lifestyle_formal_private_v1(expected_revision=3)
+        scope = same_frame_feudal_lifestyle_scope(driver.frame, _scope_root())
+        plan = consume_lifestyle_private_query(
+            {"selected_step": "life-advance"}, scope=scope, query=query,
+        )
+        self.assertEqual(plan["selected_step"], PERK_SUBMIT_STEP)
+        query["snapshot"]["legal_perk_candidates"]["items"] = []
+        with self.assertRaisesRegex(Exception, "final-legal same-frame binding"):
+            submit_player_lifestyle_perk_private_v1(
+                driver, query=query, action=plan["lifestyle_action"],
+                expected_revision=3,
+            )
+        self.assertFalse(any(
+            row["command"] == PERK_SUBMIT_STEP for row in driver.history
+        ))
+
     def test_wartime_perk_waits_when_war_planner_has_a_step(self) -> None:
         driver = _Driver()
         driver.frame["active_wars"] = [{"war_id": 16777250}]

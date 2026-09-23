@@ -1,5 +1,21 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+R0183 在 CK3 `1.19.0.6-steam23530548` 冻结 EXE、Robert 29829
+h2120/raw53215920 同一 paused `native:3` 帧，原生 `CanSelectPerk`
+两次一致地确认 `professional_workforce_perk` 最终合法，且目标未拥有、
+管家生活方式未花点为 2、已花点为 5。独立后帧未推进日期或动作；报告 SHA-256
+`D60B4555E935A739FC0199F151CDE7F2F0B2DD34951557526E53A02535E9B8E7`，
+见 [专项证据](lifestyle-professional-workforce-readback-entry.md)。下图
+`cutting_corners → professional_workforce` 的 parent 边因此有本帧原生最终合法互证；
+typed 选取、独立 HasPerk/点数后置与下一正式 turn 仍待新帧验证。
+
+```mermaid
+flowchart LR
+  A[cutting_corners 已拥有] --> B[professional_workforce parent 满足]
+  B --> C[R0183 同帧原生 CanSelectPerk 两次合法]
+  C -. 新帧 typed / HasPerk / 点数 / 下一 turn 尚未实测 .-> D[正式第二技能闭环]
+```
+
 ## 状态与适用范围
 
 - **证据状态**：原版选择树仍为 `static-confirmed`；R0112 对当前玩家的固定财富重心最终合法性有一条 `production-live primitive` 私有只读证据，不等于原版 NPC 排名、正式策略消费或动作。

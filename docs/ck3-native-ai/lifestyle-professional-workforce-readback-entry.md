@@ -1,7 +1,7 @@
 # M4-B0: professional workforce final-legality readback
 
-Status: **static-ready, live readback pending**. This is one private read-only
-target, not full perk enumeration, a typed perk action, or a public capability.
+Status: **production-live private readback for one exact target**. This is not
+full perk enumeration, a typed perk action, or a public capability.
 The existing M4 two-year peaceful-governance gate remains open.
 
 ## Why this target
@@ -58,5 +58,58 @@ cutting-corners verdict cannot certify this different target or a later frame.
 The exact ABI and offsets are in
 `native_bridge/research/player_lifestyle_stock_perk_legality_v1_abi.json`.
 `lifestyle-focus-perk-ai.md` remains the decision-tree source. The still-open
-branch is live final legality on the next paired Robert checkpoint, followed
-only if legal by a distinct typed-action/receipt/next-turn package.
+branch is typed action/receipt/next-turn on a fresh matching frame.
+
+## R0183 exact-build result and next action boundary
+
+R0183 restored the official R0181 Robert h2120/raw53215920 frozen pair in an
+independent `ordinary_campaign_succession/xar_off` profile under the frozen
+game directory. The private query returned `observed_native_legal` for
+`professional_workforce_perk`, `target_perk_owned=false`, stewardship
+`unspent_perk_points=2`, `used_perk_points=5`, and `validator_invoked_twice=true`
+on paused `native:3` for actor 29829. The independent after-frame retained
+the same actor, date, episode and native revision. Gameplay actions and date
+advance were both zero; the CK3/job/watchdog tree was reclaimed and owner
+released. Report:
+`Z:/ck3_mod_rewrite_process_assets/g2-m4-professional-workforce-r0183-robert-readonly-20260923/runner-evidence/report.json`,
+SHA-256 `D60B4555E935A739FC0199F151CDE7F2F0B2DD34951557526E53A02535E9B8E7`.
+The exact readback step SHA-256 is
+`C50277EA1F6632BDD1BDDE9EE77C35A7415E7E14704C2DA8299CDD5F352D7835`.
+The response identifies `stewardship_lifestyle`; it does not by itself return
+the exact current focus key.
+
+The typed path must obtain a new formal same-frame LIFE2 state and final
+legal candidate, then submit one `professional_workforce_perk` action through
+the existing private typed step. ACK remains pending until an independently
+captured paused HasPerk and point-count receipt, followed by next-turn
+consumption and official paired checkpoint/recovery. R0183's read-only
+verdict cannot be reused as the submit frame. The existing two-year M4 gate
+and public query/action advertisement remain open/OFF.
+
+The bounded private wartime runner requires the explicit
+`--expected-perk professional_workforce_perk` opt-in for this second target;
+its default remains `cutting_corners_perk`. Its candidate must be prepared and
+preflighted from a clean official pair with the matching newly built DLL. If
+the fresh formal query selects another target, the runner returns without a
+typed submit. The existing action ID, native ACK, later paused receipt,
+LIFE2 point readback, next-turn consumption and paired checkpoint path are
+reused, not replaced by this read-only result.
+
+## Private typed candidate impact
+
+The source change adds only the second exact-build stewardship target to the
+existing private formal query/action path. Windowless formal queries choose
+`cutting_corners_perk` until owned, then independently read the native final
+legality of its `professional_workforce_perk` child on the current paused
+frame. The typed step recomputes that precondition and dispatches the resolved
+definition only for the matching allowed key. The policy still selects one
+action at a time and gives the war planner its existing priority. Public
+query/action capabilities and the M4 peaceful two-year gate do not change.
+
+A live candidate needs a new DLL and a fresh official prepare/rebind from a
+clean paired checkpoint; the loaded DLL cannot be replaced in an existing
+process. The immutable R0181 source pair and R0183 read-only evidence remain
+separate. On ACK without an independent material receipt, the durable action
+ID remains pending and the operator must check actual state before any retry.
+After a verified typed action, the official paired checkpoint must be cold
+restored in a later new-PID round before treating it as resumed mainline state.

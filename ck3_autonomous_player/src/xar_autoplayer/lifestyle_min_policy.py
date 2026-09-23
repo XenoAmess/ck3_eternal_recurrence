@@ -14,6 +14,7 @@ POLICY_ID = "g2-m4-lifestyle-min-v1"
 WAR_PERK_POLICY_ID = "g2-lifestyle-wartime-stewardship-perk-v1"
 _STEWARDSHIP = "stewardship_lifestyle"
 _BUILD_COST_PERK = "cutting_corners_perk"
+_BUILD_SPEED_PERK = "professional_workforce_perk"
 _WEALTH_FOCUS = "stewardship_wealth_focus"
 _REQUIRED_READINESS = (
     "current_focus_ready",
@@ -162,6 +163,23 @@ def choose_min_feudal_lifestyle_action(
                         "target_lifestyle_key": _STEWARDSHIP,
                         "expected": binding,
                         "reason": "feudal_build_cost_reduction_5_percent",
+                    },
+                }
+            if (
+                points > 0
+                and _BUILD_COST_PERK in owned
+                and _BUILD_SPEED_PERK in perk_keys
+                and _BUILD_SPEED_PERK not in owned
+            ):
+                return {
+                    **result,
+                    "status": "recommend_action",
+                    "selected_action": {
+                        "kind": "perk",
+                        "target_key": _BUILD_SPEED_PERK,
+                        "target_lifestyle_key": _STEWARDSHIP,
+                        "expected": binding,
+                        "reason": "feudal_build_speed_modifier_minus_30_percent",
                     },
                 }
         return {**result, "status": "no_legal_minimum"}

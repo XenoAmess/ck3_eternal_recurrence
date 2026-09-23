@@ -5335,6 +5335,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
                      ? "focus" : "perk") ||
         (step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1 &&
          target != kStockFocusLegalityTargetV1) ||
+        (step == kPlayerLifestyleFormalPrivateSubmitStepV1 &&
+         !PlayerLifestylePolicyStockPerkTargetAdmittedV1(target)) ||
         expected_native != revision ||
         expected_proof != revision ||
         g_player_lifestyle_action_may_have_submitted_v1 ||

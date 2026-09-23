@@ -62,6 +62,7 @@ class Driver:
         }
         self.life = life_snapshot()
         self.submits = 0
+        self.selected_target: str | None = None
 
     def take_snapshot(self) -> dict[str, object]:
         return copy.deepcopy(self.frame)
@@ -94,13 +95,16 @@ class Driver:
         assert query["snapshot"]["current_lifestyle_progress"][
             "unspent_perk_points"
         ] == 2
-        assert action["target_key"] == "cutting_corners_perk"
+        assert action["target_key"] == query["snapshot"][
+            "legal_perk_candidates"
+        ]["items"][0]["key"]
         assert action["expected"]["expected_player_character_id"] == 29829
         self.submits += 1
+        self.selected_target = action["target_key"]
         self.frame.update(snapshot_id="native:4", native_revision=4, revision=4)
         return {"status": "submitted_verification_pending",
                 "action_request_id": "life-perk-once",
-                "target_key": "cutting_corners_perk"}
+                "target_key": self.selected_target}
 
     def query_player_lifestyle_receipt_private_v1(
         self, *, pending: dict[str, object], expected_revision: int,
@@ -108,7 +112,7 @@ class Driver:
         assert pending["action_request_id"] == "life-perk-once"
         assert expected_revision == 4
         return {"status": "applied", "action_request_id": "life-perk-once",
-                "target_key": "cutting_corners_perk", "kind": "perk",
+                "target_key": self.selected_target, "kind": "perk",
                 "post_target_perk_owned": True, "postcondition_verified": True}
 
 
@@ -122,6 +126,59 @@ def manifest() -> dict[str, object]:
 
 
 class WartimePerkTrialTests(unittest.TestCase):
+    def test_second_perk_uses_fresh_formal_query_and_paired_checkpoint(self) -> None:
+        driver = Driver()
+        driver.life["owned_perk_keys"] = ["cutting_corners_perk"]
+        driver.life["current_lifestyle_progress"].update(
+            unspent_perk_points=2, used_perk_points=5,
+        )
+        driver.life["legal_perk_candidates"]["items"] = [{
+            "key": "professional_workforce_perk",
+            "lifestyle_key": "stewardship_lifestyle",
+        }]
+        post = copy.deepcopy(driver.life)
+        post.update(snapshot_id="native:4", native_revision=4,
+                    public_revision=4, proof_epoch=4)
+        post["owned_perk_keys"].append("professional_workforce_perk")
+        post["current_lifestyle_progress"].update(
+            unspent_perk_points=1, used_perk_points=6,
+        )
+        checkpoint = {"status": "saved", "sha256": "c" * 64,
+                      "history_index": HISTORY + 4, "date_raw": DATE}
+        with patch(
+            "xar_autoplayer.bridge.player_lifestyle_private_transport_v1."
+            "query_player_lifestyle_private_v1",
+            return_value={"status": "available", "snapshot": post},
+        ):
+            result = choose_one_wartime_perk(
+                driver, manifest(), wait_for_post=lambda pending: None,
+                save_paired_checkpoint=lambda: checkpoint,
+                plan_current_turn=lambda: {"plan": {"selected_step": None}},
+                plan_following_turn=lambda: {"plan": {
+                    "lifestyle_receipt_consumed": {
+                        "action_request_id": "life-perk-once",
+                        "postcondition_verified": True,
+                    },
+                }},
+                expected_target="professional_workforce_perk",
+            )
+        self.assertEqual(result["status"], "perk_checkpointed")
+        self.assertEqual(result["target_key"], "professional_workforce_perk")
+        self.assertEqual(result["post_points"], {"unspent": 1, "used": 6})
+        self.assertEqual(driver.submits, 1)
+        self.assertEqual(result["checkpoint"]["sha256"], "c" * 64)
+
+        wrong_target = Driver()
+        wrong_target.life = copy.deepcopy(driver.life)
+        rejected = choose_one_wartime_perk(
+            wrong_target, manifest(), wait_for_post=lambda pending: None,
+            save_paired_checkpoint=lambda: self.fail("no checkpoint"),
+            plan_current_turn=lambda: self.fail("no formal plan"),
+            plan_following_turn=lambda: self.fail("no following plan"),
+        )
+        self.assertEqual(rejected["status"], "no_legal_wartime_perk")
+        self.assertEqual(wrong_target.submits, 0)
+
     def test_r0175_timeout_does_not_misclassify_reclaimed_process(self) -> None:
         result = {
             "status": "red", "red": {"reason": "TimeoutError: no later frame"},
