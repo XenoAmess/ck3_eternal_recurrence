@@ -326,9 +326,9 @@ leaf 已可读，就把 `glory.feedback_closed` 或总 `ast_evaluator_ready` 提
 `on_accolade_rank_change` 的 stock 分支只触发 owner 的 hidden notification event，并在首次升 rank 时为
 acclaimed knight 创建 `accolade_ranked_up` memory。`accolade.0001/.0002` 的 immediate 也只物化
 interface message。它们没有另一条显式 combat-stat writer；战斗内可能变化的参数来自当前 glory/rank
-被 `0x251CB60(CAccolade*, parameter_id)` 等 getter 立即重新求值。当前 11-file phase-manifest
-playset proof **尚未**包含 `accolade_on_actions.txt` 与 `accolade_events.txt`；提升这一 family 的
-feedback gate 前必须把这两份 exact stock SHA/overlay coverage 纳入依赖闭包，不能把静态读取外推到覆盖了
+被 `0x251CB60(CAccolade*, parameter_id)` 等 getter 立即重新求值。此前 11-file phase-manifest
+playset proof 未包含 `accolade_on_actions.txt` 与 `accolade_events.txt`；提升这一 family 的
+feedback gate 需要把这两份 exact stock SHA/overlay coverage 纳入依赖闭包，不能把静态读取外推到覆盖了
 on_action/event 的 mod playset。exact build `1.19.0.6` 当前原版字节哈希已经冻结为：
 
 - `common/on_action/accolade_on_actions.txt`：
