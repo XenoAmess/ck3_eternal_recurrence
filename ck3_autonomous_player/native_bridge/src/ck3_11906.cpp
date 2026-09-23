@@ -7164,6 +7164,44 @@ void ReadWarObjectiveProvinceStates(
   remaining_state_budget -= war.objective_province_states.size();
 }
 
+std::optional<std::int32_t> ReadHostileSiegeDaysLeft(
+    const Bindings &bindings, void *game_state,
+    const ResolvedArmySnapshot &enemy) noexcept {
+  if (bindings.siege_storage_slot == nullptr ||
+      bindings.is_native_component_alive == nullptr ||
+      bindings.get_siege_days_left == nullptr || enemy.army == nullptr ||
+      !enemy.snapshot.has_current_province) {
+    return std::nullopt;
+  }
+  void *const province =
+      ResolveProvince(game_state, enemy.snapshot.current_province_id);
+  if (province == nullptr) {
+    return std::nullopt;
+  }
+  const auto siege_id =
+      LoadAt<std::int32_t>(province, kProvinceActiveSiegeIdOffset);
+  if (siege_id == -1) {
+    return std::nullopt;
+  }
+  void *const siege = ResolveSiege(bindings, siege_id);
+  if (siege == nullptr ||
+      LoadAt<void *>(siege, kSiegeProvinceOffset) != province) {
+    return std::nullopt;
+  }
+  const auto besieging_carmy_id =
+      LoadAt<std::int32_t>(siege, kSiegeBesiegingArmyIdOffset);
+  if (besieging_carmy_id == -1 ||
+      besieging_carmy_id !=
+          LoadAt<std::int32_t>(enemy.army, kUnitArmyIdOffset)) {
+    return std::nullopt;
+  }
+  const auto days_left = bindings.get_siege_days_left(siege);
+  if (days_left < 0 || days_left == std::numeric_limits<std::int32_t>::max()) {
+    return std::nullopt;
+  }
+  return days_left;
+}
+
 void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
                        std::int32_t played_character_id,
                        bool include_full_routes,
@@ -7304,7 +7342,17 @@ void ReadWarsAndArmies(const Bindings &bindings, void *game_state,
       } else if (bindings.contains_war_participant(
                      enemy_participants,
                      army.snapshot.owner_character_id)) {
-        snapshot.enemy_armies.push_back(army.snapshot);
+        auto enemy = army.snapshot;
+        if (include_full_routes &&
+            snapshot.player_side == PlayerWarSide::defender &&
+            snapshot.player_is_primary_war_leader &&
+            enemy.army_state_code == 3 && !enemy.in_combat &&
+            !enemy.retreating && remaining_objective_state_budget > 0) {
+          --remaining_objective_state_budget;
+          enemy.siege_days_left =
+              ReadHostileSiegeDaysLeft(bindings, game_state, army);
+        }
+        snapshot.enemy_armies.push_back(std::move(enemy));
       }
     }
     output.active_wars.push_back(std::move(snapshot));

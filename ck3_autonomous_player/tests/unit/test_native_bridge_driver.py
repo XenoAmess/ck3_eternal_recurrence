@@ -72,6 +72,7 @@ from xar_autoplayer.bridge.war_contract import (
     is_life_advance_step,
     is_native_war_step,
     merge_armies_step,
+    normalize_active_wars,
     parse_merge_armies_step,
     parse_battle_decision_epoch_advance_step,
     parse_start_assault_step,
@@ -95,6 +96,47 @@ from xar_autoplayer.environment import write_bytes_atomic, write_json_atomic
 _SIGNED_PENDING_ID = -2_130_706_341
 _SIGNED_NOTIFICATION_ID = -2_130_706_340
 _SIGNED_SERVICE_NOTIFICATION_ID = -2_130_706_339
+
+
+class HostileSiegeTimerProjectionTests(unittest.TestCase):
+    def test_primary_defender_enemy_timer_survives_snapshot_and_history(self) -> None:
+        raw_war = {
+            "war_id": 16777231,
+            "player_side": "defender",
+            "player_relative_war_score": -42,
+            "war_objective_province_ids": [2610],
+            "enemy_armies": [
+                {
+                    "army_id": 50331920,
+                    "owner_character_id": 30097,
+                    "controllable": False,
+                    "current_province_id": 2619,
+                    "army_state": "sieging",
+                    "army_state_code": 3,
+                    "siege_days_left": 12,
+                }
+            ],
+        }
+        war = normalize_active_wars([raw_war])[0]
+        self.assertEqual(war["war_objective_province_ids"], [2610])
+        self.assertEqual(war["enemy_armies"][0]["siege_days_left"], 12)
+        history = _war_progress_summary(
+            {"date_raw": 53202168, "active_wars": [war]}
+        )
+        self.assertEqual(
+            history["wars"][0]["enemy_armies"][0]["siege_days_left"], 12
+        )
+
+        raw_war["enemy_armies"][0]["siege_days_left"] = None
+        self.assertIsNone(
+            normalize_active_wars([raw_war])[0]["enemy_armies"][0][
+                "siege_days_left"
+            ]
+        )
+        for invalid in (-1, True):
+            raw_war["enemy_armies"][0]["siege_days_left"] = invalid
+            with self.assertRaises(ValueError):
+                normalize_active_wars([raw_war])
 
 
 class FakeEndpoint:

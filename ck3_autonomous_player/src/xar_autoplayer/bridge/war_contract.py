@@ -785,6 +785,13 @@ def normalize_armies(
             normalized["army_state_code"] = _non_negative_id(
                 army_state_code, "army_state_code"
             )
+        if "siege_days_left" in raw_army:
+            days_left = raw_army["siege_days_left"]
+            normalized["siege_days_left"] = (
+                _non_negative_id(days_left, "siege_days_left")
+                if days_left is not None
+                else None
+            )
         result.append(normalized)
     return result
 

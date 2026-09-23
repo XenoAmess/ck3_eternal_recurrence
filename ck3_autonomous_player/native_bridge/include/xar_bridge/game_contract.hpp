@@ -105,6 +105,9 @@ struct ArmySnapshot {
   bool in_combat = false;
   bool retreating = false;
   bool controllable = false;
+  // Paused exact-build read for a primary defender's hostile siege at this
+  // Army's current Province. Absent when the siege or besieger join is unknown.
+  std::optional<std::int32_t> siege_days_left;
 
   friend bool operator==(const ArmySnapshot &, const ArmySnapshot &) = default;
 };

@@ -798,3 +798,63 @@ flowchart TD
     P -->|proven| C["existing route/contact checks"]
     C -.-> U["unknown: future contact, occupation and war terminal"]
 ```
+
+## R0178: hostile siege timer outside the war objective
+
+- [production-live, exact build] CK3 `1.19.0.6-steam23530548`, EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+  The Robert-line R0178 formal run completed its bounded 120/120 turns and
+  saved history `1767` at `date_raw=53202168`. War `95` reached +100 after
+  combat and typed `enforce-demands-95` row `#1646` returned
+  `victory_enforced`; War `16777250` did likewise at row `#1738`. Their
+  independent later war frames exclude both. This proves two defensive
+  victories, not a new county: the last root readback at row `#1763` still
+  lists the same five held county TitleIDs.
+- [production-live] The last paused war frame at row `#1766` has only primary
+  defensive War `16777231`, score `-42`, objective Province `2610`. Enemy
+  Army `50331920` is `sieging` the player's capital Province `2619`. Player
+  Army `83886367` is at `2632`, moving to `2610` along
+  `[2617, 2618, 2614, 2610]`. The previous contact query at row `#1745`
+  covered only one day from `date_raw=53201064`; it does not prove the
+  route safe at the final paused date. The latest termination query at row
+  `#1764` is also earlier than the final frame: white peace was unavailable,
+  while surrender terms were not observable. Neither is an authorized blind
+  exit action.
+- [exact-build native entry] `ReadWarObjectiveProvinceState` resolves the
+  Province's active SiegeID, checks the live Siege component and Province
+  backlink, joins its besieging CArmy to a unique public ArmyID, then calls
+  the bound `get_siege_days_left` getter. `ReadWarObjectiveProvinceStates`
+  invokes this only for `war_objective_province_ids`. Province `2619` is not
+  War `16777231`'s objective `2610`, so the currently published objective
+  rows cannot give the capital's enemy siege timer. The minimal read-only
+  extension adds nullable `siege_days_left` on an enemy Army row only when
+  that Army is observed `sieging` the same Province and the exact Siege
+  component identifies that Army as its besieger. The getter already exists
+  for this build; no faith or broad siege strategy is implied.
+- [evidence boundary] The result is a paused-frame observation for comparing
+  the current siege completion estimate with an independently queried route
+  ETA. A null result means the timer or identity join is unavailable, not
+  zero days. It does not prove a safe move, successful relief, occupation,
+  war termination, or a county gain. Frozen R0178 driver SHA-256:
+  `E01A77CE72C4746875CD255FC82158A692069F7E52FE1A102DB62479492E2549`;
+  formal report SHA-256:
+  `EC550DD705EFA1714086FCB9C3F9FE57D90A32CD0CE14D30D553AD82DC9A77BF`.
+- [static-ready, live pending] The existing `ck3_take_snapshot` MCP response
+  carries the normalized enemy Army field; driver war-progress history also
+  retains it. Debug and Release exact adapter fixtures, bridge DLL builds,
+  and normal/optimized Python projection tests pass. R0178 predates this
+  bridge build, so its frozen driver cannot demonstrate a non-null live value;
+  the next paused exact-build readback must do that before a timer-based
+  relief choice is advertised.
+
+```mermaid
+flowchart TD
+    W["primary defensive war with enemy Army sieging a nonobjective Province"] --> P{"same paused frame: Province and Army identity known?"}
+    P -->|no| X["unknown: timer and route comparison"]
+    P -->|yes| S{"live SiegeID, Province backlink and unique besieger CArmy match?"}
+    S -->|no| X
+    S -->|yes| D["read exact-build siege_days_left"]
+    D -->|unavailable| X
+    D -->|available| R["compare with freshly queried route ETA and strength"]
+    R -.-> U["unknown: safe relief, battle and war outcome"]
+```

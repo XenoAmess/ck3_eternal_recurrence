@@ -2738,6 +2738,12 @@ void AppendArmySnapshot(std::string &result,
   result += army.retreating ? "true" : "false";
   result += ",\"controllable\":";
   result += army.controllable ? "true" : "false";
+  result += ",\"siege_days_left\":";
+  if (army.siege_days_left.has_value()) {
+    result += SignedNumber(*army.siege_days_left);
+  } else {
+    result += "null";
+  }
   result += '}';
 }
 

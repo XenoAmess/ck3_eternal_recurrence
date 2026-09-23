@@ -199,7 +199,7 @@ std::int64_t g_route_edge_duration_raw = 150'000;
 bool g_route_edge_all_indices = false;
 std::int32_t g_route_edge_invalid_index = -1;
 std::array<std::byte, 0x20> g_player_province{};
-std::array<std::byte, 0x20> g_enemy_province{};
+std::array<std::byte, 0x900> g_enemy_province{};
 std::array<std::byte, 0x20> g_enemy_default_raise_province{};
 std::array<std::byte, 0xC0> g_player_map_node{};
 std::array<std::byte, 0xC0> g_enemy_map_node{};
@@ -6789,6 +6789,56 @@ int main() {
     return Fail("stalled siege INT_MAX was exposed as a real day count");
   }
   g_siege_days_left = 12;
+
+  // A primary defender can have a hostile siege outside the targeted war
+  // objectives. Publish its remaining days only for the exact besieging Army.
+  Store(g_attacker_participant, 0x08, enemy_character_id);
+  Store(g_defender_participant, 0x08, played_character_id);
+  Store(g_war, 0x288, enemy_character_id);
+  Store(g_war, 0x28C, played_character_id);
+  Store(g_enemy_province, 0x790, active_siege_id);
+  Store(g_siege, 0x200, static_cast<void *>(g_enemy_province.data()));
+  Store(g_siege, 0x208, enemy_internal_army_id);
+  Store(g_enemy_army, 0x170, std::int32_t{0});
+  g_enemy_army_state_code = 3;
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars.size() != 1 ||
+      snapshot.active_wars[0].player_side !=
+          xar::game::PlayerWarSide::defender ||
+      snapshot.active_wars[0].enemy_armies.size() != 1 ||
+      snapshot.active_wars[0].enemy_armies[0].siege_days_left != 12 ||
+      snapshot.player_armies[0].siege_days_left.has_value()) {
+    return Fail(
+        "nonobjective hostile siege days were not bound to the enemy Army");
+  }
+  Store(g_siege, 0x208, player_internal_army_id);
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0].enemy_armies[0].siege_days_left.has_value()) {
+    return Fail("hostile siege timer ignored the besieging CArmy identity");
+  }
+  Store(g_siege, 0x208, enemy_internal_army_id);
+  g_siege_days_left = std::numeric_limits<std::int32_t>::max();
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0].enemy_armies[0].siege_days_left.has_value()) {
+    return Fail("stalled hostile siege was exposed as a real timer");
+  }
+  g_siege_days_left = 12;
+  Store(jomini_state, 0x20, std::uint8_t{0});
+  if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
+      snapshot.active_wars[0].enemy_armies[0].siege_days_left.has_value()) {
+    return Fail("running frame traversed the hostile siege subgraph");
+  }
+  Store(jomini_state, 0x20, std::uint8_t{1});
+  g_enemy_army_state_code = 6;
+  Store(g_enemy_army, 0x170, std::int32_t{1});
+  Store(g_enemy_province, 0x790, std::int32_t{-1});
+  Store(g_siege, 0x200,
+        static_cast<void *>(g_war_objective_province.data()));
+  Store(g_siege, 0x208, player_internal_army_id);
+  Store(g_attacker_participant, 0x08, played_character_id);
+  Store(g_defender_participant, 0x08, enemy_character_id);
+  Store(g_war, 0x288, played_character_id);
+  Store(g_war, 0x28C, enemy_character_id);
 
   Store(g_siege, 0x3D8, std::int32_t{3});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
