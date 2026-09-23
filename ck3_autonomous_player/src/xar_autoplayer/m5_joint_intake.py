@@ -43,6 +43,8 @@ def build_m5_same_frame_intake(
         or first_heir_legality.get("read_only") is not True
         or first_heir_legality.get("advertised") is not False
         or first_heir_legality.get("native_revision") != native_revision
+        or type(first_heir_legality.get("query_sequence")) is not int
+        or first_heir_legality["query_sequence"] <= 0
     ):
         raise ValueError("current private first-heir legality observation required")
     heir_id = first_heir_legality.get("observed_first_heir_character_id")
@@ -102,7 +104,7 @@ def build_m5_same_frame_intake(
         "policy": "g2-m5-same-frame-intake-v1",
         "played_character_id": player_id,
         "first_heir_character_id": heir_id,
-        "family_legality_query_sequence": first_heir_legality.get("query_sequence"),
+        "family_legality_query_sequence": first_heir_legality["query_sequence"],
         "native_revision": native_revision,
         "date_raw": date_raw,
         "snapshot_id": snapshot_id,

@@ -40,7 +40,8 @@ def _family() -> dict[str, object]:
         "schema": "xar.ck3.observed-first-heir-marriage-legality.v1",
         "exact_ck3_build": "1.19.0.6",
         "read_only": True, "advertised": False, "status": "available",
-        "native_revision": 3, "observed_first_heir_character_id": 38822,
+        "native_revision": 3, "query_sequence": 1,
+        "observed_first_heir_character_id": 38822,
         "native_legal_candidates": rows,
     }
 
@@ -78,6 +79,16 @@ class M5SameFrameIntakeTests(unittest.TestCase):
         self.assertFalse(result["joint_selection_ready"])
         self.assertIsNone(result["selected_step"])
         self.assertEqual(result["episode_run_id"], "fixture-episode")
+        self.assertEqual(result["family_legality_query_sequence"], 1)
+
+    def test_missing_legality_sequence_cannot_bind_five_row_projection(self) -> None:
+        family = _family()
+        family.pop("query_sequence")
+        with self.assertRaisesRegex(ValueError, "current private first-heir legality"):
+            build_m5_same_frame_intake(
+                before=_frame(), after=_frame(),
+                first_heir_legality=family, declarable_war_query=_war_query(),
+            )
 
     def test_changed_date_cannot_reuse_five_current_candidates(self) -> None:
         with self.assertRaisesRegex(ValueError, "crossed a paused native frame"):
