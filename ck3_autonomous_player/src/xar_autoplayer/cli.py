@@ -368,6 +368,14 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     native_auto_run_parser.add_argument(
+        "--allow-private-m5-joint-collector",
+        action="store_true",
+        help=(
+            "enable one unadvertised query-only peacetime building/faction "
+            "proposal collection for a bounded native-auto-run"
+        ),
+    )
+    native_auto_run_parser.add_argument(
         "--allow-private-lifestyle-formal-trial",
         action="store_true",
         help=(
@@ -836,6 +844,11 @@ def main(argv: list[str] | None = None) -> int:
                     if args.allow_private_construction_formal_trial
                     else {}
                 )
+                private_m5_options = (
+                    {"allow_private_m5_joint_collector": True}
+                    if args.allow_private_m5_joint_collector
+                    else {}
+                )
                 private_lifestyle_options = {}
                 if args.allow_private_lifestyle_formal_trial:
                     private_lifestyle_options["allow_private_lifestyle_formal_trial"] = True
@@ -872,6 +885,7 @@ def main(argv: list[str] | None = None) -> int:
                     ),
                     **private_faction_options,
                     **private_construction_options,
+                    **private_m5_options,
                     **private_lifestyle_options,
                     **succession_options,
                     operator_stop_event=operator_stop_event,

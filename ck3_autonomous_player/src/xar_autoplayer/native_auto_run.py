@@ -327,6 +327,7 @@ def native_auto_run(
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     allow_private_construction_formal_trial: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
+    allow_private_m5_joint_collector: bool = False,
     private_faction_round_id: str | None = None,
     succession_lifecycle: str = ROGUE_ONE_LIFE,
     ordinary_campaign_no_pact: bool = False,
@@ -410,6 +411,13 @@ def native_auto_run(
     ):
         raise AgentError(
             "private faction gift trial only admits a bounded contract"
+        )
+    if (
+        allow_private_m5_joint_collector is True
+        and completion_contract != "bounded"
+    ):
+        raise AgentError(
+            "private M5 peacetime collector only admits a bounded contract"
         )
     if allow_private_faction_gift_formal_trial is True and not (
         isinstance(private_faction_round_id, str)
@@ -684,6 +692,11 @@ def native_auto_run(
             if allow_private_faction_gift_formal_trial is True
             else {}
         )
+        private_m5_driver_options = (
+            {"allow_private_m5_joint_collector": True}
+            if allow_private_m5_joint_collector is True
+            else {}
+        )
         ordinary_succession_driver_options = (
             {
                 "allow_private_current_timeline_blocker_query": True,
@@ -706,6 +719,7 @@ def native_auto_run(
             ),
             **private_lifestyle_driver_options,
             **private_faction_driver_options,
+            **private_m5_driver_options,
             **ordinary_succession_driver_options,
         )
         # This controlled, private Python route does not change the native

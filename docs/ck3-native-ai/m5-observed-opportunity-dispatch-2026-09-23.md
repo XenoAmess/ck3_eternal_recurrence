@@ -111,17 +111,64 @@ when the analytic reservation is non-null.
 
 Marriage is not a source-bundle domain.  Adding a `marriage` key is a RED;
 the R0133 legality inventory therefore cannot enter through this private
-route.  The source reader itself is also deliberately not advertised or
-enabled by a general CLI flag.  A later bounded candidate must wire real
-same-frame domain queries and commitment persistence into that private reader,
-then obtain paused live readback before any formal typed consumer is added.
-This static collector does not advance G2-M5 from `not_started`.
+route.  The source reader remains unadvertised.  The private bounded CLI flag
+described below only enables a query-only peacetime producer; it does not
+enable a formal action or public M5 capability.  Paused live readback is still
+required before any formal typed consumer is added.  This static collector
+does not advance G2-M5 from `not_started`.
 
 R0133 remains read-only evidence: 657 distinct final-legal first-heir rows and
 five successful projection reads, with zero observed alliance payoff in the
 sample. This selector does not turn that count into a marriage proposal. It
 also does not convert the Robert war power ratios into a war proposal because
 power alone omits the resource and exit observations above.
+
+## Realizable peacetime source producer
+
+The default-OFF `m5_peacetime_proposal_sources_v1` producer is the first real
+source implementation for the collector.  It composes exactly two existing
+side-effect-free reads on one unchanged paused frame:
+
+1. the private native construction source; and
+2. the public same-frame faction root followed, only for a nonempty targeting
+   vector, by the private native faction-gift preview.
+
+The producer requires `one-life-turn-v1` to have selected `life-advance`, a
+living feudal player with no event or pending interaction, no active wars and
+no player armies.  The last two conditions come from the existing production
+construction query contract.  Therefore the three-domain war + building +
+gift focused fixture is a dispatcher contract test, not a realizable live
+frame.  Active-war continuation remains a separate read-only MCP dependency
+and cannot be spliced into this producer.
+
+Before either query, both durable formal ledgers must have no pending action;
+a construction already consumed in the current episode also blocks a new
+building proposal under the existing one-construction-per-episode formal
+contract, but it does not block an independently ready faction gift.  A future
+multi-construction policy must extend that formal ledger contract first; this
+producer does not infer permission from a fresh native candidate.  The
+producer verifies the full player, native revision, public revision, date,
+snapshot and episode binding plus player gold before, between and after the
+reads,
+then re-reads both ledgers.  Only `selected` domain results are included.
+Known-empty faction targeting and a complete no-building result are valid
+domain omissions; a missing public root, private route OFF, partial result,
+ledger change or frame drift is RED.
+
+The returned commitment set is explicitly empty because both formal pending
+ledgers were read as empty.  Current gold is read from the paused snapshot and
+must match both native domain observations.  Each proposal retains its own
+existing reserve (20M raw construction, 10M raw faction gift); the joint
+additional reserve is zero rather than a new invented budget.  The observed
+war vector and admitted war-slot budget are both zero.  Neither `war` nor
+`marriage` is emitted.
+
+`native-auto-run --allow-private-m5-joint-collector` is a bounded private
+query-only entry.  With the flag absent, runner and planner behavior are
+unchanged.  With it present, the existing collector runs once and still
+returns `selected_step=null` and `formal_action_ready=false`.  Static tests and
+the opt-in do not establish a live joint choice, typed consumption, next-turn
+use or recovery; G2-M5 remains `not_started` until those separate gates pass.
 
 ## Focused fixture boundary and next live input
 
