@@ -131,6 +131,7 @@ from .lifestyle_formal_consumer import consume_lifestyle_private_query
 from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
 )
+from .simulation import combat_decision_contract as combat_entry_eu
 from .vanilla_events.policy import (
     recommend_registered_vanilla_event_option_v1,
 )
@@ -15169,7 +15170,7 @@ def _primary_defender_siege_forecast_ingress(
     action_steps: set[str],
     bridge_capabilities: set[str],
 ) -> dict[str, object]:
-    """Read an under-two-times siege encounter without authorizing combat."""
+    """Read an under-two-times siege encounter; admit only a qualified EU result."""
     if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
         return baseline
     phase = baseline.get("phase")
@@ -15421,13 +15422,44 @@ def _primary_defender_siege_forecast_ingress(
                 "fresh-v3-cache-readback",
                 detail={"route_preview": preview, "route_contact_horizon": contact},
             )
+        qualified = _qualified_siege_forecast_move(
+            snapshot,
+            war_id=war_id,
+            army_id=army_id,
+            target_province_id=target,
+            entry_province_id=entry,
+            defender_army_ids=defenders,
+            contact_scope_safe=(
+                contact.get("one_day_contact_free") is True
+                or target_only_contact
+            ),
+        )
+        if qualified.get("status") == "ready":
+            move_step = move_army_step(army_id, target)
+            if move_step not in action_steps:
+                return blocked(
+                    "the qualified forecast has no advertised typed move action",
+                    move_step,
+                    detail={"qualified_forecast": qualified},
+                )
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_siege_forecast_move",
+                "selected_step": move_step,
+                "reason": "the same-frame qualified combat forecast favors siege relief over avoid and wait/reinforce within its risk limits",
+                "route_preview": preview,
+                "route_contact_horizon": contact,
+                "qualified_forecast": qualified,
+                **{**evidence, "forecast_status": "qualified", "active_attack_allowed": True},
+            }
         return blocked(
-            "the exact v3 input readback is research-only; no qualified battle probability or expected utility authorizes contact",
+            "the exact v3 input readback has no qualified battle probability and expected-utility decision authorizing contact",
             "qualified-same-frame-combat-forecast-and-expected-utility",
             detail={
                 "phase": "native_war_siege_forecast_inputs_observed",
                 "route_preview": preview,
                 "route_contact_horizon": contact,
+                "qualified_forecast": qualified,
                 "combat_inputs_v3_query": {
                     "step": query_step,
                     "accepted": result.get("accepted"),
@@ -15464,6 +15496,119 @@ def _primary_defender_siege_forecast_ingress(
         "route_preview": preview,
         "route_contact_horizon": contact,
         **evidence,
+    }
+
+
+def _qualified_siege_forecast_move(
+    snapshot: dict[str, object],
+    *,
+    war_id: int,
+    army_id: int,
+    target_province_id: int,
+    entry_province_id: int,
+    defender_army_ids: tuple[int, ...],
+    contact_scope_safe: bool,
+) -> dict[str, object]:
+    """Consume the existing combat-entry EU contract for one exact encounter.
+
+    The production contract currently has no forecast producer, EU calculator,
+    or activation.  Its assessor therefore cannot return an attack selection.
+    This seam preserves the selected route and contact proof when those
+    independently qualified components are eventually delivered.
+    """
+    payload = snapshot.get("combat_entry_eu_v1")
+    if not isinstance(payload, dict):
+        return {"status": "producer_unavailable"}
+    identity = payload.get("identity")
+    if not isinstance(identity, dict):
+        return {"status": "identity_unavailable"}
+    frame = identity.get("observation")
+    expected_frame = {
+        key: snapshot.get(key)
+        for key in (
+            "episode_run_id", "snapshot_id", "revision", "native_revision"
+        )
+    }
+    if not (
+        isinstance(frame, dict)
+        and frame == expected_frame
+        and identity.get("forecast") == expected_frame
+        and identity.get("war_id") == war_id
+        and identity.get("target_province_id") == target_province_id
+        and identity.get("entry_province_id") == entry_province_id
+        and identity.get("player_ordered_army_ids") == [army_id]
+        and identity.get("opponent_ordered_army_ids") == list(defender_army_ids)
+    ):
+        return {"status": "encounter_identity_mismatch"}
+    try:
+        assessment = combat_entry_eu.assess_combat_entry_eu_contract(payload)
+    except (combat_entry_eu.CombatEntryEuContractError, KeyError, TypeError, ValueError):
+        return {"status": "contract_invalid"}
+    result: dict[str, object] = {
+        "status": "contract_blocked",
+        "assessment_sha256": assessment.get("assessment_sha256"),
+        "contract_status": assessment.get("status"),
+        "blockers": assessment.get("blockers"),
+    }
+    if not (
+        combat_entry_eu.COMBAT_ENTRY_EU_ACTIVATION_ENABLED
+        and contact_scope_safe
+        and assessment.get("contract_sha256")
+        == combat_entry_eu.COMBAT_ENTRY_EU_CONTRACT_SHA256
+        and assessment.get("external_inputs_ready") is True
+        and assessment.get("automatic_attack_enabled") is True
+        and assessment.get("decision_status") == "selected"
+        and assessment.get("selected_action") == "attack"
+    ):
+        return result
+    policy = payload.get("utility_policy")
+    distribution = payload.get("distribution")
+    tails = payload.get("character_tails")
+    if not (
+        isinstance(policy, dict)
+        and isinstance(distribution, dict)
+        and isinstance(tails, dict)
+        and isinstance(policy.get("risk_constraints"), dict)
+        and isinstance(distribution.get("resolved_win_wilson95"), dict)
+    ):
+        return result
+    risk = policy["risk_constraints"]
+    wilson_low = distribution["resolved_win_wilson95"].get("low_raw")
+    stack_wipe = distribution.get("player_stack_wipe_probability_raw")
+    catastrophe = tails.get("player_one_life_catastrophic_probability_raw")
+    attack = assessment.get("eu_attack_raw")
+    avoid = assessment.get("eu_avoid_raw")
+    wait = assessment.get("eu_wait_reinforce_raw")
+    margin = assessment.get("attack_margin_raw")
+    minimum_margin = policy.get("minimum_attack_margin_raw")
+    if not all(
+        isinstance(value, int) and not isinstance(value, bool)
+        for value in (wilson_low, stack_wipe, catastrophe, attack, avoid,
+                      wait, margin, minimum_margin)
+    ):
+        return result
+    if not (
+        wilson_low >= risk["min_resolved_win_wilson_low_raw"]
+        and stack_wipe <= risk["max_player_stack_wipe_probability_raw"]
+        and catastrophe
+        <= risk["max_player_one_life_catastrophic_probability_raw"]
+        and margin == attack - max(avoid, wait)
+        and margin > minimum_margin
+    ):
+        return result
+    return {
+        "status": "ready",
+        "assessment_sha256": assessment["assessment_sha256"],
+        "simulator_version": payload["experiment"]["simulator_version"],
+        "simulator_sha256": payload["experiment"]["simulator_sha256"],
+        "player_win_probability_raw": distribution["player_win_probability_raw"],
+        "resolved_win_wilson95_low_raw": wilson_low,
+        "player_stack_wipe_probability_raw": stack_wipe,
+        "player_one_life_catastrophic_probability_raw": catastrophe,
+        "eu_attack_raw": attack,
+        "eu_avoid_raw": avoid,
+        "eu_wait_reinforce_raw": wait,
+        "attack_margin_raw": margin,
     }
 
 

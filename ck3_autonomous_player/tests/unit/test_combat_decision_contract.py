@@ -4,6 +4,7 @@ import copy
 from pathlib import Path
 import sys
 import unittest
+from unittest import mock
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -16,6 +17,7 @@ from xar_autoplayer.simulation.combat_decision_contract import (
     assess_combat_entry_eu_contract,
     combat_entry_eu_contract,
 )
+from xar_autoplayer.strategy import _qualified_siege_forecast_move
 
 
 def _complete_payload() -> dict[str, object]:
@@ -206,6 +208,81 @@ class CombatDecisionContractTests(unittest.TestCase):
         self.assertFalse(result["external_inputs_ready"])
         self.assertFalse(result["automatic_attack_enabled"])
         self.assertIsNone(result["selected_action"])
+
+    def test_under_two_siege_consumer_keeps_complete_forecast_inactive(self) -> None:
+        payload = _complete_payload()
+        payload["identity"]["player_ordered_army_ids"] = [101]
+        frame = {
+            **payload["identity"]["observation"],
+            "combat_entry_eu_v1": payload,
+        }
+        decision = _qualified_siege_forecast_move(
+            frame, war_id=77, army_id=101, target_province_id=2596,
+            entry_province_id=2581, defender_army_ids=(201, 202),
+            contact_scope_safe=True,
+        )
+        self.assertEqual(decision["status"], "contract_blocked")
+        self.assertEqual(decision["contract_status"], "blocked_not_activated")
+        self.assertIn("combat_entry_eu_activation_not_enabled", decision["blockers"])
+        self.assertFalse(assess_combat_entry_eu_contract(payload)["automatic_attack_enabled"])
+        frame["native_revision"] = 42
+        self.assertEqual(
+            _qualified_siege_forecast_move(
+                frame, war_id=77, army_id=101,
+                target_province_id=2596, entry_province_id=2581,
+                defender_army_ids=(201, 202), contact_scope_safe=True,
+            )["status"],
+            "encounter_identity_mismatch",
+        )
+
+    def test_future_qualified_siege_consumer_checks_contact_risk_and_eu(self) -> None:
+        # This mocked future calculator tests the strategy seam only.  The
+        # actual contract remains inactive and produces no such assessment.
+        payload = _complete_payload()
+        payload["identity"]["player_ordered_army_ids"] = [101]
+        payload["utility_policy"]["minimum_attack_margin_raw"] = 10
+        frame = {
+            **payload["identity"]["observation"],
+            "combat_entry_eu_v1": payload,
+        }
+        future_assessment = {
+            "contract_sha256": COMBAT_ENTRY_EU_CONTRACT_SHA256,
+            "assessment_sha256": "E" * 64,
+            "external_inputs_ready": True,
+            "automatic_attack_enabled": True,
+            "decision_status": "selected",
+            "selected_action": "attack",
+            "eu_attack_raw": 200,
+            "eu_avoid_raw": 0,
+            "eu_wait_reinforce_raw": 100,
+            "attack_margin_raw": 100,
+        }
+
+        def decide(*, contact_scope_safe: bool) -> dict[str, object]:
+            return _qualified_siege_forecast_move(
+                frame, war_id=77, army_id=101,
+                target_province_id=2596, entry_province_id=2581,
+                defender_army_ids=(201, 202),
+                contact_scope_safe=contact_scope_safe,
+            )
+
+        with (
+            mock.patch(
+                "xar_autoplayer.strategy.combat_entry_eu.COMBAT_ENTRY_EU_ACTIVATION_ENABLED",
+                True,
+            ),
+            mock.patch(
+                "xar_autoplayer.strategy.combat_entry_eu.assess_combat_entry_eu_contract",
+                return_value=future_assessment,
+            ),
+        ):
+            self.assertEqual(decide(contact_scope_safe=False)["status"], "contract_blocked")
+            self.assertEqual(decide(contact_scope_safe=True)["status"], "ready")
+            future_assessment["attack_margin_raw"] = 99
+            self.assertEqual(decide(contact_scope_safe=True)["status"], "contract_blocked")
+            future_assessment["attack_margin_raw"] = 100
+            payload["distribution"]["resolved_win_wilson95"]["low_raw"] = 60_000
+            self.assertEqual(decide(contact_scope_safe=True)["status"], "contract_blocked")
 
 
 if __name__ == "__main__":

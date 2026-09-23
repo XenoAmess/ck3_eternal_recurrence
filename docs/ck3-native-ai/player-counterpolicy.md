@@ -836,6 +836,31 @@ flowchart TD
   任一输入缺失则停在明确观测缺口，v3 回读也只构成 research-only 证据。合法终战和已证明安全的
   其他改道继续由原规划选择。未来的合格同帧 combat forecast 与 expected utility 要统一比较所有
   接战候选，不能继续让 `2×` 否决已证明高胜率的战斗。
+- [implementation-confirmed] `WAR-UNDER2-QUALIFIED-POLICY` 在既有 v3 回读之后增加
+  `combat-entry-eu-v1` 消费缝。它绑定同一 episode/snapshot/revision/native revision、WarID、
+  目标省、已预览入口省及两侧有序 ArmyID；要求接触冲突只在目标围城省，且现有正式评估器同时
+  给出 `external_inputs_ready`、`automatic_attack_enabled`、`selected_action=attack`。胜率可信度
+  使用 resolved-win Wilson 95% 下界，并按版本化 utility policy 的最低下界、stack wipe/一命灾难上限
+  及 `EU(attack) > max(EU(avoid), EU(wait_reinforce)) + minimum_attack_margin` 核对。
+  效用输入须包含保卫目标/战争分、预期伤亡、补员、补给及替代路线机会成本；没有额外的固定兵数倍数门。
+  接触 horizon 必须证明首日无接触，或所有预测冲突均限于目标围城省；这只会选择已有广告的 typed
+  move，仍需独立路线后置、逐日接触重审与下一 turn 消费。
+- [current RED] 当前正式 `combat-entry-eu-v1` 只有字段校验，激活常量为 false，三个 EU 值均为 null；
+  snapshot 也没有合格的 `combat_entry_eu_v1` 生产者。R0188 的 N4096 research 分布不满足模型保真门，
+  所以此条件在当前真实运行中不可达，仍返回零攻击。下一依赖是 exact-build 主阶段 trace/模型校准、
+  同帧效用计算与正式激活；本静态接线不等于这些门已通过。
+
+```mermaid
+flowchart TD
+    S["[live-confirmed] 同帧围城、军队与战争"] --> R["[implementation-confirmed] fresh route preview + 全敌 contact"]
+    R --> V["[implementation-confirmed] exact v3 input readback"]
+    V -. "[current RED] 合格模拟与效用生产者缺失" .-> U["保持 RED；零攻击"]
+    V --> Q{"[counter-policy] 同帧合格预测、Wilson 下界、风险与替代效用均过门?"}
+    Q -->|否| U
+    Q -->|是，且首日安全或冲突仅在目标| M["typed move → 独立后置 → 逐日重审"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
+```
 - [fixture-confirmed] 旧轮次 R0118 的 balanced 反例为玩家 `900` 对敌 `759`，native preview 六跳
   `[699,700,714,975,715,45]`，敌围城军当前在路线终点 `45`。contact horizon 只证明首日无接触，
   无法证明抵达 `45` 后的战斗；route audit 明确报 `enemy_current_on_route`。因此停止该具体进攻并

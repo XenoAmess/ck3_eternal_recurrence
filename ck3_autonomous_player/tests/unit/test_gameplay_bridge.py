@@ -18800,8 +18800,17 @@ class SiegeForecastIngressTests(unittest.TestCase):
         )
         self.assertEqual(observed["phase"], "native_war_siege_forecast_inputs_observed")
         self.assertIsNone(observed["selected_step"])
+        self.assertEqual(observed["qualified_forecast"]["status"], "producer_unavailable")
         self.assertFalse(observed["combat_inputs_v3_query"]["planner_usable"])
         self.assertNotEqual(observed["selected_step"], "life-advance")
+        with mock.patch(
+            "xar_autoplayer.strategy._qualified_siege_forecast_move",
+            return_value={"status": "ready", "assessment_sha256": "E" * 64},
+        ):
+            qualified = ingest([preview_row, contact_row, query_row], frame=queried_frame)
+        self.assertEqual(qualified["phase"], "native_war_siege_forecast_move")
+        self.assertEqual(qualified["selected_step"], "move-army-11-to-32")
+        self.assertTrue(qualified["active_attack_allowed"])
         stale = ingest([preview_row, contact_row, query_row])
         self.assertIsNone(stale["selected_step"])
         self.assertEqual(stale["required_observation"], "fresh-v3-cache-readback")
