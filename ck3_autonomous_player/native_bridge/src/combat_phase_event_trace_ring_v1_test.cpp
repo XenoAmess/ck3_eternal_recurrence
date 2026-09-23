@@ -43,12 +43,16 @@ struct Fixture {
   static constexpr std::int32_t kBattleResultId = 0x01000002;
   static constexpr std::array<std::int32_t, 2> kArmyIds{11, 21};
   static constexpr std::array<std::int32_t, 2> kRegimentIds{31, 41};
+  static constexpr std::array<std::int32_t, 2> kLevyRegimentIds{32, 42};
   static constexpr std::array<std::int32_t, 2> kCharacterIds{101, 201};
   static constexpr std::int32_t kAccoladeId = 51;
 
   std::array<std::byte, 0x720> combat{};
   std::array<std::array<std::byte, 0x130>, 2> armies{};
   std::array<std::array<std::byte, 0x150>, 2> regiments{};
+  std::array<std::array<std::byte, 0x150>, 2> levy_regiments{};
+  std::array<std::array<std::byte, 0xA10>, 2> combat_types{};
+  std::array<std::array<std::byte, 0xA10>, 2> levy_combat_types{};
   std::array<std::array<std::byte, 0x1D0>, 2> characters{};
   std::array<std::array<std::byte, 0x100>, 2> character_links{};
   std::array<std::byte, 0x570> accolade_link{};
@@ -58,6 +62,8 @@ struct Fixture {
   std::uintptr_t accolade_rank_threshold_data_slot = 0;
   std::int32_t accolade_rank_threshold_count_slot = 3;
   std::array<std::array<std::byte, 0x60>, 2> knight_entries{};
+  std::array<std::array<std::byte, 0x60>, 2> levy_entries{};
+  std::array<std::array<std::byte, 0x18>, 2> hard_owner_rows{};
   std::array<std::array<std::byte, 0x10>, 2> schedule_rows{};
   std::array<std::int32_t, 2> side_army_ids{kArmyIds};
   std::array<std::byte, 0x1B0> battle_result{};
@@ -94,11 +100,21 @@ struct Fixture {
             reinterpret_cast<std::uintptr_t>(&side_army_ids[side_index]));
       Store(side, 0x18, std::int32_t{1});
       Store(side, 0x1C, std::int32_t{1});
+      Store(side, 0x28,
+            reinterpret_cast<std::uintptr_t>(
+                levy_entries[side_index].data()));
+      Store(side, 0x30, std::int32_t{1});
+      Store(side, 0x34, std::int32_t{1});
       Store(side, 0x40,
             reinterpret_cast<std::uintptr_t>(
                 knight_entries[side_index].data()));
       Store(side, 0x48, std::int32_t{1});
       Store(side, 0x4C, std::int32_t{1});
+      Store(side, 0x58,
+            reinterpret_cast<std::uintptr_t>(
+                hard_owner_rows[side_index].data()));
+      Store(side, 0x60, std::int32_t{1});
+      Store(side, 0x64, std::int32_t{1});
       Store(side, 0x74, kCharacterIds[side_index]);
       Store(side, 0x98,
             std::int64_t{1'000'000 +
@@ -121,9 +137,32 @@ struct Fixture {
       Store(armies[side_index], 0x128, kCombatId);
       Store(knight_entries[side_index], 0x08,
             kRegimentIds[side_index]);
+      Store(knight_entries[side_index], 0x10, std::int64_t{1'000'000});
+      Store(knight_entries[side_index], 0x18, std::int64_t{1'000'000});
+      Store(knight_entries[side_index], 0x40, std::int64_t{200'000});
+      Store(knight_entries[side_index], 0x48, std::int64_t{150'000});
+      Store(levy_entries[side_index], 0x08,
+            kLevyRegimentIds[side_index]);
+      Store(levy_entries[side_index], 0x10, std::int64_t{500'000});
+      Store(levy_entries[side_index], 0x18, std::int64_t{0});
+      Store(levy_entries[side_index], 0x40, std::int64_t{80'000});
+      Store(levy_entries[side_index], 0x48, std::int64_t{60'000});
+      Store(hard_owner_rows[side_index], 0x08,
+            kCharacterIds[side_index]);
+      Store(hard_owner_rows[side_index], 0x10, std::int64_t{0});
       Store(regiments[side_index], 0x10, kRegimentIds[side_index]);
+      Store(regiments[side_index], 0x18,
+            reinterpret_cast<std::uintptr_t>(
+                combat_types[side_index].data()));
       Store(regiments[side_index], 0x140, kArmyIds[side_index]);
       Store(regiments[side_index], 0x148, kCharacterIds[side_index]);
+      Store(levy_regiments[side_index], 0x10,
+            kLevyRegimentIds[side_index]);
+      Store(levy_regiments[side_index], 0x18,
+            reinterpret_cast<std::uintptr_t>(
+                levy_combat_types[side_index].data()));
+      Store(levy_regiments[side_index], 0x140, kArmyIds[side_index]);
+      Store(combat_types[side_index], 0xA0A, std::uint8_t{1});
       Store(characters[side_index], 0x18, kCharacterIds[side_index]);
       Store(characters[side_index], 0xD8,
             std::int32_t{10 + static_cast<std::int32_t>(side_index)});
@@ -180,15 +219,18 @@ struct Fixture {
     plan.expected_battle_event_vtable =
         reinterpret_cast<std::uintptr_t>(battle_event_vtable.data());
     plan.army_count = 2;
-    plan.regiment_count = 2;
+    plan.regiment_count = 4;
     plan.character_count = 2;
     for (std::size_t index = 0; index < 2; ++index) {
       plan.armies[index] = {
           kArmyIds[index],
           reinterpret_cast<std::uintptr_t>(armies[index].data())};
-      plan.regiments[index] = {
+      plan.regiments[index * 2] = {
           kRegimentIds[index],
           reinterpret_cast<std::uintptr_t>(regiments[index].data())};
+      plan.regiments[index * 2 + 1] = {
+          kLevyRegimentIds[index],
+          reinterpret_cast<std::uintptr_t>(levy_regiments[index].data())};
       plan.characters[index] = {
           kCharacterIds[index],
           reinterpret_cast<std::uintptr_t>(characters[index].data())};
@@ -289,6 +331,9 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
   Store(fixture.characters[0], 0xE8, std::int32_t{16});
   Store(fixture.characters[0], 0x1C8, std::uintptr_t{1});
   Store(fixture.accolade, 0xB0, std::int64_t{1'100'000});
+  Store(fixture.knight_entries[0], 0x18, std::int64_t{900'000});
+  Store(fixture.knight_entries[0], 0x20, std::int64_t{50'000});
+  Store(fixture.hard_owner_rows[0], 0x10, std::int64_t{50'000});
   fixture.SetBattleRow(0, "phase.hit", 2, true);
   Store(reinterpret_cast<void *>(fixture.plan.sides[0]), 0x98,
         std::int64_t{900'000});
@@ -308,6 +353,9 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
     return Fail("before side1 fire capture failed");
   }
   Store(fixture.rng_state, 0x08, std::uint32_t{102});
+  Store(fixture.knight_entries[1], 0x18, std::int64_t{850'000});
+  Store(fixture.knight_entries[1], 0x20, std::int64_t{100'000});
+  Store(fixture.hard_owner_rows[1], 0x10, std::int64_t{50'000});
   fixture.SetBattleRow(1, "phase.reply", 3, false);
   Store(reinterpret_cast<void *>(fixture.plan.sides[1]), 0x98,
         std::int64_t{1'000'000});
@@ -373,6 +421,25 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
       !records[3].characters[0].death_marker_present ||
       records[2].sides[0].current_fighting_total_raw != 1'000'000 ||
       records[3].sides[0].current_fighting_total_raw != 900'000 ||
+      records[2].sides[0].regiment_count != 2 ||
+      records[2].sides[0].regiments[0].regiment_id !=
+          Fixture::kLevyRegimentIds[0] ||
+      records[2].sides[0].regiments[0].hard_casualties_available ||
+      records[2].sides[0].regiments[1].regiment_id !=
+          Fixture::kRegimentIds[0] ||
+      records[2].sides[0].regiments[1].current_fighting_raw !=
+          1'000'000 ||
+      records[3].sides[0].regiments[1].current_fighting_raw !=
+          900'000 ||
+      records[3].sides[0].regiments[1].soft_casualties_raw !=
+          50'000 ||
+      records[3].sides[0].regiments[1].hard_casualties_raw !=
+          50'000 ||
+      records[2].sides[0].hard_owners[0].hard_casualties_raw != 0 ||
+      records[3].sides[0].hard_owners[0].hard_casualties_raw !=
+          50'000 ||
+      records[5].sides[1].regiments[1].hard_casualties_raw !=
+          50'000 ||
       records[2].resolved_advantage_raw != 600'000 ||
       records[3].resolved_advantage_raw != 700'000 ||
       records[5].resolved_advantage_raw != 500'000 ||
@@ -422,6 +489,23 @@ bool FailureCases() {
     return Fail("CombatID mutation did not fail closed");
   }
   Store(fixture.combat, 0x08, Fixture::kCombatId);
+  CancelCombatPhaseEventTraceRingV1(*ring);
+
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    return Fail("regiment identity fixture arm failed");
+  }
+  Store(fixture.levy_regiments[0], 0x10,
+        Fixture::kLevyRegimentIds[0] + 1);
+  if (CaptureCombatPhaseEventTraceBoundaryV1(
+          CombatPhaseEventTraceBoundaryV1::before_side0_schedule,
+          fixture.combat.data(),
+          reinterpret_cast<void *>(fixture.plan.sides[0]),
+          fixture.schedule_rng.data(), schedule0_return) ||
+      (ring->failure_flags.load() & trace_capture_failure_identity) == 0) {
+    return Fail("retained levy generation mutation did not fail closed");
+  }
+  Store(fixture.levy_regiments[0], 0x10,
+        Fixture::kLevyRegimentIds[0]);
   CancelCombatPhaseEventTraceRingV1(*ring);
 
   if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {

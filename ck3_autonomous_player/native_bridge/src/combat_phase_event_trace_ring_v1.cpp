@@ -27,7 +27,9 @@ constexpr std::size_t kCombatBattleResultIdOffset = 0x708;
 constexpr std::size_t kCombatResolvedAdvantageOffset = 0x710;
 
 constexpr std::size_t kSideArmyHeaderOffset = 0x10;
+constexpr std::size_t kSideLevyHeaderOffset = 0x28;
 constexpr std::size_t kSideKnightHeaderOffset = 0x40;
+constexpr std::size_t kSideHardOwnerHeaderOffset = 0x58;
 constexpr std::size_t kSideSelectedCommanderOffset = 0x74;
 constexpr std::size_t kSideCurrentFightingTotalOffset = 0x98;
 constexpr std::size_t kSideFirstFightingSubtotalOffset = 0xA0;
@@ -36,6 +38,16 @@ constexpr std::size_t kSideScheduledKnightHeaderOffset = 0xD8;
 constexpr std::size_t kSideScheduledCommanderOffset = 0xF0;
 constexpr std::size_t kSideKnightStride = 0x60;
 constexpr std::size_t kSideKnightRegimentIdOffset = 0x08;
+constexpr std::size_t kSideRegimentStride = 0x60;
+constexpr std::size_t kSideRegimentIdOffset = 0x08;
+constexpr std::size_t kSideRegimentStartingOffset = 0x10;
+constexpr std::size_t kSideRegimentCurrentOffset = 0x18;
+constexpr std::size_t kSideRegimentSoftOffset = 0x20;
+constexpr std::size_t kSideRegimentDamageOffset = 0x40;
+constexpr std::size_t kSideRegimentToughnessOffset = 0x48;
+constexpr std::size_t kSideHardOwnerStride = 0x18;
+constexpr std::size_t kSideHardOwnerCharacterIdOffset = 0x08;
+constexpr std::size_t kSideHardOwnerCasualtiesOffset = 0x10;
 constexpr std::size_t kSideScheduledKnightStride = 0x10;
 constexpr std::size_t kSideScheduledKnightEventOffset = 0x00;
 constexpr std::size_t kSideScheduledKnightRegimentIdOffset = 0x08;
@@ -46,6 +58,8 @@ constexpr std::size_t kArmyCombatIdOffset = 0x128;
 constexpr std::size_t kRegimentIdOffset = 0x10;
 constexpr std::size_t kRegimentArmyIdOffset = 0x140;
 constexpr std::size_t kRegimentCharacterIdOffset = 0x148;
+constexpr std::size_t kRegimentCombatTypeOffset = 0x18;
+constexpr std::size_t kCombatTypeMainPhaseEligibleOffset = 0xA0A;
 constexpr std::size_t kCharacterIdOffset = 0x18;
 constexpr std::size_t kCharacterMartialOffset = 0xD8;
 constexpr std::size_t kCharacterLearningOffset = 0xE4;
@@ -305,6 +319,110 @@ bool ReadVector(std::uintptr_t owner, std::size_t header_offset,
   return true;
 }
 
+bool SideContainsArmy(const CombatPhaseEventTraceSideRecordV1 &side,
+                      std::int32_t army_id) noexcept {
+  for (std::uint32_t index = 0; index < side.army_count; ++index) {
+    if (side.armies[index].army_id == army_id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool ReadRegimentBucket(const CombatPhaseEventTraceCapturePlanV1 &plan,
+                        std::uintptr_t side, std::size_t header_offset,
+                        bool men_at_arms,
+                        CombatPhaseEventTraceSideRecordV1 &output,
+                        std::uint32_t &failure_flags) noexcept {
+  NativeVectorView entries{};
+  const auto remaining = static_cast<std::uint32_t>(
+      output.regiments.size() - output.regiment_count);
+  if (!ReadVector(side, header_offset, remaining, entries, failure_flags)) {
+    return false;
+  }
+  for (std::uint32_t index = 0; index < entries.count; ++index) {
+    const auto native_row = entries.data + index * kSideRegimentStride;
+    const auto regiment_id =
+        LoadAt<std::int32_t>(native_row, kSideRegimentIdOffset);
+    const auto *const resolved = FindObject(
+        plan.regiments.data(), plan.regiment_count, regiment_id);
+    if (resolved == nullptr ||
+        LoadAt<std::int32_t>(resolved->object, kRegimentIdOffset) !=
+            regiment_id) {
+      failure_flags |= trace_capture_failure_identity;
+      return false;
+    }
+    auto &row = output.regiments[output.regiment_count++];
+    row.regiment_id = regiment_id;
+    row.army_id =
+        LoadAt<std::int32_t>(resolved->object, kRegimentArmyIdOffset);
+    if (!SideContainsArmy(output, row.army_id)) {
+      failure_flags |= trace_capture_failure_identity;
+      return false;
+    }
+    row.bucket_index = static_cast<std::int32_t>(index);
+    row.men_at_arms = men_at_arms;
+    const auto combat_type = LoadAt<std::uintptr_t>(
+        resolved->object, kRegimentCombatTypeOffset);
+    if (combat_type == 0) {
+      failure_flags |= trace_capture_failure_identity;
+      return false;
+    }
+    row.fights_in_main_phase = LoadAt<std::uint8_t>(
+        combat_type, kCombatTypeMainPhaseEligibleOffset) != 0;
+    row.starting_raw =
+        LoadAt<std::int64_t>(native_row, kSideRegimentStartingOffset);
+    row.current_fighting_raw =
+        LoadAt<std::int64_t>(native_row, kSideRegimentCurrentOffset);
+    row.soft_casualties_raw =
+        LoadAt<std::int64_t>(native_row, kSideRegimentSoftOffset);
+    row.effective_damage_raw =
+        LoadAt<std::int64_t>(native_row, kSideRegimentDamageOffset);
+    row.effective_toughness_raw =
+        LoadAt<std::int64_t>(native_row, kSideRegimentToughnessOffset);
+    if (row.starting_raw < 0 || row.current_fighting_raw < 0 ||
+        row.soft_casualties_raw < 0 ||
+        row.current_fighting_raw > row.starting_raw ||
+        row.soft_casualties_raw >
+            row.starting_raw - row.current_fighting_raw) {
+      failure_flags |= trace_capture_failure_container;
+      return false;
+    }
+    if (row.fights_in_main_phase) {
+      row.hard_casualties_available = true;
+      row.hard_casualties_raw = row.starting_raw -
+                                row.current_fighting_raw -
+                                row.soft_casualties_raw;
+    }
+  }
+  return true;
+}
+
+bool ReadHardOwners(std::uintptr_t side,
+                    CombatPhaseEventTraceSideRecordV1 &output,
+                    std::uint32_t &failure_flags) noexcept {
+  NativeVectorView entries{};
+  if (!ReadVector(side, kSideHardOwnerHeaderOffset,
+                  static_cast<std::uint32_t>(output.hard_owners.size()),
+                  entries, failure_flags)) {
+    return false;
+  }
+  output.hard_owner_count = entries.count;
+  for (std::uint32_t index = 0; index < entries.count; ++index) {
+    const auto native_row = entries.data + index * kSideHardOwnerStride;
+    auto &row = output.hard_owners[index];
+    row.character_id = LoadAt<std::int32_t>(
+        native_row, kSideHardOwnerCharacterIdOffset);
+    row.hard_casualties_raw = LoadAt<std::int64_t>(
+        native_row, kSideHardOwnerCasualtiesOffset);
+    if (row.character_id <= 0 || row.hard_casualties_raw < 0) {
+      failure_flags |= trace_capture_failure_container;
+      return false;
+    }
+  }
+  return true;
+}
+
 bool ReadSide(const CombatPhaseEventTraceCapturePlanV1 &plan,
               std::size_t side_index,
               CombatPhaseEventTraceSideRecordV1 &output,
@@ -354,6 +472,14 @@ bool ReadSide(const CombatPhaseEventTraceCapturePlanV1 &plan,
       failure_flags |= trace_capture_failure_identity;
       return false;
     }
+  }
+
+  if (!ReadRegimentBucket(plan, side, kSideLevyHeaderOffset, false,
+                          output, failure_flags) ||
+      !ReadRegimentBucket(plan, side, kSideKnightHeaderOffset, true,
+                          output, failure_flags) ||
+      !ReadHardOwners(side, output, failure_flags)) {
+    return false;
   }
 
   NativeVectorView knights{};

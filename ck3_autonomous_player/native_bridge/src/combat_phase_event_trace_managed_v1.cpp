@@ -37,6 +37,7 @@ constexpr std::size_t kCombatSide0Offset = 0x20;
 constexpr std::size_t kCombatSide1Offset = 0x368;
 constexpr std::size_t kCombatBattleResultIdOffset = 0x708;
 constexpr std::size_t kSideArmyHeaderOffset = 0x10;
+constexpr std::size_t kSideLevyHeaderOffset = 0x28;
 constexpr std::size_t kSideKnightHeaderOffset = 0x40;
 constexpr std::size_t kSideSelectedCommanderOffset = 0x74;
 constexpr std::size_t kSideCombatBackPointerOffset = 0xB8;
@@ -252,6 +253,40 @@ BuildCombatPhaseEventTraceCapturePlanV1Result BuildPlanUnsafe(
                                              kArmyCommanderOffset))) {
         return output.army_count >= output.armies.size() ||
                        output.character_count >= output.characters.size()
+                   ? BuildCombatPhaseEventTraceCapturePlanV1Result::
+                         capacity_exceeded
+                   : BuildCombatPhaseEventTraceCapturePlanV1Result::
+                         roster_unavailable;
+      }
+    }
+
+    // The phase trace reads both retained entry buckets. The old plan only
+    // admitted the +0x40 MAA/knight bucket; resolve levy generations too.
+    std::uintptr_t levy_rows = 0;
+    std::uint32_t levy_count = 0;
+    if (!ReadVector(side, kSideLevyHeaderOffset,
+                    kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide,
+                    levy_rows, levy_count)) {
+      return BuildCombatPhaseEventTraceCapturePlanV1Result::roster_unavailable;
+    }
+    for (std::uint32_t index = 0; index < levy_count; ++index) {
+      const auto row = levy_rows + index * kSideKnightStride;
+      const auto regiment_id =
+          LoadAt<std::int32_t>(row, kSideKnightRegimentIdOffset);
+      void *const regiment = ResolveStoredComponent(
+          bindings.regiment_storage_slot, regiment_id, kRegimentIdOffset);
+      const auto army_id = regiment == nullptr
+                               ? -1
+                               : LoadAt<std::int32_t>(regiment,
+                                                      kRegimentArmyIdOffset);
+      void *const army = ResolveStoredComponent(
+          bindings.army_internal_storage_slot, army_id, kArmyIdOffset);
+      if (regiment == nullptr || army == nullptr ||
+          !Int32VectorContains(army_ids, army_count, army_id) ||
+          LoadAt<std::int32_t>(army, kArmyCombatIdOffset) != combat_id ||
+          !AddObjectRef(output.regiments, output.regiment_count, regiment_id,
+                        regiment)) {
+        return output.regiment_count >= output.regiments.size()
                    ? BuildCombatPhaseEventTraceCapturePlanV1Result::
                          capacity_exceeded
                    : BuildCombatPhaseEventTraceCapturePlanV1Result::

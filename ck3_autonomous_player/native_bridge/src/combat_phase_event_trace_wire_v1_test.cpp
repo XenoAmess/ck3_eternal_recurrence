@@ -64,6 +64,20 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
       side.armies[0] = {side_index == 0 ? 11 : 21,
                         side_index == 0 ? 101 : 201,
                         record.combat_id};
+      side.regiment_count = 2;
+      side.regiments[0] = {side_index == 0 ? 32 : 42,
+                           side_index == 0 ? 11 : 21,
+                           0, false, false,
+                           500'000, 0, 0, false, 0,
+                           80'000, 60'000};
+      side.regiments[1] = {side_index == 0 ? 31 : 41,
+                           side_index == 0 ? 11 : 21,
+                           0, true, true,
+                           1'000'000, 900'000, 50'000, true, 50'000,
+                           200'000, 150'000};
+      side.hard_owner_count = 1;
+      side.hard_owners[0] = {side_index == 0 ? 101 : 201,
+                             50'000};
       side.knight_count = 1;
       side.knights[0] = {side_index == 0 ? 31 : 41,
                          side_index == 0 ? 11 : 21,
@@ -109,7 +123,7 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
 bool HappyPath() {
   const auto drain = SmallDrain();
   const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
-  constexpr std::array<std::string_view, 14> required{
+  constexpr std::array<std::string_view, 19> required{
       "\"schema_version\":1",
       "\"status\":\"captured\"",
       "\"record_count\":7",
@@ -124,6 +138,11 @@ bool HappyPath() {
       "\"character_id\":101",
       "\"stable_key\":\"phase.\\\"hit\\\"\"",
       "\"rank_native_mirror\":2",
+      "\"regiments\":[",
+      "\"bucket\":\"levy\"",
+      "\"current_fighting_raw\":900000",
+      "\"hard_casualties_raw\":null",
+      "\"participant_hard_ledger\":[",
   };
   if (json.empty() || json.size() >
                           kCombatPhaseEventTraceWireMaximumBytesV1) {
@@ -143,8 +162,9 @@ bool HappyPath() {
 
 bool InvalidCountsFailClosed() {
   const auto drain = SmallDrain();
-  drain->records[0].character_count =
-      static_cast<std::uint32_t>(drain->records[0].characters.size() + 1);
+  drain->records[0].sides[0].regiment_count =
+      static_cast<std::uint32_t>(
+          drain->records[0].sides[0].regiments.size() + 1);
   if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty()) {
     return Fail("invalid record count did not fail closed");
   }

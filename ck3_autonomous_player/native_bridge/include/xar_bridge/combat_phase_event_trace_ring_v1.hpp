@@ -22,6 +22,8 @@ inline constexpr std::size_t
 inline constexpr std::size_t
     kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide = 2'048;
 inline constexpr std::size_t
+    kCombatPhaseEventTraceRingV1MaximumHardOwnersPerSide = 256;
+inline constexpr std::size_t
     kCombatPhaseEventTraceRingV1MaximumTrackedRegiments = 4'096;
 inline constexpr std::size_t kCombatPhaseEventTraceRingV1MaximumCharacters =
     4'096;
@@ -191,6 +193,33 @@ struct CombatPhaseEventTraceScheduleRowV1 {
                          const CombatPhaseEventTraceScheduleRowV1 &) = default;
 };
 
+struct CombatPhaseEventTraceRegimentRowV1 {
+  std::int32_t regiment_id = -1;
+  std::int32_t army_id = -1;
+  std::int32_t bucket_index = -1;
+  bool men_at_arms = false;
+  bool fights_in_main_phase = false;
+  std::int64_t starting_raw = 0;
+  std::int64_t current_fighting_raw = 0;
+  std::int64_t soft_casualties_raw = 0;
+  // Only retained main-phase fighters have a derivable per-entry hard loss.
+  bool hard_casualties_available = false;
+  std::int64_t hard_casualties_raw = 0;
+  std::int64_t effective_damage_raw = 0;
+  std::int64_t effective_toughness_raw = 0;
+
+  friend bool operator==(const CombatPhaseEventTraceRegimentRowV1 &,
+                         const CombatPhaseEventTraceRegimentRowV1 &) = default;
+};
+
+struct CombatPhaseEventTraceHardOwnerRowV1 {
+  std::int32_t character_id = -1;
+  std::int64_t hard_casualties_raw = 0;
+
+  friend bool operator==(const CombatPhaseEventTraceHardOwnerRowV1 &,
+                         const CombatPhaseEventTraceHardOwnerRowV1 &) = default;
+};
+
 struct CombatPhaseEventTraceSideRecordV1 {
   std::uintptr_t side = 0;
   std::int32_t side_index = -1;
@@ -202,6 +231,15 @@ struct CombatPhaseEventTraceSideRecordV1 {
   std::array<CombatPhaseEventTraceArmyRowV1,
              kCombatPhaseEventTraceRingV1MaximumArmiesPerSide>
       armies{};
+  // Native bucket order is levy rows followed by men-at-arms rows.
+  std::uint32_t regiment_count = 0;
+  std::array<CombatPhaseEventTraceRegimentRowV1,
+             kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide>
+      regiments{};
+  std::uint32_t hard_owner_count = 0;
+  std::array<CombatPhaseEventTraceHardOwnerRowV1,
+             kCombatPhaseEventTraceRingV1MaximumHardOwnersPerSide>
+      hard_owners{};
   std::uint32_t knight_count = 0;
   std::array<CombatPhaseEventTraceKnightRowV1,
              kCombatPhaseEventTraceRingV1MaximumRegimentsPerSide>
@@ -304,10 +342,9 @@ struct CombatPhaseEventTraceRingRecordV1 {
              kCombatPhaseEventTraceRingV1MaximumAccolades>
       accolades{};
 
-  // Only the already closed identity/skill/regiment core is copied today.
-  // This deliberately remains false until injury/trait ranks, trait-track XP,
-  // accolade progress, unlock variables and participant detach readers are
-  // added and a managed live delta fixture passes.
+  // Ordered retained regiment current/soft and owner-hard rows are copied,
+  // but outgoing damage/conversion and complete event-effect feedback are not.
+  // Keep this false until those inputs and a managed live parity fixture close.
   bool full_mutable_transition_bundle_complete = false;
 
   friend bool operator==(const CombatPhaseEventTraceRingRecordV1 &,

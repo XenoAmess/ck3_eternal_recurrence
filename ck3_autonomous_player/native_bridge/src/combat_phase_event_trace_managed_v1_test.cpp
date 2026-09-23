@@ -109,6 +109,7 @@ struct NativeFixture {
   static constexpr std::int32_t kBattleResultId = 0x01000002;
   static constexpr std::array<std::int32_t, 2> kArmyIds{11, 21};
   static constexpr std::array<std::int32_t, 2> kRegimentIds{31, 41};
+  static constexpr std::array<std::int32_t, 2> kLevyRegimentIds{32, 42};
   static constexpr std::array<std::int32_t, 2> kCharacterIds{51, 61};
   static constexpr std::int32_t kAccoladeId = 31;
   static constexpr std::int32_t kBeforeDate = 53'175'816;
@@ -122,11 +123,15 @@ struct NativeFixture {
   std::array<std::byte, 0x720> combat{};
   std::array<std::array<std::byte, 0x130>, 2> armies{};
   std::array<std::array<std::byte, 0x150>, 2> regiments{};
+  std::array<std::array<std::byte, 0x150>, 2> levy_regiments{};
+  std::array<std::array<std::byte, 0xA10>, 2> combat_types{};
+  std::array<std::array<std::byte, 0xA10>, 2> levy_combat_types{};
   std::array<std::array<std::byte, 0x1D0>, 2> characters{};
   std::array<std::array<std::byte, 0x100>, 2> character_links{};
   std::array<std::byte, 0x570> accolade_link{};
   std::array<std::byte, 0xB8> accolade{};
   std::array<std::array<std::byte, 0x60>, 2> knight_rows{};
+  std::array<std::array<std::byte, 0x60>, 2> levy_rows{};
   std::array<std::int32_t, 2> side_army_ids{kArmyIds};
   std::array<std::byte, 0x1B0> battle_result{};
   std::array<std::byte, 0x10> date_object{};
@@ -172,6 +177,10 @@ struct NativeFixture {
             reinterpret_cast<std::uintptr_t>(&side_army_ids[index]));
       Store(side, 0x18, std::int32_t{1});
       Store(side, 0x1C, std::int32_t{1});
+      Store(side, 0x28,
+            reinterpret_cast<std::uintptr_t>(levy_rows[index].data()));
+      Store(side, 0x30, std::int32_t{1});
+      Store(side, 0x34, std::int32_t{1});
       Store(side, 0x40,
             reinterpret_cast<std::uintptr_t>(knight_rows[index].data()));
       Store(side, 0x48, std::int32_t{1});
@@ -192,9 +201,24 @@ struct NativeFixture {
       Store(armies[index], 0x120, kCharacterIds[index]);
       Store(armies[index], 0x128, kCombatId);
       Store(knight_rows[index], 0x08, kRegimentIds[index]);
+      Store(levy_rows[index], 0x08, kLevyRegimentIds[index]);
+      Store(levy_rows[index], 0x10, std::int64_t{500'000});
+      Store(knight_rows[index], 0x10, std::int64_t{1'000'000});
+      Store(knight_rows[index], 0x18, std::int64_t{1'000'000});
+      Store(knight_rows[index], 0x40, std::int64_t{200'000});
+      Store(knight_rows[index], 0x48, std::int64_t{150'000});
       Store(regiments[index], 0x10, kRegimentIds[index]);
+      Store(regiments[index], 0x18,
+            reinterpret_cast<std::uintptr_t>(combat_types[index].data()));
       Store(regiments[index], 0x140, kArmyIds[index]);
       Store(regiments[index], 0x148, kCharacterIds[index]);
+      Store(combat_types[index], 0xA0A, std::uint8_t{1});
+      Store(levy_regiments[index], 0x10,
+            kLevyRegimentIds[index]);
+      Store(levy_regiments[index], 0x18,
+            reinterpret_cast<std::uintptr_t>(
+                levy_combat_types[index].data()));
+      Store(levy_regiments[index], 0x140, kArmyIds[index]);
       Store(characters[index], 0x18, kCharacterIds[index]);
       Store(characters[index], 0xD8,
             std::int32_t{10 + static_cast<std::int32_t>(index)});
@@ -208,6 +232,8 @@ struct NativeFixture {
                 character_links[index].data()));
       army_store.Add(kArmyIds[index], armies[index].data());
       regiment_store.Add(kRegimentIds[index], regiments[index].data());
+      regiment_store.Add(kLevyRegimentIds[index],
+                         levy_regiments[index].data());
       character_store.Add(kCharacterIds[index], characters[index].data());
     }
     Store(battle_result, 0x08, kBattleResultId);
@@ -362,10 +388,12 @@ bool PlanBuilderClosesPointers() {
     return Fail("capture plan did not build");
   }
   if (plan.combat_id != NativeFixture::kCombatId ||
-      plan.army_count != 2 || plan.regiment_count != 2 ||
+      plan.army_count != 2 || plan.regiment_count != 4 ||
       plan.character_count != 2 || plan.accolade_count != 1 ||
       plan.armies[0].full_id != NativeFixture::kArmyIds[0] ||
-      plan.regiments[1].full_id != NativeFixture::kRegimentIds[1] ||
+      plan.regiments[1].full_id != NativeFixture::kLevyRegimentIds[0] ||
+      plan.regiments[2].full_id != NativeFixture::kRegimentIds[1] ||
+      plan.regiments[3].full_id != NativeFixture::kLevyRegimentIds[1] ||
       plan.characters[0].full_id != NativeFixture::kCharacterIds[0] ||
       plan.accolades[0].accolade_id != NativeFixture::kAccoladeId ||
       plan.accolades[0].acclaimed_knight_character_id !=

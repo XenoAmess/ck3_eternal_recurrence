@@ -57,7 +57,12 @@
     },
     "side": {
       "army_ids": "CCombatSide+0x10 data, +0x1C count, int32 CArmyID rows",
+      "levy_entries": "CCombatSide+0x28 data, +0x34 count, native ordered Entry60 rows",
       "knight_entries": "CCombatSide+0x40 data, +0x4C count, stride 0x60, CRegimentID at row+0x08",
+      "men_at_arms_entries": "The existing +0x40 knight-entry vector is the retained men-at-arms Entry60 bucket; trace copies both +0x28 and +0x40 in bucket order",
+      "entry_mutable": "Entry60 +0x08 full CRegimentID, +0x10 starting Q100000, +0x18 current fighting Q100000, +0x20 soft casualties Q100000, +0x40 effective damage Q100000, +0x48 effective toughness Q100000; exact CRegiment generation and side CArmy membership revalidated at every boundary",
+      "entry_hard": "For a retained row only when CRegiment+0x18 combat type +0xA0A main-phase eligibility is true, derive hard = starting-current-soft; for non-main reserve hard is unavailable, not zero",
+      "participant_hard_ledger": "CCombatSide+0x58 data, +0x64 count, stride 0x18, owner CharacterID +0x08 and cumulative hard Q100000 +0x10; native order retained separately from per-entry derived hard",
       "selected_commander": "CCombatSide+0x74 CharacterID",
       "combat_back_pointer": "CCombatSide+0xB8 CCombat*",
       "scheduled_knights": "CCombatSide+0xD8 data, +0xE4 count, stride 0x10 {event*, CRegimentID}",

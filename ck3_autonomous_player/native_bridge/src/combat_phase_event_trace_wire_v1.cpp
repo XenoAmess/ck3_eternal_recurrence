@@ -121,6 +121,60 @@ bool AppendScheduleRows(std::string &output,
   return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
 }
 
+bool AppendRegiments(std::string &output,
+                     const CombatPhaseEventTraceSideRecordV1 &side) {
+  output += '[';
+  for (std::uint32_t index = 0; index < side.regiment_count; ++index) {
+    if (index != 0) output.push_back(',');
+    const auto &row = side.regiments[index];
+    output += "{\"regiment_id\":";
+    if (!AppendNumber(output, row.regiment_id)) return false;
+    output += ",\"army_id\":";
+    if (!AppendNumber(output, row.army_id)) return false;
+    output += ",\"bucket\":\"";
+    output += row.men_at_arms ? "men_at_arms" : "levy";
+    output += "\",\"bucket_index\":";
+    if (!AppendNumber(output, row.bucket_index)) return false;
+    output += ",\"fights_in_main_phase\":";
+    if (!AppendBool(output, row.fights_in_main_phase)) return false;
+    output += ",\"starting_raw\":";
+    if (!AppendNumber(output, row.starting_raw)) return false;
+    output += ",\"current_fighting_raw\":";
+    if (!AppendNumber(output, row.current_fighting_raw)) return false;
+    output += ",\"soft_casualties_raw\":";
+    if (!AppendNumber(output, row.soft_casualties_raw)) return false;
+    output += ",\"hard_casualties_raw\":";
+    if (row.hard_casualties_available) {
+      if (!AppendNumber(output, row.hard_casualties_raw)) return false;
+    } else {
+      output += "null";
+    }
+    output += ",\"effective_damage_raw\":";
+    if (!AppendNumber(output, row.effective_damage_raw)) return false;
+    output += ",\"effective_toughness_raw\":";
+    if (!AppendNumber(output, row.effective_toughness_raw)) return false;
+    output.push_back('}');
+  }
+  output.push_back(']');
+  return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
+}
+
+bool AppendHardOwners(std::string &output,
+                      const CombatPhaseEventTraceSideRecordV1 &side) {
+  output += '[';
+  for (std::uint32_t index = 0; index < side.hard_owner_count; ++index) {
+    if (index != 0) output.push_back(',');
+    const auto &row = side.hard_owners[index];
+    output += "{\"character_id\":";
+    if (!AppendNumber(output, row.character_id)) return false;
+    output += ",\"hard_casualties_raw\":";
+    if (!AppendNumber(output, row.hard_casualties_raw)) return false;
+    output.push_back('}');
+  }
+  output.push_back(']');
+  return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
+}
+
 bool AppendSide(std::string &output,
                 const CombatPhaseEventTraceSideRecordV1 &side) {
   output += "{\"side_index\":";
@@ -137,6 +191,10 @@ bool AppendSide(std::string &output,
   }
   output += ",\"armies\":";
   if (!AppendArmyRows(output, side)) return false;
+  output += ",\"regiments\":";
+  if (!AppendRegiments(output, side)) return false;
+  output += ",\"participant_hard_ledger\":";
+  if (!AppendHardOwners(output, side)) return false;
   output += ",\"knights\":";
   if (!AppendKnightRows(output, side)) return false;
   output += ",\"scheduled_knights\":";
@@ -230,6 +288,8 @@ bool CountsValid(const CombatPhaseEventTraceRingRecordV1 &record) {
   }
   for (const auto &side : record.sides) {
     if (side.army_count > side.armies.size() ||
+        side.regiment_count > side.regiments.size() ||
+        side.hard_owner_count > side.hard_owners.size() ||
         side.knight_count > side.knights.size() ||
         side.scheduled_knight_count > side.scheduled_knights.size()) {
       return false;
