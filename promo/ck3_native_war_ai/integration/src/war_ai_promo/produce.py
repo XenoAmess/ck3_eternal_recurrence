@@ -6,7 +6,9 @@ import json
 import math
 import os
 from pathlib import Path
+import shutil
 import sys
+import zipfile
 from copy import deepcopy
 
 from xar_promo.media import probe_and_write_bound_media
@@ -16,6 +18,36 @@ from .common import binding, load, verify, write_new
 from .finalize import add_chapters
 from .capture_media import load_capture_spec, prepare_capture_clip
 from .capture_overlay import label_capture_clip
+
+
+def archive_capture_attempt(attempt, archive):
+    """Bind the complete attempt tree in one immutable lifecycle artifact.
+
+    Each adapter control remains present at its original relative path in this
+    archive and in the retained workdir. A large bundle can contain hundreds
+    of controls, so one archive avoids hundreds of manifest rewrites while
+    preserving their individual hashes in control-index.json and the receipt.
+    """
+    attempt, archive = Path(attempt), Path(archive)
+    if archive.exists():
+        raise FileExistsError(archive)
+    files = sorted(path for path in attempt.rglob("*") if path.is_file())
+    if not files:
+        raise ValueError("Cannot archive an empty capture attempt")
+    with zipfile.ZipFile(archive, mode="x", compression=zipfile.ZIP_STORED,
+                         allowZip64=True) as target:
+        for path in files:
+            relative = path.relative_to(attempt).as_posix()
+            entry = zipfile.ZipInfo(relative, date_time=(1980, 1, 1, 0, 0, 0))
+            entry.compress_type = zipfile.ZIP_STORED
+            entry.external_attr = 0o100644 << 16
+            with path.open("rb") as source, target.open(entry, "w", force_zip64=True) as sink:
+                shutil.copyfileobj(source, sink, 1024 * 1024)
+    with zipfile.ZipFile(archive) as source:
+        if source.testzip() is not None or source.namelist() != [
+                path.relative_to(attempt).as_posix() for path in files]:
+            raise ValueError(f"Capture attempt archive failed readback: {archive}")
+    return archive
 
 
 def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffprobe="ffprobe"):
@@ -52,23 +84,19 @@ def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffpr
 
     for index, spec in enumerate(specs, 1):
         attempt = Path(root) / "capture" / f"{index:03d}"
+        archive = attempt.with_name(attempt.name + "-process.zip")
+        succeeded = False
         try:
             prepared = prepare_capture_clip(spec, attempt / "clip.mp4", ffmpeg, ffprobe, attempt / "audit")
-            original_controls = []
             if v3:
                 case_id = {"case-w-bundle-r1": "CASE-W", "case-c-bundle-r2": "CASE-C"}.get(
                     Path(spec["bundle_root"]).name)
                 if case_id is None or spec["evidence_role"] != "context":
                     raise ValueError("V3 accepts only reviewed CASE-W/C context clips")
-                original_controls = [prepared["media"]["path"], prepared["receipt"]["path"]]
                 prepared = label_capture_clip(prepared, case_id=case_id, cue_id=spec["cue_id"],
                                               output_root=attempt / "context-label", ffmpeg=ffmpeg,
                                               ffprobe=ffprobe)
             raw_id = keep(prepared["source_recording"]["path"], "capture-raw-", "capture-original-recording")
-            controls = [keep(item["preserved"]["path"], "capture-control-", "capture-control-evidence")
-                        for item in prepared["controls"]]
-            controls.extend(keep(path, "capture-control-", "capture-original-prepared-clip")
-                            for path in original_controls)
             media_id = keep(prepared["media"]["path"], "capture-clip-", "capture-continuous-clip", "derived")
             receipt_id = keep(prepared["receipt"]["path"], "capture-receipt-", "capture-clip-receipt", "derived")
             row = rows[spec["cue_id"]]
@@ -84,7 +112,7 @@ def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffpr
             row["duration_seconds"] = duration
             row["capture_clip"] = {
                 "media_artifact_id":media_id, "receipt_artifact_id":receipt_id,
-                "raw_artifact_id":raw_id, "control_artifact_ids":controls,
+                "raw_artifact_id":raw_id, "control_artifact_ids":[],
                 "claim_ids":list(spec["claim_ids"]), "evidence_role":spec["evidence_role"],
                 "span_id":spec["span_id"], "duration_seconds":duration,
                 "probed_media_duration_seconds":prepared["duration_seconds"],
@@ -92,6 +120,7 @@ def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffpr
                 "alignment":"real-clip-full-frames; at-most-one-frame adjustment; full speech retained",
                 "native_ai_causality_verified":False,
             }
+            succeeded = True
         except Exception as error:
             write_new(attempt / "integration-failure.json", {
                 "cue_id":spec["cue_id"], "status":"failed-retained", "error":str(error),
@@ -100,9 +129,12 @@ def prepare_captures(inputs, spec_path, root, preserve, *, ffmpeg="ffmpeg", ffpr
             raise
         finally:
             if attempt.exists():
-                for path in sorted(attempt.rglob("*")):
-                    if path.is_file():
-                        keep(path, "capture-audit-", "capture-preparation-process", "derived")
+                # The receipt records each control hash; this archive retains
+                # their exact bytes and every preparation/audit process file.
+                archive_id = keep(archive_capture_attempt(attempt, archive),
+                                  "capture-process-", "capture-complete-process-archive", "derived")
+                if succeeded:
+                    row["capture_clip"]["control_artifact_ids"] = [archive_id]
     result["media_scope"] = "mixed-footage"
     result["capture_selection_artifact_id"] = "capture-selection-spec-v1"
     result["capture_cue_count"] = len(specs)

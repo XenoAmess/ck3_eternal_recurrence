@@ -7,6 +7,7 @@ from types import SimpleNamespace
 import sys
 import unittest
 from unittest.mock import patch
+import zipfile
 
 from xar_promo.media import probe_and_write_bound_media
 from xar_promo.pipeline import ProjectConfig
@@ -83,6 +84,15 @@ class CaptureIntegrationTests(unittest.TestCase):
         self.assertIn(mapped["raw_artifact_id"],ids)
         self.assertIn(mapped["receipt_artifact_id"],ids)
         self.assertTrue(set(mapped["control_artifact_ids"]).issubset(ids))
+        self.assertEqual(len(mapped["control_artifact_ids"]),1)
+        archive = root / "capture/001-process.zip"
+        self.assertEqual(binding(archive)["sha256"],binding(
+            root / "preserved" / (mapped["control_artifact_ids"][0] + ".zip"))["sha256"])
+        with zipfile.ZipFile(archive) as source:
+            self.assertIsNone(source.testzip())
+            self.assertIn("audit/control-index.json",source.namelist())
+            self.assertIn("audit/receipt.json",source.namelist())
+            self.assertIn("clip.mp4",source.namelist())
         invoke = self.invocation(selected,root,artifacts,preserve)
         captured,teaching = invoke.draft.segments
         self.assertFalse(captured.visual_source.requires_resolution)
@@ -126,6 +136,8 @@ class CaptureIntegrationTests(unittest.TestCase):
                 produce.prepare_captures(inputs,self.spec_path,root,preserve)
         self.assertTrue((root / "capture/001/integration-failure.json").exists())
         self.assertTrue((root / "capture/001/clip.mp4").exists())
+        with zipfile.ZipFile(root / "capture/001-process.zip") as source:
+            self.assertIn("integration-failure.json",source.namelist())
         self.assertTrue(any(item.artifact_id.startswith("capture-raw-") for item in artifacts))
         self.assertTrue(any(item.artifact_id.startswith("capture-receipt-") for item in artifacts))
         self.assertFalse((root / "build").exists())
