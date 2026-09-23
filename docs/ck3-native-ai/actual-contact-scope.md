@@ -353,6 +353,75 @@ initiating CArmy+0x124
 
 扫描 stride `0x30` row，`+0x04` 是 target ProvinceID，`+0x00` 是传给 constructor 的 raw adjacency kind。没有验证到 edge 时原路径保留 raw `0`。
 
+### 接战后能否回读攻击方 final-edge entry（2026-09-23）
+
+冻结版本仍是 CK3 `1.19.0.6`、EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+本次重放 exact-build 反汇编：
+`0x2209C48 --size 0xC7`、`0x27FB7C0 --size 0x260`、
+`0x2303CF0 --size 0x270`、`0x2303F50 --size 0x180`，
+使用上文的 `disasm_ck3.py --exe` 冻结 EXE。
+
+- [static-confirmed] `0x2209C48..0x2209D0F` 用 **initiating** CArmy 映射到 CUnit，
+  从 CUnit `+0x20` 当前 Province 与 `+0x30` movement target 查询 adjacency kind。
+  `initiator_is_defender=true` 时，这条边来自将进入 side1 的军队；不得据此标成 side0 的攻击入场边。
+- [static-confirmed] `0x27FB8CB..0x27FB8F0` 向 `0x2303CF0` 传 initiating CArmy、opponent vector、
+  `initiator_is_defender`、target Province 与 raw adjacency kind。constructor 在
+  `0x2303D94..0x2303DE6` 存 `CCombat+0x6B8` target 与 `+0x6F8` kind，
+  `0x2303E82..0x2303F50` 再按 polarity 插入双方。**已检查的 constructor 参数/写路径未保存 origin ProvinceID 或 initiator ID**；
+  是否另有原生持久字段仍是 `unknown`，不能把 kind、target、接战后 CUnit 当前省份反推为 origin。
+- [live-confirmed] R0202 对 R0194 h1251 的真实 `CombatID=738197508` 读到 side0 敌军
+  `[50331863]`、side1 我军 `[83886367]`、target `2638`。原 driver 的
+  `2643→2638` 是我军 defender 到达；这帧没有已证明的 side0 attacker entry，
+  不能作为现有 combat-v3 显式 attacker-entry 模型的同帧数值对照。R0202 冻结索引为
+  `Z:\ck3_mod_rewrite_process_assets\g2-combat-actual-side-R0202-frozen-20260923\FREEZE-MANIFEST.json`，
+  SHA-256 `E40EC31202246BDF9C3CDD81DF00CA871BB354050C2AD86815AC3F8E8F356057`。
+
+```mermaid
+flowchart TD
+    M["[static-confirmed] initiator CUnit<br/>origin +0x20 → target +0x30"] --> K["adjacency kind → CCombat+0x6F8"]
+    M --> P{"initiator_is_defender?"}
+    P -->|false| A["initiator → side0 attacker<br/>pre-contact route can identify its final edge"]
+    P -->|true| D["initiator → side1 defender<br/>edge is not side0 attacker entry"]
+    K --> U["unknown: separate persisted initiator/origin field?<br/>none in inspected constructor writes"]
+    A --> C["post-contact CombatID / target / ordered sides<br/>must independently match"]
+    D --> C
+```
+
+已有自然阳性线索是 2026-08-26 first-contact artifact：
+`Z:\ck3_mod_rewrite\_archive_temp_evidence\xar-one-generation-longrun-20260827T1713-5c85824-state\logs\p0-actual-contact-first-live.json`
+（SHA-256 `265D4FFCC644DCEFCFE192A273880DB6D37901B89AF733C12FA304B530597B5C`）。
+其 route/contact horizon 预测敌军 `357`、`33554657` 在 date `53178120`
+先到 `2586`，玩家 CUnit `83886341` 在 `53178264` 到达；接战前
+`native:39` / date `53178240` 显示玩家位于 `2581`、剩余 route
+`[2586,2579]`、未接战；后帧 `native:42` / date `53178264` 显示它在
+`2586` 的新 CombatID `335544325`，actual side0 attacker `[83886341]`、side1
+`[357,33554657]`。结合上述原生队列与 polarity，这是可追溯的 **attacker-side
+final edge `2581→2586` 候选**；artifact 没有直接保存 contact initiator 字段，
+故 exact initiator 身份仍需原 paired checkpoint / transition receipt 验证。
+同一历史 artifact 的 `actual_sides_combat_v3.attacker_entry_province_id=2585`
+是早期 hypothetical 查询输入，和该最后一条边不相等，不能当作同帧 parity。
+原始 date `53177976` seed 的 Z 盘只读副本位于同一 archive 的
+`runs\20260827T071014Z-one-generation-b49cef53\seed`；`manifest.json`
+记载并经本轮哈希复核 save
+`12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D`、
+driver `3C3BBFECDC6941B17B1CC946CEDA1011ABF3DD673AD511B1BFB764FC20E955A9`。
+它仍须经当前正式恢复器核 profile/lifecycle、版本、恢复边界和动作待确认项，
+目前**不是**已批准启动的候选。下一步先做官方 no-launch；若该原件不能合法恢复，
+只在正常运行出现 attacker-initiated 自然 contact 时保存接战前 route、接战后
+CombatID/side0/target，以及后帧同 paused revision 的 battle-control 与 v3 读回。
+不因本条证据启动专题长跑。
+
+本包来源索引（路径均为已存在的 Z 盘原件；本包不修改它们）：
+
+| 来源 | SHA-256 | 用途 |
+|---|---|---|
+| `g2-combat-actual-side-R0202-frozen-20260923/FREEZE-MANIFEST.json` | `E40EC31202246BDF9C3CDD81DF00CA871BB354050C2AD86815AC3F8E8F356057` | R0202 全部只读现场索引；位于 `Z:\ck3_mod_rewrite_process_assets` |
+| 同目录 `live/observation-index.json` | `CB6641771ABDCAD35615EA81421603CC4555B4932AE1E0E9397ABB5935417AF4` | R0202 CombatID、两侧身份与四 raw |
+| `logs/p0-actual-contact-first-live.json` | `265D4FFCC644DCEFCFE192A273880DB6D37901B89AF733C12FA304B530597B5C` | 2026-08-26 前 route/后 contact 帧；位于上述 `_archive_temp_evidence` 根 |
+| `runs/20260827T071014Z-one-generation-b49cef53/seed/manifest.json` | `0A828DED7D9B58EB84DEC56FF701DC8CB6619DC7E47E2EA943E11F60328FCE2C` | 原 save/driver 配对清单；同一 archive 根 |
+| 同 seed 的 `xar_checkpoint.ck3` / `driver-state.json` | `12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D` / `3C3BBFECDC6941B17B1CC946CEDA1011ABF3DD673AD511B1BFB764FC20E955A9` | 本轮原件哈希复核；正式恢复语义仍待 no-launch |
+
 ## 原生 mutation visibility
 
 这些写路径是理解同队列后续行为的证据，不是 query 可调用接口。

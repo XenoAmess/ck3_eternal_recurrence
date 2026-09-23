@@ -344,19 +344,41 @@ outgoing_damage = effective_attack_after_counter_and_modifiers
   `CCombat`/tick 对照才能把 local-shell raw 当作已验证的实战 hard conversion 输入。
   `0x2309FE8` 与 `0x230A002` 交换双方后两次进入 `0x23CE080`，所以每侧都需分别读
   `0x18C` 与 `0x18D`，不能只保存一次 defending-own/attacking-enemy 的二元组。
-  [static-ready; live pending] `COMBAT-ACTUAL-SIDE-DIAGNOSTIC` 在既有
+  [production-live primitive; narrow R0202] `COMBAT-ACTUAL-SIDE-DIAGNOSTIC` 在既有
   `query-battle-control-snapshot-v1-N` 的 paused application-main 双采样内，复用
   generation-valid CombatID、`CCombat+0x20/+0x368` 双 side、`side+0xB8`
   backlink、有序 CUnit 与 commander 身份验证，再用同一 exact-build
   `0x23C8FF0(out, actual_side, enum)` 分别读取两侧的 `0x18C/0x18D`。
   `actual_hard_casualty_sides` 是可选私有诊断：读取失败返回 `unavailable`
   且不发布四 raw，旧 battle-control 帧仍合法；它不改变 `battle_control_ready`。
-  尚无同帧原版 actual-side 与 v3 local-shell 数值对照，二者相等、伤亡逐日
-  parity、Monte Carlo 胜率和进攻授权均未成立。候选 R0194 h1251
-  原件 SHA `C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA`
-  是 Robert 战中 paused 配对，但旧轮次 battle-control 查询在执行前超时；须先解除
-  此阻塞，再以新 DLL 做 0 动作、0 日期的同帧读回。历史 final edge `2643→2638`
-  仅由原 driver route preview/contact 证明，新帧仍须核对实际双方身份。
+  R0202 已在 R0194 h1251 派生的合法配对上以新 DLL 做到 0 typed、0 日期的真实
+  battle-control 读回：`native:3`、CombatID `738197508`、target `2638`；
+  side0 敌军 `[50331863]` / commander `31797` 的 own/enemy raw 为 `0/0`，
+  side1 我军 `[83886367]` / commander `29829` 为 `20000/25000`，
+  比例尺 `100000`。冻结索引 SHA-256
+  `E40EC31202246BDF9C3CDD81DF00CA871BB354050C2AD86815AC3F8E8F356057`，
+  路径见 [实际接敌 scope](actual-contact-scope.md)。
+  旧 R0194 的 battle-control timeout 在这次有界新 DLL 读回中未复现；这不证明任意场景
+  timeout 已修复。**仍无**同帧原版 actual-side 与 v3 local-shell 数值对照，
+  伤亡逐日 parity、Monte Carlo 胜率和进攻授权均未成立。
+
+  R0194 的历史 final edge `2643→2638` 属于我军 **defender** 入场；敌军虽是
+  actual side0 attacker，现有证据没有它的 final-edge origin，不能把 defender
+  edge 代填 combat-v3 的 `attacker_entry_province_id`。原版
+  `0x2209C48..0x2209D0F` 用 contact **initiator** 的 CUnit origin/target 算
+  adjacency kind，而 `initiator_is_defender=true` 会把 initiator 放在 side1；
+  已检查 constructor 只保存 target Province 与 raw adjacency kind，不保存 source
+  Province 或 initiator ID。详细原生树与 `unknown` 分支见上链接。
+
+  2026-08-26 不可变自然接敌 artifact 提供更合适的候选：玩家 CUnit `83886341`
+  在接战前 date `53178240` / `native:39` 位于 `2581`、剩余路线
+  `[2586,2579]`，接战后 date `53178264` / `native:42` 在 target `2586`
+  成为 actual side0 attacker，CombatID `335544325`。其 candidate final edge
+  是 `2581→2586`；历史同 artifact 的 hypothetical combat 查询却填 entry
+  `2585`，不能沿用作 parity。先核可恢复 save/driver 与 transition 身份，再在
+  同一新 paused frame 将正确 edge 的 v3 local-shell 与 actual-side 四 raw 按
+  CombatID、target、有序 army 与 commander 对照；失败保留 RED，绝不从旧
+  hypothetical 输入推出真实胜率。
   作用点和截断顺序是：
 
   ```text
