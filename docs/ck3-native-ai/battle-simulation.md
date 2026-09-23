@@ -359,16 +359,52 @@ side1 的 `145,000 × 3,000 → 4,350`，再乘 `54,604 → 2,375`，
 这只闭合一个真实 tick 的出伤外壳，不证明战前 R14 重建、完整转移或胜率；
 `production_trace_ready`、胜率与攻击门继续关闭。
 
+[live-confirmed; research-only] R0220 从 R0157 原始 `raw53179128` 配对冷恢复，
+同一 CombatID `587202560` 经三天 maneuver 到 `raw53179200` 首个 main tick，
+再推进到 `raw53179224`；总计严格 `+96` 小时、零 typed 战术动作。
+七边界 `record_count=7`、`failure_flags=0`，原始配对未改，CK3 与 owner
+受控停止后均为零。冻结索引在
+`Z:\ck3_mod_rewrite_process_assets\g2-combat-r0157-harness-v2-f67-no-launch-20260924\checks\R0220-MAIN-TICK-FREEZE.json`
+（SHA-256 `0068BC85457D8CB1A50FBAC0B2293B04C0DA27C0105B8F8A9068C07E30731D6F`）。
+
+[model-checked against live tick] 起点 v3 固定接触输入在 `raw53179128` 取得，
+不是主 tick 当日新查询；三天 maneuver 后，双方 40/14 个兵团的 ID 集合、
+逐 ID current fighting 与 effective toughness 均与原版主 tick 前七边界相同。
+v3 枚举次序和七边界展示次序不同，因此按兵团 ID 对齐。以当前 master
+`31569c94477f9aa14768d485b2dfc6b92b2a6e1c` 的动态 counter 重算，R14
+双侧 `5,034,902,812 / 1,314,526,000` 与原版零残差；以同一 master 的
+advantage → scale → width → R14 截断顺序，outgoing
+`135,136,791 / 39,435,780` 也与原版零残差。R14 对照索引 SHA-256
+`C19276F2705C6B20BF44B31A2AE457F7DED283D573639EB649730BE892305E55`；
+出伤双版本对照索引 SHA-256
+`B058AC67D1A11ED376BECCEBC7F04CFB196483816BDD8C2A51A3D584E21F2226`。
+旧 f67 模型曾在 side0 多算 `45,666` raw，已由 master #238 修正。
+
+[model-checked against live tick] 将原版 outgoing 送入当前
+`apply_main_phase_casualties` 后，54 个兵团逐项 current/soft/hard 均为零残差：
+side0 soft/hard `1,988,339 / 1,118,404`，side1
+`6,133,074 / 3,679,835`（Q100000）。逐兵团差分索引 SHA-256
+`E237B1BF614C649EE076D003BD711C1F799E4D0EDE591B5E2EB4D4C375E63136`。
+该 tick 七边界的 BattleEvents 与 scheduled knights 均为空，只证明这次
+未观测到非空事件；没有验过非空 loaded phase effect。七边界尚未发布
+backing-component 士兵数组，故组件分配的独立后置、完整可变转移及 winner
+结果仍未闭合。`production_trace_ready=false`、`p_win` 与主动攻击继续 OFF。
+
 ```mermaid
 flowchart LR
-  E["actual CombatID 738197508"] --> T["seven original tick boundaries"]
+  E["R0217 CombatID 738197508"] --> T["seven original tick boundaries"]
+  E2["R0220 CombatID 587202560"] --> T2["three maneuver days + one main tick; seven boundaries"]
   H["outer outgoing hook: original caller + side"] --> R
   T --> R["0x23CB435 R14: post-counter attack"]
+  T2 --> R
+  V2["R0220 v3 baseline matched by regiment ID at tick"] --> R
   R --> S["先 advantage × 0.03 × width，再乘 R14；每步截断"]
   S --> O["native outgoing pair"]
-  O --> C["44 regiment casualty rows: R0215 delta 0"]
-  U["unknown: enemy side0 actual final-edge origin"] -.-> V["v3 hypothetical entry parity"]
+  O --> C["R0217: 44 regiment casualty rows delta 0"]
+  O --> C2["R0220: 54 regiment casualty rows delta 0"]
+  U["unknown: R0217 enemy side0 actual final-edge origin"] -.-> V["v3 hypothetical entry parity"]
   V -.-> R
+  C2 -.-> W["unknown: backing components / nonempty phase effect / winner"]
 ```
 
 ```text
