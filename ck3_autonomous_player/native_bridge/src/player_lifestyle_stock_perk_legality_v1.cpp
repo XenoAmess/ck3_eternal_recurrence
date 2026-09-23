@@ -194,7 +194,8 @@ bool Validate(const StockPerkLegalityEnvironmentV1 &env,
 }
 
 Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
-               const StockPerkLegalityAccessV1 &access, Sample &sample) noexcept {
+               const StockPerkLegalityAccessV1 &access,
+               std::string_view target_key, Sample &sample) noexcept {
   sample = {};
   if (!access.capture_frame(access.context, sample.frame) ||
       !FrameValid(sample.frame)) {
@@ -235,7 +236,7 @@ Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
     if (!key_read) {
       return Status::unavailable_database;
     }
-    if (View(key) == kStockPerkLegalityTargetV1) {
+    if (View(key) == target_key) {
       ++target_matches;
       sample.target_definition = sample.definition_members[index];
       sample.target_key = key;
@@ -252,8 +253,16 @@ Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
       View(sample.target_lifestyle_key) != kStockPerkLegalityLifestyleV1) {
     return Status::unavailable_candidate;
   }
-  if (!access.read_player_state(access.context, sample.frame, lifestyle,
-                                sample.player_state) ||
+  const bool state_observed =
+      access.read_target_player_state != nullptr
+          ? access.read_target_player_state(access.context, sample.frame,
+                                            lifestyle, target_key,
+                                            sample.player_state)
+          : target_key == kStockPerkLegalityTargetV1 &&
+                access.read_player_state != nullptr &&
+                access.read_player_state(access.context, sample.frame,
+                                         lifestyle, sample.player_state);
+  if (!state_observed ||
       !StableKeyValid(sample.player_state.target_lifestyle_key) ||
       View(sample.player_state.target_lifestyle_key) !=
           kStockPerkLegalityLifestyleV1 ||
@@ -314,27 +323,42 @@ StockPerkLegalityEnvironmentV1 BindStockPerkLegalityEnvironmentV1(
 StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
     const StockPerkLegalityEnvironmentV1 &env,
     const StockPerkLegalityAccessV1 &access) noexcept {
+  return ReadStockPerkLegalityV1(env, access, kStockPerkLegalityTargetV1);
+}
+
+StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
+    const StockPerkLegalityEnvironmentV1 &env,
+    const StockPerkLegalityAccessV1 &access,
+    std::string_view target_key) noexcept {
   StockPerkLegalityResultV1 out{};
+  if (target_key != kStockPerkLegalityTargetV1 &&
+      target_key != kStockPerkLegalityFollowupTargetV1) {
+    out.status = Status::unavailable_candidate;
+    return out;
+  }
   if (!EnvironmentValid(env)) {
     out.status = Status::unavailable_exact_build;
     return out;
   }
   if (access.is_application_main_thread == nullptr ||
       access.capture_frame == nullptr || access.read_memory == nullptr ||
-      access.read_player_state == nullptr ||
+      (access.read_player_state == nullptr &&
+       access.read_target_player_state == nullptr) ||
+      (target_key == kStockPerkLegalityFollowupTargetV1 &&
+       access.read_target_player_state == nullptr) ||
       !access.is_application_main_thread(access.context)) {
     out.status = Status::unavailable_binding;
     return out;
   }
   Sample first{};
-  const auto first_status = ReadOne(env, access, first);
+  const auto first_status = ReadOne(env, access, target_key, first);
   if (first_status != Status::observed_native_illegal &&
       first_status != Status::observed_native_legal) {
     out.status = first_status;
     return out;
   }
   Sample second{};
-  const auto second_status = ReadOne(env, access, second);
+  const auto second_status = ReadOne(env, access, target_key, second);
   if (second_status != Status::observed_native_illegal &&
       second_status != Status::observed_native_legal) {
     out.status = second_status;

@@ -15,6 +15,18 @@
     "max_database_rows": 512,
     "rule": "scan every pointer and stable key; require one exact target member, read that definition's target Lifestyle pointer, its exact XP/point getters, and LIFE2 owned-perk state in one paused frame; a current focus is not required"
   },
+  "followup_read_only_target": {
+    "stable_key": "professional_workforce_perk",
+    "lifestyle_key": "stewardship_lifestyle",
+    "exact_definition": "common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt:236-279",
+    "exact_definition_sha256": "ADB3EF30EBE3DA37FC02F8F132815173987527B6E82C19FB738A8EB8D3635C21",
+    "parent": "cutting_corners_perk",
+    "ordinary_landed_modifier": "build_speed=-0.3, holding_build_speed=-0.3",
+    "scope": "one independently selected policy target; never report this as complete native perk enumeration",
+    "sampling": "use the same exact database getter, stable-key/lifestyle offsets and stock validator twice on the same paused frame; read owned state for this target key independently of cutting_corners_perk",
+    "action": "not admitted by this read-only extension; existing cutting_corners_perk typed path is unchanged",
+    "live_status": "pending a new frozen pair and bounded paused readback"
+  },
   "stock_final_legality": {
     "window_wrapper_rva": "0x132D640",
     "window_wrapper_region_length": "0xBA",

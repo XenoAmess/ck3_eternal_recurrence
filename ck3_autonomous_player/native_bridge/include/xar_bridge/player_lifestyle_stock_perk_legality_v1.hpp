@@ -15,6 +15,8 @@ inline constexpr std::string_view kStockPerkLegalityExeSha256V1 =
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
 inline constexpr std::string_view kStockPerkLegalityTargetV1 =
     "cutting_corners_perk";
+inline constexpr std::string_view kStockPerkLegalityFollowupTargetV1 =
+    "professional_workforce_perk";
 inline constexpr std::string_view kStockPerkLegalityLifestyleV1 =
     "stewardship_lifestyle";
 
@@ -57,6 +59,9 @@ using StockPerkReadMemoryV1 = bool (*)(void *, std::uintptr_t, void *,
 using StockPerkReadPlayerStateV1 = bool (*)(
     void *, const StockPerkLegalityFrameV1 &, std::uintptr_t target_lifestyle,
     StockPerkLegalityPlayerStateV1 &) noexcept;
+using StockPerkReadTargetPlayerStateV1 = bool (*)(
+    void *, const StockPerkLegalityFrameV1 &, std::uintptr_t target_lifestyle,
+    std::string_view target_key, StockPerkLegalityPlayerStateV1 &) noexcept;
 using StockPerkProbeMainThreadV1 = bool (*)(void *) noexcept;
 using StockPerkGetDatabaseV1 = void *(*)();
 using StockPerkValidateCommandV1 = bool (*)(void *, void *);
@@ -76,6 +81,7 @@ struct StockPerkLegalityAccessV1 {
   StockPerkCaptureFrameV1 capture_frame = nullptr;
   StockPerkReadMemoryV1 read_memory = nullptr;
   StockPerkReadPlayerStateV1 read_player_state = nullptr;
+  StockPerkReadTargetPlayerStateV1 read_target_player_state = nullptr;
 };
 
 enum class StockPerkLegalityStatusV1 : std::uint32_t {
@@ -122,6 +128,13 @@ StockPerkLegalityEnvironmentV1 BindStockPerkLegalityEnvironmentV1(
 StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
     const StockPerkLegalityEnvironmentV1 &environment,
     const StockPerkLegalityAccessV1 &access) noexcept;
+
+// The second exact-key read is a private observation only. Existing callers
+// keep the cutting-corners target and the existing typed submit contract.
+StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
+    const StockPerkLegalityEnvironmentV1 &environment,
+    const StockPerkLegalityAccessV1 &access,
+    std::string_view target_key) noexcept;
 
 std::string_view StockPerkLegalityStatusKeyV1(
     StockPerkLegalityStatusV1 status) noexcept;

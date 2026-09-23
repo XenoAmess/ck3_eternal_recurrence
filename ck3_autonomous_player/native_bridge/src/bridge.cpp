@@ -5124,6 +5124,57 @@ std::string PlayerLifestyleFormalPrivateResultFrame(
       result += '}';
     }
   } else if (context.mode == xar::ck3_11906::
+                                 PlayerLifestyleFormalWireModeV1::
+                                     query_professional_workforce_only) {
+    const auto &perk = context.stock_perk_result;
+    result += "\"status\":";
+    AppendJsonString(
+        result, xar::ck3_11906::StockPerkLegalityStatusKeyV1(perk.status));
+    result += ",\"read_only\":true,\"policy_scoped\":true,";
+    result += "\"episode_run_id\":";
+    AppendJsonString(result, context.episode_run_id);
+    result += ",\"snapshot_id\":";
+    AppendJsonString(result, context.snapshot_id);
+    result += ",\"native_revision\":" +
+        std::to_string(context.expected_revision);
+    result += ",\"date_raw\":" +
+        std::to_string(context.expected_snapshot.date_raw);
+    result += ",\"played_character_id\":" +
+        std::to_string(context.expected_snapshot.played_character_id);
+    result += ",\"target_key\":";
+    AppendJsonString(
+        result, xar::ck3_11906::kStockPerkLegalityFollowupTargetV1);
+    if (perk.status == xar::ck3_11906::
+                           StockPerkLegalityStatusV1::observed_native_legal ||
+        perk.status == xar::ck3_11906::
+                           StockPerkLegalityStatusV1::observed_native_illegal) {
+      result += ",\"lifestyle_key\":";
+      AppendJsonString(result,
+                       xar::ck3_11906::PlayerLifestyleWindowStableKeyViewV1(
+                           perk.lifestyle_key));
+      result += ",\"native_legal\":";
+      result += perk.status == xar::ck3_11906::
+                                   StockPerkLegalityStatusV1::
+                                       observed_native_legal
+                    ? "true" : "false";
+      result += ",\"target_perk_owned\":";
+      result += perk.observed_target_owned ? "true" : "false";
+      result += ",\"unspent_perk_points\":" +
+          std::to_string(perk.observed_unspent_points);
+      result += ",\"used_perk_points\":" +
+          std::to_string(perk.observed_used_points);
+      result += ",\"xp_total_raw\":" +
+          std::to_string(perk.observed_target_xp_total_raw);
+      result += ",\"xp_within_level_raw\":" +
+          std::to_string(perk.observed_target_xp_within_level_raw);
+      result += ",\"xp_per_level\":" +
+          std::to_string(perk.observed_target_xp_per_level);
+      result += ",\"validator_invoked_twice\":";
+      result += perk.validator_invoked_twice ? "true" : "false";
+      result += ",\"scanned_database_rows\":" +
+          std::to_string(perk.scanned_database_rows);
+    }
+  } else if (context.mode == xar::ck3_11906::
                           PlayerLifestyleFormalWireModeV1::query) {
     result += "\"status\":\"available\",\"episode_run_id\":";
     AppendJsonString(result, context.episode_run_id);
@@ -5221,7 +5272,8 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
           payload,
           step == kPlayerLifestyleFormalPrivateQueryStepV1 ||
                   step == kPlayerLifestyleFormalPrivateCurrentStateStepV1 ||
-                  step == kPlayerLifestyleFormalPrivateStockFocusStepV1
+                  step == kPlayerLifestyleFormalPrivateStockFocusStepV1 ||
+                  step == kPlayerLifestyleFormalPrivateProfessionalWorkforceStepV1
               ? "episode_run_id"
               : "expected_episode_run_id",
           episode_run_id, 64) ||
@@ -5316,6 +5368,9 @@ std::string ExecutePlayerLifestyleFormalPrivateStepV1(
                 ? PlayerLifestyleFormalWireModeV1::query_state_only
                 : step == kPlayerLifestyleFormalPrivateStockFocusStepV1
                       ? PlayerLifestyleFormalWireModeV1::query_focus_only
+                : step == kPlayerLifestyleFormalPrivateProfessionalWorkforceStepV1
+                      ? PlayerLifestyleFormalWireModeV1::
+                            query_professional_workforce_only
                 : step == kPlayerLifestyleFormalPrivateSubmitStepV1
                       ? PlayerLifestyleFormalWireModeV1::submit_perk
                       : step == kPlayerLifestyleFormalPrivateSubmitFocusStepV1
@@ -9009,6 +9064,8 @@ void RunConnectedSession(
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateStockFocusStepV1
                    && step != xar::ck3_11906::
+                                  kPlayerLifestyleFormalPrivateProfessionalWorkforceStepV1
+                   && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateSubmitStepV1
                    && step != xar::ck3_11906::
                                   kPlayerLifestyleFormalPrivateSubmitFocusStepV1
@@ -9117,6 +9174,8 @@ void RunConnectedSession(
                           kPlayerLifestyleFormalPrivateCurrentStateStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateStockFocusStepV1 ||
+              step == xar::ck3_11906::
+                          kPlayerLifestyleFormalPrivateProfessionalWorkforceStepV1 ||
               step == xar::ck3_11906::
                           kPlayerLifestyleFormalPrivateSubmitStepV1 ||
               step == xar::ck3_11906::

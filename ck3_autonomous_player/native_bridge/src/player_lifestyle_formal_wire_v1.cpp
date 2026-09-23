@@ -219,13 +219,17 @@ void ReadStockFocus(PlayerLifestyleFormalWireContextV1 &context) noexcept {
   context.stock_focus_result = ReadStockFocusLegalityV1(environment, access);
 }
 
-bool ReadStockPerkPlayerState(
+bool ReadStockPerkTargetPlayerState(
     void *opaque, const StockPerkLegalityFrameV1 &frame,
     std::uintptr_t target_lifestyle,
+    std::string_view target_key,
     StockPerkLegalityPlayerStateV1 &output) noexcept {
   output = {};
   auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
-  if (context == nullptr || target_lifestyle == 0 || !OnMain(*context) ||
+  if (context == nullptr || target_lifestyle == 0 ||
+      (target_key != kStockPerkLegalityTargetV1 &&
+       target_key != kStockPerkLegalityFollowupTargetV1) ||
+      !OnMain(*context) ||
       context->snapshot == nullptr ||
       context->snapshot->status !=
           game::PlayerLifestyleSnapshotStatusV1::available ||
@@ -275,12 +279,32 @@ bool ReadStockPerkPlayerState(
   output.target_perk_owned = false;
   for (std::uint32_t index = 0; index < state.owned_perk_count; ++index) {
     if (PlayerLifestyleStableKeyViewV1(state.owned_perk_keys[index]) ==
-        kStockPerkLegalityTargetV1) {
+        target_key) {
       output.target_perk_owned = true;
       break;
     }
   }
   return true;
+}
+
+bool ReadStockPerkPlayerState(
+    void *opaque, const StockPerkLegalityFrameV1 &frame,
+    std::uintptr_t target_lifestyle,
+    StockPerkLegalityPlayerStateV1 &output) noexcept {
+  return ReadStockPerkTargetPlayerState(
+      opaque, frame, target_lifestyle, kStockPerkLegalityTargetV1, output);
+}
+
+void ReadProfessionalWorkforcePerk(
+    PlayerLifestyleFormalWireContextV1 &context) noexcept {
+  const auto environment = BindStockPerkLegalityEnvironmentV1(
+      context.module_base, true, kStockPerkLegalityExeSha256V1);
+  StockPerkLegalityAccessV1 access{
+      &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
+      &ReadStockPerkPlayerState};
+  access.read_target_player_state = &ReadStockPerkTargetPlayerState;
+  context.stock_perk_result = ReadStockPerkLegalityV1(
+      environment, access, kStockPerkLegalityFollowupTargetV1);
 }
 
 bool PublishStockPerkCandidates(
@@ -566,6 +590,17 @@ bool ExecutePlayerLifestyleFormalWireMailboxV1(
     }
     if (context->mode == PlayerLifestyleFormalWireModeV1::query_focus_only) {
       ReadStockFocus(*context);
+      context->completed = true;
+      return true;
+    }
+    if (context->mode ==
+        PlayerLifestyleFormalWireModeV1::query_professional_workforce_only) {
+      if (!ReadState(*context)) {
+        context->failure = PlayerLifestyleFormalStateFailureV1(
+            context->snapshot->unavailable_reason);
+        return true;
+      }
+      ReadProfessionalWorkforcePerk(*context);
       context->completed = true;
       return true;
     }

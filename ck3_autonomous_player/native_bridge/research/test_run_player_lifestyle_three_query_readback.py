@@ -19,6 +19,7 @@ from run_player_lifestyle_current_state_read import _frame as life2_frame
 from run_player_lifestyle_three_query_readback import (
     FOCUS_STEP,
     PERK_STEP,
+    PROFESSIONAL_STEP,
     _frame,
     _manifest_source_identities,
     _new_bound_driver,
@@ -27,6 +28,7 @@ from run_player_lifestyle_three_query_readback import (
     _verify_ordinary_profile,
     parser,
     run_three_queries,
+    run_professional_workforce_query,
 )
 from test_run_player_lifestyle_current_state_read import typed_state
 
@@ -63,6 +65,8 @@ class FakeState:
         self.perk_status = "available"
         self.perk_error: str | None = None
         self.progress_presence = "present"
+        self.professional_status = "observed_native_legal"
+        self.professional_owned = False
 
     def semantic_snapshot(self) -> dict[str, object]:
         return copy.deepcopy(self.frame)
@@ -134,6 +138,32 @@ class FakeState:
                         {"presence": "unavailable", "reason": "target_native_getters_unavailable"}
                     ),
                 )
+        elif step == PROFESSIONAL_STEP:
+            result.update(
+                status=self.professional_status,
+                read_only=True,
+                policy_scoped=True,
+                snapshot_id="native:3",
+                native_revision=3,
+                date_raw=53_178_312,
+                played_character_id=29_829,
+                target_key="professional_workforce_perk",
+            )
+            if self.professional_status in {
+                "observed_native_legal", "observed_native_illegal"
+            }:
+                result.update(
+                    lifestyle_key="stewardship_lifestyle",
+                    native_legal=self.professional_status == "observed_native_legal",
+                    target_perk_owned=self.professional_owned,
+                    unspent_perk_points=1,
+                    used_perk_points=5,
+                    xp_total_raw=213125,
+                    xp_within_level_raw=13125,
+                    xp_per_level=1000,
+                    validator_invoked_twice=True,
+                    scanned_database_rows=96,
+                )
         else:
             raise RuntimeError("test sent an unexpected step")
         return {
@@ -155,6 +185,63 @@ class FakeDriver:
 
 
 class LifeThreeQueryTest(unittest.TestCase):
+    def test_professional_readback_is_one_bound_read_only_query(self) -> None:
+        driver = FakeDriver()
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_professional_workforce_query(
+                driver, self.manifest(), Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+            self.assertTrue((Path(temp) / f"{PROFESSIONAL_STEP}.json").exists())
+        self.assertEqual(result["status"], "professional_workforce_observed")
+        self.assertEqual(result["steps"][0]["native_legal"], True)
+        self.assertEqual(result["gameplay_actions"], 0)
+        self.assertFalse(result["date_advanced"])
+        self.assertEqual(
+            [item["step"] for item in driver.endpoint.sent],
+            [PROFESSIONAL_STEP],
+        )
+        self.assertEqual(result["starting_frame"], result["ending_frame"])
+
+    def test_professional_native_denial_and_unavailable_remain_distinct(self) -> None:
+        driver = FakeDriver()
+        driver.state.professional_status = "observed_native_illegal"
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_professional_workforce_query(
+                driver, self.manifest(), Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+        self.assertEqual(result["status"], "professional_workforce_observed")
+        self.assertFalse(result["steps"][0]["native_legal"])
+        driver.state.professional_status = "unavailable_state"
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_professional_workforce_query(
+                driver, self.manifest(), Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+        self.assertEqual(result["status"], "evidence_insufficient")
+
+    def test_professional_mode_requires_explicit_runner_flag(self) -> None:
+        ordinary = parser().parse_args(["--candidate-root", "Z:/candidate"])
+        targeted = parser().parse_args([
+            "--candidate-root", "Z:/candidate", "--professional-workforce",
+        ])
+        self.assertFalse(ordinary.professional_workforce)
+        self.assertTrue(targeted.professional_workforce)
+
+    def test_professional_owned_target_cannot_be_reported_legal(self) -> None:
+        driver = FakeDriver()
+        driver.state.professional_owned = True
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_professional_workforce_query(
+                driver, self.manifest(), Path(temp),
+                deadline=time.monotonic() + 120,
+            )
+        self.assertEqual(result["status"], "red")
+        self.assertEqual(
+            result["steps"][0]["issue"], "professional_final_legality_untyped"
+        )
+
     def test_r0146_legacy_manifest_is_rejected_before_native_commit_keyerror(
         self,
     ) -> None:

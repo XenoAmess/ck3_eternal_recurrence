@@ -37,10 +37,12 @@ struct Fixture {
   static constexpr std::uintptr_t kModule = 0x1000000000ULL;
   std::array<std::byte, 0x90> database{};
   std::array<std::byte, 0x490> target_definition{};
+  std::array<std::byte, 0x490> followup_definition{};
   std::array<std::byte, 0x50> lifestyle_definition{};
   std::array<std::byte, 0x30> character{};
   std::array<std::uintptr_t, 2> database_rows{};
   std::array<char, 64> target_key_text{};
+  std::array<char, 64> followup_key_text{};
   std::array<char, 64> lifestyle_key_text{};
   std::uint32_t global_player_id = 29829;
   std::uintptr_t validator_slot = kModule + 0x25DFAF0;
@@ -53,15 +55,21 @@ struct Fixture {
   bool state_observation_available = true;
   bool main_thread = true;
   bool command_fields_valid = true;
+  bool followup_owned = false;
+  std::uintptr_t expected_definition = 0;
   static Fixture *active;
 
   void Init() {
     constexpr std::string_view target = "cutting_corners_perk";
+    constexpr std::string_view followup = "professional_workforce_perk";
     constexpr std::string_view lifestyle = "stewardship_lifestyle";
     std::memcpy(target_key_text.data(), target.data(), target.size());
+    std::memcpy(followup_key_text.data(), followup.data(), followup.size());
     std::memcpy(lifestyle_key_text.data(), lifestyle.data(), lifestyle.size());
     const auto target_text =
         reinterpret_cast<std::uintptr_t>(target_key_text.data());
+    const auto followup_text =
+        reinterpret_cast<std::uintptr_t>(followup_key_text.data());
     const auto lifestyle_text =
         reinterpret_cast<std::uintptr_t>(lifestyle_key_text.data());
     const auto lifestyle_pointer =
@@ -72,6 +80,12 @@ struct Fixture {
     Write(target_definition, 0x30,
           static_cast<std::uint64_t>(target_key_text.size() - 1));
     Write(target_definition, 0x468, lifestyle_pointer);
+    Write(followup_definition, 0x18, followup_text);
+    Write(followup_definition, 0x28,
+          static_cast<std::uint64_t>(followup.size()));
+    Write(followup_definition, 0x30,
+          static_cast<std::uint64_t>(followup_key_text.size() - 1));
+    Write(followup_definition, 0x468, lifestyle_pointer);
     Write(lifestyle_definition, 0x18, lifestyle_text);
     Write(lifestyle_definition, 0x28,
           static_cast<std::uint64_t>(lifestyle.size()));
@@ -80,10 +94,13 @@ struct Fixture {
     Write(character, 0x18, global_player_id);
     database_rows[0] =
         reinterpret_cast<std::uintptr_t>(target_definition.data());
+    database_rows[1] =
+        reinterpret_cast<std::uintptr_t>(followup_definition.data());
+    expected_definition = database_rows[0];
     Write(database, 0x68,
           reinterpret_cast<std::uintptr_t>(database_rows.data()));
     Write(database, 0x70, static_cast<std::int32_t>(2));
-    Write(database, 0x74, static_cast<std::int32_t>(1));
+    Write(database, 0x74, static_cast<std::int32_t>(2));
     std::memcpy(frame.episode_run_id.data(), "ordinary-feudal-episode",
                 sizeof("ordinary-feudal-episode"));
     std::memcpy(frame.snapshot_id.data(), "native:23", sizeof("native:23"));
@@ -135,10 +152,12 @@ struct Fixture {
     }
     return CopyRange(address, output, size, f.database) ||
            CopyRange(address, output, size, f.target_definition) ||
+           CopyRange(address, output, size, f.followup_definition) ||
            CopyRange(address, output, size, f.lifestyle_definition) ||
            CopyRange(address, output, size, f.character) ||
            CopyRange(address, output, size, f.database_rows) ||
            CopyRange(address, output, size, f.target_key_text) ||
+           CopyRange(address, output, size, f.followup_key_text) ||
            CopyRange(address, output, size, f.lifestyle_key_text);
   }
 
@@ -167,6 +186,20 @@ struct Fixture {
     return true;
   }
 
+  static bool ReadTargetPlayer(void *context,
+                               const StockPerkLegalityFrameV1 &frame,
+                               std::uintptr_t target_lifestyle,
+                               std::string_view target_key,
+                               StockPerkLegalityPlayerStateV1 &output) noexcept {
+    auto &f = *static_cast<Fixture *>(context);
+    if (target_key != kStockPerkLegalityFollowupTargetV1 ||
+        !ReadPlayer(context, frame, target_lifestyle, output)) {
+      return false;
+    }
+    output.target_perk_owned = f.followup_owned;
+    return true;
+  }
+
   static bool OnMain(void *context) noexcept {
     return static_cast<Fixture *>(context)->main_thread;
   }
@@ -192,19 +225,28 @@ struct Fixture {
                              primary == kModule + 0x4323A50 &&
                              secondary == kModule + 0x4323A20 &&
                              character_id == f.global_player_id &&
-                             definition == f.database_rows[0];
+                             definition == f.expected_definition;
     return f.native_validator_result;
   }
 
-  StockPerkLegalityResultV1 Run(bool exact = true) {
+  StockPerkLegalityResultV1 Run(
+      bool exact = true,
+      std::string_view target_key = kStockPerkLegalityTargetV1,
+      bool bind_followup = true) {
     active = this;
     const StockPerkLegalityEnvironmentV1 env{
         exact, kStockPerkLegalityExeSha256V1, kModule, true,
         &Fixture::Database, &Fixture::Validate};
-    const StockPerkLegalityAccessV1 access{
+    StockPerkLegalityAccessV1 access{
         this, &Fixture::OnMain, &Fixture::Capture,
         &Fixture::ReadMemory, &Fixture::ReadPlayer};
-    return ReadStockPerkLegalityV1(env, access);
+    if (target_key == kStockPerkLegalityFollowupTargetV1 && bind_followup) {
+      access.read_target_player_state = &Fixture::ReadTargetPlayer;
+      expected_definition = database_rows[1];
+    }
+    return target_key == kStockPerkLegalityTargetV1
+               ? ReadStockPerkLegalityV1(env, access)
+               : ReadStockPerkLegalityV1(env, access, target_key);
   }
 };
 Fixture *Fixture::active = nullptr;
@@ -219,13 +261,56 @@ void TestLegalWithoutWindowOrCurrentFocus() {
   Require(result.validator_invoked_twice && f.validator_calls == 2 &&
               f.capture_calls == 3 && f.command_fields_valid,
           "both native validations must use the exact command in one frame");
-  Require(result.scanned_database_rows == 1 &&
+  Require(result.scanned_database_rows == 2 &&
               result.observed_unspent_points == 1 &&
               result.observed_used_points == 0 &&
               result.observed_target_xp_total_raw == 0 &&
               result.observed_target_xp_per_level == 1000 &&
               result.target_definition == f.database_rows[0],
           "target lifestyle progress and owned state must be sampled");
+}
+
+void TestProfessionalWorkforceUsesExactFinalValidator() {
+  Fixture f{};
+  f.Init();
+  const auto result = f.Run(true, kStockPerkLegalityFollowupTargetV1);
+  Require(result.status == Status::observed_native_legal &&
+              f.validator_calls == 2 && f.capture_calls == 3 &&
+              f.command_fields_valid &&
+              result.target_definition == f.database_rows[1] &&
+              result.observed_target_owned == false &&
+              result.observed_unspent_points == 1,
+          "followup key must use its own definition and same-frame native verdict");
+  Require(std::string_view(result.target_key.bytes.data(),
+                           result.target_key.size) ==
+              kStockPerkLegalityFollowupTargetV1,
+          "followup query must report the exact selected key");
+}
+
+void TestProfessionalWorkforceDenialsRemainTyped() {
+  Fixture f{};
+  f.Init();
+  f.native_validator_result = false;
+  f.followup_owned = true;
+  Require(f.Run(true, kStockPerkLegalityFollowupTargetV1).status ==
+              Status::observed_native_illegal,
+          "owned followup with a native false is an observed rejection");
+  Fixture g{};
+  g.Init();
+  g.followup_owned = true;
+  Require(g.Run(true, kStockPerkLegalityFollowupTargetV1).status ==
+              Status::unavailable_state,
+          "native true for an already owned followup must not be published");
+  Fixture h{};
+  h.Init();
+  Require(h.Run(true, "unsupported_perk").status ==
+              Status::unavailable_candidate && h.validator_calls == 0,
+          "arbitrary keys must not reach the exact native validator");
+  Fixture i{};
+  i.Init();
+  Require(i.Run(true, kStockPerkLegalityFollowupTargetV1, false).status ==
+              Status::unavailable_binding && i.validator_calls == 0,
+          "followup cannot reuse cutting-corners-only owned-state callback");
 }
 
 void TestProductionBinder() {
@@ -329,13 +414,15 @@ void TestFrameDriftAndManualReservationBoundary() {
 int main() {
   try {
     TestLegalWithoutWindowOrCurrentFocus();
+    TestProfessionalWorkforceUsesExactFinalValidator();
+    TestProfessionalWorkforceDenialsRemainTyped();
     TestObservedNativeRejection();
     TestUnknownPointAndOwnershipRemainUnavailable();
     TestDuplicateDefinitionAndAbiMismatch();
     TestBoundedDatabaseWithoutCapacityGuess();
     TestFrameDriftAndManualReservationBoundary();
     TestProductionBinder();
-    std::cout << "stock perk legality private fixture: 7/7 green\n";
+    std::cout << "stock perk legality private fixture: 9/9 green\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "stock perk legality private fixture RED: " << error.what()

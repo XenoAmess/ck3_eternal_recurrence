@@ -32,10 +32,13 @@ from run_player_lifestyle_current_state_read import (
 
 SCHEMA = "xar.ck3.g2_m4_lifestyle_three_query_candidate_v1"
 REPORT_SCHEMA = "xar.ck3.g2_m4_lifestyle_three_query_live_v1"
+PROFESSIONAL_SCHEMA = "xar.ck3.g2_m4_professional_workforce_readback_candidate_v1"
+PROFESSIONAL_REPORT_SCHEMA = "xar.ck3.g2_m4_professional_workforce_readback_live_v1"
 EXE_SHA256 = "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 STATE_STEP = "private-query-player-lifestyle-current-state-v1"
 PERK_STEP = "private-query-player-lifestyle-formal-v1"
 FOCUS_STEP = "private-query-player-lifestyle-stock-focus-v1"
+PROFESSIONAL_STEP = "private-query-player-lifestyle-professional-workforce-v1"
 PERK_ABSENT_PROGRESS_ERROR = "native_lifestyle_windowless_policy_perk_unavailable_state"
 
 
@@ -413,6 +416,8 @@ def prepare_candidate(
     )
     evidence = {
         "schema": (
+            "xar.ck3.g2_m4_professional_workforce_readback_no_launch_v1"
+            if schema == PROFESSIONAL_SCHEMA else
             "xar.ck3.g2_m4_lifestyle_three_query_no_launch_v1"
             if read_only else "xar.ck3.g2_m4_lifestyle_action_no_launch_v1"
         ),
@@ -796,8 +801,123 @@ def run_three_queries(
     return record
 
 
-def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
-    spec, manifest, ready = preflight(candidate_root)
+def run_professional_workforce_query(
+    driver: Any,
+    manifest: dict[str, object],
+    evidence: Path,
+    *,
+    deadline: float,
+) -> dict[str, object]:
+    """Read one fixed native final-legal target on one paused frame."""
+    starting = _frame(driver.take_internal_semantic_snapshot())
+    if not _valid_start(starting, manifest):
+        return {"status": "ineligible_scene", "starting_frame": starting}
+    remaining = deadline - time.monotonic()
+    if remaining <= 20:
+        return {"status": "timeout", "starting_frame": starting,
+                "issue": "overall_window_exhausted"}
+    timeout = min(float(manifest["bounds"]["native_query_seconds"]), remaining - 20)
+    request_id = "g2m4-professional-read-" + uuid.uuid4().hex
+    request = {
+        "type": "execute_step", "protocol_version": 1,
+        "request_id": request_id, "step": PROFESSIONAL_STEP,
+        "expected_snapshot_id": starting["snapshot_id"],
+        "expected_revision": starting["native_revision"],
+        "expected_date_raw": starting["date_raw"],
+        "expected_player_character_id": starting["played_character_id"],
+        "episode_run_id": starting["episode_run_id"],
+    }
+    driver.endpoint.send(request)
+    response = driver.state.wait_for_command_result(request_id, timeout)
+    after = _frame(driver.take_internal_semantic_snapshot())
+    step: dict[str, object] = {
+        "step": PROFESSIONAL_STEP, "request": request,
+        "response": response, "independent_after_frame": after,
+    }
+    if after != starting:
+        step.update(status="red", issue="paused_frame_drift")
+    elif response is None:
+        step.update(status="timeout", issue="native_query_timeout")
+    elif not (
+        isinstance(response, dict)
+        and response.get("type") == "command_result"
+        and response.get("protocol_version") == 1
+        and response.get("request_id") == request_id
+        and response.get("ok") is True
+        and isinstance(response.get("result"), dict)
+    ):
+        step.update(status="red", issue="native_query_result_invalid")
+    else:
+        result = response["result"]
+        native_status = result.get("status")
+        bound = (
+            result.get("step") == PROFESSIONAL_STEP
+            and result.get("private_build") is True
+            and result.get("advertised") is False
+            and result.get("read_only") is True
+            and result.get("policy_scoped") is True
+            and result.get("episode_run_id") == starting["episode_run_id"]
+            and result.get("snapshot_id") == starting["snapshot_id"]
+            and result.get("native_revision") == starting["native_revision"]
+            and result.get("date_raw") == starting["date_raw"]
+            and result.get("played_character_id") == starting["played_character_id"]
+            and result.get("target_key") == "professional_workforce_perk"
+        )
+        if not bound:
+            step.update(status="red", issue="professional_result_binding_invalid")
+        elif native_status in {"observed_native_legal", "observed_native_illegal"}:
+            points = result.get("unspent_perk_points")
+            used = result.get("used_perk_points")
+            owned = result.get("target_perk_owned")
+            legal = result.get("native_legal")
+            xp_total = result.get("xp_total_raw")
+            xp_within = result.get("xp_within_level_raw")
+            xp_per_level = result.get("xp_per_level")
+            if not (
+                type(points) is int and points >= 0
+                and type(used) is int and used >= 0
+                and type(xp_total) is int and xp_total >= 0
+                and type(xp_within) is int and xp_within >= 0
+                and type(xp_per_level) is int and xp_per_level > 0
+                and type(owned) is bool and type(legal) is bool
+                and legal == (native_status == "observed_native_legal")
+                and (not legal or (points > 0 and not owned))
+                and result.get("lifestyle_key") == "stewardship_lifestyle"
+                and result.get("validator_invoked_twice") is True
+                and type(result.get("scanned_database_rows")) is int
+                and result["scanned_database_rows"] > 0
+            ):
+                step.update(status="red", issue="professional_final_legality_untyped")
+            else:
+                step.update(status="observed", native_status=native_status,
+                            native_legal=legal, target_perk_owned=owned,
+                            unspent_perk_points=points, used_perk_points=used,
+                            xp_total_raw=xp_total,
+                            xp_within_level_raw=xp_within,
+                            xp_per_level=xp_per_level)
+        elif isinstance(native_status, str) and native_status.startswith("unavailable_"):
+            step.update(status="native_unavailable", native_status=native_status)
+        else:
+            step.update(status="red", issue="professional_native_status_invalid")
+    _write(evidence / f"{PROFESSIONAL_STEP}.json", step)
+    return {
+        "status": ("professional_workforce_observed" if step["status"] == "observed"
+                   else "evidence_insufficient" if step["status"] == "native_unavailable"
+                   else step["status"]),
+        "starting_frame": starting,
+        "steps": [step],
+        "ending_frame": after,
+        "gameplay_actions": 0,
+        "date_advanced": after["date_raw"] != starting["date_raw"],
+    }
+
+
+def run(candidate_root: Path, round_id: str, evidence: Path,
+        *, professional_workforce: bool = False) -> int:
+    spec, manifest, ready = preflight(
+        candidate_root,
+        expected_schema=(PROFESSIONAL_SCHEMA if professional_workforce else SCHEMA),
+    )
     _need(
         round_id.startswith("R") and round_id[1:].isdigit() and int(round_id[1:]) > 0,
         "sole operator must allocate a new R{n}",
@@ -807,7 +927,8 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
     evidence.mkdir(parents=True)
     started = time.monotonic()
     report: dict[str, object] = {
-        "schema": REPORT_SCHEMA,
+        "schema": (PROFESSIONAL_REPORT_SCHEMA if professional_workforce
+                   else REPORT_SCHEMA),
         "candidate": str(candidate_root.resolve()),
         "round_id": round_id,
         "status": "unexecuted",
@@ -836,7 +957,11 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
 
         _need(not ck3_process_inventory().get("processes"), "old CK3 still alive")
         locks.enter_context(exclusive_launch_lock(spec.game_exe))
-        locks.enter_context(exclusive_state_lock(spec.state_dir, "g2m4-three-query-readback"))
+        locks.enter_context(exclusive_state_lock(
+            spec.state_dir,
+            "g2m4-professional-workforce-readback" if professional_workforce
+            else "g2m4-three-query-readback",
+        ))
         driver = _new_bound_driver(
             spec,
             manifest,
@@ -873,10 +998,10 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
             cold_start_checkpoint=True,
             allow_terminal=False,
         )
-        report["readback"] = run_three_queries(
-            driver,
-            manifest,
-            evidence,
+        readback = (run_professional_workforce_query if professional_workforce
+                    else run_three_queries)
+        report["readback"] = readback(
+            driver, manifest, evidence,
             deadline=started + float(manifest["bounds"]["overall_seconds"]),
         )
         report["status"] = report["readback"]["status"]
@@ -947,7 +1072,9 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
             sort_keys=True,
         )
     )
-    if report["ck3_reclaimed"] and report["status"] == "three_queries_observed":
+    if report["ck3_reclaimed"] and report["status"] in {
+        "three_queries_observed", "professional_workforce_observed"
+    }:
         return 0
     if report["ck3_reclaimed"] and report["status"] in {
         "evidence_insufficient", "timeout", "ineligible_scene"
@@ -959,6 +1086,7 @@ def run(candidate_root: Path, round_id: str, evidence: Path) -> int:
 def parser(*, description: str | None = None) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=description or __doc__)
     parser.add_argument("--candidate-root", required=True, type=Path)
+    parser.add_argument("--professional-workforce", action="store_true")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--prepare-only", action="store_true")
     mode.add_argument("--preflight-only", action="store_true")
@@ -985,6 +1113,7 @@ def parser(*, description: str | None = None) -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    schema = PROFESSIONAL_SCHEMA if args.professional_workforce else SCHEMA
     if args.prepare_only:
         required = (
             "python_source_repo", "native_source_repo",
@@ -998,18 +1127,21 @@ def main() -> int:
             all(getattr(args, name) is not None for name in required),
             "--prepare-only requires the complete source/build/pair identity",
         )
-        evidence = prepare_candidate(args)
+        evidence = prepare_candidate(args, schema=schema)
         print(json.dumps(evidence, ensure_ascii=False, sort_keys=True))
         return 0
     if args.preflight_only:
-        _, _, ready = preflight(args.candidate_root)
+        _, _, ready = preflight(args.candidate_root, expected_schema=schema)
         print(json.dumps(ready, ensure_ascii=False, sort_keys=True))
         return 0
     _need(
         args.round is not None and args.evidence is not None,
         "live mode requires --round and --evidence",
     )
-    return run(args.candidate_root, args.round, args.evidence.resolve())
+    return run(
+        args.candidate_root, args.round, args.evidence.resolve(),
+        professional_workforce=args.professional_workforce,
+    )
 
 
 if __name__ == "__main__":
