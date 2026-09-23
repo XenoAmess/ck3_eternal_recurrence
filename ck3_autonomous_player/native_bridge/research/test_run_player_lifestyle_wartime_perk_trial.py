@@ -94,7 +94,7 @@ class Driver:
         assert expected_revision == 3
         assert query["snapshot"]["current_lifestyle_progress"][
             "unspent_perk_points"
-        ] == 2
+        ] > 0
         assert action["target_key"] == query["snapshot"][
             "legal_perk_candidates"
         ]["items"][0]["key"]
@@ -126,6 +126,64 @@ def manifest() -> dict[str, object]:
 
 
 class WartimePerkTrialTests(unittest.TestCase):
+    def test_third_perk_uses_fresh_final_legality_and_one_typed_checkpoint(self) -> None:
+        driver = Driver()
+        driver.life["owned_perk_keys"] = [
+            "cutting_corners_perk", "professional_workforce_perk",
+        ]
+        driver.life["current_lifestyle_progress"].update(
+            unspent_perk_points=1, used_perk_points=6,
+        )
+        driver.life["legal_perk_candidates"]["items"] = [{
+            "key": "centralization_perk",
+            "lifestyle_key": "stewardship_lifestyle",
+        }]
+        post = copy.deepcopy(driver.life)
+        post.update(snapshot_id="native:4", native_revision=4,
+                    public_revision=4, proof_epoch=4)
+        post["owned_perk_keys"].append("centralization_perk")
+        post["current_lifestyle_progress"].update(
+            unspent_perk_points=0, used_perk_points=7,
+        )
+        checkpoint = {"status": "saved", "sha256": "d" * 64,
+                      "history_index": HISTORY + 4, "date_raw": DATE}
+        with patch(
+            "xar_autoplayer.bridge.player_lifestyle_private_transport_v1."
+            "query_player_lifestyle_private_v1",
+            return_value={"status": "available", "snapshot": post},
+        ):
+            result = choose_one_wartime_perk(
+                driver, manifest(), wait_for_post=lambda pending: None,
+                save_paired_checkpoint=lambda: checkpoint,
+                plan_current_turn=lambda: {"plan": {"selected_step": None}},
+                plan_following_turn=lambda: {"plan": {
+                    "lifestyle_receipt_consumed": {
+                        "action_request_id": "life-perk-once",
+                        "postcondition_verified": True,
+                    },
+                }},
+                expected_target="centralization_perk",
+            )
+        self.assertEqual(result["status"], "perk_checkpointed")
+        self.assertEqual(result["target_key"], "centralization_perk")
+        self.assertEqual(result["post_points"], {"unspent": 0, "used": 7})
+        self.assertEqual(result["checkpoint"]["sha256"], "d" * 64)
+        self.assertEqual(driver.submits, 1)
+        self.assertFalse(result["date_advanced"])
+
+        no_legal = Driver()
+        no_legal.life = copy.deepcopy(driver.life)
+        no_legal.life["legal_perk_candidates"]["items"] = []
+        rejected = choose_one_wartime_perk(
+            no_legal, manifest(), wait_for_post=lambda pending: None,
+            save_paired_checkpoint=lambda: self.fail("no checkpoint"),
+            plan_current_turn=lambda: self.fail("no formal plan"),
+            plan_following_turn=lambda: self.fail("no following plan"),
+            expected_target="centralization_perk",
+        )
+        self.assertEqual(rejected["status"], "no_legal_wartime_perk")
+        self.assertEqual(no_legal.submits, 0)
+
     def test_second_perk_uses_fresh_formal_query_and_paired_checkpoint(self) -> None:
         driver = Driver()
         driver.life["owned_perk_keys"] = ["cutting_corners_perk"]

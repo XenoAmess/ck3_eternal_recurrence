@@ -25,7 +25,9 @@ from run_player_lifestyle_three_query_readback import (
 SCHEMA = "xar.ck3.g2_m4_wartime_perk_action_candidate_v1"
 REPORT_SCHEMA = "xar.ck3.g2_m4_wartime_perk_action_live_v1"
 ROOT_STEP = "query-campaign-root-context-v1"
-TARGETS = frozenset({"cutting_corners_perk", "professional_workforce_perk"})
+TARGETS = frozenset({
+    "cutting_corners_perk", "professional_workforce_perk", "centralization_perk",
+})
 DEFAULT_TARGET = "cutting_corners_perk"
 STOP_RESERVE_SECONDS = 15.0
 

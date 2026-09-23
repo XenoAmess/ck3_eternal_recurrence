@@ -332,7 +332,8 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
     std::string_view target_key) noexcept {
   StockPerkLegalityResultV1 out{};
   if (target_key != kStockPerkLegalityTargetV1 &&
-      target_key != kStockPerkLegalityFollowupTargetV1) {
+      target_key != kStockPerkLegalityFollowupTargetV1 &&
+      target_key != kStockPerkLegalityNextTargetV1) {
     out.status = Status::unavailable_candidate;
     return out;
   }
@@ -344,7 +345,7 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
       access.capture_frame == nullptr || access.read_memory == nullptr ||
       (access.read_player_state == nullptr &&
        access.read_target_player_state == nullptr) ||
-      (target_key == kStockPerkLegalityFollowupTargetV1 &&
+      (target_key != kStockPerkLegalityTargetV1 &&
        access.read_target_player_state == nullptr) ||
       !access.is_application_main_thread(access.context)) {
     out.status = Status::unavailable_binding;

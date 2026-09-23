@@ -27,6 +27,17 @@
     "action": "not admitted by this read-only extension; existing cutting_corners_perk typed path is unchanged",
     "live_status": "pending a new frozen pair and bounded paused readback"
   },
+  "next_private_policy_target": {
+    "stable_key": "centralization_perk",
+    "lifestyle_key": "stewardship_lifestyle",
+    "exact_definition": "common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt:280-318",
+    "exact_definition_sha256": "ADB3EF30EBE3DA37FC02F8F132815173987527B6E82C19FB738A8EB8D3635C21",
+    "parent": "professional_workforce_perk",
+    "ordinary_landed_modifier": "character_capital_county_monthly_development_growth_add=0.3",
+    "selection": "after observed ownership of professional_workforce_perk, query this exact target through the same paused native validator and target-owned callback; submit only if current final legality is true and private formal policy selects the same key",
+    "live_status": "static_candidate_only; R0187 confirms parent owned and one unspent point, not centralization final legality or action",
+    "public_advertised": false
+  },
   "stock_final_legality": {
     "window_wrapper_rva": "0x132D640",
     "window_wrapper_region_length": "0xBA",

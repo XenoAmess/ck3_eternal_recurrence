@@ -228,7 +228,8 @@ bool ReadStockPerkTargetPlayerState(
   auto *context = static_cast<PlayerLifestyleFormalWireContextV1 *>(opaque);
   if (context == nullptr || target_lifestyle == 0 ||
       (target_key != kStockPerkLegalityTargetV1 &&
-       target_key != kStockPerkLegalityFollowupTargetV1) ||
+       target_key != kStockPerkLegalityFollowupTargetV1 &&
+       target_key != kStockPerkLegalityNextTargetV1) ||
       !OnMain(*context) ||
       context->snapshot == nullptr ||
       context->snapshot->status !=

@@ -45,12 +45,13 @@ inline constexpr std::string_view kPlayerLifestyleFormalPrivateReceiptStepV1 =
 inline bool PlayerLifestylePolicyStockPerkTargetAdmittedV1(
     std::string_view target) noexcept {
   return target == kStockPerkLegalityTargetV1 ||
-         target == kStockPerkLegalityFollowupTargetV1;
+         target == kStockPerkLegalityFollowupTargetV1 ||
+         target == kStockPerkLegalityNextTargetV1;
 }
 
-// The first domain perk is the parent of professional_workforce_perk. A
-// windowless formal query reads one exact native target for the observed
-// ownership state; submit recomputes that target on the same paused frame.
+// The domain parent chain is cutting_corners -> professional_workforce ->
+// centralization. A windowless formal query reads one exact native target for
+// the observed ownership state; submit recomputes it on the same paused frame.
 inline std::string_view PlayerLifestylePolicyStockPerkTargetV1(
     const game::PlayerLifestyleSnapshotV1 &snapshot) noexcept {
   if (snapshot.status != game::PlayerLifestyleSnapshotStatusV1::available ||
@@ -59,15 +60,19 @@ inline std::string_view PlayerLifestylePolicyStockPerkTargetV1(
           game::kPlayerLifestyleWindowMaximumPerksV1) {
     return {};
   }
+  bool cutting_corners_owned = false;
+  bool professional_workforce_owned = false;
   for (std::uint32_t index = 0;
        index < snapshot.state.owned_perk_count; ++index) {
-    if (PlayerLifestyleStableKeyViewV1(
-            snapshot.state.owned_perk_keys[index]) ==
-        kStockPerkLegalityTargetV1) {
-      return kStockPerkLegalityFollowupTargetV1;
-    }
+    const auto key = PlayerLifestyleStableKeyViewV1(
+        snapshot.state.owned_perk_keys[index]);
+    if (key == kStockPerkLegalityFollowupTargetV1)
+      professional_workforce_owned = true;
+    if (key == kStockPerkLegalityTargetV1) cutting_corners_owned = true;
   }
-  return kStockPerkLegalityTargetV1;
+  if (professional_workforce_owned) return kStockPerkLegalityNextTargetV1;
+  return cutting_corners_owned ? kStockPerkLegalityFollowupTargetV1
+                               : kStockPerkLegalityTargetV1;
 }
 
 // Proof belongs to the published native frame, not the pump that happens to

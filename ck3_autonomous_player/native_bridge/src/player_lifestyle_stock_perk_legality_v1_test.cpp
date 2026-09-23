@@ -38,11 +38,13 @@ struct Fixture {
   std::array<std::byte, 0x90> database{};
   std::array<std::byte, 0x490> target_definition{};
   std::array<std::byte, 0x490> followup_definition{};
+  std::array<std::byte, 0x490> next_definition{};
   std::array<std::byte, 0x50> lifestyle_definition{};
   std::array<std::byte, 0x30> character{};
-  std::array<std::uintptr_t, 2> database_rows{};
+  std::array<std::uintptr_t, 3> database_rows{};
   std::array<char, 64> target_key_text{};
   std::array<char, 64> followup_key_text{};
+  std::array<char, 64> next_key_text{};
   std::array<char, 64> lifestyle_key_text{};
   std::uint32_t global_player_id = 29829;
   std::uintptr_t validator_slot = kModule + 0x25DFAF0;
@@ -56,20 +58,25 @@ struct Fixture {
   bool main_thread = true;
   bool command_fields_valid = true;
   bool followup_owned = false;
+  bool next_owned = false;
   std::uintptr_t expected_definition = 0;
   static Fixture *active;
 
   void Init() {
     constexpr std::string_view target = "cutting_corners_perk";
     constexpr std::string_view followup = "professional_workforce_perk";
+    constexpr std::string_view next = "centralization_perk";
     constexpr std::string_view lifestyle = "stewardship_lifestyle";
     std::memcpy(target_key_text.data(), target.data(), target.size());
     std::memcpy(followup_key_text.data(), followup.data(), followup.size());
+    std::memcpy(next_key_text.data(), next.data(), next.size());
     std::memcpy(lifestyle_key_text.data(), lifestyle.data(), lifestyle.size());
     const auto target_text =
         reinterpret_cast<std::uintptr_t>(target_key_text.data());
     const auto followup_text =
         reinterpret_cast<std::uintptr_t>(followup_key_text.data());
+    const auto next_text =
+        reinterpret_cast<std::uintptr_t>(next_key_text.data());
     const auto lifestyle_text =
         reinterpret_cast<std::uintptr_t>(lifestyle_key_text.data());
     const auto lifestyle_pointer =
@@ -86,6 +93,12 @@ struct Fixture {
     Write(followup_definition, 0x30,
           static_cast<std::uint64_t>(followup_key_text.size() - 1));
     Write(followup_definition, 0x468, lifestyle_pointer);
+    Write(next_definition, 0x18, next_text);
+    Write(next_definition, 0x28,
+          static_cast<std::uint64_t>(next.size()));
+    Write(next_definition, 0x30,
+          static_cast<std::uint64_t>(next_key_text.size() - 1));
+    Write(next_definition, 0x468, lifestyle_pointer);
     Write(lifestyle_definition, 0x18, lifestyle_text);
     Write(lifestyle_definition, 0x28,
           static_cast<std::uint64_t>(lifestyle.size()));
@@ -96,11 +109,13 @@ struct Fixture {
         reinterpret_cast<std::uintptr_t>(target_definition.data());
     database_rows[1] =
         reinterpret_cast<std::uintptr_t>(followup_definition.data());
+    database_rows[2] =
+        reinterpret_cast<std::uintptr_t>(next_definition.data());
     expected_definition = database_rows[0];
     Write(database, 0x68,
           reinterpret_cast<std::uintptr_t>(database_rows.data()));
-    Write(database, 0x70, static_cast<std::int32_t>(2));
-    Write(database, 0x74, static_cast<std::int32_t>(2));
+    Write(database, 0x70, static_cast<std::int32_t>(3));
+    Write(database, 0x74, static_cast<std::int32_t>(3));
     std::memcpy(frame.episode_run_id.data(), "ordinary-feudal-episode",
                 sizeof("ordinary-feudal-episode"));
     std::memcpy(frame.snapshot_id.data(), "native:23", sizeof("native:23"));
@@ -153,11 +168,13 @@ struct Fixture {
     return CopyRange(address, output, size, f.database) ||
            CopyRange(address, output, size, f.target_definition) ||
            CopyRange(address, output, size, f.followup_definition) ||
+           CopyRange(address, output, size, f.next_definition) ||
            CopyRange(address, output, size, f.lifestyle_definition) ||
            CopyRange(address, output, size, f.character) ||
            CopyRange(address, output, size, f.database_rows) ||
            CopyRange(address, output, size, f.target_key_text) ||
            CopyRange(address, output, size, f.followup_key_text) ||
+           CopyRange(address, output, size, f.next_key_text) ||
            CopyRange(address, output, size, f.lifestyle_key_text);
   }
 
@@ -192,11 +209,14 @@ struct Fixture {
                                std::string_view target_key,
                                StockPerkLegalityPlayerStateV1 &output) noexcept {
     auto &f = *static_cast<Fixture *>(context);
-    if (target_key != kStockPerkLegalityFollowupTargetV1 ||
+    if ((target_key != kStockPerkLegalityFollowupTargetV1 &&
+         target_key != kStockPerkLegalityNextTargetV1) ||
         !ReadPlayer(context, frame, target_lifestyle, output)) {
       return false;
     }
-    output.target_perk_owned = f.followup_owned;
+    output.target_perk_owned =
+        target_key == kStockPerkLegalityNextTargetV1
+            ? f.next_owned : f.followup_owned;
     return true;
   }
 
@@ -240,9 +260,10 @@ struct Fixture {
     StockPerkLegalityAccessV1 access{
         this, &Fixture::OnMain, &Fixture::Capture,
         &Fixture::ReadMemory, &Fixture::ReadPlayer};
-    if (target_key == kStockPerkLegalityFollowupTargetV1 && bind_followup) {
+    if (target_key != kStockPerkLegalityTargetV1 && bind_followup) {
       access.read_target_player_state = &Fixture::ReadTargetPlayer;
-      expected_definition = database_rows[1];
+      expected_definition = target_key == kStockPerkLegalityNextTargetV1
+                                ? database_rows[2] : database_rows[1];
     }
     return target_key == kStockPerkLegalityTargetV1
                ? ReadStockPerkLegalityV1(env, access)
@@ -261,7 +282,7 @@ void TestLegalWithoutWindowOrCurrentFocus() {
   Require(result.validator_invoked_twice && f.validator_calls == 2 &&
               f.capture_calls == 3 && f.command_fields_valid,
           "both native validations must use the exact command in one frame");
-  Require(result.scanned_database_rows == 2 &&
+  Require(result.scanned_database_rows == 3 &&
               result.observed_unspent_points == 1 &&
               result.observed_used_points == 0 &&
               result.observed_target_xp_total_raw == 0 &&
@@ -285,6 +306,38 @@ void TestProfessionalWorkforceUsesExactFinalValidator() {
                            result.target_key.size) ==
               kStockPerkLegalityFollowupTargetV1,
           "followup query must report the exact selected key");
+}
+
+void TestCentralizationUsesItsOwnFinalValidatorAndOwnedState() {
+  Fixture f{};
+  f.Init();
+  const auto result = f.Run(true, kStockPerkLegalityNextTargetV1);
+  Require(result.status == Status::observed_native_legal &&
+              f.validator_calls == 2 && f.capture_calls == 3 &&
+              f.command_fields_valid &&
+              result.target_definition == f.database_rows[2] &&
+              !result.observed_target_owned &&
+              result.observed_unspent_points == 1,
+          "third policy target must have its own same-frame native verdict");
+  Require(std::string_view(result.target_key.bytes.data(),
+                           result.target_key.size) ==
+              kStockPerkLegalityNextTargetV1,
+          "third query must report its exact selected key");
+  Fixture denied{};
+  denied.Init();
+  denied.native_validator_result = false;
+  denied.next_owned = true;
+  const auto denied_result =
+      denied.Run(true, kStockPerkLegalityNextTargetV1);
+  Require(denied_result.status == Status::observed_native_illegal &&
+              denied_result.observed_target_owned,
+          "an already owned third target cannot be promoted to legal");
+  Fixture missing_state{};
+  missing_state.Init();
+  Require(missing_state.Run(true, kStockPerkLegalityNextTargetV1,
+                            false).status == Status::unavailable_binding &&
+              missing_state.validator_calls == 0,
+          "third target cannot reuse the first target's owned-state callback");
 }
 
 void TestProfessionalWorkforceDenialsRemainTyped() {
@@ -415,6 +468,7 @@ int main() {
   try {
     TestLegalWithoutWindowOrCurrentFocus();
     TestProfessionalWorkforceUsesExactFinalValidator();
+    TestCentralizationUsesItsOwnFinalValidatorAndOwnedState();
     TestProfessionalWorkforceDenialsRemainTyped();
     TestObservedNativeRejection();
     TestUnknownPointAndOwnershipRemainUnavailable();
@@ -422,7 +476,7 @@ int main() {
     TestBoundedDatabaseWithoutCapacityGuess();
     TestFrameDriftAndManualReservationBoundary();
     TestProductionBinder();
-    std::cout << "stock perk legality private fixture: 9/9 green\n";
+    std::cout << "stock perk legality private fixture: 10/10 green\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << "stock perk legality private fixture RED: " << error.what()

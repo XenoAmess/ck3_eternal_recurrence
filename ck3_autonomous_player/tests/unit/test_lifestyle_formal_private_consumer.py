@@ -82,6 +82,7 @@ class _State:
         self.formal_focus_absent = False
         self.stock_focus_present = False
         self.professional_workforce_ready = False
+        self.centralization_ready = False
 
     def wait_for_command_result(self, request_id: str, _: float) -> dict[str, object]:
         assert self.last is not None and self.last["request_id"] == request_id
@@ -111,6 +112,16 @@ class _State:
                 life["current_lifestyle_progress"]["used_perk_points"] = 5
                 life["legal_perk_candidates"]["items"] = [{
                     "key": "professional_workforce_perk",
+                    "lifestyle_key": "stewardship_lifestyle",
+                }]
+            if self.centralization_ready:
+                life["owned_perk_keys"] = [
+                    "cutting_corners_perk", "professional_workforce_perk",
+                ]
+                life["current_lifestyle_progress"]["unspent_perk_points"] = 1
+                life["current_lifestyle_progress"]["used_perk_points"] = 6
+                life["legal_perk_candidates"]["items"] = [{
+                    "key": "centralization_perk",
                     "lifestyle_key": "stewardship_lifestyle",
                 }]
             if self.formal_focus_absent:
@@ -214,6 +225,47 @@ class _Driver:
 
 
 class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
+    def test_centralization_formal_choice_reuses_typed_receipt_and_next_turn(self) -> None:
+        driver = _Driver()
+        driver.state.centralization_ready = True
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        driver.history.extend(_scope_root())
+        service = GameplayBridgeService(driver)
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "life-advance", "phase": "wartime"},
+        ):
+            plan = service.plan_turn()["plan"]
+        self.assertEqual(plan["selected_step"], PERK_SUBMIT_STEP)
+        self.assertEqual(plan["lifestyle_action"]["target_key"], "centralization_perk")
+        self.assertEqual(
+            plan["lifestyle_query"]["snapshot"]["current_lifestyle_progress"][
+                "unspent_perk_points"
+            ], 1,
+        )
+        pending = submit_player_lifestyle_perk_private_v1(
+            driver, query=plan["lifestyle_query"],
+            action=plan["lifestyle_action"], expected_revision=3,
+        )
+        self.assertEqual(pending["status"], "submitted_verification_pending")
+        self.assertEqual(driver.state.last["target_key"], "centralization_perk")
+        driver.frame = _game_frame(4)
+        driver.frame["active_wars"] = [{"war_id": 16777250}]
+        applied = query_player_lifestyle_receipt_private_v1(
+            driver, pending=pending, expected_revision=4,
+        )
+        self.assertTrue(applied["post_target_perk_owned"])
+        self.assertTrue(applied["postcondition_verified"])
+        with mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value={"selected_step": "life-advance", "phase": "wartime"},
+        ):
+            following = service.plan_turn()["plan"]
+        self.assertEqual(
+            following["lifestyle_receipt_consumed"]["action_request_id"],
+            pending["action_request_id"],
+        )
+
     def test_professional_workforce_formal_choice_typed_receipt_and_next_turn(self) -> None:
         driver = _Driver()
         driver.state.professional_workforce_ready = True

@@ -17,6 +17,8 @@ inline constexpr std::string_view kStockPerkLegalityTargetV1 =
     "cutting_corners_perk";
 inline constexpr std::string_view kStockPerkLegalityFollowupTargetV1 =
     "professional_workforce_perk";
+inline constexpr std::string_view kStockPerkLegalityNextTargetV1 =
+    "centralization_perk";
 inline constexpr std::string_view kStockPerkLegalityLifestyleV1 =
     "stewardship_lifestyle";
 
@@ -129,8 +131,8 @@ StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
     const StockPerkLegalityEnvironmentV1 &environment,
     const StockPerkLegalityAccessV1 &access) noexcept;
 
-// The second exact-key read is a private observation only. Existing callers
-// keep the cutting-corners target and the existing typed submit contract.
+// Exact policy targets share the private observation and typed submit contract.
+// A newly admitted target still needs its own fresh same-frame native verdict.
 StockPerkLegalityResultV1 ReadStockPerkLegalityV1(
     const StockPerkLegalityEnvironmentV1 &environment,
     const StockPerkLegalityAccessV1 &access,

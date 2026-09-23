@@ -89,6 +89,8 @@ int main() {
             ck3::kStockPerkLegalityTargetV1);
     Require(ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
                 ck3::kStockPerkLegalityFollowupTargetV1) &&
+            ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
+                ck3::kStockPerkLegalityNextTargetV1) &&
             !ck3::PlayerLifestylePolicyStockPerkTargetAdmittedV1(
                 "unreviewed_perk"));
     const auto episode = "native-29829-ee172aa720db";
@@ -166,6 +168,21 @@ int main() {
             ck3::PlayerLifestyleWindowStableKeyViewV1(
                 out->candidates.perks[0].key) ==
                 ck3::kStockPerkLegalityFollowupTargetV1);
+    state->state.owned_perk_count = 2;
+    Require(ck3::AssignPlayerLifestyleStableKeyV1(
+        ck3::kStockPerkLegalityFollowupTargetV1,
+        state->state.owned_perk_keys[1]));
+    Require(ck3::PlayerLifestylePolicyStockPerkTargetV1(*state) ==
+            ck3::kStockPerkLegalityNextTargetV1);
+    Require(ck3::AssignPlayerLifestyleWindowStableKeyV1(
+        ck3::kStockPerkLegalityNextTargetV1,
+        candidates->perks[0].key));
+    Require(ck3::BuildPlayerLifestyleFormalPreconditionV1(
+                *state, *candidates, episode, *out) ==
+                ck3::PlayerLifestyleFormalPreconditionResultV1::ready &&
+            ck3::PlayerLifestyleWindowStableKeyViewV1(
+                out->candidates.perks[0].key) ==
+                ck3::kStockPerkLegalityNextTargetV1);
     ++candidates->public_revision;
     Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(
                 candidates->public_revision, action_pump) !=

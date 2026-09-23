@@ -1,5 +1,47 @@
 # 生活方式、重心与技能：原生 AI 决策树和 LIFE1 施工边界
 
+## R0186–R0187：剩余管理技能点的下一条原生分支（2026-09-23）
+
+冻结 CK3 `1.19.0.6-steam23530548` EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+R0186 在 Robert 主线 h2127/raw53215920 通过正式私有策略选取一次
+`professional_workforce_perk`，独立 `HasPerk` 与管理点数 2/5 → 1/6、
+下一 turn 消费和同日 checkpoint 均成立；冻结报告 SHA-256
+`656BABEE8CCB58FD69D30EF84782C95F331D5109482F9A2E5320E40FA2F98D58`。
+R0187 从该配对以新 PID 冷恢复，私有 paused `native:3` 读回再次确认
+`professional_workforce_perk` 已拥有、当前重心为 `stewardship_wealth_focus`、
+管理点数 1 未用/6 已用；读回 SHA-256
+`23EEC778AEF620E825FE07E979BECAC72A74CD4561C2E64B5F08CADB1500B388`。
+这份读回的 `legal_perk_candidates` 明确为 `lifestyle_window_unavailable`，
+不能从已拥有技能和剩余点数推定另一项技能最终合法。R0187 的 combat-v3
+输入读口另行 RED，0 动作、0 日期推进；两者不互相冲销。
+
+原版 `common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt:280-318`
+（SHA-256 `ADB3EF30EBE3DA37FC02F8F132815173987527B6E82C19FB738A8EB8D3635C21`）
+规定 `centralization_perk` 的唯一 parent 为已拥有的
+`professional_workforce_perk`；标准有地政府分支提供首都伯爵领月发展增长
+`+0.3`。它是下一条有明确长期治理收益的**待测候选**，不是 R0187
+已经合法的动作，也不是完整技能前沿排序。下次正式选择须在新的同一
+paused 帧读取该 exact definition、目标生活方式 XP/点数、owned 状态，
+并由原生 `CanSelectPerk` 给出最终合法结果；只有 true 才交给现有
+私有正式策略和单项 typed 提交。若为 false、不可读、已拥有或点数用尽，
+本候选不提交；不能重投已拥有的 `professional_workforce_perk`。
+
+```mermaid
+flowchart LR
+  A[R0187 h2127 读回：专业工人已拥有，管理剩 1 点] --> B[原版 centralization parent 与收益]
+  B -. 尚无当前帧最终合法读回 .-> C[新 paused 帧：exact definition、点数、owned、CanSelectPerk]
+  C -- true 且同帧 --> D[私有正式策略选一项]
+  C -- false 或 unavailable --> R[本技能候选 blocked；动作 0]
+  D -. 待实机 .-> E[typed 提交、独立 HasPerk/点数、下一 turn、配对 checkpoint/冷恢复]
+```
+
+当前 windowless formal query 只按 `cutting_corners` 是否拥有选择
+`cutting_corners` 或 `professional_workforce` 固定目标；R0187 状态会再次
+查询已拥有的后者。最小下一步是沿用其 exact-build stock validator，
+把第三目标仅接入私有同帧 final-legal 路径和现有 typed/receipt 合同，
+不开放公共 LIFE 接口，也不改变和平两年 M4 门或战争优先级。
+
 R0183 在 CK3 `1.19.0.6-steam23530548` 冻结 EXE、Robert 29829
 h2120/raw53215920 同一 paused `native:3` 帧，原生 `CanSelectPerk`
 两次一致地确认 `professional_workforce_perk` 最终合法，且目标未拥有、

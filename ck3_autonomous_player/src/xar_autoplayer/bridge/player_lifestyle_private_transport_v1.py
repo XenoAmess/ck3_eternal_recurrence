@@ -21,7 +21,9 @@ FOCUS_SUBMIT_STEP = "private-select-player-lifestyle-stock-focus-v1"
 RECEIPT_STEP = "private-query-player-lifestyle-receipt-v1"
 FOCUS_TARGET = "stewardship_wealth_focus"
 FOCUS_LIFESTYLE = "stewardship_lifestyle"
-PERK_TARGETS = frozenset({"cutting_corners_perk", "professional_workforce_perk"})
+PERK_TARGETS = frozenset({
+    "cutting_corners_perk", "professional_workforce_perk", "centralization_perk",
+})
 
 
 def _target_in_final_legal_perks(
