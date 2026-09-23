@@ -89,6 +89,34 @@ resulting alliance pairs with usable realm/ally state, and the alliance's
 duration and cancellation cost.  The existing five-row projection and the
 657-row count do not supply those fields.
 
+## Default-OFF formal collector
+
+The B1 static call-through now implements the narrow interface identified by
+the audit.  `GameplayBridgeService.plan_turn` checks the private driver flag
+`allow_private_m5_joint_collector` after creating its ordinary formal plan and
+before any private typed lifestyle, faction-gift or construction route.  The
+flag is absent/false in normal production, so the ordinary plan and public
+capabilities are unchanged.
+
+An enabled candidate must provide exactly one unadvertised, read-only
+`query_m5_joint_proposal_sources_private_v1` result for the planning snapshot,
+history and revision.  Its `xar.ck3.m5-formal-proposal-sources.v1` payload
+contains the full paused-frame identity, current commitment claims, explicit
+gold reserve and war-slot budget, plus only the domain sources complete in
+that frame.  The collector applies the existing war-continuation, council,
+construction, faction-gift and wartime-lifestyle adapters, constructs one
+`M5FrameDispatcher`, and calls `choose_observed` once.  The service then
+returns `selected_step=null` and `m5_joint_formal_action_ready=false`, even
+when the analytic reservation is non-null.
+
+Marriage is not a source-bundle domain.  Adding a `marriage` key is a RED;
+the R0133 legality inventory therefore cannot enter through this private
+route.  The source reader itself is also deliberately not advertised or
+enabled by a general CLI flag.  A later bounded candidate must wire real
+same-frame domain queries and commitment persistence into that private reader,
+then obtain paused live readback before any formal typed consumer is added.
+This static collector does not advance G2-M5 from `not_started`.
+
 R0133 remains read-only evidence: 657 distinct final-legal first-heir rows and
 five successful projection reads, with zero observed alliance payoff in the
 sample. This selector does not turn that count into a marriage proposal. It

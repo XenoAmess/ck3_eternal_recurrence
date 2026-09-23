@@ -399,6 +399,7 @@ from .faction_gift_formal_route_v1 import (
     SUBMIT_STEP as PRIVATE_FACTION_SUBMIT_STEP,
     plan_faction_gift_private_v1,
 )
+from ..m5_formal_proposal_collector import plan_m5_formal_query_only
 
 
 class GameplayBridgeService:
@@ -753,6 +754,20 @@ class GameplayBridgeService:
                     if getattr(self.driver, "allow_private_construction_formal_trial", False) is True
                     else None
                 ),
+                "_private_m5_snapshot_v1": (
+                    planning_snapshot
+                    if getattr(
+                        self.driver, "allow_private_m5_joint_collector", False
+                    ) is True
+                    else None
+                ),
+                "_private_m5_history_v1": (
+                    history
+                    if getattr(
+                        self.driver, "allow_private_m5_joint_collector", False
+                    ) is True
+                    else None
+                ),
             }
 
         if use_internal_view:
@@ -766,6 +781,23 @@ class GameplayBridgeService:
                     if isinstance(public_native_history, list)
                     else []
                 ),
+            )
+        m5_snapshot = planned.pop("_private_m5_snapshot_v1", None)
+        m5_history = planned.pop("_private_m5_history_v1", None)
+        if getattr(
+            self.driver, "allow_private_m5_joint_collector", False
+        ) is True:
+            if not isinstance(m5_snapshot, dict) or not isinstance(
+                m5_history, list
+            ):
+                raise BridgeUnavailableError(
+                    "private M5 collector lacks its formal planning view"
+                )
+            return plan_m5_formal_query_only(
+                self.driver,
+                planned,
+                snapshot=m5_snapshot,
+                history=m5_history,
             )
         if getattr(
             self.driver, "allow_private_lifestyle_formal_trial", False
