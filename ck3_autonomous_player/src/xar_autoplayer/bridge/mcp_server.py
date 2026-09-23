@@ -1318,6 +1318,23 @@ def create_server(
             tail_limit=tail_limit,
         )
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_engine_log_literals_v1(
+        log_name: str,
+        literals: list[str],
+        sample_limit: int = 3,
+    ) -> dict[str, object]:
+        """Count exact phrases in one fixed log below the server-bound profile."""
+        if runtime_diagnostics is None:
+            raise RuntimeError(
+                "engine log inspection requires a server-configured profile"
+            )
+        return runtime_diagnostics.query_engine_log_literals_v1(
+            log_name=log_name,
+            literals=literals,
+            sample_limit=sample_limit,
+        )
+
     @server.tool()
     def ck3_take_snapshot() -> dict[str, object]:
         """Return the latest backend-neutral CK3 session snapshot."""
@@ -2660,6 +2677,9 @@ def create_server(
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_engine_diagnostics_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_engine_log_literals_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_steward_develop_county_candidates_v1"

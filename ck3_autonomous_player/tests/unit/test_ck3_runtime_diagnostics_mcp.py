@@ -80,6 +80,36 @@ class Ck3RuntimeDiagnosticsTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "tail_limit"):
                 inspector.query_engine_diagnostics_v1(tail_limit=0)
 
+    def test_exact_log_literals_count_complete_fixed_file(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            profile = self._profile(Path(temporary))
+            inspector = Ck3RuntimeDiagnosticsInspector(profile)
+            result = inspector.query_engine_log_literals_v1(
+                log_name="error.log",
+                literals=["Error in character", "house trigger"],
+                sample_limit=1,
+            )
+            self.assertTrue(result["exists"])
+            self.assertEqual(result["matches"][0]["line_count"], 2)
+            self.assertEqual(result["matches"][0]["samples"][0]["line_number"], 1)
+            self.assertEqual(result["matches"][1]["line_count"], 0)
+            self.assertEqual(result["matches"][1]["samples"], [])
+            self.assertEqual(result["scanned_line_count"], 3)
+            self.assertEqual(len(result["sha256"]), 64)
+            self.assertFalse(result["regex_argument_accepted"])
+            with self.assertRaisesRegex(ValueError, "log_name"):
+                inspector.query_engine_log_literals_v1(
+                    log_name="../../secret", literals=["Error"]
+                )
+            with self.assertRaisesRegex(ValueError, "distinct"):
+                inspector.query_engine_log_literals_v1(
+                    log_name="error.log", literals=["Error", "Error"]
+                )
+            with self.assertRaisesRegex(ValueError, "sample_limit"):
+                inspector.query_engine_log_literals_v1(
+                    log_name="error.log", literals=["Error"], sample_limit=6
+                )
+
 
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class Ck3RuntimeDiagnosticsMcpTests(unittest.IsolatedAsyncioTestCase):
@@ -116,6 +146,27 @@ class Ck3RuntimeDiagnosticsMcpTests(unittest.IsolatedAsyncioTestCase):
                     {"path": str(profile)},
                 )
                 self.assertTrue(rejected.is_error)
+
+                literal_tool = tools["ck3_query_engine_log_literals_v1"]
+                self.assertTrue(literal_tool.annotations.read_only_hint)
+                self.assertNotIn("path", literal_tool.input_schema["properties"])
+                self.assertNotIn("regex", literal_tool.input_schema["properties"])
+                self.assertFalse(
+                    literal_tool.input_schema.get("additionalProperties", True)
+                )
+                literal_result = await client.call_tool(
+                    "ck3_query_engine_log_literals_v1",
+                    {"log_name": "error.log", "literals": ["Error in character"]},
+                )
+                self.assertFalse(literal_result.is_error)
+                self.assertEqual(
+                    literal_result.structured_content["matches"][0]["line_count"], 2
+                )
+                rejected_literal = await client.call_tool(
+                    "ck3_query_engine_log_literals_v1",
+                    {"log_name": "error.log", "literals": ["Error"], "path": str(profile)},
+                )
+                self.assertTrue(rejected_literal.is_error)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import Counter
+import hashlib
 from pathlib import Path
 import re
 
@@ -27,6 +28,9 @@ MAX_FINGERPRINTS = 100
 MAX_TAIL_LINES = 100
 MAX_MILESTONES = 40
 MAX_LINE_CHARS = 2_000
+MAX_LOG_LITERALS = 16
+MAX_LITERAL_CHARS = 160
+MAX_LITERAL_SAMPLES = 5
 _ENGINE_LEVEL = re.compile(r"^\[[^\]]+\]\[([EFW])\]")
 _CRASH_PACKAGE = re.compile(r"ck3_[0-9]{8}_[0-9]{6}\Z")
 _MILESTONE_TERMS = (
@@ -299,5 +303,78 @@ class Ck3RuntimeDiagnosticsInspector:
             },
             "path_argument_accepted": False,
             "regex_argument_accepted": False,
+            "read_only": True,
+        }
+
+    def query_engine_log_literals_v1(
+        self,
+        *,
+        log_name: str,
+        literals: list[str],
+        sample_limit: int = 3,
+    ) -> dict[str, object]:
+        """Count exact, case-sensitive phrases across one complete fixed CK3 log."""
+        if log_name not in LOG_NAMES:
+            raise ValueError("log_name must be a fixed CK3 log name")
+        if not isinstance(literals, list) or not 1 <= len(literals) <= MAX_LOG_LITERALS:
+            raise ValueError(f"literals must contain 1 to {MAX_LOG_LITERALS} values")
+        if any(
+            not isinstance(value, str)
+            or not 1 <= len(value) <= MAX_LITERAL_CHARS
+            or any(character in value for character in "\r\n\0")
+            for value in literals
+        ):
+            raise ValueError("each literal must be a nonempty single-line string")
+        if len(set(literals)) != len(literals):
+            raise ValueError("literals must be distinct")
+        if not 0 <= sample_limit <= MAX_LITERAL_SAMPLES:
+            raise ValueError(f"sample_limit must be from 0 to {MAX_LITERAL_SAMPLES}")
+
+        path = self.profile_dir / "logs" / log_name
+        if not path.is_file():
+            return {
+                "schema": "xar.ck3.engine-log-literals/v1",
+                "log_name": log_name,
+                "exists": False,
+                "matches": [],
+            }
+        self._assert_below_profile(path)
+        payload = path.read_bytes()
+        if len(payload) > MAX_LOG_BYTES:
+            raise Ck3DiagnosticsError(
+                f"refusing to read oversized CK3 log: {len(payload)} > {MAX_LOG_BYTES} bytes"
+            )
+        lines = payload.decode("utf-8", errors="replace").splitlines()
+        matches: list[dict[str, object]] = []
+        for literal in literals:
+            matched_count = 0
+            samples: list[dict[str, object]] = []
+            for index, line in enumerate(lines, start=1):
+                if literal not in line:
+                    continue
+                matched_count += 1
+                if len(samples) < sample_limit:
+                    samples.append(
+                        {"line_number": index, "text": _bounded_line(line)}
+                    )
+            matches.append(
+                {
+                    "literal": literal,
+                    "line_count": matched_count,
+                    "samples": samples,
+                }
+            )
+        return {
+            "schema": "xar.ck3.engine-log-literals/v1",
+            "log_name": log_name,
+            "exists": True,
+            "bytes": len(payload),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+            "scanned_line_count": len(lines),
+            "matches": matches,
+            "match_count_semantics": "lines containing each literal, not independent bugs",
+            "case_sensitive": True,
+            "regex_argument_accepted": False,
+            "path_argument_accepted": False,
             "read_only": True,
         }

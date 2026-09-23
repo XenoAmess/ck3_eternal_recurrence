@@ -67,6 +67,7 @@ VANILLA_EVENT_OFFLINE_TOOLS: Final = (
 LOCAL_PROFILE_OBSERVATION_TOOLS: Final = (
     "ck3_inspect_save_artifacts_v1",
     "ck3_query_engine_diagnostics_v1",
+    "ck3_query_engine_log_literals_v1",
 )
 ZHONGGUO_B1_CYCLE_SNAPSHOT_TOOL: Final = (
     "ck3_query_zhongguo_b1_cycle_snapshot_v1"
