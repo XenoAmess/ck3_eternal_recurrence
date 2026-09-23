@@ -1,5 +1,11 @@
 # 一代人自治：阻塞与能力债账本
 
+## 2026-09-24 COMBAT-RATIO-GATE-B0：围城解围接战比例门
+
+| 缺口 | 当前事实与影响 | 本包最小改动 | 后续解除条件 |
+| --- | --- | --- | --- |
+| Robert primary-defender siege relief / B1 | R0188 防御战已读同帧 v3，但 `monte_carlo_ready=false`、`planner_usable=false`；旧策略把兵数及 native base power 双 `2×` 当作可直接进入围城敌军省份的准入。原版确定性 combat prediction ratio 也不是胜率。 | 所有完整候选统一 `forecast_required`，沿用 route preview → 全敌 contact horizon → v3 → 同帧合格 forecast 与三行动 expected utility。对于原规划在另一目标原地 `life-advance` 的情况，先读取该围城接敌证据；其它合法 typed 路线和终战优先级保留。静态包不启动 CK3、不提交动作。 | 原始战斗 trace 校准使 win probability 的可信下界可用；同帧 attack/avoid/wait 输入与资源机会成本生产者、正式激活；然后在生产 paused frame 核对 typed move、路线/战斗独立后置、下一 turn 与 checkpoint。此前保持 observation RED，2× 无权直接放行，也不再挡住未来合格的低兵力高胜率方案。 |
+
 ## 2026-09-21 R0036-R0043 GEN-034-D replay and same-session closure ledger
 
 | Delivery gate / capability | Status | Formal entry | Artifact / source | Actual game and next-turn evidence | Restore evidence | B0/B1 gap / owner | Branch cleanup |

@@ -15170,7 +15170,7 @@ def _primary_defender_siege_forecast_ingress(
     action_steps: set[str],
     bridge_capabilities: set[str],
 ) -> dict[str, object]:
-    """Read an under-two-times siege encounter; admit only a qualified EU result."""
+    """Read a siege encounter at any strength; admit only a qualified EU result."""
     if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
         return baseline
     phase = baseline.get("phase")
@@ -15227,7 +15227,14 @@ def _primary_defender_siege_forecast_ingress(
             and pursuit.get("war_id") == war_id
             and pursuit.get("target_province_id") == target
         ):
-            return baseline
+            # An idle army can be holding a different siege objective while
+            # this observed hostile siege continues.  Do not let that hold
+            # advance bypass the relief forecast; preserve other typed plans.
+            if not (
+                phase == "native_war_pursuit_progress"
+                and baseline.get("selected_step") == "life-advance"
+            ):
+                return baseline
 
     evidence = {
         "siege_relief": candidate,
@@ -15624,10 +15631,10 @@ def _primary_defender_siege_relief_assessment(
     """Select one observed hostile siege for a proof-bound relief route.
 
     R0160 showed that a seven-day objective hold can lose an occupied county
-    while a much stronger sole army remains stationary.  This admission is
-    deliberately narrow: it consumes only exact paused enemy army state and
-    the complete per-war strength query, then delegates route and contact
-    safety to the existing preview pipeline.
+    while a much stronger sole army remains stationary.  Strength is only a
+    participant-scope observation here, never permission to make contact.
+    Every complete relief candidate needs the same route/contact/v3 and
+    qualified combat-forecast decision before a typed move.
     """
 
     siege_rows: list[tuple[dict[str, object], dict[str, object]]] = []
@@ -15803,9 +15810,6 @@ def _primary_defender_siege_relief_assessment(
             "required_observation": "single-idle-controllable-army-binding",
         }
 
-    ready: list[
-        tuple[int, int, int, int, dict[str, object]]
-    ] = []
     forecast_candidates: list[
         tuple[int, int, int, int, dict[str, object]]
     ] = []
@@ -15855,24 +15859,7 @@ def _primary_defender_siege_relief_assessment(
         ):
             incomplete_war_ids.add(war_id)
             continue
-        friendly_current, enemy_current, friendly_power, enemy_power = (
-            int(value) for value in numeric
-        )
-        if not (
-            friendly_current >= enemy_current * 2
-            and friendly_power >= enemy_power * 2
-        ):
-            forecast_candidates.append(
-                (
-                    int(war["player_relative_war_score"]),
-                    war_id,
-                    int(enemy_id),
-                    int(target),
-                    balance,
-                )
-            )
-            continue
-        ready.append(
+        forecast_candidates.append(
             (
                 int(war["player_relative_war_score"]),
                 war_id,
@@ -15889,26 +15876,9 @@ def _primary_defender_siege_relief_assessment(
             ),
             "war_ids": sorted(incomplete_war_ids),
         }
-    if not ready:
-        if forecast_candidates:
-            score, war_id, enemy_id, target, balance = min(forecast_candidates)
-            return {
-                "status": "forecast_required",
-                "selection_policy": "lowest-score-then-war-enemy-province",
-                "war_id": war_id,
-                "player_relative_war_score": score,
-                "army_id": army_id,
-                "enemy_army_id": enemy_id,
-                "target_province_id": target,
-                "army_strength_balance": dict(balance),
-                "candidate_count": len(forecast_candidates),
-                "reason": "operational_two_times_gate_not_met; exact combat forecast required",
-            }
-        return {"status": "no_friendly_operational_overmatch"}
-
-    score, war_id, enemy_id, target, balance = min(ready)
+    score, war_id, enemy_id, target, balance = min(forecast_candidates)
     return {
-        "status": "ready",
+        "status": "forecast_required",
         "selection_policy": "lowest-score-then-war-enemy-province",
         "war_id": war_id,
         "player_relative_war_score": score,
@@ -15916,7 +15886,8 @@ def _primary_defender_siege_relief_assessment(
         "enemy_army_id": enemy_id,
         "target_province_id": target,
         "army_strength_balance": dict(balance),
-        "candidate_count": len(ready),
+        "candidate_count": len(forecast_candidates),
+        "reason": "qualified_same_frame_combat_forecast_required_for_siege_contact",
     }
 
 

@@ -824,18 +824,22 @@ flowchart TD
 - [inference][counter-policy] 只有公开且语义冻结的 exact combat forecast capability 出现后，P08/P09/P12 的
   contact 分支才可从 fail-closed 升级；新增能力前不得为测试伪造 unknown native 语义。
 - [static-confirmed][counter-policy] 原生 [army-controller.md](army-controller.md) 已证明接战候选使用
-  combat prediction ratio，而我方 primary-defender siege relief 当前的兵数及 native base power 双 `2×`
-  是缺少合格预报时的临时准入，不是原版胜率公式。R0188 的 Robert 防御战争同帧 v3 输入已能读取，
+  combat prediction ratio；它不是胜率。我方 primary-defender siege relief 曾用兵数及 native base power
+  双 `2×` 直接放行，这也不是胜率公式。R0188 的 Robert 防御战争同帧 v3 输入已能读取，
   `monte_carlo_ready=false`、`planner_usable=false`、`active_attack_allowed=false`；因此不能从这份输入、
   N4096 research 模拟或 base-power ratio 推出可用胜率。
-- [inference][counter-policy] 对已观测但未过 `2×` 的单军解围候选，正式策略先保留其 WarID、ArmyID、
+- [implementation-confirmed] `COMBAT-RATIO-GATE-B0` 将所有完整的单军解围候选，不论兵数与基础战力比例，
+  统一标为 `forecast_required`；实力查询只证明同帧双方身份与完整范围，不授权接敌。原规划若正准备对
+  不同围城目标原地 `life-advance`，也先转入这个只读入口；已选合法终战、独立证明安全的改道与其它
+  typed 动作不被这个入口截走。静态测试覆盖过 `2×` 与不足 `2×`；尚无合格预报生产者，实机结果仍为 RED。
+- [inference][counter-policy] 对已观测的单军解围候选，正式策略先保留其 WarID、ArmyID、
   Siege Province 和完整 strength scope。仅当原规划将推进此围城或尝试其路线时，复用同帧 native move
   preview、全敌军 contact horizon 和现有 v3 typed 只读查询；入口省份只取已预览路线最后一跳的前驱。
   contact horizon 若只指向该目标省、该围城敌军，可继续做假设性只读查询；若提示在其他省先接触，
   目标省的预报不覆盖真实首战，保持阻塞。
   任一输入缺失则停在明确观测缺口，v3 回读也只构成 research-only 证据。合法终战和已证明安全的
   其他改道继续由原规划选择。未来的合格同帧 combat forecast 与 expected utility 要统一比较所有
-  接战候选，不能继续让 `2×` 否决已证明高胜率的战斗。
+  接战候选，不得用任何固定兵力比例否决已证明高胜率的战斗，也不得用该比例直接授权接战。
 - [implementation-confirmed] `WAR-UNDER2-QUALIFIED-POLICY` 在既有 v3 回读之后增加
   `combat-entry-eu-v1` 消费缝。它绑定同一 episode/snapshot/revision/native revision、WarID、
   目标省、已预览入口省及两侧有序 ArmyID；要求接触冲突只在目标围城省，且现有正式评估器同时
@@ -854,7 +858,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    S["[live-confirmed] 同帧围城、军队与战争"] --> R["[implementation-confirmed] fresh route preview + 全敌 contact"]
+    S["[live-confirmed] 同帧围城、军队与战争<br/>任意兵力比例"] --> R["[implementation-confirmed] fresh route preview + 全敌 contact"]
     R --> V["[implementation-confirmed] exact v3 input readback"]
     V -. "[current RED] 合格模拟与效用生产者缺失" .-> U["保持 RED；零攻击"]
     V --> Q{"[counter-policy] 同帧合格预测、Wilson 下界、风险与替代效用均过门?"}

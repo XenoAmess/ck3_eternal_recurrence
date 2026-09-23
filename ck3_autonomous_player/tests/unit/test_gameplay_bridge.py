@@ -4692,7 +4692,7 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(plan["phase"], "native_war_route_preview_unsupported")
         self.assertIn("2631", str(plan["required_step"]))
 
-    def test_r0160_primary_defender_routes_to_one_overmatched_enemy_siege(
+    def test_r0160_primary_defender_requires_forecast_for_overmatched_siege(
         self,
     ) -> None:
         date_raw = 53_184_000
@@ -4812,7 +4812,7 @@ class GameplayBridgeTests(unittest.TestCase):
                 "life-advance",
             ),
         )
-        self.assertEqual(preview["phase"], "native_war_route_preview")
+        self.assertEqual(preview["phase"], "native_war_siege_forecast_route_preview")
         self.assertEqual(preview["selected_step"], preview_step)
         self.assertNotIn("hold-sentinel", preview["selected_step"])
 
@@ -4829,9 +4829,7 @@ class GameplayBridgeTests(unittest.TestCase):
             history=[preview_row],
             steps=(contact_step, move_step, "life-advance"),
         )
-        self.assertEqual(
-            contact["phase"], "native_war_candidate_contact_horizon"
-        )
+        self.assertEqual(contact["phase"], "native_war_siege_forecast_contact_query")
         self.assertEqual(contact["selected_step"], contact_step)
 
         unsafe_contact_row = _route_contact_row(
@@ -4849,7 +4847,7 @@ class GameplayBridgeTests(unittest.TestCase):
             history=[preview_row, unsafe_contact_row],
             steps=(move_step, "life-advance"),
         )
-        self.assertEqual(unsafe["phase"], "native_war_no_safe_exact_route")
+        self.assertEqual(unsafe["phase"], "native_war_siege_forecast_observation_blocked")
         self.assertIsNone(unsafe["selected_step"])
 
         contact_row = _route_contact_row(
@@ -4867,14 +4865,14 @@ class GameplayBridgeTests(unittest.TestCase):
             history=[preview_row, contact_row],
             steps=(move_step, "life-advance"),
         )
-        self.assertEqual(move["phase"], "native_war_pursuit")
-        self.assertEqual(move["selected_step"], move_step)
-        self.assertEqual(move["pursuit"]["war_id"], 95)
-        self.assertEqual(move["pursuit"]["target_source"], "enemy_siege_relief")
-        self.assertEqual(move["pursuit"]["objective_kind"], "relief")
-        self.assertEqual(move["pursuit"]["target_army_id"], 50_331_863)
-        self.assertEqual(move["pursuit"]["siege_relief"]["candidate_count"], 2)
-        self.assertEqual(move["pursuit"]["siege_relief"]["war_id"], 95)
+        self.assertEqual(move["phase"], "native_war_siege_forecast_observation_blocked")
+        self.assertIsNone(move["selected_step"])
+        self.assertEqual(move["required_observation"],
+                         query_combat_simulation_inputs_v3_step(
+                             2_635, 2_636, [83_886_367], [50_331_863]
+                         ))
+        self.assertEqual(move["siege_relief"]["candidate_count"], 2)
+        self.assertEqual(move["siege_relief"]["war_id"], 95)
 
         # After War 95's siege completes, the same army is assigned once to
         # the remaining War 16777250 siege instead of resuming the hold.
@@ -4889,7 +4887,7 @@ class GameplayBridgeTests(unittest.TestCase):
                 "steps": ("preview-move-army-83886367-to-2627", "life-advance"),
             }
         )
-        self.assertEqual(second["phase"], "native_war_route_preview")
+        self.assertEqual(second["phase"], "native_war_siege_forecast_route_preview")
         self.assertEqual(
             second["selected_step"], "preview-move-army-83886367-to-2627"
         )
@@ -18673,7 +18671,7 @@ class GameplayMcpServerTests(unittest.IsolatedAsyncioTestCase):
 
 
 class SiegeForecastIngressTests(unittest.TestCase):
-    def test_under_two_times_reads_exact_route_contact_and_v3_once(self) -> None:
+    def test_any_strength_reads_exact_route_contact_and_v3_once(self) -> None:
         date_raw = 53_215_920
         player = _army(
             11, soldiers=2_327, province_id=30, controllable=True,
@@ -18733,6 +18731,15 @@ class SiegeForecastIngressTests(unittest.TestCase):
         preview = ingest([])
         self.assertEqual(preview["selected_step"], preview_step)
         self.assertFalse(preview["active_attack_allowed"])
+        holding_another_objective = {
+            "phase": "native_war_pursuit_progress",
+            "selected_step": "life-advance",
+            "pursuit": {"war_id": 95, "target_province_id": 30},
+        }
+        self.assertEqual(
+            ingest([], plan=holding_another_objective)["selected_step"],
+            preview_step,
+        )
         preview_row = _preview_row(
             1, army_id=11, origin=30, target=32,
             date_raw=date_raw, route=[31, 32],
@@ -18840,14 +18847,41 @@ class SiegeForecastIngressTests(unittest.TestCase):
             _primary_defender_siege_relief_assessment(
                 overmatch, commands=[], active_wars=[war],
                 controlled_armies=[player], pursuit_army=player,
-            )["status"], "ready",
+            )["status"], "forecast_required",
         )
-        self.assertIs(
+        overmatch_preview = _primary_defender_siege_forecast_ingress(
+            baseline, commands=[], snapshot=overmatch,
+            action_steps=steps, bridge_capabilities=capabilities,
+        )
+        self.assertEqual(overmatch_preview["selected_step"], preview_step)
+        self.assertFalse(overmatch_preview["active_attack_allowed"])
+        self.assertEqual(
             _primary_defender_siege_forecast_ingress(
-                baseline, commands=[], snapshot=overmatch,
+                holding_another_objective, commands=[], snapshot=overmatch,
                 action_steps=steps, bridge_capabilities=capabilities,
-            ), baseline,
+            )["selected_step"],
+            preview_step,
         )
+        overmatch_readback = _primary_defender_siege_forecast_ingress(
+            baseline, commands=[preview_row, contact_row, query_row],
+            snapshot={**queried_frame, "army_strengths": overmatch["army_strengths"]},
+            action_steps=steps, bridge_capabilities=capabilities,
+        )
+        self.assertEqual(overmatch_readback["phase"],
+                         "native_war_siege_forecast_inputs_observed")
+        self.assertIsNone(overmatch_readback["selected_step"])
+        self.assertEqual(overmatch_readback["qualified_forecast"]["status"],
+                         "producer_unavailable")
+        with mock.patch(
+            "xar_autoplayer.strategy._qualified_siege_forecast_move",
+            return_value={"status": "ready", "assessment_sha256": "E" * 64},
+        ):
+            overmatch_qualified = _primary_defender_siege_forecast_ingress(
+                baseline, commands=[preview_row, contact_row, query_row],
+                snapshot={**queried_frame, "army_strengths": overmatch["army_strengths"]},
+                action_steps=steps, bridge_capabilities=capabilities,
+            )
+        self.assertEqual(overmatch_qualified["selected_step"], "move-army-11-to-32")
 
 
 if __name__ == "__main__":
