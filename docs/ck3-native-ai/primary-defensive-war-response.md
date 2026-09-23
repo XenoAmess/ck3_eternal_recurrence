@@ -364,3 +364,55 @@ flowchart TD
     P -->|safe| M
     M --> R["re-observe army, battle, siege and war score"]
 ```
+
+## R0161: accepted siege relief must enter the existing in-flight route tree
+
+- [production-live primitive] At `date_raw=53189208`, the R0161 formal loop
+  observed hostile Army `50331863` sieging Province `2627`.  The R0160 policy
+  selected that Province, obtained native route preview
+  `[2643,2639,2633,2627]`, and obtained a complete-scope contact horizon with
+  `one_day_contact_free=true` for hostile IDs `50331863` and `83886252`.
+- [production-live primitive] Typed command
+  `move-army-83886367-to-2627` was accepted.  Its independent postcondition
+  published the same Army as `moving`, with `move_target_province_id=2627`
+  and the same complete route.  This closes route selection and typed move
+  submission for the observed frame; it does not prove arrival, battle, siege
+  relief, or war victory.
+- [production blocker] On the same date, campaign-root and strength queries
+  refreshed successfully.  The siege-relief admission then rejected the
+  moving Army as if its idle binding were missing and returned
+  `single-idle-controllable-army-binding`, before the older active-route tree
+  could consume the accepted move.  The run stopped without advancing the
+  route.
+- [counter-policy input] A complete nonempty passive route whose target equals
+  the observed move target, plus a matching accepted native move intent, owns
+  the Army before a new siege-relief selection.  The siege helper yields to
+  the existing active-route audit.  That tree must obtain a fresh complete
+  hostile contact horizon when the move postcondition changes native revision,
+  then consume only its proof-bound advance step.  It must not submit the move
+  again.
+- [evidence-boundary] A moving Army without a matching accepted intent, a
+  missing or malformed passive route, a route ending at another Province, or
+  an unsafe/unavailable current-frame contact horizon remains zero-action fail
+  closed.  R0161 contains no date advance after the move, so continued route
+  consumption remains a static-ready candidate pending the next bounded live
+  run.
+- [artifact] Driver state SHA-256:
+  `AA82C7A9FB34310680677BEE38644AFEBC9E2A8D05771E8844D166D54EFA7969`.
+  Formal report SHA-256:
+  `4B62ABDE57DFFDA5E53E80D0FAA9243BDEA77EABDCB05BB89C2E30C87C25C8DD`.
+
+```mermaid
+flowchart TD
+    S["observed hostile siege"] --> A{"sole controlled Army state"}
+    A -->|idle regular| N["R0160 strength + target selection"]
+    A -->|moving / embarked| I{"matching accepted move intent<br/>and complete route to same target?"}
+    I -->|no / unknown| X["fail closed; no move and no time advance"]
+    I -->|yes| R["existing passive route audit"]
+    R --> C{"fresh complete hostile contact horizon?"}
+    C -->|no| Q["query current-frame horizon"]
+    C -->|unsafe / unavailable| X
+    C -->|contact-free| P["proof-bound route advance"]
+    P --> O["re-observe route, contact, battle and siege"]
+    N --> R
+```

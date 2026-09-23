@@ -8965,6 +8965,7 @@ def _choose_one_life_turn_core(
             }
         siege_relief = _primary_defender_siege_relief_assessment(
             snapshot if isinstance(snapshot, dict) else {},
+            commands=rows,
             active_wars=active_wars,
             controlled_armies=controlled_armies,
             pursuit_army=(
@@ -15380,6 +15381,7 @@ def _same_frame_army_strength_balance(
 def _primary_defender_siege_relief_assessment(
     snapshot: dict[str, object],
     *,
+    commands: list[dict[str, object]],
     active_wars: list[dict[str, object]],
     controlled_armies: list[dict[str, object]],
     pursuit_army: dict[str, object] | None,
@@ -15432,6 +15434,47 @@ def _primary_defender_siege_relief_assessment(
         }
     army = controlled_armies[0]
     army_id = _native_int(army.get("army_id"))
+    observed_target = _native_int(army.get("move_target_province_id"))
+    observed_route = army.get("route_province_ids")
+    moving = bool(
+        _army_tactical_state(army) in {"moving", "embarked"}
+        or _native_int(army.get("army_state_code")) in {4, 7}
+    )
+    if moving:
+        intent = (
+            _active_native_move_intent(
+                commands,
+                snapshot,
+                army_id=army_id,
+                target_province_id=observed_target,
+            )
+            if army_id is not None
+            and observed_target is not None
+            and observed_target > 0
+            and isinstance(observed_route, list)
+            and bool(observed_route)
+            and all(
+                _native_int(province_id) is not None
+                and int(province_id) > 0
+                for province_id in observed_route
+            )
+            and observed_route[-1] == observed_target
+            else None
+        )
+        if isinstance(intent, dict):
+            return {
+                "status": "active_move_intent",
+                "army_id": army_id,
+                "target_province_id": observed_target,
+                "route_province_ids": list(observed_route),
+                "move_intent": intent,
+            }
+        return {
+            "status": "observation_unavailable",
+            "required_observation": (
+                "complete-matching-active-native-move-intent-route"
+            ),
+        }
     if not (
         army_id is not None
         and _native_int(army.get("current_province_id")) is not None
