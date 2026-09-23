@@ -1181,3 +1181,11 @@ other bridge error, or exhaustion of the exact retry, remains RED. After the
 probe returns, the runner rebinds the full snapshot before handling a modal or
 issuing another action. The native wire, readiness fields and MCP surface do
 not change.
+
+### Battle-control queued wake on a paused loaded map
+
+R0194 and R0208 produced the same live `timeout_cancelled_before_execution`
+for a read-only battle-control query. The exact-build transport tree, evidence
+boundary, and bounded same-ticket wake fixture are recorded in
+[battle-control-queued-wake.md](battle-control-queued-wake.md). This does not
+claim a combat forecast or authorize an attack.

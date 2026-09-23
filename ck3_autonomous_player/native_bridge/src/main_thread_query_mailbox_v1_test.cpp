@@ -473,6 +473,8 @@ struct PostedWakeDrainThreadContext {
   UINT received_message = UINT_MAX;
   WPARAM received_wparam = 1;
   LPARAM received_lparam = 1;
+  bool skip_first_wake = false;
+  UINT first_message = UINT_MAX;
   bool executor_ran = false;
 };
 
@@ -500,6 +502,12 @@ DWORD WINAPI DrainAfterPostedWakeOnFixtureThread(void *opaque) {
   const auto message_result = GetMessageW(&message, nullptr, 0, 0);
   if (message_result <= 0) {
     return 1;
+  }
+  if (context.skip_first_wake) {
+    context.first_message = message.message;
+    if (GetMessageW(&message, nullptr, 0, 0) <= 0) {
+      return 1;
+    }
   }
   context.received_message = message.message;
   context.received_wparam = message.wParam;
@@ -1581,7 +1589,7 @@ bool TestFrontendMailboxWithoutGameplayState() {
   return true;
 }
 
-bool TestPausedQueuePostsInertOwnerWake() {
+bool TestPausedQueuePostsInertOwnerWake(bool skip_first_wake = false) {
   using namespace xar::ck3_11906;
   g_failure_stage = "paused_queue_posted_owner_wake";
   constexpr std::uintptr_t fake_module_base = 0x140000000ULL;
@@ -1600,6 +1608,7 @@ bool TestPausedQueuePostsInertOwnerWake() {
     return false;
   }
   PostedWakeDrainThreadContext wake{&mailbox, &runtime, ready};
+  wake.skip_first_wake = skip_first_wake;
   HANDLE owner_thread = CreateThread(
       nullptr, 0, &DrainAfterPostedWakeOnFixtureThread, &wake, 0, nullptr);
   if (owner_thread == nullptr ||
@@ -1621,13 +1630,20 @@ bool TestPausedQueuePostsInertOwnerWake() {
   ExecutorContext context{};
   context.mailbox = &mailbox;
   MainThreadQueryTicketV1 ticket{};
+  MainThreadQueryQueuedWakeTraceV1 wake_trace{};
   const auto submit =
-      TrySubmitMainThreadQueryV1(mailbox, &Execute, &context, ticket);
+      TrySubmitMainThreadQueryV1(mailbox, &Execute, &context, ticket,
+                                 &wake_trace);
   const auto wait =
       submit == MainThreadQuerySubmitResultV1::submitted
-          ? WaitForMainThreadQueryV1(mailbox, ticket, 2'000)
+          ? WaitForMainThreadQueryV1(mailbox, ticket, 2'000,
+                                    &wake_trace, 50)
           : MainThreadQueryWaitResultV1::ticket_mismatch;
   const auto owner_wait = WaitForSingleObject(owner_thread, 2'000);
+  if (owner_wait != WAIT_OBJECT_0) {
+    (void)PostThreadMessageW(wake.owner_thread_id, WM_QUIT, 0, 0);
+    (void)WaitForSingleObject(owner_thread, 2'000);
+  }
   DWORD owner_exit_code = STILL_ACTIVE;
   (void)GetExitCodeThread(owner_thread, &owner_exit_code);
   CloseHandle(owner_thread);
@@ -1645,8 +1661,57 @@ bool TestPausedQueuePostsInertOwnerWake() {
          owner_wait == WAIT_OBJECT_0 && owner_exit_code == 0 &&
          wake.received_message == WM_NULL && wake.received_wparam == 0 &&
          wake.received_lparam == 0 && wake.executor_ran &&
+         (!skip_first_wake || wake.first_message == WM_NULL) &&
+         wake_trace.wake_attempts >= (skip_first_wake ? 2U : 1U) &&
+         wake_trace.wake_succeeded == wake_trace.wake_attempts &&
+         wake_trace.wake_failed == 0 &&
+         wake_trace.pump_epoch_at_end > wake_trace.pump_epoch_at_start &&
          context.calls == 1 &&
          context.observed.thread_id == wake.owner_thread_id &&
+         reclaim == MainThreadQueryReclaimResultV1::reclaimed &&
+         uninstall == MainThreadQueryUninstallResultV1::uninstalled;
+}
+
+bool TestQueuedWakeStillCancelsWithoutPump() {
+  using namespace xar::ck3_11906;
+  g_failure_stage = "queued_wake_no_pump_cancels";
+  constexpr std::uintptr_t fake_module_base = 0x140000000ULL;
+  FakeRuntime runtime(GetCurrentThreadId(), 53'175'816);
+  void *iat = reinterpret_cast<void *>(&FakePeekMessage);
+  auto &mailbox = g_test_mailbox;
+  if (!InstallMainThreadQueryMailboxV1(
+          mailbox,
+          runtime.Environment(fake_module_base, &iat, &FakePeekMessage))) {
+    return false;
+  }
+  MSG unused{};
+  (void)PeekMessageW(&unused, nullptr, 0, 0, PM_NOREMOVE);
+  (void)ObserveMainThreadPumpAndDrainV1(
+      mailbox, kSdlWindowsPumpFirstPeekReturnRva, GetCurrentThreadId());
+  (void)ObserveMainThreadPumpAndDrainV1(
+      mailbox, kSdlWindowsPumpFirstPeekReturnRva, GetCurrentThreadId());
+  ExecutorContext context{};
+  context.mailbox = &mailbox;
+  MainThreadQueryTicketV1 ticket{};
+  MainThreadQueryQueuedWakeTraceV1 wake_trace{};
+  const auto submit = TrySubmitMainThreadQueryV1(
+      mailbox, &Execute, &context, ticket, &wake_trace);
+  const auto wait = submit == MainThreadQuerySubmitResultV1::submitted
+                        ? WaitForMainThreadQueryV1(mailbox, ticket, 180,
+                                                  &wake_trace, 40)
+                        : MainThreadQueryWaitResultV1::ticket_mismatch;
+  const auto reclaim =
+      wait == MainThreadQueryWaitResultV1::timeout_cancelled_before_execution
+          ? ReclaimMainThreadQueryV1(mailbox, ticket)
+          : MainThreadQueryReclaimResultV1::not_terminal;
+  const auto uninstall = UninstallMainThreadQueryMailboxV1(mailbox, 10);
+  return submit == MainThreadQuerySubmitResultV1::submitted &&
+         wait == MainThreadQueryWaitResultV1::timeout_cancelled_before_execution &&
+         wake_trace.wake_attempts >= 2 &&
+         wake_trace.wake_attempts ==
+             wake_trace.wake_succeeded + wake_trace.wake_failed &&
+         wake_trace.pump_epoch_at_end == wake_trace.pump_epoch_at_start &&
+         context.calls == 0 &&
          reclaim == MainThreadQueryReclaimResultV1::reclaimed &&
          uninstall == MainThreadQueryUninstallResultV1::uninstalled;
 }
@@ -2215,6 +2280,11 @@ int main(int argc, char **argv) {
     return 1;
   }
   if (!TestPausedQueuePostsInertOwnerWake()) {
+    std::fprintf(stderr, "mailbox fixture failed at %s\n", g_failure_stage);
+    return 1;
+  }
+  if (!TestPausedQueuePostsInertOwnerWake(true) ||
+      !TestQueuedWakeStillCancelsWithoutPump()) {
     std::fprintf(stderr, "mailbox fixture failed at %s\n", g_failure_stage);
     return 1;
   }

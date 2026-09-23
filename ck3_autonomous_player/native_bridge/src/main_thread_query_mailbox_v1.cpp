@@ -961,8 +961,12 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
 
 MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
     MainThreadQueryMailboxV1 &mailbox, MainThreadQueryExecutorV1 executor,
-    void *context, MainThreadQueryTicketV1 &ticket) noexcept {
+    void *context, MainThreadQueryTicketV1 &ticket,
+    MainThreadQueryQueuedWakeTraceV1 *queued_wake_trace) noexcept {
   ticket = {};
+  if (queued_wake_trace != nullptr) {
+    *queued_wake_trace = {};
+  }
   if (executor == nullptr || context == nullptr) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
@@ -1132,8 +1136,17 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
   // already verified application-main owner with an inert thread message so
   // its normal SDL/PeekMessage loop reaches the installed drain hook. Posting
   // is best effort: failure leaves the bounded queued wait fail-closed.
-  (void)PostThreadMessageW(
+  const auto posted = PostThreadMessageW(
       mailbox.owner_thread_id.load(std::memory_order_acquire), WM_NULL, 0, 0);
+  if (queued_wake_trace != nullptr) {
+    ++queued_wake_trace->wake_attempts;
+    if (posted != 0) {
+      ++queued_wake_trace->wake_succeeded;
+    } else {
+      ++queued_wake_trace->wake_failed;
+      queued_wake_trace->last_wake_error = GetLastError();
+    }
+  }
   return MainThreadQuerySubmitResultV1::submitted;
 }
 
@@ -1170,30 +1183,66 @@ MainThreadQueryCancelResultV1 CancelMainThreadQueryV1(
 MainThreadQueryWaitResultV1 WaitForMainThreadQueryV1(
     MainThreadQueryMailboxV1 &mailbox,
     const MainThreadQueryTicketV1 &ticket,
-    std::uint32_t timeout_milliseconds) noexcept {
+    std::uint32_t timeout_milliseconds,
+    MainThreadQueryQueuedWakeTraceV1 *queued_wake_trace,
+    std::uint32_t queued_wake_interval_milliseconds) noexcept {
+  if (queued_wake_trace != nullptr) {
+    queued_wake_trace->pump_epoch_at_start =
+        mailbox.pump_epochs.load(std::memory_order_acquire);
+  }
+  const auto finish = [&](MainThreadQueryWaitResultV1 result) noexcept {
+    if (queued_wake_trace != nullptr) {
+      queued_wake_trace->pump_epoch_at_end =
+          mailbox.pump_epochs.load(std::memory_order_acquire);
+    }
+    return result;
+  };
   if (ticket.sequence == 0 ||
       mailbox.published_sequence.load(std::memory_order_acquire) !=
           ticket.sequence) {
-    return MainThreadQueryWaitResultV1::ticket_mismatch;
+    return finish(MainThreadQueryWaitResultV1::ticket_mismatch);
   }
   const auto started = GetTickCount64();
+  auto next_queued_wake = started + queued_wake_interval_milliseconds;
   while (true) {
     const auto state = mailbox.state.load(std::memory_order_acquire);
     if (IsTerminal(state)) {
-      return TerminalWaitResult(state);
+      return finish(TerminalWaitResult(state));
     }
-    if (GetTickCount64() - started >= timeout_milliseconds) {
+    const auto now = GetTickCount64();
+    if (now - started >= timeout_milliseconds) {
       const auto cancelled = CancelMainThreadQueryV1(mailbox, ticket);
       if (cancelled == MainThreadQueryCancelResultV1::cancelled) {
-        return MainThreadQueryWaitResultV1::timeout_cancelled_before_execution;
+        return finish(
+            MainThreadQueryWaitResultV1::timeout_cancelled_before_execution);
       }
       if (cancelled == MainThreadQueryCancelResultV1::executing) {
-        return MainThreadQueryWaitResultV1::timeout_executor_already_running;
+        return finish(
+            MainThreadQueryWaitResultV1::timeout_executor_already_running);
       }
       const auto terminal = mailbox.state.load(std::memory_order_acquire);
-      return IsTerminal(terminal)
-                 ? TerminalWaitResult(terminal)
-                 : MainThreadQueryWaitResultV1::ticket_mismatch;
+      return finish(IsTerminal(terminal)
+                        ? TerminalWaitResult(terminal)
+                        : MainThreadQueryWaitResultV1::ticket_mismatch);
+    }
+    if (queued_wake_trace != nullptr &&
+        queued_wake_interval_milliseconds != 0 &&
+        now >= next_queued_wake &&
+        state == MainThreadQueryMailboxStateV1::queued &&
+        !mailbox.stop_requested.load(std::memory_order_acquire)) {
+      // Repost the same inert wake for the same queued ticket. This never
+      // resubmits its executor or extends the caller's original deadline.
+      const auto posted = PostThreadMessageW(
+          mailbox.owner_thread_id.load(std::memory_order_acquire),
+          WM_NULL, 0, 0);
+      ++queued_wake_trace->wake_attempts;
+      if (posted != 0) {
+        ++queued_wake_trace->wake_succeeded;
+      } else {
+        ++queued_wake_trace->wake_failed;
+        queued_wake_trace->last_wake_error = GetLastError();
+      }
+      next_queued_wake = now + queued_wake_interval_milliseconds;
     }
     Sleep(1);
   }

@@ -16504,12 +16504,14 @@ void RunConnectedSession(
                 query.request = battle_request;
                 query.expected_snapshot_revision = expected_revision;
                 query.expected_snapshot = current_snapshot;
+                xar::ck3_11906::MainThreadQueryQueuedWakeTraceV1
+                    queued_wake_trace{};
                 const auto submit =
                     xar::ck3_11906::TrySubmitMainThreadQueryV1(
                         g_main_thread_query_mailbox_v1,
                         &xar::ck3_11906::
                             ExecuteBattleControlSnapshotMailboxQueryV1,
-                        &query, query.ticket);
+                        &query, query.ticket, &queued_wake_trace);
                 if (submit != xar::ck3_11906::
                                   MainThreadQuerySubmitResultV1::submitted) {
                   std::string_view error =
@@ -16531,7 +16533,8 @@ void RunConnectedSession(
                   auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1, query.ticket,
                       xar::ck3_11906::
-                          kBattleControlSnapshotV1QueuedWaitBudgetMilliseconds);
+                          kBattleControlSnapshotV1QueuedWaitBudgetMilliseconds,
+                      &queued_wake_trace, 250);
                   while (wait == xar::ck3_11906::
                                      MainThreadQueryWaitResultV1::
                                          timeout_executor_already_running) {
@@ -16571,6 +16574,24 @@ void RunConnectedSession(
                             wait, query.completion, query.result.status,
                             completion_snapshot_stable);
                     std::string error(failure);
+                    if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                                    timeout_cancelled_before_execution) {
+                      error += " (pump_start=" +
+                               std::to_string(
+                                   queued_wake_trace.pump_epoch_at_start) +
+                               ", pump_end=" +
+                               std::to_string(
+                                   queued_wake_trace.pump_epoch_at_end) +
+                               ", wake_attempts=" +
+                               std::to_string(queued_wake_trace.wake_attempts) +
+                               ", wake_succeeded=" +
+                               std::to_string(queued_wake_trace.wake_succeeded) +
+                               ", wake_failed=" +
+                               std::to_string(queued_wake_trace.wake_failed) +
+                               ", last_wake_error=" +
+                               std::to_string(queued_wake_trace.last_wake_error) +
+                               ")";
+                    }
                     if (query.result.status == xar::game::
                                                    BattleControlSnapshotStatus::
                                                        state_changed &&

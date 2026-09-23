@@ -488,9 +488,21 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
 void SignalMainThreadQueryMailboxProcessDetachV1(
     MainThreadQueryMailboxV1 &mailbox) noexcept;
 
+// Optional observation for the battle-control queued wait. A wake is the
+// existing inert WM_NULL thread message; it never executes a gameplay step.
+struct MainThreadQueryQueuedWakeTraceV1 {
+  std::uint64_t pump_epoch_at_start = 0;
+  std::uint64_t pump_epoch_at_end = 0;
+  std::uint32_t wake_attempts = 0;
+  std::uint32_t wake_succeeded = 0;
+  std::uint32_t wake_failed = 0;
+  std::uint32_t last_wake_error = 0;
+};
+
 MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
     MainThreadQueryMailboxV1 &mailbox, MainThreadQueryExecutorV1 executor,
-    void *context, MainThreadQueryTicketV1 &ticket) noexcept;
+    void *context, MainThreadQueryTicketV1 &ticket,
+    MainThreadQueryQueuedWakeTraceV1 *queued_wake_trace = nullptr) noexcept;
 
 MainThreadQueryCancelResultV1 CancelMainThreadQueryV1(
     MainThreadQueryMailboxV1 &mailbox,
@@ -502,7 +514,9 @@ MainThreadQueryCancelResultV1 CancelMainThreadQueryV1(
 MainThreadQueryWaitResultV1 WaitForMainThreadQueryV1(
     MainThreadQueryMailboxV1 &mailbox,
     const MainThreadQueryTicketV1 &ticket,
-    std::uint32_t timeout_milliseconds) noexcept;
+    std::uint32_t timeout_milliseconds,
+    MainThreadQueryQueuedWakeTraceV1 *queued_wake_trace = nullptr,
+    std::uint32_t queued_wake_interval_milliseconds = 0) noexcept;
 
 MainThreadQueryReclaimResultV1 ReclaimMainThreadQueryV1(
     MainThreadQueryMailboxV1 &mailbox,
