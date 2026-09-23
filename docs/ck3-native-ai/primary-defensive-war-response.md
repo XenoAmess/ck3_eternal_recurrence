@@ -466,3 +466,44 @@ flowchart TD
     S -->|yes| P["existing siege progress and threat checks"]
     P --> O["re-observe occupation, Army and both wars"]
 ```
+
+## R0166: repeated cold restores during one recovery siege
+
+- [production blocker] R0166 restored the R0164 checkpoint at history index
+  `1082`, `date_raw=53190528` and planned zero gameplay actions. Its paused
+  frame still showed Army `83886367` sieging the accepted destination Province
+  `2627`; another hostile siege remained visible. The relief admission rejected
+  the arrival proof because the history also contained the earlier cold restore
+  at index `989`. The existing lookup stopped at the second restore without
+  checking either checkpoint identity.
+- [recovery binding] The accepted typed move at history index `976` targets
+  `2627`. A save after it at index `988` has checkpoint history index `989`,
+  date `53189712` and SHA-256 `9B7ACD64...47A949E`, matching restore `989`.
+  The later save at index `1081` has checkpoint history index `1082`, date
+  `53190528` and SHA-256 `C2E8778D...B2F7E2`, matching restore `1082`.
+  Every intervening cold restore must independently match a later official
+  save after the accepted move; any unmatched restore breaks the binding.
+- [production-live loop] Between those restores, R0164 issued 22 successful
+  bounded siege progress slices. The latest independent after-state at
+  `53190528` still showed this Army sieging Province `2627` with no move target
+  and no route. This is evidence of continued occupation work, not another
+  movement command or the final capture of that Province.
+- [counter-policy input] The 90-day movement intent limit governs an Army
+  still travelling. After arrival, the same native siege can continue only
+  while successful bounded progress results consistently keep the Army
+  sieging the accepted Province and the latest result reaches the current
+  paused date. A contradictory Army state, another typed move, an unmatched
+  restore or incomplete progress evidence stops continuation. The existing
+  stationary threat and exact siege checks still apply each slice.
+
+```mermaid
+flowchart TD
+    A["accepted relief move"] --> R{"each later cold restore has<br/>matching official save?"}
+    R -->|no / unknown| X["stop for observation"]
+    R -->|yes| P{"current Army at accepted Province,<br/>sieging without route or target?"}
+    P -->|no / unknown| X
+    P -->|yes| C{"movement window open or<br/>continuous bounded siege after-state?"}
+    C -->|no / unknown| X
+    C -->|yes| S["existing stationary threat and siege progress checks"]
+    S -.-> U["unknown: capture or war termination"]
+```

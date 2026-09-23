@@ -17654,7 +17654,17 @@ def _accepted_native_move_arrival(
         action=action,
         snapshot=snapshot,
     )
-    if elapsed_days >= _NATIVE_MOVE_INTENT_MAX_GAME_DAYS:
+    if (
+        elapsed_days >= _NATIVE_MOVE_INTENT_MAX_GAME_DAYS
+        and not _accepted_native_move_siege_continuity(
+            commands,
+            move_position=latest_position,
+            army_id=army_id,
+            target_province_id=target_province_id,
+            submitted_date_raw=_native_int(action.get("submitted_date_raw")),
+            current_date_raw=_native_int(snapshot.get("date_raw")),
+        )
+    ):
         return None
     return {
         "status": "arrived",
@@ -17665,12 +17675,112 @@ def _accepted_native_move_arrival(
     }
 
 
+def _accepted_native_move_siege_continuity(
+    commands: list[dict[str, object]],
+    *,
+    move_position: int,
+    army_id: int,
+    target_province_id: int,
+    submitted_date_raw: int | None,
+    current_date_raw: int | None,
+) -> bool:
+    """Keep an arrived siege bound after the travel intent window expires."""
+
+    if submitted_date_raw is None or current_date_raw is None:
+        return False
+    expected_date_raw = submitted_date_raw
+    arrived = False
+    for row in commands[move_position + 1 :]:
+        if row.get("ok") is not True:
+            continue
+        result = _effective_command_result(row)
+        before = result.get("war_progress_before") if isinstance(result, dict) else None
+        after = result.get("war_progress_after") if isinstance(result, dict) else None
+        if not isinstance(before, dict) or not isinstance(after, dict):
+            if is_life_advance_step(_effective_command(row)):
+                return False
+            continue
+        before_date_raw = _native_int(before.get("date_raw"))
+        after_date_raw = _native_int(after.get("date_raw"))
+        if (
+            before_date_raw != expected_date_raw
+            or after_date_raw is None
+            or after_date_raw <= before_date_raw
+        ):
+            return False
+        before_army = _progress_summary_player_army(before, army_id)
+        after_army = _progress_summary_player_army(after, army_id)
+        if before_army is None or after_army is None:
+            return False
+        if arrived:
+            if not (
+                _army_is_sieging_target(before_army, target_province_id)
+                and _army_is_sieging_target(after_army, target_province_id)
+            ):
+                return False
+        elif _army_is_sieging_target(after_army, target_province_id):
+            if not _army_is_moving_to_target(before_army, target_province_id):
+                return False
+            arrived = True
+        elif not (
+            _army_is_moving_to_target(before_army, target_province_id)
+            and _army_is_moving_to_target(after_army, target_province_id)
+        ):
+            return False
+        expected_date_raw = after_date_raw
+    return arrived and expected_date_raw == current_date_raw
+
+
+def _progress_summary_player_army(
+    summary: dict[str, object], army_id: int
+) -> dict[str, object] | None:
+    wars = summary.get("wars")
+    if not isinstance(wars, list):
+        return None
+    armies = [
+        army
+        for war in wars
+        if isinstance(war, dict)
+        for army in (war.get("player_armies") or [])
+        if isinstance(army, dict) and _native_int(army.get("army_id")) == army_id
+    ]
+    return armies[0] if armies and all(army == armies[0] for army in armies) else None
+
+
+def _army_is_moving_to_target(
+    army: dict[str, object], target_province_id: int
+) -> bool:
+    route = army.get("route_province_ids")
+    return (
+        _army_tactical_state(army) in {"moving", "embarked"}
+        and _native_int(army.get("move_target_province_id")) == target_province_id
+        and isinstance(route, list)
+        and bool(route)
+        and _native_int(route[-1]) == target_province_id
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+    )
+
+
+def _army_is_sieging_target(
+    army: dict[str, object], target_province_id: int
+) -> bool:
+    return (
+        _army_tactical_state(army) == "sieging"
+        and _native_int(army.get("current_province_id")) == target_province_id
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+    )
+
+
 def _latest_accepted_native_move_row(
     commands: list[dict[str, object]],
     *,
     army_id: int,
 ) -> tuple[int, dict[str, object]] | None:
-    """Return the latest move, including one persisted cold restore.
+    """Return the latest move across individually persisted cold restores.
 
     A move before the latest restore is eligible only when an official saved
     checkpoint between the move and restore has the exact identity consumed
@@ -17678,35 +17788,30 @@ def _latest_accepted_native_move_row(
     active route or completed arrival in the caller.
     """
 
-    restore_position: int | None = None
-    restore_row: dict[str, object] | None = None
+    restores: list[tuple[int, dict[str, object]]] = []
     for position in range(len(commands) - 1, -1, -1):
         row = commands[position]
         if _successful_merge_barrier(row, army_id):
             return None
         command = _effective_command(row)
         if command == "restore-checkpoint" and row.get("ok") is True:
-            if restore_row is not None:
-                return None
-            restore_position = position
-            restore_row = row
+            restores.append((position, row))
             continue
         parsed = parse_move_army_step(command)
         if parsed is None or parsed[0] != army_id:
             continue
         if row.get("ok") is not True:
             return None
-        if (
-            restore_row is not None
-            and restore_position is not None
-            and not _native_move_persisted_through_restore(
+        preceding_boundary = position
+        for restore_position, restore_row in reversed(restores):
+            if not _native_move_persisted_through_restore(
                 commands,
-                move_position=position,
+                move_position=preceding_boundary,
                 restore_position=restore_position,
                 restore_row=restore_row,
-            )
-        ):
-            return None
+            ):
+                return None
+            preceding_boundary = restore_position
         return position, row
     return None
 

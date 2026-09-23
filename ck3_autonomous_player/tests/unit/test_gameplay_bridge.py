@@ -52,6 +52,7 @@ from xar_autoplayer.bridge.war_contract import (
     war_termination_negative_query_signature,
 )
 from xar_autoplayer.strategy import (
+    _accepted_native_move_arrival,
     _audit_war_route,
     _enemy_endpoint_epochs,
     _moving_route_contact_horizon_conjunction,
@@ -5165,6 +5166,51 @@ class GameplayBridgeTests(unittest.TestCase):
             restored_arrival_progress["selected_step"], "life-advance"
         )
 
+        second_checkpoint = copy.deepcopy(persisted_checkpoint)
+        second_checkpoint["result"]["checkpoint"] = {
+            "history_index": 7,
+            "date_raw": date_raw,
+            "sha256": "b" * 64,
+        }
+        second_restore = copy.deepcopy(cold_restore)
+        second_restore["result"]["checkpoint"] = copy.deepcopy(
+            second_checkpoint["result"]["checkpoint"]
+        )
+        twice_restored = _native_war_plan(
+            **arrival_base,
+            history=[
+                preview,
+                stale_contact,
+                move,
+                persisted_checkpoint,
+                cold_restore,
+                second_checkpoint,
+                second_restore,
+            ],
+            steps=(move_step, "life-advance"),
+        )
+        self.assertEqual(twice_restored["phase"], "native_war_siege_progress")
+        self.assertEqual(twice_restored["selected_step"], "life-advance")
+
+        second_restore["result"]["checkpoint"]["sha256"] = "c" * 64
+        unmatched_restore = _native_war_plan(
+            **arrival_base,
+            history=[
+                preview,
+                stale_contact,
+                move,
+                persisted_checkpoint,
+                cold_restore,
+                second_checkpoint,
+                second_restore,
+            ],
+            steps=(move_step, "life-advance"),
+        )
+        self.assertEqual(
+            unmatched_restore["phase"],
+            "native_war_defender_siege_relief_observation_blocked",
+        )
+
         arrived_without_move_proof = _native_war_plan(
             **arrival_base,
             history=[preview, stale_contact],
@@ -5178,6 +5224,113 @@ class GameplayBridgeTests(unittest.TestCase):
         self.assertEqual(
             arrived_without_move_proof["required_observation"],
             "accepted-native-move-arrival-for-current-siege",
+        )
+
+    def test_arrived_relief_outlives_travel_window_with_continuous_siege(self) -> None:
+        army_id = 83_886_367
+        target = 2_627
+        date_raw = 53_189_208
+        moving = _army(
+            army_id,
+            soldiers=None,
+            province_id=2_638,
+            controllable=True,
+            move_target_province_id=target,
+            army_state="moving",
+            army_state_code=7,
+            route_province_ids=[2_643, target],
+            in_combat=False,
+            retreating=False,
+        )
+        arrived = _army(
+            army_id,
+            soldiers=None,
+            province_id=target,
+            controllable=True,
+            move_target_province_id=None,
+            army_state="sieging",
+            army_state_code=3,
+            route_province_ids=[],
+            in_combat=False,
+            retreating=False,
+        )
+
+        def summary(day: int, army: dict[str, object]) -> dict[str, object]:
+            return {
+                "date_raw": date_raw + day * 24,
+                "wars": [{"war_id": 95, "player_armies": [copy.deepcopy(army)]}],
+            }
+
+        history: list[dict[str, object]] = [
+            {
+                "command": f"move-army-{army_id}-to-{target}",
+                "ok": True,
+                "result": {
+                    "accepted": True,
+                    "war_action": {
+                        "status": "moving",
+                        "army_id": army_id,
+                        "target_province_id": target,
+                        "submitted_date_raw": date_raw,
+                    },
+                },
+            }
+        ]
+        for day in range(1, 92):
+            history.append(
+                {
+                    "command": "life-advance",
+                    "ok": True,
+                    "result": {
+                        "war_progress_before": summary(
+                            day - 1, moving if day == 1 else arrived
+                        ),
+                        "war_progress_after": summary(day, arrived),
+                    },
+                }
+            )
+            if day in {1, 91}:
+                checkpoint = {
+                    "history_index": len(history) + 1,
+                    "date_raw": date_raw + day * 24,
+                    "sha256": ("a" if day == 1 else "b") * 64,
+                }
+                history.extend(
+                    [
+                        {
+                            "command": "save-checkpoint",
+                            "ok": True,
+                            "result": {"checkpoint": copy.deepcopy(checkpoint)},
+                        },
+                        {
+                            "command": "restore-checkpoint",
+                            "ok": True,
+                            "result": {
+                                "status": "restored",
+                                "source": "native-session-cold-start",
+                                "checkpoint": copy.deepcopy(checkpoint),
+                            },
+                        },
+                    ]
+                )
+        snapshot = {
+            "date_raw": date_raw + 91 * 24,
+            "player_armies": [arrived],
+        }
+        arrival = _accepted_native_move_arrival(
+            history, snapshot, army_id=army_id, target_province_id=target
+        )
+        self.assertIsNotNone(arrival)
+        self.assertEqual(arrival["elapsed_days"], 91)
+
+        broken = copy.deepcopy(history)
+        broken[46]["result"]["war_progress_after"]["wars"][0][
+            "player_armies"
+        ][0]["current_province_id"] = 2_628
+        self.assertIsNone(
+            _accepted_native_move_arrival(
+                broken, snapshot, army_id=army_id, target_province_id=target
+            )
         )
 
     def test_stationary_hold_never_preempts_full_enforcement(self) -> None:
