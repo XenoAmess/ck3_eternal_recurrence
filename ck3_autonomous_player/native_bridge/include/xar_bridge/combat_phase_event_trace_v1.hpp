@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <charconv>
 #include <cstdint>
 #include <string>
 #include <string_view>
@@ -10,14 +11,13 @@ namespace xar::ck3_11906 {
 
 struct Bindings;
 
-// This is a frozen research contract, not an advertised capability.  The
-// concrete command grammar is reserved here so that a later bridge hookup
-// cannot silently change the request identity.
+// This capability exposes only the paused evaluator differential.  It never
+// claims an original daily trace or a simulated battle probability.
 inline constexpr std::string_view kCombatPhaseEventTraceV1Capability =
     "game.command.query-combat-phase-event-trace-v1-N";
 inline constexpr std::string_view kCombatPhaseEventTraceV1StepPrefix =
     "query-combat-phase-event-trace-v1-";
-inline constexpr bool kCombatPhaseEventTraceV1CapabilityAdvertised = false;
+inline constexpr bool kCombatPhaseEventTraceV1CapabilityAdvertised = true;
 
 inline constexpr std::int32_t kCombatPhaseEventTraceV1RowCount = 13;
 inline constexpr std::int64_t kCombatPhaseEventTraceV1FixedScale = 100'000;
@@ -387,12 +387,32 @@ enum class ReadCombatPhaseEventTraceV1Result {
 
 namespace xar::ck3_11906 {
 
-// Research-only exact-build reader.  It never invokes the weighted selector,
-// schedule builder, event dispatcher, effect executor or RNG draw entrypoint.
-// A future production command may call this only after the missing transition
-// readers listed in the output and ABI ledger are closed.
+// Exact-build paused evaluator reader.  It never invokes the weighted
+// selector, schedule builder, event dispatcher, effect executor or RNG draw.
+// Missing transition readers remain explicit and keep probability unavailable.
 game::ReadCombatPhaseEventTraceV1Result ReadCombatPhaseEventTraceV1Probe(
     const Bindings &bindings, std::int32_t combat_id,
     game::CombatPhaseEventTraceV1 &output) noexcept;
+
+inline bool ParseCombatPhaseEventTraceV1Step(
+    std::string_view step, std::int32_t &combat_id) noexcept {
+  combat_id = -1;
+  if (!step.starts_with(kCombatPhaseEventTraceV1StepPrefix)) {
+    return false;
+  }
+  const auto digits = step.substr(kCombatPhaseEventTraceV1StepPrefix.size());
+  if (digits.empty() || digits.front() == '0') {
+    return false;
+  }
+  for (const char digit : digits) {
+    if (digit < '0' || digit > '9') {
+      return false;
+    }
+  }
+  const auto parsed =
+      std::from_chars(digits.data(), digits.data() + digits.size(), combat_id);
+  return parsed.ec == std::errc{} &&
+         parsed.ptr == digits.data() + digits.size() && combat_id > 0;
+}
 
 } // namespace xar::ck3_11906

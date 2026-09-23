@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
     return 2;
   }
 
-  if (xar::ck3_11906::kCombatPhaseEventTraceV1CapabilityAdvertised ||
+  if (!xar::ck3_11906::kCombatPhaseEventTraceV1CapabilityAdvertised ||
       xar::ck3_11906::kCombatPhaseEventTraceV1RowCount != 13 ||
       xar::ck3_11906::kCombatPhaseEventTraceV1FixedScale != 100'000) {
     return 3;
@@ -200,7 +200,7 @@ int main(int argc, char **argv) {
   constexpr std::array<std::string_view, 18> required_header{
       "game.command.query-combat-phase-event-trace-v1-N",
       "query-combat-phase-event-trace-v1-",
-      "kCombatPhaseEventTraceV1CapabilityAdvertised = false",
+      "kCombatPhaseEventTraceV1CapabilityAdvertised = true",
       "std::array<CombatPhaseEventNativeRowV1, 13>",
       "retained_row_occurrence_requires_managed_before_after",
       "transition_state_complete = false",
@@ -222,7 +222,7 @@ int main(int argc, char **argv) {
   }
 
   constexpr std::array<std::string_view, 23> required_abi{
-      "\"advertised\": false",
+      "\"advertised\": true",
       "\"calls_weighted_selector\": false",
       "\"calls_effect_executor\": false",
       "\"calls_global_rng_draw\": false",
@@ -255,7 +255,7 @@ int main(int argc, char **argv) {
       "\"contains_fake_combat_id\": false",
       "\"contains_fake_rng_state\": false",
       "\"contains_fake_effect_transition\": false",
-      "\"capability_advertised\": false",
+      "\"capability_advertised\": true",
       "retained_schedule_and_generic_battle_event_rows_only",
       "ccombat_side_knight_source_then_tail_swap_remove_v1",
       "generic_battle_ledger_not_phase_origin_without_boundary_delta",
@@ -279,7 +279,7 @@ int main(int argc, char **argv) {
       "```mermaid",
       "kind-11",
       "evaluator_probe_available",
-      "production capability",
+      "production_trace_ready=false",
       "retained schedule",
       "managed before/after",
       "tail-swap-remove",

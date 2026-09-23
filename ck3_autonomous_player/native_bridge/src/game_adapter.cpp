@@ -1,4 +1,5 @@
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/combat_phase_event_trace_v1.hpp"
 
 #include "xar_bridge/war_entry_assessments_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
@@ -504,6 +505,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     RouteContactHorizonRequest route_request{};
     if (ck3_11906::ParseRouteContactHorizonV1Step(step, route_request)) {
       capability = "game.command.query-route-contact-horizon-v1-N";
+    }
+  }
+  if (capability.empty()) {
+    std::int32_t combat_id = -1;
+    if (ck3_11906::ParseCombatPhaseEventTraceV1Step(step, combat_id)) {
+      capability = ck3_11906::kCombatPhaseEventTraceV1Capability;
     }
   }
   if (capability.empty()) {

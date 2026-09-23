@@ -78,6 +78,12 @@ from .combat_phase_contract import (
     normalize_combat_simulation_inputs_v3,
     parse_query_combat_simulation_inputs_v3_step,
 )
+from .combat_phase_event_trace_contract import (
+    QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY,
+    QUERY_COMBAT_PHASE_EVENT_TRACE_V1_STEP_PREFIX,
+    normalize_combat_phase_event_trace_v1,
+    parse_query_combat_phase_event_trace_v1_step,
+)
 from .war_exit_terms_contract import (
     QUERY_WAR_TERMINATION_EXIT_TERMS_CAPABILITY,
     QUERY_WAR_TERMINATION_EXIT_TERMS_STEP_PREFIX,
@@ -2209,6 +2215,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
                 in bridge_capabilities
             ),
+            "combat_phase_event_trace_v1_query_supported": (
+                QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "war_entry_assessments_query_supported": (
                 QUERY_WAR_ENTRY_ASSESSMENTS_CAPABILITY
                 in bridge_capabilities
@@ -2982,6 +2992,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "combat_simulation_inputs_v3_query_supported": (
                 QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
+                in bridge_capabilities
+            ),
+            "combat_phase_event_trace_v1_query_supported": (
+                QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "war_entry_assessments_query_supported": (
@@ -6568,6 +6582,18 @@ class NativeHeadlessGameplayDriver:
             return self._execute_war_entry_assessments_query(
                 step,
                 expected_revision=expected_revision,
+            )
+        phase_trace_combat_id = parse_query_combat_phase_event_trace_v1_step(step)
+        if phase_trace_combat_id is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY not in bridge_capabilities:
+                raise UnsupportedStepError(
+                    "native DLL cannot query paused combat phase-event evaluator"
+                )
+            return self._execute_combat_phase_event_trace_v1_query(
+                step, expected_revision=expected_revision,
             )
         combat_v3_query = parse_query_combat_simulation_inputs_v3_step(step)
         if combat_v3_query is not None:
@@ -10383,6 +10409,54 @@ class NativeHeadlessGameplayDriver:
                     else:
                         self._war_entry_assessments_two_read_trace = [entry]
         return observed
+
+    def _execute_combat_phase_event_trace_v1_query(
+        self, step: str, *, expected_revision: int | None,
+    ) -> dict[str, object]:
+        combat_id = parse_query_combat_phase_event_trace_v1_step(step)
+        if combat_id is None:
+            raise UnsupportedStepError("malformed combat phase-event trace step")
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError("combat phase-event trace requires paused map")
+        selected_revision = (
+            expected_revision if expected_revision is not None
+            else starting.get("revision")
+        )
+        result = self._execute_primitive_step(
+            step, expected_revision=selected_revision,
+            required_capability=QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY,
+        )
+        if (
+            set(result) != {
+                "step", "accepted", "status", "query_sequence",
+                "combat_phase_event_trace", "backend_id",
+            }
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") not in {"evaluator_probe_available", "unavailable"}
+        ):
+            raise BridgeUnavailableError("combat phase-event response is malformed")
+        try:
+            trace = normalize_combat_phase_event_trace_v1(
+                result["combat_phase_event_trace"], combat_id=combat_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"combat phase-event trace is malformed: {error}"
+            ) from error
+        if (result["status"] == "evaluator_probe_available") != trace["evaluator_probe_ready"]:
+            raise BridgeUnavailableError("combat phase-event status disagrees with evaluator proof")
+        current = self.take_snapshot()
+        if not _same_paused_native_frame(starting, current) or starting.get("revision") != current.get("revision"):
+            raise BridgeUnavailableError("combat phase-event query crossed paused frame")
+        return {
+            **result,
+            "combat_phase_event_trace": trace,
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": starting.get("native_revision"),
+        }
 
     def _execute_combat_simulation_inputs_v3_query(
         self,
@@ -20379,6 +20453,36 @@ class ConfiguredHybridFallbackDriver:
                 "queried_native_revision": starting.get("native_revision"),
             }
         if isinstance(step, str) and step.startswith(
+            QUERY_COMBAT_PHASE_EVENT_TRACE_V1_STEP_PREFIX
+        ):
+            if parse_query_combat_phase_event_trace_v1_step(step) is None:
+                raise UnsupportedStepError("malformed combat phase-event trace step")
+            native_bridge_capabilities = set(_string_list(
+                self.native.capabilities().get("bridge_capabilities")
+            ))
+            if QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY not in native_bridge_capabilities:
+                raise UnsupportedStepError("combat phase-event trace is pure native")
+            starting = self.take_snapshot()
+            if expected_revision is not None and expected_revision != starting.get("revision"):
+                raise BridgeUnavailableError("hybrid combat phase-event revision mismatch")
+            backend_revisions = starting.get("backend_revisions")
+            native_revision = (
+                backend_revisions.get("fast")
+                if isinstance(backend_revisions, dict) else None
+            )
+            result = self.native.execute_step(
+                step, expected_revision=native_revision,
+            )
+            ending = self.take_snapshot()
+            if not _same_paused_native_frame(starting, ending) or starting.get("revision") != ending.get("revision"):
+                raise BridgeUnavailableError("hybrid combat phase-event frame changed")
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
+        if isinstance(step, str) and step.startswith(
             QUERY_COMBAT_SIMULATION_INPUTS_V3_STEP_PREFIX
         ):
             if parse_query_combat_simulation_inputs_v3_step(step) is None:
@@ -24499,6 +24603,7 @@ def _action_steps(
         elif capability in {
             QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY,
             QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY,
+            QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY,
         }:
             # The target, entry edge and ordered side partitions are supplied.
             # Never leak the N placeholder as an executable action or try to

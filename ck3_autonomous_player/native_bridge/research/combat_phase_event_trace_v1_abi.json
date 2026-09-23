@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract": "combat_phase_event_trace_v1",
-  "contract_stage": "research_probe_exact_build",
+  "contract_stage": "paused_evaluator_static_ready_live_readback_pending",
   "game": {
     "product_version": "1.19.0.6",
     "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -10,8 +10,8 @@
     "capability": "game.command.query-combat-phase-event-trace-v1-N",
     "step_prefix": "query-combat-phase-event-trace-v1-",
     "argument": "positive full-generation CombatID",
-    "advertised": false,
-    "bridge_dispatch_connected": false,
+    "advertised": true,
+    "bridge_dispatch_connected": true,
     "generic_fallback_allowed": false
   },
   "read_only_boundary": {

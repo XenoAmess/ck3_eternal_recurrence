@@ -45,6 +45,11 @@ from .combat_phase_contract import (
     normalize_combat_simulation_inputs_v3,
     query_combat_simulation_inputs_v3_step,
 )
+from .combat_phase_event_trace_contract import (
+    QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY,
+    normalize_combat_phase_event_trace_v1,
+    query_combat_phase_event_trace_v1_step,
+)
 from .war_exit_terms_contract import (
     WAR_TERMINATION_EXIT_TERMS_PRODUCTION_ENABLED,
     query_war_termination_exit_terms_step,
@@ -10984,6 +10989,46 @@ class GameplayBridgeService:
                 completeness["missing_required_domains"]
             ),
             "combat_simulation_inputs": normalized,
+        }
+
+    def query_combat_phase_event_trace_v1(
+        self, combat_id: int, *, expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read one live CombatID evaluator; never infer event occurrence or odds."""
+        step = query_combat_phase_event_trace_v1_step(combat_id)
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError("combat phase-event trace requires paused map")
+        revision = snapshot.get("revision")
+        if isinstance(revision, bool) or not isinstance(revision, int) or revision <= 0:
+            raise BridgeUnavailableError("combat phase-event trace lacks revision")
+        if expected_revision is not None and expected_revision != revision:
+            raise BridgeUnavailableError("combat phase-event expected revision differs")
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or QUERY_COMBAT_PHASE_EVENT_TRACE_V1_CAPABILITY not in capabilities:
+            raise UnsupportedStepError("backend cannot query native combat phase-event evaluator")
+        result = self.execute_step(step, expected_revision=revision)
+        if not isinstance(result, dict) or result.get("step") != step or result.get("accepted") is not True:
+            raise BridgeUnavailableError("combat phase-event backend result is malformed")
+        try:
+            trace = normalize_combat_phase_event_trace_v1(
+                result.get("combat_phase_event_trace"), combat_id=combat_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(f"combat phase-event result is malformed: {error}") from error
+        if result.get("status") != (
+            "evaluator_probe_available" if trace["evaluator_probe_ready"]
+            else "unavailable"
+        ):
+            raise BridgeUnavailableError("combat phase-event status disagrees with trace")
+        after = self.snapshot()
+        if after.get("snapshot_id") != snapshot.get("snapshot_id") or after.get("revision") != revision or after.get("date_raw") != snapshot.get("date_raw"):
+            raise BridgeUnavailableError("combat phase-event query crossed paused frame")
+        return {
+            **result,
+            "combat_phase_event_trace": trace,
+            "production_trace_ready": False,
+            "qualified_win_probability_available": False,
         }
 
     def query_combat_simulation_inputs_v3(

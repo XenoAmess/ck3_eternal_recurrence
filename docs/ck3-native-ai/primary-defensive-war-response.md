@@ -919,3 +919,79 @@ flowchart TD
     R -.-> U
     W -.-> U
 ```
+
+## R0184–R0185: bounded relief admission before the county siege completes
+
+- [production-live read-only, exact build] Both rounds used CK3
+  `1.19.0.6-steam23530548`, EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+  the Robert ordinary campaign episode `native-29829-2bc2d599f7f9`, and the
+  immutable `h2120` save at `date_raw=53215920`. R0184's paused snapshot
+  (`94BEFF633BA1EB58D83D904D13C7F6CF323B39765F71A551405819CD89C9C521`)
+  identified the besieged Province `2628` holder as Character `32716` and
+  `siege_province_in_player_subrealm=true`. Army `50331920` was its unique
+  visible hostile besieger with `siege_days_left=69`; Army `83886367` was the
+  sole idle controllable player Army at Province `2610`.
+- [production-live read-only] R0185 queried three existing exact-build
+  capabilities in the same paused `native:3` frame, public revision `4`, with
+  zero gameplay actions and zero date advance. Native move preview returned
+  the available `2610 → 2614 → 2618 → 2617 → 2632 → 2613 → 8752 → 2628`
+  route (SHA-256 `59488C4AE4E7E16661D04148245A6AD85AD7D614861791CD59412CE5B7733BDC`).
+  Its complete one-hostile route horizon gave target arrival
+  `date_raw=53217024`, 46 game days from the current frame, with the hostile
+  still stationary at `2628` and `one_day_contact_free=true` (SHA-256
+  `9A4E5193EE02C5DE3012CB31F213F70068C4A8ABE48DDC12A3EAD59F510F7713`).
+  Same-frame strengths were player `2327/2461` soldiers and AI base power
+  raw `7574100000`, enemy `1488/1899` and raw `4952700000` (SHA-256
+  `10B410D237519B1900700F99CFA25A27888F7CD81674F3885F39F3F0A96F3CBB`).
+  These aggregates are operational inputs, not battle-win odds. Before and
+  after snapshots retained the same episode, date and native revision; the
+  source save hash was unchanged and the managed process tree was recovered.
+- [counter-policy gap] The existing primary-defender siege-relief selector
+  requires **both** friendly soldiers and native base power to reach twice
+  the enemy. Here `2327 < 2×1488` and `7574100000 < 2×4952700000`, so it
+  returns `no_friendly_operational_overmatch` before the already available
+  route and contact inputs enter the formal movement pipeline. The 46-day
+  arrival is earlier than the observed 69-day siege timer, but the one-day
+  contact horizon cannot prove safety at the eventual battle. Neither the
+  soldier ratio, the AI base-power ratio, nor the original deterministic
+  combat-prediction ratio is a battle-win probability. The requested
+  probability-based admission therefore remains blocked; the 2× selector is
+  unchanged.
+- [observation and simulation boundary] R0185 did not query production
+  `combat-simulation-inputs-v3`; its final paused snapshot has null v3 status
+  and payload. The existing v3 query can request a fixed hypothetical contact
+  with target `2628`, final-edge entry `8752`, attacker `[83886367]` and
+  defender `[50331920]`, after refreshing the current route, participants and
+  revision. Its literal step is
+  `query-combat-simulation-inputs-v3-2628-8752-a-1-83886367-d-1-50331920`.
+  This would close only the same-frame input observation for that hypothetical
+  contact. Production v3 explicitly reports `monte_carlo_ready=false`,
+  `transition_fidelity_gate=false`, `planner_usable=false` and
+  `active_attack_allowed=false`, even when all 132 native state references are
+  available. The bounded simulator has no exact loaded phase-event effects or
+  original CK3 trace fixture; the combat-entry expected-utility contract is
+  separately inactive. The next construction work is to validate the loaded
+  effect evaluator and transition simulator against independent exact-build
+  traces, then obtain a qualified same-frame win distribution before changing
+  formal relief admission. See [battle-simulation.md](battle-simulation.md)
+  and [combat-simulation-inputs.md](combat-simulation-inputs.md).
+- [live boundary] R0185 made no typed move and did not demonstrate battle,
+  occupation, war closure or 46 days of future contact safety. Its immutable
+  evidence index is
+  `g2-robert-r0184-route-strength-readonly-R0185-20260923/R0185-READBACK-SUMMARY.json`
+  (SHA-256 `CB417155190684DB9B35C549A1BA370244C4DD0C5BCBADAA9E5D63A120F6BE64`).
+  The next formal run must re-read the paused frame after official cold
+  restore; a prior probe response alone is not a fresh formal decision.
+
+```mermaid
+flowchart TD
+    S["R0185 same-frame siege, route, ETA and army aggregates"] --> P{"qualified win probability for the actual future contact?"}
+    P -->|no| X["RED: keep existing admission; do not call a ratio probability"]
+    S --> V["production v3 hypothetical-contact input query available"]
+    V -.-> I["unknown: refreshed route, participant set and v3 readback"]
+    I -.-> F["unknown: loaded effects, simulator and independent original trace parity"]
+    F -.-> P
+    P -->|future qualified result| M["formal expected-utility decision and typed move gate"]
+    M -.-> U["unknown: later arrivals, battle and war result"]
+```

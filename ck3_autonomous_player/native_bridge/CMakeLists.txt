@@ -503,6 +503,8 @@ add_library(xar_ck3_bridge SHARED
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
   src/coat_of_arms_designer_probe_v1.cpp
+  src/combat_phase_event_trace_v1.cpp
+  src/combat_phase_event_trace_v1_mailbox.cpp
   src/combat_phase_event_trace_detour_v1.cpp
   src/combat_phase_event_trace_managed_v1.cpp
   src/combat_phase_event_trace_ring_v1.cpp
@@ -1934,7 +1936,7 @@ if(BUILD_TESTING)
   if(MSVC)
     target_compile_options(
       xar_ck3_combat_phase_event_trace_v1_source_contract_test PRIVATE
-      /W4 /permissive- /EHsc)
+      /W4 /permissive- /EHsc /utf-8)
   endif()
   add_test(
     NAME xar_ck3_native_bridge_combat_phase_event_trace_v1_source_contract

@@ -2,12 +2,12 @@
 
 ## 结论与边界
 
-本页冻结下一项只读观测口 `query-combat-phase-event-trace-v1-{CombatID}` 的 exact-build
-设计与第一阶段 native reader。它解决的不是 hypothetical pre-contact：请求必须携带 storage 中仍然存在的完整
+本页冻结只读观测口 `query-combat-phase-event-trace-v1-{CombatID}` 的 exact-build
+设计、native reader 与有界受管查询。它解决的不是 hypothetical pre-contact：请求必须携带 storage 中仍然存在的完整
 generation `CombatID`，并且只在暂停帧读取真实 `CCombat`、两个 embedded `CCombatSide`、真实 Character root
 与 kind-11 `scope:combat_side`。单帧 probe 与后续 managed before/after 七边界合同是两个独立 gate。
 
-- [implementation-confirmed] DTO 与 research-only reader 已分别落在
+- [implementation-confirmed] DTO 与 paused reader 已分别落在
   [`combat_phase_event_trace_v1.hpp`](../../ck3_autonomous_player/native_bridge/include/xar_bridge/combat_phase_event_trace_v1.hpp)
   和
   [`combat_phase_event_trace_v1.cpp`](../../ck3_autonomous_player/native_bridge/src/combat_phase_event_trace_v1.cpp)。
@@ -23,8 +23,9 @@ generation `CombatID`，并且只在暂停帧读取真实 `CCombat`、两个 emb
   [`combat_phase_event_trace_ring_v1_source_contract.json`](../../ck3_autonomous_player/native_bridge/research/fixtures/combat_phase_event_trace_ring_v1_source_contract.json)。
   当前完成的是无分配 capture ABI、原 helper wrapper、exact-build detour installer、受 900 KiB 上限约束的 drain wire serializer，
   以及离线七记录/delta/fail-closed 测试；detour 源码已编进 production DLL，但尚未由 paused managed driver 安装，也未广告 capability。
-- [implementation-confirmed] 当前只发布内部状态 `evaluator_probe_available`，production capability 常量明确
-  `advertised=false`，也没有接 bridge、driver、service 或 MCP。它不是可以被 planner 调用的完成口。
+- [implementation-confirmed] 有界 paused `CombatID` evaluator 查询已接 bridge、driver、service 与 MCP，
+  能返回 `evaluator_probe_available` 和直接的 13 行 trigger/chance differential。查询 capability 的广告
+  只说明可以提出只读请求；`production_trace_ready=false`，仍不能作为 planner 的合格胜率输入。
 - [static-confirmed] 当前 reader 不调用 `0x2E1C570` selector、`0x23C8750` schedule builder、
   `0x23C9900` fire、`0x3380310` effect executor、`0x356A0A0/0x356B770` RNG draw，也不调用会 lazy-init
   singleton 的 `0x23CEB10`。
@@ -32,11 +33,51 @@ generation `CombatID`，并且只在暂停帧读取真实 `CCombat`、两个 emb
   `ccombat_side_knight_source_then_tail_swap_remove_v1`；reader 只读它的 pre-limit source vector，不调用 selector。
 - [implementation-confirmed] `CCombat+0x708` 对应 Battle-result 的 retained `BattleEvent` storage 已有 generation-safe
   纯读 reader；单帧只把它称为 generic battle ledger，不伪造 phase-event origin。
-- [not-live-tested] 本轮只读原版 EXE 并构建源码，没有启动、注入、暂停、恢复或操作 CK3。实机 paused
-  snapshot 与 managed daily transition 仍须在部署窗口完成。
+- [not-live-tested] 本项 evaluator 查询已通过静态编译与聚焦合同测试，尚无真实 paused CombatID
+  的同版本读回；历史 CombatID 只能作为官方恢复后的候选。managed daily transition 更未通过实机。
+  本包静态验证没有启动、注入、暂停、恢复或操作 CK3。
 
 绑定版本仍是 CK3 `1.19.0.6`，`ck3.exe` SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+
+## R0185 后的最小只读入口与历史实战来源
+
+- [production-live read-only] R0185 在 `h2120/raw53215920` 的罗贝尔主线只确认了
+  省 `2628` 的围城、路线、一天 contact horizon 和双方军力；没有发生接战，也没有
+  `combat-simulation-inputs-v3` 的当前场景读回。人数、AI base power 和原版
+  deterministic combat-prediction ratio 都不能填作胜率。
+- [production-live read-only RED] R0187 从 R0186 加点后的 `h2127/raw53215920` 新 PID
+  冷恢复，M4 HasPerk、援围 preview 与 h1 route 查询成功；随后 v3 假设接战输入在
+  `production phase character identity or role mismatch` 校验处 RED。原始响应见
+  `Z:\ck3_mod_rewrite_process_assets\g2-robert-r0186-combat-v3-readonly-R0187-20260923\combat-v3-inputs-mcp-result.json`
+  （SHA-256 `5771D8FEDD3F212BA35A1624450FF68A07D3EB3FE02E7556EE5F44DF9240FE9E`）。
+  这不影响此页独立的真实 CombatID evaluator 施工，也不把 v3 `132/132` 静态库存
+  冒充 R0187 live 可用。
+- [implementation-confirmed] 此页的 `ReadCombatPhaseEventTraceV1Probe` 已能在暂停帧对
+  **真实、仍 generation-valid 的一个 CombatID** 读取双方 side、ordered participant、
+  13 行 loaded event 的 trigger/chance differential、retained schedule 和 generic
+  BattleEvent ledger。结果只证明 `evaluator_probe_ready`；它不调用 selector、effect
+  或 RNG，不产生 Monte Carlo 分布。
+- [historical source candidate] 旧 R0168 `h1251/raw53192304` 的同帧 battle-control
+  查询曾观测 Army `83886367` 与敌 Army `50331863` 在省 `2638` 的
+  CombatID `738197508`，maneuver day 1。历史 ID 仅用于定位独立研究 save；未来
+  必须经官方配对冷恢复并在**新 paused 帧**重新验证该 CombatID 仍有效。不得把
+  该历史战斗与 R0185 的将来省 `2628` 接战视为同一场战斗，也不得污染主线。
+- [construction boundary] 首个接线只发布有界 paused one-CombatID evaluator 查询，
+  返回当前同帧原始 differential 与缺失的 transition readers；
+  `production_trace_ready=false`、`original_trace_ready=false` 和 qualified
+  `win_probability=unavailable` 保持。受控 one-day 七边界 capture、15 类 effect
+  feedback、模拟器 original-trace parity 和策略 admission 是后续独立门。
+
+```mermaid
+flowchart TD
+    Q["one full-generation CombatID on a paused exact-build frame"] --> V{"generation and same-frame identity valid?"}
+    V -->|no| X["unavailable; preserve source and RED"]
+    V -->|yes| R["existing research reader: real sides, 13-row trigger/chance differential"]
+    R --> O["bounded read-only result; production_trace_ready=false"]
+    O -. "controlled original seven-boundary trace pending" .-> T["unknown: transition parity and qualified win probability"]
+    T -.-> W["future probability-based relief decision"]
+```
 
 ```mermaid
 flowchart TD
@@ -53,7 +94,7 @@ flowchart TD
     A --> V{"snapshot, Combat, roster,<br/>schedule, rows and RNG unchanged?"}
     V -->|no| F["atomicity_failed"]
     V -->|yes| O["evaluator_probe_available"]
-    O -. "full mutable state + managed native-boundary occurrence missing" .-> H["production capability withheld"]
+    O -. "full mutable state + managed native-boundary occurrence missing" .-> H["probability/transition capability withheld"]
 ```
 
 ## 原生事件表与 differential
@@ -356,25 +397,28 @@ production DLL。begin 只在已验证 paused mailbox slot 上、且外部已创
 finish 要求同 token、同 application-main thread、`after.date_raw=before.date_raw+24`，随后 capture 第七条、drain 并卸载
 detour。两者本身都不改变速度或推进日期；离线 fixture 已闭合 before/after checkpoint、七记录、wire 与卸载恢复。
 
-尚未实现的是共享 mailbox 的 typed union dispatch、bridge/service/MCP 接线、外部可恢复 one-day driver 和 paused live 同
+尚未实现的是 one-day trace 的共享 mailbox typed union dispatch、bridge/service/MCP 接线、外部可恢复 one-day driver 和 paused live 同
 Combat fixture；完整 trait/track/variable/accolade mutable bundle 也仍缺。因此 ring 可令
 `bounded_ring_source_ready/detour_installer_ready/bounded_wire_serializer_ready/capture_plan_builder_ready/typed_begin_finish_executor_ready=true`；
 `same_combat_live_fixture_ready/full_mutable_transition_bundle_ready/production_trace_ready` 仍为 false。
-UI date 轮询仍不能提供六个中间点 provenance，generic BattleEvent reader 也不解除该门；capability 继续不广告。
+UI date 轮询仍不能提供六个中间点 provenance，generic BattleEvent reader 也不解除该门；
+合格胜率与 transition parity 继续不广告。
 
 ## readiness 与现有 132/132 observation 的分离
 
-phase-event trace 的 fidelity gate 不能反向让已经完整的 combat-simulation-inputs v3 `132/132` observation 变成
-unavailable。前者用于 Monte Carlo 的 original-transition parity；后者用于当前帧确定性输入。
+phase-event trace 的 fidelity gate 与 combat-simulation-inputs v3 `132/132` **静态字段库存**
+是两个独立结论。R0187 当前场景的 v3 live 查询仍 RED；前者将用于 Monte Carlo 的
+original-transition parity，后者在修复实机字段错配后才能声称当前帧确定性输入可用。
 
 ```mermaid
 flowchart LR
-    I["combat inputs v3<br/>132/132 observation ready"] --> P["planner can inspect current combat inputs"]
+    I["combat inputs v3<br/>132/132 static inventory"] --> P{"current paused live readback?"}
+    P -->|R0187 RED| E["phase character identity/role mismatch under diagnosis"]
+    P -. "future GREEN" .-> C["current encounter inputs"]
     T["trace v1 evaluator probe"] --> G{"full transition gates?"}
     G -->|no| W["phase-event parity withheld"]
     G -. "missing managed native boundaries + full mutable state" .-> U["no exact-native-parity Monte Carlo claim"]
     G -->|yes, future| M["phase-event original trace ready"]
-    I --> C["independent observation readiness"]
     M --> F["simulation fidelity readiness"]
     C -. "must remain independent" .- F
 ```

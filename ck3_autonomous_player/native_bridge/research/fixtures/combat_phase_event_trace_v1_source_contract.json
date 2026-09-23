@@ -9,8 +9,8 @@
   "contains_fake_rng_state": false,
   "contains_fake_effect_transition": false,
   "request_literal_rule": "query-combat-phase-event-trace-v1-{positive_full_generation_CombatID}",
-  "capability_advertised": false,
-  "bridge_dispatch_connected": false,
+  "capability_advertised": true,
+  "bridge_dispatch_connected": true,
   "expected_live_probe_status": "evaluator_probe_available",
   "production_trace_status": "withheld_until_missing_readers_close",
   "stock_rows": [

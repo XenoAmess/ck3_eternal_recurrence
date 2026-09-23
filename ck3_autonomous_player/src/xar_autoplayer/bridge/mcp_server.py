@@ -2517,6 +2517,16 @@ def create_server(
         )
 
     @server.tool()
+    def ck3_query_combat_phase_event_trace_v1(
+        combat_id: int,
+        expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Read one paused native CombatID evaluator; no battle odds or action."""
+        return service.query_combat_phase_event_trace_v1(
+            combat_id, expected_revision=expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_combat_simulation_inputs_v3(
         target_province_id: int,
         attacker_entry_province_id: int,
