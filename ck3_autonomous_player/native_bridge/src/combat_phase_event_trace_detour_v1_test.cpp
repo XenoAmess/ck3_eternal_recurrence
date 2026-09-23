@@ -17,6 +17,9 @@ constexpr std::array<std::uint8_t, 15> kSchedulePrologue{
 constexpr std::array<std::uint8_t, 15> kFirePrologue{
     0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
     0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18};
+constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
+    0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
+    0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
 constexpr std::array<std::uint8_t, 5> kScheduleSide0Call{
     0xE8, 0xBC, 0xD1, 0xBC, 0xFF};
 constexpr std::array<std::uint8_t, 5> kScheduleSide1Call{
@@ -27,6 +30,10 @@ constexpr std::array<std::uint8_t, 5> kFireSide1Call{
     0xE8, 0xF1, 0x03, 0x0C, 0x00};
 constexpr std::array<std::uint8_t, 5> kFireTailJump{
     0xE9, 0xAD, 0xF5, 0xFF, 0xFF};
+constexpr std::array<std::uint8_t, 5> kOutgoingDamageSide0Call{
+    0xE8, 0x38, 0x12, 0x0C, 0x00};
+constexpr std::array<std::uint8_t, 5> kOutgoingDamageSide1Call{
+    0xE8, 0x1C, 0x12, 0x0C, 0x00};
 
 bool Fail(std::string_view reason) {
   std::cerr << reason << '\n';
@@ -36,9 +43,12 @@ bool Fail(std::string_view reason) {
 struct FixtureMemory {
   void *schedule_page = nullptr;
   void *fire_page = nullptr;
+  void *outgoing_damage_page = nullptr;
   bool fail_fire_patch_protection = false;
+  bool fail_outgoing_damage_patch_protection = false;
   bool fail_allocation = false;
   std::uintptr_t fire_target = 0;
+  std::uintptr_t outgoing_damage_target = 0;
   std::uint32_t live_allocations = 0;
 
   ~FixtureMemory() {
@@ -47,6 +57,9 @@ struct FixtureMemory {
     }
     if (fire_page != nullptr) {
       VirtualFree(fire_page, 0, MEM_RELEASE);
+    }
+    if (outgoing_damage_page != nullptr) {
+      VirtualFree(outgoing_damage_page, 0, MEM_RELEASE);
     }
   }
 };
@@ -83,6 +96,13 @@ bool FixtureProtect(void *raw, void *address, std::size_t size,
     previous = 0;
     return false;
   }
+  if (fixture.fail_outgoing_damage_patch_protection &&
+      reinterpret_cast<std::uintptr_t>(address) ==
+          fixture.outgoing_damage_target &&
+      desired == PAGE_EXECUTE_READWRITE) {
+    previous = 0;
+    return false;
+  }
   previous = 0;
   return VirtualProtect(address, size, desired, &previous) != FALSE;
 }
@@ -98,6 +118,10 @@ struct Fixture {
   std::array<std::uint8_t, 5> fire_side0_call{kFireSide0Call};
   std::array<std::uint8_t, 5> fire_side1_call{kFireSide1Call};
   std::array<std::uint8_t, 5> fire_tail_jump{kFireTailJump};
+  std::array<std::uint8_t, 5> outgoing_damage_side0_call{
+      kOutgoingDamageSide0Call};
+  std::array<std::uint8_t, 5> outgoing_damage_side1_call{
+      kOutgoingDamageSide1Call};
   CombatPhaseEventTraceDetourEnvironmentV1 environment{};
 
   Fixture() {
@@ -111,20 +135,31 @@ struct Fixture {
     memory.fire_page = VirtualAlloc(
         nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
         PAGE_EXECUTE_READWRITE);
-    if (memory.schedule_page == nullptr || memory.fire_page == nullptr) {
+    memory.outgoing_damage_page = VirtualAlloc(
+        nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE);
+    if (memory.schedule_page == nullptr || memory.fire_page == nullptr ||
+        memory.outgoing_damage_page == nullptr) {
       return;
     }
     std::memcpy(memory.schedule_page, kSchedulePrologue.data(),
                 kSchedulePrologue.size());
     std::memcpy(memory.fire_page, kFirePrologue.data(),
                 kFirePrologue.size());
+    std::memcpy(memory.outgoing_damage_page,
+                kOutgoingDamagePrologue.data(),
+                kOutgoingDamagePrologue.size());
     DWORD ignored = 0;
     (void)VirtualProtect(memory.schedule_page, page_size,
                          PAGE_EXECUTE_READ, &ignored);
     (void)VirtualProtect(memory.fire_page, page_size,
                          PAGE_EXECUTE_READ, &ignored);
+    (void)VirtualProtect(memory.outgoing_damage_page, page_size,
+                         PAGE_EXECUTE_READ, &ignored);
     memory.fire_target =
         reinterpret_cast<std::uintptr_t>(memory.fire_page);
+    memory.outgoing_damage_target =
+        reinterpret_cast<std::uintptr_t>(memory.outgoing_damage_page);
 
     environment.exact_build_admitted = true;
     environment.managed_paused_quiescence_proven = true;
@@ -133,6 +168,8 @@ struct Fixture {
     environment.schedule_target_override =
         reinterpret_cast<std::uintptr_t>(memory.schedule_page);
     environment.fire_target_override = memory.fire_target;
+    environment.outgoing_damage_target_override =
+        memory.outgoing_damage_target;
     environment.schedule_side0_call_override =
         reinterpret_cast<std::uintptr_t>(schedule_side0_call.data());
     environment.schedule_side1_call_override =
@@ -143,6 +180,10 @@ struct Fixture {
         reinterpret_cast<std::uintptr_t>(fire_side1_call.data());
     environment.fire_tail_jump_override =
         reinterpret_cast<std::uintptr_t>(fire_tail_jump.data());
+    environment.outgoing_damage_side0_call_override =
+        reinterpret_cast<std::uintptr_t>(outgoing_damage_side0_call.data());
+    environment.outgoing_damage_side1_call_override =
+        reinterpret_cast<std::uintptr_t>(outgoing_damage_side1_call.data());
     environment.memory_context = &memory;
     environment.virtual_alloc_override = &FixtureAlloc;
     environment.virtual_free_override = &FixtureFree;
@@ -164,7 +205,8 @@ bool IsAbsoluteJumpTo(const void *storage, std::uintptr_t expected) {
 bool InstallAndUninstall() {
   Fixture fixture;
   if (fixture.memory.schedule_page == nullptr ||
-      fixture.memory.fire_page == nullptr) {
+      fixture.memory.fire_page == nullptr ||
+      fixture.memory.outgoing_damage_page == nullptr) {
     return Fail("fixture executable pages unavailable");
   }
   CombatPhaseEventTraceDetourStateV1 state{};
@@ -173,7 +215,7 @@ bool InstallAndUninstall() {
     return Fail("detour install failed");
   }
   if (state.installed.load() != 1 || state.failure_flags.load() != 0 ||
-      fixture.memory.live_allocations != 2 ||
+      fixture.memory.live_allocations != 3 ||
       !IsAbsoluteJumpTo(
           fixture.memory.schedule_page,
           reinterpret_cast<std::uintptr_t>(
@@ -181,6 +223,9 @@ bool InstallAndUninstall() {
       !IsAbsoluteJumpTo(
           fixture.memory.fire_page,
           reinterpret_cast<std::uintptr_t>(&XarCombatPhaseEventFireHookV1)) ||
+      !IsAbsoluteJumpTo(
+          fixture.memory.outgoing_damage_page,
+          reinterpret_cast<std::uintptr_t>(&XarCombatOutgoingDamageHookV1)) ||
       !IsAbsoluteJumpTo(
           static_cast<const std::uint8_t *>(state.schedule_trampoline) +
               kCombatPhaseEventTraceDetourPatchBytesV1,
@@ -191,10 +236,19 @@ bool InstallAndUninstall() {
               kCombatPhaseEventTraceDetourPatchBytesV1,
           state.fire_target +
               kCombatPhaseEventTraceDetourPatchBytesV1) ||
+      !IsAbsoluteJumpTo(
+          static_cast<const std::uint8_t *>(
+              state.outgoing_damage_trampoline) +
+              kCombatPhaseEventTraceDetourPatchBytesV1,
+          state.outgoing_damage_target +
+              kCombatPhaseEventTraceDetourPatchBytesV1) ||
       std::memcmp(state.schedule_trampoline, kSchedulePrologue.data(),
                   kSchedulePrologue.size()) != 0 ||
       std::memcmp(state.fire_trampoline, kFirePrologue.data(),
-                  kFirePrologue.size()) != 0) {
+                  kFirePrologue.size()) != 0 ||
+      std::memcmp(state.outgoing_damage_trampoline,
+                  kOutgoingDamagePrologue.data(),
+                  kOutgoingDamagePrologue.size()) != 0) {
     return Fail("installed patch/trampoline mismatch");
   }
   if (!UninstallCombatPhaseEventTraceDetoursV1(state) ||
@@ -202,7 +256,10 @@ bool InstallAndUninstall() {
       std::memcmp(fixture.memory.schedule_page,
                   kSchedulePrologue.data(), kSchedulePrologue.size()) != 0 ||
       std::memcmp(fixture.memory.fire_page, kFirePrologue.data(),
-                  kFirePrologue.size()) != 0) {
+                  kFirePrologue.size()) != 0 ||
+      std::memcmp(fixture.memory.outgoing_damage_page,
+                  kOutgoingDamagePrologue.data(),
+                  kOutgoingDamagePrologue.size()) != 0) {
     return Fail("detour uninstall did not restore originals");
   }
   return true;
@@ -233,6 +290,17 @@ bool AdmissionAndRollbackFailures() {
   }
   {
     Fixture fixture;
+    fixture.outgoing_damage_side1_call[0] = 0x90;
+    CombatPhaseEventTraceDetourStateV1 state{};
+    if (InstallCombatPhaseEventTraceDetoursV1(state,
+                                              fixture.environment) ||
+        (state.failure_flags.load() & trace_detour_failure_anchor) == 0 ||
+        fixture.memory.live_allocations != 0) {
+      return Fail("outgoing damage call anchor mismatch was admitted");
+    }
+  }
+  {
+    Fixture fixture;
     fixture.memory.fail_allocation = true;
     CombatPhaseEventTraceDetourStateV1 state{};
     if (InstallCombatPhaseEventTraceDetoursV1(state,
@@ -259,6 +327,26 @@ bool AdmissionAndRollbackFailures() {
         std::memcmp(fixture.memory.fire_page, kFirePrologue.data(),
                     kFirePrologue.size()) != 0) {
       return Fail("partial install did not roll schedule patch back");
+    }
+  }
+  {
+    Fixture fixture;
+    fixture.memory.fail_outgoing_damage_patch_protection = true;
+    CombatPhaseEventTraceDetourStateV1 state{};
+    if (InstallCombatPhaseEventTraceDetoursV1(state,
+                                              fixture.environment) ||
+        (state.failure_flags.load() &
+         trace_detour_failure_target_protection) == 0 ||
+        fixture.memory.live_allocations != 0 ||
+        std::memcmp(fixture.memory.schedule_page,
+                    kSchedulePrologue.data(),
+                    kSchedulePrologue.size()) != 0 ||
+        std::memcmp(fixture.memory.fire_page, kFirePrologue.data(),
+                    kFirePrologue.size()) != 0 ||
+        std::memcmp(fixture.memory.outgoing_damage_page,
+                    kOutgoingDamagePrologue.data(),
+                    kOutgoingDamagePrologue.size()) != 0) {
+      return Fail("partial install did not roll both earlier patches back");
     }
   }
   return true;

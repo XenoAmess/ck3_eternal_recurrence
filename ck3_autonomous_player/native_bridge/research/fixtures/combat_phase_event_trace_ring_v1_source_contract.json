@@ -7,6 +7,7 @@
   "hook_targets": {
     "schedule_function_rva": "0x23C8750",
     "phase_fire_function_rva": "0x23C9900",
+    "outgoing_damage_function_rva": "0x23CB1D0",
     "installation_ready": true,
     "original_trampoline_required": true
   },
@@ -34,6 +35,22 @@
     "side_argument": "RCX=actual_CCombatSide",
     "side_identity": "tail_jump_preserves_0x2309EF7_or_0x2309EFF_return_address",
     "capture_policy": "entry_and_post_original_for_each_side"
+  },
+  "outgoing_damage_call_chain": {
+    "main_tick_function_rva": "0x2309E80",
+    "side0_call_rva": "0x2309F93",
+    "side0_return_rva": "0x2309F98",
+    "side1_call_rva": "0x2309FAF",
+    "side1_return_rva": "0x2309FB4",
+    "first_casualty_application_rva": "0x2309FE8",
+    "callee_fifth_argument": "opposite_CCombatSide_at_callee_rsp_plus_0xA0",
+    "result_argument": "RDX_points_to_signed_Q100000_int64_output",
+    "result_write_zero_path_rva": "0x23CB214",
+    "result_write_normal_path_rva": "0x23CB7AF",
+    "prologue_15_bytes_hex": "44894424185557415441564883EC58",
+    "prologue_15_bytes_sha256": "180B53838F1B7CA3FD5ECD62C76C322312BF64147622F178619D52F160BAFBA0",
+    "caller_compute_apply_span_sha256": "284C68CAF0618BC04AEB11DE4925A2470678D772FE8E29C8C4F32443EEF6F559",
+    "capture_policy": "after_each_original_calculator_return_copy_output_before_both_native_casualty_calls"
   },
   "required_snapshot_sequence": [
     "native_capture_before_side0_schedule_call_0x27FB58F",
@@ -98,10 +115,13 @@
     "character_identity_death_marker_skills_and_regiment_membership_core",
     "participant_accolade_identity_owner_acclaimed_knight_glory_and_mirrored_rank",
     "side_current_fighting_totals",
+    "both_native_outgoing_damage_raw_before_casualty",
     "combat_base_resolved_advantage_and_rolls"
   ],
   "readiness": {
     "bounded_ring_source_ready": true,
+    "outgoing_damage_static_boundary_ready": true,
+    "outgoing_damage_same_combat_live_fixture_ready": false,
     "detour_installer_ready": true,
     "bounded_wire_serializer_ready": true,
     "typed_begin_finish_executor_ready": true,

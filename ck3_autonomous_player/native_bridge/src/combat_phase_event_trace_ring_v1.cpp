@@ -100,6 +100,7 @@ constexpr std::int32_t kMaximumNativeContainerCapacity = 65'536;
 std::atomic<CombatPhaseEventTraceRingV1 *> g_active_ring{nullptr};
 std::atomic<CombatPhaseEventScheduleOriginalV1> g_original_schedule{nullptr};
 std::atomic<CombatPhaseEventFireOriginalV1> g_original_fire{nullptr};
+std::atomic<CombatOutgoingDamageOriginalV1> g_original_outgoing_damage{nullptr};
 
 template <typename T>
 T LoadAt(std::uintptr_t base, std::size_t offset) noexcept {
@@ -1003,9 +1004,11 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.armed.store(0, std::memory_order_relaxed);
   ring.capture_in_progress.store(0, std::memory_order_relaxed);
   ring.committed_count.store(0, std::memory_order_relaxed);
+  ring.outgoing_damage_count.store(0, std::memory_order_relaxed);
   ring.failure_flags.store(trace_capture_failure_none,
                            std::memory_order_relaxed);
   ring.plan = plan;
+  ring.outgoing_damage_raw = {};
   std::memset(ring.records.data(), 0,
               sizeof(CombatPhaseEventTraceRingRecordV1) *
                   ring.records.size());
@@ -1073,6 +1076,72 @@ bool CaptureCombatPhaseEventTraceBoundaryV1(
   return captured;
 }
 
+bool CaptureCombatOutgoingDamageV1(
+    void *side, void *opposite_side, const std::int64_t *output,
+    std::uintptr_t caller_return_address) noexcept {
+  auto *const ring = g_active_ring.load(std::memory_order_acquire);
+  if (ring == nullptr ||
+      ring->armed.load(std::memory_order_acquire) == 0) {
+    return false;
+  }
+  const auto module = ring->plan.module_base;
+  std::uint32_t index = 0;
+  if (caller_return_address ==
+      module + kCombatOutgoingDamageSide0ReturnRva) {
+    index = 0;
+  } else if (caller_return_address ==
+             module + kCombatOutgoingDamageSide1ReturnRva) {
+    index = 1;
+  } else {
+    return false;
+  }
+  const auto side_address = reinterpret_cast<std::uintptr_t>(side);
+  // The daily dispatcher can process other combats while this one is armed.
+  // The schedule/fire hooks also ignore nonselected CombatSide pointers.
+  if (side_address != ring->plan.sides[0] &&
+      side_address != ring->plan.sides[1]) {
+    return false;
+  }
+  if (ring->capture_in_progress.exchange(1, std::memory_order_acq_rel) != 0) {
+    MarkFailure(*ring, trace_capture_failure_reentry);
+    return false;
+  }
+
+  bool valid = output != nullptr &&
+               side_address == ring->plan.sides[index] &&
+               reinterpret_cast<std::uintptr_t>(opposite_side) ==
+                   ring->plan.sides[1 - index] &&
+               ring->committed_count.load(std::memory_order_acquire) == 6 &&
+               ring->outgoing_damage_count.load(std::memory_order_acquire) ==
+                   index;
+  std::int64_t damage_raw = 0;
+  if (valid) {
+#if defined(_MSC_VER)
+    __try {
+#endif
+      valid = LoadAt<std::int32_t>(ring->plan.combat, kCombatIdOffset) ==
+              ring->plan.combat_id;
+      if (valid) {
+        std::memcpy(&damage_raw, output, sizeof(damage_raw));
+      }
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      valid = false;
+      MarkFailure(*ring, trace_capture_failure_memory_fault);
+    }
+#endif
+  }
+  if (valid) {
+    ring->outgoing_damage_raw[index] = damage_raw;
+    ring->outgoing_damage_count.store(index + 1,
+                                      std::memory_order_release);
+  } else {
+    MarkFailure(*ring, trace_capture_failure_outgoing_damage);
+  }
+  ring->capture_in_progress.store(0, std::memory_order_release);
+  return valid;
+}
+
 bool CompleteAndDrainCombatPhaseEventTraceRingV1(
     CombatPhaseEventTraceRingV1 &ring,
     CombatPhaseEventTraceRingDrainV1 &output) noexcept {
@@ -1087,6 +1156,12 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
   std::memset(&output, 0, sizeof(output));
   output.failure_flags =
       ring.failure_flags.load(std::memory_order_acquire);
+  output.outgoing_damage_count =
+      ring.outgoing_damage_count.load(std::memory_order_acquire);
+  output.outgoing_damage_raw = ring.outgoing_damage_raw;
+  output.outgoing_damage_pair_complete =
+      output.outgoing_damage_count == 2 &&
+      (output.failure_flags & trace_capture_failure_outgoing_damage) == 0;
   output.record_count = std::min<std::uint32_t>(
       ring.committed_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.records.size()));
@@ -1151,12 +1226,16 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
 
 bool BindCombatPhaseEventTraceOriginalTrampolinesV1(
     CombatPhaseEventScheduleOriginalV1 schedule,
-    CombatPhaseEventFireOriginalV1 fire) noexcept {
-  if (schedule == nullptr || fire == nullptr) {
+    CombatPhaseEventFireOriginalV1 fire,
+    CombatOutgoingDamageOriginalV1 outgoing_damage) noexcept {
+  if (schedule == nullptr || fire == nullptr ||
+      outgoing_damage == nullptr) {
     return false;
   }
   g_original_schedule.store(schedule, std::memory_order_release);
   g_original_fire.store(fire, std::memory_order_release);
+  g_original_outgoing_damage.store(outgoing_damage,
+                                    std::memory_order_release);
   return true;
 }
 
@@ -1247,6 +1326,27 @@ XarCombatPhaseEventFireHookV1(void *side) noexcept {
         after, reinterpret_cast<void *>(ring->plan.combat), side, nullptr,
         return_address);
   }
+  return result;
+}
+
+extern "C" std::uintptr_t __fastcall XarCombatOutgoingDamageHookV1(
+    void *side, std::int64_t *output, std::int32_t final_width,
+    std::int64_t advantage_multiplier_raw, void *opposite_side) noexcept {
+  const auto return_address =
+      reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+  const auto original =
+      g_original_outgoing_damage.load(std::memory_order_acquire);
+  if (original == nullptr) {
+    if (auto *ring = g_active_ring.load(std::memory_order_acquire);
+        ring != nullptr) {
+      MarkFailure(*ring, trace_capture_failure_original_trampoline);
+    }
+    return 0;
+  }
+  const auto result = original(side, output, final_width,
+                               advantage_multiplier_raw, opposite_side);
+  (void)CaptureCombatOutgoingDamageV1(side, opposite_side, output,
+                                       return_address);
   return result;
 }
 

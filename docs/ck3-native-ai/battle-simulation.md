@@ -271,6 +271,24 @@ flowchart TD
 
 ### Outgoing damage 的闭合外壳
 
+#### 原版双侧伤害只读采样边界（2026-09-23）
+
+[static-confirmed] 冻结 EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+`0x2309F93` 与 `0x2309FAF` 依次调用 `0x23CB1D0` 计算 side 0 与 side 1 的 outgoing damage；
+调用者分别给出 `[rsp+0x58]` 和 `[rsp+0x50]` 的 signed Q100000 输出地址。两次调用的返回点是
+`0x2309F98`、`0x2309FB4`，而第一笔 casualty application 直到 `0x2309FE8` 才开始。
+`0x23CB1D0` 的零值和正常路径分别在 `0x23CB214`、`0x23CB7AF` 写输出地址；
+因而原调用返回后立即复制输出，能取得真正结算前双方伤害值。callee 的第五参数在
+`0x23CB3B7/0x23CB413` 从其 `[rsp+0xA0]` 读取，是相反一侧指针。
+
+相应只读 bridge 以原版函数的 15 字节 prologue
+`44894424185557415441564883EC58`、两个 main tick call-site 字节和同一 Combat/side/轮次身份绑定；
+日调度可依次处理其他 Combat，所以采样钩子忽略非目标双方的 side 指针，目标场内的次序或身份不符则显式失败；
+冻结字节 SHA、反汇编和有限 hook 方案保存在
+`Z:\ck3_mod_rewrite_process_assets\g2-combat-damage-boundary-static-20260923`。
+该路径目前仅有静态原版依据；双侧输出的实机 one-day 对账与模拟器 parity 仍未完成，
+`full_mutable_transition_bundle_complete`、`original_trace_ready`、胜率和攻击能力继续关闭。
+
 `0x23CB1D0..0x23CB7BD` 先计算战宽参与比例，再将有效攻击聚合依次乘 damage scaling、advantage 和战宽：
 
 ```text

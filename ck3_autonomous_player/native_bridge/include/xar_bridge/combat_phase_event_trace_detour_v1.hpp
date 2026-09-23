@@ -56,11 +56,14 @@ struct CombatPhaseEventTraceDetourEnvironmentV1 {
 
   std::uintptr_t schedule_target_override = 0;
   std::uintptr_t fire_target_override = 0;
+  std::uintptr_t outgoing_damage_target_override = 0;
   std::uintptr_t schedule_side0_call_override = 0;
   std::uintptr_t schedule_side1_call_override = 0;
   std::uintptr_t fire_side0_call_override = 0;
   std::uintptr_t fire_side1_call_override = 0;
   std::uintptr_t fire_tail_jump_override = 0;
+  std::uintptr_t outgoing_damage_side0_call_override = 0;
+  std::uintptr_t outgoing_damage_side1_call_override = 0;
 
   void *memory_context = nullptr;
   CombatTraceVirtualAllocV1 virtual_alloc_override = nullptr;
@@ -76,19 +79,23 @@ struct CombatPhaseEventTraceDetourStateV1 {
   std::uintptr_t module_base = 0;
   std::uintptr_t schedule_target = 0;
   std::uintptr_t fire_target = 0;
+  std::uintptr_t outgoing_damage_target = 0;
   void *schedule_trampoline = nullptr;
   void *fire_trampoline = nullptr;
+  void *outgoing_damage_trampoline = nullptr;
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       schedule_original{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       fire_original{};
+  std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
+      outgoing_damage_original{};
   void *memory_context = nullptr;
   CombatTraceVirtualFreeV1 virtual_free = nullptr;
   CombatTraceVirtualProtectV1 virtual_protect = nullptr;
   CombatTraceFlushInstructionCacheV1 flush_instruction_cache = nullptr;
 };
 
-// Install/uninstall only patch the two frozen function entries.  The caller
+// Install/uninstall patch the three frozen function entries.  The caller
 // must invoke both operations from the verified application-main mailbox while
 // CK3 is paused and the simulation tick is quiescent.  Installation never arms
 // a capture ring and does not advertise a bridge capability.

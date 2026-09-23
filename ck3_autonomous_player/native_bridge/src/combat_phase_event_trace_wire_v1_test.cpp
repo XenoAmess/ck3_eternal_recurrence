@@ -22,6 +22,9 @@ bool Has(std::string_view source, std::string_view token) {
 std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
   auto drain = std::make_unique<CombatPhaseEventTraceRingDrainV1>();
   drain->record_count = 7;
+  drain->outgoing_damage_count = 2;
+  drain->outgoing_damage_raw = {310'000, 280'000};
+  drain->outgoing_damage_pair_complete = true;
   drain->exact_boundary_sequence = true;
   drain->same_full_generation_combat = true;
   drain->same_native_date = false;
@@ -123,10 +126,15 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
 bool HappyPath() {
   const auto drain = SmallDrain();
   const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
-  constexpr std::array<std::string_view, 19> required{
+  constexpr std::array<std::string_view, 24> required{
       "\"schema_version\":1",
       "\"status\":\"captured\"",
       "\"record_count\":7",
+      "\"outgoing_damage\":{",
+      "\"source\":\"native_main_tick_before_casualty\"",
+      "\"side0_raw\":310000",
+      "\"side1_raw\":280000",
+      "\"outgoing_damage_pair_complete\":true",
       "\"same_native_date\":false",
       "\"expected_one_day_date_split\":true",
       "\"bounded_capture_complete\":true",
@@ -167,6 +175,11 @@ bool InvalidCountsFailClosed() {
           drain->records[0].sides[0].regiments.size() + 1);
   if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty()) {
     return Fail("invalid record count did not fail closed");
+  }
+  drain->records[0].sides[0].regiment_count = 2;
+  drain->outgoing_damage_count = 3;
+  if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty()) {
+    return Fail("invalid outgoing damage count did not fail closed");
   }
   return true;
 }

@@ -367,6 +367,22 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
           fire1_return)) {
     return Fail("after side1 fire capture failed");
   }
+  const std::int64_t side0_damage_raw = 310'000;
+  const std::int64_t side1_damage_raw = 280'000;
+  if (!CaptureCombatOutgoingDamageV1(
+          reinterpret_cast<void *>(fixture.plan.sides[0]),
+          reinterpret_cast<void *>(fixture.plan.sides[1]),
+          &side0_damage_raw,
+          fixture.plan.module_base +
+              kCombatOutgoingDamageSide0ReturnRva) ||
+      !CaptureCombatOutgoingDamageV1(
+          reinterpret_cast<void *>(fixture.plan.sides[1]),
+          reinterpret_cast<void *>(fixture.plan.sides[0]),
+          &side1_damage_raw,
+          fixture.plan.module_base +
+              kCombatOutgoingDamageSide1ReturnRva)) {
+    return Fail("pre-casualty outgoing damage pair capture failed");
+  }
   const bool captured = CompleteAndDrainCombatPhaseEventTraceRingV1(*ring, *drain);
   if (captured != (date_delta == 24)) {
     return Fail("one-day date split admission mismatch");
@@ -386,6 +402,10 @@ bool CaptureSevenRecordFixture(std::int32_t date_delta = 24) {
       !drain->side_and_return_site_identity ||
       !drain->schedule_phase_day_then_single_increment ||
       !drain->bounded_capture_complete ||
+      !drain->outgoing_damage_pair_complete ||
+      drain->outgoing_damage_count != 2 ||
+      drain->outgoing_damage_raw[0] != side0_damage_raw ||
+      drain->outgoing_damage_raw[1] != side1_damage_raw ||
       drain->full_mutable_transition_bundle_complete ||
       drain->production_trace_ready) {
     return Fail("drain gates mismatch");
@@ -562,11 +582,100 @@ bool FailureCases() {
   return true;
 }
 
+bool OutgoingDamageCaptureCases() {
+  Fixture fixture;
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  const std::int64_t side0_damage_raw = 310'000;
+  const std::int64_t side1_damage_raw = 280'000;
+  const auto side0_return = fixture.plan.module_base +
+                            kCombatOutgoingDamageSide0ReturnRva;
+  const auto side1_return = fixture.plan.module_base +
+                            kCombatOutgoingDamageSide1ReturnRva;
+  auto *const side0 = reinterpret_cast<void *>(fixture.plan.sides[0]);
+  auto *const side1 = reinterpret_cast<void *>(fixture.plan.sides[1]);
+
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    return Fail("outgoing damage fixture arm failed");
+  }
+  ring->committed_count.store(6);
+  if (CaptureCombatOutgoingDamageV1(reinterpret_cast<void *>(3), side1,
+                                    &side0_damage_raw, side0_return) ||
+      ring->failure_flags.load() != trace_capture_failure_none ||
+      CaptureCombatOutgoingDamageV1(side1, side0, &side1_damage_raw,
+                                    side1_return) ||
+      (ring->failure_flags.load() &
+       trace_capture_failure_outgoing_damage) == 0) {
+    return Fail("outgoing damage side order was accepted");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    return Fail("outgoing damage identity fixture arm failed");
+  }
+  ring->committed_count.store(6);
+  if (CaptureCombatOutgoingDamageV1(side0, side1, &side0_damage_raw,
+                                    side0_return - 1) ||
+      ring->failure_flags.load() != trace_capture_failure_none ||
+      !CaptureCombatOutgoingDamageV1(side0, side1,
+                                     &side0_damage_raw, side0_return) ||
+      CaptureCombatOutgoingDamageV1(side0, side1, &side0_damage_raw,
+                                    side0_return) ||
+      (ring->failure_flags.load() &
+       trace_capture_failure_outgoing_damage) == 0) {
+    return Fail("outgoing damage return site or duplicate was accepted");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    return Fail("outgoing damage CombatID fixture arm failed");
+  }
+  ring->committed_count.store(6);
+  Store(fixture.combat, 0x08, Fixture::kCombatId + 1);
+  if (CaptureCombatOutgoingDamageV1(side0, side1, &side0_damage_raw,
+                                    side0_return) ||
+      (ring->failure_flags.load() &
+       trace_capture_failure_outgoing_damage) == 0) {
+    return Fail("outgoing damage changed CombatID was accepted");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  return true;
+}
+
+std::uintptr_t DummySchedule(void *, std::uint32_t *, void *) { return 0; }
+std::uintptr_t DummyFire(void *) { return 0; }
+std::uintptr_t DummyOutgoingDamage(void *side, std::int64_t *output,
+                                   std::int32_t width,
+                                   std::int64_t multiplier_raw,
+                                   void *opposite_side) {
+  if (side != reinterpret_cast<void *>(1) ||
+      opposite_side != reinterpret_cast<void *>(2) || width != 73 ||
+      multiplier_raw != 150'000) {
+    return 0;
+  }
+  *output = 42'000;
+  return reinterpret_cast<std::uintptr_t>(output);
+}
+
+bool OutgoingDamageHookAbi() {
+  if (!BindCombatPhaseEventTraceOriginalTrampolinesV1(
+          &DummySchedule, &DummyFire, &DummyOutgoingDamage)) {
+    return Fail("outgoing damage trampoline binding failed");
+  }
+  std::int64_t output = 0;
+  const auto result = XarCombatOutgoingDamageHookV1(
+      reinterpret_cast<void *>(1), &output, 73, 150'000,
+      reinterpret_cast<void *>(2));
+  return result == reinterpret_cast<std::uintptr_t>(&output) &&
+                 output == 42'000
+             ? true
+             : Fail("outgoing damage hook changed original ABI/result");
+}
+
 bool SourceContract(std::string_view path) {
   std::ifstream stream{std::string(path), std::ios::binary};
   const std::string contents{std::istreambuf_iterator<char>(stream),
                              std::istreambuf_iterator<char>()};
-  constexpr std::array<std::string_view, 13> required{
+  constexpr std::array<std::string_view, 18> required{
       "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
       "0x23C8750",
       "0x23C9900",
@@ -574,6 +683,11 @@ bool SourceContract(std::string_view path) {
       "0x27FB5AC",
       "0x2309EF7",
       "0x2309EFF",
+      "0x23CB1D0",
+      "0x2309F98",
+      "0x2309FB4",
+      "0x2309FE8",
+      "180B53838F1B7CA3FD5ECD62C76C322312BF64147622F178619D52F160BAFBA0",
       "managed_query_owned_fixed_width_ring",
       "atomic_fail_closed_no_truncation",
       "component_store_resolution",
@@ -596,11 +710,13 @@ bool SourceCodeContract(std::string_view path) {
   std::ifstream stream{std::string(path), std::ios::binary};
   const std::string contents{std::istreambuf_iterator<char>(stream),
                              std::istreambuf_iterator<char>()};
-  constexpr std::array<std::string_view, 19> required{
+  constexpr std::array<std::string_view, 21> required{
       "kCombatPhaseEventScheduleSide0ReturnRva",
       "kCombatPhaseEventScheduleSide1ReturnRva",
       "kCombatPhaseEventFireSide0ReturnRva",
       "kCombatPhaseEventFireSide1ReturnRva",
+      "kCombatOutgoingDamageSide0ReturnRva",
+      "kCombatOutgoingDamageSide1ReturnRva",
       "CaptureCombatPhaseEventTraceBoundaryV1",
       "CaptureWithFaultBoundary",
       "schedule_local_rng_word0",
@@ -660,7 +776,9 @@ int main(int argc, char **argv) {
       !CaptureSevenRecordFixture(23) ||
       !CaptureSevenRecordFixture(48) ||
       !FailureCases() ||
-      BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr)) {
+      !OutgoingDamageCaptureCases() || !OutgoingDamageHookAbi() ||
+      BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr,
+                                                      nullptr)) {
     return 1;
   }
   return 0;
