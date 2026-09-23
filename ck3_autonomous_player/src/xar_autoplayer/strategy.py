@@ -173,31 +173,20 @@ _WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP = (
     "war-objective-hold-sentinel-advance"
 )
 _CONSERVATIVE_FEUDAL_DE_JURE_WAR_ENTRY = {
-    "rule_id": "feudal-single-county-de-jure-overmatch-v1",
+    "rule_id": "feudal-single-county-de-jure-forecast-candidate-v1",
     "casus_belli_key": "individual_county_de_jure_cb",
     "source": "common/casus_belli_types/00_dejure_war.txt",
     "source_sha256": (
         "D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE"
     ),
-    # Native R is target total / actor total on scale 100000.  This narrow
-    # rule requires the actor's own adjusted base to cover at least 150% of
-    # the complete target total, with neither side depending on the native
-    # relationship-network lane.
-    "maximum_target_actor_ratio_raw": 66_667,
-    "minimum_actor_target_numerator": 3,
-    "minimum_actor_target_denominator": 2,
 }
 _CONSERVATIVE_FEUDAL_PLAYER_CLAIM_WAR_ENTRY = {
-    "rule_id": "feudal-adjacent-independent-county-player-claim-overmatch-v1",
+    "rule_id": "feudal-adjacent-independent-county-player-claim-forecast-candidate-v1",
     "casus_belli_key": "claim_cb",
     "source": "common/casus_belli_types/00_claim.txt",
     "source_sha256": (
         "D9AA37BDC45F81B4F6185B2697A3EBD09404084EA0D3CF77BBE3C1D2C962E8B1"
     ),
-    # The exact-build assessment ratio already uses the actor's complete
-    # native total and the effective target's base + relationship network +
-    # adjustment total.  Admit only a two-to-one (or larger) overmatch.
-    "maximum_target_actor_ratio_raw": 50_000,
 }
 _BATTLE_TERMINAL_CRUISE_STEP = "battle-terminal-cruise"
 _BATTLE_CONTROL_IDENTITY_PENDING_QUERY_ATTEMPTS = 3
@@ -701,7 +690,7 @@ def _conservative_feudal_de_jure_war_entry(
     *,
     at_peace: bool,
 ) -> dict[str, object]:
-    """Admit one exact-build, no-network, single-county overmatch slice."""
+    """Keep one exact-build single-county candidate for a future forecast."""
 
     rule = _CONSERVATIVE_FEUDAL_DE_JURE_WAR_ENTRY
     declaration_id = declaration.get("declaration_id")
@@ -790,27 +779,26 @@ def _conservative_feudal_de_jure_war_entry(
             and assessment.get("target_adjustment_delta_raw") == 0
             and target_total == target_pre_adjustment
             and assessment.get("distance_raw") == 0
-            and 0 < ratio <= int(rule["maximum_target_actor_ratio_raw"])
-            and actor_base * int(rule["minimum_actor_target_denominator"])
-            >= target_total * int(rule["minimum_actor_target_numerator"])
+            and ratio > 0
         ):
-            blockers.append("native_no_network_overmatch_gate_not_met")
-    if not (
-        isinstance(declaration_step, str)
-        and declaration_step in available_steps
-    ):
-        blockers.append("typed_declaration_step_unavailable")
+            blockers.append("native_de_jure_candidate_scope_not_met")
     return {
-        "status": "ready" if not blockers else "blocked",
+        "status": "forecast_required" if not blockers else "blocked",
         "rule_id": rule["rule_id"],
-        "selected_step": declaration_step if not blockers else None,
+        "selected_step": None,
+        "typed_declaration_step": declaration_step,
+        "typed_declaration_available": (
+            isinstance(declaration_step, str)
+            and declaration_step in available_steps
+        ),
         "blockers": blockers,
         "source": rule["source"],
         "source_sha256": rule["source_sha256"],
-        "maximum_target_actor_ratio_raw": rule[
-            "maximum_target_actor_ratio_raw"
-        ],
-        "minimum_actor_target_power_ratio": "3/2",
+        "native_actual_power_ratio_raw": (
+            assessment.get("actual_power_ratio_raw")
+            if isinstance(assessment, dict)
+            else None
+        ),
     }
 
 
@@ -918,7 +906,7 @@ def _conservative_feudal_player_claim_war_entry(
     *,
     at_peace: bool,
 ) -> dict[str, object]:
-    """Select one adjacent independent county claim under a 2:1 power gate."""
+    """Rank adjacent player claims without using power as action permission."""
 
     rule = _CONSERVATIVE_FEUDAL_PLAYER_CLAIM_WAR_ENTRY
     government = (
@@ -1026,17 +1014,15 @@ def _conservative_feudal_player_claim_war_entry(
                 and target_total > 0
                 and target_pre_adjustment == target_base + target_network
                 and target_total == target_pre_adjustment + target_adjustment
-                and 0 < ratio <= int(rule["maximum_target_actor_ratio_raw"])
+                and ratio > 0
             ):
-                blockers.append("native_complete_power_overmatch_gate_not_met")
+                blockers.append("native_complete_power_assessment_invalid")
         try:
             declaration_step = declare_war_step(
                 str(declaration["declaration_id"])
             )
         except ValueError:
             declaration_step = ""
-        if declaration_step not in available_steps:
-            blockers.append("typed_declaration_step_unavailable")
         if blockers:
             candidate_blockers.append(
                 {
@@ -1067,24 +1053,20 @@ def _conservative_feudal_player_claim_war_entry(
             "candidate_blockers": candidate_blockers,
             "source": rule["source"],
             "source_sha256": rule["source_sha256"],
-            "maximum_target_actor_ratio_raw": rule[
-                "maximum_target_actor_ratio_raw"
-            ],
         }
     selected = min(admitted)
     return {
-        "status": "ready",
+        "status": "forecast_required",
         "rule_id": rule["rule_id"],
-        "selected_step": selected[7],
+        "selected_step": None,
+        "typed_declaration_step": selected[7],
+        "typed_declaration_available": selected[7] in available_steps,
         "declaration": selected[5],
         "assessment": selected[6],
         "candidate_blockers": candidate_blockers,
         "source": rule["source"],
         "source_sha256": rule["source_sha256"],
-        "maximum_target_actor_ratio_raw": rule[
-            "maximum_target_actor_ratio_raw"
-        ],
-        "minimum_actor_target_power_ratio": "2/1",
+        "native_actual_power_ratio_raw": selected[0],
         "eligible_candidate_count": len(admitted),
     }
 
@@ -5604,6 +5586,68 @@ def _war_entry_power_eu_projection(
         "eu_lower_raw": None,
         "missing_components": missing,
         "automatic_declaration_enabled": False,
+    }
+
+
+def _forecast_required_war_entry_plan(
+    declaration: dict[str, object],
+    assessment: dict[str, object],
+    candidate: dict[str, object],
+    campaign_root: dict[str, object],
+    available_steps: set[str],
+) -> dict[str, object]:
+    """Preserve a legal candidate without treating native power as odds."""
+
+    advance = "life-advance" if "life-advance" in available_steps else None
+    power_eu = _war_entry_power_eu_projection(assessment)
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_entry_forecast_required",
+        "selected_step": advance,
+        "reason": (
+            "the native declaration and strategic power are observable, but "
+            "a qualified declaration-bound prewar combat forecast and campaign "
+            "utility are unavailable; choose NO_DECLARE and re-observe after "
+            "one bounded advance when supported"
+        ),
+        "decision": {
+            "policy": candidate["rule_id"],
+            "outcome": "NO_DECLARE",
+            "declaration_id": declaration.get("declaration_id"),
+            "target_character_id": declaration.get("target_character_id"),
+            "casus_belli_key": declaration.get("casus_belli_key"),
+            "claimant_character_id": declaration.get("claimant_character_id"),
+            "native_power_assessment_consumed": True,
+            "campaign_root_context_consumed": True,
+            "forecast_required": True,
+            "automatic_declaration_enabled": False,
+            "eu_lower_raw": None,
+            "advance_contract": "native_life_advance" if advance else None,
+        },
+        "required_capabilities": [
+            "game.command.query-prewar-scope-v1-N",
+            "game.command.query-prewar-combat-simulation-inputs-v3-N",
+            "game.forecast.combat-monte-carlo-v1",
+        ],
+        "prewar_forecast_admission_available": False,
+        "declaration": dict(declaration),
+        "war_entry_assessment": dict(assessment),
+        "war_entry_expected_utility": power_eu,
+        "war_entry_candidate": dict(candidate),
+        "campaign_root_context": {
+            key: campaign_root.get(key)
+            for key in (
+                "snapshot_revision",
+                "date_raw",
+                "player_character_id",
+                "independent",
+                "government",
+                "player_monthly_gold_income",
+                "player_domain_size",
+                "player_domain_limit",
+                "player_targeting_faction_count",
+            )
+        },
     }
 
 
@@ -13245,70 +13289,16 @@ def _choose_one_life_turn_core(
                 available_steps,
                 at_peace=at_peace,
             )
-            if claim_entry["status"] == "ready":
+            if claim_entry["status"] == "forecast_required":
                 declaration = claim_entry["declaration"]
                 assessment_row = claim_entry["assessment"]
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_declaration",
-                    "selected_step": claim_entry["selected_step"],
-                    "reason": (
-                        "declare the weakest final-legal adjacent independent "
-                        "county target for the player's own claim after the same "
-                        "paused frame proves complete target power at no more "
-                        "than half of complete actor power"
-                    ),
-                    "decision": {
-                        "policy": claim_entry["rule_id"],
-                        "outcome": "DECLARE",
-                        "declaration_id": declaration.get("declaration_id"),
-                        "target_character_id": declaration.get(
-                            "target_character_id"
-                        ),
-                        "casus_belli_key": declaration.get("casus_belli_key"),
-                        "claimant_character_id": declaration.get(
-                            "claimant_character_id"
-                        ),
-                        "native_power_assessment_consumed": True,
-                        "campaign_root_context_consumed": True,
-                        "automatic_declaration_enabled": True,
-                        "native_ai_equivalent": False,
-                        "semantic_optimal": False,
-                        "scope": (
-                            "standard_feudal_adjacent_independent_county_"
-                            "player_claim_overmatch"
-                        ),
-                    },
-                    "declaration": declaration,
-                    "war_entry_assessment": dict(assessment_row),
-                    "war_entry_expected_utility": (
-                        _war_entry_power_eu_projection(assessment_row)
-                    ),
-                    "war_entry_minimum_gate": claim_entry,
-                    "campaign_root_context": {
-                        "snapshot_revision": campaign_root.get(
-                            "snapshot_revision"
-                        ),
-                        "date_raw": campaign_root.get("date_raw"),
-                        "player_character_id": campaign_root.get(
-                            "player_character_id"
-                        ),
-                        "independent": campaign_root.get("independent"),
-                        "government": campaign_root.get("government"),
-                        "player_monthly_gold_income": campaign_root.get(
-                            "player_monthly_gold_income"
-                        ),
-                        "player_domain_size": campaign_root.get(
-                            "player_domain_size"
-                        ),
-                        "player_domain_limit": campaign_root.get(
-                            "player_domain_limit"
-                        ),
-                        "player_targeting_faction_count": campaign_root.get(
-                            "player_targeting_faction_count"
-                        ),
-                    },
-                }
+                return _forecast_required_war_entry_plan(
+                    declaration,
+                    assessment_row,
+                    claim_entry,
+                    campaign_root,
+                    available_steps,
+                )
     declaration = _preferred_native_declaration(
         raw_declarations,
         war_entry_assessments=war_entry_assessment_rows,
@@ -13410,60 +13400,14 @@ def _choose_one_life_turn_core(
             available_steps,
             at_peace=at_peace,
         )
-        if conservative_entry["status"] == "ready":
-            return {
-                "policy": "one-life-turn-v1",
-                "phase": "native_war_declaration",
-                "selected_step": conservative_entry["selected_step"],
-                "reason": (
-                    "declare one native-legal single-county de jure war only "
-                    "after the same paused frame proves standard feudal scope, "
-                    "positive income, no targeting faction or domain pressure, "
-                    "zero relationship-network dependence on either side, and "
-                    "at least a 3:2 actor-base power overmatch"
-                ),
-                "decision": {
-                    "policy": conservative_entry["rule_id"],
-                    "outcome": "DECLARE",
-                    "declaration_id": declaration.get("declaration_id"),
-                    "target_character_id": declaration.get(
-                        "target_character_id"
-                    ),
-                    "casus_belli_key": declaration.get("casus_belli_key"),
-                    "native_power_assessment_consumed": True,
-                    "campaign_root_context_consumed": True,
-                    "automatic_declaration_enabled": True,
-                    "native_ai_equivalent": False,
-                    "semantic_optimal": False,
-                    "scope": "standard_feudal_single_county_de_jure_overmatch",
-                },
-                "declaration": declaration,
-                "war_entry_assessment": dict(assessment_row),
-                "war_entry_expected_utility": power_eu,
-                "war_entry_minimum_gate": conservative_entry,
-                "campaign_root_context": {
-                    "snapshot_revision": campaign_root.get(
-                        "snapshot_revision"
-                    ),
-                    "date_raw": campaign_root.get("date_raw"),
-                    "player_character_id": campaign_root.get(
-                        "player_character_id"
-                    ),
-                    "government": campaign_root.get("government"),
-                    "player_monthly_gold_income": campaign_root.get(
-                        "player_monthly_gold_income"
-                    ),
-                    "player_domain_size": campaign_root.get(
-                        "player_domain_size"
-                    ),
-                    "player_domain_limit": campaign_root.get(
-                        "player_domain_limit"
-                    ),
-                    "player_targeting_faction_count": campaign_root.get(
-                        "player_targeting_faction_count"
-                    ),
-                },
-            }
+        if conservative_entry["status"] == "forecast_required":
+            return _forecast_required_war_entry_plan(
+                declaration,
+                assessment_row,
+                conservative_entry,
+                campaign_root,
+                available_steps,
+            )
         # The declaration row proves legality and the war-entry query now
         # contributes exact native power/network risk to candidate ordering
         # and the EU ledger.  It is still not a battle forecast, campaign-cost

@@ -5,18 +5,17 @@
 
 ## 决策结论
 
-- [policy-design] 自动玩家必须把“可以宣战”和“值得宣战”拆成两个阶段。通用战争仍要求完整 forecast/cost/exit；
-  R759 暴露的标准封建、单郡法理战争另有一个严格窄门，只消费同帧原生合法声明、campaign-root 与完整战略军力行。
-- [policy-design] 原生 `PowerRatio` 单独不能替代完整战争模型。当前唯一例外是
-  `feudal-single-county-de-jure-overmatch-v1`：玩家同帧必须为标准封建、正月收入、无针对自己的派系、未超直辖上限；
-  CB 必须是 exact-build `individual_county_de_jure_cb` 的单 title、无 claimant/config；双方原生 relationship-network
-  contribution、target adjustment 与距离必须全为零；玩家**自有** adjusted base 必须至少是目标完整 total 的 `3/2`，
-  且 native `target/actor` ratio 不高于 `0.66667`。任一字段 unknown/stale 即 `NO_DECLARE`。
+- [policy-design] 自动玩家把“可以宣战”和“值得宣战”拆成两个阶段。当前宣战前参战范围、合格战斗预测、
+  战役费用与退出效用仍未闭合，任何 `claim_cb` 或单郡法理候选都不能仅凭战略军力比提交 typed 宣战。
+- [implementation-confirmed] 历史 `feudal-single-county-de-jure-overmatch-v1` 曾在标准封建、单郡、无网络依赖
+  的窄形状使用 `3:2` 自有军力门；玩家本人 `claim_cb` 曾使用 `2:1` 总军力门。这两条是已停用的直接动作准入。
+  同帧合法 declaration、campaign-root 与完整 native assessment 现在只生成诊断候选，低于旧倍率的候选仍可进入
+  后续 declaration-bound forecast admission。原生 `PowerRatio` 只用于候选风险排序，不是胜率。
 - [policy-design] 若同一对手已经多次无法战胜，而兵力构成、盟友承诺、财政、地形入口与目标战争负担没有发生
   实质变化，则把该敌人标成 `UNSOLVED_TARGET`；不再用重复攻击“重新试一次”。
-- [implementation-confirmed] 通用战争继续因完整模拟输入不足而 `NO_DECLARE`。上述窄门通过时选择同一 paused frame
-  对应的 typed `declare-war-*`；未通过时仍推进一个原生有界 interval，只有推进动作也不可达时才 blocked。窄门不是胜率预测，
-  也不把 unknown 当成零。原生确定性 ratio 与真实随机结算分别见
+- [implementation-confirmed] 两条历史窄门现在返回 `native_war_entry_forecast_required / NO_DECLARE`；当前生产 forecast
+  未发布时，有合法 `life-advance` 才推进一个原生有界 interval，否则 `selected_step=None`。候选中保留 typed
+  declaration literal 作身份诊断，但它不是所选动作。原生确定性 ratio 与真实随机结算分别见
   [combat-prediction.md](combat-prediction.md) 和 [battle-simulation.md](battle-simulation.md)。
 - [production-live] [R0136 同帧拒战复核](r0136-war-entry-stall-2026-09-23.md)确认 50 帧仅有两条对同一强大领主的合法声明；
   两条均不属上述窄门且目标实力为玩家的 `14.35..19.03` 倍。持久 checkpoint 只累计 1,455 天；末尾 50 天仍未配对。
@@ -31,10 +30,10 @@
   combat forecast 字段。
 - [static-confirmed] 修复前策略只要找到了上述偏好项且对应 `declare-war-*` step 可执行，就直接返回
   `phase=native_war_declaration`；没有原版的 actual/max power ratio 门，也没有胜率或 expected utility 门。
-- [implementation-confirmed] 当前策略用上述排序挑出合法声明并完整列出缺失的 participant arrival、
-  combat forecast、campaign cost、exit assessment 与 calibrated utility。存在 `life-advance` 时固定返回
-  `NO_DECLARE`，但 exact single-county de-jure declaration 满足窄门时会返回 `native_war_declaration/DECLARE`。没有
-  `life-advance` 且窄门未过时才返回 `native_war_entry_evidence_required/selected_step=None`。
+- [implementation-confirmed] 当前策略用同帧原生评估排序诊断候选，并列出缺失的 participant arrival、
+  combat forecast、campaign cost、exit assessment 与 calibrated utility。两条原直通分支都只返回
+  `native_war_entry_forecast_required / NO_DECLARE`；其它合法候选按既有 `war-entry-minimal-defer-v1` 返回
+  `NO_DECLARE`。没有合法 `life-advance` 时 `selected_step=None`，不会退回 typed declaration。
 - [static-confirmed] native query 不可用时的 legacy `war-declare-palermo` 视觉旁路也受同一硬门约束；命令仍可供
   人工兼容和已开始历史使用，但 planner 不再把“Palermo / low-cost”名称当作可赢性证据。
 - [static-confirmed] 原版 AI 至少使用双方估算军力、盟友/overlord、目标现有战争、人格、hostage 与 CB score，
@@ -208,8 +207,10 @@ stateDiagram-v2
 - [implementation-confirmed] 当前生产策略默认以 `war-entry-minimal-defer-v1` 收口：有 `life-advance` 时明确记录
   `automatic_declaration_enabled=false`、`native_ai_equivalent=false`、`semantic_optimal=false`、缺失 components 与
   `advance_contract=native_life_advance`，然后选择 `NO_DECLARE → life-advance`；没有推进 primitive 时才 blocked。
-  `feudal-single-county-de-jure-overmatch-v1` 与下述玩家本人 `claim_cb` 窄门是已实现的自动声明范围；其它 CB 与任何缺字段场景仍要求真实 production v3
-  capability `game.command.query-combat-simulation-inputs-v3-N`、`game.forecast.combat-monte-carlo-v1` 与 war-entry assessment。
+  两条原直通分支现在是 `*-forecast-candidate-v1`，明确要求尚未发布的 declaration-bound prewar scope、
+  `game.command.query-prewar-combat-simulation-inputs-v3-N` 准入与 `game.forecast.combat-monte-carlo-v1`，
+  并保留原 assessment 作诊断；现有 `query-combat-simulation-inputs-v3-N` 需要 active WarID，不能用于和平帧。
+  任何倍率均不授权自动声明。
 - [static-confirmed] `query-war-entry-assessments-v1` 的 exact ABI/contract、独立 native reader/serializer、双原生采样
   fixture、golden payload 与 source-contract 已离线闭合；paused live 验收结论以
   [war-declaration.md](war-declaration.md) 的最新账本为准。完整 participant/forecast/cost/exit 门仍未 ready，因而窄门外的主动
@@ -222,7 +223,7 @@ stateDiagram-v2
 - [policy-design] 提交前重新执行 native legality evaluator，并比较 generation-bound target、CB key/index、config、
   claimant、titles、participant set 与资源 cost；不一致即刷新，不能沿用旧 forecast。
 - [static-confirmed] 按 [combat-simulation-inputs.md](combat-simulation-inputs.md) 的当前能力边界，完整模型仍无法解锁；
-  当前窄门基于已有 exact native 观测明确排除 network/adjustment/faction/domain 压力，不声称完成 combat forecast。
+  旧窄门的 exact native 观测和历史战果继续有效，但不声称完成 combat forecast 或新宣战资格。
 
 [production-live] run `20260827T072606Z-one-generation-659914ab` 及其冷恢复续跑已经消费当前 exact declaration
 `29097-11-0 / claim_cb / title 2121` 的 native power assessment：actor base `5,481,600,000`、network
@@ -249,9 +250,9 @@ production-live loop；`eu_lower_raw` 仍为 `null`，不能升级为智能 war-
   `D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE`；该 CB 是单 county de-jure 类型，
   有 native validity/cost、victory、white peace、defeat 与 truce 脚本。本策略只依赖 CB identity 与 native legal choice，
   不自行推算动态 prestige multiplier 或把结果条款转成伪 EU。
-- [implementation-confirmed] 离线逐帧回放把上述 163 帧全部映射为窄门 `DECLARE`；回放文件
+- [historical implementation-confirmed] 当时的离线逐帧回放把上述 163 帧全部映射为旧窄门 `DECLARE`；回放文件
   `r759-offline-replay.json` SHA-256 为 `1BCDCDE9FAE027E9470D8DF166AF2132EE77DB5562695DF4512E609014330202`。
-  这是策略选择证据，不是宣战已在 CK3 生效；实机仍须由唯一 CK3 负责人完成 typed declaration、独立 WarID 后置状态和下一 turn 消费。
+  这是旧策略选择证据，不是宣战已在 CK3 生效；当前策略保留该合法候选，但不沿用军力比直接动作门。
 
 ### R0151 玩家本人 claim_cb 候选与最小窄门（2026-09-23）
 
@@ -264,16 +265,16 @@ production-live loop；`eu_lower_raw` 仍为 `null`，不能升级为智能 war-
   `33422`、`33621`，其完整 native target total / actor total ratio raw 分别为 `45422`、`34172`、`27791`；
   `31549` 的 target total 明确包含 `1,670,000,000` network contribution。最低比值是 declaration
   `33621-11-0`。`31050` 虽为 `18719`，其 primary title 是 duchy，故不进入 county 窄门。
-- [counter-policy] `feudal-adjacent-independent-county-player-claim-overmatch-v1` 只考虑当前
+- [historical counter-policy] 旧 `feudal-adjacent-independent-county-player-claim-overmatch-v1` 只考虑当时
   `query-declarable-wars` 发布的 native `claim_cb`，claimant 必须等于 played actor，单一 target title 必须等于同帧
   adjacent/independent target 的 county primary title。策略必须先收齐所有这类候选的同帧 assessment，再按 native
   `actual_power_ratio_raw` 升序选择；effective target 必须保持该 target，target total 必须为正并等于
-  `base + network + adjustment`，ratio 必须不高于 `50000`。玩家必须无 active war，且继续沿用标准封建、独立、正收入、
-  无 targeting faction 与 domain limit 门。
-- [implementation-confirmed] assessment、campaign-root 或 typed declaration 任一缺失时固定 `NO_DECLARE`；宗教 CB、
-  非玩家 claimant、duchy scope、非相邻/非独立 target、异常 `target_total <= 0` 与 ratio 超门候选均不能触发该窄门。
-  本静态选择只授权提交一条 typed declaration，不声称 WarID 已生成、战争可获胜或领土已经取得；仍需唯一 CK3 实机完成
-  独立后置、下一 turn 消费与持续战争执行验收。
+  `base + network + adjustment`，旧版本另要求 ratio 不高于 `50000`。
+- [implementation-confirmed] 当前 `feudal-adjacent-independent-county-player-claim-forecast-candidate-v1` 仍要求本人
+  final-legal、同帧标准封建相邻独立 county scope 与完整 assessment，但只用 ratio 排序，不以 `50000` 为准入上限。
+  低于旧 `2:1` 的合法目标也返回 `native_war_entry_forecast_required / NO_DECLARE`，有界观察可继续；缺 typed
+  declaration step 也不会把该 literal 当作已选动作。宗教 CB、非玩家 claimant、duchy、非相邻/非独立 target
+  仍不进入此窄候选集合，其他合法 CB 保留在通用诊断路径。WarID、战胜概率或领土取得均未因此获得新证据。
 
 ```mermaid
 flowchart TD
@@ -281,32 +282,33 @@ flowchart TD
     C -- 否 --> O["[P] 既有 CB 策略"]
     C -- 是 --> R{"[P] 同帧独立标准封建<br/>相邻独立 county scope 齐全?"}
     R -- 否 --> N["[P] NO_DECLARE / refresh"]
-    R -- 是 --> Q["[P] 逐 target 查询 exact-build assessment"]
-    Q --> A{"[P] 全部候选同帧且 ready?"}
+    R -- 是 --> Q["[I] 逐 target 查询 exact-build assessment"]
+    Q --> A{"[I] 全部候选同帧且 ready?"}
     A -- 否 --> N
-    A -- 是 --> G{"[P] effective target 一致<br/>complete target total > 0<br/>target/actor ≤ 0.5?"}
+    A -- 是 --> G{"[I] effective target 一致<br/>complete target total > 0<br/>native ratio > 0?"}
     G -- 否 --> N
-    G -- 是 --> S["[P] 最低 ratio 的 county claim"]
-    S --> T{"[P] 无 active war<br/>typed declaration 可用?"}
-    T -- 否 --> N
-    T -- 是 --> X["[P] 提交一条 declare-war"]
+    G -- 是 --> S["[I] 最低 ratio 仅作诊断候选"]
+    S --> U["[U] declaration-bound prewar forecast<br/>目前未发布"]
+    U -.-> N
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U unknown;
 ```
 
 ## 验收矩阵
 
 | 场景 | 预期结果 |
 |---|---|
-| [implementation-confirmed] 同帧标准封建 campaign-root + native legal 单郡法理 CB + 双方 network/adjustment/distance=0 + actor base ≥ 1.5× target total + ratio ≤ 0.66667 + typed step | `native_war_declaration`；`DECLARE`；提交一条 typed declaration |
-| [implementation-confirmed] 同帧独立标准封建 campaign-root + final-legal 玩家本人 `claim_cb` + 相邻独立 county primary title + 全候选 assessment 齐全 + positive complete target total + ratio ≤ 0.5 + typed step | 选择最低 ratio 候选并进入 `native_war_declaration`；R0151 回放选择 `33621-11-0` |
-| [implementation-confirmed] 玩家 claim 候选的 campaign-root / 任一候选 assessment / typed step 不齐，或已有 active war | `NO_DECLARE`；不提前提交其它已评估 claim |
+| [implementation-confirmed] 同帧标准封建 campaign-root + native legal 单郡法理 CB + 窄 scope 完整 assessment，ratio 在旧 `0.66667` 上下 | 保留诊断候选；`native_war_entry_forecast_required / NO_DECLARE`；有合法 `life-advance` 才继续有界观察 |
+| [implementation-confirmed] 同帧独立标准封建 campaign-root + final-legal 玩家本人 `claim_cb` + 相邻独立 county primary title + 全候选 assessment 齐全，ratio 在旧 `0.5` 上下 | 选择最低 ratio 诊断候选；`native_war_entry_forecast_required / NO_DECLARE`，不提交 typed declaration |
+| [implementation-confirmed] 玩家 claim 候选的 campaign-root / 任一候选 assessment 不齐，或已有 active war | `NO_DECLARE`；不提前提交其它已评估 claim |
 | [implementation-confirmed / production-live] 其它 native declaration，有/无 power component但完整模型不齐，且 `life-advance` 可达 | 保留完整缺口与诊断 payload；`NO_DECLARE`；`selected_step=life-advance` |
 | [implementation-confirmed] 同上但 `life-advance` 也不可达 | `native_war_entry_evidence_required`；`selected_step=None` |
 | [static-confirmed] 首选 target 有 power 且 `actor_base < target_total`，另有未评估合法 target | 同帧查询下一 target；不宣战 |
 | [static-confirmed] 多个同帧 target assessments | 按 conservative margin、native ratio 与 network 风险排序；不把 ratio 写成胜率 |
 | [static-confirmed] history assessment 的 native revision/date/actor 不同 | 丢弃该 row，不参与风险序或 EU projection |
-| [policy-design] 窄门以外有 power，无 combat forecast | `NO_DECLARE` |
+| [implementation-confirmed] 包含旧窄门在内的候选有 power、无合格 combat forecast | `NO_DECLARE` |
 | [policy-design] forecast 与 declaration 来自不同 epoch | `REFRESH_EVIDENCE` |
-| [policy-design] 原生 ratio 过门但 `p_win_lower` 不过门 | `UNSOLVED_TARGET` 或观察，不宣战 |
+| [policy-design] 合格 forecast 的 `p_win_lower` 不过门 | `UNSOLVED_TARGET` 或观察，不宣战 |
 | [policy-design] 胜率高但高分位损失破坏防御 reserve | 不宣战 |
 | [policy-design] 胜率高、EU 正，但退出后果 unknown | 不宣战 |
 | [policy-design] 盟友是否加入 unknown | 使用 actor 悲观/enemy 乐观场景；仍不能闭合则不宣战 |

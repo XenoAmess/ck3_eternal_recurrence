@@ -432,42 +432,46 @@ flowchart TD
 
 - [inference] 原版 AI 的军力比是战略强弱估计，仍不是胜率或期望效用；仅以军力比准入会允许实际打不赢的战争，
   也会拒绝兵力较少但经合格模拟可取胜的战争。
-- [implementation-confirmed] 当前 Python 的宣战候选排序、两条窄范围直接准入及其它候选的 fail-closed 路径见
+- [implementation-confirmed] 当前 Python 的宣战候选排序、两条窄范围 forecast 候选及其它候选的 fail-closed 路径见
   [player-war-entry-policy.md](player-war-entry-policy.md)。
 - [implementation-confirmed] 当前桥虽可读同帧原生战略军力，但不能提供合格的宣战前战斗胜率，详见
   [prewar-encounter-inputs.md](prewar-encounter-inputs.md) 与
   [combat-simulation-inputs.md](combat-simulation-inputs.md)。单郡法理 `3:2` 与玩家本人宣称 `2:1` 是我方
-  既有直接准入条件，均未消费战斗模拟；不能把 `GetPowerRatio` 或历史胜仗解释成预测概率。
+  旧版直接准入条件，均未消费战斗模拟；现已停用。不能把 `GetPowerRatio` 或历史胜仗解释成预测概率。
 
-## 2026-09-24：我方直通宣战与模拟准入入口
+## 2026-09-24：停用倍率直通与模拟准入入口
 
 以下 `[I]` 是当前代码实现，不属于原版 AI 决策树；`[P]` 是待实施的我方策略；`[U]` 是尚未闭合的原生观测或模拟证据。本文仍只绑定上述 exact build。
 
-- [implementation-confirmed] 玩家本人 `claim_cb`：`ck3_autonomous_player/src/xar_autoplayer/strategy.py` 的
+- [historical implementation-confirmed] 玩家本人 `claim_cb`：`ck3_autonomous_player/src/xar_autoplayer/strategy.py` 的
   `_player_claim_declarations` 筛出本人宣称，
   `_adjacent_independent_county_player_claims` 只保留相邻、独立、county primary title 目标；同一 paused frame
   查询 campaign-root 和每个目标的 `war_entry_assessments` 后，
-  `_conservative_feudal_player_claim_war_entry` 以原生 `target/actor` ratio `<= 50000/100000` 选最低比值目标，
-  `choose_one_life_turn` 随即返回 `native_war_declaration` 和 typed `declare-war-*`。完整 target total 含原生
+  旧 `_conservative_feudal_player_claim_war_entry` 以原生 `target/actor` ratio `<= 50000/100000` 选最低比值目标，
+  旧 `choose_one_life_turn` 随即返回 `native_war_declaration` 和 typed `declare-war-*`。完整 target total 含原生
   network/adjustment；这个 `2:1` 是军力门，没有 `combat_forecast` 输入。
-- [implementation-confirmed] 单郡 `individual_county_de_jure_cb`：`_preferred_native_declaration` 与同帧
+- [historical implementation-confirmed] 单郡 `individual_county_de_jure_cb`：`_preferred_native_declaration` 与同帧
   assessment、campaign-root 进入 `_conservative_feudal_de_jure_war_entry`；在标准封建、和平、正收入、无针对玩家的派系、
   domain 未超限、双方 network 和 target adjustment/distance 均为零的窄形状下，要求原生 ratio `<= 66667/100000`
   且 `actor_base * 2 >= target_total * 3`，随后直接返回 typed `declare-war-*`。它也没有模拟胜率。
-- [implementation-confirmed] 现有聚焦回归位于
-  `ck3_autonomous_player/tests/unit/test_war_entry_assessments_bridge.py` 的两条直通声明、各边界、候选比较和同帧缺口测试。
+- [implementation-confirmed] 两条直通均已移除：同帧合法性、campaign-root 与原生 assessment 只形成诊断候选；
+  原生 ratio 只用于候选排序，不作胜率或 typed action 许可。低于旧 `2:1` 或 `3:2` 的合格形状也可成为
+  `native_war_entry_forecast_required / NO_DECLARE` 候选；仅有合法 `life-advance` 时继续有界观察。
+  当前 prewar scope 不广告，declaration-bound prewar v3 input/admission 尚未实现；已有 v3 只接受共享 active WarID，
+  不能在和平时直接调用。聚焦回归位于 `ck3_autonomous_player/tests/unit/test_war_entry_assessments_bridge.py`。
   Robert 既有三次 `claim_cb` 胜仗是实际结果；改变后续准入规则不改写这些已发生的后置证据。
 
 ```mermaid
 flowchart TD
     D["[I] 同帧 native final-legal declaration<br/>target / CB / config / claimant / titles"] --> B["[I] campaign-root + native war-entry assessment"]
     B --> C{"[I] 本人相邻单郡 claim_cb?"}
-    C -- 是 --> R1["[I] ratio <= 0.5<br/>当前直接 DECLARE"]
+    C -- 是 --> R1["[I] 同帧合法 claim 候选<br/>ratio 仅排序"]
     C -- 否 --> J{"[I] 单郡法理窄形状?"}
-    J -- 是 --> R2["[I] ratio <= 0.66667 且 base >= 1.5×target<br/>当前直接 DECLARE"]
+    J -- 是 --> R2["[I] 同帧单郡法理候选<br/>ratio 仅诊断"]
     J -- 否 --> N["[I] 其它候选 NO_DECLARE / bounded observe"]
-    R1 --> F["[P] 改为 declaration-bound forecast admission"]
-    R2 --> F
+    R1 --> N1["[I] 当前 NO_DECLARE / bounded observe"]
+    R2 --> N1
+    N1 -.-> F["[P] declaration-bound forecast admission"]
     U1["[U] 宣战前完整参战方、盟友接受与到达/接触顺序"] -.-> F
     F --> V["[P] 同帧有序 ArmyIDs + target/entry<br/>prewar v3 scenario"]
     U2["[U] 当前 v3 只接受共享 active WarID；prewar admission 未发布"] -.-> V
@@ -484,9 +488,9 @@ flowchart TD
 
 ### 最短施工清单与当前资格
 
-1. [counter-policy] 静态改造两条 `native_war_declaration` 直通：保留原生合法性、同帧身份与军力信息用于候选排序，
-   取消固定 `2:1` / `3:2` 作为 typed action 许可；forecast 缺失时写明 `NO_DECLARE` 与缺失能力，不能把降低倍率当作修复。
-   旧阈值测试改为“无合格 forecast 不宣战”和“低于 `2:1` 但合格 forecast/效用可宣战”的聚焦用例。
+1. [implementation-confirmed] 两条 `native_war_declaration` 直通已移除：保留原生合法性、同帧身份与军力信息用于候选排序，
+   取消固定 `2:1` / `3:2` 作为 typed action 许可；forecast 缺失时明确 `NO_DECLARE` 与缺失能力。
+   聚焦测试已覆盖“无合格 forecast 不宣战”及“低于旧倍率仍保留候选”。“合格 forecast/效用可宣战”仍待后续实现和验收。
 2. [implementation-confirmed + unknown] 已有 `prewar_scope_v1` 的静态契约可把 declaration 绑定主攻守角色、当前已动员
    `CUnit`、位置和路线，但 `PREWAR_SCOPE_V1_ADVERTISED=False`，`native_join_bounds`、目标省、contact geometry、
    prewar arrival 与 `combat_v3_prewar_scope` readiness 都为 false。下一只读包先完成选中 CB/title 到目标 Province 的
@@ -555,15 +559,15 @@ flowchart TD
   `56027..64634`，actor/target network contribution、distance、target adjustment 全为零；actor 自有 base 始终至少为
   target final total 的 1.5 倍。campaign-root 始终是 `feudal_government`，targeting faction `0`、domain `2/5`、
   月收入为正。
-- [counter-policy] `feudal-single-county-de-jure-overmatch-v1` 只覆盖这一字段形状，不绑定 CharacterID/TitleID。
+- [historical counter-policy] 旧 `feudal-single-county-de-jure-overmatch-v1` 只覆盖这一字段形状，不绑定 CharacterID/TitleID。
   必须保持 same-frame native legal declaration，单 target title、configuration/claimant 均 `-1`，exact CB key，标准封建、
   faction `0`、domain 不超限、正收入、双方 network 为零、target adjustment/distance 为零、native ratio ≤ `66667`，
   且 actor base ×2 ≥ target total ×3；typed declaration step 也必须仍在当前 action surface。任一条件缺失即回到
-  `NO_DECLARE`，其它 CB 不随此解锁。
-- [static-confirmed] exact CB 源 `00_dejure_war.txt` SHA-256
+  `NO_DECLARE`，其它 CB 不随此解锁。当前该军力直通已停用，合法形状只保留为 forecast 候选。
+- [historical static-confirmed] exact CB 源 `00_dejure_war.txt` SHA-256
   `D8737A2205116118A5ECD6EFA576D316B3155730A3824DC4BD109A68B9D5B6EE`。离线 R759 逐帧回放 163/163 均能选择同一
   typed declaration，且聚焦 normal/optimized Python tests 验证阈值、network、adjustment、government、faction、stale root
-  和其它 CB 全部 fail closed。此处仍是静态策略 readiness；真实 declaration/WarID 后置状态等待独占 CK3 短复验。
+  和其它 CB 全部 fail closed。该回放仅证明旧策略当时的选择，不能当作当前模拟准入或新 WarID 后置结果。
 
 ### R853 final interaction validator RED（2026-09-17）
 

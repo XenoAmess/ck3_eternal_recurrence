@@ -772,7 +772,7 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
         self.assertIn("combat_forecast", eu["missing_components"])
         self.assertFalse(eu["automatic_declaration_enabled"])
 
-    def test_strategy_declares_narrow_feudal_de_jure_overmatch_without_ids(self) -> None:
+    def test_feudal_de_jure_overmatch_remains_a_forecast_candidate(self) -> None:
         snapshot = _r759_like_entry_snapshot(target=909)
         plan = choose_one_life_turn(
             [{"index": 1, "command": "save-checkpoint", "ok": True}],
@@ -785,17 +785,49 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(plan["phase"], "native_war_declaration")
-        self.assertEqual(plan["selected_step"], "declare-war-909-17--1")
-        self.assertEqual(plan["decision"]["outcome"], "DECLARE")
-        self.assertTrue(plan["decision"]["automatic_declaration_enabled"])
+        self.assertEqual(plan["phase"], "native_war_entry_forecast_required")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
+        self.assertFalse(plan["decision"]["automatic_declaration_enabled"])
         self.assertEqual(
             plan["decision"]["policy"],
-            "feudal-single-county-de-jure-overmatch-v1",
+            "feudal-single-county-de-jure-forecast-candidate-v1",
         )
         self.assertEqual(plan["declaration"]["target_title_ids"], [777])
+        self.assertEqual(plan["war_entry_candidate"]["native_actual_power_ratio_raw"], 62_500)
+        self.assertEqual(plan["war_entry_candidate"]["typed_declaration_step"], "declare-war-909-17--1")
+        self.assertTrue(plan["war_entry_candidate"]["typed_declaration_available"])
+        self.assertIsNone(plan["war_entry_expected_utility"]["eu_lower_raw"])
+        self.assertFalse(plan["prewar_forecast_admission_available"])
+        self.assertIn(
+            "game.command.query-prewar-combat-simulation-inputs-v3-N",
+            plan["required_capabilities"],
+        )
+        self.assertNotIn(
+            "game.command.query-combat-simulation-inputs-v3-N",
+            plan["required_capabilities"],
+        )
+        self.assertIn("game.forecast.combat-monte-carlo-v1", plan["required_capabilities"])
 
-    def test_narrow_war_entry_gate_fails_closed_on_each_observed_boundary(self) -> None:
+    def test_feudal_de_jure_below_old_overmatch_still_enters_forecast(self) -> None:
+        snapshot = _r759_like_entry_snapshot(target=909)
+        assessment = snapshot["war_entry_assessments"]["assessments"][0]
+        assessment["target_power_base_raw"] = 1_800_000_000
+        assessment["target_pre_adjustment_total_raw"] = 1_800_000_000
+        assessment["target_power_total_raw"] = 1_800_000_000
+        assessment["actual_power_ratio_raw"] = 75_000
+        plan = choose_one_life_turn(
+            [{"index": 1, "command": "save-checkpoint", "ok": True}],
+            snapshot=snapshot,
+            action_steps={"declare-war-909-17--1", "life-advance"},
+        )
+        self.assertEqual(plan["phase"], "native_war_entry_forecast_required")
+        self.assertEqual(plan["declaration"]["declaration_id"], "909-17--1")
+        self.assertEqual(plan["war_entry_candidate"]["native_actual_power_ratio_raw"], 75_000)
+        self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
+        self.assertEqual(plan["selected_step"], "life-advance")
+
+    def test_de_jure_candidate_scope_stays_observable_without_declaration(self) -> None:
         cases = {
             "power_ratio": lambda snapshot: snapshot[
                 "war_entry_assessments"
@@ -849,14 +881,16 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
                     },
                 )
                 self.assertNotEqual(plan["phase"], "native_war_declaration")
-                if name != "active_war":
+                if name == "power_ratio":
+                    self.assertEqual(plan["phase"], "native_war_entry_forecast_required")
+                    self.assertEqual(plan["war_entry_candidate"]["native_actual_power_ratio_raw"], 66_668)
+                elif name != "active_war":
                     self.assertEqual(
                         plan["phase"], "native_war_entry_no_declare"
                     )
+                if name != "active_war":
                     self.assertEqual(plan["selected_step"], "life-advance")
-                    self.assertEqual(
-                        plan["decision"]["outcome"], "NO_DECLARE"
-                    )
+                    self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
 
     def test_strategy_uses_same_frame_power_and_network_risk_to_rank_targets(self) -> None:
         risky = _payload([42])
@@ -997,17 +1031,18 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(plan["phase"], "native_war_declaration")
-        self.assertEqual(plan["selected_step"], "declare-war-33621-11-0")
+        self.assertEqual(plan["phase"], "native_war_entry_forecast_required")
+        self.assertEqual(plan["selected_step"], "life-advance")
         self.assertEqual(plan["declaration"]["target_character_id"], 33_621)
         self.assertEqual(plan["declaration"]["casus_belli_key"], "claim_cb")
         self.assertEqual(plan["decision"]["claimant_character_id"], 29_829)
+        self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
         self.assertEqual(
             plan["decision"]["policy"],
-            "feudal-adjacent-independent-county-player-claim-overmatch-v1",
+            "feudal-adjacent-independent-county-player-claim-forecast-candidate-v1",
         )
 
-    def test_player_claim_selector_includes_target_network_in_two_to_one_gate(
+    def test_player_claim_selector_includes_target_network_in_diagnostic_total(
         self,
     ) -> None:
         claim = _player_claim(808, title=91)
@@ -1029,7 +1064,7 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
             action_steps={"declare-war-808-11-0", "life-advance"},
         )
 
-        self.assertEqual(plan["phase"], "native_war_declaration")
+        self.assertEqual(plan["phase"], "native_war_entry_forecast_required")
         self.assertEqual(
             plan["war_entry_assessment"][
                 "target_network_contribution_raw"
@@ -1039,8 +1074,35 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
         self.assertEqual(
             plan["war_entry_assessment"]["target_power_total_raw"], 50_000
         )
+        self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
 
-    def test_player_claim_selector_rejects_zero_total_unsafe_and_nonplayer_claims(
+    def test_player_claim_below_two_to_one_still_enters_forecast(self) -> None:
+        claim = _player_claim(808, title=91)
+        snapshot, history = _claim_snapshot_and_history(
+            [claim],
+            [_claim_power_payload(808, target_base=80_000)],
+            target_contexts=[(808, 91, "county")],
+        )
+        plan = choose_one_life_turn(
+            history,
+            snapshot=snapshot,
+            action_steps={"declare-war-808-11-0", "life-advance"},
+        )
+        self.assertEqual(plan["phase"], "native_war_entry_forecast_required")
+        self.assertEqual(plan["declaration"]["declaration_id"], "808-11-0")
+        self.assertEqual(plan["war_entry_candidate"]["native_actual_power_ratio_raw"], 80_000)
+        self.assertEqual(plan["decision"]["outcome"], "NO_DECLARE")
+        self.assertEqual(plan["selected_step"], "life-advance")
+        without_advance = choose_one_life_turn(
+            history,
+            snapshot=snapshot,
+            action_steps={"declare-war-808-11-0"},
+        )
+        self.assertEqual(without_advance["phase"], "native_war_entry_forecast_required")
+        self.assertIsNone(without_advance["selected_step"])
+        self.assertEqual(without_advance["decision"]["outcome"], "NO_DECLARE")
+
+    def test_player_claim_selector_rejects_zero_total_and_nonplayer_claims(
         self,
     ) -> None:
         cases = (
@@ -1048,11 +1110,6 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
                 "zero_total",
                 _player_claim(808, title=91),
                 _claim_power_payload(808, target_base=0),
-            ),
-            (
-                "unsafe_ratio",
-                _player_claim(808, title=91),
-                _claim_power_payload(808, target_base=50_001),
             ),
             (
                 "nonplayer_claimant",
