@@ -24,6 +24,8 @@ tools\.venv\Scripts\python.exe -m war_ai_promo.produce --project promo/ck3_nativ
 ```
 
 `produce` 在线核对最新正式 xar-promo，拒绝版本不符；随后使用真实 CLI 完成 `start-run / preserve / plan / build / review`，每次 run 修改后验证配置和清单。`plan` 不生成工作目录。输入是实测音频，不按导演案参考秒数拉长静音。
+新版审阅包仍将每张原始帧和报告留在独立 workdir；后续 run 将整包做一次带逐项回读的 ZIP，再作为一个 content-addressed artifact 保全，避免为 106 张边界帧重复改写/校验整份清单。`v3-film-attempt-003` 按当时 producer 的逐文件保全方式运行，历史记录不追改。
+离线核对该封装路径可运行 `tools\.venv\Scripts\python.exe promo\ck3_native_war_ai\integration\test_review_bundle_archive.py`；测试只用合成的小审阅树，不声称完成视频内容审片。
 
 全片使用完整稿，并以 `--full-film` 检查八章齐备和 20–40 分钟实测时长。最终播放器书签无重编码封装到新的 `war-ai-full-film-review.mp4`，原始构建视频仍保留：
 
@@ -48,7 +50,7 @@ Edge 批量最多并发三段，每段最多三次尝试；失败音频和错误
 
 ## 2026-09-23 重制状态更正
 
-以上“等待用户审片”和旧 DLL 缺能力是旧产物当时的状态。用户已退回纯图解全片；新版按 [导演案 v3](../longform/director-plan-v3.md) 与 [主张台账](../research-first-claim-ledger-20260923.md) 执行。新 DLL 已构建，前两次实机分别为 pipe 占用 RED、360 秒未到主菜单 RED，第三次独立 run 正在有界运行。现有 composer 的纯图解输入不能满足重制要求，实机导入接线正在施工；没有新成片或因果案例完成。
+以上旧片“等待用户审片”和旧 DLL 缺能力是当时的状态。用户已退回纯图解全片；新版已按 [导演案 v3](../longform/director-plan-v3.md) 与 [主张台账](../research-first-claim-ledger-20260923.md) 制成 [33:53.8 审阅片](../build-records/v3-fullfilm-20260923-r1.json)。实机导入了同一场玩家宣战后战争的五段上下文录像，原生 `review` 生成 106 帧待人工审阅包；自然 AI 宣战、战斗战分及主动求和的闭合因果录像仍未取得。旧失败 run 与无启动预检结论继续保留，不用新版成果倒填为旧 GREEN。
 
 ## 实机导入接线
 

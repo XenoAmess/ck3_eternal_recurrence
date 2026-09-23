@@ -1,6 +1,6 @@
 # 《CK3 的 AI，怎样决定一场战争？》中文导演旁白稿 v3
 
-2026-09-23；**完整文字审阅稿，未生成 TTS，未接入旧 producer，未形成新成片或人工签核。** 本稿独立保存，旧 `narration.md/json`、旧片和旧 run 不覆盖。
+2026-09-23；**这是文字稿建立时的制作状态：当时未生成 TTS、未接入旧 producer，也未形成新成片或人工签核。** 本稿独立保存，旧 `narration.md/json`、旧片和旧 run 不覆盖。后续已从本稿抽出 45 段朗读正文、生成 EdgeTTS 并制成 33:53.8 的 v3 完整审阅片；精确媒体与仍缺的自然因果镜头见[当前制作记录](../production-stage.md)和[构建记录](../build-records/v3-fullfilm-20260923-r1.json)，这不追改本稿原先的待拍备注。
 
 采用[导演案 v3](director-plan-v3.md)的战争三阶段主线与[研究台账](../research-first-claim-ledger-20260923.md)的勘误。新增 [CASE-R](../../../docs/ck3-native-ai/war-film-robert-case-r-result-2026-09-23.md)作为已经取得的真实读回；W2/W3/W4/W6/W7 的新因果镜头仍须按各段制作标记取得。图解承担具体已证规则的解释，不能把缺失案例转换成“本章已经拍完”。
 

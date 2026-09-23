@@ -392,9 +392,11 @@ def main():
     for path, identifier, role in [(bound, "sample-bound-probe", "bound-media-probe"),
                                     (story_path, "sample-review-storyboard", "review-storyboard")]:
         preserve(path, identifier, role, "derived")
-    for index, path in enumerate(sorted((root / "review").rglob("*"))):
-        if path.is_file():
-            preserve(path, f"sample-review-{index:03d}", "pending-review-material", "derived")
+    # The native review report hashes each of its 106 frames. Keep the entire
+    # review tree on disk, then preserve one byte-verified archive instead of
+    # rewriting and validating a large RunManifest for every frame.
+    review_archive = archive_capture_attempt(root / "review", root / "review-package-archive.zip")
+    preserve(review_archive, "sample-review-bundle", "pending-review-material", "derived")
     write_new(root / "production-receipt.json", {"created_at_utc": datetime.now(timezone.utc).isoformat(),
               "status": "rendered-pending-human-review", "run": binding(manifest), "video": binding(video),
               "bound_probe": binding(bound), "actual_duration_seconds": actual, "toolchain": version,
