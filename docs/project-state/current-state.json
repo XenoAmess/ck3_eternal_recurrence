@@ -177,7 +177,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "621BA72BF275693D64FFC4BAB86F7EAE0EF9045B5D7FF474A76E698EA90BC66B"
+        "sha256": "8F91370943B039A1CC1816AEAB5FB3336417A5B8EFC087E8E954516B56F338B1"
       },
       "raw_footage": {
         "passed": 0,
@@ -481,6 +481,28 @@
       "source_commit": "785d12f45a0b86513e3b61cfc498ba5d680ac2ab",
       "source_pair": "R0181_h2120",
       "status": "GREEN_PRIVATE_PERK_CHECKPOINTED"
+    },
+    "latest_phase_trace_research": {
+      "combat_id": 738197508,
+      "current_mainline_checkpoint_history_index": 2127,
+      "current_mainline_checkpoint_round": "R0186",
+      "date_advanced_days": 0,
+      "evidence": {
+        "base": "configured_process_assets_root",
+        "freeze_index_locator": "g2-r0168-phase-trace-R0190-native-executor-red-frozen-20260923/R0190-raw-freeze.json",
+        "freeze_index_sha256": "B100DC51DB8C9EA62FDCBC833DD36B80520BF7DAE0DE3C0610A2AB55CC13E739",
+        "mcp_error_locator": "g2-r0168-phase-trace-R0190-native-executor-red-frozen-20260923/probe/combat-phase-event-trace-mcp-result.json",
+        "mcp_error_sha256": "FBEDFAC34E5CAACE42042738FBF2D022CF44E4002A7173D40FA79F333478F262"
+      },
+      "phase_event_trace_status": "RED_application_main_executor_unavailable",
+      "prior_runner_guard_round": "R0189",
+      "prior_runner_guard_status": "RED_revision_comparison_before_query",
+      "r0188_combat_v3_input_readback_still_green": true,
+      "research_source": "R0168_h1251_separate_bounded_battle_scene",
+      "robert_mainline_durable_game_days_unchanged": 2983,
+      "round": "R0190",
+      "typed_actions": 0,
+      "war_decision_status": "RED"
     },
     "latest_read_only_route_observation": {
       "army_controllable": true,
@@ -1360,6 +1382,73 @@
     ],
     "recent_nonadvancing_attempts": [
       {
+        "battle_control_status": "available",
+        "ck3_pid": 12072,
+        "cleanup_proven": true,
+        "combat_id": 738197508,
+        "date_advanced_days": 0,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "freeze_index_locator": "g2-r0168-phase-trace-R0190-native-executor-red-frozen-20260923/R0190-raw-freeze.json",
+          "freeze_index_sha256": "B100DC51DB8C9EA62FDCBC833DD36B80520BF7DAE0DE3C0610A2AB55CC13E739",
+          "mcp_error_locator": "g2-r0168-phase-trace-R0190-native-executor-red-frozen-20260923/probe/combat-phase-event-trace-mcp-result.json",
+          "mcp_error_sha256": "FBEDFAC34E5CAACE42042738FBF2D022CF44E4002A7173D40FA79F333478F262"
+        },
+        "execution_id": "b65f5c4a-4a3b-4717-95dd-601b14ec5cea",
+        "frozen_at_utc": "2026-09-23T09:04:15.0433939Z",
+        "managed_process_count_after_cleanup": 0,
+        "native_snapshot_revision": 3,
+        "owner_released": true,
+        "phase_event_query_called": true,
+        "phase_event_query_status": "RED_application_main_combat_phase_event_executor_unavailable",
+        "public_revision": 4,
+        "raw_driver_history_count": 1254,
+        "raw_driver_is_next_source_pair": false,
+        "raw_driver_sha256": "21DC0D5BA107F52DEA11700B41FB4B1E633E64B3BEA5DE537849F7C6B43D9AC7",
+        "round": "R0190",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0190",
+        "scope": "R0190 replayed the separate R0168 h1251 scene with the runner revision comparison corrected. The same CombatID 738197508 and native revision 3 were observed, then the actual phase-event trace MCP query returned 'application-main combat phase-event executor is unavailable'. This is a production read-port RED, not a phase trace or combat outcome. No typed action or date advance occurred; the unchanged h1251 save remains the source and the raw driver with three post-checkpoint rows requires official recovery before reuse. R0188 combat-v3 hypothetical input GREEN on current h2127 remains separate, and current war strategy is RED.",
+        "source_checkpoint_date_raw": 53192304,
+        "source_checkpoint_history_index": 1251,
+        "source_checkpoint_round": "R0168",
+        "source_code_commit": "9be8e762078fe30a01e8f745ebc691e43af07984",
+        "source_save_sha256": "C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA",
+        "status": "completed-red",
+        "typed_actions": 0
+      },
+      {
+        "battle_control_status": "available",
+        "ck3_pid": 3984,
+        "cleanup_proven": true,
+        "combat_id": 738197508,
+        "date_advanced_days": 0,
+        "evidence": {
+          "base": "configured_process_assets_root",
+          "freeze_index_locator": "g2-r0168-phase-trace-R0189-red-frozen-20260923/R0189-raw-freeze.json",
+          "freeze_index_sha256": "24513B2CE3AD43FFCE3B446DABA61A9664AC6F30187F73B1C0E56A506E4623F8"
+        },
+        "execution_id": "625cf2cf-55be-477d-8b81-9ff8649351a8",
+        "frozen_at_utc": "2026-09-23T08:57:09.5592766Z",
+        "managed_process_count_after_cleanup": 0,
+        "native_snapshot_revision": 3,
+        "owner_released": true,
+        "phase_event_query_called": false,
+        "public_revision": 4,
+        "raw_driver_history_count": 1253,
+        "raw_driver_is_next_source_pair": false,
+        "raw_driver_sha256": "A5495F7952BA9AB1091E0C95EB768DFD880238A13A75FE5AA27484A52D96CB96",
+        "red_kind": "runner_revision_comparison_before_phase_query",
+        "round": "R0189",
+        "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0189",
+        "scope": "R0189 replayed the separate old R0168 h1251 battle scene. The runner compared native snapshot_revision 3 against public revision 4 instead of native revision 3, returning RED before invoking any phase-event query. Fresh battle control and CombatID 738197508 were available, but no phase trace result or war action was obtained. The raw driver has post-checkpoint restore and battle-control query rows and is not a new source pair; Robert's current h2127 mainline and durable 2983 days are unchanged.",
+        "source_checkpoint_date_raw": 53192304,
+        "source_checkpoint_history_index": 1251,
+        "source_checkpoint_round": "R0168",
+        "source_save_sha256": "C21E594004B3CFB8125CE5C98D70230996F12823238EACAEC5163038013ED9CA",
+        "status": "completed-red",
+        "typed_actions": 0
+      },
+      {
         "active_war_ids": [
           16777231
         ],
@@ -1716,5 +1805,5 @@
     "result": "GREEN",
     "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-23T16:32:17+08:00"
+  "updated_at": "2026-09-23T17:09:01+08:00"
 }
