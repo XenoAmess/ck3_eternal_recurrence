@@ -858,3 +858,55 @@ flowchart TD
     D -->|available| R["compare with freshly queried route ETA and strength"]
     R -.-> U["unknown: safe relief, battle and war outcome"]
 ```
+
+## R0182: identify the land under the hostile siege before choosing relief
+
+- [production-live, exact build] R0182 used CK3 `1.19.0.6-steam23530548`, EXE
+  SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+  Its read-only MCP `ck3_take_snapshot` at `date_raw=53215920` has War
+  `16777231` at `-15`, objective Province `2610` unoccupied, player Army
+  `83886367` regular and stationary at `2610`, and enemy Army `50331920`
+  sieging Province `2628` with `siege_days_left=69`. The snapshot SHA-256 is
+  `041F0082916A74C441247DDC080342866A462D6662EA5C2D7A32D21D350DFC24`.
+  This proves the siege timer readback, not whether `2628` is the player's
+  land, whether relief is safe, or whether the enemy would win in 69 days.
+- [original definition] The frozen game's
+  `game/common/landed_titles/00_landed_titles.txt` maps Province `2628` to
+  `b_cosenza`, the capital barony of `c_cosenza`; the neighboring `2629` is
+  `b_rossano`. Geography does not establish the paused save's current holder.
+  The prior campaign-root row `#2116` lists the player's five held county
+  capitals and ten direct vassals' primary capitals, none at `2628`, but it
+  does not enumerate every vassal's secondary holdings or map all Provinces
+  to holders. It also predates R0182's paused frame.
+- [exact-build native input] The bound
+  `read_province_holder_character_id` at RVA `0x220C3F0` can read a resolved
+  Province's current holder; `campaign_root_context_v1.cpp` already uses it
+  while enumerating Provinces. The same file's
+  `CharacterBelongsToPlayerSubrealm` follows the verified immediate-liege
+  chain and can classify a holder relative to the current player. Existing
+  `ReadWarObjectiveProvinceState` publishes occupation only for the war's
+  objective Province `2610`, so it cannot answer `2628`'s owner or occupation.
+  The minimal read-only extension should expose a nullable holder ID and a
+  nullable player-subrealm boolean on the active hostile-sieging Army's
+  current Province, bound to that Army and paused snapshot revision. An
+  unresolved Province, invalid holder or failed liege chain remains unknown.
+- [decision boundary] The existing `preview-move-army-83886367-to-2628`,
+  `query-route-contact-horizon-v1-83886367-to-2628-h-1-50331920`, and
+  `query-army-strengths-v1` are available but were not run at R0182's paused
+  revision. The route query's `h-1` counts one hostile Army; its contact-free
+  predicate covers only the next day. Row `#2118` reports player `2327` and
+  enemy `1488` soldiers at an earlier date, not same-frame battle safety.
+  Re-read ownership, route arrival, strength, and current termination options
+  before choosing a typed relief or another hold slice. The current snapshot
+  alone licenses neither a move nor a claim that holding `2610` is safe.
+
+```mermaid
+flowchart TD
+    A["enemy Army sieging Province 2628; ETA 69 at R0182"] --> H{"same-frame holder and player-subrealm relation known?"}
+    H -->|unknown| O["read exact-build Province holder and liege chain"]
+    H -->|player subrealm| R["query current route ETA, contact and strength"]
+    H -->|external| W["check war relevance and opportunity cost"]
+    O -.-> U["unknown: land at risk and relief choice"]
+    R -.-> U
+    W -.-> U
+```
