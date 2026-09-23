@@ -356,7 +356,7 @@ def prepare_candidate(args: argparse.Namespace) -> dict[str, object]:
         and expectations.get("succession_lifecycle")
         == "ordinary_campaign_succession"
         and expectations.get("ordinary_campaign_no_pact") is True,
-        "official prepare/rebind receipt differs from the h1094 source pair",
+        f"official prepare/rebind receipt differs from the h{args.expected_history_index} source pair",
     )
     prepared_save = state / "profile" / "save games" / "xar_checkpoint.ck3"
     prepared_driver = state / "native-session" / "driver-state.json"
@@ -399,7 +399,7 @@ def prepare_candidate(args: argparse.Namespace) -> dict[str, object]:
             "native_query_seconds": 60,
         },
         "source_pair_reason": (
-            "fresh official prepare/rebind from immutable h1094 source pair"
+            f"fresh official prepare/rebind from immutable h{args.expected_history_index} source pair"
         ),
         "source_pair_receipt": str(receipt_path),
         "source_pair_receipt_sha256": _sha(receipt_path),
