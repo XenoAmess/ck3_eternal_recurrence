@@ -1,0 +1,463 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_war_ai_v3_spoken_narration",
+  "source": "../narration-v3-review.md",
+  "source_sha256": "625c8c7f2b3c0c2ee3a772f9e895df0fcb4e9e75d101a6d0e1ba1785832d10f1",
+  "game_build": "1.19.0.6",
+  "narration_locale": "zh-CN",
+  "voice_candidate": "zh-CN-XiaoxiaoNeural",
+  "media_binding_state": "unbound",
+  "subtitle_translation_state": "editorial-draft-requires-review",
+  "cues": [
+    {
+      "id": "V3-01",
+      "shot_id": "S3-01",
+      "chapter_id": "hook",
+      "claim_ids": [],
+      "zh": "先把地图停在罗贝尔的这局游戏。我们没有替他宣战，而是从游戏里读出了他当前可以提出的战争，以及两个目标的军力评估。罗贝尔这一侧的估值都是三万七千八百六十，一个目标的估值超过十万，另一个只有一万三千多。更有意思的是，第一个目标送进评估以后，实际防守方还换成了另一个人物。同一个领主、同一个时刻，屏幕上看似只是两次“向谁开战”，程序面对的却已经是两份不同的局势。它接下来凭什么选？这就是我们今天的起点。",
+      "en": "In this paused game, we read Robert's available wars and estimated power against two targets; we did not declare war for him. His own estimate is 37,860 in both queries, but one effective defender exceeds 100,000 and the other is about 13,000. The first original target even resolves to another defender. What will the ruler choose from these different situations?",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-02",
+      "shot_id": "S3-02",
+      "chapter_id": "hook",
+      "claim_ids": [],
+      "zh": "这期沿着战争走一遍：先看领主为什么考虑某场战争，再跟着军队看它往哪里去、是否接近敌人、什么时候要求支援，最后看一场胜负怎样进入战争分数，以及双方为什么愿意停手。开头这组数值来自原版游戏的真实读取；后面的规则算例，会单独标在画面上。我们讨论的是一点一九点零点六版本。你不用记程序地址，只要始终分清三件事：它现在比较的是什么，哪条条件决定能否继续，通过以后究竟改变了什么。",
+      "en": "We will follow a war from the ruler's choice, through army objectives, approach and requests for help, to battle score and peace. The opening figures are real native readbacks; later numerical examples will be labelled as examples. In CK3 1.19.0.6, keep asking what is being compared, which condition lets the process continue, and what changes afterward.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-03",
+      "shot_id": "S3-03",
+      "chapter_id": "declaration",
+      "claim_ids": [],
+      "zh": "玩家最容易看到的是宣战按钮：有合适的理由，选好对象，就能打开窗口。但 AI 自己发动战争，还要经过另一套选择过程。它先决定这一轮要不要考虑进攻，再挑目标和战争理由，检查军力、限制与费用，给留下的方案评分，最后才选择其中一项。我们在罗贝尔这局读到的九条合法声明，回答的是“当前能提出哪些战争”，没有替他走完 AI 的整套主动选择。把这两件事分开，才不会把“按钮亮着”误读成“电脑已经决定要打”。",
+      "en": "An available Declare War button answers which wars a player can propose right now. The AI's own decision also considers whether to attack, which target and cause to use, power, restrictions, costs, scores and final selection. Robert's nine legal entries are not a record of that entire AI decision. An available button does not mean the AI has decided to fight.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-04",
+      "shot_id": "S3-04",
+      "chapter_id": "declaration",
+      "claim_ids": [],
+      "zh": "先看开战前的钱。这里有两种不同的问题：有没有为战争留出准备金，以及某一个宣战方案的费用能不能支付。在已经追到的普通周期入口里，金币战争储备和国库战争储备，要分别达到原生算出的需求，才继续考虑候选。等到具体方案出现，还会检查战争理由本身的成本，以及通用交互的成本。因此，看到界面上还有金币，只能说明钱袋没有空；它既不能代替战争储备，也不能替所有宣战方案盖上“付得起”的章。",
+      "en": "Prewar money raises two questions: whether the ruler has set aside the required war reserves, and whether a particular declaration can be paid for. In the traced ordinary periodic path, gold and treasury war reserves each have their own requirement. A specific candidate then faces the cause's cost and the general interaction cost. Visible cash alone settles none of those separate checks.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-05",
+      "shot_id": "S3-05",
+      "chapter_id": "declaration",
+      "claim_ids": [],
+      "zh": "再看军力。地图旗帜旁的人数很直观，但战略评估用的是另一套军力值。不同部队按各自规则进入汇总，征召兵、兵士、雇佣兵、特殊部队和骑士，并不是把人头直接放在一起相加。这里还有当前值和最大侧估计的区别。特别要留意，名字带“最大”，也不意味着所有部队已经补满：特殊部队在这条军力路径里，采用的就是当前编成。这个数字适合拿来做它所服务的战略比较，不能改成“这名领主现在有这么多兵”。",
+      "en": "The soldier count beside an army flag is not the strategic power estimate. Levies, men-at-arms, mercenaries, special troops and knights enter that estimate under different rules, and current and maximum-side estimates differ. A label containing 'maximum' does not mean every troop type is fully replenished: this path uses current composition for special troops. Do not translate strategic power into a headcount.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-06",
+      "shot_id": "S3-06",
+      "chapter_id": "declaration",
+      "claim_ids": [],
+      "zh": "回到开头的真实对照。第一个原始目标进入查询时，游戏解析出的有效防守方是另一个人物；第二个目标则保持原样。所以在解释“它觉得对手有多强”之前，先要确认它实际在评估谁。两次读回里，罗贝尔的军力总值相同，对方总值却分别是十万七千一百八十和一万三千三百四十。对方除以己方，原生返回的比值约为二点八三和零点三五。这个对照已经说明，地图上点击的对象和最终用于战略比较的对象，不能不加区分。",
+      "en": "In Robert's first query, the effective defender is a different person from the original target; the second target stays the same. Robert's power is unchanged, while opposing power is 107,180 and 13,340. The native ratios, opposing power divided by Robert's power, are about 2.83 and 0.35. Identify the effective defender before interpreting an apparent choice of opponent.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-07",
+      "shot_id": "S3-07",
+      "chapter_id": "declaration",
+      "claim_ids": [],
+      "zh": "把自己和对手找对以后，还要处理关系网络。原生程序会从婚姻、联盟、负有参战义务的关系等来源寻找可能的助力，再检查是否具备潜在召战资格。己方和目标方的过滤也不完全一样，不能把双方的盟友列表各自一加就收工。这次罗贝尔的两组读回里，双方的网络增量都是零。这只说明本次评估没有从这一项增加军力，并不说明这些人物没有盟友。关系存在、计入估值、答应召战、军队真的到场，是四个不同的结果。",
+      "en": "The native relationship network looks for potential help through marriage, alliances and obligations to join, then checks potential call eligibility. Filtering differs between the two sides, so ally lists are not simply added together. Both network increments in Robert's readbacks are zero; that does not establish that these rulers have no allies. A relationship, an estimate, an accepted call and an arriving army are different outcomes.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-08",
+      "shot_id": "S3-08",
+      "chapter_id": "declaration",
+      "claim_ids": [],
+      "zh": "军力门还会考虑目标是不是已经在打仗。用一组单纯的规则算例来看：暂时不加额外战争和大胆性修正，对手处于和平时，可接受的目标与己方军力比上限从一开始；对手已经参战时，则从一点五开始。假设某目标的这个比值是一点二，前一种状态会在这里被挡住，后一种状态能够继续。答案不是“AI 算出现在必赢”，而是已有战事会改变它愿意考虑的风险范围。后面的费用、评分和最终选择，仍然要接着做。",
+      "en": "Whether a target is already at war changes the military-power gate. In a simplified rule example without extra war or boldness modifiers, the permitted opposing-to-own ratio starts at 1.0 for a peaceful target and 1.5 for one already fighting. A ratio of 1.2 fails the first gate but passes the second. This widens consideration, without proving victory or skipping later cost, scoring and selection checks.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-09",
+      "shot_id": "S3-09",
+      "chapter_id": "declaration",
+      "claim_ids": [],
+      "zh": "现在把方案放到最后的评分桌上。假设已经留下六张正分卡，分数是一百、九十七、九十四、九十一、九十和八十九。程序先以最高分的百分之九十作线，把八十九去掉，九十正好留下。剩下五项，已经不需要再截；如果这一轮还多于五项，才进一步保留最高的五项。也就是说，它先排除明显落后的方案，再缩小选择范围。八十九在这组输入里没有进入最后抽选，而九十虽然不是第一名，仍然有机会。",
+      "en": "Suppose six positive-scoring candidates have scores of 100, 97, 94, 91, 90 and 89. The native filter draws a line at 90 percent of the highest score: 89 leaves and 90 remains. Exactly five remain, so no further top-five truncation is needed. The best card has an advantage, but every retained card is still eligible for the final draw.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-10",
+      "shot_id": "S3-10",
+      "chapter_id": "declaration",
+      "claim_ids": [],
+      "zh": "最后一步按这些分数加权抽取。一百分的卡权重大一些，但不是拿走所有机会。刚才五张卡的总权重是四百七十二，九十四分这一张占其中的九十四份，大约五分之一。这里的随机发生在已经筛过的好方案之间，并不是从所有邻国随手挑一个。于是，第一个问题有了完整答案：能宣战只是取得资格；实际要不要打，还受准备、风险、费用和评分约束。到了最后，即使分数不是最高，只要留在最终池里，也可能成为这次选择。",
+      "en": "The final draw uses the retained scores as weights. In this example their total is 472, so the 94-point card has 94 of those shares, roughly one fifth. Random choice happens among filtered candidates, not arbitrary neighbors. Having a legal war only opens the process; preparation, risk, cost, scoring and this final draw still matter.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-11",
+      "shot_id": "S3-11",
+      "chapter_id": "targets",
+      "claim_ids": [],
+      "zh": "战争开始以后，问题变了。现在需要把军团放到具体位置，围城、守住战目标，或者接近敌军。只给每个省贴一个价值标签，还不能回答谁该去哪里。原生的普通目标流程先产生省份候选，再把合格的军团与省份组成一对一的候选记录，给这些组合评分。一个省适合甲军团，不意味着乙军团去那里同样合适。接下来排队的，已经不是孤立的城堡清单，而是“这支军团去这个地方”的一组组安排。",
+      "en": "Once war starts, armies need concrete destinations for siege, defense of the war objective, or approach to an enemy. The ordinary native objective path generates province candidates, pairs eligible armies with those provinces, and scores the pairs. A province suitable for one army need not suit another. The choice concerns an army going to a place, rather than a free-standing list of castle values.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-12",
+      "shot_id": "S3-12",
+      "chapter_id": "targets",
+      "claim_ids": [],
+      "zh": "同一个省可能被不止一种目标理由找到，比如它既是战目标附近的重要位置，又符合另一种目标要求。这时基础候选不会因为被找到两次，就把两份优先级全部叠上去。省份相同，较高的基础优先级替换较低的；一样高，就保留已经存在的记录。后续仍然可以有别的加减分，但“重复被列为目标”和“平白多拿一份基础分”不是一回事。这能解释为什么一座看起来集齐许多标签的城，并不必然把其他候选全部压过去。",
+      "en": "One province can be found for several objective reasons. Its basic priority is not summed repeatedly: a higher priority replaces a lower one, and an equal priority keeps the existing record. Other modifiers may still apply. Being listed twice is different from receiving two copies of the basic score.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-13",
+      "shot_id": "S3-13",
+      "chapter_id": "targets",
+      "claim_ids": [],
+      "zh": "目标还按配置中的顺序分批提供。可以把它想成几页任务清单：先处理前面的任务，再根据需要补下一页。不过，翻页条件不是“前一页必须空无一物”。如果已经找到的省份，还不够覆盖当前未分配的军团，程序就能继续取后面的目标块；做过一轮评分和分配以后，剩下军团与后续目标之间还有继续处理的条件。因此，它既不是把所有任务不分先后倒进一锅，也不是前面出现一座城，后面整页就永远看不见。",
+      "en": "Objective blocks are supplied in order, but a later block can still matter when earlier provinces cannot cover the unassigned armies. Further work after an allocation round also has its own conditions. The process neither mixes every objective at once nor permanently stops merely because an early block found one province.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-14",
+      "shot_id": "S3-14",
+      "chapter_id": "targets",
+      "claim_ids": [],
+      "zh": "接着，军团与省份的组合按分数从高到低排列。轮到一条记录时，要看这个省在本轮是否已经被占用，这支军团是否已经有了安排，以及需要时能否找到有效路线。想象甲去城堡得九十分，乙去同一座城得八十五分，乙去另一处得八十分。在其他条件都通过的算例里，甲先获得城堡以后，乙的八十五分安排就会因本轮占用跳过，转而考虑后面的安排。这不是乙突然看不见更高分，而是共同分配已经改变了它还能领取的任务。",
+      "en": "Army-province pairs are sorted by score, then checked against province use in this round, whether the army already has an assignment, and route validity when required. In a hypothetical list, A gets a castle at 90; B's 85-point plan for that same castle is skipped, so its 80-point alternative can be considered. Shared allocation changes what remains available to B.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-15",
+      "shot_id": "S3-15",
+      "chapter_id": "targets",
+      "claim_ids": [],
+      "zh": "排序以后，路径检查仍然能让某条高分安排落选。这里的处理是沿着已排好的顺序检查条件，先通过的获得本轮标记；不是把所有路线都算完，再重新求一次整个战区的最优分配。原生还限制这轮候选检查的工作量，并可能提前停止。因此，我们不应该把屏幕上的一次选择理解成“它已经穷尽所有可能路线，证明这是全局最好”。更准确的答案是：它在有序、有限的候选中，找到满足当前分配条件的安排。",
+      "en": "A high-scoring pair can still fail a later path check. The native process checks its ordered candidates and marks passing arrangements; it does not solve a new global optimum after exploring every possible route. The work in this round is also bounded. The observed selection is a valid arrangement within that limited ordered search, not proof that every other route was worse.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-16",
+      "shot_id": "S3-16",
+      "chapter_id": "targets",
+      "claim_ids": [],
+      "zh": "军团也不会每一瞬间都把整张清单推倒重来。目标更新有自己的计数器，同时还存在提前请求重算的路径；有些状态又会暂缓这一步。于是，“过了几天换目标”和“因为那个敌军动了，所以立刻换目标”，不是同一个结论。真正的顺序应该是：先确认进入了目标重算，再看候选和分配怎样变化，最后看新的目标是否写回。这样才能把重算时机、选择结果和后续移动连起来，而不是仅凭地图上两条不同的箭头补出原因。",
+      "en": "Armies do not rebuild their whole objective list every instant. Target updates have a counter, an early recomputation route, and states that can defer the update. A target changing after several days does not by itself show that an enemy movement immediately caused the change. Trace the recomputation, changed candidates and allocation, then the written target and later action.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-17",
+      "shot_id": "S3-17",
+      "chapter_id": "targets",
+      "claim_ids": [],
+      "zh": "所以，军队没有全奔向同一座高价值城堡，并不难理解。它先获得按顺序提供、去重后的省份候选，再以军团和省份的组合参加排序，受本轮占用、已有安排和路径条件限制。最后还要满足有效目标和正分等条件，才能写回军团。这个写回告诉我们它选择了哪里；军团有没有立即出发、沿哪条路前进，则要继续看动作层。沿着这条顺序，我们就能把“想去哪里”和“地图上已经走到哪里”分开解释。",
+      "en": "Different armies need not all run to the same valuable castle. Ordered and deduplicated province candidates are paired with armies, then constrained by this round's use, existing assignments, routes and final validity. Writing a target shows the selected destination; departure and the route taken belong to the next action stage.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-18",
+      "shot_id": "S3-18",
+      "chapter_id": "movement",
+      "claim_ids": [],
+      "zh": "离开领主的战略桌，走到一支军队身边，我们又会遇到一个比例。但它和刚才“对方军力除以自己军力”的宣战评估，不是同一套数字。局部预测在正常返回路径里，把本方估算力量，除以本方加上经过修正的对方力量。用最简单的算例，本方一百、修正后的对方也是一百，结果就是零点五。本方变成二百、对方仍是一百，结果大约零点六七。这只是力量在这个合计里的占比，没有做一百次战斗试验，也没有报告赢了多少次。",
+      "en": "The local approach metric is different from the declaration ratio of enemy strategic power to own power. In its normal return path, local estimated own power is divided by own power plus adjusted opposing power. With 100 on each side it is 0.5; with 200 versus 100 it is about 0.67. This share of a power total is not a measured probability of winning a battle.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-19",
+      "shot_id": "S3-19",
+      "chapter_id": "movement",
+      "claim_ids": [],
+      "zh": "这里的对方力量也不是把周围所有红色旗帜直接相加。原生会按关系和上下文把力量分组，在相应敌对组里施加修正，再选主要的一组，其余适用的敌对组按半权重加入。还有进一步的上下文修正。因此，同样是地图上看到几千人，得到的局部指标也不能只靠两边旗帜数字倒算。这套估算的作用，是让后面的行动规则得到一个可以比较的数。它有自己的输入范围，和战斗真正发生以后逐阶段结算的结果，需要分别看待。",
+      "en": "The opposing input is not a raw sum of every nearby hostile flag. Native logic groups power by relationship and context, modifies hostile groups, uses a main group and half-weights other applicable groups, then applies further context adjustment. Visible soldier numbers alone cannot reproduce the metric. It serves the following action rules, separately from actual battle resolution.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-20",
+      "shot_id": "S3-20",
+      "chapter_id": "movement",
+      "claim_ids": [],
+      "zh": "有了指标，还要看当前采用哪一道接战门。在这版游戏的对应分支里，普通门槛是零点五，另一档较低的门槛是零点四，而且必须严格超过才通过。假设本次指标为零点四五，它过不了普通门，却能过较低门；恰好零点五，也不通过普通门。这个变化的含义，是这条判断允许接受更不利的力量比较。它不是把同一场仗的胜率改了，也不是指标一过线，军队就会无条件向前冲，其他目标和路线条件还会继续检查。",
+      "en": "The corresponding approach branch can use a normal strict threshold of 0.5 or a lower strict threshold of 0.4. A metric of 0.45 passes the lower gate but fails the normal one; exactly 0.5 still fails the normal strict comparison. The chosen gate changes which unfavorable power comparisons are allowed, but other objectives and route conditions still apply.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-21",
+      "shot_id": "S3-21",
+      "chapter_id": "movement",
+      "claim_ids": [],
+      "zh": "较低这一档在配置里叫“绝望”，但不能只凭名字把它翻译成“快打输了就会用”。它的选择先比较战争协调层的两项力量，再区分战争类型和攻守身份；普通守方的后续判断，还会看军团数量、领地规模，以及它自己这一侧的战争分数。特别是走到末端的分数分支，要求己方分数达到对应的正门槛，并不是把对方领先当成己方绝望。这个名字听起来很戏剧化，实际条件却是几步具体比较。理解这些条件，比替这个标签编一个心理故事更可靠。",
+      "en": "The lower setting is named 'desperate' in configuration, but that name is not its trigger rule. Selection first compares two power values at war-coordination level, then distinguishes war type and attacker or defender role. The ordinary defender path can also check army count, realm size and its own war score. A positive threshold on its own score is not equivalent to the opponent being ahead.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-22",
+      "shot_id": "S3-22",
+      "chapter_id": "movement",
+      "claim_ids": [],
+      "zh": "路径还有另一层选择：目标前的某种不利邻接，如果预测指标低于零点六二五，程序会尝试寻找额外成本受限的替代路线。替代路线合适，就采用它；找不到合适的，再回到当前的接战门槛判断原路线能不能保留。所以，绕开一个入口不一定表示放弃目标，也不一定表示路径坏了。它可能仍然要去同一处，只是在调整接近方式。这条规则针对的是已经定位的目标前邻接，不能把它当成对整条路线未来所有敌军接触的保证。",
+      "en": "For a particular unfavorable adjacency before a target, a local metric below 0.625 can trigger a search for an alternative route with limited extra cost. If a suitable alternative exists, it is used; otherwise the current approach gate decides whether the original route can remain. Avoiding one entrance need not mean abandoning the target, and this local check does not promise safety along every future step.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-23",
+      "shot_id": "S3-23",
+      "chapter_id": "movement",
+      "claim_ids": [],
+      "zh": "这就回答了“同样看着兵少，为什么有时接近、有时绕行”。军队消费的是经过整理的局部力量指标，当前门槛和路线条件又决定哪些安排能继续。单看人数，或者单看一个带百分号的数字，都容易漏掉中间这层判断。本章讲的是接战前的候选与路线选择。战斗已经开始以后，主动撤退属于另一项决定，不需要拿它来替前面的规则补故事。回到地图，我们要看的就是当前目标、接近路线和相应门槛，三者怎样接到一起。",
+      "en": "To understand why an army sometimes approaches and sometimes detours, identify its adjusted local power metric, selected threshold, target and route checks. A soldier count or percentage alone skips those decisions. These are pre-contact choices; active retreat after a battle begins is a separate decision. The map becomes clearer when target, approach path and gate are read together.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-24",
+      "shot_id": "S3-24",
+      "chapter_id": "help",
+      "claim_ids": [],
+      "zh": "现在看普通 AI 军队之间的求援。最有意思的地方，不是只有一道“弱了就叫人”的线，而是开始求援和停止求援，使用两条不同的线。此前没有求援时，指标严格低于零点六六，才开始请求；已经在求援时，只要仍低于零点七五，就继续保持。这个规则会记住刚才的状态。于是，同样是零点七零，两支军队的求援状态可以不同：一支可能刚从危急中缓过来，另一支可能从未低到需要开始请求。",
+      "en": "Ordinary AI requests for support remember their previous state. If the army was not asking, the metric must be strictly below 0.66 to start. If it was already asking, it continues while still below 0.75. Thus two armies at 0.70 can have different request states because one previously asked for help and the other never crossed the starting threshold.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-25",
+      "shot_id": "S3-25",
+      "chapter_id": "help",
+      "claim_ids": [],
+      "zh": "沿着一支已经满足求援前置条件的军队看这组算例。开始时没有请求，指标掉到零点六五，低于开始线，于是求援打开。局势好转到零点七零，它已经越过开始线，但还没越过停止线，所以继续请求。再上升到零点七六，才关闭。现在另取一支此前从未求援的军队，直接给它零点七零，它不会开启请求。两边当前数字一样，结果却不同，原因就在上一刻的状态。两条线之间留出的这一段，避免了状态在同一条边界附近来回翻转。",
+      "en": "In a rule example with the prerequisites met, a unit starts asking at 0.65, keeps asking when it rises to 0.70, and stops at 0.76. Another unit that has never asked does not start at 0.70. The current number can be the same while prior state produces a different answer; the space between the thresholds prevents rapid switching near one line.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-26",
+      "shot_id": "S3-26",
+      "chapter_id": "help",
+      "claim_ids": [],
+      "zh": "不过，这两条线不会无条件套在每一面军旗上。已分析的普通生产路径，要求请求方所在的父级 AI 栈有超过一个子单位；只有一个的情况，会在前面走清除请求的分支。这里数的不是屏幕上站着几个人，也不是你目测有几支队伍靠在一起，而是 AI 内部怎样把单位组织成组。因此，等了很多天都没有求援，首先要确认它有没有进入这套判断。结构条件不成立，多等几天也不会把这个前置门变成通过。",
+      "en": "The two support thresholds do not apply to every flag unconditionally. In the traced ordinary producer, the requesting unit's parent AI stack needs more than one subunit; a singleton follows an earlier branch that clears its request. This counts internal AI organization, not the soldiers visible on a banner or nearby armies. First establish that the unit reached this decision at all.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-27",
+      "shot_id": "S3-27",
+      "chapter_id": "help",
+      "claim_ids": [],
+      "zh": "请求发出来，也不等于旁边最近的一支军队立刻过来。助手的匹配还有自己的候选和状态检查。在一条跨栈检查里，程序把请求量按当前规则放大并量化，再与请求方父组的可用力量比较。假设量化后的需求是一百五十，请求方可用力量是一百四十九或一百五十，这一关会留下它；变成一百五十一，反而继续看其他候选。这条比较问的是请求方是否仍需要支援，不能反过来解释成“助手必须带够一百五十人”。",
+      "en": "A request does not automatically summon the nearest army. Cross-stack helper matching also checks whether a need remains: a quantized request value is compared with the requesting parent group's available power. If required power is 150, available power of 149 or 150 passes this check, while 151 continues to other candidates. The comparison describes the requester's remaining need, not a minimum size for the helper.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-28",
+      "shot_id": "S3-28",
+      "chapter_id": "help",
+      "claim_ids": [],
+      "zh": "把求援过程拆开，就很容易看懂。请求方先改变求援状态；另一组单位通过匹配，获得去支援的任务；随后才有路线、抵达和实际加入战斗。这几件事会相互衔接，但不是同一个瞬间。原生按保存的组顺序处理时，前面一组可能看到后面一组上次留下的请求，后面一组则可能看到前面刚更新的状态；之后还有动作提交。这也说明为什么“我看见两支队伍朝同一个地方走”，还不足以证明它们完成了某一次求援匹配。",
+      "en": "A request state, a helper assignment, and arrival in the same combat are separate changes. During a native update, parent groups are processed in stored order, so an earlier group may see a later group's previous request, while a later group may see a request just updated by an earlier one. Action submission follows. Two armies moving toward one place alone cannot prove a particular support match occurred.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-29",
+      "shot_id": "S3-29",
+      "chapter_id": "help",
+      "claim_ids": [],
+      "zh": "所以，“已经变强，为什么还在求援”的答案，是它尚未越过停止线；“喊了人，为什么还没有援军”的答案，则要继续看匹配、任务和到场。我们刚才讲的是普通 AI 之间的这条求援路径。对玩家军队的支援另有专门的需求、距离和到达时间条件，不能把同一组数字直接搬过去。看懂这一点以后，就不需要把每一次没来帮忙都解释成盟友发呆：先确认请求有没有成立，再确认助手是否真的领到了任务。",
+      "en": "An army can keep requesting help after it strengthens because it has not passed the stopping threshold. Whether help arrives also depends on matching, assignment and movement. These are ordinary AI-to-AI rules. Support for player armies has its own need, distance and arrival-time conditions; do not apply the same numbers to that separate path.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-30",
+      "shot_id": "S3-30",
+      "chapter_id": "battle-end",
+      "claim_ids": [],
+      "zh": "打赢一仗，地图上的敌军退了，战争进度条却未必涨得像你想象那么多。这是因为战斗结果进入战争账本时，还要衡量这次给败方造成的损失有多大。已追到的单场计算，取本场败方的硬损失，再除以败方战争参战者的一份军事数量汇总，之后应用战争理由对应的倍率和单场上限。这里有两个不同的范围：分子来自这一场战斗，分母却不只是这一场站在你面前的敌军。只看战后面板上的双方参战人数，就可能把比例算错。",
+      "en": "Winning a battle does not award a fixed amount of war score. In the traced single-battle calculation, hard losses inflicted on the loser are divided by a military quantity aggregated across the losing war participants, then the relevant cause's multiplier and per-battle cap apply. The numerator comes from this battle; the denominator is broader than the enemy army directly in front of you.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-31",
+      "shot_id": "S3-31",
+      "chapter_id": "battle-end",
+      "claim_ids": [],
+      "zh": "这份分母由八类数量组成。征召兵和兵士采用对应的最大数量口径，特殊部队、骑士和游牧骑手等，又各有具体规则。所以它既不是“本场还活着多少人”，也不能一句话改成“所有部队完全补满会有多少人”。更关键的是，这里相加的是数量，不是前面宣战时的军力权重。一名骑士在战略估值中可以带来一份较高的力量贡献，到了数量汇总里，不能把那份力量值再当成同样多的人。前面用来比较强弱的尺子，在这里已经换了。",
+      "en": "The denominator combines eight quantity categories. Levies and men-at-arms use their respective maximum-count measures, while special troops, knights and other categories have their own rules. It is neither the survivors of this battle nor a universal fully replenished army. It is a quantity total, not the strategic power weight used for declaration.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-32",
+      "shot_id": "S3-32",
+      "chapter_id": "battle-end",
+      "claim_ids": [],
+      "zh": "用一个规则算例看这件事。假设本场硬损失是一千，败方战争参战者的汇总数量是一万，损失比例就是十分之一。再假设这场战争采用的单场倍率是五十，而且没有碰到其他上限，这一项算出来就是五分。如果分子仍是一千，分母变成两万，同样的损失只占二十分之一，对应就是二点五分。它衡量的是损失相对于这份战争规模的分量，不是给每次胜利发一张固定面值的奖券。换了战争理由，还要使用那场战争实际配置的倍率。",
+      "en": "As a rule example, 1,000 hard losses against an aggregate of 10,000 are one tenth; with a hypothetical multiplier of 50 and no other cap, that contributes five. Against 20,000, the same losses contribute 2.5. The measure scales damage against this war's relevant size, and a real war uses the multiplier configured for its actual cause.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-33",
+      "shot_id": "S3-33",
+      "chapter_id": "battle-end",
+      "claim_ids": [],
+      "zh": "单场结果写进去以后，还会进入累计战斗分。进攻方赢的记录和防守方赢的记录，要按战争中的身份分别汇总，再经过这场战争的累计上限。更外面才是总战争分数，其中还有占领、持续控制战目标、重要人物被囚禁等来源。因此，一次战斗刚结束时，战争面板的总变化不能自动全算在这场战斗头上。要解释得清楚，就要沿着单场记录、累计战斗项和总战争分逐层对照；也要始终说明，我们正在从进攻方还是防守方的视角读正负。",
+      "en": "A battle result enters a single-battle record, then cumulative battle score by attacker or defender identity, with its cap. Overall war score also includes occupation, control of the war objective, important prisoners and other sources. A simultaneous change in the total panel cannot automatically be assigned entirely to one battle. Read the single entry, cumulative term and total in order, from the correct side's viewpoint.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-34",
+      "shot_id": "S3-34",
+      "chapter_id": "battle-end",
+      "claim_ids": [],
+      "zh": "现在再问“为什么大胜以后只涨了这些分”，就有明确的检查顺序了：这场硬损失是多少，分母包含哪些败方战争参战者，当前战争使用什么倍率和上限，再看累计项与总分的其他变化。一场战斗打得漂亮，和它足以决定整场战争，是两个不同尺度的问题。这个区别也把我们带到最后一步：军队还有多少、战场刚刚赢没赢，都只是局势的一部分。领主是否愿意停战，还得重新计算继续战争和结束战争的条件。",
+      "en": "To explain a modest score increase after a convincing win, check hard losses, which losing participants enter the denominator, the war's multiplier and caps, then cumulative and other total-score changes. A good battlefield result and a result sufficient to decide the whole war use different scales. Peace is another decision, with separate reasons to continue or stop.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-35",
+      "shot_id": "S3-35",
+      "chapter_id": "peace",
+      "claim_ids": [],
+      "zh": "和平最容易混淆的地方，是把“愿意接受”和“准备主动提出”看成同一个决定。实际上，主动白和与接受白和各算一遍，而且立场不同。主动倾向的基础值是零，要靠具体动机增加；普通白和接受分的基础值是负三十，再叠加局势和人物修正。前一张账问的是“我现在要不要去谈”，后一张账问的是“对方已经提出这些条件，我接不接受”。一个人肯接受邀请，不代表他此刻一定会主动发出邀请，原生白和把这两件事真的分开了。",
+      "en": "Willingness to propose a white peace and willingness to accept one are separate calculations. The proactive inclination starts at zero and needs positive motivations; ordinary acceptance starts at minus thirty, then receives situational and character modifiers. One asks whether to offer terms now, the other whether to accept terms already received. An AI willing to accept need not send an offer itself.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-36",
+      "shot_id": "S3-36",
+      "chapter_id": "peace",
+      "claim_ids": [],
+      "zh": "先算收到白和时的这一张。原版普通分支会加入对手的战争分数，所以自己越接近输，通常越容易被这一项推向接受。假设收件人是防守方，其他适用修正都取零，进攻方战分为二十：从负三十起算，加上二十，还剩负十。进攻方战分变成三十时，这个算例只到零；再变成三十一，才到正一。如果把攻守立场读反，就会讲成“自己越接近赢越想接受”，这与这条实际加分方向恰好相反。",
+      "en": "In ordinary white-peace acceptance, the opponent's war score contributes to the recipient's calculation. For a defending recipient with other modifiers set to zero, attacker score 20 gives minus ten from the base of minus thirty; 30 gives zero; 31 gives plus one. Keep the attacker and defender identities fixed or the direction of this example becomes misleading.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-37",
+      "shot_id": "S3-37",
+      "chapter_id": "peace",
+      "claim_ids": [],
+      "zh": "在这里已经确认的合法、普通 AI 收件人、无中介的原版白和路径，接受分必须严格大于零，零分仍然不通过。这不是成功概率，也不是把面板上的整数四舍五入后再决定。与此同时，战争时长、债务、其他防御战争、人格、和平相关能力和人质等条件，都可能改变接受分。比如战争超过一年以后，时长会开始提供相应贡献。所以某个对手早先拒绝，后来愿意谈，是可以沿着这些输入变化解释的，而不是只说“时间到了，程序强制求和”。",
+      "en": "On the verified legal, ordinary AI-recipient path without mediation, the acceptance score must be strictly greater than zero: zero still fails. War length, debt, other defensive wars, personality, peace-related abilities and hostages can change it. A later acceptance can therefore follow changed inputs; time alone is not a universal forced-peace switch.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-38",
+      "shot_id": "S3-38",
+      "chapter_id": "peace",
+      "claim_ids": [],
+      "zh": "再把账本转到主动提出的一方。它关心的是这场战争打了多久，自己处在什么战分，是否负债，是否同时承担其他防御战争，以及人格和特殊局势。进攻方和防守方的条件并不完全对称。有些条件增加主动意愿，有些会压低它，还有直接把意愿归零的分支。所以，“对手会接受”只能说明这一项交易有可能谈成，不能独自创造提出交易的动机。要解释自然白和为什么发生，必须在提出者这一侧找到促成它的输入，再去看对方怎样答复。",
+      "en": "The proactive side has a different ledger: war duration, its own score, debt, other defensive wars, personality and special circumstances can affect the inclination. Attacker and defender branches are not identical, and some branches set it to zero. Acceptance by the other party cannot supply the sender's motive. A natural offer requires tracing the sender's inputs and then the recipient's response.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-39",
+      "shot_id": "S3-39",
+      "chapter_id": "peace",
+      "claim_ids": [],
+      "zh": "即使主动意愿已经增加，也还没有跳到发送命令。原生会按身份和月份安排考虑机会，再准备可用的对象和交互。进入这轮比较以后，主动意愿先取整数，减去一个零到九十九的随机整数；得到的余量要严格超过当前最佳值，才成为新的候选。最佳值从零开始，所以这一轮完全可能没有选出要发送的提议。最后还要再检查能否发送。这里的随机和宣战卡片的加权抽选是两种不同处理，不该画成同一个转盘。",
+      "en": "Positive inclination still does not send an offer. The AI receives consideration opportunities, prepares legal recipients and interactions, then compares candidates. It converts inclination to an integer, subtracts a random integer from zero to ninety-nine, and requires the remainder to strictly beat a best value initially set to zero. No offer may win; the final send check remains. This is different from the declaration weighted draw.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-40",
+      "shot_id": "S3-40",
+      "chapter_id": "peace",
+      "claim_ids": [],
+      "zh": "玩家还会遇到一层专门限制。原版白和对 AI 向玩家提出的情况，有额外的预筛与归零规则。例如 AI 作为防守方、玩家进攻方的战分已经达到十分时，就会被相应预筛排除。其他攻守组合还有自己的门。于是，你把一个 AI 打得更惨，并不保证它会更主动给你发白和；主动提出和收到玩家请求后的接受判断，仍是两条线。这不是用玩家观察反推所有 AI 之间都如此，而是提醒我们，案例里谁是玩家，也必须一直标清楚。",
+      "en": "Offers from an AI to a player face extra screening and zeroing rules. For example, when the AI defends and the attacking player's war score reaches ten, a relevant prefilter excludes that proactive offer. Making an AI lose more does not guarantee it will offer the player white peace. Its proactive decision and its response to a player's proposal remain distinct, and player-facing rules cannot simply be projected onto AI-to-AI wars.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-41",
+      "shot_id": "S3-41",
+      "chapter_id": "peace",
+      "claim_ids": [],
+      "zh": "最后一步才是把提议送出去，并由收件人的规则处理。对于一次真实案例，我们要看到同一场战争里的提出者、条件和答复，再看战争是否结束，以及实际生效的后果。提议被拒绝也可以构成清楚的答案：哪一项让它没过线，随后战争继续。相反，只有一次按钮点击，或者一张“对方会接受”的提示，还不能拿来当成已经停战的结局。和平是一项从意愿到发送、接受和结果的连续过程，最后的地图与战争面板，应该能回读这次过程的终点。",
+      "en": "After an offer is sent, its recipient must process the actual terms. For a real case, identify sender, recipient, conditions, response and whether the same war ended or continued. A rejection is also an informative outcome when its failed condition is known. A click or an 'would accept' hint alone does not establish that peace occurred.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-42",
+      "shot_id": "S3-42",
+      "chapter_id": "peace",
+      "claim_ids": [],
+      "zh": "所以，“他肯接受，为什么还没有主动来谈”，答案是两张账解决的不是同一个问题。接受分评价收到的条件，主动意愿决定是否值得提出；考虑机会、随机竞争和发送检查，又把意愿接到真正的提议上。把提出者和收件人分清，把主动和被动分清，我们就能解释看似矛盾的表现：一方已经愿意接受，却仍没有发起谈判；另一方想结束战争，对手却仍然拒绝。它们并不需要共享同一个“厌战数值”，才能各自作出选择。",
+      "en": "A ruler can be willing to accept and still not propose peace because the two ledgers answer different questions. Acceptance evaluates received terms; proactive inclination, opportunity, random competition and the final send check determine whether an offer is made. One party may want to stop while the other refuses. No single universal 'war exhaustion' number is needed to explain both decisions.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-43",
+      "shot_id": "S3-43",
+      "chapter_id": "epilogue",
+      "claim_ids": [],
+      "zh": "回到最初的地图。领主选择战争，先处理准备、资格、军力和费用，再从经过筛选的方案里选择。军队行动，把省份和军团组成安排，在目标、路径和局部力量之间作判断；求援还要保留上一刻的状态，再经过指派与到场。战争结束时，单场胜负先换算成战争账本中的贡献，和平又分别计算提出者和收件人。它们连成一场战争，却不是把同一个“胜率”从头用到尾。看懂不同阶段在量什么，很多表面矛盾就有了具体的解释入口。",
+      "en": "War selection evaluates preparation, eligibility, power, cost and scored candidates. Army behavior assigns objectives and routes, compares local strength, and handles support requests and arrivals. Battle results become war-score contributions, while peace evaluates sender and recipient separately. These stages connect into a war, but they do not all reuse one 'chance of winning' measure.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-44",
+      "shot_id": "S3-44",
+      "chapter_id": "epilogue",
+      "claim_ids": [],
+      "zh": "再看罗贝尔的两张比较卡。我们已经能读懂它们：同一时刻，原始对象可能解析成不同的有效防守方；战略军力值与兵数不同，二点八三和零点三五也不是胜率。它们让我们真正看见原生评估的一部分输入和结果。至于 AI 最终挑哪场战争，要继续经过它自己的准备、评分和选择，而不是由这两张卡直接宣布答案。这样看一局游戏，重点就从“这一下看着聪不聪明”，变成了“它用了什么局势，过了哪道条件，最后做出了哪项选择”。",
+      "en": "Robert's two cards show what we can already read: an original target can resolve to a different effective defender, strategic power differs from soldier count, and ratios near 2.83 and 0.35 are not win probabilities. They show part of the native evaluation, not which war the AI ultimately chose. Its own preparation, scoring and selection would still be required.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    },
+    {
+      "id": "V3-45",
+      "shot_id": "S3-45",
+      "chapter_id": "epilogue",
+      "claim_ids": [],
+      "zh": "下一次看到 AI 犹豫、改道或迟迟没有求和，可以先沿着这个顺序看：对象是谁，现在处于哪一步，比较的是军力、局部力量，还是战争与和平的分数；再找真正改变结果的条件。不是每一个表象都能靠一张地图截图解释，但已经明确的规则，足以让我们提出更准确的问题。片中这一版本的决策图、完整数值和资料来源，都放在说明中。你可以从自己最在意的一次行动开始，对着那一段规则，重新看懂它。",
+      "en": "When an AI hesitates, detours or does not offer peace, ask who is acting, which decision stage is active, which kind of power or score is compared, and what condition changed the result. A map screenshot cannot explain every cause by itself. The versioned decision diagrams, exact figures and sources are provided with the film so viewers can inspect a particular action more carefully.",
+      "subtitle_translation_state": "editorial-draft-requires-review",
+      "visual_binding_state": "unbound-v3-shot"
+    }
+  ]
+}

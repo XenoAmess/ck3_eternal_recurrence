@@ -1,0 +1,323 @@
+{
+  "format_version": 1,
+  "kind": "ck3_native_war_ai_v3_narration_shot_index",
+  "purpose": "Prepare narration and give every spoken cue a unique title; visual bindings pending",
+  "source_sha256": "625c8c7f2b3c0c2ee3a772f9e895df0fcb4e9e75d101a6d0e1ba1785832d10f1",
+  "shots": [
+    {
+      "id": "S3-01",
+      "chapter_id": "hook",
+      "title": "同一个领主，两个完全不同的对手",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-01"
+    },
+    {
+      "id": "S3-02",
+      "chapter_id": "hook",
+      "title": "沿着战争走，分清每一步在回答什么",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-02"
+    },
+    {
+      "id": "S3-03",
+      "chapter_id": "declaration",
+      "title": "宣战按钮只回答了第一个问题",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-03"
+    },
+    {
+      "id": "S3-04",
+      "chapter_id": "declaration",
+      "title": "钱袋里有钱，还要看战争准备",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-04"
+    },
+    {
+      "id": "S3-05",
+      "chapter_id": "declaration",
+      "title": "军力估值为什么不能写成“多少士兵”",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-05"
+    },
+    {
+      "id": "S3-06",
+      "chapter_id": "declaration",
+      "title": "为什么目标会换成另一个人",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-06"
+    },
+    {
+      "id": "S3-07",
+      "chapter_id": "declaration",
+      "title": "盟友也不是在账上无条件相加",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-07"
+    },
+    {
+      "id": "S3-08",
+      "chapter_id": "declaration",
+      "title": "一个正在打仗的强敌，可能更容易进入考虑",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-08"
+    },
+    {
+      "id": "S3-09",
+      "chapter_id": "declaration",
+      "title": "最高分有优势，却没有独占答案",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-09"
+    },
+    {
+      "id": "S3-10",
+      "chapter_id": "declaration",
+      "title": "最后抽的是权重，不是固定第一名",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-10"
+    },
+    {
+      "id": "S3-11",
+      "chapter_id": "targets",
+      "title": "指定“打什么”，再分配“谁去打”",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-11"
+    },
+    {
+      "id": "S3-12",
+      "chapter_id": "targets",
+      "title": "同一座城，不把所有基础理由叠成大奖",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-12"
+    },
+    {
+      "id": "S3-13",
+      "chapter_id": "targets",
+      "title": "目标有先后，但找到一个还不一定够",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-13"
+    },
+    {
+      "id": "S3-14",
+      "chapter_id": "targets",
+      "title": "分配是一轮共同选择，不是人人独立抢第一",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-14"
+    },
+    {
+      "id": "S3-15",
+      "chapter_id": "targets",
+      "title": "高分还要落到一条能走的安排上",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-15"
+    },
+    {
+      "id": "S3-16",
+      "chapter_id": "targets",
+      "title": "目标改变，还有重算的节奏",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-16"
+    },
+    {
+      "id": "S3-17",
+      "chapter_id": "targets",
+      "title": "本章答案：目的地是分配结果",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-17"
+    },
+    {
+      "id": "S3-18",
+      "chapter_id": "movement",
+      "title": "战略军力比与局部接战指标，先分开",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-18"
+    },
+    {
+      "id": "S3-19",
+      "chapter_id": "movement",
+      "title": "输入的两边，也经过了整理",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-19"
+    },
+    {
+      "id": "S3-20",
+      "chapter_id": "movement",
+      "title": "同样的局势，选中的门槛可以不同",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-20"
+    },
+    {
+      "id": "S3-21",
+      "chapter_id": "movement",
+      "title": "“绝望”是程序名，不能凭名字猜触发",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-21"
+    },
+    {
+      "id": "S3-22",
+      "chapter_id": "movement",
+      "title": "走得通的原路，也可能值得换",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-22"
+    },
+    {
+      "id": "S3-23",
+      "chapter_id": "movement",
+      "title": "本章答案：先问它过的是哪一道门",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-23"
+    },
+    {
+      "id": "S3-24",
+      "chapter_id": "help",
+      "title": "求援这件事，记得自己刚才的状态",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-24"
+    },
+    {
+      "id": "S3-25",
+      "chapter_id": "help",
+      "title": "走一遍零点六五、零点七零、零点七六",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-25"
+    },
+    {
+      "id": "S3-26",
+      "chapter_id": "help",
+      "title": "有资格进入求援判断，才轮得到那两条线",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-26"
+    },
+    {
+      "id": "S3-27",
+      "chapter_id": "help",
+      "title": "谁来帮忙，还要检查请求是否仍有缺口",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-27"
+    },
+    {
+      "id": "S3-28",
+      "chapter_id": "help",
+      "title": "请求、指派、到场，是三次不同的变化",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-28"
+    },
+    {
+      "id": "S3-29",
+      "chapter_id": "help",
+      "title": "本章答案：求援有记忆，支援还要落地",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-29"
+    },
+    {
+      "id": "S3-30",
+      "chapter_id": "battle-end",
+      "title": "胜负之外，还要衡量这场损失的分量",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-30"
+    },
+    {
+      "id": "S3-31",
+      "chapter_id": "battle-end",
+      "title": "分母也不是一句“全国现役兵数”",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-31"
+    },
+    {
+      "id": "S3-32",
+      "chapter_id": "battle-end",
+      "title": "同样损失，放到不同战争规模里会不同",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-32"
+    },
+    {
+      "id": "S3-33",
+      "chapter_id": "battle-end",
+      "title": "单场、累计和总战争分，是三本相连的账",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-33"
+    },
+    {
+      "id": "S3-34",
+      "chapter_id": "battle-end",
+      "title": "本章答案：胜利进入战争，要先换算分量",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-34"
+    },
+    {
+      "id": "S3-35",
+      "chapter_id": "peace",
+      "title": "两张账，分别属于提出者和收件人",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-35"
+    },
+    {
+      "id": "S3-36",
+      "chapter_id": "peace",
+      "title": "战争分的方向，要从收件人的处境看",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-36"
+    },
+    {
+      "id": "S3-37",
+      "chapter_id": "peace",
+      "title": "零分还不够；战争拖长也只是其中一项",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-37"
+    },
+    {
+      "id": "S3-38",
+      "chapter_id": "peace",
+      "title": "主动求和，需要另一套动机",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-38"
+    },
+    {
+      "id": "S3-39",
+      "chapter_id": "peace",
+      "title": "白和还有自己的机会与竞争",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-39"
+    },
+    {
+      "id": "S3-40",
+      "chapter_id": "peace",
+      "title": "对玩家的规则，不能从 AI 对 AI 直接照搬",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-40"
+    },
+    {
+      "id": "S3-41",
+      "chapter_id": "peace",
+      "title": "点了发送，还要看战争有没有真的结束",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-41"
+    },
+    {
+      "id": "S3-42",
+      "chapter_id": "peace",
+      "title": "本章答案：两个人、两套判断、一个结果",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-42"
+    },
+    {
+      "id": "S3-43",
+      "chapter_id": "epilogue",
+      "title": "三个阶段，使用三套不同的尺度",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-43"
+    },
+    {
+      "id": "S3-44",
+      "chapter_id": "epilogue",
+      "title": "罗贝尔的两张卡，现在能回答到哪一步",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-44"
+    },
+    {
+      "id": "S3-45",
+      "chapter_id": "epilogue",
+      "title": "留给观众的一套观察顺序",
+      "visual_binding_state": "unbound-v3-shot",
+      "cue_id": "V3-45"
+    }
+  ]
+}
