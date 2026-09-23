@@ -1151,6 +1151,23 @@ def _ck3_query_minor_religious_war_defenders_private_v1(
     )
 
 
+def _ck3_query_m5_war_primary_current_private_v1(
+    service: GameplayBridgeService,
+    target_character_id: int,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Private M5 war readback seam; intentionally absent from public tools."""
+    query = getattr(
+        service.driver, "query_m5_war_primary_current_private_v1", None
+    )
+    if not callable(query):
+        raise RuntimeError("M5 war primary current private query is unavailable")
+    return query(
+        target_character_id=target_character_id,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_player_epidemic_recovery_private_v1(
     service: GameplayBridgeService,
     expected_revision: int,

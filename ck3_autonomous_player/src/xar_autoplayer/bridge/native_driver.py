@@ -1422,6 +1422,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_faction_gift_formal_trial: bool = False,
         allow_private_m5_joint_collector: bool = False,
         allow_private_current_timeline_blocker_query: bool = False,
+        allow_private_m5_war_primary_current_query: bool = False,
         allow_private_minor_religious_war_defenders_query: bool = False,
         allow_private_epidemic_treatment_presence_query: bool = False,
         allow_private_epidemic_recovery_query: bool = False,
@@ -1494,6 +1495,9 @@ class NativeHeadlessGameplayDriver:
         )
         self.allow_private_current_timeline_blocker_query = (
             allow_private_current_timeline_blocker_query is True
+        )
+        self.allow_private_m5_war_primary_current_query = (
+            allow_private_m5_war_primary_current_query is True
         )
         self.allow_private_minor_religious_war_defenders_query = (
             allow_private_minor_religious_war_defenders_query is True
@@ -2367,6 +2371,21 @@ class NativeHeadlessGameplayDriver:
         )
 
         return query_minor_religious_war_defenders_private_v1(
+            self,
+            target_character_id=target_character_id,
+            expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_m5_war_primary_current_private_v1(
+        self, *, target_character_id: int, expected_revision: int
+    ) -> dict[str, object]:
+        """Read one legal war's current resources without choosing an action."""
+        from .m5_war_primary_current_private_transport import (
+            query_m5_war_primary_current_private_v1,
+        )
+
+        return query_m5_war_primary_current_private_v1(
             self,
             target_character_id=target_character_id,
             expected_revision=expected_revision,
