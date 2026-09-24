@@ -40,6 +40,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_phase_event_kill_replay_feedback,
     load_episode01_phase_event_kill_trace_recovery,
     load_episode01_phase_event_kill_trace_release,
+    load_episode01_conditional_kill_effect_audit,
     load_episode01_knight_kill_reward_scaling,
     original_daily_timeline,
 )
@@ -389,6 +390,16 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertTrue(report["target_core_at_final_query"]["death_marker_present"])
         self.assertEqual(report["scheduled_knight_at_final_query"]["current_character_id"], -1)
         self.assertFalse(report["full_mutable_transition_bundle_complete"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_conditional_kill_path_records_native_stat_mismatch(self) -> None:
+        report = load_episode01_conditional_kill_effect_audit()
+        self.assertEqual(report["observed_killer_character_id"], 34120)
+        self.assertIn(34120, report["eligible_enemy_character_ids"])
+        self.assertTrue(report["conditional_participant_detach_matches_native"])
+        self.assertEqual(report["modeled_root_prowess_raw_after"], 400000)
+        self.assertEqual(report["native_derived_root_prowess_raw_after"], 200000)
+        self.assertFalse(report["native_draw_trace_available"])
         self.assertFalse(report["planner_usable"])
 
 

@@ -52,6 +52,8 @@ EPISODE01_KILL_TRACE_RECOVERY_FILE = "ck3_1_19_0_6_episode01_messina_phase_event
 EPISODE01_KILL_TRACE_RECOVERY_SHA256 = "B7F940916285F5E057B972EBBF12873BF6466D2396A13EF76905A95F04EA2C05"
 EPISODE01_KILL_TRACE_RELEASE_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_kill_trace_release.json"
 EPISODE01_KILL_TRACE_RELEASE_SHA256 = "906900875DF185CD3157874293E440865ECD7BDDDD758E7FB9EC6163FFFD19BE"
+EPISODE01_CONDITIONAL_KILL_EFFECT_FILE = "ck3_1_19_0_6_episode01_messina_conditional_kill_effect_audit.json"
+EPISODE01_CONDITIONAL_KILL_EFFECT_SHA256 = "CFB7E59263D09FBF9F92CBB2426C1227ABD706994393F142AC163A2BD4CE2F16"
 EPISODE01_KILL_REWARD_FILE = "ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json"
 EPISODE01_KILL_REWARD_SHA256 = "3FCB1FFB509251CA471E33FAACC768FD7E7FC04243413EDCD9EDCFD0CAD99E92"
 
@@ -897,6 +899,37 @@ def load_episode01_phase_event_kill_trace_release() -> dict[str, Any]:
     return report
 
 
+def load_episode01_conditional_kill_effect_audit() -> dict[str, Any]:
+    """Read a reachable modeled kill path and its native mismatch, never a forecast."""
+    path = Path(__file__).with_name("data") / EPISODE01_CONDITIONAL_KILL_EFFECT_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_CONDITIONAL_KILL_EFFECT_SHA256:
+        raise NativeBattleCaseError("conditional kill effect audit bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.conditional-kill-effect-audit/v1"
+            or report.get("source_native_report_sha256") != EPISODE01_KILL_TRACE_RELEASE_SHA256
+            or report.get("root_character_id") != 33437
+            or report.get("observed_killer_character_id") != 34120
+            or report.get("draw_provenance") != "synthetic_reachability_witness_not_native_rng"
+            or report.get("native_draw_trace_available") is not False
+            or report.get("modeled_root_prowess_raw_after") != 400000
+            or report.get("native_derived_root_prowess_raw_after") != 200000
+            or any(report.get(key) is not True for key in (
+                "conditional_death_reason_matches_native",
+                "conditional_killer_matches_native",
+                "conditional_participant_detach_matches_native",
+            ))
+            or any(report.get(key) is not False for key in (
+                "effective_character_stat_refresh_matches_native",
+                "reward_transition_modeled_by_effect_kernel",
+                "full_effect_write_set_proven", "same_day_effect_order_proven",
+                "whole_battle_win_probability_available", "planner_usable",
+            ))):
+        raise NativeBattleCaseError("conditional kill effect or fidelity boundary drifted")
+    return report
+
+
 def load_episode01_knight_kill_reward_scaling() -> dict[str, Any]:
     """Read conditional stock reward parity without event-effect promotion."""
     path = Path(__file__).with_name("data") / EPISODE01_KILL_REWARD_FILE
@@ -961,6 +994,8 @@ __all__ = [
     "EPISODE01_KILL_TRACE_RECOVERY_SHA256",
     "EPISODE01_KILL_TRACE_RELEASE_FILE",
     "EPISODE01_KILL_TRACE_RELEASE_SHA256",
+    "EPISODE01_CONDITIONAL_KILL_EFFECT_FILE",
+    "EPISODE01_CONDITIONAL_KILL_EFFECT_SHA256",
     "EPISODE01_KILL_REWARD_FILE",
     "EPISODE01_KILL_REWARD_SHA256",
     "NativeBattleCaseError",
@@ -983,6 +1018,7 @@ __all__ = [
     "load_episode01_phase_event_kill_replay_feedback",
     "load_episode01_phase_event_kill_trace_recovery",
     "load_episode01_phase_event_kill_trace_release",
+    "load_episode01_conditional_kill_effect_audit",
     "load_episode01_knight_kill_reward_scaling",
     "original_daily_timeline",
 ]
