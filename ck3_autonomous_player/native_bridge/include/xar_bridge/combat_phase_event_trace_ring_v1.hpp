@@ -127,6 +127,11 @@ struct CombatPhaseEventTraceCapturePlanV1 {
   // states must match it. Null schedule/final records remain explicit.
   std::uintptr_t phase_event_database_slot = 0;
   std::uintptr_t expected_phase_event_database = 0;
+  // Paused-only copy of the exact 13 native event-object pointers in load
+  // order. Hook records keep opaque identities; wire projection resolves
+  // them after drain without dereferencing an event object on the game stack.
+  bool loaded_event_row_objects_available = false;
+  std::array<std::uintptr_t, 13> loaded_event_row_objects{};
   std::uintptr_t current_date_slot = 0;
   std::uintptr_t expected_current_date_object = 0;
   std::uintptr_t global_rng_wrapper_slot = 0;
@@ -375,6 +380,8 @@ struct CombatPhaseEventTraceRingV1 {
 };
 
 struct CombatPhaseEventTraceRingDrainV1 {
+  bool loaded_event_row_objects_available = false;
+  std::array<std::uintptr_t, 13> loaded_event_row_objects{};
   std::uint32_t failure_flags = trace_capture_failure_none;
   std::uint32_t record_count = 0;
   std::uint32_t outgoing_damage_count = 0;

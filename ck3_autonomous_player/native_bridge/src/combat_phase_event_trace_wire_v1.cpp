@@ -103,14 +103,43 @@ bool AppendKnightRows(std::string &output,
   return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
 }
 
+std::int32_t EventLoadIndex(
+    std::uintptr_t event_identity,
+    const CombatPhaseEventTraceRingDrainV1 &drain) noexcept {
+  if (!drain.loaded_event_row_objects_available || event_identity == 0) {
+    return -1;
+  }
+  for (std::size_t index = 0; index < drain.loaded_event_row_objects.size();
+       ++index) {
+    if (drain.loaded_event_row_objects[index] == event_identity) {
+      return static_cast<std::int32_t>(index);
+    }
+  }
+  return -1;
+}
+
+bool AppendEventLoadIndex(
+    std::string &output, std::uintptr_t event_identity,
+    const CombatPhaseEventTraceRingDrainV1 &drain) {
+  const auto index = EventLoadIndex(event_identity, drain);
+  if (index < 0) {
+    output += "null";
+    return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
+  }
+  return AppendNumber(output, index);
+}
+
 bool AppendScheduleRows(std::string &output,
-                        const CombatPhaseEventTraceSideRecordV1 &side) {
+                        const CombatPhaseEventTraceSideRecordV1 &side,
+                        const CombatPhaseEventTraceRingDrainV1 &drain) {
   output += '[';
   for (std::uint32_t index = 0; index < side.scheduled_knight_count; ++index) {
     if (index != 0) output.push_back(',');
     const auto &row = side.scheduled_knights[index];
     output += "{\"event_identity_token\":";
     if (!AppendOpaqueToken(output, row.event_identity)) return false;
+    output += ",\"native_event_load_index\":";
+    if (!AppendEventLoadIndex(output, row.event_identity, drain)) return false;
     output += ",\"regiment_id\":";
     if (!AppendNumber(output, row.regiment_id)) return false;
     output += ",\"current_character_id\":";
@@ -176,7 +205,8 @@ bool AppendHardOwners(std::string &output,
 }
 
 bool AppendSide(std::string &output,
-                const CombatPhaseEventTraceSideRecordV1 &side) {
+                const CombatPhaseEventTraceSideRecordV1 &side,
+                const CombatPhaseEventTraceRingDrainV1 &drain) {
   output += "{\"side_index\":";
   if (!AppendNumber(output, side.side_index)) return false;
   output += ",\"selected_commander_character_id\":";
@@ -189,6 +219,10 @@ bool AppendSide(std::string &output,
   if (!AppendOpaqueToken(output, side.scheduled_commander_event_identity)) {
     return false;
   }
+  output += ",\"scheduled_commander_native_event_load_index\":";
+  if (!AppendEventLoadIndex(output,
+                            side.scheduled_commander_event_identity,
+                            drain)) return false;
   output += ",\"armies\":";
   if (!AppendArmyRows(output, side)) return false;
   output += ",\"regiments\":";
@@ -198,7 +232,7 @@ bool AppendSide(std::string &output,
   output += ",\"knights\":";
   if (!AppendKnightRows(output, side)) return false;
   output += ",\"scheduled_knights\":";
-  if (!AppendScheduleRows(output, side)) return false;
+  if (!AppendScheduleRows(output, side, drain)) return false;
   output.push_back('}');
   return output.size() <= kCombatPhaseEventTraceWireMaximumBytesV1;
 }
@@ -299,7 +333,8 @@ bool CountsValid(const CombatPhaseEventTraceRingRecordV1 &record) {
 }
 
 bool AppendRecord(std::string &output,
-                  const CombatPhaseEventTraceRingRecordV1 &record) {
+                   const CombatPhaseEventTraceRingRecordV1 &record,
+                   const CombatPhaseEventTraceRingDrainV1 &drain) {
   if (!CountsValid(record)) return false;
   const auto boundary_index = static_cast<std::size_t>(record.boundary);
   if (boundary_index >= kCombatPhaseEventTraceBoundaryNamesV1.size()) {
@@ -348,9 +383,9 @@ bool AppendRecord(std::string &output,
   output += ",\"owner_thread_token\":";
   if (!AppendNumber(output, record.global_rng_owner_thread_token)) return false;
   output += "},\"sides\":[";
-  if (!AppendSide(output, record.sides[0])) return false;
+  if (!AppendSide(output, record.sides[0], drain)) return false;
   output.push_back(',');
-  if (!AppendSide(output, record.sides[1])) return false;
+  if (!AppendSide(output, record.sides[1], drain)) return false;
   output += "],\"characters\":";
   if (!AppendCharacters(output, record)) return false;
   output += ",\"battle_events\":";
@@ -423,6 +458,9 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
   if (!AppendBool(output, drain.expected_one_day_date_split)) return {};
   output += ",\"same_loaded_event_table\":";
   if (!AppendBool(output, drain.same_loaded_event_table)) return {};
+  output += ",\"loaded_event_row_identity_map_available\":";
+  if (!AppendBool(output,
+                  drain.loaded_event_row_objects_available)) return {};
   output += ",\"side_and_return_site_identity\":";
   if (!AppendBool(output, drain.side_and_return_site_identity)) return {};
   output += ",\"schedule_phase_day_then_single_increment\":";
@@ -442,7 +480,7 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
   output += "},\"records\":[";
   for (std::uint32_t index = 0; index < drain.record_count; ++index) {
     if (index != 0) output.push_back(',');
-    if (!AppendRecord(output, drain.records[index])) return {};
+    if (!AppendRecord(output, drain.records[index], drain)) return {};
   }
   output += "]}";
   if (output.size() > kCombatPhaseEventTraceWireMaximumBytesV1) {

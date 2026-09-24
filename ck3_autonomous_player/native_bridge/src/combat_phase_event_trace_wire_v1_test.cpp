@@ -33,6 +33,14 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
   drain->same_native_date = false;
   drain->expected_one_day_date_split = true;
   drain->same_loaded_event_table = true;
+  drain->loaded_event_row_objects_available = true;
+  for (std::size_t index = 0;
+       index < drain->loaded_event_row_objects.size(); ++index) {
+    drain->loaded_event_row_objects[index] = 0x1000 + index;
+  }
+  drain->loaded_event_row_objects[0] = 0x142;
+  drain->loaded_event_row_objects[10] = 0x243;
+  drain->loaded_event_row_objects[11] = 0x242;
   drain->side_and_return_site_identity = true;
   drain->schedule_phase_day_then_single_increment = true;
   drain->bounded_capture_complete = true;
@@ -129,7 +137,7 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
 bool HappyPath() {
   const auto drain = SmallDrain();
   const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
-  constexpr std::array<std::string_view, 29> required{
+  constexpr std::array<std::string_view, 32> required{
       "\"schema_version\":1",
       "\"status\":\"captured\"",
       "\"record_count\":7",
@@ -144,13 +152,16 @@ bool HappyPath() {
       "\"side1_raw\":6222222",
       "\"post_counter_attack_pair_complete\":true",
       "\"same_native_date\":false",
-      "\"expected_one_day_date_split\":true",
+       "\"expected_one_day_date_split\":true",
+       "\"loaded_event_row_identity_map_available\":true",
       "\"bounded_capture_complete\":true",
       "\"full_mutable_transition_bundle_complete\":false",
       "\"original_trace_ready\":false",
       "native_capture_before_side0_schedule_call_0x27FB58F",
       "paused_next_day_stable_query",
-      "\"event_identity_token\":\"process-local-0x242\"",
+       "\"event_identity_token\":\"process-local-0x242\"",
+       "\"native_event_load_index\":11",
+       "\"scheduled_commander_native_event_load_index\":0",
       "\"character_id\":101",
       "\"stable_key\":\"phase.\\\"hit\\\"\"",
       "\"rank_native_mirror\":2",
@@ -192,6 +203,18 @@ bool InvalidCountsFailClosed() {
   return true;
 }
 
+bool MissingRowMapStaysExplicitlyUnknown() {
+  const auto drain = SmallDrain();
+  drain->loaded_event_row_objects_available = false;
+  const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
+  if (!Has(json, "\"loaded_event_row_identity_map_available\":false") ||
+      !Has(json, "\"native_event_load_index\":null") ||
+      !Has(json, "\"scheduled_commander_native_event_load_index\":null")) {
+    return Fail("missing event-object map was silently resolved");
+  }
+  return true;
+}
+
 bool OversizeFailsClosed() {
   auto drain = std::make_unique<CombatPhaseEventTraceRingDrainV1>();
   drain->record_count = 7;
@@ -217,6 +240,7 @@ bool OversizeFailsClosed() {
 
 int main() {
   return HappyPath() && InvalidCountsFailClosed() &&
+                 MissingRowMapStaysExplicitlyUnknown() &&
                  OversizeFailsClosed()
              ? 0
              : 1;

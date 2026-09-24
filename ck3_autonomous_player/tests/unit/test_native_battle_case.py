@@ -41,6 +41,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_phase_event_kill_trace_recovery,
     load_episode01_phase_event_kill_trace_release,
     load_episode01_conditional_kill_effect_audit,
+    load_episode01_selected_phase_event_row,
     load_episode01_knight_kill_reward_scaling,
     original_daily_timeline,
 )
@@ -400,6 +401,15 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertEqual(report["modeled_root_prowess_raw_after"], 400000)
         self.assertEqual(report["native_derived_root_prowess_raw_after"], 200000)
         self.assertFalse(report["native_draw_trace_available"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_native_selected_event_row_is_knight_killed_without_draw_proof(self) -> None:
+        report = load_episode01_selected_phase_event_row()
+        self.assertEqual(report["native_event_global_load_index"], 11)
+        self.assertEqual(report["native_event_key"], "knight_killed")
+        self.assertEqual(report["mapped_boundaries"], [1, 2, 3, 4, 5, 6])
+        self.assertEqual(report["appended_battle_event"]["right_character_id"], 34120)
+        self.assertFalse(report["native_effect_internal_draws_observed"])
         self.assertFalse(report["planner_usable"])
 
 

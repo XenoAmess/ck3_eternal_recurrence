@@ -54,6 +54,8 @@ EPISODE01_KILL_TRACE_RELEASE_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_
 EPISODE01_KILL_TRACE_RELEASE_SHA256 = "906900875DF185CD3157874293E440865ECD7BDDDD758E7FB9EC6163FFFD19BE"
 EPISODE01_CONDITIONAL_KILL_EFFECT_FILE = "ck3_1_19_0_6_episode01_messina_conditional_kill_effect_audit.json"
 EPISODE01_CONDITIONAL_KILL_EFFECT_SHA256 = "CFB7E59263D09FBF9F92CBB2426C1227ABD706994393F142AC163A2BD4CE2F16"
+EPISODE01_SELECTED_EVENT_ROW_FILE = "ck3_1_19_0_6_episode01_messina_selected_phase_event_row.json"
+EPISODE01_SELECTED_EVENT_ROW_SHA256 = "BEA95DDF36C0B8F1E5D4B6E01364BF8E35C3C3A7F676B10B038880A94CB5321D"
 EPISODE01_KILL_REWARD_FILE = "ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json"
 EPISODE01_KILL_REWARD_SHA256 = "3FCB1FFB509251CA471E33FAACC768FD7E7FC04243413EDCD9EDCFD0CAD99E92"
 
@@ -927,6 +929,38 @@ def load_episode01_conditional_kill_effect_audit() -> dict[str, Any]:
                 "whole_battle_win_probability_available", "planner_usable",
             ))):
         raise NativeBattleCaseError("conditional kill effect or fidelity boundary drifted")
+    return report
+
+
+def load_episode01_selected_phase_event_row() -> dict[str, Any]:
+    """Read exact native row identity; this does not expose its hidden draws."""
+    path = Path(__file__).with_name("data") / EPISODE01_SELECTED_EVENT_ROW_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_SELECTED_EVENT_ROW_SHA256:
+        raise NativeBattleCaseError("selected event row bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.selected-phase-event-row/v1"
+            or report.get("game_build") != "CK3 1.19.0.6"
+            or report.get("restored_source_save_sha256") !=
+            "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+            or report.get("trace_response_sha256") !=
+            "5744C62F395179F69234CAF15E9AE40913A14161D333D1D5D4E9D2A188E8B50B"
+            or report.get("target_character_id") != 33437
+            or report.get("target_regiment_id") != 65
+            or report.get("native_event_global_load_index") != 11
+            or report.get("native_event_key") != "knight_killed"
+            or report.get("native_selected_row_observed") is not True
+            or report.get("mapped_boundaries") != [1, 2, 3, 4, 5, 6]
+            or report.get("appended_battle_event", {}).get("stable_key") != "knight_killed_by_enemy"
+            or report.get("event_appended_between_boundaries") != [4, 5]
+            or report.get("death_and_detachment_observed_at_boundary") != 6
+            or report.get("target_derived_prowess_before_and_after") != [4, 2]
+            or any(report.get(key) is not False for key in (
+                "native_effect_internal_draws_observed", "full_event_write_set_proven",
+                "whole_battle_win_probability_available", "planner_usable",
+            ))):
+        raise NativeBattleCaseError("selected event row or readiness drifted")
     return report
 
 

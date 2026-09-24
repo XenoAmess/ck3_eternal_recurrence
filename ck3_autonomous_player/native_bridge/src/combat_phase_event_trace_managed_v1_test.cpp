@@ -153,7 +153,8 @@ struct NativeFixture {
   std::array<std::byte, 0x10> date_object{};
   std::array<std::byte, 0x18> rng_wrapper{};
   std::array<std::byte, 0x18> rng_state{};
-  std::array<std::byte, 8> event_database{};
+  std::array<std::byte, 0x80> event_database{};
+  std::array<std::uintptr_t, 13> event_row_ptrs{};
   std::array<std::byte, 8> battle_event_vtable{};
   std::array<std::int64_t, 3> thresholds{100'000, 500'000, 1'000'000};
   std::uintptr_t phase_database_slot = 0;
@@ -272,6 +273,13 @@ struct NativeFixture {
     Store(accolade, 0x08, kAccoladeId);
     Store(accolade, 0x70, std::int32_t{901});
     Store(accolade, 0xB0, std::int64_t{600'000});
+    for (std::size_t index = 0; index < event_row_ptrs.size(); ++index) {
+      event_row_ptrs[index] =
+          reinterpret_cast<std::uintptr_t>(event_database.data()) + index;
+    }
+    Store(event_database, 0x68,
+          reinterpret_cast<std::uintptr_t>(event_row_ptrs.data()));
+    Store(event_database, 0x74, std::int32_t{13});
     phase_database_slot =
         reinterpret_cast<std::uintptr_t>(event_database.data());
     date_slot = reinterpret_cast<std::uintptr_t>(date_object.data());

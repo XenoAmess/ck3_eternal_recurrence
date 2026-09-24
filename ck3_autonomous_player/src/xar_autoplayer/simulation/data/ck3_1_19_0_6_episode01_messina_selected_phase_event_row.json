@@ -1,0 +1,50 @@
+{
+  "schema": "xar.ck3.episode01.selected-phase-event-row/v1",
+  "game_build": "CK3 1.19.0.6",
+  "capture_run": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-day26-selected-row-map-attempt-017",
+  "restored_source_save_sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B",
+  "release_build_cache_sha256": "DD6CBAC4D3148554AA50EAE0ED47014CA053937EDAF7C0EC572B68E1C507BEBD",
+  "release_bridge_dll_sha256": "7998CBD177AF2AC1793A03311F35E7508C82345B9E0B335F3BEA86F88874AD74",
+  "v3_response_sha256": "D33AC923AE04284288549BE47C5A4F32739D38364101AC900C8C6E956CE76E68",
+  "trace_response_sha256": "5744C62F395179F69234CAF15E9AE40913A14161D333D1D5D4E9D2A188E8B50B",
+  "after_save_receipt_sha256": "95E17CA9F4888D76E106B1E25A762E7FF106895CDDCF0FF8964A756B7DAF14CE",
+  "after_native_save_sha256": "BF4507A49228CDD4DE12A899854E3DB7263892ECCF5951106265BF485C26B3FF",
+  "stock_phase_event_manifest_sha256": "91EDCEEDC634C5ACDCFAC8B02F53FE74C4E7A2E1768AAFC12CD0D976E874F2AC",
+  "combat_id": 16777218,
+  "source_day": 26,
+  "target_character_id": 33437,
+  "target_regiment_id": 65,
+  "native_event_global_load_index": 11,
+  "native_event_key": "knight_killed",
+  "native_selected_row_observed": true,
+  "scheduled_event_identity_token": "process-local-0x14BE25DAF88",
+  "mapped_boundaries": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "appended_battle_event": {
+    "left_character_id": 33437,
+    "right_character_id": 34120,
+    "stable_key": "knight_killed_by_enemy",
+    "type_raw": 3,
+    "side_index": 1,
+    "target_right": false
+  },
+  "event_appended_between_boundaries": [
+    4,
+    5
+  ],
+  "death_and_detachment_observed_at_boundary": 6,
+  "target_derived_prowess_before_and_after": [
+    4,
+    2
+  ],
+  "native_effect_internal_draws_observed": false,
+  "full_event_write_set_proven": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

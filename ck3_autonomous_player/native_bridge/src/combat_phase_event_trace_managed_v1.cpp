@@ -25,6 +25,8 @@ constexpr std::uintptr_t kAccoladeStorageSlotRva = 0x57BF1E0;
 constexpr std::uintptr_t kAccoladeFallbackSlotRva = 0x57BF198;
 constexpr std::uintptr_t kAccoladeRankThresholdDataSlotRva = 0x4F62B98;
 constexpr std::uintptr_t kAccoladeRankThresholdCountSlotRva = 0x4F62BA4;
+constexpr std::size_t kPhaseEventDatabaseRowsOffset = 0x68;
+constexpr std::size_t kPhaseEventDatabaseRowCountOffset = 0x74;
 
 constexpr std::size_t kStorageSlotsOffset = 0x20;
 constexpr std::size_t kStorageCapacityOffset = 0x2C;
@@ -230,6 +232,31 @@ BuildCombatPhaseEventTraceCapturePlanV1Result BuildPlanUnsafe(
     return BuildCombatPhaseEventTraceCapturePlanV1Result::
         native_slot_unavailable;
   }
+  const auto event_row_data = LoadAt<std::uintptr_t>(
+      output.expected_phase_event_database, kPhaseEventDatabaseRowsOffset);
+  const auto event_row_count = LoadAt<std::int32_t>(
+      output.expected_phase_event_database, kPhaseEventDatabaseRowCountOffset);
+  if (event_row_data == 0 ||
+      event_row_count !=
+          static_cast<std::int32_t>(output.loaded_event_row_objects.size())) {
+    return BuildCombatPhaseEventTraceCapturePlanV1Result::
+        native_slot_unavailable;
+  }
+  for (std::size_t index = 0;
+       index < output.loaded_event_row_objects.size(); ++index) {
+    const auto event_object = LoadAt<std::uintptr_t>(
+        event_row_data, index * sizeof(std::uintptr_t));
+    if (event_object == 0 ||
+        std::find(output.loaded_event_row_objects.begin(),
+                  output.loaded_event_row_objects.begin() + index,
+                  event_object) !=
+            output.loaded_event_row_objects.begin() + index) {
+      return BuildCombatPhaseEventTraceCapturePlanV1Result::
+          native_slot_unavailable;
+    }
+    output.loaded_event_row_objects[index] = event_object;
+  }
+  output.loaded_event_row_objects_available = true;
 
   for (std::size_t side_index = 0; side_index < output.sides.size();
        ++side_index) {

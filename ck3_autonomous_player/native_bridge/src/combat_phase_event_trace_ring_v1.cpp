@@ -226,8 +226,8 @@ bool ValidateCapturePlanUnsafe(
       plan.combat_id <= 0 || plan.combat == 0 ||
       plan.sides[0] != plan.combat + kCombatSide0Offset ||
       plan.sides[1] != plan.combat + kCombatSide1Offset ||
-      plan.phase_event_database_slot == 0 ||
-      plan.expected_phase_event_database == 0 ||
+       plan.phase_event_database_slot == 0 ||
+       plan.expected_phase_event_database == 0 ||
       plan.current_date_slot == 0 ||
       plan.expected_current_date_object == 0 ||
       plan.global_rng_wrapper_slot == 0 ||
@@ -244,8 +244,22 @@ bool ValidateCapturePlanUnsafe(
                                 plan.regiment_count) ||
       !IsStrictlySortedAndValid(plan.characters.data(),
                                 plan.character_count) ||
-      !ValidateAccoladePlanUnsafe(plan)) {
+       !ValidateAccoladePlanUnsafe(plan)) {
     return false;
+  }
+  if (plan.loaded_event_row_objects_available) {
+    for (std::size_t index = 0;
+         index < plan.loaded_event_row_objects.size(); ++index) {
+      if (plan.loaded_event_row_objects[index] == 0) {
+        return false;
+      }
+      for (std::size_t prior = 0; prior < index; ++prior) {
+        if (plan.loaded_event_row_objects[prior] ==
+            plan.loaded_event_row_objects[index]) {
+          return false;
+        }
+      }
+    }
   }
   if (LoadAt<std::int32_t>(plan.combat, kCombatIdOffset) != plan.combat_id ||
       LoadAt<std::uintptr_t>(plan.sides[0],
@@ -1236,6 +1250,9 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
   CancelCombatPhaseEventTraceRingV1(ring);
 
   std::memset(&output, 0, sizeof(output));
+  output.loaded_event_row_objects_available =
+      ring.plan.loaded_event_row_objects_available;
+  output.loaded_event_row_objects = ring.plan.loaded_event_row_objects;
   output.failure_flags =
       ring.failure_flags.load(std::memory_order_acquire);
   output.outgoing_damage_count =

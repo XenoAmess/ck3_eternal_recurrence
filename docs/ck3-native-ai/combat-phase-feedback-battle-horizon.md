@@ -1,5 +1,7 @@
 # CK3 1.19.0.6 战斗 phase effect：本场回流分类
 
+2026-09-25 的独立 Release 回放 attempt-017 又补齐了**实际选中事件行**：在冻结的第 26 日检查点，原生七边界 trace 零采集失败，目标骑士 `33437`／兵团 `65` 的日程在边界 1–6 始终映射到原生载入索引 `11`；同进程 v3 输入与 stock manifest 将索引 11 精确对应 `knight_killed`。边界 4→5 追加 `knight_killed_by_enemy` 战报，边界 6 观察到 death marker、派生勇武 `4→2` 和参战兵团退出。[哈希绑定报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_selected_phase_event_row.json) SHA-256 `BEA95DDF36C0B8F1E5D4B6E01364BF8E35C3C3A7F676B10B038880A94CB5321D`，由 [`project_episode01_selected_event_row.py`](../../tools/project_episode01_selected_event_row.py) 从原始回执重建；[智能体只读入口](../../ck3_autonomous_player/src/xar_autoplayer/simulation/native_battle_case.py)也锁定该报告字节。这确认了此回放的 row 选择，**没有**记录效果内部 RNG 抽签、完整写集或独立样本下的事件概率；`planner_usable=false`，不能把单次阵亡路径写成整场胜率。
+
 ## 冻结边界
 
 - 原版 EXE SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下脚本行号只针对该 build 的 `Crusader Kings III/game`，不把其他版本或 mod 加载表外推到当前场景。
