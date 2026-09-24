@@ -66,6 +66,20 @@
 
 进一步把原版实测出伤和这两次已观察到的入场名单送入智能体现有的 `apply_main_phase_casualties`，得到了[初次条件对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json)：第 12 日新增兵团 12/12 精确，整侧 37/38 精确，原有兵团 `220` 的 `current_raw` 残差为 `+214`（Q100000）；第 22 日新增兵团 5/5、整侧 42/42 精确。第 11 日原版有效阶段记录证明，兵团 `220` 在 side0 schedule 前的有效韧性已从较早快照的 `7400000` 变为 `3700000`。用这份**原版调度前韧性**作为条件输入后，[第二次条件对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json)分别为第 12 日 38/38、第 22 日 42/42 精确。模拟器尚未自主计算该韧性刷新、增援策略或每日出伤；两天源 trace RED 保留，整场胜率仍不可用。
 
+### 反制后攻击力 R14：同日输入与阶段回执配对
+
+第三条**独立回放** `D:\workspace\ck3_native_war_ai_promo_work\episode01-paired-counter-trace-attempt-010` 从 attempt-004 的第 4 日不可变存档启动；第 4–26 日逐日先保存 checkpoint，再在**同一暂停日期与同一进程**读取原版 v3 的兵团类别、反制目标和双方 owner 修正，然后推进一天，读取原生阶段追踪的反制后攻击力 R14。原始 v3、BEGIN/FINISH、存档和逐日 journal 均保存在该 attempt。[只读重建工具](../../tools/project_native_paired_counter_parity.py)逐个核对存档及两类回执 SHA，并调用智能体内核重算；[共用报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_paired_counter_r14_parity.json) SHA-256 `18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358`，片用[反制板 v1](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/counter-r14-board-v1.json)由智能体的同一读取器生成。
+
+v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接以它计算 R14 会把暂时退出当前交战的软伤亡兵员也算进去。第 5 日即能观察到高估。智能体因此新增 `post_counter_attack_from_fighting_entries_raw`，要求传入阶段边界的逐兵团 `current_fighting_raw`（Q100000）和当时**已刷新**的有效攻击属性，再按当前双方类别兵力重算反制系数；缺少完整属性表或兵团身份不合时拒绝计算。第 5 日的[原版配对回归夹具](../../ck3_autonomous_player/tests/fixtures/combat/episode01_messina_paired_day05_r14.json)与单元测试验证了两种人数口径的差异。
+
+| 配对回放源日 | R14 条件对拍 | 限制 |
+| --- | ---: | --- |
+| 4–10、12–20、22–26 | 42/42 双方零差 | 给定原版当日参战人数、已刷新攻击属性与日初参战名单；第 26 日整条阶段 trace 仍是 RED，只使用捕获标志为 0 的局部边界。 |
+| 11 | 0/2 | 当日军队 22 插入后才计算 R14；v3 与局部阶段记录仍是增援前名单，整条 trace `trace_unavailable`。 |
+| 21 | 1/2 | 当日军队 28 插入；玩家侧零差，敌侧旧名单少了新军的攻击量，整条 trace `trace_unavailable`。 |
+
+因此 23 日共 **43/46 个局部 R14 数值零差**，但它是“原版当前战斗状态给定时”的内核验证。第 11、21 日还需把入场兵团与反制时点接入同一来源；人物伤势导致的属性刷新仍由原版边界提供，优势的日内生成、事件完整效果、后续胜败与概率校准也未自主生成。新回放第 6 日数值与 attempt-004 不同，不能把两条时间线混剪或混用于逐日残差。报告维持 `forecast_ready=false`、`planner_usable=false`。
+
 ### 同接战存档的三次原生回放
 
 2026-09-24 在独立 profile 中进行了有界重复性实验，原始请求、响应、脚本、失败回执、两次原生 restore 生命周期与 session 清理证明保存在 `D:\workspace\ck3_native_war_ai_promo_work\episode01-native-repeatability-attempt-007`。最初脚本在第 32 天错误查询已经移除的活动战斗，收到 RED；修正脚本改查被动终局 journal，保留这条失败记录，没有覆盖此前素材。输入仍是接战日 `raw53146248`、同一 `CombatID=16777218`；本次原生固定 checkpoint 的 SHA-256 为 `ABC37ED58E0ED008C1D627F38E6BA138F728438DDC16F50041576E5368399EDD`。第 1 次是保存检查点后的同会话继续，第 2、3 次才分别从这份**相同 bytes** 的检查点重启原版进程。

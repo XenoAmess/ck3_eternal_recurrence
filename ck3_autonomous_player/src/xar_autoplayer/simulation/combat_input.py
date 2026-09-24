@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from .combat_core import (
     FIXED_SCALE,
@@ -333,6 +333,57 @@ class FrozenCombatSimulationInput:
                 total += fixed_mul(
                     damage_raw, regiment.current_soldiers * FIXED_SCALE
                 )
+        return total
+
+    def post_counter_attack_from_fighting_entries_raw(
+        self,
+        coalition_side: str,
+        countered_entries: tuple[CombatRegimentState, ...],
+        countering_entries: tuple[CombatRegimentState, ...],
+        effective_damage_raw_by_regiment_id: Mapping[int, int],
+    ) -> int:
+        """Recompute R14 from fighting Q100000 men and current effective damage.
+
+        The v2/v3 ``current_soldiers`` field includes men temporarily out of
+        the fight as soft casualties. It is therefore suitable for the initial
+        contact input but cannot stand in for a later phase boundary's
+        ``current_fighting_raw``. Callers must supply both current combat-entry
+        pools and refreshed damage stats; a frozen pre-contact stat is not
+        silently substituted after wounds or other phase effects.
+        """
+        regiments = tuple(
+            regiment
+            for army in self.armies_for_side(coalition_side)
+            for regiment in army.regiments
+        )
+        _validate_entry_census(regiments, countered_entries)
+        expected_damage_ids = {
+            regiment.regiment_id
+            for regiment in regiments
+            if regiment.fights_in_main_phase
+        }
+        if set(effective_damage_raw_by_regiment_id) != expected_damage_ids:
+            raise CombatInputError("current effective-damage census drifted")
+        if any(
+            type(value) is not int or value < 0
+            for value in effective_damage_raw_by_regiment_id.values()
+        ):
+            raise CombatInputError("current effective damage must be nonnegative int")
+        if any(entry.current_raw < 0 for entry in countered_entries):
+            raise CombatInputError("current fighting men must be nonnegative")
+        retention = self.dynamic_counter_retention_by_class_raw(
+            coalition_side, countered_entries, countering_entries
+        )
+        total = 0
+        for regiment, entry in zip(regiments, countered_entries, strict=True):
+            if not regiment.fights_in_main_phase or entry.current_raw == 0:
+                continue
+            damage_raw = effective_damage_raw_by_regiment_id[regiment.regiment_id]
+            if regiment.counter is not None:
+                damage_raw = fixed_mul(
+                    damage_raw, retention[regiment.counter.class_index]
+                )
+            total += fixed_mul(damage_raw, entry.current_raw)
         return total
 
 

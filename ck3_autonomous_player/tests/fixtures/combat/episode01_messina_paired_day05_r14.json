@@ -1,0 +1,2979 @@
+{
+  "schema": "xar.ck3.native-r14-regression-fixture/v1",
+  "game_build": "CK3 1.19.0.6",
+  "source_capture_run": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010",
+  "source_day": 5,
+  "v3_response_sha256": "9446F4274DED45F68A9D1DB59AB2BACED4043D4C24776D4AEAA0614A61A185F1",
+  "trace_response_sha256": "6B72365D4B3BD2B8ED6E54F7E0ECF8F924352F9C615A71E999FAEBF47BA2F611",
+  "basis": "same-run v3 classes/context plus native pre-fire fighting Q100000 and refreshed damage",
+  "base_inputs": {
+    "target_province_id": 2633,
+    "participant_policy": "explicit_hypothetical_fixed_at_contact_no_reinforcements",
+    "scenario": {
+      "kind": "explicit_hypothetical_contact",
+      "attacker_entry_province_id": 8653,
+      "attacker_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "defender_army_ids": [
+        18
+      ],
+      "attacker_side": "enemy",
+      "defender_side": "player_or_allied",
+      "attacker_position_policy": "fixed_at_entry_hypothetical",
+      "defender_position_policy": "fixed_at_target_hypothetical",
+      "defender_insertion_order_policy": "explicit_request_order_hypothetical",
+      "actual_route_dependency": false
+    },
+    "armies": [
+      {
+        "status": "available",
+        "army_id": 16777221,
+        "encounter_role": "attacker",
+        "native_carmy_id": 16777221,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          4
+        ],
+        "current_province_id": 2633,
+        "owner": {
+          "status": "available",
+          "character_id": 31549,
+          "counter_efficiency_raw": 0,
+          "counter_resistance_raw": 0,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "commander": {
+          "status": "available",
+          "character_id": 31549,
+          "generic_advantage_points": 18,
+          "battle_context": {
+            "status": "available",
+            "source_target_province_id": 2633,
+            "effective_min_roll": 0,
+            "effective_max_roll": 10,
+            "unavailable_reason": null
+          },
+          "unavailable_reason": null
+        },
+        "regiments": [
+          {
+            "status": "available",
+            "regiment_id": 87,
+            "identity_valid": true,
+            "current_soldiers": 100,
+            "maximum_soldiers": 100,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 3,
+              "siege_value_raw": 0,
+              "damage_raw": 4500000,
+              "toughness_raw": 2625000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "available",
+              "class_index": 0,
+              "current_chunk_raw": 100000,
+              "targets": [
+                {
+                  "class_index": 1,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                },
+                {
+                  "class_index": 2,
+                  "effectiveness_raw": 200000,
+                  "scale": 100000
+                },
+                {
+                  "class_index": 0,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                }
+              ],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 88,
+            "identity_valid": true,
+            "current_soldiers": 216,
+            "maximum_soldiers": 219,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 89,
+            "identity_valid": true,
+            "current_soldiers": 8,
+            "maximum_soldiers": 8,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 90,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 55000000,
+              "toughness_raw": 11000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 91,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 49500000,
+              "toughness_raw": 9900000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 92,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 22000000,
+              "toughness_raw": 4400000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          }
+        ],
+        "knights": {
+          "status": "available",
+          "members": [
+            {
+              "eligible": true,
+              "character_id": 47032,
+              "source_regiment_id": 90,
+              "army_id": 16777221,
+              "participant_army_membership_verified": true,
+              "prowess": 10,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 55000000,
+              "effective_toughness_raw": 11000000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 47031,
+              "source_regiment_id": 91,
+              "army_id": 16777221,
+              "participant_army_membership_verified": true,
+              "prowess": 9,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 49500000,
+              "effective_toughness_raw": 9900000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 47029,
+              "source_regiment_id": 92,
+              "army_id": 16777221,
+              "participant_army_membership_verified": true,
+              "prowess": 4,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 22000000,
+              "effective_toughness_raw": 4400000,
+              "scale": 100000
+            }
+          ],
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 16777231,
+        "encounter_role": "attacker",
+        "native_carmy_id": 16777231,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          4
+        ],
+        "current_province_id": 2633,
+        "owner": {
+          "status": "available",
+          "character_id": 32725,
+          "counter_efficiency_raw": 0,
+          "counter_resistance_raw": 0,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "commander": {
+          "status": "available",
+          "character_id": 32725,
+          "generic_advantage_points": 27,
+          "battle_context": {
+            "status": "available",
+            "source_target_province_id": 2633,
+            "effective_min_roll": 0,
+            "effective_max_roll": 10,
+            "unavailable_reason": null
+          },
+          "unavailable_reason": null
+        },
+        "regiments": [
+          {
+            "status": "available",
+            "regiment_id": 102,
+            "identity_valid": true,
+            "current_soldiers": 336,
+            "maximum_soldiers": 341,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 103,
+            "identity_valid": true,
+            "current_soldiers": 7,
+            "maximum_soldiers": 7,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 104,
+            "identity_valid": true,
+            "current_soldiers": 298,
+            "maximum_soldiers": 300,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 3,
+              "siege_value_raw": 0,
+              "damage_raw": 2500000,
+              "toughness_raw": 1490000,
+              "pursuit_raw": 0,
+              "screen_raw": 400000,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "available",
+              "class_index": 3,
+              "current_chunk_raw": 298000,
+              "targets": [
+                {
+                  "class_index": 6,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                }
+              ],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 105,
+            "identity_valid": true,
+            "current_soldiers": 10,
+            "maximum_soldiers": 10,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": false,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 3,
+              "siege_value_raw": 20000,
+              "damage_raw": 100000,
+              "toughness_raw": 1308000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "available",
+              "class_index": 11,
+              "current_chunk_raw": 100000,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 106,
+            "identity_valid": true,
+            "current_soldiers": 100,
+            "maximum_soldiers": 100,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 3,
+              "siege_value_raw": 0,
+              "damage_raw": 2200000,
+              "toughness_raw": 1635000,
+              "pursuit_raw": 2000000,
+              "screen_raw": 2000000,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "available",
+              "class_index": 8,
+              "current_chunk_raw": 100000,
+              "targets": [
+                {
+                  "class_index": 4,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                }
+              ],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 107,
+            "identity_valid": true,
+            "current_soldiers": 347,
+            "maximum_soldiers": 352,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 108,
+            "identity_valid": true,
+            "current_soldiers": 7,
+            "maximum_soldiers": 7,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 109,
+            "identity_valid": true,
+            "current_soldiers": 8,
+            "maximum_soldiers": 8,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 110,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 60500000,
+              "toughness_raw": 12100000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 111,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 49500000,
+              "toughness_raw": 9900000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 112,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 44000000,
+              "toughness_raw": 8800000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 113,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 44000000,
+              "toughness_raw": 8800000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 114,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 38500000,
+              "toughness_raw": 7700000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 115,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 38500000,
+              "toughness_raw": 7700000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 140,
+            "identity_valid": true,
+            "current_soldiers": 41,
+            "maximum_soldiers": 41,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          }
+        ],
+        "knights": {
+          "status": "available",
+          "members": [
+            {
+              "eligible": true,
+              "character_id": 34484,
+              "source_regiment_id": 110,
+              "army_id": 16777231,
+              "participant_army_membership_verified": true,
+              "prowess": 11,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 60500000,
+              "effective_toughness_raw": 12100000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 44476,
+              "source_regiment_id": 111,
+              "army_id": 16777231,
+              "participant_army_membership_verified": true,
+              "prowess": 9,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 49500000,
+              "effective_toughness_raw": 9900000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 33884,
+              "source_regiment_id": 112,
+              "army_id": 16777231,
+              "participant_army_membership_verified": true,
+              "prowess": 8,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 44000000,
+              "effective_toughness_raw": 8800000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 36303,
+              "source_regiment_id": 113,
+              "army_id": 16777231,
+              "participant_army_membership_verified": true,
+              "prowess": 8,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 44000000,
+              "effective_toughness_raw": 8800000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 34117,
+              "source_regiment_id": 114,
+              "army_id": 16777231,
+              "participant_army_membership_verified": true,
+              "prowess": 7,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 38500000,
+              "effective_toughness_raw": 7700000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 34120,
+              "source_regiment_id": 115,
+              "army_id": 16777231,
+              "participant_army_membership_verified": true,
+              "prowess": 7,
+              "knight_effectiveness_raw": 110000,
+              "effective_damage_raw": 38500000,
+              "effective_toughness_raw": 7700000,
+              "scale": 100000
+            }
+          ],
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 27,
+        "encounter_role": "attacker",
+        "native_carmy_id": 27,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          4
+        ],
+        "current_province_id": 2633,
+        "owner": {
+          "status": "available",
+          "character_id": 34320,
+          "counter_efficiency_raw": 0,
+          "counter_resistance_raw": 0,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "commander": {
+          "status": "available",
+          "character_id": 34320,
+          "generic_advantage_points": 30,
+          "battle_context": {
+            "status": "available",
+            "source_target_province_id": 2633,
+            "effective_min_roll": 0,
+            "effective_max_roll": 10,
+            "unavailable_reason": null
+          },
+          "unavailable_reason": null
+        },
+        "regiments": [
+          {
+            "status": "available",
+            "regiment_id": 217,
+            "identity_valid": true,
+            "current_soldiers": 100,
+            "maximum_soldiers": 100,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 3,
+              "siege_value_raw": 0,
+              "damage_raw": 4500000,
+              "toughness_raw": 2675000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "available",
+              "class_index": 0,
+              "current_chunk_raw": 100000,
+              "targets": [
+                {
+                  "class_index": 1,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                },
+                {
+                  "class_index": 2,
+                  "effectiveness_raw": 200000,
+                  "scale": 100000
+                },
+                {
+                  "class_index": 0,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                }
+              ],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 218,
+            "identity_valid": true,
+            "current_soldiers": 401,
+            "maximum_soldiers": 407,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 219,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 74000000,
+              "toughness_raw": 14800000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 220,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 37000000,
+              "toughness_raw": 7400000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 221,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 27750000,
+              "toughness_raw": 5550000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 222,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 18500000,
+              "toughness_raw": 3700000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          }
+        ],
+        "knights": {
+          "status": "available",
+          "members": [
+            {
+              "eligible": true,
+              "character_id": 54140,
+              "source_regiment_id": 219,
+              "army_id": 27,
+              "participant_army_membership_verified": true,
+              "prowess": 8,
+              "knight_effectiveness_raw": 185000,
+              "effective_damage_raw": 74000000,
+              "effective_toughness_raw": 14800000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 54144,
+              "source_regiment_id": 220,
+              "army_id": 27,
+              "participant_army_membership_verified": true,
+              "prowess": 4,
+              "knight_effectiveness_raw": 185000,
+              "effective_damage_raw": 37000000,
+              "effective_toughness_raw": 7400000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 54145,
+              "source_regiment_id": 221,
+              "army_id": 27,
+              "participant_army_membership_verified": true,
+              "prowess": 3,
+              "knight_effectiveness_raw": 185000,
+              "effective_damage_raw": 27750000,
+              "effective_toughness_raw": 5550000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 54141,
+              "source_regiment_id": 222,
+              "army_id": 27,
+              "participant_army_membership_verified": true,
+              "prowess": 2,
+              "knight_effectiveness_raw": 185000,
+              "effective_damage_raw": 18500000,
+              "effective_toughness_raw": 3700000,
+              "scale": 100000
+            }
+          ],
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "army_id": 18,
+        "encounter_role": "defender",
+        "native_carmy_id": 18,
+        "scope_role": "player",
+        "war_ids": [
+          4
+        ],
+        "current_province_id": 2633,
+        "owner": {
+          "status": "available",
+          "character_id": 29829,
+          "counter_efficiency_raw": 0,
+          "counter_resistance_raw": 0,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "commander": {
+          "status": "available",
+          "character_id": 29829,
+          "generic_advantage_points": 34,
+          "battle_context": {
+            "status": "available",
+            "source_target_province_id": 2633,
+            "effective_min_roll": 0,
+            "effective_max_roll": 10,
+            "unavailable_reason": null
+          },
+          "unavailable_reason": null
+        },
+        "regiments": [
+          {
+            "status": "available",
+            "regiment_id": 50,
+            "identity_valid": true,
+            "current_soldiers": 66,
+            "maximum_soldiers": 67,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 51,
+            "identity_valid": true,
+            "current_soldiers": 199,
+            "maximum_soldiers": 200,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 3,
+              "siege_value_raw": 15000,
+              "damage_raw": 2200000,
+              "toughness_raw": 4224000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "available",
+              "class_index": 1,
+              "current_chunk_raw": 199000,
+              "targets": [
+                {
+                  "class_index": 4,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                },
+                {
+                  "class_index": 5,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                },
+                {
+                  "class_index": 8,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                },
+                {
+                  "class_index": 9,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                }
+              ],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 52,
+            "identity_valid": true,
+            "current_soldiers": 100,
+            "maximum_soldiers": 100,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 3,
+              "siege_value_raw": 15000,
+              "damage_raw": 3680000,
+              "toughness_raw": 3322000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "available",
+              "class_index": 0,
+              "current_chunk_raw": 100000,
+              "targets": [
+                {
+                  "class_index": 1,
+                  "effectiveness_raw": 100000,
+                  "scale": 100000
+                },
+                {
+                  "class_index": 2,
+                  "effectiveness_raw": 200000,
+                  "scale": 100000
+                }
+              ],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 53,
+            "identity_valid": true,
+            "current_soldiers": 10,
+            "maximum_soldiers": 10,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": false,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 3,
+              "siege_value_raw": 57000,
+              "damage_raw": 100000,
+              "toughness_raw": 1512000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "available",
+              "class_index": 11,
+              "current_chunk_raw": 100000,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 54,
+            "identity_valid": true,
+            "current_soldiers": 340,
+            "maximum_soldiers": 347,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 55,
+            "identity_valid": true,
+            "current_soldiers": 219,
+            "maximum_soldiers": 224,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 56,
+            "identity_valid": true,
+            "current_soldiers": 11,
+            "maximum_soldiers": 11,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 57,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 122500000,
+              "toughness_raw": 24500000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 58,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 122500000,
+              "toughness_raw": 24500000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 59,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 113750000,
+              "toughness_raw": 22750000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 60,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 105000000,
+              "toughness_raw": 21000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 61,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 96250000,
+              "toughness_raw": 19250000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 62,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 87500000,
+              "toughness_raw": 17500000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 63,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 78750000,
+              "toughness_raw": 15750000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 64,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 43750000,
+              "toughness_raw": 8750000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 65,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 35000000,
+              "toughness_raw": 7000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 66,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 26250000,
+              "toughness_raw": 5250000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 67,
+            "identity_valid": true,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "men_at_arms",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 17500000,
+              "toughness_raw": 3500000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 72,
+            "identity_valid": true,
+            "current_soldiers": 86,
+            "maximum_soldiers": 87,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 73,
+            "identity_valid": true,
+            "current_soldiers": 27,
+            "maximum_soldiers": 27,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 131,
+            "identity_valid": true,
+            "current_soldiers": 38,
+            "maximum_soldiers": 38,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 132,
+            "identity_valid": true,
+            "current_soldiers": 56,
+            "maximum_soldiers": 57,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 133,
+            "identity_valid": true,
+            "current_soldiers": 9,
+            "maximum_soldiers": 9,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          },
+          {
+            "status": "available",
+            "regiment_id": 144,
+            "identity_valid": true,
+            "current_soldiers": 108,
+            "maximum_soldiers": 110,
+            "maa_type": {
+              "status": "absent",
+              "key": null,
+              "unavailable_reason": null
+            },
+            "kind": {
+              "status": "available",
+              "value": "levy",
+              "unavailable_reason": null
+            },
+            "fights_in_main_phase": true,
+            "effective_stats": {
+              "status": "available",
+              "source_target_province_id": 2633,
+              "max_size": 0,
+              "siege_value_raw": 0,
+              "damage_raw": 1000000,
+              "toughness_raw": 1000000,
+              "pursuit_raw": 0,
+              "screen_raw": 0,
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "counter": {
+              "status": "absent",
+              "class_index": null,
+              "current_chunk_raw": null,
+              "targets": [],
+              "scale": 100000,
+              "unavailable_reason": null
+            },
+            "unavailable_reason": null
+          }
+        ],
+        "knights": {
+          "status": "available",
+          "members": [
+            {
+              "eligible": true,
+              "character_id": 33435,
+              "source_regiment_id": 57,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 14,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 122500000,
+              "effective_toughness_raw": 24500000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 36077,
+              "source_regiment_id": 58,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 14,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 122500000,
+              "effective_toughness_raw": 24500000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 32716,
+              "source_regiment_id": 59,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 13,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 113750000,
+              "effective_toughness_raw": 22750000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 32440,
+              "source_regiment_id": 60,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 12,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 105000000,
+              "effective_toughness_raw": 21000000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 34333,
+              "source_regiment_id": 61,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 11,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 96250000,
+              "effective_toughness_raw": 19250000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 34867,
+              "source_regiment_id": 62,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 10,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 87500000,
+              "effective_toughness_raw": 17500000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 43706,
+              "source_regiment_id": 63,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 9,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 78750000,
+              "effective_toughness_raw": 15750000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 43712,
+              "source_regiment_id": 64,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 5,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 43750000,
+              "effective_toughness_raw": 8750000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 33437,
+              "source_regiment_id": 65,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 4,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 35000000,
+              "effective_toughness_raw": 7000000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 35637,
+              "source_regiment_id": 66,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 3,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 26250000,
+              "effective_toughness_raw": 5250000,
+              "scale": 100000
+            },
+            {
+              "eligible": true,
+              "character_id": 30784,
+              "source_regiment_id": 67,
+              "army_id": 18,
+              "participant_army_membership_verified": true,
+              "prowess": 2,
+              "knight_effectiveness_raw": 175000,
+              "effective_damage_raw": 17500000,
+              "effective_toughness_raw": 3500000,
+              "scale": 100000
+            }
+          ],
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      }
+    ],
+    "target_province": {
+      "status": "available",
+      "province_id": 2633,
+      "terrain": {
+        "status": "available",
+        "key": "forest",
+        "combat_width_multiplier_raw": 90000,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "crossing": {
+        "status": "available",
+        "kind": "none",
+        "unavailable_reason": null
+      },
+      "defender_context": {
+        "status": "available",
+        "defender_side": "player_or_allied",
+        "holding_defender_status": "available",
+        "holding_defender": true,
+        "holding_unavailable_reason": null,
+        "unavailable_reason": null
+      },
+      "precontact_width": {
+        "status": "available",
+        "base": 1636,
+        "final": 1472,
+        "unavailable_reason": null
+      },
+      "unavailable_reason": null
+    },
+    "ongoing_combats": [
+      {
+        "status": "available",
+        "combat_id": 16777218,
+        "province_id": 2633,
+        "phase": 1,
+        "phase_day": 1,
+        "base_combat_width": 1645,
+        "final_combat_width": 1480,
+        "side_0_roll": 9,
+        "side_1_roll": 5,
+        "base_advantage": -300000,
+        "resolved_advantage": -1000000,
+        "orientation": "native_side_0_attacker_side_1_defender",
+        "unavailable_reason": null
+      }
+    ],
+    "counter_resolutions": [
+      {
+        "status": "available",
+        "countered_side": "player_or_allied",
+        "countering_side": "enemy",
+        "countered_modifier_owner_character_id": 29829,
+        "countering_modifier_owner_character_id": 31549,
+        "context_scale_raw": 100000,
+        "class_count": 13,
+        "damage_retention_by_class_raw": [
+          10000,
+          54775,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      {
+        "status": "available",
+        "countered_side": "enemy",
+        "countering_side": "player_or_allied",
+        "countered_modifier_owner_character_id": 31549,
+        "countering_modifier_owner_character_id": 29829,
+        "context_scale_raw": 125000,
+        "class_count": 13,
+        "damage_retention_by_class_raw": [
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          100000,
+          10000,
+          100000,
+          100000,
+          100000,
+          100000
+        ],
+        "scale": 100000,
+        "unavailable_reason": null
+      }
+    ],
+    "completeness": {
+      "observation_slice": "precontact-composition-context-v2",
+      "input_observation_ready": true,
+      "monte_carlo_ready": false,
+      "missing_required_domains": [
+        "damage_to_casualty_allocation",
+        "pursuit_transition",
+        "battle_end_and_retreat_transition",
+        "phase_event_rng_and_effects"
+      ]
+    }
+  },
+  "pre_fire_regiments": {
+    "enemy": [
+      {
+        "regiment_id": 88,
+        "current_fighting_raw": 20864568,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 89,
+        "current_fighting_raw": 762176,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 102,
+        "current_fighting_raw": 32487752,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 103,
+        "current_fighting_raw": 666904,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 107,
+        "current_fighting_raw": 33535744,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 108,
+        "current_fighting_raw": 666904,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 109,
+        "current_fighting_raw": 762176,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 140,
+        "current_fighting_raw": 3906152,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 218,
+        "current_fighting_raw": 38775704,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 87,
+        "current_fighting_raw": 9819881,
+        "effective_damage_raw": 4500000,
+        "effective_toughness_raw": 2625000
+      },
+      {
+        "regiment_id": 90,
+        "current_fighting_raw": 99571,
+        "effective_damage_raw": 55000000,
+        "effective_toughness_raw": 11000000
+      },
+      {
+        "regiment_id": 91,
+        "current_fighting_raw": 99523,
+        "effective_damage_raw": 49500000,
+        "effective_toughness_raw": 9900000
+      },
+      {
+        "regiment_id": 92,
+        "current_fighting_raw": 98926,
+        "effective_damage_raw": 22000000,
+        "effective_toughness_raw": 4400000
+      },
+      {
+        "regiment_id": 104,
+        "current_fighting_raw": 29048025,
+        "effective_damage_raw": 2500000,
+        "effective_toughness_raw": 1490000
+      },
+      {
+        "regiment_id": 105,
+        "current_fighting_raw": 0,
+        "effective_damage_raw": 100000,
+        "effective_toughness_raw": 1308000
+      },
+      {
+        "regiment_id": 106,
+        "current_fighting_raw": 9710817,
+        "effective_damage_raw": 2200000,
+        "effective_toughness_raw": 1635000
+      },
+      {
+        "regiment_id": 110,
+        "current_fighting_raw": 99610,
+        "effective_damage_raw": 60500000,
+        "effective_toughness_raw": 12100000
+      },
+      {
+        "regiment_id": 111,
+        "current_fighting_raw": 99523,
+        "effective_damage_raw": 49500000,
+        "effective_toughness_raw": 9900000
+      },
+      {
+        "regiment_id": 112,
+        "current_fighting_raw": 99463,
+        "effective_damage_raw": 44000000,
+        "effective_toughness_raw": 8800000
+      },
+      {
+        "regiment_id": 113,
+        "current_fighting_raw": 99463,
+        "effective_damage_raw": 44000000,
+        "effective_toughness_raw": 8800000
+      },
+      {
+        "regiment_id": 114,
+        "current_fighting_raw": 99386,
+        "effective_damage_raw": 38500000,
+        "effective_toughness_raw": 7700000
+      },
+      {
+        "regiment_id": 115,
+        "current_fighting_raw": 99386,
+        "effective_damage_raw": 38500000,
+        "effective_toughness_raw": 7700000
+      },
+      {
+        "regiment_id": 217,
+        "current_fighting_raw": 9823247,
+        "effective_damage_raw": 4500000,
+        "effective_toughness_raw": 2675000
+      },
+      {
+        "regiment_id": 219,
+        "current_fighting_raw": 99681,
+        "effective_damage_raw": 74000000,
+        "effective_toughness_raw": 14800000
+      },
+      {
+        "regiment_id": 220,
+        "current_fighting_raw": 99362,
+        "effective_damage_raw": 37000000,
+        "effective_toughness_raw": 7400000
+      },
+      {
+        "regiment_id": 221,
+        "current_fighting_raw": 99149,
+        "effective_damage_raw": 27750000,
+        "effective_toughness_raw": 5550000
+      },
+      {
+        "regiment_id": 222,
+        "current_fighting_raw": 98723,
+        "effective_damage_raw": 18500000,
+        "effective_toughness_raw": 3700000
+      }
+    ],
+    "player_or_allied": [
+      {
+        "regiment_id": 50,
+        "current_fighting_raw": 6282657,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 54,
+        "current_fighting_raw": 32538537,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 55,
+        "current_fighting_raw": 21004704,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 56,
+        "current_fighting_raw": 1031481,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 72,
+        "current_fighting_raw": 8158077,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 73,
+        "current_fighting_raw": 2531817,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 131,
+        "current_fighting_raw": 3563298,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 132,
+        "current_fighting_raw": 5344947,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 133,
+        "current_fighting_raw": 843939,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 144,
+        "current_fighting_raw": 10314810,
+        "effective_damage_raw": 1000000,
+        "effective_toughness_raw": 1000000
+      },
+      {
+        "regiment_id": 51,
+        "current_fighting_raw": 19705044,
+        "effective_damage_raw": 2200000,
+        "effective_toughness_raw": 4224000
+      },
+      {
+        "regiment_id": 52,
+        "current_fighting_raw": 9812478,
+        "effective_damage_raw": 3680000,
+        "effective_toughness_raw": 3322000
+      },
+      {
+        "regiment_id": 53,
+        "current_fighting_raw": 0,
+        "effective_damage_raw": 100000,
+        "effective_toughness_raw": 1512000
+      },
+      {
+        "regiment_id": 57,
+        "current_fighting_raw": 99746,
+        "effective_damage_raw": 122500000,
+        "effective_toughness_raw": 24500000
+      },
+      {
+        "regiment_id": 58,
+        "current_fighting_raw": 99746,
+        "effective_damage_raw": 122500000,
+        "effective_toughness_raw": 24500000
+      },
+      {
+        "regiment_id": 59,
+        "current_fighting_raw": 99727,
+        "effective_damage_raw": 113750000,
+        "effective_toughness_raw": 22750000
+      },
+      {
+        "regiment_id": 60,
+        "current_fighting_raw": 99704,
+        "effective_damage_raw": 105000000,
+        "effective_toughness_raw": 21000000
+      },
+      {
+        "regiment_id": 61,
+        "current_fighting_raw": 99677,
+        "effective_damage_raw": 96250000,
+        "effective_toughness_raw": 19250000
+      },
+      {
+        "regiment_id": 62,
+        "current_fighting_raw": 99645,
+        "effective_damage_raw": 87500000,
+        "effective_toughness_raw": 17500000
+      },
+      {
+        "regiment_id": 63,
+        "current_fighting_raw": 99605,
+        "effective_damage_raw": 78750000,
+        "effective_toughness_raw": 15750000
+      },
+      {
+        "regiment_id": 64,
+        "current_fighting_raw": 99289,
+        "effective_damage_raw": 43750000,
+        "effective_toughness_raw": 8750000
+      },
+      {
+        "regiment_id": 65,
+        "current_fighting_raw": 99111,
+        "effective_damage_raw": 35000000,
+        "effective_toughness_raw": 7000000
+      },
+      {
+        "regiment_id": 66,
+        "current_fighting_raw": 98814,
+        "effective_damage_raw": 26250000,
+        "effective_toughness_raw": 5250000
+      },
+      {
+        "regiment_id": 67,
+        "current_fighting_raw": 98221,
+        "effective_damage_raw": 17500000,
+        "effective_toughness_raw": 3500000
+      }
+    ]
+  },
+  "native_r14_raw": {
+    "enemy": 3511465714,
+    "player_or_allied": 2036632465
+  }
+}

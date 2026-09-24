@@ -36,6 +36,8 @@ EPISODE01_OUTGOING_FILE = "ck3_1_19_0_6_episode01_messina_main_outgoing_conditio
 EPISODE01_OUTGOING_SHA256 = "E31C81A6C7A65A65704C942DFC1C470C6C30EA41FB8CD769334E8D79CCF41727"
 EPISODE01_OUTGOING_V2_FILE = "ck3_1_19_0_6_episode01_messina_main_outgoing_conditional_parity_v2.json"
 EPISODE01_OUTGOING_V2_SHA256 = "967FD94030A39A7408C33D281E814E01C0F1E412B7797F61449F90FAA58F8F00"
+EPISODE01_PAIRED_COUNTER_FILE = "ck3_1_19_0_6_episode01_messina_paired_counter_r14_parity.json"
+EPISODE01_PAIRED_COUNTER_SHA256 = "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358"
 
 
 class NativeBattleCaseError(ValueError):
@@ -648,6 +650,43 @@ def load_episode01_main_outgoing_conditional_parity_v2() -> dict[str, Any]:
     return report
 
 
+def load_episode01_paired_counter_r14_parity() -> dict[str, Any]:
+    """Load only the same-run conditional R14 proof; never promote a forecast."""
+    path = Path(__file__).with_name("data") / EPISODE01_PAIRED_COUNTER_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_PAIRED_COUNTER_SHA256:
+        raise NativeBattleCaseError("bundled paired counter R14 bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.paired-counter-r14-parity/v1"
+            or report.get("game_build") != "CK3 1.19.0.6"
+            or report.get("forecast_ready") is not False
+            or report.get("planner_usable") is not False
+            or report.get("conditional_on") != [
+                "native_current_fighting_raw", "native_effective_damage_raw", "native_pre_fire_roster"
+            ]):
+        raise NativeBattleCaseError("paired counter R14 scope or readiness drifted")
+    days = report.get("days")
+    if (not isinstance(days, list)
+            or [row.get("day") for row in days] != list(range(4, 27))
+            or report.get("observed_days") != 23):
+        raise NativeBattleCaseError("paired counter R14 daily sequence is incomplete")
+    exact_days = [row["day"] for row in days if all(
+        value == "exact" for value in row["side_comparison"].values()
+    )]
+    unresolved_days = [row["day"] for row in days if row["day"] not in exact_days]
+    exact_sides = sum(
+        value == "exact" for row in days for value in row["side_comparison"].values()
+    )
+    if (report.get("conditional_exact_days") != exact_days
+            or report.get("unresolved_days") != unresolved_days
+            or report.get("conditional_exact_side_comparisons") != exact_sides
+            or report.get("conditional_comparable_side_count") != 46
+            or unresolved_days != [11, 21]):
+        raise NativeBattleCaseError("paired counter R14 summary disagrees with day rows")
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -671,6 +710,8 @@ __all__ = [
     "EPISODE01_OUTGOING_SHA256",
     "EPISODE01_OUTGOING_V2_FILE",
     "EPISODE01_OUTGOING_V2_SHA256",
+    "EPISODE01_PAIRED_COUNTER_FILE",
+    "EPISODE01_PAIRED_COUNTER_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -683,5 +724,6 @@ __all__ = [
     "load_episode01_phase_event_regiment_feedback",
     "load_episode01_main_outgoing_conditional_parity",
     "load_episode01_main_outgoing_conditional_parity_v2",
+    "load_episode01_paired_counter_r14_parity",
     "original_daily_timeline",
 ]

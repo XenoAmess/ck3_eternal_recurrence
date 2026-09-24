@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+from dataclasses import replace
+import json
 from pathlib import Path
 import unittest
 
 from xar_autoplayer.simulation.combat_core import CURRENT_BOUNDED_CORE_MANIFEST
 from xar_autoplayer.simulation.combat_core import CombatExperiment
 from xar_autoplayer.simulation.combat_input import (
+    CombatInputError,
     engagement_readiness,
+    freeze_combat_simulation_input,
     load_live_combat_fixture,
 )
 from xar_autoplayer.simulation.research_envelope import (
@@ -133,6 +137,52 @@ class LiveCombatInputAdapterTests(unittest.TestCase):
                     self.assertEqual(
                         observed,
                         resolution.damage_retention_by_class_raw,
+                    )
+
+    def test_paired_native_day_five_r14_uses_fighting_men_and_refreshed_damage(self) -> None:
+        fixture = json.loads(
+            (FIXTURES / "episode01_messina_paired_day05_r14.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        combat_input = freeze_combat_simulation_input(fixture["base_inputs"])
+        observations = {
+            side: {row["regiment_id"]: row for row in fixture["pre_fire_regiments"][side]}
+            for side in ("enemy", "player_or_allied")
+        }
+        entries = {
+            side: tuple(
+                replace(
+                    entry,
+                    current_raw=observations[side][entry.regiment_id]["current_fighting_raw"],
+                    toughness_raw=observations[side][entry.regiment_id]["effective_toughness_raw"],
+                )
+                for entry in combat_input.initial_entries_for_side(side)
+            )
+            for side in observations
+        }
+        for side in observations:
+            with self.subTest(side=side):
+                other = "enemy" if side == "player_or_allied" else "player_or_allied"
+                damage = {
+                    regiment.regiment_id: observations[side][regiment.regiment_id]["effective_damage_raw"]
+                    for army in combat_input.armies_for_side(side)
+                    for regiment in army.regiments
+                    if regiment.fights_in_main_phase
+                }
+                self.assertEqual(
+                    combat_input.post_counter_attack_from_fighting_entries_raw(
+                        side, entries[side], entries[other], damage
+                    ),
+                    fixture["native_r14_raw"][side],
+                )
+                self.assertNotEqual(
+                    combat_input.counter_adjusted_damage_raw(side),
+                    fixture["native_r14_raw"][side],
+                )
+                with self.assertRaises(CombatInputError):
+                    combat_input.post_counter_attack_from_fighting_entries_raw(
+                        side, entries[side], entries[other], {}
                     )
 
     def test_both_defensive_and_offensive_inputs_fail_closed_for_active_attack(self) -> None:

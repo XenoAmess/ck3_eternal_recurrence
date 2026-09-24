@@ -1,0 +1,150 @@
+{
+  "schema": "ck3-episode01-counter-r14-board-v1",
+  "source_report_sha256": "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358",
+  "same_replay_days": 23,
+  "conditional_exact_side_comparisons": 43,
+  "conditional_comparable_side_count": 46,
+  "unresolved_join_days": [
+    11,
+    21
+  ],
+  "examples": [
+    {
+      "source_day": 4,
+      "attacker_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "trace_status": "bounded_trace_available",
+      "native_enemy_r14_raw": 3620750000,
+      "derived_enemy_r14_raw": 3620750000,
+      "native_player_r14_raw": 2104550000,
+      "derived_player_r14_raw": 2104550000,
+      "side_comparison": {
+        "enemy": "exact",
+        "player_or_allied": "exact"
+      },
+      "classification": "conditional_exact_native_fighting_and_stats"
+    },
+    {
+      "source_day": 5,
+      "attacker_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "trace_status": "bounded_trace_available",
+      "native_enemy_r14_raw": 3511465714,
+      "derived_enemy_r14_raw": 3511465714,
+      "native_player_r14_raw": 2036632465,
+      "derived_player_r14_raw": 2036632465,
+      "side_comparison": {
+        "enemy": "exact",
+        "player_or_allied": "exact"
+      },
+      "classification": "conditional_exact_native_fighting_and_stats"
+    },
+    {
+      "source_day": 11,
+      "attacker_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "trace_status": "trace_unavailable",
+      "native_enemy_r14_raw": 7098023593,
+      "derived_enemy_r14_raw": 2917773593,
+      "native_player_r14_raw": 1446446906,
+      "derived_player_r14_raw": 1619913156,
+      "side_comparison": {
+        "enemy": "mismatch",
+        "player_or_allied": "mismatch"
+      },
+      "classification": "join_or_boundary_not_reconstructed"
+    },
+    {
+      "source_day": 12,
+      "attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "trace_status": "bounded_trace_available",
+      "native_enemy_r14_raw": 7041273255,
+      "derived_enemy_r14_raw": 7041273255,
+      "native_player_r14_raw": 1359076919,
+      "derived_player_r14_raw": 1359076919,
+      "side_comparison": {
+        "enemy": "exact",
+        "player_or_allied": "exact"
+      },
+      "classification": "conditional_exact_native_fighting_and_stats"
+    },
+    {
+      "source_day": 21,
+      "attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "trace_status": "trace_unavailable",
+      "native_enemy_r14_raw": 8101085259,
+      "derived_enemy_r14_raw": 6599085259,
+      "native_player_r14_raw": 708222767,
+      "derived_player_r14_raw": 708222767,
+      "side_comparison": {
+        "enemy": "mismatch",
+        "player_or_allied": "exact"
+      },
+      "classification": "join_or_boundary_not_reconstructed"
+    },
+    {
+      "source_day": 22,
+      "attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "trace_status": "bounded_trace_available",
+      "native_enemy_r14_raw": 8080672125,
+      "derived_enemy_r14_raw": 8080672125,
+      "native_player_r14_raw": 658852730,
+      "derived_player_r14_raw": 658852730,
+      "side_comparison": {
+        "enemy": "exact",
+        "player_or_allied": "exact"
+      },
+      "classification": "conditional_exact_native_fighting_and_stats"
+    },
+    {
+      "source_day": 26,
+      "attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "trace_status": "trace_unavailable",
+      "native_enemy_r14_raw": 8041665253,
+      "derived_enemy_r14_raw": 8041665253,
+      "native_player_r14_raw": 223709762,
+      "derived_player_r14_raw": 223709762,
+      "side_comparison": {
+        "enemy": "exact",
+        "player_or_allied": "exact"
+      },
+      "classification": "conditional_exact_native_fighting_and_stats"
+    }
+  ],
+  "conditioned_on_native_current_fighting_raw": true,
+  "conditioned_on_native_effective_damage_raw": true,
+  "join_day_recompute_complete": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

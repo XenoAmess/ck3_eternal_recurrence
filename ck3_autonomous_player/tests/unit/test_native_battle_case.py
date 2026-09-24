@@ -32,6 +32,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_phase_event_regiment_feedback,
     load_episode01_main_outgoing_conditional_parity,
     load_episode01_main_outgoing_conditional_parity_v2,
+    load_episode01_paired_counter_r14_parity,
     original_daily_timeline,
 )
 
@@ -246,6 +247,25 @@ class NativeBattleCaseTests(unittest.TestCase):
         promoted["outgoing_damage_reconstructed"] = True
         with self.assertRaises(NativeBattleCaseError):
             _validate_join_day_kernel_parity(promoted)
+
+    def test_paired_counter_r14_does_not_promote_join_days_or_forecast(self) -> None:
+        report = load_episode01_paired_counter_r14_parity()
+        self.assertEqual(report["observed_days"], 23)
+        self.assertEqual(report["conditional_exact_side_comparisons"], 43)
+        self.assertEqual(report["unresolved_days"], [11, 21])
+        rows = {row["day"]: row for row in report["days"]}
+        self.assertEqual(rows[11]["side_comparison"], {
+            "enemy": "mismatch", "player_or_allied": "mismatch"
+        })
+        self.assertEqual(rows[21]["side_comparison"], {
+            "enemy": "mismatch", "player_or_allied": "exact"
+        })
+        self.assertEqual(rows[26]["trace_status"], "trace_unavailable")
+        self.assertEqual(rows[26]["side_comparison"], {
+            "enemy": "exact", "player_or_allied": "exact"
+        })
+        self.assertFalse(report["forecast_ready"])
+        self.assertFalse(report["planner_usable"])
 
 
 if __name__ == "__main__":
