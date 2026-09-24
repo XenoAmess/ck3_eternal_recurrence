@@ -1,6 +1,6 @@
 {
-  "schema": "ck3-episode01-phase-event-timing-board-v1",
-  "source_report_sha256": "C84B9E7D513F2D26E0532ABAD95394685CF6739A4EC6F712532DF84B3C2B56CB",
+  "schema": "ck3-episode01-phase-event-timing-board-v2",
+  "source_report_sha256": "94831B16AE56BC050833D7BEE9064170D118F77700DE672A0977E68F47C98AAE",
   "game_version": "1.19.0.6",
   "combat_id": 16777218,
   "phase_trace_trajectory": "independent-replay-from-original-contact-checkpoint",
@@ -42,7 +42,7 @@
       "source_receipt_sha256": "851B664AF6D2D59DED0A8D602AEEF95E6E0BE0283D2CCCD2F5204F77C9801808",
       "next_source_day_receipt_sha256": "78939C8E2FE2BA03ADE14EB49F43CDED7288EDC37E0E785DADD562C237533848",
       "whole_day_trace_available": true,
-      "causal_effect_execution_proven": false
+      "complete_effect_feedback_proven": false
     },
     {
       "source_day": 15,
@@ -65,10 +65,10 @@
       "source_receipt_sha256": "31DF5CAC53ADE6EB6CDEE1B84D5C76A57508B9885DA5712F793D8D6D172D80E3",
       "next_source_day_receipt_sha256": "1F43A75B2FA6BA0779F2FEEE5101822261D2C7955B3A0EBCCC08EF74571089B4",
       "whole_day_trace_available": false,
-      "causal_effect_execution_proven": false
+      "complete_effect_feedback_proven": false
     }
   ],
-  "effect_execution_or_complete_feedback_proven": false,
+  "complete_effect_feedback_proven": false,
   "calibrated_win_probability_available": false,
   "planner_usable": false
 }

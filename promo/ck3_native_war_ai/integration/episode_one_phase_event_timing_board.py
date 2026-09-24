@@ -39,10 +39,10 @@ def build_board() -> dict[str, object]:
             "source_receipt_sha256": row["source_receipt_sha256"],
             "next_source_day_receipt_sha256": target["next_source_day_receipt_sha256"],
             "whole_day_trace_available": row["source_trace_status"] == "bounded_trace_available",
-            "causal_effect_execution_proven": False,
+            "complete_effect_feedback_proven": False,
         })
     return {
-        "schema": "ck3-episode01-phase-event-timing-board-v1",
+        "schema": "ck3-episode01-phase-event-timing-board-v2",
         "source_report_sha256": EPISODE01_PHASE_EVENT_SHA256,
         "game_version": evidence["game_version"],
         "combat_id": evidence["combat_id"],
@@ -51,7 +51,7 @@ def build_board() -> dict[str, object]:
             row["source_day"] for row in evidence["event_fire_pairs"]
         ],
         "examples": examples,
-        "effect_execution_or_complete_feedback_proven": False,
+        "complete_effect_feedback_proven": False,
         "calibrated_win_probability_available": False,
         "planner_usable": False,
     }

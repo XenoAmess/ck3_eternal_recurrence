@@ -75,8 +75,8 @@ class NativeBattleCaseTests(unittest.TestCase):
         killed = report["event_fire_pairs"][3]["target_character_observations"][0]
         self.assertFalse(killed["same_fire_after"]["death_marker_present"])
         self.assertTrue(killed["next_source_day_record2"]["death_marker_present"])
-        self.assertFalse(report["effect_execution_or_complete_feedback_proven"])
-        for key in ("effect_execution_or_complete_feedback_proven", "planner_usable"):
+        self.assertFalse(report["complete_effect_feedback_proven"])
+        for key in ("complete_effect_feedback_proven", "planner_usable"):
             promoted = copy.deepcopy(report)
             promoted[key] = True
             with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):

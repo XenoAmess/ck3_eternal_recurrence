@@ -32,7 +32,7 @@
 
 ### 2026-09-24 梅西纳独立回放的局部事件时序
 
-[episode01 共用阶段事件观察](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_observations.json)（SHA-256 `C84B9E7D513F2D26E0532ABAD95394685CF6739A4EC6F712532DF84B3C2B56CB`）从 attempt-004 原始回执逐份校验后投影。第 5、7、9、15、16、19 日均有一次 battle-event ledger 追加；对应局部 fire 前后已捕获的 character core 和 accolade 字段六次全无 delta。第 5 日受伤目标 36303 的勇武在 fire 前后及下一源日 schedule 前均为 8，下一源日 fire 前为 6。第 15 日阵亡目标 36673 的 death marker 在 fire 后仍为 false，下一源日 fire 前为 true。第 15、16 日只满足局部成对记录条件，整日 trace 仍为 `trace_unavailable`。
+[episode01 共用阶段事件观察](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_observations.json)（SHA-256 `94831B16AE56BC050833D7BEE9064170D118F77700DE672A0977E68F47C98AAE`）从 attempt-004 原始回执逐份校验后投影。第 5、7、9、15、16、19 日均有一次 battle-event ledger 追加；对应局部 fire 前后已捕获的 character core 和 accolade 字段六次全无 delta。第 5 日受伤目标 36303 的勇武在 fire 前后及下一源日 schedule 前均为 8，下一源日 fire 前为 6。第 15 日阵亡目标 36673 的 death marker 在 fire 后仍为 false，下一源日 fire 前为 true。第 15、16 日只满足局部成对记录条件，整日 trace 仍为 `trace_unavailable`。
 
 exact-build stock `game/common/combat_phase_events/00_knight_phase_events.txt` SHA-256 `E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1` 中，受伤分支先写 `battle_event`（727–733），后调用 `increase_wounds_effect`（734）；击杀分支先写 `battle_event`（1277–1282），后执行 `death`（1318–1320）。脚本顺序与“账本先可见”相容，但不能据此推出运行时同步边界，也不能把脚本行号当作实际写集回执。
 

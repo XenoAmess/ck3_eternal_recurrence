@@ -20,7 +20,7 @@ EPISODE01_PARITY_SHA256 = "CE1B40AB72126C905D4B73411FBFB44141A1AA251D6A108575CDA
 EPISODE01_REPEATABILITY_FILE = "ck3_1_19_0_6_episode01_messina_repeatability.json"
 EPISODE01_REPEATABILITY_SHA256 = "5E2D4B1AEE3BD6D64AC48111CD7ED1D8F48B8827D9FEBAB3F04505F3F2C1EF9C"
 EPISODE01_PHASE_EVENT_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_observations.json"
-EPISODE01_PHASE_EVENT_SHA256 = "C84B9E7D513F2D26E0532ABAD95394685CF6739A4EC6F712532DF84B3C2B56CB"
+EPISODE01_PHASE_EVENT_SHA256 = "94831B16AE56BC050833D7BEE9064170D118F77700DE672A0977E68F47C98AAE"
 
 
 class NativeBattleCaseError(ValueError):
@@ -160,13 +160,13 @@ def load_episode01_native_battle_repeatability() -> dict[str, Any]:
 
 
 def _validate_phase_event_observations(report: dict[str, Any]) -> None:
-    if (report.get("schema") != "ck3-native-phase-event-observations-v1"
+    if (report.get("schema") != "ck3-native-phase-event-observations-v2"
             or report.get("game_version") != "1.19.0.6"
             or report.get("combat_id") != 16777218
             or report.get("phase_trace_trajectory") !=
             "independent-replay-from-original-contact-checkpoint"):
         raise NativeBattleCaseError("phase-event observation identity mismatch")
-    if (report.get("effect_execution_or_complete_feedback_proven") is not False
+    if (report.get("complete_effect_feedback_proven") is not False
             or report.get("planner_usable") is not False):
         raise NativeBattleCaseError("phase-event ledger cannot authorize effect parity")
     rows = report.get("event_fire_pairs")
@@ -177,7 +177,8 @@ def _validate_phase_event_observations(report: dict[str, Any]) -> None:
     for row in rows:
         if (len(row.get("appended_battle_events", [])) != 1
                 or row.get("full_mutable_transition_bundle_complete") is not False
-                or row.get("effect_execution_or_complete_feedback_proven") is not False
+                or row.get("battle_event_append_observed") is not True
+                or row.get("complete_effect_feedback_proven") is not False
                 or row.get("observed_character_core_deltas_within_fire") != []
                 or row.get("observed_accolade_deltas_within_fire") != []):
             raise NativeBattleCaseError("phase-event fire evidence was promoted")

@@ -1,5 +1,5 @@
 {
-  "schema": "ck3-native-phase-event-observations-v1",
+  "schema": "ck3-native-phase-event-observations-v2",
   "case_id": "episode01-sicily-messina-combat-16777218",
   "game_version": "1.19.0.6",
   "combat_id": 16777218,
@@ -27,6 +27,7 @@
           "target_right": false
         }
       ],
+      "battle_event_append_observed": true,
       "observed_character_core_deltas_within_fire": [],
       "observed_accolade_deltas_within_fire": [],
       "target_character_observations": [
@@ -74,7 +75,7 @@
       "global_rng_counter_before": 400187,
       "global_rng_counter_after": 400188,
       "full_mutable_transition_bundle_complete": false,
-      "effect_execution_or_complete_feedback_proven": false
+      "complete_effect_feedback_proven": false
     },
     {
       "source_day": 7,
@@ -97,6 +98,7 @@
           "target_right": false
         }
       ],
+      "battle_event_append_observed": true,
       "observed_character_core_deltas_within_fire": [],
       "observed_accolade_deltas_within_fire": [],
       "target_character_observations": [
@@ -144,7 +146,7 @@
       "global_rng_counter_before": 401384,
       "global_rng_counter_after": 401385,
       "full_mutable_transition_bundle_complete": false,
-      "effect_execution_or_complete_feedback_proven": false
+      "complete_effect_feedback_proven": false
     },
     {
       "source_day": 9,
@@ -167,6 +169,7 @@
           "target_right": false
         }
       ],
+      "battle_event_append_observed": true,
       "observed_character_core_deltas_within_fire": [],
       "observed_accolade_deltas_within_fire": [],
       "target_character_observations": [
@@ -214,7 +217,7 @@
       "global_rng_counter_before": 402613,
       "global_rng_counter_after": 402614,
       "full_mutable_transition_bundle_complete": false,
-      "effect_execution_or_complete_feedback_proven": false
+      "complete_effect_feedback_proven": false
     },
     {
       "source_day": 15,
@@ -237,6 +240,7 @@
           "target_right": false
         }
       ],
+      "battle_event_append_observed": true,
       "observed_character_core_deltas_within_fire": [],
       "observed_accolade_deltas_within_fire": [],
       "target_character_observations": [
@@ -276,7 +280,7 @@
       "global_rng_counter_before": 409085,
       "global_rng_counter_after": 409088,
       "full_mutable_transition_bundle_complete": false,
-      "effect_execution_or_complete_feedback_proven": false
+      "complete_effect_feedback_proven": false
     },
     {
       "source_day": 16,
@@ -299,6 +303,7 @@
           "target_right": false
         }
       ],
+      "battle_event_append_observed": true,
       "observed_character_core_deltas_within_fire": [],
       "observed_accolade_deltas_within_fire": [],
       "target_character_observations": [
@@ -346,7 +351,7 @@
       "global_rng_counter_before": 409730,
       "global_rng_counter_after": 409731,
       "full_mutable_transition_bundle_complete": false,
-      "effect_execution_or_complete_feedback_proven": false
+      "complete_effect_feedback_proven": false
     },
     {
       "source_day": 19,
@@ -369,6 +374,7 @@
           "target_right": false
         }
       ],
+      "battle_event_append_observed": true,
       "observed_character_core_deltas_within_fire": [],
       "observed_accolade_deltas_within_fire": [],
       "target_character_observations": [
@@ -416,10 +422,10 @@
       "global_rng_counter_before": 414426,
       "global_rng_counter_after": 414427,
       "full_mutable_transition_bundle_complete": false,
-      "effect_execution_or_complete_feedback_proven": false
+      "complete_effect_feedback_proven": false
     }
   ],
   "battle_event_row_count": 6,
-  "effect_execution_or_complete_feedback_proven": false,
+  "complete_effect_feedback_proven": false,
   "planner_usable": false
 }

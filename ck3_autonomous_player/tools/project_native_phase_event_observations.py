@@ -111,6 +111,7 @@ def project(trace_root: Path) -> dict:
                 "fire_record_indices": [left_index, right_index],
                 "native_date_raw": before["native_date_raw"],
                 "appended_battle_events": appended,
+                "battle_event_append_observed": True,
                 "observed_character_core_deltas_within_fire": _deltas(
                     before["characters"], after["characters"], "character_id"
                 ),
@@ -121,10 +122,10 @@ def project(trace_root: Path) -> dict:
                 "global_rng_counter_before": before["global_rng"]["counter"],
                 "global_rng_counter_after": after["global_rng"]["counter"],
                 "full_mutable_transition_bundle_complete": False,
-                "effect_execution_or_complete_feedback_proven": False,
+                "complete_effect_feedback_proven": False,
             })
     return {
-        "schema": "ck3-native-phase-event-observations-v1",
+        "schema": "ck3-native-phase-event-observations-v2",
         "case_id": case["case_id"],
         "game_version": case["game_version"],
         "combat_id": case["combat_id"],
@@ -132,7 +133,7 @@ def project(trace_root: Path) -> dict:
         "phase_trace_trajectory": case["phase_trace_trajectory"],
         "event_fire_pairs": rows,
         "battle_event_row_count": sum(len(row["appended_battle_events"]) for row in rows),
-        "effect_execution_or_complete_feedback_proven": False,
+        "complete_effect_feedback_proven": False,
         "planner_usable": False,
     }
 
