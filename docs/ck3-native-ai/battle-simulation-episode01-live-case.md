@@ -84,6 +84,8 @@ v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接
 
 同一 `attempt-010` 还可独立检查局部优势算术：每天的同进程 v3 `phase_event_inputs.advantage_model` 都返回 `available`、`original_helpers_matched`，静态来源累加器均为 `-300000`，两侧动态贡献 `3500000` 与 `4200000`，所以当日**零掷骰上下文**均为 `-1000000`。把同日 phase trace 局部边界中已经观察到的双方将领掷骰整数按 `zero_roll + (side0_roll - side1_roll) × 100000` 应用，第 4–26 日 **23/23 日零差**。第 4 日是 `[0,0]`，第 5、8、11、14、17、20、23、26 日显示新的掷骰值，其后两日沿用；这与已静态确认的三日 cadence 一致。第 11、21、26 日只使用 `capture_failure_flags=0` 的局部优势边界，整日 phase trace 仍 RED。[共用优势报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_paired_advantage_parity.json)由[只读投影工具](../../tools/project_native_paired_advantage_parity.py)逐日核验原版回执 SHA，[片用掷骰板](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/advantage-roll-board-v1.json)从智能体读取器生成。这里**以原版同日零掷骰上下文和已经发生的 roll 为条件**，不预测随机掷骰、事件后来源变更，也没有闭合整场胜率；不能把 23/23 当作零条件 forecast。
 
+对 RED trace 的[单独故障边界投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_paired_trace_failure_boundaries.json)进一步核到：第 11、21 日七条边界的第 `0/1` 条有效，第 `2` 条起 `capture_failure_flags=16`，同一推进回执分别出现此前未入战的 ArmyID `22/28`。原生采集器 `ReadSide` 用开始时冻结的 `plan.armies` 查每个当前 ArmyID，找不到即报 identity；失败记录在新军槽留下 `0`。因此这两日 `1040=identity(16)+final_query(1024)` 是采集器名单不随加入扩张的明确限制，不能当作原版反制/优势算术残差。第 26 日第 `0–5` 条均有效，仅最后暂停回读报 identity；同日没有新军加入，不能套用前两日解释。诊断工具核对原始 trace 与推进回执 SHA，并保留三日整条 trace RED；下一轮应升级可追踪新增参与者及终局角色身份的采集器，重新实机取证，不能靠离线改旗标补绿。
+
 这仍没有预测**军队会在第几天加入**，也没有从战前自主推进软/硬伤亡、伤势引起的有效属性刷新、优势或事件全部效果。第 11、21 日整条阶段追踪仍 `trace_unavailable`；追加证据只闭合局部 R14 算术及源日假设查询的可用性，不改变正片概率与游玩智能体的 `planner_usable=false` 门禁。
 
 ### 同接战存档的三次原生回放

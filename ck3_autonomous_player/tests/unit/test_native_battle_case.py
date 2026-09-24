@@ -35,6 +35,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_paired_counter_r14_parity,
     load_episode01_prejoin_counter_r14_parity_v2,
     load_episode01_paired_advantage_parity,
+    load_episode01_paired_trace_failure_boundaries,
     original_daily_timeline,
 )
 from xar_autoplayer.simulation.native_advantage import resolved_advantage_with_commander_rolls_raw
@@ -299,6 +300,16 @@ class NativeBattleCaseTests(unittest.TestCase):
                           if row["whole_phase_trace_status"] != "bounded_trace_available"],
                          [11, 21, 26])
         self.assertFalse(report["future_rolls_predicted"])
+        self.assertFalse(report["whole_battle_win_probability_available"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_red_trace_boundary_diagnostics_preserve_green_local_only(self) -> None:
+        report = load_episode01_paired_trace_failure_boundaries()
+        self.assertEqual([row["day"] for row in report["red_days"]], [11, 21, 26])
+        self.assertEqual([row["first_failing_boundary_index"] for row in report["red_days"]], [2, 2, 6])
+        self.assertEqual([row["same_day_newly_joined_enemy_army_ids"] for row in report["red_days"]],
+                         [[22], [28], []])
+        self.assertTrue(all(row["full_trace_available"] is False for row in report["red_days"]))
         self.assertFalse(report["whole_battle_win_probability_available"])
         self.assertFalse(report["planner_usable"])
 

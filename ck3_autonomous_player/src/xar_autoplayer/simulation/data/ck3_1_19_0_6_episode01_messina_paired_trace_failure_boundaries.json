@@ -1,0 +1,86 @@
+{
+  "schema": "xar.ck3.episode01.paired-trace-failure-boundaries/v1",
+  "game_build": "CK3 1.19.0.6",
+  "source_paired_report_sha256": "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358",
+  "paired_run": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010",
+  "observed_main_days": 23,
+  "whole_trace_green_days": 20,
+  "whole_trace_red_days": 3,
+  "red_days": [
+    {
+      "day": 11,
+      "first_failing_boundary_index": 2,
+      "locally_valid_boundary_indices": [
+        0,
+        1
+      ],
+      "failing_boundary_indices": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "capture_failure_bit": 16,
+      "aggregate_failure_flags": 1040,
+      "same_day_newly_joined_enemy_army_ids": [
+        22
+      ],
+      "classification": "frozen_begin_roster_cannot_resolve_new_army",
+      "full_trace_available": false,
+      "native_trace_response_sha256": "61D83245612E4A86ADA908CA74644AE69C8CDFE8239B0FD86A8496696225E651",
+      "daily_advance_response_sha256": "E17124EEA53D974A5D51850C8B5C3EAE598D83D52588247E8E079286C2A29A32"
+    },
+    {
+      "day": 21,
+      "first_failing_boundary_index": 2,
+      "locally_valid_boundary_indices": [
+        0,
+        1
+      ],
+      "failing_boundary_indices": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "capture_failure_bit": 16,
+      "aggregate_failure_flags": 1040,
+      "same_day_newly_joined_enemy_army_ids": [
+        28
+      ],
+      "classification": "frozen_begin_roster_cannot_resolve_new_army",
+      "full_trace_available": false,
+      "native_trace_response_sha256": "020494CDEAE77A968673AA45C65F6BEF7229193385902FBAA70F313CCF27198A",
+      "daily_advance_response_sha256": "BF78F9D897B09AE21E8993C6E9480A0A984FFCB7F02F8F1A7BB50E6DA8A5B939"
+    },
+    {
+      "day": 26,
+      "first_failing_boundary_index": 6,
+      "locally_valid_boundary_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "failing_boundary_indices": [
+        6
+      ],
+      "capture_failure_bit": 16,
+      "aggregate_failure_flags": 1040,
+      "same_day_newly_joined_enemy_army_ids": [],
+      "classification": "final_paused_query_identity_failure_unlocalized",
+      "full_trace_available": false,
+      "native_trace_response_sha256": "8352A4EC49DFE527261C34B82A3E28FE07F0F5963617EF78DAA607EA4EE006FE",
+      "daily_advance_response_sha256": "4B9C426360A161C5BBF95A20F90E1158920F09F84FC2DC853C6547B973BD9DC2"
+    }
+  ],
+  "join_day_capture_repaired": false,
+  "final_identity_failure_repaired": false,
+  "phase_effect_transition_complete": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

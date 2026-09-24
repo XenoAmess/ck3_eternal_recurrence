@@ -42,6 +42,8 @@ EPISODE01_PREJOIN_COUNTER_V2_FILE = "ck3_1_19_0_6_episode01_messina_prejoin_coun
 EPISODE01_PREJOIN_COUNTER_V2_SHA256 = "6C32F7DED9CFDB29D103A242B3C9DC8E71DF69C1A08A9980A1EB917A6BAAE113"
 EPISODE01_PAIRED_ADVANTAGE_FILE = "ck3_1_19_0_6_episode01_messina_paired_advantage_parity.json"
 EPISODE01_PAIRED_ADVANTAGE_SHA256 = "1B8548CDE3AEA3844CD00B52AB4B0AF4C9CFEBD4C95424E2D6767D4B8996314A"
+EPISODE01_TRACE_FAILURE_FILE = "ck3_1_19_0_6_episode01_messina_paired_trace_failure_boundaries.json"
+EPISODE01_TRACE_FAILURE_SHA256 = "3E82A6A59ED2648F37D31BC8A4A6CEB32D79516F9E9F6DD2F2E5A0B7A4554953"
 
 
 class NativeBattleCaseError(ValueError):
@@ -742,6 +744,32 @@ def load_episode01_paired_advantage_parity() -> dict[str, Any]:
     return report
 
 
+def load_episode01_paired_trace_failure_boundaries() -> dict[str, Any]:
+    """Identify locally valid boundaries while preserving whole-trace RED."""
+    path = Path(__file__).with_name("data") / EPISODE01_TRACE_FAILURE_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_TRACE_FAILURE_SHA256:
+        raise NativeBattleCaseError("bundled trace failure bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.paired-trace-failure-boundaries/v1"
+            or report.get("game_build") != "CK3 1.19.0.6"
+            or report.get("source_paired_report_sha256") != EPISODE01_PAIRED_COUNTER_SHA256
+            or report.get("observed_main_days") != 23
+            or report.get("whole_trace_green_days") != 20
+            or report.get("whole_trace_red_days") != 3
+            or [row.get("day") for row in report.get("red_days", [])] != [11, 21, 26]
+            or [row.get("first_failing_boundary_index") for row in report["red_days"]] != [2, 2, 6]
+            or any(row.get("full_trace_available") is not False for row in report["red_days"])
+            or report.get("join_day_capture_repaired") is not False
+            or report.get("final_identity_failure_repaired") is not False
+            or report.get("phase_effect_transition_complete") is not False
+            or report.get("whole_battle_win_probability_available") is not False
+            or report.get("planner_usable") is not False):
+        raise NativeBattleCaseError("paired trace failure boundary or readiness drifted")
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -771,6 +799,8 @@ __all__ = [
     "EPISODE01_PREJOIN_COUNTER_V2_SHA256",
     "EPISODE01_PAIRED_ADVANTAGE_FILE",
     "EPISODE01_PAIRED_ADVANTAGE_SHA256",
+    "EPISODE01_TRACE_FAILURE_FILE",
+    "EPISODE01_TRACE_FAILURE_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -786,5 +816,6 @@ __all__ = [
     "load_episode01_paired_counter_r14_parity",
     "load_episode01_prejoin_counter_r14_parity_v2",
     "load_episode01_paired_advantage_parity",
+    "load_episode01_paired_trace_failure_boundaries",
     "original_daily_timeline",
 ]
