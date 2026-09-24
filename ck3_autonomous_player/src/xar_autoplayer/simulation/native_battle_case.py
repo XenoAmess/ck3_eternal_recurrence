@@ -44,6 +44,8 @@ EPISODE01_PAIRED_ADVANTAGE_FILE = "ck3_1_19_0_6_episode01_messina_paired_advanta
 EPISODE01_PAIRED_ADVANTAGE_SHA256 = "1B8548CDE3AEA3844CD00B52AB4B0AF4C9CFEBD4C95424E2D6767D4B8996314A"
 EPISODE01_TRACE_FAILURE_FILE = "ck3_1_19_0_6_episode01_messina_paired_trace_failure_boundaries.json"
 EPISODE01_TRACE_FAILURE_SHA256 = "3E82A6A59ED2648F37D31BC8A4A6CEB32D79516F9E9F6DD2F2E5A0B7A4554953"
+EPISODE01_TRACE_DAY26_FILE = "ck3_1_19_0_6_episode01_messina_paired_trace_day26_identity.json"
+EPISODE01_TRACE_DAY26_SHA256 = "32715AE1731CF19ABFEFB4D2668D47F6EFA8188AEADC187F298E739825019065"
 
 
 class NativeBattleCaseError(ValueError):
@@ -770,6 +772,30 @@ def load_episode01_paired_trace_failure_boundaries() -> dict[str, Any]:
     return report
 
 
+def load_episode01_paired_trace_day26_identity() -> dict[str, Any]:
+    """Read the narrow final-query failure diagnosis without promoting RED."""
+    path = Path(__file__).with_name("data") / EPISODE01_TRACE_DAY26_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_TRACE_DAY26_SHA256:
+        raise NativeBattleCaseError("bundled day-26 identity diagnosis bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.paired-trace-day26-identity/v1"
+            or report.get("source_failure_report_sha256") != EPISODE01_TRACE_FAILURE_SHA256
+            or report.get("day") != 26
+            or report.get("first_failing_boundary_index") != 6
+            or report.get("final_side1_scheduled_regiment_id") != 62
+            or report.get("inferred_first_failing_read") !=
+               "ReadSide(side1).scheduled_knights.regiment_identity_guard"
+            or report.get("same_day_post_event_save_available") is not False
+            or report.get("event_effect_write_set_complete") is not False
+            or report.get("full_trace_available") is not False
+            or report.get("whole_battle_win_probability_available") is not False
+            or report.get("planner_usable") is not False):
+        raise NativeBattleCaseError("day-26 identity diagnosis or readiness drifted")
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -801,6 +827,8 @@ __all__ = [
     "EPISODE01_PAIRED_ADVANTAGE_SHA256",
     "EPISODE01_TRACE_FAILURE_FILE",
     "EPISODE01_TRACE_FAILURE_SHA256",
+    "EPISODE01_TRACE_DAY26_FILE",
+    "EPISODE01_TRACE_DAY26_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -817,5 +845,6 @@ __all__ = [
     "load_episode01_prejoin_counter_r14_parity_v2",
     "load_episode01_paired_advantage_parity",
     "load_episode01_paired_trace_failure_boundaries",
+    "load_episode01_paired_trace_day26_identity",
     "original_daily_timeline",
 ]

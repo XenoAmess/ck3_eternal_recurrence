@@ -86,6 +86,8 @@ v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接
 
 对 RED trace 的[单独故障边界投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_paired_trace_failure_boundaries.json)进一步核到：第 11、21 日七条边界的第 `0/1` 条有效，第 `2` 条起 `capture_failure_flags=16`，同一推进回执分别出现此前未入战的 ArmyID `22/28`。原生采集器 `ReadSide` 用开始时冻结的 `plan.armies` 查每个当前 ArmyID，找不到即报 identity；失败记录在新军槽留下 `0`。因此这两日 `1040=identity(16)+final_query(1024)` 是采集器名单不随加入扩张的明确限制，不能当作原版反制/优势算术残差。第 26 日第 `0–5` 条均有效，仅最后暂停回读报 identity；同日没有新军加入，不能套用前两日解释。诊断工具核对原始 trace 与推进回执 SHA，并保留三日整条 trace RED；下一轮应升级可追踪新增参与者及终局角色身份的采集器，重新实机取证，不能靠离线改旗标补绿。
 
+第 26 日的后续[只读身份诊断](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_paired_trace_day26_identity.json)（SHA-256 `32715AE1731CF19ABFEFB4D2668D47F6EFA8188AEADC187F298E739825019065`）进一步定位这次不同于增援的故障。第 `4→5` 边界新增 `knight_killed_by_enemy` 战报，目标 CharacterID `34867`、RegimentID `62`；第 5 条边界角色 core 仍在且 death marker 为 false。最终回读里，敌方 `knights` 与参战兵团 bucket 已不含 `62`，但 `scheduled_knights` 仍留同一事件 token 和兵团 `62`；`current_character_id` 字段停在默认 `0`，角色、勋号、战报后续集合未被读取。对照绑定 SHA 的采集器源码，`ReadSide(side1)` 先填 schedule token/兵团 ID，再核对冻结的兵团对象身份，成功才填角色 ID，然后才会进入 `ReadCharacters`。这些字段与执行顺序将首个失败读取定位为**旧日程引用的兵团身份校验**；这是一条采集器诊断推断，不是已经捕到全部原版死亡效果。该运行没有事件后的同日冻结存档，不能由阵亡战报单独推断完整死亡写集、事件唯一因果或整场胜率。历史 RED 报告和新诊断都保持 `planner_usable=false`。
+
 这仍没有预测**军队会在第几天加入**，也没有从战前自主推进软/硬伤亡、伤势引起的有效属性刷新、优势或事件全部效果。第 11、21 日整条阶段追踪仍 `trace_unavailable`；追加证据只闭合局部 R14 算术及源日假设查询的可用性，不改变正片概率与游玩智能体的 `planner_usable=false` 门禁。
 
 ### 同接战存档的三次原生回放

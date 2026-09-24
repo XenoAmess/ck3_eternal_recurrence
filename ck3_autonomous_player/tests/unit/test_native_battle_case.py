@@ -36,6 +36,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_prejoin_counter_r14_parity_v2,
     load_episode01_paired_advantage_parity,
     load_episode01_paired_trace_failure_boundaries,
+    load_episode01_paired_trace_day26_identity,
     original_daily_timeline,
 )
 from xar_autoplayer.simulation.native_advantage import resolved_advantage_with_commander_rolls_raw
@@ -311,6 +312,19 @@ class NativeBattleCaseTests(unittest.TestCase):
                          [[22], [28], []])
         self.assertTrue(all(row["full_trace_available"] is False for row in report["red_days"]))
         self.assertFalse(report["whole_battle_win_probability_available"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_day26_stale_scheduled_regiment_diagnostic_keeps_trace_red(self) -> None:
+        report = load_episode01_paired_trace_day26_identity()
+        self.assertEqual(report["appended_event"]["stable_key"], "knight_killed_by_enemy")
+        self.assertEqual(report["appended_event"]["left_character_id"], 34867)
+        self.assertEqual(report["final_side1_scheduled_regiment_id"], 62)
+        self.assertFalse(report["final_side1_knight_regiment_present"])
+        self.assertFalse(report["final_side1_regiment_bucket_present"])
+        self.assertEqual(report["inferred_first_failing_read"],
+                         "ReadSide(side1).scheduled_knights.regiment_identity_guard")
+        self.assertFalse(report["same_day_post_event_save_available"])
+        self.assertFalse(report["full_trace_available"])
         self.assertFalse(report["planner_usable"])
 
 

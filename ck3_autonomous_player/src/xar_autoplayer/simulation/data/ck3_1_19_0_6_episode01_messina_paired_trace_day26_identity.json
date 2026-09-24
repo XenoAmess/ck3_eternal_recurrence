@@ -1,0 +1,34 @@
+{
+  "schema": "xar.ck3.episode01.paired-trace-day26-identity/v1",
+  "game_build": "CK3 1.19.0.6",
+  "source_failure_report_sha256": "3E82A6A59ED2648F37D31BC8A4A6CEB32D79516F9E9F6DD2F2E5A0B7A4554953",
+  "source_native_trace_response_sha256": "8352A4EC49DFE527261C34B82A3E28FE07F0F5963617EF78DAA607EA4EE006FE",
+  "capture_source_sha256": "77A9E7EA459A05D9818C188736FB06DF9F11D6BCDC7B67184DF31DD1772B870C",
+  "day": 26,
+  "first_failing_boundary_index": 6,
+  "event_appended_between_boundaries": [
+    4,
+    5
+  ],
+  "appended_event": {
+    "left_character_id": 34867,
+    "right_character_id": 47032,
+    "stable_key": "knight_killed_by_enemy",
+    "type_raw": 3,
+    "side_index": 1,
+    "target_right": false
+  },
+  "last_valid_target_regiment_id": 62,
+  "last_valid_target_character_id": 34867,
+  "final_side1_knight_regiment_present": false,
+  "final_side1_regiment_bucket_present": false,
+  "final_side1_scheduled_regiment_id": 62,
+  "final_side1_scheduled_character_id_field": 0,
+  "inferred_first_failing_read": "ReadSide(side1).scheduled_knights.regiment_identity_guard",
+  "inference_basis": "scheduled row identity fields assigned; character field remains default; later character/battle-event/accolade reads not reached under exact source order",
+  "same_day_post_event_save_available": false,
+  "event_effect_write_set_complete": false,
+  "full_trace_available": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}
