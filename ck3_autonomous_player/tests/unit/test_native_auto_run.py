@@ -1372,6 +1372,17 @@ class _FakeGameplayService:
         self.harness = harness
         self.driver = driver
 
+    def center_map_on_landed_title_v1(
+        self, title_key: str, *, expected_revision: int
+    ) -> dict[str, object]:
+        if title_key != "b_messina" or expected_revision != self.harness.public_revision:
+            raise AssertionError("camera must target the observed battle at its snapshot revision")
+        self.harness.events.append("camera_center:b_messina")
+        return {
+            "status": "centered", "title": {"key": title_key},
+            "camera_center": {"postcondition_verified": True},
+        }
+
     def auto_turn(
         self,
         *,
@@ -1580,6 +1591,7 @@ class NativeAutoRunTests(unittest.TestCase):
         after_intercept: object = None,
         require_initial_lifestyle_focus_before_date_advance: bool = False,
         focus_post_xp_available: bool = True,
+        war_hotspot_army: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         use_cold_start_checkpoint = (
             completion_contract in {"one_generation", "next_episode"}
@@ -1623,6 +1635,14 @@ class NativeAutoRunTests(unittest.TestCase):
                 operator_stop_after_action_count
             ),
         )
+        if war_hotspot_army:
+            harness.active_wars = [{
+                "war_id": 4,
+                "allied_armies": [{
+                    "army_id": 18, "controllable": True, "in_combat": True,
+                    "current_province_id": 2633,
+                }],
+            }]
         harness.advance_pump_epochs = advance_pump_epochs
         harness.opening_focus_gate_trial = (
             require_initial_lifestyle_focus_before_date_advance
@@ -1752,6 +1772,47 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertFalse(
             args.require_initial_lifestyle_focus_before_date_advance
         )
+
+    def test_war_camera_follows_observed_battle_before_gameplay_turn(self) -> None:
+        title_dir = self.spec.game_dir / "game" / "common" / "landed_titles"
+        title_dir.mkdir(parents=True)
+        (title_dir / "00_landed_titles.txt").write_text(
+            "c_messina = { b_messina = { province = 2633 } }",
+            encoding="utf-8",
+        )
+        with mock.patch.object(
+            native_auto_run_module, "park_foreground_ck3_cursor",
+            return_value={"status": "parked", "parked_screen_xy": [512, 560]},
+        ):
+            report, harness = self._run(["advance"], war_hotspot_army=True)
+        turn = report["auto_run"]["turns"][0]
+        follow = turn["camera_follow"]
+        self.assertEqual(follow["status"], "centered")
+        self.assertEqual(follow["hotspot"]["province_id"], 2633)
+        self.assertEqual(follow["hotspot"]["reason"], "battle")
+        self.assertTrue(follow["camera_receipt"]["camera_center"]["postcondition_verified"])
+        self.assertLess(harness.events.index("camera_center:b_messina"),
+                        harness.events.index("auto_turn:advance"))
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 1)
+
+    def test_camera_focus_failure_is_reported_without_replacing_gameplay(self) -> None:
+        title_dir = self.spec.game_dir / "game" / "common" / "landed_titles"
+        title_dir.mkdir(parents=True)
+        (title_dir / "00_landed_titles.txt").write_text(
+            "c_messina = { b_messina = { province = 2633 } }",
+            encoding="utf-8",
+        )
+        with mock.patch.object(
+            native_auto_run_module, "park_foreground_ck3_cursor",
+            return_value={"status": "ck3_not_foreground"},
+        ):
+            report, harness = self._run(["advance"], war_hotspot_army=True)
+        turn = report["auto_run"]["turns"][0]
+        self.assertEqual(turn["camera_follow"]["status"], "unavailable")
+        self.assertIn("cursor was not parked", turn["camera_follow"]["reason"])
+        self.assertEqual(turn["selected_step"], "life-advance")
+        self.assertEqual(report["auto_run"]["visible_gameplay_turns"], 1)
+        self.assertNotIn("camera_center:b_messina", harness.events)
 
     def test_parser_exposes_private_bounded_construction_opt_in(self) -> None:
         args = cli.parser().parse_args([

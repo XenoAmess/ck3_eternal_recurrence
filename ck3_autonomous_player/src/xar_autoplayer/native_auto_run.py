@@ -600,6 +600,7 @@ def native_auto_run(
                 else None
             ),
             "before": copy.deepcopy(before),
+            "camera_follow": copy.deepcopy(attempt.get("camera_follow")),
             "plan": copy.deepcopy(attempt.get("plan")),
             "selected_step": attempt.get("selected_step"),
             "result": _compact_failure_step_result(attempt.get("result")),
@@ -942,8 +943,14 @@ def native_auto_run(
             current_attempt["before"] = _public_binding(before)
             if camera_index is not None:
                 try:
+                    semantic = before.get("_semantic")
+                    if not isinstance(semantic, dict):
+                        raise ValueError("readiness frame has no bound war snapshot")
                     current_attempt["camera_follow"] = follow_war_hotspot(
-                        service, before, camera_index,
+                        service, {
+                            "revision": before.get("revision"),
+                            "active_wars": semantic.get("active_wars"),
+                        }, camera_index,
                         park_cursor=park_foreground_ck3_cursor,
                     )
                 except (BridgeUnavailableError, UnsupportedStepError, ValueError, OSError) as error:
@@ -1130,6 +1137,7 @@ def native_auto_run(
                             "formal_plan_intercepted_before_submission",
                             "candidate_checkpoint_saved",
                         ],
+                        camera_follow=current_attempt["camera_follow"],
                     )
                 )
                 if after_intercept is None:
@@ -1198,6 +1206,7 @@ def native_auto_run(
                         before=before,
                         after=before,
                         evidence=[],
+                        camera_follow=current_attempt["camera_follow"],
                     )
                 )
                 status = "blocked"
@@ -1230,6 +1239,7 @@ def native_auto_run(
                         before=before,
                         after=before,
                         evidence=[],
+                        camera_follow=current_attempt["camera_follow"],
                     )
                 )
                 if completion_contract in strict_completion_contracts:
@@ -2047,6 +2057,7 @@ def native_auto_run(
                     before=before,
                     after=after,
                     evidence=evidence,
+                    camera_follow=current_attempt["camera_follow"],
                 )
             )
             if (
@@ -4576,6 +4587,7 @@ def _turn_record(
     before: dict[str, object],
     after: dict[str, object],
     evidence: list[str],
+    camera_follow: object = None,
 ) -> dict[str, object]:
     plan = outcome.get("plan")
     result = outcome.get("result")
@@ -4599,6 +4611,7 @@ def _turn_record(
         "result": _compact_step_result(result),
         "before": _public_binding(before),
         "after": _public_binding(after),
+        "camera_follow": copy.deepcopy(camera_follow),
         "evidence": evidence or [
             "same_frame_query" if turn_class == "query" else "no_semantic_delta"
         ],
