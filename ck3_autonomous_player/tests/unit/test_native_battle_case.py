@@ -13,8 +13,10 @@ from xar_autoplayer.simulation.native_battle_case import (
     NativeBattleCaseError,
     _validate,
     _validate_repeatability,
+    _validate_phase_event_observations,
     load_episode01_native_battle_case,
     load_episode01_native_battle_repeatability,
+    load_episode01_phase_event_observations,
     original_daily_timeline,
 )
 
@@ -57,6 +59,28 @@ class NativeBattleCaseTests(unittest.TestCase):
             promoted[key] = True
             with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):
                 _validate_repeatability(promoted)
+
+    def test_phase_event_ledger_is_not_mistaken_for_effect_execution(self) -> None:
+        report = load_episode01_phase_event_observations()
+        self.assertEqual(report["battle_event_row_count"], 6)
+        self.assertEqual([row["source_day"] for row in report["event_fire_pairs"]],
+                         [5, 7, 9, 15, 16, 19])
+        self.assertTrue(all(not row["observed_character_core_deltas_within_fire"]
+                            for row in report["event_fire_pairs"]))
+        wounded = report["event_fire_pairs"][0]["target_character_observations"][0]
+        self.assertEqual(wounded["same_fire_before"]["prowess"], 8)
+        self.assertEqual(wounded["same_fire_after"]["prowess"], 8)
+        self.assertEqual(wounded["next_source_day_record0"]["prowess"], 8)
+        self.assertEqual(wounded["next_source_day_record2"]["prowess"], 6)
+        killed = report["event_fire_pairs"][3]["target_character_observations"][0]
+        self.assertFalse(killed["same_fire_after"]["death_marker_present"])
+        self.assertTrue(killed["next_source_day_record2"]["death_marker_present"])
+        self.assertFalse(report["effect_execution_or_complete_feedback_proven"])
+        for key in ("effect_execution_or_complete_feedback_proven", "planner_usable"):
+            promoted = copy.deepcopy(report)
+            promoted[key] = True
+            with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):
+                _validate_phase_event_observations(promoted)
 
 
 if __name__ == "__main__":

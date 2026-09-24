@@ -30,6 +30,14 @@
 
 ## 下一次最小施工与验收
 
+### 2026-09-24 梅西纳独立回放的局部事件时序
+
+[episode01 共用阶段事件观察](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_observations.json)（SHA-256 `C84B9E7D513F2D26E0532ABAD95394685CF6739A4EC6F712532DF84B3C2B56CB`）从 attempt-004 原始回执逐份校验后投影。第 5、7、9、15、16、19 日均有一次 battle-event ledger 追加；对应局部 fire 前后已捕获的 character core 和 accolade 字段六次全无 delta。第 5 日受伤目标 36303 的勇武在 fire 前后及下一源日 schedule 前均为 8，下一源日 fire 前为 6。第 15 日阵亡目标 36673 的 death marker 在 fire 后仍为 false，下一源日 fire 前为 true。第 15、16 日只满足局部成对记录条件，整日 trace 仍为 `trace_unavailable`。
+
+exact-build stock `game/common/combat_phase_events/00_knight_phase_events.txt` SHA-256 `E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1` 中，受伤分支先写 `battle_event`（727–733），后调用 `increase_wounds_effect`（734）；击杀分支先写 `battle_event`（1277–1282），后执行 `death`（1318–1320）。脚本顺序与“账本先可见”相容，但不能据此推出运行时同步边界，也不能把脚本行号当作实际写集回执。
+
+这些观察把“事件账本何时追加”与“被追踪字段何时变化”明确分开；它们**没有**捕获完整 mutable write-set，也没有证明勇武/死亡变化唯一由对应条目造成。后续验收必须定位账本 append 之后到下一次 phase read 之前的实际 callback/调度边界，并同时读取受伤 trait、死亡链、荣誉/威望、参战身份和 outgoing damage。不能用账本条目本身代替 effect 执行回执。
+
 1. 用新的七边界 ordered levy/MAA `starting/current_fighting/soft/hard`、owner-hard ledger 与双方 outgoing damage、`0x18C/0x18D/0x19F` 有效 raw，对拍一个**无事件** main tick 的确定性伤亡；R0209 的旧 DTO 只有聚合，不能给这一步填期望值。
 2. 从合法自然战斗中捕获一个**非空原版 effect** 的有界一天：同 CombatID/date split、实际 selected row/root、fire 前后 RNG、root trait/health、participant/commander、accolade rank/参数和下个 tick 读回。调用已合入的 `execute_phase_event_trial_sequence` 做同一 root 的 effect 对拍，再补跨 root/side 写回。对不一致字段只修对应 source/transition。
 3. 对表中战报/叙事候选做**定向** callback write-set 与 13 行/主 tick consumer 检查，证明本场不回流者即可排除数值模拟；有反馈者继续建模。迟发事件按当前 battle horizon 判定，不永久要求所有故事系统完整实现。

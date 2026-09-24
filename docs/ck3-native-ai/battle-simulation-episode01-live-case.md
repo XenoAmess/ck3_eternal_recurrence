@@ -56,6 +56,14 @@
 
 三次均连续回读 31 个战斗日，第 28 天进入追击，第 32 天正常结算；原生终局 `winner_raw=0`，玩家位于 side1，三次都是玩家败退并造成战争进攻方 -50 战分。三条**逐兵团当前兵力合计**轨迹两两在第 6 天首次分叉；第 6 天敌方合计分别为 `183703672`、`185282077`、`183966739` Q100000。原生 side-level 暂存兵力与逐兵团合计在这些帧并不总一致，因此对照板不用暂存值冒充战斗人数。绑定原始回执 SHA、逐兵团合计和每次终局的[共用回放数据](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_repeatability.json) SHA-256 为 `5E2D4B1AEE3BD6D64AC48111CD7ED1D8F48B8827D9FEBAB3F04505F3F2C1EF9C`；[只读投影工具](../../ck3_autonomous_player/tools/project_native_battle_repeatability.py)会核对源响应与检查点 bytes。视频的[片用对照板](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/repeatability-board.json)与智能体都经 `native_battle_case.py` 读取同一份数据。
 
+### 阶段事件账本与实际回流的时点
+
+对 attempt-004 的 24 份原始阶段回执再次按 SHA 核验，并把六次战报新增条目的 fire 前后人物核心字段、骑士称号荣耀以及下一次逐日回读分别投影到[共用阶段事件观察](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_observations.json)（SHA-256 `C84B9E7D513F2D26E0532ABAD95394685CF6739A4EC6F712532DF84B3C2B56CB`）。[投影工具](../../ck3_autonomous_player/tools/project_native_phase_event_observations.py)拒绝源回执 hash 变化、非追加账本或跨 side 条目；智能体的案例读取器也强制 `effect_execution_or_complete_feedback_proven=false`、`planner_usable=false`。
+
+六次条目在第 5、7、9、15、16、19 日各一条；每一次对应的 fire 前后，**已捕获的人物核心字段与称号字段没有变化**。这只排除这些字段在该捕获区间内可见的即时改写，不能排除未捕获 trait、资源、脚本变量、回调或稍后的改写。第 5 日条目称 `knight_wounded_by_enemy`，目标角色 36303 在 fire 前后勇武均为 8，下一源日 schedule 前仍为 8、fire 前已为 6；第 15 日 `knight_killed_by_enemy` 的目标 36673 在 fire 后仍未见死亡标记，下一源日 fire 前已有死亡标记且兵团链接改变。第 15、16 日整体 trace 是 `trace_unavailable`，这里只引用零错误、身份与日期相符的局部 fire 成对记录，不提升整日 readiness。
+
+因此战报追加时刻**不等于**效果写集全部生效时刻。跨两次日初/阶段回读的变化与对应条目有时间关联，但还不能单独证明因果、精确回调边界或完整 effect；任何模拟器若在 fire 记录追加时立刻把伤/死效果写入状态，仍需和原版后续读取点对拍。片中可以展示“战报先出现，后续状态再变”的该案实证，不得解说为完整事件模型已经确认。
+
 这些结果证明“同一接战检查点可产生不同的原版逐日数值轨迹”，也证明三条被观察到的轨迹都输了；**不证明回放之间是独立随机抽样，更不等于这场战斗的胜率为 0%**。样本只有一个初始局面、两个真正的重启回放，没有覆盖不同战斗条件；event effect、增援策略与模拟器预测残差也未闭合。数据合同明确 `independent_random_draws_proven=false`、`calibrated_win_probability_available=false`、`planner_usable=false`，不得把 3/3 败退作为自动进攻的概率输入或作为正片百分比。
 
 ## 仍未满足的正片与智能体门槛

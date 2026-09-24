@@ -1,0 +1,74 @@
+{
+  "schema": "ck3-episode01-phase-event-timing-board-v1",
+  "source_report_sha256": "C84B9E7D513F2D26E0532ABAD95394685CF6739A4EC6F712532DF84B3C2B56CB",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "phase_trace_trajectory": "independent-replay-from-original-contact-checkpoint",
+  "all_observed_ledger_append_days": [
+    5,
+    7,
+    9,
+    15,
+    16,
+    19
+  ],
+  "examples": [
+    {
+      "source_day": 5,
+      "target_day": 6,
+      "event_key_as_recorded_in_battle_ledger": "knight_wounded_by_enemy",
+      "ledger_target_character_id": 36303,
+      "same_fire_before_prowess": 8,
+      "same_fire_after_prowess": 8,
+      "same_fire_after_death_marker": false,
+      "next_source_day_record0": {
+        "character_id": 36303,
+        "death_marker_present": false,
+        "martial": 12,
+        "learning": 6,
+        "prowess": 8,
+        "current_regiment_id": 113,
+        "current_regiment_back_reference_matches": true
+      },
+      "next_source_day_record2": {
+        "character_id": 36303,
+        "death_marker_present": false,
+        "martial": 11,
+        "learning": 6,
+        "prowess": 6,
+        "current_regiment_id": 113,
+        "current_regiment_back_reference_matches": true
+      },
+      "source_receipt_sha256": "851B664AF6D2D59DED0A8D602AEEF95E6E0BE0283D2CCCD2F5204F77C9801808",
+      "next_source_day_receipt_sha256": "78939C8E2FE2BA03ADE14EB49F43CDED7288EDC37E0E785DADD562C237533848",
+      "whole_day_trace_available": true,
+      "causal_effect_execution_proven": false
+    },
+    {
+      "source_day": 15,
+      "target_day": 16,
+      "event_key_as_recorded_in_battle_ledger": "knight_killed_by_enemy",
+      "ledger_target_character_id": 36673,
+      "same_fire_before_prowess": 6,
+      "same_fire_after_prowess": 6,
+      "same_fire_after_death_marker": false,
+      "next_source_day_record0": null,
+      "next_source_day_record2": {
+        "character_id": 36673,
+        "death_marker_present": true,
+        "martial": 0,
+        "learning": 4,
+        "prowess": 6,
+        "current_regiment_id": 0,
+        "current_regiment_back_reference_matches": true
+      },
+      "source_receipt_sha256": "31DF5CAC53ADE6EB6CDEE1B84D5C76A57508B9885DA5712F793D8D6D172D80E3",
+      "next_source_day_receipt_sha256": "1F43A75B2FA6BA0779F2FEEE5101822261D2C7955B3A0EBCCC08EF74571089B4",
+      "whole_day_trace_available": false,
+      "causal_effect_execution_proven": false
+    }
+  ],
+  "effect_execution_or_complete_feedback_proven": false,
+  "calibrated_win_probability_available": false,
+  "planner_usable": false
+}

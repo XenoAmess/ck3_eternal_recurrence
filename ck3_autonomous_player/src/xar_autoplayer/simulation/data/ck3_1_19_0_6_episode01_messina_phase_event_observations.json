@@ -1,0 +1,425 @@
+{
+  "schema": "ck3-native-phase-event-observations-v1",
+  "case_id": "episode01-sicily-messina-combat-16777218",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "trace_run_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-full-edge-attempt-004",
+  "phase_trace_trajectory": "independent-replay-from-original-contact-checkpoint",
+  "event_fire_pairs": [
+    {
+      "source_day": 5,
+      "target_day": 6,
+      "source_trace_status": "bounded_trace_available",
+      "source_receipt_sha256": "851B664AF6D2D59DED0A8D602AEEF95E6E0BE0283D2CCCD2F5204F77C9801808",
+      "phase_side_index": 0,
+      "fire_record_indices": [
+        2,
+        3
+      ],
+      "native_date_raw": 53146368,
+      "appended_battle_events": [
+        {
+          "left_character_id": 36303,
+          "right_character_id": 34867,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ],
+      "observed_character_core_deltas_within_fire": [],
+      "observed_accolade_deltas_within_fire": [],
+      "target_character_observations": [
+        {
+          "character_id": 36303,
+          "same_fire_before": {
+            "character_id": 36303,
+            "death_marker_present": false,
+            "martial": 12,
+            "learning": 6,
+            "prowess": 8,
+            "current_regiment_id": 113,
+            "current_regiment_back_reference_matches": true
+          },
+          "same_fire_after": {
+            "character_id": 36303,
+            "death_marker_present": false,
+            "martial": 12,
+            "learning": 6,
+            "prowess": 8,
+            "current_regiment_id": 113,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record0": {
+            "character_id": 36303,
+            "death_marker_present": false,
+            "martial": 12,
+            "learning": 6,
+            "prowess": 8,
+            "current_regiment_id": 113,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record2": {
+            "character_id": 36303,
+            "death_marker_present": false,
+            "martial": 11,
+            "learning": 6,
+            "prowess": 6,
+            "current_regiment_id": 113,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_receipt_sha256": "78939C8E2FE2BA03ADE14EB49F43CDED7288EDC37E0E785DADD562C237533848"
+        }
+      ],
+      "global_rng_counter_before": 400187,
+      "global_rng_counter_after": 400188,
+      "full_mutable_transition_bundle_complete": false,
+      "effect_execution_or_complete_feedback_proven": false
+    },
+    {
+      "source_day": 7,
+      "target_day": 8,
+      "source_trace_status": "bounded_trace_available",
+      "source_receipt_sha256": "FCCA9F842CB6188F490F9CA4691EBA231EF764DCE2EA8E12BAB0037AB4817641",
+      "phase_side_index": 1,
+      "fire_record_indices": [
+        4,
+        5
+      ],
+      "native_date_raw": 53146416,
+      "appended_battle_events": [
+        {
+          "left_character_id": 43706,
+          "right_character_id": 54140,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ],
+      "observed_character_core_deltas_within_fire": [],
+      "observed_accolade_deltas_within_fire": [],
+      "target_character_observations": [
+        {
+          "character_id": 43706,
+          "same_fire_before": {
+            "character_id": 43706,
+            "death_marker_present": false,
+            "martial": 0,
+            "learning": 9,
+            "prowess": 9,
+            "current_regiment_id": 63,
+            "current_regiment_back_reference_matches": true
+          },
+          "same_fire_after": {
+            "character_id": 43706,
+            "death_marker_present": false,
+            "martial": 0,
+            "learning": 9,
+            "prowess": 9,
+            "current_regiment_id": 63,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record0": {
+            "character_id": 43706,
+            "death_marker_present": false,
+            "martial": 0,
+            "learning": 9,
+            "prowess": 9,
+            "current_regiment_id": 63,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record2": {
+            "character_id": 43706,
+            "death_marker_present": false,
+            "martial": 0,
+            "learning": 9,
+            "prowess": 9,
+            "current_regiment_id": 63,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_receipt_sha256": "4CE59178599B9779945F4DFAB851BAFEED1B376E37D891BB03DF60BFC3211715"
+        }
+      ],
+      "global_rng_counter_before": 401384,
+      "global_rng_counter_after": 401385,
+      "full_mutable_transition_bundle_complete": false,
+      "effect_execution_or_complete_feedback_proven": false
+    },
+    {
+      "source_day": 9,
+      "target_day": 10,
+      "source_trace_status": "bounded_trace_available",
+      "source_receipt_sha256": "AB14DEE59C2A051094195C02BFD1792B6133731771026D435B2BFB9650E6F649",
+      "phase_side_index": 0,
+      "fire_record_indices": [
+        2,
+        3
+      ],
+      "native_date_raw": 53146464,
+      "appended_battle_events": [
+        {
+          "left_character_id": 54144,
+          "right_character_id": 34867,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ],
+      "observed_character_core_deltas_within_fire": [],
+      "observed_accolade_deltas_within_fire": [],
+      "target_character_observations": [
+        {
+          "character_id": 54144,
+          "same_fire_before": {
+            "character_id": 54144,
+            "death_marker_present": false,
+            "martial": 10,
+            "learning": 5,
+            "prowess": 4,
+            "current_regiment_id": 220,
+            "current_regiment_back_reference_matches": true
+          },
+          "same_fire_after": {
+            "character_id": 54144,
+            "death_marker_present": false,
+            "martial": 10,
+            "learning": 5,
+            "prowess": 4,
+            "current_regiment_id": 220,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record0": {
+            "character_id": 54144,
+            "death_marker_present": false,
+            "martial": 10,
+            "learning": 5,
+            "prowess": 4,
+            "current_regiment_id": 220,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record2": {
+            "character_id": 54144,
+            "death_marker_present": false,
+            "martial": 9,
+            "learning": 5,
+            "prowess": 2,
+            "current_regiment_id": 220,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_receipt_sha256": "77C8CE63401677FA958F442B0E2E45572BE538441CB0D5A4843665394BBCED2C"
+        }
+      ],
+      "global_rng_counter_before": 402613,
+      "global_rng_counter_after": 402614,
+      "full_mutable_transition_bundle_complete": false,
+      "effect_execution_or_complete_feedback_proven": false
+    },
+    {
+      "source_day": 15,
+      "target_day": 16,
+      "source_trace_status": "trace_unavailable",
+      "source_receipt_sha256": "31DF5CAC53ADE6EB6CDEE1B84D5C76A57508B9885DA5712F793D8D6D172D80E3",
+      "phase_side_index": 0,
+      "fire_record_indices": [
+        2,
+        3
+      ],
+      "native_date_raw": 53146608,
+      "appended_battle_events": [
+        {
+          "left_character_id": 36673,
+          "right_character_id": 32716,
+          "stable_key": "knight_killed_by_enemy",
+          "type_raw": 3,
+          "side_index": 0,
+          "target_right": false
+        }
+      ],
+      "observed_character_core_deltas_within_fire": [],
+      "observed_accolade_deltas_within_fire": [],
+      "target_character_observations": [
+        {
+          "character_id": 36673,
+          "same_fire_before": {
+            "character_id": 36673,
+            "death_marker_present": false,
+            "martial": 1,
+            "learning": 6,
+            "prowess": 6,
+            "current_regiment_id": 180,
+            "current_regiment_back_reference_matches": true
+          },
+          "same_fire_after": {
+            "character_id": 36673,
+            "death_marker_present": false,
+            "martial": 1,
+            "learning": 6,
+            "prowess": 6,
+            "current_regiment_id": 180,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record0": null,
+          "next_source_day_record2": {
+            "character_id": 36673,
+            "death_marker_present": true,
+            "martial": 0,
+            "learning": 4,
+            "prowess": 6,
+            "current_regiment_id": 0,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_receipt_sha256": "1F43A75B2FA6BA0779F2FEEE5101822261D2C7955B3A0EBCCC08EF74571089B4"
+        }
+      ],
+      "global_rng_counter_before": 409085,
+      "global_rng_counter_after": 409088,
+      "full_mutable_transition_bundle_complete": false,
+      "effect_execution_or_complete_feedback_proven": false
+    },
+    {
+      "source_day": 16,
+      "target_day": 17,
+      "source_trace_status": "trace_unavailable",
+      "source_receipt_sha256": "1F43A75B2FA6BA0779F2FEEE5101822261D2C7955B3A0EBCCC08EF74571089B4",
+      "phase_side_index": 1,
+      "fire_record_indices": [
+        4,
+        5
+      ],
+      "native_date_raw": 53146632,
+      "appended_battle_events": [
+        {
+          "left_character_id": 33437,
+          "right_character_id": 54144,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ],
+      "observed_character_core_deltas_within_fire": [],
+      "observed_accolade_deltas_within_fire": [],
+      "target_character_observations": [
+        {
+          "character_id": 33437,
+          "same_fire_before": {
+            "character_id": 33437,
+            "death_marker_present": false,
+            "martial": 4,
+            "learning": 9,
+            "prowess": 4,
+            "current_regiment_id": 65,
+            "current_regiment_back_reference_matches": true
+          },
+          "same_fire_after": {
+            "character_id": 33437,
+            "death_marker_present": false,
+            "martial": 4,
+            "learning": 9,
+            "prowess": 4,
+            "current_regiment_id": 65,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record0": {
+            "character_id": 33437,
+            "death_marker_present": false,
+            "martial": 4,
+            "learning": 9,
+            "prowess": 4,
+            "current_regiment_id": 65,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record2": {
+            "character_id": 33437,
+            "death_marker_present": false,
+            "martial": 3,
+            "learning": 9,
+            "prowess": 4,
+            "current_regiment_id": 65,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_receipt_sha256": "9C247123EE5936AD331D3E5B88B230CCED06A65B4116F8E2B598BA72399D8288"
+        }
+      ],
+      "global_rng_counter_before": 409730,
+      "global_rng_counter_after": 409731,
+      "full_mutable_transition_bundle_complete": false,
+      "effect_execution_or_complete_feedback_proven": false
+    },
+    {
+      "source_day": 19,
+      "target_day": 20,
+      "source_trace_status": "bounded_trace_available",
+      "source_receipt_sha256": "9105A6880309176F38091689136B725A352F4325BBB67065BB10B3969A9C9BCC",
+      "phase_side_index": 1,
+      "fire_record_indices": [
+        4,
+        5
+      ],
+      "native_date_raw": 53146704,
+      "appended_battle_events": [
+        {
+          "left_character_id": 30784,
+          "right_character_id": 35124,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ],
+      "observed_character_core_deltas_within_fire": [],
+      "observed_accolade_deltas_within_fire": [],
+      "target_character_observations": [
+        {
+          "character_id": 30784,
+          "same_fire_before": {
+            "character_id": 30784,
+            "death_marker_present": false,
+            "martial": 5,
+            "learning": 6,
+            "prowess": 2,
+            "current_regiment_id": 67,
+            "current_regiment_back_reference_matches": true
+          },
+          "same_fire_after": {
+            "character_id": 30784,
+            "death_marker_present": false,
+            "martial": 5,
+            "learning": 6,
+            "prowess": 2,
+            "current_regiment_id": 67,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record0": {
+            "character_id": 30784,
+            "death_marker_present": false,
+            "martial": 5,
+            "learning": 6,
+            "prowess": 2,
+            "current_regiment_id": 67,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_record2": {
+            "character_id": 30784,
+            "death_marker_present": false,
+            "martial": 4,
+            "learning": 6,
+            "prowess": 2,
+            "current_regiment_id": 67,
+            "current_regiment_back_reference_matches": true
+          },
+          "next_source_day_receipt_sha256": "D07DAC91DF6A3DAB17CE19C5C5CB27B4184D0C156B033376A8140DBA7CB5DDED"
+        }
+      ],
+      "global_rng_counter_before": 414426,
+      "global_rng_counter_after": 414427,
+      "full_mutable_transition_bundle_complete": false,
+      "effect_execution_or_complete_feedback_proven": false
+    }
+  ],
+  "battle_event_row_count": 6,
+  "effect_execution_or_complete_feedback_proven": false,
+  "planner_usable": false
+}
