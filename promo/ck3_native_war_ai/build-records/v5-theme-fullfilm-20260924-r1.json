@@ -1,0 +1,126 @@
+{
+  "schema": "ck3-war-ai.v5-single-theme-full-film-review.v1",
+  "created_at_utc": "2026-09-24T04:21:32.132844+00:00",
+  "state": "rendered-uploaded-pending-human-review",
+  "human_signoff": "not-provided",
+  "game_baseline": "CK3 1.19.0.6",
+  "episode": 0,
+  "series_theme": {
+    "original_title": "Quiet Courtly Tension",
+    "original_wav": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/run/artifacts/raw/sha256/FD/FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+      "bytes": 30726160,
+      "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+    },
+    "onedrive_backup": {
+      "path": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-War-Series-Theme-Quiet-Courtly-Tension-20260924.wav",
+      "bytes": 30726160,
+      "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+    },
+    "single_theme_for_future_episodes": true,
+    "no_other_music": true
+  },
+  "source_v4_film": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/war-ai-full-film-review.mp4",
+    "bytes": 228899890,
+    "sha256": "7be5bc37cda034f866bc8b5774edfc121bd5ba22c0134b9cc88d6fd2de0b96e2"
+  },
+  "film": {
+    "title": "CK3 的 AI 为什么开战、绕路，又突然愿意讲和？",
+    "video": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/CK3-War-AI-Episode-0-Series-Theme-Review-20260924.mp4",
+      "bytes": 231774341,
+      "sha256": "0a7858b4e9c395eafb0532f5eb6ec243369f214607ab09c21de5aa9ad4f0ac10"
+    },
+    "duration_seconds": 2224.888021,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "fps": "30/1",
+    "chapters": 8,
+    "voice": "IndexTTS 2.5, V4 narration preserved at 0 dB in the mix",
+    "gameplay_spans": 5,
+    "music": true
+  },
+  "mix": {
+    "music_gain_db": -17.0,
+    "narration_gain_db": 0.0,
+    "duck_windows": [],
+    "automatic_normalization": false,
+    "music_loop": "same original WAV, FFmpeg -stream_loop -1",
+    "theme_fade_in_seconds": 2.0,
+    "theme_fade_out_seconds": 8.0,
+    "receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/theme-mix/theme-mix-receipt.json",
+      "bytes": 6585,
+      "sha256": "1d925b0144efe6f3366b6587c5c2669c8b989deff0e530c1bc32a9868dd5ea41"
+    }
+  },
+  "toolchain": {
+    "name": "xar-promo-toolchain",
+    "version": "0.2.1",
+    "formal_release_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1",
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "run_id": "ck3-war-ep0-theme-20260924-r1",
+    "run_manifest": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/run/run-manifest.json",
+      "bytes": 6844,
+      "sha256": "0c6393eaafccf8d7487f30b44ac43d50928901265f4e9ad930495cdf97970670"
+    },
+    "run_validation": "authoring GREEN; referenced file hashes checked",
+    "bound_probe": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/video.bound-probe.json",
+      "bytes": 5371,
+      "sha256": "c40a5c2b9bab4e2c39fb2c9088022be477bdf548ea1cc65ca4f331c4f02da1ba"
+    },
+    "inherited_visual_review": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/visual-review-inheritance.json",
+      "bytes": 2661,
+      "sha256": "870036a2d8325660da23aaa4737933e686b15a3b140f553d1946f5c95c3c682d"
+    },
+    "review_state": "pending-human-review; 106 verified V4 boundary frames inherited via exact V4/V5 video packet-and-timing identity",
+    "native_v5_review_attempt": "stopped incomplete after 72 frames; retained and not called GREEN"
+  },
+  "technical_checks": {
+    "source_equals_output_encoded_video_stream_sha256": "c7061e88a8d97d4b245653f814ab3869b21445ca8f8bab153de7713813c4cfee",
+    "output_audio_full_decode": "passed with FFmpeg -xerror",
+    "output_audio_mean_dbfs": -20.6,
+    "output_audio_peak_dbfs": -2.5,
+    "chapter_titles_and_timestamps": "eight match V4 within 2 ms",
+    "verification_receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/technical-verification.json",
+      "bytes": 3141,
+      "sha256": "3d0c0a8af70ab1864c1b8a36dfc465621cb329653df888489fd47db064fa1806"
+    },
+    "video_packet_and_timing_identity": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/video-packet-identity.json",
+      "bytes": 1727,
+      "sha256": "d3bd4ab12c2ee90544e11b3109488c3c41f1f63d2585cdd7fff3feff073fff0e"
+    }
+  },
+  "delivery": {
+    "method": "OneDrive desktop client, existing fixed selective-sync folder",
+    "destination": {
+      "path": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-War-AI-Episode-0-Series-Theme-Review-20260924.mp4",
+      "bytes": 231774341,
+      "sha256": "0a7858b4e9c395eafb0532f5eb6ec243369f214607ab09c21de5aa9ad4f0ac10"
+    },
+    "delivery_receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/onedrive-delivery-receipt.json",
+      "bytes": 2097,
+      "sha256": "52cf8819dd5c4f020add2fe59b4fd851245978938425ebb7cb3b39edf84e9b49"
+    },
+    "client_activity_readback": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/onedrive-client-success.json",
+      "bytes": 23049,
+      "sha256": "599b37db0c96e82b2832cea49111258fbb9cb97b0478e3de5c7b1df6469dfdb8"
+    },
+    "client_status": "已备份和同步",
+    "client_mp4_activity": "CK3-War-AI-Episode-0-Series-Theme-Review-20260924.mp4. 已上传到 CK3-War-AI-20260923. 20 秒 前. 1 个最近的项，共 7 个。",
+    "client_wav_activity": "CK3-War-Series-Theme-Quiet-Courtly-Tension-20260924.wav. 已上传到 CK3-War-AI-20260923. 7 分钟 前. 2 个最近的项，共 7 个。",
+    "other_cloud_file_content_read_or_downloaded_by_this_task": false,
+    "cloud_bytes_readback": "not-performed; client activity confirms upload, local copy SHA confirms bytes"
+  },
+  "scope": "Audio-only remix of V4. No new vanilla decision evidence or gameplay capture. Machine review is not 1x human playback or signoff."
+}

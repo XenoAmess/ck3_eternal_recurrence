@@ -1,8 +1,8 @@
 # 《CK3 的 AI 为什么开战、绕路，又突然愿意讲和？》
 
-**当前交付：IndexTTS 重配音的 v4 完整审阅版。** 片长 37:04.888，八章、45 段旁白、五段连续原版实机画面、双语字幕和播放器章节书签。沿用用户确认的参考声，以及《Project 因果律》的语速和自然情感设置。45 段独立 ASR 漏句筛查、原生 run 验证与最终媒体完整音视频解码均通过；[v4 构建记录](build-records/v4-index-fullfilm-20260924-r1.json)绑定准确字节和证据范围。OneDrive 客户端已明确回读 `CK3-War-AI-V4-IndexTTS-Review-20260924.mp4`“已上传到 CK3-War-AI-20260923”；人工 1× 全片审阅和签核待用户完成。旧片的[审片结论、研究清单与重做标准](../../docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md)仍是本次重制依据。
+**当前交付：加入全系列唯一主题音乐的第 0 集完整审阅版。** 片长 37:04.888，八章、45 段 IndexTTS 旁白、五段连续原版实机画面、双语字幕和播放器章节书签。主题音乐是用户提供的 `Quiet Courtly Tension.wav`；一首曲子循环铺底，旁白不降音量，音乐固定 -17 dB，不做随旁白变化的 ducking。新片 `CK3-War-AI-Episode-0-Series-Theme-Review-20260924.mp4` 与原曲 WAV 已由 OneDrive 桌面客户端上传到 `CK3-War-AI-20260923`；[v5 构建记录](build-records/v5-theme-fullfilm-20260924-r1.json)绑定精确字节和证据范围。画面、章节、研究边界及声音均承接 [v4 IndexTTS 母版](build-records/v4-index-fullfilm-20260924-r1.json)；人工 1× 全片审阅和签核待用户完成。旧片的[审片结论、研究清单与重做标准](../../docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md)仍是本次重制依据。
 
-用户希望把更深入的内容逐集制作；[后续专题系列规划](series-roadmap.md)以单条原生决策链为一集，并列明各集尚需取得的实机证据。本片保持全景片定位，不追认系列中尚未完成的研究。
+用户希望把更深入的内容逐集制作；[后续专题系列规划](series-roadmap.md)以单条原生决策链为一集，并列明各集尚需取得的实机证据及唯一主题音乐规则。本片保持全景片定位，不追认系列中尚未完成的研究。[合集无字概念图](concept-art/series-concept-960x540-v1.png)为 960×540 的视觉方向稿，已单独通过 OneDrive 客户端上传；系列正式名称仍待确定。
 
 用户提供的参考声及 IndexTTS 重配过程见[重配音记录](index-revoice-20260923.md)。此前的 [v3 EdgeTTS 完整审阅版](build-records/v3-fullfilm-20260923-r1.json)保留为历史产物，不再是当前推荐审阅文件。
 

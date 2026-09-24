@@ -1,5 +1,13 @@
 # 战争 AI 影片：制作记录
 
+## v5 全系列唯一主题音乐审阅版 · 2026-09-24
+
+用户提供的 `Quiet Courtly Tension.wav`（SHA-256 `fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f`）已指定为[本系列唯一主题音乐](series-roadmap.md#全系列唯一主题音乐)。原曲为 159.960 秒、48 kHz 立体声，已通过 OneDrive 桌面客户端备份到固定同步目录 `CK3-War-AI-20260923/CK3-War-Series-Theme-Quiet-Courtly-Tension-20260924.wav`，客户端活动中心明确显示“已上传到 CK3-War-AI-20260923”。
+
+第 0 集配乐审阅版为 **2224.888021 秒（37:04.9）**、2560×1440 / 30 fps，文件 `D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/CK3-War-AI-Episode-0-Series-Theme-Review-20260924.mp4`，231,774,341 bytes，SHA-256 `0a7858b4e9c395eafb0532f5eb6ec243369f214607ab09c21de5aa9ad4f0ac10`。它沿用 [V4 IndexTTS 母版](build-records/v4-index-fullfilm-20260924-r1.json)的画面、章节、旁白和原生机制证据，只加入这一首曲子的循环混音。复制的编码视频流 SHA-256 与 V4 完全相同；八章标题和时间戳保持一致。旁白增益 0 dB，音乐固定 -17 dB、首尾各淡入 2 秒／淡出 8 秒，不使用随旁白变化的 ducking 或自动归一化。新音轨 48 kHz 立体声 AAC，严格完整音轨解码通过，混合后的峰值为 -2.5 dB。
+
+新片已复制到同一固定同步目录的 `CK3-War-AI-Episode-0-Series-Theme-Review-20260924.mp4`；本地源/交付副本的字节数和 SHA-256 相同。OneDrive 客户端活动中心分别确认这部 MP4 和原曲 WAV 已上传，状态“已备份和同步”。只向既定目录写入这两个文件，本任务未读取或下载其他云端文件内容。配乐 run `D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/` 保留原曲、V4 源片、精确配置快照、混音命令和日志、媒体探测、交付回读与新片；使用正式 xar-promo 0.2.1 的 `start-run/preserve/validate`。原生 `review` 曾实际抽出 72 张新片边界帧，因证实 V4/V5 共 66,746 个编码视频包、包时间戳和持续时间逐条一致而停止重复抽取；该 attempt 的部分帧、日志与停止收据保持原样，**没有标为 GREEN**。项目级继承审阅重新核对 V4 原生包全部 106 张帧的哈希，绑定新片精确 SHA 与新音轨完整解码/电平结果，状态 `pending-human-review`、`approval_granted=false`。这不能替代 1× 人工观看或声音审听。[构建记录](build-records/v5-theme-fullfilm-20260924-r1.json)列出精确资产和验收边界。
+
 ## v3 研究后重制审阅版 · 2026-09-23
 
 本次完整影片为 **2033.821354 秒（33:53.8）**、2560×1440 / 30 fps，八章、45 段 EdgeTTS `zh-CN-XiaoxiaoNeural / -12%` 配音、画面内烧录的简中主字幕和英文副字幕。以 CK3 原版地图与界面、旧金纸面规则卡和五段原速连续实机画面交替讲述；无音乐。交付文件为 `D:/workspace/ck3_native_war_ai_promo_work/v3-film-attempt-003/war-ai-full-film-review.mp4`，211,373,375 bytes，SHA-256 `f2068c66a47af7fd5fcdd2abab484607870e65f588068514fa8d4182239b8192`。完整收据见 [v3 构建记录](build-records/v3-fullfilm-20260923-r1.json)。

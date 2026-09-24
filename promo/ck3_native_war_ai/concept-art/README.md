@@ -1,0 +1,11 @@
+# 战争系列合集概念图
+
+[无字概念图](series-concept-960x540-v1.png)为 960×540、16:9 的 PNG，供系列封面与标题包装讨论；不是 CK3 实机截图，也未决定最终系列名称。画面以王冠、战争地图、红蓝军队、城堡与封蜡和约串起宣战、行军、交战、议和，右侧留标题空间。
+
+[构建与交付记录](../build-records/series-concept-20260924-r1.json)绑定生成原图、最终 PNG、OneDrive 本地副本和客户端上传回读的精确字节。
+
+2026-09-24 使用内置 `image_gen` 生成 1672×941 原图，再用 FFmpeg Lanczos 缩放到精确 960×540。生成原图保存在 `D:/workspace/ck3_native_war_ai_promo_work/concept-art-attempt-001/series-concept-source-1672x941.png`，SHA-256 `33151d40a4308e43b7d20ea663322318bcfe9361fee7af790f8661bdaa152382`；本目录最终图 SHA-256 `c0f55d4d8cc77899b9c9d691b0b3e84472e6c6e14ad9806c3cb4651879766776`。`concept-art-attempt-001/run/` 用正式 xar-promo 0.2.1 的 `start-run/preserve/validate` 保全原图、最终图与上传回读，引用文件逐字节校验 GREEN。只将 960×540 版本复制到 OneDrive 固定同步目录 `CK3-War-AI-20260923/CK3-War-Machine-Series-Concept-960x540-20260924.png`；本地源/同步副本哈希一致，桌面客户端活动中心显示“已上传到 CK3-War-AI-20260923”及全局“已备份和同步”。回读保存在 `D:/workspace/ck3_native_war_ai_promo_work/concept-art-attempt-001/onedrive-client-success.json`。
+
+生成提示词（最终版本）：
+
+> Use case: stylized-concept. Asset type: 16:9 collection cover concept art for a Chinese documentary video series about Crusader Kings III's native war AI and combat systems, target delivery 960×540 pixels. Scene: a late-medieval illuminated parchment campaign map laid across a dark royal war room table. Main subject: an ornate but historically grounded crown casting a long shadow over the map; fine red and blue campaign lines branch from the crown toward a besieged stone castle, two small opposing army formations, and a sealed peace treaty, evoking declaration, movement, battle and negotiation as one connected chain. Style: premium historical strategy game key art blended with manuscript illumination and restrained cinematic realism, rich ink linework, worn parchment, engraved brass, wax seal, believable medieval details. Composition: wide panoramic 16:9, crown and strategic map command attention on left and center; keep the right third darker and visually quiet for later title typography. Lighting/mood: candlelit, grave, intelligent, courtly tension rather than action spectacle; deep burgundy, midnight blue, antique gold. No UI overlays, no charts, no text, no lettering, no logos, no watermarks, no modern objects. Make this clearly original concept art, not a screenshot or imitation of an existing game asset.

@@ -1,5 +1,11 @@
 # 导演案如何进入现有 promo 工具链
 
+## 2026-09-24 当前配乐制作入口
+
+第 0 集 V5 以 V4 已完成的 IndexTTS 画面与旁白母版为输入，使用项目脚本 [`war_ai_promo/theme_mix.py`](integration/src/war_ai_promo/theme_mix.py) 调用正式 xar-promo 0.2.1 的 `AudioMixSpec/plan_audio_mix`，只复制原视频流并重混 AAC 音轨；没有重拍或改变原生机制结论。`start-run` 的配置快照、原曲 WAV、源片、脚本、混音命令、成片、媒体探测、审阅尝试和 OneDrive 回读保存在独立的 `v5-theme-film-attempt-001/`。V4/V5 编码视频包和时间戳完全一致后，V5 原生 review 的重复抽帧尝试保留为不完整状态；项目级审阅通过这一逐包等价证明继承 V4 的 106 张真实帧，并单独绑定新音轨的完整解码证据，不把继承包冒充原生 `review` GREEN。每次未来制作前仍按根 AGENTS 查询最新正式 Release，届时版本可能不同，不能把 0.2.1 当永久要求。
+
+[全系列唯一主题音乐规则](series-roadmap.md#全系列唯一主题音乐)绑定用户提供 WAV 的 SHA-256。后续新集也只用这首原曲，旁白保持 0 dB，音乐使用静态 -17 dB 起始设定，关闭 ducking 与 `amix` 自动归一化；循环、首尾淡化及任何调整都写入该集独立 run 和构建记录。片长、证据门与用户审片仍按各集要求处理。[V5 构建记录](build-records/v5-theme-fullfilm-20260924-r1.json)与[合集概念图记录](build-records/series-concept-20260924-r1.json)是本阶段准确状态；下文较早的“未执行”“尚待制作”只反映 2026-09-22 初案时点。
+
 ## 2026-09-22 开始制作
 
 当前运行入口已实现于 [integration](integration/pyproject.toml)，实际配音、项目 composer 和样片进展见[制作记录](production-stage.md)。下文未实现接线的描述记录导演 authoring 阶段；不能用它否定后续样片，也不能把单章样片反写成当时已经完成的事实。完整影片仍待制作和审片。

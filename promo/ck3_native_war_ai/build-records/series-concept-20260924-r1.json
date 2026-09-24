@@ -1,0 +1,52 @@
+{
+  "schema": "ck3-war-ai.series-concept-image.v1",
+  "created_at_utc": "2026-09-24T04:09:16.074825+00:00",
+  "state": "generated-uploaded-working-title",
+  "concept": "Crown over illuminated campaign map, armies, siege and peace treaty; quiet right-side title space",
+  "series_title_status": "working recommendation only; not selected by user",
+  "generation": {
+    "method": "built-in image_gen",
+    "use_case": "stylized-concept",
+    "source": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/concept-art-attempt-001/series-concept-source-1672x941.png",
+      "bytes": 2487057,
+      "sha256": "33151d40a4308e43b7d20ea663322318bcfe9361fee7af790f8661bdaa152382"
+    },
+    "prompt_document": "promo/ck3_native_war_ai/concept-art/README.md"
+  },
+  "final_image": {
+    "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/concept-art/series-concept-960x540-v1.png",
+    "bytes": 901739,
+    "sha256": "c0f55d4d8cc77899b9c9d691b0b3e84472e6c6e14ad9806c3cb4651879766776",
+    "width": 960,
+    "height": 540,
+    "scale": "FFmpeg Lanczos from 1672x941"
+  },
+  "toolchain": {
+    "name": "xar-promo-toolchain",
+    "version": "0.2.1",
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "run_manifest": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/concept-art-attempt-001/run/run-manifest.json",
+      "bytes": 2171,
+      "sha256": "f413a8dcd172e02270fbf3a6ddbc92c5c809a360d6112e1199b5b34162d5ccbf"
+    },
+    "run_validation": "authoring GREEN; referenced file hashes checked"
+  },
+  "delivery": {
+    "method": "OneDrive desktop client, existing fixed selective-sync folder",
+    "local_delivery_copy": {
+      "path": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-War-Machine-Series-Concept-960x540-20260924.png",
+      "bytes": 901739,
+      "sha256": "c0f55d4d8cc77899b9c9d691b0b3e84472e6c6e14ad9806c3cb4651879766776"
+    },
+    "client_activity": "CK3-War-Machine-Series-Concept-960x540-20260924.png. 已上传到 CK3-War-AI-20260923. 20 秒 前. 1 个最近的项，共 8 个。",
+    "client_status": "已备份和同步",
+    "client_readback": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/concept-art-attempt-001/onedrive-client-success.json",
+      "bytes": 25862,
+      "sha256": "525a3f617d72a0225dbfb8adc0b01cc8941ac6193475ef3671d6f30f2d0055c2"
+    },
+    "other_cloud_file_content_read_or_downloaded_by_this_task": false
+  }
+}
