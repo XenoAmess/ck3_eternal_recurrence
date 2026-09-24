@@ -112,8 +112,13 @@ def select_war_hotspot(
                 if army.get("controllable") is True and army.get("retreating") is not True:
                     target = _positive_int(army.get("move_target_province_id"))
                     if target is not None:
-                        _add(candidates, index, 5, war_id, army_id, target, "army_destination")
-                    _add(candidates, index, 7, war_id, army_id, current, "player_army")
+                        # Follow the moving army's observed position while it
+                        # remains on land. A far route endpoint is only a
+                        # fallback if the army itself is currently at sea.
+                        _add(candidates, index, 5, war_id, army_id, current, "moving_player_army")
+                        _add(candidates, index, 6, war_id, army_id, target, "army_destination")
+                    else:
+                        _add(candidates, index, 8, war_id, army_id, current, "player_army")
         states = war.get("objective_province_states")
         if isinstance(states, list):
             for row in states:
@@ -122,11 +127,11 @@ def select_war_hotspot(
                 province = _positive_int(row.get("province_id"))
                 if row.get("active_siege") is not None:
                     _add(candidates, index, 4, war_id, 0, province, "objective_siege")
-                _add(candidates, index, 6, war_id, 0, province, "war_objective")
+                _add(candidates, index, 7, war_id, 0, province, "war_objective")
         objectives = war.get("war_objective_province_ids")
         if isinstance(objectives, list):
             for province in objectives:
-                _add(candidates, index, 6, war_id, 0, _positive_int(province), "war_objective")
+                _add(candidates, index, 7, war_id, 0, _positive_int(province), "war_objective")
     if not candidates:
         return None
     priority, war_id, army_id, province, reason = min(candidates)

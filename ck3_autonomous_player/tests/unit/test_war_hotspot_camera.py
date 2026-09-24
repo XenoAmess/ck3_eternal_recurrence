@@ -87,6 +87,35 @@ def test_sea_does_not_displace_land_objective(tmp_path: Path) -> None:
     assert hotspot["title_key"] == "b_syracuse"
 
 
+def test_moving_army_follows_observed_position_not_distant_destination(tmp_path: Path) -> None:
+    title_dir = tmp_path / "game" / "common" / "landed_titles"
+    title_dir.mkdir(parents=True)
+    (title_dir / "00_landed_titles.txt").write_text(
+        "c_one = { b_current = { province = 10 } } "
+        "c_two = { b_target = { province = 20 } }",
+        encoding="utf-8",
+    )
+    snapshot = {"active_wars": [{
+        "war_id": 1,
+        "allied_armies": [{"army_id": 5, "controllable": True,
+                           "current_province_id": 10,
+                           "move_target_province_id": 20}],
+        "war_objective_province_ids": [20],
+    }]}
+    index = LandedProvinceIndex.from_game_dir(tmp_path)
+    land_hotspot = select_war_hotspot(snapshot, index)
+    assert land_hotspot is not None
+    assert (land_hotspot["reason"], land_hotspot["province_id"]) == (
+        "moving_player_army", 10
+    )
+    snapshot["active_wars"][0]["allied_armies"][0]["current_province_id"] = 8653
+    sea_hotspot = select_war_hotspot(snapshot, index)
+    assert sea_hotspot is not None
+    assert (sea_hotspot["reason"], sea_hotspot["province_id"]) == (
+        "army_destination", 20
+    )
+
+
 def test_controlled_battle_outranks_other_allied_battle(tmp_path: Path) -> None:
     title_dir = tmp_path / "game" / "common" / "landed_titles"
     title_dir.mkdir(parents=True)

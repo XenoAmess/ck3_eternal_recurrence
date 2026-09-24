@@ -4,6 +4,8 @@
 
 视频与游玩智能体使用同一个 `war_hotspot_camera.py` 选择器。本场 1–31 天均从原生 `active_wars` 选中交战中的省份 2633，解析为 `b_messina`；原生 `center-map-on-landed-title-v1` 回执核对稳定键、revision、镜头停稳与 postcondition。录像开头的 `opening-camera-follow.json` / `.png` 证明自动选点和实机画面吻合，地图中央可见双方军旗。
 
+后续行军镜头沿用同一选择器的当前位置优先规则：陆地上的受控行军军队是画面热点，海上无法解析领地键时才退到陆地目的地。此优先级由单测覆盖；本场墨西拿素材始终处于交战优先级，不能以其 267 帧实证冒充行军视角的实机验收。
+
 首段 `gameplay-hotspot-follow-full-battle.mkv` 的录制在第 17 天收到 `state_changed`：鼠标被移到屏幕边缘后，CK3 持续滚动地图，说明居中回执不能保证几秒后的画面。这次 RED attempt 原样保留。随后给视频与智能体共同流程加入前台 CK3 客户区鼠标停放；视频再增加镜头开始和停留末尾的军旗像素门禁。`resume-d17-r2.mkv` 是第 17–19 天续拍，`resume-d20-r3.mkv` 是第 20–31 天及终局续拍；两段的逐日门禁均通过。最后一天战斗已结束，镜头切换到战争目标，其尾部不作为战斗标记可见区间。
 
 1 秒间隔的视频审计结果：首段前 131 秒可见（131/139 样本），第 17–19 天续段全 29.433 秒可见（30/30），第 20–31 天续段前 109 秒可见（109/116）。`clean-battle-edit-plan.json` 只选 `[0,130]`、`[0,28.4]`、`[0,108]` 秒，留出边界余量。由 `assemble_verified_battle_footage.py` 拼接的 `gameplay-messina-full-battle-clean-v1.mp4` 为 266.4 秒、77,025,802 bytes、SHA-256 `1BF6FD2E3B35DF5E0B43F8EE7D595422E3BE959F156409A33829133B8F6D9A02`。拼接后独立再次以每秒一帧审计，**267/267 样本可见战斗标记**；审计文件为同目录 `gameplay-messina-full-battle-clean-v1-visibility-audit.json`。自动逐秒抽样与原始截图人工抽看不能替代对最终成片按 1× 完整人工观看和签核。

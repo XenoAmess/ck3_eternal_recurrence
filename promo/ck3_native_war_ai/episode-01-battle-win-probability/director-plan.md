@@ -20,6 +20,8 @@
 
 片中优先使用同一场的原版连续实机。定向验证事件、增援或撤退若只能在另一场取得，独立章签写明“另案验证”、不同 CombatID、日期和目的，不把它接成主案的下一镜。教学动画只解释已证机制，明确标“规则示意”；图形所用数字必须来自镜头绑定的证据或标为纯计算例。
 
+实机镜头按原生 `active_wars` 的当前热点逐日重取焦点：交战时锁战场，战斗结束后才转向下一围城、行军军队或目标；行军时跟随军队的已观测当前位置，不提前跳到远端目的地。居中前停放 CK3 窗口内鼠标以防边缘滚屏，居中后核对原生回执、开头帧和停留末帧；失锁片段保留为失败 attempt，不进入净片。游玩智能体复用[同一选择器与镜头边界](../../../docs/ck3-native-ai/war-hotspot-camera-follow.md)，不得靠后期裁切掩盖镜头漂到海上。
+
 ## 证据、拍摄与剪辑门禁
 
 权威研究入口为[战斗结算与 Monte Carlo 边界](../../../docs/ck3-native-ai/battle-simulation.md)、[模拟器核心](../../../docs/ck3-native-ai/combat-simulator-core.md)、[阶段事件反馈](../../../docs/ck3-native-ai/combat-phase-feedback-battle-horizon.md)、[增援与加入](../../../docs/ck3-native-ai/battle-reinforcement-and-join.md)和[终局与撤退](../../../docs/ck3-native-ai/battle-terminal-and-reentry.md)。当前 exact build 是 CK3 1.19.0.6。静态链已区分预测器与真实日结算；R0217/R0220 已有原版主阶段 tick 对拍，其中 R0220 的 54 行兵团当日伤亡零差。这只支持相应日的结论，不能推出整场胜率。四场各十万次的研究包络关闭阶段事件，不能标成原版完整结局分布。`win_probability` 当前仍是 `unavailable/null/0`，`planner_usable=false`。
