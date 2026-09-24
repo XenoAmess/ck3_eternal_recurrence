@@ -51,15 +51,24 @@ def caption_cues(row):
 
 
 def subtitle_document(row):
+    gameplay = row.get("visual_kind") == "gameplay"
     tracks = [
         SubtitleTrackConfig("zh", "zh-CN", 2, AssStyleConfig(
             name="Chinese", font_name="Microsoft YaHei", font_size=49, bold=True,
-            margin_left=145, margin_right=145, margin_vertical=178, outline=2.5)),
+            alignment=8 if gameplay else 2,
+            margin_left=145, margin_right=145,
+            margin_vertical=260 if gameplay else 178, outline=2.5)),
         SubtitleTrackConfig("en", "en", 1, AssStyleConfig(
             name="English", font_name="Microsoft YaHei", font_size=31, bold=False,
             primary_colour="&H00BBC4C9", margin_left=145, margin_right=145,
             margin_vertical=65, outline=2)),
     ]
+    cues = caption_cues(row)
+    if gameplay:
+        # The bottom of native gameplay holds the combat panel. Preserve it
+        # completely by placing Chinese captions above the battle and leaving
+        # the small English aid off the gameplay shots.
+        cues = [cue for cue in cues if cue.track_id == "zh"]
     return render_ass_document(
         AssDocumentConfig(row["shot_title"], 2560, 1440, duration_seconds=row["duration_seconds"]),
-        tracks, caption_cues(row), available_font_names={"Microsoft YaHei"})
+        tracks, cues, available_font_names={"Microsoft YaHei"})

@@ -1,6 +1,6 @@
-"""Mix the series theme into an immutable episode-zero review master.
+"""Mix the single series theme into a new episode review candidate.
 
-The video stream and chapter table come from the already reviewed source film.
+The video stream and chapter table come from the rendered source film.
 This project-specific wrapper uses xar-promo's deterministic audio planner; its
 FFmpeg command has no voice gain, duck windows, or automatic normalization.
 """

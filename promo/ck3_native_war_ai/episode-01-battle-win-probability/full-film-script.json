@@ -1,0 +1,156 @@
+{
+  "format_version": 1,
+  "purpose": "Episode 1 verified-mechanism observation film; no calibrated whole-battle probability claim",
+  "cues": [
+    {
+      "id": "E1-F01", "shot_id": "E1-F01", "chapter_id": "hook", "visual_kind": "gameplay", "gameplay_start_seconds": 0, "gameplay_seconds": 32,
+      "visual_title": "一场仗，不是一张力量表", "visual_points": ["原版实机：墨西拿战斗", "战斗沿游戏日期推进", "本集跟着算法走一遍"], "evidence": "墨西拿同存档独立重放；镜头与原始研究回执第 6 天后分叉",
+      "zh": "地图上，两支军队已经在墨西拿接战。我们通常先看人数，再看面板上的强弱提示，仿佛胜负已经写好。但把画面慢下来，就会发现一场仗不是一次比较，而是一串连续的计算：谁进场，谁能在战宽里出手，当天造成多少伤害，谁只是溃退，谁永久损失，第二天还能留下多少人。本集不报一个未经校准的胜率。我想带你沿着原版的计算顺序，从这张地图走进它每天更新的状态。",
+      "en": "At Messina, two armies are already fighting. We follow the native sequence from participants and width to damage, casualties, and the next day's state. This edition explains verified mechanics without claiming a calibrated whole-battle win probability."
+    },
+    {
+      "id": "E1-F02", "shot_id": "E1-F02", "chapter_id": "hook", "visual_kind": "card",
+      "visual_title": "先分清两种问题", "visual_points": ["战前预测：当前力量比较", "实战结算：阶段与每日状态", "比例不能直接念成胜率"], "evidence": "docs/ck3-native-ai/battle-simulation.md；combat-prediction.md",
+      "zh": "第一件容易混淆的事，是游戏在开打之前给出的预测，和开打之后的实际结算。原版确实有一条确定性的战斗预测路径，会比较当前双方的相对力量；真正的战斗则由另一条按阶段、按日推进的路径处理。前者面对的是眼前这组条件，后者还会遇到将领掷骰、伤亡分配和事件反馈。假如屏幕出现零点六，那只能按对应字段的定义读成比较比例，不能未经证明就翻译成百分之六十获胜。我们先不猜结果，先把输入找齐。",
+      "en": "Native pre-battle prediction and the day-by-day resolver are distinct paths. A relative-power ratio answers a current comparison; it is not automatically a probability of winning the whole battle."
+    },
+    {
+      "id": "E1-F03", "shot_id": "E1-F03", "chapter_id": "hook", "visual_kind": "gameplay", "gameplay_start_seconds": 32, "gameplay_seconds": 31,
+      "visual_title": "镜头与数字各有出处", "visual_points": ["画面：完整战斗独立重放", "机制：冻结版本源码与程序", "数值：对应回执，不拼接不同战局"], "evidence": "camera-follow-footage-ledger.md；CK3 1.19.0.6",
+      "zh": "你现在看到的是原版十字军之王三的实机，镜头自动追着当前交战省份走，墨西拿始终留在画面里。它来自同一接触点存档的一次独立重放，和我们分析数值的原始战局在第六天以后出现分叉。因此，画面能证明战场位置、镜头和整场过程确实存在；某一天的精确伤亡，则必须读那一天绑定的原始回执。把两者硬接成同一次随机结果，会让再漂亮的画面也变成假证据。接下来每一步，我会分清原生规则、实机回读和教学示意。",
+      "en": "This is actual CK3 footage from an independent replay of the same contact save. It diverges numerically after day six. Footage and research receipts therefore have separate, explicitly labelled evidentiary roles."
+    },
+    {
+      "id": "E1-F04", "shot_id": "E1-F04", "chapter_id": "inputs", "visual_kind": "card",
+      "visual_title": "第一步：绑定参战身份", "visual_points": ["同一个 CombatID 与位置", "双方兵团逐项列出", "攻守顺序不可随意互换"], "evidence": "combat-simulation-inputs.md；battle-simulation.md",
+      "zh": "要复算一场仗，先不能只写我方一千人、敌方八百人。原版战斗对象有自己的身份和位置，也有固定的双方顺序；每侧下面还挂着具体军队和兵团。我们读取的是这些对象的完整身份、当前人数与所属关系，而不是从地图图标推测一支抽象大军。原因很实际：同样的总人数，若其中一支军队晚一天进场，第一天的战宽、将领和伤害都可能不同。连攻守顺序弄反，河流或渡口的影响也会跟着落错边。复算的起点，是一个带日期的战场快照。",
+      "en": "A battle input binds the native combat, location, side order, armies, regiment identities, and current strengths at a specific date. Aggregate troop counts alone erase timing and roles."
+    },
+    {
+      "id": "E1-F05", "shot_id": "E1-F05", "chapter_id": "inputs", "visual_kind": "gameplay", "gameplay_start_seconds": 63, "gameplay_seconds": 32,
+      "visual_title": "兵团不是一个总数", "visual_points": ["征召兵与职业兵保留各自记录", "当前人数不等于编制上限", "身份决定后续伤亡落在谁身上"], "evidence": "原版 CCombatSide 兵团记录；battle-simulation.md",
+      "zh": "战斗界面上的兵力数字，看起来像一个单值；原生结算却沿着兵团记录往下走。征召兵和职业兵在战斗侧各有条目，每条都有开战人数、当前人数和已经形成的软伤亡。我们尤其要区分当前人数与编制上限：耗损过的兵团不能按满员出伤。伤亡发生后，也不是从一侧的总人数直接扣完就算了，它会落回具体兵团，甚至落回兵团内部的实际人数单元。正因为有这层身份，后面才能按兵团编号把模拟结果和游戏逐项对拍。",
+      "en": "Native combat stores levy and men-at-arms entries separately, with starting and current strength. Casualties return to particular regiments and backing soldier components, which makes per-regiment verification possible."
+    },
+    {
+      "id": "E1-F06", "shot_id": "E1-F06", "chapter_id": "inputs", "visual_kind": "card",
+      "visual_title": "地形、渡口与接战方向", "visual_points": ["目标省份提供地形", "最终接战边决定渡口类型", "发起接战者不一定是画面左侧"], "evidence": "combat-simulation-inputs.md；battle-simulation.md",
+      "zh": "第二组输入来自地面。战斗发生在哪个省份，会决定地形和对应的战宽倍率；军队从哪一侧进入，又可能决定普通接战、海峡、河流或大河渡口。这里不能凭地图上两支旗帜相隔多远来填写渡口。原版构造战斗时看的，是实际进入目标省份的最后一段边，以及接战者和守方的关系。我们在研究中曾遇到一个反例：仅凭历史截图猜入场边，和原生战斗读到的边并不一致。这个细节说明，任何复算都要把接战方向和原生对象一同锁住。",
+      "en": "Terrain comes from the battle province, while crossing type depends on the actual final contact edge and roles. A map screenshot alone is insufficient to reconstruct that edge."
+    },
+    {
+      "id": "E1-F07", "shot_id": "E1-F07", "chapter_id": "inputs", "visual_kind": "card",
+      "visual_title": "战宽：能同时出手的范围", "visual_points": ["先由双方当前战力构造基础宽度", "地形倍率形成最终宽度", "宽度限制当日出伤比例"], "evidence": "battle-simulation.md 战宽与 main damage 路径",
+      "zh": "人数多，不等于每个人都能在同一天同时出手。原版接战时会构造基础战宽，再由地形倍率得到最终战宽；进入主阶段后，出伤计算会看这侧当前还在战斗的人数，并取战宽与人数之比，但最多取一。也就是说，窄地形里多出来的兵，仍可能提供后续承受伤亡的厚度，却不能把当天出伤无限按人数抬高。这里的顺序很关键：先确定当前参战者和人数，再确定宽度，再进入当日伤害。只对比双方总兵力，会把这个限制整个抹掉。",
+      "en": "Battle width limits how much of a side's current fighting force contributes to daily outgoing damage. Terrain scales the width, and extra soldiers do not linearly increase that day's attack."
+    },
+    {
+      "id": "E1-F08", "shot_id": "E1-F08", "chapter_id": "inputs", "visual_kind": "gameplay", "gameplay_start_seconds": 95, "gameplay_seconds": 31,
+      "visual_title": "四个有效属性，不是面板底值", "visual_points": ["伤害与坚韧", "追击与掩护", "省份和修正后再读有效值"], "evidence": "0x239CAE0 原版有效属性路径；battle-simulation.md",
+      "zh": "第三组输入藏在兵团的有效属性里。原生读取路径会给出伤害、坚韧、追击和掩护四个数，它们已经处在当时省份和相关修正的语境下。把兵种定义文件里的基础伤害直接抄进公式，是把地形、驻扎、文化、统帅等来源可能带来的变化漏掉了。我们现在可以从原版对象读这四维有效值，但还不能宣称已经逐一枚举每个修正来源。对这部片来说，可靠的说法是：真正进入结算的是当前有效属性，而不是百科卡上一个脱离战场的底值。",
+      "en": "The native effective-stat path supplies damage, toughness, pursuit, and screen in the current battle context. Base unit definitions alone are not the values the resolver consumes."
+    },
+    {
+      "id": "E1-F09", "shot_id": "E1-F09", "chapter_id": "daily", "visual_kind": "card",
+      "visual_title": "战斗是一台阶段机器", "visual_points": ["机动 → 主战 → 追击 → 结束", "每次推进都读当前状态", "阶段和日数是原生字段"], "evidence": "CCombat phase/day dispatcher；battle-simulation.md",
+      "zh": "现在把战场时钟打开。原生战斗有机动、主战、追击和结束四种阶段状态；阶段日数也记录在战斗对象中。主战时的出伤与伤亡计算，和追击阶段的结算不是同一套角色：追击者、撤退者、软伤亡池、追击与掩护属性都会重新参与。你在界面里看到一条战斗条慢慢移动，背后其实是阶段状态先被确认，再在每个游戏日读取当前人数、宽度、优势和事件。假如第一天死了一名骑士，第二天的输入就已经不是战前截图那一份。",
+      "en": "Native combat advances through maneuver, main battle, pursuit, and done. Each tick reads current state, so an event or casualty on one day can change the next day's inputs."
+    },
+    {
+      "id": "E1-F10", "shot_id": "E1-F10", "chapter_id": "daily", "visual_kind": "gameplay", "gameplay_start_seconds": 126, "gameplay_seconds": 33,
+      "visual_title": "优势与将领掷骰", "visual_points": ["基础优势与双方修正合成", "将领掷骰按原生节奏更新", "结果再影响伤害倍率"], "evidence": "CCombat 优势与掷骰字段；battle-simulation.md",
+      "zh": "同样两支军队，今天和三天后不一定打出同样的数字。原版会把基础优势与双方贡献合成当前优势，将领掷骰则按自己的节奏更新；主战计算把这些状态转成这一侧的伤害倍率。这里最容易犯的错误，是看到一个固定的统帅优势，就把它当成整场每天都不变的输出。实际推演必须保存掷骰节奏、双方当日值和当前战宽。随机性也不意味着所有数字都在乱跳：在给定当日输入和掷骰之后，后面的伤害算术有可以逐项复算的确定顺序。",
+      "en": "Advantage combines current contributions, while commander rolls update on their native cadence. Given the day's state and rolls, the damage arithmetic follows a deterministic order."
+    },
+    {
+      "id": "E1-F11", "shot_id": "E1-F11", "chapter_id": "daily", "visual_kind": "card",
+      "visual_title": "把当天出伤拆成四步", "visual_points": ["优势形成伤害倍率", "乘原版 0.03 缩放", "乘战宽占比与有效攻击"], "evidence": "battle-simulation.md 逐日 outgoing damage 静态闭合路径",
+      "zh": "主阶段某一侧的出伤，可以沿着四步读。先拿该侧当日的优势伤害倍率；再乘原版这一版本的伤害缩放因子零点零三；然后乘最终战宽占当前参战人数的比例，上限是一；最后乘已经计入兵种反制和相关修正的有效攻击。听起来像一条普通乘法，但游戏使用定点数，每一步都会截断。顺序一换，低位就可能差一截。我们复刻这条路径时，不是把四项扔进计算器算一个浮点结果，而是按原生每一步的算术与截断走。",
+      "en": "Main-phase outgoing damage multiplies the current advantage multiplier, native 0.03 scaling, capped width fraction, and effective attack. Fixed-point truncation occurs at each step."
+    },
+    {
+      "id": "E1-F12", "shot_id": "E1-F12", "chapter_id": "daily", "visual_kind": "card",
+      "visual_title": "十万分之一的定点数", "visual_points": ["原生缩放：100000", "乘除逐步向零截断", "同样公式，换运算顺序会错"], "evidence": "battle-simulation.md signed CFixedPoint 与 golden vectors",
+      "zh": "把刚才的算式放大看，原版许多战斗量以十万为一的缩放保存：十万代表一，三千代表零点零三。乘法不是数学课里无限精度的乘法，而是先做整数运算，再按固定比例向零截断；除法也有对应顺序。征召兵和职业兵的伤亡分支，甚至在同样的入伤和坚韧条件下，先乘谁、后除谁都不完全一样。我们的静态推导和离线 golden vector 专门保留这些差别。它们看似只是个位数误差，累积到逐日、逐兵团时就能暴露模型有没有真的按原版走。",
+      "en": "Many native combat quantities use signed fixed-point values scaled by 100,000. Multiplication and division truncate in a defined order; changing that order can alter regiment-level results."
+    },
+    {
+      "id": "E1-F13", "shot_id": "E1-F13", "chapter_id": "daily", "visual_kind": "card",
+      "visual_title": "入伤怎样落到每个兵团", "visual_points": ["先取得守方当日入伤", "按当前人数与有效坚韧换算", "征召兵、职业兵各有截断顺序"], "evidence": "0x23CE080 原生伤亡路径；battle-simulation.md",
+      "zh": "一侧打出的伤害，会成为另一侧收到的入伤；然后才是逐兵团分配。结算器遍历守方仍有人的征召兵和职业兵，结合当前人数与有效坚韧，算这一条目本日承受多少伤亡。坚韧高，通常意味着同一入伤下转换成的人数损失更少；但是不要跳过刚才的定点数顺序。征召兵分支先算侧总量中的伤害份额，再除以坚韧；职业兵则先把本条当前人数乘进入伤，再过侧总量和坚韧。两条路径最后都受当前人数限制，不能凭总伤害直接按平均比例给每队扣人。",
+      "en": "Incoming damage is allocated to live levy and men-at-arms entries using current strength and effective toughness. Their fixed-point operation order differs, and losses are bounded by current strength."
+    },
+    {
+      "id": "E1-F14", "shot_id": "E1-F14", "chapter_id": "daily", "visual_kind": "gameplay", "gameplay_start_seconds": 159, "gameplay_seconds": 32,
+      "visual_title": "软伤亡与硬伤亡", "visual_points": ["软伤亡：已溃退的兵员", "硬伤亡：永久减员", "二者对后续阶段的作用不同"], "evidence": "原版 soft/hard casualty ledger；battle-simulation.md",
+      "zh": "这里还要把一个常见误会拆开。战斗里的伤亡不只有一种。原版把软伤亡和硬伤亡分开记录：前者是已经溃退、之后可能回来的兵员；后者是永久减员。主战阶段会先得到总伤亡，再按基础转换率和双方修正拆成两部分。本版本的基础软转硬比例是零点三，但那不是所有条件下的最终固定结果，因为还有守方、攻击方和冬季的修正。接着软伤亡会留在战斗条目里，硬伤亡写回底层兵团。追击时，又会重新读取撤退方积下的软伤亡池。",
+      "en": "Native combat records soft and hard casualties separately. Main-phase losses are split by a base conversion ratio of 0.3 plus modifiers; pursuit later reads the accumulated soft casualty pool."
+    },
+    {
+      "id": "E1-F15", "shot_id": "E1-F15", "chapter_id": "daily", "visual_kind": "card",
+      "visual_title": "伤亡写回的最后一层", "visual_points": ["战斗条目更新 current 与 soft", "硬伤亡写到底层兵团", "内部人数单元按原生顺序扣除"], "evidence": "0x23CDF70 / 0x239C840；battle-simulation.md",
+      "zh": "算出某兵团的软硬伤亡，还不是这个 tick 的终点。原版先更新战斗侧条目的当前人数和软伤亡，再把硬伤亡传给底层兵团；兵团内部可能有多个真正承载人数的单元，底层 helper 会按它们的存储顺序分摊。为了复算，我们连这个分摊的截断和剩余量也保留。为什么值得较真？因为下一日读回的，不是一张理想化的总损失表，而是已经改写过的各个兵团对象。哪怕总减员相同，只要落在不同兵种上，下一日有效攻击、坚韧和追击输入就会不同。",
+      "en": "Casualty results update combat entries and underlying regiment components. Distribution across specific unit types matters because it changes the next day's effective battle input."
+    },
+    {
+      "id": "E1-F16", "shot_id": "E1-F16", "chapter_id": "events", "visual_kind": "card",
+      "visual_title": "骑士事件先被排进日程", "visual_points": ["载入的原版事件行参与选择", "每侧分别安排候选", "排中不等于效果已经执行"], "evidence": "combat-phase-event-trace.md；13-row loaded table",
+      "zh": "数值结算之外，还有另一条会改变战场的线：战斗阶段事件。原版会从已经载入的事件表里，按照条件和权重为双方安排事件；随后还有实际触发和执行效果的时点。排进日程，不代表人物已经受伤，更不代表战报已经写入。我们把这几个边界分开看，是因为同一个事件名在不同阶段代表不同事实。前一天安排了骑士事件，到了执行日才可能出现战报；战报出现后，同一天的后续回读才可能看见角色死亡、兵团退出或属性变化。若把排程当成已执行，模型会提前改写战力。",
+      "en": "Phase events are selected and scheduled before their effects execute. Scheduled identity, battle-event ledger entry, and later state changes must be read at separate native boundaries."
+    },
+    {
+      "id": "E1-F17", "shot_id": "E1-F17", "chapter_id": "events", "visual_kind": "gameplay", "gameplay_start_seconds": 191, "gameplay_seconds": 31,
+      "visual_title": "随机数不是一个全局百分比", "visual_points": ["将领与事件分别消费随机数", "顺序由原版调用链决定", "一次事件还有局部效果随机状态"], "evidence": "combat-phase-event-trace.md；phase-fire draw projection",
+      "zh": "骑士事件为什么不能直接用一个随机百分比代替？因为原版调用链有明确的消费顺序。将领掷骰、两侧事件选择、事件安排与触发，并不是大家随意从一个口袋里抓数字。我们已经在墨西拿的同一日边界上，读到事件触发前后全局随机计数按两侧推进；对被选中的事件，根效果又从自己的局部状态开始消费。能看见计数变化，并不等于已经知道深层每一次抽签的候选集合。因此本片讲清顺序和已经实录的边界，不把某个推导出的种子冒充击杀者的实测抽签值。",
+      "en": "Commander rolls and phase events consume random draws in a native order. The selected event also executes within local effect RNG state; observed counters do not by themselves prove every deeper selector draw."
+    },
+    {
+      "id": "E1-F18", "shot_id": "E1-F18", "chapter_id": "events", "visual_kind": "card",
+      "visual_title": "一次可核对的骑士阵亡", "visual_points": ["原版载入索引 11：knight_killed", "战报先出现", "同日后续才见死亡和退场"], "evidence": "messina_selected_phase_event_row.json；effect_root_observation.json",
+      "zh": "现在看一个具体例子。冻结第26日的原版回放中，目标骑士的日程指向载入表第十一行，正是骑士阵亡事件。我们沿七个原生暂停边界记录它：先看到日程仍在，随后出现击杀战报，再到同日后面的回读，角色死亡标记出现，派生勇武从四变二，所属兵团退出参战名单。战报里的击杀者和事后存档也能互相核对。注意这里最有价值的不是戏剧性的死亡，而是时间顺序：状态什么时候才真的变，下一日究竟该读哪一个人数与角色集合。",
+      "en": "In a frozen day-26 native replay, loaded row 11 is the knight-killed event. Seven paused boundaries show the ledger entry first, then the death marker, prowess change, and regiment exit later that day."
+    },
+    {
+      "id": "E1-F19", "shot_id": "E1-F19", "chapter_id": "events", "visual_kind": "gameplay", "gameplay_start_seconds": 222, "gameplay_seconds": 31,
+      "visual_title": "事件改变下一日的输入", "visual_points": ["人物状态与参战身份分开读", "已退出兵团不能继续出伤", "这不是把事件概率算完"], "evidence": "combat-phase-feedback-battle-horizon.md；独立重放画面非第26日数值证据",
+      "zh": "让画面继续往前走，你能感受到为何事件不是战斗算法里的花边。一个骑士阵亡，可能让一个兵团从当前参战集合中消失，也可能引出人物属性与战斗数值的刷新。原版第26日的回读已经确认这个例子里死亡、勇武变化和兵团退出；但这段连续游戏镜头是另一条独立重放，不拿它冒充那次随机阵亡的同步录像。对于计算而言，可靠做法是把事件执行后的实际状态当成下一日输入。至于事件内部每个选择分支的概率，还需要另做独立验证。",
+      "en": "An executed event can alter who fights on the next day. The verified day-26 trace establishes a death and regiment exit; the continuous gameplay footage is a separate replay and is not that event's synchronized recording."
+    },
+    {
+      "id": "E1-F20", "shot_id": "E1-F20", "chapter_id": "evidence", "visual_kind": "card",
+      "visual_title": "一日对拍：54 行零差", "visual_points": ["同一主战阶段 tick", "按兵团 ID 对齐 54 条结果", "零差只归于这一日"], "evidence": "battle-simulation.md R0220 原版主阶段对拍",
+      "zh": "规则能写成代码，还需要拿游戏本体的结果来验。我们在一条原版主战阶段回执上，按兵团编号对齐了五十四行当日伤亡；模拟器给出的对应结果与原版逐行零差。这不是五十四场胜利，也不是说任何战斗都已经预测正确。它证明的是：在绑定的输入、这个版本、这个 tick 上，出伤和伤亡分配的已覆盖部分确实按原版跑到了同样的数。正因为证据可以这样逐行核对，我们才敢把前面那些看起来枯燥的截断顺序拍成结论，而不是把一张公式图当作证明。",
+      "en": "For one native main-phase tick, 54 regiment casualty rows matched the simulator by regiment ID with zero difference. This validates that bounded calculation, not 54 battles or a complete win distribution."
+    },
+    {
+      "id": "E1-F21", "shot_id": "E1-F21", "chapter_id": "evidence", "visual_kind": "card",
+      "visual_title": "同存档重放也会分叉", "visual_points": ["随机消费顺序影响路径", "镜头与回执必须双锚定位", "只比较同一日期与同一身份"], "evidence": "camera-follow-footage-ledger.md；repeatability-board.json",
+      "zh": "为什么我们花那么多力气给每份素材标存档、日期和哈希？因为把同一个接触点存档重新打开，并不保证之后三十天每个随机事件都一模一样。墨西拿的完整录像就从第六天开始与原始研究回执数值分叉。此后两条线仍能各自说明真实的原版行为，却不能再拿一条线第十二天的兵力去解释另一条线第十二天的画面。视频里的日期标签、CombatID 和素材来源，就是为了让你知道眼前是原生录像、静态规则，还是另一次回放的逐日数字。逻辑解释可以跨案例，精确数值必须守住身份。",
+      "en": "Reloading the same contact save can diverge through random consumption. After day six, this footage and the original research trace are separate timelines; exact numeric claims remain bound to their own receipts."
+    },
+    {
+      "id": "E1-F22", "shot_id": "E1-F22", "chapter_id": "evidence", "visual_kind": "gameplay", "gameplay_start_seconds": 253, "gameplay_seconds": 13,
+      "visual_title": "画面始终跟着战场", "visual_points": ["热点优先当前交战省份", "逐秒检查军旗是否可见", "录制失败段保留并剔出成片"], "evidence": "camera-follow-footage-ledger.md；267/267 战斗标记可见样本",
+      "zh": "最后看一眼这段实机如何拍成。录制程序和游玩智能体使用同一个战场热点选择器，交战时优先定位当前战斗省份，而不是让地图视角慢慢漂到海上。首段拍摄曾因为鼠标停在屏幕边缘而使镜头滚走，那段失败素材仍然保留；修正鼠标停放与续拍后，我们只剪入通过逐秒可见性审计的区间。最终净片每秒抽一帧，二百六十七个样本里，战斗标记二百六十七次都在画面里。这只能证明镜头可见，不会替算法或剪辑的完整人工审阅盖章。",
+      "en": "The film and gameplay agent share a war-hotspot camera selector. The accepted 266-second replay clip passed a one-second visibility audit at 267 of 267 samples; an earlier camera drift attempt remains recorded as failed."
+    },
+    {
+      "id": "E1-F23", "shot_id": "E1-F23", "chapter_id": "decision", "visual_kind": "card",
+      "visual_title": "能怎样实际使用这些计算", "visual_points": ["能复算绑定输入下的单日结算", "能解释哪些因素改变下一日", "不能把当前力量比叫整场胜率"], "evidence": "combat_core.py；strategy.py 当前 planner_usable=false",
+      "zh": "到这里，我们已经拥有一套很有用的局部计算：给定当前兵团、地形、宽度、有效属性和当日状态，就能复算已经闭合的主阶段出伤与逐兵团伤亡；再结合原版边界，解释事件如何把下一日输入改掉。它适合回答‘为什么今天伤亡这样分配’和‘哪项条件改变了眼前交锋’。但它还不能独立回答‘这场仗最终有多大概率赢’。游玩智能体的接口已经接到战斗评估位置，可是合格的整场预测生产者仍未开放，自动进攻门禁保持关闭。这个限制来自证据范围，不是让一个看起来漂亮的百分比替它越权。",
+      "en": "The bounded model can explain and reproduce covered daily calculations under bound inputs. It does not yet produce a calibrated whole-battle probability, and the gameplay agent's automatic attack gate remains closed."
+    },
+    {
+      "id": "E1-F24", "shot_id": "E1-F24", "chapter_id": "decision", "visual_kind": "card",
+      "visual_title": "下次观战，按什么顺序看", "visual_points": ["先认双方与战场", "再看当日伤害与伤亡", "最后检查下一日状态"], "evidence": "本片已引用原版静态机制、单日回执与独立实机录像",
+      "zh": "下次你在自己的存档里旁观一场战斗，不妨按同样的顺序读界面。先认清双方实际进入的是哪些军队，战场是什么省份，谁在进攻；再看兵种、当前人数、地形、战宽与将领优势；等游戏日推进，观察谁承受了软伤亡和硬伤亡，是否有骑士事件把人或兵团移出。这样做不能靠肉眼算出精确胜率，却能把‘我明明人数多为什么还是输’拆成几个具体的可查问题。也能防止把战前预测牌上的比例，错当成已经模拟完了整场仗的概率。",
+      "en": "When observing a battle, identify its real participants and province, then current stats and width, daily casualties, and event-driven changes. This explains many surprises without pretending a pre-battle ratio is a full outcome probability."
+    },
+    {
+      "id": "E1-F25", "shot_id": "E1-F25", "chapter_id": "decision", "visual_kind": "card",
+      "visual_title": "一场仗是一条状态链", "visual_points": ["锁住输入", "按原生顺序结算", "把结果写给下一日"], "evidence": "CK3 1.19.0.6；导演案与逐条证据见本项目 docs",
+      "zh": "回到墨西拿的地图，这场仗给我们的答案已经相当具体：人数只是开头，真正的过程是锁定参战身份与战场条件，按当天的优势和战宽算出伤，把伤亡落到兵团，让骑士事件在实际执行时改变状态，再把新状态交给下一天。每一步都有自己的时间和证据位置。这部片先把已经确认的部分完整讲清，而不是拿尚未校准的整场百分比填空。接下来我们会继续追增援、撤退与终局，再判断怎样把整场预测交给智能体。你现在至少知道，地图上的一次胜负，是怎样被一天天算出来的。",
+      "en": "At Messina, the verified chain runs from bound participants and conditions through daily damage, regiment casualties, event execution, and the next day's state. Later work will connect joins, retreat, terminal outcomes, and agent forecasts."
+    }
+  ]
+}

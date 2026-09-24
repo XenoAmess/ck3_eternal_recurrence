@@ -1,0 +1,150 @@
+{
+  "format_version": 1,
+  "source_script": "promo/ck3_native_war_ai/episode-01-battle-win-probability/full-film-script.json",
+  "shots": [
+    {
+      "id": "E1-F01",
+      "title": "一场仗，不是一张力量表",
+      "visual": "gameplay",
+      "evidence": "墨西拿同存档独立重放；镜头与原始研究回执第 6 天后分叉"
+    },
+    {
+      "id": "E1-F02",
+      "title": "先分清两种问题",
+      "visual": "card",
+      "evidence": "docs/ck3-native-ai/battle-simulation.md；combat-prediction.md"
+    },
+    {
+      "id": "E1-F03",
+      "title": "镜头与数字各有出处",
+      "visual": "gameplay",
+      "evidence": "camera-follow-footage-ledger.md；CK3 1.19.0.6"
+    },
+    {
+      "id": "E1-F04",
+      "title": "第一步：绑定参战身份",
+      "visual": "card",
+      "evidence": "combat-simulation-inputs.md；battle-simulation.md"
+    },
+    {
+      "id": "E1-F05",
+      "title": "兵团不是一个总数",
+      "visual": "gameplay",
+      "evidence": "原版 CCombatSide 兵团记录；battle-simulation.md"
+    },
+    {
+      "id": "E1-F06",
+      "title": "地形、渡口与接战方向",
+      "visual": "card",
+      "evidence": "combat-simulation-inputs.md；battle-simulation.md"
+    },
+    {
+      "id": "E1-F07",
+      "title": "战宽：能同时出手的范围",
+      "visual": "card",
+      "evidence": "battle-simulation.md 战宽与 main damage 路径"
+    },
+    {
+      "id": "E1-F08",
+      "title": "四个有效属性，不是面板底值",
+      "visual": "gameplay",
+      "evidence": "0x239CAE0 原版有效属性路径；battle-simulation.md"
+    },
+    {
+      "id": "E1-F09",
+      "title": "战斗是一台阶段机器",
+      "visual": "card",
+      "evidence": "CCombat phase/day dispatcher；battle-simulation.md"
+    },
+    {
+      "id": "E1-F10",
+      "title": "优势与将领掷骰",
+      "visual": "gameplay",
+      "evidence": "CCombat 优势与掷骰字段；battle-simulation.md"
+    },
+    {
+      "id": "E1-F11",
+      "title": "把当天出伤拆成四步",
+      "visual": "card",
+      "evidence": "battle-simulation.md 逐日 outgoing damage 静态闭合路径"
+    },
+    {
+      "id": "E1-F12",
+      "title": "十万分之一的定点数",
+      "visual": "card",
+      "evidence": "battle-simulation.md signed CFixedPoint 与 golden vectors"
+    },
+    {
+      "id": "E1-F13",
+      "title": "入伤怎样落到每个兵团",
+      "visual": "card",
+      "evidence": "0x23CE080 原生伤亡路径；battle-simulation.md"
+    },
+    {
+      "id": "E1-F14",
+      "title": "软伤亡与硬伤亡",
+      "visual": "gameplay",
+      "evidence": "原版 soft/hard casualty ledger；battle-simulation.md"
+    },
+    {
+      "id": "E1-F15",
+      "title": "伤亡写回的最后一层",
+      "visual": "card",
+      "evidence": "0x23CDF70 / 0x239C840；battle-simulation.md"
+    },
+    {
+      "id": "E1-F16",
+      "title": "骑士事件先被排进日程",
+      "visual": "card",
+      "evidence": "combat-phase-event-trace.md；13-row loaded table"
+    },
+    {
+      "id": "E1-F17",
+      "title": "随机数不是一个全局百分比",
+      "visual": "gameplay",
+      "evidence": "combat-phase-event-trace.md；phase-fire draw projection"
+    },
+    {
+      "id": "E1-F18",
+      "title": "一次可核对的骑士阵亡",
+      "visual": "card",
+      "evidence": "messina_selected_phase_event_row.json；effect_root_observation.json"
+    },
+    {
+      "id": "E1-F19",
+      "title": "事件改变下一日的输入",
+      "visual": "gameplay",
+      "evidence": "combat-phase-feedback-battle-horizon.md；独立重放画面非第26日数值证据"
+    },
+    {
+      "id": "E1-F20",
+      "title": "一日对拍：54 行零差",
+      "visual": "card",
+      "evidence": "battle-simulation.md R0220 原版主阶段对拍"
+    },
+    {
+      "id": "E1-F21",
+      "title": "同存档重放也会分叉",
+      "visual": "card",
+      "evidence": "camera-follow-footage-ledger.md；repeatability-board.json"
+    },
+    {
+      "id": "E1-F22",
+      "title": "画面始终跟着战场",
+      "visual": "gameplay",
+      "evidence": "camera-follow-footage-ledger.md；267/267 战斗标记可见样本"
+    },
+    {
+      "id": "E1-F23",
+      "title": "能怎样实际使用这些计算",
+      "visual": "card",
+      "evidence": "combat_core.py；strategy.py 当前 planner_usable=false"
+    },
+    {
+      "id": "E1-F24",
+      "title": "把一场仗读成一串状态变化",
+      "visual": "card",
+      "evidence": "本片已引用原版静态机制、单日回执与独立实机录像"
+    }
+  ]
+}
