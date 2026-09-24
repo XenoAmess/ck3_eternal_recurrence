@@ -80,6 +80,10 @@ v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接
 
 因此 23 日共 **43/46 个局部 R14 数值零差**，但它是“原版当前战斗状态给定时”的内核验证。第 11、21 日还需把入场兵团与反制时点接入同一来源；人物伤势导致的属性刷新仍由原版边界提供，优势的日内生成、事件完整效果、后续胜败与概率校准也未自主生成。新回放第 6 日数值与 attempt-004 不同，不能把两条时间线混剪或混用于逐日残差。报告维持 `forecast_ready=false`、`planner_usable=false`。
 
+两次源日缺口随后用**该回放各自原始 checkpoint 的精确 bytes**单独重载：`episode01-prejoin-v3-day11-attempt-011` 在军队 22 尚未加入时，请求把它纳入第 11 日的 v3 假设参战名单；`episode01-prejoin-v3-day21-attempt-012` 对军队 28 做同样请求。两次原版查询均 `available`，同时原生战斗控制回执证明活动名单尚未包含待入场军队，v3 却能读出其当日兵团类别、反制系数、有效攻击属性和现存人数。Rakaly 解码的同一源日存档逐兵团人数与 v3 逐项一致。以这些**源日可查询输入**、阶段记录中旧军当日实际参战人数和已观察到的加入时点计算，源日第 11 日与第 21 日的双方 R14 分别 2/2 零差。[追加的 v2 只读投影工具](../../tools/project_native_prejoin_counter_parity.py)绑定存档、解码文本、控制回执、同日 v3 及 R14 的 SHA；[共用 v2 报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_prejoin_counter_r14_parity_v2.json) SHA-256 `6C32F7DED9CFDB29D103A242B3C9DC8E71DF69C1A08A9980A1EB917A6BAAE113`。v1 的 43/46 保持历史原样，v2 汇总为 **46/46 条件零差**；[片用源日增援反制板 v2](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/prejoin-counter-r14-board-v2.json)从智能体同一读取器生成。
+
+这仍没有预测**军队会在第几天加入**，也没有从战前自主推进软/硬伤亡、伤势引起的有效属性刷新、优势或事件全部效果。第 11、21 日整条阶段追踪仍 `trace_unavailable`；追加证据只闭合局部 R14 算术及源日假设查询的可用性，不改变正片概率与游玩智能体的 `planner_usable=false` 门禁。
+
 ### 同接战存档的三次原生回放
 
 2026-09-24 在独立 profile 中进行了有界重复性实验，原始请求、响应、脚本、失败回执、两次原生 restore 生命周期与 session 清理证明保存在 `D:\workspace\ck3_native_war_ai_promo_work\episode01-native-repeatability-attempt-007`。最初脚本在第 32 天错误查询已经移除的活动战斗，收到 RED；修正脚本改查被动终局 journal，保留这条失败记录，没有覆盖此前素材。输入仍是接战日 `raw53146248`、同一 `CombatID=16777218`；本次原生固定 checkpoint 的 SHA-256 为 `ABC37ED58E0ED008C1D627F38E6BA138F728438DDC16F50041576E5368399EDD`。第 1 次是保存检查点后的同会话继续，第 2、3 次才分别从这份**相同 bytes** 的检查点重启原版进程。

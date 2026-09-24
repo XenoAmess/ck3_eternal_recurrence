@@ -1,0 +1,101 @@
+{
+  "schema": "xar.ck3.episode01.prejoin-counter-r14-parity/v2",
+  "game_build": "CK3 1.19.0.6",
+  "source_paired_report_sha256": "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358",
+  "paired_run": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010",
+  "prejoin_runs": {
+    "11": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-prejoin-v3-day11-attempt-011",
+    "21": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-prejoin-v3-day21-attempt-012"
+  },
+  "rakaly_exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+  "same_date_hypothetical_prejoin_query_available": true,
+  "native_r14_side_comparisons": 46,
+  "conditional_exact_r14_side_comparisons": 46,
+  "join_day_repairs": [
+    {
+      "source_day": 11,
+      "joined_army_id": 22,
+      "prejoin_active_attacker_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "hypothetical_attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "prejoin_saved_regiment_count": 13,
+      "prejoin_fighting_regiment_count": 12,
+      "native_r14_raw": {
+        "enemy": 7098023593,
+        "player_or_allied": 1446446906
+      },
+      "predicted_r14_raw": {
+        "enemy": 7098023593,
+        "player_or_allied": 1446446906
+      },
+      "delta_raw": {
+        "enemy": 0,
+        "player_or_allied": 0
+      },
+      "source_checkpoint_sha256": "2F62852F194ED55C01CFDC433D6D29D022BAF08F5B5DE560700C769A33E5AC21",
+      "melted_save_sha256": "D20D6B73BE790098130F4C9A5BB8A64FB39EBE20BF7332204A961D903DED0BA2",
+      "prejoin_snapshot_sha256": "CF20220AB59E9C55B3477760D4787174E27E1F3F54B1827AAE722F929AF48F73",
+      "prejoin_control_sha256": "F75B7335856DC2A13D71815EDF3E8E56B220C8A5ACCD0C15E1FD09AB98A97EAF",
+      "same_day_v3_response_sha256": "BC7B5EE501471B077BD19366DC348BDF6FE55C570BBBE61BC7769996D6174043",
+      "source_phase_trace_sha256": "61D83245612E4A86ADA908CA74644AE69C8CDFE8239B0FD86A8496696225E651",
+      "source_whole_phase_trace_status": "trace_unavailable"
+    },
+    {
+      "source_day": 21,
+      "joined_army_id": 28,
+      "prejoin_active_attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "hypothetical_attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "prejoin_saved_regiment_count": 5,
+      "prejoin_fighting_regiment_count": 5,
+      "native_r14_raw": {
+        "enemy": 8101085259,
+        "player_or_allied": 708222767
+      },
+      "predicted_r14_raw": {
+        "enemy": 8101085259,
+        "player_or_allied": 708222767
+      },
+      "delta_raw": {
+        "enemy": 0,
+        "player_or_allied": 0
+      },
+      "source_checkpoint_sha256": "0E5AD3066B97689178797F1F9D3C35CA3700D513FAE6F6B032A3E8BF7BD1FB2A",
+      "melted_save_sha256": "FAF359742D91185B3CDE0F533F93CF0163FAA3107AAA839FAC9F6C5C3FAF4FB1",
+      "prejoin_snapshot_sha256": "B8D608A5F2D3E37A5988A77263F14DBD3F25267C0D3661A0C50D053CD9B4C289",
+      "prejoin_control_sha256": "1932BB5551AFE842255715DC1AA5CCF9FBA17A0F6C41A733518A629E29C598C6",
+      "same_day_v3_response_sha256": "463790479A50773EE6DCE435B9CF2F5EE8256864584F79F0EE3A7134108DC52D",
+      "source_phase_trace_sha256": "020494CDEAE77A968673AA45C65F6BEF7229193385902FBAA70F313CCF27198A",
+      "source_whole_phase_trace_status": "trace_unavailable"
+    }
+  ],
+  "conditioned_on": [
+    "observed_join_timing",
+    "native_old_side_current_fighting_raw",
+    "native_old_side_effective_damage_raw",
+    "native_prejoin_saved_regiment_current"
+  ],
+  "join_policy_reconstructed": false,
+  "phase_effect_transition_complete": false,
+  "advantage_reconstructed": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

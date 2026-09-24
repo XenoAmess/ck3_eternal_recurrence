@@ -1,0 +1,77 @@
+{
+  "schema": "ck3-episode01-prejoin-counter-r14-board-v2",
+  "source_paired_report_sha256": "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358",
+  "source_prejoin_report_sha256": "6C32F7DED9CFDB29D103A242B3C9DC8E71DF69C1A08A9980A1EB917A6BAAE113",
+  "conditional_exact_r14_side_comparisons": 46,
+  "native_r14_side_comparisons": 46,
+  "join_examples": [
+    {
+      "source_day": 11,
+      "joined_army_id": 22,
+      "prejoin_active_attacker_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "hypothetical_attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "prejoin_fighting_regiment_count": 12,
+      "native_r14_raw": {
+        "enemy": 7098023593,
+        "player_or_allied": 1446446906
+      },
+      "predicted_r14_raw": {
+        "enemy": 7098023593,
+        "player_or_allied": 1446446906
+      },
+      "delta_raw": {
+        "enemy": 0,
+        "player_or_allied": 0
+      },
+      "source_whole_phase_trace_status": "trace_unavailable"
+    },
+    {
+      "source_day": 21,
+      "joined_army_id": 28,
+      "prejoin_active_attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "hypothetical_attacker_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "prejoin_fighting_regiment_count": 5,
+      "native_r14_raw": {
+        "enemy": 8101085259,
+        "player_or_allied": 708222767
+      },
+      "predicted_r14_raw": {
+        "enemy": 8101085259,
+        "player_or_allied": 708222767
+      },
+      "delta_raw": {
+        "enemy": 0,
+        "player_or_allied": 0
+      },
+      "source_whole_phase_trace_status": "trace_unavailable"
+    }
+  ],
+  "conditioned_on_native_current_fighting_raw": true,
+  "conditioned_on_native_effective_damage_raw": true,
+  "conditioned_on_observed_join_timing": true,
+  "same_date_prejoin_hypothetical_query_available": true,
+  "join_policy_reconstructed": false,
+  "advantage_reconstructed": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

@@ -33,6 +33,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_main_outgoing_conditional_parity,
     load_episode01_main_outgoing_conditional_parity_v2,
     load_episode01_paired_counter_r14_parity,
+    load_episode01_prejoin_counter_r14_parity_v2,
     original_daily_timeline,
 )
 
@@ -265,6 +266,20 @@ class NativeBattleCaseTests(unittest.TestCase):
             "enemy": "exact", "player_or_allied": "exact"
         })
         self.assertFalse(report["forecast_ready"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_same_date_prejoin_query_closes_only_conditional_r14_arithmetic(self) -> None:
+        report = load_episode01_prejoin_counter_r14_parity_v2()
+        self.assertEqual(report["native_r14_side_comparisons"], 46)
+        self.assertEqual(report["conditional_exact_r14_side_comparisons"], 46)
+        self.assertEqual([row["source_day"] for row in report["join_day_repairs"]], [11, 21])
+        self.assertEqual([row["joined_army_id"] for row in report["join_day_repairs"]], [22, 28])
+        self.assertTrue(all(row["delta_raw"] == {"enemy": 0, "player_or_allied": 0}
+                            for row in report["join_day_repairs"]))
+        self.assertFalse(report["join_policy_reconstructed"])
+        self.assertFalse(report["phase_effect_transition_complete"])
+        self.assertFalse(report["advantage_reconstructed"])
+        self.assertFalse(report["whole_battle_win_probability_available"])
         self.assertFalse(report["planner_usable"])
 
 

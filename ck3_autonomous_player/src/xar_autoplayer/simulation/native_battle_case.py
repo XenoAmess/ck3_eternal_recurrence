@@ -38,6 +38,8 @@ EPISODE01_OUTGOING_V2_FILE = "ck3_1_19_0_6_episode01_messina_main_outgoing_condi
 EPISODE01_OUTGOING_V2_SHA256 = "967FD94030A39A7408C33D281E814E01C0F1E412B7797F61449F90FAA58F8F00"
 EPISODE01_PAIRED_COUNTER_FILE = "ck3_1_19_0_6_episode01_messina_paired_counter_r14_parity.json"
 EPISODE01_PAIRED_COUNTER_SHA256 = "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358"
+EPISODE01_PREJOIN_COUNTER_V2_FILE = "ck3_1_19_0_6_episode01_messina_prejoin_counter_r14_parity_v2.json"
+EPISODE01_PREJOIN_COUNTER_V2_SHA256 = "6C32F7DED9CFDB29D103A242B3C9DC8E71DF69C1A08A9980A1EB917A6BAAE113"
 
 
 class NativeBattleCaseError(ValueError):
@@ -687,6 +689,32 @@ def load_episode01_paired_counter_r14_parity() -> dict[str, Any]:
     return report
 
 
+def load_episode01_prejoin_counter_r14_parity_v2() -> dict[str, Any]:
+    """Load the two same-date hypothetical join probes with their RED gates."""
+    path = Path(__file__).with_name("data") / EPISODE01_PREJOIN_COUNTER_V2_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_PREJOIN_COUNTER_V2_SHA256:
+        raise NativeBattleCaseError("bundled prejoin counter R14 bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.prejoin-counter-r14-parity/v2"
+            or report.get("game_build") != "CK3 1.19.0.6"
+            or report.get("source_paired_report_sha256") != EPISODE01_PAIRED_COUNTER_SHA256
+            or report.get("same_date_hypothetical_prejoin_query_available") is not True
+            or report.get("native_r14_side_comparisons") != 46
+            or report.get("conditional_exact_r14_side_comparisons") != 46
+            or [row.get("source_day") for row in report.get("join_day_repairs", [])] != [11, 21]
+            or any(any(delta != 0 for delta in row.get("delta_raw", {}).values())
+                   for row in report["join_day_repairs"])
+            or report.get("join_policy_reconstructed") is not False
+            or report.get("phase_effect_transition_complete") is not False
+            or report.get("advantage_reconstructed") is not False
+            or report.get("whole_battle_win_probability_available") is not False
+            or report.get("planner_usable") is not False):
+        raise NativeBattleCaseError("prejoin counter R14 contract or readiness drifted")
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -712,6 +740,8 @@ __all__ = [
     "EPISODE01_OUTGOING_V2_SHA256",
     "EPISODE01_PAIRED_COUNTER_FILE",
     "EPISODE01_PAIRED_COUNTER_SHA256",
+    "EPISODE01_PREJOIN_COUNTER_V2_FILE",
+    "EPISODE01_PREJOIN_COUNTER_V2_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -725,5 +755,6 @@ __all__ = [
     "load_episode01_main_outgoing_conditional_parity",
     "load_episode01_main_outgoing_conditional_parity_v2",
     "load_episode01_paired_counter_r14_parity",
+    "load_episode01_prejoin_counter_r14_parity_v2",
     "original_daily_timeline",
 ]
