@@ -15,18 +15,21 @@ sys.path.insert(0, str(REPO / "ck3_autonomous_player" / "src"))
 from xar_autoplayer.simulation.native_battle_case import (  # noqa: E402
     EPISODE01_PHASE_EVENT_SHA256,
     EPISODE01_PHASE_EVENT_SAVE_SHA256,
+    EPISODE01_EVENT_REGIMENT_SHA256,
     load_episode01_phase_event_observations,
     load_episode01_phase_event_save_feedback,
+    load_episode01_phase_event_regiment_feedback,
 )
 
 
 def build_board() -> dict[str, object]:
     evidence = load_episode01_phase_event_observations()
     saved = load_episode01_phase_event_save_feedback()
+    regiment_feedback = load_episode01_phase_event_regiment_feedback()
     save_by_day = {row["event_source_day"]: row for row in saved["event_save_pairs"]}
     examples = []
     for row in evidence["event_fire_pairs"]:
-        if row["source_day"] not in (5, 15):
+        if row["source_day"] not in (5, 9, 15):
             continue
         event = row["appended_battle_events"][0]
         target = row["target_character_observations"][0]
@@ -51,11 +54,15 @@ def build_board() -> dict[str, object]:
             "same_date_native_save_after": save_pair["saves"][1],
             "whole_day_trace_available": row["source_trace_status"] == "bounded_trace_available",
             "complete_effect_feedback_proven": False,
+            "later_regiment_feedback": regiment_feedback["stages"]
+            if row["source_day"] == 9 else None,
+            "event_unique_cause_proven": False,
         })
     return {
-        "schema": "ck3-episode01-phase-event-timing-board-v3",
+        "schema": "ck3-episode01-phase-event-timing-board-v4",
         "source_report_sha256": EPISODE01_PHASE_EVENT_SHA256,
         "source_save_report_sha256": EPISODE01_PHASE_EVENT_SAVE_SHA256,
+        "source_regiment_feedback_sha256": EPISODE01_EVENT_REGIMENT_SHA256,
         "game_version": evidence["game_version"],
         "combat_id": evidence["combat_id"],
         "phase_trace_trajectory": evidence["phase_trace_trajectory"],

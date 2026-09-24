@@ -1845,6 +1845,7 @@ request order、且不依赖当前驻军排序；`current_province_id=null` 也�
   encounter participant 输入。
 - [static-confirmed] 首次 contact 战宽、counter、main damage/casualty、pursuit、manual retreat validator/application、
   force-win 与 result-envelope 顺序已闭合；在 simulator/original traces 与 loaded effects 完成前仍未达到 exact-native parity。
+- [live-confirmed / conditional parity] [第 1 集增援日对拍](battle-reinforcement-and-join.md)证明第 11 日较早 control 快照中的兵团 `220` 有效韧性 `7400000`，同日原生 side0 schedule 前已变为 `3700000`；给伤亡内核送入后者和原版出伤、入场名单后，第 12/22 日分别 38/38、42/42 个参战兵团当前值精确。动态有效属性必须在相应阶段边界刷新，不能把更早 paused/control 输入冻结为整日不变。刷新策略、原因和出伤仍未由模拟器重建，不能开启胜率或 planner gate。
 - [static-confirmed] `0x356B770` 核心 RNG、roll/phase-event 条件消费次序、weighted selection 与 effect seed 已闭合；
   [unknown] loaded script effect 对伤/残/死、participant 移除和下一日 side state 的完整反馈。
 - [unknown] 多军中途加入、离开、第三方敌对关系与同日到达的 dynamic participant policy；它不属于

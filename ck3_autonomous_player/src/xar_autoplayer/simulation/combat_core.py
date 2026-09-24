@@ -216,7 +216,12 @@ def apply_main_phase_casualties(
     attacking_enemy_hard_modifier_raw: int = 0,
     combat_hard_winter_raw: int = 0,
 ) -> MainCasualtyResult:
-    """Apply one side's frozen outgoing damage to the defending entries."""
+    """Apply frozen damage to entries with effective stats at this phase boundary.
+
+    An earlier same-date control snapshot can already be stale: episode 1 day 11
+    changed RegimentID 220 toughness before the side schedule. Callers that
+    cannot reconstruct the refresh must keep forecast fidelity closed.
+    """
 
     conversion_raw = hard_casualty_conversion_raw(
         base_conversion_raw=base_conversion_raw,

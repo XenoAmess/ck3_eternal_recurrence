@@ -30,6 +30,8 @@ EPISODE01_JOIN_KERNEL_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_par
 EPISODE01_JOIN_KERNEL_SHA256 = "CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0"
 EPISODE01_JOIN_KERNEL_V2_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json"
 EPISODE01_JOIN_KERNEL_V2_SHA256 = "B3660C52B27FD6D2186E0AB7590CE64C24720262A1BCCB3DCA8F2FB622DA5571"
+EPISODE01_EVENT_REGIMENT_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_regiment_feedback.json"
+EPISODE01_EVENT_REGIMENT_SHA256 = "C32350EF7AE635A3E554761077100210A2F402BEB354218E640E7EA5B74D1A55"
 
 
 class NativeBattleCaseError(ValueError):
@@ -469,6 +471,56 @@ def load_episode01_join_day_kernel_parity_v2() -> dict[str, Any]:
     return report
 
 
+def _validate_phase_event_regiment_feedback(report: dict[str, Any]) -> None:
+    if (report.get("schema") != "ck3-native-phase-event-regiment-feedback-v1"
+            or report.get("game_version") != "1.19.0.6"
+            or report.get("combat_id") != 16777218
+            or report.get("trajectory") != "independent-replay-from-original-contact-checkpoint"
+            or report.get("case_sha256") != EPISODE01_CASE_SHA256
+            or report.get("phase_event_sha256") != EPISODE01_PHASE_EVENT_SHA256
+            or report.get("phase_event_save_sha256") != EPISODE01_PHASE_EVENT_SAVE_SHA256
+            or report.get("join_kernel_initial_sha256") != EPISODE01_JOIN_KERNEL_SHA256
+            or report.get("join_kernel_refreshed_sha256") != EPISODE01_JOIN_KERNEL_V2_SHA256
+            or report.get("wound_event_source_day") != 9
+            or report.get("wound_character_id") != 54144
+            or report.get("wound_regiment_id") != 220
+            or report.get("same_date_later_save_wounded_rank") != 1):
+        raise NativeBattleCaseError("phase-event regiment feedback identity mismatch")
+    if any(report.get(key) is not False for key in (
+        "event_unique_cause_proven", "full_effect_write_set_proven",
+        "source_day_11_whole_trace_available", "effective_stat_refresh_reconstructed",
+        "planner_usable",
+    )):
+        raise NativeBattleCaseError("event-regiment observation cannot authorize a model")
+    stages = report.get("stages")
+    if (not isinstance(stages, list) or len(stages) != 4
+            or [(row.get("source_day"), row.get("record_index")) for row in stages]
+            != [(9, 2), (10, 0), (10, 2), (11, 0)]
+            or [(row.get("prowess"), row.get("effective_toughness_raw")) for row in stages]
+            != [(4, 7400000), (4, 7400000), (2, 7400000), (2, 3700000)]
+            or [row.get("effective_damage_raw") for row in stages]
+            != [37000000, 37000000, 37000000, 18500000]
+            or any(row.get("character_id") != 54144 or row.get("regiment_id") != 220
+                   or row.get("capture_failure_flags") != 0 for row in stages)):
+        raise NativeBattleCaseError("event-regiment stage sequence mismatch")
+    if (report.get("day_11_initial_conditional_residual_raw") != 214
+            or report.get("day_11_refreshed_conditional_residual_raw") != 0):
+        raise NativeBattleCaseError("event-regiment residual was hidden or changed")
+
+
+def load_episode01_phase_event_regiment_feedback() -> dict[str, Any]:
+    """Return one observed wound/prowess/entry-stat sequence, not unique cause."""
+    path = Path(__file__).with_name("data") / EPISODE01_EVENT_REGIMENT_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_EVENT_REGIMENT_SHA256:
+        raise NativeBattleCaseError("bundled event-regiment feedback bytes changed without review")
+    report = json.loads(data)
+    if not isinstance(report, dict):
+        raise NativeBattleCaseError("event-regiment feedback must be a JSON object")
+    _validate_phase_event_regiment_feedback(report)
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -486,6 +538,8 @@ __all__ = [
     "EPISODE01_JOIN_KERNEL_SHA256",
     "EPISODE01_JOIN_KERNEL_V2_FILE",
     "EPISODE01_JOIN_KERNEL_V2_SHA256",
+    "EPISODE01_EVENT_REGIMENT_FILE",
+    "EPISODE01_EVENT_REGIMENT_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -495,5 +549,6 @@ __all__ = [
     "load_episode01_join_day_casualties",
     "load_episode01_join_day_kernel_parity",
     "load_episode01_join_day_kernel_parity_v2",
+    "load_episode01_phase_event_regiment_feedback",
     "original_daily_timeline",
 ]

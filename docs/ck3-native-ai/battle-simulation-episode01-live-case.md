@@ -83,6 +83,8 @@
 | 16 | `wounded_1` | 54144 | +75 | +1 | 存档字段缺失，未断言 |
 | 19 | `wounded_1` | 35124 | +75 | 0 | +75 |
 
+第 9 日受伤目标 `54144` 的 RegimentID `220` 又提供了[后续兵团属性回流链](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_regiment_feedback.json)：同日后续存档新增 `wounded_1`；第 9 日 fire 前、第 10 日 schedule 前、第 10 日 fire 前、第 11 日 schedule 前，人物勇武 `4/4/2/2`，对应兵团有效韧性 `7400000/7400000/7400000/3700000`。更早 control 快照沿用旧韧性，造成第 11 日条件伤亡对拍的 `+214` 残差；送入原版 schedule 前韧性后精确。这个时序是同一独立回放的观察，不证明受伤条目是数值变化的唯一原因，也不把第 11 日整体 RED trace 提升为 GREEN。
+
 原版 `00_knight_phase_events.txt` 的相应分支调用 `add_prestige` 与 `knight_increase_prowess_chance_effect`；这些存档数值与调用相容，未逐指令证明唯一因果。勇武增量并非每次都出现，模拟器不能把这个机会效果硬编码成固定 +1。
 
 所以“条目出现后，伤势/死亡到下一游戏日才生效”这个说法过宽：**同日期存档已保存伤势 trait 和死亡状态**。当前实证只定位到“fire 局部 core 读数未变，但同日期后续存档状态已变；勇武缓存的可见下降更晚”；它捕获了六次对手威望与基础勇武的存档变化，但没有定位完整 effect 回调、荣誉/脚本变量等全部写集或排除同日其他因果。模拟器必须分别对拍 trait/死亡状态和其对下一次战斗数值输入的刷新时点；本片仍不能报整场胜率。
