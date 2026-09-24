@@ -15771,10 +15771,10 @@ def _qualified_siege_forecast_move(
 ) -> dict[str, object]:
     """Consume the existing combat-entry EU contract for one exact encounter.
 
-    The production contract currently has no forecast producer, EU calculator,
-    or activation.  Its assessor therefore cannot return an attack selection.
-    This seam preserves the selected route and contact proof when those
-    independently qualified components are eventually delivered.
+    The production contract currently has no qualified forecast producer or
+    activation.  A separately bound trial-component tape may still be assessed
+    here so the same calculator used by research and film reaches the agent's
+    actual decision seam without bypassing the fidelity gate.
     """
     payload = snapshot.get("combat_entry_eu_v1")
     if not isinstance(payload, dict):
@@ -15801,7 +15801,10 @@ def _qualified_siege_forecast_move(
     ):
         return {"status": "encounter_identity_mismatch"}
     try:
-        assessment = combat_entry_eu.assess_combat_entry_eu_contract(payload)
+        assessment = combat_entry_eu.assess_combat_entry_eu_contract(
+            payload,
+            action_components=snapshot.get("combat_entry_action_components_v1"),
+        )
     except (combat_entry_eu.CombatEntryEuContractError, KeyError, TypeError, ValueError):
         return {"status": "contract_invalid"}
     result: dict[str, object] = {
@@ -15809,6 +15812,8 @@ def _qualified_siege_forecast_move(
         "assessment_sha256": assessment.get("assessment_sha256"),
         "contract_status": assessment.get("status"),
         "blockers": assessment.get("blockers"),
+        "action_components_ready": assessment.get("action_components_ready", False),
+        "candidate_action": assessment.get("candidate_action"),
     }
     if not (
         combat_entry_eu.COMBAT_ENTRY_EU_ACTIVATION_ENABLED

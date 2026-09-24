@@ -56,6 +56,12 @@ constexpr std::array<std::uint8_t, 15> kSchedulePrologue{
 constexpr std::array<std::uint8_t, 15> kFirePrologue{
     0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
     0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18};
+constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
+    0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
+    0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
+constexpr std::array<std::uint8_t, 16> kPostCounterOriginal{
+    0x4C, 0x8B, 0xBD, 0x98, 0x00, 0x00, 0x00, 0x41,
+    0xBB, 0xA0, 0x86, 0x01, 0x00, 0x4C, 0x03, 0x30};
 constexpr std::array<std::uint8_t, 5> kScheduleSide0Call{
     0xE8, 0xBC, 0xD1, 0xBC, 0xFF};
 constexpr std::array<std::uint8_t, 5> kScheduleSide1Call{
@@ -66,15 +72,25 @@ constexpr std::array<std::uint8_t, 5> kFireSide1Call{
     0xE8, 0xF1, 0x03, 0x0C, 0x00};
 constexpr std::array<std::uint8_t, 5> kFireTailJump{
     0xE9, 0xAD, 0xF5, 0xFF, 0xFF};
+constexpr std::array<std::uint8_t, 5> kOutgoingDamageSide0Call{
+    0xE8, 0x38, 0x12, 0x0C, 0x00};
+constexpr std::array<std::uint8_t, 5> kOutgoingDamageSide1Call{
+    0xE8, 0x1C, 0x12, 0x0C, 0x00};
 
 struct DetourMemory {
   void *schedule_page = nullptr;
   void *fire_page = nullptr;
+  void *outgoing_damage_page = nullptr;
+  void *post_counter_page = nullptr;
   std::uint32_t live_allocations = 0;
 
   ~DetourMemory() {
     if (schedule_page != nullptr) VirtualFree(schedule_page, 0, MEM_RELEASE);
     if (fire_page != nullptr) VirtualFree(fire_page, 0, MEM_RELEASE);
+    if (outgoing_damage_page != nullptr)
+      VirtualFree(outgoing_damage_page, 0, MEM_RELEASE);
+    if (post_counter_page != nullptr)
+      VirtualFree(post_counter_page, 0, MEM_RELEASE);
   }
 };
 
@@ -155,6 +171,10 @@ struct NativeFixture {
   std::array<std::uint8_t, 5> fire_side0_call{kFireSide0Call};
   std::array<std::uint8_t, 5> fire_side1_call{kFireSide1Call};
   std::array<std::uint8_t, 5> fire_tail_jump{kFireTailJump};
+  std::array<std::uint8_t, 5> outgoing_damage_side0_call{
+      kOutgoingDamageSide0Call};
+  std::array<std::uint8_t, 5> outgoing_damage_side1_call{
+      kOutgoingDamageSide1Call};
   CombatPhaseEventTraceDetourEnvironmentV1 detour_environment{};
 
   NativeFixture() {
@@ -299,16 +319,34 @@ struct NativeFixture {
     detour_memory.fire_page = VirtualAlloc(
         nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
         PAGE_EXECUTE_READWRITE);
+    detour_memory.outgoing_damage_page = VirtualAlloc(
+        nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE);
+    detour_memory.post_counter_page = VirtualAlloc(
+        nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE);
     if (detour_memory.schedule_page != nullptr &&
-        detour_memory.fire_page != nullptr) {
+        detour_memory.fire_page != nullptr &&
+        detour_memory.outgoing_damage_page != nullptr &&
+        detour_memory.post_counter_page != nullptr) {
       std::memcpy(detour_memory.schedule_page, kSchedulePrologue.data(),
                   kSchedulePrologue.size());
       std::memcpy(detour_memory.fire_page, kFirePrologue.data(),
                   kFirePrologue.size());
+      std::memcpy(detour_memory.outgoing_damage_page,
+                  kOutgoingDamagePrologue.data(),
+                  kOutgoingDamagePrologue.size());
+      std::memcpy(detour_memory.post_counter_page,
+                  kPostCounterOriginal.data(),
+                  kPostCounterOriginal.size());
       DWORD ignored = 0;
       (void)VirtualProtect(detour_memory.schedule_page, page_size,
                            PAGE_EXECUTE_READ, &ignored);
       (void)VirtualProtect(detour_memory.fire_page, page_size,
+                           PAGE_EXECUTE_READ, &ignored);
+      (void)VirtualProtect(detour_memory.outgoing_damage_page, page_size,
+                           PAGE_EXECUTE_READ, &ignored);
+      (void)VirtualProtect(detour_memory.post_counter_page, page_size,
                            PAGE_EXECUTE_READ, &ignored);
     }
     detour_environment.exact_build_admitted = true;
@@ -318,6 +356,10 @@ struct NativeFixture {
         reinterpret_cast<std::uintptr_t>(detour_memory.schedule_page);
     detour_environment.fire_target_override =
         reinterpret_cast<std::uintptr_t>(detour_memory.fire_page);
+    detour_environment.outgoing_damage_target_override =
+        reinterpret_cast<std::uintptr_t>(detour_memory.outgoing_damage_page);
+    detour_environment.post_counter_target_override =
+        reinterpret_cast<std::uintptr_t>(detour_memory.post_counter_page);
     detour_environment.schedule_side0_call_override =
         reinterpret_cast<std::uintptr_t>(schedule_side0_call.data());
     detour_environment.schedule_side1_call_override =
@@ -328,6 +370,12 @@ struct NativeFixture {
         reinterpret_cast<std::uintptr_t>(fire_side1_call.data());
     detour_environment.fire_tail_jump_override =
         reinterpret_cast<std::uintptr_t>(fire_tail_jump.data());
+    detour_environment.outgoing_damage_side0_call_override =
+        reinterpret_cast<std::uintptr_t>(
+            outgoing_damage_side0_call.data());
+    detour_environment.outgoing_damage_side1_call_override =
+        reinterpret_cast<std::uintptr_t>(
+            outgoing_damage_side1_call.data());
     detour_environment.memory_context = &detour_memory;
     detour_environment.virtual_alloc_override = &FixtureAlloc;
     detour_environment.virtual_free_override = &FixtureFree;
@@ -417,7 +465,9 @@ bool ManagedBeginFinishProducesBoundedDto() {
   NativeFixture fixture;
   Store(fixture.rng_wrapper, 0x00, std::uintptr_t{0});
   if (fixture.detour_memory.schedule_page == nullptr ||
-      fixture.detour_memory.fire_page == nullptr) {
+      fixture.detour_memory.fire_page == nullptr ||
+      fixture.detour_memory.outgoing_damage_page == nullptr ||
+      fixture.detour_memory.post_counter_page == nullptr) {
     return Fail("detour pages unavailable");
   }
   MainThreadQueryMailboxV1 mailbox{};
@@ -437,6 +487,12 @@ bool ManagedBeginFinishProducesBoundedDto() {
       session->stage != CombatPhaseEventTraceManagedStageV1::
                             armed_waiting_for_one_day ||
       !IsCombatPhaseEventTraceRingV1Armed()) {
+    std::cerr << "begin completion=" << static_cast<int>(begin.completion)
+              << " stage=" << static_cast<int>(session->stage)
+              << " plan_result=" << static_cast<int>(session->plan_result)
+              << " detour_installed=" << session->detours.installed
+              << " ring_armed=" << IsCombatPhaseEventTraceRingV1Armed()
+              << '\n';
     return Fail("typed begin did not arm trace");
   }
 
@@ -476,6 +532,26 @@ bool ManagedBeginFinishProducesBoundedDto() {
       return Fail("fire boundary failed");
     }
   }
+  const std::int64_t side0_damage_raw = 310'000;
+  const std::int64_t side1_damage_raw = 280'000;
+  const auto side0_damage_return =
+      NativeFixture::kModule + kCombatOutgoingDamageSide0ReturnRva;
+  const auto side1_damage_return =
+      NativeFixture::kModule + kCombatOutgoingDamageSide1ReturnRva;
+  CaptureCombatPostCounterAttackV1(side0, 10'333'333,
+                                   session->plan.sides[0],
+                                   side0_damage_return);
+  if (!CaptureCombatOutgoingDamageV1(side0, side1, &side0_damage_raw,
+                                     side0_damage_return)) {
+    return Fail("side0 damage capture failed");
+  }
+  CaptureCombatPostCounterAttackV1(side1, 6'222'222,
+                                   session->plan.sides[1],
+                                   side1_damage_return);
+  if (!CaptureCombatOutgoingDamageV1(side1, side0, &side1_damage_raw,
+                                     side1_damage_return)) {
+    return Fail("side1 damage capture failed");
+  }
   Store(fixture.rng_wrapper, 0x00, std::uintptr_t{0});
 
   CombatPhaseEventTraceFinishContextV1 finish{};
@@ -494,6 +570,16 @@ bool ManagedBeginFinishProducesBoundedDto() {
       session->drain.production_trace_ready ||
       fixture.detour_memory.live_allocations != 0 ||
       IsCombatPhaseEventTraceRingV1Armed()) {
+    std::cerr << "finish completion=" << static_cast<int>(finish.completion)
+              << " stage=" << static_cast<int>(session->stage)
+              << " one_day=" << session->exact_one_day_observed
+              << " dates=" << session->boundary_dates_match_checkpoint
+              << " uninstalled=" << session->detours_uninstalled
+              << " bounded=" << session->drain.bounded_capture_complete
+              << " ready=" << session->drain.production_trace_ready
+              << " allocations=" << fixture.detour_memory.live_allocations
+              << " ring=" << IsCombatPhaseEventTraceRingV1Armed()
+              << '\n';
     return Fail("typed finish did not drain/cleanup bounded trace");
   }
   const auto wire = SerializeCombatPhaseEventTraceManagedResultV1(*session);

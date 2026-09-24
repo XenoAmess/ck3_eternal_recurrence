@@ -167,7 +167,7 @@ def session_outcome(*, session_ok: bool, debug_recording_enabled: bool, recordin
 
 
 async def service_requests(directory: Path, *, call, stopped: threading.Event,
-                           seconds: float, state_reader) -> None:
+                           seconds: float, state_reader, private_phase_call=None) -> None:
     """Keep the one owning MCP connection available for bounded hot diagnosis.
 
     Requests are explicit local JSON files, never inferred retries of StartGame.
@@ -198,6 +198,11 @@ async def service_requests(directory: Path, *, call, stopped: threading.Event,
                 if request.get("action") == "finish":
                     row["result"] = "SERVICE_FINISHED"
                     finish = True
+                elif request.get("action") == "private_phase_trace":
+                    require(private_phase_call is not None,
+                            "Private phase trace is not enabled for this capture")
+                    row["body"] = private_phase_call(request)
+                    row["result"] = "CALL_COMPLETED"
                 else:
                     require(request.get("action") == "mcp", "Unknown request action")
                     name = request.get("tool")
@@ -504,9 +509,45 @@ def capture(args: argparse.Namespace, checked: dict) -> dict:
                     ImageGrab.grab().save(args.output_dir / "hot-failure-desktop.png")
                 duration = args.recovery_seconds if failed else args.interactive_seconds
                 if duration > 0 and not stopped.is_set():
+                    def private_phase_call(request: dict) -> dict:
+                        require(args.enable_private_phase_trace,
+                                "Private phase trace requires explicit capture opt-in")
+                        step = request.get("step")
+                        require(step in {
+                            "experimental-combat-phase-event-trace-begin-v1",
+                            "experimental-combat-phase-event-trace-finish-v1",
+                        }, "Only the bounded phase trace command pair is permitted")
+                        expected_revision = request.get("expected_revision")
+                        combat_id = request.get("combat_id")
+                        token = request.get("managed_daily_sequence_token")
+                        require(type(expected_revision) is int and expected_revision > 0,
+                                "Private phase trace needs a positive revision")
+                        require(type(combat_id) is int and combat_id > 0,
+                                "Private phase trace needs a positive CombatID")
+                        require(type(token) is int and token > 0,
+                                "Private phase trace needs a positive sequence token")
+                        fields = {"combat_id": combat_id,
+                                  "managed_daily_sequence_token": token}
+                        allowed = {"action", "step", "expected_revision",
+                                   "combat_id", "managed_daily_sequence_token"}
+                        if step.endswith("-begin-v1"):
+                            checkpoint_sequence = request.get("checkpoint_sequence")
+                            require(type(checkpoint_sequence) is int and checkpoint_sequence > 0,
+                                    "Begin requires a materialized checkpoint sequence")
+                            fields["checkpoint_sequence"] = checkpoint_sequence
+                            allowed.add("checkpoint_sequence")
+                        require(set(request) == allowed,
+                                "Private phase trace request fields differ from the bounded contract")
+                        return driver._execute_primitive_step(
+                            step, expected_revision=expected_revision,
+                            required_capability="game.command.experimental-combat-phase-event-trace-managed-v1",
+                            request_fields=fields, timeout_seconds=90,
+                        )
+
                     await service_requests(
                         args.output_dir / ("recovery-requests" if failed else "interactive-requests"),
                         call=call, stopped=stopped, seconds=duration, state_reader=driver.diagnostics,
+                        private_phase_call=private_phase_call if args.enable_private_phase_trace else None,
                     )
 
     def worker_main() -> None:
@@ -614,6 +655,8 @@ def main() -> int:
     parser.add_argument("--interactive-seconds", type=float, default=1800,
                         help="Keep the loaded campaign available for explicit MCP requests; use 3600 for a bounded one-hour work session")
     parser.add_argument("--steam-offline-receipt", type=Path)
+    parser.add_argument("--enable-private-phase-trace", action="store_true",
+                        help="Allow only the research BEGIN/FINISH trace pair in explicit local requests")
     parser.add_argument("--capture", action="store_true", help="Explicitly launch CK3 after preflight; default is no launch")
     args = parser.parse_args()
     require(30 <= args.hold_seconds <= 90, "Hold must be 30..90 seconds")

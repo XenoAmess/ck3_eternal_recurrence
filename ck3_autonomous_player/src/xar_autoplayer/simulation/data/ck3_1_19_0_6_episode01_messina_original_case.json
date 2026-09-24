@@ -1,0 +1,3064 @@
+{
+  "schema": "ck3-native-battle-evidence-v1",
+  "case_id": "episode01-sicily-messina-combat-16777218",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "original_case_receipt_sha256": "794ED48E04A0E734DA2DBE19482DAF525FB1FE2B87350EB1113E3223765EB2AD",
+  "war_id": 4,
+  "combat_id": 16777218,
+  "province_id": 2633,
+  "first_date_raw": 53146248,
+  "terminal_date_raw": 53146992,
+  "winner_side": "attacker",
+  "winner_relative_to_player": "enemy",
+  "battle_warscore_player_delta_raw_q100000": -5000000,
+  "joins": [
+    {
+      "day": 1,
+      "date_raw": 53146248,
+      "added_attacker_army_ids": [
+        16777221
+      ]
+    },
+    {
+      "day": 2,
+      "date_raw": 53146272,
+      "added_attacker_army_ids": [
+        16777231,
+        27
+      ]
+    },
+    {
+      "day": 12,
+      "date_raw": 53146512,
+      "added_attacker_army_ids": [
+        22
+      ]
+    },
+    {
+      "day": 22,
+      "date_raw": 53146752,
+      "added_attacker_army_ids": [
+        28
+      ]
+    }
+  ],
+  "daily": [
+    {
+      "day": 1,
+      "date_raw": 53146248,
+      "phase": "maneuver",
+      "phase_day": 1,
+      "winner_side": "none",
+      "combat_width": 728,
+      "side0": {
+        "army_ids": [
+          16777221
+        ],
+        "regiment_count": 6,
+        "current_raw": 33000000,
+        "stored_current_raw": 33000000,
+        "stored_current_matches_derived": true,
+        "soft_raw": 0,
+        "hard_raw": 0
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 128800000,
+        "stored_current_raw": 128800000,
+        "stored_current_matches_derived": true,
+        "soft_raw": 0,
+        "hard_raw": 0
+      }
+    },
+    {
+      "day": 2,
+      "date_raw": 53146272,
+      "phase": "maneuver",
+      "phase_day": 2,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 27,
+        "current_raw": 200300000,
+        "stored_current_raw": 200300000,
+        "stored_current_matches_derived": true,
+        "soft_raw": 0,
+        "hard_raw": 0
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 128800000,
+        "stored_current_raw": 128800000,
+        "stored_current_matches_derived": true,
+        "soft_raw": 0,
+        "hard_raw": 0
+      }
+    },
+    {
+      "day": 3,
+      "date_raw": 53146296,
+      "phase": "maneuver",
+      "phase_day": 3,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 27,
+        "current_raw": 200300000,
+        "stored_current_raw": 200300000,
+        "stored_current_matches_derived": true,
+        "soft_raw": 0,
+        "hard_raw": 0
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 128800000,
+        "stored_current_raw": 128800000,
+        "stored_current_matches_derived": true,
+        "soft_raw": 0,
+        "hard_raw": 0
+      }
+    },
+    {
+      "day": 4,
+      "date_raw": 53146320,
+      "phase": "main",
+      "phase_day": 0,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 27,
+        "current_raw": 200300000,
+        "stored_current_raw": 200300000,
+        "stored_current_matches_derived": true,
+        "soft_raw": 0,
+        "hard_raw": 0
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 128800000,
+        "stored_current_raw": 128800000,
+        "stored_current_matches_derived": true,
+        "soft_raw": 0,
+        "hard_raw": 0
+      }
+    },
+    {
+      "day": 5,
+      "date_raw": 53146344,
+      "phase": "main",
+      "phase_day": 1,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 27,
+        "current_raw": 192121816,
+        "stored_current_raw": 200300000,
+        "stored_current_matches_derived": false,
+        "soft_raw": 5602065,
+        "hard_raw": 2576119
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 122225074,
+        "stored_current_raw": 128800000,
+        "stored_current_matches_derived": false,
+        "soft_raw": 4207965,
+        "hard_raw": 2366961
+      }
+    },
+    {
+      "day": 6,
+      "date_raw": 53146368,
+      "phase": "main",
+      "phase_day": 2,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 27,
+        "current_raw": 186071277,
+        "stored_current_raw": 192121816,
+        "stored_current_matches_derived": false,
+        "soft_raw": 9746697,
+        "hard_raw": 4482026
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 115629874,
+        "stored_current_raw": 122225074,
+        "stored_current_matches_derived": false,
+        "soft_raw": 8428903,
+        "hard_raw": 4741223
+      }
+    },
+    {
+      "day": 7,
+      "date_raw": 53146392,
+      "phase": "main",
+      "phase_day": 3,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 27,
+        "current_raw": 180239833,
+        "stored_current_raw": 186071277,
+        "stored_current_matches_derived": false,
+        "soft_raw": 13741248,
+        "hard_raw": 6318919
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 109038546,
+        "stored_current_raw": 115629874,
+        "stored_current_matches_derived": false,
+        "soft_raw": 12647363,
+        "hard_raw": 7114091
+      }
+    },
+    {
+      "day": 8,
+      "date_raw": 53146416,
+      "phase": "main",
+      "phase_day": 4,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 26,
+        "current_raw": 174528341,
+        "stored_current_raw": 180141404,
+        "stored_current_matches_derived": false,
+        "soft_raw": 17585130,
+        "hard_raw": 8086529
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 102457888,
+        "stored_current_raw": 109038546,
+        "stored_current_matches_derived": false,
+        "soft_raw": 16858994,
+        "hard_raw": 9483118
+      }
+    },
+    {
+      "day": 9,
+      "date_raw": 53146440,
+      "phase": "main",
+      "phase_day": 5,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 26,
+        "current_raw": 167254473,
+        "stored_current_raw": 174528341,
+        "stored_current_matches_derived": false,
+        "soft_raw": 22567738,
+        "hard_raw": 10377789
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 95978738,
+        "stored_current_raw": 102457888,
+        "stored_current_matches_derived": false,
+        "soft_raw": 21005659,
+        "hard_raw": 11815603
+      }
+    },
+    {
+      "day": 10,
+      "date_raw": 53146464,
+      "phase": "main",
+      "phase_day": 6,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 26,
+        "current_raw": 160239264,
+        "stored_current_raw": 167254473,
+        "stored_current_matches_derived": false,
+        "soft_raw": 27373170,
+        "hard_raw": 12587566
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 89504855,
+        "stored_current_raw": 95978738,
+        "stored_current_matches_derived": false,
+        "soft_raw": 25148957,
+        "hard_raw": 14146188
+      }
+    },
+    {
+      "day": 11,
+      "date_raw": 53146488,
+      "phase": "main",
+      "phase_day": 7,
+      "winner_side": "none",
+      "combat_width": 1480,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27
+        ],
+        "regiment_count": 26,
+        "current_raw": 153518548,
+        "stored_current_raw": 160239264,
+        "stored_current_matches_derived": false,
+        "soft_raw": 31976875,
+        "hard_raw": 14704577
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 83046426,
+        "stored_current_raw": 89504855,
+        "stored_current_matches_derived": false,
+        "soft_raw": 29282361,
+        "hard_raw": 16471213
+      }
+    },
+    {
+      "day": 12,
+      "date_raw": 53146512,
+      "phase": "main",
+      "phase_day": 8,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 403543459,
+        "stored_current_raw": 409518548,
+        "stored_current_matches_derived": false,
+        "soft_raw": 36069830,
+        "hard_raw": 16586711
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 74335074,
+        "stored_current_raw": 83046426,
+        "stored_current_matches_derived": false,
+        "soft_raw": 34857640,
+        "hard_raw": 19607286
+      }
+    },
+    {
+      "day": 13,
+      "date_raw": 53146536,
+      "phase": "main",
+      "phase_day": 9,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 397934828,
+        "stored_current_raw": 403543459,
+        "stored_current_matches_derived": false,
+        "soft_raw": 39911761,
+        "hard_raw": 18353411
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 65812833,
+        "stored_current_raw": 74335074,
+        "stored_current_matches_derived": false,
+        "soft_raw": 40311886,
+        "hard_raw": 22675281
+      }
+    },
+    {
+      "day": 14,
+      "date_raw": 53146560,
+      "phase": "main",
+      "phase_day": 10,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 392682579,
+        "stored_current_raw": 397934828,
+        "stored_current_matches_derived": false,
+        "soft_raw": 43509567,
+        "hard_raw": 20007854
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 57523381,
+        "stored_current_raw": 65812833,
+        "stored_current_matches_derived": false,
+        "soft_raw": 45617146,
+        "hard_raw": 25659473
+      }
+    },
+    {
+      "day": 15,
+      "date_raw": 53146584,
+      "phase": "main",
+      "phase_day": 11,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 387935905,
+        "stored_current_raw": 392682579,
+        "stored_current_matches_derived": false,
+        "soft_raw": 46761056,
+        "hard_raw": 21503039
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 49515948,
+        "stored_current_raw": 57523381,
+        "stored_current_matches_derived": false,
+        "soft_raw": 50741915,
+        "hard_raw": 28542137
+      }
+    },
+    {
+      "day": 16,
+      "date_raw": 53146608,
+      "phase": "main",
+      "phase_day": 12,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 383479037,
+        "stored_current_raw": 387935905,
+        "stored_current_matches_derived": false,
+        "soft_raw": 49814032,
+        "hard_raw": 22906931
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 41889021,
+        "stored_current_raw": 49515948,
+        "stored_current_matches_derived": false,
+        "soft_raw": 55623158,
+        "hard_raw": 31287821
+      }
+    },
+    {
+      "day": 17,
+      "date_raw": 53146632,
+      "phase": "main",
+      "phase_day": 13,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 379335820,
+        "stored_current_raw": 383479037,
+        "stored_current_matches_derived": false,
+        "soft_raw": 52652155,
+        "hard_raw": 24212025
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 34696886,
+        "stored_current_raw": 41889021,
+        "stored_current_matches_derived": false,
+        "soft_raw": 60226136,
+        "hard_raw": 33876978
+      }
+    },
+    {
+      "day": 18,
+      "date_raw": 53146656,
+      "phase": "main",
+      "phase_day": 14,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 374974616,
+        "stored_current_raw": 379335820,
+        "stored_current_matches_derived": false,
+        "soft_raw": 55639599,
+        "hard_raw": 25585785
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 28044939,
+        "stored_current_raw": 34696886,
+        "stored_current_matches_derived": false,
+        "soft_raw": 64483393,
+        "hard_raw": 36271668
+      }
+    },
+    {
+      "day": 19,
+      "date_raw": 53146680,
+      "phase": "main",
+      "phase_day": 15,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 370929960,
+        "stored_current_raw": 374974616,
+        "stored_current_matches_derived": false,
+        "soft_raw": 58410209,
+        "hard_raw": 26859831
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 22051604,
+        "stored_current_raw": 28044939,
+        "stored_current_matches_derived": false,
+        "soft_raw": 68319138,
+        "hard_raw": 38429258
+      }
+    },
+    {
+      "day": 20,
+      "date_raw": 53146704,
+      "phase": "main",
+      "phase_day": 16,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 367178863,
+        "stored_current_raw": 370929960,
+        "stored_current_matches_derived": false,
+        "soft_raw": 60979728,
+        "hard_raw": 28041409
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 16849820,
+        "stored_current_raw": 22051604,
+        "stored_current_matches_derived": false,
+        "soft_raw": 71648288,
+        "hard_raw": 40301892
+      }
+    },
+    {
+      "day": 21,
+      "date_raw": 53146728,
+      "phase": "main",
+      "phase_day": 17,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22
+        ],
+        "regiment_count": 39,
+        "current_raw": 364721204,
+        "stored_current_raw": 367178863,
+        "stored_current_matches_derived": false,
+        "soft_raw": 62663245,
+        "hard_raw": 28815551
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 12540557,
+        "stored_current_raw": 16849820,
+        "stored_current_matches_derived": false,
+        "soft_raw": 74406225,
+        "hard_raw": 41853218
+      }
+    },
+    {
+      "day": 22,
+      "date_raw": 53146752,
+      "phase": "main",
+      "phase_day": 18,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 468198345,
+        "stored_current_raw": 470521204,
+        "stored_current_matches_derived": false,
+        "soft_raw": 64254425,
+        "hard_raw": 29547230
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 9246976,
+        "stored_current_raw": 12540557,
+        "stored_current_matches_derived": false,
+        "soft_raw": 76514128,
+        "hard_raw": 43038896
+      }
+    },
+    {
+      "day": 23,
+      "date_raw": 53146776,
+      "phase": "main",
+      "phase_day": 19,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 466033584,
+        "stored_current_raw": 468198345,
+        "stored_current_matches_derived": false,
+        "soft_raw": 65737308,
+        "hard_raw": 30229108
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 6445172,
+        "stored_current_raw": 9246976,
+        "stored_current_matches_derived": false,
+        "soft_raw": 78307293,
+        "hard_raw": 44047535
+      }
+    },
+    {
+      "day": 24,
+      "date_raw": 53146800,
+      "phase": "main",
+      "phase_day": 20,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 463291300,
+        "stored_current_raw": 466033584,
+        "stored_current_matches_derived": false,
+        "soft_raw": 67615794,
+        "hard_raw": 31092906
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 3751195,
+        "stored_current_raw": 6445172,
+        "stored_current_matches_derived": false,
+        "soft_raw": 80031446,
+        "hard_raw": 45017359
+      }
+    },
+    {
+      "day": 25,
+      "date_raw": 53146824,
+      "phase": "main",
+      "phase_day": 21,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 460841865,
+        "stored_current_raw": 463291300,
+        "stored_current_matches_derived": false,
+        "soft_raw": 69293678,
+        "hard_raw": 31864457
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 1184192,
+        "stored_current_raw": 3751195,
+        "stored_current_matches_derived": false,
+        "soft_raw": 81674334,
+        "hard_raw": 45941474
+      }
+    },
+    {
+      "day": 26,
+      "date_raw": 53146848,
+      "phase": "main",
+      "phase_day": 22,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 458815339,
+        "stored_current_raw": 460841865,
+        "stored_current_matches_derived": false,
+        "soft_raw": 70681870,
+        "hard_raw": 32502791
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 217930,
+        "stored_current_raw": 1184192,
+        "stored_current_matches_derived": false,
+        "soft_raw": 82292747,
+        "hard_raw": 46289323
+      }
+    },
+    {
+      "day": 27,
+      "date_raw": 53146872,
+      "phase": "main",
+      "phase_day": 23,
+      "winner_side": "none",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 457629639,
+        "stored_current_raw": 458815339,
+        "stored_current_matches_derived": false,
+        "soft_raw": 71494094,
+        "hard_raw": 32876267
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 0,
+        "stored_current_raw": 217930,
+        "stored_current_matches_derived": false,
+        "soft_raw": 82432224,
+        "hard_raw": 46367776
+      }
+    },
+    {
+      "day": 28,
+      "date_raw": 53146896,
+      "phase": "pursuit",
+      "phase_day": 0,
+      "winner_side": "attacker",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 457629639,
+        "stored_current_raw": 457629639,
+        "stored_current_matches_derived": true,
+        "soft_raw": 71494094,
+        "hard_raw": 32876267
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 0,
+        "stored_current_raw": 0,
+        "stored_current_matches_derived": true,
+        "soft_raw": 82432224,
+        "hard_raw": 46367776
+      }
+    },
+    {
+      "day": 29,
+      "date_raw": 53146920,
+      "phase": "pursuit",
+      "phase_day": 1,
+      "winner_side": "attacker",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 457629639,
+        "stored_current_raw": 457629639,
+        "stored_current_matches_derived": true,
+        "soft_raw": 71494094,
+        "hard_raw": 32876267
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 0,
+        "stored_current_raw": 0,
+        "stored_current_matches_derived": true,
+        "soft_raw": 80367109,
+        "hard_raw": 48432891
+      }
+    },
+    {
+      "day": 30,
+      "date_raw": 53146944,
+      "phase": "pursuit",
+      "phase_day": 2,
+      "winner_side": "attacker",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 457629639,
+        "stored_current_raw": 457629639,
+        "stored_current_matches_derived": true,
+        "soft_raw": 71494094,
+        "hard_raw": 32876267
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 0,
+        "stored_current_raw": 0,
+        "stored_current_matches_derived": true,
+        "soft_raw": 78275410,
+        "hard_raw": 50524590
+      }
+    },
+    {
+      "day": 31,
+      "date_raw": 53146968,
+      "phase": "pursuit",
+      "phase_day": 3,
+      "winner_side": "attacker",
+      "combat_width": 2215,
+      "side0": {
+        "army_ids": [
+          16777221,
+          16777231,
+          27,
+          22,
+          28
+        ],
+        "regiment_count": 44,
+        "current_raw": 457629639,
+        "stored_current_raw": 457629639,
+        "stored_current_matches_derived": true,
+        "soft_raw": 71494094,
+        "hard_raw": 32876267
+      },
+      "side1": {
+        "army_ids": [
+          18
+        ],
+        "regiment_count": 24,
+        "current_raw": 0,
+        "stored_current_raw": 0,
+        "stored_current_matches_derived": true,
+        "soft_raw": 76154649,
+        "hard_raw": 52645351
+      }
+    }
+  ],
+  "original_receipts": [
+    {
+      "day": 1,
+      "kind": "snapshot",
+      "file": "b001-snapshot.json",
+      "sha256": "FFF7D8833D8977CBE3C9C2E2E45470FB7957B23237B31A4AA0C4ACBAE13C4FCB"
+    },
+    {
+      "day": 1,
+      "kind": "control",
+      "file": "b001-control.json",
+      "sha256": "99B919B21B9F96828EA9BDE588FB860A6169082516A9F892B1B6B1A0619DECCF"
+    },
+    {
+      "day": 1,
+      "kind": "transition",
+      "file": "b001-transition.json",
+      "sha256": "A113AF38C2BB32B0BAB7DCF33374DF45C968DAC4BC5652B23947CD765820A12D"
+    },
+    {
+      "day": 1,
+      "kind": "advance",
+      "file": "b001-advance.json",
+      "sha256": "2AEC5609653B9BCEF8D03BD1053A0DFBC17111463EADDAE170F33FDEA8ECBB9F"
+    },
+    {
+      "day": 2,
+      "kind": "snapshot",
+      "file": "b002-snapshot.json",
+      "sha256": "749E829D021A784F7AD0F8628AD319F944DC8E405DCADEF35528AB303F57A527"
+    },
+    {
+      "day": 2,
+      "kind": "control",
+      "file": "b002-control.json",
+      "sha256": "8A958EF9B4E83F57E97E37415C85396237ED8BD50A17FA2337C731C6C0509A0F"
+    },
+    {
+      "day": 2,
+      "kind": "transition",
+      "file": "b002-transition.json",
+      "sha256": "DFA5EA8DFEB0DE883F52F91BB5EC167FF41DE82FF7502FE40C2752CAD0E30C02"
+    },
+    {
+      "day": 2,
+      "kind": "advance",
+      "file": "b002-advance.json",
+      "sha256": "ABB7289268DF461A1A53E599208E48AEB9FD1A8AA36E7E51B7DCA8CFEECCF1F9"
+    },
+    {
+      "day": 3,
+      "kind": "snapshot",
+      "file": "b003-snapshot.json",
+      "sha256": "47DA24824AC996245CFE79ADA1F00FBF188B4BAE943429E5E3C1AD790C8407A8"
+    },
+    {
+      "day": 3,
+      "kind": "control",
+      "file": "b003-control.json",
+      "sha256": "D8E70FDECA44FD9EC8D0DDFF1A51663299D6AE4D6F91D0249093FC0D9D193F78"
+    },
+    {
+      "day": 3,
+      "kind": "transition",
+      "file": "b003-transition.json",
+      "sha256": "8E186EEAC277CF5885E8F79F95D5550E7C4602D786ED01B1D552043C286493BC"
+    },
+    {
+      "day": 3,
+      "kind": "advance",
+      "file": "b003-advance.json",
+      "sha256": "4216FF00C72249C5142ADB7B07CB111F2940E76399BF2ECD7BE2BC7D65A85B96"
+    },
+    {
+      "day": 4,
+      "kind": "snapshot",
+      "file": "b004-snapshot.json",
+      "sha256": "E2A19E363F1048E0A72222F7E47B25BC4B656C6C0BCF156F1E66729A17FEF614"
+    },
+    {
+      "day": 4,
+      "kind": "control",
+      "file": "b004-control.json",
+      "sha256": "38A6F111035611C10AC4018EBE8EB54E47F3A17EF3FD579284B0B4A8B50ACD03"
+    },
+    {
+      "day": 4,
+      "kind": "transition",
+      "file": "b004-transition.json",
+      "sha256": "EAB692C20C22F06835FA421C2542C59300538D4DCBF5658017F0C8DB35FBDE40"
+    },
+    {
+      "day": 4,
+      "kind": "advance",
+      "file": "b004-advance.json",
+      "sha256": "2A806347507C596A1B3F338DC31ADBA49840B067018F9C14B06EB52431144F22"
+    },
+    {
+      "day": 5,
+      "kind": "snapshot",
+      "file": "b005-snapshot.json",
+      "sha256": "1BB760FE1EF3747ED01E962370DC020EE9F09C09011C91D3116C71C9976A8CBA"
+    },
+    {
+      "day": 5,
+      "kind": "control",
+      "file": "b005-control.json",
+      "sha256": "A98496CEDA64FABE258AE2D83F835D2F4E466D01A30DC6977E8AAE2B86B8AB89"
+    },
+    {
+      "day": 5,
+      "kind": "transition",
+      "file": "b005-transition.json",
+      "sha256": "DE2A200AD9E616257B244C452F6A8B6B12B02412BDA731E87A19D41E395F9A05"
+    },
+    {
+      "day": 5,
+      "kind": "advance",
+      "file": "b005-advance.json",
+      "sha256": "C5E866EE1C136032A0F3211E37C0CF5AAEEF1B0CE4A9B7F6AEEAFBC463B74849"
+    },
+    {
+      "day": 6,
+      "kind": "snapshot",
+      "file": "b006-snapshot.json",
+      "sha256": "15CA3C76172E793566397A7F27CA7EA193201359D329FBFA27545918F30B87C2"
+    },
+    {
+      "day": 6,
+      "kind": "control",
+      "file": "b006-control.json",
+      "sha256": "D929215A41AD3926C3533736AFF2022BCA0D5435389F5CF3C4820122FAE94E0F"
+    },
+    {
+      "day": 6,
+      "kind": "transition",
+      "file": "b006-transition.json",
+      "sha256": "5F2966187F353F6C344CBEC37D0A2F6AF70660142EC6C67D4FB48702086E7A94"
+    },
+    {
+      "day": 6,
+      "kind": "advance",
+      "file": "b006-advance.json",
+      "sha256": "E0CF526D703E4F0451385865BDF2B4D5A76EAF38AE5F9BE58716C050C4015FD8"
+    },
+    {
+      "day": 7,
+      "kind": "snapshot",
+      "file": "b007-snapshot.json",
+      "sha256": "C2B540A4222BE3790F24CB2871962588DC187562C1C8375B39901649E31CF19F"
+    },
+    {
+      "day": 7,
+      "kind": "control",
+      "file": "b007-control.json",
+      "sha256": "8099B4967C72B0BCA0BDB59D290D5D4D5469FFC83C98D0CA9DAFD58C21C55867"
+    },
+    {
+      "day": 7,
+      "kind": "transition",
+      "file": "b007-transition.json",
+      "sha256": "2B7D869EF19BDEA5EA075E6A3B8E0132B4D1EC992543B05AE6BEB0F3A6ECAA5C"
+    },
+    {
+      "day": 7,
+      "kind": "advance",
+      "file": "b007-advance.json",
+      "sha256": "D47C669B8A781F39ACF58B2E8E55321DB442C955C6D7F6E59FFA6F646A51204A"
+    },
+    {
+      "day": 8,
+      "kind": "snapshot",
+      "file": "b008-snapshot.json",
+      "sha256": "5391983EE85B906A8C024182F8F8EC8987811C78D1C6A83B18C7E2AE74DDEC47"
+    },
+    {
+      "day": 8,
+      "kind": "control",
+      "file": "b008-control.json",
+      "sha256": "7CB427CCC60D15058D32A8D5C3062F673B388281F8A78CE1CB13F4CC256249F1"
+    },
+    {
+      "day": 8,
+      "kind": "transition",
+      "file": "b008-transition.json",
+      "sha256": "35E5FBF3D2549EE0D82F5129C6C04887736B9DE371962188C986BC578BAD5D90"
+    },
+    {
+      "day": 8,
+      "kind": "advance",
+      "file": "b008-advance.json",
+      "sha256": "83BEFEB04183EE8C4D05BC2A2C1542D22EA518AEE5CF300D5AD88A89F2038342"
+    },
+    {
+      "day": 9,
+      "kind": "snapshot",
+      "file": "b009-snapshot.json",
+      "sha256": "8AE92A15087517976051DA828AE865A4D21A0E7D6BC22843CB192189717D3617"
+    },
+    {
+      "day": 9,
+      "kind": "control",
+      "file": "b009-control.json",
+      "sha256": "8992B88B07EFD31BE403E790FFA7BD838E21A09B3E19FF15D6582344A4C103EA"
+    },
+    {
+      "day": 9,
+      "kind": "transition",
+      "file": "b009-transition.json",
+      "sha256": "929E8733AFBA2E8FD27E355FEA3910443AF47BAA91CE73C45272075306C921E7"
+    },
+    {
+      "day": 9,
+      "kind": "advance",
+      "file": "b009-advance.json",
+      "sha256": "1C15EEB22051EA18365B9BBC1C095DC12AB75B0E8AED9EB977BAB241922970A4"
+    },
+    {
+      "day": 10,
+      "kind": "snapshot",
+      "file": "b010-snapshot.json",
+      "sha256": "2EF9AEDF24FB39BA54F3BFEF66BB86A29D76FAF63FD9FFC785A519C088FDC56D"
+    },
+    {
+      "day": 10,
+      "kind": "control",
+      "file": "b010-control.json",
+      "sha256": "9BC6CF2C15475FC9B627FC575E7959C178A2E2E5CAACEDC1D9C217676ECA9ECE"
+    },
+    {
+      "day": 10,
+      "kind": "transition",
+      "file": "b010-transition.json",
+      "sha256": "EDB927584E75D237E052E355A7C10A8ECD31E98A1BCDC42FD07B22E4E79612CB"
+    },
+    {
+      "day": 10,
+      "kind": "advance",
+      "file": "b010-advance.json",
+      "sha256": "B27D9AC68E1A29FFF2C920DEFD79E713365313AC0DBA8FF18DC1929D70B27789"
+    },
+    {
+      "day": 11,
+      "kind": "snapshot",
+      "file": "b011-snapshot.json",
+      "sha256": "8BFCC5769A25A7929580D2A2D7AD2D691CD750F05D89A6AB469300B52150F62D"
+    },
+    {
+      "day": 11,
+      "kind": "control",
+      "file": "b011-control.json",
+      "sha256": "5C7F920455B99FEB249A03B97918FD10AD1BC475B80CBEFBE15F43815A3A6A75"
+    },
+    {
+      "day": 11,
+      "kind": "transition",
+      "file": "b011-transition.json",
+      "sha256": "3A54DE76FC87AFD447301EA3BCF4480A99F4C41FDFD57BF2771F64F32AD4193F"
+    },
+    {
+      "day": 11,
+      "kind": "advance",
+      "file": "b011-advance.json",
+      "sha256": "EE4385596E5947401FA37C6E8D7BBA24355A20DD04286B0300B930AD4ABB13DA"
+    },
+    {
+      "day": 12,
+      "kind": "snapshot",
+      "file": "b012-snapshot.json",
+      "sha256": "853634902D799861880CF639CA0B5CF04A47B271106FBEC2808829594800D850"
+    },
+    {
+      "day": 12,
+      "kind": "control",
+      "file": "b012-control.json",
+      "sha256": "5B78877610020F0E706371FE78E3EC3F90019EF05C20D2940C01F2738C526DC1"
+    },
+    {
+      "day": 12,
+      "kind": "transition",
+      "file": "b012-transition.json",
+      "sha256": "8BBF37DDBE291C0F448879BC4201AC38229C568D112BBA006D904910F5D89696"
+    },
+    {
+      "day": 12,
+      "kind": "advance",
+      "file": "b012-advance.json",
+      "sha256": "82DFFC59B656A299DDC08357F3A918A26D11B877BE7C73C3F5BAADC474A6DFEA"
+    },
+    {
+      "day": 13,
+      "kind": "snapshot",
+      "file": "b013-snapshot.json",
+      "sha256": "7DF9792F13EBF42B6D5111C1A7E6310BDCB6CFAEA55EC829BD46DB3FB3E3E5E5"
+    },
+    {
+      "day": 13,
+      "kind": "control",
+      "file": "b013-control.json",
+      "sha256": "2696EE0DFF57C9A15C0790E624F509C8A790D21AD805F6D64C5D1E79239402EB"
+    },
+    {
+      "day": 13,
+      "kind": "transition",
+      "file": "b013-transition.json",
+      "sha256": "34D61295094A6D533FCBCABAD6914F58C3E4677FF6558E0DAFDDFBBC81C3718C"
+    },
+    {
+      "day": 13,
+      "kind": "advance",
+      "file": "b013-advance.json",
+      "sha256": "67D71539EA80C0021975881B5181D0821DDBA67F0A994A6DED408C10DBC64C6E"
+    },
+    {
+      "day": 14,
+      "kind": "snapshot",
+      "file": "b014-snapshot.json",
+      "sha256": "384E920F61D7B98C102A50AC169C2E75FC52929A236593D329EC3563799D40B1"
+    },
+    {
+      "day": 14,
+      "kind": "control",
+      "file": "b014-control.json",
+      "sha256": "E10756F4B180406D6448C6FA953A6B1F1010C45C0BBEDD7D25A77657BDC76D80"
+    },
+    {
+      "day": 14,
+      "kind": "transition",
+      "file": "b014-transition.json",
+      "sha256": "C88C9E5D510A74E292A6D2295C3E62CB81D3324449C544576EB7B975BF80B1B4"
+    },
+    {
+      "day": 14,
+      "kind": "advance",
+      "file": "b014-advance.json",
+      "sha256": "E8BCF2C4E3C88D1446CBDDA14DD988A5129E1FF6F21227FF2CA35C1A35BAD117"
+    },
+    {
+      "day": 15,
+      "kind": "snapshot",
+      "file": "b015-snapshot.json",
+      "sha256": "510F44634A05F631770A40D3803E8A841E4C0FEE341ACBC7C1A2107DBDD90115"
+    },
+    {
+      "day": 15,
+      "kind": "control",
+      "file": "b015-control.json",
+      "sha256": "352692B3ED3C5B488C5AED5AC9A0781C3D170C911FBC4AF6AD883D5367AE680B"
+    },
+    {
+      "day": 15,
+      "kind": "transition",
+      "file": "b015-transition.json",
+      "sha256": "91A8446E273EFAF602F881A4D6273FD76D3E0D48FA99DA9F298DF2030AF135EF"
+    },
+    {
+      "day": 15,
+      "kind": "advance",
+      "file": "b015-advance.json",
+      "sha256": "DD427E06601B39978D69BBB533FDC539965B7FBDC15DE16520625B7CB1169036"
+    },
+    {
+      "day": 16,
+      "kind": "snapshot",
+      "file": "b016-snapshot.json",
+      "sha256": "F6BC17E6C593590A9252D6364D4164D5DE526561C7362F1FC748B137EC3BF5A2"
+    },
+    {
+      "day": 16,
+      "kind": "control",
+      "file": "b016-control.json",
+      "sha256": "FA9C974851E347FFBA9BA11F77D4B68F95FF404EC69C6EF397A9D0A7E76594F6"
+    },
+    {
+      "day": 16,
+      "kind": "transition",
+      "file": "b016-transition.json",
+      "sha256": "8DE91353381542D14B33B0339877E2761EB86CD5BC4CEC92669E7C8805C5CCAC"
+    },
+    {
+      "day": 16,
+      "kind": "advance",
+      "file": "b016-advance.json",
+      "sha256": "9D52522A6FF99261F00714DE199D1A7DCA5454FF1594A2AF921E5E74239C3291"
+    },
+    {
+      "day": 17,
+      "kind": "snapshot",
+      "file": "b017-snapshot.json",
+      "sha256": "642BC54A0609FB19A0D84AF1D0B84CAB2025951B4B95172842002D7D32AB6526"
+    },
+    {
+      "day": 17,
+      "kind": "control",
+      "file": "b017-control.json",
+      "sha256": "355552FD570C970E61ADC50ED86694BED7E98CC30F8A4457D9D8316A18E5FD25"
+    },
+    {
+      "day": 17,
+      "kind": "transition",
+      "file": "b017-transition.json",
+      "sha256": "E4A29A33870C7DF2B04DEACED0D8E19FA1246BE114B162F155D823E9A56EE07D"
+    },
+    {
+      "day": 17,
+      "kind": "advance",
+      "file": "b017-advance.json",
+      "sha256": "A24BBD67020AC799622EF32024FFE1E31FB000C0F1011048C1E3142EF25A672D"
+    },
+    {
+      "day": 18,
+      "kind": "snapshot",
+      "file": "b018-snapshot.json",
+      "sha256": "8700EFE8BC006C3CC24CE45E354AC4C42ADC897F7F556E3329450175F3A98F1B"
+    },
+    {
+      "day": 18,
+      "kind": "control",
+      "file": "b018-control.json",
+      "sha256": "2EC3F3D7A80AFD791B20CCC34D4A658B7772968D9E429EC56D17861F139081A5"
+    },
+    {
+      "day": 18,
+      "kind": "transition",
+      "file": "b018-transition.json",
+      "sha256": "B8E463274A5B6F821867D2FBF5224A4242BC22E081425EDB7210060155BCD5AE"
+    },
+    {
+      "day": 18,
+      "kind": "advance",
+      "file": "b018-advance.json",
+      "sha256": "CDCE41A880B6CE6D8EAB6B0CD1DCBB54ED98CDDBB09D33D826F64EBAB72C2213"
+    },
+    {
+      "day": 19,
+      "kind": "snapshot",
+      "file": "b019-snapshot.json",
+      "sha256": "8043561B096CF60F6F433BEA80EB999161731EEF6DF78B79C6DD9A238ECD4FBA"
+    },
+    {
+      "day": 19,
+      "kind": "control",
+      "file": "b019-control.json",
+      "sha256": "5DE7F5D8D346130980BFD5C40F5E599D5BCD7BE365BDD007DCF2FCBE55EC8384"
+    },
+    {
+      "day": 19,
+      "kind": "transition",
+      "file": "b019-transition.json",
+      "sha256": "69A3CCCCF5607B75247B19E3574392058357560DBA77C630AFCC921209174400"
+    },
+    {
+      "day": 19,
+      "kind": "advance",
+      "file": "b019-advance.json",
+      "sha256": "74FA639D1ED5B63AC44E26E1DFCB7687AA3480816692DE7C6C8BD1D076B7A746"
+    },
+    {
+      "day": 20,
+      "kind": "snapshot",
+      "file": "b020-snapshot.json",
+      "sha256": "71220F2810389E9AA962BBE1E968313BB926C6DC917812150223D02C3622D3D6"
+    },
+    {
+      "day": 20,
+      "kind": "control",
+      "file": "b020-control.json",
+      "sha256": "2D7675563199A81AC1B9E407C370C3E93BE90C550C6FAA3F5A91A7C7E4ED3CEF"
+    },
+    {
+      "day": 20,
+      "kind": "transition",
+      "file": "b020-transition.json",
+      "sha256": "CFAE0566FD8463BF8AB0159B57B98B120BF47EFEF4DCFBB2A1F30CB450B55057"
+    },
+    {
+      "day": 20,
+      "kind": "advance",
+      "file": "b020-advance.json",
+      "sha256": "C3AFE5D3414B5AFBC968410313212CFA8E93CC99553DD6461C514651390E309F"
+    },
+    {
+      "day": 21,
+      "kind": "snapshot",
+      "file": "b021-snapshot.json",
+      "sha256": "6C8727AEA124DD66AE52D065E1C912758BACAC2B4E77902E23FA2E599929994D"
+    },
+    {
+      "day": 21,
+      "kind": "control",
+      "file": "b021-control.json",
+      "sha256": "5C6806F8E65D32EA571850A5B0AFAA45FFC1DC2D673AAA505A33986318D0D4A2"
+    },
+    {
+      "day": 21,
+      "kind": "transition",
+      "file": "b021-transition.json",
+      "sha256": "D68D55403746E87A3DFF4DBD7EF4608C75FCC78D8D2BFD277781367B4DF7F642"
+    },
+    {
+      "day": 21,
+      "kind": "advance",
+      "file": "b021-advance.json",
+      "sha256": "326577502532ED8F78B29A524066FFD4EFD8613E276E27248977E857CCE88F48"
+    },
+    {
+      "day": 22,
+      "kind": "snapshot",
+      "file": "b022-snapshot.json",
+      "sha256": "0195C6D764BF7FA59FB2881E7C656BC7A1168DA7DA4D7AB4D30352DCD355BE90"
+    },
+    {
+      "day": 22,
+      "kind": "control",
+      "file": "b022-control.json",
+      "sha256": "D3B14BC39C13569CAAC3C043AC9A9176F469A8B7C2FB98FC56A34B8452A9752D"
+    },
+    {
+      "day": 22,
+      "kind": "transition",
+      "file": "b022-transition.json",
+      "sha256": "72B81FF595446B1284240E60A0D969FD6249229F198CE9B6ADD8073CFE2EBA93"
+    },
+    {
+      "day": 22,
+      "kind": "advance",
+      "file": "b022-advance.json",
+      "sha256": "EA41B88AABC8DEA9E6778770D6889F256645D8937B5DCF3138BB524DA5E1AECD"
+    },
+    {
+      "day": 23,
+      "kind": "snapshot",
+      "file": "b023-snapshot.json",
+      "sha256": "5A6FC31235628460908B0505AF78993A136A28ABD1684042D0BE46AB571E0330"
+    },
+    {
+      "day": 23,
+      "kind": "control",
+      "file": "b023-control.json",
+      "sha256": "4C18B918381D27FD37624C1807F5B99146AB1A4820A433FC0D50E3313DDB9874"
+    },
+    {
+      "day": 23,
+      "kind": "transition",
+      "file": "b023-transition.json",
+      "sha256": "71151894CF526E72880D33995DDC584CCF57DC25C023192900C31DC908058051"
+    },
+    {
+      "day": 23,
+      "kind": "advance",
+      "file": "b023-advance.json",
+      "sha256": "E9A9154C89F0808C2E8B5BA56FBBE04860BA4199811CBF042F199C0DD9DE4807"
+    },
+    {
+      "day": 24,
+      "kind": "snapshot",
+      "file": "b024-snapshot.json",
+      "sha256": "C6A4BE1B920C3767A6AA90F365DA41B085E1569D8F216BF22B2190A6C14CAF1D"
+    },
+    {
+      "day": 24,
+      "kind": "control",
+      "file": "b024-control.json",
+      "sha256": "9CFD5B0C2C2FAB1F98E8B084C668BB7C159F56D16616B1037D7B8611D289190E"
+    },
+    {
+      "day": 24,
+      "kind": "transition",
+      "file": "b024-transition.json",
+      "sha256": "D768456DBEF3BBEC465E2234B9032D5F1B126E1E81C17B563EAEC99C4AAB0EBE"
+    },
+    {
+      "day": 24,
+      "kind": "advance",
+      "file": "b024-advance.json",
+      "sha256": "7109ABABD79523BD6A8CE430EC66A7CC31D3959A22FBA947267006E2ECE93037"
+    },
+    {
+      "day": 25,
+      "kind": "snapshot",
+      "file": "b025-snapshot.json",
+      "sha256": "214645A2728C645A7FABD07ED54D50F68A9B9B5FFC02A7789F8D5874D4E1AF8E"
+    },
+    {
+      "day": 25,
+      "kind": "control",
+      "file": "b025-control.json",
+      "sha256": "9BDC574C1A113FB515F582CD1596DB889FBB1248F3C6DE3CE0951A056617509B"
+    },
+    {
+      "day": 25,
+      "kind": "transition",
+      "file": "b025-transition.json",
+      "sha256": "EBA563E5FBE0C2673E5E04C06789388B4DEB88DB7616275CC9B6A3359F657C51"
+    },
+    {
+      "day": 25,
+      "kind": "advance",
+      "file": "b025-advance.json",
+      "sha256": "1F1C567D2F558781ECE14846F0CDA8C12B8F3D601E9B05F033B1A8B2318A93A4"
+    },
+    {
+      "day": 26,
+      "kind": "snapshot",
+      "file": "b026-snapshot.json",
+      "sha256": "AC85AF1E6C343E3F61C2E189BF425092FCC6CD236714105892DD57B9AFD380D0"
+    },
+    {
+      "day": 26,
+      "kind": "control",
+      "file": "b026-control.json",
+      "sha256": "44E944A620DCD1911155E5622905B5B6A7F085F41FCB423DD1C644B95D24F397"
+    },
+    {
+      "day": 26,
+      "kind": "transition",
+      "file": "b026-transition.json",
+      "sha256": "533D30E3B12C9454441E75FC1C58611EA9894CFA52ADA2C812C05730A2D204C5"
+    },
+    {
+      "day": 26,
+      "kind": "advance",
+      "file": "b026-advance.json",
+      "sha256": "3724E1B84674FB2A9A6F393CD2E99EA4FCB90073F7A32D3745F0B7993B566D27"
+    },
+    {
+      "day": 27,
+      "kind": "snapshot",
+      "file": "b027-snapshot.json",
+      "sha256": "6C15BB4A605D728838FD18E55630894A660F417EB1C9144C8BF65FE7EB931234"
+    },
+    {
+      "day": 27,
+      "kind": "control",
+      "file": "b027-control.json",
+      "sha256": "88DA6144910E631BB30C8E22C210CA63416180FD367498FC71F1EFC5079C885C"
+    },
+    {
+      "day": 27,
+      "kind": "transition",
+      "file": "b027-transition.json",
+      "sha256": "0A9E192ACF3197F2F351785FE78385506035004981D396260A25E09C02FC894C"
+    },
+    {
+      "day": 27,
+      "kind": "advance",
+      "file": "b027-advance.json",
+      "sha256": "ADCD2A33EE5A01BD143FAA338671944CB621EF4D19ABBB4490FD37A80CB9BF92"
+    },
+    {
+      "day": 28,
+      "kind": "snapshot",
+      "file": "b028-snapshot.json",
+      "sha256": "1A5607A8D4B1E19E8578F52614CF2956ACA83AE7A0680C4D7D485D6734C494CA"
+    },
+    {
+      "day": 28,
+      "kind": "control",
+      "file": "b028-control.json",
+      "sha256": "5511607DEC348CF36444D27F255D52D67B841241AE6B189789B2AF794BEAFD0B"
+    },
+    {
+      "day": 28,
+      "kind": "transition",
+      "file": "b028-transition.json",
+      "sha256": "593AC5F06A3DE486EE72AE7D091868F41CDE95E232F740E093771D23F20884FD"
+    },
+    {
+      "day": 28,
+      "kind": "advance",
+      "file": "b028-advance.json",
+      "sha256": "B7C08098173B3EA34CFDAAB4EA0EDBA43C213CA17FB7FC405044DA154DA3114F"
+    },
+    {
+      "day": 29,
+      "kind": "snapshot",
+      "file": "b029-snapshot.json",
+      "sha256": "9A0FFA2614C8D0B782A179C31FA00233A609DF42663210C0E255E49D09781ACF"
+    },
+    {
+      "day": 29,
+      "kind": "control",
+      "file": "b029-control.json",
+      "sha256": "686EBD80C6BB41E75C84C7FE7328357BC98893FB7D81A1275F5BBDD40D656C01"
+    },
+    {
+      "day": 29,
+      "kind": "transition",
+      "file": "b029-transition.json",
+      "sha256": "063B1F248A4027781ABACF3E2D93FA0648C1BC5547B199A960F8588FE1926229"
+    },
+    {
+      "day": 29,
+      "kind": "advance",
+      "file": "b029-advance.json",
+      "sha256": "15606BA65E8118F363FF12FC654538D76AB836A6A26B6BF2730A256756D2505D"
+    },
+    {
+      "day": 30,
+      "kind": "snapshot",
+      "file": "b030-snapshot.json",
+      "sha256": "EF7E26BFCB2047D6DF5DA489DB35ED9620C3D3726DBC28E316F9A5D90FF68506"
+    },
+    {
+      "day": 30,
+      "kind": "control",
+      "file": "b030-control.json",
+      "sha256": "E7978218E8DED7939526AD7A345AB5E29D032CFFD518D82BB8F84705114A5DFB"
+    },
+    {
+      "day": 30,
+      "kind": "transition",
+      "file": "b030-transition.json",
+      "sha256": "D8674F8A597470B993F209C945F1923BE571297C6371D82A13FDFC269BE712EF"
+    },
+    {
+      "day": 30,
+      "kind": "advance",
+      "file": "b030-advance.json",
+      "sha256": "D2E6EC8D5A225F5625C66706BFF932DA047D1F7601D036C37A351DA99F176D29"
+    },
+    {
+      "day": 31,
+      "kind": "snapshot",
+      "file": "b031-snapshot.json",
+      "sha256": "9C156808F104EA9D9640FC9847175FFCA5B7CA4C5B1920482741F5007F2D0F18"
+    },
+    {
+      "day": 31,
+      "kind": "control",
+      "file": "b031-control.json",
+      "sha256": "6AC0B4178413D8C620B7CB4421B668DA6B6044A593EAA7FBBC671002CCC73762"
+    },
+    {
+      "day": 31,
+      "kind": "transition",
+      "file": "b031-transition.json",
+      "sha256": "3D31CB86F014923F563A0F2D070EB0696AFD99B728CBB2735C6914CA2E19D275"
+    },
+    {
+      "day": 31,
+      "kind": "advance",
+      "file": "b031-advance.json",
+      "sha256": "D66ED15BD78847B3930C24627CFCE2D4AE783A250C6144DCE94541AC8749E304"
+    },
+    {
+      "day": 32,
+      "kind": "terminal",
+      "file": "b032-terminal.json",
+      "sha256": "82C9CC0E2032B711DD60956C0A437289CC6365877ECA3331C9F25DF2ADB761A2"
+    }
+  ],
+  "phase_traces": [
+    {
+      "source_day": 4,
+      "target_day": 5,
+      "source_date_raw": 53146320,
+      "checkpoint_sha256": "7689ECDD94D7B57AFDADB7CDCCE09198DB606C251480450BE2C808456F34F913",
+      "control_receipt_sha256": "F981AB6E9577088F33098CFDD06F9AC202C303B7109541AC157F9D06BE4E262D",
+      "finish_receipt_sha256": "FE0460FB8ADF3655EE87912AB019ED263D23540CC50FB36589DE51A43353DE9A",
+      "replay_matches_original_day": true,
+      "original_side_current_raw": [
+        200300000,
+        128800000
+      ],
+      "replay_side_current_raw": [
+        200300000,
+        128800000
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 80235820,
+        "side1_raw": 94704750
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 3620750000,
+        "side1_raw": 2104550000
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 5,
+      "target_day": 6,
+      "source_date_raw": 53146344,
+      "checkpoint_sha256": "D07F2C31E0D2C81D652806DA82DC30D20256F6F82A0EA6F29D90E03F10E77249",
+      "control_receipt_sha256": "A294718302F0A9212F0F1246746E75B9E1F038AEBD773C7D0E5AB50B88BB07C6",
+      "finish_receipt_sha256": "851B664AF6D2D59DED0A8D602AEEF95E6E0BE0283D2CCCD2F5204F77C9801808",
+      "replay_matches_original_day": true,
+      "original_side_current_raw": [
+        192121816,
+        122225074
+      ],
+      "replay_side_current_raw": [
+        192121816,
+        122225074
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 81149972,
+        "side1_raw": 79428666
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 3511465714,
+        "side1_raw": 2036632465
+      },
+      "new_battle_events": [
+        {
+          "phase_side_index": 0,
+          "left_character_id": 36303,
+          "right_character_id": 34867,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "source_day": 6,
+      "target_day": 7,
+      "source_date_raw": 53146368,
+      "checkpoint_sha256": "D6040B3F1F80C6F37A0F98AA93D14DCF768B9E2B58DED1994C56629CE9841C7D",
+      "control_receipt_sha256": "19829CA33B67C787FF22E6DAB2B4FB628CC9F97800BD460CA774A5C323B5A1A1",
+      "finish_receipt_sha256": "78939C8E2FE2BA03ADE14EB49F43CDED7288EDC37E0E785DADD562C237533848",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        186071277,
+        115629874
+      ],
+      "replay_side_current_raw": [
+        185282077,
+        115629874
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 81932909,
+        "side1_raw": 76739465
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 3419570511,
+        "side1_raw": 1967678598
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 7,
+      "target_day": 8,
+      "source_date_raw": 53146392,
+      "checkpoint_sha256": "EB2A1AF70DA0B5A3F754176E3B2974974193B3DFA3791B00DD05EBFBA5A85664",
+      "control_receipt_sha256": "42A4D21253E6CA9A817DCDB8FAD1E1DB83319516FC7985C11F7B6BFADCF151CA",
+      "finish_receipt_sha256": "FCCA9F842CB6188F490F9CA4691EBA231EF764DCE2EA8E12BAB0037AB4817641",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        180239833,
+        109038546
+      ],
+      "replay_side_current_raw": [
+        178690767,
+        109031978
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 82462567,
+        "side1_raw": 74371738
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 3319749111,
+        "side1_raw": 1906967651
+      },
+      "new_battle_events": [
+        {
+          "phase_side_index": 1,
+          "left_character_id": 43706,
+          "right_character_id": 54140,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "source_day": 8,
+      "target_day": 9,
+      "source_date_raw": 53146416,
+      "checkpoint_sha256": "21CF2A1A24884D4D4E58222B04C640EE1FC4DB7448EC142F94DD88010EF09954",
+      "control_receipt_sha256": "F9410A3219E5AA9ACBB16B903663C3BE1AA89C0965BDF0FB69D6E6029017C522",
+      "finish_receipt_sha256": "4CE59178599B9779945F4DFAB851BAFEED1B376E37D891BB03DF60BFC3211715",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        174528341,
+        102457888
+      ],
+      "replay_side_current_raw": [
+        172317736,
+        102457930
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 83289790,
+        "side1_raw": 71660365
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 3233299326,
+        "side1_raw": 1837445262
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 9,
+      "target_day": 10,
+      "source_date_raw": 53146440,
+      "checkpoint_sha256": "7EB357F5EB2427EE55229E959477B29B9BFFA48BD2E4F56D458AF5A4B51448D7",
+      "control_receipt_sha256": "6DBEB8237A19A60F3317C000319F261C042267DF1A9BC7579AD25CA2C85301DC",
+      "finish_receipt_sha256": "AB14DEE59C2A051094195C02BFD1792B6133731771026D435B2BFB9650E6F649",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        167254473,
+        95978738
+      ],
+      "replay_side_current_raw": [
+        166193371,
+        95892395
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 84374907,
+        "side1_raw": 68933713
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 3158925759,
+        "side1_raw": 1767531112
+      },
+      "new_battle_events": [
+        {
+          "phase_side_index": 0,
+          "left_character_id": 54144,
+          "right_character_id": 34867,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "source_day": 10,
+      "target_day": 11,
+      "source_date_raw": 53146464,
+      "checkpoint_sha256": "0F283E6EEE50BFCAFA46AE12D2D2C7538B0FF835A61800EC66C9CEE6BDC6ACFB",
+      "control_receipt_sha256": "70E748FA7B2DC1E71351F7183A04FA26AAD31335FA90E0DCF8C1B987E79BF031",
+      "finish_receipt_sha256": "77C8CE63401677FA958F442B0E2E45572BE538441CB0D5A4843665394BBCED2C",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        160239264,
+        89504855
+      ],
+      "replay_side_current_raw": [
+        160317482,
+        89325449
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 85241395,
+        "side1_raw": 66185100
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 3078418023,
+        "side1_raw": 1697053849
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 11,
+      "target_day": 12,
+      "source_date_raw": 53146488,
+      "checkpoint_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "control_receipt_sha256": "F364151C693D419DDA6A22113B6B23137C9B8F77562C0CF21A2288E8EF72024F",
+      "finish_receipt_sha256": "3C0E71A11279628E1574C4CF6EBE6B35BFE3546A7F32C979723ED1203B96C36C",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        153518548,
+        83046426
+      ],
+      "replay_side_current_raw": [
+        154690163,
+        82785368
+      ],
+      "status": "trace_unavailable",
+      "failure_flags": 1040,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": false,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": false,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": false,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 116118762,
+        "side1_raw": 67660992
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 7163402981,
+        "side1_raw": 1455075113
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 12,
+      "target_day": 13,
+      "source_date_raw": 53146512,
+      "checkpoint_sha256": "E334D0ADDBC010375A46266A4012E7F7021E5AF2CA6CCC7A346A37502D6D80F4",
+      "control_receipt_sha256": "5AE37180B5680192DB9C09EC3632AC3CF89695C24103B1F7D7C0D92519FA78E3",
+      "finish_receipt_sha256": "B8865D71ED12D7E558341299C3EAEF11EB13ACE198F0A073CF6008846D0962D7",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        403543459,
+        74335074
+      ],
+      "replay_side_current_raw": [
+        404728240,
+        74020077
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 116572401,
+        "side1_raw": 63568260
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 7086468150,
+        "side1_raw": 1367059376
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 13,
+      "target_day": 14,
+      "source_date_raw": 53146536,
+      "checkpoint_sha256": "D403DD72C0E09E28768412C4A54748B0CA9ADBDF6AA7514E0F914E035E062313",
+      "control_receipt_sha256": "B590F6EDB9BAE842E96A685856B4EDEB5DB082EA38C018B3E5BD0AE03F4EA728",
+      "finish_receipt_sha256": "4F2A5CF728C60FF4512FA2422EAC9422466D14DAAC089422961BFC63C73C6661",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        397934828,
+        65812833
+      ],
+      "replay_side_current_raw": [
+        399133098,
+        65447557
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 116995572,
+        "side1_raw": 59555125
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 7014123061,
+        "side1_raw": 1280755394
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 14,
+      "target_day": 15,
+      "source_date_raw": 53146560,
+      "checkpoint_sha256": "22042E6382939FF9298D86EBB1E72E39725E5A6E3072FC56756C6109FAA990B0",
+      "control_receipt_sha256": "D5B7B1F9A05722B1B38A099BC7625CCD526FEB1DDFFAC2F1B61332EA5D117EF0",
+      "finish_receipt_sha256": "C728DD8F934CFD60117D5C46C718CDA16B687AECD5420537802A4197FDB510A4",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        392682579,
+        57523381
+      ],
+      "replay_side_current_raw": [
+        393894700,
+        57112216
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 117688489,
+        "side1_raw": 55638858
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 6963815936,
+        "side1_raw": 1196534594
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 15,
+      "target_day": 16,
+      "source_date_raw": 53146584,
+      "checkpoint_sha256": "7C027A1A1D47E177F28DC0616BEBDCC8F3E57BD21801197FACC03EFE2578C53A",
+      "control_receipt_sha256": "15034F5717EF9302F290598C3C2DEB2F4C512A5DC7D546D9DDF09BB378670F14",
+      "finish_receipt_sha256": "31DF5CAC53ADE6EB6CDEE1B84D5C76A57508B9885DA5712F793D8D6D172D80E3",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        387935905,
+        49515948
+      ],
+      "replay_side_current_raw": [
+        389006758,
+        49049629
+      ],
+      "status": "trace_unavailable",
+      "failure_flags": 1040,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": false,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": false,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": false,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 118134518,
+        "side1_raw": 51831331
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 6900380736,
+        "side1_raw": 1114652296
+      },
+      "new_battle_events": [
+        {
+          "phase_side_index": 0,
+          "left_character_id": 36673,
+          "right_character_id": 32716,
+          "stable_key": "knight_killed_by_enemy",
+          "type_raw": 3,
+          "side_index": 0,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "source_day": 16,
+      "target_day": 17,
+      "source_date_raw": 53146608,
+      "checkpoint_sha256": "0A0034E15064E39FA7FD5619A4BF4FC35FA363D7E346864302B15BF0C5DD0566",
+      "control_receipt_sha256": "774544D88DE564447E4C900EA99B4CB7CAA9EA2D055B0CD76DBB3ADEC013177F",
+      "finish_receipt_sha256": "1F43A75B2FA6BA0779F2FEEE5101822261D2C7955B3A0EBCCC08EF74571089B4",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        383479037,
+        41889021
+      ],
+      "replay_side_current_raw": [
+        384357638,
+        41347109
+      ],
+      "status": "trace_unavailable",
+      "failure_flags": 16,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": false,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": false,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": false,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 117483370,
+        "side1_raw": 48166117
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 6783104561,
+        "side1_raw": 1035830480
+      },
+      "new_battle_events": [
+        {
+          "phase_side_index": 1,
+          "left_character_id": 33437,
+          "right_character_id": 54144,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "source_day": 17,
+      "target_day": 18,
+      "source_date_raw": 53146632,
+      "checkpoint_sha256": "A5BB173012DEC29DC596FAD61D84588FFD8CC8355FB83B45F278D719E1E56436",
+      "control_receipt_sha256": "6978212C53589CFE49A42874FD3F725C3316FC820479F969B71DB71740170B56",
+      "finish_receipt_sha256": "9C247123EE5936AD331D3E5B88B230CCED06A65B4116F8E2B598BA72399D8288",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        379335820,
+        34696886
+      ],
+      "replay_side_current_raw": [
+        380131499,
+        34160196
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 117876981,
+        "side1_raw": 47991379
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 6728138196,
+        "side1_raw": 969522817
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 18,
+      "target_day": 19,
+      "source_date_raw": 53146656,
+      "checkpoint_sha256": "BDF654AE31E12115ABEF8EF540BD7AFFA4E101C06DDD7052D12B8689C61DA732",
+      "control_receipt_sha256": "8AD5EA35535ED4EECD677091C61B79E4BE640F4F7242A6825D099285AE43B1B2",
+      "finish_receipt_sha256": "AFEAD18EA5CEC91BA0AE78B1D69CDBFC468219AE01A1833D03C67B0B569014E0",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        374974616,
+        28044939
+      ],
+      "replay_side_current_raw": [
+        375924974,
+        27524327
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 118446258,
+        "side1_raw": 44526524
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 6688100400,
+        "side1_raw": 899525749
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 19,
+      "target_day": 20,
+      "source_date_raw": 53146680,
+      "checkpoint_sha256": "86DD997A8D956EC4C4464535C965A6D8F6F4BC9A11DC26288C37B95EF5549E2A",
+      "control_receipt_sha256": "8417E5B5A080E766C3D6A0A2F94E985C6F7FD992636BA2AE4ABCCA2C915241A8",
+      "finish_receipt_sha256": "9105A6880309176F38091689136B725A352F4325BBB67065BB10B3969A9C9BCC",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        370929960,
+        22051604
+      ],
+      "replay_side_current_raw": [
+        372025245,
+        21560218
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 119057871,
+        "side1_raw": 41312229
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 6651277725,
+        "side1_raw": 834590505
+      },
+      "new_battle_events": [
+        {
+          "phase_side_index": 1,
+          "left_character_id": 30784,
+          "right_character_id": 35124,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ]
+    },
+    {
+      "source_day": 20,
+      "target_day": 21,
+      "source_date_raw": 53146704,
+      "checkpoint_sha256": "92C0E5FB5A07BA267022409E1364457D80EAEEC6FF97736C4A633CB882E3E110",
+      "control_receipt_sha256": "E5E3D43CD1BCB22B30EE300990A05872341A01A430AC94464118782FF8F16B7F",
+      "finish_receipt_sha256": "D07DAC91DF6A3DAB17CE19C5C5CB27B4184D0C156B033376A8140DBA7CB5DDED",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        367178863,
+        16849820
+      ],
+      "replay_side_current_raw": [
+        368409866,
+        16406435
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 119632226,
+        "side1_raw": 40698021
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 6620488447,
+        "side1_raw": 775200406
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 21,
+      "target_day": 22,
+      "source_date_raw": 53146728,
+      "checkpoint_sha256": "E16B8EDE740F674973DE99036E6B0589E85B1866A5BBA8FD7C2E3D4B2DF7630A",
+      "control_receipt_sha256": "69C9867D55892F4306D9931BCADC29F3313A557D3D8A289B6ECDEB3E825937A2",
+      "finish_receipt_sha256": "46E2EE2B4E2D6F480AA9DCA1947A18CC6843C77C3256AC016DE2F6A8ECB1A994",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        364721204,
+        12540557
+      ],
+      "replay_side_current_raw": [
+        364851390,
+        12161798
+      ],
+      "status": "trace_unavailable",
+      "failure_flags": 1040,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": false,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": false,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": false,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 114543938,
+        "side1_raw": 37845714
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 8094977971,
+        "side1_raw": 720870760
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 22,
+      "target_day": 23,
+      "source_date_raw": 53146752,
+      "checkpoint_sha256": "9C3562CDF1A87974C4FEC5BC0B253353B9FFABF1FB0997EA0CEA82184304F397",
+      "control_receipt_sha256": "6F286635D6EDA5BFD7B9980379ABD2096D9A7B6462CF2ABA66B74D4B4ED9E6F8",
+      "finish_receipt_sha256": "169361CE6CF0C577DD50C894A30FBCDBB33F12D69D7315D9A5195660981213CB",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        468198345,
+        9246976
+      ],
+      "replay_side_current_raw": [
+        467286200,
+        8922598
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 115038730,
+        "side1_raw": 35231969
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 8072893383,
+        "side1_raw": 671085128
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 23,
+      "target_day": 24,
+      "source_date_raw": 53146776,
+      "checkpoint_sha256": "95D6A3CD69096D7F1B9059A57AA11F229ED79C2CA2CB3D28A969C7E6464259ED",
+      "control_receipt_sha256": "F037C1987603224DE9BE4B289BFB2488105065EAEF81F5E97C586AA3914C1E1A",
+      "finish_receipt_sha256": "6376D4E9F6DD55046C26D336821ADC7A241A93C8A6DF3F0DD905F5682AE7C071",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        466033584,
+        6445172
+      ],
+      "replay_side_current_raw": [
+        464158082,
+        6148423
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 115511471,
+        "side1_raw": 25913184
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 8055193258,
+        "side1_raw": 616980587
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 24,
+      "target_day": 25,
+      "source_date_raw": 53146800,
+      "checkpoint_sha256": "3841476A4BD0B0D98B3D1C23038DD15AD36980FA862534AE56755CFF076972E5",
+      "control_receipt_sha256": "D2E7A37DD3EC9E1ADB1915287D0E1168295A2EB67CBBCB523E5C766628049E7D",
+      "finish_receipt_sha256": "B9B0459C02AB96154019E2EBD7D0206F8FEC9889987E15EE2115658BF5CD60B1",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        463291300,
+        3751195
+      ],
+      "replay_side_current_raw": [
+        461856756,
+        3461592
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 115978439,
+        "side1_raw": 23048064
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 8048469105,
+        "side1_raw": 548763449
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 25,
+      "target_day": 26,
+      "source_date_raw": 53146824,
+      "checkpoint_sha256": "D00D6A06CDF6F9F6917EA061CCA41AE04145E8AC0F800B7A7B55672A0D053788",
+      "control_receipt_sha256": "D5E84B00908C2CAA647E4488574C91A1F90BCC2FB2CC0DCB21CCB9D1E8C385C4",
+      "finish_receipt_sha256": "6EC9B044FC3B0A2F06BBD5D5AE57385B91A836138D5601103CFE784D7C7D7771",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        460841865,
+        1184192
+      ],
+      "replay_side_current_raw": [
+        459809727,
+        926434
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 116488670,
+        "side1_raw": 18798164
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 8044797670,
+        "side1_raw": 447575355
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 26,
+      "target_day": 27,
+      "source_date_raw": 53146848,
+      "checkpoint_sha256": "11CEA7CA242901C124E1729E063F1C6A7AE7FC28F3AA1EC3B05E3CA5884B28C3",
+      "control_receipt_sha256": "787B8905970476C1BE88A215E5DD054AA4358382A3911C855E7654CA98CABB93",
+      "finish_receipt_sha256": "09EF57C29D8600C85A5456BA70B6DE5145052711BE66C4D177A4E3AD2B8C2E6F",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        458815339,
+        217930
+      ],
+      "replay_side_current_raw": [
+        458143556,
+        160464
+      ],
+      "status": "bounded_trace_available",
+      "failure_flags": 0,
+      "record_count": 7,
+      "readiness": {
+        "exact_boundary_sequence": true,
+        "same_full_generation_combat": true,
+        "same_native_date": false,
+        "expected_one_day_date_split": true,
+        "same_loaded_event_table": true,
+        "side_and_return_site_identity": true,
+        "schedule_phase_day_then_single_increment": true,
+        "bounded_capture_complete": true,
+        "outgoing_damage_pair_complete": true,
+        "post_counter_attack_pair_complete": true,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 116663232,
+        "side1_raw": 6695984
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 2,
+        "side0_raw": 8029128182,
+        "side1_raw": 178559586
+      },
+      "new_battle_events": []
+    },
+    {
+      "source_day": 27,
+      "target_day": 28,
+      "source_date_raw": 53146872,
+      "checkpoint_sha256": "F085D8ABB89A354FA1004DBE8800505BC952AA8A68C0EA21AAB788F9875FEEB3",
+      "control_receipt_sha256": "39C5E44F7176056FC417738CEF351D508231574FF46FF2F46EEF95465D435801",
+      "finish_receipt_sha256": "E4292F65261249DA0A3955ABAD8565B516165B227AF4A4EA78250E1618554D6D",
+      "replay_matches_original_day": false,
+      "original_side_current_raw": [
+        457629639,
+        0
+      ],
+      "replay_side_current_raw": [
+        457549708,
+        0
+      ],
+      "status": "trace_unavailable",
+      "failure_flags": 1032,
+      "record_count": 2,
+      "readiness": {
+        "exact_boundary_sequence": false,
+        "same_full_generation_combat": false,
+        "same_native_date": false,
+        "expected_one_day_date_split": false,
+        "same_loaded_event_table": false,
+        "side_and_return_site_identity": false,
+        "schedule_phase_day_then_single_increment": false,
+        "bounded_capture_complete": false,
+        "outgoing_damage_pair_complete": false,
+        "post_counter_attack_pair_complete": false,
+        "full_mutable_transition_bundle_complete": false,
+        "original_trace_ready": false
+      },
+      "outgoing_damage": {
+        "source": "native_main_tick_before_casualty",
+        "scale": 100000,
+        "count": 0,
+        "side0_raw": null,
+        "side1_raw": null
+      },
+      "post_counter_attack": {
+        "source": "native_r14_after_0x23cae70_before_damage_scaling",
+        "scale": 100000,
+        "count": 0,
+        "side0_raw": null,
+        "side1_raw": null
+      },
+      "new_battle_events": []
+    }
+  ],
+  "phase_trace_trajectory": "independent-replay-from-original-contact-checkpoint",
+  "same_random_trajectory_proven": false,
+  "first_numeric_divergence_source_day": 6,
+  "phase_trace_may_bind_to_original_daily_transition": false,
+  "planner_usable": false,
+  "calibrated_win_probability_available": false
+}

@@ -459,6 +459,35 @@ class CombatDecisionContractTests(unittest.TestCase):
             "encounter_identity_mismatch",
         )
 
+    def test_siege_consumer_uses_bound_trial_tape_but_cannot_activate_attack(self) -> None:
+        payload, action_components = _calculator_inputs()
+        payload["identity"]["player_ordered_army_ids"] = [101]
+        action_components["identity"] = copy.deepcopy(payload["identity"])
+        frame = {
+            **payload["identity"]["observation"],
+            "combat_entry_eu_v1": payload,
+            "combat_entry_action_components_v1": action_components,
+        }
+        decision = _qualified_siege_forecast_move(
+            frame, war_id=77, army_id=101, target_province_id=2596,
+            entry_province_id=2581, defender_army_ids=(201, 202),
+            contact_scope_safe=True,
+        )
+        self.assertEqual(decision["status"], "contract_blocked")
+        self.assertEqual(decision["contract_status"], "calculated_not_activated")
+        self.assertTrue(decision["action_components_ready"])
+        self.assertEqual(decision["candidate_action"], "attack")
+        self.assertIn("combat_entry_eu_activation_not_enabled", decision["blockers"])
+
+        action_components["experiment_input_sha256"] = "F" * 64
+        tampered = _qualified_siege_forecast_move(
+            frame, war_id=77, army_id=101, target_province_id=2596,
+            entry_province_id=2581, defender_army_ids=(201, 202),
+            contact_scope_safe=True,
+        )
+        self.assertEqual(tampered["status"], "contract_blocked")
+        self.assertFalse(tampered["action_components_ready"])
+
     def test_future_qualified_siege_consumer_checks_contact_risk_and_eu(self) -> None:
         # This mocked future calculator tests the strategy seam only.  The
         # actual contract remains inactive and produces no such assessment.

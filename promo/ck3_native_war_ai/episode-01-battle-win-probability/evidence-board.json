@@ -1,0 +1,315 @@
+{
+  "schema": "ck3-episode01-evidence-board-v1",
+  "case_sha256": "62C70CED2E4E1E355A986C9220F05F59441EE26F14C0EE412D537383413DBF9F",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "first_numeric_replay_divergence_day": 6,
+  "original_beats": [
+    {
+      "day": 1,
+      "date_raw": 53146248,
+      "phase": "maneuver",
+      "enemy_army_ids": [
+        16777221
+      ],
+      "enemy_current_raw": 33000000,
+      "player_current_raw": 128800000,
+      "source_trajectory": "original-31-day-capture"
+    },
+    {
+      "day": 2,
+      "date_raw": 53146272,
+      "phase": "maneuver",
+      "enemy_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "enemy_current_raw": 200300000,
+      "player_current_raw": 128800000,
+      "source_trajectory": "original-31-day-capture"
+    },
+    {
+      "day": 4,
+      "date_raw": 53146320,
+      "phase": "main",
+      "enemy_army_ids": [
+        16777221,
+        16777231,
+        27
+      ],
+      "enemy_current_raw": 200300000,
+      "player_current_raw": 128800000,
+      "source_trajectory": "original-31-day-capture"
+    },
+    {
+      "day": 12,
+      "date_raw": 53146512,
+      "phase": "main",
+      "enemy_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22
+      ],
+      "enemy_current_raw": 403543459,
+      "player_current_raw": 74335074,
+      "source_trajectory": "original-31-day-capture"
+    },
+    {
+      "day": 22,
+      "date_raw": 53146752,
+      "phase": "main",
+      "enemy_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "enemy_current_raw": 468198345,
+      "player_current_raw": 9246976,
+      "source_trajectory": "original-31-day-capture"
+    },
+    {
+      "day": 28,
+      "date_raw": 53146896,
+      "phase": "pursuit",
+      "enemy_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "enemy_current_raw": 457629639,
+      "player_current_raw": 0,
+      "source_trajectory": "original-31-day-capture"
+    },
+    {
+      "day": 31,
+      "date_raw": 53146968,
+      "phase": "pursuit",
+      "enemy_army_ids": [
+        16777221,
+        16777231,
+        27,
+        22,
+        28
+      ],
+      "enemy_current_raw": 457629639,
+      "player_current_raw": 0,
+      "source_trajectory": "original-31-day-capture"
+    }
+  ],
+  "independent_replay_event_beats": [
+    {
+      "source_day": 5,
+      "target_day": 6,
+      "status": "bounded_trace_available",
+      "new_battle_events": [
+        {
+          "phase_side_index": 0,
+          "left_character_id": 36303,
+          "right_character_id": 34867,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ],
+      "finish_receipt_sha256": "851B664AF6D2D59DED0A8D602AEEF95E6E0BE0283D2CCCD2F5204F77C9801808",
+      "source_trajectory": "independent-replay-from-contact-checkpoint",
+      "may_splice_into_original": false
+    },
+    {
+      "source_day": 7,
+      "target_day": 8,
+      "status": "bounded_trace_available",
+      "new_battle_events": [
+        {
+          "phase_side_index": 1,
+          "left_character_id": 43706,
+          "right_character_id": 54140,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ],
+      "finish_receipt_sha256": "FCCA9F842CB6188F490F9CA4691EBA231EF764DCE2EA8E12BAB0037AB4817641",
+      "source_trajectory": "independent-replay-from-contact-checkpoint",
+      "may_splice_into_original": false
+    },
+    {
+      "source_day": 9,
+      "target_day": 10,
+      "status": "bounded_trace_available",
+      "new_battle_events": [
+        {
+          "phase_side_index": 0,
+          "left_character_id": 54144,
+          "right_character_id": 34867,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 0,
+          "target_right": false
+        }
+      ],
+      "finish_receipt_sha256": "AB14DEE59C2A051094195C02BFD1792B6133731771026D435B2BFB9650E6F649",
+      "source_trajectory": "independent-replay-from-contact-checkpoint",
+      "may_splice_into_original": false
+    },
+    {
+      "source_day": 15,
+      "target_day": 16,
+      "status": "trace_unavailable",
+      "new_battle_events": [
+        {
+          "phase_side_index": 0,
+          "left_character_id": 36673,
+          "right_character_id": 32716,
+          "stable_key": "knight_killed_by_enemy",
+          "type_raw": 3,
+          "side_index": 0,
+          "target_right": false
+        }
+      ],
+      "finish_receipt_sha256": "31DF5CAC53ADE6EB6CDEE1B84D5C76A57508B9885DA5712F793D8D6D172D80E3",
+      "source_trajectory": "independent-replay-from-contact-checkpoint",
+      "may_splice_into_original": false
+    },
+    {
+      "source_day": 16,
+      "target_day": 17,
+      "status": "trace_unavailable",
+      "new_battle_events": [
+        {
+          "phase_side_index": 1,
+          "left_character_id": 33437,
+          "right_character_id": 54144,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ],
+      "finish_receipt_sha256": "1F43A75B2FA6BA0779F2FEEE5101822261D2C7955B3A0EBCCC08EF74571089B4",
+      "source_trajectory": "independent-replay-from-contact-checkpoint",
+      "may_splice_into_original": false
+    },
+    {
+      "source_day": 19,
+      "target_day": 20,
+      "status": "bounded_trace_available",
+      "new_battle_events": [
+        {
+          "phase_side_index": 1,
+          "left_character_id": 30784,
+          "right_character_id": 35124,
+          "stable_key": "knight_wounded_by_enemy",
+          "type_raw": 2,
+          "side_index": 1,
+          "target_right": false
+        }
+      ],
+      "finish_receipt_sha256": "9105A6880309176F38091689136B725A352F4325BBB67065BB10B3969A9C9BCC",
+      "source_trajectory": "independent-replay-from-contact-checkpoint",
+      "may_splice_into_original": false
+    }
+  ],
+  "conditional_main_tick_parity": {
+    "report_sha256": "CE1B40AB72126C905D4B73411FBFB44141A1AA251D6A108575CDA32B019E7497",
+    "conditioned_on_native_outgoing_damage": true,
+    "stable_bounded_exact_days": 14,
+    "all_source_exact_days": [
+      4,
+      5,
+      6,
+      8,
+      10,
+      12,
+      13,
+      16,
+      19,
+      20,
+      22,
+      23,
+      24,
+      25,
+      26
+    ],
+    "residual_or_identity_change_days": [
+      {
+        "source_day": 7,
+        "attacker_mismatch_count": 1,
+        "defender_mismatch_count": 1,
+        "same_attacker_army_ids": true,
+        "trace_status": "bounded_trace_available"
+      },
+      {
+        "source_day": 9,
+        "attacker_mismatch_count": 1,
+        "defender_mismatch_count": 0,
+        "same_attacker_army_ids": true,
+        "trace_status": "bounded_trace_available"
+      },
+      {
+        "source_day": 11,
+        "attacker_mismatch_count": 26,
+        "defender_mismatch_count": 0,
+        "same_attacker_army_ids": false,
+        "trace_status": "trace_unavailable"
+      },
+      {
+        "source_day": 14,
+        "attacker_mismatch_count": 1,
+        "defender_mismatch_count": 0,
+        "same_attacker_army_ids": true,
+        "trace_status": "bounded_trace_available"
+      },
+      {
+        "source_day": 15,
+        "attacker_mismatch_count": 1,
+        "defender_mismatch_count": 0,
+        "same_attacker_army_ids": true,
+        "trace_status": "trace_unavailable"
+      },
+      {
+        "source_day": 16,
+        "attacker_mismatch_count": 0,
+        "defender_mismatch_count": 0,
+        "same_attacker_army_ids": true,
+        "trace_status": "trace_unavailable"
+      },
+      {
+        "source_day": 17,
+        "attacker_mismatch_count": 0,
+        "defender_mismatch_count": 1,
+        "same_attacker_army_ids": true,
+        "trace_status": "bounded_trace_available"
+      },
+      {
+        "source_day": 18,
+        "attacker_mismatch_count": 1,
+        "defender_mismatch_count": 0,
+        "same_attacker_army_ids": true,
+        "trace_status": "bounded_trace_available"
+      },
+      {
+        "source_day": 21,
+        "attacker_mismatch_count": 37,
+        "defender_mismatch_count": 0,
+        "same_attacker_army_ids": false,
+        "trace_status": "trace_unavailable"
+      }
+    ],
+    "win_probability_available": false
+  },
+  "original_terminal": {
+    "date_raw": 53146992,
+    "winner_relative_to_player": "enemy",
+    "player_warscore_delta_raw": -5000000
+  },
+  "calibrated_win_probability_available": false
+}
