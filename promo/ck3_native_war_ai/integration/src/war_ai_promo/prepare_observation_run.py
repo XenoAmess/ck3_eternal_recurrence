@@ -1,4 +1,4 @@
-"""Archive the measured Episode 1 EdgeTTS inputs in a fresh xar-promo run."""
+"""Archive measured Episode 1 narration inputs in a fresh xar-promo run."""
 
 from __future__ import annotations
 
@@ -29,6 +29,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--speech", type=Path, required=True)
+    parser.add_argument("--production-inputs", type=Path)
+    parser.add_argument("--reference", type=Path)
+    parser.add_argument("--toolchain-receipt", type=Path)
     parser.add_argument("--script", type=Path, required=True)
     parser.add_argument("--timeline", type=Path, required=True)
     parser.add_argument("--footage", type=Path, required=True)
@@ -42,11 +45,17 @@ def main() -> None:
         raise ValueError("full-battle footage changed")
     if digest(arguments.theme) != EXPECTED_THEME_SHA256:
         raise ValueError("single series theme changed")
-    production = arguments.speech / "production-inputs.json"
+    production = arguments.production_inputs or arguments.speech / "production-inputs.json"
     inputs = json.loads(production.read_text(encoding="utf-8"))
     rows = inputs["cues"]
-    if len(rows) != 25 or inputs["provider"] != "edge":
-        raise ValueError("wrong EdgeTTS cue set")
+    provider = inputs["provider"]
+    if len(rows) != 25 or provider not in {"edge", "index"}:
+        raise ValueError("wrong Episode 1 narration cue set")
+    if provider == "index":
+        if arguments.reference is None or not arguments.reference.is_file():
+            raise ValueError("IndexTTS reference WAV required")
+        if digest(arguments.reference) != inputs["index_voice"]["reference"]["sha256"].upper():
+            raise ValueError("IndexTTS reference changed")
     if not 1200 <= inputs["actual_duration_seconds"] <= 2400:
         raise ValueError("outside authorized 20–40 minutes")
     arguments.output.mkdir(parents=True, exist_ok=False)
@@ -61,13 +70,22 @@ def main() -> None:
     source_files = {
         "observation-composer-source": Path(__file__).with_name("episode_one_observation.py"),
         "observation-preparation-source": Path(__file__),
-        "edge-narration-preparation-source": Path(__file__).with_name("prepare_narration.py"),
         "observation-timeline-source": Path(__file__).with_name("episode_one_full_timeline.py"),
         "observation-captions-source": Path(__file__).with_name("captions.py"),
         "observation-visuals-source": Path(__file__).with_name("visuals.py"),
         "observation-common-source": Path(__file__).with_name("common.py"),
+        "observation-theme-mix-source": Path(__file__).with_name("theme_mix.py"),
         "observation-director-plan": repository / "promo/ck3_native_war_ai/episode-01-battle-win-probability/director-plan.md",
     }
+    if provider == "index":
+        source_files["index-narration-preparation-source"] = Path(__file__).with_name("prepare_episode_one_index_inputs.py")
+        source_files["index-narration-synthesis-source"] = Path(__file__).with_name("index_revoice.py")
+        source_files["index-film-verification-source"] = Path(__file__).with_name("verify_episode_one_index_film.py")
+        source_files["index-review-contact-sheet-source"] = Path(__file__).with_name("review_contact_sheets.py")
+        source_files["index-one-drive-delivery-source"] = Path(__file__).with_name("deliver_episode_one_index.py")
+        source_files["index-one-drive-readback-source"] = Path(__file__).with_name("check_episode_one_onedrive.py")
+    else:
+        source_files["edge-narration-preparation-source"] = Path(__file__).with_name("prepare_narration.py")
     jobs: list[tuple[str, Path, str, str]] = [
         ("observation-production-inputs", production, "measured-narration-inputs", "application/json"),
         ("observation-film-script", arguments.script, "film-script", "application/json"),
@@ -76,14 +94,24 @@ def main() -> None:
         ("messina-camera-visibility-audit", arguments.visibility_audit, "capture-audit", "application/json"),
         ("single-series-theme-master", arguments.theme, "audio-master", "audio/wav"),
         ("gameplay-provenance-overlay", overlay, "visual-provenance", "image/png"),
-        ("edge-speech-process-archive", archive, "process-archive", "application/zip"),
+        (f"{provider}-speech-process-archive", archive, "process-archive", "application/zip"),
     ]
+    if provider == "index":
+        jobs.extend([
+            ("index-voice-reference", arguments.reference, "authorized-voice-reference", "audio/wav"),
+            ("index-synthesis-receipt", arguments.speech / "completed.json", "synthesis-receipt", "application/json"),
+        ])
+        if arguments.toolchain_receipt is None or not arguments.toolchain_receipt.is_file():
+            raise ValueError("New IndexTTS run must bind latest formal xar-promo release")
+        jobs.append(("index-toolchain-release-receipt", arguments.toolchain_receipt,
+                     "toolchain-release", "application/json"))
     jobs.extend((identifier, path, "source", "text/plain")
                 for identifier, path in source_files.items())
     for row in rows:
         identifier = row["audio_artifact_id"]
-        jobs.append((identifier, arguments.speech / f"{row['id']}.mp3",
-                     "prepared-narration", "audio/mpeg"))
+        extension, media_type = (".wav", "audio/wav") if provider == "index" else (".mp3", "audio/mpeg")
+        jobs.append((identifier, arguments.speech / f"{row['id']}{extension}",
+                     "prepared-narration", media_type))
     log_path = arguments.output / "preserve-command-history.jsonl"
     for identifier, source, role, media_type in jobs:
         if not source.is_file():

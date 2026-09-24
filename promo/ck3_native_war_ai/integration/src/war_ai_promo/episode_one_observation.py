@@ -1,4 +1,4 @@
-"""Full Episode 1 EdgeTTS observation composer with bounded CK3 gameplay.
+"""Full Episode 1 observation composer with bounded CK3 gameplay.
 
 Gameplay is an independent same-checkpoint replay. It is never used as a
 frame-exact visual proof for a numeric receipt from the diverged original run.
@@ -7,6 +7,7 @@ frame-exact visual proof for a numeric receipt from the diverged original run.
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import os
 from pathlib import Path
@@ -206,8 +207,13 @@ def compose(config, run, *, config_path, run_path, workdir,
         f"E1-F{index:02d}" for index in range(1, 26)
     ]:
         raise ValueError("observation film requires 25 ordered cues")
-    if inputs["provider"] != "edge" or inputs["human_signoff"] != "not-provided":
-        raise ValueError("expected unsigned EdgeTTS narration")
+    if inputs["provider"] not in {"edge", "index"} or inputs["human_signoff"] != "not-provided":
+        raise ValueError("expected unsigned EdgeTTS or IndexTTS narration")
+    if inputs["provider"] == "index":
+        reference = artifact(run, run_path, "index-voice-reference")
+        if inputs["index_voice"]["reference"]["sha256"].lower() != hashlib.sha256(
+            reference.read_bytes()).hexdigest():
+            raise ValueError("IndexTTS voice reference differs from frozen inputs")
     if not 1200 <= sum(row["duration_seconds"] for row in rows) <= 2400:
         raise ValueError("observation film falls outside the authorized 20–40 minutes")
     gameplay = artifact(run, run_path, "messina-full-battle-clean-footage")

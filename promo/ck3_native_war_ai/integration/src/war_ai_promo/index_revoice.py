@@ -76,6 +76,8 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--reuse-from", type=Path)
     parser.add_argument("--limit", type=int)
+    parser.add_argument("--cue-prefix", default="V3-",
+                        help="Expected cue ID prefix for the frozen script")
     args = parser.parse_args()
     args.inputs = args.inputs.resolve()
     args.reference = args.reference.resolve()
@@ -92,7 +94,7 @@ def main() -> None:
     cues = source["cues"][:args.limit]
     if not cues or len({cue["id"] for cue in cues}) != len(cues):
         raise ValueError("Expected nonempty unique cue IDs")
-    if any(not cue["zh"].strip() or not cue["id"].startswith("V3-") for cue in cues):
+    if any(not cue["zh"].strip() or not cue["id"].startswith(args.cue_prefix) for cue in cues):
         raise ValueError("Missing narration or wrong script version")
     revision = subprocess.check_output(["git", "-C", str(args.index_root), "rev-parse", "HEAD"], text=True).strip()
     reference = binding(args.reference)

@@ -1,5 +1,7 @@
 # 第 1 集 EdgeTTS 观察版：制作入口
 
+2026-09-25 用户明确指定本版为草稿；正式版另用已授权参考声和《Project 因果律》的 IndexTTS 2.5 配置重配、重排并机器核验，制作配置见 [`index-film-project/promo-project.json`](../index-film-project/promo-project.json)。
+
 2026-09-25 用户调整本次看片范围：**先用已经确认的原生机制做一部 20–40 分钟完整视频**，重心是逐步讲清 CK3 一场战斗的输入、逐日算法和可复验实例；不以尚未校准的整场胜率百分比作为本版结论。成片交付后再继续击杀深层抽签、增援／撤退／终局与胜率校准研究。此前 `preproduction-0001` 的原意和素材保持历史原样；本次配置修改后创建新 run。
 
 第 26 日事件行的后续实机回读已固化为[共享选中行报告](../../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_selected_phase_event_row.json)：确认为原版 `knight_killed`，内部抽签与整场胜率仍未闭合。全片脚本和字幕只能在这一证据边界内写结论。

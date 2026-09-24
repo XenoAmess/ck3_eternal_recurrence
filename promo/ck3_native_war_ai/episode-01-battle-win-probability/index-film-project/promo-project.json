@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-native-war-ai-episode-01-full",
+    "title": "十字军之王3：一场仗是怎么算出来的｜IndexTTS 正式审片版"
+  },
+  "pipeline": {
+    "adapter": "ck3-native-war-ai-v1",
+    "preset": "ck3-native-war-ai-longform-zh-v2"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": ["zh-CN", "en"]
+  },
+  "constraints": {
+    "duration_limit_seconds": 2400
+  },
+  "chapters": [
+    {"id": "hook", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "墨西拿：一场战斗"}, "cues": [], "artifact_ids": []},
+    {"id": "inputs", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "战场输入"}, "cues": [], "artifact_ids": []},
+    {"id": "daily", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "逐日结算"}, "cues": [], "artifact_ids": []},
+    {"id": "events", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "骑士与事件"}, "cues": [], "artifact_ids": []},
+    {"id": "evidence", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "把算法与实机对拍"}, "cues": [], "artifact_ids": []},
+    {"id": "decision", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "怎样读懂计算结果"}, "cues": [], "artifact_ids": []}
+  ]
+}
