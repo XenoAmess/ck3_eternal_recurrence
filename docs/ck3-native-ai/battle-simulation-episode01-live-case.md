@@ -54,9 +54,9 @@
 
 第 11、21 源日的完整 phase trace 因增援导致 side 身份变化而为 `trace_unavailable`，但前一日冻结存档、移动快照和下一日的首次有效阶段记录可以独立配对。[共用增援日投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_casualties.json) SHA-256 `C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72` 核对了所有源 bytes：ArmyID `22` 到达第 12 日，其 12 个参战兵团的入场前存档当前人数合计 2560，到达日阶段回读为 2521.99061，软/硬伤亡分别为 26.03650/11.97289；另 1 个未参战骑士兵团没有战斗伤亡。ArmyID `28` 到达第 22 日，其 5 个参战兵团从 1058 到 1049.99308，软/硬伤亡为 5.48476/2.52216。17 个参战兵团逐项满足“入场前存档当前数 = 阶段起始数”和“起始数 − 到达日当前数 = 软伤亡 + 硬伤亡”，每项伤亡均大于零。两次移动前 `in_combat=false`、目标梅西纳；一步日期推进后 `in_combat=true`，同 CombatID。
 
-因此至少这两次自然加入在**到达的同一日推进中已经受伤**。这比仅见“下一日参战名单增加”更强，但还不能推出所有地图接触情形的 manager 全局调用顺序；两次到达源日整条 trace 的 RED 保持原状，也不能将独立回放拼接到首条原案。片用摘要为[同源增援板 v2](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/join-day-board-v2.json)；智能体模拟器应允许入场当天伤亡，实际调度仍须通过其他时序夹具对拍。
+因此至少这两次自然加入在**到达的同一日推进中已经受伤**。这比仅见“下一日参战名单增加”更强，但还不能推出所有地图接触情形的 manager 全局调用顺序；两次到达源日整条 trace 的 RED 保持原状，也不能将独立回放拼接到首条原案。片用摘要为[同源增援板 v3](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/join-day-board-v3.json)；智能体模拟器应允许入场当天伤亡，实际调度仍须通过其他时序夹具对拍。
 
-进一步把原版实测出伤和这两次已观察到的入场名单送入智能体现有的 `apply_main_phase_casualties`，得到了[同源条件对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json)：第 12 日新增兵团 12/12 精确，整侧 37/38 精确，原有兵团 `220` 的 `current_raw` 残差为 `+214`（Q100000）；第 22 日新增兵团 5/5、整侧 42/42 精确。它实证了给定名单和出伤时的伤亡分配，**并不重建增援策略或每日出伤**；残差和两天源 trace RED 都保留，整场胜率仍不可用。
+进一步把原版实测出伤和这两次已观察到的入场名单送入智能体现有的 `apply_main_phase_casualties`，得到了[初次条件对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json)：第 12 日新增兵团 12/12 精确，整侧 37/38 精确，原有兵团 `220` 的 `current_raw` 残差为 `+214`（Q100000）；第 22 日新增兵团 5/5、整侧 42/42 精确。第 11 日原版有效阶段记录证明，兵团 `220` 在 side0 schedule 前的有效韧性已从较早快照的 `7400000` 变为 `3700000`。用这份**原版调度前韧性**作为条件输入后，[第二次条件对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json)分别为第 12 日 38/38、第 22 日 42/42 精确。模拟器尚未自主计算该韧性刷新、增援策略或每日出伤；两天源 trace RED 保留，整场胜率仍不可用。
 
 ### 同接战存档的三次原生回放
 

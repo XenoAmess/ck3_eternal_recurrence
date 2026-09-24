@@ -28,6 +28,8 @@ EPISODE01_JOIN_DAY_FILE = "ck3_1_19_0_6_episode01_messina_join_day_casualties.js
 EPISODE01_JOIN_DAY_SHA256 = "C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72"
 EPISODE01_JOIN_KERNEL_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json"
 EPISODE01_JOIN_KERNEL_SHA256 = "CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0"
+EPISODE01_JOIN_KERNEL_V2_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json"
+EPISODE01_JOIN_KERNEL_V2_SHA256 = "B3660C52B27FD6D2186E0AB7590CE64C24720262A1BCCB3DCA8F2FB622DA5571"
 
 
 class NativeBattleCaseError(ValueError):
@@ -410,6 +412,63 @@ def load_episode01_join_day_kernel_parity() -> dict[str, Any]:
     return report
 
 
+def _validate_join_day_kernel_parity_v2(report: dict[str, Any]) -> None:
+    if (report.get("schema") != "ck3-native-join-day-conditional-casualty-parity-v2"
+            or report.get("case_sha256") != EPISODE01_CASE_SHA256
+            or report.get("join_evidence_sha256") != EPISODE01_JOIN_DAY_SHA256
+            or report.get("game_version") != "1.19.0.6"
+            or report.get("combat_id") != 16777218
+            or report.get("trajectory") != "independent-replay-from-original-contact-checkpoint"):
+        raise NativeBattleCaseError("join-day refreshed parity identity mismatch")
+    if any(report.get(key) is not True for key in (
+        "conditioned_on_native_outgoing_damage", "conditioned_on_observed_joined_roster",
+        "conditioned_on_native_pre_schedule_effective_toughness",
+    )) or any(report.get(key) is not False for key in (
+        "outgoing_damage_reconstructed", "join_policy_reconstructed",
+        "effective_toughness_refresh_reconstructed", "whole_battle_win_probability_available",
+        "planner_usable",
+    )):
+        raise NativeBattleCaseError("refreshed parity conditioning or forecast gate mismatch")
+    rows = report.get("source_days")
+    if not isinstance(rows, list) or len(rows) != 2:
+        raise NativeBattleCaseError("refreshed parity pair count mismatch")
+    for row, source_day, arrival_day, army_id, old_count, joined_count in zip(
+        rows, (11, 21), (12, 22), (22, 28), (26, 37), (12, 5), strict=True,
+    ):
+        if (row.get("source_day") != source_day
+                or row.get("arrival_day") != arrival_day
+                or row.get("army_id") != army_id
+                or row.get("old_fighting_regiment_count") != old_count
+                or row.get("joined_fighting_regiment_count") != joined_count
+                or row.get("joined_regiment_current_exact_count") != joined_count
+                or row.get("all_joined_regiments_current_exact") is not True
+                or row.get("whole_side_current_exact") is not True
+                or row.get("residuals") != []
+                or row.get("source_day_whole_trace_available") is not False
+                or row.get("pre_schedule_boundary") !=
+                "native_capture_before_side0_schedule_call_0x27FB58F"
+                or row.get("pre_schedule_capture_failure_flags") != 0):
+            raise NativeBattleCaseError("refreshed parity row or pre-schedule boundary mismatch")
+        changes = ([{"regiment_id": 220, "control_toughness_raw": 7400000,
+                     "pre_schedule_toughness_raw": 3700000}]
+                   if source_day == 11 else [])
+        if row.get("old_regiment_effective_toughness_changes") != changes:
+            raise NativeBattleCaseError("pre-schedule toughness change mismatch")
+
+
+def load_episode01_join_day_kernel_parity_v2() -> dict[str, Any]:
+    """Return native pre-schedule toughness-conditioned parity for two joins."""
+    path = Path(__file__).with_name("data") / EPISODE01_JOIN_KERNEL_V2_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_JOIN_KERNEL_V2_SHA256:
+        raise NativeBattleCaseError("bundled refreshed parity bytes changed without review")
+    report = json.loads(data)
+    if not isinstance(report, dict):
+        raise NativeBattleCaseError("refreshed parity must be a JSON object")
+    _validate_join_day_kernel_parity_v2(report)
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -425,6 +484,8 @@ __all__ = [
     "EPISODE01_JOIN_DAY_SHA256",
     "EPISODE01_JOIN_KERNEL_FILE",
     "EPISODE01_JOIN_KERNEL_SHA256",
+    "EPISODE01_JOIN_KERNEL_V2_FILE",
+    "EPISODE01_JOIN_KERNEL_V2_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -433,5 +494,6 @@ __all__ = [
     "load_episode01_phase_event_save_feedback",
     "load_episode01_join_day_casualties",
     "load_episode01_join_day_kernel_parity",
+    "load_episode01_join_day_kernel_parity_v2",
     "original_daily_timeline",
 ]

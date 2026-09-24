@@ -18,12 +18,14 @@ from xar_autoplayer.simulation.native_battle_case import (
     _validate_phase_event_save_feedback,
     _validate_join_day_casualties,
     _validate_join_day_kernel_parity,
+    _validate_join_day_kernel_parity_v2,
     load_episode01_native_battle_case,
     load_episode01_native_battle_repeatability,
     load_episode01_phase_event_observations,
     load_episode01_phase_event_save_feedback,
     load_episode01_join_day_casualties,
     load_episode01_join_day_kernel_parity,
+    load_episode01_join_day_kernel_parity_v2,
     original_daily_timeline,
 )
 
@@ -170,6 +172,23 @@ class NativeBattleCaseTests(unittest.TestCase):
         promoted["source_days"][0]["residuals"] = []
         with self.assertRaises(NativeBattleCaseError):
             _validate_join_day_kernel_parity(promoted)
+
+    def test_pre_schedule_toughness_refresh_closes_only_conditional_parity(self) -> None:
+        report = load_episode01_join_day_kernel_parity_v2()
+        day11, day21 = report["source_days"]
+        self.assertEqual(day11["old_regiment_effective_toughness_changes"], [{
+            "regiment_id": 220,
+            "control_toughness_raw": 7400000,
+            "pre_schedule_toughness_raw": 3700000,
+        }])
+        self.assertEqual(day21["old_regiment_effective_toughness_changes"], [])
+        self.assertTrue(all(row["whole_side_current_exact"] for row in report["source_days"]))
+        self.assertFalse(report["effective_toughness_refresh_reconstructed"])
+        self.assertFalse(report["planner_usable"])
+        promoted = copy.deepcopy(report)
+        promoted["effective_toughness_refresh_reconstructed"] = True
+        with self.assertRaises(NativeBattleCaseError):
+            _validate_join_day_kernel_parity_v2(promoted)
         promoted = copy.deepcopy(report)
         promoted["outgoing_damage_reconstructed"] = True
         with self.assertRaises(NativeBattleCaseError):

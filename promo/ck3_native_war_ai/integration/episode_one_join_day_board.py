@@ -13,8 +13,10 @@ sys.path.insert(0, str(REPO / "ck3_autonomous_player" / "src"))
 from xar_autoplayer.simulation.native_battle_case import (  # noqa: E402
     EPISODE01_JOIN_DAY_SHA256,
     EPISODE01_JOIN_KERNEL_SHA256,
+    EPISODE01_JOIN_KERNEL_V2_SHA256,
     load_episode01_join_day_casualties,
     load_episode01_join_day_kernel_parity,
+    load_episode01_join_day_kernel_parity_v2,
 )
 
 
@@ -22,11 +24,16 @@ def build_board() -> dict:
     evidence = load_episode01_join_day_casualties()
     parity = load_episode01_join_day_kernel_parity()
     parity_by_day = {row["source_day"]: row for row in parity["source_days"]}
+    refreshed = load_episode01_join_day_kernel_parity_v2()
+    refreshed_by_day = {row["source_day"]: row for row in refreshed["source_days"]}
     joins = []
     for row in evidence["join_observations"]:
         kernel = parity_by_day[row["source_day"]]
+        kernel_refreshed = refreshed_by_day[row["source_day"]]
         if (kernel["arrival_day"] != row["arrival_day"]
-                or kernel["army_id"] != row["army_id"]):
+                or kernel["army_id"] != row["army_id"]
+                or kernel_refreshed["arrival_day"] != row["arrival_day"]
+                or kernel_refreshed["army_id"] != row["army_id"]):
             raise ValueError("join-day kernel and observed roster do not bind")
         fighting = [item for item in row["regiments"] if item["fights_in_main_phase"]]
         prejoin = sum(item["prejoin_saved_current_raw"] for item in fighting)
@@ -54,13 +61,19 @@ def build_board() -> dict:
             "conditional_kernel_joined_exact_count": kernel["joined_regiment_current_exact_count"],
             "conditional_kernel_whole_side_exact": kernel["whole_side_current_exact"],
             "conditional_kernel_residuals": kernel["residuals"],
+            "native_pre_schedule_toughness_changes":
+                kernel_refreshed["old_regiment_effective_toughness_changes"],
+            "refreshed_conditional_kernel_whole_side_exact":
+                kernel_refreshed["whole_side_current_exact"],
             "kernel_uses_native_outgoing_damage": True,
+            "kernel_uses_native_pre_schedule_toughness": True,
             "source_day_whole_trace_available": False,
         })
     return {
-        "schema": "ck3-episode01-join-day-board-v2",
+        "schema": "ck3-episode01-join-day-board-v3",
         "source_report_sha256": EPISODE01_JOIN_DAY_SHA256,
         "conditional_kernel_report_sha256": EPISODE01_JOIN_KERNEL_SHA256,
+        "refreshed_conditional_kernel_report_sha256": EPISODE01_JOIN_KERNEL_V2_SHA256,
         "game_version": evidence["game_version"],
         "combat_id": evidence["combat_id"],
         "phase_trace_trajectory": evidence["phase_trace_trajectory"],
@@ -69,6 +82,7 @@ def build_board() -> dict:
         "global_manager_order_proven": False,
         "outgoing_damage_reconstructed": False,
         "join_policy_reconstructed": False,
+        "effective_toughness_refresh_reconstructed": False,
         "planner_usable": False,
     }
 
