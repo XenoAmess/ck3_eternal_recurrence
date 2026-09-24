@@ -1,10 +1,10 @@
 # 《CK3 的 AI 为什么开战、绕路，又突然愿意讲和？》
 
-**当前交付：研究后重制的 v3 完整审阅版。** 片长 33:53.821，八章、45 段清晰女声旁白、五段连续原版实机画面、双语字幕和播放器章节书签。只读检查了最终媒体的章节、分辨率、时长和完整音视频解码；[v3 构建记录](build-records/v3-fullfilm-20260923-r1.json)绑定准确字节和证据范围。OneDrive 客户端已明确回读新版文件“已上传到 CK3-War-AI-20260923”；人工 1× 全片审阅和签核待用户完成。旧片的[审片结论、研究清单与重做标准](../../docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md)仍是本次重制依据。
+**当前交付：IndexTTS 重配音的 v4 完整审阅版。** 片长 37:04.888，八章、45 段旁白、五段连续原版实机画面、双语字幕和播放器章节书签。沿用用户确认的参考声，以及《Project 因果律》的语速和自然情感设置。45 段独立 ASR 漏句筛查、原生 run 验证与最终媒体完整音视频解码均通过；[v4 构建记录](build-records/v4-index-fullfilm-20260924-r1.json)绑定准确字节和证据范围。OneDrive 客户端已明确回读 `CK3-War-AI-V4-IndexTTS-Review-20260924.mp4`“已上传到 CK3-War-AI-20260923”；人工 1× 全片审阅和签核待用户完成。旧片的[审片结论、研究清单与重做标准](../../docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md)仍是本次重制依据。
 
-用户希望把更深入的内容逐集制作；[后续专题系列规划](series-roadmap.md)以单条原生决策链为一集，并列明各集尚需取得的实机证据。当前 v3 保持全景片定位，不追认系列中尚未完成的研究。
+用户希望把更深入的内容逐集制作；[后续专题系列规划](series-roadmap.md)以单条原生决策链为一集，并列明各集尚需取得的实机证据。本片保持全景片定位，不追认系列中尚未完成的研究。
 
-用户另已提供参考声，要求用 IndexTTS 沿用《Project 因果律》的语速与情感设置为本片重配音。[IndexTTS 重配音记录](index-revoice-20260923.md)保存参考哈希、实际设置和新 attempt 状态；新片尚未取代当前 v3 审阅文件。
+用户提供的参考声及 IndexTTS 重配过程见[重配音记录](index-revoice-20260923.md)。此前的 [v3 EdgeTTS 完整审阅版](build-records/v3-fullfilm-20260923-r1.json)保留为历史产物，不再是当前推荐审阅文件。
 
 ## 历史：初版导演材料与被退回的影片
 
@@ -27,9 +27,9 @@
 | [production-workflow.md](production-workflow.md) | 已用工具、版本与 run，以及后续 composer、取材、渲染和审片接入点 |
 | [build-records/longform-director-20260922-r1.json](build-records/longform-director-20260922-r1.json) | 长篇 authoring 验证与新封存 run 索引；不是媒体构建报告 |
 
-项目 adapter/preset 和 composer 已在 [integration](integration/README.md) 实现。当前 v3 run 已完成真实配音、`xar-promo plan/build/review`；原生审阅包包含 106 张边界帧，状态为 `pending-human-review`、`approval_granted=false`。最终媒体另经完整音视频解码。具体阶段和收据见[v3 构建记录](build-records/v3-fullfilm-20260923-r1.json)。导演 authoring、单章样片、旧完整影片与 v3 实机取材分别记录，不混用状态。
+项目 adapter/preset 和 composer 已在 [integration](integration/README.md) 实现。v4 原生 run 已完成 IndexTTS 配音绑定、`xar-promo plan/build/review`；审阅包包含 106 张边界帧，状态为 `pending-human-review`、`approval_granted=false`。最终媒体另经完整音视频解码。具体阶段和收据见[v4 构建记录](build-records/v4-index-fullfilm-20260924-r1.json)。导演 authoring、单章样片、旧完整影片和新片分别记录，不混用状态。
 
-默认中文旁白、简中主字幕与英文副字幕，2560×1440 / 30 fps。20–40 分钟指影片长度，不是制作工期；不为凑整点拉长静帧或加快配音。v3 用 CK3 原版画面与纸面图解，未加音乐；五段实机均明确标为上下文，不能充当未拍到的自然 AI 因果结果。每次新任务/run 使用最新正式 xar-promo；所有过程资产留在 `D:/workspace/ck3_native_war_ai_promo_work/` 的独立 attempt 中，大体积媒体不进 Git。
+默认中文旁白、简中主字幕与英文副字幕，2560×1440 / 30 fps。20–40 分钟指影片长度，不是制作工期；不为凑整点拉长静帧或加快配音。v4 用 CK3 原版画面与纸面图解，未加音乐；五段实机均明确标为上下文，不能充当未拍到的自然 AI 因果结果。每次新任务/run 使用最新正式 xar-promo；所有过程资产留在 `D:/workspace/ck3_native_war_ai_promo_work/` 的独立 attempt 中，大体积媒体不进 Git。
 
 13:30 初案保留为历史：[导演案 v1](director-plan.md)、[旧镜头表](shot-list.md)、[旧时间线](timeline.json)、[首个 run 索引](build-records/director-20260922-r1.json)。版本升级记录见 [toolchain-latest-policy-20260922.json](build-records/toolchain-latest-policy-20260922.json)。旧 run 的配置快照与素材不受当前 ProjectConfig 修改影响。
 

@@ -1,0 +1,188 @@
+{
+  "schema": "ck3-war-ai.v4-index-full-film-review.v1",
+  "created_at_utc": "2026-09-24T00:49:09.185671+00:00",
+  "state": "rendered-uploaded-pending-human-review",
+  "human_signoff": "not-provided",
+  "game_baseline": "CK3 1.19.0.6",
+  "film": {
+    "title": "CK3 的 AI 为什么开战、绕路，又突然愿意讲和？",
+    "video": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/war-ai-full-film-review.mp4",
+      "bytes": 228899890,
+      "sha256": "7be5bc37cda034f866bc8b5774edfc121bd5ba22c0134b9cc88d6fd2de0b96e2"
+    },
+    "duration_seconds": 2224.888021,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "fps": "30/1",
+    "chapters": [
+      {
+        "title": "三个疑问",
+        "start_seconds": 0.0,
+        "end_seconds": 104.233333
+      },
+      {
+        "title": "为什么选这场战争",
+        "start_seconds": 104.233333,
+        "end_seconds": 502.566667
+      },
+      {
+        "title": "开战后，先盯哪里",
+        "start_seconds": 502.566667,
+        "end_seconds": 832.833333
+      },
+      {
+        "title": "遭遇之前，它在比较什么",
+        "start_seconds": 832.833333,
+        "end_seconds": 1128.466667
+      },
+      {
+        "title": "求援开关",
+        "start_seconds": 1128.466667,
+        "end_seconds": 1426.466667
+      },
+      {
+        "title": "一仗结束，战争还在继续",
+        "start_seconds": 1426.466667,
+        "end_seconds": 1683.833333
+      },
+      {
+        "title": "和平桌上的两张账",
+        "start_seconds": 1683.833333,
+        "end_seconds": 2077.833333
+      },
+      {
+        "title": "回到地图",
+        "start_seconds": 2077.833333,
+        "end_seconds": 2224.866667
+      }
+    ],
+    "narration_cues": 45,
+    "voice": "IndexTTS 2.5, user reference, Project Causality settings",
+    "audio": {
+      "codec": "aac",
+      "sample_rate_hz": 48000,
+      "channels": 2
+    },
+    "subtitles": [
+      "zh-Hans primary",
+      "English secondary"
+    ],
+    "gameplay_spans": 5,
+    "music": false
+  },
+  "voice_evidence": {
+    "synthesis_batch": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-speech-attempt-002/completed.json",
+      "bytes": 54171,
+      "sha256": "6e702a1b06dfb32172b86c06444958733e960384971f6e8d747257d487f8dab3"
+    },
+    "reference": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-voice-source-20260923/index-reference.wav",
+      "bytes": 1781954,
+      "sha256": "061fe25b425752776da6c35eb2c634e2424239a8b5a2ea694bdee5a850e6d8b1"
+    },
+    "model_revision": "ee40fa7d6c6b8a2c7f06105f9f1e65775b74868c",
+    "profile": {
+      "provider": "IndexTTS-2.5",
+      "mode": "natural-reference-emotion",
+      "language": "ZH",
+      "duration_factor": 0.9,
+      "interval_silence_ms": 100,
+      "text_normalization": true,
+      "use_bf16": true,
+      "use_qwen_emo": false,
+      "use_cuda_kernel": false,
+      "use_torch_compile": false
+    },
+    "speech_seconds": 2191.0501133786847,
+    "independent_asr": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-pipeline-attempt-001/independent-asr/audit-summary.json",
+      "bytes": 5614,
+      "sha256": "9bc137f182c8984ccbfa914c62901c728023fa9251b909c167fb773de4d680c4"
+    },
+    "asr_screen": "advisory-screen-green",
+    "asr_similarity_is_advisory": true,
+    "asr_scope": "Gross truncation/silence/repetition only; no exact transcript or human listening claim",
+    "caption_timing": "Measured WAV duration and Chinese script sentence-length estimate; not forced alignment"
+  },
+  "evidence_scope": {
+    "capture_preflight": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-actual-capture-window-preflight-r2.json",
+      "bytes": 5676,
+      "sha256": "9dde744e8d106c9b4b56214077d427a0e4763ebdb80008358c79a3f08ea18bb1"
+    },
+    "live_spans": "Five unlooped 1x CASE-W/CASE-C context clips from a player-declared war",
+    "missing_natural_causal_footage": [
+      "AI declaration",
+      "sampled battle-score causality",
+      "AI-originated peace proposal and response"
+    ]
+  },
+  "toolchain": {
+    "name": "xar-promo-toolchain",
+    "version": "0.2.1",
+    "formal_release": {
+      "isDraft": false,
+      "isPrerelease": false,
+      "tagName": "v0.2.1",
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1"
+    },
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "native_run_id": "v4-index-film-attempt-001",
+    "run_manifest": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/run/run-manifest.json",
+      "bytes": 165804,
+      "sha256": "1d4a781461b0715b0fc79d991a1c0520cc988d77c206fcc1d9d800a86d6179a4"
+    },
+    "producer_receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/production-receipt.json",
+      "bytes": 27419,
+      "sha256": "a8defcc9496f02f914c0756f177ea32a0a44a5f85dde959abfaa173c107b208f"
+    },
+    "review_package": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/review/review-package.json",
+      "bytes": 67711,
+      "sha256": "b1dd8f217312ef359ddd6c55f3df9dbf2ce6bb6f7a17dbfcf6c49dd5c6b49572"
+    },
+    "review_state": "pending-human-review-package-generated"
+  },
+  "technical_checks": {
+    "pipeline_result": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-pipeline-attempt-001/pipeline-result.json",
+      "bytes": 1296,
+      "sha256": "4fa52bdc439dc86ec8c22a46fe5df635b4319d2e473e59894f0d0d8e21d6a937"
+    },
+    "strict_full_audio_video_decode": "passed; ffmpeg -xerror full-stream null decode",
+    "strict_decode_log": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-pipeline-attempt-001/strict-full-decode.console.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native_run_validation": "passed",
+    "scope": "Machine checks and sampled frames; no 1x full-length human viewing or approval"
+  },
+  "delivery": {
+    "method": "OneDrive desktop client, fixed selective-sync folder",
+    "destination": {
+      "path": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-War-AI-V4-IndexTTS-Review-20260924.mp4",
+      "bytes": 228899890,
+      "sha256": "7be5bc37cda034f866bc8b5774edfc121bd5ba22c0134b9cc88d6fd2de0b96e2"
+    },
+    "single_file_copy_receipt": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-pipeline-attempt-001/onedrive-single-file-copy.json",
+      "bytes": 651,
+      "sha256": "55669e9d5792b6c86c2c1a3ab816a23ba236d641708518db2dcaef58cf94f426"
+    },
+    "client_activity_readback": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-pipeline-attempt-001/onedrive-client-readback-02.json",
+      "bytes": 2058,
+      "sha256": "7487730100d0bbc9ee291d60c594c92947a7e5da214d60d1efa74d7a4505796f"
+    },
+    "client_message": "CK3-War-AI-V4-IndexTTS-Review-20260924.mp4. 已上传到 CK3-War-AI-20260923.",
+    "cloud_bytes_readback": "not-performed; client activity confirms upload, local SHA confirms copied bytes",
+    "other_cloud_file_content_read_or_downloaded_by_this_task": false
+  }
+}
