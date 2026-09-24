@@ -50,6 +50,8 @@ from .construction_formal_consumer import (
     read_construction_ledger,
 )
 from .bridge.service import GameplayBridgeService
+from .bridge.war_hotspot_camera import LandedProvinceIndex, follow_war_hotspot
+from .bridge.camera_cursor_parking import park_foreground_ck3_cursor
 from .bridge.settlement_contract import (
     normalize_fixed_score,
     normalize_one_life_settlement,
@@ -740,6 +742,12 @@ def native_auto_run(
                 "selected succession lifecycle requires a binding-capable driver"
             )
         service = GameplayBridgeService(driver)
+        landed_title_dir = spec.game_dir / "game" / "common" / "landed_titles"
+        camera_index = (
+            LandedProvinceIndex.from_game_dir(spec.game_dir)
+            if landed_title_dir.is_dir()
+            else None
+        )
         session_thread = threading.Thread(
             target=supervise,
             name="xar-native-auto-run-session",
@@ -907,6 +915,7 @@ def native_auto_run(
                 "result": None,
                 "after": None,
                 "read_only_query_retry": None,
+                "camera_follow": None,
             }
             if session_done.is_set():
                 raise AgentError(_premature_session_exit(session_state))
@@ -931,6 +940,19 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            if camera_index is not None:
+                try:
+                    current_attempt["camera_follow"] = follow_war_hotspot(
+                        service, before, camera_index,
+                        park_cursor=park_foreground_ck3_cursor,
+                    )
+                except (BridgeUnavailableError, UnsupportedStepError, ValueError, OSError) as error:
+                    # Presentation failure cannot invent or replace a gameplay
+                    # action.  The failed follow remains visible in this turn.
+                    current_attempt["camera_follow"] = {
+                        "status": "unavailable",
+                        "reason": f"{type(error).__name__}: {error}",
+                    }
             if (
                 opening_focus_gate is not None
                 and opening_focus_gate["stage"] != "complete"
