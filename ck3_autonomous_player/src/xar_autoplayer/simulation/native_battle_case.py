@@ -21,6 +21,8 @@ EPISODE01_REPEATABILITY_FILE = "ck3_1_19_0_6_episode01_messina_repeatability.jso
 EPISODE01_REPEATABILITY_SHA256 = "5E2D4B1AEE3BD6D64AC48111CD7ED1D8F48B8827D9FEBAB3F04505F3F2C1EF9C"
 EPISODE01_PHASE_EVENT_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_observations.json"
 EPISODE01_PHASE_EVENT_SHA256 = "94831B16AE56BC050833D7BEE9064170D118F77700DE672A0977E68F47C98AAE"
+EPISODE01_PHASE_EVENT_SAVE_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json"
+EPISODE01_PHASE_EVENT_SAVE_SHA256 = "2C392178AF7206E62EDE47AF061E133B9B09D91C3F9CEA736A503EC7843D44B5"
 
 
 class NativeBattleCaseError(ValueError):
@@ -197,6 +199,62 @@ def load_episode01_phase_event_observations() -> dict[str, Any]:
     return report
 
 
+def _validate_phase_event_save_feedback(report: dict[str, Any]) -> None:
+    if (report.get("schema") != "ck3-native-phase-event-save-feedback-v1"
+            or report.get("game_version") != "1.19.0.6"
+            or report.get("combat_id") != 16777218
+            or report.get("rakaly_version") != "0.8.19"
+            or report.get("rakaly_exe_sha256") !=
+            "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"):
+        raise NativeBattleCaseError("phase-event save evidence identity mismatch")
+    if any(report.get(key) is not False for key in (
+        "full_effect_write_set_proven", "calibrated_win_probability_available", "planner_usable",
+    )):
+        raise NativeBattleCaseError("save state changes do not authorize effect parity")
+    rows = report.get("event_save_pairs")
+    if not isinstance(rows, list) or [row.get("event_source_day") for row in rows] != [5, 15]:
+        raise NativeBattleCaseError("phase-event save pairs missing")
+    wound, killed = rows
+    if (wound.get("target_character_id") != 36303
+            or wound.get("event_key") != "knight_wounded_by_enemy"
+            or killed.get("target_character_id") != 36673
+            or killed.get("event_key") != "knight_killed_by_enemy"):
+        raise NativeBattleCaseError("phase-event save target mismatch")
+    for row in rows:
+        saves = row.get("saves")
+        if (not isinstance(saves, list)
+                or [save.get("source_day") for save in saves] !=
+                [row["event_source_day"], row["event_source_day"] + 1]
+                or saves[1].get("date_raw") != row.get("event_native_date_raw")
+                or row.get("full_effect_write_set_proven") is not False
+                or row.get("effect_was_only_possible_cause_proven") is not False):
+            raise NativeBattleCaseError("phase-event save date or gate mismatch")
+    if (wound["saves"][0]["character"]["wounded_rank"] != 0
+            or wound["saves"][1]["character"]["wounded_rank"] != 1
+            or wound["target_core_observations"]["same_fire_after"]["prowess"] != 8
+            or wound["target_core_observations"]["next_source_day_record0"]["prowess"] != 8
+            or wound["target_core_observations"]["next_source_day_record2"]["prowess"] != 6):
+        raise NativeBattleCaseError("wound trait and cached prowess observation mismatch")
+    if (killed["saves"][0]["character"]["alive_data_present"] is not True
+            or killed["saves"][1]["character"]["dead_data_present"] is not True
+            or killed["saves"][1]["character"]["death_reason"] != "death_battle"
+            or killed["saves"][1]["character"]["killer_character_id"] != 32716):
+        raise NativeBattleCaseError("death save observation mismatch")
+
+
+def load_episode01_phase_event_save_feedback() -> dict[str, Any]:
+    """Return same-date original save state changes without full effect parity."""
+    path = Path(__file__).with_name("data") / EPISODE01_PHASE_EVENT_SAVE_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_PHASE_EVENT_SAVE_SHA256:
+        raise NativeBattleCaseError("bundled phase-event save bytes changed without review")
+    report = json.loads(data)
+    if not isinstance(report, dict):
+        raise NativeBattleCaseError("phase-event save evidence must be an object")
+    _validate_phase_event_save_feedback(report)
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -206,10 +264,13 @@ __all__ = [
     "EPISODE01_REPEATABILITY_SHA256",
     "EPISODE01_PHASE_EVENT_FILE",
     "EPISODE01_PHASE_EVENT_SHA256",
+    "EPISODE01_PHASE_EVENT_SAVE_FILE",
+    "EPISODE01_PHASE_EVENT_SAVE_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
     "load_episode01_native_battle_repeatability",
     "load_episode01_phase_event_observations",
+    "load_episode01_phase_event_save_feedback",
     "original_daily_timeline",
 ]

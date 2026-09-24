@@ -36,7 +36,9 @@
 
 exact-build stock `game/common/combat_phase_events/00_knight_phase_events.txt` SHA-256 `E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1` 中，受伤分支先写 `battle_event`（727–733），后调用 `increase_wounds_effect`（734）；击杀分支先写 `battle_event`（1277–1282），后执行 `death`（1318–1320）。脚本顺序与“账本先可见”相容，但不能据此推出运行时同步边界，也不能把脚本行号当作实际写集回执。
 
-这些观察把“事件账本何时追加”与“被追踪字段何时变化”明确分开；它们**没有**捕获完整 mutable write-set，也没有证明勇武/死亡变化唯一由对应条目造成。后续验收必须定位账本 append 之后到下一次 phase read 之前的实际 callback/调度边界，并同时读取受伤 trait、死亡链、荣誉/威望、参战身份和 outgoing damage。不能用账本条目本身代替 effect 执行回执。
+后续[同战斗原始存档回流投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json)（SHA-256 `2C392178AF7206E62EDE47AF061E133B9B09D91C3F9CEA736A503EC7843D44B5`）将事件前后的四份冻结 `.ck3` 用 Rakaly CLI `v0.8.19` 只读解码并核对 `traits_lookup`。第 5 日条目后的**同日期**日初存档已经给 36303 保存 `wounded_1`，虽然当时 core 勇武仍为 8，下一 fire 前才是 6；第 15 日条目后的**同日期**日初存档已经给 36673 保存 `dead_data`，死因为 `death_battle`，killer 32716 与战报相符。第 15 日整条 trace 仍不可用，只能将局部 fire、同日存档与下一源日回读分别引用。
+
+这些观察把“事件账本何时追加”“trait/死亡状态何时可在存档读到”“派生战斗数值何时刷新”明确分开。它们**没有**捕获完整 mutable write-set，也没有证明勇武/死亡变化唯一由对应条目造成。后续验收必须定位 fire 到同日保存之间的写入边界，以及下一次 phase read 前的数值刷新边界，并同时读取荣誉/威望、参战身份和 outgoing damage。不能用账本条目本身代替完整 effect 执行回执。
 
 1. 用新的七边界 ordered levy/MAA `starting/current_fighting/soft/hard`、owner-hard ledger 与双方 outgoing damage、`0x18C/0x18D/0x19F` 有效 raw，对拍一个**无事件** main tick 的确定性伤亡；R0209 的旧 DTO 只有聚合，不能给这一步填期望值。
 2. 从合法自然战斗中捕获一个**非空原版 effect** 的有界一天：同 CombatID/date split、实际 selected row/root、fire 前后 RNG、root trait/health、participant/commander、accolade rank/参数和下个 tick 读回。调用已合入的 `execute_phase_event_trial_sequence` 做同一 root 的 effect 对拍，再补跨 root/side 写回。对不一致字段只修对应 source/transition。

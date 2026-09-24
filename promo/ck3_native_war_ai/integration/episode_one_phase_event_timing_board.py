@@ -14,18 +14,27 @@ sys.path.insert(0, str(REPO / "ck3_autonomous_player" / "src"))
 
 from xar_autoplayer.simulation.native_battle_case import (  # noqa: E402
     EPISODE01_PHASE_EVENT_SHA256,
+    EPISODE01_PHASE_EVENT_SAVE_SHA256,
     load_episode01_phase_event_observations,
+    load_episode01_phase_event_save_feedback,
 )
 
 
 def build_board() -> dict[str, object]:
     evidence = load_episode01_phase_event_observations()
+    saved = load_episode01_phase_event_save_feedback()
+    save_by_day = {row["event_source_day"]: row for row in saved["event_save_pairs"]}
     examples = []
     for row in evidence["event_fire_pairs"]:
         if row["source_day"] not in (5, 15):
             continue
         event = row["appended_battle_events"][0]
         target = row["target_character_observations"][0]
+        save_pair = save_by_day[row["source_day"]]
+        if (save_pair["event_receipt_sha256"] != row["source_receipt_sha256"]
+                or save_pair["target_character_id"] != target["character_id"]
+                or save_pair["event_native_date_raw"] != row["native_date_raw"]):
+            raise ValueError("save feedback and fire evidence do not bind")
         examples.append({
             "source_day": row["source_day"],
             "target_day": row["target_day"],
@@ -38,12 +47,15 @@ def build_board() -> dict[str, object]:
             "next_source_day_record2": target["next_source_day_record2"],
             "source_receipt_sha256": row["source_receipt_sha256"],
             "next_source_day_receipt_sha256": target["next_source_day_receipt_sha256"],
+            "same_date_native_save_before": save_pair["saves"][0],
+            "same_date_native_save_after": save_pair["saves"][1],
             "whole_day_trace_available": row["source_trace_status"] == "bounded_trace_available",
             "complete_effect_feedback_proven": False,
         })
     return {
-        "schema": "ck3-episode01-phase-event-timing-board-v2",
+        "schema": "ck3-episode01-phase-event-timing-board-v3",
         "source_report_sha256": EPISODE01_PHASE_EVENT_SHA256,
+        "source_save_report_sha256": EPISODE01_PHASE_EVENT_SAVE_SHA256,
         "game_version": evidence["game_version"],
         "combat_id": evidence["combat_id"],
         "phase_trace_trajectory": evidence["phase_trace_trajectory"],
@@ -52,6 +64,7 @@ def build_board() -> dict[str, object]:
         ],
         "examples": examples,
         "complete_effect_feedback_proven": False,
+        "full_effect_write_set_proven": False,
         "calibrated_win_probability_available": False,
         "planner_usable": False,
     }

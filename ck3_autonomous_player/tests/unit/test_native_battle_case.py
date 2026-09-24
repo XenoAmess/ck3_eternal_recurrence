@@ -14,9 +14,11 @@ from xar_autoplayer.simulation.native_battle_case import (
     _validate,
     _validate_repeatability,
     _validate_phase_event_observations,
+    _validate_phase_event_save_feedback,
     load_episode01_native_battle_case,
     load_episode01_native_battle_repeatability,
     load_episode01_phase_event_observations,
+    load_episode01_phase_event_save_feedback,
     original_daily_timeline,
 )
 
@@ -81,6 +83,26 @@ class NativeBattleCaseTests(unittest.TestCase):
             promoted[key] = True
             with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):
                 _validate_phase_event_observations(promoted)
+
+    def test_same_date_save_closes_wound_and_death_state_only(self) -> None:
+        report = load_episode01_phase_event_save_feedback()
+        wound, killed = report["event_save_pairs"]
+        self.assertEqual(wound["saves"][0]["character"]["wounded_rank"], 0)
+        self.assertEqual(wound["saves"][1]["character"]["wounded_rank"], 1)
+        self.assertEqual(wound["saves"][1]["date_raw"], wound["event_native_date_raw"])
+        self.assertEqual(wound["target_core_observations"]["next_source_day_record0"]["prowess"], 8)
+        self.assertEqual(wound["target_core_observations"]["next_source_day_record2"]["prowess"], 6)
+        self.assertTrue(killed["saves"][0]["character"]["alive_data_present"])
+        self.assertTrue(killed["saves"][1]["character"]["dead_data_present"])
+        self.assertEqual(killed["saves"][1]["character"]["death_reason"], "death_battle")
+        self.assertEqual(killed["saves"][1]["character"]["killer_character_id"], 32716)
+        self.assertEqual(killed["saves"][1]["date_raw"], killed["event_native_date_raw"])
+        for key in ("full_effect_write_set_proven", "calibrated_win_probability_available",
+                    "planner_usable"):
+            promoted = copy.deepcopy(report)
+            promoted[key] = True
+            with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):
+                _validate_phase_event_save_feedback(promoted)
 
 
 if __name__ == "__main__":

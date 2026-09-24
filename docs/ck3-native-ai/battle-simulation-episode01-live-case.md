@@ -62,7 +62,9 @@
 
 六次条目在第 5、7、9、15、16、19 日各一条；每一次对应的 fire 前后，**已捕获的人物核心字段与称号字段没有变化**。这只排除这些字段在该捕获区间内可见的即时改写，不能排除未捕获 trait、资源、脚本变量、回调或稍后的改写。第 5 日条目称 `knight_wounded_by_enemy`，目标角色 36303 在 fire 前后勇武均为 8，下一源日 schedule 前仍为 8、fire 前已为 6；第 15 日 `knight_killed_by_enemy` 的目标 36673 在 fire 后仍未见死亡标记，下一源日 fire 前已有死亡标记且兵团链接改变。第 15、16 日整体 trace 是 `trace_unavailable`，这里只引用零错误、身份与日期相符的局部 fire 成对记录，不提升整日 readiness。
 
-因此战报追加时刻**不等于**效果写集全部生效时刻。跨两次日初/阶段回读的变化与对应条目有时间关联，但还不能单独证明因果、精确回调边界或完整 effect；任何模拟器若在 fire 记录追加时立刻把伤/死效果写入状态，仍需和原版后续读取点对拍。片中可以展示“战报先出现，后续状态再变”的该案实证，不得解说为完整事件模型已经确认。
+原始回放还保留了事件前、后的同战斗存档。使用 [Rakaly CLI](https://github.com/rakaly/cli) `v0.8.19`（官方 Windows zip SHA-256 `343E2C33869B1EC82E4AB018D1BB6936CC68B63146F99F426939F4D76106710D`；解码 exe SHA-256 `E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D`）在外置 attempt-008 只读解码四份已冻结 `.ck3`，四次命令均退出 0。[共用存档回流投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json)（SHA-256 `2C392178AF7206E62EDE47AF061E133B9B09D91C3F9CEA736A503EC7843D44B5`）逐一绑定原始存档 SHA、解码文本 SHA、`traits_lookup`、CharacterID 和事件回执。第 5 日事件前存档中 36303 没有伤势；与事件 `native_date_raw=53146368` **同日期**的第 6 日初存档已有 `wounded_1`，但当时原生 core 回读勇武仍为 8，到再下一个 fire 入口才读到 6。第 15 日事件前存档中 36673 存活；与事件 `native_date_raw=53146608` **同日期**的第 16 日初存档已有 `dead_data`，日期 `1066.12.19`、死因 `death_battle`、击杀者 32716，与战报右侧人物相符。
+
+所以“条目出现后，伤势/死亡到下一游戏日才生效”这个说法过宽：**同日期存档已保存伤势 trait 和死亡状态**。当前实证只定位到“fire 局部 core 读数未变，但同日期后续存档状态已变；勇武缓存的可见下降更晚”；它没有逐指令定位 effect 回调，也没有捕获威望、荣誉、脚本变量等完整写集或排除同日其他因果。模拟器必须分别对拍 trait/死亡状态和其对下一次战斗数值输入的刷新时点；本片仍不能报整场胜率。
 
 这些结果证明“同一接战检查点可产生不同的原版逐日数值轨迹”，也证明三条被观察到的轨迹都输了；**不证明回放之间是独立随机抽样，更不等于这场战斗的胜率为 0%**。样本只有一个初始局面、两个真正的重启回放，没有覆盖不同战斗条件；event effect、增援策略与模拟器预测残差也未闭合。数据合同明确 `independent_random_draws_proven=false`、`calibrated_win_probability_available=false`、`planner_usable=false`，不得把 3/3 败退作为自动进攻的概率输入或作为正片百分比。
 
