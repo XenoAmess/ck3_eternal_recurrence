@@ -32,6 +32,8 @@ EPISODE01_JOIN_KERNEL_V2_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_
 EPISODE01_JOIN_KERNEL_V2_SHA256 = "B3660C52B27FD6D2186E0AB7590CE64C24720262A1BCCB3DCA8F2FB622DA5571"
 EPISODE01_EVENT_REGIMENT_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_regiment_feedback.json"
 EPISODE01_EVENT_REGIMENT_SHA256 = "C32350EF7AE635A3E554761077100210A2F402BEB354218E640E7EA5B74D1A55"
+EPISODE01_OUTGOING_FILE = "ck3_1_19_0_6_episode01_messina_main_outgoing_conditional_parity.json"
+EPISODE01_OUTGOING_SHA256 = "E31C81A6C7A65A65704C942DFC1C470C6C30EA41FB8CD769334E8D79CCF41727"
 
 
 class NativeBattleCaseError(ValueError):
@@ -521,6 +523,63 @@ def load_episode01_phase_event_regiment_feedback() -> dict[str, Any]:
     return report
 
 
+def _validate_main_outgoing_conditional_parity(report: dict[str, Any]) -> None:
+    if (report.get("schema") != "ck3-native-main-outgoing-conditional-parity-v1"
+            or report.get("case_sha256") != EPISODE01_CASE_SHA256
+            or report.get("join_evidence_sha256") != EPISODE01_JOIN_DAY_SHA256
+            or report.get("game_version") != "1.19.0.6"
+            or report.get("combat_id") != 16777218
+            or report.get("trajectory") != "independent-replay-from-original-contact-checkpoint"
+            or report.get("native_outgoing_values_compared") != 46
+            or report.get("exact_outgoing_values") != 46):
+        raise NativeBattleCaseError("conditional outgoing parity identity or count mismatch")
+    if any(report.get(key) is not True for key in (
+        "conditioned_on_native_post_counter_attack", "conditioned_on_native_advantage",
+        "conditioned_on_observed_joined_roster_and_width",
+    )) or any(report.get(key) is not False for key in (
+        "post_counter_attack_reconstructed", "advantage_reconstructed",
+        "join_policy_reconstructed", "width_refresh_reconstructed",
+        "whole_battle_win_probability_available", "planner_usable",
+    )):
+        raise NativeBattleCaseError("conditional outgoing parity forecast gate mismatch")
+    rows = report.get("source_days")
+    if not isinstance(rows, list) or [row.get("source_day") for row in rows] != list(range(4, 27)):
+        raise NativeBattleCaseError("conditional outgoing day sequence mismatch")
+    for row in rows:
+        sides = row.get("sides")
+        if (not isinstance(sides, list)
+                or [side.get("side_index") for side in sides] != [0, 1]
+                or row.get("advantage_record_index") != 1
+                or row.get("advantage_record_capture_failure_flags") != 0
+                or row.get("both_sides_exact") is not True
+                or any(side.get("agent_minus_native_raw") != 0
+                       or side.get("agent_outgoing_damage_raw") != side.get("native_outgoing_damage_raw")
+                       for side in sides)):
+            raise NativeBattleCaseError("conditional outgoing day residual or boundary mismatch")
+        source_day = row["source_day"]
+        if source_day in (11, 21):
+            if (row.get("width_source") != "arrival_day_control_after_join"
+                    or row.get("observed_joined_fighting_men_raw") !=
+                    (256000000 if source_day == 11 else 105800000)):
+                raise NativeBattleCaseError("conditional outgoing join input mismatch")
+        elif (row.get("width_source") != "source_day_control"
+              or row.get("observed_joined_fighting_men_raw") != 0):
+            raise NativeBattleCaseError("unexpected join input on stable day")
+
+
+def load_episode01_main_outgoing_conditional_parity() -> dict[str, Any]:
+    """Return 46 exact conditional damage-scaling checks, not forecasts."""
+    path = Path(__file__).with_name("data") / EPISODE01_OUTGOING_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_OUTGOING_SHA256:
+        raise NativeBattleCaseError("bundled outgoing parity bytes changed without review")
+    report = json.loads(data)
+    if not isinstance(report, dict):
+        raise NativeBattleCaseError("outgoing parity must be a JSON object")
+    _validate_main_outgoing_conditional_parity(report)
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -540,6 +599,8 @@ __all__ = [
     "EPISODE01_JOIN_KERNEL_V2_SHA256",
     "EPISODE01_EVENT_REGIMENT_FILE",
     "EPISODE01_EVENT_REGIMENT_SHA256",
+    "EPISODE01_OUTGOING_FILE",
+    "EPISODE01_OUTGOING_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -550,5 +611,6 @@ __all__ = [
     "load_episode01_join_day_kernel_parity",
     "load_episode01_join_day_kernel_parity_v2",
     "load_episode01_phase_event_regiment_feedback",
+    "load_episode01_main_outgoing_conditional_parity",
     "original_daily_timeline",
 ]

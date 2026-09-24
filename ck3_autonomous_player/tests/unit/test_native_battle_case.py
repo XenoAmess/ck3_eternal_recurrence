@@ -20,6 +20,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     _validate_join_day_kernel_parity,
     _validate_join_day_kernel_parity_v2,
     _validate_phase_event_regiment_feedback,
+    _validate_main_outgoing_conditional_parity,
     load_episode01_native_battle_case,
     load_episode01_native_battle_repeatability,
     load_episode01_phase_event_observations,
@@ -28,6 +29,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_join_day_kernel_parity,
     load_episode01_join_day_kernel_parity_v2,
     load_episode01_phase_event_regiment_feedback,
+    load_episode01_main_outgoing_conditional_parity,
     original_daily_timeline,
 )
 
@@ -204,6 +206,22 @@ class NativeBattleCaseTests(unittest.TestCase):
         promoted["event_unique_cause_proven"] = True
         with self.assertRaises(NativeBattleCaseError):
             _validate_phase_event_regiment_feedback(promoted)
+
+    def test_outgoing_damage_scaling_exact_only_with_native_operands(self) -> None:
+        report = load_episode01_main_outgoing_conditional_parity()
+        self.assertEqual(report["native_outgoing_values_compared"], 46)
+        self.assertEqual(report["exact_outgoing_values"], 46)
+        self.assertEqual([row["source_day"] for row in report["source_days"]], list(range(4, 27)))
+        by_day = {row["source_day"]: row for row in report["source_days"]}
+        self.assertEqual(by_day[11]["observed_joined_fighting_men_raw"], 256000000)
+        self.assertEqual(by_day[21]["observed_joined_fighting_men_raw"], 105800000)
+        self.assertEqual(by_day[16]["advantage_record_capture_failure_flags"], 0)
+        self.assertFalse(report["post_counter_attack_reconstructed"])
+        self.assertFalse(report["planner_usable"])
+        promoted = copy.deepcopy(report)
+        promoted["post_counter_attack_reconstructed"] = True
+        with self.assertRaises(NativeBattleCaseError):
+            _validate_main_outgoing_conditional_parity(promoted)
         promoted = copy.deepcopy(report)
         promoted["outgoing_damage_reconstructed"] = True
         with self.assertRaises(NativeBattleCaseError):

@@ -50,6 +50,12 @@
 
 这份对拍报告被智能体包持有，并可由视频从同一证据板引用。它支持“给定原版当天出伤和稳定参战名单时，现有伤亡内核多日逐兵团对拍”的窄结论；**不支持**完整出伤生成、事件反馈、增援预测、追击终局或整场胜率。模型决策门禁仍必须逐项等待这些缺口关闭。
 
+### 主阶段出伤缩放的 46 项条件零差
+
+[共用出伤对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_main_outgoing_conditional_parity.json) SHA-256 `E31C81A6C7A65A65704C942DFC1C470C6C30EA41FB8CD769334E8D79CCF41727`，由[只读重算工具](../../ck3_autonomous_player/tools/compare_native_main_outgoing_damage.py)核对第 4–26 日的 control/phase 原始回执 SHA，将智能体 `outgoing_damage_raw` 应用于双方 46 个实测值，**46/46 零差**。每项输入包含原版反制后攻击力、有效优势、战宽及参战人数。优势取同日期 side1 schedule 返回后的有效记录；第 16 日首条记录的捕获标志非零，但该下一条同日期记录为 0，没有借用失败记录。人数取当前有效兵力，不能沿用阶段记录中的上一日缓存；第 11、21 日须计入已观察到的增援，前者还须使用入场后更新的战宽。
+
+这闭合的是**给定原版中间输入时的主阶段出伤缩放公式**，并未自主重建反制后攻击力、优势生成、增援决策或战宽刷新。第 11、15、16、21 日完整阶段 trace 的 RED 不因局部出伤公式零差而变绿；原案与独立回放仍严格分开。视频[同源出伤板](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/outgoing-damage-board.json)由智能体读取器生成；整场胜率和 `planner_usable` 均未开放。
+
 ### 两次自然增援的到达日伤亡
 
 第 11、21 源日的完整 phase trace 因增援导致 side 身份变化而为 `trace_unavailable`，但前一日冻结存档、移动快照和下一日的首次有效阶段记录可以独立配对。[共用增援日投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_casualties.json) SHA-256 `C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72` 核对了所有源 bytes：ArmyID `22` 到达第 12 日，其 12 个参战兵团的入场前存档当前人数合计 2560，到达日阶段回读为 2521.99061，软/硬伤亡分别为 26.03650/11.97289；另 1 个未参战骑士兵团没有战斗伤亡。ArmyID `28` 到达第 22 日，其 5 个参战兵团从 1058 到 1049.99308，软/硬伤亡为 5.48476/2.52216。17 个参战兵团逐项满足“入场前存档当前数 = 阶段起始数”和“起始数 − 到达日当前数 = 软伤亡 + 硬伤亡”，每项伤亡均大于零。两次移动前 `in_combat=false`、目标梅西纳；一步日期推进后 `in_combat=true`，同 CombatID。
