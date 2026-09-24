@@ -46,6 +46,10 @@ EPISODE01_TRACE_FAILURE_FILE = "ck3_1_19_0_6_episode01_messina_paired_trace_fail
 EPISODE01_TRACE_FAILURE_SHA256 = "3E82A6A59ED2648F37D31BC8A4A6CEB32D79516F9E9F6DD2F2E5A0B7A4554953"
 EPISODE01_TRACE_DAY26_FILE = "ck3_1_19_0_6_episode01_messina_paired_trace_day26_identity.json"
 EPISODE01_TRACE_DAY26_SHA256 = "32715AE1731CF19ABFEFB4D2668D47F6EFA8188AEADC187F298E739825019065"
+EPISODE01_KILL_REPLAY_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_kill_replay_feedback.json"
+EPISODE01_KILL_REPLAY_SHA256 = "2E68CB2196B1546E610CED211F81251AEE6DD09294FD6EF529EFF132C0134EDC"
+EPISODE01_KILL_REWARD_FILE = "ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json"
+EPISODE01_KILL_REWARD_SHA256 = "3FCB1FFB509251CA471E33FAACC768FD7E7FC04243413EDCD9EDCFD0CAD99E92"
 
 
 class NativeBattleCaseError(ValueError):
@@ -796,6 +800,62 @@ def load_episode01_paired_trace_day26_identity() -> dict[str, Any]:
     return report
 
 
+def load_episode01_phase_event_kill_replay_feedback() -> dict[str, Any]:
+    """Read an independent same-date kill/save observation for agent and film."""
+    path = Path(__file__).with_name("data") / EPISODE01_KILL_REPLAY_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_KILL_REPLAY_SHA256:
+        raise NativeBattleCaseError("bundled kill replay feedback bytes changed without review")
+    report = json.loads(data)
+    target = report.get("target_before_and_after", []) if isinstance(report, dict) else []
+    if (not isinstance(report, dict)
+            or not isinstance(target, list) or len(target) != 2
+            or not all(isinstance(row, dict) for row in target)
+            or report.get("schema") != "xar.ck3.episode01.phase-event-kill-replay-feedback/v1"
+            or report.get("restored_source_paired_report_sha256") != EPISODE01_PAIRED_COUNTER_SHA256
+            or report.get("appended_event", {}).get("stable_key") != "knight_killed_by_enemy"
+            or report.get("appended_event", {}).get("left_character_id") != 33437
+            or report.get("target_regiment_id_before") != 65
+            or report.get("stale_scheduled_regiment_id_at_final_query") != 65
+            or target[0].get("alive_data_present") is not True
+            or target[1].get("dead_data_present") is not True
+            or target[1].get("killer_character_id") != 34120
+            or report.get("opponent_prestige_currency_delta") != "150.0000"
+            or report.get("opponent_base_prowess_delta") != 0
+            or report.get("full_event_write_set_proven") is not False
+            or report.get("only_possible_cause_proven") is not False
+            or report.get("full_phase_trace_available") is not False
+            or report.get("whole_battle_win_probability_available") is not False
+            or report.get("planner_usable") is not False):
+        raise NativeBattleCaseError("kill replay feedback or readiness drifted")
+    return report
+
+
+def load_episode01_knight_kill_reward_scaling() -> dict[str, Any]:
+    """Read conditional stock reward parity without event-effect promotion."""
+    path = Path(__file__).with_name("data") / EPISODE01_KILL_REWARD_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_KILL_REWARD_SHA256:
+        raise NativeBattleCaseError("bundled kill reward scaling bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.knight-kill-reward-scaling/v1"
+            or report.get("source_old_feedback_sha256") != EPISODE01_PHASE_EVENT_SAVE_SHA256
+            or report.get("source_new_feedback_sha256") != EPISODE01_KILL_REPLAY_SHA256
+            or report.get("conditional_exact_cases") != 2
+            or [row.get("target_character_id") for row in report.get("cases", [])] != [36673, 33437]
+            or [row.get("native_prestige_delta_raw_q100000") for row in report["cases"]]
+               != [30_000_000, 15_000_000]
+            or any(row.get("delta_raw_q100000") != 0 for row in report["cases"])
+            or report.get("title_rank_and_lowborn_conditions_proven_for_all_future_events") is not False
+            or report.get("reward_only_possible_cause_proven") is not False
+            or report.get("full_event_write_set_proven") is not False
+            or report.get("whole_battle_win_probability_available") is not False
+            or report.get("planner_usable") is not False):
+        raise NativeBattleCaseError("conditional kill reward scaling or readiness drifted")
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -829,6 +889,10 @@ __all__ = [
     "EPISODE01_TRACE_FAILURE_SHA256",
     "EPISODE01_TRACE_DAY26_FILE",
     "EPISODE01_TRACE_DAY26_SHA256",
+    "EPISODE01_KILL_REPLAY_FILE",
+    "EPISODE01_KILL_REPLAY_SHA256",
+    "EPISODE01_KILL_REWARD_FILE",
+    "EPISODE01_KILL_REWARD_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -846,5 +910,7 @@ __all__ = [
     "load_episode01_paired_advantage_parity",
     "load_episode01_paired_trace_failure_boundaries",
     "load_episode01_paired_trace_day26_identity",
+    "load_episode01_phase_event_kill_replay_feedback",
+    "load_episode01_knight_kill_reward_scaling",
     "original_daily_timeline",
 ]

@@ -1,0 +1,199 @@
+{
+  "schema": "xar.ck3.episode01.phase-event-kill-replay-feedback/v1",
+  "game_build": "CK3 1.19.0.6",
+  "capture_run": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-day26-postevent-attempt-013",
+  "restored_source_paired_report_sha256": "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358",
+  "restored_source_save_sha256": "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B",
+  "rakaly_version": "0.8.19",
+  "rakaly_exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+  "rakaly_command": "melt <immutable.ck3> --unknown-key stringify --format ck3 --out <melted.ck3>",
+  "before_save_receipt_sha256": "64B54C4397F0902193ABB13EB7CAF575B472583AB026CA2959ABC56C074A2D1D",
+  "after_save_receipt_sha256": "122B064C1E6245083DA5176D70AA5EBC896789BE4E1E716E9AF9839380BA6549",
+  "trace_response_sha256": "A94DF9C0BBA0551D2A9C66FA6D32BAB222BDE698BC39CFC445D28D5C11F150B6",
+  "before_native_save_sha256": "5F4802027BC9B6E504EBA07133BF8276FEB74567C2EF51A640901C1F9DB7FEF4",
+  "after_native_save_sha256": "C25BAC4289B36C7F643C14F746CBC9D8FA4D53F6C12ABEFC145355A271CC1BC0",
+  "before_melted_save_sha256": "2E47C707D666092F0726DDFDD632D3FE18A5ED5DC9B2AE096C07433C08AE1E65",
+  "after_melted_save_sha256": "54FA4BCE8AC2AFE315FA4BA8A51639A6B97FC26F9EAF995C34686D5653CD4EBA",
+  "before_date_raw": 53146848,
+  "after_date_raw": 53146872,
+  "appended_event": {
+    "left_character_id": 33437,
+    "right_character_id": 34120,
+    "stable_key": "knight_killed_by_enemy",
+    "type_raw": 3,
+    "side_index": 1,
+    "target_right": false
+  },
+  "event_appended_between_boundaries": [
+    4,
+    5
+  ],
+  "target_core_at_last_valid_boundary": {
+    "character_id": 33437,
+    "death_marker_present": false,
+    "martial": 4,
+    "learning": 9,
+    "prowess": 4,
+    "current_regiment_id": 65,
+    "current_regiment_back_reference_matches": true
+  },
+  "target_regiment_id_before": 65,
+  "target_regiment_present_in_final_side_knights": false,
+  "stale_scheduled_regiment_id_at_final_query": 65,
+  "target_before_and_after": [
+    {
+      "character_id": 33437,
+      "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+      "trait_indices": [
+        50,
+        76,
+        54,
+        16,
+        236
+      ],
+      "trait_keys": [
+        "temperate",
+        "callous",
+        "diligent",
+        "education_martial_2",
+        "logistician"
+      ],
+      "base_skill_values": [
+        4,
+        0,
+        4,
+        6,
+        6,
+        2
+      ],
+      "prestige_currency": "300.3456",
+      "prestige_accumulated": "1000.3456",
+      "wounded_rank": 0,
+      "alive_data_present": true,
+      "dead_data_present": false,
+      "death_date": null,
+      "death_reason": null,
+      "killer_character_id": null,
+      "regiment_id": 65,
+      "character_block_sha256": "9550E8E5838E1BABF2F39F7C45F098B9E7612D6F0253B53E4B316BB3ADDA80F1"
+    },
+    {
+      "character_id": 33437,
+      "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+      "trait_indices": [
+        50,
+        76,
+        54,
+        16,
+        236
+      ],
+      "trait_keys": [
+        "temperate",
+        "callous",
+        "diligent",
+        "education_martial_2",
+        "logistician"
+      ],
+      "base_skill_values": [
+        4,
+        0,
+        4,
+        6,
+        6,
+        2
+      ],
+      "prestige_currency": null,
+      "prestige_accumulated": null,
+      "wounded_rank": 0,
+      "alive_data_present": false,
+      "dead_data_present": true,
+      "death_date": "1066.12.30",
+      "death_reason": "death_battle",
+      "killer_character_id": 34120,
+      "regiment_id": null,
+      "character_block_sha256": "59EAAF0917F2813B6BB6644706D695DA7E6404D8DC584EF51CBB24079C98DE48"
+    }
+  ],
+  "opponent_before_and_after": [
+    {
+      "character_id": 34120,
+      "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+      "trait_indices": [
+        62,
+        69,
+        71,
+        16,
+        248
+      ],
+      "trait_keys": [
+        "honest",
+        "arbitrary",
+        "cynical",
+        "education_martial_2",
+        "rough_terrain_expert"
+      ],
+      "base_skill_values": [
+        7,
+        5,
+        4,
+        6,
+        8,
+        7
+      ],
+      "prestige_currency": "301.0608",
+      "prestige_accumulated": "1001.0608",
+      "wounded_rank": 0,
+      "alive_data_present": true,
+      "dead_data_present": false,
+      "death_date": null,
+      "death_reason": null,
+      "killer_character_id": null,
+      "regiment_id": 115,
+      "character_block_sha256": "43FB24ABA7E73D422397CF2637438578EB8B20534B97B1002EEA8202D0EC4872"
+    },
+    {
+      "character_id": 34120,
+      "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+      "trait_indices": [
+        62,
+        69,
+        71,
+        16,
+        248
+      ],
+      "trait_keys": [
+        "honest",
+        "arbitrary",
+        "cynical",
+        "education_martial_2",
+        "rough_terrain_expert"
+      ],
+      "base_skill_values": [
+        7,
+        5,
+        4,
+        6,
+        8,
+        7
+      ],
+      "prestige_currency": "451.0608",
+      "prestige_accumulated": "1151.0608",
+      "wounded_rank": 0,
+      "alive_data_present": true,
+      "dead_data_present": false,
+      "death_date": null,
+      "death_reason": null,
+      "killer_character_id": null,
+      "regiment_id": 115,
+      "character_block_sha256": "B40088F0C47AA722E3455BF6E7666296EF0E57C284DC3B65D0DB35134D35A01D"
+    }
+  ],
+  "opponent_prestige_currency_delta": "150.0000",
+  "opponent_prestige_accumulated_delta": "150.0000",
+  "opponent_base_prowess_delta": 0,
+  "full_event_write_set_proven": false,
+  "only_possible_cause_proven": false,
+  "full_phase_trace_available": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

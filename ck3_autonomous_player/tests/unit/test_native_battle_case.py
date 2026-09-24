@@ -37,9 +37,12 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_paired_advantage_parity,
     load_episode01_paired_trace_failure_boundaries,
     load_episode01_paired_trace_day26_identity,
+    load_episode01_phase_event_kill_replay_feedback,
+    load_episode01_knight_kill_reward_scaling,
     original_daily_timeline,
 )
 from xar_autoplayer.simulation.native_advantage import resolved_advantage_with_commander_rolls_raw
+from xar_autoplayer.simulation.native_phase_event_rewards import knight_kill_inverse_prestige_raw
 
 
 class NativeBattleCaseTests(unittest.TestCase):
@@ -325,6 +328,40 @@ class NativeBattleCaseTests(unittest.TestCase):
                          "ReadSide(side1).scheduled_knights.regiment_identity_guard")
         self.assertFalse(report["same_day_post_event_save_available"])
         self.assertFalse(report["full_trace_available"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_independent_kill_replay_binds_same_date_save_without_forecast(self) -> None:
+        report = load_episode01_phase_event_kill_replay_feedback()
+        self.assertEqual(report["appended_event"]["left_character_id"], 33437)
+        self.assertEqual(report["event_appended_between_boundaries"], [4, 5])
+        self.assertEqual(report["target_core_at_last_valid_boundary"]["current_regiment_id"], 65)
+        self.assertFalse(report["target_core_at_last_valid_boundary"]["death_marker_present"])
+        self.assertTrue(report["target_before_and_after"][1]["dead_data_present"])
+        self.assertEqual(report["target_before_and_after"][1]["death_reason"], "death_battle")
+        self.assertEqual(report["target_before_and_after"][1]["killer_character_id"], 34120)
+        self.assertEqual(report["opponent_prestige_currency_delta"], "150.0000")
+        self.assertEqual(report["opponent_prestige_accumulated_delta"], "150.0000")
+        self.assertEqual(report["opponent_base_prowess_delta"], 0)
+        self.assertFalse(report["full_event_write_set_proven"])
+        self.assertFalse(report["full_phase_trace_available"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_stock_kill_reward_uses_victim_title_in_two_native_cases(self) -> None:
+        report = load_episode01_knight_kill_reward_scaling()
+        self.assertEqual(report["source_phase_events_sha256"],
+                         "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1")
+        self.assertEqual(report["conditional_exact_cases"], 2)
+        self.assertEqual([row["target_held_title_keys"] for row in report["cases"]],
+                         [["b_baja_medjerda", "c_medjerda"], []])
+        for row in report["cases"]:
+            self.assertEqual(knight_kill_inverse_prestige_raw(
+                victim_primary_title_tier=row["conditional_primary_title_tier"],
+                victim_is_lowborn=row["conditional_lowborn"],
+            ), row["native_prestige_delta_raw_q100000"])
+            self.assertEqual(row["delta_raw_q100000"], 0)
+        self.assertEqual(knight_kill_inverse_prestige_raw(
+            victim_primary_title_tier=None, victim_is_lowborn=True), 7_500_000)
+        self.assertFalse(report["title_rank_and_lowborn_conditions_proven_for_all_future_events"])
         self.assertFalse(report["planner_usable"])
 
 

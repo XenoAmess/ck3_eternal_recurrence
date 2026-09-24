@@ -1,0 +1,52 @@
+{
+  "schema": "xar.ck3.episode01.knight-kill-reward-scaling/v1",
+  "game_build": "CK3 1.19.0.6",
+  "source_old_feedback_sha256": "42C495789167F27F330D40FE657CEE359C02AF5FF217DFCB16E9A2971ECAC130",
+  "source_new_feedback_sha256": "2E68CB2196B1546E610CED211F81251AEE6DD09294FD6EF529EFF132C0134EDC",
+  "source_script_values_sha256": "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096",
+  "source_phase_events_sha256": "E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1",
+  "script_value_key": "knight_prestige_gain_on_kill_inverse",
+  "base_prestige_raw_q100000": 15000000,
+  "conditional_formula": "base * positive_root_primary_title_tier_if_present / 2_if_root_is_lowborn",
+  "conditional_exact_cases": 2,
+  "cases": [
+    {
+      "source": "attempt-004-original-day15-kill",
+      "target_character_id": 36673,
+      "opponent_character_id": 32716,
+      "target_held_title_keys": [
+        "b_baja_medjerda",
+        "c_medjerda"
+      ],
+      "target_dynasty_house_id": 10393,
+      "conditional_primary_title_tier": 2,
+      "conditional_lowborn": false,
+      "native_lowborn_trigger_readback_available": false,
+      "native_prestige_delta_raw_q100000": 30000000,
+      "agent_stock_value_raw_q100000": 30000000,
+      "delta_raw_q100000": 0,
+      "source_native_save_sha256": "7C027A1A1D47E177F28DC0616BEBDCC8F3E57BD21801197FACC03EFE2578C53A",
+      "source_melted_save_sha256": "D3DADB33E2638EE078FFED90D6BCB40A131638BCEBCD83D8B29F6F43DD4B025D"
+    },
+    {
+      "source": "attempt-013-independent-restored-day26-kill",
+      "target_character_id": 33437,
+      "opponent_character_id": 34120,
+      "target_held_title_keys": [],
+      "target_dynasty_house_id": 1105,
+      "conditional_primary_title_tier": null,
+      "conditional_lowborn": false,
+      "native_lowborn_trigger_readback_available": false,
+      "native_prestige_delta_raw_q100000": 15000000,
+      "agent_stock_value_raw_q100000": 15000000,
+      "delta_raw_q100000": 0,
+      "source_native_save_sha256": "5F4802027BC9B6E504EBA07133BF8276FEB74567C2EF51A640901C1F9DB7FEF4",
+      "source_melted_save_sha256": "2E47C707D666092F0726DDFDD632D3FE18A5ED5DC9B2AE096C07433C08AE1E65"
+    }
+  ],
+  "title_rank_and_lowborn_conditions_proven_for_all_future_events": false,
+  "reward_only_possible_cause_proven": false,
+  "full_event_write_set_proven": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}
