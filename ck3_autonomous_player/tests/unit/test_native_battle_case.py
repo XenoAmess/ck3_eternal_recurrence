@@ -39,6 +39,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_paired_trace_day26_identity,
     load_episode01_phase_event_kill_replay_feedback,
     load_episode01_phase_event_kill_trace_recovery,
+    load_episode01_phase_event_kill_trace_release,
     load_episode01_knight_kill_reward_scaling,
     original_daily_timeline,
 )
@@ -378,6 +379,16 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertEqual(report["killer_prestige_currency_delta"], "150.0000")
         self.assertFalse(report["full_mutable_transition_bundle_complete"])
         self.assertFalse(report["full_event_write_set_proven"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_release_build_restores_v3_input_without_planner_promotion(self) -> None:
+        report = load_episode01_phase_event_kill_trace_release()
+        self.assertEqual(report["v3_phase_event_input_status"], "available")
+        self.assertIsNone(report["v3_phase_event_input_unavailable_reason"])
+        self.assertEqual(report["boundary_capture_failure_flags"], [0] * 7)
+        self.assertTrue(report["target_core_at_final_query"]["death_marker_present"])
+        self.assertEqual(report["scheduled_knight_at_final_query"]["current_character_id"], -1)
+        self.assertFalse(report["full_mutable_transition_bundle_complete"])
         self.assertFalse(report["planner_usable"])
 
 

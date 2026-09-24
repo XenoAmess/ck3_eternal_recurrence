@@ -50,6 +50,8 @@ EPISODE01_KILL_REPLAY_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_kill_re
 EPISODE01_KILL_REPLAY_SHA256 = "2E68CB2196B1546E610CED211F81251AEE6DD09294FD6EF529EFF132C0134EDC"
 EPISODE01_KILL_TRACE_RECOVERY_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_kill_trace_recovery.json"
 EPISODE01_KILL_TRACE_RECOVERY_SHA256 = "B7F940916285F5E057B972EBBF12873BF6466D2396A13EF76905A95F04EA2C05"
+EPISODE01_KILL_TRACE_RELEASE_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_kill_trace_release.json"
+EPISODE01_KILL_TRACE_RELEASE_SHA256 = "906900875DF185CD3157874293E440865ECD7BDDDD758E7FB9EC6163FFFD19BE"
 EPISODE01_KILL_REWARD_FILE = "ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json"
 EPISODE01_KILL_REWARD_SHA256 = "3FCB1FFB509251CA471E33FAACC768FD7E7FC04243413EDCD9EDCFD0CAD99E92"
 
@@ -866,6 +868,35 @@ def load_episode01_phase_event_kill_trace_recovery() -> dict[str, Any]:
     return report
 
 
+def load_episode01_phase_event_kill_trace_release() -> dict[str, Any]:
+    """Read Release-build v3 admission and same-day kill capture, still nonplanner."""
+    path = Path(__file__).with_name("data") / EPISODE01_KILL_TRACE_RELEASE_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_KILL_TRACE_RELEASE_SHA256:
+        raise NativeBattleCaseError("Release kill trace bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.phase-event-kill-trace-recovery/v1"
+            or report.get("restored_source_paired_report_sha256") != EPISODE01_PAIRED_COUNTER_SHA256
+            or report.get("boundary_capture_failure_flags") != [0] * 7
+            or report.get("appended_event", {}).get("left_character_id") != 33437
+            or report.get("target_core_at_final_query", {}).get("death_marker_present") is not True
+            or report.get("scheduled_knight_at_final_query", {}).get("current_character_id") != -1
+            or report.get("v3_phase_event_input_status") != "available"
+            or report.get("v3_phase_event_input_unavailable_reason") is not None
+            or not isinstance(report.get("release_build_cache_sha256"), str)
+            or len(report["release_build_cache_sha256"]) != 64
+            or not isinstance(report.get("release_bridge_dll_sha256"), str)
+            or len(report["release_bridge_dll_sha256"]) != 64
+            or any(report.get(key) is not False for key in (
+                "full_mutable_transition_bundle_complete", "full_event_write_set_proven",
+                "only_possible_cause_proven", "whole_battle_win_probability_available",
+                "planner_usable",
+            ))):
+        raise NativeBattleCaseError("Release kill trace or readiness drifted")
+    return report
+
+
 def load_episode01_knight_kill_reward_scaling() -> dict[str, Any]:
     """Read conditional stock reward parity without event-effect promotion."""
     path = Path(__file__).with_name("data") / EPISODE01_KILL_REWARD_FILE
@@ -928,6 +959,8 @@ __all__ = [
     "EPISODE01_KILL_REPLAY_SHA256",
     "EPISODE01_KILL_TRACE_RECOVERY_FILE",
     "EPISODE01_KILL_TRACE_RECOVERY_SHA256",
+    "EPISODE01_KILL_TRACE_RELEASE_FILE",
+    "EPISODE01_KILL_TRACE_RELEASE_SHA256",
     "EPISODE01_KILL_REWARD_FILE",
     "EPISODE01_KILL_REWARD_SHA256",
     "NativeBattleCaseError",
@@ -949,6 +982,7 @@ __all__ = [
     "load_episode01_paired_trace_day26_identity",
     "load_episode01_phase_event_kill_replay_feedback",
     "load_episode01_phase_event_kill_trace_recovery",
+    "load_episode01_phase_event_kill_trace_release",
     "load_episode01_knight_kill_reward_scaling",
     "original_daily_timeline",
 ]

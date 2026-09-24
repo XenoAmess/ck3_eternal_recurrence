@@ -92,6 +92,8 @@ v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接
 
 随后在**另一个隔离 attempt-015**中，采集器只对“预先确认存在、但已退出当前骑士列表”的旧日程保留事件/兵团 ID，并把当前角色标为 `-1`；未知兵团 ID 仍拒绝。修正后的独立第 26 日回放得到七条零失败原生边界，[共用恢复报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_kill_trace_recovery.json)校验原始回执和两份同日存档。第 5→6 边界目标 `33437` 的 death marker 从 false 变 true、派生勇武从 4 降为 2、人物兵团链接从 65 变为 0，65 号兵团退出参战；旧日程仍留在侧面记录。存档再次显示 `death_battle/killer=34120`、对手威望 +150。原先 RED attempt 保持原样；新七边界的 `bounded_capture_complete=true` 仍伴随 `full_mutable_transition_bundle_complete=false`，只修复采集，不提升整场胜率或智能体进攻许可。本次新构建的 v3 输入另有文化参数 `knights_slightly_more_prone_to_injury` 缺口。
 
+该文化参数缺口只出现在 attempt-014/015 使用的 Debug 桥接构建。另以相同第 26 日检查点、相同源代码的**Release 桥接构建**运行 attempt-016，[新的共用报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_kill_trace_release.json)记录 `phase_event_inputs_ready=true`、七边界 `bounded_capture_complete=true`、目标死亡与退伍，以及构建缓存/DLL SHA。Debug 失败仍存档；当前后续研究使用 Release 结果，但 `full_mutable_transition_bundle_complete=false`、`planner_usable=false` 未变。
+
 这仍没有预测**军队会在第几天加入**，也没有从战前自主推进软/硬伤亡、伤势引起的有效属性刷新、优势或事件全部效果。第 11、21 日整条阶段追踪仍 `trace_unavailable`；追加证据只闭合局部 R14 算术及源日假设查询的可用性，不改变正片概率与游玩智能体的 `planner_usable=false` 门禁。
 
 ### 同接战存档的三次原生回放

@@ -49,7 +49,14 @@ def _character(record: dict, character_id: int) -> dict:
     return next(row for row in record["characters"] if row["character_id"] == character_id)
 
 
-def project(run: Path, rakaly_exe: Path) -> dict:
+def project(
+    run: Path,
+    rakaly_exe: Path,
+    *,
+    expected_v3_status: str = "unavailable",
+    build_cache: Path | None = None,
+    bridge_dll: Path | None = None,
+) -> dict:
     run = run.resolve()
     if digest(rakaly_exe) != RAKALY_EXE_SHA256:
         raise ValueError("Rakaly executable bytes changed")
@@ -125,11 +132,23 @@ def project(run: Path, rakaly_exe: Path) -> dict:
         raise ValueError("killer prestige delta changed")
 
     phase_inputs = v3["combat_simulation_inputs"]["phase_event_inputs"]
-    if (v3["status"] != "unavailable" or phase_inputs["status"] != "unavailable"
-            or phase_inputs["unavailable_reason"] !=
-            "native_phase_definition_context_culture_parameter_unavailable:knights_slightly_more_prone_to_injury"):
-        raise ValueError("concurrent v3 input gap changed")
-    return {
+    if expected_v3_status == "unavailable":
+        if (v3["status"] != "unavailable" or phase_inputs["status"] != "unavailable"
+                or phase_inputs["unavailable_reason"] !=
+                "native_phase_definition_context_culture_parameter_unavailable:knights_slightly_more_prone_to_injury"):
+            raise ValueError("concurrent Debug v3 input gap changed")
+    elif expected_v3_status == "available":
+        if (v3["status"] != "available" or phase_inputs["status"] != "available"
+                or v3["combat_simulation_inputs"]["completeness"]["phase_event_inputs_ready"] is not True
+                or build_cache is None or bridge_dll is None):
+            raise ValueError("Release v3 phase input admission changed")
+        cache = build_cache.read_text(encoding="utf-8", errors="replace")
+        if ("CMAKE_BUILD_TYPE:STRING=Release" not in cache
+                or "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1:BOOL=ON" not in cache):
+            raise ValueError("Release trace build configuration changed")
+    else:
+        raise ValueError("expected_v3_status must be available or unavailable")
+    result = {
         "schema": "xar.ck3.episode01.phase-event-kill-trace-recovery/v1",
         "game_build": "CK3 1.19.0.6",
         "capture_run": str(run),
@@ -172,6 +191,10 @@ def project(run: Path, rakaly_exe: Path) -> dict:
         "whole_battle_win_probability_available": False,
         "planner_usable": False,
     }
+    if expected_v3_status == "available":
+        result["release_build_cache_sha256"] = digest(build_cache)
+        result["release_bridge_dll_sha256"] = digest(bridge_dll)
+    return result
 
 
 def main() -> None:
@@ -179,8 +202,14 @@ def main() -> None:
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--rakaly-exe", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--expected-v3-status", choices=("available", "unavailable"),
+                        default="unavailable")
+    parser.add_argument("--build-cache", type=Path)
+    parser.add_argument("--bridge-dll", type=Path)
     args = parser.parse_args()
-    report = project(args.run, args.rakaly_exe)
+    report = project(args.run, args.rakaly_exe,
+                     expected_v3_status=args.expected_v3_status,
+                     build_cache=args.build_cache, bridge_dll=args.bridge_dll)
     with args.output.open("x", encoding="utf-8", newline="\n") as out:
         json.dump(report, out, ensure_ascii=False, indent=2)
         out.write("\n")
