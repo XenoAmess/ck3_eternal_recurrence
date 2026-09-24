@@ -58,6 +58,8 @@ EPISODE01_SELECTED_EVENT_ROW_FILE = "ck3_1_19_0_6_episode01_messina_selected_pha
 EPISODE01_SELECTED_EVENT_ROW_SHA256 = "BEA95DDF36C0B8F1E5D4B6E01364BF8E35C3C3A7F676B10B038880A94CB5321D"
 EPISODE01_PHASE_FIRE_DRAWS_FILE = "ck3_1_19_0_6_episode01_messina_phase_fire_draw_projection.json"
 EPISODE01_PHASE_FIRE_DRAWS_SHA256 = "5EC7EE43064603B913305EEEF7403D8315C0BB7EC67BFD0AE7BAD01EB3BFC5AD"
+EPISODE01_EFFECT_LOCAL_ROOT_FILE = "ck3_1_19_0_6_episode01_messina_effect_local_root_seed.json"
+EPISODE01_EFFECT_LOCAL_ROOT_SHA256 = "9344BF9C785A8DC32CAF9D9435E9A27429C1BF9E2B0C7C0F876AFB4BBB468BC6"
 EPISODE01_KILL_REWARD_FILE = "ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json"
 EPISODE01_KILL_REWARD_SHA256 = "3FCB1FFB509251CA471E33FAACC768FD7E7FC04243413EDCD9EDCFD0CAD99E92"
 
@@ -994,6 +996,32 @@ def load_episode01_phase_fire_draw_projection() -> dict[str, Any]:
                 "planner_usable",
             ))):
         raise NativeBattleCaseError("phase-fire draw projection or readiness drifted")
+    return report
+
+
+def load_episode01_effect_local_root_seed() -> dict[str, Any]:
+    """Read static effect-local seed initialization, without internal draw parity."""
+    path = Path(__file__).with_name("data") / EPISODE01_EFFECT_LOCAL_ROOT_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_EFFECT_LOCAL_ROOT_SHA256:
+        raise NativeBattleCaseError("effect-local root seed bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.effect-local-root-seed/v1"
+            or report.get("ck3_exe_sha256") !=
+            "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+            or report.get("phase_fire_draw_projection_sha256") != EPISODE01_PHASE_FIRE_DRAWS_SHA256
+            or report.get("observed_native_event_key") != "knight_killed"
+            or report.get("derived_effect_seed") != 1111439774
+            or report.get("derived_effect_local_root_counter") != 2708350930
+            or report.get("derived_effect_local_root_salt") != 0
+            or report.get("first_draw_if_root_dispatch_consumes") != 26436929
+            or any(report.get(key) is not False for key in (
+                "root_first_draw_directly_observed", "effect_local_node_hashes_observed",
+                "effect_local_winner_draw_observed", "full_effect_write_set_proven",
+                "whole_battle_win_probability_available", "planner_usable",
+            ))):
+        raise NativeBattleCaseError("effect-local root seed or fidelity boundary drifted")
     return report
 
 

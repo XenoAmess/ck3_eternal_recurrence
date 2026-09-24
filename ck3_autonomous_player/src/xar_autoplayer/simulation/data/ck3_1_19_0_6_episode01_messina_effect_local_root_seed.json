@@ -1,0 +1,20 @@
+{
+  "schema": "xar.ck3.episode01.effect-local-root-seed/v1",
+  "game_build": "CK3 1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "seed_initializer_rva": "0x337FE60",
+  "seed_initializer_first_0x60_sha256": "8A78AD9EB8FDE70099BEAE0A600A55DE91429F7E3D31DDA56516FA70938EDE4C",
+  "phase_fire_draw_projection_sha256": "5EC7EE43064603B913305EEEF7403D8315C0BB7EC67BFD0AE7BAD01EB3BFC5AD",
+  "observed_native_event_key": "knight_killed",
+  "derived_effect_seed": 1111439774,
+  "derived_effect_local_root_counter": 2708350930,
+  "derived_effect_local_root_salt": 0,
+  "first_draw_if_root_dispatch_consumes": 26436929,
+  "root_counter_after_first_draw_if_consumed": 2708350931,
+  "root_first_draw_directly_observed": false,
+  "effect_local_node_hashes_observed": false,
+  "effect_local_winner_draw_observed": false,
+  "full_effect_write_set_proven": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

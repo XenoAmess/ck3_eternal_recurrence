@@ -4,6 +4,8 @@
 
 同一 trace 的 phase-fire 前后还留下两次隔离的原生全局 RNG 计数器增量：side 0 为 `421195→421196`，side 1 为 `421196→421197`，盐值均为 `3812344717`。使用 exact-build 已静态确认的 [`DrawState.draw31` 与 `fire_phase_event_seeds`](../../ck3_autonomous_player/src/xar_autoplayer/simulation/combat_core.py)重算，分别得到全局 draw `753992024`、`816083018`；目标 `knight_killed` 是 side 1 唯一仍有效的骑士日程，推导出的效果种子为 `1111439774`。[共享投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_fire_draw_projection.json) SHA-256 `5EC7EE43064603B913305EEEF7403D8315C0BB7EC67BFD0AE7BAD01EB3BFC5AD`，由 [`project_episode01_phase_fire_draws.py`](../../tools/project_episode01_phase_fire_draws.py)复算。计数器与盐值是实机观察；draw 与 seed 是静态算法投影，**效果局部 draw 与 seed 到局部状态的完整映射仍未对拍**，不可据此倒推出 `[8,0]` 是本次原生抽签。
 
+对冻结 exe SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` 的 `0x337FE60` 种子初始化分支再次作字节门禁后，[效果局部初始状态投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_effect_local_root_seed.json)（SHA-256 `9344BF9C785A8DC32CAF9D9435E9A27429C1BF9E2B0C7C0F876AFB4BBB468BC6`）得到 root 局部 `counter=2708350930, salt=0`；若 root dispatcher 消费首个 draw，其值为 `26436929`。这是由实机 seed 与静态二进制推导的**条件初态**，尚未实机读取 node hash、局部 draw 或击杀者选择值，因此不能把它写成已对拍的原生内部抽签。
+
 ## 冻结边界
 
 - 原版 EXE SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。以下脚本行号只针对该 build 的 `Crusader Kings III/game`，不把其他版本或 mod 加载表外推到当前场景。

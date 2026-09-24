@@ -43,6 +43,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_conditional_kill_effect_audit,
     load_episode01_selected_phase_event_row,
     load_episode01_phase_fire_draw_projection,
+    load_episode01_effect_local_root_seed,
     load_episode01_knight_kill_reward_scaling,
     original_daily_timeline,
 )
@@ -419,6 +420,13 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertEqual(report["phase_fire_draws"][1]["native_rng_counter_after"], 421197)
         self.assertEqual(report["target_effect_seed"], 1111439774)
         self.assertFalse(report["effect_local_draws_directly_observed"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_effect_local_root_seed_is_static_projection_not_winner_draw(self) -> None:
+        report = load_episode01_effect_local_root_seed()
+        self.assertEqual(report["derived_effect_local_root_counter"], 2708350930)
+        self.assertEqual(report["first_draw_if_root_dispatch_consumes"], 26436929)
+        self.assertFalse(report["effect_local_winner_draw_observed"])
         self.assertFalse(report["planner_usable"])
 
 
