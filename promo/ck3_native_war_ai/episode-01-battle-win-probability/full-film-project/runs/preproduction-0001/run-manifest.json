@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "preproduction-0001"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/3F/3FF04AE1244E37225BA464FDD34FAA9936EB496F1D0D41A5993588EB12BFAD2E.json",
+    "bytes": 447,
+    "sha256": "3FF04AE1244E37225BA464FDD34FAA9936EB496F1D0D41A5993588EB12BFAD2E"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [],
+  "audits": [],
+  "signoffs": []
+}

@@ -1,0 +1,29 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-native-war-ai-episode-01-full",
+    "title": "一场仗的胜率从哪里来｜完整 EdgeTTS 版"
+  },
+  "pipeline": {
+    "adapter": "ck3-native-war-ai-v1",
+    "preset": "ck3-native-war-ai-longform-zh-v2"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 2400
+  },
+  "chapters": [
+    {"id": "hook", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "墨西拿：问题与战场"}, "cues": [], "artifact_ids": []},
+    {"id": "inputs", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "锁定参战输入"}, "cues": [], "artifact_ids": []},
+    {"id": "daily", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "逐日结算与事件反馈"}, "cues": [], "artifact_ids": []},
+    {"id": "distribution", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "从一场到条件分布"}, "cues": [], "artifact_ids": []},
+    {"id": "decision", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "把胜率用于决策"}, "cues": [], "artifact_ids": []}
+  ]
+}
