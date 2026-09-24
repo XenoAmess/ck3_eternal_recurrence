@@ -60,6 +60,8 @@ EPISODE01_PHASE_FIRE_DRAWS_FILE = "ck3_1_19_0_6_episode01_messina_phase_fire_dra
 EPISODE01_PHASE_FIRE_DRAWS_SHA256 = "5EC7EE43064603B913305EEEF7403D8315C0BB7EC67BFD0AE7BAD01EB3BFC5AD"
 EPISODE01_EFFECT_LOCAL_ROOT_FILE = "ck3_1_19_0_6_episode01_messina_effect_local_root_seed.json"
 EPISODE01_EFFECT_LOCAL_ROOT_SHA256 = "9344BF9C785A8DC32CAF9D9435E9A27429C1BF9E2B0C7C0F876AFB4BBB468BC6"
+EPISODE01_EFFECT_ROOT_OBSERVATION_FILE = "ck3_1_19_0_6_episode01_messina_effect_root_observation.json"
+EPISODE01_EFFECT_ROOT_OBSERVATION_SHA256 = "D4C914DEAF00D827AF1DFD7AFE3E9374C72E5348307E50381944F3C37A735A00"
 EPISODE01_KILL_REWARD_FILE = "ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json"
 EPISODE01_KILL_REWARD_SHA256 = "3FCB1FFB509251CA471E33FAACC768FD7E7FC04243413EDCD9EDCFD0CAD99E92"
 
@@ -1022,6 +1024,41 @@ def load_episode01_effect_local_root_seed() -> dict[str, Any]:
                 "whole_battle_win_probability_available", "planner_usable",
             ))):
         raise NativeBattleCaseError("effect-local root seed or fidelity boundary drifted")
+    return report
+
+
+def load_episode01_effect_root_observation() -> dict[str, Any]:
+    """Read native effect-root RNG parity while keeping deeper draws closed."""
+    path = Path(__file__).with_name("data") / EPISODE01_EFFECT_ROOT_OBSERVATION_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_EFFECT_ROOT_OBSERVATION_SHA256:
+        raise NativeBattleCaseError("effect-root observation bytes changed without review")
+    report = json.loads(data)
+    root = report.get("native_effect_root", {}) if isinstance(report, dict) else {}
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.effect-root-observation/v1"
+            or report.get("source_checkpoint_sha256") !=
+            "C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B"
+            or report.get("selected_event_row_report_sha256") != EPISODE01_SELECTED_EVENT_ROW_SHA256
+            or report.get("effect_local_static_projection_sha256") != EPISODE01_EFFECT_LOCAL_ROOT_SHA256
+            or report.get("trace_response_sha256") !=
+            "9C7515B24CB6F606B364162AD6FA6C382504C56DFD2B3209BD8762D4B80938EA"
+            or report.get("native_event_key") != "knight_killed"
+            or root.get("side_index") != 1
+            or root.get("native_event_load_index") != 11
+            or root.get("node_hash") != 3689483501
+            or root.get("counter_before") != 2708350930
+            or root.get("counter_after") != 2708350931
+            or root.get("salt_before") != 0 or root.get("salt_after") != 0
+            or report.get("native_effect_root_first_draw_derived_from_observed_counter") != 26436929
+            or report.get("derived_first_child_seed_from_observed_node_hash") != 612212889
+            or report.get("native_effect_root_counter_advanced_once") is not True
+            or any(report.get(key) is not False for key in (
+                "deep_effect_node_draws_observed", "killer_selection_draw_observed",
+                "full_effect_write_set_proven", "whole_battle_win_probability_available",
+                "planner_usable",
+            ))):
+        raise NativeBattleCaseError("native effect-root observation or readiness drifted")
     return report
 
 

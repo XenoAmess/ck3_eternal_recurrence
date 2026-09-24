@@ -6,6 +6,8 @@
 
 [效果局部初始状态投影](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_effect_local_root_seed.json)把该 seed 进一步约束到 root `counter=2708350930, salt=0`；这是静态二进制与原生 seed 的组合证据。影片只有在局部 node hash、实际 winner draw 和效果写回继续取得实机对拍后，才能把“为什么由 `34120` 击杀”讲成已经确认的原生因果链。
 
+attempt-018 的[实机根节点报告](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_effect_root_observation.json)已直接确认 root `counter=2708350930→2708350931, salt=0` 与 hash `3689483501`，对应第一层 child seed 的静态推导为 `612212889`。可将“原生种子一路进入效果根节点”拍成证据链；击杀者抽选发生在更深节点，尚无实机 draw，影片不能把根 draw 画成 `34120` 的选择值。
+
 版本：2026-09-24，拍摄与研究并行稿。它承接[系列计划](../series-roadmap.md)的第 1 集；第 0 集建立的 CK3 地图、肖像、纹章、羊皮纸和战场面板视觉语法继续使用。目标片长约 37 分钟，可在 35–40 分钟内按证据和叙事收缩。只有证据闭合后才制作并发布整期；本轮先交导演案和 EdgeTTS 视听样片。
 
 ## 观众带走什么

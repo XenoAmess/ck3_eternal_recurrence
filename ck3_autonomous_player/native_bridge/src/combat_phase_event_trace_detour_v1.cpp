@@ -16,6 +16,9 @@ constexpr std::array<std::uint8_t, 15> kSchedulePrologue{
 constexpr std::array<std::uint8_t, 15> kFirePrologue{
     0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
     0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18};
+constexpr std::array<std::uint8_t, 15> kEffectDispatchPrologue{
+    0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x08, 0x48,
+    0x89, 0x70, 0x18, 0x55, 0x57, 0x41, 0x54};
 constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
     0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
     0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
@@ -273,6 +276,11 @@ void FreeTrampolines(CombatPhaseEventTraceDetourStateV1 &state) noexcept {
       (void)state.virtual_free(state.memory_context,
                                state.fire_trampoline, 0, MEM_RELEASE);
     }
+    if (state.effect_dispatch_trampoline != nullptr) {
+      (void)state.virtual_free(state.memory_context,
+                               state.effect_dispatch_trampoline, 0,
+                               MEM_RELEASE);
+    }
     if (state.outgoing_damage_trampoline != nullptr) {
       (void)state.virtual_free(state.memory_context,
                                state.outgoing_damage_trampoline, 0,
@@ -286,6 +294,7 @@ void FreeTrampolines(CombatPhaseEventTraceDetourStateV1 &state) noexcept {
   }
   state.schedule_trampoline = nullptr;
   state.fire_trampoline = nullptr;
+  state.effect_dispatch_trampoline = nullptr;
   state.outgoing_damage_trampoline = nullptr;
   state.post_counter_trampoline = nullptr;
 }
@@ -293,11 +302,13 @@ void FreeTrampolines(CombatPhaseEventTraceDetourStateV1 &state) noexcept {
 bool ExactAnchorsMatch(
     const CombatPhaseEventTraceDetourEnvironmentV1 &environment,
     std::uintptr_t schedule_target, std::uintptr_t fire_target,
+    std::uintptr_t effect_dispatch_target,
     std::uintptr_t outgoing_damage_target,
     std::uintptr_t post_counter_target) noexcept {
   const auto module = environment.module_base;
   return BytesMatch(schedule_target, kSchedulePrologue) &&
          BytesMatch(fire_target, kFirePrologue) &&
+         BytesMatch(effect_dispatch_target, kEffectDispatchPrologue) &&
          BytesMatch(outgoing_damage_target, kOutgoingDamagePrologue) &&
          BytesMatch(post_counter_target, kPostCounterOriginal) &&
          BytesMatch(Resolve(environment.schedule_side0_call_override, module,
@@ -362,6 +373,9 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   state.fire_target = Resolve(environment.fire_target_override,
                               environment.module_base,
                               kCombatPhaseEventFireFunctionRva);
+  state.effect_dispatch_target = Resolve(
+      environment.effect_dispatch_target_override,
+      environment.module_base, kCombatPhaseEffectDispatchFunctionRva);
   state.outgoing_damage_target = Resolve(
       environment.outgoing_damage_target_override,
       environment.module_base, kCombatOutgoingDamageFunctionRva);
@@ -385,6 +399,7 @@ bool InstallCombatPhaseEventTraceDetoursV1(
 
   if (!ExactAnchorsMatch(environment, state.schedule_target,
                          state.fire_target,
+                         state.effect_dispatch_target,
                          state.outgoing_damage_target,
                          state.post_counter_target)) {
     AddFailure(state, trace_detour_failure_anchor);
@@ -397,6 +412,9 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   std::memcpy(state.fire_original.data(),
               reinterpret_cast<const void *>(state.fire_target),
               state.fire_original.size());
+  std::memcpy(state.effect_dispatch_original.data(),
+              reinterpret_cast<const void *>(state.effect_dispatch_target),
+              state.effect_dispatch_original.size());
   std::memcpy(state.outgoing_damage_original.data(),
               reinterpret_cast<const void *>(state.outgoing_damage_target),
               state.outgoing_damage_original.size());
@@ -410,6 +428,9 @@ bool InstallCombatPhaseEventTraceDetoursV1(
   state.fire_trampoline = virtual_alloc(
       state.memory_context, kCombatPhaseEventTraceTrampolineBytesV1,
       MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+  state.effect_dispatch_trampoline = virtual_alloc(
+      state.memory_context, kCombatPhaseEventTraceTrampolineBytesV1,
+      MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
   state.outgoing_damage_trampoline = virtual_alloc(
       state.memory_context, kCombatPhaseEventTraceTrampolineBytesV1,
       MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
@@ -418,6 +439,7 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
   if (state.schedule_trampoline == nullptr ||
       state.fire_trampoline == nullptr ||
+      state.effect_dispatch_trampoline == nullptr ||
       state.outgoing_damage_trampoline == nullptr ||
       state.post_counter_trampoline == nullptr) {
     AddFailure(state, trace_detour_failure_allocation);
@@ -432,6 +454,11 @@ bool InstallCombatPhaseEventTraceDetoursV1(
           state.fire_trampoline, state.fire_original,
           state.fire_target + kCombatPhaseEventTraceDetourPatchBytesV1) ||
       !FillTrampoline(
+          state.effect_dispatch_trampoline,
+          state.effect_dispatch_original,
+          state.effect_dispatch_target +
+              kCombatPhaseEventTraceDetourPatchBytesV1) ||
+      !FillTrampoline(
           state.outgoing_damage_trampoline,
           state.outgoing_damage_original,
           state.outgoing_damage_target +
@@ -441,6 +468,7 @@ bool InstallCombatPhaseEventTraceDetoursV1(
           state.post_counter_target + kCombatPostCounterPatchBytesV1) ||
       !MakeTrampolineExecutable(state, state.schedule_trampoline) ||
       !MakeTrampolineExecutable(state, state.fire_trampoline) ||
+      !MakeTrampolineExecutable(state, state.effect_dispatch_trampoline) ||
       !MakeTrampolineExecutable(state, state.outgoing_damage_trampoline) ||
       !MakeTrampolineExecutable(state, state.post_counter_trampoline,
                                 kCombatPostCounterTrampolineBytesV1)) {
@@ -461,11 +489,21 @@ bool InstallCombatPhaseEventTraceDetoursV1(
     g_active_detours.store(nullptr, std::memory_order_release);
     return false;
   }
+  if (!BindCombatPhaseEffectDispatchOriginalV1(
+          reinterpret_cast<CombatPhaseEffectDispatchOriginalV1>(
+              state.effect_dispatch_trampoline))) {
+    AddFailure(state, trace_detour_failure_original_binding);
+    FreeTrampolines(state);
+    g_active_detours.store(nullptr, std::memory_order_release);
+    return false;
+  }
 
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       schedule_patch{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       fire_patch{};
+  std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
+      effect_dispatch_patch{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       outgoing_damage_patch{};
   std::array<std::uint8_t, kCombatPostCounterPatchBytesV1>
@@ -474,8 +512,11 @@ bool InstallCombatPhaseEventTraceDetoursV1(
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatPhaseEventScheduleHookV1));
   WriteAbsoluteJump(fire_patch.data(),
+                     reinterpret_cast<std::uintptr_t>(
+                         &XarCombatPhaseEventFireHookV1));
+  WriteAbsoluteJump(effect_dispatch_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
-                        &XarCombatPhaseEventFireHookV1));
+                        &XarCombatPhaseEffectDispatchHookV1));
   WriteAbsoluteJump(outgoing_damage_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatOutgoingDamageHookV1));
@@ -484,6 +525,7 @@ bool InstallCombatPhaseEventTraceDetoursV1(
                         state.post_counter_trampoline));
   schedule_patch.back() = 0x90;
   fire_patch.back() = 0x90;
+  effect_dispatch_patch.back() = 0x90;
   outgoing_damage_patch.back() = 0x90;
   post_counter_patch[14] = 0x90;
   post_counter_patch[15] = 0x90;
@@ -495,8 +537,13 @@ bool InstallCombatPhaseEventTraceDetoursV1(
       schedule_installed &&
       WriteTargetBytes(state, state.fire_target,
                        state.fire_original.data(), fire_patch.data());
-  const bool outgoing_damage_installed =
+  const bool effect_dispatch_installed =
       fire_installed &&
+      WriteTargetBytes(state, state.effect_dispatch_target,
+                       state.effect_dispatch_original.data(),
+                       effect_dispatch_patch.data());
+  const bool outgoing_damage_installed =
+      effect_dispatch_installed &&
       WriteTargetBytes(state, state.outgoing_damage_target,
                        state.outgoing_damage_original.data(),
                        outgoing_damage_patch.data());
@@ -507,11 +554,17 @@ bool InstallCombatPhaseEventTraceDetoursV1(
                        post_counter_patch.data(),
                        kCombatPostCounterPatchBytesV1);
   if (!schedule_installed || !fire_installed ||
+      !effect_dispatch_installed ||
       !outgoing_damage_installed || !post_counter_installed) {
     if (outgoing_damage_installed) {
       (void)RestoreTarget(state, state.outgoing_damage_target,
                           outgoing_damage_patch.data(),
                           state.outgoing_damage_original.data());
+    }
+    if (effect_dispatch_installed) {
+      (void)RestoreTarget(state, state.effect_dispatch_target,
+                          effect_dispatch_patch.data(),
+                          state.effect_dispatch_original.data());
     }
     if (fire_installed) {
       (void)RestoreTarget(state, state.fire_target, fire_patch.data(),
@@ -529,6 +582,9 @@ bool InstallCombatPhaseEventTraceDetoursV1(
             state.fire_target),
         reinterpret_cast<CombatOutgoingDamageOriginalV1>(
             state.outgoing_damage_target));
+    (void)BindCombatPhaseEffectDispatchOriginalV1(
+        reinterpret_cast<CombatPhaseEffectDispatchOriginalV1>(
+            state.effect_dispatch_target));
     FreeTrampolines(state);
     g_active_detours.store(nullptr, std::memory_order_release);
     return false;
@@ -549,10 +605,12 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
     return false;
   }
   if (state.schedule_target == 0 || state.fire_target == 0 ||
+      state.effect_dispatch_target == 0 ||
       state.outgoing_damage_target == 0 ||
       state.post_counter_target == 0 ||
       state.schedule_trampoline == nullptr ||
       state.fire_trampoline == nullptr ||
+      state.effect_dispatch_trampoline == nullptr ||
       state.outgoing_damage_trampoline == nullptr ||
       state.post_counter_trampoline == nullptr) {
     AddFailure(state, trace_detour_failure_target_identity);
@@ -564,6 +622,8 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       fire_patch{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
+      effect_dispatch_patch{};
+  std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       outgoing_damage_patch{};
   std::array<std::uint8_t, kCombatPostCounterPatchBytesV1>
       post_counter_patch{};
@@ -571,8 +631,11 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatPhaseEventScheduleHookV1));
   WriteAbsoluteJump(fire_patch.data(),
+                     reinterpret_cast<std::uintptr_t>(
+                         &XarCombatPhaseEventFireHookV1));
+  WriteAbsoluteJump(effect_dispatch_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
-                        &XarCombatPhaseEventFireHookV1));
+                        &XarCombatPhaseEffectDispatchHookV1));
   WriteAbsoluteJump(outgoing_damage_patch.data(),
                     reinterpret_cast<std::uintptr_t>(
                         &XarCombatOutgoingDamageHookV1));
@@ -581,6 +644,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
                         state.post_counter_trampoline));
   schedule_patch.back() = 0x90;
   fire_patch.back() = 0x90;
+  effect_dispatch_patch.back() = 0x90;
   outgoing_damage_patch.back() = 0x90;
   post_counter_patch[14] = 0x90;
   post_counter_patch[15] = 0x90;
@@ -593,20 +657,34 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
       AddFailure(state, trace_detour_failure_rollback);
     }
   };
+  const auto restore_effect_dispatch_patch = [&]() noexcept {
+    if (!WriteTargetBytes(state, state.effect_dispatch_target,
+                          state.effect_dispatch_original.data(),
+                          effect_dispatch_patch.data())) {
+      AddFailure(state, trace_detour_failure_rollback);
+    }
+  };
 
   // Restore all entrypoints before invalidating any trampoline.  A failed
   // restore deliberately leaves the installation owned and the trampolines
   // alive; the caller may retry from another verified paused pump.
+  if (!RestoreTarget(state, state.effect_dispatch_target,
+                     effect_dispatch_patch.data(),
+                     state.effect_dispatch_original.data())) {
+    return false;
+  }
   if (!RestoreTarget(state, state.post_counter_target,
                      post_counter_patch.data(),
                      state.post_counter_original.data(),
                      kCombatPostCounterPatchBytesV1)) {
+    restore_effect_dispatch_patch();
     return false;
   }
   if (!RestoreTarget(state, state.outgoing_damage_target,
                      outgoing_damage_patch.data(),
                      state.outgoing_damage_original.data())) {
     restore_post_counter_patch();
+    restore_effect_dispatch_patch();
     return false;
   }
   if (!RestoreTarget(state, state.fire_target, fire_patch.data(),
@@ -617,6 +695,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
       AddFailure(state, trace_detour_failure_rollback);
     }
     restore_post_counter_patch();
+    restore_effect_dispatch_patch();
     return false;
   }
   if (!RestoreTarget(state, state.schedule_target,
@@ -635,6 +714,7 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
       AddFailure(state, trace_detour_failure_rollback);
     }
     restore_post_counter_patch();
+    restore_effect_dispatch_patch();
     return false;
   }
   if (!BindCombatPhaseEventTraceOriginalTrampolinesV1(
@@ -644,6 +724,12 @@ bool UninstallCombatPhaseEventTraceDetoursV1(
               state.fire_target),
           reinterpret_cast<CombatOutgoingDamageOriginalV1>(
               state.outgoing_damage_target))) {
+    AddFailure(state, trace_detour_failure_original_binding);
+    return false;
+  }
+  if (!BindCombatPhaseEffectDispatchOriginalV1(
+          reinterpret_cast<CombatPhaseEffectDispatchOriginalV1>(
+              state.effect_dispatch_target))) {
     AddFailure(state, trace_detour_failure_original_binding);
     return false;
   }

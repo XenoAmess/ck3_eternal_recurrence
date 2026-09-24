@@ -58,6 +58,7 @@ struct CombatPhaseEventTraceDetourEnvironmentV1 {
 
   std::uintptr_t schedule_target_override = 0;
   std::uintptr_t fire_target_override = 0;
+  std::uintptr_t effect_dispatch_target_override = 0;
   std::uintptr_t outgoing_damage_target_override = 0;
   std::uintptr_t post_counter_target_override = 0;
   std::uintptr_t schedule_side0_call_override = 0;
@@ -82,16 +83,20 @@ struct CombatPhaseEventTraceDetourStateV1 {
   std::uintptr_t module_base = 0;
   std::uintptr_t schedule_target = 0;
   std::uintptr_t fire_target = 0;
+  std::uintptr_t effect_dispatch_target = 0;
   std::uintptr_t outgoing_damage_target = 0;
   std::uintptr_t post_counter_target = 0;
   void *schedule_trampoline = nullptr;
   void *fire_trampoline = nullptr;
+  void *effect_dispatch_trampoline = nullptr;
   void *outgoing_damage_trampoline = nullptr;
   void *post_counter_trampoline = nullptr;
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       schedule_original{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       fire_original{};
+  std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
+      effect_dispatch_original{};
   std::array<std::uint8_t, kCombatPhaseEventTraceDetourPatchBytesV1>
       outgoing_damage_original{};
   std::array<std::uint8_t, kCombatPostCounterPatchBytesV1>
@@ -102,7 +107,7 @@ struct CombatPhaseEventTraceDetourStateV1 {
   CombatTraceFlushInstructionCacheV1 flush_instruction_cache = nullptr;
 };
 
-// Install/uninstall patch three frozen function entries and the 16-byte
+// Install/uninstall patch four frozen function entries and the 16-byte
 // post-counter scalar site inside the outgoing calculator. The caller
 // must invoke both operations from the verified application-main mailbox while
 // CK3 is paused and the simulation tick is quiescent.  Installation never arms

@@ -56,6 +56,9 @@ constexpr std::array<std::uint8_t, 15> kSchedulePrologue{
 constexpr std::array<std::uint8_t, 15> kFirePrologue{
     0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
     0x24, 0x10, 0x48, 0x89, 0x7C, 0x24, 0x18};
+constexpr std::array<std::uint8_t, 15> kEffectDispatchPrologue{
+    0x48, 0x8B, 0xC4, 0x48, 0x89, 0x58, 0x08, 0x48,
+    0x89, 0x70, 0x18, 0x55, 0x57, 0x41, 0x54};
 constexpr std::array<std::uint8_t, 15> kOutgoingDamagePrologue{
     0x44, 0x89, 0x44, 0x24, 0x18, 0x55, 0x57, 0x41,
     0x54, 0x41, 0x56, 0x48, 0x83, 0xEC, 0x58};
@@ -80,6 +83,7 @@ constexpr std::array<std::uint8_t, 5> kOutgoingDamageSide1Call{
 struct DetourMemory {
   void *schedule_page = nullptr;
   void *fire_page = nullptr;
+  void *effect_dispatch_page = nullptr;
   void *outgoing_damage_page = nullptr;
   void *post_counter_page = nullptr;
   std::uint32_t live_allocations = 0;
@@ -87,6 +91,8 @@ struct DetourMemory {
   ~DetourMemory() {
     if (schedule_page != nullptr) VirtualFree(schedule_page, 0, MEM_RELEASE);
     if (fire_page != nullptr) VirtualFree(fire_page, 0, MEM_RELEASE);
+    if (effect_dispatch_page != nullptr)
+      VirtualFree(effect_dispatch_page, 0, MEM_RELEASE);
     if (outgoing_damage_page != nullptr)
       VirtualFree(outgoing_damage_page, 0, MEM_RELEASE);
     if (post_counter_page != nullptr)
@@ -327,6 +333,9 @@ struct NativeFixture {
     detour_memory.fire_page = VirtualAlloc(
         nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
         PAGE_EXECUTE_READWRITE);
+    detour_memory.effect_dispatch_page = VirtualAlloc(
+        nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE);
     detour_memory.outgoing_damage_page = VirtualAlloc(
         nullptr, page_size, MEM_RESERVE | MEM_COMMIT,
         PAGE_EXECUTE_READWRITE);
@@ -335,12 +344,16 @@ struct NativeFixture {
         PAGE_EXECUTE_READWRITE);
     if (detour_memory.schedule_page != nullptr &&
         detour_memory.fire_page != nullptr &&
+        detour_memory.effect_dispatch_page != nullptr &&
         detour_memory.outgoing_damage_page != nullptr &&
         detour_memory.post_counter_page != nullptr) {
       std::memcpy(detour_memory.schedule_page, kSchedulePrologue.data(),
                   kSchedulePrologue.size());
       std::memcpy(detour_memory.fire_page, kFirePrologue.data(),
                   kFirePrologue.size());
+      std::memcpy(detour_memory.effect_dispatch_page,
+                  kEffectDispatchPrologue.data(),
+                  kEffectDispatchPrologue.size());
       std::memcpy(detour_memory.outgoing_damage_page,
                   kOutgoingDamagePrologue.data(),
                   kOutgoingDamagePrologue.size());
@@ -351,6 +364,8 @@ struct NativeFixture {
       (void)VirtualProtect(detour_memory.schedule_page, page_size,
                            PAGE_EXECUTE_READ, &ignored);
       (void)VirtualProtect(detour_memory.fire_page, page_size,
+                            PAGE_EXECUTE_READ, &ignored);
+      (void)VirtualProtect(detour_memory.effect_dispatch_page, page_size,
                            PAGE_EXECUTE_READ, &ignored);
       (void)VirtualProtect(detour_memory.outgoing_damage_page, page_size,
                            PAGE_EXECUTE_READ, &ignored);
@@ -364,6 +379,9 @@ struct NativeFixture {
         reinterpret_cast<std::uintptr_t>(detour_memory.schedule_page);
     detour_environment.fire_target_override =
         reinterpret_cast<std::uintptr_t>(detour_memory.fire_page);
+    detour_environment.effect_dispatch_target_override =
+        reinterpret_cast<std::uintptr_t>(
+            detour_memory.effect_dispatch_page);
     detour_environment.outgoing_damage_target_override =
         reinterpret_cast<std::uintptr_t>(detour_memory.outgoing_damage_page);
     detour_environment.post_counter_target_override =
@@ -474,6 +492,7 @@ bool ManagedBeginFinishProducesBoundedDto() {
   Store(fixture.rng_wrapper, 0x00, std::uintptr_t{0});
   if (fixture.detour_memory.schedule_page == nullptr ||
       fixture.detour_memory.fire_page == nullptr ||
+      fixture.detour_memory.effect_dispatch_page == nullptr ||
       fixture.detour_memory.outgoing_damage_page == nullptr ||
       fixture.detour_memory.post_counter_page == nullptr) {
     return Fail("detour pages unavailable");

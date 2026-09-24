@@ -406,7 +406,8 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
   if (drain.record_count > drain.records.size() ||
       drain.outgoing_damage_count > drain.outgoing_damage_raw.size() ||
       drain.post_counter_attack_count >
-          drain.post_counter_attack_raw.size()) {
+          drain.post_counter_attack_raw.size() ||
+      drain.effect_root_count > drain.effect_roots.size()) {
     return {};
   }
   std::string output;
@@ -447,6 +448,29 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
     output += "null";
   }
   output += "}";
+  output += ",\"effect_roots\":[";
+  for (std::uint32_t index = 0; index < drain.effect_root_count; ++index) {
+    if (index != 0) output.push_back(',');
+    const auto &row = drain.effect_roots[index];
+    output += "{\"side_index\":";
+    if (!AppendNumber(output, row.side_index)) return {};
+    output += ",\"native_event_load_index\":";
+    if (!AppendNumber(output, row.native_event_load_index)) return {};
+    output += ",\"node_identity_token\":";
+    if (!AppendOpaqueToken(output, row.node_identity)) return {};
+    output += ",\"node_hash\":";
+    if (!AppendNumber(output, row.node_hash)) return {};
+    output += ",\"counter_before\":";
+    if (!AppendNumber(output, row.counter_before)) return {};
+    output += ",\"salt_before\":";
+    if (!AppendNumber(output, row.salt_before)) return {};
+    output += ",\"counter_after\":";
+    if (!AppendNumber(output, row.counter_after)) return {};
+    output += ",\"salt_after\":";
+    if (!AppendNumber(output, row.salt_after)) return {};
+    output.push_back('}');
+  }
+  output += "]";
   output += ",\"readiness\":{";
   output += "\"exact_boundary_sequence\":";
   if (!AppendBool(output, drain.exact_boundary_sequence)) return {};
