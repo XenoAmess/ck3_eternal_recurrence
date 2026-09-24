@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+from decimal import Decimal
 from pathlib import Path
 import sys
 import unittest
@@ -84,7 +85,7 @@ class NativeBattleCaseTests(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):
                 _validate_phase_event_observations(promoted)
 
-    def test_same_date_save_closes_wound_and_death_state_only(self) -> None:
+    def test_same_date_save_binds_target_and_opponent_state(self) -> None:
         report = load_episode01_phase_event_save_feedback()
         wound, killed = report["event_save_pairs"]
         self.assertEqual(wound["saves"][0]["character"]["wounded_rank"], 0)
@@ -97,6 +98,22 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertEqual(killed["saves"][1]["character"]["death_reason"], "death_battle")
         self.assertEqual(killed["saves"][1]["character"]["killer_character_id"], 32716)
         self.assertEqual(killed["saves"][1]["date_raw"], killed["event_native_date_raw"])
+        for row, opponent_id, gain, before_prowess, after_prowess in (
+            (wound, 34867, 75, 3, 4),
+            (killed, 32716, 300, 4, 5),
+        ):
+            before, after = (save["opponent_character"] for save in row["saves"])
+            self.assertEqual(row["opponent_character_id"], opponent_id)
+            self.assertEqual(after["base_skill_values"][-1] - before["base_skill_values"][-1], 1)
+            self.assertEqual((before["base_skill_values"][-1], after["base_skill_values"][-1]),
+                             (before_prowess, after_prowess))
+            self.assertEqual(Decimal(after["prestige_currency"]) - Decimal(before["prestige_currency"]), gain)
+            self.assertEqual(Decimal(after["prestige_accumulated"]) - Decimal(before["prestige_accumulated"]), gain)
+            changed = copy.deepcopy(report)
+            changed["event_save_pairs"][0 if row is wound else 1]["saves"][1][
+                "opponent_character"]["prestige_currency"] = "0"
+            with self.assertRaises(NativeBattleCaseError):
+                _validate_phase_event_save_feedback(changed)
         for key in ("full_effect_write_set_proven", "calibrated_win_probability_available",
                     "planner_usable"):
             promoted = copy.deepcopy(report)

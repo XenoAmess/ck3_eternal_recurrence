@@ -13,6 +13,7 @@
       "event_native_date_raw": 53146368,
       "event_key": "knight_wounded_by_enemy",
       "target_character_id": 36303,
+      "opponent_character_id": 34867,
       "event_receipt_sha256": "851B664AF6D2D59DED0A8D602AEEF95E6E0BE0283D2CCCD2F5204F77C9801808",
       "saves": [
         {
@@ -37,6 +38,16 @@
               "education_martial_3",
               "logistician"
             ],
+            "base_skill_values": [
+              4,
+              6,
+              2,
+              3,
+              7,
+              8
+            ],
+            "prestige_currency": "150.468",
+            "prestige_accumulated": "1000.468",
             "wounded_rank": 0,
             "alive_data_present": true,
             "dead_data_present": false,
@@ -45,6 +56,42 @@
             "killer_character_id": null,
             "regiment_id": 113,
             "character_block_sha256": "DA5A617BF6A57A57635A5F61065E8BA4AB468873D5296F6C70285633C78DCC8A"
+          },
+          "opponent_character": {
+            "character_id": 34867,
+            "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+            "trait_indices": [
+              67,
+              73,
+              60,
+              17,
+              236
+            ],
+            "trait_keys": [
+              "ambitious",
+              "paranoid",
+              "humble",
+              "education_martial_3",
+              "logistician"
+            ],
+            "base_skill_values": [
+              6,
+              8,
+              5,
+              5,
+              5,
+              3
+            ],
+            "prestige_currency": "751.176",
+            "prestige_accumulated": "1001.176",
+            "wounded_rank": 0,
+            "alive_data_present": true,
+            "dead_data_present": false,
+            "death_date": null,
+            "death_reason": null,
+            "killer_character_id": null,
+            "regiment_id": 62,
+            "character_block_sha256": "5C09F60E47E241555191967EF936ED439CFDE91CC0FCD1B456149A4D8DE9CCE8"
           }
         },
         {
@@ -71,6 +118,16 @@
               "logistician",
               "wounded_1"
             ],
+            "base_skill_values": [
+              4,
+              6,
+              2,
+              3,
+              7,
+              8
+            ],
+            "prestige_currency": "150.468",
+            "prestige_accumulated": "1000.468",
             "wounded_rank": 1,
             "alive_data_present": true,
             "dead_data_present": false,
@@ -79,6 +136,42 @@
             "killer_character_id": null,
             "regiment_id": 113,
             "character_block_sha256": "2F1DB960283382EAA007221E3228752D256CF48AFE764241DAC68073BDEC274F"
+          },
+          "opponent_character": {
+            "character_id": 34867,
+            "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+            "trait_indices": [
+              67,
+              73,
+              60,
+              17,
+              236
+            ],
+            "trait_keys": [
+              "ambitious",
+              "paranoid",
+              "humble",
+              "education_martial_3",
+              "logistician"
+            ],
+            "base_skill_values": [
+              6,
+              8,
+              5,
+              5,
+              5,
+              4
+            ],
+            "prestige_currency": "826.176",
+            "prestige_accumulated": "1076.176",
+            "wounded_rank": 0,
+            "alive_data_present": true,
+            "dead_data_present": false,
+            "death_date": null,
+            "death_reason": null,
+            "killer_character_id": null,
+            "regiment_id": 62,
+            "character_block_sha256": "40C3AEDF99F31BAD66F2BF83BABF21119AEE0E4BBA267AC1BF56418D936A6353"
           }
         }
       ],
@@ -131,6 +224,7 @@
       "event_native_date_raw": 53146608,
       "event_key": "knight_killed_by_enemy",
       "target_character_id": 36673,
+      "opponent_character_id": 32716,
       "event_receipt_sha256": "31DF5CAC53ADE6EB6CDEE1B84D5C76A57508B9885DA5712F793D8D6D172D80E3",
       "saves": [
         {
@@ -153,6 +247,16 @@
               "stubborn",
               "education_stewardship_3"
             ],
+            "base_skill_values": [
+              10,
+              1,
+              10,
+              6,
+              5,
+              4
+            ],
+            "prestige_currency": "451.05",
+            "prestige_accumulated": "1001.05",
             "wounded_rank": 0,
             "alive_data_present": true,
             "dead_data_present": false,
@@ -161,6 +265,42 @@
             "killer_character_id": null,
             "regiment_id": 180,
             "character_block_sha256": "1528F12970A17327DC92D450FD772B407DD75A9BDDA90B1FE27AAF666C1F079D"
+          },
+          "opponent_character": {
+            "character_id": 32716,
+            "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+            "trait_indices": [
+              70,
+              56,
+              54,
+              18,
+              246
+            ],
+            "trait_keys": [
+              "just",
+              "calm",
+              "diligent",
+              "education_martial_4",
+              "holy_warrior"
+            ],
+            "base_skill_values": [
+              7,
+              8,
+              8,
+              4,
+              5,
+              4
+            ],
+            "prestige_currency": "604.635",
+            "prestige_accumulated": "1004.635",
+            "wounded_rank": 0,
+            "alive_data_present": true,
+            "dead_data_present": false,
+            "death_date": null,
+            "death_reason": null,
+            "killer_character_id": null,
+            "regiment_id": 59,
+            "character_block_sha256": "5053501A2A7E0928223988E2CFB8339ED32C5F55CEA3A7C4F0D32E0DF0145F47"
           }
         },
         {
@@ -183,6 +323,16 @@
               "stubborn",
               "education_stewardship_3"
             ],
+            "base_skill_values": [
+              10,
+              1,
+              10,
+              6,
+              5,
+              4
+            ],
+            "prestige_currency": null,
+            "prestige_accumulated": null,
             "wounded_rank": 0,
             "alive_data_present": false,
             "dead_data_present": true,
@@ -191,6 +341,42 @@
             "killer_character_id": 32716,
             "regiment_id": null,
             "character_block_sha256": "AB4EC5D9521DECA0F03B0B808DCA0D8E82FE51C1FE7361C7529B22D12CDEA51D"
+          },
+          "opponent_character": {
+            "character_id": 32716,
+            "trait_lookup_sha256": "B2DB9F4CE5EF23181FF99E03BF88681273FFEBD42EA97D10DB4ED5A65E6717D5",
+            "trait_indices": [
+              70,
+              56,
+              54,
+              18,
+              246
+            ],
+            "trait_keys": [
+              "just",
+              "calm",
+              "diligent",
+              "education_martial_4",
+              "holy_warrior"
+            ],
+            "base_skill_values": [
+              7,
+              8,
+              8,
+              4,
+              5,
+              5
+            ],
+            "prestige_currency": "904.635",
+            "prestige_accumulated": "1304.635",
+            "wounded_rank": 0,
+            "alive_data_present": true,
+            "dead_data_present": false,
+            "death_date": null,
+            "death_reason": null,
+            "killer_character_id": null,
+            "regiment_id": 59,
+            "character_block_sha256": "7B682E38B093785B73CBC522ED8385FF651BFF9E4E488DC35CD5A2E906FD4F87"
           }
         }
       ],

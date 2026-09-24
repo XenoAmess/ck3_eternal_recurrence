@@ -9,6 +9,7 @@ a portable narrow observation.  It does not establish a complete effect model.
 from __future__ import annotations
 
 import argparse
+from decimal import Decimal
 import hashlib
 import json
 from pathlib import Path
@@ -60,11 +61,24 @@ def _character_snapshot(text: str, character_id: int) -> dict:
     dead = re.search(r"^\t\tdead_data=\{", body, re.M) is not None
     if alive == dead:
         raise ValueError(f"character {character_id} life status ambiguous")
+    skill_match = re.findall(r"^\t\tskill=\{\s*\n\t\t\t([^\n]+)\n\t\t\}", body, re.M)
+    if len(skill_match) != 1:
+        raise ValueError(f"character {character_id} has no unique base skill list")
+    skills = [int(value) for value in skill_match[0].split()]
+    if len(skills) != 6:
+        raise ValueError(f"character {character_id} has an unexpected base skill list")
+    prestige_match = re.findall(r"^\t\t\tprestige=\{\n(.*?)^\t\t\t\}", body, re.M | re.S)
+    if alive and len(prestige_match) != 1:
+        raise ValueError(f"living character {character_id} has no unique prestige block")
+    prestige = prestige_match[0] if prestige_match else ""
     return {
         "character_id": character_id,
         "trait_lookup_sha256": hashlib.sha256(lookup[0].encode("utf-8")).hexdigest().upper(),
         "trait_indices": indices,
         "trait_keys": [trait_keys[index] for index in indices],
+        "base_skill_values": skills,
+        "prestige_currency": _field(prestige, "currency") if alive else None,
+        "prestige_accumulated": _field(prestige, "accumulated") if alive else None,
         "wounded_rank": next((rank for rank in (1, 2, 3) if f"wounded_{rank}" in
                               [trait_keys[index] for index in indices]), 0),
         "alive_data_present": alive,
@@ -99,6 +113,7 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
                 or ledger[0]["target_right"] is not False):
             raise ValueError(f"day {event_day}: ledger target mismatch")
         saves = []
+        opponent_id = ledger[0]["right_character_id"]
         for source_day in (event_day, event_day + 1):
             raw = trace_root / f"trace-d{source_day:02d}-immutable.ck3"
             raw_sha = digest(raw)
@@ -108,13 +123,15 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
             melted_sha = digest(melted)
             if melted_sha != MELTED_SHA256_BY_DAY[source_day]:
                 raise ValueError(f"day {source_day}: melted save changed")
-            snapshot = _character_snapshot(melted.read_text(encoding="utf-8-sig"), character_id)
+            text = melted.read_text(encoding="utf-8-sig")
+            snapshot = _character_snapshot(text, character_id)
             saves.append({
                 "source_day": source_day,
                 "date_raw": case["daily"][source_day - 1]["date_raw"],
                 "native_save_sha256": raw_sha,
                 "melted_save_sha256": melted_sha,
                 "character": snapshot,
+                "opponent_character": _character_snapshot(text, opponent_id),
             })
         if (event_day == 5 and not (
                 saves[0]["character"]["wounded_rank"] == 0
@@ -129,6 +146,19 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
                     ledger[0]["right_character_id"]
                 )):
             raise ValueError(f"day {event_day}: expected narrow state transition absent")
+        opponent_before = saves[0]["opponent_character"]
+        opponent_after = saves[1]["opponent_character"]
+        expected_opponent_id, previous_prowess, next_prowess, prestige_gain = (
+            (34867, 3, 4, 75) if event_day == 5 else (32716, 4, 5, 300)
+        )
+        if (opponent_id != expected_opponent_id
+                or opponent_before["base_skill_values"][-1] != previous_prowess
+                or opponent_after["base_skill_values"][-1] != next_prowess
+                or Decimal(opponent_after["prestige_currency"]) -
+                Decimal(opponent_before["prestige_currency"]) != prestige_gain
+                or Decimal(opponent_after["prestige_accumulated"]) -
+                Decimal(opponent_before["prestige_accumulated"]) != prestige_gain):
+            raise ValueError(f"day {event_day}: opponent state delta absent")
         if event["native_date_raw"] != saves[1]["date_raw"]:
             raise ValueError(f"day {event_day}: event and later save date differ")
         rows.append({
@@ -136,6 +166,7 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
             "event_native_date_raw": event["native_date_raw"],
             "event_key": key,
             "target_character_id": character_id,
+            "opponent_character_id": opponent_id,
             "event_receipt_sha256": event["source_receipt_sha256"],
             "saves": saves,
             "same_fire_character_core_deltas": event["observed_character_core_deltas_within_fire"],

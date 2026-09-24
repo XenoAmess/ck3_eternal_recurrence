@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
@@ -22,7 +23,7 @@ EPISODE01_REPEATABILITY_SHA256 = "5E2D4B1AEE3BD6D64AC48111CD7ED1D8F48B8827D9FEBA
 EPISODE01_PHASE_EVENT_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_observations.json"
 EPISODE01_PHASE_EVENT_SHA256 = "94831B16AE56BC050833D7BEE9064170D118F77700DE672A0977E68F47C98AAE"
 EPISODE01_PHASE_EVENT_SAVE_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json"
-EPISODE01_PHASE_EVENT_SAVE_SHA256 = "2C392178AF7206E62EDE47AF061E133B9B09D91C3F9CEA736A503EC7843D44B5"
+EPISODE01_PHASE_EVENT_SAVE_SHA256 = "E68AD6F4099AC0DC3254C5CC7F7D9935AEC9221AF8D132E1F4915D4210E4A36C"
 
 
 class NativeBattleCaseError(ValueError):
@@ -240,6 +241,19 @@ def _validate_phase_event_save_feedback(report: dict[str, Any]) -> None:
             or killed["saves"][1]["character"]["death_reason"] != "death_battle"
             or killed["saves"][1]["character"]["killer_character_id"] != 32716):
         raise NativeBattleCaseError("death save observation mismatch")
+    for row, opponent_id, before_prowess, after_prowess, prestige_gain in (
+        (wound, 34867, 3, 4, Decimal("75")),
+        (killed, 32716, 4, 5, Decimal("300")),
+    ):
+        before, after = (save["opponent_character"] for save in row["saves"])
+        if (row.get("opponent_character_id") != opponent_id
+                or before.get("character_id") != opponent_id
+                or after.get("character_id") != opponent_id
+                or before.get("base_skill_values", [None])[-1] != before_prowess
+                or after.get("base_skill_values", [None])[-1] != after_prowess
+                or Decimal(after["prestige_currency"]) - Decimal(before["prestige_currency"]) != prestige_gain
+                or Decimal(after["prestige_accumulated"]) - Decimal(before["prestige_accumulated"]) != prestige_gain):
+            raise NativeBattleCaseError("opponent prestige or base prowess save observation mismatch")
 
 
 def load_episode01_phase_event_save_feedback() -> dict[str, Any]:
