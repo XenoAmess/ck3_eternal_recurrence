@@ -332,6 +332,35 @@ def outgoing_damage_raw(
     return fixed_mul(result, effective_attack_after_counter_raw)
 
 
+def update_combat_width(
+    side_0_fighting_raw: int,
+    side_1_fighting_raw: int,
+    *,
+    previous_base_width: int,
+    terrain_width_multiplier_raw: int,
+    base_width_ratio_raw: int = FIXED_SCALE,
+    minimum_combat_width: int = 100,
+) -> tuple[int, int]:
+    """Mirror the participant-update width formula with a monotone base width.
+
+    Inputs are the internal Q100000 fighting totals at the update boundary,
+    including soldiers that joined that day. The caller must supply the exact
+    terrain multiplier and participant timing; this function does not predict
+    either of those inputs.
+    """
+    if (side_0_fighting_raw < 0 or side_1_fighting_raw < 0
+            or previous_base_width < 0 or terrain_width_multiplier_raw < 0
+            or base_width_ratio_raw < 0 or minimum_combat_width <= 0):
+        raise ValueError("combat width inputs must be nonnegative with positive minimum")
+    average_raw = fixed_div(side_0_fighting_raw + side_1_fighting_raw, 2 * FIXED_SCALE)
+    base_raw = fixed_mul(average_raw, base_width_ratio_raw)
+    candidate = trunc_div_toward_zero(base_raw, FIXED_SCALE)
+    base = max(previous_base_width, max(1, candidate))
+    final_raw = fixed_mul(base * FIXED_SCALE, terrain_width_multiplier_raw)
+    final = max(minimum_combat_width, trunc_div_toward_zero(final_raw, FIXED_SCALE))
+    return base, final
+
+
 @dataclass(frozen=True, slots=True)
 class PursuitInitialPools:
     levy_soft_raw: int

@@ -21,6 +21,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     _validate_join_day_kernel_parity_v2,
     _validate_phase_event_regiment_feedback,
     _validate_main_outgoing_conditional_parity,
+    _validate_main_outgoing_conditional_parity_v2,
     load_episode01_native_battle_case,
     load_episode01_native_battle_repeatability,
     load_episode01_phase_event_observations,
@@ -30,6 +31,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_join_day_kernel_parity_v2,
     load_episode01_phase_event_regiment_feedback,
     load_episode01_main_outgoing_conditional_parity,
+    load_episode01_main_outgoing_conditional_parity_v2,
     original_daily_timeline,
 )
 
@@ -222,6 +224,24 @@ class NativeBattleCaseTests(unittest.TestCase):
         promoted["post_counter_attack_reconstructed"] = True
         with self.assertRaises(NativeBattleCaseError):
             _validate_main_outgoing_conditional_parity(promoted)
+
+    def test_stock_forest_and_observed_joins_reconstruct_width_history(self) -> None:
+        report = load_episode01_main_outgoing_conditional_parity_v2()
+        by_day = {row["source_day"]: row for row in report["source_days"]}
+        self.assertEqual((by_day[4]["computed_base_combat_width"],
+                          by_day[4]["computed_final_combat_width"]), (1645, 1480))
+        self.assertEqual((by_day[11]["computed_base_combat_width"],
+                          by_day[11]["computed_final_combat_width"]), (2467, 2220))
+        self.assertEqual((by_day[21]["computed_base_combat_width"],
+                          by_day[21]["computed_final_combat_width"]), (2467, 2220))
+        self.assertTrue(all(row["combat_width_exact"] and row["both_sides_exact"]
+                            for row in report["source_days"]))
+        self.assertFalse(report["width_update_timing_reconstructed"])
+        self.assertFalse(report["planner_usable"])
+        promoted = copy.deepcopy(report)
+        promoted["width_update_timing_reconstructed"] = True
+        with self.assertRaises(NativeBattleCaseError):
+            _validate_main_outgoing_conditional_parity_v2(promoted)
         promoted = copy.deepcopy(report)
         promoted["outgoing_damage_reconstructed"] = True
         with self.assertRaises(NativeBattleCaseError):

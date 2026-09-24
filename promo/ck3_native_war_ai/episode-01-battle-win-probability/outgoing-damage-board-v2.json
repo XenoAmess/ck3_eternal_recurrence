@@ -1,0 +1,160 @@
+{
+  "schema": "ck3-episode01-outgoing-damage-board-v2",
+  "source_report_sha256": "967FD94030A39A7408C33D281E814E01C0F1E412B7797F61449F90FAA58F8F00",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "trajectory": "independent-replay-from-original-contact-checkpoint",
+  "battle_terrain_key": "forest",
+  "terrain_width_multiplier_raw": 90000,
+  "source_days_compared": 23,
+  "native_outgoing_values_compared": 46,
+  "exact_outgoing_values": 46,
+  "examples": [
+    {
+      "source_day": 4,
+      "phase_trace_status": "bounded_trace_available",
+      "control_receipt_sha256": "F981AB6E9577088F33098CFDD06F9AC202C303B7109541AC157F9D06BE4E262D",
+      "finish_receipt_sha256": "FE0460FB8ADF3655EE87912AB019ED263D23540CC50FB36589DE51A43353DE9A",
+      "resolved_advantage_raw": -1000000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3620750000,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 200300000,
+          "native_outgoing_damage_raw": 80235820,
+          "agent_outgoing_damage_raw": 80235820,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 2104550000,
+          "native_advantage_multiplier_raw": 150000,
+          "current_fighting_men_before_damage_raw": 128800000,
+          "native_outgoing_damage_raw": 94704750,
+          "agent_outgoing_damage_raw": 94704750,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 5,
+      "phase_trace_status": "bounded_trace_available",
+      "control_receipt_sha256": "A294718302F0A9212F0F1246746E75B9E1F038AEBD773C7D0E5AB50B88BB07C6",
+      "finish_receipt_sha256": "851B664AF6D2D59DED0A8D602AEEF95E6E0BE0283D2CCCD2F5204F77C9801808",
+      "resolved_advantage_raw": -600000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3511465714,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 192121816,
+          "native_outgoing_damage_raw": 81149972,
+          "agent_outgoing_damage_raw": 81149972,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 2036632465,
+          "native_advantage_multiplier_raw": 130000,
+          "current_fighting_men_before_damage_raw": 122225074,
+          "native_outgoing_damage_raw": 79428666,
+          "agent_outgoing_damage_raw": 79428666,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 11,
+      "phase_trace_status": "trace_unavailable",
+      "control_receipt_sha256": "F364151C693D419DDA6A22113B6B23137C9B8F77562C0CF21A2288E8EF72024F",
+      "finish_receipt_sha256": "3C0E71A11279628E1574C4CF6EBE6B35BFE3546A7F32C979723ED1203B96C36C",
+      "resolved_advantage_raw": -1100000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 256000000,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 7163402981,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 410690163,
+          "native_outgoing_damage_raw": 116118762,
+          "agent_outgoing_damage_raw": 116118762,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1455075113,
+          "native_advantage_multiplier_raw": 155000,
+          "current_fighting_men_before_damage_raw": 82785368,
+          "native_outgoing_damage_raw": 67660992,
+          "agent_outgoing_damage_raw": 67660992,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 21,
+      "phase_trace_status": "trace_unavailable",
+      "control_receipt_sha256": "69C9867D55892F4306D9931BCADC29F3313A557D3D8A289B6ECDEB3E825937A2",
+      "finish_receipt_sha256": "46E2EE2B4E2D6F480AA9DCA1947A18CC6843C77C3256AC016DE2F6A8ECB1A994",
+      "resolved_advantage_raw": -1500000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 105800000,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 8094977971,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 470651390,
+          "native_outgoing_damage_raw": 114543938,
+          "agent_outgoing_damage_raw": 114543938,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 720870760,
+          "native_advantage_multiplier_raw": 175000,
+          "current_fighting_men_before_damage_raw": 12161798,
+          "native_outgoing_damage_raw": 37845714,
+          "agent_outgoing_damage_raw": 37845714,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    }
+  ],
+  "conditioned_on_native_post_counter_attack": true,
+  "conditioned_on_native_advantage": true,
+  "conditioned_on_observed_joined_roster": true,
+  "width_formula_reconstructed_from_observed_join_timing": true,
+  "width_update_timing_reconstructed": false,
+  "post_counter_attack_reconstructed": false,
+  "advantage_reconstructed": false,
+  "join_policy_reconstructed": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

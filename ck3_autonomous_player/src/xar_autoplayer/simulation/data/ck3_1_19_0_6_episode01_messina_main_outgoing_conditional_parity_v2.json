@@ -1,0 +1,879 @@
+{
+  "schema": "ck3-native-main-outgoing-conditional-parity-v2",
+  "case_sha256": "62C70CED2E4E1E355A986C9220F05F59441EE26F14C0EE412D537383413DBF9F",
+  "join_evidence_sha256": "C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "trajectory": "independent-replay-from-original-contact-checkpoint",
+  "terrain_width_multiplier_raw": 90000,
+  "province_terrain_source_sha256": "922A5B8BA73007B18E95F1CCFCDBE075A03F5DE61CBF8FF8F66698BEDBB3BE3C",
+  "terrain_types_source_sha256": "39D79AD120BF85B49D6EE8D96FE4D94EDBBABC190A41662DBA8ECA8DE0ACE64E",
+  "battle_province_id": 2633,
+  "battle_terrain_key": "forest",
+  "source_days": [
+    {
+      "source_day": 4,
+      "control_receipt_sha256": "F981AB6E9577088F33098CFDD06F9AC202C303B7109541AC157F9D06BE4E262D",
+      "finish_receipt_sha256": "FE0460FB8ADF3655EE87912AB019ED263D23540CC50FB36589DE51A43353DE9A",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1000000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3620750000,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 200300000,
+          "native_outgoing_damage_raw": 80235820,
+          "agent_outgoing_damage_raw": 80235820,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 2104550000,
+          "native_advantage_multiplier_raw": 150000,
+          "current_fighting_men_before_damage_raw": 128800000,
+          "native_outgoing_damage_raw": 94704750,
+          "agent_outgoing_damage_raw": 94704750,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 5,
+      "control_receipt_sha256": "A294718302F0A9212F0F1246746E75B9E1F038AEBD773C7D0E5AB50B88BB07C6",
+      "finish_receipt_sha256": "851B664AF6D2D59DED0A8D602AEEF95E6E0BE0283D2CCCD2F5204F77C9801808",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -600000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3511465714,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 192121816,
+          "native_outgoing_damage_raw": 81149972,
+          "agent_outgoing_damage_raw": 81149972,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 2036632465,
+          "native_advantage_multiplier_raw": 130000,
+          "current_fighting_men_before_damage_raw": 122225074,
+          "native_outgoing_damage_raw": 79428666,
+          "agent_outgoing_damage_raw": 79428666,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 6,
+      "control_receipt_sha256": "19829CA33B67C787FF22E6DAB2B4FB628CC9F97800BD460CA774A5C323B5A1A1",
+      "finish_receipt_sha256": "78939C8E2FE2BA03ADE14EB49F43CDED7288EDC37E0E785DADD562C237533848",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -600000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3419570511,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 185282077,
+          "native_outgoing_damage_raw": 81932909,
+          "agent_outgoing_damage_raw": 81932909,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1967678598,
+          "native_advantage_multiplier_raw": 130000,
+          "current_fighting_men_before_damage_raw": 115629874,
+          "native_outgoing_damage_raw": 76739465,
+          "agent_outgoing_damage_raw": 76739465,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 7,
+      "control_receipt_sha256": "42A4D21253E6CA9A817DCDB8FAD1E1DB83319516FC7985C11F7B6BFADCF151CA",
+      "finish_receipt_sha256": "FCCA9F842CB6188F490F9CA4691EBA231EF764DCE2EA8E12BAB0037AB4817641",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -600000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3319749111,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 178690767,
+          "native_outgoing_damage_raw": 82462567,
+          "agent_outgoing_damage_raw": 82462567,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1906967651,
+          "native_advantage_multiplier_raw": 130000,
+          "current_fighting_men_before_damage_raw": 109031978,
+          "native_outgoing_damage_raw": 74371738,
+          "agent_outgoing_damage_raw": 74371738,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 8,
+      "control_receipt_sha256": "F9410A3219E5AA9ACBB16B903663C3BE1AA89C0965BDF0FB69D6E6029017C522",
+      "finish_receipt_sha256": "4CE59178599B9779945F4DFAB851BAFEED1B376E37D891BB03DF60BFC3211715",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -600000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3233299326,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 172317736,
+          "native_outgoing_damage_raw": 83289790,
+          "agent_outgoing_damage_raw": 83289790,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1837445262,
+          "native_advantage_multiplier_raw": 130000,
+          "current_fighting_men_before_damage_raw": 102457930,
+          "native_outgoing_damage_raw": 71660365,
+          "agent_outgoing_damage_raw": 71660365,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 9,
+      "control_receipt_sha256": "6DBEB8237A19A60F3317C000319F261C042267DF1A9BC7579AD25CA2C85301DC",
+      "finish_receipt_sha256": "AB14DEE59C2A051094195C02BFD1792B6133731771026D435B2BFB9650E6F649",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -600000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3158925759,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 166193371,
+          "native_outgoing_damage_raw": 84374907,
+          "agent_outgoing_damage_raw": 84374907,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1767531112,
+          "native_advantage_multiplier_raw": 130000,
+          "current_fighting_men_before_damage_raw": 95892395,
+          "native_outgoing_damage_raw": 68933713,
+          "agent_outgoing_damage_raw": 68933713,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 10,
+      "control_receipt_sha256": "70E748FA7B2DC1E71351F7183A04FA26AAD31335FA90E0DCF8C1B987E79BF031",
+      "finish_receipt_sha256": "77C8CE63401677FA958F442B0E2E45572BE538441CB0D5A4843665394BBCED2C",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -600000,
+      "computed_base_combat_width": 1645,
+      "computed_final_combat_width": 1480,
+      "native_base_combat_width": 1645,
+      "native_final_combat_width": 1480,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 3078418023,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 160317482,
+          "native_outgoing_damage_raw": 85241395,
+          "agent_outgoing_damage_raw": 85241395,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1697053849,
+          "native_advantage_multiplier_raw": 130000,
+          "current_fighting_men_before_damage_raw": 89325449,
+          "native_outgoing_damage_raw": 66185100,
+          "agent_outgoing_damage_raw": 66185100,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 11,
+      "control_receipt_sha256": "F364151C693D419DDA6A22113B6B23137C9B8F77562C0CF21A2288E8EF72024F",
+      "finish_receipt_sha256": "3C0E71A11279628E1574C4CF6EBE6B35BFE3546A7F32C979723ED1203B96C36C",
+      "arrival_control_receipt_sha256": "5AE37180B5680192DB9C09EC3632AC3CF89695C24103B1F7D7C0D92519FA78E3",
+      "phase_trace_status": "trace_unavailable",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1100000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 256000000,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 7163402981,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 410690163,
+          "native_outgoing_damage_raw": 116118762,
+          "agent_outgoing_damage_raw": 116118762,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1455075113,
+          "native_advantage_multiplier_raw": 155000,
+          "current_fighting_men_before_damage_raw": 82785368,
+          "native_outgoing_damage_raw": 67660992,
+          "agent_outgoing_damage_raw": 67660992,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 12,
+      "control_receipt_sha256": "5AE37180B5680192DB9C09EC3632AC3CF89695C24103B1F7D7C0D92519FA78E3",
+      "finish_receipt_sha256": "B8865D71ED12D7E558341299C3EAEF11EB13ACE198F0A073CF6008846D0962D7",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1100000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 7086468150,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 404728240,
+          "native_outgoing_damage_raw": 116572401,
+          "agent_outgoing_damage_raw": 116572401,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1367059376,
+          "native_advantage_multiplier_raw": 155000,
+          "current_fighting_men_before_damage_raw": 74020077,
+          "native_outgoing_damage_raw": 63568260,
+          "agent_outgoing_damage_raw": 63568260,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 13,
+      "control_receipt_sha256": "B590F6EDB9BAE842E96A685856B4EDEB5DB082EA38C018B3E5BD0AE03F4EA728",
+      "finish_receipt_sha256": "4F2A5CF728C60FF4512FA2422EAC9422466D14DAAC089422961BFC63C73C6661",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1100000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 7014123061,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 399133098,
+          "native_outgoing_damage_raw": 116995572,
+          "agent_outgoing_damage_raw": 116995572,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1280755394,
+          "native_advantage_multiplier_raw": 155000,
+          "current_fighting_men_before_damage_raw": 65447557,
+          "native_outgoing_damage_raw": 59555125,
+          "agent_outgoing_damage_raw": 59555125,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 14,
+      "control_receipt_sha256": "D5B7B1F9A05722B1B38A099BC7625CCD526FEB1DDFFAC2F1B61332EA5D117EF0",
+      "finish_receipt_sha256": "C728DD8F934CFD60117D5C46C718CDA16B687AECD5420537802A4197FDB510A4",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1100000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 6963815936,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 393894700,
+          "native_outgoing_damage_raw": 117688489,
+          "agent_outgoing_damage_raw": 117688489,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1196534594,
+          "native_advantage_multiplier_raw": 155000,
+          "current_fighting_men_before_damage_raw": 57112216,
+          "native_outgoing_damage_raw": 55638858,
+          "agent_outgoing_damage_raw": 55638858,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 15,
+      "control_receipt_sha256": "15034F5717EF9302F290598C3C2DEB2F4C512A5DC7D546D9DDF09BB378670F14",
+      "finish_receipt_sha256": "31DF5CAC53ADE6EB6CDEE1B84D5C76A57508B9885DA5712F793D8D6D172D80E3",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "trace_unavailable",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1100000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 6900380736,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 389006758,
+          "native_outgoing_damage_raw": 118134518,
+          "agent_outgoing_damage_raw": 118134518,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1114652296,
+          "native_advantage_multiplier_raw": 155000,
+          "current_fighting_men_before_damage_raw": 49049629,
+          "native_outgoing_damage_raw": 51831331,
+          "agent_outgoing_damage_raw": 51831331,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 16,
+      "control_receipt_sha256": "774544D88DE564447E4C900EA99B4CB7CAA9EA2D055B0CD76DBB3ADEC013177F",
+      "finish_receipt_sha256": "1F43A75B2FA6BA0779F2FEEE5101822261D2C7955B3A0EBCCC08EF74571089B4",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "trace_unavailable",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1100000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 6783104561,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 384357638,
+          "native_outgoing_damage_raw": 117483370,
+          "agent_outgoing_damage_raw": 117483370,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 1035830480,
+          "native_advantage_multiplier_raw": 155000,
+          "current_fighting_men_before_damage_raw": 41347109,
+          "native_outgoing_damage_raw": 48166117,
+          "agent_outgoing_damage_raw": 48166117,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 17,
+      "control_receipt_sha256": "6978212C53589CFE49A42874FD3F725C3316FC820479F969B71DB71740170B56",
+      "finish_receipt_sha256": "9C247123EE5936AD331D3E5B88B230CCED06A65B4116F8E2B598BA72399D8288",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1300000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 6728138196,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 380131499,
+          "native_outgoing_damage_raw": 117876981,
+          "agent_outgoing_damage_raw": 117876981,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 969522817,
+          "native_advantage_multiplier_raw": 165000,
+          "current_fighting_men_before_damage_raw": 34160196,
+          "native_outgoing_damage_raw": 47991379,
+          "agent_outgoing_damage_raw": 47991379,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 18,
+      "control_receipt_sha256": "8AD5EA35535ED4EECD677091C61B79E4BE640F4F7242A6825D099285AE43B1B2",
+      "finish_receipt_sha256": "AFEAD18EA5CEC91BA0AE78B1D69CDBFC468219AE01A1833D03C67B0B569014E0",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1300000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 6688100400,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 375924974,
+          "native_outgoing_damage_raw": 118446258,
+          "agent_outgoing_damage_raw": 118446258,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 899525749,
+          "native_advantage_multiplier_raw": 165000,
+          "current_fighting_men_before_damage_raw": 27524327,
+          "native_outgoing_damage_raw": 44526524,
+          "agent_outgoing_damage_raw": 44526524,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 19,
+      "control_receipt_sha256": "8417E5B5A080E766C3D6A0A2F94E985C6F7FD992636BA2AE4ABCCA2C915241A8",
+      "finish_receipt_sha256": "9105A6880309176F38091689136B725A352F4325BBB67065BB10B3969A9C9BCC",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1300000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 6651277725,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 372025245,
+          "native_outgoing_damage_raw": 119057871,
+          "agent_outgoing_damage_raw": 119057871,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 834590505,
+          "native_advantage_multiplier_raw": 165000,
+          "current_fighting_men_before_damage_raw": 21560218,
+          "native_outgoing_damage_raw": 41312229,
+          "agent_outgoing_damage_raw": 41312229,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 20,
+      "control_receipt_sha256": "E5E3D43CD1BCB22B30EE300990A05872341A01A430AC94464118782FF8F16B7F",
+      "finish_receipt_sha256": "D07DAC91DF6A3DAB17CE19C5C5CB27B4184D0C156B033376A8140DBA7CB5DDED",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1500000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 6620488447,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 368409866,
+          "native_outgoing_damage_raw": 119632226,
+          "agent_outgoing_damage_raw": 119632226,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 775200406,
+          "native_advantage_multiplier_raw": 175000,
+          "current_fighting_men_before_damage_raw": 16406435,
+          "native_outgoing_damage_raw": 40698021,
+          "agent_outgoing_damage_raw": 40698021,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 21,
+      "control_receipt_sha256": "69C9867D55892F4306D9931BCADC29F3313A557D3D8A289B6ECDEB3E825937A2",
+      "finish_receipt_sha256": "46E2EE2B4E2D6F480AA9DCA1947A18CC6843C77C3256AC016DE2F6A8ECB1A994",
+      "arrival_control_receipt_sha256": "6F286635D6EDA5BFD7B9980379ABD2096D9A7B6462CF2ABA66B74D4B4ED9E6F8",
+      "phase_trace_status": "trace_unavailable",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1500000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 105800000,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 8094977971,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 470651390,
+          "native_outgoing_damage_raw": 114543938,
+          "agent_outgoing_damage_raw": 114543938,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 720870760,
+          "native_advantage_multiplier_raw": 175000,
+          "current_fighting_men_before_damage_raw": 12161798,
+          "native_outgoing_damage_raw": 37845714,
+          "agent_outgoing_damage_raw": 37845714,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 22,
+      "control_receipt_sha256": "6F286635D6EDA5BFD7B9980379ABD2096D9A7B6462CF2ABA66B74D4B4ED9E6F8",
+      "finish_receipt_sha256": "169361CE6CF0C577DD50C894A30FBCDBB33F12D69D7315D9A5195660981213CB",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -1500000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 8072893383,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 467286200,
+          "native_outgoing_damage_raw": 115038730,
+          "agent_outgoing_damage_raw": 115038730,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 671085128,
+          "native_advantage_multiplier_raw": 175000,
+          "current_fighting_men_before_damage_raw": 8922598,
+          "native_outgoing_damage_raw": 35231969,
+          "agent_outgoing_damage_raw": 35231969,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 23,
+      "control_receipt_sha256": "F037C1987603224DE9BE4B289BFB2488105065EAEF81F5E97C586AA3914C1E1A",
+      "finish_receipt_sha256": "6376D4E9F6DD55046C26D336821ADC7A241A93C8A6DF3F0DD905F5682AE7C071",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -800000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 8055193258,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 464158082,
+          "native_outgoing_damage_raw": 115511471,
+          "agent_outgoing_damage_raw": 115511471,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 616980587,
+          "native_advantage_multiplier_raw": 140000,
+          "current_fighting_men_before_damage_raw": 6148423,
+          "native_outgoing_damage_raw": 25913184,
+          "agent_outgoing_damage_raw": 25913184,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 24,
+      "control_receipt_sha256": "D2E7A37DD3EC9E1ADB1915287D0E1168295A2EB67CBBCB523E5C766628049E7D",
+      "finish_receipt_sha256": "B9B0459C02AB96154019E2EBD7D0206F8FEC9889987E15EE2115658BF5CD60B1",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -800000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 8048469105,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 461856756,
+          "native_outgoing_damage_raw": 115978439,
+          "agent_outgoing_damage_raw": 115978439,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 548763449,
+          "native_advantage_multiplier_raw": 140000,
+          "current_fighting_men_before_damage_raw": 3461592,
+          "native_outgoing_damage_raw": 23048064,
+          "agent_outgoing_damage_raw": 23048064,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 25,
+      "control_receipt_sha256": "D5E84B00908C2CAA647E4488574C91A1F90BCC2FB2CC0DCB21CCB9D1E8C385C4",
+      "finish_receipt_sha256": "6EC9B044FC3B0A2F06BBD5D5AE57385B91A836138D5601103CFE784D7C7D7771",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -800000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 8044797670,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 459809727,
+          "native_outgoing_damage_raw": 116488670,
+          "agent_outgoing_damage_raw": 116488670,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 447575355,
+          "native_advantage_multiplier_raw": 140000,
+          "current_fighting_men_before_damage_raw": 926434,
+          "native_outgoing_damage_raw": 18798164,
+          "agent_outgoing_damage_raw": 18798164,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    },
+    {
+      "source_day": 26,
+      "control_receipt_sha256": "787B8905970476C1BE88A215E5DD054AA4358382A3911C855E7654CA98CABB93",
+      "finish_receipt_sha256": "09EF57C29D8600C85A5456BA70B6DE5145052711BE66C4D177A4E3AD2B8C2E6F",
+      "arrival_control_receipt_sha256": null,
+      "phase_trace_status": "bounded_trace_available",
+      "advantage_record_index": 1,
+      "advantage_record_capture_failure_flags": 0,
+      "resolved_advantage_raw": -500000,
+      "computed_base_combat_width": 2467,
+      "computed_final_combat_width": 2220,
+      "native_base_combat_width": 2467,
+      "native_final_combat_width": 2220,
+      "combat_width_exact": true,
+      "observed_joined_fighting_men_raw": 0,
+      "sides": [
+        {
+          "side_index": 0,
+          "native_post_counter_attack_raw": 8029128182,
+          "native_advantage_multiplier_raw": 100000,
+          "current_fighting_men_before_damage_raw": 458143556,
+          "native_outgoing_damage_raw": 116663232,
+          "agent_outgoing_damage_raw": 116663232,
+          "agent_minus_native_raw": 0
+        },
+        {
+          "side_index": 1,
+          "native_post_counter_attack_raw": 178559586,
+          "native_advantage_multiplier_raw": 125000,
+          "current_fighting_men_before_damage_raw": 160464,
+          "native_outgoing_damage_raw": 6695984,
+          "agent_outgoing_damage_raw": 6695984,
+          "agent_minus_native_raw": 0
+        }
+      ],
+      "both_sides_exact": true
+    }
+  ],
+  "native_outgoing_values_compared": 46,
+  "exact_outgoing_values": 46,
+  "conditioned_on_native_post_counter_attack": true,
+  "conditioned_on_native_advantage": true,
+  "conditioned_on_observed_joined_roster": true,
+  "conditioned_on_stock_terrain_width": true,
+  "post_counter_attack_reconstructed": false,
+  "advantage_reconstructed": false,
+  "join_policy_reconstructed": false,
+  "width_formula_reconstructed_from_observed_join_timing": true,
+  "width_update_timing_reconstructed": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

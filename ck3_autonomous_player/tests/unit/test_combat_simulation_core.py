@@ -34,6 +34,7 @@ from xar_autoplayer.simulation.combat_core import (
     fixed_div,
     fixed_mul,
     outgoing_damage_raw,
+    update_combat_width,
     phase_schedule_state,
     run_combat_experiment,
     schedule_main_day_randomness,
@@ -50,6 +51,23 @@ from xar_autoplayer.simulation.combat_core import (
 
 
 class CombatFixedPointTests(unittest.TestCase):
+    def test_joined_soldiers_raise_width_and_later_losses_do_not_lower_base(self) -> None:
+        first = update_combat_width(
+            200300000, 128800000, previous_base_width=0,
+            terrain_width_multiplier_raw=90000,
+        )
+        joined = update_combat_width(
+            410690163, 82785368, previous_base_width=first[0],
+            terrain_width_multiplier_raw=90000,
+        )
+        later = update_combat_width(
+            470651390, 12161798, previous_base_width=joined[0],
+            terrain_width_multiplier_raw=90000,
+        )
+        self.assertEqual(first, (1645, 1480))
+        self.assertEqual(joined, (2467, 2220))
+        self.assertEqual(later, (2467, 2220))
+
     def test_signed_operations_truncate_toward_zero(self) -> None:
         self.assertEqual(trunc_div_toward_zero(-7, 3), -2)
         self.assertEqual(trunc_div_toward_zero(7, -3), -2)

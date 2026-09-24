@@ -54,7 +54,9 @@
 
 [共用出伤对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_main_outgoing_conditional_parity.json) SHA-256 `E31C81A6C7A65A65704C942DFC1C470C6C30EA41FB8CD769334E8D79CCF41727`，由[只读重算工具](../../ck3_autonomous_player/tools/compare_native_main_outgoing_damage.py)核对第 4–26 日的 control/phase 原始回执 SHA，将智能体 `outgoing_damage_raw` 应用于双方 46 个实测值，**46/46 零差**。每项输入包含原版反制后攻击力、有效优势、战宽及参战人数。优势取同日期 side1 schedule 返回后的有效记录；第 16 日首条记录的捕获标志非零，但该下一条同日期记录为 0，没有借用失败记录。人数取当前有效兵力，不能沿用阶段记录中的上一日缓存；第 11、21 日须计入已观察到的增援，前者还须使用入场后更新的战宽。
 
-这闭合的是**给定原版中间输入时的主阶段出伤缩放公式**，并未自主重建反制后攻击力、优势生成、增援决策或战宽刷新。第 11、15、16、21 日完整阶段 trace 的 RED 不因局部出伤公式零差而变绿；原案与独立回放仍严格分开。视频[同源出伤板](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/outgoing-damage-board.json)由智能体读取器生成；整场胜率和 `planner_usable` 均未开放。
+进一步从 exact-build stock `common/province_terrain/00_province_terrain.txt`（SHA-256 `922A5B8BA73007B18E95F1CCFCDBE075A03F5DE61CBF8FF8F66698BEDBB3BE3C`）核到战场省份 `2633=forest`，`common/terrain_types/00_terrains.txt`（SHA-256 `39D79AD120BF85B49D6EE8D96FE4D94EDBBABC190A41662DBA8ECA8DE0ACE64E`）给森林战宽系数 `0.9`。智能体新增 `update_combat_width`，用双方当前参战人数、既有 base 战宽历史与该系数逐日更新：第 4 日 `1645/1480`，第 11 日已观察到的增援使之升至 `2467/2220`，第 21 日再增援时 base 仍保留 `2467`。新的[宽度自主复算 + 出伤条件对拍 v2](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_main_outgoing_conditional_parity_v2.json) SHA-256 `967FD94030A39A7408C33D281E814E01C0F1E412B7797F61449F90FAA58F8F00`，23/23 日战宽与原版相等，双方出伤仍 46/46 零差；v1 保留原样。
+
+这闭合的是**已观察到入场时点和参战人数下的战宽公式、以及给定原版反制后攻击力和优势时的主阶段出伤缩放公式**。它没有重建反制后攻击力、优势生成、增援策略或宽度更新被调用的动态时点。第 11、15、16、21 日完整阶段 trace 的 RED 不因局部公式零差而变绿；原案与独立回放仍严格分开。视频[同源出伤板 v2](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/outgoing-damage-board-v2.json)由智能体读取器生成，[v1](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/outgoing-damage-board.json)保留为过程资产；整场胜率和 `planner_usable` 均未开放。
 
 ### 两次自然增援的到达日伤亡
 
