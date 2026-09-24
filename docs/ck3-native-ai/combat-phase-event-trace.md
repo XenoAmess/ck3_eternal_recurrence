@@ -4,6 +4,8 @@
 
 独立 Release 构建的七边界 attempt-017 将原生日程中的事件对象指针在暂停 arm 时与同进程已载入的 13 行表绑定；原生 tick hook 只记录身份，drain 后才序列化为 `native_event_load_index`。目标 `33437`／兵团 `65` 在边界 1–6 的索引均为 `11`，原版 manifest 对应 `knight_killed`。边界 4→5 追加击杀战报，边界 6 观察到死亡与退出；采集失败标志为 0。来源字节与桥接 DLL 见[选中行报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_selected_phase_event_row.json)（SHA-256 `BEA95DDF36C0B8F1E5D4B6E01364BF8E35C3C3A7F676B10B038880A94CB5321D`）。这是该同源回放的事件行身份，不是内部随机抽签或全效果写集证明；整场胜率与智能体 planner 仍关闭。
 
+该回放的两次 phase-fire 还隔离出原生全局 RNG counter `421195→421196→421197`。从原生 salt `3812344717` 及 exact-build 算法推导出 side 0/1 draw `753992024`／`816083018`，side 1 第一个骑士效果 seed `1111439774`；详见[draw 投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_fire_draw_projection.json)（SHA-256 `5EC7EE43064603B913305EEEF7403D8315C0BB7EC67BFD0AE7BAD01EB3BFC5AD`）。effect-local 抽签没有直接记录，不能与人工可达路径混同。
+
 ## R0192 paused RNG scope and original tick boundary
 
 - [production-live RED] R0192 used master `6240e7b` and an officially recovered copy of the old R0168 `h1251/raw53192304` battle. The fresh paused frame retained CombatID `738197508` and native revision `3`; the phase query was accepted but returned `evaluator_probe_ready=false`, `unavailable_reason=global_rng_state_unavailable`. It made no typed action or date advance and stopped under control. Immutable index: `Z:\ck3_mod_rewrite_process_assets\g2-r0168-phase-trace-R0192-global-rng-red-frozen-20260923\R0192-raw-freeze.json`, SHA-256 `87E0167EFB33A73C3BE12F7EB618531E37B26CF5B39FAE1B7C9F397041E9ED27`. The response does not distinguish a null slot, wrapper or state.

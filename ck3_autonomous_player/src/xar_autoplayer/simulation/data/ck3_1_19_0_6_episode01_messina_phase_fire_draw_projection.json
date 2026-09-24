@@ -1,0 +1,47 @@
+{
+  "schema": "xar.ck3.episode01.phase-fire-draw-projection/v1",
+  "game_build": "CK3 1.19.0.6",
+  "selected_event_row_report_sha256": "BEA95DDF36C0B8F1E5D4B6E01364BF8E35C3C3A7F676B10B038880A94CB5321D",
+  "trace_response_sha256": "5744C62F395179F69234CAF15E9AE40913A14161D333D1D5D4E9D2A188E8B50B",
+  "native_state_counter_salt_observed": true,
+  "global_draw_and_effect_seed_provenance": "derived_from_native_state_with_exact_build_static_algorithm",
+  "phase_fire_draws": [
+    {
+      "side_index": 0,
+      "before_boundary": 2,
+      "after_boundary": 3,
+      "native_rng_counter_before": 421195,
+      "native_rng_counter_after": 421196,
+      "native_rng_salt": 3812344717,
+      "derived_global_draw31": 753992024,
+      "derived_phase_fire_base": 55386792,
+      "scheduled_knight_event_load_indices": [],
+      "derived_knight_effect_seeds": [],
+      "derived_commander_effect_seed": null
+    },
+    {
+      "side_index": 1,
+      "before_boundary": 4,
+      "after_boundary": 5,
+      "native_rng_counter_before": 421196,
+      "native_rng_counter_after": 421197,
+      "native_rng_salt": 3812344717,
+      "derived_global_draw31": 816083018,
+      "derived_phase_fire_base": 3972133750,
+      "scheduled_knight_event_load_indices": [
+        11
+      ],
+      "derived_knight_effect_seeds": [
+        1111439774
+      ],
+      "derived_commander_effect_seed": null
+    }
+  ],
+  "target_event_key": "knight_killed",
+  "target_effect_seed": 1111439774,
+  "effect_local_draws_directly_observed": false,
+  "effect_local_seed_to_draw_state_validated": false,
+  "full_effect_write_set_proven": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}

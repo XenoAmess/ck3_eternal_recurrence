@@ -56,6 +56,8 @@ EPISODE01_CONDITIONAL_KILL_EFFECT_FILE = "ck3_1_19_0_6_episode01_messina_conditi
 EPISODE01_CONDITIONAL_KILL_EFFECT_SHA256 = "CFB7E59263D09FBF9F92CBB2426C1227ABD706994393F142AC163A2BD4CE2F16"
 EPISODE01_SELECTED_EVENT_ROW_FILE = "ck3_1_19_0_6_episode01_messina_selected_phase_event_row.json"
 EPISODE01_SELECTED_EVENT_ROW_SHA256 = "BEA95DDF36C0B8F1E5D4B6E01364BF8E35C3C3A7F676B10B038880A94CB5321D"
+EPISODE01_PHASE_FIRE_DRAWS_FILE = "ck3_1_19_0_6_episode01_messina_phase_fire_draw_projection.json"
+EPISODE01_PHASE_FIRE_DRAWS_SHA256 = "5EC7EE43064603B913305EEEF7403D8315C0BB7EC67BFD0AE7BAD01EB3BFC5AD"
 EPISODE01_KILL_REWARD_FILE = "ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json"
 EPISODE01_KILL_REWARD_SHA256 = "3FCB1FFB509251CA471E33FAACC768FD7E7FC04243413EDCD9EDCFD0CAD99E92"
 
@@ -961,6 +963,37 @@ def load_episode01_selected_phase_event_row() -> dict[str, Any]:
                 "whole_battle_win_probability_available", "planner_usable",
             ))):
         raise NativeBattleCaseError("selected event row or readiness drifted")
+    return report
+
+
+def load_episode01_phase_fire_draw_projection() -> dict[str, Any]:
+    """Read observed RNG boundaries and exact-build draw/seed projection."""
+    path = Path(__file__).with_name("data") / EPISODE01_PHASE_FIRE_DRAWS_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_PHASE_FIRE_DRAWS_SHA256:
+        raise NativeBattleCaseError("phase-fire draw projection bytes changed without review")
+    report = json.loads(data)
+    fires = report.get("phase_fire_draws", []) if isinstance(report, dict) else []
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.phase-fire-draw-projection/v1"
+            or report.get("selected_event_row_report_sha256") != EPISODE01_SELECTED_EVENT_ROW_SHA256
+            or report.get("trace_response_sha256") !=
+            "5744C62F395179F69234CAF15E9AE40913A14161D333D1D5D4E9D2A188E8B50B"
+            or report.get("native_state_counter_salt_observed") is not True
+            or report.get("global_draw_and_effect_seed_provenance") !=
+            "derived_from_native_state_with_exact_build_static_algorithm"
+            or not isinstance(fires, list) or len(fires) != 2
+            or [row.get("side_index") for row in fires] != [0, 1]
+            or [row.get("derived_global_draw31") for row in fires] != [753992024, 816083018]
+            or fires[1].get("scheduled_knight_event_load_indices") != [11]
+            or fires[1].get("derived_knight_effect_seeds") != [1111439774]
+            or report.get("target_effect_seed") != 1111439774
+            or any(report.get(key) is not False for key in (
+                "effect_local_draws_directly_observed", "effect_local_seed_to_draw_state_validated",
+                "full_effect_write_set_proven", "whole_battle_win_probability_available",
+                "planner_usable",
+            ))):
+        raise NativeBattleCaseError("phase-fire draw projection or readiness drifted")
     return report
 
 
