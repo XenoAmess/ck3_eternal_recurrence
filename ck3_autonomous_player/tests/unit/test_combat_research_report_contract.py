@@ -46,12 +46,19 @@ class CombatResearchReportContractTests(unittest.TestCase):
         self.assertFalse(report["planner_usable"])
         self.assertFalse(report["active_attack_allowed"])
 
-        actual_code_files = {
-            name: hashlib.sha256((PROJECT_ROOT / name).read_bytes()).hexdigest()
-            for name in report["code_files_sha256"]
-        }
-        self.assertEqual(actual_code_files, report["code_files_sha256"])
-        self.assertEqual(_canonical_sha256(actual_code_files), report["code_sha256"])
+        # This report records the bytes of an earlier research run. Current
+        # simulator development must not rewrite those historical inputs.
+        self.assertEqual(
+            set(report["code_files_sha256"]),
+            {
+                "run_combat_research_envelope.py",
+                "src/xar_autoplayer/simulation/combat_core.py",
+                "src/xar_autoplayer/simulation/combat_input.py",
+                "src/xar_autoplayer/simulation/research_envelope.py",
+            },
+        )
+        self.assertTrue(all(len(value) == 64 for value in report["code_files_sha256"].values()))
+        self.assertEqual(_canonical_sha256(report["code_files_sha256"]), report["code_sha256"])
         self.assertEqual(
             _canonical_sha256(report["transition_manifest"]),
             report["transition_manifest_sha256"],

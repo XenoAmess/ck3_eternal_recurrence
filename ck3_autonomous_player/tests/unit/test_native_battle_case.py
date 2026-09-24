@@ -34,8 +34,10 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_main_outgoing_conditional_parity_v2,
     load_episode01_paired_counter_r14_parity,
     load_episode01_prejoin_counter_r14_parity_v2,
+    load_episode01_paired_advantage_parity,
     original_daily_timeline,
 )
+from xar_autoplayer.simulation.native_advantage import resolved_advantage_with_commander_rolls_raw
 
 
 class NativeBattleCaseTests(unittest.TestCase):
@@ -279,6 +281,24 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertFalse(report["join_policy_reconstructed"])
         self.assertFalse(report["phase_effect_transition_complete"])
         self.assertFalse(report["advantage_reconstructed"])
+        self.assertFalse(report["whole_battle_win_probability_available"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_same_run_zero_roll_context_and_observed_rolls_match_local_advantage(self) -> None:
+        report = load_episode01_paired_advantage_parity()
+        self.assertEqual(report["observed_main_days"], 23)
+        self.assertEqual(report["conditional_exact_advantage_days"], 23)
+        self.assertEqual({row["zero_roll_advantage_raw"] for row in report["days"]}, {-1_000_000})
+        for row in report["days"]:
+            self.assertEqual(
+                resolved_advantage_with_commander_rolls_raw(
+                    row["zero_roll_advantage_raw"], *row["observed_roll_points"]
+                ), row["native_advantage_raw"],
+            )
+        self.assertEqual([row["day"] for row in report["days"]
+                          if row["whole_phase_trace_status"] != "bounded_trace_available"],
+                         [11, 21, 26])
+        self.assertFalse(report["future_rolls_predicted"])
         self.assertFalse(report["whole_battle_win_probability_available"])
         self.assertFalse(report["planner_usable"])
 

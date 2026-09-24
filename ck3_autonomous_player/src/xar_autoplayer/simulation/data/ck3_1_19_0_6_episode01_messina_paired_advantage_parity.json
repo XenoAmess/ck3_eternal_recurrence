@@ -1,0 +1,480 @@
+{
+  "schema": "xar.ck3.episode01.paired-advantage-parity/v1",
+  "game_build": "CK3 1.19.0.6",
+  "source_paired_report_sha256": "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358",
+  "paired_run": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-paired-counter-trace-attempt-010",
+  "observed_main_days": 23,
+  "conditional_exact_advantage_days": 23,
+  "conditioned_on": [
+    "native_same_date_zero_roll_advantage_context",
+    "native_observed_commander_roll_points"
+  ],
+  "zero_roll_context_reconstructed_independently": false,
+  "future_rolls_predicted": false,
+  "phase_effect_transition_complete": false,
+  "join_policy_reconstructed": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false,
+  "days": [
+    {
+      "day": 4,
+      "date_raw": 53146320,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        0,
+        0
+      ],
+      "projected_advantage_raw": -1000000,
+      "native_advantage_raw": -1000000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "7089959532672839724C5BB262B6E9C6860773A499F102998EB95A4709B9AFA5",
+      "native_trace_response_sha256": "754A35DF43A7DB32F68A2AA3E9409E42783F2F06B7918CA9BB2A182ED12E6B61"
+    },
+    {
+      "day": 5,
+      "date_raw": 53146344,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        9,
+        5
+      ],
+      "projected_advantage_raw": -600000,
+      "native_advantage_raw": -600000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "9446F4274DED45F68A9D1DB59AB2BACED4043D4C24776D4AEAA0614A61A185F1",
+      "native_trace_response_sha256": "6B72365D4B3BD2B8ED6E54F7E0ECF8F924352F9C615A71E999FAEBF47BA2F611"
+    },
+    {
+      "day": 6,
+      "date_raw": 53146368,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        9,
+        5
+      ],
+      "projected_advantage_raw": -600000,
+      "native_advantage_raw": -600000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "18F31DB1D85C08892E7B93DFEC82627070C9FA4181CC31AC5CDF92B250FEE46D",
+      "native_trace_response_sha256": "503E55BECDC75F3364A9CB0BF425E026225C8877A06C735470F9149B23AE37CA"
+    },
+    {
+      "day": 7,
+      "date_raw": 53146392,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        9,
+        5
+      ],
+      "projected_advantage_raw": -600000,
+      "native_advantage_raw": -600000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "B80FD053A166EA67909BFD2C4AE85AF7D6978AD52F5652C13723F95083CA4B47",
+      "native_trace_response_sha256": "E480EC26C23B43AD634145819C693226FFAB1CA4F54C0DF8AF38A6264AF5F16A"
+    },
+    {
+      "day": 8,
+      "date_raw": 53146416,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        6,
+        9
+      ],
+      "projected_advantage_raw": -1300000,
+      "native_advantage_raw": -1300000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "929820A2827F8620F33A38D1507657D19825F328B9E9FF5254B5CA6B223051C9",
+      "native_trace_response_sha256": "F7230B21E434D77C68F90E41DB0BA75FBFB5C3AD0CE399A7453693EAFBBB4B3D"
+    },
+    {
+      "day": 9,
+      "date_raw": 53146440,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        6,
+        9
+      ],
+      "projected_advantage_raw": -1300000,
+      "native_advantage_raw": -1300000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "2A0766F1D159180C6DC55EDACC4258954D22E0E3937ED2ACA268E4233969276A",
+      "native_trace_response_sha256": "CE1CE2F2869A5C4A957454983199C5433A41A29363AF8BF9E28F8EB40DCFA148"
+    },
+    {
+      "day": 10,
+      "date_raw": 53146464,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        6,
+        9
+      ],
+      "projected_advantage_raw": -1300000,
+      "native_advantage_raw": -1300000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "BE7BEC66A86FBDBDF95659D73D1C1B0F3CB5C8A8DEF88AC43C3247A7964A9DBE",
+      "native_trace_response_sha256": "02F8C2485D8D96228C28ABF7F965013354A97E6A4CE6B2570960A5ED2FADE60D"
+    },
+    {
+      "day": 11,
+      "date_raw": 53146488,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        7,
+        0
+      ],
+      "projected_advantage_raw": -300000,
+      "native_advantage_raw": -300000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "trace_unavailable",
+      "native_v3_response_sha256": "097981C3FF7E078CF879D1E1D11F90CB29FCEE017BC0C3E566937AFAD7BD0656",
+      "native_trace_response_sha256": "61D83245612E4A86ADA908CA74644AE69C8CDFE8239B0FD86A8496696225E651"
+    },
+    {
+      "day": 12,
+      "date_raw": 53146512,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        7,
+        0
+      ],
+      "projected_advantage_raw": -300000,
+      "native_advantage_raw": -300000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "D60302016044BAC22803FF6688E78D1C02FC6D3DB51EC90F01281CA76ADA95BB",
+      "native_trace_response_sha256": "C8ECCC08569B92E0928DC844EAFB2379386499A85B816D5D85C3B43E117FB196"
+    },
+    {
+      "day": 13,
+      "date_raw": 53146536,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        7,
+        0
+      ],
+      "projected_advantage_raw": -300000,
+      "native_advantage_raw": -300000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "73326F678C54A135C0FFEECFB3DA10F885B38FA4E78C06BB93393DCF3958F34D",
+      "native_trace_response_sha256": "941343841C3C084597AD8146F56023218F96CFE81E273F5E2268847A76F8A0D7"
+    },
+    {
+      "day": 14,
+      "date_raw": 53146560,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        9,
+        10
+      ],
+      "projected_advantage_raw": -1100000,
+      "native_advantage_raw": -1100000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "BC4AA3B675FFC15159A4E3E14D82BC74A470633158671905980737779FF57D6F",
+      "native_trace_response_sha256": "34FA6E062AD2C06866F9126984EBF0E0273210A83B3573D6CE2AD2DBAB698E0D"
+    },
+    {
+      "day": 15,
+      "date_raw": 53146584,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        9,
+        10
+      ],
+      "projected_advantage_raw": -1100000,
+      "native_advantage_raw": -1100000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "0DB1A2E948DA26DE084A2CBF431202E58650FF835690699F21693E22D48B1746",
+      "native_trace_response_sha256": "7219665559BCAB0F5A55B0DE39F6358056466C8368CBA12A1CFDE59FF790EC7F"
+    },
+    {
+      "day": 16,
+      "date_raw": 53146608,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        9,
+        10
+      ],
+      "projected_advantage_raw": -1100000,
+      "native_advantage_raw": -1100000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "A321A6C45B268D7444922D8AF47D184FEF07C09492F24A1BBA4CF181CCE5867D",
+      "native_trace_response_sha256": "E111D72BB292681279A2BFE8E1E1B25E16A14C0B51B40C12A75858D5F80A45E9"
+    },
+    {
+      "day": 17,
+      "date_raw": 53146632,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        1,
+        8
+      ],
+      "projected_advantage_raw": -1700000,
+      "native_advantage_raw": -1700000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "5421355D90FA683A17FF3672851E719E1A028A0B2F858FC5F1024A59FC8F749F",
+      "native_trace_response_sha256": "A6788A4866F1C8825FBB6B5A591901EF1FF0F2E7DA08CC89D661B378528A1C93"
+    },
+    {
+      "day": 18,
+      "date_raw": 53146656,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        1,
+        8
+      ],
+      "projected_advantage_raw": -1700000,
+      "native_advantage_raw": -1700000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "798D348BDD067C72CB7E1D10DD55BA041B277CE9D9749D8D68B9F4F36C9CF4A6",
+      "native_trace_response_sha256": "1647E8305579ADF801AF8F7B236BC8736DAA6BA4300871CCB0ABF7F1FA027660"
+    },
+    {
+      "day": 19,
+      "date_raw": 53146680,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        1,
+        8
+      ],
+      "projected_advantage_raw": -1700000,
+      "native_advantage_raw": -1700000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "38965BD212A5934DC8B3459555A105519FA3A08910808CA886D74EA4BAA357B1",
+      "native_trace_response_sha256": "4EE52196095F635B9AB1F1CAED460653E62E3BC2E858801324437143438346C2"
+    },
+    {
+      "day": 20,
+      "date_raw": 53146704,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        3,
+        7
+      ],
+      "projected_advantage_raw": -1400000,
+      "native_advantage_raw": -1400000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "E84ADFB64452164E39FB434A2B84EE91E0C70D95C80B6B44384035891B07E4E3",
+      "native_trace_response_sha256": "0A3F404C25BAB10C8C8E391C8707AC9A9D7B1537C7AB6D4221989E68CD44B358"
+    },
+    {
+      "day": 21,
+      "date_raw": 53146728,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        3,
+        7
+      ],
+      "projected_advantage_raw": -1400000,
+      "native_advantage_raw": -1400000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "trace_unavailable",
+      "native_v3_response_sha256": "430DCC180DF4D740A4DC9956AAEBE0D3226A36F2FF14A43BAB61284C75AC32DF",
+      "native_trace_response_sha256": "020494CDEAE77A968673AA45C65F6BEF7229193385902FBAA70F313CCF27198A"
+    },
+    {
+      "day": 22,
+      "date_raw": 53146752,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        3,
+        7
+      ],
+      "projected_advantage_raw": -1400000,
+      "native_advantage_raw": -1400000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "C32745233D50998A801B53D8BB3849CCE750A8F06FCF704BB9F47352A1C3E30F",
+      "native_trace_response_sha256": "9D33516E32AE5C31C168602E7BF89181EC60E8BD6A6EB687D10039EFFFB16D0C"
+    },
+    {
+      "day": 23,
+      "date_raw": 53146776,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        4,
+        2
+      ],
+      "projected_advantage_raw": -800000,
+      "native_advantage_raw": -800000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "B7BC99DACF9E24B52833ABD0D09576CD2127BC86C2A4B55E952D222F6761F30D",
+      "native_trace_response_sha256": "C9E44B695A55224039CA88437DA82B508721EB460028D20BDE9C446257434879"
+    },
+    {
+      "day": 24,
+      "date_raw": 53146800,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        4,
+        2
+      ],
+      "projected_advantage_raw": -800000,
+      "native_advantage_raw": -800000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "BB0851536BF390E2A962DDDDC74A60DC26C4D842EF27C0D8396A61CA809034D7",
+      "native_trace_response_sha256": "4462E9065F72CC27A16075B0161037E34CEBE6306F23439CF3E42D23BBCDD6F1"
+    },
+    {
+      "day": 25,
+      "date_raw": 53146824,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        4,
+        2
+      ],
+      "projected_advantage_raw": -800000,
+      "native_advantage_raw": -800000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "bounded_trace_available",
+      "native_v3_response_sha256": "9AB35D24DAAC3DDD8A9BA69E26AE3522A76B7A03590FEC287710E8F09C5DB653",
+      "native_trace_response_sha256": "24AE742A33A93CBF2667C60234DC0C36EA86A997353D207A35EEBA397BFDB5A5"
+    },
+    {
+      "day": 26,
+      "date_raw": 53146848,
+      "zero_roll_advantage_raw": -1000000,
+      "base_static_advantage_raw": -300000,
+      "side_dynamic_raw": [
+        3500000,
+        4200000
+      ],
+      "observed_roll_points": [
+        6,
+        8
+      ],
+      "projected_advantage_raw": -1200000,
+      "native_advantage_raw": -1200000,
+      "delta_raw": 0,
+      "whole_phase_trace_status": "trace_unavailable",
+      "native_v3_response_sha256": "EBF5D9E91055494858F9EEC419F6A6FC29E571A05DCF897A61F40FEB5752AEDE",
+      "native_trace_response_sha256": "8352A4EC49DFE527261C34B82A3E28FE07F0F5963617EF78DAA607EA4EE006FE"
+    }
+  ]
+}

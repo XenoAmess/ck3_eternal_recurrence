@@ -40,6 +40,8 @@ EPISODE01_PAIRED_COUNTER_FILE = "ck3_1_19_0_6_episode01_messina_paired_counter_r
 EPISODE01_PAIRED_COUNTER_SHA256 = "18B9BC086BAFB4423262EF01BE00B71D19CBA461A4483795E514C710992E7358"
 EPISODE01_PREJOIN_COUNTER_V2_FILE = "ck3_1_19_0_6_episode01_messina_prejoin_counter_r14_parity_v2.json"
 EPISODE01_PREJOIN_COUNTER_V2_SHA256 = "6C32F7DED9CFDB29D103A242B3C9DC8E71DF69C1A08A9980A1EB917A6BAAE113"
+EPISODE01_PAIRED_ADVANTAGE_FILE = "ck3_1_19_0_6_episode01_messina_paired_advantage_parity.json"
+EPISODE01_PAIRED_ADVANTAGE_SHA256 = "1B8548CDE3AEA3844CD00B52AB4B0AF4C9CFEBD4C95424E2D6767D4B8996314A"
 
 
 class NativeBattleCaseError(ValueError):
@@ -715,6 +717,31 @@ def load_episode01_prejoin_counter_r14_parity_v2() -> dict[str, Any]:
     return report
 
 
+def load_episode01_paired_advantage_parity() -> dict[str, Any]:
+    """Load conditional observed-roll advantage parity, never a forecast."""
+    path = Path(__file__).with_name("data") / EPISODE01_PAIRED_ADVANTAGE_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_PAIRED_ADVANTAGE_SHA256:
+        raise NativeBattleCaseError("bundled paired advantage bytes changed without review")
+    report = json.loads(data)
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.paired-advantage-parity/v1"
+            or report.get("game_build") != "CK3 1.19.0.6"
+            or report.get("source_paired_report_sha256") != EPISODE01_PAIRED_COUNTER_SHA256
+            or report.get("observed_main_days") != 23
+            or report.get("conditional_exact_advantage_days") != 23
+            or [row.get("day") for row in report.get("days", [])] != list(range(4, 27))
+            or any(row.get("delta_raw") != 0 for row in report["days"])
+            or report.get("zero_roll_context_reconstructed_independently") is not False
+            or report.get("future_rolls_predicted") is not False
+            or report.get("phase_effect_transition_complete") is not False
+            or report.get("join_policy_reconstructed") is not False
+            or report.get("whole_battle_win_probability_available") is not False
+            or report.get("planner_usable") is not False):
+        raise NativeBattleCaseError("paired advantage contract or readiness drifted")
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -742,6 +769,8 @@ __all__ = [
     "EPISODE01_PAIRED_COUNTER_SHA256",
     "EPISODE01_PREJOIN_COUNTER_V2_FILE",
     "EPISODE01_PREJOIN_COUNTER_V2_SHA256",
+    "EPISODE01_PAIRED_ADVANTAGE_FILE",
+    "EPISODE01_PAIRED_ADVANTAGE_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
@@ -756,5 +785,6 @@ __all__ = [
     "load_episode01_main_outgoing_conditional_parity_v2",
     "load_episode01_paired_counter_r14_parity",
     "load_episode01_prejoin_counter_r14_parity_v2",
+    "load_episode01_paired_advantage_parity",
     "original_daily_timeline",
 ]

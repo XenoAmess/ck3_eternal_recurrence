@@ -1,0 +1,108 @@
+{
+  "schema": "ck3-episode01-advantage-roll-board-v1",
+  "source_report_sha256": "1B8548CDE3AEA3844CD00B52AB4B0AF4C9CFEBD4C95424E2D6767D4B8996314A",
+  "main_days": 23,
+  "conditional_exact_advantage_days": 23,
+  "observed_roll_periods": [
+    {
+      "start_day": 4,
+      "end_day": 4,
+      "observed_roll_points": [
+        0,
+        0
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -1000000
+    },
+    {
+      "start_day": 5,
+      "end_day": 7,
+      "observed_roll_points": [
+        9,
+        5
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -600000
+    },
+    {
+      "start_day": 8,
+      "end_day": 10,
+      "observed_roll_points": [
+        6,
+        9
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -1300000
+    },
+    {
+      "start_day": 11,
+      "end_day": 13,
+      "observed_roll_points": [
+        7,
+        0
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -300000
+    },
+    {
+      "start_day": 14,
+      "end_day": 16,
+      "observed_roll_points": [
+        9,
+        10
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -1100000
+    },
+    {
+      "start_day": 17,
+      "end_day": 19,
+      "observed_roll_points": [
+        1,
+        8
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -1700000
+    },
+    {
+      "start_day": 20,
+      "end_day": 22,
+      "observed_roll_points": [
+        3,
+        7
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -1400000
+    },
+    {
+      "start_day": 23,
+      "end_day": 25,
+      "observed_roll_points": [
+        4,
+        2
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -800000
+    },
+    {
+      "start_day": 26,
+      "end_day": 26,
+      "observed_roll_points": [
+        6,
+        8
+      ],
+      "zero_roll_advantage_raw": -1000000,
+      "resolved_advantage_raw": -1200000
+    }
+  ],
+  "conditioned_on_native_zero_roll_context": true,
+  "conditioned_on_native_observed_roll_points": true,
+  "whole_phase_trace_red_days": [
+    11,
+    21,
+    26
+  ],
+  "future_rolls_predicted": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false
+}
