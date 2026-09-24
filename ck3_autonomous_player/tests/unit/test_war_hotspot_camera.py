@@ -87,6 +87,29 @@ def test_sea_does_not_displace_land_objective(tmp_path: Path) -> None:
     assert hotspot["title_key"] == "b_syracuse"
 
 
+def test_controlled_battle_outranks_other_allied_battle(tmp_path: Path) -> None:
+    title_dir = tmp_path / "game" / "common" / "landed_titles"
+    title_dir.mkdir(parents=True)
+    (title_dir / "00_landed_titles.txt").write_text(
+        "c_one = { b_one = { province = 10 } } "
+        "c_two = { b_two = { province = 20 } }",
+        encoding="utf-8",
+    )
+    index = LandedProvinceIndex.from_game_dir(tmp_path)
+    hotspot = select_war_hotspot({"active_wars": [{
+        "war_id": 1,
+        "allied_armies": [
+            {"army_id": 1, "in_combat": True, "controllable": False,
+             "current_province_id": 10},
+            {"army_id": 20, "in_combat": True, "controllable": True,
+             "current_province_id": 20},
+        ],
+    }]}, index)
+    assert hotspot is not None
+    assert hotspot["province_id"] == 20
+    assert hotspot["priority"] == 0
+
+
 def test_camera_requires_verified_native_result(tmp_path: Path) -> None:
     title_dir = tmp_path / "game" / "common" / "landed_titles"
     title_dir.mkdir(parents=True)

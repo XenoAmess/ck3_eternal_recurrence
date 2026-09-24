@@ -2,7 +2,7 @@
 
 ## 共同入口
 
-`ck3_autonomous_player/src/xar_autoplayer/bridge/war_hotspot_camera.py` 是游玩智能体与战争视频拍摄的共同热点选择器。它从当前原生 `active_wars` 快照按以下顺序选择**可观测的陆地省份**：玩家参战位置、玩家围城位置、战争目标的正在围城位置、受控军队目的地、战争目标、受控军队当前位置。多处同级热点按战争 ID、军队 ID 与省份 ID 稳定排序。海域没有领地键，不能成为镜头目标；没有可解析陆地热点时明确返回 `no_observable_land_hotspot`。
+`ck3_autonomous_player/src/xar_autoplayer/bridge/war_hotspot_camera.py` 是游玩智能体与战争视频拍摄的共同热点选择器。它从当前原生 `active_wars` 快照按以下顺序选择**可观测的陆地省份**：受控军队参战位置、同方其他军队参战位置、受控军队围城位置、同方其他军队围城位置、战争目标的正在围城位置、受控军队目的地、战争目标、受控军队当前位置。多处同级热点按战争 ID、军队 ID 与省份 ID 稳定排序。海域没有领地键，不能成为镜头目标；没有可解析陆地热点时明确返回 `no_observable_land_hotspot`。
 
 省份到男爵领稳定键的映射在运行时只读解析当前 CK3 安装目录 `game/common/landed_titles/*.txt`。本机原版安装的 10 份文件解析出 10,966 个陆地省份；2633 对应 `b_messina` / `c_messina`。这个映射是展示用定位数据，不是战斗胜率模型、路线策略或命令能力。游戏升级后必须重新解析当时安装的原版文件；实际镜头命令仍受精确 CK3 build 和桥接 capability 门禁约束。
 

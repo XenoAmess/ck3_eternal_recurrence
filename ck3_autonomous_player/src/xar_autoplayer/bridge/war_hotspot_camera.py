@@ -102,14 +102,18 @@ def select_war_hotspot(
                 army_id = _positive_int(army.get("army_id")) or 2**31 - 1
                 current = _positive_int(army.get("current_province_id"))
                 if army.get("in_combat") is True:
-                    _add(candidates, index, 0, war_id, army_id, current, "battle")
+                    _add(candidates, index,
+                         0 if army.get("controllable") is True else 1,
+                         war_id, army_id, current, "battle")
                 elif army.get("army_state") == "siege" or army.get("siege_days_left") is not None:
-                    _add(candidates, index, 1, war_id, army_id, current, "siege")
+                    _add(candidates, index,
+                         2 if army.get("controllable") is True else 3,
+                         war_id, army_id, current, "siege")
                 if army.get("controllable") is True and army.get("retreating") is not True:
                     target = _positive_int(army.get("move_target_province_id"))
                     if target is not None:
-                        _add(candidates, index, 3, war_id, army_id, target, "army_destination")
-                    _add(candidates, index, 5, war_id, army_id, current, "player_army")
+                        _add(candidates, index, 5, war_id, army_id, target, "army_destination")
+                    _add(candidates, index, 7, war_id, army_id, current, "player_army")
         states = war.get("objective_province_states")
         if isinstance(states, list):
             for row in states:
@@ -117,12 +121,12 @@ def select_war_hotspot(
                     continue
                 province = _positive_int(row.get("province_id"))
                 if row.get("active_siege") is not None:
-                    _add(candidates, index, 2, war_id, 0, province, "objective_siege")
-                _add(candidates, index, 4, war_id, 0, province, "war_objective")
+                    _add(candidates, index, 4, war_id, 0, province, "objective_siege")
+                _add(candidates, index, 6, war_id, 0, province, "war_objective")
         objectives = war.get("war_objective_province_ids")
         if isinstance(objectives, list):
             for province in objectives:
-                _add(candidates, index, 4, war_id, 0, _positive_int(province), "war_objective")
+                _add(candidates, index, 6, war_id, 0, _positive_int(province), "war_objective")
     if not candidates:
         return None
     priority, war_id, army_id, province, reason = min(candidates)
