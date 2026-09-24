@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "shots": [
+    {"id": "E1-S01", "title": "地图上的直觉", "visual": "retained real CK3 CASE-W context clip; labelled as a different war"},
+    {"id": "E1-S02", "title": "比例不是胜率", "visual": "two distinct native calculation paths"},
+    {"id": "E1-S03", "title": "锁定战前条件", "visual": "battle input ledger"},
+    {"id": "E1-S04", "title": "逐日状态", "visual": "phase and daily state machine"},
+    {"id": "E1-S05", "title": "R0220 的一日对拍", "visual": "54 regiment casualty rows; one main-phase tick"},
+    {"id": "E1-S06", "title": "把一天推到终局", "visual": "events, joins, retreat and terminal"},
+    {"id": "E1-S07", "title": "这三个数字各自回答什么", "visual": "ratio versus daily parity versus conditional distribution"}
+  ]
+}

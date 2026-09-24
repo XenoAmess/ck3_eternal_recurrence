@@ -1,0 +1,41 @@
+{
+  "format_version": 1,
+  "purpose": "Episode 1 EdgeTTS audiovisual treatment sample; verified narrow claim, not a finished battle-win-rate result",
+  "cues": [
+    {
+      "id": "E1-01", "shot_id": "E1-S01", "chapter_id": "hook",
+      "zh": "把地图停在两支军队相遇之前。你可能已经在心里算了一遍：我比他人多，或许能赢；他的军队更强，也许就该绕开。画面是我们此前保存的原版战时观察，属于另一场战争，只用来带你回到十字军之王三的地图。今天要拆开的，是更具体的问题：游戏在开打前比较的力量，能不能直接读成这一仗的胜率？",
+      "en": "Pause the map before two armies meet. It is tempting to read troop counts or apparent strength as odds of victory. This is retained CK3 wartime context from another case, not footage of the battle trace examined next. Our question is whether a pre-battle power comparison can be read as the chance of winning the whole battle."
+    },
+    {
+      "id": "E1-02", "shot_id": "E1-S02", "chapter_id": "prediction",
+      "zh": "先拆第一个数字。原版有一条确定性的战斗预测路径，会产出双方力量比较的比例；真正开战以后，却由另一个逐日结算器推进战斗。这两条路径不是同一个计算过程。预测比例可以影响一次比较或门槛，但它没有把之后每一天的事件、伤亡和参战变化都算完。所以，画面上如果出现零点六，不能把它念成百分之六十的获胜机会。",
+      "en": "The native deterministic combat prediction path produces a relative-power ratio. Actual combat is advanced by a separate daily resolver. The ratio can participate in a comparison or threshold, but it has not simulated later days, events, casualties or changing participants. A displayed ratio of 0.6 would not mean a 60 percent chance of winning."
+    },
+    {
+      "id": "E1-03", "shot_id": "E1-S03", "chapter_id": "prediction",
+      "zh": "再看开战时究竟要锁住什么。不是只抄两边的总兵数，而是要确定每个兵团是谁、还剩多少人、谁担任将领和骑士、战场地形与渡口怎样、战宽和兵种反制如何进入计算。同一支我方军队，如果对面只来一支敌军，和两支敌军同时加入，已经是两种不同的战前条件。换了条件，后来统计出的胜率也必须重新命名。",
+      "en": "A battle input is more than two troop totals. It binds regiments and their current strength, commanders and knights, terrain and crossings, width and counters. Facing one enemy army and facing two arriving together are different pre-contact conditions. Any later win-rate estimate must identify which condition it describes."
+    },
+    {
+      "id": "E1-04", "shot_id": "E1-S04", "chapter_id": "daily",
+      "zh": "进入战斗后，时间不是一张静止的胜负表。原版按阶段和日期前进：先确定当日状态，算双方出伤，再把伤亡分配到具体兵团，更新下一日会读到的兵力与优势。将领掷骰和战斗阶段事件还会引入随机分支。假如只复刻某一天的出伤公式，哪怕算得分毫不差，也只是证明那一天的算术，不能跨过后面所有状态变化，直接宣布整场结局。",
+      "en": "Combat advances by phase and day. The game resolves both sides' damage, allocates casualties to regiments, and carries state forward. Commander rolls and phase events introduce random branches. Reproducing one day's arithmetic, even exactly, does not by itself establish the outcome distribution of the whole battle."
+    },
+    {
+      "id": "E1-05", "shot_id": "E1-S05", "chapter_id": "daily",
+      "zh": "我们已经能把这件事落到原版证据上。R0220 这场战斗的一次主阶段 tick，按兵团编号逐项核对，当日五十四行伤亡结果与原版零差。这个结果很硬：它说明对应输入和这一日的伤亡分配确实对上了。它的边界也很清楚：五十四行是一日的兵团记录，不是五十四场战斗；零差的是这个 tick，不是从开战直到终局的所有分支。",
+      "en": "In the R0220 native main-phase tick, 54 regiment casualty rows matched the game with zero difference by regiment ID. That is strong evidence for this day's allocation under its bound inputs. The 54 rows are one day's regiment records, not 54 battles, and this parity does not yet cover every transition through the terminal result."
+    },
+    {
+      "id": "E1-06", "shot_id": "E1-S06", "chapter_id": "horizon",
+      "zh": "真正把一日推成一整场，还要处理这些转折：事件伤到将领或骑士，会不会改变下一日；新军队什么时候加入，旧军队什么时候离开；谁开始撤退，追击又持续多久；最后是哪一侧获胜，结果怎样落地。它们不是给公式添几个注脚，而是会改写之后的状态。正片会用同一场战斗的连续实机和逐日记录把主线跑到底；另案验证的分支会明写另案，不接成同一场戏。",
+      "en": "To extend a day into a full battle we must follow event effects, joins and exits, retreat, pursuit, winner and terminal effects. These change future state. The full episode will align continuous game footage and daily records for one battle; a branch proven in another case will be labelled as a separate case."
+    },
+    {
+      "id": "E1-07", "shot_id": "E1-S07", "chapter_id": "answer",
+      "zh": "所以，这期的答案先落在这里：战前力量比，回答的是眼前的比较；一天的零差对拍，回答的是那一天算得准不准；整场胜率，则要锁定同一套条件，让经过原版终局校验的模型反复走完战斗，才有资格报出一组分布。那组百分比还要同时说明样本数、适用条件和模型误差。下次再看到一支军队冲进战场，别急着把屏幕上的比例叫作胜率。我们要追问，它究竟算到了哪一天。",
+      "en": "The pre-battle ratio answers a current comparison. A zero-difference daily trace verifies that day. A whole-battle win rate requires repeated complete runs of a model checked against native terminal outcomes under fixed conditions, with sample size, scope and model error stated. Before calling a displayed ratio odds of victory, ask how far its calculation actually runs."
+    }
+  ]
+}

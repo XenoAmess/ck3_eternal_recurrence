@@ -1,0 +1,15 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {"id": "ck3-native-war-ai-episode-01-sample", "title": "一场仗的胜率从哪里来｜EdgeTTS 样片"},
+  "pipeline": {"adapter": "ck3-native-war-ai-v1", "preset": "ck3-native-war-ai-longform-zh-v2"},
+  "locales": {"narration": "zh-CN", "subtitles": ["zh-CN", "en"]},
+  "constraints": {"duration_limit_seconds": null},
+  "chapters": [
+    {"id": "hook", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "地图上的问题"}, "cues": [], "artifact_ids": []},
+    {"id": "prediction", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "战前数字"}, "cues": [], "artifact_ids": []},
+    {"id": "daily", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "逐日对拍"}, "cues": [], "artifact_ids": []},
+    {"id": "horizon", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "走到终局"}, "cues": [], "artifact_ids": []},
+    {"id": "answer", "type": "mixed-explainer", "state": "planned", "title": {"zh-CN": "先把数字叫对"}, "cues": [], "artifact_ids": []}
+  ]
+}
