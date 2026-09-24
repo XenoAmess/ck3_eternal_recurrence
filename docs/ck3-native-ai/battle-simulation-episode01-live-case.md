@@ -50,6 +50,14 @@
 
 这份对拍报告被智能体包持有，并可由视频从同一证据板引用。它支持“给定原版当天出伤和稳定参战名单时，现有伤亡内核多日逐兵团对拍”的窄结论；**不支持**完整出伤生成、事件反馈、增援预测、追击终局或整场胜率。模型决策门禁仍必须逐项等待这些缺口关闭。
 
+### 两次自然增援的到达日伤亡
+
+第 11、21 源日的完整 phase trace 因增援导致 side 身份变化而为 `trace_unavailable`，但前一日冻结存档、移动快照和下一日的首次有效阶段记录可以独立配对。[共用增援日投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_casualties.json) SHA-256 `C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72` 核对了所有源 bytes：ArmyID `22` 到达第 12 日，其 12 个参战兵团的入场前存档当前人数合计 2560，到达日阶段回读为 2521.99061，软/硬伤亡分别为 26.03650/11.97289；另 1 个未参战骑士兵团没有战斗伤亡。ArmyID `28` 到达第 22 日，其 5 个参战兵团从 1058 到 1049.99308，软/硬伤亡为 5.48476/2.52216。17 个参战兵团逐项满足“入场前存档当前数 = 阶段起始数”和“起始数 − 到达日当前数 = 软伤亡 + 硬伤亡”，每项伤亡均大于零。两次移动前 `in_combat=false`、目标梅西纳；一步日期推进后 `in_combat=true`，同 CombatID。
+
+因此至少这两次自然加入在**到达的同一日推进中已经受伤**。这比仅见“下一日参战名单增加”更强，但还不能推出所有地图接触情形的 manager 全局调用顺序；两次到达源日整条 trace 的 RED 保持原状，也不能将独立回放拼接到首条原案。片用摘要为[同源增援板 v2](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/join-day-board-v2.json)；智能体模拟器应允许入场当天伤亡，实际调度仍须通过其他时序夹具对拍。
+
+进一步把原版实测出伤和这两次已观察到的入场名单送入智能体现有的 `apply_main_phase_casualties`，得到了[同源条件对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json)：第 12 日新增兵团 12/12 精确，整侧 37/38 精确，原有兵团 `220` 的 `current_raw` 残差为 `+214`（Q100000）；第 22 日新增兵团 5/5、整侧 42/42 精确。它实证了给定名单和出伤时的伤亡分配，**并不重建增援策略或每日出伤**；残差和两天源 trace RED 都保留，整场胜率仍不可用。
+
 ### 同接战存档的三次原生回放
 
 2026-09-24 在独立 profile 中进行了有界重复性实验，原始请求、响应、脚本、失败回执、两次原生 restore 生命周期与 session 清理证明保存在 `D:\workspace\ck3_native_war_ai_promo_work\episode01-native-repeatability-attempt-007`。最初脚本在第 32 天错误查询已经移除的活动战斗，收到 RED；修正脚本改查被动终局 journal，保留这条失败记录，没有覆盖此前素材。输入仍是接战日 `raw53146248`、同一 `CombatID=16777218`；本次原生固定 checkpoint 的 SHA-256 为 `ABC37ED58E0ED008C1D627F38E6BA138F728438DDC16F50041576E5368399EDD`。第 1 次是保存检查点后的同会话继续，第 2、3 次才分别从这份**相同 bytes** 的检查点重启原版进程。

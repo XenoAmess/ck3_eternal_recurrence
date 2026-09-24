@@ -1,0 +1,254 @@
+{
+  "schema": "ck3-native-join-day-casualty-observation-v1",
+  "case_id": "episode01-sicily-messina-combat-16777218",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "phase_trace_trajectory": "independent-replay-from-original-contact-checkpoint",
+  "melted_by_rakaly_version": "0.8.19",
+  "rakaly_exe_sha256": "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D",
+  "join_observations": [
+    {
+      "source_day": 11,
+      "arrival_day": 12,
+      "army_id": 22,
+      "combat_id": 16777218,
+      "original_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+      "melted_save_sha256": "A82FDD3A57B84B8FC5E4A42EBD292013C45FAA5061D89F79D9E7A24E979A01C6",
+      "snapshots": [
+        {
+          "phase": "before",
+          "receipt_sha256": "680C915BB49AB305E89934700BDA080A2D5D7FCDB13FBC6F539FEF8AC3088C81",
+          "date_raw": 53146488,
+          "army_id": 22,
+          "current_province_id": 8653,
+          "move_target_province_id": 2633,
+          "in_combat": false,
+          "army_state": "embarked"
+        },
+        {
+          "phase": "after",
+          "receipt_sha256": "87112AA2B7F0AEDC2C83C3DF6B8026A9421022DF9FF06799DA6AD57D302B25DE",
+          "date_raw": 53146512,
+          "army_id": 22,
+          "current_province_id": 2633,
+          "move_target_province_id": null,
+          "in_combat": true,
+          "army_state": "combat"
+        }
+      ],
+      "arrival_phase_receipt_sha256": "B8865D71ED12D7E558341299C3EAEF11EB13ACE198F0A073CF6008846D0962D7",
+      "arrival_phase_boundary": "native_capture_before_side0_schedule_call_0x27FB58F",
+      "arrival_phase_date_raw": 53146512,
+      "regiments": [
+        {
+          "regiment_id": 175,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 75000000,
+          "arrival_day_starting_raw": 75000000,
+          "arrival_day_current_fighting_raw": 73764750,
+          "arrival_day_soft_casualties_raw": 846147,
+          "arrival_day_hard_casualties_raw": 389103
+        },
+        {
+          "regiment_id": 178,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 77600000,
+          "arrival_day_starting_raw": 77600000,
+          "arrival_day_current_fighting_raw": 76321928,
+          "arrival_day_soft_casualties_raw": 875480,
+          "arrival_day_hard_casualties_raw": 402592
+        },
+        {
+          "regiment_id": 191,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 40200000,
+          "arrival_day_starting_raw": 40200000,
+          "arrival_day_current_fighting_raw": 39537906,
+          "arrival_day_soft_casualties_raw": 453535,
+          "arrival_day_hard_casualties_raw": 208559
+        },
+        {
+          "regiment_id": 192,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 8700000,
+          "arrival_day_starting_raw": 8700000,
+          "arrival_day_current_fighting_raw": 8556711,
+          "arrival_day_soft_casualties_raw": 98153,
+          "arrival_day_hard_casualties_raw": 45136
+        },
+        {
+          "regiment_id": 197,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 2600000,
+          "arrival_day_starting_raw": 2600000,
+          "arrival_day_current_fighting_raw": 2557178,
+          "arrival_day_soft_casualties_raw": 29334,
+          "arrival_day_hard_casualties_raw": 13488
+        },
+        {
+          "regiment_id": 198,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 5800000,
+          "arrival_day_starting_raw": 5800000,
+          "arrival_day_current_fighting_raw": 5704474,
+          "arrival_day_soft_casualties_raw": 65436,
+          "arrival_day_hard_casualties_raw": 30090
+        },
+        {
+          "regiment_id": 204,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 5700000,
+          "arrival_day_starting_raw": 5700000,
+          "arrival_day_current_fighting_raw": 5606121,
+          "arrival_day_soft_casualties_raw": 64308,
+          "arrival_day_hard_casualties_raw": 29571
+        },
+        {
+          "regiment_id": 176,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 40000000,
+          "arrival_day_starting_raw": 40000000,
+          "arrival_day_current_fighting_raw": 39751322,
+          "arrival_day_soft_casualties_raw": 170345,
+          "arrival_day_hard_casualties_raw": 78333
+        },
+        {
+          "regiment_id": 177,
+          "fights_in_main_phase": false,
+          "prejoin_saved_current_raw": 1000000,
+          "arrival_day_starting_raw": 1000000,
+          "arrival_day_current_fighting_raw": 0,
+          "arrival_day_soft_casualties_raw": 0,
+          "arrival_day_hard_casualties_raw": null
+        },
+        {
+          "regiment_id": 179,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 100000,
+          "arrival_day_starting_raw": 100000,
+          "arrival_day_current_fighting_raw": 99936,
+          "arrival_day_soft_casualties_raw": 44,
+          "arrival_day_hard_casualties_raw": 20
+        },
+        {
+          "regiment_id": 180,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 100000,
+          "arrival_day_starting_raw": 100000,
+          "arrival_day_current_fighting_raw": 99860,
+          "arrival_day_soft_casualties_raw": 96,
+          "arrival_day_hard_casualties_raw": 44
+        },
+        {
+          "regiment_id": 181,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 100000,
+          "arrival_day_starting_raw": 100000,
+          "arrival_day_current_fighting_raw": 99719,
+          "arrival_day_soft_casualties_raw": 193,
+          "arrival_day_hard_casualties_raw": 88
+        },
+        {
+          "regiment_id": 182,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 100000,
+          "arrival_day_starting_raw": 100000,
+          "arrival_day_current_fighting_raw": 99156,
+          "arrival_day_soft_casualties_raw": 579,
+          "arrival_day_hard_casualties_raw": 265
+        }
+      ],
+      "fighting_regiment_count": 12,
+      "arrival_day_casualties_observed": true,
+      "global_manager_order_proven": false,
+      "source_day_whole_trace_available": false
+    },
+    {
+      "source_day": 21,
+      "arrival_day": 22,
+      "army_id": 28,
+      "combat_id": 16777218,
+      "original_save_sha256": "E16B8EDE740F674973DE99036E6B0589E85B1866A5BBA8FD7C2E3D4B2DF7630A",
+      "melted_save_sha256": "48F2EA80D7AF0DA5EA4DA3B34E965A481BD2FF201017E35F0F08711503089B61",
+      "snapshots": [
+        {
+          "phase": "before",
+          "receipt_sha256": "E469D162969177F1DFC0511122A48FDA94199B62B7FB34990B59A8D36CA505BB",
+          "date_raw": 53146728,
+          "army_id": 28,
+          "current_province_id": 8653,
+          "move_target_province_id": 2633,
+          "in_combat": false,
+          "army_state": "embarked"
+        },
+        {
+          "phase": "after",
+          "receipt_sha256": "03299BEB425EF9B2E407D26A1A61692189388D27728C67DD54F8D66B7C938E64",
+          "date_raw": 53146752,
+          "army_id": 28,
+          "current_province_id": 2633,
+          "move_target_province_id": null,
+          "in_combat": true,
+          "army_state": "combat"
+        }
+      ],
+      "arrival_phase_receipt_sha256": "169361CE6CF0C577DD50C894A30FBCDBB33F12D69D7315D9A5195660981213CB",
+      "arrival_phase_boundary": "native_capture_before_side0_schedule_call_0x27FB58F",
+      "arrival_phase_date_raw": 53146752,
+      "regiments": [
+        {
+          "regiment_id": 224,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 42500000,
+          "arrival_day_starting_raw": 42500000,
+          "arrival_day_current_fighting_raw": 42158300,
+          "arrival_day_soft_casualties_raw": 234065,
+          "arrival_day_hard_casualties_raw": 107635
+        },
+        {
+          "regiment_id": 16777387,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 53100000,
+          "arrival_day_starting_raw": 53100000,
+          "arrival_day_current_fighting_raw": 52673076,
+          "arrival_day_soft_casualties_raw": 292443,
+          "arrival_day_hard_casualties_raw": 134481
+        },
+        {
+          "regiment_id": 223,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 10000000,
+          "arrival_day_starting_raw": 10000000,
+          "arrival_day_current_fighting_raw": 9968154,
+          "arrival_day_soft_casualties_raw": 21815,
+          "arrival_day_hard_casualties_raw": 10031
+        },
+        {
+          "regiment_id": 225,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 100000,
+          "arrival_day_starting_raw": 100000,
+          "arrival_day_current_fighting_raw": 99945,
+          "arrival_day_soft_casualties_raw": 38,
+          "arrival_day_hard_casualties_raw": 17
+        },
+        {
+          "regiment_id": 226,
+          "fights_in_main_phase": true,
+          "prejoin_saved_current_raw": 100000,
+          "arrival_day_starting_raw": 100000,
+          "arrival_day_current_fighting_raw": 99833,
+          "arrival_day_soft_casualties_raw": 115,
+          "arrival_day_hard_casualties_raw": 52
+        }
+      ],
+      "fighting_regiment_count": 5,
+      "arrival_day_casualties_observed": true,
+      "global_manager_order_proven": false,
+      "source_day_whole_trace_available": false
+    }
+  ],
+  "same_day_reinforcement_damage_observed": true,
+  "global_manager_order_proven": false,
+  "planner_usable": false
+}

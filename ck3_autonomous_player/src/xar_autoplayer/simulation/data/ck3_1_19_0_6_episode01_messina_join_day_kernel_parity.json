@@ -1,0 +1,58 @@
+{
+  "schema": "ck3-native-join-day-conditional-casualty-parity-v1",
+  "case_sha256": "62C70CED2E4E1E355A986C9220F05F59441EE26F14C0EE412D537383413DBF9F",
+  "join_evidence_sha256": "C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "trajectory": "independent-replay-from-original-contact-checkpoint",
+  "conditioned_on_native_outgoing_damage": true,
+  "conditioned_on_observed_joined_roster": true,
+  "outgoing_damage_reconstructed": false,
+  "join_policy_reconstructed": false,
+  "whole_battle_win_probability_available": false,
+  "planner_usable": false,
+  "source_days": [
+    {
+      "source_day": 11,
+      "arrival_day": 12,
+      "army_id": 22,
+      "source_control_receipt_sha256": "F364151C693D419DDA6A22113B6B23137C9B8F77562C0CF21A2288E8EF72024F",
+      "arrival_control_receipt_sha256": "5AE37180B5680192DB9C09EC3632AC3CF89695C24103B1F7D7C0D92519FA78E3",
+      "source_phase_receipt_sha256": "3C0E71A11279628E1574C4CF6EBE6B35BFE3546A7F32C979723ED1203B96C36C",
+      "arrival_phase_receipt_sha256": "B8865D71ED12D7E558341299C3EAEF11EB13ACE198F0A073CF6008846D0962D7",
+      "native_incoming_damage_raw": 67660992,
+      "old_fighting_regiment_count": 26,
+      "joined_fighting_regiment_count": 12,
+      "defending_total_fighting_men_before_damage_raw": 410690163,
+      "joined_regiment_current_exact_count": 12,
+      "all_joined_regiments_current_exact": true,
+      "whole_side_current_exact": false,
+      "residuals": [
+        {
+          "regiment_id": 220,
+          "newly_joined": false,
+          "predicted_minus_native_raw": 214
+        }
+      ],
+      "source_day_whole_trace_available": false
+    },
+    {
+      "source_day": 21,
+      "arrival_day": 22,
+      "army_id": 28,
+      "source_control_receipt_sha256": "69C9867D55892F4306D9931BCADC29F3313A557D3D8A289B6ECDEB3E825937A2",
+      "arrival_control_receipt_sha256": "6F286635D6EDA5BFD7B9980379ABD2096D9A7B6462CF2ABA66B74D4B4ED9E6F8",
+      "source_phase_receipt_sha256": "46E2EE2B4E2D6F480AA9DCA1947A18CC6843C77C3256AC016DE2F6A8ECB1A994",
+      "arrival_phase_receipt_sha256": "169361CE6CF0C577DD50C894A30FBCDBB33F12D69D7315D9A5195660981213CB",
+      "native_incoming_damage_raw": 37845714,
+      "old_fighting_regiment_count": 37,
+      "joined_fighting_regiment_count": 5,
+      "defending_total_fighting_men_before_damage_raw": 470651390,
+      "joined_regiment_current_exact_count": 5,
+      "all_joined_regiments_current_exact": true,
+      "whole_side_current_exact": true,
+      "residuals": [],
+      "source_day_whole_trace_available": false
+    }
+  ]
+}

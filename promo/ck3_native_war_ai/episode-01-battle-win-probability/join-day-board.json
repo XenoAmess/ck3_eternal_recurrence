@@ -1,0 +1,64 @@
+{
+  "schema": "ck3-episode01-join-day-board-v1",
+  "source_report_sha256": "C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "phase_trace_trajectory": "independent-replay-from-original-contact-checkpoint",
+  "joins": [
+    {
+      "source_day": 11,
+      "arrival_day": 12,
+      "army_id": 22,
+      "arrival_date_raw": 53146512,
+      "prejoin_snapshot_sha256": "680C915BB49AB305E89934700BDA080A2D5D7FCDB13FBC6F539FEF8AC3088C81",
+      "arrival_snapshot_sha256": "87112AA2B7F0AEDC2C83C3DF6B8026A9421022DF9FF06799DA6AD57D302B25DE",
+      "arrival_phase_receipt_sha256": "B8865D71ED12D7E558341299C3EAEF11EB13ACE198F0A073CF6008846D0962D7",
+      "fighting_regiment_count": 12,
+      "nonfighting_regiment_count": 1,
+      "prejoin_fighting_current_raw": 256000000,
+      "arrival_day_fighting_current_raw": 252199061,
+      "arrival_day_soft_casualties_raw": 2603650,
+      "arrival_day_hard_casualties_raw": 1197289,
+      "sample_regiment": {
+        "regiment_id": 175,
+        "fights_in_main_phase": true,
+        "prejoin_saved_current_raw": 75000000,
+        "arrival_day_starting_raw": 75000000,
+        "arrival_day_current_fighting_raw": 73764750,
+        "arrival_day_soft_casualties_raw": 846147,
+        "arrival_day_hard_casualties_raw": 389103
+      },
+      "same_day_casualties_observed": true,
+      "source_day_whole_trace_available": false
+    },
+    {
+      "source_day": 21,
+      "arrival_day": 22,
+      "army_id": 28,
+      "arrival_date_raw": 53146752,
+      "prejoin_snapshot_sha256": "E469D162969177F1DFC0511122A48FDA94199B62B7FB34990B59A8D36CA505BB",
+      "arrival_snapshot_sha256": "03299BEB425EF9B2E407D26A1A61692189388D27728C67DD54F8D66B7C938E64",
+      "arrival_phase_receipt_sha256": "169361CE6CF0C577DD50C894A30FBCDBB33F12D69D7315D9A5195660981213CB",
+      "fighting_regiment_count": 5,
+      "nonfighting_regiment_count": 0,
+      "prejoin_fighting_current_raw": 105800000,
+      "arrival_day_fighting_current_raw": 104999308,
+      "arrival_day_soft_casualties_raw": 548476,
+      "arrival_day_hard_casualties_raw": 252216,
+      "sample_regiment": {
+        "regiment_id": 224,
+        "fights_in_main_phase": true,
+        "prejoin_saved_current_raw": 42500000,
+        "arrival_day_starting_raw": 42500000,
+        "arrival_day_current_fighting_raw": 42158300,
+        "arrival_day_soft_casualties_raw": 234065,
+        "arrival_day_hard_casualties_raw": 107635
+      },
+      "same_day_casualties_observed": true,
+      "source_day_whole_trace_available": false
+    }
+  ],
+  "same_day_reinforcement_damage_observed": true,
+  "global_manager_order_proven": false,
+  "planner_usable": false
+}

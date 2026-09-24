@@ -24,6 +24,10 @@ EPISODE01_PHASE_EVENT_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_observa
 EPISODE01_PHASE_EVENT_SHA256 = "94831B16AE56BC050833D7BEE9064170D118F77700DE672A0977E68F47C98AAE"
 EPISODE01_PHASE_EVENT_SAVE_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json"
 EPISODE01_PHASE_EVENT_SAVE_SHA256 = "42C495789167F27F330D40FE657CEE359C02AF5FF217DFCB16E9A2971ECAC130"
+EPISODE01_JOIN_DAY_FILE = "ck3_1_19_0_6_episode01_messina_join_day_casualties.json"
+EPISODE01_JOIN_DAY_SHA256 = "C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72"
+EPISODE01_JOIN_KERNEL_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json"
+EPISODE01_JOIN_KERNEL_SHA256 = "CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0"
 
 
 class NativeBattleCaseError(ValueError):
@@ -288,6 +292,124 @@ def load_episode01_phase_event_save_feedback() -> dict[str, Any]:
     return report
 
 
+def _validate_join_day_casualties(report: dict[str, Any]) -> None:
+    if (report.get("schema") != "ck3-native-join-day-casualty-observation-v1"
+            or report.get("game_version") != "1.19.0.6"
+            or report.get("combat_id") != 16777218
+            or report.get("rakaly_exe_sha256") !=
+            "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D"
+            or report.get("same_day_reinforcement_damage_observed") is not True
+            or report.get("global_manager_order_proven") is not False
+            or report.get("planner_usable") is not False):
+        raise NativeBattleCaseError("join-day evidence identity or boundary mismatch")
+    rows = report.get("join_observations")
+    if not isinstance(rows, list) or len(rows) != 2:
+        raise NativeBattleCaseError("join-day pair count mismatch")
+    for row, source_day, arrival_day, army_id, date_raw, fighting_count in zip(
+        rows,
+        (11, 21), (12, 22), (22, 28), (53146512, 53146752), (12, 5),
+        strict=True,
+    ):
+        if (row.get("source_day") != source_day
+                or row.get("arrival_day") != arrival_day
+                or row.get("army_id") != army_id
+                or row.get("combat_id") != 16777218
+                or row.get("arrival_phase_date_raw") != date_raw
+                or row.get("arrival_day_casualties_observed") is not True
+                or row.get("source_day_whole_trace_available") is not False
+                or row.get("global_manager_order_proven") is not False):
+            raise NativeBattleCaseError("join-day row identity or gate mismatch")
+        snapshots = row.get("snapshots")
+        if (not isinstance(snapshots, list) or len(snapshots) != 2
+                or snapshots[0].get("phase") != "before"
+                or snapshots[1].get("phase") != "after"
+                or snapshots[0].get("in_combat") is not False
+                or snapshots[1].get("in_combat") is not True
+                or snapshots[1].get("date_raw") != date_raw):
+            raise NativeBattleCaseError("join-day arrival snapshot mismatch")
+        regiments = row.get("regiments")
+        if (not isinstance(regiments, list)
+                or len(regiments) != (13 if source_day == 11 else 5)
+                or sum(regiment.get("fights_in_main_phase") is True for regiment in regiments)
+                != fighting_count
+                or row.get("fighting_regiment_count") != fighting_count):
+            raise NativeBattleCaseError("join-day regiment roster mismatch")
+        for regiment in regiments:
+            if regiment.get("prejoin_saved_current_raw") != regiment.get("arrival_day_starting_raw"):
+                raise NativeBattleCaseError("join-day starting strength mismatch")
+            if regiment.get("fights_in_main_phase") is True:
+                soft = regiment.get("arrival_day_soft_casualties_raw")
+                hard = regiment.get("arrival_day_hard_casualties_raw")
+                if (not isinstance(soft, int) or not isinstance(hard, int)
+                        or soft + hard <= 0
+                        or soft + hard != regiment["prejoin_saved_current_raw"]
+                        - regiment["arrival_day_current_fighting_raw"]):
+                    raise NativeBattleCaseError("join-day casualty arithmetic mismatch")
+
+
+def load_episode01_join_day_casualties() -> dict[str, Any]:
+    """Return two observed same-date arrival/damage pairs, not universal order."""
+    path = Path(__file__).with_name("data") / EPISODE01_JOIN_DAY_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_JOIN_DAY_SHA256:
+        raise NativeBattleCaseError("bundled join-day evidence bytes changed without review")
+    report = json.loads(data)
+    if not isinstance(report, dict):
+        raise NativeBattleCaseError("join-day evidence must be a JSON object")
+    _validate_join_day_casualties(report)
+    return report
+
+
+def _validate_join_day_kernel_parity(report: dict[str, Any]) -> None:
+    if (report.get("schema") != "ck3-native-join-day-conditional-casualty-parity-v1"
+            or report.get("case_sha256") != EPISODE01_CASE_SHA256
+            or report.get("join_evidence_sha256") != EPISODE01_JOIN_DAY_SHA256
+            or report.get("game_version") != "1.19.0.6"
+            or report.get("combat_id") != 16777218
+            or report.get("trajectory") != "independent-replay-from-original-contact-checkpoint"
+            or report.get("conditioned_on_native_outgoing_damage") is not True
+            or report.get("conditioned_on_observed_joined_roster") is not True):
+        raise NativeBattleCaseError("join-day kernel parity identity or conditioning mismatch")
+    if any(report.get(key) is not False for key in (
+        "outgoing_damage_reconstructed", "join_policy_reconstructed",
+        "whole_battle_win_probability_available", "planner_usable",
+    )):
+        raise NativeBattleCaseError("conditional join-day parity cannot authorize a forecast")
+    rows = report.get("source_days")
+    if not isinstance(rows, list) or len(rows) != 2:
+        raise NativeBattleCaseError("join-day kernel parity pair count mismatch")
+    for row, source_day, arrival_day, army_id, old_count, joined_count in zip(
+        rows, (11, 21), (12, 22), (22, 28), (26, 37), (12, 5), strict=True,
+    ):
+        if (row.get("source_day") != source_day
+                or row.get("arrival_day") != arrival_day
+                or row.get("army_id") != army_id
+                or row.get("old_fighting_regiment_count") != old_count
+                or row.get("joined_fighting_regiment_count") != joined_count
+                or row.get("joined_regiment_current_exact_count") != joined_count
+                or row.get("all_joined_regiments_current_exact") is not True
+                or row.get("source_day_whole_trace_available") is not False):
+            raise NativeBattleCaseError("join-day kernel parity row mismatch")
+        residuals = row.get("residuals")
+        if (residuals != ([{"regiment_id": 220, "newly_joined": False,
+                            "predicted_minus_native_raw": 214}] if source_day == 11 else [])
+                or row.get("whole_side_current_exact") is not (source_day == 21)):
+            raise NativeBattleCaseError("join-day residual was hidden or changed")
+
+
+def load_episode01_join_day_kernel_parity() -> dict[str, Any]:
+    """Return conditional joined-roster casualty parity, never a battle forecast."""
+    path = Path(__file__).with_name("data") / EPISODE01_JOIN_KERNEL_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_JOIN_KERNEL_SHA256:
+        raise NativeBattleCaseError("bundled join-day parity bytes changed without review")
+    report = json.loads(data)
+    if not isinstance(report, dict):
+        raise NativeBattleCaseError("join-day parity must be a JSON object")
+    _validate_join_day_kernel_parity(report)
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
@@ -299,11 +421,17 @@ __all__ = [
     "EPISODE01_PHASE_EVENT_SHA256",
     "EPISODE01_PHASE_EVENT_SAVE_FILE",
     "EPISODE01_PHASE_EVENT_SAVE_SHA256",
+    "EPISODE01_JOIN_DAY_FILE",
+    "EPISODE01_JOIN_DAY_SHA256",
+    "EPISODE01_JOIN_KERNEL_FILE",
+    "EPISODE01_JOIN_KERNEL_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
     "load_episode01_native_battle_repeatability",
     "load_episode01_phase_event_observations",
     "load_episode01_phase_event_save_feedback",
+    "load_episode01_join_day_casualties",
+    "load_episode01_join_day_kernel_parity",
     "original_daily_timeline",
 ]

@@ -1,5 +1,18 @@
 # CK3 1.19.0.6 原生 AI 战斗增援、到达与加入既有战斗
 
+## 2026-09-24：梅西纳同日增援伤亡实机观察
+
+同一接战检查点的[独立原版回放](battle-simulation-episode01-live-case.md)提供了两次自然增援。对第 11、21 源日的不可变存档只读解码，按 RegimentID 与第 12、22 日第一次有效阶段记录逐项绑定；[智能体共用投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_casualties.json) SHA-256 为 `C51A17070A66729C00B1BB1ADB40821CB61CAC1F7DF11155CE25FE0C5152EA72`，[只读重建工具](../../ck3_autonomous_player/tools/project_native_join_day_casualties.py)核对原始存档、解码文本、移动前后快照与阶段回执 SHA。两次增援在移动前均未入战、目标为梅西纳，推进恰好一天后已进入相同 CombatID。
+
+| 增援 | 到达日 | 原存档入战前兵力 | 到达日阶段回读兵力 | 软伤亡 + 硬伤亡 | 逐兵团核对 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| ArmyID `22` | 12 | 2560 | 2521.99061 | 26.03650 + 11.97289 | 12 个参战兵团逐项闭合；另 1 个非参战骑士兵团无战斗伤亡 |
+| ArmyID `28` | 22 | 1058 | 1049.99308 | 5.48476 + 2.52216 | 5 个参战兵团逐项闭合 |
+
+这些新入战兵团在到达日前的存档中 `cached.current` 全等于阶段记录的 `starting_raw`；到达日第一次有效阶段记录中，每个参战兵团的 `starting_raw - current_fighting_raw` 全等于软伤亡加硬伤亡，且都大于零。**这证明上述两次自然增援在抵达的同一日推进中已承受战斗伤亡**，不能再把“增援一律从次日才受伤”写成规则。第 11、21 源日的完整七边界 trace 仍因加入时的 side 身份变化为 `trace_unavailable`；证据只合并独立的移动快照、冻结存档与下一次有效阶段回读，尚未给出 unit-manager/contact/combat-manager 的全局调用顺序，也不推广到所有加入时点。独立回放从第 6 日起与首条原案数值分叉，不能混剪成同一轨迹。
+
+用这两天**原版实测出伤与已观察到的入场名单**作为输入，把新增兵团先加入防守侧，再调用智能体现有的 `apply_main_phase_casualties`，[逐兵团对拍](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json) SHA-256 `CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0` 得到：第 12 日新增 12/12 精确，整侧 37/38 精确，原有 RegimentID `220` 的模拟 `current_raw` 比原版多 `214` 个 Q100000 单位；第 22 日新增 5/5、整侧 42/42 精确。[只读重算工具](../../ck3_autonomous_player/tools/compare_native_join_day_casualties.py)核对原生回执 SHA，并保留这笔残差。这个条件对拍证明**伤亡分配内核在这两次给定入场名单和出伤的情形下高度吻合**，没有重建增援决策、出伤生成或完整整场胜率，不能将 `planner_usable` 打开。视频的[同源增援板 v2](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/join-day-board-v2.json)由智能体读取器同时读取原版观察和该条件对拍生成；[v1 板](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/join-day-board.json)保留为前一尝试的过程资产。
+
 ## 2026-09-23 勘误与研究增量
 
 本页下文保留历史研究记录；跨 stack 比较的旧解释已被同一 EXE 的直接指令复查推翻。

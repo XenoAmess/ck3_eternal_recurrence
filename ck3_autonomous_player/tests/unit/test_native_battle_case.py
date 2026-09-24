@@ -16,10 +16,14 @@ from xar_autoplayer.simulation.native_battle_case import (
     _validate_repeatability,
     _validate_phase_event_observations,
     _validate_phase_event_save_feedback,
+    _validate_join_day_casualties,
+    _validate_join_day_kernel_parity,
     load_episode01_native_battle_case,
     load_episode01_native_battle_repeatability,
     load_episode01_phase_event_observations,
     load_episode01_phase_event_save_feedback,
+    load_episode01_join_day_casualties,
+    load_episode01_join_day_kernel_parity,
     original_daily_timeline,
 )
 
@@ -127,6 +131,49 @@ class NativeBattleCaseTests(unittest.TestCase):
             promoted[key] = True
             with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):
                 _validate_phase_event_save_feedback(promoted)
+
+    def test_joined_regiments_take_observed_arrival_day_casualties(self) -> None:
+        report = load_episode01_join_day_casualties()
+        self.assertEqual([row["army_id"] for row in report["join_observations"]], [22, 28])
+        self.assertEqual([row["fighting_regiment_count"] for row in report["join_observations"]], [12, 5])
+        for row in report["join_observations"]:
+            for regiment in row["regiments"]:
+                if not regiment["fights_in_main_phase"]:
+                    continue
+                self.assertGreater(regiment["arrival_day_soft_casualties_raw"], 0)
+                self.assertGreater(regiment["arrival_day_hard_casualties_raw"], 0)
+                self.assertEqual(
+                    regiment["prejoin_saved_current_raw"] - regiment["arrival_day_current_fighting_raw"],
+                    regiment["arrival_day_soft_casualties_raw"]
+                    + regiment["arrival_day_hard_casualties_raw"],
+                )
+        self.assertFalse(report["global_manager_order_proven"])
+        self.assertFalse(report["planner_usable"])
+        promoted = copy.deepcopy(report)
+        promoted["global_manager_order_proven"] = True
+        with self.assertRaises(NativeBattleCaseError):
+            _validate_join_day_casualties(promoted)
+
+    def test_join_day_casualty_kernel_preserves_conditioning_and_residual(self) -> None:
+        report = load_episode01_join_day_kernel_parity()
+        day11, day21 = report["source_days"]
+        self.assertEqual((day11["joined_regiment_current_exact_count"],
+                          day21["joined_regiment_current_exact_count"]), (12, 5))
+        self.assertEqual(day11["residuals"], [{
+            "regiment_id": 220,
+            "newly_joined": False,
+            "predicted_minus_native_raw": 214,
+        }])
+        self.assertEqual(day21["residuals"], [])
+        self.assertFalse(report["planner_usable"])
+        promoted = copy.deepcopy(report)
+        promoted["source_days"][0]["residuals"] = []
+        with self.assertRaises(NativeBattleCaseError):
+            _validate_join_day_kernel_parity(promoted)
+        promoted = copy.deepcopy(report)
+        promoted["outgoing_damage_reconstructed"] = True
+        with self.assertRaises(NativeBattleCaseError):
+            _validate_join_day_kernel_parity(promoted)
 
 
 if __name__ == "__main__":
