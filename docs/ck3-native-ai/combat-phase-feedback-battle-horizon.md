@@ -36,7 +36,7 @@
 
 exact-build stock `game/common/combat_phase_events/00_knight_phase_events.txt` SHA-256 `E8F8E4978BB1AF130D74AA6ED72EE41F014B09C9F324608EBFB0E87D56A5EDB1` 中，受伤分支先写 `battle_event`（727–733），后调用 `increase_wounds_effect`（734）；击杀分支先写 `battle_event`（1277–1282），后执行 `death`（1318–1320）。脚本顺序与“账本先可见”相容，但不能据此推出运行时同步边界，也不能把脚本行号当作实际写集回执。
 
-后续[同战斗原始存档回流投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json)（SHA-256 `E68AD6F4099AC0DC3254C5CC7F7D9935AEC9221AF8D132E1F4915D4210E4A36C`）将事件前后的四份冻结 `.ck3` 用 Rakaly CLI `v0.8.19` 只读解码并核对 `traits_lookup`。第 5 日条目后的**同日期**日初存档已经给 36303 保存 `wounded_1`，虽然当时 core 勇武仍为 8，下一 fire 前才是 6；对手 34867 的威望货币和累计威望各增加 75，基础勇武从 3 到 4。第 15 日条目后的**同日期**日初存档已经给 36673 保存 `dead_data`，死因为 `death_battle`，killer 32716 与战报相符；对手 32716 的两项威望各增加 300，基础勇武从 4 到 5。第 15 日整条 trace 仍不可用，只能将局部 fire、同日存档与下一源日回读分别引用。
+后续[同战斗原始存档回流投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json)（SHA-256 `42C495789167F27F330D40FE657CEE359C02AF5FF217DFCB16E9A2971ECAC130`）将六次事件前后的 11 份冻结 `.ck3` 用 Rakaly CLI `v0.8.19` 只读解码并核对 `traits_lookup`。第 5、7、9、16、19 日受伤条目后的**同日期**存档均给对应目标新增 `wounded_1`；第 5 日目标 36303 的 core 勇武当时仍为 8，下一 fire 前才是 6。第 15 日击杀条目后的**同日期**存档给目标 36673 保存 `dead_data/death_battle/killer=32716`。六名对手的威望货币分别增加 `75/37.5/37.5/300/75/75`，基础勇武分别增加 `1/1/0/1/1/0`；第 16 日对手的累计威望缺字段，未强行填零。第 15、16 日整条 trace 仍不可用，只能将局部 fire、同日存档与下一源日回读分别引用。
 
 这些观察把“事件账本何时追加”“trait/死亡状态何时可在存档读到”“派生战斗数值何时刷新”明确分开。威望和基础勇武的数值变化与原版分支里的 `add_prestige`、`knight_increase_prowess_chance_effect` 相容，但**没有**捕获完整 mutable write-set，也没有证明变化唯一由对应条目造成。后续验收必须定位 fire 到同日保存之间的写入边界，以及下一次 phase read 前的数值刷新边界，并继续读取荣誉、参战身份和 outgoing damage。不能用账本条目本身代替完整 effect 执行回执。
 

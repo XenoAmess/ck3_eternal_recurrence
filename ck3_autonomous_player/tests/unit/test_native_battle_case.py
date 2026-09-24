@@ -87,7 +87,9 @@ class NativeBattleCaseTests(unittest.TestCase):
 
     def test_same_date_save_binds_target_and_opponent_state(self) -> None:
         report = load_episode01_phase_event_save_feedback()
-        wound, killed = report["event_save_pairs"]
+        by_day = {row["event_source_day"]: row for row in report["event_save_pairs"]}
+        self.assertEqual(tuple(by_day), (5, 7, 9, 15, 16, 19))
+        wound, killed = by_day[5], by_day[15]
         self.assertEqual(wound["saves"][0]["character"]["wounded_rank"], 0)
         self.assertEqual(wound["saves"][1]["character"]["wounded_rank"], 1)
         self.assertEqual(wound["saves"][1]["date_raw"], wound["event_native_date_raw"])
@@ -98,19 +100,24 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertEqual(killed["saves"][1]["character"]["death_reason"], "death_battle")
         self.assertEqual(killed["saves"][1]["character"]["killer_character_id"], 32716)
         self.assertEqual(killed["saves"][1]["date_raw"], killed["event_native_date_raw"])
-        for row, opponent_id, gain, before_prowess, after_prowess in (
-            (wound, 34867, 75, 3, 4),
-            (killed, 32716, 300, 4, 5),
+        for day, opponent_id, gain, prowess_gain in (
+            (5, 34867, 75, 1),
+            (7, 54140, Decimal("37.5"), 1),
+            (9, 34867, Decimal("37.5"), 0),
+            (15, 32716, 300, 1),
+            (16, 54144, 75, 1),
+            (19, 35124, 75, 0),
         ):
+            row = by_day[day]
             before, after = (save["opponent_character"] for save in row["saves"])
             self.assertEqual(row["opponent_character_id"], opponent_id)
-            self.assertEqual(after["base_skill_values"][-1] - before["base_skill_values"][-1], 1)
-            self.assertEqual((before["base_skill_values"][-1], after["base_skill_values"][-1]),
-                             (before_prowess, after_prowess))
+            self.assertEqual(after["base_skill_values"][-1] - before["base_skill_values"][-1], prowess_gain)
             self.assertEqual(Decimal(after["prestige_currency"]) - Decimal(before["prestige_currency"]), gain)
-            self.assertEqual(Decimal(after["prestige_accumulated"]) - Decimal(before["prestige_accumulated"]), gain)
+            if before["prestige_accumulated"] is not None and after["prestige_accumulated"] is not None:
+                self.assertEqual(Decimal(after["prestige_accumulated"])
+                                 - Decimal(before["prestige_accumulated"]), gain)
             changed = copy.deepcopy(report)
-            changed["event_save_pairs"][0 if row is wound else 1]["saves"][1][
+            changed["event_save_pairs"][list(by_day).index(day)]["saves"][1][
                 "opponent_character"]["prestige_currency"] = "0"
             with self.assertRaises(NativeBattleCaseError):
                 _validate_phase_event_save_feedback(changed)

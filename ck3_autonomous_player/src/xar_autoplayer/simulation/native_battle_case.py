@@ -23,7 +23,7 @@ EPISODE01_REPEATABILITY_SHA256 = "5E2D4B1AEE3BD6D64AC48111CD7ED1D8F48B8827D9FEBA
 EPISODE01_PHASE_EVENT_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_observations.json"
 EPISODE01_PHASE_EVENT_SHA256 = "94831B16AE56BC050833D7BEE9064170D118F77700DE672A0977E68F47C98AAE"
 EPISODE01_PHASE_EVENT_SAVE_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json"
-EPISODE01_PHASE_EVENT_SAVE_SHA256 = "E68AD6F4099AC0DC3254C5CC7F7D9935AEC9221AF8D132E1F4915D4210E4A36C"
+EPISODE01_PHASE_EVENT_SAVE_SHA256 = "42C495789167F27F330D40FE657CEE359C02AF5FF217DFCB16E9A2971ECAC130"
 
 
 class NativeBattleCaseError(ValueError):
@@ -201,7 +201,7 @@ def load_episode01_phase_event_observations() -> dict[str, Any]:
 
 
 def _validate_phase_event_save_feedback(report: dict[str, Any]) -> None:
-    if (report.get("schema") != "ck3-native-phase-event-save-feedback-v1"
+    if (report.get("schema") != "ck3-native-phase-event-save-feedback-v2"
             or report.get("game_version") != "1.19.0.6"
             or report.get("combat_id") != 16777218
             or report.get("rakaly_version") != "0.8.19"
@@ -213,14 +213,10 @@ def _validate_phase_event_save_feedback(report: dict[str, Any]) -> None:
     )):
         raise NativeBattleCaseError("save state changes do not authorize effect parity")
     rows = report.get("event_save_pairs")
-    if not isinstance(rows, list) or [row.get("event_source_day") for row in rows] != [5, 15]:
+    if not isinstance(rows, list) or [row.get("event_source_day") for row in rows] != [5, 7, 9, 15, 16, 19]:
         raise NativeBattleCaseError("phase-event save pairs missing")
-    wound, killed = rows
-    if (wound.get("target_character_id") != 36303
-            or wound.get("event_key") != "knight_wounded_by_enemy"
-            or killed.get("target_character_id") != 36673
-            or killed.get("event_key") != "knight_killed_by_enemy"):
-        raise NativeBattleCaseError("phase-event save target mismatch")
+    by_day = {row["event_source_day"]: row for row in rows}
+    wound, killed = by_day[5], by_day[15]
     for row in rows:
         saves = row.get("saves")
         if (not isinstance(saves, list)
@@ -230,30 +226,53 @@ def _validate_phase_event_save_feedback(report: dict[str, Any]) -> None:
                 or row.get("full_effect_write_set_proven") is not False
                 or row.get("effect_was_only_possible_cause_proven") is not False):
             raise NativeBattleCaseError("phase-event save date or gate mismatch")
-    if (wound["saves"][0]["character"]["wounded_rank"] != 0
-            or wound["saves"][1]["character"]["wounded_rank"] != 1
-            or wound["target_core_observations"]["same_fire_after"]["prowess"] != 8
+    if (wound["target_core_observations"]["same_fire_after"]["prowess"] != 8
             or wound["target_core_observations"]["next_source_day_record0"]["prowess"] != 8
             or wound["target_core_observations"]["next_source_day_record2"]["prowess"] != 6):
-        raise NativeBattleCaseError("wound trait and cached prowess observation mismatch")
-    if (killed["saves"][0]["character"]["alive_data_present"] is not True
-            or killed["saves"][1]["character"]["dead_data_present"] is not True
-            or killed["saves"][1]["character"]["death_reason"] != "death_battle"
-            or killed["saves"][1]["character"]["killer_character_id"] != 32716):
-        raise NativeBattleCaseError("death save observation mismatch")
-    for row, opponent_id, before_prowess, after_prowess, prestige_gain in (
-        (wound, 34867, 3, 4, Decimal("75")),
-        (killed, 32716, 4, 5, Decimal("300")),
+        raise NativeBattleCaseError("cached prowess observation mismatch")
+    for day, target_id, opponent_id, event_key, prestige_gain, prowess_gain in (
+        (5, 36303, 34867, "knight_wounded_by_enemy", Decimal("75"), 1),
+        (7, 43706, 54140, "knight_wounded_by_enemy", Decimal("37.5"), 1),
+        (9, 54144, 34867, "knight_wounded_by_enemy", Decimal("37.5"), 0),
+        (15, 36673, 32716, "knight_killed_by_enemy", Decimal("300"), 1),
+        (16, 33437, 54144, "knight_wounded_by_enemy", Decimal("75"), 1),
+        (19, 30784, 35124, "knight_wounded_by_enemy", Decimal("75"), 0),
     ):
+        row = by_day[day]
+        target_before, target_after = (save["character"] for save in row["saves"])
         before, after = (save["opponent_character"] for save in row["saves"])
-        if (row.get("opponent_character_id") != opponent_id
+        if (row.get("target_character_id") != target_id
+                or row.get("event_key") != event_key
+                or target_before.get("character_id") != target_id
+                or target_after.get("character_id") != target_id
+                or row.get("opponent_character_id") != opponent_id
                 or before.get("character_id") != opponent_id
                 or after.get("character_id") != opponent_id
-                or before.get("base_skill_values", [None])[-1] != before_prowess
-                or after.get("base_skill_values", [None])[-1] != after_prowess
+                or after.get("base_skill_values", [None])[-1]
+                - before.get("base_skill_values", [None])[-1] != prowess_gain
                 or Decimal(after["prestige_currency"]) - Decimal(before["prestige_currency"]) != prestige_gain
-                or Decimal(after["prestige_accumulated"]) - Decimal(before["prestige_accumulated"]) != prestige_gain):
+                or Decimal(row.get("opponent_prestige_currency_delta", "0")) != prestige_gain
+                or row.get("opponent_base_prowess_delta") != prowess_gain):
             raise NativeBattleCaseError("opponent prestige or base prowess save observation mismatch")
+        accumulated_available = (before["prestige_accumulated"] is not None
+                                 and after["prestige_accumulated"] is not None)
+        if accumulated_available != (day != 16):
+            raise NativeBattleCaseError("opponent accumulated prestige availability mismatch")
+        if (accumulated_available
+                and Decimal(after["prestige_accumulated"])
+                - Decimal(before["prestige_accumulated"]) != prestige_gain):
+            raise NativeBattleCaseError("opponent accumulated prestige save observation mismatch")
+        if event_key == "knight_wounded_by_enemy":
+            if (target_before["wounded_rank"] != 0
+                    or target_after["wounded_rank"] != 1
+                    or target_before["alive_data_present"] is not True
+                    or target_after["alive_data_present"] is not True):
+                raise NativeBattleCaseError("wound save observation mismatch")
+        elif (target_before["alive_data_present"] is not True
+              or target_after["dead_data_present"] is not True
+              or target_after["death_reason"] != "death_battle"
+              or target_after["killer_character_id"] != opponent_id):
+            raise NativeBattleCaseError("death save observation mismatch")
 
 
 def load_episode01_phase_event_save_feedback() -> dict[str, Any]:

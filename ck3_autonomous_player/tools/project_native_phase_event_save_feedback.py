@@ -1,4 +1,4 @@
-"""Bind exact CK3 saves to two observed phase-event state changes.
+"""Bind exact CK3 saves to six observed phase-event state changes.
 
 Rakaly is used only to decode immutable CK3 saves into external plaintext
 artifacts.  This projector verifies the native saves, melter, melted bytes,
@@ -28,9 +28,25 @@ RAKALY_EXE_SHA256 = "E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F
 MELTED_SHA256_BY_DAY = {
     5: "AC71F3BFC148F475318CB98339470D52B30188957DD091C9552CA8DA5B4476C1",
     6: "54665950498039F44E92EC57F1E9D5E8951DE5EB4DAD2C525B7A7C34FECD2945",
+    7: "94F138D4C42E5C1164B66D168DCDB2C7167925430C41FFAB53A9772E8FE870B9",
+    8: "78726F1BCC95B0245F7824BA70A016D7CB8518EB3369F68FFF08CB7BFE6264F2",
+    9: "FCCCD8060577A10C08688EE7AD406E5A5ADE77CA9F3A9F594F0481FFD693D372",
+    10: "E45311005A1B67D8C44E11613C0ECCF457E921037D3C1BCABF3516798D735F4A",
     15: "D3DADB33E2638EE078FFED90D6BCB40A131638BCEBCD83D8B29F6F43DD4B025D",
     16: "2A2C2A8B8CAD579843613B3A5DEF2496D34433F541134CC388A49E267253D374",
+    17: "3540C190C80C50C284829C7024D7AD88B377C49559E9061DEE9536A996EC8326",
+    19: "2FE8C9D6546EE560D7FBD0C835F8E44B0D12048CBF85C81106A981CAF2058BD1",
+    20: "92B8D270B89F4DC6EDB94DDFC4FC8288A284095E3FE082CDB7D994F0D8480F51",
 }
+
+EVENT_EXPECTATIONS = (
+    (5, 36303, 34867, "knight_wounded_by_enemy", Decimal("75"), 1),
+    (7, 43706, 54140, "knight_wounded_by_enemy", Decimal("37.5"), 1),
+    (9, 54144, 34867, "knight_wounded_by_enemy", Decimal("37.5"), 0),
+    (15, 36673, 32716, "knight_killed_by_enemy", Decimal("300"), 1),
+    (16, 33437, 54144, "knight_wounded_by_enemy", Decimal("75"), 1),
+    (19, 30784, 35124, "knight_wounded_by_enemy", Decimal("75"), 0),
+)
 
 
 def digest(path: Path) -> str:
@@ -102,18 +118,16 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
     source_by_day = {row["source_day"]: row for row in case["phase_traces"]}
     event_by_day = {row["source_day"]: row for row in observations["event_fire_pairs"]}
     rows = []
-    for event_day, character_id, key in (
-        (5, 36303, "knight_wounded_by_enemy"),
-        (15, 36673, "knight_killed_by_enemy"),
-    ):
+    text_cache: dict[int, str] = {}
+    for event_day, character_id, opponent_id, key, prestige_gain, prowess_gain in EVENT_EXPECTATIONS:
         event = event_by_day[event_day]
         ledger = event["appended_battle_events"]
         if (len(ledger) != 1 or ledger[0]["stable_key"] != key
                 or ledger[0]["left_character_id"] != character_id
+                or ledger[0]["right_character_id"] != opponent_id
                 or ledger[0]["target_right"] is not False):
             raise ValueError(f"day {event_day}: ledger target mismatch")
         saves = []
-        opponent_id = ledger[0]["right_character_id"]
         for source_day in (event_day, event_day + 1):
             raw = trace_root / f"trace-d{source_day:02d}-immutable.ck3"
             raw_sha = digest(raw)
@@ -123,7 +137,9 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
             melted_sha = digest(melted)
             if melted_sha != MELTED_SHA256_BY_DAY[source_day]:
                 raise ValueError(f"day {source_day}: melted save changed")
-            text = melted.read_text(encoding="utf-8-sig")
+            if source_day not in text_cache:
+                text_cache[source_day] = melted.read_text(encoding="utf-8-sig")
+            text = text_cache[source_day]
             snapshot = _character_snapshot(text, character_id)
             saves.append({
                 "source_day": source_day,
@@ -133,12 +149,12 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
                 "character": snapshot,
                 "opponent_character": _character_snapshot(text, opponent_id),
             })
-        if (event_day == 5 and not (
+        if (key == "knight_wounded_by_enemy" and not (
                 saves[0]["character"]["wounded_rank"] == 0
                 and saves[1]["character"]["wounded_rank"] == 1
                 and saves[0]["character"]["alive_data_present"]
                 and saves[1]["character"]["alive_data_present"])
-                or event_day == 15 and not (
+                or key == "knight_killed_by_enemy" and not (
                     saves[0]["character"]["alive_data_present"]
                     and saves[1]["character"]["dead_data_present"]
                     and saves[1]["character"]["death_reason"] == "death_battle"
@@ -148,17 +164,20 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
             raise ValueError(f"day {event_day}: expected narrow state transition absent")
         opponent_before = saves[0]["opponent_character"]
         opponent_after = saves[1]["opponent_character"]
-        expected_opponent_id, previous_prowess, next_prowess, prestige_gain = (
-            (34867, 3, 4, 75) if event_day == 5 else (32716, 4, 5, 300)
-        )
-        if (opponent_id != expected_opponent_id
-                or opponent_before["base_skill_values"][-1] != previous_prowess
-                or opponent_after["base_skill_values"][-1] != next_prowess
-                or Decimal(opponent_after["prestige_currency"]) -
-                Decimal(opponent_before["prestige_currency"]) != prestige_gain
-                or Decimal(opponent_after["prestige_accumulated"]) -
-                Decimal(opponent_before["prestige_accumulated"]) != prestige_gain):
+        observed_prestige_gain = (Decimal(opponent_after["prestige_currency"])
+                                 - Decimal(opponent_before["prestige_currency"]))
+        if (opponent_after["base_skill_values"][-1]
+                - opponent_before["base_skill_values"][-1] != prowess_gain
+                or observed_prestige_gain != prestige_gain):
             raise ValueError(f"day {event_day}: opponent state delta absent")
+        accumulated_available = (opponent_before["prestige_accumulated"] is not None
+                                 and opponent_after["prestige_accumulated"] is not None)
+        if accumulated_available != (event_day != 16):
+            raise ValueError(f"day {event_day}: opponent accumulated prestige availability changed")
+        if (accumulated_available
+                and Decimal(opponent_after["prestige_accumulated"])
+                - Decimal(opponent_before["prestige_accumulated"]) != prestige_gain):
+            raise ValueError(f"day {event_day}: opponent accumulated prestige delta absent")
         if event["native_date_raw"] != saves[1]["date_raw"]:
             raise ValueError(f"day {event_day}: event and later save date differ")
         rows.append({
@@ -167,6 +186,8 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
             "event_key": key,
             "target_character_id": character_id,
             "opponent_character_id": opponent_id,
+            "opponent_prestige_currency_delta": str(observed_prestige_gain),
+            "opponent_base_prowess_delta": prowess_gain,
             "event_receipt_sha256": event["source_receipt_sha256"],
             "saves": saves,
             "same_fire_character_core_deltas": event["observed_character_core_deltas_within_fire"],
@@ -175,7 +196,7 @@ def project(trace_root: Path, melted_dir: Path, rakaly_exe: Path) -> dict:
             "effect_was_only_possible_cause_proven": False,
         })
     return {
-        "schema": "ck3-native-phase-event-save-feedback-v1",
+        "schema": "ck3-native-phase-event-save-feedback-v2",
         "case_id": case["case_id"],
         "game_version": case["game_version"],
         "combat_id": case["combat_id"],
