@@ -8,6 +8,8 @@
 
 attempt-018 的研究钩子只在原生 phase-fire 同步调用期间，对与 13 行载入表匹配的 compiled effect root 读取 `node+0x38` hash 和 context RNG 前后 `counter/salt`；容量上限 64，失败标志进入同一七边界门禁。目标行 11 的[原生根节点回读](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_effect_root_observation.json)（SHA-256 `D4C914DEAF00D827AF1DFD7AFE3E9374C72E5348307E50381944F3C37A735A00`）显示 `node_hash=3689483501`，RNG `2708350930→2708350931, salt=0`，与静态 seed 初始化一致。后续需在内部节点范围捕获实际选择 draw 与写回，当前报告不能被提升为胜率输入。
 
+研究钩子的下一步已准备好 exact-build `0x33E8D40` 骑士候选索引选择入口：在同一 effect root 作用域内只读候选数、返回索引、选中候选的两词原始 token 及局部 RNG 前后状态，最多 64 条；Release 编译及五项离线 trace 测试通过。**这只是待实机验证的采集能力**，尚无原生运行回执，不能把选中项、draw 或写回写成已对拍结论。按用户当前安排，先制作已确认机制的视频，再继续此项研究。
+
 ## R0192 paused RNG scope and original tick boundary
 
 - [production-live RED] R0192 used master `6240e7b` and an officially recovered copy of the old R0168 `h1251/raw53192304` battle. The fresh paused frame retained CombatID `738197508` and native revision `3`; the phase query was accepted but returned `evaluator_probe_ready=false`, `unavailable_reason=global_rng_state_unavailable`. It made no typed action or date advance and stopped under control. Immutable index: `Z:\ck3_mod_rewrite_process_assets\g2-r0168-phase-trace-R0192-global-rng-red-frozen-20260923\R0192-raw-freeze.json`, SHA-256 `87E0167EFB33A73C3BE12F7EB618531E37B26CF5B39FAE1B7C9F397041E9ED27`. The response does not distinguish a null slot, wrapper or state.

@@ -40,6 +40,7 @@ inline constexpr std::uintptr_t kCombatPhaseEventScheduleFunctionRva =
     0x23C8750;
 inline constexpr std::uintptr_t kCombatPhaseEventFireFunctionRva = 0x23C9900;
 inline constexpr std::uintptr_t kCombatPhaseEffectDispatchFunctionRva = 0x3380A00;
+inline constexpr std::uintptr_t kCombatPhaseKnightSelectFunctionRva = 0x33E8D40;
 inline constexpr std::uintptr_t kCombatOutgoingDamageFunctionRva = 0x23CB1D0;
 inline constexpr std::uintptr_t kCombatPostCounterAttackCaptureRva = 0x23CB435;
 inline constexpr std::uintptr_t kCombatOutgoingDamageSide0ReturnRva =
@@ -93,6 +94,7 @@ enum CombatPhaseEventTraceCaptureFailureV1 : std::uint32_t {
   trace_capture_failure_outgoing_damage = 1U << 12,
   trace_capture_failure_post_counter_attack = 1U << 13,
   trace_capture_failure_effect_root = 1U << 14,
+  trace_capture_failure_knight_select = 1U << 15,
 };
 
 inline constexpr std::size_t kCombatPhaseEffectRootMaximumRecordsV1 = 64;
@@ -102,6 +104,21 @@ struct CombatPhaseEffectRootRecordV1 {
   std::int32_t native_event_load_index = -1;
   std::uintptr_t node_identity = 0;
   std::uint32_t node_hash = 0;
+  std::uint32_t counter_before = 0;
+  std::uint32_t salt_before = 0;
+  std::uint32_t counter_after = 0;
+  std::uint32_t salt_after = 0;
+};
+
+inline constexpr std::size_t kCombatPhaseKnightSelectMaximumRecordsV1 = 64;
+
+struct CombatPhaseKnightSelectRecordV1 {
+  std::int32_t side_index = -1;
+  std::int32_t native_event_load_index = -1;
+  std::int32_t candidate_count = -1;
+  std::int32_t selected_index = -1;
+  std::uintptr_t selected_candidate_word0 = 0;
+  std::uintptr_t selected_candidate_word1 = 0;
   std::uint32_t counter_before = 0;
   std::uint32_t salt_before = 0;
   std::uint32_t counter_after = 0;
@@ -386,12 +403,15 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> outgoing_damage_count{0};
   std::atomic<std::uint32_t> post_counter_attack_count{0};
   std::atomic<std::uint32_t> effect_root_count{0};
+  std::atomic<std::uint32_t> knight_select_count{0};
   std::atomic<std::uint32_t> failure_flags{trace_capture_failure_none};
   CombatPhaseEventTraceCapturePlanV1 plan{};
   std::array<std::int64_t, 2> outgoing_damage_raw{};
   std::array<std::int64_t, 2> post_counter_attack_raw{};
   std::array<CombatPhaseEffectRootRecordV1,
              kCombatPhaseEffectRootMaximumRecordsV1> effect_roots{};
+  std::array<CombatPhaseKnightSelectRecordV1,
+             kCombatPhaseKnightSelectMaximumRecordsV1> knight_selects{};
   std::array<CombatPhaseEventTraceRingRecordV1,
              kCombatPhaseEventTraceRingV1RecordCount>
       records{};
@@ -411,6 +431,9 @@ struct CombatPhaseEventTraceRingDrainV1 {
   std::uint32_t effect_root_count = 0;
   std::array<CombatPhaseEffectRootRecordV1,
              kCombatPhaseEffectRootMaximumRecordsV1> effect_roots{};
+  std::uint32_t knight_select_count = 0;
+  std::array<CombatPhaseKnightSelectRecordV1,
+             kCombatPhaseKnightSelectMaximumRecordsV1> knight_selects{};
   bool exact_boundary_sequence = false;
   bool same_full_generation_combat = false;
   bool same_native_date = false;
@@ -431,6 +454,8 @@ using CombatPhaseEventScheduleOriginalV1 = std::uintptr_t (*)(
 using CombatPhaseEventFireOriginalV1 = std::uintptr_t (*)(void *side);
 using CombatPhaseEffectDispatchOriginalV1 = std::uintptr_t (*)(
     void *node, void *context);
+using CombatPhaseKnightSelectOriginalV1 = std::int32_t (*)(
+    void *selector, void *candidates, void *context);
 using CombatOutgoingDamageOriginalV1 = std::uintptr_t (*)(
     void *side, std::int64_t *output, std::int32_t final_width,
     std::int64_t advantage_multiplier_raw, void *opposite_side);
@@ -485,6 +510,8 @@ bool BindCombatPhaseEventTraceOriginalTrampolinesV1(
     CombatOutgoingDamageOriginalV1 outgoing_damage) noexcept;
 bool BindCombatPhaseEffectDispatchOriginalV1(
     CombatPhaseEffectDispatchOriginalV1 dispatch) noexcept;
+bool BindCombatPhaseKnightSelectOriginalV1(
+    CombatPhaseKnightSelectOriginalV1 select) noexcept;
 
 extern "C" std::uintptr_t __fastcall
 XarCombatPhaseEventScheduleHookV1(void *side,
@@ -494,6 +521,8 @@ extern "C" std::uintptr_t __fastcall
 XarCombatPhaseEventFireHookV1(void *side) noexcept;
 extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
     void *node, void *context) noexcept;
+extern "C" std::int32_t __fastcall XarCombatPhaseKnightSelectHookV1(
+    void *selector, void *candidates, void *context) noexcept;
 extern "C" std::uintptr_t __fastcall XarCombatOutgoingDamageHookV1(
     void *side, std::int64_t *output, std::int32_t final_width,
     std::int64_t advantage_multiplier_raw, void *opposite_side) noexcept;

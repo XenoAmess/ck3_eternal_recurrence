@@ -101,6 +101,7 @@ std::atomic<CombatPhaseEventTraceRingV1 *> g_active_ring{nullptr};
 std::atomic<CombatPhaseEventScheduleOriginalV1> g_original_schedule{nullptr};
 std::atomic<CombatPhaseEventFireOriginalV1> g_original_fire{nullptr};
 std::atomic<CombatPhaseEffectDispatchOriginalV1> g_original_effect_dispatch{nullptr};
+std::atomic<CombatPhaseKnightSelectOriginalV1> g_original_knight_select{nullptr};
 std::atomic<CombatOutgoingDamageOriginalV1> g_original_outgoing_damage{nullptr};
 struct OriginalOutgoingCallContextV1 {
   std::uintptr_t side = 0;
@@ -108,6 +109,7 @@ struct OriginalOutgoingCallContextV1 {
 };
 thread_local OriginalOutgoingCallContextV1 g_original_outgoing_call{};
 thread_local std::int32_t g_original_phase_fire_side = -1;
+thread_local std::int32_t g_original_effect_root_event_row = -1;
 
 template <typename T>
 T LoadAt(std::uintptr_t base, std::size_t offset) noexcept {
@@ -1046,12 +1048,14 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.outgoing_damage_count.store(0, std::memory_order_relaxed);
   ring.post_counter_attack_count.store(0, std::memory_order_relaxed);
   ring.effect_root_count.store(0, std::memory_order_relaxed);
+  ring.knight_select_count.store(0, std::memory_order_relaxed);
   ring.failure_flags.store(trace_capture_failure_none,
                            std::memory_order_relaxed);
   ring.plan = plan;
   ring.outgoing_damage_raw = {};
   ring.post_counter_attack_raw = {};
   ring.effect_roots = {};
+  ring.knight_selects = {};
   std::memset(ring.records.data(), 0,
               sizeof(CombatPhaseEventTraceRingRecordV1) *
                   ring.records.size());
@@ -1276,6 +1280,11 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
       static_cast<std::uint32_t>(output.effect_roots.size()));
   std::copy_n(ring.effect_roots.begin(), output.effect_root_count,
               output.effect_roots.begin());
+  output.knight_select_count = std::min<std::uint32_t>(
+      ring.knight_select_count.load(std::memory_order_acquire),
+      static_cast<std::uint32_t>(output.knight_selects.size()));
+  std::copy_n(ring.knight_selects.begin(), output.knight_select_count,
+              output.knight_selects.begin());
   output.record_count = std::min<std::uint32_t>(
       ring.committed_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.records.size()));
@@ -1364,6 +1373,15 @@ bool BindCombatPhaseEffectDispatchOriginalV1(
   return true;
 }
 
+bool BindCombatPhaseKnightSelectOriginalV1(
+    CombatPhaseKnightSelectOriginalV1 select) noexcept {
+  if (select == nullptr) {
+    return false;
+  }
+  g_original_knight_select.store(select, std::memory_order_release);
+  return true;
+}
+
 extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
     void *node, void *context) noexcept {
   auto *const ring = g_active_ring.load(std::memory_order_acquire);
@@ -1376,10 +1394,10 @@ extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
   }
   CombatPhaseEffectRootRecordV1 *record = nullptr;
   std::uintptr_t state = 0;
+  std::int32_t event_index = -1;
   if (ring != nullptr && ring->armed.load(std::memory_order_acquire) != 0 &&
       g_original_phase_fire_side >= 0 && node != nullptr &&
       context != nullptr && ring->plan.loaded_event_row_objects_available) {
-    std::int32_t event_index = -1;
     for (std::size_t index = 0;
          index < ring->plan.loaded_event_row_objects.size(); ++index) {
       if (reinterpret_cast<std::uintptr_t>(node) ==
@@ -1418,7 +1436,12 @@ extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
       }
     }
   }
+  const auto previous_effect_root_event_row = g_original_effect_root_event_row;
+  if (record != nullptr) {
+    g_original_effect_root_event_row = event_index;
+  }
   const auto result = original(node, context);
+  g_original_effect_root_event_row = previous_effect_root_event_row;
   if (record != nullptr && state != 0) {
 #if defined(_MSC_VER)
     __try {
@@ -1432,6 +1455,81 @@ extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
 #endif
   }
   return result;
+}
+
+extern "C" std::int32_t __fastcall XarCombatPhaseKnightSelectHookV1(
+    void *selector, void *candidates, void *context) noexcept {
+  auto *const ring = g_active_ring.load(std::memory_order_acquire);
+  const auto original = g_original_knight_select.load(std::memory_order_acquire);
+  if (original == nullptr) {
+    if (ring != nullptr) {
+      MarkFailure(*ring, trace_capture_failure_original_trampoline);
+    }
+    return -1;
+  }
+  CombatPhaseKnightSelectRecordV1 *record = nullptr;
+  std::uintptr_t state = 0;
+  if (ring != nullptr && ring->armed.load(std::memory_order_acquire) != 0 &&
+      g_original_phase_fire_side >= 0 &&
+      g_original_effect_root_event_row >= 0 && candidates != nullptr &&
+      context != nullptr) {
+    const auto index = ring->knight_select_count.fetch_add(
+        1, std::memory_order_acq_rel);
+    if (index >= ring->knight_selects.size()) {
+      MarkFailure(*ring, trace_capture_failure_capacity);
+    } else {
+      record = &ring->knight_selects[index];
+      record->side_index = g_original_phase_fire_side;
+      record->native_event_load_index = g_original_effect_root_event_row;
+#if defined(_MSC_VER)
+      __try {
+#endif
+        record->candidate_count = LoadAt<std::int32_t>(candidates, 0xC);
+        state = LoadAt<std::uintptr_t>(context, 0x28);
+        if (state != 0) {
+          record->counter_before = LoadAt<std::uint32_t>(state, 0);
+          record->salt_before = LoadAt<std::uint32_t>(state, 4);
+        }
+#if defined(_MSC_VER)
+      } __except (EXCEPTION_EXECUTE_HANDLER) {
+        state = 0;
+      }
+#endif
+      if (state == 0 || record->candidate_count <= 0 ||
+          record->candidate_count > 65'536) {
+        MarkFailure(*ring, trace_capture_failure_knight_select);
+      }
+    }
+  }
+  const auto chosen = original(selector, candidates, context);
+  if (record != nullptr && state != 0) {
+    record->selected_index = chosen;
+#if defined(_MSC_VER)
+    __try {
+#endif
+      record->counter_after = LoadAt<std::uint32_t>(state, 0);
+      record->salt_after = LoadAt<std::uint32_t>(state, 4);
+      if (chosen >= 0 && chosen < record->candidate_count) {
+        const auto entries = LoadAt<std::uintptr_t>(candidates, 0);
+        if (entries != 0) {
+          const auto selected = entries + static_cast<std::size_t>(chosen) * 16;
+          record->selected_candidate_word0 =
+              LoadAt<std::uintptr_t>(selected, 0);
+          record->selected_candidate_word1 =
+              LoadAt<std::uintptr_t>(selected, 8);
+        } else {
+          MarkFailure(*ring, trace_capture_failure_knight_select);
+        }
+      } else {
+        MarkFailure(*ring, trace_capture_failure_knight_select);
+      }
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      MarkFailure(*ring, trace_capture_failure_knight_select);
+    }
+#endif
+  }
+  return chosen;
 }
 
 extern "C" std::uintptr_t __fastcall

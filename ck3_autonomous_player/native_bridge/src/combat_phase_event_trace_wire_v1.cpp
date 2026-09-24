@@ -407,7 +407,8 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
       drain.outgoing_damage_count > drain.outgoing_damage_raw.size() ||
       drain.post_counter_attack_count >
           drain.post_counter_attack_raw.size() ||
-      drain.effect_root_count > drain.effect_roots.size()) {
+      drain.effect_root_count > drain.effect_roots.size() ||
+      drain.knight_select_count > drain.knight_selects.size()) {
     return {};
   }
   std::string output;
@@ -460,6 +461,33 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
     if (!AppendOpaqueToken(output, row.node_identity)) return {};
     output += ",\"node_hash\":";
     if (!AppendNumber(output, row.node_hash)) return {};
+    output += ",\"counter_before\":";
+    if (!AppendNumber(output, row.counter_before)) return {};
+    output += ",\"salt_before\":";
+    if (!AppendNumber(output, row.salt_before)) return {};
+    output += ",\"counter_after\":";
+    if (!AppendNumber(output, row.counter_after)) return {};
+    output += ",\"salt_after\":";
+    if (!AppendNumber(output, row.salt_after)) return {};
+    output.push_back('}');
+  }
+  output += "]";
+  output += ",\"knight_selects\":[";
+  for (std::uint32_t index = 0; index < drain.knight_select_count; ++index) {
+    if (index != 0) output.push_back(',');
+    const auto &row = drain.knight_selects[index];
+    output += "{\"side_index\":";
+    if (!AppendNumber(output, row.side_index)) return {};
+    output += ",\"native_event_load_index\":";
+    if (!AppendNumber(output, row.native_event_load_index)) return {};
+    output += ",\"candidate_count\":";
+    if (!AppendNumber(output, row.candidate_count)) return {};
+    output += ",\"selected_index\":";
+    if (!AppendNumber(output, row.selected_index)) return {};
+    output += ",\"selected_candidate_word0_token\":";
+    if (!AppendOpaqueToken(output, row.selected_candidate_word0)) return {};
+    output += ",\"selected_candidate_word1_token\":";
+    if (!AppendOpaqueToken(output, row.selected_candidate_word1)) return {};
     output += ",\"counter_before\":";
     if (!AppendNumber(output, row.counter_before)) return {};
     output += ",\"salt_before\":";

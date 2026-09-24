@@ -30,7 +30,10 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
   drain->post_counter_attack_pair_complete = true;
   drain->effect_root_count = 1;
   drain->effect_roots[0] = {1, 11, 0x3BA, 1234, 2708350930U,
-                            0, 2708350931U, 0};
+                             0, 2708350931U, 0};
+  drain->knight_select_count = 1;
+  drain->knight_selects[0] = {1, 11, 14, 8, 0x111, 0x222,
+                              612212889U, 0, 612212890U, 0};
   drain->exact_boundary_sequence = true;
   drain->same_full_generation_combat = true;
   drain->same_native_date = false;
@@ -140,7 +143,7 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
 bool HappyPath() {
   const auto drain = SmallDrain();
   const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
-  constexpr std::array<std::string_view, 37> required{
+  constexpr std::array<std::string_view, 38> required{
       "\"schema_version\":1",
       "\"status\":\"captured\"",
       "\"record_count\":7",
@@ -155,6 +158,7 @@ bool HappyPath() {
       "\"side1_raw\":6222222",
       "\"post_counter_attack_pair_complete\":true",
       "\"effect_roots\":[",
+      "\"knight_selects\":[",
       "\"node_identity_token\":\"process-local-0x3BA\"",
       "\"node_hash\":1234",
       "\"counter_before\":2708350930",
