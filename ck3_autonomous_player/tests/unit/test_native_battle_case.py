@@ -12,7 +12,9 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 from xar_autoplayer.simulation.native_battle_case import (
     NativeBattleCaseError,
     _validate,
+    _validate_repeatability,
     load_episode01_native_battle_case,
+    load_episode01_native_battle_repeatability,
     original_daily_timeline,
 )
 
@@ -39,6 +41,22 @@ class NativeBattleCaseTests(unittest.TestCase):
             promoted[key] = True
             with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):
                 _validate(promoted)
+
+    def test_checkpoint_replays_diverge_without_authorizing_win_probability(self) -> None:
+        report = load_episode01_native_battle_repeatability()
+        self.assertEqual([row["winner_side_raw"] for row in report["trials"]], [0, 0, 0])
+        self.assertEqual([row["first_regiment_current_divergence_day"]
+                          for row in report["pairwise_divergence"]], [6, 6, 6])
+        self.assertEqual([row["mode"] for row in report["trials"]], [
+            "live_continuation_after_contact_save", "checkpoint_restore", "checkpoint_restore",
+        ])
+        self.assertFalse(report["calibrated_win_probability_available"])
+        for key in ("independent_random_draws_proven", "calibrated_win_probability_available",
+                    "planner_usable"):
+            promoted = copy.deepcopy(report)
+            promoted[key] = True
+            with self.subTest(key=key), self.assertRaises(NativeBattleCaseError):
+                _validate_repeatability(promoted)
 
 
 if __name__ == "__main__":

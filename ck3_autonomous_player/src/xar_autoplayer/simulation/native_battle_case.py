@@ -17,6 +17,8 @@ EPISODE01_CASE_FILE = "ck3_1_19_0_6_episode01_messina_original_case.json"
 EPISODE01_CASE_SHA256 = "62C70CED2E4E1E355A986C9220F05F59441EE26F14C0EE412D537383413DBF9F"
 EPISODE01_PARITY_FILE = "ck3_1_19_0_6_episode01_messina_main_tick_parity.json"
 EPISODE01_PARITY_SHA256 = "CE1B40AB72126C905D4B73411FBFB44141A1AA251D6A108575CDA32B019E7497"
+EPISODE01_REPEATABILITY_FILE = "ck3_1_19_0_6_episode01_messina_repeatability.json"
+EPISODE01_REPEATABILITY_SHA256 = "5E2D4B1AEE3BD6D64AC48111CD7ED1D8F48B8827D9FEBAB3F04505F3F2C1EF9C"
 
 
 class NativeBattleCaseError(ValueError):
@@ -102,13 +104,69 @@ def load_episode01_main_tick_parity() -> dict[str, Any]:
     return report
 
 
+def _validate_repeatability(report: dict[str, Any]) -> None:
+    if report.get("schema") != "ck3-native-battle-repeatability-evidence-v1":
+        raise NativeBattleCaseError("battle repeatability schema mismatch")
+    if (report.get("game_version") != "1.19.0.6"
+            or report.get("combat_id") != 16777218
+            or report.get("player_cunit_id") != 18
+            or report.get("player_combat_side_raw") != 1):
+        raise NativeBattleCaseError("battle repeatability identity mismatch")
+    if any(report.get(key) is not False for key in (
+        "independent_random_draws_proven", "calibrated_win_probability_available",
+        "planner_usable",
+    )):
+        raise NativeBattleCaseError("three replays cannot authorize a win percentage")
+    trials = report.get("trials")
+    if not isinstance(trials, list) or [row.get("trial") for row in trials] != [1, 2, 3]:
+        raise NativeBattleCaseError("repeatability trials are missing")
+    for number, trial in enumerate(trials, 1):
+        if trial.get("mode") != (
+            "live_continuation_after_contact_save" if number == 1 else "checkpoint_restore"
+        ):
+            raise NativeBattleCaseError("repeatability trial mode mismatch")
+        if (trial.get("first_date_raw") != 53146248
+                or trial.get("terminal_date_raw") != 53146992
+                or trial.get("winner_side_raw") != 0
+                or trial.get("player_won") is not False):
+            raise NativeBattleCaseError("repeatability terminal outcome mismatch")
+        days = trial.get("daily")
+        if not isinstance(days, list) or [row.get("day") for row in days] != list(range(1, 32)):
+            raise NativeBattleCaseError("repeatability daily sequence has a gap")
+        if [row.get("date_raw") for row in days] != [53146248 + 24 * index for index in range(31)]:
+            raise NativeBattleCaseError("repeatability daily dates have a gap")
+    pairs = report.get("pairwise_divergence")
+    if not isinstance(pairs, list) or [
+        (row.get("left_trial"), row.get("right_trial"),
+         row.get("first_regiment_current_divergence_day"))
+        for row in pairs
+    ] != [(1, 2, 6), (1, 3, 6), (2, 3, 6)]:
+        raise NativeBattleCaseError("repeatability trajectory divergence mismatch")
+
+
+def load_episode01_native_battle_repeatability() -> dict[str, Any]:
+    """Return three observed trajectories, never a calibrated probability."""
+    path = Path(__file__).with_name("data") / EPISODE01_REPEATABILITY_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_REPEATABILITY_SHA256:
+        raise NativeBattleCaseError("bundled repeatability bytes changed without review")
+    report = json.loads(data)
+    if not isinstance(report, dict):
+        raise NativeBattleCaseError("repeatability report must be a JSON object")
+    _validate_repeatability(report)
+    return report
+
+
 __all__ = [
     "EPISODE01_CASE_FILE",
     "EPISODE01_CASE_SHA256",
     "EPISODE01_PARITY_FILE",
     "EPISODE01_PARITY_SHA256",
+    "EPISODE01_REPEATABILITY_FILE",
+    "EPISODE01_REPEATABILITY_SHA256",
     "NativeBattleCaseError",
     "load_episode01_native_battle_case",
     "load_episode01_main_tick_parity",
+    "load_episode01_native_battle_repeatability",
     "original_daily_timeline",
 ]

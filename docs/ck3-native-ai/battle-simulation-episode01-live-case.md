@@ -50,6 +50,14 @@
 
 这份对拍报告被智能体包持有，并可由视频从同一证据板引用。它支持“给定原版当天出伤和稳定参战名单时，现有伤亡内核多日逐兵团对拍”的窄结论；**不支持**完整出伤生成、事件反馈、增援预测、追击终局或整场胜率。模型决策门禁仍必须逐项等待这些缺口关闭。
 
+### 同接战存档的三次原生回放
+
+2026-09-24 在独立 profile 中进行了有界重复性实验，原始请求、响应、脚本、失败回执、两次原生 restore 生命周期与 session 清理证明保存在 `D:\workspace\ck3_native_war_ai_promo_work\episode01-native-repeatability-attempt-007`。最初脚本在第 32 天错误查询已经移除的活动战斗，收到 RED；修正脚本改查被动终局 journal，保留这条失败记录，没有覆盖此前素材。输入仍是接战日 `raw53146248`、同一 `CombatID=16777218`；本次原生固定 checkpoint 的 SHA-256 为 `ABC37ED58E0ED008C1D627F38E6BA138F728438DDC16F50041576E5368399EDD`。第 1 次是保存检查点后的同会话继续，第 2、3 次才分别从这份**相同 bytes** 的检查点重启原版进程。
+
+三次均连续回读 31 个战斗日，第 28 天进入追击，第 32 天正常结算；原生终局 `winner_raw=0`，玩家位于 side1，三次都是玩家败退并造成战争进攻方 -50 战分。三条**逐兵团当前兵力合计**轨迹两两在第 6 天首次分叉；第 6 天敌方合计分别为 `183703672`、`185282077`、`183966739` Q100000。原生 side-level 暂存兵力与逐兵团合计在这些帧并不总一致，因此对照板不用暂存值冒充战斗人数。绑定原始回执 SHA、逐兵团合计和每次终局的[共用回放数据](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_repeatability.json) SHA-256 为 `5E2D4B1AEE3BD6D64AC48111CD7ED1D8F48B8827D9FEBAB3F04505F3F2C1EF9C`；[只读投影工具](../../ck3_autonomous_player/tools/project_native_battle_repeatability.py)会核对源响应与检查点 bytes。视频的[片用对照板](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/repeatability-board.json)与智能体都经 `native_battle_case.py` 读取同一份数据。
+
+这些结果证明“同一接战检查点可产生不同的原版逐日数值轨迹”，也证明三条被观察到的轨迹都输了；**不证明回放之间是独立随机抽样，更不等于这场战斗的胜率为 0%**。样本只有一个初始局面、两个真正的重启回放，没有覆盖不同战斗条件；event effect、增援策略与模拟器预测残差也未闭合。数据合同明确 `independent_random_draws_proven=false`、`calibrated_win_probability_available=false`、`planner_usable=false`，不得把 3/3 败退作为自动进攻的概率输入或作为正片百分比。
+
 ## 仍未满足的正片与智能体门槛
 
 本案例足以展示“开局 1288 对 330，增援改变了整场战斗并最终败退”的原版观察，也新增了原版事件账本和可用实机追击画面；它**不足以给出原版条件胜率**。下一步须在同一条随机时间线闭合 event effect 写集、增援/脱离/撤退与终局，逐日对拍模拟器，并用不同条件、独立种子的原版战例做概率校准。当前 [`combat-entry-eu-v1`](../../ck3_autonomous_player/src/xar_autoplayer/simulation/combat_decision_contract.py) 计算器和[游玩策略入口](../../ck3_autonomous_player/src/xar_autoplayer/strategy.py)已能接收同一试验向量；没有合格 forecast producer 时保持自动进攻关闭，不能将研究包络的胜率用于实机进攻。第 1 集[导演案](../../promo/ck3_native_war_ai/episode-01-battle-win-probability/director-plan.md)的出片门禁不变。

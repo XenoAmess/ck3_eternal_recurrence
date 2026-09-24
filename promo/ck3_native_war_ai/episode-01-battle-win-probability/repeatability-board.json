@@ -1,0 +1,78 @@
+{
+  "schema": "ck3-episode01-repeatability-board-v1",
+  "source_report_sha256": "5E2D4B1AEE3BD6D64AC48111CD7ED1D8F48B8827D9FEBAB3F04505F3F2C1EF9C",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "day_six_comparison": [
+    {
+      "trial": 1,
+      "mode": "live_continuation_after_contact_save",
+      "day": 6,
+      "date_raw": 53146368,
+      "enemy_current_raw_from_regiments": 183703672,
+      "player_current_raw_from_regiments": 115629874,
+      "control_response_sha256": "4E7935E9F5F30D3814727DE2C56C5CDFD1F8B6F0802CD084F13E1147AA646178",
+      "may_splice_into_other_trajectory": false
+    },
+    {
+      "trial": 2,
+      "mode": "checkpoint_restore",
+      "day": 6,
+      "date_raw": 53146368,
+      "enemy_current_raw_from_regiments": 185282077,
+      "player_current_raw_from_regiments": 115629874,
+      "control_response_sha256": "AB939204F03920B1B414469FD1FE9A5562B90CEC4FC03BE79B30BD69FEF5F191",
+      "may_splice_into_other_trajectory": false
+    },
+    {
+      "trial": 3,
+      "mode": "checkpoint_restore",
+      "day": 6,
+      "date_raw": 53146368,
+      "enemy_current_raw_from_regiments": 183966739,
+      "player_current_raw_from_regiments": 115629874,
+      "control_response_sha256": "ADAB9D4538994EBB4EB3E291F79A91906710DBC18808BF7F7F10BD995C57D337",
+      "may_splice_into_other_trajectory": false
+    }
+  ],
+  "pairwise_first_divergence": [
+    {
+      "left_trial": 1,
+      "right_trial": 2,
+      "first_regiment_current_divergence_day": 6
+    },
+    {
+      "left_trial": 1,
+      "right_trial": 3,
+      "first_regiment_current_divergence_day": 6
+    },
+    {
+      "left_trial": 2,
+      "right_trial": 3,
+      "first_regiment_current_divergence_day": 6
+    }
+  ],
+  "terminal_outcomes": [
+    {
+      "trial": 1,
+      "terminal_date_raw": 53146992,
+      "winner_relative_to_player": "enemy",
+      "terminal_response_sha256": "685FA0883AD346A5E2FB771FF28D49390946D9528140DD12380DC8BB123394DE"
+    },
+    {
+      "trial": 2,
+      "terminal_date_raw": 53146992,
+      "winner_relative_to_player": "enemy",
+      "terminal_response_sha256": "481B30B26D328FE3B8ED32F45EED0A3A0D9A3FD631FECC37CB2CEB9CB3578EA4"
+    },
+    {
+      "trial": 3,
+      "terminal_date_raw": 53146992,
+      "winner_relative_to_player": "enemy",
+      "terminal_response_sha256": "799E33AF7D354B0346CA0889E60265918408A2F7B6BA84F9609010A3BFCF919E"
+    }
+  ],
+  "independent_random_draws_proven": false,
+  "calibrated_win_probability_available": false,
+  "planner_usable": false
+}

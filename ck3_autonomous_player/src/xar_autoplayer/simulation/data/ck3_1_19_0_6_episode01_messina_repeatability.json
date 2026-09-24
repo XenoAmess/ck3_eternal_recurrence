@@ -1,0 +1,1864 @@
+{
+  "schema": "ck3-native-battle-repeatability-evidence-v1",
+  "case_id": "episode01-sicily-messina-combat-16777218",
+  "game_version": "1.19.0.6",
+  "combat_id": 16777218,
+  "player_cunit_id": 18,
+  "player_combat_side_raw": 1,
+  "source_run_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-native-repeatability-attempt-007",
+  "source_summary_sha256": "0DCA1F14598DEEED190CE64D596CF102FCF99B8997C167536ABFF1F67C32F418",
+  "source_journal_sha256": [
+    "9D1DEFAE5FC3A27D8B322F918F707AE457836AB3BA85ECDC0968DDF06AC22FA7",
+    "2305A18545F6D50E2F3497827F1BA2F847379E2B2F3AC5BAD33238A74AB3E402"
+  ],
+  "contact_checkpoint_sha256": "ABC37ED58E0ED008C1D627F38E6BA138F728438DDC16F50041576E5368399EDD",
+  "trials": [
+    {
+      "trial": 1,
+      "mode": "live_continuation_after_contact_save",
+      "first_date_raw": 53146248,
+      "terminal_date_raw": 53146992,
+      "winner_side_raw": 0,
+      "player_won": false,
+      "battle_warscore": {
+        "status": "recorded",
+        "war_id": 4,
+        "war_battle_row_index": 0,
+        "value_raw_q100000": 5000000,
+        "winner_is_war_attacker": false,
+        "combat_side0_is_war_attacker": false,
+        "attacker_relative_delta_raw_q100000": -5000000
+      },
+      "terminal_response_sha256": "685FA0883AD346A5E2FB771FF28D49390946D9528140DD12380DC8BB123394DE",
+      "daily": [
+        {
+          "day": 1,
+          "date_raw": 53146248,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            33000000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            33000000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "7223B0544C9FD6D358B392EAF7A101FEFEBF913E9686281E002557751211F8A9"
+        },
+        {
+          "day": 2,
+          "date_raw": 53146272,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "139CEEC677E3468CED87BE5E0BBAFCA2D18248875EBD5C3FB5105877F3378819"
+        },
+        {
+          "day": 3,
+          "date_raw": 53146296,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "1C216877AA94CC134319CD8FDF8777081F8EE0690A3D92A31B46D5839C96E103"
+        },
+        {
+          "day": 4,
+          "date_raw": 53146320,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "B23973FE0544F75E6DBFEBDE6304FFB37175449C497F91BC8BCC95E86740311B"
+        },
+        {
+          "day": 5,
+          "date_raw": 53146344,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            192121816,
+            122225074
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "D12915E5B9619DA73CB2FCFACE82425442F279C5E7337D568A2C0EF47D7EFC3F"
+        },
+        {
+          "day": 6,
+          "date_raw": 53146368,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            183703672,
+            115629874
+          ],
+          "side_stored_current_raw": [
+            192121816,
+            122225074
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "4E7935E9F5F30D3814727DE2C56C5CDFD1F8B6F0802CD084F13E1147AA646178"
+        },
+        {
+          "day": 7,
+          "date_raw": 53146392,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            175591120,
+            109038542
+          ],
+          "side_stored_current_raw": [
+            183703672,
+            115629874
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "C55FD8B465DDA5C2A44E2D2AE6F75ED83CBBFBF200F0D9B10F2799D1E1047589"
+        },
+        {
+          "day": 8,
+          "date_raw": 53146416,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            167785986,
+            102421376
+          ],
+          "side_stored_current_raw": [
+            175591120,
+            109038542
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "4A880C470BB7080A445AC2C238200BA9EB43CE31786A85D98E93EBC66A0695F1"
+        },
+        {
+          "day": 9,
+          "date_raw": 53146440,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            161226589,
+            95794793
+          ],
+          "side_stored_current_raw": [
+            167785986,
+            102421376
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "C6FC31A4F94A53F67EBBFF9F000CCBBCD69B04FD1C3B568846520D603E8D8A9F"
+        },
+        {
+          "day": 10,
+          "date_raw": 53146464,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            154937612,
+            89179952
+          ],
+          "side_stored_current_raw": [
+            161226589,
+            95794793
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "0EAEE3FAFC4D5CE51B3C89DE59D0DCEFDE2CF94BFD479539A1699704F45A87E7"
+        },
+        {
+          "day": 11,
+          "date_raw": 53146488,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            148919450,
+            82585040
+          ],
+          "side_stored_current_raw": [
+            154937612,
+            89179952
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "C6B78D5592685D411E57DF723EDEB8073E370045B1564DEABCB68A48BE40F89E"
+        },
+        {
+          "day": 12,
+          "date_raw": 53146512,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            398430362,
+            73909831
+          ],
+          "side_stored_current_raw": [
+            404919450,
+            82585040
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "98E4CD9BCF840EDA5839E89FBAFAA8E71C7B35CDC5A80F19CBE350563B881087"
+        },
+        {
+          "day": 13,
+          "date_raw": 53146536,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            392339854,
+            65418279
+          ],
+          "side_stored_current_raw": [
+            398430362,
+            73909831
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "7DE681365456EE771E82671E37203776F663EAF1F06EF8D6857D9E567AF80BF8"
+        },
+        {
+          "day": 14,
+          "date_raw": 53146560,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            386638699,
+            57120512
+          ],
+          "side_stored_current_raw": [
+            392339854,
+            65418279
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "A27A7EC60F38CDD2C88671BC009F652A7163724430465BCD9CC859158F3A87BA"
+        },
+        {
+          "day": 15,
+          "date_raw": 53146584,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            381633681,
+            49100721
+          ],
+          "side_stored_current_raw": [
+            386638699,
+            57120512
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "7A473AF9217E4E3D95F2B34F82E9016AB37D1B163471ABF96C0C82444DC97683"
+        },
+        {
+          "day": 16,
+          "date_raw": 53146608,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            376975949,
+            41439815
+          ],
+          "side_stored_current_raw": [
+            381633681,
+            49100721
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "33B88B02865F0926B990CE5FE1C4853B55498CCFEEFAC3F742B4D19590809232"
+        },
+        {
+          "day": 17,
+          "date_raw": 53146632,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            372650312,
+            34221043
+          ],
+          "side_stored_current_raw": [
+            376975949,
+            41439815
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "7E075AC8F0BD0D2DC3AE6B99A40FC5A5A8E78808D66B5050D25DFF3DB3BA1945"
+        },
+        {
+          "day": 18,
+          "date_raw": 53146656,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            369395900,
+            27558343
+          ],
+          "side_stored_current_raw": [
+            372650312,
+            34221043
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "CE7FD6A78A09385521DD09EC44458D9635B3D5E0217AEED08943112942C1FF4B"
+        },
+        {
+          "day": 19,
+          "date_raw": 53146680,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            366462935,
+            21555365
+          ],
+          "side_stored_current_raw": [
+            369395900,
+            27558343
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "E831C3E4F59741319DBA6E2A3BAC844E4D74F77DFBB08F8CEDCC9DC1492B4F0E"
+        },
+        {
+          "day": 20,
+          "date_raw": 53146704,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            363753791,
+            16376733
+          ],
+          "side_stored_current_raw": [
+            366462935,
+            21555365
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "AAB362F703A691C23FBF15CAE52A9EB8E15E8BCC3E4E2E8A8FDA0F4CD6E43EA7"
+        },
+        {
+          "day": 21,
+          "date_raw": 53146728,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            361441500,
+            12117987
+          ],
+          "side_stored_current_raw": [
+            363753791,
+            16376733
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "2C51CF12DD1B20644BDF21FB8A10A4DDD8A87ECC9DEAFD960D3D29280ACE6121"
+        },
+        {
+          "day": 22,
+          "date_raw": 53146752,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            465064347,
+            8884226
+          ],
+          "side_stored_current_raw": [
+            467241500,
+            12117987
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "28BDECE7AE5C0C929EBD29B6EAC598293257D244F6C1A88D6712DA3A63D354C2"
+        },
+        {
+          "day": 23,
+          "date_raw": 53146776,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            463046769,
+            6110016
+          ],
+          "side_stored_current_raw": [
+            465064347,
+            8884226
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "FEF9E2A9953594A7F0F4A480A4FD16EABDC9C27F8ED245808FE128668D44E973"
+        },
+        {
+          "day": 24,
+          "date_raw": 53146800,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            461046811,
+            3422990
+          ],
+          "side_stored_current_raw": [
+            463046769,
+            6110016
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "E004E32AD9AC70DB13B00EEADB7E4DCF80DFCB579600DD7E1E7888F2914CD1E5"
+        },
+        {
+          "day": 25,
+          "date_raw": 53146824,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            459281292,
+            887866
+          ],
+          "side_stored_current_raw": [
+            461046811,
+            3422990
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "0A4319397ABDFFFD9FDFE2BB9E04AD3C0220639D53FCB731A4A37A5C75C7B02C"
+        },
+        {
+          "day": 26,
+          "date_raw": 53146848,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            457861521,
+            129744
+          ],
+          "side_stored_current_raw": [
+            459281292,
+            887866
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "81BBDE6211BB63E19514C85CA97D7F59F1F6CF0A0325C707871AFE195A90A044"
+        },
+        {
+          "day": 27,
+          "date_raw": 53146872,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            457169926,
+            0
+          ],
+          "side_stored_current_raw": [
+            457861521,
+            129744
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "590BA83DD320FD03C0CBCA00EA0E53D6F515FACE69BCF0C76FC2F4102C301D82"
+        },
+        {
+          "day": 28,
+          "date_raw": 53146896,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            457169926,
+            0
+          ],
+          "side_stored_current_raw": [
+            457169926,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "88AC9EDEE0DBA5B212CEBA833A737C0C91DD72C731C76937C6ADD36DCFA92CBF"
+        },
+        {
+          "day": 29,
+          "date_raw": 53146920,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            457169926,
+            0
+          ],
+          "side_stored_current_raw": [
+            457169926,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "E599207D40C8695B64F567A6F3A575E8C49F62832891D425B7ADE9CF4EF15CD5"
+        },
+        {
+          "day": 30,
+          "date_raw": 53146944,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            457169926,
+            0
+          ],
+          "side_stored_current_raw": [
+            457169926,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "9870013CF169497A1144CF7CDC35A3555980546B9860DD66DF570A99D295C725"
+        },
+        {
+          "day": 31,
+          "date_raw": 53146968,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            457169926,
+            0
+          ],
+          "side_stored_current_raw": [
+            457169926,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "614158CF713BA31675D514A81CC0E07EB35BBB41179A2A9307C1750EB0887540"
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "mode": "checkpoint_restore",
+      "first_date_raw": 53146248,
+      "terminal_date_raw": 53146992,
+      "winner_side_raw": 0,
+      "player_won": false,
+      "battle_warscore": {
+        "status": "recorded",
+        "war_id": 4,
+        "war_battle_row_index": 0,
+        "value_raw_q100000": 5000000,
+        "winner_is_war_attacker": false,
+        "combat_side0_is_war_attacker": false,
+        "attacker_relative_delta_raw_q100000": -5000000
+      },
+      "terminal_response_sha256": "481B30B26D328FE3B8ED32F45EED0A3A0D9A3FD631FECC37CB2CEB9CB3578EA4",
+      "daily": [
+        {
+          "day": 1,
+          "date_raw": 53146248,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            33000000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            33000000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "3C45D7B2E1AAE40C103F11DBFD0668619C2D64F17C9C8629024F53740C093303"
+        },
+        {
+          "day": 2,
+          "date_raw": 53146272,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "DF693608B70B5C547E7C5BD369B75E15F419AE35873D61117128410744243742"
+        },
+        {
+          "day": 3,
+          "date_raw": 53146296,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "D9054B8BB108195216827383807CB5EC633FD5C198171A7A5E6737A17D4FEBAF"
+        },
+        {
+          "day": 4,
+          "date_raw": 53146320,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "EA08EC6710E4CB3D47E5BEA72ABFD86D6B875A537C7812494210A0DCBD0ABAE0"
+        },
+        {
+          "day": 5,
+          "date_raw": 53146344,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            192121816,
+            122225074
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "0761361C947983A19BA79ACEBF8286DA8CE9C852C7154DD200A8036BE5E42FC2"
+        },
+        {
+          "day": 6,
+          "date_raw": 53146368,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            185282077,
+            115629874
+          ],
+          "side_stored_current_raw": [
+            192121816,
+            122225074
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "AB939204F03920B1B414469FD1FE9A5562B90CEC4FC03BE79B30BD69FEF5F191"
+        },
+        {
+          "day": 7,
+          "date_raw": 53146392,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            178718247,
+            109012337
+          ],
+          "side_stored_current_raw": [
+            185282077,
+            115629874
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "832BCFAF2520E0188776C68EC6D1D5AB3357463444F845F4F99A360E614E7CC5"
+        },
+        {
+          "day": 8,
+          "date_raw": 53146416,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            172404042,
+            102396642
+          ],
+          "side_stored_current_raw": [
+            178718247,
+            109012337
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "FAA0B571E7EE621233B7D9F32F6A53A428E717B1697144CA7030CFA6CD643E9E"
+        },
+        {
+          "day": 9,
+          "date_raw": 53146440,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            164005630,
+            95833441
+          ],
+          "side_stored_current_raw": [
+            172404042,
+            102396642
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "BF92EDE49E6A2B956B84068F6A5899970A2440F2B466F71BFCC4D2C2FEF5466A"
+        },
+        {
+          "day": 10,
+          "date_raw": 53146464,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            155952974,
+            89261417
+          ],
+          "side_stored_current_raw": [
+            164005630,
+            95833441
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "6818F758951CD937379830E76FE37465ECF33485D0197E255B7450B72553023C"
+        },
+        {
+          "day": 11,
+          "date_raw": 53146488,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            148248540,
+            82689390
+          ],
+          "side_stored_current_raw": [
+            155952974,
+            89261417
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "2114021C9CF35713014F5CFCE4870900466BE2F9C161A03C3FC0987C92120D3A"
+        },
+        {
+          "day": 12,
+          "date_raw": 53146512,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            397792585,
+            74001219
+          ],
+          "side_stored_current_raw": [
+            404248540,
+            82689390
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "AEE96A8166C137E0333D1565BD90DEC198C9C12E9130837DAABB26C43432C887"
+        },
+        {
+          "day": 13,
+          "date_raw": 53146536,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            391698394,
+            65526585
+          ],
+          "side_stored_current_raw": [
+            397792585,
+            74001219
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "856F642E6EF45870AC6483073B8E4AFF4F4BC2E6189685C23D830B2CE0632DD9"
+        },
+        {
+          "day": 14,
+          "date_raw": 53146560,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            385993154,
+            57277511
+          ],
+          "side_stored_current_raw": [
+            391698394,
+            65526585
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "E2B941CD5C920D3359405E1BCF50D61513A2FE66D1DB4AC440F3B0B2D83EA513"
+        },
+        {
+          "day": 15,
+          "date_raw": 53146584,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            381604097,
+            49307901
+          ],
+          "side_stored_current_raw": [
+            385993154,
+            57277511
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "DB1645480E2D481416D884C3513D6985548ABC5F49FF3E2CC836041CDE18DB48"
+        },
+        {
+          "day": 16,
+          "date_raw": 53146608,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            377516192,
+            41694099
+          ],
+          "side_stored_current_raw": [
+            381604097,
+            49307901
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "A6803AD5241B59CEE001CB6D80BC79D6182E6B773E582D0832CA1DEF8AC9D8DC"
+        },
+        {
+          "day": 17,
+          "date_raw": 53146632,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            373719740,
+            34516024
+          ],
+          "side_stored_current_raw": [
+            377516192,
+            41694099
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "625CE16B7CAE0A2217F9804CE08C59BDD28DD81EA00F275BF36AE9289893213C"
+        },
+        {
+          "day": 18,
+          "date_raw": 53146656,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            369316074,
+            27879387
+          ],
+          "side_stored_current_raw": [
+            373719740,
+            34516024
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "C35E219FD92EA74312A539AE1FA5FA1A90C6754C3B9B47321EE775117DECC8B0"
+        },
+        {
+          "day": 19,
+          "date_raw": 53146680,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            365236218,
+            21910990
+          ],
+          "side_stored_current_raw": [
+            369316074,
+            27879387
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "380DCA09095CE0FE05D69922FE2CA3ED2D94F12203FBFA3D9133087FDE21DF10"
+        },
+        {
+          "day": 20,
+          "date_raw": 53146704,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            361453950,
+            16731528
+          ],
+          "side_stored_current_raw": [
+            365236218,
+            21910990
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "496F4978A901841EA9AE5D3C7463F86580E8038834C727ADC1568902DCFDA060"
+        },
+        {
+          "day": 21,
+          "date_raw": 53146728,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            357543030,
+            12441976
+          ],
+          "side_stored_current_raw": [
+            361453950,
+            16731528
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "858F26BD79D385B1BA05771A92D5CB59B07353780D5632CDCF93C5EE5BF3565A"
+        },
+        {
+          "day": 22,
+          "date_raw": 53146752,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            459645012,
+            9171583
+          ],
+          "side_stored_current_raw": [
+            463343030,
+            12441976
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "F2FE8CFB46120AD17716EC1ED6CE165D5EBC8D45CA95B9EDF18B0A916B825581"
+        },
+        {
+          "day": 23,
+          "date_raw": 53146776,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            456199120,
+            6308254
+          ],
+          "side_stored_current_raw": [
+            459645012,
+            9103381
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "A9CCDF816052F24B2AF8D1A07CEF9E9E645715009ADAEF2B6AFB27178499ADFC"
+        },
+        {
+          "day": 24,
+          "date_raw": 53146800,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            453526069,
+            3583513
+          ],
+          "side_stored_current_raw": [
+            456199120,
+            6308254
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "FCB3005654A3D011A8836181D8A1A2FDBFF2598E540EA7AD3101A9AB8D2E90DD"
+        },
+        {
+          "day": 25,
+          "date_raw": 53146824,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            451139525,
+            987036
+          ],
+          "side_stored_current_raw": [
+            453526069,
+            3583513
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "9746AEDD7EA0E577340E2D621FA0697944DF3F5A27C33931E87C0A842B9F2E90"
+        },
+        {
+          "day": 26,
+          "date_raw": 53146848,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            449178368,
+            160634
+          ],
+          "side_stored_current_raw": [
+            451139525,
+            987036
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "D6EA519CF257C22ADFBE8A90B9EC922EB240555850B9F8F315EC7AA7C984EA73"
+        },
+        {
+          "day": 27,
+          "date_raw": 53146872,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            448385517,
+            0
+          ],
+          "side_stored_current_raw": [
+            449178368,
+            160634
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "3ABAFC29CDDB239CD1334C238A8654637CF9ED1FF4C401416B833B8C8213C2D7"
+        },
+        {
+          "day": 28,
+          "date_raw": 53146896,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            448385517,
+            0
+          ],
+          "side_stored_current_raw": [
+            448385517,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "FD32E04324480F95C43C86744085D1255A82A4EF33E5B50690F7D5EBAC6C3532"
+        },
+        {
+          "day": 29,
+          "date_raw": 53146920,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            448385517,
+            0
+          ],
+          "side_stored_current_raw": [
+            448385517,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "97E7F5D8D9EA3C8D80DE3577A5989DC23F8506CDC9C2791D198AAE0B82126816"
+        },
+        {
+          "day": 30,
+          "date_raw": 53146944,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            448385517,
+            0
+          ],
+          "side_stored_current_raw": [
+            448385517,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "54F0856354A110B18265C90E6E65D585544B6AD602FCB677ECAD738C52FD786F"
+        },
+        {
+          "day": 31,
+          "date_raw": 53146968,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            448385517,
+            0
+          ],
+          "side_stored_current_raw": [
+            448385517,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "0F147EFE79316B180F2428DBD49C2C5CB5E125A93E1446AFD1249EE5D2A39872"
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "mode": "checkpoint_restore",
+      "first_date_raw": 53146248,
+      "terminal_date_raw": 53146992,
+      "winner_side_raw": 0,
+      "player_won": false,
+      "battle_warscore": {
+        "status": "recorded",
+        "war_id": 4,
+        "war_battle_row_index": 0,
+        "value_raw_q100000": 5000000,
+        "winner_is_war_attacker": false,
+        "combat_side0_is_war_attacker": false,
+        "attacker_relative_delta_raw_q100000": -5000000
+      },
+      "terminal_response_sha256": "799E33AF7D354B0346CA0889E60265918408A2F7B6BA84F9609010A3BFCF919E",
+      "daily": [
+        {
+          "day": 1,
+          "date_raw": 53146248,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            33000000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            33000000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "D9C3008C44FD077EA33A7EC9BA96E42029237465A87FD438E8D4C96924BF37B1"
+        },
+        {
+          "day": 2,
+          "date_raw": 53146272,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "C4953ABAA58C413542D9CE56A70E136858E842B68C2529451B05F51C49E44EBC"
+        },
+        {
+          "day": 3,
+          "date_raw": 53146296,
+          "phase": "maneuver",
+          "phase_raw": 0,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "04F1B222E4B574C57E92E0393AD4B1F5C965951FF198008F6B092D801F37ACA1"
+        },
+        {
+          "day": 4,
+          "date_raw": 53146320,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            200300000,
+            128800000
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "5D5974DC17E962A92F08E748DEF6339D5C36AE744C0870899B41F270E3F115DE"
+        },
+        {
+          "day": 5,
+          "date_raw": 53146344,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            192121816,
+            122225074
+          ],
+          "side_stored_current_raw": [
+            200300000,
+            128800000
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "5F134C442F4BDE37272D4D919F4EFF6A75E9EC661D9D43ED69A5D9173E6947DD"
+        },
+        {
+          "day": 6,
+          "date_raw": 53146368,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            183966739,
+            115629874
+          ],
+          "side_stored_current_raw": [
+            192121816,
+            122225074
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "ADAB9D4538994EBB4EB3E291F79A91906710DBC18808BF7F7F10BD995C57D337"
+        },
+        {
+          "day": 7,
+          "date_raw": 53146392,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            176108225,
+            109040386
+          ],
+          "side_stored_current_raw": [
+            183966739,
+            115629874
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "170497A980D83C9F6A75102BC09C70453B0C945837770D339EBCAC5FFEE06DFE"
+        },
+        {
+          "day": 8,
+          "date_raw": 53146416,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            168547714,
+            102438731
+          ],
+          "side_stored_current_raw": [
+            176108225,
+            109040386
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "20106F09571C53176480E8DABC32B0568E2AFB9B4FA743312314AD05B3C73D21"
+        },
+        {
+          "day": 9,
+          "date_raw": 53146440,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            163133598,
+            95854437
+          ],
+          "side_stored_current_raw": [
+            168547714,
+            102438731
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "9D2E1A81E4FF163C84CA8D8AFD61808C3032893E044C17A8632731A3DA3A2035"
+        },
+        {
+          "day": 10,
+          "date_raw": 53146464,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            157939038,
+            89295111
+          ],
+          "side_stored_current_raw": [
+            163133598,
+            95854437
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "498F413207503DD2CA28362344F7D03809E97656AA7FD67669C598828248C301"
+        },
+        {
+          "day": 11,
+          "date_raw": 53146488,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            152939051,
+            82808457
+          ],
+          "side_stored_current_raw": [
+            157939038,
+            89295111
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "D1B3FB33C11A77A1BC4EAAE1B461B5E692BE54867F1555E39C6E8D10304CD81F"
+        },
+        {
+          "day": 12,
+          "date_raw": 53146512,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            403846767,
+            74103157
+          ],
+          "side_stored_current_raw": [
+            408939051,
+            82808457
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "50495143F5A48BD99A6A064640702B9D7899A405E606121F40F3C1E4A039E6EC"
+        },
+        {
+          "day": 13,
+          "date_raw": 53146536,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            399060300,
+            65567803
+          ],
+          "side_stored_current_raw": [
+            403846767,
+            74103157
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "1FE8E00A07DFE375DFBC09DDB5FC709F75B7309B215BB2C9AA052FC93BCFB8DB"
+        },
+        {
+          "day": 14,
+          "date_raw": 53146560,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            394570010,
+            57274129
+          ],
+          "side_stored_current_raw": [
+            399060300,
+            65567803
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "336A708BA885D0E15894DD052DB62840D957CD10EF7F79941015EEF125B81574"
+        },
+        {
+          "day": 15,
+          "date_raw": 53146584,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            391017993,
+            49271072
+          ],
+          "side_stored_current_raw": [
+            394570010,
+            57274129
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "122BCD958097B6B84D66B54C569FE8F16042E0116D2710E43CC79CFA5827EC9A"
+        },
+        {
+          "day": 16,
+          "date_raw": 53146608,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            387702920,
+            41626659
+          ],
+          "side_stored_current_raw": [
+            391017993,
+            49271072
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "5193736F575ECFD539821E147017261C5855C9A20B873218FD50DC013FEB1BA5"
+        },
+        {
+          "day": 17,
+          "date_raw": 53146632,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            384615418,
+            34430799
+          ],
+          "side_stored_current_raw": [
+            387702920,
+            41626659
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "6AD15BA5D35847FCE570F24AD5886BA1227491823415EBBF3802DA005B908BE0"
+        },
+        {
+          "day": 18,
+          "date_raw": 53146656,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            380700359,
+            27785615
+          ],
+          "side_stored_current_raw": [
+            384615418,
+            34430799
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "8DDFBBAE9F3502365628FE6013E7ABD76BF1C6F9B783A827C1A499634B2B6249"
+        },
+        {
+          "day": 19,
+          "date_raw": 53146680,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            377064749,
+            21808134
+          ],
+          "side_stored_current_raw": [
+            380700359,
+            27785615
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "B8BC237CB1C343F9137B9FA9C668A438159EEAA4F1D0279856084FEA45461A62"
+        },
+        {
+          "day": 20,
+          "date_raw": 53146704,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            373684592,
+            16633219
+          ],
+          "side_stored_current_raw": [
+            377064749,
+            21808134
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "C3E53EA4FFB3EADD70A9D66D3D147497DFFBDA916754F9155C7CEF5172ACCDA2"
+        },
+        {
+          "day": 21,
+          "date_raw": 53146728,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            371482258,
+            12356415
+          ],
+          "side_stored_current_raw": [
+            373684592,
+            16633219
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "4934D6CE3D43AF4BE7A66D55A8C3F9048F4F670542135B69D2B1A18787377E81"
+        },
+        {
+          "day": 22,
+          "date_raw": 53146752,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            475196608,
+            9090544
+          ],
+          "side_stored_current_raw": [
+            477282258,
+            12356415
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "81594A6BCF3B304E8F31BC9AE9596C5215F7AE3255231E1D96C5297DE52B4B71"
+        },
+        {
+          "day": 23,
+          "date_raw": 53146776,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            473247530,
+            6317350
+          ],
+          "side_stored_current_raw": [
+            475196608,
+            9090544
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "398ADAE7DBF8AEB8E78AE01BF121F2732E234701E2F1E455D34EBD9F85E5BB44"
+        },
+        {
+          "day": 24,
+          "date_raw": 53146800,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            470843995,
+            3643285
+          ],
+          "side_stored_current_raw": [
+            473247530,
+            6317350
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "DAFD9014C48A73457DA7EB0FA3AD7ED4365E21F76ED92345AF1FAC80C6C2F248"
+        },
+        {
+          "day": 25,
+          "date_raw": 53146824,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            468687712,
+            1106752
+          ],
+          "side_stored_current_raw": [
+            470843995,
+            3643285
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "F393F6480615963F1665A15F165828E1F0FFB612EF7F9332DB54D8E2AD346948"
+        },
+        {
+          "day": 26,
+          "date_raw": 53146848,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            466891866,
+            211205
+          ],
+          "side_stored_current_raw": [
+            468687712,
+            1106752
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "4067B16DBCADA1F43B059EEBF4CB3B24BA2176A4828610B3205ACDECB46756FE"
+        },
+        {
+          "day": 27,
+          "date_raw": 53146872,
+          "phase": "main",
+          "phase_raw": 1,
+          "side_current_raw_from_regiments": [
+            466003734,
+            0
+          ],
+          "side_stored_current_raw": [
+            466891866,
+            211205
+          ],
+          "stored_matches_derived": [
+            false,
+            false
+          ],
+          "control_response_sha256": "243BA09AB02F36742BC239EF09D62EE6A1B12FF14A038C530D811620F0E36969"
+        },
+        {
+          "day": 28,
+          "date_raw": 53146896,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            466003734,
+            0
+          ],
+          "side_stored_current_raw": [
+            466003734,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "2A3664CD5963519EDDF349008C9723870EF6B494A6E0330E915F48508D9417DA"
+        },
+        {
+          "day": 29,
+          "date_raw": 53146920,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            466003734,
+            0
+          ],
+          "side_stored_current_raw": [
+            466003734,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "FC250372B3019B5FA955546E48CDBAA56578B2595EDE45BAF339B6E85832555F"
+        },
+        {
+          "day": 30,
+          "date_raw": 53146944,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            466003734,
+            0
+          ],
+          "side_stored_current_raw": [
+            466003734,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "B11B0FC0B95A16E1865B18AC1D15DAB8C9E677DF944D149E8D7B939582BB36D3"
+        },
+        {
+          "day": 31,
+          "date_raw": 53146968,
+          "phase": "pursuit",
+          "phase_raw": 2,
+          "side_current_raw_from_regiments": [
+            466003734,
+            0
+          ],
+          "side_stored_current_raw": [
+            466003734,
+            0
+          ],
+          "stored_matches_derived": [
+            true,
+            true
+          ],
+          "control_response_sha256": "B8326D3C2FDFB73A28CF66339B39E691FC98EF5D231B1F07A51A95EB752FBBB5"
+        }
+      ]
+    }
+  ],
+  "pairwise_divergence": [
+    {
+      "left_trial": 1,
+      "right_trial": 2,
+      "first_regiment_current_divergence_day": 6
+    },
+    {
+      "left_trial": 1,
+      "right_trial": 3,
+      "first_regiment_current_divergence_day": 6
+    },
+    {
+      "left_trial": 2,
+      "right_trial": 3,
+      "first_regiment_current_divergence_day": 6
+    }
+  ],
+  "independent_random_draws_proven": false,
+  "calibrated_win_probability_available": false,
+  "planner_usable": false
+}
