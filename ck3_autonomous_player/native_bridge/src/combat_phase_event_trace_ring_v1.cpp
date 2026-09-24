@@ -335,6 +335,16 @@ bool SideContainsArmy(const CombatPhaseEventTraceSideRecordV1 &side,
   return false;
 }
 
+bool SideContainsKnightRegiment(const CombatPhaseEventTraceSideRecordV1 &side,
+                                std::int32_t regiment_id) noexcept {
+  for (std::uint32_t index = 0; index < side.knight_count; ++index) {
+    if (side.knights[index].regiment_id == regiment_id) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool ReadRegimentBucket(const CombatPhaseEventTraceCapturePlanV1 &plan,
                         std::uintptr_t side, std::size_t header_offset,
                         bool men_at_arms,
@@ -536,6 +546,14 @@ bool ReadSide(const CombatPhaseEventTraceCapturePlanV1 &plan,
     if (resolved == nullptr ||
         LoadAt<std::int32_t>(resolved->object, kRegimentIdOffset) !=
             row.regiment_id) {
+      // CK3 may retain a scheduled event after its killed knight leaves the
+      // active side. Keep the native schedule identity, but do not invent a
+      // current character from a prearmed regiment pointer that is now stale.
+      if (resolved != nullptr &&
+          !SideContainsKnightRegiment(output, row.regiment_id)) {
+        row.current_character_id = -1;
+        continue;
+      }
       failure_flags |= trace_capture_failure_identity;
       return false;
     }

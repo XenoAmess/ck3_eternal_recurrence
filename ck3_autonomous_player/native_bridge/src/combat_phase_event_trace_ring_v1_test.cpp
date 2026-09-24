@@ -595,6 +595,60 @@ bool FailureCases() {
     return Fail("foreign-thread RNG was admitted at original fire");
   }
   CancelCombatPhaseEventTraceRingV1(*ring);
+
+  Fixture unknown_schedule_fixture;
+  unknown_schedule_fixture.SetSchedule(1);
+  if (!ArmCombatPhaseEventTraceRingV1(*ring,
+                                      unknown_schedule_fixture.plan)) {
+    return Fail("unknown schedule identity fixture arm failed");
+  }
+  Store(unknown_schedule_fixture.schedule_rows[1], 0x08,
+        Fixture::kRegimentIds[1] + 1000);
+  if (CaptureCombatPhaseEventTraceBoundaryV1(
+          CombatPhaseEventTraceBoundaryV1::before_side0_schedule,
+          unknown_schedule_fixture.combat.data(),
+          reinterpret_cast<void *>(unknown_schedule_fixture.plan.sides[0]),
+          unknown_schedule_fixture.schedule_rng.data(),
+          unknown_schedule_fixture.plan.module_base +
+              kCombatPhaseEventScheduleSide0ReturnRva) ||
+      (ring->failure_flags.load() & trace_capture_failure_identity) == 0) {
+    return Fail("unknown scheduled regiment identity did not fail");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
+  return true;
+}
+
+bool StaleScheduledKnightCase() {
+  Fixture fixture;
+  auto ring = std::make_unique<CombatPhaseEventTraceRingV1>();
+  fixture.SetSchedule(1);
+  if (!ArmCombatPhaseEventTraceRingV1(*ring, fixture.plan)) {
+    return Fail("retained schedule fixture arm failed");
+  }
+  // The killed knight has left the live side, while its scheduled event still
+  // names the regiment. Its prearmed component pointer has been reused.
+  Store(reinterpret_cast<void *>(fixture.plan.sides[1]), 0x4C,
+        std::int32_t{0});
+  Store(fixture.regiments[1], 0x10, Fixture::kRegimentIds[1] + 1);
+  Store(fixture.characters[1], 0x1B0, std::uintptr_t{0});
+  if (!CaptureCombatPhaseEventTraceBoundaryV1(
+          CombatPhaseEventTraceBoundaryV1::before_side0_schedule,
+          fixture.combat.data(),
+          reinterpret_cast<void *>(fixture.plan.sides[0]),
+          fixture.schedule_rng.data(),
+          fixture.plan.module_base +
+              kCombatPhaseEventScheduleSide0ReturnRva) ||
+      ring->committed_count.load() != 1 ||
+      ring->failure_flags.load() != trace_capture_failure_none ||
+      ring->records[0].sides[1].knight_count != 0 ||
+      ring->records[0].sides[1].scheduled_knight_count != 1 ||
+      ring->records[0].sides[1].scheduled_knights[0].regiment_id !=
+          Fixture::kRegimentIds[1] ||
+      ring->records[0].sides[1].scheduled_knights[0].current_character_id !=
+          -1) {
+    return Fail("retained schedule after knight removal was not captured");
+  }
+  CancelCombatPhaseEventTraceRingV1(*ring);
   return true;
 }
 
@@ -951,6 +1005,7 @@ int main(int argc, char **argv) {
       !CaptureSevenRecordFixture(23) ||
       !CaptureSevenRecordFixture(48) ||
       !FailureCases() ||
+      !StaleScheduledKnightCase() ||
       !OutgoingDamageCaptureCases() || !PostCounterAttackCaptureCases() ||
       !OutgoingDamageHookAbi() || !OuterCallerContextTransport() ||
       BindCombatPhaseEventTraceOriginalTrampolinesV1(nullptr, nullptr,

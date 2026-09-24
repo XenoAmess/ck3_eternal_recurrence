@@ -90,6 +90,8 @@ v3 的 `current_soldiers` 是军队现存人数口径；战斗继续后，直接
 
 为补上这份缺失存档，另从原始第 26 日冻结存档启动**独立恢复回放**。这次随机轨迹击杀的是另一名骑士 `33437`（RegimentID `65`），不能与上一条目标 `34867` 的事件混为一条。新[同日死亡回流投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_kill_replay_feedback.json)核对了恢复前后两份不可变 `.ck3`：新战报于边界 `4→5` 追加，边界 5 的 core 仍未置 death marker；随后同日期存档显示 `death_battle/killer=34120`，对手威望货币和累计威望各 +150、基础勇武不变。最后回读也因旧 schedule 仍指向已退出的 `65` 号兵团而报 identity，独立复现了故障类型。完整事件写集与终局概率仍不可用，智能体案例只作证据输入，`planner_usable=false`。
 
+随后在**另一个隔离 attempt-015**中，采集器只对“预先确认存在、但已退出当前骑士列表”的旧日程保留事件/兵团 ID，并把当前角色标为 `-1`；未知兵团 ID 仍拒绝。修正后的独立第 26 日回放得到七条零失败原生边界，[共用恢复报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_kill_trace_recovery.json)校验原始回执和两份同日存档。第 5→6 边界目标 `33437` 的 death marker 从 false 变 true、派生勇武从 4 降为 2、人物兵团链接从 65 变为 0，65 号兵团退出参战；旧日程仍留在侧面记录。存档再次显示 `death_battle/killer=34120`、对手威望 +150。原先 RED attempt 保持原样；新七边界的 `bounded_capture_complete=true` 仍伴随 `full_mutable_transition_bundle_complete=false`，只修复采集，不提升整场胜率或智能体进攻许可。本次新构建的 v3 输入另有文化参数 `knights_slightly_more_prone_to_injury` 缺口。
+
 这仍没有预测**军队会在第几天加入**，也没有从战前自主推进软/硬伤亡、伤势引起的有效属性刷新、优势或事件全部效果。第 11、21 日整条阶段追踪仍 `trace_unavailable`；追加证据只闭合局部 R14 算术及源日假设查询的可用性，不改变正片概率与游玩智能体的 `planner_usable=false` 门禁。
 
 ### 同接战存档的三次原生回放

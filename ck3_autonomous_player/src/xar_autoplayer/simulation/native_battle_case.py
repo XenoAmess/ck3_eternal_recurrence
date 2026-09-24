@@ -48,6 +48,8 @@ EPISODE01_TRACE_DAY26_FILE = "ck3_1_19_0_6_episode01_messina_paired_trace_day26_
 EPISODE01_TRACE_DAY26_SHA256 = "32715AE1731CF19ABFEFB4D2668D47F6EFA8188AEADC187F298E739825019065"
 EPISODE01_KILL_REPLAY_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_kill_replay_feedback.json"
 EPISODE01_KILL_REPLAY_SHA256 = "2E68CB2196B1546E610CED211F81251AEE6DD09294FD6EF529EFF132C0134EDC"
+EPISODE01_KILL_TRACE_RECOVERY_FILE = "ck3_1_19_0_6_episode01_messina_phase_event_kill_trace_recovery.json"
+EPISODE01_KILL_TRACE_RECOVERY_SHA256 = "B7F940916285F5E057B972EBBF12873BF6466D2396A13EF76905A95F04EA2C05"
 EPISODE01_KILL_REWARD_FILE = "ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json"
 EPISODE01_KILL_REWARD_SHA256 = "3FCB1FFB509251CA471E33FAACC768FD7E7FC04243413EDCD9EDCFD0CAD99E92"
 
@@ -831,6 +833,39 @@ def load_episode01_phase_event_kill_replay_feedback() -> dict[str, Any]:
     return report
 
 
+def load_episode01_phase_event_kill_trace_recovery() -> dict[str, Any]:
+    """Read a recovered seven-boundary capture without promoting effect fidelity."""
+    path = Path(__file__).with_name("data") / EPISODE01_KILL_TRACE_RECOVERY_FILE
+    data = path.read_bytes()
+    if hashlib.sha256(data).hexdigest().upper() != EPISODE01_KILL_TRACE_RECOVERY_SHA256:
+        raise NativeBattleCaseError("kill trace recovery bytes changed without review")
+    report = json.loads(data)
+    before = report.get("target_core_before_final_query", {}) if isinstance(report, dict) else {}
+    after = report.get("target_core_at_final_query", {}) if isinstance(report, dict) else {}
+    if (not isinstance(report, dict)
+            or report.get("schema") != "xar.ck3.episode01.phase-event-kill-trace-recovery/v1"
+            or report.get("restored_source_paired_report_sha256") != EPISODE01_PAIRED_COUNTER_SHA256
+            or report.get("appended_event", {}).get("stable_key") != "knight_killed_by_enemy"
+            or report.get("appended_event", {}).get("left_character_id") != 33437
+            or report.get("boundary_count") != 7
+            or report.get("boundary_capture_failure_flags") != [0] * 7
+            or report.get("trace_failure_flags") != 0
+            or before.get("death_marker_present") is not False
+            or after.get("death_marker_present") is not True
+            or before.get("current_regiment_id") != 65
+            or after.get("current_regiment_id") != 0
+            or report.get("scheduled_knight_at_final_query", {}).get("current_character_id") != -1
+            or report.get("killer_prestige_currency_delta") != "150.0000"
+            or report.get("seven_boundary_capture_available") is not True
+            or any(report.get(key) is not False for key in (
+                "full_mutable_transition_bundle_complete", "full_event_write_set_proven",
+                "only_possible_cause_proven", "whole_battle_win_probability_available",
+                "planner_usable",
+            ))):
+        raise NativeBattleCaseError("kill trace recovery or readiness drifted")
+    return report
+
+
 def load_episode01_knight_kill_reward_scaling() -> dict[str, Any]:
     """Read conditional stock reward parity without event-effect promotion."""
     path = Path(__file__).with_name("data") / EPISODE01_KILL_REWARD_FILE
@@ -891,6 +926,8 @@ __all__ = [
     "EPISODE01_TRACE_DAY26_SHA256",
     "EPISODE01_KILL_REPLAY_FILE",
     "EPISODE01_KILL_REPLAY_SHA256",
+    "EPISODE01_KILL_TRACE_RECOVERY_FILE",
+    "EPISODE01_KILL_TRACE_RECOVERY_SHA256",
     "EPISODE01_KILL_REWARD_FILE",
     "EPISODE01_KILL_REWARD_SHA256",
     "NativeBattleCaseError",
@@ -911,6 +948,7 @@ __all__ = [
     "load_episode01_paired_trace_failure_boundaries",
     "load_episode01_paired_trace_day26_identity",
     "load_episode01_phase_event_kill_replay_feedback",
+    "load_episode01_phase_event_kill_trace_recovery",
     "load_episode01_knight_kill_reward_scaling",
     "original_daily_timeline",
 ]

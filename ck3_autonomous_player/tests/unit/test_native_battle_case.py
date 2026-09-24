@@ -38,6 +38,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_paired_trace_failure_boundaries,
     load_episode01_paired_trace_day26_identity,
     load_episode01_phase_event_kill_replay_feedback,
+    load_episode01_phase_event_kill_trace_recovery,
     load_episode01_knight_kill_reward_scaling,
     original_daily_timeline,
 )
@@ -362,6 +363,21 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertEqual(knight_kill_inverse_prestige_raw(
             victim_primary_title_tier=None, victim_is_lowborn=True), 7_500_000)
         self.assertFalse(report["title_rank_and_lowborn_conditions_proven_for_all_future_events"])
+        self.assertFalse(report["planner_usable"])
+
+    def test_kill_trace_recovers_seven_boundaries_without_effect_promotion(self) -> None:
+        report = load_episode01_phase_event_kill_trace_recovery()
+        self.assertEqual(report["boundary_capture_failure_flags"], [0] * 7)
+        self.assertEqual(report["event_appended_between_boundaries"], [4, 5])
+        self.assertFalse(report["target_core_before_final_query"]["death_marker_present"])
+        self.assertTrue(report["target_core_at_final_query"]["death_marker_present"])
+        self.assertEqual(report["target_core_at_final_query"]["current_regiment_id"], 0)
+        self.assertEqual(report["target_core_at_final_query"]["prowess"], 2)
+        self.assertEqual(report["scheduled_knight_at_final_query"]["regiment_id"], 65)
+        self.assertEqual(report["scheduled_knight_at_final_query"]["current_character_id"], -1)
+        self.assertEqual(report["killer_prestige_currency_delta"], "150.0000")
+        self.assertFalse(report["full_mutable_transition_bundle_complete"])
+        self.assertFalse(report["full_event_write_set_proven"])
         self.assertFalse(report["planner_usable"])
 
 

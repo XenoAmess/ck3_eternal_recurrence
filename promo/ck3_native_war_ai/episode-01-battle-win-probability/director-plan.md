@@ -46,6 +46,8 @@
 
 补拍的独立恢复回放有更完整的同日证据：[智能体共用死亡回流报告](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_kill_replay_feedback.json)绑定了原生战报、有效阶段边界和事件后存档：本次目标是另一名骑士 `33437`，后续存档确认为 `death_battle/killer=34120`，对手威望两字段各 +150、基础勇武不变。镜头可以用同一人物肖像连接“战报出现→兵团退出→存档死亡”，但要标明这是**另一条恢复回放**；它与前次击杀的目标和奖励不同，不能剪成同一次过程，也不能把单次结果称为胜率。
 
+再一次独立回放修复了旧日程阻断最终回读的问题：[同源七边界报告](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_kill_trace_recovery.json)绑定原始回执和前后存档。可将第 5→6 边界剪成具体的“战报出现之后，同日回读才见死亡标志、勇武 4→2、65 号兵团退出”；旧事件日程保留但当前人物为 `-1`。字幕必须写明该数值属于本次重放，旧 attempt 的 RED 仍是历史事实。它只闭合这一条死亡回流观察；完整 effect 写集和 v3 文化参数输入仍缺，整场胜率章节门禁不变。
+
 若要解释两次奖励差异，可用[跨回放条件板](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_knight_kill_reward_scaling.json)做一个短镜头：旧目标持伯爵领，`150×2=300`；新目标无领地头衔，基础 `150`。旁白同时说明低出生身分还有减半分支、勇武成长是另一个随机分支。智能体的同源计算函数已完成两例条件零差，但视频不得把这两个原生已观察结果包装为完整事件分布。
 
 事件章节新增一组可拍但仍受限的原版时序：[共用阶段事件观察](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_observations.json)核验六次战报条目追加；[同战斗存档回流](../../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_phase_event_save_feedback.json)进一步核到五次受伤目标都在各自**同日期**后续存档新增 `wounded_1`，一次击杀目标有 `dead_data/death_battle/killer=32716`；对手威望货币六次均增加，基础勇武四次 +1、两次不变。第 5 日受伤目标的原生 core 勇武在同日期后续存档仍为 8，下一次 fire 前才降到 6。第 9 日目标 `54144` 提供更适合解释模拟器为何不能直接用旧输入的镜头：同一 RegimentID `220` 的人物勇武先 `4→2`，兵团有效韧性在下一次调度前才 `7400000→3700000`；更早快照产生的条件伤亡残差因此消失。[片用时序板 v4](phase-event-timing-board-v4.json)由同一智能体读取器生成，并保留旧板为过程素材。镜头分开标“战报追加”“同日存档状态”“人物勇武回读”“兵团有效属性刷新”，只讲这些观察；完整 effect 写集、唯一因果和原版胜率仍待闭合。第 11、15、16 日整体 trace 不可用，不能把局部有效边界标作整日 GREEN。
