@@ -44,6 +44,10 @@ def main() -> None:
     parser.add_argument("--observation-speech", type=Path,
                         help="prepared speech when stored in a separate immutable attempt")
     parser.add_argument("--math", type=Path, required=True)
+    parser.add_argument("--casualty", type=Path,
+                        help="optional immutable casualty-chain addendum attempt")
+    parser.add_argument("--pursuit-detail", type=Path,
+                        help="optional immutable C12 pursuit arithmetic attempt")
     parser.add_argument("--music", type=Path, required=True)
     parser.add_argument("--output-name", required=True)
     parser.add_argument("--correct-gameplay-captions", action="store_true",
@@ -53,6 +57,10 @@ def main() -> None:
     observation = args.observation.resolve(strict=True)
     observation_speech = (args.observation_speech or observation / "speech").resolve(strict=True)
     math = args.math.resolve(strict=True)
+    casualty = args.casualty.resolve(strict=True) if args.casualty else None
+    pursuit_detail = args.pursuit_detail.resolve(strict=True) if args.pursuit_detail else None
+    if pursuit_detail and not casualty:
+        parser.error("--pursuit-detail requires --casualty")
     music = args.music.resolve(strict=True)
     if Path(args.output_name).name != args.output_name or not args.output_name.lower().endswith(".mp4"):
         parser.error("--output-name must be one MP4 basename")
@@ -68,21 +76,35 @@ def main() -> None:
 
     observation_inputs = json.loads((observation_speech / "production-inputs.json").read_text(encoding="utf-8"))
     math_inputs = json.loads((math / "speech" / "production-inputs.json").read_text(encoding="utf-8"))
+    casualty_inputs = (json.loads((casualty / "speech" / "production-inputs.json").read_text(encoding="utf-8"))
+                       if casualty else None)
+    pursuit_detail_inputs = (json.loads((pursuit_detail / "speech" / "production-inputs.json").read_text(encoding="utf-8"))
+                             if pursuit_detail else None)
     observation_rows = {row["id"]: row for row in observation_inputs["cues"]}
     math_rows = {row["id"]: row for row in math_inputs["cues"]}
+    casualty_rows = ({row["id"]: row for row in casualty_inputs["cues"]}
+                     if casualty_inputs else {})
+    detail_rows = ({row["id"]: row for row in pursuit_detail_inputs["cues"]}
+                   if pursuit_detail_inputs else {})
+    casualty_ids = ([f"C{i:02d}" for i in range(1, 11)] +
+                    (["C12"] if pursuit_detail else []) + ["C11"] if casualty else [])
     ordered_ids = ([f"E1-F{i:02d}" for i in range(1, 11)] +
                    [f"M{i:02d}" for i in range(2, 8)] +
                    [f"E1-F{i:02d}" for i in range(13, 16)] + ["M08"] +
+                   casualty_ids +
                    [f"E1-F{i:02d}" for i in range(16, 26)])
-    assert len(ordered_ids) == 30 and len(set(ordered_ids)) == 30
-    rows = [observation_rows.get(cue_id) or math_rows[cue_id] for cue_id in ordered_ids]
+    assert len(ordered_ids) == (30 + len(casualty_ids)) and len(set(ordered_ids)) == len(ordered_ids)
+    rows = [observation_rows.get(cue_id) or math_rows.get(cue_id) or casualty_rows.get(cue_id) or detail_rows[cue_id]
+            for cue_id in ordered_ids]
     for row in rows:
         for key in ("zh", "en", "visual_title"):
             if any(term in row[key] for term in ("旧顺序", "旧乘法", "old order", "样稿")):
                 raise ValueError(f"historical comparison or pilot wording in {row['id']} {key}")
     (attempt / "edit-list.json").write_text(json.dumps({"schema": "ck3-war-ai-edge-math-full-edit.v1",
         "source_observation": str(observation), "source_observation_speech": str(observation_speech),
-        "source_math": str(math), "cue_ids": ordered_ids,
+        "source_math": str(math), "source_casualty": str(casualty) if casualty else None,
+        "source_pursuit_detail": str(pursuit_detail) if pursuit_detail else None,
+        "cue_ids": ordered_ids,
         "policy": "native CK3 calculation only; no old-order comparisons"}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     # The older observation attempt predates hybrid gameplay/card caption positioning.
@@ -113,6 +135,11 @@ def main() -> None:
             source = corrected[cue_id]
         elif cue_id.startswith("M"):
             source = math / "build" / "segments" / f"{int(cue_id[1:]):04d}-{cue_id}.mp4"
+        elif cue_id.startswith("C"):
+            source_attempt = pursuit_detail if cue_id == "C12" else casualty
+            assert source_attempt is not None
+            source_index = 1 if cue_id == "C12" else int(cue_id[1:])
+            source = source_attempt / "build" / "segments" / f"{source_index:04d}-{cue_id}.mp4"
         else:
             source = observation / "build" / "segments" / f"{int(cue_id[-2:]):04d}-{cue_id}.mp4"
         source.resolve(strict=True)
@@ -155,6 +182,10 @@ def main() -> None:
                "duration_seconds": actual, "cue_count": len(ordered_ids), "chapter_count": len(result["chapters"]),
                "observation_inputs_sha256": digest(observation_speech / "production-inputs.json"),
                "math_inputs_sha256": digest(math / "speech" / "production-inputs.json"),
+               "casualty_inputs_sha256": (digest(casualty / "speech" / "production-inputs.json")
+                                          if casualty else None),
+               "pursuit_detail_inputs_sha256": (digest(pursuit_detail / "speech" / "production-inputs.json")
+                                                if pursuit_detail else None),
                "music_sha256": digest(music), "human_signoff": "not-provided"}
     (attempt / "build-receipt.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(receipt, ensure_ascii=False), flush=True)

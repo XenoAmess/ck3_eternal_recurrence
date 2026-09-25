@@ -43,7 +43,7 @@ def _card(row: dict, active: int, path: Path) -> None:
     _text(draw, 209, 78, "十字军之王 III · 原版战斗算术", 38,
           color=GOLD, bold=True)
     _text(draw, 148, 190, row["visual_title"], 76, bold=True, width=2210)
-    _text(draw, 153, 320, "R0217 · 单个主阶段 tick · Q100000", 40,
+    _text(draw, 153, 320, row.get("source_label", "R0217 · 单个主阶段 tick · Q100000"), 40,
           color=MUTED)
     for index, line in enumerate(row["visual_lines"]):
         top = 431 + 207 * index
@@ -58,7 +58,7 @@ def _card(row: dict, active: int, path: Path) -> None:
               color=INK if selected else MUTED, bold=index == active,
               width=1980)
     draw.line((146, 1081, 2414, 1081), fill="#66513A", width=2)
-    _text(draw, 155, 1101, "原版 1.19.0.6 · 数字来源：docs/ck3-native-ai/battle-simulation.md · R0217",
+    _text(draw, 155, 1101, row.get("footer", "原版 1.19.0.6 · 数字来源：docs/ck3-native-ai/battle-simulation.md · R0217"),
           30, color=GOLD)
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("xb") as stream:
@@ -98,7 +98,8 @@ def _card_clip(row: dict, target: Path, ffmpeg: str, work: Path) -> Path:
                                    partial_artifacts=[target]),
                 audit_directory=work / "audit" / "cards" / row["id"])
     (drawings / "visual-plan.json").write_text(json.dumps({
-        "cue_id": row["id"], "source_case": "R0217", "source_scope": "one native main-phase tick",
+        "cue_id": row["id"], "source_case": row.get("source_label", "R0217"),
+        "source_scope": row.get("source_scope", "one native main-phase tick"),
         "stage_frames": [str(path) for path in frames], "duration_seconds": duration,
         "claims": row["visual_lines"], "human_signoff": "not-provided",
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

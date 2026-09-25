@@ -1,0 +1,16 @@
+{
+  "format_version": 1,
+  "purpose": "Episode 1 R5 exact native pursuit golden-vector arithmetic, inserted between C10 and C11",
+  "game_version": "CK3 1.19.0.6",
+  "evidence": "docs/ck3-native-ai/battle-simulation.md#pursuit--screen",
+  "cues": [
+    {
+      "id": "C12", "shot_id": "C-S12", "chapter_id": "pursuit_arithmetic", "visual_kind": "card",
+      "visual_title": "追击逐步算账：从属性到每日预算",
+      "visual_lines": ["坚韧软伤 1,400,000,000；追击 225,000,000；掩护 200,000,000 raw", "基础 70,000,000；最低 14,000,000；净追击 25,000,000 raw", "每日预算：征召 A/B=357,000/1,000,000；职业 A/B=238,000/666,666 raw"],
+      "source_label": "原版静态公式 golden vector · 非墨西拿实机",
+      "zh": "把追击的中间算术逐格摆出来。这份原版静态公式向量里，两支征召兵软伤分别三百五十和二百五十人，职业兵士四百人。逐团坚韧乘软伤再相加，原始值十四亿。胜方追击属性乘现役人数再乘零点五，得到两亿二千五百万；败方掩护属性乘软伤，得到两亿。基础项是十四亿乘百分之五，七千万；最低项是百分之一，一千四百万；追击减掩护为正的净额两千五百万，基础兜底项取七千万。把这两个项分别除以坚韧软伤量，再乘阶段开始冻结的征召兵六百人和职业兵四百人软伤池，乘本例百分之百修正，再除三天并逐步截断。征召兵每天的净额预算三十五万七千、基础预算一百万原始值；职业兵士分别二十三万八千和六十六万六千六百六十六。征召兵第一团按三百五十除六百的软伤份额，两项分到二十万八千二百五十和五十八万三千三百三十三；第二团分到十四万八千七百五十和四十一万六千六百六十六。第一遍合计比预算少一个原始单位，按存储顺序补给第一团，才得到两团的七十九万一千五百八十四和五十六万五千四百一十六。职业单团得到九十万四千六百六十六。",
+      "en": "Native static pursuit vector: toughness-weighted soft 1,400,000,000 raw, pursuit 225,000,000, screen 200,000,000. Base 70,000,000, minimum 14,000,000, extra 25,000,000. Daily levy A/B 357,000/1,000,000; men-at-arms 238,000/666,666 raw."
+    }
+  ]
+}
