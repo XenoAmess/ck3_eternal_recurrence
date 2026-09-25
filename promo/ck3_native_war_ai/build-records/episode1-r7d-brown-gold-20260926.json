@@ -1,0 +1,54 @@
+{
+  "schema": "ck3-war-ai-episode-01-r7d-brown-gold-delivery.v1",
+  "recorded_at_utc": "2026-09-25T17:03:47+00:00",
+  "state": "rendered-uploaded-machine-reviewed-pending-human-1x-review",
+  "episode": 1,
+  "purpose": "Align the same-battle Messina film with Episode 0's brown-and-gold visual system",
+  "source": {
+    "combat_id": 16777218,
+    "game_version": "CK3 1.19.0.6",
+    "original_capture_sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+    "script": "promo/ck3_native_war_ai/episode-01-battle-win-probability/r7-same-battle/script.json",
+    "visual_style": "promo/ck3_native_war_ai/episode-01-battle-win-probability/r7d-brown-gold/visual-style.md"
+  },
+  "film": {
+    "name": "CK3-War-AI-Episode-1-Messina-Original-EdgeTTS-Full-R7D-20260926.mp4",
+    "duration_seconds": 1467.888021,
+    "bytes": 107381337,
+    "sha256": "16c8f79ee0bb99f2b9e61554f644dc7577027b25b24b03e7690daafbf10b1b62",
+    "resolution": [2560, 1440],
+    "chapters": 23,
+    "voice": "EdgeTTS zh-CN-XiaoxiaoNeural, rate -12%",
+    "theme_sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f",
+    "theme_gain_db": -17,
+    "voice_gain_db": 0,
+    "ducking": false
+  },
+  "toolchain": {
+    "name": "xar-promo",
+    "version": "0.2.1",
+    "formal_release": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1",
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "run_id": "episode01-r7d-brown-gold-001",
+    "manifest": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7d-brown-gold-001/run/run-manifest.json",
+    "authoring_validation": "GREEN; 123 artifacts; referenced bytes and SHA checked"
+  },
+  "delivery": {
+    "method": "OneDrive desktop client in existing selective-sync folder",
+    "folder": "CK3-War-AI-20260923",
+    "files_copied": 1,
+    "client_status": "uploaded",
+    "client_receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7d-brown-gold-001/onedrive-client-success.json",
+    "other_cloud_file_content_read_or_downloaded": false
+  },
+  "machine_review_after_upload": {
+    "full_decode": "passed with FFmpeg -xerror before delivery",
+    "onedrive_local_copy_sha256": "16c8f79ee0bb99f2b9e61554f644dc7577027b25b24b03e7690daafbf10b1b62",
+    "chapter_samples": 23,
+    "palette_fixed_regions": "23/23 chapter samples passed the Episode 0 brown-and-gold color audit",
+    "manual_sample_inspection": "Four contact sheets plus full-size samples of chapters 10, 20 and 23: warm UI, no caption/footer overlap, game state visible",
+    "review_receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7d-brown-gold-001/post-upload-review/review-probe.json",
+    "palette_receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7d-brown-gold-001/post-upload-review/palette-audit.json",
+    "human_1x_signoff": "not-provided"
+  }
+}
