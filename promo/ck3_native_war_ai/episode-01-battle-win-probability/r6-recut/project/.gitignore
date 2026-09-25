@@ -1,0 +1,3 @@
+# Render run stores source visuals and audio in content-addressed storage.
+# Preserve them locally and reference their immutable receipts in the build record.
+runs/

@@ -45,6 +45,8 @@ def _card(row: dict, active: int, path: Path) -> None:
     _text(draw, 148, 190, row["visual_title"], 76, bold=True, width=2210)
     _text(draw, 153, 320, row.get("source_label", "R0217 · 单个主阶段 tick · Q100000"), 40,
           color=MUTED)
+    if row.get("ui_bridge"):
+        _text(draw, 153, 378, row["ui_bridge"], 31, color=GOLD, width=2200)
     for index, line in enumerate(row["visual_lines"]):
         top = 431 + 207 * index
         selected = index <= active
@@ -101,7 +103,8 @@ def _card_clip(row: dict, target: Path, ffmpeg: str, work: Path) -> Path:
         "cue_id": row["id"], "source_case": row.get("source_label", "R0217"),
         "source_scope": row.get("source_scope", "one native main-phase tick"),
         "stage_frames": [str(path) for path in frames], "duration_seconds": duration,
-        "claims": row["visual_lines"], "human_signoff": "not-provided",
+        "claims": row["visual_lines"], "ui_bridge": row.get("ui_bridge"),
+        "human_signoff": "not-provided",
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return target
 
