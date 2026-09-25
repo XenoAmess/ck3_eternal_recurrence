@@ -1,5 +1,7 @@
 # 导演案如何进入现有 promo 工具链
 
+第 1 集 R3→R5 的数值、证据、画面与交付复盘已整理为 [CK3 原生战争机制视频制作门禁](../docs/ck3-war-ai-numeric-video-lessons.md)；后续新集在句稿冻结和成片交付前按此核对。
+
 ## 2026-09-24 当前配乐制作入口
 
 第 0 集 V5 以 V4 已完成的 IndexTTS 画面与旁白母版为输入，使用项目脚本 [`war_ai_promo/theme_mix.py`](integration/src/war_ai_promo/theme_mix.py) 调用正式 xar-promo 0.2.1 的 `AudioMixSpec/plan_audio_mix`，只复制原视频流并重混 AAC 音轨；没有重拍或改变原生机制结论。`start-run` 的配置快照、原曲 WAV、源片、脚本、混音命令、成片、媒体探测、审阅尝试和 OneDrive 回读保存在独立的 `v5-theme-film-attempt-001/`。V4/V5 编码视频包和时间戳完全一致后，V5 原生 review 的重复抽帧尝试保留为不完整状态；项目级审阅通过这一逐包等价证明继承 V4 的 106 张真实帧，并单独绑定新音轨的完整解码证据，不把继承包冒充原生 `review` GREEN。每次未来制作前仍按根 AGENTS 查询最新正式 Release，届时版本可能不同，不能把 0.2.1 当永久要求。
