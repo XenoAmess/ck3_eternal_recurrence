@@ -1,4 +1,4 @@
-"""Read the fixed OneDrive client's activity row for one uploaded MP4."""
+"""Read the fixed OneDrive client's activity row for one uploaded MP4 or WAV."""
 
 from __future__ import annotations
 
@@ -28,8 +28,8 @@ def main() -> None:
     parser.add_argument("--target-name", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    if not args.target_name.endswith(".mp4") or Path(args.target_name).name != args.target_name:
-        raise ValueError("Expected one MP4 basename")
+    if not args.target_name.lower().endswith((".mp4", ".wav")) or Path(args.target_name).name != args.target_name:
+        raise ValueError("Expected one MP4 or WAV basename")
     root = auto.GetRootControl()
     windows = root.GetChildren()
     if not any(window.ClassName == "OneDriveReactNativeWin32WindowClass" for window in windows):

@@ -1,0 +1,75 @@
+{
+  "schema": "ck3-war-ai-episode-01-r7f-index-formal-delivery.v1",
+  "recorded_at_utc": "2026-09-25T20:30:50+00:00",
+  "state": "rendered-uploaded-machine-reviewed-pending-human-1x-review",
+  "episode": 1,
+  "source": {
+    "combat_id": 16777218,
+    "game_version": "CK3 1.19.0.6",
+    "original_capture_sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+    "frozen_script": "promo/ck3_native_war_ai/episode-01-battle-win-probability/r7e-recut/script.json",
+    "frozen_script_sha256": "a3cd86166116bf64123b72d57e284b3554f5d41734ed8933113fbba154e18e45",
+    "readme": "promo/ck3_native_war_ai/episode-01-battle-win-probability/r7f-index-formal/README.md"
+  },
+  "film": {
+    "name": "CK3-War-AI-Episode-1-Messina-Original-IndexTTS-Formal-R7F-20260926.mp4",
+    "duration_seconds": 1544.821354,
+    "bytes": 113155622,
+    "sha256": "14db0d74b349386cffdcc96e4db6f7cc6015dff9403ddcbfcd317985accba880",
+    "resolution": [2560, 1440],
+    "chapters": 23,
+    "narration_provider": "IndexTTS 2.5",
+    "narration_reference_sha256": "061fe25b425752776da6c35eb2c634e2424239a8b5a2ea694bdee5a850e6d8b1",
+    "index_revision": "5bb1a21d0add49e164e1438144e48da31bb34582",
+    "profile": {
+      "duration_factor": 0.9,
+      "interval_silence_ms": 100,
+      "language": "ZH",
+      "emotion": "natural-reference-emotion",
+      "reference_device": "cpu",
+      "reuse_spk_cond_for_emo": false
+    },
+    "theme_sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f",
+    "theme_gain_db": -17,
+    "voice_gain_db": 0,
+    "ducking": false
+  },
+  "voice_generation": {
+    "cues": 23,
+    "speech_seconds": 1530.732381,
+    "inference_seconds": 3093.11601,
+    "inference_rtf": 2.020677,
+    "wall_seconds_including_load": 3277.99674,
+    "gross_whisper_screen": "23/23 advisory pass; not word-perfect or human-reviewed",
+    "receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-001/voice-performance.json"
+  },
+  "toolchain": {
+    "name": "xar-promo",
+    "version": "0.2.1",
+    "formal_release": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1",
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "run_id": "episode01-r7f-index-formal-001",
+    "manifest": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-001/run/run-manifest.json",
+    "authoring_validation": "GREEN; 170 artifacts; referenced bytes and SHA checked"
+  },
+  "delivery": {
+    "method": "OneDrive desktop client in existing selective-sync folder",
+    "folder": "CK3-War-AI-20260923",
+    "files_copied": 1,
+    "client_status": "uploaded",
+    "client_receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-001/onedrive-client-check-03.json",
+    "other_cloud_file_content_read_or_downloaded": false
+  },
+  "machine_review_after_upload": {
+    "onedrive_local_copy_sha256": "14db0d74b349386cffdcc96e4db6f7cc6015dff9403ddcbfcd317985accba880",
+    "full_decode": "passed",
+    "chapter_count": 23,
+    "caption_events": {"zh": 184, "en": 65},
+    "palette_samples": "27/27 pass, opening seconds 1/8/18/30 and 23 chapters",
+    "visual_sample_inspection": "Four contact sheets and four opening frames checked against the original Messina footage and Episode 0 brown/gold package",
+    "audio_mean_db": -20.5,
+    "audio_peak_db": -2.5,
+    "review_receipt": "D:/workspace/ck3_native_war_ai_promo_work/episode01-r7f-index-formal-001/post-upload-review/review-probe.json",
+    "human_1x_signoff": "not-provided"
+  }
+}

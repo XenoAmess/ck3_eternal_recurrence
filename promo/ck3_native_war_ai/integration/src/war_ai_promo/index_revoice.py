@@ -77,7 +77,11 @@ def main() -> None:
     parser.add_argument("--reuse-from", type=Path)
     parser.add_argument("--limit", type=int)
     parser.add_argument("--cue-prefix", default="V3-",
-                        help="Expected cue ID prefix for the frozen script")
+                        help="Expected cue ID prefix for the frozen script; * allows mixed chapter IDs")
+    parser.add_argument("--reference-device", choices=("cpu", "cuda:0"),
+                        help="PR #795 reference encoder device; omit for historical default")
+    parser.add_argument("--expected-model-revision",
+                        help="Refuse synthesis if the local IndexTTS checkout differs")
     args = parser.parse_args()
     args.inputs = args.inputs.resolve()
     args.reference = args.reference.resolve()
@@ -94,11 +98,19 @@ def main() -> None:
     cues = source["cues"][:args.limit]
     if not cues or len({cue["id"] for cue in cues}) != len(cues):
         raise ValueError("Expected nonempty unique cue IDs")
-    if any(not cue["zh"].strip() or not cue["id"].startswith(args.cue_prefix) for cue in cues):
+    if any(not cue["zh"].strip() or
+           (args.cue_prefix != "*" and not cue["id"].startswith(args.cue_prefix))
+           for cue in cues):
         raise ValueError("Missing narration or wrong script version")
     revision = subprocess.check_output(["git", "-C", str(args.index_root), "rev-parse", "HEAD"], text=True).strip()
+    if args.expected_model_revision and revision != args.expected_model_revision:
+        raise ValueError(f"IndexTTS revision {revision} differs from requested {args.expected_model_revision}")
     reference = binding(args.reference)
-    identity = {"profile": PROFILE, "model_revision": revision,
+    # Preserve the historical receipt schema when the optimization is not requested.
+    profile = ({**PROFILE, "reference_device": args.reference_device,
+                "reuse_spk_cond_for_emo": False}
+               if args.reference_device else PROFILE)
+    identity = {"profile": profile, "model_revision": revision,
                 "model_config": binding(args.index_root / "checkpoints/config.yaml"),
                 "reference": reference, "inputs": binding(args.inputs)}
     args.output_dir.mkdir(parents=True, exist_ok=False)
@@ -111,7 +123,7 @@ def main() -> None:
     for cue in cues:
         target = args.output_dir / (cue["id"] + ".wav")
         expected = {"id": cue["id"], "text_sha256": hashlib.sha256(cue["zh"].encode("utf-8")).hexdigest(),
-                    "reference_sha256": reference["sha256"], "model_revision": revision, "profile": PROFILE}
+                    "reference_sha256": reference["sha256"], "model_revision": revision, "profile": profile}
         write_new(args.output_dir / (cue["id"] + ".request.json"), expected)
         former = args.reuse_from / (cue["id"] + ".wav") if args.reuse_from else None
         former_receipt = args.reuse_from / (cue["id"] + ".receipt.json") if args.reuse_from else None
@@ -137,7 +149,8 @@ def main() -> None:
                         model_dir=str(args.index_root / "checkpoints"),
                         device="cuda:0", use_bf16=True, use_cuda_kernel=False,
                         use_deepspeed=False, use_accel=False, use_torch_compile=False,
-                        use_qwen_emo=False)
+                        use_qwen_emo=False, reference_device=args.reference_device,
+                        reuse_spk_cond_for_emo=False)
         print(f"MODEL READY {time.perf_counter() - started:.1f}s", flush=True)
         for position, (cue, target, expected) in enumerate(pending, 1):
             partial = args.output_dir / (cue["id"] + ".partial.wav")
