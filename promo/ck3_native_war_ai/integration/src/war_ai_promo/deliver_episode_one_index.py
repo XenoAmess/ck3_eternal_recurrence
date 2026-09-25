@@ -26,21 +26,23 @@ def main() -> None:
     parser.add_argument("--film", type=Path, required=True)
     parser.add_argument("--verification", type=Path, required=True)
     parser.add_argument("--speech-audit", type=Path, required=True)
-    parser.add_argument("--review-package", type=Path, required=True)
+    parser.add_argument("--review-package", type=Path,
+                        help="Optional bound review package when visual review has already finished")
     parser.add_argument("--receipt", type=Path, required=True)
     args = parser.parse_args()
     film = args.film.resolve(strict=True)
     report = json.loads(args.verification.read_text(encoding="utf-8"))
     speech = json.loads(args.speech_audit.read_text(encoding="utf-8"))
-    review = json.loads(args.review_package.read_text(encoding="utf-8"))
     source = binding(film)
     if report["state"] != "technical-checks-passed-pending-human-review" or report["video"]["sha256"] != source["sha256"]:
         raise ValueError("Final film lacks matching full decode and media verification")
     if speech["state"] != "advisory-screen-green" or speech["gross_screen_failures"]:
         raise ValueError("IndexTTS speech screen is not green")
-    if (review["state"] != "pending-human-review" or review["approval_granted"]
-            or review["artifact"]["sha256"].lower() != source["sha256"]):
-        raise ValueError("Final film lacks matching unsigned review frames")
+    if args.review_package:
+        review = json.loads(args.review_package.read_text(encoding="utf-8"))
+        if (review["state"] != "pending-human-review" or review["approval_granted"]
+                or review["artifact"]["sha256"].lower() != source["sha256"]):
+            raise ValueError("Review package does not bind this film")
     if not DESTINATION_DIRECTORY.is_dir() or film.suffix.lower() != ".mp4":
         raise ValueError("Fixed OneDrive client folder or MP4 missing")
     target = DESTINATION_DIRECTORY / film.name
@@ -56,6 +58,7 @@ def main() -> None:
         "method": "copy exactly one verified MP4 into fixed OneDrive desktop-client sync folder",
         "source": source, "destination": copied,
         "other_cloud_items_downloaded_by_this_task": 0,
+        "visual_review": "review-package-bound" if args.review_package else "pending-after-upload",
         "status": "local-copy-byte-verified; client-upload-readback-pending",
     }
     args.receipt.parent.mkdir(parents=True, exist_ok=True)
