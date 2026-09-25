@@ -1,0 +1,605 @@
+{
+  "format_version": 1,
+  "purpose": "R7E editorial recut of one original Messina battle with exact gameplay footage",
+  "game_version": "1.19.0.6",
+  "cues": [
+    {
+      "id": "E1-F01",
+      "shot_id": "E1-F01",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "墨西拿：数字跳得很快，账却一笔笔记",
+      "visual_points": [
+        "墨西拿 · 罗贝尔守方",
+        "1,222 → 1,156",
+        "相邻游戏日 · 少 66 名现役"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "墨西拿。罗贝尔的守军，前一日还有一千二百二十二人。日历翻过一页，战斗窗里只剩一千一百五十六。数字跳得很快，账却是一笔一笔记下的。这六十六名现役士兵，究竟从哪一步开始退出战线？我们把这一天倒回去：森林给出战宽，双方算出伤害，入伤再经过每支兵团各自的坚韧。今天，就让原版把墨西拿的这一笔账，算给你看。",
+      "en": "At Messina, Robert's active defenders change from 1,222 to 1,156 across adjacent battle days. That is 66 fewer on the displayed combat window. We follow this same battle's width, damage, and regiment toughness to explain key steps behind the change.",
+      "subtitle_mode": "paragraph",
+      "visual_lines": [
+        "墨西拿 · 罗贝尔守方",
+        "1,222 → 1,156",
+        "相邻游戏日 · 少 66 名现役"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "E1-F03",
+      "shot_id": "E1-F03",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "把战斗窗两帧接到底层人数",
+      "visual_points": [
+        "原片 275 秒：守方 1,222 / 攻方 1,921",
+        "原片 280 秒：守方 1,156 / 攻方 1,860",
+        "底层守方差 6,595,200 raw = 65.952 人当量"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "现在把刚才的两帧和原生回执接上。原片二百七十五秒，墨西拿守方罗贝尔约一千二百二十二人，进攻方约一千九百二十一人；到二百八十秒，守方约一千一百五十六，进攻方约一千八百六十。底层第五日边界的守方人数是原始整数一亿二千二百二十二万五千零七十四，除十万等于一千二百二十二点二五零七四人；下一边界一亿一千五百六十二万九千八百七十四，折合一千一百五十六点二九八七四人。精确少了六十五点九五二人当量，所以画面上的六十六是取整后的差。我们会始终把游戏窗和内部计算分开标注。",
+      "en": "The original 275-second frame shows roughly 1,222 defenders and 1,921 attackers; the 280-second frame shows 1,156 and 1,860. Defender strength changes from 122,225,074 to 115,629,874 raw, a 65.952 person-equivalent reduction. The displayed difference of 66 is rounded.",
+      "subtitle_mode": "paragraph",
+      "visual_lines": [
+        "原片 275 秒：守方 1,222 / 攻方 1,921",
+        "原片 280 秒：守方 1,156 / 攻方 1,860",
+        "底层守方差 6,595,200 raw = 65.952 人当量"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "E1-F04",
+      "shot_id": "E1-F04",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "锁定原始战斗身份与双方",
+      "visual_points": [
+        "CombatID 16777218 · 墨西拿省份 2633",
+        "side 0：进攻方；side 1：罗贝尔守方",
+        "第 5→6 日：同一战斗、连续边界"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "先锁定身份，避免把别的战斗或别的日期算进来。原生回执里的战斗编号一六七七七二一八，省份二六三三，就是画面上的墨西拿。研究编号 side 零是进攻方，side 一是玩家罗贝尔的守军；编号只负责把画面与回执接起来，不是游戏给军队的名字。我们选第五到第六日相邻边界：同一场、同一省份，源日两侧人数与出伤都已冻结，下一日能回读兵团损失。往后的数字只沿这笔账走。",
+      "en": "CombatID 16777218 in province 2633 is this Messina battle. Research side 0 is the attacker; side 1 is Robert's defenders. We pair the fifth-day native inputs with the sixth-day readback from the same battle.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_lines": [
+        "CombatID 16777218 · 墨西拿省份 2633",
+        "side 0：进攻方；side 1：罗贝尔守方",
+        "第 5→6 日：同一战斗、连续边界"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "M02",
+      "shot_id": "M02",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "先读懂定点数",
+      "visual_lines": [
+        "兵团人数/伤亡：实际人 = raw ÷ 100,000",
+        "战宽/已显示人数：直接读；无需再除",
+        "伤害原始值：计算量，不是阵亡人数"
+      ],
+      "zh": "先统一游戏界面和研究回执两套数字语言。游戏显示‘士兵’和‘军团’，我们底层回执则保存对应原始整数。本片有三类容易混淆的数。兵团当前人数和伤亡的引擎原始整数用十万倍缩放：原始值十万，才相当于一人；例如原始值四十一万七千一百零五，除十万，实际约四点一七人。游戏称‘战线宽度’的战宽，和回执已经显示成整数的人数则直接读，不要重复除十万。伤害与属性上的大整数是计算量，不能直接念成多少人。定点运算每乘一次，先把原始整数乘起来，再除十万并截断，把留下的整数交给下一步。",
+      "en": "For regiment strength and casualties, raw / 100,000 gives people-equivalent values. Width and already displayed counts are direct. Damage registers are calculation quantities, not casualty counts.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "兵团人数/伤亡：实际人 = raw ÷ 100,000",
+        "战宽/已显示人数：直接读；无需再除",
+        "伤害原始值：计算量，不是阵亡人数"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "E1-F09",
+      "shot_id": "E1-F09",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "战斗是一台阶段机器",
+      "visual_points": [
+        "墨西拿第 1–3 日：调动",
+        "第 4 日：首个主要阶段日",
+        "第 5 日：下一个主要阶段日"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "原生战斗是一台按阶段、按日推进的机器。这场墨西拿战斗第 1 到第 3 日处于调动，第 4 日进入主要阶段，第 5 日仍在主要阶段。我们现在算的是第 5 到第 6 日这一次主战结算，不能拿开战第一日的人数代入。每前进一日，都要重新读取当日阶段、人数和有效属性。片尾再回到本场第 28 到第 31 日，观察真实追击。",
+      "en": "Messina has maneuver on days 1–3 and its main phase from day 4. Our arithmetic uses the day 5 to day 6 main-phase boundary, with that day's strength and effective attributes. Later we revisit this battle's pursuit on days 28–31.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_lines": [
+        "墨西拿第 1–3 日：调动",
+        "第 4 日：首个主要阶段日",
+        "第 5 日：下一个主要阶段日"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "source_time_seconds": 260,
+      "target_time_seconds": 275
+    },
+    {
+      "id": "E1-F06",
+      "shot_id": "E1-F06",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "地形、渡口与接战方向",
+      "visual_points": [
+        "墨西拿基础战宽 1,645",
+        "森林倍率 90,000 ÷ 100,000 = 0.9",
+        "最终战宽截断为 1,480"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "这一日的战宽也能按原版整数步骤算出来。墨西拿的基础战宽一千六百四十五；森林地形倍率是九万，除十万为零点九。一千六百四十五乘九万，再除十万，是一千四百八十点五；截断后实际战宽一千四百八十。游戏把它叫战线宽度，可从战斗窗的相对军力提示查看。这个一千四百八十马上要与两侧当日参战人数比较。渡口则必须按实际入省边和攻守身份判定，不能只看地图猜。",
+      "en": "For this Messina day, base battle width 1,645 times forest factor 90,000 / 100,000 is 1,480.5; integer truncation leaves 1,480. Crossing is a separate question determined by the actual entry edge.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_lines": [
+        "墨西拿基础战宽 1,645",
+        "森林倍率 90,000 ÷ 100,000 = 0.9",
+        "最终战宽截断为 1,480"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "M03",
+      "shot_id": "M03",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "同场战宽：先把原始人数还原",
+      "visual_lines": [
+        "攻方 192,121,816 raw → 1,921.21816 人；守方 122,225,074 raw → 1,222.25074 人",
+        "攻方宽度份额 floor(1,480 × Q² ÷ 192,121,816) = 77,034",
+        "守方小于战宽：份额封顶 100,000"
+      ],
+      "zh": "把同场第五日的人数放进战宽公式。战斗窗背后的最终战线宽度是一千四百八十，这不是兵员定点数，不用除十万。进攻方当前兵力原始整数一亿九千二百一十二万一千八百一十六，折合一千九百二十一点二一八一六人；守方一亿二千二百二十二万五千零七十四，折合一千二百二十二点二五零七四人。原版用战宽除该侧当前参战人数，结果最多封顶百分之百。进攻方一千九百二十一人多于战宽，把一千四百八十乘两个十万，再除其原始兵力并截断，得到宽度份额原始值七万七千零三十四，即百分之七十七点零三四。守方参战人数少于战宽，份额封顶十万，也就是百分之百。两侧在这里不同，不是因为随机挑中了哪支兵团，而是整侧输出被宽度比例缩放。",
+      "en": "Messina's width is 1,480. The attacking side has 192,121,816 raw soldiers, or 1,921.21816 people, giving a width fraction of 77,034 raw. Robert's 1,222.25074 defenders are below width, so their fraction is capped at 100,000.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "攻方 192,121,816 raw → 1,921.21816 人；守方 122,225,074 raw → 1,222.25074 人",
+        "攻方宽度份额 floor(1,480 × Q² ÷ 192,121,816) = 77,034",
+        "守方小于战宽：份额封顶 100,000"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "M04",
+      "shot_id": "M04",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "同场出伤的四组输入",
+      "visual_lines": [
+        "优势系数：攻方 100,000；罗贝尔守方 130,000",
+        "固定伤害缩放：3,000 / Q = 0.03",
+        "反制后有效攻击 R14：3,511,465,714 / 2,036,632,465 raw"
+      ],
+      "zh": "现在只拿这场墨西拿战斗的原生出伤输入。第五日的优势作用转成两侧伤害系数：攻方十万，也就是一点零；罗贝尔守方十三万，也就是一点三。这个十三万是原生当天用于出伤的条件化系数，不等于把你在另一帧界面看到的优势数字直接念成百分之三十。固定伤害缩放原始值三千，除十万等于零点零三。刚才算出的宽度份额是攻方七万七千零三十四、守方十万。反制与兵种修正后的有效攻击内部聚合值，攻方三十五亿一千一百四十六万五千七百一十四，守方二十亿三千六百六十三万二千四百六十五。它们叫有效攻击计算量，不是人口，更不是已发生的伤亡。我们不把这些大数冒充游戏里可直接点开的单一面板；观众能在原片中核对的是同一场战斗和稍后人数的变化。",
+      "en": "The original fifth-day trace uses advantage factors 100,000 and 130,000, fixed damage scaling 3,000, width factors 77,034 and 100,000, and native post-counter aggregate attack 3,511,465,714 and 2,036,632,465 raw. The large attack terms are internal quantities.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "优势系数：攻方 100,000；罗贝尔守方 130,000",
+        "固定伤害缩放：3,000 / Q = 0.03",
+        "反制后有效攻击 R14：3,511,465,714 / 2,036,632,465 raw"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "M05",
+      "shot_id": "M05",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "第一步：优势乘固定伤害缩放",
+      "visual_lines": [
+        "攻方 floor(100,000 × 3,000 ÷ Q) = 3,000",
+        "罗贝尔守方 floor(130,000 × 3,000 ÷ Q) = 3,900",
+        "中间值不是阵亡人数"
+      ],
+      "zh": "原版第一步先把优势系数与固定伤害缩放相乘，接着除以十万并截断。进攻方十万乘三千，得到三亿；除十万，留下三千。罗贝尔守方十三万乘三千，得到三亿九千万；除十万，留下三千九百。这两个整数只是第一层内部因子，不是任何一方死了三千人。下一层会继续乘战线宽度份额；如果把这个乘法和后面的乘法合成一条实数公式，再在末尾才取整，就已经不是原版逐步运算了。画面左边的两支军队仍是刚才同一场墨西拿战斗，公式右边的顺序也与原生出伤链一致。",
+      "en": "First multiply advantage by the fixed 3,000 damage scale, dividing by 100,000 at this boundary. The attacker keeps 3,000 raw; Robert's defenders keep 3,900 raw. These are intermediate factors, not deaths.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "攻方 floor(100,000 × 3,000 ÷ Q) = 3,000",
+        "罗贝尔守方 floor(130,000 × 3,000 ÷ Q) = 3,900",
+        "中间值不是阵亡人数"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "M06",
+      "shot_id": "M06",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "第二步：乘各自的战宽份额",
+      "visual_lines": [
+        "攻方 floor(3,000 × 77,034 ÷ Q) = 2,311",
+        "罗贝尔守方 floor(3,900 × 100,000 ÷ Q) = 3,900",
+        "每步截断后再用该整数继续"
+      ],
+      "zh": "第二步把两边刚得到的整数分别乘战宽份额。进攻方三千乘七万七千零三十四，乘积是两亿三千一百一十万二千；除十万得两千三百一十一点零二，立即截断，留下两千三百一十一。罗贝尔守方三千九百乘封顶的十万，再除十万，仍是三千九百。注意这正是两军人数不对称的影响：攻方虽然有约一千九百二十一名还在战斗的人，但只有一千四百八十的战宽，输出被缩到百分之七十七点零三四；守方约一千二百二十二人，全部进入战宽。接下来不再使用两千三百一十一点零二的小数，而只能用两千三百一十一这个截断后的原始整数。",
+      "en": "Second, apply width. The attacker keeps floor(3,000 × 77,034 / 100,000) = 2,311. Robert keeps 3,900. Every following calculation uses these truncated integers.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "攻方 floor(3,000 × 77,034 ÷ Q) = 2,311",
+        "罗贝尔守方 floor(3,900 × 100,000 ÷ Q) = 3,900",
+        "每步截断后再用该整数继续"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "M07",
+      "shot_id": "M07",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "第三步：算出这一天双侧伤害",
+      "visual_lines": [
+        "攻方 floor(2,311 × 3,511,465,714 ÷ Q) = 81,149,972",
+        "守方 floor(3,900 × 2,036,632,465 ÷ Q) = 79,428,666",
+        "两项皆为内部出伤值，不能除 Q 当作死人"
+      ],
+      "zh": "第三步再乘各自反制后的有效攻击。进攻方两千三百一十一乘三十五亿一千一百四十六万五千七百一十四，除十万向零截断，得到八千一百一十四万九千九百七十二。罗贝尔守方三千九百乘二十亿三千六百六十三万二千四百六十五，同样除十万截断，得到七千九百四十二万八千六百六十六。两组结果逐项和原版这一战、这一天的出伤回读一致。它们仍是内部伤害值；绝不能把八千多万说成八千多万人，也不能直接把两边出伤相减宣布胜负。攻方这笔八千一百一十四万九千九百七十二，下一步会作为罗贝尔守方的入伤，逐支兵团经过自己的坚韧。守方的七千九百四十二万八千六百六十六，则由敌军兵团承受。",
+      "en": "Final fixed-point multiplication yields attacker outgoing damage 81,149,972 raw and Robert's outgoing damage 79,428,666 raw. Both match the native fifth-day trace. Damage is not a headcount; each receiving regiment still needs its own casualty calculation.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "攻方 floor(2,311 × 3,511,465,714 ÷ Q) = 81,149,972",
+        "守方 floor(3,900 × 2,036,632,465 ÷ Q) = 79,428,666",
+        "两项皆为内部出伤值，不能除 Q 当作死人"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "M08",
+      "shot_id": "M08",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "出伤接入伤：核对下一边界",
+      "visual_lines": [
+        "守方入伤 = 攻方出伤 81,149,972",
+        "原片守方显示约 1,222 → 1,156 人",
+        "底层守方 122,225,074 → 115,629,874 raw"
+      ],
+      "zh": "现在把出伤放回正在发生的墨西拿战斗。攻方的八千一百一十四万九千九百七十二，等于罗贝尔守军收到的入伤；罗贝尔军打出去的七千九百四十二万八千六百六十六，则交给进攻方各兵团。回到原始录像：结算前那一帧，战斗窗守方约一千二百二十二人、攻方约一千九百二十一人；之后分别约一千一百五十六与一千八百六十。底层守方总人数从一亿二千二百二十二万五千零七十四，变成一亿一千五百六十二万九千八百七十四，差值六百五十九万五千二百原始单位，折合约六十五点九五二人。但不能用两侧出伤直接推出这个差值，因为每一支兵团的坚韧、人数和软硬伤分账都还要各自计算。下面就沿着同一笔守方入伤，把账追到具体兵团。",
+      "en": "Attacker outgoing 81,149,972 is defender incoming damage. The original combat footage shows about 1,222 defenders before and 1,156 after; the native total changes from 122,225,074 to 115,629,874 raw. Regiment toughness and allocation explain the difference.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "守方入伤 = 攻方出伤 81,149,972",
+        "原片守方显示约 1,222 → 1,156 人",
+        "底层守方 122,225,074 → 115,629,874 raw"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "E1-F05",
+      "shot_id": "E1-F05",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "兵力原始值怎样变成人数",
+      "visual_points": [
+        "守方 122,225,074 ÷ 100,000 ≈ 1,222.25 人",
+        "罗贝尔征召兵 #50 6,282,657 ÷ 100,000 ≈ 62.83 人",
+        "罗贝尔长枪兵 #51 19,705,044 ÷ 100,000 ≈ 197.05 人"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "继续看这同一场墨西拿之战的原始第五日回执。防御方是玩家罗贝尔的军队：研究编号五十是征召兵军团，五十一是游戏名为‘长枪兵’的军团，六十五则关联骑士图尔吉塞。编号方便我们对账，不是你在战斗界面认兵种时要念的名字。先读懂屏幕和计算器的两种写法。守方参战人数的引擎原始整数是，一亿二千二百二十二万五千零七十四；除去十万倍的计算缩放，实际约一千二百二十二点二五人，并不是一亿多人。五十号征召兵团，原始整数六百二十八万二千六百五十七，除以十万，实际约六十二点八三人。五十一号长枪兵军团，原始整数一千九百七十万五千零四十四，除以十万，实际约一百九十七点零五人。界面通常显示取整后的人数；这次左边就是原始战局录像的对应状态，可以对照约一千二百二十二名守军。后续伤亡要分别落到兵团，不能只从守方总数扣一次。",
+      "en": "In the original Messina footage, Robert's defender total of 122,225,074 raw corresponds to about 1,222.25 people. His levy regiment #50 has 6,282,657 raw, about 62.83, and pikemen #51 have 19,705,044 raw, about 197.05.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_lines": [
+        "守方 122,225,074 ÷ 100,000 ≈ 1,222.25 人",
+        "罗贝尔征召兵 #50 6,282,657 ÷ 100,000 ≈ 62.83 人",
+        "罗贝尔长枪兵 #51 19,705,044 ÷ 100,000 ≈ 197.05 人"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "C01",
+      "shot_id": "C01",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "同一笔出伤，进入每支兵团",
+      "visual_lines": [
+        "守方入伤 D = 81,149,972：伤害值，不是人数",
+        "守方作战人数 S = 122,225,074 raw = 1,222.25074 人",
+        "逐兵团使用 n / S 和有效坚韧 T；无跨兵团先杀顺序"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "zh": "左边是罗贝尔守军同一场战斗的原片；战斗窗能看到剩余‘士兵’，却看不到整侧入伤 D 的内部大整数。刚才我们确实从这场仗算出了两侧出伤，但出伤不是死人。这一段把伤害走到每支兵团，直到伤亡写回。墨西拿第五日到第六日，守方收到的伤害原始值是八千一百一十四万九千九百七十二。它是伤害计算量，不是八千多万人。守方当前作战总兵力的原始值是一亿二千二百二十二万五千零七十四，除十万是约一千二百二十二点二五人。游戏对每支仍在主战的兵团，用同一笔入伤、这份守方总兵力、它自己的当前人数与有效坚韧，分别算一遍。不是先把伤害塞给排第一的兵团，扣光了才轮到下一支。",
+      "en": "One incoming damage value is evaluated separately for each active regiment against defender strength, its own current soldiers and effective toughness. There is no cross-regiment first-to-die queue.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "守方入伤 D = 81,149,972：伤害值，不是人数",
+        "守方作战人数 S = 122,225,074 raw = 1,222.25074 人",
+        "逐兵团使用 n / S 和有效坚韧 T；无跨兵团先杀顺序"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "C02",
+      "shot_id": "C02",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "罗贝尔征召兵 #50：三次截断",
+      "visual_lines": [
+        "份额 floor(D × Q ÷ S) = 66,393",
+        "比例 floor(66,393 × Q ÷ 1,000,000) = 6,639",
+        "损失 floor(6,282,657 × 6,639 ÷ Q) = 417,105 raw"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "zh": "看玩家罗贝尔军中的征召兵军团。研究回执叫它五十号，界面则让你按兵种和人数认出它。当前人数原始值六百二十八万二千六百五十七，按人折算是六十二点八二六五七。原版先用入伤乘十万除守方总人数，向零截断得份额六万六千三百九十三。再把这个份额乘十万、除它当天的有效坚韧一百万，再截断得到损失比例六千六百三十九，也就是百分之六点六三九。最后把兵团原始人数乘这个比例，除十万截断，得到总损失四十一万七千一百零五，按人折算是四点一七一零五。坚韧此处位于分母，越高则相同输入下通常损失越少。",
+      "en": "Robert's levy regiment is research ID 50. Its exact fixed-point steps are floor(D times Q divided by side strength)=66,393; floor(66,393 times Q divided by toughness 1,000,000)=6,639; floor(6,282,657 times 6,639 divided by Q)=417,105 raw, or 4.17105 people-equivalents.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "份额 floor(D × Q ÷ S) = 66,393",
+        "比例 floor(66,393 × Q ÷ 1,000,000) = 6,639",
+        "损失 floor(6,282,657 × 6,639 ÷ Q) = 417,105 raw"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "C03",
+      "shot_id": "C03",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "罗贝尔长枪兵 #51：三次截断",
+      "visual_lines": [
+        "floor(19,705,044 × 81,149,972 ÷ Q) = 15,990,637,688",
+        "floor(15,990,637,688 × Q ÷ 122,225,074) = 13,082,943",
+        "floor(13,082,943 × Q ÷ 4,224,000) = 309,728 raw"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "zh": "玩家罗贝尔军中的长枪兵军团，研究编号五十一，当前兵力原始值一千九百七十万五千零四十四，除十万是约一百九十七点零五人；有效坚韧四百二十二万四千。先把人数原始值乘入伤八千一百一十四万九千九百七十二，再除十万，截断为一百五十九亿九千零六十三万七千六百八十八。第二步把这个中间值乘十万，除守方总兵力一亿二千二百二十二万五千零七十四，截断为一千三百零八万二千九百四十三。最后必须再乘十万，除坚韧四百二十二万四千，截断得到伤亡原始值三十万九千七百二十八。除十万才是实际约三点一零人的兵员损失。每一步的乘十万和截断都不能省。",
+      "en": "Robert's pikemen regiment is research ID 51. It has 19,705,044 raw soldiers, or about 197.05 people. Its three fixed-point steps produce 15,990,637,688, then 13,082,943, then 309,728 raw casualties, or 3.09728 people.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "floor(19,705,044 × 81,149,972 ÷ Q) = 15,990,637,688",
+        "floor(15,990,637,688 × Q ÷ 122,225,074) = 13,082,943",
+        "floor(13,082,943 × Q ÷ 4,224,000) = 309,728 raw"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "C04",
+      "shot_id": "C04",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "骑士图尔吉塞 #65：两本账",
+      "visual_lines": [
+        "floor(99,111 × 81,149,972 ÷ Q) = 80,428,548",
+        "floor(80,428,548 × Q ÷ 122,225,074) = 65,803",
+        "floor(65,803 × Q ÷ 7,000,000) = 940 raw"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "zh": "六十五号对应的是罗贝尔军骑士图尔吉塞的一人战斗记录。存档直接把这条记录连到人物三万三千四百三十七；它在伤亡计算中位于兵士条目容器，却不是长枪兵那样的普通兵士种类。人数原始值九万九千一百一十一，除十万约零点九九人；坚韧原始值七百万。沿用该条目容器的整数路径，先用人数乘入伤除十万，得八千零四十二万八千五百四十八。再把这个中间值乘十万，除守方总兵力，得六万五千八百零三。第三步还要乘十万，除七百万坚韧，才截断为九百四十原始伤亡，也就是零点零零九四人。这是兵团人数账。后来它关联的人物是否受伤或死亡，还要单独看骑士事件，不能把九百四十直接叫作一名骑士阵亡。",
+      "en": "Research ID 65 is the one-person combat entry for Robert's knight Turgise, character 33,437. It is stored in the men-at-arms entry path but is not an ordinary men-at-arms type. The arithmetic yields 80,428,548, then 65,803, then 940 raw soldier losses; character injury or death is separate.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "floor(99,111 × 81,149,972 ÷ Q) = 80,428,548",
+        "floor(80,428,548 × Q ÷ 122,225,074) = 65,803",
+        "floor(65,803 × Q ÷ 7,000,000) = 940 raw"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "C05",
+      "shot_id": "C05",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "损失如何分成软伤、硬伤",
+      "visual_lines": [
+        "主战硬伤拆分比例 36,000 ÷ Q = 36%",
+        "罗贝尔征召兵 #50：417,105 = 硬 150,157 + 软 266,948 raw",
+        "罗贝尔长枪兵 #51：309,728 = 硬 111,502 + 软 198,226 raw"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "zh": "游戏战斗窗把软伤一侧称为‘溃逃士兵’，把永久硬伤一侧称为‘战死士兵’；后者也包括重伤到不能再战的人。再把总伤亡分成这两本账。这一日核对到的有效硬伤拆分比例原始值三万六千，除十万是百分之三十六。五十号征召兵损失四十一万七千一百零五原始值，乘三万六千再除十万，截断得硬伤十五万零一百五十七；剩余软伤二十六万六千九百四十八。五十一号长枪兵损失三十万九千七百二十八，按同样的最终有效系数，硬伤十一万一千五百零二，软伤十九万八千二百二十六。都要除十万才是人数：五十号硬伤约一点五零人、软伤约二点六七人；五十一号硬伤约一点一二人、软伤约一点九八人。当前作战人数减去总损失。硬伤在这里指永久兵员损失，不代表骑士人物死亡。",
+      "en": "The effective hard-loss split is 36,000 raw, or 36%. Regiment 50 splits 417,105 raw into 150,157 hard and 266,948 soft. Regiment 51 splits 309,728 into 111,502 hard and 198,226 soft. Divide each soldier count by Q; hard loss is not proof of a character death.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "主战硬伤拆分比例 36,000 ÷ Q = 36%",
+        "罗贝尔征召兵 #50：417,105 = 硬 150,157 + 软 266,948 raw",
+        "罗贝尔长枪兵 #51：309,728 = 硬 111,502 + 软 198,226 raw"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 275,
+      "target_time_seconds": 280
+    },
+    {
+      "id": "C10",
+      "shot_id": "C10",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "这场仗真实的追击与永久损失",
+      "visual_lines": [
+        "顶部现役 0；原片 420 秒下方红字 761 为败退兵力",
+        "累计硬伤 46,367,776 → 48,432,891 → 50,524,590 → 52,645,351 raw",
+        "三日分别 +2,065,115 / +2,091,699 / +2,120,761 raw；合计 62.77575 人当量"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "zh": "现在看这场墨西拿战斗后半段。第 28 日进入追击，顶部战斗提示里，罗贝尔守方仍在作战的现役人数已经是零；但原片四百二十秒下方战斗窗的红字仍显示七百六十一名败退兵力。零说的是现役，七百六十一说的是败退，不能混为一谈。原生回执里，守方第 28 日累计硬伤四千六百三十六万七千七百七十六原始单位，除十万约四百六十三点六八人当量。第 29 日升到四千八百四十三万二千八百九十一，比前一天增加二百零六万五千一百一十五，约二十点六五人。第 30 日升到五千零五十二万四千五百九十，再增二百零九万一千六百九十九，约二十点九二人。第 31 日升到五千二百六十四万五千三百五十一，再增二百一十二万零七百六十一，约二十一点二一人。三日新增合计六百二十七万七千五百七十五，折合六十二点七七五七五人当量。这是同一场战斗真实追击中继续增长的永久兵员损失。",
+      "en": "In the actual Messina pursuit, the top tooltip shows zero active Robert fighters; the lower red combat-window number is 761 retreating soldiers at source second 420. Those are different counts. Defender cumulative hard loss rises from 46,367,776 raw on day 28 by 2,065,115, 2,091,699 and 2,120,761 raw on days 29–31, a three-day increase of 6,277,575 raw or 62.77575 person-equivalents.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_points": [
+        "顶部现役 0；原片 420 秒下方红字 761 为败退兵力",
+        "累计硬伤 46,367,776 → 48,432,891 → 50,524,590 → 52,645,351 raw",
+        "三日分别 +2,065,115 / +2,091,699 / +2,120,761 raw；合计 62.77575 人当量"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "source_time_seconds": 400,
+      "target_time_seconds": 420
+    },
+    {
+      "id": "E1-F02",
+      "shot_id": "E1-F02",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "战前提示不是整场胜率",
+      "visual_points": [
+        "战前提示：当前力量比较",
+        "实战：按阶段、按游戏日结算",
+        "内部比例 ≠ 整场获胜概率"
+      ],
+      "evidence": "docs/ck3-native-ai/combat-prediction.md；原始墨西拿实机",
+      "zh": "现在回头看战前预测，别把它误当成刚才这套逐日账的最终概率。原版预测比较眼前双方的相对力量，并给玩家‘可能获胜’等等级提示；真正的战斗按阶段和游戏日继续走。即使研究路径里看到零点六的内部比较值，也不能把它念成百分之六十的整场获胜概率。这场墨西拿战斗，我们展示的是同日出伤、逐团损失和之后观察到的追击；判断战前提示时，要把它与实际结算分开。",
+      "en": "Native pre-battle prediction is a current relative-power comparison with qualitative UI labels. A research ratio of 0.6 is not a calibrated 60% probability of winning the whole battle. The Messina calculations shown here belong to the daily resolver.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_lines": [
+        "战前提示：当前力量比较",
+        "实战：按阶段、按游戏日结算",
+        "内部比例 ≠ 整场获胜概率"
+      ],
+      "source_label": "原版通用预测机制 · 墨西拿原始实机作说明",
+      "source_time_seconds": 250,
+      "target_time_seconds": 260
+    },
+    {
+      "id": "E1-F23",
+      "shot_id": "E1-F23",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "这份同场计算怎样交给智能体",
+      "visual_points": [
+        "复算输入：当日战宽、人数、优势、固定缩放、有效攻击",
+        "同场出伤：攻方 81,149,972 / 罗贝尔守方 79,428,666",
+        "逐团坚韧解释局部兵损；追击回读硬伤变化"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "这笔账也可以交给游玩智能体的研究内核。复算墨西拿第五日两侧出伤，输入除了同日战宽、两侧人数和反制后的有效攻击，还必须带上当日优势系数和固定伤害缩放。代入后，攻方出伤八千一百一十四万九千九百七十二，守方出伤七千九百四十二万八千六百六十六。前者成为罗贝尔守军入伤，再按每支兵团自己的人数与坚韧，得到征召兵、长枪兵及骑士一人条目的局部兵员损失，与下一日回执比对。追击段则能读出同场累计硬伤仍在增加。这样，研究内核已经能解释这一天部分损失，比较战场条件变化对局部出伤的影响；它使用的就是片中这套同日整数步骤。",
+      "en": "The agent research kernel can reproduce this battle day's local calculation when given same-day width, strength, advantage factors, fixed damage scaling, and post-counter effective attack. The resulting 81,149,972 and 79,428,666 outgoing values feed regiment-level loss explanations and conditional comparisons; the pursuit trace supplies observed hard-loss changes.",
+      "visual_lines": [
+        "复算输入：当日战宽、人数、优势、固定缩放、有效攻击",
+        "同场出伤：攻方 81,149,972 / 罗贝尔守方 79,428,666",
+        "逐团坚韧解释局部兵损；追击回读硬伤变化"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "source_time_seconds": 400,
+      "target_time_seconds": 420
+    },
+    {
+      "id": "E1-F24",
+      "shot_id": "E1-F24",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "下次看战斗，按这条顺序找数字",
+      "visual_points": [
+        "玩家界面：双方、地形、战宽、优势、人数",
+        "相邻日：读战斗窗与溃逃/战死显示",
+        "研究回执：逐团 raw、有效坚韧、截断步骤"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "下次旁观自己的存档，可以先读玩家真正看得到的东西：谁在进攻、战场位置、兵种、人数、地形、战线宽度和优势。游戏日推进后，对照战斗窗前后兵力，以及溃逃士兵、战死士兵的显示。若要像本片这样追到逐团原始整数、有效坚韧和每次截断，就得另用同场原生回执；这些大数不是界面上的隐藏按钮。墨西拿这一日，进攻方约一千九百二十一人，对应战宽一千四百八十；守方从约一千二百二十二变成约一千一百五十六。先把界面里可见的变化认准，再让回执解释其关键计算。",
+      "en": "In the game UI, identify the attacking armies, terrain, width, advantage, troop counts, and visible routed or killed losses. Exact per-regiment raw strength, effective toughness, and truncation steps come from the same-battle research trace, not from a hidden UI button. Messina's displayed defenders change from 1,222 to 1,156.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_lines": [
+        "玩家界面：双方、地形、战宽、优势、人数",
+        "相邻日：读战斗窗与溃逃/战死显示",
+        "研究回执：逐团 raw、有效坚韧、截断步骤"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "source_time_seconds": 300,
+      "target_time_seconds": 390
+    },
+    {
+      "id": "E1-F25",
+      "shot_id": "E1-F25",
+      "chapter_id": "episode-01-r7",
+      "visual_kind": "card",
+      "visual_title": "回到墨西拿：一场战斗、一条计算链",
+      "visual_points": [
+        "森林战宽 1,480；攻方宽度份额 77,034 raw",
+        "同日出伤：81,149,972 / 79,428,666 内部值",
+        "追击三日新增硬伤约 62.78 人当量；罗贝尔守方落败"
+      ],
+      "evidence": "原始录像 gameplay-precontact-r2.mkv；原始逐日回执；Messina outgoing board v2",
+      "zh": "回到墨西拿。森林把基础战宽一千六百四十五变成一千四百八十；约一千九百二十一名进攻者受限，宽度份额原始值七万七千零三十四。优势、固定缩放和反制后攻击依次进入整数公式，得到攻方出伤八千一百一十四万九千九百七十二，罗贝尔守方出伤七千九百四十二万八千六百六十六。前者落到守方兵团，我们沿征召兵、长枪兵和骑士图尔吉塞的一人战斗记录，核对了局部兵员损失与软硬伤拆分；原片也显示守方从一千二百二十二变为一千一百五十六。战斗后段，守方现役归零，追击三日让累计硬伤再增加约六十二点七八人当量，最终守方落败。下次战斗窗数字跳动时，就从这一条线追问：战宽限制了谁，伤害落到哪里，坚韧又让谁留在战线上。",
+      "en": "Messina's forest width is 1,480; attack width fraction is 77,034 raw. Same-day outgoing damage is 81,149,972 for the attacker and 79,428,666 for Robert. The film follows three representative defender entries through local losses, then observes 62.77575 further person-equivalents of hard loss across three pursuit days before Robert's defeat.",
+      "subtitle_mode": "paragraph",
+      "ui_bridge": "左：原始实机画面，面板人数取整；右：同场原生回执与内部算式",
+      "redraw_card": true,
+      "visual_lines": [
+        "森林战宽 1,480；攻方宽度份额 77,034 raw",
+        "同日出伤：81,149,972 / 79,428,666 内部值",
+        "追击三日新增硬伤约 62.78 人当量；罗贝尔守方落败"
+      ],
+      "source_label": "墨西拿原始战局 · CombatID 16777218 · 同场回执",
+      "source_time_seconds": 420,
+      "target_time_seconds": 423
+    }
+  ]
+}
