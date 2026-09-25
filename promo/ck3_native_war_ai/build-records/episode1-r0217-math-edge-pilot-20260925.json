@@ -1,0 +1,61 @@
+{
+  "schema": "ck3-war-ai.r0217-math-edge-pilot-build.v1",
+  "date": "2026-09-25",
+  "state": "uploaded-machine-checked-pending-human-review",
+  "human_signoff": "not-provided",
+  "title": "原版战争结算：把一天伤害算给你看",
+  "game_version": "CK3 1.19.0.6",
+  "native_evidence": "docs/ck3-native-ai/battle-simulation.md, R0217 one main-phase tick",
+  "gameplay_context": "Separate Messina replay, expressly labelled as non-R0217",
+  "toolchain": {
+    "formal_release": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.2.1",
+    "version": "0.2.1",
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "project_config": "promo/ck3_native_war_ai/episode-01-battle-win-probability/math-ledger-pilot/project/promo-project.json",
+    "run_manifest": "D:/workspace/ck3_native_war_ai_promo_work/episode01-edge-math-sample-003/run/run-manifest.json",
+    "failed_attempts_preserved": [
+      "D:/workspace/ck3_native_war_ai_promo_work/episode01-edge-math-sample-001",
+      "D:/workspace/ck3_native_war_ai_promo_work/episode01-edge-math-sample-002"
+    ]
+  },
+  "narration": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-12%",
+    "cue_count": 8
+  },
+  "theme": {
+    "source_sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f",
+    "music_gain_db": -17,
+    "voice_gain_db": 0,
+    "ducking": false
+  },
+  "film": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-edge-math-sample-003/CK3-War-AI-Episode-1-R0217-Math-EdgeTTS-Pilot-20260925.mp4",
+    "bytes": 24330885,
+    "sha256": "f2ab9925507ce9051a577b6db9d8afacfc74987baa5506a43fd4c87e4e15d1d7",
+    "duration_seconds": 283.354688,
+    "resolution": [2560, 1440],
+    "fps": "30/1",
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "full_audio_video_decode": "passed"
+  },
+  "delivery": {
+    "method": "OneDrive desktop client, existing fixed selective-sync folder",
+    "destination": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-War-AI-Episode-1-R0217-Math-EdgeTTS-Pilot-20260925.mp4",
+    "local_copy_sha256_match": true,
+    "client_status": "已上传到 CK3-War-AI-20260923",
+    "client_readback": "D:/workspace/ck3_native_war_ai_promo_work/episode01-edge-math-sample-003/onedrive/client-readback-003.json",
+    "other_cloud_file_content_read_or_downloaded_by_this_task": false
+  },
+  "machine_visual_review": {
+    "performed_after_upload": true,
+    "frames_checked": 16,
+    "contact_sheets": 2,
+    "result": "No observed formula/subtitle collision; battle hotspot remains visible in the opening clip",
+    "report": "D:/workspace/ck3_native_war_ai_promo_work/episode01-edge-math-sample-003/review-after-upload/machine-review-report.json",
+    "limit": "Sampled frames and full decode do not constitute 1x human viewing"
+  },
+  "scope": "One native tick arithmetic pilot. Does not assert complete R14 reconstruction, later events, whole-battle outcome, or win probability."
+}

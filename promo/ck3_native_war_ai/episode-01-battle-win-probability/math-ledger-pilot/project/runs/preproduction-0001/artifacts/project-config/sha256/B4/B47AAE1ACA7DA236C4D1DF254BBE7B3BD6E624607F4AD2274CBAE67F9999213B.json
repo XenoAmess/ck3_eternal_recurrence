@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-native-war-ai-episode-01-math-pilot",
+    "title": "CK3-R0217-Math-Pilot"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "default"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": null
+  },
+  "chapters": []
+}
