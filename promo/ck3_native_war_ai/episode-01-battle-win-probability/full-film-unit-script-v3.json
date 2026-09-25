@@ -1,0 +1,399 @@
+{
+  "format_version": 1,
+  "purpose": "Episode 1 numbered native-calculation cut; distinct receipts never combined; R4 raw-to-people units stated beside every scaled headcount",
+  "cues": [
+    {
+      "id": "E1-F01",
+      "shot_id": "E1-F01",
+      "chapter_id": "hook",
+      "visual_kind": "gameplay",
+      "gameplay_start_seconds": 0,
+      "gameplay_seconds": 32,
+      "visual_title": "一场仗，不是一张力量表",
+      "visual_points": [
+        "原版实机：墨西拿战斗",
+        "战斗沿游戏日期推进",
+        "本集跟着算法走一遍"
+      ],
+      "evidence": "墨西拿同存档独立重放；镜头与原始研究回执第 6 天后分叉",
+      "zh": "地图上，两支军队已经在墨西拿接战。我们通常先看人数，再看面板上的强弱提示，仿佛胜负已经写好。但把画面慢下来，就会发现一场仗不是一次比较，而是一串连续的计算：谁进场，谁能在战宽里出手，当天造成多少伤害，谁只是溃退，谁永久损失，第二天还能留下多少人。本集不报一个未经校准的胜率。我想带你沿着原版的计算顺序，从这张地图走进它每天更新的状态。",
+      "en": "At Messina, two armies are already fighting. We follow the native sequence from participants and width to damage, casualties, and the next day's state. This edition explains verified mechanics without claiming a calibrated whole-battle win probability."
+    },
+    {
+      "id": "E1-F02",
+      "shot_id": "E1-F02",
+      "chapter_id": "hook",
+      "visual_kind": "card",
+      "visual_title": "先分清两种问题",
+      "visual_points": [
+        "战前预测：当前力量比较",
+        "实战结算：阶段与每日状态",
+        "比例不能直接念成胜率"
+      ],
+      "evidence": "docs/ck3-native-ai/battle-simulation.md；combat-prediction.md",
+      "zh": "第一件容易混淆的事，是游戏在开打之前给出的预测，和开打之后的实际结算。原版确实有一条确定性的战斗预测路径，会比较当前双方的相对力量；真正的战斗则由另一条按阶段、按日推进的路径处理。前者面对的是眼前这组条件，后者还会遇到将领掷骰、伤亡分配和事件反馈。假如屏幕出现零点六，那只能按对应字段的定义读成比较比例，不能未经证明就翻译成百分之六十获胜。我们先不猜结果，先把输入找齐。",
+      "en": "Native pre-battle prediction and the day-by-day resolver are distinct paths. A relative-power ratio answers a current comparison; it is not automatically a probability of winning the whole battle."
+    },
+    {
+      "id": "E1-F03",
+      "shot_id": "E1-F03",
+      "chapter_id": "hook",
+      "visual_kind": "gameplay",
+      "gameplay_start_seconds": 32,
+      "gameplay_seconds": 31,
+      "visual_title": "镜头与数字各有出处",
+      "visual_points": [
+        "画面：同存档独立重放",
+        "人数：原始整数 ÷ 100,000",
+        "精确数值：绑定研究回执"
+      ],
+      "evidence": "camera-follow-footage-ledger.md；CK3 1.19.0.6",
+      "zh": "你现在看到的是原版十字军之王三的实机，镜头自动追着墨西拿战场走。这是同一接触点存档的独立重放，和研究数值所用的原始战局在第六天以后分叉。因此，画面上的几百或几千人，是这一次重放当时的界面人数；后面逐项计算的精确数字，来自另外标明日期和战斗身份的原始回执。还有一个更重要的单位问题：引擎保存兵团人数和伤亡时，常用放大十万倍的原始整数。凡是这类数字，我会先说原始值，再除以十万，报出实际约多少人。伤害、战宽、角色编号则各有自己的单位，不能统统当成人数。",
+      "en": "Footage is a separate replay. For regiment strength and casualty registers, divide raw fixed-point integers by 100,000 to get people-equivalent values. Damage and IDs are not headcounts."
+    },
+    {
+      "id": "E1-F04",
+      "shot_id": "E1-F04",
+      "chapter_id": "inputs",
+      "visual_kind": "card",
+      "visual_title": "第一步：绑定参战身份",
+      "visual_points": [
+        "R0217 战斗 ID 738197508",
+        "同一日、同一双方顺序",
+        "44 条兵团记录逐项绑定"
+      ],
+      "evidence": "battle-simulation.md R0217；原版 combat identity 与兵团记录",
+      "zh": "先认准我们到底在算哪一场。一个已核验的原版主战日，战斗编号是七亿三千八百一十九万七千五百零八，双方合计有四十四条兵团记录。四十四条不是一个平均兵种，而是各自带有编号、阵营和当前人数的对象。复算时要同时锁住战斗编号、游戏日期、战场省份和双方顺序。若把另一日的兵力或另一次重放的伤亡塞进来，即使公式完全正确，结果也没有意义。后面我会把这个四十四条的出伤案例，和墨西拿另一份第五日守方伤亡案例，明确分开。",
+      "en": "A verified R0217 tick binds CombatID 738197508 and 44 regiment records. Dates, sides, and replay identity stay bound; the later Messina casualty example is a separate receipt."
+    },
+    {
+      "id": "E1-F05",
+      "shot_id": "E1-F05",
+      "chapter_id": "inputs",
+      "visual_kind": "card",
+      "gameplay_start_seconds": 63,
+      "gameplay_seconds": 32,
+      "visual_title": "兵力原始值怎样变成人数",
+      "visual_points": [
+        "守方 122,225,074 ÷ 100,000 ≈ 1,222.25 人",
+        "#50 6,282,657 ÷ 100,000 ≈ 62.83 人",
+        "#51 19,705,044 ÷ 100,000 ≈ 197.05 人"
+      ],
+      "evidence": "墨西拿原始 b005-control.json；b006-control.json；Q100000",
+      "zh": "换到墨西拿原始回执的第五日，先读懂屏幕和计算器的两种写法。守方参战人数的引擎原始整数是，一亿二千二百二十二万五千零七十四；除去十万倍的计算缩放，实际约一千二百二十二点二五人，并不是一亿多人。五十号征召兵团，原始整数六百二十八万二千六百五十七，除以十万，实际约六十二点八三人。五十一号职业兵团，原始整数一千九百七十万五千零四十四，除以十万，实际约一百九十七点零五人。界面通常显示取整后的人数，旁边的实机又是独立重放，所以它不会逐帧等于这份第五日回执。后续伤亡要分别落到兵团，不能只从守方总数扣一次。",
+      "en": "Original Messina day 5 defender raw 122,225,074 / Q is about 1,222.25 people. Regiment #50 raw 6,282,657 is about 62.83; #51 raw 19,705,044 is about 197.05. Footage is a separate replay."
+    },
+    {
+      "id": "E1-F06",
+      "shot_id": "E1-F06",
+      "chapter_id": "inputs",
+      "visual_kind": "card",
+      "visual_title": "地形、渡口与接战方向",
+      "visual_points": [
+        "墨西拿基础战宽 1,645",
+        "森林倍率 90,000 ÷ 100,000 = 0.9",
+        "最终战宽截断为 1,480"
+      ],
+      "evidence": "墨西拿原始战场回执；battle-simulation.md 战宽路径",
+      "zh": "再看地形如何进入一个真正的数。墨西拿这一战在对应日期读到基础战宽一千六百四十五，森林的定点倍率是九万，也就是零点九。先算一千六百四十五乘九万，除以十万，得到一千四百八十点五；原版按整数截断，最终战宽是一千四百八十。渡口仍必须由实际进入目标省份的最后一段边和攻守身份判定，不能凭地图截图猜一条河。森林这个一千四百八十的结果，随后才会和两侧当天还在战斗的人数相比。",
+      "en": "Messina width: 1,645 times forest multiplier 90,000 / 100,000 is 1,480.5, truncated to 1,480. Crossing depends on the native final contact edge."
+    },
+    {
+      "id": "E1-F07",
+      "shot_id": "E1-F07",
+      "chapter_id": "inputs",
+      "visual_kind": "card",
+      "visual_title": "战宽：能同时出手的范围",
+      "visual_points": [
+        "战宽 1,269：未放大的宽度",
+        "本例人数 2,324 / 215：直接按人读",
+        "比例 54,604 ÷ 100,000 = 54.604%"
+      ],
+      "evidence": "battle-simulation.md R0217；Q100000",
+      "zh": "这里先分清三种数字。在另一份标为 R 零二一七的原版主战日，战宽一千二百六十九是宽度参数，直接读，不再除十万。该回执里的二千三百二十四人和二百一十五人，也已经是按人读的现役人数。只有下面算出的比例保留了十万倍定点缩放：一千二百六十九乘十万，除以二千三百二十四，向下截断得到原始比例五万四千六百零四；去掉缩放就是零点五四六零四，也就是百分之五十四点六零四。二百一十五人没有碰到战宽上限，比例封顶十万，即百分之百。这样，宽度参数、界面人数和定点比例不会混成一类。",
+      "en": "R0217 width 1,269 and displayed fighting counts 2,324 / 215 are direct units. Only the resulting fraction 54,604 is scaled: divide by 100,000 to obtain 54.604%."
+    },
+    {
+      "id": "E1-F08",
+      "shot_id": "E1-F08",
+      "chapter_id": "inputs",
+      "visual_kind": "gameplay",
+      "gameplay_start_seconds": 95,
+      "gameplay_seconds": 31,
+      "visual_title": "四个有效属性，不是面板底值",
+      "visual_points": [
+        "有效伤害原始属性：37,000,000 → 18,500,000",
+        "有效坚韧原始属性：7,400,000 → 3,700,000",
+        "这些是属性计算量，不是士兵人数"
+      ],
+      "evidence": "combat-phase-feedback-battle-horizon.md 骑士伤情；battle-simulation.md 有效属性",
+      "zh": "兵种卡片的基础值不能直接代替战场有效值。原版对象会给出当前伤害、坚韧、追击和掩护四维属性。这里出现的大整数是有效属性的计算原始值，不是几千万士兵。一个可核对的事件反馈里，骑士受伤后英勇由四降到二；下一日边界，有效伤害原始值从三千七百万降到一千八百五十万，恰好减半，有效坚韧原始值从七百四十万降到三百七十万，也恰好减半。这里的除二只说明这一条已观察到的状态变化。它们会影响下一次伤害计算，但绝不能拿这些属性数直接和界面人数比较。",
+      "en": "Effective damage and toughness figures are raw attribute quantities, not soldiers. A witnessed wound halves the knight's prowess and these two effective attributes."
+    },
+    {
+      "id": "E1-F09",
+      "shot_id": "E1-F09",
+      "chapter_id": "daily",
+      "visual_kind": "card",
+      "visual_title": "战斗是一台阶段机器",
+      "visual_points": [
+        "墨西拿第 1–3 日：机动",
+        "第 4 日：首个主战日",
+        "第 5 日：下一主战日"
+      ],
+      "evidence": "墨西拿 original_case.json phase_traces；battle-simulation.md",
+      "zh": "原生战斗先走阶段，再走当天的结算。墨西拿这份原始战局，第一、第二、第三日仍在机动；第四日才进入主战，第五日是后续主战日。于是第五日的当前兵力，不可能继续用第一日开战画面的数。主战以后还可能进入追击和结束，但这部片逐步算出的数字只覆盖已经闭合的主战出伤与伤亡。每前进一个游戏日，先读新的阶段、双方兵团当前人数和优势状态，再按这一日的公式走。",
+      "en": "The original Messina trace spends days 1–3 in maneuver, enters main battle on day 4, then continues main battle on day 5. Daily inputs must be refreshed."
+    },
+    {
+      "id": "E1-F10",
+      "shot_id": "E1-F10",
+      "chapter_id": "daily",
+      "visual_kind": "gameplay",
+      "gameplay_start_seconds": 126,
+      "gameplay_seconds": 33,
+      "visual_title": "优势与将领掷骰",
+      "visual_points": [
+        "R0217 side0：优势系数 100,000",
+        "R0217 side1：优势系数 145,000",
+        "同一缩放 3,000，后续逐步截断"
+      ],
+      "evidence": "battle-simulation.md R0217；原版主战出伤路径",
+      "zh": "优势不能凭固定统帅值推整场。在 R 零二一七这一个已绑定的日结算里，零号侧的当日优势系数是十万，也就是一；一号侧是十四万五千，也就是一点四五。原版这一路径的伤害缩放是三千，也就是零点零三。于是零号侧第一乘是十万乘三千除十万，仍为三千；一号侧是十四万五千乘三千除十万，得到四千三百五十。这个整数继续交给战宽和有效攻击的下一步，不能把一天的掷骰当作整场常数。",
+      "en": "For R0217, side 0's advantage multiplier 100,000 yields 3,000 after the 3,000 scaling; side 1's 145,000 yields 4,350. The next steps use these truncated integers."
+    },
+    {
+      "id": "E1-F11",
+      "shot_id": "E1-F11",
+      "chapter_id": "daily",
+      "visual_kind": "card",
+      "visual_title": "把当天出伤拆成四步",
+      "visual_points": [
+        "side1 优势 145,000 × 缩放 3,000",
+        "第一步截断为 4,350",
+        "第二步乘宽度 54,604 → 2,375"
+      ],
+      "evidence": "battle-simulation.md R0217 原版主战出伤；Q100000",
+      "zh": "把 R 零二一七的一号侧主战出伤直接列出来。优势系数十四万五千乘原版伤害缩放三千，除十万并截断，第一步是四千三百五十。再把四千三百五十乘战宽占比五万四千六百零四，除十万，整数第二步是两千三百七十五。到这里还不是最终伤害，只是接下来乘反制后有效攻击的中间系数。原版每一步都把截断后的整数交给下一步，这就是这一日实际执行的计算。",
+      "en": "R0217 side 1: floor(145,000×3,000/100,000)=4,350; floor(4,350×54,604/100,000)=2,375 before effective attack."
+    },
+    {
+      "id": "E1-F12",
+      "shot_id": "E1-F12",
+      "chapter_id": "daily",
+      "visual_kind": "card",
+      "visual_title": "十万分之一的定点数",
+      "visual_points": [
+        "第三步：2,375 × 4,911,382,134",
+        "除 100,000 → 116,645,325 raw",
+        "side0 同理得 12,414,304 raw"
+      ],
+      "evidence": "battle-simulation.md R0217 原版出伤回执；Q100000",
+      "zh": "继续 R 零二一七的一号侧。反制后有效攻击在这一次回执里是四十九亿一千一百三十八万二千一百三十四个原始单位。刚才保留下来的两千三百七十五，乘这个攻击值、除十万并截断，最终一号侧当天出伤是一亿一千六百六十四万五千三百二十五。零号侧则用自己的三千和四亿一千三百八十一万零一百四十四，有效宽度比例封顶十万，算出一千二百四十一万四千三百零四。两侧的原版回读与这两个结果一致。",
+      "en": "R0217 side 1 final: floor(2,375×4,911,382,134/100,000)=116,645,325 raw. Side 0 computes 12,414,304 raw."
+    },
+    {
+      "id": "E1-F13",
+      "shot_id": "E1-F13",
+      "chapter_id": "daily",
+      "visual_kind": "card",
+      "visual_title": "实算守方入伤：征召兵",
+      "visual_points": [
+        "入伤 81,149,972：伤害值，不是人数",
+        "#50 6,282,657 ÷ Q ≈ 62.83 人",
+        "损失 417,105 ÷ Q ≈ 4.17105 人"
+      ],
+      "evidence": "墨西拿原始 b005/b006-control.json；combat_core.py levy 分支",
+      "zh": "现在用墨西拿原始回执第五日到第六日，实算守方收到的伤害。攻击方当日出伤的原始计算值八千一百一十四万九千九百七十二，是伤害，不是八千多万人；守方参战人数原始值一亿二千二百二十二万五千零七十四，除以十万是约一千二百二十二点二五人。五十号征召兵的当前人数原始值六百二十八万二千六百五十七，换算后约六十二点八三人；有效坚韧原始值一百万，也是属性，不是人数。先用入伤乘十万再除守方总人数原始值，截断得到份额原始值六万六千三百九十三。再用这份额乘十万除坚韧，得到损失比例原始值六千六百三十九，相当于百分之六点六三九。最后用兵团人数原始值六百二十八万二千六百五十七乘六千六百三十九除十万，截断得到伤亡原始值四十一万七千一百零五；去掉十万倍人数缩放，实际约损失四点一七人。下一日的兵团原始人数确实少了这个数。",
+      "en": "Incoming raw damage 81,149,972 is not people. Defender raw strength 122,225,074 is about 1,222.25 people; levy #50 raw 6,282,657 is about 62.83. Raw loss 417,105 / Q is 4.17105 people-equivalent."
+    },
+    {
+      "id": "E1-F14",
+      "shot_id": "E1-F14",
+      "chapter_id": "daily",
+      "visual_kind": "card",
+      "gameplay_start_seconds": 159,
+      "gameplay_seconds": 32,
+      "visual_title": "实算守方入伤：职业兵",
+      "visual_points": [
+        "#51 19,705,044 ÷ Q ≈ 197.05 人",
+        "中间值 15,990,637,688 → 13,082,943：伤害计算量",
+        "损失 309,728 ÷ Q ≈ 3.09728 人"
+      ],
+      "evidence": "墨西拿原始 b005/b006-control.json；combat_core.py MAA 分支",
+      "zh": "同一笔入伤进入五十一号职业兵时，原版换了乘除顺序。五十一号当前人数的原始整数是一千九百七十万五千零四十四，除十万以后实际约一百九十七点零五人。入伤原始计算值仍是八千一百一十四万九千九百七十二；有效坚韧原始值四百二十二万四千。这两个是伤害和属性，不是人口。先把兵团人数原始值乘入伤原始值，除十万并截断，得中间计算值一百五十九亿九千零六十三万七千六百八十八；它仍然不是人数。再乘十万，除守方参战人数原始值一亿二千二百二十二万五千零七十四，得到另一中间值一千三百零八万二千九百四十三。最后乘十万，除有效坚韧原始值四百二十二万四千，得到兵团伤亡原始值三十万九千七百二十八；除十万，实际约损失三点一零人。下一日五十一号兵团的原始人数，正好减少三十万九千七百二十八。",
+      "en": "Regiment #51 raw strength 19,705,044 / Q is 197.05 people. Intermediate arithmetic values are not people. Final raw casualty 309,728 / Q is about 3.09728 people."
+    },
+    {
+      "id": "E1-F15",
+      "shot_id": "E1-F15",
+      "chapter_id": "daily",
+      "visual_kind": "card",
+      "visual_title": "软硬伤亡怎样写回",
+      "visual_points": [
+        "#50 损失 417,105 ÷ Q = 4.17105 人",
+        "#51 损失 309,728 ÷ Q = 3.09728 人",
+        "#50 剩余 5,865,552 ÷ Q ≈ 58.66 人"
+      ],
+      "evidence": "墨西拿原始 b005/b006-control.json；battle-simulation.md 硬伤亡换算",
+      "zh": "最后把伤亡写回。第五日这侧的有效软转硬系数原始值三万六千，除十万是百分之三十六；这里只断言核对过的最终有效系数。五十号总伤亡原始值四十一万七千一百零五，换算实际四点一七一零五人。乘系数再截断，硬伤亡原始值十五万零一百五十七，实际一点五零一五七人；总数减去它，软伤亡原始值二十六万六千九百四十八，实际二点六六九四八人。五十一号总伤亡原始值三十万九千七百二十八，实际三点零九七二八人。其中硬伤亡原始值十一万一千五百零二，即一点一一五零二人；软伤亡原始值十九万八千二百二十六，即一点九八二二六人。五十号人数原始值六百二十八万二千六百五十七，减去当日损失原始值四十一万七千一百零五，剩五百八十六万五千五百五十二；除十万，实际从约六十二点八三降到约五十八点六六人。界面会取整显示，原版下一日原始回执的计算整数则逐项吻合。",
+      "en": "Raw losses divide by Q: #50 total 417,105 = 4.17105 people, hard 150,157 = 1.50157, soft 266,948 = 2.66948. #51 total 309,728 = 3.09728, hard 111,502 = 1.11502, soft 198,226 = 1.98226. #50 remaining raw 5,865,552 = 58.65552 people."
+    },
+    {
+      "id": "E1-F16",
+      "shot_id": "E1-F16",
+      "chapter_id": "events",
+      "visual_kind": "card",
+      "visual_title": "骑士事件先被排进日程",
+      "visual_points": [
+        "载入事件表：13 行",
+        "本次选中全局索引 11",
+        "排程、执行、状态回读分三处"
+      ],
+      "evidence": "messina_selected_phase_event_row.json；combat-phase-event-trace.md",
+      "zh": "数字算完，还要看事件怎样改下一日输入。一次冻结的墨西拿原版事件回放中，载入事件表共有十三行，实际选中的全局行索引是十一，对应骑士阵亡事件。索引十一是从零开始数的第十二行，不是百分之十一的概率。原版先排程，再执行效果，再回读战报与角色状态；这些不是同一个时间点。模型只在状态真的改变的边界更新人物与兵团，不能在候选事件刚排进日程时就提前扣除骑士。",
+      "en": "A frozen Messina replay has 13 loaded phase-event rows; selected global index 11 is the knight-killed event. Index 11 identifies a row, not an 11% probability."
+    },
+    {
+      "id": "E1-F17",
+      "shot_id": "E1-F17",
+      "chapter_id": "events",
+      "visual_kind": "gameplay",
+      "gameplay_start_seconds": 191,
+      "gameplay_seconds": 31,
+      "visual_title": "随机数不是一个全局百分比",
+      "visual_points": [
+        "事件阶段全局计数 421,195 → 421,197",
+        "两侧各消耗一个原版随机调用",
+        "内部击杀抽签未直接观测"
+      ],
+      "evidence": "phase_fire_draw_projection.json；effect_root_observation.json",
+      "zh": "随机数也有账本。在那次冻结事件回放的阶段选择边界，全局随机计数从四十二万一千一百九十五走到四十二万一千一百九十七，一共前进两次，分别对应双方的事件选择路径。但这两个已观测到的调用，不等于骑士被击杀的最终概率。事件效果内部还会使用自己的随机状态，深层击杀抽签没有同级别的直接回读。因此本片只把十三行中的第十一号选择和后续实际状态讲清，不报一个无法证实的死亡百分比。",
+      "en": "The observed phase-selection RNG counter moves 421,195→421,197 across the two sides. Deeper effect-local kill selection is not directly observed, so no death probability is claimed."
+    },
+    {
+      "id": "E1-F18",
+      "shot_id": "E1-F18",
+      "chapter_id": "events",
+      "visual_kind": "card",
+      "visual_title": "一次可核对的骑士阵亡",
+      "visual_points": [
+        "冻结第 26 日：索引 11 的骑士阵亡",
+        "目标角色 33,437；战报击杀者 34,120",
+        "边界 4→5 记账，边界 6 退场"
+      ],
+      "evidence": "messina_selected_phase_event_row.json；effect_root_observation.json",
+      "zh": "这次观察有一个能核对的结果。冻结回放第二十六日，载入事件表十三行中的索引十一被选中，目标角色编号三万三千四百三十七；战报记录的击杀者编号三万四千一百二十。事件账本在边界四到五之间出现，到了边界六，目标的死亡和退出战场才从角色与兵团状态中读到。这里的三个数字分别是事件索引、目标身份和击杀者身份，不是三个抽签概率。把战报和状态分开，才能知道骑士从哪一天开始不再提供战力。",
+      "en": "On frozen day 26, event row 11 targets character 33,437 and the battle ledger names killer 34,120. The ledger appears at boundary 4→5; death and withdrawal are read at boundary 6."
+    },
+    {
+      "id": "E1-F19",
+      "shot_id": "E1-F19",
+      "chapter_id": "events",
+      "visual_kind": "gameplay",
+      "gameplay_start_seconds": 222,
+      "gameplay_seconds": 31,
+      "visual_title": "事件改变下一日的输入",
+      "visual_points": [
+        "另一例：英勇 4 → 2",
+        "有效属性原始值：伤害 37,000,000 → 18,500,000",
+        "有效属性原始值：坚韧 7,400,000 → 3,700,000"
+      ],
+      "evidence": "ck3_1_19_0_6_episode01_messina_phase_event_regiment_feedback.json",
+      "zh": "死亡之外，再看另一份原版伤情反馈，注意它不是刚才第二十六日死亡事件的同一条结果。角色五万四千一百四十四受伤，所属兵团二百二十；英勇从四变成二。下一日边界重新读取有效属性：伤害计算原始值三千七百万变成一千八百五十万，坚韧计算原始值七百四十万变成三百七十万。这些不是士兵人数；人数变化要另读兵团当前人数和伤亡字段。若仍沿用受伤前缓存，复算和原版之间出现二百一十四个原始计算单位的残差；刷新输入后残差归零。",
+      "en": "A separate knight wound halves prowess and raw effective attributes; these large attribute registers are not soldier counts. Refreshing them removes a 214-unit residual."
+    },
+    {
+      "id": "E1-F20",
+      "shot_id": "E1-F20",
+      "chapter_id": "evidence",
+      "visual_kind": "card",
+      "visual_title": "一日对拍：54 行零差",
+      "visual_points": [
+        "R0220 出伤原始值：135,136,791 / 39,435,780",
+        "这是伤害计算量，不是兵力",
+        "54 条兵团伤亡记录逐项零差"
+      ],
+      "evidence": "battle-simulation.md R0220 原版对拍；按 RegimentID 核对",
+      "zh": "这套复算的证据范围还有另一份样本。标为 R 零二二零的原版主战日，双侧当日出伤原始计算值分别是一亿三千五百一十三万六千七百九十一和三千九百四十三万五千七百八十。请把它们读成伤害值，绝不是一亿多人或三千多万人。随后按兵团编号对齐两侧记录，共五十四行，比较各行的总伤亡、软伤亡和硬伤亡，这个单日边界里五十四行差值都是零。五十四是兵团记录行数，不是五十四场战斗。它证明绑定条件下这一日的账能对上，下一日仍须重读人数原始值，并除十万才能和界面人数比较。",
+      "en": "R0220 values 135,136,791 / 39,435,780 are raw outgoing damage, not people. Fifty-four regiment casualty rows have zero residual in this bound tick."
+    },
+    {
+      "id": "E1-F21",
+      "shot_id": "E1-F21",
+      "chapter_id": "evidence",
+      "visual_kind": "card",
+      "visual_title": "同存档重放也会分叉",
+      "visual_points": [
+        "随机消费顺序影响路径",
+        "镜头与回执必须双锚定位",
+        "只比较同一日期与同一身份"
+      ],
+      "evidence": "camera-follow-footage-ledger.md；repeatability-board.json",
+      "zh": "为什么我们花那么多力气给每份素材标存档、日期和哈希？因为把同一个接触点存档重新打开，并不保证之后三十天每个随机事件都一模一样。墨西拿的完整录像就从第六天开始与原始研究回执数值分叉。此后两条线仍能各自说明真实的原版行为，却不能再拿一条线第十二天的兵力去解释另一条线第十二天的画面。视频里的日期标签、CombatID 和素材来源，就是为了让你知道眼前是原生录像、静态规则，还是另一次回放的逐日数字。逻辑解释可以跨案例，精确数值必须守住身份。",
+      "en": "Reloading the same contact save can diverge through random consumption. After day six, this footage and the original research trace are separate timelines; exact numeric claims remain bound to their own receipts."
+    },
+    {
+      "id": "E1-F22",
+      "shot_id": "E1-F22",
+      "chapter_id": "evidence",
+      "visual_kind": "gameplay",
+      "gameplay_start_seconds": 253,
+      "gameplay_seconds": 13,
+      "visual_title": "画面始终跟着战场",
+      "visual_points": [
+        "热点优先当前交战省份",
+        "逐秒检查军旗是否可见",
+        "录制失败段保留并剔出成片"
+      ],
+      "evidence": "camera-follow-footage-ledger.md；267/267 战斗标记可见样本",
+      "zh": "最后看一眼这段实机如何拍成。录制程序和游玩智能体使用同一个战场热点选择器，交战时优先定位当前战斗省份，而不是让地图视角慢慢漂到海上。首段拍摄曾因为鼠标停在屏幕边缘而使镜头滚走，那段失败素材仍然保留；修正鼠标停放与续拍后，我们只剪入通过逐秒可见性审计的区间。最终净片每秒抽一帧，二百六十七个样本里，战斗标记二百六十七次都在画面里。这只能证明镜头可见，不会替算法或剪辑的完整人工审阅盖章。",
+      "en": "The film and gameplay agent share a war-hotspot camera selector. The accepted 266-second replay clip passed a one-second visibility audit at 267 of 267 samples; an earlier camera drift attempt remains recorded as failed."
+    },
+    {
+      "id": "E1-F23",
+      "shot_id": "E1-F23",
+      "chapter_id": "decision",
+      "visual_kind": "card",
+      "visual_title": "能怎样实际使用这些计算",
+      "visual_points": [
+        "R0217：44 行单日闭合",
+        "R0220：54 行单日闭合",
+        "整场胜率仍无合格生产者"
+      ],
+      "evidence": "battle-simulation.md R0217/R0220；combat_core.py；strategy.py",
+      "zh": "真正能交给游玩智能体的，是有明确输入和明确适用范围的计算。我们有 R 零二一七四十四条兵团的单日对拍，也有 R 零二二零五十四条兵团的单日对拍；墨西拿第五日的守方五十号与五十一号，又能把入伤、伤亡拆分和下一日人数逐项算到原版结果。这样的能力可以解释当天为什么损失这么分配，也能供智能体比较已闭合的局部交锋。但是整场胜率还需要把增援、撤退、追击和终局串起来校准；自动进攻门禁因此仍保持关闭，不能把当前力量比冒充最终获胜概率。",
+      "en": "Bounded agent use includes R0217's 44-row and R0220's 54-row daily parity, plus Messina defender casualty arithmetic. A calibrated whole-battle probability is not yet available."
+    },
+    {
+      "id": "E1-F24",
+      "shot_id": "E1-F24",
+      "chapter_id": "decision",
+      "visual_kind": "card",
+      "visual_title": "下次观战，按什么顺序看",
+      "visual_points": [
+        "先认双方与战场",
+        "再看当日伤害与伤亡",
+        "最后检查下一日状态"
+      ],
+      "evidence": "本片已引用原版静态机制、单日回执与独立实机录像",
+      "zh": "下次你在自己的存档里旁观一场战斗，不妨按同样的顺序读界面。先认清双方实际进入的是哪些军队，战场是什么省份，谁在进攻；再看兵种、当前人数、地形、战宽与将领优势；等游戏日推进，观察谁承受了软伤亡和硬伤亡，是否有骑士事件把人或兵团移出。这样做不能靠肉眼算出精确胜率，却能把‘我明明人数多为什么还是输’拆成几个具体的可查问题。也能防止把战前预测牌上的比例，错当成已经模拟完了整场仗的概率。",
+      "en": "When observing a battle, identify its real participants and province, then current stats and width, daily casualties, and event-driven changes. This explains many surprises without pretending a pre-battle ratio is a full outcome probability."
+    },
+    {
+      "id": "E1-F25",
+      "shot_id": "E1-F25",
+      "chapter_id": "decision",
+      "visual_kind": "card",
+      "visual_title": "一场仗是一条状态链",
+      "visual_points": [
+        "锁住输入",
+        "按原生顺序结算",
+        "把结果写给下一日"
+      ],
+      "evidence": "CK3 1.19.0.6；导演案与逐条证据见本项目 docs",
+      "zh": "回到墨西拿的地图，这场仗给我们的答案已经相当具体：人数只是开头，真正的过程是锁定参战身份与战场条件，按当天的优势和战宽算出伤，把伤亡落到兵团，让骑士事件在实际执行时改变状态，再把新状态交给下一天。每一步都有自己的时间和证据位置。这部片先把已经确认的部分完整讲清，而不是拿尚未校准的整场百分比填空。接下来我们会继续追增援、撤退与终局，再判断怎样把整场预测交给智能体。你现在至少知道，地图上的一次胜负，是怎样被一天天算出来的。",
+      "en": "At Messina, the verified chain runs from bound participants and conditions through daily damage, regiment casualties, event execution, and the next day's state. Later work will connect joins, retreat, terminal outcomes, and agent forecasts."
+    }
+  ]
+}

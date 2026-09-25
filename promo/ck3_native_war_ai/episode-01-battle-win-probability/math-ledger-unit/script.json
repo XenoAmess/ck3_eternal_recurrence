@@ -1,0 +1,120 @@
+{
+  "format_version": 1,
+  "purpose": "R0217 native main-phase tick arithmetic pilot; separate Messina footage is labelled as context; R4 raw-to-people units stated beside every scaled headcount",
+  "game_version": "CK3 1.19.0.6",
+  "evidence": "docs/ck3-native-ai/battle-simulation.md#R0215-原版同-tick-差分与-R14-施工边界2026-09-24",
+  "cues": [
+    {
+      "id": "M01",
+      "shot_id": "M-S01",
+      "chapter_id": "opening",
+      "visual_kind": "gameplay",
+      "visual_title": "这一天，到底怎么算？",
+      "visual_lines": [
+        "墨西拿：独立实机重放",
+        "接下来数字：另一场 R0217",
+        "画面仅展示战场，不充当数值证据"
+      ],
+      "zh": "先看一眼十字军之王三里真实的战场。这是墨西拿的一次独立实机重放；接下来要算的数字，却来自另一场编号 R 零二一七的原版战斗。两者不能接成同一场仗。今天只问一个具体问题：在主阶段的一天，游戏怎样把双方状态算成当日出伤？",
+      "en": "This is a separate live Messina replay for battle context. The numbers that follow belong to native case R0217, not this footage. We will calculate one main-phase day's outgoing damage in the game's order."
+    },
+    {
+      "id": "M02",
+      "shot_id": "M-S02",
+      "chapter_id": "basis",
+      "visual_kind": "card",
+      "visual_title": "先读懂定点数",
+      "visual_lines": [
+        "兵团人数/伤亡：实际人 = raw ÷ 100,000",
+        "战宽/已显示人数：直接读；无需再除",
+        "伤害原始值：计算量，不是阵亡人数"
+      ],
+      "zh": "先统一数字语言。本片有三类容易混淆的数。兵团当前人数和伤亡的引擎原始整数用十万倍缩放：原始值十万，才相当于一人；例如原始值四十一万七千一百零五，除十万，实际约四点一七人。战宽和回执已经显示成整数的人数则直接读，不要重复除十万。伤害与属性上的大整数是计算量，不能直接念成多少人。定点运算每乘一次，先把原始整数乘起来，再除十万并截断，把留下的整数交给下一步。",
+      "en": "For regiment strength and casualties, raw / 100,000 gives people-equivalent values. Width and already displayed counts are direct. Damage registers are calculation quantities, not casualty counts."
+    },
+    {
+      "id": "M03",
+      "shot_id": "M-S03",
+      "chapter_id": "width",
+      "visual_kind": "card",
+      "visual_title": "战宽先限制参战比例",
+      "visual_lines": [
+        "战宽 1,269；side1 现役 2,324 人：直接读",
+        "floor(1,269 × 100,000 ÷ 2,324) = 54,604",
+        "宽度比例 54,604 ÷ 100,000 = 54.604%"
+      ],
+      "zh": "这一天的战宽是一千二百六十九，这是宽度参数，不是要除十万的人数原始值。side 零当前二百一十五人，side 一当前二千三百二十四人；这两个回执数已经按人展示，也不用再除十万。side 一超过战宽，把一千二百六十九乘十万，除以二千三百二十四并截断，得到宽度比例的原始值五万四千六百零四。只有这个比例要去掉十万倍缩放，实际是百分之五十四点六零四。side 零只有二百一十五人，未达到宽度上限，比例封顶十万，即百分之百。",
+      "en": "Width 1,269 and fighting counts 2,324 / 215 are direct values. Only fraction raw 54,604 is scaled, giving 54.604%."
+    },
+    {
+      "id": "M04",
+      "shot_id": "M-S04",
+      "chapter_id": "inputs",
+      "visual_kind": "card",
+      "visual_title": "把原版边界值放上桌",
+      "visual_lines": [
+        "优势原始系数 145,000 ÷ Q = 1.45",
+        "宽度比例 54,604 ÷ Q = 54.604%",
+        "反制后攻击 4,911,382,134：属性计算量"
+      ],
+      "zh": "现在摆出 side 一的输入。优势系数原始值十四万五千，除十万等于一点四五。固定伤害缩放原始值三千，除十万是零点零三。宽度比例原始值五万四千六百零四，实际百分之五十四点六零四。最后，反制与修正后的有效攻击 R 十四，原始计算值四十九亿一千一百三十八万二千一百三十四。这个大数是伤害链里的攻击属性，不是四十九亿名士兵，也不是已经出现的伤亡。接下来按原版次序使用这些原始整数运算。",
+      "en": "Advantage raw 145,000 means 1.45; width fraction raw 54,604 means 54.604%. R14 4,911,382,134 is raw effective attack, not people."
+    },
+    {
+      "id": "M05",
+      "shot_id": "M-S05",
+      "chapter_id": "step1",
+      "visual_kind": "card",
+      "visual_title": "第一乘：优势 × 固定缩放",
+      "visual_lines": [
+        "145,000 × 3,000 = 435,000,000",
+        "435,000,000 ÷ 100,000 = 4,350",
+        "第一阶段 raw = 4,350"
+      ],
+      "zh": "按原版指令顺序，先让优势系数乘伤害缩放。十四万五千乘三千，等于四亿三千五百万。除以十万并截断，得到四千三百五十。注意这还不是最终伤害，只是第一步留下来的原始整数；下一步只能拿四千三百五十继续算，不能把刚才除法的小数带过去。",
+      "en": "First multiply advantage by damage scaling: 145,000 times 3,000 divided by 100,000 truncates to 4,350. The next step uses that integer, not hidden fractional residue."
+    },
+    {
+      "id": "M06",
+      "shot_id": "M-S06",
+      "chapter_id": "step2",
+      "visual_kind": "card",
+      "visual_title": "第二乘：再乘战宽比例",
+      "visual_lines": [
+        "4,350 × 54,604 = 237,527,400",
+        "237,527,400 ÷ 100,000 = 2,375.274",
+        "截断后，第二阶段 raw = 2,375"
+      ],
+      "zh": "第二步，四千三百五十乘五万四千六百零四，得到两亿三千七百五十二万七千四百。除以十万是两千三百七十五点二七四；立刻截断，留下两千三百七十五。看似只丢了零点二七四，但它会影响下一次大整数乘法。这就是为什么顺序与每一步的截断，都必须照着原版来。",
+      "en": "Next, 4,350 times 54,604 is 237,527,400. Divide by 100,000 and truncate 2,375.274 to 2,375. That integer feeds the large R14 multiplication."
+    },
+    {
+      "id": "M07",
+      "shot_id": "M-S07",
+      "chapter_id": "step3",
+      "visual_kind": "card",
+      "visual_title": "第三乘：得到当天双侧出伤",
+      "visual_lines": [
+        "2,375 × 4,911,382,134 = 11,664,532,568,250",
+        "÷ 100,000 → side1 出伤 raw 116,645,325",
+        "side0 出伤 raw 12,414,304；两者都非人数"
+      ],
+      "zh": "第三步，把两千三百七十五乘反制后有效攻击原始值四十九亿一千一百三十八万二千一百三十四。屏幕写出完整整数乘积，再除十万截断，得到 side 一当日出伤原始值一亿一千六百六十四万五千三百二十五。请把它读成伤害计算值，绝不是一亿多名士兵；能损失多少人，还要进入各兵团的坚韧和伤亡公式。另一边 side 零前两步留下三千，乘自己的有效攻击原始值四亿一千三百八十一万零一百四十四，除十万得到出伤原始值一千二百四十一万四千三百零四，同样不是人数。双侧都和原版回读一致。",
+      "en": "The final raw outgoing damage is 116,645,325 for side one and 12,414,304 for side zero. These are damage quantities, never troop counts; losses require regiment formulas."
+    },
+    {
+      "id": "M08",
+      "shot_id": "M-S08",
+      "chapter_id": "boundary",
+      "visual_kind": "card",
+      "visual_title": "一天的出伤，继续写回兵团",
+      "visual_lines": [
+        "side0 / side1 出伤 raw：12,414,304 / 116,645,325",
+        "伤害计算值 ≠ 人数；经坚韧公式才得伤亡",
+        "兵团伤亡 raw ÷ 100,000 = 实际人"
+      ],
+      "zh": "把两个出伤数放回原版战斗：side 零原始伤害值一千二百四十一万四千三百零四，side 一原始伤害值一亿一千六百六十四万五千三百二十五。这里没有哪一边损失一亿多人。游戏接着把伤害分配给具体兵团，结合它们当天的坚韧算出伤亡，再更新软伤、硬伤与当前人数。这些兵团伤亡和人数如果以十万倍原始整数呈现，就要逐项除十万才是实际人数。同一 R 零二一七日的四十四条兵团伤亡记录，按编号对拍零差。下一日读到的是更新后的战斗状态。",
+      "en": "Outgoing damage values are calculation quantities. Each regiment then gets scaled casualty and strength registers; divide those by 100,000 to compare with people shown in the interface."
+    }
+  ]
+}
