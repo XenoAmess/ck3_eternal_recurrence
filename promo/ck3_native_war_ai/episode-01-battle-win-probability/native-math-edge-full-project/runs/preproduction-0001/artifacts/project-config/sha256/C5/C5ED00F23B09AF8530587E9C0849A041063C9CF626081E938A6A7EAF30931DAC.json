@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-war-ai-native-math-edge-full",
+    "title": "native-math-edge-full-project"
+  },
+  "pipeline": {
+    "adapter": "ck3-native-war-ai-v1",
+    "preset": "ck3-native-war-ai-longform-zh-v2"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": null
+  },
+  "chapters": []
+}

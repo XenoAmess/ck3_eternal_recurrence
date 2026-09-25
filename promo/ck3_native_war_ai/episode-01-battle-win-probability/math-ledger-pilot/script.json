@@ -14,9 +14,9 @@
     {
       "id": "M02", "shot_id": "M-S02", "chapter_id": "basis", "visual_kind": "card",
       "visual_title": "先读懂定点数",
-      "visual_lines": ["Q = 100,000；真实值 = raw ÷ Q", "mul(a,b) = 截断(a × b ÷ Q)", "每一步都截断；不能最后一次除 Q"],
-      "zh": "先统一数字语言。原版这里使用十万为一的定点数：原始值十万表示一，十四万五千表示一点四五。一次定点乘法，是先把两个原始整数相乘，除以十万，再截掉小数部分。关键在于每乘一次就截断一次。把所有因子一次乘完，最后才取整，会得到不同的答案。",
-      "en": "Native fixed point uses Q equals 100,000. Raw 100,000 means one, and 145,000 means 1.45. Each fixed-point multiplication truncates after division by Q. Delaying truncation changes the answer."
+      "visual_lines": ["Q = 100,000；真实值 = raw ÷ Q", "mul(a,b) = 截断(a × b ÷ Q)", "原版每乘一次就截断，并传给下一步"],
+      "zh": "先统一数字语言。原版这里使用十万为一的定点数：原始值十万表示一，十四万五千表示一点四五。一次定点乘法，是先把两个原始整数相乘，除以十万，再截掉小数部分。游戏每乘一次就截断一次，再把留下的整数送进下一步。我们沿着这个原版顺序，把每一步都写在画面上。",
+      "en": "Native fixed point uses Q equals 100,000. Raw 100,000 means one, and 145,000 means 1.45. Each multiplication truncates after division by Q, then passes the resulting integer to the next native step."
     },
     {
       "id": "M03", "shot_id": "M-S03", "chapter_id": "width", "visual_kind": "card",
@@ -29,8 +29,8 @@
       "id": "M04", "shot_id": "M-S04", "chapter_id": "inputs", "visual_kind": "card",
       "visual_title": "把原版边界值放上桌",
       "visual_lines": ["side1 优势系数 145,000；缩放 3,000", "side1 战宽比例 54,604", "side1 反制后攻击 R14 = 4,911,382,134"],
-      "zh": "现在摆出 side 一的三个输入。优势造成的伤害系数，原始值十四万五千，也就是一点四五。固定伤害缩放三千，也就是零点零三。刚算出的战宽比例是五万四千六百零四。最后一个大数，反制与修正之后的有效攻击 R 十四，是四十九亿一千一百三十八万二千一百三十四。这个大数来自原版当日边界回执；在这段样稿里，我们没有假装从战前属性独立推导出它。",
-      "en": "For side one, advantage multiplier is 145,000, scaling is 3,000, width fraction is 54,604, and post-counter effective attack R14 is 4,911,382,134. R14 is taken from the native tick boundary; this pilot does not independently derive it from pre-battle stats."
+      "zh": "现在摆出 side 一的三个输入。优势造成的伤害系数，原始值十四万五千，也就是一点四五。固定伤害缩放三千，也就是零点零三。刚算出的战宽比例是五万四千六百零四。最后一个大数，反制与修正之后的有效攻击 R 十四，是四十九亿一千一百三十八万二千一百三十四。这个输入取自原版当日的结算边界。接下来，跟着原版的运算顺序往下走。",
+      "en": "For side one, advantage multiplier is 145,000, scaling is 3,000, width fraction is 54,604, and post-counter effective attack R14 is 4,911,382,134. This R14 value comes from the native tick boundary; now we follow the native computation."
     },
     {
       "id": "M05", "shot_id": "M-S05", "chapter_id": "step1", "visual_kind": "card",
@@ -49,16 +49,16 @@
     {
       "id": "M07", "shot_id": "M-S07", "chapter_id": "step3", "visual_kind": "card",
       "visual_title": "第三乘：得到当天双侧出伤",
-      "visual_lines": ["side1: floor(2,375 × 4,911,382,134 ÷ Q)", "side1 = 116,645,325 raw；原版零差", "side0: floor(3,000 × 413,810,144 ÷ Q) = 12,414,304"],
-      "zh": "第三步，再把两千三百七十五乘反制后攻击四十九亿一千一百三十八万二千一百三十四，除以十万并截断，得到 side 一的当日出伤原始值一亿一千六百六十四万五千三百二十五，和原版读数一模一样。另一边更直接：side 零的优势系数与参战比例都是十万，所以先留下三千；乘它自己的 R 十四，四亿一千三百八十一万零一百四十四，再除十万，得到一千二百四十一万四千三百零四，也与原版零差。",
-      "en": "The third multiplication gives side one 116,645,325 raw outgoing damage, exactly matching the native value. Side zero's advantage and width fractions are both 100,000; 3,000 times its R14 of 413,810,144 divided by Q truncates to 12,414,304, also exact."
+      "visual_lines": ["2,375 × 4,911,382,134 = 11,664,532,568,250", "÷ 100,000 → side1 = 116,645,325 raw", "side0: floor(3,000 × 413,810,144 ÷ Q) = 12,414,304"],
+      "zh": "第三步，再把两千三百七十五乘反制后攻击四十九亿一千一百三十八万二千一百三十四。完整的整数乘积写在屏幕上；再除以十万并截断，得到 side 一的当日出伤原始值一亿一千六百六十四万五千三百二十五，和原版读数一致。另一边，side 零的优势系数与参战比例都是十万，前两步留下三千；乘它自己的 R 十四，四亿一千三百八十一万零一百四十四，再除十万，得到一千二百四十一万四千三百零四，也与原版一致。",
+      "en": "The third product is 11,664,532,568,250. Division by Q and truncation gives side one 116,645,325 raw outgoing damage, matching the native tick. Side zero's first two steps leave 3,000; multiply by its R14 of 413,810,144 and divide by Q to get 12,414,304, also matching."
     },
     {
       "id": "M08", "shot_id": "M-S08", "chapter_id": "boundary", "visual_kind": "card",
-      "visual_title": "算对一天，不等于算完一仗",
-      "visual_lines": ["原版顺序：116,645,325 raw", "旧顺序：116,658,782 raw；多 13,457", "边界：单个 tick；不是整场胜率"],
-      "zh": "如果把反制后攻击放到乘法最前面，再逐次截断，side 一会变成一亿一千六百六十五万八千七百八十二，比原版多一万三千四百五十七个原始单位。我们修正顺序后，这个 tick 的双侧出伤零差。但是到这里，只能说清这一天的出伤外壳。反制后攻击值的战前完整来路、后续事件与终局，都不能由这三次乘法自动证明，更不能把这个数叫作整场获胜概率。下一版正片，会按这种粒度把已经核实的计算继续展开。",
-      "en": "Putting R14 first yields 116,658,782 raw, 13,457 too high. Correct order reproduces both sides of one native tick. It does not yet derive all R14 inputs or validate later events, terminal results, or whole-battle win probability."
+      "visual_title": "一天的出伤，继续写回兵团",
+      "visual_lines": ["原版出伤：side0 12,414,304 / side1 116,645,325", "原版出伤进入伤亡分配：44 条兵团记录零差", "下一日读取更新后的兵力与战斗状态"],
+      "zh": "现在把两个出伤数放回原版战斗：side 零一千二百四十一万四千三百零四，side 一一亿一千六百六十四万五千三百二十五，都与原版当日读数一致。之后，游戏把出伤施加到具体兵团，分别更新软伤、硬伤和当前人数。同一个 R 零二一七 tick 的四十四条兵团伤亡记录，按兵团编号对拍也是零差。一天结束后，下一日读取的已经是更新后的兵力和战斗状态。这就是原版这一日从结算边界到伤亡写回的过程。",
+      "en": "Native outgoing damage is 12,414,304 for side zero and 116,645,325 for side one. The game then applies damage to regiments, updating soft and hard casualties and current strength. In this same R0217 tick, 44 regiment casualty rows also match the native records. The next day reads the updated battle state."
     }
   ]
 }
