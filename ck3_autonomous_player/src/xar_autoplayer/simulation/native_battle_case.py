@@ -42,6 +42,14 @@ EPISODE01_DAILY_STAT_REFRESH_SHA256 = (
     "E36224201492080046FE37E6C27653B6F38D8C7B97651BBEC86EC718A8A3AB06",
     "26569235A6B1507B6693E381335A46B56F632E2D6F9DD0B9D825A2C46F8833AE",
 )
+EPISODE01_DAILY_STAT_SOURCE_FILES = (
+    "ck3_1_19_0_6_episode01_messina_daily_stat_source_day11_v1.json",
+    "ck3_1_19_0_6_episode01_messina_daily_stat_source_day21_v1.json",
+)
+EPISODE01_DAILY_STAT_SOURCE_SHA256 = (
+    "534907A0EC04359D00C40E86CAE86566C00B439F4795D758068F557159548B2A",
+    "1D0FB70E3032B2358C59C41E8BB234C7B1BE5EA3747E4C983A8DB593C20FE937",
+)
 EPISODE01_JOIN_KERNEL_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity.json"
 EPISODE01_JOIN_KERNEL_SHA256 = "CCD25D31E068658A78603F772BCA57B6B657A5F3C72DD404808BE48BE5B648E0"
 EPISODE01_JOIN_KERNEL_V2_FILE = "ck3_1_19_0_6_episode01_messina_join_day_kernel_parity_v2.json"
@@ -497,6 +505,37 @@ def load_episode01_daily_stat_refresh() -> tuple[dict[str, Any], dict[str, Any]]
                 or report.get("cross_manager_global_tick_order_proven") is not False
                 or not isinstance(changes, list) or len(changes) != count):
             raise NativeBattleCaseError("daily stat-refresh identity or readiness drifted")
+        results.append(report)
+    return results[0], results[1]
+
+
+def load_episode01_daily_stat_sources() -> tuple[dict[str, Any], dict[str, Any]]:
+    """Return bounded native-kind classification and knight formula witnesses."""
+    refresh = load_episode01_daily_stat_refresh()
+    results = []
+    for index, (name, expected_sha, source_day, knight_count, maa_count) in enumerate(zip(
+        EPISODE01_DAILY_STAT_SOURCE_FILES, EPISODE01_DAILY_STAT_SOURCE_SHA256,
+        (11, 21), (24, 27), (8, 10), strict=True,
+    )):
+        raw = (Path(__file__).with_name("data") / name).read_bytes()
+        if hashlib.sha256(raw).hexdigest().upper() != expected_sha:
+            raise NativeBattleCaseError("bundled daily stat-source bytes changed without review")
+        report = json.loads(raw)
+        source = report.get("static_knight_source") if isinstance(report, dict) else None
+        counts = report.get("changed_by_native_kind") if isinstance(report, dict) else None
+        witnesses = report.get("knight_formula_witnesses") if isinstance(report, dict) else None
+        if (report.get("schema") != "ck3.native_pre_schedule_stat_source_classification.v1"
+                or report.get("source_day") != source_day
+                or report.get("refresh_report_sha256") != EPISODE01_DAILY_STAT_REFRESH_SHA256[index]
+                or report.get("finish_response_sha256") != refresh[index]["finish_response_sha256"]
+                or source is None or source.get("knight_evaluator_rva") != "0x28FDBC0"
+                or source.get("stock_defines_read_from_this_live_receipt") is not False
+                or counts != {"knight": knight_count, "levy": 0, "men_at_arms": maa_count}
+                or not isinstance(witnesses, list) or len(witnesses) != knight_count
+                or report.get("all_changed_knight_refreshed_values_match_formula") is not True
+                or report.get("prior_cached_stat_change_cause_proven") is not False
+                or report.get("specific_modifier_source_for_knight_effectiveness_proven") is not False):
+            raise NativeBattleCaseError("daily stat-source identity or scope drifted")
         results.append(report)
     return results[0], results[1]
 
@@ -1209,6 +1248,8 @@ __all__ = [
     "EPISODE01_JOIN_FULL_DAY_SHA256",
     "EPISODE01_DAILY_STAT_REFRESH_FILES",
     "EPISODE01_DAILY_STAT_REFRESH_SHA256",
+    "EPISODE01_DAILY_STAT_SOURCE_FILES",
+    "EPISODE01_DAILY_STAT_SOURCE_SHA256",
     "EPISODE01_JOIN_KERNEL_FILE",
     "EPISODE01_JOIN_KERNEL_SHA256",
     "EPISODE01_JOIN_KERNEL_V2_FILE",
@@ -1248,6 +1289,7 @@ __all__ = [
     "load_episode01_join_day_casualties",
     "load_episode01_join_full_day_boundaries",
     "load_episode01_daily_stat_refresh",
+    "load_episode01_daily_stat_sources",
     "load_episode01_join_day_kernel_parity",
     "load_episode01_join_day_kernel_parity_v2",
     "load_episode01_phase_event_regiment_feedback",

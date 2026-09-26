@@ -29,6 +29,7 @@ from xar_autoplayer.simulation.native_battle_case import (
     load_episode01_join_day_casualties,
     load_episode01_join_full_day_boundaries,
     load_episode01_daily_stat_refresh,
+    load_episode01_daily_stat_sources,
     load_episode01_join_day_kernel_parity,
     load_episode01_join_day_kernel_parity_v2,
     load_episode01_phase_event_regiment_feedback,
@@ -77,6 +78,21 @@ class NativeBattleCaseTests(unittest.TestCase):
         self.assertEqual((knight["old_toughness_raw"], knight["new_toughness_raw"]),
                          (4_000_000, 3_700_000))
         self.assertFalse(day11["specific_modifier_source_for_each_change_proven"])
+
+    def test_refreshed_knights_match_stock_formula_without_claiming_modifier_source(self) -> None:
+        day11, day21 = load_episode01_daily_stat_sources()
+        self.assertEqual(day11["changed_by_native_kind"],
+                         {"knight": 24, "levy": 0, "men_at_arms": 8})
+        self.assertEqual(day21["changed_by_native_kind"],
+                         {"knight": 27, "levy": 0, "men_at_arms": 10})
+        witness = next(row for row in day11["knight_formula_witnesses"]
+                       if row["regiment_id"] == 220)
+        self.assertEqual((witness["character_id"], witness["effective_prowess"],
+                          witness["implied_knight_effectiveness_raw"]),
+                         (54144, 2, 185000))
+        self.assertEqual((witness["new_damage_raw"], witness["new_toughness_raw"]),
+                         (18_500_000, 3_700_000))
+        self.assertFalse(day11["specific_modifier_source_for_knight_effectiveness_proven"])
 
     def test_original_outcome_and_replay_divergence_stay_separate(self) -> None:
         case = load_episode01_native_battle_case()
