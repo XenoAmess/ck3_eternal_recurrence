@@ -2,6 +2,10 @@
 
 本计划对接 [系列下一期](../../promo/ck3_native_war_ai/series-roadmap.md)与[有界整场策略估计](general-battle-strategy-forecast-2026-09-26.md)。目标是让每个片中计算都能回到确切原版 CombatID、同日输入、逐步整数计算、次日/终局状态；同一计算及其证据也进入游玩智能体。`planner_usable=false` 表示原版整场逐日同构尚未证成，不再作为禁用已有有界估计的理由。每个历史 RED 和独立回放保持原身份，不拼接为同一随机轨迹。
 
+## 跨任务战争请求优先队列
+
+按用户 2026-09-27 指令，[战争请求目录](../autonomous-agent-progress/coordination/war-requests/README.md)中的新请求优先于本计划下方的独立研究。活动研究期间每次 15 分钟任务总线 heartbeat、每次提交前，以及每个长时间实机尝试之间，先 `git fetch origin master` 并从远端 `master` 的 `war-requests/requests/`、`responses/`、`verifications/` 复查状态；新 request 立即加入本节并处理，不能仅依赖本机通知。`R0244` 已认领：Robert 战局在 `native_war_general_battle_inputs_query` 因精确 v3 查询未列入普通 action list 而阻塞；只读查询选择修复已于 `ba623c137` 推送。独立配对实机回读、长路线后续动作及消费方正式复验尚待关闭，不能把已认领或单元测试通过当成交付完成。
+
 | 顺序 | 要回答的具体问题 | 当前证据与状态 | 下一道可核验门 | 产出 |
 | --- | --- | --- | --- | --- |
 | 1. 追击三日 | 第 28 日的 soft 如何逐团写成第 29–31 日 hard，余数落在哪里？ | **本案条件计算通过**：同一 attempt-004，24 团×3 日软伤 72/72 零差；可读逐团硬伤 69/69 零差，参战者硬伤总账 3/3 零差；第 28 日状态独立连算三日仍 72/72。见[原版回读](battle-simulation-episode01-live-case.md#2026-09-26-追击三日同一独立回放的逐团与账本对拍)。 | 换不同兵种/掩护非零/追击修正条件的独立原版战例复核，不将单例扩大为全部条件。 | 可复跑比较器、逐团报告、片用三日数字板、模拟器 golden。 |
