@@ -6,7 +6,9 @@
 
 [live-confirmed, analogous encounter only] 在**另一份独立配对**的纯原版存档（SHA-256 `77BE86B0FDE44D348807B201B9809A29F8099A4FF005A9C12D632045B4AB0DE9`）暂停 raw `53144520`，对 Character `29829` 的 Army `18` 与当前 Province `2638` 的敌 Army `24` 实际调用精确只读 v3 查询，路线末边 `2643→2638`。原版返回 `status=available`、输入完整性为真，查询绑定 `snapshot_id=native:3`、公开 revision `4`、原生 revision `3`，与前后暂停帧一致；查询响应 SHA-256 `0D252C2EDF307AFA7AD12650E7F3255B73FB65E41535AC71ADDF6D2DD9200107`。同一输入的 256 次有界估计在本例通过风险预算，但 `native_parity=false` 且人物死亡、未来属性刷新仍未量化，不能把 `256/256` 模型胜样称为原版实战胜率。原始请求/响应、源档、bridge、模型报告与进程清理保留于 `D:/workspace/ck3_native_war_ai_promo_work/war-input-r0244-analog-v3-attempt-062/`。
 
-这证明已修复的**只读查询路径**在本机等价接口上可用，尚未复演另一台机器的 R0244 原始 War `48`。长路线还需逐首跳预览/接触/移动：当前驱动没有把已预览路线的首跳省加入动作列表，模型准入通过后会再次遇到策略动作门槛。下一步关闭该门并验证至少一个正式下一步；消费方仍须用其原始配对存档从新的 `master` 独立复验，不得以本例替代。
+这证明已修复的**只读查询路径**在本机等价接口上可用，尚未复演另一台机器的 R0244 原始 War `48`。后续 `90afa9fef` 修复了长路线首跳动作投影：只从当前暂停帧的成功原生路线预览提取首个实际行进省，绑定 snapshot ID、公开/原生 revision、连接代次、episode、日期与军队起点后，提供该省的预览、全敌接触查询及移动步骤；策略仍逐一要求模型风险准入、精确单跳预览和无接触的一日窗口。原生路线若以当前省开头，只剥离这一处起点前缀。相关策略、首跳投影及桥接测试 `252/252` 通过，另有 `248` 个 subtest。
+
+[live-confirmed, policy RED on a different local encounter] 独立 attempt `063` 从**驻军**存档 SHA-256 `91CEE43C055AA7C1412E5D5CD26CFEDE75E9459B4783E8C8BE8257908BEDD592` 恢复同一原版日期；Army `18` 驻 Province `2619`，到敌 Army `24` 所在 Province `2638` 的原生路线为 `2624→2631→2630→2629→8753→2626→2627→2633→2639→2643→2638`。全敌路线接触查询、一日无接触和精确 v3 输入均在 `native:3` / revision `4` / native revision `3` 的暂停帧成功，256 次有界估计通过风险预算。但生产计划最终返回 `native_war_capital_regroup_hold_progress / life-advance`，因为静态全路线审查标出敌军经 `2627`、`2633` 的未来路径交叉；按策略未提交首跳动作。这里的一日无接触与远期静态风险不是同一时间尺度，不能把本地模型准入当作策略已决定进攻。完整原始回执和 RED 摘要保留于 `D:/workspace/ck3_native_war_ai_promo_work/war-input-r0244-firsthop-attempt-063/`，进程清理清单为空。此例不能证明 R0244 原始战局的首跳执行；[交付响应](../autonomous-agent-progress/coordination/war-requests/responses/WAR-INPUT-R0244-20260927.json) 已在 `master`，仍需请求方以原始 save/DLL/EXE 成对复验并记录 verification。
 
 ## 当前行为
 
