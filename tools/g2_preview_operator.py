@@ -277,6 +277,12 @@ def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bo
     checkpoint_index = checkpoint.get("history_index")
     if type(checkpoint_index) is not int:
         return False
+    actor = driver.get("episode_character_id")
+    episode = driver.get("episode_run_id")
+    if (type(actor) is not int or not isinstance(episode, str)
+            or checkpoint.get("episode_character_id") != actor
+            or checkpoint.get("episode_run_id") != episode):
+        return False
     latest: dict[str, dict[str, Any]] = {}
     for row in history:
         if (not isinstance(row, dict)
@@ -289,7 +295,9 @@ def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bo
         request_id = receipt.get("action_request_id")
         if (isinstance(request_id, str)
                 and receipt.get("status") == "applied"
-                and receipt.get("postcondition_verified") is True):
+                and receipt.get("postcondition_verified") is True
+                and receipt.get("actor_character_id") == actor
+                and receipt.get("episode_run_id") == episode):
             previous = latest.get(request_id)
             if previous is None or row["index"] > previous["index"]:
                 latest[request_id] = row
