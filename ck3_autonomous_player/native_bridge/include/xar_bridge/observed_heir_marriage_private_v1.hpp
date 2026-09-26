@@ -22,6 +22,9 @@ enum class ObservedHeirMarriageMaterialStatusV1 : std::uint8_t {
   marriage = 1,
   betrothal = 2,
   inconsistent = 3,
+  refused = 4,
+  invalidated = 5,
+  accepted_pending = 6,
 };
 
 bool PrepareObservedHeirMarriageSubmissionV1(
@@ -35,6 +38,9 @@ bool PrepareObservedHeirMarriageSubmissionV1(
 ObservedHeirMarriageMaterialStatusV1 ReadObservedHeirMarriageMaterialStatusV1(
     const ObservedHeirMarriagePendingV1 &pending,
     const MarriageProposalBilateralRelationshipV1 &after,
-    std::uint64_t after_native_revision) noexcept;
+    std::uint64_t after_native_revision,
+    MarriageProposalNativeResolutionV1 resolution =
+        MarriageProposalNativeResolutionV1::pending,
+    bool cold_recovery = false) noexcept;
 
 } // namespace xar::bridge

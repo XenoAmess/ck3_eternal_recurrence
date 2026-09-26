@@ -82,5 +82,19 @@ int main() {
       ObservedHeirMarriageMaterialStatusV1::betrothal) {
     return EXIT_FAILURE;
   }
+  if (ReadObservedHeirMarriageMaterialStatusV1(
+          pending, before, 8, MarriageProposalNativeResolutionV1::refused) !=
+          ObservedHeirMarriageMaterialStatusV1::refused ||
+      ReadObservedHeirMarriageMaterialStatusV1(
+          pending, before, 8, MarriageProposalNativeResolutionV1::accepted) !=
+          ObservedHeirMarriageMaterialStatusV1::accepted_pending ||
+      ReadObservedHeirMarriageMaterialStatusV1(
+          pending, before, 1, MarriageProposalNativeResolutionV1::pending,
+          true) != ObservedHeirMarriageMaterialStatusV1::pending ||
+      ReadObservedHeirMarriageMaterialStatusV1(
+          pending, after, 1, MarriageProposalNativeResolutionV1::pending,
+          true) != ObservedHeirMarriageMaterialStatusV1::betrothal) {
+    return EXIT_FAILURE;
+  }
   return EXIT_SUCCESS;
 }

@@ -49,6 +49,11 @@ from .construction_formal_consumer import (
     SUBMIT_STEP as PRIVATE_CONSTRUCTION_SUBMIT_STEP,
     read_construction_ledger,
 )
+from .family_marriage_formal_consumer import (
+    SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
+    RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
+    read_family_marriage_ledger,
+)
 from .bridge.service import GameplayBridgeService
 from .bridge.war_hotspot_camera import LandedProvinceIndex, follow_war_hotspot
 from .bridge.camera_cursor_parking import park_foreground_ck3_cursor
@@ -334,6 +339,7 @@ def native_auto_run(
     allow_private_lifestyle_formal_trial: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
     allow_private_construction_formal_trial: bool = False,
+    allow_private_family_marriage_formal_trial: bool = False,
     allow_private_faction_gift_formal_trial: bool = False,
     allow_private_m5_joint_collector: bool = False,
     allow_private_epidemic_recovery_near_pair: bool = False,
@@ -414,6 +420,8 @@ def native_auto_run(
         )
     if allow_private_construction_formal_trial is True and completion_contract != "bounded":
         raise AgentError("private construction trial only admits a bounded contract")
+    if allow_private_family_marriage_formal_trial is True and completion_contract != "bounded":
+        raise AgentError("private first-heir marriage trial only admits a bounded contract")
     if (
         allow_private_faction_gift_formal_trial is True
         and completion_contract != "bounded"
@@ -753,6 +761,9 @@ def native_auto_run(
         # driver's public action registration or capability advertisement.
         driver.allow_private_construction_formal_trial = (
             allow_private_construction_formal_trial is True
+        )
+        driver.allow_private_family_marriage_formal_trial = (
+            allow_private_family_marriage_formal_trial is True
         )
         if opening_focus_gate is not None:
             driver.require_initial_lifestyle_focus_before_date_advance = True
@@ -1539,6 +1550,14 @@ def native_auto_run(
                         )
                         raise AgentError("private construction receipt does not match paused game frame")
                     evidence.append("construction_active_independent_later_frame")
+            if step == PRIVATE_FAMILY_MARRIAGE_RESULT_STEP:
+                family_result = outcome.get("result")
+                if isinstance(family_result, dict):
+                    status = family_result.get("status")
+                    if status in {"marriage", "betrothal"} and family_result.get("material_result") is True:
+                        evidence.append("first_heir_bilateral_" + status)
+                    elif status in {"refused", "invalidated", "accepted_pending", "pending"}:
+                        evidence.append("first_heir_proposal_" + status)
             if "date_advanced" in evidence:
                 date_advanced = True
             if parse_event_option_step(step) is not None:
@@ -1827,6 +1846,32 @@ def native_auto_run(
                 current_attempt["stage"] = (
                     "construction_pending_checkpoint_complete"
                 )
+                eligible_since_checkpoint = 0
+                dirty_gameplay_since_checkpoint = False
+            if step == PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP:
+                if terminal_pending or modal_decision_pending:
+                    raise AgentError("pending first-heir marriage cannot be checkpointed on a decision frame")
+                checkpoint, checkpoint_snapshot = _materialize_checkpoint(
+                    service, driver, spec.profile_dir / "save games",
+                    session_done=session_done, session_state=session_state,
+                    timeout_seconds=min(readiness_timeout,
+                                        max(0.001, run_deadline - time.monotonic())),
+                    poll_interval_seconds=poll_seconds,
+                    on_checkpoint_submit=mark_checkpoint_submit_started,
+                )
+                pending_fence = _verify_pending_family_marriage_checkpoint(
+                    checkpoint, snapshot=checkpoint_snapshot,
+                    submitted_result=outcome.get("result"),
+                    ledger=read_family_marriage_ledger(driver.state_dir),
+                )
+                counts["checkpoint"] += 1
+                checkpoints.append({"turn_index": turn_index,
+                                    "phase": "first_heir_marriage_submitted_pending",
+                                    "pending_action": pending_fence, **checkpoint})
+                evidence.append("first_heir_marriage_pending_checkpoint_saved")
+                after_snapshot = checkpoint_snapshot
+                after = _compact_binding(driver.capabilities(), checkpoint_snapshot)
+                current_attempt["after"] = _public_binding(after)
                 eligible_since_checkpoint = 0
                 dirty_gameplay_since_checkpoint = False
             if completion_contract in strict_completion_contracts:
@@ -2123,6 +2168,7 @@ def native_auto_run(
                 and evidence
                 and not war_termination_submission_pending
                 and step != PRIVATE_CONSTRUCTION_SUBMIT_STEP
+                and step != PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP
                 and step != PRIVATE_LIFESTYLE_FOCUS_SUBMIT_STEP
             ):
                 visible_gameplay_turns += 1
@@ -4744,6 +4790,11 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "construction_private_query",
         "construction_pending_action",
         "construction_receipt_consumed",
+        "family_marriage_choice",
+        "family_marriage_pending",
+        "family_marriage_result_consumed",
+        "family_marriage_status",
+        "family_marriage_cold_recovery",
         "lifestyle_query_status",
         "lifestyle_native_error",
         "exact_active_war_set_watch",
@@ -5374,6 +5425,35 @@ def _verify_pending_construction_checkpoint(
         "date_raw": checkpoint.get("date_raw"),
         "episode_run_id": checkpoint.get("episode_run_id"),
     }
+
+
+def _verify_pending_family_marriage_checkpoint(
+    checkpoint: object, *, snapshot: object, submitted_result: object,
+    ledger: object,
+) -> dict[str, object]:
+    """Keep the ACK, durable pending identity and game save on one turn."""
+    pending = ledger.get("pending") if isinstance(ledger, dict) else None
+    played = snapshot.get("played_character") if isinstance(snapshot, dict) else None
+    if not (isinstance(checkpoint, dict) and isinstance(snapshot, dict)
+            and isinstance(submitted_result, dict)
+            and isinstance(pending, dict)
+            and pending == submitted_result
+            and pending.get("submission_state") == "receipt_pending"
+            and pending.get("status") == "receipt_pending"
+            and pending.get("material_result") is False
+            and pending.get("episode_run_id") == checkpoint.get("episode_run_id")
+            == snapshot.get("episode_run_id")
+            and pending.get("source_date_raw") == checkpoint.get("date_raw")
+            == snapshot.get("date_raw")
+            and isinstance(played, dict)
+            and pending.get("played_character_id") == played.get("character_id")):
+        raise AgentError("first-heir marriage ACK lacks a paired pending checkpoint")
+    return {"step": PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
+            "status": "receipt_pending", "material_postcondition": "unobserved",
+            "heir_character_id": pending["heir_character_id"],
+            "candidate_character_id": pending["candidate_character_id"],
+            "date_raw": checkpoint["date_raw"],
+            "episode_run_id": checkpoint["episode_run_id"]}
 
 
 def _cleanup_report(

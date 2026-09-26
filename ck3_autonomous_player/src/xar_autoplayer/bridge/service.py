@@ -390,6 +390,13 @@ from ..construction_formal_consumer import (
     plan_construction_private,
     read_construction_ledger,
 )
+from ..family_marriage_formal_consumer import (
+    SUBMIT_STEP as PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP,
+    RESULT_STEP as PRIVATE_FAMILY_MARRIAGE_RESULT_STEP,
+    plan_family_marriage_private,
+    submit_family_marriage_private,
+    query_family_marriage_result_private,
+)
 from .domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
     submit_construction_private, query_construction_receipt,
@@ -762,6 +769,11 @@ class GameplayBridgeService:
                     if getattr(self.driver, "allow_private_construction_formal_trial", False) is True
                     else None
                 ),
+                "_private_family_marriage_snapshot_v1": (
+                    planning_snapshot
+                    if getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True
+                    else None
+                ),
                 "_private_m5_snapshot_v1": (
                     planning_snapshot
                     if getattr(
@@ -875,10 +887,14 @@ class GameplayBridgeService:
             and isinstance(construction_snapshot, dict)
             and isinstance(construction_history, list)
         ):
-            return plan_construction_private(
+            planned = plan_construction_private(
                 self.driver, planned, construction_snapshot,
                 construction_history, available_steps,
             )
+        family_snapshot = planned.pop("_private_family_marriage_snapshot_v1", None)
+        if (getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True
+                and isinstance(family_snapshot, dict)):
+            return plan_family_marriage_private(self.driver, planned, family_snapshot)
         return planned
 
     def _plan_initial_lifestyle_focus_first_v1(
@@ -1465,6 +1481,19 @@ class GameplayBridgeService:
                 result = query_construction_receipt(
                     self.driver, pending=pending, expected_revision=int(planned["revision"]),
                 )
+            elif selected_step == PRIVATE_FAMILY_MARRIAGE_SUBMIT_STEP:
+                if not (isinstance(plan.get("family_marriage_legality"), dict)
+                        and isinstance(plan.get("family_marriage_choice"), dict)):
+                    raise UnsupportedStepError("controlled first-heir marriage lacks a valued candidate")
+                result = submit_family_marriage_private(
+                    self.driver, plan=plan, snapshot=self.snapshot())
+            elif selected_step == PRIVATE_FAMILY_MARRIAGE_RESULT_STEP:
+                pending = plan.get("family_marriage_pending")
+                if not isinstance(pending, dict):
+                    raise UnsupportedStepError("controlled first-heir marriage lacks pending identity")
+                result = query_family_marriage_result_private(
+                    self.driver, pending=pending,
+                    cold=plan.get("family_marriage_cold_recovery") is True)
             elif selected_step == PRIVATE_FACTION_SUBMIT_STEP:
                 candidate = plan.get("faction_gift_action")
                 checkpoint = plan.get("faction_gift_pre_submit_checkpoint")

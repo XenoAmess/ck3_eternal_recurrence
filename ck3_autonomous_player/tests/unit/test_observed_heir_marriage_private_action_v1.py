@@ -14,13 +14,14 @@ from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
     RESULT_STEP, SCHEMA, SUBMIT_STEP,
     query_observed_first_heir_marriage_result_private_v1,
+    query_observed_first_heir_marriage_cold_result_private_v1,
     submit_observed_first_heir_marriage_private_v1,
 )
 
 
 def frame(revision: int = 693) -> dict[str, object]:
     return {"native_revision": revision, "paused": True,
-            "map_ready": True,
+            "map_ready": True, "revision": revision, "date_raw": 53215920,
             "played_character": {"character_id": 29829, "alive": True}}
 
 
@@ -60,6 +61,10 @@ class FakeDriver:
 
     def wait_for_command_result(self, _id: str, _timeout: float) -> dict[str, object]:
         return {"ok": True, "result": self.result}
+
+    def _execute_campaign_root_context_v1_query(self, *, expected_revision: int):
+        return {"status": "available", "held_title_partition": [
+            {"primary": True, "first_heir_character_id": 38822}]}
 
 
 def submit_result() -> dict[str, object]:
@@ -101,6 +106,7 @@ class TransportTest(unittest.TestCase):
         result = {"step": RESULT_STEP, "accepted": True,
                   "private_build": True, "advertised": False,
                   "status": "marriage", "material_result": True,
+                  "cold_recovery": False,
                   "pre_native_revision": 693, "post_native_revision": 694,
                   "heir_character_id": 38822,
                   "candidate_character_id": 16778038}
@@ -131,6 +137,7 @@ class TransportTest(unittest.TestCase):
         result = {"step": RESULT_STEP, "accepted": True,
                   "private_build": True, "advertised": False,
                   "status": "pending", "material_result": False,
+                  "cold_recovery": False,
                   "pre_native_revision": 693, "post_native_revision": 694,
                   "heir_character_id": 38822,
                   "candidate_character_id": 16778038}
@@ -138,12 +145,42 @@ class TransportTest(unittest.TestCase):
         self.assertFalse(query_observed_first_heir_marriage_result_private_v1(
             driver, pending=pending)["material_result"])
 
+    def test_native_refusal_is_terminal_without_material_marriage(self) -> None:
+        pending = {"schema": SCHEMA, **submit_result()}
+        result = {"step": RESULT_STEP, "accepted": True,
+                  "private_build": True, "advertised": False,
+                  "status": "refused", "material_result": False,
+                  "cold_recovery": False, "pre_native_revision": 693,
+                  "post_native_revision": 694, "heir_character_id": 38822,
+                  "candidate_character_id": 16778038}
+        driver = FakeDriver([frame(694)], result)
+        observed = query_observed_first_heir_marriage_result_private_v1(
+            driver, pending=pending)
+        self.assertEqual(observed["status"], "refused")
+        self.assertFalse(observed["material_result"])
+
     def test_schema_has_private_pending_and_material_branches(self) -> None:
         schema = json.loads((ROOT / "schemas" /
             "observed-first-heir-marriage-private-action-v1.schema.json").read_text())
         self.assertEqual(schema["properties"]["schema"]["const"], SCHEMA)
         self.assertEqual(schema["properties"]["advertised"]["const"], False)
         self.assertEqual(len(schema["oneOf"]), 3)
+
+    def test_cold_result_reports_pair_without_claiming_rejection(self) -> None:
+        pending = {"schema": SCHEMA, **submit_result(),
+                   "source_date_raw": 53215920}
+        cold = {"step": RESULT_STEP, "accepted": True,
+                "private_build": True, "advertised": False,
+                "status": "pending", "material_result": False,
+                "cold_recovery": True, "pre_native_revision": 0,
+                "post_native_revision": 1, "heir_character_id": 38822,
+                "candidate_character_id": 16778038}
+        driver = FakeDriver([frame(1), frame(1)], cold)
+        result = query_observed_first_heir_marriage_cold_result_private_v1(
+            driver, pending=pending)
+        self.assertTrue(result["cold_absent_relation_unresolved"])
+        self.assertEqual(driver.requests[0]["cold_recovery"], 1)
+        self.assertEqual(driver.requests[0]["source_date_raw"], 53215920)
 
 
 if __name__ == "__main__":

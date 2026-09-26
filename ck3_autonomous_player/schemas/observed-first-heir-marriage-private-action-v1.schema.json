@@ -12,9 +12,10 @@
     "private_build": {"const": true},
     "accepted": {"const": true},
     "step": {"enum": ["submit-observed-first-heir-marriage-v1-private", "query-observed-first-heir-marriage-result-v1-private"]},
-    "status": {"enum": ["receipt_pending", "pending", "marriage", "betrothal"]},
+    "status": {"enum": ["receipt_pending", "pending", "accepted_pending", "refused", "invalidated", "marriage", "betrothal"]},
     "material_result": {"type": "boolean"},
-    "pre_native_revision": {"type": "integer", "minimum": 1},
+    "pre_native_revision": {"type": "integer", "minimum": 0},
+    "cold_recovery": {"type": "boolean"},
     "post_native_revision": {"type": "integer", "minimum": 1},
     "played_character_id": {"type": "integer", "minimum": 1},
     "heir_character_id": {"type": "integer", "minimum": 1},
@@ -22,7 +23,7 @@
   },
   "oneOf": [
     {"properties": {"status": {"const": "receipt_pending"}, "step": {"const": "submit-observed-first-heir-marriage-v1-private"}, "material_result": {"const": false}}, "required": ["played_character_id"]},
-    {"properties": {"status": {"const": "pending"}, "step": {"const": "query-observed-first-heir-marriage-result-v1-private"}, "material_result": {"const": false}}, "required": ["post_native_revision"]},
+    {"properties": {"status": {"enum": ["pending", "accepted_pending", "refused", "invalidated"]}, "step": {"const": "query-observed-first-heir-marriage-result-v1-private"}, "material_result": {"const": false}}, "required": ["post_native_revision", "cold_recovery"]},
     {"properties": {"status": {"enum": ["marriage", "betrothal"]}, "step": {"const": "query-observed-first-heir-marriage-result-v1-private"}, "material_result": {"const": true}}, "required": ["post_native_revision"]}
   ]
 }
