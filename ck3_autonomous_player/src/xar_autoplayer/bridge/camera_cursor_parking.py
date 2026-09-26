@@ -12,6 +12,41 @@ import ctypes
 from ctypes import wintypes
 import os
 
+from ..environment import ck3_process_inventory
+from ..errors import AgentError
+
+
+def _minimized_owned_ck3_window() -> dict[str, object] | None:
+    """Find the sole live CK3 PID only when all its visible windows are iconic."""
+
+    import win32gui
+    import win32process
+
+    try:
+        inventory = ck3_process_inventory().get("processes", [])
+    except AgentError:
+        return None
+    if len(inventory) != 1:
+        return None
+    process = inventory[0]
+    if str(process.get("name", "")).casefold() != "ck3.exe":
+        return None
+    pid = int(process["pid"])
+    windows: list[int] = []
+
+    def collect(hwnd: int, _extra: object) -> bool:
+        if win32gui.IsWindowVisible(hwnd):
+            _thread, window_pid = win32process.GetWindowThreadProcessId(hwnd)
+            if int(window_pid) == pid:
+                windows.append(int(hwnd))
+        return True
+
+    win32gui.EnumWindows(collect, None)
+    if not windows or not all(bool(win32gui.IsIconic(hwnd)) for hwnd in windows):
+        return None
+    return {"status": "skipped_minimized", "ck3_pid": pid,
+            "window_count": len(windows)}
+
 
 def park_foreground_ck3_cursor() -> dict[str, object]:
     """Move to an interior client point when CK3 owns the foreground window."""
@@ -28,12 +63,18 @@ def park_foreground_ck3_cursor() -> dict[str, object]:
     user32.SetCursorPos.argtypes = [ctypes.c_int, ctypes.c_int]
     hwnd = user32.GetForegroundWindow()
     if not hwnd:
+        minimized = _minimized_owned_ck3_window()
+        if minimized is not None:
+            return minimized
         return {"status": "no_foreground_window"}
     length = user32.GetWindowTextLengthW(hwnd)
     title_buffer = ctypes.create_unicode_buffer(length + 1)
     user32.GetWindowTextW(hwnd, title_buffer, length + 1)
     title = title_buffer.value
     if title != "Crusader Kings III":
+        minimized = _minimized_owned_ck3_window()
+        if minimized is not None:
+            return minimized
         return {"status": "ck3_not_foreground", "foreground_title": title}
     rect = wintypes.RECT()
     if not user32.GetClientRect(hwnd, ctypes.byref(rect)):
