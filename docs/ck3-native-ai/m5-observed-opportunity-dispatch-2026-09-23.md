@@ -424,3 +424,19 @@ h159 save/driver/两账本及报告已单独哈希保留为 `g2-robert-joint-eco
 c21 冻结来源 `7367c759c1631135443b88029e87d524e85bbbec`（其后 master `184551a` 仅合入 09-26 文字报告）、DLL SHA-256 `F971ED1852B2471E7F852BAA71184F792DA1A048D0DC7E2028B37FF80F5B4863`，从 c20 `recovery-pair-h159` 的原始 save SHA `0E4236834EBDC752AAB74ACE62FDEF1CD4CC74412EA7FE041BCD92A4358E72B3`、driver 与两账本通过 ordinary `xar_off` 官方 rebind/no-launch。R0234 唯一新 PID20772 执行 paused 只读原生查询，`driver_state_restored=true`、`restore_kind=cold_checkpoint`，日期前后均 raw53156568、checkpoint SHA 不变。继承人38822/候选38710 仍为双边订婚，玩家29829/接收方32266 当前仍双向 allied；c21 建设/家庭账本与 h159 来源哈希分别相等（`A047D79B...C08FF7` / `312E26C4...7F57D0`），没有重提案或重花钱。[operator 回执](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-cold-c21-20260927/attempt-01/operator-receipt.json) SHA-256 `31F3651E5AD92751CA748CD3CBFC1B27F635C94123323CE718E6E0744599E7DD`，[原生报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-cold-c21-20260927/attempt-01/query-report.json) SHA-256 `5781E36E72492339E42BF0EF0D09530C6ADDC6C396EC31A478ADA9A9644DEA65`，`GREEN_READ_ONLY`、窗口最小化、0 动作/0 日期、进程树回收，分配器 completed-green。
 
 R0234 补齐 R0233 日期推进后新 PID 的配对状态读回；它没有继续正式 `choose_one_life_turn`、没有证明建设完工或 M5 联合 typed 消费。后续正常策略从 h159 恢复时须先核施工/家庭账本，并把真实完工收益、候选与资源预留分开验收。
+### 2026-09-27 R0235/R0236：正收益建设分支实机消费和新 PID 冷恢复
+
+C22 从原始 Robert h90/raw53153760（而非已建设 h148）冻结 source/master `c1e19275c9704023e2e4b0ab139786095516605f`，DLL SHA-256 `A02C5D87C8891E105435F12A9AE0BFC94E7C4139934D69D210CEBDF500A2DDA7`，官方 ordinary `xar_off` 配对/no-launch 通过。R0235 唯一 PID139724 在最小化窗口后台完成 10 turn；M5 入口于 native:3、revision4、raw53153760 取得 `selected` 建设源，候选 `hill_farms_01`、2174/2629/628/slot1、原生费用 raw10,000,000、现金 raw34,490,601、著录收入 +35 hundredths。`plan_m5_formal_query_only` 仅在 dispatcher 建设 reservation 与该正收益候选匹配时返回 `m5_joint_construction_typed_submit`；本次正式第 2 turn 呈现该 phase 并提交 typed `private-submit-player-construction-v1`。第 3 turn 独立 native:5 原生后置验证同槽 `in_progress`、现金 raw24,490,601，applied 请求 ID `construction-submit-6c15ecbe3dfc44e49d905c6493ff2c78`；第 9 turn raw53153976 再读仍施工。第 6 turn 真空 M5 提案正常推进 9 天；h106 checkpoint SHA `15F4F85E...15F340FB8`。正式报告 SHA `53B09D75C147658ECA838BEFF4400675C15A6EA8BD210593EDF80673B1AAE02D`，operator SHA `77A00FDE74D0256D5213D62286CA9DFFDD0BA5579526FFB0E4A356D07DD43385`，均在 [C22 artifact](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-h90-c22-20260927/attempt-01/)；这只证明已开工，+35 是著录预期而非已实现收入。
+
+C23 复制 h106 四件配对资产，经官方 rebind/no-launch 在相同源码/DLL、新 PID149680 上运行 R0236。第 2 turn `construction_cold_applied_requery` 核同 ID、同槽、同扣后现金且无第二次 submit；第 3 turn 已结算家庭账本独立重读。h106→h116 driver 新命令没有建设提交，h116 raw53153976/save SHA `AA7B769D...AA637`。第 8 turn 已交付战争路径提交 `declare-war-33621-11-0`，尚无独立结果；不把它纳入建设证明。[C23 报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-h106-c23-20260927/attempt-01/formal-report.txt) SHA `10F06B71A03888EA7D113ED1D7E3C5CCFCBDA021BB7ACE8D93B0BBFB46FE1834`，[operator receipt](Z:/ck3_mod_rewrite_process_assets/g2-robert-joint-h106-c23-20260927/attempt-01/operator-receipt.json) SHA `38586CB4A7CDEF12054E39B4A2FBED6B581069F9F3CB198E74637851A48A33D4`。这补齐一个正收益候选的同帧选择→typed→独立后置→下一 turn→冷恢复；M5 五候选和资源冲突、建筑完工/收入仍未闭合。
+
+```mermaid
+flowchart LR
+  A["Robert h90 和平 paused 帧"] --> B["M5 同帧建设源与预算"]
+  B --> C["正收益 hill_farms_01 reservation"]
+  C --> D["typed 建设施工"]
+  D --> E["新 paused 帧同槽/扣款"]
+  E --> F["h106 checkpoint 与新 PID 冷恢复"]
+  F --> G["旧 receipt 再读；不重复提交"]
+  E -.未知实际完工/收入.-> U["后续正常游玩观察"]
+```
