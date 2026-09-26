@@ -1,0 +1,92 @@
+{
+  "schema": "xar.g2.cross-team-war-request.v1",
+  "request_id": "WAR-INPUT-R0244-20260927",
+  "created_at_utc": "2026-09-26T19:43:32Z",
+  "producer_role": "nonwar_operator",
+  "requested_owner_role": "war_maintainer",
+  "assignee": null,
+  "severity": "blocks_this_derived_continuation",
+  "scope": "Consume the existing bounded whole-battle forecast on the Robert campaign; keep war model research with the war maintainer.",
+  "source": {
+    "live_source_commit": "f6fba14b10477089c40d8c0cc78cbbf344fdbbd0",
+    "native_source_commit": "38bcf6dc5dc706e0d071c54a3c90889314e5dd53",
+    "latest_master_when_filed": "c38dad99904103667896153f405be865f9321d30",
+    "ck3_version": "1.19.0.6-steam23530548",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridge_dll_sha256": "CE57BB7F67B3B6646796E9679B5D198557CE175C056000C8FE4DFCB940F2FB0C",
+    "lifecycle": "ordinary_campaign_succession",
+    "xar_enabled": "xar_off"
+  },
+  "reproduction": {
+    "observed_at_utc": "2026-09-26T19:29:14.977100+00:00",
+    "run_id": "xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0244",
+    "candidate_checkpoint_history_index": 133,
+    "candidate_checkpoint_sha256": "3E6E66CED57EE8D13707259D9D9656AA54C24F782598C86B192958CCA0B5A734",
+    "played_character_id": 29829,
+    "episode_run_id": "native-29829-2bc2d599f7f9",
+    "paused_date_raw": 53154936,
+    "turn_index": 6,
+    "snapshot_id": "native:3",
+    "snapshot_revision": 4,
+    "native_revision": 3,
+    "war_ids": [48],
+    "player_army_ids": [16777237],
+    "planner_policy": "general-battle-forecast-v1",
+    "planner_phase": "native_war_general_battle_inputs_query",
+    "baseline_phase": "native_war_pursuit",
+    "baseline_selected_step": "move-army-16777237-to-2640",
+    "encounter": {
+      "attacker_army_ids": [16777237],
+      "defender_army_ids": [16777417],
+      "target_province_id": 2640
+    },
+    "route_contact_horizon": {
+      "status": "available",
+      "date_raw": 53154936,
+      "subject_army_id": 16777237,
+      "subject_current_province_id": 2619,
+      "target_province_id": 2640,
+      "hostile_army_ids": [16777417],
+      "hostile_current_province_id": 2640,
+      "hostile_route_province_ids": [],
+      "subject_route_province_ids": [2624, 2631, 2630, 2629, 8753, 2626, 2627, 2633, 2634, 2640],
+      "subject_arrival_date_raws": [53155128, 53155296, 53155464, 53155632, 53155848, 53156016, 53156256, 53156520, 53156832, 53156952],
+      "horizon_end_date_raw": 53154960,
+      "one_day_contact_free": true,
+      "conflicts": []
+    },
+    "prior_successful_steps": [
+      "query-campaign-root-context-v1",
+      "query-war-termination-options-48",
+      "query-army-strengths-v1",
+      "preview-move-army-16777237-to-2640",
+      "query-route-contact-horizon-v1-16777237-to-2640-h-1-16777417"
+    ]
+  },
+  "actual": {
+    "run_status": "blocked",
+    "outcome": "failed",
+    "reason": "obtain same-frame per-regiment inputs for this encounter",
+    "selected_step": null,
+    "date_advanced": false,
+    "gameplay_action_submitted_in_blocked_turn": false,
+    "checkpoint_recoverable": true,
+    "process_tree_reclaimed": true
+  },
+  "requested_delivery": [
+    "Provide or bind the exact-build same-frame per-regiment inputs needed by this bounded forecast, or document a policy-safe alternative grounded in the observed frame.",
+    "Publish the typed query or strategy interface, frame/version binding, missing-field semantics and resource or pending effects so the nonwar consumer can use the delivered master commit.",
+    "Verify the changed path with focused no-launch checks and a separately paired bounded live run. Report the chosen next step and independent result without treating ACK or CI as battle outcome.",
+    "Preserve the existing COMBAT_ENTRY_EU_ACTIVATION_ENABLED setting unless its separate contract is explicitly changed."
+  ],
+  "evidence": {
+    "formal_report_sha256": "07994F762425CCFF912BF697DCBF95BA1E00F374D646BE060748420526040E6F",
+    "operator_receipt_sha256": "788F08A51C90F6A455739288D6732249DE57937FBC23C0DDA8DB355C62BB96C8",
+    "checkpoint_pair_index_sha256": "9E7FB3DD88999C00E270EF82B607F73D0A998A5977E87D2029A8CEC02E43485E",
+    "origin_machine_report": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h133-c35-20260927\\attempt-01\\formal-report.txt",
+    "origin_machine_pair": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h133-c35-20260927\\source-pair-h133\\PAIR-IDENTITY.json",
+    "cross_machine_artifact_access_verified": false,
+    "note": "The reproduction object above is carried by Git. Origin-machine paths identify the immutable full evidence only; they are not a download claim."
+  },
+  "consumer_acceptance": "After a war-maintainer response reaches master, rerun from an officially paired compatible checkpoint in a sole minimized CK3 instance; prove the blocked query/decision proceeds and independently verify the next turn plus required recovery before claiming the nonwar continuation unblocked."
+}
