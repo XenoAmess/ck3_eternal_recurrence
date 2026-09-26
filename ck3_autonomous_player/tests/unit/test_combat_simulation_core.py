@@ -265,6 +265,9 @@ class CombatRandomGoldenTests(unittest.TestCase):
         self.assertEqual(
             weighted_choice_index((1000, 25, 10, 5), random31), 0
         )
+        # The native weighted helper scales a 31-bit draw.  Modulo would
+        # incorrectly choose entry 1 for this draw and weight vector.
+        self.assertEqual(weighted_choice_index((40, 30, 15), 40), 0)
         seeds = fire_phase_event_seeds(
             0x12345678, executed_knight_count=2, commander_executes=True
         )

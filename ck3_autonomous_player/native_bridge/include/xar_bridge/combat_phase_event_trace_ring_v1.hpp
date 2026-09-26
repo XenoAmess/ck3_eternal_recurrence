@@ -95,6 +95,7 @@ enum CombatPhaseEventTraceCaptureFailureV1 : std::uint32_t {
   trace_capture_failure_post_counter_attack = 1U << 13,
   trace_capture_failure_effect_root = 1U << 14,
   trace_capture_failure_knight_select = 1U << 15,
+  trace_capture_failure_effect_node = 1U << 16,
 };
 
 inline constexpr std::size_t kCombatPhaseEffectRootMaximumRecordsV1 = 64;
@@ -104,6 +105,23 @@ struct CombatPhaseEffectRootRecordV1 {
   std::int32_t native_event_load_index = -1;
   std::uintptr_t node_identity = 0;
   std::uint32_t node_hash = 0;
+  std::uint32_t counter_before = 0;
+  std::uint32_t salt_before = 0;
+  std::uint32_t counter_after = 0;
+  std::uint32_t salt_after = 0;
+};
+
+inline constexpr std::size_t kCombatPhaseEffectNodeMaximumRecordsV1 = 256;
+
+struct CombatPhaseEffectNodeRecordV1 {
+  std::int32_t side_index = -1;
+  std::int32_t native_event_load_index = -1;
+  std::uint32_t call_index = 0;
+  std::uint32_t depth = 0;
+  std::uintptr_t node_identity = 0;
+  std::uintptr_t parent_node_identity = 0;
+  std::uint32_t node_hash = 0;
+  std::uint32_t node_vtable_rva = 0;
   std::uint32_t counter_before = 0;
   std::uint32_t salt_before = 0;
   std::uint32_t counter_after = 0;
@@ -403,6 +421,8 @@ struct CombatPhaseEventTraceRingV1 {
   std::atomic<std::uint32_t> outgoing_damage_count{0};
   std::atomic<std::uint32_t> post_counter_attack_count{0};
   std::atomic<std::uint32_t> effect_root_count{0};
+  std::atomic<std::uint32_t> effect_node_call_count{0};
+  std::atomic<std::uint32_t> effect_node_draw_count{0};
   std::atomic<std::uint32_t> knight_select_count{0};
   std::atomic<std::uint32_t> failure_flags{trace_capture_failure_none};
   CombatPhaseEventTraceCapturePlanV1 plan{};
@@ -410,6 +430,8 @@ struct CombatPhaseEventTraceRingV1 {
   std::array<std::int64_t, 2> post_counter_attack_raw{};
   std::array<CombatPhaseEffectRootRecordV1,
              kCombatPhaseEffectRootMaximumRecordsV1> effect_roots{};
+  std::array<CombatPhaseEffectNodeRecordV1,
+             kCombatPhaseEffectNodeMaximumRecordsV1> effect_node_draws{};
   std::array<CombatPhaseKnightSelectRecordV1,
              kCombatPhaseKnightSelectMaximumRecordsV1> knight_selects{};
   std::array<CombatPhaseEventTraceRingRecordV1,
@@ -431,6 +453,10 @@ struct CombatPhaseEventTraceRingDrainV1 {
   std::uint32_t effect_root_count = 0;
   std::array<CombatPhaseEffectRootRecordV1,
              kCombatPhaseEffectRootMaximumRecordsV1> effect_roots{};
+  std::uint32_t effect_node_call_count = 0;
+  std::uint32_t effect_node_draw_count = 0;
+  std::array<CombatPhaseEffectNodeRecordV1,
+             kCombatPhaseEffectNodeMaximumRecordsV1> effect_node_draws{};
   std::uint32_t knight_select_count = 0;
   std::array<CombatPhaseKnightSelectRecordV1,
              kCombatPhaseKnightSelectMaximumRecordsV1> knight_selects{};

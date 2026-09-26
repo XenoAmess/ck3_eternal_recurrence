@@ -31,6 +31,11 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
   drain->effect_root_count = 1;
   drain->effect_roots[0] = {1, 11, 0x3BA, 1234, 2708350930U,
                              0, 2708350931U, 0};
+  drain->effect_node_call_count = 3;
+  drain->effect_node_draw_count = 1;
+  drain->effect_node_draws[0] = {1, 11, 2, 2, 0x3BB, 0x3BA,
+                                 5678, 0x44782B0, 2708350930U, 0,
+                                 2708350931U, 0};
   drain->knight_select_count = 1;
   drain->knight_selects[0] = {1, 11, 14, 8, 0x111, 0x222,
                               612212889U, 0, 612212890U, 0};
@@ -143,7 +148,7 @@ std::unique_ptr<CombatPhaseEventTraceRingDrainV1> SmallDrain() {
 bool HappyPath() {
   const auto drain = SmallDrain();
   const auto json = SerializeCombatPhaseEventTraceRingDrainV1(*drain);
-  constexpr std::array<std::string_view, 38> required{
+  constexpr std::array<std::string_view, 44> required{
       "\"schema_version\":1",
       "\"status\":\"captured\"",
       "\"record_count\":7",
@@ -158,6 +163,12 @@ bool HappyPath() {
       "\"side1_raw\":6222222",
       "\"post_counter_attack_pair_complete\":true",
       "\"effect_roots\":[",
+      "\"effect_node_call_count\":3",
+      "\"effect_node_draws\":[",
+      "\"call_index\":2",
+      "\"depth\":2",
+      "\"parent_node_identity_token\":\"process-local-0x3BA\"",
+      "\"node_vtable_rva\":71795376",
       "\"knight_selects\":[",
       "\"node_identity_token\":\"process-local-0x3BA\"",
       "\"node_hash\":1234",
@@ -211,6 +222,12 @@ bool InvalidCountsFailClosed() {
   drain->outgoing_damage_count = 3;
   if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty()) {
     return Fail("invalid outgoing damage count did not fail closed");
+  }
+  drain->outgoing_damage_count = 2;
+  drain->effect_node_draw_count =
+      static_cast<std::uint32_t>(drain->effect_node_draws.size() + 1);
+  if (!SerializeCombatPhaseEventTraceRingDrainV1(*drain).empty()) {
+    return Fail("invalid nested effect draw count did not fail closed");
   }
   return true;
 }

@@ -1,5 +1,92 @@
 # ongoing combat phase-event trace v1
 
+## 2026-09-26 第 26 日成长随机列表的实际分支与抽签
+
+第二次独立离线回放 `episode01-day26-random-list-type-attempt-036` 从相同不可变第 26 日原版存档恢复；
+私有 DLL SHA-256 `9800403D142387DF76D7D98C27EB7CCE0D9F40A54300E748D6F81CED0FAE198D`，
+168/168 项原生测试通过。七边界 trace 原始响应 SHA-256
+`713DB2C37504411A2E81CAF05B198E2AEC700D7B7612F68BEF1EF3BB05EFC5AC`，
+`bounded_trace_available`、失败标志 0；仍观察到两次受伤、一次击杀以及击杀者 34120。
+完整 run 和进程清理回执保存在
+`D:/workspace/ck3_native_war_ai_promo_work/episode01-day26-random-list-type-attempt-036/`。
+
+原生 effect 子调用的 RTTI vtable 将 call 14 识别为 `CRandomListEffect` (`0x44782B0`)，
+其唯一直接子调用 call 15 为 `CRandomListEntryEffect` (`0x4478388`)。在回放后的暂停帧，
+只读 `ReadProcessMemory` 将 random-list 对象的三个条目指针和被执行子节点的指针按进程内身份匹配：
+执行的是**来源顺序第 0 项**。本 build 的原版
+`common/scripted_effects/00_commander_effects.txt:20–40` 表明第 0 项基础权重 60，内容为空；
+第 1 项基础权重 30、加勇武 1；第 2 项基础权重 10、提升剑术大师进度。
+所以**这一次选中的是不作成长写回的第 0 项**，不是仅凭后存档勇武不变倒推。
+内存回读原始三段 bytes 的 SHA-256 与节点/条目身份都保存在 run 内
+`random-list-memory.json`；[入库的只读投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_random_list_choice_v1.json)
+用[复算工具](../../ck3_autonomous_player/tools/project_native_random_list_receipt.py)绑定其 SHA、
+节点分类 SHA、精确 EXE SHA，并检查三个原始内存文件没有变化。
+
+该列表自己的局部 RNG counter 为 `1,645,259,625→1,645,259,626`、salt 0；
+由精确 build 的 `DrawState` 算得 `draw31=422,551,104`。
+加权选择器 `0x3BB6DD0` 读取的 binary64 常量 `0x4594650` 正是 `2^-31`，
+算法为 `threshold=trunc((draw31×2^-31)×正权重总和)`，选第一个累计正权重大于 threshold 的条目；
+它**不使用取模**。按脚本和本案人物条件推得的调整后权重候选 `40/30/15`，
+总和 85，得到 `threshold=16`，落在第 0 项；这组**运行时调整后权重尚未在选择器入口直接回读**，
+只能列为条件复算。分支索引 0 则已由原生实际执行的条目指针独立直接证明。
+run 内较早的 `growth-draw-projection.json` 把同一 draw 错用 `%85=39`，虽也碰巧选 0，
+其算法必须弃用；正确版本以 append-only 的 `growth-draw-projection-v2.json` 保留。
+再把**击杀者选择 draw**和**成长列表自己的 draw**同时送入智能体共用的冻结事件 AST，
+[本案直接回放](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_effect_direct_v1.json)
+由[可复跑投影器](../../ck3_autonomous_player/tools/project_native_knight_kill_effect_direct.py)得到
+目标 34120、成长第 0 项 `no_op`、被击杀者 33437，三者与同一次原版 trace 相符。
+冻结 AST 的 `4,000,000/3,000,000/1,500,000` 是 Q100000 权重，除以 100000
+对应条件整数 `40/30/15`；它不是选择器入口的直接权重采样。
+
+此结果修正下节 attempt-035 的证据边界：**根 counter 的 `26,436,929` 仍是子 seed，
+不能改称成长 draw；成长 draw 是随机列表自身的 `422,551,104`。**
+本案的无成长分支已闭合；其他受伤、致残、死亡路径的条件权重、人物完整写集及未来日缓存刷新
+仍需独立原版回读，不能从这一次空分支外推。
+
+### 事件后的下一帧智能体输入
+
+又从本次回放保存的第 27 日不可变存档（SHA-256
+`CD0648D7603290E470ED07261128C05FF449C0FFAEA89D01A1102D0D56208A55`）
+重新启动独立离线、暂停、**不推进日期**的只读 attempt
+`episode01-day27-next-input-attempt-038`，查询游玩智能体实际消费的原生 v3 `base_inputs`。
+[逐对象对照报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_kill_next_input_v1.json)
+SHA-256 `8F4050AF785DED4A166BF4C671F914820E65B588C7E83251ECCA3EAB8CA45AF6`；
+[复算工具](../../ck3_autonomous_player/tools/project_native_knight_kill_next_input.py)
+绑定前一 run 的 trace/save、新 run 的 paused snapshot/control/v3 响应及 cleanup report SHA。
+新 run 的 capture worker 成功，进程清理后库存为空。曾因 Steam 离线回执过期被拒的
+attempt-037 在 CK3 启动前即 RED，保留其记录，不并入成功 run。
+
+| v3 当前帧输入 | 第 26 日事件前 | 第 27 日保存状态重新载入后 | 同身份对照 |
+| --- | ---: | ---: | --- |
+| 兵团 | 69 | 68 | 只移除目标 RegimentID `65`；其余 68 团 v3 基础输入逐对象相同 |
+| 骑士 | 30 | 29 | 只移除被击杀 CharacterID `33437`；其余 29 名逐对象相同 |
+| 击杀者 CharacterID `34120` | 在名册 | 仍在名册 | v3 骑士行相同，与空成长分支吻合 |
+
+这证明**该次击杀后的名单变化进入下一暂停帧的策略输入**，不是只有战报文字。
+v3 的 `current_soldiers` 为当前整数字段，不能从“其余行相同”推出游戏内部每团软伤、硬伤
+或所有隐藏人物字段未改变；完整 effect 写集、其他事件路径以及未来逐日 modifier 转移仍需另查。
+
+## 2026-09-26 第 26 日 effect 子作用域回读：根计数不能当成长抽签
+
+独立离线 `episode01-day26-nested-effect-attempt-035` 再从相同不可变原版第 26 日存档
+`C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B` 恢复。私有 DLL
+SHA-256 `87BAE63168A96377F5A03CF8949C0ED6BF3135460211C4935ED7F7EF7D0EA97B`，168/168 项原生测试通过；
+七边界原始 finish 响应 SHA-256
+`44D044A954FFE975D8C0AB3043548E6E9FA66F90D1B2B5DC287ED836877DE7B7`，失败标志 0。
+直接观察仍是载入索引 11 `knight_killed`、14 人候选的索引 8／角色 34120、两次受伤加一次击杀；
+完整受管清理回执保存在 `D:/workspace/ck3_native_war_ai_promo_work/episode01-day26-nested-effect-attempt-035/`。
+不同运行的前后存档原始 bytes/SHA 不同，不能把相同战报说成整份存档逐字节相同。
+
+新的研究钩子在该 effect root 的原生递归执行中记录 41 次子节点调用，41 次各自的局部
+`counter_before→counter_after` 都是 `+1`，最深为 8 层，并保留节点、父节点、调用次序和局部状态。
+这只能说明各个**局部状态**前进，不能把所有 `+1` 都标成 41 次游戏机制抽签。更关键的是：
+根节点 `2708350930→2708350931` 算出的 `26,436,929` 在已核的原生 `0x3380C69`
+链中用于产生第一子作用域 seed `612,212,889`；子节点实机入口正从 `612,212,889` 开始。
+因此旧 v4 局部回放将 `26,436,929` 作为 `knight_increase_prowess_chance_effect` 的成长候选值，
+只能保留为**未绑定原生回调的假设输入**，不能列为成长抽签、`no_op` 分支或其概率的原版证据。
+击杀者选择器本身的独立原生 draw 与目标对拍仍然成立。下一门是按 RTTI vtable 识别
+`CRandomListEffect`，在其实际局部 RNG 与选中条目上完成直接回读，再核对人物基础勇武/trait 写回。
+
 ## 2026-09-26 第 26 日骑士击杀者抽签实机闭合
 
 独立离线 attempt-020 从原版同一第 26 日不可变存档（SHA-256 `C1276153435766A875B0984F1A3AD426CB3AFCFB6EC33061CEE6650538CFFD2B`）恢复，七边界 `bounded_trace_available`、采集失败标志 0。原生 effect root 再次确认为载入索引 11 `knight_killed`、node hash `3689483501`，局部 counter `2708350930→2708350931`。新增的 `0x33E8D40` 只读钩子**直接记录**该 root 下的骑士选择器：候选数 14、返回索引 8、候选 token `(4,0x8548)`，其中 `0x8548=34120`；其局部 RNG `counter=1117324859→1117324860, salt=0`。[原始回执只读投影](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_knight_selector_native_parity.json) SHA-256 `954B203B34CA4A8F4ECCBF43579DFA481EC964469921F97C471F6D4BDB7E426B`，复算工具为 [`project_native_knight_selector_receipt.py`](../../ck3_autonomous_player/tools/project_native_knight_selector_receipt.py)，绑定 v3、trace、后存档与源存档 SHA。

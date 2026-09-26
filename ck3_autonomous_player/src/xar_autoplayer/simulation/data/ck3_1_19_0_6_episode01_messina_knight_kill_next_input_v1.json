@@ -1,0 +1,61 @@
+{
+  "schema": "ck3.native_knight_kill_next_input.v1",
+  "game_build": "1.19.0.6",
+  "combat_id": 16777218,
+  "source_day": 26,
+  "next_day": 27,
+  "source_save_sha256": "43E1A6E8C7FE1AE5FF733B55A9A67158157F92D263EC69F0D964D45FF9203765",
+  "post_event_save_sha256": "CD0648D7603290E470ED07261128C05FF449C0FFAEA89D01A1102D0D56208A55",
+  "source_v3_response_sha256": "5A170DA39F9305689E52EAA275485413F0A10C6B98DCB24CB9A26092D0CC4251",
+  "source_trace_response_sha256": "713DB2C37504411A2E81CAF05B198E2AEC700D7B7612F68BEF1EF3BB05EFC5AC",
+  "next_snapshot_response_sha256": "C2EDD823FD497E09ACD3F0563585BADCD02982F2620EA448E8757ECEF55EBC77",
+  "next_control_response_sha256": "B509531A09AB06097F4F2B478182D386B8A374961762F9801B4A4107A45B0C51",
+  "next_v3_response_sha256": "3309B3A763F2C6CD02683EA0643D26A13A292E20F57C89BFBCF594804557B0E3",
+  "next_capture_report_sha256": "2D09C0B1432B5E2D608B95ECDA75C143169C56404C138FF85EA266B8E5504D5D",
+  "next_capture_cleanup_processes": 0,
+  "removed_regiment_id": 65,
+  "removed_knight_character_id": 33437,
+  "remaining_regiments_identical_v3_base_inputs": 68,
+  "remaining_knights_identical_v3_base_inputs": 29,
+  "killer_character_id": 34120,
+  "killer_next_v3_member": {
+    "eligible": true,
+    "character_id": 34120,
+    "source_regiment_id": 115,
+    "army_id": 16777231,
+    "participant_army_membership_verified": true,
+    "prowess": 7,
+    "knight_effectiveness_raw": 110000,
+    "effective_damage_raw": 38500000,
+    "effective_toughness_raw": 7700000,
+    "scale": 100000,
+    "effectiveness_components": {
+      "status": "available",
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        180000,
+        0,
+        1300000,
+        1200000,
+        800000,
+        1600000,
+        1700000,
+        700000
+      ]
+    }
+  },
+  "full_mutable_write_set_proven": false,
+  "full_casualty_state_identical_proven": false,
+  "other_event_paths_proven": false
+}

@@ -110,6 +110,8 @@ struct OriginalOutgoingCallContextV1 {
 thread_local OriginalOutgoingCallContextV1 g_original_outgoing_call{};
 thread_local std::int32_t g_original_phase_fire_side = -1;
 thread_local std::int32_t g_original_effect_root_event_row = -1;
+thread_local std::uintptr_t g_original_effect_dispatch_node = 0;
+thread_local std::uint32_t g_original_effect_dispatch_depth = 0;
 
 template <typename T>
 T LoadAt(std::uintptr_t base, std::size_t offset) noexcept {
@@ -1048,6 +1050,8 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.outgoing_damage_count.store(0, std::memory_order_relaxed);
   ring.post_counter_attack_count.store(0, std::memory_order_relaxed);
   ring.effect_root_count.store(0, std::memory_order_relaxed);
+  ring.effect_node_call_count.store(0, std::memory_order_relaxed);
+  ring.effect_node_draw_count.store(0, std::memory_order_relaxed);
   ring.knight_select_count.store(0, std::memory_order_relaxed);
   ring.failure_flags.store(trace_capture_failure_none,
                            std::memory_order_relaxed);
@@ -1055,6 +1059,7 @@ bool ArmCombatPhaseEventTraceRingV1(
   ring.outgoing_damage_raw = {};
   ring.post_counter_attack_raw = {};
   ring.effect_roots = {};
+  ring.effect_node_draws = {};
   ring.knight_selects = {};
   std::memset(ring.records.data(), 0,
               sizeof(CombatPhaseEventTraceRingRecordV1) *
@@ -1280,6 +1285,13 @@ bool CompleteAndDrainCombatPhaseEventTraceRingV1(
       static_cast<std::uint32_t>(output.effect_roots.size()));
   std::copy_n(ring.effect_roots.begin(), output.effect_root_count,
               output.effect_roots.begin());
+  output.effect_node_call_count =
+      ring.effect_node_call_count.load(std::memory_order_acquire);
+  output.effect_node_draw_count = std::min<std::uint32_t>(
+      ring.effect_node_draw_count.load(std::memory_order_acquire),
+      static_cast<std::uint32_t>(output.effect_node_draws.size()));
+  std::copy_n(ring.effect_node_draws.begin(), output.effect_node_draw_count,
+              output.effect_node_draws.begin());
   output.knight_select_count = std::min<std::uint32_t>(
       ring.knight_select_count.load(std::memory_order_acquire),
       static_cast<std::uint32_t>(output.knight_selects.size()));
@@ -1436,12 +1448,84 @@ extern "C" std::uintptr_t __fastcall XarCombatPhaseEffectDispatchHookV1(
       }
     }
   }
+  const bool trace_nested =
+      ring != nullptr && ring->armed.load(std::memory_order_acquire) != 0 &&
+      g_original_phase_fire_side >= 0 &&
+      g_original_effect_root_event_row >= 0 &&
+      g_original_effect_dispatch_node != 0 && node != nullptr &&
+      context != nullptr;
+  CombatPhaseEffectNodeRecordV1 nested_row{};
+  std::uintptr_t nested_state = 0;
+  if (trace_nested) {
+    nested_row.side_index = g_original_phase_fire_side;
+    nested_row.native_event_load_index = g_original_effect_root_event_row;
+    nested_row.call_index =
+        ring->effect_node_call_count.fetch_add(1, std::memory_order_acq_rel);
+    nested_row.depth = g_original_effect_dispatch_depth;
+    nested_row.node_identity = reinterpret_cast<std::uintptr_t>(node);
+    nested_row.parent_node_identity = g_original_effect_dispatch_node;
+#if defined(_MSC_VER)
+    __try {
+#endif
+      nested_row.node_hash = LoadAt<std::uint32_t>(node, 0x38);
+      const auto vtable = LoadAt<std::uintptr_t>(node, 0);
+      if (vtable >= ring->plan.module_base &&
+          vtable - ring->plan.module_base < 0x6000000) {
+        nested_row.node_vtable_rva = static_cast<std::uint32_t>(
+            vtable - ring->plan.module_base);
+      }
+      nested_state = LoadAt<std::uintptr_t>(context, 0x28);
+      if (nested_state != 0) {
+        nested_row.counter_before = LoadAt<std::uint32_t>(nested_state, 0);
+        nested_row.salt_before = LoadAt<std::uint32_t>(nested_state, 4);
+      }
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      nested_state = 0;
+    }
+#endif
+    if (nested_state == 0) {
+      MarkFailure(*ring, trace_capture_failure_effect_node);
+    }
+  }
   const auto previous_effect_root_event_row = g_original_effect_root_event_row;
+  const auto previous_effect_dispatch_node = g_original_effect_dispatch_node;
+  const auto previous_effect_dispatch_depth = g_original_effect_dispatch_depth;
   if (record != nullptr) {
     g_original_effect_root_event_row = event_index;
   }
+  if (record != nullptr || trace_nested) {
+    g_original_effect_dispatch_node = reinterpret_cast<std::uintptr_t>(node);
+    g_original_effect_dispatch_depth = previous_effect_dispatch_depth + 1;
+  }
   const auto result = original(node, context);
   g_original_effect_root_event_row = previous_effect_root_event_row;
+  g_original_effect_dispatch_node = previous_effect_dispatch_node;
+  g_original_effect_dispatch_depth = previous_effect_dispatch_depth;
+  if (trace_nested && nested_state != 0) {
+#if defined(_MSC_VER)
+    __try {
+#endif
+      nested_row.counter_after = LoadAt<std::uint32_t>(nested_state, 0);
+      nested_row.salt_after = LoadAt<std::uint32_t>(nested_state, 4);
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      nested_state = 0;
+      MarkFailure(*ring, trace_capture_failure_effect_node);
+    }
+#endif
+    if (nested_state != 0 &&
+        (nested_row.counter_before != nested_row.counter_after ||
+         nested_row.salt_before != nested_row.salt_after)) {
+      const auto index = ring->effect_node_draw_count.fetch_add(
+          1, std::memory_order_acq_rel);
+      if (index >= ring->effect_node_draws.size()) {
+        MarkFailure(*ring, trace_capture_failure_capacity);
+      } else {
+        ring->effect_node_draws[index] = nested_row;
+      }
+    }
+  }
   if (record != nullptr && state != 0) {
 #if defined(_MSC_VER)
     __try {

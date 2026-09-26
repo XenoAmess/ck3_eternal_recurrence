@@ -408,6 +408,7 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
       drain.post_counter_attack_count >
           drain.post_counter_attack_raw.size() ||
       drain.effect_root_count > drain.effect_roots.size() ||
+      drain.effect_node_draw_count > drain.effect_node_draws.size() ||
       drain.knight_select_count > drain.knight_selects.size()) {
     return {};
   }
@@ -461,6 +462,40 @@ std::string SerializeCombatPhaseEventTraceRingDrainV1(
     if (!AppendOpaqueToken(output, row.node_identity)) return {};
     output += ",\"node_hash\":";
     if (!AppendNumber(output, row.node_hash)) return {};
+    output += ",\"counter_before\":";
+    if (!AppendNumber(output, row.counter_before)) return {};
+    output += ",\"salt_before\":";
+    if (!AppendNumber(output, row.salt_before)) return {};
+    output += ",\"counter_after\":";
+    if (!AppendNumber(output, row.counter_after)) return {};
+    output += ",\"salt_after\":";
+    if (!AppendNumber(output, row.salt_after)) return {};
+    output.push_back('}');
+  }
+  output += "]";
+  output += ",\"effect_node_call_count\":";
+  if (!AppendNumber(output, drain.effect_node_call_count)) return {};
+  output += ",\"effect_node_draws\":[";
+  for (std::uint32_t index = 0; index < drain.effect_node_draw_count;
+       ++index) {
+    if (index != 0) output.push_back(',');
+    const auto &row = drain.effect_node_draws[index];
+    output += "{\"side_index\":";
+    if (!AppendNumber(output, row.side_index)) return {};
+    output += ",\"native_event_load_index\":";
+    if (!AppendNumber(output, row.native_event_load_index)) return {};
+    output += ",\"call_index\":";
+    if (!AppendNumber(output, row.call_index)) return {};
+    output += ",\"depth\":";
+    if (!AppendNumber(output, row.depth)) return {};
+    output += ",\"node_identity_token\":";
+    if (!AppendOpaqueToken(output, row.node_identity)) return {};
+    output += ",\"parent_node_identity_token\":";
+    if (!AppendOpaqueToken(output, row.parent_node_identity)) return {};
+    output += ",\"node_hash\":";
+    if (!AppendNumber(output, row.node_hash)) return {};
+    output += ",\"node_vtable_rva\":";
+    if (!AppendNumber(output, row.node_vtable_rva)) return {};
     output += ",\"counter_before\":";
     if (!AppendNumber(output, row.counter_before)) return {};
     output += ",\"salt_before\":";

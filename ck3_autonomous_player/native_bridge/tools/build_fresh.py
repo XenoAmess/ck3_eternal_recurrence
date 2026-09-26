@@ -58,6 +58,10 @@ def _parser() -> argparse.ArgumentParser:
         "--focused-feudal-start", action="store_true",
         help="Build only bridge, injector, and exact adapter registry test",
     )
+    parser.add_argument(
+        "--experimental-combat-phase-trace-managed", action="store_true",
+        help="Enable the private managed one-day phase trace in this isolated build",
+    )
     parser.add_argument("--plan-only", action="store_true")
     return parser
 
@@ -289,6 +293,10 @@ def run(args: argparse.Namespace) -> dict[str, object]:
             )
         if args.feudal_1066_target_robert:
             configure.append("-DXAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1=ON")
+        if args.experimental_combat_phase_trace_managed:
+            configure.append(
+                "-DXAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1=ON"
+            )
         _run_checked(configure)
         prefix_mode = repair_ninja_msvc_dependency_prefix(build_dir, compiler)
         build = [cmake, "--build", str(build_dir), "--parallel"]
