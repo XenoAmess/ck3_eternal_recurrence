@@ -54,6 +54,7 @@ ORDINARY_LIFECYCLE_CONTRACT = {
 ORDINARY_SEED_REBIND_V1_SCHEMA = "xar.ck3.ordinary-seed-rebind/v1"
 CONSTRUCTION_PENDING_V1_SCHEMA = "xar.ck3.construction_formal_pending_v1"
 CONSTRUCTION_SUBMIT_STEP = "private-submit-player-construction-v1"
+CONSTRUCTION_RECEIPT_STEP = "private-query-player-construction-receipt-v1"
 
 
 def sha256(path: Path) -> str:
@@ -209,19 +210,26 @@ def episode_value(driver: dict[str, Any], manifest: dict[str, Any], key: str) ->
 def construction_pending_sidecar_request(
     sidecar: dict[str, Any], driver: dict[str, Any], manifest: dict[str, Any]
 ) -> str:
-    """Pair a submitted construction ledger with its saved driver action."""
+    """Pair a submitted or applied construction ledger with saved driver evidence."""
 
     pending = sidecar.get("pending")
+    applied = sidecar.get("applied")
+    is_pending = isinstance(pending, dict) and applied is None
+    is_applied = pending is None and isinstance(applied, dict)
+    record = pending if is_pending else applied
     checkpoint = driver.get("last_checkpoint")
     history = driver.get("command_history")
     if (sidecar.get("schema") != CONSTRUCTION_PENDING_V1_SCHEMA
-            or not isinstance(pending, dict)
-            or sidecar.get("applied") is not None
-            or pending.get("status") != "submitted_verification_pending"
+            or not (is_pending or is_applied)
+            or (is_pending and record.get("status") != "submitted_verification_pending")
+            or (is_applied and (
+                record.get("status") != "applied"
+                or record.get("postcondition_verified") is not True
+                or record.get("completion_status") not in ("in_progress", "completed")))
             or not isinstance(checkpoint, dict)
             or not isinstance(history, list)):
-        raise ValueError("construction pending sidecar lacks a saved pending action")
-    request_id = pending.get("action_request_id")
+        raise ValueError("construction sidecar lacks a saved pending or applied action")
+    request_id = record.get("action_request_id")
     actor = episode_value(driver, manifest, "episode_character_id")
     episode = episode_value(driver, manifest, "episode_run_id")
     checkpoint_index = checkpoint.get("history_index")
@@ -229,21 +237,64 @@ def construction_pending_sidecar_request(
             or re.fullmatch(r"construction-submit-[0-9a-f]{32}", request_id) is None
             or type(actor) is not int or actor <= 0
             or not isinstance(episode, str)
-            or pending.get("actor_character_id") != actor
-            or pending.get("episode_run_id") != episode
+            or record.get("actor_character_id") != actor
+            or record.get("episode_run_id") != episode
             or checkpoint.get("episode_character_id") != actor
             or checkpoint.get("episode_run_id") != episode
             or type(checkpoint_index) is not int
             or not any(
                 isinstance(row, dict)
-                and row.get("command") == CONSTRUCTION_SUBMIT_STEP
+                and row.get("command") == (
+                    CONSTRUCTION_SUBMIT_STEP if is_pending else CONSTRUCTION_RECEIPT_STEP)
                 and type(row.get("index")) is int
                 and row["index"] <= checkpoint_index
-                and row.get("result") == pending
+                and row.get("result") == record
                 for row in history
             )):
-        raise ValueError("construction pending sidecar does not match checkpoint actor/episode/action")
+        raise ValueError("construction sidecar does not match checkpoint actor/episode/action")
+    if is_applied and not any(
+        isinstance(row, dict)
+        and row.get("command") == CONSTRUCTION_SUBMIT_STEP
+        and type(row.get("index")) is int
+        and row["index"] <= checkpoint_index
+        and isinstance(row.get("result"), dict)
+        and row["result"].get("status") == "submitted_verification_pending"
+        and row["result"].get("action_request_id") == request_id
+        and row["result"].get("candidate") == record.get("candidate")
+        for row in history
+    ):
+        raise ValueError("construction applied sidecar lacks its saved submit action")
     return request_id
+
+
+def saved_in_progress_construction_without_sidecar(driver: dict[str, Any]) -> bool:
+    """A saved material receipt needs its ledger for later completion checks."""
+
+    checkpoint = driver.get("last_checkpoint")
+    history = driver.get("command_history")
+    if not isinstance(checkpoint, dict) or not isinstance(history, list):
+        return False
+    checkpoint_index = checkpoint.get("history_index")
+    if type(checkpoint_index) is not int:
+        return False
+    latest: dict[str, dict[str, Any]] = {}
+    for row in history:
+        if (not isinstance(row, dict)
+                or row.get("command") != CONSTRUCTION_RECEIPT_STEP
+                or type(row.get("index")) is not int
+                or row["index"] > checkpoint_index
+                or not isinstance(row.get("result"), dict)):
+            continue
+        receipt = row["result"]
+        request_id = receipt.get("action_request_id")
+        if (isinstance(request_id, str)
+                and receipt.get("status") == "applied"
+                and receipt.get("postcondition_verified") is True):
+            previous = latest.get(request_id)
+            if previous is None or row["index"] > previous["index"]:
+                latest[request_id] = row
+    return any(row["result"].get("completion_status") == "in_progress"
+               for row in latest.values())
 
 
 def run_logged(command: list[str], stdout_path: Path, stderr_path: Path) -> int:
@@ -425,7 +476,9 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     sample_dir = args.sample_dir.resolve()
     save_source = sample_dir / "xar_checkpoint.ck3"
     driver_source = sample_dir / "driver-state.json"
-    pending_source = sample_dir / "construction-formal-pending-v1.json"
+    explicit_sidecar = getattr(args, "construction_sidecar", None)
+    pending_source = (explicit_sidecar.resolve() if explicit_sidecar is not None
+                      else sample_dir / "construction-formal-pending-v1.json")
     save_target = state_dir / "profile" / "save games" / "xar_checkpoint.ck3"
     driver_target = state_dir / "native-session" / "driver-state.json"
     pending_target = state_dir / "construction-formal-pending-v1.json"
@@ -438,6 +491,9 @@ def command_prepare_state(args: argparse.Namespace) -> int:
     pending_request_id = None
     pending_source_sha256 = None
     pending_record = None
+    driver_source_record = read_json(driver_source)
+    if explicit_sidecar is not None and not pending_source.is_file():
+        raise FileNotFoundError(pending_source)
     if pending_source.exists():
         if not pending_source.is_file():
             raise FileNotFoundError(pending_source)
@@ -445,8 +501,13 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             raise FileExistsError(f"refusing to overwrite prepared state: {pending_target}")
         pending_record = read_json(pending_source)
         pending_request_id = construction_pending_sidecar_request(
-            pending_record, read_json(driver_source), manifest)
+            pending_record, driver_source_record, manifest)
         pending_source_sha256 = sha256(pending_source)
+    elif saved_in_progress_construction_without_sidecar(driver_source_record):
+        raise ValueError(
+            "saved in-progress construction receipt requires --construction-sidecar "
+            "or construction-formal-pending-v1.json in sample-dir"
+        )
     rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         if rebind_receipt.exists():
@@ -566,6 +627,8 @@ def command_prepare_state(args: argparse.Namespace) -> int:
             raise RuntimeError("prepared construction pending sidecar hash mismatch")
         preparation["construction_pending_sidecar"] = {
             "status": "paired_no_launch",
+            "ledger_status": "pending" if pending_record["pending"] is not None else "applied",
+            "source": str(pending_source),
             "path": str(pending_target),
             "sha256": pending_source_sha256,
             "action_request_id": pending_request_id,
@@ -1272,6 +1335,7 @@ def parser() -> argparse.ArgumentParser:
     prepare = commands.add_parser("prepare-state")
     prepare.add_argument("--manifest", type=Path, required=True)
     prepare.add_argument("--sample-dir", type=Path, required=True)
+    prepare.add_argument("--construction-sidecar", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
 
     run = commands.add_parser("run")
