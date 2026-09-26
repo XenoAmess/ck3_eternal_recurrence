@@ -1,7 +1,7 @@
 # M5 observed opportunity dispatch (2026-09-23)
 
-Status: **static-ready analytic dispatch; no formal M5 action or live joint
-selection**. The exact game remains CK3 `1.19.0.6-steam23530548`, EXE SHA-256
+Status: **static-ready private construction consumer; no live joint action or
+M5 milestone completion**. The exact game remains CK3 `1.19.0.6-steam23530548`, EXE SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
 This adds to the earlier [single-frame dispatch](m5-single-frame-dispatch-2026-09-22.md)
 without changing public MCP capability or the production turn strategy.
@@ -31,7 +31,10 @@ actual shared resources that are already observable:
 Eligible proposals are ordered by least observed shared commitment: war slot,
 army count, ally count, gold, commitment-key count, character count, then
 supply margin and stable ID. This ordering is an explicit arbitration policy,
-not an inferred native utility. A positive selection remains analytic and
+not an inferred native utility. In the bounded peaceful building/gift source,
+a building with positive authored monthly-income script value precedes an
+unpriced gift; ties retain the shared-cost order. This is not actual character
+tax or a cross-domain utility scale. The dispatcher remains analytic and
 returns no typed step.
 
 `M5FrameDispatcher.choose_observed` is the reusable entry. It shares the same
@@ -45,7 +48,7 @@ gold, war-slot and identity claims.
 | Domain | Existing source consumed | Observed cost/commitment retained | Current boundary |
 | --- | --- | --- | --- |
 | Council | normalized Council19 steward observation plus `council-composition-steward-v1` action-ready decision | chosen CharacterID, incumbent/candidate stewardship, exclusive steward seat | Static adapter ready; no same-frame multi-domain live artifact |
-| Building | `domain_construction_private_transport_v1` `status=selected` query | exact barony/province/building/slot, stock gold cost, formal 20M reserve, permanent slot key | Static adapter ready; typed building path remains independently gated |
+| Building | `domain_construction_private_transport_v1` `status=selected` query | exact barony/province/building/slot, stock gold cost, authored monthly income, formal 20M reserve, permanent slot key | Private opt-in typed submit reuses the existing construction receipt path; no live M5 pair |
 | Diplomacy | `faction_gift_formal_candidate_v1` `status=selected` choice | faction/recipient identity, exact gift gold, 10M reserve, opinion delta and unique gift key | Static adapter ready; gift result still needs its own durable receipt |
 | War | existing final-legal declaration/entry assessment or active primary-defender plan | entry remains unadmitted; continuation adapter retains an already occupied slot, exact ArmyIDs, projected supply, gold/reserve and stable war commitments | R0178/R0179 lack the same-frame continuation cost projection, so no real proposal is admitted yet |
 | Lifestyle | existing private LIFE query plus wartime minimum-policy decision | current focus, one unspent perk point, permanent perk target; zero gold/Army/ally/new-war/date claim | Static adapter ready for query-only/no-step war plans; formal M5 consumer absent |
@@ -106,22 +109,29 @@ gold reserve and war-slot budget, plus only the domain sources complete in
 that frame.  The collector applies the existing war-continuation, council,
 construction, faction-gift and wartime-lifestyle adapters, constructs one
 `M5FrameDispatcher`, and calls `choose_observed` once.  The service then
-returns `selected_step=null` and `m5_joint_formal_action_ready=false`, even
-when the analytic reservation is non-null.
+returns an analytic reservation. The private formal planner consumes that
+reservation only for a selected, positive authored-income building from the
+same native query, routing the existing typed construction submit step. Other
+selections retain `selected_step=null` and
+`m5_joint_formal_action_ready=false`.
 
 The currently bound producer is peacetime-only. If the ordinary formal plan
 has already selected any step other than `life-advance`, the collector returns
 that plan unchanged and does not call the private producer. This keeps an
 existing war, marriage, or other formal strategy ahead of M5 analytics and
-prevents a peacetime-source RED from erasing its typed step.
+prevents a peacetime-source RED from erasing its typed step. With both private
+M5 and LIFE flags enabled, the existing LIFE planner runs first; a due focus,
+perk or receipt step is preserved, and the peacetime source is not queried.
+This is priority preservation, not a same-frame LIFE/building value comparison.
 
 Marriage is not a source-bundle domain.  Adding a `marriage` key is a RED;
 the R0133 legality inventory therefore cannot enter through this private
-route.  The source reader remains unadvertised.  The private bounded CLI flag
-described below only enables a query-only peacetime producer; it does not
-enable a formal action or public M5 capability.  Paused live readback is still
-required before any formal typed consumer is added.  This static collector
-does not advance G2-M5 from `not_started`.
+route. The source reader remains unadvertised. The private bounded CLI flag
+enables the producer and selected-building consumer; it does not enable a
+public M5 capability. The typed branch still needs a frozen paused-frame
+action, independent material readback, next turn and cold restore before it
+can be called live. This source and no-launch work does not advance G2-M5
+from `not_started`.
 
 R0133 remains read-only evidence: 657 distinct final-legal first-heir rows and
 five successful projection reads, with zero observed alliance payoff in the
@@ -146,6 +156,14 @@ construction query contract.  Therefore the three-domain war + building +
 gift focused fixture is a dispatcher contract test, not a realizable live
 frame.  Active-war continuation remains a separate read-only MCP dependency
 and cannot be spliced into this producer.
+
+At the reported Robert `h2134` frame, active War `16777231` makes this
+peacetime producer inapplicable. The existing construction consumer separately
+requires the baseline `life-advance` step and
+`same_frame_feudal_peace_scope`; the authored income field does not override
+either gate. Future war cash and supply commitments remain unknown in this
+comparison. No Robert construction action or joint live benefit follows from
+the static nominal-income value.
 
 Before either query, both durable formal ledgers must have no pending action.
 After the 2026-09-26 NW-ECON continuation, an applied construction receipt
@@ -175,15 +193,20 @@ producer does not add a second selector. A building proposal carries its
 permanent `building-slot:<barony>:<slot>` commitment, while a gift carries its
 `faction-gift:<faction>:<recipient>` commitment. The dispatcher compares the
 two observed gold costs under their domain reserves and the zero-war budget,
-then persists only the selected proposal's claims in its one-frame analytic
+then favors a positive authored-income building over an unpriced gift when
+both are eligible. It persists only the selected proposal's claims in its
+one-frame analytic
 reservation. Its single-writer guard prevents a second choice in that frame.
 
-`native-auto-run --allow-private-m5-joint-collector` is a bounded private
-query-only entry.  With the flag absent, runner and planner behavior are
-unchanged.  With it present, the existing collector runs once and still
-returns `selected_step=null` and `formal_action_ready=false`.  Static tests and
-the opt-in do not establish a live joint choice, typed consumption, next-turn
-use or recovery; G2-M5 remains `not_started` until those separate gates pass.
+`native-auto-run --allow-private-m5-joint-collector` remains default OFF. With
+it present, the producer compares the two same-frame candidates once. The
+formal planner routes an observed positive-income selected building through
+the existing construction submit/checkpoint/receipt path. Before another
+selection, an unresolved construction ledger is handed to that path for
+receipt or cold recheck. The analytic reservation claims only the selected
+building's gold and slot once; the durable construction ledger owns the
+subsequent action state. These are source and focused-test claims only: no
+joint live action, next-turn result or cold restore was produced here.
 
 ### 2026-09-26 NW-JOINT source continuation
 
@@ -193,11 +216,12 @@ after the first `applied` receipt in an episode. The source fix admits a later
 same-frame, native-budgeted building again after the verified receipt and a
 later game day; the focused fixture includes an independent faction-empty
 frame and observes the existing dispatcher select the building. This removes
-one proposal omission in the opt-in analytic path. It is **source/fixture
-evidence only**: the source still lacks construction time and material income
-or building-effect benefit, and the dispatcher remains query-only. A formal
-M5 consumer, independent postcondition, next-turn use and cold recovery still
-require their own live evidence before M5 status can change.
+one proposal omission in the opt-in analytic path. At that source-only commit,
+material income remained unavailable. The later NW-ECON-VALUE change on
+master `8beded9` supplies positive authored monthly income for selected
+tier-one economic buildings; the bounded typed branch above consumes it.
+Construction time, realized income and live M5 postcondition/recovery remain
+unproved.
 
 ## Focused fixture boundary and next live input
 

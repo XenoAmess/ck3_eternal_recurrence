@@ -801,6 +801,24 @@ class GameplayBridgeService:
                 raise BridgeUnavailableError(
                     "private M5 collector lacks its formal planning view"
                 )
+            # M5's current source is peaceful building/gift only. Preserve an
+            # already due LIFE action or receipt before its private comparison.
+            if getattr(
+                self.driver, "allow_private_lifestyle_formal_trial", False
+            ) is True:
+                planned = (
+                    self._plan_initial_lifestyle_focus_first_v1(
+                        planned, available_steps
+                    )
+                    if getattr(
+                        self.driver,
+                        "require_initial_lifestyle_focus_before_date_advance",
+                        False,
+                    ) is True
+                    else self._plan_private_lifestyle_trial_v1(
+                        planned, available_steps
+                    )
+                )
             return plan_m5_formal_query_only(
                 self.driver,
                 planned,

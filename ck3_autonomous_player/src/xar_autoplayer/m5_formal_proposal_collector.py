@@ -1,15 +1,25 @@
 """Default-off M5 collection of existing same-frame domain proposals.
 
-The collector is read-only.  It adapts domain-policy results that a private
-caller has already observed, invokes the existing dispatcher once, and never
-returns a CK3 step.  Public strategy and capability surfaces do not import it.
+The collector is read-only. It adapts domain-policy results observed by a
+private caller and invokes the existing dispatcher once. The separate opt-in
+formal planner can route its selected positive-income building through the
+existing construction consumer. Public capability surfaces do not import it.
 """
 
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from copy import deepcopy
+from pathlib import Path
 
+from .construction_formal_consumer import (
+    SUBMIT_STEP as CONSTRUCTION_SUBMIT_STEP,
+    plan_construction_private,
+    read_construction_ledger,
+)
+from .bridge.domain_construction_private_transport_v1 import (
+    _identity as construction_process_identity,
+)
 from .m5_joint_dispatch import M5FrameDispatcher
 from .m5_observed_opportunity_selector import (
     active_defensive_war_continuation_proposal,
@@ -110,7 +120,7 @@ def plan_m5_formal_query_only(
     driver: object, planned: Mapping[str, object], *,
     snapshot: Mapping[str, object], history: Sequence[Mapping[str, object]],
 ) -> dict[str, object]:
-    """Run one private source read at the formal paused decision boundary."""
+    """Read one private frame and route only a proved construction choice."""
 
     result = deepcopy(dict(planned))
     plan = result.get("plan")
@@ -148,6 +158,36 @@ def plan_m5_formal_query_only(
     reader = getattr(driver, "query_m5_joint_proposal_sources_private_v1", None)
     if not callable(reader):
         return blocked("M5 private proposal source reader is unavailable")
+    # The joint source refuses unresolved actions.  Let the existing durable
+    # construction consumer resolve its own receipt before another selection.
+    state_dir = getattr(driver, "state_dir", None)
+    if isinstance(state_dir, Path):
+        try:
+            ledger = read_construction_ledger(state_dir)
+            pending = ledger.get("pending")
+            applied = ledger.get("applied")
+            if isinstance(pending, Mapping) or (
+                isinstance(applied, Mapping)
+                and applied.get("episode_run_id") == snapshot.get("episode_run_id")
+                and (
+                    construction_process_identity(driver) != (
+                        applied.get("post_bridge_pid"),
+                        applied.get("post_bridge_creation_date"),
+                    )
+                    or type(snapshot.get("native_revision")) is not int
+                    or type(snapshot.get("date_raw")) is not int
+                    or snapshot["native_revision"] <= applied.get("post_native_revision", 0)
+                    or snapshot["date_raw"] <= applied.get("post_date_raw", 0))
+            ):
+                return plan_construction_private(
+                    driver, cleaned, snapshot, list(history), set()
+                )
+            if isinstance(applied, Mapping) and (
+                applied.get("episode_run_id") == snapshot.get("episode_run_id")
+            ):
+                baseline["construction_receipt_consumed"] = dict(applied)
+        except (RuntimeError, TypeError, ValueError) as error:
+            return blocked(f"M5 construction receipt RED: {error}")
     try:
         sources = reader(
             snapshot=deepcopy(dict(snapshot)),
@@ -162,6 +202,33 @@ def plan_m5_formal_query_only(
         )
     except (RuntimeError, TypeError, ValueError) as error:
         return blocked(f"M5 private proposal collection RED: {error}")
+    dispatch = collection["dispatch"]
+    reservation = dispatch.get("reservation")
+    building_source = sources.get("domains", {}).get("building")
+    query = (building_source.get("query")
+             if isinstance(building_source, Mapping) else None)
+    candidate = query.get("candidate") if isinstance(query, Mapping) else None
+    income = (candidate.get("authored_monthly_income_hundredths")
+              if isinstance(candidate, Mapping) else None)
+    if (
+        isinstance(reservation, Mapping)
+        and reservation.get("domain") == "building"
+        and reservation.get("candidate_id") == dispatch.get("selected_candidate_id")
+        and type(income) is int and income > 0
+        and isinstance(query, Mapping)
+    ):
+        return {
+            **cleaned,
+            "plan": {
+                **baseline,
+                "phase": "m5_joint_construction_typed_submit",
+                "selected_step": CONSTRUCTION_SUBMIT_STEP,
+                "construction_private_query": deepcopy(dict(query)),
+                "reason": "submit one same-frame native-legal positive-income construction",
+                "m5_joint_query_only": collection,
+                "m5_joint_formal_action_ready": True,
+            },
+        }
     return {
         **cleaned,
         "plan": {
