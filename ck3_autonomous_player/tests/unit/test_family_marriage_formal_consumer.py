@@ -56,8 +56,10 @@ def family_reads() -> tuple[dict[str, object], dict[str, object]]:
                           "heir_spouse_character_ids": [],
                           "played_dynasty_id": 20, "heir_dynasty_id": 20,
                           "played_house_id": 21, "heir_house_id": 21,
+                          "candidate_dynasty_id": 30, "candidate_house_id": 31,
                           "heir_sex_selector_raw": 0,
                           "candidate_sex_selector_raw": 1,
+                          "matrilineal_option_selected": False,
                           "effective_matrilineal_if_accepted": False})
     return ({"status": "available", "native_revision": 7,
              "query_sequence": 2,
@@ -121,6 +123,65 @@ class FamilyConsumerTest(unittest.TestCase):
         projected["rows"][3]["heir_spouse_character_ids"] = [888]
         projected["rows"][4]["heir_spouse_character_ids"] = [888]
         self.assertIsNone(choose_first_heir_marriage_candidate(legal, projected))
+
+    def test_private_five_row_diagnostic_explains_no_positive_choice(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            rows = driver.projection["rows"]
+            rows[0]["predicted_outcome_if_accepted"] = "betrothal"
+            rows[1]["candidate_sex_selector_raw"] = 0
+            rows[2]["matrilineal_option_selected"] = True
+            rows[2]["effective_matrilineal_if_accepted"] = True
+            rows[3]["predicted_outcome_if_accepted"] = "betrothal"
+            driver.legality["native_legal_candidates"][4]["recipient_ai_accept_raw"] = 0
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            plan = planned["plan"]
+            self.assertEqual(plan["selected_step"], "life-advance")
+            self.assertEqual(plan["family_marriage_status"],
+                             "no_positive_observed_marriage_opportunity")
+            diagnostic = plan["family_marriage_private_diagnostic"]
+            self.assertFalse(diagnostic["advertised"])
+            self.assertEqual(diagnostic["native_revision"], 7)
+            self.assertEqual(diagnostic["legality_query_sequence"], 2)
+            self.assertEqual(diagnostic["observed_first_heir_character_id"], 202)
+            self.assertEqual(diagnostic["final_legal_candidate_count"], 5)
+            self.assertIsNone(diagnostic["selected_candidate_character_id"])
+            observed = diagnostic["rows"]
+            self.assertEqual([row["candidate_character_id"] for row in observed],
+                             [300, 301, 302, 303, 304])
+            self.assertEqual(observed[0]["predicted_outcome_if_accepted"],
+                             "betrothal")
+            self.assertEqual(observed[0]["rejection_reasons"],
+                             ["not_adult_marriage_outcome"])
+            self.assertIn("same_selector_pair", observed[1]["rejection_reasons"])
+            self.assertEqual(observed[1]["heir_spouse_count"], 0)
+            self.assertIsNone(observed[1]["heir_betrothed_character_id"])
+            self.assertIn("lineality_not_heir_aligned", observed[2]["rejection_reasons"])
+            self.assertEqual(observed[2]["heir_house_id"], 21)
+            self.assertEqual(observed[2]["candidate_dynasty_id"], 30)
+            self.assertIn("not_adult_marriage_outcome", observed[3]["rejection_reasons"])
+            self.assertIn("recipient_accept_not_positive", observed[4]["rejection_reasons"])
+            self.assertEqual(observed[4]["recipient_ai_accept_raw"], 0)
+            self.assertEqual(driver.calls, ["legality", "projection"])
+
+    def test_private_diagnostic_retains_shared_heir_relationship_and_house_gate(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = FakeDriver(Path(temporary))
+            for row in driver.projection["rows"]:
+                row["heir_spouse_character_ids"] = [888]
+                row["heir_primary_spouse_character_id"] = 888
+                row["heir_house_id"] = 22
+            planned = plan_family_marriage_private(
+                driver, {"plan": {"selected_step": "life-advance"}}, scene())
+            rows = planned["plan"]["family_marriage_private_diagnostic"]["rows"]
+            self.assertEqual(len(rows), 5)
+            self.assertTrue(all(row["heir_spouse_count"] == 1 for row in rows))
+            self.assertTrue(all(row["heir_primary_spouse_character_id"] == 888
+                                for row in rows))
+            self.assertTrue(all("heir_spouse_list_not_empty" in row["rejection_reasons"]
+                                and "heir_house_not_played_house" in row["rejection_reasons"]
+                                for row in rows))
 
     def test_prewar_requires_explicit_native_declaration_and_observed_value(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -187,6 +248,10 @@ class FamilyConsumerTest(unittest.TestCase):
                        return_value=(55, "created")):
                 planned = plan_family_marriage_private(driver, baseline, scene())
                 self.assertEqual(planned["plan"]["selected_step"], SUBMIT_STEP)
+                self.assertEqual(planned["plan"]["family_marriage_private_diagnostic"]
+                                 ["selected_candidate_character_id"], 300)
+                self.assertEqual(planned["plan"]["family_marriage_private_diagnostic"]
+                                 ["rows"][0]["rejection_reasons"], [])
                 pending = submit_family_marriage_private(
                     driver, plan=planned["plan"], snapshot=scene())
                 self.assertEqual(pending["submission_state"], "receipt_pending")
