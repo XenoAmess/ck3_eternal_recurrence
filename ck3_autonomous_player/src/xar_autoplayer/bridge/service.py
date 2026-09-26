@@ -906,13 +906,15 @@ class GameplayBridgeService:
             construction_plan = planned.get("plan")
             if (isinstance(construction_plan, dict)
                     and isinstance(plan, dict)
-                    and plan.get("selected_step") == "life-advance"
+                    and (plan.get("selected_step") == "life-advance"
+                         or prewar_arbitration)
                     and construction_plan.get("selected_step") is None
                     and isinstance(construction_plan.get("construction_private_query"), dict)
-                    and construction_plan["construction_private_query"].get("status") == "source_red"):
+                    and construction_plan["construction_private_query"].get("status")
+                    in {"source_red", "evidence_insufficient"}):
                 construction_red_plan = construction_plan
                 planned = {**planned, "plan": {**construction_plan,
-                    "selected_step": "life-advance"}}
+                    "selected_step": plan["selected_step"]}}
         family_snapshot = planned.pop("_private_family_marriage_snapshot_v1", None)
         if (getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True
                 and isinstance(family_snapshot, dict)):
@@ -922,7 +924,7 @@ class GameplayBridgeService:
             )
         if (construction_red_plan is not None
                 and isinstance(planned.get("plan"), dict)
-                and planned["plan"].get("selected_step") == "life-advance"):
+                and planned["plan"].get("selected_step") == plan["selected_step"]):
             planned = {**planned, "plan": {**planned["plan"],
                 "selected_step": None,
                 "reason": construction_red_plan["reason"]}}

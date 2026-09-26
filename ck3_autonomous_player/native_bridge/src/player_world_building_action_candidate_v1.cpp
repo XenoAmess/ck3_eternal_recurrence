@@ -1,4 +1,5 @@
 #include "player_world_building_action_candidate_v1.hpp"
+#include "player_world_building_authored_income_v1.hpp"
 
 #include <algorithm>
 #include <array>
@@ -9,30 +10,6 @@
 
 namespace xar::ck3_11906 {
 namespace {
-
-// 1.19.0.6 vanilla 00_standard_economy_buildings.txt tier-one unconditional
-// province monthly_income, resolved through 00_building_values.txt. This is
-// authored value only; actual character tax after completion is separate.
-constexpr std::array<std::pair<std::string_view, int>, 19> kAuthoredIncome{{
-    {"caravanserai_01", 70}, {"watermills_01", 70},
-    {"windmills_01", 70}, {"farm_estates_01", 70},
-    {"paddy_fields_01", 50}, {"cereal_fields_01", 50},
-    {"murex_farm_01", 35}, {"spice_plantation_01", 35},
-    {"common_tradeport_01", 35}, {"pastures_01", 35},
-    {"orchards_01", 35}, {"logging_camps_01", 35},
-    {"peat_quarries_01", 35}, {"hill_farms_01", 35},
-    {"elephant_pens_01", 35}, {"qanats_01", 25},
-    {"hunting_grounds_01", 25}, {"plantations_01", 25},
-    {"quarries_01", 25},
-}};
-
-int AuthoredIncomeHundredths(std::string_view key) noexcept {
-  const auto found = std::find_if(kAuthoredIncome.begin(), kAuthoredIncome.end(),
-                                  [key](const auto &row) {
-                                    return row.first == key;
-                                  });
-  return found == kAuthoredIncome.end() ? 0 : found->second;
-}
 
 bool GoldOnlyStockCost(
     const PlayerWorldBuildingLegalSampleV1 &sample) noexcept {

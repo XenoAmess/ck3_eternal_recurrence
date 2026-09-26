@@ -366,7 +366,7 @@ bool ExecutePlayerConstructionViewProbeMailboxV1(
           query->player_world_building_sources =
               ReadPlayerWorldBuildingDefinitionSourcesV1(
                   query->module_base, true, world_access,
-                  {query->expected_revision, -1, 512, 8});
+                  {query->expected_revision, -1, 512, 64});
         }
       }
       if (!CaptureSameSnapshot(*query, stamp)) {
@@ -544,6 +544,9 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
               ? "100000" : "null";
   json += ",\"checks_truncated\":";
   json += world_available && world.checks_truncated ? "true" : "false";
+  json += ",\"positive_income_coverage_complete\":";
+  json += world_available && world.positive_income_coverage_complete
+              ? "true" : "false";
   json += ",\"cost_ready\":false,\"construction_action_ready\":false";
   json += ",\"directly_held_barony_provinces\":[";
   if (world_available) {

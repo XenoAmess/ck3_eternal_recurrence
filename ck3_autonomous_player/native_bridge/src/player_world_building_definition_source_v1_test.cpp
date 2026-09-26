@@ -15,6 +15,8 @@ constexpr std::int32_t kActor = 29829;
 constexpr std::int32_t kCounty = 2142;
 constexpr std::int32_t kBarony = 2143;
 constexpr std::int32_t kProvince = 2619;
+constexpr std::int32_t kSecondBarony = 2146;
+constexpr std::int32_t kSecondProvince = 2617;
 
 struct Fixture {
   std::unordered_map<std::uintptr_t, std::uint8_t> bytes;
@@ -24,6 +26,7 @@ struct Fixture {
   bool change_final_frame = false;
   bool validator_fails = false;
   bool cost_fails = false;
+  bool only_second_province = false;
   std::int32_t native_checks = 0;
   std::int32_t cost_calls = 0;
   std::int32_t frame_reads = 0;
@@ -85,13 +88,15 @@ struct Fixture {
     auto &self = *static_cast<Fixture *>(context);
     ++self.native_checks;
     std::int32_t type = -1;
-    if (self.validator_fails || actor != kActor || province != kProvince ||
+    if (self.validator_fails || actor != kActor ||
+        (province != kProvince && province != kSecondProvince) ||
         slot < 0 || slot >= 2 ||
         !Read(context, reinterpret_cast<const void *>(definition + 0x10),
               &type, sizeof(type))) {
       return false;
     }
-    allowed = type == 22 && slot == 1;
+    allowed = type == 22 && slot == 1 &&
+              (!self.only_second_province || province == kSecondProvince);
     return true;
   }
 
@@ -203,6 +208,7 @@ Fixture Scene() {
   f.Put(0xD10008, std::uintptr_t{0xB10000});
   f.Put(0xB00000, kModule + 0x44046C0);
   f.Put(0xB00000 + 0x10, std::int32_t{11});
+  f.PutKey(0xB00000, "hospices_01");
   f.Put(0xB10000, kModule + 0x44046C0);
   f.Put(0xB10000 + 0x10, std::int32_t{22});
   f.PutKey(0xB10000, "farm_estates_01");
@@ -221,6 +227,28 @@ Fixture Scene() {
   f.Put(0xC20000, kModule + 0x4172FA8);
   f.Put(0xC20000 + 0x10, std::int32_t{7});
   return f;
+}
+
+void AddSecondHolding(Fixture &f) {
+  f.Put(0x430000 + 0x1E8, std::int32_t{3});
+  f.Put(0x430000 + 0x1EC, std::int32_t{3});
+  f.Put(0x440008, kSecondBarony);
+  f.Put(0x500020 + kSecondBarony * 0x10 + 8,
+        std::uintptr_t{0x640000});
+  f.Put(0x640000 + 0x10, kSecondBarony);
+  f.Put(0x640000 + 0x160, std::uintptr_t{0x650000});
+  f.Put(0x650000 + 0x5C, std::int32_t{1});
+  f.Put(0x640000 + 0x258, kActor);
+  f.Put(0x640000 + 0x460, std::uintptr_t{0x710000});
+  f.Put(0x720000 + kSecondProvince * 8,
+        std::uintptr_t{0x710000});
+  f.Put(0x710000 + 0x10, kSecondProvince);
+  f.Put(0x710000 + 0x620 + 0x18,
+        std::uintptr_t{0x740000});
+  f.Put(0x710000 + 0x620 + 0x24, std::int32_t{2});
+  f.Put(0x740000, std::uintptr_t{0});
+  f.Put(0x740000 + 0x10, std::uintptr_t{0});
+  f.Put(0x710000 + 0x620 + 0x70, std::uintptr_t{0});
 }
 
 } // namespace
@@ -417,10 +445,26 @@ int main() {
   {
     auto f = Scene();
     auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
-        kModule, true, f.Access(), {3, kProvince, 2, 8});
-    Require(r.source_available && r.final_legality_checks == 2 &&
-                r.checks_truncated && r.legal_samples.empty(),
-            "bounded_sample_is_not_all_legal_candidates");
+        kModule, true, f.Access(), {3, kProvince, 1, 8});
+    Require(r.source_available && r.final_legality_checks == 1 &&
+                r.checks_truncated && !r.positive_income_coverage_complete &&
+                r.legal_samples.empty(),
+            "bounded_positive_sample_is_not_global_negative_evidence");
+  }
+  {
+    auto f = Scene();
+    AddSecondHolding(f);
+    f.only_second_province = true;
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 4, 8});
+    Require(r.source_available && r.final_legality_checks == 4 &&
+                r.checks_truncated && r.positive_income_coverage_complete &&
+                r.directly_held_barony_provinces.size() == 2 &&
+                r.legal_samples ==
+                    std::vector<PlayerWorldBuildingLegalSampleV1>{
+                        {kSecondBarony, kSecondProvince, 22, 1,
+                         "farm_estates_01"}},
+            "positive_definition_reaches_second_holding_before_generic_cap");
   }
   {
     auto f = Scene();

@@ -86,7 +86,7 @@
       "stock null context"
     ],
     "province_slot_count": "Province+0x620+0x24; the predicate independently checks the index against that count",
-    "sample_coverage": "bounded; truncation explicitly recorded, zero legal samples under truncation is evidence_insufficient",
+    "sample_coverage": "bounded 512 final-legality checks and 64 legal samples per paused query; verified manager canonical keys classified first, known authored positive-income definitions scanned by income priority across every directly held barony before other definitions; positive_income_coverage_complete is true only when all manager keys classify and every known positive definition/holding/slot tuple was checked, regardless of later generic truncation; no selected candidate with false coverage is evidence_insufficient rather than global no_legal_budgeted_building",
     "cost": "not read from this world vector or final predicate; stock GUIPotentialBuildingItem.GetCost callback 0x11A6530 is row/view scoped",
     "action": "none"
   },

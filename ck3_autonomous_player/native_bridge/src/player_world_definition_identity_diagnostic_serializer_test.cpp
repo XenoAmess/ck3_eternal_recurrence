@@ -71,6 +71,7 @@ int main() {
       xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query)
       << '\n';
   world.completed_buildings_observed = true;
+  world.positive_income_coverage_complete = true;
   world.completed_buildings.push_back({2103, 2635, 24, 1});
   std::cout <<
       xar::ck3_11906::SerializePlayerConstructionViewProbePrivateV1(query);
