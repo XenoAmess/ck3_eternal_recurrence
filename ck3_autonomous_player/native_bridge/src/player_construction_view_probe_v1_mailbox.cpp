@@ -580,6 +580,23 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
       json += '}';
     }
   }
+  json += "],\"completed_buildings\":[";
+  if (world_available) {
+    for (std::size_t index = 0; index < world.completed_buildings.size();
+         ++index) {
+      if (index != 0) json += ',';
+      const auto& built = world.completed_buildings[index];
+      json += "{\"barony_title_id\":";
+      json += std::to_string(built.barony_title_id);
+      json += ",\"province_id\":";
+      json += std::to_string(built.province_id);
+      json += ",\"building_type_id\":";
+      json += std::to_string(built.building_type_id);
+      json += ",\"slot_index\":";
+      json += std::to_string(built.slot_index);
+      json += '}';
+    }
+  }
   json += "],\"legal_samples\":[";
   if (world_available) {
     for (std::size_t index = 0; index < world.legal_samples.size(); ++index) {

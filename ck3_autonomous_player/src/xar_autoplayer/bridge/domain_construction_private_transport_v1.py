@@ -12,6 +12,7 @@ import uuid
 
 from ..construction_formal_consumer import (
     read_construction_ledger, write_construction_ledger,
+    same_frame_construction_income,
 )
 from ..runtime import _process_identity
 from .driver import BridgeUnavailableError, StepPostconditionError
@@ -136,6 +137,7 @@ def query_construction_private(driver: object, *, expected_revision: int,
             and type(world.get("player_gold_raw")) is int
             and world["player_gold_raw"] >= 0
             and isinstance(world.get("active_constructions"), list)
+            and isinstance(world.get("completed_buildings"), list)
             and isinstance(world.get("legal_samples"), list)
             and all(isinstance(row, Mapping)
                     and row.get("native_cost_observed") is True
@@ -219,6 +221,9 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
                 and source["date_raw"] > applied["post_date_raw"]):
             raise BridgeUnavailableError("construction receipt not yet consumed on a later game day")
     request_id = f"construction-submit-{uuid.uuid4().hex}"
+    history = starting.get("native_command_history")
+    _, pre_income = same_frame_construction_income(
+        starting, history if isinstance(history, list) else [])
     pending = {"status": "action_state_unknown", "action_request_id": request_id,
                "episode_run_id": starting["episode_run_id"],
                "actor_character_id": source["actor_character_id"],
@@ -227,6 +232,7 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
                "pre_date_raw": source["date_raw"],
                "pre_proof_epoch": query["proof_epoch"],
                "source_bridge_pid": pid, "source_bridge_creation_date": creation,
+               "pre_player_monthly_gold_income_raw": pre_income,
                "candidate": dict(candidate)}
     write_construction_ledger(state_dir, {**ledger, "pending": pending})
     driver._record_command(SUBMIT_STEP, ok=True, result=pending)
@@ -277,9 +283,14 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     pid, creation = _identity(driver)
     same_process = ((pid, creation) == (pending.get("source_bridge_pid"),
                                        pending.get("source_bridge_creation_date")))
-    if cold_recheck and (pid, creation) == (
-            pending.get("post_bridge_pid"), pending.get("post_bridge_creation_date")):
-        raise BridgeUnavailableError("construction cold requery requires a replacement process")
+    completion_watch = (cold_recheck and (pid, creation) == (
+        pending.get("post_bridge_pid"), pending.get("post_bridge_creation_date")))
+    if completion_watch and not (
+            type(starting.get("date_raw")) is int
+            and starting["date_raw"] > pending.get("post_date_raw", 0)
+            and starting["date_raw"] >= pending.get(
+                "completion_last_check_date_raw", pending.get("post_date_raw", 0)) + 30):
+        raise BridgeUnavailableError("construction completion watch needs a later monthly frame")
     if (starting.get("episode_run_id") != pending.get("episode_run_id")
             or starting["played_character"]["character_id"] != pending.get("actor_character_id")
             or starting["date_raw"] < pending.get("pre_date_raw", 0)
@@ -313,7 +324,12 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                and row.get("active") is True
                and all(row.get(key) == candidate.get(key) for key in TUPLE_KEYS)
                and row.get("initiator_character_id") == pending["actor_character_id"]] if isinstance(active, list) else []
-    if not matches and cold_recheck and (
+    built = world.get("completed_buildings")
+    completed = [row for row in built if isinstance(row, Mapping)
+                 and all(row.get(key) == candidate.get(key) for key in TUPLE_KEYS)] if isinstance(built, list) else []
+    if matches and completed:
+        raise BridgeUnavailableError("construction active and completed tuple conflict")
+    if not matches and not completed and cold_recheck and (
             starting["date_raw"] <= pending.get("post_date_raw", -1)
             and world.get("player_gold_raw") == candidate.get("gold_before_raw")):
         # A saved game from before the action has the original resources and
@@ -328,9 +344,23 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         write_construction_ledger(state_dir, {**ledger, "applied": None})
         driver._record_command(RECEIPT_STEP, ok=True, result=classification)
         return classification
-    if not matches:
+    if not matches and not completed:
         raise BridgeUnavailableError("construction material not yet observed; keep pending")
+    history = starting.get("native_command_history")
+    _, observed_income = same_frame_construction_income(
+        starting, history if isinstance(history, list) else [])
+    pre_income = pending.get("pre_player_monthly_gold_income_raw")
     receipt = {"status": "applied", "postcondition_verified": True,
+               "completion_status": "completed" if completed else "in_progress",
+               "completion_last_check_date_raw": starting["date_raw"],
+               "completion_observed_date_raw": (
+                   starting["date_raw"] if completed else None),
+               "pre_player_monthly_gold_income_raw": pre_income,
+               "observed_player_monthly_gold_income_raw": observed_income,
+               "observed_player_monthly_income_delta_raw": (
+                   observed_income - pre_income if completed and
+                   type(observed_income) is int and type(pre_income) is int
+                   else None),
                "action_request_id": pending["action_request_id"],
                "episode_run_id": pending["episode_run_id"],
                "actor_character_id": pending["actor_character_id"],
@@ -346,6 +376,14 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                "post_proof_epoch": epoch, "post_player_gold_raw": world.get("player_gold_raw"),
                "post_bridge_pid": pid, "post_bridge_creation_date": creation,
                "candidate": dict(candidate)}
+    if cold_recheck:
+        # Preserve the original action proof, including its earlier active
+        # receipt. A completed slot is a distinct later material observation.
+        receipt = {**dict(pending), **receipt,
+                   "start_receipt": pending.get("start_receipt", dict(pending)),
+                   "completion_observed_date_raw": (
+                       pending.get("completion_observed_date_raw") or starting["date_raw"]
+                       if completed else pending.get("completion_observed_date_raw"))}
     write_construction_ledger(state_dir, {**ledger, "pending": None, "applied": receipt})
     driver._record_command(RECEIPT_STEP, ok=True, result=receipt)
     return receipt
