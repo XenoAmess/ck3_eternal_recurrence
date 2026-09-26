@@ -1,5 +1,13 @@
 # CK3 1.19.0.6 战斗终局、清理、残余接战与 AI 重入
 
+## 2026-09-27 战争解散触发的无正常战果：独立实机回读
+
+[live-confirmed] 从第 6 日的不可变原版存档（SHA-256 `9ACACDE3E2D1987180EFE5FFDDC32B092146E6116779AF0D4BEBC7C97B9B7F9A`）启动隔离会话。战斗 `CombatID=16777218`、战争 `WarID=4` 仍在进行，玩家是战争主进攻方；原生战争选项读取证明投降可用、validator 通过且 `auto_accept=true`。另一只读 attempt-042 先独立复核同一前提。随后 attempt-043 在**私有研究副本**中仅对这个已核验的战争提交一次玩家投降，不推进日期，也未改变 production MCP 的退出条款门禁。游戏版本是 `1.19.0.6`，EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+
+同一日期 raw `53146368` 的终局入口 journal sequence `1` 直接记录 `terminal_kind=no_normal_result`、`suppress_normal_result_envelopes=true`、phase raw `1` / day `2`、winner raw `-1`。WarID 4 随投降消失；旧 CombatID 在全局严格解析失败，也已从 Province `2633` 的列表移除；原 ResultID 也不再严格解析。原生单场战分为 `not_recorded_by_native`，没有可解读的单场战分数字。玩家 CUnit `18` 仍存在，Army 战斗 backlink 和 active combat 都变为 null，active-combat blocker 解除；movement/retreat raw 仍是 `0`，所以**不能称为玩家撤退**。第二次独立即时查询复得同一终局核心，旧版 active-combat query 返回 `combat_not_found`；战后存档 SHA-256 `EEE2E7A77DE357E2B114D1E5BC6D9751D67FCC3EE2DE7D440B8EDF2F41B3A536`，进程清理列表为空。
+
+[只读核验器](../../ck3_autonomous_player/tools/project_native_war_teardown_no_normal.py)绑定源存档、游戏 EXE、私有 bridge、每条请求/响应、两次终局查询、战后存档及清理回执的 SHA；[机器可读报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_war_teardown_no_normal.json) SHA-256 `4DA3F2630B3D4933831B7A677738D54503914D5C990B08299FDE74480E069D96`。原始证据永久保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-war-teardown-private-attempt-043/`，另有只读预检 `episode01-war-teardown-terminal-attempt-042/`。此次直接证实一个战争结束导致的 no-normal 分支；`successor.state=unavailable` 只能说明当前查询无法判定，**不证明没有同省残余战斗**。正常战果的脚本 effect 未执行是由 exact-build 的 suppress 分支推得，不是直接脚本 effect trace；通用 AI 主动撤退策略也未由本次玩家投降实验验证。当前 aggregate `battle_terminal_ready` 仍未满足同省残余接战和 AI assignment-reopened 的独立实机门槛。下文较早章节中把 no-normal 列为待补项的句子均为其当时的历史状态，以本节新证据更新。
+
 ## 2026-09-26 梅西纳单场战分：同一次原生 writer 的完整输入与写回
 
 从 immutable 第 27 日存档再次独立回放到第 32 日，`episode01-denominator-live-attempt-024` 在**原版**战分 writer 内被动记录了败方战争参战者的 `0x292FC40(mode=2)` 返回值、实际加载的 CB 倍率和最终 row。终局回执 SHA-256 是 `E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F`。这是同一 CombatID `16777218`、WarID `4`、正常终局的一条完整局部链；不是从封顶后的 UI 战分反推输入。

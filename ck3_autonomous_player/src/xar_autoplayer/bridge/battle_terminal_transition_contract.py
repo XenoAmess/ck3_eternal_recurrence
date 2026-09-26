@@ -678,6 +678,11 @@ def _normalize_prior(
         expected_suppress = terminal_kind == "no_normal_result"
         if suppress is not expected_suppress:
             raise ValueError("terminal kind disagrees with observed suppress flag")
+        if (
+            terminal_kind == "no_normal_result"
+            and warscore["status"] != "not_recorded_by_native"
+        ):
+            raise ValueError("no-normal terminal cannot record battle warscore")
     elif terminal_kind == "active_not_terminal":
         current_fields = (
             phase_raw,

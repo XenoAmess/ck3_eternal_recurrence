@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -473,6 +474,40 @@ class BattleTerminalTransitionV1ContractTests(unittest.TestCase):
             _normalize(with_result)["prior"]["terminal_kind"],
             "normal_result",
         )
+
+    def test_live_war_teardown_no_normal_has_no_battle_warscore(self) -> None:
+        report = json.loads((
+            PROJECT_ROOT / "src/xar_autoplayer/simulation/data/"
+            "ck3_1_19_0_6_episode01_messina_war_teardown_no_normal.json"
+        ).read_text(encoding="utf-8"))
+        native = report["terminal_after"]
+        normalized = normalize_battle_terminal_transition_v1(
+            native,
+            expected_prior_combat_id=report["combat_id"],
+            expected_subject_public_cunit_id=report["player_subject_public_cunit_id"],
+            expected_after_terminal_sequence=None,
+            expected_observed_date_raw=report["source_date_raw"],
+            expected_snapshot_revision=native["snapshot_revision"],
+        )
+        self.assertEqual(normalized["prior"]["terminal_kind"], "no_normal_result")
+        self.assertEqual(
+            normalized["prior"]["battle_warscore"]["status"],
+            "not_recorded_by_native",
+        )
+        self.assertFalse(normalized["subject"]["blocked_by_active_combat"])
+        self.assertEqual(normalized["successor"]["state"], "unavailable")
+
+        contradictory = copy.deepcopy(native)
+        contradictory["prior"]["battle_warscore"]["status"] = "unavailable"
+        with self.assertRaisesRegex(ValueError, "no-normal terminal"):
+            normalize_battle_terminal_transition_v1(
+                contradictory,
+                expected_prior_combat_id=report["combat_id"],
+                expected_subject_public_cunit_id=report["player_subject_public_cunit_id"],
+                expected_after_terminal_sequence=None,
+                expected_observed_date_raw=report["source_date_raw"],
+                expected_snapshot_revision=native["snapshot_revision"],
+            )
 
     def test_active_and_gap_are_distinct_typed_states(self) -> None:
         active = _normalize(_active_frame())
