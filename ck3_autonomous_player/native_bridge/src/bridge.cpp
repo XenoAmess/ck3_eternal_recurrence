@@ -3079,6 +3079,19 @@ void AppendCombatKnights(std::string &result,
       result += SignedNumber(knight.prowess);
       result += ",\"knight_effectiveness_raw\":";
       result += SignedNumber(knight.knight_effectiveness_raw);
+      result += ",\"effectiveness_components\":{\"status\":\"";
+      result += knight.effectiveness_components_observed ? "available" : "unavailable";
+      result += "\",\"modifier_raw\":[";
+      for (std::size_t index = 0; index < knight.effectiveness_modifier_raw.size(); ++index) {
+        if (index != 0) result += ',';
+        result += SignedNumber(knight.effectiveness_modifier_raw[index]);
+      }
+      result += "],\"operand_raw\":[";
+      for (std::size_t index = 0; index < knight.effectiveness_operand_raw.size(); ++index) {
+        if (index != 0) result += ',';
+        result += SignedNumber(knight.effectiveness_operand_raw[index]);
+      }
+      result += "]}";
       result += ",\"effective_damage_raw\":";
       result += SignedNumber(knight.effective_damage_raw);
       result += ",\"effective_toughness_raw\":";

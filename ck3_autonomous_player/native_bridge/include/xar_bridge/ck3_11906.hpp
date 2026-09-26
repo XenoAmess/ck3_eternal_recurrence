@@ -69,7 +69,8 @@ using EvaluateRegimentStatsAtProvince = void *(*)(
 using IsSpecialCombatRegiment = bool (*)(void *regiment);
 using GetCharacterModifierAggregator = void *(*)(void *character);
 using ReadCharacterModifier = std::int64_t *(*)(
-    void *aggregator, std::int64_t *output, std::int32_t modifier_index);
+    void *aggregator, std::int64_t *output, std::int32_t modifier_index,
+    std::int32_t context_mode);
 using GetCombatRules = void *(*)();
 using GetCombatSideStrength = std::int32_t (*)(void *combat_side);
 using GetCombatRegimentStrength = std::int32_t (*)(void *combat_regiment);

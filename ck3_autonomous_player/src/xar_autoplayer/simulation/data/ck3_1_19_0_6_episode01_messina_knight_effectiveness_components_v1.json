@@ -1,0 +1,1475 @@
+{
+  "schema": "ck3.native_knight_effectiveness_component_parity.v1",
+  "game_build": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "source_save_sha256": "3F4B2FDAAE1AA2ED4D94958673DDADF4DCDF4A4F49073594B9AE32E782BB6953",
+  "checkpoint_copy_sha256": "D5139735E1E9E659C11107A0173A11667AAA29468204EBA1CC599987CE329303",
+  "reference_checkpoint_copy_sha256": "C1B1A3DC24D64CA42037966F713EDBD51E81D067368F43CA73064FF64739FE69",
+  "preflight_sha256": "FEEA38A41BC895C09DE8D0428129998F25C7F9F15544F5E317CA6C5E5219FF01",
+  "session_result_sha256": "BFB1596233C31E77711ABB24B7C8917B8C594A07E30A1145B827376CEC84C9FD",
+  "response_sha256": {
+    "before": "2CA486177EACA0CC5E1AB3650CC92F5B238B5CB418F479F8E9D8AFE115FEE7BE",
+    "direct_v2": "BD0EE7E0039350C0A1CF366AFB5F2C2FD74AAEC3F309BBA6C2C3D56F5E674802",
+    "direct_v3": "8A8541B2F470862267BA48B8909AB2B6798B102AE962FE70DFC7F0B3B4B25D3D",
+    "after": "30C03272B9B21041383302E1AC5D3CC60AB3717FF3A25E6EC8047C84BE844D46",
+    "reference_v2": "A91BD7A7119799109D042CFFEC58F9A3595EEE5ED7B75FB8C3322E724B107820"
+  },
+  "static_component_source": {
+    "schema": "ck3.native_knight_effectiveness_modifier_sources.v1",
+    "game_build": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "reader_rva": "0x28FD990",
+    "modifier_set_resolver_rva": "0x26172C0",
+    "modifier_value_helper_rva": "0x2940E80",
+    "knight_stat_writer_rva": "0x28FDBC0",
+    "metadata_index_to_native_enum_offset": 1,
+    "metadata_offset_calibration": [
+      {
+        "native_enum": "0x106",
+        "metadata_index": 261,
+        "name": "MOD_COMBAT_COUNTER_EFFICIENCY",
+        "literal_rva": "0x43C1208",
+        "metadata_name_pointer_rva": "0x43C8D40",
+        "reader_callsite_rva": null,
+        "input_operand": "calibration from prior counter-helper research"
+      },
+      {
+        "native_enum": "0x107",
+        "metadata_index": 262,
+        "name": "MOD_COMBAT_COUNTER_RESISTANCE",
+        "literal_rva": "0x43C1260",
+        "metadata_name_pointer_rva": "0x43C8D78",
+        "reader_callsite_rva": null,
+        "input_operand": "calibration from prior counter-helper research"
+      }
+    ],
+    "modifier_components_in_reader_order": [
+      {
+        "native_enum": "0xB6",
+        "metadata_index": 181,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "literal_rva": "0x43C2978",
+        "metadata_name_pointer_rva": "0x43C7AE0",
+        "reader_callsite_rva": "0x28FD9B3",
+        "input_operand": "constant 100000 Q100000"
+      },
+      {
+        "native_enum": "0xB7",
+        "metadata_index": 182,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "literal_rva": "0x43C29D8",
+        "metadata_name_pointer_rva": "0x43C7B18",
+        "reader_callsite_rva": "0x28FDA01",
+        "input_operand": "military+0x350"
+      },
+      {
+        "native_enum": "0xB8",
+        "metadata_index": 183,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "literal_rva": "0x43C29B0",
+        "metadata_name_pointer_rva": "0x43C7B50",
+        "reader_callsite_rva": "0x28FDA3D",
+        "input_operand": "military+0x358"
+      },
+      {
+        "native_enum": "0xB9",
+        "metadata_index": 184,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "literal_rva": "0x43C27F0",
+        "metadata_name_pointer_rva": "0x43C7B88",
+        "reader_callsite_rva": "0x28FDA74",
+        "input_operand": "character+0xE8"
+      },
+      {
+        "native_enum": "0xBA",
+        "metadata_index": 185,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "literal_rva": "0x43C27C8",
+        "metadata_name_pointer_rva": "0x43C7BC0",
+        "reader_callsite_rva": "0x28FDAAB",
+        "input_operand": "character+0xD4"
+      },
+      {
+        "native_enum": "0xBB",
+        "metadata_index": 186,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "literal_rva": "0x43C2840",
+        "metadata_name_pointer_rva": "0x43C7BF8",
+        "reader_callsite_rva": "0x28FDAE2",
+        "input_operand": "character+0xE0"
+      },
+      {
+        "native_enum": "0xBC",
+        "metadata_index": 187,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "literal_rva": "0x43C2818",
+        "metadata_name_pointer_rva": "0x43C7C30",
+        "reader_callsite_rva": "0x28FDB19",
+        "input_operand": "character+0xE4"
+      },
+      {
+        "native_enum": "0xBD",
+        "metadata_index": 188,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "literal_rva": "0x43C2898",
+        "metadata_name_pointer_rva": "0x43C7C68",
+        "reader_callsite_rva": "0x28FDB50",
+        "input_operand": "character+0xD8"
+      },
+      {
+        "native_enum": "0xBE",
+        "metadata_index": 189,
+        "name": "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP",
+        "literal_rva": "0x43C2868",
+        "metadata_name_pointer_rva": "0x43C7CA0",
+        "reader_callsite_rva": "0x28FDB87",
+        "input_operand": "character+0xDC"
+      }
+    ],
+    "character_operand_instruction_bytes": [
+      {
+        "rva": "0x28FD9E1",
+        "bytes_hex": "488B9FB8010000"
+      },
+      {
+        "rva": "0x28FD9ED",
+        "bytes_hex": "488B9B50030000"
+      },
+      {
+        "rva": "0x28FDA22",
+        "bytes_hex": "488B87B8010000"
+      },
+      {
+        "rva": "0x28FDA2E",
+        "bytes_hex": "488BA858030000"
+      },
+      {
+        "rva": "0x28FDA61",
+        "bytes_hex": "486387E8000000"
+      },
+      {
+        "rva": "0x28FDA98",
+        "bytes_hex": "486387D4000000"
+      },
+      {
+        "rva": "0x28FDACF",
+        "bytes_hex": "486387E0000000"
+      },
+      {
+        "rva": "0x28FDB06",
+        "bytes_hex": "486387E4000000"
+      },
+      {
+        "rva": "0x28FDB3D",
+        "bytes_hex": "486387D8000000"
+      },
+      {
+        "rva": "0x28FDB74",
+        "bytes_hex": "486387DC000000"
+      }
+    ],
+    "specific_modifier_values_sampled_in_live_battle": false,
+    "observed_185000_effectiveness_decomposition_proven": false
+  },
+  "knight_count": 24,
+  "component_count_per_knight": 9,
+  "all_rebuilt_effectiveness_equal_native": true,
+  "v2_and_v3_base_inputs_equal": true,
+  "prior_v2_deltas_limited_to_corrected_modifier_reader": true,
+  "prior_v2_reader_corrections": [
+    {
+      "army_id": 16777231,
+      "field": "commander.battle_context.effective_max_roll",
+      "before_raw": 10,
+      "after_raw": 9
+    },
+    {
+      "army_id": 16777231,
+      "field": "commander.battle_context.effective_min_roll",
+      "before_raw": 0,
+      "after_raw": 2
+    },
+    {
+      "army_id": 18,
+      "field": "owner.counter_efficiency_raw",
+      "before_raw": 0,
+      "after_raw": 25000
+    }
+  ],
+  "native_modifier_aggregator_reader_rva": "0x21D3F20",
+  "prior_incorrect_inner_reader_rva": "0x20AB950",
+  "knights": [
+    {
+      "army_id": 18,
+      "character_id": 33435,
+      "regiment_id": 57,
+      "effective_prowess": 14,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 36077,
+      "regiment_id": 58,
+      "effective_prowess": 14,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 32716,
+      "regiment_id": 59,
+      "effective_prowess": 13,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 32440,
+      "regiment_id": 60,
+      "effective_prowess": 12,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 34333,
+      "regiment_id": 61,
+      "effective_prowess": 11,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 34867,
+      "regiment_id": 62,
+      "effective_prowess": 11,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 43706,
+      "regiment_id": 63,
+      "effective_prowess": 9,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 43712,
+      "regiment_id": 64,
+      "effective_prowess": 5,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 33437,
+      "regiment_id": 65,
+      "effective_prowess": 4,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 35637,
+      "regiment_id": 66,
+      "effective_prowess": 3,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 18,
+      "character_id": 30784,
+      "regiment_id": 67,
+      "effective_prowess": 2,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        150000,
+        0,
+        2000000,
+        500000,
+        1100000,
+        400000,
+        2400000,
+        1000000
+      ],
+      "contribution_raw": [
+        75000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 175000,
+      "native_effectiveness_raw": 175000
+    },
+    {
+      "army_id": 27,
+      "character_id": 54140,
+      "regiment_id": 219,
+      "effective_prowess": 9,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        85000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        0,
+        0,
+        1700000,
+        800000,
+        200000,
+        500000,
+        1500000,
+        700000
+      ],
+      "contribution_raw": [
+        85000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 185000,
+      "native_effectiveness_raw": 185000
+    },
+    {
+      "army_id": 27,
+      "character_id": 54144,
+      "regiment_id": 220,
+      "effective_prowess": 2,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        85000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        0,
+        0,
+        1700000,
+        800000,
+        200000,
+        500000,
+        1500000,
+        700000
+      ],
+      "contribution_raw": [
+        85000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 185000,
+      "native_effectiveness_raw": 185000
+    },
+    {
+      "army_id": 27,
+      "character_id": 54145,
+      "regiment_id": 221,
+      "effective_prowess": 3,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        85000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        0,
+        0,
+        1700000,
+        800000,
+        200000,
+        500000,
+        1500000,
+        700000
+      ],
+      "contribution_raw": [
+        85000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 185000,
+      "native_effectiveness_raw": 185000
+    },
+    {
+      "army_id": 27,
+      "character_id": 54141,
+      "regiment_id": 222,
+      "effective_prowess": 2,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        85000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        0,
+        0,
+        1700000,
+        800000,
+        200000,
+        500000,
+        1500000,
+        700000
+      ],
+      "contribution_raw": [
+        85000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 185000,
+      "native_effectiveness_raw": 185000
+    },
+    {
+      "army_id": 16777221,
+      "character_id": 47032,
+      "regiment_id": 90,
+      "effective_prowess": 10,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        0,
+        0,
+        400000,
+        800000,
+        700000,
+        200000,
+        1300000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    },
+    {
+      "army_id": 16777221,
+      "character_id": 47031,
+      "regiment_id": 91,
+      "effective_prowess": 9,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        0,
+        0,
+        400000,
+        800000,
+        700000,
+        200000,
+        1300000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    },
+    {
+      "army_id": 16777221,
+      "character_id": 47029,
+      "regiment_id": 92,
+      "effective_prowess": 4,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        0,
+        0,
+        400000,
+        800000,
+        700000,
+        200000,
+        1300000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    },
+    {
+      "army_id": 16777231,
+      "character_id": 34484,
+      "regiment_id": 110,
+      "effective_prowess": 11,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        180000,
+        0,
+        1300000,
+        1200000,
+        800000,
+        1600000,
+        1700000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    },
+    {
+      "army_id": 16777231,
+      "character_id": 44476,
+      "regiment_id": 111,
+      "effective_prowess": 9,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        180000,
+        0,
+        1300000,
+        1200000,
+        800000,
+        1600000,
+        1700000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    },
+    {
+      "army_id": 16777231,
+      "character_id": 33884,
+      "regiment_id": 112,
+      "effective_prowess": 8,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        180000,
+        0,
+        1300000,
+        1200000,
+        800000,
+        1600000,
+        1700000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    },
+    {
+      "army_id": 16777231,
+      "character_id": 36303,
+      "regiment_id": 113,
+      "effective_prowess": 6,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        180000,
+        0,
+        1300000,
+        1200000,
+        800000,
+        1600000,
+        1700000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    },
+    {
+      "army_id": 16777231,
+      "character_id": 34117,
+      "regiment_id": 114,
+      "effective_prowess": 7,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        180000,
+        0,
+        1300000,
+        1200000,
+        800000,
+        1600000,
+        1700000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    },
+    {
+      "army_id": 16777231,
+      "character_id": 34120,
+      "regiment_id": 115,
+      "effective_prowess": 7,
+      "component_names": [
+        "MOD_KNIGHT_EFFECTIVENESS_MULT",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DREAD",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_TYRANNY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_PROWESS",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_DIPLOMACY",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_INTRIGUE",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_LEARNING",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_MARTIAL",
+        "MOD_KNIGHT_EFFECTIVENESS_PER_STEWARDSHIP"
+      ],
+      "modifier_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "operand_raw": [
+        100000,
+        180000,
+        0,
+        1300000,
+        1200000,
+        800000,
+        1600000,
+        1700000,
+        700000
+      ],
+      "contribution_raw": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "base_raw": 100000,
+      "rebuilt_effectiveness_raw": 110000,
+      "native_effectiveness_raw": 110000
+    }
+  ]
+}

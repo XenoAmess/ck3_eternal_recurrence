@@ -276,6 +276,11 @@ struct CombatKnightSnapshot {
   bool participant_army_membership_verified = false;
   std::int32_t prowess = 0;
   std::int64_t knight_effectiveness_raw = 0;
+  // B6..BE in the native 1.19.0.6 effectiveness reader. Optional diagnostic
+  // operands; the direct native effectiveness value remains authoritative.
+  bool effectiveness_components_observed = false;
+  std::array<std::int64_t, 9> effectiveness_modifier_raw{};
+  std::array<std::int64_t, 9> effectiveness_operand_raw{};
   std::int64_t effective_damage_raw = 0;
   std::int64_t effective_toughness_raw = 0;
   std::int64_t scale = 100'000;

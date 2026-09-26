@@ -2616,20 +2616,26 @@ def _normalize_knights(
             _array(row.get("members"), f"{name}.members")
         ):
             member_name = f"{name}.members[{index}]"
+            member_keys = {
+                "eligible",
+                "character_id",
+                "source_regiment_id",
+                "army_id",
+                "participant_army_membership_verified",
+                "prowess",
+                "knight_effectiveness_raw",
+                "effective_damage_raw",
+                "effective_toughness_raw",
+                "scale",
+            }
+            # Research diagnostics are additive. Old native receipts remain
+            # valid, while a present diagnostic must be shape-checked and
+            # preserved for exact same-frame source attribution.
+            if isinstance(raw_member, dict) and "effectiveness_components" in raw_member:
+                member_keys.add("effectiveness_components")
             member = _exact_object(
                 raw_member,
-                {
-                    "eligible",
-                    "character_id",
-                    "source_regiment_id",
-                    "army_id",
-                    "participant_army_membership_verified",
-                    "prowess",
-                    "knight_effectiveness_raw",
-                    "effective_damage_raw",
-                    "effective_toughness_raw",
-                    "scale",
-                },
+                member_keys,
                 member_name,
             )
             eligible = _strict_bool(
@@ -2685,20 +2691,42 @@ def _normalize_knights(
             ):
                 raise ValueError(f"native {member_name} knight stats disagree")
             _fixed_scale(member.get("scale"), f"{member_name}.scale")
-            members.append(
-                {
-                    "eligible": True,
-                    "character_id": character_id,
-                    "source_regiment_id": regiment_id,
-                    "army_id": army_id,
-                    "participant_army_membership_verified": True,
-                    "prowess": prowess,
-                    "knight_effectiveness_raw": effectiveness,
-                    "effective_damage_raw": damage,
-                    "effective_toughness_raw": toughness,
-                    "scale": CK3_COMBAT_FIXED_POINT_SCALE,
+            normalized_member = {
+                "eligible": True,
+                "character_id": character_id,
+                "source_regiment_id": regiment_id,
+                "army_id": army_id,
+                "participant_army_membership_verified": True,
+                "prowess": prowess,
+                "knight_effectiveness_raw": effectiveness,
+                "effective_damage_raw": damage,
+                "effective_toughness_raw": toughness,
+                "scale": CK3_COMBAT_FIXED_POINT_SCALE,
+            }
+            if "effectiveness_components" in member:
+                component_name = f"{member_name}.effectiveness_components"
+                component = _exact_object(
+                    member["effectiveness_components"],
+                    {"status", "modifier_raw", "operand_raw"},
+                    component_name,
+                )
+                component_status = component.get("status")
+                if component_status not in ("available", "unavailable"):
+                    raise ValueError(f"native {component_name}.status is malformed")
+                arrays: dict[str, list[int]] = {}
+                for key in ("modifier_raw", "operand_raw"):
+                    values = _array(component.get(key), f"{component_name}.{key}")
+                    if len(values) != 9:
+                        raise ValueError(f"native {component_name}.{key} must have nine values")
+                    arrays[key] = [
+                        _signed_int64(value, f"{component_name}.{key}[{position}]")
+                        for position, value in enumerate(values)
+                    ]
+                normalized_member["effectiveness_components"] = {
+                    "status": component_status,
+                    **arrays,
                 }
-            )
+            members.append(normalized_member)
             ordering.append((army_id, regiment_id, character_id))
         if ordering != sorted(ordering):
             raise ValueError(f"native {name}.members ordering is unstable")

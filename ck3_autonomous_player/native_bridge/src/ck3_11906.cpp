@@ -713,7 +713,10 @@ constexpr std::uintptr_t kGetProvinceTerrainRva = 0x220D940;
 constexpr std::uintptr_t kEvaluateRegimentStatsAtProvinceRva = 0x239CAE0;
 constexpr std::uintptr_t kIsSpecialCombatRegimentRva = 0x239CEB0;
 constexpr std::uintptr_t kGetCharacterModifierAggregatorRva = 0x26172C0;
-constexpr std::uintptr_t kReadCharacterModifierRva = 0x20AB950;
+// 0x21D3F20 reads the character modifier aggregator; context mode zero
+// delegates to the base modifier set at aggregator+0x68. Calling 0x20AB950
+// directly on the wrapper silently returned zero for all knight modifiers.
+constexpr std::uintptr_t kReadCharacterModifierRva = 0x21D3F20;
 constexpr std::uintptr_t kGetCombatRulesRva = 0x82DC40;
 constexpr std::uintptr_t kGetCombatSideStrengthRva = 0x23CC340;
 // Exact 1.19.0.6 CCombatSide modifier read used by 0x23CE080.
@@ -8663,6 +8666,40 @@ bool ReadCombatKnights(
       output.unavailable_reason = "knight_effectiveness_unavailable";
       return false;
     }
+    // 0x28FD990 resolves this same context through 0x26172C0, then sums
+    // B6..BE contributions with 0x2940E80. Collect the source operands
+    // separately, without replacing the authoritative direct evaluation.
+    void *const modifier_set =
+        bindings.get_character_modifier_aggregator(effectiveness_context);
+    if (modifier_set != nullptr) {
+      void *const military = LoadAt<void *>(
+          effectiveness_context, kCharacterMilitaryStateOffset);
+      knight.effectiveness_operand_raw = {
+          kFixedPointScale,
+          military != nullptr ? LoadAt<std::int64_t>(military, 0x350) : 0,
+          military != nullptr ? LoadAt<std::int64_t>(military, 0x358) : 0,
+          static_cast<std::int64_t>(LoadAt<std::int32_t>(
+              effectiveness_context, 0xE8)) * kFixedPointScale,
+          static_cast<std::int64_t>(LoadAt<std::int32_t>(
+              effectiveness_context, 0xD4)) * kFixedPointScale,
+          static_cast<std::int64_t>(LoadAt<std::int32_t>(
+              effectiveness_context, 0xE0)) * kFixedPointScale,
+          static_cast<std::int64_t>(LoadAt<std::int32_t>(
+              effectiveness_context, 0xE4)) * kFixedPointScale,
+          static_cast<std::int64_t>(LoadAt<std::int32_t>(
+              effectiveness_context, 0xD8)) * kFixedPointScale,
+          static_cast<std::int64_t>(LoadAt<std::int32_t>(
+              effectiveness_context, 0xDC)) * kFixedPointScale,
+      };
+      bool complete = true;
+      for (std::int32_t index = 0; index < 9; ++index) {
+        complete = ReadCharacterModifierRaw(
+            bindings, modifier_set, 0xB6 + index,
+            knight.effectiveness_modifier_raw[static_cast<std::size_t>(index)])
+            && complete;
+      }
+      knight.effectiveness_components_observed = complete;
+    }
     if (ResolveStoredComponent(bindings.regiment_storage_slot,
                                regiment_row.regiment_id,
                                kRegimentIdOffset) != regiment ||
@@ -9097,7 +9134,7 @@ bool ReadCharacterModifierRaw(const Bindings &bindings, void *aggregator,
                               std::int64_t &output) noexcept {
   output = 0;
   return bindings.read_character_modifier(aggregator, &output,
-                                          modifier_index) == &output;
+                                          modifier_index, 0) == &output;
 }
 
 CombatCommanderContextSnapshot ReadCommanderRollContext(

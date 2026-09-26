@@ -440,6 +440,38 @@ class CombatSimulationInputsContractTests(unittest.TestCase):
         )
         self.assertFalse(normalized["completeness"]["monte_carlo_ready"])
 
+    def test_optional_knight_modifier_diagnostics_preserve_old_schema(self) -> None:
+        value = _combat_inputs()
+        member = {
+            "eligible": True,
+            "character_id": 77,
+            "source_regiment_id": 31,
+            "army_id": 1_012,
+            "participant_army_membership_verified": True,
+            "prowess": 2,
+            "knight_effectiveness_raw": 185_000,
+            "effective_damage_raw": 18_500_000,
+            "effective_toughness_raw": 3_700_000,
+            "scale": 100_000,
+        }
+        value["armies"][0]["knights"]["members"] = [member]
+        old = self._normalize(value)
+        self.assertNotIn("effectiveness_components", old["armies"][0]["knights"]["members"][0])
+
+        member["effectiveness_components"] = {
+            "status": "available",
+            "modifier_raw": [85_000] + [0] * 8,
+            "operand_raw": [100_000] + [0] * 8,
+        }
+        observed = self._normalize(value)["armies"][0]["knights"]["members"][0]
+        self.assertEqual(observed["effectiveness_components"], member["effectiveness_components"])
+        bad = copy.deepcopy(value)
+        bad["armies"][0]["knights"]["members"][0]["effectiveness_components"][
+            "modifier_raw"
+        ].pop()
+        with self.assertRaisesRegex(ValueError, "nine values"):
+            self._normalize(bad)
+
     def test_ongoing_advantage_preserves_exact_signed_int64_width(self) -> None:
         value = _combat_inputs()
         value["ongoing_combats"] = [

@@ -1214,8 +1214,9 @@ void *FixtureGetCharacterModifierAggregator(void *character) {
 
 std::int64_t *FixtureReadCharacterModifier(void *aggregator,
                                            std::int64_t *output,
-                                           std::int32_t modifier_index) {
-  if (output == nullptr ||
+                                           std::int32_t modifier_index,
+                                           std::int32_t context_mode) {
+  if (output == nullptr || context_mode != 0 ||
       (aggregator != g_played_character.data() &&
        aggregator != g_target_character.data() &&
        aggregator != g_dead_character.data())) {
