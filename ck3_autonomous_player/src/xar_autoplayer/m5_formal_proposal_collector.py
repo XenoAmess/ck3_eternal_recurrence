@@ -176,8 +176,8 @@ def plan_m5_formal_query_only(
                     )
                     or type(snapshot.get("native_revision")) is not int
                     or type(snapshot.get("date_raw")) is not int
-                    or snapshot["native_revision"] <= applied.get("post_native_revision", 0)
-                    or snapshot["date_raw"] <= applied.get("post_date_raw", 0))
+                    or snapshot["native_revision"] < applied.get("post_native_revision", 0)
+                    or snapshot["date_raw"] < applied.get("post_date_raw", 0))
             ):
                 return plan_construction_private(
                     driver, cleaned, snapshot, list(history), set()

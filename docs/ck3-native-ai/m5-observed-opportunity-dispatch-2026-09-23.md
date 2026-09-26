@@ -376,3 +376,22 @@ perk, and candidate counts do not advance G2-M5; it remains `not_started`.
 c10 四 turn 与 c12 attempt-01/02 的 operator receipt 均显示 `private_m5_joint_collector=false`；原报告没有 `m5_joint_*` 不能解释为候选零。c12 attempt-03 在同一冻结源码 `bb5e4aa` / DLL SHA `7A14A216...3A65ED36` 上，官方以 h137 save/driver 通过 no-launch 后显式启用 `--private-m5-joint-collector`，operator receipt 确认 `true`。唯一 PID104656（创建 `20260926132245.837999+000`）受管窗口最小化，8/8 turn `turn_limit/qualified`，进程树清理。派生 raw53155488→53155728、h148 checkpoint SHA `63D918053CD3DE7B9E8348F1C766759A6FE22EECF9B571E9C82386951F8150E5`；[正式报告](Z:/ck3_mod_rewrite_process_assets/g2-robert-nonwar-prewar-r0149-20260926-c12/attempt-03/formal-report.txt) SHA `8F1D185752548D71C4F2C2AD32B19E79A54CF9DD942C61F923F4545FB6AA2ACA`。
 
 第1–3 turn 依次冷读 root、旧建设 `applied/in_progress`、既成双边订婚；第4 turn 是和平 `life-advance`，但同日期旧建设 applied 账本仍需由原 consumer 核销，`plan_m5_formal_query_only` 按源码短路给建设消费者，该 turn 没有调用 M5 proposal source reader。第5/6 turn 是实际事件只读/有界选项，第7 turn 重读施工仍未完工，第8 turn 是 declarable-war 查询。因此虽开启 opt-in，本次仍未取得同帧 M5 source、候选比较、selected_step 或正式 joint 动作；不能把字段缺席写成零、false 或 RED。当前 source producer 仅接和平建设与派系礼金，既成订婚不会自动作为 M5 proposal。后续须在同 PID 已核销旧账本的和平 `life-advance` 帧观测源，再依据真实字段判断接线/价值缺口；不为填库存反复重启。h148 save/driver/两账本和报告已逐项哈希复制到 c12 `recovery-pair-h148`，新候选仍须官方 prepare/rebind/no-launch。
+
+### 2026-09-26 NW-JOINT-C13：已核销建设的同帧来源短路
+
+复查 c12 不可变 `driver-state.json` 的第 4 turn 前公共 root：native revision `3`、raw date `53155488`、`player_targeting_faction_count=0`。第 2 turn 已在同一 PID 独立重读建设 `applied/in_progress`，账本的 `post_bridge_pid=104656`、`post_native_revision=3`、`post_date_raw=53155488`。因此第 4 turn **没有已证明可提交的礼金或第二项建设**；本修复不把它改写成漏动作。
+
+源码复现显示另一条可行动来源路径被过宽的 `<=` 挡住：建设 applied 已由当前 PID 核销且仍处于该 paused frame 时，`plan_m5_formal_query_only` 继续返回建设消费者，根本不到达现有 source producer。producer 本来就会把同帧旧建设标为 `prior_receipt_not_released`，只排除重复建设，并独立读取当前合法派系礼金。单帧生产路径测试在修复前失败（`plan_construction_private` 被调用一次，source reader 零次）；把已核销账本的同帧比较改为严格早于 `<` 后，测试通过，派系礼金进入既有 dispatcher 的 analytic reservation。测试使用合法字段 fixture；**c12 实机 root 的派系数为零，尚无新 live joint 动作**。
+
+```mermaid
+flowchart TD
+  A["和平 paused 帧；正式 life-advance"] --> B{"建设账本有 pending 或冷 PID／更早帧？"}
+  B -->|是| C["原建设消费者：独立 receipt／恢复"]
+  B -->|否：applied 已由当前 PID 核销| D["同帧 M5 source producer"]
+  D --> E["旧建设同帧仍占槽：不再列建设候选"]
+  D --> F{"原生派系 root 与礼金最终候选？"}
+  F -->|有| G["现有 dispatcher 分析预留礼金；无 typed 礼金动作"]
+  F -->|无| H["无完整可行提案；保留真实空结果"]
+```
+
+此改动只恢复来源评估；`selected_step` 仍为 `null`、`formal_action_ready=false`，礼金仍需自身正式消费者、独立后置、下一 turn 与恢复。没有扩大 M5 里程碑或公共广告。
