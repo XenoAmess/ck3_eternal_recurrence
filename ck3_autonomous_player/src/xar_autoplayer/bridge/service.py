@@ -893,9 +893,12 @@ class GameplayBridgeService:
             if joint_plan.get("phase") == "m5_joint_query_only_red":
                 family_plan = {
                     **family_plan,
+                    "selected_step": None,
+                    "phase": joint_plan["phase"],
+                    "reason": joint_plan.get("reason"),
                     "m5_joint_red_reason": joint_plan.get("reason"),
                 }
-            if family_plan.get("selected_step") == "life-advance":
+            elif family_plan.get("selected_step") == "life-advance":
                 family_plan = {
                     **family_plan,
                     "selected_step": joint_plan.get("selected_step"),

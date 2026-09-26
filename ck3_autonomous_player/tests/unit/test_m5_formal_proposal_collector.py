@@ -438,6 +438,45 @@ class M5FormalProposalCollectorTests(unittest.TestCase):
         self.assertEqual(planned["plan"]["reason"],
                          "M5 scene observation is unavailable")
 
+    def test_peace_m5_red_blocks_typed_family_after_diagnostic(self) -> None:
+        peace = _snapshot()
+        peace["active_wars"] = []
+        peace["player_armies"] = []
+        driver = _ServiceDriver(enabled=True, snapshot=peace)
+        driver.allow_private_family_marriage_formal_trial = True
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+
+        def joint_red(driver, planned, **kwargs):
+            return {**planned, "plan": {**planned["plan"],
+                "phase": "m5_joint_query_only_red", "selected_step": None,
+                "reason": "M5 scene observation is unavailable"}}
+
+        def family_typed(driver, planned, snapshot, **kwargs):
+            return {**planned, "plan": {**planned["plan"],
+                "phase": "first_heir_marriage_typed_submit",
+                "selected_step": "private-submit-first-heir-marriage-v1",
+                "family_marriage_private_diagnostic": {"valued": True}}}
+
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.bridge.service.plan_m5_formal_query_only",
+            side_effect=joint_red,
+        ), mock.patch(
+            "xar_autoplayer.bridge.service.plan_family_marriage_private",
+            side_effect=family_typed,
+        ) as family):
+            planned = GameplayBridgeService(driver).plan_turn()
+        family.assert_called_once()
+        self.assertIsNone(planned["plan"]["selected_step"])
+        self.assertEqual(planned["plan"]["phase"], "m5_joint_query_only_red")
+        self.assertEqual(planned["plan"]["reason"],
+                         "M5 scene observation is unavailable")
+        self.assertEqual(planned["plan"]["family_marriage_private_diagnostic"],
+                         {"valued": True})
+
 
 if __name__ == "__main__":
     unittest.main()
