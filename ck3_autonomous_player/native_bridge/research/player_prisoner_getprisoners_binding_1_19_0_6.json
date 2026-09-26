@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "contract": "private-player-prisoner-getprisoners-binding-1.19.0.6-c57",
+  "status": "static-confirmed-method-and-container-entry; no DLL binding or paused live read",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "character_get_prisoners": {
+    "name_rva": "0x4107BA8",
+    "name": "GetPrisoners",
+    "name_copy_rva": "0x50E409",
+    "registration_function": {
+      "start_rva": "0x50E3B0",
+      "end_rva_exclusive": "0x50E50E",
+      "sha256": "9FB08B6E73B864A34B514BF317D7E5369D2A852CCD6B58AC470B0BA8C2539E0B"
+    },
+    "registration_table_entry_rva": "0x3FFA410",
+    "registration_dispatch_rva": "0x97EA90",
+    "wrapper_function": {
+      "start_rva": "0x26233E0",
+      "end_rva_exclusive": "0x2623438",
+      "sha256": "0926039E59EF5EB30566E10802A72CE0960725202E59A9A0D6D6113AF36183D5"
+    },
+    "backing_getter": {
+      "start_rva": "0x2614F30",
+      "end_rva_exclusive": "0x2614F48",
+      "sha256": "15B75A28ECDDA1DB99F4F83F30556CFFD3BDC5F3922C1FBE683A02BCC0C54429",
+      "nonnull_path": "CCharacter+0x1B8 land-state pointer, then +0xD8 borrowed subcontainer",
+      "null_path": "0x15B2D10 initializes and returns a process-global empty fallback container"
+    },
+    "container_layout_static_evidence": {
+      "cross_check_rva": "0x2614F50..0x2614FC9",
+      "data_pointer_offset": "0x00",
+      "count_offset": "0x0C",
+      "element_stride_bytes": 4,
+      "identity_comparison": "0x2614F50 searches the +0xD8 array for CCharacter+0x18, the full generation-bearing CharacterID",
+      "ownership": "borrowed member of the current Character land-state; the fallback is process-global; neither pointer may outlive the paused application-main transaction",
+      "remaining": "Need a paused native read to prove complete count/order and zero/fallback behavior for the played actor. No engine ABI for mutation is authorized."
+    }
+  },
+  "court_window_get_prisoners": {
+    "same_name_copy_rva": "0xFB2AB",
+    "registration_table_entry_rva": "0x3FDDAF8",
+    "registration_function": {
+      "start_rva": "0xFB260",
+      "end_rva_exclusive": "0xFB32F",
+      "sha256": "2597CAF6A282E84F7713FE05D78E5002B385FFD4F24E387510DF953D0F498EC5"
+    },
+    "registration_dispatch_rva": "0xF4C0D0",
+    "wrapper_function": {
+      "start_rva": "0xF4C090",
+      "end_rva_exclusive": "0xF4C0C9",
+      "sha256": "547EE9ACDBEEDE501E794BCD156419F3BA639ED2F0C1FAB0DB8BF06F6D9A821D"
+    },
+    "underlying_getter_rva": "0xF482D0",
+    "underlying_getter_result": "CourtWindow+0x2B8 UI member, wrapped through 0xD80E50; this is not the CCharacter+0x1B8+0xD8 engine-owned collection"
+  },
+  "full_id_resolution": {
+    "existing_private_pattern": "character_interaction_preview_v1.cpp ResolveCharacter and active_scheme_precondition_command_binders_v1_private.cpp ResolveCharacterAddress",
+    "storage_slot_rva": "0x570C130",
+    "character_identity_offset": "0x18",
+    "rule": "Resolve each copied 32-bit array element via the generation-bearing storage slot and require returned CCharacter+0x18 to equal the entire element; never use low 24 bits as identity"
+  },
+  "readiness": {
+    "engine_owned_collection_entry_mapped": true,
+    "complete_paused_collection_read": false,
+    "custody_and_duration_mapped": false,
+    "ransom_and_release_final_previews_mapped": false,
+    "private_query_live": false,
+    "public_mcp_ready": false,
+    "action_ready": false
+  },
+  "next_dependency": "Bind a private paused Character+0x1B8+0xD8 value copy with full-ID round trips in the existing source adapter. Do not publish semantic_ready until custody and finalized ransom/release previews are native-bound and independently read from a natural prisoner scene."
+}

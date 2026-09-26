@@ -19,10 +19,10 @@
 原生失败理由，以及引擎最终的 imprisonment/banishment/execution reason。集合不完整、被 cap、角色重定向不明
 或 option ownership 不明时都要 typed unavailable，readiness 不能变 true。
 
-下一项唯一施工入口是
-**implement_private_exact_build_player_prisoner_management_snapshot_v1_reader**。第一步定位 exact
-Character.GetPrisoners/CourtWindow.GetPrisoners backing method、集合所有权和 full-ID resolver；随后复用已经冻结的
-generic interaction context/final validator。私有 paused live 证明完整集合和至少两类最终结果之后，才设计动作或公开 MCP。
+下一项施工入口是
+**implement_private_exact_build_player_prisoner_management_snapshot_v1_reader**。C57 已静态定位 exact
+`Character.GetPrisoners` 的引擎拥有集合入口与 full-ID 元素形状；实现时从当前玩家的暂停帧复制完整列表，
+再接已经冻结的 generic interaction context/final validator。私有 paused live 证明完整集合和至少两类最终结果之后，才设计动作或公开 MCP。
 
 ## 范围与宗教域排除
 
@@ -58,6 +58,36 @@ ck3.exe 内有唯一 ASCII reflection 锚点：GetExecuteReasons 在 **0x40CEDD0
 GetBanishReasons 在 **0x40CEDE8**，GetImprisonmentReasons 在 **0x40CF0E8**，
 GetPrisoners 在 **0x4107BA8**。这些字符串只证明 exact build 暴露相应反射名；它们没有证明安全 method RVA、
 返回容器布局、生命周期或线程条件。实现前仍须闭合这些 unknown，不能从字符串直接调用。
+
+### C57：`GetPrisoners` 引擎集合入口（2026-09-27，纯静态）
+
+[可复验 ABI](../../ck3_autonomous_player/native_bridge/research/player_prisoner_getprisoners_binding_1_19_0_6.json)
+在同一 SHA 的 EXE 中闭合了名称到 getter 的两条不同注册链。`GetPrisoners` 常量被编译器拆成
+`movsd` 等拷贝，常规只找 `lea` 的 xref 会漏掉它；C57 找到 `0x50E409` 与 `0xFB2AB` 两个引用。
+
+| GUI 名称 | 注册与真实调用 | 能读到什么 |
+|---|---|---|
+| `Character.GetPrisoners` | `0x50E3B0` 经 `0x97EA90` 绑定 wrapper `0x26233E0`，再调 `0x2614F30` | `CCharacter+0x1B8` land-state 存在时返回其中 `+0xD8` 的借用容器；为空时走 `0x15B2D10` 全局空容器 |
+| `CourtWindow.GetPrisoners` | `0xFB260` 经 `0xF4C0D0` 绑定 wrapper `0xF4C090`，再调 `0xF482D0` | `CourtWindow+0x2B8` UI 成员；不可当成玩家完整囚犯集合 |
+
+同一原生关系搜索 `0x2614F50..0x2614FC9` 从 `+0xD8` 容器的 `+0x00` 取数据、`+0x0C` 取数量，
+按 4 字节元素扫描，并拿元素与 `CCharacter+0x18` 的完整 generation-bearing ID 比较。私有 reader 可复用已存在的
+Character 存储解析模式（`module+0x570C130`，解析后重读 `+0x18` 全 ID），但必须在应用主线程的同一暂停帧内
+复制、再采样并验证列表；借用指针不得跨查询。`0x2614F50` 是关系搜索调用链，不是本包批准使用的动作 ABI。
+
+```mermaid
+flowchart LR
+    P[paused played Character] --> L[Character+0x1B8 land-state]
+    L --> C[+0xD8 native 32-bit-ID collection]
+    C --> R[full CharacterID storage round trip]
+    R -. natural paused read not yet done .-> V[complete private collection result]
+    V -. final ransom/release preview still missing .-> S[semantic snapshot]
+```
+
+`verify_player_prisoner_getprisoners_binding_1_19_0_6.py --exe <exact ck3.exe>` 校验整 EXE 哈希、注册函数
+与 wrapper 哈希、函数表项、名称拷贝及 getter/容器关键指令；normal 和 `-O` 均为 `GREEN_STATIC`。
+本轮未启动 CK3、未连接 DLL、未发布私有查询或 MCP。因此**只把集合入口从 unknown 收窄为静态已映射**；
+完整性、空容器语义、囚犯行的 custody/duration、赎金与释放最终结果和冷恢复仍需实机及后续原生绑定。
 
 ## 通用 interaction 管线
 
@@ -287,7 +317,7 @@ production-live。已有 pay_ransom 拒绝 loop 继续只作为通用 interactio
 
 必须继续闭合：
 
-1. 在生产 DLL 内绑定 Character.GetPrisoners/CourtWindow.GetPrisoners backing method、容器布局与 lease lifecycle；
+1. 在生产 DLL 内按 C57 已映射的 `Character.GetPrisoners` 引擎集合入口做暂停帧私有读取，验证实际 count、元素顺序、空值、full-ID 与 lease 生命周期；不使用 `CourtWindow` UI 成员代替；
 2. 把 prison relation、custody、duration 和三类 reason native surface 接到已冻结 callback；
 3. 把 ransom 三种角色、option ownership/resource terms 和 release/punish finalized context 接到 callback；
 4. 为每种 punishment 补 final consequence/tyranny presentation；
