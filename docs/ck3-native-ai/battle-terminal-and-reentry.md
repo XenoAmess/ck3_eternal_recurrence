@@ -8,6 +8,8 @@
 
 [只读核验器](../../ck3_autonomous_player/tools/project_native_war_teardown_no_normal.py)绑定源存档、游戏 EXE、私有 bridge、每条请求/响应、两次终局查询、战后存档及清理回执的 SHA；[机器可读报告](../../ck3_autonomous_player/src/xar_autoplayer/simulation/data/ck3_1_19_0_6_episode01_messina_war_teardown_no_normal.json) SHA-256 `4DA3F2630B3D4933831B7A677738D54503914D5C990B08299FDE74480E069D96`。原始证据永久保留于 `D:/workspace/ck3_native_war_ai_promo_work/episode01-war-teardown-private-attempt-043/`，另有只读预检 `episode01-war-teardown-terminal-attempt-042/`。此次直接证实一个战争结束导致的 no-normal 分支；`successor.state=unavailable` 只能说明当前查询无法判定，**不证明没有同省残余战斗**。正常战果的脚本 effect 未执行是由 exact-build 的 suppress 分支推得，不是直接脚本 effect trace；通用 AI 主动撤退策略也未由本次玩家投降实验验证。当前 aggregate `battle_terminal_ready` 仍未满足同省残余接战和 AI assignment-reopened 的独立实机门槛。下文较早章节中把 no-normal 列为待补项的句子均为其当时的历史状态，以本节新证据更新。
 
+[implementation-confirmed] 这条回执揭示两个智能体后置校验边界：首次开启会话时 terminal journal 的 `latest=oldest=0` 是可冻结的空日志，不能因为没有正序号而拒绝监控；其后若无游标查询发现事件，必须验证 `oldest=1`，以免环形日志已丢掉首事件。`no_normal_result` 的 `winner_raw=-1` 也不能硬解释成防守方获胜。策略现接受空日志的受限首事件监控，并对 no-normal 返回 `winner_side=null`、保留原始 `winner_raw`，仍不把它计入正常战分。合成的终局巡航回归覆盖零序号、无正常战果和日志缺口拒绝；实际原生无正常战果字段则由上面的冻结实机报告核验。生产巡航在 no-normal 情形下的完整端到端运行尚未实测，不能把单元回归冒充实机验收。
+
 ## 2026-09-26 梅西纳单场战分：同一次原生 writer 的完整输入与写回
 
 从 immutable 第 27 日存档再次独立回放到第 32 日，`episode01-denominator-live-attempt-024` 在**原版**战分 writer 内被动记录了败方战争参战者的 `0x292FC40(mode=2)` 返回值、实际加载的 CB 倍率和最终 row。终局回执 SHA-256 是 `E55CEFA0AEB57D2F27A0EEF5D9516B85DB9FA5722551A4A83A5BB909DF5BE96F`。这是同一 CombatID `16777218`、WarID `4`、正常终局的一条完整局部链；不是从封顶后的 UI 战分反推输入。

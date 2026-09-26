@@ -3718,7 +3718,11 @@ def _current_battle_terminal_cursor(
             and journal.get("event_status") == "not_observed"
             and journal.get("event_sequence") is None
             and latest_sequence is not None
-            and latest_sequence > 0
+            and latest_sequence >= 0
+            and (
+                latest_sequence > 0
+                or journal.get("oldest_available_sequence") == 0
+            )
             and isinstance(prior, dict)
             and prior.get("combat_id") == combat_id
             and prior.get("terminal_kind") == "active_not_terminal"
@@ -3728,7 +3732,10 @@ def _current_battle_terminal_cursor(
                     "position": record.get("position"),
                     "combat_id": combat_id,
                     "subject_army_id": subject_army_id,
-                    "after_terminal_sequence": latest_sequence,
+                    "after_terminal_sequence": (
+                        latest_sequence if latest_sequence > 0 else None
+                    ),
+                    "empty_journal_before_arm": latest_sequence == 0,
                 }
             )
     return candidates[-1] if candidates else None
@@ -4532,7 +4539,10 @@ def _cursor_bound_terminal_transition(
             and journal.get("event_status") == "not_observed"
             and journal.get("event_sequence") is None
             and latest is not None
-            and latest > 0
+            and latest >= 0
+            and (
+                latest > 0 or journal.get("oldest_available_sequence") == 0
+            )
             and isinstance(prior, dict)
             and prior.get("combat_id") == combat_id
             and prior.get("terminal_kind") == "active_not_terminal"
@@ -4544,7 +4554,7 @@ def _cursor_bound_terminal_transition(
         return {
             "status": "invalid",
             "reason": (
-                "the terminal cruise was not bound to a positive pre-arm "
+                "the terminal cruise was not bound to a gap-free pre-arm "
                 "terminal journal cursor"
             ),
         }
@@ -4557,8 +4567,9 @@ def _cursor_bound_terminal_transition(
     )
     cursor = int(cursor_record["frozen_after_terminal_sequence"])
     journal_subject = int(cursor_record["subject_army_id"])
+    wire_cursor = cursor if cursor > 0 else None
     query_step = query_battle_terminal_transition_v1_step(
-        combat_id, journal_subject, cursor
+        combat_id, journal_subject, wire_cursor
     )
     current_snapshot_id = snapshot.get("snapshot_id")
     current_revision = _native_int(snapshot.get("revision"))
@@ -4570,7 +4581,7 @@ def _cursor_bound_terminal_transition(
         if int(record["position"]) > advance_position
         and record.get("combat_id") == combat_id
         and record.get("subject_army_id") == journal_subject
-        and record.get("after_terminal_sequence") == cursor
+        and record.get("after_terminal_sequence") == wire_cursor
         and record.get("queried_snapshot_id") == current_snapshot_id
         and record.get("queried_revision") == current_revision
         and record.get("queried_native_revision") == current_native_revision
@@ -4595,7 +4606,7 @@ def _cursor_bound_terminal_transition(
             "combat_id": combat_id,
             "subject_army_id": journal_subject,
             "transition_subject_army_id": transition_subject,
-            "after_terminal_sequence": cursor,
+            "after_terminal_sequence": wire_cursor,
         }
 
     terminal = matching[-1]["frame"]
@@ -4627,16 +4638,23 @@ def _cursor_bound_terminal_transition(
         and terminal.get("prior_combat_id") == combat_id
         and terminal.get("subject_public_cunit_id") == journal_subject
         and isinstance(journal, dict)
-        and journal.get("requested_after_sequence") == cursor
+        and journal.get("requested_after_sequence") == wire_cursor
         and journal.get("event_status") == "observed"
         and event_sequence is not None
         and event_sequence > cursor
+        and (
+            cursor > 0
+            or journal.get("oldest_available_sequence") == 1
+        )
         and isinstance(prior, dict)
         and prior.get("combat_id") == combat_id
         and prior.get("terminal_kind")
         in {"normal_result", "no_normal_result"}
         and terminal_date == expected_terminal_date
-        and winner_raw in {0, 1}
+        and (
+            (prior.get("terminal_kind") == "normal_result" and winner_raw in {0, 1})
+            or (prior.get("terminal_kind") == "no_normal_result" and winner_raw in {-1, 0, 1})
+        )
     ):
         return {
             "status": "invalid",
@@ -4653,10 +4671,12 @@ def _cursor_bound_terminal_transition(
         "before_combat_id": combat_id,
         "terminal_date_raw": terminal_date,
         "terminal_journal_sequence": event_sequence,
-        "after_terminal_sequence": cursor,
+        "after_terminal_sequence": wire_cursor,
         "outcome": {
             "terminal_kind": prior.get("terminal_kind"),
-            "winner_side": "attacker" if winner_raw == 0 else "defender",
+            "winner_side": (
+                "attacker" if winner_raw == 0 else "defender"
+            ) if prior.get("terminal_kind") == "normal_result" else None,
             "winner_raw": winner_raw,
             "battle_result_id": prior.get("battle_result_id"),
             "wipe": prior.get("wipe_raw"),

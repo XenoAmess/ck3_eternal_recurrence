@@ -1350,7 +1350,7 @@ def _active_terminal_transition_frame(
         "subject_public_cunit_id": subject,
         "terminal_journal": {
             "requested_after_sequence": None,
-            "oldest_available_sequence": 1,
+            "oldest_available_sequence": 0 if latest_sequence == 0 else 1,
             "latest_sequence": latest_sequence,
             "event_sequence": None,
             "event_status": "not_observed",
@@ -1464,7 +1464,7 @@ def _observed_terminal_transition_frame(
         }
     )
     frame["terminal_journal"] = {
-        "requested_after_sequence": cursor,
+            "requested_after_sequence": cursor if cursor > 0 else None,
         "oldest_available_sequence": 1,
         "latest_sequence": cursor + 1,
         "event_sequence": cursor + 1,
@@ -1528,7 +1528,7 @@ def _observed_terminal_query_row(
     combat_id = int(battle["combat_id"])
     subject = int(battle["subject_public_cunit_id"])
     step = query_battle_terminal_transition_v1_step(
-        combat_id, subject, cursor
+        combat_id, subject, cursor if cursor > 0 else None
     )
     frame = _observed_terminal_transition_frame(
         battle,
@@ -2539,6 +2539,92 @@ class BattleSentinelStrategyTests(unittest.TestCase):
         self.assertEqual(
             plan["battle_transition"]["outcome"]["winner_side"],
             "attacker",
+        )
+
+    def test_empty_journal_no_normal_terminal_keeps_winner_unavailable(self) -> None:
+        before = _crushing_battle_frame()
+        cursor_row = _terminal_cursor_query_row(
+            2, before, latest_sequence=0
+        )
+        preplan = self._plan(
+            [_battle_query_row(1, before), cursor_row],
+            before,
+            steps=(
+                STEP, "life-advance", DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+        self.assertEqual(
+            preplan["phase"], "native_war_global_battle_terminal_cruise"
+        )
+        self.assertIsNone(
+            preplan["terminal_journal_cursors"][0]["after_terminal_sequence"]
+        )
+
+        after = _next_battle_frame(elapsed_days=5)
+        after["finalized"] = True
+        ending = int(after["observed_date_raw"])
+        after_revision = int(after["snapshot_revision"])
+        observed = _observed_terminal_query_row(
+            5, before, cursor=0, observed_date_raw=ending,
+            snapshot_revision=after_revision,
+        )
+        terminal = observed["result"]["battle_terminal_transition"]
+        terminal["prior"]["terminal_kind"] = "no_normal_result"
+        terminal["prior"]["suppress_normal_result_envelopes"] = True
+        terminal["prior"]["phase_raw"] = 1
+        terminal["prior"]["phase_day"] = 2
+        terminal["prior"]["winner_raw"] = -1
+        terminal["removal"]["result_strictly_resolves"] = False
+        terminal["successor"]["state"] = "unavailable"
+        history = [
+            _battle_query_row(1, before),
+            cursor_row,
+            _sentinel_advance_row(
+                3, step=TERMINAL_SENTINEL_STEP, terminal=True
+            ),
+            _battle_query_row(4, after),
+            observed,
+        ]
+        plan = self._plan(
+            history,
+            after,
+            steps=(
+                STEP, "life-advance", DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+        self.assertEqual(plan["phase"], "native_war_battle_terminal_cleanup")
+        transition = plan["battle_transition"]
+        self.assertEqual(transition["status"], "terminal_journal_observed")
+        self.assertEqual(transition["outcome"]["terminal_kind"], "no_normal_result")
+        self.assertEqual(transition["outcome"]["winner_raw"], -1)
+        self.assertIsNone(transition["outcome"]["winner_side"])
+        self.assertEqual(transition["terminal_journal_sequence"], 1)
+
+        lost = copy.deepcopy(history)
+        lost[-1]["result"]["battle_terminal_transition"]["terminal_journal"][
+            "oldest_available_sequence"
+        ] = 2
+        lost[-1]["result"]["battle_terminal_transition"]["terminal_journal"][
+            "latest_sequence"
+        ] = 2
+        lost[-1]["result"]["battle_terminal_transition"]["terminal_journal"][
+            "event_sequence"
+        ] = 2
+        rejected = self._plan(
+            lost, after,
+            steps=(
+                STEP, "life-advance", DECISION_SENTINEL_STEP,
+                TERMINAL_SENTINEL_STEP,
+            ),
+            readiness=_ALL_BATTLE_SPEED_GATES,
+        )
+        self.assertNotEqual(
+            rejected.get("battle_transition", {}).get("status"),
+            "terminal_journal_observed",
         )
 
     def test_one_cursor_proves_each_controlled_subject_in_same_combat(
