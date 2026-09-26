@@ -868,6 +868,7 @@ class GameplayBridgeService:
                 planned,
                 snapshot=m5_snapshot,
                 history=m5_history,
+                available_steps=available_steps,
             )
             joint_plan = joint.get("plan")
             if not (

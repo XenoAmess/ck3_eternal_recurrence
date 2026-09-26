@@ -2,8 +2,8 @@
 
 The collector is read-only. It adapts domain-policy results observed by a
 private caller and invokes the existing dispatcher once. The separate opt-in
-formal planner can route its selected positive-income building through the
-existing construction consumer. Public capability surfaces do not import it.
+formal planner routes its selected building, marriage or faction gift through
+the owning formal consumer. Public capability surfaces do not import it.
 """
 
 from __future__ import annotations
@@ -20,10 +20,15 @@ from .construction_formal_consumer import (
 from .bridge.observed_heir_marriage_private_action_v1 import (
     SUBMIT_STEP as FAMILY_SUBMIT_STEP,
 )
+from .bridge.faction_gift_formal_route_v1 import (
+    SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
+    plan_faction_gift_private_v1,
+)
 from .bridge.domain_construction_private_transport_v1 import (
     _identity as construction_process_identity,
 )
 from .m5_joint_dispatch import M5FrameDispatcher
+from .faction_gift_pending_v1 import read_faction_gift_ledger_v1
 from .m5_observed_opportunity_selector import (
     active_defensive_war_continuation_proposal,
     construction_proposal,
@@ -129,8 +134,9 @@ def collect_m5_formal_proposals(
 def plan_m5_formal_query_only(
     driver: object, planned: Mapping[str, object], *,
     snapshot: Mapping[str, object], history: Sequence[Mapping[str, object]],
+    available_steps: set[str],
 ) -> dict[str, object]:
-    """Read one private frame and route only a proved construction choice."""
+    """Read one private frame and route its proved formal domain choice."""
 
     result = deepcopy(dict(planned))
     plan = result.get("plan")
@@ -171,6 +177,9 @@ def plan_m5_formal_query_only(
     # The joint source refuses unresolved actions.  Let the existing durable
     # construction consumer resolve its own receipt before another selection.
     state_dir = getattr(driver, "state_dir", None)
+    gift_enabled = getattr(
+        driver, "allow_private_faction_gift_formal_trial", False
+    ) is True
     if isinstance(state_dir, Path):
         try:
             ledger = read_construction_ledger(state_dir)
@@ -196,8 +205,17 @@ def plan_m5_formal_query_only(
                 applied.get("episode_run_id") == snapshot.get("episode_run_id")
             ):
                 baseline["construction_receipt_consumed"] = dict(applied)
+            # A submitted gift must resolve its material receipt before the
+            # source producer considers another gift on this frame.
+            if gift_enabled and isinstance(
+                read_faction_gift_ledger_v1(state_dir).get("pending"), Mapping
+            ):
+                return plan_faction_gift_private_v1(
+                    driver, {**cleaned, "plan": baseline}, snapshot,
+                    history, available_steps,
+                )
         except (RuntimeError, TypeError, ValueError) as error:
-            return blocked(f"M5 construction receipt RED: {error}")
+            return blocked(f"M5 prior action receipt RED: {error}")
     try:
         sources = reader(
             snapshot=deepcopy(dict(snapshot)),
@@ -259,6 +277,57 @@ def plan_m5_formal_query_only(
                 "reason": "submit one same-frame native-legal valued first-heir marriage",
                 "m5_joint_query_only": collection,
                 "m5_joint_formal_action_ready": True,
+            },
+        }
+    gift_source = sources.get("domains", {}).get("diplomacy")
+    gift_candidate = (gift_source.get("candidate")
+                      if isinstance(gift_source, Mapping) else None)
+    if (
+        gift_enabled
+        and isinstance(reservation, Mapping)
+        and reservation.get("domain") == "diplomacy"
+        and reservation.get("candidate_id") == dispatch.get("selected_candidate_id")
+        and isinstance(gift_candidate, Mapping)
+    ):
+        gift = plan_faction_gift_private_v1(
+            driver, {**cleaned, "plan": {**baseline, "selected_step": "life-advance"}},
+            snapshot, history, available_steps,
+        )
+        gift_plan = gift.get("plan")
+        selected_candidate = (gift_plan.get("faction_gift_private_candidate_v1")
+                              if isinstance(gift_plan, Mapping) else None)
+        if not (
+            isinstance(selected_candidate, Mapping)
+            and selected_candidate.get("status") == "selected"
+            and selected_candidate.get("choice") == gift_candidate.get("choice")
+            and selected_candidate.get("observation")
+            == gift_candidate.get("observation")
+        ):
+            return blocked("M5 selected faction gift changed before formal routing")
+        step = gift_plan.get("selected_step")
+        if step not in {FACTION_GIFT_SUBMIT_STEP, "save-checkpoint"}:
+            return blocked("M5 selected faction gift has no formal submit path")
+        return {
+            **gift,
+            "plan": {
+                **gift_plan,
+                "m5_joint_query_only": collection,
+                "m5_joint_formal_action_ready": step == FACTION_GIFT_SUBMIT_STEP,
+            },
+        }
+    if (
+        not gift_enabled
+        and isinstance(reservation, Mapping)
+        and reservation.get("domain") == "diplomacy"
+    ):
+        return {
+            **cleaned,
+            "plan": {
+                **baseline,
+                "selected_step": "life-advance",
+                "m5_joint_status": "selected_gift_formal_consumer_disabled",
+                "m5_joint_query_only": collection,
+                "m5_joint_formal_action_ready": False,
             },
         }
     if collection["status"] == "no_complete_feasible_proposal":

@@ -5,6 +5,7 @@ from copy import deepcopy
 import io
 import json
 from pathlib import Path
+from threading import Lock
 from unittest import mock
 import sys
 import tempfile
@@ -17,6 +18,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer import cli
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.faction_gift_formal_route_v1 import (
+    SUBMIT_STEP as FACTION_GIFT_SUBMIT_STEP,
+)
 from xar_autoplayer.environment import EnvironmentSpec
 from xar_autoplayer.m5_joint_dispatch import M5FrameDispatcher
 from xar_autoplayer.m5_formal_proposal_collector import (
@@ -523,8 +527,55 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             "building-slot:501:1",
             reservation["commitments_after"]["commitment_keys"],
         )
-        self.assertIsNone(planned["plan"]["selected_step"])
+        self.assertEqual(planned["plan"]["selected_step"], "life-advance")
+        self.assertEqual(planned["plan"]["m5_joint_status"],
+                         "selected_gift_formal_consumer_disabled")
         self.assertFalse(planned["plan"]["m5_joint_formal_action_ready"])
+
+    def test_m5_selected_gift_uses_existing_pre_submit_checkpoint_gate(self) -> None:
+        driver = _Driver(self.state_dir)
+        driver.allow_private_faction_gift_formal_trial = True
+        driver.capabilities = lambda: {
+            "action_steps": ["life-advance", "save-checkpoint",
+                             FACTION_GIFT_SUBMIT_STEP],
+            "bridge_capabilities": [],
+        }
+        baseline = {"policy": "one-life-turn-v1", "phase": "peace_growth",
+                    "selected_step": "life-advance"}
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+            return_value=_construction(status="no_legal_budgeted_building"),
+        )):
+            planned = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(driver.source_reads, 1)
+        self.assertEqual(driver.faction_reads, 2)
+        self.assertEqual(planned["plan"]["selected_step"], "save-checkpoint")
+        self.assertEqual(planned["plan"]["m5_joint_query_only"]["dispatch"]
+                         ["selected_candidate_id"],
+                         "diplomacy:faction-gift:801:41003")
+        self.assertFalse(planned["plan"]["m5_joint_formal_action_ready"])
+        driver._driver_state_lock = Lock()
+        driver._last_checkpoint = {
+            "status": "saved", "sha256": "a" * 64,
+            "date_raw": _FRAME["date_raw"],
+            "episode_run_id": _FRAME["episode_run_id"],
+        }
+        with (mock.patch(
+            "xar_autoplayer.bridge.service.choose_one_life_turn",
+            return_value=deepcopy(baseline),
+        ), mock.patch(
+            "xar_autoplayer.m5_peacetime_proposal_sources_v1."
+            "query_construction_private",
+            return_value=_construction(status="no_legal_budgeted_building"),
+        )):
+            submit_plan = GameplayBridgeService(driver).plan_turn()
+        self.assertEqual(submit_plan["plan"]["selected_step"],
+                         FACTION_GIFT_SUBMIT_STEP)
+        self.assertTrue(submit_plan["plan"]["m5_joint_formal_action_ready"])
 
     def test_one_ready_building_avoids_query_only_noop(self) -> None:
         driver = _Driver(
@@ -747,7 +798,9 @@ class M5PeacetimeProposalSourcesTests(unittest.TestCase):
             plan["m5_joint_query_only"]["dispatch"]["selected_candidate_id"],
             "diplomacy:faction-gift:801:41003",
         )
-        self.assertIsNone(plan["selected_step"])
+        self.assertEqual(plan["selected_step"], "life-advance")
+        self.assertEqual(plan["m5_joint_status"],
+                         "selected_gift_formal_consumer_disabled")
         self.assertFalse(plan["m5_joint_formal_action_ready"])
 
     def test_later_day_verified_building_enters_joint_shortlist(self) -> None:
