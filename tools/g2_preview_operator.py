@@ -59,6 +59,7 @@ CONSTRUCTION_RECEIPT_STEP = "private-query-player-construction-receipt-v1"
 FAMILY_PENDING_V1_SCHEMA = "xar.ck3.first-heir-marriage-formal.v1"
 FAMILY_ACTION_V1_SCHEMA = "xar.ck3.observed-first-heir-marriage-private-action.v1"
 FAMILY_SUBMIT_STEP = "submit-observed-first-heir-marriage-v1-private"
+FACTION_GIFT_PENDING_V1_SCHEMA = "xar.ck3.faction_gift_pending_v1"
 
 
 def sha256(path: Path) -> str:
@@ -268,6 +269,42 @@ def construction_pending_sidecar_request(
         for row in history
     ):
         raise ValueError("construction applied sidecar lacks its saved submit action")
+    return request_id
+
+
+def faction_gift_pending_sidecar_request(
+    sidecar: dict[str, Any], driver: dict[str, Any],
+    manifest: dict[str, Any], save_sha256: str,
+) -> str:
+    """Bind an unresolved gift to the exact pre-submit save and driver."""
+    pending = sidecar.get("pending")
+    checkpoint = driver.get("last_checkpoint")
+    if (sidecar.get("schema") != FACTION_GIFT_PENDING_V1_SCHEMA
+            or sidecar.get("format_version") != 1
+            or not isinstance(pending, dict)
+            or not isinstance(sidecar.get("resolved_request_outcomes"), dict)
+            or not isinstance(checkpoint, dict)):
+        raise ValueError("faction gift sidecar lacks one unresolved action")
+    request_id = pending.get("request_id")
+    actor = episode_value(driver, manifest, "episode_character_id")
+    episode = episode_value(driver, manifest, "episode_run_id")
+    if (not isinstance(request_id, str)
+            or re.fullmatch(r"faction-gift-[0-9a-f]{32}", request_id) is None
+            or request_id in sidecar["resolved_request_outcomes"]
+            or pending.get("status") not in {
+                "submission_started_unconfirmed",
+                "submitted_verification_pending", "restore_requery_required",
+            }
+            or type(actor) is not int or actor <= 0
+            or not isinstance(episode, str)
+            or pending.get("pre_player_character_id") != actor
+            or pending.get("episode_run_id") != episode
+            or pending.get("pre_date_raw") != checkpoint.get("date_raw")
+            or checkpoint.get("episode_character_id") != actor
+            or checkpoint.get("episode_run_id") != episode
+            or checkpoint.get("sha256") != save_sha256
+            or pending.get("checkpoint_sha256_before_submit") != save_sha256):
+        raise ValueError("faction gift sidecar does not match pre-submit save/driver")
     return request_id
 
 
@@ -634,10 +671,14 @@ def command_prepare_state(args: argparse.Namespace) -> int:
         raise ValueError("family proof report requires a family sidecar")
     family_source = family_sidecar_arg.resolve() if family_sidecar_arg else None
     family_report_source = family_report_arg.resolve() if family_report_arg else None
+    faction_sidecar_arg = getattr(args, "faction_gift_sidecar", None)
+    faction_source = (faction_sidecar_arg.resolve() if faction_sidecar_arg is not None
+                      else sample_dir / "faction-gift-pending-v1.json")
     save_target = state_dir / "profile" / "save games" / "xar_checkpoint.ck3"
     driver_target = state_dir / "native-session" / "driver-state.json"
     pending_target = state_dir / "construction-formal-pending-v1.json"
     family_target = state_dir / "first-heir-marriage-formal-v1.json"
+    faction_target = state_dir / "native-session" / "faction-gift-pending-v1.json"
     for path in (save_source, driver_source):
         if not path.is_file():
             raise FileNotFoundError(path)
@@ -693,6 +734,21 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 sha256(save_source))
             family_kind = "resolved"
         family_source_sha256 = sha256(family_source)
+    faction_request_id = None
+    faction_source_sha256 = None
+    faction_record = None
+    if faction_sidecar_arg is not None and not faction_source.is_file():
+        raise FileNotFoundError(faction_source)
+    if faction_source.exists():
+        if not faction_source.is_file():
+            raise FileNotFoundError(faction_source)
+        if faction_target.exists():
+            raise FileExistsError(f"refusing to overwrite prepared state: {faction_target}")
+        faction_record = read_json(faction_source)
+        faction_request_id = faction_gift_pending_sidecar_request(
+            faction_record, driver_source_record, manifest, sha256(save_source)
+        )
+        faction_source_sha256 = sha256(faction_source)
     rebind_receipt = state_dir / "ordinary-seed-rebind-v1.json"
     if lifecycle == {**ORDINARY_LIFECYCLE_CONTRACT, "source": "manifest"}:
         if rebind_receipt.exists():
@@ -844,6 +900,23 @@ def command_prepare_state(args: argparse.Namespace) -> int:
                 str(family_report_source) if family_report_source else None),
             "formal_proof_report_sha256": family_report_sha256,
             "candidate_character_id": family_candidate,
+        }
+    if faction_request_id is not None:
+        if faction_gift_pending_sidecar_request(
+            faction_record, read_json(driver_target), manifest, sha256(save_target)
+        ) != faction_request_id:
+            raise RuntimeError("prepared driver no longer matches faction gift pending action")
+        shutil.copy2(faction_source, faction_target)
+        make_derived_state_owner_writable(faction_target)
+        if sha256(faction_target) != faction_source_sha256:
+            raise RuntimeError("prepared faction gift sidecar hash mismatch")
+        preparation["faction_gift_pending_sidecar"] = {
+            "status": "paired_no_launch",
+            "source": str(faction_source),
+            "path": str(faction_target),
+            "sha256": faction_source_sha256,
+            "action_request_id": faction_request_id,
+            "pre_submit_checkpoint_sha256": sha256(save_target),
         }
     print(json.dumps(preparation))
     return 0
@@ -1662,6 +1735,7 @@ def parser() -> argparse.ArgumentParser:
     prepare.add_argument("--construction-sidecar", type=Path)
     prepare.add_argument("--family-sidecar", type=Path)
     prepare.add_argument("--family-proof-report", type=Path)
+    prepare.add_argument("--faction-gift-sidecar", type=Path)
     prepare.set_defaults(handler=command_prepare_state)
 
     run = commands.add_parser("run")
