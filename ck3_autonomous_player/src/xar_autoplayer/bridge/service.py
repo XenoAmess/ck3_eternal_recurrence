@@ -26,6 +26,7 @@ from .event_contract import (
 from .declaration_contract import (
     QUERY_DECLARABLE_WARS_STEP,
     declare_war_step,
+    is_native_declaration_step,
 )
 from .marriage_contract import (
     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
@@ -837,9 +838,10 @@ class GameplayBridgeService:
                 snapshot=m5_snapshot,
                 history=m5_history,
             )
-        if getattr(
+        lifestyle_trial = getattr(
             self.driver, "allow_private_lifestyle_formal_trial", False
-        ) is True:
+        ) is True
+        if lifestyle_trial:
             planned = (
                 self._plan_initial_lifestyle_focus_first_v1(
                     planned, available_steps
@@ -853,16 +855,24 @@ class GameplayBridgeService:
                     planned, available_steps
                 )
             )
-            lifestyle_plan = planned.get("plan")
-            if (
-                isinstance(lifestyle_plan, dict)
-                and lifestyle_plan.get("selected_step") != "life-advance"
-            ):
-                planned.pop("_private_faction_snapshot_v1", None)
-                planned.pop("_private_faction_history_v1", None)
-                planned.pop("_private_construction_snapshot_v1", None)
-                planned.pop("_private_construction_history_v1", None)
-                return planned
+        plan = planned.get("plan")
+        prewar_arbitration = (
+            isinstance(plan, dict)
+            and is_native_declaration_step(plan.get("selected_step"))
+            and snapshot.get("paused") is True
+            and snapshot.get("map_ready") is True
+            and snapshot.get("active_event") is None
+            and snapshot.get("pending_character_interaction") is None
+            and snapshot.get("active_wars") == []
+        )
+        if (lifestyle_trial and isinstance(plan, dict)
+                and plan.get("selected_step") != "life-advance"
+                and not prewar_arbitration):
+            planned.pop("_private_faction_snapshot_v1", None)
+            planned.pop("_private_faction_history_v1", None)
+            planned.pop("_private_construction_snapshot_v1", None)
+            planned.pop("_private_construction_history_v1", None)
+            return planned
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
         if getattr(
@@ -890,11 +900,15 @@ class GameplayBridgeService:
             planned = plan_construction_private(
                 self.driver, planned, construction_snapshot,
                 construction_history, available_steps,
+                prewar_arbitration=prewar_arbitration,
             )
         family_snapshot = planned.pop("_private_family_marriage_snapshot_v1", None)
         if (getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True
                 and isinstance(family_snapshot, dict)):
-            return plan_family_marriage_private(self.driver, planned, family_snapshot)
+            return plan_family_marriage_private(
+                self.driver, planned, family_snapshot,
+                prewar_arbitration=prewar_arbitration,
+            )
         return planned
 
     def _plan_initial_lifestyle_focus_first_v1(
