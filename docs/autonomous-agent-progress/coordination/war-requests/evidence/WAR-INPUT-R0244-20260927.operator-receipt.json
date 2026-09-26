@@ -1,0 +1,33 @@
+{
+  "schema": "xar-g2-preview-python-operator-v1",
+  "manifest": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h133-c35-20260927\\operator-manifest.json",
+  "output": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h133-c35-20260927\\attempt-01",
+  "checkpoint_sha256_before": "3e6e66ced57ee8d13707259d9d9656aa54c24f782598c86b192958cca0b5a734",
+  "driver_state_sha256_before": "7dfb9c60713bce8eeefef1b65826ad42aa0173b82e1bc498d39269fbb9e21b86",
+  "preflight_exit_code": 0,
+  "lifecycle": {
+    "xar_enabled": "xar_off",
+    "succession_lifecycle": "ordinary_campaign_succession",
+    "ordinary_campaign_no_pact": true,
+    "source": "manifest"
+  },
+  "display_mode": "windowed",
+  "private_lifestyle_formal_trial": true,
+  "private_construction_formal_trial": true,
+  "private_family_marriage_formal_trial": true,
+  "private_m5_joint_collector": true,
+  "require_initial_lifestyle_focus_before_date_advance": true,
+  "ok": false,
+  "status": "formal_run_failed",
+  "game_launched": true,
+  "formal_exit_code": 1,
+  "formal_report": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h133-c35-20260927\\attempt-01\\formal-report.txt",
+  "formal_stderr": "Z:\\ck3_mod_rewrite_process_assets\\g2-robert-econ-h133-c35-20260927\\attempt-01\\formal-stderr.txt",
+  "turns": 40,
+  "timeout_seconds": 1500,
+  "readiness_timeout_seconds": 300,
+  "private_faction_gift_formal_trial": false,
+  "private_faction_round_id": null,
+  "checkpoint_sha256_after": "3e6e66ced57ee8d13707259d9d9656aa54c24f782598c86b192958cca0b5a734",
+  "driver_state_sha256_after": "2c3a86966fabb9a43587124c8c3cc8e4d1254631ced5986576cad2ecb763c9df"
+}
